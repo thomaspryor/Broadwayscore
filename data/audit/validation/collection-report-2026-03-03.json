@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-03-03T13:46:57.252Z",
+  "runDate": "2026-03-03T14:35:17.773Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 500,
+    "maxReviews": 50,
     "priority": "all",
     "showFilter": "",
     "aggressive": false,
@@ -11,43 +11,43 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 91,
-    "failed": 611,
+    "processed": 114,
+    "failed": 638,
     "skipped": 0,
-    "successRate": "13.0%"
+    "successRate": "15.2%"
   },
   "tierBreakdown": {
-    "playwright": 38,
-    "amp": 46,
+    "playwright": 51,
+    "amp": 52,
     "browserbase": 0,
-    "directCookies": 36,
-    "scrapingbee": 13,
+    "directCookies": 40,
+    "scrapingbee": 15,
     "brightdata": 0,
-    "archiveToday": 35,
-    "archive": 32
+    "archiveToday": 39,
+    "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 61,
-    "tier1Success": 19,
-    "ampAttempts": 35,
-    "ampSuccess": 12,
+    "tier1Attempts": 30,
+    "tier1Success": 14,
+    "ampAttempts": 7,
+    "ampSuccess": 4,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 11,
-    "tier2Success": 6,
-    "tier3Attempts": 5,
+    "tier2Attempts": 6,
+    "tier2Success": 2,
+    "tier3Attempts": 4,
     "tier3Success": 0,
-    "tier3_6Attempts": 3,
-    "tier3_6Success": 3,
-    "tier4Attempts": 26,
-    "tier4Success": 12,
-    "totalFailed": 429,
-    "scrapingBeeCreditsUsed": 310,
+    "tier3_6Attempts": 4,
+    "tier3_6Success": 4,
+    "tier4Attempts": 11,
+    "tier4Success": 8,
+    "totalFailed": 15,
+    "scrapingBeeCreditsUsed": 30,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 250,
-    "urlDiscoverySuccess": 75,
-    "urlDiscoveryCapped": 250
+    "urlDiscoveryAttempts": 10,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
   },
   "processed": [
     "pied-a-terre-off-broadway-2026/nytg--unknown.json",
@@ -140,7 +140,30 @@
     "beetlejuice-2022/timeout--adam-feldman.json",
     "beetlejuice-west-end-2026/guardian--tim-byrne.json",
     "betrayal-2013/timeout--andrzej-lukowski.json",
-    "betrayal-2013/timeout--david-cote.json"
+    "betrayal-2013/timeout--david-cote.json",
+    "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
+    "romeo-and-juliet-suite-off-broadway-2026/timeout--unknown.json",
+    "spread-off-broadway-2026/thewrap--unknown.json",
+    "the-amazing-sex-life-of-rabbits-off-broadway-2026/nbcnews--unknown.json",
+    "the-amazing-sex-life-of-rabbits-off-broadway-2026/theatermania--unknown.json",
+    "bloodlove-off-broadway-2026/one-minute-critic--unknown.json",
+    "body-count-off-broadway-2026/rollingstone--unknown.json",
+    "chamber-magic-off-broadway-2022/culturesauce--unknown.json",
+    "matilda-the-musical-west-end-2021/whatsonstage--andy-plaice.json",
+    "mother-russia-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "mother-russia-off-broadway-2026/theater-scene--tony-marinelli.json",
+    "my-neighbour-totoro-west-end-2025/all-that-dazzles-uk--daz-gale.json",
+    "night-side-songs-off-broadway-2026/dc-theater-arts--deb-miller.json",
+    "night-side-songs-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "night-side-songs-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "the-holy-rosenbergs-west-end-2026/times-uk--unknown.json",
+    "a-delicate-balance-1996/nytimes--ben-brantley.json",
+    "a-view-from-the-bridge-1983/nytimes--ben-brantley.json",
+    "cats-1982/nytimes--charles-isherwood.json",
+    "hello-dolly-1995/nytimes--jesse-green.json",
+    "les-liaisons-dangereuses-1987/nytimes--ben-brantley.json",
+    "les-liaisons-dangereuses-2008/nytimes--matt-wolf.json",
+    "m-butterfly-1988/nytimes--ben-brantley.json"
   ],
   "failed": [
     "bigfoot-off-broadway-2026/vulture--unknown.json",
@@ -753,7 +776,34 @@
     "anything-goes-2002/variety--steven-suskin.json",
     "anything-goes-2011/variety--charles-isherwood.json",
     "arcadia-1995/hollywood-reporter--david-rooney.json",
-    "arcadia-1995/nytimes--ben-brantley.json"
+    "arcadia-1995/nytimes--ben-brantley.json",
+    "bloodlove-off-broadway-2026/nyt-theater--unknown.json",
+    "la-ternura-off-broadway-2025/nyt-theater--unknown.json",
+    "the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
+    "mj-2022/thewrap--steve-pond.json",
+    "night-side-songs-off-broadway-2026/timeout--unknown.json",
+    "the-play-that-goes-wrong-off-broadway-2019/nydailynews--joe-dziemianowicz.json",
+    "austentatious-an-improvised-jane-austen-novel-west-end-2025/times-uk--unknown.json",
+    "chicago-1996/ap--michael-kuchwara.json",
+    "garry-starr-classic-penguins-garrick-west-end-2026/broadwayworld--franco-milazzo.json",
+    "paranormal-activity-west-end-2025/financialtimes--paul-raven.json",
+    "the-office-a-musical-parody-off-broadway-2018/unknown--rob-crowther-iv.json",
+    "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/times-uk--clive-davis.json",
+    "you-got-older-off-broadway-2026/nysr--frank-scheck.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
+    "a-view-from-the-bridge-2015/hollywood-reporter--leslie-felperin.json",
+    "american-buffalo-1983/hollywood-reporter--lovia-gyarkye.json",
+    "betrayal-2000/hollywood-reporter--david-rooney.json",
+    "bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json",
+    "cats-1982/hollywood-reporter--frank-scheck.json",
+    "children-of-a-lesser-god-1980/hollywood-reporter--david-rooney.json",
+    "escape-to-margaritaville-2018/vulture--jesse-green.json",
+    "how-to-dance-in-ohio-2023/hollywood-reporter--angie-han.json",
+    "john-lithgow-stories-by-heart-2018/vulture--jesse-green.json",
+    "les-liaisons-dangereuses-2008/variety--matt-trueman.json",
+    "linda-vista-2019/variety--marilyn-stasio.json",
+    "macbeth-1982/hollywood-reporter--frank-scheck.json",
+    "noises-off-2001/hollywood-reporter--david-rooney.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -794,7 +844,20 @@
       "beetlejuice-2022/timeout--adam-feldman.json",
       "beetlejuice-west-end-2026/guardian--tim-byrne.json",
       "betrayal-2013/timeout--andrzej-lukowski.json",
-      "betrayal-2013/timeout--david-cote.json"
+      "betrayal-2013/timeout--david-cote.json",
+      "spread-off-broadway-2026/thewrap--unknown.json",
+      "the-amazing-sex-life-of-rabbits-off-broadway-2026/nbcnews--unknown.json",
+      "the-amazing-sex-life-of-rabbits-off-broadway-2026/theatermania--unknown.json",
+      "bloodlove-off-broadway-2026/one-minute-critic--unknown.json",
+      "matilda-the-musical-west-end-2021/whatsonstage--andy-plaice.json",
+      "mother-russia-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+      "mother-russia-off-broadway-2026/theater-scene--tony-marinelli.json",
+      "my-neighbour-totoro-west-end-2025/all-that-dazzles-uk--daz-gale.json",
+      "night-side-songs-off-broadway-2026/dc-theater-arts--deb-miller.json",
+      "night-side-songs-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "night-side-songs-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+      "the-holy-rosenbergs-west-end-2026/times-uk--unknown.json",
+      "cats-1982/hollywood-reporter--frank-scheck.json"
     ],
     "amp": [
       "data/review-texts/bigfoot-off-broadway-2026/vulture--unknown.json",
@@ -842,7 +905,13 @@
       "data/review-texts/the-mystery-of-edwin-drood-1985/hollywood-reporter--david-rooney.json",
       "the-mystery-of-edwin-drood-1985/hollywood-reporter--david-rooney.json",
       "data/review-texts/to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json",
-      "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json"
+      "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json",
+      "data/review-texts/the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
+      "the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
+      "data/review-texts/a-view-from-the-bridge-2015/hollywood-reporter--leslie-felperin.json",
+      "a-view-from-the-bridge-2015/hollywood-reporter--leslie-felperin.json",
+      "data/review-texts/betrayal-2000/hollywood-reporter--david-rooney.json",
+      "betrayal-2000/hollywood-reporter--david-rooney.json"
     ],
     "browserbase": [],
     "directCookies": [
@@ -881,7 +950,11 @@
       "the-wild-party-2000/vulture--jesse-green.json",
       "torch-song-trilogy-1982/variety--marilyn-stasio.json",
       "waitress-2021/variety--marilyn-stasio.json",
-      "west-side-story-1980/hollywood-reporter--david-rooney.json"
+      "west-side-story-1980/hollywood-reporter--david-rooney.json",
+      "night-side-songs-off-broadway-2026/timeout--unknown.json",
+      "american-buffalo-1983/hollywood-reporter--lovia-gyarkye.json",
+      "children-of-a-lesser-god-1980/hollywood-reporter--david-rooney.json",
+      "les-liaisons-dangereuses-2008/variety--matt-trueman.json"
     ],
     "scrapingbee": [
       "midnight-a-new-original-musical-by-todrick-hall-west-end-2026/guardian--unknown.json",
@@ -896,7 +969,9 @@
       "take-me-out-2022/nytimes--ben-brantley.json",
       "the-piano-lesson-1990/nytimes--maya-phillips.json",
       "the-wiz-1975/nytimes--maya-phillips.json",
-      "an-enemy-of-the-people-2012/guardian--adrian-horton.json"
+      "an-enemy-of-the-people-2012/guardian--adrian-horton.json",
+      "chamber-magic-off-broadway-2022/culturesauce--unknown.json",
+      "garry-starr-classic-penguins-garrick-west-end-2026/broadwayworld--franco-milazzo.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -934,7 +1009,11 @@
       "data/review-texts/hercules-west-end-2025/nytimes--matt-wolf.json",
       "data/review-texts/side-show-1997/nytimes--charles-isherwood.json",
       "data/review-texts/spamalot-off-broadway-2026/nytimes--jesse-green.json",
-      "data/review-texts/the-other-place-off-broadway-2026/nytimes--charles-isherwood.json"
+      "data/review-texts/the-other-place-off-broadway-2026/nytimes--charles-isherwood.json",
+      "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/nydailynews--joe-dziemianowicz.json",
+      "data/review-texts/chicago-1996/ap--michael-kuchwara.json",
+      "data/review-texts/the-office-a-musical-parody-off-broadway-2018/unknown--rob-crowther-iv.json",
+      "data/review-texts/you-got-older-off-broadway-2026/nysr--frank-scheck.json"
     ],
     "archive": [
       "pied-a-terre-off-broadway-2026/nytg--unknown.json",
@@ -968,498 +1047,19 @@
       "magic-mike-live-west-end-2021/timeout--nicola-dowse.json",
       "moulin-rouge-the-musical-west-end-2021/timeout--andrzej-lukowski.json",
       "pal-joey-1976/nytimes--jesse-green.json",
-      "uncle-vanya-1973/nytimes--jesse-green.json"
+      "uncle-vanya-1973/nytimes--jesse-green.json",
+      "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
+      "romeo-and-juliet-suite-off-broadway-2026/timeout--unknown.json",
+      "body-count-off-broadway-2026/rollingstone--unknown.json",
+      "a-delicate-balance-1996/nytimes--ben-brantley.json",
+      "a-view-from-the-bridge-1983/nytimes--ben-brantley.json",
+      "cats-1982/nytimes--charles-isherwood.json",
+      "hello-dolly-1995/nytimes--jesse-green.json",
+      "les-liaisons-dangereuses-1987/nytimes--ben-brantley.json",
+      "les-liaisons-dangereuses-2008/nytimes--matt-wolf.json",
+      "m-butterfly-1988/nytimes--ben-brantley.json"
     ]
   },
-  "failuresByOutlet": {
-    "Zeal NYC": {
-      "count": 1,
-      "domain": "zealnyc.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Cleveland Plain Dealer": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Columbus Dispatch": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Denver Post": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Kitchener-Ontario Record": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Milwaukee Journal Sentinel": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "NJ.com": {
-      "count": 2,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Post and Courier": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Press-Enterprise": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Sarasota Herald-Tribune": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Seattle Post-Intelligencer": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Syracuse Herald Journal": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "unknown": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Virginian-Pilot": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Paste Magazine": {
-      "count": 1,
-      "domain": "pastemagazine.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "NY1": {
-      "count": 1,
-      "domain": "ny1.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
-  "urlDiscoveries": [
-    {
-      "reviewId": "broken-glass-west-end-2026/timeout--unknown.json",
-      "oldUrl": "https://www.timeout.com/london/theatre/broken-glass-4",
-      "newUrl": "https://www.timeout.com/london/theatre/broken-glass-1"
-    },
-    {
-      "reviewId": "the-holy-rosenbergs-west-end-2026/timeout--unknown.json",
-      "oldUrl": "https://www.timeout.com/london/theatre/the-holy-rosenbergs",
-      "newUrl": "https://www.timeout.com/london/theatre/ryan-craig-and-laurie-sansom-on-the-holy-rosenbergs"
-    },
-    {
-      "reviewId": "all-my-sons-west-end-2025/hollywood-reporter--demetrios-matheou.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/london-paddington-the-musical-bryan-cranston-all-my-sons-1236439785/",
-      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/all-my-sons-theater-review-bryan-cranston-arthur-miller-1236433540/"
-    },
-    {
-      "reviewId": "all-my-sons-west-end-2025/hollywood-reporter--frank-scheck.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/all-my-sons-theater-review-bryan-cranston-arthur-miller-1236433540/",
-      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/london-paddington-the-musical-bryan-cranston-all-my-sons-1236439785/"
-    },
-    {
-      "reviewId": "broken-glass-west-end-2026/variety--jeremy-gerard.json",
-      "oldUrl": "https://variety.com/1994/legit/reviews/broken-glass-2-1200436583/",
-      "newUrl": "https://variety.com/1996/film/reviews/broken-glass-3-1200447247/"
-    },
-    {
-      "reviewId": "bug-2026/hollywood-reporter--caitlin-huston.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/carrie-coon-tracy-letts-bug-broadway-1236348700/",
-      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/carrie-coon-internet-fame-broadway-1236460848/"
-    },
-    {
-      "reviewId": "chicago-1996/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/movies/movie-news/chicago-review-2002-movie-959366/",
-      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-bound-first-wives-club-715726/"
-    },
-    {
-      "reviewId": "hamilton-2015/nytimes--unknown.json",
-      "oldUrl": "https://www.nytimes.com/2015/08/07/theater/review-hamilton-young-rebels-changing-history-and-theater.html",
-      "newUrl": "https://www.nytimes.com/2015/02/18/theater/review-in-hamilton-lin-manuel-miranda-forges-democracy-through-rap.html"
-    },
-    {
-      "reviewId": "heathers-the-musical-off-broadway-2025/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2022/09/15/movies/heathers-the-musical-review.html",
-      "newUrl": "https://www.nytimes.com/2025/07/08/theater/heathers-the-musical-preview.html"
-    },
-    {
-      "reviewId": "high-noon-west-end-2025/variety--william-brogdon.json",
-      "oldUrl": "https://variety.com/1952/film/reviews/high-noon-1200417314/",
-      "newUrl": "https://variety.com/2000/tv/reviews/high-noon-2-1200463803/"
-    },
-    {
-      "reviewId": "mamma-mia-west-end-2021/variety--matt-wolf.json",
-      "oldUrl": "https://variety.com/2015/legit/news/mamma-mia-closing-broadway-musical-female-driven-blockbuster-1201585083/",
-      "newUrl": "https://variety.com/1999/legit/reviews/mamma-mia-1200457147/"
-    },
-    {
-      "reviewId": "man-and-boy-west-end-2026/variety--marilyn-stasio.json",
-      "oldUrl": "https://variety.com/2011/legit/reviews/man-and-boy-1117946330/",
-      "newUrl": "https://variety.com/2005/legit/reviews/man-and-boy-2-1200527783/"
-    },
-    {
-      "reviewId": "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/simu-liu-broadway-debut-oh-mary-1236451899/",
-      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-escola-broadway-1235945864/"
-    },
-    {
-      "reviewId": "schmigadoon-2026/nytimes--margaret-lyons.json",
-      "oldUrl": "https://www.nytimes.com/2021/07/15/arts/television/review-schmigadoon.html",
-      "newUrl": "https://www.nytimes.com/2025/02/03/theater/schmigadoon-review-kennedy-center.html"
-    },
-    {
-      "reviewId": "paddington-the-musical-west-end-2025/theatermania--alex-wood.json",
-      "oldUrl": "https://www.theatermania.com/news/review-paddington-the-musical-marmalade-and-musical-heaven_1813757/",
-      "newUrl": "https://www.theatermania.com/news/paddington-the-musical-in-development_1723775/"
-    },
-    {
-      "reviewId": "stranger-things-2024/variety--david-benedict.json",
-      "oldUrl": "https://variety.com/2025/legit/reviews/stranger-things-the-first-shadow-review-broadway-1236375485/",
-      "newUrl": "https://variety.com/2023/legit/reviews/stranger-things-play-the-first-shadow-review-west-end-1235838159/"
-    },
-    {
-      "reviewId": "titanique-2026/nytimes--elisabeth-vincentelli.json",
-      "oldUrl": "https://www.nytimes.com/2025/12/15/theater/titanique-broadway.html",
-      "newUrl": "https://www.nytimes.com/2022/06/28/theater/titanique-review.html"
-    },
-    {
-      "reviewId": "you-got-older-off-broadway-2026/nytimes--charles-isherwood.json",
-      "oldUrl": "https://www.nytimes.com/2026/02/24/theater/you-got-older-review-shawkat-friedman-barron.html",
-      "newUrl": "https://www.nytimes.com/2014/11/08/theater/clare-barrons-you-got-older-at-here-arts-center.html"
-    },
-    {
-      "reviewId": "all-my-sons-west-end-2025/timeout--andrzej-lukowski.json",
-      "oldUrl": "https://www.timeout.com/london/theatre/all-my-sons-3",
-      "newUrl": "https://www.timeout.com/london/news/review-all-my-sons-starring-bran-cranston-at-wyndhams-theatre-112225"
-    },
-    {
-      "reviewId": "and-juliet-2022/guardian--unknown.json",
-      "oldUrl": "https://www.theguardian.com/stage/2023/mar/10/and-juliet-review-max-martin-shakespeare-queer-joy-and-pop-delirium",
-      "newUrl": "https://www.theguardian.com/culture/2023/feb/21/theatre-and-pop-at-its-absolute-excess-the-broadway-hit-that-asks-what-if-juliet-just-got-on-with-it"
-    },
-    {
-      "reviewId": "giant-2026/guardian--arifa-akbar.json",
-      "oldUrl": "https://www.theguardian.com/stage/2025/apr/06/olivier-awards-2025-giant-benjamin-button-and-fiddler-on-the-roof-triumph",
-      "newUrl": "https://www.theguardian.com/stage/2024/sep/27/giant-review-royal-court-theatre-mark-rosenblatt-london"
-    },
-    {
-      "reviewId": "hamilton-west-end-2021/timeout--andrzej-lukowski.json",
-      "oldUrl": "https://www.timeout.com/london/theatre/hamilton-tickets-and-review",
-      "newUrl": "https://www.timeout.com/newyork/theater/hamilton-on-broadway"
-    },
-    {
-      "reviewId": "hamlet-off-broadway-2026/timeout--raven-snook.json",
-      "oldUrl": "https://www.timeout.com/newyork/theater/hamlet-shakespeare-in-the-park",
-      "newUrl": "https://www.timeout.com/newyork/theater/hamlet-eddie-izzard-review"
-    },
-    {
-      "reviewId": "heathers-the-musical-off-broadway-2025/timeout--unknown.json",
-      "oldUrl": "http://www.timeout.com/newyork/theater/heathers-the-musical",
-      "newUrl": "https://www.timeout.com/newyork/theater/heathers-the-musical-review-off-broadway"
-    },
-    {
-      "reviewId": "magic-mike-live-west-end-2021/timeout--nicola-dowse.json",
-      "oldUrl": "https://www.timeout.com/sydney/theatre/magic-mike-live",
-      "newUrl": "https://www.timeout.com/melbourne/theatre/magic-mike-live"
-    },
-    {
-      "reviewId": "moulin-rouge-the-musical-west-end-2021/timeout--andrzej-lukowski.json",
-      "oldUrl": "https://www.timeout.com/sydney/theatre/moulin-rouge-the-musical",
-      "newUrl": "https://www.timeout.com/london/news/monopoly-and-moulin-rouge-the-musical-announced-for-2021"
-    },
-    {
-      "reviewId": "paranormal-activity-west-end-2025/timeout--andrzej-lukowski.json",
-      "oldUrl": "https://www.timeout.com/london/theatre/paranormal-activity",
-      "newUrl": "https://www.timeout.com/los-angeles/theater/paranormal-activity"
-    },
-    {
-      "reviewId": "stranger-things-2024/timeout--andrzej-lukowski.json",
-      "oldUrl": "https://www.timeout.com/newyork/theater/stranger-things-the-first-shadow-broadway-review-prequel-louis-mccartney",
-      "newUrl": "https://www.timeout.com/london/theatre/stranger-things-the-first-shadow-review"
-    },
-    {
-      "reviewId": "stranger-things-the-first-shadow-west-end-2023/timeout--adam-feldman.json",
-      "oldUrl": "https://www.timeout.com/london/theatre/stranger-things-the-first-shadow-everything-you-need-to-know",
-      "newUrl": "https://www.timeout.com/london/theatre/stranger-things-the-first-shadow-review"
-    },
-    {
-      "reviewId": "the-devil-wears-prada-west-end-2024/timeout--andrzej-lukowski.json",
-      "oldUrl": "https://www.timeout.com/london/news/elton-johns-musical-version-of-the-devil-wears-prada-is-coming-to-the-west-end-091323",
-      "newUrl": "https://www.timeout.com/london/theatre/the-devil-wears-prada-review"
-    },
-    {
-      "reviewId": "the-mousetrap-west-end-2021/timeout--caroline-mcginn.json",
-      "oldUrl": "https://www.timeout.com/london/theatre/the-mousetrap",
-      "newUrl": "https://www.timeout.com/melbourne/theatre/the-mousetrap"
-    },
-    {
-      "reviewId": "the-producers-west-end-2025/timeout--andrzej-lukowski.json",
-      "oldUrl": "https://www.timeout.com/sydney/theatre/the-producers",
-      "newUrl": "https://www.timeout.com/london/theatre/the-producers-3-review-2"
-    },
-    {
-      "reviewId": "two-strangers-bway-2025/timeout--unknown.json",
-      "oldUrl": "https://www.timeout.com/london/theatre/two-strangers-carry-a-cake-across-new-york-review",
-      "newUrl": "https://www.timeout.com/newyork/theater/two-strangers-carry-a-cake-across-new-york"
-    },
-    {
-      "reviewId": "you-got-older-off-broadway-2026/timeout--adam-feldman.json",
-      "oldUrl": "https://www.timeout.com/newyork/theater/you-got-older",
-      "newUrl": "https://www.timeout.com/newyork/theater/you-got-older-review-revival-alia-shawkat-peter-friedman-clare-barron"
-    },
-    {
-      "reviewId": "pal-joey-1976/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2023/11/02/theater/pal-joey-review-city-center.html",
-      "newUrl": "https://www.nytimes.com/1990/07/24/theater/review-theater-pal-joey-50-years-older-but-also-new.html"
-    },
-    {
-      "reviewId": "romeo-and-juliet-west-end-2026/vulture--sara-holdren.json",
-      "oldUrl": "https://www.vulture.com/article/theater-review-connor-zegler-gold-romeo-juliet.html",
-      "newUrl": "https://www.vulture.com/article/demi-moore-dog-pilaf-tom-holland-romeo-and-juliet.html"
-    },
-    {
-      "reviewId": "runaways-1978/hollywood-reporter--frank-scheck.json",
-      "oldUrl": "http://www.hollywoodreporter.com/review/runaways-theater-review-909035",
-      "newUrl": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/runaways-theater-review-909035/"
-    },
-    {
-      "reviewId": "side-show-1997/nytimes--charles-isherwood.json",
-      "oldUrl": "http://www.nytimes.com/2014/11/18/theater/side-show-directed-by-bill-condon-returns-to-broadway.html?_r=1",
-      "newUrl": "https://www.nytimes.com/1997/12/23/theater/defeated-side-show-is-closing-jan-3.html"
-    },
-    {
-      "reviewId": "side-show-1997/vulture--jesse-green.json",
-      "oldUrl": "http://www.vulture.com/2014/11/theater-review-side-show.html",
-      "newUrl": "https://www.vulture.com/2014/11/theater-review-side-show.html"
-    },
-    {
-      "reviewId": "spamalot-2005/vulture--jackson-mchenry.json",
-      "oldUrl": "https://www.vulture.com/2023/11/theater-review-spamalot-broadway-revival.html",
-      "newUrl": "https://www.vulture.com/2019/01/monty-python-spamalot-musical-oral-history-book.html"
-    },
-    {
-      "reviewId": "spamalot-2005/vulture--sara-holdren.json",
-      "oldUrl": "https://www.vulture.com/2023/11/theater-review-spamalot-broadway-revival.html",
-      "newUrl": "https://www.vulture.com/2019/01/monty-python-spamalot-musical-oral-history-book.html"
-    },
-    {
-      "reviewId": "spamalot-off-broadway-2026/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2023/11/16/theater/spamalot-review-broadway.html",
-      "newUrl": "https://www.nytimes.com/2023/08/08/theater/candide-rent-spamalot-revivals.html"
-    },
-    {
-      "reviewId": "spamalot-off-broadway-2026/vulture--jackson-mchenry.json",
-      "oldUrl": "https://www.vulture.com/2023/11/theater-review-spamalot-broadway-revival.html",
-      "newUrl": "https://www.vulture.com/article/theater-news-andrew-lloyd-webber-merrily-we-roll-along-box-office-spamalot.html"
-    },
-    {
-      "reviewId": "spring-awakening-2006/hollywood-reporter--david-rooney.json",
-      "oldUrl": "http://www.hollywoodreporter.com/review/deaf-wests-spring-awakening-theater-827479",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/spring-awakening-returning-broadway-807100/"
-    },
-    {
-      "reviewId": "stereophonic-off-broadway-2023/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/stereophonic-review-theater-david-adjmi-broadway-1235877998/",
-      "newUrl": "https://www.hollywoodreporter.com/business/business-news/broadway-box-office-merrily-we-roll-along-the-outsiders-stereophonic-tonys-1235932050/"
-    },
-    {
-      "reviewId": "stereophonic-off-broadway-2023/nytimes--naveen-kumar.json",
-      "oldUrl": "https://www.nytimes.com/2024/04/19/theater/stereophonic-review.html",
-      "newUrl": "https://www.nytimes.com/2023/10/29/theater/stereophonic-review-david-adjmi-will-butler.html"
-    },
-    {
-      "reviewId": "sunday-in-the-park-with-george-2008/hollywood-reporter--david-rooney.json",
-      "oldUrl": "http://www.hollywoodreporter.com/review/sunday-in-the-park-with-george-theater-979116",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/sunday-in-the-park-with-george-theater-979116/"
-    },
-    {
-      "reviewId": "sunset-boulevard-2017/vulture--sara-holdren.json",
-      "oldUrl": "https://www.vulture.com/article/theater-review-nicole-scherzinger-sunset-blvd-broadway.html",
-      "newUrl": "https://www.vulture.com/2016/10/glenn-close-cast-in-broadways-sunset-boulevard.html"
-    },
-    {
-      "reviewId": "sunset-boulevard-2024/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/sunset-blvd-broadway-review-nicole-scherzinger-andrew-lloyd-webber-jamie-lloyd-1236038232/",
-      "newUrl": "https://www.hollywoodreporter.com/business/business-news/broadway-box-office-nicole-scherzinger-sunset-boulevard-make-big-entrance-1236019316/"
-    },
-    {
-      "reviewId": "sweeney-todd-2005/variety--naveen-kumar.json",
-      "oldUrl": "https://variety.com/2023/legit/reviews/sweeney-todd-review-josh-groban-broadway-annaleigh-ashford-1235564843/",
-      "newUrl": "https://variety.com/2005/legit/reviews/sweeney-todd-the-demon-barber-of-fleet-street-2-1200520509/"
-    },
-    {
-      "reviewId": "sweeney-todd-2005/vulture--jackson-mchenry.json",
-      "oldUrl": "https://www.vulture.com/2023/03/theater-review-sweeney-todd-broadway-revival.html",
-      "newUrl": "https://www.vulture.com/2017/03/theater-review-a-close-up-sweeney-todd-gets-extra-demonic.html"
-    },
-    {
-      "reviewId": "take-me-out-2022/nytimes--ben-brantley.json",
-      "oldUrl": "http://theater.nytimes.com/mem/theater/treview.html?res=9c04e3d9123cf93ba15751c0a9659c8b63",
-      "newUrl": "https://www.nytimes.com/2022/04/04/theater/take-me-out-review.html"
-    },
-    {
-      "reviewId": "take-me-out-2022/variety--peter-marks.json",
-      "oldUrl": "https://variety.com/2022/legit/reviews/take-me-out-broadway-review-jesse-tyler-ferguson-1235233378/",
-      "newUrl": "https://variety.com/2022/legit/reviews/take-me-out-review-broadway-jesse-williams-1235224000/"
-    },
-    {
-      "reviewId": "the-color-purple-2005/hollywood-reporter--david-rooney.json",
-      "oldUrl": "http://www.hollywoodreporter.com/review/jennifer-hudson-color-purple-theater-847846",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/color-purple-theater-cythia-erivo-847846/"
-    },
-    {
-      "reviewId": "the-color-purple-2005/vulture--jesse-green.json",
-      "oldUrl": "http://www.vulture.com/2015/12/theater-review-the-color-purple.html",
-      "newUrl": "https://www.vulture.com/2015/12/theater-review-the-color-purple.html"
-    },
-    {
-      "reviewId": "the-glass-menagerie-2013/hollywood-reporter--david-rooney.json",
-      "oldUrl": "http://www.hollywoodreporter.com/review/glass-menagerie-theater-984781",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/glass-menagerie-theater-review-2-637472/"
-    },
-    {
-      "reviewId": "the-king-and-i-1996/hollywood-reporter--david-rooney.json",
-      "oldUrl": "http://www.hollywoodreporter.com/review/king-i-theater-review-789315",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/king-and-i-tour-957142/"
-    },
-    {
-      "reviewId": "the-mystery-of-edwin-drood-1985/hollywood-reporter--david-rooney.json",
-      "oldUrl": "http://www.hollywoodreporter.com/review/mystery-edwin-drood-theater-review-389912",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/mystery-edwin-drood-theater-review-389912/"
-    },
-    {
-      "reviewId": "the-other-place-off-broadway-2026/nytimes--charles-isherwood.json",
-      "oldUrl": "http://theater.nytimes.com/2013/01/11/theater/reviews/the-other-place-at-samuel-j-friedman-theater.html?_r=0",
-      "newUrl": "https://www.nytimes.com/2026/02/11/theater/other-place-review-zeldin-menzies-darcy.html"
-    },
-    {
-      "reviewId": "the-other-place-off-broadway-2026/vulture--scott-brown.json",
-      "oldUrl": "http://www.vulture.com/2013/01/theater-review-the-other-place.html",
-      "newUrl": "https://www.vulture.com/article/theater-review-the-other-place-is-a-low-stakes-antigone.html"
-    },
-    {
-      "reviewId": "the-piano-lesson-1990/nytimes--maya-phillips.json",
-      "oldUrl": "https://www.nytimes.com/2022/10/13/theater/the-piano-lesson-review.html",
-      "newUrl": "https://www.nytimes.com/1990/04/19/theater/a-star-of-the-piano-lesson-who-found-a-new-life-onstage.html"
-    },
-    {
-      "reviewId": "the-producers-2001/variety--bob-verini.json",
-      "oldUrl": "https://www.variety.com/review/VE1117947963?refCatId=33",
-      "newUrl": "https://variety.com/2001/legit/reviews/the-producers-5-1200466701/"
-    },
-    {
-      "reviewId": "the-wild-party-2000/vulture--jesse-green.json",
-      "oldUrl": "http://www.vulture.com/2015/07/theater-review-a-brief-return-to-the-wild-party.html",
-      "newUrl": "https://www.vulture.com/2015/07/theater-review-a-brief-return-to-the-wild-party.html"
-    },
-    {
-      "reviewId": "the-wiz-1975/nytimes--maya-phillips.json",
-      "oldUrl": "https://www.nytimes.com/2024/04/17/theater/the-wiz-review-broadway.html",
-      "newUrl": "https://www.nytimes.com/1975/04/21/archives/the-wiz-best-musical-wins-7-tonys.html"
-    },
-    {
-      "reviewId": "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/review/kill-a-mockingbird-theater-review-1169085",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/kill-a-mockingbird-theater-review-1169085/"
-    },
-    {
-      "reviewId": "torch-song-trilogy-1982/variety--marilyn-stasio.json",
-      "oldUrl": "https://variety.com/2018/legit/reviews/torch-song-review-broadway-michael-urie-1203014846/",
-      "newUrl": "https://variety.com/1987/film/reviews/torch-song-trilogy-2-1200427390/"
-    },
-    {
-      "reviewId": "uncle-vanya-1973/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2024/04/24/theater/uncle-vanya-review-steve-carell.html",
-      "newUrl": "https://www.nytimes.com/1973/06/05/archives/stage-mike-nicholss-uncle-vanya.html"
-    },
-    {
-      "reviewId": "waitress-2021/variety--marilyn-stasio.json",
-      "oldUrl": "http://variety.com/2016/legit/reviews/waitress-review-broadway-musical-1201759570/",
-      "newUrl": "https://variety.com/2023/film/news/waitress-the-musical-movie-theaters-1235815466/"
-    },
-    {
-      "reviewId": "west-side-story-1980/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/review/west-side-story-theater-1280016",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/west-side-story-broadway-revival-cast-unveiled-1223044/"
-    },
-    {
-      "reviewId": "a-view-from-the-bridge-2010/guardian--alexis-soloski.json",
-      "oldUrl": "http://www.theguardian.com/stage/2015/nov/12/view-from-the-bridge-review-arthur-miller-reinvented",
-      "newUrl": "https://www.theguardian.com/culture/2011/may/29/a-view-from-the-bridge"
-    },
-    {
-      "reviewId": "an-enemy-of-the-people-2012/guardian--adrian-horton.json",
-      "oldUrl": "https://www.theguardian.com/stage/2024/mar/18/an-enemy-of-the-people-review-jeremy-strong-henrik-ibsen-drama",
-      "newUrl": "https://www.theguardian.com/stage/2010/feb/18/an-enemy-of-the-people-review"
-    },
-    {
-      "reviewId": "beetlejuice-2022/timeout--adam-feldman.json",
-      "oldUrl": "https://www.timeout.com/newyork/theater/beetlejuice-review-broadway-musical",
-      "newUrl": "https://www.timeout.com/newyork/news/broadways-beetlejuice-comes-back-from-the-dead-050522"
-    },
-    {
-      "reviewId": "beetlejuice-west-end-2026/guardian--tim-byrne.json",
-      "oldUrl": "https://www.theguardian.com/stage/2025/may/18/beetlejuice-the-musical-review-eddie-perfect-is-simply-perfect-in-his-nutty-and-wild-hit",
-      "newUrl": "https://www.theguardian.com/stage/2019/apr/25/beetlejuice-broadway-tim-burton-adaptation-haunts"
-    },
-    {
-      "reviewId": "betrayal-2013/timeout--andrzej-lukowski.json",
-      "oldUrl": "https://www.timeout.com/london/theatre/betrayal-review",
-      "newUrl": "https://www.timeout.com/newyork/theater/betrayal"
-    },
-    {
-      "reviewId": "betrayal-2013/timeout--david-cote.json",
-      "oldUrl": "http://www.timeout.com/newyork/theater/betrayal",
-      "newUrl": "https://www.timeout.com/newyork/theater/betrayal"
-    }
-  ]
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
 }
