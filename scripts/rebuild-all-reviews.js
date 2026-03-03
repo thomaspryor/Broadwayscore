@@ -1348,31 +1348,33 @@ showDirs.forEach(showId => {
   }
 
   const showDir = path.join(reviewTextsDir, showId);
-  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json'))
-    // Sort: prefer higher-quality files first for dedup tiebreaking (first-seen wins)
-    // Priority: non-duplicate > non-unknown > verified > alphabetical
-    .sort((a, b) => {
-      const aUnknown = /unknown|unnamed/i.test(a) ? 1 : 0;
-      const bUnknown = /unknown|unnamed/i.test(b) ? 1 : 0;
-      if (aUnknown !== bUnknown) return aUnknown - bUnknown;
-      // Peek at duplicate flags to deprioritize files with isDuplicate/duplicateOf
-      try {
-        const aData = JSON.parse(fs.readFileSync(path.join(showDir, a), 'utf8'));
-        const bData = JSON.parse(fs.readFileSync(path.join(showDir, b), 'utf8'));
-        const aDupe = (aData.isDuplicate || aData.duplicateOf || aData.duplicateTextOf) ? 1 : 0;
-        const bDupe = (bData.isDuplicate || bData.duplicateOf || bData.duplicateTextOf) ? 1 : 0;
-        if (aDupe !== bDupe) return aDupe - bDupe;
-        // Prefer verified content
-        const aVerified = aData.contentVerification?.isValid ? 0 : 1;
-        const bVerified = bData.contentVerification?.isValid ? 0 : 1;
-        if (aVerified !== bVerified) return aVerified - bVerified;
-        // Prefer ensemble-scored over single-model
-        const aEnsemble = aData.ensembleData ? 0 : 1;
-        const bEnsemble = bData.ensembleData ? 0 : 1;
-        if (aEnsemble !== bEnsemble) return aEnsemble - bEnsemble;
-      } catch { /* Fall through to alphabetical */ }
-      return a.localeCompare(b);
-    });
+  const allJsonFiles = fs.readdirSync(showDir).filter(f => f.endsWith('.json'));
+
+  // Pre-read sort metadata once per file (avoids O(N log N) repeated reads in comparator)
+  const sortMeta = new Map();
+  for (const f of allJsonFiles) {
+    const meta = { isDupe: 0, isVerified: 1, hasEnsemble: 1 };
+    try {
+      const d = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
+      meta.isDupe = (d.isDuplicate || d.duplicateOf || d.duplicateTextOf) ? 1 : 0;
+      meta.isVerified = d.contentVerification?.isValid ? 0 : 1;
+      meta.hasEnsemble = d.ensembleData ? 0 : 1;
+    } catch { /* defaults are conservative */ }
+    sortMeta.set(f, meta);
+  }
+
+  // Sort: prefer higher-quality files first for dedup tiebreaking (first-seen wins)
+  // Priority: non-duplicate > non-unknown > verified > ensemble-scored > alphabetical
+  const files = allJsonFiles.sort((a, b) => {
+    const aUnknown = /unknown|unnamed/i.test(a) ? 1 : 0;
+    const bUnknown = /unknown|unnamed/i.test(b) ? 1 : 0;
+    if (aUnknown !== bUnknown) return aUnknown - bUnknown;
+    const am = sortMeta.get(a), bm = sortMeta.get(b);
+    if (am.isDupe !== bm.isDupe) return am.isDupe - bm.isDupe;
+    if (am.isVerified !== bm.isVerified) return am.isVerified - bm.isVerified;
+    if (am.hasEnsemble !== bm.hasEnsemble) return am.hasEnsemble - bm.hasEnsemble;
+    return a.localeCompare(b);
+  });
 
   stats.byShow[showId] = { files: files.length, reviews: 0, skipped: 0 };
   stats.totalFiles += files.length;

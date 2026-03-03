@@ -352,7 +352,7 @@ async function main() {
       }
 
       try {
-        const showCategory = showCategoryMap[sourceData.showId] || 'broadway';
+        const showCategory = showCategoryMap[review.showId] || 'broadway';
         const expectedType = showCategory === 'off-broadway' ? 'Off-Broadway'
           : showCategory === 'west-end' ? 'West End'
           : 'Broadway';
