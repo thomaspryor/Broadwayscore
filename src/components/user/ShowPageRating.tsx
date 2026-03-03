@@ -68,8 +68,9 @@ export default function ShowPageRating({
       setShowPanel(false);
       setEditingReview(null);
       setCurrentRating(null);
-    } catch {
-      // Error handled by parent via toast
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error('[Rating] Save error:', e);
     } finally {
       setSaving(false);
     }

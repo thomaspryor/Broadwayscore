@@ -46,7 +46,7 @@ jobs:
           # Nuclear fix: rewrite the source file to hardcode all features ON.
           node -e "
             const fs = require('fs');
-            const ALL = 'discountTickets,criticPages,creativePages,castChanges,boxOffice,goldLists,commercial,awards,tonyPredictions,castPages,westEnd,offBroadway,tonyPeople,sectionJumpLinks,userAccounts';
+            const ALL = 'discountTickets,criticPages,creativePages,castChanges,boxOffice,goldLists,commercial,awards,tonyPredictions,castPages,westEnd,offBroadway,tonyPeople,userAccounts';
             let src = fs.readFileSync('src/config/feature-flags.ts', 'utf8');
             src = src.replace(
               /\(process\.env\.NEXT_PUBLIC_FEATURES \|\| ''\)/,
@@ -60,7 +60,7 @@ jobs:
       - name: Build (all features enabled)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          NEXT_PUBLIC_FEATURES: "discountTickets,criticPages,creativePages,castChanges,boxOffice,goldLists,commercial,awards,tonyPredictions,castPages,westEnd,offBroadway,tonyPeople,sectionJumpLinks,userAccounts"
+          NEXT_PUBLIC_FEATURES: "discountTickets,criticPages,creativePages,castChanges,boxOffice,goldLists,commercial,awards,tonyPredictions,castPages,westEnd,offBroadway,tonyPeople,userAccounts"
         run: vercel build --token=$VERCEL_TOKEN
 
       - name: Deploy
