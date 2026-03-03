@@ -456,18 +456,19 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
     const hasMoreCategories = findNextNonEmptyCategory(currentCatIdx) !== null;
 
     return (
-      <div className="min-h-screen bg-surface flex flex-col">
+      <div className="min-h-screen bg-surface flex flex-col pb-[140px]">
         {/* Header */}
         <div className="sticky top-0 z-10 px-5 py-4 flex items-center justify-between border-b border-white/5 bg-surface/90 backdrop-blur-xl">
           <button onClick={() => goToScreen('picking')} className="text-gray-400 text-sm hover:text-white transition-colors p-2 -m-2">
             &larr; Back
           </button>
           <div className="flex gap-1.5">
-            {currentTier.categories.map((_, i) => (
+            {currentTier.categories.filter(c => c.nominees.length > 0).map((_, i) => (
               <div
                 key={i}
                 className={`h-2 rounded transition-all duration-300 ${
-                  i <= currentCatIdx ? 'w-2 bg-[#ff1368]' : 'w-2 bg-surface-overlay'
+                  i <= currentTier.categories.filter(c => c.nominees.length > 0).findIndex(c => c.title === currentCategory.title)
+                    ? 'w-2 bg-[#ff1368]' : 'w-2 bg-surface-overlay'
                 }`}
               />
             ))}
@@ -563,8 +564,11 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
             ))}
           </div>
 
-          {/* Actions */}
-          <div className="flex flex-col gap-2.5 animate-fade-up" style={{ animationDelay: '1s', animationFillMode: 'both' }}>
+        </div>
+
+        {/* Sticky bottom CTA */}
+        <div className="fixed bottom-0 left-0 right-0 z-20 px-5 pb-6 pt-3 bg-gradient-to-t from-surface via-surface to-transparent">
+          <div className="max-w-[480px] mx-auto flex flex-col gap-2.5">
             {hasMoreCategories ? (
               <>
                 <button
