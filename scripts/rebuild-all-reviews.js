@@ -1383,7 +1383,6 @@ showDirs.forEach(showId => {
       }
 
       const data = JSON.parse(rawContent);
-
       // Recover review text from garbageFullText when fullText is missing
       // Some reviews were flagged as garbage only due to trailing junk (newsletters, copyright)
       // but contain valid review text that can be cleaned and promoted
