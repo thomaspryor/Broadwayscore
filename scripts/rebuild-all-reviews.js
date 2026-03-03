@@ -1349,11 +1349,29 @@ showDirs.forEach(showId => {
 
   const showDir = path.join(reviewTextsDir, showId);
   const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json'))
-    // Sort: prefer files with real critic names over "unknown"/"unnamed" for URL dedup tiebreaking
+    // Sort: prefer higher-quality files first for dedup tiebreaking (first-seen wins)
+    // Priority: non-duplicate > non-unknown > verified > alphabetical
     .sort((a, b) => {
       const aUnknown = /unknown|unnamed/i.test(a) ? 1 : 0;
       const bUnknown = /unknown|unnamed/i.test(b) ? 1 : 0;
-      return aUnknown - bUnknown || a.localeCompare(b);
+      if (aUnknown !== bUnknown) return aUnknown - bUnknown;
+      // Peek at duplicate flags to deprioritize files with isDuplicate/duplicateOf
+      try {
+        const aData = JSON.parse(fs.readFileSync(path.join(showDir, a), 'utf8'));
+        const bData = JSON.parse(fs.readFileSync(path.join(showDir, b), 'utf8'));
+        const aDupe = (aData.isDuplicate || aData.duplicateOf || aData.duplicateTextOf) ? 1 : 0;
+        const bDupe = (bData.isDuplicate || bData.duplicateOf || bData.duplicateTextOf) ? 1 : 0;
+        if (aDupe !== bDupe) return aDupe - bDupe;
+        // Prefer verified content
+        const aVerified = aData.contentVerification?.isValid ? 0 : 1;
+        const bVerified = bData.contentVerification?.isValid ? 0 : 1;
+        if (aVerified !== bVerified) return aVerified - bVerified;
+        // Prefer ensemble-scored over single-model
+        const aEnsemble = aData.ensembleData ? 0 : 1;
+        const bEnsemble = bData.ensembleData ? 0 : 1;
+        if (aEnsemble !== bEnsemble) return aEnsemble - bEnsemble;
+      } catch { /* Fall through to alphabetical */ }
+      return a.localeCompare(b);
     });
 
   stats.byShow[showId] = { files: files.length, reviews: 0, skipped: 0 };
@@ -2032,13 +2050,16 @@ showDirs.forEach(showId => {
 
       // Content fingerprint dedup: same review text at same outlet under different critic names
       // Belt-and-suspenders: catches duplicates even if duplicateTextOf flag was never set
+      // Files are pre-sorted by quality (non-duplicate, verified, ensemble-scored first)
+      // so first-seen is the preferred file
       if (data.fullText && data.fullText.length >= 100) {
         const fingerprint = computeContentFingerprint(data.fullText);
         if (fingerprint) {
           const outletKey2 = normalizeOutletCanonical(data.outletId || data.outlet);
           const fpKey = `${outletKey2}|${fingerprint}`;
           if (seenFingerprintsByOutlet.has(fpKey)) {
-            console.log(`  [FINGERPRINT DEDUP] ${showId}/${file}: same text as ${seenFingerprintsByOutlet.get(fpKey)} at ${outletKey2}`);
+            const winner = seenFingerprintsByOutlet.get(fpKey);
+            console.log(`  [FINGERPRINT DEDUP] ${showId}/${file}: same text as ${winner} at ${outletKey2} (keeping ${winner})`);
             stats.skippedFingerprintDedup = (stats.skippedFingerprintDedup || 0) + 1;
             return;
           }
