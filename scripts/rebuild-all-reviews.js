@@ -26,7 +26,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical } = require('./lib/review-normalization');
+const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, isJunkOutlet } = require('./lib/review-normalization');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
@@ -2977,7 +2977,7 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
 
   const newOutlets = [];
   for (const outletId of reviewOutletIds) {
-    if (!registryIds.has(outletId.toLowerCase())) {
+    if (!registryIds.has(outletId.toLowerCase()) && !isJunkOutlet(outletId)) {
       newOutlets.push(outletId);
     }
   }
