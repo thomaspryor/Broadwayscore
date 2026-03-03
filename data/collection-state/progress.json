@@ -7,7 +7,9 @@
     "midnight-a-new-original-musical-by-todrick-hall-west-end-2026/nytimes--unknown.json",
     "midnight-a-new-original-musical-by-todrick-hall-west-end-2026/guardian--unknown.json",
     "antigone-this-play-i-read-in-high-school-off-broadway-2026/artsfuse--unknown.json",
-    "broken-glass-west-end-2026/times-uk--unknown.json"
+    "broken-glass-west-end-2026/times-uk--unknown.json",
+    "night-side-songs-off-broadway-2026/nyt-theater--unknown.json",
+    "night-side-songs-off-broadway-2026/nytg--unknown.json"
   ],
   "failed": [
     "bigfoot-off-broadway-2026/vulture--unknown.json",
@@ -33,20 +35,32 @@
     "swept-away-2024/nytg--allison-considine.json",
     "the-collaboration-2022/hollywood-reporter--anita-gates.json",
     "the-homecoming-2007/nyt-theater--team-bww.json",
-    "the-house-of-blue-leaves-2011/vulture--scott-brown.json"
+    "the-house-of-blue-leaves-2011/vulture--scott-brown.json",
+    "bigfoot-off-broadway-2026/nytimes--naveen-kumar.json",
+    "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+    "night-side-songs-off-broadway-2026/vulture--unknown.json",
+    "the-holy-rosenbergs-west-end-2026/variety--unknown.json",
+    "broken-glass-west-end-2026/guardian--alfred-hickling.json",
+    "just-in-time-2025/wsj--unknown.json",
+    "mother-russia-off-broadway-2026/wsj--unknown.json",
+    "six-2021/wsj--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/nytg--unknown.json",
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/artsfuse--unknown.json",
-      "broken-glass-west-end-2026/times-uk--unknown.json"
+      "broken-glass-west-end-2026/times-uk--unknown.json",
+      "night-side-songs-off-broadway-2026/nyt-theater--unknown.json",
+      "night-side-songs-off-broadway-2026/nytg--unknown.json"
     ],
     "amp": [
       "data/review-texts/bigfoot-off-broadway-2026/vulture--unknown.json",
       "bigfoot-off-broadway-2026/vulture--unknown.json",
       "data/review-texts/broken-glass-west-end-2026/variety--unknown.json",
       "broken-glass-west-end-2026/variety--unknown.json",
+      "data/review-texts/the-holy-rosenbergs-west-end-2026/variety--unknown.json",
+      "data/review-texts/night-side-songs-off-broadway-2026/vulture--unknown.json",
       "data/review-texts/the-holy-rosenbergs-west-end-2026/variety--unknown.json"
     ],
     "browserbase": [],
@@ -57,7 +71,12 @@
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/me-and-my-girl-1986/nytimes--jesse-green.json",
-      "data/review-texts/on-your-feet-2015/nytg--tulis-mccall.json"
+      "data/review-texts/on-your-feet-2015/nytg--tulis-mccall.json",
+      "data/review-texts/bigfoot-off-broadway-2026/nytimes--naveen-kumar.json",
+      "data/review-texts/marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+      "data/review-texts/just-in-time-2025/wsj--unknown.json",
+      "data/review-texts/mother-russia-off-broadway-2026/wsj--unknown.json",
+      "data/review-texts/six-2021/wsj--unknown.json"
     ],
     "archive": [
       "pied-a-terre-off-broadway-2026/nytg--unknown.json",
@@ -67,6 +86,51 @@
     ]
   },
   "startTime": "2026-03-03T08:34:29.131Z",
-  "lastProcessed": "the-house-of-blue-leaves-2011/vulture--scott-brown.json",
-  "log": []
+  "lastProcessed": "six-2021/wsj--unknown.json",
+  "log": [
+    {
+      "t": "2026-03-03T09:19:13.595Z",
+      "event": "bb-session",
+      "session": "aa252214",
+      "url": "https://www.nytimes.com/2026/03/02/theater/bigfoot-review-an-ogre-who-just-wants"
+    },
+    {
+      "t": "2026-03-03T09:19:15.036Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-03T09:27:57.261Z",
+      "event": "bb-session",
+      "session": "55fcd4dc",
+      "url": "https://www.wsj.com/articles/just-in-time-review-jonathan-groff-bobby-darin-broa"
+    },
+    {
+      "t": "2026-03-03T09:27:58.735Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-03T09:29:32.440Z",
+      "event": "bb-session",
+      "session": "1cd83842",
+      "url": "https://www.wsj.com/articles/mother-russia-review-a-comedy-of-soviet-collapse-52"
+    },
+    {
+      "t": "2026-03-03T09:29:33.858Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-03T09:31:14.135Z",
+      "event": "bb-session",
+      "session": "7113b567",
+      "url": "https://www.wsj.com/arts-culture/film/what-to-watch-six-movies-and-series-to-str"
+    },
+    {
+      "t": "2026-03-03T09:31:15.415Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
