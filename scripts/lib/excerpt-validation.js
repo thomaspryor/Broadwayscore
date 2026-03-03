@@ -35,6 +35,15 @@ const COMMON_WORD_TITLES = new Set([
   'chinglish',
   // Short titles easily embedded in other words/phrases
   'bug', 'job', 'juno', 'fela', 'fun', 'leap', 'loot',
+  // Place names and common nouns that are also show titles
+  'broadway', 'brooklyn', 'hamilton', 'innocence', 'barrymore',
+  'brothers', 'strangers', 'the women', 'the children', 'the life',
+  'the first', 'music is', 'the supporting cast',
+  'the producers', 'bullets over broadway',
+  // Common phrases / genre terms that are show titles
+  'all over', 'best friend', 'a broadway musical', 'charlotte',
+  'ballroom', 'liberation', 'romantic comedy', 'the father',
+  'lombardi', 'the motherf**ker with the hat',
 ]);
 
 // Minimum title length to consider for matching (chars)
