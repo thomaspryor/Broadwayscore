@@ -1,18 +1,63 @@
 {
-  "updatedAt": "2026-03-03T04:38:12.713Z",
-  "processed": 221,
-  "failed": 227,
-  "successRate": "49.3%",
+  "updatedAt": "2026-03-03T04:45:00.838Z",
+  "processed": 232,
+  "failed": 226,
+  "successRate": "50.7%",
   "tierBreakdown": {
-    "playwright": 114,
-    "amp": 50,
-    "browserbase": 0,
+    "playwright": 127,
+    "amp": 56,
+    "browserbase": 2,
     "directCookies": 26,
-    "scrapingbee": 32,
+    "scrapingbee": 34,
     "brightdata": 0,
-    "archiveToday": 106,
-    "archive": 71
+    "archiveToday": 105,
+    "archive": 64
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-03-03T04:18:00.121Z",
+      "event": "bb-session",
+      "session": "c548fd6e",
+      "url": "https://www.nytimes.com/2026/03/02/theater/bigfoot-review-amber-ruffin.html"
+    },
+    {
+      "t": "2026-03-03T04:18:01.581Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-03T04:19:20.604Z",
+      "event": "bb-session",
+      "session": "f8f30c5f",
+      "url": "https://www.nytimes.com/2025/12/01/theater/death-of-a-salesman-broadway-lane-met"
+    },
+    {
+      "t": "2026-03-03T04:19:21.931Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-03T04:24:24.660Z",
+      "event": "bb-session",
+      "session": "5cbc5ad2",
+      "url": "https://www.nytimes.com/2026/02/12/theater/the-unknown-review-sean-hayes.html"
+    },
+    {
+      "t": "2026-03-03T04:24:26.194Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-03T04:26:14.919Z",
+      "event": "bb-session",
+      "session": "a937610f",
+      "url": "https://www.nytimes.com/2022/06/28/theater/titanique-review.html"
+    },
+    {
+      "t": "2026-03-03T04:26:16.635Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
