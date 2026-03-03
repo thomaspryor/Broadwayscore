@@ -17,6 +17,7 @@ const path = require('path');
 const https = require('https');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutletFull, slugify: canonicalSlugify, findExistingReviewFile, generateReviewFilename } = require('./lib/review-normalization');
+const { excerptMentionsWrongShow } = require('./lib/excerpt-validation');
 
 // Paths
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -688,8 +689,23 @@ function saveReview(review) {
     }
 
     if (!existing.bwwExcerpt && review.bwwExcerpt) {
-      existing.bwwExcerpt = review.bwwExcerpt;
-      updated = true;
+      // Validate excerpt matches fullText if available (catches wrong-critic excerpts)
+      if (existing.fullText && existing.fullText.length >= 200) {
+        const excerptWords = (review.bwwExcerpt.toLowerCase().match(/\b[a-z]{5,}\b/g) || []);
+        const ftWords = new Set(existing.fullText.toLowerCase().match(/\b[a-z]{5,}\b/g) || []);
+        const matchCount = excerptWords.filter(w => ftWords.has(w)).length;
+        const matchRate = excerptWords.length > 0 ? matchCount / excerptWords.length : 0;
+        if (matchRate < 0.3 && excerptWords.length >= 5) {
+          console.log(`      ⚠️  BWW excerpt doesn't match fullText (${(matchRate * 100).toFixed(0)}% overlap) — skipping excerpt for ${existingFilename}`);
+          // Don't merge this excerpt — it's likely from a different critic
+        } else {
+          existing.bwwExcerpt = review.bwwExcerpt;
+          updated = true;
+        }
+      } else {
+        existing.bwwExcerpt = review.bwwExcerpt;
+        updated = true;
+      }
     }
     if (!existing.bwwRoundupUrl && review.bwwRoundupUrl) {
       existing.bwwRoundupUrl = review.bwwRoundupUrl;
@@ -785,7 +801,24 @@ async function processShow(show) {
   }
 
   // Extract reviews
-  const reviews = extractBWWReviews(html, show.id, bwwUrl);
+  const allReviews = extractBWWReviews(html, show.id, bwwUrl);
+
+  // Cross-show excerpt validation: filter out reviews whose excerpts mention
+  // a different show's title (BWW roundups occasionally mix shows)
+  let crossShowFiltered = 0;
+  const reviews = allReviews.filter(review => {
+    if (!review.bwwExcerpt) return true;
+    const check = excerptMentionsWrongShow(review.bwwExcerpt, show.id, show.title);
+    if (check.isWrongShow) {
+      console.log(`    [CROSS-SHOW] Skipping ${review.outletId}/${review.criticName}: excerpt mentions "${check.mentionedTitle}" (${check.mentionedShowId})`);
+      crossShowFiltered++;
+      return false;
+    }
+    return true;
+  });
+  if (crossShowFiltered > 0) {
+    console.log(`    Filtered ${crossShowFiltered} cross-show excerpt(s)`);
+  }
 
   // Save BWW summary to aggregator-summary.json
   if (reviews.length > 0) {

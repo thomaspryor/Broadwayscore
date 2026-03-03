@@ -279,11 +279,13 @@ async function main() {
 
   console.log(`Found ${queue.reviews.length} flagged review(s) in queue.\n`);
 
-  // Load shows for title lookup
+  // Load shows for title + category lookup
   const showsData = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf-8'));
   const showTitleMap = {};
+  const showCategoryMap = {};
   for (const show of showsData.shows) {
     showTitleMap[show.id] = show.title;
+    showCategoryMap[show.id] = show.category || 'broadway';
   }
 
   // Process each flagged review
@@ -350,9 +352,19 @@ async function main() {
       }
 
       try {
-        const contaminationPrompt = `You are a Broadway review classifier. Determine if this review is about a BROADWAY production or a NON-BROADWAY production (national tour, regional theater, pre-Broadway tryout, film/TV adaptation, streaming special).
+        const showCategory = showCategoryMap[sourceData.showId] || 'broadway';
+        const expectedType = showCategory === 'off-broadway' ? 'Off-Broadway'
+          : showCategory === 'west-end' ? 'West End'
+          : 'Broadway';
+        const wrongTypes = showCategory === 'off-broadway'
+          ? 'national tour, regional theater, film/TV adaptation, streaming special, or a BROADWAY (not Off-Broadway) production'
+          : showCategory === 'west-end'
+          ? 'national tour, regional theater, film/TV adaptation, streaming special, or a Broadway/Off-Broadway (not West End) production'
+          : 'national tour, regional theater, pre-Broadway tryout, film/TV adaptation, streaming special';
+        const contaminationPrompt = `You are a theater review classifier. Determine if this review is about a **${expectedType}** production or a NON-${expectedType.toUpperCase()} production (${wrongTypes}).
 
 **Show:** ${sourceData.showId}
+**Expected production type:** ${expectedType}
 **Outlet:** ${sourceData.outlet || review.outletId}
 **Flag reason:** ${review.reason} — ${review.detail || ''}
 
@@ -361,10 +373,10 @@ ${text.slice(0, 1500)}
 
 Respond with ONLY this JSON (no markdown fences):
 {
-  "verdict": "broadway" or "not-broadway",
+  "verdict": "correct-market" or "wrong-market",
   "confidence": "high" or "medium" or "low",
   "reasoning": "1-2 sentence explanation",
-  "productionType": "broadway" or "national-tour" or "regional" or "pre-broadway" or "film-tv" or "other"
+  "productionType": "broadway" or "off-broadway" or "west-end" or "national-tour" or "regional" or "pre-broadway" or "film-tv" or "other"
 }`;
         let resp;
         for (let attempt = 0; attempt < 3; attempt++) {
@@ -392,13 +404,15 @@ Respond with ONLY this JSON (no markdown fences):
 
         const result = JSON.parse(resp);
 
+        // Normalize verdict from both old and new format
+        const isWrongMarket = result.verdict === 'wrong-market' || result.verdict === 'not-broadway';
         if (result.confidence === 'high' || result.confidence === 'medium') {
-          if (result.verdict === 'not-broadway') {
+          if (isWrongMarket) {
             sourceData.wrongProduction = true;
             sourceData.wrongProductionNote = `Auto-adjudicated: ${result.productionType}. ${result.reasoning}`;
           } else {
             sourceData.tourCheckVerified = 'false-positive';
-            sourceData.tourCheckNote = `Auto-adjudicated: legitimate Broadway review. ${result.reasoning}`;
+            sourceData.tourCheckNote = `Auto-adjudicated: legitimate ${expectedType} review. ${result.reasoning}`;
           }
           fs.writeFileSync(filePath, JSON.stringify(sourceData, null, 2) + '\n');
           console.log(`  ✅ Contamination adjudicated: ${result.verdict} (${result.confidence}) — ${result.reasoning}`);
