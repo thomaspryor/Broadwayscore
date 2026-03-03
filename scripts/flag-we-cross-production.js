@@ -18,7 +18,7 @@ const US_ONLY_OUTLETS = new Set([
   'broadwaynews', 'theatermania',
   'dailybeast', 'thewrap', 'huffpost', 'observer',
   'wsj', 'ew', 'vulture', 'washpost', 'chicagotribune',
-  'latimes', 'sfchronicle', 'usatoday', 'bostonglobe'
+  'latimes', 'san-francisco-chronicle', 'usatoday', 'bostonglobe'
 ]);
 
 // NYT London correspondents whose WE reviews are legitimate
