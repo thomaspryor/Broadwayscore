@@ -803,21 +803,22 @@ async function processShow(show) {
   // Extract reviews
   const allReviews = extractBWWReviews(html, show.id, bwwUrl);
 
-  // Cross-show excerpt validation: filter out reviews whose excerpts mention
-  // a different show's title (BWW roundups occasionally mix shows)
-  let crossShowFiltered = 0;
-  const reviews = allReviews.filter(review => {
-    if (!review.bwwExcerpt) return true;
+  // Cross-show excerpt validation: warn (but don't filter) when excerpts mention
+  // a different show's title. Too many false positives from comparisons ("reminds
+  // me of Hamilton") to use as a hard filter. The word-overlap check in saveReview()
+  // is the reliable gate for wrong-critic excerpts.
+  const reviews = allReviews;
+  let crossShowWarnings = 0;
+  for (const review of reviews) {
+    if (!review.bwwExcerpt) continue;
     const check = excerptMentionsWrongShow(review.bwwExcerpt, show.id, show.title);
     if (check.isWrongShow) {
-      console.log(`    [CROSS-SHOW] Skipping ${review.outletId}/${review.criticName}: excerpt mentions "${check.mentionedTitle}" (${check.mentionedShowId})`);
-      crossShowFiltered++;
-      return false;
+      console.log(`    [CROSS-SHOW WARNING] ${review.outletId}/${review.criticName}: excerpt mentions "${check.mentionedTitle}" — may be comparison, keeping`);
+      crossShowWarnings++;
     }
-    return true;
-  });
-  if (crossShowFiltered > 0) {
-    console.log(`    Filtered ${crossShowFiltered} cross-show excerpt(s)`);
+  }
+  if (crossShowWarnings > 0) {
+    console.log(`    ${crossShowWarnings} excerpt(s) mention other shows (logged, not filtered)`);
   }
 
   // Save BWW summary to aggregator-summary.json
