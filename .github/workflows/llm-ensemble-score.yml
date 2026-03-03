@@ -68,6 +68,14 @@ on:
         options:
           - 'false'
           - 'true'
+      upgrade_ensemble:
+        description: 'Upgrade old single-model scores to ensemble scoring (llmScore but no ensembleData)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
       rescore:
         description: 'Re-score all reviews (even already scored ones)'
         required: false
@@ -278,6 +286,11 @@ jobs:
           # Stale scores (fullText + old excerpt-based score)
           if [ "${{ github.event.inputs.stale_scores }}" == "true" ] || [ "${{ steps.check-needed.outputs.run_stale }}" == "true" ]; then
             ARGS="$ARGS --stale-scores"
+          fi
+
+          # Upgrade single-model scores to ensemble
+          if [ "${{ github.event.inputs.upgrade_ensemble }}" == "true" ]; then
+            ARGS="$ARGS --upgrade-ensemble"
           fi
 
           # Rescore all (even already scored)
@@ -524,7 +537,7 @@ jobs:
           always() && job.status != 'cancelled'
           && (github.event.inputs.chain == 'true' || github.event_name == 'schedule')
           && steps.check-changes.outputs.has_scored_reviews == 'true'
-          && (fromJSON(steps.count-remaining.outputs.remaining) > 10 || github.event.inputs.outdated == 'true' || github.event.inputs.needs_rescore == 'true' || github.event.inputs.stale_scores == 'true')
+          && (fromJSON(steps.count-remaining.outputs.remaining) > 10 || github.event.inputs.outdated == 'true' || github.event.inputs.needs_rescore == 'true' || github.event.inputs.stale_scores == 'true' || github.event.inputs.upgrade_ensemble == 'true')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -567,6 +580,10 @@ jobs:
           if [ "${{ github.event.inputs.stale_scores }}" == "true" ] || [ "${{ steps.check-needed.outputs.run_stale }}" == "true" ]; then
             CHAIN_ARGS="$CHAIN_ARGS -f stale_scores=true"
           fi
+          # Pass through upgrade_ensemble flag so upgrade chains continue
+          if [ "${{ github.event.inputs.upgrade_ensemble }}" == "true" ]; then
+            CHAIN_ARGS="$CHAIN_ARGS -f upgrade_ensemble=true"
+          fi
 
           gh workflow run "LLM Ensemble Score Reviews" $CHAIN_ARGS
           echo "Next batch dispatched."
@@ -578,7 +595,8 @@ jobs:
               || github.event.inputs.remaining_batches == '0'
               || (github.event.inputs.outdated == 'true' && steps.check-changes.outputs.has_scored_reviews == 'false')
               || (github.event.inputs.needs_rescore == 'true' && steps.check-changes.outputs.has_scored_reviews == 'false')
-              || (github.event.inputs.stale_scores == 'true' && steps.check-changes.outputs.has_scored_reviews == 'false')) }}
+              || (github.event.inputs.stale_scores == 'true' && steps.check-changes.outputs.has_scored_reviews == 'false')
+              || (github.event.inputs.upgrade_ensemble == 'true' && steps.check-changes.outputs.has_scored_reviews == 'false')) }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

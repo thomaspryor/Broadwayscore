@@ -534,9 +534,11 @@ function parseArgs(): ScoringPipelineOptions & {
   const maxPromptVersionArg = args.find(a => a.startsWith('--max-prompt-version='));
   const maxPromptVersion = maxPromptVersionArg ? maxPromptVersionArg.split('=')[1] : undefined;
 
+  const upgradeEnsemble = args.includes('--upgrade-ensemble');
+
   return {
     showId,
-    unscoredOnly: !args.includes('--rescore') && !args.includes('--needs-rescore') && !outdated && !ensembleSource && !args.includes('--stale-scores'),
+    unscoredOnly: !args.includes('--rescore') && !args.includes('--needs-rescore') && !outdated && !ensembleSource && !args.includes('--stale-scores') && !upgradeEnsemble,
     minTextLength: 50,
     model,
     dryRun: args.includes('--dry-run'),
@@ -555,6 +557,7 @@ function parseArgs(): ScoringPipelineOptions & {
     forceFullRun: args.includes('--force-full-run'),
     ensembleSource,
     ensembleCalibrateOnly: args.includes('--ensemble-calibrate'),
+    upgradeEnsemble,
     checkpointInterval,
     shard,
     totalShards,
@@ -787,6 +790,13 @@ async function main(): Promise<void> {
       return !!(d.bwwExcerpt || d.dtliExcerpt || d.showScoreExcerpt);
     });
     console.log(`Filtering to stale-scored reviews (fullText + old excerpt-based score): ${filesToProcess.length} reviews\n`);
+  } else if (options.upgradeEnsemble) {
+    // Filter to reviews with old single-model llmScore but no ensemble scoring
+    filesToProcess = allFiles.filter(f => {
+      const d = f.data as any;
+      return d.llmScore && !d.ensembleData;
+    });
+    console.log(`Filtering to single-model reviews needing ensemble upgrade: ${filesToProcess.length} reviews\n`);
   } else if (options.unscoredOnly) {
     // Filter to unscored reviews
     filesToProcess = allFiles.filter(f => !(f.data as any).llmScore);
