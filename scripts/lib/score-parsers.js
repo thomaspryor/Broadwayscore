@@ -11,7 +11,7 @@ const { LETTER_GRADES } = require('./score-extractors');
 
 // Outlets that use letter grade scoring (from src/config/scoring.ts scoreFormat: 'letter').
 // Letter grades from other outlets are rejected by parseOriginalScore to prevent cross-contamination.
-const LETTER_GRADE_OUTLETS = new Set(['ew']);
+const LETTER_GRADE_OUTLETS = new Set(['ew', 'jks-theatre-scene']);
 
 /**
  * Parse a star rating string to 0-100.
