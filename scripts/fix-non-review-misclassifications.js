@@ -53,13 +53,13 @@ const KNOWN_CRITICS = new Set([
 
 // Outlets that primarily publish reviews (not news)
 const REVIEW_OUTLETS = new Set([
-  'nytimes', 'vulture', 'variety', 'hollywoodreporter', 'theatermania',
-  'ny-post', 'newyorker', 'timeout', 'observer', 'ew', 'newsday',
+  'nytimes', 'vulture', 'variety', 'hollywood-reporter', 'theatermania',
+  'nypost', 'newyorker', 'timeout', 'observer', 'ew', 'newsday',
   'nydailynews', 'wsj', 'washpost', 'guardian', 'dailybeast',
   'rollingstone', 'paste-magazine', 'billboard', 'talkinbroadway',
   'theater-scene', 'amny', 'broadwayworld', 'theatrely',
-  'the-stage', 'whatsonstage', 'evening-standard', 'telegraph',
-  'the-times-uk', 'timeout-london',
+  'thestage', 'whatsonstage', 'standard', 'telegraph',
+  'times-uk', 'timeout-london',
 ]);
 
 const results = { fixed: [], skipped: [], errors: [] };

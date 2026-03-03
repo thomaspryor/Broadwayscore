@@ -288,7 +288,7 @@ const COOKIE_DIR = path.join(DATA_DIR, 'cookies');
 const COOKIE_WARN_DAYS = 7;
 const COOKIE_ERROR_DAYS = 2;
 const CRITICAL_COOKIE_OUTLETS = new Set([
-  'wsj', 'nytimes', 'newyorker', 'wapo', 'ft', 'vulture', 'timeout'
+  'wsj', 'nytimes', 'newyorker', 'washpost', 'financialtimes', 'vulture', 'timeout'
 ]);
 
 function checkCookieExpiration() {

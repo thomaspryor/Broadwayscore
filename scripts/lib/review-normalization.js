@@ -946,6 +946,7 @@ const JUNK_OUTLETS = new Set([
   'unknown', 'null', 'undefined', 'n/a', 'na', 'none',
   'ad', 'ads', 'banner', 'pixel', 'tracking',
   'garth-drabinsky', 'paradise-square',
+  'buy-tickets', 'click-here',
 ]);
 
 function isJunkOutlet(outletName) {
@@ -954,6 +955,7 @@ function isJunkOutlet(outletName) {
   if (normalized.length < 2) return true;
   if (JUNK_OUTLETS.has(normalized)) return true;
   const slug = normalized.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  if (JUNK_OUTLETS.has(slug)) return true;
   // Structural: reject suspiciously long names (45+ chars catches BWW sentence fragments)
   if (slug.length > 45) return true;
   // Too many hyphens — sentence fragments (6+ segments)
