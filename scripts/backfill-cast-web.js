@@ -89,11 +89,9 @@ async function searchCast(title, year, category) {
 
   const isWestEnd = category === 'west-end';
   const location = isWestEnd ? 'west end london' : 'off-broadway new york';
-  const sites = isWestEnd
-    ? 'site:whatsonstage.com OR site:broadwayworld.com OR site:playbill.com OR site:timeout.com'
-    : 'site:playbill.com OR site:broadwayworld.com OR site:theatermania.com OR site:timeout.com';
 
-  const query = `"${title}" cast ${year || ''} ${location} ${sites}`.trim();
+  // Broad query — no site: filters (they eliminate too many valid results for OB/WE)
+  const query = `"${title}" cast ${year || ''} ${location}`.trim();
   const searchUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${apiKey}&search=${encodeURIComponent(query)}`;
 
   const result = await httpRequest(searchUrl);
@@ -105,18 +103,41 @@ async function searchCast(title, year, category) {
   const data = JSON.parse(result.body);
   const results = data.organic_results || data.results || [];
 
-  // Filter to cast/credits-related pages
-  return results
-    .filter(r => {
-      const url = (r.url || r.link || '').toLowerCase();
-      const titleText = (r.title || '').toLowerCase();
-      // Prefer pages about cast/credits
-      return url.includes('cast') || url.includes('credit') || url.includes('people') ||
-        titleText.includes('cast') || titleText.includes('starring') ||
-        titleText.includes(title.toLowerCase().split(':')[0].trim());
-    })
-    .slice(0, 3)
-    .map(r => ({ url: r.url || r.link, title: r.title || '' }));
+  // Score each result by relevance to cast data
+  const titleLower = title.toLowerCase().split(':')[0].trim();
+  const scored = results.map(r => {
+    const url = (r.url || r.link || '').toLowerCase();
+    const t = (r.title || '').toLowerCase();
+    let score = 0;
+
+    // Domain bonuses — sites known for structured cast pages
+    if (url.includes('broadwayworld.com') && url.includes('/show/')) score += 5;
+    if (url.includes('lortel.org')) score += 5;
+    if (url.includes('playbill.com') && url.includes('/production/')) score += 4;
+    if (url.includes('theatermania.com') && url.includes('/show/')) score += 4;
+    if (url.includes('whatsonstage.com')) score += 3;
+    if (url.includes('timeout.com')) score += 2;
+
+    // URL path signals
+    if (url.includes('cast') || url.includes('credit') || url.includes('people')) score += 3;
+
+    // Title signals
+    if (t.includes('cast')) score += 2;
+    if (t.includes('starring') || t.includes('stars')) score += 2;
+    if (t.includes(titleLower)) score += 1;
+
+    // Penalty for review/ticket/news pages (unlikely to have full cast)
+    if (url.includes('review') || url.includes('ticket') || url.includes('news')) score -= 2;
+
+    return { url: r.url || r.link, title: r.title || '', score };
+  });
+
+  // Return top results with minimum score threshold
+  return scored
+    .filter(r => r.score >= 2 && r.url)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 4)
+    .map(r => ({ url: r.url, title: r.title }));
 }
 
 // ============================================================================
@@ -127,16 +148,31 @@ async function fetchPageText(url) {
   const apiKey = process.env.SCRAPINGBEE_API_KEY;
   if (!apiKey) throw new Error('SCRAPINGBEE_API_KEY not set');
 
-  const fetchUrl = `https://app.scrapingbee.com/api/v1?api_key=${apiKey}&url=${encodeURIComponent(url)}&render_js=false&extract_rules=${encodeURIComponent(JSON.stringify({ text: { selector: 'body', output: 'text' } }))}`;
+  // Targeted selectors for cast/credits sections — avoids nav/footer noise
+  const extractRules = {
+    main: {
+      selector: 'main, article, .cast, .credits, .people, [class*="cast"], [class*="credit"], [id*="cast"], .show-detail, .production-detail',
+      output: 'text',
+    },
+    fallback: { selector: 'body', output: 'text' },
+  };
+
+  // BWW and Lortel need JS rendering for dynamic content
+  const needsJs = url.includes('broadwayworld.com') || url.includes('lortel.org');
+  const renderParam = needsJs ? '&render_js=true&wait=3000' : '&render_js=false';
+
+  const fetchUrl = `https://app.scrapingbee.com/api/v1?api_key=${apiKey}&url=${encodeURIComponent(url)}${renderParam}&extract_rules=${encodeURIComponent(JSON.stringify(extractRules))}`;
 
   const result = await httpRequest(fetchUrl, { timeout: 45000 });
   if (result.statusCode !== 200) return null;
 
   try {
     const data = JSON.parse(result.body);
-    return (data.text || '').substring(0, 8000); // Cap at 8K chars for LLM
+    // Prefer targeted selector, fall back to body
+    const text = (data.main || data.fallback || '').substring(0, 20000);
+    return text;
   } catch {
-    return result.body.substring(0, 8000);
+    return result.body.substring(0, 20000);
   }
 }
 
@@ -217,11 +253,13 @@ async function callAnthropic(prompt, apiKey) {
 
 function parseJsonFromLLM(text) {
   // Extract JSON array from LLM response (may have markdown fences)
-  const match = text.match(/\[[\s\S]*?\]/);
-  if (!match) return [];
+  // Use first [ and last ] to capture full array (lazy regex truncates nested objects)
+  const firstBracket = text.indexOf('[');
+  const lastBracket = text.lastIndexOf(']');
+  if (firstBracket === -1 || lastBracket === -1 || lastBracket <= firstBracket) return [];
 
   try {
-    const arr = JSON.parse(match[0]);
+    const arr = JSON.parse(text.substring(firstBracket, lastBracket + 1));
     if (!Array.isArray(arr)) return [];
     // Validate structure
     return arr.filter(m =>
@@ -249,28 +287,6 @@ async function processShow(show) {
   } catch (e) {
     console.log(`  SERP error: ${e.message}`);
     return null;
-  }
-
-  if (searchResults.length === 0) {
-    // Try broader search without site filter
-    console.log(`  No site-specific results, trying broader search...`);
-    await sleep(SERP_DELAY_MS);
-    try {
-      const apiKey = process.env.SCRAPINGBEE_API_KEY;
-      const isWE = show.category === 'west-end';
-      const loc = isWE ? 'west end london' : 'off-broadway nyc';
-      const query = `"${show.title}" cast ${year || ''} ${loc}`;
-      const searchUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${apiKey}&search=${encodeURIComponent(query)}`;
-      const result = await httpRequest(searchUrl);
-      if (result.statusCode === 200) {
-        const data = JSON.parse(result.body);
-        searchResults = (data.organic_results || data.results || [])
-          .slice(0, 3)
-          .map(r => ({ url: r.url || r.link, title: r.title || '' }));
-      }
-    } catch (e) {
-      console.log(`  Broad search error: ${e.message}`);
-    }
   }
 
   if (searchResults.length === 0) {
