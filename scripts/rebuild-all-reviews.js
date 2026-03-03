@@ -1536,6 +1536,12 @@ showDirs.forEach(showId => {
         return;
       }
 
+      // Skip non-review entries (scraper misidentified content as a review)
+      if (data.isNotReview === true) {
+        stats.skippedNotReview = (stats.skippedNotReview || 0) + 1;
+        return;
+      }
+
       // Cross-show URL dedup: if this URL also exists in another show's directory,
       // flag the copy that's farther from its show's opening year as wrongProduction.
       // Catches aggregator contamination (e.g., ShowScore listing 2013 Broadway reviews

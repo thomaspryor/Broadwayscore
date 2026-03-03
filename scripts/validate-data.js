@@ -1999,7 +1999,7 @@ function validateReviewTextQuality(shows) {
       }
 
       // Skip already-flagged reviews
-      if (data.wrongShow || data.wrongProduction || data.isRoundupArticle) continue;
+      if (data.wrongShow || data.wrongProduction || data.isRoundupArticle || data.isNotReview) continue;
 
       const critic = (data.criticName || '').trim();
       const outlet = (data.outlet || '').trim();
