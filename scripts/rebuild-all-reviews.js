@@ -937,17 +937,12 @@ function getBestScore(data) {
 
     // High/medium confidence: use directly
     if (effectiveConfidence !== 'low' && !needsReview) {
-      // ENSEMBLE QUALITY GATE: Block single-model scores without ensemble validation
+      // ENSEMBLE QUALITY GATE: Block ALL single-model scores without ensemble validation
       const hasEnsemble = !!data.ensembleData;
       if (!hasEnsemble) {
-        if (!hasOriginalFullText) {
-          // BLOCK: excerpt-only + single-model = highest error rate, fall through
-          stats.blockedSingleModelExcerpt = (stats.blockedSingleModelExcerpt || 0) + 1;
-        } else {
-          // fullText + single-model: include but tag source differently
-          stats.warnSingleModelFullText = (stats.warnSingleModelFullText || 0) + 1;
-          return { score: data.llmScore.score, source: 'llmScore-single-model' };
-        }
+        // BLOCK: single-model scores require ensemble validation, always
+        stats.blockedSingleModel = (stats.blockedSingleModel || 0) + 1;
+        // Fall through to lower-priority sources (originalScore, bucket, thumb)
       } else {
         // Has ensemble — proceed with existing validation
         // Flag if BOTH thumbs agree with each other but disagree with LLM direction
@@ -991,7 +986,8 @@ function getBestScore(data) {
   // use thumbs to VALIDATE the LLM score. The LLM already sees thumb data in its prompt
   // (input-builder.ts passes "Aggregator verdicts: DTLI: Up, BWW: Up"), so its score already
   // incorporates that signal. Thumbs boost confidence; they don't replace the score.
-  const hasLowConfLlm = data.llmScore?.score &&
+  // ENSEMBLE QUALITY GATE: Only allow thumb-validation for ensemble-scored reviews
+  const hasLowConfLlm = data.llmScore?.score && !!data.ensembleData &&
     (data.llmScore.confidence === 'low' || data.ensembleData?.needsReview ||
      !(data.fullText && data.fullText.trim().length > 100 && !data.fullTextRecoveredFrom));
 
@@ -1064,12 +1060,12 @@ function getBestScore(data) {
     const isExcerptOnly = !(data.fullText && data.fullText.trim().length > 100 && !data.fullTextRecoveredFrom);
     const hasEnsemble = !!data.ensembleData;
 
-    // ENSEMBLE QUALITY GATE: Block single-model excerpt-only scores entirely
-    if (!hasEnsemble && isExcerptOnly) {
-      stats.blockedSingleModelExcerpt = (stats.blockedSingleModelExcerpt || 0) + 1;
+    // ENSEMBLE QUALITY GATE: Block ALL single-model scores (no ensembleData)
+    if (!hasEnsemble) {
+      stats.blockedSingleModel = (stats.blockedSingleModel || 0) + 1;
       // Fall through to assignedScore/bucket/thumb fallbacks
     } else if (confidence === 'low' || isExcerptOnly) {
-      return { score: data.llmScore.score, source: hasEnsemble ? 'llmScore-lowconf' : 'llmScore-lowconf-single-model' };
+      return { score: data.llmScore.score, source: 'llmScore-lowconf' };
     } else if (needsReview) {
       return { score: data.llmScore.score, source: 'llmScore-review' };
     }
@@ -2829,15 +2825,11 @@ if (stats.bwwInternalConflicts > 0) {
 }
 
 // Ensemble quality gate report
-const blockedExcerpt = stats.blockedSingleModelExcerpt || 0;
-const warnedFullText = stats.warnSingleModelFullText || 0;
-if (blockedExcerpt + warnedFullText > 0) {
+const blockedSingleModel = stats.blockedSingleModel || 0;
+if (blockedSingleModel > 0) {
   console.log(`\nENSEMBLE QUALITY GATE:`);
-  console.log(`  Blocked (excerpt-only, no ensemble): ${blockedExcerpt}`);
-  console.log(`  Warned (fullText, no ensemble): ${warnedFullText}`);
-  if (blockedExcerpt > 0) {
-    console.log(`  → Run ensemble scoring to fix blocked reviews`);
-  }
+  console.log(`  Blocked (no ensemble data): ${blockedSingleModel}`);
+  console.log(`  → Run ensemble scoring to fix: gh workflow run "LLM Ensemble Score Reviews" -f needs_rescore=true`);
 }
 
 console.log('\nScore sources:');
