@@ -110,7 +110,10 @@ const config: Config = {
       },
       animation: {
         'fade-in': 'fadeIn 0.3s ease-out',
+        'fade-up': 'fadeUp 0.7s ease-out both',
         'slide-up': 'slideUp 0.3s ease-out',
+        'slide-in': 'slideIn 0.4s ease-out both',
+        'scale-in': 'scaleIn 0.3s cubic-bezier(0.34,1.56,0.64,1) both',
         'pulse-subtle': 'pulseSubtle 2s ease-in-out infinite',
       },
       keyframes: {
@@ -118,9 +121,21 @@ const config: Config = {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
         },
+        fadeUp: {
+          '0%': { opacity: '0', transform: 'translateY(16px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
         slideUp: {
           '0%': { opacity: '0', transform: 'translateY(10px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideIn: {
+          '0%': { opacity: '0', transform: 'translateX(-10px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        scaleIn: {
+          '0%': { opacity: '0', transform: 'scale(0.5)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
         },
         pulseSubtle: {
           '0%, 100%': { opacity: '1' },

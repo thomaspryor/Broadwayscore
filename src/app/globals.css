@@ -548,3 +548,18 @@ img {
     min-width: auto;
   }
 }
+
+/* Beat the Critics — standalone mode hides site chrome */
+body.btc-standalone {
+  padding-top: 0 !important;
+}
+body.btc-standalone > header,
+body.btc-standalone > footer,
+body.btc-standalone nav[aria-label="Main"],
+body.btc-standalone > div:last-of-type > footer {
+  display: none !important;
+}
+body.btc-standalone > main,
+body.btc-standalone > div > main {
+  min-height: 100vh !important;
+}
