@@ -133,6 +133,16 @@ jobs:
 
           bash scripts/lib/push-with-retry.sh 15
 
+      - name: Enrich shows.json cast from cast files
+        if: always() && steps.git-check.outputs.changes == 'true'
+        run: |
+          node scripts/enrich-cast-from-files.js --force
+          node scripts/generate-mobile-show-details.js
+          git add data/shows.json public/data/shows/ || true
+          if ! git diff --cached --quiet; then
+            git commit -m "data: Enrich shows.json cast after backfill"
+            bash scripts/lib/push-with-retry.sh 5
+          fi
 
       - name: Push core data to private repo
         if: always()
