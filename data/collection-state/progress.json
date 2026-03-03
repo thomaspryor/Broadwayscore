@@ -1,24 +1,47 @@
 {
   "processed": [
     "pied-a-terre-off-broadway-2026/nytg--unknown.json",
-    "pied-a-terre-off-broadway-2026/theatermania--unknown.json"
+    "pied-a-terre-off-broadway-2026/theatermania--unknown.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/nytg--unknown.json",
+    "broken-glass-west-end-2026/nytimes--unknown.json",
+    "midnight-a-new-original-musical-by-todrick-hall-west-end-2026/nytimes--unknown.json",
+    "midnight-a-new-original-musical-by-todrick-hall-west-end-2026/guardian--unknown.json"
   ],
-  "failed": [],
+  "failed": [
+    "bigfoot-off-broadway-2026/vulture--unknown.json",
+    "broken-glass-west-end-2026/variety--unknown.json",
+    "the-holy-rosenbergs-west-end-2026/variety--unknown.json",
+    "broken-glass-west-end-2026/guardian--unknown.json",
+    "mj-2022/thewrap--steve-pond.json",
+    "the-holy-rosenbergs-west-end-2026/guardian--unknown.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
-    "amp": [],
+    "playwright": [
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/nytg--unknown.json"
+    ],
+    "amp": [
+      "data/review-texts/bigfoot-off-broadway-2026/vulture--unknown.json",
+      "bigfoot-off-broadway-2026/vulture--unknown.json",
+      "data/review-texts/broken-glass-west-end-2026/variety--unknown.json",
+      "broken-glass-west-end-2026/variety--unknown.json",
+      "data/review-texts/the-holy-rosenbergs-west-end-2026/variety--unknown.json"
+    ],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "midnight-a-new-original-musical-by-todrick-hall-west-end-2026/guardian--unknown.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
       "pied-a-terre-off-broadway-2026/nytg--unknown.json",
-      "pied-a-terre-off-broadway-2026/theatermania--unknown.json"
+      "pied-a-terre-off-broadway-2026/theatermania--unknown.json",
+      "broken-glass-west-end-2026/nytimes--unknown.json",
+      "midnight-a-new-original-musical-by-todrick-hall-west-end-2026/nytimes--unknown.json"
     ]
   },
   "startTime": "2026-03-03T08:34:29.131Z",
-  "lastProcessed": "pied-a-terre-off-broadway-2026/theatermania--unknown.json",
+  "lastProcessed": "the-holy-rosenbergs-west-end-2026/guardian--unknown.json",
   "log": []
 }
