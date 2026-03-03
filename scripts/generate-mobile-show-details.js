@@ -218,10 +218,17 @@ for (const show of visibleShows) {
     detail.pd = show.previewsStartDate;
   }
 
-  // Cast (if available)
-  if (show.cast && show.cast.length > 0) {
-    detail.ca = show.cast.map(c => ({ n: c.name, r: c.role }));
-  }
+  // Cast — read from data/cast/{show-id}.json if available
+  const castFile = path.join(dataDir, 'cast', `${show.id}.json`);
+  try {
+    if (fs.existsSync(castFile)) {
+      const castData = JSON.parse(fs.readFileSync(castFile, 'utf-8'));
+      const castList = castData.openingNightCast || [];
+      if (castList.length > 0) {
+        detail.ca = castList.map(c => ({ n: c.name, r: c.role }));
+      }
+    }
+  } catch { /* skip if cast file is malformed */ }
 
   // Write file
   const filePath = path.join(outputDir, `${show.id}.json`);
