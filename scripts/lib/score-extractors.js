@@ -135,9 +135,9 @@ function extractEWScore(html, text) {
     if (match) {
       const grade = match[1].toUpperCase();
       if (LETTER_GRADES[grade] !== undefined) {
-        // Reject bare "D" — overwhelmingly false positives from page templates/navigation.
-        // Distribution: D=58, D+=2, D-=1 proves nearly all bare D are artifacts.
-        if (grade === 'D') continue;
+        // Reject bare "D" and "D-" — overwhelmingly false positives from page templates.
+        // Distribution: D=58, D+=2, D-=1. D+ kept (specific enough to be real).
+        if (grade === 'D' || grade === 'D-') continue;
         return {
           originalScore: grade,
           normalizedScore: LETTER_GRADES[grade],

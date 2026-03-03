@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-03T05:25:31.492Z",
-    "totalFlagged": 49,
+    "generatedAt": "2026-03-03T19:41:27.722Z",
+    "totalFlagged": 41,
     "reasons": {
-      "possible-tour-fulltext": 34,
-      "borderline-rave": 11,
-      "both-thumbs-disagree-with-llm": 4
+      "possible-tour-fulltext": 32,
+      "borderline-rave": 8,
+      "originalScore-llm-conflict": 1
     }
   },
   "reviews": [
@@ -15,13 +15,13 @@
       "criticName": "Ryan Leeds",
       "reason": "possible-tour-fulltext",
       "detail": "Tour signal in fullText intro: venue: \\bOrpheum\\b",
-      "llmScore": 82,
-      "llmBucket": "Positive",
+      "llmScore": 89,
+      "llmBucket": "Rave",
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": "Up",
       "bwwScore": 9,
-      "flaggedAt": "2026-03-03T05:19:07.544Z"
+      "flaggedAt": "2026-03-03T19:40:01.025Z"
     },
     {
       "showId": "700-sundays-2013",
@@ -35,7 +35,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-03T05:19:07.910Z"
+      "flaggedAt": "2026-03-03T19:40:01.880Z"
     },
     {
       "showId": "a-night-with-janis-joplin-2013",
@@ -49,21 +49,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 6,
-      "flaggedAt": "2026-03-03T05:19:09.108Z"
+      "flaggedAt": "2026-03-03T19:40:04.119Z"
     },
     {
       "showId": "all-my-sons-2019",
       "outletId": "amny",
       "criticName": "Matt Windman",
       "reason": "borderline-rave",
-      "detail": "LLM=82 (high conf), thumbs/bwwScore suggest rave. Calibration shows 62% of true raves score 78-82.",
-      "llmScore": 82,
+      "detail": "LLM=80 (high conf), thumbs/bwwScore suggest rave. Calibration shows 62% of true raves score 78-82.",
+      "llmScore": 80,
       "llmBucket": "Positive",
-      "llmConfidence": "high",
+      "llmConfidence": "medium",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-03-03T05:19:10.434Z"
+      "flaggedAt": "2026-03-03T19:40:06.167Z"
     },
     {
       "showId": "almost-famous-2022",
@@ -77,7 +77,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 6,
-      "flaggedAt": "2026-03-03T05:19:10.921Z"
+      "flaggedAt": "2026-03-03T19:40:06.847Z"
     },
     {
       "showId": "almost-famous-2022",
@@ -91,21 +91,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-03T05:19:10.929Z"
+      "flaggedAt": "2026-03-03T19:40:06.857Z"
     },
     {
-      "showId": "an-enemy-of-the-people-2024",
-      "outletId": "slantmagazine",
-      "criticName": "Dan Rubins",
+      "showId": "an-american-in-paris-2015",
+      "outletId": "hollywood-reporter",
+      "criticName": "David Rooney",
       "reason": "borderline-rave",
-      "detail": "LLM=78 (high conf), thumbs/bwwScore suggest rave. Calibration shows 62% of true raves score 78-82.",
-      "llmScore": 78,
+      "detail": "LLM=81 (high conf), thumbs/bwwScore suggest rave. Calibration shows 62% of true raves score 78-82.",
+      "llmScore": 81,
       "llmBucket": "Positive",
-      "llmConfidence": "high",
-      "dtliThumb": null,
-      "bwwThumb": "Up",
+      "llmConfidence": "medium",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-03-03T05:19:16.425Z"
+      "flaggedAt": "2026-03-03T19:40:07.888Z"
     },
     {
       "showId": "be-more-chill-2019",
@@ -119,21 +119,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-03-03T05:19:21.238Z"
-    },
-    {
-      "showId": "bigfoot-off-broadway-2026",
-      "outletId": "nytimes",
-      "criticName": "Ben Brantley",
-      "reason": "possible-tour-fulltext",
-      "detail": "Tour signal in fullText intro: \\bon tour\\b",
-      "llmScore": 77,
-      "llmBucket": "Positive",
-      "llmConfidence": "high",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "bwwScore": null,
-      "flaggedAt": "2026-03-03T05:19:27.135Z"
+      "flaggedAt": "2026-03-03T19:40:10.260Z"
     },
     {
       "showId": "bright-star-2016",
@@ -147,7 +133,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 7,
-      "flaggedAt": "2026-03-03T05:19:33.089Z"
+      "flaggedAt": "2026-03-03T19:40:12.311Z"
     },
     {
       "showId": "bright-star-2016",
@@ -161,7 +147,7 @@
       "dtliThumb": "Meh",
       "bwwThumb": null,
       "bwwScore": 6,
-      "flaggedAt": "2026-03-03T05:19:34.327Z"
+      "flaggedAt": "2026-03-03T19:40:12.435Z"
     },
     {
       "showId": "bring-it-on-the-musical-2012",
@@ -175,7 +161,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-03T05:19:34.373Z"
+      "flaggedAt": "2026-03-03T19:40:12.470Z"
     },
     {
       "showId": "buena-vista-social-club-2025",
@@ -189,21 +175,35 @@
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "bwwScore": 9,
-      "flaggedAt": "2026-03-03T05:19:35.610Z"
+      "flaggedAt": "2026-03-03T19:40:12.634Z"
     },
     {
-      "showId": "dead-outlaw-2025",
-      "outletId": "chicagotribune",
-      "criticName": "Chris Jones",
+      "showId": "chicago-1996",
+      "outletId": "ap",
+      "criticName": "Michael Kuchwara",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bon tour\\b",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-03-03T19:40:14.991Z"
+    },
+    {
+      "showId": "choir-boy-2019",
+      "outletId": "hollywood-reporter",
+      "criticName": "David Rooney",
       "reason": "borderline-rave",
-      "detail": "LLM=81 (high conf), thumbs/bwwScore suggest rave. Calibration shows 62% of true raves score 78-82.",
-      "llmScore": 81,
+      "detail": "LLM=79 (high conf), thumbs/bwwScore suggest rave. Calibration shows 62% of true raves score 78-82.",
+      "llmScore": 79,
       "llmBucket": "Positive",
       "llmConfidence": "medium",
-      "dtliThumb": null,
-      "bwwThumb": "Up",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-03-03T05:20:04.980Z"
+      "flaggedAt": "2026-03-03T19:40:15.555Z"
     },
     {
       "showId": "follies-2011",
@@ -217,7 +217,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-03-03T05:20:28.516Z"
+      "flaggedAt": "2026-03-03T19:40:20.737Z"
     },
     {
       "showId": "funny-girl-2022",
@@ -231,21 +231,7 @@
       "dtliThumb": "Down",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-03-03T05:20:36.661Z"
-    },
-    {
-      "showId": "golden-boy-2012",
-      "outletId": "ew",
-      "criticName": "Adam Markovitz",
-      "reason": "both-thumbs-disagree-with-llm",
-      "detail": "LLM=65 (Mixed), thumbs=Up/-",
-      "llmScore": 65,
-      "llmBucket": "Mixed",
-      "llmConfidence": "low",
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "bwwScore": 8,
-      "flaggedAt": "2026-03-03T05:20:46.417Z"
+      "flaggedAt": "2026-03-03T19:40:21.953Z"
     },
     {
       "showId": "hadestown-west-end-2024",
@@ -259,7 +245,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-03T05:20:56.868Z"
+      "flaggedAt": "2026-03-03T19:40:25.102Z"
     },
     {
       "showId": "indecent-2017",
@@ -273,21 +259,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-03T05:21:27.233Z"
-    },
-    {
-      "showId": "jitney-2017",
-      "outletId": "amny",
-      "criticName": "Matt Windman",
-      "reason": "borderline-rave",
-      "detail": "LLM=80 (high conf), thumbs/bwwScore suggest rave. Calibration shows 62% of true raves score 78-82.",
-      "llmScore": 80,
-      "llmBucket": "Positive",
-      "llmConfidence": "high",
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "bwwScore": 10,
-      "flaggedAt": "2026-03-03T05:21:37.416Z"
+      "flaggedAt": "2026-03-03T19:40:31.873Z"
     },
     {
       "showId": "john-lithgow-stories-by-heart-2018",
@@ -301,7 +273,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-03T05:21:41.405Z"
+      "flaggedAt": "2026-03-03T19:40:33.582Z"
     },
     {
       "showId": "les-miserables-2014",
@@ -315,7 +287,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-03T05:22:01.674Z"
+      "flaggedAt": "2026-03-03T19:40:37.428Z"
     },
     {
       "showId": "little-bear-ridge-road-2025",
@@ -329,21 +301,7 @@
       "dtliThumb": null,
       "bwwThumb": "Up",
       "bwwScore": 9,
-      "flaggedAt": "2026-03-03T05:22:06.446Z"
-    },
-    {
-      "showId": "little-shop-of-horrors-off-broadway-2019",
-      "outletId": "theatre-reviews-limited",
-      "criticName": "David Roberts",
-      "reason": "possible-tour-fulltext",
-      "detail": "Tour signal in fullText intro: venue: \\bOrpheum\\b",
-      "llmScore": 74,
-      "llmBucket": "Positive",
-      "llmConfidence": "high",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "bwwScore": null,
-      "flaggedAt": "2026-03-03T05:22:06.672Z"
+      "flaggedAt": "2026-03-03T19:40:38.274Z"
     },
     {
       "showId": "little-women-the-musical-off-broadway-2026",
@@ -357,7 +315,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-03T05:22:06.845Z"
+      "flaggedAt": "2026-03-03T19:40:38.426Z"
     },
     {
       "showId": "matilda-the-musical-west-end-2021",
@@ -371,7 +329,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-03T05:22:21.197Z"
+      "flaggedAt": "2026-03-03T19:40:41.042Z"
     },
     {
       "showId": "motown-the-musical-2016",
@@ -385,21 +343,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-03T05:22:32.166Z"
-    },
-    {
-      "showId": "motown-the-musical-2016",
-      "outletId": "nbcny",
-      "criticName": "Robert Kahn",
-      "reason": "possible-tour-fulltext",
-      "detail": "Tour signal in fullText intro: \\bnational tour\\b",
-      "llmScore": 77,
-      "llmBucket": "Positive",
-      "llmConfidence": "high",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "bwwScore": null,
-      "flaggedAt": "2026-03-03T05:22:32.222Z"
+      "flaggedAt": "2026-03-03T19:40:43.882Z"
     },
     {
       "showId": "moulin-rouge-the-musical-west-end-2021",
@@ -413,7 +357,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-03T05:22:34.004Z"
+      "flaggedAt": "2026-03-03T19:40:44.279Z"
     },
     {
       "showId": "mrs-warrens-profession-2010",
@@ -421,13 +365,13 @@
       "criticName": "Elisabeth Vincentelli",
       "reason": "possible-tour-fulltext",
       "detail": "Tour signal in fullText intro: \\bnational tour\\b",
-      "llmScore": 42,
+      "llmScore": 44,
       "llmBucket": "Negative",
       "llmConfidence": "high",
       "dtliThumb": "Down",
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-03T05:22:34.884Z"
+      "flaggedAt": "2026-03-03T19:40:44.693Z"
     },
     {
       "showId": "my-fair-lady-2018",
@@ -441,7 +385,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-03T05:22:36.125Z"
+      "flaggedAt": "2026-03-03T19:40:44.883Z"
     },
     {
       "showId": "noises-off-2016",
@@ -455,7 +399,35 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-03-03T05:22:42.188Z"
+      "flaggedAt": "2026-03-03T19:40:46.290Z"
+    },
+    {
+      "showId": "on-the-town-2014",
+      "outletId": "nbcny",
+      "criticName": "Dave Quinn",
+      "reason": "borderline-rave",
+      "detail": "LLM=79 (high conf), thumbs/bwwScore suggest rave. Calibration shows 62% of true raves score 78-82.",
+      "llmScore": 79,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "bwwScore": 9,
+      "flaggedAt": "2026-03-03T19:40:48.982Z"
+    },
+    {
+      "showId": "perfect-crime-off-broadway-1987",
+      "outletId": "front-row-center",
+      "criticName": "Sarah Downs",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"2.5/5 stars\" (=50, bucket=mixed) vs LLM 13 (bucket=negative, conf=high)",
+      "llmScore": 13,
+      "llmBucket": "Pan",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-03-03T19:40:52.683Z"
     },
     {
       "showId": "present-laughter-2010",
@@ -469,7 +441,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-03T05:23:12.738Z"
+      "flaggedAt": "2026-03-03T19:40:53.848Z"
     },
     {
       "showId": "prince-of-broadway-2017",
@@ -483,7 +455,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-03T05:23:17.485Z"
+      "flaggedAt": "2026-03-03T19:40:54.600Z"
     },
     {
       "showId": "ragtime-2009",
@@ -497,7 +469,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-03T05:23:22.413Z"
+      "flaggedAt": "2026-03-03T19:40:55.518Z"
     },
     {
       "showId": "ragtime-2025",
@@ -511,35 +483,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-03T05:23:22.933Z"
-    },
-    {
-      "showId": "romeo-juliet-2024",
-      "outletId": "nypost",
-      "criticName": "Johnny Oleksinski",
-      "reason": "both-thumbs-disagree-with-llm",
-      "detail": "LLM=58 (Flat), both thumbs=Down",
-      "llmScore": 58,
-      "llmBucket": "Mixed",
-      "llmConfidence": "medium",
-      "dtliThumb": "Down",
-      "bwwThumb": "Down",
-      "bwwScore": 2,
-      "flaggedAt": "2026-03-03T05:23:28.077Z"
-    },
-    {
-      "showId": "romeo-juliet-2024",
-      "outletId": "observer",
-      "criticName": "David Cote",
-      "reason": "borderline-rave",
-      "detail": "LLM=78 (high conf), thumbs/bwwScore suggest rave. Calibration shows 62% of true raves score 78-82.",
-      "llmScore": 78,
-      "llmBucket": "Positive",
-      "llmConfidence": "high",
-      "dtliThumb": "Up",
-      "bwwThumb": "Up",
-      "bwwScore": 8,
-      "flaggedAt": "2026-03-03T05:23:28.106Z"
+      "flaggedAt": "2026-03-03T19:40:55.680Z"
     },
     {
       "showId": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016",
@@ -553,7 +497,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-03-03T05:23:37.113Z"
+      "flaggedAt": "2026-03-03T19:40:58.597Z"
     },
     {
       "showId": "spamalot-2023",
@@ -567,7 +511,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-03T05:23:48.570Z"
+      "flaggedAt": "2026-03-03T19:41:01.569Z"
     },
     {
       "showId": "tammy-faye-2024",
@@ -581,7 +525,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-03T05:24:04.739Z"
+      "flaggedAt": "2026-03-03T19:41:06.112Z"
     },
     {
       "showId": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025",
@@ -595,7 +539,7 @@
       "dtliThumb": null,
       "bwwThumb": "Up",
       "bwwScore": 9,
-      "flaggedAt": "2026-03-03T05:24:06.952Z"
+      "flaggedAt": "2026-03-03T19:41:06.524Z"
     },
     {
       "showId": "the-color-purple-2015",
@@ -609,7 +553,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-03-03T05:24:16.477Z"
+      "flaggedAt": "2026-03-03T19:41:08.902Z"
     },
     {
       "showId": "the-gin-game-2015",
@@ -623,21 +567,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-03-03T05:24:27.419Z"
-    },
-    {
-      "showId": "the-real-thing-2014",
-      "outletId": "ew",
-      "criticName": "Thom Geier",
-      "reason": "both-thumbs-disagree-with-llm",
-      "detail": "LLM=48 (Negative), thumbs=Up/-",
-      "llmScore": 48,
-      "llmBucket": "Negative",
-      "llmConfidence": "medium",
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "bwwScore": 8,
-      "flaggedAt": "2026-03-03T05:25:03.445Z"
+      "flaggedAt": "2026-03-03T19:41:11.151Z"
     },
     {
       "showId": "the-waverly-gallery-2018",
@@ -651,49 +581,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-03T05:25:13.682Z"
-    },
-    {
-      "showId": "titanique-off-broadway-2022",
-      "outletId": "thewrap",
-      "criticName": "Robert Hofler",
-      "reason": "borderline-rave",
-      "detail": "LLM=81 (high conf), thumbs/bwwScore suggest rave. Calibration shows 62% of true raves score 78-82.",
-      "llmScore": 81,
-      "llmBucket": "Positive",
-      "llmConfidence": "medium",
-      "dtliThumb": null,
-      "bwwThumb": "Up",
-      "bwwScore": 8,
-      "flaggedAt": "2026-03-03T05:25:21.828Z"
-    },
-    {
-      "showId": "violet-2014",
-      "outletId": "nbcny",
-      "criticName": "Dave Quinn",
-      "reason": "borderline-rave",
-      "detail": "LLM=82 (high conf), thumbs/bwwScore suggest rave. Calibration shows 62% of true raves score 78-82.",
-      "llmScore": 82,
-      "llmBucket": "Positive",
-      "llmConfidence": "high",
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "bwwScore": 8,
-      "flaggedAt": "2026-03-03T05:25:28.621Z"
-    },
-    {
-      "showId": "waiting-for-godot-2025",
-      "outletId": "nypost",
-      "criticName": "Johnny Oleksinski",
-      "reason": "both-thumbs-disagree-with-llm",
-      "detail": "LLM=48 (Down), both thumbs=Meh",
-      "llmScore": 48,
-      "llmBucket": "Negative",
-      "llmConfidence": "medium",
-      "dtliThumb": "Meh",
-      "bwwThumb": "Meh",
-      "bwwScore": 5,
-      "flaggedAt": "2026-03-03T05:25:28.803Z"
+      "flaggedAt": "2026-03-03T19:41:21.223Z"
     }
   ]
 }
