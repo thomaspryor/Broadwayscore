@@ -190,6 +190,19 @@ async function main() {
     return (entry && entry.tier) || 3; // Default to Tier 3
   }
 
+  // Log tier coverage for readiness diagnostics
+  for (const { show, stats } of readyShows) {
+    const showId = show.id || show.slug;
+    const showReviews = reviewsArr.filter(r => r.showId === showId && r.assignedScore != null);
+    const t1Count = showReviews.filter(r => getOutletTier(r.outletId) === 1).length;
+    const t2Count = showReviews.filter(r => getOutletTier(r.outletId) === 2).length;
+    const t3Count = showReviews.filter(r => getOutletTier(r.outletId) === 3).length;
+    console.log(`  ${show.title}: ${stats.reviewCount} reviews (T1:${t1Count} T2:${t2Count} T3:${t3Count})`);
+    if (t1Count < 3) {
+      console.log(`    ⚠ Low T1 coverage (${t1Count} of expected 5+)`);
+    }
+  }
+
   // Build show data for email template
   const showsForEmail = readyShows.map(({ show, stats }) => {
     const showId = show.id || show.slug;
