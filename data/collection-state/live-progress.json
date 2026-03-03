@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-03T09:36:53.872Z",
-  "processed": 10,
-  "failed": 42,
-  "successRate": "19.2%",
+  "updatedAt": "2026-03-03T09:45:37.736Z",
+  "processed": 12,
+  "failed": 50,
+  "successRate": "19.4%",
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 7,
     "amp": 7,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 12,
+    "archiveToday": 19,
     "archive": 4
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-03-03T09:19:13.595Z",
@@ -58,6 +58,28 @@
       "t": "2026-03-03T09:31:15.415Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-03T09:42:10.223Z",
+      "event": "bb-session",
+      "session": "6ecb2299",
+      "url": "https://www.thestage.co.uk/reviews/oh-mary-review-trafalgar-theatre"
+    },
+    {
+      "t": "2026-03-03T09:42:11.541Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-03T09:45:12.192Z",
+      "event": "bb-session",
+      "session": "7c755eb5",
+      "url": "https://www.usatoday.com/story/entertainment/arts/2025/10/10/sarasotas-fst-bring"
+    },
+    {
+      "t": "2026-03-03T09:45:13.694Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }
