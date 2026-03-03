@@ -9,7 +9,9 @@
     "antigone-this-play-i-read-in-high-school-off-broadway-2026/artsfuse--unknown.json",
     "broken-glass-west-end-2026/times-uk--unknown.json",
     "night-side-songs-off-broadway-2026/nyt-theater--unknown.json",
-    "night-side-songs-off-broadway-2026/nytg--unknown.json"
+    "night-side-songs-off-broadway-2026/nytg--unknown.json",
+    "mother-russia-off-broadway-2026/playbill--unknown.json",
+    "night-side-songs-off-broadway-2026/nysr--unknown.json"
   ],
   "failed": [
     "bigfoot-off-broadway-2026/vulture--unknown.json",
@@ -53,7 +55,15 @@
     "harry-potter-2021/zeal-nyc--chris-caggiano.json",
     "jerome-off-broadway-2025/talkinbroadway--unknown.json",
     "little-shop-of-horrors-off-broadway-2019/curtainup--dan-rubins.json",
-    "magic-mike-live-west-end-2021/whatsonstage--sita-mcintosh.json"
+    "magic-mike-live-west-end-2021/whatsonstage--sita-mcintosh.json",
+    "moulin-rouge-2019/broadwayworld--michael-dale.json",
+    "moulin-rouge-2019/curtainup--charles-wright.json",
+    "my-joy-is-heavy-off-broadway-2025/one-minute-critic--unknown.json",
+    "oh-mary-west-end-2025/thestage--holly-omahony.json",
+    "oliver-west-end-2024/telegraph--charles-spencer.json",
+    "oliver-west-end-2024/whatsonstage--michael-coveney.json",
+    "ragtime-2025/ny1--unknown.json",
+    "ragtime-2025/usatoday--samantha-gholar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -62,7 +72,9 @@
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/artsfuse--unknown.json",
       "broken-glass-west-end-2026/times-uk--unknown.json",
       "night-side-songs-off-broadway-2026/nyt-theater--unknown.json",
-      "night-side-songs-off-broadway-2026/nytg--unknown.json"
+      "night-side-songs-off-broadway-2026/nytg--unknown.json",
+      "mother-russia-off-broadway-2026/playbill--unknown.json",
+      "night-side-songs-off-broadway-2026/nysr--unknown.json"
     ],
     "amp": [
       "data/review-texts/bigfoot-off-broadway-2026/vulture--unknown.json",
@@ -76,7 +88,8 @@
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
-      "midnight-a-new-original-musical-by-todrick-hall-west-end-2026/guardian--unknown.json"
+      "midnight-a-new-original-musical-by-todrick-hall-west-end-2026/guardian--unknown.json",
+      "moulin-rouge-2019/broadwayworld--michael-dale.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -91,7 +104,14 @@
       "data/review-texts/friends-the-musical-parody-off-broadway-2022/unknown--iris-wiener.json",
       "data/review-texts/friends-the-musical-parody-off-broadway-2022/unknown--megan-wrappe.json",
       "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json",
-      "data/review-texts/little-shop-of-horrors-off-broadway-2019/curtainup--dan-rubins.json"
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/curtainup--dan-rubins.json",
+      "data/review-texts/moulin-rouge-2019/curtainup--charles-wright.json",
+      "data/review-texts/my-joy-is-heavy-off-broadway-2025/one-minute-critic--unknown.json",
+      "data/review-texts/oh-mary-west-end-2025/thestage--holly-omahony.json",
+      "data/review-texts/oliver-west-end-2024/telegraph--charles-spencer.json",
+      "data/review-texts/oliver-west-end-2024/whatsonstage--michael-coveney.json",
+      "data/review-texts/ragtime-2025/ny1--unknown.json",
+      "data/review-texts/ragtime-2025/usatoday--samantha-gholar.json"
     ],
     "archive": [
       "pied-a-terre-off-broadway-2026/nytg--unknown.json",
@@ -101,7 +121,7 @@
     ]
   },
   "startTime": "2026-03-03T08:34:29.131Z",
-  "lastProcessed": "magic-mike-live-west-end-2021/whatsonstage--sita-mcintosh.json",
+  "lastProcessed": "ragtime-2025/usatoday--samantha-gholar.json",
   "log": [
     {
       "t": "2026-03-03T09:19:13.595Z",
@@ -146,6 +166,28 @@
       "t": "2026-03-03T09:31:15.415Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-03T09:42:10.223Z",
+      "event": "bb-session",
+      "session": "6ecb2299",
+      "url": "https://www.thestage.co.uk/reviews/oh-mary-review-trafalgar-theatre"
+    },
+    {
+      "t": "2026-03-03T09:42:11.541Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-03T09:45:12.192Z",
+      "event": "bb-session",
+      "session": "7c755eb5",
+      "url": "https://www.usatoday.com/story/entertainment/arts/2025/10/10/sarasotas-fst-bring"
+    },
+    {
+      "t": "2026-03-03T09:45:13.694Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }
