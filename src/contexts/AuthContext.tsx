@@ -95,8 +95,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // (handles case where DB trigger is missing or failed)
         await ensureProfile(userId);
       }
-    } catch {
-      // Profile not found — create it
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error('[Auth] loadProfile error:', e);
       await ensureProfile(userId);
     }
   };
@@ -108,7 +109,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const { data: { user: authUser } } = await client.auth.getUser();
       const meta = authUser?.user_metadata || {};
-      const { data } = await client
+      const { data, error: upsertErr } = await client
         .from('profiles')
         .upsert({
           id: userId,
@@ -118,11 +119,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .select()
         .single();
 
+      if (upsertErr) {
+        // eslint-disable-next-line no-console
+        console.error('[Auth] Profile upsert failed:', upsertErr.message);
+      }
       if (data) {
         setProfile(data as UserProfile);
       }
-    } catch {
-      // Non-fatal — profile will be created on next sign-in
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error('[Auth] ensureProfile error:', e);
     }
   };
 

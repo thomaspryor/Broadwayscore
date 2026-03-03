@@ -80,9 +80,9 @@ export default function HamburgerMenu({
             {/* User section */}
             {featureFlags.userAccounts && (
               <div className="px-5 pb-4 border-b border-white/[0.06]">
-                {isAuthenticated && profile ? (
+                {isAuthenticated ? (
                   <div className="flex items-center gap-3">
-                    {profile.avatar_url ? (
+                    {profile?.avatar_url ? (
                       <img
                         src={profile.avatar_url}
                         alt=""
@@ -90,11 +90,11 @@ export default function HamburgerMenu({
                       />
                     ) : (
                       <div className="w-10 h-10 rounded-full bg-brand/20 flex items-center justify-center text-brand font-bold text-sm">
-                        {profile.display_name.charAt(0).toUpperCase()}
+                        {(profile?.display_name || '?').charAt(0).toUpperCase()}
                       </div>
                     )}
                     <div className="min-w-0">
-                      <p className="text-sm font-semibold text-white truncate">{profile.display_name}</p>
+                      <p className="text-sm font-semibold text-white truncate">{profile?.display_name || 'Signed In'}</p>
                       <p className="text-xs text-gray-500">Theater Fan</p>
                     </div>
                   </div>

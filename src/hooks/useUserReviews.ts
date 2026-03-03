@@ -70,7 +70,11 @@ export function useUserReviews(userId: string | null) {
     reviewId?: string; // If editing existing
   }): Promise<UserReview | null> => {
     const client = getSupabaseClient();
-    if (!client || !userId) return null;
+    if (!client || !userId) {
+      // eslint-disable-next-line no-console
+      console.error('[Reviews] Cannot save: missing client or userId', { hasClient: !!client, userId });
+      return null;
+    }
 
     setError(null);
     try {
@@ -110,6 +114,8 @@ export function useUserReviews(userId: string | null) {
       }
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to save review';
+      // eslint-disable-next-line no-console
+      console.error('[Reviews] Save failed:', msg, e);
       setError(msg);
       throw new Error(msg);
     }
