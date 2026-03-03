@@ -166,11 +166,40 @@ jobs:
           ")
           echo "Unscored reviews: $UNSCORED"
           echo "unscored=$UNSCORED" >> $GITHUB_OUTPUT
-          if [ "$UNSCORED" -lt 5 ]; then
-            echo "Below threshold (5). Nothing to score."
-            echo "skip=true" >> $GITHUB_OUTPUT
-          else
+          if [ "$UNSCORED" -ge 5 ]; then
             echo "skip=false" >> $GITHUB_OUTPUT
+            echo "run_stale=false" >> $GITHUB_OUTPUT
+          else
+            # No unscored reviews — check for stale excerpt-based scores
+            STALE=$(node -e "
+              const fs = require('fs'), path = require('path');
+              const base = 'data/review-texts';
+              const dirs = fs.readdirSync(base).filter(d => { try { return fs.statSync(path.join(base,d)).isDirectory(); } catch(e) { return false; } });
+              let n = 0;
+              dirs.forEach(d => {
+                fs.readdirSync(path.join(base,d)).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json').forEach(f => {
+                  try {
+                    const r = JSON.parse(fs.readFileSync(path.join(base,d,f),'utf8'));
+                    if (!r.fullText || r.fullText.length < 1000) return;
+                    if (!r.llmScore || !r.llmScore.score) return;
+                    if (r.needsRescore || r.ensembleData || r.rescoreCompletedAt) return;
+                    if (r.llmMetadata && r.llmMetadata.textSource && r.llmMetadata.textSource.type === 'fullText') return;
+                    if (r.bwwExcerpt || r.dtliExcerpt || r.showScoreExcerpt) n++;
+                  } catch(e) {}
+                });
+              });
+              console.log(n);
+            ")
+            echo "Stale excerpt-based scores: $STALE"
+            if [ "$STALE" -gt 0 ]; then
+              echo "Found stale scores to sweep."
+              echo "skip=false" >> $GITHUB_OUTPUT
+              echo "run_stale=true" >> $GITHUB_OUTPUT
+            else
+              echo "Below threshold (5 unscored) and no stale scores. Skipping."
+              echo "skip=true" >> $GITHUB_OUTPUT
+              echo "run_stale=false" >> $GITHUB_OUTPUT
+            fi
           fi
 
       - name: Build CLI arguments
@@ -219,7 +248,7 @@ jobs:
           fi
 
           # Stale scores (fullText + old excerpt-based score)
-          if [ "${{ github.event.inputs.stale_scores }}" == "true" ]; then
+          if [ "${{ github.event.inputs.stale_scores }}" == "true" ] || [ "${{ steps.check-needed.outputs.run_stale }}" == "true" ]; then
             ARGS="$ARGS --stale-scores"
           fi
 
@@ -501,7 +530,8 @@ jobs:
             CHAIN_ARGS="$CHAIN_ARGS -f outdated=true"
           fi
           # Pass through stale_scores flag so stale-score chains continue
-          if [ "${{ github.event.inputs.stale_scores }}" == "true" ]; then
+          # Also pass through when scheduled run detected stale scores
+          if [ "${{ github.event.inputs.stale_scores }}" == "true" ] || [ "${{ steps.check-needed.outputs.run_stale }}" == "true" ]; then
             CHAIN_ARGS="$CHAIN_ARGS -f stale_scores=true"
           fi
 
