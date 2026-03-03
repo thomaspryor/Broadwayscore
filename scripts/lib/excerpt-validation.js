@@ -87,8 +87,12 @@ function excerptMentionsWrongShow(excerpt, currentShowId, currentShowTitle) {
 
   // Check if excerpt mentions current show's title (if so, it's probably fine
   // even if it mentions another show — could be a comparison)
-  const currentEscaped = currentShowTitle
-    ? currentShowTitle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  // Strip trailing punctuation from title before building regex — chars like ! break \b
+  const titleForMatch = currentShowTitle
+    ? currentShowTitle.replace(/[^\w]+$/, '')
+    : null;
+  const currentEscaped = titleForMatch
+    ? titleForMatch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     : null;
   const currentRegex = currentEscaped
     ? new RegExp(`\\b${currentEscaped}\\b`, 'i')
