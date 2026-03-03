@@ -491,6 +491,7 @@ function parseArgs(): ScoringPipelineOptions & {
   forceFullRun: boolean;
   ensembleSource?: string;
   ensembleCalibrateOnly: boolean;
+  upgradeEnsemble: boolean;
   checkpointInterval: number;
   shard?: number;
   totalShards?: number;
