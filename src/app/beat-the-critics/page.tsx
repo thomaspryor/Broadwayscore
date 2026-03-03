@@ -13,25 +13,13 @@ export const metadata = {
   description: 'Pick Tony Award winners and compete against top critics and the CriticScore algorithm. Win free TodayTix tickets.',
 };
 
-// Tier definitions from the spec
+// Only Tier 1 for now — the Big Four categories
 const TIERS = [
   {
     key: 'tier1',
     label: 'Tier 1',
     name: 'The Big Four',
     categories: ['Best Musical', 'Best Play', 'Best Revival of a Musical', 'Best Revival of a Play'],
-  },
-  {
-    key: 'tier2',
-    label: 'Tier 2',
-    name: 'The Performers',
-    categories: ['Best Actress in a Musical', 'Best Actor in a Musical', 'Best Actress in a Play', 'Best Actor in a Play'],
-  },
-  {
-    key: 'tier3',
-    label: 'Tier 3',
-    name: 'The Deep Cuts',
-    categories: ['Best Direction of a Musical', 'Best Direction of a Play', 'Best Original Score', 'Best Book of a Musical'],
   },
 ];
 
@@ -81,13 +69,17 @@ export default function BeatTheCriticsPage() {
     }),
   }));
 
+  // Count Tony-season-specific stats
+  const eligibleCount = eligible.length;
+  const totalReviews = eligible.reduce((sum, s) => sum + (s.criticScore?.reviewCount || 0), 0);
+
   const data: BeatTheCriticsData = {
     tiers,
     season: { label: season.label, ceremonyYear: season.ceremonyYear },
     stats: {
-      reviewsScored: 14000,
-      showsTracked: allShows.length,
-      criticsTracked: 870,
+      reviewsScored: totalReviews || 2400,  // fallback to placeholder
+      showsTracked: eligibleCount || 38,
+      criticsTracked: 150,
     },
   };
 

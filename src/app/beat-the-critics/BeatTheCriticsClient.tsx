@@ -250,25 +250,24 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
     setScreen('reveal');
   }, [currentCategory, picks]);
 
-  const handleNextCategory = useCallback(() => {
-    if (currentCatIdx < totalCategoriesInTier - 1) {
-      setCurrentCatIdx(prev => prev + 1);
-      setScreen('picking');
-    } else {
-      // End of tier
-      setScreen('results');
+  // Find the next category that has nominees, skipping empty ones
+  const findNextNonEmptyCategory = useCallback((fromCatIdx: number): number | null => {
+    for (let i = fromCatIdx + 1; i < totalCategoriesInTier; i++) {
+      if ((currentTier?.categories[i]?.nominees.length ?? 0) > 0) return i;
     }
-  }, [currentCatIdx, totalCategoriesInTier]);
+    return null;
+  }, [currentTier, totalCategoriesInTier]);
 
-  const handleNextTier = useCallback(() => {
-    if (currentTierIdx < data.tiers.length - 1) {
-      setCurrentTierIdx(prev => prev + 1);
-      setCurrentCatIdx(0);
+  const handleNextCategory = useCallback(() => {
+    const nextIdx = findNextNonEmptyCategory(currentCatIdx);
+    if (nextIdx !== null) {
+      setCurrentCatIdx(nextIdx);
       setScreen('picking');
     } else {
+      // No more categories with nominees — go to results
       setScreen('results');
     }
-  }, [currentTierIdx, data.tiers.length]);
+  }, [currentCatIdx, findNextNonEmptyCategory]);
 
   const goToScreen = useCallback((s: Screen) => {
     setScreen(s);
@@ -304,6 +303,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
               <span className="bg-gradient-to-br from-brand to-[#ff1368] bg-clip-text text-transparent">
                 the Critics
               </span>
+              <sup className="text-[13px] font-bold text-gray-500 align-super ml-0.5">&trade;</sup>
             </span>
           </h1>
 
@@ -312,7 +312,13 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           </p>
 
           <button
-            onClick={() => { setCurrentTierIdx(0); setCurrentCatIdx(0); goToScreen('picking'); }}
+            onClick={() => {
+              setCurrentTierIdx(0);
+              // Find first category with nominees
+              const firstIdx = data.tiers[0]?.categories.findIndex(c => c.nominees.length > 0) ?? 0;
+              setCurrentCatIdx(firstIdx >= 0 ? firstIdx : 0);
+              goToScreen('picking');
+            }}
             className="animate-fade-up mt-9 inline-flex items-center gap-2.5 px-10 py-4 rounded-[14px] bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white text-[17px] font-bold shadow-[0_4px_24px_rgba(255,19,104,0.35)] hover:shadow-[0_8px_32px_rgba(255,19,104,0.45)] hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200"
             style={{ animationDelay: '0.9s', animationFillMode: 'both' }}
           >
@@ -322,12 +328,16 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
 
           <div className="animate-fade-up mt-12 flex gap-6" style={{ animationDelay: '1.1s', animationFillMode: 'both' }}>
             <div className="text-center">
-              <div className="text-[22px] font-extrabold text-brand tracking-tight">{(data.stats.reviewsScored / 1000).toFixed(0)}K+</div>
-              <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mt-0.5">Reviews Scored</div>
+              <div className="text-[22px] font-extrabold text-brand tracking-tight">{data.stats.showsTracked}</div>
+              <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mt-0.5">Shows</div>
             </div>
             <div className="text-center">
-              <div className="text-[22px] font-extrabold text-brand tracking-tight">{data.stats.showsTracked.toLocaleString()}</div>
-              <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mt-0.5">Shows Tracked</div>
+              <div className="text-[22px] font-extrabold text-brand tracking-tight">
+                {data.stats.reviewsScored >= 1000
+                  ? `${(data.stats.reviewsScored / 1000).toFixed(data.stats.reviewsScored >= 10000 ? 0 : 1)}K`
+                  : data.stats.reviewsScored.toLocaleString()}
+              </div>
+              <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mt-0.5">Reviews</div>
             </div>
             <div className="text-center">
               <div className="text-[22px] font-extrabold text-brand tracking-tight">{data.stats.criticsTracked}+</div>
@@ -350,31 +360,42 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
   if (screen === 'picking' && currentCategory) {
     const selectedTitle = picks[currentCategory.title];
     const nominees = currentCategory.nominees;
+    // Count categories with nominees for progress dots
+    const catsWithNominees = currentTier.categories.filter(c => c.nominees.length > 0);
+    const currentProgressIdx = catsWithNominees.findIndex(c => c.title === currentCategory.title);
 
     return (
-      <div className="min-h-screen bg-surface flex flex-col">
+      <div className="min-h-screen bg-surface flex flex-col pb-[120px]">
         {/* Header */}
         <div className="sticky top-0 z-10 px-5 py-4 flex items-center justify-between border-b border-white/5 bg-surface/90 backdrop-blur-xl">
           <button
-            onClick={() => currentCatIdx > 0 ? setCurrentCatIdx(prev => prev - 1) : goToScreen('landing')}
+            onClick={() => {
+              // Go back to previous non-empty category, or landing
+              let prevIdx: number | null = null;
+              for (let i = currentCatIdx - 1; i >= 0; i--) {
+                if ((currentTier.categories[i]?.nominees.length ?? 0) > 0) { prevIdx = i; break; }
+              }
+              if (prevIdx !== null) setCurrentCatIdx(prevIdx);
+              else goToScreen('landing');
+            }}
             className="text-gray-400 text-sm hover:text-white transition-colors p-2 -m-2"
           >
             &larr; Back
           </button>
           <div className="flex gap-1.5">
-            {currentTier.categories.map((_, i) => (
+            {catsWithNominees.map((_, i) => (
               <div
                 key={i}
                 className={`h-2 rounded transition-all duration-300 ${
-                  i < currentCatIdx ? 'w-2 bg-[#ff1368]'
-                  : i === currentCatIdx ? 'w-5 bg-[#ff1368] shadow-[0_0_8px_rgba(255,19,104,0.5)]'
+                  i < currentProgressIdx ? 'w-2 bg-[#ff1368]'
+                  : i === currentProgressIdx ? 'w-5 bg-[#ff1368] shadow-[0_0_8px_rgba(255,19,104,0.5)]'
                   : 'w-2 bg-surface-overlay'
                 }`}
               />
             ))}
           </div>
           <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">
-            {currentCatIdx + 1} of {totalCategoriesInTier}
+            {currentProgressIdx + 1} of {catsWithNominees.length}
           </div>
         </div>
 
@@ -396,29 +417,26 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
               />
             ))}
           </div>
+        </div>
 
-          {nominees.length === 0 && (
-            <div className="text-center py-12 text-gray-500">
-              <p className="text-lg font-semibold">No nominees yet</p>
-              <p className="text-sm mt-2">Nominations will be announced in late April 2026.</p>
-            </div>
-          )}
-
-          <button
-            onClick={handleLockIn}
-            disabled={!selectedTitle}
-            className={`mt-6 w-full py-4 rounded-[14px] text-base font-bold transition-all duration-200 ${
-              selectedTitle
-                ? 'bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5'
-                : 'bg-surface-overlay text-gray-500 cursor-not-allowed'
-            }`}
-          >
-            {selectedTitle ? `Lock In: ${selectedTitle} →` : 'Lock In Pick'}
-          </button>
-
-          <p className="text-center mt-3.5 text-xs text-gray-500">
-            Not sure? <a href={`/show/${pickSlugs[currentCategory.title] || ''}`} className="text-brand hover:underline">Check the CriticScore on Broadway Scorecard</a>
-          </p>
+        {/* Sticky bottom CTA */}
+        <div className="fixed bottom-0 left-0 right-0 z-20 px-5 pb-6 pt-3 bg-gradient-to-t from-surface via-surface to-transparent">
+          <div className="max-w-[480px] mx-auto">
+            <button
+              onClick={handleLockIn}
+              disabled={!selectedTitle}
+              className={`w-full py-4 rounded-[14px] text-base font-bold transition-all duration-200 ${
+                selectedTitle
+                  ? 'bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5'
+                  : 'bg-surface-overlay text-gray-500 cursor-not-allowed'
+              }`}
+            >
+              {selectedTitle ? `Lock In: ${selectedTitle} →` : 'Lock In Pick'}
+            </button>
+            <p className="text-center mt-2.5 text-xs text-gray-500">
+              Not sure? <a href={`/show/${pickSlugs[currentCategory.title] || ''}`} className="text-brand hover:underline">Check the CriticScore on Broadway Scorecard</a>
+            </p>
+          </div>
         </div>
       </div>
     );
@@ -435,8 +453,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
     const matchesCriticScore = userPick === criticScorePick;
     const criticMatches = criticPicks.filter(p => p === userPick).length;
 
-    const isLastCategoryInTier = currentCatIdx >= totalCategoriesInTier - 1;
-    const hasMoreTiers = currentTierIdx < data.tiers.length - 1;
+    const hasMoreCategories = findNextNonEmptyCategory(currentCatIdx) !== null;
 
     return (
       <div className="min-h-screen bg-surface flex flex-col">
@@ -548,33 +565,40 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
 
           {/* Actions */}
           <div className="flex flex-col gap-2.5 animate-fade-up" style={{ animationDelay: '1s', animationFillMode: 'both' }}>
-            {!isLastCategoryInTier ? (
+            {hasMoreCategories ? (
+              <>
+                <button
+                  onClick={handleNextCategory}
+                  className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5 transition-all"
+                >
+                  Keep Going &rarr;
+                  {(() => {
+                    const nextIdx = findNextNonEmptyCategory(currentCatIdx);
+                    const nextCat = nextIdx !== null ? currentTier.categories[nextIdx] : null;
+                    const catsWithNominees = currentTier.categories.filter(c => c.nominees.length > 0);
+                    const nextProgress = nextCat ? catsWithNominees.findIndex(c => c.title === nextCat.title) + 1 : 0;
+                    return nextCat ? (
+                      <span className="block text-xs font-medium opacity-80 mt-0.5">
+                        Next: {nextCat.title} ({nextProgress} of {catsWithNominees.length})
+                      </span>
+                    ) : null;
+                  })()}
+                </button>
+                <button
+                  onClick={() => goToScreen('results')}
+                  className="w-full py-3.5 rounded-[14px] text-sm font-semibold border border-white/10 text-gray-400 hover:border-brand hover:text-brand transition-all"
+                >
+                  Save &amp; Share My Ballot
+                </button>
+              </>
+            ) : (
               <button
-                onClick={handleNextCategory}
+                onClick={() => goToScreen('results')}
                 className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5 transition-all"
               >
-                Keep Going &rarr;
-                <span className="block text-xs font-medium opacity-80 mt-0.5">
-                  Next: {currentTier.categories[currentCatIdx + 1]?.title} ({currentCatIdx + 2} of {totalCategoriesInTier})
-                </span>
+                See My Ballot &rarr;
               </button>
-            ) : hasMoreTiers ? (
-              <button
-                onClick={handleNextTier}
-                className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5 transition-all"
-              >
-                Continue to {data.tiers[currentTierIdx + 1].name} &rarr;
-                <span className="block text-xs font-medium opacity-80 mt-0.5">
-                  Bonus picks for bragging rights
-                </span>
-              </button>
-            ) : null}
-            <button
-              onClick={() => goToScreen('results')}
-              className="w-full py-3.5 rounded-[14px] text-sm font-semibold border border-white/10 text-gray-400 hover:border-brand hover:text-brand transition-all"
-            >
-              Save &amp; Share My Ballot
-            </button>
+            )}
           </div>
         </div>
       </div>
