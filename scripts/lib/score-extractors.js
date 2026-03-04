@@ -351,6 +351,25 @@ function extractUKStarRating(html, text) {
     }
   }
 
+  // 2c. Telegraph: SVG stars with e-rating__star--active class
+  if (html.includes('e-rating__star') || html.includes('review-rating')) {
+    const ratingIdx = html.indexOf('review-rating');
+    if (ratingIdx > -1) {
+      const block = html.substring(ratingIdx, ratingIdx + 5000);
+      const active = (block.match(/e-rating__star--active/g) || []).length;
+      const half = (block.match(/e-rating__star--half/g) || []).length;
+      const total = (block.match(/e-rating__star--large/g) || []).length;
+      if (active > 0 && total === 5) {
+        const rating = active + half * 0.5;
+        return {
+          originalScore: `${rating}/5 stars`,
+          normalizedScore: starsToNumeric(rating, 5),
+          source: 'telegraph-svg-stars'
+        };
+      }
+    }
+  }
+
   // 3. CSS star rating classes (common in UK review sites)
   // Be more specific to avoid false positives from CSS/text
   const starClassMatch = html.match(/class="[^"]*(?:rating|review-score|star-count)[\s_-]*(\d)[^"]*"/i);

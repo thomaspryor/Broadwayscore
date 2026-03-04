@@ -19,6 +19,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const https = require('https');
 const { extractScore, OUTLET_EXTRACTORS } = require('./lib/score-extractors');
 
 const REVIEW_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -48,30 +49,154 @@ if (!OUTLET_EXTRACTORS[outlet]) {
   process.exit(1);
 }
 
-// Dynamically import the scraper
+// Cookie domain map for paywalled outlets
+const COOKIE_DOMAIN_MAP = {
+  'telegraph.co.uk': { fileKey: 'telegraph', envVar: 'TELEGRAPH_COOKIES' },
+  'thetimes.co.uk': { fileKey: 'thetimes', envVar: 'THETIMES_COOKIES' },
+  'thetimes.com': { fileKey: 'thetimes', envVar: 'THETIMES_COOKIES' },
+  'thestage.co.uk': { fileKey: 'thestage', envVar: 'THESTAGE_COOKIES' },
+  'standard.co.uk': { fileKey: 'standard', envVar: 'STANDARD_COOKIES' },
+  'independent.co.uk': { fileKey: 'independent', envVar: 'INDEPENDENT_COOKIES' },
+  'ft.com': { fileKey: 'ft', envVar: 'FT_COOKIES' },
+};
+
+// Essential auth cookie patterns per domain (for ScrapingBee URL length limits).
+// Full cookie set goes to Playwright; only these go via ScrapingBee forward_headers.
+const ESSENTIAL_COOKIE_PATTERNS = {
+  'telegraph.co.uk': /^(__utp|tmg_refresh|tmg_session|tmg_pid|consentUUID)$/,
+  'thetimes.co.uk': /^(auth0|auth0_compat|sacs_tnl|authId|blaize_jwt|nukt_mem|nuk_customer_location_hint|login_event_fired|pay_fls|gamera_user_id|_nuk_sp_id\.|_nuk_sp_ses\.)$/,
+  'thetimes.com': /^(auth0|auth0_compat|sacs_tnl|authId|blaize_jwt|nukt_mem|nuk_customer_location_hint|login_event_fired|pay_fls|gamera_user_id|_nuk_sp_id\.|_nuk_sp_ses\.)$/,
+  'thestage.co.uk': null, // Small enough to send all
+};
+
+function loadCookiesForUrl(url) {
+  try {
+    const hostname = new URL(url).hostname.replace(/^www\./, '');
+    for (const [domain, config] of Object.entries(COOKIE_DOMAIN_MAP)) {
+      if (hostname === domain || hostname.endsWith('.' + domain)) {
+        // Try env var first (CI: base64-encoded JSON)
+        const envVal = process.env[config.envVar];
+        if (envVal) {
+          try {
+            const cookies = JSON.parse(Buffer.from(envVal, 'base64').toString('utf-8'));
+            if (Array.isArray(cookies) && cookies.length > 0) return { cookies, domain };
+          } catch (e) { /* skip */ }
+        }
+        // Try local file
+        const fp = path.join(__dirname, '..', 'data', 'cookies', `${config.fileKey}.json`);
+        if (fs.existsSync(fp)) {
+          try {
+            const cookies = JSON.parse(fs.readFileSync(fp, 'utf-8'));
+            if (Array.isArray(cookies) && cookies.length > 0) return { cookies, domain };
+          } catch (e) { /* skip */ }
+        }
+      }
+    }
+  } catch (e) { /* skip */ }
+  return null;
+}
+
+// Load env from .env file if present
+const envPath = path.join(__dirname, '..', '.env');
+if (fs.existsSync(envPath)) {
+  for (const line of fs.readFileSync(envPath, 'utf-8').split('\n')) {
+    const match = line.match(/^([A-Z_]+)\s*=\s*(.+)$/);
+    if (match && !process.env[match[1]]) {
+      process.env[match[1]] = match[2].trim().replace(/^["']|["']$/g, '');
+    }
+  }
+}
+const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
+
 let fetchUrl;
+let _browser;
+let _context;
+
+function fetchWithScrapingBee(url, cookieHeader) {
+  return new Promise((resolve, reject) => {
+    const params = new URLSearchParams({
+      api_key: SCRAPINGBEE_KEY,
+      url: url,
+      render_js: 'true',
+    });
+    if (cookieHeader) {
+      params.set('forward_headers', 'true');
+    }
+    const apiUrl = `https://app.scrapingbee.com/api/v1/?${params}`;
+    const options = { headers: {} };
+    if (cookieHeader) {
+      options.headers['Spb-Cookie'] = cookieHeader;
+    }
+    https.get(apiUrl, options, (res) => {
+      let data = '';
+      res.on('data', chunk => { data += chunk; });
+      res.on('end', () => {
+        if (res.statusCode === 200) {
+          resolve(data);
+        } else {
+          reject(new Error(`ScrapingBee HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+        }
+      });
+    }).on('error', reject);
+  });
+}
 
 async function initScraper() {
-  // Use a simple fetch approach - the scraper module is complex, let's use playwright directly
   const { chromium } = require('playwright');
-  const browser = await chromium.launch({ headless: true });
-  const context = await browser.newContext({
+  _browser = await chromium.launch({ headless: true });
+  _context = await _browser.newContext({
     userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
   });
 
   fetchUrl = async (url) => {
-    const page = await context.newPage();
+    const cookieData = loadCookiesForUrl(url);
+
+    // For paywalled/WAF-protected sites, try ScrapingBee with filtered auth cookies
+    if (cookieData && SCRAPINGBEE_KEY) {
+      const { cookies, domain } = cookieData;
+      const pattern = ESSENTIAL_COOKIE_PATTERNS[domain];
+      const filtered = pattern ? cookies.filter(c => pattern.test(c.name)) : cookies;
+      const cookieHeader = filtered.map(c => `${c.name}=${c.value}`).join('; ');
+      if (cookieHeader.length > 0) {
+        try {
+          console.log(`  ScrapingBee: forwarding ${filtered.length}/${cookies.length} cookies (${cookieHeader.length} chars)`);
+          const html = await fetchWithScrapingBee(url, cookieHeader);
+          if (html && html.length > 500) return html;
+          console.log(`  ScrapingBee returned ${html.length} chars, trying Playwright...`);
+        } catch (e) {
+          console.log(`  ScrapingBee failed: ${e.message}, trying Playwright...`);
+        }
+      }
+    }
+
+    // Playwright fallback with full cookie set
+    if (cookieData) {
+      const playwrightCookies = cookieData.cookies.map(c => ({
+        name: c.name,
+        value: c.value,
+        domain: c.domain,
+        path: c.path || '/',
+        ...(c.expires ? { expires: c.expires } : {}),
+        httpOnly: c.httpOnly || false,
+        secure: c.secure || false,
+        sameSite: c.sameSite === 'None' ? 'None' : 'Lax',
+      })).filter(c => c.name && c.value && c.domain);
+      try {
+        await _context.addCookies(playwrightCookies);
+      } catch (e) { /* skip */ }
+    }
+
+    const page = await _context.newPage();
     try {
       await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-      await page.waitForTimeout(2000); // Let JS render
-      const html = await page.content();
-      return html;
+      await page.waitForTimeout(2000);
+      return await page.content();
     } finally {
       await page.close();
     }
   };
 
-  return { browser, context };
+  return { browser: _browser, context: _context };
 }
 
 async function main() {
@@ -106,14 +231,16 @@ async function main() {
 
   if (dryRun) {
     toProcess.forEach(t => console.log(`  ${t.dir}/${t.file}: ${t.url}`));
-    console.log(`\nUse without --dry-run to fetch and extract.`);
+    console.log('\nUse without --dry-run to fetch and extract.');
     return;
   }
 
   // Init browser
   const { browser } = await initScraper();
 
-  let extracted = 0, failed = 0, errors = 0;
+  let extracted = 0;
+  let failed = 0;
+  let errors = 0;
 
   for (let i = 0; i < toProcess.length; i++) {
     const t = toProcess[i];
@@ -130,15 +257,14 @@ async function main() {
 
       if (result && result.originalScore) {
         extracted++;
-        console.log(`  FOUND: ${result.originalScore} → ${result.normalizedScore}`);
+        console.log(`  FOUND: ${result.originalScore} -> ${result.normalizedScore}`);
 
         if (execute) {
           t.data.originalScore = result.originalScore;
           t.data.originalScoreNormalized = result.normalizedScore;
           t.data._scoreNote = `Re-collected for score extraction (${new Date().toISOString().split('T')[0]})`;
-          // Also store the HTML for archiving
+          // Save archive of the HTML
           if (!t.data.htmlContent && html.length > 1000) {
-            // Save archive
             const archiveDir = path.join(__dirname, '..', 'data', 'archives', 'reviews', t.dir);
             fs.mkdirSync(archiveDir, { recursive: true });
             const archiveFile = `${outlet}--${t.file.split('--')[1].replace('.json', '')}_${new Date().toISOString().split('T')[0]}.html`;
@@ -149,7 +275,7 @@ async function main() {
         }
       } else {
         failed++;
-        console.log(`  NO SCORE FOUND in HTML`);
+        console.log('  NO SCORE FOUND in HTML');
       }
     } catch (e) {
       errors++;
@@ -164,10 +290,10 @@ async function main() {
 
   await browser.close();
 
-  console.log(`\n=== SUMMARY ===`);
+  console.log('\n=== SUMMARY ===');
   console.log(`Extracted: ${extracted} | No score: ${failed} | Errors: ${errors}`);
   if (!execute) {
-    console.log('\nPreview mode — no changes written. Use --execute to apply.');
+    console.log('\nPreview mode - no changes written. Use --execute to apply.');
   } else {
     console.log(`\n${extracted} scores extracted. Run rebuild next.`);
   }
