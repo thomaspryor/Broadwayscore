@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useCallback, useRef } from 'react';
+import React, { useEffect, useCallback, useRef } from 'react';
 import ShowPageRating from './ShowPageRating';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserReviews } from '@/hooks/useUserReviews';
@@ -30,7 +30,7 @@ export default function ShowPageRatingConnected({
 }: ShowPageRatingConnectedProps) {
   const { user, isAuthenticated, showSignIn } = useAuth();
   const { reviews, getReviewsForShow, saveReview } = useUserReviews(user?.id || null);
-  const { isWatchlisted, addToWatchlist, removeFromWatchlist, getWatchlist } = useWatchlist(user?.id || null);
+  const { isWatchlisted, addToWatchlist, removeFromWatchlist, getWatchlist, updatePlannedDate, watchlist } = useWatchlist(user?.id || null);
 
   const { showToast } = useToastSafe();
   const hasExecutedPending = useRef(false);
@@ -48,12 +48,82 @@ export default function ShowPageRatingConnected({
     reviewText: string | null;
     dateSeen: string | null;
     reviewId?: string;
-  }) => {
+  }): Promise<string | void> => {
     try {
+      const client = getSupabaseClient();
+      if (!client) {
+        showToast?.('Not connected. Please refresh the page.', 'error');
+        throw new Error('No Supabase client');
+      }
+
+      // Verify session is valid before saving
+      const { data: sessionData } = await client.auth.getSession();
+      if (!sessionData?.session) {
+        showToast?.('Session expired. Please sign in again.', 'error');
+        throw new Error('Session expired');
+      }
+
       // Ensure profile exists before saving (foreign key requirement)
       if (user) {
-        const client = getSupabaseClient();
-        if (client) {
+        try {
+          const { data: profileData } = await client
+            .from('profiles')
+            .select('id')
+            .eq('id', user.id)
+            .single();
+          if (!profileData) {
+            const meta = sessionData.session.user?.user_metadata || {};
+            await client.from('profiles').upsert({
+              id: user.id,
+              display_name: meta.full_name || meta.name || '',
+              avatar_url: meta.avatar_url || meta.picture || null,
+            }, { onConflict: 'id' });
+          }
+        } catch (profileErr) {
+          // eslint-disable-next-line no-console
+          console.warn('[Rating] Profile ensure failed (non-fatal):', profileErr);
+        }
+      }
+
+      const result = await saveReview({
+        showId,
+        rating: data.rating,
+        reviewText: data.reviewText,
+        dateSeen: data.dateSeen,
+        reviewId: data.reviewId,
+      });
+      showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">Reviews</a></>, 'success');
+      await getReviewsForShow(showId);
+      return result?.id;
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error('[Rating] handleSaveReview failed:', e);
+      if (!(e instanceof Error && (e.message === 'No Supabase client' || e.message === 'Session expired'))) {
+        showToast?.('Failed to save rating. Please try again.', 'error');
+      }
+      throw new Error('Save failed');
+    }
+  }, [showId, user, saveReview, getReviewsForShow, showToast]);
+
+  // Execute pending action after auth (deferred auth flow)
+  // IMPORTANT: Uses Supabase client directly instead of saveReview hook
+  // because the hook's userId closure may still be null right after auth.
+  useEffect(() => {
+    if (!isAuthenticated || !user || hasExecutedPending.current) return;
+    const pending = getPendingAction();
+    if (!pending || pending.showId !== showId) return;
+
+    hasExecutedPending.current = true;
+    clearPendingAction();
+
+    if (pending.type === 'rating' && pending.rating) {
+      // Save directly via Supabase client to avoid stale hook closure
+      (async () => {
+        try {
+          const client = getSupabaseClient();
+          if (!client) throw new Error('No client');
+
+          // Ensure profile exists (foreign key requirement)
           const { data: profileData } = await client
             .from('profiles')
             .select('id')
@@ -68,50 +138,30 @@ export default function ShowPageRatingConnected({
               avatar_url: meta.avatar_url || meta.picture || null,
             }, { onConflict: 'id' });
           }
+
+          const { error: insertErr } = await client
+            .from('reviews')
+            .insert({
+              user_id: user.id,
+              show_id: showId,
+              rating: pending.rating,
+              review_text: null,
+              date_seen: null,
+            });
+          if (insertErr) throw insertErr;
+
+          showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">Reviews</a></>, 'success');
+          await getReviewsForShow(showId);
+        } catch (e) {
+          // eslint-disable-next-line no-console
+          console.error('[Rating] Deferred save failed:', e);
+          showToast?.('Failed to save rating. Please try again.', 'error');
         }
-      }
-
-      // Use provided reviewId, or find existing review for this show (for edits)
-      const existingReview = reviews.find(r => r.show_id === showId);
-      const existingId = data.reviewId || existingReview?.id;
-
-      await saveReview({
-        showId,
-        rating: data.rating,
-        reviewText: data.reviewText,
-        dateSeen: data.dateSeen,
-        reviewId: existingId,
-      });
-      showToast?.('Rating saved!', 'success');
-      await getReviewsForShow(showId);
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error('[Rating] handleSaveReview failed:', e);
-      showToast?.('Failed to save rating. Please try again.', 'error');
-      throw new Error('Save failed');
-    }
-  }, [showId, user, reviews, saveReview, getReviewsForShow, showToast]);
-
-  // Execute pending action after auth (deferred auth flow)
-  useEffect(() => {
-    if (!isAuthenticated || !user || hasExecutedPending.current) return;
-    const pending = getPendingAction();
-    if (!pending || pending.showId !== showId) return;
-
-    hasExecutedPending.current = true;
-    clearPendingAction();
-
-    if (pending.type === 'rating' && pending.rating) {
-      showToast?.('Signed in! Saving your rating...', 'success');
-      handleSaveReview({
-        rating: pending.rating,
-        reviewText: null,
-        dateSeen: null,
-      });
+      })();
     } else if (pending.type === 'watchlist') {
-      showToast?.('Signed in! Adding to watchlist...', 'success');
       addToWatchlist(showId).then(() => {
         getWatchlist();
+        showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success');
       }).catch(() => {
         showToast?.('Failed to add to watchlist.', 'error');
       });
@@ -125,15 +175,23 @@ export default function ShowPageRatingConnected({
     try {
       if (isWatchlisted(showId)) {
         await removeFromWatchlist(showId);
-        showToast?.('Removed from watchlist', 'info');
+        showToast?.(<>Removed from <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'info');
       } else {
         await addToWatchlist(showId);
-        showToast?.('Added to watchlist!', 'success');
+        showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success');
       }
     } catch {
       showToast?.('Failed to update watchlist. Please try again.', 'error');
     }
   }, [showId, isWatchlisted, addToWatchlist, removeFromWatchlist, showToast]);
+
+  const handleUpdateWatchlistDate = useCallback(async (date: string | null) => {
+    try {
+      await updatePlannedDate(showId, date);
+    } catch {
+      showToast?.('Failed to save date.', 'error');
+    }
+  }, [showId, updatePlannedDate, showToast]);
 
   const handleAuthRequired = useCallback((context: 'rating' | 'watchlist', pendingRating?: number) => {
     // Save pending action for deferred auth (include rating if provided)
@@ -153,6 +211,8 @@ export default function ShowPageRatingConnected({
   // Feature flag check — AFTER all hooks (React rules-of-hooks)
   if (!featureFlags.userAccounts) return null;
 
+  const watchlistEntry = watchlist.find(w => w.show_id === showId);
+
   return (
     <ShowPageRating
       showId={showId}
@@ -161,8 +221,10 @@ export default function ShowPageRatingConnected({
       closingDate={closingDate}
       reviews={showReviews}
       isWatchlisted={isWatchlisted(showId)}
+      watchlistDate={watchlistEntry?.planned_date || null}
       onSaveReview={handleSaveReview}
       onToggleWatchlist={handleToggleWatchlist}
+      onUpdateWatchlistDate={handleUpdateWatchlistDate}
       onAuthRequired={handleAuthRequired}
       isAuthenticated={isAuthenticated}
     />

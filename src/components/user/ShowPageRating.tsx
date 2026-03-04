@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
+import Link from 'next/link';
 import StarRating from './StarRating';
 import ReviewPanel from './ReviewPanel';
 import WatchlistButton from './WatchlistButton';
@@ -15,9 +16,11 @@ interface ShowPageRatingProps {
   // Data callbacks — wired to Supabase hooks in Sprint 2
   reviews?: UserReview[];
   isWatchlisted?: boolean;
-  onSaveReview?: (data: { rating: number; reviewText: string | null; dateSeen: string | null; reviewId?: string }) => Promise<void>;
+  watchlistDate?: string | null;
+  onSaveReview?: (data: { rating: number; reviewText: string | null; dateSeen: string | null; reviewId?: string }) => Promise<string | void>;
   onDeleteReview?: (reviewId: string) => Promise<void>;
   onToggleWatchlist?: () => Promise<void>;
+  onUpdateWatchlistDate?: (date: string | null) => Promise<void>;
   onAuthRequired?: (context: 'rating' | 'watchlist', pendingRating?: number) => void;
   isAuthenticated?: boolean;
 }
@@ -29,9 +32,11 @@ export default function ShowPageRating({
   closingDate,
   reviews = [],
   isWatchlisted = false,
+  watchlistDate,
   onSaveReview,
   onDeleteReview,
   onToggleWatchlist,
+  onUpdateWatchlistDate,
   onAuthRequired,
   isAuthenticated = false,
 }: ShowPageRatingProps) {
@@ -40,6 +45,7 @@ export default function ShowPageRating({
   const [editingReview, setEditingReview] = useState<UserReview | null>(null);
   const [saving, setSaving] = useState(false);
   const [watchlistLoading, setWatchlistLoading] = useState(false);
+  const lastSavedId = useRef<string | null>(null);
 
   // Derive state from reviews
   const latestReview = reviews.length > 0
@@ -62,20 +68,23 @@ export default function ShowPageRating({
 
   const handleSave = useCallback(async (data: { rating: number; reviewText: string | null; dateSeen: string | null }) => {
     if (!onSaveReview) return;
-    const isFirstSave = !editingReview && !latestReview;
+    const isFirstSave = !editingReview && !latestReview && !lastSavedId.current;
     setSaving(true);
     try {
-      await onSaveReview({
+      // Pass reviewId: editing existing, or re-saving just-created review
+      const idToPass = editingReview?.id || lastSavedId.current || undefined;
+      const savedId = await onSaveReview({
         ...data,
-        reviewId: editingReview?.id,
+        reviewId: idToPass,
       });
+      if (savedId) lastSavedId.current = savedId;
       if (isFirstSave) {
         // Keep panel open after first save so user can add notes/date
-        // The panel will show updated state after reviews refetch
       } else {
         setShowPanel(false);
         setEditingReview(null);
         setCurrentRating(null);
+        lastSavedId.current = null;
       }
     } catch (e) {
       // eslint-disable-next-line no-console
@@ -133,7 +142,7 @@ export default function ShowPageRating({
           {latestReview && !showPanel ? (
             // Show existing rating with edit button
             <div className="flex items-center gap-2">
-              <StarRating rating={latestReview.rating} onRatingChange={handleRatingChange} size="md" readOnly />
+              <StarRating rating={latestReview.rating} onRatingChange={handleRatingChange} size="lg" readOnly />
               <button
                 type="button"
                 onClick={() => handleEdit(latestReview)}
@@ -150,6 +159,7 @@ export default function ShowPageRating({
                 onClick={() => {
                   setEditingReview(null);
                   setCurrentRating(null);
+                  lastSavedId.current = null;
                   setShowPanel(false);
                   // Reset to allow new rating
                   handleRatingChange(latestReview.rating);
@@ -164,7 +174,7 @@ export default function ShowPageRating({
             <StarRating
               rating={currentRating}
               onRatingChange={handleRatingChange}
-              size="md"
+              size="lg"
             />
           )}
 
@@ -186,15 +196,59 @@ export default function ShowPageRating({
               ))}
             </div>
           )}
+
+          {/* Link to My Shows diary */}
+          {latestReview && !showPanel && (
+            <Link href="/my-shows" className="inline-block mt-2 text-xs text-gray-500 hover:text-brand transition-colors">
+              See all Ratings
+            </Link>
+          )}
         </div>
 
-        {/* Watchlist button */}
-        <div className="flex-shrink-0 pt-5">
+        {/* Watchlist button + inline date */}
+        <div className="flex-shrink-0 pt-5 flex flex-col items-center">
           <WatchlistButton
             isWatchlisted={isWatchlisted}
             onToggle={handleToggleWatchlist}
             loading={watchlistLoading}
           />
+          {isWatchlisted && (
+            <>
+              {/* Inline date picker */}
+              <button
+                type="button"
+                className="mt-1.5 flex items-center gap-1 text-[11px] text-gray-500 hover:text-gray-300 transition-colors"
+                onClick={() => {
+                  const input = document.createElement('input');
+                  input.type = 'date';
+                  input.value = watchlistDate || '';
+                  input.style.cssText = 'position:fixed;opacity:0;pointer-events:none';
+                  document.body.appendChild(input);
+                  input.addEventListener('change', () => {
+                    onUpdateWatchlistDate?.(input.value || null);
+                    document.body.removeChild(input);
+                  });
+                  input.addEventListener('blur', () => {
+                    setTimeout(() => { if (document.body.contains(input)) document.body.removeChild(input); }, 200);
+                  });
+                  input.focus();
+                  try { input.showPicker(); } catch {}
+                }}
+              >
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span>
+                  {watchlistDate
+                    ? new Date(watchlistDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                    : 'Add date'}
+                </span>
+              </button>
+              <Link href="/my-shows?tab=watchlist" className="mt-1 text-[11px] text-gray-500 hover:text-brand transition-colors">
+                See Watchlist
+              </Link>
+            </>
+          )}
         </div>
       </div>
 
@@ -205,7 +259,6 @@ export default function ShowPageRating({
           existingReviewText={editingReview?.review_text}
           existingDateSeen={editingReview?.date_seen}
           showTitle={showTitle}
-          earliestDate={previewDate}
           latestDate={closingDate}
           onSave={handleSave}
           onCancel={handleCancel}

@@ -73,7 +73,7 @@ export function useUserReviews(userId: string | null) {
     if (!client || !userId) {
       // eslint-disable-next-line no-console
       console.error('[Reviews] Cannot save: missing client or userId', { hasClient: !!client, userId });
-      return null;
+      throw new Error('Not signed in. Please refresh and try again.');
     }
 
     setError(null);
@@ -96,21 +96,21 @@ export function useUserReviews(userId: string | null) {
         if (err) throw err;
         return updated as UserReview;
       } else {
-        // Upsert: insert if new, update if review already exists for this show
-        const { data: upserted, error: err } = await client
+        // Insert new viewing
+        const { data: inserted, error: err } = await client
           .from('reviews')
-          .upsert({
+          .insert({
             user_id: userId,
             show_id: data.showId,
             rating: data.rating,
             review_text: data.reviewText || null,
             date_seen: data.dateSeen || null,
-          }, { onConflict: 'user_id,show_id' })
+          })
           .select()
           .single();
 
         if (err) throw err;
-        return upserted as UserReview;
+        return inserted as UserReview;
       }
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to save review';

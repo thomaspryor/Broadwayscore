@@ -99,6 +99,7 @@ When wrapping up a task, recommend the best next task or follow-up. Don't just s
 4. For scripts: test with real data (`node script.js --dry-run` or inline verification)
 5. For UI: visual verification per §8a
 **If any check fails, fix before committing.** Run `/test` to execute all checks. Never push broken code — the user is non-technical and can't fix failed deploys.
+- **Backend/auth/data-flow changes: `npm run build` is NOT enough.** Verify the actual user flow works (e.g., deferred auth → save, hook state after re-render). Trace the full code path before pushing.
 - **Scoring verification: use the engine, not manual scripts.** `engine.ts` is source of truth.
 
 ### 16. Prompt Changes Require A/B Distribution Check (MANDATORY)

@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { getWestEndShows } from '@/lib/data-core';
@@ -89,12 +90,14 @@ export default function WestEndPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
       />
 
-      <WestEndPageClient
-        shows={serializedShows}
-        totalShows={scoredShows.length}
-        totalReviews={totalReviews}
-        scoredShows={scoredShows.length}
-      />
+      <Suspense>
+        <WestEndPageClient
+          shows={serializedShows}
+          totalShows={scoredShows.length}
+          totalReviews={totalReviews}
+          scoredShows={scoredShows.length}
+        />
+      </Suspense>
     </>
   );
 }

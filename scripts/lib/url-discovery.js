@@ -353,13 +353,18 @@ async function _serpViaBrightData(query, apiKey, log, dateRange) {
 async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   const log = options.log || console.log;
   const brightDataKey = options.brightDataKey || '';
-  const dateRange = options.dateRange || null;
+  let dateRange = options.dateRange || null;
   const returnMetadata = options.returnMetadata || false;
 
   if (!scrapingBeeKey && !brightDataKey) return '__SERP_UNAVAILABLE__';
 
   const showInfo = getShowInfo(review.showId);
   if (!showInfo.title) return null;
+
+  // Auto-compute date range when caller doesn't provide one (prevents cross-production SERP contamination)
+  if (!dateRange && showInfo) {
+    dateRange = calculateDateWindow(showInfo);
+  }
 
   // Get domain for the outlet (explicit override > OUTLET_DOMAINS map)
   const outletId = (review.outletId || '').toLowerCase();

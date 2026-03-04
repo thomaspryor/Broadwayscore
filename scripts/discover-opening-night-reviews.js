@@ -193,6 +193,49 @@ function isReviewUrl(url, title) {
   return lower.includes('review') || lower.includes('critic') || lower.includes('verdict');
 }
 
+/**
+ * Check if a SERP result title or URL mentions the target show.
+ * Uses word-boundary matching so "Bug" doesn't match "debug", "Six" doesn't match "sixth".
+ * Also checks URL slug and primary title (before : or -) for subtitled shows.
+ */
+function serpResultMentionsShow(resultTitle, resultUrl, showTitle) {
+  const title = (resultTitle || '').toLowerCase();
+  const url = (resultUrl || '').toLowerCase();
+
+  // Build list of title variants to check
+  const variants = [];
+  const mainTitle = showTitle.replace(/^The\s+/i, '').trim();
+  if (mainTitle.length >= 2) variants.push(mainTitle.toLowerCase());
+
+  // Primary title before : or - (e.g., "CATS: The Jellicle Ball" → "CATS")
+  if (showTitle.includes(':')) {
+    const pre = showTitle.split(':')[0].replace(/^The\s+/i, '').trim();
+    if (pre.length >= 2) variants.push(pre.toLowerCase());
+  }
+  if (showTitle.includes(' - ')) {
+    const pre = showTitle.split(' - ')[0].replace(/^The\s+/i, '').trim();
+    if (pre.length >= 2) variants.push(pre.toLowerCase());
+  }
+
+  // Check title with word boundaries
+  for (const v of variants) {
+    const escaped = v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    if (new RegExp(`\\b${escaped}\\b`, 'i').test(title)) return true;
+  }
+
+  // Check URL slug with boundary matching (delimiters: / and -)
+  // Prevents "bug" matching "debugging", "six" matching "sixth"
+  for (const v of variants) {
+    const slug = v.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    if (slug.length >= 3) {
+      const slugEscaped = slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      if (new RegExp(`(?:^|[/\\-])${slugEscaped}(?:$|[/\\-])`, 'i').test(url)) return true;
+    }
+  }
+
+  return false;
+}
+
 async function main() {
   const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
   if (!SCRAPINGBEE_KEY) {
@@ -221,8 +264,9 @@ async function main() {
   const year = (show.openingDate || '').substring(0, 4);
 
   const isWestEnd = show.category === 'west-end';
-  const marketLabel = isWestEnd ? 'West End' : 'Broadway';
-  const reviewKeyword = isWestEnd ? 'West End review' : 'Broadway review';
+  const isOB = show.category === 'off-broadway';
+  const marketLabel = isWestEnd ? 'West End' : isOB ? 'Off-Broadway' : 'Broadway';
+  const reviewKeyword = isWestEnd ? 'West End review' : isOB ? 'Off-Broadway review' : 'Broadway review';
 
   // Calculate tight opening-night date range for SERP filtering
   const DAY = 86400000;
@@ -291,12 +335,31 @@ async function main() {
         // Skip non-review pages
         if (!isReviewUrl(url, result.title)) continue;
 
+        // Skip results not about this show (SERP returns other reviews from same outlet/date)
+        if (!serpResultMentionsShow(result.title, url, showTitle)) {
+          console.log(`    [SKIP] Not about "${showTitle}": "${(result.title || '').slice(0, 70)}"`);
+          continue;
+        }
+
         // Skip results where URL year falls outside the show's production window
         const openYear = year && year.length === 4 ? parseInt(year) : null;
         const closeYear = show.closingDate ? new Date(show.closingDate).getFullYear() : null;
         if (openYear && isUrlYearOutsideWindow(url, openYear, closeYear)) {
           console.log(`    [SKIP] URL year outside production window for ${showId}`);
           continue;
+        }
+
+        // Skip results whose title mentions a year far from this production
+        if (openYear && result.title) {
+          const titleYears = result.title.match(/\b(19\d{2}|20\d{2})\b/g);
+          if (titleYears) {
+            const hasWrongYear = titleYears.some(y => Math.abs(parseInt(y) - openYear) > 3);
+            const hasRightYear = titleYears.some(y => Math.abs(parseInt(y) - openYear) <= 1);
+            if (hasWrongYear && !hasRightYear) {
+              console.log(`    [SKIP] Title year outside window: "${result.title}"`);
+              continue;
+            }
+          }
         }
 
         const criticName = extractCriticFromTitle(result.title || '');
@@ -403,12 +466,31 @@ async function main() {
       // Skip non-reviews
       if (!isReviewUrl(url, result.title)) continue;
 
+      // Skip results not about this show
+      if (!serpResultMentionsShow(result.title, url, showTitle)) {
+        console.log(`    [SKIP] Not about "${showTitle}": "${(result.title || '').slice(0, 70)}"`);
+        continue;
+      }
+
       // Skip results where URL year falls outside the show's production window
       const openYearNews = year && year.length === 4 ? parseInt(year) : null;
       const closeYearNews = show.closingDate ? new Date(show.closingDate).getFullYear() : null;
       if (openYearNews && isUrlYearOutsideWindow(url, openYearNews, closeYearNews)) {
         console.log(`    [SKIP] URL year outside production window for ${showId}`);
         continue;
+      }
+
+      // Skip results whose title mentions a year far from this production
+      if (openYearNews && result.title) {
+        const titleYears = result.title.match(/\b(19\d{2}|20\d{2})\b/g);
+        if (titleYears) {
+          const hasWrongYear = titleYears.some(y => Math.abs(parseInt(y) - openYearNews) > 3);
+          const hasRightYear = titleYears.some(y => Math.abs(parseInt(y) - openYearNews) <= 1);
+          if (hasWrongYear && !hasRightYear) {
+            console.log(`    [SKIP] Title year outside window: "${result.title}"`);
+            continue;
+          }
+        }
       }
 
       const criticName = extractCriticFromTitle(result.title || '');

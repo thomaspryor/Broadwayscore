@@ -7,8 +7,6 @@ interface ReviewPanelProps {
   existingReviewText?: string | null;
   existingDateSeen?: string | null;
   showTitle: string;
-  /** Earliest valid date (preview date or opening date) */
-  earliestDate?: string | null;
   /** Latest valid date (closing date or today) */
   latestDate?: string | null;
   onSave: (data: { rating: number; reviewText: string | null; dateSeen: string | null }) => void;
@@ -23,7 +21,6 @@ export default function ReviewPanel({
   existingReviewText,
   existingDateSeen,
   showTitle,
-  earliestDate,
   latestDate,
   onSave,
   onCancel,
@@ -44,9 +41,8 @@ export default function ReviewPanel({
     });
   }, [rating, reviewText, dateSeen, isOverLimit, saving, onSave]);
 
-  // Compute date constraints
+  // Compute date constraints — only cap the future, don't restrict the past
   const today = new Date().toISOString().split('T')[0];
-  const minDate = earliestDate || undefined;
   const maxDate = latestDate || today;
 
   return (
@@ -68,7 +64,7 @@ export default function ReviewPanel({
           value={dateSeen}
           onChange={e => setDateSeen(e.target.value)}
           onFocus={e => { try { e.currentTarget.showPicker(); } catch {} }}
-          min={minDate}
+          min="1950-01-01"
           max={maxDate}
           className="w-full sm:w-48 px-3 py-2 text-sm bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30 [color-scheme:dark] cursor-pointer"
         />

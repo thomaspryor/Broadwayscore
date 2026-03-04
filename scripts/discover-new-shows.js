@@ -332,13 +332,19 @@ function searchTodayTixByTitle(title, location = 1) {
           });
           if (exact) { resolve(exact); return; }
 
-          // Fuzzy: 60% word match
+          // Fuzzy: bidirectional 60% word match (both directions must pass)
+          // This prevents venue-based false matches (e.g., searching "Beetlejuice"
+          // and getting "Mary Poppins" because it plays at the same venue)
           const ourWords = normTitle.split(' ').filter(w => w.length > 2);
           for (const show of json.data) {
             const apiName = (show.displayName || show.name || '').toLowerCase()
               .replace(/['']/g, '').replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
-            const matchCount = ourWords.filter(w => apiName.includes(w)).length;
-            if (matchCount >= Math.ceil(ourWords.length * 0.6)) {
+            const theirWords = apiName.split(' ').filter(w => w.length > 2);
+            const ourInTheirs = ourWords.filter(w => apiName.includes(w)).length;
+            const theirsInOurs = theirWords.filter(w => normTitle.includes(w)).length;
+            const ourRatio = ourWords.length > 0 ? ourInTheirs / ourWords.length : 0;
+            const theirRatio = theirWords.length > 0 ? theirsInOurs / theirWords.length : 0;
+            if (ourRatio >= 0.6 && theirRatio >= 0.6) {
               resolve(show);
               return;
             }
@@ -1029,8 +1035,9 @@ async function discoverShows() {
       // IBDB classification is authoritative (from the production page itself)
       detectedType = show.ibdbShowType;
       confidence = 'high';
-    } else if (/\bthe\s+musical\b|\bmusical\b/i.test(show.title)) {
-      // Title contains "Musical" — strong signal (e.g., "Dog Man - The Musical")
+    } else if (/[-–—:]\s*the\s+musical\b|:\s*a\s+(new\s+)?musical\b/i.test(show.title)) {
+      // Title suffix like "Dog Man - The Musical" or "Show: A New Musical"
+      // Avoids false positives like "The Musical Comedy Murders of 1940"
       detectedType = 'musical';
       confidence = 'medium';
     } else if (isPlay) {
