@@ -23,14 +23,26 @@
  */
 function cleanHtmlForScoring(html) {
   if (!html) return '';
-  return html
+  // Extract JSON-LD blocks before stripping scripts (they contain ratingValue)
+  const jsonLdBlocks = [];
+  const jsonLdRegex = /<script[^>]*type\s*=\s*["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  let jsonLdMatch;
+  while ((jsonLdMatch = jsonLdRegex.exec(html)) !== null) {
+    jsonLdBlocks.push(jsonLdMatch[1]);
+  }
+  const cleaned = html
     .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
     .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
     .replace(/style\s*=\s*"[^"]*"/gi, '')
     .replace(/style\s*=\s*'[^']*'/gi, '')
-    .replace(/calc\s*\([^)]*\)/gi, '')  // Remove CSS calc()
-    .replace(/padding[^;:]*[;:][^;]*/gi, '')  // Remove padding rules
-    .replace(/margin[^;:]*[;:][^;]*/gi, '');  // Remove margin rules
+    .replace(/calc\s*\([^)]*\)/gi, '')
+    .replace(/padding[^;:]*[;:][^;]*/gi, '')
+    .replace(/margin[^;:]*[;:][^;]*/gi, '');
+  // Re-inject JSON-LD so extractors can find ratingValue, bestRating, etc.
+  if (jsonLdBlocks.length > 0) {
+    return cleaned + '\n' + jsonLdBlocks.join('\n');
+  }
+  return cleaned;
 }
 
 // ===================================================
@@ -641,6 +653,7 @@ const OUTLET_EXTRACTORS = {
   'the-telegraph': extractUKStarRating,
   'the-telegraph-uk': extractUKStarRating,
   'evening-standard': extractUKStarRating,
+  'standard': extractUKStarRating,
   'the-independent': extractUKStarRating,
   'the-independent-uk': extractUKStarRating,
   'independent': extractUKStarRating,
