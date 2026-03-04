@@ -102,6 +102,14 @@ const DOMAIN_TIER_ORDER = (() => {
   } catch { return {}; }
 })();
 
+// Domain-specific tier skip list — tiers with 3+ failures and 0 successes per domain.
+// These are proven dead ends. Skipping saves 15-30s per tier per review.
+const DOMAIN_TIER_SKIP = (() => {
+  try {
+    return require('./config/domain-tier-skip.json');
+  } catch { return {}; }
+})();
+
 // Parse CLI arguments
 const args = process.argv.slice(2);
 const CLI = {
@@ -3577,6 +3585,17 @@ async function fetchReviewText(review) {
         if (tierById[tier.id]) remaining.push(tier);
       }
       chain = [...prioritized, ...remaining];
+    }
+  } catch {}
+
+  // Remove tiers that are proven dead ends for this domain (3+ failures, 0 successes).
+  // Saves 15-30s per skipped tier per review.
+  try {
+    const urlDomain = new URL(url).hostname.replace('www.', '');
+    const skipTiers = DOMAIN_TIER_SKIP[urlDomain];
+    if (skipTiers && skipTiers.length > 0) {
+      const skipSet = new Set(skipTiers);
+      chain = chain.filter(tier => !skipSet.has(tier.id));
     }
   } catch {}
 
