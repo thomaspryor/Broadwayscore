@@ -1454,6 +1454,73 @@ function validateReviewOutletTiers() {
 }
 
 // ===========================================
+// P0 EXPLICIT SCORE COVERAGE
+// ===========================================
+
+/**
+ * Monitor P0 (explicit score) coverage by outlet. Flags outlets with
+ * dedicated score extractors but low P0 rates — indicates collection gap
+ * (reviews collected via aggregators without HTML for extraction).
+ */
+function validateP0ScoreCoverage() {
+  info('Checking P0 explicit score coverage by outlet...');
+
+  const reviewsFile = path.join(DATA_DIR, 'reviews.json');
+  if (!fs.existsSync(reviewsFile)) return;
+
+  let data;
+  try {
+    data = JSON.parse(fs.readFileSync(reviewsFile, 'utf8'));
+  } catch { return; }
+
+  const reviews = data.reviews || [];
+
+  // Outlets that have dedicated score extractors (not noScoreExtractor)
+  // These SHOULD have high P0 rates when HTML is available
+  const extractorOutlets = new Set([
+    'timeout', 'ew', 'usatoday', 'guardian', 'standard', 'independent',
+    'culturesauce', 'whatsonstage', 'telegraph', 'thestage', 'times-uk',
+    'nysr', 'theater-pizzazz', 'theater-life', 'uk-theatre-web',
+    'londontheatre', 'broadwayworld'
+  ]);
+
+  const stats = {};
+  for (const r of reviews) {
+    const oid = (r.outletId || '').toLowerCase();
+    if (!extractorOutlets.has(oid)) continue;
+    if (!stats[oid]) stats[oid] = { total: 0, p0: 0, llm: 0, other: 0 };
+    stats[oid].total++;
+    const src = r.scoreSource || '';
+    if (src.startsWith('originalScore')) stats[oid].p0++;
+    else if (src.startsWith('llm')) stats[oid].llm++;
+    else stats[oid].other++;
+  }
+
+  let lowP0 = 0;
+  const entries = Object.entries(stats).sort((a, b) => b[1].total - a[1].total);
+
+  for (const [oid, s] of entries) {
+    if (s.total < 5) continue; // Skip outlets with too few reviews
+    const p0Rate = s.p0 / s.total;
+    if (p0Rate < 0.5) {
+      lowP0++;
+      warn(`P0 coverage gap: ${oid} — ${s.p0}/${s.total} P0 (${(p0Rate * 100).toFixed(0)}%), ${s.llm} LLM-scored`);
+    }
+  }
+
+  if (lowP0 === 0) {
+    ok('All extractor outlets have >50% P0 coverage');
+  } else {
+    info(`${lowP0} extractor outlet(s) below 50% P0 — re-collection may help`);
+  }
+
+  // Summary stats
+  const totalP0 = entries.reduce((s, [, v]) => s + v.p0, 0);
+  const totalAll = entries.reduce((s, [, v]) => s + v.total, 0);
+  info(`Extractor outlet P0 rate: ${totalP0}/${totalAll} (${totalAll > 0 ? (totalP0 / totalAll * 100).toFixed(0) : 0}%)`);
+}
+
+// ===========================================
 // REVIEW-TEXT DUPLICATE DETECTION
 // ===========================================
 
@@ -2988,6 +3055,8 @@ function runValidation() {
   validateOutletMapperSync();
   console.log('');
   validateReviewOutletTiers();
+  console.log('');
+  validateP0ScoreCoverage();
   console.log('');
   validateReviewTextDuplicates(shows);
   console.log('');
