@@ -63,7 +63,17 @@
     "oh-mary-2024/hollywood-reporter--david-rooney.json",
     "oh-mary-2024/nytimes--erik-piepenburg.json",
     "paddington-the-musical-west-end-2025/variety--david-benedict.json",
-    "paddington-the-musical-west-end-2025/variety--ellise-shafer.json"
+    "paddington-the-musical-west-end-2025/variety--ellise-shafer.json",
+    "pied-a-terre-off-broadway-2026/nytg--unknown.json",
+    "ragtime-2025/newyorker--unknown.json",
+    "ragtime-2025/nyt-theater--unknown.json",
+    "ragtime-2025/nytimes--unknown.json",
+    "schmigadoon-2026/hollywood-reporter--daniel-feinberg.json",
+    "schmigadoon-2026/nytimes--margaret-lyons.json",
+    "schmigadoon-2026/vulture--rhoda-feng.json",
+    "six-2021/newyorker--naomi-fry.json",
+    "starlight-express-west-end-2024/variety--david-benedict.json",
+    "stranger-things-2024/nytimes--houman-barekat.json"
   ],
   "failed": [
     "on-your-feet-2015/nytg--tulis-mccall.json",
@@ -228,7 +238,9 @@
       "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json",
       "mother-russia-off-broadway-2026/nyt-theater--jonathan-mandell.json",
       "night-side-songs-off-broadway-2026/nyt-theater--unknown.json",
-      "night-side-songs-off-broadway-2026/nytg--unknown.json"
+      "night-side-songs-off-broadway-2026/nytg--unknown.json",
+      "pied-a-terre-off-broadway-2026/nytg--unknown.json",
+      "ragtime-2025/nyt-theater--unknown.json"
     ],
     "amp": [
       "data/review-texts/kiss-me-kate-1999/thewrap--robert-hofler.json",
@@ -246,7 +258,9 @@
       "data/review-texts/paddington-the-musical-west-end-2025/variety--david-benedict.json",
       "paddington-the-musical-west-end-2025/variety--david-benedict.json",
       "data/review-texts/paddington-the-musical-west-end-2025/variety--ellise-shafer.json",
-      "paddington-the-musical-west-end-2025/variety--ellise-shafer.json"
+      "paddington-the-musical-west-end-2025/variety--ellise-shafer.json",
+      "data/review-texts/starlight-express-west-end-2024/variety--david-benedict.json",
+      "starlight-express-west-end-2024/variety--david-benedict.json"
     ],
     "browserbase": [
       "data/review-texts/data-off-broadway-2026/nytimes--ben-brantley.json",
@@ -265,7 +279,10 @@
       "mj-2022/hollywood-reporter--lovia-gyarkye.json",
       "mj-2022/vulture--helen-shaw.json",
       "moulin-rouge-2019/vulture--sara-holdren.json",
-      "oh-mary-2024/hollywood-reporter--david-rooney.json"
+      "oh-mary-2024/hollywood-reporter--david-rooney.json",
+      "ragtime-2025/newyorker--unknown.json",
+      "schmigadoon-2026/vulture--rhoda-feng.json",
+      "six-2021/newyorker--naomi-fry.json"
     ],
     "scrapingbee": [
       "broken-glass-west-end-2026/independent--steve-fowler.json",
@@ -274,7 +291,9 @@
       "dracula-west-end-2025/nytimes--elisabeth-vincentelli.json",
       "hercules-west-end-2025/nytimes--matt-wolf.json",
       "moulin-rouge-2019/nytimes--ben-brantley.json",
-      "oh-mary-2024/nytimes--erik-piepenburg.json"
+      "oh-mary-2024/nytimes--erik-piepenburg.json",
+      "schmigadoon-2026/nytimes--margaret-lyons.json",
+      "stranger-things-2024/nytimes--houman-barekat.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -372,11 +391,13 @@
       "death-of-a-salesman-2026/nytimes--jesse-green.json",
       "death-of-a-salesman-2026/variety--marilyn-stasio.json",
       "giant-2026/nytimes--houman-barekat.json",
-      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json"
+      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "ragtime-2025/nytimes--unknown.json",
+      "schmigadoon-2026/hollywood-reporter--daniel-feinberg.json"
     ]
   },
   "startTime": "2026-03-04T09:17:51.206Z",
-  "lastProcessed": "paddington-the-musical-west-end-2025/variety--ellise-shafer.json",
+  "lastProcessed": "stranger-things-2024/nytimes--houman-barekat.json",
   "log": [
     {
       "t": "2026-03-04T09:21:32.409Z",
@@ -464,6 +485,28 @@
     },
     {
       "t": "2026-03-04T11:03:52.533Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-04T11:06:38.934Z",
+      "event": "bb-session",
+      "session": "54667921",
+      "url": "https://www.newyorker.com/magazine/2026/02/02/ragtime-cases-the-landmark-it-almo"
+    },
+    {
+      "t": "2026-03-04T11:06:40.226Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-04T11:07:40.047Z",
+      "event": "bb-session",
+      "session": "caa6aa38",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/six-10-25-21"
+    },
+    {
+      "t": "2026-03-04T11:07:41.328Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
     }
