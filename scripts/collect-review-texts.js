@@ -94,6 +94,14 @@ const { resolveOutletFromUrl, getOutletDisplayName } = require('./lib/review-nor
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 
+// Domain-specific tier ordering — prioritizes tiers by historical success rate per domain.
+// Generated from 30K+ review collection results. Tiers not listed for a domain stay in default order.
+const DOMAIN_TIER_ORDER = (() => {
+  try {
+    return require('./config/domain-tier-order.json');
+  } catch { return {}; }
+})();
+
 // Parse CLI arguments
 const args = process.argv.slice(2);
 const CLI = {
@@ -3543,7 +3551,35 @@ async function fetchReviewText(review) {
     console.log(`  [Browserbase routing] enabled=${CONFIG.browserbaseEnabled} isBlocked=${ctx.isKnownBlocked} creds=${ctx.hasPaywallCreds}`);
   }
 
-  const chain = buildTierChain(ctx, review);
+  let chain = buildTierChain(ctx, review);
+
+  // Reorder tier chain based on domain-specific success rates.
+  // Tiers listed in DOMAIN_TIER_ORDER for this domain get moved to the front (in priority order).
+  // Tiers NOT listed stay at the end in their default order — nothing is skipped.
+  try {
+    const urlDomain = new URL(url).hostname.replace('www.', '');
+    const domainOrder = DOMAIN_TIER_ORDER[urlDomain];
+    if (domainOrder && domainOrder.length > 0) {
+      const prioritized = [];
+      const remaining = [];
+      // Build index of tier IDs → tier objects
+      const tierById = {};
+      for (const tier of chain) tierById[tier.id] = tier;
+      // Add prioritized tiers in order
+      for (const tierId of domainOrder) {
+        if (tierById[tierId]) {
+          prioritized.push(tierById[tierId]);
+          delete tierById[tierId];
+        }
+      }
+      // Add remaining tiers in original order
+      for (const tier of chain) {
+        if (tierById[tier.id]) remaining.push(tier);
+      }
+      chain = [...prioritized, ...remaining];
+    }
+  } catch {}
+
   const attempts = [];
   let bestResult = null; // Track longest non-empty text from garbage tiers
 
