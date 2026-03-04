@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-04T14:19:05.135Z",
-  "processed": 211,
-  "failed": 818,
-  "successRate": "20.5%",
+  "updatedAt": "2026-03-04T14:22:00.231Z",
+  "processed": 204,
+  "failed": 816,
+  "successRate": "20.0%",
   "tierBreakdown": {
-    "playwright": 65,
-    "amp": 90,
+    "playwright": 103,
+    "amp": 22,
     "browserbase": 0,
     "directCookies": 15,
     "scrapingbee": 23,
     "brightdata": 0,
-    "archiveToday": 414,
-    "archive": 72
+    "archiveToday": 415,
+    "archive": 61
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-04T08:23:46.548Z",
-      "event": "bb-session",
-      "session": "3b5d4bc4",
-      "url": "https://www.nytimes.com/2009/04/30/theater/reviews/30norman.html"
-    },
-    {
-      "t": "2026-03-04T08:23:47.802Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-04T08:25:19.089Z",
       "event": "bb-session",
@@ -115,15 +104,26 @@
       "domain": "wsj.com"
     },
     {
-      "t": "2026-03-04T14:16:20.316Z",
+      "t": "2026-03-04T14:12:46.624Z",
       "event": "bb-session",
-      "session": "e4c70b0e",
-      "url": "https://variety.com/2024/legit/reviews/mcneal-review-broadway-lincoln-center-the"
+      "session": "e143624a",
+      "url": "https://origin-www.theatermania.com/broadway/reviews/pretty-woman-brings-the-fai"
     },
     {
-      "t": "2026-03-04T14:16:21.653Z",
+      "t": "2026-03-04T14:12:47.895Z",
       "event": "bb-cookie-inject",
-      "domain": "variety.com"
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-03-04T14:16:13.918Z",
+      "event": "bb-session",
+      "session": "93d6644f",
+      "url": "https://www.theatermania.com/news/act-one_68285/"
+    },
+    {
+      "t": "2026-03-04T14:16:15.086Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
     }
   ]
 }
