@@ -135,18 +135,25 @@ async function discoverRoundupUrls() {
   const xml = await fetchRaw('https://londonboxoffice.co.uk/news-sitemap.xml');
   const $ = cheerio.load(xml, { xmlMode: true });
 
-  const urls = [];
+  const roundups = [];
+  const individual = [];
   $('url > loc').each((_, el) => {
     const loc = $(el).text().trim();
-    // Match "review-round-up-", "review-roundup-", "Review-Round-Up:-", "-review-round-up" (suffix)
+    // Match roundup URLs: "review-round-up-", "review-roundup-", etc.
     if (/review-round-?up[-:]|review-round-?up$/i.test(loc)) {
-      urls.push(loc);
+      roundups.push(loc);
+    }
+    // Match individual review URLs: ends with "-review" or starts with "/review-"
+    // Excludes roundups (already matched above) and non-review articles
+    else if (/\/news\/post\/review-.+/i.test(loc) || /\/news\/post\/.+-review$/i.test(loc)) {
+      individual.push(loc);
     }
   });
 
-  console.log(`Found ${urls.length} review roundup URLs in sitemap`);
-  stats.sitemapUrls = urls.length;
-  return urls;
+  console.log(`Found ${roundups.length} roundup URLs + ${individual.length} individual review URLs in sitemap`);
+  stats.sitemapUrls = roundups.length;
+  stats.individualUrls = individual.length;
+  return { roundups, individual };
 }
 
 // ---------------------------------------------------------------------------
@@ -367,6 +374,121 @@ function extractReviewsFromLBO(html, showId) {
 }
 
 // ---------------------------------------------------------------------------
+// Extract from individual review page (single critic, no star rating)
+// ---------------------------------------------------------------------------
+
+function extractIndividualReviewFromLBO(html, showId) {
+  const $ = cheerio.load(html);
+
+  // Author from JSON-LD structured data
+  let critic = 'Unknown';
+  $('script[type="application/ld+json"]').each((_, el) => {
+    try {
+      const ld = JSON.parse($(el).text());
+      if (ld.author) {
+        const name = Array.isArray(ld.author)
+          ? (ld.author[0]?.name || '')
+          : (ld.author.name || ld.author);
+        if (typeof name === 'string' && name.length > 1 && name.length < 60) {
+          critic = name.trim();
+        }
+      }
+    } catch (e) {}
+  });
+
+  // Fallback: look for byline patterns in the page
+  if (critic === 'Unknown') {
+    const byline = $('[class*="author"], [class*="byline"], [rel="author"]').first().text().trim();
+    if (byline && byline.length > 1 && byline.length < 60) {
+      critic = byline;
+    }
+  }
+
+  // Extract first 500 chars of body text as excerpt
+  const paragraphs = [];
+  $('article p, .post-content p, .entry-content p').each((_, el) => {
+    const text = $(el).text().trim();
+    if (text.length > 30) paragraphs.push(text);
+  });
+  const excerpt = paragraphs.slice(0, 3).join(' ').substring(0, 500);
+
+  return {
+    outlet: 'London Box Office',
+    stars: null,
+    score: null,
+    critic,
+    excerpt: excerpt || '',
+    url: '', // will be set to the LBO page URL itself
+    showId,
+    isIndividual: true,
+  };
+}
+
+/**
+ * Extract show title from an individual review URL.
+ * Patterns: /review-{show-name}-{theatre} or /{show-name}-{theatre}-review
+ */
+function extractShowTitleFromIndividualUrl(url) {
+  // Pattern 1: /review-{show}-{theatre}
+  const prefixMatch = url.match(/\/news\/post\/review-(.+)$/i);
+  if (prefixMatch) {
+    const slug = prefixMatch[1];
+    return stripTheatreFromSlug(slug);
+  }
+
+  // Pattern 2: /{show}-{theatre}-review
+  const suffixMatch = url.match(/\/news\/post\/(.+)-review$/i);
+  if (suffixMatch) {
+    const slug = suffixMatch[1];
+    return stripTheatreFromSlug(slug);
+  }
+
+  return null;
+}
+
+function stripTheatreFromSlug(slug) {
+  // Known theatre names to strip (reuse same list as roundup extraction)
+  const theatres = [
+    'noel-coward-theatre', 'aldwych-theatre', 'apollo-theatre',
+    'theatre-royal-haymarket', 'harold-pinter-theatre', 'duke-of-yorks-theatre',
+    'duke-of-york-s-theatre', 'trafalgar-theatre', 'ambassadors-theatre',
+    'bridge-theatre', 'savoy-theatre', 'wyndhams-theatre', 'wyndham-s-theatre',
+    'donmar-warehouse', 'old-vic', 'the-old-vic', 'young-vic',
+    'national-theatre', 'gielgud-theatre', 'lyceum-theatre',
+    'london-palladium', 'phoenix-theatre', 'playhouse-theatre',
+    'vaudeville-theatre', 'noël-coward-theatre', 'garrick-theatre',
+    'criterion-theatre', 'duchess-theatre', 'fortune-theatre',
+    'palace-theatre', 'piccadilly-theatre', 'prince-edward-theatre',
+    'prince-of-wales-theatre', 'queens-theatre', 'savoy-theatre',
+    'shaftesbury-theatre', 'st-james-theatre', 'st-martins-theatre',
+    'gillian-lynne-theatre', 'barbican', 'soho-place',
+    '@soho-place', 'at-soho-place',
+    'dorfman-theatre', 'lyttelton-theatre', 'olivier-theatre',
+    'harold-pinter', 'sadlers-wells', 'sadlers-wells-east',
+    'london-coliseum', 'bush-theatre', 'park-theatre',
+    'omnibus-theatre', 'arcola-theatre', 'drury-lane',
+    'jermyn-street-theatre', 'waterloo-east',
+  ];
+
+  let cleaned = slug;
+  for (const theatre of theatres) {
+    // Strip "-at-the-{theatre}" or just "-{theatre}" from end
+    const atPattern = new RegExp(`-at-(?:the-)?${theatre.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i');
+    const directPattern = new RegExp(`-${theatre.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i');
+    if (atPattern.test(cleaned)) {
+      cleaned = cleaned.replace(atPattern, '');
+      break;
+    }
+    if (directPattern.test(cleaned)) {
+      cleaned = cleaned.replace(directPattern, '');
+      break;
+    }
+  }
+
+  return decodeURIComponent(cleaned).replace(/-/g, ' ').trim();
+}
+
+// ---------------------------------------------------------------------------
 // Save review data
 // ---------------------------------------------------------------------------
 
@@ -401,7 +523,7 @@ function saveLBOReview(showId, reviewInfo) {
     }
 
     const sources = new Set(existing.data.sources || [existing.data.source || '']);
-    sources.add('lbo-roundup');
+    sources.add(reviewInfo.isIndividual ? 'lbo-individual' : 'lbo-roundup');
     existing.data.sources = Array.from(sources).filter(Boolean);
 
     if (!DRY_RUN) {
@@ -451,8 +573,8 @@ function saveLBOReview(showId, reviewInfo) {
     scoreSource: reviewInfo.score !== null ? 'lbo-star-rating' : undefined,
     scorePriority: reviewInfo.score !== null ? 'P0' : undefined,
     lboRoundupExcerpt: reviewInfo.excerpt || undefined,
-    source: 'lbo-roundup',
-    sources: ['lbo-roundup'],
+    source: reviewInfo.isIndividual ? 'lbo-individual' : 'lbo-roundup',
+    sources: [reviewInfo.isIndividual ? 'lbo-individual' : 'lbo-roundup'],
   };
 
   // Clean undefined keys
@@ -492,17 +614,19 @@ async function scrapeLBORoundups() {
   const weShows = shows.filter(s => s.category === 'west-end');
   console.log(`Loaded ${weShows.length} West End shows from shows.json\n`);
 
-  // Discover roundup URLs from sitemap
-  let roundupUrls;
+  // Discover roundup + individual review URLs from sitemap
+  let roundupUrls = [];
+  let individualUrls = [];
   try {
-    roundupUrls = await discoverRoundupUrls();
+    const discovered = await discoverRoundupUrls();
+    roundupUrls = discovered.roundups;
+    individualUrls = discovered.individual;
   } catch (err) {
     console.error(`Failed to fetch sitemap: ${err.message}`);
     console.log('Falling back to targeted shows with Google SERP...');
-    roundupUrls = [];
   }
 
-  // Match URLs to shows
+  // Match roundup URLs to shows
   const matchedRoundups = [];
 
   for (const url of roundupUrls) {
@@ -511,15 +635,28 @@ async function scrapeLBORoundups() {
 
     const match = matchTitleToShow(extractedTitle, weShows, { market: 'west-end' });
     if (match && match.show) {
-      // Apply show filter if provided
       if (targetShowIds && !targetShowIds.includes(match.show.id)) continue;
-
       matchedRoundups.push({ url, show: match.show, extractedTitle });
     }
   }
 
+  // Match individual review URLs to shows
+  const matchedIndividual = [];
+
+  for (const url of individualUrls) {
+    const extractedTitle = extractShowTitleFromIndividualUrl(url);
+    if (!extractedTitle) continue;
+
+    const match = matchTitleToShow(extractedTitle, weShows, { market: 'west-end' });
+    if (match && match.show) {
+      if (targetShowIds && !targetShowIds.includes(match.show.id)) continue;
+      matchedIndividual.push({ url, show: match.show, extractedTitle });
+    }
+  }
+
   stats.matchedShows = matchedRoundups.length;
-  console.log(`\nMatched ${matchedRoundups.length} roundups to West End shows\n`);
+  stats.matchedIndividual = matchedIndividual.length;
+  console.log(`\nMatched ${matchedRoundups.length} roundups + ${matchedIndividual.length} individual reviews to West End shows\n`);
 
   // If targeted mode and some shows weren't matched via sitemap, try SERP fallback
   if (targetShowIds && SCRAPINGBEE_KEY) {
@@ -623,15 +760,71 @@ async function scrapeLBORoundups() {
     }
   }
 
+  // Process individual reviews
+  if (matchedIndividual.length > 0) {
+    console.log(`\n--- Individual LBO Reviews (${matchedIndividual.length}) ---`);
+    const individualArchiveDir = path.join(archiveDir, 'individual');
+    if (!DRY_RUN && !fs.existsSync(individualArchiveDir)) {
+      fs.mkdirSync(individualArchiveDir, { recursive: true });
+    }
+
+    for (const { url, show } of matchedIndividual) {
+      const showId = show.id;
+      const archiveName = url.split('/').pop() + '.html';
+      const archivePath = path.join(individualArchiveDir, archiveName);
+
+      // Check cached archive
+      const archiveFresh = !FORCE && fs.existsSync(archivePath) &&
+        (Date.now() - fs.statSync(archivePath).mtimeMs) / (1000 * 60 * 60 * 24) < 14;
+
+      let html;
+      if (archiveFresh) {
+        console.log(`[CACHE] ${showId}: Using archived individual review`);
+        html = fs.readFileSync(archivePath, 'utf8');
+      } else {
+        console.log(`[FETCH] ${showId}: ${url}`);
+        try {
+          html = await fetchWithRetry(url);
+          if (!html || html.length < 500) {
+            console.log(`  Empty or too short page, skipping`);
+            continue;
+          }
+          if (!DRY_RUN) {
+            fs.writeFileSync(archivePath, `<!-- Source: ${url} -->\n${html}`);
+          }
+          stats.pagesFetched++;
+          await sleep(1500);
+        } catch (err) {
+          console.error(`  [ERROR] ${showId}: ${err.message}`);
+          stats.errors.push(`${showId} (individual): ${err.message}`);
+          continue;
+        }
+      }
+
+      // Extract single review
+      const review = extractIndividualReviewFromLBO(html, showId);
+      review.url = url; // The LBO page IS the review
+      stats.reviewsExtracted++;
+
+      const result = saveLBOReview(showId, review);
+      if (result === 'new') {
+        console.log(`    [NEW] London Box Office — ${review.critic}`);
+        stats.individualNew = (stats.individualNew || 0) + 1;
+      } else if (result === 'updated') {
+        console.log(`    [UPD] London Box Office — ${review.critic}`);
+      }
+    }
+  }
+
   // Print summary
-  console.log('\n=== LBO Roundups Summary ===');
-  console.log(`Sitemap roundup URLs: ${stats.sitemapUrls}`);
-  console.log(`Matched to WE shows: ${stats.matchedShows}`);
+  console.log('\n=== LBO Summary ===');
+  console.log(`Sitemap: ${stats.sitemapUrls} roundups + ${stats.individualUrls || 0} individual reviews`);
+  console.log(`Matched roundups: ${stats.matchedShows} | Matched individual: ${stats.matchedIndividual || 0}`);
   console.log(`Pages fetched: ${stats.pagesFetched}`);
   console.log(`Used cached archives: ${stats.skippedArchived}`);
   console.log(`Total reviews extracted: ${stats.reviewsExtracted}`);
-  console.log(`New reviews created: ${stats.newReviews}`);
-  console.log(`Existing reviews updated: ${stats.updatedReviews}`);
+  console.log(`New reviews: ${stats.newReviews} (${stats.individualNew || 0} individual)`);
+  console.log(`Updated reviews: ${stats.updatedReviews}`);
   console.log(`Skipped (already have excerpt): ${stats.skippedExisting}`);
   if (stats.errors.length > 0) {
     console.log(`Errors: ${stats.errors.length}`);
