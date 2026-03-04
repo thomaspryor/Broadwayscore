@@ -142,7 +142,7 @@ export default function ShowPageRating({
           {latestReview && !showPanel ? (
             // Show existing rating with edit button
             <div className="flex items-center gap-2">
-              <StarRating rating={latestReview.rating} onRatingChange={handleRatingChange} size="md" readOnly />
+              <StarRating rating={latestReview.rating} onRatingChange={handleRatingChange} size="lg" readOnly />
               <button
                 type="button"
                 onClick={() => handleEdit(latestReview)}
@@ -174,7 +174,7 @@ export default function ShowPageRating({
             <StarRating
               rating={currentRating}
               onRatingChange={handleRatingChange}
-              size="md"
+              size="lg"
             />
           )}
 

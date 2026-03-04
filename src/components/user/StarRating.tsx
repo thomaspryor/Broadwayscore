@@ -13,7 +13,7 @@ interface StarRatingProps {
 const SIZE_MAP = {
   sm: { star: 20, gap: 2 },
   md: { star: 28, gap: 3 },
-  lg: { star: 36, gap: 4 },
+  lg: { star: 40, gap: 4 },
 };
 
 export default function StarRating({ rating, onRatingChange, size = 'md', readOnly = false, hideLabel = false }: StarRatingProps) {
@@ -109,20 +109,26 @@ export default function StarRating({ rating, onRatingChange, size = 'md', readOn
                 />
               </svg>
             ) : getFillWidth(starIndex) === '0%' ? (
-              /* Empty — single gray star */
+              /* Empty — outline only (like Google Maps) */
               <svg viewBox="0 0 24 24" fill="none" className="w-full h-full">
                 <path
                   d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-                  fill="#4B5563"
+                  fill="none"
+                  stroke="#6B7280"
+                  strokeWidth="1.5"
+                  strokeLinejoin="round"
                 />
               </svg>
             ) : (
-              /* Half-filled — need two layers for clip effect */
+              /* Half-filled — outline background + gold left half */
               <>
                 <svg viewBox="0 0 24 24" fill="none" className="absolute inset-0 w-full h-full">
                   <path
                     d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-                    fill="#4B5563"
+                    fill="none"
+                    stroke="#6B7280"
+                    strokeWidth="1.5"
+                    strokeLinejoin="round"
                   />
                 </svg>
                 <div className="absolute inset-0 overflow-hidden" style={{ width: '50%' }}>
