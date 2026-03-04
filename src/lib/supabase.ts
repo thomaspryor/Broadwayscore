@@ -13,6 +13,27 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
 let supabaseClient: SupabaseClient | null = null;
 
+/**
+ * Simple in-process lock that replaces navigator.locks.
+ * navigator.locks can deadlock in certain scenarios (e.g., when the
+ * onAuthStateChange callback triggers a Supabase query during initialization).
+ * This single-tab lock avoids the deadlock while still serializing access.
+ */
+const lockMap = new Map<string, Promise<unknown>>();
+async function simpleLock<R>(name: string, _acquireTimeout: number, fn: () => Promise<R>): Promise<R> {
+  const current = lockMap.get(name) ?? Promise.resolve();
+  const next = current.then(() => fn(), () => fn());
+  lockMap.set(name, next);
+  try {
+    return await next;
+  } finally {
+    // Clean up if this is the latest in the chain
+    if (lockMap.get(name) === next) {
+      lockMap.delete(name);
+    }
+  }
+}
+
 export function getSupabaseClient(): SupabaseClient | null {
   // Guard: Node.js SSG build
   if (typeof window === 'undefined') return null;
@@ -30,6 +51,7 @@ export function getSupabaseClient(): SupabaseClient | null {
         storageKey: 'bsc_auth',
         autoRefreshToken: true,
         detectSessionInUrl: true,
+        lock: simpleLock,
       },
     });
   }
