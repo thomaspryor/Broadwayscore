@@ -383,6 +383,34 @@ function extractUKStarRating(html, text) {
     }
   }
 
+  // 2d. Daily Mail: star rating in image filename (rating_showbiz_N.gif)
+  const dailyMailMatch = html.match(/rating_showbiz_(\d)\.gif/);
+  if (dailyMailMatch) {
+    const rating = parseInt(dailyMailMatch[1]);
+    if (rating >= 1 && rating <= 5) {
+      return {
+        originalScore: `${rating}/5 stars`,
+        normalizedScore: starsToNumeric(rating, 5),
+        source: 'dailymail-rating-img'
+      };
+    }
+  }
+
+  // 2e. Arts Desk: Drupal fivestar widget (editorRating block with <span class="on">N</span>)
+  if (html.includes('editorRating') || html.includes('fivestar-widget')) {
+    const fivestarMatch = html.match(/editorRating[\s\S]{0,500}?<span\s+class="on">(\d)<\/span>/);
+    if (fivestarMatch) {
+      const rating = parseInt(fivestarMatch[1]);
+      if (rating >= 1 && rating <= 5) {
+        return {
+          originalScore: `${rating}/5 stars`,
+          normalizedScore: starsToNumeric(rating, 5),
+          source: 'fivestar-widget'
+        };
+      }
+    }
+  }
+
   // 3. CSS star rating classes (common in UK review sites)
   // Be more specific to avoid false positives from CSS/text
   const starClassMatch = html.match(/class="[^"]*(?:rating|review-score|star-count)[\s_-]*(\d)[^"]*"/i);
