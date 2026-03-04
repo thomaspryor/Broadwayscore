@@ -116,327 +116,102 @@ const claudeApiUsage = {
 };
 
 // ---------------------------------------------------------------------------
-// Known Aliases: Reddit show names -> slugs in commercial.json / shows.json
+// Known Aliases: Import shared aliases + commercial/Reddit-specific overrides
 // ---------------------------------------------------------------------------
-const KNOWN_ALIASES = {
-  // Harry Potter variations
-  'harry potter and the cursed child': 'harry-potter',
-  'harry potter': 'harry-potter',
-  'cursed child': 'harry-potter',
+const { KNOWN_ALIASES: SHARED_ALIASES } = require('./lib/show-matching');
+
+// Commercial-specific aliases: Reddit slang, abbreviations, and production-year
+// overrides that differ from the shared base-slug mapping.
+// These are merged ON TOP of shared aliases, so they win on conflict.
+const COMMERCIAL_ALIASES = {
+  // Reddit abbreviations & slang
   'hp cursed child': 'harry-potter',
   'hpatcc': 'harry-potter',
-
-  // Lion King variations
-  'the lion king': 'the-lion-king-1997',
-  'lion king': 'the-lion-king-1997',
   'tlk': 'the-lion-king-1997',
-
-  // Beautiful Noise variations
-  'a beautiful noise': 'a-beautiful-noise-2022',
-  'beautiful noise': 'a-beautiful-noise-2022',
-  'a beautiful noise: the neil diamond musical': 'a-beautiful-noise-2022',
-  'neil diamond musical': 'a-beautiful-noise-2022',
-
-  // Book of Mormon variations
-  'the book of mormon': 'book-of-mormon',
-  'book of mormon': 'book-of-mormon',
   'bom': 'book-of-mormon',
-
-  // MJ variations
-  'mj': 'mj',
-  'mj the musical': 'mj',
-  'mj: the musical': 'mj',
-  'michael jackson musical': 'mj',
-
-  // SIX variations
-  'six': 'six',
-  'six the musical': 'six',
-  'six: the musical': 'six',
-  'six on broadway': 'six',
-
-  // Chicago variations
-  'chicago': 'chicago',
-  'chicago the musical': 'chicago',
-  'chicago: the musical': 'chicago',
-
-  // Core hits
-  'hamilton': 'hamilton',
-  'hamilton: an american musical': 'hamilton',
-  'wicked': 'wicked',
-  'wicked the musical': 'wicked',
-  'aladdin': 'aladdin',
-  'disney aladdin': 'aladdin',
-
-  // Moulin Rouge variations
-  'moulin rouge': 'moulin-rouge',
-  'moulin rouge!': 'moulin-rouge',
-  'moulin rouge! the musical': 'moulin-rouge',
-  'moulin rouge the musical': 'moulin-rouge',
-
-  // Hadestown
-  'hadestown': 'hadestown',
-
-  // The Outsiders
-  'the outsiders': 'the-outsiders',
-  'outsiders': 'the-outsiders',
-  'the outsiders musical': 'the-outsiders',
-
-  // Great Gatsby
-  'the great gatsby': 'the-great-gatsby',
-  'great gatsby': 'the-great-gatsby',
-  'gatsby': 'the-great-gatsby',
-
-  // Death Becomes Her variations
-  'death becomes her': 'death-becomes-her',
-  'death becomes her: the musical': 'death-becomes-her',
-  'death becomes her the musical': 'death-becomes-her',
   'dbh': 'death-becomes-her',
-
-  // Stranger Things variations
-  'stranger things': 'stranger-things',
-  'stranger things: the first shadow': 'stranger-things',
-  'stranger things the first shadow': 'stranger-things',
-  'st: the first shadow': 'stranger-things',
-
-  // Other current shows
-  'buena vista social club': 'buena-vista-social-club',
   'bvsc': 'buena-vista-social-club',
-  'operation mincemeat': 'operation-mincemeat',
-  'op mincemeat': 'operation-mincemeat',
-  'just in time': 'just-in-time',
-
-  // Two Strangers variations
-  'two strangers': 'two-strangers',
-  'two strangers (carry a cake across new york)': 'two-strangers',
-  'two strangers carry a cake': 'two-strangers',
-
-  'maybe happy ending': 'maybe-happy-ending',
-
-  // & Juliet variations
-  'and juliet': 'and-juliet',
-  '& juliet': 'and-juliet',
-  '&juliet': 'and-juliet',
-
-  // Oh Mary variations
-  'oh, mary!': 'oh-mary',
-  'oh mary': 'oh-mary',
-  'oh mary!': 'oh-mary',
-
-  'stereophonic': 'stereophonic',
-  'the roommate': 'the-roommate',
-  'roommate': 'the-roommate',
-  'our town': 'our-town',
-
-  // Notebook variations
-  'the notebook': 'the-notebook',
-  'notebook': 'the-notebook',
-  'the notebook musical': 'the-notebook',
-
-  // Back to the Future variations
-  'back to the future': 'back-to-the-future',
-  'back to the future: the musical': 'back-to-the-future',
-  'back to the future the musical': 'back-to-the-future',
   'bttf': 'back-to-the-future',
-
-  // Boop variations
-  'boop! the musical': 'boop',
-  'boop': 'boop',
-  'boop the musical': 'boop',
-  'betty boop': 'boop',
-  'betty boop musical': 'boop',
-
-  // Water for Elephants
-  'water for elephants': 'water-for-elephants',
   'wfe': 'water-for-elephants',
-
-  'suffs': 'suffs',
-  'suffragettes': 'suffs',
-
-  // Hell's Kitchen variations
-  "hell's kitchen": 'hells-kitchen',
-  'hells kitchen': 'hells-kitchen',
-  "hell's kitchen musical": 'hells-kitchen',
-  'alicia keys musical': 'hells-kitchen',
-
-  // Cabaret variations
-  'cabaret': 'cabaret-2024',
-  'cabaret at the kit kat club': 'cabaret-2024',
-  'kit kat club': 'cabaret-2024',
-  'cabaret revival': 'cabaret-2024',
-
-  // Queen of Versailles variations
-  'queen of versailles': 'queen-of-versailles',
-  'the queen of versailles': 'queen-of-versailles',
   'qov': 'queen-of-versailles',
+  'poto': 'the-phantom-of-the-opera-1988',
+  'deh': 'dear-evan-hansen-2016',
+  'cfa': 'come-from-away-2017',
 
-  // Classic revivals
-  'ragtime': 'ragtime',
+  // Informal names
+  'neil diamond musical': 'a-beautiful-noise-2022',
+  'michael jackson musical': 'mj',
+  'six on broadway': 'six',
+  'st: the first shadow': 'stranger-things',
+  'op mincemeat': 'operation-mincemeat',
+  'betty boop musical': 'boop',
+  'suffragettes': 'suffs',
+  'alicia keys musical': 'hells-kitchen',
+  'kit kat club': 'cabaret-2024',
   'ragtime revival': 'ragtime',
-  'chess': 'chess',
-  'chess the musical': 'chess',
-
-  'liberation': 'liberation',
-
-  // All Out
-  'all out': 'all-out',
   'all out comedy': 'all-out',
-  'all out: comedy about ambition': 'all-out',
-
-  // Mamma Mia variations
-  'mamma mia': 'mamma-mia',
-  'mamma mia!': 'mamma-mia',
   'mama mia': 'mamma-mia',
-
-  'bug': 'bug',
-  'marjorie prime': 'marjorie-prime',
-  'oedipus': 'oedipus',
-  'swept away': 'swept-away',
   'avett brothers musical': 'swept-away',
-
-  // Sunset Boulevard variations
-  'sunset boulevard': 'sunset-blvd-2024',
-  'sunset blvd.': 'sunset-blvd-2024',
-  'sunset blvd': 'sunset-blvd-2024',
-  'sunset boulevard revival': 'sunset-blvd-2024',
-
-  // Hills of California
-  'the hills of california': 'hills-of-california',
-  'hills of california': 'hills-of-california',
-
-  'left on tenth': 'left-on-tenth',
-  'tammy faye': 'tammy-faye',
-  'tammy faye musical': 'tammy-faye',
-  'yellowface': 'yellowface',
-  'eureka day': 'eureka-day',
-
-  // Gypsy variations
-  'gypsy': 'gypsy-2024',
-  'gypsy revival': 'gypsy-2024',
-  'gypsy 2024': 'gypsy-2024',
-
-  // Once Upon a Mattress
-  'once upon a mattress': 'once-upon-a-mattress-2024',
-  'mattress': 'once-upon-a-mattress-2024',
-
-  'real friends of claridge county': 'real-friends-of-claridge-county',
-  'real friends': 'real-friends-of-claridge-county',
-
-  // Additional shows from shows.json
-  'every brilliant thing': 'every-brilliant-thing',
-  'death of a salesman': 'death-of-a-salesman',
-  'salesman': 'death-of-a-salesman',
-  'beaches': 'beaches',
-  'beaches a new musical': 'beaches',
-  'the balusters': 'the-balusters',
-  'balusters': 'the-balusters',
-  'becky shaw': 'becky-shaw',
-
-  // CATS variations
-  'cats': 'cats-the-jellicle-ball',
-  'cats the jellicle ball': 'cats-the-jellicle-ball',
-  'cats: the jellicle ball': 'cats-the-jellicle-ball',
-  'jellicle ball': 'cats-the-jellicle-ball',
-
-  'dog day afternoon': 'dog-day-afternoon',
-  'fallen angels': 'fallen-angels',
-  'the fear of 13': 'the-fear-of-13',
-  'fear of 13': 'the-fear-of-13',
-  'giant': 'giant',
-  'giant musical': 'giant',
-  "joe turner's come and gone": 'joe-turners-come-and-gone',
-  'joe turner': 'joe-turners-come-and-gone',
-  'the lost boys': 'the-lost-boys',
-  'lost boys': 'the-lost-boys',
-  'proof': 'proof',
-  'the rocky horror show': 'the-rocky-horror-show',
-  'rocky horror': 'the-rocky-horror-show',
-  'rocky horror show': 'the-rocky-horror-show',
-  'schmigadoon': 'schmigadoon',
-  'schmigadoon!': 'schmigadoon',
-  'titanique': 'titanique',
-  'real women have curves': 'real-women-have-curves',
-  'redwood': 'redwood',
-  'days of wine and roses': 'days-of-wine-and-roses',
-  'wine and roses': 'days-of-wine-and-roses',
-  'harmony': 'harmony',
-  'here lies love': 'here-lies-love',
-  'how to dance in ohio': 'how-to-dance-in-ohio',
-  'dance in ohio': 'how-to-dance-in-ohio',
-  'illinoise': 'illinoise',
   'sufjan stevens musical': 'illinoise',
-  'lempicka': 'lempicka',
-  'once upon a one more time': 'once-upon-a-one-more-time',
   'britney spears musical': 'once-upon-a-one-more-time',
-  'the heart of rock and roll': 'heart-of-rock-and-roll',
-  'heart of rock and roll': 'heart-of-rock-and-roll',
   'huey lewis musical': 'heart-of-rock-and-roll',
-  'gutenberg': 'gutenberg',
-  'gutenberg! the musical!': 'gutenberg',
-  'gutenberg the musical': 'gutenberg',
-  'merrily we roll along': 'merrily-we-roll-along',
-  'merrily': 'merrily-we-roll-along',
-  'spamalot': 'spamalot',
   'monty python spamalot': 'spamalot',
-  "the who's tommy": 'the-whos-tommy',
-  'tommy': 'the-whos-tommy',
-  'the wiz': 'the-wiz',
-  'wiz': 'the-wiz',
-  'grey house': 'grey-house',
-  'i need that': 'i-need-that',
-  "jaja's african hair braiding": 'jajas-african-hair-braiding',
-  'jajas african hair braiding': 'jajas-african-hair-braiding',
-  'just for us': 'just-for-us',
-  'mary jane': 'mary-jane',
-  'mother play': 'mother-play',
-  'patriots': 'patriots',
-  'prayer for the french republic': 'prayer-for-the-french-republic',
-  'french republic': 'prayer-for-the-french-republic',
-  'the cottage': 'the-cottage',
-  'cottage': 'the-cottage',
-  'the shark is broken': 'the-shark-is-broken',
-  'shark is broken': 'the-shark-is-broken',
-  'an enemy of the people': 'an-enemy-of-the-people',
-  'enemy of the people': 'an-enemy-of-the-people',
-  'appropriate': 'appropriate',
-  'doubt': 'doubt',
-  'doubt: a parable': 'doubt',
-  'doubt a parable': 'doubt',
-  'purlie victorious': 'purlie-victorious',
-  'purlie': 'purlie-victorious',
-  'uncle vanya': 'uncle-vanya',
-  'vanya': 'uncle-vanya',
 
-  // Historical mega-hits (batch-researched)
+  // Production-year overrides (commercial data needs specific productions)
+  'cabaret': 'cabaret-2024',
+  'cabaret revival': 'cabaret-2024',
+  'gypsy': 'gypsy-2024',
+  'gypsy 2024': 'gypsy-2024',
+  'beautiful': 'beautiful-the-carole-king-musical-2014',
+  'beautiful the carole king musical': 'beautiful-the-carole-king-musical-2014',
+  'sunset boulevard revival': 'sunset-blvd-2024',
+  'tammy faye musical': 'tammy-faye',
+
+  // Short forms
+  'mattress': 'once-upon-a-mattress-2024',
+  'real friends': 'real-friends-of-claridge-county',
+  'salesman': 'death-of-a-salesman',
+  'balusters': 'the-balusters',
+  'jellicle ball': 'cats-the-jellicle-ball',
+  'giant musical': 'giant',
+  'wine and roses': 'days-of-wine-and-roses',
+  'dance in ohio': 'how-to-dance-in-ohio',
+  'cottage': 'the-cottage',
+  'shark is broken': 'the-shark-is-broken',
+  'french republic': 'prayer-for-the-french-republic',
+  'purlie': 'purlie-victorious',
+  'vanya': 'uncle-vanya',
+  'wiz': 'the-wiz',
+
+  // Historical mega-hits (year-specific slugs)
   'the phantom of the opera': 'the-phantom-of-the-opera-1988',
   'phantom of the opera': 'the-phantom-of-the-opera-1988',
   'phantom': 'the-phantom-of-the-opera-1988',
-  'poto': 'the-phantom-of-the-opera-1988',
-
   'jersey boys': 'jersey-boys-2005',
-
   'kinky boots': 'kinky-boots-2013',
   'kinky boots the musical': 'kinky-boots-2013',
-
-  'beautiful': 'beautiful-the-carole-king-musical-2014',
-  'beautiful the carole king musical': 'beautiful-the-carole-king-musical-2014',
   'carole king musical': 'beautiful-the-carole-king-musical-2014',
-
   'dear evan hansen': 'dear-evan-hansen-2016',
   'evan hansen': 'dear-evan-hansen-2016',
-  'deh': 'dear-evan-hansen-2016',
-
   'hairspray': 'hairspray-2002',
   'hairspray the musical': 'hairspray-2002',
-
   'come from away': 'come-from-away-2017',
-  'cfa': 'come-from-away-2017',
-
   'matilda': 'matilda-the-musical-2013',
   'matilda the musical': 'matilda-the-musical-2013',
-
   'billy elliot': 'billy-elliot-the-musical-2008',
   'billy elliot the musical': 'billy-elliot-the-musical-2008',
+  'beaches a new musical': 'beaches',
+  'death becomes her the musical': 'death-becomes-her',
+  'back to the future the musical': 'back-to-the-future',
+  'rocky horror show': 'the-rocky-horror-show',
+  'gutenberg the musical': 'gutenberg',
+  'doubt a parable': 'doubt',
+  'jajas african hair braiding': 'jajas-african-hair-braiding',
+  'cats': 'cats-the-jellicle-ball',
 };
+
+// Merge: shared base aliases + commercial overrides (commercial wins on conflict)
+const KNOWN_ALIASES = { ...SHARED_ALIASES, ...COMMERCIAL_ALIASES };
 
 // ---------------------------------------------------------------------------
 // Utility Functions

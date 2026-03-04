@@ -12,6 +12,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { stripWikiMarkup, hasWikiMarkup } = require('./lib/wiki-utils');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -98,21 +99,12 @@ function extractPlotSection(content) {
     const sectionText = nextSection ? rest.substring(0, nextSection.index) : rest.substring(0, 3000);
 
     // Clean wikitext
-    let cleaned = sectionText
-      .replace(/<!--.*?-->/gs, '')
-      .replace(/<ref[^>]*>.*?<\/ref>/gis, '')
-      .replace(/<ref[^>]*\/>/gi, '')
-      .replace(/<\/?(?:br|small|nowiki|sup|sub|blockquote)[^>]*>/gi, ' ')
-      .replace(/\{\{[^}]*\}\}/g, '')           // Remove all templates
-      .replace(/\[\[(?:File|Image|Category):[^\]]*\]\]/gi, '') // Remove file/image links
-      .replace(/\[\[([^\]|]*\|)?([^\]]*)\]\]/g, '$2') // [[link|text]] → text
-      .replace(/'{2,3}/g, '')                    // Remove bold/italic markup
-      .replace(/\n\*/g, ' ')                     // List items → spaces
-      .replace(/\n+/g, ' ')                      // Newlines → spaces
-      .replace(/\s+/g, ' ')                      // Collapse whitespace
-      .trim();
+    let cleaned = stripWikiMarkup(sectionText);
 
     if (cleaned.length < 20) continue;
+
+    // Reject if markup remnants survive cleaning
+    if (hasWikiMarkup(cleaned)) continue;
 
     // Skip "Musical numbers" sections that are just song lists
     if (/^Act [12I]/i.test(cleaned) || /^[""]/.test(cleaned)) continue;
@@ -126,20 +118,9 @@ function extractPlotSection(content) {
     const lead = content.substring(0, leadEnd.index);
     // Only use lead if it has substantial content after the infobox
     const afterInfobox = lead.replace(/\{\{Infobox[\s\S]*?\n\}\}/gi, '').trim();
-    let cleaned = afterInfobox
-      .replace(/<!--.*?-->/gs, '')
-      .replace(/<ref[^>]*>.*?<\/ref>/gis, '')
-      .replace(/<ref[^>]*\/>/gi, '')
-      .replace(/<\/?(?:br|small|nowiki|sup|sub)[^>]*>/gi, ' ')
-      .replace(/\{\{[^}]*\}\}/g, '')
-      .replace(/\[\[(?:File|Image|Category):[^\]]*\]\]/gi, '')
-      .replace(/\[\[([^\]|]*\|)?([^\]]*)\]\]/g, '$2')
-      .replace(/'{2,3}/g, '')
-      .replace(/\n+/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim();
+    let cleaned = stripWikiMarkup(afterInfobox);
 
-    if (cleaned.length >= 50) return cleaned;
+    if (cleaned.length >= 50 && !hasWikiMarkup(cleaned)) return cleaned;
   }
 
   return null;
