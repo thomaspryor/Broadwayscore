@@ -4452,7 +4452,11 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // Clear stale contentVerification when fullText changes (prevents wrongArticle from blocking valid new text)
   if (data.contentVerification && data.contentVerification.wrongArticle && data.fullText !== cleanedText) {
     console.log(`    → Clearing stale contentVerification.wrongArticle (fullText updated)`);
-    delete data.contentVerification;
+    // Only clear wrongArticle-related fields; preserve wrongProduction, isFilmTv, etc.
+    delete data.contentVerification.wrongArticle;
+    delete data.contentVerification.verifiedAt;
+    delete data.contentVerification.verifiedBy;
+    delete data.contentVerification.reasoning;
   }
   data.fullText = cleanedText;
   data.isFullReview = cleanedText.length > 1500;
