@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
 import { getSupabaseClient } from '@/lib/supabase';
-import { saveReturnUrl, getPendingAction, clearPendingAction } from '@/lib/deferred-auth';
+import { saveReturnUrl } from '@/lib/deferred-auth';
 import type { UserProfile } from '@/types/user';
 import SignInModal from '@/components/auth/SignInModal';
 
@@ -63,13 +63,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setModalOpen(false);
         setSignInLoading(false);
 
-        // Execute pending action (deferred auth)
-        const pending = getPendingAction();
-        if (pending) {
-          // Clear AFTER confirming auth success, not before
-          clearPendingAction();
-          // Pending action execution handled by consuming components
-        }
+        // Pending action execution handled by consuming components
+        // (e.g. ShowPageRatingConnected reads and clears the pending action)
       } else if (event === 'SIGNED_OUT') {
         setUser(null);
         setProfile(null);
