@@ -1,59 +1,129 @@
 {
-  "updatedAt": "2026-03-04T06:03:08.147Z",
-  "processed": 164,
-  "failed": 176,
-  "successRate": "48.2%",
+  "updatedAt": "2026-03-04T06:10:03.589Z",
+  "processed": 63,
+  "failed": 189,
+  "successRate": "25.0%",
   "tierBreakdown": {
-    "playwright": 80,
-    "amp": 14,
-    "browserbase": 0,
-    "directCookies": 5,
-    "scrapingbee": 29,
+    "playwright": 15,
+    "amp": 28,
+    "browserbase": 2,
+    "directCookies": 4,
+    "scrapingbee": 10,
     "brightdata": 0,
-    "archiveToday": 98,
-    "archive": 45
+    "archiveToday": 91,
+    "archive": 22
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 20,
   "recentActivity": [
     {
-      "t": "2026-03-04T03:54:59.279Z",
+      "t": "2026-03-04T03:43:48.420Z",
       "event": "bb-session",
-      "session": "78de0113",
-      "url": "https://%20http:/www.newsday.com/entertainment/theater/review-disconnect-served-"
+      "session": "077524e6",
+      "url": "https://www.nytimes.com/2005/10/28/theater/reviews/the-odd-couple-redux-still-at"
     },
     {
-      "t": "2026-03-04T03:58:53.353Z",
-      "event": "bb-session",
-      "session": "417036cf",
-      "url": "https://%C2%A0http://deadline.com/2018/04/summer-the-donna-summer-musical-broadw"
-    },
-    {
-      "t": "2026-03-04T04:02:03.757Z",
-      "event": "bb-session",
-      "session": "444b6351",
-      "url": "https://bway.ly/04r8b#http://nypost.com/2016/09/29/broadway-is-no-place-for-podc"
-    },
-    {
-      "t": "2026-03-04T04:44:49.139Z",
-      "event": "bb-session",
-      "session": "413ef4f8",
-      "url": "https://The%20show%20is%20a%20triple-decker:%20an%20intimate%20story%20of%20a%20"
-    },
-    {
-      "t": "2026-03-04T04:44:54.301Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-03-04T04:54:11.178Z",
-      "event": "bb-session",
-      "session": "4b629c18",
-      "url": "https://preview.bloomberg.com/news/2010-04-29/linda-lavin-bellows-at-sarah-pauls"
-    },
-    {
-      "t": "2026-03-04T04:54:12.272Z",
+      "t": "2026-03-04T03:43:49.727Z",
       "event": "bb-cookie-inject",
-      "domain": "bloomberg.com"
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-04T03:44:56.883Z",
+      "event": "bb-session",
+      "session": "c9a9a08a",
+      "url": "https://www.newyorker.com/culture/culture-desk/uma-thurman-debuts-on-broadway-in"
+    },
+    {
+      "t": "2026-03-04T03:44:57.963Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-04T03:45:32.414Z",
+      "event": "bb-session",
+      "session": "6c9226c8",
+      "url": "https://www.nytimes.com/2001/04/20/movies/theater-review-frolic-and-detour-on-th"
+    },
+    {
+      "t": "2026-03-04T03:45:33.546Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-04T03:48:17.204Z",
+      "event": "bb-session",
+      "session": "8b9ccd31",
+      "url": "https://www.newyorker.com/arts/events/theatre/time-stands-still-cort-theatre"
+    },
+    {
+      "t": "2026-03-04T03:48:18.536Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-04T03:52:10.513Z",
+      "event": "bb-session",
+      "session": "7fa77947",
+      "url": "https://www.nytimes.com/2009/04/01/theater/reviews/01godot.html"
+    },
+    {
+      "t": "2026-03-04T03:52:11.694Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-04T03:53:58.404Z",
+      "event": "bb-session",
+      "session": "869c0678",
+      "url": "https://www.wsj.com/articles/SB117961869834728582"
+    },
+    {
+      "t": "2026-03-04T03:53:59.624Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-04T03:55:38.487Z",
+      "event": "bb-session",
+      "session": "8115dbdc",
+      "url": "https://www.wsj.com/articles/1984-review-big-brother-is-watching-on-broadway-149"
+    },
+    {
+      "t": "2026-03-04T03:55:39.674Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-04T03:57:15.253Z",
+      "event": "bb-session",
+      "session": "302f9d45",
+      "url": "https://www.wsj.com/articles/SB123788676543210987"
+    },
+    {
+      "t": "2026-03-04T03:57:16.334Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-04T03:58:52.186Z",
+      "event": "bb-session",
+      "session": "74310e4c",
+      "url": "https://observer.com/2010/culture/raindrops-keep-falling-their-heads?page=1"
+    },
+    {
+      "t": "2026-03-04T03:58:53.325Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-04T03:59:17.869Z",
+      "event": "bb-session",
+      "session": "11a3d943",
+      "url": "https://online.wsj.com/article/SB10001424052748704187204575101443623615472.html"
+    },
+    {
+      "t": "2026-03-04T03:59:19.095Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
