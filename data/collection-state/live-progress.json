@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-03-04T14:35:58.489Z",
+  "updatedAt": "2026-03-04T14:38:26.794Z",
   "processed": 253,
-  "failed": 834,
+  "failed": 833,
   "successRate": "23.3%",
   "tierBreakdown": {
     "playwright": 152,
@@ -10,22 +10,11 @@
     "directCookies": 15,
     "scrapingbee": 23,
     "brightdata": 0,
-    "archiveToday": 415,
+    "archiveToday": 416,
     "archive": 61
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-03-04T08:25:19.089Z",
-      "event": "bb-session",
-      "session": "41bb40ff",
-      "url": "https://www.nytimes.com/2005/10/28/theater/reviews/the-odd-couple-redux-still-at"
-    },
-    {
-      "t": "2026-03-04T08:25:20.669Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-04T08:27:58.718Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-04T14:16:15.086Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-03-04T14:37:34.415Z",
+      "event": "bb-session",
+      "session": "dd149c4e",
+      "url": "https://www.theatermania.com/news/act-one_68285/"
+    },
+    {
+      "t": "2026-03-04T14:37:35.611Z",
       "event": "bb-cookie-inject",
       "domain": "theatermania.com"
     }
