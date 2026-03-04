@@ -1,19 +1,5 @@
 [
   {
-    "startedAt": "2026-02-27T22:26:03.045Z",
-    "completedAt": "2026-02-27T22:26:21.179Z",
-    "totalReviews": 9,
-    "processed": 4,
-    "skipped": 5,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 36859,
-      "output": 1117,
-      "total": 56611
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-02-27T22:26:22.287Z",
     "completedAt": "2026-02-27T22:26:49.180Z",
     "totalReviews": 80,
@@ -694755,6 +694741,31 @@
           "total": 3
         },
         "hasDisagreement": false
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-03-04T05:19:47.992Z",
+    "completedAt": "2026-03-04T05:19:48.420Z",
+    "totalReviews": 31085,
+    "processed": 0,
+    "skipped": 31077,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "errorDetails": [
+      {
+        "showId": "stereophonic-2024",
+        "outletId": "nytg",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "sunset-boulevard-2024",
+        "outletId": "hollywood-reporter",
+        "error": "Review text too short or missing"
       }
     ]
   }
