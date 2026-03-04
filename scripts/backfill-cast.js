@@ -137,7 +137,8 @@ async function main() {
       const result = await lookupIBDBCast(show.title, {
         openingYear,
         venue: show.venue,
-        ibdbUrl: show.ibdbUrl || null
+        ibdbUrl: show.ibdbUrl || null,
+        category: show.category || 'broadway'
       });
 
       if (!result.found || result.openingNightCast.length === 0) {

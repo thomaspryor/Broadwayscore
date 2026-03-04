@@ -346,6 +346,12 @@ async function lookupIBDBCast(title, options = {}) {
     found: false
   };
 
+  // IBDB is Broadway-only — skip for off-broadway and west-end shows
+  if (options.category && (options.category === 'off-broadway' || options.category === 'west-end')) {
+    console.log(`  ⏭️  Skipping IBDB lookup for ${options.category} show "${title}" (IBDB is Broadway-only)`);
+    return notFound;
+  }
+
   try {
     let bestMatch;
 
@@ -378,9 +384,12 @@ async function lookupIBDBCast(title, options = {}) {
       return { ...notFound, ibdbUrl: bestMatch.url };
     }
 
-    // Title validation: check the IBDB page title matches our show
-    // Uses fast string checks first, LLM for ambiguous cases
-    if (castData.pageTitle) {
+    // Title validation: MANDATORY — if we can't extract the page title, reject
+    if (!castData.pageTitle) {
+      console.log(`  ⚠️  Could not extract IBDB page title — rejecting to prevent mismatch`);
+      return { ...notFound, ibdbUrl: bestMatch.url, titleMismatch: true };
+    }
+    {
       const normalize = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
         .replace(/[^a-z0-9\s]/g, '').trim();
       const ourTitle = normalize(title);
