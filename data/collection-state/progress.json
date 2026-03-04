@@ -773,7 +773,9 @@
     "starlight-express-west-end-2024/thestage--paul-vale.json",
     "sweetmeats-west-end-2026/thestage--holly-omahony.json",
     "the-dinosaurs-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "the-hunger-games-on-stage-west-end-2025/thestage--holly-omahony.json"
+    "the-hunger-games-on-stage-west-end-2025/thestage--holly-omahony.json",
+    "the-play-that-goes-wrong-off-broadway-2019/thestage--erin-kahn.json",
+    "the-rat-trap-west-end-2026/thestage--unknown.json"
   ],
   "failed": [
     "bigfoot-off-broadway-2026/vulture--unknown.json",
@@ -1243,7 +1245,15 @@
     "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
     "the-lion-king-1997/familyvacationcritic--unknown.json",
     "the-mousetrap-west-end-2021/thestage--john-thaxter.json",
-    "the-mousetrap-west-end-2021/times-uk--jo-4252.json"
+    "the-mousetrap-west-end-2021/times-uk--jo-4252.json",
+    "the-play-that-goes-wrong-off-broadway-2019/broadway-blog--samuel-l-leiter.json",
+    "the-play-that-goes-wrong-off-broadway-2019/broadwayworld--michael-dale.json",
+    "the-play-that-goes-wrong-off-broadway-2019/dctheatrescene--deb-miller.json",
+    "the-play-that-goes-wrong-off-broadway-2019/huffpost--steven-suskin.json",
+    "the-play-that-goes-wrong-off-broadway-2019/stagebizcom--danny-groner.json",
+    "the-play-that-goes-wrong-off-broadway-2019/talkinbroadway--matthew-murray.json",
+    "the-play-that-goes-wrong-off-broadway-2019/talkinbroadway--unknown.json",
+    "the-play-that-goes-wrong-west-end-2021/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1755,7 +1765,9 @@
       "starlight-express-west-end-2024/thestage--paul-vale.json",
       "sweetmeats-west-end-2026/thestage--holly-omahony.json",
       "the-dinosaurs-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "the-hunger-games-on-stage-west-end-2025/thestage--holly-omahony.json"
+      "the-hunger-games-on-stage-west-end-2025/thestage--holly-omahony.json",
+      "the-play-that-goes-wrong-off-broadway-2019/thestage--erin-kahn.json",
+      "the-rat-trap-west-end-2026/thestage--unknown.json"
     ],
     "amp": [
       "data/review-texts/bigfoot-off-broadway-2026/vulture--unknown.json",
@@ -2059,7 +2071,9 @@
       "im-sorry-prime-minister-west-end-2026/daily-mail--patrick-marmion.json",
       "moulin-rouge-the-musical-west-end-2021/independent--ava-wong-davies.json",
       "stranger-things-2024/broadwayworld--alexander-cohen.json",
-      "the-devil-wears-prada-west-end-2024/daily-mail--gina-kalsi.json"
+      "the-devil-wears-prada-west-end-2024/daily-mail--gina-kalsi.json",
+      "the-play-that-goes-wrong-off-broadway-2019/huffpost--steven-suskin.json",
+      "the-play-that-goes-wrong-off-broadway-2019/stagebizcom--danny-groner.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2210,7 +2224,8 @@
       "data/review-texts/hamilton-2015/broadwayworld--michael-dale.json",
       "data/review-texts/hells-kitchen-2024/talkinbroadway--matthew-murray.json",
       "data/review-texts/oh-mary-west-end-2025/daily-mail--patrick-marmion.json",
-      "data/review-texts/the-mousetrap-west-end-2021/thestage--john-thaxter.json"
+      "data/review-texts/the-mousetrap-west-end-2021/thestage--john-thaxter.json",
+      "data/review-texts/the-play-that-goes-wrong-west-end-2021/thestage--unknown.json"
     ],
     "archive": [
       "pied-a-terre-off-broadway-2026/nytg--unknown.json",
@@ -2374,11 +2389,15 @@
       "mamma-mia-west-end-2021/standard--jessie-thompson.json",
       "ragtime-2025/billboard--joe-lynch.json",
       "perfect-crime-off-broadway-1987/billboard--bww-news-desk.json",
-      "ragtime-2025/ap--mark-kennedy.json"
+      "ragtime-2025/ap--mark-kennedy.json",
+      "the-play-that-goes-wrong-off-broadway-2019/dctheatrescene--deb-miller.json",
+      "the-play-that-goes-wrong-off-broadway-2019/broadwayworld--michael-dale.json",
+      "the-play-that-goes-wrong-off-broadway-2019/talkinbroadway--matthew-murray.json",
+      "the-play-that-goes-wrong-off-broadway-2019/talkinbroadway--unknown.json"
     ]
   },
   "startTime": "2026-03-03T08:34:29.131Z",
-  "lastProcessed": "the-mousetrap-west-end-2021/times-uk--jo-4252.json",
+  "lastProcessed": "the-rat-trap-west-end-2026/thestage--unknown.json",
   "log": [
     {
       "t": "2026-03-04T00:34:02.831Z",
@@ -2476,6 +2495,17 @@
     },
     {
       "t": "2026-03-04T02:14:32.078Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-04T02:34:35.744Z",
+      "event": "bb-session",
+      "session": "cb4174bf",
+      "url": "https://www.thestage.co.uk/reviews/2014/the-play-that-goes-wrong/"
+    },
+    {
+      "t": "2026-03-04T02:34:36.968Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
