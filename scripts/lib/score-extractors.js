@@ -8,7 +8,7 @@
  * - NY Post: Sometimes letter grades or stars
  * - The Guardian: Star ratings /5
  * - Culture Sauce: Star ratings /5
- * - NY Daily News: Sometimes letter grades
+ * - NY Daily News: Does NOT publish letter grades (extractGenericLetterGrade mapped here was causing false positives)
  *
  * Score normalization:
  * - All scores normalized to 0-100 scale
@@ -621,8 +621,10 @@ function extractGenericStarRating(html, text) {
  */
 function extractGenericLetterGrade(html, text) {
   // Only look for letter grades with clear context
+  // NOTE: Pattern 1 uses \b before the alternation to avoid matching "rating" as a
+  // substring inside words like "celebrating", "operating", "frustrating".
   const patterns = [
-    /(?:grade|rating)\s*:?\s*([A-F][+-]?)\b/i,
+    /\b(?:grade|rating)\s*:?\s*([A-F][+-]?)\b/i,
     /\bgrade\s+([A-F][+-]?)\b/i,
     /\b([A-F][+-]?)\s+(?:grade|rating)\b/i
   ];
@@ -697,9 +699,9 @@ const OUTLET_EXTRACTORS = {
   'new-york-post': extractNYPostScore,
   'culturesauce': extractCultureSauceScore,
   'culture-sauce': extractCultureSauceScore,
-  'nydailynews': extractGenericLetterGrade,
-  'ny-daily-news': extractGenericLetterGrade,
-  'nydn': extractGenericLetterGrade,
+  'nydailynews': noScoreExtractor,   // NYDN does not publish letter grades; extractGenericLetterGrade produced false positives
+  'ny-daily-news': noScoreExtractor,
+  'nydn': noScoreExtractor,
 
   // USA Today
   'usatoday': extractUSATodayScore,
