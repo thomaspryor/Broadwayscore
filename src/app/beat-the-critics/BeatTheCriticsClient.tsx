@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { ScoreBadge } from '@/components/show-cards';
 import type { BeatTheCriticsData, BeatTheCriticsCategoryData } from './page';
 import type { SerializedTonyShow } from '@/lib/data-tony-predictions';
 
@@ -23,7 +22,6 @@ const CRITICS: CriticPanelist[] = [
 
 // ─── Helpers ───
 
-/** Generate a mock CriticScore pick — highest-scored nominee */
 function getCriticScorePick(nominees: SerializedTonyShow[]): string {
   const scored = nominees.filter(n => n.compositeScore != null);
   if (scored.length === 0) return nominees[0]?.title ?? '';
@@ -31,10 +29,8 @@ function getCriticScorePick(nominees: SerializedTonyShow[]): string {
   return scored[0].title;
 }
 
-/** Generate mock critic picks (deterministic, seeded by category title) */
 function getCriticPicks(category: string, nominees: SerializedTonyShow[]): string[] {
   if (nominees.length === 0) return [];
-  // Distribute critics across top nominees deterministically
   const seed = category.length;
   return CRITICS.map((_, i) => {
     const idx = (seed + i) % Math.min(nominees.length, 3);
@@ -42,24 +38,30 @@ function getCriticPicks(category: string, nominees: SerializedTonyShow[]): strin
   });
 }
 
-/** Generate mock crowd percentages */
 function getCrowdPercentages(nominees: SerializedTonyShow[]): number[] {
   if (nominees.length === 0) return [];
-  // Weight by score, fallback to equal distribution
   const scores = nominees.map(n => n.blendedScore ?? n.compositeScore ?? 50);
   const total = scores.reduce((a, b) => a + b, 0);
   const pcts = scores.map(s => Math.round((s / total) * 100));
-  // Ensure they sum to 100
   const diff = 100 - pcts.reduce((a, b) => a + b, 0);
   if (pcts.length > 0) pcts[0] += diff;
   return pcts;
 }
 
+function seededShuffle<T>(arr: T[], seed: number): T[] {
+  const shuffled = [...arr];
+  let s = seed;
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    s = (s * 1664525 + 1013904223) & 0xffffffff;
+    const j = ((s >>> 0) % (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 function getShowImagePath(show: SerializedTonyShow): string | null {
   if (!show.thumbnailPath) return null;
-  // External CDN URLs (e.g. Contentful) — use as-is
   if (show.thumbnailPath.startsWith('http')) return show.thumbnailPath;
-  // Local images — convert thumbnail to poster (same directory, better aspect ratio)
   return show.thumbnailPath.replace('/thumbnail.webp', '/poster.webp');
 }
 
@@ -99,7 +101,7 @@ function CoBrand({ size = 'default' }: { size?: 'default' | 'small' }) {
       <TodayTixLogo className="h-5 w-auto" white />
       <div className="w-px h-7 bg-white/10" />
       <div className="leading-tight">
-        <div className="text-[11px] font-bold text-gray-400 tracking-tight">Broadway Scorecard</div>
+        <div className="text-xs font-bold text-gray-400 tracking-tight">Broadway Scorecard</div>
         <div className="text-[8px] font-semibold text-gray-500 tracking-wider">CriticScore&trade;</div>
       </div>
     </div>
@@ -109,113 +111,39 @@ function CoBrand({ size = 'default' }: { size?: 'default' | 'small' }) {
 function ShowPoster({ show, size = 'sm' }: { show: SerializedTonyShow; size?: 'sm' | 'md' }) {
   const [imgError, setImgError] = useState(false);
   const dims = size === 'md' ? 'w-14 h-20' : 'w-[52px] h-[72px]';
-
   const imgPath = getShowImagePath(show);
-
   if (imgError || !imgPath) {
-    return (
-      <div className={`${dims} rounded-lg bg-surface-overlay flex items-center justify-center text-xl font-extrabold text-white/30 flex-shrink-0`}>
-        {show.title.charAt(0)}
-      </div>
-    );
+    return (<div className={`${dims} rounded-lg bg-surface-overlay flex items-center justify-center text-xl font-extrabold text-white/30 flex-shrink-0`}>{show.title.charAt(0)}</div>);
   }
-
-  return (
-    <img
-      src={imgPath}
-      alt={show.title}
-      className={`${dims} rounded-lg object-cover flex-shrink-0 bg-surface-overlay`}
-      onError={() => setImgError(true)}
-    />
-  );
+  return (<img src={imgPath} alt={show.title} className={`${dims} rounded-lg object-cover flex-shrink-0 bg-surface-overlay`} onError={() => setImgError(true)} />);
 }
 
-function NomineeCard({
-  show,
-  selected,
-  onSelect,
-}: {
-  show: SerializedTonyShow;
-  selected: boolean;
-  onSelect: () => void;
-}) {
+function NomineeCard({ show, selected, onSelect }: { show: SerializedTonyShow; selected: boolean; onSelect: () => void }) {
   return (
-    <button
-      onClick={onSelect}
-      className={`
-        w-full flex items-center gap-3.5 p-3.5 rounded-[14px] text-left transition-all duration-200
-        ${selected
-          ? 'bg-[#ff1368]/[0.06] border-2 border-[#ff1368] shadow-[0_0_20px_rgba(255,19,104,0.1)]'
-          : 'bg-surface-raised border-2 border-transparent hover:bg-surface-overlay hover:border-white/10'
-        }
-      `}
-    >
+    <button onClick={onSelect} className={`w-full flex items-center gap-3.5 p-3.5 rounded-[14px] text-left transition-all duration-200 ${selected ? 'bg-[#ff1368]/[0.06] border-2 border-[#ff1368] shadow-[0_0_20px_rgba(255,19,104,0.1)]' : 'bg-surface-raised border-2 border-transparent hover:bg-surface-overlay hover:border-white/10'}`}>
       <ShowPoster show={show} />
       <div className="flex-1 min-w-0">
         <div className="text-[15px] font-bold truncate">{show.title}</div>
-        <div className="text-[11px] text-gray-500 flex items-center gap-2">
-          <span>{show.venue}</span>
-          <span className="text-[#ff1368] font-semibold">TodayTix &rarr;</span>
-        </div>
+        <div className="text-xs text-gray-500 flex items-center gap-2"><span>{show.venue}</span><span className="text-[#ff1368] font-semibold">TodayTix &rarr;</span></div>
       </div>
-      <div className="relative flex-shrink-0">
-        <ScoreBadge
-          score={show.compositeScore}
-          size="sm"
-          reviewCount={show.reviewCount}
-          status={show.status}
-          showCrown
-        />
-        {selected && (
-          <div className="absolute -top-1 -right-1 w-[18px] h-[18px] rounded-full bg-[#ff1368] flex items-center justify-center animate-scale-in">
-            <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="white" strokeWidth="2">
-              <path d="M2.5 6l2.5 2.5 4.5-5" />
-            </svg>
-          </div>
-        )}
+      <div className={`w-7 h-7 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all duration-200 ${selected ? 'border-[#ff1368] bg-[#ff1368] animate-scale-in' : 'border-gray-600'}`}>
+        {selected && (<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="white" strokeWidth="2.5"><path d="M2.5 6l2.5 2.5 4.5-5" /></svg>)}
       </div>
     </button>
   );
 }
 
-function CrowdBar({
-  label,
-  pct,
-  isUserPick,
-  variant,
-}: {
-  label: string;
-  pct: number;
-  isUserPick: boolean;
-  variant: 'rose' | 'brand' | 'muted';
-}) {
+function CrowdBar({ label, pct, isUserPick, variant, score }: { label: string; pct: number; isUserPick: boolean; variant: 'rose' | 'brand' | 'muted'; score?: number | null }) {
   const barRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (barRef.current) barRef.current.style.width = `${pct}%`;
-    }, 600);
-    return () => clearTimeout(timer);
-  }, [pct]);
-
+  useEffect(() => { const timer = setTimeout(() => { if (barRef.current) barRef.current.style.width = `${pct}%`; }, 600); return () => clearTimeout(timer); }, [pct]);
   const bgColor = variant === 'rose' ? 'bg-[#ff1368]' : variant === 'brand' ? 'bg-brand' : 'bg-gray-500';
-
   return (
     <div className="mb-2.5">
       <div className="flex justify-between text-xs mb-1">
-        <span className="font-semibold">
-          {label}
-          {isUserPick && <span className="text-[#ff1368] text-[10px] font-semibold ml-1">(Your pick)</span>}
-        </span>
+        <span className="font-semibold">{label}{score != null && <span className="text-brand text-[10px] font-bold ml-1.5">{score}</span>}{isUserPick && <span className="text-[#ff1368] text-[10px] font-semibold ml-1">(Your pick)</span>}</span>
         <span className="text-gray-500">{pct}%</span>
       </div>
-      <div className="h-2 rounded bg-surface-overlay overflow-hidden">
-        <div
-          ref={barRef}
-          className={`h-full rounded ${bgColor} transition-all duration-1000 ease-out`}
-          style={{ width: 0 }}
-        />
-      </div>
+      <div className="h-2 rounded bg-surface-overlay overflow-hidden"><div ref={barRef} className={`h-full rounded ${bgColor} transition-all duration-1000 ease-out`} style={{ width: 0 }} /></div>
     </div>
   );
 }
@@ -223,474 +151,155 @@ function CrowdBar({
 // ─── Main Client Component ───
 
 export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
-  // Hide site chrome (header/footer) — this is a standalone co-branded experience
-  useEffect(() => {
-    document.body.classList.add('btc-standalone');
-    return () => document.body.classList.remove('btc-standalone');
-  }, []);
+  useEffect(() => { document.body.classList.add('btc-standalone'); return () => document.body.classList.remove('btc-standalone'); }, []);
   const [screen, setScreen] = useState<Screen>('landing');
   const [currentTierIdx, setCurrentTierIdx] = useState(0);
   const [currentCatIdx, setCurrentCatIdx] = useState(0);
-  const [picks, setPicks] = useState<Record<string, string>>({}); // categoryTitle → showTitle
-  const [pickSlugs, setPickSlugs] = useState<Record<string, string>>({}); // categoryTitle → showSlug
-
+  const [picks, setPicks] = useState<Record<string, string>>({});
+  const [pickSlugs, setPickSlugs] = useState<Record<string, string>>({});
+  const [shuffleSeed] = useState(() => Math.floor(Math.random() * 1000000));
   const currentTier = data.tiers[currentTierIdx];
   const currentCategory = currentTier?.categories[currentCatIdx];
   const totalCategoriesInTier = currentTier?.categories.length ?? 0;
-
   const allCompletedPicks = Object.entries(picks);
+  const handlePick = useCallback((category: string, show: SerializedTonyShow) => { setPicks(prev => ({ ...prev, [category]: show.title })); setPickSlugs(prev => ({ ...prev, [category]: show.slug })); }, []);
+  const handleLockIn = useCallback(() => { if (!currentCategory || !picks[currentCategory.title]) return; setScreen('reveal'); }, [currentCategory, picks]);
+  const findNextNonEmptyCategory = useCallback((fromCatIdx: number): number | null => { for (let i = fromCatIdx + 1; i < totalCategoriesInTier; i++) { if ((currentTier?.categories[i]?.nominees.length ?? 0) > 0) return i; } return null; }, [currentTier, totalCategoriesInTier]);
+  const handleNextCategory = useCallback(() => { const nextIdx = findNextNonEmptyCategory(currentCatIdx); if (nextIdx !== null) { setCurrentCatIdx(nextIdx); setScreen('picking'); } else { setScreen('results'); } }, [currentCatIdx, findNextNonEmptyCategory]);
+  const goToScreen = useCallback((s: Screen) => { setScreen(s); }, []);
 
-  const handlePick = useCallback((category: string, show: SerializedTonyShow) => {
-    setPicks(prev => ({ ...prev, [category]: show.title }));
-    setPickSlugs(prev => ({ ...prev, [category]: show.slug }));
-  }, []);
-
-  const handleLockIn = useCallback(() => {
-    if (!currentCategory || !picks[currentCategory.title]) return;
-    setScreen('reveal');
-  }, [currentCategory, picks]);
-
-  // Find the next category that has nominees, skipping empty ones
-  const findNextNonEmptyCategory = useCallback((fromCatIdx: number): number | null => {
-    for (let i = fromCatIdx + 1; i < totalCategoriesInTier; i++) {
-      if ((currentTier?.categories[i]?.nominees.length ?? 0) > 0) return i;
-    }
-    return null;
-  }, [currentTier, totalCategoriesInTier]);
-
-  const handleNextCategory = useCallback(() => {
-    const nextIdx = findNextNonEmptyCategory(currentCatIdx);
-    if (nextIdx !== null) {
-      setCurrentCatIdx(nextIdx);
-      setScreen('picking');
-    } else {
-      // No more categories with nominees — go to results
-      setScreen('results');
-    }
-  }, [currentCatIdx, findNextNonEmptyCategory]);
-
-  const goToScreen = useCallback((s: Screen) => {
-    setScreen(s);
-  }, []);
-
-  // ─── LANDING ───
   if (screen === 'landing') {
     return (
       <div className="min-h-screen bg-surface relative overflow-hidden flex flex-col">
-        {/* Ambient gradient */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#ff1368]/[0.06] rounded-full blur-[120px]" />
-          <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-brand/[0.04] rounded-full blur-[100px]" />
-        </div>
-
+        <div className="absolute inset-0 pointer-events-none"><div className="absolute top-0 left-1/4 w-96 h-96 bg-[#ff1368]/[0.06] rounded-full blur-[120px]" /><div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-brand/[0.04] rounded-full blur-[100px]" /></div>
         <div className="relative z-10 flex-1 flex flex-col items-center justify-center max-w-[480px] mx-auto px-6 py-12 text-center">
-          <div className="animate-fade-up" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
-            <CoBrand />
-          </div>
-
+          <div className="animate-fade-up" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}><CoBrand /></div>
           <div className="animate-fade-up mt-10" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#ff1368]/10 border border-[#ff1368]/20 text-[#ff1368] text-[11px] font-semibold tracking-widest uppercase">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-              </svg>
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#ff1368]/10 border border-[#ff1368]/20 text-[#ff1368] text-xs font-semibold tracking-widest uppercase">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
               Tony Awards {data.season.ceremonyYear}
             </span>
           </div>
-
           <h1 className="animate-fade-up mt-6" style={{ animationDelay: '0.5s', animationFillMode: 'both' }}>
-            <span className="block text-[52px] font-black leading-[0.95] tracking-tighter">
-              Beat{' '}
-              <span className="bg-gradient-to-br from-brand to-[#ff1368] bg-clip-text text-transparent">
-                the Critics
-              </span>
-              <sup className="text-[13px] font-bold text-gray-500 align-super ml-0.5">&trade;</sup>
-            </span>
+            <span className="block text-[52px] font-black leading-[0.95] tracking-tighter">Beat{' '}<span className="bg-gradient-to-br from-brand to-[#ff1368] bg-clip-text text-transparent">the Critics</span><sup className="text-sm font-bold text-gray-500 align-super ml-0.5">&trade;</sup></span>
           </h1>
-
-          <p className="animate-fade-up mt-5 text-[17px] leading-relaxed text-gray-400 max-w-[360px]" style={{ animationDelay: '0.7s', animationFillMode: 'both' }}>
-            Pick Tony winners. Compete against <strong className="text-gray-200 font-semibold">top critics</strong> and the <strong className="text-gray-200 font-semibold">CriticScore algorithm</strong>. Win <strong className="text-gray-200 font-semibold">free tickets</strong>.
-          </p>
-
-          <button
-            onClick={() => {
-              setCurrentTierIdx(0);
-              // Find first category with nominees
-              const firstIdx = data.tiers[0]?.categories.findIndex(c => c.nominees.length > 0) ?? 0;
-              setCurrentCatIdx(firstIdx >= 0 ? firstIdx : 0);
-              goToScreen('picking');
-            }}
-            className="animate-fade-up mt-9 inline-flex items-center gap-2.5 px-10 py-4 rounded-[14px] bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white text-[17px] font-bold shadow-[0_4px_24px_rgba(255,19,104,0.35)] hover:shadow-[0_8px_32px_rgba(255,19,104,0.45)] hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200"
-            style={{ animationDelay: '0.9s', animationFillMode: 'both' }}
-          >
-            Make Your Picks
-            <span className="transition-transform group-hover:translate-x-1">&rarr;</span>
-          </button>
-
+          <p className="animate-fade-up mt-5 text-[17px] leading-relaxed text-gray-400 max-w-[360px]" style={{ animationDelay: '0.7s', animationFillMode: 'both' }}>Pick Tony winners. Compete against <strong className="text-gray-200 font-semibold">top critics</strong> and the <strong className="text-gray-200 font-semibold">CriticScore algorithm</strong>. Win <strong className="text-gray-200 font-semibold">free tickets</strong>.</p>
+          <button onClick={() => { setCurrentTierIdx(0); const firstIdx = data.tiers[0]?.categories.findIndex(c => c.nominees.length > 0) ?? 0; setCurrentCatIdx(firstIdx >= 0 ? firstIdx : 0); goToScreen('picking'); }} className="animate-fade-up mt-9 inline-flex items-center gap-2.5 px-10 py-4 rounded-[14px] bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white text-[17px] font-bold shadow-[0_4px_24px_rgba(255,19,104,0.35)] hover:shadow-[0_8px_32px_rgba(255,19,104,0.45)] hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200" style={{ animationDelay: '0.9s', animationFillMode: 'both' }}>Make Your Picks <span className="transition-transform group-hover:translate-x-1">&rarr;</span></button>
           <div className="animate-fade-up mt-12 flex gap-6" style={{ animationDelay: '1.1s', animationFillMode: 'both' }}>
-            <div className="text-center">
-              <div className="text-[22px] font-extrabold text-brand tracking-tight">{data.stats.showsTracked}</div>
-              <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mt-0.5">Shows</div>
-            </div>
-            <div className="text-center">
-              <div className="text-[22px] font-extrabold text-brand tracking-tight">
-                {data.stats.reviewsScored >= 1000
-                  ? `${(data.stats.reviewsScored / 1000).toFixed(data.stats.reviewsScored >= 10000 ? 0 : 1)}K`
-                  : data.stats.reviewsScored.toLocaleString()}
-              </div>
-              <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mt-0.5">Reviews</div>
-            </div>
-            <div className="text-center">
-              <div className="text-[22px] font-extrabold text-brand tracking-tight">{data.stats.criticsTracked}+</div>
-              <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mt-0.5">Critics Tracked</div>
-            </div>
+            <div className="text-center"><div className="text-[22px] font-extrabold text-brand tracking-tight">{data.stats.showsTracked}</div><div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mt-0.5">Shows</div></div>
+            <div className="text-center"><div className="text-[22px] font-extrabold text-brand tracking-tight">{data.stats.reviewsScored >= 1000 ? `${(data.stats.reviewsScored / 1000).toFixed(data.stats.reviewsScored >= 10000 ? 0 : 1)}K` : data.stats.reviewsScored.toLocaleString()}</div><div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mt-0.5">Reviews</div></div>
+            <div className="text-center"><div className="text-[22px] font-extrabold text-brand tracking-tight">{data.stats.criticsTracked}+</div><div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mt-0.5">Critics Tracked</div></div>
           </div>
-
-          <div className="animate-fade-up mt-8 flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-brand/[0.08] border border-brand/15" style={{ animationDelay: '1.3s', animationFillMode: 'both' }}>
-            <span className="text-xl">🎫</span>
-            <span className="text-[13px] text-gray-400">
-              Beat the critics &rarr; enter to win <strong className="text-brand">free TodayTix tickets</strong>
-            </span>
-          </div>
+          <div className="animate-fade-up mt-8 flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-brand/[0.08] border border-brand/15" style={{ animationDelay: '1.3s', animationFillMode: 'both' }}><span className="text-xl">🎫</span><span className="text-sm text-gray-400">Beat the critics &rarr; enter to win <strong className="text-brand">free TodayTix tickets</strong></span></div>
         </div>
       </div>
     );
   }
 
-  // ─── PICKING ───
   if (screen === 'picking' && currentCategory) {
     const selectedTitle = picks[currentCategory.title];
-    const nominees = currentCategory.nominees;
-    // Count categories with nominees for progress dots
+    const nominees = seededShuffle(currentCategory.nominees, shuffleSeed + currentCatIdx);
     const catsWithNominees = currentTier.categories.filter(c => c.nominees.length > 0);
     const currentProgressIdx = catsWithNominees.findIndex(c => c.title === currentCategory.title);
-
     return (
       <div className="min-h-screen bg-surface flex flex-col pb-[120px]">
-        {/* Header */}
         <div className="sticky top-0 z-10 px-5 py-4 flex items-center justify-between border-b border-white/5 bg-surface/90 backdrop-blur-xl">
-          <button
-            onClick={() => {
-              // Go back to previous non-empty category, or landing
-              let prevIdx: number | null = null;
-              for (let i = currentCatIdx - 1; i >= 0; i--) {
-                if ((currentTier.categories[i]?.nominees.length ?? 0) > 0) { prevIdx = i; break; }
-              }
-              if (prevIdx !== null) setCurrentCatIdx(prevIdx);
-              else goToScreen('landing');
-            }}
-            className="text-gray-400 text-sm hover:text-white transition-colors p-2 -m-2"
-          >
-            &larr; Back
-          </button>
-          <div className="flex gap-1.5">
-            {catsWithNominees.map((_, i) => (
-              <div
-                key={i}
-                className={`h-2 rounded transition-all duration-300 ${
-                  i < currentProgressIdx ? 'w-2 bg-[#ff1368]'
-                  : i === currentProgressIdx ? 'w-5 bg-[#ff1368] shadow-[0_0_8px_rgba(255,19,104,0.5)]'
-                  : 'w-2 bg-surface-overlay'
-                }`}
-              />
-            ))}
-          </div>
-          <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">
-            {currentProgressIdx + 1} of {catsWithNominees.length}
-          </div>
+          <button onClick={() => { let prevIdx: number | null = null; for (let i = currentCatIdx - 1; i >= 0; i--) { if ((currentTier.categories[i]?.nominees.length ?? 0) > 0) { prevIdx = i; break; } } if (prevIdx !== null) setCurrentCatIdx(prevIdx); else goToScreen('landing'); }} className="text-gray-400 text-sm hover:text-white transition-colors p-2 -m-2">&larr; Back</button>
+          <div className="flex gap-1.5">{catsWithNominees.map((_, i) => (<div key={i} className={`h-2 rounded transition-all duration-300 ${i < currentProgressIdx ? 'w-2 bg-[#ff1368]' : i === currentProgressIdx ? 'w-5 bg-[#ff1368] shadow-[0_0_8px_rgba(255,19,104,0.5)]' : 'w-2 bg-surface-overlay'}`} />))}</div>
+          <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">{currentProgressIdx + 1} of {catsWithNominees.length}</div>
         </div>
-
-        {/* Body */}
         <div className="flex-1 px-5 py-6 max-w-[480px] mx-auto w-full">
-          <div className="inline-flex px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider mb-3 bg-brand/15 text-brand">
-            {currentTier.label} &middot; {currentTier.name}
-          </div>
+          <div className="inline-flex px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider mb-3 bg-brand/15 text-brand">{currentTier.label} &middot; {currentTier.name}</div>
           <h2 className="text-[28px] font-extrabold tracking-tight mb-1.5">{currentCategory.title}</h2>
-          <p className="text-[13px] text-gray-500 mb-7">Tap your pick. Scores out of 100 via CriticScore.</p>
-
-          <div className="flex flex-col gap-2.5">
-            {nominees.map((show) => (
-              <NomineeCard
-                key={show.slug}
-                show={show}
-                selected={selectedTitle === show.title}
-                onSelect={() => handlePick(currentCategory.title, show)}
-              />
-            ))}
-          </div>
+          <p className="text-sm text-gray-500 mb-7">Tap your pick.</p>
+          <div className="flex flex-col gap-2.5">{nominees.map((show) => (<NomineeCard key={show.slug} show={show} selected={selectedTitle === show.title} onSelect={() => handlePick(currentCategory.title, show)} />))}</div>
         </div>
-
-        {/* Sticky bottom CTA */}
         <div className="fixed bottom-0 left-0 right-0 z-20 px-5 pb-6 pt-3 bg-gradient-to-t from-surface via-surface to-transparent">
           <div className="max-w-[480px] mx-auto">
-            <button
-              onClick={handleLockIn}
-              disabled={!selectedTitle}
-              className={`w-full py-4 rounded-[14px] text-base font-bold transition-all duration-200 ${
-                selectedTitle
-                  ? 'bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5'
-                  : 'bg-surface-overlay text-gray-500 cursor-not-allowed'
-              }`}
-            >
-              {selectedTitle ? `Lock In: ${selectedTitle} →` : 'Lock In Pick'}
-            </button>
-            <p className="text-center mt-2.5 text-xs text-gray-500">
-              Not sure? <a href={`/show/${pickSlugs[currentCategory.title] || ''}`} className="text-brand hover:underline">Check the CriticScore on Broadway Scorecard</a>
-            </p>
+            <button onClick={handleLockIn} disabled={!selectedTitle} className={`w-full py-4 rounded-[14px] text-base font-bold transition-all duration-200 ${selectedTitle ? 'bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5' : 'bg-surface-overlay text-gray-500 cursor-not-allowed'}`}>{selectedTitle ? 'Lock In: ' + selectedTitle + ' \u2192' : 'Lock In Pick'}</button>
+            <p className="text-center mt-2.5 text-xs text-gray-500">Not sure? Go with your gut!</p>
           </div>
         </div>
       </div>
     );
   }
 
-  // ─── REVEAL ───
   if (screen === 'reveal' && currentCategory) {
     const userPick = picks[currentCategory.title];
-    const nominees = currentCategory.nominees;
+    const nominees = [...currentCategory.nominees].sort((a, b) => (b.compositeScore ?? 0) - (a.compositeScore ?? 0));
     const criticScorePick = getCriticScorePick(nominees);
     const criticPicks = getCriticPicks(currentCategory.title, nominees);
     const crowdPcts = getCrowdPercentages(nominees);
-
+    const criticScorePickShow = nominees.find(n => n.title === criticScorePick);
     const matchesCriticScore = userPick === criticScorePick;
     const criticMatches = criticPicks.filter(p => p === userPick).length;
-
     const hasMoreCategories = findNextNonEmptyCategory(currentCatIdx) !== null;
-
     return (
       <div className="min-h-screen bg-surface flex flex-col pb-[140px]">
-        {/* Header */}
         <div className="sticky top-0 z-10 px-5 py-4 flex items-center justify-between border-b border-white/5 bg-surface/90 backdrop-blur-xl">
-          <button onClick={() => goToScreen('picking')} className="text-gray-400 text-sm hover:text-white transition-colors p-2 -m-2">
-            &larr; Back
-          </button>
-          <div className="flex gap-1.5">
-            {currentTier.categories.filter(c => c.nominees.length > 0).map((_, i) => (
-              <div
-                key={i}
-                className={`h-2 rounded transition-all duration-300 ${
-                  i <= currentTier.categories.filter(c => c.nominees.length > 0).findIndex(c => c.title === currentCategory.title)
-                    ? 'w-2 bg-[#ff1368]' : 'w-2 bg-surface-overlay'
-                }`}
-              />
-            ))}
-          </div>
+          <button onClick={() => goToScreen('picking')} className="text-gray-400 text-sm hover:text-white transition-colors p-2 -m-2">&larr; Back</button>
+          <div className="flex gap-1.5">{currentTier.categories.filter(c => c.nominees.length > 0).map((_, i) => (<div key={i} className={`h-2 rounded transition-all duration-300 ${i <= currentTier.categories.filter(c => c.nominees.length > 0).findIndex(c => c.title === currentCategory.title) ? 'w-2 bg-[#ff1368]' : 'w-2 bg-surface-overlay'}`} />))}</div>
           <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Reveal</div>
         </div>
-
-        {/* Body */}
         <div className="flex-1 px-5 py-6 max-w-[480px] mx-auto w-full">
-          <div className="text-center mb-8 animate-fade-up" style={{ animationFillMode: 'both' }}>
-            <h2 className="text-2xl font-extrabold">{currentCategory.title}</h2>
-            <p className="text-sm text-gray-400 mt-1">Here&apos;s what the experts picked</p>
-          </div>
-
-          {/* User's pick */}
+          <div className="text-center mb-8 animate-fade-up" style={{ animationFillMode: 'both' }}><h2 className="text-2xl font-extrabold">{currentCategory.title}</h2><p className="text-sm text-gray-400 mt-1">Here&apos;s what the experts picked</p></div>
           <div className="p-4 rounded-[14px] bg-[#ff1368]/[0.06] border border-[#ff1368]/15 mb-6 animate-fade-up" style={{ animationDelay: '0.15s', animationFillMode: 'both' }}>
             <div className="text-[10px] font-bold uppercase tracking-wider text-[#ff1368] mb-2">Your Pick</div>
             <div className="text-lg font-extrabold">{userPick}</div>
-            <div className="text-xs text-gray-400 mt-1">
-              {matchesCriticScore && <span className="text-green-500 font-semibold">Matches CriticScore prediction</span>}
-              {matchesCriticScore && ' · '}
-              You agree with {criticMatches} of {CRITICS.length} critics
-            </div>
+            <div className="text-xs text-gray-400 mt-1">{matchesCriticScore && <span className="text-green-500 font-semibold">Matches CriticScore prediction</span>}{matchesCriticScore && ' \u00b7 '}You agree with {criticMatches} of {CRITICS.length} critics</div>
           </div>
-
-          {/* Critics Panel */}
           <div className="mb-6">
-            <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-gray-500 mb-3">
-              Critics Panel
-              <span className="text-[10px] font-semibold uppercase tracking-wider">
-                Powered by <span className="text-brand">CriticScore</span>
-              </span>
-              <div className="flex-1 h-px bg-white/5" />
-            </div>
-
-            {/* CriticScore */}
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">Critics Panel<span className="text-[10px] font-semibold uppercase tracking-wider">Powered by <span className="text-brand">CriticScore</span></span><div className="flex-1 h-px bg-white/5" /></div>
             <div className="flex items-center gap-3 p-3 rounded-xl bg-surface-raised mb-2 animate-slide-in" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
-              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-brand to-[#DAA520] flex items-center justify-center text-[13px] font-bold text-[#1a1a1a] flex-shrink-0">CS</div>
-              <div className="flex-1 min-w-0">
-                <div className="text-[13px] font-bold">CriticScore</div>
-                <div className="text-[11px] text-gray-500">Broadway Scorecard Algorithm</div>
-              </div>
-              <div className="text-right max-w-[140px]">
-                <div className="text-xs font-semibold truncate">{criticScorePick}</div>
-                {userPick === criticScorePick ? (
-                  <span className="inline-block mt-0.5 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-green-500/15 text-green-500">Match!</span>
-                ) : (
-                  <span className="inline-block mt-0.5 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-red-500/10 text-red-500/70">Different</span>
-                )}
+              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-brand to-[#DAA520] flex items-center justify-center text-sm font-bold text-[#1a1a1a] flex-shrink-0">CS</div>
+              <div className="flex-1 min-w-0"><div className="text-sm font-bold">CriticScore</div><div className="text-xs text-gray-500">Broadway Scorecard Algorithm</div></div>
+              <div className="text-right max-w-[160px]">
+                <div className="text-xs font-semibold truncate">{criticScorePick}{criticScorePickShow?.compositeScore != null && <span className="text-brand font-bold ml-1">({criticScorePickShow.compositeScore})</span>}</div>
+                {userPick === criticScorePick ? (<span className="inline-block mt-0.5 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-green-500/15 text-green-500">Match!</span>) : (<span className="inline-block mt-0.5 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-red-500/10 text-red-500/70">Different</span>)}
               </div>
             </div>
-
-            {/* Named critics */}
             {CRITICS.map((critic, i) => (
-              <div
-                key={critic.name}
-                className="flex items-center gap-3 p-3 rounded-xl bg-surface-raised mb-2 animate-slide-in"
-                style={{ animationDelay: `${0.4 + i * 0.1}s`, animationFillMode: 'both' }}
-              >
-                <div className="w-9 h-9 rounded-full bg-surface-overlay flex items-center justify-center text-sm font-bold text-gray-400 flex-shrink-0">
-                  {critic.initials}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-[13px] font-bold">{critic.name}</div>
-                  <div className="text-[11px] text-gray-500">{critic.outlet}</div>
-                </div>
-                <div className="text-right max-w-[140px]">
-                  <div className="text-xs font-semibold truncate">{criticPicks[i]}</div>
-                  {userPick === criticPicks[i] ? (
-                    <span className="inline-block mt-0.5 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-green-500/15 text-green-500">Match!</span>
-                  ) : (
-                    <span className="inline-block mt-0.5 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-red-500/10 text-red-500/70">Different</span>
-                  )}
-                </div>
+              <div key={critic.name} className="flex items-center gap-3 p-3 rounded-xl bg-surface-raised mb-2 animate-slide-in" style={{ animationDelay: `${0.4 + i * 0.1}s`, animationFillMode: 'both' }}>
+                <div className="w-9 h-9 rounded-full bg-surface-overlay flex items-center justify-center text-sm font-bold text-gray-400 flex-shrink-0">{critic.initials}</div>
+                <div className="flex-1 min-w-0"><div className="text-sm font-bold">{critic.name}</div><div className="text-xs text-gray-500">{critic.outlet}</div></div>
+                <div className="text-right max-w-[140px]"><div className="text-xs font-semibold truncate">{criticPicks[i]}</div>{userPick === criticPicks[i] ? (<span className="inline-block mt-0.5 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-green-500/15 text-green-500">Match!</span>) : (<span className="inline-block mt-0.5 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-red-500/10 text-red-500/70">Different</span>)}</div>
               </div>
             ))}
           </div>
-
-          {/* Crowd */}
           <div className="mb-7 animate-fade-up" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
-            <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-gray-500 mb-3">
-              What Other Players Picked
-              <div className="flex-1 h-px bg-white/5" />
-            </div>
-            {nominees.map((show, i) => (
-              <CrowdBar
-                key={show.slug}
-                label={show.title}
-                pct={crowdPcts[i] ?? 0}
-                isUserPick={show.title === userPick}
-                variant={show.title === userPick ? 'rose' : i === 0 ? 'brand' : 'muted'}
-              />
-            ))}
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">What Other Players Picked<div className="flex-1 h-px bg-white/5" /></div>
+            {nominees.map((show, i) => (<CrowdBar key={show.slug} label={show.title} pct={crowdPcts[i] ?? 0} isUserPick={show.title === userPick} variant={show.title === userPick ? 'rose' : i === 0 ? 'brand' : 'muted'} score={show.compositeScore} />))}
           </div>
-
         </div>
-
-        {/* Sticky bottom CTA */}
         <div className="fixed bottom-0 left-0 right-0 z-20 px-5 pb-6 pt-3 bg-gradient-to-t from-surface via-surface to-transparent">
           <div className="max-w-[480px] mx-auto flex flex-col gap-2.5">
-            {hasMoreCategories ? (
-              <>
-                <button
-                  onClick={handleNextCategory}
-                  className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5 transition-all"
-                >
-                  Keep Going &rarr;
-                  {(() => {
-                    const nextIdx = findNextNonEmptyCategory(currentCatIdx);
-                    const nextCat = nextIdx !== null ? currentTier.categories[nextIdx] : null;
-                    const catsWithNominees = currentTier.categories.filter(c => c.nominees.length > 0);
-                    const nextProgress = nextCat ? catsWithNominees.findIndex(c => c.title === nextCat.title) + 1 : 0;
-                    return nextCat ? (
-                      <span className="block text-xs font-medium opacity-80 mt-0.5">
-                        Next: {nextCat.title} ({nextProgress} of {catsWithNominees.length})
-                      </span>
-                    ) : null;
-                  })()}
-                </button>
-                <button
-                  onClick={() => goToScreen('results')}
-                  className="w-full py-3.5 rounded-[14px] text-sm font-semibold border border-white/10 text-gray-400 hover:border-brand hover:text-brand transition-all"
-                >
-                  Save &amp; Share My Ballot
-                </button>
-              </>
-            ) : (
-              <button
-                onClick={() => goToScreen('results')}
-                className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5 transition-all"
-              >
-                See My Ballot &rarr;
-              </button>
-            )}
+            {hasMoreCategories ? (<><button onClick={handleNextCategory} className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5 transition-all">Keep Going &rarr;{(() => { const nextIdx = findNextNonEmptyCategory(currentCatIdx); const nextCat = nextIdx !== null ? currentTier.categories[nextIdx] : null; const catsWN = currentTier.categories.filter(c => c.nominees.length > 0); const nextP = nextCat ? catsWN.findIndex(c => c.title === nextCat.title) + 1 : 0; return nextCat ? (<span className="block text-xs font-medium opacity-80 mt-0.5">Next: {nextCat.title} ({nextP} of {catsWN.length})</span>) : null; })()}</button><button onClick={() => goToScreen('results')} className="w-full py-3.5 rounded-[14px] text-sm font-semibold border border-white/10 text-gray-400 hover:border-brand hover:text-brand transition-all">Save &amp; Share My Ballot</button></>) : (<button onClick={() => goToScreen('results')} className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5 transition-all">See My Ballot &rarr;</button>)}
           </div>
         </div>
       </div>
     );
   }
 
-  // ─── RESULTS ───
   return (
     <div className="min-h-screen bg-surface flex flex-col">
-      {/* Header */}
-      <div className="sticky top-0 z-10 px-5 py-4 flex items-center justify-between border-b border-white/5 bg-surface/90 backdrop-blur-xl">
-        <button onClick={() => goToScreen('reveal')} className="text-gray-400 text-sm hover:text-white transition-colors p-2 -m-2">
-          &larr; Back
-        </button>
-        <div className="text-xs font-bold">Your Ballot</div>
-        <div />
-      </div>
-
+      <div className="sticky top-0 z-10 px-5 py-4 flex items-center justify-between border-b border-white/5 bg-surface/90 backdrop-blur-xl"><button onClick={() => goToScreen('reveal')} className="text-gray-400 text-sm hover:text-white transition-colors p-2 -m-2">&larr; Back</button><div className="text-xs font-bold">Your Ballot</div><div /></div>
       <div className="flex-1 px-5 py-8 max-w-[480px] mx-auto w-full flex flex-col items-center">
-        {/* Share Card */}
         <div className="w-full max-w-[380px] rounded-[20px] overflow-hidden bg-surface-raised border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-fade-up" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
-          <div className="px-6 pt-6 pb-4 bg-gradient-to-br from-[#ff1368]/10 to-brand/[0.06] border-b border-white/5">
-            <CoBrand size="small" />
-            <div className="text-[22px] font-black tracking-tight mt-4">My Tony Picks</div>
-            <div className="text-[13px] text-gray-400">Beat the Critics &middot; {data.season.ceremonyYear}</div>
-          </div>
-
+          <div className="px-6 pt-6 pb-4 bg-gradient-to-br from-[#ff1368]/10 to-brand/[0.06] border-b border-white/5"><CoBrand size="small" /><div className="text-[22px] font-black tracking-tight mt-4">My Tony Picks</div><div className="text-sm text-gray-400">Beat the Critics &middot; {data.season.ceremonyYear}</div></div>
           <div className="px-6 py-4">
-            {allCompletedPicks.map(([category, showTitle]) => (
-              <div key={category} className="flex items-center justify-between py-2.5 border-b border-white/5 last:border-b-0">
-                <div className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">
-                  {category.replace('Best ', '').replace('Revival of a ', 'Revival · ')}
-                </div>
-                <div className="text-[13px] font-bold text-right">{showTitle}</div>
-              </div>
-            ))}
-            {allCompletedPicks.length === 0 && (
-              <div className="py-4 text-center text-gray-500 text-sm">No picks made yet</div>
-            )}
+            {allCompletedPicks.map(([category, showTitle]) => (<div key={category} className="flex items-center justify-between py-2.5 border-b border-white/5 last:border-b-0"><div className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">{category.replace('Best ', '').replace('Revival of a ', 'Revival \u00b7 ')}</div><div className="text-sm font-bold text-right">{showTitle}</div></div>))}
+            {allCompletedPicks.length === 0 && (<div className="py-4 text-center text-gray-500 text-sm">No picks made yet</div>)}
           </div>
-
-          <div className="px-6 py-4 bg-[#ff1368]/[0.04] border-t border-white/5 text-center">
-            <div className="text-sm font-bold text-[#ff1368]">Can you Beat the Critics?</div>
-            <div className="text-[11px] text-gray-500 mt-1">todaytix.com/beat-the-critics</div>
-          </div>
+          <div className="px-6 py-4 bg-[#ff1368]/[0.04] border-t border-white/5 text-center"><div className="text-sm font-bold text-[#ff1368]">Can you Beat the Critics?</div><div className="text-xs text-gray-500 mt-1">todaytix.com/beat-the-critics</div></div>
         </div>
-
-        {/* Email capture */}
         <div className="w-full max-w-[380px] mt-7 p-6 rounded-2xl bg-gradient-to-br from-[#ff1368]/[0.06] to-brand/[0.04] border border-[#ff1368]/10 animate-fade-up" style={{ animationDelay: '0.6s', animationFillMode: 'both' }}>
           <h3 className="text-base font-bold">Get your results on Tony night</h3>
-          <p className="text-[13px] text-gray-400 mt-1.5 mb-4">We&apos;ll email you a scorecard showing how you stacked up against the critics.</p>
-
-          <div className="flex gap-2 mb-3">
-            <input
-              type="email"
-              placeholder="you@email.com"
-              className="flex-1 px-4 py-3.5 rounded-xl border border-white/10 bg-surface-raised text-white text-sm outline-none focus:border-[#ff1368] transition-colors placeholder:text-gray-500"
-            />
-            <button className="px-6 py-3.5 rounded-xl bg-[#ff1368] text-white text-sm font-bold hover:bg-[#e6115e] transition-colors whitespace-nowrap">
-              Save
-            </button>
-          </div>
-
-          <label className="flex items-start gap-2.5 text-left cursor-pointer">
-            <input type="checkbox" defaultChecked className="mt-0.5 accent-[#ff1368] w-4 h-4" />
-            <span className="text-xs text-gray-400 leading-relaxed">
-              Enter me in the drawing to win <strong className="text-brand">free TodayTix tickets</strong>
-            </span>
-          </label>
+          <p className="text-sm text-gray-400 mt-1.5 mb-4">We&apos;ll email you a scorecard showing how you stacked up against the critics.</p>
+          <div className="flex gap-2 mb-3"><input type="email" placeholder="you@email.com" className="flex-1 px-4 py-3.5 rounded-xl border border-white/10 bg-surface-raised text-white text-sm outline-none focus:border-[#ff1368] transition-colors placeholder:text-gray-500" /><button className="px-6 py-3.5 rounded-xl bg-[#ff1368] text-white text-sm font-bold hover:bg-[#e6115e] transition-colors whitespace-nowrap">Save</button></div>
+          <label className="flex items-start gap-2.5 text-left cursor-pointer"><input type="checkbox" defaultChecked className="mt-0.5 accent-[#ff1368] w-4 h-4" /><span className="text-xs text-gray-400 leading-relaxed">Enter me in the drawing to win <strong className="text-brand">free TodayTix tickets</strong></span></label>
         </div>
-
-        {/* Share buttons */}
         <div className="flex gap-2.5 mt-5 animate-fade-up" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
-          {[
-            { label: 'Share', icon: <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" /> },
-            { label: 'Post', icon: <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="currentColor" stroke="none" /> },
-            { label: 'Story', icon: <><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="12" cy="12" r="5" /><circle cx="18" cy="6" r="1.5" fill="currentColor" /></> },
-          ].map(btn => (
-            <button
-              key={btn.label}
-              className="flex items-center gap-1.5 px-4 py-2.5 rounded-[10px] text-[13px] font-semibold border border-white/10 bg-surface-raised text-white hover:border-brand hover:-translate-y-0.5 transition-all"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                {btn.icon}
-              </svg>
-              {btn.label}
-            </button>
-          ))}
+          {[{ label: 'Share', icon: <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" /> }, { label: 'Post', icon: <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="currentColor" stroke="none" /> }, { label: 'Story', icon: <><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="12" cy="12" r="5" /><circle cx="18" cy="6" r="1.5" fill="currentColor" /></> }].map(btn => (<button key={btn.label} className="flex items-center gap-1.5 px-4 py-2.5 rounded-[10px] text-sm font-semibold border border-white/10 bg-surface-raised text-white hover:border-brand hover:-translate-y-0.5 transition-all"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">{btn.icon}</svg>{btn.label}</button>))}
         </div>
       </div>
     </div>
