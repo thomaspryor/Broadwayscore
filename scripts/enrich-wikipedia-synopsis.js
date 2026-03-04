@@ -202,7 +202,7 @@ async function main() {
     }
 
     // Reject disambiguation pages
-    if (/\{\{disambiguation\}\}/i.test(content) || /may refer to:/i.test(content.substring(0, 500))) {
+    if (/\{\{disambiguation\}\}/i.test(content) || /may refer to:/i.test(content.substring(0, 2000))) {
       console.log('disambiguation page');
       notFound++;
       await new Promise(r => setTimeout(r, 300));
