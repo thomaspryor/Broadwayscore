@@ -500,7 +500,7 @@ jobs:
                   const fp = path.join(base,d,f);
                   const r = JSON.parse(fs.readFileSync(fp,'utf8'));
                   if (r.llmScore || r.wrongShow || r.wrongProduction || r.wrongAttribution) return;
-                  if (r.duplicateOf || r.rejectionReason || r.isRoundupArticle) return;
+                  if (r.duplicateOf || r.rejectionReason || r.isRoundupArticle || r.isMultiShowReview) return;
                   if (r.contentTier === 'invalid') return;
                   if (garbageSuffix.has(d + '/' + f)) return;
                   const hasText = r.fullText && r.fullText.length > 100;
