@@ -1652,7 +1652,7 @@ showDirs.forEach(showId => {
           if (urlPath.startsWith('/london') || urlHost.endsWith('.co.uk')) {
             data.outletId = 'timeout-london';
             data.outlet = 'Time Out London';
-            if (data.wrongProduction && data.wrongProductionNote && data.wrongProductionNote.includes('timeout')) {
+            if (data.wrongProduction && data.wrongProductionNote && data.wrongProductionNote.includes('US outlet "timeout"')) {
               delete data.wrongProduction;
               delete data.wrongProductionNote;
             }
