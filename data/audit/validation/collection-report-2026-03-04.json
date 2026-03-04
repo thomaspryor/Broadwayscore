@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-03-04T15:21:45.991Z",
+  "runDate": "2026-03-04T14:28:45.617Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,42 +11,42 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 169,
-    "failed": 901,
+    "processed": 170,
+    "failed": 815,
     "skipped": 0,
-    "successRate": "15.8%"
+    "successRate": "17.3%"
   },
   "tierBreakdown": {
-    "playwright": 67,
-    "amp": 24,
+    "playwright": 65,
+    "amp": 22,
     "browserbase": 0,
-    "directCookies": 15,
+    "directCookies": 18,
     "scrapingbee": 23,
     "brightdata": 0,
-    "archiveToday": 455,
-    "archive": 62
+    "archiveToday": 413,
+    "archive": 65
   },
   "statistics": {
-    "tier1Attempts": 248,
-    "tier1Success": 56,
-    "ampAttempts": 40,
-    "ampSuccess": 4,
+    "tier1Attempts": 4,
+    "tier1Success": 0,
+    "ampAttempts": 4,
+    "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 203,
-    "tier2Success": 10,
-    "tier3Attempts": 183,
+    "tier2Attempts": 9,
+    "tier2Success": 0,
+    "tier3Attempts": 9,
     "tier3Success": 0,
-    "tier3_6Attempts": 112,
-    "tier3_6Success": 112,
-    "tier4Attempts": 149,
-    "tier4Success": 18,
-    "totalFailed": 256,
-    "scrapingBeeCreditsUsed": 369,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 8,
+    "tier4Success": 5,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 93,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 59,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 13,
+    "urlDiscoverySuccess": 7,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -54,9 +54,10 @@
     "les-liaisons-dangereuses-1987/timeout--david-cote.json",
     "les-miserables-1987/nydailynews--joe-dziemianowicz.json",
     "oklahoma-2002/nydailynews--chris-jones.json",
-    "passing-strange-2008/guardian--kate-wyver.json",
-    "rodgers-hammersteins-cinderella-2013/theatermania--hayley-levitt.json",
-    "something-rotten-2015/new-jersey-newsroom--michael-sommers.json"
+    "once-on-this-island-2017/deadline--jeremy-gerard.json",
+    "patriots-2024/deadline--pete-hammond.json",
+    "the-parisian-woman-2017/deadline--jeremy-gerard.json",
+    "the-parisian-woman-2017/deadline--pete-hammond.json"
   ],
   "failed": [
     "on-your-feet-2015/nytg--tulis-mccall.json",
@@ -356,103 +357,17 @@
     "oh-mary-off-broadway-2024/wsj--charles-isherwood.json",
     "oklahoma-2002/wsj--terry-teachout.json",
     "oklahoma-2019/broadwaynews--charles-isherwood.json",
-    "oklahoma-2019/onandoffbroadwaytheaterreviews--richard-seff.json",
-    "on-the-town-1971/wsj--terry-teachout.json",
-    "on-the-town-2014/guardian--jesse-green.json",
-    "one-man-two-guvnors-2012/new-jersey-newsroom--michael-sommers.json",
-    "passing-strange-2008/ew--lisa-schwarzbaum.json",
-    "passing-strange-2008/wsj--terry-teachout.json",
-    "picnic-2013/newsday--steve-parks.json",
-    "pretty-woman-the-musical-2018/broadwaynews--charles-isherwood.json",
-    "pretty-woman-the-musical-2018/onandoffbroadwaytheaterreviews--richard-seff.json",
-    "pretty-woman-the-musical-2018/theatermania--hayley-levitt.json",
-    "primo-2005/680newscom--gloria-martin.json",
-    "private-lives-1975/ew--clark-collis.json",
-    "private-lives-2002/ew--clark-collis.json",
-    "private-lives-2025/ew--clark-collis.json",
-    "private-lives-2025/timeout--david-cote.json",
-    "promises-promises-2010/timeout--adam-feldman.json",
-    "purlie-victorious-2023/wsj--charles-isherwood.json",
-    "race-2009/timeout--adam-feldman.json",
-    "radio-golf-2007/wsj--terry-teachout.json",
-    "rain-2010/wsj--terry-teachout.json",
-    "redwood-2025/theatre-reviews-limited--joseph-verlezza.json",
-    "rent-1996/timeout--david-cote.json",
-    "rock-of-ages-2009/nypost--elisabeth-vincentelli.json",
-    "rodgers-hammersteins-cinderella-2013/ew--jessica-shaw.json",
-    "romeo-and-juliet-2013/theatermania--adam-feldman.json",
-    "romeo-and-juliet-2013/wsj--terry-teachout.json",
-    "saint-joan-2018/broadwaynews--charles-isherwood.json",
-    "seminar-2011/ew--lisa-schwarzbaum.json",
-    "she-loves-me-1994/wsj--terry-teachout.json",
-    "she-loves-me-2016/reviewing-the-drama--robin-riegelhaupt.json",
-    "shucked-2023/the-news-herald--mark-meszoros.json",
-    "shucked-2023/theatre-reviews-limited--joseph-verlezza.json",
-    "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016/theatermania--jesse-green.json",
-    "skylight-2015/wsj--terry-teachout.json",
-    "sondheim-on-sondheim-2010/timeout--adam-feldman.json",
-    "south-pacific-2008/timeout--adam-feldman.json",
-    "stereophonic-2024/wsj--charles-isherwood.json",
-    "stick-fly-2011/timeout--david-cote.json",
-    "straight-white-men-2018/broadwaynews--charles-isherwood.json",
-    "straight-white-men-2018/theater-reviews-from-my-seat--joe-lombardi.json",
-    "summer-2018/deadline--greg-evans.json",
-    "sunday-in-the-park-with-george-2008/wsj--terry-teachout.json",
-    "sunset-boulevard-1994/wsj--charles-isherwood.json",
-    "sunset-boulevard-2017/theatermania--jesse-oxfeld.json",
-    "sunset-boulevard-2024/theatre-reviews-limited--david-roberts.json",
-    "sweeney-todd-1979/wsj--charles-isherwood.json",
-    "tammy-faye-2024/wsj--charles-isherwood.json",
-    "that-championship-season-2011/timeout--david-cote.json",
-    "the-anarchist-2012/ew--lisa-schwarzbaum.json",
-    "the-bands-visit-2017/broadwaynews--elizabeth-bradley.json",
-    "the-bands-visit-2017/newnownextcom--michael-musto.json",
-    "the-boys-in-the-band-2018/broadwaynews--charles-isherwood.json",
-    "the-cher-show-2018/broadwaynews--charles-isherwood.json",
-    "the-cherry-orchard-1977/newsday--linda-winer.json",
-    "the-encounter-2016/nypost--unknown.json",
-    "the-farnsworth-invention-2007/wsj--terry-teachout.json",
-    "the-ferryman-2018/broadwaynews--charles-isherwood.json",
-    "the-ferryman-2018/theater-reviews-from-my-seat--joe-lombardi.json",
-    "the-front-page-2016/wsj--terry-teachout.json",
-    "the-hills-of-california-2024/theatre-reviews-limited--david-roberts.json",
-    "the-house-of-blue-leaves-2011/observer--jesse-oxfeld.json",
-    "the-house-of-blue-leaves-2011/timeout--david-cote.json",
-    "the-iceman-cometh-2018/broadwaynews--charles-isherwood.json",
-    "the-importance-of-being-earnest-2011/timeout--david-cote.json",
-    "the-little-mermaid-2008/wsj--terry-teachout.json",
-    "the-merchant-of-venice-1973/new-jersey-newsroom--michael-sommers.json",
-    "the-merchant-of-venice-1973/timeout--david-cote.json",
-    "the-merchant-of-venice-1989/new-jersey-newsroom--michael-sommers.json",
-    "the-merchant-of-venice-1989/newsday--linda-winer.json",
-    "the-merchant-of-venice-1989/timeout--david-cote.json",
     "the-music-man-2000/deadline--greg-evans.json",
-    "the-nap-2018/broadwaynews--charles-isherwood.json",
-    "the-new-one-2018/broadwaynews--elizabeth-bradley.json",
-    "the-odd-couple-2005/wsj--terry-teachout.json",
-    "the-parisian-woman-2017/broadwaynews--charles-isherwood.json",
-    "the-parisian-woman-2017/newnownextcom--michael-musto.json",
-    "the-performers-2012/newsday--linda-winer.json",
-    "the-pitmen-painters-2010/nypost--elisabeth-vincentelli.json",
-    "the-pitmen-painters-2010/timeout--adam-feldman.json",
-    "the-price-2017/reviewing-the-drama--robin-riegelhaupt.json",
-    "the-prom-2018/broadwaynews--elizabeth-bradley.json",
-    "the-realistic-joneses-2014/wsj--terry-teachout.json",
-    "the-ritz-2007/newsday--linda-winer.json",
-    "the-road-to-mecca-2012/ew--melissa-rose-bernardo.json",
-    "the-robber-bridegroom-1976/deadline--jeremy-gerard.json",
-    "the-robber-bridegroom-1976/ew--jesse-oxfeld.json",
-    "the-robber-bridegroom-1976/newsday--linda-winer.json",
-    "the-robber-bridegroom-1976/thewrap--robert-hofler.json",
-    "the-royal-family-2009/theatermania--david-finkle.json",
-    "the-scottsboro-boys-2010/observer--jesse-oxfeld.json",
-    "the-scottsboro-boys-2010/timeout--david-cote.json",
-    "the-terms-of-my-surrender-2017/theatre-reviews-limited--david-roberts.json",
-    "the-velocity-of-autumn-2014/ew--stephan-lee.json",
-    "the-velocity-of-autumn-2014/wsj--terry-teachout.json",
-    "the-weir-1999/wsj--charles-isherwood.json",
-    "the-wiz-2024/wsj--charles-isherwood.json",
-    "time-and-the-conways-2017/broadwaynews--charles-isherwood.json"
+    "a-soldiers-play-2020/deadline--greg-evans.json",
+    "doctor-zhivago-2015/deadline--jeremy-gerard.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2002/deadline--greg-evans.json",
+    "fully-committed-2016/deadline--jeremy-gerard.json",
+    "kiss-me-kate-2019/deadline--pete-hammond.json",
+    "living-on-love-2015/deadline--jeremy-gerard.json",
+    "punch-2025/deadline--greg-evans.json",
+    "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016/deadline--jeremy-gerard.json",
+    "suffs-2024/deadline--pete-hammond.json",
+    "trouble-in-mind-2021/deadline--greg-evans.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -542,9 +457,7 @@
       "a-view-from-the-bridge-2015/guardian--lyn-gardner.json",
       "burn-this-1987/timeout--adam-feldman.json",
       "eclipsed-2016/guardian--alexis-soloski.json",
-      "girl-from-the-north-country-2022/ew--allison-adato.json",
-      "passing-strange-2008/guardian--kate-wyver.json",
-      "rodgers-hammersteins-cinderella-2013/theatermania--hayley-levitt.json"
+      "girl-from-the-north-country-2022/ew--allison-adato.json"
     ],
     "amp": [
       "data/review-texts/kiss-me-kate-1999/thewrap--robert-hofler.json",
@@ -569,7 +482,10 @@
       "the-father-1981/hollywood-reporter--david-rooney.json",
       "the-visit-1973/hollywood-reporter--david-rooney.json",
       "a-christmas-carol-2001/timeout--adam-feldman.json",
-      "les-liaisons-dangereuses-1987/timeout--david-cote.json"
+      "les-liaisons-dangereuses-1987/timeout--david-cote.json",
+      "the-music-man-2000/deadline--greg-evans.json",
+      "frankie-and-johnny-in-the-clair-de-lune-2002/deadline--greg-evans.json",
+      "punch-2025/deadline--greg-evans.json"
     ],
     "scrapingbee": [
       "broken-glass-west-end-2026/independent--steve-fowler.json",
@@ -738,49 +654,7 @@
       "data/review-texts/noises-off-2016/reviewing-the-drama--robin-riegelhaupt.json",
       "data/review-texts/oh-hello-on-broadway-2016/wsj--terry-teachout.json",
       "data/review-texts/oh-mary-off-broadway-2024/wsj--charles-isherwood.json",
-      "data/review-texts/oklahoma-2002/wsj--terry-teachout.json",
-      "data/review-texts/on-the-town-1971/wsj--terry-teachout.json",
-      "data/review-texts/one-man-two-guvnors-2012/new-jersey-newsroom--michael-sommers.json",
-      "data/review-texts/passing-strange-2008/wsj--terry-teachout.json",
-      "data/review-texts/picnic-2013/newsday--steve-parks.json",
-      "data/review-texts/pretty-woman-the-musical-2018/theatermania--hayley-levitt.json",
-      "data/review-texts/primo-2005/680newscom--gloria-martin.json",
-      "data/review-texts/private-lives-1975/ew--clark-collis.json",
-      "data/review-texts/private-lives-2002/ew--clark-collis.json",
-      "data/review-texts/private-lives-2025/ew--clark-collis.json",
-      "data/review-texts/purlie-victorious-2023/wsj--charles-isherwood.json",
-      "data/review-texts/race-2009/timeout--adam-feldman.json",
-      "data/review-texts/radio-golf-2007/wsj--terry-teachout.json",
-      "data/review-texts/rain-2010/wsj--terry-teachout.json",
-      "data/review-texts/romeo-and-juliet-2013/wsj--terry-teachout.json",
-      "data/review-texts/seminar-2011/ew--lisa-schwarzbaum.json",
-      "data/review-texts/she-loves-me-1994/wsj--terry-teachout.json",
-      "data/review-texts/she-loves-me-2016/reviewing-the-drama--robin-riegelhaupt.json",
-      "data/review-texts/shucked-2023/the-news-herald--mark-meszoros.json",
-      "data/review-texts/stereophonic-2024/wsj--charles-isherwood.json",
-      "data/review-texts/straight-white-men-2018/theater-reviews-from-my-seat--joe-lombardi.json",
-      "data/review-texts/summer-2018/deadline--greg-evans.json",
-      "data/review-texts/sunday-in-the-park-with-george-2008/wsj--terry-teachout.json",
-      "data/review-texts/sunset-boulevard-1994/wsj--charles-isherwood.json",
-      "data/review-texts/sweeney-todd-1979/wsj--charles-isherwood.json",
-      "data/review-texts/tammy-faye-2024/wsj--charles-isherwood.json",
-      "data/review-texts/the-encounter-2016/nypost--unknown.json",
-      "data/review-texts/the-farnsworth-invention-2007/wsj--terry-teachout.json",
-      "data/review-texts/the-ferryman-2018/theater-reviews-from-my-seat--joe-lombardi.json",
-      "data/review-texts/the-front-page-2016/wsj--terry-teachout.json",
-      "data/review-texts/the-little-mermaid-2008/wsj--terry-teachout.json",
-      "data/review-texts/the-merchant-of-venice-1973/new-jersey-newsroom--michael-sommers.json",
-      "data/review-texts/the-merchant-of-venice-1989/new-jersey-newsroom--michael-sommers.json",
-      "data/review-texts/the-odd-couple-2005/wsj--terry-teachout.json",
-      "data/review-texts/the-price-2017/reviewing-the-drama--robin-riegelhaupt.json",
-      "data/review-texts/the-realistic-joneses-2014/wsj--terry-teachout.json",
-      "data/review-texts/the-robber-bridegroom-1976/deadline--jeremy-gerard.json",
-      "data/review-texts/the-robber-bridegroom-1976/ew--jesse-oxfeld.json",
-      "data/review-texts/the-robber-bridegroom-1976/newsday--linda-winer.json",
-      "data/review-texts/the-robber-bridegroom-1976/thewrap--robert-hofler.json",
-      "data/review-texts/the-velocity-of-autumn-2014/wsj--terry-teachout.json",
-      "data/review-texts/the-weir-1999/wsj--charles-isherwood.json",
-      "data/review-texts/the-wiz-2024/wsj--charles-isherwood.json"
+      "data/review-texts/oklahoma-2002/wsj--terry-teachout.json"
     ],
     "archive": [
       "come-from-away-2017/thewrap--alphonso-duralde.json",
@@ -844,66 +718,48 @@
       "butley-2006/thewrap--robert-hofler.json",
       "carrie-1988/ew--thom-geier.json",
       "cats-1982/wsj--terry-teachout.json",
-      "something-rotten-2015/new-jersey-newsroom--michael-sommers.json"
+      "once-on-this-island-2017/deadline--jeremy-gerard.json",
+      "patriots-2024/deadline--pete-hammond.json",
+      "the-parisian-woman-2017/deadline--jeremy-gerard.json",
+      "the-parisian-woman-2017/deadline--pete-hammond.json"
     ]
   },
-  "failuresByOutlet": {
-    "Entertainment Weekly": {
-      "count": 9,
-      "domain": "ew.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
+  "failuresByOutlet": {},
+  "urlDiscoveries": [
+    {
+      "reviewId": "kiss-me-kate-2019/deadline--pete-hammond.json",
+      "oldUrl": "https://deadline.com/2019/03/kiss-me-kate-broadway-review-will-chase-kelli-ohara-cole-porter-roundabout-theatre-company-1202574481/",
+      "newUrl": "https://deadline.com/2019/03/broadway-box-office-30-million-temptations-aint-too-proud-be-more-chill-kiss-me-kate-1202573654/"
     },
-    "Broadway News": {
-      "count": 31,
-      "domain": "broadway.news",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
+    {
+      "reviewId": "once-on-this-island-2017/deadline--jeremy-gerard.json",
+      "oldUrl": "https://deadline.com/2017/12/broadway-review-once-on-this-island-revival-1202218859/",
+      "newUrl": "https://deadline.com/2017/11/broadway-box-office-dips-once-on-this-island-nears-sro-1202212574/"
     },
-    "onandoffbroadwaytheaterreviews": {
-      "count": 7,
-      "domain": "onandoffbroadwaytheaterreviews.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
+    {
+      "reviewId": "patriots-2024/deadline--pete-hammond.json",
+      "oldUrl": "https://deadline.com/2024/05/ai-deepfakes-senate-bill-hollywood-1235899967/warner-music-group-ceo-robert-kyncl-and-singer-actor-fka-twigs-congressional-testimony-no-fakes-act/",
+      "newUrl": "https://deadline.com/2024/01/patriots-broadway-opening-date-1235800324/"
     },
-    "New York Post": {
-      "count": 4,
-      "domain": "nypost.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
+    {
+      "reviewId": "punch-2025/deadline--greg-evans.json",
+      "oldUrl": "https://deadline.com/2025/09/punch-broadway-review-1236564771/",
+      "newUrl": "https://deadline.com/2025/04/punch-west-end-transfer-broadway-james-graham-1236355321/"
     },
-    "Newsday": {
-      "count": 14,
-      "domain": "newsday.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
+    {
+      "reviewId": "suffs-2024/deadline--pete-hammond.json",
+      "oldUrl": "https://deadline.com/stephen-colbert-jimmy-kimmel-donald-trump/",
+      "newUrl": "https://deadline.com/2024/07/suffs-broadway-protest-1236000674/"
     },
-    "The Guardian": {
-      "count": 1,
-      "domain": "theguardian.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
+    {
+      "reviewId": "the-parisian-woman-2017/deadline--jeremy-gerard.json",
+      "oldUrl": "https://deadline.com/2017/11/broadway-review-uma-thurman-beau-willimon-the-parisian-woman-1202217774/",
+      "newUrl": "https://deadline.com/2017/07/uma-thurman-beau-willimon-the-parisian-woman-broadway-1202127238/"
     },
-    "New York Observer": {
-      "count": 2,
-      "domain": "observer.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Broadway.news": {
-      "count": 1,
-      "domain": "broadway.news",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
+    {
+      "reviewId": "the-parisian-woman-2017/deadline--pete-hammond.json",
+      "oldUrl": "https://deadline.com/2017/11/broadway-review-uma-thurman-beau-willimon-the-parisian-woman-1202217774/",
+      "newUrl": "https://deadline.com/2017/07/uma-thurman-beau-willimon-the-parisian-woman-broadway-1202127238/"
     }
-  },
-  "urlDiscoveries": []
+  ]
 }
