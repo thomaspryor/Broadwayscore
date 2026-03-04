@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-03-04T14:23:09.400Z",
+  "runDate": "2026-03-04T14:23:48.190Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,42 +11,42 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 167,
-    "failed": 817,
+    "processed": 199,
+    "failed": 827,
     "skipped": 0,
-    "successRate": "17.0%"
+    "successRate": "19.4%"
   },
   "tierBreakdown": {
     "playwright": 66,
     "amp": 22,
     "browserbase": 0,
-    "directCookies": 15,
+    "directCookies": 25,
     "scrapingbee": 23,
     "brightdata": 0,
     "archiveToday": 417,
-    "archive": 61
+    "archive": 83
   },
   "statistics": {
-    "tier1Attempts": 11,
-    "tier1Success": 1,
-    "ampAttempts": 6,
-    "ampSuccess": 0,
+    "tier1Attempts": 23,
+    "tier1Success": 23,
+    "ampAttempts": 4,
+    "ampSuccess": 4,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 10,
-    "tier2Success": 0,
+    "tier2Attempts": 4,
+    "tier2Success": 4,
     "tier3Attempts": 4,
     "tier3Success": 0,
     "tier3_6Attempts": 4,
     "tier3_6Success": 4,
-    "tier4Attempts": 19,
-    "tier4Success": 2,
-    "totalFailed": 13,
-    "scrapingBeeCreditsUsed": 7,
+    "tier4Attempts": 45,
+    "tier4Success": 26,
+    "totalFailed": 23,
+    "scrapingBeeCreditsUsed": 52,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 7,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 12,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -216,7 +216,39 @@
     "les-liaisons-dangereuses-1987/timeout--david-cote.json",
     "les-miserables-1987/nydailynews--joe-dziemianowicz.json",
     "oklahoma-2002/nydailynews--chris-jones.json",
-    "all-my-sons-1987/ew--jessica-derschowitz.json"
+    "a-little-night-music-2009/timeout--david-cote.json",
+    "brief-encounter-2010/timeout--david-cote.json",
+    "collected-stories-2010/timeout--adam-feldman.json",
+    "come-fly-away-2010/timeout--adam-feldman.json",
+    "million-dollar-quartet-2010/timeout--adam-feldman.json",
+    "next-fall-2010/timeout--adam-feldman.json",
+    "next-to-normal-2009/timeout--adam-feldman.json",
+    "private-lives-2025/timeout--david-cote.json",
+    "promises-promises-2010/timeout--adam-feldman.json",
+    "rent-1996/timeout--david-cote.json",
+    "sondheim-on-sondheim-2010/timeout--adam-feldman.json",
+    "south-pacific-2008/timeout--adam-feldman.json",
+    "the-house-of-blue-leaves-2011/timeout--david-cote.json",
+    "the-pitmen-painters-2010/timeout--adam-feldman.json",
+    "the-scottsboro-boys-2010/timeout--david-cote.json",
+    "time-stands-still-2010/timeout--adam-feldman.json",
+    "amazing-grace-2015/timeout--kris-vire.json",
+    "an-enemy-of-the-people-2012/timeout--david-cote.json",
+    "cats-2016/timeout--adam-feldman.json",
+    "gigi-2015/timeout--adam-feldman.json",
+    "hamlet-2009/timeout--david-cote.json",
+    "how-to-succeed-in-business-without-really-trying-2011/timeout--david-cote.json",
+    "imitation-of-life-off-broadway-2026/timeout--adam-feldman.json",
+    "in-transit-2016/timeout--adam-feldman.json",
+    "ink-2019/timeout--adam-feldman.json",
+    "its-only-a-play-2014/timeout--david-cote.json",
+    "la-bete-2010/timeout--david-cote.json",
+    "lucky-guy-2013/timeout--adam-feldman.json",
+    "on-a-clear-day-you-can-see-forever-2011/timeout--david-cote.json",
+    "the-bridges-of-madison-county-2014/timeout--adam-feldman.json",
+    "the-lightning-thief-2019/timeout--helen-shaw.json",
+    "the-little-foxes-2017/timeout--adam-feldman.json",
+    "the-normal-heart-2011/timeout--david-cote.json"
   ],
   "failed": [
     "les-miserables-1987/nytg--tulis-mccall.json",
@@ -1023,19 +1055,29 @@
     "oh-mary-off-broadway-2024/wsj--charles-isherwood.json",
     "oklahoma-2002/wsj--terry-teachout.json",
     "oklahoma-2019/broadwaynews--charles-isherwood.json",
-    "amelie-a-new-musical-2017/ew--marc-snetiker.json",
-    "bonnie-and-clyde-2011/ew--thom-geier.json",
-    "passing-strange-2008/ew--lisa-schwarzbaum.json",
-    "private-lives-1975/ew--clark-collis.json",
-    "private-lives-2002/ew--clark-collis.json",
-    "private-lives-2025/ew--clark-collis.json",
-    "rodgers-hammersteins-cinderella-2013/ew--jessica-shaw.json",
-    "seminar-2011/ew--lisa-schwarzbaum.json",
-    "the-anarchist-2012/ew--lisa-schwarzbaum.json",
-    "the-road-to-mecca-2012/ew--melissa-rose-bernardo.json",
-    "the-velocity-of-autumn-2014/ew--stephan-lee.json",
-    "wonderland-2011/ew--melissa-rose-bernardo.json",
-    "burn-the-floor-2009/ew--jennifer-armstrong.json"
+    "a-behanding-in-spokane-2010/timeout--bill-cain.json",
+    "a-life-in-the-theatre-2010/timeout--adam-feldman.json",
+    "driving-miss-daisy-2010/timeout--adam-feldman.json",
+    "stick-fly-2011/timeout--david-cote.json",
+    "that-championship-season-2011/timeout--david-cote.json",
+    "the-importance-of-being-earnest-2011/timeout--david-cote.json",
+    "the-merchant-of-venice-1973/timeout--david-cote.json",
+    "the-merchant-of-venice-1989/timeout--david-cote.json",
+    "a-behanding-in-spokane-2010/timeout--david-cote.json",
+    "act-one-2014/timeout--adam-feldman.json",
+    "act-one-2014/timeout--david-cote.json",
+    "death-of-a-salesman-2012/timeout--david-cote.json",
+    "disgraced-2014/timeout--adam-feldman.json",
+    "disgraced-2014/timeout--david-cote.json",
+    "disgraced-2014/timeout--times-sq.json",
+    "elf-2012/timeout--david-cote.json",
+    "jerusalem-2011/timeout--david-cote.json",
+    "machinal-2014/timeout--andrzej-lukowski.json",
+    "machinal-2014/timeout--david-cote.json",
+    "no-mans-land-2013/timeout--adam-feldman.json",
+    "of-mice-and-men-2014/timeout--adam-feldman.json",
+    "of-mice-and-men-2014/timeout--david-cote.json",
+    "straight-white-men-2018/timeout--adam-feldman.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1104,7 +1146,7 @@
       "burn-this-1987/timeout--adam-feldman.json",
       "eclipsed-2016/guardian--alexis-soloski.json",
       "girl-from-the-north-country-2022/ew--allison-adato.json",
-      "all-my-sons-1987/ew--jessica-derschowitz.json"
+      "amazing-grace-2015/timeout--kris-vire.json"
     ],
     "amp": [
       "data/review-texts/a-christmas-carol-1991/thewrap--robert-hofler.json",
@@ -1146,7 +1188,17 @@
       "the-father-1981/hollywood-reporter--david-rooney.json",
       "the-visit-1973/hollywood-reporter--david-rooney.json",
       "a-christmas-carol-2001/timeout--adam-feldman.json",
-      "les-liaisons-dangereuses-1987/timeout--david-cote.json"
+      "les-liaisons-dangereuses-1987/timeout--david-cote.json",
+      "an-enemy-of-the-people-2012/timeout--david-cote.json",
+      "gigi-2015/timeout--adam-feldman.json",
+      "hamlet-2009/timeout--david-cote.json",
+      "how-to-succeed-in-business-without-really-trying-2011/timeout--david-cote.json",
+      "in-transit-2016/timeout--adam-feldman.json",
+      "ink-2019/timeout--adam-feldman.json",
+      "la-bete-2010/timeout--david-cote.json",
+      "on-a-clear-day-you-can-see-forever-2011/timeout--david-cote.json",
+      "the-little-foxes-2017/timeout--adam-feldman.json",
+      "the-normal-heart-2011/timeout--david-cote.json"
     ],
     "scrapingbee": [
       "orphans-2013/guardian--arifa-akbar.json",
@@ -1588,10 +1640,10 @@
       "data/review-texts/oh-hello-on-broadway-2016/wsj--terry-teachout.json",
       "data/review-texts/oh-mary-off-broadway-2024/wsj--charles-isherwood.json",
       "data/review-texts/oklahoma-2002/wsj--terry-teachout.json",
-      "data/review-texts/private-lives-1975/ew--clark-collis.json",
-      "data/review-texts/private-lives-2002/ew--clark-collis.json",
-      "data/review-texts/private-lives-2025/ew--clark-collis.json",
-      "data/review-texts/seminar-2011/ew--lisa-schwarzbaum.json"
+      "data/review-texts/death-of-a-salesman-2012/timeout--david-cote.json",
+      "data/review-texts/elf-2012/timeout--david-cote.json",
+      "data/review-texts/jerusalem-2011/timeout--david-cote.json",
+      "data/review-texts/no-mans-land-2013/timeout--adam-feldman.json"
     ],
     "archive": [
       "come-from-away-2017/thewrap--alphonso-duralde.json",
@@ -1654,17 +1706,37 @@
       "born-yesterday-2011/observer--jesse-oxfeld.json",
       "butley-2006/thewrap--robert-hofler.json",
       "carrie-1988/ew--thom-geier.json",
-      "cats-1982/wsj--terry-teachout.json"
+      "cats-1982/wsj--terry-teachout.json",
+      "a-little-night-music-2009/timeout--david-cote.json",
+      "brief-encounter-2010/timeout--david-cote.json",
+      "collected-stories-2010/timeout--adam-feldman.json",
+      "come-fly-away-2010/timeout--adam-feldman.json",
+      "million-dollar-quartet-2010/timeout--adam-feldman.json",
+      "next-fall-2010/timeout--adam-feldman.json",
+      "next-to-normal-2009/timeout--adam-feldman.json",
+      "private-lives-2025/timeout--david-cote.json",
+      "promises-promises-2010/timeout--adam-feldman.json",
+      "rent-1996/timeout--david-cote.json",
+      "sondheim-on-sondheim-2010/timeout--adam-feldman.json",
+      "south-pacific-2008/timeout--adam-feldman.json",
+      "the-house-of-blue-leaves-2011/timeout--david-cote.json",
+      "the-pitmen-painters-2010/timeout--adam-feldman.json",
+      "the-scottsboro-boys-2010/timeout--david-cote.json",
+      "time-stands-still-2010/timeout--adam-feldman.json",
+      "cats-2016/timeout--adam-feldman.json",
+      "imitation-of-life-off-broadway-2026/timeout--adam-feldman.json",
+      "its-only-a-play-2014/timeout--david-cote.json",
+      "lucky-guy-2013/timeout--adam-feldman.json",
+      "the-bridges-of-madison-county-2014/timeout--adam-feldman.json",
+      "the-lightning-thief-2019/timeout--helen-shaw.json"
     ]
   },
-  "failuresByOutlet": {
-    "Entertainment Weekly": {
-      "count": 6,
-      "domain": "ew.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
+  "failuresByOutlet": {},
+  "urlDiscoveries": [
+    {
+      "reviewId": "its-only-a-play-2014/timeout--david-cote.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/its-only-a-play#:~:text=Wicker's%20line%20is%20one%20of,and%20not%20nearly%20funny%20enough.",
+      "newUrl": "https://www.timeout.com/newyork/theater/its-only-a-play"
     }
-  },
-  "urlDiscoveries": []
+  ]
 }
