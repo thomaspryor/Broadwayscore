@@ -367,26 +367,35 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   </div>
                 );
 
+                const hasAudience = !showTBD && audienceBuzz && audienceBuzz.combinedScore != null && hasEnoughAudienceReviews(audienceBuzz);
+                const audienceGrade = hasAudience ? getAudienceGrade(audienceBuzz!.combinedScore!) : null;
+
                 return (
-                  <div className="space-y-3" data-testid="show-score-section">
+                  <div className="space-y-2" data-testid="show-score-section">
                     {/* Score row */}
                     <div className="flex items-center gap-3 sm:gap-4">
                       {scoreBox}
-                      {/* Sentiment and review count */}
                       <div>
                         {showTBD ? (
                           <div className="text-base sm:text-lg font-bold text-gray-400">Awaiting Reviews</div>
                         ) : sentiment && (
                           <div className={`text-base sm:text-lg font-bold ${sentiment.colorClass}`}>{sentiment.label}</div>
                         )}
-                        {reviewCount > 0 && (
-                          <a
-                            href="#critic-reviews"
-                            className="text-xs sm:text-sm text-gray-500 hover:text-brand transition-colors"
-                          >
-                            Based on {reviewCount} Critic {reviewCount === 1 ? 'Review' : 'Reviews'}
-                          </a>
-                        )}
+                        <div className="flex items-center gap-2 sm:gap-3 flex-wrap mt-0.5">
+                          {reviewCount > 0 && (
+                            <a
+                              href="#critic-reviews"
+                              className="text-xs sm:text-sm text-gray-500 hover:text-brand transition-colors"
+                            >
+                              Based on {reviewCount} Critic {reviewCount === 1 ? 'Review' : 'Reviews'}
+                            </a>
+                          )}
+                          {hasAudience && audienceGrade && (
+                            <a href="#audience" className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-semibold hover:brightness-125 transition-all" style={{ background: `${audienceGrade.color}15`, color: audienceGrade.color }}>
+                              <span className="opacity-60">Audience:</span> {audienceGrade.grade} · {audienceGrade.label}
+                            </a>
+                          )}
+                        </div>
                         {/* Review age note for long-running shows */}
                         {(() => {
                           if (!show.openingDate || show.status === 'closed') return null;
@@ -402,18 +411,48 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                       </div>
                     </div>
 
-                    {/* Breakdown bar moved to Critic Reviews section */}
+                    {/* Review breakdown bar */}
+                    {(() => {
+                      const revs = show.criticScore?.reviews || [];
+                      const pos = revs.filter(r => r.reviewScore >= 65).length;
+                      const mix = revs.filter(r => r.reviewScore >= 55 && r.reviewScore < 65).length;
+                      const neg = revs.filter(r => r.reviewScore < 55).length;
+                      const tot = revs.length;
+                      if (tot === 0 || showTBD) return null;
+                      const posPct = Math.round((pos / tot) * 100);
+                      const mixPct = Math.round((mix / tot) * 100);
+                      const negPct = 100 - posPct - mixPct;
+                      return (
+                        <div className="space-y-1">
+                          <div className="h-2 rounded-full overflow-hidden flex bg-surface-overlay">
+                            {posPct > 0 && <div className="bg-score-great h-full" style={{ width: `${posPct}%` }} />}
+                            {mixPct > 0 && <div className="bg-score-tepid h-full" style={{ width: `${mixPct}%` }} />}
+                            {negPct > 0 && <div className="bg-score-skip h-full" style={{ width: `${negPct}%` }} />}
+                          </div>
+                          <div className="flex items-center gap-2 sm:gap-3 text-[10px] sm:text-xs">
+                            {pos > 0 && (
+                              <div className="flex items-center gap-1">
+                                <div className="w-2 h-2 rounded-sm bg-score-great" />
+                                <span className="text-gray-400">{pos} Positive</span>
+                              </div>
+                            )}
+                            {mix > 0 && (
+                              <div className="flex items-center gap-1">
+                                <div className="w-2 h-2 rounded-sm bg-score-tepid" />
+                                <span className="text-gray-400">{mix} Mixed</span>
+                              </div>
+                            )}
+                            {neg > 0 && (
+                              <div className="flex items-center gap-1">
+                                <div className="w-2 h-2 rounded-sm bg-score-skip" />
+                                <span className="text-gray-400">{neg} Negative</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })()}
                   </div>
-                );
-              })()}
-
-              {/* Audience grade chip — separate from critic score */}
-              {audienceBuzz && audienceBuzz.combinedScore != null && hasEnoughAudienceReviews(audienceBuzz) && (() => {
-                const grade = getAudienceGrade(audienceBuzz.combinedScore);
-                return (
-                  <a href="#audience" className="inline-flex items-center gap-1 mt-2 px-2 py-0.5 rounded-full text-[11px] font-semibold hover:brightness-125 transition-all" style={{ background: `${grade.color}15`, color: grade.color }}>
-                    <span className="opacity-60">Audience:</span> {grade.grade} · {grade.label}
-                  </a>
                 );
               })()}
             </div>
@@ -605,48 +644,6 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               <h2 className="text-lg font-bold text-white">Critic Reviews</h2>
               <span className="text-sm text-gray-400 font-medium">{show.criticScore.reviewCount} {show.criticScore.reviewCount === 1 ? 'review' : 'reviews'}</span>
             </div>
-
-            {/* Review breakdown bar */}
-            {(() => {
-              const revs = show.criticScore.reviews;
-              const pos = revs.filter(r => r.reviewScore >= 65).length;
-              const mix = revs.filter(r => r.reviewScore >= 55 && r.reviewScore < 65).length;
-              const neg = revs.filter(r => r.reviewScore < 55).length;
-              const tot = revs.length;
-              if (tot === 0) return null;
-              const posPct = Math.round((pos / tot) * 100);
-              const mixPct = Math.round((mix / tot) * 100);
-              const negPct = 100 - posPct - mixPct;
-              return (
-                <div className="space-y-1.5 mb-3">
-                  <div className="h-2.5 rounded-full overflow-hidden flex bg-surface-overlay">
-                    {posPct > 0 && <div className="bg-score-great h-full" style={{ width: `${posPct}%` }} />}
-                    {mixPct > 0 && <div className="bg-score-tepid h-full" style={{ width: `${mixPct}%` }} />}
-                    {negPct > 0 && <div className="bg-score-skip h-full" style={{ width: `${negPct}%` }} />}
-                  </div>
-                  <div className="flex items-center gap-3 text-[10px] sm:text-xs">
-                    {pos > 0 && (
-                      <div className="flex items-center gap-1">
-                        <div className="w-2.5 h-2.5 rounded-sm bg-score-great" />
-                        <span className="text-gray-400">{pos} Positive</span>
-                      </div>
-                    )}
-                    {mix > 0 && (
-                      <div className="flex items-center gap-1">
-                        <div className="w-2.5 h-2.5 rounded-sm bg-score-tepid" />
-                        <span className="text-gray-400">{mix} Mixed</span>
-                      </div>
-                    )}
-                    {neg > 0 && (
-                      <div className="flex items-center gap-1">
-                        <div className="w-2.5 h-2.5 rounded-sm bg-score-skip" />
-                        <span className="text-gray-400">{neg} Negative</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            })()}
 
             <ReviewsList reviews={show.criticScore.reviews.map(r => ({
               ...r,
