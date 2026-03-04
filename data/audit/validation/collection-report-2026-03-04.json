@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-03-04T14:52:13.436Z",
+  "runDate": "2026-03-04T14:57:27.210Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 200,
     "priority": "all",
     "showFilter": "",
     "aggressive": false,
@@ -12,41 +12,41 @@
   },
   "summary": {
     "processed": 253,
-    "failed": 861,
+    "failed": 872,
     "skipped": 0,
-    "successRate": "22.7%"
+    "successRate": "22.5%"
   },
   "tierBreakdown": {
     "playwright": 152,
     "amp": 22,
     "browserbase": 0,
-    "directCookies": 18,
+    "directCookies": 15,
     "scrapingbee": 23,
     "brightdata": 0,
-    "archiveToday": 416,
+    "archiveToday": 418,
     "archive": 61
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 1,
-    "ampAttempts": 1,
+    "tier1Attempts": 8,
+    "tier1Success": 8,
+    "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 1,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier2Success": 1,
+    "tier3Attempts": 1,
     "tier3Success": 0,
     "tier3_6Attempts": 1,
     "tier3_6Success": 1,
     "tier4Attempts": 1,
-    "tier4Success": 0,
-    "totalFailed": 14,
-    "scrapingBeeCreditsUsed": 13,
+    "tier4Success": 1,
+    "totalFailed": 11,
+    "scrapingBeeCreditsUsed": 15,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 5,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -302,10 +302,7 @@
     "waiting-for-godot-2013/theatermania--charles-isherwood.json",
     "war-paint-2017/theatermania--andy-propst.json",
     "wonderland-2011/theatermania--david-finkle.json",
-    "young-frankenstein-2007/theatermania--unknown.json",
-    "how-to-succeed-in-business-without-really-trying-2011/timeout--david-cote.json",
-    "on-a-clear-day-you-can-see-forever-2011/timeout--david-cote.json",
-    "the-normal-heart-2011/timeout--david-cote.json"
+    "young-frankenstein-2007/theatermania--unknown.json"
   ],
   "failed": [
     "les-miserables-1987/nytg--tulis-mccall.json",
@@ -1168,7 +1165,18 @@
     "the-little-mermaid-2008/variety--david-rooney.json",
     "the-merchant-of-venice-2010/variety--charles-isherwood.json",
     "the-road-to-mecca-2012/variety--marilyn-stasio.json",
-    "xanadu-2007/variety--david-rooney.json"
+    "xanadu-2007/variety--david-rooney.json",
+    "romeo-and-juliet-2013/theatermania--adam-feldman.json",
+    "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016/theatermania--jesse-green.json",
+    "a-gentlemans-guide-to-love-and-murder-2013/theatermania--david-gordon.json",
+    "act-one-2014/theatermania--charles-isherwood.json",
+    "amelie-a-new-musical-2017/theatermania--adam-feldman.json",
+    "an-act-of-god-2016/theatermania--adam-feldman.json",
+    "eclipsed-2016/theatermania--adam-feldman.json",
+    "ink-2019/theatermania--andy-propst.json",
+    "oslo-2017/theatermania--jesse-green.json",
+    "race-2009/theatermania--charles-isherwood.json",
+    "school-of-rock-the-musical-2015/theatermania--jesse-green.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1365,10 +1373,7 @@
       "the-father-1981/hollywood-reporter--david-rooney.json",
       "the-visit-1973/hollywood-reporter--david-rooney.json",
       "a-christmas-carol-2001/timeout--adam-feldman.json",
-      "les-liaisons-dangereuses-1987/timeout--david-cote.json",
-      "how-to-succeed-in-business-without-really-trying-2011/timeout--david-cote.json",
-      "on-a-clear-day-you-can-see-forever-2011/timeout--david-cote.json",
-      "the-normal-heart-2011/timeout--david-cote.json"
+      "les-liaisons-dangereuses-1987/timeout--david-cote.json"
     ],
     "scrapingbee": [
       "orphans-2013/guardian--arifa-akbar.json",
@@ -1813,7 +1818,8 @@
       "data/review-texts/pretty-woman-the-musical-2018/theatermania--hayley-levitt.json",
       "data/review-texts/act-one-2014/theatermania--charles-isherwood.json",
       "data/review-texts/act-one-2014/theatermania--charles-isherwood.json",
-      "data/review-texts/mcneal-2024/variety--peter-marks.json"
+      "data/review-texts/mcneal-2024/variety--peter-marks.json",
+      "data/review-texts/act-one-2014/theatermania--charles-isherwood.json"
     ],
     "archive": [
       "come-from-away-2017/thewrap--alphonso-duralde.json",
@@ -1879,14 +1885,17 @@
       "cats-1982/wsj--terry-teachout.json"
     ]
   },
-  "failuresByOutlet": {
-    "Entertainment Weekly": {
-      "count": 1,
-      "domain": "ew.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
+  "failuresByOutlet": {},
+  "urlDiscoveries": [
+    {
+      "reviewId": "act-one-2014/theatermania--charles-isherwood.json",
+      "oldUrl": "https://www.theatermania.com/broadway/news/act-one_70041.html",
+      "newUrl": "https://www.theatermania.com/news/act-one_68285/"
+    },
+    {
+      "reviewId": "race-2009/theatermania--charles-isherwood.json",
+      "oldUrl": "https://www.theatermania.com/broadway/news/race_25982.html",
+      "newUrl": "https://www.theatermania.com/news/race_23313/"
     }
-  },
-  "urlDiscoveries": []
+  ]
 }
