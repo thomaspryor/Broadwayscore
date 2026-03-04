@@ -85,7 +85,7 @@ jobs:
             # Excluded: guardian (API metadata), usatoday (no star ratings in HTML)
             # Paywalled UK outlets (telegraph, thestage) use cookie secrets for auth
             # Excluded: times-uk (no star ratings in HTML even with working auth)
-            OUTLETS="timeout,ew,standard,independent,culturesauce,whatsonstage,telegraph,thestage"
+            OUTLETS="timeout,ew,standard,independent,culturesauce,whatsonstage,telegraph,thestage,nypost"
           else
             OUTLETS="$OUTLETS_INPUT"
           fi
