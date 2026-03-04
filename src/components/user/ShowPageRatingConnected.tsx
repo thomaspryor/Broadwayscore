@@ -7,7 +7,7 @@ import { useUserReviews } from '@/hooks/useUserReviews';
 import { useWatchlist } from '@/hooks/useWatchlist';
 import { useToastSafe } from '@/components/ui/Toast';
 import { savePendingAction, getPendingAction, clearPendingAction } from '@/lib/deferred-auth';
-import { getSupabaseClient } from '@/lib/supabase';
+import { supabaseRestInsert, supabaseRestUpdate, supabaseRestUpsert } from '@/lib/supabase-rest';
 import { featureFlags } from '@/config/feature-flags';
 
 interface ShowPageRatingConnectedProps {
@@ -29,7 +29,7 @@ export default function ShowPageRatingConnected({
   closingDate,
 }: ShowPageRatingConnectedProps) {
   const { user, isAuthenticated, showSignIn } = useAuth();
-  const { reviews, getReviewsForShow, saveReview } = useUserReviews(user?.id || null);
+  const { reviews, getReviewsForShow } = useUserReviews(user?.id || null);
   const { isWatchlisted, addToWatchlist, removeFromWatchlist, getWatchlist, updatePlannedDate, watchlist } = useWatchlist(user?.id || null);
 
   const { showToast } = useToastSafe();
@@ -49,62 +49,59 @@ export default function ShowPageRatingConnected({
     dateSeen: string | null;
     reviewId?: string;
   }): Promise<string | void> => {
+    if (!user) {
+      showToast?.('Please sign in to save ratings.', 'error');
+      throw new Error('Not signed in');
+    }
+
     try {
-      const client = getSupabaseClient();
-      if (!client) {
-        showToast?.('Not connected. Please refresh the page.', 'error');
-        throw new Error('No Supabase client');
-      }
+      // Ensure profile exists (foreign key requirement) — non-fatal
+      await supabaseRestUpsert('profiles', {
+        id: user.id,
+        display_name: '',
+        avatar_url: null,
+      }, 'id').catch(() => {});
 
-      // Verify session is valid before saving
-      const { data: sessionData } = await client.auth.getSession();
-      if (!sessionData?.session) {
-        showToast?.('Session expired. Please sign in again.', 'error');
-        throw new Error('Session expired');
-      }
+      // All DB calls use direct REST API with explicit auth headers.
+      // This bypasses the Supabase JS client's internal token resolution
+      // which can lose the auth token under certain timing conditions.
+      if (data.reviewId) {
+        // Update existing review
+        const filters = `id=eq.${data.reviewId}&user_id=eq.${user.id}`;
+        const { data: updated, error } = await supabaseRestUpdate<{ id: string }>('reviews', filters, {
+          rating: data.rating,
+          review_text: data.reviewText || null,
+          date_seen: data.dateSeen || null,
+          updated_at: new Date().toISOString(),
+        });
+        if (error) throw new Error(error.message);
 
-      // Ensure profile exists before saving (foreign key requirement)
-      if (user) {
-        try {
-          const { data: profileData } = await client
-            .from('profiles')
-            .select('id')
-            .eq('id', user.id)
-            .single();
-          if (!profileData) {
-            const meta = sessionData.session.user?.user_metadata || {};
-            await client.from('profiles').upsert({
-              id: user.id,
-              display_name: meta.full_name || meta.name || '',
-              avatar_url: meta.avatar_url || meta.picture || null,
-            }, { onConflict: 'id' });
-          }
-        } catch (profileErr) {
-          // eslint-disable-next-line no-console
-          console.warn('[Rating] Profile ensure failed (non-fatal):', profileErr);
-        }
-      }
+        showToast?.(<>Updated in <a href="/my-shows" className="underline hover:text-white/90">Reviews</a></>, 'success');
+        await getReviewsForShow(showId);
+        return updated?.id;
+      } else {
+        // Insert new review
+        const { data: inserted, error } = await supabaseRestInsert<{ id: string }>('reviews', {
+          user_id: user.id,
+          show_id: showId,
+          rating: data.rating,
+          review_text: data.reviewText || null,
+          date_seen: data.dateSeen || null,
+        });
+        if (error) throw new Error(error.message);
 
-      const result = await saveReview({
-        showId,
-        rating: data.rating,
-        reviewText: data.reviewText,
-        dateSeen: data.dateSeen,
-        reviewId: data.reviewId,
-      });
-      showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">Reviews</a></>, 'success');
-      await getReviewsForShow(showId);
-      return result?.id;
+        showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">Reviews</a></>, 'success');
+        await getReviewsForShow(showId);
+        return inserted?.id;
+      }
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error('[Rating] handleSaveReview failed:', e);
-      if (!(e instanceof Error && (e.message === 'No Supabase client' || e.message === 'Session expired'))) {
-        const detail = e instanceof Error ? e.message : 'Unknown error';
-        showToast?.(`Save failed: ${detail}`, 'error');
-      }
+      const detail = e instanceof Error ? e.message : 'Unknown error';
+      showToast?.(`Save failed: ${detail}`, 'error');
       throw new Error('Save failed');
     }
-  }, [showId, user, saveReview, getReviewsForShow, showToast]);
+  }, [showId, user, getReviewsForShow, showToast]);
 
   // Execute pending action after auth (deferred auth flow)
   // IMPORTANT: Uses Supabase client directly instead of saveReview hook
@@ -118,38 +115,24 @@ export default function ShowPageRatingConnected({
     clearPendingAction();
 
     if (pending.type === 'rating' && pending.rating) {
-      // Save directly via Supabase client to avoid stale hook closure
+      // Save via direct REST API with explicit auth headers
       (async () => {
         try {
-          const client = getSupabaseClient();
-          if (!client) throw new Error('No client');
+          // Ensure profile exists (foreign key requirement) — non-fatal
+          await supabaseRestUpsert('profiles', {
+            id: user.id,
+            display_name: '',
+            avatar_url: null,
+          }, 'id').catch(() => {});
 
-          // Ensure profile exists (foreign key requirement)
-          const { data: profileData } = await client
-            .from('profiles')
-            .select('id')
-            .eq('id', user.id)
-            .single();
-          if (!profileData) {
-            const { data: { user: authUser } } = await client.auth.getUser();
-            const meta = authUser?.user_metadata || {};
-            await client.from('profiles').upsert({
-              id: user.id,
-              display_name: meta.full_name || meta.name || '',
-              avatar_url: meta.avatar_url || meta.picture || null,
-            }, { onConflict: 'id' });
-          }
-
-          const { error: insertErr } = await client
-            .from('reviews')
-            .insert({
-              user_id: user.id,
-              show_id: showId,
-              rating: pending.rating,
-              review_text: null,
-              date_seen: null,
-            });
-          if (insertErr) throw insertErr;
+          const { error: insertErr } = await supabaseRestInsert('reviews', {
+            user_id: user.id,
+            show_id: showId,
+            rating: pending.rating,
+            review_text: null,
+            date_seen: null,
+          });
+          if (insertErr) throw new Error(insertErr.message);
 
           showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">Reviews</a></>, 'success');
           await getReviewsForShow(showId);
