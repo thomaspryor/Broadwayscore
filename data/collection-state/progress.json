@@ -106,7 +106,15 @@
     "bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
     "bigfoot-off-broadway-2026/timeout--unknown.json",
     "bloodlove-off-broadway-2026/theatermania--linda-buchwald.json",
-    "book-of-mormon-2011/ew--thom-geier.json"
+    "book-of-mormon-2011/ew--thom-geier.json",
+    "book-of-mormon-2011/guardian--ben-brantley.json",
+    "buena-vista-social-club-2025/timeout--adam-feldman.json",
+    "bug-2026/theatre-reviews-limited--david-roberts.json",
+    "bug-2026/timeout--adam-feldman.json",
+    "bug-2026/wsj--charles-isherwood.json",
+    "burnout-paradise-off-broadway-2026/theatermania--zachary-stewart.json",
+    "calf-scramble-off-broadway-2026/theatermania--unknown.json",
+    "cats-the-jellicle-ball-2026/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "on-your-feet-2015/nytg--tulis-mccall.json",
@@ -251,7 +259,9 @@
     "wicked-2003/nytimes--charles-isherwood.json",
     "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
     "all-out-2025/deadline--unknown.json",
-    "bigfoot-off-broadway-2026/broadwaynews--chloe-rabinowitz.json"
+    "bigfoot-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
+    "bughouse-off-broadway-2026/broadwaynews--aa-cristi.json",
+    "cats-the-jellicle-ball-2026/timeout--david-cote.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -298,7 +308,14 @@
       "arcadia-west-end-2026/guardian--arifa-akbar.json",
       "bigfoot-off-broadway-2026/theatermania--unknown.json",
       "bloodlove-off-broadway-2026/theatermania--linda-buchwald.json",
-      "book-of-mormon-2011/ew--thom-geier.json"
+      "book-of-mormon-2011/ew--thom-geier.json",
+      "book-of-mormon-2011/guardian--ben-brantley.json",
+      "buena-vista-social-club-2025/timeout--adam-feldman.json",
+      "bug-2026/theatre-reviews-limited--david-roberts.json",
+      "bug-2026/timeout--adam-feldman.json",
+      "burnout-paradise-off-broadway-2026/theatermania--zachary-stewart.json",
+      "calf-scramble-off-broadway-2026/theatermania--unknown.json",
+      "cats-the-jellicle-ball-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [
       "data/review-texts/kiss-me-kate-1999/thewrap--robert-hofler.json",
@@ -476,11 +493,12 @@
       "the-lion-king-1997/vulture--john-simon.json",
       "aladdin-2014/timeout--adam-feldman.json",
       "aladdin-2014/wsj--terry-teachout.json",
-      "bigfoot-off-broadway-2026/thewrap--robert-hofler.json"
+      "bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
+      "bug-2026/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-03-04T09:17:51.206Z",
-  "lastProcessed": "book-of-mormon-2011/ew--thom-geier.json",
+  "lastProcessed": "cats-the-jellicle-ball-2026/timeout--david-cote.json",
   "log": [
     {
       "t": "2026-03-04T09:21:32.409Z",
@@ -636,6 +654,17 @@
       "t": "2026-03-04T11:14:41.480Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-04T11:26:10.513Z",
+      "event": "bb-session",
+      "session": "7a96bfbf",
+      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
+    },
+    {
+      "t": "2026-03-04T11:26:11.791Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
