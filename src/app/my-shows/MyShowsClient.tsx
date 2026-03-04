@@ -7,7 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useUserReviews } from '@/hooks/useUserReviews';
 import { useWatchlist } from '@/hooks/useWatchlist';
 import StarRating from '@/components/user/StarRating';
-import { FormatPill, ProductionPill, StatusBadge } from '@/components/show-cards';
+import { FormatPill, StatusBadge } from '@/components/show-cards';
 import type { UserReview, WatchlistEntry, ShowLookup } from '@/types/user';
 
 type Tab = 'diary' | 'watchlist';
@@ -45,7 +45,7 @@ export default function MyShowsClient() {
 
   const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
   const { reviews, getAllReviews, loading: reviewsLoading } = useUserReviews(user?.id || null);
-  const { watchlist, getWatchlist, loading: watchlistLoading } = useWatchlist(user?.id || null);
+  const { watchlist, getWatchlist, updatePlannedDate, loading: watchlistLoading } = useWatchlist(user?.id || null);
   const loading = authLoading || reviewsLoading || watchlistLoading;
 
   // Load show lookup data
@@ -316,6 +316,7 @@ export default function MyShowsClient() {
                     key={entry.id}
                     entry={entry}
                     show={showMap[entry.show_id]}
+                    onDateChange={(date) => updatePlannedDate(entry.show_id, date)}
                   />
                 ))}
               </div>
@@ -387,7 +388,7 @@ function DiaryCard({ review, show }: { review: UserReview; show?: ShowLookup }) 
   );
 }
 
-function WatchlistCard({ entry, show }: { entry: WatchlistEntry; show?: ShowLookup }) {
+function WatchlistCard({ entry, show, onDateChange }: { entry: WatchlistEntry; show?: ShowLookup; onDateChange: (date: string | null) => void }) {
   const title = show?.title || entry.show_id;
   const slug = show?.slug || entry.show_id;
   const category = show?.category || 'broadway';
@@ -405,30 +406,63 @@ function WatchlistCard({ entry, show }: { entry: WatchlistEntry; show?: ShowLook
     return closing.getTime() - now.getTime() < fourWeeks && closing > now;
   })();
 
+  const formattedDate = entry.planned_date
+    ? new Date(entry.planned_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+    : null;
+
   return (
-    <Link
-      href={href}
-      className="flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden"
-    >
-      {/* Poster */}
-      <div className="aspect-[2/3] bg-surface-overlay relative">
-        {show?.posterUrl ? (
-          <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-600 text-3xl">🎭</div>
-        )}
-        {isClosingSoon && (
-          <span className="absolute top-1.5 right-1.5 px-1.5 py-0.5 text-[9px] font-bold uppercase bg-amber-500/90 text-black rounded">
-            Closing Soon
-          </span>
-        )}
-      </div>
-      {/* Title */}
+    <div className="flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
+      {/* Poster — links to show page */}
+      <Link href={href}>
+        <div className="aspect-[2/3] bg-surface-overlay relative">
+          {show?.posterUrl ? (
+            <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-gray-600 text-3xl">🎭</div>
+          )}
+          {isClosingSoon && (
+            <span className="absolute top-1.5 right-1.5 px-1.5 py-0.5 text-[9px] font-bold uppercase bg-amber-500/90 text-black rounded">
+              Closing Soon
+            </span>
+          )}
+        </div>
+      </Link>
+      {/* Title + date */}
       <div className="p-2">
-        <h4 className="text-[11px] font-semibold text-white truncate">{title}</h4>
-        <p className="text-[10px] text-gray-500 truncate">{show?.venue}</p>
+        <Link href={href}>
+          <h4 className="text-[11px] font-semibold text-white truncate">{title}</h4>
+          <p className="text-[10px] text-gray-500 truncate">{show?.venue}</p>
+        </Link>
+        {/* Planned date — tap to set/change */}
+        <button
+          type="button"
+          className="mt-1 flex items-center gap-1 text-[10px] text-gray-500 hover:text-gray-300 transition-colors"
+          onClick={() => {
+            const input = document.createElement('input');
+            input.type = 'date';
+            input.value = entry.planned_date || '';
+            input.style.position = 'fixed';
+            input.style.opacity = '0';
+            input.style.pointerEvents = 'none';
+            document.body.appendChild(input);
+            input.addEventListener('change', () => {
+              onDateChange(input.value || null);
+              document.body.removeChild(input);
+            });
+            input.addEventListener('blur', () => {
+              setTimeout(() => { if (document.body.contains(input)) document.body.removeChild(input); }, 200);
+            });
+            input.focus();
+            try { input.showPicker(); } catch {}
+          }}
+        >
+          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <span>{formattedDate || 'Add date'}</span>
+        </button>
       </div>
-    </Link>
+    </div>
   );
 }
 

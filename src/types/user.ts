@@ -26,6 +26,7 @@ export interface WatchlistEntry {
   id: string;
   user_id: string;
   show_id: string;
+  planned_date: string | null; // ISO date string (YYYY-MM-DD)
   created_at: string;
 }
 

@@ -53,7 +53,7 @@ export function useWatchlist(userId: string | null) {
 
       // Optimistic update
       setWatchlist(prev => [
-        { id: crypto.randomUUID(), user_id: userId, show_id: showId, created_at: new Date().toISOString() },
+        { id: crypto.randomUUID(), user_id: userId, show_id: showId, planned_date: null, created_at: new Date().toISOString() },
         ...prev,
       ]);
     } catch (e) {
@@ -86,6 +86,31 @@ export function useWatchlist(userId: string | null) {
     }
   }, [userId]);
 
+  const updatePlannedDate = useCallback(async (showId: string, plannedDate: string | null): Promise<void> => {
+    const client = getSupabaseClient();
+    if (!client || !userId) return;
+
+    setError(null);
+    try {
+      const { error: err } = await client
+        .from('watchlist')
+        .update({ planned_date: plannedDate })
+        .eq('user_id', userId)
+        .eq('show_id', showId);
+
+      if (err) throw err;
+
+      // Optimistic update
+      setWatchlist(prev => prev.map(w =>
+        w.show_id === showId ? { ...w, planned_date: plannedDate } : w
+      ));
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Failed to update date';
+      setError(msg);
+      throw new Error(msg);
+    }
+  }, [userId]);
+
   return {
     watchlist,
     loading,
@@ -94,5 +119,6 @@ export function useWatchlist(userId: string | null) {
     isWatchlisted,
     addToWatchlist,
     removeFromWatchlist,
+    updatePlannedDate,
   };
 }
