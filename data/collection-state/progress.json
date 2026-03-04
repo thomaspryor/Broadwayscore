@@ -193,7 +193,11 @@
     "hello-dolly-1975/variety--marilyn-stasio.json",
     "here-lies-love-2023/variety--aramide-tinubu.json",
     "in-the-heights-2008/variety--david-rooney.json",
-    "la-bete-2010/variety--david-rooney.json"
+    "la-bete-2010/variety--david-rooney.json",
+    "lysistrata-jones-2011/variety--steven-suskin.json",
+    "mary-stuart-2009/variety--david-rooney.json",
+    "next-to-normal-2009/variety--david-rooney.json",
+    "nice-work-if-you-can-get-it-2012/variety--steven-suskin.json"
   ],
   "failed": [
     "les-miserables-1987/nytg--tulis-mccall.json",
@@ -1001,7 +1005,13 @@
     "oklahoma-2002/wsj--terry-teachout.json",
     "oklahoma-2019/broadwaynews--charles-isherwood.json",
     "driving-miss-daisy-2010/variety--charles-isherwood.json",
-    "fela-2012/variety--marilyn-stasio.json"
+    "fela-2012/variety--marilyn-stasio.json",
+    "macbeth-2008/variety--charles-isherwood.json",
+    "mary-poppins-2006/variety--charles-isherwood.json",
+    "mcneal-2024/variety--peter-marks.json",
+    "memphis-2009/variety--charles-isherwood.json",
+    "on-the-twentieth-century-2015/variety--marilyn-stasio.json",
+    "relatively-speaking-2011/variety--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1136,7 +1146,13 @@
       "data/review-texts/in-the-heights-2008/variety--david-rooney.json",
       "in-the-heights-2008/variety--david-rooney.json",
       "data/review-texts/la-bete-2010/variety--david-rooney.json",
-      "la-bete-2010/variety--david-rooney.json"
+      "la-bete-2010/variety--david-rooney.json",
+      "data/review-texts/lysistrata-jones-2011/variety--steven-suskin.json",
+      "lysistrata-jones-2011/variety--steven-suskin.json",
+      "data/review-texts/mary-stuart-2009/variety--david-rooney.json",
+      "mary-stuart-2009/variety--david-rooney.json",
+      "data/review-texts/next-to-normal-2009/variety--david-rooney.json",
+      "next-to-normal-2009/variety--david-rooney.json"
     ],
     "browserbase": [],
     "directCookies": [
@@ -1595,7 +1611,8 @@
       "data/review-texts/noises-off-2016/reviewing-the-drama--robin-riegelhaupt.json",
       "data/review-texts/oh-hello-on-broadway-2016/wsj--terry-teachout.json",
       "data/review-texts/oh-mary-off-broadway-2024/wsj--charles-isherwood.json",
-      "data/review-texts/oklahoma-2002/wsj--terry-teachout.json"
+      "data/review-texts/oklahoma-2002/wsj--terry-teachout.json",
+      "data/review-texts/mcneal-2024/variety--peter-marks.json"
     ],
     "archive": [
       "come-from-away-2017/thewrap--alphonso-duralde.json",
@@ -1665,11 +1682,12 @@
       "company-1993/variety--naveen-kumar.json",
       "company-2006/variety--charles-isherwood.json",
       "evita-2012/variety--steven-suskin.json",
-      "hello-dolly-1975/variety--marilyn-stasio.json"
+      "hello-dolly-1975/variety--marilyn-stasio.json",
+      "nice-work-if-you-can-get-it-2012/variety--steven-suskin.json"
     ]
   },
   "startTime": "2026-03-04T03:18:53.322Z",
-  "lastProcessed": "la-bete-2010/variety--david-rooney.json",
+  "lastProcessed": "relatively-speaking-2011/variety--charles-isherwood.json",
   "log": [
     {
       "t": "2026-03-04T03:25:20.168Z",
@@ -1820,6 +1838,17 @@
       "t": "2026-03-04T08:40:20.628Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-04T14:16:20.316Z",
+      "event": "bb-session",
+      "session": "e4c70b0e",
+      "url": "https://variety.com/2024/legit/reviews/mcneal-review-broadway-lincoln-center-the"
+    },
+    {
+      "t": "2026-03-04T14:16:21.653Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
