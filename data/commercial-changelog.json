@@ -1,5 +1,76 @@
 [
   {
+    "date": "2026-03-04",
+    "timestamp": "2026-03-04T16:37:52.218Z",
+    "changesApplied": 1,
+    "changesFlagged": 0,
+    "changesSkipped": 0,
+    "deepResearchConflicts": 3,
+    "newEntries": 3,
+    "shadowDisagreements": 37,
+    "applied": [
+      {
+        "slug": "maybe-happy-ending",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": [
+          20,
+          40
+        ],
+        "newValue": [
+          20,
+          40
+        ],
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis confirms recoup estimate remains at 20-40%"
+      }
+    ],
+    "flagged": [],
+    "blocked": [
+      {
+        "slug": "death-becomes-her",
+        "field": "estimatedRecoupmentPct",
+        "verifiedValue": [
+          70,
+          80
+        ],
+        "proposedValue": [
+          10,
+          30
+        ],
+        "severity": "critical",
+        "discrepancy": "verified 70-80%, proposed 10-30% (55pt difference)"
+      },
+      {
+        "slug": "the-great-gatsby",
+        "field": "estimatedRecoupmentPct",
+        "verifiedValue": [
+          50,
+          70
+        ],
+        "proposedValue": [
+          10,
+          30
+        ],
+        "severity": "critical",
+        "discrepancy": "verified 50-70%, proposed 10-30% (40pt difference)"
+      },
+      {
+        "slug": "chess",
+        "field": "estimatedRecoupmentPct",
+        "verifiedValue": [
+          10,
+          20
+        ],
+        "proposedValue": [
+          30,
+          50
+        ],
+        "severity": "high",
+        "discrepancy": "verified 10-20%, proposed 30-50% (25pt difference)"
+      }
+    ]
+  },
+  {
     "date": "2026-02-25",
     "timestamp": "2026-02-25T17:05:29.596Z",
     "changesApplied": 1,
