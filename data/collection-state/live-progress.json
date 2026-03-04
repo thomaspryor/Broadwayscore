@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-03-04T15:21:44.261Z",
-  "processed": 169,
-  "failed": 901,
-  "successRate": "15.8%",
+  "updatedAt": "2026-03-04T15:25:55.429Z",
+  "processed": 256,
+  "failed": 909,
+  "successRate": "22.0%",
   "tierBreakdown": {
-    "playwright": 67,
-    "amp": 24,
+    "playwright": 152,
+    "amp": 22,
     "browserbase": 0,
-    "directCookies": 15,
+    "directCookies": 18,
     "scrapingbee": 23,
     "brightdata": 0,
-    "archiveToday": 455,
-    "archive": 62
+    "archiveToday": 425,
+    "archive": 61
   },
   "browserbaseSessions": 0,
   "recentActivity": [
-    {
-      "t": "2026-03-04T08:22:43.120Z",
-      "event": "bb-session",
-      "session": "616f34b6",
-      "url": "https://nymag.com/daily/entertainment/2011/04/theater_review_a_cramped_and_m.htm"
-    },
-    {
-      "t": "2026-03-04T08:22:44.590Z",
-      "event": "bb-cookie-inject",
-      "domain": "nymag.com"
-    },
-    {
-      "t": "2026-03-04T08:23:46.548Z",
-      "event": "bb-session",
-      "session": "3b5d4bc4",
-      "url": "https://www.nytimes.com/2009/04/30/theater/reviews/30norman.html"
-    },
-    {
-      "t": "2026-03-04T08:23:47.802Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-04T08:25:19.089Z",
-      "event": "bb-session",
-      "session": "41bb40ff",
-      "url": "https://www.nytimes.com/2005/10/28/theater/reviews/the-odd-couple-redux-still-at"
-    },
-    {
-      "t": "2026-03-04T08:25:20.669Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-04T08:27:58.718Z",
       "event": "bb-session",
@@ -124,6 +91,39 @@
       "t": "2026-03-04T08:40:20.628Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-04T14:12:46.624Z",
+      "event": "bb-session",
+      "session": "e143624a",
+      "url": "https://origin-www.theatermania.com/broadway/reviews/pretty-woman-brings-the-fai"
+    },
+    {
+      "t": "2026-03-04T14:12:47.895Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-03-04T14:16:13.918Z",
+      "event": "bb-session",
+      "session": "93d6644f",
+      "url": "https://www.theatermania.com/news/act-one_68285/"
+    },
+    {
+      "t": "2026-03-04T14:16:15.086Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-03-04T14:37:34.415Z",
+      "event": "bb-session",
+      "session": "dd149c4e",
+      "url": "https://www.theatermania.com/news/act-one_68285/"
+    },
+    {
+      "t": "2026-03-04T14:37:35.611Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
     }
   ]
 }
