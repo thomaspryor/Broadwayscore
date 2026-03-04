@@ -1,6 +1,8 @@
 import { getAllBlogReviews } from '@/lib/data-reviews-blog';
 import { AUTHOR } from '@/config/author';
 
+export const dynamic = 'force-static';
+
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
 function escapeXml(s: string): string {
