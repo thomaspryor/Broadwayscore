@@ -1,25 +1,40 @@
 {
   "processed": [
     "you-got-older-off-broadway-2026/timeout--unknown.json",
-    "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json"
+    "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "night-side-songs-off-broadway-2026/nytg--unknown.json",
+    "hadestown-west-end-2024/timeout-london--andrzej-lukowski.json"
   ],
-  "failed": [],
+  "failed": [
+    "hells-kitchen-2024/usatoday--david-rooney.json",
+    "hadestown-2019/newyorker--hilton-als.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/backstage--david-sheward.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
+    "dracula-west-end-2025/times-uk--clive-davis.json",
+    "giant-2026/ap--jennifer-farrar.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json"
+      "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+      "night-side-songs-off-broadway-2026/nytg--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/hells-kitchen-2024/usatoday--david-rooney.json"
+    ],
     "archive": [
-      "you-got-older-off-broadway-2026/timeout--unknown.json"
+      "you-got-older-off-broadway-2026/timeout--unknown.json",
+      "hadestown-west-end-2024/timeout-london--andrzej-lukowski.json"
     ]
   },
   "startTime": "2026-03-04T03:09:46.547Z",
-  "lastProcessed": "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+  "lastProcessed": "giant-2026/ap--jennifer-farrar.json",
   "log": []
 }
