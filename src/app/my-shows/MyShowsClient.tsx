@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useUserReviews } from '@/hooks/useUserReviews';
 import { useWatchlist } from '@/hooks/useWatchlist';
 import StarRating from '@/components/user/StarRating';
+import { FormatPill, ProductionPill, StatusBadge } from '@/components/show-cards';
 import type { UserReview, WatchlistEntry, ShowLookup } from '@/types/user';
 
 type Tab = 'diary' | 'watchlist';
@@ -309,7 +310,7 @@ export default function MyShowsClient() {
                 </select>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
                 {sortedWatchlist.map(entry => (
                   <WatchlistCard
                     key={entry.id}
@@ -339,43 +340,47 @@ function DiaryCard({ review, show }: { review: UserReview; show?: ShowLookup }) 
   return (
     <Link
       href={href}
-      className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors"
+      className="group flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors"
     >
-      {/* Poster thumbnail */}
-      <div className="w-10 h-14 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
+      {/* Poster thumbnail — matches homepage ShowCard size */}
+      <div className="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-surface-overlay">
         {show?.posterUrl ? (
           <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-600 text-lg">🎭</div>
+          <div className="w-full h-full flex items-center justify-center text-gray-600 text-xl">🎭</div>
         )}
       </div>
 
-      {/* Info */}
+      {/* Info — matches homepage layout */}
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-1.5">
-          <h4 className="text-sm font-semibold text-white truncate">{title}</h4>
-          {category !== 'broadway' && (
-            <span className={`text-[9px] font-bold uppercase ${
-              category === 'west-end' ? 'text-teal-400' : 'text-indigo-400'
-            }`}>
-              {category === 'west-end' ? 'WE' : 'OB'}
-            </span>
+        <h4 className="font-bold text-white text-base group-hover:text-brand transition-colors truncate">{title}</h4>
+        <div className="flex flex-wrap items-center gap-1.5 mt-1">
+          {show?.type && <FormatPill type={show.type} />}
+          {show && <StatusBadge status={show.status} />}
+          {category === 'off-broadway' && (
+            <span className="px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-purple-300 bg-purple-500/15 border border-purple-500/20 rounded">Off-Bway</span>
           )}
-        </div>
-        <div className="flex items-center gap-2 mt-0.5">
-          <StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly />
-          {review.date_seen && (
-            <span className="text-[11px] text-gray-500">
-              {new Date(review.date_seen + 'T00:00:00').toLocaleDateString('en-US', {
-                month: 'short',
-                day: 'numeric',
-                year: 'numeric',
-              })}
-            </span>
+          {category === 'west-end' && (
+            <span className="px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-teal-300 bg-teal-500/15 border border-teal-500/20 rounded">West End</span>
           )}
         </div>
         {review.review_text && (
-          <p className="text-xs text-gray-500 mt-1 line-clamp-1">{review.review_text}</p>
+          <p className="text-xs text-gray-500 mt-1.5 line-clamp-1">{review.review_text}</p>
+        )}
+      </div>
+
+      {/* Rating column — replaces ScoreBadge */}
+      <div className="flex-shrink-0 flex flex-col items-center gap-1 w-20 sm:w-24">
+        <StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly />
+        <span className="text-lg font-bold text-amber-400">{review.rating.toFixed(1)}</span>
+        {review.date_seen && (
+          <span className="text-[10px] text-gray-500 whitespace-nowrap">
+            {new Date(review.date_seen + 'T00:00:00').toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+            })}
+          </span>
         )}
       </div>
     </Link>
@@ -419,8 +424,8 @@ function WatchlistCard({ entry, show }: { entry: WatchlistEntry; show?: ShowLook
         )}
       </div>
       {/* Title */}
-      <div className="p-2.5">
-        <h4 className="text-xs font-semibold text-white truncate">{title}</h4>
+      <div className="p-2">
+        <h4 className="text-[11px] font-semibold text-white truncate">{title}</h4>
         <p className="text-[10px] text-gray-500 truncate">{show?.venue}</p>
       </div>
     </Link>
