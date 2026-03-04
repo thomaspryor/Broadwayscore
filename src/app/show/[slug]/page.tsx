@@ -48,13 +48,13 @@ export function generateStaticParams() {
   // Rest generated on-demand via ISR, cached at Vercel edge until next deploy.
   const allSlugs = getAllShowSlugs();
   const sixMonthsAgo = new Date(Date.now() - 180 * 86400000);
-  return allSlugs
+  const allShows = allSlugs
     .map(slug => getShowBySlug(slug))
-    .filter((s): s is ComputedShow =>
-      !!s && (
-        s.status === 'open' || s.status === 'previews' ||
-        (!!s.closingDate && new Date(s.closingDate) > sixMonthsAgo)
-      )
+    .filter(Boolean) as ComputedShow[];
+  return allShows
+    .filter(s =>
+      s.status === 'open' || s.status === 'previews' ||
+      (s.closingDate != null && new Date(s.closingDate) > sixMonthsAgo)
     )
     .map(s => ({ slug: s.slug }));
 }
