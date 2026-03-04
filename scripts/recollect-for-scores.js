@@ -222,6 +222,7 @@ async function main() {
         if (!data.url) continue; // No URL to fetch
         if (data.wrongShow) continue; // Flagged as wrong content
         if (data.wrongProduction) continue; // URL is for a different production
+        if (data._noScoreOnHtml) continue; // Already checked, no score in HTML
         // Skip non-theatre content URLs (film reviews, concert reviews, etc.)
         const urlPath = data.url.toLowerCase();
         if (/\/(films|film)\//i.test(urlPath) || /\/music\/concerts\//i.test(urlPath)) continue;
@@ -285,6 +286,11 @@ async function main() {
       } else {
         failed++;
         console.log('  NO SCORE FOUND in HTML');
+        // Mark as checked so subsequent runs skip this review
+        if (execute) {
+          t.data._noScoreOnHtml = new Date().toISOString().split('T')[0];
+          fs.writeFileSync(t.fp, JSON.stringify(t.data, null, 2) + '\n');
+        }
       }
     } catch (e) {
       errors++;
