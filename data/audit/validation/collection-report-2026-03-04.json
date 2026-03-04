@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-03-04T14:35:59.674Z",
+  "runDate": "2026-03-04T14:37:30.215Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,41 +11,41 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 253,
-    "failed": 834,
+    "processed": 209,
+    "failed": 848,
     "skipped": 0,
-    "successRate": "23.3%"
+    "successRate": "19.8%"
   },
   "tierBreakdown": {
     "playwright": 103,
     "amp": 22,
     "browserbase": 0,
-    "directCookies": 15,
+    "directCookies": 18,
     "scrapingbee": 23,
     "brightdata": 0,
-    "archiveToday": 417,
-    "archive": 61
+    "archiveToday": 420,
+    "archive": 63
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
-    "ampAttempts": 1,
-    "ampSuccess": 0,
+    "tier1Attempts": 10,
+    "tier1Success": 10,
+    "ampAttempts": 4,
+    "ampSuccess": 4,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 1,
-    "tier3Attempts": 1,
+    "tier2Attempts": 4,
+    "tier2Success": 4,
+    "tier3Attempts": 4,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 1,
-    "tier4Success": 0,
-    "totalFailed": 14,
-    "scrapingBeeCreditsUsed": 23,
+    "tier3_6Attempts": 4,
+    "tier3_6Success": 4,
+    "tier4Attempts": 11,
+    "tier4Success": 5,
+    "totalFailed": 18,
+    "scrapingBeeCreditsUsed": 51,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 13,
+    "urlDiscoveryAttempts": 11,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -253,7 +253,12 @@
     "gigi-2015/theatermania--david-gordon.json",
     "grand-horizons-2020/theatermania--jesse-green.json",
     "heart-of-rock-and-roll-2024/theatermania--adam-feldman.json",
-    "heisenberg-2016/theatermania--jesse-david-fox.json"
+    "heisenberg-2016/theatermania--jesse-david-fox.json",
+    "the-merchant-of-venice-1973/timeout--david-cote.json",
+    "the-merchant-of-venice-1989/timeout--david-cote.json",
+    "how-to-succeed-in-business-without-really-trying-2011/timeout--david-cote.json",
+    "on-a-clear-day-you-can-see-forever-2011/timeout--david-cote.json",
+    "the-normal-heart-2011/timeout--david-cote.json"
   ],
   "failed": [
     "les-miserables-1987/nytg--tulis-mccall.json",
@@ -1072,10 +1077,6 @@
     "amelie-a-new-musical-2017/theatermania--adam-feldman.json",
     "an-act-of-god-2016/theatermania--adam-feldman.json",
     "eclipsed-2016/theatermania--adam-feldman.json",
-    "ink-2019/theatermania--andy-propst.json",
-    "oslo-2017/theatermania--jesse-green.json",
-    "race-2009/theatermania--charles-isherwood.json",
-    "school-of-rock-the-musical-2015/theatermania--jesse-green.json",
     "driving-miss-daisy-2010/variety--charles-isherwood.json",
     "fela-2012/variety--marilyn-stasio.json",
     "macbeth-2008/variety--charles-isherwood.json",
@@ -1089,7 +1090,25 @@
     "the-little-mermaid-2008/variety--david-rooney.json",
     "the-merchant-of-venice-2010/variety--charles-isherwood.json",
     "the-road-to-mecca-2012/variety--marilyn-stasio.json",
-    "xanadu-2007/variety--david-rooney.json"
+    "xanadu-2007/variety--david-rooney.json",
+    "stick-fly-2011/timeout--david-cote.json",
+    "that-championship-season-2011/timeout--david-cote.json",
+    "the-importance-of-being-earnest-2011/timeout--david-cote.json",
+    "a-behanding-in-spokane-2010/timeout--david-cote.json",
+    "act-one-2014/timeout--adam-feldman.json",
+    "act-one-2014/timeout--david-cote.json",
+    "death-of-a-salesman-2012/timeout--david-cote.json",
+    "disgraced-2014/timeout--adam-feldman.json",
+    "disgraced-2014/timeout--david-cote.json",
+    "disgraced-2014/timeout--times-sq.json",
+    "elf-2012/timeout--david-cote.json",
+    "jerusalem-2011/timeout--david-cote.json",
+    "machinal-2014/timeout--andrzej-lukowski.json",
+    "machinal-2014/timeout--david-cote.json",
+    "no-mans-land-2013/timeout--adam-feldman.json",
+    "of-mice-and-men-2014/timeout--adam-feldman.json",
+    "of-mice-and-men-2014/timeout--david-cote.json",
+    "straight-white-men-2018/timeout--adam-feldman.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1237,7 +1256,10 @@
       "the-father-1981/hollywood-reporter--david-rooney.json",
       "the-visit-1973/hollywood-reporter--david-rooney.json",
       "a-christmas-carol-2001/timeout--adam-feldman.json",
-      "les-liaisons-dangereuses-1987/timeout--david-cote.json"
+      "les-liaisons-dangereuses-1987/timeout--david-cote.json",
+      "how-to-succeed-in-business-without-really-trying-2011/timeout--david-cote.json",
+      "on-a-clear-day-you-can-see-forever-2011/timeout--david-cote.json",
+      "the-normal-heart-2011/timeout--david-cote.json"
     ],
     "scrapingbee": [
       "orphans-2013/guardian--arifa-akbar.json",
@@ -1682,7 +1704,10 @@
       "data/review-texts/pretty-woman-the-musical-2018/theatermania--hayley-levitt.json",
       "data/review-texts/act-one-2014/theatermania--charles-isherwood.json",
       "data/review-texts/mcneal-2024/variety--peter-marks.json",
-      "data/review-texts/seminar-2011/ew--lisa-schwarzbaum.json"
+      "data/review-texts/death-of-a-salesman-2012/timeout--david-cote.json",
+      "data/review-texts/elf-2012/timeout--david-cote.json",
+      "data/review-texts/jerusalem-2011/timeout--david-cote.json",
+      "data/review-texts/no-mans-land-2013/timeout--adam-feldman.json"
     ],
     "archive": [
       "come-from-away-2017/thewrap--alphonso-duralde.json",
@@ -1745,7 +1770,9 @@
       "born-yesterday-2011/observer--jesse-oxfeld.json",
       "butley-2006/thewrap--robert-hofler.json",
       "carrie-1988/ew--thom-geier.json",
-      "cats-1982/wsj--terry-teachout.json"
+      "cats-1982/wsj--terry-teachout.json",
+      "the-merchant-of-venice-1973/timeout--david-cote.json",
+      "the-merchant-of-venice-1989/timeout--david-cote.json"
     ]
   },
   "failuresByOutlet": {},
