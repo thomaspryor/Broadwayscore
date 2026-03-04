@@ -99,7 +99,8 @@ export default function ShowPageRatingConnected({
       // eslint-disable-next-line no-console
       console.error('[Rating] handleSaveReview failed:', e);
       if (!(e instanceof Error && (e.message === 'No Supabase client' || e.message === 'Session expired'))) {
-        showToast?.('Failed to save rating. Please try again.', 'error');
+        const detail = e instanceof Error ? e.message : 'Unknown error';
+        showToast?.(`Save failed: ${detail}`, 'error');
       }
       throw new Error('Save failed');
     }
@@ -152,10 +153,11 @@ export default function ShowPageRatingConnected({
 
           showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">Reviews</a></>, 'success');
           await getReviewsForShow(showId);
-        } catch (e) {
+        } catch (e: unknown) {
           // eslint-disable-next-line no-console
           console.error('[Rating] Deferred save failed:', e);
-          showToast?.('Failed to save rating. Please try again.', 'error');
+          const detail = (e && typeof e === 'object' && 'message' in e) ? String((e as { message: string }).message) : 'Unknown error';
+          showToast?.(`Save failed: ${detail}`, 'error');
         }
       })();
     } else if (pending.type === 'watchlist') {
