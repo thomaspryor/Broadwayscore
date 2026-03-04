@@ -463,8 +463,16 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], totalShows
     window.history.replaceState({}, '', '/');
   }, []);
 
+  // Search should span ALL shows (Broadway + OB) regardless of toggle state
+  const allShowsForSearch = useMemo(() => {
+    if (offBroadwayShows.length === 0) return shows;
+    // Combine Broadway + OB, deduplicating by id
+    const ids = new Set(shows.map(s => s.id));
+    return [...shows, ...offBroadwayShows.filter(s => !ids.has(s.id))];
+  }, [shows, offBroadwayShows]);
+
   // Fuse.js instance for fuzzy search across title, venue, and creative team
-  const fuse = useMemo(() => new Fuse(allShows, {
+  const fuse = useMemo(() => new Fuse(allShowsForSearch, {
     keys: [
       { name: 'title', weight: 0.6 },
       { name: 'venue', weight: 0.2 },
@@ -480,7 +488,7 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], totalShows
       }
       return Fuse.config.getFn(obj, path);
     },
-  }), [allShows]);
+  }), [allShowsForSearch]);
 
   // Featured rows data - only shows opened in last 12 months
   const twelveMonthsAgo = useMemo(() => {
