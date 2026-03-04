@@ -1199,7 +1199,17 @@
     "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
     "marcel-on-the-train-off-broadway-2026/broadwaynews--unknown.json",
     "mexodus-off-broadway-2026/theatermania--zachary-stewart.json",
-    "mexodus-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json"
+    "mexodus-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
+    "mj-2022/wsj--charles-isherwood.json",
+    "my-joy-is-heavy-off-broadway-2025/theatermania--unknown.json",
+    "ragtime-2025/wsj--unknown.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "six-2021/wsj--unknown.json",
+    "the-great-gatsby-2024/wsj--charles-isherwood.json",
+    "the-monsters-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
+    "the-play-that-goes-wrong-off-broadway-2019/deadline--jeremy-gerard.json",
+    "the-play-that-goes-wrong-off-broadway-2019/nydailynews--joe-dziemianowicz.json",
+    "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1879,7 +1889,14 @@
       "data/review-texts/just-in-time-2025/wsj--unknown.json",
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
       "data/review-texts/mexodus-off-broadway-2026/theatermania--zachary-stewart.json",
-      "data/review-texts/mexodus-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json"
+      "data/review-texts/mexodus-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
+      "data/review-texts/mj-2022/wsj--charles-isherwood.json",
+      "data/review-texts/my-joy-is-heavy-off-broadway-2025/theatermania--unknown.json",
+      "data/review-texts/ragtime-2025/wsj--unknown.json",
+      "data/review-texts/silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+      "data/review-texts/six-2021/wsj--unknown.json",
+      "data/review-texts/the-great-gatsby-2024/wsj--charles-isherwood.json",
+      "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/deadline--jeremy-gerard.json"
     ],
     "archive": [
       "come-from-away-2017/thewrap--alphonso-duralde.json",
@@ -1946,7 +1963,7 @@
     ]
   },
   "startTime": "2026-03-04T03:18:53.322Z",
-  "lastProcessed": "mexodus-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
+  "lastProcessed": "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
   "log": [
     {
       "t": "2026-03-04T03:25:20.168Z",
@@ -2161,6 +2178,72 @@
     },
     {
       "t": "2026-03-04T15:58:55.007Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-04T16:01:33.010Z",
+      "event": "bb-session",
+      "session": "c04e253d",
+      "url": "https://www.wsj.com/articles/mj-the-musical-review-broadway-michael-jackson-1164"
+    },
+    {
+      "t": "2026-03-04T16:01:34.295Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-04T16:03:55.643Z",
+      "event": "bb-session",
+      "session": "874a46cf",
+      "url": "https://www.theatermania.com/shows/washington-dc-theater/my-joy-is-heavy-coming-"
+    },
+    {
+      "t": "2026-03-04T16:03:56.822Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-03-04T16:04:17.026Z",
+      "event": "bb-session",
+      "session": "30fffb88",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-03-04T16:04:18.256Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-04T16:06:22.021Z",
+      "event": "bb-session",
+      "session": "12ade922",
+      "url": "https://www.theatermania.com/tags/silver-manhattan/"
+    },
+    {
+      "t": "2026-03-04T16:06:23.349Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-03-04T16:06:49.468Z",
+      "event": "bb-session",
+      "session": "f5c24dba",
+      "url": "https://www.wsj.com/arts-culture/film/what-to-watch-six-movies-and-series-to-str"
+    },
+    {
+      "t": "2026-03-04T16:06:51.011Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-04T16:08:30.470Z",
+      "event": "bb-session",
+      "session": "225bb597",
+      "url": "https://www.wsj.com/arts-culture/theater/the-great-gatsby-broadway-review-jeremy"
+    },
+    {
+      "t": "2026-03-04T16:08:31.773Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

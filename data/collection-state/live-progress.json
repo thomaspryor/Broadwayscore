@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-03-04T16:01:29.108Z",
+  "updatedAt": "2026-03-04T16:11:33.909Z",
   "processed": 258,
-  "failed": 940,
-  "successRate": "21.5%",
+  "failed": 950,
+  "successRate": "21.4%",
   "tierBreakdown": {
     "playwright": 152,
     "amp": 22,
@@ -10,77 +10,11 @@
     "directCookies": 20,
     "scrapingbee": 23,
     "brightdata": 0,
-    "archiveToday": 449,
+    "archiveToday": 456,
     "archive": 61
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 9,
   "recentActivity": [
-    {
-      "t": "2026-03-04T08:35:24.166Z",
-      "event": "bb-session",
-      "session": "b5e1c1ba",
-      "url": "https://www.wsj.com/articles/1984-review-big-brother-is-watching-on-broadway-149"
-    },
-    {
-      "t": "2026-03-04T08:35:25.473Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-04T08:37:08.094Z",
-      "event": "bb-session",
-      "session": "aeedfd49",
-      "url": "https://www.wsj.com/articles/SB123788676543210987"
-    },
-    {
-      "t": "2026-03-04T08:37:09.314Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-04T08:38:44.911Z",
-      "event": "bb-session",
-      "session": "11ea34c3",
-      "url": "https://observer.com/2010/culture/raindrops-keep-falling-their-heads?page=1"
-    },
-    {
-      "t": "2026-03-04T08:38:46.232Z",
-      "event": "bb-cookie-inject",
-      "domain": "observer.com"
-    },
-    {
-      "t": "2026-03-04T08:40:19.487Z",
-      "event": "bb-session",
-      "session": "b899f726",
-      "url": "https://www.wsj.com/articles/aint-no-mo-review-jordan-e-cooper-takes-aim-at-amer"
-    },
-    {
-      "t": "2026-03-04T08:40:20.628Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-04T14:12:46.624Z",
-      "event": "bb-session",
-      "session": "e143624a",
-      "url": "https://origin-www.theatermania.com/broadway/reviews/pretty-woman-brings-the-fai"
-    },
-    {
-      "t": "2026-03-04T14:12:47.895Z",
-      "event": "bb-cookie-inject",
-      "domain": "theatermania.com"
-    },
-    {
-      "t": "2026-03-04T14:16:13.918Z",
-      "event": "bb-session",
-      "session": "93d6644f",
-      "url": "https://www.theatermania.com/news/act-one_68285/"
-    },
-    {
-      "t": "2026-03-04T14:16:15.086Z",
-      "event": "bb-cookie-inject",
-      "domain": "theatermania.com"
-    },
     {
       "t": "2026-03-04T14:37:34.415Z",
       "event": "bb-session",
@@ -122,6 +56,72 @@
     },
     {
       "t": "2026-03-04T15:58:55.007Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-04T16:01:33.010Z",
+      "event": "bb-session",
+      "session": "c04e253d",
+      "url": "https://www.wsj.com/articles/mj-the-musical-review-broadway-michael-jackson-1164"
+    },
+    {
+      "t": "2026-03-04T16:01:34.295Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-04T16:03:55.643Z",
+      "event": "bb-session",
+      "session": "874a46cf",
+      "url": "https://www.theatermania.com/shows/washington-dc-theater/my-joy-is-heavy-coming-"
+    },
+    {
+      "t": "2026-03-04T16:03:56.822Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-03-04T16:04:17.026Z",
+      "event": "bb-session",
+      "session": "30fffb88",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-03-04T16:04:18.256Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-04T16:06:22.021Z",
+      "event": "bb-session",
+      "session": "12ade922",
+      "url": "https://www.theatermania.com/tags/silver-manhattan/"
+    },
+    {
+      "t": "2026-03-04T16:06:23.349Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-03-04T16:06:49.468Z",
+      "event": "bb-session",
+      "session": "f5c24dba",
+      "url": "https://www.wsj.com/arts-culture/film/what-to-watch-six-movies-and-series-to-str"
+    },
+    {
+      "t": "2026-03-04T16:06:51.011Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-04T16:08:30.470Z",
+      "event": "bb-session",
+      "session": "225bb597",
+      "url": "https://www.wsj.com/arts-culture/theater/the-great-gatsby-broadway-review-jeremy"
+    },
+    {
+      "t": "2026-03-04T16:08:31.773Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
