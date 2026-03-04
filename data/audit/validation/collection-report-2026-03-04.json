@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-03-04T14:34:13.506Z",
+  "runDate": "2026-03-04T14:35:59.674Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 204,
-    "failed": 836,
+    "processed": 253,
+    "failed": 834,
     "skipped": 0,
-    "successRate": "19.6%"
+    "successRate": "23.3%"
   },
   "tierBreakdown": {
     "playwright": 103,
@@ -27,26 +27,26 @@
     "archive": 61
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 1,
-    "ampAttempts": 3,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
+    "ampAttempts": 1,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 4,
-    "tier2Success": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 1,
     "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
-    "tier4Attempts": 9,
-    "tier4Success": 1,
-    "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 4,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 1,
+    "tier4Success": 0,
+    "totalFailed": 14,
+    "scrapingBeeCreditsUsed": 23,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 4,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoveryAttempts": 13,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -1072,6 +1072,10 @@
     "amelie-a-new-musical-2017/theatermania--adam-feldman.json",
     "an-act-of-god-2016/theatermania--adam-feldman.json",
     "eclipsed-2016/theatermania--adam-feldman.json",
+    "ink-2019/theatermania--andy-propst.json",
+    "oslo-2017/theatermania--jesse-green.json",
+    "race-2009/theatermania--charles-isherwood.json",
+    "school-of-rock-the-musical-2015/theatermania--jesse-green.json",
     "driving-miss-daisy-2010/variety--charles-isherwood.json",
     "fela-2012/variety--marilyn-stasio.json",
     "macbeth-2008/variety--charles-isherwood.json",
@@ -1085,13 +1089,7 @@
     "the-little-mermaid-2008/variety--david-rooney.json",
     "the-merchant-of-venice-2010/variety--charles-isherwood.json",
     "the-road-to-mecca-2012/variety--marilyn-stasio.json",
-    "xanadu-2007/variety--david-rooney.json",
-    "bonnie-and-clyde-2011/ew--thom-geier.json",
-    "rodgers-hammersteins-cinderella-2013/ew--jessica-shaw.json",
-    "seminar-2011/ew--lisa-schwarzbaum.json",
-    "the-anarchist-2012/ew--lisa-schwarzbaum.json",
-    "wonderland-2011/ew--melissa-rose-bernardo.json",
-    "burn-the-floor-2009/ew--jennifer-armstrong.json"
+    "xanadu-2007/variety--david-rooney.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1750,20 +1748,6 @@
       "cats-1982/wsj--terry-teachout.json"
     ]
   },
-  "failuresByOutlet": {
-    "Entertainment Weekly": {
-      "count": 2,
-      "domain": "ew.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
-  "urlDiscoveries": [
-    {
-      "reviewId": "bonnie-and-clyde-2011/ew--thom-geier.json",
-      "oldUrl": "https://www.ew.com/ew/article/0,,20364394_20550263,00.html",
-      "newUrl": "https://ew.com/article/2011/12/03/this-week-on-stage-bonnie-and-clyde/?srsltid=AfmBOorxIPzGmm7LhGfgR5v_ikRvcIgQO1lrNP2yIvUeW1WpoUSiUoG7"
-    }
-  ]
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
 }
