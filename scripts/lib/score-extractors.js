@@ -746,8 +746,8 @@ const OUTLET_EXTRACTORS = {
   'the-recs': extractUKStarRating,
   'lost-in-theatreland': extractUKStarRating,
   'digital-journal': extractUKStarRating,
-  'rollingstone': extractUKStarRating,
-  'rolling-stone': extractUKStarRating,
+  'rollingstone': noScoreExtractor,    // RS theater reviews don't have star ratings
+  'rolling-stone': noScoreExtractor,
   'theater-life': extractUKStarRating,
   'jks-theatre-scene': extractGenericLetterGrade,
 
