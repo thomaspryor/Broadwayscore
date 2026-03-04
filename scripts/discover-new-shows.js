@@ -1029,8 +1029,9 @@ async function discoverShows() {
       // IBDB classification is authoritative (from the production page itself)
       detectedType = show.ibdbShowType;
       confidence = 'high';
-    } else if (/\bthe\s+musical\b|\bmusical\b/i.test(show.title)) {
-      // Title contains "Musical" — strong signal (e.g., "Dog Man - The Musical")
+    } else if (/[-–—:]\s*the\s+musical\b|:\s*a\s+(new\s+)?musical\b/i.test(show.title)) {
+      // Title suffix like "Dog Man - The Musical" or "Show: A New Musical"
+      // Avoids false positives like "The Musical Comedy Murders of 1940"
       detectedType = 'musical';
       confidence = 'medium';
     } else if (isPlay) {
