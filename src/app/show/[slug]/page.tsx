@@ -44,7 +44,19 @@ import { getComparisonsForShow } from '@/config/comparisons';
 import ShowPageRatingConnected from '@/components/user/ShowPageRatingConnected';
 
 export function generateStaticParams() {
-  return getAllShowSlugs().map((slug) => ({ slug }));
+  // Pre-render open + previews + recently closed shows (high traffic).
+  // Rest generated on-demand via ISR, cached at Vercel edge until next deploy.
+  const allSlugs = getAllShowSlugs();
+  const sixMonthsAgo = new Date(Date.now() - 180 * 86400000);
+  return allSlugs
+    .map(slug => getShowBySlug(slug))
+    .filter((s): s is ComputedShow =>
+      !!s && (
+        s.status === 'open' || s.status === 'previews' ||
+        (!!s.closingDate && new Date(s.closingDate) > sixMonthsAgo)
+      )
+    )
+    .map(s => ({ slug: s.slug }));
 }
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
