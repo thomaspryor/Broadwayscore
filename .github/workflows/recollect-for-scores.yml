@@ -83,7 +83,9 @@ jobs:
           if [ "$OUTLETS_INPUT" = "all-free" ]; then
             # Free outlets with dedicated score extractors (not noScoreExtractor)
             # Excluded: guardian (API metadata), usatoday (no star ratings in HTML)
-            OUTLETS="timeout,ew,standard,independent,culturesauce,whatsonstage"
+            # Paywalled UK outlets (telegraph, thestage) use cookie secrets for auth
+            # Excluded: times-uk (no star ratings in HTML even with working auth)
+            OUTLETS="timeout,ew,standard,independent,culturesauce,whatsonstage,telegraph,thestage"
           else
             OUTLETS="$OUTLETS_INPUT"
           fi
@@ -92,6 +94,10 @@ jobs:
 
       - name: Recollect review HTML for score extraction
         id: recollect
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          TELEGRAPH_COOKIES: ${{ secrets.TELEGRAPH_COOKIES }}
+          THESTAGE_COOKIES: ${{ secrets.THESTAGE_COOKIES }}
         run: |
           IFS=',' read -ra OUTLET_ARRAY <<< "${{ steps.outlets.outputs.list }}"
           LIMIT="${{ inputs.limit || '100' }}"
