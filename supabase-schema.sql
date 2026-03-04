@@ -31,6 +31,7 @@ CREATE TABLE watchlist (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
   show_id TEXT NOT NULL,
+  planned_date DATE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   UNIQUE(user_id, show_id)
 );
@@ -85,6 +86,10 @@ CREATE POLICY "Users can view own watchlist"
 CREATE POLICY "Users can insert own watchlist"
   ON watchlist FOR INSERT
   WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update own watchlist"
+  ON watchlist FOR UPDATE
+  USING (auth.uid() = user_id);
 
 CREATE POLICY "Users can delete own watchlist"
   ON watchlist FOR DELETE
