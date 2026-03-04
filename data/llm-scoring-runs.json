@@ -1,19 +1,5 @@
 [
   {
-    "startedAt": "2026-03-01T16:58:57.737Z",
-    "completedAt": "2026-03-01T16:59:01.791Z",
-    "totalReviews": 30629,
-    "processed": 1,
-    "skipped": 30626,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 8432,
-      "output": 210,
-      "total": 12935
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-03-01T17:03:13.349Z",
     "completedAt": "2026-03-01T17:07:13.562Z",
     "totalReviews": 30629,
@@ -777582,6 +777568,31 @@
           "total": 3
         },
         "hasDisagreement": false
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-03-04T15:06:26.533Z",
+    "completedAt": "2026-03-04T15:06:51.835Z",
+    "totalReviews": 31103,
+    "processed": 7,
+    "skipped": 31094,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 51566,
+      "output": 1817,
+      "total": 79779
+    },
+    "errorDetails": [
+      {
+        "showId": "the-devil-wears-prada-west-end-2024",
+        "outletId": "artsdesk",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "la-cage-aux-folles-2010",
+        "outletId": "newsday",
+        "error": "Review text too short or missing"
       }
     ]
   }
