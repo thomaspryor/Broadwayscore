@@ -48,7 +48,7 @@ export default function ShowPageRatingConnected({
     reviewText: string | null;
     dateSeen: string | null;
     reviewId?: string;
-  }) => {
+  }): Promise<string | void> => {
     try {
       // Ensure profile exists before saving (foreign key requirement)
       if (user) {
@@ -71,26 +71,23 @@ export default function ShowPageRatingConnected({
         }
       }
 
-      // Use provided reviewId, or find existing review for this show (for edits)
-      const existingReview = reviews.find(r => r.show_id === showId);
-      const existingId = data.reviewId || existingReview?.id;
-
-      await saveReview({
+      const result = await saveReview({
         showId,
         rating: data.rating,
         reviewText: data.reviewText,
         dateSeen: data.dateSeen,
-        reviewId: existingId,
+        reviewId: data.reviewId,
       });
       showToast?.('Rating saved!', 'success');
       await getReviewsForShow(showId);
+      return result?.id;
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error('[Rating] handleSaveReview failed:', e);
       showToast?.('Failed to save rating. Please try again.', 'error');
       throw new Error('Save failed');
     }
-  }, [showId, user, reviews, saveReview, getReviewsForShow, showToast]);
+  }, [showId, user, saveReview, getReviewsForShow, showToast]);
 
   // Execute pending action after auth (deferred auth flow)
   useEffect(() => {

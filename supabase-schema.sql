@@ -12,7 +12,7 @@ CREATE TABLE profiles (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- 2. Reviews table (one review per user per show, with multiple viewings via date_seen)
+-- 2. Reviews table (multiple viewings per show allowed)
 CREATE TABLE reviews (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
@@ -22,8 +22,7 @@ CREATE TABLE reviews (
   date_seen DATE,
   visibility TEXT NOT NULL DEFAULT 'private' CHECK (visibility IN ('public', 'private')),
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  UNIQUE(user_id, show_id, date_seen)
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 -- 3. Watchlist table
