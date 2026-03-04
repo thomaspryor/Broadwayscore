@@ -6,7 +6,11 @@ const nextConfig = {
   trailingSlash: false,
   ...(isGitHubPages && { basePath: '/Broadwayscore' }),
   images: {
-    unoptimized: true,
+    remotePatterns: [
+      { protocol: 'https', hostname: 'images.ctfassets.net' },
+      { protocol: 'https', hostname: 'res.cloudinary.com' },
+      { protocol: 'https', hostname: '**.amazonaws.com' },
+    ],
   },
 }
 
