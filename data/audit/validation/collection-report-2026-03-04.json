@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-03-04T03:01:17.086Z",
+  "runDate": "2026-03-04T03:07:40.602Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 5,
@@ -11,37 +11,37 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 749,
-    "failed": 468,
+    "processed": 745,
+    "failed": 472,
     "skipped": 0,
-    "successRate": "61.5%"
+    "successRate": "61.2%"
   },
   "tierBreakdown": {
-    "playwright": 493,
+    "playwright": 488,
     "amp": 106,
     "browserbase": 0,
     "directCookies": 92,
     "scrapingbee": 107,
     "brightdata": 0,
-    "archiveToday": 180,
-    "archive": 143
+    "archiveToday": 184,
+    "archive": 144
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 5,
+    "tier1Attempts": 4,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 4,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 5,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
-    "totalFailed": 0,
+    "tier3_6Attempts": 4,
+    "tier3_6Success": 4,
+    "tier4Attempts": 5,
+    "tier4Success": 1,
+    "totalFailed": 4,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -794,11 +794,7 @@
     "shining-city-2006/nytimes--ben-brantley.json",
     "some-like-it-hot-2022/newyorker--unknown.json",
     "take-me-out/nytimes--ben-brantley.json",
-    "a-bronx-tale-the-musical-2016/nbcny--dave-quinn.json",
-    "colin-quinn-long-story-short-2010/nbcny--robert-kahn.json",
-    "disaster-2016/nbcny--robert-kahn.json",
-    "doctor-zhivago-2015/nbcny--robert-kahn.json",
-    "the-glass-menagerie-1983/nbcny--robert-kahn.json"
+    "death-of-a-salesman-2022/talkinbroadway--howard-miller.json"
   ],
   "failed": [
     "bigfoot-off-broadway-2026/vulture--unknown.json",
@@ -1268,7 +1264,11 @@
     "summer-2018/nytimes--jesse-green.json",
     "summer-2018/vulture--jesse-green.json",
     "sweat-2017/vulture--jesse-green.json",
-    "sweet-charity-2005/nytimes--ben-brantley.json"
+    "sweet-charity-2005/nytimes--ben-brantley.json",
+    "a-man-for-all-seasons-2008/talkinbroadway--unknown.json",
+    "all-about-me-2010/talkinbroadway--unknown.json",
+    "almost-famous-2022/talkinbroadway--matthew-murray.json",
+    "choir-boy-2019/talkinbroadway--marc-miller.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1759,12 +1759,7 @@
       "purpose/nytg--joe-dziemianowicz.json",
       "romeo-juliet/nyt-theater--jonathan-mandell.json",
       "romeo-juliet/nytg--gillian-russo.json",
-      "take-me-out/nytimes--ben-brantley.json",
-      "a-bronx-tale-the-musical-2016/nbcny--dave-quinn.json",
-      "colin-quinn-long-story-short-2010/nbcny--robert-kahn.json",
-      "disaster-2016/nbcny--robert-kahn.json",
-      "doctor-zhivago-2015/nbcny--robert-kahn.json",
-      "the-glass-menagerie-1983/nbcny--robert-kahn.json"
+      "take-me-out/nytimes--ben-brantley.json"
     ],
     "amp": [
       "data/review-texts/bigfoot-off-broadway-2026/vulture--unknown.json",
@@ -2259,7 +2254,11 @@
       "data/review-texts/summer-2018/nytimes--jesse-green.json",
       "data/review-texts/summer-2018/vulture--jesse-green.json",
       "data/review-texts/sweat-2017/vulture--jesse-green.json",
-      "data/review-texts/sweet-charity-2005/nytimes--ben-brantley.json"
+      "data/review-texts/sweet-charity-2005/nytimes--ben-brantley.json",
+      "data/review-texts/a-man-for-all-seasons-2008/talkinbroadway--unknown.json",
+      "data/review-texts/all-about-me-2010/talkinbroadway--unknown.json",
+      "data/review-texts/almost-famous-2022/talkinbroadway--matthew-murray.json",
+      "data/review-texts/choir-boy-2019/talkinbroadway--marc-miller.json"
     ],
     "archive": [
       "pied-a-terre-off-broadway-2026/nytg--unknown.json",
@@ -2404,7 +2403,8 @@
       "queen-versailles-2025/newyorker--helen-shaw.json",
       "red-2010/newyorker--john-lahr.json",
       "redwood-2025/newyorker--helen-shaw.json",
-      "shining-city-2006/nytimes--ben-brantley.json"
+      "shining-city-2006/nytimes--ben-brantley.json",
+      "death-of-a-salesman-2022/talkinbroadway--howard-miller.json"
     ]
   },
   "failuresByOutlet": {},
