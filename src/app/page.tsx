@@ -1,6 +1,6 @@
 // Server component — loads data at build time, passes serialized props to client
 import type { Metadata } from 'next';
-import { getBroadwayShows, getOffBroadwayShows, getDataStats, getUpcomingShows } from '@/lib/data-core';
+import { getBroadwayShows, getOffBroadwayShows, getWestEndShows, getDataStats, getUpcomingShows } from '@/lib/data-core';
 import type { ComputedShow } from '@/lib/data-types';
 import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
 import { BASE_URL, generateHomepageFAQSchema } from '@/lib/seo';
@@ -65,6 +65,9 @@ export default function HomePage() {
     (s.status === 'open' || s.status === 'previews') &&
     s.criticScore && s.criticScore.reviewCount !== undefined && s.criticScore.reviewCount >= 5
   );
+  const weShows = getWestEndShows().filter(s =>
+    s.criticScore && s.criticScore.reviewCount !== undefined && s.criticScore.reviewCount >= 3
+  );
 
   // Precompute "Best Recent Musicals" server-side for both preload links and SSR featured row
   const twelveMonthsAgo = new Date();
@@ -111,6 +114,7 @@ export default function HomePage() {
         shows={allShows.map(serializeShow)}
         upcomingShows={upcomingShows.map(serializeShow)}
         offBroadwayShows={obShows.map(serializeShow)}
+        westEndShows={weShows.map(serializeShow)}
         totalShows={stats.totalShows}
         totalReviews={stats.totalReviews}
         skipHero
