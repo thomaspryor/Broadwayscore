@@ -64,6 +64,7 @@ export default function ReviewPanel({
           value={dateSeen}
           onChange={e => setDateSeen(e.target.value)}
           onFocus={e => { try { e.currentTarget.showPicker(); } catch {} }}
+          min="1950-01-01"
           max={maxDate}
           className="w-full sm:w-48 px-3 py-2 text-sm bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30 [color-scheme:dark] cursor-pointer"
         />

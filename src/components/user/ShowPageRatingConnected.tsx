@@ -106,6 +106,8 @@ export default function ShowPageRatingConnected({
   }, [showId, user, saveReview, getReviewsForShow, showToast]);
 
   // Execute pending action after auth (deferred auth flow)
+  // IMPORTANT: Uses Supabase client directly instead of saveReview hook
+  // because the hook's userId closure may still be null right after auth.
   useEffect(() => {
     if (!isAuthenticated || !user || hasExecutedPending.current) return;
     const pending = getPendingAction();
@@ -115,11 +117,47 @@ export default function ShowPageRatingConnected({
     clearPendingAction();
 
     if (pending.type === 'rating' && pending.rating) {
-      handleSaveReview({
-        rating: pending.rating,
-        reviewText: null,
-        dateSeen: null,
-      });
+      // Save directly via Supabase client to avoid stale hook closure
+      (async () => {
+        try {
+          const client = getSupabaseClient();
+          if (!client) throw new Error('No client');
+
+          // Ensure profile exists (foreign key requirement)
+          const { data: profileData } = await client
+            .from('profiles')
+            .select('id')
+            .eq('id', user.id)
+            .single();
+          if (!profileData) {
+            const { data: { user: authUser } } = await client.auth.getUser();
+            const meta = authUser?.user_metadata || {};
+            await client.from('profiles').upsert({
+              id: user.id,
+              display_name: meta.full_name || meta.name || '',
+              avatar_url: meta.avatar_url || meta.picture || null,
+            }, { onConflict: 'id' });
+          }
+
+          const { error: insertErr } = await client
+            .from('reviews')
+            .insert({
+              user_id: user.id,
+              show_id: showId,
+              rating: pending.rating,
+              review_text: null,
+              date_seen: null,
+            });
+          if (insertErr) throw insertErr;
+
+          showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">Reviews</a></>, 'success');
+          await getReviewsForShow(showId);
+        } catch (e) {
+          // eslint-disable-next-line no-console
+          console.error('[Rating] Deferred save failed:', e);
+          showToast?.('Failed to save rating. Please try again.', 'error');
+        }
+      })();
     } else if (pending.type === 'watchlist') {
       addToWatchlist(showId).then(() => {
         getWatchlist();
