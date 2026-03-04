@@ -238,12 +238,21 @@ function extractReviewsFromLBO(html, showId) {
     const text = $(el).text().trim();
 
     if (tag === 'h4') {
+      // LBO puts star ratings in <h4> elements too — check for stars first
+      const h4Stars = text.match(/^(★+)\s*$/);
+      if (h4Stars && currentOutlet) {
+        currentStars = h4Stars[1].length;
+        continue;
+      }
+
       // New outlet — flush previous
       flushReview();
 
       // Skip non-outlet h4s (navigation, ads, etc.)
       if (text.length > 80 || text.length < 3) continue;
-      if (/book tickets|buy tickets|related|share|newsletter/i.test(text)) continue;
+      if (/book tickets|buy tickets|related|share|newsletter|categories|connect with/i.test(text)) continue;
+      // Skip pure star strings without a preceding outlet
+      if (/^★+$/.test(text)) continue;
 
       currentOutlet = text;
       continue;
@@ -251,7 +260,7 @@ function extractReviewsFromLBO(html, showId) {
 
     if (!currentOutlet) continue;
 
-    // Star rating line — Unicode ★ characters
+    // Star rating line — Unicode ★ characters (in <p> elements)
     const starMatch = text.match(/^(★+)\s*$/);
     if (starMatch) {
       currentStars = starMatch[1].length;
@@ -290,14 +299,24 @@ function extractReviewsFromLBO(html, showId) {
       }
     }
 
+    // Short "Read the review here" link paragraphs (LBO puts these in separate <p>)
+    if (text.length <= 40 && /read the review|read more|full review/i.test(text)) {
+      const link = $(el).find('a').first();
+      const linkHref = link.length ? link.attr('href') : '';
+      if (linkHref && linkHref.startsWith('http') && !linkHref.includes('londonboxoffice.co.uk')) {
+        currentUrl = linkHref;
+      }
+      continue;
+    }
+
     // Excerpt — longer paragraph text
     if (text.length > 40) {
       // Capture first link as review URL
       const link = $(el).find('a').first();
       if (link.length && link.attr('href')) {
         const href = link.attr('href');
-        // Only capture external review links (not LBO internal links)
-        if (!href.includes('londonboxoffice.co.uk')) {
+        // Only capture external review links (not LBO internal or relative links)
+        if (!href.includes('londonboxoffice.co.uk') && href.startsWith('http')) {
           currentUrl = href;
         }
       }
@@ -484,11 +503,11 @@ async function scrapeLBORoundups() {
     if (!extractedTitle) continue;
 
     const match = matchTitleToShow(extractedTitle, weShows, { market: 'west-end' });
-    if (match) {
+    if (match && match.show) {
       // Apply show filter if provided
-      if (targetShowIds && !targetShowIds.includes(match.id)) continue;
+      if (targetShowIds && !targetShowIds.includes(match.show.id)) continue;
 
-      matchedRoundups.push({ url, show: match, extractedTitle });
+      matchedRoundups.push({ url, show: match.show, extractedTitle });
     }
   }
 
