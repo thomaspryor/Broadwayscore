@@ -1,20 +1,31 @@
 {
-  "updatedAt": "2026-03-04T14:27:28.551Z",
-  "processed": 204,
-  "failed": 830,
-  "successRate": "19.7%",
+  "updatedAt": "2026-03-04T14:29:43.509Z",
+  "processed": 250,
+  "failed": 820,
+  "successRate": "23.4%",
   "tierBreakdown": {
-    "playwright": 103,
+    "playwright": 149,
     "amp": 22,
     "browserbase": 0,
     "directCookies": 15,
     "scrapingbee": 23,
     "brightdata": 0,
-    "archiveToday": 416,
+    "archiveToday": 415,
     "archive": 61
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
+    {
+      "t": "2026-03-04T08:25:19.089Z",
+      "event": "bb-session",
+      "session": "41bb40ff",
+      "url": "https://www.nytimes.com/2005/10/28/theater/reviews/the-odd-couple-redux-still-at"
+    },
+    {
+      "t": "2026-03-04T08:25:20.669Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
     {
       "t": "2026-03-04T08:27:58.718Z",
       "event": "bb-session",
@@ -113,17 +124,6 @@
       "t": "2026-03-04T14:16:15.086Z",
       "event": "bb-cookie-inject",
       "domain": "theatermania.com"
-    },
-    {
-      "t": "2026-03-04T14:26:28.492Z",
-      "event": "bb-session",
-      "session": "d2931fad",
-      "url": "https://variety.com/2024/legit/reviews/mcneal-review-broadway-lincoln-center-the"
-    },
-    {
-      "t": "2026-03-04T14:26:29.822Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
     }
   ]
 }
