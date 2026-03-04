@@ -221,9 +221,14 @@ async function main() {
         if (data.originalScore) continue; // Already has score
         if (!data.url) continue; // No URL to fetch
         if (data.wrongShow) continue; // Flagged as wrong content
+        if (data.wrongProduction) continue; // URL is for a different production
         // Skip non-theatre content URLs (film reviews, concert reviews, etc.)
         const urlPath = data.url.toLowerCase();
         if (/\/(films|film)\//i.test(urlPath) || /\/music\/concerts\//i.test(urlPath)) continue;
+        // Skip URLs that clearly don't match the show's production year
+        const showYear = dir.match(/(\d{4})$/)?.[1];
+        const urlYear = data.url.match(/(?:nypost|timeout|ew|standard|independent|whatsonstage|telegraph|thestage)\.(?:com|co\.uk)\/(\d{4})\//)?.[1];
+        if (showYear && urlYear && Math.abs(parseInt(urlYear) - parseInt(showYear)) > 1) continue;
         targets.push({ dir, file, fp, url: data.url, data });
       } catch (e) { /* skip */ }
     }
