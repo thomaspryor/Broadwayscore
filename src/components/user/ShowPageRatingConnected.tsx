@@ -102,7 +102,6 @@ export default function ShowPageRatingConnected({
     clearPendingAction();
 
     if (pending.type === 'rating' && pending.rating) {
-      showToast?.('Signed in! Saving your rating...', 'success');
       handleSaveReview({
         rating: pending.rating,
         reviewText: null,
