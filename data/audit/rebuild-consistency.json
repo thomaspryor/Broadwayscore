@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-04T04:50:53.540Z",
+  "generatedAt": "2026-03-04T06:52:40.328Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -32,6 +32,14 @@
       "outlet": "london-theatre",
       "critic": "Marianka Swain",
       "detail": "originalRating \"4/5\" (=80) vs score 45 (source: llmScore-lowconf)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "bonnie-and-clyde-2011",
+      "outlet": "timeout",
+      "critic": "Adam Feldman",
+      "detail": "originalRating \"5/5\" (=100) vs score 63 (source: human-review)"
     },
     {
       "type": "rating-score-mismatch",
@@ -144,6 +152,14 @@
       "outlet": "ew",
       "critic": "Kristen Baldwin",
       "detail": "originalRating \"B+\" (=80) vs score 45 (source: human-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "punch-2025",
+      "outlet": "thestage",
+      "critic": "Unknown",
+      "detail": "originalRating \"4/4 stars\" (=100) vs score 78 (source: human-review)"
     },
     {
       "type": "rating-score-mismatch",
@@ -288,6 +304,14 @@
       "outlet": "nypost",
       "critic": "Johnny Oleksinski",
       "detail": "humanReviewScore 25 (negative) overrides explicit \"4 stars\" (=80, positive)"
+    },
+    {
+      "type": "human-override-vs-explicit-grade",
+      "severity": "high",
+      "showId": "bonnie-and-clyde-2011",
+      "outlet": "timeout",
+      "critic": "Adam Feldman",
+      "detail": "humanReviewScore 63 (mixed) overrides explicit \"5/5\" (=100, positive)"
     },
     {
       "type": "human-override-vs-explicit-grade",
