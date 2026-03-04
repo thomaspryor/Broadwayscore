@@ -332,19 +332,45 @@ function searchTodayTixByTitle(title, location = 1) {
           });
           if (exact) { resolve(exact); return; }
 
-          // Fuzzy: bidirectional 60% word match (both directions must pass)
-          // This prevents venue-based false matches (e.g., searching "Beetlejuice"
-          // and getting "Mary Poppins" because it plays at the same venue)
+          // Fuzzy match with containment check to prevent venue-based false matches
+          // (e.g., searching "Beetlejuice" and getting "Mary Poppins" at same venue)
           const ourWords = normTitle.split(' ').filter(w => w.length > 2);
           for (const show of json.data) {
             const apiName = (show.displayName || show.name || '').toLowerCase()
               .replace(/['']/g, '').replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
-            const theirWords = apiName.split(' ').filter(w => w.length > 2);
             const ourInTheirs = ourWords.filter(w => apiName.includes(w)).length;
-            const theirsInOurs = theirWords.filter(w => normTitle.includes(w)).length;
             const ourRatio = ourWords.length > 0 ? ourInTheirs / ourWords.length : 0;
+            if (ourRatio < 0.6) continue;
+
+            // If all our words match AND we have >1 significant word, accept
+            // (our title is contained in theirs, e.g., "Beetlejuice" → "Beetlejuice The Musical")
+            // Single-word titles need exact match to avoid "Chicago" → "Chicago Fire"
+            if (ourRatio >= 1.0 && ourWords.length > 1) {
+              resolve(show);
+              return;
+            }
+            // Single significant word: only match if API name has <=3 significant
+            // words (prevents "Chicago" → "Chicago Fire" but allows "Cats" → "Cats The Musical")
+            if (ourRatio >= 1.0 && ourWords.length === 1) {
+              const theirWords = apiName.split(' ').filter(w => w.length > 2);
+              const unmatched = theirWords.filter(w => !normTitle.includes(w));
+              // Allow common suffixes (the, musical, show) but reject titles with
+              // unrelated content words
+              const theatreFluff = new Set(['the', 'musical', 'show', 'play', 'new', 'disneys', 'disney']);
+              const realUnmatched = unmatched.filter(w => !theatreFluff.has(w));
+              if (realUnmatched.length === 0) {
+                resolve(show);
+                return;
+              }
+              continue;
+            }
+
+            // Partial forward match: also require reverse containment to prevent
+            // short-word overlap false positives
+            const theirWords = apiName.split(' ').filter(w => w.length > 2);
+            const theirsInOurs = theirWords.filter(w => normTitle.includes(w)).length;
             const theirRatio = theirWords.length > 0 ? theirsInOurs / theirWords.length : 0;
-            if (ourRatio >= 0.6 && theirRatio >= 0.6) {
+            if (theirRatio >= 0.4) {
               resolve(show);
               return;
             }
