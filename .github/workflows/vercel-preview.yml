@@ -32,6 +32,8 @@ jobs:
     runs-on: ubuntu-latest
     concurrency:
       group: vercel-preview-deploy
+      # Intentionally true: for previews, only the latest staging push matters.
+      # Queuing (false) would waste time building stale intermediate versions.
       cancel-in-progress: true
     steps:
       - name: Checkout staging
@@ -46,6 +48,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
@@ -61,9 +64,38 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
 
+      - name: Cache Next.js build
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: nextjs-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            nextjs-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
+            nextjs-cache-${{ runner.os }}-
+
+      - name: Check if data changed
+        id: check-data
+        run: |
+          BEFORE="${{ github.event.before }}"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            echo "data_changed=true" >> "$GITHUB_OUTPUT"
+            echo "Full prebuild (manual trigger or no prior commit)"
+            exit 0
+          fi
+          git fetch --depth=2 origin "$BEFORE" 2>/dev/null || true
+          CHANGED=$(git diff --name-only "$BEFORE"..HEAD 2>/dev/null)
+          if [ -z "$CHANGED" ] || echo "$CHANGED" | grep -qE '^(data/|public/data/|content/reviews/)'; then
+            echo "data_changed=true" >> "$GITHUB_OUTPUT"
+            echo "Data files changed (or diff unavailable) — full prebuild"
+          else
+            echo "data_changed=false" >> "$GITHUB_OUTPUT"
+            echo "Code-only change — fast prebuild"
+          fi
+
       - name: Build
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          SKIP_HEAVY_PREBUILD: ${{ steps.check-data.outputs.data_changed == 'false' && 'true' || '' }}
         run: vercel build --token=$VERCEL_TOKEN
 
       - name: Deploy Preview
