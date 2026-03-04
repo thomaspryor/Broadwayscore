@@ -484,7 +484,8 @@ function normalizeForTitleMatch(title) {
     .replace(/\s*[-–]\s*broadway\s+production\b/i, '') // Remove "- Broadway Production"
     .replace(/\s*\(.*?\)/g, '')        // Remove parentheticals
     .replace(/[''']s\b/g, 's')        // Possessive 's → s (before punctuation strip)
-    .replace(/[''.:!?,/&']/g, ' ')    // Punctuation → spaces (preserves compound words)
+    .replace(/['''`]/g, '')            // Remove apostrophes (keep contractions: ain't → aint)
+    .replace(/[.:!?,/&]/g, ' ')        // Other punctuation → spaces (preserves compound words)
     .replace(/^(the|a|an)\s+/i, '')    // Remove leading articles
     .replace(/[^a-z0-9\s]/g, '')       // Remove remaining non-alphanumeric
     .replace(/\s+/g, ' ')
@@ -517,10 +518,10 @@ function titleMatchScore(searchTitle, candidateUrl, candidateSerpTitle) {
     const union = new Set([...wordsA, ...wordsB]).size;
     const jaccard = union > 0 ? intersection / union : 0;
     if (jaccard >= 0.5) return 8;    // Strong partial match
-    if (jaccard > 0) return 0;       // Some overlap, neutral
 
-    // Character-level fallback for accented/diacritical differences
+    // Character-level check for accent/diacritical differences AND weak word overlap
     // (e.g., "les miserables" vs "les misrables" — IBDB drops accented chars)
+    // Also catches hyphenated titles: "court martial" vs "courtmartial"
     const longer = Math.max(search.length, fromUrl.length);
     if (longer > 0) {
       let common = 0;
@@ -530,10 +531,11 @@ function titleMatchScore(searchTitle, candidateUrl, candidateSerpTitle) {
         if (idx !== -1) { common++; bChars.splice(idx, 1); }
       }
       const charSim = common / longer;
-      if (charSim > 0.75) return 5;   // Close character match (accent differences)
+      if (charSim > 0.75) return 5;   // Close character match (accent/hyphen differences)
       if (charSim > 0.5) return 0;    // Marginal, neutral
     }
 
+    if (jaccard > 0) return 0;        // Some word overlap but poor character match = neutral
     return -10;                        // Zero overlap = clear mismatch
   }
   return 0;
@@ -588,10 +590,26 @@ function findBestProduction(results, options = {}) {
 
   scored.sort((a, b) => b.score - a.score);
 
-  // Reject if best candidate is a clear mismatch (score too low)
-  if (title && scored[0].score < -5) {
-    console.log(`  ⛔ All IBDB results are title mismatches for "${title}" — rejecting`);
-    return null;
+  // Reject if best candidate doesn't have a positive title signal.
+  // Old threshold was -5, which let neutral/wrong matches through.
+  if (title) {
+    const best = scored[0];
+    const titleScore = titleMatchScore(title, best.url, best.title);
+
+    // Must have at least some positive title evidence (score >= 5)
+    if (titleScore < 5) {
+      console.log(`  ⛔ Best IBDB result has weak title match (titleScore=${titleScore}) for "${title}" — rejecting`);
+      return null;
+    }
+
+    // Year gate: if year differs by >2, require near-exact title match (>= 12)
+    if (openingYear && best.year) {
+      const yearGap = Math.abs(parseInt(best.year) - openingYear);
+      if (yearGap > 2 && titleScore < 12) {
+        console.log(`  ⛔ IBDB result year ${best.year} is ${yearGap} years off from ${openingYear}, and title match is weak (${titleScore}) — rejecting`);
+        return null;
+      }
+    }
   }
 
   return scored[0];
