@@ -12,7 +12,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { stripWikiMarkup, hasWikiMarkup } = require('./lib/wiki-utils');
+const { stripWikiMarkup, hasWikiMarkup, stripLeadingJunk } = require('./lib/wiki-utils');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -219,7 +219,7 @@ async function main() {
       continue;
     }
 
-    const synopsis = trimToSynopsis(plotText);
+    const synopsis = trimToSynopsis(stripLeadingJunk(plotText));
     if (synopsis.length < 20) {
       console.log('synopsis too short');
       noPlot++;
