@@ -1189,7 +1189,17 @@
     "the-play-that-goes-wrong-off-broadway-2019/newyorker--michael-schulman.json",
     "the-play-that-goes-wrong-off-broadway-2019/vulture--jesse-green.json",
     "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
-    "an-ark-off-broadway-2026/new-jersey-newsroom--micheal-sommers.json"
+    "an-ark-off-broadway-2026/new-jersey-newsroom--micheal-sommers.json",
+    "and-juliet-2022/wsj--charles-isherwood.json",
+    "book-of-mormon-2011/theatermania--david-rooney.json",
+    "book-of-mormon-2011/wsj--terry-teachout.json",
+    "chicago-1996/nypost--elisabeth-vincentelli.json",
+    "harry-potter-2021/indiewire--david-ehrlich.json",
+    "just-in-time-2025/wsj--unknown.json",
+    "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
+    "marcel-on-the-train-off-broadway-2026/broadwaynews--unknown.json",
+    "mexodus-off-broadway-2026/theatermania--zachary-stewart.json",
+    "mexodus-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1863,7 +1873,13 @@
       "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/vulture--jesse-green.json",
       "data/review-texts/pen-pals-off-broadway-2025/nyt-theater--chloe-rabinowitz.json",
       "data/review-texts/11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
-      "data/review-texts/an-ark-off-broadway-2026/new-jersey-newsroom--micheal-sommers.json"
+      "data/review-texts/an-ark-off-broadway-2026/new-jersey-newsroom--micheal-sommers.json",
+      "data/review-texts/and-juliet-2022/wsj--charles-isherwood.json",
+      "data/review-texts/book-of-mormon-2011/wsj--terry-teachout.json",
+      "data/review-texts/just-in-time-2025/wsj--unknown.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
+      "data/review-texts/mexodus-off-broadway-2026/theatermania--zachary-stewart.json",
+      "data/review-texts/mexodus-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json"
     ],
     "archive": [
       "come-from-away-2017/thewrap--alphonso-duralde.json",
@@ -1930,7 +1946,7 @@
     ]
   },
   "startTime": "2026-03-04T03:18:53.322Z",
-  "lastProcessed": "an-ark-off-broadway-2026/new-jersey-newsroom--micheal-sommers.json",
+  "lastProcessed": "mexodus-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
   "log": [
     {
       "t": "2026-03-04T03:25:20.168Z",
@@ -2114,6 +2130,39 @@
       "t": "2026-03-04T14:37:35.611Z",
       "event": "bb-cookie-inject",
       "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-03-04T15:54:43.665Z",
+      "event": "bb-session",
+      "session": "57f3c382",
+      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
+    },
+    {
+      "t": "2026-03-04T15:54:45.132Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-04T15:56:29.482Z",
+      "event": "bb-session",
+      "session": "ec445caa",
+      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
+    },
+    {
+      "t": "2026-03-04T15:56:30.782Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-04T15:58:53.608Z",
+      "event": "bb-session",
+      "session": "81e009a8",
+      "url": "https://www.wsj.com/articles/just-in-time-review-jonathan-groff-bobby-darin-broa"
+    },
+    {
+      "t": "2026-03-04T15:58:55.007Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
