@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-03-04T21:06:17.370Z",
-  "processed": 44,
-  "failed": 16,
-  "successRate": "73.3%",
+  "updatedAt": "2026-03-04T21:13:11.823Z",
+  "processed": 10,
+  "failed": 90,
+  "successRate": "10.0%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 4,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 36,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 9,
-    "archive": 8
+    "archiveToday": 89,
+    "archive": 6
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-03-04T20:48:12.518Z",
+      "event": "bb-session",
+      "session": "c0fdddfe",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-bronx-bombers-"
+    },
+    {
+      "t": "2026-03-04T20:48:13.856Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    }
+  ]
 }
