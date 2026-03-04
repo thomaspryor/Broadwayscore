@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-04T01:31:01.028Z",
-  "processed": 744,
-  "failed": 438,
-  "successRate": "62.9%",
+  "updatedAt": "2026-03-04T01:39:26.025Z",
+  "processed": 752,
+  "failed": 440,
+  "successRate": "63.1%",
   "tierBreakdown": {
-    "playwright": 486,
+    "playwright": 488,
     "amp": 102,
     "browserbase": 2,
-    "directCookies": 82,
-    "scrapingbee": 102,
+    "directCookies": 83,
+    "scrapingbee": 103,
     "brightdata": 0,
-    "archiveToday": 144,
-    "archive": 154
+    "archiveToday": 146,
+    "archive": 158
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-03-04T00:34:02.831Z",
@@ -69,6 +69,17 @@
       "t": "2026-03-04T00:48:47.661Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-04T01:39:14.285Z",
+      "event": "bb-session",
+      "session": "25aca5f8",
+      "url": "https://www.usatoday.com/story/entertainment/music/2024/04/30/tony-awards-nomina"
+    },
+    {
+      "t": "2026-03-04T01:39:15.358Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }

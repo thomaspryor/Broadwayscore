@@ -743,7 +743,15 @@
     "chess-2025/thestage--unknown.json",
     "deep-azure-globe-west-end-2026/thestage--unknown.json",
     "giant-2026/thestage--dave-fargnoli.json",
-    "giant-2026/times-uk--clive-davis.json"
+    "giant-2026/times-uk--clive-davis.json",
+    "hamilton-2015/ap--mark-kennedy.json",
+    "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
+    "harry-potter-2021/broadwayworld--michael-dale.json",
+    "heathers-the-musical-off-broadway-2025/northjerseycom--robert-feldberg.json",
+    "hells-kitchen-2024/ap--mark-kennedy.json",
+    "hells-kitchen-2024/rollingstone--brittani-samuel.json",
+    "hells-kitchen-2024/theater-life--samuel-l-leiter.json",
+    "hells-kitchen-2024/usatoday--david-oliver.json"
   ],
   "failed": [
     "bigfoot-off-broadway-2026/vulture--unknown.json",
@@ -1183,7 +1191,9 @@
     "dracula-west-end-2025/times-uk--clive-davis.json",
     "giant-2026/ap--jennifer-farrar.json",
     "giant-2026/london-theatre--julia-rank.json",
-    "hadestown-west-end-2024/times-uk--clive-davis.json"
+    "hadestown-west-end-2024/times-uk--clive-davis.json",
+    "hamilton-2015/broadwayworld--michael-dale.json",
+    "hells-kitchen-2024/talkinbroadway--matthew-murray.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1673,7 +1683,9 @@
       "chess-2025/thestage--unknown.json",
       "deep-azure-globe-west-end-2026/thestage--unknown.json",
       "giant-2026/thestage--dave-fargnoli.json",
-      "giant-2026/times-uk--clive-davis.json"
+      "giant-2026/times-uk--clive-davis.json",
+      "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
+      "hells-kitchen-2024/theater-life--samuel-l-leiter.json"
     ],
     "amp": [
       "data/review-texts/bigfoot-off-broadway-2026/vulture--unknown.json",
@@ -1865,7 +1877,8 @@
       "the-book-of-mormon-west-end-2024/times-uk--libby-purves.json",
       "the-mousetrap-west-end-2021/times-uk--quentin-letts.json",
       "an-ark-2026/vulture--sara-holdren.json",
-      "blackout-songs-2026/vulture--jackson-mchenry.json"
+      "blackout-songs-2026/vulture--jackson-mchenry.json",
+      "hells-kitchen-2024/usatoday--david-oliver.json"
     ],
     "scrapingbee": [
       "midnight-a-new-original-musical-by-todrick-hall-west-end-2026/guardian--unknown.json",
@@ -1969,7 +1982,8 @@
       "la-ternura-off-broadway-2025/nyt-theater--unknown.json",
       "the-office-a-musical-parody-off-broadway-2018/broadwaynews--aa-cristi.json",
       "the-play-that-goes-wrong-off-broadway-2019/nydailynews--maria-4251.json",
-      "hells-kitchen-2024/cititour--unknown.json"
+      "hells-kitchen-2024/cititour--unknown.json",
+      "hells-kitchen-2024/rollingstone--brittani-samuel.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2116,7 +2130,9 @@
       "data/review-texts/perfect-crime-off-broadway-1987/broadwaynews--bww-news-desk.json",
       "data/review-texts/chess-2025/ap--mark-kennedy.json",
       "data/review-texts/chess-2025/daily-mail--milly-veitch.json",
-      "data/review-texts/chicago-1996/ap--michael-kuchwara.json"
+      "data/review-texts/chicago-1996/ap--michael-kuchwara.json",
+      "data/review-texts/hamilton-2015/broadwayworld--michael-dale.json",
+      "data/review-texts/hells-kitchen-2024/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "pied-a-terre-off-broadway-2026/nytg--unknown.json",
@@ -2272,11 +2288,15 @@
       "ragtime-2025/nypost--unknown.json",
       "six-2021/timeout--adam-feldman.json",
       "the-play-that-goes-wrong-off-broadway-2019/broadwaynews--julie-musbach.json",
-      "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json"
+      "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json",
+      "hamilton-2015/ap--mark-kennedy.json",
+      "harry-potter-2021/broadwayworld--michael-dale.json",
+      "heathers-the-musical-off-broadway-2025/northjerseycom--robert-feldberg.json",
+      "hells-kitchen-2024/ap--mark-kennedy.json"
     ]
   },
   "startTime": "2026-03-03T08:34:29.131Z",
-  "lastProcessed": "hadestown-west-end-2024/times-uk--clive-davis.json",
+  "lastProcessed": "hells-kitchen-2024/usatoday--david-oliver.json",
   "log": [
     {
       "t": "2026-03-04T00:34:02.831Z",
@@ -2332,6 +2352,17 @@
       "t": "2026-03-04T00:48:47.661Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-04T01:39:14.285Z",
+      "event": "bb-session",
+      "session": "25aca5f8",
+      "url": "https://www.usatoday.com/story/entertainment/music/2024/04/30/tony-awards-nomina"
+    },
+    {
+      "t": "2026-03-04T01:39:15.358Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }
