@@ -29,7 +29,16 @@
     "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
     "cats-the-jellicle-ball-2026/nytimes--jesse-green.json",
     "chess-2025/hollywood-reporter--angie-han.json",
-    "chess-2025/newyorker--michael-schulman.json"
+    "chess-2025/newyorker--michael-schulman.json",
+    "chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
+    "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nytimes--ben-brantley.json",
+    "death-becomes-her-2024/newyorker--helen-shaw.json",
+    "death-of-a-salesman-2026/nytimes--jesse-green.json",
+    "death-of-a-salesman-2026/variety--marilyn-stasio.json",
+    "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+    "dracula-west-end-2025/nytimes--elisabeth-vincentelli.json",
+    "drunk-romeo-and-juliet-off-broadway-2025/nytg--unknown.json"
   ],
   "failed": [
     "on-your-feet-2015/nytg--tulis-mccall.json",
@@ -161,7 +170,8 @@
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
     "the-holy-rosenbergs-west-end-2026/theatre-weekly--unknown.json",
     "the-lion-king-west-end-2021/thestage--unknown.json",
-    "bughouse-off-broadway-2026/variety--charles-isherwood.json"
+    "bughouse-off-broadway-2026/variety--charles-isherwood.json",
+    "dirty-books-off-broadway-2025/nytg--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -179,7 +189,10 @@
       "all-out-2025/nytg--gillian-russo.json",
       "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
       "bigfoot-off-broadway-2026/vulture--unknown.json",
-      "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json"
+      "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+      "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+      "drunk-romeo-and-juliet-off-broadway-2025/nytg--unknown.json"
     ],
     "amp": [
       "data/review-texts/kiss-me-kate-1999/thewrap--robert-hofler.json",
@@ -193,14 +206,19 @@
       "data/review-texts/death-of-a-salesman-2026/thewrap--robert-hofler.json",
       "death-of-a-salesman-2026/thewrap--robert-hofler.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/data-off-broadway-2026/nytimes--ben-brantley.json",
+      "data-off-broadway-2026/nytimes--ben-brantley.json"
+    ],
     "directCookies": [
       "death-of-a-salesman-2026/deadline--greg-evans.json",
       "chess-2025/hollywood-reporter--angie-han.json"
     ],
     "scrapingbee": [
       "broken-glass-west-end-2026/independent--steve-fowler.json",
-      "the-hunger-games-on-stage-west-end-2025/independent--unknown.json"
+      "the-hunger-games-on-stage-west-end-2025/independent--unknown.json",
+      "chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
+      "dracula-west-end-2025/nytimes--elisabeth-vincentelli.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -293,11 +311,14 @@
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
       "back-to-the-future-west-end-2021/variety--david-benedict.json",
       "cats-the-jellicle-ball-2026/nytimes--jesse-green.json",
-      "chess-2025/newyorker--michael-schulman.json"
+      "chess-2025/newyorker--michael-schulman.json",
+      "death-becomes-her-2024/newyorker--helen-shaw.json",
+      "death-of-a-salesman-2026/nytimes--jesse-green.json",
+      "death-of-a-salesman-2026/variety--marilyn-stasio.json"
     ]
   },
   "startTime": "2026-03-04T09:17:51.206Z",
-  "lastProcessed": "chess-2025/newyorker--michael-schulman.json",
+  "lastProcessed": "drunk-romeo-and-juliet-off-broadway-2025/nytg--unknown.json",
   "log": [
     {
       "t": "2026-03-04T09:21:32.409Z",
@@ -352,6 +373,17 @@
     },
     {
       "t": "2026-03-04T10:42:08.975Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-04T10:57:21.433Z",
+      "event": "bb-session",
+      "session": "5de1eb53",
+      "url": "https://www.nytimes.com/2026/01/26/theater/data-review.html"
+    },
+    {
+      "t": "2026-03-04T10:57:22.645Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
