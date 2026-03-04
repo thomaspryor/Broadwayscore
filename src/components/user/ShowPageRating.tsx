@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import Link from 'next/link';
 import StarRating from './StarRating';
 import ReviewPanel from './ReviewPanel';
 import WatchlistButton from './WatchlistButton';
@@ -186,15 +187,27 @@ export default function ShowPageRating({
               ))}
             </div>
           )}
+
+          {/* Link to My Shows diary */}
+          {latestReview && !showPanel && (
+            <Link href="/my-shows" className="inline-block mt-2 text-xs text-gray-500 hover:text-brand transition-colors">
+              See all Ratings
+            </Link>
+          )}
         </div>
 
         {/* Watchlist button */}
-        <div className="flex-shrink-0 pt-5">
+        <div className="flex-shrink-0 pt-5 flex flex-col items-center">
           <WatchlistButton
             isWatchlisted={isWatchlisted}
             onToggle={handleToggleWatchlist}
             loading={watchlistLoading}
           />
+          {isWatchlisted && (
+            <Link href="/my-shows?tab=watchlist" className="mt-1.5 text-xs text-gray-500 hover:text-brand transition-colors">
+              See Watchlist
+            </Link>
+          )}
         </div>
       </div>
 
