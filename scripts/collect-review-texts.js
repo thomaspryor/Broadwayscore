@@ -4430,6 +4430,11 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
 
   // Use cleaned text (junk stripped) if available, otherwise pre-cleaned
   const cleanedText = qualityResult.cleanedText || preCleanedText;
+  // Clear stale contentVerification when fullText changes (prevents wrongArticle from blocking valid new text)
+  if (data.contentVerification && data.contentVerification.wrongArticle && data.fullText !== cleanedText) {
+    console.log(`    → Clearing stale contentVerification.wrongArticle (fullText updated)`);
+    delete data.contentVerification;
+  }
   data.fullText = cleanedText;
   data.isFullReview = cleanedText.length > 1500;
   data.textWordCount = cleanedText.split(/\s+/).filter(w => w.length > 0).length;

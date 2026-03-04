@@ -931,7 +931,17 @@ function getBestScore(data) {
     // Audit showed ~50% error rate on excerpt-only high/medium confidence scores
     // Also downgrade when fullText was recovered from garbage — the LLM scored the excerpt, not the recovered text
     // Also downgrade when contentVerification flagged the article as wrong — the text is from a different article
-    const cvWrongArticle = data.contentVerification && data.contentVerification.wrongArticle === true;
+    // Detect stale contentVerification: if text was fetched AFTER verification, the verification
+    // is outdated (text may have been replaced/updated). Ignore wrongArticle in that case.
+    let cvWrongArticle = data.contentVerification && data.contentVerification.wrongArticle === true;
+    if (cvWrongArticle && data.textFetchedAt && data.contentVerification.verifiedAt) {
+      const fetchedAt = new Date(data.textFetchedAt).getTime();
+      const verifiedAt = new Date(data.contentVerification.verifiedAt).getTime();
+      if (fetchedAt > verifiedAt) {
+        cvWrongArticle = false;
+        stats.staleContentVerificationCleared = (stats.staleContentVerificationCleared || 0) + 1;
+      }
+    }
     const hasOriginalFullText = data.fullText && data.fullText.trim().length > 100 && !data.fullTextRecoveredFrom && !cvWrongArticle;
     const effectiveConfidence = (!hasOriginalFullText && confidence !== 'low') ? 'low' : confidence;
 
@@ -2817,6 +2827,9 @@ if (stats.staleDuplicateTextCleared > 0) {
 }
 if (stats.dupeRefExcludedRecovered > 0) {
   console.log(`  Recovered (duplicate ref would be excluded by other guards): ${stats.dupeRefExcludedRecovered}`);
+}
+if (stats.staleContentVerificationCleared > 0) {
+  console.log(`  Recovered (stale contentVerification — text fetched after verification): ${stats.staleContentVerificationCleared}`);
 }
 console.log(`  Skipped (unknown critic dedup): ${stats.skippedUnknownCriticDedup || 0}`);
 console.log(`  Skipped (fingerprint dedup): ${stats.skippedFingerprintDedup || 0}`);
