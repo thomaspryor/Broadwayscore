@@ -96,21 +96,21 @@ export function useUserReviews(userId: string | null) {
         if (err) throw err;
         return updated as UserReview;
       } else {
-        // Insert new
-        const { data: inserted, error: err } = await client
+        // Upsert: insert if new, update if review already exists for this show
+        const { data: upserted, error: err } = await client
           .from('reviews')
-          .insert({
+          .upsert({
             user_id: userId,
             show_id: data.showId,
             rating: data.rating,
             review_text: data.reviewText || null,
             date_seen: data.dateSeen || null,
-          })
+          }, { onConflict: 'user_id,show_id' })
           .select()
           .single();
 
         if (err) throw err;
-        return inserted as UserReview;
+        return upserted as UserReview;
       }
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to save review';
