@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-04T10:58:36.392Z",
-  "processed": 39,
-  "failed": 131,
-  "successRate": "22.9%",
+  "updatedAt": "2026-03-04T11:01:30.872Z",
+  "processed": 47,
+  "failed": 133,
+  "successRate": "26.1%",
   "tierBreakdown": {
-    "playwright": 17,
+    "playwright": 19,
     "amp": 10,
     "browserbase": 2,
-    "directCookies": 2,
-    "scrapingbee": 4,
+    "directCookies": 6,
+    "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 79,
-    "archive": 12
+    "archive": 13
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-03-04T09:21:32.409Z",
@@ -81,6 +81,17 @@
       "t": "2026-03-04T10:57:22.645Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-04T11:00:38.352Z",
+      "event": "bb-session",
+      "session": "79da9672",
+      "url": "https://www.newyorker.com/goings-on-about-town/just-in-time#:~:text=In%20the%20l"
+    },
+    {
+      "t": "2026-03-04T11:00:39.586Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
