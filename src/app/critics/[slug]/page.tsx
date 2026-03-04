@@ -5,7 +5,7 @@ import { generateBreadcrumbSchema, generateCriticSchema, generateCriticFAQSchema
 import CriticDetailClient from './CriticDetailClient';
 
 export function generateStaticParams() {
-  return getAllCriticSlugs().map((slug) => ({ slug }));
+  return []; // On-demand via ISR — saves ~1,100 pages of build time
 }
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
