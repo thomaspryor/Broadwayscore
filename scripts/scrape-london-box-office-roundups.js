@@ -58,14 +58,18 @@ function sleep(ms) {
 // ---------------------------------------------------------------------------
 
 function fetchUrl(url, renderJs = false) {
-  if (!SCRAPINGBEE_KEY) {
-    throw new Error('SCRAPINGBEE_API_KEY required');
-  }
-
-  const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=${renderJs}`;
+  // LBO pages are static HTML — try direct fetch first, fall back to ScrapingBee
+  const targetUrl = SCRAPINGBEE_KEY
+    ? `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=${renderJs}`
+    : url;
 
   return new Promise((resolve, reject) => {
-    const req = https.get(apiUrl, (res) => {
+    const handler = (res) => {
+      // Follow redirects
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        https.get(res.headers.location, handler).on('error', reject);
+        return;
+      }
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
@@ -75,7 +79,8 @@ function fetchUrl(url, renderJs = false) {
           reject(new Error(`HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
         }
       });
-    });
+    };
+    const req = https.get(targetUrl, handler);
     req.on('error', reject);
     req.setTimeout(60000, () => { req.destroy(); reject(new Error('Timeout')); });
   });
@@ -133,8 +138,8 @@ async function discoverRoundupUrls() {
   const urls = [];
   $('url > loc').each((_, el) => {
     const loc = $(el).text().trim();
-    // Match both "review-round-up-" and "review-roundup-" (LBO uses both)
-    if (/review-round-?up-/i.test(loc)) {
+    // Match "review-round-up-", "review-roundup-", "Review-Round-Up:-", "-review-round-up" (suffix)
+    if (/review-round-?up[-:]|review-round-?up$/i.test(loc)) {
       urls.push(loc);
     }
   });
@@ -150,7 +155,8 @@ async function discoverRoundupUrls() {
 
 function extractShowTitleFromUrl(url) {
   // URL pattern: /news/post/review-round-up-{show-name}-{theatre-name}
-  const match = url.match(/review-round-?up-(.+)$/i);
+  // Also handles: /news/post/Review-Round-Up:-SHOW-NAME-at-the-Theatre
+  const match = url.match(/review-round-?up[:-]+(.+)$/i);
   if (!match) return null;
 
   const slug = match[1];
@@ -201,8 +207,9 @@ function extractReviewsFromLBO(html, showId) {
   // Critic line: "Reviewer: Name" (bold)
   // Review link: <a> within or after excerpt
 
-  // Strategy: iterate through content elements, use h4 as outlet markers
-  const contentElements = $('h4, p, blockquote').toArray();
+  // Strategy: iterate through content elements, use h3/h4 as outlet markers
+  // Some LBO pages use h3 for outlets (e.g., Hunger Games), others use h4
+  const contentElements = $('h3, h4, p, blockquote').toArray();
 
   let currentOutlet = null;
   let currentStars = null;
@@ -237,20 +244,20 @@ function extractReviewsFromLBO(html, showId) {
     const tag = el.tagName.toLowerCase();
     const text = $(el).text().trim();
 
-    if (tag === 'h4') {
-      // LBO puts star ratings in <h4> elements too — check for stars first
-      const h4Stars = text.match(/^(★+)\s*$/);
-      if (h4Stars && currentOutlet) {
-        currentStars = h4Stars[1].length;
+    if (tag === 'h3' || tag === 'h4') {
+      // LBO puts star ratings in heading elements too — check for stars first
+      const hStars = text.match(/^(★+)\s*$/);
+      if (hStars && currentOutlet) {
+        currentStars = hStars[1].length;
         continue;
       }
 
       // New outlet — flush previous
       flushReview();
 
-      // Skip non-outlet h4s (navigation, ads, etc.)
+      // Skip non-outlet headings (navigation, ads, etc.)
       if (text.length > 80 || text.length < 3) continue;
-      if (/book tickets|buy tickets|related|share|newsletter|categories|connect with/i.test(text)) continue;
+      if (/book tickets|buy tickets|related|share|newsletter|categories|connect with|latest news/i.test(text)) continue;
       // Skip pure star strings without a preceding outlet
       if (/^★+$/.test(text)) continue;
 
