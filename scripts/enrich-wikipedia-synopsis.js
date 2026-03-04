@@ -201,10 +201,25 @@ async function main() {
       continue;
     }
 
-    // Validate this is a theatrical production page
-    const hasInfobox = /\{\{Infobox (musical|play|film|television)/i.test(content);
+    // Reject disambiguation pages
+    if (/\{\{disambiguation\}\}/i.test(content) || /may refer to:/i.test(content.substring(0, 500))) {
+      console.log('disambiguation page');
+      notFound++;
+      await new Promise(r => setTimeout(r, 300));
+      continue;
+    }
+
+    // Validate this is a theatrical production page (not a film-only page)
+    const hasTheatreInfobox = /\{\{Infobox (musical|play)/i.test(content);
+    const hasFilmInfobox = /\{\{Infobox (film|television)/i.test(content);
     const hasTheatreContext = /\b(broadway|west end|off-broadway|theatre|theater|musical|playwright|librett)/i.test(content.substring(0, 2000));
-    if (!hasInfobox && !hasTheatreContext) {
+    if (hasFilmInfobox && !hasTheatreInfobox && !hasTheatreContext) {
+      console.log('film page, not theatre');
+      notFound++;
+      await new Promise(r => setTimeout(r, 300));
+      continue;
+    }
+    if (!hasTheatreInfobox && !hasFilmInfobox && !hasTheatreContext) {
       console.log('not a theatre page');
       notFound++;
       await new Promise(r => setTimeout(r, 300));
@@ -222,6 +237,16 @@ async function main() {
     const synopsis = trimToSynopsis(stripLeadingJunk(plotText));
     if (synopsis.length < 20) {
       console.log('synopsis too short');
+      noPlot++;
+      await new Promise(r => setTimeout(r, 300));
+      continue;
+    }
+
+    // Reject synopses that are clearly wrong content
+    if (/may refer to:/i.test(synopsis) ||
+        /^.{0,20}is a \d{4} American .* film/i.test(synopsis) ||
+        /\| website = |\| past_members/.test(synopsis)) {
+      console.log('bad content in synopsis');
       noPlot++;
       await new Promise(r => setTimeout(r, 300));
       continue;
