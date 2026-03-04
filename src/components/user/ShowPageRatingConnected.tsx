@@ -46,6 +46,7 @@ export default function ShowPageRatingConnected({
     rating: number;
     reviewText: string | null;
     dateSeen: string | null;
+    reviewId?: string;
   }) => {
     try {
       // Ensure profile exists before saving (foreign key requirement)
@@ -69,11 +70,16 @@ export default function ShowPageRatingConnected({
         }
       }
 
+      // Use provided reviewId, or find existing review for this show (for edits)
+      const existingReview = reviews.find(r => r.show_id === showId);
+      const existingId = data.reviewId || existingReview?.id;
+
       await saveReview({
         showId,
         rating: data.rating,
         reviewText: data.reviewText,
         dateSeen: data.dateSeen,
+        reviewId: existingId,
       });
       showToast?.('Rating saved!', 'success');
       await getReviewsForShow(showId);
@@ -83,7 +89,7 @@ export default function ShowPageRatingConnected({
       showToast?.('Failed to save rating. Please try again.', 'error');
       throw new Error('Save failed');
     }
-  }, [showId, user, saveReview, getReviewsForShow, showToast]);
+  }, [showId, user, reviews, saveReview, getReviewsForShow, showToast]);
 
   const handleToggleWatchlist = useCallback(async () => {
     try {
