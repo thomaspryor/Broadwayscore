@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-03-04T14:37:48.565Z",
+  "runDate": "2026-03-04T14:38:28.800Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 198,
-    "failed": 818,
+    "processed": 253,
+    "failed": 833,
     "skipped": 0,
-    "successRate": "19.5%"
+    "successRate": "23.3%"
   },
   "tierBreakdown": {
     "playwright": 65,
@@ -23,30 +23,30 @@
     "directCookies": 23,
     "scrapingbee": 29,
     "brightdata": 0,
-    "archiveToday": 418,
-    "archive": 79
+    "archiveToday": 416,
+    "archive": 61
   },
   "statistics": {
-    "tier1Attempts": 6,
-    "tier1Success": 0,
+    "tier1Attempts": 10,
+    "tier1Success": 10,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 6,
-    "tier1_5Success": 1,
-    "tier2Attempts": 22,
-    "tier2Success": 9,
-    "tier3Attempts": 40,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 1,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 5,
-    "tier3_6Success": 5,
-    "tier4Attempts": 38,
-    "tier4Success": 19,
-    "totalFailed": 14,
-    "scrapingBeeCreditsUsed": 203,
-    "browserbaseSessionsUsed": 6,
-    "browserbaseMinutesUsed": 2.4,
-    "urlDiscoveryAttempts": 13,
-    "urlDiscoverySuccess": 6,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 1,
+    "tier4Success": 1,
+    "totalFailed": 13,
+    "scrapingBeeCreditsUsed": 15,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.4,
+    "urlDiscoveryAttempts": 5,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -1054,20 +1054,35 @@
     "oh-mary-off-broadway-2024/wsj--charles-isherwood.json",
     "oklahoma-2002/wsj--terry-teachout.json",
     "oklahoma-2019/broadwaynews--charles-isherwood.json",
-    "topdog-underdog-2022/corey-hawkins--unknown.json",
-    "topdog-underdog-2022/kenny-leon--unknown.json",
-    "bloody-bloody-andrew-jackson-2010/hollywood-reporter--frank-scheck.json",
-    "clydes-2021/hollywood-reporter--david-rooney.json",
-    "end-of-the-rainbow-west-end-2026/hollywood-reporter--david-rooney.json",
-    "leopoldstadt-2022/hollywood-reporter--david-rooney.json",
-    "mcneal-2024/hollywood-reporter--david-rooney.json",
-    "race-2009/hollywood-reporter--frank-scheck.json",
-    "significant-other-2017/hollywood-reporter--david-rooney.json",
-    "some-like-it-hot-2022/hollywood-reporter--david-rooney.json",
-    "the-collaboration-2022/hollywood-reporter--angie-han.json",
-    "the-collaboration-2022/hollywood-reporter--david-rooney.json",
-    "the-threepenny-opera-2006/hollywood-reporter--david-rooney.json",
-    "the-whos-tommy-2024/hollywood-reporter--david-rooney.json"
+    "how-to-succeed-in-business-without-really-trying-2011/theatermania--david-rooney.json",
+    "indecent-2017/theatermania--jesse-green.json",
+    "pretty-woman-the-musical-2018/theatermania--hayley-levitt.json",
+    "romeo-and-juliet-2013/theatermania--adam-feldman.json",
+    "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016/theatermania--jesse-green.json",
+    "sunset-boulevard-2017/theatermania--jesse-oxfeld.json",
+    "the-royal-family-2009/theatermania--david-finkle.json",
+    "a-gentlemans-guide-to-love-and-murder-2013/theatermania--david-gordon.json",
+    "act-one-2014/theatermania--charles-isherwood.json",
+    "amelie-a-new-musical-2017/theatermania--adam-feldman.json",
+    "an-act-of-god-2016/theatermania--adam-feldman.json",
+    "eclipsed-2016/theatermania--adam-feldman.json",
+    "ink-2019/theatermania--andy-propst.json",
+    "oslo-2017/theatermania--jesse-green.json",
+    "race-2009/theatermania--charles-isherwood.json",
+    "school-of-rock-the-musical-2015/theatermania--jesse-green.json",
+    "romeo-and-juliet-2013/theatermania--adam-feldman.json",
+    "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016/theatermania--jesse-green.json",
+    "sunset-boulevard-2017/theatermania--jesse-oxfeld.json",
+    "the-royal-family-2009/theatermania--david-finkle.json",
+    "a-gentlemans-guide-to-love-and-murder-2013/theatermania--david-gordon.json",
+    "act-one-2014/theatermania--charles-isherwood.json",
+    "amelie-a-new-musical-2017/theatermania--adam-feldman.json",
+    "an-act-of-god-2016/theatermania--adam-feldman.json",
+    "eclipsed-2016/theatermania--adam-feldman.json",
+    "ink-2019/theatermania--andy-propst.json",
+    "oslo-2017/theatermania--jesse-green.json",
+    "race-2009/theatermania--charles-isherwood.json",
+    "school-of-rock-the-musical-2015/theatermania--jesse-green.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1633,11 +1648,9 @@
       "data/review-texts/oh-hello-on-broadway-2016/wsj--terry-teachout.json",
       "data/review-texts/oh-mary-off-broadway-2024/wsj--charles-isherwood.json",
       "data/review-texts/oklahoma-2002/wsj--terry-teachout.json",
-      "data/review-texts/clydes-2021/hollywood-reporter--david-rooney.json",
-      "data/review-texts/mcneal-2024/hollywood-reporter--david-rooney.json",
-      "data/review-texts/significant-other-2017/hollywood-reporter--david-rooney.json",
-      "data/review-texts/some-like-it-hot-2022/hollywood-reporter--david-rooney.json",
-      "data/review-texts/the-whos-tommy-2024/hollywood-reporter--david-rooney.json"
+      "data/review-texts/pretty-woman-the-musical-2018/theatermania--hayley-levitt.json",
+      "data/review-texts/act-one-2014/theatermania--charles-isherwood.json",
+      "data/review-texts/act-one-2014/theatermania--charles-isherwood.json"
     ],
     "archive": [
       "come-from-away-2017/thewrap--alphonso-duralde.json",
@@ -1732,34 +1745,14 @@
   },
   "urlDiscoveries": [
     {
-      "reviewId": "looped-2010/hollywood-reporter--frank-scheck.json",
-      "oldUrl": "https://www.hollywoodreporter.com/hr/film-reviews/looped-theater-review-1004075079.story",
-      "newUrl": "https://www.hollywoodreporter.com/movies/movie-reviews/looped-theater-review-29397/"
+      "reviewId": "act-one-2014/theatermania--charles-isherwood.json",
+      "oldUrl": "https://www.theatermania.com/broadway/news/act-one_70041.html",
+      "newUrl": "https://www.theatermania.com/news/act-one_68285/"
     },
     {
-      "reviewId": "meteor-shower-2017/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/style/selena-gomez-debuts-blond-do-at-2017-american-music-awards-1059982/",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/meteor-shower-theater-1062117/"
-    },
-    {
-      "reviewId": "romeo-and-juliet-2013/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/news/general-news/lebron-james-marries-longtime-girlfriend-629441/",
-      "newUrl": "https://www.hollywoodreporter.com/movies/movie-reviews/orlando-bloom-romeo-juliet-theater-632505/"
-    },
-    {
-      "reviewId": "three-tall-women-2018/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/news/general-news/three-tall-women-theater-1098416/",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/glenda-jackson-return-broadway-30-years-three-tall-women-1005415/"
-    },
-    {
-      "reviewId": "time-stands-still-2010/hollywood-reporter--frank-scheck.json",
-      "oldUrl": "https://www.hollywoodreporter.com/hr/film-reviews/time-stands-still-theater-review-1004063419.story",
-      "newUrl": "https://www.hollywoodreporter.com/movies/movie-reviews/time-stands-still-theater-review-29218/"
-    },
-    {
-      "reviewId": "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/news/general-news/kill-a-mockingbird-theater-review-1169085/",
-      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/to-kill-a-mockingbird-broadway-return-scott-rudin-1234965919/"
+      "reviewId": "race-2009/theatermania--charles-isherwood.json",
+      "oldUrl": "https://www.theatermania.com/broadway/news/race_25982.html",
+      "newUrl": "https://www.theatermania.com/news/race_23313/"
     }
   ]
 }
