@@ -151,7 +151,7 @@ async function initScraper() {
   fetchUrl = async (url) => {
     const cookieData = loadCookiesForUrl(url);
 
-    // For paywalled/WAF-protected sites, try ScrapingBee with filtered auth cookies
+    // For paywalled sites, try ScrapingBee with filtered auth cookies
     if (cookieData && SCRAPINGBEE_KEY) {
       const { cookies, domain } = cookieData;
       const pattern = ESSENTIAL_COOKIE_PATTERNS[domain];
@@ -166,6 +166,18 @@ async function initScraper() {
         } catch (e) {
           console.log(`  ScrapingBee failed: ${e.message}, trying Playwright...`);
         }
+      }
+    }
+
+    // For free outlets, try ScrapingBee without cookies (many sites block headless Playwright)
+    if (!cookieData && SCRAPINGBEE_KEY) {
+      try {
+        console.log(`  ScrapingBee: fetching without cookies`);
+        const html = await fetchWithScrapingBee(url, null);
+        if (html && html.length > 500) return html;
+        console.log(`  ScrapingBee returned ${html.length} chars, trying Playwright...`);
+      } catch (e) {
+        console.log(`  ScrapingBee failed: ${e.message}, trying Playwright...`);
       }
     }
 
