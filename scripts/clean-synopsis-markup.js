@@ -11,7 +11,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { stripWikiMarkup, hasWikiMarkup } = require('./lib/wiki-utils');
+const { stripWikiMarkup, hasWikiMarkup, stripLeadingJunk } = require('./lib/wiki-utils');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -54,20 +54,24 @@ function main() {
   for (const show of shows) {
     if (!show.synopsis) continue;
 
-    // Check if this synopsis has markup
-    if (!hasWikiMarkup(show.synopsis)) continue;
-
     const original = show.synopsis;
-    let fixed = stripWikiMarkup(original);
 
-    // Re-trim to proper synopsis length
-    fixed = trimToSynopsis(fixed);
+    // Step 1: Strip any remaining wiki markup
+    let fixed = hasWikiMarkup(original) ? stripWikiMarkup(original) : original;
+
+    // Step 2: Strip leading junk (image captions, scene markers, meta-notes)
+    fixed = stripLeadingJunk(fixed);
+
+    // Step 3: Only re-trim if content actually changed (avoids trimToSynopsis edge cases
+    // with titles containing periods like "Dana H." or exclamation marks like "Oklahoma!")
+    if (fixed !== original) {
+      fixed = trimToSynopsis(fixed);
+    }
 
     if (hasWikiMarkup(fixed)) {
       stillDirty++;
       changes.push({ id: show.id, status: 'STILL DIRTY', snippet: fixed.substring(0, 80) });
       if (!DRY_RUN) {
-        // Clear synopses that can't be cleaned — they'll be re-fetched
         show.synopsis = '';
       }
       continue;
