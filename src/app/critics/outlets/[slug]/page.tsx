@@ -5,7 +5,7 @@ import { generateBreadcrumbSchema, generateOutletSchema, generateOutletFAQSchema
 import OutletDetailClient from './OutletDetailClient';
 
 export function generateStaticParams() {
-  return getAllOutletSlugs().map((slug) => ({ slug }));
+  return []; // On-demand via ISR — saves ~480 pages of build time
 }
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
