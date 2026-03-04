@@ -11,6 +11,7 @@
 const fs = require('fs');
 const path = require('path');
 const { domainMatchesExpected } = require('./scraper');
+const { isUrlYearOutsideWindow } = require('./content-filters');
 
 // Outlet-to-domain mapping for URL discovery via Google SERP
 const OUTLET_DOMAINS = {
@@ -158,6 +159,9 @@ function getShowInfo(showId) {
         title: showEntry.title,
         year: (showEntry.openingDate || '').substring(0, 4),
         category: showEntry.category || 'broadway',
+        openingDate: showEntry.openingDate || null,
+        closingDate: showEntry.closingDate || null,
+        previewsStartDate: showEntry.previewsStartDate || null,
       };
     }
   } catch (e) { /* fall through */ }
@@ -501,6 +505,14 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     if (urlLower.includes('/attachment/') || urlLower.match(/\.(jpg|jpeg|png|gif|webp)$/)) continue;
     // TheaterMania /shows/ pages are listing pages, not reviews
     if (urlLower.includes('theatermania.com/shows/')) continue;
+
+    // Skip URLs whose embedded year is outside the production window
+    const openYear = showInfo.year ? parseInt(showInfo.year) : null;
+    const closeYear = showInfo.closingDate ? new Date(showInfo.closingDate).getFullYear() : null;
+    if (openYear && isUrlYearOutsideWindow(url, openYear, closeYear)) {
+      log(`    [SKIP] URL year outside production window: ${url}`);
+      continue;
+    }
 
     // Skip if same as the current URL
     if (url === review.url) continue;
