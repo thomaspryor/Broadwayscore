@@ -259,7 +259,6 @@ export default function ShowPageRating({
           existingReviewText={editingReview?.review_text}
           existingDateSeen={editingReview?.date_seen}
           showTitle={showTitle}
-          earliestDate={previewDate}
           latestDate={closingDate}
           onSave={handleSave}
           onCancel={handleCancel}
