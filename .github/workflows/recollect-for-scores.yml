@@ -82,10 +82,12 @@ jobs:
           OUTLETS_INPUT="${{ inputs.outlets || 'all-free' }}"
           if [ "$OUTLETS_INPUT" = "all-free" ]; then
             # Free outlets with dedicated score extractors (not noScoreExtractor)
-            # Excluded: guardian (API metadata), usatoday (no star ratings in HTML)
             # Paywalled UK outlets (telegraph, thestage) use cookie secrets for auth
-            # Excluded: times-uk (no star ratings in HTML even with working auth)
-            OUTLETS="timeout,ew,standard,independent,culturesauce,whatsonstage,telegraph,thestage,nypost"
+            # Excluded: guardian (stars from API not HTML), usatoday (no stars in HTML)
+            # Excluded: theater-life, london-theatre (no stars in HTML)
+            # Excluded: times-uk, financialtimes (paywalled, no cookies)
+            # Excluded: nydailynews, rollingstone (no star ratings)
+            OUTLETS="timeout,ew,standard,independent,culturesauce,whatsonstage,telegraph,thestage,nypost,daily-mail,artsdesk,one-minute-critic"
           else
             OUTLETS="$OUTLETS_INPUT"
           fi

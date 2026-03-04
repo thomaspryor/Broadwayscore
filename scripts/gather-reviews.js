@@ -1095,6 +1095,7 @@ function extractShowScoreReviews(html, showId) {
       { pattern: /Vulture|vulture\.com/i, outlet: 'Vulture', outletId: 'vulture' },
       { pattern: /Variety|variety\.com/i, outlet: 'Variety', outletId: 'variety' },
       { pattern: /Hollywood Reporter|hollywoodreporter\.com/i, outlet: 'The Hollywood Reporter', outletId: 'hollywood-reporter' },
+      { pattern: /Time Out London|timeout\.com\/london/i, outlet: 'Time Out London', outletId: 'timeout-london' },
       { pattern: /Time Out|timeout\.com/i, outlet: 'Time Out New York', outletId: 'timeout' },
       { pattern: /New York Post|nypost\.com/i, outlet: 'New York Post', outletId: 'nypost' },
       { pattern: /TheaterMania|theatermania\.com/i, outlet: 'TheaterMania', outletId: 'theatermania' },

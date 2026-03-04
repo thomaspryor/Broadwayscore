@@ -13,70 +13,8 @@
 const fs = require('fs');
 const path = require('path');
 
-// Import the matching functions from ibdb-dates.js
-const { normalizeForTitleMatch, titleMatchScore, extractTitleFromIBDBUrl } = (() => {
-  // We need to inline the functions since they're not all exported
-  function normalizeForTitleMatch(title) {
-    return title
-      .toLowerCase()
-      .replace(/\s*\|.*$/, '')
-      .replace(/\s*[-–]\s*broadway\s+production\b/i, '')
-      .replace(/\s*\(.*?\)/g, '')
-      .replace(/[''']s\b/g, 's')
-      .replace(/['''`]/g, '')
-      .replace(/[.:!?,/&]/g, ' ')
-      .replace(/^(the|a|an)\s+/i, '')
-      .replace(/[^a-z0-9\s]/g, '')
-      .replace(/\s+/g, ' ')
-      .trim();
-  }
-
-  function extractTitleFromIBDBUrl(url) {
-    const match = url.match(/broadway-production\/(.+?)(?:-\d+)?\/?$/);
-    if (!match) return '';
-    return match[1].replace(/-/g, ' ');
-  }
-
-  function titleMatchScore(searchTitle, candidateUrl, candidateSerpTitle) {
-    const search = normalizeForTitleMatch(searchTitle);
-    const fromUrl = normalizeForTitleMatch(extractTitleFromIBDBUrl(candidateUrl));
-    const fromSerp = normalizeForTitleMatch(candidateSerpTitle || '');
-
-    for (const candidate of [fromUrl, fromSerp]) {
-      if (!candidate) continue;
-      if (search === candidate) return 15;
-      if (candidate.includes(search) || search.includes(candidate)) return 12;
-    }
-
-    if (fromUrl) {
-      const wordsA = new Set(search.split(/\s+/).filter(w => w.length > 1 || /\d/.test(w)));
-      const wordsB = new Set(fromUrl.split(/\s+/).filter(w => w.length > 1 || /\d/.test(w)));
-      const intersection = [...wordsA].filter(w => wordsB.has(w)).length;
-      const union = new Set([...wordsA, ...wordsB]).size;
-      const jaccard = union > 0 ? intersection / union : 0;
-      if (jaccard >= 0.5) return 8;
-
-      const longer = Math.max(search.length, fromUrl.length);
-      if (longer > 0) {
-        let common = 0;
-        const bChars = fromUrl.split('');
-        for (const ch of search) {
-          const idx = bChars.indexOf(ch);
-          if (idx !== -1) { common++; bChars.splice(idx, 1); }
-        }
-        const charSim = common / longer;
-        if (charSim > 0.75) return 5;
-        if (charSim > 0.5) return 0;
-      }
-
-      if (jaccard > 0) return 0;
-      return -10;
-    }
-    return 0;
-  }
-
-  return { normalizeForTitleMatch, titleMatchScore, extractTitleFromIBDBUrl };
-})();
+// Import the matching functions from ibdb-dates.js (canonical source)
+const { normalizeForTitleMatch, titleMatchScore, extractTitleFromIBDBUrl } = require('./lib/ibdb-dates');
 
 // Load data
 const shows = JSON.parse(fs.readFileSync('data/shows.json', 'utf8')).shows;

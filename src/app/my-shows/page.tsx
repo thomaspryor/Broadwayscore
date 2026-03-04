@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import MyShowsClient from './MyShowsClient';
 
@@ -8,5 +9,9 @@ export const metadata: Metadata = {
 };
 
 export default function MyShowsPage() {
-  return <MyShowsClient />;
+  return (
+    <Suspense>
+      <MyShowsClient />
+    </Suspense>
+  );
 }

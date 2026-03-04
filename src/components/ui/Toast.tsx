@@ -7,11 +7,11 @@ type ToastType = 'success' | 'error' | 'info';
 interface ToastMessage {
   id: number;
   type: ToastType;
-  message: string;
+  message: string | ReactNode;
 }
 
 interface ToastContextValue {
-  showToast: (message: string, type?: ToastType) => void;
+  showToast: (message: string | ReactNode, type?: ToastType) => void;
 }
 
 const ToastContext = createContext<ToastContextValue | null>(null);
@@ -21,7 +21,7 @@ let toastId = 0;
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
-  const showToast = useCallback((message: string, type: ToastType = 'success') => {
+  const showToast = useCallback((message: string | ReactNode, type: ToastType = 'success') => {
     const id = ++toastId;
     setToasts(prev => [...prev, { id, type, message }]);
   }, []);

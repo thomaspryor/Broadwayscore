@@ -1642,7 +1642,27 @@ showDirs.forEach(showId => {
       // Broadway leaks from aggregator scrapers. See March 2026 contamination audit.
       const showCategory = showCategoryMap[showId] || 'broadway';
       const rawOutlet = (data.outletId || data.outlet || '').toLowerCase();
-      const canonicalOutlet = normalizeOutletCanonical(rawOutlet);
+      let canonicalOutlet = normalizeOutletCanonical(rawOutlet);
+
+      // Auto-correct timeout → timeout-london based on URL path (systemic fix for shared-domain outlet)
+      if (canonicalOutlet === 'timeout' && data.url) {
+        try {
+          const urlPath = new URL(data.url).pathname.toLowerCase();
+          const urlHost = new URL(data.url).hostname.toLowerCase();
+          if (urlPath.startsWith('/london') || urlHost.endsWith('.co.uk')) {
+            data.outletId = 'timeout-london';
+            data.outlet = 'Time Out London';
+            if (data.wrongProduction && data.wrongProductionNote && data.wrongProductionNote.includes('US outlet "timeout"')) {
+              delete data.wrongProduction;
+              delete data.wrongProductionNote;
+            }
+            try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+            canonicalOutlet = 'timeout-london';
+            stats.autoFixedTimeoutLondon = (stats.autoFixedTimeoutLondon || 0) + 1;
+          }
+        } catch (e) {}
+      }
+
       if (showCategory === 'west-end'
           && !DUAL_MARKET_OUTLETS.has(canonicalOutlet) && !DUAL_MARKET_OUTLETS.has(rawOutlet)) {
         const outletRegion = outletRegionMap[canonicalOutlet] || outletRegionMap[rawOutlet];
