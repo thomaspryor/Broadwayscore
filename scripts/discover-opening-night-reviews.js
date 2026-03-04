@@ -221,8 +221,9 @@ async function main() {
   const year = (show.openingDate || '').substring(0, 4);
 
   const isWestEnd = show.category === 'west-end';
-  const marketLabel = isWestEnd ? 'West End' : 'Broadway';
-  const reviewKeyword = isWestEnd ? 'West End review' : 'Broadway review';
+  const isOB = show.category === 'off-broadway';
+  const marketLabel = isWestEnd ? 'West End' : isOB ? 'Off-Broadway' : 'Broadway';
+  const reviewKeyword = isWestEnd ? 'West End review' : isOB ? 'Off-Broadway review' : 'Broadway review';
 
   // Calculate tight opening-night date range for SERP filtering
   const DAY = 86400000;
@@ -297,6 +298,19 @@ async function main() {
         if (openYear && isUrlYearOutsideWindow(url, openYear, closeYear)) {
           console.log(`    [SKIP] URL year outside production window for ${showId}`);
           continue;
+        }
+
+        // Skip results whose title mentions a year far from this production
+        if (openYear && result.title) {
+          const titleYears = result.title.match(/\b(19\d{2}|20\d{2})\b/g);
+          if (titleYears) {
+            const hasWrongYear = titleYears.some(y => Math.abs(parseInt(y) - openYear) > 3);
+            const hasRightYear = titleYears.some(y => Math.abs(parseInt(y) - openYear) <= 1);
+            if (hasWrongYear && !hasRightYear) {
+              console.log(`    [SKIP] Title year outside window: "${result.title}"`);
+              continue;
+            }
+          }
         }
 
         const criticName = extractCriticFromTitle(result.title || '');
@@ -409,6 +423,19 @@ async function main() {
       if (openYearNews && isUrlYearOutsideWindow(url, openYearNews, closeYearNews)) {
         console.log(`    [SKIP] URL year outside production window for ${showId}`);
         continue;
+      }
+
+      // Skip results whose title mentions a year far from this production
+      if (openYearNews && result.title) {
+        const titleYears = result.title.match(/\b(19\d{2}|20\d{2})\b/g);
+        if (titleYears) {
+          const hasWrongYear = titleYears.some(y => Math.abs(parseInt(y) - openYearNews) > 3);
+          const hasRightYear = titleYears.some(y => Math.abs(parseInt(y) - openYearNews) <= 1);
+          if (hasWrongYear && !hasRightYear) {
+            console.log(`    [SKIP] Title year outside window: "${result.title}"`);
+            continue;
+          }
+        }
       }
 
       const criticName = extractCriticFromTitle(result.title || '');
