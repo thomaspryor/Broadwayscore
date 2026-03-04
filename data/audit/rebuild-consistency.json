@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-03T22:24:59.207Z",
+  "generatedAt": "2026-03-04T02:22:48.188Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -184,6 +184,14 @@
       "outlet": "theater-life",
       "critic": "Samuel L. Leiter",
       "detail": "originalRating \"5/5 stars\" (=100) vs score 78 (source: human-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "the-book-of-mormon-west-end-2024",
+      "outlet": "telegraph",
+      "critic": "Charles Spencer",
+      "detail": "originalRating \"60/100\" (=60) vs score 82 (source: llmScore-review)"
     },
     {
       "type": "rating-score-mismatch",
