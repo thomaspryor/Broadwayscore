@@ -76,6 +76,44 @@ jobs:
             echo "should_trigger=true" >> $GITHUB_OUTPUT
           fi
 
+      - name: Setup Node.js
+        if: steps.find.outputs.has_shows == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        if: steps.find.outputs.has_shows == 'true'
+        run: npm ci --ignore-scripts
+
+      - name: Checkout review-texts
+        if: steps.find.outputs.has_shows == 'true'
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Discover reviews via SERP
+        if: steps.find.outputs.has_shows == 'true'
+        continue-on-error: true
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: |
+          IFS=',' read -ra SHOWS <<< "${{ steps.find.outputs.shows }}"
+          for SHOW in "${SHOWS[@]}"; do
+            echo "=== Discovering reviews for $SHOW ==="
+            node scripts/discover-opening-night-reviews.js --show="$SHOW" --tiers=1,2 || true
+            sleep 2
+          done
+
+      - name: Push review-texts (SERP discoveries)
+        if: steps.find.outputs.has_shows == 'true'
+        continue-on-error: true
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Opening night SERP discoveries'
+
       - name: Trigger gather-reviews
         if: steps.find.outputs.has_shows == 'true' && steps.guard.outputs.should_trigger == 'true'
         env:
@@ -88,12 +126,6 @@ jobs:
             -f parallel_jobs=1 \
             -f max_tier=3
           echo "Gather reviews triggered for: $SHOWS"
-
-      - name: Checkout review-texts for coverage audit
-        if: steps.find.outputs.has_shows == 'true'
-        uses: ./.github/actions/checkout-review-texts
-        with:
-          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
       - name: Audit T1/T2 coverage gaps
         if: steps.find.outputs.has_shows == 'true'
