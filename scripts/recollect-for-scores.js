@@ -220,6 +220,10 @@ async function main() {
         const data = JSON.parse(fs.readFileSync(fp, 'utf8'));
         if (data.originalScore) continue; // Already has score
         if (!data.url) continue; // No URL to fetch
+        if (data.wrongShow) continue; // Flagged as wrong content
+        // Skip non-theatre content URLs (film reviews, concert reviews, etc.)
+        const urlPath = data.url.toLowerCase();
+        if (/\/(films|film)\//i.test(urlPath) || /\/music\/concerts\//i.test(urlPath)) continue;
         targets.push({ dir, file, fp, url: data.url, data });
       } catch (e) { /* skip */ }
     }

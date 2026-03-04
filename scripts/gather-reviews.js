@@ -58,6 +58,7 @@ const { isNotBroadway } = require('./lib/content-filters');
 const { LETTER_GRADES } = require('./lib/score-extractors');
 const { discoverCorrectUrl } = require('./lib/url-discovery');
 const { validatePageMatchesShow } = require('./lib/page-validator');
+const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 let chromium, playwright;
 try {
   playwright = require('playwright');
@@ -2309,6 +2310,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
     dtli: { found: false, extracted: 0, skipped: false },
     showScore: { found: false, extracted: 0, skipped: false },
     bww: { found: false, extracted: 0, skipped: false },
+    lbo: { found: false, extracted: 0, skipped: false },
     serp: { calls: 0, hits: 0, skipped: false },
     rejections: { junkOutlet: 0, nonBroadway: 0, wrongProduction: 0, duplicate: 0, crossShow: 0 },
   };
@@ -2455,6 +2457,38 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
     }
   }
   await sleep(DELAY_MS);
+
+  // 1d. London Box Office Review Roundups (West End only, archive-based)
+  console.log('\n  === London Box Office Review Roundups ===');
+  if (!isWestEnd) {
+    health.lbo.skipped = true;
+    console.log(`    [SKIP] LBO roundups are West End only`);
+  } else {
+    const lboArchivePath = path.join(__dirname, '../data/aggregator-archive/lbo-roundups', `${showId}.html`);
+    if (fs.existsSync(lboArchivePath)) {
+      const lboHtml = fs.readFileSync(lboArchivePath, 'utf8');
+      const lboRawReviews = extractReviewsFromLBO(lboHtml, showId);
+      health.lbo.found = true;
+      console.log(`    ✓ LBO archive found, extracted ${lboRawReviews.length} reviews`);
+
+      for (const lboReview of lboRawReviews) {
+        foundReviews.push({
+          outlet: lboReview.outlet,
+          outletId: normalizeOutlet(lboReview.outlet),
+          criticName: lboReview.critic,
+          url: lboReview.url || '',
+          excerpt: lboReview.excerpt || '',
+          score: lboReview.score,
+          scoreSource: lboReview.score !== null ? 'lbo-star-rating' : undefined,
+          source: 'lbo-roundup',
+          publishDate: null,
+        });
+      }
+      health.lbo.extracted = lboRawReviews.length;
+    } else {
+      console.log(`    No LBO archive found for ${showId}`);
+    }
+  }
 
   // STEP 2: Search outlets via Google SERP (ScrapingBee / Bright Data)
   if (aggregatorsOnly) {
@@ -2653,8 +2687,83 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
     console.log(`    Merged BWW data into ${merged} existing files, created ${stubsCreated} new stubs`);
   }
 
+  // [3c/4] Merge LBO excerpt-only reviews (no URL) into existing files or create stubs
+  const lboNoUrlReviews = foundReviews.filter(r => r.source === 'lbo-roundup' && !r.url && r.excerpt);
+  if (lboNoUrlReviews.length > 0) {
+    console.log(`\n[3c/4] Merging ${lboNoUrlReviews.length} LBO excerpt-only reviews...`);
+    const showDir = path.join(REVIEW_TEXTS_DIR, showId);
+    fs.mkdirSync(showDir, { recursive: true });
+    const existingFiles = fs.readdirSync(showDir).filter(f => f.endsWith('.json'));
+    let lboMerged = 0, lboStubs = 0;
+
+    for (const lboReview of lboNoUrlReviews) {
+      const outletNorm = normalizeOutlet(lboReview.outlet || lboReview.outletId);
+      const criticNorm = normalizeCritic(lboReview.criticName);
+
+      let matched = false;
+      for (const file of existingFiles) {
+        const expectedPattern = `${outletNorm}--${criticNorm}`;
+        if (file.startsWith(expectedPattern + '.json') || file.startsWith(expectedPattern + '-') ||
+            file.includes(`--${criticNorm}.json`) || file.includes(`--${criticNorm}-`)) {
+          const filePath = path.join(showDir, file);
+          const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+
+          if (!data.lboRoundupExcerpt) {
+            data.lboRoundupExcerpt = lboReview.excerpt;
+            if (lboReview.score !== null && lboReview.score !== undefined && !data.score) {
+              data.score = lboReview.score;
+              data.scoreSource = 'lbo-star-rating';
+            }
+            if (!data.sources) data.sources = [];
+            if (!data.sources.includes('lbo-roundup')) data.sources.push('lbo-roundup');
+
+            const tmpPath = filePath + '.tmp';
+            fs.writeFileSync(tmpPath, JSON.stringify(data, null, 2) + '\n');
+            fs.renameSync(tmpPath, filePath);
+            console.log(`    [LBO merged] ${file}`);
+            lboMerged++;
+          }
+          matched = true;
+          break;
+        }
+      }
+
+      if (!matched) {
+        const filename = generateReviewFilename(lboReview.outlet || lboReview.outletId, lboReview.criticName);
+        const filePath = path.join(showDir, filename);
+        const existingFile = findExistingReviewFile(showDir, lboReview.outlet || lboReview.outletId, lboReview.criticName);
+        if (!existingFile && !fs.existsSync(filePath)) {
+          const stub = {
+            showId,
+            outletId: outletNorm,
+            outlet: lboReview.outlet || outletNorm,
+            criticName: lboReview.criticName,
+            url: null,
+            publishDate: null,
+            fullText: null,
+            isFullReview: false,
+            lboRoundupExcerpt: lboReview.excerpt,
+            score: lboReview.score || null,
+            scoreSource: lboReview.score ? 'lbo-star-rating' : null,
+            showScoreExcerpt: null,
+            contentTier: 'excerpt',
+            contentTierReason: 'Only LBO roundup excerpt available',
+            source: 'lbo-roundup',
+            sources: ['lbo-roundup']
+          };
+          const tmpPath = filePath + '.tmp';
+          fs.writeFileSync(tmpPath, JSON.stringify(stub, null, 2) + '\n');
+          fs.renameSync(tmpPath, filePath);
+          console.log(`    [LBO stub] ${filename}`);
+          lboStubs++;
+        }
+      }
+    }
+    console.log(`    Merged LBO data into ${lboMerged} existing files, created ${lboStubs} new stubs`);
+  }
+
   // Per-show health warnings
-  const aggHits = [health.dtli, health.showScore, health.bww].filter(a => a.found).length;
+  const aggHits = [health.dtli, health.showScore, health.bww, health.lbo].filter(a => a.found).length;
   if (aggHits === 0 && show.status === 'open') {
     console.log(`\n⚠️  WARNING: Zero aggregators returned results for ${showId}`);
   }
@@ -2666,7 +2775,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
   console.log(`\n${'='.repeat(60)}`);
   console.log(`SUMMARY for ${showId}`);
   console.log('='.repeat(60));
-  console.log(`  Aggregators: DTLI=${health.dtli.extracted}, ShowScore=${health.showScore.extracted}, BWW=${health.bww.extracted}${health.bww.skipped ? ' (skipped)' : ''}`);
+  console.log(`  Aggregators: DTLI=${health.dtli.extracted}, ShowScore=${health.showScore.extracted}, BWW=${health.bww.extracted}${health.bww.skipped ? ' (skipped)' : ''}, LBO=${health.lbo.extracted}${health.lbo.skipped ? ' (skipped)' : ''}`);
   if (!health.serp.skipped) {
     console.log(`  SERP: ${health.serp.hits}/${health.serp.calls} hits`);
   } else {
@@ -2793,8 +2902,10 @@ async function main() {
       const ssExtracted0 = catResults.filter(r => r.health.showScore.found && r.health.showScore.extracted === 0).length;
       const bwwHits = catResults.filter(r => r.health.bww.found).length;
       const bwwSkipped = catResults.filter(r => r.health.bww.skipped).length;
+      const lboHits = catResults.filter(r => r.health.lbo && r.health.lbo.found).length;
+      const lboSkipped = catResults.filter(r => r.health.lbo && r.health.lbo.skipped).length;
       const zeroAgg = catResults.filter(r =>
-        !r.health.dtli.found && !r.health.showScore.found && !r.health.bww.found && r.health.status === 'open'
+        !r.health.dtli.found && !r.health.showScore.found && !r.health.bww.found && !(r.health.lbo && r.health.lbo.found) && r.health.status === 'open'
       ).length;
 
       console.log(`\n  ${cat} (${catResults.length} shows):`);
@@ -2804,6 +2915,9 @@ async function main() {
         console.log(`    BWW: skipped (all ${cat})`);
       } else {
         console.log(`    BWW: ${bwwHits}/${catResults.length - bwwSkipped} (${catResults.length - bwwSkipped > 0 ? Math.round(100 * bwwHits / (catResults.length - bwwSkipped)) : 0}%)`);
+      }
+      if (lboSkipped < catResults.length) {
+        console.log(`    LBO: ${lboHits}/${catResults.length - lboSkipped} (${catResults.length - lboSkipped > 0 ? Math.round(100 * lboHits / (catResults.length - lboSkipped)) : 0}%)`);
       }
       if (zeroAgg > 0) {
         console.log(`    ⚠️  ${zeroAgg} open shows with ZERO aggregator hits`);
