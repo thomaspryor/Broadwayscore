@@ -4625,8 +4625,9 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   }
 
   // 1C. Content hash dedup (per-show)
+  // Skip if duplicateTextOf was intentionally cleared (manual override)
   const fingerprint = computeContentFingerprint(cleanedText);
-  if (fingerprint) {
+  if (fingerprint && !data.duplicateTextOfCleared) {
     const showDir = path.dirname(review.filePath);
     const currentFile = path.basename(review.filePath);
     try {

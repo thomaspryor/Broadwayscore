@@ -1468,36 +1468,67 @@ showDirs.forEach(showId => {
 
       // Skip files flagged as duplicates by cleanup-review-sources.js
       // But only if the referenced file exists and is NOT also flagged as a duplicate
-      // (prevents circular chains where all copies get excluded)
+      // AND the reference wouldn't be excluded by other guards (prevents both files being dropped)
       if (data.duplicateOf) {
         const refPath = path.join(showDir, data.duplicateOf);
         let refAlsoDupe = false;
+        let refExcluded = false;
         try {
           const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
           refAlsoDupe = !!refData.duplicateOf || !!refData.duplicateTextOf;
+          // Check if reference would be excluded by later guards
+          refExcluded = !!(refData.wrongProduction || refData.wrongShow ||
+            refData.wrongAttribution || refData.fabricatedEntry || refData.isNotReview ||
+            refData.isNonReview || refData.nonReviewFlag || refData.nonReviewContent ||
+            refData.isSyndicatedDuplicate || refData.crossOutletDuplicate);
+          if (!refExcluded && refData.publishDate && showDateMap[showId] && !refData.allowEarlyDate) {
+            const refPubDate = new Date(refData.publishDate);
+            const openDate = showDateMap[showId];
+            const daysBefore = Math.ceil((openDate - refPubDate) / (1000 * 60 * 60 * 24));
+            const isFlexCat = showCat === 'off-broadway' || showCat === 'west-end';
+            const threshold = isFlexCat ? 1825 : 14;
+            if (daysBefore > threshold) refExcluded = true;
+          }
+          if (refExcluded) stats.dupeRefExcludedRecovered = (stats.dupeRefExcludedRecovered || 0) + 1;
         } catch {
           refAlsoDupe = true; // Reference file missing — stale flag
         }
-        if (!refAlsoDupe) {
+        if (!refAlsoDupe && !refExcluded) {
           stats.skippedDuplicateOf = (stats.skippedDuplicateOf || 0) + 1;
           return;
         }
-        // Circular or stale — let this file through, fingerprint dedup will handle actual duplicates
+        // Circular, stale, or ref excluded — let through, fingerprint dedup handles actual duplicates
         stats.circularDuplicateRecovered = (stats.circularDuplicateRecovered || 0) + 1;
       }
 
       // Skip files flagged as duplicate text of another review (same content, different critic)
       // Set by collect-review-texts.js content fingerprinting
-      // But only if the referenced file exists and is NOT also flagged — prevents circular exclusion
+      // But only if the referenced file exists, is NOT also flagged, AND wouldn't be excluded
+      // by other guards. Otherwise both the original and the "duplicate" get silently dropped.
       if (data.duplicateTextOf) {
         const refPath = path.join(showDir, data.duplicateTextOf);
         let refAlsoDupe = false;
+        let refWouldBeExcluded = false;
         let staleFlag = false;
         try {
           const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
           refAlsoDupe = !!refData.duplicateTextOf || !!refData.duplicateOf;
+          // Check if reference would be excluded by later guards
+          refWouldBeExcluded = !!(refData.wrongProduction || refData.wrongShow ||
+            refData.wrongAttribution || refData.fabricatedEntry || refData.isNotReview ||
+            refData.isNonReview || refData.nonReviewFlag || refData.nonReviewContent ||
+            refData.isSyndicatedDuplicate || refData.crossOutletDuplicate);
+          if (!refWouldBeExcluded && refData.publishDate && showDateMap[showId] && !refData.allowEarlyDate) {
+            const refPubDate = new Date(refData.publishDate);
+            const openDate = showDateMap[showId];
+            const daysBefore = Math.ceil((openDate - refPubDate) / (1000 * 60 * 60 * 24));
+            const isFlexCat = showCat === 'off-broadway' || showCat === 'west-end';
+            const threshold = isFlexCat ? 1825 : 14;
+            if (daysBefore > threshold) refWouldBeExcluded = true;
+          }
+          if (refWouldBeExcluded) stats.dupeRefExcludedRecovered = (stats.dupeRefExcludedRecovered || 0) + 1;
           // Verify fingerprints still match — flag may be stale after text re-fetch
-          if (!refAlsoDupe && data.fullText && refData.fullText) {
+          if (!refAlsoDupe && !refWouldBeExcluded && data.fullText && refData.fullText) {
             const thisFp = computeContentFingerprint(data.fullText);
             const refFp = computeContentFingerprint(refData.fullText);
             if (thisFp && refFp && thisFp !== refFp) {
@@ -1510,11 +1541,11 @@ showDirs.forEach(showId => {
         if (staleFlag) {
           // Texts no longer match — flag is stale, let this file through
           stats.staleDuplicateTextCleared = (stats.staleDuplicateTextCleared || 0) + 1;
-        } else if (!refAlsoDupe) {
+        } else if (!refAlsoDupe && !refWouldBeExcluded) {
           stats.skippedDuplicateText = (stats.skippedDuplicateText || 0) + 1;
           return;
         } else {
-          // Circular or stale — let this file through, fingerprint dedup will handle actual duplicates
+          // Circular, stale, or ref excluded — let through, fingerprint dedup handles actual duplicates
           stats.circularDuplicateRecovered = (stats.circularDuplicateRecovered || 0) + 1;
         }
       }
@@ -2783,6 +2814,9 @@ if (stats.circularDuplicateRecovered > 0) {
 }
 if (stats.staleDuplicateTextCleared > 0) {
   console.log(`  Recovered (stale duplicateTextOf — text changed): ${stats.staleDuplicateTextCleared}`);
+}
+if (stats.dupeRefExcludedRecovered > 0) {
+  console.log(`  Recovered (duplicate ref would be excluded by other guards): ${stats.dupeRefExcludedRecovered}`);
 }
 console.log(`  Skipped (unknown critic dedup): ${stats.skippedUnknownCriticDedup || 0}`);
 console.log(`  Skipped (fingerprint dedup): ${stats.skippedFingerprintDedup || 0}`);
