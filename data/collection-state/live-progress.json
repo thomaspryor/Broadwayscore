@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-04T02:06:57.250Z",
-  "processed": 771,
-  "failed": 461,
-  "successRate": "62.6%",
+  "updatedAt": "2026-03-04T02:15:23.503Z",
+  "processed": 774,
+  "failed": 468,
+  "successRate": "62.3%",
   "tierBreakdown": {
-    "playwright": 505,
+    "playwright": 508,
     "amp": 102,
     "browserbase": 2,
-    "directCookies": 84,
-    "scrapingbee": 105,
+    "directCookies": 85,
+    "scrapingbee": 107,
     "brightdata": 0,
-    "archiveToday": 147,
+    "archiveToday": 148,
     "archive": 162
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
       "t": "2026-03-04T00:34:02.831Z",
@@ -89,6 +89,28 @@
     },
     {
       "t": "2026-03-04T01:45:57.272Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-04T02:10:23.010Z",
+      "event": "bb-session",
+      "session": "6fad7960",
+      "url": "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-"
+    },
+    {
+      "t": "2026-03-04T02:10:24.234Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-04T02:14:30.829Z",
+      "event": "bb-session",
+      "session": "cc63898d",
+      "url": "https://www.thestage.co.uk/reviews/2004/the-mousetrap-review-at-st-martins-theat"
+    },
+    {
+      "t": "2026-03-04T02:14:32.078Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
