@@ -1,18 +1,74 @@
 {
-  "updatedAt": "2026-03-04T00:38:51.226Z",
-  "processed": 719,
-  "failed": 403,
-  "successRate": "64.1%",
+  "updatedAt": "2026-03-04T00:54:54.020Z",
+  "processed": 711,
+  "failed": 411,
+  "successRate": "63.4%",
   "tierBreakdown": {
-    "playwright": 481,
-    "amp": 87,
-    "browserbase": 0,
+    "playwright": 480,
+    "amp": 94,
+    "browserbase": 2,
     "directCookies": 82,
     "scrapingbee": 99,
     "brightdata": 0,
-    "archiveToday": 140,
-    "archive": 135
+    "archiveToday": 138,
+    "archive": 129
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-03-04T00:34:02.831Z",
+      "event": "bb-session",
+      "session": "c3a480ac",
+      "url": "https://www.wsj.com/articles/just-in-time-review-jonathan-groff-bobby-darin-broa"
+    },
+    {
+      "t": "2026-03-04T00:34:03.974Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-04T00:36:01.183Z",
+      "event": "bb-session",
+      "session": "7f8ef38d",
+      "url": "https://www.wsj.com/articles/mother-russia-review-a-comedy-of-soviet-collapse-52"
+    },
+    {
+      "t": "2026-03-04T00:36:02.553Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-04T00:37:41.099Z",
+      "event": "bb-session",
+      "session": "5454110b",
+      "url": "https://www.wsj.com/arts-culture/film/what-to-watch-six-movies-and-series-to-str"
+    },
+    {
+      "t": "2026-03-04T00:37:43.275Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-04T00:38:56.844Z",
+      "event": "bb-session",
+      "session": "7447dfc3",
+      "url": "https://www.usatoday.com/story/entertainment/theater/2024/04/21/hells-kitchen-br"
+    },
+    {
+      "t": "2026-03-04T00:38:58.029Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-03-04T00:48:46.501Z",
+      "event": "bb-session",
+      "session": "d1da69e1",
+      "url": "https://www.nytimes.com/2025/12/01/theater/death-of-a-salesman-broadway-lane-met"
+    },
+    {
+      "t": "2026-03-04T00:48:47.661Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
