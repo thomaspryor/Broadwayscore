@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-03-04T14:48:25.490Z",
+  "runDate": "2026-03-04T14:50:45.441Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 200,
+    "maxReviews": 100,
     "priority": "all",
     "showFilter": "",
     "aggressive": false,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 253,
-    "failed": 858,
+    "failed": 849,
     "skipped": 0,
     "successRate": "22.8%"
   },
@@ -23,30 +23,30 @@
     "directCookies": 18,
     "scrapingbee": 23,
     "brightdata": 0,
-    "archiveToday": 420,
+    "archiveToday": 416,
     "archive": 61
   },
   "statistics": {
-    "tier1Attempts": 8,
-    "tier1Success": 8,
-    "ampAttempts": 0,
+    "tier1Attempts": 1,
+    "tier1Success": 0,
+    "ampAttempts": 1,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 1,
-    "tier2Success": 1,
-    "tier3Attempts": 1,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
-    "tier4Attempts": 1,
-    "tier4Success": 1,
-    "totalFailed": 11,
-    "scrapingBeeCreditsUsed": 15,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 2,
+    "tier4Success": 0,
+    "totalFailed": 2,
+    "scrapingBeeCreditsUsed": 2,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 5,
-    "urlDiscoverySuccess": 2,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -1155,17 +1155,8 @@
     "the-merchant-of-venice-2010/variety--charles-isherwood.json",
     "the-road-to-mecca-2012/variety--marilyn-stasio.json",
     "xanadu-2007/variety--david-rooney.json",
-    "romeo-and-juliet-2013/theatermania--adam-feldman.json",
-    "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016/theatermania--jesse-green.json",
-    "a-gentlemans-guide-to-love-and-murder-2013/theatermania--david-gordon.json",
-    "act-one-2014/theatermania--charles-isherwood.json",
-    "amelie-a-new-musical-2017/theatermania--adam-feldman.json",
-    "an-act-of-god-2016/theatermania--adam-feldman.json",
-    "eclipsed-2016/theatermania--adam-feldman.json",
-    "ink-2019/theatermania--andy-propst.json",
-    "oslo-2017/theatermania--jesse-green.json",
-    "race-2009/theatermania--charles-isherwood.json",
-    "school-of-rock-the-musical-2015/theatermania--jesse-green.json"
+    "rodgers-hammersteins-cinderella-2013/ew--jessica-shaw.json",
+    "burn-the-floor-2009/ew--jennifer-armstrong.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1809,7 +1800,6 @@
       "data/review-texts/oklahoma-2002/wsj--terry-teachout.json",
       "data/review-texts/pretty-woman-the-musical-2018/theatermania--hayley-levitt.json",
       "data/review-texts/act-one-2014/theatermania--charles-isherwood.json",
-      "data/review-texts/act-one-2014/theatermania--charles-isherwood.json",
       "data/review-texts/act-one-2014/theatermania--charles-isherwood.json"
     ],
     "archive": [
@@ -1876,17 +1866,14 @@
       "cats-1982/wsj--terry-teachout.json"
     ]
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": [
-    {
-      "reviewId": "act-one-2014/theatermania--charles-isherwood.json",
-      "oldUrl": "https://www.theatermania.com/broadway/news/act-one_70041.html",
-      "newUrl": "https://www.theatermania.com/news/act-one_68285/"
-    },
-    {
-      "reviewId": "race-2009/theatermania--charles-isherwood.json",
-      "oldUrl": "https://www.theatermania.com/broadway/news/race_25982.html",
-      "newUrl": "https://www.theatermania.com/news/race_23313/"
+  "failuresByOutlet": {
+    "Entertainment Weekly": {
+      "count": 1,
+      "domain": "ew.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
-  ]
+  },
+  "urlDiscoveries": []
 }
