@@ -642,8 +642,13 @@ async function scrapeLBORoundups() {
   return stats;
 }
 
-// Run
-scrapeLBORoundups().catch(err => {
-  console.error('Fatal error:', err);
-  process.exit(1);
-});
+// Export extraction function for use by gather-reviews.js
+module.exports = { extractReviewsFromLBO };
+
+// Run if called directly
+if (require.main === module) {
+  scrapeLBORoundups().catch(err => {
+    console.error('Fatal error:', err);
+    process.exit(1);
+  });
+}

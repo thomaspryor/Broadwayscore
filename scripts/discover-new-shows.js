@@ -1149,6 +1149,11 @@ async function discoverShows() {
         creativeTeam: show.creativeTeam || [],
       };
 
+      // Persist TodayTix category for future type detection (backfill on re-runs)
+      if (show.todayTixCategory) {
+        showEntry.todayTixCategory = show.todayTixCategory;
+      }
+
       // Set category for non-Broadway shows
       if (show.category === 'off-broadway') {
         showEntry.category = 'off-broadway';
