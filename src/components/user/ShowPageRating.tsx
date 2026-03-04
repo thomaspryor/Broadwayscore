@@ -15,7 +15,7 @@ interface ShowPageRatingProps {
   // Data callbacks — wired to Supabase hooks in Sprint 2
   reviews?: UserReview[];
   isWatchlisted?: boolean;
-  onSaveReview?: (data: { rating: number; reviewText: string | null; dateSeen: string | null }) => Promise<void>;
+  onSaveReview?: (data: { rating: number; reviewText: string | null; dateSeen: string | null; reviewId?: string }) => Promise<void>;
   onDeleteReview?: (reviewId: string) => Promise<void>;
   onToggleWatchlist?: () => Promise<void>;
   onAuthRequired?: (context: 'rating' | 'watchlist') => void;
@@ -62,19 +62,28 @@ export default function ShowPageRating({
 
   const handleSave = useCallback(async (data: { rating: number; reviewText: string | null; dateSeen: string | null }) => {
     if (!onSaveReview) return;
+    const isFirstSave = !editingReview && !latestReview;
     setSaving(true);
     try {
-      await onSaveReview(data);
-      setShowPanel(false);
-      setEditingReview(null);
-      setCurrentRating(null);
+      await onSaveReview({
+        ...data,
+        reviewId: editingReview?.id,
+      });
+      if (isFirstSave) {
+        // Keep panel open after first save so user can add notes/date
+        // The panel will show updated state after reviews refetch
+      } else {
+        setShowPanel(false);
+        setEditingReview(null);
+        setCurrentRating(null);
+      }
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error('[Rating] Save error:', e);
     } finally {
       setSaving(false);
     }
-  }, [onSaveReview]);
+  }, [onSaveReview, editingReview, latestReview]);
 
   const handleCancel = useCallback(() => {
     setShowPanel(false);
