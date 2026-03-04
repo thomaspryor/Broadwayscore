@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { featureFlags } from '@/config/feature-flags';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserReviews } from '@/hooks/useUserReviews';
@@ -37,7 +38,8 @@ function decodeShow(raw: Record<string, unknown>): ShowLookup {
 }
 
 export default function MyShowsClient() {
-  const [activeTab, setActiveTab] = useState<Tab>('diary');
+  const searchParams = useSearchParams();
+  const [activeTab, setActiveTab] = useState<Tab>(searchParams.get('tab') === 'watchlist' ? 'watchlist' : 'diary');
   const [diarySort, setDiarySort] = useState<DiarySort>('date-desc');
   const [watchlistSort, setWatchlistSort] = useState<WatchlistSort>('added-desc');
   const [showMap, setShowMap] = useState<ShowMap>({});
