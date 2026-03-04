@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-04T11:13:49.947Z",
-  "processed": 81,
-  "failed": 139,
-  "successRate": "36.8%",
+  "updatedAt": "2026-03-04T11:16:23.553Z",
+  "processed": 89,
+  "failed": 141,
+  "successRate": "38.7%",
   "tierBreakdown": {
-    "playwright": 26,
-    "amp": 20,
+    "playwright": 32,
+    "amp": 22,
     "browserbase": 2,
-    "directCookies": 16,
+    "directCookies": 17,
     "scrapingbee": 12,
     "brightdata": 0,
-    "archiveToday": 82,
+    "archiveToday": 83,
     "archive": 18
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-03-04T10:15:29.443Z",
-      "event": "bb-session",
-      "session": "4be0573c",
-      "url": "https://preview.bloomberg.com/news/2010-04-29/linda-lavin-bellows-at-sarah-pauls"
-    },
-    {
-      "t": "2026-03-04T10:15:30.693Z",
-      "event": "bb-cookie-inject",
-      "domain": "bloomberg.com"
-    },
     {
       "t": "2026-03-04T10:42:07.860Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-04T11:12:48.857Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-04T11:14:40.218Z",
+      "event": "bb-session",
+      "session": "347a5f26",
+      "url": "http://www.nytimes.com/2014/08/22/theater/a-decade-later-wicked-continues-to-be-"
+    },
+    {
+      "t": "2026-03-04T11:14:41.480Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
