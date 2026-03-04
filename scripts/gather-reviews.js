@@ -1362,13 +1362,27 @@ async function searchBWWRoundup(show, year) {
   ];
 
   const searchUrls = [];
-  for (const title of titleVariations) {
-    // BWW URLs have inconsistent capitalization — try common variants
-    searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-Updating-LIVE-${year}`);
-    searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-On-Broadway-Updating-Live-${year}`);
-    searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-${year}`);
-    searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-On-Broadway-${year}`);
-    searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-${year}`);
+  if (show.category === 'west-end') {
+    // West End BWW roundup URL patterns (broadwayworld.com/london/ subdomain + main domain)
+    for (const title of titleVariations) {
+      searchUrls.push(`https://www.broadwayworld.com/london/article/Review-Roundup-${title}-Opens-in-the-West-End-Updating-LIVE-${year}`);
+      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-in-the-West-End-Updating-LIVE-${year}`);
+      searchUrls.push(`https://www.broadwayworld.com/london/article/Review-Roundup-${title}-Opens-in-the-West-End-${year}`);
+      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-in-the-West-End-${year}`);
+      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-In-London-${year}`);
+      searchUrls.push(`https://www.broadwayworld.com/london/article/Review-Roundup-${title}-${year}`);
+      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-${year}`);
+    }
+  } else {
+    // Broadway BWW roundup URL patterns
+    for (const title of titleVariations) {
+      // BWW URLs have inconsistent capitalization — try common variants
+      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-Updating-LIVE-${year}`);
+      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-On-Broadway-Updating-Live-${year}`);
+      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-${year}`);
+      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-On-Broadway-${year}`);
+      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-${year}`);
+    }
   }
 
   // Try Playwright first — BWW loads review content via JavaScript on many pages
@@ -1693,7 +1707,7 @@ function extractBWWRoundupReviews(html, showId, bwwUrl) {
  * 1. Wrong city: BWW served a London/Chicago/regional roundup for a same-named show
  * 2. Wrong year: BWW served an older production's roundup (different cast/director)
  */
-function validateBWWRoundupGeography(reviews, html, showId) {
+function validateBWWRoundupGeography(reviews, html, showId, isWestEnd = false) {
   if (reviews.length === 0) return reviews;
 
   // Load outlet registry for geographic data
@@ -1703,36 +1717,49 @@ function validateBWWRoundupGeography(reviews, html, showId) {
     outletRegistry = reg.outlets || {};
   } catch (e) { /* proceed without registry */ }
 
-  // Non-NYC outlets — derived from `region` field in outlet-registry.json (single source of truth).
-  // Includes canonical IDs + aliases for outlets whose region is not 'nyc' or 'national'.
-  const NON_NYC_OUTLET_IDS = new Set();
+  // Build set of "non-local" outlet IDs based on market.
+  // For Broadway: non-local = non-NYC outlets (London, regional, etc.)
+  // For West End: non-local = non-London outlets (NYC, regional US, etc.)
+  const NON_LOCAL_OUTLET_IDS = new Set();
   for (const [id, info] of Object.entries(outletRegistry)) {
-    if (info.region && info.region !== 'nyc' && info.region !== 'national') {
-      NON_NYC_OUTLET_IDS.add(id);
+    if (!info.region) continue;
+    const isLocal = isWestEnd
+      ? (info.region === 'london' || info.region === 'national-uk' || info.region === 'national')
+      : (info.region === 'nyc' || info.region === 'national');
+    if (!isLocal) {
+      NON_LOCAL_OUTLET_IDS.add(id);
       if (info.aliases) {
-        for (const alias of info.aliases) NON_NYC_OUTLET_IDS.add(alias.toLowerCase());
+        for (const alias of info.aliases) NON_LOCAL_OUTLET_IDS.add(alias.toLowerCase());
       }
     }
   }
 
-  // Also flag outlets with .co.uk domains, region!=nyc in registry, or "uk" in ID
-  function isNonNYCOutlet(outletId) {
-    if (NON_NYC_OUTLET_IDS.has(outletId)) return true;
-    // Catch any outlet with "-uk" suffix or "london" in name
-    if (outletId.endsWith('-uk') || outletId.includes('london')) return true;
-    const entry = outletRegistry[outletId];
-    if (!entry) return false;
-    if (entry.region && entry.region !== 'nyc' && entry.region !== 'national') return true;
-    if (entry.domain && entry.domain.endsWith('.co.uk')) return true;
-    return false;
+  function isNonLocalOutlet(outletId) {
+    if (NON_LOCAL_OUTLET_IDS.has(outletId)) return true;
+    if (isWestEnd) {
+      // For WE: flag outlets that are clearly US-only
+      // But don't flag unknown outlets — they might be London indie outlets not in registry
+      const entry = outletRegistry[outletId];
+      if (!entry) return false;
+      if (entry.region && entry.region !== 'london' && entry.region !== 'national-uk' && entry.region !== 'national') return true;
+      return false;
+    } else {
+      // For Broadway: flag outlets with .co.uk domains, "-uk" suffix, "london" in name
+      if (outletId.endsWith('-uk') || outletId.includes('london')) return true;
+      const entry = outletRegistry[outletId];
+      if (!entry) return false;
+      if (entry.region && entry.region !== 'nyc' && entry.region !== 'national') return true;
+      if (entry.domain && entry.domain.endsWith('.co.uk')) return true;
+      return false;
+    }
   }
 
   // Check each review's outlet
-  let nonNYCCount = 0;
+  let nonLocalCount = 0;
   const flagged = [];
   for (const rev of reviews) {
-    if (isNonNYCOutlet(rev.outletId)) {
-      nonNYCCount++;
+    if (isNonLocalOutlet(rev.outletId)) {
+      nonLocalCount++;
       flagged.push(rev.outletId);
     }
   }
@@ -1740,25 +1767,34 @@ function validateBWWRoundupGeography(reviews, html, showId) {
   // Also check HTML body for strong wrong-production signals
   const htmlLower = (html || '').toLowerCase();
   const wrongProductionSignals = [];
-  if (/\bwest end\b/.test(htmlLower) && !/\bbroadway\b/.test(htmlLower)) wrongProductionSignals.push('West End (no Broadway mention)');
-  if (/\blondon production\b/.test(htmlLower)) wrongProductionSignals.push('London production');
+  if (isWestEnd) {
+    // For WE shows: flag if it mentions "broadway" prominently without "west end"/"london"
+    if (/\bbroadway\b/.test(htmlLower) && !/\bwest end\b/.test(htmlLower) && !/\blondon\b/.test(htmlLower)) {
+      wrongProductionSignals.push('Broadway (no West End/London mention)');
+    }
+  } else {
+    // For Broadway shows: flag if it mentions "west end" without "broadway"
+    if (/\bwest end\b/.test(htmlLower) && !/\bbroadway\b/.test(htmlLower)) wrongProductionSignals.push('West End (no Broadway mention)');
+    if (/\blondon production\b/.test(htmlLower)) wrongProductionSignals.push('London production');
+  }
   if (/\bnational tour\b/i.test(htmlLower)) wrongProductionSignals.push('National tour');
 
-  const nonNYCRatio = nonNYCCount / reviews.length;
+  const marketLabel = isWestEnd ? 'non-London' : 'non-NYC';
+  const nonLocalRatio = nonLocalCount / reviews.length;
 
-  // If half or more are non-NYC, reject the ENTIRE roundup (wrong production)
-  if (nonNYCRatio >= 0.5) {
-    console.log(`    ⚠ REJECTING entire BWW roundup: ${nonNYCCount}/${reviews.length} reviews from non-NYC outlets (${flagged.join(', ')})`);
+  // If half or more are non-local, reject the ENTIRE roundup (wrong production)
+  if (nonLocalRatio >= 0.5) {
+    console.log(`    ⚠ REJECTING entire BWW roundup: ${nonLocalCount}/${reviews.length} reviews from ${marketLabel} outlets (${flagged.join(', ')})`);
     if (wrongProductionSignals.length > 0) {
       console.log(`    ⚠ HTML signals: ${wrongProductionSignals.join(', ')}`);
     }
     return [];
   }
 
-  // If a few non-NYC outlets mixed in, filter them out individually
-  if (nonNYCCount > 0) {
-    const filtered = reviews.filter(rev => !isNonNYCOutlet(rev.outletId));
-    console.log(`    ⚠ Filtered ${nonNYCCount} non-NYC outlets from BWW roundup: ${flagged.join(', ')}`);
+  // If a few non-local outlets mixed in, filter them out individually
+  if (nonLocalCount > 0) {
+    const filtered = reviews.filter(rev => !isNonLocalOutlet(rev.outletId));
+    console.log(`    ⚠ Filtered ${nonLocalCount} ${marketLabel} outlets from BWW roundup: ${flagged.join(', ')}`);
     return filtered;
   }
 
@@ -2383,11 +2419,11 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
 
   // 1c. BroadwayWorld Review Roundups - Compiles all reviews in one article
   console.log('\n  === BroadwayWorld Review Roundups ===');
-  if (isOffBroadway || isWestEnd) {
+  if (isOffBroadway) {
     health.bww.skipped = true;
-    console.log(`    [SKIP] BWW roundups disabled for ${isOffBroadway ? 'off-Broadway' : 'West End'} (URL patterns are Broadway-specific)`);
+    console.log(`    [SKIP] BWW roundups disabled for off-Broadway (URL patterns are Broadway-specific)`);
   }
-  let bwwResult = (isOffBroadway || isWestEnd) ? null : await searchBWWRoundup(show, year);
+  let bwwResult = isOffBroadway ? null : await searchBWWRoundup(show, year);
   // Validate page matches target show (prevents cross-show contamination)
   if (bwwResult && bwwResult.html) {
     const validation = await validatePageMatchesShow(bwwResult.html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
@@ -2408,8 +2444,8 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
       console.log(`    ✗ Skipping non-Broadway roundup: ${bwwResult.url}`);
     } else {
       let bwwReviews = extractBWWRoundupReviews(bwwResult.html, showId, bwwResult.url);
-      // Validate geographic accuracy — filter non-NYC outlets, reject if majority are wrong
-      bwwReviews = validateBWWRoundupGeography(bwwReviews, bwwResult.html, showId);
+      // Validate geographic accuracy — filter non-local outlets, reject if majority are wrong
+      bwwReviews = validateBWWRoundupGeography(bwwReviews, bwwResult.html, showId, isWestEnd);
       // Validate publish year — reject roundups from older productions of the same title
       bwwReviews = validateBWWRoundupYear(bwwReviews, bwwResult.html, show.openingDate, showId, bwwResult.url);
       health.bww.extracted = bwwReviews.length;
