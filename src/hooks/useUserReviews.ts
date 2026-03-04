@@ -73,7 +73,7 @@ export function useUserReviews(userId: string | null) {
     if (!client || !userId) {
       // eslint-disable-next-line no-console
       console.error('[Reviews] Cannot save: missing client or userId', { hasClient: !!client, userId });
-      return null;
+      throw new Error('Not signed in. Please refresh and try again.');
     }
 
     setError(null);

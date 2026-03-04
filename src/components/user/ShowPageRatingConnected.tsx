@@ -50,24 +50,38 @@ export default function ShowPageRatingConnected({
     reviewId?: string;
   }): Promise<string | void> => {
     try {
+      const client = getSupabaseClient();
+      if (!client) {
+        showToast?.('Not connected. Please refresh the page.', 'error');
+        throw new Error('No Supabase client');
+      }
+
+      // Verify session is valid before saving
+      const { data: sessionData } = await client.auth.getSession();
+      if (!sessionData?.session) {
+        showToast?.('Session expired. Please sign in again.', 'error');
+        throw new Error('Session expired');
+      }
+
       // Ensure profile exists before saving (foreign key requirement)
       if (user) {
-        const client = getSupabaseClient();
-        if (client) {
+        try {
           const { data: profileData } = await client
             .from('profiles')
             .select('id')
             .eq('id', user.id)
             .single();
           if (!profileData) {
-            const { data: { user: authUser } } = await client.auth.getUser();
-            const meta = authUser?.user_metadata || {};
+            const meta = sessionData.session.user?.user_metadata || {};
             await client.from('profiles').upsert({
               id: user.id,
               display_name: meta.full_name || meta.name || '',
               avatar_url: meta.avatar_url || meta.picture || null,
             }, { onConflict: 'id' });
           }
+        } catch (profileErr) {
+          // eslint-disable-next-line no-console
+          console.warn('[Rating] Profile ensure failed (non-fatal):', profileErr);
         }
       }
 
@@ -84,7 +98,9 @@ export default function ShowPageRatingConnected({
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error('[Rating] handleSaveReview failed:', e);
-      showToast?.('Failed to save rating. Please try again.', 'error');
+      if (!(e instanceof Error && (e.message === 'No Supabase client' || e.message === 'Session expired'))) {
+        showToast?.('Failed to save rating. Please try again.', 'error');
+      }
       throw new Error('Save failed');
     }
   }, [showId, user, saveReview, getReviewsForShow, showToast]);
