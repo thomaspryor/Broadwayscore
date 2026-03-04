@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-04T04:53:27.963Z",
-  "processed": 35,
-  "failed": 105,
-  "successRate": "25.0%",
+  "updatedAt": "2026-03-04T04:59:32.714Z",
+  "processed": 36,
+  "failed": 114,
+  "successRate": "24.0%",
   "tierBreakdown": {
-    "playwright": 18,
+    "playwright": 19,
     "amp": 4,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 7,
     "brightdata": 0,
-    "archiveToday": 63,
+    "archiveToday": 69,
     "archive": 9
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-03-04T03:54:59.279Z",
@@ -43,6 +43,17 @@
       "t": "2026-03-04T04:44:54.301Z",
       "event": "bb-login-uncertain",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-04T04:54:11.178Z",
+      "event": "bb-session",
+      "session": "4b629c18",
+      "url": "https://preview.bloomberg.com/news/2010-04-29/linda-lavin-bellows-at-sarah-pauls"
+    },
+    {
+      "t": "2026-03-04T04:54:12.272Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
     }
   ]
 }
