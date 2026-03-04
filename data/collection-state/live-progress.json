@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-04T14:15:09.478Z",
-  "processed": 194,
-  "failed": 806,
-  "successRate": "19.4%",
+  "updatedAt": "2026-03-04T14:17:06.686Z",
+  "processed": 198,
+  "failed": 812,
+  "successRate": "19.6%",
   "tierBreakdown": {
     "playwright": 65,
-    "amp": 64,
+    "amp": 70,
     "browserbase": 0,
     "directCookies": 15,
     "scrapingbee": 23,
     "brightdata": 0,
-    "archiveToday": 413,
-    "archive": 68
+    "archiveToday": 414,
+    "archive": 69
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-03-04T08:22:43.120Z",
-      "event": "bb-session",
-      "session": "616f34b6",
-      "url": "https://nymag.com/daily/entertainment/2011/04/theater_review_a_cramped_and_m.htm"
-    },
-    {
-      "t": "2026-03-04T08:22:44.590Z",
-      "event": "bb-cookie-inject",
-      "domain": "nymag.com"
-    },
     {
       "t": "2026-03-04T08:23:46.548Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-04T08:40:20.628Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-04T14:16:20.316Z",
+      "event": "bb-session",
+      "session": "e4c70b0e",
+      "url": "https://variety.com/2024/legit/reviews/mcneal-review-broadway-lincoln-center-the"
+    },
+    {
+      "t": "2026-03-04T14:16:21.653Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
