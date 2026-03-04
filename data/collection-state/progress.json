@@ -23,7 +23,17 @@
     "shadowlands-west-end-2026/times-uk--clive-davis.json",
     "stranger-things-2024/times-uk--clive-davis.json",
     "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
-    "the-lion-king-1997/familyvacationcritic--unknown.json"
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "the-play-that-goes-wrong-off-broadway-2019/broadway-blog--samuel-l-leiter.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "witness-for-the-prosecution-west-end-2022/times-uk--clive-davis.json",
+    "a-christmas-story-the-musical-2012/vulture--scott-brown.json",
+    "airline-highway-2015/nytg--stanford-friedman.json",
+    "as-you-like-it-globe-west-end-2026/variety--frank-rizzo.json",
+    "bells-are-ringing-2001/nytimes--ben-brantley.json",
+    "bob-fosses-dancin-2023/variety--charles-isherwood.json",
+    "boeingboeing-2008/variety--david-rooney.json",
+    "dead-outlaw-2025/nytg--gillian-russo.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -37,7 +47,12 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/hells-kitchen-2024/usatoday--david-rooney.json"
+      "data/review-texts/hells-kitchen-2024/usatoday--david-rooney.json",
+      "data/review-texts/a-christmas-story-the-musical-2012/vulture--scott-brown.json",
+      "data/review-texts/airline-highway-2015/nytg--stanford-friedman.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/variety--frank-rizzo.json",
+      "data/review-texts/bells-are-ringing-2001/nytimes--ben-brantley.json",
+      "data/review-texts/boeingboeing-2008/variety--david-rooney.json"
     ],
     "archive": [
       "you-got-older-off-broadway-2026/timeout--unknown.json",
@@ -46,6 +61,18 @@
     ]
   },
   "startTime": "2026-03-04T03:09:46.547Z",
-  "lastProcessed": "the-lion-king-1997/familyvacationcritic--unknown.json",
-  "log": []
+  "lastProcessed": "dead-outlaw-2025/nytg--gillian-russo.json",
+  "log": [
+    {
+      "t": "2026-03-04T03:21:46.224Z",
+      "event": "bb-session",
+      "session": "cbaca789",
+      "url": "https://variety.com/2023/legit/reviews/bob-fosses-dancin-review-broadway-1235555"
+    },
+    {
+      "t": "2026-03-04T03:21:47.438Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
