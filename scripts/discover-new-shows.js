@@ -1029,6 +1029,10 @@ async function discoverShows() {
       // IBDB classification is authoritative (from the production page itself)
       detectedType = show.ibdbShowType;
       confidence = 'high';
+    } else if (/\bthe\s+musical\b|\bmusical\b/i.test(show.title)) {
+      // Title contains "Musical" — strong signal (e.g., "Dog Man - The Musical")
+      detectedType = 'musical';
+      confidence = 'medium';
     } else if (isPlay) {
       detectedType = 'play';
       confidence = 'medium';
