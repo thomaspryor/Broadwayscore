@@ -18,7 +18,7 @@ interface ShowPageRatingProps {
   onSaveReview?: (data: { rating: number; reviewText: string | null; dateSeen: string | null; reviewId?: string }) => Promise<void>;
   onDeleteReview?: (reviewId: string) => Promise<void>;
   onToggleWatchlist?: () => Promise<void>;
-  onAuthRequired?: (context: 'rating' | 'watchlist') => void;
+  onAuthRequired?: (context: 'rating' | 'watchlist', pendingRating?: number) => void;
   isAuthenticated?: boolean;
 }
 
@@ -52,7 +52,7 @@ export default function ShowPageRating({
     if (!isAuthenticated && onAuthRequired) {
       // Store the rating intent for deferred auth
       setCurrentRating(rating);
-      onAuthRequired('rating');
+      onAuthRequired('rating', rating);
       return;
     }
     setCurrentRating(rating);

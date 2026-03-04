@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 import ShowPageRating from './ShowPageRating';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserReviews } from '@/hooks/useUserReviews';
 import { useWatchlist } from '@/hooks/useWatchlist';
 import { useToastSafe } from '@/components/ui/Toast';
-import { savePendingAction } from '@/lib/deferred-auth';
+import { savePendingAction, getPendingAction, clearPendingAction } from '@/lib/deferred-auth';
 import { getSupabaseClient } from '@/lib/supabase';
 import { featureFlags } from '@/config/feature-flags';
 
@@ -33,6 +33,7 @@ export default function ShowPageRatingConnected({
   const { isWatchlisted, addToWatchlist, removeFromWatchlist, getWatchlist } = useWatchlist(user?.id || null);
 
   const { showToast } = useToastSafe();
+  const hasExecutedPending = useRef(false);
 
   // Load data when authenticated
   useEffect(() => {
@@ -91,6 +92,35 @@ export default function ShowPageRatingConnected({
     }
   }, [showId, user, reviews, saveReview, getReviewsForShow, showToast]);
 
+  // Execute pending action after auth (deferred auth flow)
+  useEffect(() => {
+    if (!isAuthenticated || !user || hasExecutedPending.current) return;
+    const pending = getPendingAction();
+    if (!pending || pending.showId !== showId) return;
+
+    hasExecutedPending.current = true;
+    clearPendingAction();
+
+    if (pending.type === 'rating' && pending.rating) {
+      showToast?.('Signed in! Saving your rating...', 'success');
+      handleSaveReview({
+        rating: pending.rating,
+        reviewText: null,
+        dateSeen: null,
+      });
+    } else if (pending.type === 'watchlist') {
+      showToast?.('Signed in! Adding to watchlist...', 'success');
+      addToWatchlist(showId).then(() => {
+        getWatchlist();
+      }).catch(() => {
+        showToast?.('Failed to add to watchlist.', 'error');
+      });
+    } else {
+      showToast?.('Signed in successfully!', 'success');
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, user, showId]);
+
   const handleToggleWatchlist = useCallback(async () => {
     try {
       if (isWatchlisted(showId)) {
@@ -105,11 +135,12 @@ export default function ShowPageRatingConnected({
     }
   }, [showId, isWatchlisted, addToWatchlist, removeFromWatchlist, showToast]);
 
-  const handleAuthRequired = useCallback((context: 'rating' | 'watchlist') => {
-    // Save pending action for deferred auth
+  const handleAuthRequired = useCallback((context: 'rating' | 'watchlist', pendingRating?: number) => {
+    // Save pending action for deferred auth (include rating if provided)
     savePendingAction({
       type: context,
       showId,
+      ...(pendingRating != null && { rating: pendingRating }),
       returnUrl: window.location.pathname,
       timestamp: Date.now(),
     });
