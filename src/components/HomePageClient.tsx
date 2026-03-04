@@ -39,6 +39,7 @@ interface HomePageClientProps {
   shows: HomepageShow[];
   upcomingShows: HomepageShow[];
   offBroadwayShows?: HomepageShow[];
+  westEndShows?: HomepageShow[];
   totalShows: number;
   totalReviews: number;
   skipHero?: boolean;
@@ -370,7 +371,7 @@ function FeaturedRow({ title, shows, viewAllHref }: { title: string; shows: Home
 }
 
 // Inner component that uses searchParams
-function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], totalShows, totalReviews, skipHero, skipFirstMusicals }: HomePageClientProps) {
+function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], westEndShows = [], totalShows, totalReviews, skipHero, skipFirstMusicals }: HomePageClientProps) {
   const initialSearchParams = useSearchParams();
 
   // Local state for instant updates (no full-page reload)
@@ -463,13 +464,12 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], totalShows
     window.history.replaceState({}, '', '/');
   }, []);
 
-  // Search should span ALL shows (Broadway + OB) regardless of toggle state
+  // Search should span ALL shows (Broadway + OB + West End) regardless of toggle state
   const allShowsForSearch = useMemo(() => {
-    if (offBroadwayShows.length === 0) return shows;
-    // Combine Broadway + OB, deduplicating by id
     const ids = new Set(shows.map(s => s.id));
-    return [...shows, ...offBroadwayShows.filter(s => !ids.has(s.id))];
-  }, [shows, offBroadwayShows]);
+    const extra = [...offBroadwayShows, ...westEndShows].filter(s => !ids.has(s.id));
+    return extra.length > 0 ? [...shows, ...extra] : shows;
+  }, [shows, offBroadwayShows, westEndShows]);
 
   // Fuse.js instance for fuzzy search across title, venue, and creative team
   const fuse = useMemo(() => new Fuse(allShowsForSearch, {
