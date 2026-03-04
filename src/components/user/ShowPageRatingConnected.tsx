@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useCallback, useRef } from 'react';
+import React, { useEffect, useCallback, useRef } from 'react';
 import ShowPageRating from './ShowPageRating';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserReviews } from '@/hooks/useUserReviews';
@@ -30,7 +30,7 @@ export default function ShowPageRatingConnected({
 }: ShowPageRatingConnectedProps) {
   const { user, isAuthenticated, showSignIn } = useAuth();
   const { reviews, getReviewsForShow, saveReview } = useUserReviews(user?.id || null);
-  const { isWatchlisted, addToWatchlist, removeFromWatchlist, getWatchlist } = useWatchlist(user?.id || null);
+  const { isWatchlisted, addToWatchlist, removeFromWatchlist, getWatchlist, updatePlannedDate, watchlist } = useWatchlist(user?.id || null);
 
   const { showToast } = useToastSafe();
   const hasExecutedPending = useRef(false);
@@ -78,7 +78,7 @@ export default function ShowPageRatingConnected({
         dateSeen: data.dateSeen,
         reviewId: data.reviewId,
       });
-      showToast?.('Rating saved!', 'success');
+      showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">Reviews</a></>, 'success');
       await getReviewsForShow(showId);
       return result?.id;
     } catch (e) {
@@ -105,9 +105,9 @@ export default function ShowPageRatingConnected({
         dateSeen: null,
       });
     } else if (pending.type === 'watchlist') {
-      showToast?.('Signed in! Adding to watchlist...', 'success');
       addToWatchlist(showId).then(() => {
         getWatchlist();
+        showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success');
       }).catch(() => {
         showToast?.('Failed to add to watchlist.', 'error');
       });
@@ -121,15 +121,23 @@ export default function ShowPageRatingConnected({
     try {
       if (isWatchlisted(showId)) {
         await removeFromWatchlist(showId);
-        showToast?.('Removed from watchlist', 'info');
+        showToast?.(<>Removed from <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'info');
       } else {
         await addToWatchlist(showId);
-        showToast?.('Added to watchlist!', 'success');
+        showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success');
       }
     } catch {
       showToast?.('Failed to update watchlist. Please try again.', 'error');
     }
   }, [showId, isWatchlisted, addToWatchlist, removeFromWatchlist, showToast]);
+
+  const handleUpdateWatchlistDate = useCallback(async (date: string | null) => {
+    try {
+      await updatePlannedDate(showId, date);
+    } catch {
+      showToast?.('Failed to save date.', 'error');
+    }
+  }, [showId, updatePlannedDate, showToast]);
 
   const handleAuthRequired = useCallback((context: 'rating' | 'watchlist', pendingRating?: number) => {
     // Save pending action for deferred auth (include rating if provided)
@@ -149,6 +157,8 @@ export default function ShowPageRatingConnected({
   // Feature flag check — AFTER all hooks (React rules-of-hooks)
   if (!featureFlags.userAccounts) return null;
 
+  const watchlistEntry = watchlist.find(w => w.show_id === showId);
+
   return (
     <ShowPageRating
       showId={showId}
@@ -157,8 +167,10 @@ export default function ShowPageRatingConnected({
       closingDate={closingDate}
       reviews={showReviews}
       isWatchlisted={isWatchlisted(showId)}
+      watchlistDate={watchlistEntry?.planned_date || null}
       onSaveReview={handleSaveReview}
       onToggleWatchlist={handleToggleWatchlist}
+      onUpdateWatchlistDate={handleUpdateWatchlistDate}
       onAuthRequired={handleAuthRequired}
       isAuthenticated={isAuthenticated}
     />

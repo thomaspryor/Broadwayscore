@@ -16,9 +16,11 @@ interface ShowPageRatingProps {
   // Data callbacks — wired to Supabase hooks in Sprint 2
   reviews?: UserReview[];
   isWatchlisted?: boolean;
+  watchlistDate?: string | null;
   onSaveReview?: (data: { rating: number; reviewText: string | null; dateSeen: string | null; reviewId?: string }) => Promise<string | void>;
   onDeleteReview?: (reviewId: string) => Promise<void>;
   onToggleWatchlist?: () => Promise<void>;
+  onUpdateWatchlistDate?: (date: string | null) => Promise<void>;
   onAuthRequired?: (context: 'rating' | 'watchlist', pendingRating?: number) => void;
   isAuthenticated?: boolean;
 }
@@ -30,9 +32,11 @@ export default function ShowPageRating({
   closingDate,
   reviews = [],
   isWatchlisted = false,
+  watchlistDate,
   onSaveReview,
   onDeleteReview,
   onToggleWatchlist,
+  onUpdateWatchlistDate,
   onAuthRequired,
   isAuthenticated = false,
 }: ShowPageRatingProps) {
@@ -201,7 +205,7 @@ export default function ShowPageRating({
           )}
         </div>
 
-        {/* Watchlist button */}
+        {/* Watchlist button + inline date */}
         <div className="flex-shrink-0 pt-5 flex flex-col items-center">
           <WatchlistButton
             isWatchlisted={isWatchlisted}
@@ -209,9 +213,41 @@ export default function ShowPageRating({
             loading={watchlistLoading}
           />
           {isWatchlisted && (
-            <Link href="/my-shows?tab=watchlist" className="mt-1.5 text-xs text-gray-500 hover:text-brand transition-colors">
-              See Watchlist
-            </Link>
+            <>
+              {/* Inline date picker */}
+              <button
+                type="button"
+                className="mt-1.5 flex items-center gap-1 text-[11px] text-gray-500 hover:text-gray-300 transition-colors"
+                onClick={() => {
+                  const input = document.createElement('input');
+                  input.type = 'date';
+                  input.value = watchlistDate || '';
+                  input.style.cssText = 'position:fixed;opacity:0;pointer-events:none';
+                  document.body.appendChild(input);
+                  input.addEventListener('change', () => {
+                    onUpdateWatchlistDate?.(input.value || null);
+                    document.body.removeChild(input);
+                  });
+                  input.addEventListener('blur', () => {
+                    setTimeout(() => { if (document.body.contains(input)) document.body.removeChild(input); }, 200);
+                  });
+                  input.focus();
+                  try { input.showPicker(); } catch {}
+                }}
+              >
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span>
+                  {watchlistDate
+                    ? new Date(watchlistDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                    : 'Add date'}
+                </span>
+              </button>
+              <Link href="/my-shows?tab=watchlist" className="mt-1 text-[11px] text-gray-500 hover:text-brand transition-colors">
+                See Watchlist
+              </Link>
+            </>
           )}
         </div>
       </div>
