@@ -443,7 +443,14 @@ jobs:
 
           echo "Reviews needing text collection: $NEEDS_COLLECTION"
 
-          THRESHOLD=20
+          # For targeted show runs, always trigger collection (even 1 review)
+          # For broad runs, use higher threshold to avoid noise
+          SHOW_INPUT="${{ inputs.shows }}"
+          if [ -n "$SHOW_INPUT" ]; then
+            THRESHOLD=1
+          else
+            THRESHOLD=20
+          fi
           if [ "$NEEDS_COLLECTION" -lt "$THRESHOLD" ]; then
             echo "Below threshold ($THRESHOLD). Skipping auto-trigger."
             exit 0

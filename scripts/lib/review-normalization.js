@@ -743,8 +743,19 @@ function resolveOutletFromUrl(url) {
   if (!url) return null;
 
   try {
-    const hostname = new URL(url).hostname.replace(/^www\./, '').toLowerCase();
+    const parsedUrl = new URL(url);
+    const hostname = parsedUrl.hostname.replace(/^www\./, '').toLowerCase();
     const domainBase = hostname.split('.')[0];
+
+    // Path-aware overrides for shared-domain outlets (before domain lookup)
+    // timeout.com hosts both Time Out New York and Time Out London under different paths
+    const urlPath = parsedUrl.pathname.toLowerCase();
+    if (hostname === 'timeout.com' || hostname === 'timeout.co.uk') {
+      if (urlPath.startsWith('/london')) {
+        return { outletId: 'timeout-london', displayName: 'Time Out London' };
+      }
+      return { outletId: 'timeout', displayName: 'Time Out New York' };
+    }
 
     const domainIndex = buildDomainToOutletIndex();
 
