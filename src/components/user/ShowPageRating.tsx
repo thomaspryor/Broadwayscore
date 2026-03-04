@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import StarRating from './StarRating';
 import ReviewPanel from './ReviewPanel';
@@ -16,7 +16,7 @@ interface ShowPageRatingProps {
   // Data callbacks — wired to Supabase hooks in Sprint 2
   reviews?: UserReview[];
   isWatchlisted?: boolean;
-  onSaveReview?: (data: { rating: number; reviewText: string | null; dateSeen: string | null; reviewId?: string }) => Promise<void>;
+  onSaveReview?: (data: { rating: number; reviewText: string | null; dateSeen: string | null; reviewId?: string }) => Promise<string | void>;
   onDeleteReview?: (reviewId: string) => Promise<void>;
   onToggleWatchlist?: () => Promise<void>;
   onAuthRequired?: (context: 'rating' | 'watchlist', pendingRating?: number) => void;
@@ -41,6 +41,7 @@ export default function ShowPageRating({
   const [editingReview, setEditingReview] = useState<UserReview | null>(null);
   const [saving, setSaving] = useState(false);
   const [watchlistLoading, setWatchlistLoading] = useState(false);
+  const lastSavedId = useRef<string | null>(null);
 
   // Derive state from reviews
   const latestReview = reviews.length > 0
@@ -63,20 +64,23 @@ export default function ShowPageRating({
 
   const handleSave = useCallback(async (data: { rating: number; reviewText: string | null; dateSeen: string | null }) => {
     if (!onSaveReview) return;
-    const isFirstSave = !editingReview && !latestReview;
+    const isFirstSave = !editingReview && !latestReview && !lastSavedId.current;
     setSaving(true);
     try {
-      await onSaveReview({
+      // Pass reviewId: editing existing, or re-saving just-created review
+      const idToPass = editingReview?.id || lastSavedId.current || undefined;
+      const savedId = await onSaveReview({
         ...data,
-        reviewId: editingReview?.id,
+        reviewId: idToPass,
       });
+      if (savedId) lastSavedId.current = savedId;
       if (isFirstSave) {
         // Keep panel open after first save so user can add notes/date
-        // The panel will show updated state after reviews refetch
       } else {
         setShowPanel(false);
         setEditingReview(null);
         setCurrentRating(null);
+        lastSavedId.current = null;
       }
     } catch (e) {
       // eslint-disable-next-line no-console
@@ -151,6 +155,7 @@ export default function ShowPageRating({
                 onClick={() => {
                   setEditingReview(null);
                   setCurrentRating(null);
+                  lastSavedId.current = null;
                   setShowPanel(false);
                   // Reset to allow new rating
                   handleRatingChange(latestReview.rating);

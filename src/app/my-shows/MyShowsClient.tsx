@@ -345,8 +345,8 @@ function DiaryCard({ review, show }: { review: UserReview; show?: ShowLookup }) 
       href={href}
       className="group flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors"
     >
-      {/* Poster thumbnail — matches homepage ShowCard size */}
-      <div className="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-surface-overlay">
+      {/* Poster — portrait aspect ratio */}
+      <div className="flex-shrink-0 w-14 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay">
         {show?.posterUrl ? (
           <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
         ) : (
@@ -354,7 +354,7 @@ function DiaryCard({ review, show }: { review: UserReview; show?: ShowLookup }) 
         )}
       </div>
 
-      {/* Info — matches homepage layout */}
+      {/* Info */}
       <div className="flex-1 min-w-0">
         <h4 className="font-bold text-white text-base group-hover:text-brand transition-colors truncate">{title}</h4>
         <div className="flex flex-wrap items-center gap-1.5 mt-1">
@@ -370,21 +370,21 @@ function DiaryCard({ review, show }: { review: UserReview; show?: ShowLookup }) 
         {review.review_text && (
           <p className="text-xs text-gray-500 mt-1.5 line-clamp-1">{review.review_text}</p>
         )}
-      </div>
-
-      {/* Rating column — replaces ScoreBadge */}
-      <div className="flex-shrink-0 flex flex-col items-center gap-1 w-20 sm:w-24">
-        <StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly />
-        <span className="text-lg font-bold text-amber-400">{review.rating.toFixed(1)}</span>
         {review.date_seen && (
-          <span className="text-[10px] text-gray-500 whitespace-nowrap">
+          <p className="text-[11px] text-gray-500 mt-1">
             {new Date(review.date_seen + 'T00:00:00').toLocaleDateString('en-US', {
               month: 'short',
               day: 'numeric',
               year: 'numeric',
             })}
-          </span>
+          </p>
         )}
+      </div>
+
+      {/* Rating column */}
+      <div className="flex-shrink-0 flex flex-col items-center gap-0.5 w-20 sm:w-24">
+        <StarRating rating={review.rating} onRatingChange={() => {}} size="md" readOnly hideLabel />
+        <span className="text-sm font-semibold text-amber-400">{review.rating.toFixed(1)} stars</span>
       </div>
     </Link>
   );

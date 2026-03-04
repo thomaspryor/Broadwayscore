@@ -7,6 +7,7 @@ interface StarRatingProps {
   onRatingChange: (rating: number) => void;
   size?: 'sm' | 'md' | 'lg';
   readOnly?: boolean;
+  hideLabel?: boolean;
 }
 
 const SIZE_MAP = {
@@ -15,7 +16,7 @@ const SIZE_MAP = {
   lg: { star: 36, gap: 4 },
 };
 
-export default function StarRating({ rating, onRatingChange, size = 'md', readOnly = false }: StarRatingProps) {
+export default function StarRating({ rating, onRatingChange, size = 'md', readOnly = false, hideLabel = false }: StarRatingProps) {
   const [hoverRating, setHoverRating] = useState<number | null>(null);
   const [showHalfButton, setShowHalfButton] = useState(false);
   const [lastTappedStar, setLastTappedStar] = useState<number | null>(null);
@@ -138,7 +139,7 @@ export default function StarRating({ rating, onRatingChange, size = 'md', readOn
         ))}
 
         {/* Rating label */}
-        {rating !== null && (
+        {rating !== null && !hideLabel && (
           <span className={`ml-1 font-bold text-white ${
             size === 'sm' ? 'text-xs' : size === 'md' ? 'text-sm' : 'text-base'
           }`}>
