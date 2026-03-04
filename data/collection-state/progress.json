@@ -751,7 +751,10 @@
     "hells-kitchen-2024/ap--mark-kennedy.json",
     "hells-kitchen-2024/rollingstone--brittani-samuel.json",
     "hells-kitchen-2024/theater-life--samuel-l-leiter.json",
-    "hells-kitchen-2024/usatoday--david-oliver.json"
+    "hells-kitchen-2024/usatoday--david-oliver.json",
+    "high-noon-west-end-2025/thestage--sam-marlowe.json",
+    "magic-mike-live-west-end-2021/thestage--francesca-peschier.json",
+    "mamma-mia-west-end-2021/standard--jessie-thompson.json"
   ],
   "failed": [
     "bigfoot-off-broadway-2026/vulture--unknown.json",
@@ -1193,7 +1196,14 @@
     "giant-2026/london-theatre--julia-rank.json",
     "hadestown-west-end-2024/times-uk--clive-davis.json",
     "hamilton-2015/broadwayworld--michael-dale.json",
-    "hells-kitchen-2024/talkinbroadway--matthew-murray.json"
+    "hells-kitchen-2024/talkinbroadway--matthew-murray.json",
+    "high-noon-west-end-2025/times-uk--clive-davis.json",
+    "im-sorry-prime-minister-west-end-2026/daily-mail--patrick-marmion.json",
+    "im-sorry-prime-minister-west-end-2026/thestage--dave-fargnoli.json",
+    "les-miserables-west-end-2021/standard--nick-curtis.json",
+    "les-miserables-west-end-2021/times-uk--clive-davis.json",
+    "little-shop-of-horrors-off-broadway-2019/dailybeast--adam-hetrick.json",
+    "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1685,7 +1695,9 @@
       "giant-2026/thestage--dave-fargnoli.json",
       "giant-2026/times-uk--clive-davis.json",
       "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
-      "hells-kitchen-2024/theater-life--samuel-l-leiter.json"
+      "hells-kitchen-2024/theater-life--samuel-l-leiter.json",
+      "high-noon-west-end-2025/thestage--sam-marlowe.json",
+      "magic-mike-live-west-end-2021/thestage--francesca-peschier.json"
     ],
     "amp": [
       "data/review-texts/bigfoot-off-broadway-2026/vulture--unknown.json",
@@ -1878,7 +1890,8 @@
       "the-mousetrap-west-end-2021/times-uk--quentin-letts.json",
       "an-ark-2026/vulture--sara-holdren.json",
       "blackout-songs-2026/vulture--jackson-mchenry.json",
-      "hells-kitchen-2024/usatoday--david-oliver.json"
+      "hells-kitchen-2024/usatoday--david-oliver.json",
+      "im-sorry-prime-minister-west-end-2026/thestage--dave-fargnoli.json"
     ],
     "scrapingbee": [
       "midnight-a-new-original-musical-by-todrick-hall-west-end-2026/guardian--unknown.json",
@@ -1983,7 +1996,8 @@
       "the-office-a-musical-parody-off-broadway-2018/broadwaynews--aa-cristi.json",
       "the-play-that-goes-wrong-off-broadway-2019/nydailynews--maria-4251.json",
       "hells-kitchen-2024/cititour--unknown.json",
-      "hells-kitchen-2024/rollingstone--brittani-samuel.json"
+      "hells-kitchen-2024/rollingstone--brittani-samuel.json",
+      "im-sorry-prime-minister-west-end-2026/daily-mail--patrick-marmion.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2292,11 +2306,12 @@
       "hamilton-2015/ap--mark-kennedy.json",
       "harry-potter-2021/broadwayworld--michael-dale.json",
       "heathers-the-musical-off-broadway-2025/northjerseycom--robert-feldberg.json",
-      "hells-kitchen-2024/ap--mark-kennedy.json"
+      "hells-kitchen-2024/ap--mark-kennedy.json",
+      "mamma-mia-west-end-2021/standard--jessie-thompson.json"
     ]
   },
   "startTime": "2026-03-03T08:34:29.131Z",
-  "lastProcessed": "hells-kitchen-2024/usatoday--david-oliver.json",
+  "lastProcessed": "mamma-mia-west-end-2021/standard--jessie-thompson.json",
   "log": [
     {
       "t": "2026-03-04T00:34:02.831Z",
@@ -2363,6 +2378,17 @@
       "t": "2026-03-04T01:39:15.358Z",
       "event": "bb-cookie-inject",
       "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-03-04T01:45:55.902Z",
+      "event": "bb-session",
+      "session": "d7f66abc",
+      "url": "https://www.thestage.co.uk/reviews/im-sorry-prime-minister-review-apollo-theatre"
+    },
+    {
+      "t": "2026-03-04T01:45:57.272Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
