@@ -34,7 +34,8 @@
     "burlesque-west-end-2026/city-am--adam-bloodworth.json",
     "burlesque-west-end-2026/standard--nick-curtis.json",
     "burlesque-west-end-2026/thestage--paul-vale.json",
-    "burlesque-west-end-2026/times-uk--clive-davis.json"
+    "burlesque-west-end-2026/times-uk--clive-davis.json",
+    "escape-to-margaritaville-2018/cabaret-scenes--elizabeth-ahlfors.json"
   ],
   "failed": [
     "heisenberg-2016/act-three-the-reviews--doug-marino.json",
@@ -141,7 +142,16 @@
     "bullets-over-broadway-2014/ap--mark-kennedy.json",
     "carrie-1988/amny--matt-windman.json",
     "carrie-1988/backstage--erik-haagensen.json",
-    "cats-1982/amny--matt-windman.json"
+    "cats-1982/amny--matt-windman.json",
+    "cats-1982/curtainup--elyse-sommer.json",
+    "collected-stories-2010/bloomberg--jeremy-gerard.json",
+    "collected-stories-2010/ny1--david-cote.json",
+    "death-of-a-salesman-1975/ap--mark-kennedy.json",
+    "death-of-a-salesman-1984/ap--mark-kennedy.json",
+    "deuce-2007/ap--mark-kennedy.json",
+    "dont-dress-for-dinner-2012/philadelphia-inquirer--howard-shapiro.json",
+    "escape-to-margaritaville-2018/broadway-blog--matthew-wexler.json",
+    "escape-to-margaritaville-2018/gotham-playgoer--robert-sholiton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -163,7 +173,8 @@
       "burlesque-west-end-2026/city-am--adam-bloodworth.json",
       "burlesque-west-end-2026/standard--nick-curtis.json",
       "burlesque-west-end-2026/thestage--paul-vale.json",
-      "burlesque-west-end-2026/times-uk--clive-davis.json"
+      "burlesque-west-end-2026/times-uk--clive-davis.json",
+      "escape-to-margaritaville-2018/cabaret-scenes--elizabeth-ahlfors.json"
     ],
     "amp": [
       "data/review-texts/a-christmas-carol-1994/thewrap--robert-hofler.json",
@@ -246,7 +257,13 @@
       "data/review-texts/born-yesterday-2011/village-voice--michael-musto.json",
       "data/review-texts/brighton-beach-memoirs-2009/ap--unknown.json",
       "data/review-texts/carrie-1988/amny--matt-windman.json",
-      "data/review-texts/carrie-1988/backstage--erik-haagensen.json"
+      "data/review-texts/carrie-1988/backstage--erik-haagensen.json",
+      "data/review-texts/cats-1982/curtainup--elyse-sommer.json",
+      "data/review-texts/collected-stories-2010/bloomberg--jeremy-gerard.json",
+      "data/review-texts/death-of-a-salesman-1975/ap--mark-kennedy.json",
+      "data/review-texts/death-of-a-salesman-1984/ap--mark-kennedy.json",
+      "data/review-texts/deuce-2007/ap--mark-kennedy.json",
+      "data/review-texts/dont-dress-for-dinner-2012/philadelphia-inquirer--howard-shapiro.json"
     ],
     "archive": [
       "amazing-grace-2015/chicago-land-theater-reviews--dan-zeff.json",
@@ -261,7 +278,7 @@
     ]
   },
   "startTime": "2026-03-04T03:24:33.734Z",
-  "lastProcessed": "cats-1982/amny--matt-windman.json",
+  "lastProcessed": "escape-to-margaritaville-2018/gotham-playgoer--robert-sholiton.json",
   "log": [
     {
       "t": "2026-03-04T03:54:59.279Z",
@@ -291,6 +308,17 @@
       "t": "2026-03-04T04:44:54.301Z",
       "event": "bb-login-uncertain",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-04T04:54:11.178Z",
+      "event": "bb-session",
+      "session": "4b629c18",
+      "url": "https://preview.bloomberg.com/news/2010-04-29/linda-lavin-bellows-at-sarah-pauls"
+    },
+    {
+      "t": "2026-03-04T04:54:12.272Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
     }
   ]
 }
