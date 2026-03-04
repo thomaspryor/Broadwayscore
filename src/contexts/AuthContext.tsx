@@ -52,10 +52,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
 
     // Listen for auth state changes
-    const { data: { subscription } } = client.auth.onAuthStateChange(async (event, session) => {
+    const { data: { subscription } } = client.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session?.user) {
         setUser({ id: session.user.id, email: session.user.email || '' });
-        await loadProfile(session.user.id);
+        // IMPORTANT: Do NOT await Supabase queries here.
+        // _notifyAllSubscribers awaits this callback during initialize(),
+        // but getSession() awaits initializePromise — creating a deadlock.
+        // Fire-and-forget is safe; loadProfile has its own error handling.
+        loadProfile(session.user.id);
         setModalOpen(false);
         setSignInLoading(false);
 
