@@ -244,13 +244,26 @@ function extractGuardianScore(html, text) {
  * to be careful to only extract grades with clear context to avoid false positives.
  */
 function extractNYPostScore(html, text) {
-  // Only extract letter grade if there's clear grade context
-  // Patterns like "Grade: A" or "rating: B+" or at the very start/end
+  // NY Post uses CSS star widgets on newer articles (2019+).
+  // rating__star--filled = full star, rating__star--half = half star, on a 4-star scale.
+  const filled = (html.match(/rating__star--filled/g) || []).length;
+  const half = (html.match(/rating__star--half/g) || []).length;
+  if (filled > 0) {
+    const rating = filled + (half * 0.5);
+    if (rating >= 0.5 && rating <= 4) {
+      return {
+        originalScore: `${rating}/4 stars`,
+        normalizedScore: starsToNumeric(rating, 4),
+        source: 'css-stars'
+      };
+    }
+  }
+
+  // Letter grade patterns: "Grade: A" or "rating: B+"
   const gradePatterns = [
     /(?:grade|rating)\s*:?\s*([A-F][+-]?)\b/i,
     /\bgrade\s+([A-F][+-]?)\b/i,
     /\b([A-F][+-]?)\s+(?:grade|rating)\b/i,
-    // At very beginning of text (like a header)
     /^([A-F][+-]?)\s*$/m
   ];
 
@@ -265,7 +278,7 @@ function extractNYPostScore(html, text) {
     }
   }
 
-  // Try star rating with clear context
+  // Star rating in text: "4 stars" or "3 stars out of 5"
   const starMatch = text.match(/(\d)\s*stars?\s*(?:out\s*of\s*5)?/i);
   if (starMatch) {
     const rating = parseInt(starMatch[1]);
