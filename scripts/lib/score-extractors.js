@@ -417,8 +417,11 @@ function extractUKStarRating(html, text) {
   if (unicodeMatch) {
     const stars = unicodeMatch[1].replace(/\s/g, '');
     const filled = (stars.match(/★/g) || []).length;
-    const total = stars.length;
-    if (total >= 2 && total <= 5) {
+    const empty = (stars.match(/☆/g) || []).length;
+    // If both filled and empty are present, scale = filled + empty.
+    // If only filled stars (no ☆), default to 5-star scale (UK standard).
+    const total = (empty > 0) ? (filled + empty) : 5;
+    if (filled >= 1 && filled <= 5) {
       return {
         originalScore: `${filled}/${total} stars`,
         normalizedScore: starsToNumeric(filled, total),
