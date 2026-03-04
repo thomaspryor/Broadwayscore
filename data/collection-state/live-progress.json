@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-04T11:06:18.291Z",
-  "processed": 64,
+  "updatedAt": "2026-03-04T11:08:17.897Z",
+  "processed": 74,
   "failed": 136,
-  "successRate": "32.0%",
+  "successRate": "35.2%",
   "tierBreakdown": {
-    "playwright": 23,
-    "amp": 16,
+    "playwright": 25,
+    "amp": 18,
     "browserbase": 2,
-    "directCookies": 13,
-    "scrapingbee": 7,
+    "directCookies": 16,
+    "scrapingbee": 9,
     "brightdata": 0,
     "archiveToday": 79,
-    "archive": 14
+    "archive": 16
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-03-04T09:21:32.409Z",
@@ -101,6 +101,28 @@
     },
     {
       "t": "2026-03-04T11:03:52.533Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-04T11:06:38.934Z",
+      "event": "bb-session",
+      "session": "54667921",
+      "url": "https://www.newyorker.com/magazine/2026/02/02/ragtime-cases-the-landmark-it-almo"
+    },
+    {
+      "t": "2026-03-04T11:06:40.226Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-04T11:07:40.047Z",
+      "event": "bb-session",
+      "session": "caa6aa38",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/six-10-25-21"
+    },
+    {
+      "t": "2026-03-04T11:07:41.328Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
     }
