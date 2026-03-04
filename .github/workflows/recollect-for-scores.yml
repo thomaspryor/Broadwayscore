@@ -82,8 +82,8 @@ jobs:
           OUTLETS_INPUT="${{ inputs.outlets || 'all-free' }}"
           if [ "$OUTLETS_INPUT" = "all-free" ]; then
             # Free outlets with dedicated score extractors (not noScoreExtractor)
-            # Guardian excluded: uses API metadata, not HTML extraction
-            OUTLETS="timeout,ew,usatoday,standard,independent,culturesauce,whatsonstage"
+            # Excluded: guardian (API metadata), usatoday (no star ratings in HTML)
+            OUTLETS="timeout,ew,standard,independent,culturesauce,whatsonstage"
           else
             OUTLETS="$OUTLETS_INPUT"
           fi
