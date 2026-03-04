@@ -1,64 +1,129 @@
 {
-  "updatedAt": "2026-03-04T12:36:53.699Z",
-  "processed": 11,
-  "failed": 319,
-  "successRate": "3.3%",
+  "updatedAt": "2026-03-04T12:42:14.592Z",
+  "processed": 152,
+  "failed": 698,
+  "successRate": "17.9%",
   "tierBreakdown": {
-    "playwright": 5,
-    "amp": 0,
+    "playwright": 62,
+    "amp": 18,
     "browserbase": 0,
-    "directCookies": 0,
-    "scrapingbee": 2,
+    "directCookies": 14,
+    "scrapingbee": 20,
     "brightdata": 0,
-    "archiveToday": 170,
-    "archive": 6
+    "archiveToday": 372,
+    "archive": 56
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 0,
   "recentActivity": [
     {
-      "t": "2026-03-04T09:39:43.085Z",
+      "t": "2026-03-04T08:22:43.120Z",
       "event": "bb-session",
-      "session": "bf3bdfd9",
-      "url": "https://%20http:/www.newsday.com/entertainment/theater/review-disconnect-served-"
+      "session": "616f34b6",
+      "url": "https://nymag.com/daily/entertainment/2011/04/theater_review_a_cramped_and_m.htm"
     },
     {
-      "t": "2026-03-04T09:40:58.566Z",
-      "event": "bb-session",
-      "session": "726b07dd",
-      "url": "https://bway.ly/04r8b#http://nypost.com/2016/09/29/broadway-is-no-place-for-podc"
-    },
-    {
-      "t": "2026-03-04T10:13:47.493Z",
-      "event": "bb-session",
-      "session": "0e530043",
-      "url": "http://www.amny.com/urbanite-1.812039/theater-review-annie-1-5-stars-1.4202762"
-    },
-    {
-      "t": "2026-03-04T10:13:48.698Z",
+      "t": "2026-03-04T08:22:44.590Z",
       "event": "bb-cookie-inject",
-      "domain": "amny.com"
+      "domain": "nymag.com"
     },
     {
-      "t": "2026-03-04T10:20:18.457Z",
+      "t": "2026-03-04T08:23:46.548Z",
       "event": "bb-session",
-      "session": "34481688",
-      "url": "https://The%20show%20is%20a%20triple-decker:%20an%20intimate%20story%20of%20a%20"
+      "session": "3b5d4bc4",
+      "url": "https://www.nytimes.com/2009/04/30/theater/reviews/30norman.html"
     },
     {
-      "t": "2026-03-04T10:20:23.500Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-03-04T10:30:23.228Z",
-      "event": "bb-session",
-      "session": "d89dc99e",
-      "url": "https://www.amny.com/urbanite-1.812039/theater-review-bronx-bombers-2-stars-1.69"
-    },
-    {
-      "t": "2026-03-04T10:30:24.301Z",
+      "t": "2026-03-04T08:23:47.802Z",
       "event": "bb-cookie-inject",
-      "domain": "amny.com"
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-04T08:25:19.089Z",
+      "event": "bb-session",
+      "session": "41bb40ff",
+      "url": "https://www.nytimes.com/2005/10/28/theater/reviews/the-odd-couple-redux-still-at"
+    },
+    {
+      "t": "2026-03-04T08:25:20.669Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-04T08:27:58.718Z",
+      "event": "bb-session",
+      "session": "ca8c56f3",
+      "url": "https://www.newyorker.com/arts/events/theatre/time-stands-still-cort-theatre"
+    },
+    {
+      "t": "2026-03-04T08:28:00.121Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-04T08:32:01.679Z",
+      "event": "bb-session",
+      "session": "266e6c66",
+      "url": "https://www.nytimes.com/2009/04/01/theater/reviews/01godot.html"
+    },
+    {
+      "t": "2026-03-04T08:32:03.131Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-04T08:33:39.604Z",
+      "event": "bb-session",
+      "session": "0985d98c",
+      "url": "https://www.wsj.com/articles/SB117961869834728582"
+    },
+    {
+      "t": "2026-03-04T08:33:40.727Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-04T08:35:24.166Z",
+      "event": "bb-session",
+      "session": "b5e1c1ba",
+      "url": "https://www.wsj.com/articles/1984-review-big-brother-is-watching-on-broadway-149"
+    },
+    {
+      "t": "2026-03-04T08:35:25.473Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-04T08:37:08.094Z",
+      "event": "bb-session",
+      "session": "aeedfd49",
+      "url": "https://www.wsj.com/articles/SB123788676543210987"
+    },
+    {
+      "t": "2026-03-04T08:37:09.314Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-04T08:38:44.911Z",
+      "event": "bb-session",
+      "session": "11ea34c3",
+      "url": "https://observer.com/2010/culture/raindrops-keep-falling-their-heads?page=1"
+    },
+    {
+      "t": "2026-03-04T08:38:46.232Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-04T08:40:19.487Z",
+      "event": "bb-session",
+      "session": "b899f726",
+      "url": "https://www.wsj.com/articles/aint-no-mo-review-jordan-e-cooper-takes-aim-at-amer"
+    },
+    {
+      "t": "2026-03-04T08:40:20.628Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
