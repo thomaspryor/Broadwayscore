@@ -1,4 +1,5 @@
 // Server component — loads data at build time, passes serialized props to client
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { getBroadwayShows, getOffBroadwayShows, getWestEndShows, getDataStats, getUpcomingShows } from '@/lib/data-core';
 import type { ComputedShow } from '@/lib/data-types';
@@ -110,16 +111,18 @@ export default function HomePage() {
         </div>
         <FeaturedRowServer shows={bestNewMusicalsShows} />
       </div>
-      <HomePageClient
-        shows={allShows.map(serializeShow)}
-        upcomingShows={upcomingShows.map(serializeShow)}
-        offBroadwayShows={obShows.map(serializeShow)}
-        westEndShows={weShows.map(serializeShow)}
-        totalShows={stats.totalShows}
-        totalReviews={stats.totalReviews}
-        skipHero
-        skipFirstMusicals
-      />
+      <Suspense>
+        <HomePageClient
+          shows={allShows.map(serializeShow)}
+          upcomingShows={upcomingShows.map(serializeShow)}
+          offBroadwayShows={obShows.map(serializeShow)}
+          westEndShows={weShows.map(serializeShow)}
+          totalShows={stats.totalShows}
+          totalReviews={stats.totalReviews}
+          skipHero
+          skipFirstMusicals
+        />
+      </Suspense>
     </>
   );
 }

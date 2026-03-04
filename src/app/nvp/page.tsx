@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { getBroadwayShows } from '@/lib/data-core';
 import { getAudienceBuzz, hasEnoughAudienceReviews } from '@/lib/data-audience';
 import NVPClient from './NVPClient';
@@ -59,5 +60,5 @@ export default function NVPPage() {
       };
     });
 
-  return <NVPClient shows={nvpShows} offBroadway={NVP_OFF_BROADWAY} />;
+  return <Suspense><NVPClient shows={nvpShows} offBroadway={NVP_OFF_BROADWAY} /></Suspense>;
 }

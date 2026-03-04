@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { getOffBroadwayShows } from '@/lib/data-core';
@@ -89,11 +90,13 @@ export default function OffBroadwayPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
       />
 
-      <OffBroadwayPageClient
-        shows={serializedShows}
-        totalShows={activeShows.length}
-        totalReviews={totalReviews}
-      />
+      <Suspense>
+        <OffBroadwayPageClient
+          shows={serializedShows}
+          totalShows={activeShows.length}
+          totalReviews={totalReviews}
+        />
+      </Suspense>
     </>
   );
 }
