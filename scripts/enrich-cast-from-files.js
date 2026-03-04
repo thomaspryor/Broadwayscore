@@ -59,14 +59,26 @@ const EXCLUDED_FLAGS = new Set([
 ]);
 const EXCLUDED_FLAG_PARTIAL = ['at some performances'];
 
-function isPrincipalCast(member) {
+function isPrincipalCast(member, totalSourceSize) {
   const role = (member.role || '').trim();
 
-  // Exact match on generic non-principal roles
-  if (NON_PRINCIPAL_ROLE_RE.test(role)) return false;
+  // For small casts (≤5 members), skip the exact-match generic role filter.
+  // IBDB uses "Ensemble" or "Performer" as actual roles for solo shows (e.g.,
+  // Every Brilliant Thing) and comedy specials (e.g., All Out). In big casts,
+  // these labels genuinely mean non-principal ensemble.
+  const isSmallCast = totalSourceSize <= 5;
 
-  // Contains ensemble/swing/standby/understudy/chorus as a word
-  if (NON_PRINCIPAL_ROLE_CONTAINS_RE.test(role)) return false;
+  // Exact match on generic non-principal roles (skip for small casts)
+  if (!isSmallCast && NON_PRINCIPAL_ROLE_RE.test(role)) return false;
+
+  // Contains swing/standby/understudy/chorus as a word
+  // For small casts, only filter on these clearly non-principal keywords
+  // (not "ensemble"/"performer" which may be the actual role label)
+  if (isSmallCast) {
+    if (/\b(swing|standby|understudy|chorus)\b/i.test(role)) return false;
+  } else {
+    if (NON_PRINCIPAL_ROLE_CONTAINS_RE.test(role)) return false;
+  }
 
   // Check flags
   const flags = member.flags || [];
@@ -93,8 +105,8 @@ function extractCast(castData, showStatus) {
     return null; // No usable cast data
   }
 
-  // Filter to principals only
-  const principals = source.filter(isPrincipalCast);
+  // Filter to principals only (pass total source size for small-cast exception)
+  const principals = source.filter(m => isPrincipalCast(m, source.length));
   if (principals.length === 0) return null;
 
   // Deduplicate by name (alternates/replacements may share a role)
