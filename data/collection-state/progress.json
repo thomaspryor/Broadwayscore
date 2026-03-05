@@ -33,7 +33,13 @@
     "pretty-woman-the-musical-2018/newyorker--michael-schulman.json",
     "purlie-victorious-2023/newyorker--vinson-cunningham.json",
     "purpose/newyorker--helen-shaw.json",
-    "seminar-2011/newyorker--john-lahr.json"
+    "seminar-2011/newyorker--john-lahr.json",
+    "the-audience-2015/newyorker--hilton-als.json",
+    "the-collaboration-2022/newyorker--naomi-fry.json",
+    "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json",
+    "the-parisian-woman-2017/newyorker--hilton-als.json",
+    "the-shark-is-broken-2023/newyorker--helen-shaw.json",
+    "true-west-2019/newyorker--unknown.json"
   ],
   "failed": [
     "hadestown-2019/newyorker--hilton-als.json",
@@ -51,7 +57,8 @@
     "next-to-normal-2009/newyorker--john-lahr.json",
     "prima-facie-2023/newyorker--naomi-fry.json",
     "queen-versailles-2025/newyorker--helen-shaw.json",
-    "south-pacific-2008/newyorker--john-lahr.json"
+    "south-pacific-2008/newyorker--john-lahr.json",
+    "sunset-boulevard-2017/newyorker--hilton-als.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -86,7 +93,13 @@
       "pretty-woman-the-musical-2018/newyorker--michael-schulman.json",
       "purlie-victorious-2023/newyorker--vinson-cunningham.json",
       "purpose/newyorker--helen-shaw.json",
-      "seminar-2011/newyorker--john-lahr.json"
+      "seminar-2011/newyorker--john-lahr.json",
+      "the-audience-2015/newyorker--hilton-als.json",
+      "the-collaboration-2022/newyorker--naomi-fry.json",
+      "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json",
+      "the-parisian-woman-2017/newyorker--hilton-als.json",
+      "the-shark-is-broken-2023/newyorker--helen-shaw.json",
+      "true-west-2019/newyorker--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -96,7 +109,8 @@
       "data/review-texts/smash-2025/newyorker--unknown.json",
       "data/review-texts/time-stands-still-2010/newyorker--uncredited.json",
       "data/review-texts/aint-no-mo-2022/newyorker--naomi-fry.json",
-      "data/review-texts/grey-house-2023/newyorker--dan-stahl.json"
+      "data/review-texts/grey-house-2023/newyorker--dan-stahl.json",
+      "data/review-texts/sunset-boulevard-2017/newyorker--hilton-als.json"
     ],
     "archive": [
       "august-osage-county-2007/newyorker--hilton-als.json",
@@ -109,7 +123,7 @@
     ]
   },
   "startTime": "2026-03-05T04:18:00.105Z",
-  "lastProcessed": "south-pacific-2008/newyorker--john-lahr.json",
+  "lastProcessed": "true-west-2019/newyorker--unknown.json",
   "log": [
     {
       "t": "2026-03-05T04:20:25.479Z",
@@ -185,6 +199,17 @@
     },
     {
       "t": "2026-03-05T04:37:01.573Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-05T04:45:28.860Z",
+      "event": "bb-session",
+      "session": "91ac40a1",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/sunset-boulevard-2"
+    },
+    {
+      "t": "2026-03-05T04:45:30.291Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
     }
