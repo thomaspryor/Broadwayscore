@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import StarRating from './StarRating';
 import ReviewPanel from './ReviewPanel';
@@ -23,6 +23,7 @@ interface ShowPageRatingProps {
   onUpdateWatchlistDate?: (date: string | null) => Promise<void>;
   onAuthRequired?: (context: 'rating' | 'watchlist', pendingRating?: number) => void;
   isAuthenticated?: boolean;
+  autoEditLatest?: boolean;
 }
 
 export default function ShowPageRating({
@@ -39,6 +40,7 @@ export default function ShowPageRating({
   onUpdateWatchlistDate,
   onAuthRequired,
   isAuthenticated = false,
+  autoEditLatest = false,
 }: ShowPageRatingProps) {
   const [currentRating, setCurrentRating] = useState<number | null>(null);
   const [showPanel, setShowPanel] = useState(false);
@@ -53,6 +55,15 @@ export default function ShowPageRating({
     : null;
   const displayRating = editingReview?.rating ?? latestReview?.rating ?? currentRating;
   const viewCount = reviews.length;
+
+  // Auto-open panel after deferred auth saves a rating
+  useEffect(() => {
+    if (autoEditLatest && latestReview && !showPanel) {
+      setEditingReview(latestReview);
+      setCurrentRating(latestReview.rating);
+      setShowPanel(true);
+    }
+  }, [autoEditLatest, latestReview, showPanel]);
 
   const handleRatingChange = useCallback((rating: number) => {
     if (!isAuthenticated && onAuthRequired) {
