@@ -12,8 +12,8 @@ Exceptions: Pure data updates, documentation, clearly broken bug fixes.
 ### 3. Git Workflow
 - **Quick fix** → `main`, push. Auto-deploy via `vercel-deploy.yml` (~13 min).
 - **Preview** → `staging` branch, push. Get preview URL: `gh run view $(gh run list --workflow=vercel-preview.yml --limit=1 --json databaseId -q '.[0].databaseId') --log 2>&1 | grep 'Preview URL:'`. After approval, merge to `main`.
-- **Production:** https://broadwayscorecard.com | Only `main` or `staging` — no PRs, no feature branches.
-- **BRANCH CHECK:** `git branch --show-current` before ANY commit/push. Sessions frequently leave wrong branch checked out.
+- **WORKTREE ISOLATION (MANDATORY):** At session start, if editing `src/` or config files, run `/worktree` to create an isolated worktree. Work there, commit to the worktree branch, then merge to `main` and push. This prevents concurrent sessions from clobbering each other's files. Only skip for pure data/CI/docs work.
+- **BRANCH CHECK:** `git branch --show-current` before ANY commit/push.
 
 ### 3a. Vercel Deployment
 Git-triggered builds are **BLOCKED** (`exit 0` in dashboard). Deploys ONLY via Vercel CLI in `vercel-deploy.yml`:
