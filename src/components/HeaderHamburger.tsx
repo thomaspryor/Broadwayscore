@@ -9,7 +9,7 @@ import HamburgerMenu from '@/components/HamburgerMenu';
  * Only renders when userAccounts feature flag is enabled.
  */
 export default function HeaderHamburger() {
-  const { isAuthenticated, profile, showSignIn, signOut } = useAuth();
+  const { isAuthenticated, user, profile, showSignIn, signOut } = useAuth();
 
   if (!featureFlags.userAccounts) return null;
 
@@ -17,6 +17,7 @@ export default function HeaderHamburger() {
     <HamburgerMenu
       isAuthenticated={isAuthenticated}
       profile={profile}
+      email={user?.email}
       onSignIn={() => showSignIn('generic')}
       onSignOut={signOut}
     />

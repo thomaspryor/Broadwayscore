@@ -76,6 +76,10 @@ export function useUserReviews(userId: string | null) {
       throw new Error('Not signed in. Please refresh and try again.');
     }
 
+    if (data.rating < 0.5 || data.rating > 5) {
+      throw new Error('Rating must be between 0.5 and 5');
+    }
+
     setError(null);
     try {
       if (data.reviewId) {
@@ -94,7 +98,9 @@ export function useUserReviews(userId: string | null) {
           .single();
 
         if (err) throw err;
-        return updated as UserReview;
+        const updatedReview = updated as UserReview;
+        setReviews(prev => prev.map(r => r.id === data.reviewId ? updatedReview : r));
+        return updatedReview;
       } else {
         // Insert new viewing
         const { data: inserted, error: err } = await client
@@ -110,7 +116,9 @@ export function useUserReviews(userId: string | null) {
           .single();
 
         if (err) throw err;
-        return inserted as UserReview;
+        const insertedReview = inserted as UserReview;
+        setReviews(prev => [insertedReview, ...prev]);
+        return insertedReview;
       }
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to save review';
@@ -134,6 +142,9 @@ export function useUserReviews(userId: string | null) {
         .eq('user_id', userId);
 
       if (err) throw err;
+
+      // Remove from local state so UI updates immediately
+      setReviews(prev => prev.filter(r => r.id !== reviewId));
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to delete review';
       setError(msg);

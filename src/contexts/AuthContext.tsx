@@ -2,9 +2,10 @@
 
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
 import { getSupabaseClient } from '@/lib/supabase';
-import { saveReturnUrl } from '@/lib/deferred-auth';
+import { saveReturnUrl, clearReturnUrl } from '@/lib/deferred-auth';
 import type { UserProfile } from '@/types/user';
 import SignInModal from '@/components/auth/SignInModal';
+import { signInWithAppleSDK } from '@/lib/apple-auth';
 
 interface AuthContextValue {
   user: { id: string; email: string } | null;
@@ -88,10 +89,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .single();
 
       if (data) {
-        setProfile(data as UserProfile);
+        const profile = data as UserProfile;
+        // If display_name or avatar_url is missing, backfill from auth metadata
+        if (!profile.display_name || !profile.avatar_url) {
+          await ensureProfile(userId);
+        } else {
+          setProfile(profile);
+        }
       } else {
         // Profile doesn't exist yet — create it client-side
-        // (handles case where DB trigger is missing or failed)
         await ensureProfile(userId);
       }
     } catch (e) {
@@ -131,13 +137,49 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const signIn = useCallback((provider: 'google' | 'apple') => {
+  const signIn = useCallback(async (provider: 'google' | 'apple') => {
     const client = getSupabaseClient();
     if (!client) return;
 
-    // Save return URL before redirect
-    saveReturnUrl();
+    if (provider === 'apple') {
+      // Apple: use JS SDK + signInWithIdToken (bypasses GoTrue code exchange)
+      try {
+        setSignInLoading(true);
+        const result = await signInWithAppleSDK();
 
+        const { data, error } = await client.auth.signInWithIdToken({
+          provider: 'apple',
+          token: result.idToken,
+          nonce: result.nonce,
+        });
+
+        if (error) throw error;
+
+        // Apple only returns user name on first sign-in — save it
+        if (result.user && data.user) {
+          const fullName = [result.user.firstName, result.user.lastName].filter(Boolean).join(' ');
+          if (fullName) {
+            await client.auth.updateUser({
+              data: { full_name: fullName },
+            });
+          }
+        }
+
+        // Apple popup flow doesn't navigate the page, so no redirect needed.
+        // The onAuthStateChange SIGNED_IN event handles UI updates.
+        // Clear any stale return URL from a previous Google flow attempt.
+        clearReturnUrl();
+      } catch (err) {
+        setSignInLoading(false);
+        // User closed popup or Apple error — not a crash
+        // eslint-disable-next-line no-console
+        console.error('[Auth] Apple sign-in error:', err);
+      }
+      return;
+    }
+
+    // Google: standard OAuth redirect flow
+    saveReturnUrl();
     client.auth.signInWithOAuth({
       provider,
       options: {
@@ -161,7 +203,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const handleModalSignIn = useCallback((provider: 'google' | 'apple') => {
-    setSignInLoading(true);
+    if (provider !== 'apple') setSignInLoading(true);
     signIn(provider);
   }, [signIn]);
 

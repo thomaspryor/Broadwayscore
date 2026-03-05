@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { featureFlags } from '@/config/feature-flags';
@@ -38,15 +38,21 @@ function decodeShow(raw: Record<string, unknown>): ShowLookup {
   };
 }
 
-function getShowHref(slug: string, category: string) {
-  if (category === 'west-end') return `/west-end/show/${slug}`;
-  if (category === 'off-broadway') return `/off-broadway/show/${slug}`;
+function getShowHref(slug: string, _category: string) {
+  // All shows use /show/[slug] — no separate routes for west-end or off-broadway
   return `/show/${slug}`;
 }
 
 export default function MyShowsClient() {
   const searchParams = useSearchParams();
-  const [activeTab, setActiveTab] = useState<Tab>(searchParams.get('tab') === 'watchlist' ? 'watchlist' : 'diary');
+  const [activeTab, setActiveTabState] = useState<Tab>(searchParams.get('tab') === 'watchlist' ? 'watchlist' : 'diary');
+
+  // Update URL when tab changes so back button restores the correct tab
+  const setActiveTab = (tab: Tab) => {
+    setActiveTabState(tab);
+    const url = tab === 'watchlist' ? '/my-shows?tab=watchlist' : '/my-shows';
+    window.history.replaceState(null, '', url);
+  };
   const [diarySort, setDiarySort] = useState<DiarySort>('date-desc');
   const [watchlistSort, setWatchlistSort] = useState<WatchlistSort>('added-desc');
   const [watchlistView, setWatchlistView] = useState<ViewMode>('grid');
@@ -286,24 +292,24 @@ export default function MyShowsClient() {
             </select>
           )}
           {/* Grid / List toggle — both tabs */}
-          <div className="flex flex-shrink-0 border border-white/10 rounded overflow-hidden">
+          <div className="flex flex-shrink-0 border border-white/10 rounded-lg overflow-hidden">
             <button
               type="button"
               onClick={() => activeTab === 'diary' ? setDiaryView('grid') : setWatchlistView('grid')}
-              className={`p-1.5 ${(activeTab === 'diary' ? diaryView : watchlistView) === 'grid' ? 'bg-white/10 text-white' : 'text-gray-500 hover:text-gray-300'}`}
+              className={`p-2 ${(activeTab === 'diary' ? diaryView : watchlistView) === 'grid' ? 'bg-white/10 text-white' : 'text-gray-500 hover:text-gray-300'}`}
               aria-label="Grid view"
             >
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
               </svg>
             </button>
             <button
               type="button"
               onClick={() => activeTab === 'diary' ? setDiaryView('list') : setWatchlistView('list')}
-              className={`p-1.5 ${(activeTab === 'diary' ? diaryView : watchlistView) === 'list' ? 'bg-white/10 text-white' : 'text-gray-500 hover:text-gray-300'}`}
+              className={`p-2 ${(activeTab === 'diary' ? diaryView : watchlistView) === 'list' ? 'bg-white/10 text-white' : 'text-gray-500 hover:text-gray-300'}`}
               aria-label="List view"
             >
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
@@ -432,7 +438,7 @@ export default function MyShowsClient() {
                       ))}
                     </div>
                   ) : (
-                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
+                    <div className="grid grid-cols-4 gap-2">
                       {pastReviews.map(review => (
                         <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} />
                       ))}
@@ -457,7 +463,7 @@ export default function MyShowsClient() {
               ctaHref="/"
             />
           ) : watchlistView === 'grid' ? (
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
+            <div className="grid grid-cols-4 gap-2">
               {sortedWatchlist.map(entry => (
                 <WatchlistCard
                   key={entry.id}
@@ -535,10 +541,10 @@ function DiaryCard({ review, show }: { review: UserReview; show?: ShowLookup }) 
       </div>
 
       {/* Rating + edit icon */}
-      <div className="relative z-[1] flex-shrink-0 flex flex-col items-center gap-0.5 w-20 sm:w-28">
-        {/* xs on mobile (14px), sm on desktop (20px) */}
-        <span className="sm:hidden"><StarRating rating={review.rating} onRatingChange={() => {}} size="xs" readOnly hideLabel /></span>
-        <span className="hidden sm:inline-flex"><StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel /></span>
+      <div className="relative z-[1] flex-shrink-0 flex flex-col items-center gap-0.5 w-20 md:w-28 overflow-hidden">
+        {/* xs on mobile/tablet (14px), sm on desktop (20px) */}
+        <span className="md:hidden"><StarRating rating={review.rating} onRatingChange={() => {}} size="xs" readOnly hideLabel /></span>
+        <span className="hidden md:inline-flex"><StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel /></span>
         <span className="text-xs font-semibold text-amber-400">{review.rating.toFixed(1)} stars</span>
         {/* Edit icon — inline below rating, visible on hover */}
         <Link
@@ -572,9 +578,9 @@ function DiaryGridCard({ review, show }: { review: UserReview; show?: ShowLookup
           )}
         </div>
         {review.rating > 0 && (
-          <span className="absolute bottom-1.5 right-1.5 px-1.5 py-0.5 text-[10px] font-bold bg-black/80 text-amber-400 rounded">
-            {review.rating.toFixed(1)} ★
-          </span>
+          <div className="absolute bottom-0 inset-x-0 flex justify-center pb-1.5 pt-4 bg-gradient-to-t from-black/70 to-transparent">
+            <StarRating rating={review.rating} onRatingChange={() => {}} size="xs" readOnly hideLabel />
+          </div>
         )}
       </Link>
       <div className="p-2">
@@ -627,15 +633,22 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
               Closing Soon
             </span>
           )}
-          {/* Rate prompt — visible on hover */}
-          <div className="absolute inset-0 flex items-end justify-center pb-2 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover/wl:opacity-100 transition-opacity pointer-events-none">
-            <span className="text-[10px] font-semibold text-white/90 flex items-center gap-1">
-              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-              </svg>
-              Rate
-            </span>
-          </div>
+        </div>
+        {/* Rate overlay — navigates to show page with ?rate=1 to auto-open rating */}
+        {/* Uses <div> + onClick instead of <Link> to avoid nested <a> tags */}
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.location.href = `${href}?rate=1`; }}
+          onKeyDown={(e) => { if (e.key === 'Enter') { window.location.href = `${href}?rate=1`; } }}
+          className="absolute inset-0 flex items-end justify-center pb-2 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover/wl:opacity-100 transition-opacity z-[1] cursor-pointer"
+        >
+          <span className="text-xs font-semibold text-white/90 flex items-center gap-1">
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+            </svg>
+            Rate
+          </span>
         </div>
         {/* X button to remove — top-right on hover */}
         <button
@@ -654,20 +667,44 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
           <h4 className="text-xs font-semibold text-white truncate">{title}</h4>
           <p className="text-[10px] text-gray-500 truncate">{show?.venue}</p>
         </Link>
-        {/* Planned date — native date input with larger tap target */}
-        <label className="mt-1.5 flex items-center justify-center gap-1.5 text-xs text-gray-400 hover:text-gray-300 transition-colors cursor-pointer relative min-h-[36px] px-2 rounded-lg bg-white/[0.03] border border-white/[0.06] hover:border-white/10">
-          <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-          <span className="truncate">{formattedDate || 'Add date'}</span>
-          <input
-            type="date"
-            value={entry.planned_date || ''}
-            onChange={e => { e.stopPropagation(); onDateChange(e.target.value || null); }}
-            className="absolute inset-0 opacity-[0.01] cursor-pointer w-full h-full"
-          />
-        </label>
+        {/* Planned date — uses ref + showPicker for reliable mobile support */}
+        <DatePickerButton
+          value={entry.planned_date || ''}
+          label={formattedDate || 'Add date'}
+          onChange={(val) => onDateChange(val || null)}
+        />
       </div>
+    </div>
+  );
+}
+
+/** Reusable date picker button — works reliably on iOS Safari */
+function DatePickerButton({ value, label, onChange }: { value: string; label: string; onChange: (val: string) => void }) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  return (
+    <div className="relative mt-1.5">
+      <button
+        type="button"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          try { inputRef.current?.showPicker(); } catch { inputRef.current?.focus(); }
+        }}
+        className="w-full flex items-center justify-center gap-1.5 text-xs text-gray-400 hover:text-gray-300 transition-colors cursor-pointer min-h-[36px] px-2 rounded-lg bg-white/[0.03] border border-white/[0.06] hover:border-white/10"
+      >
+        <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        <span className="truncate">{label}</span>
+      </button>
+      <input
+        ref={inputRef}
+        type="date"
+        value={value}
+        onChange={e => { e.stopPropagation(); onChange(e.target.value); }}
+        className="absolute inset-0 opacity-0 pointer-events-none"
+        tabIndex={-1}
+      />
     </div>
   );
 }
@@ -724,21 +761,14 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
       </div>
 
       <div className="relative z-[1] flex-shrink-0 flex flex-col items-center gap-1.5">
-        <label className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-300 transition-colors cursor-pointer relative min-h-[36px] px-2.5 py-1.5 rounded-lg bg-white/[0.03] border border-white/[0.06] hover:border-white/10">
-          <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-          <span>{formattedDate || 'Add date'}</span>
-          <input
-            type="date"
-            value={entry.planned_date || ''}
-            onChange={e => { e.stopPropagation(); onDateChange(e.target.value || null); }}
-            className="absolute inset-0 opacity-[0.01] cursor-pointer w-full h-full"
-          />
-        </label>
-        {/* Rate link */}
+        <DatePickerButton
+          value={entry.planned_date || ''}
+          label={formattedDate || 'Add date'}
+          onChange={(val) => onDateChange(val || null)}
+        />
+        {/* Rate link — ?rate=1 triggers auto-open of rating panel */}
         <Link
-          href={href}
+          href={`${href}?rate=1`}
           className="relative z-[1] text-xs text-gray-500 hover:text-amber-400 transition-colors flex items-center gap-1"
         >
           <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>

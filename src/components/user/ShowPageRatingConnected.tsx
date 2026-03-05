@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useCallback, useRef, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import ShowPageRating from './ShowPageRating';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserReviews } from '@/hooks/useUserReviews';
@@ -31,10 +32,13 @@ export default function ShowPageRatingConnected({
   const { user, isAuthenticated, showSignIn } = useAuth();
   const { reviews, getReviewsForShow } = useUserReviews(user?.id || null);
   const { isWatchlisted, addToWatchlist, removeFromWatchlist, getWatchlist, updatePlannedDate, watchlist } = useWatchlist(user?.id || null);
+  const searchParams = useSearchParams();
 
   const { showToast } = useToastSafe();
   const hasExecutedPending = useRef(false);
   const [autoEditLatest, setAutoEditLatest] = useState(false);
+  // ?rate=1 from watchlist "Rate" link — auto-open the rating panel
+  const [autoRate, setAutoRate] = useState(searchParams.get('rate') === '1');
 
   // Load data when authenticated
   useEffect(() => {
@@ -204,6 +208,8 @@ export default function ShowPageRatingConnected({
       onAuthRequired={handleAuthRequired}
       isAuthenticated={isAuthenticated}
       autoEditLatest={autoEditLatest}
+      autoRate={autoRate}
+      onAutoRateConsumed={() => setAutoRate(false)}
     />
   );
 }
