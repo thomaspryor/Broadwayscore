@@ -1,19 +1,5 @@
 [
   {
-    "startedAt": "2026-03-02T03:06:16.943Z",
-    "completedAt": "2026-03-02T03:06:17.103Z",
-    "totalReviews": 30963,
-    "processed": 0,
-    "skipped": 30955,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-03-02T05:23:10.149Z",
     "completedAt": "2026-03-02T05:24:15.976Z",
     "totalReviews": 30951,
@@ -759694,6 +759680,36 @@
       "input": 6736,
       "output": 220,
       "total": 10400
+    },
+    "errorDetails": [
+      {
+        "showId": "oh-mary-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "the-devil-wears-prada-west-end-2024",
+        "outletId": "artsdesk",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "la-cage-aux-folles-2010",
+        "outletId": "newsday",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-03-05T00:25:32.906Z",
+    "completedAt": "2026-03-05T00:25:33.365Z",
+    "totalReviews": 31199,
+    "processed": 0,
+    "skipped": 31196,
+    "errors": 3,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
     },
     "errorDetails": [
       {
