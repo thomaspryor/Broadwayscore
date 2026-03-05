@@ -21,6 +21,7 @@ const path = require('path');
 // Parse args
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
+const cleanupMode = args.includes('--cleanup');
 const tierArg = args.find(a => a.startsWith('--tier='));
 const tierFilter = tierArg ? tierArg.split('=')[1].split(',').map(Number) : null;
 
@@ -42,6 +43,55 @@ const shows = fs.readdirSync(reviewDir).filter(f => {
   if (fs.lstatSync(fullPath).isSymbolicLink()) return false;
   return fs.statSync(fullPath).isDirectory();
 });
+
+// --cleanup mode: remove needsRescore from unscorable files
+if (cleanupMode) {
+  console.log('='.repeat(70));
+  console.log('CLEANUP: Removing needsRescore from unscorable files');
+  console.log('='.repeat(70));
+  if (dryRun) console.log('\n*** DRY RUN — no files will be modified ***\n');
+
+  let cleaned = 0;
+  let scanned = 0;
+  const cleanedFiles = [];
+  for (const show of shows) {
+    const showDir = path.join(reviewDir, show);
+    const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    for (const file of files) {
+      const filePath = path.join(showDir, file);
+      try {
+        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        scanned++;
+        if (!data.needsRescore) continue;
+        // Check if unscorable
+        const unscorable =
+          data.duplicateOf || data.wrongShow || data.wrongProduction || data.wrongAttribution || data.contentTier === 'invalid' ||
+          data.isMultiShowReview || data.isRoundupArticle || data.rejectionReason ||
+          (data.showNotMentioned && !data.bwwExcerpt && !data.dtliExcerpt && !data.showScoreExcerpt);
+        if (unscorable) {
+          cleaned++;
+          cleanedFiles.push(`${show}/${file}`);
+          if (!dryRun) {
+            delete data.needsRescore;
+            delete data.rescoreReason;
+            fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+          }
+        }
+      } catch (e) {}
+    }
+  }
+  console.log(`Scanned: ${scanned} files`);
+  console.log(`${dryRun ? 'Would clean' : 'Cleaned'}: ${cleaned} files with stale needsRescore`);
+  if (cleanedFiles.length > 0 && cleanedFiles.length <= 30) {
+    console.log('\nFiles:');
+    cleanedFiles.forEach(f => console.log(`  ${f}`));
+  } else if (cleanedFiles.length > 30) {
+    console.log(`\nFirst 30 files:`);
+    cleanedFiles.slice(0, 30).forEach(f => console.log(`  ${f}`));
+    console.log(`  ... and ${cleanedFiles.length - 30} more`);
+  }
+  process.exit(0);
+}
 
 let flagged = 0;
 let skipped = 0;
@@ -70,6 +120,10 @@ for (const show of shows) {
     const filePath = path.join(showDir, file);
     try {
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+
+      // Skip unscorable reviews — don't flag files that the scorer will skip anyway
+      if (data.duplicateOf || data.wrongShow || data.wrongProduction || data.wrongAttribution || data.contentTier === 'invalid') continue;
+      if (data.isMultiShowReview || data.isRoundupArticle || data.rejectionReason) continue;
 
       // Skip if already flagged for rescore
       if (data.needsRescore) {

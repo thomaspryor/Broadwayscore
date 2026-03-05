@@ -66,6 +66,7 @@ const { assessTextQuality, detectGarbageFromReasoning } = require('../lib/conten
 
 import { detectMultiShow } from './multi-show-detector';
 import { PROMPT_VERSION, SYSTEM_PROMPT_V5, buildPromptV5, BUCKET_RANGES } from './config';
+import { isScoreable } from './is-scoreable';
 
 // ========================================
 // SEMVER COMPARISON
@@ -767,6 +768,7 @@ async function main(): Promise<void> {
     // Filter to reviews flagged for rescoring (had excerpt-based score, now have fullText)
     filesToProcess = allFiles.filter(f => {
       if ((f.data as any).needsRescore !== true) return false;
+      if (!isScoreable(f.data as any)) return false;
       // Optional: filter by specific rescoreReason (enables parallel runs for different reasons)
       if (options.rescoreReason) {
         const reason = (f.data as any).rescoreReason || '';
@@ -809,9 +811,7 @@ async function main(): Promise<void> {
     filesToProcess = allFiles.filter(f => {
       const d = f.data as any;
       if (!d.llmScore || d.ensembleData) return false;
-      if (d.duplicateOf || d.wrongShow || d.wrongProduction || d.contentTier === 'invalid') return false;
-      if (d.isMultiShowReview || d.isRoundupArticle) return false;
-      if (d.rejectionReason) return false;
+      if (!isScoreable(d)) return false;
       return true;
     });
     console.log(`Filtering to single-model reviews needing ensemble upgrade: ${filesToProcess.length} reviews\n`);
@@ -925,45 +925,23 @@ async function main(): Promise<void> {
   };
 
   // Pre-filter: skip reviews already flagged as unscorable
+  // Pre-filter: skip reviews flagged as unscorable (uses shared isScoreable utility)
   let dataQualitySkipped = 0;
   let showNotMentionedWithExcerpts = 0;
   const scorableFiles = filesToProcess.filter(f => {
     const d = f.data as any;
-    if (d.duplicateOf || d.wrongShow || d.wrongProduction || d.contentTier === 'invalid') {
+    if (!isScoreable(d)) {
       dataQualitySkipped++;
       return false;
     }
-    // Skip roundup/multi-show reviews already flagged by a previous scoring run.
-    // isMultiShowReview is set by the multi-show detector (line ~1014), isRoundupArticle
-    // is set by gather-reviews or manual flagging. Without this check, these get re-loaded,
-    // quality-checked, and re-detected every run (~95 files currently).
-    if (d.isMultiShowReview || d.isRoundupArticle) {
-      dataQualitySkipped++;
-      return false;
-    }
-    // Skip reviews previously rejected by the LLM ensemble (wrong_production on WE/OB shows,
-    // garbage_text with contentTier='needs-rescrape', etc.). These have rejectionReason set
-    // but aren't caught by the flags above. Without this check, they get re-processed every run.
-    // If a review is re-scraped with better text, collect-review-texts should clear rejectionReason.
-    if (d.rejectionReason) {
-      dataQualitySkipped++;
-      return false;
-    }
-    // Allow showNotMentioned reviews through if they have valid aggregator excerpts
-    // The flag means "collected fullText didn't mention the show" but aggregator excerpts
-    // ARE curated for this show and are valid for scoring
+    // Count showNotMentioned reviews that passed (have valid excerpts)
     if (d.showNotMentioned) {
-      const hasExcerpt = d.bwwExcerpt || d.dtliExcerpt || d.showScoreExcerpt || (d as any).nycTheatreExcerpt;
-      if (!hasExcerpt) {
-        dataQualitySkipped++;
-        return false;
-      }
       showNotMentionedWithExcerpts++;
     }
     return true;
   });
   if (dataQualitySkipped > 0) {
-    console.log(`Skipped ${dataQualitySkipped} reviews (duplicateOf/wrongShow/wrongProduction/multiShow/roundup/showNotMentioned-no-excerpts/invalid)\n`);
+    console.log(`Skipped ${dataQualitySkipped} reviews (duplicateOf/wrongShow/wrongProduction/wrongAttribution/multiShow/roundup/showNotMentioned-no-excerpts/invalid)\n`);
   }
   if (showNotMentionedWithExcerpts > 0) {
     console.log(`Including ${showNotMentionedWithExcerpts} showNotMentioned reviews with valid aggregator excerpts\n`);
