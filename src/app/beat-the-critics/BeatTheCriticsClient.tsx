@@ -128,9 +128,9 @@ function CoBrand({ size = 'default' }: { size?: 'default' | 'small' }) {
   );
 }
 
-function ShowPoster({ show, size = 'sm' }: { show: SerializedTonyShow; size?: 'sm' | 'md' }) {
+function ShowPoster({ show, size = 'sm' }: { show: SerializedTonyShow; size?: 'xs' | 'sm' | 'md' }) {
   const [imgError, setImgError] = useState(false);
-  const dims = size === 'md' ? 'w-14 h-20' : 'w-[52px] h-[72px]';
+  const dims = size === 'md' ? 'w-14 h-20' : size === 'xs' ? 'w-8 h-11 rounded-md' : 'w-[52px] h-[72px]';
   const imgPath = getShowImagePath(show);
   if (imgError || !imgPath) {
     return (<div className={`${dims} rounded-lg bg-surface-overlay flex items-center justify-center text-xl font-extrabold text-white/30 flex-shrink-0`}>{show.title.charAt(0)}</div>);
@@ -353,7 +353,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           <div className="text-center mb-8 animate-fade-up" style={{ animationFillMode: 'both' }}><h2 className="text-2xl font-extrabold">{currentCategory.title}</h2><p className="text-sm text-gray-400 mt-1">Here&apos;s what the experts picked</p></div>
           <div className="p-4 rounded-[14px] bg-[#ff1368]/[0.06] border border-[#ff1368]/15 mb-6 animate-fade-up" style={{ animationDelay: '0.15s', animationFillMode: 'both' }}>
             <div className="text-[10px] font-bold uppercase tracking-wider text-[#ff1368] mb-2">Your Pick</div>
-            <div className="text-lg font-extrabold">{userPick}</div>
+            <div className="text-lg font-extrabold">{userPick}{isActor && (() => { const picked = actorNominees.find(n => n.name === userPick); return picked ? <span className="text-sm font-semibold text-gray-400 ml-1.5">({picked.showTitle})</span> : null; })()}</div>
             <div className="text-xs text-gray-400 mt-1">
               {!isActor && matchesCriticScore && <><span className="text-green-500 font-semibold">Matches CriticScore prediction</span>{' \u00b7 '}</>}
               You agree with {criticMatches} of {CRITICS.length} critics
@@ -378,7 +378,8 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
                   </div>
                   <span className={`text-[10px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full ${matchesCriticScore ? 'bg-green-500/20 text-green-400' : 'bg-red-500/15 text-red-400'}`}>{matchesCriticScore ? 'Match!' : 'Different'}</span>
                 </div>
-                <div className="px-3.5 pb-3 flex items-center gap-2">
+                <div className="px-3.5 pb-3 flex items-center gap-2.5">
+                  {criticScorePickShow && <ShowPoster show={criticScorePickShow} size="xs" />}
                   <div className="text-[15px] font-bold truncate flex-1">{criticScorePick}</div>
                   {criticScorePickShow?.compositeScore != null && <ScoreBadge score={criticScorePickShow.compositeScore} size="sm" />}
                 </div>
@@ -397,8 +398,12 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
                     </div>
                     <span className={`text-[10px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full ${isMatch ? 'bg-green-500/20 text-green-400' : 'bg-red-500/15 text-red-400'}`}>{isMatch ? 'Match!' : 'Different'}</span>
                   </div>
-                  <div className="px-3.5 pb-3 flex items-center gap-2">
-                    <div className="text-[15px] font-bold truncate flex-1">{criticPicks[i]}</div>
+                  <div className="px-3.5 pb-3 flex items-center gap-2.5">
+                    {!isActor && (() => { const pickShow = nominees.find(n => n.title === criticPicks[i]); return pickShow ? <ShowPoster show={pickShow} size="xs" /> : null; })()}
+                    <div className="flex-1 min-w-0">
+                      <div className="text-[15px] font-bold truncate">{criticPicks[i]}</div>
+                      {isActor && (() => { const actorPick = actorNominees.find(n => n.name === criticPicks[i]); return actorPick ? <div className="text-xs text-gray-500 truncate">({actorPick.showTitle})</div> : null; })()}
+                    </div>
                     {!isActor && (() => { const pickShow = nominees.find(n => n.title === criticPicks[i]); return pickShow?.compositeScore != null ? <ScoreBadge score={pickShow.compositeScore} size="sm" /> : null; })()}
                   </div>
                 </div>
@@ -478,10 +483,29 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           </div>
         )}
 
-        {/* Share buttons — primary CTA after submission */}
-        <div className={`flex gap-2.5 mt-5 animate-fade-up ${emailSubmitted ? '' : ''}`} style={{ animationDelay: emailSubmitted ? '0.6s' : '0.8s', animationFillMode: 'both' }}>
-          {[{ label: 'Share', icon: <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" /> }, { label: 'Post', icon: <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="currentColor" stroke="none" /> }, { label: 'Story', icon: <><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="12" cy="12" r="5" /><circle cx="18" cy="6" r="1.5" fill="currentColor" /></> }].map(btn => (<button key={btn.label} className={`flex items-center gap-1.5 px-4 py-2.5 rounded-[10px] text-sm font-semibold border transition-all hover:-translate-y-0.5 ${emailSubmitted && btn.label === 'Share' ? 'border-[#ff1368] bg-[#ff1368]/10 text-[#ff1368]' : 'border-white/10 bg-surface-raised text-white hover:border-brand'}`}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">{btn.icon}</svg>{btn.label}</button>))}
-        </div>
+        {/* Share — big primary CTA after submission, row of small buttons before */}
+        {emailSubmitted ? (
+          <div className="w-full max-w-[380px] mt-6 animate-fade-up" style={{ animationDelay: '0.6s', animationFillMode: 'both' }}>
+            <button className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_24px_rgba(255,19,104,0.35)] hover:shadow-[0_8px_32px_rgba(255,19,104,0.45)] hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200 flex items-center justify-center gap-2.5">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" /></svg>
+              Share My Picks
+            </button>
+            <div className="flex gap-2.5 mt-3 justify-center">
+              <button className="flex items-center gap-1.5 px-5 py-2.5 rounded-[10px] text-sm font-semibold border border-white/10 bg-surface-raised text-white hover:border-brand hover:-translate-y-0.5 transition-all">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
+                Post
+              </button>
+              <button className="flex items-center gap-1.5 px-5 py-2.5 rounded-[10px] text-sm font-semibold border border-white/10 bg-surface-raised text-white hover:border-brand hover:-translate-y-0.5 transition-all">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="12" cy="12" r="5" /><circle cx="18" cy="6" r="1.5" fill="currentColor" /></svg>
+                Story
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="flex gap-2.5 mt-5 animate-fade-up" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
+            {[{ label: 'Share', icon: <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" /> }, { label: 'Post', icon: <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="currentColor" stroke="none" /> }, { label: 'Story', icon: <><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="12" cy="12" r="5" /><circle cx="18" cy="6" r="1.5" fill="currentColor" /></> }].map(btn => (<button key={btn.label} className="flex items-center gap-1.5 px-4 py-2.5 rounded-[10px] text-sm font-semibold border border-white/10 bg-surface-raised text-white hover:border-brand hover:-translate-y-0.5 transition-all"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">{btn.icon}</svg>{btn.label}</button>))}
+          </div>
+        )}
       </div>
     </div>
   );
