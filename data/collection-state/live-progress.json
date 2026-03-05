@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-05T11:49:44.120Z",
-  "processed": 106,
-  "failed": 84,
-  "successRate": "55.8%",
+  "updatedAt": "2026-03-05T11:53:15.605Z",
+  "processed": 114,
+  "failed": 86,
+  "successRate": "57.0%",
   "tierBreakdown": {
-    "playwright": 93,
-    "amp": 6,
-    "browserbase": 5,
+    "playwright": 95,
+    "amp": 10,
+    "browserbase": 7,
     "directCookies": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 43,
-    "archive": 6
+    "archiveToday": 44,
+    "archive": 8
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
       "t": "2026-03-05T10:51:55.084Z",
@@ -86,6 +86,28 @@
       "t": "2026-03-05T11:41:38.913Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-05T11:51:04.120Z",
+      "event": "bb-session",
+      "session": "e967854c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-05T11:51:05.310Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-05T11:52:06.016Z",
+      "event": "bb-session",
+      "session": "c066a7b9",
+      "url": "https://www.nytimes.com/2026/02/27/theater/chinese-republicans-review-alex-lin.h"
+    },
+    {
+      "t": "2026-03-05T11:52:07.382Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
