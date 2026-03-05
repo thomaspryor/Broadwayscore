@@ -11,7 +11,7 @@ interface StarRatingProps {
 }
 
 const SIZE_MAP = {
-  xs: { star: 12, gap: 1 },
+  xs: { star: 14, gap: 1 },
   sm: { star: 20, gap: 2 },
   md: { star: 28, gap: 3 },
   lg: { star: 40, gap: 4 },
