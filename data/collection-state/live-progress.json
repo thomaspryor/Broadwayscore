@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-05T19:58:26.872Z",
-  "processed": 345,
-  "failed": 385,
-  "successRate": "47.3%",
+  "updatedAt": "2026-03-05T20:04:28.299Z",
+  "processed": 354,
+  "failed": 386,
+  "successRate": "47.8%",
   "tierBreakdown": {
-    "playwright": 201,
+    "playwright": 207,
     "amp": 32,
-    "browserbase": 32,
+    "browserbase": 34,
     "directCookies": 1,
     "scrapingbee": 47,
     "brightdata": 0,
-    "archiveToday": 222,
-    "archive": 66
+    "archiveToday": 223,
+    "archive": 68
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-03-05T13:26:55.851Z",
-      "event": "bb-session",
-      "session": "ac9730f4",
-      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
-    },
-    {
-      "t": "2026-03-05T13:26:57.016Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-05T13:31:03.636Z",
-      "event": "bb-session",
-      "session": "90dce8ea",
-      "url": "https://www.nytimes.com/2026/02/12/theater/the-unknown-review-sean-hayes.html"
-    },
-    {
-      "t": "2026-03-05T13:31:04.701Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-05T13:39:21.716Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-05T19:55:55.751Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-05T19:59:16.971Z",
+      "event": "bb-session",
+      "session": "5b7f5bc0",
+      "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-r"
+    },
+    {
+      "t": "2026-03-05T19:59:18.116Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-05T20:01:40.815Z",
+      "event": "bb-session",
+      "session": "23256e86",
+      "url": "https://www.wsj.com/articles/maybe-happy-ending-review-a-robotic-romance-of-real"
+    },
+    {
+      "t": "2026-03-05T20:01:41.865Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
