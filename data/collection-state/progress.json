@@ -143,7 +143,17 @@
     "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
     "maybe-happy-ending-2024/newyorker--naomi-fry.json",
     "oh-mary-2024/nytimes--erik-piepenburg.json",
-    "paddington-the-musical-west-end-2025/variety--david-benedict.json"
+    "paddington-the-musical-west-end-2025/variety--david-benedict.json",
+    "paddington-the-musical-west-end-2025/variety--ellise-shafer.json",
+    "pied-a-terre-off-broadway-2026/nytg--unknown.json",
+    "ragtime-2025/newyorker--unknown.json",
+    "ragtime-2025/nyt-theater--unknown.json",
+    "ragtime-2025/nytimes--unknown.json",
+    "schmigadoon-2026/hollywood-reporter--daniel-feinberg.json",
+    "schmigadoon-2026/vulture--rhoda-feng.json",
+    "six-2021/newyorker--naomi-fry.json",
+    "starlight-express-west-end-2024/variety--david-benedict.json",
+    "stranger-things-2024/nytimes--houman-barekat.json"
   ],
   "failed": [
     "mack-and-mabel-1974/financialtimes--ian-shuttleworth.json",
@@ -424,7 +434,9 @@
       "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
       "hamilton-2015/nyt-theater--jonathan-mandell.json",
       "just-in-time-2025/nytimes--adam-feldman.json",
-      "night-side-songs-off-broadway-2026/nytg--kyle-turner.json"
+      "night-side-songs-off-broadway-2026/nytg--kyle-turner.json",
+      "pied-a-terre-off-broadway-2026/nytg--unknown.json",
+      "ragtime-2025/nyt-theater--unknown.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -444,7 +456,11 @@
       "data/review-texts/moulin-rouge-the-musical-west-end-2021/variety--marilyn-stasio.json",
       "moulin-rouge-the-musical-west-end-2021/variety--marilyn-stasio.json",
       "data/review-texts/paddington-the-musical-west-end-2025/variety--david-benedict.json",
-      "paddington-the-musical-west-end-2025/variety--david-benedict.json"
+      "paddington-the-musical-west-end-2025/variety--david-benedict.json",
+      "data/review-texts/paddington-the-musical-west-end-2025/variety--ellise-shafer.json",
+      "paddington-the-musical-west-end-2025/variety--ellise-shafer.json",
+      "data/review-texts/starlight-express-west-end-2024/variety--david-benedict.json",
+      "starlight-express-west-end-2024/variety--david-benedict.json"
     ],
     "browserbase": [
       "data/review-texts/chicago-1996/nypost--elisabeth-vincentelli.json",
@@ -464,7 +480,9 @@
       "mj-2022/hollywood-reporter--lovia-gyarkye.json",
       "data/review-texts/oh-mary-2024/hollywood-reporter--david-rooney.json",
       "oh-mary-2024/hollywood-reporter--david-rooney.json",
-      "data/review-texts/chicago-1996/nypost--elisabeth-vincentelli.json"
+      "data/review-texts/chicago-1996/nypost--elisabeth-vincentelli.json",
+      "data/review-texts/schmigadoon-2026/hollywood-reporter--daniel-feinberg.json",
+      "schmigadoon-2026/hollywood-reporter--daniel-feinberg.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -480,7 +498,11 @@
       "chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
       "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
       "maybe-happy-ending-2024/newyorker--naomi-fry.json",
-      "oh-mary-2024/nytimes--erik-piepenburg.json"
+      "oh-mary-2024/nytimes--erik-piepenburg.json",
+      "ragtime-2025/newyorker--unknown.json",
+      "ragtime-2025/nytimes--unknown.json",
+      "six-2021/newyorker--naomi-fry.json",
+      "stranger-things-2024/nytimes--houman-barekat.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -588,11 +610,12 @@
       "la-ternura-off-broadway-2025/nyt-theater--unknown.json",
       "la-ternura-off-broadway-2025/nytg--unknown.json",
       "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json",
-      "mj-2022/vulture--helen-shaw.json"
+      "mj-2022/vulture--helen-shaw.json",
+      "schmigadoon-2026/vulture--rhoda-feng.json"
     ]
   },
   "startTime": "2026-03-05T10:28:39.558Z",
-  "lastProcessed": "paddington-the-musical-west-end-2025/variety--david-benedict.json",
+  "lastProcessed": "stranger-things-2024/nytimes--houman-barekat.json",
   "log": [
     {
       "t": "2026-03-05T10:51:55.084Z",
@@ -803,6 +826,17 @@
       "t": "2026-03-05T13:07:49.314Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-05T13:21:54.427Z",
+      "event": "bb-session",
+      "session": "8508b07a",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/schmigadoon-musical-apple-tv-br"
+    },
+    {
+      "t": "2026-03-05T13:21:55.561Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
