@@ -889,7 +889,15 @@ function getBestScore(data) {
   // (e.g., reporting 5/5 when actual review was 4/5). LLM scores take priority.
   const isShowScoreSource = data.source === 'show-score' || data.source === 'show-score-playwright' || data.source === 'showscore-roundup';
   const isWestEnd = data._showCategory === 'west-end';
-  const downgradeShowScore = isShowScoreSource && isWestEnd;
+  // Downgrade ShowScore-sourced WE ratings UNLESS the score was extracted directly from
+  // the outlet's own HTML (json-ld, guardian-api, star SVGs, etc.) — those are reliable.
+  const outletVerifiedSources = new Set([
+    'json-ld', 'meta-itemprop', 'guardian-api', 'wos-star-images', 'stage-star-svg',
+    'telegraph-svg', 'dailymail-rating-img', 'fivestar-widget', 'star-class',
+    'unicode-stars', 'numeric-stars', 'original-star-rating', 'timeout-star-widget',
+  ]);
+  const isOutletVerified = outletVerifiedSources.has(data.scoreSource);
+  const downgradeShowScore = isShowScoreSource && isWestEnd && !isOutletVerified;
 
   if (data.originalScore && !downgradeShowScore) {
     // Skip low-confidence originalScores — these are often misreads from page templates
