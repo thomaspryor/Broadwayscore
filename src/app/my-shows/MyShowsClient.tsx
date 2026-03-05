@@ -534,10 +534,10 @@ function DiaryCard({ review, show }: { review: UserReview; show?: ShowLookup }) 
       </div>
 
       {/* Rating + edit icon */}
-      <div className="relative z-[1] flex-shrink-0 flex flex-col items-center gap-0.5 w-20 sm:w-28">
-        {/* xs on mobile (14px), sm on desktop (20px) */}
-        <span className="sm:hidden"><StarRating rating={review.rating} onRatingChange={() => {}} size="xs" readOnly hideLabel /></span>
-        <span className="hidden sm:inline-flex"><StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel /></span>
+      <div className="relative z-[1] flex-shrink-0 flex flex-col items-center gap-0.5 w-20 md:w-28 overflow-hidden">
+        {/* xs on mobile/tablet (14px), sm on desktop (20px) */}
+        <span className="md:hidden"><StarRating rating={review.rating} onRatingChange={() => {}} size="xs" readOnly hideLabel /></span>
+        <span className="hidden md:inline-flex"><StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel /></span>
         <span className="text-xs font-semibold text-amber-400">{review.rating.toFixed(1)} stars</span>
         {/* Edit icon — inline below rating, visible on hover */}
         <Link
@@ -628,8 +628,8 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
           )}
           {/* Rate prompt — visible on hover */}
           <div className="absolute inset-0 flex items-end justify-center pb-2 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover/wl:opacity-100 transition-opacity pointer-events-none">
-            <span className="text-[10px] font-semibold text-white/90 flex items-center gap-1">
-              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <span className="text-xs font-semibold text-white/90 flex items-center gap-1">
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
               </svg>
               Rate
