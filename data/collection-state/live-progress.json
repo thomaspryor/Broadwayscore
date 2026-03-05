@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-05T05:14:10.084Z",
-  "processed": 91,
-  "failed": 379,
-  "successRate": "19.4%",
+  "updatedAt": "2026-03-05T05:16:40.678Z",
+  "processed": 100,
+  "failed": 380,
+  "successRate": "20.8%",
   "tierBreakdown": {
-    "playwright": 42,
+    "playwright": 49,
     "amp": 2,
-    "browserbase": 4,
+    "browserbase": 6,
     "directCookies": 1,
     "scrapingbee": 18,
     "brightdata": 0,
     "archiveToday": 278,
-    "archive": 28
+    "archive": 29
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-03-05T00:59:51.218Z",
-      "event": "bb-session",
-      "session": "5574b59e",
-      "url": "https://www.nytimes.com/2022/11/14/theater/mike-birbiglia-the-old-man-and-the-po"
-    },
-    {
-      "t": "2026-03-05T00:59:52.636Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-05T01:01:15.597Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-05T05:10:06.192Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-05T05:15:38.317Z",
+      "event": "bb-session",
+      "session": "0d5a44f6",
+      "url": "https://www.amny.com/entertainment/little-shop-of-horrors-off-broadway-1-3640251"
+    },
+    {
+      "t": "2026-03-05T05:15:39.699Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
