@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-05T19:51:12.496Z",
-  "processed": 336,
-  "failed": 384,
-  "successRate": "46.7%",
+  "updatedAt": "2026-03-05T19:58:26.872Z",
+  "processed": 345,
+  "failed": 385,
+  "successRate": "47.3%",
   "tierBreakdown": {
-    "playwright": 196,
+    "playwright": 201,
     "amp": 32,
-    "browserbase": 28,
+    "browserbase": 32,
     "directCookies": 1,
     "scrapingbee": 47,
     "brightdata": 0,
     "archiveToday": 222,
-    "archive": 64
+    "archive": 66
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-03-05T13:07:48.028Z",
-      "event": "bb-session",
-      "session": "e6f480d8",
-      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
-    },
-    {
-      "t": "2026-03-05T13:07:49.314Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-03-05T13:21:54.427Z",
-      "event": "bb-session",
-      "session": "8508b07a",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/schmigadoon-musical-apple-tv-br"
-    },
-    {
-      "t": "2026-03-05T13:21:55.561Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-05T13:26:55.851Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-03-05T19:50:01.476Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-05T19:55:39.302Z",
+      "event": "bb-session",
+      "session": "bea03a6f",
+      "url": "https://nypost.com/2025/09/29/entertainment/masquerade-review-secretive-off-broa"
+    },
+    {
+      "t": "2026-03-05T19:55:40.404Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-05T19:55:54.743Z",
+      "event": "bb-session",
+      "session": "d45d81bb",
+      "url": "https://observer.com/2025/09/review-masquerade-phantom-of-the-opera-experience-i"
+    },
+    {
+      "t": "2026-03-05T19:55:55.751Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
     }
