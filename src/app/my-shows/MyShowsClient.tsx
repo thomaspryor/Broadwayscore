@@ -427,6 +427,10 @@ export default function MyShowsClient() {
                       {pastReviews.map(review => (
                         <DiaryCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={async () => { await deleteReview(review.id); showToast?.('Rating deleted.', 'info'); }} />
                       ))}
+                      <AddShowCard context="diary" variant="list" onOpen={() => {
+                        const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add a show to diary"], [aria-label="Rate a show"]');
+                        btn?.click();
+                      }} />
                     </div>
                   ) : (
                     <div className="grid grid-cols-4 gap-2">
@@ -485,6 +489,10 @@ export default function MyShowsClient() {
                   onRemove={() => removeFromWatchlist(entry.show_id)}
                 />
               ))}
+              <AddShowCard context="watchlist" variant="list" onOpen={() => {
+                const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
+                btn?.click();
+              }} />
             </div>
           )}
         </div>
@@ -1111,7 +1119,22 @@ function ToBeRatedCard({ entry, show }: { entry: WatchlistEntry; show?: ShowLook
 }
 
 /** (+) card to add shows — placed at end of grid views */
-function AddShowCard({ context, onOpen }: { context: 'diary' | 'watchlist'; onOpen: () => void }) {
+function AddShowCard({ context, variant = 'grid', onOpen }: { context: 'diary' | 'watchlist'; variant?: 'grid' | 'list'; onOpen: () => void }) {
+  if (variant === 'list') {
+    return (
+      <button
+        type="button"
+        onClick={onOpen}
+        className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl border-2 border-dashed border-white/10 hover:border-white/20 hover:bg-white/[0.03] transition-colors text-gray-500 hover:text-gray-300"
+        aria-label={context === 'diary' ? 'Add a show to diary' : 'Add to watchlist'}
+      >
+        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+        </svg>
+        <span className="text-xs font-medium">{context === 'diary' ? 'Rate a show' : 'Add a show'}</span>
+      </button>
+    );
+  }
   return (
     <button
       type="button"
