@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useCallback, useRef, useState } from 'react';
+import React, { Suspense, useEffect, useCallback, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ShowPageRating from './ShowPageRating';
 import { useAuth } from '@/contexts/AuthContext';
@@ -23,7 +23,18 @@ interface ShowPageRatingConnectedProps {
  * Hooks into AuthContext and Supabase data hooks.
  * Used on the show page — the actual show/[slug]/page.tsx imports this.
  */
-export default function ShowPageRatingConnected({
+/**
+ * Suspense wrapper — useSearchParams requires a Suspense boundary for static prerender.
+ */
+export default function ShowPageRatingConnected(props: ShowPageRatingConnectedProps) {
+  return (
+    <Suspense fallback={null}>
+      <ShowPageRatingInner {...props} />
+    </Suspense>
+  );
+}
+
+function ShowPageRatingInner({
   showId,
   showTitle,
   previewDate,
