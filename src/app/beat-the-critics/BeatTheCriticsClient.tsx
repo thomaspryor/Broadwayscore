@@ -369,17 +369,18 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
 
             {/* CriticScore card — only for show categories */}
             {!isActor && (
-              <div className={`flex items-stretch rounded-xl mb-2 animate-slide-in overflow-hidden ${matchesCriticScore ? 'bg-green-500/[0.08] ring-1 ring-green-500/20' : 'bg-red-500/[0.06] ring-1 ring-red-500/15'}`} style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
-                <div className="flex-1 p-3 flex items-center gap-3">
-                  <div className="flex-shrink-0 leading-tight">
+              <div className={`rounded-xl mb-2.5 animate-slide-in overflow-hidden ${matchesCriticScore ? 'bg-green-500/[0.08] ring-1 ring-green-500/20' : 'bg-red-500/[0.06] ring-1 ring-red-500/15'}`} style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
+                <div className="px-3.5 pt-3 pb-1.5 flex items-center justify-between">
+                  <div className="leading-tight">
                     <div className="text-xs font-bold text-brand tracking-tight">Broadway Scorecard</div>
                     <div className="text-[9px] font-semibold text-gray-500 tracking-wider">CriticScore&trade;</div>
                   </div>
-                  <div className="flex-1" />
-                  <div className="text-sm font-bold truncate">{criticScorePick}</div>
+                  <span className={`text-[10px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full ${matchesCriticScore ? 'bg-green-500/20 text-green-400' : 'bg-red-500/15 text-red-400'}`}>{matchesCriticScore ? 'Match!' : 'Different'}</span>
+                </div>
+                <div className="px-3.5 pb-3 flex items-center gap-2">
+                  <div className="text-[15px] font-bold truncate flex-1">{criticScorePick}</div>
                   {criticScorePickShow?.compositeScore != null && <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-brand/20 flex items-center justify-center text-sm font-extrabold text-brand">{criticScorePickShow.compositeScore}</div>}
                 </div>
-                <div className={`w-[72px] flex items-center justify-center text-[10px] font-bold uppercase tracking-wide flex-shrink-0 ${matchesCriticScore ? 'bg-green-500/20 text-green-400' : 'bg-red-500/15 text-red-400'}`}>{matchesCriticScore ? 'Match!' : 'Different'}</div>
               </div>
             )}
 
@@ -387,14 +388,18 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
             {CRITICS.map((critic, i) => {
               const isMatch = userPick === criticPicks[i];
               return (
-                <div key={critic.name} className={`flex items-stretch rounded-xl mb-2 animate-slide-in overflow-hidden ${isMatch ? 'bg-green-500/[0.06] ring-1 ring-green-500/15' : 'bg-red-500/[0.04] ring-1 ring-red-500/10'}`} style={{ animationDelay: `${(isActor ? 0.3 : 0.4) + i * 0.1}s`, animationFillMode: 'both' }}>
-                  <div className="flex-1 p-3 flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-surface-overlay flex items-center justify-center text-sm font-bold text-gray-400 flex-shrink-0">{critic.initials}</div>
-                    <div className="flex-shrink-0 min-w-0"><div className="text-sm font-bold">{critic.name}</div><div className="text-xs text-gray-500">{critic.outlet}</div></div>
-                    <div className="flex-1" />
-                    <div className="text-sm font-semibold truncate">{criticPicks[i]}</div>
+                <div key={critic.name} className={`rounded-xl mb-2.5 animate-slide-in overflow-hidden ${isMatch ? 'bg-green-500/[0.06] ring-1 ring-green-500/15' : 'bg-red-500/[0.04] ring-1 ring-red-500/10'}`} style={{ animationDelay: `${(isActor ? 0.3 : 0.4) + i * 0.1}s`, animationFillMode: 'both' }}>
+                  <div className="px-3.5 pt-3 pb-1.5 flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-7 h-7 rounded-full bg-surface-overlay flex items-center justify-center text-xs font-bold text-gray-400 flex-shrink-0">{critic.initials}</div>
+                      <div><div className="text-sm font-bold">{critic.name}</div><div className="text-[11px] text-gray-500">{critic.outlet}</div></div>
+                    </div>
+                    <span className={`text-[10px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full ${isMatch ? 'bg-green-500/20 text-green-400' : 'bg-red-500/15 text-red-400'}`}>{isMatch ? 'Match!' : 'Different'}</span>
                   </div>
-                  <div className={`w-[72px] flex items-center justify-center text-[10px] font-bold uppercase tracking-wide flex-shrink-0 ${isMatch ? 'bg-green-500/20 text-green-400' : 'bg-red-500/15 text-red-400'}`}>{isMatch ? 'Match!' : 'Different'}</div>
+                  <div className="px-3.5 pb-3 flex items-center gap-2">
+                    <div className="text-[15px] font-bold truncate flex-1">{criticPicks[i]}</div>
+                    {!isActor && (() => { const pickShow = nominees.find(n => n.title === criticPicks[i]); return pickShow?.compositeScore != null ? <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-brand/20 flex items-center justify-center text-sm font-extrabold text-brand">{pickShow.compositeScore}</div> : null; })()}
+                  </div>
                 </div>
               );
             })}
