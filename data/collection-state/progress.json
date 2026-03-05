@@ -353,7 +353,16 @@
     "maybe-happy-ending-2024/theatermania--jesse-green.json",
     "maybe-happy-ending-2024/timeout--adam-feldman.json",
     "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/theatermania--rachel-graham.json",
-    "mj-2022/theatermania--jesse-green.json"
+    "mj-2022/theatermania--jesse-green.json",
+    "mother-russia-off-broadway-2026/theatermania--linda-buchwald.json",
+    "mother-russia-off-broadway-2026/theatermania--zachary-stewart.json",
+    "moulin-rouge-2019/theatermania--jesse-green.json",
+    "moulin-rouge-2019/theatermania--zachary-stewart.json",
+    "moulin-rouge-2019/timeout--adam-feldman.json",
+    "moulin-rouge-the-musical-west-end-2021/timeout-london--unknown.json",
+    "my-neighbour-totoro-west-end-2025/guardian--arifa-akbar.json",
+    "night-side-songs-off-broadway-2026/theatermania--zachary-stewart.json",
+    "oh-mary-2024/theatermania--jesse-green.json"
   ],
   "failed": [
     "mack-and-mabel-1974/financialtimes--ian-shuttleworth.json",
@@ -741,7 +750,8 @@
     "death-of-a-salesman-2026/ew--lester-fabian-brathwaite.json",
     "little-shop-of-horrors-off-broadway-2019/broadwaynews--andrew-gans.json",
     "lost-in-del-valle-off-broadway-2026/theatermania--unknown.json",
-    "maybe-happy-ending-2024/wsj--charles-isherwood.json"
+    "maybe-happy-ending-2024/wsj--charles-isherwood.json",
+    "moulin-rouge-2019/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -952,7 +962,14 @@
       "maybe-happy-ending-2024/new-york-sun--broadway-scorecard.json",
       "maybe-happy-ending-2024/timeout--adam-feldman.json",
       "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/theatermania--rachel-graham.json",
-      "mj-2022/theatermania--jesse-green.json"
+      "mj-2022/theatermania--jesse-green.json",
+      "mother-russia-off-broadway-2026/theatermania--linda-buchwald.json",
+      "mother-russia-off-broadway-2026/theatermania--zachary-stewart.json",
+      "moulin-rouge-2019/theatermania--jesse-green.json",
+      "moulin-rouge-2019/theatermania--zachary-stewart.json",
+      "moulin-rouge-2019/timeout--adam-feldman.json",
+      "my-neighbour-totoro-west-end-2025/guardian--arifa-akbar.json",
+      "night-side-songs-off-broadway-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -1300,7 +1317,8 @@
       "data/review-texts/memphis-2009/wsj--terry-teachout.json",
       "data/review-texts/million-dollar-quartet-2010/wsj--mr-teachout.json",
       "data/review-texts/death-becomes-her-2024/wsj--charles-isherwood.json",
-      "data/review-texts/maybe-happy-ending-2024/wsj--charles-isherwood.json"
+      "data/review-texts/maybe-happy-ending-2024/wsj--charles-isherwood.json",
+      "data/review-texts/moulin-rouge-2019/wsj--terry-teachout.json"
     ],
     "archive": [
       "the-encounter-2016/financialtimes--ian-shuttleworth.json",
@@ -1370,11 +1388,13 @@
       "magic-mike-live-west-end-2021/timeout-london--unknown.json",
       "mamma-mia-west-end-2021/timeout-london--nina-caplan.json",
       "matilda-the-musical-west-end-2021/timeout-london--sam-marlowe.json",
-      "maybe-happy-ending-2024/theatermania--jesse-green.json"
+      "maybe-happy-ending-2024/theatermania--jesse-green.json",
+      "moulin-rouge-the-musical-west-end-2021/timeout-london--unknown.json",
+      "oh-mary-2024/theatermania--jesse-green.json"
     ]
   },
   "startTime": "2026-03-05T10:28:39.558Z",
-  "lastProcessed": "mj-2022/theatermania--jesse-green.json",
+  "lastProcessed": "oh-mary-2024/theatermania--jesse-green.json",
   "log": [
     {
       "t": "2026-03-05T10:51:55.084Z",
@@ -1726,6 +1746,17 @@
     },
     {
       "t": "2026-03-05T20:01:41.865Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-05T20:06:32.527Z",
+      "event": "bb-session",
+      "session": "1ad04144",
+      "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11"
+    },
+    {
+      "t": "2026-03-05T20:06:33.639Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
