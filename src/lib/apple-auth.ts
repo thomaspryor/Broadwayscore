@@ -97,10 +97,14 @@ export async function signInWithAppleSDK(): Promise<AppleAuthResult> {
   const rawNonce = generateNonce();
   const hashedNonce = await sha256(rawNonce);
 
+  // redirectURI must be registered in Apple Developer Console.
+  // With usePopup:true the redirect doesn't actually happen — Apple
+  // returns the response via the popup JS bridge — but Apple still
+  // validates the URI against the registered list.
   window.AppleID.auth.init({
     clientId: 'com.broadwayscorecard.web',
     scope: 'name email',
-    redirectURI: `${window.location.origin}/auth/callback`,
+    redirectURI: 'https://tcbkoevwfemkicrwpypb.supabase.co/auth/v1/callback',
     usePopup: true,
     nonce: hashedNonce,
   });
