@@ -11,7 +11,7 @@ interface AuthContextValue {
   profile: UserProfile | null;
   loading: boolean;
   isAuthenticated: boolean;
-  signIn: (provider: 'google') => void;
+  signIn: (provider: 'google' | 'apple') => void;
   signOut: () => void;
   /** Show sign-in modal with context */
   showSignIn: (context?: 'rating' | 'watchlist' | 'generic') => void;
@@ -131,7 +131,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const signIn = useCallback((provider: 'google') => {
+  const signIn = useCallback((provider: 'google' | 'apple') => {
     const client = getSupabaseClient();
     if (!client) return;
 
@@ -160,7 +160,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setModalOpen(true);
   }, []);
 
-  const handleModalSignIn = useCallback((provider: 'google') => {
+  const handleModalSignIn = useCallback((provider: 'google' | 'apple') => {
     setSignInLoading(true);
     signIn(provider);
   }, [signIn]);
