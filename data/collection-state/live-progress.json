@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-03-05T11:39:55.258Z",
+  "updatedAt": "2026-03-05T11:43:55.802Z",
   "processed": 103,
-  "failed": 67,
-  "successRate": "60.6%",
+  "failed": 77,
+  "successRate": "57.2%",
   "tierBreakdown": {
     "playwright": 93,
     "amp": 6,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 36,
+    "archiveToday": 40,
     "archive": 3
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-03-05T10:51:55.084Z",
@@ -75,6 +75,17 @@
       "t": "2026-03-05T11:27:44.722Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-05T11:41:37.321Z",
+      "event": "bb-session",
+      "session": "e881bd38",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
+    },
+    {
+      "t": "2026-03-05T11:41:38.913Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
