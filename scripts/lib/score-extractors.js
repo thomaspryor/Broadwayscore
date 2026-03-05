@@ -745,7 +745,7 @@ const OUTLET_EXTRACTORS = {
   'everything-theatre-uk': extractUKStarRating,
   'theatre-weekly': extractUKStarRating,
   'theatre-bee-uk': extractUKStarRating,
-  'timeout-london': extractUKStarRating,
+  'timeout-london': extractTimeOutScore,
   'i-newspaper': extractUKStarRating,
   'cityam': extractUKStarRating,
   'the-recs': extractUKStarRating,
