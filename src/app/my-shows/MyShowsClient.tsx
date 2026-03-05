@@ -14,6 +14,7 @@ import type { UserReview, WatchlistEntry, ShowLookup } from '@/types/user';
 type Tab = 'diary' | 'watchlist';
 type DiarySort = 'date-desc' | 'date-asc' | 'rating-desc';
 type WatchlistSort = 'added-desc' | 'alphabetical' | 'closing-soon';
+type WatchlistView = 'grid' | 'list';
 
 interface ShowMap {
   [showId: string]: ShowLookup;
@@ -37,17 +38,24 @@ function decodeShow(raw: Record<string, unknown>): ShowLookup {
   };
 }
 
+function getShowHref(slug: string, category: string) {
+  if (category === 'west-end') return `/west-end/show/${slug}`;
+  if (category === 'off-broadway') return `/off-broadway/show/${slug}`;
+  return `/show/${slug}`;
+}
+
 export default function MyShowsClient() {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<Tab>(searchParams.get('tab') === 'watchlist' ? 'watchlist' : 'diary');
   const [diarySort, setDiarySort] = useState<DiarySort>('date-desc');
   const [watchlistSort, setWatchlistSort] = useState<WatchlistSort>('added-desc');
+  const [watchlistView, setWatchlistView] = useState<WatchlistView>('grid');
   const [showMap, setShowMap] = useState<ShowMap>({});
   const [showMapLoaded, setShowMapLoaded] = useState(false);
 
   const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
   const { reviews, getAllReviews, loading: reviewsLoading } = useUserReviews(user?.id || null);
-  const { watchlist, getWatchlist, updatePlannedDate, loading: watchlistLoading } = useWatchlist(user?.id || null);
+  const { watchlist, getWatchlist, updatePlannedDate, removeFromWatchlist, loading: watchlistLoading } = useWatchlist(user?.id || null);
   const loading = authLoading || reviewsLoading || watchlistLoading;
 
   // Load show lookup data
@@ -201,8 +209,8 @@ export default function MyShowsClient() {
         <span><strong className="text-white">{watchlist.length}</strong> on watchlist</span>
       </div>
 
-      {/* Tab bar */}
-      <div className="flex border-b border-white/10 mb-6">
+      {/* Tab bar + inline sort/view controls */}
+      <div className="flex items-center border-b border-white/10 mb-6">
         <button
           type="button"
           onClick={() => setActiveTab('diary')}
@@ -230,6 +238,57 @@ export default function MyShowsClient() {
             </span>
           )}
         </button>
+
+        {/* Inline controls on the right */}
+        <div className="ml-auto flex items-center gap-2 -mb-[1px] pb-1">
+          {activeTab === 'diary' && (
+            <select
+              value={diarySort}
+              onChange={e => setDiarySort(e.target.value as DiarySort)}
+              className="text-xs bg-white/5 border border-white/10 rounded px-2 py-1 text-gray-300"
+            >
+              <option value="date-desc">Newest First</option>
+              <option value="date-asc">Oldest First</option>
+              <option value="rating-desc">Highest Rated</option>
+            </select>
+          )}
+          {activeTab === 'watchlist' && (
+            <>
+              <select
+                value={watchlistSort}
+                onChange={e => setWatchlistSort(e.target.value as WatchlistSort)}
+                className="text-xs bg-white/5 border border-white/10 rounded px-2 py-1 text-gray-300"
+              >
+                <option value="added-desc">Recently Added</option>
+                <option value="alphabetical">A-Z</option>
+                <option value="closing-soon">Closing Soon</option>
+              </select>
+              {/* Grid / List toggle */}
+              <div className="flex border border-white/10 rounded overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => setWatchlistView('grid')}
+                  className={`p-1 ${watchlistView === 'grid' ? 'bg-white/10 text-white' : 'text-gray-500 hover:text-gray-300'}`}
+                  aria-label="Grid view"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setWatchlistView('list')}
+                  className={`p-1 ${watchlistView === 'list' ? 'bg-white/10 text-white' : 'text-gray-500 hover:text-gray-300'}`}
+                  aria-label="List view"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                </button>
+              </div>
+            </>
+          )}
+        </div>
       </div>
 
       {/* Diary tab */}
@@ -245,19 +304,6 @@ export default function MyShowsClient() {
             />
           ) : (
             <>
-              {/* Sort control */}
-              <div className="flex justify-end mb-4">
-                <select
-                  value={diarySort}
-                  onChange={e => setDiarySort(e.target.value as DiarySort)}
-                  className="text-xs bg-white/5 border border-white/10 rounded px-2 py-1 text-gray-300"
-                >
-                  <option value="date-desc">Newest First</option>
-                  <option value="date-asc">Oldest First</option>
-                  <option value="rating-desc">Highest Rated</option>
-                </select>
-              </div>
-
               {/* Upcoming section */}
               {upcomingReviews.length > 0 && (
                 <div className="mb-8">
@@ -297,32 +343,30 @@ export default function MyShowsClient() {
               ctaLabel="Browse Shows"
               ctaHref="/"
             />
+          ) : watchlistView === 'grid' ? (
+            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
+              {sortedWatchlist.map(entry => (
+                <WatchlistCard
+                  key={entry.id}
+                  entry={entry}
+                  show={showMap[entry.show_id]}
+                  onDateChange={(date) => updatePlannedDate(entry.show_id, date)}
+                  onRemove={() => removeFromWatchlist(entry.show_id)}
+                />
+              ))}
+            </div>
           ) : (
-            <>
-              {/* Sort control */}
-              <div className="flex justify-end mb-4">
-                <select
-                  value={watchlistSort}
-                  onChange={e => setWatchlistSort(e.target.value as WatchlistSort)}
-                  className="text-xs bg-white/5 border border-white/10 rounded px-2 py-1 text-gray-300"
-                >
-                  <option value="added-desc">Recently Added</option>
-                  <option value="alphabetical">A-Z</option>
-                  <option value="closing-soon">Closing Soon</option>
-                </select>
-              </div>
-
-              <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
-                {sortedWatchlist.map(entry => (
-                  <WatchlistCard
-                    key={entry.id}
-                    entry={entry}
-                    show={showMap[entry.show_id]}
-                    onDateChange={(date) => updatePlannedDate(entry.show_id, date)}
-                  />
-                ))}
-              </div>
-            </>
+            <div className="space-y-2">
+              {sortedWatchlist.map(entry => (
+                <WatchlistListItem
+                  key={entry.id}
+                  entry={entry}
+                  show={showMap[entry.show_id]}
+                  onDateChange={(date) => updatePlannedDate(entry.show_id, date)}
+                  onRemove={() => removeFromWatchlist(entry.show_id)}
+                />
+              ))}
+            </div>
           )}
         </div>
       )}
@@ -334,19 +378,15 @@ function DiaryCard({ review, show }: { review: UserReview; show?: ShowLookup }) 
   const title = show?.title || review.show_id;
   const slug = show?.slug || review.show_id;
   const category = show?.category || 'broadway';
-  const href = category === 'west-end'
-    ? `/west-end/show/${slug}`
-    : category === 'off-broadway'
-    ? `/off-broadway/show/${slug}`
-    : `/show/${slug}`;
+  const href = getShowHref(slug, category);
 
   return (
-    <Link
-      href={href}
-      className="group flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors"
-    >
-      {/* Poster — portrait aspect ratio */}
-      <div className="flex-shrink-0 w-14 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay">
+    <div className="group/diary relative flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
+      {/* Link overlay for the whole card */}
+      <Link href={href} className="absolute inset-0 z-0" aria-label={`View ${title}`} />
+
+      {/* Poster */}
+      <div className="relative z-[1] flex-shrink-0 w-14 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay">
         {show?.posterUrl ? (
           <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
         ) : (
@@ -355,8 +395,8 @@ function DiaryCard({ review, show }: { review: UserReview; show?: ShowLookup }) 
       </div>
 
       {/* Info */}
-      <div className="flex-1 min-w-0">
-        <h4 className="font-bold text-white text-base group-hover:text-brand transition-colors truncate">{title}</h4>
+      <div className="relative z-[1] flex-1 min-w-0">
+        <h4 className="font-bold text-white text-base group-hover/diary:text-brand transition-colors truncate">{title}</h4>
         <div className="flex flex-wrap items-center gap-1.5 mt-1">
           {show?.type && <FormatPill type={show.type} />}
           {show && <StatusBadge status={show.status} />}
@@ -371,7 +411,7 @@ function DiaryCard({ review, show }: { review: UserReview; show?: ShowLookup }) 
           <p className="text-xs text-gray-500 mt-1.5 line-clamp-1">{review.review_text}</p>
         )}
         {review.date_seen && (
-          <p className="text-[11px] text-gray-500 mt-1">
+          <p className="text-xs text-gray-500 mt-1">
             {new Date(review.date_seen + 'T00:00:00').toLocaleDateString('en-US', {
               month: 'short',
               day: 'numeric',
@@ -381,26 +421,36 @@ function DiaryCard({ review, show }: { review: UserReview; show?: ShowLookup }) 
         )}
       </div>
 
-      {/* Rating column */}
-      <div className="flex-shrink-0 flex flex-col items-center gap-0.5 w-20 sm:w-24">
-        <StarRating rating={review.rating} onRatingChange={() => {}} size="md" readOnly hideLabel />
-        <span className="text-sm font-semibold text-amber-400">{review.rating.toFixed(1)} stars</span>
+      {/* Rating + edit icon */}
+      <div className="relative z-[1] flex-shrink-0 flex flex-col items-center gap-0.5 w-16 sm:w-20">
+        <StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel />
+        <span className="text-sm font-semibold text-amber-400">{review.rating.toFixed(1)}</span>
+        {/* Edit icon — visible on hover */}
+        <Link
+          href={href}
+          className="absolute -top-1 -right-1 p-1 rounded-full bg-surface-raised/80 text-gray-500 hover:text-white opacity-0 group-hover/diary:opacity-100 transition-opacity"
+          aria-label="Edit rating"
+        >
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+          </svg>
+        </Link>
       </div>
-    </Link>
+    </div>
   );
 }
 
-function WatchlistCard({ entry, show, onDateChange }: { entry: WatchlistEntry; show?: ShowLookup; onDateChange: (date: string | null) => void }) {
+function WatchlistCard({ entry, show, onDateChange, onRemove }: {
+  entry: WatchlistEntry;
+  show?: ShowLookup;
+  onDateChange: (date: string | null) => void;
+  onRemove: () => void;
+}) {
   const title = show?.title || entry.show_id;
   const slug = show?.slug || entry.show_id;
   const category = show?.category || 'broadway';
-  const href = category === 'west-end'
-    ? `/west-end/show/${slug}`
-    : category === 'off-broadway'
-    ? `/off-broadway/show/${slug}`
-    : `/show/${slug}`;
+  const href = getShowHref(slug, category);
 
-  // Check if closing soon (within 4 weeks)
   const isClosingSoon = show?.closingDate && (() => {
     const closing = new Date(show.closingDate!);
     const now = new Date();
@@ -413,9 +463,8 @@ function WatchlistCard({ entry, show, onDateChange }: { entry: WatchlistEntry; s
     : null;
 
   return (
-    <div className="flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
-      {/* Poster — links to show page */}
-      <Link href={href}>
+    <div className="group/wl flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
+      <Link href={href} className="relative">
         <div className="aspect-[2/3] bg-surface-overlay relative">
           {show?.posterUrl ? (
             <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
@@ -428,40 +477,107 @@ function WatchlistCard({ entry, show, onDateChange }: { entry: WatchlistEntry; s
             </span>
           )}
         </div>
-      </Link>
-      {/* Title + date */}
-      <div className="p-2">
-        <Link href={href}>
-          <h4 className="text-[11px] font-semibold text-white truncate">{title}</h4>
-          <p className="text-[10px] text-gray-500 truncate">{show?.venue}</p>
-        </Link>
-        {/* Planned date — tap to set/change */}
+        {/* X button to remove — top-left on hover */}
         <button
           type="button"
-          className="mt-1 flex items-center gap-1 text-[10px] text-gray-500 hover:text-gray-300 transition-colors"
-          onClick={() => {
-            const input = document.createElement('input');
-            input.type = 'date';
-            input.value = entry.planned_date || '';
-            input.style.position = 'fixed';
-            input.style.opacity = '0';
-            input.style.pointerEvents = 'none';
-            document.body.appendChild(input);
-            input.addEventListener('change', () => {
-              onDateChange(input.value || null);
-              document.body.removeChild(input);
-            });
-            input.addEventListener('blur', () => {
-              setTimeout(() => { if (document.body.contains(input)) document.body.removeChild(input); }, 200);
-            });
-            input.focus();
-            try { input.showPicker(); } catch {}
-          }}
+          onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRemove(); }}
+          className="absolute top-1 left-1 p-0.5 rounded-full bg-black/70 text-gray-400 hover:text-white opacity-0 group-hover/wl:opacity-100 transition-opacity"
+          aria-label="Remove from watchlist"
         >
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </Link>
+      <div className="p-2">
+        <Link href={href}>
+          <h4 className="text-xs font-semibold text-white truncate">{title}</h4>
+          <p className="text-[10px] text-gray-500 truncate">{show?.venue}</p>
+        </Link>
+        {/* Planned date — native date input with label overlay */}
+        <label className="mt-1 flex items-center gap-1 text-[10px] text-gray-500 hover:text-gray-300 transition-colors cursor-pointer relative">
           <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
           <span>{formattedDate || 'Add date'}</span>
+          <input
+            type="date"
+            value={entry.planned_date || ''}
+            onChange={e => onDateChange(e.target.value || null)}
+            className="absolute inset-0 opacity-0 cursor-pointer w-full"
+          />
+        </label>
+      </div>
+    </div>
+  );
+}
+
+function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
+  entry: WatchlistEntry;
+  show?: ShowLookup;
+  onDateChange: (date: string | null) => void;
+  onRemove: () => void;
+}) {
+  const title = show?.title || entry.show_id;
+  const slug = show?.slug || entry.show_id;
+  const category = show?.category || 'broadway';
+  const href = getShowHref(slug, category);
+
+  const isClosingSoon = show?.closingDate && (() => {
+    const closing = new Date(show.closingDate!);
+    const now = new Date();
+    const fourWeeks = 28 * 24 * 60 * 60 * 1000;
+    return closing.getTime() - now.getTime() < fourWeeks && closing > now;
+  })();
+
+  const formattedDate = entry.planned_date
+    ? new Date(entry.planned_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+    : null;
+
+  return (
+    <div className="group/wl relative flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
+      <Link href={href} className="absolute inset-0 z-0" aria-label={`View ${title}`} />
+
+      <div className="relative z-[1] flex-shrink-0 w-14 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay">
+        {show?.posterUrl ? (
+          <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-gray-600 text-xl">🎭</div>
+        )}
+      </div>
+
+      <div className="relative z-[1] flex-1 min-w-0">
+        <h4 className="font-bold text-white text-base group-hover/wl:text-brand transition-colors truncate">{title}</h4>
+        <p className="text-xs text-gray-500 truncate">{show?.venue}</p>
+        <div className="flex flex-wrap items-center gap-1.5 mt-1">
+          {show?.type && <FormatPill type={show.type} />}
+          {show && <StatusBadge status={show.status} />}
+          {isClosingSoon && (
+            <span className="px-1.5 py-0.5 text-[9px] font-bold uppercase bg-amber-500/90 text-black rounded">Closing Soon</span>
+          )}
+        </div>
+      </div>
+
+      <div className="relative z-[1] flex-shrink-0 flex flex-col items-center gap-1">
+        <label className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-300 transition-colors cursor-pointer relative">
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <span>{formattedDate || 'Add date'}</span>
+          <input
+            type="date"
+            value={entry.planned_date || ''}
+            onChange={e => onDateChange(e.target.value || null)}
+            className="absolute inset-0 opacity-0 cursor-pointer w-full"
+          />
+        </label>
+        <button
+          type="button"
+          onClick={onRemove}
+          className="text-[10px] text-gray-600 hover:text-red-400 transition-colors"
+          aria-label="Remove from watchlist"
+        >
+          Remove
         </button>
       </div>
     </div>
