@@ -205,7 +205,7 @@ export default function ShowPageRating({
           {/* Link to My Shows diary */}
           {latestReview && !showPanel && (
             <Link href="/my-shows" className="inline-block mt-2 text-xs text-gray-500 hover:text-brand transition-colors">
-              See all Ratings
+              See all my Ratings
             </Link>
           )}
         </div>

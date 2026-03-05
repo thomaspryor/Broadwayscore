@@ -7,7 +7,7 @@ import { useUserReviews } from '@/hooks/useUserReviews';
 import { useWatchlist } from '@/hooks/useWatchlist';
 import { useToastSafe } from '@/components/ui/Toast';
 import { savePendingAction, getPendingAction, clearPendingAction } from '@/lib/deferred-auth';
-import { supabaseRestInsert, supabaseRestUpdate, supabaseRestUpsert } from '@/lib/supabase-rest';
+import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
 import { featureFlags } from '@/config/feature-flags';
 
 interface ShowPageRatingConnectedProps {
@@ -55,13 +55,6 @@ export default function ShowPageRatingConnected({
     }
 
     try {
-      // Ensure profile exists (foreign key requirement) — non-fatal
-      await supabaseRestUpsert('profiles', {
-        id: user.id,
-        display_name: '',
-        avatar_url: null,
-      }, 'id').catch(() => {});
-
       // All DB calls use direct REST API with explicit auth headers.
       // This bypasses the Supabase JS client's internal token resolution
       // which can lose the auth token under certain timing conditions.
@@ -104,7 +97,7 @@ export default function ShowPageRatingConnected({
   }, [showId, user, getReviewsForShow, showToast]);
 
   // Execute pending action after auth (deferred auth flow)
-  // IMPORTANT: Uses Supabase client directly instead of saveReview hook
+  // IMPORTANT: Uses direct REST API instead of saveReview hook
   // because the hook's userId closure may still be null right after auth.
   useEffect(() => {
     if (!isAuthenticated || !user || hasExecutedPending.current) return;
@@ -118,12 +111,8 @@ export default function ShowPageRatingConnected({
       // Save via direct REST API with explicit auth headers
       (async () => {
         try {
-          // Ensure profile exists (foreign key requirement) — non-fatal
-          await supabaseRestUpsert('profiles', {
-            id: user.id,
-            display_name: '',
-            avatar_url: null,
-          }, 'id').catch(() => {});
+          // Profile is ensured by AuthContext.ensureProfile() — no upsert here
+          // (previous upsert was clobbering Google profile metadata)
 
           const { error: insertErr } = await supabaseRestInsert('reviews', {
             user_id: user.id,
