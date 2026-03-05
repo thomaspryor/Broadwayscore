@@ -47,9 +47,12 @@ function ShowPageRatingInner({
 
   const { showToast } = useToastSafe();
   const hasExecutedPending = useRef(false);
-  const [autoEditLatest, setAutoEditLatest] = useState(false);
+  // ?edit=1 from diary edit pencil — auto-open edit panel for latest review
+  const [autoEditLatest, setAutoEditLatest] = useState(searchParams.get('edit') === '1');
   // ?rate=1 from watchlist "Rate" link — auto-open the rating panel
   const [autoRate, setAutoRate] = useState(searchParams.get('rate') === '1');
+  // ?stars=N pre-selected rating from To Be Rated inline stars
+  const autoRateStars = searchParams.get('stars') ? parseFloat(searchParams.get('stars')!) : null;
 
   // Load data when authenticated
   useEffect(() => {
@@ -233,6 +236,7 @@ function ShowPageRatingInner({
       authLoading={authLoading}
       autoEditLatest={autoEditLatest}
       autoRate={autoRate}
+      autoRateStars={autoRateStars}
       onAutoRateConsumed={() => setAutoRate(false)}
     />
   );

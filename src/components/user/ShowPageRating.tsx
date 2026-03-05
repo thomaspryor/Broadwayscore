@@ -27,6 +27,8 @@ interface ShowPageRatingProps {
   autoEditLatest?: boolean;
   /** Auto-open rating panel (from watchlist "Rate" link) */
   autoRate?: boolean;
+  /** Pre-selected star rating when auto-opening (from To Be Rated inline stars) */
+  autoRateStars?: number | null;
   onAutoRateConsumed?: () => void;
 }
 
@@ -47,6 +49,7 @@ export default function ShowPageRating({
   authLoading = false,
   autoEditLatest = false,
   autoRate = false,
+  autoRateStars,
   onAutoRateConsumed,
 }: ShowPageRatingProps) {
   const [currentRating, setCurrentRating] = useState<number | null>(null);
@@ -82,7 +85,7 @@ export default function ShowPageRating({
   useEffect(() => {
     if (autoRate && !showPanel) {
       if (!isAuthenticated && !authLoading && onAuthRequired) {
-        onAuthRequired('rating');
+        onAuthRequired('rating', autoRateStars ?? undefined);
       } else {
         setShowPanel(true);
         setEditingReview(null);
@@ -90,6 +93,8 @@ export default function ShowPageRating({
         if (latestReview) {
           setEditingReview(latestReview);
           setCurrentRating(latestReview.rating);
+        } else if (autoRateStars) {
+          setCurrentRating(autoRateStars);
         }
       }
       onAutoRateConsumed?.();
