@@ -427,7 +427,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
                 <div className="px-3.5 pb-3 flex items-center gap-2.5">
                   {criticScorePickShow && <ShowPoster show={criticScorePickShow} size="xs" />}
                   <div className="text-[15px] font-bold truncate flex-1">{criticScorePick}</div>
-                  {criticScorePickShow?.compositeScore != null && <ScoreBadge score={criticScorePickShow.compositeScore} size="sm" />}
+                  {criticScorePickShow && <ScoreBadge score={criticScorePickShow.compositeScore ?? undefined} status={criticScorePickShow.status} size="sm" />}
                 </div>
               </div>
             )}
@@ -450,7 +450,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
                       <div className="text-[15px] font-bold truncate">{criticPicks[i]}</div>
                       {isActor && (() => { const actorPick = actorNominees.find(n => n.name === criticPicks[i]); return actorPick ? <div className="text-xs text-gray-500 truncate">({actorPick.showTitle})</div> : null; })()}
                     </div>
-                    {!isActor && (() => { const pickShow = nominees.find(n => n.title === criticPicks[i]); return pickShow?.compositeScore != null ? <ScoreBadge score={pickShow.compositeScore} size="sm" /> : null; })()}
+                    {!isActor && (() => { const pickShow = nominees.find(n => n.title === criticPicks[i]); return pickShow ? <ScoreBadge score={pickShow.compositeScore ?? undefined} status={pickShow.status} size="sm" /> : null; })()}
                   </div>
                 </div>
               );
