@@ -537,6 +537,9 @@ function parseArgs(): ScoringPipelineOptions & {
 
   const upgradeEnsemble = args.includes('--upgrade-ensemble');
 
+  const rescoreReasonArg = args.find(a => a.startsWith('--rescore-reason='));
+  const rescoreReason = rescoreReasonArg ? rescoreReasonArg.split('=').slice(1).join('=') : undefined;
+
   return {
     showId,
     unscoredOnly: !args.includes('--rescore') && !args.includes('--needs-rescore') && !outdated && !ensembleSource && !args.includes('--stale-scores') && !upgradeEnsemble,
@@ -563,7 +566,8 @@ function parseArgs(): ScoringPipelineOptions & {
     shard,
     totalShards,
     scoreRange,
-    maxPromptVersion
+    maxPromptVersion,
+    rescoreReason
   };
 }
 
@@ -761,8 +765,16 @@ async function main(): Promise<void> {
   let filesToProcess: typeof allFiles;
   if (options.needsRescore) {
     // Filter to reviews flagged for rescoring (had excerpt-based score, now have fullText)
-    filesToProcess = allFiles.filter(f => (f.data as any).needsRescore === true);
-    console.log(`Filtering to reviews flagged for rescoring: ${filesToProcess.length} reviews\n`);
+    filesToProcess = allFiles.filter(f => {
+      if ((f.data as any).needsRescore !== true) return false;
+      // Optional: filter by specific rescoreReason (enables parallel runs for different reasons)
+      if (options.rescoreReason) {
+        const reason = (f.data as any).rescoreReason || '';
+        return reason.startsWith(options.rescoreReason);
+      }
+      return true;
+    });
+    console.log(`Filtering to reviews flagged for rescoring${options.rescoreReason ? ` (reason: "${options.rescoreReason}")` : ''}: ${filesToProcess.length} reviews\n`);
   } else if (options.outdated) {
     // Filter to reviews scored with an older prompt version
     filesToProcess = allFiles.filter(f => {
