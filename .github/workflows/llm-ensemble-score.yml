@@ -1,9 +1,9 @@
 name: LLM Ensemble Score Reviews
 
-# Prevent parallel scoring runs from corrupting data.
-# Separate from rebuild-reviews group so scoring doesn't block rebuilds.
+# Separate concurrency groups per rescore_reason allow parallel scoring of disjoint file sets.
+# Default group "scoring-reviews" serializes regular runs; "scoring-reviews-{reason}" for targeted rescores.
 concurrency:
-  group: scoring-reviews
+  group: scoring-reviews${{ inputs.rescore_reason && format('-{0}', inputs.rescore_reason) || '' }}
   cancel-in-progress: false
 
 on:
@@ -52,6 +52,11 @@ on:
         options:
           - 'false'
           - 'true'
+      rescore_reason:
+        description: 'Filter rescores to this reason prefix (e.g. "fullText added" or "re-ensemble"). Enables parallel runs.'
+        required: false
+        default: ''
+        type: string
       outdated:
         description: 'Re-score reviews with promptVersion older than current PROMPT_VERSION'
         required: false
@@ -276,6 +281,11 @@ jobs:
           # Also auto-triggered when scheduled run detects needsRescore backlog
           if [ "${{ github.event.inputs.needs_rescore }}" == "true" ] || [ "${{ steps.check-needed.outputs.run_rescore }}" == "true" ]; then
             ARGS="$ARGS --needs-rescore"
+          fi
+
+          # Rescore reason filter (enables parallel runs for different reason buckets)
+          if [ -n "${{ github.event.inputs.rescore_reason }}" ]; then
+            ARGS="$ARGS --rescore-reason=${{ github.event.inputs.rescore_reason }}"
           fi
 
           # Outdated (rescore reviews with old prompt versions)
@@ -574,6 +584,10 @@ jobs:
           # Also pass through when scheduled run detected needsRescore backlog
           if [ "${{ github.event.inputs.needs_rescore }}" == "true" ] || [ "${{ steps.check-needed.outputs.run_rescore }}" == "true" ]; then
             CHAIN_ARGS="$CHAIN_ARGS -f needs_rescore=true"
+          fi
+          # Pass through rescore_reason filter so parallel chains stay in their lane
+          if [ -n "${{ github.event.inputs.rescore_reason }}" ]; then
+            CHAIN_ARGS="$CHAIN_ARGS -f rescore_reason=${{ github.event.inputs.rescore_reason }}"
           fi
           # Pass through stale_scores flag so stale-score chains continue
           # Also pass through when scheduled run detected stale scores
