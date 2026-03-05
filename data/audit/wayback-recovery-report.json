@@ -1,22 +1,50 @@
 {
-  "totalCandidates": 55,
-  "cdxFound": 0,
-  "cdxNotFound": 13,
-  "recovered": 0,
+  "totalCandidates": 500,
+  "cdxFound": 44,
+  "cdxNotFound": 51,
+  "recovered": 36,
   "recoveredByTier": {
     "1": 0,
-    "2": 0,
-    "3": 0
+    "2": 9,
+    "3": 27
   },
-  "recoveredByDomain": {},
-  "tooShort": 0,
+  "recoveredByDomain": {
+    "amny.com": 2,
+    "huffingtonpost.com": 1,
+    "usatoday.com": 3,
+    "villagevoice.com": 1,
+    "nydailynews.com": 1,
+    "newsday.com": 1,
+    "thestage.co.uk": 1,
+    "theaterscene.net": 1,
+    "apnews.com": 1,
+    "gotham-playgoer.blogspot.com": 2,
+    "curtainup.com": 7,
+    "thebroadwayblog.com": 1,
+    "out.com": 3,
+    "talkinbroadway.com": 1,
+    "manhattandigest.com": 1,
+    "theaterlife.com": 1,
+    "chicagotribune.com": 1,
+    "whatshouldwedo.com": 1,
+    "newnownext.com": 1,
+    "theaterscene.com": 1,
+    "reviewingthedrama.com": 1,
+    "centerontheaisle.com": 1,
+    "filmfestivaltraveler.com": 1,
+    "backstagebarbie.blogspot.com": 1
+  },
+  "tooShort": 8,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 34,
-  "notInArchive": 13,
-  "domainSkipped": 8,
+  "errors": 365,
+  "notInArchive": 51,
+  "domainSkipped": 40,
   "circuitBrokenDomains": [
-    "jasonraize.net"
+    "hollywoodreporter.com",
+    "washingtonpost.com",
+    "observer.com",
+    "northjersey.com"
   ]
 }
