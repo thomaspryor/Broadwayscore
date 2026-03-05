@@ -468,6 +468,9 @@ export interface ScoringPipelineOptions {
 
   /** Run aggregator validation after scoring */
   runValidation: boolean;
+
+  /** Filter rescores to reviews whose rescoreReason starts with this prefix */
+  rescoreReason?: string;
 }
 
 /**
