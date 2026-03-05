@@ -335,7 +335,16 @@
     "into-the-woods-west-end-2025/guardian--arifa-akbar.json",
     "just-in-time-2025/observer--rex-reed.json",
     "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json",
-    "little-shop-of-horrors-off-broadway-2019/theatermania--zachary-stewart.json"
+    "little-shop-of-horrors-off-broadway-2019/theatermania--zachary-stewart.json",
+    "magic-mike-live-west-end-2021/guardian--tanya-gold.json",
+    "magic-mike-live-west-end-2021/timeout-london--unknown.json",
+    "mamma-mia-west-end-2021/timeout-london--nina-caplan.json",
+    "marcel-on-the-train-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "marcel-on-the-train-off-broadway-2026/theatermania--zachary-stewart.json",
+    "masquerade-off-broadway-2025/nypost--johnny-oleksinski.json",
+    "masquerade-off-broadway-2025/observer--david-cote.json",
+    "masquerade-off-broadway-2025/theatermania--meg-masseron.json",
+    "masquerade-off-broadway-2025/timeout--adam-feldman.json"
   ],
   "failed": [
     "mack-and-mabel-1974/financialtimes--ian-shuttleworth.json",
@@ -721,7 +730,8 @@
     "death-becomes-her-2024/wsj--charles-isherwood.json",
     "death-of-a-salesman-2026/broadwaynews--brittani-samuel.json",
     "death-of-a-salesman-2026/ew--lester-fabian-brathwaite.json",
-    "little-shop-of-horrors-off-broadway-2019/broadwaynews--andrew-gans.json"
+    "little-shop-of-horrors-off-broadway-2019/broadwaynews--andrew-gans.json",
+    "lost-in-del-valle-off-broadway-2026/theatermania--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -921,7 +931,12 @@
       "hamlet-off-broadway-2026/theatermania--zachary-stewart.json",
       "heathers-the-musical-off-broadway-2025/new-york-sun--elysa-gardner.json",
       "hercules-west-end-2025/timeout-london--andrzej-lukowski.json",
-      "little-shop-of-horrors-off-broadway-2019/theatermania--zachary-stewart.json"
+      "little-shop-of-horrors-off-broadway-2019/theatermania--zachary-stewart.json",
+      "magic-mike-live-west-end-2021/guardian--tanya-gold.json",
+      "marcel-on-the-train-off-broadway-2026/new-york-sun--elysa-gardner.json",
+      "marcel-on-the-train-off-broadway-2026/theatermania--zachary-stewart.json",
+      "masquerade-off-broadway-2025/theatermania--meg-masseron.json",
+      "masquerade-off-broadway-2025/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -985,7 +1000,11 @@
       "data/review-texts/heathers-the-musical-off-broadway-2025/observer--david-cote.json",
       "heathers-the-musical-off-broadway-2025/observer--david-cote.json",
       "data/review-texts/just-in-time-2025/observer--rex-reed.json",
-      "just-in-time-2025/observer--rex-reed.json"
+      "just-in-time-2025/observer--rex-reed.json",
+      "data/review-texts/masquerade-off-broadway-2025/nypost--johnny-oleksinski.json",
+      "masquerade-off-broadway-2025/nypost--johnny-oleksinski.json",
+      "data/review-texts/masquerade-off-broadway-2025/observer--david-cote.json",
+      "masquerade-off-broadway-2025/observer--david-cote.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json"
@@ -1328,11 +1347,13 @@
       "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
       "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json",
       "high-noon-west-end-2025/timeout--unknown.json",
-      "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json"
+      "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json",
+      "magic-mike-live-west-end-2021/timeout-london--unknown.json",
+      "mamma-mia-west-end-2021/timeout-london--nina-caplan.json"
     ]
   },
   "startTime": "2026-03-05T10:28:39.558Z",
-  "lastProcessed": "little-shop-of-horrors-off-broadway-2019/theatermania--zachary-stewart.json",
+  "lastProcessed": "masquerade-off-broadway-2025/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-03-05T10:51:55.084Z",
@@ -1640,6 +1661,28 @@
     },
     {
       "t": "2026-03-05T19:50:01.476Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-05T19:55:39.302Z",
+      "event": "bb-session",
+      "session": "bea03a6f",
+      "url": "https://nypost.com/2025/09/29/entertainment/masquerade-review-secretive-off-broa"
+    },
+    {
+      "t": "2026-03-05T19:55:40.404Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-05T19:55:54.743Z",
+      "event": "bb-session",
+      "session": "d45d81bb",
+      "url": "https://observer.com/2025/09/review-masquerade-phantom-of-the-opera-experience-i"
+    },
+    {
+      "t": "2026-03-05T19:55:55.751Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
     }
