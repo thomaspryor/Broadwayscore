@@ -5,12 +5,13 @@ import { useState, useRef, useCallback } from 'react';
 interface StarRatingProps {
   rating: number | null;
   onRatingChange: (rating: number) => void;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
   readOnly?: boolean;
   hideLabel?: boolean;
 }
 
 const SIZE_MAP = {
+  xs: { star: 12, gap: 1 },
   sm: { star: 20, gap: 2 },
   md: { star: 28, gap: 3 },
   lg: { star: 40, gap: 4 },

@@ -422,9 +422,9 @@ function DiaryCard({ review, show }: { review: UserReview; show?: ShowLookup }) 
       </div>
 
       {/* Rating + edit icon */}
-      <div className="relative z-[1] flex-shrink-0 flex flex-col items-center gap-0.5 w-16 sm:w-20">
-        <StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel />
-        <span className="text-sm font-semibold text-amber-400">{review.rating.toFixed(1)}</span>
+      <div className="relative z-[1] flex-shrink-0 flex flex-col items-center gap-0.5 w-16 sm:w-20 overflow-hidden">
+        <StarRating rating={review.rating} onRatingChange={() => {}} size="xs" readOnly hideLabel />
+        <span className="text-xs font-semibold text-amber-400">{review.rating.toFixed(1)} stars</span>
         {/* Edit icon — visible on hover */}
         <Link
           href={href}
@@ -504,7 +504,7 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
             type="date"
             value={entry.planned_date || ''}
             onChange={e => onDateChange(e.target.value || null)}
-            className="absolute inset-0 opacity-0 cursor-pointer w-full"
+            className="absolute inset-0 opacity-[0.01] cursor-pointer w-full h-full"
           />
         </label>
       </div>
@@ -568,7 +568,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
             type="date"
             value={entry.planned_date || ''}
             onChange={e => onDateChange(e.target.value || null)}
-            className="absolute inset-0 opacity-0 cursor-pointer w-full"
+            className="absolute inset-0 opacity-[0.01] cursor-pointer w-full h-full"
           />
         </label>
         <button
