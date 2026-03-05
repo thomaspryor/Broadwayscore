@@ -3,8 +3,13 @@
  *
  * This bypasses the GoTrue OAuth redirect flow (which has issues with
  * Apple's code exchange) and instead:
- * 1. Uses Apple's JS SDK to get an id_token directly
+ * 1. Uses Apple's JS SDK to get an id_token directly (popup mode with web_message)
  * 2. Passes it to Supabase for verification via JWKS
+ *
+ * IMPORTANT: With usePopup:true, Apple uses response_mode=web_message which sends
+ * the auth response via postMessage to the redirectURI origin. The redirectURI MUST
+ * be on the same origin as the calling page, and the domain + return URL must be
+ * registered in Apple Developer Console under the Services ID configuration.
  */
 
 declare global {
@@ -97,14 +102,16 @@ export async function signInWithAppleSDK(): Promise<AppleAuthResult> {
   const rawNonce = generateNonce();
   const hashedNonce = await sha256(rawNonce);
 
-  // redirectURI must be registered in Apple Developer Console.
-  // With usePopup:true the redirect doesn't actually happen — Apple
-  // returns the response via the popup JS bridge — but Apple still
-  // validates the URI against the registered list.
+  // redirectURI origin MUST match the calling page origin for web_message to work.
+  // The domain + return URL must be registered in Apple Developer Console.
+  // With usePopup:true, Apple uses response_mode=web_message (postMessage),
+  // NOT form_post — the redirectURI page doesn't actually receive a request.
+  const redirectURI = `${window.location.origin}/auth/apple-callback`;
+
   window.AppleID.auth.init({
     clientId: 'com.broadwayscorecard.web',
     scope: 'name email',
-    redirectURI: 'https://tcbkoevwfemkicrwpypb.supabase.co/auth/v1/callback',
+    redirectURI,
     usePopup: true,
     nonce: hashedNonce,
   });
