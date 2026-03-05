@@ -1,138 +1,86 @@
 {
   "processed": [
-    "chess-2025/newyorker--michael-schulman.json",
-    "death-becomes-her-2024/newyorker--helen-shaw.json",
-    "just-in-time-2025/newyorker--unknown.json",
-    "ragtime-2025/newyorker--unknown.json",
-    "six-2021/newyorker--naomi-fry.json",
-    "an-enemy-of-the-people-2024/newyorker--naomi-fry.json",
-    "august-osage-county-2007/newyorker--hilton-als.json",
-    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-    "call-me-izzy-2025/newyorker--helen-shaw.json",
-    "come-from-away-2017/newyorker--hilton-als.json"
+    "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json",
+    "broken-glass-west-end-2026/telegraph--dominic-cavendish.json",
+    "hamilton-2015/telegraph--unknown.json",
+    "harry-potter-and-the-cursed-child-both-parts-west-end-2021/telegraph--dominic-cavendish.json",
+    "high-noon-west-end-2025/telegraph--dominic-cavendish.json",
+    "im-sorry-prime-minister-west-end-2026/telegraph--dominic-cavendish.json",
+    "matilda-the-musical-west-end-2021/telegraph--charles-spencer.json",
+    "matilda-the-musical-west-end-2021/telegraph--unknown.json",
+    "shadowlands-west-end-2026/telegraph--dominic-cavendish.json",
+    "showstopper-the-improvised-musical-west-end-2023/telegraph--dominic-cavendish.json",
+    "starlight-express-west-end-2024/telegraph--dominic-cavendish.json",
+    "stranger-things-the-first-shadow-west-end-2023/telegraph--dominic-cavendish.json",
+    "the-hunger-games-on-stage-west-end-2025/telegraph--unknown.json",
+    "the-phantom-of-the-opera-west-end-1986/telegraph--serena-davies.json",
+    "the-play-that-goes-wrong-west-end-2021/telegraph--tim-walker.json",
+    "a-dolls-house-2023/telegraph--diane-snyder.json",
+    "all-my-sons-2019/telegraph--serena-davies.json",
+    "betrayal-2013/telegraph--matt-wolf.json",
+    "matilda-the-musical-2013/telegraph--unknown.json",
+    "to-kill-a-mockingbird-2018/telegraph--unknown.json",
+    "ulster-american-irish-repertory-theatre-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "west-side-story-2020/telegraph--diane-snyder.json",
+    "woman-in-mind-west-end-2025/telegraph--claire-allfree.json"
   ],
   "failed": [
-    "hadestown-2019/newyorker--hilton-als.json",
-    "maybe-happy-ending-2024/newyorker--naomi-fry.json",
-    "camelot-2023/newyorker--helen-shaw.json",
-    "in-the-heights-2008/newyorker--hilton-als.json",
-    "oedipus-2025/newyorker--helen-shaw.json",
-    "smash-2025/newyorker--unknown.json",
-    "time-stands-still-2010/newyorker--uncredited.json",
-    "aint-no-mo-2022/newyorker--naomi-fry.json",
-    "brief-encounter-2010/newyorker--uncredited.json",
-    "cost-of-living-2022/newyorker--vinson-cunningham.json"
+    "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "man-and-boy-west-end-2026/telegraph--dominic-cavendish.json",
+    "the-lion-king-west-end-2021/telegraph--david-gritten.json",
+    "the-lion-king-west-end-2021/telegraph--unknown.json",
+    "the-mousetrap-west-end-2021/telegraph--unknown.json",
+    "sinatra-the-musical-west-end-2026/telegraph--unknown.json",
+    "bad-cinderella-2023/telegraph--anita-singh.json",
+    "finding-neverland-2015/telegraph--matt-wolf.json",
+    "the-color-purple-2015/telegraph--charles-spencer.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "the-play-that-goes-wrong-west-end-2021/telegraph--tim-walker.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
-      "chess-2025/newyorker--michael-schulman.json",
-      "death-becomes-her-2024/newyorker--helen-shaw.json",
-      "just-in-time-2025/newyorker--unknown.json",
-      "ragtime-2025/newyorker--unknown.json",
-      "six-2021/newyorker--naomi-fry.json",
-      "an-enemy-of-the-people-2024/newyorker--naomi-fry.json",
-      "call-me-izzy-2025/newyorker--helen-shaw.json",
-      "come-from-away-2017/newyorker--hilton-als.json"
+      "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json",
+      "broken-glass-west-end-2026/telegraph--dominic-cavendish.json",
+      "hamilton-2015/telegraph--unknown.json",
+      "harry-potter-and-the-cursed-child-both-parts-west-end-2021/telegraph--dominic-cavendish.json",
+      "high-noon-west-end-2025/telegraph--dominic-cavendish.json",
+      "im-sorry-prime-minister-west-end-2026/telegraph--dominic-cavendish.json",
+      "matilda-the-musical-west-end-2021/telegraph--charles-spencer.json",
+      "shadowlands-west-end-2026/telegraph--dominic-cavendish.json",
+      "showstopper-the-improvised-musical-west-end-2023/telegraph--dominic-cavendish.json",
+      "the-hunger-games-on-stage-west-end-2025/telegraph--unknown.json",
+      "the-phantom-of-the-opera-west-end-1986/telegraph--serena-davies.json",
+      "a-dolls-house-2023/telegraph--diane-snyder.json",
+      "all-my-sons-2019/telegraph--serena-davies.json",
+      "ulster-american-irish-repertory-theatre-off-broadway-2026/telegraph--dominic-cavendish.json",
+      "west-side-story-2020/telegraph--diane-snyder.json",
+      "woman-in-mind-west-end-2025/telegraph--claire-allfree.json"
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/maybe-happy-ending-2024/newyorker--naomi-fry.json",
-      "data/review-texts/camelot-2023/newyorker--helen-shaw.json",
-      "data/review-texts/in-the-heights-2008/newyorker--hilton-als.json",
-      "data/review-texts/oedipus-2025/newyorker--helen-shaw.json",
-      "data/review-texts/smash-2025/newyorker--unknown.json",
-      "data/review-texts/time-stands-still-2010/newyorker--uncredited.json",
-      "data/review-texts/aint-no-mo-2022/newyorker--naomi-fry.json"
+      "data/review-texts/man-and-boy-west-end-2026/telegraph--dominic-cavendish.json",
+      "data/review-texts/the-lion-king-west-end-2021/telegraph--david-gritten.json",
+      "data/review-texts/the-lion-king-west-end-2021/telegraph--unknown.json",
+      "data/review-texts/the-mousetrap-west-end-2021/telegraph--unknown.json",
+      "data/review-texts/bad-cinderella-2023/telegraph--anita-singh.json",
+      "data/review-texts/finding-neverland-2015/telegraph--matt-wolf.json",
+      "data/review-texts/the-color-purple-2015/telegraph--charles-spencer.json"
     ],
     "archive": [
-      "august-osage-county-2007/newyorker--hilton-als.json",
-      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json"
+      "matilda-the-musical-west-end-2021/telegraph--unknown.json",
+      "starlight-express-west-end-2024/telegraph--dominic-cavendish.json",
+      "stranger-things-the-first-shadow-west-end-2023/telegraph--dominic-cavendish.json",
+      "betrayal-2013/telegraph--matt-wolf.json",
+      "matilda-the-musical-2013/telegraph--unknown.json",
+      "to-kill-a-mockingbird-2018/telegraph--unknown.json"
     ]
   },
-  "startTime": "2026-03-05T07:22:59.508Z",
-  "lastProcessed": "cost-of-living-2022/newyorker--vinson-cunningham.json",
-  "log": [
-    {
-      "t": "2026-03-05T07:25:51.950Z",
-      "event": "bb-session",
-      "session": "659f3de0",
-      "url": "https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24"
-    },
-    {
-      "t": "2026-03-05T07:25:53.261Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-03-05T07:27:50.754Z",
-      "event": "bb-session",
-      "session": "68be152e",
-      "url": "https://www.newyorker.com/culture/the-theatre/review-camelot-aaron-sorkin-bartle"
-    },
-    {
-      "t": "2026-03-05T07:27:51.977Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-03-05T07:30:13.127Z",
-      "event": "bb-session",
-      "session": "923d39cd",
-      "url": "https://www.newyorker.com/magazine/2008/03/31/crossing-over"
-    },
-    {
-      "t": "2026-03-05T07:30:14.332Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-03-05T07:31:42.049Z",
-      "event": "bb-session",
-      "session": "ca4aee8e",
-      "url": "https://www.newyorker.com/magazine/2025/12/01/this-world-of-tomorrow-theatre-rev"
-    },
-    {
-      "t": "2026-03-05T07:31:43.191Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-03-05T07:33:21.148Z",
-      "event": "bb-session",
-      "session": "a27a7f06",
-      "url": "https://www.newyorker.com/magazine/2025/05/05#:~:text=Also%3A%20reviews%20of%20B"
-    },
-    {
-      "t": "2026-03-05T07:33:22.383Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-03-05T07:35:51.638Z",
-      "event": "bb-session",
-      "session": "07f17f7c",
-      "url": "https://www.newyorker.com/arts/events/theatre/time-stands-still-cort-theatre"
-    },
-    {
-      "t": "2026-03-05T07:35:53.073Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-03-05T07:38:00.786Z",
-      "event": "bb-session",
-      "session": "70c7f7b2",
-      "url": "https://www.newyorker.com/magazine/2022/12/19/aint-no-mo-theatre-review"
-    },
-    {
-      "t": "2026-03-05T07:38:01.932Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    }
-  ]
+  "startTime": "2026-03-05T07:23:02.552Z",
+  "lastProcessed": "woman-in-mind-west-end-2025/telegraph--claire-allfree.json",
+  "log": []
 }
