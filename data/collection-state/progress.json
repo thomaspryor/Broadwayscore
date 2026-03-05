@@ -457,7 +457,16 @@
     "broken-glass-west-end-2026/independent--alice-saville.json",
     "broken-glass-west-end-2026/london-theatre--julia-rank.json",
     "broken-glass-west-end-2026/standard--nick-curtis.json",
-    "broken-glass-west-end-2026/telegraph--dominic-cavendish.json"
+    "broken-glass-west-end-2026/telegraph--dominic-cavendish.json",
+    "broken-glass-west-end-2026/thestage--unknown.json",
+    "broken-glass-west-end-2026/whatsonstage--sarah-crompton.json",
+    "buena-vista-social-club-2025/amny--matt-windman.json",
+    "buena-vista-social-club-2025/latimes--nicholas-ducassi.json",
+    "buena-vista-social-club-2025/washpost--naveen-kumar.json",
+    "bug-2026/njcom--unknown.json",
+    "bug-2026/ny1--roma-torre.json",
+    "bug-2026/playbill--logan-culwell-block.json",
+    "bughouse-off-broadway-2026/one-minute-critic--unknown.json"
   ],
   "failed": [
     "mack-and-mabel-1974/financialtimes--ian-shuttleworth.json",
@@ -951,7 +960,8 @@
     "bloodlove-off-broadway-2026/playbill--unknown.json",
     "book-of-mormon-2011/ap--mark-kennedy.json",
     "book-of-mormon-2011/backstage--david-sheward.json",
-    "broken-glass-west-end-2026/broadwayworld--alexander-cohen.json"
+    "broken-glass-west-end-2026/broadwayworld--alexander-cohen.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/artsdesk--david-nice.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1224,7 +1234,13 @@
       "bigfoot-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
       "broken-glass-west-end-2026/london-theatre--julia-rank.json",
       "broken-glass-west-end-2026/standard--nick-curtis.json",
-      "broken-glass-west-end-2026/telegraph--dominic-cavendish.json"
+      "broken-glass-west-end-2026/telegraph--dominic-cavendish.json",
+      "broken-glass-west-end-2026/thestage--unknown.json",
+      "broken-glass-west-end-2026/whatsonstage--sarah-crompton.json",
+      "buena-vista-social-club-2025/washpost--naveen-kumar.json",
+      "bug-2026/ny1--roma-torre.json",
+      "bug-2026/playbill--logan-culwell-block.json",
+      "bughouse-off-broadway-2026/one-minute-critic--unknown.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -1297,7 +1313,9 @@
       "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
       "data/review-texts/the-great-gatsby-2024/observer--david-cote.json",
       "the-great-gatsby-2024/observer--david-cote.json",
-      "data/review-texts/chicago-1996/nypost--elisabeth-vincentelli.json"
+      "data/review-texts/chicago-1996/nypost--elisabeth-vincentelli.json",
+      "data/review-texts/buena-vista-social-club-2025/amny--matt-windman.json",
+      "buena-vista-social-club-2025/amny--matt-windman.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json",
@@ -1367,7 +1385,9 @@
       "what-we-did-before-our-moth-days-off-broadway-2026/times-uk--unknown.json",
       "the-unknown-off-broadway-2026/nytimes--helen-shaw.json",
       "broken-glass-west-end-2026/independent--alice-saville.json",
-      "broken-glass-west-end-2026/broadwayworld--alexander-cohen.json"
+      "broken-glass-west-end-2026/broadwayworld--alexander-cohen.json",
+      "buena-vista-social-club-2025/latimes--nicholas-ducassi.json",
+      "bug-2026/njcom--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1735,7 +1755,7 @@
     ]
   },
   "startTime": "2026-03-05T10:28:39.558Z",
-  "lastProcessed": "broken-glass-west-end-2026/telegraph--dominic-cavendish.json",
+  "lastProcessed": "cabaret-at-the-kit-kat-club-west-end-2021/artsdesk--david-nice.json",
   "log": [
     {
       "t": "2026-03-05T10:51:55.084Z",
@@ -2172,6 +2192,17 @@
       "t": "2026-03-05T21:42:25.709Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-05T22:03:49.718Z",
+      "event": "bb-session",
+      "session": "23e5f80e",
+      "url": "https://www.amny.com/entertainment/broadway/review-buena-vista-social-clunk/"
+    },
+    {
+      "t": "2026-03-05T22:03:50.892Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
