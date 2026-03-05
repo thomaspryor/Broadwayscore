@@ -64,13 +64,31 @@ function buildSearchTitles(show) {
 
   const type = show.type || show.format;
   const variants = [];
+
+  // Extract year from show ID for year-disambiguated articles (e.g., "Passion (1994 musical)")
+  const yearMatch = show.id && show.id.match(/-(\d{4})(?:-|$)/);
+  const year = yearMatch ? yearMatch[1] : null;
+
   if (type === 'musical') {
-    variants.push(`${title} (musical)`, title, `${title} (Musical)`);
+    variants.push(`${title} (musical)`, title);
+    if (year) variants.push(`${title} (${year} musical)`);
   } else if (type === 'play') {
-    variants.push(`${title} (play)`, title, `${title} (Play)`);
+    variants.push(`${title} (play)`, title);
+    if (year) variants.push(`${title} (${year} play)`);
   } else {
     variants.push(title, `${title} (musical)`, `${title} (play)`);
   }
+
+  // For shows with "The" prefix, also try without it
+  if (title.startsWith('The ') && title.length > 6) {
+    const noThe = title.substring(4);
+    if (type === 'musical') {
+      variants.push(`${noThe} (musical)`);
+    } else if (type === 'play') {
+      variants.push(`${noThe} (play)`);
+    }
+  }
+
   return variants;
 }
 
