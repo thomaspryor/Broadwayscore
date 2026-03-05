@@ -1,74 +1,129 @@
 {
-  "updatedAt": "2026-03-05T00:44:28.113Z",
-  "processed": 121,
-  "failed": 39,
-  "successRate": "75.6%",
+  "updatedAt": "2026-03-05T00:46:29.802Z",
+  "processed": 49,
+  "failed": 51,
+  "successRate": "49.0%",
   "tierBreakdown": {
-    "playwright": 77,
+    "playwright": 0,
     "amp": 0,
-    "browserbase": 0,
-    "directCookies": 9,
-    "scrapingbee": 6,
+    "browserbase": 2,
+    "directCookies": 0,
+    "scrapingbee": 37,
     "brightdata": 0,
-    "archiveToday": 13,
-    "archive": 39
+    "archiveToday": 51,
+    "archive": 11
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 40,
   "recentActivity": [
     {
-      "t": "2026-03-04T23:12:32.199Z",
+      "t": "2026-03-05T00:03:11.678Z",
       "event": "bb-session",
-      "session": "f48e5851",
-      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
+      "session": "81e42219",
+      "url": "https://www.nytimes.com/2005/10/28/theater/reviews/the-odd-couple-redux-still-at"
     },
     {
-      "t": "2026-03-04T23:12:33.577Z",
+      "t": "2026-03-05T00:03:12.927Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-03-04T23:30:50.528Z",
+      "t": "2026-03-05T00:04:42.435Z",
       "event": "bb-session",
-      "session": "b05206f7",
-      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
+      "session": "1f4e04d1",
+      "url": "https://www.nytimes.com/2010/11/12/theater/reviews/12pee.html"
     },
     {
-      "t": "2026-03-04T23:30:51.910Z",
+      "t": "2026-03-05T00:04:43.603Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-03-04T23:37:57.652Z",
+      "t": "2026-03-05T00:05:57.149Z",
       "event": "bb-session",
-      "session": "e6eabcad",
-      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+      "session": "8636d08b",
+      "url": "https://www.nytimes.com/2009/05/08/theater/reviews/08philanthropist.html"
     },
     {
-      "t": "2026-03-04T23:37:58.981Z",
+      "t": "2026-03-05T00:05:58.158Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-03-04T23:59:04.671Z",
+      "t": "2026-03-05T00:07:17.729Z",
       "event": "bb-session",
-      "session": "4a114f68",
-      "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11"
+      "session": "cd2e3308",
+      "url": "https://www.nytimes.com/2010/12/08/theater/reviews/08pitmen.html"
     },
     {
-      "t": "2026-03-04T23:59:06.122Z",
+      "t": "2026-03-05T00:07:18.836Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-03-05T00:16:26.601Z",
+      "t": "2026-03-05T00:08:36.989Z",
       "event": "bb-session",
-      "session": "9e0994d1",
-      "url": "https://www.wsj.com/articles/the-outsiders-review-the-greasers-go-to-broadway-da"
+      "session": "f5711825",
+      "url": "https://www.nytimes.com/2001/04/20/movies/theater-review-frolic-and-detour-on-th"
     },
     {
-      "t": "2026-03-05T00:16:27.928Z",
+      "t": "2026-03-05T00:08:38.377Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-05T00:09:51.258Z",
+      "event": "bb-session",
+      "session": "d04be446",
+      "url": "https://www.nytimes.com/2014/04/25/theater/reviews/the-real-thing-opens-on-broad"
+    },
+    {
+      "t": "2026-03-05T00:09:52.272Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-05T00:12:36.271Z",
+      "event": "bb-session",
+      "session": "ccc41690",
+      "url": "https://www.nytimes.com/2012/01/18/theater/reviews/the-road-to-mecca-at-the-amer"
+    },
+    {
+      "t": "2026-03-05T00:12:37.499Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-05T00:15:20.180Z",
+      "event": "bb-session",
+      "session": "d51a7a52",
+      "url": "https://www.nytimes.com/2010/11/13/theater/reviews/13scottsboro.html"
+    },
+    {
+      "t": "2026-03-05T00:15:21.301Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-05T00:16:51.631Z",
+      "event": "bb-session",
+      "session": "2fab4c08",
+      "url": "https://www.nytimes.com/2009/02/10/theater/reviews/10story.html"
+    },
+    {
+      "t": "2026-03-05T00:16:52.822Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-05T00:18:15.705Z",
+      "event": "bb-session",
+      "session": "3165b6e1",
+      "url": "https://www.nytimes.com/2018/10/25/theater/the-waverly-gallery-review-elaine-may"
+    },
+    {
+      "t": "2026-03-05T00:18:16.699Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
