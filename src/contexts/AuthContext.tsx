@@ -89,10 +89,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .single();
 
       if (data) {
-        setProfile(data as UserProfile);
+        const profile = data as UserProfile;
+        // If display_name or avatar_url is missing, backfill from auth metadata
+        if (!profile.display_name || !profile.avatar_url) {
+          await ensureProfile(userId);
+        } else {
+          setProfile(profile);
+        }
       } else {
         // Profile doesn't exist yet — create it client-side
-        // (handles case where DB trigger is missing or failed)
         await ensureProfile(userId);
       }
     } catch (e) {

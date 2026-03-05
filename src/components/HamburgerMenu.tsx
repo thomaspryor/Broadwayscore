@@ -6,9 +6,9 @@ import { featureFlags } from '@/config/feature-flags';
 import type { UserProfile } from '@/types/user';
 
 interface HamburgerMenuProps {
-  // Auth state — wired in Sprint 2
   isAuthenticated?: boolean;
   profile?: UserProfile | null;
+  email?: string;
   onSignIn?: () => void;
   onSignOut?: () => void;
 }
@@ -16,6 +16,7 @@ interface HamburgerMenuProps {
 export default function HamburgerMenu({
   isAuthenticated = false,
   profile = null,
+  email,
   onSignIn,
   onSignOut,
 }: HamburgerMenuProps) {
@@ -90,12 +91,11 @@ export default function HamburgerMenu({
                       />
                     ) : (
                       <div className="w-10 h-10 rounded-full bg-brand/20 flex items-center justify-center text-brand font-bold text-sm">
-                        {(profile?.display_name || '?').charAt(0).toUpperCase()}
+                        {(profile?.display_name || email || '?').charAt(0).toUpperCase()}
                       </div>
                     )}
                     <div className="min-w-0">
-                      <p className="text-sm font-semibold text-white truncate">{profile?.display_name || 'Signed In'}</p>
-                      <p className="text-xs text-gray-500">Theater Fan</p>
+                      <p className="text-sm font-semibold text-white truncate">{profile?.display_name || email || 'Signed In'}</p>
                     </div>
                   </div>
                 ) : (
