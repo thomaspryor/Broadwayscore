@@ -460,7 +460,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           {/* Crowd bars — show categories only */}
           {!isActor && (
             <div className="mb-7 animate-fade-up" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">CriticScore Odds<div className="flex-1 h-px bg-white/5" /></div>
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">What Other Players Picked<div className="flex-1 h-px bg-white/5" /></div>
               {nominees.map((show, i) => (<CrowdBar key={show.slug} label={show.title} pct={crowdPcts[i] ?? 0} isUserPick={show.title === userPick} variant={show.title === userPick ? 'rose' : i === 0 ? 'brand' : 'muted'} score={show.compositeScore} />))}
             </div>
           )}
