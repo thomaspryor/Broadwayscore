@@ -182,17 +182,22 @@ export default function ShowPageRating({
           {viewCount > 1 && !showPanel && (
             <div className="mt-2 space-y-1">
               {reviews.slice(0, 3).map(review => (
-                <button
-                  key={review.id}
-                  type="button"
-                  onClick={() => handleEdit(review)}
-                  className="flex items-center gap-2 text-xs text-gray-500 hover:text-white transition-colors"
-                >
-                  <StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly />
+                <div key={review.id} className="group/viewing flex items-center gap-2 text-xs text-gray-500">
+                  <StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel />
                   {review.date_seen && (
                     <span>{new Date(review.date_seen + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                   )}
-                </button>
+                  <button
+                    type="button"
+                    onClick={() => handleEdit(review)}
+                    className="p-0.5 text-gray-600 hover:text-white transition-colors"
+                    aria-label="Edit this viewing"
+                  >
+                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                    </svg>
+                  </button>
+                </div>
               ))}
             </div>
           )}
@@ -215,26 +220,7 @@ export default function ShowPageRating({
           {isWatchlisted && (
             <>
               {/* Inline date picker */}
-              <button
-                type="button"
-                className="mt-1.5 flex items-center gap-1 text-[11px] text-gray-500 hover:text-gray-300 transition-colors"
-                onClick={() => {
-                  const input = document.createElement('input');
-                  input.type = 'date';
-                  input.value = watchlistDate || '';
-                  input.style.cssText = 'position:fixed;opacity:0;pointer-events:none';
-                  document.body.appendChild(input);
-                  input.addEventListener('change', () => {
-                    onUpdateWatchlistDate?.(input.value || null);
-                    document.body.removeChild(input);
-                  });
-                  input.addEventListener('blur', () => {
-                    setTimeout(() => { if (document.body.contains(input)) document.body.removeChild(input); }, 200);
-                  });
-                  input.focus();
-                  try { input.showPicker(); } catch {}
-                }}
-              >
+              <label className="mt-1.5 flex items-center gap-1 text-[11px] text-gray-500 hover:text-gray-300 transition-colors cursor-pointer relative">
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
@@ -243,7 +229,13 @@ export default function ShowPageRating({
                     ? new Date(watchlistDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
                     : 'Add date'}
                 </span>
-              </button>
+                <input
+                  type="date"
+                  value={watchlistDate || ''}
+                  onChange={e => onUpdateWatchlistDate?.(e.target.value || null)}
+                  className="absolute inset-0 opacity-0 cursor-pointer w-full"
+                />
+              </label>
               <Link href="/my-shows?tab=watchlist" className="mt-1 text-[11px] text-gray-500 hover:text-brand transition-colors">
                 See Watchlist
               </Link>

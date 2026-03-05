@@ -14,6 +14,7 @@ import { ProGateProvider } from '@/contexts/ProGateContext';
 import { featureFlags } from '@/config/feature-flags';
 import UserProviders from '@/components/UserProviders';
 import HeaderHamburger from '@/components/HeaderHamburger';
+import HeaderUserIcon from '@/components/HeaderUserIcon';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -136,6 +137,7 @@ export default function RootLayout({
                     <HeaderSubscribeButton />
                   </div>
                   <HeaderSearch />
+                  <HeaderUserIcon />
                   <HeaderHamburger />
                 </div>
               </div>
