@@ -85,7 +85,7 @@ function extractPlotSection(content) {
     /==\s*Synopsis\s*==/i,
     /==\s*Plot summary\s*==/i,
     /==\s*Story\s*==/i,
-    /==\s*Musical numbers?\s*==/i, // Sometimes has plot description
+    // Musical numbers section removed — yields song lists, not plot summaries
   ];
 
   for (const headerRegex of sectionHeaders) {
