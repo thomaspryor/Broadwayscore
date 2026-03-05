@@ -7,7 +7,7 @@ import { ScoreBadge } from '@/components/show-cards';
 
 // ─── Types ───
 
-type Screen = 'landing' | 'picking' | 'reveal' | 'results';
+type Screen = 'landing' | 'picking' | 'reveal' | 'tier-complete' | 'results';
 
 interface CriticPanelist {
   name: string;
@@ -207,6 +207,9 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
   const currentCategory = currentTier?.categories[currentCatIdx];
   const totalCategoriesInTier = currentTier?.categories.length ?? 0;
   const allCompletedPicks = Object.entries(picks);
+  const entriesEarned = data.tiers.filter(tier =>
+    tier.categories.filter(categoryHasNominees).every(cat => picks[cat.title])
+  ).length;
 
   const handlePick = useCallback((category: string, title: string, slug: string) => {
     setPicks(prev => ({ ...prev, [category]: title }));
@@ -255,9 +258,17 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
   }, []);
 
   const shareText = useCallback(() => {
-    const pickLines = allCompletedPicks.map(([cat, pick]) => `${cat.replace('Best ', '')}: ${pick}`).join('\n');
-    return `My Tony Award Picks 🏆\n\n${pickLines}\n\nMake your picks: broadwayscorecard.com/beat-the-critics`;
-  }, [allCompletedPicks]);
+    const lines: string[] = [];
+    for (const tier of data.tiers) {
+      const tierPicks = tier.categories.filter(categoryHasNominees).filter(cat => picks[cat.title]);
+      if (tierPicks.length === 0) continue;
+      lines.push(`\n${tier.name}:`);
+      for (const cat of tierPicks) {
+        lines.push(`${cat.title.replace('Best ', '')}: ${picks[cat.title]}`);
+      }
+    }
+    return `My Tony Award Picks 🏆 (${entriesEarned} ${entriesEarned === 1 ? 'entry' : 'entries'})${lines.join('\n')}\n\nMake your picks: broadwayscorecard.com/beat-the-critics`;
+  }, [data.tiers, picks, entriesEarned]);
 
   const handleShare = useCallback(async () => {
     const text = shareText();
@@ -292,14 +303,14 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           <h1 className="animate-fade-up mt-6" style={{ animationDelay: '0.5s', animationFillMode: 'both' }}>
             <span className="block text-[52px] font-black leading-[0.95] tracking-tighter">Beat{' '}<span className="bg-gradient-to-br from-brand to-[#ff1368] bg-clip-text text-transparent">the Critics</span><sup className="text-sm font-bold text-gray-500 align-super ml-0.5">&trade;</sup></span>
           </h1>
-          <p className="animate-fade-up mt-5 text-[17px] leading-relaxed text-gray-400 max-w-[360px]" style={{ animationDelay: '0.7s', animationFillMode: 'both' }}>Pick Tony winners.<br />Compete against <strong className="text-gray-200 font-semibold">top critics</strong> and the <strong className="text-gray-200 font-semibold">CriticScore algorithm</strong>.<br />Win <strong className="text-gray-200 font-semibold">free tickets</strong>.</p>
+          <p className="animate-fade-up mt-5 text-[17px] leading-relaxed text-gray-400 max-w-[360px]" style={{ animationDelay: '0.7s', animationFillMode: 'both' }}>Pick Tony winners across <strong className="text-gray-200 font-semibold">4 rounds</strong>.<br />Compete against <strong className="text-gray-200 font-semibold">top critics</strong> and the <strong className="text-gray-200 font-semibold">CriticScore algorithm</strong>.<br />Each round = <strong className="text-gray-200 font-semibold">1 entry to win free tickets</strong>.</p>
           <button onClick={() => { setCurrentTierIdx(0); const firstIdx = data.tiers[0]?.categories.findIndex(c => categoryHasNominees(c)) ?? 0; setCurrentCatIdx(firstIdx >= 0 ? firstIdx : 0); goToScreen('picking'); }} className="animate-fade-up mt-9 inline-flex items-center gap-2.5 px-10 py-4 rounded-[14px] bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white text-[17px] font-bold shadow-[0_4px_24px_rgba(255,19,104,0.35)] hover:shadow-[0_8px_32px_rgba(255,19,104,0.45)] hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200" style={{ animationDelay: '0.9s', animationFillMode: 'both' }}>Make Your Picks <span className="transition-transform group-hover:translate-x-1">&rarr;</span></button>
           <div className="animate-fade-up mt-12 flex gap-6" style={{ animationDelay: '1.1s', animationFillMode: 'both' }}>
             <div className="text-center"><div className="text-[22px] font-extrabold text-brand tracking-tight">{data.stats.showsTracked}</div><div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mt-0.5">Shows</div></div>
             <div className="text-center"><div className="text-[22px] font-extrabold text-brand tracking-tight">{data.stats.reviewsScored >= 1000 ? `${(data.stats.reviewsScored / 1000).toFixed(data.stats.reviewsScored >= 10000 ? 0 : 1)}K` : data.stats.reviewsScored.toLocaleString()}</div><div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mt-0.5">Reviews</div></div>
             <div className="text-center"><div className="text-[22px] font-extrabold text-brand tracking-tight">{data.stats.criticsTracked}+</div><div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mt-0.5">Critics Tracked</div></div>
           </div>
-          <div className="animate-fade-up mt-8 flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-brand/[0.08] border border-brand/15" style={{ animationDelay: '1.3s', animationFillMode: 'both' }}><span className="text-xl">🎫</span><span className="text-sm text-gray-400">Beat the critics &rarr; enter to win <strong className="text-brand">free TodayTix tickets</strong></span></div>
+          <div className="animate-fade-up mt-8 flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-brand/[0.08] border border-brand/15" style={{ animationDelay: '1.3s', animationFillMode: 'both' }}><span className="text-xl">🎟️</span><span className="text-sm text-gray-400">4 rounds &middot; 4 entries &middot; <strong className="text-brand">win free TodayTix tickets</strong></span></div>
         </div>
       </div>
     );
@@ -454,18 +465,62 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
                 Keep Going &rarr;
                 {(() => { const nextIdx = findNextNonEmptyCategory(currentCatIdx); const nextCat = nextIdx !== null ? currentTier.categories[nextIdx] : null; const catsWN = currentTier.categories.filter(categoryHasNominees); const nextP = nextCat ? catsWN.findIndex(c => c.title === nextCat.title) + 1 : 0; return nextCat ? (<span className="block text-xs font-medium opacity-80 mt-0.5">Next: {nextCat.title} ({nextP} of {catsWN.length})</span>) : null; })()}
               </button>
-            ) : hasNextTier ? (
-              <>
-                <button onClick={handleNextTier} className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5 transition-all">
-                  Continue to {data.tiers[currentTierIdx + 1]?.name ?? 'Tier 2'} &rarr;
-                  <span className="block text-xs font-medium opacity-80 mt-0.5">Optional &middot; Doubles your chances to win</span>
-                </button>
-                <button onClick={() => goToScreen('results')} className="w-full py-3.5 rounded-[14px] text-sm font-semibold border border-white/10 text-gray-400 hover:border-brand hover:text-brand transition-all">Save &amp; Share My Ballot</button>
-              </>
             ) : (
-              <button onClick={() => goToScreen('results')} className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5 transition-all">See My Ballot &rarr;</button>
+              <button onClick={() => goToScreen('tier-complete')} className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5 transition-all">
+                {hasNextTier ? 'Complete Round \u2192' : 'See My Ballot \u2192'}
+              </button>
             )}
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ─── Tier Complete Celebration ───
+  if (screen === 'tier-complete') {
+    const tierJustCompleted = currentTier;
+    const completedCats = tierJustCompleted?.categories.filter(categoryHasNominees) ?? [];
+    const tierNumber = currentTierIdx + 1;
+    const nextTier = hasNextTier ? data.tiers[currentTierIdx + 1] : null;
+
+    return (
+      <div className="min-h-screen bg-surface flex flex-col items-center justify-center px-6">
+        <div className="max-w-[420px] w-full text-center animate-fade-up" style={{ animationFillMode: 'both' }}>
+          <div className="text-6xl mb-4">🎟️</div>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#ff1368]/10 border border-[#ff1368]/20 text-[#ff1368] text-sm font-bold uppercase tracking-wider mb-5">
+            Entry #{tierNumber} Earned!
+          </div>
+          <h2 className="text-[32px] font-black tracking-tight mb-2">
+            {tierJustCompleted?.name} Complete
+          </h2>
+          <p className="text-gray-400 text-base mb-3">
+            You picked all {completedCats.length} categories in {tierJustCompleted?.name}.
+          </p>
+          <div className="flex justify-center gap-2 mb-8">
+            {data.tiers.map((t, i) => (
+              <div key={t.key} className={`h-2.5 w-8 rounded-full transition-all ${i <= currentTierIdx ? 'bg-[#ff1368]' : 'bg-surface-overlay'}`} />
+            ))}
+          </div>
+          <p className="text-sm text-gray-500 mb-8">
+            {entriesEarned} of {data.tiers.length} entries earned
+          </p>
+
+          {nextTier ? (
+            <>
+              <button onClick={handleNextTier} className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_24px_rgba(255,19,104,0.35)] hover:-translate-y-0.5 transition-all mb-3">
+                Continue to {nextTier.name} &rarr;
+                <span className="block text-xs font-medium opacity-80 mt-0.5">Earn entry #{tierNumber + 1}</span>
+              </button>
+              <button onClick={() => goToScreen('results')} className="w-full py-3.5 rounded-[14px] text-sm font-semibold border border-white/10 text-gray-400 hover:border-brand hover:text-brand transition-all">
+                Save &amp; Share My Ballot
+              </button>
+            </>
+          ) : (
+            <button onClick={() => goToScreen('results')} className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_24px_rgba(255,19,104,0.35)] hover:-translate-y-0.5 transition-all">
+              See My Ballot &rarr;
+              <span className="block text-xs font-medium opacity-80 mt-0.5">All {data.tiers.length} entries earned!</span>
+            </button>
+          )}
         </div>
       </div>
     );
@@ -477,9 +532,18 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
       <div className="sticky top-0 z-10 px-5 py-4 flex items-center justify-between border-b border-white/5 bg-surface/90 backdrop-blur-xl"><button onClick={() => goToScreen('reveal')} className="text-gray-400 text-sm hover:text-white transition-colors p-2 -m-2">&larr; Back</button><div className="text-xs font-bold">Your Ballot</div><div /></div>
       <div className="flex-1 px-5 py-8 max-w-[480px] mx-auto w-full flex flex-col items-center">
         <div className="w-full max-w-[380px] rounded-[20px] overflow-hidden bg-surface-raised border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-fade-up" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
-          <div className="px-6 pt-6 pb-4 bg-gradient-to-br from-[#ff1368]/10 to-brand/[0.06] border-b border-white/5"><div className="text-center"><CoBrand size="small" /><div className="text-[22px] font-black tracking-tight mt-4">My Tony Picks</div><div className="text-sm text-gray-400">Beat the Critics &middot; {data.season.ceremonyYear}</div></div></div>
+          <div className="px-6 pt-6 pb-4 bg-gradient-to-br from-[#ff1368]/10 to-brand/[0.06] border-b border-white/5"><div className="text-center"><CoBrand size="small" /><div className="text-[22px] font-black tracking-tight mt-4">My Tony Picks</div><div className="text-sm text-gray-400">Beat the Critics &middot; {data.season.ceremonyYear}</div>{entriesEarned > 0 && <div className="inline-flex items-center gap-1.5 mt-2.5 px-3 py-1 rounded-full bg-[#ff1368]/10 text-[#ff1368] text-xs font-bold">🎟️ {entriesEarned} {entriesEarned === 1 ? 'entry' : 'entries'} earned</div>}</div></div>
           <div className="px-6 py-4">
-            {allCompletedPicks.map(([category, pickTitle]) => (<div key={category} className="flex items-center justify-between py-2.5 border-b border-white/5 last:border-b-0"><div className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">{category.replace('Best ', '').replace('Revival of a ', 'Revival \u00b7 ')}</div><div className="text-sm font-bold text-right">{pickTitle}</div></div>))}
+            {data.tiers.map(tier => {
+              const tierPicks = tier.categories.filter(categoryHasNominees).filter(cat => picks[cat.title]);
+              if (tierPicks.length === 0) return null;
+              return (
+                <div key={tier.key}>
+                  <div className="text-[9px] font-bold uppercase tracking-wider text-gray-600 mt-3 first:mt-0 mb-1">{tier.name}</div>
+                  {tierPicks.map(cat => (<div key={cat.title} className="flex items-center justify-between py-2 border-b border-white/5 last:border-b-0"><div className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">{cat.title.replace('Best ', '').replace('Revival of a ', 'Revival \u00b7 ').replace('Featured ', 'Feat. ')}</div><div className="text-sm font-bold text-right">{picks[cat.title]}</div></div>))}
+                </div>
+              );
+            })}
             {allCompletedPicks.length === 0 && (<div className="py-4 text-center text-gray-500 text-sm">No picks made yet</div>)}
           </div>
           <div className="px-6 py-4 bg-[#ff1368]/[0.04] border-t border-white/5 text-center"><div className="text-sm font-bold text-[#ff1368]">Can you Beat the Critics?</div><div className="text-xs text-gray-500 mt-1">todaytix.com/beat-the-critics</div></div>
@@ -502,7 +566,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
                 {emailSubmitting ? 'Saving...' : 'Save'}
               </button>
             </div>
-            <label className="flex items-start gap-2.5 text-left cursor-pointer"><input type="checkbox" defaultChecked className="mt-0.5 accent-[#ff1368] w-4 h-4" /><span className="text-xs text-gray-400 leading-relaxed">Enter me in the drawing to win <strong className="text-brand">free TodayTix tickets</strong></span></label>
+            <label className="flex items-start gap-2.5 text-left cursor-pointer"><input type="checkbox" defaultChecked className="mt-0.5 accent-[#ff1368] w-4 h-4" /><span className="text-xs text-gray-400 leading-relaxed">Enter me ({entriesEarned} {entriesEarned === 1 ? 'entry' : 'entries'}) in the drawing to win <strong className="text-brand">free TodayTix tickets</strong></span></label>
           </div>
         )}
 
