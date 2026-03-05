@@ -190,7 +190,7 @@ test.describe('Show Page Rating Section', () => {
         const input = dateInputs.nth(i);
         // Should have opacity-0 class (hidden but clickable via label)
         const classes = await input.getAttribute('class');
-        expect(classes).toContain('opacity-0');
+        expect(classes).toMatch(/opacity-0|opacity-\[0\.01\]/);
       }
     }
   });

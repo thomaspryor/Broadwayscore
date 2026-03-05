@@ -244,7 +244,7 @@ export default function ShowPageRating({
                   type="date"
                   value={watchlistDate || ''}
                   onChange={e => onUpdateWatchlistDate?.(e.target.value || null)}
-                  className="absolute inset-0 opacity-0 cursor-pointer w-full"
+                  className="absolute inset-0 opacity-[0.01] cursor-pointer w-full h-full"
                 />
               </label>
               <Link href="/my-shows?tab=watchlist" className="mt-1 text-[11px] text-gray-500 hover:text-brand transition-colors">
