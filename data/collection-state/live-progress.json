@@ -1,18 +1,129 @@
 {
-  "updatedAt": "2026-03-05T01:18:51.939Z",
-  "processed": 68,
-  "failed": 2,
-  "successRate": "97.1%",
+  "updatedAt": "2026-03-05T01:19:33.131Z",
+  "processed": 67,
+  "failed": 333,
+  "successRate": "16.8%",
   "tierBreakdown": {
-    "playwright": 68,
+    "playwright": 2,
     "amp": 0,
-    "browserbase": 0,
-    "directCookies": 0,
-    "scrapingbee": 0,
+    "browserbase": 6,
+    "directCookies": 10,
+    "scrapingbee": 31,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 0
+    "archiveToday": 172,
+    "archive": 21
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-03-04T21:21:54.655Z",
+      "event": "bb-session",
+      "session": "d87577cf",
+      "url": "https://www.nytimes.com/2013/04/17/theater/reviews/the-big-knife-with-bobby-cann"
+    },
+    {
+      "t": "2026-03-04T21:21:55.810Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-04T21:23:19.037Z",
+      "event": "bb-session",
+      "session": "e9e83a86",
+      "url": "https://www.nytimes.com/2005/03/16/theater/reviews/16cons.html"
+    },
+    {
+      "t": "2026-03-04T21:23:20.259Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-04T21:25:49.574Z",
+      "event": "bb-session",
+      "session": "9af84f48",
+      "url": "https://www.nytimes.com/2017/03/10/theater/the-glass-menagerie-review-sally-fiel"
+    },
+    {
+      "t": "2026-03-04T21:25:50.812Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-04T21:27:04.465Z",
+      "event": "bb-session",
+      "session": "24224a8c",
+      "url": "https://www.nytimes.com/2017/04/20/theater/the-little-foxes-review-laura-linney-"
+    },
+    {
+      "t": "2026-03-04T21:27:05.713Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-04T21:28:17.384Z",
+      "event": "bb-session",
+      "session": "6d0b1813",
+      "url": "https://www.nytimes.com/2010/11/19/theater/reviews/19merchant.html"
+    },
+    {
+      "t": "2026-03-04T21:28:18.606Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-04T21:29:54.019Z",
+      "event": "bb-session",
+      "session": "15d590fd",
+      "url": "https://www.nytimes.com/2011/04/12/theater/reviews/the-motherfucker-with-the-hat"
+    },
+    {
+      "t": "2026-03-04T21:29:55.294Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-04T21:31:18.505Z",
+      "event": "bb-session",
+      "session": "81c3fe80",
+      "url": "https://www.nytimes.com/2009/04/30/theater/reviews/30norman.html"
+    },
+    {
+      "t": "2026-03-04T21:31:19.675Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-04T21:32:31.600Z",
+      "event": "bb-session",
+      "session": "bea3ec57",
+      "url": "https://www.nytimes.com/2005/10/28/theater/reviews/the-odd-couple-redux-still-at"
+    },
+    {
+      "t": "2026-03-04T21:32:32.798Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-04T21:34:03.670Z",
+      "event": "bb-session",
+      "session": "551cb0ae",
+      "url": "https://www.nytimes.com/2010/11/12/theater/reviews/12pee.html"
+    },
+    {
+      "t": "2026-03-04T21:34:04.931Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-04T21:35:18.253Z",
+      "event": "bb-session",
+      "session": "641eeec4",
+      "url": "https://www.nytimes.com/2009/05/08/theater/reviews/08philanthropist.html"
+    },
+    {
+      "t": "2026-03-04T21:35:19.575Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
