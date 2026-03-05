@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect, useRef } from 'react';
-import type { BeatTheCriticsData, BeatTheCriticsCategoryData } from './page';
+import type { BeatTheCriticsData, BeatTheCriticsCategoryData, ActorNominee } from './page';
 import type { SerializedTonyShow } from '@/lib/data-tony-predictions';
 
 // ─── Types ───
@@ -38,6 +38,15 @@ function getCriticPicks(category: string, nominees: SerializedTonyShow[]): strin
   });
 }
 
+function getActorCriticPicks(category: string, actorNominees: ActorNominee[]): string[] {
+  if (actorNominees.length === 0) return [];
+  const seed = category.length;
+  return CRITICS.map((_, i) => {
+    const idx = (seed + i * 7) % Math.min(actorNominees.length, 4);
+    return actorNominees[idx]?.name ?? actorNominees[0]?.name ?? '';
+  });
+}
+
 function getCrowdPercentages(nominees: SerializedTonyShow[]): number[] {
   if (nominees.length === 0) return [];
   const scores = nominees.map(n => n.blendedScore ?? n.compositeScore ?? 50);
@@ -63,6 +72,16 @@ function getShowImagePath(show: SerializedTonyShow): string | null {
   if (!show.thumbnailPath) return null;
   if (show.thumbnailPath.startsWith('http')) return show.thumbnailPath;
   return show.thumbnailPath.replace('/thumbnail.webp', '/poster.webp');
+}
+
+function getActorImagePath(nominee: ActorNominee): string | null {
+  if (!nominee.thumbnailPath) return null;
+  if (nominee.thumbnailPath.startsWith('http')) return nominee.thumbnailPath;
+  return nominee.thumbnailPath.replace('/thumbnail.webp', '/poster.webp');
+}
+
+function categoryHasNominees(cat: BeatTheCriticsCategoryData): boolean {
+  return (cat.nominees?.length ?? 0) > 0 || (cat.actorNominees?.length ?? 0) > 0;
 }
 
 // ─── Components ───
@@ -118,13 +137,37 @@ function ShowPoster({ show, size = 'sm' }: { show: SerializedTonyShow; size?: 's
   return (<img src={imgPath} alt={show.title} className={`${dims} rounded-lg object-cover flex-shrink-0 bg-surface-overlay`} onError={() => setImgError(true)} />);
 }
 
+function ActorPoster({ nominee }: { nominee: ActorNominee }) {
+  const [imgError, setImgError] = useState(false);
+  const imgPath = getActorImagePath(nominee);
+  if (imgError || !imgPath) {
+    return (<div className="w-[52px] h-[72px] rounded-lg bg-surface-overlay flex items-center justify-center text-xl font-extrabold text-white/30 flex-shrink-0">{nominee.name.charAt(0)}</div>);
+  }
+  return (<img src={imgPath} alt={nominee.showTitle} className="w-[52px] h-[72px] rounded-lg object-cover flex-shrink-0 bg-surface-overlay" onError={() => setImgError(true)} />);
+}
+
 function NomineeCard({ show, selected, onSelect }: { show: SerializedTonyShow; selected: boolean; onSelect: () => void }) {
   return (
     <button onClick={onSelect} className={`w-full flex items-center gap-3.5 p-3.5 rounded-[14px] text-left transition-all duration-200 ${selected ? 'bg-[#ff1368]/[0.06] border-2 border-[#ff1368] shadow-[0_0_20px_rgba(255,19,104,0.1)]' : 'bg-surface-raised border-2 border-transparent hover:bg-surface-overlay hover:border-white/10'}`}>
       <ShowPoster show={show} />
       <div className="flex-1 min-w-0">
         <div className="text-[15px] font-bold truncate">{show.title}</div>
-        <div className="text-xs text-gray-500 flex items-center gap-2"><span>{show.venue}</span><span className="text-[#ff1368] font-semibold">TodayTix &rarr;</span></div>
+        <div className="text-xs text-gray-500">{show.venue}</div>
+      </div>
+      <div className={`w-7 h-7 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all duration-200 ${selected ? 'border-[#ff1368] bg-[#ff1368] animate-scale-in' : 'border-gray-600'}`}>
+        {selected && (<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="white" strokeWidth="2.5"><path d="M2.5 6l2.5 2.5 4.5-5" /></svg>)}
+      </div>
+    </button>
+  );
+}
+
+function ActorNomineeCard({ nominee, selected, onSelect }: { nominee: ActorNominee; selected: boolean; onSelect: () => void }) {
+  return (
+    <button onClick={onSelect} className={`w-full flex items-center gap-3.5 p-3.5 rounded-[14px] text-left transition-all duration-200 ${selected ? 'bg-[#ff1368]/[0.06] border-2 border-[#ff1368] shadow-[0_0_20px_rgba(255,19,104,0.1)]' : 'bg-surface-raised border-2 border-transparent hover:bg-surface-overlay hover:border-white/10'}`}>
+      <ActorPoster nominee={nominee} />
+      <div className="flex-1 min-w-0">
+        <div className="text-[15px] font-bold truncate">{nominee.name}</div>
+        <div className="text-xs text-gray-500">{nominee.showTitle}</div>
       </div>
       <div className={`w-7 h-7 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all duration-200 ${selected ? 'border-[#ff1368] bg-[#ff1368] animate-scale-in' : 'border-gray-600'}`}>
         {selected && (<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="white" strokeWidth="2.5"><path d="M2.5 6l2.5 2.5 4.5-5" /></svg>)}
@@ -158,16 +201,62 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
   const [picks, setPicks] = useState<Record<string, string>>({});
   const [pickSlugs, setPickSlugs] = useState<Record<string, string>>({});
   const [shuffleSeed] = useState(() => Math.floor(Math.random() * 1000000));
+  const [emailSubmitted, setEmailSubmitted] = useState(false);
+  const [emailSubmitting, setEmailSubmitting] = useState(false);
   const currentTier = data.tiers[currentTierIdx];
   const currentCategory = currentTier?.categories[currentCatIdx];
   const totalCategoriesInTier = currentTier?.categories.length ?? 0;
   const allCompletedPicks = Object.entries(picks);
-  const handlePick = useCallback((category: string, show: SerializedTonyShow) => { setPicks(prev => ({ ...prev, [category]: show.title })); setPickSlugs(prev => ({ ...prev, [category]: show.slug })); }, []);
-  const handleLockIn = useCallback(() => { if (!currentCategory || !picks[currentCategory.title]) return; setScreen('reveal'); }, [currentCategory, picks]);
-  const findNextNonEmptyCategory = useCallback((fromCatIdx: number): number | null => { for (let i = fromCatIdx + 1; i < totalCategoriesInTier; i++) { if ((currentTier?.categories[i]?.nominees.length ?? 0) > 0) return i; } return null; }, [currentTier, totalCategoriesInTier]);
-  const handleNextCategory = useCallback(() => { const nextIdx = findNextNonEmptyCategory(currentCatIdx); if (nextIdx !== null) { setCurrentCatIdx(nextIdx); setScreen('picking'); } else { setScreen('results'); } }, [currentCatIdx, findNextNonEmptyCategory]);
+
+  const handlePick = useCallback((category: string, title: string, slug: string) => {
+    setPicks(prev => ({ ...prev, [category]: title }));
+    setPickSlugs(prev => ({ ...prev, [category]: slug }));
+  }, []);
+
+  const handleLockIn = useCallback(() => {
+    if (!currentCategory || !picks[currentCategory.title]) return;
+    setScreen('reveal');
+  }, [currentCategory, picks]);
+
+  const findNextNonEmptyCategory = useCallback((fromCatIdx: number): number | null => {
+    for (let i = fromCatIdx + 1; i < totalCategoriesInTier; i++) {
+      if (categoryHasNominees(currentTier?.categories[i])) return i;
+    }
+    return null;
+  }, [currentTier, totalCategoriesInTier]);
+
+  const hasNextTier = currentTierIdx + 1 < data.tiers.length && data.tiers[currentTierIdx + 1].categories.some(categoryHasNominees);
+
+  const handleNextCategory = useCallback(() => {
+    const nextIdx = findNextNonEmptyCategory(currentCatIdx);
+    if (nextIdx !== null) {
+      setCurrentCatIdx(nextIdx);
+      setScreen('picking');
+    } else if (hasNextTier) {
+      // Stay on reveal — tier transition buttons handle this
+    } else {
+      setScreen('results');
+    }
+  }, [currentCatIdx, findNextNonEmptyCategory, hasNextTier]);
+
+  const handleNextTier = useCallback(() => {
+    const nextTierIdx = currentTierIdx + 1;
+    if (nextTierIdx < data.tiers.length) {
+      setCurrentTierIdx(nextTierIdx);
+      const firstCatIdx = data.tiers[nextTierIdx].categories.findIndex(categoryHasNominees);
+      setCurrentCatIdx(firstCatIdx >= 0 ? firstCatIdx : 0);
+      setScreen('picking');
+    }
+  }, [currentTierIdx, data.tiers]);
+
+  const handleEmailSave = useCallback(() => {
+    setEmailSubmitting(true);
+    setTimeout(() => { setEmailSubmitting(false); setEmailSubmitted(true); }, 1500);
+  }, []);
+
   const goToScreen = useCallback((s: Screen) => { setScreen(s); }, []);
 
+  // ─── Landing Screen ───
   if (screen === 'landing') {
     return (
       <div className="min-h-screen bg-surface relative overflow-hidden flex flex-col">
@@ -183,8 +272,8 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           <h1 className="animate-fade-up mt-6" style={{ animationDelay: '0.5s', animationFillMode: 'both' }}>
             <span className="block text-[52px] font-black leading-[0.95] tracking-tighter">Beat{' '}<span className="bg-gradient-to-br from-brand to-[#ff1368] bg-clip-text text-transparent">the Critics</span><sup className="text-sm font-bold text-gray-500 align-super ml-0.5">&trade;</sup></span>
           </h1>
-          <p className="animate-fade-up mt-5 text-[17px] leading-relaxed text-gray-400 max-w-[360px]" style={{ animationDelay: '0.7s', animationFillMode: 'both' }}>Pick Tony winners. Compete against <strong className="text-gray-200 font-semibold">top critics</strong> and the <strong className="text-gray-200 font-semibold">CriticScore algorithm</strong>. Win <strong className="text-gray-200 font-semibold">free tickets</strong>.</p>
-          <button onClick={() => { setCurrentTierIdx(0); const firstIdx = data.tiers[0]?.categories.findIndex(c => c.nominees.length > 0) ?? 0; setCurrentCatIdx(firstIdx >= 0 ? firstIdx : 0); goToScreen('picking'); }} className="animate-fade-up mt-9 inline-flex items-center gap-2.5 px-10 py-4 rounded-[14px] bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white text-[17px] font-bold shadow-[0_4px_24px_rgba(255,19,104,0.35)] hover:shadow-[0_8px_32px_rgba(255,19,104,0.45)] hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200" style={{ animationDelay: '0.9s', animationFillMode: 'both' }}>Make Your Picks <span className="transition-transform group-hover:translate-x-1">&rarr;</span></button>
+          <p className="animate-fade-up mt-5 text-[17px] leading-relaxed text-gray-400 max-w-[360px]" style={{ animationDelay: '0.7s', animationFillMode: 'both' }}>Pick Tony winners.<br />Compete against <strong className="text-gray-200 font-semibold">top critics</strong> and the <strong className="text-gray-200 font-semibold">CriticScore algorithm</strong>.<br />Win <strong className="text-gray-200 font-semibold">free tickets</strong>.</p>
+          <button onClick={() => { setCurrentTierIdx(0); const firstIdx = data.tiers[0]?.categories.findIndex(c => categoryHasNominees(c)) ?? 0; setCurrentCatIdx(firstIdx >= 0 ? firstIdx : 0); goToScreen('picking'); }} className="animate-fade-up mt-9 inline-flex items-center gap-2.5 px-10 py-4 rounded-[14px] bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white text-[17px] font-bold shadow-[0_4px_24px_rgba(255,19,104,0.35)] hover:shadow-[0_8px_32px_rgba(255,19,104,0.45)] hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200" style={{ animationDelay: '0.9s', animationFillMode: 'both' }}>Make Your Picks <span className="transition-transform group-hover:translate-x-1">&rarr;</span></button>
           <div className="animate-fade-up mt-12 flex gap-6" style={{ animationDelay: '1.1s', animationFillMode: 'both' }}>
             <div className="text-center"><div className="text-[22px] font-extrabold text-brand tracking-tight">{data.stats.showsTracked}</div><div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mt-0.5">Shows</div></div>
             <div className="text-center"><div className="text-[22px] font-extrabold text-brand tracking-tight">{data.stats.reviewsScored >= 1000 ? `${(data.stats.reviewsScored / 1000).toFixed(data.stats.reviewsScored >= 10000 ? 0 : 1)}K` : data.stats.reviewsScored.toLocaleString()}</div><div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mt-0.5">Reviews</div></div>
@@ -196,15 +285,21 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
     );
   }
 
+  // ─── Picking Screen ───
   if (screen === 'picking' && currentCategory) {
+    const isActor = !!currentCategory.isActorCategory;
     const selectedTitle = picks[currentCategory.title];
-    const nominees = seededShuffle(currentCategory.nominees, shuffleSeed + currentCatIdx);
-    const catsWithNominees = currentTier.categories.filter(c => c.nominees.length > 0);
+    const catsWithNominees = currentTier.categories.filter(categoryHasNominees);
     const currentProgressIdx = catsWithNominees.findIndex(c => c.title === currentCategory.title);
+
+    // Get the right nominees list
+    const showNominees = isActor ? [] : seededShuffle(currentCategory.nominees, shuffleSeed + currentCatIdx);
+    const actorNominees = isActor ? seededShuffle(currentCategory.actorNominees ?? [], shuffleSeed + currentCatIdx) : [];
+
     return (
       <div className="min-h-screen bg-surface flex flex-col pb-[120px]">
         <div className="sticky top-0 z-10 px-5 py-4 flex items-center justify-between border-b border-white/5 bg-surface/90 backdrop-blur-xl">
-          <button onClick={() => { let prevIdx: number | null = null; for (let i = currentCatIdx - 1; i >= 0; i--) { if ((currentTier.categories[i]?.nominees.length ?? 0) > 0) { prevIdx = i; break; } } if (prevIdx !== null) setCurrentCatIdx(prevIdx); else goToScreen('landing'); }} className="text-gray-400 text-sm hover:text-white transition-colors p-2 -m-2">&larr; Back</button>
+          <button onClick={() => { let prevIdx: number | null = null; for (let i = currentCatIdx - 1; i >= 0; i--) { if (categoryHasNominees(currentTier.categories[i])) { prevIdx = i; break; } } if (prevIdx !== null) setCurrentCatIdx(prevIdx); else if (currentTierIdx > 0) { setCurrentTierIdx(currentTierIdx - 1); const prevTier = data.tiers[currentTierIdx - 1]; const lastCat = prevTier.categories.length - 1; setCurrentCatIdx(lastCat); setScreen('reveal'); } else goToScreen('landing'); }} className="text-gray-400 text-sm hover:text-white transition-colors p-2 -m-2">&larr; Back</button>
           <div className="flex gap-1.5">{catsWithNominees.map((_, i) => (<div key={i} className={`h-2 rounded transition-all duration-300 ${i < currentProgressIdx ? 'w-2 bg-[#ff1368]' : i === currentProgressIdx ? 'w-5 bg-[#ff1368] shadow-[0_0_8px_rgba(255,19,104,0.5)]' : 'w-2 bg-surface-overlay'}`} />))}</div>
           <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">{currentProgressIdx + 1} of {catsWithNominees.length}</div>
         </div>
@@ -212,7 +307,12 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           <div className="inline-flex px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider mb-3 bg-brand/15 text-brand">{currentTier.label} &middot; {currentTier.name}</div>
           <h2 className="text-[28px] font-extrabold tracking-tight mb-1.5">{currentCategory.title}</h2>
           <p className="text-sm text-gray-500 mb-7">Tap your pick.</p>
-          <div className="flex flex-col gap-2.5">{nominees.map((show) => (<NomineeCard key={show.slug} show={show} selected={selectedTitle === show.title} onSelect={() => handlePick(currentCategory.title, show)} />))}</div>
+          <div className="flex flex-col gap-2.5">
+            {isActor
+              ? actorNominees.map((nom) => (<ActorNomineeCard key={nom.name + nom.showSlug} nominee={nom} selected={selectedTitle === nom.name} onSelect={() => handlePick(currentCategory.title, nom.name, nom.showSlug)} />))
+              : showNominees.map((show) => (<NomineeCard key={show.slug} show={show} selected={selectedTitle === show.title} onSelect={() => handlePick(currentCategory.title, show.title, show.slug)} />))
+            }
+          </div>
         </div>
         <div className="fixed bottom-0 left-0 right-0 z-20 px-5 pb-6 pt-3 bg-gradient-to-t from-surface via-surface to-transparent">
           <div className="max-w-[480px] mx-auto">
@@ -224,21 +324,28 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
     );
   }
 
+  // ─── Reveal Screen ───
   if (screen === 'reveal' && currentCategory) {
+    const isActor = !!currentCategory.isActorCategory;
     const userPick = picks[currentCategory.title];
-    const nominees = [...currentCategory.nominees].sort((a, b) => (b.compositeScore ?? 0) - (a.compositeScore ?? 0));
-    const criticScorePick = getCriticScorePick(nominees);
-    const criticPicks = getCriticPicks(currentCategory.title, nominees);
-    const crowdPcts = getCrowdPercentages(nominees);
-    const criticScorePickShow = nominees.find(n => n.title === criticScorePick);
-    const matchesCriticScore = userPick === criticScorePick;
+    const hasMoreCatsInTier = findNextNonEmptyCategory(currentCatIdx) !== null;
+
+    // Show categories: full reveal with CriticScore + critics + crowd
+    // Actor categories: critics only (no CriticScore)
+    const nominees = isActor ? [] : [...currentCategory.nominees].sort((a, b) => (b.compositeScore ?? 0) - (a.compositeScore ?? 0));
+    const actorNominees = isActor ? (currentCategory.actorNominees ?? []) : [];
+    const criticScorePick = isActor ? '' : getCriticScorePick(nominees);
+    const criticPicks = isActor ? getActorCriticPicks(currentCategory.title, actorNominees) : getCriticPicks(currentCategory.title, nominees);
+    const crowdPcts = isActor ? [] : getCrowdPercentages(nominees);
+    const criticScorePickShow = isActor ? undefined : nominees.find(n => n.title === criticScorePick);
+    const matchesCriticScore = isActor ? false : userPick === criticScorePick;
     const criticMatches = criticPicks.filter(p => p === userPick).length;
-    const hasMoreCategories = findNextNonEmptyCategory(currentCatIdx) !== null;
+
     return (
       <div className="min-h-screen bg-surface flex flex-col pb-[140px]">
         <div className="sticky top-0 z-10 px-5 py-4 flex items-center justify-between border-b border-white/5 bg-surface/90 backdrop-blur-xl">
           <button onClick={() => goToScreen('picking')} className="text-gray-400 text-sm hover:text-white transition-colors p-2 -m-2">&larr; Back</button>
-          <div className="flex gap-1.5">{currentTier.categories.filter(c => c.nominees.length > 0).map((_, i) => (<div key={i} className={`h-2 rounded transition-all duration-300 ${i <= currentTier.categories.filter(c => c.nominees.length > 0).findIndex(c => c.title === currentCategory.title) ? 'w-2 bg-[#ff1368]' : 'w-2 bg-surface-overlay'}`} />))}</div>
+          <div className="flex gap-1.5">{currentTier.categories.filter(categoryHasNominees).map((_, i) => (<div key={i} className={`h-2 rounded transition-all duration-300 ${i <= currentTier.categories.filter(categoryHasNominees).findIndex(c => c.title === currentCategory.title) ? 'w-2 bg-[#ff1368]' : 'w-2 bg-surface-overlay'}`} />))}</div>
           <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Reveal</div>
         </div>
         <div className="flex-1 px-5 py-6 max-w-[480px] mx-auto w-full">
@@ -246,60 +353,128 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           <div className="p-4 rounded-[14px] bg-[#ff1368]/[0.06] border border-[#ff1368]/15 mb-6 animate-fade-up" style={{ animationDelay: '0.15s', animationFillMode: 'both' }}>
             <div className="text-[10px] font-bold uppercase tracking-wider text-[#ff1368] mb-2">Your Pick</div>
             <div className="text-lg font-extrabold">{userPick}</div>
-            <div className="text-xs text-gray-400 mt-1">{matchesCriticScore && <span className="text-green-500 font-semibold">Matches CriticScore prediction</span>}{matchesCriticScore && ' \u00b7 '}You agree with {criticMatches} of {CRITICS.length} critics</div>
-          </div>
-          <div className="mb-6">
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">Critics Panel<span className="text-[10px] font-semibold uppercase tracking-wider">Powered by <span className="text-brand">CriticScore</span></span><div className="flex-1 h-px bg-white/5" /></div>
-            <div className="flex items-center gap-3 p-3 rounded-xl bg-surface-raised mb-2 animate-slide-in" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
-              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-brand to-[#DAA520] flex items-center justify-center text-sm font-bold text-[#1a1a1a] flex-shrink-0">CS</div>
-              <div className="flex-1 min-w-0"><div className="text-sm font-bold">CriticScore</div><div className="text-xs text-gray-500">Broadway Scorecard Algorithm</div></div>
-              <div className="text-right max-w-[160px]">
-                <div className="text-xs font-semibold truncate">{criticScorePick}{criticScorePickShow?.compositeScore != null && <span className="text-brand font-bold ml-1">({criticScorePickShow.compositeScore})</span>}</div>
-                {userPick === criticScorePick ? (<span className="inline-block mt-0.5 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-green-500/15 text-green-500">Match!</span>) : (<span className="inline-block mt-0.5 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-red-500/10 text-red-500/70">Different</span>)}
-              </div>
+            <div className="text-xs text-gray-400 mt-1">
+              {!isActor && matchesCriticScore && <><span className="text-green-500 font-semibold">Matches CriticScore prediction</span>{' \u00b7 '}</>}
+              You agree with {criticMatches} of {CRITICS.length} critics
             </div>
-            {CRITICS.map((critic, i) => (
-              <div key={critic.name} className="flex items-center gap-3 p-3 rounded-xl bg-surface-raised mb-2 animate-slide-in" style={{ animationDelay: `${0.4 + i * 0.1}s`, animationFillMode: 'both' }}>
-                <div className="w-9 h-9 rounded-full bg-surface-overlay flex items-center justify-center text-sm font-bold text-gray-400 flex-shrink-0">{critic.initials}</div>
-                <div className="flex-1 min-w-0"><div className="text-sm font-bold">{critic.name}</div><div className="text-xs text-gray-500">{critic.outlet}</div></div>
-                <div className="text-right max-w-[140px]"><div className="text-xs font-semibold truncate">{criticPicks[i]}</div>{userPick === criticPicks[i] ? (<span className="inline-block mt-0.5 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-green-500/15 text-green-500">Match!</span>) : (<span className="inline-block mt-0.5 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-red-500/10 text-red-500/70">Different</span>)}</div>
+          </div>
+
+          {/* Critics Panel */}
+          <div className="mb-6">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">
+              Critics Panel
+              {!isActor && <span className="text-[10px] font-semibold uppercase tracking-wider">Powered by <span className="text-brand">CriticScore</span></span>}
+              <div className="flex-1 h-px bg-white/5" />
+            </div>
+
+            {/* CriticScore card — only for show categories */}
+            {!isActor && (
+              <div className={`flex items-stretch rounded-xl mb-2 animate-slide-in overflow-hidden ${matchesCriticScore ? 'bg-green-500/[0.08] ring-1 ring-green-500/20' : 'bg-red-500/[0.06] ring-1 ring-red-500/15'}`} style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
+                <div className="flex-1 p-3 flex items-center gap-3">
+                  <div className="flex-shrink-0 leading-tight">
+                    <div className="text-xs font-bold text-brand tracking-tight">Broadway Scorecard</div>
+                    <div className="text-[9px] font-semibold text-gray-500 tracking-wider">CriticScore&trade;</div>
+                  </div>
+                  <div className="flex-1" />
+                  <div className="text-sm font-bold truncate">{criticScorePick}</div>
+                  {criticScorePickShow?.compositeScore != null && <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-brand/20 flex items-center justify-center text-sm font-extrabold text-brand">{criticScorePickShow.compositeScore}</div>}
+                </div>
+                <div className={`w-[72px] flex items-center justify-center text-[10px] font-bold uppercase tracking-wide flex-shrink-0 ${matchesCriticScore ? 'bg-green-500/20 text-green-400' : 'bg-red-500/15 text-red-400'}`}>{matchesCriticScore ? 'Match!' : 'Different'}</div>
               </div>
-            ))}
+            )}
+
+            {/* Critic cards */}
+            {CRITICS.map((critic, i) => {
+              const isMatch = userPick === criticPicks[i];
+              return (
+                <div key={critic.name} className={`flex items-stretch rounded-xl mb-2 animate-slide-in overflow-hidden ${isMatch ? 'bg-green-500/[0.06] ring-1 ring-green-500/15' : 'bg-red-500/[0.04] ring-1 ring-red-500/10'}`} style={{ animationDelay: `${(isActor ? 0.3 : 0.4) + i * 0.1}s`, animationFillMode: 'both' }}>
+                  <div className="flex-1 p-3 flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-surface-overlay flex items-center justify-center text-sm font-bold text-gray-400 flex-shrink-0">{critic.initials}</div>
+                    <div className="flex-shrink-0 min-w-0"><div className="text-sm font-bold">{critic.name}</div><div className="text-xs text-gray-500">{critic.outlet}</div></div>
+                    <div className="flex-1" />
+                    <div className="text-sm font-semibold truncate">{criticPicks[i]}</div>
+                  </div>
+                  <div className={`w-[72px] flex items-center justify-center text-[10px] font-bold uppercase tracking-wide flex-shrink-0 ${isMatch ? 'bg-green-500/20 text-green-400' : 'bg-red-500/15 text-red-400'}`}>{isMatch ? 'Match!' : 'Different'}</div>
+                </div>
+              );
+            })}
           </div>
-          <div className="mb-7 animate-fade-up" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">What Other Players Picked<div className="flex-1 h-px bg-white/5" /></div>
-            {nominees.map((show, i) => (<CrowdBar key={show.slug} label={show.title} pct={crowdPcts[i] ?? 0} isUserPick={show.title === userPick} variant={show.title === userPick ? 'rose' : i === 0 ? 'brand' : 'muted'} score={show.compositeScore} />))}
-          </div>
+
+          {/* Crowd bars — show categories only */}
+          {!isActor && (
+            <div className="mb-7 animate-fade-up" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">What Other Players Picked<div className="flex-1 h-px bg-white/5" /></div>
+              {nominees.map((show, i) => (<CrowdBar key={show.slug} label={show.title} pct={crowdPcts[i] ?? 0} isUserPick={show.title === userPick} variant={show.title === userPick ? 'rose' : i === 0 ? 'brand' : 'muted'} score={show.compositeScore} />))}
+            </div>
+          )}
         </div>
+
+        {/* Bottom buttons */}
         <div className="fixed bottom-0 left-0 right-0 z-20 px-5 pb-6 pt-3 bg-gradient-to-t from-surface via-surface to-transparent">
           <div className="max-w-[480px] mx-auto flex flex-col gap-2.5">
-            {hasMoreCategories ? (<><button onClick={handleNextCategory} className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5 transition-all">Keep Going &rarr;{(() => { const nextIdx = findNextNonEmptyCategory(currentCatIdx); const nextCat = nextIdx !== null ? currentTier.categories[nextIdx] : null; const catsWN = currentTier.categories.filter(c => c.nominees.length > 0); const nextP = nextCat ? catsWN.findIndex(c => c.title === nextCat.title) + 1 : 0; return nextCat ? (<span className="block text-xs font-medium opacity-80 mt-0.5">Next: {nextCat.title} ({nextP} of {catsWN.length})</span>) : null; })()}</button><button onClick={() => goToScreen('results')} className="w-full py-3.5 rounded-[14px] text-sm font-semibold border border-white/10 text-gray-400 hover:border-brand hover:text-brand transition-all">Save &amp; Share My Ballot</button></>) : (<button onClick={() => goToScreen('results')} className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5 transition-all">See My Ballot &rarr;</button>)}
+            {hasMoreCatsInTier ? (
+              <>
+                <button onClick={handleNextCategory} className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5 transition-all">
+                  Keep Going &rarr;
+                  {(() => { const nextIdx = findNextNonEmptyCategory(currentCatIdx); const nextCat = nextIdx !== null ? currentTier.categories[nextIdx] : null; const catsWN = currentTier.categories.filter(categoryHasNominees); const nextP = nextCat ? catsWN.findIndex(c => c.title === nextCat.title) + 1 : 0; return nextCat ? (<span className="block text-xs font-medium opacity-80 mt-0.5">Next: {nextCat.title} ({nextP} of {catsWN.length})</span>) : null; })()}
+                </button>
+                <button onClick={() => goToScreen('results')} className="w-full py-3.5 rounded-[14px] text-sm font-semibold border border-white/10 text-gray-400 hover:border-brand hover:text-brand transition-all">Save &amp; Share My Ballot</button>
+              </>
+            ) : hasNextTier ? (
+              <>
+                <button onClick={handleNextTier} className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5 transition-all">
+                  Continue to {data.tiers[currentTierIdx + 1]?.name ?? 'Tier 2'} &rarr;
+                  <span className="block text-xs font-medium opacity-80 mt-0.5">Optional &middot; Doubles your chances to win</span>
+                </button>
+                <button onClick={() => goToScreen('results')} className="w-full py-3.5 rounded-[14px] text-sm font-semibold border border-white/10 text-gray-400 hover:border-brand hover:text-brand transition-all">Save &amp; Share My Ballot</button>
+              </>
+            ) : (
+              <button onClick={() => goToScreen('results')} className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5 transition-all">See My Ballot &rarr;</button>
+            )}
           </div>
         </div>
       </div>
     );
   }
 
+  // ─── Results Screen ───
   return (
     <div className="min-h-screen bg-surface flex flex-col">
       <div className="sticky top-0 z-10 px-5 py-4 flex items-center justify-between border-b border-white/5 bg-surface/90 backdrop-blur-xl"><button onClick={() => goToScreen('reveal')} className="text-gray-400 text-sm hover:text-white transition-colors p-2 -m-2">&larr; Back</button><div className="text-xs font-bold">Your Ballot</div><div /></div>
       <div className="flex-1 px-5 py-8 max-w-[480px] mx-auto w-full flex flex-col items-center">
         <div className="w-full max-w-[380px] rounded-[20px] overflow-hidden bg-surface-raised border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-fade-up" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
-          <div className="px-6 pt-6 pb-4 bg-gradient-to-br from-[#ff1368]/10 to-brand/[0.06] border-b border-white/5"><CoBrand size="small" /><div className="text-[22px] font-black tracking-tight mt-4">My Tony Picks</div><div className="text-sm text-gray-400">Beat the Critics &middot; {data.season.ceremonyYear}</div></div>
+          <div className="px-6 pt-6 pb-4 bg-gradient-to-br from-[#ff1368]/10 to-brand/[0.06] border-b border-white/5"><div className="text-center"><CoBrand size="small" /><div className="text-[22px] font-black tracking-tight mt-4">My Tony Picks</div><div className="text-sm text-gray-400">Beat the Critics &middot; {data.season.ceremonyYear}</div></div></div>
           <div className="px-6 py-4">
-            {allCompletedPicks.map(([category, showTitle]) => (<div key={category} className="flex items-center justify-between py-2.5 border-b border-white/5 last:border-b-0"><div className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">{category.replace('Best ', '').replace('Revival of a ', 'Revival \u00b7 ')}</div><div className="text-sm font-bold text-right">{showTitle}</div></div>))}
+            {allCompletedPicks.map(([category, pickTitle]) => (<div key={category} className="flex items-center justify-between py-2.5 border-b border-white/5 last:border-b-0"><div className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">{category.replace('Best ', '').replace('Revival of a ', 'Revival \u00b7 ')}</div><div className="text-sm font-bold text-right">{pickTitle}</div></div>))}
             {allCompletedPicks.length === 0 && (<div className="py-4 text-center text-gray-500 text-sm">No picks made yet</div>)}
           </div>
           <div className="px-6 py-4 bg-[#ff1368]/[0.04] border-t border-white/5 text-center"><div className="text-sm font-bold text-[#ff1368]">Can you Beat the Critics?</div><div className="text-xs text-gray-500 mt-1">todaytix.com/beat-the-critics</div></div>
         </div>
-        <div className="w-full max-w-[380px] mt-7 p-6 rounded-2xl bg-gradient-to-br from-[#ff1368]/[0.06] to-brand/[0.04] border border-[#ff1368]/10 animate-fade-up" style={{ animationDelay: '0.6s', animationFillMode: 'both' }}>
-          <h3 className="text-base font-bold">Get your results on Tony night</h3>
-          <p className="text-sm text-gray-400 mt-1.5 mb-4">We&apos;ll email you a scorecard showing how you stacked up against the critics.</p>
-          <div className="flex gap-2 mb-3"><input type="email" placeholder="you@email.com" className="flex-1 px-4 py-3.5 rounded-xl border border-white/10 bg-surface-raised text-white text-sm outline-none focus:border-[#ff1368] transition-colors placeholder:text-gray-500" /><button className="px-6 py-3.5 rounded-xl bg-[#ff1368] text-white text-sm font-bold hover:bg-[#e6115e] transition-colors whitespace-nowrap">Save</button></div>
-          <label className="flex items-start gap-2.5 text-left cursor-pointer"><input type="checkbox" defaultChecked className="mt-0.5 accent-[#ff1368] w-4 h-4" /><span className="text-xs text-gray-400 leading-relaxed">Enter me in the drawing to win <strong className="text-brand">free TodayTix tickets</strong></span></label>
-        </div>
-        <div className="flex gap-2.5 mt-5 animate-fade-up" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
-          {[{ label: 'Share', icon: <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" /> }, { label: 'Post', icon: <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="currentColor" stroke="none" /> }, { label: 'Story', icon: <><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="12" cy="12" r="5" /><circle cx="18" cy="6" r="1.5" fill="currentColor" /></> }].map(btn => (<button key={btn.label} className="flex items-center gap-1.5 px-4 py-2.5 rounded-[10px] text-sm font-semibold border border-white/10 bg-surface-raised text-white hover:border-brand hover:-translate-y-0.5 transition-all"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">{btn.icon}</svg>{btn.label}</button>))}
+
+        {/* Email / Submission */}
+        {emailSubmitted ? (
+          <div className="w-full max-w-[380px] mt-7 p-6 rounded-2xl bg-green-500/[0.06] border border-green-500/15 text-center animate-fade-up" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
+            <div className="text-3xl mb-2">&#10003;</div>
+            <h3 className="text-base font-bold text-green-400">Submission Complete!</h3>
+            <p className="text-sm text-gray-400 mt-1.5">We&apos;ll email your scorecard on Tony night.</p>
+          </div>
+        ) : (
+          <div className="w-full max-w-[380px] mt-7 p-6 rounded-2xl bg-gradient-to-br from-[#ff1368]/[0.06] to-brand/[0.04] border border-[#ff1368]/10 animate-fade-up" style={{ animationDelay: '0.6s', animationFillMode: 'both' }}>
+            <h3 className="text-base font-bold">Get your results on Tony night</h3>
+            <p className="text-sm text-gray-400 mt-1.5 mb-4">We&apos;ll email you a scorecard showing how you stacked up against the critics.</p>
+            <div className="flex gap-2 mb-3">
+              <input type="email" placeholder="you@email.com" className="flex-1 px-4 py-3.5 rounded-xl border border-white/10 bg-surface-raised text-white text-sm outline-none focus:border-[#ff1368] transition-colors placeholder:text-gray-500" />
+              <button onClick={handleEmailSave} disabled={emailSubmitting} className="px-6 py-3.5 rounded-xl bg-[#ff1368] text-white text-sm font-bold hover:bg-[#e6115e] transition-colors whitespace-nowrap disabled:opacity-60">
+                {emailSubmitting ? 'Saving...' : 'Save'}
+              </button>
+            </div>
+            <label className="flex items-start gap-2.5 text-left cursor-pointer"><input type="checkbox" defaultChecked className="mt-0.5 accent-[#ff1368] w-4 h-4" /><span className="text-xs text-gray-400 leading-relaxed">Enter me in the drawing to win <strong className="text-brand">free TodayTix tickets</strong></span></label>
+          </div>
+        )}
+
+        {/* Share buttons — primary CTA after submission */}
+        <div className={`flex gap-2.5 mt-5 animate-fade-up ${emailSubmitted ? '' : ''}`} style={{ animationDelay: emailSubmitted ? '0.6s' : '0.8s', animationFillMode: 'both' }}>
+          {[{ label: 'Share', icon: <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" /> }, { label: 'Post', icon: <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="currentColor" stroke="none" /> }, { label: 'Story', icon: <><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="12" cy="12" r="5" /><circle cx="18" cy="6" r="1.5" fill="currentColor" /></> }].map(btn => (<button key={btn.label} className={`flex items-center gap-1.5 px-4 py-2.5 rounded-[10px] text-sm font-semibold border transition-all hover:-translate-y-0.5 ${emailSubmitted && btn.label === 'Share' ? 'border-[#ff1368] bg-[#ff1368]/10 text-[#ff1368]' : 'border-white/10 bg-surface-raised text-white hover:border-brand'}`}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">{btn.icon}</svg>{btn.label}</button>))}
         </div>
       </div>
     </div>
