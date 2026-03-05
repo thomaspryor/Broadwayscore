@@ -89,8 +89,10 @@ export default function ShowPageRating({
         reviewId: idToPass,
       });
       if (savedId) lastSavedId.current = savedId;
-      if (isFirstSave) {
-        // Keep panel open after first save so user can add notes/date
+      // Close panel after save. Only keep open on first save if user hasn't added notes/date yet.
+      const userFilledDetails = !!(data.reviewText || data.dateSeen);
+      if (isFirstSave && !userFilledDetails) {
+        // Keep panel open so user can add notes/date
       } else {
         setShowPanel(false);
         setEditingReview(null);
