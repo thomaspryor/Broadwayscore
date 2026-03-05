@@ -38,9 +38,8 @@ function decodeShow(raw: Record<string, unknown>): ShowLookup {
   };
 }
 
-function getShowHref(slug: string, category: string) {
-  if (category === 'west-end') return `/west-end/show/${slug}`;
-  if (category === 'off-broadway') return `/off-broadway/show/${slug}`;
+function getShowHref(slug: string, _category: string) {
+  // All shows use /show/[slug] — no separate routes for west-end or off-broadway
   return `/show/${slug}`;
 }
 
