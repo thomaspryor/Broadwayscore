@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-05T11:03:19.611Z",
-  "processed": 91,
-  "failed": 19,
-  "successRate": "82.7%",
+  "updatedAt": "2026-03-05T11:10:46.531Z",
+  "processed": 93,
+  "failed": 27,
+  "successRate": "77.5%",
   "tierBreakdown": {
-    "playwright": 83,
+    "playwright": 84,
     "amp": 6,
     "browserbase": 5,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 9,
-    "archive": 2
+    "archiveToday": 15,
+    "archive": 3
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-03-05T10:51:55.084Z",
@@ -47,6 +47,23 @@
       "t": "2026-03-05T10:52:26.857Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-05T11:06:13.457Z",
+      "event": "bb-session",
+      "session": "69a38ec7",
+      "url": "https://www.thedailybeast.com/the-book-of-mormon-blessed-be-the-filthy/"
+    },
+    {
+      "t": "2026-03-05T11:07:11.905Z",
+      "event": "bb-session",
+      "session": "f0542c15",
+      "url": "https://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.1"
+    },
+    {
+      "t": "2026-03-05T11:07:13.042Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
