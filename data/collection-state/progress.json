@@ -439,7 +439,11 @@
     "anonymous-off-broadway-2026/off-off-online--walter-murphy.json",
     "austentatious-an-improvised-jane-austen-novel-west-end-2025/standard--bruce-dessau.json",
     "back-to-the-future-west-end-2021/artsdesk--gary-naylor.json",
-    "what-we-did-before-our-moth-days-off-broadway-2026/times-uk--unknown.json"
+    "what-we-did-before-our-moth-days-off-broadway-2026/times-uk--unknown.json",
+    "la-llamada-off-broadway-2024/nytg--unknown.json",
+    "the-unknown-off-broadway-2026/nytimes--helen-shaw.json",
+    "wicked-2003/vulture--bilge-eberi.json",
+    "book-of-mormon-2011/wsj--terry-teachout.json"
   ],
   "failed": [
     "mack-and-mabel-1974/financialtimes--ian-shuttleworth.json",
@@ -911,7 +915,13 @@
     "wicked-2003/njcom--michael-sommers.json",
     "wicked-2003/ny1--roma-torre.json",
     "wicked-west-end-2021/tim-talks-theatre-uk--tim-talks-theatre-uk.json",
-    "bughouse-off-broadway-2026/variety--charles-isherwood.json"
+    "bughouse-off-broadway-2026/variety--charles-isherwood.json",
+    "hadestown-2019/newyorker--hilton-als.json",
+    "los-soles-truncos-off-broadway-2025/nytg--unknown.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "bigfoot-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
+    "cats-the-jellicle-ball-2026/timeout--david-cote.json",
+    "death-of-a-salesman-2026/broadwaynews--brittani-samuel.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1249,7 +1259,8 @@
       "data/review-texts/chicago-1996/nypost--elisabeth-vincentelli.json"
     ],
     "directCookies": [
-      "the-lion-king-1997/vulture--john-simon.json"
+      "the-lion-king-1997/vulture--john-simon.json",
+      "book-of-mormon-2011/wsj--terry-teachout.json"
     ],
     "scrapingbee": [
       "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
@@ -1312,7 +1323,8 @@
       "the-office-a-musical-parody-off-broadway-2018/theatrely--unknown.json",
       "the-unknown-off-broadway-2026/cititour--brian-scott-lipton.json",
       "all-my-sons-west-end-2025/independent--alice-saville.json",
-      "what-we-did-before-our-moth-days-off-broadway-2026/times-uk--unknown.json"
+      "what-we-did-before-our-moth-days-off-broadway-2026/times-uk--unknown.json",
+      "the-unknown-off-broadway-2026/nytimes--helen-shaw.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1668,11 +1680,13 @@
       "all-my-sons-west-end-2025/artsdesk--matt-wolf.json",
       "amaze-magic-off-broadway-2025/hollywood-soapbox--john-soltes.json",
       "amaze-magic-off-broadway-2025/theater-scene--victor-gluck.json",
-      "back-to-the-future-west-end-2021/artsdesk--gary-naylor.json"
+      "back-to-the-future-west-end-2021/artsdesk--gary-naylor.json",
+      "la-llamada-off-broadway-2024/nytg--unknown.json",
+      "wicked-2003/vulture--bilge-eberi.json"
     ]
   },
   "startTime": "2026-03-05T10:28:39.558Z",
-  "lastProcessed": "bughouse-off-broadway-2026/variety--charles-isherwood.json",
+  "lastProcessed": "death-of-a-salesman-2026/broadwaynews--brittani-samuel.json",
   "log": [
     {
       "t": "2026-03-05T10:51:55.084Z",
@@ -2098,6 +2112,17 @@
       "t": "2026-03-05T21:30:51.543Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-05T21:42:24.591Z",
+      "event": "bb-session",
+      "session": "38904f93",
+      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
+    },
+    {
+      "t": "2026-03-05T21:42:25.709Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

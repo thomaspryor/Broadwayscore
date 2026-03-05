@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-05T21:37:57.718Z",
-  "processed": 440,
-  "failed": 470,
-  "successRate": "48.4%",
+  "updatedAt": "2026-03-05T21:42:52.119Z",
+  "processed": 444,
+  "failed": 476,
+  "successRate": "48.3%",
   "tierBreakdown": {
     "playwright": 258,
     "amp": 32,
     "browserbase": 37,
-    "directCookies": 1,
-    "scrapingbee": 61,
+    "directCookies": 2,
+    "scrapingbee": 62,
     "brightdata": 0,
     "archiveToday": 263,
-    "archive": 88
+    "archive": 90
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-03-05T19:55:40.404Z",
-      "event": "bb-cookie-inject",
-      "domain": "nypost.com"
-    },
-    {
-      "t": "2026-03-05T19:55:54.743Z",
-      "event": "bb-session",
-      "session": "d45d81bb",
-      "url": "https://observer.com/2025/09/review-masquerade-phantom-of-the-opera-experience-i"
-    },
     {
       "t": "2026-03-05T19:55:55.751Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "t": "2026-03-05T21:30:51.543Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-05T21:42:24.591Z",
+      "event": "bb-session",
+      "session": "38904f93",
+      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
+    },
+    {
+      "t": "2026-03-05T21:42:25.709Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
