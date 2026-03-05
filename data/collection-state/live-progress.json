@@ -1,18 +1,129 @@
 {
-  "updatedAt": "2026-03-05T07:14:36.832Z",
-  "processed": 24,
-  "failed": 76,
-  "successRate": "24.0%",
+  "updatedAt": "2026-03-05T10:18:47.088Z",
+  "processed": 124,
+  "failed": 686,
+  "successRate": "15.3%",
   "tierBreakdown": {
-    "playwright": 1,
-    "amp": 4,
-    "browserbase": 0,
-    "directCookies": 0,
-    "scrapingbee": 3,
+    "playwright": 84,
+    "amp": 1,
+    "browserbase": 2,
+    "directCookies": 3,
+    "scrapingbee": 15,
     "brightdata": 0,
-    "archiveToday": 73,
-    "archive": 18
+    "archiveToday": 526,
+    "archive": 24
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-03-05T01:11:09.487Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-05T04:25:18.002Z",
+      "event": "bb-session",
+      "session": "9741237d",
+      "url": "https://www.nypost.com/p/entertainment/theater/lost_in_translation_hilariously_D"
+    },
+    {
+      "t": "2026-03-05T04:25:19.128Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-05T04:38:20.281Z",
+      "event": "bb-session",
+      "session": "97bc5278",
+      "url": "https://www.thedailybeast.com/the-book-of-mormon-blessed-be-the-filthy/"
+    },
+    {
+      "t": "2026-03-05T04:58:52.525Z",
+      "event": "bb-session",
+      "session": "2cfe242a",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
+    },
+    {
+      "t": "2026-03-05T04:58:53.830Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-05T05:03:59.959Z",
+      "event": "bb-session",
+      "session": "5b63bd17",
+      "url": "https://www.thestage.co.uk/reviews/the-producers-review-garrick-theatre-london-m"
+    },
+    {
+      "t": "2026-03-05T05:04:01.198Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-05T05:32:42.740Z",
+      "event": "bb-session",
+      "session": "1df4d1b0",
+      "url": "https://www.nytimes.com/2009/12/14/theater/reviews/14night.html"
+    },
+    {
+      "t": "2026-03-05T05:32:44.386Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-05T05:36:07.243Z",
+      "event": "bb-session",
+      "session": "540043d8",
+      "url": "https://www.nytimes.com/2009/10/21/theater/reviews/21julie.html"
+    },
+    {
+      "t": "2026-03-05T05:36:08.613Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-05T05:41:41.190Z",
+      "event": "bb-session",
+      "session": "d2592a05",
+      "url": "https://www.nytimes.com/2008/10/17/theater/reviews/17buff.html"
+    },
+    {
+      "t": "2026-03-05T05:41:42.328Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-05T05:42:46.465Z",
+      "event": "bb-session",
+      "session": "3689ff82",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/american-buffalo-broadway-revie"
+    },
+    {
+      "t": "2026-03-05T05:42:47.693Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-05T05:44:09.756Z",
+      "event": "bb-session",
+      "session": "9ee2a84c",
+      "url": "https://variety.com/2013/legit/reviews/breakfast-at-tiffanys-1200334041/"
+    },
+    {
+      "t": "2026-03-05T05:44:10.936Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-05T05:46:57.383Z",
+      "event": "bb-session",
+      "session": "3ab416ef",
+      "url": "https://www.nytimes.com/2010/11/10/theater/reviews/10quinn.html"
+    },
+    {
+      "t": "2026-03-05T05:46:58.572Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
