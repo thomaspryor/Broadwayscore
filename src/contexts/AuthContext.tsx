@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
 import { getSupabaseClient } from '@/lib/supabase';
-import { saveReturnUrl, getReturnUrl, clearReturnUrl } from '@/lib/deferred-auth';
+import { saveReturnUrl, clearReturnUrl } from '@/lib/deferred-auth';
 import type { UserProfile } from '@/types/user';
 import SignInModal from '@/components/auth/SignInModal';
 import { signInWithAppleSDK } from '@/lib/apple-auth';
@@ -160,12 +160,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           }
         }
 
-        // Redirect to return URL (onAuthStateChange will fire SIGNED_IN)
-        const returnUrl = getReturnUrl();
+        // Apple popup flow doesn't navigate the page, so no redirect needed.
+        // The onAuthStateChange SIGNED_IN event handles UI updates.
+        // Clear any stale return URL from a previous Google flow attempt.
         clearReturnUrl();
-        if (returnUrl && returnUrl !== window.location.pathname) {
-          window.location.href = returnUrl;
-        }
       } catch (err) {
         setSignInLoading(false);
         // User closed popup or Apple error — not a crash
