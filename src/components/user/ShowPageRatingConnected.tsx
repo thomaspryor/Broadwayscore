@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useCallback, useRef } from 'react';
+import React, { useEffect, useCallback, useRef, useState } from 'react';
 import ShowPageRating from './ShowPageRating';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserReviews } from '@/hooks/useUserReviews';
@@ -34,6 +34,7 @@ export default function ShowPageRatingConnected({
 
   const { showToast } = useToastSafe();
   const hasExecutedPending = useRef(false);
+  const [autoEditLatest, setAutoEditLatest] = useState(false);
 
   // Load data when authenticated
   useEffect(() => {
@@ -123,8 +124,9 @@ export default function ShowPageRatingConnected({
           });
           if (insertErr) throw new Error(insertErr.message);
 
-          showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">Reviews</a></>, 'success');
+          showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">Reviews</a> — add date &amp; notes below</>, 'success');
           await getReviewsForShow(showId);
+          setAutoEditLatest(true);
         } catch (e: unknown) {
           // eslint-disable-next-line no-console
           console.error('[Rating] Deferred save failed:', e);
@@ -201,6 +203,7 @@ export default function ShowPageRatingConnected({
       onUpdateWatchlistDate={handleUpdateWatchlistDate}
       onAuthRequired={handleAuthRequired}
       isAuthenticated={isAuthenticated}
+      autoEditLatest={autoEditLatest}
     />
   );
 }
