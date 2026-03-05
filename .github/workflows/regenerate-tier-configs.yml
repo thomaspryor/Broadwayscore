@@ -1,0 +1,88 @@
+# Regenerate domain-specific tier ordering and skip configs from fetchAttempts data.
+# Runs weekly after collection runs have accumulated new data.
+name: Regenerate Tier Configs
+
+on:
+  schedule:
+    # Weekly on Sundays at 6 AM UTC — after weekend collection runs
+    - cron: '0 6 * * 0'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report only, do not update configs'
+        required: false
+        default: false
+        type: boolean
+      min_attempts:
+        description: 'Min attempts per domain+tier to include in ordering'
+        required: false
+        default: '3'
+        type: string
+      skip_threshold:
+        description: 'Min failures (with 0 successes) to add to skip list'
+        required: false
+        default: '3'
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  regenerate:
+    name: Regenerate tier configs
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Regenerate configs
+        run: |
+          FLAGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            FLAGS="$FLAGS --dry-run"
+          fi
+          if [ -n "${{ inputs.min_attempts }}" ] && [ "${{ inputs.min_attempts }}" != "3" ]; then
+            FLAGS="$FLAGS --min-attempts=${{ inputs.min_attempts }}"
+          fi
+          if [ -n "${{ inputs.skip_threshold }}" ] && [ "${{ inputs.skip_threshold }}" != "3" ]; then
+            FLAGS="$FLAGS --skip-threshold=${{ inputs.skip_threshold }}"
+          fi
+          node scripts/regenerate-tier-configs.js $FLAGS
+
+      - name: Commit and push
+        if: inputs.dry_run != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add scripts/config/domain-tier-order.json scripts/config/domain-tier-skip.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            DOMAINS_ORDER=$(node -e "console.log(Object.keys(require('./scripts/config/domain-tier-order.json')).length)")
+            DOMAINS_SKIP=$(node -e "const s=require('./scripts/config/domain-tier-skip.json'); console.log(Object.keys(s).length + ' domains, ' + Object.values(s).reduce((a,b)=>a+b.length,0) + ' skips')")
+            git commit -m "chore: Regenerate tier configs (ordering: ${DOMAINS_ORDER} domains, skip: ${DOMAINS_SKIP})"
+            for i in 1 2 3 4 5; do
+              git pull --rebase && git push && break || sleep $((i * 5))
+            done
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
