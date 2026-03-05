@@ -1,18 +1,85 @@
 {
-  "updatedAt": "2026-03-05T10:38:28.729Z",
-  "processed": 83,
-  "failed": 2,
-  "successRate": "97.6%",
+  "updatedAt": "2026-03-05T10:45:02.175Z",
+  "processed": 20,
+  "failed": 10,
+  "successRate": "66.7%",
   "tierBreakdown": {
-    "playwright": 82,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 17,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 1
+    "archiveToday": 6,
+    "archive": 3
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 6,
+  "recentActivity": [
+    {
+      "t": "2026-03-05T10:31:06.188Z",
+      "event": "bb-session",
+      "session": "65688a89",
+      "url": "https://www.newyorker.com/culture/the-theatre/review-camelot-aaron-sorkin-bartle"
+    },
+    {
+      "t": "2026-03-05T10:31:07.401Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-05T10:33:38.353Z",
+      "event": "bb-session",
+      "session": "96a0d4e9",
+      "url": "https://www.newyorker.com/magazine/2008/03/31/crossing-over"
+    },
+    {
+      "t": "2026-03-05T10:33:39.792Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-05T10:35:10.287Z",
+      "event": "bb-session",
+      "session": "357adc9c",
+      "url": "https://www.newyorker.com/magazine/2025/12/01/this-world-of-tomorrow-theatre-rev"
+    },
+    {
+      "t": "2026-03-05T10:35:11.734Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-05T10:36:46.519Z",
+      "event": "bb-session",
+      "session": "1c7558d5",
+      "url": "https://www.newyorker.com/magazine/2025/05/05#:~:text=Also%3A%20reviews%20of%20B"
+    },
+    {
+      "t": "2026-03-05T10:36:47.629Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-05T10:39:08.344Z",
+      "event": "bb-session",
+      "session": "c8f7c324",
+      "url": "https://www.newyorker.com/arts/events/theatre/time-stands-still-cort-theatre"
+    },
+    {
+      "t": "2026-03-05T10:39:09.554Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-05T10:41:50.265Z",
+      "event": "bb-session",
+      "session": "7eee9d1c",
+      "url": "https://www.newyorker.com/magazine/2022/12/19/aint-no-mo-theatre-review"
+    },
+    {
+      "t": "2026-03-05T10:41:51.439Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    }
+  ]
 }
