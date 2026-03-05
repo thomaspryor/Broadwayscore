@@ -2,8 +2,8 @@
 
 ## CRITICAL RULES
 
-### 1. NEVER Ask User to Run Local Commands
-User is **non-technical, often on phone**. Push to Git, use GitHub Actions. Create a workflow if local execution is needed.
+### 1. NEVER Ask User to Do Things You Can Do
+User is **non-technical, often on phone**. Push to Git, use GitHub Actions. You have API access to Supabase, Vercel, GitHub — use them. For visual QA: Playwright + Supabase magic link auth. See `memory/ugc-supabase.md` for API details.
 
 ### 2. ALWAYS ASK: Quick Fix or Preview?
 Before ANY code/design changes, ask: **quick fix** (→ `main`) or **preview** (→ `staging`)?
