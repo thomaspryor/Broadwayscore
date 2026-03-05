@@ -24,6 +24,9 @@ interface ShowPageRatingProps {
   onAuthRequired?: (context: 'rating' | 'watchlist', pendingRating?: number) => void;
   isAuthenticated?: boolean;
   autoEditLatest?: boolean;
+  /** Auto-open rating panel (from watchlist "Rate" link) */
+  autoRate?: boolean;
+  onAutoRateConsumed?: () => void;
 }
 
 export default function ShowPageRating({
@@ -41,6 +44,8 @@ export default function ShowPageRating({
   onAuthRequired,
   isAuthenticated = false,
   autoEditLatest = false,
+  autoRate = false,
+  onAutoRateConsumed,
 }: ShowPageRatingProps) {
   const [currentRating, setCurrentRating] = useState<number | null>(null);
   const [showPanel, setShowPanel] = useState(false);
@@ -69,6 +74,25 @@ export default function ShowPageRating({
       setShowPanel(true);
     }
   }, [autoEditLatest, latestReview, showPanel]);
+
+  // Auto-open rating panel from ?rate=1 (watchlist "Rate" link)
+  useEffect(() => {
+    if (autoRate && !showPanel) {
+      if (!isAuthenticated && onAuthRequired) {
+        onAuthRequired('rating');
+      } else {
+        setShowPanel(true);
+        setEditingReview(null);
+        // If they already have a rating, edit it; otherwise start fresh
+        if (latestReview) {
+          setEditingReview(latestReview);
+          setCurrentRating(latestReview.rating);
+        }
+      }
+      onAutoRateConsumed?.();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoRate]);
 
   const handleRatingChange = useCallback((rating: number) => {
     if (!isAuthenticated && onAuthRequired) {
