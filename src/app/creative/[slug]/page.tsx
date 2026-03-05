@@ -5,6 +5,8 @@ import { getPersonTonyStatsByName, getShowTonyMapByName } from '@/lib/data-tony-
 import { generateBreadcrumbSchema, generateUnifiedCreativePersonSchema, generateUnifiedCreativeFAQSchema, BASE_URL } from '@/lib/seo';
 import UnifiedCreativeDetailClient from '@/components/creative/UnifiedCreativeDetailClient';
 
+export const revalidate = 86400;
+
 export function generateStaticParams() {
   return []; // On-demand via ISR — saves ~2,200 pages of build time
 }

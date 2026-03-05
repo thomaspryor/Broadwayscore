@@ -5,6 +5,8 @@ import { getPersonTonyStats, getShowTonyMap } from '@/lib/data-tony-noms';
 import { generateBreadcrumbSchema, generateActorPersonSchema, generateActorFAQSchema, BASE_URL } from '@/lib/seo';
 import ActorDetailClient from './ActorDetailClient';
 
+export const revalidate = 43200;
+
 export function generateStaticParams() {
   return []; // On-demand via ISR — saves ~21,000 pages of build time
 }
