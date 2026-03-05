@@ -37,6 +37,8 @@ function stripWikiMarkup(text) {
   cleaned = cleaned
     .replace(/\[\[/g, '')                                  // Orphaned [[
     .replace(/\]\]/g, '')                                  // Orphaned ]]
+    .replace(/\{\{/g, '')                                  // Orphaned {{
+    .replace(/\}\}/g, '')                                  // Orphaned }}
     .replace(/\|/g, ' ')                                   // Stray pipes
     .replace(/\n+/g, ' ')                                  // Newlines → spaces
     .replace(/\s+/g, ' ')                                  // Collapse whitespace
@@ -53,7 +55,7 @@ function stripWikiMarkup(text) {
  * @returns {boolean} True if markup remnants detected
  */
 function hasWikiMarkup(text) {
-  return /[={]{2}|\[\[|\]\]|\{\{/.test(text);
+  return /[={]{2}|\[\[|\]\]|\{\{|\}\}|\|\s*\w+\s*=/.test(text);
 }
 
 /**
