@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 interface ReviewPanelProps {
   rating: number;
@@ -28,6 +28,10 @@ export default function ReviewPanel({
 }: ReviewPanelProps) {
   const [reviewText, setReviewText] = useState(existingReviewText || '');
   const [dateSeen, setDateSeen] = useState(existingDateSeen || '');
+
+  // Sync state when editing a different review (props change without remount)
+  useEffect(() => { setReviewText(existingReviewText || ''); }, [existingReviewText]);
+  useEffect(() => { setDateSeen(existingDateSeen || ''); }, [existingDateSeen]);
 
   const charsRemaining = MAX_CHARS - reviewText.length;
   const isOverLimit = charsRemaining < 0;

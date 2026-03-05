@@ -112,7 +112,7 @@ export default function ShowPageRating({
     setCurrentRating(rating);
     setShowPanel(true);
     setEditingReview(null);
-  }, [isAuthenticated, onAuthRequired]);
+  }, [isAuthenticated, authLoading, onAuthRequired]);
 
   const handleSave = useCallback(async (data: { rating: number; reviewText: string | null; dateSeen: string | null }) => {
     if (!onSaveReview) return;
@@ -186,7 +186,7 @@ export default function ShowPageRating({
     } finally {
       setWatchlistLoading(false);
     }
-  }, [isAuthenticated, onAuthRequired, onToggleWatchlist]);
+  }, [isAuthenticated, authLoading, onAuthRequired, onToggleWatchlist]);
 
   if (!featureFlags.userAccounts) return null;
 
