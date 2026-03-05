@@ -23,6 +23,7 @@ interface ShowPageRatingProps {
   onUpdateWatchlistDate?: (date: string | null) => Promise<void>;
   onAuthRequired?: (context: 'rating' | 'watchlist', pendingRating?: number) => void;
   isAuthenticated?: boolean;
+  authLoading?: boolean;
   autoEditLatest?: boolean;
   /** Auto-open rating panel (from watchlist "Rate" link) */
   autoRate?: boolean;
@@ -43,6 +44,7 @@ export default function ShowPageRating({
   onUpdateWatchlistDate,
   onAuthRequired,
   isAuthenticated = false,
+  authLoading = false,
   autoEditLatest = false,
   autoRate = false,
   onAutoRateConsumed,
@@ -52,6 +54,7 @@ export default function ShowPageRating({
   const [editingReview, setEditingReview] = useState<UserReview | null>(null);
   const [saving, setSaving] = useState(false);
   const [watchlistLoading, setWatchlistLoading] = useState(false);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const lastSavedId = useRef<string | null>(null);
 
   // Reset lastSavedId when showId changes (prevents stale ID on navigation)
@@ -78,7 +81,7 @@ export default function ShowPageRating({
   // Auto-open rating panel from ?rate=1 (watchlist "Rate" link)
   useEffect(() => {
     if (autoRate && !showPanel) {
-      if (!isAuthenticated && onAuthRequired) {
+      if (!isAuthenticated && !authLoading && onAuthRequired) {
         onAuthRequired('rating');
       } else {
         setShowPanel(true);
@@ -95,7 +98,7 @@ export default function ShowPageRating({
   }, [autoRate]);
 
   const handleRatingChange = useCallback((rating: number) => {
-    if (!isAuthenticated && onAuthRequired) {
+    if (!isAuthenticated && !authLoading && onAuthRequired) {
       // Store the rating intent for deferred auth
       setCurrentRating(rating);
       onAuthRequired('rating', rating);
@@ -150,8 +153,24 @@ export default function ShowPageRating({
     setShowPanel(true);
   }, []);
 
+  const handleDelete = useCallback(async (reviewId: string) => {
+    if (!onDeleteReview) return;
+    try {
+      await onDeleteReview(reviewId);
+      setConfirmDeleteId(null);
+      // If we deleted the current editing review, close panel
+      if (editingReview?.id === reviewId) {
+        setShowPanel(false);
+        setEditingReview(null);
+        setCurrentRating(null);
+      }
+    } catch {
+      // Toast handled by parent
+    }
+  }, [onDeleteReview, editingReview]);
+
   const handleToggleWatchlist = useCallback(async () => {
-    if (!isAuthenticated && onAuthRequired) {
+    if (!isAuthenticated && !authLoading && onAuthRequired) {
       onAuthRequired('watchlist');
       return;
     }
@@ -195,6 +214,23 @@ export default function ShowPageRating({
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                 </svg>
               </button>
+              {confirmDeleteId === latestReview.id ? (
+                <span className="flex items-center gap-1.5 text-xs">
+                  <button type="button" onClick={() => handleDelete(latestReview.id)} className="text-red-400 hover:text-red-300 font-medium">Delete?</button>
+                  <button type="button" onClick={() => setConfirmDeleteId(null)} className="text-gray-500 hover:text-white">Cancel</button>
+                </span>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setConfirmDeleteId(latestReview.id)}
+                  className="p-1 text-gray-500 hover:text-red-400 transition-colors"
+                  aria-label="Delete rating"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </button>
+              )}
               {/* New viewing button */}
               <button
                 type="button"
@@ -239,6 +275,23 @@ export default function ShowPageRating({
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                     </svg>
                   </button>
+                  {confirmDeleteId === review.id ? (
+                    <span className="flex items-center gap-1 text-[10px]">
+                      <button type="button" onClick={() => handleDelete(review.id)} className="text-red-400 hover:text-red-300 font-medium">Delete?</button>
+                      <button type="button" onClick={() => setConfirmDeleteId(null)} className="text-gray-500 hover:text-white">No</button>
+                    </span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setConfirmDeleteId(review.id)}
+                      className="p-0.5 text-gray-600 hover:text-red-400 transition-colors"
+                      aria-label="Delete this viewing"
+                    >
+                      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  )}
                 </div>
               ))}
             </div>

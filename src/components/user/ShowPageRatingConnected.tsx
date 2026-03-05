@@ -40,8 +40,8 @@ function ShowPageRatingInner({
   previewDate,
   closingDate,
 }: ShowPageRatingConnectedProps) {
-  const { user, isAuthenticated, showSignIn } = useAuth();
-  const { reviews, getReviewsForShow } = useUserReviews(user?.id || null);
+  const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
+  const { reviews, getReviewsForShow, deleteReview } = useUserReviews(user?.id || null);
   const { isWatchlisted, addToWatchlist, removeFromWatchlist, getWatchlist, updatePlannedDate, watchlist } = useWatchlist(user?.id || null);
   const searchParams = useSearchParams();
 
@@ -162,6 +162,17 @@ function ShowPageRatingInner({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, user, showId]);
 
+  const handleDeleteReview = useCallback(async (reviewId: string) => {
+    try {
+      await deleteReview(reviewId);
+      showToast?.('Rating deleted.', 'info');
+      await getReviewsForShow(showId);
+    } catch (e) {
+      const detail = e instanceof Error ? e.message : 'Unknown error';
+      showToast?.(`Delete failed: ${detail}`, 'error');
+    }
+  }, [deleteReview, showId, getReviewsForShow, showToast]);
+
   const handleToggleWatchlist = useCallback(async () => {
     try {
       if (isWatchlisted(showId)) {
@@ -214,10 +225,12 @@ function ShowPageRatingInner({
       isWatchlisted={isWatchlisted(showId)}
       watchlistDate={watchlistEntry?.planned_date || null}
       onSaveReview={handleSaveReview}
+      onDeleteReview={handleDeleteReview}
       onToggleWatchlist={handleToggleWatchlist}
       onUpdateWatchlistDate={handleUpdateWatchlistDate}
       onAuthRequired={handleAuthRequired}
       isAuthenticated={isAuthenticated}
+      authLoading={authLoading}
       autoEditLatest={autoEditLatest}
       autoRate={autoRate}
       onAutoRateConsumed={() => setAutoRate(false)}
