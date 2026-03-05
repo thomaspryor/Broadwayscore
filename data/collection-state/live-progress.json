@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-05T07:50:22.032Z",
-  "processed": 34,
-  "failed": 16,
-  "successRate": "68.0%",
+  "updatedAt": "2026-03-05T07:53:55.862Z",
+  "processed": 40,
+  "failed": 17,
+  "successRate": "70.2%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 29,
+    "scrapingbee": 35,
     "brightdata": 0,
-    "archiveToday": 8,
+    "archiveToday": 9,
     "archive": 5
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
       "t": "2026-03-05T07:25:51.950Z",
@@ -100,6 +100,17 @@
     },
     {
       "t": "2026-03-05T07:44:05.668Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-05T07:52:58.035Z",
+      "event": "bb-session",
+      "session": "c7108768",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/the-collaboration-01-16-2"
+    },
+    {
+      "t": "2026-03-05T07:52:59.274Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
     }
