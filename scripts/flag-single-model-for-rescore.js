@@ -46,6 +46,10 @@ function main() {
       // Skip files without llmScore or that already have ensemble data
       if (!data.llmScore || data.ensembleData) continue;
 
+      // Skip unscorable reviews — don't flag files that the scorer will skip anyway
+      if (data.duplicateOf || data.wrongShow || data.wrongProduction || data.wrongAttribution || data.contentTier === 'invalid') continue;
+      if (data.isMultiShowReview || data.isRoundupArticle || data.rejectionReason) continue;
+
       singleModelTotal++;
       const tier = data.contentTier || 'unknown';
       byContentTier[tier] = (byContentTier[tier] || 0) + 1;
