@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-05T19:44:48.669Z",
-  "processed": 327,
-  "failed": 383,
-  "successRate": "46.1%",
+  "updatedAt": "2026-03-05T19:51:12.496Z",
+  "processed": 336,
+  "failed": 384,
+  "successRate": "46.7%",
   "tierBreakdown": {
-    "playwright": 195,
+    "playwright": 196,
     "amp": 32,
-    "browserbase": 26,
+    "browserbase": 28,
     "directCookies": 1,
-    "scrapingbee": 42,
+    "scrapingbee": 47,
     "brightdata": 0,
     "archiveToday": 222,
-    "archive": 62
+    "archive": 64
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-03-05T12:54:30.404Z",
-      "event": "bb-session",
-      "session": "af4d391c",
-      "url": "https://www.thestage.co.uk/reviews/2018/matilda-musical-review-curve-leicester/"
-    },
-    {
-      "t": "2026-03-05T12:54:32.942Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
     {
       "t": "2026-03-05T13:07:48.028Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-05T19:42:01.074Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-05T19:50:00.218Z",
+      "event": "bb-session",
+      "session": "8da5e524",
+      "url": "https://observer.com/2025/04/just-in-time-broadway-review-jonathan-groff-dazzles"
+    },
+    {
+      "t": "2026-03-05T19:50:01.476Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
     }

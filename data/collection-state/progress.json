@@ -326,7 +326,16 @@
     "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
     "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json",
     "hercules-west-end-2025/guardian--arifa-akbar.json",
-    "hercules-west-end-2025/timeout-london--andrzej-lukowski.json"
+    "hercules-west-end-2025/timeout-london--andrzej-lukowski.json",
+    "high-noon-west-end-2025/guardian--arifa-akbar.json",
+    "high-noon-west-end-2025/timeout--unknown.json",
+    "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json",
+    "hold-on-to-your-butts-off-broadway-2026/guardian--chris-wiegand.json",
+    "im-sorry-prime-minister-west-end-2026/timeout-london--unknown.json",
+    "into-the-woods-west-end-2025/guardian--arifa-akbar.json",
+    "just-in-time-2025/observer--rex-reed.json",
+    "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json",
+    "little-shop-of-horrors-off-broadway-2019/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "mack-and-mabel-1974/financialtimes--ian-shuttleworth.json",
@@ -711,7 +720,8 @@
     "million-dollar-quartet-2010/wsj--mr-teachout.json",
     "death-becomes-her-2024/wsj--charles-isherwood.json",
     "death-of-a-salesman-2026/broadwaynews--brittani-samuel.json",
-    "death-of-a-salesman-2026/ew--lester-fabian-brathwaite.json"
+    "death-of-a-salesman-2026/ew--lester-fabian-brathwaite.json",
+    "little-shop-of-horrors-off-broadway-2019/broadwaynews--andrew-gans.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -910,7 +920,8 @@
       "hadestown-2019/timeout--adam-feldman.json",
       "hamlet-off-broadway-2026/theatermania--zachary-stewart.json",
       "heathers-the-musical-off-broadway-2025/new-york-sun--elysa-gardner.json",
-      "hercules-west-end-2025/timeout-london--andrzej-lukowski.json"
+      "hercules-west-end-2025/timeout-london--andrzej-lukowski.json",
+      "little-shop-of-horrors-off-broadway-2019/theatermania--zachary-stewart.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -972,7 +983,9 @@
       "data/review-texts/all-out-2025/deadline--unknown.json",
       "all-out-2025/deadline--unknown.json",
       "data/review-texts/heathers-the-musical-off-broadway-2025/observer--david-cote.json",
-      "heathers-the-musical-off-broadway-2025/observer--david-cote.json"
+      "heathers-the-musical-off-broadway-2025/observer--david-cote.json",
+      "data/review-texts/just-in-time-2025/observer--rex-reed.json",
+      "just-in-time-2025/observer--rex-reed.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json"
@@ -1019,7 +1032,12 @@
       "chinese-republicans-off-broadway-2026/thewrap--unknown.json",
       "hadestown-2019/ew--jessica-derschowitz.json",
       "hadestown-2019/guardian--adrian-horton.json",
-      "hercules-west-end-2025/guardian--arifa-akbar.json"
+      "hercules-west-end-2025/guardian--arifa-akbar.json",
+      "high-noon-west-end-2025/guardian--arifa-akbar.json",
+      "hold-on-to-your-butts-off-broadway-2026/guardian--chris-wiegand.json",
+      "im-sorry-prime-minister-west-end-2026/timeout-london--unknown.json",
+      "into-the-woods-west-end-2025/guardian--arifa-akbar.json",
+      "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1308,11 +1326,13 @@
       "harry-potter-and-the-cursed-child-both-parts-west-end-2021/timeout-london--unknown.json",
       "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json",
       "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
-      "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json"
+      "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json",
+      "high-noon-west-end-2025/timeout--unknown.json",
+      "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json"
     ]
   },
   "startTime": "2026-03-05T10:28:39.558Z",
-  "lastProcessed": "hercules-west-end-2025/timeout-london--andrzej-lukowski.json",
+  "lastProcessed": "little-shop-of-horrors-off-broadway-2019/theatermania--zachary-stewart.json",
   "log": [
     {
       "t": "2026-03-05T10:51:55.084Z",
@@ -1609,6 +1629,17 @@
     },
     {
       "t": "2026-03-05T19:42:01.074Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-05T19:50:00.218Z",
+      "event": "bb-session",
+      "session": "8da5e524",
+      "url": "https://observer.com/2025/04/just-in-time-broadway-review-jonathan-groff-dazzles"
+    },
+    {
+      "t": "2026-03-05T19:50:01.476Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
     }
