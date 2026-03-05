@@ -28,7 +28,8 @@ describe('getOutletConfig() — Tier Resolution', () => {
     const tier1Tests = [
       'nytimes', 'vulture', 'variety', 'hollywood-reporter', 'wsj',
       'guardian', 'timeout', 'washpost', 'ap', 'latimes', 'broadwaynews',
-      'newyorker', 'telegraph', 'standard', 'times-uk', 'daily-mail',
+      'newyorker', 'telegraph', 'standard', 'times-uk',
+      'financialtimes', 'thestage', 'timeout-london',
     ];
 
     for (const id of tier1Tests) {
@@ -45,8 +46,8 @@ describe('getOutletConfig() — Tier Resolution', () => {
       'theatrely', 'newsday', 'time', 'bloomberg', 'slate',
       'chicagotribune', 'usatoday', 'nydailynews', 'rollingstone',
       'people', 'parade', 'billboard', 'huffpost', 'backstage',
-      'village-voice', 'financialtimes', 'whatsonstage', 'thestage',
-      'independent', 'timeout-london', 'amny', 'talkinbroadway',
+      'village-voice', 'daily-mail', 'whatsonstage',
+      'independent', 'amny', 'talkinbroadway',
       'ny1', 'nbcny', 'curtainup',
     ];
 

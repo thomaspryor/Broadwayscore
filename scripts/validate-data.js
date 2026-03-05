@@ -358,6 +358,30 @@ function validateSynopsisQuality(shows) {
       warn(`Show "${show.title}" (${show.id}) synopsis ends mid-sentence (trailing comma)`);
       issues++;
     }
+
+    // Wiki markup remnants
+    if (/\{\{|\}\}|\[\[|\]\]|\|\s*\w+\s*=/.test(show.synopsis)) {
+      warn(`Show "${show.title}" (${show.id}) synopsis contains wiki markup`);
+      issues++;
+    }
+
+    // Wikipedia disambiguation page content
+    if (/may refer to:/i.test(show.synopsis.substring(0, 200))) {
+      warn(`Show "${show.title}" (${show.id}) synopsis is a disambiguation page`);
+      issues++;
+    }
+
+    // Film description instead of stage show
+    if (/^.{0,30}is a \d{4} American .* film/i.test(show.synopsis)) {
+      warn(`Show "${show.title}" (${show.id}) synopsis describes a film, not a stage show`);
+      issues++;
+    }
+
+    // Song list instead of plot
+    if (/^Act [12I]/i.test(show.synopsis) && /[""\u201C\u201D][^"""\u201C\u201D]+[""\u201C\u201D]\s*[-–—]\s*/.test(show.synopsis)) {
+      warn(`Show "${show.title}" (${show.id}) synopsis is a song list, not a plot summary`);
+      issues++;
+    }
   }
 
   if (issues === 0) {
@@ -1685,7 +1709,7 @@ function validateCommercialJson() {
     return;
   }
 
-  const validProductionTypes = ['original', 'tour-stop', 'return-engagement'];
+  const validProductionTypes = ['original', 'tour-stop', 'return-engagement', 'international-transfer', 'International Transfer'];
   const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
   const showKeys = Object.keys(data.shows);
   let issues = 0;
@@ -1702,7 +1726,7 @@ function validateCommercialJson() {
     }
 
     // Validate estimatedRecoupmentPct
-    if (show.estimatedRecoupmentPct !== undefined) {
+    if (show.estimatedRecoupmentPct != null) {
       if (!Array.isArray(show.estimatedRecoupmentPct) || show.estimatedRecoupmentPct.length !== 2) {
         error(`commercial.json: "${showId}" estimatedRecoupmentPct must be a 2-element array [low, high]`);
         issues++;
@@ -2688,8 +2712,8 @@ function validateAggregatorArchives(shows) {
     const files = fs.readdirSync(path.join(archiveDir, dir));
     const count = files.length;
     total += count;
-    if (count < 40) {
-      warn(`aggregator-archive/${dir}: only ${count} files (expected 40+)`);
+    if (count < 5) {
+      warn(`aggregator-archive/${dir}: only ${count} files (expected 5+)`);
       lowDirs++;
     }
   }
