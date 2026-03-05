@@ -9,15 +9,44 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Clone core data repo
+    - name: Restore core data cache
+      uses: actions/cache@v4
+      with:
+        path: /tmp/core-data-checkout
+        key: core-data-${{ runner.os }}-${{ github.run_id }}
+        restore-keys: |
+          core-data-${{ runner.os }}-
+
+    - name: Clone or update core data repo
       shell: bash
       env:
         CORE_DATA_TOKEN: ${{ inputs.token }}
       run: |
-        # Clone to /tmp to avoid nested .git inside workspace (causes
-        # actions/checkout post-cleanup "No url found for submodule" errors)
-        rm -rf /tmp/core-data-checkout
-        git clone --depth 1 "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" /tmp/core-data-checkout
+        START=$(date +%s)
+
+        if [ -d "/tmp/core-data-checkout/.git" ]; then
+          # Cache restored — fast update via fetch
+          cd /tmp/core-data-checkout
+          git remote set-url origin "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git"
+          if git fetch origin main --depth 1 2>/dev/null && git reset --hard origin/main 2>/dev/null; then
+            ELAPSED=$(($(date +%s) - START))
+            echo "Core data updated from cache in ${ELAPSED}s (git fetch)"
+          else
+            # Fetch failed — fall back to full clone
+            echo "::warning::Cache update failed — falling back to full clone"
+            cd /tmp
+            rm -rf /tmp/core-data-checkout
+            git clone --depth 1 "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" /tmp/core-data-checkout
+            ELAPSED=$(($(date +%s) - START))
+            echo "Core data cloned fresh in ${ELAPSED}s (fallback)"
+          fi
+        else
+          # No cache — full clone
+          rm -rf /tmp/core-data-checkout
+          git clone --depth 1 "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" /tmp/core-data-checkout
+          ELAPSED=$(($(date +%s) - START))
+          echo "Core data cloned fresh in ${ELAPSED}s"
+        fi
 
     - name: Copy core data to data/
       shell: bash

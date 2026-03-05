@@ -88,7 +88,7 @@ export default function BeatTheCriticsPage() {
   // Build thumbnail lookup from eligible shows
   const thumbMap = new Map<string, string | null>();
   for (const s of eligible) {
-    thumbMap.set(s.id, s.images?.thumbnail ?? null);
+    thumbMap.set(s.id, s.thumbnailPath ?? null);
   }
 
   // Tier 1: The Big Four (show categories)
