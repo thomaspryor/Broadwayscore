@@ -132,8 +132,10 @@ export default function MezzanineImport({
       await ensureSearchData();
 
       // Match diary entries
+      // NOTE: We allow multiple diary entries for the same show (re-viewings).
+      // Only skip if user already has a review for this show in their account.
       const matched: MatchedEntry[] = [];
-      const seenShows = new Set<string>();
+      const diaryShowIds = new Set<string>();
 
       for (const entry of parsed.data.diaryEntries) {
         const { match, score } = matchShow(
@@ -141,7 +143,6 @@ export default function MezzanineImport({
           entry.production?.theater?.name
         );
         const showId = match?.id || '';
-        const isDuplicate = showId && seenShows.has(showId);
         const alreadyReviewed = showId ? existingReviewShowIds.has(showId) : false;
 
         matched.push({
@@ -151,11 +152,11 @@ export default function MezzanineImport({
           mezzReview: entry.review || null,
           match,
           matchScore: score,
-          selected: !!match && score > 0.5 && !isDuplicate && !alreadyReviewed,
+          selected: !!match && score > 0.5 && !alreadyReviewed,
           type: 'diary',
         });
 
-        if (showId) seenShows.add(showId);
+        if (showId) diaryShowIds.add(showId);
       }
 
       // Match wishlist entries
@@ -164,7 +165,7 @@ export default function MezzanineImport({
           const { match, score } = matchShow(show.name);
           const showId = match?.id || '';
           const alreadyWatchlisted = showId ? existingWatchlistShowIds.has(showId) : false;
-          const alreadyInDiary = showId ? seenShows.has(showId) : false;
+          const alreadyInDiary = showId ? diaryShowIds.has(showId) : false;
 
           matched.push({
             mezzName: show.name,
@@ -192,7 +193,9 @@ export default function MezzanineImport({
   const watchlistEntries = useMemo(() => entries.filter(e => e.type === 'watchlist'), [entries]);
   const selectedDiary = useMemo(() => diaryEntries.filter(e => e.selected && e.match), [diaryEntries]);
   const selectedWatchlist = useMemo(() => watchlistEntries.filter(e => e.selected && e.match), [watchlistEntries]);
-  const unmatchedCount = useMemo(() => entries.filter(e => !e.match || e.matchScore <= 0.5).length, [entries]);
+  const unmatchedDiary = useMemo(() => diaryEntries.filter(e => !e.match || e.matchScore <= 0.5).length, [diaryEntries]);
+  const unmatchedWatchlist = useMemo(() => watchlistEntries.filter(e => !e.match || e.matchScore <= 0.5).length, [watchlistEntries]);
+  const unmatchedCount = unmatchedDiary + unmatchedWatchlist;
 
   const toggleEntry = (index: number) => {
     setEntries(prev => prev.map((e, i) => i === index ? { ...e, selected: !e.selected } : e));
