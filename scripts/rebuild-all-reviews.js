@@ -1071,6 +1071,18 @@ function getBestScore(data) {
     // Meh thumbs or mixed signals: don't change confidence, fall through to P4
   }
 
+  // P3b: Downgraded ShowScore originalScore (WE shows only)
+  // ShowScore star ratings aren't trusted at P0.5 (known inflation), but they're more
+  // reliable than low-confidence LLM scores. A 3/5 star rating should score ~60, not 25.
+  // Placed here so star ratings beat low-conf LLM but lose to high/medium-conf LLM.
+  if (downgradeShowScore && data.originalScore) {
+    const parsed = parseOriginalScore(data.originalScore, data.outletId);
+    if (parsed !== null) {
+      stats.showScoreDowngradedFallback = (stats.showScoreDowngradedFallback || 0) + 1;
+      return { score: parsed, source: 'originalScore-showscore-downgraded' };
+    }
+  }
+
   // Priority 4: LLM score fallback (low confidence, needs review, or excerpt-only - when no thumb available)
   if (data.llmScore && data.llmScore.score) {
     const confidence = data.llmScore.confidence;
@@ -1110,15 +1122,6 @@ function getBestScore(data) {
     }
   }
 
-  // P4b: Downgraded ShowScore originalScore fallback (WE shows only)
-  // ShowScore star ratings for WE are used as fallback when no LLM/explicit score exists
-  if (downgradeShowScore && data.originalScore) {
-    const parsed = parseOriginalScore(data.originalScore, data.outletId);
-    if (parsed !== null) {
-      stats.showScoreDowngradedFallback = (stats.showScoreDowngradedFallback || 0) + 1;
-      return { score: parsed, source: 'originalScore-showscore-downgraded' };
-    }
-  }
 
   // P5: Bucket mapping
   if (data.bucket && BUCKET_TO_SCORE[data.bucket]) {

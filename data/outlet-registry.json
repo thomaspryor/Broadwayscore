@@ -6077,15 +6077,6 @@
       ],
       "accessModel": "defunct"
     },
-    "londonboxoffice": {
-      "displayName": "Londonboxoffice",
-      "tier": 3,
-      "aliases": [
-        "londonboxoffice"
-      ],
-      "region": "london",
-      "accessModel": "defunct"
-    },
     "rock-nyc": {
       "displayName": "Rock Nyc",
       "tier": 3,
@@ -7687,12 +7678,6 @@
       "domain": "dailymail.co.uk",
       "accessModel": "free"
     },
-    "i-newspaper": {
-      "displayName": "i newspaper",
-      "tier": 3,
-      "region": "london",
-      "accessModel": "paywalled"
-    },
     "afterelton": {
       "displayName": "AfterElton",
       "tier": 3,
@@ -8225,16 +8210,6 @@
       "domain": null,
       "accessModel": "defunct"
     },
-    "oscaremoore": {
-      "displayName": "Oscaremoore",
-      "tier": 3,
-      "aliases": [
-        "oscaremoore",
-        "oscar e moore"
-      ],
-      "domain": "oscaremoore.com",
-      "accessModel": "free"
-    },
     "timteeman": {
       "displayName": "Timteeman",
       "tier": 3,
@@ -8439,6 +8414,88 @@
         "seth-saith"
       ],
       "domain": null
+    },
+    "london-box-office": {
+      "displayName": "London Box Office",
+      "tier": 3,
+      "aliases": [
+        "london-box-office",
+        "londonboxoffice"
+      ],
+      "domain": "londonboxoffice.co.uk",
+      "accessModel": "free",
+      "market": "west-end"
+    },
+    "lincoln-journal-star": {
+      "displayName": "Lincoln Journal Star",
+      "tier": 3,
+      "aliases": [
+        "lincoln-journal-star"
+      ],
+      "domain": "journalstar.com",
+      "accessModel": "metered"
+    },
+    "london-theatre-1": {
+      "displayName": "London Theatre 1",
+      "tier": 3,
+      "aliases": [
+        "london-theatre-1",
+        "londontheatre1"
+      ],
+      "domain": "londontheatre1.com",
+      "accessModel": "free",
+      "market": "west-end"
+    },
+    "oscar-e-moore": {
+      "displayName": "Oscar E Moore",
+      "tier": 3,
+      "aliases": [
+        "oscar-e-moore",
+        "oscaremoore",
+        "oscar e moore"
+      ],
+      "domain": "oscaremoore.com",
+      "accessModel": "free"
+    },
+    "matttrueman": {
+      "displayName": "Matt Trueman",
+      "tier": 3,
+      "aliases": [
+        "matttrueman",
+        "matt-trueman"
+      ],
+      "domain": "matttrueman.co.uk",
+      "accessModel": "free",
+      "market": "west-end"
+    },
+    "stagebiz": {
+      "displayName": "StageBiz",
+      "tier": 3,
+      "aliases": [
+        "stagebiz",
+        "stage-biz"
+      ],
+      "domain": "stagebiz.com",
+      "accessModel": "free"
+    },
+    "break-point": {
+      "displayName": "BreakPoint",
+      "tier": 3,
+      "aliases": [
+        "break-point",
+        "breakpoint"
+      ],
+      "domain": "breakpoint.org",
+      "accessModel": "free"
+    },
+    "b1039": {
+      "displayName": "B103.9",
+      "tier": 3,
+      "aliases": [
+        "b1039"
+      ],
+      "domain": "b1039.com",
+      "accessModel": "free"
     }
   },
   "_aliasIndex": {
@@ -8977,6 +9034,7 @@
     "the-upcoming": "theupcoming",
     "musicals-101": "musicals101",
     "inews": "i-paper",
+    "i-newspaper": "i-paper",
     "lost-in-theatreland-uk": "lost-in-theatreland",
     "daily-mail-uk": "daily-mail",
     "citiour": "cititour",
