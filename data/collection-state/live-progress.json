@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-05T04:43:19.034Z",
-  "processed": 34,
-  "failed": 16,
-  "successRate": "68.0%",
+  "updatedAt": "2026-03-05T04:46:53.549Z",
+  "processed": 40,
+  "failed": 17,
+  "successRate": "70.2%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 27,
+    "scrapingbee": 33,
     "brightdata": 0,
-    "archiveToday": 7,
+    "archiveToday": 8,
     "archive": 7
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-03-05T04:20:25.479Z",
@@ -89,6 +89,17 @@
     },
     {
       "t": "2026-03-05T04:37:01.573Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-05T04:45:28.860Z",
+      "event": "bb-session",
+      "session": "91ac40a1",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/sunset-boulevard-2"
+    },
+    {
+      "t": "2026-03-05T04:45:30.291Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
     }
