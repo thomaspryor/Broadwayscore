@@ -20,7 +20,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { extractScore, OUTLET_EXTRACTORS } = require('./lib/score-extractors');
+const { extractScore, OUTLET_EXTRACTORS, EXTRACTOR_VERSION } = require('./lib/score-extractors');
 
 const REVIEW_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -234,7 +234,12 @@ async function main() {
         if (!data.url) continue; // No URL to fetch
         if (data.wrongShow) continue; // Flagged as wrong content
         if (data.wrongProduction) continue; // URL is for a different production
-        if (data._noScoreOnHtml) continue; // Already checked, no score in HTML
+        // Skip if already checked with current extractor version
+        const checkedVersion = data._noScoreExtractorVersion || 0;
+        if (data._noScoreOnHtml && checkedVersion >= EXTRACTOR_VERSION) continue;
+        if (data._noScoreOnHtml && checkedVersion < EXTRACTOR_VERSION) {
+          console.log(`  Retrying ${file} (extractor updated: v${checkedVersion} -> v${EXTRACTOR_VERSION})`);
+        }
         // Skip non-theatre content URLs (film reviews, concert reviews, etc.)
         const urlPath = data.url.toLowerCase();
         if (/\/(films|film)\//i.test(urlPath) || /\/music\/concerts\//i.test(urlPath)) continue;
@@ -301,6 +306,7 @@ async function main() {
         // Mark as checked so subsequent runs skip this review
         if (execute) {
           t.data._noScoreOnHtml = new Date().toISOString().split('T')[0];
+          t.data._noScoreExtractorVersion = EXTRACTOR_VERSION;
           fs.writeFileSync(t.fp, JSON.stringify(t.data, null, 2) + '\n');
         }
       }
