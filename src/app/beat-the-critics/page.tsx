@@ -39,34 +39,35 @@ export interface BeatTheCriticsData {
 }
 
 // Curated likely nominees per Tier 1 category (~5 per, simulating post-nomination slate)
+// NOTE: These use SerializedTonyShow.slug (not show ID), e.g. 'ragtime' not 'ragtime-2025'
 const CURATED_SHOW_NOMINEES: Record<string, string[]> = {
   'Best Musical': [
-    'two-strangers-bway-2025',  // NYT Critics Pick, frontrunner
-    'queen-versailles-2025',     // Kristin Chenoweth, Stephen Schwartz
-    'schmigadoon-2026',          // Apple TV+ adaptation
-    'the-lost-boys-2026',        // Michael Arden directing
-    'beaches-2026',              // Major new musical
+    'two-strangers',             // NYT Critics Pick, frontrunner
+    'queen-of-versailles',       // Kristin Chenoweth, Stephen Schwartz
+    'schmigadoon',               // Apple TV+ adaptation
+    'the-lost-boys',             // Michael Arden directing
+    'beaches',                   // Major new musical
   ],
   'Best Play': [
-    'giant-2026',                // Olivier Award winner, John Lithgow
-    'dog-day-afternoon-2026',    // Stephen Adly Guirgis, Jon Bernthal
-    'the-balusters-2026',        // David Lindsay-Abaire, Kenny Leon
-    'liberation-2025',           // Early season buzz
-    'the-fear-of-13-2026',       // Adrien Brody, Tessa Thompson
+    'giant',                     // Olivier Award winner, John Lithgow
+    'dog-day-afternoon',         // Stephen Adly Guirgis, Jon Bernthal
+    'the-balusters',             // David Lindsay-Abaire, Kenny Leon
+    'oedipus',                   // Mark Strong, Lesley Manville
+    'the-fear-of-13',            // Adrien Brody, Tessa Thompson
   ],
   'Best Revival of a Musical': [
-    'ragtime-2025',              // Lincoln Center, 96% audience score
-    'chess-2025',                // Aaron Tveit, Lea Michele
-    'cats-the-jellicle-ball-2026', // Ballroom reimagining, OB hit
-    'the-rocky-horror-show-2026', // Luke Evans, Roundabout
-    'mamma-mia-2025',           // Tony-eligible revival
+    'ragtime',                   // Lincoln Center, 96% audience score
+    'chess',                     // Aaron Tveit, Lea Michele
+    'cats-the-jellicle-ball',    // Ballroom reimagining, OB hit
+    'the-rocky-horror-show',     // Luke Evans, Roundabout
+    'mamma-mia',                 // Tony-eligible revival
   ],
   'Best Revival of a Play': [
-    'oedipus-2025',              // Mark Strong, Robert Icke
     'waiting-for-godot-2025',    // Keanu Reeves, Jamie Lloyd
     'art-2025',                  // Cannavale, NPH, Corden
-    'marjorie-prime-2025',       // June Squibb, Cynthia Nixon
-    'joe-turners-come-and-gone-2026', // August Wilson classic
+    'marjorie-prime',            // June Squibb, Cynthia Nixon
+    'joe-turners-come-and-gone', // August Wilson classic
+    'bug',                       // Carrie Coon, Namir Smallwood
   ],
 };
 
