@@ -194,7 +194,16 @@ function CrowdBar({ label, pct, isUserPick, variant, score }: { label: string; p
 // ─── Main Client Component ───
 
 export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
-  useEffect(() => { document.body.classList.add('btc-standalone'); return () => document.body.classList.remove('btc-standalone'); }, []);
+  useEffect(() => {
+    document.body.classList.add('btc-standalone');
+    try {
+      const saved = localStorage.getItem('btc-picks');
+      const savedSlugs = localStorage.getItem('btc-pick-slugs');
+      if (saved) setPicks(JSON.parse(saved));
+      if (savedSlugs) setPickSlugs(JSON.parse(savedSlugs));
+    } catch {}
+    return () => document.body.classList.remove('btc-standalone');
+  }, []);
   const [screen, setScreen] = useState<Screen>('landing');
   const [currentTierIdx, setCurrentTierIdx] = useState(0);
   const [currentCatIdx, setCurrentCatIdx] = useState(0);
@@ -212,8 +221,8 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
   ).length;
 
   const handlePick = useCallback((category: string, title: string, slug: string) => {
-    setPicks(prev => ({ ...prev, [category]: title }));
-    setPickSlugs(prev => ({ ...prev, [category]: slug }));
+    setPicks(prev => { const next = { ...prev, [category]: title }; try { localStorage.setItem('btc-picks', JSON.stringify(next)); } catch {} return next; });
+    setPickSlugs(prev => { const next = { ...prev, [category]: slug }; try { localStorage.setItem('btc-pick-slugs', JSON.stringify(next)); } catch {} return next; });
   }, []);
 
   const handleLockIn = useCallback(() => {
@@ -285,7 +294,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
     window.open(`https://x.com/intent/tweet?text=${text}`, '_blank');
   }, [shareText]);
 
-  const goToScreen = useCallback((s: Screen) => { setScreen(s); }, []);
+  const goToScreen = useCallback((s: Screen) => { setScreen(s); window.scrollTo(0, 0); }, []);
 
   // ─── Landing Screen ───
   if (screen === 'landing') {
@@ -451,7 +460,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           {/* Crowd bars — show categories only */}
           {!isActor && (
             <div className="mb-7 animate-fade-up" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">What Other Players Picked<div className="flex-1 h-px bg-white/5" /></div>
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">CriticScore Odds<div className="flex-1 h-px bg-white/5" /></div>
               {nominees.map((show, i) => (<CrowdBar key={show.slug} label={show.title} pct={crowdPcts[i] ?? 0} isUserPick={show.title === userPick} variant={show.title === userPick ? 'rose' : i === 0 ? 'brand' : 'muted'} score={show.compositeScore} />))}
             </div>
           )}
@@ -546,7 +555,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
             })}
             {allCompletedPicks.length === 0 && (<div className="py-4 text-center text-gray-500 text-sm">No picks made yet</div>)}
           </div>
-          <div className="px-6 py-4 bg-[#ff1368]/[0.04] border-t border-white/5 text-center"><div className="text-sm font-bold text-[#ff1368]">Can you Beat the Critics?</div><div className="text-xs text-gray-500 mt-1">todaytix.com/beat-the-critics</div></div>
+          <div className="px-6 py-4 bg-[#ff1368]/[0.04] border-t border-white/5 text-center"><div className="text-sm font-bold text-[#ff1368]">Can you Beat the Critics?</div><div className="text-xs text-gray-500 mt-1">broadwayscorecard.com/beat-the-critics</div></div>
         </div>
 
         {/* Email / Submission */}
