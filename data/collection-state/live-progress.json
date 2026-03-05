@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-05T13:24:47.368Z",
-  "processed": 154,
-  "failed": 176,
-  "successRate": "46.7%",
+  "updatedAt": "2026-03-05T13:32:13.991Z",
+  "processed": 163,
+  "failed": 177,
+  "successRate": "47.9%",
   "tierBreakdown": {
-    "playwright": 101,
-    "amp": 22,
-    "browserbase": 20,
-    "directCookies": 0,
-    "scrapingbee": 17,
+    "playwright": 102,
+    "amp": 26,
+    "browserbase": 22,
+    "directCookies": 1,
+    "scrapingbee": 20,
     "brightdata": 0,
-    "archiveToday": 88,
-    "archive": 16
+    "archiveToday": 89,
+    "archive": 17
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-03-05T11:55:01.100Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-05T11:56:54.108Z",
-      "event": "bb-session",
-      "session": "a964894b",
-      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
-    },
-    {
-      "t": "2026-03-05T11:56:55.390Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-05T12:03:57.802Z",
-      "event": "bb-session",
-      "session": "acb21c57",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
-    },
     {
       "t": "2026-03-05T12:03:59.074Z",
       "event": "bb-cookie-inject",
@@ -124,6 +102,28 @@
       "t": "2026-03-05T13:21:55.561Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-05T13:26:55.851Z",
+      "event": "bb-session",
+      "session": "ac9730f4",
+      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
+    },
+    {
+      "t": "2026-03-05T13:26:57.016Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-05T13:31:03.636Z",
+      "event": "bb-session",
+      "session": "90dce8ea",
+      "url": "https://www.nytimes.com/2026/02/12/theater/the-unknown-review-sean-hayes.html"
+    },
+    {
+      "t": "2026-03-05T13:31:04.701Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
