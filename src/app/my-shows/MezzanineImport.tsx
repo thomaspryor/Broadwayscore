@@ -137,6 +137,8 @@ export default function MezzanineImport({
       const matched: MatchedEntry[] = [];
       const diaryShowIds = new Set<string>();
 
+      const today = new Date().toISOString().split('T')[0];
+
       for (const entry of parsed.data.diaryEntries) {
         const { match, score } = matchShow(
           entry.show.name,
@@ -144,17 +146,36 @@ export default function MezzanineImport({
         );
         const showId = match?.id || '';
         const alreadyReviewed = showId ? existingReviewShowIds.has(showId) : false;
+        const entryDate = entry.date ? entry.date.split('T')[0] : null;
+        const hasRating = !!(entry.rating && entry.rating > 0);
+        const isFuture = entryDate && entryDate > today;
 
-        matched.push({
-          mezzName: entry.show.name,
-          mezzRating: entry.rating || null,
-          mezzDate: entry.date ? entry.date.split('T')[0] : null,
-          mezzReview: entry.review || null,
-          match,
-          matchScore: score,
-          selected: !!match && score > 0.5 && !alreadyReviewed,
-          type: 'diary',
-        });
+        // Unrated future entries → watchlist with planned_date (not diary)
+        if (!hasRating && isFuture) {
+          const alreadyWatchlisted = showId ? existingWatchlistShowIds.has(showId) : false;
+          matched.push({
+            mezzName: entry.show.name,
+            mezzRating: null,
+            mezzDate: entryDate,
+            mezzReview: null,
+            match,
+            matchScore: score,
+            selected: !!match && score > 0.5 && !alreadyWatchlisted && !alreadyReviewed,
+            type: 'watchlist',
+            listName: 'Upcoming',
+          });
+        } else {
+          matched.push({
+            mezzName: entry.show.name,
+            mezzRating: entry.rating || null,
+            mezzDate: entryDate,
+            mezzReview: entry.review || null,
+            match,
+            matchScore: score,
+            selected: !!match && score > 0.5 && !alreadyReviewed,
+            type: 'diary',
+          });
+        }
 
         if (showId) diaryShowIds.add(showId);
       }
@@ -240,6 +261,7 @@ export default function MezzanineImport({
         const { error: insertErr } = await supabaseRestInsert('watchlist', {
           user_id: userId,
           show_id: entry.match.id,
+          ...(entry.mezzDate && { planned_date: entry.mezzDate }),
         });
         if (insertErr) {
           if (insertErr.code === '23505') skipped++;
