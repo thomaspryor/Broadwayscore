@@ -198,7 +198,7 @@ export default function MyShowsClient() {
           </p>
           <button
             type="button"
-            onClick={() => showSignIn('rating')}
+            onClick={() => showSignIn()}
             className="inline-block px-6 py-3 text-sm font-semibold text-black bg-[#FFD700] rounded-lg hover:bg-[#e6c200] transition-colors"
           >
             Sign In to Get Started
@@ -470,7 +470,7 @@ export default function MyShowsClient() {
                   entry={entry}
                   show={showMap[entry.show_id]}
                   onDateChange={(date) => updatePlannedDate(entry.show_id, date)}
-                  onRemove={() => removeFromWatchlist(entry.show_id)}
+                  onRemove={async () => { await removeFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
                 />
               ))}
               <AddShowCard context="watchlist" onOpen={() => {
@@ -486,7 +486,7 @@ export default function MyShowsClient() {
                   entry={entry}
                   show={showMap[entry.show_id]}
                   onDateChange={(date) => updatePlannedDate(entry.show_id, date)}
-                  onRemove={() => removeFromWatchlist(entry.show_id)}
+                  onRemove={async () => { await removeFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
                 />
               ))}
               <AddShowCard context="watchlist" variant="list" onOpen={() => {
@@ -651,6 +651,7 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
   onDateChange: (date: string | null) => void;
   onRemove: () => void;
 }) {
+  const [confirmRemove, setConfirmRemove] = useState(false);
   const title = show?.title || entry.show_id;
   const slug = show?.slug || entry.show_id;
   const category = show?.category || 'broadway';
@@ -698,11 +699,11 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
             Rate
           </span>
         </div>
-        {/* Trash button to remove — top-right on hover */}
+        {/* Trash button to remove — top-right on hover, with confirmation */}
         <button
           type="button"
-          onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRemove(); }}
-          className="absolute top-1 right-1 z-[2] p-1 rounded-full bg-black/70 text-gray-400 hover:text-red-400 opacity-0 group-hover/wl:opacity-100 transition-opacity"
+          onClick={(e) => { e.preventDefault(); e.stopPropagation(); confirmRemove ? onRemove() : setConfirmRemove(true); }}
+          className={`absolute top-1 right-1 z-[2] p-1 rounded-full ${confirmRemove ? 'bg-red-500/80 text-white opacity-100' : 'bg-black/70 text-gray-400 hover:text-red-400 opacity-0 group-hover/wl:opacity-100'} transition-opacity`}
           aria-label="Remove from watchlist"
         >
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -727,23 +728,23 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
 }
 
 /** Render mini star icons for grid cards (filled, half, empty) */
+let miniStarsCounter = 0;
 function MiniStars({ rating }: { rating: number }) {
+  const idRef = useRef(`ms-${++miniStarsCounter}`);
+  const uid = idRef.current;
   const stars = [];
   for (let i = 1; i <= 5; i++) {
     if (i <= Math.floor(rating)) {
-      // Filled star
       stars.push(<svg key={i} className="w-3.5 h-3.5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>);
     } else if (i === Math.ceil(rating) && rating % 1 !== 0) {
-      // Half star
       stars.push(
         <svg key={i} className="w-3.5 h-3.5" viewBox="0 0 20 20">
-          <defs><clipPath id={`half-${i}`}><rect x="0" y="0" width="10" height="20" /></clipPath></defs>
+          <defs><clipPath id={`${uid}-${i}`}><rect x="0" y="0" width="10" height="20" /></clipPath></defs>
           <path className="text-gray-600" fill="currentColor" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-          <path className="text-amber-400" fill="currentColor" clipPath={`url(#half-${i})`} d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          <path className="text-amber-400" fill="currentColor" clipPath={`url(#${uid}-${i})`} d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
         </svg>
       );
     } else {
-      // Empty star
       stars.push(<svg key={i} className="w-3.5 h-3.5 text-gray-600" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>);
     }
   }
@@ -787,6 +788,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
   onDateChange: (date: string | null) => void;
   onRemove: () => void;
 }) {
+  const [confirmRemove, setConfirmRemove] = useState(false);
   const title = show?.title || entry.show_id;
   const slug = show?.slug || entry.show_id;
   const category = show?.category || 'broadway';
@@ -848,16 +850,23 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
           </svg>
           Rate
         </Link>
-        <button
-          type="button"
-          onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRemove(); }}
-          className="relative z-[1] p-1 text-gray-600 hover:text-red-400 transition-colors"
-          aria-label="Remove from watchlist"
-        >
-          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-          </svg>
-        </button>
+        {confirmRemove ? (
+          <span className="relative z-[1] flex items-center gap-1 text-[10px]">
+            <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRemove(); }} className="text-red-400 hover:text-red-300 font-medium">Remove?</button>
+            <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirmRemove(false); }} className="text-gray-500 hover:text-white">No</button>
+          </span>
+        ) : (
+          <button
+            type="button"
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirmRemove(true); }}
+            className="relative z-[1] p-1 text-gray-600 hover:text-red-400 transition-colors"
+            aria-label="Remove from watchlist"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+          </button>
+        )}
       </div>
     </div>
   );

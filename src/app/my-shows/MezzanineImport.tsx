@@ -228,15 +228,22 @@ export default function MezzanineImport({
     let skipped = 0;
     let errors = 0;
 
-    // Import diary entries (reviews)
+    // Import diary entries (reviews) — only entries with a rating
+    // Unrated entries become watchlist items (handled below)
+    const unratedDiary: typeof selectedDiary = [];
     for (const entry of selectedDiary) {
       if (!entry.match) continue;
+      if (!entry.mezzRating || entry.mezzRating <= 0) {
+        // No rating — add to watchlist with planned_date instead
+        unratedDiary.push(entry);
+        continue;
+      }
       try {
         // Mezzanine ratings are 1-5 with 0.5 steps — same as ours
         const { error: insertErr } = await supabaseRestInsert('reviews', {
           user_id: userId,
           show_id: entry.match.id,
-          rating: entry.mezzRating || 3, // Default to 3 if unrated
+          rating: entry.mezzRating,
           review_text: entry.mezzReview || null,
           date_seen: entry.mezzDate || null,
         });
@@ -254,8 +261,9 @@ export default function MezzanineImport({
       }
     }
 
-    // Import watchlist entries
-    for (const entry of selectedWatchlist) {
+    // Import watchlist entries + unrated diary entries as watchlist items
+    const allWatchlistEntries = [...selectedWatchlist, ...unratedDiary];
+    for (const entry of allWatchlistEntries) {
       if (!entry.match) continue;
       try {
         const { error: insertErr } = await supabaseRestInsert('watchlist', {
