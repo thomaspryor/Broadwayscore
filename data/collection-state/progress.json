@@ -344,7 +344,16 @@
     "masquerade-off-broadway-2025/nypost--johnny-oleksinski.json",
     "masquerade-off-broadway-2025/observer--david-cote.json",
     "masquerade-off-broadway-2025/theatermania--meg-masseron.json",
-    "masquerade-off-broadway-2025/timeout--adam-feldman.json"
+    "masquerade-off-broadway-2025/timeout--adam-feldman.json",
+    "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json",
+    "matilda-the-musical-west-end-2021/timeout-london--sam-marlowe.json",
+    "maybe-happy-ending-2024/guardian--adrian-horton.json",
+    "maybe-happy-ending-2024/new-york-sun--broadway-scorecard.json",
+    "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+    "maybe-happy-ending-2024/theatermania--jesse-green.json",
+    "maybe-happy-ending-2024/timeout--adam-feldman.json",
+    "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/theatermania--rachel-graham.json",
+    "mj-2022/theatermania--jesse-green.json"
   ],
   "failed": [
     "mack-and-mabel-1974/financialtimes--ian-shuttleworth.json",
@@ -731,7 +740,8 @@
     "death-of-a-salesman-2026/broadwaynews--brittani-samuel.json",
     "death-of-a-salesman-2026/ew--lester-fabian-brathwaite.json",
     "little-shop-of-horrors-off-broadway-2019/broadwaynews--andrew-gans.json",
-    "lost-in-del-valle-off-broadway-2026/theatermania--unknown.json"
+    "lost-in-del-valle-off-broadway-2026/theatermania--unknown.json",
+    "maybe-happy-ending-2024/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -936,7 +946,13 @@
       "marcel-on-the-train-off-broadway-2026/new-york-sun--elysa-gardner.json",
       "marcel-on-the-train-off-broadway-2026/theatermania--zachary-stewart.json",
       "masquerade-off-broadway-2025/theatermania--meg-masseron.json",
-      "masquerade-off-broadway-2025/timeout--adam-feldman.json"
+      "masquerade-off-broadway-2025/timeout--adam-feldman.json",
+      "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json",
+      "maybe-happy-ending-2024/guardian--adrian-horton.json",
+      "maybe-happy-ending-2024/new-york-sun--broadway-scorecard.json",
+      "maybe-happy-ending-2024/timeout--adam-feldman.json",
+      "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/theatermania--rachel-graham.json",
+      "mj-2022/theatermania--jesse-green.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -1004,7 +1020,9 @@
       "data/review-texts/masquerade-off-broadway-2025/nypost--johnny-oleksinski.json",
       "masquerade-off-broadway-2025/nypost--johnny-oleksinski.json",
       "data/review-texts/masquerade-off-broadway-2025/observer--david-cote.json",
-      "masquerade-off-broadway-2025/observer--david-cote.json"
+      "masquerade-off-broadway-2025/observer--david-cote.json",
+      "data/review-texts/maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+      "maybe-happy-ending-2024/nypost--johnny-oleksinski.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json"
@@ -1281,7 +1299,8 @@
       "data/review-texts/memphis-2009/nydailynews--joe-dziemianowicz-bway.json",
       "data/review-texts/memphis-2009/wsj--terry-teachout.json",
       "data/review-texts/million-dollar-quartet-2010/wsj--mr-teachout.json",
-      "data/review-texts/death-becomes-her-2024/wsj--charles-isherwood.json"
+      "data/review-texts/death-becomes-her-2024/wsj--charles-isherwood.json",
+      "data/review-texts/maybe-happy-ending-2024/wsj--charles-isherwood.json"
     ],
     "archive": [
       "the-encounter-2016/financialtimes--ian-shuttleworth.json",
@@ -1349,11 +1368,13 @@
       "high-noon-west-end-2025/timeout--unknown.json",
       "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json",
       "magic-mike-live-west-end-2021/timeout-london--unknown.json",
-      "mamma-mia-west-end-2021/timeout-london--nina-caplan.json"
+      "mamma-mia-west-end-2021/timeout-london--nina-caplan.json",
+      "matilda-the-musical-west-end-2021/timeout-london--sam-marlowe.json",
+      "maybe-happy-ending-2024/theatermania--jesse-green.json"
     ]
   },
   "startTime": "2026-03-05T10:28:39.558Z",
-  "lastProcessed": "masquerade-off-broadway-2025/timeout--adam-feldman.json",
+  "lastProcessed": "mj-2022/theatermania--jesse-green.json",
   "log": [
     {
       "t": "2026-03-05T10:51:55.084Z",
@@ -1685,6 +1706,28 @@
       "t": "2026-03-05T19:55:55.751Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-05T19:59:16.971Z",
+      "event": "bb-session",
+      "session": "5b7f5bc0",
+      "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-r"
+    },
+    {
+      "t": "2026-03-05T19:59:18.116Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-05T20:01:40.815Z",
+      "event": "bb-session",
+      "session": "23256e86",
+      "url": "https://www.wsj.com/articles/maybe-happy-ending-review-a-robotic-romance-of-real"
+    },
+    {
+      "t": "2026-03-05T20:01:41.865Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
