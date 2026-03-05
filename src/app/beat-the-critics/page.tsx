@@ -38,6 +38,38 @@ export interface BeatTheCriticsData {
   stats: { reviewsScored: number; showsTracked: number; criticsTracked: number };
 }
 
+// Curated likely nominees per Tier 1 category (~5 per, simulating post-nomination slate)
+const CURATED_SHOW_NOMINEES: Record<string, string[]> = {
+  'Best Musical': [
+    'two-strangers-bway-2025',  // NYT Critics Pick, frontrunner
+    'queen-versailles-2025',     // Kristin Chenoweth, Stephen Schwartz
+    'schmigadoon-2026',          // Apple TV+ adaptation
+    'the-lost-boys-2026',        // Michael Arden directing
+    'beaches-2026',              // Major new musical
+  ],
+  'Best Play': [
+    'giant-2026',                // Olivier Award winner, John Lithgow
+    'dog-day-afternoon-2026',    // Stephen Adly Guirgis, Jon Bernthal
+    'the-balusters-2026',        // David Lindsay-Abaire, Kenny Leon
+    'liberation-2025',           // Early season buzz
+    'the-fear-of-13-2026',       // Adrien Brody, Tessa Thompson
+  ],
+  'Best Revival of a Musical': [
+    'ragtime-2025',              // Lincoln Center, 96% audience score
+    'chess-2025',                // Aaron Tveit, Lea Michele
+    'cats-the-jellicle-ball-2026', // Ballroom reimagining, OB hit
+    'the-rocky-horror-show-2026', // Luke Evans, Roundabout
+    'mamma-mia-2025',           // Tony-eligible revival
+  ],
+  'Best Revival of a Play': [
+    'oedipus-2025',              // Mark Strong, Robert Icke
+    'waiting-for-godot-2025',    // Keanu Reeves, Jamie Lloyd
+    'art-2025',                  // Cannavale, NPH, Corden
+    'marjorie-prime-2025',       // June Squibb, Cynthia Nixon
+    'joe-turners-come-and-gone-2026', // August Wilson classic
+  ],
+};
+
 // Tier 2: Lead Actor contenders — curated from eligible shows' cast data
 const LEAD_ACTOR_NOMINEES: Record<string, { name: string; showTitle: string; showSlug: string }[]> = {
   'Best Actor in a Musical': [
@@ -124,14 +156,18 @@ export default function BeatTheCriticsPage() {
     thumbMap.set(s.id, s.images?.thumbnail ?? null);
   }
 
-  // Tier 1: The Big Four (show categories)
+  // Tier 1: The Big Four (show categories) — filtered to curated likely nominees
   const tier1 = {
     key: 'tier1',
     label: 'Tier 1',
     name: 'The Big Four',
     categories: ['Best Musical', 'Best Play', 'Best Revival of a Musical', 'Best Revival of a Play'].map(catTitle => {
       const catData = categoryMap.get(catTitle);
-      const nominees = catData ? [...catData.shows, ...catData.upcoming] : [];
+      const allNominees = catData ? [...catData.shows, ...catData.upcoming] : [];
+      const curated = CURATED_SHOW_NOMINEES[catTitle];
+      const nominees = curated
+        ? allNominees.filter(n => curated.includes(n.slug))
+        : allNominees;
       return { title: catTitle, nominees };
     }),
   };
@@ -168,14 +204,16 @@ export default function BeatTheCriticsPage() {
     })),
   };
 
-  // Helper to merge show pools from multiple categories (deduped by slug)
+  // Helper to merge curated show pools from multiple categories (deduped by slug)
   function mergeShowPools(...catTitles: string[]): SerializedTonyShow[] {
     const seen = new Set<string>();
     const merged: SerializedTonyShow[] = [];
     for (const title of catTitles) {
       const cat = categoryMap.get(title);
       if (!cat) continue;
+      const curated = CURATED_SHOW_NOMINEES[title];
       for (const s of [...cat.shows, ...cat.upcoming]) {
+        if (curated && !curated.includes(s.slug)) continue;
         if (!seen.has(s.slug)) { seen.add(s.slug); merged.push(s); }
       }
     }
