@@ -4,8 +4,8 @@ name: Adjudicate Review Queue
 
 on:
   schedule:
-    # Daily at 5 AM UTC (1 hour after 4 AM rebuild generates the queue)
-    - cron: '0 5 * * *'
+    # Daily at 5:15 AM UTC — staggered 15 min after scoring (5 AM) and rebuild (4 AM)
+    - cron: '15 5 * * *'
   workflow_dispatch:
     inputs:
       dry_run:

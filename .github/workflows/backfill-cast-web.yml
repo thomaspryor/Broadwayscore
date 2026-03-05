@@ -6,10 +6,10 @@ on:
       category:
         description: 'Category to process'
         required: false
-        default: ''
+        default: 'all'
         type: choice
         options:
-          - ''
+          - all
           - off-broadway
           - west-end
       show_filter:
@@ -64,7 +64,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           FLAGS=""
-          if [ -n "${{ inputs.category }}" ]; then
+          if [ -n "${{ inputs.category }}" ] && [ "${{ inputs.category }}" != "all" ]; then
             FLAGS="$FLAGS --category=${{ inputs.category }}"
           fi
           if [ -n "${{ inputs.show_filter }}" ]; then
@@ -103,7 +103,7 @@ jobs:
           git add data/cast/ public/data/shows/
 
           CAT_MSG=""
-          if [ -n "${{ inputs.category }}" ]; then
+          if [ -n "${{ inputs.category }}" ] && [ "${{ inputs.category }}" != "all" ]; then
             CAT_MSG=" (${{ inputs.category }})"
           fi
 
