@@ -71,14 +71,12 @@ function seededShuffle<T>(arr: T[], seed: number): T[] {
 
 function getShowImagePath(show: SerializedTonyShow): string | null {
   if (!show.thumbnailPath) return null;
-  if (show.thumbnailPath.startsWith('http')) return show.thumbnailPath;
-  return show.thumbnailPath.replace('/thumbnail.webp', '/poster.webp');
+  return show.thumbnailPath;
 }
 
 function getActorImagePath(nominee: ActorNominee): string | null {
   if (!nominee.thumbnailPath) return null;
-  if (nominee.thumbnailPath.startsWith('http')) return nominee.thumbnailPath;
-  return nominee.thumbnailPath.replace('/thumbnail.webp', '/poster.webp');
+  return nominee.thumbnailPath;
 }
 
 function categoryHasNominees(cat: BeatTheCriticsCategoryData): boolean {
@@ -130,21 +128,22 @@ function CoBrand({ size = 'default' }: { size?: 'default' | 'small' }) {
 
 function ShowPoster({ show, size = 'sm' }: { show: SerializedTonyShow; size?: 'xs' | 'sm' | 'md' }) {
   const [imgError, setImgError] = useState(false);
-  const dims = size === 'md' ? 'w-14 h-20' : size === 'xs' ? 'w-8 h-11 rounded-md' : 'w-[52px] h-[72px]';
+  const dims = size === 'md' ? 'w-12 h-12' : size === 'xs' ? 'w-8 h-8' : 'w-11 h-11';
+  const radius = size === 'xs' ? 'rounded-md' : 'rounded-lg';
   const imgPath = getShowImagePath(show);
   if (imgError || !imgPath) {
-    return (<div className={`${dims} rounded-lg bg-surface-overlay flex items-center justify-center text-xl font-extrabold text-white/30 flex-shrink-0`}>{show.title.charAt(0)}</div>);
+    return (<div className={`${dims} ${radius} bg-surface-overlay flex items-center justify-center text-sm font-extrabold text-white/30 flex-shrink-0`}>{show.title.charAt(0)}</div>);
   }
-  return (<img src={imgPath} alt={show.title} className={`${dims} rounded-lg object-cover flex-shrink-0 bg-surface-overlay`} onError={() => setImgError(true)} />);
+  return (<img src={imgPath} alt={show.title} className={`${dims} ${radius} object-cover flex-shrink-0 bg-surface-overlay`} onError={() => setImgError(true)} />);
 }
 
 function ActorPoster({ nominee }: { nominee: ActorNominee }) {
   const [imgError, setImgError] = useState(false);
   const imgPath = getActorImagePath(nominee);
   if (imgError || !imgPath) {
-    return (<div className="w-[52px] h-[72px] rounded-lg bg-surface-overlay flex items-center justify-center text-xl font-extrabold text-white/30 flex-shrink-0">{nominee.name.charAt(0)}</div>);
+    return (<div className="w-11 h-11 rounded-lg bg-surface-overlay flex items-center justify-center text-sm font-extrabold text-white/30 flex-shrink-0">{nominee.name.charAt(0)}</div>);
   }
-  return (<img src={imgPath} alt={nominee.showTitle} className="w-[52px] h-[72px] rounded-lg object-cover flex-shrink-0 bg-surface-overlay" onError={() => setImgError(true)} />);
+  return (<img src={imgPath} alt={nominee.showTitle} className="w-11 h-11 rounded-lg object-cover flex-shrink-0 bg-surface-overlay" onError={() => setImgError(true)} />);
 }
 
 function NomineeCard({ show, selected, onSelect }: { show: SerializedTonyShow; selected: boolean; onSelect: () => void }) {
@@ -353,10 +352,17 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           <div className="text-center mb-8 animate-fade-up" style={{ animationFillMode: 'both' }}><h2 className="text-2xl font-extrabold">{currentCategory.title}</h2><p className="text-sm text-gray-400 mt-1">Here&apos;s what the experts picked</p></div>
           <div className="p-4 rounded-[14px] bg-[#ff1368]/[0.06] border border-[#ff1368]/15 mb-6 animate-fade-up" style={{ animationDelay: '0.15s', animationFillMode: 'both' }}>
             <div className="text-[10px] font-bold uppercase tracking-wider text-[#ff1368] mb-2">Your Pick</div>
-            <div className="text-lg font-extrabold">{userPick}{isActor && (() => { const picked = actorNominees.find(n => n.name === userPick); return picked ? <span className="text-sm font-semibold text-gray-400 ml-1.5">({picked.showTitle})</span> : null; })()}</div>
-            <div className="text-xs text-gray-400 mt-1">
-              {!isActor && matchesCriticScore && <><span className="text-green-500 font-semibold">Matches CriticScore prediction</span>{' \u00b7 '}</>}
-              You agree with {criticMatches} of {CRITICS.length} critics
+            <div className="flex items-center gap-3">
+              {!isActor && (() => { const pickShow = nominees.find(n => n.title === userPick); return pickShow ? <ShowPoster show={pickShow} size="sm" /> : null; })()}
+              {isActor && (() => { const pickActor = actorNominees.find(n => n.name === userPick); return pickActor ? <ActorPoster nominee={pickActor} /> : null; })()}
+              <div>
+                <div className="text-lg font-extrabold">{userPick}</div>
+                {isActor && (() => { const picked = actorNominees.find(n => n.name === userPick); return picked ? <div className="text-sm text-gray-400">({picked.showTitle})</div> : null; })()}
+                <div className="text-xs text-gray-400 mt-0.5">
+                  {!isActor && matchesCriticScore && <><span className="text-green-500 font-semibold">Matches CriticScore prediction</span>{' \u00b7 '}</>}
+                  You agree with {criticMatches} of {CRITICS.length} critics
+                </div>
+              </div>
             </div>
           </div>
 
@@ -424,13 +430,10 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
         <div className="fixed bottom-0 left-0 right-0 z-20 px-5 pb-6 pt-3 bg-gradient-to-t from-surface via-surface to-transparent">
           <div className="max-w-[480px] mx-auto flex flex-col gap-2.5">
             {hasMoreCatsInTier ? (
-              <>
-                <button onClick={handleNextCategory} className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5 transition-all">
-                  Keep Going &rarr;
-                  {(() => { const nextIdx = findNextNonEmptyCategory(currentCatIdx); const nextCat = nextIdx !== null ? currentTier.categories[nextIdx] : null; const catsWN = currentTier.categories.filter(categoryHasNominees); const nextP = nextCat ? catsWN.findIndex(c => c.title === nextCat.title) + 1 : 0; return nextCat ? (<span className="block text-xs font-medium opacity-80 mt-0.5">Next: {nextCat.title} ({nextP} of {catsWN.length})</span>) : null; })()}
-                </button>
-                <button onClick={() => goToScreen('results')} className="w-full py-3.5 rounded-[14px] text-sm font-semibold border border-white/10 text-gray-400 hover:border-brand hover:text-brand transition-all">Save &amp; Share My Ballot</button>
-              </>
+              <button onClick={handleNextCategory} className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5 transition-all">
+                Keep Going &rarr;
+                {(() => { const nextIdx = findNextNonEmptyCategory(currentCatIdx); const nextCat = nextIdx !== null ? currentTier.categories[nextIdx] : null; const catsWN = currentTier.categories.filter(categoryHasNominees); const nextP = nextCat ? catsWN.findIndex(c => c.title === nextCat.title) + 1 : 0; return nextCat ? (<span className="block text-xs font-medium opacity-80 mt-0.5">Next: {nextCat.title} ({nextP} of {catsWN.length})</span>) : null; })()}
+              </button>
             ) : hasNextTier ? (
               <>
                 <button onClick={handleNextTier} className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5 transition-all">
