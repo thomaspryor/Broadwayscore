@@ -43,6 +43,8 @@ import TicketLink from '@/components/TicketLink';
 import { getComparisonsForShow } from '@/config/comparisons';
 import ShowPageRatingConnected from '@/components/user/ShowPageRatingConnected';
 
+export const revalidate = 86400;
+
 export function generateStaticParams() {
   // Pre-render open + previews + recently closed shows (high traffic).
   // Rest generated on-demand via ISR, cached at Vercel edge until next deploy.

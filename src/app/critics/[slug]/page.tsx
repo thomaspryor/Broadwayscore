@@ -4,6 +4,8 @@ import { getCriticBySlug, getAllCriticSlugs } from '@/lib/data-reviews';
 import { generateBreadcrumbSchema, generateCriticSchema, generateCriticFAQSchema, BASE_URL } from '@/lib/seo';
 import CriticDetailClient from './CriticDetailClient';
 
+export const revalidate = 43200;
+
 export function generateStaticParams() {
   return []; // On-demand via ISR — saves ~1,100 pages of build time
 }
