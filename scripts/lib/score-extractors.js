@@ -18,6 +18,11 @@
  * Only match patterns that clearly indicate a review rating.
  */
 
+// Bump this when extractors are added or improved.
+// recollect-for-scores.js stamps this on _noScoreOnHtml so stale
+// "no score found" flags are retried after extractor changes.
+const EXTRACTOR_VERSION = 2;  // v2: added daily-mail, artsdesk, one-minute-critic; fixed \b regex
+
 /**
  * Clean HTML of scripts, styles, and CSS to avoid false positives
  */
@@ -925,5 +930,6 @@ module.exports = {
   BUCKET_SCORES,
   THUMB_SCORES,
   starsToNumeric,
-  OUTLET_EXTRACTORS
+  OUTLET_EXTRACTORS,
+  EXTRACTOR_VERSION
 };
