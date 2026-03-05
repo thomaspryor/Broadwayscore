@@ -16,6 +16,7 @@ runs:
         key: core-data-${{ runner.os }}-${{ github.run_id }}
         restore-keys: |
           core-data-${{ runner.os }}-
+        save-always: true
 
     - name: Clone or update core data repo
       shell: bash
