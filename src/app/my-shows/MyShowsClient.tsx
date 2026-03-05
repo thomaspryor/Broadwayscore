@@ -354,6 +354,19 @@ export default function MyShowsClient() {
             />
           ) : (
             <>
+              {/* To Be Rated — at top so users notice it */}
+              {toBeRatedEntries.length > 0 && (
+                <div className="mb-8">
+                  <h3 className="text-xs font-bold text-amber-400/80 uppercase tracking-wider mb-1">To Be Rated</h3>
+                  <p className="text-xs text-gray-500 mb-3">You saw these shows — how were they?</p>
+                  <div className="space-y-2">
+                    {toBeRatedEntries.map(entry => (
+                      <ToBeRatedCard key={`rate-${entry.id}`} entry={entry} show={showMap[entry.show_id]} />
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Upcoming section — watchlist entries with future dates + reviews with future date_seen */}
               {(upcomingWatchlistEntries.length > 0 || upcomingReviews.length > 0) && (
                 <div className="mb-8">
@@ -374,18 +387,18 @@ export default function MyShowsClient() {
                       return (
                         <div key={`wl-${entry.id}`} className="relative flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
                           <Link href={entryHref} className="absolute inset-0 z-0" aria-label={`View ${entryTitle}`} />
-                          <div className="relative z-[1] flex-shrink-0 w-14 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay">
+                          <div className="relative z-[1] flex-shrink-0 w-14 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay pointer-events-none">
                             {entryShow?.posterUrl ? (
                               <img src={entryShow.posterUrl} alt="" className="w-full h-full object-cover" />
                             ) : (
                               <div className="w-full h-full flex items-center justify-center text-gray-600 text-xl">🎭</div>
                             )}
                           </div>
-                          <div className="relative z-[1] flex-1 min-w-0">
+                          <div className="relative z-[1] flex-1 min-w-0 pointer-events-none">
                             <h4 className="font-bold text-white text-base truncate">{entryTitle}</h4>
                             {entryShow?.venue && <p className="text-xs text-gray-500 truncate">{entryShow.venue}</p>}
                           </div>
-                          <div className="relative z-[1] flex-shrink-0 text-right">
+                          <div className="relative z-[1] flex-shrink-0 text-right pointer-events-none">
                             {entryFormattedDate && <p className="text-xs font-medium text-brand">{entryFormattedDate}</p>}
                             {daysUntil !== null && daysUntil > 0 && (
                               <p className="text-[10px] text-gray-500 mt-0.5">
@@ -399,52 +412,6 @@ export default function MyShowsClient() {
                     {upcomingReviews.map(review => (
                       <DiaryCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={async () => { await deleteReview(review.id); showToast?.('Rating deleted.', 'info'); }} />
                     ))}
-                  </div>
-                </div>
-              )}
-
-              {/* To Be Rated — watchlist entries with past planned_date, no review yet */}
-              {toBeRatedEntries.length > 0 && (
-                <div className="mb-8">
-                  <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">To Be Rated</h3>
-                  <p className="text-xs text-gray-500 mb-3">You saw these shows — how were they?</p>
-                  <div className="space-y-2">
-                    {toBeRatedEntries.map(entry => {
-                      const entryShow = showMap[entry.show_id];
-                      const entryTitle = entryShow?.title || entry.show_id;
-                      const entrySlug = entryShow?.slug || entry.show_id;
-                      const entryCategory = entryShow?.category || 'broadway';
-                      const entryHref = getShowHref(entrySlug, entryCategory);
-                      return (
-                        <div key={`rate-${entry.id}`} className="relative flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3 rounded-xl bg-amber-500/[0.03] border border-amber-500/10 hover:border-amber-500/20 hover:bg-amber-500/[0.06] transition-colors">
-                          <Link href={entryHref} className="absolute inset-0 z-0" aria-label={`Rate ${entryTitle}`} />
-                          <div className="relative z-[1] flex-shrink-0 w-14 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay">
-                            {entryShow?.posterUrl ? (
-                              <img src={entryShow.posterUrl} alt="" className="w-full h-full object-cover" />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center text-gray-600 text-xl">🎭</div>
-                            )}
-                          </div>
-                          <div className="relative z-[1] flex-1 min-w-0">
-                            <h4 className="font-bold text-white text-base truncate">{entryTitle}</h4>
-                            {entryShow?.venue && <p className="text-xs text-gray-500">{entryShow.venue}</p>}
-                            {entry.planned_date && (
-                              <p className="text-xs text-gray-500 mt-0.5">
-                                Saw on {new Date(entry.planned_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                              </p>
-                            )}
-                          </div>
-                          <div className="relative z-[1] flex-shrink-0">
-                            <span className="text-xs font-semibold text-amber-400/80 flex items-center gap-1">
-                              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                              </svg>
-                              Rate
-                            </span>
-                          </div>
-                        </div>
-                      );
-                    })}
                   </div>
                 </div>
               )}
@@ -466,6 +433,11 @@ export default function MyShowsClient() {
                       {pastReviews.map(review => (
                         <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={async () => { await deleteReview(review.id); showToast?.('Rating deleted.', 'info'); }} />
                       ))}
+                      <AddShowCard context="diary" onOpen={() => {
+                        // Find and trigger the AddShowSearch open
+                        const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add a show to diary"], [aria-label="Rate a show"]');
+                        btn?.click();
+                      }} />
                     </div>
                   )}
                 </div>
@@ -497,6 +469,10 @@ export default function MyShowsClient() {
                   onRemove={() => removeFromWatchlist(entry.show_id)}
                 />
               ))}
+              <AddShowCard context="watchlist" onOpen={() => {
+                const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
+                btn?.click();
+              }} />
             </div>
           ) : (
             <div className="space-y-2">
@@ -530,7 +506,7 @@ function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: Show
       <Link href={href} className="absolute inset-0 z-0" aria-label={`View ${title}`} />
 
       {/* Poster */}
-      <div className="relative z-[1] flex-shrink-0 w-14 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay">
+      <div className="relative z-[1] pointer-events-none flex-shrink-0 w-14 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay">
         {show?.posterUrl ? (
           <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
         ) : (
@@ -539,7 +515,7 @@ function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: Show
       </div>
 
       {/* Info */}
-      <div className="relative z-[1] flex-1 min-w-0">
+      <div className="relative z-[1] pointer-events-none flex-1 min-w-0">
         <h4 className="font-bold text-white text-base group-hover/diary:text-brand transition-colors truncate">{title}</h4>
         <div className="flex flex-wrap items-center gap-1.5 mt-1">
           {show?.type && <FormatPill type={show.type} />}
@@ -566,7 +542,7 @@ function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: Show
       </div>
 
       {/* Rating + edit icon */}
-      <div className="relative z-[1] flex-shrink-0 flex flex-col items-center gap-0.5 w-16 md:w-28 overflow-hidden">
+      <div className="relative z-[1] pointer-events-none flex-shrink-0 flex flex-col items-center gap-0.5 w-16 md:w-28 overflow-hidden">
         {/* Single star + number on mobile, full stars on desktop */}
         <span className="md:hidden flex items-center gap-1">
           <svg className="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
@@ -575,9 +551,9 @@ function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: Show
         <span className="hidden md:inline-flex"><StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel /></span>
         <span className="hidden md:block text-sm font-bold text-amber-400">{review.rating.toFixed(1)} stars</span>
         {/* Edit + delete icons — inline below rating, visible on hover */}
-        <div className="flex items-center gap-0.5 opacity-0 group-hover/diary:opacity-100 transition-opacity">
+        <div className="flex items-center gap-0.5 opacity-0 group-hover/diary:opacity-100 transition-opacity pointer-events-auto">
           <Link
-            href={href}
+            href={`${href}?edit=1`}
             className="p-1 rounded-full text-gray-600 hover:text-white transition-colors"
             aria-label="Edit rating"
           >
@@ -627,10 +603,9 @@ function DiaryGridCard({ review, show, onDelete }: { review: UserReview; show?: 
           )}
         </div>
         {review.rating > 0 && (
-          <div className="absolute bottom-1.5 left-1.5">
-            <span className="flex items-center gap-1 px-2 py-1 rounded-md bg-black/70 backdrop-blur-sm">
-              <svg className="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-              <span className="text-sm font-bold text-white">{review.rating % 1 === 0 ? review.rating.toFixed(0) : review.rating.toFixed(1)}</span>
+          <div className="absolute inset-x-0 bottom-0 flex justify-center pb-1.5">
+            <span className="flex items-center gap-0.5 px-2 py-1 rounded-md bg-black/70 backdrop-blur-sm">
+              <MiniStars rating={review.rating} />
             </span>
           </div>
         )}
@@ -741,6 +716,30 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
       </div>
     </div>
   );
+}
+
+/** Render mini star icons for grid cards (filled, half, empty) */
+function MiniStars({ rating }: { rating: number }) {
+  const stars = [];
+  for (let i = 1; i <= 5; i++) {
+    if (i <= Math.floor(rating)) {
+      // Filled star
+      stars.push(<svg key={i} className="w-3.5 h-3.5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>);
+    } else if (i === Math.ceil(rating) && rating % 1 !== 0) {
+      // Half star
+      stars.push(
+        <svg key={i} className="w-3.5 h-3.5" viewBox="0 0 20 20">
+          <defs><clipPath id={`half-${i}`}><rect x="0" y="0" width="10" height="20" /></clipPath></defs>
+          <path className="text-gray-600" fill="currentColor" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          <path className="text-amber-400" fill="currentColor" clipPath={`url(#half-${i})`} d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+        </svg>
+      );
+    } else {
+      // Empty star
+      stars.push(<svg key={i} className="w-3.5 h-3.5 text-gray-600" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>);
+    }
+  }
+  return <>{stars}</>;
 }
 
 /** Reusable date picker button — works reliably on iOS Safari */
@@ -1068,6 +1067,63 @@ function AddShowSearch({
         </div>
       )}
     </div>
+  );
+}
+
+/** "To Be Rated" card with inline interactive stars */
+function ToBeRatedCard({ entry, show }: { entry: WatchlistEntry; show?: ShowLookup }) {
+  const router = useRouter();
+  const title = show?.title || entry.show_id;
+  const slug = show?.slug || entry.show_id;
+  const category = show?.category || 'broadway';
+  const href = getShowHref(slug, category);
+
+  return (
+    <div className="relative flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3 rounded-xl bg-amber-500/[0.03] border border-amber-500/10 hover:border-amber-500/20 hover:bg-amber-500/[0.06] transition-colors">
+      <Link href={href} className="absolute inset-0 z-0" aria-label={`Rate ${title}`} />
+      <div className="relative z-[1] flex-shrink-0 w-14 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay pointer-events-none">
+        {show?.posterUrl ? (
+          <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-gray-600 text-xl">🎭</div>
+        )}
+      </div>
+      <div className="relative z-[1] flex-1 min-w-0 pointer-events-none">
+        <h4 className="font-bold text-white text-base truncate">{title}</h4>
+        {show?.venue && <p className="text-xs text-gray-500">{show.venue}</p>}
+        {entry.planned_date && (
+          <p className="text-xs text-gray-500 mt-0.5">
+            Saw on {new Date(entry.planned_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+          </p>
+        )}
+      </div>
+      <div className="relative z-[2] flex-shrink-0 pointer-events-auto">
+        <StarRating
+          rating={null}
+          onRatingChange={(rating) => {
+            router.push(`${href}?rate=1&stars=${rating}`);
+          }}
+          size="sm"
+        />
+      </div>
+    </div>
+  );
+}
+
+/** (+) card to add shows — placed at end of grid views */
+function AddShowCard({ context, onOpen }: { context: 'diary' | 'watchlist'; onOpen: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-white/10 hover:border-white/20 hover:bg-white/[0.03] transition-colors aspect-[2/3] text-gray-500 hover:text-gray-300"
+      aria-label={context === 'diary' ? 'Add a show to diary' : 'Add to watchlist'}
+    >
+      <svg className="w-8 h-8 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+      </svg>
+      <span className="text-[10px] font-medium">{context === 'diary' ? 'Rate' : 'Add'}</span>
+    </button>
   );
 }
 
