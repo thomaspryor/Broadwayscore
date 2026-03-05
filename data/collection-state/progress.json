@@ -90,7 +90,9 @@
     "it-walks-around-the-house-at-night-west-end-2026/guardian--unknown.json",
     "stranger-things-2024/timeout--adam-feldman.json",
     "the-amazing-sex-life-of-rabbits-off-broadway-2026/theatermania--unknown.json",
-    "all-my-sons-west-end-2025/london-theatre--olivia-rook.json"
+    "all-my-sons-west-end-2025/london-theatre--olivia-rook.json",
+    "and-juliet-2022/broadway-blog--joey-sims.json",
+    "cold-war-choir-practice-off-broadway-2026/one-minute-critic--unknown.json"
   ],
   "failed": [
     "mack-and-mabel-1974/financialtimes--ian-shuttleworth.json",
@@ -111,7 +113,15 @@
     "bloodlove-off-broadway-2026/theatrely--kobi-kassal.json",
     "zack-off-broadway-2026/theatrely--kobi-kassal.json",
     "11-to-midnight-off-broadway-2026/billboard--unknown.json",
-    "aladdin-2014/broadway-voice--kristen-balzano.json"
+    "aladdin-2014/broadway-voice--kristen-balzano.json",
+    "an-ark-off-broadway-2026/ap--mark-kennedy.json",
+    "an-ark-off-broadway-2026/usatoday--elysa-gardner.json",
+    "bigfoot-off-broadway-2026/buy-tickets--unknown.json",
+    "book-of-mormon-2011/dailybeast--john-anderson.json",
+    "book-of-mormon-2011/northjerseycom--robert-feldberg.json",
+    "book-of-mormon-2011/village-voice--michael-musto.json",
+    "chess-2025/talkinbroadway--unknown.json",
+    "chinese-republicans-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -198,7 +208,8 @@
       "bloodlove-off-broadway-2026/theatermania--rachel-graham.json",
       "it-walks-around-the-house-at-night-west-end-2026/guardian--unknown.json",
       "the-amazing-sex-life-of-rabbits-off-broadway-2026/theatermania--unknown.json",
-      "all-my-sons-west-end-2025/london-theatre--olivia-rook.json"
+      "all-my-sons-west-end-2025/london-theatre--olivia-rook.json",
+      "cold-war-choir-practice-off-broadway-2026/one-minute-critic--unknown.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -229,15 +240,22 @@
       "data/review-texts/silver-manhattan-off-broadway-2026/theatermania--unknown.json",
       "data/review-texts/what-we-did-before-our-moth-days-off-broadway-2026/broadwaynews--stephi-wild.json",
       "data/review-texts/11-to-midnight-off-broadway-2026/billboard--unknown.json",
-      "data/review-texts/aladdin-2014/broadway-voice--kristen-balzano.json"
+      "data/review-texts/aladdin-2014/broadway-voice--kristen-balzano.json",
+      "data/review-texts/an-ark-off-broadway-2026/ap--mark-kennedy.json",
+      "data/review-texts/an-ark-off-broadway-2026/usatoday--elysa-gardner.json",
+      "data/review-texts/bigfoot-off-broadway-2026/buy-tickets--unknown.json",
+      "data/review-texts/book-of-mormon-2011/dailybeast--john-anderson.json",
+      "data/review-texts/chess-2025/talkinbroadway--unknown.json",
+      "data/review-texts/chinese-republicans-off-broadway-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
       "the-encounter-2016/financialtimes--ian-shuttleworth.json",
-      "stranger-things-2024/timeout--adam-feldman.json"
+      "stranger-things-2024/timeout--adam-feldman.json",
+      "and-juliet-2022/broadway-blog--joey-sims.json"
     ]
   },
   "startTime": "2026-03-05T10:28:39.558Z",
-  "lastProcessed": "all-my-sons-west-end-2025/london-theatre--olivia-rook.json",
+  "lastProcessed": "cold-war-choir-practice-off-broadway-2026/one-minute-critic--unknown.json",
   "log": [
     {
       "t": "2026-03-05T10:51:55.084Z",
@@ -271,6 +289,23 @@
       "t": "2026-03-05T10:52:26.857Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-05T11:06:13.457Z",
+      "event": "bb-session",
+      "session": "69a38ec7",
+      "url": "https://www.thedailybeast.com/the-book-of-mormon-blessed-be-the-filthy/"
+    },
+    {
+      "t": "2026-03-05T11:07:11.905Z",
+      "event": "bb-session",
+      "session": "f0542c15",
+      "url": "https://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.1"
+    },
+    {
+      "t": "2026-03-05T11:07:13.042Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
