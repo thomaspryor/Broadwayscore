@@ -49,6 +49,11 @@ export default function ShowPageRating({
   const [watchlistLoading, setWatchlistLoading] = useState(false);
   const lastSavedId = useRef<string | null>(null);
 
+  // Reset lastSavedId when showId changes (prevents stale ID on navigation)
+  useEffect(() => {
+    lastSavedId.current = null;
+  }, [showId]);
+
   // Derive state from reviews
   const latestReview = reviews.length > 0
     ? reviews.reduce((a, b) => new Date(b.created_at) > new Date(a.created_at) ? b : a)
