@@ -8,7 +8,7 @@ concurrency:
 
 on:
   schedule:
-    - cron: '0 5 * * *'  # Daily at 5 AM UTC (1 AM EST), after rebuild at 4 AM
+    - cron: '30 4 * * *'  # Daily at 4:30 AM UTC — after rebuild (4 AM), before adjudicate (5:15 AM)
   # Manual trigger with options
   workflow_dispatch:
     inputs:

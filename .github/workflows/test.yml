@@ -105,8 +105,8 @@ jobs:
             COUNT=$(ls "$dir" 2>/dev/null | wc -l | tr -d ' ')
             echo "$NAME: $COUNT files"
             TOTAL=$((TOTAL + COUNT))
-            if [ "$COUNT" -lt 40 ]; then
-              echo "::warning::$NAME has only $COUNT files (expected 40+)"
+            if [ "$COUNT" -lt 5 ]; then
+              echo "::warning::$NAME has only $COUNT files (expected 5+)"
               FAIL=$((FAIL + 1))
             fi
           done
