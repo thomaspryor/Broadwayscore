@@ -12,6 +12,7 @@ import { FormatPill, StatusBadge } from '@/components/show-cards';
 import { useToastSafe } from '@/components/ui/Toast';
 import type { UserReview, WatchlistEntry, ShowLookup } from '@/types/user';
 import type Fuse from 'fuse.js';
+import MezzanineImport from './MezzanineImport';
 
 type Tab = 'diary' | 'watchlist';
 type DiarySort = 'date-desc' | 'date-asc' | 'rating-desc';
@@ -229,7 +230,7 @@ export default function MyShowsClient() {
       <h1 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">My Shows</h1>
 
       {/* Stats bar */}
-      <div className="flex items-center gap-4 text-sm text-gray-400 mb-6">
+      <div className="flex items-center gap-4 text-sm text-gray-400 mb-2">
         <span><strong className="text-white">{showsSeen}</strong> shows seen</span>
         {upcomingCount > 0 && (
           <span><strong className="text-white">{upcomingCount}</strong> upcoming</span>
@@ -238,6 +239,14 @@ export default function MyShowsClient() {
         {toBeRatedEntries.length > 0 && (
           <span><strong className="text-amber-400">{toBeRatedEntries.length}</strong> to rate</span>
         )}
+      </div>
+      <div className="mb-6">
+        <MezzanineImport
+          userId={user!.id}
+          existingReviewShowIds={new Set(reviews.map(r => r.show_id))}
+          existingWatchlistShowIds={new Set(watchlist.map(w => w.show_id))}
+          onImportComplete={() => { getAllReviews(); getWatchlist(); }}
+        />
       </div>
 
       {/* Tab bar + inline sort/view controls */}
