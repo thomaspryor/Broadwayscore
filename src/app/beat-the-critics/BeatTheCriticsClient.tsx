@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import type { BeatTheCriticsData, BeatTheCriticsCategoryData, ActorNominee } from './page';
 import type { SerializedTonyShow } from '@/lib/data-tony-predictions';
+import { ScoreBadge } from '@/components/show-cards';
 
 // ─── Types ───
 
@@ -379,7 +380,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
                 </div>
                 <div className="px-3.5 pb-3 flex items-center gap-2">
                   <div className="text-[15px] font-bold truncate flex-1">{criticScorePick}</div>
-                  {criticScorePickShow?.compositeScore != null && <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-brand/20 flex items-center justify-center text-sm font-extrabold text-brand">{criticScorePickShow.compositeScore}</div>}
+                  {criticScorePickShow?.compositeScore != null && <ScoreBadge score={criticScorePickShow.compositeScore} size="sm" />}
                 </div>
               </div>
             )}
@@ -398,7 +399,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
                   </div>
                   <div className="px-3.5 pb-3 flex items-center gap-2">
                     <div className="text-[15px] font-bold truncate flex-1">{criticPicks[i]}</div>
-                    {!isActor && (() => { const pickShow = nominees.find(n => n.title === criticPicks[i]); return pickShow?.compositeScore != null ? <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-brand/20 flex items-center justify-center text-sm font-extrabold text-brand">{pickShow.compositeScore}</div> : null; })()}
+                    {!isActor && (() => { const pickShow = nominees.find(n => n.title === criticPicks[i]); return pickShow?.compositeScore != null ? <ScoreBadge score={pickShow.compositeScore} size="sm" /> : null; })()}
                   </div>
                 </div>
               );
