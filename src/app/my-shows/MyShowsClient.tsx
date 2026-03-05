@@ -64,7 +64,7 @@ export default function MyShowsClient() {
   const [showMapLoaded, setShowMapLoaded] = useState(false);
 
   const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
-  const { reviews, getAllReviews, loading: reviewsLoading } = useUserReviews(user?.id || null);
+  const { reviews, getAllReviews, deleteReview, loading: reviewsLoading } = useUserReviews(user?.id || null);
   const { watchlist, getWatchlist, addToWatchlist, updatePlannedDate, removeFromWatchlist, loading: watchlistLoading } = useWatchlist(user?.id || null);
   const { showToast } = useToastSafe();
   const loading = authLoading || reviewsLoading || watchlistLoading;
@@ -227,7 +227,19 @@ export default function MyShowsClient() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-12">
       {/* Header */}
-      <h1 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">My Shows</h1>
+      <div className="flex items-center justify-between mb-2">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-white">My Shows</h1>
+        <AddShowSearch
+          context={activeTab}
+          onAddToWatchlist={async (showId: string) => {
+            await addToWatchlist(showId);
+            await getWatchlist();
+            showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success');
+          }}
+          existingWatchlistIds={new Set(watchlist.map(w => w.show_id))}
+          existingReviewIds={new Set(reviews.map(r => r.show_id))}
+        />
+      </div>
 
       {/* Stats bar */}
       <div className="flex items-center gap-4 text-sm text-gray-400 mb-2">
@@ -281,16 +293,6 @@ export default function MyShowsClient() {
 
         {/* Inline controls on the right */}
         <div className="ml-auto flex items-center gap-2 -mb-[1px] pb-1">
-          <AddShowSearch
-            context={activeTab}
-            onAddToWatchlist={async (showId: string) => {
-              await addToWatchlist(showId);
-              await getWatchlist();
-              showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success');
-            }}
-            existingWatchlistIds={new Set(watchlist.map(w => w.show_id))}
-            existingReviewIds={new Set(reviews.map(r => r.show_id))}
-          />
           {activeTab === 'diary' && (
             <select
               value={diarySort}
@@ -395,7 +397,7 @@ export default function MyShowsClient() {
                       );
                     })}
                     {upcomingReviews.map(review => (
-                      <DiaryCard key={review.id} review={review} show={showMap[review.show_id]} />
+                      <DiaryCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={async () => { await deleteReview(review.id); showToast?.('Rating deleted.', 'info'); }} />
                     ))}
                   </div>
                 </div>
@@ -456,13 +458,13 @@ export default function MyShowsClient() {
                   {diaryView === 'list' ? (
                     <div className="space-y-2">
                       {pastReviews.map(review => (
-                        <DiaryCard key={review.id} review={review} show={showMap[review.show_id]} />
+                        <DiaryCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={async () => { await deleteReview(review.id); showToast?.('Rating deleted.', 'info'); }} />
                       ))}
                     </div>
                   ) : (
                     <div className="grid grid-cols-4 gap-2">
                       {pastReviews.map(review => (
-                        <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} />
+                        <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={async () => { await deleteReview(review.id); showToast?.('Rating deleted.', 'info'); }} />
                       ))}
                     </div>
                   )}
@@ -515,7 +517,8 @@ export default function MyShowsClient() {
   );
 }
 
-function DiaryCard({ review, show }: { review: UserReview; show?: ShowLookup }) {
+function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: ShowLookup; onDelete?: () => void }) {
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const title = show?.title || review.show_id;
   const slug = show?.slug || review.show_id;
   const category = show?.category || 'broadway';
@@ -567,33 +570,54 @@ function DiaryCard({ review, show }: { review: UserReview; show?: ShowLookup }) 
         {/* Single star + number on mobile, full stars on desktop */}
         <span className="md:hidden flex items-center gap-1">
           <svg className="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-          <span className="text-sm font-semibold text-amber-400">{review.rating % 1 === 0 ? review.rating.toFixed(0) : review.rating.toFixed(1)}</span>
+          <span className="text-base font-bold text-amber-400">{review.rating % 1 === 0 ? review.rating.toFixed(0) : review.rating.toFixed(1)}</span>
         </span>
         <span className="hidden md:inline-flex"><StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel /></span>
-        <span className="hidden md:block text-xs font-semibold text-amber-400">{review.rating.toFixed(1)} stars</span>
-        {/* Edit icon — inline below rating, visible on hover */}
-        <Link
-          href={href}
-          className="p-1 rounded-full text-gray-600 hover:text-white opacity-0 group-hover/diary:opacity-100 transition-opacity"
-          aria-label="Edit rating"
-        >
-          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-          </svg>
-        </Link>
+        <span className="hidden md:block text-sm font-bold text-amber-400">{review.rating.toFixed(1)} stars</span>
+        {/* Edit + delete icons — inline below rating, visible on hover */}
+        <div className="flex items-center gap-0.5 opacity-0 group-hover/diary:opacity-100 transition-opacity">
+          <Link
+            href={href}
+            className="p-1 rounded-full text-gray-600 hover:text-white transition-colors"
+            aria-label="Edit rating"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+            </svg>
+          </Link>
+          {onDelete && !confirmDelete && (
+            <button
+              type="button"
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirmDelete(true); }}
+              className="relative z-[1] p-1 rounded-full text-gray-600 hover:text-red-400 transition-colors"
+              aria-label="Delete rating"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </button>
+          )}
+          {confirmDelete && (
+            <span className="relative z-[1] flex items-center gap-1 text-[10px]">
+              <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete?.(); }} className="text-red-400 hover:text-red-300 font-medium">Delete?</button>
+              <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirmDelete(false); }} className="text-gray-500 hover:text-white">No</button>
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );
 }
 
-function DiaryGridCard({ review, show }: { review: UserReview; show?: ShowLookup }) {
+function DiaryGridCard({ review, show, onDelete }: { review: UserReview; show?: ShowLookup; onDelete?: () => void }) {
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const title = show?.title || review.show_id;
   const slug = show?.slug || review.show_id;
   const category = show?.category || 'broadway';
   const href = getShowHref(slug, category);
 
   return (
-    <div className="flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
+    <div className="group/grid flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
       <Link href={href} className="relative">
         <div className="aspect-[2/3] bg-surface-overlay">
           {show?.posterUrl ? (
@@ -603,12 +627,25 @@ function DiaryGridCard({ review, show }: { review: UserReview; show?: ShowLookup
           )}
         </div>
         {review.rating > 0 && (
-          <div className="absolute bottom-0 inset-x-0 flex justify-center pb-1.5 pt-4 bg-gradient-to-t from-black/70 to-transparent">
-            <span className="flex items-center gap-0.5">
+          <div className="absolute bottom-1.5 left-1.5">
+            <span className="flex items-center gap-1 px-2 py-1 rounded-md bg-black/70 backdrop-blur-sm">
               <svg className="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-              <span className="text-xs font-semibold text-amber-400">{review.rating % 1 === 0 ? review.rating.toFixed(0) : review.rating.toFixed(1)}</span>
+              <span className="text-sm font-bold text-white">{review.rating % 1 === 0 ? review.rating.toFixed(0) : review.rating.toFixed(1)}</span>
             </span>
           </div>
+        )}
+        {/* Delete button — top-right on hover */}
+        {onDelete && (
+          <button
+            type="button"
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); confirmDelete ? onDelete() : setConfirmDelete(true); }}
+            className={`absolute top-1 right-1 z-[2] p-1 rounded-full ${confirmDelete ? 'bg-red-500/80 text-white opacity-100' : 'bg-black/70 text-gray-400 hover:text-red-400 opacity-0 group-hover/grid:opacity-100'} transition-opacity`}
+            aria-label="Delete rating"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+          </button>
         )}
       </Link>
       <div className="p-2">
@@ -678,15 +715,15 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
             Rate
           </span>
         </div>
-        {/* X button to remove — top-right on hover */}
+        {/* Trash button to remove — top-right on hover */}
         <button
           type="button"
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRemove(); }}
-          className="absolute top-1 right-1 p-1 rounded-full bg-black/70 text-gray-400 hover:text-white opacity-0 group-hover/wl:opacity-100 transition-opacity"
+          className="absolute top-1 right-1 z-[2] p-1 rounded-full bg-black/70 text-gray-400 hover:text-red-400 opacity-0 group-hover/wl:opacity-100 transition-opacity"
           aria-label="Remove from watchlist"
         >
-          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
           </svg>
         </button>
       </Link>
@@ -806,11 +843,13 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
         </Link>
         <button
           type="button"
-          onClick={onRemove}
-          className="text-[10px] text-gray-600 hover:text-red-400 transition-colors"
+          onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRemove(); }}
+          className="relative z-[1] p-1 text-gray-600 hover:text-red-400 transition-colors"
           aria-label="Remove from watchlist"
         >
-          Remove
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
         </button>
       </div>
     </div>
