@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-05T20:18:38.349Z",
-  "processed": 392,
-  "failed": 388,
-  "successRate": "50.3%",
+  "updatedAt": "2026-03-05T20:23:18.801Z",
+  "processed": 401,
+  "failed": 389,
+  "successRate": "50.8%",
   "tierBreakdown": {
-    "playwright": 232,
+    "playwright": 237,
     "amp": 32,
     "browserbase": 36,
     "directCookies": 1,
-    "scrapingbee": 50,
+    "scrapingbee": 51,
     "brightdata": 0,
-    "archiveToday": 224,
-    "archive": 77
+    "archiveToday": 225,
+    "archive": 80
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 11,
   "recentActivity": [
-    {
-      "t": "2026-03-05T19:29:43.213Z",
-      "event": "bb-session",
-      "session": "fe10510b",
-      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
-    },
-    {
-      "t": "2026-03-05T19:29:44.376Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-05T19:39:08.342Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-05T20:17:59.309Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-05T20:20:52.512Z",
+      "event": "bb-session",
+      "session": "12e81a22",
+      "url": "https://www.wsj.com/articles/the-outsiders-review-the-greasers-go-to-broadway-da"
+    },
+    {
+      "t": "2026-03-05T20:20:53.612Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

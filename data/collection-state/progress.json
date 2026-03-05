@@ -391,7 +391,16 @@
     "the-dinosaurs-off-broadway-2026/theatermania--dan-rubins.json",
     "the-dinosaurs-off-broadway-2026/timeout--adam-feldman.json",
     "the-great-gatsby-2024/observer--david-cote.json",
-    "the-great-gatsby-2024/timeout--adam-feldman.json"
+    "the-great-gatsby-2024/timeout--adam-feldman.json",
+    "the-hunger-games-on-stage-west-end-2025/guardian--unknown.json",
+    "the-hunger-games-on-stage-west-end-2025/timeout--unknown.json",
+    "the-hunger-games-on-stage-west-end-2025/timeout-london--andrzej-lukowski.json",
+    "the-lion-king-west-end-2021/timeout-london--ben-walters.json",
+    "the-monsters-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "the-monsters-off-broadway-2026/theatermania--pete-hempstead.json",
+    "the-outsiders-2024/timeout--adam-feldman.json",
+    "the-phantom-of-the-opera-west-end-1986/guardian--michael-billington.json",
+    "the-play-that-goes-wrong-west-end-2021/timeout-london--unknown.json"
   ],
   "failed": [
     "mack-and-mabel-1974/financialtimes--ian-shuttleworth.json",
@@ -781,7 +790,8 @@
     "lost-in-del-valle-off-broadway-2026/theatermania--unknown.json",
     "maybe-happy-ending-2024/wsj--charles-isherwood.json",
     "moulin-rouge-2019/wsj--terry-teachout.json",
-    "sweetmeats-west-end-2026/guardian--anya-ryan.json"
+    "sweetmeats-west-end-2026/guardian--anya-ryan.json",
+    "the-outsiders-2024/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1017,7 +1027,12 @@
       "the-book-of-mormon-west-end-2024/timeout-london--unknown.json",
       "the-devil-wears-prada-west-end-2024/musical-theatre-review--ian-bowkett.json",
       "the-dinosaurs-off-broadway-2026/timeout--adam-feldman.json",
-      "the-great-gatsby-2024/timeout--adam-feldman.json"
+      "the-great-gatsby-2024/timeout--adam-feldman.json",
+      "the-hunger-games-on-stage-west-end-2025/guardian--unknown.json",
+      "the-hunger-games-on-stage-west-end-2025/timeout--unknown.json",
+      "the-monsters-off-broadway-2026/new-york-sun--elysa-gardner.json",
+      "the-monsters-off-broadway-2026/theatermania--pete-hempstead.json",
+      "the-outsiders-2024/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -1144,7 +1159,8 @@
       "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json",
       "shadowlands-west-end-2026/guardian--arifa-akbar.json",
       "the-book-of-mormon-west-end-2024/guardian--euan-ferguson.json",
-      "the-devil-wears-prada-west-end-2024/guardian--arifa-akbar.json"
+      "the-devil-wears-prada-west-end-2024/guardian--arifa-akbar.json",
+      "the-phantom-of-the-opera-west-end-1986/guardian--michael-billington.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1371,7 +1387,8 @@
       "data/review-texts/million-dollar-quartet-2010/wsj--mr-teachout.json",
       "data/review-texts/death-becomes-her-2024/wsj--charles-isherwood.json",
       "data/review-texts/maybe-happy-ending-2024/wsj--charles-isherwood.json",
-      "data/review-texts/moulin-rouge-2019/wsj--terry-teachout.json"
+      "data/review-texts/moulin-rouge-2019/wsj--terry-teachout.json",
+      "data/review-texts/the-outsiders-2024/wsj--charles-isherwood.json"
     ],
     "archive": [
       "the-encounter-2016/financialtimes--ian-shuttleworth.json",
@@ -1450,11 +1467,14 @@
       "perfect-crime-off-broadway-1987/broadwaynews--bww-news-desk.json",
       "ragtime-2025/timeout--adam-feldman.json",
       "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/theatermania--zachary-stewart.json",
-      "the-dinosaurs-off-broadway-2026/theatermania--dan-rubins.json"
+      "the-dinosaurs-off-broadway-2026/theatermania--dan-rubins.json",
+      "the-hunger-games-on-stage-west-end-2025/timeout-london--andrzej-lukowski.json",
+      "the-lion-king-west-end-2021/timeout-london--ben-walters.json",
+      "the-play-that-goes-wrong-west-end-2021/timeout-london--unknown.json"
     ]
   },
   "startTime": "2026-03-05T10:28:39.558Z",
-  "lastProcessed": "the-great-gatsby-2024/timeout--adam-feldman.json",
+  "lastProcessed": "the-play-that-goes-wrong-west-end-2021/timeout-london--unknown.json",
   "log": [
     {
       "t": "2026-03-05T10:51:55.084Z",
@@ -1830,6 +1850,17 @@
       "t": "2026-03-05T20:17:59.309Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-05T20:20:52.512Z",
+      "event": "bb-session",
+      "session": "12e81a22",
+      "url": "https://www.wsj.com/articles/the-outsiders-review-the-greasers-go-to-broadway-da"
+    },
+    {
+      "t": "2026-03-05T20:20:53.612Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
