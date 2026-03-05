@@ -57,7 +57,8 @@
     "my-fair-lady-1993/wsj--terry-teachout.json",
     "oh-mary-off-broadway-2024/wsj--charles-isherwood.json",
     "oklahoma-2002/nydailynews--chris-jones.json",
-    "oklahoma-2002/wsj--terry-teachout.json"
+    "oklahoma-2002/wsj--terry-teachout.json",
+    "orphans-2013/guardian--arifa-akbar.json"
   ],
   "failed": [
     "death-of-a-salesman-2026/nytimes--jesse-green.json",
@@ -311,12 +312,22 @@
     "oh-hello-on-broadway-2016/wsj--terry-teachout.json",
     "oh-mary-off-broadway-2024/guardian--adrian-horton.json",
     "oklahoma-2019/broadwaynews--charles-isherwood.json",
-    "oklahoma-2019/onandoffbroadwaytheaterreviews--richard-seff.json"
+    "oklahoma-2019/onandoffbroadwaytheaterreviews--richard-seff.json",
+    "on-the-town-1971/wsj--terry-teachout.json",
+    "on-the-town-2014/guardian--jesse-green.json",
+    "one-man-two-guvnors-2012/new-jersey-newsroom--michael-sommers.json",
+    "passing-strange-2008/ew--lisa-schwarzbaum.json",
+    "passing-strange-2008/wsj--terry-teachout.json",
+    "picnic-2013/newsday--steve-parks.json",
+    "pretty-woman-the-musical-2018/broadwaynews--charles-isherwood.json",
+    "pretty-woman-the-musical-2018/onandoffbroadwaytheaterreviews--richard-seff.json",
+    "pretty-woman-the-musical-2018/theatermania--hayley-levitt.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "faith-healer-2006/guardian--mark-lawson.json"
+      "faith-healer-2006/guardian--mark-lawson.json",
+      "orphans-2013/guardian--arifa-akbar.json"
     ],
     "amp": [],
     "browserbase": [
@@ -509,7 +520,11 @@
       "data/review-texts/machinal-2014/wsj--terry-teachout.json",
       "data/review-texts/newsies-the-musical-2012/new-jersey-newsroom--michael-musto.json",
       "data/review-texts/noises-off-2016/reviewing-the-drama--robin-riegelhaupt.json",
-      "data/review-texts/oh-hello-on-broadway-2016/wsj--terry-teachout.json"
+      "data/review-texts/oh-hello-on-broadway-2016/wsj--terry-teachout.json",
+      "data/review-texts/on-the-town-1971/wsj--terry-teachout.json",
+      "data/review-texts/passing-strange-2008/wsj--terry-teachout.json",
+      "data/review-texts/picnic-2013/newsday--steve-parks.json",
+      "data/review-texts/pretty-woman-the-musical-2018/theatermania--hayley-levitt.json"
     ],
     "archive": [
       "cats-the-jellicle-ball-2026/nytimes--jesse-green.json",
@@ -532,7 +547,7 @@
     ]
   },
   "startTime": "2026-03-04T20:40:08.804Z",
-  "lastProcessed": "oklahoma-2019/onandoffbroadwaytheaterreviews--richard-seff.json",
+  "lastProcessed": "pretty-woman-the-musical-2018/theatermania--hayley-levitt.json",
   "log": [
     {
       "t": "2026-03-04T20:40:52.731Z",
