@@ -1076,7 +1076,9 @@ function ProductionPicker({
   addingId: string | null;
 }) {
   const prods = show.prods || [];
-  const showFilter = prods.length > 15;
+  const showFilter = prods.length > 10;
+  const [showAll, setShowAll] = useState(false);
+  const PAGE_SIZE = 50;
 
   const filtered = filter
     ? prods.filter(p => {
@@ -1088,7 +1090,13 @@ function ProductionPicker({
       })
     : prods;
 
-  const groups = groupProductions(filtered);
+  // Paginate: show first PAGE_SIZE items unless filter is active or user clicked "Show all"
+  const paginated = (!filter && !showAll && filtered.length > PAGE_SIZE)
+    ? filtered.slice(0, PAGE_SIZE)
+    : filtered;
+  const hasMore = !filter && !showAll && filtered.length > PAGE_SIZE;
+
+  const groups = groupProductions(paginated);
 
   return (
     <div className="absolute top-full right-0 mt-1.5 w-[calc(100vw-2rem)] sm:w-80 bg-surface-raised border border-white/10 rounded-lg shadow-xl overflow-hidden z-[80] max-h-80 flex flex-col">
@@ -1105,7 +1113,7 @@ function ProductionPicker({
         </button>
         <div className="flex-1 min-w-0">
           <div className="text-sm font-medium text-white truncate">{show.title}</div>
-          <div className="text-[10px] text-gray-500">{prods.length} productions — pick one</div>
+          <div className="text-[11px] text-gray-400">{prods.length} productions — pick one</div>
         </div>
       </div>
 
@@ -1118,6 +1126,7 @@ function ProductionPicker({
             placeholder="Filter by city, venue, year..."
             className="w-full px-2 py-1 text-xs bg-white/5 border border-white/10 rounded text-white placeholder-gray-500 focus:outline-none focus:border-brand/50"
             autoFocus
+            aria-label="Filter productions by city, venue, or year"
           />
         </div>
       )}
@@ -1168,6 +1177,15 @@ function ProductionPicker({
           <div className="px-3 py-4 text-center text-xs text-gray-500">
             No productions match &ldquo;{filter}&rdquo;
           </div>
+        )}
+        {hasMore && (
+          <button
+            type="button"
+            onClick={() => setShowAll(true)}
+            className="w-full px-3 py-2 text-xs text-brand hover:text-white bg-white/[0.02] hover:bg-white/5 border-t border-white/5 transition-colors"
+          >
+            Show all {filtered.length} productions
+          </button>
         )}
       </div>
     </div>
@@ -1241,9 +1259,16 @@ function AddShowSearch({
           const diaryData: SearchShow[] = await diaryRes.json();
           const existingTitles = new Set(data.map(s => s.title.toLowerCase()));
           for (const s of diaryData) {
-            // Always keep multi-production groups (they offer a production picker)
-            // Only dedup single-production diary entries against existing search entries
+            // Skip single-prod diary entries that duplicate existing search entries
             if (!s.prods && existingTitles.has(s.title.toLowerCase())) continue;
+            // Multi-prod groups supersede individual entries with the same title
+            // (e.g., one "Wicked" with 737 prods replaces separate Broadway/WE entries)
+            if (s.prods && s.prods.length > 1) {
+              const titleLower = s.title.toLowerCase();
+              for (let i = data.length - 1; i >= 0; i--) {
+                if (data[i].title.toLowerCase() === titleLower) data.splice(i, 1);
+              }
+            }
             data.push(s);
           }
         } catch { /* ignore */ }
@@ -1329,7 +1354,20 @@ function AddShowSearch({
         }
       }
     } else {
-      if (!dy) router.push(`/show/${slug}?rate=1`);
+      // Diary context
+      if (dy) {
+        // Diary-only show — no show page exists, save to watchlist as fallback
+        if (!existingWatchlistIds.has(id) && !existingReviewIds.has(id)) {
+          setAddingId(id);
+          try {
+            await onAddToWatchlist(id);
+          } finally {
+            setAddingId(null);
+          }
+        }
+      } else {
+        router.push(`/show/${slug}?rate=1`);
+      }
     }
     setSelectedShow(null);
     setIsOpen(false);
@@ -1423,23 +1461,25 @@ function AddShowSearch({
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-medium text-white truncate">{show.title}</div>
                   <div className="text-[10px] text-gray-500 flex items-center gap-1.5">
-                    <span className={`px-1 py-0.5 rounded font-medium ${
-                      show.status === 'open' ? 'bg-green-500/20 text-green-400' :
-                      show.status === 'previews' ? 'bg-yellow-500/20 text-yellow-400' :
-                      'bg-gray-500/20 text-gray-400'
-                    }`}>
-                      {show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'Previews' : 'Closed'}
-                    </span>
                     {isMulti ? (
-                      <span className="text-gray-400">{show.n} productions</span>
+                      <span className="text-gray-400">{show.n} productions worldwide</span>
                     ) : (
-                      show.venue && <span className="truncate">{show.venue}</span>
+                      <>
+                        <span className={`px-1 py-0.5 rounded font-medium ${
+                          show.status === 'open' ? 'bg-green-500/20 text-green-400' :
+                          show.status === 'previews' ? 'bg-yellow-500/20 text-yellow-400' :
+                          'bg-gray-500/20 text-gray-400'
+                        }`}>
+                          {show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'Previews' : 'Closed'}
+                        </span>
+                        {show.venue && <span className="truncate">{show.venue}</span>}
+                      </>
                     )}
                   </div>
                 </div>
-                <div className="flex-shrink-0 text-[10px] text-gray-500">
+                <div className="flex-shrink-0 text-xs text-gray-500">
                   {isMulti ? (
-                    <span className="text-brand">Pick &rarr;</span>
+                    <span className="text-brand font-medium px-1.5 py-0.5 rounded bg-brand/10">{show.n} &rarr;</span>
                   ) : context === 'diary' ? (
                     alreadyReviewed ? <span className="text-green-400">Rated</span> : <span>Rate</span>
                   ) : (
