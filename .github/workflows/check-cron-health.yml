@@ -1,0 +1,88 @@
+name: Check Cron Health
+
+on:
+  schedule:
+    - cron: '0 12 * * *'  # Noon UTC daily — checks that morning crons actually fired
+  workflow_dispatch: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check critical crons ran recently
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Critical cron workflows and their max allowed gap (hours)
+          # Format: "workflow_filename|max_hours|friendly_name"
+          CRITICAL_CRONS=(
+            "opening-night-broadcast.yml|36|Opening Night Broadcast"
+            "update-show-status.yml|36|Update Show Status"
+            "rebuild-reviews.yml|36|Rebuild Reviews"
+            "collect-review-texts.yml|36|Collect Review Texts"
+            "llm-ensemble-score.yml|48|LLM Ensemble Score"
+            "test.yml|48|Test Suite"
+          )
+
+          FAILURES=""
+          WARNINGS=""
+          NOW=$(date +%s)
+
+          for entry in "${CRITICAL_CRONS[@]}"; do
+            IFS='|' read -r workflow max_hours name <<< "$entry"
+
+            # Get most recent run (any trigger type)
+            LAST_RUN=$(gh run list --workflow="$workflow" --limit=1 --json createdAt,conclusion -q '.[0]' 2>/dev/null || echo '{}')
+            LAST_DATE=$(echo "$LAST_RUN" | jq -r '.createdAt // empty' 2>/dev/null)
+            LAST_CONCLUSION=$(echo "$LAST_RUN" | jq -r '.conclusion // empty' 2>/dev/null)
+
+            if [ -z "$LAST_DATE" ]; then
+              FAILURES="${FAILURES}❌ ${name}: No runs found at all!\n"
+              continue
+            fi
+
+            # Calculate hours since last run
+            LAST_TS=$(date -d "$LAST_DATE" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$LAST_DATE" +%s 2>/dev/null || echo "0")
+            HOURS_AGO=$(( (NOW - LAST_TS) / 3600 ))
+
+            if [ "$HOURS_AGO" -gt "$max_hours" ]; then
+              FAILURES="${FAILURES}❌ ${name}: Last run ${HOURS_AGO}h ago (max ${max_hours}h). Last conclusion: ${LAST_CONCLUSION}\n"
+            elif [ "$LAST_CONCLUSION" = "failure" ]; then
+              WARNINGS="${WARNINGS}⚠️ ${name}: Last run failed (${HOURS_AGO}h ago)\n"
+            fi
+          done
+
+          if [ -n "$FAILURES" ]; then
+            echo "::error::Critical cron workflows have stopped running!"
+            echo ""
+            echo "=== STALE CRONS ==="
+            echo -e "$FAILURES"
+            if [ -n "$WARNINGS" ]; then
+              echo "=== WARNINGS ==="
+              echo -e "$WARNINGS"
+            fi
+            echo ""
+            echo "Fix: Go to Actions tab, find the stale workflow, click 'Enable workflow' or trigger manually."
+            echo "Common causes: GitHub disables crons after 60 days inactivity, after persistent failures, or after workflow file changes."
+            exit 1
+          elif [ -n "$WARNINGS" ]; then
+            echo "All crons running on schedule, but some have recent failures:"
+            echo -e "$WARNINGS"
+          else
+            echo "✅ All critical crons healthy"
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Critical Cron Workflows Stopped Running'
+          severity: 'critical'
+          email: 'true'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
