@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-05T23:42:40.792Z",
-  "processed": 565,
-  "failed": 565,
-  "successRate": "50.0%",
+  "updatedAt": "2026-03-06T04:14:57.229Z",
+  "processed": 574,
+  "failed": 566,
+  "successRate": "50.4%",
   "tierBreakdown": {
-    "playwright": 341,
+    "playwright": 346,
     "amp": 32,
-    "browserbase": 39,
+    "browserbase": 43,
     "directCookies": 3,
-    "scrapingbee": 87,
+    "scrapingbee": 88,
     "brightdata": 0,
-    "archiveToday": 293,
-    "archive": 108
+    "archiveToday": 294,
+    "archive": 109
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-05T19:59:18.116Z",
-      "event": "bb-cookie-inject",
-      "domain": "nypost.com"
-    },
-    {
-      "t": "2026-03-05T20:01:40.815Z",
-      "event": "bb-session",
-      "session": "23256e86",
-      "url": "https://www.wsj.com/articles/maybe-happy-ending-review-a-robotic-romance-of-real"
-    },
-    {
-      "t": "2026-03-05T20:01:41.865Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-05T20:06:32.527Z",
-      "event": "bb-session",
-      "session": "1ad04144",
-      "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11"
-    },
     {
       "t": "2026-03-05T20:06:33.639Z",
       "event": "bb-cookie-inject",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-03-05T22:03:50.892Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-06T04:12:28.490Z",
+      "event": "bb-session",
+      "session": "ad65bceb",
+      "url": "https://www.amny.com/news/review-marcel-on-the-train-finds-bravery/"
+    },
+    {
+      "t": "2026-03-06T04:12:29.688Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-06T04:13:51.468Z",
+      "event": "bb-session",
+      "session": "ab93730c",
+      "url": "https://www.amny.com/entertainment/broadway/review-masquerade-phantom-of-the-ope"
+    },
+    {
+      "t": "2026-03-06T04:13:53.016Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     }
