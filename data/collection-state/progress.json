@@ -29,14 +29,24 @@
     "chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
     "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
     "data-off-broadway-2026/nytimes--ben-brantley.json",
-    "death-becomes-her-2024/newyorker--helen-shaw.json"
+    "death-becomes-her-2024/newyorker--helen-shaw.json",
+    "death-of-a-salesman-2026/nytimes--jesse-green.json",
+    "death-of-a-salesman-2026/variety--marilyn-stasio.json",
+    "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+    "dirty-books-off-broadway-2025/nytg--unknown.json",
+    "drunk-romeo-and-juliet-off-broadway-2025/nytg--unknown.json",
+    "hadestown-2019/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/nyt-theater--jonathan-mandell.json"
   ],
   "failed": [
     "it-walks-around-the-house-at-night-west-end-2026/broadwayworld--unknown.json",
     "manic-street-creature-west-end-2026/broadwayworld--unknown.json",
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
     "the-lion-king-west-end-2021/thestage--unknown.json",
-    "bughouse-off-broadway-2026/variety--charles-isherwood.json"
+    "bughouse-off-broadway-2026/variety--charles-isherwood.json",
+    "hadestown-2019/newyorker--hilton-als.json",
+    "hercules-west-end-2025/nytimes--matt-wolf.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -52,19 +62,28 @@
       "manic-street-creature-west-end-2026/west-end-best-friend--marina-holmes-smith.json",
       "spread-off-broadway-2026/theatermania--unknown.json",
       "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
-      "data-off-broadway-2026/nyt-theater--jonathan-mandell.json"
+      "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+      "drunk-romeo-and-juliet-off-broadway-2025/nytg--unknown.json",
+      "hamilton-2015/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
       "back-to-the-future-west-end-2021/variety--david-benedict.json",
       "data/review-texts/bigfoot-off-broadway-2026/vulture--unknown.json",
-      "bigfoot-off-broadway-2026/vulture--unknown.json"
+      "bigfoot-off-broadway-2026/vulture--unknown.json",
+      "data/review-texts/death-of-a-salesman-2026/variety--marilyn-stasio.json",
+      "death-of-a-salesman-2026/variety--marilyn-stasio.json"
     ],
     "browserbase": [
       "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
       "chess-2025/hollywood-reporter--angie-han.json",
       "data/review-texts/data-off-broadway-2026/nytimes--ben-brantley.json",
-      "data-off-broadway-2026/nytimes--ben-brantley.json"
+      "data-off-broadway-2026/nytimes--ben-brantley.json",
+      "data/review-texts/hadestown-2019/hollywood-reporter--david-rooney.json",
+      "hadestown-2019/hollywood-reporter--david-rooney.json",
+      "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json",
+      "hamilton-2015/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -88,11 +107,13 @@
       "all-out-2025/nytg--gillian-russo.json",
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
       "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
-      "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json"
+      "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+      "death-of-a-salesman-2026/nytimes--jesse-green.json",
+      "dirty-books-off-broadway-2025/nytg--unknown.json"
     ]
   },
   "startTime": "2026-03-06T17:15:52.929Z",
-  "lastProcessed": "death-becomes-her-2024/newyorker--helen-shaw.json",
+  "lastProcessed": "hercules-west-end-2025/nytimes--matt-wolf.json",
   "log": [
     {
       "t": "2026-03-06T18:51:51.105Z",
@@ -113,6 +134,39 @@
     },
     {
       "t": "2026-03-06T18:53:53.773Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-06T18:55:18.867Z",
+      "event": "bb-session",
+      "session": "f0fac405",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-06T18:55:20.051Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-06T18:55:36.269Z",
+      "event": "bb-session",
+      "session": "c688a160",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-06T18:55:37.293Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-06T18:57:25.813Z",
+      "event": "bb-session",
+      "session": "8368bd5b",
+      "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
+    },
+    {
+      "t": "2026-03-06T18:57:27.115Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

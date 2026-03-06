@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-06T18:54:19.701Z",
-  "processed": 30,
-  "failed": 5,
-  "successRate": "85.7%",
+  "updatedAt": "2026-03-06T18:58:28.563Z",
+  "processed": 38,
+  "failed": 7,
+  "successRate": "84.4%",
   "tierBreakdown": {
-    "playwright": 12,
-    "amp": 4,
-    "browserbase": 4,
+    "playwright": 15,
+    "amp": 6,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 8,
     "brightdata": 0,
     "archiveToday": 2,
-    "archive": 6
+    "archive": 8
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-03-06T18:51:51.105Z",
@@ -34,6 +34,39 @@
     },
     {
       "t": "2026-03-06T18:53:53.773Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-06T18:55:18.867Z",
+      "event": "bb-session",
+      "session": "f0fac405",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-06T18:55:20.051Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-06T18:55:36.269Z",
+      "event": "bb-session",
+      "session": "c688a160",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-06T18:55:37.293Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-06T18:57:25.813Z",
+      "event": "bb-session",
+      "session": "8368bd5b",
+      "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
+    },
+    {
+      "t": "2026-03-06T18:57:27.115Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
