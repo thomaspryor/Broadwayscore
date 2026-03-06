@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Show Picker Prototype</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0d0d0f; color: #e5e5e5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 20px; max-width: 500px; margin: 0 auto; }
+  h2 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { font-size: 13px; color: #888; margin-bottom: 20px; }
+
+  /* Search box */
+  .search-wrap { position: relative; margin-bottom: 8px; }
+  .search-wrap input { width: 100%; padding: 10px 12px 10px 36px; background: #1a1a1e; border: 1px solid #333; border-radius: 10px; color: #fff; font-size: 14px; outline: none; }
+  .search-wrap input:focus { border-color: #555; }
+  .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #666; font-size: 14px; }
+
+  /* Results dropdown */
+  .results { background: #1a1a1e; border: 1px solid #333; border-radius: 12px; overflow: hidden; max-height: 400px; overflow-y: auto; }
+  .result-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; cursor: pointer; border-bottom: 1px solid #222; transition: background 0.15s; }
+  .result-item:hover { background: #252528; }
+  .result-item:last-child { border-bottom: none; }
+  .result-thumb { width: 36px; height: 36px; border-radius: 6px; background: #2a2a2e; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #555; font-size: 18px; }
+  .result-info { flex: 1; min-width: 0; }
+  .result-title { font-size: 14px; font-weight: 600; color: #fff; }
+  .result-meta { font-size: 11px; color: #888; display: flex; gap: 6px; align-items: center; margin-top: 1px; }
+  .result-count { font-size: 10px; color: #666; flex-shrink: 0; }
+  .result-arrow { color: #555; flex-shrink: 0; }
+  .pill { display: inline-block; padding: 1px 5px; border-radius: 3px; font-size: 10px; font-weight: 600; }
+  .pill-closed { background: rgba(128,128,128,0.2); color: #999; }
+  .pill-open { background: rgba(74,222,128,0.15); color: #4ade80; }
+
+  /* Production picker (step 2) */
+  .picker-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #222; }
+  .back-btn { background: none; border: none; color: #888; font-size: 20px; cursor: pointer; padding: 4px; }
+  .back-btn:hover { color: #fff; }
+  .picker-title { font-size: 18px; font-weight: 700; color: #fff; }
+  .picker-subtitle { font-size: 11px; color: #666; }
+
+  .production-group { margin-bottom: 16px; }
+  .group-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #666; margin-bottom: 6px; padding-left: 2px; }
+
+  .production-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; margin-bottom: 6px; cursor: pointer; transition: all 0.15s; }
+  .production-item:hover { border-color: rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); }
+  .prod-info { flex: 1; }
+  .prod-city { font-size: 13px; font-weight: 600; color: #fff; }
+  .prod-venue { font-size: 11px; color: #888; }
+  .prod-year { font-size: 12px; color: #b08d57; font-weight: 600; flex-shrink: 0; }
+  .prod-action { font-size: 10px; color: #666; flex-shrink: 0; }
+
+  .flag { font-size: 14px; flex-shrink: 0; }
+
+  /* Tabs for the demo */
+  .demo-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .demo-tab { padding: 6px 12px; border-radius: 8px; background: #1a1a1e; border: 1px solid #333; color: #888; font-size: 12px; cursor: pointer; }
+  .demo-tab:hover { border-color: #555; color: #fff; }
+  .demo-tab.active { border-color: #b08d57; color: #b08d57; }
+
+  .note { font-size: 11px; color: #555; margin-top: 16px; padding: 10px; background: #111; border-radius: 8px; line-height: 1.5; }
+
+  .hidden { display: none; }
+
+  /* Single-production result (no picker needed) */
+  .result-item.single .result-meta { color: #888; }
+</style>
+</head>
+<body>
+
+<h2>My Shows</h2>
+<p class="subtitle">Show-first search prototype</p>
+
+<div class="demo-tabs">
+  <div class="demo-tab active" onclick="showStep('search')">Step 1: Search</div>
+  <div class="demo-tab" onclick="showStep('picker-multi')">Step 2: Pick Production (many)</div>
+  <div class="demo-tab" onclick="showStep('picker-few')">Step 2: Pick Production (few)</div>
+</div>
+
+<!-- STEP 1: Search results (show-level) -->
+<div id="step-search">
+  <div class="search-wrap">
+    <span class="search-icon">Q</span>
+    <input type="text" value="mary poppins" readonly />
+  </div>
+  <div class="results">
+    <!-- Mary Poppins - many productions -->
+    <div class="result-item" onclick="showStep('picker-multi')">
+      <div class="result-thumb">&#127917;</div>
+      <div class="result-info">
+        <div class="result-title">Mary Poppins</div>
+        <div class="result-meta">
+          <span class="pill pill-closed">Closed</span>
+          <span>Broadway, West End, touring +</span>
+        </div>
+      </div>
+      <div class="result-count">118 productions</div>
+      <div class="result-arrow">&#8250;</div>
+    </div>
+    <!-- Mary Poppins Jr -->
+    <div class="result-item single">
+      <div class="result-thumb">&#127917;</div>
+      <div class="result-info">
+        <div class="result-title">Mary Poppins Jr.</div>
+        <div class="result-meta">
+          <span class="pill pill-closed">Closed</span>
+          <span>Milton, US</span>
+        </div>
+      </div>
+      <div class="result-count"></div>
+      <div class="prod-action">Rate</div>
+    </div>
+    <!-- Mary Poppins on Ice -->
+    <div class="result-item single">
+      <div class="result-thumb">&#127917;</div>
+      <div class="result-info">
+        <div class="result-title">Mary Poppins on Ice</div>
+        <div class="result-meta">
+          <span class="pill pill-closed">Closed</span>
+          <span>Blackpool, UK</span>
+        </div>
+      </div>
+      <div class="result-count"></div>
+      <div class="prod-action">Rate</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>How it works:</strong> Search returns unique <em>shows</em> (8,600) instead of individual productions (32,000). Shows with 1 production go straight to Rate. Shows with multiple productions show a count badge and arrow — tapping opens the production picker (Step 2).
+  </div>
+</div>
+
+<!-- STEP 2a: Production picker (many - Mary Poppins) -->
+<div id="step-picker-multi" class="hidden">
+  <div class="picker-header">
+    <button class="back-btn" onclick="showStep('search')">&lsaquo;</button>
+    <div>
+      <div class="picker-title">Mary Poppins</div>
+      <div class="picker-subtitle">Which production did you see?</div>
+    </div>
+  </div>
+
+  <!-- Search within productions -->
+  <div class="search-wrap" style="margin-bottom: 16px">
+    <span class="search-icon">Q</span>
+    <input type="text" placeholder="Filter by city or venue..." />
+  </div>
+
+  <div class="production-group">
+    <div class="group-label">Broadway & West End</div>
+    <div class="production-item">
+      <div class="flag">&#127482;&#127480;</div>
+      <div class="prod-info">
+        <div class="prod-city">Broadway</div>
+        <div class="prod-venue">New Amsterdam Theatre</div>
+      </div>
+      <div class="prod-year">2006–13</div>
+      <div class="prod-action">Rate</div>
+    </div>
+    <div class="production-item">
+      <div class="flag">&#127468;&#127463;</div>
+      <div class="prod-info">
+        <div class="prod-city">West End</div>
+        <div class="prod-venue">Prince Edward Theatre</div>
+      </div>
+      <div class="prod-year">2004–08, 2019–</div>
+      <div class="prod-action">Rate</div>
+    </div>
+  </div>
+
+  <div class="production-group">
+    <div class="group-label">North America</div>
+    <div class="production-item">
+      <div class="flag">&#127482;&#127480;</div>
+      <div class="prod-info">
+        <div class="prod-city">Chicago</div>
+        <div class="prod-venue">Cadillac Palace Theatre</div>
+      </div>
+      <div class="prod-year"></div>
+      <div class="prod-action">Rate</div>
+    </div>
+    <div class="production-item">
+      <div class="flag">&#127482;&#127480;</div>
+      <div class="prod-info">
+        <div class="prod-city">Boston</div>
+        <div class="prod-venue">Boston Opera House</div>
+      </div>
+      <div class="prod-year"></div>
+      <div class="prod-action">Rate</div>
+    </div>
+    <div class="production-item">
+      <div class="flag">&#127482;&#127480;</div>
+      <div class="prod-info">
+        <div class="prod-city">San Francisco</div>
+        <div class="prod-venue">Orpheum Theatre</div>
+      </div>
+      <div class="prod-year"></div>
+      <div class="prod-action">Rate</div>
+    </div>
+    <div class="production-item">
+      <div class="flag">&#127482;&#127480;</div>
+      <div class="prod-info">
+        <div class="prod-city">Minneapolis</div>
+        <div class="prod-venue">Orpheum Theatre</div>
+      </div>
+      <div class="prod-year"></div>
+      <div class="prod-action">Rate</div>
+    </div>
+    <div class="production-item">
+      <div class="flag">&#127482;&#127480;</div>
+      <div class="prod-info">
+        <div class="prod-city">Philadelphia</div>
+        <div class="prod-venue">Walnut Street Theater</div>
+      </div>
+      <div class="prod-year"></div>
+      <div class="prod-action">Rate</div>
+    </div>
+    <div class="production-item">
+      <div class="flag">&#127464;&#127462;</div>
+      <div class="prod-info">
+        <div class="prod-city">Toronto</div>
+        <div class="prod-venue">Princess of Wales Theatre</div>
+      </div>
+      <div class="prod-year"></div>
+      <div class="prod-action">Rate</div>
+    </div>
+    <div class="production-item">
+      <div class="flag">&#127464;&#127462;</div>
+      <div class="prod-info">
+        <div class="prod-city">Vancouver</div>
+        <div class="prod-venue">Stanley Industrial Alliance Stage</div>
+      </div>
+      <div class="prod-year"></div>
+      <div class="prod-action">Rate</div>
+    </div>
+  </div>
+
+  <div class="production-group">
+    <div class="group-label">UK Regional</div>
+    <div class="production-item">
+      <div class="flag">&#127468;&#127463;</div>
+      <div class="prod-info">
+        <div class="prod-city">Southampton</div>
+        <div class="prod-venue">Mayflower Theatre</div>
+      </div>
+      <div class="prod-year"></div>
+      <div class="prod-action">Rate</div>
+    </div>
+    <div class="production-item">
+      <div class="flag">&#127468;&#127463;</div>
+      <div class="prod-info">
+        <div class="prod-city">Bristol</div>
+        <div class="prod-venue">Hippodrome</div>
+      </div>
+      <div class="prod-year"></div>
+      <div class="prod-action">Rate</div>
+    </div>
+    <div class="production-item">
+      <div class="flag">&#127468;&#127463;</div>
+      <div class="prod-info">
+        <div class="prod-city">Edinburgh</div>
+        <div class="prod-venue">Festival Theatre</div>
+      </div>
+      <div class="prod-year"></div>
+      <div class="prod-action">Rate</div>
+    </div>
+    <div class="production-item">
+      <div class="flag">&#127468;&#127463;</div>
+      <div class="prod-info">
+        <div class="prod-city">Bradford</div>
+        <div class="prod-venue">The Alhambra</div>
+      </div>
+      <div class="prod-year"></div>
+      <div class="prod-action">Rate</div>
+    </div>
+  </div>
+
+  <div class="production-group">
+    <div class="group-label">International</div>
+    <div class="production-item">
+      <div class="flag">&#127462;&#127482;</div>
+      <div class="prod-info">
+        <div class="prod-city">Melbourne</div>
+        <div class="prod-venue">Her Majesty's Theatre</div>
+      </div>
+      <div class="prod-year"></div>
+      <div class="prod-action">Rate</div>
+    </div>
+    <div class="production-item">
+      <div class="flag">&#127462;&#127482;</div>
+      <div class="prod-info">
+        <div class="prod-city">Sydney</div>
+        <div class="prod-venue">Lyric Theatre</div>
+      </div>
+      <div class="prod-year"></div>
+      <div class="prod-action">Rate</div>
+    </div>
+    <div class="production-item">
+      <div class="flag">&#127470;&#127466;</div>
+      <div class="prod-info">
+        <div class="prod-city">Dublin</div>
+        <div class="prod-venue">Bord Gais Theatre</div>
+      </div>
+      <div class="prod-year"></div>
+      <div class="prod-action">Rate</div>
+    </div>
+    <div class="production-item">
+      <div class="flag">&#127470;&#127481;</div>
+      <div class="prod-info">
+        <div class="prod-city">Milano</div>
+        <div class="prod-venue">Teatro Nazionale</div>
+      </div>
+      <div class="prod-year"></div>
+      <div class="prod-action">Rate</div>
+    </div>
+    <div class="production-item">
+      <div class="flag">&#127471;&#127477;</div>
+      <div class="prod-info">
+        <div class="prod-city">Tokyo</div>
+        <div class="prod-venue">Tokyu Theatre Orb</div>
+      </div>
+      <div class="prod-year"></div>
+      <div class="prod-action">Rate</div>
+    </div>
+    <div class="production-item">
+      <div class="flag">&#127474;&#127485;</div>
+      <div class="prod-info">
+        <div class="prod-city">Mexico City</div>
+        <div class="prod-venue">Centro Cultural Teatro 1</div>
+      </div>
+      <div class="prod-year"></div>
+      <div class="prod-action">Rate</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>118 productions</strong> grouped by region. Broadway/West End at top, then North America, UK Regional, International. Filter input at top narrows by city or venue name. Each production shows city + venue + year range.
+  </div>
+</div>
+
+<!-- STEP 2b: Production picker (few - Come From Away) -->
+<div id="step-picker-few" class="hidden">
+  <div class="picker-header">
+    <button class="back-btn" onclick="showStep('search')">&lsaquo;</button>
+    <div>
+      <div class="picker-title">Come From Away</div>
+      <div class="picker-subtitle">Which production did you see?</div>
+    </div>
+  </div>
+
+  <div class="production-group">
+    <div class="group-label">Broadway & West End</div>
+    <div class="production-item">
+      <div class="flag">&#127482;&#127480;</div>
+      <div class="prod-info">
+        <div class="prod-city">Broadway</div>
+        <div class="prod-venue">Gerald Schoenfeld Theatre</div>
+      </div>
+      <div class="prod-year">2017–22</div>
+      <div class="prod-action">Rate</div>
+    </div>
+    <div class="production-item">
+      <div class="flag">&#127468;&#127463;</div>
+      <div class="prod-info">
+        <div class="prod-city">West End</div>
+        <div class="prod-venue">Phoenix Theatre</div>
+      </div>
+      <div class="prod-year">2019–20</div>
+      <div class="prod-action">Rate</div>
+    </div>
+  </div>
+
+  <div class="production-group">
+    <div class="group-label">North America</div>
+    <div class="production-item">
+      <div class="flag">&#127482;&#127480;</div>
+      <div class="prod-info">
+        <div class="prod-city">Washington DC</div>
+        <div class="prod-venue">Ford's Theatre</div>
+      </div>
+      <div class="prod-year">2016</div>
+      <div class="prod-action">Rate</div>
+    </div>
+    <div class="production-item">
+      <div class="flag">&#127464;&#127462;</div>
+      <div class="prod-info">
+        <div class="prod-city">Toronto</div>
+        <div class="prod-venue">Royal Alexandra Theatre</div>
+      </div>
+      <div class="prod-year">2018</div>
+      <div class="prod-action">Rate</div>
+    </div>
+  </div>
+
+  <div class="production-group">
+    <div class="group-label">International</div>
+    <div class="production-item">
+      <div class="flag">&#127462;&#127482;</div>
+      <div class="prod-info">
+        <div class="prod-city">Melbourne</div>
+        <div class="prod-venue">Comedy Theatre</div>
+      </div>
+      <div class="prod-year">2019</div>
+      <div class="prod-action">Rate</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>5 productions</strong> — no filter needed for a short list. This is what most shows with 2-10 productions would look like. Clean and easy to pick.
+  </div>
+</div>
+
+<script>
+function showStep(step) {
+  document.getElementById('step-search').classList.add('hidden');
+  document.getElementById('step-picker-multi').classList.add('hidden');
+  document.getElementById('step-picker-few').classList.add('hidden');
+
+  if (step === 'search') document.getElementById('step-search').classList.remove('hidden');
+  if (step === 'picker-multi') document.getElementById('step-picker-multi').classList.remove('hidden');
+  if (step === 'picker-few') document.getElementById('step-picker-few').classList.remove('hidden');
+
+  document.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.demo-tab').forEach(t => {
+    if ((step === 'search' && t.textContent.includes('Step 1')) ||
+        (step === 'picker-multi' && t.textContent.includes('many')) ||
+        (step === 'picker-few' && t.textContent.includes('few'))) {
+      t.classList.add('active');
+    }
+  });
+}
+</script>
+
+</body>
+</html>
