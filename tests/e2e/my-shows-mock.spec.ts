@@ -1,5 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
-import { assertElementsCenteredInParent } from './helpers/layout-assertions';
+
 
 /**
  * Comprehensive E2E tests for the My Shows page using mock mode.
@@ -280,10 +280,25 @@ test.describe('My Shows — View Toggle', () => {
     expect(classes).toContain('bg-white');
   });
 
-  test('trash icons are centered on grid cards', async ({ page }) => {
+  test('trash icons are positioned top-right on grid cards', async ({ page }) => {
     await goToMock(page, 'watchlist');
-    // Watchlist grid: trash icons must be horizontally centered in their parent link
-    await assertElementsCenteredInParent(page, 'button[aria-label="Remove from watchlist"]');
+    // Watchlist grid: trash icons must be in top-right corner of their parent
+    const trashButtons = page.locator('button[aria-label="Remove from watchlist"]');
+    const count = await trashButtons.count();
+    expect(count).toBeGreaterThan(0);
+    for (let i = 0; i < count; i++) {
+      const btn = trashButtons.nth(i);
+      if (!(await btn.isVisible())) continue;
+      const btnBox = await btn.boundingBox();
+      const parentBox = await btn.locator('..').boundingBox();
+      if (!btnBox || !parentBox) continue;
+      // Button should be near the right edge (within 16px of right side)
+      const rightOffset = (parentBox.x + parentBox.width) - (btnBox.x + btnBox.width);
+      expect(rightOffset, `trash icon ${i} should be near right edge`).toBeLessThan(16);
+      // Button should be near the top (within 16px of top)
+      const topOffset = btnBox.y - parentBox.y;
+      expect(topOffset, `trash icon ${i} should be near top edge`).toBeLessThan(16);
+    }
   });
 
   test('view toggle works independently per tab', async ({ page }) => {
