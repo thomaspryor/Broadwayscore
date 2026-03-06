@@ -209,7 +209,17 @@
     "night-side-songs-off-broadway-2026/theatermania--zachary-stewart.json",
     "night-side-songs-off-broadway-2026/timeout--unknown.json",
     "oh-mary-2024/theatermania--jesse-green.json",
-    "oh-mary-2024/timeout--adam-feldman.json"
+    "oh-mary-2024/timeout--adam-feldman.json",
+    "oh-mary-west-end-2025/guardian--arifa-akbar.json",
+    "oliver-west-end-2024/guardian--arifa-akbar.json",
+    "oliver-west-end-2024/timeout-london--andrzej-lukowski.json",
+    "operation-mincemeat-2025/broadwaynews--brittani-samuel.json",
+    "operation-mincemeat-2025/guardian--kate-wyver.json",
+    "operation-mincemeat-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "operation-mincemeat-2025/timeout--adam-feldman.json",
+    "operation-mincemeat-2025/timeout--holly-williams.json",
+    "operation-mincemeat-2025/wsj--charles-isherwood.json",
+    "operation-mincemeat-west-end-2024/guardian--emma-john.json"
   ],
   "failed": [
     "what-we-did-before-our-moth-days-off-broadway-2026/nytimes--unknown.json",
@@ -322,7 +332,8 @@
       "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/timeout--adam-feldman.json",
       "mj-2022/theatermania--jesse-green.json",
       "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
-      "night-side-songs-off-broadway-2026/timeout--unknown.json"
+      "night-side-songs-off-broadway-2026/timeout--unknown.json",
+      "operation-mincemeat-2025/theatre-reviews-limited--joseph-verlezza.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -418,7 +429,12 @@
       "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json",
       "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
       "maybe-happy-ending-2024/guardian--adrian-horton.json",
-      "my-neighbour-totoro-west-end-2025/guardian--arifa-akbar.json"
+      "my-neighbour-totoro-west-end-2025/guardian--arifa-akbar.json",
+      "oh-mary-west-end-2025/guardian--arifa-akbar.json",
+      "oliver-west-end-2024/guardian--arifa-akbar.json",
+      "operation-mincemeat-2025/broadwaynews--brittani-samuel.json",
+      "operation-mincemeat-2025/guardian--kate-wyver.json",
+      "operation-mincemeat-west-end-2024/guardian--emma-john.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -515,11 +531,15 @@
       "moulin-rouge-the-musical-west-end-2021/timeout-london--unknown.json",
       "night-side-songs-off-broadway-2026/theatermania--zachary-stewart.json",
       "oh-mary-2024/theatermania--jesse-green.json",
-      "oh-mary-2024/timeout--adam-feldman.json"
+      "oh-mary-2024/timeout--adam-feldman.json",
+      "oliver-west-end-2024/timeout-london--andrzej-lukowski.json",
+      "operation-mincemeat-2025/timeout--adam-feldman.json",
+      "operation-mincemeat-2025/timeout--holly-williams.json",
+      "operation-mincemeat-2025/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-03-06T09:13:03.197Z",
-  "lastProcessed": "oh-mary-2024/timeout--adam-feldman.json",
+  "lastProcessed": "operation-mincemeat-west-end-2024/guardian--emma-john.json",
   "log": [
     {
       "t": "2026-03-06T09:14:33.354Z",
@@ -663,6 +683,17 @@
       "t": "2026-03-06T11:00:51.676Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-06T11:08:01.805Z",
+      "event": "bb-session",
+      "session": "2cc2ec1b",
+      "url": "https://www.wsj.com/articles/operation-mincemeat-review-a-madcap-military-plot-o"
+    },
+    {
+      "t": "2026-03-06T11:08:03.147Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
