@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-06T11:14:09.256Z",
-  "processed": 239,
+  "updatedAt": "2026-03-06T11:18:35.285Z",
+  "processed": 249,
   "failed": 41,
-  "successRate": "85.4%",
+  "successRate": "85.9%",
   "tierBreakdown": {
-    "playwright": 73,
+    "playwright": 78,
     "amp": 24,
-    "browserbase": 22,
+    "browserbase": 24,
     "directCookies": 2,
-    "scrapingbee": 48,
+    "scrapingbee": 50,
     "brightdata": 0,
     "archiveToday": 12,
-    "archive": 95
+    "archive": 97
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-03-06T09:33:35.953Z",
-      "event": "bb-session",
-      "session": "72cf2577",
-      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
-    },
-    {
-      "t": "2026-03-06T09:33:37.337Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-06T09:35:11.234Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-06T11:11:33.421Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-06T11:18:20.101Z",
+      "event": "bb-session",
+      "session": "16b1a7ab",
+      "url": "https://observer.com/2024/04/review-flashy-and-fake-great-gatsby-caps-a-weak-sea"
+    },
+    {
+      "t": "2026-03-06T11:18:21.181Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
     }
   ]
 }
