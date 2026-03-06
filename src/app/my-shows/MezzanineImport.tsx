@@ -119,7 +119,14 @@ export default function MezzanineImport({
       if (venueMatch) return { match: venueMatch.item, score: 1 - (venueMatch.score || 0) };
     }
 
-    return { match: results[0].item, score: 1 - (results[0].score || 0) };
+    const best = results[0];
+    const score = 1 - (best.score || 0);
+    // Penalize matches where titles don't share a containment relationship
+    // e.g. "High Spirits" ≠ "Blithe Spirit" even though both contain "Spirit"
+    const nameL = name.toLowerCase();
+    const matchL = best.item.title.toLowerCase();
+    const contained = nameL.includes(matchL) || matchL.includes(nameL);
+    return { match: best.item, score: contained ? score : score * 0.6 };
   }, []);
 
   const handleFileSelect = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -168,7 +175,7 @@ export default function MezzanineImport({
             mezzReview: null,
             match,
             matchScore: score,
-            selected: !!match && score > 0.5 && !alreadyWatchlisted && !alreadyReviewed,
+            selected: !!match && score > 0.7 && !alreadyWatchlisted && !alreadyReviewed,
             type: 'watchlist',
             listName: 'Upcoming',
           });
@@ -180,7 +187,7 @@ export default function MezzanineImport({
             mezzReview: entry.review || null,
             match,
             matchScore: score,
-            selected: !!match && score > 0.5 && !alreadyReviewed,
+            selected: !!match && score > 0.7 && !alreadyReviewed,
             type: 'diary',
           });
         }
@@ -203,7 +210,7 @@ export default function MezzanineImport({
             mezzReview: null,
             match,
             matchScore: score,
-            selected: !!match && score > 0.5 && !alreadyWatchlisted && !alreadyInDiary,
+            selected: !!match && score > 0.7 && !alreadyWatchlisted && !alreadyInDiary,
             type: 'watchlist',
             listName: list.name,
           });
@@ -222,8 +229,8 @@ export default function MezzanineImport({
   const watchlistEntries = useMemo(() => entries.filter(e => e.type === 'watchlist'), [entries]);
   const selectedDiary = useMemo(() => diaryEntries.filter(e => e.selected && e.match), [diaryEntries]);
   const selectedWatchlist = useMemo(() => watchlistEntries.filter(e => e.selected && e.match), [watchlistEntries]);
-  const unmatchedDiary = useMemo(() => diaryEntries.filter(e => !e.match || e.matchScore <= 0.5).length, [diaryEntries]);
-  const unmatchedWatchlist = useMemo(() => watchlistEntries.filter(e => !e.match || e.matchScore <= 0.5).length, [watchlistEntries]);
+  const unmatchedDiary = useMemo(() => diaryEntries.filter(e => !e.match || e.matchScore <= 0.7).length, [diaryEntries]);
+  const unmatchedWatchlist = useMemo(() => watchlistEntries.filter(e => !e.match || e.matchScore <= 0.7).length, [watchlistEntries]);
   const unmatchedCount = unmatchedDiary + unmatchedWatchlist;
 
   const toggleEntry = (index: number) => {
@@ -461,7 +468,7 @@ export default function MezzanineImport({
 }
 
 function ImportEntryRow({ entry, index, onToggle }: { entry: MatchedEntry; index: number; onToggle: (i: number) => void }) {
-  const noMatch = !entry.match || entry.matchScore <= 0.5;
+  const noMatch = !entry.match || entry.matchScore <= 0.7;
   return (
     <label className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg cursor-pointer transition-colors ${
       noMatch ? 'opacity-50' : entry.selected ? 'bg-white/5' : 'opacity-60'
