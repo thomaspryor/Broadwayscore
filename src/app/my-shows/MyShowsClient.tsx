@@ -38,12 +38,24 @@ function decodeShow(raw: Record<string, unknown>): ShowLookup {
     closingDate: (raw.cd as string) || null,
     compositeScore: null,
     posterUrl: (raw.p as string) || null,
+    diaryOnly: !!raw.dy,
   };
 }
 
-function getShowHref(slug: string, _category: string) {
-  // All shows use /show/[slug] — no separate routes for west-end or off-broadway
+function getShowHref(slug: string, _category: string, diaryOnly?: boolean): string | null {
+  if (diaryOnly) return null; // Diary-only shows have no show page
   return `/show/${slug}`;
+}
+
+// Wrapper components for diary-only show link suppression
+function ShowCardOverlay({ href, label }: { href: string | null; label: string }) {
+  if (href) return <Link href={href} className="absolute inset-0 z-0" aria-label={`View ${label}`} />;
+  return null;
+}
+
+function ShowCardPosterLink({ href, children, className }: { href: string | null; children: React.ReactNode; className?: string }) {
+  if (href) return <Link href={href} className={className}>{children}</Link>;
+  return <div className={className}>{children}</div>;
 }
 
 export default function MyShowsClient() {
@@ -69,7 +81,7 @@ export default function MyShowsClient() {
   const { showToast } = useToastSafe();
   const loading = authLoading || reviewsLoading || watchlistLoading;
 
-  // Load show lookup data
+  // Load show lookup data (scored shows)
   useEffect(() => {
     fetch('/data/show-lookup.json')
       .then(res => res.json())
@@ -86,6 +98,33 @@ export default function MyShowsClient() {
         setShowMapLoaded(true);
       });
   }, []);
+
+  // Lazy-load diary show lookup when user has entries referencing unknown show IDs
+  const diaryLookupLoaded = useRef(false);
+  useEffect(() => {
+    if (!showMapLoaded || diaryLookupLoaded.current) return;
+    const allShowIds = new Set([
+      ...reviews.map(r => r.show_id),
+      ...watchlist.map(w => w.show_id),
+    ]);
+    const hasUnknown = Array.from(allShowIds).some(id => !showMap[id]);
+    if (!hasUnknown) return;
+
+    diaryLookupLoaded.current = true;
+    fetch('/data/diary-lookup.json')
+      .then(res => res.json())
+      .then((data: Record<string, unknown>[]) => {
+        setShowMap(prev => {
+          const next = { ...prev };
+          for (const raw of data) {
+            const show = decodeShow(raw);
+            if (!next[show.id]) next[show.id] = show;
+          }
+          return next;
+        });
+      })
+      .catch(() => { /* diary-lookup.json may not exist yet */ });
+  }, [showMapLoaded, reviews, watchlist, showMap]);
 
   // Load user data when authenticated
   useEffect(() => {
@@ -377,7 +416,7 @@ export default function MyShowsClient() {
                       const entryTitle = entryShow?.title || entry.show_id;
                       const entrySlug = entryShow?.slug || entry.show_id;
                       const entryCategory = entryShow?.category || 'broadway';
-                      const entryHref = getShowHref(entrySlug, entryCategory);
+                      const entryHref = getShowHref(entrySlug, entryCategory, entryShow?.diaryOnly);
                       const daysUntil = entry.planned_date
                         ? Math.ceil((new Date(entry.planned_date + 'T00:00:00').getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
                         : null;
@@ -386,7 +425,7 @@ export default function MyShowsClient() {
                         : null;
                       return (
                         <div key={`wl-${entry.id}`} className="relative flex items-center gap-2 sm:gap-4 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
-                          <Link href={entryHref} className="absolute inset-0 z-0" aria-label={`View ${entryTitle}`} />
+                          <ShowCardOverlay href={entryHref} label={entryTitle} />
                           <div className="relative z-[1] flex-shrink-0 w-10 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay pointer-events-none">
                             {entryShow?.posterUrl ? (
                               <img src={entryShow.posterUrl} alt="" className="w-full h-full object-cover" />
@@ -506,12 +545,12 @@ function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: Show
   const title = show?.title || review.show_id;
   const slug = show?.slug || review.show_id;
   const category = show?.category || 'broadway';
-  const href = getShowHref(slug, category);
+  const href = getShowHref(slug, category, show?.diaryOnly);
 
   return (
     <div className="group/diary relative flex items-center gap-2 sm:gap-4 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
       {/* Link overlay for the whole card */}
-      <Link href={href} className="absolute inset-0 z-0" aria-label={`View ${title}`} />
+      <ShowCardOverlay href={href} label={title} />
 
       {/* Poster */}
       <div className="relative z-[1] pointer-events-none flex-shrink-0 w-10 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay">
@@ -598,11 +637,11 @@ function DiaryGridCard({ review, show, onDelete }: { review: UserReview; show?: 
   const title = show?.title || review.show_id;
   const slug = show?.slug || review.show_id;
   const category = show?.category || 'broadway';
-  const href = getShowHref(slug, category);
+  const href = getShowHref(slug, category, show?.diaryOnly);
 
   return (
     <div className="group/grid flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
-      <Link href={href} className="relative">
+      <ShowCardPosterLink href={href} className="relative">
         <div className="aspect-[2/3] bg-surface-overlay">
           {show?.posterUrl ? (
             <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
@@ -630,16 +669,16 @@ function DiaryGridCard({ review, show, onDelete }: { review: UserReview; show?: 
             </svg>
           </button>
         )}
-      </Link>
+      </ShowCardPosterLink>
       <div className="p-2">
-        <Link href={href}>
+        <ShowCardPosterLink href={href}>
           <h4 className="text-xs font-semibold text-white truncate">{title}</h4>
           {review.date_seen && (
             <p className="text-[10px] text-gray-500 truncate">
               {new Date(review.date_seen + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
             </p>
           )}
-        </Link>
+        </ShowCardPosterLink>
       </div>
     </div>
   );
@@ -655,7 +694,7 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
   const title = show?.title || entry.show_id;
   const slug = show?.slug || entry.show_id;
   const category = show?.category || 'broadway';
-  const href = getShowHref(slug, category);
+  const href = getShowHref(slug, category, show?.diaryOnly);
 
   const isClosingSoon = show?.closingDate && (() => {
     const closing = new Date(show.closingDate!);
@@ -670,7 +709,7 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
 
   return (
     <div className="group/wl flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
-      <Link href={href} className="relative">
+      <ShowCardPosterLink href={href} className="relative">
         <div className="aspect-[2/3] bg-surface-overlay relative">
           {show?.posterUrl ? (
             <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
@@ -689,8 +728,8 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
         <div
           role="button"
           tabIndex={0}
-          onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.location.href = `${href}?rate=1`; }}
-          onKeyDown={(e) => { if (e.key === 'Enter') { window.location.href = `${href}?rate=1`; } }}
+          onClick={(e) => { e.preventDefault(); e.stopPropagation(); if (href) window.location.href = `${href}?rate=1`; }}
+          onKeyDown={(e) => { if (e.key === 'Enter' && href) { window.location.href = `${href}?rate=1`; } }}
           className="absolute inset-x-0 bottom-0 flex items-end justify-center pb-2 bg-gradient-to-t from-black/60 via-transparent to-transparent sm:inset-0 sm:opacity-0 sm:group-hover/wl:opacity-100 transition-opacity z-[1] cursor-pointer"
         >
           <span className="text-[10px] sm:text-xs font-semibold text-white/90 flex items-center gap-1">
@@ -711,12 +750,12 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
           </svg>
         </button>
-      </Link>
+      </ShowCardPosterLink>
       <div className="p-2">
-        <Link href={href}>
+        <ShowCardPosterLink href={href}>
           <h4 className="text-xs font-semibold text-white truncate">{title}</h4>
           <p className="text-[10px] text-gray-500 truncate">{show?.venue}</p>
-        </Link>
+        </ShowCardPosterLink>
         {/* Planned date — uses ref + showPicker for reliable mobile support */}
         <DatePickerButton
           value={entry.planned_date || ''}
@@ -793,7 +832,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
   const title = show?.title || entry.show_id;
   const slug = show?.slug || entry.show_id;
   const category = show?.category || 'broadway';
-  const href = getShowHref(slug, category);
+  const href = getShowHref(slug, category, show?.diaryOnly);
 
   const isClosingSoon = show?.closingDate && (() => {
     const closing = new Date(show.closingDate!);
@@ -808,7 +847,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
 
   return (
     <div className="group/wl relative flex items-center gap-2 sm:gap-4 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
-      <Link href={href} className="absolute inset-0 z-0" aria-label={`View ${title}`} />
+      <ShowCardOverlay href={href} label={title} />
 
       <div className="relative z-[1] flex-shrink-0 w-10 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay">
         {show?.posterUrl ? (
@@ -883,6 +922,7 @@ interface SearchShow {
   venue?: string;
   images?: { thumbnail?: string };
   category?: string;
+  dy?: boolean; // diary-only show
 }
 
 function AddShowSearch({
@@ -913,11 +953,19 @@ function AddShowSearch({
     if (fetchedRef.current) return;
     fetchedRef.current = true;
     try {
-      const [res, { default: FuseClass }] = await Promise.all([
+      const [res, diaryRes, { default: FuseClass }] = await Promise.all([
         fetch('/data/search-shows.json'),
+        fetch('/data/diary-search.json').catch(() => null),
         import('fuse.js/basic') as Promise<{ default: typeof Fuse }>,
       ]);
       const data: SearchShow[] = await res.json();
+      // Merge diary shows for broader search coverage
+      if (diaryRes?.ok) {
+        try {
+          const diaryData: SearchShow[] = await diaryRes.json();
+          data.push(...diaryData);
+        } catch { /* ignore */ }
+      }
       fuseRef.current = new FuseClass(data, {
         keys: [{ name: 'title', weight: 0.8 }, { name: 'venue', weight: 0.2 }],
         threshold: 0.35,
@@ -965,8 +1013,8 @@ function AddShowSearch({
   const handleSelect = async (show: SearchShow) => {
     if (context === 'watchlist') {
       if (existingWatchlistIds.has(show.id)) {
-        // Already on watchlist — just go to show page
-        router.push(`/show/${show.slug}`);
+        // Already on watchlist — go to show page (if not diary-only)
+        if (!show.dy) router.push(`/show/${show.slug}`);
       } else {
         setAddingId(show.id);
         try {
@@ -976,8 +1024,8 @@ function AddShowSearch({
         }
       }
     } else {
-      // Diary — go to show page with ?rate=1
-      router.push(`/show/${show.slug}?rate=1`);
+      // Diary — go to show page with ?rate=1 (if not diary-only)
+      if (!show.dy) router.push(`/show/${show.slug}?rate=1`);
     }
     setIsOpen(false);
     setQuery('');
@@ -1096,11 +1144,11 @@ function ToBeRatedCard({ entry, show }: { entry: WatchlistEntry; show?: ShowLook
   const title = show?.title || entry.show_id;
   const slug = show?.slug || entry.show_id;
   const category = show?.category || 'broadway';
-  const href = getShowHref(slug, category);
+  const href = getShowHref(slug, category, show?.diaryOnly);
 
   return (
     <div className="relative flex items-center gap-2 sm:gap-4 px-3 sm:px-5 py-3 rounded-xl bg-amber-500/[0.03] border border-amber-500/10 hover:border-amber-500/20 hover:bg-amber-500/[0.06] transition-colors">
-      <Link href={href} className="absolute inset-0 z-0" aria-label={`Rate ${title}`} />
+      <ShowCardOverlay href={href} label={`Rate ${title}`} />
       <div className="relative z-[1] flex-shrink-0 w-10 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay pointer-events-none">
         {show?.posterUrl ? (
           <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
