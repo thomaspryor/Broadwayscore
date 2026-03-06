@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-06T12:08:42.498Z",
-  "processed": 385,
-  "failed": 75,
-  "successRate": "83.7%",
+  "updatedAt": "2026-03-06T12:11:03.964Z",
+  "processed": 393,
+  "failed": 77,
+  "successRate": "83.6%",
   "tierBreakdown": {
-    "playwright": 146,
+    "playwright": 153,
     "amp": 24,
-    "browserbase": 26,
+    "browserbase": 28,
     "directCookies": 3,
     "scrapingbee": 68,
     "brightdata": 0,
     "archiveToday": 19,
     "archive": 145
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-03-06T09:38:31.900Z",
-      "event": "bb-session",
-      "session": "bde84051",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/schmigadoon-musical-apple-tv-br"
-    },
-    {
-      "t": "2026-03-06T09:38:33.285Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-06T10:58:29.130Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-06T11:59:20.318Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-06T12:09:02.306Z",
+      "event": "bb-session",
+      "session": "9ad2d441",
+      "url": "https://www.amny.com/entertainment/hadestown-review-1-29924932/"
+    },
+    {
+      "t": "2026-03-06T12:09:03.501Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     }
