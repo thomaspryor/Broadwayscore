@@ -1,0 +1,94 @@
+import { test, expect } from '@playwright/test';
+import { VIEWPORTS, goToMock, goToShowFixture } from './helpers/mock-helpers';
+
+/**
+ * Visual baseline screenshots for all UGC states.
+ * Catches visual regressions (trash icon centering, star sizing, overflow, etc.)
+ *
+ * Run: TEST_BASE_URL=http://localhost:3456 npx playwright test --project=chromium tests/e2e/ugc-visual-baselines.spec.ts
+ * Update baselines: add --update-snapshots
+ */
+
+for (const vp of VIEWPORTS) {
+  test.describe(`UGC Visual Baselines — ${vp.name} (${vp.width}px)`, () => {
+    test.beforeEach(async ({ page }) => {
+      await page.setViewportSize({ width: vp.width, height: vp.height });
+    });
+
+    // ─── My Shows — Diary ──────────────────────────────────────
+
+    test('diary list view', async ({ page }) => {
+      await goToMock(page, 'diary');
+      await expect(page).toHaveScreenshot(`diary-list-${vp.width}.png`, {
+        fullPage: true,
+        animations: 'disabled',
+      });
+    });
+
+    test('diary grid view', async ({ page }) => {
+      await goToMock(page, 'diary');
+      await page.getByRole('button', { name: 'Grid view' }).click();
+      await expect(page.getByRole('button', { name: 'Grid view' })).toHaveClass(/bg-white/, { timeout: 3000 });
+      await expect(page).toHaveScreenshot(`diary-grid-${vp.width}.png`, {
+        fullPage: true,
+        animations: 'disabled',
+      });
+    });
+
+    // ─── My Shows — Watchlist ──────────────────────────────────
+
+    test('watchlist grid view', async ({ page }) => {
+      await goToMock(page, 'watchlist');
+      await expect(page).toHaveScreenshot(`watchlist-grid-${vp.width}.png`, {
+        fullPage: true,
+        animations: 'disabled',
+      });
+    });
+
+    test('watchlist list view', async ({ page }) => {
+      await goToMock(page, 'watchlist');
+      await page.getByRole('button', { name: 'List view' }).click();
+      await expect(page.getByRole('button', { name: 'List view' })).toHaveClass(/bg-white/, { timeout: 3000 });
+      await expect(page).toHaveScreenshot(`watchlist-list-${vp.width}.png`, {
+        fullPage: true,
+        animations: 'disabled',
+      });
+    });
+
+    // ─── Show Rating Fixture ───────────────────────────────────
+
+    test('rating — existing state', async ({ page }) => {
+      await goToShowFixture(page, 'existing');
+      await expect(page).toHaveScreenshot(`rating-existing-${vp.width}.png`, {
+        fullPage: true,
+        animations: 'disabled',
+      });
+    });
+
+    test('rating — empty state', async ({ page }) => {
+      await goToShowFixture(page, 'empty');
+      await expect(page).toHaveScreenshot(`rating-empty-${vp.width}.png`, {
+        fullPage: true,
+        animations: 'disabled',
+      });
+    });
+
+    test('rating — multi state', async ({ page }) => {
+      await goToShowFixture(page, 'multi');
+      await expect(page).toHaveScreenshot(`rating-multi-${vp.width}.png`, {
+        fullPage: true,
+        animations: 'disabled',
+      });
+    });
+
+    test('rating — review panel open', async ({ page }) => {
+      await goToShowFixture(page, 'existing');
+      await page.getByRole('button', { name: 'Edit rating' }).click();
+      await expect(page.locator('textarea')).toBeVisible({ timeout: 3000 });
+      await expect(page).toHaveScreenshot(`rating-panel-open-${vp.width}.png`, {
+        fullPage: true,
+        animations: 'disabled',
+      });
+    });
+  });
+}
