@@ -147,7 +147,13 @@
     "wicked-2003/vulture--bilge-eberi.json",
     "bigfoot-off-broadway-2026/timeout--unknown.json",
     "bug-2026/wsj--charles-isherwood.json",
-    "chinese-republicans-off-broadway-2026/broadwaynews--chloe-rabinowitz.json"
+    "chinese-republicans-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
+    "high-noon-west-end-2025/guardian--arifa-akbar.json",
+    "high-noon-west-end-2025/timeout--unknown.json",
+    "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json",
+    "hold-on-to-your-butts-off-broadway-2026/guardian--chris-wiegand.json",
+    "im-sorry-prime-minister-west-end-2026/timeout-london--unknown.json",
+    "into-the-woods-west-end-2025/guardian--arifa-akbar.json"
   ],
   "failed": [
     "it-walks-around-the-house-at-night-west-end-2026/broadwayworld--unknown.json",
@@ -186,7 +192,11 @@
     "anne-teresa-de-keersmaeker-exit-above-off-broadway-2026/broadwaynews--unknown.json",
     "book-of-mormon-2011/wsj--terry-teachout.json",
     "cats-the-jellicle-ball-2026/timeout--david-cote.json",
-    "death-of-a-salesman-2026/broadwaynews--brittani-samuel.json"
+    "death-of-a-salesman-2026/broadwaynews--brittani-samuel.json",
+    "dirty-books-off-broadway-2025/broadwaynews--chloe-rabinowitz.json",
+    "hadestown-2019/wsj--terry-teachout.json",
+    "hamilton-2015/wsj--terry-teachout.json",
+    "harry-potter-2021/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -248,7 +258,10 @@
       "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json",
       "heathers-the-musical-off-broadway-2025/new-york-sun--elysa-gardner.json",
       "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
-      "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json"
+      "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json",
+      "high-noon-west-end-2025/guardian--arifa-akbar.json",
+      "high-noon-west-end-2025/timeout--unknown.json",
+      "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -340,7 +353,10 @@
       "hadestown-2019/guardian--adrian-horton.json",
       "hercules-west-end-2025/guardian--arifa-akbar.json",
       "manic-street-creature-west-end-2026/broadwayworld--unknown.json",
-      "bigfoot-off-broadway-2026/timeout--unknown.json"
+      "bigfoot-off-broadway-2026/timeout--unknown.json",
+      "hold-on-to-your-butts-off-broadway-2026/guardian--chris-wiegand.json",
+      "im-sorry-prime-minister-west-end-2026/timeout-london--unknown.json",
+      "into-the-woods-west-end-2025/guardian--arifa-akbar.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -352,7 +368,11 @@
       "data/review-texts/hamilton-2015/wsj--terry-teachout.json",
       "data/review-texts/it-walks-around-the-house-at-night-west-end-2026/broadwayworld--unknown.json",
       "data/review-texts/aladdin-2014/wsj--terry-teachout.json",
-      "data/review-texts/book-of-mormon-2011/wsj--terry-teachout.json"
+      "data/review-texts/book-of-mormon-2011/wsj--terry-teachout.json",
+      "data/review-texts/dirty-books-off-broadway-2025/broadwaynews--chloe-rabinowitz.json",
+      "data/review-texts/hadestown-2019/wsj--terry-teachout.json",
+      "data/review-texts/hamilton-2015/wsj--terry-teachout.json",
+      "data/review-texts/harry-potter-2021/wsj--terry-teachout.json"
     ],
     "archive": [
       "tru-off-broadway-2026/theatermania--unknown.json",
@@ -391,7 +411,7 @@
     ]
   },
   "startTime": "2026-03-06T17:15:52.929Z",
-  "lastProcessed": "death-of-a-salesman-2026/broadwaynews--brittani-samuel.json",
+  "lastProcessed": "into-the-woods-west-end-2025/guardian--arifa-akbar.json",
   "log": [
     {
       "t": "2026-03-06T18:51:51.105Z",
@@ -654,6 +674,39 @@
     },
     {
       "t": "2026-03-06T20:15:49.409Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-06T20:19:49.404Z",
+      "event": "bb-session",
+      "session": "270c80c2",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
+    },
+    {
+      "t": "2026-03-06T20:19:50.503Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-06T20:22:50.099Z",
+      "event": "bb-session",
+      "session": "48882211",
+      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
+    },
+    {
+      "t": "2026-03-06T20:22:51.203Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-06T20:25:07.145Z",
+      "event": "bb-session",
+      "session": "7978941b",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-06T20:25:08.165Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
