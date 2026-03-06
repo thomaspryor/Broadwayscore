@@ -107,7 +107,7 @@ export default function MyShowsClient() {
       ...reviews.map(r => r.show_id),
       ...watchlist.map(w => w.show_id),
     ]);
-    const hasUnknown = [...allShowIds].some(id => !showMap[id]);
+    const hasUnknown = Array.from(allShowIds).some(id => !showMap[id]);
     if (!hasUnknown) return;
 
     diaryLookupLoaded.current = true;
