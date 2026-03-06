@@ -268,7 +268,17 @@
     "the-reservoir-off-broadway-2026/broadwaynews--nicole-rosky.json",
     "the-reservoir-off-broadway-2026/theatermania--jonas-schwartz.json",
     "the-reservoir-off-broadway-2026/theatermania--zachary-stewart.json",
-    "the-reservoir-off-broadway-2026/theatre-reviews-limited--david-roberts.json"
+    "the-reservoir-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
+    "the-unknown-off-broadway-2026/theatermania--zachary-stewart.json",
+    "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
+    "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/theatermania--unknown.json",
+    "wicked-2003/theatermania--david-gordon.json",
+    "wicked-2003/timeout--david-cote.json",
+    "wicked-2003/wsj--terry-teachout.json",
+    "wicked-west-end-2021/timeout-london--honour-bayes.json",
+    "you-got-older-off-broadway-2026/timeout--unknown.json",
+    "zack-off-broadway-2026/broadwaynews--gillian-blum.json"
   ],
   "failed": [
     "what-we-did-before-our-moth-days-off-broadway-2026/nytimes--unknown.json",
@@ -396,7 +406,9 @@
       "the-dinosaurs-off-broadway-2026/timeout--adam-feldman.json",
       "the-monsters-off-broadway-2026/new-york-sun--elysa-gardner.json",
       "the-producers-west-end-2025/timeout-london--unknown.json",
-      "the-reservoir-off-broadway-2026/theatre-reviews-limited--david-roberts.json"
+      "the-reservoir-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
+      "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "what-we-did-before-our-moth-days-off-broadway-2026/theatermania--unknown.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -635,11 +647,19 @@
       "the-play-that-goes-wrong-west-end-2021/timeout-london--unknown.json",
       "the-reservoir-off-broadway-2026/broadwaynews--nicole-rosky.json",
       "the-reservoir-off-broadway-2026/theatermania--jonas-schwartz.json",
-      "the-reservoir-off-broadway-2026/theatermania--zachary-stewart.json"
+      "the-reservoir-off-broadway-2026/theatermania--zachary-stewart.json",
+      "the-unknown-off-broadway-2026/theatermania--zachary-stewart.json",
+      "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
+      "wicked-2003/theatermania--david-gordon.json",
+      "wicked-2003/timeout--david-cote.json",
+      "wicked-2003/wsj--terry-teachout.json",
+      "wicked-west-end-2021/timeout-london--honour-bayes.json",
+      "you-got-older-off-broadway-2026/timeout--unknown.json",
+      "zack-off-broadway-2026/broadwaynews--gillian-blum.json"
     ]
   },
   "startTime": "2026-03-06T09:13:03.197Z",
-  "lastProcessed": "the-reservoir-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
+  "lastProcessed": "zack-off-broadway-2026/broadwaynews--gillian-blum.json",
   "log": [
     {
       "t": "2026-03-06T09:14:33.354Z",
@@ -816,6 +836,17 @@
       "t": "2026-03-06T11:18:21.181Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-06T11:22:53.628Z",
+      "event": "bb-session",
+      "session": "d1b6bf67",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-03-06T11:22:54.877Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
