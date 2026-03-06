@@ -20,13 +20,23 @@
     "all-out-2025/nytg--gillian-russo.json",
     "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
     "back-to-the-future-west-end-2021/variety--david-benedict.json",
-    "bigfoot-off-broadway-2026/nytg--caroline-cao.json"
+    "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+    "bigfoot-off-broadway-2026/vulture--unknown.json",
+    "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+    "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+    "chess-2025/hollywood-reporter--angie-han.json",
+    "chess-2025/newyorker--michael-schulman.json",
+    "chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
+    "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nytimes--ben-brantley.json",
+    "death-becomes-her-2024/newyorker--helen-shaw.json"
   ],
   "failed": [
     "it-walks-around-the-house-at-night-west-end-2026/broadwayworld--unknown.json",
     "manic-street-creature-west-end-2026/broadwayworld--unknown.json",
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
-    "the-lion-king-west-end-2021/thestage--unknown.json"
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "bughouse-off-broadway-2026/variety--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -40,20 +50,32 @@
       "broken-glass-west-end-2026/thestage--unknown.json",
       "broken-glass-west-end-2026/whatsonstage--sarah-crompton.json",
       "manic-street-creature-west-end-2026/west-end-best-friend--marina-holmes-smith.json",
-      "spread-off-broadway-2026/theatermania--unknown.json"
+      "spread-off-broadway-2026/theatermania--unknown.json",
+      "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+      "data-off-broadway-2026/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
-      "back-to-the-future-west-end-2021/variety--david-benedict.json"
+      "back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "data/review-texts/bigfoot-off-broadway-2026/vulture--unknown.json",
+      "bigfoot-off-broadway-2026/vulture--unknown.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
+      "chess-2025/hollywood-reporter--angie-han.json",
+      "data/review-texts/data-off-broadway-2026/nytimes--ben-brantley.json",
+      "data-off-broadway-2026/nytimes--ben-brantley.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "broken-glass-west-end-2026/nytimes--unknown.json",
       "it-walks-around-the-house-at-night-west-end-2026/timeout--unknown.json",
       "broken-glass-west-end-2026/independent--alice-saville.json",
       "broken-glass-west-end-2026/telegraph--dominic-cavendish.json",
-      "romeo-and-juliet-suite-off-broadway-2026/nytimes--gia-kourlas.json"
+      "romeo-and-juliet-suite-off-broadway-2026/nytimes--gia-kourlas.json",
+      "chess-2025/newyorker--michael-schulman.json",
+      "chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
+      "death-becomes-her-2024/newyorker--helen-shaw.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -65,10 +87,34 @@
       "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
       "all-out-2025/nytg--gillian-russo.json",
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
-      "bigfoot-off-broadway-2026/nytg--caroline-cao.json"
+      "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+      "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json"
     ]
   },
   "startTime": "2026-03-06T17:15:52.929Z",
-  "lastProcessed": "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
-  "log": []
+  "lastProcessed": "death-becomes-her-2024/newyorker--helen-shaw.json",
+  "log": [
+    {
+      "t": "2026-03-06T18:51:51.105Z",
+      "event": "bb-session",
+      "session": "e3415984",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-06T18:51:52.370Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-06T18:53:52.750Z",
+      "event": "bb-session",
+      "session": "606d5f30",
+      "url": "https://www.nytimes.com/2026/01/26/theater/data-review.html"
+    },
+    {
+      "t": "2026-03-06T18:53:53.773Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
