@@ -325,7 +325,9 @@
     "bigfoot-off-broadway-2026/playbill--unknown.json",
     "bigfoot-off-broadway-2026/theater-scene--darryl-reilly.json",
     "bigfoot-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
-    "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json"
+    "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json",
+    "book-of-mormon-2011/wsj--terry-teachout.json",
+    "magic-mike-live-west-end-2021/guardian--tanya-gold.json"
   ],
   "failed": [
     "what-we-did-before-our-moth-days-off-broadway-2026/nytimes--unknown.json",
@@ -381,7 +383,15 @@
     "tru-off-broadway-2026/playbill--unknown.json",
     "bughouse-off-broadway-2026/variety--charles-isherwood.json",
     "hadestown-2019/newyorker--hilton-als.json",
-    "aladdin-2014/new-jersey-newsroom--michael-sommers.json"
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "anne-teresa-de-keersmaeker-exit-above-off-broadway-2026/broadwaynews--unknown.json",
+    "cats-the-jellicle-ball-2026/timeout--david-cote.json",
+    "death-of-a-salesman-2026/broadwaynews--brittani-samuel.json",
+    "la-ternura-off-broadway-2025/broadwaynews--aa-cristi.json",
+    "little-shop-of-horrors-off-broadway-2019/theatermania--unknown.json",
+    "los-soles-truncos-off-broadway-2025/broadwaynews--aa-cristi.json",
+    "los-soles-truncos-off-broadway-2025/nypost--chloe-rabinowitz.json",
+    "lost-in-del-valle-off-broadway-2026/theatermania--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -494,7 +504,8 @@
       "bigfoot-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
       "bigfoot-off-broadway-2026/playbill--unknown.json",
       "bigfoot-off-broadway-2026/theater-scene--darryl-reilly.json",
-      "bigfoot-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
+      "bigfoot-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+      "magic-mike-live-west-end-2021/guardian--tanya-gold.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -550,7 +561,8 @@
     ],
     "directCookies": [
       "what-we-did-before-our-moth-days-off-broadway-2026/wsj--charles-isherwood.json",
-      "the-lion-king-1997/vulture--john-simon.json"
+      "the-lion-king-1997/vulture--john-simon.json",
+      "book-of-mormon-2011/wsj--terry-teachout.json"
     ],
     "scrapingbee": [
       "romeo-and-juliet-suite-off-broadway-2026/nytimes--gia-kourlas.json",
@@ -633,7 +645,8 @@
       "data/review-texts/la-ternura-off-broadway-2025/broadwaynews--aa-cristi.json",
       "data/review-texts/los-soles-truncos-off-broadway-2025/nypost--chloe-rabinowitz.json",
       "data/review-texts/spread-off-broadway-2026/talkinbroadway--michael-dale.json",
-      "data/review-texts/the-little-mermaid-the-musical-off-broadway-2026/broadwayworld--kaitlin-milligan.json"
+      "data/review-texts/the-little-mermaid-the-musical-off-broadway-2026/broadwayworld--kaitlin-milligan.json",
+      "data/review-texts/la-ternura-off-broadway-2025/broadwaynews--aa-cristi.json"
     ],
     "archive": [
       "tru-off-broadway-2026/theatermania--unknown.json",
@@ -768,7 +781,7 @@
     ]
   },
   "startTime": "2026-03-06T09:13:03.197Z",
-  "lastProcessed": "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+  "lastProcessed": "magic-mike-live-west-end-2021/guardian--tanya-gold.json",
   "log": [
     {
       "t": "2026-03-06T09:14:33.354Z",
@@ -954,6 +967,17 @@
     },
     {
       "t": "2026-03-06T11:22:54.877Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-06T11:43:17.867Z",
+      "event": "bb-session",
+      "session": "48df0a75",
+      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
+    },
+    {
+      "t": "2026-03-06T11:43:19.508Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
