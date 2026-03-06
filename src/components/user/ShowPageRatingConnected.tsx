@@ -88,7 +88,7 @@ function ShowPageRatingInner({
         });
         if (error) throw new Error(error.message);
 
-        showToast?.(<>Updated in <a href="/my-shows" className="underline hover:text-white/90">Reviews</a></>, 'success');
+        showToast?.(<>Updated in <a href="/my-shows" className="underline hover:text-white/90">My Ratings &amp; Reviews</a></>, 'success');
         await getReviewsForShow(showId);
         return updated?.id;
       } else {
@@ -102,7 +102,7 @@ function ShowPageRatingInner({
         });
         if (error) throw new Error(error.message);
 
-        showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">Reviews</a></>, 'success');
+        showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">My Ratings &amp; Reviews</a></>, 'success');
         await getReviewsForShow(showId);
         return inserted?.id;
       }
@@ -142,7 +142,7 @@ function ShowPageRatingInner({
           });
           if (insertErr) throw new Error(insertErr.message);
 
-          showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">Reviews</a> — add date &amp; notes below</>, 'success');
+          showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">My Ratings &amp; Reviews</a> — add date &amp; notes below</>, 'success');
           await getReviewsForShow(showId);
           setAutoEditLatest(true);
         } catch (e: unknown) {

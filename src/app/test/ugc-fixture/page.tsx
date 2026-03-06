@@ -118,7 +118,7 @@ export default function UGCFixturePage() {
                   </div>
 
                   <a href="/my-shows" className="inline-block mt-2 text-xs text-gray-500 hover:text-brand transition-colors">
-                    See all my Ratings
+                    See all my Ratings &amp; Reviews
                   </a>
                 </div>
 
