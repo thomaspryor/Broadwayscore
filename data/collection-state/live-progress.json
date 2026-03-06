@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-06T09:33:10.000Z",
-  "processed": 38,
-  "failed": 12,
-  "successRate": "76.0%",
+  "updatedAt": "2026-03-06T09:34:56.327Z",
+  "processed": 47,
+  "failed": 13,
+  "successRate": "78.3%",
   "tierBreakdown": {
-    "playwright": 23,
+    "playwright": 24,
     "amp": 6,
-    "browserbase": 4,
+    "browserbase": 8,
     "directCookies": 1,
-    "scrapingbee": 6,
+    "scrapingbee": 8,
     "brightdata": 0,
     "archiveToday": 5,
-    "archive": 3
+    "archive": 7
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-03-06T09:14:33.354Z",
@@ -56,6 +56,28 @@
     },
     {
       "t": "2026-03-06T09:30:44.019Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-06T09:33:16.043Z",
+      "event": "bb-session",
+      "session": "c63042ac",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-06T09:33:17.552Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-06T09:33:35.953Z",
+      "event": "bb-session",
+      "session": "72cf2577",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-06T09:33:37.337Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
