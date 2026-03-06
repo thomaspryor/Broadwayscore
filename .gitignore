@@ -88,6 +88,15 @@ data/collected-reviews/
 data/mezzanine-screenshots/
 data/bug-reviews.json
 
+# Diary/historical show data (stored in private repo thomaspryor/broadway-scorecard-data)
+data/diary-shows.json
+data/mezzanine-productions-raw.json
+data/diary-import-checkpoint.json
+
+# Generated diary data (regenerated at build time)
+public/data/diary-search.json
+public/data/diary-lookup.json
+
 # Core data files (stored in private repo thomaspryor/broadway-scorecard-data)
 data/shows.json
 data/reviews.json
