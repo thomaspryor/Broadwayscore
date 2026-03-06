@@ -1032,6 +1032,8 @@ interface SearchShow {
   slug: string;
   status: string;
   venue?: string;
+  city?: string;
+  od?: string; // openingDate (YYYY-MM-DD)
   images?: { thumbnail?: string };
   category?: string;
 }
@@ -1212,7 +1214,7 @@ function AddShowSearch({
                     }`}>
                       {show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'Previews' : 'Closed'}
                     </span>
-                    {show.venue && <span className="truncate">{show.venue}</span>}
+                    <span className="truncate">{formatSearchSubtitle(show)}</span>
                   </div>
                 </div>
                 {/* Action hint */}
