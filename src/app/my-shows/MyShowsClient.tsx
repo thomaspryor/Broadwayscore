@@ -81,7 +81,7 @@ export default function MyShowsClient() {
   const { showToast } = useToastSafe();
   const loading = authLoading || reviewsLoading || watchlistLoading;
 
-  // Load show lookup data
+  // Load show lookup data (scored shows)
   useEffect(() => {
     fetch('/data/show-lookup.json')
       .then(res => res.json())
@@ -98,6 +98,33 @@ export default function MyShowsClient() {
         setShowMapLoaded(true);
       });
   }, []);
+
+  // Lazy-load diary show lookup when user has entries referencing unknown show IDs
+  const diaryLookupLoaded = useRef(false);
+  useEffect(() => {
+    if (!showMapLoaded || diaryLookupLoaded.current) return;
+    const allShowIds = new Set([
+      ...reviews.map(r => r.show_id),
+      ...watchlist.map(w => w.show_id),
+    ]);
+    const hasUnknown = [...allShowIds].some(id => !showMap[id]);
+    if (!hasUnknown) return;
+
+    diaryLookupLoaded.current = true;
+    fetch('/data/diary-lookup.json')
+      .then(res => res.json())
+      .then((data: Record<string, unknown>[]) => {
+        setShowMap(prev => {
+          const next = { ...prev };
+          for (const raw of data) {
+            const show = decodeShow(raw);
+            if (!next[show.id]) next[show.id] = show;
+          }
+          return next;
+        });
+      })
+      .catch(() => { /* diary-lookup.json may not exist yet */ });
+  }, [showMapLoaded, reviews, watchlist, showMap]);
 
   // Load user data when authenticated
   useEffect(() => {
@@ -895,6 +922,7 @@ interface SearchShow {
   venue?: string;
   images?: { thumbnail?: string };
   category?: string;
+  dy?: boolean; // diary-only show
 }
 
 function AddShowSearch({
@@ -925,11 +953,19 @@ function AddShowSearch({
     if (fetchedRef.current) return;
     fetchedRef.current = true;
     try {
-      const [res, { default: FuseClass }] = await Promise.all([
+      const [res, diaryRes, { default: FuseClass }] = await Promise.all([
         fetch('/data/search-shows.json'),
+        fetch('/data/diary-search.json').catch(() => null),
         import('fuse.js/basic') as Promise<{ default: typeof Fuse }>,
       ]);
       const data: SearchShow[] = await res.json();
+      // Merge diary shows for broader search coverage
+      if (diaryRes?.ok) {
+        try {
+          const diaryData: SearchShow[] = await diaryRes.json();
+          data.push(...diaryData);
+        } catch { /* ignore */ }
+      }
       fuseRef.current = new FuseClass(data, {
         keys: [{ name: 'title', weight: 0.8 }, { name: 'venue', weight: 0.2 }],
         threshold: 0.35,
@@ -977,8 +1013,8 @@ function AddShowSearch({
   const handleSelect = async (show: SearchShow) => {
     if (context === 'watchlist') {
       if (existingWatchlistIds.has(show.id)) {
-        // Already on watchlist — just go to show page
-        router.push(`/show/${show.slug}`);
+        // Already on watchlist — go to show page (if not diary-only)
+        if (!show.dy) router.push(`/show/${show.slug}`);
       } else {
         setAddingId(show.id);
         try {
@@ -988,8 +1024,8 @@ function AddShowSearch({
         }
       }
     } else {
-      // Diary — go to show page with ?rate=1
-      router.push(`/show/${show.slug}?rate=1`);
+      // Diary — go to show page with ?rate=1 (if not diary-only)
+      if (!show.dy) router.push(`/show/${show.slug}?rate=1`);
     }
     setIsOpen(false);
     setQuery('');
