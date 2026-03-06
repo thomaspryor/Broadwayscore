@@ -154,6 +154,37 @@ export async function assertRowAlignment(
 }
 
 /**
+ * Assert that elements matching a selector are horizontally centered within their parent.
+ * Catches the recurring trash-icon-not-centered regression on grid cards.
+ */
+export async function assertElementsCenteredInParent(
+  page: Page,
+  selector: string,
+  tolerance = 4
+): Promise<void> {
+  const results = await page.evaluate(({ sel, tol }) => {
+    const elements = document.querySelectorAll(sel);
+    const failures: string[] = [];
+    elements.forEach((el, i) => {
+      const parent = el.parentElement;
+      if (!parent) return;
+      const parentRect = parent.getBoundingClientRect();
+      const elRect = el.getBoundingClientRect();
+      const elCenterX = elRect.left + elRect.width / 2 - parentRect.left;
+      const parentCenterX = parentRect.width / 2;
+      const offset = Math.abs(elCenterX - parentCenterX);
+      if (offset > tol) {
+        const label = el.getAttribute('aria-label') || `element[${i}]`;
+        failures.push(`"${label}" off-center by ${Math.round(offset)}px (center=${Math.round(elCenterX)} vs parent=${Math.round(parentCenterX)})`);
+      }
+    });
+    return failures;
+  }, { sel: selector, tol: tolerance });
+
+  expect(results, 'Elements not centered in parent').toEqual([]);
+}
+
+/**
  * Assert page has no horizontal overflow (scrollWidth <= viewport width).
  */
 export async function assertNoHorizontalOverflow(page: Page): Promise<void> {

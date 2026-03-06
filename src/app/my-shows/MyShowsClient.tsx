@@ -746,12 +746,12 @@ function DiaryGridCard({ review, show, onDelete }: { review: UserReview; show?: 
             </span>
           </div>
         )}
-        {/* Delete button — top-right, always visible on mobile, hover on desktop */}
+        {/* Delete button — centered top, always visible on mobile, hover on desktop */}
         {onDelete && (
           <button
             type="button"
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); confirmDelete ? onDelete() : setConfirmDelete(true); }}
-            className={`absolute top-2 right-2 z-[2] w-8 h-8 flex items-center justify-center rounded-full ${confirmDelete ? 'bg-red-500/80 text-white opacity-100' : 'bg-black/70 text-gray-400 hover:text-red-400 opacity-100 sm:opacity-0 sm:group-hover/grid:opacity-100'} transition-opacity`}
+            className={`absolute top-2 left-1/2 -translate-x-1/2 z-[2] w-8 h-8 flex items-center justify-center rounded-full ${confirmDelete ? 'bg-red-500/80 text-white opacity-100' : 'bg-black/70 text-gray-400 hover:text-red-400 opacity-100 sm:opacity-0 sm:group-hover/grid:opacity-100'} transition-opacity`}
             aria-label="Delete rating"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -846,11 +846,11 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
             Rate
           </span>
         </div>
-        {/* Trash button to remove — top-right, always visible on mobile, hover on desktop */}
+        {/* Trash button to remove — centered top, always visible on mobile, hover on desktop */}
         <button
           type="button"
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); confirmRemove ? onRemove() : setConfirmRemove(true); }}
-          className={`absolute top-2 right-2 z-[2] w-8 h-8 flex items-center justify-center rounded-full ${confirmRemove ? 'bg-red-500/80 text-white opacity-100' : 'bg-black/70 text-gray-400 hover:text-red-400 opacity-100 sm:opacity-0 sm:group-hover/wl:opacity-100'} transition-opacity`}
+          className={`absolute top-2 left-1/2 -translate-x-1/2 z-[2] w-8 h-8 flex items-center justify-center rounded-full ${confirmRemove ? 'bg-red-500/80 text-white opacity-100' : 'bg-black/70 text-gray-400 hover:text-red-400 opacity-100 sm:opacity-0 sm:group-hover/wl:opacity-100'} transition-opacity`}
           aria-label="Remove from watchlist"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
