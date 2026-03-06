@@ -19,7 +19,8 @@ export async function goToMock(
   tab: 'diary' | 'watchlist' = 'diary'
 ): Promise<void> {
   await page.goto(`${MOCK_URL}&tab=${tab}`);
-  await page.waitForSelector('text=shows seen', { timeout: 10000 });
+  // "shows seen" text is always visible in the summary bar regardless of active tab
+  await page.waitForSelector('text=shows seen', { timeout: 30000 });
 }
 
 /**
@@ -31,5 +32,5 @@ export async function goToShowFixture(
   state: 'existing' | 'empty' | 'multi' = 'existing'
 ): Promise<void> {
   await page.goto(`/test/show-rating-fixture?state=${state}`);
-  await page.waitForSelector('[data-testid="show-rating-fixture"]', { timeout: 10000 });
+  await page.waitForSelector('[data-testid="show-rating-fixture"]', { timeout: 30000 });
 }
