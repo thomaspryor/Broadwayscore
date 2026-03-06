@@ -8,7 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useUserReviews } from '@/hooks/useUserReviews';
 import { useWatchlist } from '@/hooks/useWatchlist';
 import StarRating from '@/components/user/StarRating';
-
+import { FormatPill, StatusBadge } from '@/components/show-cards';
 import { useToastSafe } from '@/components/ui/Toast';
 import type { UserReview, WatchlistEntry, ShowLookup } from '@/types/user';
 import type Fuse from 'fuse.js';
@@ -18,6 +18,13 @@ type Tab = 'diary' | 'watchlist';
 type DiarySort = 'date-desc' | 'date-asc' | 'rating-desc';
 type WatchlistSort = 'added-desc' | 'alphabetical' | 'closing-soon';
 type ViewMode = 'grid' | 'list';
+
+const MEZZ_IMG_PREFIX = 'https://www.theaterdiary.com/parse/files/C7TsezAg3jnX9jHLsC9KFEteyKePkwLtB46dDpfh/';
+function expandMezzImg(compact: string | undefined | null): string | null {
+  if (!compact) return null;
+  if (compact.startsWith('http')) return compact;
+  return MEZZ_IMG_PREFIX + compact;
+}
 
 interface ShowMap {
   [showId: string]: ShowLookup;
@@ -37,13 +44,25 @@ function decodeShow(raw: Record<string, unknown>): ShowLookup {
     openingDate: (raw.od as string) || null,
     closingDate: (raw.cd as string) || null,
     compositeScore: null,
-    posterUrl: (raw.p as string) || null,
+    posterUrl: (raw.p as string) || expandMezzImg(raw.img as string) || null,
+    diaryOnly: !!raw.dy,
   };
 }
 
-function getShowHref(slug: string, _category: string) {
-  // All shows use /show/[slug] — no separate routes for west-end or off-broadway
+function getShowHref(slug: string, _category: string, diaryOnly?: boolean): string | null {
+  if (diaryOnly) return null; // Diary-only shows have no show page
   return `/show/${slug}`;
+}
+
+// Wrapper components for diary-only show link suppression
+function ShowCardOverlay({ href, label }: { href: string | null; label: string }) {
+  if (href) return <Link href={href} className="absolute inset-0 z-0" aria-label={`View ${label}`} />;
+  return null;
+}
+
+function ShowCardPosterLink({ href, children, className }: { href: string | null; children: React.ReactNode; className?: string }) {
+  if (href) return <Link href={href} className={className}>{children}</Link>;
+  return <div className={className}>{children}</div>;
 }
 
 export default function MyShowsClient() {
@@ -120,6 +139,33 @@ export default function MyShowsClient() {
     }
   }, [isMockMode, mockData]);
 
+  // Lazy-load diary show lookup when user has entries referencing unknown show IDs
+  const diaryLookupLoaded = useRef(false);
+  useEffect(() => {
+    if (!showMapLoaded || diaryLookupLoaded.current) return;
+    const allShowIds = new Set([
+      ...reviews.map(r => r.show_id),
+      ...watchlist.map(w => w.show_id),
+    ]);
+    const hasUnknown = Array.from(allShowIds).some(id => !showMap[id]);
+    if (!hasUnknown) return;
+
+    diaryLookupLoaded.current = true;
+    fetch('/data/diary-lookup.json')
+      .then(res => res.json())
+      .then((data: Record<string, unknown>[]) => {
+        setShowMap(prev => {
+          const next = { ...prev };
+          for (const raw of data) {
+            const show = decodeShow(raw);
+            if (!next[show.id]) next[show.id] = show;
+          }
+          return next;
+        });
+      })
+      .catch(() => { /* diary-lookup.json may not exist yet */ });
+  }, [showMapLoaded, reviews, watchlist, showMap]);
+
   // Load user data when authenticated
   useEffect(() => {
     if (isMockMode) return;
@@ -194,15 +240,7 @@ export default function MyShowsClient() {
     const sorted = [...watchlist];
     switch (watchlistSort) {
       case 'added-desc':
-        return sorted.sort((a, b) => {
-          // Items with planned_date come first, sorted by date ascending (upcoming order)
-          const aHasDate = !!a.planned_date;
-          const bHasDate = !!b.planned_date;
-          if (aHasDate && !bHasDate) return -1;
-          if (!aHasDate && bHasDate) return 1;
-          if (aHasDate && bHasDate) return (a.planned_date || '').localeCompare(b.planned_date || '');
-          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-        });
+        return sorted.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
       case 'alphabetical':
         return sorted.sort((a, b) => {
           const titleA = showMap[a.show_id]?.title || '';
@@ -365,7 +403,7 @@ export default function MyShowsClient() {
               value={diarySort}
               onChange={e => setDiarySort(e.target.value as DiarySort)}
               aria-label="Sort diary"
-              className="text-[11px] sm:text-xs bg-white/5 border border-white/10 rounded px-1.5 sm:px-2 py-1 h-9 sm:h-8 text-gray-300 max-w-[110px] sm:max-w-none"
+              className="text-[11px] sm:text-xs bg-white/5 border border-white/10 rounded px-1.5 sm:px-2 py-1 text-gray-300 max-w-[110px] sm:max-w-none"
             >
               <option value="date-desc">Newest</option>
               <option value="date-asc">Oldest</option>
@@ -377,7 +415,7 @@ export default function MyShowsClient() {
               value={watchlistSort}
               onChange={e => setWatchlistSort(e.target.value as WatchlistSort)}
               aria-label="Sort watchlist"
-              className="text-[11px] sm:text-xs bg-white/5 border border-white/10 rounded px-1.5 sm:px-2 py-1 h-9 sm:h-8 text-gray-300 max-w-[110px] sm:max-w-none"
+              className="text-[11px] sm:text-xs bg-white/5 border border-white/10 rounded px-1.5 sm:px-2 py-1 text-gray-300 max-w-[110px] sm:max-w-none"
             >
               <option value="added-desc">Recent</option>
               <option value="alphabetical">A-Z</option>
@@ -440,81 +478,48 @@ export default function MyShowsClient() {
               {(upcomingWatchlistEntries.length > 0 || upcomingReviews.length > 0) && (
                 <div className="mb-8">
                   <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Upcoming</h3>
-                  {diaryView === 'list' ? (
-                    <div className="space-y-2">
-                      {upcomingWatchlistEntries.map(entry => {
-                        const entryShow = showMap[entry.show_id];
-                        const entryTitle = entryShow?.title || entry.show_id;
-                        const entrySlug = entryShow?.slug || entry.show_id;
-                        const entryCategory = entryShow?.category || 'broadway';
-                        const entryHref = getShowHref(entrySlug, entryCategory);
-                        const daysUntil = entry.planned_date
-                          ? Math.ceil((new Date(entry.planned_date + 'T00:00:00').getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
-                          : null;
-                        const entryFormattedDate = entry.planned_date
-                          ? new Date(entry.planned_date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
-                          : null;
-                        return (
-                          <div key={`wl-${entry.id}`} className="relative flex items-center gap-2 sm:gap-4 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
-                            <Link href={entryHref} className="absolute inset-0 z-0" aria-label={`View ${entryTitle}`} />
-                            <div className="relative z-[1] flex-shrink-0 w-10 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay pointer-events-none">
-                              {entryShow?.posterUrl ? (
-                                <img src={entryShow.posterUrl} alt="" className="w-full h-full object-cover" />
-                              ) : (
-                                <div className="w-full h-full flex items-center justify-center text-gray-600 text-xl">🎭</div>
-                              )}
-                            </div>
-                            <div className="relative z-[1] flex-1 min-w-0 pointer-events-none">
-                              <h4 className="font-bold text-white text-sm sm:text-base truncate">{entryTitle}</h4>
-                              {entryShow?.venue && <p className="text-[11px] sm:text-xs text-gray-500 truncate">{entryShow.venue}</p>}
-                            </div>
-                            <div className="relative z-[1] flex-shrink-0 text-right pointer-events-none">
-                              {entryFormattedDate && <p className="text-[11px] sm:text-xs font-medium text-brand">{entryFormattedDate}</p>}
-                              {daysUntil !== null && daysUntil > 0 && (
-                                <p className="text-[10px] text-gray-500 mt-0.5">
-                                  {daysUntil === 1 ? 'Tomorrow' : `${daysUntil}d`}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        );
-                      })}
-                      {upcomingReviews.map(review => (
-                        <DiaryCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={async () => { await deleteReview(review.id); showToast?.('Rating deleted.', 'info'); }} />
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                      {upcomingWatchlistEntries.map(entry => {
-                        const entryShow = showMap[entry.show_id];
-                        const entrySlug = entryShow?.slug || entry.show_id;
-                        const entryCategory = entryShow?.category || 'broadway';
-                        const entryHref = getShowHref(entrySlug, entryCategory);
-                        const entryFormattedDate = entry.planned_date
-                          ? new Date(entry.planned_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-                          : null;
-                        return (
-                          <Link key={`wl-grid-${entry.id}`} href={entryHref} className="flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
-                            <div className="relative aspect-[2/3] bg-surface-overlay">
-                              {entryShow?.posterUrl ? (
-                                <img src={entryShow.posterUrl} alt="" className="w-full h-full object-cover" />
-                              ) : (
-                                <div className="w-full h-full flex items-center justify-center text-gray-600 text-3xl">🎭</div>
-                              )}
-                            </div>
-                            {entryFormattedDate && (
-                              <div className="px-2 py-1.5">
-                                <p className="text-[10px] font-medium text-brand truncate">{entryFormattedDate}</p>
-                              </div>
+                  <div className="space-y-2">
+                    {upcomingWatchlistEntries.map(entry => {
+                      const entryShow = showMap[entry.show_id];
+                      const entryTitle = entryShow?.title || entry.show_id;
+                      const entrySlug = entryShow?.slug || entry.show_id;
+                      const entryCategory = entryShow?.category || 'broadway';
+                      const entryHref = getShowHref(entrySlug, entryCategory, entryShow?.diaryOnly);
+                      const daysUntil = entry.planned_date
+                        ? Math.ceil((new Date(entry.planned_date + 'T00:00:00').getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
+                        : null;
+                      const entryFormattedDate = entry.planned_date
+                        ? new Date(entry.planned_date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
+                        : null;
+                      return (
+                        <div key={`wl-${entry.id}`} className="relative flex items-center gap-2 sm:gap-4 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
+                          <ShowCardOverlay href={entryHref} label={entryTitle} />
+                          <div className="relative z-[1] flex-shrink-0 w-10 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay pointer-events-none">
+                            {entryShow?.posterUrl ? (
+                              <img src={entryShow.posterUrl} alt="" className="w-full h-full object-cover" />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-gray-600 text-xl">🎭</div>
                             )}
-                          </Link>
-                        );
-                      })}
-                      {upcomingReviews.map(review => (
-                        <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={async () => { await deleteReview(review.id); showToast?.('Rating deleted.', 'info'); }} />
-                      ))}
-                    </div>
-                  )}
+                          </div>
+                          <div className="relative z-[1] flex-1 min-w-0 pointer-events-none">
+                            <h4 className="font-bold text-white text-sm sm:text-base truncate">{entryTitle}</h4>
+                            {entryShow?.venue && <p className="text-[11px] sm:text-xs text-gray-500 truncate">{entryShow.venue}</p>}
+                          </div>
+                          <div className="relative z-[1] flex-shrink-0 text-right pointer-events-none">
+                            {entryFormattedDate && <p className="text-[11px] sm:text-xs font-medium text-brand">{entryFormattedDate}</p>}
+                            {daysUntil !== null && daysUntil > 0 && (
+                              <p className="text-[10px] text-gray-500 mt-0.5">
+                                {daysUntil === 1 ? 'Tomorrow' : `${daysUntil}d`}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                    {upcomingReviews.map(review => (
+                      <DiaryCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={async () => { await deleteReview(review.id); showToast?.('Rating deleted.', 'info'); }} />
+                    ))}
+                  </div>
                 </div>
               )}
 
@@ -614,12 +619,12 @@ function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: Show
   const title = show?.title || review.show_id;
   const slug = show?.slug || review.show_id;
   const category = show?.category || 'broadway';
-  const href = getShowHref(slug, category);
+  const href = getShowHref(slug, category, show?.diaryOnly);
 
   return (
     <div className="group/diary relative flex items-center gap-2 sm:gap-4 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
       {/* Link overlay for the whole card */}
-      <Link href={href} className="absolute inset-0 z-0" aria-label={`View ${title}`} />
+      <ShowCardOverlay href={href} label={title} />
 
       {/* Poster */}
       <div className="relative z-[1] pointer-events-none flex-shrink-0 w-10 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay">
@@ -633,7 +638,16 @@ function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: Show
       {/* Info */}
       <div className="relative z-[1] pointer-events-none flex-1 min-w-0">
         <h4 className="font-bold text-white text-sm sm:text-base group-hover/diary:text-brand transition-colors truncate">{title}</h4>
-        {show?.venue && <p className="text-[11px] sm:text-xs text-gray-500 truncate">{show.venue}</p>}
+        <div className="flex flex-wrap items-center gap-1 sm:gap-1.5 mt-0.5 sm:mt-1">
+          {show?.type && <FormatPill type={show.type} />}
+          {show && <StatusBadge status={show.status} />}
+          {category === 'off-broadway' && (
+            <span className="px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-purple-300 bg-purple-500/15 border border-purple-500/20 rounded">Off-Bway</span>
+          )}
+          {category === 'west-end' && (
+            <span className="px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-teal-300 bg-teal-500/15 border border-teal-500/20 rounded">West End</span>
+          )}
+        </div>
         {review.review_text && (
           <p className="text-xs text-gray-500 mt-1.5 line-clamp-1">{review.review_text}</p>
         )}
@@ -653,21 +667,23 @@ function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: Show
         {/* Single star + number on mobile, full stars on desktop */}
         <span className="md:hidden flex items-center gap-1">
           <svg className="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-          <span className="text-base font-bold text-amber-400">{review.rating % 1 === 0 ? review.rating.toFixed(0) : review.rating.toFixed(1)} stars</span>
+          <span className="text-base font-bold text-amber-400">{review.rating % 1 === 0 ? review.rating.toFixed(0) : review.rating.toFixed(1)}</span>
         </span>
         <span className="hidden md:inline-flex"><StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel /></span>
         <span className="hidden md:block text-sm font-bold text-amber-400">{review.rating.toFixed(1)} stars</span>
         {/* Edit + delete icons — inline below rating, always visible on mobile, hover on desktop */}
-        <div className="flex items-center justify-center gap-0.5 opacity-100 sm:opacity-0 sm:group-hover/diary:opacity-100 transition-opacity pointer-events-auto">
-          <Link
-            href={`${href}?edit=1`}
-            className="p-1 rounded-full text-gray-600 hover:text-white transition-colors"
-            aria-label="Edit rating"
-          >
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-            </svg>
-          </Link>
+        <div className="flex items-center gap-0.5 opacity-100 sm:opacity-0 sm:group-hover/diary:opacity-100 transition-opacity pointer-events-auto">
+          {href && (
+            <Link
+              href={`${href}?edit=1`}
+              className="p-1 rounded-full text-gray-600 hover:text-white transition-colors"
+              aria-label="Edit rating"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+              </svg>
+            </Link>
+          )}
           {onDelete && !confirmDelete && (
             <button
               type="button"
@@ -702,11 +718,11 @@ function DiaryGridCard({ review, show, onDelete }: { review: UserReview; show?: 
   const title = show?.title || review.show_id;
   const slug = show?.slug || review.show_id;
   const category = show?.category || 'broadway';
-  const href = getShowHref(slug, category);
+  const href = getShowHref(slug, category, show?.diaryOnly);
 
   return (
     <div className="group/grid flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
-      <Link href={href} className="relative">
+      <ShowCardPosterLink href={href} className="relative">
         <div className="aspect-[2/3] bg-surface-overlay">
           {show?.posterUrl ? (
             <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
@@ -734,14 +750,17 @@ function DiaryGridCard({ review, show, onDelete }: { review: UserReview; show?: 
             </svg>
           </button>
         )}
-      </Link>
-      {review.date_seen && (
-        <div className="px-2 py-1.5">
-          <p className="text-[10px] font-medium text-amber-400 truncate">
-            {new Date(review.date_seen + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-          </p>
-        </div>
-      )}
+      </ShowCardPosterLink>
+      <div className="p-2">
+        <ShowCardPosterLink href={href}>
+          <h4 className="text-xs font-semibold text-white truncate">{title}</h4>
+          {review.date_seen && (
+            <p className="text-[10px] text-gray-500 truncate">
+              {new Date(review.date_seen + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+            </p>
+          )}
+        </ShowCardPosterLink>
+      </div>
     </div>
   );
 }
@@ -761,7 +780,7 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
   const title = show?.title || entry.show_id;
   const slug = show?.slug || entry.show_id;
   const category = show?.category || 'broadway';
-  const href = getShowHref(slug, category);
+  const href = getShowHref(slug, category, show?.diaryOnly);
 
   const isClosingSoon = show?.closingDate && (() => {
     const closing = new Date(show.closingDate!);
@@ -776,7 +795,7 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
 
   return (
     <div className="group/wl flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
-      <Link href={href} className="relative">
+      <ShowCardPosterLink href={href} className="relative">
         <div className="aspect-[2/3] bg-surface-overlay relative">
           {show?.posterUrl ? (
             <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
@@ -790,37 +809,24 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
           )}
         </div>
         {/* Rate overlay — navigates to show page with ?rate=1 to auto-open rating */}
-        {/* On mobile: "Rate" button at bottom; on desktop: 5 empty stars on hover */}
-        <div
-          role="button"
-          tabIndex={0}
-          onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.location.href = `${href}?rate=1`; }}
-          onKeyDown={(e) => { if (e.key === 'Enter') { window.location.href = `${href}?rate=1`; } }}
-          className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 sm:group-hover/wl:opacity-100 transition-opacity z-[1] cursor-pointer"
-        >
-          <span className="hidden sm:flex items-center gap-0.5">
-            {[1,2,3,4,5].map(i => (
-              <svg key={i} className="w-5 h-5" viewBox="0 0 24 24" fill="none">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="none" stroke="#FFD700" strokeWidth="1.5" strokeLinejoin="round" />
-              </svg>
-            ))}
-          </span>
-        </div>
-        {/* Mobile-only: small Rate button at bottom */}
-        <div className="sm:hidden absolute inset-x-0 bottom-0 flex items-end justify-center pb-2 bg-gradient-to-t from-black/60 via-transparent to-transparent z-[1]">
-          <span
+        {/* Uses <div> + onClick instead of <Link> to avoid nested <a> tags */}
+        {/* On mobile: always visible small button at bottom; on desktop: full hover overlay */}
+        {href && (
+          <div
             role="button"
             tabIndex={0}
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.location.href = `${href}?rate=1`; }}
             onKeyDown={(e) => { if (e.key === 'Enter') { window.location.href = `${href}?rate=1`; } }}
-            className="text-[10px] font-semibold text-white/90 flex items-center gap-1 cursor-pointer"
+            className="absolute inset-x-0 bottom-0 flex items-end justify-center pb-2 bg-gradient-to-t from-black/60 via-transparent to-transparent sm:inset-0 sm:opacity-0 sm:group-hover/wl:opacity-100 transition-opacity z-[1] cursor-pointer"
           >
-            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-            </svg>
-            Rate
-          </span>
-        </div>
+            <span className="text-[10px] sm:text-xs font-semibold text-white/90 flex items-center gap-1">
+              <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+              </svg>
+              Rate
+            </span>
+          </div>
+        )}
         {/* Trash button to remove — top-right, always visible on mobile, hover on desktop */}
         <button
           type="button"
@@ -832,12 +838,16 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
           </svg>
         </button>
-      </Link>
-      <div className="px-2 py-1.5">
+      </ShowCardPosterLink>
+      <div className="p-2">
+        <ShowCardPosterLink href={href}>
+          <h4 className="text-xs font-semibold text-white truncate">{title}</h4>
+          <p className="text-[10px] text-gray-500 truncate">{show?.venue}</p>
+        </ShowCardPosterLink>
+        {/* Planned date — uses ref + showPicker for reliable mobile support */}
         <DatePickerButton
           value={entry.planned_date || ''}
           label={formattedDate || 'Add date'}
-          hasDate={!!formattedDate}
           onChange={(val) => onDateChange(val || null)}
         />
       </div>
@@ -870,10 +880,10 @@ function MiniStars({ rating }: { rating: number }) {
 }
 
 /** Reusable date picker button — works reliably on iOS Safari */
-function DatePickerButton({ value, label, hasDate, onChange }: { value: string; label: string; hasDate?: boolean; onChange: (val: string) => void }) {
+function DatePickerButton({ value, label, onChange }: { value: string; label: string; onChange: (val: string) => void }) {
   const inputRef = useRef<HTMLInputElement>(null);
   return (
-    <div className="relative mt-1">
+    <div className="relative mt-1.5">
       <button
         type="button"
         onClick={(e) => {
@@ -881,18 +891,12 @@ function DatePickerButton({ value, label, hasDate, onChange }: { value: string; 
           e.stopPropagation();
           try { inputRef.current?.showPicker(); } catch { inputRef.current?.focus(); }
         }}
-        className={`w-full flex items-center justify-center gap-1 sm:gap-1.5 text-[11px] sm:text-xs transition-colors cursor-pointer min-h-[32px] sm:min-h-[36px] px-1.5 sm:px-2 rounded-lg ${
-          hasDate
-            ? 'text-amber-400 hover:text-amber-300'
-            : 'text-gray-400 hover:text-gray-300 bg-white/[0.03] border border-white/[0.06] hover:border-white/10'
-        }`}
+        className="w-full flex items-center justify-center gap-1 sm:gap-1.5 text-[11px] sm:text-xs text-gray-400 hover:text-gray-300 transition-colors cursor-pointer min-h-[32px] sm:min-h-[36px] px-1.5 sm:px-2 rounded-lg bg-white/[0.03] border border-white/[0.06] hover:border-white/10"
       >
-        {!hasDate && (
-          <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-        )}
-        <span className={`truncate ${hasDate ? 'font-medium' : ''}`}>{label}</span>
+        <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        <span className="truncate">{label}</span>
       </button>
       <input
         ref={inputRef}
@@ -921,7 +925,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
   const title = show?.title || entry.show_id;
   const slug = show?.slug || entry.show_id;
   const category = show?.category || 'broadway';
-  const href = getShowHref(slug, category);
+  const href = getShowHref(slug, category, show?.diaryOnly);
 
   const isClosingSoon = show?.closingDate && (() => {
     const closing = new Date(show.closingDate!);
@@ -936,7 +940,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
 
   return (
     <div className="group/wl relative flex items-center gap-2 sm:gap-4 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
-      <Link href={href} className="absolute inset-0 z-0" aria-label={`View ${title}`} />
+      <ShowCardOverlay href={href} label={title} />
 
       <div className="relative z-[1] flex-shrink-0 w-10 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay">
         {show?.posterUrl ? (
@@ -949,9 +953,13 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
       <div className="relative z-[1] flex-1 min-w-0">
         <h4 className="font-bold text-white text-sm sm:text-base group-hover/wl:text-brand transition-colors truncate">{title}</h4>
         <p className="text-[11px] sm:text-xs text-gray-500 truncate">{show?.venue}</p>
-        {isClosingSoon && (
-          <span className="inline-block mt-1 px-1.5 py-0.5 text-[9px] font-bold uppercase bg-amber-500/90 text-black rounded">Closing Soon</span>
-        )}
+        <div className="flex flex-wrap items-center gap-1.5 mt-1">
+          {show?.type && <FormatPill type={show.type} />}
+          {show && <StatusBadge status={show.status} />}
+          {isClosingSoon && (
+            <span className="px-1.5 py-0.5 text-[9px] font-bold uppercase bg-amber-500/90 text-black rounded">Closing Soon</span>
+          )}
+        </div>
         {show?.closingDate && (
           <p className="text-[10px] text-gray-500 mt-1">
             Closes {new Date(show.closingDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
@@ -963,7 +971,6 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
         <DatePickerButton
           value={entry.planned_date || ''}
           label={formattedDate || 'Add date'}
-          hasDate={!!formattedDate}
           onChange={(val) => onDateChange(val || null)}
         />
         {/* Rate + Remove row */}
@@ -1000,6 +1007,191 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
   );
 }
 
+/** Group productions by region for the picker */
+function groupProductions(prods: DiaryProduction[]) {
+  const groups: { label: string; items: DiaryProduction[] }[] = [];
+  const regionMap: Record<string, DiaryProduction[]> = {};
+
+  for (const p of prods) {
+    let region: string;
+    if (p.cat === 'broadway') region = 'Broadway';
+    else if (p.cat === 'west-end') region = 'West End';
+    else if (p.cat === 'off-broadway') region = 'Off-Broadway';
+    else if (p.co === 'US') region = 'US Regional';
+    else if (p.co === 'GB') region = 'UK Regional';
+    else if (p.co === 'AU') region = 'Australia';
+    else if (p.co === 'CA') region = 'Canada';
+    else if (p.co === 'DE') region = 'Germany';
+    else if (p.co === 'JP') region = 'Japan';
+    else if (p.co) region = p.co;
+    else region = 'Other';
+    if (!regionMap[region]) regionMap[region] = [];
+    regionMap[region].push(p);
+  }
+
+  const priority = ['Broadway', 'West End', 'Off-Broadway', 'US Regional', 'UK Regional'];
+  const sorted = Object.entries(regionMap).sort((a, b) => {
+    const ai = priority.indexOf(a[0]);
+    const bi = priority.indexOf(b[0]);
+    if (ai !== -1 && bi !== -1) return ai - bi;
+    if (ai !== -1) return -1;
+    if (bi !== -1) return 1;
+    return b[1].length - a[1].length;
+  });
+
+  for (const [label, items] of sorted) {
+    groups.push({ label, items });
+  }
+  return groups;
+}
+
+/** Format production label: "City · Venue (Year)" */
+function prodLabel(p: DiaryProduction): string {
+  const parts: string[] = [];
+  if (p.ci) parts.push(p.ci);
+  if (p.v && p.v !== p.ci) parts.push(p.v);
+  const main = parts.join(' · ') || (p.co ? p.co : p.cat || 'Unknown location');
+  return p.y ? `${main} (${p.y})` : main;
+}
+
+function ProductionPicker({
+  show,
+  filter,
+  onFilterChange,
+  onSelect,
+  onBack,
+  context,
+  existingReviewIds,
+  existingWatchlistIds,
+  addingId,
+}: {
+  show: SearchShow;
+  filter: string;
+  onFilterChange: (v: string) => void;
+  onSelect: (prod: DiaryProduction) => void;
+  onBack: () => void;
+  context: 'diary' | 'watchlist';
+  existingReviewIds: Set<string>;
+  existingWatchlistIds: Set<string>;
+  addingId: string | null;
+}) {
+  const prods = show.prods || [];
+  const showFilter = prods.length > 10;
+  const [showAll, setShowAll] = useState(false);
+  const PAGE_SIZE = 50;
+
+  const filtered = filter
+    ? prods.filter(p => {
+        const q = filter.toLowerCase();
+        return (p.ci?.toLowerCase().includes(q)) ||
+               (p.v?.toLowerCase().includes(q)) ||
+               (p.y?.includes(q)) ||
+               (p.co?.toLowerCase().includes(q));
+      })
+    : prods;
+
+  // Paginate: show first PAGE_SIZE items unless filter is active or user clicked "Show all"
+  const paginated = (!filter && !showAll && filtered.length > PAGE_SIZE)
+    ? filtered.slice(0, PAGE_SIZE)
+    : filtered;
+  const hasMore = !filter && !showAll && filtered.length > PAGE_SIZE;
+
+  const groups = groupProductions(paginated);
+
+  return (
+    <div className="absolute top-full right-0 mt-1.5 w-[calc(100vw-2rem)] sm:w-80 bg-surface-raised border border-white/10 rounded-lg shadow-xl overflow-hidden z-[80] max-h-80 flex flex-col">
+      <div className="flex items-center gap-2 px-3 py-2 border-b border-white/10 bg-white/[0.02]">
+        <button
+          type="button"
+          onClick={onBack}
+          className="p-0.5 text-gray-400 hover:text-white transition-colors"
+          aria-label="Back to search"
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <div className="flex-1 min-w-0">
+          <div className="text-sm font-medium text-white truncate">{show.title}</div>
+          <div className="text-[11px] text-gray-400">{prods.length} productions — pick one</div>
+        </div>
+      </div>
+
+      {showFilter && (
+        <div className="px-3 py-1.5 border-b border-white/5">
+          <input
+            type="text"
+            value={filter}
+            onChange={e => onFilterChange(e.target.value)}
+            placeholder="Filter by city, venue, year..."
+            className="w-full px-2 py-1 text-xs bg-white/5 border border-white/10 rounded text-white placeholder-gray-500 focus:outline-none focus:border-brand/50"
+            autoFocus
+            aria-label="Filter productions by city, venue, or year"
+          />
+        </div>
+      )}
+
+      <div className="overflow-y-auto flex-1">
+        {groups.length > 0 ? groups.map(group => (
+          <div key={group.label}>
+            {groups.length > 1 && (
+              <div className="px-3 py-1 text-[10px] font-semibold text-gray-500 uppercase tracking-wider bg-white/[0.02] sticky top-0">
+                {group.label} ({group.items.length})
+              </div>
+            )}
+            {group.items.map(prod => {
+              const isAdding = addingId === prod.id;
+              const alreadyReviewed = existingReviewIds.has(prod.id);
+              const alreadyWatchlisted = existingWatchlistIds.has(prod.id);
+              return (
+                <button
+                  key={prod.id}
+                  onClick={() => onSelect(prod)}
+                  disabled={isAdding}
+                  className="w-full flex items-center gap-2 px-3 py-1.5 text-left hover:bg-white/5 transition-colors disabled:opacity-50"
+                >
+                  <div className="flex-1 min-w-0">
+                    <div className="text-xs text-white truncate">{prodLabel(prod)}</div>
+                  </div>
+                  {prod.st === 'open' && (
+                    <span className="flex-shrink-0 text-[9px] px-1 py-0.5 rounded bg-green-500/20 text-green-400 font-medium">Now Playing</span>
+                  )}
+                  <div className="flex-shrink-0 text-[10px] text-gray-500">
+                    {context === 'diary' ? (
+                      alreadyReviewed ? <span className="text-green-400">Rated</span> : <span>Rate</span>
+                    ) : (
+                      isAdding ? (
+                        <span className="animate-pulse">Adding...</span>
+                      ) : alreadyWatchlisted ? (
+                        <span className="text-green-400">Added</span>
+                      ) : (
+                        <span>+ Add</span>
+                      )
+                    )}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        )) : (
+          <div className="px-3 py-4 text-center text-xs text-gray-500">
+            No productions match &ldquo;{filter}&rdquo;
+          </div>
+        )}
+        {hasMore && (
+          <button
+            type="button"
+            onClick={() => setShowAll(true)}
+            className="w-full px-3 py-2 text-xs text-brand hover:text-white bg-white/[0.02] hover:bg-white/5 border-t border-white/5 transition-colors"
+          >
+            Show all {filtered.length} productions
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
 interface SearchShow {
   id: string;
   title: string;
@@ -1008,6 +1200,21 @@ interface SearchShow {
   venue?: string;
   images?: { thumbnail?: string };
   category?: string;
+  dy?: boolean;
+  img?: string;
+  gid?: string;
+  n?: number;
+  prods?: DiaryProduction[];
+}
+
+interface DiaryProduction {
+  id: string;
+  v: string;
+  ci: string;
+  co?: string;
+  y?: string;
+  st?: string;
+  cat?: string;
 }
 
 function AddShowSearch({
@@ -1033,16 +1240,39 @@ function AddShowSearch({
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [addingId, setAddingId] = useState<string | null>(null);
+  const [selectedShow, setSelectedShow] = useState<SearchShow | null>(null);
+  const [prodFilter, setProdFilter] = useState('');
 
   const ensureData = useCallback(async () => {
     if (fetchedRef.current) return;
     fetchedRef.current = true;
     try {
-      const [res, { default: FuseClass }] = await Promise.all([
+      const [res, diaryRes, { default: FuseClass }] = await Promise.all([
         fetch('/data/search-shows.json'),
+        fetch('/data/diary-search.json').catch(() => null),
         import('fuse.js/basic') as Promise<{ default: typeof Fuse }>,
       ]);
       const data: SearchShow[] = await res.json();
+      // Merge diary shows — now show-grouped (single-prod entries have id/slug, multi-prod have gid/prods)
+      if (diaryRes?.ok) {
+        try {
+          const diaryData: SearchShow[] = await diaryRes.json();
+          const existingTitles = new Set(data.map(s => s.title.toLowerCase()));
+          for (const s of diaryData) {
+            // Skip single-prod diary entries that duplicate existing search entries
+            if (!s.prods && existingTitles.has(s.title.toLowerCase())) continue;
+            // Multi-prod groups supersede individual entries with the same title
+            // (e.g., one "Wicked" with 737 prods replaces separate Broadway/WE entries)
+            if (s.prods && s.prods.length > 1) {
+              const titleLower = s.title.toLowerCase();
+              for (let i = data.length - 1; i >= 0; i--) {
+                if (data[i].title.toLowerCase() === titleLower) data.splice(i, 1);
+              }
+            }
+            data.push(s);
+          }
+        } catch { /* ignore */ }
+      }
       fuseRef.current = new FuseClass(data, {
         keys: [{ name: 'title', weight: 0.8 }, { name: 'venue', weight: 0.2 }],
         threshold: 0.35,
@@ -1059,12 +1289,17 @@ function AddShowSearch({
   // Compute results from deferred query
   const filteredResults = useMemo(() => {
     if (deferredQuery.length < 2 || !fuseRef.current) return [];
-    const fuseResults = fuseRef.current.search(deferredQuery, { limit: 6 }).map(r => r.item);
+    const fuseResults = fuseRef.current.search(deferredQuery, { limit: 10 }).map(r => r.item);
     const q = deferredQuery.toLowerCase();
+    const fuseKeys = new Set(fuseResults.map(r => r.gid || r.id));
     const substring = shows.filter(s =>
-      s.title.toLowerCase().includes(q) && !fuseResults.some(r => r.id === s.id)
+      s.title.toLowerCase().includes(q) && !fuseKeys.has(s.gid || s.id)
     );
-    return [...fuseResults, ...substring].slice(0, 6);
+    const combined = [...fuseResults, ...substring];
+    // Sort open/previews shows first, then closed
+    const statusOrder = (s: SearchShow) => s.status === 'open' || s.status === 'previews' ? 0 : 1;
+    combined.sort((a, b) => statusOrder(a) - statusOrder(b));
+    return combined.slice(0, 8);
   }, [deferredQuery, dataReady, shows]);
 
   useEffect(() => { setResults(filteredResults); }, [filteredResults]);
@@ -1076,6 +1311,8 @@ function AddShowSearch({
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
         setIsOpen(false);
         setQuery('');
+        setSelectedShow(null);
+        setProdFilter('');
       }
     }
     document.addEventListener('mousedown', handleClick);
@@ -1088,22 +1325,51 @@ function AddShowSearch({
   }, [isOpen, ensureData]);
 
   const handleSelect = async (show: SearchShow) => {
+    // Multi-production show → open production picker
+    if (show.prods && show.prods.length > 1) {
+      setSelectedShow(show);
+      setProdFilter('');
+      return;
+    }
+
+    // Single production inside a group — use the production's id
+    if (show.prods && show.prods.length === 1) {
+      await handleProductionSelect(show.prods[0].id, show.prods[0].id, true);
+      return;
+    }
+
+    await handleProductionSelect(show.id, show.slug, show.dy);
+  };
+
+  const handleProductionSelect = async (id: string, slug: string, dy?: boolean) => {
     if (context === 'watchlist') {
-      if (existingWatchlistIds.has(show.id)) {
-        // Already on watchlist — just go to show page
-        router.push(`/show/${show.slug}`);
+      if (existingWatchlistIds.has(id)) {
+        if (!dy) router.push(`/show/${slug}`);
       } else {
-        setAddingId(show.id);
+        setAddingId(id);
         try {
-          await onAddToWatchlist(show.id);
+          await onAddToWatchlist(id);
         } finally {
           setAddingId(null);
         }
       }
     } else {
-      // Diary — go to show page with ?rate=1
-      router.push(`/show/${show.slug}?rate=1`);
+      // Diary context
+      if (dy) {
+        // Diary-only show — no show page exists, save to watchlist as fallback
+        if (!existingWatchlistIds.has(id) && !existingReviewIds.has(id)) {
+          setAddingId(id);
+          try {
+            await onAddToWatchlist(id);
+          } finally {
+            setAddingId(null);
+          }
+        }
+      } else {
+        router.push(`/show/${slug}?rate=1`);
+      }
     }
+    setSelectedShow(null);
     setIsOpen(false);
     setQuery('');
   };
@@ -1113,14 +1379,13 @@ function AddShowSearch({
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-gray-400 hover:text-white bg-white/[0.06] hover:bg-white/10 border border-white/10 transition-colors text-xs font-medium"
+        className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
         aria-label={context === 'diary' ? 'Add a show to diary' : 'Add to watchlist'}
         title={context === 'diary' ? 'Rate a show' : 'Add to watchlist'}
       >
-        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
         </svg>
-        <span>Add show</span>
       </button>
     );
   }
@@ -1135,8 +1400,11 @@ function AddShowSearch({
             value={query}
             onChange={e => setQuery(e.target.value)}
             onKeyDown={e => {
-              if (e.key === 'Escape') { setIsOpen(false); setQuery(''); }
-              if (e.key === 'Enter' && results.length > 0) { handleSelect(results[0]); }
+              if (e.key === 'Escape') {
+                if (selectedShow) { setSelectedShow(null); }
+                else { setIsOpen(false); setQuery(''); }
+              }
+              if (e.key === 'Enter' && !selectedShow && results.length > 0) { handleSelect(results[0]); }
             }}
             placeholder={context === 'diary' ? 'Search to rate...' : 'Search to add...'}
             className="w-40 sm:w-52 px-3 py-1.5 pl-8 text-xs bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand/50"
@@ -1147,7 +1415,7 @@ function AddShowSearch({
         </div>
         <button
           type="button"
-          onClick={() => { setIsOpen(false); setQuery(''); }}
+          onClick={() => { setIsOpen(false); setQuery(''); setSelectedShow(null); }}
           className="p-1 text-gray-500 hover:text-white"
           aria-label="Close search"
         >
@@ -1157,45 +1425,62 @@ function AddShowSearch({
         </button>
       </div>
 
-      {/* Dropdown results */}
-      {query.length >= 2 && (
+      {/* Dropdown: search results OR production picker */}
+      {selectedShow ? (
+        <ProductionPicker
+          show={selectedShow}
+          filter={prodFilter}
+          onFilterChange={setProdFilter}
+          onSelect={(prod) => handleProductionSelect(prod.id, prod.id, true)}
+          onBack={() => setSelectedShow(null)}
+          context={context}
+          existingReviewIds={existingReviewIds}
+          existingWatchlistIds={existingWatchlistIds}
+          addingId={addingId}
+        />
+      ) : query.length >= 2 ? (
         <div className="absolute top-full right-0 mt-1.5 w-[calc(100vw-2rem)] sm:w-80 bg-surface-raised border border-white/10 rounded-lg shadow-xl overflow-hidden z-[80] max-h-72 overflow-y-auto">
           {results.length > 0 ? results.map(show => {
-            const alreadyReviewed = existingReviewIds.has(show.id);
-            const alreadyWatchlisted = existingWatchlistIds.has(show.id);
+            const key = show.gid || show.id;
+            const alreadyReviewed = show.id ? existingReviewIds.has(show.id) : false;
+            const alreadyWatchlisted = show.id ? existingWatchlistIds.has(show.id) : false;
             const isAdding = addingId === show.id;
+            const isMulti = show.prods && show.prods.length > 1;
             return (
               <button
-                key={show.id}
+                key={key}
                 onClick={() => handleSelect(show)}
                 disabled={isAdding}
                 className="w-full flex items-center gap-2.5 px-3 py-2 text-left hover:bg-white/5 transition-colors disabled:opacity-50"
               >
-                {show.images?.thumbnail ? (
-                  <img src={show.images.thumbnail} alt="" className="w-9 h-9 rounded object-cover flex-shrink-0" />
+                {(show.images?.thumbnail || show.img) ? (
+                  <img src={show.images?.thumbnail || expandMezzImg(show.img) || ''} alt="" className="w-9 h-9 rounded object-cover flex-shrink-0" />
                 ) : (
                   <div className="w-9 h-9 rounded bg-white/10 flex-shrink-0" />
                 )}
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-medium text-white truncate">{show.title}</div>
                   <div className="text-[10px] text-gray-500 flex items-center gap-1.5">
-                    <span className={`px-1 py-0.5 rounded font-medium ${
-                      show.status === 'open' ? 'bg-green-500/20 text-green-400' :
-                      show.status === 'previews' ? 'bg-yellow-500/20 text-yellow-400' :
-                      show.status === 'upcoming' || show.status === 'announced' ? 'bg-blue-500/20 text-blue-400' :
-                      'bg-gray-500/20 text-gray-400'
-                    }`}>
-                      {show.status === 'open' ? 'Now Playing' :
-                       show.status === 'previews' ? 'Previews' :
-                       show.status === 'upcoming' ? 'Upcoming' :
-                       show.status === 'announced' ? 'Announced' : 'Closed'}
-                    </span>
-                    {show.venue && <span className="truncate">{show.venue}</span>}
+                    {isMulti ? (
+                      <span className="text-gray-400">{show.n} productions worldwide</span>
+                    ) : (
+                      <>
+                        <span className={`px-1 py-0.5 rounded font-medium ${
+                          show.status === 'open' ? 'bg-green-500/20 text-green-400' :
+                          show.status === 'previews' ? 'bg-yellow-500/20 text-yellow-400' :
+                          'bg-gray-500/20 text-gray-400'
+                        }`}>
+                          {show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'Previews' : 'Closed'}
+                        </span>
+                        {show.venue && <span className="truncate">{show.venue}</span>}
+                      </>
+                    )}
                   </div>
                 </div>
-                {/* Action hint */}
-                <div className="flex-shrink-0 text-[10px] text-gray-500">
-                  {context === 'diary' ? (
+                <div className="flex-shrink-0 text-xs text-gray-500">
+                  {isMulti ? (
+                    <span className="text-brand font-medium px-1.5 py-0.5 rounded bg-brand/10">{show.n} &rarr;</span>
+                  ) : context === 'diary' ? (
                     alreadyReviewed ? <span className="text-green-400">Rated</span> : <span>Rate</span>
                   ) : (
                     isAdding ? (
@@ -1215,7 +1500,7 @@ function AddShowSearch({
             </div>
           )}
         </div>
-      )}
+      ) : null}
     </div>
   );
 }
@@ -1226,11 +1511,11 @@ function ToBeRatedCard({ entry, show }: { entry: WatchlistEntry; show?: ShowLook
   const title = show?.title || entry.show_id;
   const slug = show?.slug || entry.show_id;
   const category = show?.category || 'broadway';
-  const href = getShowHref(slug, category);
+  const href = getShowHref(slug, category, show?.diaryOnly);
 
   return (
     <div className="relative flex items-center gap-2 sm:gap-4 px-3 sm:px-5 py-3 rounded-xl bg-amber-500/[0.03] border border-amber-500/10 hover:border-amber-500/20 hover:bg-amber-500/[0.06] transition-colors">
-      <Link href={href} className="absolute inset-0 z-0" aria-label={`Rate ${title}`} />
+      <ShowCardOverlay href={href} label={title} />
       <div className="relative z-[1] flex-shrink-0 w-10 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay pointer-events-none">
         {show?.posterUrl ? (
           <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
@@ -1253,7 +1538,7 @@ function ToBeRatedCard({ entry, show }: { entry: WatchlistEntry; show?: ShowLook
           <StarRating
             rating={null}
             onRatingChange={(rating) => {
-              router.push(`${href}?rate=1&stars=${rating}`);
+              if (href) router.push(`${href}?rate=1&stars=${rating}`);
             }}
             size="xs"
           />
@@ -1262,7 +1547,7 @@ function ToBeRatedCard({ entry, show }: { entry: WatchlistEntry; show?: ShowLook
           <StarRating
             rating={null}
             onRatingChange={(rating) => {
-              router.push(`${href}?rate=1&stars=${rating}`);
+              if (href) router.push(`${href}?rate=1&stars=${rating}`);
             }}
             size="sm"
           />
