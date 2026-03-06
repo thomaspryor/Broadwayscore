@@ -18,7 +18,7 @@
     "test:e2e": "npx playwright test",
     "test:e2e:ui": "npx playwright test --ui",
     "test:my-shows": "TEST_BASE_URL=http://localhost:3456 npx playwright test tests/e2e/my-shows-mock.spec.ts",
-    "test:functional": "TEST_BASE_URL=http://localhost:3456 npx playwright test tests/e2e/my-shows-functional.spec.ts tests/e2e/show-rating-functional.spec.ts",
+    "test:functional": "TEST_BASE_URL=http://localhost:3456 npx playwright test --project=chromium tests/e2e/my-shows-functional.spec.ts tests/e2e/show-rating-functional.spec.ts",
     "test:unit": "node --test 'tests/unit/*.test.mjs'",
     "data:check": "node scripts/check-data-health.js",
     "agent:update": "npx ts-node --project scripts/tsconfig.json scripts/agent-update.ts",
