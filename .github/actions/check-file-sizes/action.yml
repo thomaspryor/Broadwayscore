@@ -6,25 +6,28 @@ runs:
     - name: Block large files before commit
       shell: bash
       run: |
-        # Find files >5MB in data/ that aren't archives, known large JSON, or HTML
-        LARGE=$(find data/ -type f -size +5M \
-          ! -path 'data/archives/*' \
-          ! -path 'data/aggregator-archive/*' \
-          ! -path 'data/review-texts/.git/*' \
-          ! -name 'master-review-list.json' \
-          ! -name 'llm-scoring-runs.json' \
-          ! -name 'llm-scoring-garbage-skips.json' \
-          ! -name 'reviews.json' \
-          ! -name 'shows.json' \
-          ! -name 'show-score.json' \
-          ! -name '*.html' \
-          2>/dev/null || true)
+        # Check ONLY staged files >5MB in data/.
+        # IMPORTANT: Previous version used `find data/` which scanned ALL files on disk
+        # including gitignored ones. This caused 5 consecutive scoring failures (March 2026)
+        # when gitignored diary-shows.json (13MB) and mezzanine-productions-raw.json
+        # blocked every workflow that used this check.
+        LARGE=""
+        while IFS= read -r file; do
+          [ -z "$file" ] && continue
+          if [ -f "$file" ]; then
+            SIZE=$(stat --format=%s "$file" 2>/dev/null || stat -f%z "$file" 2>/dev/null || echo 0)
+            if [ "$SIZE" -gt 5242880 ]; then
+              LARGE="${LARGE}${file} (${SIZE} bytes)
+        "
+            fi
+          fi
+        done <<< "$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null | grep '^data/' || true)"
+
         if [ -n "$LARGE" ]; then
-          echo "::error::Large files detected that should not be committed:"
+          echo "::error::Large staged files detected that should not be committed:"
           echo "$LARGE"
           echo ""
-          echo "If this is data/broadway.db, it should be in .gitignore."
-          echo "If this is a new legitimate data file, add it to the exclusion list in .github/actions/check-file-sizes/action.yml"
+          echo "If this is a legitimate data file, add it to the private core-data repo instead."
           exit 1
         fi
-        echo "File size check passed"
+        echo "File size check passed (staged files only)"
