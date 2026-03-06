@@ -312,9 +312,13 @@ export default function MyShowsClient() {
       )}
 
       {/* Tab bar + inline sort/view controls */}
-      <div className="flex items-center gap-1 border-b border-white/10 mb-6">
+      <div role="tablist" className="flex items-center gap-1 border-b border-white/10 mb-6">
         <button
           type="button"
+          role="tab"
+          id="tab-diary"
+          aria-selected={activeTab === 'diary'}
+          aria-controls="panel-diary"
           onClick={() => setActiveTab('diary')}
           className={`flex-shrink-0 px-3 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] ${
             activeTab === 'diary'
@@ -326,6 +330,10 @@ export default function MyShowsClient() {
         </button>
         <button
           type="button"
+          role="tab"
+          id="tab-watchlist"
+          aria-selected={activeTab === 'watchlist'}
+          aria-controls="panel-watchlist"
           onClick={() => setActiveTab('watchlist')}
           aria-label={watchlist.length > 0 ? `Watchlist, ${watchlist.length} shows` : 'Watchlist'}
           className={`flex-shrink-0 px-3 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] ${
@@ -348,6 +356,7 @@ export default function MyShowsClient() {
             <select
               value={diarySort}
               onChange={e => setDiarySort(e.target.value as DiarySort)}
+              aria-label="Sort diary"
               className="text-[11px] sm:text-xs bg-white/5 border border-white/10 rounded px-1.5 sm:px-2 py-1 text-gray-300 max-w-[110px] sm:max-w-none"
             >
               <option value="date-desc">Newest</option>
@@ -359,6 +368,7 @@ export default function MyShowsClient() {
             <select
               value={watchlistSort}
               onChange={e => setWatchlistSort(e.target.value as WatchlistSort)}
+              aria-label="Sort watchlist"
               className="text-[11px] sm:text-xs bg-white/5 border border-white/10 rounded px-1.5 sm:px-2 py-1 text-gray-300 max-w-[110px] sm:max-w-none"
             >
               <option value="added-desc">Recent</option>
@@ -394,7 +404,7 @@ export default function MyShowsClient() {
 
       {/* Diary tab */}
       {activeTab === 'diary' && (
-        <div>
+        <div id="panel-diary" role="tabpanel" aria-labelledby="tab-diary">
           {reviews.length === 0 && upcomingWatchlistEntries.length === 0 && toBeRatedEntries.length === 0 ? (
             <EmptyState
               icon="🎭"
@@ -504,7 +514,7 @@ export default function MyShowsClient() {
 
       {/* Watchlist tab */}
       {activeTab === 'watchlist' && (
-        <div>
+        <div id="panel-watchlist" role="tabpanel" aria-labelledby="tab-watchlist">
           {watchlist.length === 0 ? (
             <EmptyState
               icon="📋"
@@ -554,6 +564,12 @@ export default function MyShowsClient() {
 
 function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: ShowLookup; onDelete?: () => void }) {
   const [confirmDelete, setConfirmDelete] = useState(false);
+  // Auto-dismiss delete confirmation after 4 seconds
+  useEffect(() => {
+    if (!confirmDelete) return;
+    const timer = setTimeout(() => setConfirmDelete(false), 4000);
+    return () => clearTimeout(timer);
+  }, [confirmDelete]);
   const title = show?.title || review.show_id;
   const slug = show?.slug || review.show_id;
   const category = show?.category || 'broadway';
@@ -646,6 +662,11 @@ function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: Show
 
 function DiaryGridCard({ review, show, onDelete }: { review: UserReview; show?: ShowLookup; onDelete?: () => void }) {
   const [confirmDelete, setConfirmDelete] = useState(false);
+  useEffect(() => {
+    if (!confirmDelete) return;
+    const timer = setTimeout(() => setConfirmDelete(false), 4000);
+    return () => clearTimeout(timer);
+  }, [confirmDelete]);
   const title = show?.title || review.show_id;
   const slug = show?.slug || review.show_id;
   const category = show?.category || 'broadway';
@@ -703,6 +724,11 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
   onRemove: () => void;
 }) {
   const [confirmRemove, setConfirmRemove] = useState(false);
+  useEffect(() => {
+    if (!confirmRemove) return;
+    const timer = setTimeout(() => setConfirmRemove(false), 4000);
+    return () => clearTimeout(timer);
+  }, [confirmRemove]);
   const title = show?.title || entry.show_id;
   const slug = show?.slug || entry.show_id;
   const category = show?.category || 'broadway';
@@ -841,6 +867,11 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
   onRemove: () => void;
 }) {
   const [confirmRemove, setConfirmRemove] = useState(false);
+  useEffect(() => {
+    if (!confirmRemove) return;
+    const timer = setTimeout(() => setConfirmRemove(false), 4000);
+    return () => clearTimeout(timer);
+  }, [confirmRemove]);
   const title = show?.title || entry.show_id;
   const slug = show?.slug || entry.show_id;
   const category = show?.category || 'broadway';
