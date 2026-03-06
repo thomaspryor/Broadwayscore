@@ -1353,6 +1353,56 @@ const crossShowUrlIndex = new Map();
 // Key: SHA-256 hash of full cleaned text (avoids false positives from shared boilerplate prefixes)
 const crossShowFingerprints = new Map();
 
+// Pre-opening guard pass: flag reviews published 90+ days before a show's earliest date
+// as wrongProduction. Runs on ALL show dirs (including previews/upcoming that get skipped
+// in the main loop) so that files are flagged persistently before a show transitions to "open".
+{
+  let preOpenFlagged = 0;
+  for (const sid of showDirs) {
+    const status = showStatusMap[sid];
+    if (status !== 'previews' && status !== 'upcoming' && status !== 'announced') continue;
+    const showEarliest = showDateMap[sid];
+    if (!showEarliest) continue;
+    const sDir = path.join(reviewTextsDir, sid);
+    for (const f of fs.readdirSync(sDir).filter(x => x.endsWith('.json'))) {
+      try {
+        const d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8'));
+        if (d.wrongProduction || d.wrongShow) continue;
+        let reviewDate = null;
+        if (d.publishDate) {
+          const cleaned = d.publishDate.replace(/(\d+)(?:st|nd|rd|th)\b/g, '$1');
+          const pd = new Date(cleaned);
+          if (!isNaN(pd.getTime())) reviewDate = pd;
+        }
+        if (!reviewDate && d.url) {
+          // Try YYYYMMDD pattern (e.g. chicagotribune URLs: 20231117)
+          const ymd = d.url.match(/(?:[\/\-_.])((?:19|20)\d\d)(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])(?:\D|$)/);
+          if (ymd) {
+            reviewDate = new Date(`${ymd[1]}-${ymd[2]}-${ymd[3]}`);
+            if (isNaN(reviewDate.getTime())) reviewDate = null;
+          }
+          // Try YYYY with delimiter pattern
+          if (!reviewDate) {
+            const ym = d.url.match(/(?:[\/\-_.])((?:19|20)\d\d)(?:[\/\-_.])/);
+            if (ym) reviewDate = new Date(`${ym[1]}-07-01`);
+          }
+        }
+        if (reviewDate && (showEarliest - reviewDate) > 90 * 86400000) {
+          console.log(`  [PRE-OPENING] ${sid}/${f}: review ${reviewDate.toISOString().split('T')[0]} is 90+ days before show ${showEarliest.toISOString().split('T')[0]}`);
+          d.wrongProduction = true;
+          d.wrongProductionNote = `Pre-opening guard: review dated ${reviewDate.toISOString().split('T')[0]} is 90+ days before show starts ${showEarliest.toISOString().split('T')[0]}`;
+          fs.writeFileSync(path.join(sDir, f), JSON.stringify(d, null, 2) + '\n');
+          preOpenFlagged++;
+        }
+      } catch { /* skip unreadable */ }
+    }
+  }
+  if (preOpenFlagged > 0) {
+    console.log(`Pre-opening guard: flagged ${preOpenFlagged} reviews as wrongProduction\n`);
+  }
+  stats.preOpeningFlagged = preOpenFlagged;
+}
+
 showDirs.forEach(showId => {
   // Skip Broadway shows in previews — they haven't opened yet, all reviews are wrong-production
   // Off-Broadway and West End shows commonly get reviewed during previews, so don't skip them
