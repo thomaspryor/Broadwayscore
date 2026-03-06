@@ -7,7 +7,17 @@
     "the-amazing-sex-life-of-rabbits-off-broadway-2026/nyt-theater--unknown.json",
     "the-little-mermaid-the-musical-off-broadway-2026/hollywood-reporter--robyn-bahr.json",
     "burnout-paradise-off-broadway-2026/timeout--raven-snook.json",
-    "mexodus-off-broadway-2026/theatermania--zachary-stewart.json"
+    "mexodus-off-broadway-2026/theatermania--zachary-stewart.json",
+    "mexodus-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
+    "mexodus-off-broadway-2026/this-week-in-new-york--mark-rifkin.json",
+    "spread-off-broadway-2026/theatermania--unknown.json",
+    "tru-off-broadway-2026/theatermania--unknown.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/wsj--charles-isherwood.json",
+    "bloodlove-off-broadway-2026/front-row-center--kendra-jones.json",
+    "burnout-paradise-off-broadway-2026/culturesauce--thom-geier.json",
+    "burnout-paradise-off-broadway-2026/one-minute-critic--unknown.json",
+    "mexodus-off-broadway-2026/front-row-center--holli-harms.json",
+    "mexodus-off-broadway-2026/frontmezzjunkies--unknown.json"
   ],
   "failed": [
     "what-we-did-before-our-moth-days-off-broadway-2026/nytimes--unknown.json",
@@ -21,26 +31,38 @@
       "mexodus-off-broadway-2026/nytg--austin-fimmano.json",
       "the-amazing-sex-life-of-rabbits-off-broadway-2026/nyt-theater--unknown.json",
       "burnout-paradise-off-broadway-2026/timeout--raven-snook.json",
-      "mexodus-off-broadway-2026/theatermania--zachary-stewart.json"
+      "mexodus-off-broadway-2026/theatermania--zachary-stewart.json",
+      "mexodus-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
+      "mexodus-off-broadway-2026/this-week-in-new-york--mark-rifkin.json",
+      "spread-off-broadway-2026/theatermania--unknown.json",
+      "bloodlove-off-broadway-2026/front-row-center--kendra-jones.json",
+      "burnout-paradise-off-broadway-2026/culturesauce--thom-geier.json",
+      "mexodus-off-broadway-2026/front-row-center--holli-harms.json",
+      "mexodus-off-broadway-2026/frontmezzjunkies--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/the-little-mermaid-the-musical-off-broadway-2026/hollywood-reporter--robyn-bahr.json",
       "the-little-mermaid-the-musical-off-broadway-2026/hollywood-reporter--robyn-bahr.json"
     ],
-    "directCookies": [],
+    "directCookies": [
+      "what-we-did-before-our-moth-days-off-broadway-2026/wsj--charles-isherwood.json"
+    ],
     "scrapingbee": [
-      "romeo-and-juliet-suite-off-broadway-2026/nytimes--gia-kourlas.json"
+      "romeo-and-juliet-suite-off-broadway-2026/nytimes--gia-kourlas.json",
+      "burnout-paradise-off-broadway-2026/one-minute-critic--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/what-we-did-before-our-moth-days-off-broadway-2026/nytimes--unknown.json",
       "data/review-texts/what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json"
     ],
-    "archive": []
+    "archive": [
+      "tru-off-broadway-2026/theatermania--unknown.json"
+    ]
   },
   "startTime": "2026-03-06T09:13:03.197Z",
-  "lastProcessed": "mexodus-off-broadway-2026/theatermania--zachary-stewart.json",
+  "lastProcessed": "mexodus-off-broadway-2026/frontmezzjunkies--unknown.json",
   "log": [
     {
       "t": "2026-03-06T09:14:33.354Z",
@@ -63,6 +85,17 @@
       "t": "2026-03-06T09:15:45.735Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-06T09:21:34.440Z",
+      "event": "bb-session",
+      "session": "76fbbac6",
+      "url": "https://www.wsj.com/articles/what-we-did-before-our-moth-days-review-wallace-sha"
+    },
+    {
+      "t": "2026-03-06T09:21:35.920Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
