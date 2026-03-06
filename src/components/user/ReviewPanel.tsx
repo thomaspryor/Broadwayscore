@@ -87,23 +87,24 @@ export default function ReviewPanel({
           maxLength={MAX_CHARS + 100} // Allow slight overflow to show counter
           className="w-full px-3 py-2 text-sm bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30 resize-none"
         />
-        <div className={`text-right text-xs mt-0.5 ${
-          isOverLimit ? 'text-red-400' : charsRemaining < 200 ? 'text-amber-400' : 'text-gray-600'
-        }`}>
-          {charsRemaining.toLocaleString()} characters remaining
+        {/* Char counter + privacy inline */}
+        <div className="flex items-center justify-between mt-0.5">
+          <div className="flex items-center gap-1.5 text-xs text-gray-500">
+            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+            <span>Only visible to you</span>
+          </div>
+          <span className={`text-xs ${
+            isOverLimit ? 'text-red-400' : charsRemaining < 200 ? 'text-amber-400' : 'text-gray-600'
+          }`}>
+            {charsRemaining.toLocaleString()} left
+          </span>
         </div>
       </div>
 
-      {/* Privacy note */}
-      <div className="flex items-center gap-1.5 mb-4 text-xs text-gray-500">
-        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-        </svg>
-        <span>Only visible to you</span>
-      </div>
-
       {/* Action buttons */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 mt-3">
         <button
           type="button"
           onClick={handleSave}

@@ -384,12 +384,12 @@ export default function MyShowsClient() {
               <option value="closing-soon">Closing</option>
             </select>
           )}
-          {/* Grid / List toggle — both tabs */}
-          <div className="flex flex-shrink-0 rounded-lg overflow-hidden bg-white/[0.04] border border-white/10">
+          {/* Grid / List toggle — both tabs, height matches sort dropdown (h-9 / sm:h-8) */}
+          <div className="flex flex-shrink-0 rounded overflow-hidden bg-white/[0.04] border border-white/10 h-9 sm:h-8">
             <button
               type="button"
               onClick={() => activeTab === 'diary' ? setDiaryView('grid') : setWatchlistView('grid')}
-              className={`flex items-center justify-center w-9 h-9 sm:w-8 sm:h-8 transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'grid' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
+              className={`flex items-center justify-center w-9 sm:w-8 h-full transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'grid' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
               aria-label="Grid view"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -399,7 +399,7 @@ export default function MyShowsClient() {
             <button
               type="button"
               onClick={() => activeTab === 'diary' ? setDiaryView('list') : setWatchlistView('list')}
-              className={`flex items-center justify-center w-9 h-9 sm:w-8 sm:h-8 transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'list' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
+              className={`flex items-center justify-center w-9 sm:w-8 h-full transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'list' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
               aria-label="List view"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
