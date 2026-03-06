@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-06T09:20:51.291Z",
-  "processed": 8,
+  "updatedAt": "2026-03-06T09:23:35.789Z",
+  "processed": 18,
   "failed": 2,
-  "successRate": "80.0%",
+  "successRate": "90.0%",
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 13,
     "amp": 0,
     "browserbase": 2,
-    "directCookies": 0,
-    "scrapingbee": 1,
+    "directCookies": 1,
+    "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 2,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-03-06T09:14:33.354Z",
@@ -36,6 +36,17 @@
       "t": "2026-03-06T09:15:45.735Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-06T09:21:34.440Z",
+      "event": "bb-session",
+      "session": "76fbbac6",
+      "url": "https://www.wsj.com/articles/what-we-did-before-our-moth-days-review-wallace-sha"
+    },
+    {
+      "t": "2026-03-06T09:21:35.920Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
