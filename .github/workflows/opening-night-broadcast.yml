@@ -1,10 +1,8 @@
 name: Opening Night Broadcast
 
 on:
-  # schedule disabled until broadcast pipeline is validated end-to-end
-  # schedule:
-  #   - cron: '0 4 * * *'  # 4 AM UTC = ~11 PM ET
-  #   - cron: '0 5 * * *'  # 5 AM UTC = ~midnight ET
+  schedule:
+    - cron: '0 5 * * *'  # 5 AM UTC = ~midnight ET — sends preview to owner
   workflow_dispatch:
     inputs:
       lookback_days:
@@ -12,6 +10,11 @@ on:
         required: false
         type: number
         default: 2
+      send_to_all:
+        description: 'Send to ALL subscribers (default: preview to owner only)'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -202,11 +205,22 @@ jobs:
         if: always() && steps.check.outputs.pending_shows != ''
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: |
+          # Preview mode by default (cron + manual without send_to_all)
+          # Only send to all subscribers when explicitly approved via manual dispatch
+          SEND_TO_FLAG=""
+          if [ "${{ inputs.send_to_all }}" != "true" ]; then
+            SEND_TO_FLAG="--send-to=$OWNER_EMAIL"
+            echo "** PREVIEW MODE — sending to owner only. To send to all: re-run with send_to_all=true **"
+          else
+            echo "** SENDING TO ALL SUBSCRIBERS **"
+          fi
+
           # Broadway broadcast (skip if no Broadway shows)
           if [ -n "${{ steps.find.outputs.broadway }}" ]; then
             echo "--- Broadway broadcast ---"
-            node scripts/send-opening-night-broadcast.js --market=broadway --budget=60
+            node scripts/send-opening-night-broadcast.js --market=broadway --budget=60 $SEND_TO_FLAG
           else
             echo "No Broadway shows to broadcast"
           fi
@@ -214,7 +228,7 @@ jobs:
           # West End broadcast (skip if no WE shows)
           if [ -n "${{ steps.find.outputs.westend }}" ]; then
             echo "--- West End broadcast ---"
-            node scripts/send-opening-night-broadcast.js --market=west-end --budget=35
+            node scripts/send-opening-night-broadcast.js --market=west-end --budget=35 $SEND_TO_FLAG
           else
             echo "No West End shows to broadcast"
           fi
