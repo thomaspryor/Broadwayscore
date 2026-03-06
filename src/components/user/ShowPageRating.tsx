@@ -192,7 +192,7 @@ export default function ShowPageRating({
 
   return (
     <div className="mt-5 pt-5 border-t border-white/[0.06]">
-      <div className="flex items-start justify-between gap-3">
+      <div className="flex items-start justify-between gap-2 sm:gap-3">
         <div className="flex-1">
           {/* Section label */}
           <div className="flex items-center gap-2 mb-2">
@@ -207,7 +207,7 @@ export default function ShowPageRating({
           {/* Stars + edit state */}
           {latestReview && !showPanel ? (
             // Show existing rating with edit button
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
               <StarRating rating={latestReview.rating} onRatingChange={handleRatingChange} size="lg" readOnly />
               <button
                 type="button"
