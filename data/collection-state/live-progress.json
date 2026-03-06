@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-06T20:30:07.554Z",
-  "processed": 154,
-  "failed": 41,
+  "updatedAt": "2026-03-06T20:34:53.929Z",
+  "processed": 162,
+  "failed": 43,
   "successRate": "79.0%",
   "tierBreakdown": {
-    "playwright": 61,
+    "playwright": 62,
     "amp": 26,
-    "browserbase": 24,
+    "browserbase": 28,
     "directCookies": 1,
-    "scrapingbee": 36,
+    "scrapingbee": 37,
     "brightdata": 0,
     "archiveToday": 13,
-    "archive": 33
+    "archive": 37
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-03-06T19:48:16.827Z",
-      "event": "bb-session",
-      "session": "571a1708",
-      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
-    },
-    {
-      "t": "2026-03-06T19:48:17.912Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-06T19:50:40.350Z",
-      "event": "bb-session",
-      "session": "f3fcb4a7",
-      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
-    },
-    {
-      "t": "2026-03-06T19:50:41.428Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-06T19:52:32.166Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-06T20:25:08.165Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-06T20:30:10.876Z",
+      "event": "bb-session",
+      "session": "ad8fac98",
+      "url": "https://observer.com/2025/04/just-in-time-broadway-review-jonathan-groff-dazzles"
+    },
+    {
+      "t": "2026-03-06T20:30:12.176Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-06T20:31:10.393Z",
+      "event": "bb-session",
+      "session": "4a8dcda8",
+      "url": "https://nypost.com/2019/10/17/little-shop-of-horrors-review-jonathan-groff-tammy"
+    },
+    {
+      "t": "2026-03-06T20:31:12.244Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
