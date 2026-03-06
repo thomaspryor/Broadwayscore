@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-06T19:42:46.685Z",
-  "processed": 125,
-  "failed": 20,
-  "successRate": "86.2%",
+  "updatedAt": "2026-03-06T19:50:37.054Z",
+  "processed": 133,
+  "failed": 22,
+  "successRate": "85.8%",
   "tierBreakdown": {
-    "playwright": 49,
+    "playwright": 54,
     "amp": 26,
     "browserbase": 22,
     "directCookies": 1,
-    "scrapingbee": 28,
+    "scrapingbee": 30,
     "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 24
+    "archiveToday": 5,
+    "archive": 25
   },
-  "browserbaseSessions": 17,
+  "browserbaseSessions": 18,
   "recentActivity": [
-    {
-      "t": "2026-03-06T19:04:32.094Z",
-      "event": "bb-session",
-      "session": "1014640a",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
-    },
-    {
-      "t": "2026-03-06T19:04:33.120Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-06T19:06:52.891Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-06T19:41:49.496Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-06T19:48:16.827Z",
+      "event": "bb-session",
+      "session": "571a1708",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
+    },
+    {
+      "t": "2026-03-06T19:48:17.912Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
