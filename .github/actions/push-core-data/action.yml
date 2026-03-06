@@ -21,7 +21,7 @@ runs:
         # workflow start). Prevents stale copies of unmodified files from
         # overwriting concurrent updates by other workflows.
         MODIFIED=""
-        for f in shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json outlet-registry.json; do
+        for f in shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json outlet-registry.json diary-shows.json; do
           if [ -f "data/$f" ]; then
             if [ ! -f "/tmp/core-data-checkout/$f" ]; then
               # New file — always copy

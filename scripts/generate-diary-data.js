@@ -1,0 +1,75 @@
+#!/usr/bin/env node
+/**
+ * Generate diary show data files for client-side diary/watchlist features.
+ *
+ * Reads data/diary-shows.json (from private repo) and produces:
+ *   - public/data/diary-search.json  — for diary search + Mezzanine import matching
+ *   - public/data/diary-lookup.json  — for My Shows page display of diary-only shows
+ *
+ * These are lazy-loaded only when needed (not bundled with main search/lookup).
+ *
+ * Run: node scripts/generate-diary-data.js
+ * Or via: npm run prebuild
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+const dataDir = path.join(__dirname, '../data');
+const outputDir = path.join(__dirname, '../public/data');
+
+// Ensure output directory exists
+if (!fs.existsSync(outputDir)) {
+  fs.mkdirSync(outputDir, { recursive: true });
+}
+
+// Load diary shows — graceful fallback if missing or empty
+let diaryShows = [];
+try {
+  const raw = JSON.parse(fs.readFileSync(path.join(dataDir, 'diary-shows.json'), 'utf-8'));
+  diaryShows = raw.shows || [];
+} catch {
+  // diary-shows.json doesn't exist yet — generate empty files
+}
+
+if (diaryShows.length === 0) {
+  // Write empty files so fetches don't 404
+  fs.writeFileSync(path.join(outputDir, 'diary-search.json'), '[]');
+  fs.writeFileSync(path.join(outputDir, 'diary-lookup.json'), '[]');
+  console.log('Generated empty diary data files (no diary shows yet)');
+  process.exit(0);
+}
+
+// diary-search.json — minimal fields for Fuse.js fuzzy search
+const searchEntries = diaryShows.map(show => {
+  const entry = {
+    id: show.id,
+    title: show.title,
+    slug: show.slug,
+    status: show.status || 'closed',
+    dy: true,
+  };
+  if (show.venue) entry.venue = show.venue;
+  if (show.category && show.category !== 'broadway') entry.category = show.category;
+  return entry;
+});
+
+const searchPath = path.join(outputDir, 'diary-search.json');
+fs.writeFileSync(searchPath, JSON.stringify(searchEntries));
+const searchSizeKB = (fs.statSync(searchPath).size / 1024).toFixed(0);
+
+// diary-lookup.json — compact format matching show-lookup.json structure
+// Used by MyShowsClient to display diary-only shows in the user's diary/watchlist
+const lookupEntries = diaryShows.map(show => {
+  const entry = { id: show.id, t: show.title, s: show.slug, v: show.venue || '', dy: 1 };
+  if (show.category) entry.c = show.category;
+  if (show.openingDate) entry.od = show.openingDate;
+  return entry;
+});
+
+const lookupPath = path.join(outputDir, 'diary-lookup.json');
+fs.writeFileSync(lookupPath, JSON.stringify(lookupEntries));
+const lookupSizeKB = (fs.statSync(lookupPath).size / 1024).toFixed(0);
+
+console.log(`Generated diary-search.json: ${searchEntries.length} shows (${searchSizeKB}KB)`);
+console.log(`Generated diary-lookup.json: ${lookupEntries.length} shows (${lookupSizeKB}KB)`);

@@ -75,14 +75,22 @@ export default function MezzanineImport({
   const fuseRef = useRef<Fuse<SearchShow> | null>(null);
   const showsRef = useRef<SearchShow[]>([]);
 
-  // Load search data + Fuse.js
+  // Load search data + Fuse.js (scored shows + diary shows)
   const ensureSearchData = useCallback(async () => {
     if (fuseRef.current) return;
-    const [res, { default: FuseClass }] = await Promise.all([
+    const [res, diaryRes, { default: FuseClass }] = await Promise.all([
       fetch('/data/search-shows.json'),
+      fetch('/data/diary-search.json').catch(() => null),
       import('fuse.js/basic') as Promise<{ default: typeof Fuse }>,
     ]);
     const data: SearchShow[] = await res.json();
+    // Merge diary shows if available
+    if (diaryRes?.ok) {
+      try {
+        const diaryData: SearchShow[] = await diaryRes.json();
+        data.push(...diaryData);
+      } catch { /* ignore parse errors */ }
+    }
     showsRef.current = data;
     fuseRef.current = new FuseClass(data, {
       keys: [{ name: 'title', weight: 0.8 }, { name: 'venue', weight: 0.2 }],
