@@ -9,6 +9,18 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './tests/e2e',
 
+  // UGC tests need local dev server with userAccounts flag.
+  // Excluded by default (main CI hits production). Set RUN_UGC_TESTS=1 to include them.
+  testIgnore: process.env.RUN_UGC_TESTS
+    ? []
+    : [
+        '**/my-shows-mock*',
+        '**/my-shows-functional*',
+        '**/show-rating-functional*',
+        '**/ugc-visual-regression*',
+        '**/ugc-visual-baselines*',
+      ],
+
   // Run tests in parallel
   fullyParallel: true,
 
