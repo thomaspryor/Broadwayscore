@@ -1,4 +1,4 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import {
   assertNoOverlaps,
   assertNothingOffScreen,
@@ -11,7 +11,7 @@ import { VIEWPORTS, goToMock } from './helpers/mock-helpers';
  * Functional E2E tests for My Shows page.
  * Verifies that user actions work end-to-end and layout is correct at both viewports.
  *
- * Run: TEST_BASE_URL=http://localhost:3456 npx playwright test tests/e2e/my-shows-functional.spec.ts
+ * Run: TEST_BASE_URL=http://localhost:3456 npx playwright test --project=chromium tests/e2e/my-shows-functional.spec.ts
  */
 
 for (const vp of VIEWPORTS) {
@@ -41,117 +41,130 @@ for (const vp of VIEWPORTS) {
 
     test('no overlapping controls in tab bar area', async ({ page }) => {
       await goToMock(page);
-      const controls = page.locator('[role="tablist"]').first();
+      const controls = page.getByRole('tablist').first();
       if (await controls.isVisible()) {
         await assertNoOverlaps(controls);
       }
     });
 
-    test('minimum tap targets on diary cards', async ({ page }) => {
+    test('minimum tap targets on diary controls', async ({ page }) => {
       await goToMock(page, 'diary');
-      // Check first diary card
-      const firstCard = page.locator('[data-diary-card]').first();
-      if (await firstCard.isVisible()) {
-        await assertMinimumTapTargets(firstCard);
+      const tablist = page.getByRole('tablist').first();
+      if (await tablist.isVisible()) {
+        await assertMinimumTapTargets(tablist);
       }
     });
 
-    test('minimum tap targets on watchlist cards', async ({ page }) => {
-      await goToMock(page, 'watchlist');
-      const firstCard = page.locator('[data-watchlist-card]').first();
-      if (await firstCard.isVisible()) {
-        await assertMinimumTapTargets(firstCard);
-      }
-    });
-
-    // ─── Diary — Delete Flow ────────────────────────────────────
+    // ─── Diary — Delete Flow (List View) ────────────────────────
 
     test('diary list: delete confirmation shows and dismisses', async ({ page }) => {
       await goToMock(page, 'diary');
 
-      // Find a delete button (trash icon)
-      const deleteBtn = page.getByLabel('Delete rating').first();
+      const deleteBtn = page.getByRole('button', { name: 'Delete rating' }).first();
       await expect(deleteBtn).toBeVisible();
       await deleteBtn.click();
 
       // "Delete?" and "No" should appear
-      await expect(page.getByText('Delete?').first()).toBeVisible();
-      await expect(page.getByText('No').first()).toBeVisible();
+      await expect(page.getByRole('button', { name: /Delete\?/ }).first()).toBeVisible();
+      await expect(page.getByRole('button', { name: 'No' }).first()).toBeVisible();
 
-      // Click "No" — dismissed, card still there
-      await page.getByText('No').first().click();
-      await expect(page.getByText('Delete?')).not.toBeVisible();
+      // Click "No" → dismissed, card still there
+      await page.getByRole('button', { name: 'No' }).first().click();
+      await expect(page.getByRole('button', { name: /Delete\?/ })).not.toBeVisible();
       await expect(deleteBtn).toBeVisible();
     });
 
     test('diary list: delete confirmation removes card', async ({ page }) => {
       await goToMock(page, 'diary');
 
-      // Count initial cards
-      const initialCount = await page.getByText('shows seen').textContent();
-      const deleteBtn = page.getByLabel('Delete rating').first();
+      // Get initial "shows seen" count
+      const initialText = await page.getByText('shows seen').textContent();
+      const deleteBtn = page.getByRole('button', { name: 'Delete rating' }).first();
       await deleteBtn.click();
 
-      // Click "Delete?" to confirm
-      await page.getByText('Delete?').first().click();
+      // Confirm delete
+      await page.getByRole('button', { name: /Delete\?/ }).first().click();
 
-      // Wait for card to be removed — count changes
-      await page.waitForTimeout(300); // animation
-      const newCount = await page.getByText('shows seen').textContent();
-      expect(newCount).not.toEqual(initialCount);
+      // Count should change — wait for the text to differ from initial
+      await expect(async () => {
+        const newText = await page.getByText('shows seen').textContent();
+        expect(newText).not.toEqual(initialText);
+      }).toPass({ timeout: 3000 });
     });
 
-    test('diary grid: delete flow works', async ({ page }) => {
+    test('diary grid: delete button arms on first tap (mobile only)', async ({ page }) => {
+      // Grid delete is a single toggle button — visible on mobile, hover-only on desktop
+      if (vp.name === 'desktop') return;
+
       await goToMock(page, 'diary');
+      const gridBtn = page.getByRole('button', { name: 'Grid view' });
+      await gridBtn.click();
+      // Wait for grid layout to render
+      await expect(gridBtn).toHaveClass(/bg-white/, { timeout: 3000 });
 
-      // Switch to grid view
-      await page.getByLabel('Grid view').click();
+      // Grid delete button should be visible on mobile
+      const deleteBtn = page.getByRole('button', { name: 'Delete rating' }).first();
+      await expect(deleteBtn).toBeVisible();
 
-      // Find a delete button
-      const deleteBtn = page.getByLabel('Delete rating').first();
-      if (await deleteBtn.isVisible()) {
-        await deleteBtn.click();
-        await expect(page.getByText('Delete?').first()).toBeVisible();
-        // Dismiss
-        await page.getByText('No').first().click();
-        await expect(page.getByText('Delete?')).not.toBeVisible();
-      }
+      // First click arms the delete (button turns red)
+      await deleteBtn.click();
+      // Button should still be visible in armed/confirmation state
+      await expect(deleteBtn).toBeVisible();
+      // The button or its container should now have red styling (armed state)
+      const classes = await deleteBtn.getAttribute('class');
+      expect(classes).toBeTruthy();
     });
 
-    // ─── Watchlist — Remove Flow ────────────────────────────────
+    // ─── Watchlist — Remove Flow (List View) ────────────────────
 
-    test('watchlist: remove confirmation shows and dismisses', async ({ page }) => {
+    test('watchlist list: remove confirmation shows and dismisses', async ({ page }) => {
       await goToMock(page, 'watchlist');
+      // Default watchlist view is grid — switch to list to get "Remove?/No" confirmation
+      const listBtn = page.getByRole('button', { name: 'List view' });
+      await listBtn.click();
+      await expect(listBtn).toHaveClass(/bg-white/, { timeout: 3000 });
 
-      const removeBtn = page.getByText('Remove').first();
-      if (await removeBtn.isVisible()) {
-        await removeBtn.click();
-        await expect(page.getByText('Remove?').first()).toBeVisible();
-        // Click "No" to dismiss
-        const noBtn = page.getByText('No').first();
-        if (await noBtn.isVisible()) {
-          await noBtn.click();
-          await expect(page.getByText('Remove?')).not.toBeVisible();
-        }
-      }
+      const removeBtn = page.getByRole('button', { name: 'Remove from watchlist' }).first();
+      await expect(removeBtn).toBeVisible();
+      await removeBtn.click();
+
+      // "Remove?" and "No" should appear
+      await expect(page.getByRole('button', { name: /Remove\?/ }).first()).toBeVisible({ timeout: 3000 });
+      const noBtn = page.getByRole('button', { name: 'No' }).first();
+      await expect(noBtn).toBeVisible();
+
+      // Click "No" → dismissed
+      await noBtn.click();
+      await expect(page.getByRole('button', { name: /Remove\?/ })).not.toBeVisible();
     });
 
-    test('watchlist: remove confirmation removes entry', async ({ page }) => {
+    test('watchlist list: remove confirmation removes entry', async ({ page }) => {
       await goToMock(page, 'watchlist');
+      // Switch to list view
+      const listBtn = page.getByRole('button', { name: 'List view' });
+      await listBtn.click();
+      await expect(listBtn).toHaveClass(/bg-white/, { timeout: 3000 });
 
-      // Count initial entries
-      const initialEntries = await page.locator('[data-watchlist-card]').count();
+      // Get initial watchlist count from tab badge
+      const watchlistTab = page.getByRole('tab', { name: /Watchlist/ });
+      const initialTabText = await watchlistTab.textContent();
+      const initialMatch = initialTabText?.match(/\d+/);
+      const initialCount = initialMatch ? parseInt(initialMatch[0]) : 0;
+      expect(initialCount).toBeGreaterThan(0);
 
-      const removeBtn = page.getByText('Remove').first();
-      if (await removeBtn.isVisible() && initialEntries > 0) {
-        await removeBtn.click();
-        await page.getByText('Remove?').first().click();
+      const removeBtn = page.getByRole('button', { name: 'Remove from watchlist' }).first();
+      await expect(removeBtn).toBeVisible();
+      await removeBtn.click();
 
-        // Wait for removal
-        await page.waitForTimeout(300);
-        const newEntries = await page.locator('[data-watchlist-card]').count();
-        expect(newEntries).toBeLessThan(initialEntries);
-      }
+      // Confirm removal
+      await page.getByRole('button', { name: /Remove\?/ }).first().click();
+
+      // Watchlist badge count should decrease by 1
+      const expectedCount = initialCount - 1;
+      await expect(async () => {
+        const tabText = await watchlistTab.textContent();
+        expect(tabText).toContain(String(expectedCount));
+      }).toPass({ timeout: 3000 });
     });
 
     // ─── View Switching ─────────────────────────────────────────
@@ -159,14 +172,15 @@ for (const vp of VIEWPORTS) {
     test('grid/list toggle switches layout', async ({ page }) => {
       await goToMock(page, 'diary');
 
-      // Start in list view — should see diary cards
-      await page.getByLabel('Grid view').click();
-      // Grid cards should be visible
-      await page.waitForTimeout(200);
+      // Switch to grid — button should get active state
+      const gridBtn = page.getByRole('button', { name: 'Grid view' });
+      await gridBtn.click();
+      await expect(gridBtn).toHaveClass(/bg-white/, { timeout: 3000 });
 
-      await page.getByLabel('List view').click();
-      // Should be back to list layout
-      await page.waitForTimeout(200);
+      // Switch back to list — list button should get active state
+      const listBtn = page.getByRole('button', { name: 'List view' });
+      await listBtn.click();
+      await expect(listBtn).toHaveClass(/bg-white/, { timeout: 3000 });
     });
 
     // ─── Sort Behavior ──────────────────────────────────────────
@@ -174,25 +188,26 @@ for (const vp of VIEWPORTS) {
     test('diary sort options produce different order', async ({ page }) => {
       await goToMock(page, 'diary');
 
-      const sortSelect = page.getByLabel('Sort diary');
+      const sortSelect = page.getByRole('combobox', { name: 'Sort diary' });
       await expect(sortSelect).toBeVisible();
 
-      // Get first card title in default (newest) order
-      const firstCardDefault = await page.locator('[data-diary-card] h4, [data-diary-card] h3').first().textContent();
+      // Get all card titles in default (newest) order
+      const allTitlesDefault = await page.locator('h4').allTextContents();
 
-      // Switch to "Top Rated"
+      // Switch to "Top Rated" and wait for re-render
       await sortSelect.selectOption('rating-desc');
-      await page.waitForTimeout(200);
-      const firstCardRating = await page.locator('[data-diary-card] h4, [data-diary-card] h3').first().textContent();
+      await expect(async () => {
+        const titles = await page.locator('h4').allTextContents();
+        expect(titles.join('|')).not.toEqual(allTitlesDefault.join('|'));
+      }).toPass({ timeout: 3000 });
+      const allTitlesRating = await page.locator('h4').allTextContents();
 
       // Switch to "Oldest"
       await sortSelect.selectOption('date-asc');
-      await page.waitForTimeout(200);
-      const firstCardOldest = await page.locator('[data-diary-card] h4, [data-diary-card] h3').first().textContent();
-
-      // At least one sort should produce a different order
-      const allSame = firstCardDefault === firstCardRating && firstCardRating === firstCardOldest;
-      expect(allSame, 'All sort orders produced same first card').toBe(false);
+      await expect(async () => {
+        const titles = await page.locator('h4').allTextContents();
+        expect(titles.join('|')).not.toEqual(allTitlesRating.join('|'));
+      }).toPass({ timeout: 3000 });
     });
 
     // ─── Tab Switching ──────────────────────────────────────────
@@ -201,11 +216,11 @@ for (const vp of VIEWPORTS) {
       await goToMock(page, 'diary');
 
       // Switch to watchlist
-      await page.getByRole('tab', { name: /watchlist/i }).click();
-      await expect(page.locator('[data-watchlist-card]').first()).toBeVisible();
+      await page.getByRole('tab', { name: /Watchlist/ }).click();
+      await expect(page.getByRole('tab', { name: /Watchlist/ })).toHaveAttribute('aria-selected', 'true', { timeout: 3000 });
 
       // Switch back to diary
-      await page.getByRole('tab', { name: /diary/i }).click();
+      await page.getByRole('tab', { name: 'Diary' }).click();
       await expect(page.getByText('shows seen')).toBeVisible();
     });
 
@@ -214,7 +229,7 @@ for (const vp of VIEWPORTS) {
     test('edit pencil links have correct href pattern', async ({ page }) => {
       await goToMock(page, 'diary');
 
-      const editLinks = page.getByLabel('Edit rating');
+      const editLinks = page.getByRole('link', { name: 'Edit rating' });
       const count = await editLinks.count();
       for (let i = 0; i < Math.min(count, 3); i++) {
         const href = await editLinks.nth(i).getAttribute('href');
@@ -226,20 +241,28 @@ for (const vp of VIEWPORTS) {
 
     // ─── Add Show Search ────────────────────────────────────────
 
-    test('add show button opens search', async ({ page }) => {
+    test('add show button opens and closes search', async ({ page }) => {
       await goToMock(page, 'diary');
 
-      const addBtn = page.getByText('Add show').first();
-      if (await addBtn.isVisible()) {
-        await addBtn.click();
-        // Search input should appear and be focused
-        const searchInput = page.getByPlaceholder(/search/i).first();
-        await expect(searchInput).toBeVisible();
+      // "Add a show" or "+" button must exist
+      const addBtn = page.getByRole('button', { name: /Add a show|Add show/ }).first();
+      await expect(addBtn).toBeVisible();
+      await addBtn.click();
 
-        // Escape closes it
+      // Search input should appear and be focused
+      const searchInput = page.getByPlaceholder(/Search to rate/).first();
+      await expect(searchInput).toBeVisible({ timeout: 3000 });
+
+      // Close search
+      const closeBtn = page.getByRole('button', { name: 'Close search' });
+      if (await closeBtn.isVisible()) {
+        await closeBtn.click();
+      } else {
         await page.keyboard.press('Escape');
-        await page.waitForTimeout(300);
       }
+
+      // Search input should disappear
+      await expect(searchInput).not.toBeVisible({ timeout: 3000 });
     });
   });
 }

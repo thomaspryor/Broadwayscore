@@ -129,7 +129,6 @@ export default function ShowPageRating({
         reviewId: idToPass,
       });
       if (savedId) lastSavedId.current = savedId;
-      lastSavedId.current = null;
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error('[Rating] Save error:', e);
@@ -215,7 +214,7 @@ export default function ShowPageRating({
           {/* Stars + edit state */}
           {latestReview && !showPanel ? (
             // Show existing rating with actions on same row
-            <div className="flex items-center gap-2">
+            <div className="flex items-center flex-wrap gap-2">
               <StarRating rating={latestReview.rating} onRatingChange={handleRatingChange} size="md" readOnly hideLabel />
               <div className="flex items-center gap-1">
                 <button
@@ -273,8 +272,8 @@ export default function ShowPageRating({
           {/* Previous viewings list (collapsed) */}
           {viewCount > 1 && !showPanel && (
             <div className="mt-2 space-y-1">
-              {reviews.slice(0, 3).map(review => (
-                <div key={review.id} className="group/viewing flex items-center gap-2 text-xs text-gray-500">
+              {reviews.filter(r => r.id !== latestReview?.id).slice(0, 3).map(review => (
+                <div key={review.id} className="group/viewing flex items-center flex-wrap gap-1.5 text-xs text-gray-500">
                   <StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel />
                   {review.date_seen && (
                     <span>{new Date(review.date_seen + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
@@ -282,7 +281,7 @@ export default function ShowPageRating({
                   <button
                     type="button"
                     onClick={() => handleEdit(review)}
-                    className="p-0.5 text-gray-600 hover:text-white transition-colors"
+                    className="p-2 -m-1 text-gray-600 hover:text-white transition-colors"
                     aria-label="Edit this viewing"
                   >
                     <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -298,7 +297,7 @@ export default function ShowPageRating({
                     <button
                       type="button"
                       onClick={() => setConfirmDeleteId(review.id)}
-                      className="p-0.5 text-gray-600 hover:text-red-400 transition-colors"
+                      className="p-2 -m-1 text-gray-600 hover:text-red-400 transition-colors"
                       aria-label="Delete this viewing"
                     >
                       <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
