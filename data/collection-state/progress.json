@@ -329,7 +329,16 @@
     "book-of-mormon-2011/wsj--terry-teachout.json",
     "magic-mike-live-west-end-2021/guardian--tanya-gold.json",
     "bloodlove-off-broadway-2026/one-minute-critic--unknown.json",
-    "book-of-mormon-2011/financialtimes--brendan-lemon.json"
+    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+    "broken-glass-west-end-2026/independent--alice-saville.json",
+    "broken-glass-west-end-2026/london-theatre--julia-rank.json",
+    "broken-glass-west-end-2026/telegraph--dominic-cavendish.json",
+    "broken-glass-west-end-2026/thestage--unknown.json",
+    "broken-glass-west-end-2026/whatsonstage--sarah-crompton.json",
+    "buena-vista-social-club-2025/amny--matt-windman.json",
+    "buena-vista-social-club-2025/latimes--nicholas-ducassi.json",
+    "buena-vista-social-club-2025/washpost--naveen-kumar.json",
+    "bug-2026/ny1--roma-torre.json"
   ],
   "failed": [
     "what-we-did-before-our-moth-days-off-broadway-2026/nytimes--unknown.json",
@@ -401,7 +410,8 @@
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
     "book-of-mormon-2011/ap--mark-kennedy.json",
     "book-of-mormon-2011/backstage--david-sheward.json",
-    "broken-glass-west-end-2026/broadwayworld--alexander-cohen.json"
+    "broken-glass-west-end-2026/broadwayworld--alexander-cohen.json",
+    "bug-2026/njcom--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -517,7 +527,12 @@
       "bigfoot-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
       "magic-mike-live-west-end-2021/guardian--tanya-gold.json",
       "bloodlove-off-broadway-2026/one-minute-critic--unknown.json",
-      "book-of-mormon-2011/financialtimes--brendan-lemon.json"
+      "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+      "broken-glass-west-end-2026/london-theatre--julia-rank.json",
+      "broken-glass-west-end-2026/thestage--unknown.json",
+      "broken-glass-west-end-2026/whatsonstage--sarah-crompton.json",
+      "buena-vista-social-club-2025/washpost--naveen-kumar.json",
+      "bug-2026/ny1--roma-torre.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -569,7 +584,9 @@
       "data/review-texts/maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
       "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
       "data/review-texts/the-great-gatsby-2024/observer--david-cote.json",
-      "the-great-gatsby-2024/observer--david-cote.json"
+      "the-great-gatsby-2024/observer--david-cote.json",
+      "data/review-texts/buena-vista-social-club-2025/amny--matt-windman.json",
+      "buena-vista-social-club-2025/amny--matt-windman.json"
     ],
     "directCookies": [
       "what-we-did-before-our-moth-days-off-broadway-2026/wsj--charles-isherwood.json",
@@ -640,7 +657,9 @@
       "the-office-a-musical-parody-off-broadway-2018/theatrely--unknown.json",
       "the-unknown-off-broadway-2026/cititour--brian-scott-lipton.json",
       "all-my-sons-west-end-2025/independent--alice-saville.json",
-      "back-to-the-future-west-end-2021/independent--clarisse-loughrey.json"
+      "back-to-the-future-west-end-2021/independent--clarisse-loughrey.json",
+      "broken-glass-west-end-2026/independent--alice-saville.json",
+      "broken-glass-west-end-2026/telegraph--dominic-cavendish.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -660,7 +679,9 @@
       "data/review-texts/the-little-mermaid-the-musical-off-broadway-2026/broadwayworld--kaitlin-milligan.json",
       "data/review-texts/la-ternura-off-broadway-2025/broadwaynews--aa-cristi.json",
       "data/review-texts/los-soles-truncos-off-broadway-2025/broadwaynews--aa-cristi.json",
-      "data/review-texts/los-soles-truncos-off-broadway-2025/nypost--chloe-rabinowitz.json"
+      "data/review-texts/los-soles-truncos-off-broadway-2025/nypost--chloe-rabinowitz.json",
+      "data/review-texts/broken-glass-west-end-2026/broadwayworld--alexander-cohen.json",
+      "data/review-texts/bug-2026/njcom--unknown.json"
     ],
     "archive": [
       "tru-off-broadway-2026/theatermania--unknown.json",
@@ -791,11 +812,12 @@
       "amaze-magic-off-broadway-2025/theater-scene--victor-gluck.json",
       "and-juliet-2022/broadway-blog--joey-sims.json",
       "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json",
-      "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json"
+      "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json",
+      "buena-vista-social-club-2025/latimes--nicholas-ducassi.json"
     ]
   },
   "startTime": "2026-03-06T09:13:03.197Z",
-  "lastProcessed": "broken-glass-west-end-2026/broadwayworld--alexander-cohen.json",
+  "lastProcessed": "bug-2026/ny1--roma-torre.json",
   "log": [
     {
       "t": "2026-03-06T09:14:33.354Z",
@@ -994,6 +1016,17 @@
       "t": "2026-03-06T11:43:19.508Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-06T11:59:18.522Z",
+      "event": "bb-session",
+      "session": "b817d4cd",
+      "url": "https://www.amny.com/entertainment/broadway/review-buena-vista-social-clunk/"
+    },
+    {
+      "t": "2026-03-06T11:59:20.318Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
