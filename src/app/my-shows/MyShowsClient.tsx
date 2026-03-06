@@ -242,12 +242,12 @@ export default function MyShowsClient() {
       </div>
 
       {/* Stats bar */}
-      <div className="flex items-center gap-4 text-sm text-gray-400 mb-2">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-400 mb-2">
         <span><strong className="text-white">{showsSeen}</strong> shows seen</span>
         {upcomingCount > 0 && (
           <span><strong className="text-white">{upcomingCount}</strong> upcoming</span>
         )}
-        <span><strong className="text-white">{watchlist.length}</strong> on watchlist</span>
+        <span><strong className="text-white">{watchlist.length}</strong> watchlist</span>
         {toBeRatedEntries.length > 0 && (
           <span><strong className="text-amber-400">{toBeRatedEntries.length}</strong> to rate</span>
         )}
@@ -262,11 +262,11 @@ export default function MyShowsClient() {
       </div>
 
       {/* Tab bar + inline sort/view controls */}
-      <div className="flex items-center border-b border-white/10 mb-6">
+      <div className="flex items-center gap-1 border-b border-white/10 mb-6">
         <button
           type="button"
           onClick={() => setActiveTab('diary')}
-          className={`px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] ${
+          className={`flex-shrink-0 px-3 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] ${
             activeTab === 'diary'
               ? 'text-white border-brand'
               : 'text-gray-500 border-transparent hover:text-gray-300'
@@ -277,7 +277,7 @@ export default function MyShowsClient() {
         <button
           type="button"
           onClick={() => setActiveTab('watchlist')}
-          className={`px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] ${
+          className={`flex-shrink-0 px-3 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] ${
             activeTab === 'watchlist'
               ? 'text-white border-brand'
               : 'text-gray-500 border-transparent hover:text-gray-300'
@@ -285,34 +285,34 @@ export default function MyShowsClient() {
         >
           Watchlist
           {watchlist.length > 0 && (
-            <span className="ml-1.5 px-1.5 py-0.5 text-[10px] bg-white/10 rounded-full">
+            <span className="ml-1 px-1.5 py-0.5 text-[10px] bg-white/10 rounded-full">
               {watchlist.length}
             </span>
           )}
         </button>
 
         {/* Inline controls on the right */}
-        <div className="ml-auto flex items-center gap-2 -mb-[1px] pb-1">
+        <div className="ml-auto flex items-center gap-1.5 sm:gap-2 -mb-[1px] pb-1">
           {activeTab === 'diary' && (
             <select
               value={diarySort}
               onChange={e => setDiarySort(e.target.value as DiarySort)}
-              className="text-xs bg-white/5 border border-white/10 rounded px-2 py-1 text-gray-300"
+              className="text-[11px] sm:text-xs bg-white/5 border border-white/10 rounded px-1.5 sm:px-2 py-1 text-gray-300 max-w-[110px] sm:max-w-none"
             >
-              <option value="date-desc">Newest First</option>
-              <option value="date-asc">Oldest First</option>
-              <option value="rating-desc">Highest Rated</option>
+              <option value="date-desc">Newest</option>
+              <option value="date-asc">Oldest</option>
+              <option value="rating-desc">Top Rated</option>
             </select>
           )}
           {activeTab === 'watchlist' && (
             <select
               value={watchlistSort}
               onChange={e => setWatchlistSort(e.target.value as WatchlistSort)}
-              className="text-xs bg-white/5 border border-white/10 rounded px-2 py-1 text-gray-300"
+              className="text-[11px] sm:text-xs bg-white/5 border border-white/10 rounded px-1.5 sm:px-2 py-1 text-gray-300 max-w-[110px] sm:max-w-none"
             >
-              <option value="added-desc">Recently Added</option>
+              <option value="added-desc">Recent</option>
               <option value="alphabetical">A-Z</option>
-              <option value="closing-soon">Closing Soon</option>
+              <option value="closing-soon">Closing</option>
             </select>
           )}
           {/* Grid / List toggle — both tabs */}
@@ -320,20 +320,20 @@ export default function MyShowsClient() {
             <button
               type="button"
               onClick={() => activeTab === 'diary' ? setDiaryView('grid') : setWatchlistView('grid')}
-              className={`p-2 ${(activeTab === 'diary' ? diaryView : watchlistView) === 'grid' ? 'bg-white/10 text-white' : 'text-gray-500 hover:text-gray-300'}`}
+              className={`p-1.5 sm:p-2 ${(activeTab === 'diary' ? diaryView : watchlistView) === 'grid' ? 'bg-white/10 text-white' : 'text-gray-500 hover:text-gray-300'}`}
               aria-label="Grid view"
             >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
               </svg>
             </button>
             <button
               type="button"
               onClick={() => activeTab === 'diary' ? setDiaryView('list') : setWatchlistView('list')}
-              className={`p-2 ${(activeTab === 'diary' ? diaryView : watchlistView) === 'list' ? 'bg-white/10 text-white' : 'text-gray-500 hover:text-gray-300'}`}
+              className={`p-1.5 sm:p-2 ${(activeTab === 'diary' ? diaryView : watchlistView) === 'list' ? 'bg-white/10 text-white' : 'text-gray-500 hover:text-gray-300'}`}
               aria-label="List view"
             >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
@@ -385,9 +385,9 @@ export default function MyShowsClient() {
                         ? new Date(entry.planned_date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
                         : null;
                       return (
-                        <div key={`wl-${entry.id}`} className="relative flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
+                        <div key={`wl-${entry.id}`} className="relative flex items-center gap-2 sm:gap-4 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
                           <Link href={entryHref} className="absolute inset-0 z-0" aria-label={`View ${entryTitle}`} />
-                          <div className="relative z-[1] flex-shrink-0 w-14 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay pointer-events-none">
+                          <div className="relative z-[1] flex-shrink-0 w-10 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay pointer-events-none">
                             {entryShow?.posterUrl ? (
                               <img src={entryShow.posterUrl} alt="" className="w-full h-full object-cover" />
                             ) : (
@@ -395,14 +395,14 @@ export default function MyShowsClient() {
                             )}
                           </div>
                           <div className="relative z-[1] flex-1 min-w-0 pointer-events-none">
-                            <h4 className="font-bold text-white text-base truncate">{entryTitle}</h4>
-                            {entryShow?.venue && <p className="text-xs text-gray-500 truncate">{entryShow.venue}</p>}
+                            <h4 className="font-bold text-white text-sm sm:text-base truncate">{entryTitle}</h4>
+                            {entryShow?.venue && <p className="text-[11px] sm:text-xs text-gray-500 truncate">{entryShow.venue}</p>}
                           </div>
                           <div className="relative z-[1] flex-shrink-0 text-right pointer-events-none">
-                            {entryFormattedDate && <p className="text-xs font-medium text-brand">{entryFormattedDate}</p>}
+                            {entryFormattedDate && <p className="text-[11px] sm:text-xs font-medium text-brand">{entryFormattedDate}</p>}
                             {daysUntil !== null && daysUntil > 0 && (
                               <p className="text-[10px] text-gray-500 mt-0.5">
-                                {daysUntil === 1 ? 'Tomorrow' : `In ${daysUntil} days`}
+                                {daysUntil === 1 ? 'Tomorrow' : `${daysUntil}d`}
                               </p>
                             )}
                           </div>
@@ -433,7 +433,7 @@ export default function MyShowsClient() {
                       }} />
                     </div>
                   ) : (
-                    <div className="grid grid-cols-4 gap-2">
+                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                       {pastReviews.map(review => (
                         <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={async () => { await deleteReview(review.id); showToast?.('Rating deleted.', 'info'); }} />
                       ))}
@@ -463,7 +463,7 @@ export default function MyShowsClient() {
               ctaHref="/"
             />
           ) : watchlistView === 'grid' ? (
-            <div className="grid grid-cols-4 gap-2">
+            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
               {sortedWatchlist.map(entry => (
                 <WatchlistCard
                   key={entry.id}
@@ -509,12 +509,12 @@ function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: Show
   const href = getShowHref(slug, category);
 
   return (
-    <div className="group/diary relative flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
+    <div className="group/diary relative flex items-center gap-2 sm:gap-4 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
       {/* Link overlay for the whole card */}
       <Link href={href} className="absolute inset-0 z-0" aria-label={`View ${title}`} />
 
       {/* Poster */}
-      <div className="relative z-[1] pointer-events-none flex-shrink-0 w-14 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay">
+      <div className="relative z-[1] pointer-events-none flex-shrink-0 w-10 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay">
         {show?.posterUrl ? (
           <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
         ) : (
@@ -524,8 +524,8 @@ function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: Show
 
       {/* Info */}
       <div className="relative z-[1] pointer-events-none flex-1 min-w-0">
-        <h4 className="font-bold text-white text-base group-hover/diary:text-brand transition-colors truncate">{title}</h4>
-        <div className="flex flex-wrap items-center gap-1.5 mt-1">
+        <h4 className="font-bold text-white text-sm sm:text-base group-hover/diary:text-brand transition-colors truncate">{title}</h4>
+        <div className="flex flex-wrap items-center gap-1 sm:gap-1.5 mt-0.5 sm:mt-1">
           {show?.type && <FormatPill type={show.type} />}
           {show && <StatusBadge status={show.status} />}
           {category === 'off-broadway' && (
@@ -550,7 +550,7 @@ function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: Show
       </div>
 
       {/* Rating + edit icon */}
-      <div className="relative z-[1] pointer-events-none flex-shrink-0 flex flex-col items-center gap-0.5 w-16 md:w-28 overflow-hidden">
+      <div className="relative z-[1] pointer-events-none flex-shrink-0 flex flex-col items-center gap-0.5 w-12 sm:w-16 md:w-28 overflow-hidden">
         {/* Single star + number on mobile, full stars on desktop */}
         <span className="md:hidden flex items-center gap-1">
           <svg className="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
@@ -558,8 +558,8 @@ function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: Show
         </span>
         <span className="hidden md:inline-flex"><StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel /></span>
         <span className="hidden md:block text-sm font-bold text-amber-400">{review.rating.toFixed(1)} stars</span>
-        {/* Edit + delete icons — inline below rating, visible on hover */}
-        <div className="flex items-center gap-0.5 opacity-0 group-hover/diary:opacity-100 transition-opacity pointer-events-auto">
+        {/* Edit + delete icons — inline below rating, always visible on mobile, hover on desktop */}
+        <div className="flex items-center gap-0.5 opacity-100 sm:opacity-0 sm:group-hover/diary:opacity-100 transition-opacity pointer-events-auto">
           <Link
             href={`${href}?edit=1`}
             className="p-1 rounded-full text-gray-600 hover:text-white transition-colors"
@@ -617,12 +617,12 @@ function DiaryGridCard({ review, show, onDelete }: { review: UserReview; show?: 
             </span>
           </div>
         )}
-        {/* Delete button — top-right on hover */}
+        {/* Delete button — top-right, always visible on mobile, hover on desktop */}
         {onDelete && (
           <button
             type="button"
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); confirmDelete ? onDelete() : setConfirmDelete(true); }}
-            className={`absolute top-1 right-1 z-[2] p-1 rounded-full ${confirmDelete ? 'bg-red-500/80 text-white opacity-100' : 'bg-black/70 text-gray-400 hover:text-red-400 opacity-0 group-hover/grid:opacity-100'} transition-opacity`}
+            className={`absolute top-1 right-1 z-[2] p-1.5 rounded-full ${confirmDelete ? 'bg-red-500/80 text-white opacity-100' : 'bg-black/70 text-gray-400 hover:text-red-400 opacity-100 sm:opacity-0 sm:group-hover/grid:opacity-100'} transition-opacity`}
             aria-label="Delete rating"
           >
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -685,25 +685,26 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
         </div>
         {/* Rate overlay — navigates to show page with ?rate=1 to auto-open rating */}
         {/* Uses <div> + onClick instead of <Link> to avoid nested <a> tags */}
+        {/* On mobile: always visible small button at bottom; on desktop: full hover overlay */}
         <div
           role="button"
           tabIndex={0}
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.location.href = `${href}?rate=1`; }}
           onKeyDown={(e) => { if (e.key === 'Enter') { window.location.href = `${href}?rate=1`; } }}
-          className="absolute inset-0 flex items-end justify-center pb-2 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover/wl:opacity-100 transition-opacity z-[1] cursor-pointer"
+          className="absolute inset-x-0 bottom-0 flex items-end justify-center pb-2 bg-gradient-to-t from-black/60 via-transparent to-transparent sm:inset-0 sm:opacity-0 sm:group-hover/wl:opacity-100 transition-opacity z-[1] cursor-pointer"
         >
-          <span className="text-xs font-semibold text-white/90 flex items-center gap-1">
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <span className="text-[10px] sm:text-xs font-semibold text-white/90 flex items-center gap-1">
+            <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
             </svg>
             Rate
           </span>
         </div>
-        {/* Trash button to remove — top-right on hover, with confirmation */}
+        {/* Trash button to remove — top-right, always visible on mobile, hover on desktop */}
         <button
           type="button"
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); confirmRemove ? onRemove() : setConfirmRemove(true); }}
-          className={`absolute top-1 right-1 z-[2] p-1 rounded-full ${confirmRemove ? 'bg-red-500/80 text-white opacity-100' : 'bg-black/70 text-gray-400 hover:text-red-400 opacity-0 group-hover/wl:opacity-100'} transition-opacity`}
+          className={`absolute top-1 right-1 z-[2] p-1.5 rounded-full ${confirmRemove ? 'bg-red-500/80 text-white opacity-100' : 'bg-black/70 text-gray-400 hover:text-red-400 opacity-100 sm:opacity-0 sm:group-hover/wl:opacity-100'} transition-opacity`}
           aria-label="Remove from watchlist"
         >
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -763,7 +764,7 @@ function DatePickerButton({ value, label, onChange }: { value: string; label: st
           e.stopPropagation();
           try { inputRef.current?.showPicker(); } catch { inputRef.current?.focus(); }
         }}
-        className="w-full flex items-center justify-center gap-1.5 text-xs text-gray-400 hover:text-gray-300 transition-colors cursor-pointer min-h-[36px] px-2 rounded-lg bg-white/[0.03] border border-white/[0.06] hover:border-white/10"
+        className="w-full flex items-center justify-center gap-1 sm:gap-1.5 text-[11px] sm:text-xs text-gray-400 hover:text-gray-300 transition-colors cursor-pointer min-h-[32px] sm:min-h-[36px] px-1.5 sm:px-2 rounded-lg bg-white/[0.03] border border-white/[0.06] hover:border-white/10"
       >
         <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -806,20 +807,20 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
     : null;
 
   return (
-    <div className="group/wl relative flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
+    <div className="group/wl relative flex items-center gap-2 sm:gap-4 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
       <Link href={href} className="absolute inset-0 z-0" aria-label={`View ${title}`} />
 
-      <div className="relative z-[1] flex-shrink-0 w-14 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay">
+      <div className="relative z-[1] flex-shrink-0 w-10 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay">
         {show?.posterUrl ? (
           <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-600 text-xl">🎭</div>
+          <div className="w-full h-full flex items-center justify-center text-gray-600 text-lg sm:text-xl">🎭</div>
         )}
       </div>
 
       <div className="relative z-[1] flex-1 min-w-0">
-        <h4 className="font-bold text-white text-base group-hover/wl:text-brand transition-colors truncate">{title}</h4>
-        <p className="text-xs text-gray-500 truncate">{show?.venue}</p>
+        <h4 className="font-bold text-white text-sm sm:text-base group-hover/wl:text-brand transition-colors truncate">{title}</h4>
+        <p className="text-[11px] sm:text-xs text-gray-500 truncate">{show?.venue}</p>
         <div className="flex flex-wrap items-center gap-1.5 mt-1">
           {show?.type && <FormatPill type={show.type} />}
           {show && <StatusBadge status={show.status} />}
@@ -834,39 +835,41 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
         )}
       </div>
 
-      <div className="relative z-[1] flex-shrink-0 flex flex-col items-center gap-1.5">
+      <div className="relative z-[1] flex-shrink-0 flex flex-col items-end gap-1">
         <DatePickerButton
           value={entry.planned_date || ''}
           label={formattedDate || 'Add date'}
           onChange={(val) => onDateChange(val || null)}
         />
-        {/* Rate link — ?rate=1 triggers auto-open of rating panel */}
-        <Link
-          href={`${href}?rate=1`}
-          className="relative z-[1] text-xs text-gray-500 hover:text-amber-400 transition-colors flex items-center gap-1"
-        >
-          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-          </svg>
-          Rate
-        </Link>
-        {confirmRemove ? (
-          <span className="relative z-[1] flex items-center gap-1 text-[10px]">
-            <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRemove(); }} className="text-red-400 hover:text-red-300 font-medium">Remove?</button>
-            <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirmRemove(false); }} className="text-gray-500 hover:text-white">No</button>
-          </span>
-        ) : (
-          <button
-            type="button"
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirmRemove(true); }}
-            className="relative z-[1] p-1 text-gray-600 hover:text-red-400 transition-colors"
-            aria-label="Remove from watchlist"
+        {/* Rate + Remove row */}
+        <div className="flex items-center gap-2">
+          <Link
+            href={`${href}?rate=1`}
+            className="relative z-[1] text-[11px] sm:text-xs text-gray-500 hover:text-amber-400 transition-colors flex items-center gap-1"
           >
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
             </svg>
-          </button>
-        )}
+            Rate
+          </Link>
+          {confirmRemove ? (
+            <span className="relative z-[1] flex items-center gap-1 text-[10px]">
+              <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRemove(); }} className="text-red-400 hover:text-red-300 font-medium">Remove?</button>
+              <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirmRemove(false); }} className="text-gray-500 hover:text-white">No</button>
+            </span>
+          ) : (
+            <button
+              type="button"
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirmRemove(true); }}
+              className="relative z-[1] p-1 text-gray-600 hover:text-red-400 transition-colors"
+              aria-label="Remove from watchlist"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -1030,7 +1033,7 @@ function AddShowSearch({
 
       {/* Dropdown results */}
       {query.length >= 2 && (
-        <div className="absolute top-full right-0 mt-1.5 w-72 sm:w-80 bg-surface-raised border border-white/10 rounded-lg shadow-xl overflow-hidden z-[80] max-h-72 overflow-y-auto">
+        <div className="absolute top-full right-0 mt-1.5 w-[calc(100vw-2rem)] sm:w-80 bg-surface-raised border border-white/10 rounded-lg shadow-xl overflow-hidden z-[80] max-h-72 overflow-y-auto">
           {results.length > 0 ? results.map(show => {
             const alreadyReviewed = existingReviewIds.has(show.id);
             const alreadyWatchlisted = existingWatchlistIds.has(show.id);
@@ -1096,32 +1099,44 @@ function ToBeRatedCard({ entry, show }: { entry: WatchlistEntry; show?: ShowLook
   const href = getShowHref(slug, category);
 
   return (
-    <div className="relative flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3 rounded-xl bg-amber-500/[0.03] border border-amber-500/10 hover:border-amber-500/20 hover:bg-amber-500/[0.06] transition-colors">
+    <div className="relative flex items-center gap-2 sm:gap-4 px-3 sm:px-5 py-3 rounded-xl bg-amber-500/[0.03] border border-amber-500/10 hover:border-amber-500/20 hover:bg-amber-500/[0.06] transition-colors">
       <Link href={href} className="absolute inset-0 z-0" aria-label={`Rate ${title}`} />
-      <div className="relative z-[1] flex-shrink-0 w-14 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay pointer-events-none">
+      <div className="relative z-[1] flex-shrink-0 w-10 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay pointer-events-none">
         {show?.posterUrl ? (
           <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-600 text-xl">🎭</div>
+          <div className="w-full h-full flex items-center justify-center text-gray-600 text-lg sm:text-xl">🎭</div>
         )}
       </div>
       <div className="relative z-[1] flex-1 min-w-0 pointer-events-none">
-        <h4 className="font-bold text-white text-base truncate">{title}</h4>
-        {show?.venue && <p className="text-xs text-gray-500">{show.venue}</p>}
+        <h4 className="font-bold text-white text-sm sm:text-base truncate">{title}</h4>
+        {show?.venue && <p className="text-[11px] sm:text-xs text-gray-500 truncate">{show.venue}</p>}
         {entry.planned_date && (
-          <p className="text-xs text-gray-500 mt-0.5">
-            Saw on {new Date(entry.planned_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+          <p className="text-[11px] sm:text-xs text-gray-500 mt-0.5">
+            Saw {new Date(entry.planned_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
           </p>
         )}
       </div>
       <div className="relative z-[2] flex-shrink-0 pointer-events-auto">
-        <StarRating
-          rating={null}
-          onRatingChange={(rating) => {
-            router.push(`${href}?rate=1&stars=${rating}`);
-          }}
-          size="sm"
-        />
+        {/* xs stars on mobile, sm on desktop — prevents overflow */}
+        <span className="sm:hidden">
+          <StarRating
+            rating={null}
+            onRatingChange={(rating) => {
+              router.push(`${href}?rate=1&stars=${rating}`);
+            }}
+            size="xs"
+          />
+        </span>
+        <span className="hidden sm:inline-flex">
+          <StarRating
+            rating={null}
+            onRatingChange={(rating) => {
+              router.push(`${href}?rate=1&stars=${rating}`);
+            }}
+            size="sm"
+          />
+        </span>
       </div>
     </div>
   );
