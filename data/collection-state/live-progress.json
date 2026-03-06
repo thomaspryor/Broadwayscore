@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-06T19:27:38.463Z",
-  "processed": 100,
-  "failed": 15,
-  "successRate": "87.0%",
+  "updatedAt": "2026-03-06T19:34:00.470Z",
+  "processed": 108,
+  "failed": 17,
+  "successRate": "86.4%",
   "tierBreakdown": {
-    "playwright": 35,
+    "playwright": 42,
     "amp": 24,
     "browserbase": 18,
     "directCookies": 1,
     "scrapingbee": 25,
     "brightdata": 0,
     "archiveToday": 3,
-    "archive": 18
+    "archive": 19
   },
-  "browserbaseSessions": 13,
+  "browserbaseSessions": 15,
   "recentActivity": [
-    {
-      "t": "2026-03-06T18:55:36.269Z",
-      "event": "bb-session",
-      "session": "c688a160",
-      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
-    },
-    {
-      "t": "2026-03-06T18:55:37.293Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-06T18:57:25.813Z",
-      "event": "bb-session",
-      "session": "8368bd5b",
-      "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
-    },
-    {
-      "t": "2026-03-06T18:57:27.115Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-06T19:00:22.451Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-03-06T19:22:44.539Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-06T19:28:11.497Z",
+      "event": "bb-session",
+      "session": "c31fa8a3",
+      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
+    },
+    {
+      "t": "2026-03-06T19:28:12.601Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-06T19:30:41.623Z",
+      "event": "bb-session",
+      "session": "772dfa1d",
+      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
+    },
+    {
+      "t": "2026-03-06T19:30:42.683Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
