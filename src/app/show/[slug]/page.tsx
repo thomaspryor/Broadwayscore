@@ -387,9 +387,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 return (
                   <div className="space-y-2" data-testid="show-score-section">
                     {/* Score row */}
-                    <div className="flex items-center gap-3 sm:gap-4">
+                    <div className="flex items-start gap-3 sm:gap-4">
                       {scoreBox}
-                      <div>
+                      <div className="pt-0.5">
                         {showTBD ? (
                           <div className="text-base sm:text-lg font-bold text-gray-400">Awaiting Reviews</div>
                         ) : sentiment && (

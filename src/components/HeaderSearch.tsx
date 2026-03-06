@@ -83,6 +83,9 @@ export default function HeaderSearch() {
     // Merge: Fuse results first (ranked by relevance), then substring matches
     // Note: unscored closed shows are already excluded from search-shows.json at build time
     const merged = [...fuseResults, ...substringMatches];
+    // Sort open/previews shows first, then closed
+    const statusOrder = (s: Show) => s.status === 'open' || s.status === 'previews' ? 0 : 1;
+    merged.sort((a, b) => statusOrder(a) - statusOrder(b));
     return merged.slice(0, 8);
   }, [deferredQuery, dataReady, shows]);
 
