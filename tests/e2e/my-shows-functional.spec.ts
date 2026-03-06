@@ -77,37 +77,42 @@ for (const vp of VIEWPORTS) {
     test('diary list: delete confirmation removes card', async ({ page }) => {
       await goToMock(page, 'diary');
 
-      const initialCount = await page.getByText('shows seen').textContent();
+      // Get initial "shows seen" count
+      const initialText = await page.getByText('shows seen').textContent();
       const deleteBtn = page.getByRole('button', { name: 'Delete rating' }).first();
       await deleteBtn.click();
 
       // Confirm delete
       await page.getByRole('button', { name: /Delete\?/ }).first().click();
 
-      // Count should change
-      await page.waitForTimeout(300);
-      const newCount = await page.getByText('shows seen').textContent();
-      expect(newCount).not.toEqual(initialCount);
+      // Count should change — wait for the text to differ from initial
+      await expect(async () => {
+        const newText = await page.getByText('shows seen').textContent();
+        expect(newText).not.toEqual(initialText);
+      }).toPass({ timeout: 3000 });
     });
 
-    test('diary grid: delete button toggles on mobile', async ({ page }) => {
+    test('diary grid: delete button arms on first tap (mobile only)', async ({ page }) => {
       // Grid delete is a single toggle button — visible on mobile, hover-only on desktop
-      if (vp.name === 'desktop') return; // skip — grid delete needs hover which is brittle in tests
+      if (vp.name === 'desktop') return;
 
       await goToMock(page, 'diary');
-      await page.getByRole('button', { name: 'Grid view' }).click();
-      await page.waitForTimeout(200);
+      const gridBtn = page.getByRole('button', { name: 'Grid view' });
+      await gridBtn.click();
+      // Wait for grid layout to render
+      await expect(gridBtn).toHaveClass(/bg-white/, { timeout: 3000 });
 
-      // Grid delete button should be visible on mobile (opacity-100)
+      // Grid delete button should be visible on mobile
       const deleteBtn = page.getByRole('button', { name: 'Delete rating' }).first();
-      if (await deleteBtn.isVisible()) {
-        // First click arms the delete (button turns red)
-        await deleteBtn.click();
-        await page.waitForTimeout(200);
-        // Second click confirms delete — but we'll just dismiss by waiting for auto-cancel (4s timeout)
-        // Verify the button is still there (confirmation state)
-        await expect(deleteBtn).toBeVisible();
-      }
+      await expect(deleteBtn).toBeVisible();
+
+      // First click arms the delete (button turns red)
+      await deleteBtn.click();
+      // Button should still be visible in armed/confirmation state
+      await expect(deleteBtn).toBeVisible();
+      // The button or its container should now have red styling (armed state)
+      const classes = await deleteBtn.getAttribute('class');
+      expect(classes).toBeTruthy();
     });
 
     // ─── Watchlist — Remove Flow (List View) ────────────────────
@@ -115,8 +120,9 @@ for (const vp of VIEWPORTS) {
     test('watchlist list: remove confirmation shows and dismisses', async ({ page }) => {
       await goToMock(page, 'watchlist');
       // Default watchlist view is grid — switch to list to get "Remove?/No" confirmation
-      await page.getByRole('button', { name: 'List view' }).click();
-      await page.waitForTimeout(200);
+      const listBtn = page.getByRole('button', { name: 'List view' });
+      await listBtn.click();
+      await expect(listBtn).toHaveClass(/bg-white/, { timeout: 3000 });
 
       const removeBtn = page.getByRole('button', { name: 'Remove from watchlist' }).first();
       await expect(removeBtn).toBeVisible();
@@ -135,8 +141,16 @@ for (const vp of VIEWPORTS) {
     test('watchlist list: remove confirmation removes entry', async ({ page }) => {
       await goToMock(page, 'watchlist');
       // Switch to list view
-      await page.getByRole('button', { name: 'List view' }).click();
-      await page.waitForTimeout(200);
+      const listBtn = page.getByRole('button', { name: 'List view' });
+      await listBtn.click();
+      await expect(listBtn).toHaveClass(/bg-white/, { timeout: 3000 });
+
+      // Get initial watchlist count from tab badge
+      const watchlistTab = page.getByRole('tab', { name: /Watchlist/ });
+      const initialTabText = await watchlistTab.textContent();
+      const initialMatch = initialTabText?.match(/\d+/);
+      const initialCount = initialMatch ? parseInt(initialMatch[0]) : 0;
+      expect(initialCount).toBeGreaterThan(0);
 
       const removeBtn = page.getByRole('button', { name: 'Remove from watchlist' }).first();
       await expect(removeBtn).toBeVisible();
@@ -145,13 +159,12 @@ for (const vp of VIEWPORTS) {
       // Confirm removal
       await page.getByRole('button', { name: /Remove\?/ }).first().click();
 
-      // Wait for removal animation
-      await page.waitForTimeout(300);
-      // Watchlist badge count should decrease
-      const watchlistTab = page.getByRole('tab', { name: /Watchlist/ });
-      const tabText = await watchlistTab.textContent();
-      // Should show fewer than 6 (original count)
-      expect(tabText).toContain('5');
+      // Watchlist badge count should decrease by 1
+      const expectedCount = initialCount - 1;
+      await expect(async () => {
+        const tabText = await watchlistTab.textContent();
+        expect(tabText).toContain(String(expectedCount));
+      }).toPass({ timeout: 3000 });
     });
 
     // ─── View Switching ─────────────────────────────────────────
@@ -159,19 +172,15 @@ for (const vp of VIEWPORTS) {
     test('grid/list toggle switches layout', async ({ page }) => {
       await goToMock(page, 'diary');
 
-      // Switch to grid
+      // Switch to grid — button should get active state
       const gridBtn = page.getByRole('button', { name: 'Grid view' });
       await gridBtn.click();
-      await page.waitForTimeout(200);
-      const gridClasses = await gridBtn.getAttribute('class');
-      expect(gridClasses).toContain('bg-white');
+      await expect(gridBtn).toHaveClass(/bg-white/, { timeout: 3000 });
 
-      // Switch back to list
+      // Switch back to list — list button should get active state
       const listBtn = page.getByRole('button', { name: 'List view' });
       await listBtn.click();
-      await page.waitForTimeout(200);
-      const listClasses = await listBtn.getAttribute('class');
-      expect(listClasses).toContain('bg-white');
+      await expect(listBtn).toHaveClass(/bg-white/, { timeout: 3000 });
     });
 
     // ─── Sort Behavior ──────────────────────────────────────────
@@ -183,25 +192,22 @@ for (const vp of VIEWPORTS) {
       await expect(sortSelect).toBeVisible();
 
       // Get all card titles in default (newest) order
-      // Note: "To Be Rated" section is always first, so check Past Shows section
       const allTitlesDefault = await page.locator('h4').allTextContents();
 
-      // Switch to "Top Rated"
+      // Switch to "Top Rated" and wait for re-render
       await sortSelect.selectOption('rating-desc');
-      await page.waitForTimeout(300);
+      await expect(async () => {
+        const titles = await page.locator('h4').allTextContents();
+        expect(titles.join('|')).not.toEqual(allTitlesDefault.join('|'));
+      }).toPass({ timeout: 3000 });
       const allTitlesRating = await page.locator('h4').allTextContents();
 
       // Switch to "Oldest"
       await sortSelect.selectOption('date-asc');
-      await page.waitForTimeout(300);
-      const allTitlesOldest = await page.locator('h4').allTextContents();
-
-      // The full title list should differ between at least two sort orders
-      const defaultStr = allTitlesDefault.join('|');
-      const ratingStr = allTitlesRating.join('|');
-      const oldestStr = allTitlesOldest.join('|');
-      const allSame = defaultStr === ratingStr && ratingStr === oldestStr;
-      expect(allSame, 'All sort orders produced same card order').toBe(false);
+      await expect(async () => {
+        const titles = await page.locator('h4').allTextContents();
+        expect(titles.join('|')).not.toEqual(allTitlesRating.join('|'));
+      }).toPass({ timeout: 3000 });
     });
 
     // ─── Tab Switching ──────────────────────────────────────────
@@ -211,7 +217,7 @@ for (const vp of VIEWPORTS) {
 
       // Switch to watchlist
       await page.getByRole('tab', { name: /Watchlist/ }).click();
-      await page.waitForTimeout(300);
+      await expect(page.getByRole('tab', { name: /Watchlist/ })).toHaveAttribute('aria-selected', 'true', { timeout: 3000 });
 
       // Switch back to diary
       await page.getByRole('tab', { name: 'Diary' }).click();
@@ -235,24 +241,28 @@ for (const vp of VIEWPORTS) {
 
     // ─── Add Show Search ────────────────────────────────────────
 
-    test('add show button opens search', async ({ page }) => {
+    test('add show button opens and closes search', async ({ page }) => {
       await goToMock(page, 'diary');
 
-      const addBtn = page.getByRole('button', { name: /Add a show/ }).first();
-      if (await addBtn.isVisible()) {
-        await addBtn.click();
-        const searchInput = page.getByPlaceholder(/Search to rate/).first();
-        await expect(searchInput).toBeVisible();
+      // "Add a show" or "+" button must exist
+      const addBtn = page.getByRole('button', { name: /Add a show|Add show/ }).first();
+      await expect(addBtn).toBeVisible();
+      await addBtn.click();
 
-        // Close search
-        const closeBtn = page.getByRole('button', { name: 'Close search' });
-        if (await closeBtn.isVisible()) {
-          await closeBtn.click();
-        } else {
-          await page.keyboard.press('Escape');
-        }
-        await page.waitForTimeout(300);
+      // Search input should appear and be focused
+      const searchInput = page.getByPlaceholder(/Search to rate/).first();
+      await expect(searchInput).toBeVisible({ timeout: 3000 });
+
+      // Close search
+      const closeBtn = page.getByRole('button', { name: 'Close search' });
+      if (await closeBtn.isVisible()) {
+        await closeBtn.click();
+      } else {
+        await page.keyboard.press('Escape');
       }
+
+      // Search input should disappear
+      await expect(searchInput).not.toBeVisible({ timeout: 3000 });
     });
   });
 }

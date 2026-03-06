@@ -94,9 +94,8 @@ for (const vp of VIEWPORTS) {
       // Cancel
       await page.getByRole('button', { name: /cancel/i }).click();
 
-      // Panel should close
-      await page.waitForTimeout(300);
-      await expect(page.locator('textarea')).not.toBeVisible();
+      // Panel should close — textarea disappears
+      await expect(page.locator('textarea')).not.toBeVisible({ timeout: 3000 });
     });
 
     test('existing state: save updates the review', async ({ page }) => {
@@ -110,9 +109,9 @@ for (const vp of VIEWPORTS) {
       await textarea.fill('Updated review text');
       await page.getByRole('button', { name: /save/i }).click();
 
-      // Panel should close
-      await page.waitForTimeout(500);
-      await expect(page.locator('textarea')).not.toBeVisible();
+      // Panel should close — textarea disappears, edit button returns
+      await expect(page.locator('textarea')).not.toBeVisible({ timeout: 3000 });
+      await expect(page.getByRole('button', { name: 'Edit rating' })).toBeVisible({ timeout: 3000 });
     });
 
     // ─── Delete Flow ────────────────────────────────────────────
@@ -124,13 +123,12 @@ for (const vp of VIEWPORTS) {
       await expect(deleteBtn).toBeVisible();
       await deleteBtn.click();
 
-      // "Delete?" and "Cancel" appear (use .first() — existing state has 2 reviews,
-      // both show Delete? because latestReview is duplicated in previous viewings list)
-      await expect(page.getByRole('button', { name: 'Delete?' }).first()).toBeVisible();
-      await expect(page.getByRole('button', { name: 'Cancel' }).first()).toBeVisible();
+      // "Delete?" and "Cancel" appear
+      await expect(page.getByRole('button', { name: 'Delete?' })).toBeVisible();
+      await expect(page.getByRole('button', { name: 'Cancel' })).toBeVisible();
 
       // Cancel → dismissed
-      await page.getByRole('button', { name: 'Cancel' }).first().click();
+      await page.getByRole('button', { name: 'Cancel' }).click();
       await expect(page.getByRole('button', { name: 'Delete?' })).not.toBeVisible();
       await expect(deleteBtn).toBeVisible();
     });
@@ -140,11 +138,9 @@ for (const vp of VIEWPORTS) {
 
       const deleteBtn = page.getByRole('button', { name: 'Delete rating' });
       await deleteBtn.click();
-      await page.getByRole('button', { name: 'Delete?' }).first().click();
+      await page.getByRole('button', { name: 'Delete?' }).click();
 
-      // Review should be removed — stars should reset to interactive (empty) state
-      await page.waitForTimeout(500);
-      // Interactive stars should now be visible (empty state with clickable stars)
+      // Review should be removed — interactive stars should appear (empty state)
       const stars = page.locator('[data-testid="show-rating-fixture"] button[aria-label$="stars"]');
       await expect(stars.first()).toBeVisible({ timeout: 3000 });
     });
@@ -158,15 +154,27 @@ for (const vp of VIEWPORTS) {
       await expect(page.getByText(/Seen \d+ times/)).toBeVisible();
     });
 
-    test('multi state: new viewing button works', async ({ page }) => {
+    test('multi state: new viewing button opens panel with interactive stars', async ({ page }) => {
       await goToShowFixture(page, 'multi');
 
       const newViewingBtn = page.getByRole('button', { name: '+ New Viewing' });
       await expect(newViewingBtn).toBeVisible();
       await newViewingBtn.click();
 
-      // Should show interactive stars for new rating (panel area resets)
-      await page.waitForTimeout(300);
+      // After clicking "+ New Viewing", the panel should reset to show interactive stars
+      // (the existing filled stars disappear, replaced by clickable empty stars)
+      const interactiveStars = page.locator('[data-testid="show-rating-fixture"] button[aria-label$="stars"]');
+      await expect(interactiveStars.first()).toBeVisible({ timeout: 3000 });
+    });
+
+    test('multi state: latestReview not duplicated in previous viewings', async ({ page }) => {
+      await goToShowFixture(page, 'multi');
+
+      // Multi state has 4 reviews. The latest (5.0 stars) shows in the main row.
+      // Previous viewings should show the other 3, NOT including the latest.
+      // Count "Edit this viewing" buttons — should be exactly 3 (not 4)
+      const editViewingBtns = page.getByRole('button', { name: 'Edit this viewing' });
+      await expect(editViewingBtns).toHaveCount(3);
     });
 
     // ─── Watchlist Toggle ───────────────────────────────────────
@@ -175,16 +183,16 @@ for (const vp of VIEWPORTS) {
       await goToShowFixture(page, 'existing');
 
       // Should be watchlisted initially — button says "Remove from watchlist"
-      const watchlistBtn = page.getByRole('button', { name: /from watchlist|to watchlist/i }).first();
-      if (await watchlistBtn.isVisible()) {
-        await watchlistBtn.click();
-        // Should toggle state
-        await page.waitForTimeout(300);
+      const removeBtn = page.getByRole('button', { name: 'Remove from watchlist' }).first();
+      await expect(removeBtn).toBeVisible();
+      await removeBtn.click();
 
-        // Toggle back
-        await watchlistBtn.click();
-        await page.waitForTimeout(300);
-      }
+      // After un-watchlisting, button should change to "Add to watchlist"
+      await expect(page.getByRole('button', { name: 'Add to watchlist' }).first()).toBeVisible({ timeout: 3000 });
+
+      // Toggle back — should return to "Remove from watchlist"
+      await page.getByRole('button', { name: 'Add to watchlist' }).first().click();
+      await expect(page.getByRole('button', { name: 'Remove from watchlist' }).first()).toBeVisible({ timeout: 3000 });
     });
 
     // ─── ReviewPanel Layout ─────────────────────────────────────
