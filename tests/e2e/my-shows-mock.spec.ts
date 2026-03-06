@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { assertElementsCenteredInParent } from './helpers/layout-assertions';
 
 /**
  * Comprehensive E2E tests for the My Shows page using mock mode.
@@ -48,7 +49,7 @@ test.describe('My Shows — Page Structure', () => {
     await goToMock(page);
     // Stats bar contains "X shows seen", "X watchlist", "X to rate"
     await expect(page.getByText('shows seen')).toBeVisible();
-    await expect(page.getByText('7', { exact: true }).first()).toBeVisible();
+    await expect(page.getByText('9', { exact: true }).first()).toBeVisible();
     await expect(page.getByText('watchlist').first()).toBeVisible();
     await expect(page.getByText('to rate')).toBeVisible();
   });
@@ -175,7 +176,7 @@ test.describe('My Shows — Diary Sections', () => {
     await goToMock(page);
     const editLinks = page.getByRole('link', { name: 'Edit rating' });
     const count = await editLinks.count();
-    expect(count).toBe(7); // 7 rated shows
+    expect(count).toBe(9); // 9 rated shows in mock data
     // First edit link should include ?edit=1
     const firstHref = await editLinks.first().getAttribute('href');
     expect(firstHref).toContain('?edit=1');
@@ -277,6 +278,12 @@ test.describe('My Shows — View Toggle', () => {
     const gridBtn = page.getByRole('button', { name: 'Grid view' });
     const classes = await gridBtn.getAttribute('class');
     expect(classes).toContain('bg-white');
+  });
+
+  test('trash icons are centered on grid cards', async ({ page }) => {
+    await goToMock(page, 'watchlist');
+    // Watchlist grid: trash icons must be horizontally centered in their parent link
+    await assertElementsCenteredInParent(page, 'button[aria-label="Remove from watchlist"]');
   });
 
   test('view toggle works independently per tab', async ({ page }) => {
