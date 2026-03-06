@@ -104,10 +104,17 @@ export default function MyShowsClient() {
       watchlist: prev.watchlist.map(w => w.show_id === showId ? { ...w, planned_date: date } : w),
     } : prev);
   }, []);
+  const mockAddToWatchlist = useCallback(async (showId: string) => {
+    setMockData(prev => prev ? {
+      ...prev,
+      watchlist: [...prev.watchlist, { show_id: showId, user_id: 'mock', planned_date: null, created_at: new Date().toISOString() } as WatchlistEntry],
+    } : prev);
+  }, []);
 
   const effectiveDeleteReview = isMockMode ? mockDeleteReview : deleteReview;
   const effectiveRemoveFromWatchlist = isMockMode ? mockRemoveFromWatchlist : removeFromWatchlist;
   const effectiveUpdatePlannedDate = isMockMode ? mockUpdatePlannedDate : updatePlannedDate;
+  const effectiveAddToWatchlist = isMockMode ? mockAddToWatchlist : addToWatchlist;
 
   // Load show lookup data (abort if mock mode activates mid-flight)
   useEffect(() => {
@@ -306,8 +313,8 @@ export default function MyShowsClient() {
         <AddShowSearch
           context={activeTab}
           onAddToWatchlist={async (showId: string) => {
-            await addToWatchlist(showId);
-            await getWatchlist();
+            await effectiveAddToWatchlist(showId);
+            if (!isMockMode) await getWatchlist();
             showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success');
           }}
           existingWatchlistIds={new Set(watchlist.map(w => w.show_id))}
