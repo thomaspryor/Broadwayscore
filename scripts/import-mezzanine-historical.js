@@ -314,7 +314,7 @@ function processProductions(productions) {
       ? Math.round((p.averageRating / 5) * 100)
       : null;
 
-    diaryShows.push({
+    const entry = {
       id: slug,
       title: showName,
       slug,
@@ -327,7 +327,14 @@ function processProductions(productions) {
       audienceScore,
       audienceRatingsCount: p.ratingsCount || 0,
       mezzanineId: mezzId,
-    });
+    };
+
+    // Extract poster art if available
+    if (p.art && p.art.url) {
+      entry.posterUrl = p.art.url;
+    }
+
+    diaryShows.push(entry);
   }
 
   return { diaryShows, stats };
