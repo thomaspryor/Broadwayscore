@@ -50,12 +50,12 @@ export default function ReviewPanel({
   const maxDate = latestDate || today;
 
   return (
-    <div className="mt-3 p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+    <div className="mt-3 p-3 sm:p-4 rounded-xl bg-white/[0.03] border border-white/[0.06] overflow-hidden">
       {/* Rating display */}
-      <div className="flex items-center gap-2 mb-3">
-        <span className="text-sm text-gray-400">Your rating for</span>
-        <span className="text-sm font-semibold text-white truncate">{showTitle}</span>
-        <span className="text-sm font-bold text-amber-400">{rating.toFixed(1)}</span>
+      <div className="flex items-center gap-2 mb-3 min-w-0">
+        <span className="text-sm text-gray-400 shrink-0">Your rating for</span>
+        <span className="text-sm font-semibold text-white truncate min-w-0">{showTitle}</span>
+        <span className="text-sm font-bold text-amber-400 shrink-0">{rating.toFixed(1)}</span>
       </div>
 
       {/* Date seen (optional) */}
