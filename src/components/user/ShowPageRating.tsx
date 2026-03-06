@@ -30,6 +30,7 @@ interface ShowPageRatingProps {
   /** Pre-selected star rating when auto-opening (from To Be Rated inline stars) */
   autoRateStars?: number | null;
   onAutoRateConsumed?: () => void;
+  onAutoEditConsumed?: () => void;
 }
 
 export default function ShowPageRating({
@@ -51,6 +52,7 @@ export default function ShowPageRating({
   autoRate = false,
   autoRateStars,
   onAutoRateConsumed,
+  onAutoEditConsumed,
 }: ShowPageRatingProps) {
   const [currentRating, setCurrentRating] = useState<number | null>(null);
   const [showPanel, setShowPanel] = useState(false);
@@ -78,7 +80,9 @@ export default function ShowPageRating({
       setEditingReview(latestReview);
       setCurrentRating(latestReview.rating);
       setShowPanel(true);
+      onAutoEditConsumed?.(); // Prevent re-triggering on cancel/save
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoEditLatest, latestReview, showPanel]);
 
   // Auto-open rating panel from ?rate=1 (watchlist "Rate" link)
@@ -125,16 +129,16 @@ export default function ShowPageRating({
         reviewId: idToPass,
       });
       if (savedId) lastSavedId.current = savedId;
-      // Always close panel after save
-      setShowPanel(false);
-      setEditingReview(null);
-      setCurrentRating(null);
       lastSavedId.current = null;
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error('[Rating] Save error:', e);
     } finally {
+      // Always close panel after save (even on error)
       setSaving(false);
+      setShowPanel(false);
+      setEditingReview(null);
+      setCurrentRating(null);
     }
   }, [onSaveReview, editingReview]);
 
@@ -262,6 +266,7 @@ export default function ShowPageRating({
               rating={currentRating}
               onRatingChange={handleRatingChange}
               size="lg"
+              hideLabel
             />
           )}
 
@@ -347,9 +352,9 @@ export default function ShowPageRating({
           )}
         </div>
 
-        {/* Mobile-only: watchlist date + link below the rating area */}
+        {/* Mobile-only: watchlist date + link below the watchlist button */}
         {isWatchlisted && (
-          <div className="sm:hidden flex items-center gap-3 mt-1">
+          <div className="sm:hidden flex items-center gap-3 -mt-1 ml-auto">
             <label className="flex items-center gap-1 text-[11px] text-gray-500 hover:text-gray-300 transition-colors cursor-pointer relative">
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -366,7 +371,7 @@ export default function ShowPageRating({
                 className="absolute inset-0 opacity-[0.01] cursor-pointer w-full h-full"
               />
             </label>
-            <Link href="/my-shows?tab=watchlist" className="text-[11px] text-gray-500 hover:text-brand transition-colors">
+            <Link href="/my-shows?tab=watchlist" className="text-[11px] text-gray-500 hover:text-brand transition-colors whitespace-nowrap">
               See Watchlist
             </Link>
           </div>
