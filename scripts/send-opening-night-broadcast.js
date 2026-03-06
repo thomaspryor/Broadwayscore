@@ -10,7 +10,10 @@
  *
  * Multiple shows opening the same night are coalesced into a single email.
  *
- * Usage: node scripts/send-opening-night-broadcast.js [--dry-run] [--lookback=DAYS] [--market=broadway|west-end] [--budget=N]
+ * Usage: node scripts/send-opening-night-broadcast.js [--dry-run] [--lookback=DAYS] [--market=broadway|west-end] [--budget=N] [--send-to=EMAIL]
+ *
+ * --send-to=EMAIL  Preview mode: send to a single email only, skip sent-tracking.
+ *                  Use this to review the email before approving a full send.
  *
  * Env: RESEND_API_KEY, DISCORD_WEBHOOK_ALERTS
  */
@@ -28,6 +31,8 @@ const LOOKBACK_DAYS = LOOKBACK_ARG ? parseInt(LOOKBACK_ARG.split('=')[1], 10) : 
 const MARKET_ARG = process.argv.find(a => a.startsWith('--market='));
 const MARKET = MARKET_ARG ? MARKET_ARG.split('=')[1] : 'broadway'; // 'broadway' or 'west-end'
 const BUDGET_ARG = process.argv.find(a => a.startsWith('--budget='));
+const SEND_TO_ARG = process.argv.find(a => a.startsWith('--send-to='));
+const SEND_TO = SEND_TO_ARG ? SEND_TO_ARG.split('=')[1] : null; // Preview mode: send to single email only
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
@@ -128,12 +133,19 @@ async function main() {
 
   const consensus = loadJSON(CONSENSUS_PATH) || {};
 
-  const subscribersData = loadJSON(SUBSCRIBERS_PATH);
-  if (!subscribersData || !subscribersData.subscribers || subscribersData.subscribers.length === 0) {
-    console.log('No subscribers found — nothing to broadcast');
-    process.exit(0);
+  let subscribers;
+  if (SEND_TO) {
+    // Preview mode: send to single email, skip subscriber file
+    subscribers = [SEND_TO];
+    console.log(`** PREVIEW MODE — sending to ${SEND_TO} only **\n`);
+  } else {
+    const subscribersData = loadJSON(SUBSCRIBERS_PATH);
+    if (!subscribersData || !subscribersData.subscribers || subscribersData.subscribers.length === 0) {
+      console.log('No subscribers found — nothing to broadcast');
+      process.exit(0);
+    }
+    subscribers = subscribersData.subscribers; // Already sorted alphabetically
   }
-  const subscribers = subscribersData.subscribers; // Already sorted alphabetically
 
   // Load or init sent tracking
   let sentData = loadJSON(SENT_PATH);
@@ -153,8 +165,8 @@ async function main() {
     console.log(`  - ${s.title} (${s.id}) opened ${s.openingDate}`);
   }
 
-  // Filter out already-completed broadcasts
-  const pendingShows = recentlyOpened.filter(s => {
+  // Filter out already-completed broadcasts (skip in preview mode)
+  const pendingShows = SEND_TO ? recentlyOpened : recentlyOpened.filter(s => {
     const sent = sentData.shows[s.id || s.slug];
     return !sent || !sent.completed;
   });
@@ -288,9 +300,10 @@ async function main() {
   }
 
   // Build subject line
-  const subject = showsForEmail.length === 1
+  const baseSubject = showsForEmail.length === 1
     ? `${showsForEmail[0].showTitle} is now open, and the critic reviews are in`
     : `${showsForEmail.length} shows opened ${MARKET === 'west-end' ? 'in the West End' : 'on Broadway'} — the reviews are in`;
+  const subject = SEND_TO ? `[PREVIEW] ${baseSubject}` : baseSubject;
 
   console.log(`\nSubject: ${subject}`);
   console.log(`Sending to ${toSend.length} subscribers (offset ${alreadySentCount})...`);
@@ -389,22 +402,27 @@ async function main() {
     }
   }
 
-  // Final save
-  const allSent = sentCount >= subscribers.length;
-  sentData.shows[broadcastKey] = {
-    sentAt: new Date().toISOString(),
-    sentCount,
-    subscriberCount: subscribers.length,
-    reviewCount: showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0),
-    completed: allSent,
-  };
-  saveSentData(sentData);
+  // Final save (skip tracking in preview mode)
+  if (!SEND_TO) {
+    const allSent = sentCount >= subscribers.length;
+    sentData.shows[broadcastKey] = {
+      sentAt: new Date().toISOString(),
+      sentCount,
+      subscriberCount: subscribers.length,
+      reviewCount: showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0),
+      completed: allSent,
+    };
+    saveSentData(sentData);
 
-  console.log(`\nDone: ${sentCount - alreadySentCount} sent this run, ${sentCount} total`);
-  if (allSent) {
-    console.log('All subscribers sent — broadcast complete');
+    console.log(`\nDone: ${sentCount - alreadySentCount} sent this run, ${sentCount} total`);
+    if (allSent) {
+      console.log('All subscribers sent — broadcast complete');
+    } else {
+      console.log(`${subscribers.length - sentCount} remaining — will continue on next cron run`);
+    }
   } else {
-    console.log(`${subscribers.length - sentCount} remaining — will continue on next cron run`);
+    console.log(`\nPreview sent to ${SEND_TO}`);
+    console.log('To send to all subscribers, re-run without --send-to flag');
   }
 }
 
