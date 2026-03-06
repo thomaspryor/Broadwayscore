@@ -99,7 +99,15 @@
     "antigone-this-play-i-read-in-high-school-off-broadway-2026/theatermania--unknown.json",
     "antigone-this-play-i-read-in-high-school-off-broadway-2026/timeout--unknown.json",
     "arcadia-west-end-2026/guardian--arifa-akbar.json",
-    "bigfoot-off-broadway-2026/theatermania--hayley-levitt.json"
+    "bigfoot-off-broadway-2026/theatermania--hayley-levitt.json",
+    "bloodlove-off-broadway-2026/theatermania--rachel-graham.json",
+    "book-of-mormon-2011/guardian--ben-brantley.json",
+    "buena-vista-social-club-2025/timeout--adam-feldman.json",
+    "bug-2026/theatre-reviews-limited--david-roberts.json",
+    "bug-2026/timeout--adam-feldman.json",
+    "burnout-paradise-off-broadway-2026/theatermania--zachary-stewart.json",
+    "burnout-paradise-off-broadway-2026/timeout--raven-snook.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/timeout-london--unknown.json"
   ],
   "failed": [
     "it-walks-around-the-house-at-night-west-end-2026/broadwayworld--unknown.json",
@@ -116,7 +124,9 @@
     "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
     "aladdin-2014/wsj--terry-teachout.json",
     "anne-teresa-de-keersmaeker-exit-above-off-broadway-2026/broadwaynews--unknown.json",
-    "bigfoot-off-broadway-2026/timeout--unknown.json"
+    "bigfoot-off-broadway-2026/timeout--unknown.json",
+    "book-of-mormon-2011/wsj--terry-teachout.json",
+    "bug-2026/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -155,7 +165,14 @@
       "and-juliet-2022/theatermania--hayley-levitt.json",
       "anonymous-off-broadway-2026/theatermania--unknown.json",
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/theatermania--unknown.json",
-      "bigfoot-off-broadway-2026/theatermania--hayley-levitt.json"
+      "bigfoot-off-broadway-2026/theatermania--hayley-levitt.json",
+      "bloodlove-off-broadway-2026/theatermania--rachel-graham.json",
+      "book-of-mormon-2011/guardian--ben-brantley.json",
+      "buena-vista-social-club-2025/timeout--adam-feldman.json",
+      "bug-2026/theatre-reviews-limited--david-roberts.json",
+      "burnout-paradise-off-broadway-2026/theatermania--zachary-stewart.json",
+      "burnout-paradise-off-broadway-2026/timeout--raven-snook.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/timeout-london--unknown.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -257,11 +274,12 @@
       "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json",
       "aladdin-2014/ew--thom-geier.json",
       "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
-      "and-juliet-2022/theatermania--jesse-green.json"
+      "and-juliet-2022/theatermania--jesse-green.json",
+      "bug-2026/timeout--adam-feldman.json"
     ]
   },
   "startTime": "2026-03-06T17:15:52.929Z",
-  "lastProcessed": "bigfoot-off-broadway-2026/timeout--unknown.json",
+  "lastProcessed": "cabaret-at-the-kit-kat-club-west-end-2021/timeout-london--unknown.json",
   "log": [
     {
       "t": "2026-03-06T18:51:51.105Z",
@@ -403,6 +421,28 @@
     },
     {
       "t": "2026-03-06T19:22:44.539Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-06T19:28:11.497Z",
+      "event": "bb-session",
+      "session": "c31fa8a3",
+      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
+    },
+    {
+      "t": "2026-03-06T19:28:12.601Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-06T19:30:41.623Z",
+      "event": "bb-session",
+      "session": "772dfa1d",
+      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
+    },
+    {
+      "t": "2026-03-06T19:30:42.683Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
