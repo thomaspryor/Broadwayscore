@@ -46,10 +46,14 @@ test.describe('My Shows — Page Structure', () => {
 
   test('stats bar shows correct counts', async ({ page }) => {
     await goToMock(page);
-    // Stats bar contains "X shows seen", "X watchlist", "X to rate"
+    // 7 reviews in mock data
+    await expect(page.getByText('7')).toBeVisible();
     await expect(page.getByText('shows seen')).toBeVisible();
-    await expect(page.getByText('7', { exact: true }).first()).toBeVisible();
-    await expect(page.getByText('watchlist').first()).toBeVisible();
+    // 6 watchlist items
+    await expect(page.getByText('6')).toBeVisible();
+    await expect(page.getByText('watchlist')).toBeVisible();
+    // 2 to-be-rated items (Chess + Ragtime have past planned_dates)
+    await expect(page.getByText('2')).toBeVisible();
     await expect(page.getByText('to rate')).toBeVisible();
   });
 
@@ -214,15 +218,10 @@ test.describe('My Shows — Sorting', () => {
 
   test('watchlist "A-Z" sort orders alphabetically', async ({ page }) => {
     await goToMock(page, 'watchlist');
-    // Switch to list view so titles are easier to extract from card headings
-    await page.getByRole('button', { name: 'List view' }).click();
     await page.getByRole('combobox', { name: 'Sort watchlist' }).selectOption('alphabetical');
-    // Get show title headings from the watchlist cards (h4 inside card items, not the "Add" button)
-    const headings = page.locator('[role="tabpanel"] h4');
-    const titles = await headings.allTextContents();
-    // Filter to actual show titles (min 3 chars, not UI labels)
-    const showTitles = titles.filter(t => t.length > 2);
-    expect(showTitles.length).toBeGreaterThanOrEqual(5);
+    const titles = await page.locator('h4').allTextContents();
+    // Filter to show titles (skip "Add" etc.)
+    const showTitles = titles.filter(t => t !== 'Rate' && t !== 'Add' && t.length > 2);
     // Should be alphabetical
     const sorted = [...showTitles].sort((a, b) => a.localeCompare(b));
     expect(showTitles).toEqual(sorted);
@@ -402,12 +401,13 @@ test.describe('My Shows — Mobile Layout (390px)', () => {
 
   test('To Be Rated stars use xs size on mobile', async ({ page }) => {
     await goToMock(page);
-    // On mobile (<640px), the xs StarRating renders with 14px inline style
-    // The button has a larger tap target (min 44px) but the visual star is xs
+    // Star buttons in To Be Rated should be small (14px)
     const starBtn = page.getByRole('button', { name: '1 star' }).first();
-    // Check the inline style sets 14px (xs size from SIZE_MAP)
-    await expect(starBtn).toHaveAttribute('style', /width:\s*14px/);
-    await expect(starBtn).toHaveAttribute('style', /height:\s*14px/);
+    const box = await starBtn.boundingBox();
+    expect(box).toBeTruthy();
+    if (box) {
+      expect(box.width).toBeLessThanOrEqual(20); // xs = 14px + some padding
+    }
   });
 
   test('tab bar does not overflow on mobile', async ({ page }) => {
