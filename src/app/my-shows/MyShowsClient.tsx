@@ -1262,13 +1262,17 @@ function AddShowSearch({
   // Compute results from deferred query
   const filteredResults = useMemo(() => {
     if (deferredQuery.length < 2 || !fuseRef.current) return [];
-    const fuseResults = fuseRef.current.search(deferredQuery, { limit: 6 }).map(r => r.item);
+    const fuseResults = fuseRef.current.search(deferredQuery, { limit: 10 }).map(r => r.item);
     const q = deferredQuery.toLowerCase();
     const fuseKeys = new Set(fuseResults.map(r => r.gid || r.id));
     const substring = shows.filter(s =>
       s.title.toLowerCase().includes(q) && !fuseKeys.has(s.gid || s.id)
     );
-    return [...fuseResults, ...substring].slice(0, 6);
+    const combined = [...fuseResults, ...substring];
+    // Sort open/previews shows first, then closed
+    const statusOrder = (s: SearchShow) => s.status === 'open' || s.status === 'previews' ? 0 : 1;
+    combined.sort((a, b) => statusOrder(a) - statusOrder(b));
+    return combined.slice(0, 8);
   }, [deferredQuery, dataReady, shows]);
 
   useEffect(() => { setResults(filteredResults); }, [filteredResults]);
