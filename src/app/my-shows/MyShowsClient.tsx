@@ -1068,6 +1068,13 @@ interface SearchShow {
   category?: string;
 }
 
+function formatSearchSubtitle(show: SearchShow): string {
+  const parts: string[] = [];
+  if (show.venue) parts.push(show.venue);
+  if (show.od) parts.push(show.od.slice(0, 4));
+  return parts.join(' · ') || '';
+}
+
 function AddShowSearch({
   context,
   onAddToWatchlist,
