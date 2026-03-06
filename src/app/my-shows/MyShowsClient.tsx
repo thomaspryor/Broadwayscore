@@ -1182,9 +1182,13 @@ function AddShowSearch({
                     <span className={`px-1 py-0.5 rounded font-medium ${
                       show.status === 'open' ? 'bg-green-500/20 text-green-400' :
                       show.status === 'previews' ? 'bg-yellow-500/20 text-yellow-400' :
+                      show.status === 'upcoming' || show.status === 'announced' ? 'bg-blue-500/20 text-blue-400' :
                       'bg-gray-500/20 text-gray-400'
                     }`}>
-                      {show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'Previews' : 'Closed'}
+                      {show.status === 'open' ? 'Now Playing' :
+                       show.status === 'previews' ? 'Previews' :
+                       show.status === 'upcoming' ? 'Upcoming' :
+                       show.status === 'announced' ? 'Announced' : 'Closed'}
                     </span>
                     {show.venue && <span className="truncate">{show.venue}</span>}
                   </div>

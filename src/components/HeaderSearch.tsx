@@ -245,11 +245,12 @@ export default function HeaderSearch() {
                     <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium
                                     ${show.status === 'open' ? 'bg-green-500/20 text-green-400' :
                                       show.status === 'previews' ? 'bg-yellow-500/20 text-yellow-400' :
-                                      show.status === 'upcoming' ? 'bg-blue-500/20 text-blue-400' :
+                                      show.status === 'upcoming' || show.status === 'announced' ? 'bg-blue-500/20 text-blue-400' :
                                       'bg-gray-500/20 text-gray-400'}`}>
                       {show.status === 'open' ? 'Now Playing' :
                        show.status === 'previews' ? 'In Previews' :
-                       show.status === 'upcoming' ? 'Upcoming' : 'Closed'}
+                       show.status === 'upcoming' ? 'Upcoming' :
+                       show.status === 'announced' ? 'Announced' : 'Closed'}
                     </span>
                     {show.category === 'west-end' && (
                       <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-teal-500/20 text-teal-400">West End</span>
@@ -351,11 +352,12 @@ export default function HeaderSearch() {
                           <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium
                                           ${show.status === 'open' ? 'bg-green-500/20 text-green-400' :
                                             show.status === 'previews' ? 'bg-yellow-500/20 text-yellow-400' :
-                                            show.status === 'upcoming' ? 'bg-blue-500/20 text-blue-400' :
+                                            show.status === 'upcoming' || show.status === 'announced' ? 'bg-blue-500/20 text-blue-400' :
                                             'bg-gray-500/20 text-gray-400'}`}>
                             {show.status === 'open' ? 'Now Playing' :
                              show.status === 'previews' ? 'In Previews' :
-                             show.status === 'upcoming' ? 'Upcoming' : 'Closed'}
+                             show.status === 'upcoming' ? 'Upcoming' :
+                             show.status === 'announced' ? 'Announced' : 'Closed'}
                           </span>
                           {show.category === 'west-end' && (
                             <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-teal-500/20 text-teal-400">West End</span>
