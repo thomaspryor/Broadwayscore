@@ -38,34 +38,32 @@ function decodeShow(raw: Record<string, unknown>): ShowLookup {
     closingDate: (raw.cd as string) || null,
     compositeScore: null,
     posterUrl: (raw.p as string) || null,
-    diaryOnly: !!raw.dy,
   };
 }
 
-function getShowHref(slug: string, _category: string, diaryOnly?: boolean): string | null {
-  if (diaryOnly) return null; // Diary-only shows have no show page
+function getShowHref(slug: string, _category: string) {
+  // All shows use /show/[slug] — no separate routes for west-end or off-broadway
   return `/show/${slug}`;
-}
-
-// Wrapper components for diary-only show link suppression
-function ShowCardOverlay({ href, label }: { href: string | null; label: string }) {
-  if (href) return <Link href={href} className="absolute inset-0 z-0" aria-label={`View ${label}`} />;
-  return null;
-}
-
-function ShowCardPosterLink({ href, children, className }: { href: string | null; children: React.ReactNode; className?: string }) {
-  if (href) return <Link href={href} className={className}>{children}</Link>;
-  return <div className={className}>{children}</div>;
 }
 
 export default function MyShowsClient() {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTabState] = useState<Tab>(searchParams.get('tab') === 'watchlist' ? 'watchlist' : 'diary');
 
+  // Dev-only mock mode: ?mock=1 on localhost renders with fake data (for Playwright visual QA)
+  // Must be state (not derived) to avoid SSR/client hydration mismatch
+  const [isMockMode, setIsMockMode] = useState(false);
+  useEffect(() => {
+    if (window.location.hostname === 'localhost' && searchParams.get('mock') === '1') {
+      setIsMockMode(true);
+    }
+  }, [searchParams]);
+
   // Update URL when tab changes so back button restores the correct tab
   const setActiveTab = (tab: Tab) => {
     setActiveTabState(tab);
-    const url = tab === 'watchlist' ? '/my-shows?tab=watchlist' : '/my-shows';
+    const mockParam = isMockMode ? '&mock=1' : '';
+    const url = tab === 'watchlist' ? `/my-shows?tab=watchlist${mockParam}` : `/my-shows${mockParam ? `?${mockParam.slice(1)}` : ''}`;
     window.history.replaceState(null, '', url);
   };
   const [diarySort, setDiarySort] = useState<DiarySort>('date-desc');
@@ -76,14 +74,28 @@ export default function MyShowsClient() {
   const [showMapLoaded, setShowMapLoaded] = useState(false);
 
   const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
-  const { reviews, getAllReviews, deleteReview, loading: reviewsLoading } = useUserReviews(user?.id || null);
-  const { watchlist, getWatchlist, addToWatchlist, updatePlannedDate, removeFromWatchlist, loading: watchlistLoading } = useWatchlist(user?.id || null);
+  const { reviews: realReviews, getAllReviews, deleteReview, loading: reviewsLoading } = useUserReviews(user?.id || null);
+  const { watchlist: realWatchlist, getWatchlist, addToWatchlist, updatePlannedDate, removeFromWatchlist, loading: watchlistLoading } = useWatchlist(user?.id || null);
   const { showToast } = useToastSafe();
-  const loading = authLoading || reviewsLoading || watchlistLoading;
 
-  // Load show lookup data (scored shows)
+  // In mock mode, bypass loading/auth and inject fake data
+  const [mockData, setMockData] = useState<{ reviews: UserReview[]; watchlist: WatchlistEntry[]; showMap: ShowMap } | null>(null);
   useEffect(() => {
-    fetch('/data/show-lookup.json')
+    if (!isMockMode) return;
+    import('./__dev-mock-data').then(mod => {
+      setMockData({ reviews: mod.mockReviews, watchlist: mod.mockWatchlist, showMap: mod.mockShowMap });
+    });
+  }, [isMockMode]);
+
+  const reviews = isMockMode && mockData ? mockData.reviews : realReviews;
+  const watchlist = isMockMode && mockData ? mockData.watchlist : realWatchlist;
+  const loading = isMockMode ? !mockData : (authLoading || reviewsLoading || watchlistLoading);
+
+  // Load show lookup data (abort if mock mode activates mid-flight)
+  useEffect(() => {
+    if (isMockMode) return;
+    const controller = new AbortController();
+    fetch('/data/show-lookup.json', { signal: controller.signal })
       .then(res => res.json())
       .then((data: Record<string, unknown>[]) => {
         const map: ShowMap = {};
@@ -95,44 +107,27 @@ export default function MyShowsClient() {
         setShowMapLoaded(true);
       })
       .catch(() => {
-        setShowMapLoaded(true);
+        if (!controller.signal.aborted) setShowMapLoaded(true);
       });
-  }, []);
+    return () => controller.abort();
+  }, [isMockMode]);
 
-  // Lazy-load diary show lookup when user has entries referencing unknown show IDs
-  const diaryLookupLoaded = useRef(false);
+  // Inject mock showMap when loaded
   useEffect(() => {
-    if (!showMapLoaded || diaryLookupLoaded.current) return;
-    const allShowIds = new Set([
-      ...reviews.map(r => r.show_id),
-      ...watchlist.map(w => w.show_id),
-    ]);
-    const hasUnknown = Array.from(allShowIds).some(id => !showMap[id]);
-    if (!hasUnknown) return;
-
-    diaryLookupLoaded.current = true;
-    fetch('/data/diary-lookup.json')
-      .then(res => res.json())
-      .then((data: Record<string, unknown>[]) => {
-        setShowMap(prev => {
-          const next = { ...prev };
-          for (const raw of data) {
-            const show = decodeShow(raw);
-            if (!next[show.id]) next[show.id] = show;
-          }
-          return next;
-        });
-      })
-      .catch(() => { /* diary-lookup.json may not exist yet */ });
-  }, [showMapLoaded, reviews, watchlist, showMap]);
+    if (isMockMode && mockData) {
+      setShowMap(mockData.showMap);
+      setShowMapLoaded(true);
+    }
+  }, [isMockMode, mockData]);
 
   // Load user data when authenticated
   useEffect(() => {
+    if (isMockMode) return;
     if (isAuthenticated && user) {
       getAllReviews();
       getWatchlist();
     }
-  }, [isAuthenticated, user, getAllReviews, getWatchlist]);
+  }, [isMockMode, isAuthenticated, user, getAllReviews, getWatchlist]);
 
   // Stats
   const showsSeen = new Set(reviews.map(r => r.show_id)).size;
@@ -217,7 +212,21 @@ export default function MyShowsClient() {
     }
   }, [watchlist, watchlistSort, showMap]);
 
-  if (!featureFlags.userAccounts) {
+  // While mock mode is initializing (useEffect hasn't fired yet), show loading
+  const hasMockParam = searchParams.get('mock') === '1';
+
+  if (!featureFlags.userAccounts && !isMockMode) {
+    if (hasMockParam) {
+      // Mock mode initializing — show loading skeleton briefly
+      return (
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-8">
+          <div className="animate-pulse space-y-4">
+            <div className="h-8 bg-white/5 rounded w-48" />
+            <div className="h-4 bg-white/5 rounded w-64" />
+          </div>
+        </div>
+      );
+    }
     return (
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-8">
         <p className="text-gray-400">This feature is not yet available.</p>
@@ -225,7 +234,7 @@ export default function MyShowsClient() {
     );
   }
 
-  if (!authLoading && !isAuthenticated) {
+  if (!isMockMode && !authLoading && !isAuthenticated) {
     return (
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-12">
         <h1 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">My Shows</h1>
@@ -291,19 +300,25 @@ export default function MyShowsClient() {
           <span><strong className="text-amber-400">{toBeRatedEntries.length}</strong> to rate</span>
         )}
       </div>
-      <div className="mb-6">
-        <MezzanineImport
-          userId={user!.id}
-          existingReviewShowIds={new Set(reviews.map(r => r.show_id))}
-          existingWatchlistShowIds={new Set(watchlist.map(w => w.show_id))}
-          onImportComplete={() => { getAllReviews(); getWatchlist(); }}
-        />
-      </div>
+      {!isMockMode && user && (
+        <div className="mb-6">
+          <MezzanineImport
+            userId={user.id}
+            existingReviewShowIds={new Set(reviews.map(r => r.show_id))}
+            existingWatchlistShowIds={new Set(watchlist.map(w => w.show_id))}
+            onImportComplete={() => { getAllReviews(); getWatchlist(); }}
+          />
+        </div>
+      )}
 
       {/* Tab bar + inline sort/view controls */}
-      <div className="flex items-center gap-1 border-b border-white/10 mb-6">
+      <div role="tablist" className="flex items-center gap-1 border-b border-white/10 mb-6">
         <button
           type="button"
+          role="tab"
+          id="tab-diary"
+          aria-selected={activeTab === 'diary'}
+          aria-controls="panel-diary"
           onClick={() => setActiveTab('diary')}
           className={`flex-shrink-0 px-3 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] ${
             activeTab === 'diary'
@@ -315,7 +330,12 @@ export default function MyShowsClient() {
         </button>
         <button
           type="button"
+          role="tab"
+          id="tab-watchlist"
+          aria-selected={activeTab === 'watchlist'}
+          aria-controls="panel-watchlist"
           onClick={() => setActiveTab('watchlist')}
+          aria-label={watchlist.length > 0 ? `Watchlist, ${watchlist.length} shows` : 'Watchlist'}
           className={`flex-shrink-0 px-3 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] ${
             activeTab === 'watchlist'
               ? 'text-white border-brand'
@@ -324,7 +344,7 @@ export default function MyShowsClient() {
         >
           Watchlist
           {watchlist.length > 0 && (
-            <span className="ml-1 px-1.5 py-0.5 text-[10px] bg-white/10 rounded-full">
+            <span className="ml-1.5 px-1.5 py-0.5 text-[10px] bg-white/10 rounded-full" aria-hidden="true">
               {watchlist.length}
             </span>
           )}
@@ -336,6 +356,7 @@ export default function MyShowsClient() {
             <select
               value={diarySort}
               onChange={e => setDiarySort(e.target.value as DiarySort)}
+              aria-label="Sort diary"
               className="text-[11px] sm:text-xs bg-white/5 border border-white/10 rounded px-1.5 sm:px-2 py-1 text-gray-300 max-w-[110px] sm:max-w-none"
             >
               <option value="date-desc">Newest</option>
@@ -347,6 +368,7 @@ export default function MyShowsClient() {
             <select
               value={watchlistSort}
               onChange={e => setWatchlistSort(e.target.value as WatchlistSort)}
+              aria-label="Sort watchlist"
               className="text-[11px] sm:text-xs bg-white/5 border border-white/10 rounded px-1.5 sm:px-2 py-1 text-gray-300 max-w-[110px] sm:max-w-none"
             >
               <option value="added-desc">Recent</option>
@@ -355,24 +377,24 @@ export default function MyShowsClient() {
             </select>
           )}
           {/* Grid / List toggle — both tabs */}
-          <div className="flex flex-shrink-0 border border-white/10 rounded-lg overflow-hidden">
+          <div className="flex flex-shrink-0 rounded-lg overflow-hidden bg-white/[0.04] border border-white/10">
             <button
               type="button"
               onClick={() => activeTab === 'diary' ? setDiaryView('grid') : setWatchlistView('grid')}
-              className={`p-1.5 sm:p-2 ${(activeTab === 'diary' ? diaryView : watchlistView) === 'grid' ? 'bg-white/10 text-white' : 'text-gray-500 hover:text-gray-300'}`}
+              className={`flex items-center justify-center w-9 h-9 sm:w-8 sm:h-8 transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'grid' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
               aria-label="Grid view"
             >
-              <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
               </svg>
             </button>
             <button
               type="button"
               onClick={() => activeTab === 'diary' ? setDiaryView('list') : setWatchlistView('list')}
-              className={`p-1.5 sm:p-2 ${(activeTab === 'diary' ? diaryView : watchlistView) === 'list' ? 'bg-white/10 text-white' : 'text-gray-500 hover:text-gray-300'}`}
+              className={`flex items-center justify-center w-9 h-9 sm:w-8 sm:h-8 transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'list' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
               aria-label="List view"
             >
-              <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
@@ -382,7 +404,7 @@ export default function MyShowsClient() {
 
       {/* Diary tab */}
       {activeTab === 'diary' && (
-        <div>
+        <div id="panel-diary" role="tabpanel" aria-labelledby="tab-diary">
           {reviews.length === 0 && upcomingWatchlistEntries.length === 0 && toBeRatedEntries.length === 0 ? (
             <EmptyState
               icon="🎭"
@@ -416,7 +438,7 @@ export default function MyShowsClient() {
                       const entryTitle = entryShow?.title || entry.show_id;
                       const entrySlug = entryShow?.slug || entry.show_id;
                       const entryCategory = entryShow?.category || 'broadway';
-                      const entryHref = getShowHref(entrySlug, entryCategory, entryShow?.diaryOnly);
+                      const entryHref = getShowHref(entrySlug, entryCategory);
                       const daysUntil = entry.planned_date
                         ? Math.ceil((new Date(entry.planned_date + 'T00:00:00').getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
                         : null;
@@ -425,7 +447,7 @@ export default function MyShowsClient() {
                         : null;
                       return (
                         <div key={`wl-${entry.id}`} className="relative flex items-center gap-2 sm:gap-4 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
-                          <ShowCardOverlay href={entryHref} label={entryTitle} />
+                          <Link href={entryHref} className="absolute inset-0 z-0" aria-label={`View ${entryTitle}`} />
                           <div className="relative z-[1] flex-shrink-0 w-10 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay pointer-events-none">
                             {entryShow?.posterUrl ? (
                               <img src={entryShow.posterUrl} alt="" className="w-full h-full object-cover" />
@@ -492,7 +514,7 @@ export default function MyShowsClient() {
 
       {/* Watchlist tab */}
       {activeTab === 'watchlist' && (
-        <div>
+        <div id="panel-watchlist" role="tabpanel" aria-labelledby="tab-watchlist">
           {watchlist.length === 0 ? (
             <EmptyState
               icon="📋"
@@ -542,15 +564,21 @@ export default function MyShowsClient() {
 
 function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: ShowLookup; onDelete?: () => void }) {
   const [confirmDelete, setConfirmDelete] = useState(false);
+  // Auto-dismiss delete confirmation after 4 seconds
+  useEffect(() => {
+    if (!confirmDelete) return;
+    const timer = setTimeout(() => setConfirmDelete(false), 4000);
+    return () => clearTimeout(timer);
+  }, [confirmDelete]);
   const title = show?.title || review.show_id;
   const slug = show?.slug || review.show_id;
   const category = show?.category || 'broadway';
-  const href = getShowHref(slug, category, show?.diaryOnly);
+  const href = getShowHref(slug, category);
 
   return (
     <div className="group/diary relative flex items-center gap-2 sm:gap-4 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
       {/* Link overlay for the whole card */}
-      <ShowCardOverlay href={href} label={title} />
+      <Link href={href} className="absolute inset-0 z-0" aria-label={`View ${title}`} />
 
       {/* Poster */}
       <div className="relative z-[1] pointer-events-none flex-shrink-0 w-10 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay">
@@ -634,14 +662,19 @@ function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: Show
 
 function DiaryGridCard({ review, show, onDelete }: { review: UserReview; show?: ShowLookup; onDelete?: () => void }) {
   const [confirmDelete, setConfirmDelete] = useState(false);
+  useEffect(() => {
+    if (!confirmDelete) return;
+    const timer = setTimeout(() => setConfirmDelete(false), 4000);
+    return () => clearTimeout(timer);
+  }, [confirmDelete]);
   const title = show?.title || review.show_id;
   const slug = show?.slug || review.show_id;
   const category = show?.category || 'broadway';
-  const href = getShowHref(slug, category, show?.diaryOnly);
+  const href = getShowHref(slug, category);
 
   return (
     <div className="group/grid flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
-      <ShowCardPosterLink href={href} className="relative">
+      <Link href={href} className="relative">
         <div className="aspect-[2/3] bg-surface-overlay">
           {show?.posterUrl ? (
             <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
@@ -669,16 +702,16 @@ function DiaryGridCard({ review, show, onDelete }: { review: UserReview; show?: 
             </svg>
           </button>
         )}
-      </ShowCardPosterLink>
+      </Link>
       <div className="p-2">
-        <ShowCardPosterLink href={href}>
+        <Link href={href}>
           <h4 className="text-xs font-semibold text-white truncate">{title}</h4>
           {review.date_seen && (
             <p className="text-[10px] text-gray-500 truncate">
               {new Date(review.date_seen + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
             </p>
           )}
-        </ShowCardPosterLink>
+        </Link>
       </div>
     </div>
   );
@@ -691,10 +724,15 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
   onRemove: () => void;
 }) {
   const [confirmRemove, setConfirmRemove] = useState(false);
+  useEffect(() => {
+    if (!confirmRemove) return;
+    const timer = setTimeout(() => setConfirmRemove(false), 4000);
+    return () => clearTimeout(timer);
+  }, [confirmRemove]);
   const title = show?.title || entry.show_id;
   const slug = show?.slug || entry.show_id;
   const category = show?.category || 'broadway';
-  const href = getShowHref(slug, category, show?.diaryOnly);
+  const href = getShowHref(slug, category);
 
   const isClosingSoon = show?.closingDate && (() => {
     const closing = new Date(show.closingDate!);
@@ -709,7 +747,7 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
 
   return (
     <div className="group/wl flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
-      <ShowCardPosterLink href={href} className="relative">
+      <Link href={href} className="relative">
         <div className="aspect-[2/3] bg-surface-overlay relative">
           {show?.posterUrl ? (
             <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
@@ -728,8 +766,8 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
         <div
           role="button"
           tabIndex={0}
-          onClick={(e) => { e.preventDefault(); e.stopPropagation(); if (href) window.location.href = `${href}?rate=1`; }}
-          onKeyDown={(e) => { if (e.key === 'Enter' && href) { window.location.href = `${href}?rate=1`; } }}
+          onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.location.href = `${href}?rate=1`; }}
+          onKeyDown={(e) => { if (e.key === 'Enter') { window.location.href = `${href}?rate=1`; } }}
           className="absolute inset-x-0 bottom-0 flex items-end justify-center pb-2 bg-gradient-to-t from-black/60 via-transparent to-transparent sm:inset-0 sm:opacity-0 sm:group-hover/wl:opacity-100 transition-opacity z-[1] cursor-pointer"
         >
           <span className="text-[10px] sm:text-xs font-semibold text-white/90 flex items-center gap-1">
@@ -750,12 +788,12 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
           </svg>
         </button>
-      </ShowCardPosterLink>
+      </Link>
       <div className="p-2">
-        <ShowCardPosterLink href={href}>
+        <Link href={href}>
           <h4 className="text-xs font-semibold text-white truncate">{title}</h4>
           <p className="text-[10px] text-gray-500 truncate">{show?.venue}</p>
-        </ShowCardPosterLink>
+        </Link>
         {/* Planned date — uses ref + showPicker for reliable mobile support */}
         <DatePickerButton
           value={entry.planned_date || ''}
@@ -829,10 +867,15 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
   onRemove: () => void;
 }) {
   const [confirmRemove, setConfirmRemove] = useState(false);
+  useEffect(() => {
+    if (!confirmRemove) return;
+    const timer = setTimeout(() => setConfirmRemove(false), 4000);
+    return () => clearTimeout(timer);
+  }, [confirmRemove]);
   const title = show?.title || entry.show_id;
   const slug = show?.slug || entry.show_id;
   const category = show?.category || 'broadway';
-  const href = getShowHref(slug, category, show?.diaryOnly);
+  const href = getShowHref(slug, category);
 
   const isClosingSoon = show?.closingDate && (() => {
     const closing = new Date(show.closingDate!);
@@ -847,7 +890,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
 
   return (
     <div className="group/wl relative flex items-center gap-2 sm:gap-4 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
-      <ShowCardOverlay href={href} label={title} />
+      <Link href={href} className="absolute inset-0 z-0" aria-label={`View ${title}`} />
 
       <div className="relative z-[1] flex-shrink-0 w-10 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay">
         {show?.posterUrl ? (
@@ -922,7 +965,6 @@ interface SearchShow {
   venue?: string;
   images?: { thumbnail?: string };
   category?: string;
-  dy?: boolean; // diary-only show
 }
 
 function AddShowSearch({
@@ -953,19 +995,11 @@ function AddShowSearch({
     if (fetchedRef.current) return;
     fetchedRef.current = true;
     try {
-      const [res, diaryRes, { default: FuseClass }] = await Promise.all([
+      const [res, { default: FuseClass }] = await Promise.all([
         fetch('/data/search-shows.json'),
-        fetch('/data/diary-search.json').catch(() => null),
         import('fuse.js/basic') as Promise<{ default: typeof Fuse }>,
       ]);
       const data: SearchShow[] = await res.json();
-      // Merge diary shows for broader search coverage
-      if (diaryRes?.ok) {
-        try {
-          const diaryData: SearchShow[] = await diaryRes.json();
-          data.push(...diaryData);
-        } catch { /* ignore */ }
-      }
       fuseRef.current = new FuseClass(data, {
         keys: [{ name: 'title', weight: 0.8 }, { name: 'venue', weight: 0.2 }],
         threshold: 0.35,
@@ -1013,8 +1047,8 @@ function AddShowSearch({
   const handleSelect = async (show: SearchShow) => {
     if (context === 'watchlist') {
       if (existingWatchlistIds.has(show.id)) {
-        // Already on watchlist — go to show page (if not diary-only)
-        if (!show.dy) router.push(`/show/${show.slug}`);
+        // Already on watchlist — just go to show page
+        router.push(`/show/${show.slug}`);
       } else {
         setAddingId(show.id);
         try {
@@ -1024,8 +1058,8 @@ function AddShowSearch({
         }
       }
     } else {
-      // Diary — go to show page with ?rate=1 (if not diary-only)
-      if (!show.dy) router.push(`/show/${show.slug}?rate=1`);
+      // Diary — go to show page with ?rate=1
+      router.push(`/show/${show.slug}?rate=1`);
     }
     setIsOpen(false);
     setQuery('');
@@ -1144,11 +1178,11 @@ function ToBeRatedCard({ entry, show }: { entry: WatchlistEntry; show?: ShowLook
   const title = show?.title || entry.show_id;
   const slug = show?.slug || entry.show_id;
   const category = show?.category || 'broadway';
-  const href = getShowHref(slug, category, show?.diaryOnly);
+  const href = getShowHref(slug, category);
 
   return (
     <div className="relative flex items-center gap-2 sm:gap-4 px-3 sm:px-5 py-3 rounded-xl bg-amber-500/[0.03] border border-amber-500/10 hover:border-amber-500/20 hover:bg-amber-500/[0.06] transition-colors">
-      <ShowCardOverlay href={href} label={`Rate ${title}`} />
+      <Link href={href} className="absolute inset-0 z-0" aria-label={`Rate ${title}`} />
       <div className="relative z-[1] flex-shrink-0 w-10 sm:w-16 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay pointer-events-none">
         {show?.posterUrl ? (
           <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
@@ -1160,7 +1194,7 @@ function ToBeRatedCard({ entry, show }: { entry: WatchlistEntry; show?: ShowLook
         <h4 className="font-bold text-white text-sm sm:text-base truncate">{title}</h4>
         {show?.venue && <p className="text-[11px] sm:text-xs text-gray-500 truncate">{show.venue}</p>}
         {entry.planned_date && (
-          <p className="text-[11px] sm:text-xs text-gray-500 mt-0.5">
+          <p className="text-[11px] sm:text-xs text-gray-500 mt-0.5 whitespace-nowrap">
             Saw {new Date(entry.planned_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
           </p>
         )}
