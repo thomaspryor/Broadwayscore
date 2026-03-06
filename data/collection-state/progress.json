@@ -1,0 +1,68 @@
+{
+  "processed": [
+    "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+    "mexodus-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "mexodus-off-broadway-2026/nytg--austin-fimmano.json",
+    "romeo-and-juliet-suite-off-broadway-2026/nytimes--gia-kourlas.json",
+    "the-amazing-sex-life-of-rabbits-off-broadway-2026/nyt-theater--unknown.json",
+    "the-little-mermaid-the-musical-off-broadway-2026/hollywood-reporter--robyn-bahr.json",
+    "burnout-paradise-off-broadway-2026/timeout--raven-snook.json",
+    "mexodus-off-broadway-2026/theatermania--zachary-stewart.json"
+  ],
+  "failed": [
+    "what-we-did-before-our-moth-days-off-broadway-2026/nytimes--unknown.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json"
+  ],
+  "skipped": [],
+  "tierBreakdown": {
+    "playwright": [
+      "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+      "mexodus-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "mexodus-off-broadway-2026/nytg--austin-fimmano.json",
+      "the-amazing-sex-life-of-rabbits-off-broadway-2026/nyt-theater--unknown.json",
+      "burnout-paradise-off-broadway-2026/timeout--raven-snook.json",
+      "mexodus-off-broadway-2026/theatermania--zachary-stewart.json"
+    ],
+    "amp": [],
+    "browserbase": [
+      "data/review-texts/the-little-mermaid-the-musical-off-broadway-2026/hollywood-reporter--robyn-bahr.json",
+      "the-little-mermaid-the-musical-off-broadway-2026/hollywood-reporter--robyn-bahr.json"
+    ],
+    "directCookies": [],
+    "scrapingbee": [
+      "romeo-and-juliet-suite-off-broadway-2026/nytimes--gia-kourlas.json"
+    ],
+    "brightdata": [],
+    "archiveToday": [
+      "data/review-texts/what-we-did-before-our-moth-days-off-broadway-2026/nytimes--unknown.json",
+      "data/review-texts/what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json"
+    ],
+    "archive": []
+  },
+  "startTime": "2026-03-06T09:13:03.197Z",
+  "lastProcessed": "mexodus-off-broadway-2026/theatermania--zachary-stewart.json",
+  "log": [
+    {
+      "t": "2026-03-06T09:14:33.354Z",
+      "event": "bb-session",
+      "session": "12e53775",
+      "url": "https://www.hollywoodreporter.com/review/little-mermaid-live-review-1252669"
+    },
+    {
+      "t": "2026-03-06T09:14:34.816Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-06T09:15:44.343Z",
+      "event": "bb-session",
+      "session": "85c54279",
+      "url": "https://www.nytimes.com/2026/03/05/theater/what-we-did-before-our-moth-days-revi"
+    },
+    {
+      "t": "2026-03-06T09:15:45.735Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
+}
