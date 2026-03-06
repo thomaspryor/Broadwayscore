@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Fuse from 'fuse.js';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
-import { SCORE_TIERS, getScoreTier, getScoreColorClass, ScoreBadge, MustSeeCrown, StatusBadge, FormatPill, ProductionPill, AudienceChip, ToggleBar, ScoreToggle } from '@/components/show-cards';
+import { SCORE_TIERS, getScoreTier, getScoreColorClass, ScoreBadge, MustSeeCrown, StatusBadge, FormatPill, ProductionPill, AudienceChip, CategoryBadge, ToggleBar, ScoreToggle } from '@/components/show-cards';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
 import type { ScoreTier } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
@@ -25,6 +25,7 @@ export interface WestEndShow {
   reviewYearNote?: string;
   images?: { thumbnail?: string; poster?: string; hero?: string };
   criticScore?: { score?: number; reviewCount?: number; tier1Count?: number; tier2Count?: number };
+  isOffWestEnd?: boolean;
   audienceCombinedScore: number | null;
   audienceGrade: { grade: string; label: string; color: string; textColor: string; tooltip: string } | null;
   creativeTeam?: Array<{ name: string; role: string }>;
@@ -150,6 +151,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
         <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
           <FormatPill type={show.type} />
           <ProductionPill isRevival={isRevival} />
+          {show.isOffWestEnd && <CategoryBadge category="off-west-end" />}
           {!hideStatus && <StatusBadge status={show.status} />}
         </div>
         <p className="text-sm text-gray-400 mt-2.5 truncate">
@@ -347,6 +349,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
     scoreMode: (['critics', 'audience'].includes(initialSearchParams.get('scoreMode') as string)
       ? initialSearchParams.get('scoreMode') as ScoreModeParam : DEFAULT_SCORE_MODE),
     q: initialSearchParams.get('q') || '',
+    venue: (initialSearchParams.get('venue') === 'west-end-only' ? 'west-end-only' : 'all') as 'all' | 'west-end-only',
   }));
 
   // Separate synchronous state for search input — startTransition drops keystrokes on controlled inputs
@@ -357,6 +360,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
   const type = filters.type;
   const scoreMode = filters.scoreMode;
   const searchQuery = filters.q;
+  const venueFilter = filters.venue;
   const statusFilter = statusParamToFilter[status];
 
   const updateParams = useCallback((updates: Record<string, string | null>) => {
@@ -368,7 +372,8 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
             key === 'status' ? DEFAULT_STATUS :
             key === 'sort' ? DEFAULT_SORT :
             key === 'type' ? DEFAULT_TYPE :
-            key === 'scoreMode' ? DEFAULT_SCORE_MODE : '';
+            key === 'scoreMode' ? DEFAULT_SCORE_MODE :
+            key === 'venue' ? 'all' : '';
         } else {
           (next as Record<string, string>)[key] = value;
         }
@@ -380,6 +385,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
       if (next.type !== DEFAULT_TYPE) urlParams.set('type', next.type);
       if (next.scoreMode !== DEFAULT_SCORE_MODE) urlParams.set('scoreMode', next.scoreMode);
       if (next.q) urlParams.set('q', next.q);
+      if (next.venue === 'west-end-only') urlParams.set('venue', next.venue);
 
       const paramString = urlParams.toString();
       window.history.replaceState({}, '', paramString ? `/west-end?${paramString}` : '/west-end');
@@ -396,6 +402,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
       type: DEFAULT_TYPE,
       scoreMode: DEFAULT_SCORE_MODE,
       q: '',
+      venue: 'all',
     });
     window.history.replaceState({}, '', '/west-end');
   }, []);
@@ -473,6 +480,11 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
       result = result.filter(show => type === 'musical' ? show.type === 'musical' : show.type !== 'musical');
     }
 
+    // Venue filter (Off-West End)
+    if (venueFilter === 'west-end-only') {
+      result = result.filter(show => !show.isOffWestEnd);
+    }
+
     // Sort
     result.sort((a, b) => {
       switch (sort) {
@@ -502,7 +514,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
     });
 
     return result;
-  }, [shows, fuse, statusFilter, type, searchQuery, sort, scoreMode]);
+  }, [shows, fuse, statusFilter, type, searchQuery, sort, scoreMode, venueFilter]);
 
   const shouldHideStatus = statusFilter !== 'all';
 
@@ -577,6 +589,22 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
           }}
         />
       </div>
+
+      {/* Venue Filter */}
+      {shows.some(s => s.isOffWestEnd) && (
+        <div className="flex items-center gap-2 mb-3 text-sm">
+          <ToggleBar
+            label="VENUE:"
+            options={[
+              { value: 'all' as const, label: 'ALL' },
+              { value: 'west-end-only' as const, label: 'WEST END ONLY' },
+            ]}
+            value={venueFilter}
+            onChange={(v) => updateParams({ venue: v === 'all' ? null : v })}
+            ariaLabel="Filter by venue type"
+          />
+        </div>
+      )}
 
       {/* Status & Sort Filters */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-3 mb-4 sm:mb-6 text-sm">
