@@ -158,13 +158,11 @@ test.describe('My Shows — Diary Sections', () => {
     expect(url).toContain('/show/ragtime-2025');
   });
 
-  test('show badges display correctly', async ({ page }) => {
+  test('venue is displayed in diary list view', async ({ page }) => {
     await goToMock(page);
-    // Wicked should show MUSICAL + NOW PLAYING
-    await expect(page.getByText('MUSICAL').first()).toBeVisible();
-    await expect(page.getByText('NOW PLAYING').first()).toBeVisible();
-    // Sunset Boulevard should show CLOSED
-    await expect(page.getByText('CLOSED').first()).toBeVisible();
+    // Diary list view should show venue names instead of badges
+    const venues = page.locator('.text-gray-500').filter({ hasText: /Theatre|Theater/ });
+    expect(await venues.count()).toBeGreaterThan(0);
   });
 
   test('review text is displayed for shows with notes', async ({ page }) => {
@@ -238,7 +236,11 @@ test.describe('My Shows — Tabs', () => {
     await page.getByRole('tab', { name: /Watchlist/ }).click();
     // URL should update
     await expect(page).toHaveURL(/tab=watchlist/);
-    // Watchlist shows should appear (6 items)
+    // Watchlist defaults to grid — check poster images exist (no h4 in grid)
+    const posters = page.locator('.aspect-\\[2\\/3\\]');
+    expect(await posters.count()).toBeGreaterThanOrEqual(6);
+    // Switch to list view and verify titles
+    await page.getByRole('button', { name: 'List view' }).click();
     await expect(page.getByRole('heading', { name: 'Gypsy', level: 4 })).toBeVisible();
     await expect(page.getByRole('heading', { name: /Oh, Mary/, level: 4 })).toBeVisible();
   });
@@ -334,8 +336,12 @@ test.describe('My Shows — Delete Flow', () => {
 test.describe('My Shows — Watchlist', () => {
   test('shows all 6 watchlist items', async ({ page }) => {
     await goToMock(page, 'watchlist');
-    // Count show title headings (excluding "Add" card)
-    const titles = page.locator('h4');
+    // Grid view: count poster cards (aspect-[2/3] areas, excluding AddShowCard)
+    const posters = page.locator('[role="tabpanel"] .aspect-\\[2\\/3\\]');
+    expect(await posters.count()).toBeGreaterThanOrEqual(6);
+    // Switch to list view to verify titles are present
+    await page.getByRole('button', { name: 'List view' }).click();
+    const titles = page.locator('[role="tabpanel"] h4');
     expect(await titles.count()).toBeGreaterThanOrEqual(6);
   });
 
@@ -427,9 +433,9 @@ test.describe('My Shows — Desktop Layout (1440px)', () => {
   test('diary grid uses 4 columns on desktop', async ({ page }) => {
     await goToMock(page);
     await page.getByRole('button', { name: 'Grid view' }).click();
-    // Grid container should have sm:grid-cols-4
-    const grid = page.locator('.grid.grid-cols-3');
-    await expect(grid).toBeVisible();
+    // Grid container should have grid-cols-3 sm:grid-cols-4 (resolves to 4 at 1440px)
+    const grid = page.locator('.grid.grid-cols-3.sm\\:grid-cols-4');
+    await expect(grid.first()).toBeVisible();
   });
 
   test('diary list shows full star ratings on desktop', async ({ page }) => {
