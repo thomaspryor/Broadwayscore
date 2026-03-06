@@ -50,10 +50,20 @@ export default function MyShowsClient() {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTabState] = useState<Tab>(searchParams.get('tab') === 'watchlist' ? 'watchlist' : 'diary');
 
+  // Dev-only mock mode: ?mock=1 on localhost renders with fake data (for Playwright visual QA)
+  // Must be state (not derived) to avoid SSR/client hydration mismatch
+  const [isMockMode, setIsMockMode] = useState(false);
+  useEffect(() => {
+    if (window.location.hostname === 'localhost' && searchParams.get('mock') === '1') {
+      setIsMockMode(true);
+    }
+  }, [searchParams]);
+
   // Update URL when tab changes so back button restores the correct tab
   const setActiveTab = (tab: Tab) => {
     setActiveTabState(tab);
-    const url = tab === 'watchlist' ? '/my-shows?tab=watchlist' : '/my-shows';
+    const mockParam = isMockMode ? '&mock=1' : '';
+    const url = tab === 'watchlist' ? `/my-shows?tab=watchlist${mockParam}` : `/my-shows${mockParam ? `?${mockParam.slice(1)}` : ''}`;
     window.history.replaceState(null, '', url);
   };
   const [diarySort, setDiarySort] = useState<DiarySort>('date-desc');
@@ -64,13 +74,26 @@ export default function MyShowsClient() {
   const [showMapLoaded, setShowMapLoaded] = useState(false);
 
   const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
-  const { reviews, getAllReviews, deleteReview, loading: reviewsLoading } = useUserReviews(user?.id || null);
-  const { watchlist, getWatchlist, addToWatchlist, updatePlannedDate, removeFromWatchlist, loading: watchlistLoading } = useWatchlist(user?.id || null);
+  const { reviews: realReviews, getAllReviews, deleteReview, loading: reviewsLoading } = useUserReviews(user?.id || null);
+  const { watchlist: realWatchlist, getWatchlist, addToWatchlist, updatePlannedDate, removeFromWatchlist, loading: watchlistLoading } = useWatchlist(user?.id || null);
   const { showToast } = useToastSafe();
-  const loading = authLoading || reviewsLoading || watchlistLoading;
+
+  // In mock mode, bypass loading/auth and inject fake data
+  const [mockData, setMockData] = useState<{ reviews: UserReview[]; watchlist: WatchlistEntry[]; showMap: ShowMap } | null>(null);
+  useEffect(() => {
+    if (!isMockMode) return;
+    import('./__dev-mock-data').then(mod => {
+      setMockData({ reviews: mod.mockReviews, watchlist: mod.mockWatchlist, showMap: mod.mockShowMap });
+    });
+  }, [isMockMode]);
+
+  const reviews = isMockMode && mockData ? mockData.reviews : realReviews;
+  const watchlist = isMockMode && mockData ? mockData.watchlist : realWatchlist;
+  const loading = isMockMode ? !mockData : (authLoading || reviewsLoading || watchlistLoading);
 
   // Load show lookup data
   useEffect(() => {
+    if (isMockMode) return; // Mock mode uses its own showMap
     fetch('/data/show-lookup.json')
       .then(res => res.json())
       .then((data: Record<string, unknown>[]) => {
@@ -85,15 +108,24 @@ export default function MyShowsClient() {
       .catch(() => {
         setShowMapLoaded(true);
       });
-  }, []);
+  }, [isMockMode]);
+
+  // Inject mock showMap when loaded
+  useEffect(() => {
+    if (isMockMode && mockData) {
+      setShowMap(mockData.showMap);
+      setShowMapLoaded(true);
+    }
+  }, [isMockMode, mockData]);
 
   // Load user data when authenticated
   useEffect(() => {
+    if (isMockMode) return;
     if (isAuthenticated && user) {
       getAllReviews();
       getWatchlist();
     }
-  }, [isAuthenticated, user, getAllReviews, getWatchlist]);
+  }, [isMockMode, isAuthenticated, user, getAllReviews, getWatchlist]);
 
   // Stats
   const showsSeen = new Set(reviews.map(r => r.show_id)).size;
@@ -178,7 +210,21 @@ export default function MyShowsClient() {
     }
   }, [watchlist, watchlistSort, showMap]);
 
-  if (!featureFlags.userAccounts) {
+  // While mock mode is initializing (useEffect hasn't fired yet), show loading
+  const hasMockParam = searchParams.get('mock') === '1';
+
+  if (!featureFlags.userAccounts && !isMockMode) {
+    if (hasMockParam) {
+      // Mock mode initializing — show loading skeleton briefly
+      return (
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-8">
+          <div className="animate-pulse space-y-4">
+            <div className="h-8 bg-white/5 rounded w-48" />
+            <div className="h-4 bg-white/5 rounded w-64" />
+          </div>
+        </div>
+      );
+    }
     return (
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-8">
         <p className="text-gray-400">This feature is not yet available.</p>
@@ -186,7 +232,7 @@ export default function MyShowsClient() {
     );
   }
 
-  if (!authLoading && !isAuthenticated) {
+  if (!isMockMode && !authLoading && !isAuthenticated) {
     return (
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-12">
         <h1 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">My Shows</h1>
@@ -252,14 +298,16 @@ export default function MyShowsClient() {
           <span><strong className="text-amber-400">{toBeRatedEntries.length}</strong> to rate</span>
         )}
       </div>
-      <div className="mb-6">
-        <MezzanineImport
-          userId={user!.id}
-          existingReviewShowIds={new Set(reviews.map(r => r.show_id))}
-          existingWatchlistShowIds={new Set(watchlist.map(w => w.show_id))}
-          onImportComplete={() => { getAllReviews(); getWatchlist(); }}
-        />
-      </div>
+      {!isMockMode && user && (
+        <div className="mb-6">
+          <MezzanineImport
+            userId={user.id}
+            existingReviewShowIds={new Set(reviews.map(r => r.show_id))}
+            existingWatchlistShowIds={new Set(watchlist.map(w => w.show_id))}
+            onImportComplete={() => { getAllReviews(); getWatchlist(); }}
+          />
+        </div>
+      )}
 
       {/* Tab bar + inline sort/view controls */}
       <div className="flex items-center gap-1 border-b border-white/10 mb-6">
