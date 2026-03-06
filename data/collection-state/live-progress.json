@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-06T11:05:38.775Z",
-  "processed": 210,
+  "updatedAt": "2026-03-06T11:09:10.394Z",
+  "processed": 220,
   "failed": 40,
-  "successRate": "84.0%",
+  "successRate": "84.6%",
   "tierBreakdown": {
-    "playwright": 67,
+    "playwright": 68,
     "amp": 24,
     "browserbase": 22,
     "directCookies": 2,
-    "scrapingbee": 40,
+    "scrapingbee": 45,
     "brightdata": 0,
     "archiveToday": 12,
-    "archive": 80
+    "archive": 84
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-03-06T09:30:42.582Z",
-      "event": "bb-session",
-      "session": "1e9c3a77",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
-    },
-    {
-      "t": "2026-03-06T09:30:44.019Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-06T09:33:16.043Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-06T11:00:51.676Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-06T11:08:01.805Z",
+      "event": "bb-session",
+      "session": "2cc2ec1b",
+      "url": "https://www.wsj.com/articles/operation-mincemeat-review-a-madcap-military-plot-o"
+    },
+    {
+      "t": "2026-03-06T11:08:03.147Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
