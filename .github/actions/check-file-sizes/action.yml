@@ -11,9 +11,17 @@ runs:
         # including gitignored ones. This caused 5 consecutive scoring failures (March 2026)
         # when gitignored diary-shows.json (13MB) and mezzanine-productions-raw.json
         # blocked every workflow that used this check.
+        # Known large files that are legitimately committed to the public repo
+        ALLOW_LARGE="llm-scoring-runs.json llm-scoring-garbage-skips.json master-review-list.json reviews.json shows.json show-score.json"
+
         LARGE=""
         while IFS= read -r file; do
           [ -z "$file" ] && continue
+          BASENAME=$(basename "$file")
+          # Skip known-large legitimate files
+          if echo " $ALLOW_LARGE " | grep -q " $BASENAME "; then
+            continue
+          fi
           if [ -f "$file" ]; then
             SIZE=$(stat --format=%s "$file" 2>/dev/null || stat -f%z "$file" 2>/dev/null || echo 0)
             if [ "$SIZE" -gt 5242880 ]; then
