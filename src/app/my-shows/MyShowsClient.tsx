@@ -1272,7 +1272,7 @@ function AddShowSearch({
     );
     const combined = [...fuseResults, ...substring];
     // Sort open/previews shows first, then closed
-    const statusOrder = (s: SearchShow) => s.status === 'open' || s.status === 'previews' ? 0 : 1;
+    const statusOrder = (s: SearchShow) => s.status === 'closed' ? 1 : 0;
     combined.sort((a, b) => statusOrder(a) - statusOrder(b));
     return combined.slice(0, 8);
   }, [deferredQuery, dataReady, shows]);
