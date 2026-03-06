@@ -190,12 +190,12 @@ export default function ShowPageRating({
 
   return (
     <div className="mt-5 pt-5 border-t border-white/[0.06]">
-      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-3">
         <div className="flex-1">
           {/* Section label + watchlist on same row on mobile */}
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
-              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Your Rating</h3>
+              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">My Rating &amp; Review</h3>
               {viewCount > 1 && (
                 <span className="text-[10px] font-medium text-gray-500 bg-white/[0.05] px-1.5 py-0.5 rounded">
                   Seen {viewCount} times
@@ -214,37 +214,38 @@ export default function ShowPageRating({
 
           {/* Stars + edit state */}
           {latestReview && !showPanel ? (
-            // Show existing rating with edit button
-            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-              <StarRating rating={latestReview.rating} onRatingChange={handleRatingChange} size="lg" readOnly hideLabel />
-              <button
-                type="button"
-                onClick={() => handleEdit(latestReview)}
-                className="p-1 text-gray-500 hover:text-white transition-colors"
-                aria-label="Edit rating"
-              >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                </svg>
-              </button>
-              {confirmDeleteId === latestReview.id ? (
-                <span className="flex items-center gap-1.5 text-xs">
-                  <button type="button" onClick={() => handleDelete(latestReview.id)} className="text-red-400 hover:text-red-300 font-medium">Delete?</button>
-                  <button type="button" onClick={() => setConfirmDeleteId(null)} className="text-gray-500 hover:text-white">Cancel</button>
-                </span>
-              ) : (
+            // Show existing rating with actions on same row
+            <div className="flex items-center gap-2">
+              <StarRating rating={latestReview.rating} onRatingChange={handleRatingChange} size="md" readOnly hideLabel />
+              <div className="flex items-center gap-1">
                 <button
                   type="button"
-                  onClick={() => setConfirmDeleteId(latestReview.id)}
-                  className="p-1 text-gray-500 hover:text-red-400 transition-colors"
-                  aria-label="Delete rating"
+                  onClick={() => handleEdit(latestReview)}
+                  className="p-1.5 text-gray-500 hover:text-white transition-colors"
+                  aria-label="Edit rating"
                 >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                   </svg>
                 </button>
-              )}
-              {/* New viewing button */}
+                {confirmDeleteId === latestReview.id ? (
+                  <span className="flex items-center gap-1.5 text-xs">
+                    <button type="button" onClick={() => handleDelete(latestReview.id)} className="text-red-400 hover:text-red-300 font-medium">Delete?</button>
+                    <button type="button" onClick={() => setConfirmDeleteId(null)} className="text-gray-500 hover:text-white">Cancel</button>
+                  </span>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setConfirmDeleteId(latestReview.id)}
+                    className="p-1.5 text-gray-500 hover:text-red-400 transition-colors"
+                    aria-label="Delete rating"
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
+                )}
+              </div>
               <button
                 type="button"
                 onClick={() => {
@@ -252,10 +253,9 @@ export default function ShowPageRating({
                   setCurrentRating(null);
                   lastSavedId.current = null;
                   setShowPanel(false);
-                  // Reset to allow new rating
                   handleRatingChange(latestReview.rating);
                 }}
-                className="text-xs text-gray-500 hover:text-brand transition-colors"
+                className="text-xs text-gray-500 hover:text-brand transition-colors whitespace-nowrap"
               >
                 + New Viewing
               </button>
@@ -265,7 +265,7 @@ export default function ShowPageRating({
             <StarRating
               rating={currentRating}
               onRatingChange={handleRatingChange}
-              size="lg"
+              size="md"
               hideLabel
             />
           )}
@@ -314,7 +314,7 @@ export default function ShowPageRating({
           {/* Link to My Shows diary */}
           {latestReview && !showPanel && (
             <Link href="/my-shows" className="inline-block mt-2 text-xs text-gray-500 hover:text-brand transition-colors">
-              See all my Ratings
+              See all my Ratings &amp; Reviews
             </Link>
           )}
         </div>
