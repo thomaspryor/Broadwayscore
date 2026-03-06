@@ -384,7 +384,15 @@
     "friends-the-musical-parody-off-broadway-2022/theater-life--iris-wiener.json",
     "friends-the-musical-parody-off-broadway-2022/theater-pizzazz--adam-cohen.json",
     "friends-the-musical-parody-off-broadway-2022/zeal-nyc--megan-wrappe.json",
-    "garry-starr-classic-penguins-garrick-west-end-2026/broadwayworld--franco-milazzo.json"
+    "garry-starr-classic-penguins-garrick-west-end-2026/broadwayworld--franco-milazzo.json",
+    "garry-starr-classic-penguins-garrick-west-end-2026/everything-theatre-uk--jess-gonzalez.json",
+    "hadestown-2019/amny--matt-windman.json",
+    "hadestown-2019/chicagotribune--chris-jones.json",
+    "hadestown-2019/medium--christian-lewis.json",
+    "hadestown-2019/theater-life--barry-gordin.json",
+    "hadestown-2019/washpost--peter-marks.json",
+    "hadestown-2019/washpost--unknown.json",
+    "hadestown-west-end-2024/artsdesk--mert-dilek.json"
   ],
   "failed": [
     "what-we-did-before-our-moth-days-off-broadway-2026/nytimes--unknown.json",
@@ -461,7 +469,9 @@
     "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
     "cats-the-jellicle-ball-2026/amny--matt-windman.json",
     "cold-war-choir-practice-off-broadway-2026/times-uk--unknown.json",
-    "dracula-west-end-2025/times-uk--clive-davis.json"
+    "dracula-west-end-2025/times-uk--clive-davis.json",
+    "giant-2026/ap--jennifer-farrar.json",
+    "giant-2026/london-theatre--julia-rank.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -611,7 +621,14 @@
       "dracula-west-end-2025/whatsonstage--sarah-crompton.json",
       "friends-the-musical-parody-off-broadway-2022/says-me-says-mom--jeryl-marcus.json",
       "friends-the-musical-parody-off-broadway-2022/stagebuddy--bill-crouch.json",
-      "friends-the-musical-parody-off-broadway-2022/theater-life--iris-wiener.json"
+      "friends-the-musical-parody-off-broadway-2022/theater-life--iris-wiener.json",
+      "garry-starr-classic-penguins-garrick-west-end-2026/everything-theatre-uk--jess-gonzalez.json",
+      "hadestown-2019/chicagotribune--chris-jones.json",
+      "hadestown-2019/medium--christian-lewis.json",
+      "hadestown-2019/theater-life--barry-gordin.json",
+      "hadestown-2019/washpost--peter-marks.json",
+      "hadestown-2019/washpost--unknown.json",
+      "hadestown-west-end-2024/artsdesk--mert-dilek.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -665,7 +682,9 @@
       "data/review-texts/the-great-gatsby-2024/observer--david-cote.json",
       "the-great-gatsby-2024/observer--david-cote.json",
       "data/review-texts/buena-vista-social-club-2025/amny--matt-windman.json",
-      "buena-vista-social-club-2025/amny--matt-windman.json"
+      "buena-vista-social-club-2025/amny--matt-windman.json",
+      "data/review-texts/hadestown-2019/amny--matt-windman.json",
+      "hadestown-2019/amny--matt-windman.json"
     ],
     "directCookies": [
       "what-we-did-before-our-moth-days-off-broadway-2026/wsj--charles-isherwood.json",
@@ -913,7 +932,7 @@
     ]
   },
   "startTime": "2026-03-06T09:13:03.197Z",
-  "lastProcessed": "garry-starr-classic-penguins-garrick-west-end-2026/broadwayworld--franco-milazzo.json",
+  "lastProcessed": "hadestown-west-end-2024/artsdesk--mert-dilek.json",
   "log": [
     {
       "t": "2026-03-06T09:14:33.354Z",
@@ -1121,6 +1140,17 @@
     },
     {
       "t": "2026-03-06T11:59:20.318Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-06T12:09:02.306Z",
+      "event": "bb-session",
+      "session": "9ad2d441",
+      "url": "https://www.amny.com/entertainment/hadestown-review-1-29924932/"
+    },
+    {
+      "t": "2026-03-06T12:09:03.501Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     }
