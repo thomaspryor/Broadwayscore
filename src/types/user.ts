@@ -43,6 +43,7 @@ export interface ShowLookup {
   closingDate: string | null;
   compositeScore: number | null;
   posterUrl: string | null;
+  diaryOnly?: boolean;
 }
 
 // Pending action for deferred auth flow
