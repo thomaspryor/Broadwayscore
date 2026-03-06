@@ -91,10 +91,11 @@ export default function MyShowsClient() {
   const watchlist = isMockMode && mockData ? mockData.watchlist : realWatchlist;
   const loading = isMockMode ? !mockData : (authLoading || reviewsLoading || watchlistLoading);
 
-  // Load show lookup data
+  // Load show lookup data (abort if mock mode activates mid-flight)
   useEffect(() => {
-    if (isMockMode) return; // Mock mode uses its own showMap
-    fetch('/data/show-lookup.json')
+    if (isMockMode) return;
+    const controller = new AbortController();
+    fetch('/data/show-lookup.json', { signal: controller.signal })
       .then(res => res.json())
       .then((data: Record<string, unknown>[]) => {
         const map: ShowMap = {};
@@ -106,8 +107,9 @@ export default function MyShowsClient() {
         setShowMapLoaded(true);
       })
       .catch(() => {
-        setShowMapLoaded(true);
+        if (!controller.signal.aborted) setShowMapLoaded(true);
       });
+    return () => controller.abort();
   }, [isMockMode]);
 
   // Inject mock showMap when loaded
@@ -325,6 +327,7 @@ export default function MyShowsClient() {
         <button
           type="button"
           onClick={() => setActiveTab('watchlist')}
+          aria-label={watchlist.length > 0 ? `Watchlist, ${watchlist.length} shows` : 'Watchlist'}
           className={`flex-shrink-0 px-3 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] ${
             activeTab === 'watchlist'
               ? 'text-white border-brand'
@@ -333,7 +336,7 @@ export default function MyShowsClient() {
         >
           Watchlist
           {watchlist.length > 0 && (
-            <span className="ml-1 px-1.5 py-0.5 text-[10px] bg-white/10 rounded-full">
+            <span className="ml-1.5 px-1.5 py-0.5 text-[10px] bg-white/10 rounded-full" aria-hidden="true">
               {watchlist.length}
             </span>
           )}
@@ -1160,7 +1163,7 @@ function ToBeRatedCard({ entry, show }: { entry: WatchlistEntry; show?: ShowLook
         <h4 className="font-bold text-white text-sm sm:text-base truncate">{title}</h4>
         {show?.venue && <p className="text-[11px] sm:text-xs text-gray-500 truncate">{show.venue}</p>}
         {entry.planned_date && (
-          <p className="text-[11px] sm:text-xs text-gray-500 mt-0.5">
+          <p className="text-[11px] sm:text-xs text-gray-500 mt-0.5 whitespace-nowrap">
             Saw {new Date(entry.planned_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
           </p>
         )}
