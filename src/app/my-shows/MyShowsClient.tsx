@@ -19,6 +19,13 @@ type DiarySort = 'date-desc' | 'date-asc' | 'rating-desc';
 type WatchlistSort = 'added-desc' | 'alphabetical' | 'closing-soon';
 type ViewMode = 'grid' | 'list';
 
+const MEZZ_IMG_PREFIX = 'https://www.theaterdiary.com/parse/files/C7TsezAg3jnX9jHLsC9KFEteyKePkwLtB46dDpfh/';
+function expandMezzImg(compact: string | undefined | null): string | null {
+  if (!compact) return null;
+  if (compact.startsWith('http')) return compact;
+  return MEZZ_IMG_PREFIX + compact;
+}
+
 interface ShowMap {
   [showId: string]: ShowLookup;
 }
@@ -37,7 +44,7 @@ function decodeShow(raw: Record<string, unknown>): ShowLookup {
     openingDate: (raw.od as string) || null,
     closingDate: (raw.cd as string) || null,
     compositeScore: null,
-    posterUrl: (raw.p as string) || null,
+    posterUrl: (raw.p as string) || expandMezzImg(raw.img as string) || null,
     diaryOnly: !!raw.dy,
   };
 }
@@ -1000,6 +1007,173 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
   );
 }
 
+/** Group productions by region for the picker */
+function groupProductions(prods: DiaryProduction[]) {
+  const groups: { label: string; items: DiaryProduction[] }[] = [];
+  const regionMap: Record<string, DiaryProduction[]> = {};
+
+  for (const p of prods) {
+    let region: string;
+    if (p.cat === 'broadway') region = 'Broadway';
+    else if (p.cat === 'west-end') region = 'West End';
+    else if (p.cat === 'off-broadway') region = 'Off-Broadway';
+    else if (p.co === 'US') region = 'US Regional';
+    else if (p.co === 'GB') region = 'UK Regional';
+    else if (p.co === 'AU') region = 'Australia';
+    else if (p.co === 'CA') region = 'Canada';
+    else if (p.co === 'DE') region = 'Germany';
+    else if (p.co === 'JP') region = 'Japan';
+    else if (p.co) region = p.co;
+    else region = 'Other';
+    if (!regionMap[region]) regionMap[region] = [];
+    regionMap[region].push(p);
+  }
+
+  const priority = ['Broadway', 'West End', 'Off-Broadway', 'US Regional', 'UK Regional'];
+  const sorted = Object.entries(regionMap).sort((a, b) => {
+    const ai = priority.indexOf(a[0]);
+    const bi = priority.indexOf(b[0]);
+    if (ai !== -1 && bi !== -1) return ai - bi;
+    if (ai !== -1) return -1;
+    if (bi !== -1) return 1;
+    return b[1].length - a[1].length;
+  });
+
+  for (const [label, items] of sorted) {
+    groups.push({ label, items });
+  }
+  return groups;
+}
+
+/** Format production label: "City · Venue (Year)" */
+function prodLabel(p: DiaryProduction): string {
+  const parts: string[] = [];
+  if (p.ci) parts.push(p.ci);
+  if (p.v && p.v !== p.ci) parts.push(p.v);
+  const main = parts.join(' · ') || (p.co ? p.co : p.cat || 'Unknown location');
+  return p.y ? `${main} (${p.y})` : main;
+}
+
+function ProductionPicker({
+  show,
+  filter,
+  onFilterChange,
+  onSelect,
+  onBack,
+  context,
+  existingReviewIds,
+  existingWatchlistIds,
+  addingId,
+}: {
+  show: SearchShow;
+  filter: string;
+  onFilterChange: (v: string) => void;
+  onSelect: (prod: DiaryProduction) => void;
+  onBack: () => void;
+  context: 'diary' | 'watchlist';
+  existingReviewIds: Set<string>;
+  existingWatchlistIds: Set<string>;
+  addingId: string | null;
+}) {
+  const prods = show.prods || [];
+  const showFilter = prods.length > 15;
+
+  const filtered = filter
+    ? prods.filter(p => {
+        const q = filter.toLowerCase();
+        return (p.ci?.toLowerCase().includes(q)) ||
+               (p.v?.toLowerCase().includes(q)) ||
+               (p.y?.includes(q)) ||
+               (p.co?.toLowerCase().includes(q));
+      })
+    : prods;
+
+  const groups = groupProductions(filtered);
+
+  return (
+    <div className="absolute top-full right-0 mt-1.5 w-[calc(100vw-2rem)] sm:w-80 bg-surface-raised border border-white/10 rounded-lg shadow-xl overflow-hidden z-[80] max-h-80 flex flex-col">
+      <div className="flex items-center gap-2 px-3 py-2 border-b border-white/10 bg-white/[0.02]">
+        <button
+          type="button"
+          onClick={onBack}
+          className="p-0.5 text-gray-400 hover:text-white transition-colors"
+          aria-label="Back to search"
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <div className="flex-1 min-w-0">
+          <div className="text-sm font-medium text-white truncate">{show.title}</div>
+          <div className="text-[10px] text-gray-500">{prods.length} productions — pick one</div>
+        </div>
+      </div>
+
+      {showFilter && (
+        <div className="px-3 py-1.5 border-b border-white/5">
+          <input
+            type="text"
+            value={filter}
+            onChange={e => onFilterChange(e.target.value)}
+            placeholder="Filter by city, venue, year..."
+            className="w-full px-2 py-1 text-xs bg-white/5 border border-white/10 rounded text-white placeholder-gray-500 focus:outline-none focus:border-brand/50"
+            autoFocus
+          />
+        </div>
+      )}
+
+      <div className="overflow-y-auto flex-1">
+        {groups.length > 0 ? groups.map(group => (
+          <div key={group.label}>
+            {groups.length > 1 && (
+              <div className="px-3 py-1 text-[10px] font-semibold text-gray-500 uppercase tracking-wider bg-white/[0.02] sticky top-0">
+                {group.label} ({group.items.length})
+              </div>
+            )}
+            {group.items.map(prod => {
+              const isAdding = addingId === prod.id;
+              const alreadyReviewed = existingReviewIds.has(prod.id);
+              const alreadyWatchlisted = existingWatchlistIds.has(prod.id);
+              return (
+                <button
+                  key={prod.id}
+                  onClick={() => onSelect(prod)}
+                  disabled={isAdding}
+                  className="w-full flex items-center gap-2 px-3 py-1.5 text-left hover:bg-white/5 transition-colors disabled:opacity-50"
+                >
+                  <div className="flex-1 min-w-0">
+                    <div className="text-xs text-white truncate">{prodLabel(prod)}</div>
+                  </div>
+                  {prod.st === 'open' && (
+                    <span className="flex-shrink-0 text-[9px] px-1 py-0.5 rounded bg-green-500/20 text-green-400 font-medium">Now Playing</span>
+                  )}
+                  <div className="flex-shrink-0 text-[10px] text-gray-500">
+                    {context === 'diary' ? (
+                      alreadyReviewed ? <span className="text-green-400">Rated</span> : <span>Rate</span>
+                    ) : (
+                      isAdding ? (
+                        <span className="animate-pulse">Adding...</span>
+                      ) : alreadyWatchlisted ? (
+                        <span className="text-green-400">Added</span>
+                      ) : (
+                        <span>+ Add</span>
+                      )
+                    )}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        )) : (
+          <div className="px-3 py-4 text-center text-xs text-gray-500">
+            No productions match &ldquo;{filter}&rdquo;
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 interface SearchShow {
   id: string;
   title: string;
@@ -1009,6 +1183,20 @@ interface SearchShow {
   images?: { thumbnail?: string };
   category?: string;
   dy?: boolean;
+  img?: string;
+  gid?: string;
+  n?: number;
+  prods?: DiaryProduction[];
+}
+
+interface DiaryProduction {
+  id: string;
+  v: string;
+  ci: string;
+  co?: string;
+  y?: string;
+  st?: string;
+  cat?: string;
 }
 
 function AddShowSearch({
@@ -1034,6 +1222,8 @@ function AddShowSearch({
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [addingId, setAddingId] = useState<string | null>(null);
+  const [selectedShow, setSelectedShow] = useState<SearchShow | null>(null);
+  const [prodFilter, setProdFilter] = useState('');
 
   const ensureData = useCallback(async () => {
     if (fetchedRef.current) return;
@@ -1045,13 +1235,16 @@ function AddShowSearch({
         import('fuse.js/basic') as Promise<{ default: typeof Fuse }>,
       ]);
       const data: SearchShow[] = await res.json();
-      // Merge diary-only shows into search index
+      // Merge diary shows — now show-grouped (single-prod entries have id/slug, multi-prod have gid/prods)
       if (diaryRes?.ok) {
-        const diaryData: SearchShow[] = await diaryRes.json();
-        const existingIds = new Set(data.map(s => s.id));
-        for (const s of diaryData) {
-          if (!existingIds.has(s.id)) data.push(s);
-        }
+        try {
+          const diaryData: SearchShow[] = await diaryRes.json();
+          const existingTitles = new Set(data.map(s => s.title.toLowerCase()));
+          for (const s of diaryData) {
+            if (existingTitles.has(s.title.toLowerCase())) continue;
+            data.push(s);
+          }
+        } catch { /* ignore */ }
       }
       fuseRef.current = new FuseClass(data, {
         keys: [{ name: 'title', weight: 0.8 }, { name: 'venue', weight: 0.2 }],
@@ -1071,8 +1264,9 @@ function AddShowSearch({
     if (deferredQuery.length < 2 || !fuseRef.current) return [];
     const fuseResults = fuseRef.current.search(deferredQuery, { limit: 6 }).map(r => r.item);
     const q = deferredQuery.toLowerCase();
+    const fuseKeys = new Set(fuseResults.map(r => r.gid || r.id));
     const substring = shows.filter(s =>
-      s.title.toLowerCase().includes(q) && !fuseResults.some(r => r.id === s.id)
+      s.title.toLowerCase().includes(q) && !fuseKeys.has(s.gid || s.id)
     );
     return [...fuseResults, ...substring].slice(0, 6);
   }, [deferredQuery, dataReady, shows]);
@@ -1086,6 +1280,8 @@ function AddShowSearch({
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
         setIsOpen(false);
         setQuery('');
+        setSelectedShow(null);
+        setProdFilter('');
       }
     }
     document.addEventListener('mousedown', handleClick);
@@ -1098,22 +1294,38 @@ function AddShowSearch({
   }, [isOpen, ensureData]);
 
   const handleSelect = async (show: SearchShow) => {
+    // Multi-production show → open production picker
+    if (show.prods && show.prods.length > 1) {
+      setSelectedShow(show);
+      setProdFilter('');
+      return;
+    }
+
+    // Single production inside a group — use the production's id
+    if (show.prods && show.prods.length === 1) {
+      await handleProductionSelect(show.prods[0].id, show.prods[0].id, true);
+      return;
+    }
+
+    await handleProductionSelect(show.id, show.slug, show.dy);
+  };
+
+  const handleProductionSelect = async (id: string, slug: string, dy?: boolean) => {
     if (context === 'watchlist') {
-      if (existingWatchlistIds.has(show.id)) {
-        // Already on watchlist — go to show page (if it has one)
-        if (!show.dy) router.push(`/show/${show.slug}`);
+      if (existingWatchlistIds.has(id)) {
+        if (!dy) router.push(`/show/${slug}`);
       } else {
-        setAddingId(show.id);
+        setAddingId(id);
         try {
-          await onAddToWatchlist(show.id);
+          await onAddToWatchlist(id);
         } finally {
           setAddingId(null);
         }
       }
     } else {
-      // Diary — go to show page with ?rate=1 (diary-only shows have no page)
-      if (!show.dy) router.push(`/show/${show.slug}?rate=1`);
+      if (!dy) router.push(`/show/${slug}?rate=1`);
     }
+    setSelectedShow(null);
     setIsOpen(false);
     setQuery('');
   };
@@ -1144,8 +1356,11 @@ function AddShowSearch({
             value={query}
             onChange={e => setQuery(e.target.value)}
             onKeyDown={e => {
-              if (e.key === 'Escape') { setIsOpen(false); setQuery(''); }
-              if (e.key === 'Enter' && results.length > 0) { handleSelect(results[0]); }
+              if (e.key === 'Escape') {
+                if (selectedShow) { setSelectedShow(null); }
+                else { setIsOpen(false); setQuery(''); }
+              }
+              if (e.key === 'Enter' && !selectedShow && results.length > 0) { handleSelect(results[0]); }
             }}
             placeholder={context === 'diary' ? 'Search to rate...' : 'Search to add...'}
             className="w-40 sm:w-52 px-3 py-1.5 pl-8 text-xs bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand/50"
@@ -1156,7 +1371,7 @@ function AddShowSearch({
         </div>
         <button
           type="button"
-          onClick={() => { setIsOpen(false); setQuery(''); }}
+          onClick={() => { setIsOpen(false); setQuery(''); setSelectedShow(null); }}
           className="p-1 text-gray-500 hover:text-white"
           aria-label="Close search"
         >
@@ -1166,22 +1381,36 @@ function AddShowSearch({
         </button>
       </div>
 
-      {/* Dropdown results */}
-      {query.length >= 2 && (
+      {/* Dropdown: search results OR production picker */}
+      {selectedShow ? (
+        <ProductionPicker
+          show={selectedShow}
+          filter={prodFilter}
+          onFilterChange={setProdFilter}
+          onSelect={(prod) => handleProductionSelect(prod.id, prod.id, true)}
+          onBack={() => setSelectedShow(null)}
+          context={context}
+          existingReviewIds={existingReviewIds}
+          existingWatchlistIds={existingWatchlistIds}
+          addingId={addingId}
+        />
+      ) : query.length >= 2 ? (
         <div className="absolute top-full right-0 mt-1.5 w-[calc(100vw-2rem)] sm:w-80 bg-surface-raised border border-white/10 rounded-lg shadow-xl overflow-hidden z-[80] max-h-72 overflow-y-auto">
           {results.length > 0 ? results.map(show => {
-            const alreadyReviewed = existingReviewIds.has(show.id);
-            const alreadyWatchlisted = existingWatchlistIds.has(show.id);
+            const key = show.gid || show.id;
+            const alreadyReviewed = show.id ? existingReviewIds.has(show.id) : false;
+            const alreadyWatchlisted = show.id ? existingWatchlistIds.has(show.id) : false;
             const isAdding = addingId === show.id;
+            const isMulti = show.prods && show.prods.length > 1;
             return (
               <button
-                key={show.id}
+                key={key}
                 onClick={() => handleSelect(show)}
                 disabled={isAdding}
                 className="w-full flex items-center gap-2.5 px-3 py-2 text-left hover:bg-white/5 transition-colors disabled:opacity-50"
               >
-                {show.images?.thumbnail ? (
-                  <img src={show.images.thumbnail} alt="" className="w-9 h-9 rounded object-cover flex-shrink-0" />
+                {(show.images?.thumbnail || show.img) ? (
+                  <img src={show.images?.thumbnail || expandMezzImg(show.img) || ''} alt="" className="w-9 h-9 rounded object-cover flex-shrink-0" />
                 ) : (
                   <div className="w-9 h-9 rounded bg-white/10 flex-shrink-0" />
                 )}
@@ -1195,12 +1424,17 @@ function AddShowSearch({
                     }`}>
                       {show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'Previews' : 'Closed'}
                     </span>
-                    {show.venue && <span className="truncate">{show.venue}</span>}
+                    {isMulti ? (
+                      <span className="text-gray-400">{show.n} productions</span>
+                    ) : (
+                      show.venue && <span className="truncate">{show.venue}</span>
+                    )}
                   </div>
                 </div>
-                {/* Action hint */}
                 <div className="flex-shrink-0 text-[10px] text-gray-500">
-                  {context === 'diary' ? (
+                  {isMulti ? (
+                    <span className="text-brand">Pick &rarr;</span>
+                  ) : context === 'diary' ? (
                     alreadyReviewed ? <span className="text-green-400">Rated</span> : <span>Rate</span>
                   ) : (
                     isAdding ? (
@@ -1220,7 +1454,7 @@ function AddShowSearch({
             </div>
           )}
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

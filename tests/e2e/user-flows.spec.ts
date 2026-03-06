@@ -215,6 +215,56 @@ test.describe('Show Page Rating Section', () => {
   });
 });
 
+test.describe('Diary Search & Production Picker', () => {
+  test('diary-search.json is fetchable and valid', async ({ page }) => {
+    const res = await page.goto('/data/diary-search.json');
+    if (!res || res.status() === 404) {
+      test.skip(true, 'diary-search.json not deployed yet');
+      return;
+    }
+    const data = await res.json();
+    expect(Array.isArray(data)).toBeTruthy();
+  });
+
+  test('diary-lookup.json is fetchable and valid', async ({ page }) => {
+    const res = await page.goto('/data/diary-lookup.json');
+    if (!res || res.status() === 404) {
+      test.skip(true, 'diary-lookup.json not deployed yet');
+      return;
+    }
+    const data = await res.json();
+    expect(Array.isArray(data)).toBeTruthy();
+  });
+
+  test('multi-production search entries have prods array', async ({ page }) => {
+    const res = await page.goto('/data/diary-search.json');
+    if (!res || res.status() === 404) {
+      test.skip(true, 'diary-search.json not deployed yet');
+      return;
+    }
+    const data = await res.json();
+    const multis = data.filter((e: any) => e.prods);
+    if (multis.length === 0) {
+      test.skip(true, 'No multi-production entries found');
+      return;
+    }
+
+    // Every multi-production entry should have gid, title, n, and prods
+    for (const entry of multis.slice(0, 10)) {
+      expect(entry.gid).toBeTruthy();
+      expect(entry.title).toBeTruthy();
+      expect(entry.n).toBeGreaterThan(1);
+      expect(Array.isArray(entry.prods)).toBeTruthy();
+      expect(entry.prods.length).toBe(entry.n);
+
+      // Each production should have an id
+      for (const prod of entry.prods.slice(0, 5)) {
+        expect(prod.id).toBeTruthy();
+      }
+    }
+  });
+});
+
 test.describe('My Shows Page Layout', () => {
   test('tab bar and sort controls are on the same line', async ({ page }) => {
     await page.goto('/my-shows');
