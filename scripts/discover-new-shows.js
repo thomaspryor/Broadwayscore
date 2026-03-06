@@ -560,11 +560,31 @@ async function consumeShowScoreCandidatesFile() {
 
       ttConfirmed++;
       const title = (ttShow.displayName || ttShow.name || candidate.title).trim();
+
+      // For WE/OB shows, TodayTix startDate is first preview, NOT press night.
+      // Scrape Show Score for the actual press night ("Opens Mar 09") date.
+      let openingDate = ttShow.startDate || null;
+      let previewsStartDate = null;
+      if (candidate.category === 'west-end' || candidate.category === 'off-broadway') {
+        let ssData = null;
+        try {
+          ssData = await fetchShowScoreStatus(candidate.showScoreUrl);
+          await new Promise(r => setTimeout(r, 500));
+        } catch { /* ShowScore fetch failed */ }
+        if (ssData?.openingDate) {
+          // Show Score "Opens X" = press night = true opening date
+          previewsStartDate = ttShow.startDate || null;
+          openingDate = ssData.openingDate;
+          console.log(`    Date correction: TT startDate ${previewsStartDate} → previewsStart, SS "Opens" ${openingDate} → openingDate`);
+        }
+      }
+
       validated.push({
         title,
         venue: (typeof ttShow.venue === 'string' ? ttShow.venue : ttShow.venue?.name) || 'TBA',
         slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
-        openingDate: ttShow.startDate || null,
+        openingDate,
+        previewsStartDate,
         closingDate: ttShow.endDate === 'null' ? null : ttShow.endDate || null,
         category: candidate.category,
         description: ttShow.description || '',
@@ -869,6 +889,14 @@ async function discoverShows() {
       }
     }
 
+    let previewsStartDate = null;
+    if (show.previewsStartDate) {
+      const parsed = new Date(show.previewsStartDate);
+      if (!isNaN(parsed.getTime())) {
+        previewsStartDate = parsed.toISOString().split('T')[0];
+      }
+    }
+
     // Use opening year for ID if available, otherwise current year
     const idYear = openingDate ? openingDate.split('-')[0] : new Date().getFullYear();
     const baseSlug = slugify(show.title);
@@ -900,6 +928,7 @@ async function discoverShows() {
       slug: slug,
       id: showId,
       openingDate,
+      previewsStartDate,
       closingDate,
     });
   }
