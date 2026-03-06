@@ -238,6 +238,7 @@ function ShowPageRatingInner({
       autoRate={autoRate}
       autoRateStars={autoRateStars}
       onAutoRateConsumed={() => setAutoRate(false)}
+      onAutoEditConsumed={() => setAutoEditLatest(false)}
     />
   );
 }
