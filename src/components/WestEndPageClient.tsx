@@ -453,7 +453,11 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
 
   const filteredAndSortedShows = useMemo(() => {
     if (searchQuery) {
-      return fuse.search(searchQuery).map(result => result.item);
+      let searchResults = fuse.search(searchQuery).map(result => result.item);
+      if (venueFilter === 'west-end-only') {
+        searchResults = searchResults.filter(show => !show.isOffWestEnd);
+      }
+      return searchResults;
     }
 
     let result = shows.filter(show => {
