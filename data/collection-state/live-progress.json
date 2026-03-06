@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-06T04:38:54.782Z",
-  "processed": 673,
-  "failed": 577,
-  "successRate": "53.8%",
+  "updatedAt": "2026-03-06T04:41:02.099Z",
+  "processed": 682,
+  "failed": 578,
+  "successRate": "54.1%",
   "tierBreakdown": {
-    "playwright": 402,
+    "playwright": 407,
     "amp": 32,
-    "browserbase": 45,
+    "browserbase": 47,
     "directCookies": 3,
     "scrapingbee": 98,
     "brightdata": 0,
-    "archiveToday": 295,
-    "archive": 141
+    "archiveToday": 297,
+    "archive": 144
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-03-05T20:17:59.309Z",
-      "event": "bb-cookie-inject",
-      "domain": "observer.com"
-    },
-    {
-      "t": "2026-03-05T20:20:52.512Z",
-      "event": "bb-session",
-      "session": "12e81a22",
-      "url": "https://www.wsj.com/articles/the-outsiders-review-the-greasers-go-to-broadway-da"
-    },
     {
       "t": "2026-03-05T20:20:53.612Z",
       "event": "bb-cookie-inject",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-06T04:19:51.492Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-06T04:39:29.490Z",
+      "event": "bb-session",
+      "session": "85970b03",
+      "url": "https://www.amny.com/entertainment/theater/spelling-bee-returns-nails-every-word"
+    },
+    {
+      "t": "2026-03-06T04:39:30.761Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     }
