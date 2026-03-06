@@ -75,7 +75,15 @@
     "the-infinite-wrench-off-broadway-2025/nytg--unknown.json",
     "the-lion-king-1997/nytimes--ben-brantley.json",
     "the-lion-king-1997/vulture--john-simon.json",
-    "the-lion-king-west-end-2021/variety--matt-wolf.json"
+    "the-lion-king-west-end-2021/variety--matt-wolf.json",
+    "the-unknown-off-broadway-2026/nytimes--helen-shaw.json",
+    "two-strangers-bway-2025/nyt-theater--unknown.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/nytg--gillian-russo.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/nytimes--unknown.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json",
+    "wicked-2003/variety--charles-isherwood.json",
+    "age-is-a-feeling-off-broadway-2024/guardian--mark-fisher.json"
   ],
   "failed": [
     "it-walks-around-the-house-at-night-west-end-2026/broadwayworld--unknown.json",
@@ -86,7 +94,9 @@
     "hadestown-2019/newyorker--hilton-als.json",
     "hercules-west-end-2025/nytimes--matt-wolf.json",
     "la-llamada-off-broadway-2024/nytg--unknown.json",
-    "los-soles-truncos-off-broadway-2025/nytg--unknown.json"
+    "los-soles-truncos-off-broadway-2025/nytg--unknown.json",
+    "wicked-2003/nytimes--charles-isherwood.json",
+    "wicked-2003/vulture--bilge-eberi.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -113,7 +123,11 @@
       "pied-a-terre-off-broadway-2026/nytg--unknown.json",
       "ragtime-2025/nyt-theater--unknown.json",
       "the-amazing-sex-life-of-rabbits-off-broadway-2026/nyt-theater--unknown.json",
-      "the-infinite-wrench-off-broadway-2025/nytg--unknown.json"
+      "the-infinite-wrench-off-broadway-2025/nytg--unknown.json",
+      "two-strangers-bway-2025/nyt-theater--unknown.json",
+      "what-we-did-before-our-moth-days-off-broadway-2026/nytg--gillian-russo.json",
+      "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json",
+      "age-is-a-feeling-off-broadway-2024/guardian--mark-fisher.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -135,7 +149,9 @@
       "data/review-texts/the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
       "the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
       "data/review-texts/the-lion-king-west-end-2021/variety--matt-wolf.json",
-      "the-lion-king-west-end-2021/variety--matt-wolf.json"
+      "the-lion-king-west-end-2021/variety--matt-wolf.json",
+      "data/review-texts/wicked-2003/variety--charles-isherwood.json",
+      "wicked-2003/variety--charles-isherwood.json"
     ],
     "browserbase": [
       "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
@@ -178,12 +194,15 @@
       "stranger-things-2024/nytimes--houman-barekat.json",
       "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
       "the-dinosaurs-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
-      "the-lion-king-1997/nytimes--ben-brantley.json"
+      "the-lion-king-1997/nytimes--ben-brantley.json",
+      "the-unknown-off-broadway-2026/nytimes--helen-shaw.json",
+      "what-we-did-before-our-moth-days-off-broadway-2026/nytimes--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/it-walks-around-the-house-at-night-west-end-2026/broadwayworld--unknown.json",
-      "data/review-texts/manic-street-creature-west-end-2026/broadwayworld--unknown.json"
+      "data/review-texts/manic-street-creature-west-end-2026/broadwayworld--unknown.json",
+      "data/review-texts/wicked-2003/nytimes--charles-isherwood.json"
     ],
     "archive": [
       "tru-off-broadway-2026/theatermania--unknown.json",
@@ -199,11 +218,12 @@
       "mexodus-off-broadway-2026/nytg--austin-fimmano.json",
       "mj-2022/vulture--helen-shaw.json",
       "moulin-rouge-2019/nytimes--ben-brantley.json",
-      "the-great-gatsby-2024/nytimes--maya-phillips.json"
+      "the-great-gatsby-2024/nytimes--maya-phillips.json",
+      "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-03-06T17:15:52.929Z",
-  "lastProcessed": "the-lion-king-west-end-2021/variety--matt-wolf.json",
+  "lastProcessed": "age-is-a-feeling-off-broadway-2024/guardian--mark-fisher.json",
   "log": [
     {
       "t": "2026-03-06T18:51:51.105Z",
@@ -303,6 +323,17 @@
       "t": "2026-03-06T19:06:53.915Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-06T19:13:47.469Z",
+      "event": "bb-session",
+      "session": "0f8a24ad",
+      "url": "http://www.nytimes.com/2014/08/22/theater/a-decade-later-wicked-continues-to-be-"
+    },
+    {
+      "t": "2026-03-06T19:13:48.551Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

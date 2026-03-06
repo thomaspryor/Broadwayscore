@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-06T19:10:27.282Z",
-  "processed": 76,
-  "failed": 9,
-  "successRate": "89.4%",
+  "updatedAt": "2026-03-06T19:18:05.372Z",
+  "processed": 84,
+  "failed": 11,
+  "successRate": "88.4%",
   "tierBreakdown": {
-    "playwright": 23,
-    "amp": 20,
+    "playwright": 27,
+    "amp": 22,
     "browserbase": 16,
     "directCookies": 1,
-    "scrapingbee": 20,
+    "scrapingbee": 22,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 14
+    "archiveToday": 3,
+    "archive": 15
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-03-06T18:51:51.105Z",
@@ -113,6 +113,17 @@
       "t": "2026-03-06T19:06:53.915Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-06T19:13:47.469Z",
+      "event": "bb-session",
+      "session": "0f8a24ad",
+      "url": "http://www.nytimes.com/2014/08/22/theater/a-decade-later-wicked-continues-to-be-"
+    },
+    {
+      "t": "2026-03-06T19:13:48.551Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
