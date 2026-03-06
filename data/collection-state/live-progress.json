@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-06T09:38:15.818Z",
-  "processed": 67,
+  "updatedAt": "2026-03-06T09:40:36.919Z",
+  "processed": 77,
   "failed": 13,
-  "successRate": "83.8%",
+  "successRate": "85.6%",
   "tierBreakdown": {
     "playwright": 26,
-    "amp": 14,
-    "browserbase": 14,
+    "amp": 18,
+    "browserbase": 16,
     "directCookies": 1,
-    "scrapingbee": 11,
+    "scrapingbee": 15,
     "brightdata": 0,
     "archiveToday": 5,
-    "archive": 15
+    "archive": 18
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-03-06T09:14:33.354Z",
@@ -111,6 +111,17 @@
     },
     {
       "t": "2026-03-06T09:37:23.958Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-06T09:38:31.900Z",
+      "event": "bb-session",
+      "session": "bde84051",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/schmigadoon-musical-apple-tv-br"
+    },
+    {
+      "t": "2026-03-06T09:38:33.285Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
