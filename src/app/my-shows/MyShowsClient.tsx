@@ -1241,7 +1241,9 @@ function AddShowSearch({
           const diaryData: SearchShow[] = await diaryRes.json();
           const existingTitles = new Set(data.map(s => s.title.toLowerCase()));
           for (const s of diaryData) {
-            if (existingTitles.has(s.title.toLowerCase())) continue;
+            // Always keep multi-production groups (they offer a production picker)
+            // Only dedup single-production diary entries against existing search entries
+            if (!s.prods && existingTitles.has(s.title.toLowerCase())) continue;
             data.push(s);
           }
         } catch { /* ignore */ }
