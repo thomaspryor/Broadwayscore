@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-06T11:22:04.240Z",
-  "processed": 269,
+  "updatedAt": "2026-03-06T11:23:41.602Z",
+  "processed": 279,
   "failed": 41,
-  "successRate": "86.8%",
+  "successRate": "87.2%",
   "tierBreakdown": {
-    "playwright": 81,
+    "playwright": 83,
     "amp": 24,
     "browserbase": 24,
     "directCookies": 2,
     "scrapingbee": 54,
     "brightdata": 0,
     "archiveToday": 12,
-    "archive": 110
+    "archive": 118
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-03-06T09:35:11.234Z",
-      "event": "bb-session",
-      "session": "5452b58e",
-      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
-    },
-    {
-      "t": "2026-03-06T09:35:12.632Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-06T09:35:56.924Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-06T11:18:21.181Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-06T11:22:53.628Z",
+      "event": "bb-session",
+      "session": "d1b6bf67",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-03-06T11:22:54.877Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
