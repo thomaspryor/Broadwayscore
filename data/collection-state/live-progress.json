@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-03-06T10:52:04.009Z",
-  "processed": 258,
-  "failed": 42,
-  "successRate": "86.0%",
+  "updatedAt": "2026-03-06T11:03:45.987Z",
+  "processed": 200,
+  "failed": 40,
+  "successRate": "83.3%",
   "tierBreakdown": {
-    "playwright": 86,
+    "playwright": 65,
     "amp": 24,
-    "browserbase": 16,
+    "browserbase": 22,
     "directCookies": 2,
-    "scrapingbee": 45,
+    "scrapingbee": 39,
     "brightdata": 0,
-    "archiveToday": 13,
-    "archive": 107
+    "archiveToday": 12,
+    "archive": 73
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-03-06T09:14:33.354Z",
-      "event": "bb-session",
-      "session": "12e53775",
-      "url": "https://www.hollywoodreporter.com/review/little-mermaid-live-review-1252669"
-    },
-    {
-      "t": "2026-03-06T09:14:34.816Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-06T09:15:44.343Z",
-      "event": "bb-session",
-      "session": "85c54279",
-      "url": "https://www.nytimes.com/2026/03/05/theater/what-we-did-before-our-moth-days-revi"
-    },
-    {
-      "t": "2026-03-06T09:15:45.735Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-06T09:21:34.440Z",
-      "event": "bb-session",
-      "session": "76fbbac6",
-      "url": "https://www.wsj.com/articles/what-we-did-before-our-moth-days-review-wallace-sha"
-    },
-    {
-      "t": "2026-03-06T09:21:35.920Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-06T09:30:42.582Z",
       "event": "bb-session",
@@ -124,6 +91,39 @@
       "t": "2026-03-06T09:38:33.285Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-06T10:58:29.130Z",
+      "event": "bb-session",
+      "session": "8d8dd9a1",
+      "url": "https://nypost.com/2025/09/29/entertainment/masquerade-review-secretive-off-broa"
+    },
+    {
+      "t": "2026-03-06T10:58:30.370Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-06T10:58:46.084Z",
+      "event": "bb-session",
+      "session": "dee2d7fa",
+      "url": "https://observer.com/2025/09/review-masquerade-phantom-of-the-opera-experience-i"
+    },
+    {
+      "t": "2026-03-06T10:58:47.365Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-06T11:00:50.552Z",
+      "event": "bb-session",
+      "session": "9618512f",
+      "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-r"
+    },
+    {
+      "t": "2026-03-06T11:00:51.676Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
