@@ -32,7 +32,15 @@ Run all of these simultaneously via Bash:
 1. **TypeScript check:** `npx tsc --noEmit 2>&1 | tail -20`
 2. **Lint check:** `npx next lint 2>&1 | tail -20`
 3. **Data validation:** `node scripts/validate-data.js 2>&1 | tail -30`
-4. **Build test:** `npm run build 2>&1 | tail -30` (catches SSG errors, missing imports, data issues at scale)
+4. **Build test (auth-aware):** Build with feature flags enabled, but only include `userAccounts` if Supabase env vars are present:
+   ```bash
+   if [ -n "$NEXT_PUBLIC_SUPABASE_URL" ]; then
+     NEXT_PUBLIC_FEATURES=userAccounts,criticPages,castPages,westEnd,offBroadway,tonyPeople,tonyPredictions npm run build 2>&1 | tail -30
+   else
+     echo "Skipping userAccounts flag (no NEXT_PUBLIC_SUPABASE_URL). Building with other flags."
+     NEXT_PUBLIC_FEATURES=criticPages,castPages,westEnd,offBroadway,tonyPeople,tonyPredictions npm run build 2>&1 | tail -30
+   fi
+   ```
 
 If any fail, report them immediately — these are P0 blockers. Do NOT continue to visual review until build passes.
 
@@ -58,6 +66,42 @@ This phase checks for data correctness and edge cases. Tailor the queries to wha
 4. **Accuracy spot-check** — Pick 3-5 specific items and verify the displayed data matches the source JSON files. Don't trust aggregated numbers without checking the inputs.
 
 Report findings: what looks correct, what looks suspicious, what's clearly wrong.
+
+### Phase 3.5: Auth flow verification
+
+Run this phase for ANY change that touches auth-gated code (`useAuth`, `UserProviders`, `ShowPageRating`, `my-shows`, `deferred-auth`, `useUserReviews`, `useWatchlist`). If no auth-related files were changed, skip to Phase 4.
+
+**A. Mock mode pre-flight:**
+Before relying on mock mode for screenshots, verify it still exists:
+```bash
+grep -r "mock=1\|mock=" src/app/my-shows/ --include="*.tsx" --include="*.ts" | head -5
+```
+If no results, skip mock screenshots in Phase 4 and report "mock mode not found" in the review.
+
+**B. Feature flag branches:** Read the root layout and all changed files. For every `featureFlags.userAccounts` check, verify BOTH branches render valid UI:
+- Flag ON + authenticated → full feature
+- Flag ON + unauthenticated → sign-in prompt / CTA
+- Flag OFF → feature hidden, no crashes
+
+**C. Deferred auth flow:**
+If changes touch rating, watchlist, or sign-in, trace the EXACT lifecycle:
+1. Read `src/lib/deferred-auth.ts` — verify `savePendingAction()` stores: `type`, `showId`, `rating?`, `returnUrl`, `timestamp`
+2. In the consuming component (e.g. `ShowPageRatingConnected`), verify this sequence:
+   - `savePendingAction()` called BEFORE `showSignIn()`
+   - After auth state changes (`isAuthenticated` becomes true), component calls `getPendingAction()`
+   - Verify `getPendingAction()` is called AFTER `onAuthStateChange` fires `SIGNED_IN` — check the useEffect dependency that triggers replay (must depend on `isAuthenticated` or `user`, not just mount)
+   - After execution: `clearPendingAction()` is called
+3. Check TTL: `Date.now() - action.timestamp > 3600000` → action expires
+4. Storage key: `bsc_pending_action` (web localStorage) or `@bsc:pending_action` (mobile AsyncStorage)
+
+**D. useAuth() consumers:** For every component calling `useAuth()`:
+- Handles `loading === true`? (skeleton/spinner, not flash of unauthenticated state)
+- Handles `user === null`? (sign-in CTA, not crash)
+- Passes correct `showSignIn()` context: `'rating'` for star taps, `'watchlist'` for watchlist, `'generic'` otherwise
+
+**E. Data hook null safety:** Verify `useUserReviews()` and `useWatchlist()` called with `user?.id || null`, not `user.id`.
+
+**F. Mock mode consistency:** If `__dev-mock-data.ts` exists, verify mock types match `src/types/user.ts`. Stale mocks → tests pass, production breaks.
 
 ### Phase 4: Visual audit
 
@@ -103,6 +147,19 @@ node -e "const{chromium}=require('playwright');(async()=>{const b=await chromium
 - Is the new feature visually consistent with the established design language?
 - Any regressions on pages that weren't supposed to change?
 
+**Auth-gated page screenshots (use mock mode):**
+Only run if Phase 3.5A confirmed mock mode exists.
+```bash
+# My Shows with mock data
+npx playwright screenshot --browser=chromium --viewport-size=390,844 --full-page http://localhost:3456/my-shows?mock=1 /tmp/review-mobile-my-shows-mock.png
+npx playwright screenshot --browser=chromium --viewport-size=1440,900 --full-page http://localhost:3456/my-shows?mock=1 /tmp/review-desktop-my-shows-mock.png
+```
+
+For show pages with rating sections (rating section visible without auth):
+```bash
+npx playwright screenshot --browser=chromium --viewport-size=390,844 --full-page http://localhost:3456/show/hamilton /tmp/review-mobile-show-rating.png
+```
+
 ### Phase 5: UX review (run BOTH in parallel)
 
 Launch both reviewers simultaneously. Save the screenshots to files that can be referenced.
@@ -120,9 +177,16 @@ Launch both reviewers simultaneously. Save the screenshots to files that can be 
    > 4. Is there anything that works but looks wrong? (e.g., correct data displayed in a misleading way, sort order that seems arbitrary, truncated text that hides important info)
    > 5. Accessibility: any contrast issues, missing alt text, touch targets too small?
    >
+   > **AUTH FLOW REVIEW:**
+   > 6. Trace the unauthenticated journey: tap action → sign-in modal → sign in → deferred action executes
+   > 7. Trace the authenticated journey: tap action → immediate execution
+   > 8. Does the sign-in modal show the right context message for this action?
+   > 9. Is there a loading flash between "checking auth" and "showing content"?
+   > 10. What happens if the user cancels sign-in? Does the UI revert cleanly?
+   >
    > **REGRESSION CHECK:**
-   > 6. Did any shared component get modified? If so, check 2-3 other pages that use it — did they break?
-   > 7. Are there any new TypeScript `any` types, suppressed errors, or TODO comments that indicate shortcuts?
+   > 11. Did any shared component get modified? If so, check 2-3 other pages that use it — did they break?
+   > 12. Are there any new TypeScript `any` types, suppressed errors, or TODO comments that indicate shortcuts?
    >
    > Reference specific files and line numbers. Under 500 words. Bullet points only.
    >
@@ -149,6 +213,7 @@ Launch both reviewers simultaneously. Save the screenshots to files that can be 
    - What the user journey is (how do you get to these pages?)
    - What data is displayed and what it means
    - Any design choices that might be surprising
+   - For auth-gated features: the full auth flow (what prompts appear when unauthenticated, what happens after sign-in, what happens on cancel, how deferred actions replay)
 
 ### Phase 6: Report
 
@@ -188,6 +253,9 @@ This is critical — the user is non-technical and this system must be automated
 - Bug: market-unaware code → **Systematic:** Add a code comment or TypeScript type that forces market to be passed, so forgetting it is a compile error not a runtime bug
 - Bug: hardcoded "Broadway" in template → **Systematic:** Create a `getSiteName(market)` helper so branding is centralized, not scattered across files
 - Bug: localStorage key collision → **Systematic:** Use TypeScript const enum or branded types for storage keys
+- Bug: component crashes when `user` is null → **Systematic:** TypeScript strict null check, destructure from `useAuth()` with fallback
+- Bug: deferred action not executed after sign-in → **Systematic:** Integration test verifying pending action lifecycle (save → auth → replay → clear)
+- Bug: feature flag not checked around auth code → **Systematic:** Grep check that auth imports (`useAuth`, `useUserReviews`, `useWatchlist`) are paired with `featureFlags.userAccounts` check in the same file
 
 **In the report, for each P0/P1, include:**
 - **Fix:** [what to change]
