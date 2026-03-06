@@ -55,7 +55,7 @@ export default function ReviewPanel({
       <div className="flex items-center gap-2 mb-3 min-w-0">
         <span className="text-sm text-gray-400 shrink-0">Your rating for</span>
         <span className="text-sm font-semibold text-white truncate min-w-0">{showTitle}</span>
-        <span className="text-sm font-bold text-amber-400 shrink-0">{rating.toFixed(1)}</span>
+        <span className="text-sm font-bold text-amber-400 shrink-0">{rating.toFixed(1)} stars</span>
       </div>
 
       {/* Date seen (optional) */}
