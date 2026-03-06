@@ -581,7 +581,17 @@
     "mj-2022/exeunt-magazine--juliet-hindell.json",
     "mj-2022/theater-life--patrick-christiano.json",
     "mj-2022/theater-scene--joel-benjamin.json",
-    "mj-2022/usatoday--david-rooney.json"
+    "mj-2022/usatoday--david-rooney.json",
+    "mother-russia-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "mother-russia-off-broadway-2026/theater-life--samuel-l-leiter.json",
+    "mother-russia-off-broadway-2026/theater-pizzazz--ron-fassler.json",
+    "moulin-rouge-2019/amny--matt-windman.json",
+    "moulin-rouge-2019/njcom--christoher-kelly.json",
+    "moulin-rouge-2019/washpost--peter-marks.json",
+    "moulin-rouge-the-musical-west-end-2021/artsdesk--marianka-swain.json",
+    "moulin-rouge-the-musical-west-end-2021/independent--ava-wong-davies.json",
+    "moulin-rouge-the-musical-west-end-2021/london-theatre--suzy-evans.json",
+    "moulin-rouge-the-musical-west-end-2021/standard--nick-curtis.json"
   ],
   "failed": [
     "mack-and-mabel-1974/financialtimes--ian-shuttleworth.json",
@@ -1506,7 +1516,14 @@
       "maybe-happy-ending-2024/theater-scene--victor-gluck.json",
       "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/nysr--roma-torre.json",
       "mj-2022/theater-life--patrick-christiano.json",
-      "mj-2022/usatoday--david-rooney.json"
+      "mj-2022/usatoday--david-rooney.json",
+      "mother-russia-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+      "mother-russia-off-broadway-2026/theater-life--samuel-l-leiter.json",
+      "mother-russia-off-broadway-2026/theater-pizzazz--ron-fassler.json",
+      "moulin-rouge-2019/washpost--peter-marks.json",
+      "moulin-rouge-the-musical-west-end-2021/artsdesk--marianka-swain.json",
+      "moulin-rouge-the-musical-west-end-2021/london-theatre--suzy-evans.json",
+      "moulin-rouge-the-musical-west-end-2021/standard--nick-curtis.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -1585,7 +1602,9 @@
       "data/review-texts/marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
       "marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
       "data/review-texts/masquerade-off-broadway-2025/amny--matt-windman.json",
-      "masquerade-off-broadway-2025/amny--matt-windman.json"
+      "masquerade-off-broadway-2025/amny--matt-windman.json",
+      "data/review-texts/moulin-rouge-2019/amny--matt-windman.json",
+      "moulin-rouge-2019/amny--matt-windman.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json",
@@ -1681,7 +1700,8 @@
       "magic-mike-live-west-end-2021/independent--hugh-montgomery.json",
       "man-and-boy-west-end-2026/independent--alice-saville.json",
       "man-and-boy-west-end-2026/telegraph--dominic-cavendish.json",
-      "matilda-the-musical-west-end-2021/telegraph--charles-spencer.json"
+      "matilda-the-musical-west-end-2021/telegraph--charles-spencer.json",
+      "moulin-rouge-2019/njcom--christoher-kelly.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2092,11 +2112,12 @@
       "im-sorry-prime-minister-west-end-2026/daily-mail--patrick-marmion.json",
       "masquerade-off-broadway-2025/slantmagazine--dan-rubins.json",
       "mj-2022/exeunt-magazine--juliet-hindell.json",
-      "mj-2022/theater-scene--joel-benjamin.json"
+      "mj-2022/theater-scene--joel-benjamin.json",
+      "moulin-rouge-the-musical-west-end-2021/independent--ava-wong-davies.json"
     ]
   },
   "startTime": "2026-03-05T10:28:39.558Z",
-  "lastProcessed": "mj-2022/usatoday--david-rooney.json",
+  "lastProcessed": "moulin-rouge-the-musical-west-end-2021/standard--nick-curtis.json",
   "log": [
     {
       "t": "2026-03-05T10:51:55.084Z",
@@ -2564,6 +2585,17 @@
     },
     {
       "t": "2026-03-06T04:13:53.016Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-06T04:19:50.222Z",
+      "event": "bb-session",
+      "session": "0b30ae04",
+      "url": "https://www.amny.com/entertainment/moulin-rouge-review-1.34264501/"
+    },
+    {
+      "t": "2026-03-06T04:19:51.492Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     }
