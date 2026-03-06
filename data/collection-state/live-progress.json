@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-06T11:58:12.523Z",
-  "processed": 330,
-  "failed": 70,
-  "successRate": "82.5%",
+  "updatedAt": "2026-03-06T12:01:18.291Z",
+  "processed": 339,
+  "failed": 71,
+  "successRate": "82.7%",
   "tierBreakdown": {
-    "playwright": 112,
+    "playwright": 117,
     "amp": 24,
-    "browserbase": 24,
+    "browserbase": 26,
     "directCookies": 3,
-    "scrapingbee": 64,
+    "scrapingbee": 66,
     "brightdata": 0,
-    "archiveToday": 17,
-    "archive": 129
+    "archiveToday": 19,
+    "archive": 130
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-06T09:37:22.636Z",
-      "event": "bb-session",
-      "session": "7f49accb",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
-    },
-    {
-      "t": "2026-03-06T09:37:23.958Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-06T09:38:31.900Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-06T11:43:19.508Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-06T11:59:18.522Z",
+      "event": "bb-session",
+      "session": "b817d4cd",
+      "url": "https://www.amny.com/entertainment/broadway/review-buena-vista-social-clunk/"
+    },
+    {
+      "t": "2026-03-06T11:59:20.318Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
