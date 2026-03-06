@@ -115,7 +115,16 @@
     "chicago-1996/nydailynews--joe-dziemianowicz.json",
     "chinese-republicans-off-broadway-2026/theatermania--unknown.json",
     "chinese-republicans-off-broadway-2026/thewrap--unknown.json",
-    "cold-war-choir-practice-off-broadway-2026/broadwaynews--chloe-rabinowitz.json"
+    "cold-war-choir-practice-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
+    "data-off-broadway-2026/theatermania--zachary-stewart.json",
+    "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
+    "death-becomes-her-2024/nydailynews--chris-jones.json",
+    "death-becomes-her-2024/theatermania--jesse-green.json",
+    "death-becomes-her-2024/timeout--adam-feldman.json",
+    "death-of-a-salesman-2026/deadline--greg-evans.json",
+    "death-of-a-salesman-2026/nypost--johnny-oleksinski.json",
+    "death-of-a-salesman-2026/theatermania--zachary-stewart.json",
+    "death-of-a-salesman-2026/thewrap--robert-hofler.json"
   ],
   "failed": [
     "it-walks-around-the-house-at-night-west-end-2026/broadwayworld--unknown.json",
@@ -136,7 +145,8 @@
     "book-of-mormon-2011/wsj--terry-teachout.json",
     "bug-2026/wsj--charles-isherwood.json",
     "cats-the-jellicle-ball-2026/timeout--david-cote.json",
-    "chinese-republicans-off-broadway-2026/broadwaynews--chloe-rabinowitz.json"
+    "chinese-republicans-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
+    "death-of-a-salesman-2026/broadwaynews--brittani-samuel.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -185,7 +195,11 @@
       "cabaret-at-the-kit-kat-club-west-end-2021/timeout-london--unknown.json",
       "cats-the-jellicle-ball-2026/theatermania--zachary-stewart.json",
       "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
-      "chess-2025/timeout--adam-feldman.json"
+      "chess-2025/timeout--adam-feldman.json",
+      "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
+      "death-becomes-her-2024/nydailynews--chris-jones.json",
+      "death-becomes-her-2024/theatermania--jesse-green.json",
+      "death-of-a-salesman-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -211,7 +225,9 @@
       "data/review-texts/wicked-2003/variety--charles-isherwood.json",
       "wicked-2003/variety--charles-isherwood.json",
       "data/review-texts/and-juliet-2022/thewrap--robert-hofler.json",
-      "and-juliet-2022/thewrap--robert-hofler.json"
+      "and-juliet-2022/thewrap--robert-hofler.json",
+      "data/review-texts/death-of-a-salesman-2026/thewrap--robert-hofler.json",
+      "death-of-a-salesman-2026/thewrap--robert-hofler.json"
     ],
     "browserbase": [
       "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
@@ -231,7 +247,11 @@
       "data/review-texts/schmigadoon-2026/hollywood-reporter--daniel-feinberg.json",
       "schmigadoon-2026/hollywood-reporter--daniel-feinberg.json",
       "data/review-texts/all-out-2025/deadline--unknown.json",
-      "all-out-2025/deadline--unknown.json"
+      "all-out-2025/deadline--unknown.json",
+      "data/review-texts/death-of-a-salesman-2026/deadline--greg-evans.json",
+      "death-of-a-salesman-2026/deadline--greg-evans.json",
+      "data/review-texts/death-of-a-salesman-2026/nypost--johnny-oleksinski.json",
+      "death-of-a-salesman-2026/nypost--johnny-oleksinski.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json"
@@ -294,11 +314,13 @@
       "bug-2026/timeout--adam-feldman.json",
       "chinese-republicans-off-broadway-2026/theatermania--unknown.json",
       "chinese-republicans-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
-      "cold-war-choir-practice-off-broadway-2026/broadwaynews--chloe-rabinowitz.json"
+      "cold-war-choir-practice-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
+      "data-off-broadway-2026/theatermania--zachary-stewart.json",
+      "death-becomes-her-2024/timeout--adam-feldman.json"
     ]
   },
   "startTime": "2026-03-06T17:15:52.929Z",
-  "lastProcessed": "cold-war-choir-practice-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
+  "lastProcessed": "death-of-a-salesman-2026/thewrap--robert-hofler.json",
   "log": [
     {
       "t": "2026-03-06T18:51:51.105Z",
@@ -464,6 +486,28 @@
       "t": "2026-03-06T19:30:42.683Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-06T19:41:32.914Z",
+      "event": "bb-session",
+      "session": "9a957a6d",
+      "url": "https://deadline.com/2022/10/death-of-a-salesman-broadway-review-wendell-pierce-"
+    },
+    {
+      "t": "2026-03-06T19:41:34.019Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-06T19:41:48.418Z",
+      "event": "bb-session",
+      "session": "29763155",
+      "url": "https://nypost.com/2022/10/09/death-of-a-salesman-broadway-review-so-so-revival-"
+    },
+    {
+      "t": "2026-03-06T19:41:49.496Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
