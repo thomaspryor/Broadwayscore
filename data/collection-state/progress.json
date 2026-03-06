@@ -143,7 +143,11 @@
     "hercules-west-end-2025/guardian--arifa-akbar.json",
     "hercules-west-end-2025/nytimes--matt-wolf.json",
     "los-soles-truncos-off-broadway-2025/nytg--unknown.json",
-    "wicked-2003/nytimes--charles-isherwood.json"
+    "wicked-2003/nytimes--charles-isherwood.json",
+    "wicked-2003/vulture--bilge-eberi.json",
+    "bigfoot-off-broadway-2026/timeout--unknown.json",
+    "bug-2026/wsj--charles-isherwood.json",
+    "chinese-republicans-off-broadway-2026/broadwaynews--chloe-rabinowitz.json"
   ],
   "failed": [
     "it-walks-around-the-house-at-night-west-end-2026/broadwayworld--unknown.json",
@@ -176,7 +180,13 @@
     "the-lion-king-west-end-2021/thestage--unknown.json",
     "bughouse-off-broadway-2026/variety--charles-isherwood.json",
     "hadestown-2019/newyorker--hilton-als.json",
-    "la-llamada-off-broadway-2024/nytg--unknown.json"
+    "la-llamada-off-broadway-2024/nytg--unknown.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "aladdin-2014/wsj--terry-teachout.json",
+    "anne-teresa-de-keersmaeker-exit-above-off-broadway-2026/broadwaynews--unknown.json",
+    "book-of-mormon-2011/wsj--terry-teachout.json",
+    "cats-the-jellicle-ball-2026/timeout--david-cote.json",
+    "death-of-a-salesman-2026/broadwaynews--brittani-samuel.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -329,7 +339,8 @@
       "hadestown-2019/ew--jessica-derschowitz.json",
       "hadestown-2019/guardian--adrian-horton.json",
       "hercules-west-end-2025/guardian--arifa-akbar.json",
-      "manic-street-creature-west-end-2026/broadwayworld--unknown.json"
+      "manic-street-creature-west-end-2026/broadwayworld--unknown.json",
+      "bigfoot-off-broadway-2026/timeout--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -339,7 +350,9 @@
       "data/review-texts/dirty-books-off-broadway-2025/broadwaynews--chloe-rabinowitz.json",
       "data/review-texts/hadestown-2019/wsj--terry-teachout.json",
       "data/review-texts/hamilton-2015/wsj--terry-teachout.json",
-      "data/review-texts/it-walks-around-the-house-at-night-west-end-2026/broadwayworld--unknown.json"
+      "data/review-texts/it-walks-around-the-house-at-night-west-end-2026/broadwayworld--unknown.json",
+      "data/review-texts/aladdin-2014/wsj--terry-teachout.json",
+      "data/review-texts/book-of-mormon-2011/wsj--terry-teachout.json"
     ],
     "archive": [
       "tru-off-broadway-2026/theatermania--unknown.json",
@@ -371,11 +384,14 @@
       "harry-potter-and-the-cursed-child-both-parts-west-end-2021/timeout-london--unknown.json",
       "hercules-west-end-2025/nytimes--matt-wolf.json",
       "los-soles-truncos-off-broadway-2025/nytg--unknown.json",
-      "wicked-2003/nytimes--charles-isherwood.json"
+      "wicked-2003/nytimes--charles-isherwood.json",
+      "wicked-2003/vulture--bilge-eberi.json",
+      "bug-2026/wsj--charles-isherwood.json",
+      "chinese-republicans-off-broadway-2026/broadwaynews--chloe-rabinowitz.json"
     ]
   },
   "startTime": "2026-03-06T17:15:52.929Z",
-  "lastProcessed": "wicked-2003/nytimes--charles-isherwood.json",
+  "lastProcessed": "death-of-a-salesman-2026/broadwaynews--brittani-samuel.json",
   "log": [
     {
       "t": "2026-03-06T18:51:51.105Z",
@@ -607,6 +623,39 @@
       "t": "2026-03-06T19:55:00.243Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-06T20:10:55.755Z",
+      "event": "bb-session",
+      "session": "a831d877",
+      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
+    },
+    {
+      "t": "2026-03-06T20:10:56.933Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-06T20:14:00.046Z",
+      "event": "bb-session",
+      "session": "258f44f1",
+      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
+    },
+    {
+      "t": "2026-03-06T20:14:01.053Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-06T20:15:48.383Z",
+      "event": "bb-session",
+      "session": "13f20ed7",
+      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
+    },
+    {
+      "t": "2026-03-06T20:15:49.409Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

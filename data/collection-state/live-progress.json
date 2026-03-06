@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-03-06T20:10:04.778Z",
-  "processed": 144,
-  "failed": 31,
-  "successRate": "82.3%",
+  "updatedAt": "2026-03-06T20:16:43.678Z",
+  "processed": 148,
+  "failed": 37,
+  "successRate": "80.0%",
   "tierBreakdown": {
     "playwright": 58,
     "amp": 26,
     "browserbase": 24,
     "directCookies": 1,
-    "scrapingbee": 32,
+    "scrapingbee": 33,
     "brightdata": 0,
-    "archiveToday": 7,
-    "archive": 30
+    "archiveToday": 9,
+    "archive": 33
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-03-06T19:21:40.854Z",
-      "event": "bb-session",
-      "session": "cfbd3575",
-      "url": "https://deadline.com/2026/02/jake-shane-broadway-all-out-comedy-about-ambition-1"
-    },
-    {
-      "t": "2026-03-06T19:21:42.016Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
-    {
-      "t": "2026-03-06T19:22:42.859Z",
-      "event": "bb-session",
-      "session": "4651a01f",
-      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
-    },
-    {
-      "t": "2026-03-06T19:22:44.539Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-06T19:28:11.497Z",
-      "event": "bb-session",
-      "session": "c31fa8a3",
-      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
-    },
-    {
-      "t": "2026-03-06T19:28:12.601Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-06T19:30:41.623Z",
       "event": "bb-session",
@@ -124,6 +91,39 @@
       "t": "2026-03-06T19:55:00.243Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-06T20:10:55.755Z",
+      "event": "bb-session",
+      "session": "a831d877",
+      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
+    },
+    {
+      "t": "2026-03-06T20:10:56.933Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-06T20:14:00.046Z",
+      "event": "bb-session",
+      "session": "258f44f1",
+      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
+    },
+    {
+      "t": "2026-03-06T20:14:01.053Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-06T20:15:48.383Z",
+      "event": "bb-session",
+      "session": "13f20ed7",
+      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
+    },
+    {
+      "t": "2026-03-06T20:15:49.409Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
