@@ -44,6 +44,17 @@ export const mockReviews: UserReview[] = [
     rating: 2.5, review_text: 'Disappointing.', date_seen: '2025-01-18',
     visibility: 'private', created_at: '2025-01-19T00:00:00Z', updated_at: '2025-01-19T00:00:00Z',
   },
+  // Diary-only shows (no show page, no link)
+  {
+    id: 'r8', user_id: USER_ID, show_id: 'rent-off-broadway-1996',
+    rating: 5.0, review_text: 'Changed my life.', date_seen: '1996-04-29',
+    visibility: 'private', created_at: '2024-01-01T00:00:00Z', updated_at: '2024-01-01T00:00:00Z',
+  },
+  {
+    id: 'r9', user_id: USER_ID, show_id: 'les-miserables-west-end-1985',
+    rating: 4.5, review_text: null, date_seen: '2019-08-10',
+    visibility: 'private', created_at: '2024-01-02T00:00:00Z', updated_at: '2024-01-02T00:00:00Z',
+  },
 ];
 
 export const mockWatchlist: WatchlistEntry[] = [
@@ -71,4 +82,7 @@ export const mockShowMap: Record<string, ShowLookup> = {
   'operation-mincemeat-2025': { id: 'operation-mincemeat-2025', title: 'Operation Mincemeat', slug: 'operation-mincemeat-2025', venue: 'Golden Theatre', type: 'musical', status: 'open', category: 'broadway', previewDate: null, openingDate: '2025-03-20', closingDate: null, compositeScore: 85, posterUrl: null },
   'chess-2025': { id: 'chess-2025', title: 'Chess', slug: 'chess-2025', venue: 'Broadhurst Theatre', type: 'musical', status: 'open', category: 'broadway', previewDate: null, openingDate: '2025-02-13', closingDate: null, compositeScore: 72, posterUrl: null },
   'ragtime-2025': { id: 'ragtime-2025', title: 'Ragtime', slug: 'ragtime-2025', venue: 'Todd Haimes Theatre', type: 'musical', status: 'open', category: 'broadway', previewDate: null, openingDate: '2025-03-27', closingDate: null, compositeScore: 78, posterUrl: null },
+  // Diary-only shows (no show page)
+  'rent-off-broadway-1996': { id: 'rent-off-broadway-1996', title: 'Rent', slug: 'rent-off-broadway-1996', venue: 'New York Theatre Workshop', type: 'musical', status: 'closed', category: 'off-broadway', previewDate: null, openingDate: '1996-02-13', closingDate: '1996-04-29', compositeScore: null, posterUrl: null, diaryOnly: true },
+  'les-miserables-west-end-1985': { id: 'les-miserables-west-end-1985', title: 'Les Misérables', slug: 'les-miserables-west-end-1985', venue: 'Barbican Theatre', type: 'musical', status: 'closed', category: 'west-end', previewDate: null, openingDate: '1985-10-08', closingDate: '2019-07-13', compositeScore: null, posterUrl: null, diaryOnly: true },
 };
