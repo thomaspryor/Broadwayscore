@@ -285,7 +285,13 @@ function processProductions(productions) {
 
     let slug = `${baseSlug}-${suffix}`;
 
-    // Handle collisions
+    // Skip if this exact slug/ID already exists in scored shows.json
+    if (existingIds.has(slug) || existingSlugs.has(slug)) {
+      stats.duplicate++;
+      continue;
+    }
+
+    // Handle collisions with other diary shows in this batch
     if (usedSlugs.has(slug)) {
       // Try adding venue
       const vSlug = slugify(venue);
