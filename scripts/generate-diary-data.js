@@ -141,8 +141,46 @@ if (hasGrouping) {
       return entry;
     });
 
+    // Deduplicate productions with same venue+city (keep most recent year)
+    // Normalize venue names: strip "The ", trailing "Theatre"/"Theater" variants, etc.
+    function normalizeVenue(v, city) {
+      let n = (v || '').toLowerCase()
+        .replace(/^the\s+/, '')
+        .replace(/\s+theatre$/, ' theater')
+        .replace(/,\s*$/, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+      // Strip city/region prefix from venue (e.g., "Sydney Lyric Theatre" → "lyric theater")
+      // Try both the city field and common city names that appear as venue prefixes
+      const prefixes = city ? [city.toLowerCase()] : [];
+      // Add well-known city aliases for suburbs (e.g., Pyrmont is in Sydney)
+      const suburbMap = { pyrmont: 'sydney', southwark: 'london', manhattan: 'new york' };
+      if (city && suburbMap[city.toLowerCase()]) prefixes.push(suburbMap[city.toLowerCase()]);
+      for (const prefix of prefixes) {
+        if (n.startsWith(prefix + ' ')) { n = n.slice(prefix.length + 1); break; }
+      }
+      return n;
+    }
+    const seen = new Map();
+    const dedupedEntries = [];
+    for (const p of prodEntries) {
+      const key = `${(p.ci || '').toLowerCase()}|${normalizeVenue(p.v, p.ci)}`;
+      if (!key || key === '|') { dedupedEntries.push(p); continue; }
+      const existing = seen.get(key);
+      if (!existing) {
+        seen.set(key, dedupedEntries.length);
+        dedupedEntries.push(p);
+      } else {
+        // Keep the one with the most recent year, or open status
+        const prev = dedupedEntries[existing];
+        if (p.st === 'open' || (p.y && (!prev.y || p.y > prev.y))) {
+          dedupedEntries[existing] = p;
+        }
+      }
+    }
+
     // Sort: Broadway first, then West End, then by country, then city
-    prodEntries.sort((a, b) => {
+    dedupedEntries.sort((a, b) => {
       const aIsBway = a.cat === 'broadway';
       const bIsBway = b.cat === 'broadway';
       if (aIsBway !== bIsBway) return aIsBway ? -1 : 1;
@@ -160,8 +198,8 @@ if (hasGrouping) {
       title: group.title,
       status,
       dy: true,
-      n: prods.length, // production count
-      prods: prodEntries,
+      n: dedupedEntries.length, // production count (deduped by venue+city)
+      prods: dedupedEntries,
     };
     if (img) result.img = img;
     return result;
