@@ -3,7 +3,7 @@
  * Activated by ?mock=1 on localhost only.
  * Never imported in production builds — guarded by runtime check in MyShowsClient.
  */
-import type { UserReview, WatchlistEntry, ShowLookup } from '@/types/user';
+import type { UserReview, WatchlistEntry, ShowLookup, UserList, ListItem } from '@/types/user';
 
 const USER_ID = 'mock-user-000';
 
@@ -66,6 +66,49 @@ export const mockWatchlist: WatchlistEntry[] = [
   { id: 'w5', user_id: USER_ID, show_id: 'chess-2025', planned_date: '2026-02-15', created_at: '2026-01-05T00:00:00Z' },
   { id: 'w6', user_id: USER_ID, show_id: 'ragtime-2025', planned_date: '2026-02-28', created_at: '2026-01-10T00:00:00Z' },
 ];
+
+// Mock lists for the Lists tab
+export const mockLists: UserList[] = [
+  {
+    id: 'list-1', user_id: USER_ID, name: 'Must-See Musicals',
+    description: 'My all-time favorites that everyone should see.',
+    is_ranked: true, created_at: '2026-01-15T00:00:00Z', updated_at: '2026-03-01T00:00:00Z',
+    item_count: 4, preview_show_ids: ['hamilton-2015', 'wicked-2003', 'merrily-we-roll-along-2023', 'book-of-mormon-2011'],
+    all_show_ids: ['hamilton-2015', 'wicked-2003', 'merrily-we-roll-along-2023', 'book-of-mormon-2011'],
+  },
+  {
+    id: 'list-2', user_id: USER_ID, name: 'Shows to Revisit',
+    description: null,
+    is_ranked: false, created_at: '2026-02-10T00:00:00Z', updated_at: '2026-02-20T00:00:00Z',
+    item_count: 2, preview_show_ids: ['cabaret-2024', 'sunset-boulevard-2024'],
+    all_show_ids: ['cabaret-2024', 'sunset-boulevard-2024'],
+  },
+  {
+    id: 'list-3', user_id: USER_ID, name: '2025 Season Picks',
+    description: 'What I want to catch this season.',
+    is_ranked: false, created_at: '2025-09-01T00:00:00Z', updated_at: '2026-01-05T00:00:00Z',
+    item_count: 3, preview_show_ids: ['gypsy-2024', 'smash-2025', 'operation-mincemeat-2025'],
+    all_show_ids: ['gypsy-2024', 'smash-2025', 'operation-mincemeat-2025'],
+  },
+];
+
+export const mockListItems: Record<string, ListItem[]> = {
+  'list-1': [
+    { id: 'li-1', list_id: 'list-1', show_id: 'hamilton-2015', position: 1000, note: null, created_at: '2026-01-15T00:00:00Z' },
+    { id: 'li-2', list_id: 'list-1', show_id: 'wicked-2003', position: 2000, note: null, created_at: '2026-01-15T00:00:00Z' },
+    { id: 'li-3', list_id: 'list-1', show_id: 'merrily-we-roll-along-2023', position: 3000, note: null, created_at: '2026-01-20T00:00:00Z' },
+    { id: 'li-4', list_id: 'list-1', show_id: 'book-of-mormon-2011', position: 4000, note: null, created_at: '2026-02-01T00:00:00Z' },
+  ],
+  'list-2': [
+    { id: 'li-5', list_id: 'list-2', show_id: 'cabaret-2024', position: 1000, note: null, created_at: '2026-02-10T00:00:00Z' },
+    { id: 'li-6', list_id: 'list-2', show_id: 'sunset-boulevard-2024', position: 2000, note: null, created_at: '2026-02-10T00:00:00Z' },
+  ],
+  'list-3': [
+    { id: 'li-7', list_id: 'list-3', show_id: 'gypsy-2024', position: 1000, note: null, created_at: '2025-09-01T00:00:00Z' },
+    { id: 'li-8', list_id: 'list-3', show_id: 'smash-2025', position: 2000, note: null, created_at: '2025-09-15T00:00:00Z' },
+    { id: 'li-9', list_id: 'list-3', show_id: 'operation-mincemeat-2025', position: 3000, note: null, created_at: '2025-10-01T00:00:00Z' },
+  ],
+};
 
 // Minimal show lookup entries matching the IDs above
 export const mockShowMap: Record<string, ShowLookup> = {
