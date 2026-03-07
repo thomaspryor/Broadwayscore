@@ -83,7 +83,7 @@ jobs:
           fi
 
       - name: Check for changes
-        if: steps.check_queue.outputs.has_items == 'true'
+        if: always() && steps.check_queue.outputs.has_items == 'true'
         id: changes
         run: |
           if git diff --quiet; then

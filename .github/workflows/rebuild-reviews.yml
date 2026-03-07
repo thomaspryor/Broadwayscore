@@ -161,6 +161,7 @@ jobs:
           echo "count=$COUNT" >> $GITHUB_OUTPUT
 
       - name: Check for changes
+        if: always()
         id: changes
         run: |
           if git diff --quiet data/reviews.json; then
