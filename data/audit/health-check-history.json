@@ -1,6 +1,6 @@
 {
-  "lastRun": "2026-03-07T23:21:08.880Z",
-  "consecutiveErrorDays": 3,
+  "lastRun": "2026-03-07T23:19:53.895Z",
+  "consecutiveErrorDays": 4,
   "results": [
     {
       "name": "Freshness: reviews.json",
@@ -40,7 +40,7 @@
     {
       "name": "Sync: review-texts vs reviews.json",
       "status": "pass",
-      "message": "Skipped — review-texts not checked out (private repo)"
+      "message": "31094 files, 18043 reviews (surplus: 13051)"
     },
     {
       "name": "Sync: open show coverage",
@@ -50,7 +50,7 @@
     {
       "name": "Sync: baseline drift",
       "status": "pass",
-      "message": "2301 shows, 141 open, 18054 reviews (all at or above baseline)"
+      "message": "2301 shows, 141 open, 18043 reviews (all at or above baseline)"
     },
     {
       "name": "Pipeline: rebuild-reviews",
@@ -85,12 +85,12 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.7% scored (18054/18300)"
+      "message": "98.7% scored (18043/18286)"
     },
     {
       "name": "Cookies: expiration",
       "status": "warn",
-      "message": "data/cookies/ not found"
+      "message": "1 expired, 0 expiring <7d — newsday: EXPIRED"
     },
     {
       "name": "CWV: performance",
@@ -103,39 +103,14 @@
       "message": "Last SEO check unknown ago (>14d)"
     },
     {
-      "name": "Cron: Update Show Status",
-      "status": "pass",
-      "message": "4h ago, success"
-    },
-    {
-      "name": "Cron: Rebuild Reviews",
-      "status": "pass",
-      "message": "0h ago, skipped"
-    },
-    {
-      "name": "Cron: Collect Review Texts",
-      "status": "pass",
-      "message": "0h ago, "
-    },
-    {
-      "name": "Cron: LLM Ensemble Score",
-      "status": "pass",
-      "message": "1h ago, success"
-    },
-    {
-      "name": "Cron: Test Suite",
-      "status": "pass",
-      "message": "0h ago, "
-    },
-    {
-      "name": "Cron: Opening Night Broadcast",
-      "status": "pass",
-      "message": "15h ago, success"
+      "name": "Cron: health",
+      "status": "warn",
+      "message": "Skipped — no GH_TOKEN available (local run)"
     },
     {
       "name": "Secrets: health",
-      "status": "pass",
-      "message": "Last check passed (5d ago)"
+      "status": "warn",
+      "message": "Skipped — no GH_TOKEN available (local run)"
     }
   ],
   "lastCleanStreak": 0
