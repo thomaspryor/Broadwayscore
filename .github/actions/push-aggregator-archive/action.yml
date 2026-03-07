@@ -1,0 +1,64 @@
+name: Push aggregator-archive
+description: Commits and pushes aggregator-archive changes to the private repo
+
+inputs:
+  token:
+    description: PAT for private repo access
+    required: true
+  message:
+    description: Commit message
+    required: false
+    default: 'data: Update aggregator archive'
+
+runs:
+  using: composite
+  steps:
+    - name: Sync and push aggregator-archive
+      shell: bash
+      env:
+        REPO_TOKEN: ${{ inputs.token }}
+        COMMIT_MSG: ${{ inputs.message }}
+      run: |
+        if [ ! -d "/tmp/aggregator-archive-checkout/.git" ]; then
+          echo "::warning::Aggregator archive checkout not found - skipping push"
+          exit 0
+        fi
+
+        # Copy changed files back to the checkout
+        mkdir -p /tmp/aggregator-archive-checkout/aggregator-archive
+        rsync -a --delete data/aggregator-archive/ /tmp/aggregator-archive-checkout/aggregator-archive/
+
+        cd /tmp/aggregator-archive-checkout
+
+        git config user.name "GitHub Action"
+        git config user.email "action@github.com"
+        git remote set-url origin "https://x-access-token:${REPO_TOKEN}@github.com/thomaspryor/broadway-review-texts.git"
+
+        git add aggregator-archive/
+
+        if git diff --staged --quiet; then
+          echo "No aggregator-archive changes to push"
+          exit 0
+        fi
+
+        CHANGED=$(git diff --staged --stat | tail -1)
+        git commit -m "${COMMIT_MSG}" -m "Changed: ${CHANGED}"
+
+        # Push with retry — newer local scrape always wins on conflicts
+        # In rebase context, -X theirs = keep our commits being replayed (local changes)
+        for i in 1 2 3 4 5; do
+          if git push origin main 2>&1; then
+            echo "Aggregator archive pushed successfully (attempt $i)"
+            exit 0
+          fi
+
+          echo "Push attempt $i failed, pulling and rebasing..."
+          if ! git pull --rebase -X theirs origin main 2>&1; then
+            git rebase --abort 2>/dev/null || true
+          fi
+
+          sleep $((RANDOM % 10 + 5))
+        done
+
+        echo "WARNING: Failed to push aggregator-archive after 5 attempts"
+        exit 1

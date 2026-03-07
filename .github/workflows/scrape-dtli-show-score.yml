@@ -123,6 +123,10 @@ jobs:
         uses: ./.github/actions/checkout-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -146,41 +150,12 @@ jobs:
           fi
           npx tsx scripts/fetch-aggregator-pages.ts --aggregator dtli --shows "$SHOWS_ARG" $FORCE_FLAG
 
-      - name: Commit DTLI archives
+      - name: Push aggregator-archive to private repo
         if: always()
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/aggregator-archive/dtli/
-          git diff --staged --quiet && echo "No DTLI archive changes" && exit 0
-
-          git commit -m "data: Fetch DTLI aggregator pages"
-
-          MAX_RETRIES=5
-          RETRY_COUNT=0
-          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-            echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
-            git checkout -- . 2>/dev/null || true
-            git clean -fd 2>/dev/null || true
-            if git pull --rebase -X theirs origin main; then
-              if git push origin main; then
-                echo "Successfully pushed changes"
-                exit 0
-              fi
-            else
-              echo "Rebase failed, aborting and retrying..."
-              git rebase --abort 2>/dev/null || true
-            fi
-            RETRY_COUNT=$((RETRY_COUNT + 1))
-            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
-              WAIT_TIME=$((10 + RANDOM % 20))
-              echo "Waiting $WAIT_TIME seconds before retry..."
-              sleep $WAIT_TIME
-              git fetch origin main
-            fi
-          done
-          echo "Failed to push after $MAX_RETRIES attempts"
-          exit 1
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Fetch DTLI aggregator pages"
 
   fetch-show-score:
     if: ${{ github.event_name == 'schedule' || inputs.aggregator == 'all' || inputs.aggregator == 'show-score' }}
@@ -202,6 +177,10 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Checkout review-texts (private repo)
         uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
@@ -227,41 +206,22 @@ jobs:
           fi
           npx tsx scripts/fetch-aggregator-pages.ts --aggregator show-score --shows "$SHOWS_ARG" $FORCE_FLAG
 
-      - name: Commit Show Score archives
+      - name: Push aggregator-archive to private repo
+        if: always()
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Fetch Show Score aggregator pages"
+
+      - name: Commit show-score-urls.json
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/aggregator-archive/show-score/ data/show-score-urls.json
-          git diff --staged --quiet && echo "No Show Score archive changes" && exit 0
-
-          git commit -m "data: Fetch Show Score aggregator pages"
-
-          MAX_RETRIES=5
-          RETRY_COUNT=0
-          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-            echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
-            git checkout -- . 2>/dev/null || true
-            git clean -fd 2>/dev/null || true
-            if git pull --rebase -X theirs origin main; then
-              if git push origin main; then
-                echo "Successfully pushed changes"
-                exit 0
-              fi
-            else
-              echo "Rebase failed, aborting and retrying..."
-              git rebase --abort 2>/dev/null || true
-            fi
-            RETRY_COUNT=$((RETRY_COUNT + 1))
-            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
-              WAIT_TIME=$((10 + RANDOM % 20))
-              echo "Waiting $WAIT_TIME seconds before retry..."
-              sleep $WAIT_TIME
-              git fetch origin main
-            fi
-          done
-          echo "Failed to push after $MAX_RETRIES attempts"
-          exit 1
+          git add data/show-score-urls.json
+          git diff --staged --quiet && echo "No show-score-urls changes" && exit 0
+          git commit -m "data: Update show-score-urls.json"
+          bash scripts/lib/push-with-retry.sh
 
   extract-and-rebuild:
     needs: [fetch-dtli, fetch-show-score]
@@ -284,6 +244,10 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Checkout review-texts (private repo)
         uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js

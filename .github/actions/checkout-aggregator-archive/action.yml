@@ -1,0 +1,67 @@
+name: Checkout aggregator-archive
+description: Checks out aggregator-archive from private repo into data/aggregator-archive/
+
+inputs:
+  token:
+    description: PAT for private repo access
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Restore aggregator-archive cache
+      uses: actions/cache@v4
+      with:
+        path: /tmp/aggregator-archive-checkout
+        key: aggregator-archive-${{ runner.os }}-${{ github.run_id }}
+        restore-keys: |
+          aggregator-archive-${{ runner.os }}-
+        save-always: true
+
+    - name: Clone or update aggregator-archive
+      shell: bash
+      env:
+        REPO_TOKEN: ${{ inputs.token }}
+      run: |
+        START=$(date +%s)
+
+        if [ -d "/tmp/aggregator-archive-checkout/.git" ]; then
+          cd /tmp/aggregator-archive-checkout
+          git remote set-url origin "https://x-access-token:${REPO_TOKEN}@github.com/thomaspryor/broadway-review-texts.git"
+          if git fetch origin main --depth 1 2>/dev/null && git reset --hard origin/main 2>/dev/null; then
+            ELAPSED=$(($(date +%s) - START))
+            echo "Aggregator archive updated from cache in ${ELAPSED}s"
+          else
+            echo "::warning::Cache update failed - falling back to fresh clone"
+            cd /tmp
+            rm -rf /tmp/aggregator-archive-checkout
+            git clone --depth 1 --filter=blob:none --sparse \
+              "https://x-access-token:${REPO_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" \
+              /tmp/aggregator-archive-checkout
+            cd /tmp/aggregator-archive-checkout
+            git sparse-checkout set aggregator-archive
+            ELAPSED=$(($(date +%s) - START))
+            echo "Aggregator archive cloned fresh (sparse) in ${ELAPSED}s"
+          fi
+        else
+          rm -rf /tmp/aggregator-archive-checkout
+          git clone --depth 1 --filter=blob:none --sparse \
+            "https://x-access-token:${REPO_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" \
+            /tmp/aggregator-archive-checkout
+          cd /tmp/aggregator-archive-checkout
+          git sparse-checkout set aggregator-archive
+          ELAPSED=$(($(date +%s) - START))
+          echo "Aggregator archive cloned fresh (sparse) in ${ELAPSED}s"
+        fi
+
+    - name: Copy aggregator-archive to data/
+      shell: bash
+      run: |
+        mkdir -p data/aggregator-archive
+        if [ -d "/tmp/aggregator-archive-checkout/aggregator-archive" ]; then
+          cp -r /tmp/aggregator-archive-checkout/aggregator-archive/* data/aggregator-archive/ 2>/dev/null || true
+          COUNT=$(find data/aggregator-archive -type f | wc -l | tr -d ' ')
+          echo "Aggregator archive restored from private repo ($COUNT files)"
+        else
+          echo "::warning::No aggregator-archive directory found in private repo"
+        fi

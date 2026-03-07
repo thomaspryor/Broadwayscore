@@ -135,6 +135,10 @@ jobs:
         uses: ./.github/actions/checkout-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -182,46 +186,12 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Backfill Aggregator Data — Commit and push changes"
-      - name: Commit and push changes
+      - name: Push aggregator-archive to private repo
         if: always()
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/aggregator-archive/
-          git diff --staged --quiet && { echo "No changes in batch ${{ matrix.batch_id }}"; exit 0; }
-
-          git commit -m "data: Backfill aggregator data (batch ${{ matrix.batch_id }}/${{ strategy.job-total }})"
-
-          MAX_RETRIES=5
-          RETRY_COUNT=0
-          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-            echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
-            git checkout -- . 2>/dev/null || true
-            git clean -fd 2>/dev/null || true
-            if git pull --rebase -X theirs origin main; then
-              # Verify shows.json wasn't corrupted by rebase
-              node -e "const d=JSON.parse(require('fs').readFileSync('data/shows.json','utf8')); if(!Array.isArray(d.shows)) throw new Error('shows.json corrupted: .shows is not an array')" || {
-                echo "shows.json corrupted during rebase, restoring..."
-                git checkout origin/main -- data/shows.json
-              }
-              if git push origin main; then
-                echo "Successfully pushed batch ${{ matrix.batch_id }}"
-                exit 0
-              fi
-            else
-              echo "Rebase failed, aborting and retrying..."
-              git rebase --abort 2>/dev/null || true
-            fi
-            RETRY_COUNT=$((RETRY_COUNT + 1))
-            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
-              WAIT_TIME=$((10 + RANDOM % 20))
-              echo "Waiting $WAIT_TIME seconds before retry..."
-              sleep $WAIT_TIME
-              git fetch origin main
-            fi
-          done
-          echo "Failed to push after $MAX_RETRIES attempts"
-          exit 1
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Backfill aggregator data (batch ${{ matrix.batch_id }})"
 
 
       - name: Push core data to private repo
