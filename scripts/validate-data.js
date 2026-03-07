@@ -2711,7 +2711,8 @@ function validateAggregatorArchives(shows) {
 
   const archiveDir = path.join(DATA_DIR, 'aggregator-archive');
   if (!fs.existsSync(archiveDir)) {
-    error('data/aggregator-archive/ directory missing entirely');
+    // Not an error — many workflows don't check out aggregator-archive (it's in the private repo)
+    info('data/aggregator-archive/ not present (skipping archive validation)');
     return;
   }
 

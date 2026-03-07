@@ -42,6 +42,10 @@ jobs:
         uses: ./.github/actions/checkout-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -64,70 +68,12 @@ jobs:
         env:
           NODE_ENV: production
 
-      - name: Check for changes
-        id: changes
-        run: |
-          if git diff --quiet data/; then
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-          else
-            echo "has_changes=true" >> $GITHUB_OUTPUT
-            # Count changed files
-            CHANGED=$(git diff --name-only data/ | wc -l | tr -d ' ')
-            echo "changed_count=$CHANGED" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Commit and push changes
-        if: always() && steps.changes.outputs.has_changes == 'true'
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-
-          git add data/
-
-          # Create commit message based on inputs
-          AGGREGATOR="${{ github.event.inputs.aggregator }}"
-          SHOWS="${{ github.event.inputs.shows }}"
-          CHANGED="${{ steps.changes.outputs.changed_count }}"
-
-          git commit -m "data: Fetch $AGGREGATOR pages ($CHANGED files updated)
-
-          Aggregator: $AGGREGATOR
-          Shows: $SHOWS
-          Force: ${{ github.event.inputs.force }}
-
-          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
-
-          # Retry loop for push with rebase (handles parallel workflow conflicts)
-          MAX_RETRIES=5
-          RETRY_COUNT=0
-
-          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-            echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
-
-            # Pull and rebase
-            if git pull --rebase origin main; then
-              # Try to push
-              if git push origin main; then
-                echo "Successfully pushed changes"
-                exit 0
-              fi
-            else
-              echo "Rebase failed, aborting and retrying..."
-              git rebase --abort 2>/dev/null || true
-            fi
-
-            RETRY_COUNT=$((RETRY_COUNT + 1))
-
-            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
-              WAIT_TIME=$((10 + RANDOM % 20))  # Random 10-30 second wait
-              echo "Waiting $WAIT_TIME seconds before retry..."
-              sleep $WAIT_TIME
-              git fetch origin main
-            fi
-          done
-
-          echo "Failed to push after $MAX_RETRIES attempts"
-          exit 1
+      - name: Push aggregator-archive to private repo
+        if: always()
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Fetch ${{ github.event.inputs.aggregator }} aggregator pages"
 
       - name: Summary
         run: |
@@ -137,15 +83,8 @@ jobs:
           echo "**Shows:** ${{ github.event.inputs.shows }}" >> $GITHUB_STEP_SUMMARY
           echo "**Force:** ${{ github.event.inputs.force }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-
-          if [ "${{ steps.changes.outputs.has_changes }}" = "true" ]; then
-            echo "### Files Updated" >> $GITHUB_STEP_SUMMARY
-            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-            git diff --name-only data/ | head -20 >> $GITHUB_STEP_SUMMARY
-            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "No changes to commit." >> $GITHUB_STEP_SUMMARY
-          fi
+          AA_COUNT=$(find data/aggregator-archive -type f 2>/dev/null | wc -l | tr -d ' ')
+          echo "**Aggregator archive files:** $AA_COUNT" >> $GITHUB_STEP_SUMMARY
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure

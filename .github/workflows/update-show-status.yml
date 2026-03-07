@@ -47,6 +47,10 @@ jobs:
         uses: ./.github/actions/checkout-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -188,6 +192,12 @@ jobs:
 
   # Create issue for new shows that need review data
 
+      - name: Push aggregator-archive to private repo
+        if: always()
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Show Score archives from update-show-status'
       - name: Push core data to private repo
         if: always() && steps.validate.outcome != 'failure'
         uses: ./.github/actions/push-core-data
