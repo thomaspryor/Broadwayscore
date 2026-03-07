@@ -643,6 +643,8 @@ function loadShows() {
 }
 
 function saveShows(data) {
+  if (!data._meta) data._meta = {};
+  data._meta.lastUpdated = new Date().toISOString();
   fs.writeFileSync(SHOWS_FILE, JSON.stringify(data, null, 2) + '\n');
 }
 

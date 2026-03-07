@@ -1,13 +1,32 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { getSupabaseClient } from '@/lib/supabase';
 import type { WatchlistEntry } from '@/types/user';
+
+// Cross-instance sync: all useWatchlist hooks with the same userId share state
+const WATCHLIST_SYNC = 'watchlist-sync';
+function broadcastWatchlist(userId: string, entries: WatchlistEntry[]) {
+  if (typeof document !== 'undefined') {
+    document.dispatchEvent(new CustomEvent(WATCHLIST_SYNC, { detail: { userId, entries } }));
+  }
+}
 
 export function useWatchlist(userId: string | null) {
   const [watchlist, setWatchlist] = useState<WatchlistEntry[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Listen for sync events from other instances
+  useEffect(() => {
+    if (!userId) return;
+    const handler = (e: Event) => {
+      const { userId: eventUserId, entries } = (e as CustomEvent).detail;
+      if (eventUserId === userId) setWatchlist(entries);
+    };
+    document.addEventListener(WATCHLIST_SYNC, handler);
+    return () => document.removeEventListener(WATCHLIST_SYNC, handler);
+  }, [userId]);
 
   const getWatchlist = useCallback(async (): Promise<WatchlistEntry[]> => {
     const client = getSupabaseClient();
@@ -25,6 +44,7 @@ export function useWatchlist(userId: string | null) {
       if (err) throw err;
       const result = (data || []) as WatchlistEntry[];
       setWatchlist(result);
+      broadcastWatchlist(userId, result);
       return result;
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to load watchlist';
@@ -51,11 +71,15 @@ export function useWatchlist(userId: string | null) {
 
       if (err) throw err;
 
-      // Optimistic update
-      setWatchlist(prev => [
-        { id: crypto.randomUUID(), user_id: userId, show_id: showId, planned_date: null, created_at: new Date().toISOString() },
-        ...prev,
-      ]);
+      // Optimistic update + broadcast to other instances
+      setWatchlist(prev => {
+        const next = [
+          { id: crypto.randomUUID(), user_id: userId, show_id: showId, planned_date: null, created_at: new Date().toISOString() },
+          ...prev,
+        ];
+        broadcastWatchlist(userId, next);
+        return next;
+      });
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to add to watchlist';
       setError(msg);
@@ -77,8 +101,12 @@ export function useWatchlist(userId: string | null) {
 
       if (err) throw err;
 
-      // Optimistic update
-      setWatchlist(prev => prev.filter(w => w.show_id !== showId));
+      // Optimistic update + broadcast to other instances
+      setWatchlist(prev => {
+        const next = prev.filter(w => w.show_id !== showId);
+        broadcastWatchlist(userId, next);
+        return next;
+      });
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to remove from watchlist';
       setError(msg);
@@ -100,10 +128,14 @@ export function useWatchlist(userId: string | null) {
 
       if (err) throw err;
 
-      // Optimistic update
-      setWatchlist(prev => prev.map(w =>
-        w.show_id === showId ? { ...w, planned_date: plannedDate } : w
-      ));
+      // Optimistic update + broadcast to other instances
+      setWatchlist(prev => {
+        const next = prev.map(w =>
+          w.show_id === showId ? { ...w, planned_date: plannedDate } : w
+        );
+        broadcastWatchlist(userId, next);
+        return next;
+      });
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to update date';
       setError(msg);
