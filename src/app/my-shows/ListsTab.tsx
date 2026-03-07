@@ -1,11 +1,10 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef, useMemo, useDeferredValue } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useUserLists } from '@/hooks/useUserLists';
 import type { UserList, ListItem, ShowLookup } from '@/types/user';
-import type Fuse from 'fuse.js';
 import {
   DndContext, closestCenter, DragOverlay,
   PointerSensor, TouchSensor, KeyboardSensor,
@@ -16,6 +15,7 @@ import { SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-
 import { CSS } from '@dnd-kit/utilities';
 import { Modal } from '@/components/show-cards';
 import { useClickOutside } from '@/hooks/useClickOutside';
+import { useShowSearch } from '@/hooks/useShowSearch';
 
 interface ShowMap {
   [showId: string]: ShowLookup;
@@ -670,53 +670,13 @@ function ListAddShowSearch({
   onClose: () => void;
   existingShowIds: Set<string>;
 }) {
-  const [query, setQuery] = useState('');
-  const deferredQuery = useDeferredValue(query);
-  const [results, setResults] = useState<SearchShow[]>([]);
-  const [shows, setShows] = useState<SearchShow[]>([]);
-  const fuseRef = useRef<Fuse<SearchShow> | null>(null);
-  const [dataReady, setDataReady] = useState(false);
-  const fetchedRef = useRef(false);
+  const { query, setQuery, results, ensureData } = useShowSearch<SearchShow>();
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const ensureData = useCallback(async () => {
-    if (fetchedRef.current) return;
-    fetchedRef.current = true;
-    try {
-      const [res, { default: FuseClass }] = await Promise.all([
-        fetch('/data/search-shows.json'),
-        import('fuse.js/basic') as Promise<{ default: typeof Fuse }>,
-      ]);
-      const data: SearchShow[] = await res.json();
-      fuseRef.current = new FuseClass(data, {
-        keys: [{ name: 'title', weight: 0.8 }, { name: 'venue', weight: 0.2 }],
-        threshold: 0.35,
-        ignoreLocation: true,
-        minMatchCharLength: 2,
-      });
-      setShows(data);
-      setDataReady(true);
-    } catch {
-      fetchedRef.current = false;
-    }
-  }, []);
 
   useEffect(() => {
     ensureData();
     setTimeout(() => inputRef.current?.focus(), 50);
   }, [ensureData]);
-
-  const filteredResults = useMemo(() => {
-    if (deferredQuery.length < 2 || !fuseRef.current) return [];
-    const fuseResults = fuseRef.current.search(deferredQuery, { limit: 6 }).map(r => r.item);
-    const q = deferredQuery.toLowerCase();
-    const substring = shows.filter(s =>
-      s.title.toLowerCase().includes(q) && !fuseResults.some(r => r.id === s.id)
-    );
-    return [...fuseResults, ...substring].slice(0, 6);
-  }, [deferredQuery, dataReady, shows]);
-
-  useEffect(() => { setResults(filteredResults); }, [filteredResults]);
 
   return (
     <div className="relative">
