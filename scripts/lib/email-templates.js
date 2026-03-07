@@ -110,6 +110,7 @@ function buildEmailHtml(showTitle, changes, showUrl, showId, email, market) {
   market = market || 'broadway';
   const isWE = market === 'west-end';
   const siteNameFirst = isWE ? 'West End' : 'Broadway';
+  const brandColor = isWE ? '#f472b6' : '#d4a574';
   const changesHtml = changes.map(c => {
     const anchor = getChangeAnchor(c.type);
     const linkUrl = `${showUrl}${anchor}`;
@@ -123,7 +124,7 @@ function buildEmailHtml(showTitle, changes, showUrl, showId, email, market) {
 <tr><td align="center" bgcolor="#0f0f14">
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
   <tr><td style="padding-bottom:20px;border-bottom:1px solid rgba(212,165,116,0.2);">
-    <span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">${siteNameFirst}</span><span style="font-size:22px;font-weight:800;color:#d4a574;letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span>
+    <span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">${siteNameFirst}</span><span style="font-size:22px;font-weight:800;color:${brandColor};letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span>
   </td></tr>
   <tr><td style="padding:28px 0 8px;">
     <h1 style="margin:0;font-size:22px;font-weight:700;color:#ffffff;line-height:1.3;font-family:${FONT};">Updates for ${escapeHtml(showTitle)}</h1>
@@ -150,6 +151,7 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
   market = market || 'broadway';
   const isWE = market === 'west-end';
   const siteNameFirst = isWE ? 'West End' : 'Broadway';
+  const brandColor = isWE ? '#f472b6' : '#d4a574';
   const sc = getScoreColor(openingChange.score);
   const scoreDisplay = openingChange.score != null ? Math.round(openingChange.score) : '?';
   const reviewCount = openingChange.reviewCount || 0;
@@ -239,7 +241,7 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
 <tr><td align="center" bgcolor="#0f0f14">
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
   <tr><td style="padding-bottom:20px;border-bottom:1px solid rgba(212,165,116,0.2);">
-    <span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">${siteNameFirst}</span><span style="font-size:22px;font-weight:800;color:#d4a574;letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span>
+    <span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">${siteNameFirst}</span><span style="font-size:22px;font-weight:800;color:${brandColor};letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span>
   </td></tr>
   <tr><td style="padding:28px 0 8px;">
     <h1 style="margin:0;font-size:24px;font-weight:700;color:#ffffff;line-height:1.3;font-family:${FONT};">${escapeHtml(showTitle)} Critic Reviews Are In${openingChange.score != null ? ` \u2014 Critic Score: ${Math.round(openingChange.score)}` : ''}</h1>
@@ -294,6 +296,7 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
   market = market || 'broadway';
   const isWE = market === 'west-end';
   const siteNameFirst = isWE ? 'West End' : 'Broadway';
+  const brandColor = isWE ? '#f472b6' : '#d4a574';
   const browseUrl = isWE ? 'https://broadwayscorecard.com/west-end' : 'https://broadwayscorecard.com';
   // Build a score card for each show
   const showCards = shows.map(show => {
@@ -403,7 +406,7 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
 <tr><td align="center" bgcolor="#0f0f14">
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
   <tr><td style="padding-bottom:20px;border-bottom:1px solid rgba(212,165,116,0.2);">
-    <span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">${siteNameFirst}</span><span style="font-size:22px;font-weight:800;color:#d4a574;letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span>
+    <span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">${siteNameFirst}</span><span style="font-size:22px;font-weight:800;color:${brandColor};letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span>
   </td></tr>
   <tr><td style="padding:28px 0 8px;">
     <h1 style="margin:0;font-size:24px;font-weight:700;color:#ffffff;line-height:1.3;font-family:${FONT};">${h1}</h1>
