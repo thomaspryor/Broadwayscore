@@ -7,6 +7,7 @@ import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/li
 import WestEndPageClient from '@/components/WestEndPageClient';
 import type { WestEndShow } from '@/components/WestEndPageClient';
 import { featureFlags } from '@/config/feature-flags';
+import { isOffWestEndVenue } from '@/lib/venue-classification';
 
 export const metadata: Metadata = {
   title: 'West End Scorecard - London Theatre Ratings & Reviews',
@@ -21,31 +22,6 @@ export const metadata: Metadata = {
     type: 'article',
   },
 };
-
-// Official West End theatres (SOLT members / Theatreland).
-// Anything NOT on this list is classified as Off-West End.
-const WEST_END_VENUES = new Set([
-  'adelphi', 'aldwych', 'ambassadors', 'apollo', 'apollo victoria',
-  'cambridge', 'coliseum', 'london coliseum', 'criterion', 'dominion',
-  'duchess', "duke of york's", 'fortune', 'garrick', 'gielgud',
-  'harold pinter', "his majesty's", "her majesty's", 'lyceum', 'lyric',
-  'london palladium', "noel coward", "noël coward", 'novello', 'palace',
-  'peacock', 'phoenix', 'piccadilly', 'playhouse', 'prince edward',
-  'prince of wales', "queen's", 'savoy', 'shaftesbury', "st martin's",
-  "st. martin's", 'sondheim', 'soho place', 'theatre royal drury lane',
-  'theatre royal haymarket', 'trafalgar', 'vaudeville', 'victoria palace',
-  "wyndham's", 'wyndhams', 'gillian lynne', 'london hippodrome',
-  'the old vic', 'old vic',
-]);
-
-function isOffWestEndVenue(venue?: string): boolean {
-  if (!venue || venue === 'TBA') return false;
-  // Normalize: lowercase, strip "Theatre"/"Theater" suffix, strip parenthetical notes
-  const v = venue.trim().toLowerCase()
-    .replace(/\s*\(.*\)$/, '')
-    .replace(/ theatre$| theater$/, '');
-  return !WEST_END_VENUES.has(v);
-}
 
 function serializeShow(show: ReturnType<typeof getWestEndShows>[number]): WestEndShow {
   const buzz = getAudienceBuzz(show.id);
