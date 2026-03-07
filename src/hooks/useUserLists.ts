@@ -57,6 +57,7 @@ export function useUserLists(userId: string | null) {
           ...l,
           item_count: showIds.length,
           preview_show_ids: showIds.slice(0, 4),
+          all_show_ids: showIds,
         };
       });
 
@@ -119,7 +120,7 @@ export function useUserLists(userId: string | null) {
         .single();
 
       if (err) throw err;
-      const newList: UserList = { ...data, item_count: 0, preview_show_ids: [] };
+      const newList: UserList = { ...data, item_count: 0, preview_show_ids: [], all_show_ids: [] };
       setLists(prev => [newList, ...prev]);
       return newList;
     } catch (e) {
@@ -218,10 +219,12 @@ export function useUserLists(userId: string | null) {
         if (l.id !== listId) return l;
         const count = (l.item_count || 0) + 1;
         const previews = l.preview_show_ids || [];
+        const allIds = l.all_show_ids || [];
         return {
           ...l,
           item_count: count,
           preview_show_ids: previews.length < 4 ? [...previews, showId] : previews,
+          all_show_ids: allIds.includes(showId) ? allIds : [...allIds, showId],
           updated_at: new Date().toISOString(),
         };
       }));
@@ -250,7 +253,8 @@ export function useUserLists(userId: string | null) {
         if (l.id !== listId) return l;
         const count = Math.max(0, (l.item_count || 0) - 1);
         const previews = (l.preview_show_ids || []).filter(id => id !== showId);
-        return { ...l, item_count: count, preview_show_ids: previews };
+        const allIds = (l.all_show_ids || []).filter(id => id !== showId);
+        return { ...l, item_count: count, preview_show_ids: previews, all_show_ids: allIds };
       }));
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to remove from list';
