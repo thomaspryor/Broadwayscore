@@ -6,6 +6,14 @@ import { useSearchParams } from 'next/navigation';
 import { useUserLists } from '@/hooks/useUserLists';
 import type { UserList, ListItem, ShowLookup } from '@/types/user';
 import type Fuse from 'fuse.js';
+import {
+  DndContext, closestCenter, DragOverlay,
+  PointerSensor, TouchSensor, KeyboardSensor,
+  useSensor, useSensors,
+  type DragStartEvent, type DragEndEvent,
+} from '@dnd-kit/core';
+import { SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 interface ShowMap {
   [showId: string]: ShowLookup;
@@ -139,10 +147,18 @@ export default function ListsTab({ userId, showMap, isMockMode, createTrigger = 
           onDelete={() => handleDeleteList(activeListId)}
           onAddShow={(showId) => handleAddToList(activeListId, showId)}
           onRemoveShow={(showId) => handleRemoveFromList(activeListId, showId)}
-          onReorder={async (itemIds, positions) => {
-            await reorderList(activeListId, itemIds, positions);
-            const items = await getListItems(activeListId);
-            setListItems(items);
+          onReorder={(itemIds, positions) => {
+            // Optimistic: reorder local state immediately
+            const idOrder = new Map(itemIds.map((id, i) => [id, i]));
+            setListItems(prev => {
+              const sorted = [...prev].sort((a, b) => (idOrder.get(a.id) ?? 0) - (idOrder.get(b.id) ?? 0));
+              return sorted.map((item, i) => ({ ...item, position: positions[i] }));
+            });
+            // Persist in background
+            reorderList(activeListId, itemIds, positions).catch(() => {
+              // On failure, refresh from server to revert
+              getListItems(activeListId).then(items => setListItems(items));
+            });
           }}
         />
         {showModal === 'edit' && editingList && (
@@ -283,6 +299,39 @@ function ListDetailView({
   const [confirmRemoveId, setConfirmRemoveId] = useState<string | null>(null);
   const confirmTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const overflowRef = useRef<HTMLDivElement>(null);
+  const [activeId, setActiveId] = useState<string | null>(null);
+
+  // DnD sensors — pointer needs 5px distance, touch needs 200ms delay to avoid scroll conflicts
+  const pointerSensor = useSensor(PointerSensor, { activationConstraint: { distance: 5 } });
+  const touchSensor = useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 5 } });
+  const keyboardSensor = useSensor(KeyboardSensor);
+  const sensors = useSensors(pointerSensor, touchSensor, keyboardSensor);
+
+  const handleDragStart = useCallback((event: DragStartEvent) => {
+    setActiveId(String(event.active.id));
+  }, []);
+
+  const handleDragEnd = useCallback((event: DragEndEvent) => {
+    setActiveId(null);
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
+    const oldIndex = items.findIndex(i => i.id === active.id);
+    const newIndex = items.findIndex(i => i.id === over.id);
+    if (oldIndex === -1 || newIndex === -1) return;
+
+    // Build reordered array
+    const reordered = [...items];
+    const [moved] = reordered.splice(oldIndex, 1);
+    reordered.splice(newIndex, 0, moved);
+
+    // Assign fresh positions (index * 1000) and call onReorder
+    const itemIds = reordered.map(i => i.id);
+    const positions = reordered.map((_, idx) => (idx + 1) * 1000);
+    onReorder(itemIds, positions);
+  }, [items, onReorder]);
+
+  const activeItem = activeId ? items.find(i => i.id === activeId) : null;
 
   // Close overflow on outside click
   useEffect(() => {
@@ -380,78 +429,62 @@ function ListDetailView({
         <div className="text-center py-12">
           <p className="text-sm text-gray-400 mb-4">This list is empty. Add some shows!</p>
         </div>
+      ) : list.is_ranked ? (
+        /* Ranked list — drag-to-reorder enabled */
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+          <SortableContext items={items.map(i => i.id)} strategy={verticalListSortingStrategy}>
+            <div className="space-y-1">
+              {items.map((item, index) => (
+                <SortableListItem
+                  key={item.id}
+                  item={item}
+                  index={index}
+                  show={showMap[item.show_id]}
+                  isRanked
+                  confirmRemoveId={confirmRemoveId}
+                  onRemove={(showId) => onRemoveShow(showId)}
+                  onConfirmRemove={(id) => {
+                    setConfirmRemoveId(id);
+                    if (confirmTimerRef.current) clearTimeout(confirmTimerRef.current);
+                    confirmTimerRef.current = setTimeout(() => setConfirmRemoveId(null), 4000);
+                  }}
+                  onCancelRemove={() => setConfirmRemoveId(null)}
+                />
+              ))}
+            </div>
+          </SortableContext>
+          <DragOverlay dropAnimation={null}>
+            {activeItem ? (
+              <ListItemContent
+                item={activeItem}
+                index={items.indexOf(activeItem)}
+                show={showMap[activeItem.show_id]}
+                isRanked
+                isDragOverlay
+              />
+            ) : null}
+          </DragOverlay>
+        </DndContext>
       ) : (
+        /* Unranked list — static */
         <div className="space-y-1">
-          {items.map((item, index) => {
-            const show = showMap[item.show_id];
-            const title = show?.title || item.show_id;
-            const slug = show?.slug || item.show_id;
-            const href = `/show/${slug}`;
-
-            return (
-              <div
-                key={item.id}
-                className="group/item relative flex items-center gap-3 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors"
-              >
-                <Link href={href} className="absolute inset-0 z-0" aria-label={`View ${title}`} />
-
-                {/* Rank number */}
-                {list.is_ranked && (
-                  <span className="relative z-[1] flex-shrink-0 w-6 text-center text-sm font-bold text-gray-500 pointer-events-none">
-                    {index + 1}
-                  </span>
-                )}
-
-                {/* Poster */}
-                <div className="relative z-[1] flex-shrink-0 w-12 sm:w-14 aspect-square rounded-lg overflow-hidden bg-surface-overlay pointer-events-none">
-                  {show?.posterUrl ? (
-                    <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-gray-600 text-lg">🎭</div>
-                  )}
-                </div>
-
-                {/* Info */}
-                <div className="relative z-[1] flex-1 min-w-0 pointer-events-none">
-                  <h4 className="font-bold text-white text-base group-hover/item:text-brand transition-colors truncate">{title}</h4>
-                  {show?.venue && <p className="text-sm text-gray-500 truncate">{show.venue}</p>}
-                </div>
-
-                {/* Remove button — 2-step confirm with 4s auto-reset */}
-                {confirmRemoveId === item.id ? (
-                  <div className="relative z-[1] flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRemoveShow(item.show_id); setConfirmRemoveId(null); }}
-                      className="text-xs font-medium text-red-400 hover:text-red-300"
-                    >Remove?</button>
-                    <button
-                      type="button"
-                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirmRemoveId(null); }}
-                      className="text-xs text-gray-500 hover:text-white"
-                    >No</button>
-                  </div>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault(); e.stopPropagation();
-                      setConfirmRemoveId(item.id);
-                      if (confirmTimerRef.current) clearTimeout(confirmTimerRef.current);
-                      confirmTimerRef.current = setTimeout(() => setConfirmRemoveId(null), 4000);
-                    }}
-                    className="relative z-[1] text-xs text-gray-600 hover:text-red-400 transition-colors"
-                    aria-label={`Remove ${title} from list`}
-                  >Remove</button>
-                )}
-
-                {/* Chevron */}
-                <svg className="relative z-[1] w-4 h-4 text-gray-600 flex-shrink-0 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-            );
-          })}
+          {items.map((item, index) => (
+            <ListItemContent
+              key={item.id}
+              item={item}
+              index={index}
+              show={showMap[item.show_id]}
+              isRanked={false}
+              confirmRemoveId={confirmRemoveId}
+              onRemove={(showId) => onRemoveShow(showId)}
+              onConfirmRemove={(id) => {
+                setConfirmRemoveId(id);
+                if (confirmTimerRef.current) clearTimeout(confirmTimerRef.current);
+                confirmTimerRef.current = setTimeout(() => setConfirmRemoveId(null), 4000);
+              }}
+              onCancelRemove={() => setConfirmRemoveId(null)}
+            />
+          ))}
         </div>
       )}
 
@@ -476,6 +509,160 @@ function ListDetailView({
           </svg>
           <span>Add show</span>
         </button>
+      )}
+    </div>
+  );
+}
+
+// --- Sortable List Item (drag-to-reorder wrapper) ---
+
+function SortableListItem({
+  item, index, show, isRanked, confirmRemoveId,
+  onRemove, onConfirmRemove, onCancelRemove,
+}: {
+  item: ListItem;
+  index: number;
+  show: ShowLookup | undefined;
+  isRanked: boolean;
+  confirmRemoveId: string | null;
+  onRemove: (showId: string) => void;
+  onConfirmRemove: (itemId: string) => void;
+  onCancelRemove: () => void;
+}) {
+  const { attributes, listeners, setNodeRef, setActivatorNodeRef, transform, transition, isDragging } = useSortable({ id: item.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.4 : 1,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style}>
+      <ListItemContent
+        item={item}
+        index={index}
+        show={show}
+        isRanked={isRanked}
+        confirmRemoveId={confirmRemoveId}
+        onRemove={onRemove}
+        onConfirmRemove={onConfirmRemove}
+        onCancelRemove={onCancelRemove}
+        dragHandleRef={setActivatorNodeRef}
+        dragHandleProps={{ ...attributes, ...listeners }}
+      />
+    </div>
+  );
+}
+
+// --- List Item Content (shared between sortable and static rendering) ---
+
+function ListItemContent({
+  item, index, show, isRanked, isDragOverlay,
+  confirmRemoveId, onRemove, onConfirmRemove, onCancelRemove,
+  dragHandleRef, dragHandleProps,
+}: {
+  item: ListItem;
+  index: number;
+  show: ShowLookup | undefined;
+  isRanked: boolean;
+  isDragOverlay?: boolean;
+  confirmRemoveId?: string | null;
+  onRemove?: (showId: string) => void;
+  onConfirmRemove?: (itemId: string) => void;
+  onCancelRemove?: () => void;
+  dragHandleRef?: (node: HTMLElement | null) => void;
+  dragHandleProps?: Record<string, unknown>;
+}) {
+  const title = show?.title || item.show_id;
+  const slug = show?.slug || item.show_id;
+  const href = `/show/${slug}`;
+
+  return (
+    <div
+      className={`group/item relative flex items-center gap-3 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl border transition-colors ${
+        isDragOverlay
+          ? 'bg-surface-raised border-white/20 shadow-2xl scale-[1.02]'
+          : 'bg-white/[0.02] border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04]'
+      }`}
+    >
+      {!isDragOverlay && <Link href={href} className="absolute inset-0 z-0" aria-label={`View ${title}`} />}
+
+      {/* Drag handle (ranked lists only) */}
+      {isRanked && (
+        <button
+          type="button"
+          ref={dragHandleRef}
+          {...(dragHandleProps as React.ButtonHTMLAttributes<HTMLButtonElement>)}
+          className="relative z-[1] flex-shrink-0 touch-none cursor-grab active:cursor-grabbing p-1 -ml-1 text-gray-600 hover:text-gray-400 transition-colors"
+          aria-label="Drag to reorder"
+        >
+          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+            <circle cx="9" cy="6" r="1.5" />
+            <circle cx="15" cy="6" r="1.5" />
+            <circle cx="9" cy="12" r="1.5" />
+            <circle cx="15" cy="12" r="1.5" />
+            <circle cx="9" cy="18" r="1.5" />
+            <circle cx="15" cy="18" r="1.5" />
+          </svg>
+        </button>
+      )}
+
+      {/* Rank number */}
+      {isRanked && (
+        <span className="relative z-[1] flex-shrink-0 w-6 text-center text-sm font-bold text-gray-500 pointer-events-none">
+          {index + 1}
+        </span>
+      )}
+
+      {/* Poster */}
+      <div className="relative z-[1] flex-shrink-0 w-12 sm:w-14 aspect-square rounded-lg overflow-hidden bg-surface-overlay pointer-events-none">
+        {show?.posterUrl ? (
+          <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-gray-600 text-lg">🎭</div>
+        )}
+      </div>
+
+      {/* Info */}
+      <div className="relative z-[1] flex-1 min-w-0 pointer-events-none">
+        <h4 className="font-bold text-white text-base group-hover/item:text-brand transition-colors truncate">{title}</h4>
+        {show?.venue && <p className="text-sm text-gray-500 truncate">{show.venue}</p>}
+      </div>
+
+      {/* Remove button — 2-step confirm with 4s auto-reset */}
+      {!isDragOverlay && onRemove && onConfirmRemove && onCancelRemove && (
+        confirmRemoveId === item.id ? (
+          <div className="relative z-[1] flex items-center gap-2">
+            <button
+              type="button"
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRemove(item.show_id); onCancelRemove(); }}
+              className="text-xs font-medium text-red-400 hover:text-red-300"
+            >Remove?</button>
+            <button
+              type="button"
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onCancelRemove(); }}
+              className="text-xs text-gray-500 hover:text-white"
+            >No</button>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault(); e.stopPropagation();
+              onConfirmRemove(item.id);
+            }}
+            className="relative z-[1] text-xs text-gray-600 hover:text-red-400 transition-colors"
+            aria-label={`Remove ${title} from list`}
+          >Remove</button>
+        )
+      )}
+
+      {/* Chevron */}
+      {!isDragOverlay && (
+        <svg className="relative z-[1] w-4 h-4 text-gray-600 flex-shrink-0 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
       )}
     </div>
   );
