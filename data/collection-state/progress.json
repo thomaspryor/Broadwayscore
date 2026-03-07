@@ -395,7 +395,15 @@
     "harry-potter-and-the-cursed-child-both-parts-west-end-2021/telegraph--dominic-cavendish.json",
     "harry-potter-and-the-cursed-child-both-parts-west-end-2021/whatsonstage--sarah-crompton.json",
     "heathers-the-musical-off-broadway-2025/digital-journal--mark-papadatos.json",
-    "heathers-the-musical-off-broadway-2025/frontmezzjunkies--ross.json"
+    "heathers-the-musical-off-broadway-2025/frontmezzjunkies--ross.json",
+    "heathers-the-musical-off-broadway-2025/off-off-online--jessica-taghap.json",
+    "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+    "heathers-the-musical-off-broadway-2025/theater-pizzazz--ron-fassler.json",
+    "hercules-west-end-2025/daily-mail--patrick-marmion.json",
+    "hercules-west-end-2025/independent--alice-saville.json",
+    "hercules-west-end-2025/london-theatre--olivia-rook.json",
+    "hercules-west-end-2025/standard--nick-curtis.json",
+    "hercules-west-end-2025/theatre-weekly--greg-stewart.json"
   ],
   "failed": [
     "it-walks-around-the-house-at-night-west-end-2026/broadwayworld--unknown.json",
@@ -476,7 +484,9 @@
     "hamilton-2015/ap--mark-kennedy.json",
     "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
     "harry-potter-2021/usatoday--kelly-lawler.json",
-    "harry-potter-and-the-cursed-child-both-parts-west-end-2021/thestage--mark-shenton.json"
+    "harry-potter-and-the-cursed-child-both-parts-west-end-2021/thestage--mark-shenton.json",
+    "heathers-the-musical-off-broadway-2025/northjerseycom--robert-feldberg.json",
+    "heathers-the-musical-off-broadway-2025/usatoday--elysa-gardner.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -659,7 +669,13 @@
       "harry-potter-and-the-cursed-child-both-parts-west-end-2021/financialtimes--sarah-hemming.json",
       "harry-potter-and-the-cursed-child-both-parts-west-end-2021/whatsonstage--sarah-crompton.json",
       "heathers-the-musical-off-broadway-2025/digital-journal--mark-papadatos.json",
-      "heathers-the-musical-off-broadway-2025/frontmezzjunkies--ross.json"
+      "heathers-the-musical-off-broadway-2025/frontmezzjunkies--ross.json",
+      "heathers-the-musical-off-broadway-2025/off-off-online--jessica-taghap.json",
+      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+      "heathers-the-musical-off-broadway-2025/theater-pizzazz--ron-fassler.json",
+      "hercules-west-end-2025/london-theatre--olivia-rook.json",
+      "hercules-west-end-2025/standard--nick-curtis.json",
+      "hercules-west-end-2025/theatre-weekly--greg-stewart.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -807,7 +823,9 @@
       "harry-potter-2021/dtli--ana-zambrana.json",
       "harry-potter-2021/times-uk--ann-treneman.json",
       "harry-potter-and-the-cursed-child-both-parts-west-end-2021/independent--jack-shepherd.json",
-      "harry-potter-and-the-cursed-child-both-parts-west-end-2021/telegraph--dominic-cavendish.json"
+      "harry-potter-and-the-cursed-child-both-parts-west-end-2021/telegraph--dominic-cavendish.json",
+      "hercules-west-end-2025/daily-mail--patrick-marmion.json",
+      "hercules-west-end-2025/independent--alice-saville.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -828,7 +846,8 @@
       "data/review-texts/and-juliet-2022/broadway-blog--joey-sims.json",
       "data/review-texts/hamilton-2015/ap--mark-kennedy.json",
       "data/review-texts/harry-potter-2021/usatoday--kelly-lawler.json",
-      "data/review-texts/harry-potter-and-the-cursed-child-both-parts-west-end-2021/thestage--mark-shenton.json"
+      "data/review-texts/harry-potter-and-the-cursed-child-both-parts-west-end-2021/thestage--mark-shenton.json",
+      "data/review-texts/heathers-the-musical-off-broadway-2025/usatoday--elysa-gardner.json"
     ],
     "archive": [
       "tru-off-broadway-2026/theatermania--unknown.json",
@@ -946,7 +965,7 @@
     ]
   },
   "startTime": "2026-03-06T17:15:52.929Z",
-  "lastProcessed": "heathers-the-musical-off-broadway-2025/frontmezzjunkies--ross.json",
+  "lastProcessed": "hercules-west-end-2025/theatre-weekly--greg-stewart.json",
   "log": [
     {
       "t": "2026-03-06T18:51:51.105Z",
@@ -1299,6 +1318,17 @@
       "t": "2026-03-07T04:07:25.639Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-07T04:09:57.956Z",
+      "event": "bb-session",
+      "session": "224b289f",
+      "url": "http://www.northjersey.com/arts-and-entertainment/theater/revisiting-the-dark-si"
+    },
+    {
+      "t": "2026-03-07T04:09:59.396Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
