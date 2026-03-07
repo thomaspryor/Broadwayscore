@@ -132,7 +132,17 @@
     "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json",
     "heathers-the-musical-off-broadway-2025/new-york-sun--elysa-gardner.json",
     "heathers-the-musical-off-broadway-2025/observer--david-cote.json",
-    "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json"
+    "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
+    "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json",
+    "hercules-west-end-2025/guardian--arifa-akbar.json",
+    "high-noon-west-end-2025/guardian--arifa-akbar.json",
+    "high-noon-west-end-2025/timeout--unknown.json",
+    "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json",
+    "hold-on-to-your-butts-off-broadway-2026/guardian--chris-wiegand.json",
+    "im-sorry-prime-minister-west-end-2026/timeout-london--unknown.json",
+    "into-the-woods-west-end-2025/guardian--arifa-akbar.json",
+    "it-walks-around-the-house-at-night-west-end-2026/timeout--unknown.json",
+    "just-in-time-2025/observer--rex-reed.json"
   ],
   "failed": [
     "mexodus-off-broadway-2026/nytg--austin-fimmano.json",
@@ -207,7 +217,8 @@
       "dracula-west-end-2025/guardian--arifa-akbar.json",
       "hadestown-2019/guardian--adrian-horton.json",
       "heathers-the-musical-off-broadway-2025/new-york-sun--elysa-gardner.json",
-      "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json"
+      "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
+      "high-noon-west-end-2025/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -241,7 +252,9 @@
       "data/review-texts/all-out-2025/deadline--unknown.json",
       "all-out-2025/deadline--unknown.json",
       "data/review-texts/heathers-the-musical-off-broadway-2025/observer--david-cote.json",
-      "heathers-the-musical-off-broadway-2025/observer--david-cote.json"
+      "heathers-the-musical-off-broadway-2025/observer--david-cote.json",
+      "data/review-texts/just-in-time-2025/observer--rex-reed.json",
+      "just-in-time-2025/observer--rex-reed.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json",
@@ -272,7 +285,13 @@
       "chicago-1996/ew--melissa-rose-bernardo.json",
       "chicago-1996/nydailynews--joe-dziemianowicz.json",
       "chinese-republicans-off-broadway-2026/thewrap--unknown.json",
-      "hadestown-2019/ew--jessica-derschowitz.json"
+      "hadestown-2019/ew--jessica-derschowitz.json",
+      "hercules-west-end-2025/guardian--arifa-akbar.json",
+      "high-noon-west-end-2025/guardian--arifa-akbar.json",
+      "hold-on-to-your-butts-off-broadway-2026/guardian--chris-wiegand.json",
+      "im-sorry-prime-minister-west-end-2026/timeout-london--unknown.json",
+      "into-the-woods-west-end-2025/guardian--arifa-akbar.json",
+      "it-walks-around-the-house-at-night-west-end-2026/timeout--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -342,11 +361,13 @@
       "hamilton-2015/theatermania--adam-hetrick.json",
       "hamilton-2015/wsj--terry-teachout.json",
       "harry-potter-and-the-cursed-child-both-parts-west-end-2021/timeout-london--unknown.json",
-      "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json"
+      "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json",
+      "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json",
+      "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json"
     ]
   },
   "startTime": "2026-03-07T09:54:22.824Z",
-  "lastProcessed": "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
+  "lastProcessed": "just-in-time-2025/observer--rex-reed.json",
   "log": [
     {
       "t": "2026-03-07T10:49:42.495Z",
@@ -466,6 +487,17 @@
     },
     {
       "t": "2026-03-07T11:26:51.467Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-07T11:31:27.360Z",
+      "event": "bb-session",
+      "session": "db859e1e",
+      "url": "https://observer.com/2025/04/just-in-time-broadway-review-jonathan-groff-dazzles"
+    },
+    {
+      "t": "2026-03-07T11:31:28.696Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
     }

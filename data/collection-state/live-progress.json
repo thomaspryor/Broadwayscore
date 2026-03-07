@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-07T11:27:25.838Z",
-  "processed": 133,
+  "updatedAt": "2026-03-07T11:31:39.765Z",
+  "processed": 143,
   "failed": 27,
-  "successRate": "83.1%",
+  "successRate": "84.1%",
   "tierBreakdown": {
-    "playwright": 42,
+    "playwright": 43,
     "amp": 24,
-    "browserbase": 6,
+    "browserbase": 8,
     "directCookies": 3,
-    "scrapingbee": 24,
+    "scrapingbee": 30,
     "brightdata": 0,
     "archiveToday": 14,
-    "archive": 51
+    "archive": 53
   },
-  "browserbaseSessions": 11,
+  "browserbaseSessions": 12,
   "recentActivity": [
-    {
-      "t": "2026-03-07T10:50:57.957Z",
-      "event": "bb-session",
-      "session": "72f8024e",
-      "url": "https://www.nytimes.com/2026/02/12/theater/the-unknown-review-sean-hayes.html"
-    },
-    {
-      "t": "2026-03-07T10:50:59.167Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-07T10:56:55.063Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-07T11:26:51.467Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-07T11:31:27.360Z",
+      "event": "bb-session",
+      "session": "db859e1e",
+      "url": "https://observer.com/2025/04/just-in-time-broadway-review-jonathan-groff-dazzles"
+    },
+    {
+      "t": "2026-03-07T11:31:28.696Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
     }
