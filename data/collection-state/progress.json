@@ -558,7 +558,16 @@
     "starlight-express-west-end-2024/telegraph--dominic-cavendish.json",
     "starlight-express-west-end-2024/times-uk--clive-davis.json",
     "starlight-express-west-end-2024/west-end-best-friend--jenny-ell.json",
-    "starlight-express-west-end-2024/whatsonstage--sarah-crompton.json"
+    "starlight-express-west-end-2024/whatsonstage--sarah-crompton.json",
+    "stranger-things-the-first-shadow-west-end-2023/artsdesk--mert-dilek.json",
+    "stranger-things-the-first-shadow-west-end-2023/everything-theatre--xi-ye.json",
+    "stranger-things-the-first-shadow-west-end-2023/lost-in-theatreland--jill-johnson.json",
+    "stranger-things-the-first-shadow-west-end-2023/telegraph--dominic-cavendish.json",
+    "sweetmeats-west-end-2026/artsdesk--aleks-sierz.json",
+    "sweetmeats-west-end-2026/whatsonstage--rachel-agyekum.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/culturesauce--thom-geier.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/exeunt-magazine--lane-williamson.json"
   ],
   "failed": [
     "it-walks-around-the-house-at-night-west-end-2026/broadwayworld--unknown.json",
@@ -706,7 +715,8 @@
     "starlight-express-west-end-2024/thestage--paul-vale.json",
     "stranger-things-2024/broadwayworld--alexander-cohen.json",
     "stranger-things-2024/theater-scene--joseph-pisano.json",
-    "stranger-things-2024/thestage--dave-fargnoli.json"
+    "stranger-things-2024/thestage--dave-fargnoli.json",
+    "stranger-things-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1007,7 +1017,13 @@
       "starlight-express-west-end-2024/london-theatre--marianka-swain.json",
       "starlight-express-west-end-2024/times-uk--clive-davis.json",
       "starlight-express-west-end-2024/west-end-best-friend--jenny-ell.json",
-      "starlight-express-west-end-2024/whatsonstage--sarah-crompton.json"
+      "starlight-express-west-end-2024/whatsonstage--sarah-crompton.json",
+      "stranger-things-the-first-shadow-west-end-2023/artsdesk--mert-dilek.json",
+      "stranger-things-the-first-shadow-west-end-2023/everything-theatre--xi-ye.json",
+      "sweetmeats-west-end-2026/artsdesk--aleks-sierz.json",
+      "sweetmeats-west-end-2026/whatsonstage--rachel-agyekum.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/culturesauce--thom-geier.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/exeunt-magazine--lane-williamson.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -1073,7 +1089,9 @@
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/amny--unknown.json",
       "little-shop-of-horrors-off-broadway-2019/amny--unknown.json",
       "data/review-texts/marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
-      "marcel-on-the-train-off-broadway-2026/amny--matt-windman.json"
+      "marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
+      "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json",
@@ -1188,7 +1206,8 @@
       "six-the-musical-west-end-2021/independent--ava-wong-davies.json",
       "starlight-express-west-end-2024/independent--tim-bano.json",
       "starlight-express-west-end-2024/telegraph--dominic-cavendish.json",
-      "stranger-things-2024/theater-scene--joseph-pisano.json"
+      "stranger-things-2024/theater-scene--joseph-pisano.json",
+      "stranger-things-the-first-shadow-west-end-2023/lost-in-theatreland--jill-johnson.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1355,11 +1374,12 @@
       "ragtime-2025/ap--mark-kennedy.json",
       "ragtime-2025/billboard--joe-lynch.json",
       "shadowlands-west-end-2026/artsdesk--helen-hawkins.json",
-      "six-the-musical-west-end-2021/thestage--mark-shenton.json"
+      "six-the-musical-west-end-2021/thestage--mark-shenton.json",
+      "stranger-things-the-first-shadow-west-end-2023/telegraph--dominic-cavendish.json"
     ]
   },
   "startTime": "2026-03-06T17:15:52.929Z",
-  "lastProcessed": "stranger-things-2024/thestage--dave-fargnoli.json",
+  "lastProcessed": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/exeunt-magazine--lane-williamson.json",
   "log": [
     {
       "t": "2026-03-06T18:51:51.105Z",
@@ -1822,6 +1842,17 @@
       "t": "2026-03-07T05:31:32.122Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-07T05:33:37.833Z",
+      "event": "bb-session",
+      "session": "fb1b3580",
+      "url": "https://www.amny.com/entertainment/theater/spelling-bee-returns-nails-every-word"
+    },
+    {
+      "t": "2026-03-07T05:33:38.996Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
