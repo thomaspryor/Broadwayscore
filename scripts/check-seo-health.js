@@ -479,6 +479,93 @@ async function checkStalePages(token) {
   return { sampled: sample.length, stale, resubmitted };
 }
 
+// --- Check: High-Value Page Submission (use remaining quota) ---
+
+async function submitHighValuePages(token) {
+  console.log('\n--- High-Value Page Submission ---');
+
+  const remaining = getQuotaRemaining();
+  if (remaining < 10 || dryRun) {
+    console.log(`  Skipping (${remaining} quota remaining${dryRun ? ', dry run' : ''})`);
+    return { submitted: 0, skipped: 0 };
+  }
+
+  let shows;
+  try {
+    const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+    shows = data.shows || data;
+  } catch {
+    console.log('  Could not read shows.json, skipping');
+    return { submitted: 0, skipped: 0 };
+  }
+
+  // Load submission history for backoff
+  const ledger = readQuotaLedger();
+  const submissionCounts = {};
+  for (const sub of (ledger.submissions || [])) {
+    submissionCounts[sub.url] = (submissionCounts[sub.url] || 0) + 1;
+  }
+
+  // Priority: open/previews shows, then key hub pages
+  const highValueUrls = [
+    // Active shows first
+    ...shows
+      .filter(s => s.status === 'open' || s.status === 'previews')
+      .map(s => `${SITE_HOST}/show/${s.slug}`),
+    // Key landing pages
+    `${SITE_HOST}/`,
+    `${SITE_HOST}/rankings`,
+    `${SITE_HOST}/best-value`,
+    `${SITE_HOST}/lotteries`,
+    `${SITE_HOST}/rush`,
+    `${SITE_HOST}/box-office`,
+    `${SITE_HOST}/tony-awards`,
+    `${SITE_HOST}/west-end`,
+    `${SITE_HOST}/off-broadway`,
+  ];
+
+  // Filter out pages submitted 3+ times (backoff)
+  const candidates = highValueUrls.filter(url => {
+    const count = submissionCounts[url] || 0;
+    return count < 3;
+  });
+
+  const budget = Math.min(candidates.length, remaining, 50);
+  if (budget === 0) {
+    console.log('  No candidates remaining (all at backoff limit)');
+    return { submitted: 0, skipped: highValueUrls.length - candidates.length };
+  }
+
+  console.log(`  Submitting up to ${budget} high-value pages (${candidates.length} eligible, ${highValueUrls.length - candidates.length} at backoff limit)...`);
+
+  let submitted = 0;
+  try {
+    const indexToken = await getAccessToken(loadServiceAccount(), SCOPE_INDEXING);
+    for (let i = 0; i < budget; i++) {
+      const res = await fetch(
+        'https://indexing.googleapis.com/v3/urlNotifications:publish',
+        {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${indexToken}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: candidates[i], type: 'URL_UPDATED' }),
+        }
+      );
+      if (res.status === 429) {
+        console.log(`  Rate limited at ${i}/${budget}. Stopping.`);
+        break;
+      }
+      if (res.ok) {
+        recordQuotaUsage(candidates[i], 'high-value');
+        submitted++;
+      }
+      await new Promise(r => setTimeout(r, 150));
+    }
+  } catch { /* non-critical */ }
+
+  console.log(`  Submitted ${submitted} high-value pages`);
+  return { submitted, skipped: highValueUrls.length - candidates.length };
+}
+
 // --- Check: Target Keyword Rankings ---
 
 async function checkTargetKeywords(token) {
@@ -499,28 +586,23 @@ async function checkTargetKeywords(token) {
       token,
       {
         method: 'POST',
+        // GSC API doesn't support OR filter groups — fetch all queries, filter client-side
         body: JSON.stringify({
           startDate: fmt(startDate),
           endDate: fmt(endDate),
           dimensions: ['query'],
-          dimensionFilterGroups: [{
-            filters: TARGET_KEYWORDS.map(kw => ({
-              dimension: 'query',
-              operator: 'equals',
-              expression: kw,
-            })),
-            groupType: 'or',
-          }],
-          rowLimit: TARGET_KEYWORDS.length,
+          rowLimit: 5000,
         }),
       }
     );
 
     const rows = data.rows || [];
+    const targetSet = new Set(TARGET_KEYWORDS);
     const foundKeywords = new Set();
 
     for (const row of rows) {
       const keyword = row.keys[0];
+      if (!targetSet.has(keyword)) continue;
       foundKeywords.add(keyword);
       rankings.push({
         keyword,
@@ -853,6 +935,7 @@ async function main() {
   const indexCoverage = await checkIndexCoverage(wmToken, sampleUrls);
   const newPages = await checkNewPages(wmToken);
   const stalePages = await checkStalePages(wmToken);
+  const highValuePages = await submitHighValuePages(wmToken);
   const targetKeywords = await checkTargetKeywords(wmToken);
   const coreWebVitals = await checkCoreWebVitals();
 
@@ -899,6 +982,7 @@ async function main() {
   console.log(`  Sitemaps: ${sitemapStatus.count}`);
   console.log(`  New Pages: ${newPages.checked} checked, ${newPages.indexed} indexed`);
   console.log(`  Stale Pages: ${stalePages.stale}/${stalePages.sampled} stale, ${stalePages.resubmitted} resubmitted`);
+  console.log(`  High-Value Submissions: ${highValuePages.submitted} submitted, ${highValuePages.skipped} at backoff limit`);
   console.log(`  Target Keywords: ${targetKeywords.filter(r => r.position !== null).length}/${TARGET_KEYWORDS.length} ranking`);
   console.log(`  Core Web Vitals: ${coreWebVitals.length} pages checked`);
   console.log(`  Anomalies: ${anomalies.length}`);

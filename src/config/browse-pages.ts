@@ -40,6 +40,10 @@ function parseRuntime(runtime?: string): number {
   return hours * 60 + minutes;
 }
 
+// Current year for meta titles — evaluated at build time (static export).
+// Deploys happen multiple times per week, so this stays current.
+const CURRENT_YEAR = new Date().getFullYear();
+
 // Helper to check if show is closing within days
 function isClosingWithinDays(show: ComputedShow, days: number): boolean {
   if (!show.closingDate) return false;
@@ -143,7 +147,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'broadway-shows-for-kids',
     title: 'Best Broadway Shows for Kids',
     h1: 'Best Broadway Shows for Kids',
-    metaTitle: 'Best Broadway Shows for Kids (2026)',
+    metaTitle: `Best Broadway Shows for Kids (${CURRENT_YEAR})`,
     metaDescription: 'Find the best family-friendly Broadway shows for children. Our guide to kid-appropriate musicals and plays perfect for young theatergoers.',
     intro: 'Looking for the perfect Broadway show to take your kids to? We\'ve curated a list of the best family-friendly productions currently playing on Broadway. These shows feature age-appropriate content, engaging stories, and spectacle that will captivate young audiences. From Disney classics to new favorites, these productions offer the perfect introduction to the magic of live theater. Most of these shows also offer family-friendly pricing and matinee performances.',
     filter: (show) => {
@@ -164,7 +168,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'broadway-shows-for-date-night',
     title: 'Best Broadway Date Night Shows',
     h1: 'Best Broadway Date Night Shows',
-    metaTitle: 'Best Broadway Shows for Date Night (2026)',
+    metaTitle: `Best Broadway Shows for Date Night (${CURRENT_YEAR})`,
     metaDescription: 'Romantic Broadway shows perfect for date night. From sweeping love stories to sophisticated dramas, find the ideal show for a memorable evening.',
     intro: 'Planning a romantic evening in New York? Broadway offers some of the most memorable date night experiences in the city. Whether you\'re looking for a sweeping romance, a sophisticated drama, or a spectacular musical, these shows deliver the perfect atmosphere for couples. We\'ve selected productions that combine quality storytelling with that special something that makes for an unforgettable night out together.',
     filter: (show) => {
@@ -183,7 +187,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'broadway-shows-for-tourists',
     title: 'Must-See Broadway Shows for Tourists',
     h1: 'Must-See Broadway Shows for Tourists',
-    metaTitle: 'Must-See Broadway Shows for Tourists (2026)',
+    metaTitle: `Must-See Broadway Shows for Tourists (${CURRENT_YEAR})`,
     metaDescription: 'The essential Broadway shows every visitor to NYC should see. Iconic productions that define the Broadway experience for first-time visitors.',
     intro: 'Visiting New York City and want to experience the best of Broadway? These iconic shows represent the pinnacle of what Broadway has to offer. From long-running legends to critically acclaimed newer productions, these are the shows that define the Broadway experience. Whether it\'s your first time on Broadway or you\'re returning for another visit, these productions deliver unforgettable theatrical experiences that showcase why New York remains the theater capital of the world.',
     filter: (show) => {
@@ -199,7 +203,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'first-time-broadway',
     title: 'Best Broadway Shows for First-Timers',
     h1: 'Best Broadway Shows for First-Timers',
-    metaTitle: 'Best Broadway Shows for First-Timers (2026)',
+    metaTitle: `Best Broadway Shows for First-Timers (${CURRENT_YEAR})`,
     metaDescription: 'New to Broadway? These accessible, crowd-pleasing shows are perfect for your first theatrical experience. Start your Broadway journey here.',
     intro: 'Never been to a Broadway show before? Welcome! These productions are perfect for first-time theatergoers. We\'ve selected shows that are accessible, entertaining, and representative of what makes Broadway special. These aren\'t just "beginner" shows - they\'re critically acclaimed productions that happen to be particularly welcoming to newcomers. With engaging stories, spectacular staging, and universal themes, these shows will leave you excited to come back for more.',
     filter: (show) => {
@@ -217,8 +221,8 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'broadway-shows-closing-soon',
     title: 'Broadway Shows Closing Soon',
     h1: 'Broadway Shows Closing Soon',
-    metaTitle: 'Broadway Shows Closing Soon (2026)',
-    metaDescription: 'Don\'t miss these Broadway shows before they close! Limited engagement shows and productions ending their runs in the next 60 days.',
+    metaTitle: `Broadway Shows Closing Soon — Last Chance (${CURRENT_YEAR})`,
+    metaDescription: 'Broadway shows ending their runs soon. See which productions are closing in the next 60 days and grab tickets before they\'re gone forever.',
     intro: 'Time is running out to see these Broadway productions! Whether they\'re limited engagements or shows that have announced their closing dates, these productions will be gone soon. If any of these have been on your must-see list, now is the time to act. Once a show closes on Broadway, there\'s no guarantee it will return. Don\'t let these slip away - book your tickets before it\'s too late.',
     filter: (show) => {
       return show.status === 'open' && isClosingWithinDays(show, 60);
@@ -245,7 +249,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'best-broadway-revivals',
     title: 'Best Broadway Revivals',
     h1: 'Best Broadway Revivals',
-    metaTitle: 'Best Broadway Revivals (2026)',
+    metaTitle: `Best Broadway Revivals (${CURRENT_YEAR})`,
     metaDescription: 'The best Broadway revival productions currently playing. Classic shows reimagined for today\'s audiences with fresh perspectives and new stars.',
     intro: 'Broadway revivals bring beloved classics back to life with fresh perspectives, new stars, and reimagined staging. These productions honor the original material while offering something new - whether it\'s an innovative concept, a diverse cast, or simply the chance to experience a legendary show in person. From Tony-winning productions to intimate reimaginings, these revivals prove that great theater is timeless.',
     filter: (show) => {
@@ -262,7 +266,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'best-broadway-comedies',
     title: 'Best Broadway Comedies',
     h1: 'Best Broadway Comedies',
-    metaTitle: 'Best Broadway Comedies (2026)',
+    metaTitle: `Best Broadway Comedies (${CURRENT_YEAR})`,
     metaDescription: 'The funniest shows on Broadway right now. Hilarious musicals and laugh-out-loud plays guaranteed to brighten your evening.',
     intro: 'Looking for a good laugh? Broadway\'s comedy offerings range from witty satire to outrageous farce, from musical comedy to sharp-tongued plays. These productions deliver genuine laughs while showcasing incredible talent. Whether you prefer subtle humor or broad comedy, clever wordplay or physical gags, there\'s a funny show waiting for you on Broadway. Laughter is the best medicine, and these shows are ready to provide it.',
     filter: (show) => {
@@ -278,7 +282,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'best-broadway-dramas',
     title: 'Best Broadway Dramas',
     h1: 'Best Broadway Dramas',
-    metaTitle: 'Best Broadway Dramas (2026)',
+    metaTitle: `Best Broadway Dramas (${CURRENT_YEAR})`,
     metaDescription: 'Powerful dramatic productions on Broadway. From intense plays to emotional musicals, these shows deliver unforgettable storytelling.',
     intro: 'Broadway drama offers some of the most powerful theatrical experiences available. These productions tackle complex themes, feature exceptional performances, and stay with you long after the curtain falls. From intimate character studies to sweeping epics, from classic revivals to world premieres, these shows represent the best of serious theater. If you\'re looking for a meaningful, thought-provoking evening at the theater, start here.',
     filter: (show) => {
@@ -294,7 +298,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'jukebox-musicals-on-broadway',
     title: 'Jukebox Musicals on Broadway',
     h1: 'Jukebox Musicals on Broadway',
-    metaTitle: 'Jukebox Musicals on Broadway (2026)',
+    metaTitle: `Jukebox Musicals on Broadway (${CURRENT_YEAR})`,
     metaDescription: 'Broadway musicals featuring hit songs you already know and love. From ABBA to Michael Jackson, sing along to your favorite music on stage.',
     intro: 'Jukebox musicals take songs you already know and love and weave them into compelling theatrical experiences. Whether built around the catalog of a legendary artist or assembling hits from an era, these shows offer the unique joy of hearing familiar music performed live on Broadway. From the dance-worthy hits to the power ballads, these productions let you experience beloved songs in an entirely new way while telling stories that give those songs new meaning.',
     filter: (show) => {
@@ -310,7 +314,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'broadway-lottery-shows',
     title: 'Broadway Shows with Lotteries',
     h1: 'Broadway Shows with Lotteries',
-    metaTitle: 'Broadway Lottery Shows - Win Cheap Tickets (2026)',
+    metaTitle: `Broadway Lottery Shows - Win Cheap Tickets (${CURRENT_YEAR})`,
     metaDescription: 'Broadway shows offering digital lotteries for discounted tickets. Enter daily for your chance to see top shows at a fraction of the price.',
     intro: 'Broadway lotteries offer an incredible opportunity to see top shows at deeply discounted prices - often $30-40 for orchestra seats that normally cost hundreds. Most lotteries are digital and can be entered via apps like TodayTix or the show\'s official website. Enter early in the day for evening performances, and don\'t be discouraged if you don\'t win right away - persistence pays off! These shows all currently offer lottery programs.',
     filter: (show) => {
@@ -326,7 +330,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'broadway-rush-tickets',
     title: 'Broadway Rush Ticket Shows',
     h1: 'Broadway Rush Ticket Shows',
-    metaTitle: 'Broadway Rush Tickets - Same-Day Deals (2026)',
+    metaTitle: `Broadway Rush Tickets - Same-Day Deals (${CURRENT_YEAR})`,
     metaDescription: 'Broadway shows offering same-day rush tickets. Get discounted seats by arriving early at the box office or checking online portals.',
     intro: 'Rush tickets are same-day discounted tickets sold at the box office, typically when doors open or a few hours before showtime. Unlike lotteries, rush tickets are first-come, first-served, rewarding those willing to arrive early. Some shows also offer digital rush through apps. Prices typically range from $30-50, making Broadway accessible to those on a budget. Here are the shows currently offering rush ticket programs.',
     filter: (show) => {
@@ -342,7 +346,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'short-broadway-shows',
     title: 'Short Broadway Shows',
     h1: 'Short Broadway Shows (Under 90 Minutes)',
-    metaTitle: 'Short Broadway Shows Under 90 Minutes (2026)',
+    metaTitle: `Short Broadway Shows Under 90 Minutes (${CURRENT_YEAR})`,
     metaDescription: 'Broadway shows with runtimes under 90 minutes. Perfect for busy schedules or those who prefer a tight, focused theatrical experience.',
     intro: 'Not every Broadway show needs to be a three-hour epic. These shorter productions pack powerful experiences into 90 minutes or less, often with no intermission. They\'re perfect for those with busy schedules, families with younger children, or anyone who appreciates tight, focused storytelling. Don\'t let the shorter runtime fool you - these shows deliver complete, satisfying theatrical experiences.',
     filter: (show) => {
@@ -358,7 +362,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'broadway-shows-no-intermission',
     title: 'Broadway Shows with No Intermission',
     h1: 'Broadway Shows with No Intermission',
-    metaTitle: 'Broadway Shows with No Intermission (2026)',
+    metaTitle: `Broadway Shows with No Intermission (${CURRENT_YEAR})`,
     metaDescription: 'Broadway productions that run straight through with no intermission. Immersive experiences that keep you engaged from start to finish.',
     intro: 'Some of Broadway\'s most immersive experiences come from shows that run straight through without an intermission. These productions create an unbroken theatrical journey, maintaining tension, emotion, or energy without a break. Whether it\'s a gripping drama, a high-energy musical, or an intimate play, these shows command your attention from the first moment to the last. Perfect for those who love to be fully absorbed in the story.',
     filter: (show) => {
@@ -373,7 +377,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'tony-winners-on-broadway',
     title: 'Tony Winning Shows Now on Broadway',
     h1: 'Tony Winning Shows Now on Broadway',
-    metaTitle: 'Tony Award Winners on Broadway (2026)',
+    metaTitle: `Tony Award Winners on Broadway (${CURRENT_YEAR})`,
     metaDescription: 'See Tony Award-winning shows currently playing on Broadway. The best of the best, as recognized by the theater industry\'s highest honors.',
     intro: 'The Tony Awards represent the highest honors in American theater, and these shows have earned Broadway\'s most prestigious accolades. Whether they won Best Musical, Best Play, or collected multiple awards for their creative teams, these productions represent the pinnacle of theatrical achievement. Seeing a Tony winner is a chance to experience shows that have been recognized as the very best Broadway has to offer.',
     filter: (show) => {
@@ -405,7 +409,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'best-broadway-show-right-now',
     title: 'The Best Broadway Show Right Now',
     h1: 'The Best Broadway Show Right Now',
-    metaTitle: 'The #1 Best Broadway Show Right Now (2026)',
+    metaTitle: `The #1 Best Broadway Show Right Now (${CURRENT_YEAR})`,
     metaDescription: 'What\'s the single best show on Broadway today? Based on our aggregated CriticScore ratings, here\'s our top pick for the best show to see right now.',
     intro: 'If you could only see one Broadway show, which should it be? Based on our comprehensive analysis of critic reviews, we\'ve identified the single best show currently playing on Broadway. This isn\'t just about popularity or longevity - it\'s about quality as measured by the people who see the most theater: professional critics. Whether you\'re a first-timer or a seasoned theatergoer, this is the show that delivers the best experience right now.',
     filter: (show) => {
@@ -420,7 +424,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'best-broadway-musicals',
     title: 'Best Broadway Musicals',
     h1: 'Best Broadway Musicals',
-    metaTitle: 'Best Broadway Musicals (2026)',
+    metaTitle: `Best Broadway Musicals (${CURRENT_YEAR})`,
     metaDescription: 'The highest-rated musicals currently playing on Broadway. From new hits to long-running classics, find your next must-see musical.',
     intro: 'Broadway musicals represent the pinnacle of theatrical entertainment, combining compelling stories with unforgettable songs, spectacular staging, and incredible performances. These are the highest-rated musicals currently playing on Broadway, as determined by aggregated critic reviews. Whether you\'re looking for a classic, a new hit, or something in between, these productions deliver the very best of what musical theater has to offer.',
     filter: (show) => {
@@ -435,7 +439,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'best-recent-musicals',
     title: 'Best Recent Broadway Musicals',
     h1: 'Best Recent Broadway Musicals',
-    metaTitle: 'Best Recent Broadway Musicals (2026)',
+    metaTitle: `Best Recent Broadway Musicals (${CURRENT_YEAR})`,
     metaDescription: 'The highest-rated musicals that opened on Broadway in the past year. Fresh productions setting the new standard for musical theater.',
     intro: 'These are the best new musicals that have opened on Broadway in the past 12 months. Fresh off their opening nights, these productions represent the cutting edge of musical theater. From world premieres to acclaimed transfers, these recent arrivals are making their mark on the Great White Way. See what\'s exciting audiences and critics right now.',
     filter: (show) => {
@@ -455,7 +459,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'best-recent-plays',
     title: 'Best Recent Broadway Plays',
     h1: 'Best Recent Broadway Plays',
-    metaTitle: 'Best Recent Broadway Plays (2026)',
+    metaTitle: `Best Recent Broadway Plays (${CURRENT_YEAR})`,
     metaDescription: 'The highest-rated plays that opened on Broadway in the past year. Fresh productions pushing the boundaries of dramatic theater.',
     intro: 'These are the best new plays that have opened on Broadway in the past 12 months. From powerful dramas to sharp comedies, these recent productions showcase the best of contemporary playwriting and performance. See what\'s captivating audiences and earning critical acclaim right now.',
     filter: (show) => {
@@ -475,7 +479,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'best-broadway-plays',
     title: 'Best Broadway Plays',
     h1: 'Best Broadway Plays',
-    metaTitle: 'Best Broadway Plays (2026)',
+    metaTitle: `Best Broadway Plays (${CURRENT_YEAR})`,
     metaDescription: 'The highest-rated plays currently on Broadway. Powerful dramas, sharp comedies, and thought-provoking theater at its finest.',
     intro: 'Broadway plays offer some of the most powerful and intimate theatrical experiences available. Without the spectacle of big musical numbers, plays rely on exceptional writing, direction, and performances to captivate audiences. These are the highest-rated plays currently on Broadway, ranging from gripping dramas to sharp comedies. If you\'re looking for theater that challenges, moves, and stays with you, these productions deliver.',
     filter: (show) => {
@@ -490,7 +494,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'longest-running-broadway-shows',
     title: 'Longest Running Broadway Shows',
     h1: 'Longest Running Broadway Shows',
-    metaTitle: 'Longest Running Broadway Shows (2026)',
+    metaTitle: `Longest Running Broadway Shows (${CURRENT_YEAR})`,
     metaDescription: 'The longest running shows currently on Broadway by total performances. See the legendary productions that have stood the test of time.',
     intro: 'These shows have earned their place in Broadway history through thousands of performances and years of entertaining audiences. From beloved classics to modern phenomena, these productions represent the staying power of great theater. Their longevity is a testament to timeless storytelling, memorable music, and the countless talented performers who have graced their stages night after night.',
     filter: (show) => show.status === 'open',
@@ -502,7 +506,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'upcoming-broadway-shows',
     title: 'Upcoming Broadway Shows',
     h1: 'Upcoming Broadway Shows',
-    metaTitle: 'Upcoming Broadway Shows (2026)',
+    metaTitle: `Upcoming Broadway Shows (${CURRENT_YEAR})`,
     metaDescription: 'New Broadway shows coming soon. See what\'s opening next on the Great White Way, from world premieres to highly anticipated transfers.',
     intro: 'Get excited for Broadway\'s next wave of productions! These shows are currently in previews or have announced opening dates in the coming months. From world premieres to transfers from Off-Broadway and London, these productions represent the future of Broadway. Many are already selling tickets, so if you\'re planning ahead, here\'s your guide to what\'s coming to the Great White Way.',
     filter: (show) => show.status === 'previews' || show.status === 'upcoming',
@@ -514,7 +518,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'broadway-shows-for-teens',
     title: 'Best Broadway Shows for Teens',
     h1: 'Best Broadway Shows for Teens',
-    metaTitle: 'Best Broadway Shows for Teenagers (2026)',
+    metaTitle: `Best Broadway Shows for Teenagers (${CURRENT_YEAR})`,
     metaDescription: 'Broadway shows perfect for teenagers. Age-appropriate productions with themes and stories that resonate with teen audiences.',
     intro: 'Looking for Broadway shows that will actually engage your teenager? These productions feature themes, stories, and music that resonate with teen audiences while remaining age-appropriate. From coming-of-age stories to high-energy musicals, these shows offer the perfect introduction to Broadway for older kids who\'ve outgrown the purely family-friendly fare. Many of these productions deal with relatable topics like identity, belonging, and growing up.',
     filter: (show) => {
@@ -534,7 +538,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'broadway-shows-under-2-hours',
     title: 'Broadway Shows Under 2 Hours',
     h1: 'Broadway Shows Under 2 Hours',
-    metaTitle: 'Broadway Shows Under 2 Hours (2026)',
+    metaTitle: `Broadway Shows Under 2 Hours (${CURRENT_YEAR})`,
     metaDescription: 'Broadway shows with runtimes under 2 hours including intermission. Perfect for busy schedules or evening plans after the show.',
     intro: 'Want to see a Broadway show but have dinner reservations or an early flight? These productions clock in at under two hours, giving you a complete theatrical experience without the lengthy time commitment. Whether you\'re short on time, have kids with limited attention spans, or just prefer a tighter show, these productions prove that great theater doesn\'t have to be an all-night affair. Most still include an intermission for a quick stretch.',
     filter: (show) => {
@@ -550,7 +554,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'broadway-shows-based-on-movies',
     title: 'Broadway Shows Based on Movies',
     h1: 'Broadway Shows Based on Movies',
-    metaTitle: 'Broadway Musicals Based on Movies (2026)',
+    metaTitle: `Broadway Musicals Based on Movies (${CURRENT_YEAR})`,
     metaDescription: 'Broadway shows adapted from popular films. See your favorite movies come to life on stage with spectacular music, dance, and staging.',
     intro: 'Love a movie? See it live on Broadway! These productions bring beloved films to the stage, often expanding the story with new songs, elaborate choreography, and the unique magic of live theater. From Disney classics to cult favorites, these adaptations offer a fresh take on stories you already know and love. Whether you\'re curious how they\'ll translate your favorite film or want to introduce someone to a story through live performance, these shows deliver familiar tales in spectacular new ways.',
     filter: (show) => {
@@ -594,7 +598,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'long-broadway-shows',
     title: 'Long Broadway Shows (2.5+ Hours)',
     h1: 'Long Broadway Shows (2.5+ Hours)',
-    metaTitle: 'Long Broadway Shows Over 2.5 Hours (2026)',
+    metaTitle: `Long Broadway Shows Over 2.5 Hours (${CURRENT_YEAR})`,
     metaDescription: 'Broadway\'s epic theatrical experiences running 2.5+ hours. Immersive productions that demand and reward your full evening.',
     intro: 'Some stories need more time to tell. These Broadway productions run two and a half hours or more, offering immersive theatrical experiences that transport you into fully realized worlds. From sweeping historical dramas to elaborate musical extravaganzas, these shows reward your time investment with unforgettable journeys. Plan for a full evening — these aren\'t shows to rush through.',
     filter: (show) => {
@@ -664,7 +668,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'broadway-ticket-prices',
     title: 'Broadway Ticket Prices',
     h1: 'Broadway Ticket Prices — Average Cost per Show',
-    metaTitle: 'Broadway Ticket Prices — Average Cost per Show (2026)',
+    metaTitle: `Broadway Ticket Prices — Average Cost per Show (${CURRENT_YEAR})`,
     metaDescription: 'Current average ticket prices for every Broadway show. Compare costs across musicals and plays to find the best value for your budget.',
     intro: 'How much does a Broadway ticket actually cost? This page shows the current average ticket price (ATP) for every open Broadway show, pulled from weekly box office grosses data. ATP is calculated by dividing total gross revenue by tickets sold, giving you a real-world average that includes premium, regular, and discounted seats. Use this to compare costs and find shows that fit your budget — or discover which productions command the highest prices.',
     dataFilter: (show, ctx) => {
@@ -686,7 +690,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'broadway-shows-based-on-books',
     title: 'Broadway Shows Based on Books',
     h1: 'Broadway Shows Based on Books',
-    metaTitle: 'Broadway Musicals & Plays Based on Books (2026)',
+    metaTitle: `Broadway Musicals & Plays Based on Books (${CURRENT_YEAR})`,
     metaDescription: 'Broadway shows adapted from novels and books. See beloved literary works brought to life on stage with music, drama, and spectacle.',
     intro: 'From beloved novels to unexpected page-to-stage adaptations, these Broadway shows bring literary works to life with the unique magic of live theater. Books have always been a rich source of Broadway material — their deep characters, complex plots, and built-in audiences make them ideal for theatrical adaptation. Whether you read the book first or discover the story through the show, these productions prove that great literature makes for great theater.',
     filter: (show) => {
@@ -702,7 +706,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'broadway-shows-based-on-true-stories',
     title: 'Broadway Shows Based on True Stories',
     h1: 'Broadway Shows Based on True Stories',
-    metaTitle: 'Broadway Shows Based on True Stories (2026)',
+    metaTitle: `Broadway Shows Based on True Stories (${CURRENT_YEAR})`,
     metaDescription: 'Broadway musicals and plays inspired by real events and people. True stories brought to life on stage with unforgettable performances.',
     intro: 'The best stories are often true. These Broadway shows draw from real events, real people, and real history to create theatrical experiences that are both entertaining and enlightening. From biographical musicals about legendary figures to plays that dramatize pivotal moments in history, these productions prove that truth really can be stranger — and more compelling — than fiction. Each show takes creative liberties, but the emotional core comes from events that actually happened.',
     filter: (show) => {
@@ -756,7 +760,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'best-west-end-musicals',
     title: 'Best West End Musicals',
     h1: 'Best West End Musicals — London Theatre Rankings',
-    metaTitle: 'Best West End Musicals (2026) — Ranked by Critics',
+    metaTitle: `Best West End Musicals (${CURRENT_YEAR}) — Ranked by Critics`,
     metaDescription: 'The best West End musicals in London right now, ranked by aggregated critic reviews from The Guardian, Telegraph, Time Out, WhatsOnStage, and more.',
     intro: 'Every currently running West End musical in London, ranked by aggregated CriticScore ratings. We collect reviews from the UK\'s leading theatre critics — The Guardian, The Telegraph, Time Out London, WhatsOnStage, The Stage, and more — and combine them into a single weighted score. Whether you\'re a London local choosing your next night out or a tourist planning a theatre trip, this is the definitive ranked list of West End musicals playing right now.',
     filter: (show) => show.status === 'open' && show.type === 'musical' && (show.criticScore?.reviewCount ?? 0) >= 3,
@@ -769,7 +773,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'best-west-end-plays',
     title: 'Best West End Plays',
     h1: 'Best West End Plays — London Theatre Rankings',
-    metaTitle: 'Best West End Plays (2026) — Ranked by Critics',
+    metaTitle: `Best West End Plays (${CURRENT_YEAR}) — Ranked by Critics`,
     metaDescription: 'The best West End plays in London right now, ranked by aggregated critic reviews from The Guardian, Telegraph, Time Out, WhatsOnStage, and more.',
     intro: 'Every currently running West End play in London, ranked by aggregated CriticScore ratings. From gripping dramas to sharp comedies, these plays represent the finest non-musical theatre London has to offer. Our scores aggregate reviews from the UK\'s top theatre critics — The Guardian, The Telegraph, Time Out London, WhatsOnStage, and The Stage — into a single weighted score that reflects the critical consensus.',
     filter: (show) => show.status === 'open' && show.type === 'play' && (show.criticScore?.reviewCount ?? 0) >= 3,
@@ -782,7 +786,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'upcoming-west-end-shows',
     title: 'Upcoming West End Shows',
     h1: 'Upcoming West End Shows — What\'s Coming to London',
-    metaTitle: 'Upcoming West End Shows (2026)',
+    metaTitle: `Upcoming West End Shows (${CURRENT_YEAR})`,
     metaDescription: 'All upcoming West End shows opening in London. New musicals, plays, and transfers coming to the West End, sorted by opening date.',
     intro: 'Every West End show announced for London\'s theatre district, sorted by opening date. From highly anticipated transfers to world premieres, these are the productions headed to the West End. Bookmark this page to stay up to date on what\'s coming to London theatre — we update it as new shows are announced and opening dates are confirmed.',
     filter: (show) => show.status === 'upcoming' || show.status === 'previews',
@@ -795,7 +799,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'west-end-shows-for-kids',
     title: 'West End Shows for Kids',
     h1: 'Best West End Shows for Kids — Family-Friendly London Theatre',
-    metaTitle: 'Best West End Shows for Kids (2026)',
+    metaTitle: `Best West End Shows for Kids (${CURRENT_YEAR})`,
     metaDescription: 'The best family-friendly West End shows in London for children. Age-appropriate musicals and plays perfect for young theatregoers.',
     intro: 'Planning a family theatre trip to London? These West End shows are recommended for children, with age recommendations ranging from 5 to 8 years old. From spectacular musicals to imaginative adaptations, these productions offer the perfect introduction to live theatre for young audiences. Each show has been vetted for age-appropriate content, and many offer family-friendly matinee performances and group pricing.',
     filter: (show) => {
@@ -816,7 +820,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'longest-running-west-end-shows',
     title: 'Longest-Running West End Shows',
     h1: 'Longest-Running West End Shows in London',
-    metaTitle: 'Longest-Running West End Shows (2026)',
+    metaTitle: `Longest-Running West End Shows (${CURRENT_YEAR})`,
     metaDescription: 'The longest-running West End shows currently playing in London, sorted by opening date. From The Mousetrap to modern classics.',
     intro: 'London\'s West End is home to some of the longest-running shows in theatrical history. This list shows all currently running West End productions sorted by how long they\'ve been open — from The Mousetrap (running since 1952) to the newest arrivals. Note: opening dates reflect the current production run, so shows that closed and reopened (like Les Misérables) show their most recent opening. For total historical performance counts, these numbers may understate a show\'s true longevity.',
     filter: (show) => show.status === 'open',
@@ -846,7 +850,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'off-broadway-shows',
     title: 'Off-Broadway Shows',
     h1: 'Off-Broadway Shows Playing Now — Ranked & Rated',
-    metaTitle: 'Off-Broadway Shows Playing Now (2026)',
+    metaTitle: `Off-Broadway Shows Playing Now (${CURRENT_YEAR})`,
     metaDescription: 'Every Off-Broadway show currently playing in NYC, ranked by CriticScore. Aggregated reviews from top critics for musicals, plays, and more.',
     intro: 'Every Off-Broadway show currently playing or in previews in New York City, ranked by aggregated CriticScore ratings. Off-Broadway is where NYC\'s most adventurous, innovative, and intimate theatre happens — from boundary-pushing new works to acclaimed revivals in smaller venues. We collect reviews from dozens of professional critics and combine them into a single weighted score. Whether you\'re a devoted Off-Broadway fan or looking beyond the bright lights of Times Square, find your next show here.',
     filter: (show) => show.status === 'open' || show.status === 'previews',
@@ -859,7 +863,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'best-off-broadway-shows',
     title: 'Best Off-Broadway Shows',
     h1: 'Best Off-Broadway Shows — Top-Rated in NYC',
-    metaTitle: 'Best Off-Broadway Shows (2026) — Ranked by Critics',
+    metaTitle: `Best Off-Broadway Shows (${CURRENT_YEAR}) — Ranked by Critics`,
     metaDescription: 'The best Off-Broadway shows in NYC right now, ranked by aggregated CriticScore. Only shows with 3+ professional reviews qualify.',
     intro: 'The highest-rated Off-Broadway shows currently playing in New York City, ranked by aggregated CriticScore. Only shows with at least three professional reviews qualify for this list, ensuring every ranking reflects a meaningful critical consensus. Off-Broadway consistently produces some of NYC\'s most acclaimed theatre — intimate venues, bold storytelling, and performances that rival anything on the Great White Way. These are the Off-Broadway shows critics are raving about right now.',
     filter: (show) => {
@@ -875,7 +879,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'best-off-broadway-musicals',
     title: 'Best Off-Broadway Musicals',
     h1: 'Best Off-Broadway Musicals in NYC',
-    metaTitle: 'Best Off-Broadway Musicals (2026) — Ranked',
+    metaTitle: `Best Off-Broadway Musicals (${CURRENT_YEAR}) — Ranked`,
     metaDescription: 'The best Off-Broadway musicals in NYC right now, ranked by CriticScore. Intimate, inventive musicals beyond the Great White Way.',
     intro: 'Off-Broadway is where some of the most inventive, daring, and intimate musicals in New York City come to life. From breakout hits that go on to transfer to Broadway to hidden gems that thrive in smaller venues, these productions showcase the incredible range of musical theatre beyond Times Square. Ranked by aggregated CriticScore from professional critics, these are the Off-Broadway musicals worth seeing right now.',
     filter: (show) => (show.status === 'open' || show.status === 'previews') && show.type === 'musical' && (show.criticScore?.reviewCount ?? 0) >= 3,
@@ -888,7 +892,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'best-off-broadway-plays',
     title: 'Best Off-Broadway Plays',
     h1: 'Best Off-Broadway Plays in NYC',
-    metaTitle: 'Best Off-Broadway Plays (2026) — Ranked',
+    metaTitle: `Best Off-Broadway Plays (${CURRENT_YEAR}) — Ranked`,
     metaDescription: 'The best Off-Broadway plays in NYC right now, ranked by CriticScore. Dramas, comedies, and experimental works in intimate venues.',
     intro: 'Off-Broadway is the beating heart of New York\'s dramatic theatre scene. These plays — from searing dramas to sharp comedies to genre-defying experimental works — represent the full spectrum of what Off-Broadway does best: intimate storytelling in venues where you\'re close enough to see every expression on an actor\'s face. Ranked by aggregated CriticScore from professional critics, these are the Off-Broadway plays getting the best reviews right now.',
     filter: (show) => (show.status === 'open' || show.status === 'previews') && show.type === 'play' && (show.criticScore?.reviewCount ?? 0) >= 3,
@@ -901,7 +905,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'upcoming-off-broadway-shows',
     title: 'Upcoming Off-Broadway Shows',
     h1: 'Upcoming Off-Broadway Shows in NYC',
-    metaTitle: 'Upcoming Off-Broadway Shows (2026)',
+    metaTitle: `Upcoming Off-Broadway Shows (${CURRENT_YEAR})`,
     metaDescription: 'All upcoming Off-Broadway shows opening in NYC. New plays, musicals, and revivals coming to Off-Broadway venues, sorted by opening date.',
     intro: 'Every Off-Broadway show announced for New York City venues, sorted by opening date. Off-Broadway is where tomorrow\'s Broadway hits get their start and where the most exciting new voices in theatre debut their work. From world premieres at iconic venues like Playwrights Horizons and MCC Theater to transfers from regional theatres, these are the Off-Broadway productions on the horizon. Shows currently in previews appear on the main Off-Broadway page.',
     filter: (show) => show.status === 'upcoming',
