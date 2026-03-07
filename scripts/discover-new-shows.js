@@ -1087,10 +1087,10 @@ async function discoverShows() {
       } else if (show.todayTixCategory === 'Plays') {
         detectedType = 'play';
         if (confidence === 'low') confidence = 'high';
-      } else if (show.todayTixCategory === 'Dance' || show.todayTixCategory === 'Cabaret' || show.todayTixCategory === 'Immersive Experiences') {
-        // Dance/cabaret/immersive shows default to 'musical' (most have scores/music)
-        detectedType = 'musical';
-        if (confidence === 'low') confidence = 'medium';
+      } else if (['Dance', 'Cabaret', 'Immersive Experiences', 'Opera', 'Circus and Magic', 'Concerts'].includes(show.todayTixCategory)) {
+        // Non-musical/play categories → 'special' (avoids misclassifying ballet as musical, etc.)
+        detectedType = 'special';
+        if (confidence === 'low') confidence = 'high';
       }
     } else if (show.ibdbShowType) {
       // IBDB classification is authoritative (from the production page itself)
