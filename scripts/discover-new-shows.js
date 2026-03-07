@@ -623,6 +623,8 @@ function loadShows() {
 }
 
 function saveShows(data) {
+  if (!data._meta) data._meta = {};
+  data._meta.lastUpdated = new Date().toISOString();
   fs.writeFileSync(SHOWS_FILE, JSON.stringify(data, null, 2) + '\n');
 }
 
@@ -1056,6 +1058,10 @@ async function discoverShows() {
       } else if (show.todayTixCategory === 'Plays') {
         detectedType = 'play';
         if (confidence === 'low') confidence = 'high';
+      } else if (show.todayTixCategory === 'Dance' || show.todayTixCategory === 'Cabaret' || show.todayTixCategory === 'Immersive Experiences') {
+        // Dance/cabaret/immersive shows default to 'musical' (most have scores/music)
+        detectedType = 'musical';
+        if (confidence === 'low') confidence = 'medium';
       }
     } else if (show.ibdbShowType) {
       // IBDB classification is authoritative (from the production page itself)
