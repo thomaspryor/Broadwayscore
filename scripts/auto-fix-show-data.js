@@ -353,8 +353,12 @@ async function fixCreativeTeam(show, todayTixIds) {
   let creativeTeam = await fetchCreativeTeamFromTodayTix(show, todayTixInfo);
 
   if (creativeTeam && creativeTeam.length >= 2) {
-    show.creativeTeam = creativeTeam;
-    return `Fetched creative team from TodayTix for ${show.title} (${creativeTeam.length} members)`;
+    // Filter out garbage names (marketing blurbs parsed as names)
+    creativeTeam = creativeTeam.filter(m => m.name && m.name.length <= 80);
+    if (creativeTeam.length >= 2) {
+      show.creativeTeam = creativeTeam;
+      return `Fetched creative team from TodayTix for ${show.title} (${creativeTeam.length} members)`;
+    }
   }
 
   // Try LLM generation
@@ -362,8 +366,12 @@ async function fixCreativeTeam(show, todayTixIds) {
     console.log(`    Generating via Claude...`);
     creativeTeam = await generateCreativeTeamWithLLM(show);
     if (creativeTeam && creativeTeam.length >= 1) {
-      show.creativeTeam = creativeTeam;
-      return `Generated creative team via Claude for ${show.title} (${creativeTeam.length} members)`;
+      // Filter out garbage names (LLM sometimes returns descriptions)
+      creativeTeam = creativeTeam.filter(m => m.name && m.name.length <= 80);
+      if (creativeTeam.length >= 1) {
+        show.creativeTeam = creativeTeam;
+        return `Generated creative team via Claude for ${show.title} (${creativeTeam.length} members)`;
+      }
     }
   }
 

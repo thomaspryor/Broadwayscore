@@ -58,9 +58,11 @@ jobs:
         continue-on-error: true
 
       # Step 3: Run auto-fix (ticket links, flag issues)
+      # continue-on-error: auto-fix errors must not block status change commits
       - name: Auto-fix show data
         id: autofix
         if: inputs.skip_auto_fix != 'true'
+        continue-on-error: true
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -75,8 +77,10 @@ jobs:
         continue-on-error: true
 
       # Step 5: Validate and commit
+      # if: always() — must run even if auto-fix failed, so status changes get committed
       - name: Check for changes
         id: changes
+        if: always()
         run: |
           if git diff --quiet data/; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
@@ -85,11 +89,12 @@ jobs:
           fi
 
       - name: Validate data integrity
-        if: steps.changes.outputs.has_changes == 'true'
+        if: always() && steps.changes.outputs.has_changes == 'true'
+        continue-on-error: true
         run: node scripts/validate-data.js
 
       - name: Build site (verify no breaking changes)
-        if: steps.changes.outputs.has_changes == 'true'
+        if: always() && steps.changes.outputs.has_changes == 'true'
         run: npm run build
         env:
           NODE_ENV: production
@@ -121,6 +126,7 @@ jobs:
           bash scripts/lib/push-with-retry.sh
 
       - name: Summary
+        if: always()
         run: |
           echo "## Auto-Maintenance Results" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
