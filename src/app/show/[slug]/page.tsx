@@ -19,6 +19,7 @@ import { getBlogReviewByShowSlug } from '@/lib/data-reviews-blog';
 import { GOLD_LIST_MAP } from '@/config/gold-lists';
 import { GoldListBadge } from '@/components/gold-list/GoldListBadge';
 import { featureFlags } from '@/config/feature-flags';
+import { isOffWestEndVenue } from '@/lib/venue-classification';
 import type { ComputedShow } from '@/lib/data-types';
 import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, BASE_URL, toAbsoluteUrl } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -304,7 +305,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               {/* Compact pill labels under poster — mobile only */}
               <div className="flex sm:hidden flex-wrap justify-center gap-x-1.5 gap-y-0.5 text-[9px] font-semibold uppercase tracking-wide leading-none" data-testid="show-pills-poster">
                 {show.category && show.category !== 'broadway' && (
-                  <span className={show.category === 'west-end' ? 'text-teal-400' : 'text-indigo-400'}>{show.category === 'west-end' ? 'West End' : 'Off-Bway'}</span>
+                  show.category === 'west-end' && isOffWestEndVenue(show.venue)
+                    ? <span className="text-violet-400">Off-West End</span>
+                    : <span className={show.category === 'west-end' ? 'text-teal-400' : 'text-indigo-400'}>{show.category === 'west-end' ? 'West End' : 'Off-Bway'}</span>
                 )}
                 <span className={show.type === 'musical' ? 'text-purple-400' : 'text-blue-400'}>{show.type === 'musical' ? 'Musical' : 'Play'}</span>
                 <span className={show.isRevival ? 'text-gray-400' : 'text-amber-400'}>{show.isRevival ? 'Revival' : 'Original'}</span>
@@ -316,7 +319,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             <div className="flex-1 min-w-0">
               {/* Pills row — desktop only (mobile pills moved below poster) */}
               <div className="hidden sm:flex flex-wrap items-center gap-1.5 mb-2" data-testid="show-pills-row">
-                <CategoryBadge category={show.category} />
+                <CategoryBadge category={show.category === 'west-end' && isOffWestEndVenue(show.venue) ? 'off-west-end' : show.category} />
                 <FormatPill type={show.type} />
                 <ProductionPill isRevival={show.isRevival === true} />
                 {show.limitedRun && <LimitedRunBadge />}
