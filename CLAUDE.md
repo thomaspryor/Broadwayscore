@@ -48,10 +48,8 @@ Scripts processing >10 items in CI: save progress incrementally, `if: always()` 
 - **Local changes MUST be synced:** After ANY local modification to `data/review-texts/` files (scoring, flagging, extracting, etc.), run `bash scripts/sync-review-texts.sh` before ending the session. This handles commit, conflict resolution, and push to the private repo. **Never leave local review-text changes uncommitted.**
 
 ### 7b. Private Core Data Repo
-9 sensitive JSON files in private repo `thomaspryor/broadway-scorecard-data`:
-`shows.json`, `reviews.json`, `grosses.json`, `grosses-history.json`, `commercial.json`, `audience-buzz.json`, `critic-consensus.json`, `critic-registry.json`, `outlet-registry.json`
-- CI: `.github/actions/checkout-core-data/` and `push-core-data/` (with `if: always()`).
-- Same PAT (`REVIEW_TEXTS_TOKEN`). All 9 files gitignored. Staleness canary in `test.yml`.
+9 sensitive JSON files in `thomaspryor/broadway-scorecard-data` (see `memory/schemas-and-data.md` for list).
+- CI: `.github/actions/checkout-core-data/` and `push-core-data/` (with `if: always()`). PAT: `REVIEW_TEXTS_TOKEN`. All gitignored.
 - Deploy: terminal workflows dispatch deploys directly (not path-triggered).
 - New workflows: MUST include `checkout-core-data`. Writers MUST also include `push-core-data`.
 - **Session data check:** Run `npm run data:check` at session start. If files missing/stale → `./scripts/setup-local-data.sh`. Never make data-dependent claims without verifying data is present.
@@ -62,6 +60,7 @@ Use shared components from `src/components/show-cards/` — never create custom 
 - `ToggleBar<T>` — labeled toggle row. `size='compact'` for dense pages, `'default'` for main (36px tap targets).
 - `ScoreToggle` — Critics/Audience control. `audienceFirst` for NVP, `size='large'` for NVP. Side effects in parent `onChange`.
 - Import from `@/components/show-cards`. Add new components to barrel, never inline.
+- **Per-market branding** (logo text, colors): `src/config/branding.ts` is the single source of truth. Use it in components AND email templates. Never hardcode brand colors.
 
 ### 8a. Visual QA (MANDATORY for UI Changes)
 **Never deploy UI changes without visual verification.** Dev server → Playwright screenshots at 390px + 1440px → confirm before commit. Kill server after: `kill $(lsof -ti:3456)`.
