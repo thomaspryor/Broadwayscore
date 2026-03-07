@@ -104,7 +104,7 @@ function ShowRatingFixtureInner() {
         <p className="text-sm text-gray-500 mb-4">Richard Rodgers Theatre</p>
 
         {/* The actual component under test */}
-        <div className="card p-5">
+        <div className="card p-5" data-testid="rating-card">
           <ShowPageRating
             showId="hamilton-2015"
             showTitle="Hamilton"

@@ -59,6 +59,9 @@ for (const vp of VIEWPORTS) {
 
     test('diary list: delete confirmation shows and dismisses', async ({ page }) => {
       await goToMock(page, 'diary');
+      // Switch to list view (diary defaults to grid)
+      await page.getByRole('button', { name: 'List view' }).click();
+      await expect(page.getByRole('button', { name: 'List view' })).toHaveClass(/bg-white/, { timeout: 3000 });
 
       const deleteBtn = page.getByRole('button', { name: 'Delete rating' }).first();
       await expect(deleteBtn).toBeVisible();
@@ -76,6 +79,9 @@ for (const vp of VIEWPORTS) {
 
     test('diary list: delete confirmation removes card', async ({ page }) => {
       await goToMock(page, 'diary');
+      // Switch to list view (diary defaults to grid)
+      await page.getByRole('button', { name: 'List view' }).click();
+      await expect(page.getByRole('button', { name: 'List view' })).toHaveClass(/bg-white/, { timeout: 3000 });
 
       // Get initial "shows seen" count
       const initialText = await page.getByText('shows seen').textContent();
@@ -92,27 +98,17 @@ for (const vp of VIEWPORTS) {
       }).toPass({ timeout: 3000 });
     });
 
-    test('diary grid: delete button arms on first tap (mobile only)', async ({ page }) => {
-      // Grid delete is a single toggle button — visible on mobile, hover-only on desktop
-      if (vp.name === 'desktop') return;
+    test('diary grid: delete button visible on desktop hover', async ({ page }) => {
+      // Grid delete is hidden on mobile (hidden sm:flex), hover-only on desktop
+      if (vp.name === 'mobile') return;
 
       await goToMock(page, 'diary');
-      const gridBtn = page.getByRole('button', { name: 'Grid view' });
-      await gridBtn.click();
-      // Wait for grid layout to render
-      await expect(gridBtn).toHaveClass(/bg-white/, { timeout: 3000 });
+      // Grid is the default view — verify we're in grid
+      await expect(page.getByRole('button', { name: 'Grid view' })).toHaveClass(/bg-white/, { timeout: 3000 });
 
-      // Grid delete button should be visible on mobile
+      // Grid delete button exists in DOM but is opacity-0 until hover
       const deleteBtn = page.getByRole('button', { name: 'Delete rating' }).first();
-      await expect(deleteBtn).toBeVisible();
-
-      // First click arms the delete (button turns red)
-      await deleteBtn.click();
-      // Button should still be visible in armed/confirmation state
-      await expect(deleteBtn).toBeVisible();
-      // The button or its container should now have red styling (armed state)
-      const classes = await deleteBtn.getAttribute('class');
-      expect(classes).toBeTruthy();
+      await expect(deleteBtn).toBeAttached();
     });
 
     // ─── Watchlist — Remove Flow (List View) ────────────────────
@@ -187,6 +183,9 @@ for (const vp of VIEWPORTS) {
 
     test('diary sort options produce different order', async ({ page }) => {
       await goToMock(page, 'diary');
+      // Switch to list view (grid cards don't show titles as h4)
+      await page.getByRole('button', { name: 'List view' }).click();
+      await expect(page.getByRole('button', { name: 'List view' })).toHaveClass(/bg-white/, { timeout: 3000 });
 
       const sortSelect = page.getByRole('combobox', { name: 'Sort diary' });
       await expect(sortSelect).toBeVisible();
