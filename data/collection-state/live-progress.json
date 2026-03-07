@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-07T04:57:40.993Z",
-  "processed": 519,
-  "failed": 116,
-  "successRate": "81.7%",
+  "updatedAt": "2026-03-07T05:02:40.184Z",
+  "processed": 521,
+  "failed": 124,
+  "successRate": "80.8%",
   "tierBreakdown": {
-    "playwright": 275,
+    "playwright": 276,
     "amp": 26,
     "browserbase": 36,
     "directCookies": 6,
     "scrapingbee": 95,
     "brightdata": 0,
-    "archiveToday": 24,
-    "archive": 119
+    "archiveToday": 27,
+    "archive": 120
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-06T20:25:07.145Z",
-      "event": "bb-session",
-      "session": "7978941b",
-      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
-    },
-    {
-      "t": "2026-03-06T20:25:08.165Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-06T20:30:10.876Z",
-      "event": "bb-session",
-      "session": "ad8fac98",
-      "url": "https://observer.com/2025/04/just-in-time-broadway-review-jonathan-groff-dazzles"
-    },
-    {
-      "t": "2026-03-06T20:30:12.176Z",
-      "event": "bb-cookie-inject",
-      "domain": "observer.com"
-    },
     {
       "t": "2026-03-06T20:31:10.393Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-07T04:28:28.134Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-07T05:00:30.480Z",
+      "event": "bb-session",
+      "session": "1aa14543",
+      "url": "https://www.thestage.co.uk/reviews/2016/harry-potter-cursed-child-review-palace-"
+    },
+    {
+      "t": "2026-03-07T05:00:31.662Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-07T05:01:59.859Z",
+      "event": "bb-session",
+      "session": "387ddb42",
+      "url": "http://www.northjersey.com/arts-and-entertainment/theater/revisiting-the-dark-si"
+    },
+    {
+      "t": "2026-03-07T05:02:01.076Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
