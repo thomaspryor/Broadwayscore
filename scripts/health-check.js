@@ -3,27 +3,36 @@
  * Daily Data Health Check
  *
  * Monitors all automated pipelines for silent failures.
- * Checks across 5 categories:
+ * Checks across 9 categories:
  *   A. Data Freshness (7) — are data files up to date?
  *   B. Data Sync (3) — do derived files match source files?
  *   C. Pipeline Health (6) — did critical workflows run recently? (warn only)
  *   D. Content Quality (1) — is scored review percentage healthy?
  *   E. Cookie Expiration (1) — are paywall cookies still valid?
+ *   F. Core Web Vitals (1) — Lighthouse performance regressions
+ *   G. SEO Health (1) — index coverage and traffic anomalies
+ *   H. Cron Health (6) — are critical scheduled workflows running?
+ *   I. Secrets Health (1) — last check-secrets-health run status
  *
  * Progressive alerting:
  *   - #weekly-reports: always (daily summary)
  *   - #alerts: only after 2+ consecutive error days
+ *
+ * Triage state: writes per-system files to data/audit/triage/ for auto-triage pipeline.
+ * Auto-triage issue: creates GitHub issue with 'auto-triage' label for persistent errors.
  *
  * Exit codes: 0 = pass/warn or first-day errors, 1 = persistent errors (2+ days)
  */
 
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 const { sendAlert, sendReport, sendToWebhook } = require('./lib/discord-notify');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const AUDIT_DIR = path.join(DATA_DIR, 'audit');
 const PIPELINE_DIR = path.join(AUDIT_DIR, 'pipeline-health');
+const TRIAGE_DIR = path.join(AUDIT_DIR, 'triage');
 const HISTORY_FILE = path.join(AUDIT_DIR, 'health-check-history.json');
 
 // --- Helpers ---
@@ -360,6 +369,237 @@ function checkCookieExpiration() {
   return results;
 }
 
+// --- Category F: Core Web Vitals ---
+
+function checkCWV() {
+  return [
+    runCheck('CWV: performance', () => {
+      const cwvFile = path.join(AUDIT_DIR, 'cwv-results.json');
+      if (!fs.existsSync(cwvFile)) {
+        return { name: 'CWV: performance', status: 'warn', message: 'No CWV data (check-cwv-health may not have run)' };
+      }
+      const data = readJSON(cwvFile);
+      const latest = data.latest;
+      if (!latest || !latest.timestamp) {
+        return { name: 'CWV: performance', status: 'warn', message: 'No latest CWV run found' };
+      }
+      const age = hoursAgo(latest.timestamp);
+      if (age > 336) { // 14 days — weekly check, allow 2 weeks
+        return { name: 'CWV: performance', status: 'warn', message: `Last CWV check ${formatAge(age)} ago (>14d)`, hint: 'Trigger check-cwv-health workflow manually' };
+      }
+      const alerts = [];
+      const m = latest.mobile || {};
+      const d = latest.desktop || {};
+      if (m.lcp > 4000) alerts.push(`Mobile LCP ${(m.lcp / 1000).toFixed(1)}s`);
+      if (m.cls > 0.1) alerts.push(`Mobile CLS ${m.cls.toFixed(3)}`);
+      if (m.tbt > 600) alerts.push(`Mobile TBT ${m.tbt.toFixed(0)}ms`);
+      if (d.lcp > 2500) alerts.push(`Desktop LCP ${(d.lcp / 1000).toFixed(1)}s`);
+      if (d.cls > 0.1) alerts.push(`Desktop CLS ${d.cls.toFixed(3)}`);
+      if (d.tbt > 300) alerts.push(`Desktop TBT ${d.tbt.toFixed(0)}ms`);
+
+      if (alerts.length > 0) {
+        return { name: 'CWV: performance', status: 'warn', message: `Threshold violations: ${alerts.join(', ')}`, hint: 'Check Lighthouse results in data/audit/cwv-results.json' };
+      }
+      return { name: 'CWV: performance', status: 'pass', message: `All metrics within thresholds (${formatAge(age)} ago)` };
+    }),
+  ];
+}
+
+// --- Category G: SEO Health ---
+
+function checkSEO() {
+  return [
+    runCheck('SEO: health', () => {
+      const seoFile = path.join(AUDIT_DIR, 'seo-health.json');
+      if (!fs.existsSync(seoFile)) {
+        return { name: 'SEO: health', status: 'warn', message: 'No SEO data (check-seo-health may not have run)' };
+      }
+      const data = readJSON(seoFile);
+      const age = data.timestamp ? hoursAgo(data.timestamp) : Infinity;
+      if (age > 336) { // 14 days
+        return { name: 'SEO: health', status: 'warn', message: `Last SEO check ${formatAge(age)} ago (>14d)`, hint: 'Trigger check-seo-health workflow manually' };
+      }
+      // Check for anomalies flagged by the SEO health script
+      if (data.anomalies && data.anomalies.length > 0) {
+        const critical = data.anomalies.filter(a => a.severity === 'error');
+        if (critical.length > 0) {
+          return { name: 'SEO: health', status: 'error', message: `${critical.length} critical SEO anomalies: ${critical.map(a => a.metric).join(', ')}`, hint: 'Check data/audit/seo-health.json for details' };
+        }
+        return { name: 'SEO: health', status: 'warn', message: `${data.anomalies.length} SEO warnings`, hint: 'Check data/audit/seo-health.json for details' };
+      }
+      // Check index coverage
+      if (data.indexCoverage) {
+        const { indexed, total } = data.indexCoverage;
+        if (total > 0 && indexed / total < 0.9) {
+          return { name: 'SEO: health', status: 'warn', message: `${((indexed / total) * 100).toFixed(0)}% indexed (${indexed}/${total})` };
+        }
+      }
+      return { name: 'SEO: health', status: 'pass', message: `Healthy (${formatAge(age)} ago)` };
+    }),
+  ];
+}
+
+// --- Category H: Cron Health (via GitHub API) ---
+
+function checkCronHealth() {
+  // Uses `gh` CLI to check last run of critical workflows
+  if (!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN) {
+    return [{ name: 'Cron: health', status: 'warn', message: 'Skipped — no GH_TOKEN available (local run)' }];
+  }
+
+  const CRITICAL_CRONS = [
+    { workflow: 'update-show-status.yml', maxHours: 36, name: 'Update Show Status' },
+    { workflow: 'rebuild-reviews.yml', maxHours: 36, name: 'Rebuild Reviews' },
+    { workflow: 'collect-review-texts.yml', maxHours: 36, name: 'Collect Review Texts' },
+    { workflow: 'llm-ensemble-score.yml', maxHours: 48, name: 'LLM Ensemble Score' },
+    { workflow: 'test.yml', maxHours: 48, name: 'Test Suite' },
+    { workflow: 'opening-night-broadcast.yml', maxHours: 36, name: 'Opening Night Broadcast' },
+  ];
+
+  return CRITICAL_CRONS.map(({ workflow, maxHours, name }) =>
+    runCheck(`Cron: ${name}`, () => {
+      try {
+        const result = execSync(
+          `gh run list --workflow="${workflow}" --limit=1 --json createdAt,conclusion -q '.[0]'`,
+          { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
+        ).trim();
+        if (!result || result === '{}') {
+          return { name: `Cron: ${name}`, status: 'warn', message: 'No runs found' };
+        }
+        const run = JSON.parse(result);
+        const age = hoursAgo(run.createdAt);
+        if (age > maxHours) {
+          return { name: `Cron: ${name}`, status: 'error', message: `Last run ${formatAge(age)} ago (max ${maxHours}h). Conclusion: ${run.conclusion}`, hint: 'Check Actions tab — workflow may be disabled' };
+        }
+        if (run.conclusion === 'failure') {
+          return { name: `Cron: ${name}`, status: 'warn', message: `Last run failed (${formatAge(age)} ago)` };
+        }
+        return { name: `Cron: ${name}`, status: 'pass', message: `${formatAge(age)} ago, ${run.conclusion}` };
+      } catch (err) {
+        return { name: `Cron: ${name}`, status: 'warn', message: `gh CLI failed: ${err.message.substring(0, 80)}` };
+      }
+    })
+  );
+}
+
+// --- Category I: Secrets Health ---
+
+function checkSecretsHealth() {
+  if (!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN) {
+    return [{ name: 'Secrets: health', status: 'warn', message: 'Skipped — no GH_TOKEN available (local run)' }];
+  }
+
+  return [
+    runCheck('Secrets: health', () => {
+      try {
+        const result = execSync(
+          `gh run list --workflow="check-secrets-health.yml" --limit=1 --json createdAt,conclusion -q '.[0]'`,
+          { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
+        ).trim();
+        if (!result || result === '{}') {
+          return { name: 'Secrets: health', status: 'warn', message: 'No secrets check runs found' };
+        }
+        const run = JSON.parse(result);
+        const age = hoursAgo(run.createdAt);
+        if (age > 336) { // 14 days — weekly check
+          return { name: 'Secrets: health', status: 'warn', message: `Last check ${formatAge(age)} ago (>14d)`, hint: 'Trigger check-secrets-health workflow manually' };
+        }
+        if (run.conclusion === 'failure') {
+          return { name: 'Secrets: health', status: 'error', message: `Last check FAILED (${formatAge(age)} ago)`, hint: 'Check check-secrets-health workflow logs' };
+        }
+        return { name: 'Secrets: health', status: 'pass', message: `Last check passed (${formatAge(age)} ago)` };
+      } catch (err) {
+        return { name: 'Secrets: health', status: 'warn', message: `gh CLI failed: ${err.message.substring(0, 80)}` };
+      }
+    }),
+  ];
+}
+
+// --- Triage State (per-system files) ---
+
+function writeTriageState(allResults) {
+  fs.mkdirSync(TRIAGE_DIR, { recursive: true });
+
+  // Group results by system category
+  const systems = {};
+  for (const r of allResults) {
+    const category = r.name.split(':')[0].trim().toLowerCase();
+    if (!systems[category]) systems[category] = { results: [], worstStatus: 'pass' };
+    systems[category].results.push(r);
+    if (r.status === 'error') systems[category].worstStatus = 'error';
+    else if (r.status === 'warn' && systems[category].worstStatus !== 'error') systems[category].worstStatus = 'warn';
+  }
+
+  for (const [system, data] of Object.entries(systems)) {
+    const triageFile = path.join(TRIAGE_DIR, `${system}.json`);
+    let existing = {};
+    try {
+      if (fs.existsSync(triageFile)) existing = readJSON(triageFile);
+    } catch {}
+
+    const now = new Date().toISOString();
+    const state = {
+      system,
+      status: data.worstStatus,
+      lastChecked: now,
+      lastAlertTimestamp: existing.lastAlertTimestamp || null,
+      autoFixAttempts: data.worstStatus === 'pass' ? 0 : (existing.autoFixAttempts || 0),
+      escalationState: data.worstStatus === 'pass' ? 'resolved' : (existing.escalationState || 'monitoring'),
+      details: data.results.map(r => ({ name: r.name, status: r.status, message: r.message })),
+    };
+
+    fs.writeFileSync(triageFile, JSON.stringify(state, null, 2) + '\n');
+  }
+}
+
+// --- Auto-Triage Issue Creation ---
+
+async function createTriageIssue(allResults, history) {
+  // Only create issues for persistent errors (2+ days)
+  if (history.consecutiveErrorDays < 2) return;
+  if (!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN) return;
+
+  const errors = allResults.filter(r => r.status === 'error');
+  if (errors.length === 0) return;
+
+  // Dedup: check for existing open auto-triage issues
+  try {
+    const existing = execSync(
+      `gh issue list --label auto-triage --state open --json number -q 'length'`,
+      { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
+    ).trim();
+    if (parseInt(existing, 10) > 0) {
+      console.log(`[Triage] ${existing} open auto-triage issue(s) already exist, skipping creation`);
+      return;
+    }
+  } catch {}
+
+  const issueBody = JSON.stringify({
+    type: 'health-check-digest',
+    timestamp: new Date().toISOString(),
+    consecutiveErrorDays: history.consecutiveErrorDays,
+    errors: errors.map(e => ({
+      name: e.name,
+      message: e.message,
+      hint: e.hint || null,
+      category: e.name.split(':')[0].trim().toLowerCase(),
+    })),
+  }, null, 2);
+
+  const title = `Auto-Triage: ${errors.length} persistent error${errors.length > 1 ? 's' : ''} (day ${history.consecutiveErrorDays})`;
+
+  try {
+    const escapedBody = issueBody.replace(/'/g, "'\\''");
+    execSync(
+      `gh issue create --title "${title}" --label auto-triage --label automated --body '${escapedBody}'`,
+      { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
+    );
+    console.log(`[Triage] Created auto-triage issue: ${title}`);
+  } catch (err) {
+    console.error(`[Triage] Failed to create issue: ${err.message.substring(0, 100)}`);
+  }
+}
+
 // --- Progressive Alerting ---
 
 function loadHistory() {
@@ -379,13 +619,17 @@ function saveHistory(history) {
 // --- Discord Notifications ---
 
 async function sendDailyReport(results, history) {
-  const categories = { Freshness: [], Sync: [], Pipelines: [], Quality: [], Cookies: [] };
+  const categories = { Freshness: [], Sync: [], Pipelines: [], Quality: [], Cookies: [], CWV: [], SEO: [], Cron: [], Secrets: [] };
   for (const r of results) {
     if (r.name.startsWith('Freshness:')) categories.Freshness.push(r);
     else if (r.name.startsWith('Sync:')) categories.Sync.push(r);
     else if (r.name.startsWith('Pipeline:')) categories.Pipelines.push(r);
     else if (r.name.startsWith('Quality:')) categories.Quality.push(r);
     else if (r.name.startsWith('Cookies:')) categories.Cookies.push(r);
+    else if (r.name.startsWith('CWV:')) categories.CWV.push(r);
+    else if (r.name.startsWith('SEO:')) categories.SEO.push(r);
+    else if (r.name.startsWith('Cron:')) categories.Cron.push(r);
+    else if (r.name.startsWith('Secrets:')) categories.Secrets.push(r);
   }
 
   const catSummary = (checks) => {
@@ -432,6 +676,10 @@ async function sendDailyReport(results, history) {
     { name: 'Pipelines', value: catSummary(categories.Pipelines), inline: true },
     { name: 'Quality', value: catSummary(categories.Quality), inline: true },
     { name: 'Cookies', value: catSummary(categories.Cookies), inline: true },
+    { name: 'CWV', value: catSummary(categories.CWV), inline: true },
+    { name: 'SEO', value: catSummary(categories.SEO), inline: true },
+    { name: 'Cron', value: catSummary(categories.Cron), inline: true },
+    { name: 'Secrets', value: catSummary(categories.Secrets), inline: true },
   ];
 
   const webhookUrl = process.env.DISCORD_WEBHOOK_REPORTS;
@@ -485,10 +733,14 @@ async function main() {
     ...checkPipelines(),
     ...checkQuality(),
     ...checkCookieExpiration(),
+    ...checkCWV(),
+    ...checkSEO(),
+    ...checkCronHealth(),
+    ...checkSecretsHealth(),
   ];
 
   // Print console summary
-  const icons = { pass: '✅', warn: '⚠️', error: '❌' };
+  const icons = { pass: '\u2705', warn: '\u26A0\uFE0F', error: '\u274C' };
   for (const r of allResults) {
     console.log(`  ${icons[r.status]} ${r.name}: ${r.message}`);
   }
@@ -514,18 +766,24 @@ async function main() {
   history.results = allResults.map(r => ({ name: r.name, status: r.status, message: r.message }));
   saveHistory(history);
 
+  // Write per-system triage state files
+  writeTriageState(allResults);
+
   // Send Discord notifications
   await sendDailyReport(allResults, history);
   await sendCriticalAlert(allResults, history);
 
+  // Create auto-triage issue for persistent errors
+  await createTriageIssue(allResults, history);
+
   // Exit code: 1 only for persistent errors (2+ consecutive days)
   if (hadErrors && history.consecutiveErrorDays >= 2) {
-    console.log(`\n❌ Persistent errors (${history.consecutiveErrorDays} consecutive days). Exiting with code 1.`);
+    console.log(`\n\u274C Persistent errors (${history.consecutiveErrorDays} consecutive days). Exiting with code 1.`);
     process.exit(1);
   } else if (hadErrors) {
-    console.log(`\n⚠️ First-day errors detected. Monitoring — will escalate if repeated tomorrow.`);
+    console.log(`\n\u26A0\uFE0F First-day errors detected. Monitoring — will escalate if repeated tomorrow.`);
   } else {
-    console.log('✅ All healthy.');
+    console.log('\u2705 All healthy.');
   }
 }
 

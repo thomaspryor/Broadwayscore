@@ -1,0 +1,25 @@
+{
+  "system": "sync",
+  "status": "pass",
+  "lastChecked": "2026-03-07T23:19:53.898Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Sync: review-texts vs reviews.json",
+      "status": "pass",
+      "message": "31094 files, 18043 reviews (surplus: 13051)"
+    },
+    {
+      "name": "Sync: open show coverage",
+      "status": "pass",
+      "message": "26 open shows all have reviews and grosses"
+    },
+    {
+      "name": "Sync: baseline drift",
+      "status": "pass",
+      "message": "2301 shows, 141 open, 18043 reviews (all at or above baseline)"
+    }
+  ]
+}
