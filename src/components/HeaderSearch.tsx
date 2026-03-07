@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback, useMemo, useDeferredValue } f
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import type Fuse from 'fuse.js';
+import { useClickOutside } from '@/hooks/useClickOutside';
 
 interface Show {
   id: string;
@@ -89,17 +90,8 @@ export default function HeaderSearch() {
     return merged.slice(0, 8);
   }, [deferredQuery, dataReady, shows]);
 
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-        setIsMobileOpen(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  const closeSearch = useCallback(() => { setIsOpen(false); setIsMobileOpen(false); }, []);
+  useClickOutside(containerRef, closeSearch);
 
   // Handle keyboard navigation — guard Enter against stale deferred results
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {

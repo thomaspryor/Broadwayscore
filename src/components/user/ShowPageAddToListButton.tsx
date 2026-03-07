@@ -6,6 +6,7 @@ import { useUserLists } from '@/hooks/useUserLists';
 import { useToastSafe } from '@/components/ui/Toast';
 import { savePendingAction } from '@/lib/deferred-auth';
 import { featureFlags } from '@/config/feature-flags';
+import { useClickOutside } from '@/hooks/useClickOutside';
 
 interface ShowPageAddToListButtonProps {
   showId: string;
@@ -28,19 +29,8 @@ export default function ShowPageAddToListButton({ showId }: ShowPageAddToListBut
     }
   }, [isAuthenticated, user, getLists]);
 
-  // Close dropdown on outside click
-  useEffect(() => {
-    if (!open) return;
-    const handler = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setOpen(false);
-        setCreating(false);
-        setNewName('');
-      }
-    };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
-  }, [open]);
+  const closeDropdown = useCallback(() => { setOpen(false); setCreating(false); setNewName(''); }, []);
+  useClickOutside(dropdownRef, closeDropdown, open);
 
   // Focus input when creating
   useEffect(() => {

@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useClickOutside } from '@/hooks/useClickOutside';
 
 interface MarketStats {
   nyc: { openShows: number; theaters: number };
@@ -18,18 +19,8 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   const isOffBroadway = pathname.startsWith('/off-broadway');
   const currentMarket = isWestEnd ? 'west-end' : 'nyc';
 
-  // Close dropdown on outside click
-  useEffect(() => {
-    function handleClick(e: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setIsOpen(false);
-      }
-    }
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClick);
-      return () => document.removeEventListener('mousedown', handleClick);
-    }
-  }, [isOpen]);
+  const closeDropdown = useCallback(() => setIsOpen(false), []);
+  useClickOutside(dropdownRef, closeDropdown, isOpen);
 
   // Close on route change
   useEffect(() => {
