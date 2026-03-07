@@ -46,13 +46,36 @@ export interface ShowLookup {
   diaryOnly?: boolean;
 }
 
+export interface UserList {
+  id: string;
+  user_id: string;
+  name: string;
+  description: string | null;
+  is_ranked: boolean;
+  created_at: string;
+  updated_at: string;
+  item_count?: number;
+  preview_show_ids?: string[];
+}
+
+export interface ListItem {
+  id: string;
+  list_id: string;
+  show_id: string;
+  position: number;
+  note: string | null;
+  created_at: string;
+}
+
 // Pending action for deferred auth flow
 export interface PendingAction {
-  type: 'rating' | 'watchlist';
+  type: 'rating' | 'watchlist' | 'add-to-list' | 'create-list-and-add';
   showId: string;
   rating?: number;
   reviewText?: string;
   dateSeen?: string;
+  listId?: string;
+  listName?: string;
   returnUrl: string;
   timestamp: number;
 }
