@@ -7,13 +7,12 @@ on:
 jobs:
   health-check:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     permissions:
       contents: write
       issues: write
     steps:
       - uses: actions/checkout@v4
-
 
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
@@ -23,27 +22,30 @@ jobs:
         with:
           node-version: 20
 
+      - name: Install dependencies
+        run: npm ci
+
       - name: Run health check
         env:
+          GH_TOKEN: ${{ github.token }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          DISCORD_WEBHOOK_REPORTS: ${{ secrets.DISCORD_WEBHOOK_REPORTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: node scripts/health-check.js
 
-      - name: Commit health check history
+      - name: Commit health check + triage data
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/audit/health-check-history.json
+          git add data/audit/triage/ 2>/dev/null || true
           if git diff --staged --quiet; then
-            echo "No health check history changes"
+            echo "No health check data changes"
           else
-            git commit -m "data: Update health check history"
-            git stash --include-untracked 2>/dev/null || true
-            git pull --rebase origin main 2>/dev/null || true
-            git stash pop 2>/dev/null || true
-            git push origin main || echo "::warning::Health check history push failed"
+            git commit -m "data: Update health check + triage state [skip ci]"
+            bash scripts/lib/push-with-retry.sh
           fi
 
       - name: Notify on failure
@@ -55,25 +57,3 @@ jobs:
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}
-
-      - name: Create issue on persistent failure
-        if: failure()
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const title = `Data Health Check Failed — ${new Date().toISOString().split('T')[0]}`;
-            const existing = await github.rest.issues.listForRepo({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              labels: 'health-check',
-              state: 'open'
-            });
-            if (existing.data.length === 0) {
-              await github.rest.issues.create({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                title,
-                labels: ['health-check', 'automated'],
-                body: `Health check failed for 2+ consecutive days.\n\n[View run](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})`
-              });
-            }
