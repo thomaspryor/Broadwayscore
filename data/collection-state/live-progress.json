@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-07T19:40:19.618Z",
-  "processed": 607,
-  "failed": 163,
+  "updatedAt": "2026-03-07T19:46:36.300Z",
+  "processed": 615,
+  "failed": 165,
   "successRate": "78.8%",
   "tierBreakdown": {
-    "playwright": 307,
+    "playwright": 312,
     "amp": 24,
     "browserbase": 24,
     "directCookies": 6,
-    "scrapingbee": 85,
+    "scrapingbee": 86,
     "brightdata": 0,
-    "archiveToday": 45,
-    "archive": 191
+    "archiveToday": 47,
+    "archive": 193
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-07T11:39:00.232Z",
-      "event": "bb-session",
-      "session": "ddc04ef7",
-      "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-r"
-    },
-    {
-      "t": "2026-03-07T11:39:01.286Z",
-      "event": "bb-cookie-inject",
-      "domain": "nypost.com"
-    },
     {
       "t": "2026-03-07T11:45:55.414Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-07T19:37:08.634Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-07T19:46:01.795Z",
+      "event": "bb-session",
+      "session": "7db4b3ee",
+      "url": "https://www.thestage.co.uk/reviews/2014/the-play-that-goes-wrong/"
+    },
+    {
+      "t": "2026-03-07T19:46:03.014Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }

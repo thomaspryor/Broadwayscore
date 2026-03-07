@@ -606,7 +606,15 @@
     "the-play-that-goes-wrong-off-broadway-2019/huffpost--steven-suskin.json",
     "the-play-that-goes-wrong-off-broadway-2019/ny1--david-cote.json",
     "the-play-that-goes-wrong-off-broadway-2019/nysr--david-finkle.json",
-    "the-play-that-goes-wrong-off-broadway-2019/stagebizcom--danny-groner.json"
+    "the-play-that-goes-wrong-off-broadway-2019/stagebizcom--danny-groner.json",
+    "the-play-that-goes-wrong-off-broadway-2019/talkinbroadway--unknown.json",
+    "the-play-that-goes-wrong-off-broadway-2019/theater-pizzazz--sandi-durell.json",
+    "the-play-that-goes-wrong-off-broadway-2019/thestage--erin-kahn.json",
+    "the-play-that-goes-wrong-west-end-2021/financialtimes--sarah-hemming.json",
+    "the-play-that-goes-wrong-west-end-2021/london-theatre--dom-ohanlon.json",
+    "the-play-that-goes-wrong-west-end-2021/standard--fiona-mountford.json",
+    "the-play-that-goes-wrong-west-end-2021/telegraph--tim-walker.json",
+    "the-play-that-goes-wrong-west-end-2021/times-uk--dominic-maxwell.json"
   ],
   "failed": [
     "mexodus-off-broadway-2026/nytg--austin-fimmano.json",
@@ -771,7 +779,9 @@
     "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
     "the-mousetrap-west-end-2021/thestage--john-thaxter.json",
     "the-play-that-goes-wrong-off-broadway-2019/broadway-blog--samuel-l-leiter.json",
-    "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json"
+    "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
+    "the-play-that-goes-wrong-off-broadway-2019/talkinbroadway--matthew-murray.json",
+    "the-play-that-goes-wrong-west-end-2021/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1082,7 +1092,12 @@
       "the-office-a-musical-parody-off-broadway-2018/thepopbreak--rob-crowther-iv.json",
       "the-outsiders-2024/culturesauce--thom-geier.json",
       "the-phantom-of-the-opera-west-end-1986/standard--katie-rosseinsky.json",
-      "the-play-that-goes-wrong-off-broadway-2019/nysr--david-finkle.json"
+      "the-play-that-goes-wrong-off-broadway-2019/nysr--david-finkle.json",
+      "the-play-that-goes-wrong-off-broadway-2019/thestage--erin-kahn.json",
+      "the-play-that-goes-wrong-west-end-2021/financialtimes--sarah-hemming.json",
+      "the-play-that-goes-wrong-west-end-2021/london-theatre--dom-ohanlon.json",
+      "the-play-that-goes-wrong-west-end-2021/standard--fiona-mountford.json",
+      "the-play-that-goes-wrong-west-end-2021/telegraph--tim-walker.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -1229,7 +1244,8 @@
       "the-book-of-mormon-west-end-2024/times-uk--libby-purves.json",
       "shadowlands-west-end-2026/independent--alice-saville.json",
       "the-devil-wears-prada-west-end-2024/independent--alice-saville.json",
-      "the-hunger-games-on-stage-west-end-2025/independent--unknown.json"
+      "the-hunger-games-on-stage-west-end-2025/independent--unknown.json",
+      "the-play-that-goes-wrong-west-end-2021/times-uk--dominic-maxwell.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1277,7 +1293,9 @@
       "data/review-texts/the-devil-wears-prada-west-end-2024/independent--alice-saville.json",
       "data/review-texts/manic-street-creature-west-end-2026/broadwayworld--unknown.json",
       "data/review-texts/the-lion-king-1997/talkinbroadway--matthew-murray.json",
-      "data/review-texts/the-mousetrap-west-end-2021/thestage--john-thaxter.json"
+      "data/review-texts/the-mousetrap-west-end-2021/thestage--john-thaxter.json",
+      "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/talkinbroadway--matthew-murray.json",
+      "data/review-texts/the-play-that-goes-wrong-west-end-2021/thestage--unknown.json"
     ],
     "archive": [
       "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
@@ -1470,11 +1488,13 @@
       "the-play-that-goes-wrong-off-broadway-2019/dctheatrescene--deb-miller.json",
       "the-play-that-goes-wrong-off-broadway-2019/huffpost--steven-suskin.json",
       "the-play-that-goes-wrong-off-broadway-2019/ny1--david-cote.json",
-      "the-play-that-goes-wrong-off-broadway-2019/stagebizcom--danny-groner.json"
+      "the-play-that-goes-wrong-off-broadway-2019/stagebizcom--danny-groner.json",
+      "the-play-that-goes-wrong-off-broadway-2019/talkinbroadway--unknown.json",
+      "the-play-that-goes-wrong-off-broadway-2019/theater-pizzazz--sandi-durell.json"
     ]
   },
   "startTime": "2026-03-07T09:54:22.824Z",
-  "lastProcessed": "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
+  "lastProcessed": "the-play-that-goes-wrong-west-end-2021/times-uk--dominic-maxwell.json",
   "log": [
     {
       "t": "2026-03-07T10:49:42.495Z",
@@ -1748,6 +1768,17 @@
     },
     {
       "t": "2026-03-07T19:37:08.634Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-07T19:46:01.795Z",
+      "event": "bb-session",
+      "session": "7db4b3ee",
+      "url": "https://www.thestage.co.uk/reviews/2014/the-play-that-goes-wrong/"
+    },
+    {
+      "t": "2026-03-07T19:46:03.014Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
