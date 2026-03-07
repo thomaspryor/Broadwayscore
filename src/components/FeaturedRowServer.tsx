@@ -8,6 +8,7 @@
 import Link from 'next/link';
 import { getOptimizedImageUrl, getCdnSrcSet } from '@/lib/images';
 import { MustSeeCrown, getScoreColorClass } from '@/components/show-cards/ScoreBadge';
+import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import type { HomepageShow } from '@/components/HomePageClient';
 
 function ServerMiniShowCard({ show, priority }: { show: HomepageShow; priority: boolean }) {
@@ -29,7 +30,8 @@ function ServerMiniShowCard({ show, priority }: { show: HomepageShow; priority: 
       className="flex-shrink-0 w-28 sm:w-32 group"
     >
       <div className="relative mb-1.5">
-        <div className="rounded-lg overflow-hidden bg-surface-overlay aspect-[2/3]">
+        <div className="relative rounded-lg overflow-hidden bg-surface-overlay aspect-[2/3]">
+          <ShowPageBookmark showId={show.id} size="sm" />
           {imgSrc ? (
             <img
               src={imgSrc}

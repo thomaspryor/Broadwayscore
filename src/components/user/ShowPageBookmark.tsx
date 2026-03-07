@@ -75,7 +75,7 @@ export default function ShowPageBookmark({ showId, size = 'md' }: ShowPageBookma
       className={`absolute ${s.button} z-10 flex items-center justify-center rounded-full transition-all ${
         watched
           ? 'bg-black/60 text-amber-400 scale-100'
-          : 'bg-black/40 text-white/70 hover:text-white hover:bg-black/60'
+          : `bg-black/40 text-white/70 hover:text-white hover:bg-black/60${size === 'sm' ? ' sm:opacity-0 sm:group-hover:opacity-100' : ''}`
       } ${loading ? 'opacity-50' : ''}`}
       aria-label={watched ? 'Remove from watchlist' : 'Add to watchlist'}
     >
