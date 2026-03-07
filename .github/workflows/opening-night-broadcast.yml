@@ -53,6 +53,9 @@ jobs:
 
             const opened = shows.filter(s => {
               if (s.status !== 'open' || !s.openingDate) return false;
+              // Only broadcast for Broadway and West End — skip OB/OWE
+              const cat = s.category || 'broadway';
+              if (cat !== 'broadway' && cat !== 'west-end') return false;
               const d = new Date(s.openingDate);
               d.setHours(0,0,0,0);
               return d >= cutoff && d <= now;
