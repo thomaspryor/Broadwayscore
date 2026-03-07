@@ -35,6 +35,19 @@ Look at the changes and ask:
 
 For each finding, note it — don't fix it now. Just capture it for the roadmap.
 
+### Phase 2.5: Mobile App Feature Parity
+
+**Skip** unless this session shipped a new user-facing feature (new page, UI component, user flow). Data/CI/docs/backend changes don't need this.
+
+If you shipped a user-facing feature:
+1. Read `/Users/tompryor/BroadwayScorecard/memory/feature-parity.md`
+2. If the feature isn't listed, add a row to "Needs App Implementation":
+   `| Feature name | Priority (P0-P3) | Today's date | Web files, one-line description |`
+3. Commit + push:
+   ```bash
+   cd /Users/tompryor/BroadwayScorecard && git add memory/feature-parity.md && git commit -m "chore: Flag [feature] for app parity" && git push && cd -
+   ```
+
 ### Phase 3: Loose Ends Audit
 
 Check for:
