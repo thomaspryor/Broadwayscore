@@ -353,7 +353,7 @@ export default function MyShowsClient() {
           aria-selected={activeTab === 'diary'}
           aria-controls="panel-diary"
           onClick={() => setActiveTab('diary')}
-          className={`flex-shrink-0 px-3 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] ${
+          className={`flex-shrink-0 px-3 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] outline-none ${
             activeTab === 'diary'
               ? 'text-white border-brand'
               : 'text-gray-500 border-transparent hover:text-gray-300'
@@ -369,7 +369,7 @@ export default function MyShowsClient() {
           aria-controls="panel-watchlist"
           onClick={() => setActiveTab('watchlist')}
           aria-label={watchlist.length > 0 ? `Watchlist, ${watchlist.length} shows` : 'Watchlist'}
-          className={`flex-shrink-0 px-3 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] ${
+          className={`flex-shrink-0 px-3 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] outline-none ${
             activeTab === 'watchlist'
               ? 'text-white border-brand'
               : 'text-gray-500 border-transparent hover:text-gray-300'
@@ -384,7 +384,7 @@ export default function MyShowsClient() {
         </button>
 
         {/* Inline controls on the right */}
-        <div className="ml-auto flex items-center gap-1.5 sm:gap-2 -mb-[1px] pb-1">
+        <div className="ml-auto flex items-center gap-1.5 sm:gap-2 -mb-[1px]">
           {activeTab === 'diary' && (
             <select
               value={diarySort}
@@ -409,12 +409,12 @@ export default function MyShowsClient() {
               <option value="closing-soon">Closing</option>
             </select>
           )}
-          {/* Grid / List toggle — both tabs, height matches sort dropdown (h-9 / sm:h-8) */}
-          <div className="flex flex-shrink-0 rounded overflow-hidden bg-white/[0.04] border border-white/10 h-9 sm:h-8">
+          {/* Grid / List toggle — both tabs */}
+          <div className="inline-flex flex-shrink-0 rounded overflow-hidden bg-white/[0.04] border border-white/10">
             <button
               type="button"
               onClick={() => activeTab === 'diary' ? setDiaryView('grid') : setWatchlistView('grid')}
-              className={`flex items-center justify-center w-9 sm:w-8 h-full transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'grid' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
+              className={`inline-flex items-center justify-center w-9 h-9 sm:w-8 sm:h-8 outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'grid' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
               aria-label="Grid view"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -424,7 +424,7 @@ export default function MyShowsClient() {
             <button
               type="button"
               onClick={() => activeTab === 'diary' ? setDiaryView('list') : setWatchlistView('list')}
-              className={`flex items-center justify-center w-9 sm:w-8 h-full transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'list' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
+              className={`inline-flex items-center justify-center w-9 h-9 sm:w-8 sm:h-8 outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'list' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
               aria-label="List view"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -727,14 +727,14 @@ function UpcomingGridCard({ href, posterUrl, date, onRemove }: { href: string; p
             <div className="w-full h-full flex items-center justify-center text-gray-600 text-3xl">🎭</div>
           )}
         </div>
-        {/* Remove button — top-right, always visible on mobile, hover on desktop */}
+        {/* Remove button — hidden on mobile, visible on hover on desktop */}
         <button
           type="button"
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); confirmRemove ? onRemove() : setConfirmRemove(true); }}
-          className={`absolute top-2 right-2 z-[2] w-8 h-8 flex items-center justify-center rounded-full ${confirmRemove ? 'bg-red-500/80 text-white opacity-100' : 'bg-black/70 text-gray-400 hover:text-red-400 opacity-100 sm:opacity-0 sm:group-hover/grid:opacity-100'} transition-opacity`}
+          className={`absolute top-2 right-2 z-[2] w-7 h-7 hidden sm:flex items-center justify-center rounded-full ${confirmRemove ? 'bg-red-500/80 text-white opacity-100' : 'bg-black/70 text-gray-400 hover:text-red-400 opacity-0 group-hover/grid:opacity-100'} transition-opacity`}
           aria-label="Remove from upcoming"
         >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
           </svg>
         </button>
@@ -874,14 +874,14 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
             Rate
           </span>
         </div>
-        {/* Trash button to remove — top-right, always visible on mobile, hover on desktop */}
+        {/* Trash button to remove — hidden on mobile, visible on hover on desktop */}
         <button
           type="button"
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); confirmRemove ? onRemove() : setConfirmRemove(true); }}
-          className={`absolute top-2 right-2 z-[2] w-8 h-8 flex items-center justify-center rounded-full ${confirmRemove ? 'bg-red-500/80 text-white opacity-100' : 'bg-black/70 text-gray-400 hover:text-red-400 opacity-100 sm:opacity-0 sm:group-hover/wl:opacity-100'} transition-opacity`}
+          className={`absolute top-2 right-2 z-[2] w-7 h-7 hidden sm:flex items-center justify-center rounded-full ${confirmRemove ? 'bg-red-500/80 text-white opacity-100' : 'bg-black/70 text-gray-400 hover:text-red-400 opacity-0 group-hover/wl:opacity-100'} transition-opacity`}
           aria-label="Remove from watchlist"
         >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
           </svg>
         </button>
