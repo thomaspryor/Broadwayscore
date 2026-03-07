@@ -317,6 +317,7 @@ jobs:
           echo "Reviews rebuilt successfully"
 
       - name: Check for changes
+        if: always()
         id: changes
         run: |
           if git diff --quiet data/; then
