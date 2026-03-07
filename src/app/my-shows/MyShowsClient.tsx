@@ -220,11 +220,9 @@ export default function MyShowsClient() {
     switch (watchlistSort) {
       case 'added-desc':
         return sorted.sort((a, b) => {
-          // Items with planned_date come first, sorted by date ascending (upcoming order)
+          // Within each section (booked vs unbooked), sort by planned_date or created_at
           const aHasDate = !!a.planned_date;
           const bHasDate = !!b.planned_date;
-          if (aHasDate && !bHasDate) return -1;
-          if (!aHasDate && bHasDate) return 1;
           if (aHasDate && bHasDate) return (a.planned_date || '').localeCompare(b.planned_date || '');
           return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
         });
@@ -244,6 +242,10 @@ export default function MyShowsClient() {
         return sorted;
     }
   }, [watchlist, watchlistSort, showMap]);
+
+  // Split watchlist into "not yet booked" vs "booked" (has planned_date)
+  const unbookedWatchlist = useMemo(() => sortedWatchlist.filter(e => !e.planned_date), [sortedWatchlist]);
+  const bookedWatchlist = useMemo(() => sortedWatchlist.filter(e => !!e.planned_date), [sortedWatchlist]);
 
   // While mock mode is initializing (useEffect hasn't fired yet), show loading
   const hasMockParam = searchParams.get('mock') === '1';
@@ -409,12 +411,12 @@ export default function MyShowsClient() {
               <option value="closing-soon">Closing</option>
             </select>
           )}
-          {/* Grid / List toggle — both tabs */}
-          <div className="inline-flex flex-shrink-0 rounded overflow-hidden bg-white/[0.04] border border-white/10">
+          {/* Grid / List toggle — MUST match sort dropdown height (h-9 sm:h-8). Height on container, NOT buttons. */}
+          <div className="inline-flex flex-shrink-0 rounded overflow-hidden bg-white/[0.04] border border-white/10 h-9 sm:h-8">
             <button
               type="button"
               onClick={() => activeTab === 'diary' ? setDiaryView('grid') : setWatchlistView('grid')}
-              className={`inline-flex items-center justify-center w-9 h-9 sm:w-8 sm:h-8 outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'grid' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
+              className={`inline-flex items-center justify-center w-9 sm:w-8 outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'grid' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
               aria-label="Grid view"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -424,7 +426,7 @@ export default function MyShowsClient() {
             <button
               type="button"
               onClick={() => activeTab === 'diary' ? setDiaryView('list') : setWatchlistView('list')}
-              className={`inline-flex items-center justify-center w-9 h-9 sm:w-8 sm:h-8 outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'list' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
+              className={`inline-flex items-center justify-center w-9 sm:w-8 outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'list' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
               aria-label="List view"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -451,7 +453,10 @@ export default function MyShowsClient() {
               {/* To Be Rated — at top so users notice it */}
               {toBeRatedEntries.length > 0 && (
                 <div className="mb-8">
-                  <h3 className="text-xs font-bold text-amber-400/80 uppercase tracking-wider mb-1">To Be Rated</h3>
+                  <div className="flex items-center justify-between mb-1">
+                    <h3 className="text-xs font-bold text-amber-400/80 uppercase tracking-wider">To Be Rated</h3>
+                    <span className="text-[11px] text-gray-500">{toBeRatedEntries.length} {toBeRatedEntries.length === 1 ? 'entry' : 'entries'}</span>
+                  </div>
                   <p className="text-xs text-gray-500 mb-3">You saw these shows — how were they?</p>
                   <div className="space-y-2">
                     {toBeRatedEntries.map(entry => (
@@ -464,7 +469,10 @@ export default function MyShowsClient() {
               {/* Upcoming section — watchlist entries with future dates + reviews with future date_seen */}
               {(upcomingWatchlistEntries.length > 0 || upcomingReviews.length > 0) && (
                 <div className="mb-8">
-                  <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Upcoming</h3>
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Upcoming</h3>
+                    <span className="text-[11px] text-gray-500">{upcomingWatchlistEntries.length + upcomingReviews.length} {(upcomingWatchlistEntries.length + upcomingReviews.length) === 1 ? 'entry' : 'entries'}</span>
+                  </div>
                   {diaryView === 'list' ? (
                     <div className="space-y-2">
                       {upcomingWatchlistEntries.map(entry => {
@@ -536,36 +544,65 @@ export default function MyShowsClient() {
                 </div>
               )}
 
-              {/* Past shows section */}
-              {pastReviews.length > 0 && (
-                <div>
-                  {(upcomingReviews.length > 0 || upcomingWatchlistEntries.length > 0 || toBeRatedEntries.length > 0) && (
-                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Past Shows</h3>
-                  )}
-                  {diaryView === 'list' ? (
-                    <div className="space-y-2">
-                      {pastReviews.map(review => (
-                        <DiaryCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={async () => { await effectiveDeleteReview(review.id); showToast?.('Rating deleted.', 'info'); }} />
-                      ))}
-                      <AddShowCard context="diary" variant="list" onOpen={() => {
-                        const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add a show to diary"], [aria-label="Rate a show"]');
-                        btn?.click();
-                      }} />
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                      {pastReviews.map(review => (
-                        <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={async () => { await effectiveDeleteReview(review.id); showToast?.('Rating deleted.', 'info'); }} />
-                      ))}
-                      <AddShowCard context="diary" onOpen={() => {
-                        // Find and trigger the AddShowSearch open
-                        const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add a show to diary"], [aria-label="Rate a show"]');
-                        btn?.click();
-                      }} />
-                    </div>
-                  )}
-                </div>
-              )}
+              {/* Past shows section — grouped by year in grid view */}
+              {pastReviews.length > 0 && (() => {
+                // Group past reviews by year (from date_seen or created_at)
+                const reviewsByYear: Record<string, UserReview[]> = {};
+                for (const review of pastReviews) {
+                  const dateStr = review.date_seen || review.created_at;
+                  const year = dateStr ? new Date(dateStr.includes('T') ? dateStr : dateStr + 'T00:00:00').getFullYear().toString() : 'Unknown';
+                  if (!reviewsByYear[year]) reviewsByYear[year] = [];
+                  reviewsByYear[year].push(review);
+                }
+                // Sort years descending (newest first), with 'Unknown' at end
+                const sortedYears = Object.keys(reviewsByYear).sort((a, b) => {
+                  if (a === 'Unknown') return 1;
+                  if (b === 'Unknown') return -1;
+                  return diarySort === 'date-asc' ? a.localeCompare(b) : b.localeCompare(a);
+                });
+                const hasOtherSections = upcomingReviews.length > 0 || upcomingWatchlistEntries.length > 0 || toBeRatedEntries.length > 0;
+                const showYearHeaders = diaryView === 'grid' || sortedYears.length > 1 || hasOtherSections;
+
+                return (
+                  <div className="space-y-6">
+                    {sortedYears.map((year, yearIdx) => (
+                      <div key={year}>
+                        {showYearHeaders && (
+                          <div className="flex items-center justify-between mb-3">
+                            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">{year}</h3>
+                            <span className="text-[11px] text-gray-500">{reviewsByYear[year].length} {reviewsByYear[year].length === 1 ? 'entry' : 'entries'}</span>
+                          </div>
+                        )}
+                        {diaryView === 'list' ? (
+                          <div className="space-y-2">
+                            {reviewsByYear[year].map(review => (
+                              <DiaryCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={async () => { await effectiveDeleteReview(review.id); showToast?.('Rating deleted.', 'info'); }} />
+                            ))}
+                            {yearIdx === sortedYears.length - 1 && (
+                              <AddShowCard context="diary" variant="list" onOpen={() => {
+                                const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add a show to diary"], [aria-label="Rate a show"]');
+                                btn?.click();
+                              }} />
+                            )}
+                          </div>
+                        ) : (
+                          <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                            {reviewsByYear[year].map(review => (
+                              <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={async () => { await effectiveDeleteReview(review.id); showToast?.('Rating deleted.', 'info'); }} />
+                            ))}
+                            {yearIdx === sortedYears.length - 1 && (
+                              <AddShowCard context="diary" onOpen={() => {
+                                const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add a show to diary"], [aria-label="Rate a show"]');
+                                btn?.click();
+                              }} />
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                );
+              })()}
             </>
           )}
         </div>
@@ -582,37 +619,93 @@ export default function MyShowsClient() {
               ctaLabel="Browse Shows"
               ctaHref="/"
             />
-          ) : watchlistView === 'grid' ? (
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-              {sortedWatchlist.map(entry => (
-                <WatchlistCard
-                  key={entry.id}
-                  entry={entry}
-                  show={showMap[entry.show_id]}
-                  onDateChange={(date) => effectiveUpdatePlannedDate(entry.show_id, date)}
-                  onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
-                />
-              ))}
-              <AddShowCard context="watchlist" onOpen={() => {
-                const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
-                btn?.click();
-              }} />
-            </div>
           ) : (
-            <div className="space-y-2">
-              {sortedWatchlist.map(entry => (
-                <WatchlistListItem
-                  key={entry.id}
-                  entry={entry}
-                  show={showMap[entry.show_id]}
-                  onDateChange={(date) => effectiveUpdatePlannedDate(entry.show_id, date)}
-                  onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
-                />
-              ))}
-              <AddShowCard context="watchlist" variant="list" onOpen={() => {
-                const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
-                btn?.click();
-              }} />
+            <div className="space-y-6">
+              {/* Not yet booked section */}
+              {unbookedWatchlist.length > 0 && (
+                <div>
+                  {bookedWatchlist.length > 0 && (
+                    <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Not yet booked</h3>
+                  )}
+                  {watchlistView === 'grid' ? (
+                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                      {unbookedWatchlist.map(entry => (
+                        <WatchlistCard
+                          key={entry.id}
+                          entry={entry}
+                          show={showMap[entry.show_id]}
+                          onDateChange={(date) => effectiveUpdatePlannedDate(entry.show_id, date)}
+                          onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                        />
+                      ))}
+                      <AddShowCard context="watchlist" onOpen={() => {
+                        const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
+                        btn?.click();
+                      }} />
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      {unbookedWatchlist.map(entry => (
+                        <WatchlistListItem
+                          key={entry.id}
+                          entry={entry}
+                          show={showMap[entry.show_id]}
+                          onDateChange={(date) => effectiveUpdatePlannedDate(entry.show_id, date)}
+                          onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                        />
+                      ))}
+                      <AddShowCard context="watchlist" variant="list" onOpen={() => {
+                        const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
+                        btn?.click();
+                      }} />
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Booked section */}
+              {bookedWatchlist.length > 0 && (
+                <div>
+                  <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Booked</h3>
+                  {watchlistView === 'grid' ? (
+                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                      {bookedWatchlist.map(entry => (
+                        <WatchlistCard
+                          key={entry.id}
+                          entry={entry}
+                          show={showMap[entry.show_id]}
+                          onDateChange={(date) => effectiveUpdatePlannedDate(entry.show_id, date)}
+                          onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                        />
+                      ))}
+                      {unbookedWatchlist.length === 0 && (
+                        <AddShowCard context="watchlist" onOpen={() => {
+                          const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
+                          btn?.click();
+                        }} />
+                      )}
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      {bookedWatchlist.map(entry => (
+                        <WatchlistListItem
+                          key={entry.id}
+                          entry={entry}
+                          show={showMap[entry.show_id]}
+                          onDateChange={(date) => effectiveUpdatePlannedDate(entry.show_id, date)}
+                          onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                        />
+                      ))}
+                      {unbookedWatchlist.length === 0 && (
+                        <AddShowCard context="watchlist" variant="list" onOpen={() => {
+                          const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
+                          btn?.click();
+                        }} />
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -784,16 +877,11 @@ function DiaryGridCard({ review, show, onDelete }: { review: UserReview; show?: 
           </button>
         )}
       </Link>
-      {/* Stars + date below image — fixed height for consistent grid cards */}
-      <div className="px-2 py-1.5 text-center">
-        <div className="flex justify-center gap-0.5 mb-0.5 min-h-[14px]">
-          {review.rating > 0 && <MiniStars rating={review.rating} size="sm" />}
+      {/* Stars below image — centered, filled only (Mezzanine-style) */}
+      <div className="px-2 py-1.5">
+        <div className="flex justify-center gap-0.5 min-h-[18px]">
+          {review.rating > 0 && <MiniStars rating={review.rating} size="md" filledOnly />}
         </div>
-        <p className="text-[11px] font-medium text-amber-400 truncate min-h-[1em]">
-          {review.date_seen
-            ? new Date(review.date_seen + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-            : '\u00A0'}
-        </p>
       </div>
     </div>
   );
@@ -898,10 +986,10 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
   );
 }
 
-/** Render mini star icons for grid cards (filled, half, empty) */
-function MiniStars({ rating, size = 'sm' }: { rating: number; size?: 'sm' | 'lg' }) {
+/** Render mini star icons for grid cards (filled, half, empty — or filled-only) */
+function MiniStars({ rating, size = 'sm', filledOnly = false }: { rating: number; size?: 'sm' | 'md' | 'lg'; filledOnly?: boolean }) {
   const uid = useId();
-  const starClass = size === 'lg' ? 'w-5 h-5 sm:w-6 sm:h-6' : 'w-3.5 h-3.5';
+  const starClass = size === 'lg' ? 'w-5 h-5 sm:w-6 sm:h-6' : size === 'md' ? 'w-4.5 h-4.5 sm:w-5 sm:h-5' : 'w-3.5 h-3.5';
   const stars = [];
   for (let i = 1; i <= 5; i++) {
     if (i <= Math.floor(rating)) {
@@ -914,7 +1002,7 @@ function MiniStars({ rating, size = 'sm' }: { rating: number; size?: 'sm' | 'lg'
           <path className="text-amber-400" fill="currentColor" clipPath={`url(#${uid}-${i})`} d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
         </svg>
       );
-    } else {
+    } else if (!filledOnly) {
       stars.push(<svg key={i} className={`${starClass} text-gray-600`} fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>);
     }
   }

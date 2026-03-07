@@ -42,7 +42,7 @@ function ShowPageRatingInner({
 }: ShowPageRatingConnectedProps) {
   const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
   const { reviews, getReviewsForShow, deleteReview } = useUserReviews(user?.id || null);
-  const { addToWatchlist, getWatchlist } = useWatchlist(user?.id || null);
+  const { addToWatchlist, getWatchlist, watchlist } = useWatchlist(user?.id || null);
   const searchParams = useSearchParams();
 
   const { showToast } = useToastSafe();
@@ -191,6 +191,9 @@ function ShowPageRatingInner({
   // Filter reviews for this show
   const showReviews = reviews.filter(r => r.show_id === showId);
 
+  // Get watchlist planned_date for this show (pre-fill Date Seen on new ratings)
+  const watchlistDate = watchlist.find(w => w.show_id === showId)?.planned_date || null;
+
   // Feature flag check — AFTER all hooks (React rules-of-hooks)
   if (!featureFlags.userAccounts) return null;
 
@@ -201,6 +204,7 @@ function ShowPageRatingInner({
       previewDate={previewDate}
       closingDate={closingDate}
       reviews={showReviews}
+      watchlistDate={watchlistDate}
       onSaveReview={handleSaveReview}
       onDeleteReview={handleDeleteReview}
       onAuthRequired={handleAuthRequired}

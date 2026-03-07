@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { featureFlags } from '@/config/feature-flags';
+import { saveReturnUrl } from '@/lib/deferred-auth';
 import type { UserProfile } from '@/types/user';
 
 interface HamburgerMenuProps {
@@ -102,6 +103,7 @@ export default function HamburgerMenu({
                   <button
                     type="button"
                     onClick={() => {
+                      saveReturnUrl('/my-shows');
                       close();
                       onSignIn?.();
                     }}

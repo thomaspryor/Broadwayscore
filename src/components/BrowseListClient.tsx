@@ -7,6 +7,7 @@ import { SCORE_TIERS, getScoreTier, ScoreBadge, FormatPill, ProductionPill, Audi
 import type { ScoreTier } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
+import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 
 // Serialized show data passed from server component
 export interface BrowseShow {
@@ -115,7 +116,8 @@ const ShowCard = memo(function ShowCard({
         className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group flex-1 min-w-0"
       >
         {/* Thumbnail */}
-        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
+        <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
+          <ShowPageBookmark showId={show.id} size="sm" />
           {show.images?.thumbnail ? (
             <img
               src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
