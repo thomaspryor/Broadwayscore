@@ -27,12 +27,33 @@ const SHOW_SCORE_URLS_PATH = path.join(DATA_DIR, 'show-score-urls.json');
 const DTLI_SLUG_MAP_PATH = path.join(DATA_DIR, 'dtli-slug-map.json');
 const ARCHIVE_DIR = path.join(DATA_DIR, 'aggregator-archive');
 
+// Not-found cache: per-aggregator files tracking shows confirmed absent
+function notFoundCachePath(aggregator: string): string {
+  return path.join(ARCHIVE_DIR, aggregator, '_not-found.json');
+}
+
+function loadNotFoundForAggregator(aggregator: string): Record<string, string> {
+  try {
+    return JSON.parse(fs.readFileSync(notFoundCachePath(aggregator), 'utf8'));
+  } catch {
+    return {};
+  }
+}
+
+function saveNotFoundForAggregator(aggregator: string, cache: Record<string, string>): void {
+  const dir = path.join(ARCHIVE_DIR, aggregator);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(notFoundCachePath(aggregator), JSON.stringify(cache, null, 2));
+}
+
 // Types
 interface Show {
   id: string;
   title: string;
   slug: string;
   category?: 'broadway' | 'off-broadway';
+  market?: string;
+  venue?: string;
 }
 
 interface FetchResult {
@@ -453,11 +474,27 @@ async function main() {
   try {
     for (const aggregator of aggregators) {
       console.log(`\n--- ${aggregator.toUpperCase()} ---`);
+      const notFound = loadNotFoundForAggregator(aggregator);
+      let skippedNotFound = 0;
+      let skippedMarket = 0;
 
       for (const showId of showIds) {
+        const show = shows[showId];
+
+        // Skip West End shows — Show Score and DTLI only cover Broadway/OB
+        if (show && (show.market === 'west-end' || showId.includes('-west-end-'))) {
+          skippedMarket++;
+          continue;
+        }
+
         // Skip if file exists and not forcing
         if (!force && archiveExists(aggregator, showId)) {
-          console.log(`[${showId}] Skipping (file exists)`);
+          continue;
+        }
+
+        // Skip if previously confirmed not found (unless forcing)
+        if (!force && notFound[showId]) {
+          skippedNotFound++;
           continue;
         }
 
@@ -468,13 +505,26 @@ async function main() {
         if (result.success) {
           console.log(`[${showId}] Success`);
           if (aggregator === 'show-score') fetchedShowScore = true;
+          delete notFound[showId];
         } else {
           console.log(`[${showId}] Failed: ${result.error}`);
+          // Cache "not found" failures (not transient errors like timeouts/network)
+          const isNotFound = result.error?.includes('No Broadway page found') ||
+                             result.error?.includes('No DTLI slug') ||
+                             result.error?.includes('Show not found') ||
+                             result.error?.includes('Page not found or wrong production');
+          if (isNotFound) {
+            notFound[showId] = new Date().toISOString().split('T')[0];
+          }
         }
 
         // Small delay between requests
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
+
+      saveNotFoundForAggregator(aggregator, notFound);
+      if (skippedNotFound > 0) console.log(`  Skipped ${skippedNotFound} shows (previously not found)`);
+      if (skippedMarket > 0) console.log(`  Skipped ${skippedMarket} shows (wrong market)`);
     }
   } finally {
     await browser.close();
