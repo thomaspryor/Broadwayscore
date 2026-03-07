@@ -386,10 +386,10 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
                 return (
                   <div className="space-y-2" data-testid="show-score-section">
-                    {/* Score row */}
+                    {/* Score row: box + label + review count */}
                     <div className="flex items-start gap-3 sm:gap-4">
                       {scoreBox}
-                      <div className="pt-0.5">
+                      <div className="pt-0.5 min-w-0">
                         {showTBD ? (
                           <div className="text-base sm:text-lg font-bold text-gray-400">Awaiting Reviews</div>
                         ) : sentiment && (
@@ -404,8 +404,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                               Based on {reviewCount} Critic {reviewCount === 1 ? 'Review' : 'Reviews'}
                             </a>
                           )}
+                          {/* Audience chip — inline on desktop where there's room */}
                           {hasAudience && audienceGrade && (
-                            <a href="#audience" className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-semibold hover:brightness-125 transition-all" style={{ background: `${audienceGrade.color}15`, color: audienceGrade.color }}>
+                            <a href="#audience" className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold hover:brightness-125 transition-all" style={{ background: `${audienceGrade.color}15`, color: audienceGrade.color }}>
                               <span className="opacity-60">Audience:</span> {audienceGrade.grade} · {audienceGrade.label}
                             </a>
                           )}
@@ -424,6 +425,12 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                         })()}
                       </div>
                     </div>
+                    {/* Audience chip — full-width on mobile for clean alignment */}
+                    {hasAudience && audienceGrade && (
+                      <a href="#audience" className="sm:hidden inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold hover:brightness-125 transition-all" style={{ background: `${audienceGrade.color}15`, color: audienceGrade.color }}>
+                        <span className="opacity-60">Audience:</span> {audienceGrade.grade} · {audienceGrade.label}
+                      </a>
+                    )}
 
                     {/* Review breakdown bar */}
                     {(() => {
