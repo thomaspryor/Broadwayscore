@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-03-07T06:33:24.936Z",
+  "generatedAt": "2026-03-07T22:20:41.751Z",
   "summary": {
-    "totalShows": 2299,
-    "openShows": 139,
+    "totalShows": 2301,
+    "openShows": 142,
     "closedShows": 1987
   },
   "grosses": {
@@ -10,7 +10,7 @@
     "weekEnding": "3/01/2026",
     "showCount": 1194,
     "status": "ok",
-    "daysStale": 2
+    "daysStale": 3
   },
   "statusChanges": {
     "autoClosed": [
@@ -83,6 +83,12 @@
       "daysLeft": 8
     },
     {
+      "id": "no-excuses-no-limits-off-broadway-2026",
+      "title": "No Excuses, No Limits",
+      "closingDate": "2026-03-15",
+      "daysLeft": 8
+    },
+    {
       "id": "pen-pals-off-broadway-2025",
       "title": "Pen Pals",
       "closingDate": "2026-03-15",
@@ -143,6 +149,12 @@
       "daysLeft": 15
     },
     {
+      "id": "trash-off-broadway-2026",
+      "title": "Trash",
+      "closingDate": "2026-03-28",
+      "daysLeft": 21
+    },
+    {
       "id": "the-amazing-sex-life-of-rabbits-off-broadway-2026",
       "title": "The Amazing Sex Life of Rabbits",
       "closingDate": "2026-03-28",
@@ -165,6 +177,12 @@
       "title": "It Walks Around The House At Night",
       "closingDate": "2026-03-28",
       "daysLeft": 21
+    },
+    {
+      "id": "ice-queen-off-broadway-2026",
+      "title": "Ice Queen",
+      "closingDate": "2026-03-29",
+      "daysLeft": 22
     },
     {
       "id": "night-side-songs-off-broadway-2026",
@@ -375,6 +393,20 @@
           {
             "type": "no_closing_date",
             "severity": "info"
+          }
+        ]
+      },
+      {
+        "id": "ice-queen-off-broadway-2026",
+        "title": "Ice Queen",
+        "issues": [
+          {
+            "type": "missing_synopsis",
+            "severity": "high"
+          },
+          {
+            "type": "missing_creative",
+            "severity": "medium"
           }
         ]
       },
@@ -653,6 +685,20 @@
         ]
       },
       {
+        "id": "trash-off-broadway-2026",
+        "title": "Trash",
+        "issues": [
+          {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
+          {
+            "type": "missing_age_rec",
+            "severity": "low"
+          }
+        ]
+      },
+      {
         "id": "anonymous-off-broadway-2026",
         "title": "Anonymous",
         "issues": [
@@ -761,6 +807,20 @@
           {
             "type": "missing_age_rec",
             "severity": "low"
+          }
+        ]
+      },
+      {
+        "id": "no-excuses-no-limits-off-broadway-2026",
+        "title": "No Excuses, No Limits",
+        "issues": [
+          {
+            "type": "missing_synopsis",
+            "severity": "high"
+          },
+          {
+            "type": "missing_creative",
+            "severity": "medium"
           }
         ]
       },
@@ -1789,10 +1849,6 @@
             "severity": "medium"
           },
           {
-            "type": "missing_runtime",
-            "severity": "low"
-          },
-          {
             "type": "missing_age_rec",
             "severity": "low"
           }
@@ -2121,6 +2177,7 @@
         "LOS SOLES TRUNCOS",
         "Blood/Love",
         "Silver Manhattan",
+        "Trash",
         "Anonymous",
         "Antigone (This Play I Read in High School)",
         "Chinese Republicans",
@@ -2193,6 +2250,7 @@
       "missing_creative": [
         "Mexodus",
         "Singfeld! A Musical About Nothing",
+        "Ice Queen",
         "The Unknown",
         "The Waterfall",
         "Pied à Terre",
@@ -2207,12 +2265,14 @@
         "BODY COUNT",
         "Blood/Love",
         "Silver Manhattan",
+        "Trash",
         "Anonymous",
         "Antigone (This Play I Read in High School)",
         "Chinese Republicans",
         "Meat Suit, or the s**tshow of motherhood",
         "Hold On To Your Butts",
         "The Amazing Sex Life of Rabbits",
+        "No Excuses, No Limits",
         "La Llamada",
         "Pen Pals",
         "Marcel on the Train",
@@ -2317,6 +2377,7 @@
         "AMAZE Magic"
       ],
       "missing_synopsis": [
+        "Ice Queen",
         "The Waterfall",
         "Pied à Terre",
         "Spread",
@@ -2327,6 +2388,7 @@
         "Anonymous",
         "Antigone (This Play I Read in High School)",
         "Hold On To Your Butts",
+        "No Excuses, No Limits",
         "Pen Pals",
         "Drunk Romeo & Juliet",
         "ZACK",
@@ -2366,7 +2428,6 @@
         "The Tempest - Globe",
         "The Holy Rosenbergs",
         "I'm Every Woman, The Chaka Khan Musical",
-        "Summerfolk",
         "Cabaret at the Kit Kat Club",
         "Dracula",
         "Garry Starr: Classic Penguins",
