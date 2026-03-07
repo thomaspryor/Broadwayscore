@@ -271,40 +271,44 @@ export default function ShowPageRating({
 
           {/* Previous viewings list (collapsed) */}
           {viewCount > 1 && !showPanel && (
-            <div className="mt-2 space-y-1">
+            <div className="mt-2 space-y-1.5">
               {reviews.filter(r => r.id !== latestReview?.id).slice(0, 3).map(review => (
-                <div key={review.id} className="group/viewing flex items-center flex-wrap gap-1.5 text-sm text-gray-500">
-                  <StarRating rating={review.rating} onRatingChange={() => {}} size="md" readOnly hideLabel />
-                  {review.date_seen && (
-                    <span>{new Date(review.date_seen + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                  )}
-                  <button
-                    type="button"
-                    onClick={() => handleEdit(review)}
-                    className="p-1.5 text-gray-500 hover:text-white transition-colors"
-                    aria-label="Edit this viewing"
-                  >
-                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                    </svg>
-                  </button>
-                  {confirmDeleteId === review.id ? (
-                    <span className="flex items-center gap-1 text-[10px]">
-                      <button type="button" onClick={() => handleDelete(review.id)} className="text-red-400 hover:text-red-300 font-medium">Delete?</button>
-                      <button type="button" onClick={() => setConfirmDeleteId(null)} className="text-gray-500 hover:text-white">No</button>
-                    </span>
-                  ) : (
+                <div key={review.id} className="group/viewing flex items-center gap-1.5 text-sm text-gray-500">
+                  <StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel />
+                  <span className="text-xs text-gray-500 min-w-[70px]">
+                    {review.date_seen
+                      ? new Date(review.date_seen + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                      : '\u00A0'}
+                  </span>
+                  <div className="flex items-center gap-0.5 opacity-0 group-hover/viewing:opacity-100 transition-opacity">
                     <button
                       type="button"
-                      onClick={() => setConfirmDeleteId(review.id)}
-                      className="p-1.5 text-gray-500 hover:text-red-400 transition-colors"
-                      aria-label="Delete this viewing"
+                      onClick={() => handleEdit(review)}
+                      className="p-1 text-gray-500 hover:text-white transition-colors"
+                      aria-label="Edit this viewing"
                     >
-                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                       </svg>
                     </button>
-                  )}
+                    {confirmDeleteId === review.id ? (
+                      <span className="flex items-center gap-1 text-[10px]">
+                        <button type="button" onClick={() => handleDelete(review.id)} className="text-red-400 hover:text-red-300 font-medium">Delete?</button>
+                        <button type="button" onClick={() => setConfirmDeleteId(null)} className="text-gray-500 hover:text-white">No</button>
+                      </span>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setConfirmDeleteId(review.id)}
+                        className="p-1 text-gray-500 hover:text-red-400 transition-colors"
+                        aria-label="Delete this viewing"
+                      >
+                        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
@@ -318,64 +322,40 @@ export default function ShowPageRating({
           )}
         </div>
 
-        {/* Watchlist button + inline date — hidden on mobile (shown inline above) */}
+        {/* Watchlist button — hidden on mobile (shown inline in header above) */}
         <div className="hidden sm:flex flex-shrink-0 flex-col items-center">
           <WatchlistButton
             isWatchlisted={isWatchlisted}
             onToggle={handleToggleWatchlist}
             loading={watchlistLoading}
           />
-          {isWatchlisted && (
-            <>
-              {/* Inline date picker */}
-              <label className="mt-1.5 flex items-center gap-1 text-[11px] text-gray-500 hover:text-gray-300 transition-colors cursor-pointer relative">
-                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                <span>
-                  {watchlistDate
-                    ? new Date(watchlistDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-                    : 'Add date'}
-                </span>
-                <input
-                  type="date"
-                  value={watchlistDate || ''}
-                  onChange={e => onUpdateWatchlistDate?.(e.target.value || null)}
-                  className="absolute inset-0 opacity-[0.01] cursor-pointer w-full h-full"
-                />
-              </label>
-              <Link href="/my-shows?tab=watchlist" className="mt-1 text-[11px] text-gray-500 hover:text-brand transition-colors">
-                See Watchlist
-              </Link>
-            </>
-          )}
         </div>
-
-        {/* Mobile-only: watchlist date + link below the watchlist button */}
-        {isWatchlisted && (
-          <div className="sm:hidden flex items-center gap-3 -mt-1 ml-auto">
-            <label className="flex items-center gap-1 text-[11px] text-gray-500 hover:text-gray-300 transition-colors cursor-pointer relative">
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              <span>
-                {watchlistDate
-                  ? new Date(watchlistDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-                  : 'Add date'}
-              </span>
-              <input
-                type="date"
-                value={watchlistDate || ''}
-                onChange={e => onUpdateWatchlistDate?.(e.target.value || null)}
-                className="absolute inset-0 opacity-[0.01] cursor-pointer w-full h-full"
-              />
-            </label>
-            <Link href="/my-shows?tab=watchlist" className="text-[11px] text-gray-500 hover:text-brand transition-colors whitespace-nowrap">
-              See Watchlist
-            </Link>
-          </div>
-        )}
       </div>
+
+      {/* Watchlist date + link — shown as a tidy row below the main section */}
+      {isWatchlisted && (
+        <div className="flex items-center gap-3 mt-2">
+          <label className="flex items-center gap-1 text-[11px] text-gray-500 hover:text-gray-300 transition-colors cursor-pointer relative">
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span>
+              {watchlistDate
+                ? new Date(watchlistDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                : 'Add date'}
+            </span>
+            <input
+              type="date"
+              value={watchlistDate || ''}
+              onChange={e => onUpdateWatchlistDate?.(e.target.value || null)}
+              className="absolute inset-0 opacity-[0.01] cursor-pointer w-full h-full"
+            />
+          </label>
+          <Link href="/my-shows?tab=watchlist" className="text-[11px] text-gray-500 hover:text-brand transition-colors whitespace-nowrap">
+            See Watchlist
+          </Link>
+        </div>
+      )}
 
       {/* Expandable review panel */}
       {showPanel && currentRating !== null && (

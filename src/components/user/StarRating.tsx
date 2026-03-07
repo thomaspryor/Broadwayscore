@@ -30,7 +30,7 @@ export default function StarRating({ rating, onRatingChange, size = 'md', readOn
   const handleMouseMove = useCallback((e: React.MouseEvent, starIndex: number) => {
     if (readOnly) return;
     isTouchDevice.current = false;
-    const rect = (e.target as HTMLElement).getBoundingClientRect();
+    const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const isLeftHalf = x < rect.width / 2;
     setHoverRating(isLeftHalf ? starIndex - 0.5 : starIndex);
@@ -46,7 +46,7 @@ export default function StarRating({ rating, onRatingChange, size = 'md', readOn
 
     // Desktop: use hover position for half-star precision
     if (!isTouchDevice.current) {
-      const rect = (e.target as HTMLElement).getBoundingClientRect();
+      const rect = e.currentTarget.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const isLeftHalf = x < rect.width / 2;
       const newRating = isLeftHalf ? starIndex - 0.5 : starIndex;
