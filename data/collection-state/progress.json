@@ -387,7 +387,15 @@
     "hamlet-off-broadway-2026/dc-theater-arts--deb-miller.json",
     "harry-potter-2021/broadwayworld--michael-dale.json",
     "harry-potter-2021/dtli--ana-zambrana.json",
-    "harry-potter-2021/financialtimes--charles-isherwood.json"
+    "harry-potter-2021/financialtimes--charles-isherwood.json",
+    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+    "harry-potter-2021/times-uk--ann-treneman.json",
+    "harry-potter-and-the-cursed-child-both-parts-west-end-2021/financialtimes--sarah-hemming.json",
+    "harry-potter-and-the-cursed-child-both-parts-west-end-2021/independent--jack-shepherd.json",
+    "harry-potter-and-the-cursed-child-both-parts-west-end-2021/telegraph--dominic-cavendish.json",
+    "harry-potter-and-the-cursed-child-both-parts-west-end-2021/whatsonstage--sarah-crompton.json",
+    "heathers-the-musical-off-broadway-2025/digital-journal--mark-papadatos.json",
+    "heathers-the-musical-off-broadway-2025/frontmezzjunkies--ross.json"
   ],
   "failed": [
     "it-walks-around-the-house-at-night-west-end-2026/broadwayworld--unknown.json",
@@ -466,7 +474,9 @@
     "giant-2026/london-theatre--julia-rank.json",
     "hadestown-west-end-2024/times-uk--clive-davis.json",
     "hamilton-2015/ap--mark-kennedy.json",
-    "harry-potter-2021/broadway-and-me--janice-c-simpson.json"
+    "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
+    "harry-potter-2021/usatoday--kelly-lawler.json",
+    "harry-potter-and-the-cursed-child-both-parts-west-end-2021/thestage--mark-shenton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -644,7 +654,12 @@
       "hamilton-west-end-2021/financialtimes--sarah-hemming.json",
       "hamilton-west-end-2021/whatsonstage--sarah-crompton.json",
       "hamlet-off-broadway-2026/dc-theater-arts--deb-miller.json",
-      "harry-potter-2021/financialtimes--charles-isherwood.json"
+      "harry-potter-2021/financialtimes--charles-isherwood.json",
+      "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+      "harry-potter-and-the-cursed-child-both-parts-west-end-2021/financialtimes--sarah-hemming.json",
+      "harry-potter-and-the-cursed-child-both-parts-west-end-2021/whatsonstage--sarah-crompton.json",
+      "heathers-the-musical-off-broadway-2025/digital-journal--mark-papadatos.json",
+      "heathers-the-musical-off-broadway-2025/frontmezzjunkies--ross.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -789,7 +804,10 @@
       "death-of-a-salesman-2026/latimes--charles-mcnulty.json",
       "hadestown-2019/chicagotribune--chris-jones.json",
       "hamilton-west-end-2021/independent--paul-taylor.json",
-      "harry-potter-2021/dtli--ana-zambrana.json"
+      "harry-potter-2021/dtli--ana-zambrana.json",
+      "harry-potter-2021/times-uk--ann-treneman.json",
+      "harry-potter-and-the-cursed-child-both-parts-west-end-2021/independent--jack-shepherd.json",
+      "harry-potter-and-the-cursed-child-both-parts-west-end-2021/telegraph--dominic-cavendish.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -808,7 +826,9 @@
       "data/review-texts/harry-potter-2021/wsj--terry-teachout.json",
       "data/review-texts/what-we-did-before-our-moth-days-off-broadway-2026/wsj--charles-isherwood.json",
       "data/review-texts/and-juliet-2022/broadway-blog--joey-sims.json",
-      "data/review-texts/hamilton-2015/ap--mark-kennedy.json"
+      "data/review-texts/hamilton-2015/ap--mark-kennedy.json",
+      "data/review-texts/harry-potter-2021/usatoday--kelly-lawler.json",
+      "data/review-texts/harry-potter-and-the-cursed-child-both-parts-west-end-2021/thestage--mark-shenton.json"
     ],
     "archive": [
       "tru-off-broadway-2026/theatermania--unknown.json",
@@ -926,7 +946,7 @@
     ]
   },
   "startTime": "2026-03-06T17:15:52.929Z",
-  "lastProcessed": "harry-potter-2021/financialtimes--charles-isherwood.json",
+  "lastProcessed": "heathers-the-musical-off-broadway-2025/frontmezzjunkies--ross.json",
   "log": [
     {
       "t": "2026-03-06T18:51:51.105Z",
@@ -1268,6 +1288,17 @@
       "t": "2026-03-06T20:36:08.256Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-07T04:07:24.382Z",
+      "event": "bb-session",
+      "session": "827d6cec",
+      "url": "https://www.thestage.co.uk/reviews/2016/harry-potter-cursed-child-review-palace-"
+    },
+    {
+      "t": "2026-03-07T04:07:25.639Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
