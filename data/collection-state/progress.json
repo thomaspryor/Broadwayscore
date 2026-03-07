@@ -209,7 +209,10 @@
     "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
     "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
     "the-unknown-off-broadway-2026/nytimes--helen-shaw.json",
-    "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json"
+    "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json",
+    "chinese-republicans-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
+    "cold-war-choir-practice-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
+    "shadowlands-west-end-2026/guardian--arifa-akbar.json"
   ],
   "failed": [
     "mexodus-off-broadway-2026/nytg--austin-fimmano.json",
@@ -251,7 +254,14 @@
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
     "the-lion-king-west-end-2021/thestage--unknown.json",
     "what-we-did-before-our-moth-days-off-broadway-2026/buy-tickets--unknown.json",
-    "hadestown-2019/newyorker--hilton-als.json"
+    "hadestown-2019/newyorker--hilton-als.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "anne-teresa-de-keersmaeker-exit-above-off-broadway-2026/broadwaynews--unknown.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/theatermania--unknown.json",
+    "cats-the-jellicle-ball-2026/timeout--david-cote.json",
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "los-soles-truncos-off-broadway-2025/broadwaynews--aa-cristi.json",
+    "lost-in-del-valle-off-broadway-2026/theatermania--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -413,7 +423,8 @@
       "operation-mincemeat-west-end-2024/guardian--emma-john.json",
       "broken-glass-west-end-2026/nytimes--unknown.json",
       "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
-      "the-unknown-off-broadway-2026/nytimes--helen-shaw.json"
+      "the-unknown-off-broadway-2026/nytimes--helen-shaw.json",
+      "shadowlands-west-end-2026/guardian--arifa-akbar.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -438,7 +449,8 @@
       "data/review-texts/mexodus-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
       "data/review-texts/mexodus-off-broadway-2026/front-row-center--holli-harms.json",
       "data/review-texts/mexodus-off-broadway-2026/theater-scene--victor-gluck.json",
-      "data/review-texts/what-we-did-before-our-moth-days-off-broadway-2026/buy-tickets--unknown.json"
+      "data/review-texts/what-we-did-before-our-moth-days-off-broadway-2026/buy-tickets--unknown.json",
+      "data/review-texts/harry-potter-2021/wsj--terry-teachout.json"
     ],
     "archive": [
       "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
@@ -523,11 +535,13 @@
       "dirty-books-off-broadway-2025/nytg--unknown.json",
       "los-soles-truncos-off-broadway-2025/nytg--unknown.json",
       "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
-      "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json"
+      "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json",
+      "chinese-republicans-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
+      "cold-war-choir-practice-off-broadway-2026/broadwaynews--chloe-rabinowitz.json"
     ]
   },
   "startTime": "2026-03-07T09:54:22.824Z",
-  "lastProcessed": "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json",
+  "lastProcessed": "shadowlands-west-end-2026/guardian--arifa-akbar.json",
   "log": [
     {
       "t": "2026-03-07T10:49:42.495Z",
@@ -726,6 +740,17 @@
       "t": "2026-03-07T11:56:56.967Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-07T11:58:37.165Z",
+      "event": "bb-session",
+      "session": "5f7cf9f4",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-07T11:58:38.582Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
