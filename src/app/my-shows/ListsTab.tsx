@@ -233,9 +233,12 @@ function ListRow({ list, showMap, onClick }: { list: UserList; showMap: ShowMap;
     >
       <div className="flex-1 min-w-0">
         <h4 className="font-bold text-white text-base truncate">{list.name}</h4>
+        {list.description && (
+          <p className="text-[11px] text-gray-600 truncate mt-0.5">{list.description}</p>
+        )}
         <p className="text-xs text-gray-500 mt-0.5">
           {list.item_count || 0} {(list.item_count || 0) === 1 ? 'Show' : 'Shows'}
-          {list.is_ranked && <span className="ml-1.5 text-amber-400/60">#</span>}
+          {list.is_ranked && <span className="ml-1.5 text-[10px] font-semibold text-amber-400/70 bg-amber-400/10 px-1.5 py-0.5 rounded">Ranked</span>}
         </p>
       </div>
       {/* Poster previews */}
@@ -277,6 +280,8 @@ function ListDetailView({
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [showOverflow, setShowOverflow] = useState(false);
   const [showAddSearch, setShowAddSearch] = useState(false);
+  const [confirmRemoveId, setConfirmRemoveId] = useState<string | null>(null);
+  const confirmTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const overflowRef = useRef<HTMLDivElement>(null);
 
   // Close overflow on outside click
@@ -356,6 +361,10 @@ function ListDetailView({
           )}
         </div>
       </div>
+      <p className="text-xs text-gray-500 mb-1">
+        {items.length} {items.length === 1 ? 'Show' : 'Shows'}
+        {list.is_ranked && <span className="ml-1.5 text-[10px] font-semibold text-amber-400/70 bg-amber-400/10 px-1.5 py-0.5 rounded">Ranked</span>}
+      </p>
       {list.description && (
         <p className="text-sm text-gray-400 mb-4">{list.description}</p>
       )}
@@ -408,17 +417,33 @@ function ListDetailView({
                   {show?.venue && <p className="text-sm text-gray-500 truncate">{show.venue}</p>}
                 </div>
 
-                {/* Remove button */}
-                <button
-                  type="button"
-                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRemoveShow(item.show_id); }}
-                  className="relative z-[1] p-1.5 text-gray-600 hover:text-red-400 transition-colors opacity-0 group-hover/item:opacity-100 sm:opacity-0 sm:group-hover/item:opacity-100"
-                  aria-label={`Remove ${title} from list`}
-                >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
+                {/* Remove button — 2-step confirm with 4s auto-reset */}
+                {confirmRemoveId === item.id ? (
+                  <div className="relative z-[1] flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRemoveShow(item.show_id); setConfirmRemoveId(null); }}
+                      className="text-xs font-medium text-red-400 hover:text-red-300"
+                    >Remove?</button>
+                    <button
+                      type="button"
+                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirmRemoveId(null); }}
+                      className="text-xs text-gray-500 hover:text-white"
+                    >No</button>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault(); e.stopPropagation();
+                      setConfirmRemoveId(item.id);
+                      if (confirmTimerRef.current) clearTimeout(confirmTimerRef.current);
+                      confirmTimerRef.current = setTimeout(() => setConfirmRemoveId(null), 4000);
+                    }}
+                    className="relative z-[1] text-xs text-gray-600 hover:text-red-400 transition-colors"
+                    aria-label={`Remove ${title} from list`}
+                  >Remove</button>
+                )}
 
                 {/* Chevron */}
                 <svg className="relative z-[1] w-4 h-4 text-gray-600 flex-shrink-0 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -678,17 +703,20 @@ function ListModal({
           )}
 
           {/* Ranked toggle */}
-          <div className="flex items-center justify-between py-2">
-            <span className="text-sm text-white">Ranked list</span>
-            <button
-              type="button"
-              onClick={() => setIsRanked(!isRanked)}
-              className={`relative w-11 h-6 rounded-full transition-colors ${isRanked ? 'bg-brand' : 'bg-white/20'}`}
-              role="switch"
-              aria-checked={isRanked}
-            >
-              <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${isRanked ? 'translate-x-[22px]' : 'translate-x-0.5'}`} />
-            </button>
+          <div>
+            <div className="flex items-center justify-between py-2">
+              <span className="text-sm text-white">Ranked list</span>
+              <button
+                type="button"
+                onClick={() => setIsRanked(!isRanked)}
+                className={`relative w-11 h-6 rounded-full transition-colors ${isRanked ? 'bg-brand' : 'bg-white/20'}`}
+                role="switch"
+                aria-checked={isRanked}
+              >
+                <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${isRanked ? 'translate-x-[22px]' : 'translate-x-0.5'}`} />
+              </button>
+            </div>
+            <p className="text-[11px] text-gray-500 -mt-1">Numbers your shows 1, 2, 3…</p>
           </div>
 
           {/* Delete */}
