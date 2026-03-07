@@ -480,9 +480,9 @@ export default function MyShowsClient() {
                           ? new Date(entry.planned_date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
                           : null;
                         return (
-                          <div key={`wl-${entry.id}`} className="relative flex items-center gap-3 sm:gap-4 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
+                          <div key={`wl-${entry.id}`} className="relative flex items-center gap-3 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
                             <Link href={entryHref} className="absolute inset-0 z-0" aria-label={`View ${entryTitle}`} />
-                            <div className="relative z-[1] flex-shrink-0 w-12 sm:w-20 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay pointer-events-none">
+                            <div className="relative z-[1] flex-shrink-0 w-14 sm:w-16 aspect-square rounded-lg overflow-hidden bg-surface-overlay pointer-events-none">
                               {entryShow?.posterUrl ? (
                                 <img src={entryShow.posterUrl} alt="" className="w-full h-full object-cover" />
                               ) : (
@@ -490,11 +490,11 @@ export default function MyShowsClient() {
                               )}
                             </div>
                             <div className="relative z-[1] flex-1 min-w-0 pointer-events-none">
-                              <h4 className="font-bold text-white text-base sm:text-lg truncate">{entryTitle}</h4>
-                              {entryShow?.venue && <p className="text-xs sm:text-sm text-gray-500 truncate">{entryShow.venue}</p>}
+                              <h4 className="font-bold text-white text-base truncate">{entryTitle}</h4>
+                              {entryShow?.venue && <p className="text-sm text-gray-500 truncate">{entryShow.venue}</p>}
                             </div>
                             <div className="relative z-[1] flex-shrink-0 text-right pointer-events-none">
-                              {entryFormattedDate && <p className="text-xs sm:text-sm font-medium text-amber-400">{entryFormattedDate}</p>}
+                              {entryFormattedDate && <p className="text-sm font-medium text-amber-400">{entryFormattedDate}</p>}
                               {daysUntil !== null && daysUntil > 0 && (
                                 <p className="text-[10px] text-gray-500 mt-0.5">
                                   {daysUntil === 1 ? 'Tomorrow' : `${daysUntil}d`}
@@ -635,12 +635,12 @@ function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: Show
   const href = getShowHref(slug, category);
 
   return (
-    <div className="group/diary relative flex items-center gap-3 sm:gap-4 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
+    <div className="group/diary relative flex items-center gap-3 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
       {/* Link overlay for the whole card */}
       <Link href={href} className="absolute inset-0 z-0" aria-label={`View ${title}`} />
 
-      {/* Poster */}
-      <div className="relative z-[1] pointer-events-none flex-shrink-0 w-12 sm:w-20 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay">
+      {/* Poster — square thumbnail to match homepage cards */}
+      <div className="relative z-[1] pointer-events-none flex-shrink-0 w-14 sm:w-16 aspect-square rounded-lg overflow-hidden bg-surface-overlay">
         {show?.posterUrl ? (
           <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
         ) : (
@@ -648,15 +648,12 @@ function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: Show
         )}
       </div>
 
-      {/* Info */}
+      {/* Info — date above review text, consistent font sizes */}
       <div className="relative z-[1] pointer-events-none flex-1 min-w-0">
-        <h4 className="font-bold text-white text-base sm:text-lg group-hover/diary:text-brand transition-colors truncate">{title}</h4>
-        {show?.venue && <p className="text-xs sm:text-sm text-gray-500 truncate">{show.venue}</p>}
-        {review.review_text && (
-          <p className="text-xs text-gray-500 mt-1.5 line-clamp-1">{review.review_text}</p>
-        )}
+        <h4 className="font-bold text-white text-base group-hover/diary:text-brand transition-colors truncate">{title}</h4>
+        {show?.venue && <p className="text-sm text-gray-500 truncate">{show.venue}</p>}
         {review.date_seen && (
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-amber-400/70 mt-0.5">
             {new Date(review.date_seen + 'T00:00:00').toLocaleDateString('en-US', {
               month: 'short',
               day: 'numeric',
@@ -664,17 +661,19 @@ function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: Show
             })}
           </p>
         )}
+        {review.review_text && (
+          <p className="text-xs text-gray-500 mt-0.5 line-clamp-1 italic">{review.review_text}</p>
+        )}
       </div>
 
       {/* Rating + edit icon */}
-      <div className="relative z-[1] pointer-events-none flex-shrink-0 flex flex-col items-center gap-0.5 w-12 sm:w-16 md:w-28 overflow-hidden">
-        {/* Single star + number on mobile, full stars on desktop */}
+      <div className="relative z-[1] pointer-events-none flex-shrink-0 flex flex-col items-center gap-0.5">
+        {/* Single star + number on mobile, full stars on desktop — no "stars" label */}
         <span className="md:hidden flex items-center gap-1">
           <svg className="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-          <span className="text-base font-bold text-amber-400">{review.rating % 1 === 0 ? review.rating.toFixed(0) : review.rating.toFixed(1)} stars</span>
+          <span className="text-base font-bold text-amber-400">{review.rating % 1 === 0 ? review.rating.toFixed(0) : review.rating.toFixed(1)}</span>
         </span>
         <span className="hidden md:inline-flex"><StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel /></span>
-        <span className="hidden md:block text-sm font-bold text-amber-400">{review.rating.toFixed(1)} stars</span>
         {/* Edit + delete icons — inline below rating, always visible on mobile, hover on desktop */}
         <div className="flex items-center justify-center gap-0.5 opacity-100 sm:opacity-0 sm:group-hover/diary:opacity-100 transition-opacity pointer-events-auto">
           <Link
@@ -991,20 +990,20 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
     : null;
 
   return (
-    <div className="group/wl relative flex items-center gap-3 sm:gap-4 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
+    <div className="group/wl relative flex items-center gap-3 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
       <Link href={href} className="absolute inset-0 z-0" aria-label={`View ${title}`} />
 
-      <div className="relative z-[1] flex-shrink-0 w-12 sm:w-20 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay">
+      <div className="relative z-[1] flex-shrink-0 w-14 sm:w-16 aspect-square rounded-lg overflow-hidden bg-surface-overlay">
         {show?.posterUrl ? (
           <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-600 text-lg sm:text-xl">🎭</div>
+          <div className="w-full h-full flex items-center justify-center text-gray-600 text-xl">🎭</div>
         )}
       </div>
 
       <div className="relative z-[1] flex-1 min-w-0">
-        <h4 className="font-bold text-white text-base sm:text-lg group-hover/wl:text-brand transition-colors truncate">{title}</h4>
-        <p className="text-xs sm:text-sm text-gray-500 truncate">{show?.venue}</p>
+        <h4 className="font-bold text-white text-base group-hover/wl:text-brand transition-colors truncate">{title}</h4>
+        <p className="text-sm text-gray-500 truncate">{show?.venue}</p>
         {isClosingSoon && (
           <span className="inline-block mt-1 px-1.5 py-0.5 text-[9px] font-bold uppercase bg-amber-500/90 text-black rounded">Closing Soon</span>
         )}
@@ -1290,20 +1289,20 @@ function ToBeRatedCard({ entry, show }: { entry: WatchlistEntry; show?: ShowLook
   const href = getShowHref(slug, category);
 
   return (
-    <div className="relative flex items-center gap-3 sm:gap-4 px-3 sm:px-5 py-3 rounded-xl bg-amber-500/[0.03] border border-amber-500/10 hover:border-amber-500/20 hover:bg-amber-500/[0.06] transition-colors">
+    <div className="relative flex items-center gap-3 px-3 sm:px-5 py-3 rounded-xl bg-amber-500/[0.03] border border-amber-500/10 hover:border-amber-500/20 hover:bg-amber-500/[0.06] transition-colors">
       <Link href={href} className="absolute inset-0 z-0" aria-label={`Rate ${title}`} />
-      <div className="relative z-[1] flex-shrink-0 w-12 sm:w-20 aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay pointer-events-none">
+      <div className="relative z-[1] flex-shrink-0 w-14 sm:w-16 aspect-square rounded-lg overflow-hidden bg-surface-overlay pointer-events-none">
         {show?.posterUrl ? (
           <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-600 text-lg sm:text-xl">🎭</div>
+          <div className="w-full h-full flex items-center justify-center text-gray-600 text-xl">🎭</div>
         )}
       </div>
       <div className="relative z-[1] flex-1 min-w-0 pointer-events-none">
-        <h4 className="font-bold text-white text-base sm:text-lg truncate">{title}</h4>
-        {show?.venue && <p className="text-xs sm:text-sm text-gray-500 truncate">{show.venue}</p>}
+        <h4 className="font-bold text-white text-base truncate">{title}</h4>
+        {show?.venue && <p className="text-sm text-gray-500 truncate">{show.venue}</p>}
         {entry.planned_date && (
-          <p className="text-[11px] sm:text-xs text-gray-500 mt-0.5 whitespace-nowrap">
+          <p className="text-xs text-amber-400/70 mt-0.5 whitespace-nowrap">
             Saw {new Date(entry.planned_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
           </p>
         )}
