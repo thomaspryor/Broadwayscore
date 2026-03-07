@@ -433,12 +433,13 @@ function ListDetailView({
         <button
           type="button"
           onClick={() => setShowAddSearch(true)}
-          className="mt-4 flex items-center gap-2 text-sm text-brand hover:text-brand/80 transition-colors"
+          className="mt-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-gray-400 hover:text-white bg-white/[0.06] hover:bg-white/10 border border-white/10 transition-colors text-xs font-medium"
+          aria-label="Add a show to this list"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
           </svg>
-          Add a show...
+          <span>Add show</span>
         </button>
       )}
     </div>
@@ -503,9 +504,9 @@ function ListAddShowSearch({
   useEffect(() => { setResults(filteredResults); }, [filteredResults]);
 
   return (
-    <div className="space-y-2">
-      <div className="flex items-center gap-2">
-        <div className="relative flex-1">
+    <div className="relative">
+      <div className="flex items-center gap-1.5">
+        <div className="relative">
           <input
             ref={inputRef}
             type="text"
@@ -515,17 +516,17 @@ function ListAddShowSearch({
               if (e.key === 'Escape') onClose();
               if (e.key === 'Enter' && results.length > 0) onSelect(results[0].id);
             }}
-            placeholder="Search for a show..."
-            className="w-full px-3 py-2 pl-8 text-sm bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/50"
+            placeholder="Search to add..."
+            className="w-40 sm:w-52 px-3 py-1.5 pl-8 text-xs bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand/50"
           />
-          <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </div>
         <button
           type="button"
           onClick={onClose}
-          className="p-2 text-gray-500 hover:text-white transition-colors"
+          className="p-1 text-gray-500 hover:text-white"
           aria-label="Close search"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -534,7 +535,7 @@ function ListAddShowSearch({
         </button>
       </div>
       {query.length >= 2 && (
-        <div className="bg-surface-raised border border-white/10 rounded-lg overflow-hidden max-h-64 overflow-y-auto">
+        <div className="absolute top-full left-0 mt-1.5 w-[calc(100vw-2rem)] sm:w-80 bg-surface-raised border border-white/10 rounded-lg shadow-xl overflow-hidden z-[80] max-h-72 overflow-y-auto">
           {results.length > 0 ? results.map(show => {
             const alreadyAdded = existingShowIds.has(show.id);
             return (
@@ -551,9 +552,17 @@ function ListAddShowSearch({
                 )}
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-medium text-white truncate">{show.title}</div>
-                  <div className="text-[10px] text-gray-500">
-                    {show.venue && <span>{show.venue}</span>}
-                    {show.od && <span> · {show.od.slice(0, 4)}</span>}
+                  <div className="text-[10px] text-gray-500 flex items-center gap-1.5">
+                    <span className={`px-1 py-0.5 rounded font-medium ${
+                      show.status === 'open' ? 'bg-green-500/20 text-green-400' :
+                      show.status === 'previews' ? 'bg-yellow-500/20 text-yellow-400' :
+                      'bg-gray-500/20 text-gray-400'
+                    }`}>
+                      {show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'Previews' : 'Closed'}
+                    </span>
+                    <span className="truncate">
+                      {[show.venue, show.od?.slice(0, 4)].filter(Boolean).join(' · ')}
+                    </span>
                   </div>
                 </div>
                 <span className="text-[10px] text-gray-500 flex-shrink-0">
