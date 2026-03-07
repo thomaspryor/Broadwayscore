@@ -5208,7 +5208,18 @@ function findReviewsToProcess() {
         // Skip misattributed/wrong reviews (unless explicitly targeting wrong_content)
         const isWrongContent = data.wrongAttribution || data.wrongProduction || data.wrongShow;
         if (isWrongContent && !CONFIG.incompleteReasonFilter.includes('wrong_content')) {
-          continue;
+          // Allow retry for collector-flagged wrongShow files (bad scrape of correct URL)
+          // These have wrongShowReason starting with "Collector LLM" — distinguishes from
+          // cross-show collisions ("Cross-show") and scorer flags (no wrongShowReason)
+          const isCollectorFlagged = data.wrongShow && typeof data.wrongShowReason === 'string'
+            && data.wrongShowReason.startsWith('Collector LLM');
+          const retryAge = data.wrongShowRetryAt ? Date.now() - new Date(data.wrongShowRetryAt).getTime() : Infinity;
+          const retryAllowed = isCollectorFlagged && retryAge > 14 * 24 * 60 * 60 * 1000; // 14-day cooldown
+          if (!retryAllowed) {
+            continue;
+          }
+          // Mark retry attempt timestamp
+          data._wrongShowRetrying = true;
         }
 
         // Skip if already has good text (unless retrying failed or filtering by reason)
@@ -5831,6 +5842,28 @@ async function processReview(review) {
       } catch (e) {}
     }
 
+    // For collector-flagged wrongShow retries: clear flags if re-fetch succeeded with valid content
+    if (review._wrongShowRetrying && review.filePath) {
+      try {
+        const postData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+        const cv = postData.contentVerification;
+        if (cv && cv.isValid && !cv.wrongArticle) {
+          // Re-fetch got correct content — clear wrongShow flags
+          delete postData.wrongShow;
+          delete postData.wrongShowReason;
+          delete postData.wrongShowRetryAt;
+          delete postData.wrongFullText;
+          console.log(`    ✓ wrongShow cleared — re-fetch got correct content`);
+        } else {
+          // Still wrong — update retry timestamp to enforce cooldown
+          postData.wrongShowRetryAt = new Date().toISOString();
+          console.log(`    ✗ wrongShow retry failed — still wrong content, next retry in 14 days`);
+        }
+        delete postData._wrongShowRetrying;
+        fs.writeFileSync(review.filePath, JSON.stringify(postData, null, 2) + '\n');
+      } catch (e) {}
+    }
+
     return { success: true, method: result.method, validation };
 
   } catch (error) {
@@ -5936,6 +5969,16 @@ async function processReview(review) {
       };
     }
     stats.failuresByOutlet[outletName].count++;
+
+    // For wrongShow retries that failed: update retry timestamp to enforce cooldown
+    if (review._wrongShowRetrying && review.filePath) {
+      try {
+        const postData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+        postData.wrongShowRetryAt = new Date().toISOString();
+        delete postData._wrongShowRetrying;
+        fs.writeFileSync(review.filePath, JSON.stringify(postData, null, 2) + '\n');
+      } catch (e) {}
+    }
 
     return { success: false, error: error.message };
   }
