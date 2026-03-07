@@ -35,17 +35,44 @@ CREATE TABLE watchlist (
   UNIQUE(user_id, show_id)
 );
 
+-- 4. Lists table (user-created collections of shows)
+CREATE TABLE lists (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  description TEXT,
+  is_ranked BOOLEAN NOT NULL DEFAULT false,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- 5. List items table (shows within a list)
+CREATE TABLE list_items (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  list_id UUID NOT NULL REFERENCES lists(id) ON DELETE CASCADE,
+  show_id TEXT NOT NULL,
+  position REAL NOT NULL DEFAULT 0,
+  note TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE(list_id, show_id)
+);
+
 -- Indexes for common queries
 CREATE INDEX idx_reviews_user_id ON reviews(user_id);
 CREATE INDEX idx_reviews_show_id ON reviews(show_id);
 CREATE INDEX idx_reviews_user_show ON reviews(user_id, show_id);
 CREATE INDEX idx_watchlist_user_id ON watchlist(user_id);
 CREATE INDEX idx_watchlist_user_show ON watchlist(user_id, show_id);
+CREATE INDEX idx_lists_user_id ON lists(user_id);
+CREATE INDEX idx_list_items_list_id ON list_items(list_id);
+CREATE INDEX idx_list_items_list_show ON list_items(list_id, show_id);
 
 -- Row Level Security (RLS) — users can only access their own data
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
 ALTER TABLE watchlist ENABLE ROW LEVEL SECURITY;
+ALTER TABLE lists ENABLE ROW LEVEL SECURITY;
+ALTER TABLE list_items ENABLE ROW LEVEL SECURITY;
 
 -- Profiles: users can read/update their own profile
 CREATE POLICY "Users can view own profile"
@@ -93,6 +120,56 @@ CREATE POLICY "Users can update own watchlist"
 CREATE POLICY "Users can delete own watchlist"
   ON watchlist FOR DELETE
   USING (auth.uid() = user_id);
+
+-- Lists: users can CRUD their own lists
+CREATE POLICY "Users can view own lists"
+  ON lists FOR SELECT
+  USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert own lists"
+  ON lists FOR INSERT
+  WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update own lists"
+  ON lists FOR UPDATE
+  USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete own lists"
+  ON lists FOR DELETE
+  USING (auth.uid() = user_id);
+
+-- List items: users can CRUD items in their own lists
+CREATE POLICY "Users can view own list items"
+  ON list_items FOR SELECT
+  USING (EXISTS (SELECT 1 FROM lists WHERE lists.id = list_items.list_id AND lists.user_id = auth.uid()));
+
+CREATE POLICY "Users can insert own list items"
+  ON list_items FOR INSERT
+  WITH CHECK (EXISTS (SELECT 1 FROM lists WHERE lists.id = list_items.list_id AND lists.user_id = auth.uid()));
+
+CREATE POLICY "Users can update own list items"
+  ON list_items FOR UPDATE
+  USING (EXISTS (SELECT 1 FROM lists WHERE lists.id = list_items.list_id AND lists.user_id = auth.uid()));
+
+CREATE POLICY "Users can delete own list items"
+  ON list_items FOR DELETE
+  USING (EXISTS (SELECT 1 FROM lists WHERE lists.id = list_items.list_id AND lists.user_id = auth.uid()));
+
+-- Reorder list items atomically (SECURITY DEFINER — validates list ownership internally)
+CREATE OR REPLACE FUNCTION reorder_list_items(p_list_id UUID, p_item_ids UUID[], p_positions REAL[])
+RETURNS VOID AS $$
+BEGIN
+  -- Verify caller owns the list
+  IF NOT EXISTS (SELECT 1 FROM lists WHERE id = p_list_id AND user_id = auth.uid()) THEN
+    RAISE EXCEPTION 'Not authorized';
+  END IF;
+
+  FOR i IN 1..array_length(p_item_ids, 1) LOOP
+    UPDATE list_items SET position = p_positions[i]
+    WHERE id = p_item_ids[i] AND list_id = p_list_id;
+  END LOOP;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- Auto-create profile on signup
 CREATE OR REPLACE FUNCTION handle_new_user()
