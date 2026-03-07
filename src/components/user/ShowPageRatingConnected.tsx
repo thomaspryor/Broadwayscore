@@ -6,6 +6,7 @@ import ShowPageRating from './ShowPageRating';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserReviews } from '@/hooks/useUserReviews';
 import { useWatchlist } from '@/hooks/useWatchlist';
+import { useUserLists } from '@/hooks/useUserLists';
 import { useToastSafe } from '@/components/ui/Toast';
 import { savePendingAction, getPendingAction, clearPendingAction } from '@/lib/deferred-auth';
 import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
@@ -43,6 +44,7 @@ function ShowPageRatingInner({
   const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
   const { reviews, getReviewsForShow, deleteReview } = useUserReviews(user?.id || null);
   const { addToWatchlist, getWatchlist, watchlist } = useWatchlist(user?.id || null);
+  const { addToList, createList } = useUserLists(user?.id || null);
   const searchParams = useSearchParams();
 
   const { showToast } = useToastSafe();
@@ -158,6 +160,21 @@ function ShowPageRatingInner({
         showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success');
       }).catch(() => {
         showToast?.('Failed to add to watchlist.', 'error');
+      });
+    } else if (pending.type === 'add-to-list' && pending.listId) {
+      addToList(pending.listId, showId).then(() => {
+        showToast?.(<>Added to <a href={`/my-shows?tab=lists&list=${pending.listId}`} className="underline hover:text-white/90">your list</a></>, 'success');
+      }).catch(() => {
+        showToast?.('Failed to add to list.', 'error');
+      });
+    } else if (pending.type === 'create-list-and-add' && pending.listName) {
+      createList(pending.listName).then(async (newList) => {
+        if (newList) {
+          await addToList(newList.id, showId);
+          showToast?.(<>Added to <a href={`/my-shows?tab=lists&list=${newList.id}`} className="underline hover:text-white/90">{pending.listName}</a></>, 'success');
+        }
+      }).catch(() => {
+        showToast?.('Failed to create list.', 'error');
       });
     } else {
       showToast?.('Signed in successfully!', 'success');
