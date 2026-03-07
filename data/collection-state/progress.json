@@ -552,7 +552,13 @@
     "six-the-musical-west-end-2021/theatre-weekly--greg-stewart.json",
     "six-the-musical-west-end-2021/thestage--mark-shenton.json",
     "six-the-musical-west-end-2021/whatsonstage--daisy-bowie-sell.json",
-    "starlight-express-west-end-2024/i-paper--fiona-mountford.json"
+    "starlight-express-west-end-2024/i-paper--fiona-mountford.json",
+    "starlight-express-west-end-2024/independent--tim-bano.json",
+    "starlight-express-west-end-2024/london-theatre--marianka-swain.json",
+    "starlight-express-west-end-2024/telegraph--dominic-cavendish.json",
+    "starlight-express-west-end-2024/times-uk--clive-davis.json",
+    "starlight-express-west-end-2024/west-end-best-friend--jenny-ell.json",
+    "starlight-express-west-end-2024/whatsonstage--sarah-crompton.json"
   ],
   "failed": [
     "it-walks-around-the-house-at-night-west-end-2026/broadwayworld--unknown.json",
@@ -696,7 +702,11 @@
     "shadowlands-west-end-2026/times-uk--clive-davis.json",
     "showstopper-the-improvised-musical-west-end-2023/telegraph--dominic-cavendish.json",
     "six-the-musical-west-end-2021/standard--fiona-mountford.json",
-    "six-the-musical-west-end-2021/theatre-bee-uk--theatre-bee-uk.json"
+    "six-the-musical-west-end-2021/theatre-bee-uk--theatre-bee-uk.json",
+    "starlight-express-west-end-2024/thestage--paul-vale.json",
+    "stranger-things-2024/broadwayworld--alexander-cohen.json",
+    "stranger-things-2024/theater-scene--joseph-pisano.json",
+    "stranger-things-2024/thestage--dave-fargnoli.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -993,7 +1003,11 @@
       "six-the-musical-west-end-2021/london-theatre--sam-marlowe.json",
       "six-the-musical-west-end-2021/theatre-weekly--greg-stewart.json",
       "six-the-musical-west-end-2021/whatsonstage--daisy-bowie-sell.json",
-      "starlight-express-west-end-2024/i-paper--fiona-mountford.json"
+      "starlight-express-west-end-2024/i-paper--fiona-mountford.json",
+      "starlight-express-west-end-2024/london-theatre--marianka-swain.json",
+      "starlight-express-west-end-2024/times-uk--clive-davis.json",
+      "starlight-express-west-end-2024/west-end-best-friend--jenny-ell.json",
+      "starlight-express-west-end-2024/whatsonstage--sarah-crompton.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -1171,7 +1185,10 @@
       "shadowlands-west-end-2026/independent--alice-saville.json",
       "shadowlands-west-end-2026/telegraph--dominic-cavendish.json",
       "showstopper-the-improvised-musical-west-end-2023/independent--gillian-orr.json",
-      "six-the-musical-west-end-2021/independent--ava-wong-davies.json"
+      "six-the-musical-west-end-2021/independent--ava-wong-davies.json",
+      "starlight-express-west-end-2024/independent--tim-bano.json",
+      "starlight-express-west-end-2024/telegraph--dominic-cavendish.json",
+      "stranger-things-2024/theater-scene--joseph-pisano.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1204,7 +1221,10 @@
       "data/review-texts/heathers-the-musical-off-broadway-2025/usatoday--elysa-gardner.json",
       "data/review-texts/perfect-crime-off-broadway-1987/billboard--bww-news-desk.json",
       "data/review-texts/shadowlands-west-end-2026/thestage--holly-o-mahony.json",
-      "data/review-texts/shadowlands-west-end-2026/thestage--mahony.json"
+      "data/review-texts/shadowlands-west-end-2026/thestage--mahony.json",
+      "data/review-texts/starlight-express-west-end-2024/thestage--paul-vale.json",
+      "data/review-texts/stranger-things-2024/broadwayworld--alexander-cohen.json",
+      "data/review-texts/stranger-things-2024/thestage--dave-fargnoli.json"
     ],
     "archive": [
       "tru-off-broadway-2026/theatermania--unknown.json",
@@ -1339,7 +1359,7 @@
     ]
   },
   "startTime": "2026-03-06T17:15:52.929Z",
-  "lastProcessed": "starlight-express-west-end-2024/i-paper--fiona-mountford.json",
+  "lastProcessed": "stranger-things-2024/thestage--dave-fargnoli.json",
   "log": [
     {
       "t": "2026-03-06T18:51:51.105Z",
@@ -1778,6 +1798,28 @@
     },
     {
       "t": "2026-03-07T05:16:56.773Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-07T05:23:44.245Z",
+      "event": "bb-session",
+      "session": "5fc775ef",
+      "url": "https://www.thestage.co.uk/reviews/starlight-express-review-troubadour-wembley-p"
+    },
+    {
+      "t": "2026-03-07T05:23:45.570Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-07T05:31:30.931Z",
+      "event": "bb-session",
+      "session": "fde61c7f",
+      "url": "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-"
+    },
+    {
+      "t": "2026-03-07T05:31:32.122Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
