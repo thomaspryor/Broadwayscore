@@ -29,7 +29,7 @@ interface MezzExport {
   };
 }
 
-// Our search-shows.json shape
+// Our search-shows.json shape (also covers diary-search.json grouped entries)
 interface SearchShow {
   id: string;
   title: string;
@@ -38,6 +38,8 @@ interface SearchShow {
   venue?: string;
   category?: string;
   images?: { thumbnail?: string };
+  prods?: { id: string; v?: string; ci?: string; co?: string; cat?: string }[];
+  gid?: string;
 }
 
 interface MatchedEntry {
@@ -84,11 +86,42 @@ export default function MezzanineImport({
       import('fuse.js/basic') as Promise<{ default: typeof Fuse }>,
     ]);
     const data: SearchShow[] = await res.json();
-    // Merge diary shows if available
+    // Merge diary shows — expand multi-prod groups into individual entries and add
+    // diary entries with distinct venues for venue-aware import matching.
     if (diaryRes?.ok) {
       try {
         const diaryData: SearchShow[] = await diaryRes.json();
-        data.push(...diaryData);
+        const existingVenues = new Map<string, Set<string>>();
+        for (const s of data) {
+          const key = s.title.toLowerCase();
+          if (!existingVenues.has(key)) existingVenues.set(key, new Set());
+          if (s.venue) existingVenues.get(key)!.add(s.venue.toLowerCase());
+        }
+        for (const s of diaryData) {
+          const titleLower = s.title.toLowerCase();
+          // Expand multi-prod groups into individual entries with venues
+          if (s.prods) {
+            for (const p of s.prods) {
+              const venue = p.v || '';
+              if (venue && !(existingVenues.get(titleLower)?.has(venue.toLowerCase()))) {
+                data.push({ id: p.id, title: s.title, slug: p.id, status: s.status || 'closed', venue, category: p.cat });
+                if (!existingVenues.has(titleLower)) existingVenues.set(titleLower, new Set());
+                existingVenues.get(titleLower)!.add(venue.toLowerCase());
+              }
+            }
+            continue;
+          }
+          const existingSet = existingVenues.get(titleLower);
+          // Skip if no venue to differentiate, and title already exists
+          if (!s.venue && existingSet) continue;
+          // Skip if same venue already in data
+          if (s.venue && existingSet?.has(s.venue.toLowerCase())) continue;
+          data.push(s);
+          if (s.venue) {
+            if (!existingVenues.has(titleLower)) existingVenues.set(titleLower, new Set());
+            existingVenues.get(titleLower)!.add(s.venue.toLowerCase());
+          }
+        }
       } catch { /* ignore parse errors */ }
     }
     showsRef.current = data;
@@ -102,13 +135,30 @@ export default function MezzanineImport({
 
   const matchShow = useCallback((name: string, venue?: string): { match: SearchShow | null; score: number } => {
     if (!fuseRef.current) return { match: null, score: 0 };
-    // Try exact title match first
-    const exact = showsRef.current.find(s => s.title.toLowerCase() === name.toLowerCase());
-    if (exact) return { match: exact, score: 1 };
+    const nameLower = name.toLowerCase();
+
+    // Try exact title match — venue-aware when venue is provided
+    const exactAll = showsRef.current.filter(s => s.title.toLowerCase() === nameLower);
+    if (exactAll.length > 0) {
+      if (venue) {
+        const venueNorm = venue.toLowerCase().replace(/theatre|theater/gi, '').trim();
+        const venueMatch = exactAll.find(s =>
+          s.venue && s.venue.toLowerCase().replace(/theatre|theater/gi, '').trim().includes(venueNorm)
+        );
+        if (venueMatch) return { match: venueMatch, score: 1 };
+        // No venue match among exact titles — fall through to Fuse for better matching
+      } else {
+        return { match: exactAll[0], score: 1 };
+      }
+    }
 
     // Fuzzy match
-    const results = fuseRef.current.search(name, { limit: 3 });
-    if (results.length === 0) return { match: null, score: 0 };
+    const results = fuseRef.current.search(name, { limit: 5 });
+    if (results.length === 0) {
+      // Fall back to first exact match if Fuse found nothing
+      if (exactAll.length > 0) return { match: exactAll[0], score: 1 };
+      return { match: null, score: 0 };
+    }
 
     // If venue provided, prefer matches with same venue
     if (venue) {
