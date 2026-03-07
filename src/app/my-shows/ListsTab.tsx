@@ -33,15 +33,27 @@ export default function ListsTab({ userId, showMap, isMockMode }: ListsTabProps)
   const activeListId = searchParams.get('list');
 
   const {
-    lists, loading, getLists, getListItems,
+    lists: realLists, loading: realLoading, getLists, getListItems,
     createList, updateList, deleteList,
     addToList, removeFromList, reorderList,
   } = useUserLists(userId);
 
+  const [mockData, setMockData] = useState<{ lists: UserList[]; items: Record<string, ListItem[]> } | null>(null);
   const [listItems, setListItems] = useState<ListItem[]>([]);
   const [listItemsLoading, setListItemsLoading] = useState(false);
   const [showModal, setShowModal] = useState<'create' | 'edit' | null>(null);
   const [editingList, setEditingList] = useState<UserList | null>(null);
+
+  // Mock mode: load mock data
+  useEffect(() => {
+    if (!isMockMode) return;
+    import('./__dev-mock-data').then(mod => {
+      setMockData({ lists: mod.mockLists, items: mod.mockListItems });
+    });
+  }, [isMockMode]);
+
+  const lists = isMockMode && mockData ? mockData.lists : realLists;
+  const loading = isMockMode ? !mockData : realLoading;
 
   // Load lists on mount
   useEffect(() => {
@@ -52,13 +64,18 @@ export default function ListsTab({ userId, showMap, isMockMode }: ListsTabProps)
 
   // Load items when viewing a specific list
   useEffect(() => {
-    if (!activeListId || !userId || isMockMode) return;
+    if (!activeListId) return;
+    if (isMockMode && mockData) {
+      setListItems(mockData.items[activeListId] || []);
+      return;
+    }
+    if (!userId || isMockMode) return;
     setListItemsLoading(true);
     getListItems(activeListId).then(items => {
       setListItems(items);
       setListItemsLoading(false);
     });
-  }, [activeListId, userId, isMockMode, getListItems]);
+  }, [activeListId, userId, isMockMode, mockData, getListItems]);
 
   const activeList = lists.find(l => l.id === activeListId);
 
