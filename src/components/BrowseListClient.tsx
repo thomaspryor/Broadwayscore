@@ -1,13 +1,8 @@
 'use client';
 
-import { useState, useMemo, memo, startTransition } from 'react';
-import Link from 'next/link';
-import { getOptimizedImageUrl } from '@/lib/images';
-import { SCORE_TIERS, getScoreTier, ScoreBadge, FormatPill, ProductionPill, AudienceChip, ToggleBar, ScoreToggle } from '@/components/show-cards';
-import type { ScoreTier } from '@/components/show-cards';
+import { useState, useMemo, startTransition } from 'react';
+import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
-import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
-import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 
 // Serialized show data passed from server component
 export interface BrowseShow {
@@ -51,17 +46,6 @@ interface BrowseListClientProps {
 }
 
 
-function RankBadge({ rank }: { rank: number }) {
-  const isTop3 = rank <= 3;
-  return (
-    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
-      isTop3 ? 'bg-accent-gold text-gray-900' : 'bg-surface-overlay text-gray-400 border border-white/10'
-    }`}>
-      {rank}
-    </div>
-  );
-}
-
 const SORT_LABELS: Record<SortOption, string> = {
   score: 'Critics',
   alpha: 'A-Z',
@@ -71,170 +55,6 @@ const SORT_LABELS: Record<SortOption, string> = {
   performances: 'Longest',
   custom: 'Default',
 };
-
-const ShowCard = memo(function ShowCard({
-  show,
-  rank,
-  showRanks,
-  isMixedType,
-  isMixedStatus,
-  scoreMode,
-}: {
-  show: BrowseShow;
-  rank: number;
-  showRanks: boolean;
-  isMixedType: boolean;
-  isMixedStatus: boolean;
-  scoreMode: ScoreMode;
-}) {
-  const isOpen = show.status === 'open' || show.status === 'previews' || show.status === 'upcoming';
-  const isWestEnd = show.category === 'west-end';
-  const isOffBroadway = show.category === 'off-broadway';
-  const durationSuffix = isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
-  const duration = isOpen ? getBroadwayDuration(show.openingDate, durationSuffix) : null;
-
-  // Determine which score/tier to display
-  let tier: ScoreTier | null = null;
-  let displayScore: number | undefined;
-
-  if (scoreMode === 'audience') {
-    // Audience mode: use audience grade
-    displayScore = show.audienceCombinedScore ?? undefined;
-    tier = getScoreTier(displayScore);
-  } else {
-    displayScore = show.criticScore?.score;
-    const reviewCount = show.criticScore?.reviewCount ?? 0;
-    const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
-    tier = hasEnoughReviews(reviewCount, show.category, t1t2) ? getScoreTier(displayScore) : null;
-  }
-
-  return (
-    <div className="flex items-center gap-3">
-      {showRanks && <RankBadge rank={rank} />}
-      <Link
-        href={`/show/${show.slug}`}
-        className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group flex-1 min-w-0"
-      >
-        {/* Thumbnail */}
-        <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
-          <ShowPageBookmark showId={show.id} size="sm" />
-          {show.images?.thumbnail ? (
-            <img
-              src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
-              alt={`${show.title} ${isWestEnd ? 'West End' : isOffBroadway ? 'Off-Broadway' : 'Broadway'} ${show.type}`}
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <span className="text-2xl">🎭</span>
-            </div>
-          )}
-        </div>
-
-        {/* Info */}
-        <div className="flex-1 min-w-0">
-          <h2 className="font-bold text-lg text-white group-hover:text-brand transition-colors truncate">
-            {show.title}
-          </h2>
-          <div className="flex flex-wrap items-center gap-1.5 mt-1">
-            {isMixedType && <FormatPill type={show.type} />}
-            {show.isRevival && <ProductionPill isRevival={true} />}
-          </div>
-          <div className="flex flex-wrap items-center gap-1.5 mt-1 text-xs text-gray-500">
-            {show.performances ? (
-              <span className="text-emerald-400">{show.performances.toLocaleString()} performances</span>
-            ) : (
-              <>
-                {duration && <span>{duration}</span>}
-                {isOpen && show.closingDate && (
-                  <span className="text-amber-400">
-                    {duration && '·'} Closes {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                  </span>
-                )}
-                {(show.status === 'previews' || show.status === 'upcoming') && show.openingDate && (
-                  <span className="text-purple-400">
-                    Opens {new Date(show.openingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                  </span>
-                )}
-              </>
-            )}
-            {isMixedStatus && !isOpen && (
-              <span className="text-orange-400">
-                {(() => {
-                  if (!show.closingDate) return 'Closed';
-                  const when = new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-                  const runLen = getRunLength(show.openingDate, show.closingDate, 'short');
-                  return runLen ? `Closed ${when}, after ${runLen}` : `Closed ${when}`;
-                })()}
-              </span>
-            )}
-          </div>
-        </div>
-
-        {/* Review Year Note - hidden on mobile */}
-        {show.reviewYearNote && scoreMode === 'critics' && (
-          <span className="hidden sm:flex flex-shrink-0 text-[10px] text-gray-400 leading-tight text-right max-w-[4.5rem] self-center">
-            {show.reviewYearNote}
-          </span>
-        )}
-
-        {/* Score */}
-        <div className="flex-shrink-0 flex flex-col items-center gap-1.5 w-20 sm:w-24">
-          {scoreMode === 'audience' ? (
-            show.audienceGrade ? (
-              <>
-                <span
-                  className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap"
-                  style={{ color: show.audienceGrade.color }}
-                >
-                  {show.audienceGrade.label}
-                </span>
-                <div
-                  className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center font-bold text-xl sm:text-2xl"
-                  style={{ backgroundColor: show.audienceGrade.color, color: show.audienceGrade.textColor }}
-                  title={show.audienceGrade.tooltip}
-                >
-                  {show.audienceGrade.grade}
-                </div>
-              </>
-            ) : (
-              <>
-                <span className="text-[9px] font-semibold uppercase tracking-wide text-gray-600 whitespace-nowrap">
-                  No Data
-                </span>
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center font-bold text-lg bg-surface-overlay text-gray-600 border border-white/10">
-                  --
-                </div>
-              </>
-            )
-          ) : (
-            <>
-              {tier ? (
-                <span
-                  className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap"
-                  style={{ color: tier.color }}
-                >
-                  {tier.label}
-                </span>
-              ) : null}
-              <ScoreBadge score={displayScore} size="md" showCrown reviewCount={show.criticScore?.reviewCount} category={show.category} tier1And2Count={(show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0)} />
-              {show.criticScore?.reviewCount && show.criticScore.reviewCount <= 2 ? (
-                <span className="text-[9px] text-gray-500 whitespace-nowrap">
-                  {show.criticScore.reviewCount} review{show.criticScore.reviewCount > 1 ? 's' : ''}
-                </span>
-              ) : show.audienceGrade ? (
-                <div className="mt-0.5">
-                  <AudienceChip grade={show.audienceGrade} />
-                </div>
-              ) : null}
-            </>
-          )}
-        </div>
-      </Link>
-    </div>
-  );
-});
 
 export default function BrowseListClient({
   shows: initialShows,
@@ -361,14 +181,17 @@ export default function BrowseListClient({
       {filteredAndSorted.length > 0 ? (
         <div className="space-y-3">
           {filteredAndSorted.map((show, index) => (
-            <ShowCard
+            <ShowListCard
               key={show.id}
               show={show}
-              rank={index + 1}
-              showRanks={showRanks}
-              isMixedType={isMixedType && typeFilter === 'all'}
+              index={index}
+              variant="compact"
+              rank={showRanks ? index + 1 : undefined}
+              showFormatPill={isMixedType && typeFilter === 'all'}
               isMixedStatus={isMixedStatus}
               scoreMode={scoreMode}
+              showPerformances={hasPerformanceData}
+              showLowReviewCount
             />
           ))}
         </div>
