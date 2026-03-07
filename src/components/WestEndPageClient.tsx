@@ -10,6 +10,7 @@ import { SCORE_TIERS, getScoreTier, getScoreColorClass, ScoreBadge, MustSeeCrown
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
 import type { ScoreTier } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
+import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 
 // Serialized show data passed from server component
 export interface WestEndShow {
@@ -120,7 +121,8 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
       style={{ animationDelay: `${index * 30}ms` }}
     >
       {/* Thumbnail */}
-      <div className="flex-shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-lg overflow-hidden bg-surface-overlay">
+      <div className="relative flex-shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-lg overflow-hidden bg-surface-overlay">
+        <ShowPageBookmark showId={show.id} size="sm" />
         <ShowImage
           sources={[
             show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'thumbnail') : null,
@@ -268,7 +270,8 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: { sh
       className="flex-shrink-0 w-28 sm:w-32 group"
     >
       <div className="relative mb-1.5">
-        <div className="rounded-lg overflow-hidden bg-surface-overlay aspect-[2/3]">
+        <div className="relative rounded-lg overflow-hidden bg-surface-overlay aspect-[2/3]">
+          <ShowPageBookmark showId={show.id} size="sm" />
           <ShowImage
             sources={[
               show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'card') : null,

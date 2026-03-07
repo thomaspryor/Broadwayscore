@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { featureFlags } from '@/config/feature-flags';
 import { useAuth } from '@/contexts/AuthContext';
+import { saveReturnUrl } from '@/lib/deferred-auth';
 
 /**
  * User icon in header — links to /my-shows when authenticated,
@@ -39,7 +40,7 @@ export default function HeaderUserIcon() {
   return (
     <button
       type="button"
-      onClick={() => showSignIn('generic')}
+      onClick={() => { saveReturnUrl('/my-shows'); showSignIn('generic'); }}
       className="p-2 text-gray-400 hover:text-white transition-colors"
       aria-label="Sign In"
     >
