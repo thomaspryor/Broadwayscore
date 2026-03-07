@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useRef, useCallback, useDeferredValue } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback, useDeferredValue, useId } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { featureFlags } from '@/config/feature-flags';
@@ -653,7 +653,7 @@ function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: Show
         <h4 className="font-bold text-white text-base group-hover/diary:text-brand transition-colors truncate">{title}</h4>
         {show?.venue && <p className="text-sm text-gray-500 truncate">{show.venue}</p>}
         {review.date_seen && (
-          <p className="text-xs text-amber-400/70 mt-0.5">
+          <p className="text-xs text-amber-400 mt-0.5">
             {new Date(review.date_seen + 'T00:00:00').toLocaleDateString('en-US', {
               month: 'short',
               day: 'numeric',
@@ -900,10 +900,8 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
 }
 
 /** Render mini star icons for grid cards (filled, half, empty) */
-let miniStarsCounter = 0;
 function MiniStars({ rating, size = 'sm' }: { rating: number; size?: 'sm' | 'lg' }) {
-  const idRef = useRef(`ms-${++miniStarsCounter}`);
-  const uid = idRef.current;
+  const uid = useId();
   const starClass = size === 'lg' ? 'w-5 h-5 sm:w-6 sm:h-6' : 'w-3.5 h-3.5';
   const stars = [];
   for (let i = 1; i <= 5; i++) {
@@ -1003,7 +1001,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
 
       <div className="relative z-[1] flex-1 min-w-0">
         <h4 className="font-bold text-white text-base group-hover/wl:text-brand transition-colors truncate">{title}</h4>
-        <p className="text-sm text-gray-500 truncate">{show?.venue}</p>
+        {show?.venue && <p className="text-sm text-gray-500 truncate">{show.venue}</p>}
         {isClosingSoon && (
           <span className="inline-block mt-1 px-1.5 py-0.5 text-[9px] font-bold uppercase bg-amber-500/90 text-black rounded">Closing Soon</span>
         )}
@@ -1302,7 +1300,7 @@ function ToBeRatedCard({ entry, show }: { entry: WatchlistEntry; show?: ShowLook
         <h4 className="font-bold text-white text-base truncate">{title}</h4>
         {show?.venue && <p className="text-sm text-gray-500 truncate">{show.venue}</p>}
         {entry.planned_date && (
-          <p className="text-xs text-amber-400/70 mt-0.5 whitespace-nowrap">
+          <p className="text-xs text-amber-400 mt-0.5 whitespace-nowrap">
             Saw {new Date(entry.planned_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
           </p>
         )}
