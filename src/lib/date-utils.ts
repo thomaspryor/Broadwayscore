@@ -62,3 +62,17 @@ export function getRunLength(
   if (remaining === 0) return `${years} year${years === 1 ? '' : 's'}`;
   return `${years} year${years === 1 ? '' : 's'}, ${remaining} month${remaining === 1 ? '' : 's'}`;
 }
+
+/** Format a date string as "Mon YYYY" (e.g. "Jan 2025") */
+export function formatOpeningDate(dateStr: string): string {
+  const date = new Date(dateStr);
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return `${months[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
+}
+
+/** Get the duration suffix for a market category */
+export function getDurationSuffix(category?: string): string {
+  if (category === 'west-end') return 'in the West End';
+  if (category === 'off-broadway') return 'Off-Broadway';
+  return 'on Broadway';
+}

@@ -42,6 +42,7 @@ function serializeShow(show: ReturnType<typeof getOffBroadwayShows>[number]): Of
     audienceCombinedScore: buzz && hasEnoughAudienceReviews(buzz) ? buzz.combinedScore : null,
     audienceGrade: buzz && hasEnoughAudienceReviews(buzz) ? getAudienceGrade(buzz.combinedScore) : null,
     creativeTeam: show.creativeTeam,
+    category: 'off-broadway',
   };
 }
 

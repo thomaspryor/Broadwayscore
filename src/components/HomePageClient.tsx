@@ -1,17 +1,13 @@
 'use client';
 
-import { useMemo, memo, useCallback, useState, startTransition, Suspense } from 'react';
+import { useMemo, useCallback, useState, startTransition, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Fuse from 'fuse.js';
-import { getOptimizedImageUrl } from '@/lib/images';
-import ShowImage from '@/components/ShowImage';
 import FooterEmailCapture from '@/components/FooterEmailCapture';
-import { SCORE_TIERS, getScoreTier, getScoreColorClass, ScoreBadge, MustSeeCrown, StatusBadge, FormatPill, ProductionPill, AudienceChip, ToggleBar, ScoreToggle } from '@/components/show-cards';
-import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
-import type { ScoreTier } from '@/components/show-cards';
+import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from '@/components/show-cards';
+import type { ScoreModeParam } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
-import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 
 // Serialized show data passed from server component
 export interface HomepageShow {
@@ -51,8 +47,6 @@ interface HomePageClientProps {
 type StatusParam = 'now_playing' | 'closed' | 'upcoming' | 'closing_soon' | 'all';
 type SortParam = 'recent' | 'score_desc' | 'score_asc' | 'alpha' | 'audience_buzz';
 type TypeParam = 'all' | 'musical' | 'play';
-type ScoreModeParam = 'critics' | 'audience';
-
 // Internal filter values
 type StatusFilter = 'all' | 'open' | 'closed' | 'previews' | 'closing_soon';
 
@@ -72,14 +66,6 @@ const statusParamToFilter: Record<StatusParam, StatusFilter> = {
 };
 
 
-// Use UTC-based formatting to avoid timezone-related hydration mismatch
-function formatOpeningDate(dateStr: string): string {
-  const date = new Date(dateStr);
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  return `${months[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
-}
-
-
 function SearchIcon() {
   return (
     <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -96,251 +82,11 @@ function ChevronRightIcon() {
   );
 }
 
-const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: { show: HomepageShow; index: number; hideStatus: boolean; scoreMode: ScoreModeParam }) {
-  const isRevival = show.isRevival === true;
-
-  // Get the appropriate score based on mode
-  let score: number | null | undefined;
-  let label: string | undefined;
-  let tier: ScoreTier | null = null;
-  let audienceGrade: HomepageShow['audienceGrade'] = null;
-
-  // Always compute critic score/tier for the chip in audience mode
-  const criticScore = show.criticScore?.score;
-  const criticTier = getScoreTier(criticScore);
-
-  if (scoreMode === 'audience') {
-    if (show.audienceCombinedScore != null && show.status !== 'previews') {
-      score = show.audienceCombinedScore;
-      audienceGrade = show.audienceGrade;
-      if (audienceGrade) {
-        label = audienceGrade.grade;
-        tier = { label: audienceGrade.grade, color: audienceGrade.color, tooltip: audienceGrade.tooltip, range: '', glow: false };
-      }
-    }
-  } else {
-    score = show.criticScore?.score;
-    tier = getScoreTier(score);
-    // Always get audience grade for the chip below critic score
-    audienceGrade = show.audienceGrade;
-  }
-
-  return (
-    <Link
-      href={`/show/${show.slug}`}
-      prefetch={false}
-      role="listitem"
-      data-testid="show-card"
-      className="group card-interactive flex items-center gap-4 px-5 py-3 animate-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
-      style={{ animationDelay: `${index * 30}ms` }}
-    >
-      {/* Thumbnail - larger square image */}
-      <div className="relative flex-shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-lg overflow-hidden bg-surface-overlay">
-        <ShowPageBookmark showId={show.id} size="sm" />
-        <ShowImage
-          sources={[
-            show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'thumbnail') : null,
-            show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'thumbnail') : null,
-            show.images?.hero ? getOptimizedImageUrl(show.images.hero, 'thumbnail') : null,
-          ]}
-          alt={`${show.title} Broadway ${show.type}`}
-          priority={index < 2}
-          loading={index < 2 ? "eager" : "lazy"}
-          width={112}
-          height={112}
-          decoding="async"
-          sizes="(min-width: 640px) 112px, 96px"
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 will-change-transform"
-          fallback={
-            <div className="w-full h-full flex flex-col items-center justify-center text-gray-500 px-2" aria-hidden="true">
-              <div className="text-2xl mb-0.5">🎭</div>
-              {(show.status === 'previews' || show.status === 'upcoming') && (
-                <div className="text-[9px] text-gray-500 text-center font-medium leading-tight">Images<br/>soon</div>
-              )}
-            </div>
-          }
-        />
-      </div>
-
-      {/* Info */}
-      <div className="flex-1 min-w-0">
-        <h3 className="font-bold text-white text-lg group-hover:text-brand transition-colors truncate">
-          {show.title}
-        </h3>
-        <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
-          <FormatPill type={show.type} />
-          <ProductionPill isRevival={isRevival} />
-          {!hideStatus && <StatusBadge status={show.status} />}
-          {show.category === 'off-broadway' && (
-            <span className="px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-purple-300 bg-purple-500/15 border border-purple-500/20 rounded">Off-Bway</span>
-          )}
-        </div>
-        <p className="text-sm text-gray-400 mt-2.5 truncate">
-          {show.status === 'previews' || show.status === 'upcoming' ? (
-            <>Opens {formatOpeningDate(show.openingDate)}</>
-          ) : show.status === 'closed' ? (
-            <span className="text-orange-400">{(() => {
-              if (!show.closingDate) return 'Closed';
-              const when = formatOpeningDate(show.closingDate);
-              const runLen = getRunLength(show.openingDate, show.closingDate, 'short');
-              return runLen ? `Closed ${when}, after ${runLen}` : `Closed ${when}`;
-            })()}</span>
-          ) : (
-            <>
-              {getBroadwayDuration(show.openingDate)}
-              {show.closingDate && (
-                <span className="text-amber-400"> · Closes {formatOpeningDate(show.closingDate)}</span>
-              )}
-            </>
-          )}
-        </p>
-      </div>
-
-      {/* Review Year Note - between info and score (hidden on mobile) */}
-      {show.reviewYearNote && scoreMode === 'critics' && (
-        <span className="hidden sm:flex flex-shrink-0 text-[10px] text-gray-400 leading-tight text-right max-w-[4.5rem] self-center">
-          {show.reviewYearNote}
-        </span>
-      )}
-
-      {/* Score Badge */}
-      <div className="flex-shrink-0 flex flex-col items-center justify-center gap-1.5 w-20 sm:w-24 overflow-visible">
-        {scoreMode === 'audience' ? (
-          // Audience mode: Big audience grade + small critic chip below
-          audienceGrade ? (
-            <>
-              <span
-                className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap"
-                style={{ color: audienceGrade.color }}
-                title={audienceGrade.tooltip}
-              >
-                {audienceGrade.label}
-              </span>
-              <div
-                className={`score-badge w-16 h-16 sm:w-20 sm:h-20 text-2xl sm:text-3xl rounded-xl font-bold${audienceGrade.grade === 'A+' ? ' audience-top-grade' : ''}`}
-                style={audienceGrade.grade === 'A+' ? {} : {
-                  backgroundColor: audienceGrade.color,
-                  color: audienceGrade.textColor,
-                  boxShadow: `0 2px 8px ${audienceGrade.color}4d`,
-                }}
-                title={audienceGrade.tooltip}
-              >
-                {audienceGrade.grade}
-              </div>
-              {criticScore != null && (
-                <div
-                  className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold mt-1"
-                  style={{ backgroundColor: `${criticTier?.color ?? '#6b7280'}20`, color: criticTier?.color ?? '#6b7280' }}
-                  title={criticTier?.tooltip}
-                >
-                  <span className="opacity-60">Critics:</span>
-                  <span>{Math.round(criticScore)}</span>
-                </div>
-              )}
-            </>
-          ) : show.status === 'previews' || show.status === 'upcoming' ? (
-            <div className="score-badge w-16 h-16 sm:w-20 sm:h-20 text-sm rounded-xl score-none font-bold text-gray-400">
-              TBD
-            </div>
-          ) : null
-        ) : (
-          // Critics mode: Show tier label + numeric score badge + audience chip
-          <>
-            {show.status === 'previews' || show.status === 'upcoming' || (show.criticScore?.reviewCount !== undefined && show.criticScore.reviewCount < 5) ? (
-              <span className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap text-gray-500">
-                Not Yet Rated
-              </span>
-            ) : tier ? (
-              <span
-                className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap"
-                style={{ color: tier.color }}
-                title={tier.tooltip}
-              >
-                {tier.label}
-              </span>
-            ) : null}
-            <ScoreBadge
-              score={score}
-              size="lg"
-              reviewCount={show.criticScore?.reviewCount}
-              status={show.status}
-              showCrown
-            />
-            {audienceGrade && (
-              <div className="mt-1">
-                <AudienceChip grade={audienceGrade} />
-              </div>
-            )}
-          </>
-        )}
-      </div>
-    </Link>
-  );
-});
-
-// Compact card for featured rows
-// NOTE: Poster images use 2:3 aspect ratio (standard Broadway poster format, e.g., 480x720)
-// Never use a landscape/hero image as a poster — source proper portrait images instead
-const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: { show: HomepageShow; priority?: boolean }) {
-  const score = show.criticScore?.score;
-
-  return (
-    <Link
-      href={`/show/${show.slug}`}
-      prefetch={false}
-      className="flex-shrink-0 w-28 sm:w-32 group"
-    >
-      {/* Poster container wrapper — relative so score overlay can escape overflow-hidden */}
-      <div className="relative mb-1.5">
-        <div className="relative rounded-lg overflow-hidden bg-surface-overlay aspect-[2/3]">
-          <ShowPageBookmark showId={show.id} size="sm" />
-          <ShowImage
-            sources={[
-              show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'card') : null,
-              show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'card') : null,
-              show.images?.hero ? getOptimizedImageUrl(show.images.hero, 'card') : null,
-            ]}
-            alt={`${show.title} Broadway ${show.type}`}
-            priority={priority}
-            loading={priority ? "eager" : "lazy"}
-            sizes="(min-width: 640px) 128px, 112px"
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-            fallback={
-              <div className="w-full h-full flex flex-col items-center justify-center text-gray-500 px-2" aria-hidden="true">
-                <div className="text-2xl mb-1">🎭</div>
-                {(show.status === 'previews' || show.status === 'upcoming') && (
-                  <div className="text-[10px] text-gray-500 text-center font-medium">Images<br/>coming soon</div>
-                )}
-              </div>
-            }
-          />
-        </div>
-        {/* Score overlay — outside overflow-hidden so crown can escape */}
-        <div className="absolute bottom-1.5 right-1.5">
-          <div className="relative overflow-visible">
-            {score !== undefined && score !== null && score >= 83 && (
-              <MustSeeCrown size="mini" />
-            )}
-            <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold ${
-              score === undefined || score === null ? 'bg-surface-overlay text-gray-400' : getScoreColorClass(score)
-            }`}>
-              {score !== undefined && score !== null ? Math.round(score) : '—'}
-            </div>
-          </div>
-        </div>
-      </div>
-      <h3 className="font-semibold text-white text-sm group-hover:text-brand transition-colors line-clamp-2 leading-tight">
-        {show.title}
-      </h3>
-    </Link>
-  );
-});
-
 function ShowCardList({ shows, hideStatus, scoreMode }: { shows: HomepageShow[]; hideStatus: boolean; scoreMode: ScoreModeParam }) {
   return (
     <div className="space-y-3" role="list" aria-label="Broadway shows">
       {shows.map((show, index) => (
-        <ShowCard key={show.id} show={show} index={index} hideStatus={hideStatus} scoreMode={scoreMode} />
+        <ShowListCard key={show.id} show={show} index={index} hideStatus={hideStatus} scoreMode={scoreMode} showCategoryBadge />
       ))}
     </div>
   );

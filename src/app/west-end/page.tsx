@@ -44,6 +44,7 @@ function serializeShow(show: ReturnType<typeof getWestEndShows>[number]): WestEn
     audienceCombinedScore: buzz && hasEnoughAudienceReviews(buzz) ? buzz.combinedScore : null,
     audienceGrade: buzz && hasEnoughAudienceReviews(buzz) ? getAudienceGrade(buzz.combinedScore) : null,
     creativeTeam: show.creativeTeam,
+    category: 'west-end',
   };
 }
 
