@@ -98,7 +98,7 @@ module.exports = async (req, res) => {
   }
 
   const lookbackDays = lookback || '2';
-  const showNames = names ? decodeURIComponent(names) : shows;
+  const showNames = names || shows;
   const marketLabel = market === 'west-end' ? 'West End' : 'Broadway';
 
   try {
