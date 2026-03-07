@@ -210,6 +210,34 @@ jobs:
             echo "No West End shows to broadcast"
           fi
 
+      - name: Send push notifications (mobile app)
+        if: steps.check.outputs.pending_shows != '' && steps.find.outputs.broadway != ''
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          # Dispatch push notification to mobile app for each Broadway show
+          IFS=',' read -ra SHOW_IDS <<< "${{ steps.find.outputs.broadway }}"
+          for SHOW_ID in "${SHOW_IDS[@]}"; do
+            # Look up slug and title from shows.json
+            SHOW_INFO=$(node -e "
+              const shows = require('./data/shows.json').shows;
+              const s = shows.find(x => x.id === '$SHOW_ID');
+              if (s) console.log(JSON.stringify({ slug: s.slug || s.id, title: s.title }));
+            ")
+            if [ -z "$SHOW_INFO" ]; then
+              echo "Show $SHOW_ID not found in shows.json, skipping push"
+              continue
+            fi
+            SLUG=$(echo "$SHOW_INFO" | jq -r '.slug')
+            TITLE=$(echo "$SHOW_INFO" | jq -r '.title')
+            echo "Dispatching push notification for: $TITLE ($SLUG)"
+            gh workflow run send-notifications.yml \
+              --repo thomaspryor/BroadwayScorecard-app \
+              -f type=reviews-in \
+              -f "show=$SLUG" \
+              -f "title=$TITLE" || echo "Push dispatch failed for $SLUG — non-critical"
+          done
 
       - name: Commit data
         if: always()
