@@ -14,6 +14,7 @@ import {
 } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { Modal } from '@/components/show-cards';
 
 interface ShowMap {
   [showId: string]: ShowLookup;
@@ -824,12 +825,8 @@ function ListModal({
   const canSave = name.trim().length > 0;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center">
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/60" onClick={onClose} />
-      {/* Modal */}
-      <div className="relative w-full sm:max-w-md bg-surface-raised border border-white/10 rounded-t-2xl sm:rounded-2xl max-h-[85vh] overflow-y-auto">
-        {/* Header */}
+    <Modal isOpen={true} onClose={onClose} maxWidth="md" bottomSheet ariaLabel={mode === 'create' ? 'Create list' : 'Edit list'}>
+      {/* Header */}
         <div className="sticky top-0 flex items-center justify-between px-4 py-3 border-b border-white/10 bg-surface-raised z-10">
           <button type="button" onClick={onClose} className="text-sm text-brand hover:text-brand/80">
             Cancel
@@ -930,7 +927,6 @@ function ListModal({
             </div>
           )}
         </div>
-      </div>
-    </div>
+    </Modal>
   );
 }

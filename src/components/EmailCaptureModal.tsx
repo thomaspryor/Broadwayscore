@@ -7,6 +7,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { track } from '@vercel/analytics';
+import { Modal, ModalCloseButton } from '@/components/show-cards';
 
 export type GateTrigger =
   | 'csv_download'
@@ -92,30 +93,6 @@ export default function EmailCaptureModal({
     }
   }, [isOpen, trigger]);
 
-  // Handle escape key (only for non-blocking modals)
-  useEffect(() => {
-    if (blocking) return;
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
-        onClose();
-      }
-    };
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
-  }, [isOpen, onClose, blocking]);
-
-  // Prevent body scroll when modal is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
-
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -160,36 +137,18 @@ export default function EmailCaptureModal({
     }
   }, [email, name, company, role, trigger, onSubmit]);
 
-  if (!isOpen) return null;
-
   return (
-    <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="modal-title"
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      maxWidth="md"
+      closeOnBackdrop={!blocking}
+      closeOnEscape={!blocking}
+      ariaLabel="Email capture"
     >
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
-        onClick={blocking ? undefined : onClose}
-        aria-hidden="true"
-      />
-
-      {/* Modal */}
-      <div className="relative w-full max-w-md bg-surface-raised rounded-2xl shadow-2xl border border-white/10 overflow-hidden">
-        {/* Close button - hidden when blocking */}
-        {!blocking && (
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors z-10"
-            aria-label="Close modal"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        )}
+      {!blocking && (
+        <ModalCloseButton onClick={onClose} className="absolute top-4 right-4 z-10" />
+      )}
 
         {/* Header */}
         <div className="px-6 pt-8 pb-4 text-center">
@@ -308,7 +267,6 @@ export default function EmailCaptureModal({
             We respect your privacy. No spam, unsubscribe anytime.
           </p>
         </form>
-      </div>
-    </div>
+    </Modal>
   );
 }

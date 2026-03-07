@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useFormspreeCapture } from '@/hooks/useFormspreeCapture';
+import { Modal, ModalCloseButton } from '@/components/show-cards';
 
 export default function HeaderSubscribeButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState('');
-  const modalRef = useRef<HTMLDivElement>(null);
   const { status, errorMessage, submit, isSubscribed, market } = useFormspreeCapture({
     userGroup: 'main-site-subscriber',
     source: 'header',
@@ -21,37 +21,11 @@ export default function HeaderSubscribeButton() {
     }
   }, [status]);
 
-  // Close on Escape
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setIsOpen(false);
-    };
-    document.addEventListener('keydown', handleKey);
-    return () => document.removeEventListener('keydown', handleKey);
-  }, [isOpen]);
-
-  // Prevent body scroll when open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => { document.body.style.overflow = ''; };
-  }, [isOpen]);
-
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     const ok = await submit(email);
     if (ok) setEmail('');
   }, [email, submit]);
-
-  const handleBackdropClick = useCallback((e: React.MouseEvent) => {
-    if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-      setIsOpen(false);
-    }
-  }, []);
 
   // Already subscribed — show checkmark button
   if (isSubscribed && !isOpen) {
@@ -77,27 +51,11 @@ export default function HeaderSubscribeButton() {
         Get the Scorecard
       </button>
 
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-[70] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4"
-          onClick={handleBackdropClick}
-          role="dialog"
-          aria-modal="true"
-          aria-label={`Subscribe to ${marketLabel} Scorecard`}
-        >
-          <div ref={modalRef} className="relative w-full max-w-sm bg-surface-raised border border-white/10 rounded-2xl p-6 shadow-2xl">
-            {/* Close button */}
-            <button
-              onClick={() => setIsOpen(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
-              aria-label="Close"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} zIndex={70} maxWidth="sm" ariaLabel={`Subscribe to ${marketLabel} Scorecard`}>
+        <div className="p-6">
+          <ModalCloseButton onClick={() => setIsOpen(false)} className="absolute top-4 right-4" />
 
-            {status === 'success' || status === 'already_subscribed' ? (
+          {status === 'success' || status === 'already_subscribed' ? (
               <div className="text-center py-4">
                 <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-emerald-400/10 flex items-center justify-center">
                   <svg className="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -138,9 +96,8 @@ export default function HeaderSubscribeButton() {
                 )}
               </>
             )}
-          </div>
         </div>
-      )}
+      </Modal>
     </>
   );
 }
