@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-07T11:31:39.765Z",
-  "processed": 143,
-  "failed": 27,
-  "successRate": "84.1%",
+  "updatedAt": "2026-03-07T11:36:37.367Z",
+  "processed": 151,
+  "failed": 29,
+  "successRate": "83.9%",
   "tierBreakdown": {
-    "playwright": 43,
+    "playwright": 46,
     "amp": 24,
-    "browserbase": 8,
+    "browserbase": 10,
     "directCookies": 3,
-    "scrapingbee": 30,
+    "scrapingbee": 31,
     "brightdata": 0,
-    "archiveToday": 14,
-    "archive": 53
+    "archiveToday": 15,
+    "archive": 56
   },
-  "browserbaseSessions": 12,
+  "browserbaseSessions": 13,
   "recentActivity": [
-    {
-      "t": "2026-03-07T10:56:55.063Z",
-      "event": "bb-session",
-      "session": "cadc6e7c",
-      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
-    },
-    {
-      "t": "2026-03-07T10:56:56.177Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-07T10:58:56.645Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-07T11:31:28.696Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-07T11:32:10.349Z",
+      "event": "bb-session",
+      "session": "799afa5d",
+      "url": "https://nypost.com/2019/10/17/little-shop-of-horrors-review-jonathan-groff-tammy"
+    },
+    {
+      "t": "2026-03-07T11:32:11.418Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
