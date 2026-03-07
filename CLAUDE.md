@@ -41,18 +41,17 @@ Scripts processing >10 items in CI: save progress incrementally, `if: always()` 
 
 ### 7a. Private Review-Texts Repo
 **NEVER commit copyrighted text or API keys to public repo** (DMCA risk).
-- `data/review-texts/` → private repo `thomaspryor/broadway-review-texts`, gitignored.
-- CI: `.github/actions/checkout-review-texts/` and `push-review-texts/` composite actions.
+- `data/review-texts/` → private repo `thomaspryor/broadway-review-texts`, gitignored. CI: `checkout-review-texts/` + `push-review-texts/`.
 - Secret: `REVIEW_TEXTS_TOKEN` (PAT, `repo` scope). Guard: `test.yml` fails if review-text files leak.
-- New workflows reading/writing review-texts MUST include both composite actions.
-- **Local changes MUST be synced:** After ANY local modification to `data/review-texts/` files (scoring, flagging, extracting, etc.), run `bash scripts/sync-review-texts.sh` before ending the session. This handles commit, conflict resolution, and push to the private repo. **Never leave local review-text changes uncommitted.**
+- New workflows MUST include both composite actions. Local changes: `bash scripts/sync-review-texts.sh` before ending session.
+
+### 7a-2. Private Aggregator Archive
+`data/aggregator-archive/` → same private repo (`aggregator-archive/` subdir), gitignored. CI: `checkout-aggregator-archive/` + `push-aggregator-archive/`. Guard in `test.yml`. New workflows MUST use both actions.
 
 ### 7b. Private Core Data Repo
-9 sensitive JSON files in `thomaspryor/broadway-scorecard-data` (see `memory/schemas-and-data.md` for list).
-- CI: `.github/actions/checkout-core-data/` and `push-core-data/` (with `if: always()`). PAT: `REVIEW_TEXTS_TOKEN`. All gitignored.
-- Deploy: terminal workflows dispatch deploys directly (not path-triggered).
-- New workflows: MUST include `checkout-core-data`. Writers MUST also include `push-core-data`.
-- **Session data check:** Run `npm run data:check` at session start. If files missing/stale → `./scripts/setup-local-data.sh`. Never make data-dependent claims without verifying data is present.
+9 JSON files in `thomaspryor/broadway-scorecard-data`. CI: `checkout-core-data/` + `push-core-data/` (with `if: always()`). PAT: `REVIEW_TEXTS_TOKEN`. All gitignored.
+- New workflows MUST include `checkout-core-data`. Writers MUST also include `push-core-data`.
+- **Session data check:** `npm run data:check` at start. Missing → `./scripts/setup-local-data.sh`.
 
 ### 8. Design System
 Use shared components from `src/components/show-cards/` — never create custom versions.
