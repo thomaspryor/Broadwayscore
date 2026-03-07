@@ -201,7 +201,15 @@
     "ragtime-2025/theatre-reviews-limited--joseph-verlezza.json",
     "ragtime-2025/timeout--adam-feldman.json",
     "ragtime-2025/wsj--charles-isherwood.json",
-    "operation-mincemeat-2025/telegraph--dominic-cavendish.json"
+    "operation-mincemeat-2025/telegraph--dominic-cavendish.json",
+    "broken-glass-west-end-2026/nytimes--unknown.json",
+    "dirty-books-off-broadway-2025/nytg--unknown.json",
+    "hadestown-2019/hollywood-reporter--david-rooney.json",
+    "los-soles-truncos-off-broadway-2025/nytg--unknown.json",
+    "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
+    "the-unknown-off-broadway-2026/nytimes--helen-shaw.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json"
   ],
   "failed": [
     "mexodus-off-broadway-2026/nytg--austin-fimmano.json",
@@ -241,7 +249,9 @@
     "mexodus-off-broadway-2026/front-row-center--holli-harms.json",
     "mexodus-off-broadway-2026/theater-scene--victor-gluck.json",
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
-    "the-lion-king-west-end-2021/thestage--unknown.json"
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/buy-tickets--unknown.json",
+    "hadestown-2019/newyorker--hilton-als.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -357,7 +367,9 @@
       "data/review-texts/masquerade-off-broadway-2025/observer--david-cote.json",
       "masquerade-off-broadway-2025/observer--david-cote.json",
       "data/review-texts/maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
-      "maybe-happy-ending-2024/nypost--johnny-oleksinski.json"
+      "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+      "data/review-texts/hadestown-2019/hollywood-reporter--david-rooney.json",
+      "hadestown-2019/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json",
@@ -398,7 +410,10 @@
       "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json",
       "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
       "operation-mincemeat-2025/broadwaynews--brittani-samuel.json",
-      "operation-mincemeat-west-end-2024/guardian--emma-john.json"
+      "operation-mincemeat-west-end-2024/guardian--emma-john.json",
+      "broken-glass-west-end-2026/nytimes--unknown.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
+      "the-unknown-off-broadway-2026/nytimes--helen-shaw.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -422,7 +437,8 @@
       "data/review-texts/mexodus-off-broadway-2026/theatermania--zachary-stewart.json",
       "data/review-texts/mexodus-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
       "data/review-texts/mexodus-off-broadway-2026/front-row-center--holli-harms.json",
-      "data/review-texts/mexodus-off-broadway-2026/theater-scene--victor-gluck.json"
+      "data/review-texts/mexodus-off-broadway-2026/theater-scene--victor-gluck.json",
+      "data/review-texts/what-we-did-before-our-moth-days-off-broadway-2026/buy-tickets--unknown.json"
     ],
     "archive": [
       "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
@@ -503,11 +519,15 @@
       "perfect-crime-off-broadway-1987/nydailynews--editorial-staff.json",
       "perfect-crime-off-broadway-1987/theatermania--unknown.json",
       "pied-a-terre-off-broadway-2026/theatermania--unknown.json",
-      "ragtime-2025/wsj--charles-isherwood.json"
+      "ragtime-2025/wsj--charles-isherwood.json",
+      "dirty-books-off-broadway-2025/nytg--unknown.json",
+      "los-soles-truncos-off-broadway-2025/nytg--unknown.json",
+      "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
+      "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-03-07T09:54:22.824Z",
-  "lastProcessed": "the-lion-king-west-end-2021/thestage--unknown.json",
+  "lastProcessed": "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json",
   "log": [
     {
       "t": "2026-03-07T10:49:42.495Z",
@@ -695,6 +715,17 @@
       "t": "2026-03-07T11:45:56.516Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-07T11:56:55.540Z",
+      "event": "bb-session",
+      "session": "751c8f0c",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-07T11:56:56.967Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
