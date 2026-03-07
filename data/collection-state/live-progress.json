@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-07T05:31:51.108Z",
-  "processed": 559,
-  "failed": 146,
-  "successRate": "79.3%",
+  "updatedAt": "2026-03-07T05:34:04.046Z",
+  "processed": 568,
+  "failed": 147,
+  "successRate": "79.4%",
   "tierBreakdown": {
-    "playwright": 297,
+    "playwright": 303,
     "amp": 26,
-    "browserbase": 36,
+    "browserbase": 38,
     "directCookies": 6,
-    "scrapingbee": 105,
+    "scrapingbee": 106,
     "brightdata": 0,
     "archiveToday": 33,
-    "archive": 129
+    "archive": 130
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-03-07T04:09:57.956Z",
-      "event": "bb-session",
-      "session": "224b289f",
-      "url": "http://www.northjersey.com/arts-and-entertainment/theater/revisiting-the-dark-si"
-    },
-    {
-      "t": "2026-03-07T04:09:59.396Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
     {
       "t": "2026-03-07T04:19:40.695Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-07T05:31:32.122Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-07T05:33:37.833Z",
+      "event": "bb-session",
+      "session": "fb1b3580",
+      "url": "https://www.amny.com/entertainment/theater/spelling-bee-returns-nails-every-word"
+    },
+    {
+      "t": "2026-03-07T05:33:38.996Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
