@@ -1,18 +1,41 @@
 {
-  "updatedAt": "2026-03-07T10:42:51.928Z",
-  "processed": 129,
+  "updatedAt": "2026-03-07T10:56:51.014Z",
+  "processed": 79,
   "failed": 21,
-  "successRate": "86.0%",
+  "successRate": "79.0%",
   "tierBreakdown": {
-    "playwright": 39,
+    "playwright": 22,
     "amp": 22,
-    "browserbase": 0,
-    "directCookies": 2,
-    "scrapingbee": 30,
+    "browserbase": 2,
+    "directCookies": 1,
+    "scrapingbee": 13,
     "brightdata": 0,
-    "archiveToday": 11,
-    "archive": 47
+    "archiveToday": 13,
+    "archive": 31
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-03-07T10:49:42.495Z",
+      "event": "bb-session",
+      "session": "c38bb851",
+      "url": "https://www.nytimes.com/2026/02/17/theater/the-dinosaurs-review-chalfant-marvel-"
+    },
+    {
+      "t": "2026-03-07T10:49:43.501Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-07T10:50:57.957Z",
+      "event": "bb-session",
+      "session": "72f8024e",
+      "url": "https://www.nytimes.com/2026/02/12/theater/the-unknown-review-sean-hayes.html"
+    },
+    {
+      "t": "2026-03-07T10:50:59.167Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
