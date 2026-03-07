@@ -10,12 +10,13 @@ First, determine the session scope:
 
 ### Phase 1: Session Inventory
 
-Identify what YOU did this session using git:
+Identify what YOU did this session using git. **Worktree-aware**: if you're in a worktree, check both the worktree branch AND main (fixes may have been committed/pushed directly to main):
 ```bash
-# Find your commits (adjust timeframe as needed)
-git log --oneline --since="2 hours ago" --author="$(git config user.name)" | head -20
-# Or diff from where you started
-git diff --stat origin/main@{2.hours.ago}..HEAD 2>/dev/null || git log --oneline -15
+# Check current worktree branch
+git log --oneline --since="2 hours ago" | head -10
+# ALSO check main in the main repo (commits may have been pushed there directly)
+MAIN_REPO=$(git worktree list | head -1 | awk '{print $1}')
+git -C "$MAIN_REPO" log --oneline --since="2 hours ago" | head -10
 ```
 
 Summarize in 3-5 bullet points. Be specific — include file names, feature names, and outcomes. Distinguish between:
@@ -37,10 +38,11 @@ For each finding, note it — don't fix it now. Just capture it for the roadmap.
 ### Phase 3: Loose Ends Audit
 
 Check for:
-1. **Unstaged changes**: `git status` — are there modified files that should be committed or discarded?
+1. **Unstaged changes**: `git status` — are there modified files that should be committed or discarded? **Worktree note**: If in a worktree, pre-existing changes from prior sessions are NOT loose ends. Only flag changes YOU made this session. Compare against the worktree's state at session start (check `git stash list` or the initial git status snapshot).
 2. **Running processes**: Any dev servers, background tasks, or watchers still running? Kill them (`kill $(lsof -ti:3456)` etc.)
-3. **Failed tests**: Run `npx tsc --noEmit 2>&1 | head -20` — are there TypeScript errors?
+3. **Failed tests**: Run `npx tsc --noEmit 2>&1 | head -20` — are there TypeScript errors in files YOU changed?
 4. **Broken deploys**: Check `gh run list --workflow="Deploy to Vercel" --limit 1 --json status,conclusion` — is the latest deploy healthy?
+5. **Worktree cleanup**: If the worktree was created for this session and all work is merged to main, note it can be removed. If the worktree pre-existed, leave it alone.
 
 ### Phase 4: Roadmap Update
 
