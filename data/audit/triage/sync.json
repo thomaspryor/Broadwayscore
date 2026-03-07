@@ -1,7 +1,7 @@
 {
   "system": "sync",
   "status": "pass",
-  "lastChecked": "2026-03-07T23:19:53.898Z",
+  "lastChecked": "2026-03-07T23:21:08.882Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Sync: review-texts vs reviews.json",
       "status": "pass",
-      "message": "31094 files, 18043 reviews (surplus: 13051)"
+      "message": "Skipped — review-texts not checked out (private repo)"
     },
     {
       "name": "Sync: open show coverage",
@@ -19,7 +19,7 @@
     {
       "name": "Sync: baseline drift",
       "status": "pass",
-      "message": "2301 shows, 141 open, 18043 reviews (all at or above baseline)"
+      "message": "2301 shows, 141 open, 18054 reviews (all at or above baseline)"
     }
   ]
 }

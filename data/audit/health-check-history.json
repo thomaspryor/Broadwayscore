@@ -1,16 +1,16 @@
 {
-  "lastRun": "2026-03-07T07:25:29.002Z",
-  "consecutiveErrorDays": 2,
+  "lastRun": "2026-03-07T23:21:08.880Z",
+  "consecutiveErrorDays": 3,
   "results": [
     {
       "name": "Freshness: reviews.json",
       "status": "pass",
-      "message": "7h old"
+      "message": "23h old"
     },
     {
       "name": "Freshness: shows.json",
       "status": "error",
-      "message": "5d old (error threshold: 4d)"
+      "message": "6d old (error threshold: 4d)"
     },
     {
       "name": "Freshness: grosses.json",
@@ -20,22 +20,22 @@
     {
       "name": "Freshness: audience-buzz.json",
       "status": "pass",
-      "message": "1d old"
+      "message": "23h old"
     },
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "3d old"
+      "message": "4d old"
     },
     {
       "name": "Freshness: critic-consensus.json",
       "status": "pass",
-      "message": "2h old"
+      "message": "15h old"
     },
     {
       "name": "Freshness: lottery-rush.json",
       "status": "pass",
-      "message": "5d old"
+      "message": "6d old"
     },
     {
       "name": "Sync: review-texts vs reviews.json",
@@ -49,8 +49,8 @@
     },
     {
       "name": "Sync: baseline drift",
-      "status": "warn",
-      "message": "Reviews dropped: 18029 vs baseline 18049"
+      "status": "pass",
+      "message": "2301 shows, 141 open, 18054 reviews (all at or above baseline)"
     },
     {
       "name": "Pipeline: rebuild-reviews",
@@ -65,7 +65,7 @@
     {
       "name": "Pipeline: collect-review-texts",
       "status": "pass",
-      "message": "Last success 3h ago"
+      "message": "Last success 1h ago"
     },
     {
       "name": "Pipeline: weekly-grosses",
@@ -75,22 +75,67 @@
     {
       "name": "Pipeline: weekly-integrity",
       "status": "pass",
-      "message": "Last success 6d ago"
+      "message": "Last success 7d ago"
     },
     {
       "name": "Pipeline: test",
       "status": "warn",
-      "message": "Last success 2d ago (threshold: 2d)"
+      "message": "Last success 3d ago (threshold: 2d)"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.7% scored (18029/18268)"
+      "message": "98.7% scored (18054/18300)"
     },
     {
       "name": "Cookies: expiration",
       "status": "warn",
       "message": "data/cookies/ not found"
+    },
+    {
+      "name": "CWV: performance",
+      "status": "warn",
+      "message": "Threshold violations: Mobile TBT 992ms"
+    },
+    {
+      "name": "SEO: health",
+      "status": "warn",
+      "message": "Last SEO check unknown ago (>14d)"
+    },
+    {
+      "name": "Cron: Update Show Status",
+      "status": "pass",
+      "message": "4h ago, success"
+    },
+    {
+      "name": "Cron: Rebuild Reviews",
+      "status": "pass",
+      "message": "0h ago, skipped"
+    },
+    {
+      "name": "Cron: Collect Review Texts",
+      "status": "pass",
+      "message": "0h ago, "
+    },
+    {
+      "name": "Cron: LLM Ensemble Score",
+      "status": "pass",
+      "message": "1h ago, success"
+    },
+    {
+      "name": "Cron: Test Suite",
+      "status": "pass",
+      "message": "0h ago, "
+    },
+    {
+      "name": "Cron: Opening Night Broadcast",
+      "status": "pass",
+      "message": "15h ago, success"
+    },
+    {
+      "name": "Secrets: health",
+      "status": "pass",
+      "message": "Last check passed (5d ago)"
     }
   ],
   "lastCleanStreak": 0
