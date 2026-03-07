@@ -569,6 +569,85 @@ ${verification && !verification.skipped ? (
   return { subject, html };
 }
 
+/**
+ * Approval email for broadcast — sent to owner after preview, with "Approve & Send" button.
+ */
+function buildBroadcastApprovalHtml(shows, approvalUrl, market) {
+  market = market || 'broadway';
+  const isWE = market === 'west-end';
+  const marketLabel = isWE ? 'West End' : 'Broadway';
+  const brandColor = isWE ? '#f472b6' : '#d4a574';
+
+  const showRows = shows.map(show => {
+    const sc = getScoreColor(show.score);
+    const scoreDisplay = show.score != null ? Math.round(show.score) : '?';
+    return `
+      <tr>
+        <td style="padding:8px 0;font-family:${FONT};font-size:15px;color:#fff;border-bottom:1px solid rgba(255,255,255,0.1);">
+          ${escapeHtml(show.showTitle)}
+        </td>
+        <td align="right" style="padding:8px 0;font-family:${FONT};font-size:15px;font-weight:700;color:${sc.bg};border-bottom:1px solid rgba(255,255,255,0.1);">
+          ${scoreDisplay}
+        </td>
+        <td align="right" style="padding:8px 0;font-family:${FONT};font-size:13px;color:rgba(255,255,255,0.5);border-bottom:1px solid rgba(255,255,255,0.1);">
+          ${show.reviewCount} reviews
+        </td>
+      </tr>`;
+  }).join('');
+
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background-color:#0f0f14;font-family:${FONT};">
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#0f0f14;">
+<tr><td align="center" style="padding:32px 16px;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width:500px;">
+
+    <!-- Header -->
+    <tr><td style="padding:0 0 24px;text-align:center;">
+      <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.5);font-family:${FONT};text-transform:uppercase;letter-spacing:1px;">
+        ${marketLabel} Broadcast Approval
+      </p>
+    </td></tr>
+
+    <!-- Title -->
+    <tr><td style="padding:0 0 8px;">
+      <h1 style="margin:0;font-size:22px;color:#fff;font-family:${FONT};text-align:center;">
+        Ready to send opening night ${shows.length === 1 ? 'email' : 'emails'}?
+      </h1>
+    </td></tr>
+
+    <tr><td style="padding:0 0 24px;">
+      <p style="margin:0;font-size:14px;color:rgba(255,255,255,0.6);font-family:${FONT};text-align:center;">
+        The following ${shows.length === 1 ? 'show is' : 'shows are'} ready for broadcast:
+      </p>
+    </td></tr>
+
+    <!-- Show list -->
+    <tr><td style="padding:0 0 24px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background:rgba(255,255,255,0.05);border-radius:8px;padding:12px 16px;">
+        ${showRows}
+      </table>
+    </td></tr>
+
+    <!-- CTA Button -->
+    <tr><td align="center" style="padding:0 0 24px;">
+      <a href="${approvalUrl}" style="display:inline-block;padding:16px 40px;background:${brandColor};color:#1a1a1a;font-size:16px;font-weight:700;font-family:${FONT};text-decoration:none;border-radius:8px;">
+        Approve &amp; Send to All Subscribers
+      </a>
+    </td></tr>
+
+    <!-- Footer -->
+    <tr><td style="padding:16px 0 0;text-align:center;border-top:1px solid rgba(255,255,255,0.1);">
+      <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.35);font-family:${FONT};">
+        This link expires tomorrow at midnight UTC. If you do nothing, no emails are sent.
+      </p>
+    </td></tr>
+
+  </table>
+</td></tr>
+</table>
+</body></html>`;
+}
+
 module.exports = {
   FONT,
   postJSON,
@@ -585,4 +664,5 @@ module.exports = {
   buildBroadcastOpeningNightHtml,
   buildFeedbackThankYouEmail,
   buildFixApprovalEmail,
+  buildBroadcastApprovalHtml,
 };

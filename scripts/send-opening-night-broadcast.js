@@ -18,11 +18,12 @@
  * Env: RESEND_API_KEY, DISCORD_WEBHOOK_ALERTS
  */
 
+const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const { sendAlert } = require('./lib/discord-notify');
 const {
-  postJSON, sleep, buildBroadcastOpeningNightHtml,
+  postJSON, sleep, buildBroadcastOpeningNightHtml, buildBroadcastApprovalHtml,
 } = require('./lib/email-templates');
 
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -424,7 +425,49 @@ async function main() {
     }
   } else {
     console.log(`\nPreview sent to ${SEND_TO}`);
-    console.log('To send to all subscribers, re-run without --send-to flag');
+
+    // Send approval email (only on 5 AM cron, not 8 AM)
+    const HMAC_SECRET = process.env.APPROVAL_HMAC_SECRET;
+    const BROADCAST_HOUR = process.env.BROADCAST_HOUR;
+    const OWNER_EMAIL = process.env.OWNER_EMAIL;
+
+    if (!HMAC_SECRET) {
+      console.log('No APPROVAL_HMAC_SECRET — skipping approval email');
+    } else if (BROADCAST_HOUR === '8') {
+      console.log('8 AM run — skipping approval email (sent at 5 AM)');
+    } else if (!OWNER_EMAIL) {
+      console.log('No OWNER_EMAIL — skipping approval email');
+    } else {
+      try {
+        const dateStr = new Date().toISOString().slice(0, 10);
+        const showIds = showsForEmail.map(s => s.showId).sort().join(',');
+        const payload = `broadcast:${showIds}:${MARKET}:${dateStr}`;
+        const hmacToken = crypto.createHmac('sha256', HMAC_SECRET).update(payload).digest('hex');
+
+        const showNames = showsForEmail.map(s => s.showTitle).join(',');
+        const approvalUrl = `https://broadwayscorecard.com/api/approve-broadcast?token=${hmacToken}&shows=${encodeURIComponent(showIds)}&market=${MARKET}&lookback=${LOOKBACK_DAYS}&names=${encodeURIComponent(showNames)}`;
+
+        const approvalHtml = buildBroadcastApprovalHtml(showsForEmail, approvalUrl, MARKET);
+
+        await postJSON('https://api.resend.com/emails', {
+          from: `${SITE_NAME} <${FROM_EMAIL}>`,
+          to: [OWNER_EMAIL],
+          subject: `[Action Required] Approve ${MARKET === 'west-end' ? 'West End' : 'Broadway'} broadcast — ${showsForEmail.map(s => s.showTitle).join(', ')}`,
+          html: approvalHtml,
+        }, {
+          'Authorization': `Bearer ${RESEND_API_KEY}`,
+        });
+
+        console.log(`Approval email sent to owner (${OWNER_EMAIL.replace(/(.{2}).*(@.*)/, '$1***$2')})`);
+      } catch (err) {
+        console.error(`ERROR sending approval email: ${err.message}`);
+        await sendAlert({
+          title: 'Broadcast Approval Email Failed',
+          description: `Could not send approval email: ${err.message}. Owner cannot approve broadcast from phone.`,
+          severity: 'error',
+        });
+      }
+    }
   }
 }
 
