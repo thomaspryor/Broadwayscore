@@ -179,7 +179,9 @@ async function main() {
 
     // Show image: prefer thumbnail → poster → hero
     const imagePath = show?.images?.thumbnail || show?.images?.poster || show?.images?.hero;
-    const imageUrl = imagePath ? `https://broadwayscorecard.com${imagePath}` : null;
+    const imageUrl = imagePath
+      ? (imagePath.startsWith('http') ? imagePath : `https://broadwayscorecard.com${imagePath}`)
+      : null;
 
     const html = openingNight
       ? buildOpeningNightHtml(showTitle, openingNight, otherChanges, showUrl, showId, email, imageUrl, market)
