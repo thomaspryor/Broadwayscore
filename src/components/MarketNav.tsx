@@ -42,7 +42,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
       <Link href={isWestEnd ? '/west-end' : '/'} className="flex items-center group">
         {isWestEnd ? (
           <>
-            <span className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">WestEnd</span>
+            <span className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">West End</span>
             <span className="text-2xl sm:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent">Scorecard</span>
           </>
         ) : (
