@@ -10,8 +10,8 @@ import type { UserReview } from '@/types/user';
  * Renders the component with local-state callbacks — no Supabase, no auth.
  *
  * Query params:
- *   ?state=existing (default) — 2 reviews, watchlisted with date
- *   ?state=empty — no reviews, not watchlisted
+ *   ?state=existing (default) — 2 reviews
+ *   ?state=empty — no reviews
  *   ?state=multi — 4 reviews (tests "Seen N times" and previous viewings)
  *
  * Only used by Playwright tests for functional QA.
@@ -30,19 +30,15 @@ function makeReview(overrides: Partial<UserReview> & { id: string; rating: numbe
   };
 }
 
-const STATES: Record<string, { reviews: UserReview[]; watchlisted: boolean; watchlistDate: string | null }> = {
+const STATES: Record<string, { reviews: UserReview[] }> = {
   existing: {
     reviews: [
       makeReview({ id: 'r1', rating: 4.5, review_text: 'Incredible show!', date_seen: '2024-11-15', created_at: '2024-11-15T20:00:00Z', updated_at: '2024-11-15T20:00:00Z' }),
       makeReview({ id: 'r2', rating: 4.0, date_seen: '2024-08-03', created_at: '2024-08-03T20:00:00Z', updated_at: '2024-08-03T20:00:00Z' }),
     ],
-    watchlisted: true,
-    watchlistDate: '2025-03-15',
   },
   empty: {
     reviews: [],
-    watchlisted: false,
-    watchlistDate: null,
   },
   multi: {
     reviews: [
@@ -51,8 +47,6 @@ const STATES: Record<string, { reviews: UserReview[]; watchlisted: boolean; watc
       makeReview({ id: 'r3', rating: 4.0, review_text: 'Great cast', date_seen: '2024-06-15', created_at: '2024-06-15T20:00:00Z', updated_at: '2024-06-15T20:00:00Z' }),
       makeReview({ id: 'r4', rating: 3.5, date_seen: '2024-02-28', created_at: '2024-02-28T20:00:00Z', updated_at: '2024-02-28T20:00:00Z' }),
     ],
-    watchlisted: true,
-    watchlistDate: '2025-04-01',
   },
 };
 
@@ -62,8 +56,6 @@ function ShowRatingFixtureInner() {
   const initial = STATES[stateKey] || STATES.existing;
 
   const [reviews, setReviews] = useState<UserReview[]>(initial.reviews);
-  const [watchlisted, setWatchlisted] = useState(initial.watchlisted);
-  const [watchlistDate, setWatchlistDate] = useState<string | null>(initial.watchlistDate);
 
   const handleSaveReview = useCallback(async (data: {
     rating: number;
@@ -102,16 +94,7 @@ function ShowRatingFixtureInner() {
     setReviews(prev => prev.filter(r => r.id !== reviewId));
   }, []);
 
-  const handleToggleWatchlist = useCallback(async () => {
-    setWatchlisted(prev => {
-      if (prev) setWatchlistDate(null);
-      return !prev;
-    });
-  }, []);
 
-  const handleUpdateWatchlistDate = useCallback(async (date: string | null) => {
-    setWatchlistDate(date);
-  }, []);
 
   return (
     <div className="min-h-screen bg-surface text-white" data-testid="show-rating-fixture">
@@ -127,12 +110,8 @@ function ShowRatingFixtureInner() {
             previewDate="2015-07-13"
             closingDate={null}
             reviews={reviews}
-            isWatchlisted={watchlisted}
-            watchlistDate={watchlistDate}
             onSaveReview={handleSaveReview}
             onDeleteReview={handleDeleteReview}
-            onToggleWatchlist={handleToggleWatchlist}
-            onUpdateWatchlistDate={handleUpdateWatchlistDate}
             isAuthenticated={true}
             authLoading={false}
           />

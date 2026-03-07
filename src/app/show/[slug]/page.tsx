@@ -42,6 +42,8 @@ import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
 import TicketLink from '@/components/TicketLink';
 import { getComparisonsForShow } from '@/config/comparisons';
 import ShowPageRatingConnected from '@/components/user/ShowPageRatingConnected';
+import ShowPageWatchlistButton from '@/components/user/ShowPageWatchlistButton';
+import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 
 export const revalidate = 86400;
 
@@ -279,7 +281,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           <div className="flex gap-4 sm:gap-6">
             {/* Poster Card + pills underneath on mobile */}
             <div className="flex-shrink-0 w-28 sm:w-36 lg:w-40 flex flex-col gap-2">
-              <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
+              <div className="relative aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
+                <ShowPageBookmark showId={show.id} />
                 <ShowImage
                   sources={[
                     show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'poster') : null,
@@ -491,9 +494,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             </p>
           ) : null}
 
-          {/* Links row: Official Site, Tickets, Trailer, Lottery/Rush */}
-          {(show.officialUrl || show.trailerUrl || (show.ticketLinks && show.ticketLinks.length > 0 && show.status !== 'closed') || (lotteryRush && show.status !== 'closed')) && (
-            <div className="flex flex-wrap gap-2 mt-4">
+          {/* Links row: Official Site, Tickets, Trailer, Lottery/Rush + Watchlist */}
+          <div className="flex items-center gap-2 mt-4 flex-nowrap">
+            <div className="flex flex-wrap gap-2 min-w-0">
               {/* Official Website */}
               {show.officialUrl && (
                 <TicketLink
@@ -549,7 +552,10 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 </a>
               )}
             </div>
-          )}
+
+            {/* Watchlist button — right-aligned */}
+            <ShowPageWatchlistButton showId={show.id} />
+          </div>
 
           {/* User Rating — feature-flagged */}
           <ShowPageRatingConnected

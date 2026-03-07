@@ -69,7 +69,7 @@ export default function MyShowsClient() {
   const [diarySort, setDiarySort] = useState<DiarySort>('date-desc');
   const [watchlistSort, setWatchlistSort] = useState<WatchlistSort>('added-desc');
   const [watchlistView, setWatchlistView] = useState<ViewMode>('grid');
-  const [diaryView, setDiaryView] = useState<ViewMode>('list');
+  const [diaryView, setDiaryView] = useState<ViewMode>('grid');
   const [showMap, setShowMap] = useState<ShowMap>({});
   const [showMapLoaded, setShowMapLoaded] = useState(false);
 
@@ -1304,7 +1304,7 @@ function ToBeRatedCard({ entry, show }: { entry: WatchlistEntry; show?: ShowLook
         )}
       </div>
       <div className="relative z-[2] flex-shrink-0 pointer-events-auto">
-        {/* xs stars on mobile, sm on desktop — prevents overflow */}
+        {/* xs stars on mobile, md on desktop */}
         <span className="sm:hidden">
           <StarRating
             rating={null}
@@ -1320,7 +1320,7 @@ function ToBeRatedCard({ entry, show }: { entry: WatchlistEntry; show?: ShowLook
             onRatingChange={(rating) => {
               router.push(`${href}?rate=1&stars=${rating}`);
             }}
-            size="sm"
+            size="md"
           />
         </span>
       </div>

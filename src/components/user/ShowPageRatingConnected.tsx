@@ -42,7 +42,7 @@ function ShowPageRatingInner({
 }: ShowPageRatingConnectedProps) {
   const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
   const { reviews, getReviewsForShow, deleteReview } = useUserReviews(user?.id || null);
-  const { isWatchlisted, addToWatchlist, removeFromWatchlist, getWatchlist, updatePlannedDate, watchlist } = useWatchlist(user?.id || null);
+  const { addToWatchlist, getWatchlist } = useWatchlist(user?.id || null);
   const searchParams = useSearchParams();
 
   const { showToast } = useToastSafe();
@@ -176,28 +176,6 @@ function ShowPageRatingInner({
     }
   }, [deleteReview, showId, getReviewsForShow, showToast]);
 
-  const handleToggleWatchlist = useCallback(async () => {
-    try {
-      if (isWatchlisted(showId)) {
-        await removeFromWatchlist(showId);
-        showToast?.(<>Removed from <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'info');
-      } else {
-        await addToWatchlist(showId);
-        showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success');
-      }
-    } catch {
-      showToast?.('Failed to update watchlist. Please try again.', 'error');
-    }
-  }, [showId, isWatchlisted, addToWatchlist, removeFromWatchlist, showToast]);
-
-  const handleUpdateWatchlistDate = useCallback(async (date: string | null) => {
-    try {
-      await updatePlannedDate(showId, date);
-    } catch {
-      showToast?.('Failed to save date.', 'error');
-    }
-  }, [showId, updatePlannedDate, showToast]);
-
   const handleAuthRequired = useCallback((context: 'rating' | 'watchlist', pendingRating?: number) => {
     // Save pending action for deferred auth (include rating if provided)
     savePendingAction({
@@ -216,8 +194,6 @@ function ShowPageRatingInner({
   // Feature flag check — AFTER all hooks (React rules-of-hooks)
   if (!featureFlags.userAccounts) return null;
 
-  const watchlistEntry = watchlist.find(w => w.show_id === showId);
-
   return (
     <ShowPageRating
       showId={showId}
@@ -225,12 +201,8 @@ function ShowPageRatingInner({
       previewDate={previewDate}
       closingDate={closingDate}
       reviews={showReviews}
-      isWatchlisted={isWatchlisted(showId)}
-      watchlistDate={watchlistEntry?.planned_date || null}
       onSaveReview={handleSaveReview}
       onDeleteReview={handleDeleteReview}
-      onToggleWatchlist={handleToggleWatchlist}
-      onUpdateWatchlistDate={handleUpdateWatchlistDate}
       onAuthRequired={handleAuthRequired}
       isAuthenticated={isAuthenticated}
       authLoading={authLoading}
