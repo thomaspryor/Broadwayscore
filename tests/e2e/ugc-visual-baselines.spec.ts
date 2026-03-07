@@ -17,19 +17,19 @@ for (const vp of VIEWPORTS) {
 
     // ─── My Shows — Diary ──────────────────────────────────────
 
-    test('diary list view', async ({ page }) => {
+    test('diary grid view (default)', async ({ page }) => {
       await goToMock(page, 'diary');
-      await expect(page).toHaveScreenshot(`diary-list-${vp.width}.png`, {
+      await expect(page).toHaveScreenshot(`diary-grid-${vp.width}.png`, {
         fullPage: true,
         animations: 'disabled',
       });
     });
 
-    test('diary grid view', async ({ page }) => {
+    test('diary list view', async ({ page }) => {
       await goToMock(page, 'diary');
-      await page.getByRole('button', { name: 'Grid view' }).click();
-      await expect(page.getByRole('button', { name: 'Grid view' })).toHaveClass(/bg-white/, { timeout: 3000 });
-      await expect(page).toHaveScreenshot(`diary-grid-${vp.width}.png`, {
+      await page.getByRole('button', { name: 'List view' }).click();
+      await expect(page.getByRole('button', { name: 'List view' })).toHaveClass(/bg-white/, { timeout: 3000 });
+      await expect(page).toHaveScreenshot(`diary-list-${vp.width}.png`, {
         fullPage: true,
         animations: 'disabled',
       });
@@ -87,6 +87,16 @@ for (const vp of VIEWPORTS) {
       await expect(page.locator('textarea')).toBeVisible({ timeout: 3000 });
       await expect(page).toHaveScreenshot(`rating-panel-open-${vp.width}.png`, {
         fullPage: true,
+        animations: 'disabled',
+      });
+    });
+
+    // ─── Half-Star Rendering (catches SVG clipPath regressions) ──
+    test('half-star rendering at all sizes', async ({ page }) => {
+      await goToShowFixture(page, 'existing');
+      const showcase = page.locator('[data-testid="star-showcase"]');
+      await expect(showcase).toBeVisible({ timeout: 5000 });
+      await expect(showcase).toHaveScreenshot(`half-star-showcase-${vp.width}.png`, {
         animations: 'disabled',
       });
     });
