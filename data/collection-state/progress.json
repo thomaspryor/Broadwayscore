@@ -303,7 +303,16 @@
     "bigfoot-off-broadway-2026/theater-scene--darryl-reilly.json",
     "bigfoot-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
     "bloodlove-off-broadway-2026/front-row-center--kendra-jones.json",
-    "bloodlove-off-broadway-2026/one-minute-critic--unknown.json"
+    "bloodlove-off-broadway-2026/one-minute-critic--unknown.json",
+    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+    "broken-glass-west-end-2026/artsdesk--unknown.json",
+    "broken-glass-west-end-2026/independent--alice-saville.json",
+    "broken-glass-west-end-2026/london-theatre--julia-rank.json",
+    "broken-glass-west-end-2026/telegraph--dominic-cavendish.json",
+    "broken-glass-west-end-2026/thestage--unknown.json",
+    "broken-glass-west-end-2026/whatsonstage--sarah-crompton.json",
+    "buena-vista-social-club-2025/amny--matt-windman.json",
+    "buena-vista-social-club-2025/latimes--nicholas-ducassi.json"
   ],
   "failed": [
     "mexodus-off-broadway-2026/nytg--austin-fimmano.json",
@@ -361,7 +370,8 @@
     "beaches-2026/around-the-town-chicago--unknown.json",
     "beaches-2026/chicago-critic--tom-williams.json",
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
-    "book-of-mormon-2011/ap--mark-kennedy.json"
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -481,7 +491,12 @@
       "bigfoot-off-broadway-2026/theater-scene--darryl-reilly.json",
       "bigfoot-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
       "bloodlove-off-broadway-2026/front-row-center--kendra-jones.json",
-      "bloodlove-off-broadway-2026/one-minute-critic--unknown.json"
+      "bloodlove-off-broadway-2026/one-minute-critic--unknown.json",
+      "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+      "broken-glass-west-end-2026/artsdesk--unknown.json",
+      "broken-glass-west-end-2026/london-theatre--julia-rank.json",
+      "broken-glass-west-end-2026/thestage--unknown.json",
+      "broken-glass-west-end-2026/whatsonstage--sarah-crompton.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -529,7 +544,9 @@
       "data/review-texts/hadestown-2019/hollywood-reporter--david-rooney.json",
       "hadestown-2019/hollywood-reporter--david-rooney.json",
       "data/review-texts/the-great-gatsby-2024/observer--david-cote.json",
-      "the-great-gatsby-2024/observer--david-cote.json"
+      "the-great-gatsby-2024/observer--david-cote.json",
+      "data/review-texts/buena-vista-social-club-2025/amny--matt-windman.json",
+      "buena-vista-social-club-2025/amny--matt-windman.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json",
@@ -591,7 +608,9 @@
       "the-unknown-off-broadway-2026/cititour--brian-scott-lipton.json",
       "all-my-sons-west-end-2025/independent--alice-saville.json",
       "back-to-the-future-west-end-2021/independent--clarisse-loughrey.json",
-      "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json"
+      "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json",
+      "broken-glass-west-end-2026/independent--alice-saville.json",
+      "broken-glass-west-end-2026/telegraph--dominic-cavendish.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -732,11 +751,12 @@
       "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
       "all-my-sons-west-end-2025/artsdesk--matt-wolf.json",
       "amaze-magic-off-broadway-2025/hollywood-soapbox--john-soltes.json",
-      "amaze-magic-off-broadway-2025/theater-scene--victor-gluck.json"
+      "amaze-magic-off-broadway-2025/theater-scene--victor-gluck.json",
+      "buena-vista-social-club-2025/latimes--nicholas-ducassi.json"
     ]
   },
   "startTime": "2026-03-07T09:54:22.824Z",
-  "lastProcessed": "book-of-mormon-2011/ap--mark-kennedy.json",
+  "lastProcessed": "buena-vista-social-club-2025/latimes--nicholas-ducassi.json",
   "log": [
     {
       "t": "2026-03-07T10:49:42.495Z",
@@ -979,6 +999,17 @@
       "t": "2026-03-07T12:19:15.846Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-07T12:33:08.186Z",
+      "event": "bb-session",
+      "session": "7693ef32",
+      "url": "https://www.amny.com/entertainment/broadway/review-buena-vista-social-clunk/"
+    },
+    {
+      "t": "2026-03-07T12:33:09.556Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }

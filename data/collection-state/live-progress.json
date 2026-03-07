@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-07T12:31:40.017Z",
-  "processed": 304,
-  "failed": 56,
-  "successRate": "84.4%",
+  "updatedAt": "2026-03-07T12:33:39.744Z",
+  "processed": 313,
+  "failed": 57,
+  "successRate": "84.6%",
   "tierBreakdown": {
-    "playwright": 116,
+    "playwright": 121,
     "amp": 24,
-    "browserbase": 20,
+    "browserbase": 22,
     "directCookies": 3,
-    "scrapingbee": 55,
+    "scrapingbee": 57,
     "brightdata": 0,
     "archiveToday": 26,
-    "archive": 110
+    "archive": 111
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-03-07T11:32:10.349Z",
-      "event": "bb-session",
-      "session": "799afa5d",
-      "url": "https://nypost.com/2019/10/17/little-shop-of-horrors-review-jonathan-groff-tammy"
-    },
-    {
-      "t": "2026-03-07T11:32:11.418Z",
-      "event": "bb-cookie-inject",
-      "domain": "nypost.com"
-    },
     {
       "t": "2026-03-07T11:37:10.688Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-07T12:19:15.846Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-07T12:33:08.186Z",
+      "event": "bb-session",
+      "session": "7693ef32",
+      "url": "https://www.amny.com/entertainment/broadway/review-buena-vista-social-clunk/"
+    },
+    {
+      "t": "2026-03-07T12:33:09.556Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
