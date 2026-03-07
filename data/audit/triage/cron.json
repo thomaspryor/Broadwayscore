@@ -1,15 +1,40 @@
 {
   "system": "cron",
-  "status": "warn",
-  "lastChecked": "2026-03-07T23:19:53.900Z",
+  "status": "pass",
+  "lastChecked": "2026-03-07T23:21:08.883Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
-  "escalationState": "monitoring",
+  "escalationState": "resolved",
   "details": [
     {
-      "name": "Cron: health",
-      "status": "warn",
-      "message": "Skipped — no GH_TOKEN available (local run)"
+      "name": "Cron: Update Show Status",
+      "status": "pass",
+      "message": "4h ago, success"
+    },
+    {
+      "name": "Cron: Rebuild Reviews",
+      "status": "pass",
+      "message": "0h ago, skipped"
+    },
+    {
+      "name": "Cron: Collect Review Texts",
+      "status": "pass",
+      "message": "0h ago, "
+    },
+    {
+      "name": "Cron: LLM Ensemble Score",
+      "status": "pass",
+      "message": "1h ago, success"
+    },
+    {
+      "name": "Cron: Test Suite",
+      "status": "pass",
+      "message": "0h ago, "
+    },
+    {
+      "name": "Cron: Opening Night Broadcast",
+      "status": "pass",
+      "message": "15h ago, success"
     }
   ]
 }
