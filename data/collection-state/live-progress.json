@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-07T11:44:20.022Z",
-  "processed": 191,
+  "updatedAt": "2026-03-07T11:46:24.004Z",
+  "processed": 201,
   "failed": 29,
-  "successRate": "86.8%",
+  "successRate": "87.4%",
   "tierBreakdown": {
-    "playwright": 64,
+    "playwright": 67,
     "amp": 24,
     "browserbase": 16,
     "directCookies": 3,
     "scrapingbee": 34,
     "brightdata": 0,
     "archiveToday": 15,
-    "archive": 72
+    "archive": 79
   },
-  "browserbaseSessions": 16,
+  "browserbaseSessions": 17,
   "recentActivity": [
-    {
-      "t": "2026-03-07T11:06:54.447Z",
-      "event": "bb-session",
-      "session": "d1db85d4",
-      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
-    },
-    {
-      "t": "2026-03-07T11:06:55.601Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-07T11:22:57.310Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-07T11:39:01.286Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-07T11:45:55.414Z",
+      "event": "bb-session",
+      "session": "b4165097",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-03-07T11:45:56.516Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
