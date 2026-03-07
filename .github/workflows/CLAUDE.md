@@ -95,20 +95,22 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Manual trigger:** `gh workflow run "Opening Night Reviews" -f lookback_days=7`
 
 ## `opening-night-broadcast.yml`
-- **Runs:** Daily at 4 AM UTC (~11 PM ET) and 5 AM UTC (~midnight ET), or manually
-- **Does:** Full opening-night pipeline: discovers reviews via SERP, gathers from aggregators, rebuilds/scores, generates consensus, sends broadcast email to all subscribers via Resend
-- **Pipeline:** Find recently opened shows → check already broadcast → sync subscribers (Formspree) → discover reviews (ScrapingBee SERP, per Tier 1+2 outlet) → gather reviews (aggregators) → rebuild reviews.json → **LLM ensemble scoring** → rebuild after scoring → generate consensus → send broadcast → commit
+- **Runs:** Daily at 5 AM UTC (midnight ET) and 8 AM UTC (3 AM ET), or manually
+- **Does:** Thin "check & send" workflow — reads existing scored data, generates consensus, sends broadcast email. Heavy lifting (gather, rebuild, score) handled by independent data pipeline.
+- **Pipeline:** Find recently opened BW+WE shows → check already broadcast → sync subscribers (Formspree) → generate consensus → send broadcast → commit → deploy → indexing
+- **Data dependency:** Relies on data pipeline chain: `update-show-status` → `gather-reviews` → `rebuild` → `llm-ensemble-score`. The 5 AM run catches shows scored overnight; 8 AM catches shows scored between 5-8 AM.
 - **Early exit:** No recent openers or all already broadcast → exits in <10s (no Node setup)
-- **Readiness gate:** 8+ scored reviews required before sending (lowered from 12 on Feb 20, 2026)
-- **Scoring:** Tier-weighted composite (matches website: T1=1.0, T2=0.75, T3=0.35) via outlet-registry.json lookup
-- **Budget gate:** Cap at 95 sends per run (Resend 100/day limit, leaves headroom for per-show follows)
-- **Multi-show coalescing:** If 2+ shows open same night, sends single email with multiple score cards
+- **Readiness gate:** 8+ scored reviews required before sending (in `send-opening-night-broadcast.js`)
+- **Market filter:** Only Broadway and West End shows trigger emails. OB shows get website data via pipeline but no broadcast.
+- **Budget gate:** Cap at 60 sends/market (Broadway) and 35 sends/market (West End) per run
+- **Multi-show coalescing:** If 2+ shows open same night in a market, sends single email with multiple score cards
 - **Resume:** Tracks `sentCount` in `data/opening-night-sent.json` (gitignored but `git add --force` in commit step). If interrupted, next cron run picks up where it left off.
-- **Double-send prevention:** `opening-night-sent.json` is force-added to git (`git add --force`) to persist across cron runs despite being gitignored. Without `--force`, the file was silently skipped and every cron run thought no broadcast had been sent.
-- **Scripts:** `scripts/discover-opening-night-reviews.js`, `scripts/send-opening-night-broadcast.js`
-- **Requires:** SCRAPINGBEE_API_KEY, BRIGHTDATA_TOKEN, ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY, RESEND_API_KEY, FORMSPREE_FOLLOW_API_KEY, FORMSPREE_SUBSCRIBER_API_KEY, FORMSPREE_FOLLOW_FORM_ID, FORMSPREE_SUBSCRIBER_FORM_ID
+- **Double-send prevention:** `opening-night-sent.json` is force-added to git (`git add --force`) to persist across cron runs despite being gitignored.
+- **Preview mode:** Cron runs always send to owner only. Manual dispatch with `send_to_all=true` sends to all subscribers.
+- **Scripts:** `scripts/send-opening-night-broadcast.js`, `scripts/generate-critic-consensus.js`
+- **Requires:** ANTHROPIC_API_KEY, RESEND_API_KEY, FORMSPREE_FOLLOW_API_KEY, FORMSPREE_SUBSCRIBER_API_KEY, FORMSPREE_FOLLOW_FORM_ID, FORMSPREE_SUBSCRIBER_FORM_ID, FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID, FORMSPREE_WESTEND_SUBSCRIBER_API_KEY
 - **Manual trigger:** `gh workflow run "Opening Night Broadcast" -f lookback_days=7`
-- **Related:** `opening-night-reviews.yml` (older, simpler — just triggers gather-reviews). The broadcast workflow is a superset that includes review discovery + scoring + email sending.
+- **Related:** `opening-night-reviews.yml` handles SERP discovery + triggers gather-reviews (runs at 5 AM UTC). The data pipeline runs independently and feeds scored data to this broadcast workflow.
 
 ## `gather-reviews.yml`
 - **Runs:** When new shows discovered (or manually triggered)
