@@ -251,7 +251,14 @@
     "the-reservoir-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
     "the-unknown-off-broadway-2026/theatermania--zachary-stewart.json",
     "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
-    "tru-off-broadway-2026/theatermania--unknown.json"
+    "tru-off-broadway-2026/theatermania--unknown.json",
+    "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "wicked-2003/theatermania--david-gordon.json",
+    "wicked-2003/timeout--david-cote.json",
+    "wicked-2003/wsj--terry-teachout.json",
+    "you-got-older-off-broadway-2026/timeout--unknown.json",
+    "zack-off-broadway-2026/broadwaynews--gillian-blum.json",
+    "zack-off-broadway-2026/theatermania--unknown.json"
   ],
   "failed": [
     "mexodus-off-broadway-2026/nytg--austin-fimmano.json",
@@ -301,7 +308,10 @@
     "harry-potter-2021/wsj--terry-teachout.json",
     "los-soles-truncos-off-broadway-2025/broadwaynews--aa-cristi.json",
     "lost-in-del-valle-off-broadway-2026/theatermania--unknown.json",
-    "sweetmeats-west-end-2026/guardian--anya-ryan.json"
+    "sweetmeats-west-end-2026/guardian--anya-ryan.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/theatermania--unknown.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/wsj--charles-isherwood.json",
+    "zack-off-broadway-2026/nydailynews--logan-culwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -391,7 +401,8 @@
       "the-producers-west-end-2025/timeout-london--unknown.json",
       "the-reservoir-off-broadway-2026/broadwaynews--nicole-rosky.json",
       "the-reservoir-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
-      "the-unknown-off-broadway-2026/theatermania--zachary-stewart.json"
+      "the-unknown-off-broadway-2026/theatermania--zachary-stewart.json",
+      "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -517,7 +528,8 @@
       "data/review-texts/mexodus-off-broadway-2026/theater-scene--victor-gluck.json",
       "data/review-texts/what-we-did-before-our-moth-days-off-broadway-2026/buy-tickets--unknown.json",
       "data/review-texts/harry-potter-2021/wsj--terry-teachout.json",
-      "data/review-texts/los-soles-truncos-off-broadway-2025/broadwaynews--aa-cristi.json"
+      "data/review-texts/los-soles-truncos-off-broadway-2025/broadwaynews--aa-cristi.json",
+      "data/review-texts/what-we-did-before-our-moth-days-off-broadway-2026/wsj--charles-isherwood.json"
     ],
     "archive": [
       "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
@@ -618,11 +630,17 @@
       "the-reservoir-off-broadway-2026/theatermania--jonas-schwartz.json",
       "the-reservoir-off-broadway-2026/theatermania--zachary-stewart.json",
       "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
-      "tru-off-broadway-2026/theatermania--unknown.json"
+      "tru-off-broadway-2026/theatermania--unknown.json",
+      "wicked-2003/theatermania--david-gordon.json",
+      "wicked-2003/timeout--david-cote.json",
+      "wicked-2003/wsj--terry-teachout.json",
+      "you-got-older-off-broadway-2026/timeout--unknown.json",
+      "zack-off-broadway-2026/broadwaynews--gillian-blum.json",
+      "zack-off-broadway-2026/theatermania--unknown.json"
     ]
   },
   "startTime": "2026-03-07T09:54:22.824Z",
-  "lastProcessed": "tru-off-broadway-2026/theatermania--unknown.json",
+  "lastProcessed": "zack-off-broadway-2026/theatermania--unknown.json",
   "log": [
     {
       "t": "2026-03-07T10:49:42.495Z",
@@ -843,6 +861,28 @@
       "t": "2026-03-07T12:09:55.065Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-07T12:17:22.635Z",
+      "event": "bb-session",
+      "session": "ed5771ca",
+      "url": "https://www.wsj.com/articles/what-we-did-before-our-moth-days-review-wallace-sha"
+    },
+    {
+      "t": "2026-03-07T12:17:24.105Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-07T12:19:14.487Z",
+      "event": "bb-session",
+      "session": "ccebea9f",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-03-07T12:19:15.846Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
