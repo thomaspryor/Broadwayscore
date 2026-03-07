@@ -57,6 +57,7 @@ export default function MyShowsClient() {
   // Dev-only mock mode: ?mock=1 on localhost renders with fake data (for Playwright visual QA)
   // Must be state (not derived) to avoid SSR/client hydration mismatch
   const [isMockMode, setIsMockMode] = useState(false);
+  const [createListTrigger, setCreateListTrigger] = useState(0);
   useEffect(() => {
     if (window.location.hostname === 'localhost' && searchParams.get('mock') === '1') {
       setIsMockMode(true);
@@ -318,16 +319,29 @@ export default function MyShowsClient() {
       {/* Header */}
       <div className="flex items-center justify-between mb-2">
         <h1 className="text-2xl sm:text-3xl font-extrabold text-white">My Shows</h1>
-        <AddShowSearch
-          context={activeTab === 'lists' ? 'watchlist' : activeTab}
-          onAddToWatchlist={async (showId: string) => {
-            await effectiveAddToWatchlist(showId);
-            if (!isMockMode) await getWatchlist();
-            showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success');
-          }}
-          existingWatchlistIds={new Set(watchlist.map(w => w.show_id))}
-          existingReviewIds={new Set(reviews.map(r => r.show_id))}
-        />
+        {activeTab === 'lists' ? (
+          <button
+            type="button"
+            onClick={() => setCreateListTrigger(t => t + 1)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-gray-400 hover:text-white bg-white/[0.06] hover:bg-white/10 border border-white/10 transition-colors text-xs font-medium"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            <span>New list</span>
+          </button>
+        ) : (
+          <AddShowSearch
+            context={activeTab}
+            onAddToWatchlist={async (showId: string) => {
+              await effectiveAddToWatchlist(showId);
+              if (!isMockMode) await getWatchlist();
+              showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success');
+            }}
+            existingWatchlistIds={new Set(watchlist.map(w => w.show_id))}
+            existingReviewIds={new Set(reviews.map(r => r.show_id))}
+          />
+        )}
       </div>
 
       {/* Stats bar */}
@@ -773,7 +787,7 @@ export default function MyShowsClient() {
       {/* Lists tab */}
       {activeTab === 'lists' && (
         <div id="panel-lists" role="tabpanel" aria-labelledby="tab-lists">
-          <ListsTab userId={user?.id || null} showMap={showMap} isMockMode={isMockMode} />
+          <ListsTab userId={user?.id || null} showMap={showMap} isMockMode={isMockMode} createTrigger={createListTrigger} />
         </div>
       )}
     </div>
