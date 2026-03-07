@@ -1,9 +1,9 @@
 'use client';
 
-import { useMemo, useCallback, useState, startTransition, Suspense } from 'react';
+import { useMemo, useCallback, useState, useRef, useEffect, startTransition, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import Fuse from 'fuse.js';
+import type Fuse from 'fuse.js';
 import FooterEmailCapture from '@/components/FooterEmailCapture';
 import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from '@/components/show-cards';
 import type { ScoreModeParam } from '@/components/show-cards';
@@ -220,24 +220,49 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], westEndSho
     return extra.length > 0 ? [...shows, ...extra] : shows;
   }, [shows, offBroadwayShows, westEndShows]);
 
-  // Fuse.js instance for fuzzy search across title, venue, and creative team
-  const fuse = useMemo(() => new Fuse(allShowsForSearch, {
-    keys: [
-      { name: 'title', weight: 0.6 },
-      { name: 'venue', weight: 0.2 },
-      { name: 'creativeTeamSearch', weight: 0.2 },
-    ],
-    threshold: 0.35,
-    ignoreLocation: true,
-    minMatchCharLength: 2,
-    getFn: (obj, path) => {
-      const key = Array.isArray(path) ? path[0] : path;
-      if (key === 'creativeTeamSearch') {
-        return (obj as HomepageShow).creativeTeam?.map(m => m.name).join(', ') || '';
+  // Fuse.js — lazy-loaded on first search keystroke to reduce initial bundle
+  const fuseRef = useRef<Fuse<HomepageShow> | null>(null);
+  const fuseDataRef = useRef(allShowsForSearch);
+  fuseDataRef.current = allShowsForSearch;
+
+  const getFuse = useCallback(async () => {
+    if (fuseRef.current) return fuseRef.current;
+    const FuseModule = (await import('fuse.js/basic')).default;
+    fuseRef.current = new FuseModule(fuseDataRef.current, {
+      keys: [
+        { name: 'title', weight: 0.6 },
+        { name: 'venue', weight: 0.2 },
+        { name: 'creativeTeamSearch', weight: 0.2 },
+      ],
+      threshold: 0.35,
+      ignoreLocation: true,
+      minMatchCharLength: 2,
+      getFn: (obj, path) => {
+        const key = Array.isArray(path) ? path[0] : path;
+        if (key === 'creativeTeamSearch') {
+          return (obj as HomepageShow).creativeTeam?.map(m => m.name).join(', ') || '';
+        }
+        return FuseModule.config.getFn(obj, path);
+      },
+    });
+    return fuseRef.current;
+  }, []);
+
+  // Async search results from lazy-loaded Fuse
+  const [fuseResults, setFuseResults] = useState<HomepageShow[] | null>(null);
+  useEffect(() => {
+    if (!searchQuery) {
+      setFuseResults(null);
+      return;
+    }
+    let cancelled = false;
+    getFuse().then(fuse => {
+      if (!cancelled) {
+        setFuseResults(fuse.search(searchQuery).map(r => r.item));
       }
-      return Fuse.config.getFn(obj, path);
-    },
-  }), [allShowsForSearch]);
+    });
+    return () => { cancelled = true; };
+  }, [searchQuery, getFuse]);
 
   // Featured rows data - only shows opened in last 12 months
   const twelveMonthsAgo = useMemo(() => {
@@ -341,7 +366,7 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], westEndSho
     // When searching, include ALL shows (ignore status/type filters)
     // This ensures users can find any show in the database
     if (searchQuery) {
-      return fuse.search(searchQuery).map(result => result.item);
+      return fuseResults || [];
     }
 
     // Non-search filtering: apply score mode, status, and type filters
@@ -428,7 +453,7 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], westEndSho
     }
 
     return result;
-  }, [allShows, fuse, statusFilter, type, searchQuery, sort, scoreMode]);
+  }, [allShows, fuseResults, statusFilter, type, searchQuery, sort, scoreMode]);
 
   // Hide status chip when it would be redundant
   const shouldHideStatus = statusFilter !== 'all';
