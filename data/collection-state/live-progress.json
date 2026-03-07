@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-07T11:05:40.457Z",
-  "processed": 97,
-  "failed": 23,
-  "successRate": "80.8%",
+  "updatedAt": "2026-03-07T11:10:22.900Z",
+  "processed": 106,
+  "failed": 24,
+  "successRate": "81.5%",
   "tierBreakdown": {
-    "playwright": 27,
+    "playwright": 31,
     "amp": 24,
     "browserbase": 4,
     "directCookies": 2,
-    "scrapingbee": 19,
+    "scrapingbee": 20,
     "brightdata": 0,
     "archiveToday": 13,
-    "archive": 35
+    "archive": 39
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-03-07T10:49:42.495Z",
@@ -78,6 +78,17 @@
     },
     {
       "t": "2026-03-07T11:05:12.457Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-07T11:06:54.447Z",
+      "event": "bb-session",
+      "session": "d1db85d4",
+      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
+    },
+    {
+      "t": "2026-03-07T11:06:55.601Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
