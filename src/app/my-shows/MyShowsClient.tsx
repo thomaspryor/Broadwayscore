@@ -11,10 +11,14 @@ import StarRating from '@/components/user/StarRating';
 
 import { useToastSafe } from '@/components/ui/Toast';
 import type { UserReview, WatchlistEntry, ShowLookup } from '@/types/user';
+import dynamic from 'next/dynamic';
 import MezzanineImport from './MezzanineImport';
 import { useShowSearch } from '@/hooks/useShowSearch';
 import { useClickOutside } from '@/hooks/useClickOutside';
-import ListsTab from './ListsTab';
+
+const ListsTab = dynamic(() => import('./ListsTab'), {
+  loading: () => <div className="text-center py-12 text-gray-500">Loading lists...</div>,
+});
 
 type Tab = 'diary' | 'watchlist' | 'lists';
 type DiarySort = 'date-desc' | 'date-asc' | 'rating-desc';

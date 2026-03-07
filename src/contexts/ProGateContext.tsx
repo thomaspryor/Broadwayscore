@@ -11,9 +11,12 @@
  */
 
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import dynamic from 'next/dynamic';
 import { track } from '@vercel/analytics';
-import EmailCaptureModal, { type GateTrigger, type CapturedUserData } from '@/components/EmailCaptureModal';
+import { type GateTrigger, type CapturedUserData } from '@/components/EmailCaptureModal';
 import { emailCaptureConfig } from '@/config/email-capture';
+
+const EmailCaptureModal = dynamic(() => import('@/components/EmailCaptureModal'), { ssr: false });
 
 const STORAGE_KEY = 'bsc_user_data';
 const SUBSCRIBED_KEY = 'bsc_email_subscribed';
