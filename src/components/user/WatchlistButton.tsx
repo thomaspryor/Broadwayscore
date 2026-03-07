@@ -12,25 +12,21 @@ export default function WatchlistButton({ isWatchlisted, onToggle, loading = fal
       type="button"
       onClick={onToggle}
       disabled={loading}
-      className={`inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full border transition-all duration-200 ${
+      className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-all duration-200 ${
         isWatchlisted
           ? 'bg-[#FFD700]/10 border-[#FFD700]/30 text-[#FFD700] hover:bg-[#FFD700]/20'
-          : 'bg-white/[0.03] border-white/10 text-gray-400 hover:text-white hover:border-white/20'
+          : 'bg-surface-overlay border-white/10 text-gray-300 hover:text-white hover:bg-white/10'
       } ${loading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
       aria-label={isWatchlisted ? 'Remove from watchlist' : 'Add to watchlist'}
     >
       {loading ? (
-        <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
+        <svg className="w-3.5 h-3.5 animate-spin" viewBox="0 0 24 24" fill="none">
           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
         </svg>
-      ) : isWatchlisted ? (
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
-        </svg>
       ) : (
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-          <path strokeLinecap="round" d="M12 5v14M5 12h14" />
+        <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill={isWatchlisted ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
         </svg>
       )}
       <span>{isWatchlisted ? 'Watchlisted' : 'Watchlist'}</span>

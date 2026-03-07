@@ -121,9 +121,15 @@ export default function StarRating({ rating, onRatingChange, size = 'md', readOn
                 />
               </svg>
             ) : (
-              /* Half-filled — outline background + gold left half */
+              /* Half-filled — use clipPath for clean half-star */
               <>
                 <svg viewBox="0 0 24 24" fill="none" className="absolute inset-0 w-full h-full">
+                  <defs>
+                    <clipPath id={`half-${starIndex}`}>
+                      <rect x="0" y="0" width="12" height="24" />
+                    </clipPath>
+                  </defs>
+                  {/* Outline background */}
                   <path
                     d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
                     fill="none"
@@ -131,15 +137,13 @@ export default function StarRating({ rating, onRatingChange, size = 'md', readOn
                     strokeWidth="1.5"
                     strokeLinejoin="round"
                   />
+                  {/* Gold left half */}
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                    fill="#FFD700"
+                    clipPath={`url(#half-${starIndex})`}
+                  />
                 </svg>
-                <div className="absolute inset-0 overflow-hidden" style={{ width: '50%' }}>
-                  <svg viewBox="0 0 24 24" fill="none" style={{ width: starSize, height: starSize }}>
-                    <path
-                      d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-                      fill="#FFD700"
-                    />
-                  </svg>
-                </div>
               </>
             )}
           </button>
