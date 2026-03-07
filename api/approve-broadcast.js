@@ -40,6 +40,10 @@ function githubApi(path, method, body, token) {
   });
 }
 
+function escapeHtml(str) {
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 function verifyToken(token, shows, market, dateStr, secret) {
   const payload = `broadcast:${shows}:${market}:${dateStr}`;
   const expected = crypto.createHmac('sha256', secret).update(payload).digest('hex');
@@ -112,13 +116,13 @@ module.exports = async (req, res) => {
   } catch (err) {
     console.error('Workflow dispatch failed:', err.message);
     return res.status(502).send(htmlPage('Dispatch Failed',
-      `<h1>Something Went Wrong</h1><p>Could not trigger the broadcast workflow. Error: ${err.message}</p>` +
+      `<h1>Something Went Wrong</h1><p>Could not trigger the broadcast workflow. Error: ${escapeHtml(err.message)}</p>` +
       `<p>You can try manually from <a href="https://github.com/${repo}/actions">GitHub Actions</a>.</p>`));
   }
 
   return res.status(200).send(htmlPage('Broadcast Dispatched!',
     '<h1 class="success">Broadcast Dispatched!</h1>' +
-    `<p>The ${marketLabel} opening night broadcast for <strong>${showNames.replace(/,/g, ', ')}</strong> is now being sent to all subscribers.</p>` +
+    `<p>The ${marketLabel} opening night broadcast for <strong>${escapeHtml(showNames).replace(/,/g, ', ')}</strong> is now being sent to all subscribers.</p>` +
     '<p>You\'ll see it land in your inbox shortly along with everyone else.</p>' +
     '<p><a href="https://broadwayscorecard.com">Back to Broadway Scorecard</a></p>'));
 };

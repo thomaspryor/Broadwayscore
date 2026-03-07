@@ -638,7 +638,7 @@ function buildBroadcastApprovalHtml(shows, approvalUrl, market) {
     <!-- Footer -->
     <tr><td style="padding:16px 0 0;text-align:center;border-top:1px solid rgba(255,255,255,0.1);">
       <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.35);font-family:${FONT};">
-        This link expires tomorrow at midnight UTC. If you do nothing, no emails are sent.
+        This link is valid until end of day tomorrow (UTC). If you do nothing, no emails are sent.
       </p>
     </td></tr>
 
