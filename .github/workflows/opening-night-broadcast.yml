@@ -28,6 +28,10 @@ permissions:
   contents: write
   actions: write
 
+concurrency:
+  group: broadcast-send
+  cancel-in-progress: false
+
 jobs:
   broadcast:
     runs-on: ubuntu-latest
@@ -164,11 +168,21 @@ jobs:
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
         run: |
           # Preview mode by default (cron + manual without send_to_all)
           # Only send to all subscribers when explicitly approved via manual dispatch
           LOOKBACK=${{ inputs.lookback_days || 2 }}
           SEND_TO_FLAG=""
+
+          # Detect which cron run this is (5 AM or 8 AM UTC) for approval email dedup
+          CURRENT_HOUR=$(date -u +%H)
+          if [ "$CURRENT_HOUR" -ge 7 ] && [ "$CURRENT_HOUR" -le 9 ]; then
+            export BROADCAST_HOUR=8
+          else
+            export BROADCAST_HOUR=5
+          fi
+
           if [ "${{ inputs.send_to_all }}" != "true" ]; then
             SEND_TO_FLAG="--send-to=$OWNER_EMAIL"
             echo "** PREVIEW MODE — sending to owner only. To send to all: re-run with send_to_all=true **"
