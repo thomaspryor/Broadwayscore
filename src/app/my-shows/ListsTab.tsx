@@ -15,6 +15,7 @@ import {
 import { SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Modal } from '@/components/show-cards';
+import { useClickOutside } from '@/hooks/useClickOutside';
 
 interface ShowMap {
   [showId: string]: ShowLookup;
@@ -334,17 +335,8 @@ function ListDetailView({
 
   const activeItem = activeId ? items.find(i => i.id === activeId) : null;
 
-  // Close overflow on outside click
-  useEffect(() => {
-    if (!showOverflow) return;
-    function handleClick(e: MouseEvent) {
-      if (overflowRef.current && !overflowRef.current.contains(e.target as Node)) {
-        setShowOverflow(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClick);
-    return () => document.removeEventListener('mousedown', handleClick);
-  }, [showOverflow]);
+  const closeOverflow = useCallback(() => setShowOverflow(false), []);
+  useClickOutside(overflowRef, closeOverflow, showOverflow);
 
   return (
     <div>
