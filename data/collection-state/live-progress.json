@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-07T12:07:34.441Z",
-  "processed": 222,
+  "updatedAt": "2026-03-07T12:10:50.077Z",
+  "processed": 232,
   "failed": 48,
-  "successRate": "82.2%",
+  "successRate": "82.9%",
   "tierBreakdown": {
-    "playwright": 75,
+    "playwright": 79,
     "amp": 24,
-    "browserbase": 18,
+    "browserbase": 20,
     "directCookies": 3,
-    "scrapingbee": 39,
+    "scrapingbee": 41,
     "brightdata": 0,
     "archiveToday": 24,
-    "archive": 86
+    "archive": 89
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-03-07T11:24:24.262Z",
-      "event": "bb-session",
-      "session": "b8fdcaf7",
-      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
-    },
-    {
-      "t": "2026-03-07T11:24:25.320Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-07T11:26:50.347Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-07T11:58:38.582Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-07T12:09:53.736Z",
+      "event": "bb-session",
+      "session": "f9307ea0",
+      "url": "https://observer.com/2024/04/review-flashy-and-fake-great-gatsby-caps-a-weak-sea"
+    },
+    {
+      "t": "2026-03-07T12:09:55.065Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
     }
   ]
 }
