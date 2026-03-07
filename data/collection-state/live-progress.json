@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-07T11:38:50.756Z",
-  "processed": 161,
+  "updatedAt": "2026-03-07T11:40:19.060Z",
+  "processed": 171,
   "failed": 29,
-  "successRate": "84.7%",
+  "successRate": "85.5%",
   "tierBreakdown": {
-    "playwright": 52,
+    "playwright": 54,
     "amp": 24,
-    "browserbase": 14,
+    "browserbase": 16,
     "directCookies": 3,
     "scrapingbee": 32,
     "brightdata": 0,
     "archiveToday": 15,
-    "archive": 57
+    "archive": 64
   },
-  "browserbaseSessions": 15,
+  "browserbaseSessions": 16,
   "recentActivity": [
-    {
-      "t": "2026-03-07T11:05:11.341Z",
-      "event": "bb-session",
-      "session": "b5335eb7",
-      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
-    },
-    {
-      "t": "2026-03-07T11:05:12.457Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-07T11:06:54.447Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-07T11:37:29.268Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-07T11:39:00.232Z",
+      "event": "bb-session",
+      "session": "ddc04ef7",
+      "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-r"
+    },
+    {
+      "t": "2026-03-07T11:39:01.286Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
