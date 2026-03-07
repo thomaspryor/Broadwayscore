@@ -26,9 +26,11 @@ interface ListsTabProps {
   userId: string | null;
   showMap: ShowMap;
   isMockMode: boolean;
+  /** Increment to trigger the create-list modal from the parent header button */
+  createTrigger?: number;
 }
 
-export default function ListsTab({ userId, showMap, isMockMode }: ListsTabProps) {
+export default function ListsTab({ userId, showMap, isMockMode, createTrigger = 0 }: ListsTabProps) {
   const searchParams = useSearchParams();
   const activeListId = searchParams.get('list');
 
@@ -51,6 +53,11 @@ export default function ListsTab({ userId, showMap, isMockMode }: ListsTabProps)
       setMockData({ lists: mod.mockLists, items: mod.mockListItems });
     });
   }, [isMockMode]);
+
+  // Open create modal when parent header button triggers it
+  useEffect(() => {
+    if (createTrigger > 0) setShowModal('create');
+  }, [createTrigger]);
 
   const lists = isMockMode && mockData ? mockData.lists : realLists;
   const loading = isMockMode ? !mockData : realLoading;
@@ -286,8 +293,8 @@ function ListDetailView({
 
   return (
     <div>
-      {/* Header */}
-      <div className="flex items-center justify-between mb-4">
+      {/* Back link */}
+      <div className="mb-2">
         <button
           type="button"
           onClick={onBack}
@@ -298,6 +305,11 @@ function ListDetailView({
           </svg>
           Lists
         </button>
+      </div>
+
+      {/* List name + options menu */}
+      <div className="flex items-center gap-1 mb-1">
+        <h2 className="text-2xl font-extrabold text-white">{list.name}</h2>
         <div className="relative" ref={overflowRef}>
           <button
             type="button"
@@ -312,7 +324,7 @@ function ListDetailView({
             </svg>
           </button>
           {showOverflow && (
-            <div className="absolute right-0 top-full mt-1 bg-surface-raised border border-white/10 rounded-lg shadow-xl overflow-hidden z-50 min-w-[160px]">
+            <div className="absolute left-0 top-full mt-1 bg-surface-raised border border-white/10 rounded-lg shadow-xl overflow-hidden z-50 min-w-[160px]">
               <button
                 type="button"
                 onClick={() => { setShowOverflow(false); onEdit(); }}
@@ -344,8 +356,6 @@ function ListDetailView({
           )}
         </div>
       </div>
-
-      <h2 className="text-2xl font-extrabold text-white mb-1">{list.name}</h2>
       {list.description && (
         <p className="text-sm text-gray-400 mb-4">{list.description}</p>
       )}
