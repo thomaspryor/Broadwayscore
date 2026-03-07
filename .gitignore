@@ -39,6 +39,9 @@ next-env.d.ts
 # Review texts (copyrighted full-text reviews — stored in private repo thomaspryor/broadway-review-texts)
 data/review-texts/
 
+# Aggregator archive (copyrighted scraped HTML — stored in private repo thomaspryor/broadway-review-texts)
+data/aggregator-archive/
+
 # Subscriber PII (generated fresh each workflow run via sync-followers.js)
 data/subscribers.json
 data/subscribers-westend.json

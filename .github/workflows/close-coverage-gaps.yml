@@ -283,6 +283,10 @@ jobs:
         uses: ./.github/actions/checkout-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -337,39 +341,8 @@ jobs:
             # Checkpoint every N shows or on the last show
             if [ $((COUNT % CHECKPOINT_EVERY)) -eq 0 ] || [ "$COUNT" -eq "$TOTAL" ]; then
               echo "--- Checkpoint at $COUNT/$TOTAL ---"
-
-              # Stage files
-              git add data/aggregator-archive/ 2>/dev/null || true
-              STAGED_FILES=$(git diff --cached --name-only 2>/dev/null)
-              STAGED=$(echo "$STAGED_FILES" | grep -c . 2>/dev/null || echo "0")
-
-              if [ "$STAGED" -gt 0 ]; then
-                # Pre-commit JSON validation
-                INVALID=0
-                while IFS= read -r file; do
-                  if [[ "$file" == *.json ]]; then
-                    if ! node -e "JSON.parse(require('fs').readFileSync('$file','utf8'))" 2>/dev/null; then
-                      echo "INVALID JSON: $file"
-                      git reset HEAD "$file" 2>/dev/null || true
-                      INVALID=$((INVALID + 1))
-                    fi
-                  fi
-                done <<< "$STAGED_FILES"
-
-                if [ "$INVALID" -gt 0 ]; then
-                  echo "Excluded $INVALID invalid JSON files from commit"
-                  STAGED=$((STAGED - INVALID))
-                fi
-
-                if [ "$STAGED" -gt 0 ]; then
-                  TOTAL_COMMITTED=$((TOTAL_COMMITTED + STAGED))
-                  git commit -m "data: Batch ${{ matrix.batch_id }} checkpoint $COUNT/$TOTAL — $STAGED files (${{ inputs.era }})" || true
-
-                  bash scripts/lib/push-with-retry.sh
-                fi
-              else
-                echo "No new files since last checkpoint"
-              fi
+              # Aggregator archive files are pushed to private repo at end of job
+              echo "Aggregator archive checkpoint: $(find data/aggregator-archive -type f 2>/dev/null | wc -l) total files"
             fi
           done
 
@@ -392,15 +365,12 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Close Coverage Gaps — Final commit (catch uncommitted files)"
-      - name: Final commit (catch uncommitted files)
+      - name: Push aggregator-archive to private repo
         if: always()
-        run: |
-          git add data/aggregator-archive/ 2>/dev/null || true
-          STAGED=$(git diff --cached --name-only 2>/dev/null | wc -l | tr -d ' ')
-          if [ "$STAGED" -gt 0 ]; then
-            git commit -m "data: Batch ${{ matrix.batch_id }} final — $STAGED remaining files (${{ inputs.era }})" || true
-            bash scripts/lib/push-with-retry.sh
-          fi
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Close Coverage Gaps — batch ${{ matrix.batch_id }} (${{ inputs.era }})"
 
       - name: Upload failure report
         if: always()
@@ -431,6 +401,10 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Checkout review-texts (private repo)
         uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - uses: actions/setup-node@v4
@@ -478,26 +452,12 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Close Coverage Gaps — Commit PV + NYC results"
-      - name: Commit PV + NYC results
-        run: |
-          if git diff --quiet data/ && [ -z "$(git ls-files --others --exclude-standard data/)" ]; then
-            echo "No new data"
-            exit 0
-          fi
-
-          git add data/aggregator-archive/playbill-verdict/ data/aggregator-archive/nyc-theatre/
-          CHANGED=$(git diff --cached --name-only | wc -l | tr -d ' ')
-
-          if [ "$CHANGED" = "0" ]; then
-            echo "Nothing staged"
-            exit 0
-          fi
-
-          git commit -m "data: Scrape PV + NYC Theatre for ${{ inputs.era }} gap shows ($CHANGED files)
-
-          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
-
-          bash scripts/lib/push-with-retry.sh
+      - name: Push aggregator-archive to private repo
+        if: always()
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Close Coverage Gaps — PV + NYC Theatre (${{ inputs.era }})"
 
   # Job 4: Validate and rebuild reviews.json
   rebuild:

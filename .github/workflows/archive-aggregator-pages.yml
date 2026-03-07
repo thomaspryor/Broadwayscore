@@ -25,6 +25,10 @@ jobs:
         uses: ./.github/actions/checkout-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -248,25 +252,12 @@ jobs:
           });
           EOF
 
-      - name: Commit and push changes
+      - name: Push aggregator-archive to private repo
         if: always()
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/aggregator-archive/
-
-          if git diff --staged --quiet; then
-            echo "ℹ️  No changes to commit"
-          else
-            COMMIT_MSG="Archive aggregator pages (automated)"
-            if [ -n "${{ github.event.inputs.show_ids }}" ]; then
-              COMMIT_MSG="Archive aggregator pages for: ${{ github.event.inputs.show_ids }}"
-            fi
-            git commit -m "$COMMIT_MSG"
-
-            bash scripts/lib/push-with-retry.sh
-            echo "✅ Changes committed and pushed"
-          fi
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Archive aggregator pages"
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure

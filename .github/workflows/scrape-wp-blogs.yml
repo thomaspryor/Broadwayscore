@@ -36,6 +36,10 @@ jobs:
         uses: ./.github/actions/checkout-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -61,39 +65,12 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Scrape WordPress Theater Blogs — Commit and push changes"
-      - name: Commit and push changes
+      - name: Push aggregator-archive to private repo
         if: always()
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/aggregator-archive/
-          git diff --staged --quiet || git commit -m "chore: Update WordPress theater blog review data"
-
-          MAX_RETRIES=5
-          RETRY_COUNT=0
-          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-            echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
-            git checkout -- . 2>/dev/null || true
-            git clean -fd 2>/dev/null || true
-            if git pull --rebase -X theirs origin main; then
-              if git push origin main; then
-                echo "Successfully pushed changes"
-                exit 0
-              fi
-            else
-              echo "Rebase failed, aborting and retrying..."
-              git rebase --abort 2>/dev/null || true
-            fi
-            RETRY_COUNT=$((RETRY_COUNT + 1))
-            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
-              WAIT_TIME=$((10 + RANDOM % 20))
-              echo "Waiting $WAIT_TIME seconds before retry..."
-              sleep $WAIT_TIME
-              git fetch origin main
-            fi
-          done
-          echo "Failed to push after $MAX_RETRIES attempts"
-          exit 1
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: WordPress theater blog scrape (aggregator archive)"
 
       - name: Notify on failure
         if: failure()

@@ -75,6 +75,10 @@ jobs:
         uses: ./.github/actions/checkout-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Verify core data freshness
         run: |
           # Canary: shows.json must exist and be valid after checkout-core-data
@@ -95,6 +99,15 @@ jobs:
             exit 1
           fi
           echo "✓ Zero review-text files in public repo"
+
+          # Fail immediately if ANY aggregator-archive files are tracked in the public repo
+          AA_COUNT=$(git ls-tree -r HEAD --name-only -- 'data/aggregator-archive/' 2>/dev/null | wc -l | tr -d ' ')
+          if [ "$AA_COUNT" -gt "0" ]; then
+            echo "::error::CRITICAL: $AA_COUNT aggregator-archive files found in public repo! These contain copyrighted content and MUST be removed."
+            git ls-tree -r HEAD --name-only -- 'data/aggregator-archive/' | head -20
+            exit 1
+          fi
+          echo "✓ Zero aggregator-archive files in public repo"
 
       - name: Guard — aggregator archives present
         run: |

@@ -92,10 +92,18 @@ if [ "${1:-}" = "--all" ]; then
     fi
   fi
 
-  # Copy review text directories (exclude .git)
-  rsync -a --exclude='.git' "$TEMP_DIR/review-texts/" "$DATA_DIR/review-texts/"
+  # Copy review text directories (exclude .git and aggregator-archive)
+  rsync -a --exclude='.git' --exclude='aggregator-archive' "$TEMP_DIR/review-texts/" "$DATA_DIR/review-texts/"
   RT_COUNT=$(find "$DATA_DIR/review-texts" -name "*.json" -type f | wc -l | tr -d ' ')
   echo "Review texts: $RT_COUNT files copied to data/review-texts/"
+
+  # Copy aggregator-archive to its own directory
+  if [ -d "$TEMP_DIR/review-texts/aggregator-archive" ]; then
+    mkdir -p "$DATA_DIR/aggregator-archive"
+    rsync -a "$TEMP_DIR/review-texts/aggregator-archive/" "$DATA_DIR/aggregator-archive/"
+    AA_COUNT=$(find "$DATA_DIR/aggregator-archive" -type f | wc -l | tr -d ' ')
+    echo "Aggregator archive: $AA_COUNT files copied to data/aggregator-archive/"
+  fi
 fi
 
 echo ""

@@ -160,6 +160,10 @@ jobs:
         uses: ./.github/actions/checkout-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -209,10 +213,9 @@ jobs:
       - name: Check for changes
         id: git-check
         run: |
-          # Check for changes in review-texts or archives directory (NOT reviews.json to avoid conflicts)
-          git diff --exit-code data/aggregator-archive/ data/collection-state/ 2>/dev/null || echo "changes=true" >> $GITHUB_OUTPUT
-          # Also check for untracked files
-          if [ -n "$(git ls-files --others --exclude-standard data/aggregator-archive/)" ]; then
+          # Check for changes in collection-state (aggregator-archive is now in private repo)
+          git diff --exit-code data/collection-state/ 2>/dev/null || echo "changes=true" >> $GITHUB_OUTPUT
+          if [ -n "$(git ls-files --others --exclude-standard data/collection-state/)" ]; then
             echo "changes=true" >> $GITHUB_OUTPUT
           fi
 
@@ -227,17 +230,20 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Gather Review Data — Commit review data"
-      - name: Commit review data
+      - name: Push aggregator-archive to private repo
+        if: always()
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Gather Review Data — aggregator archive"
+      - name: Commit collection-state
         if: always() && steps.git-check.outputs.changes == 'true'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
-          # Only add review-texts and archives (NOT reviews.json to avoid merge conflicts)
-          # reviews.json can be rebuilt later from review-texts
-          git add data/aggregator-archive/ data/collection-state/
+          git add data/collection-state/
 
-          # Check if there's anything to commit after adding
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
@@ -278,6 +284,10 @@ jobs:
         uses: ./.github/actions/checkout-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -308,20 +318,12 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Gather Review Data — Commit and push aggregator data"
-      - name: Commit and push aggregator data
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-
-          git add data/aggregator-archive/
-          if git diff --staged --quiet; then
-            echo "No aggregator changes to commit"
-            exit 0
-          fi
-
-          git commit -m "data: Add aggregator data (PV + NYC Theatre + BWW Roundups) for ${{ inputs.shows }}"
-
-          bash scripts/lib/push-with-retry.sh 8 main
+      - name: Push aggregator-archive to private repo
+        if: always()
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Add aggregator data (PV + NYC Theatre + BWW Roundups) for ${{ inputs.shows }}"
 
   # Step 4: Rebuild reviews.json after all batches and aggregators complete
   rebuild:
