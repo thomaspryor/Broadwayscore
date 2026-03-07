@@ -13,8 +13,9 @@ import { useToastSafe } from '@/components/ui/Toast';
 import type { UserReview, WatchlistEntry, ShowLookup } from '@/types/user';
 import type Fuse from 'fuse.js';
 import MezzanineImport from './MezzanineImport';
+import ListsTab from './ListsTab';
 
-type Tab = 'diary' | 'watchlist';
+type Tab = 'diary' | 'watchlist' | 'lists';
 type DiarySort = 'date-desc' | 'date-asc' | 'rating-desc';
 type WatchlistSort = 'added-desc' | 'alphabetical' | 'closing-soon';
 type ViewMode = 'grid' | 'list';
@@ -48,7 +49,10 @@ function getShowHref(slug: string, _category: string) {
 
 export default function MyShowsClient() {
   const searchParams = useSearchParams();
-  const [activeTab, setActiveTabState] = useState<Tab>(searchParams.get('tab') === 'watchlist' ? 'watchlist' : 'diary');
+  const [activeTab, setActiveTabState] = useState<Tab>(
+    searchParams.get('tab') === 'watchlist' ? 'watchlist' :
+    searchParams.get('tab') === 'lists' ? 'lists' : 'diary'
+  );
 
   // Dev-only mock mode: ?mock=1 on localhost renders with fake data (for Playwright visual QA)
   // Must be state (not derived) to avoid SSR/client hydration mismatch
@@ -63,7 +67,9 @@ export default function MyShowsClient() {
   const setActiveTab = (tab: Tab) => {
     setActiveTabState(tab);
     const mockParam = isMockMode ? '&mock=1' : '';
-    const url = tab === 'watchlist' ? `/my-shows?tab=watchlist${mockParam}` : `/my-shows${mockParam ? `?${mockParam.slice(1)}` : ''}`;
+    const url = tab === 'diary'
+      ? `/my-shows${mockParam ? `?${mockParam.slice(1)}` : ''}`
+      : `/my-shows?tab=${tab}${mockParam}`;
     window.history.replaceState(null, '', url);
   };
   const [diarySort, setDiarySort] = useState<DiarySort>('date-desc');
@@ -311,7 +317,7 @@ export default function MyShowsClient() {
       <div className="flex items-center justify-between mb-2">
         <h1 className="text-2xl sm:text-3xl font-extrabold text-white">My Shows</h1>
         <AddShowSearch
-          context={activeTab}
+          context={activeTab === 'lists' ? 'watchlist' : activeTab}
           onAddToWatchlist={async (showId: string) => {
             await effectiveAddToWatchlist(showId);
             if (!isMockMode) await getWatchlist();
@@ -382,8 +388,24 @@ export default function MyShowsClient() {
             </span>
           )}
         </button>
+        <button
+          type="button"
+          role="tab"
+          id="tab-lists"
+          aria-selected={activeTab === 'lists'}
+          aria-controls="panel-lists"
+          onClick={() => setActiveTab('lists')}
+          className={`flex-shrink-0 px-3 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] outline-none ${
+            activeTab === 'lists'
+              ? 'text-white border-brand'
+              : 'text-gray-500 border-transparent hover:text-gray-300'
+          }`}
+        >
+          Lists
+        </button>
 
-        {/* Inline controls on the right */}
+        {/* Inline controls on the right (hidden for Lists tab) */}
+        {activeTab !== 'lists' && (
         <div className="ml-auto flex items-center gap-1.5 sm:gap-2 -mb-[1px]">
           {activeTab === 'diary' && (
             <select
@@ -433,6 +455,7 @@ export default function MyShowsClient() {
             </button>
           </div>
         </div>
+        )}
       </div>
 
       {/* Diary tab */}
@@ -615,6 +638,13 @@ export default function MyShowsClient() {
               }} />
             </div>
           )}
+        </div>
+      )}
+
+      {/* Lists tab */}
+      {activeTab === 'lists' && (
+        <div id="panel-lists" role="tabpanel" aria-labelledby="tab-lists">
+          <ListsTab userId={user?.id || null} showMap={showMap} isMockMode={isMockMode} />
         </div>
       )}
     </div>
