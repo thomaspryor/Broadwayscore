@@ -63,7 +63,7 @@ export default function ShowPageWatchlistButton({ showId }: ShowPageWatchlistBut
   const watchlistDate = watchlistEntry?.planned_date || null;
 
   return (
-    <div className="flex items-center gap-2 ml-auto flex-shrink-0">
+    <div className="flex items-center gap-2 flex-shrink-0">
       {watched && (
         <label className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-300 transition-colors cursor-pointer relative">
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

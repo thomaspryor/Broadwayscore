@@ -56,6 +56,7 @@ export interface UserList {
   updated_at: string;
   item_count?: number;
   preview_show_ids?: string[];
+  all_show_ids?: string[];
 }
 
 export interface ListItem {
