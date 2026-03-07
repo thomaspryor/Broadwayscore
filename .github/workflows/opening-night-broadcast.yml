@@ -1,8 +1,16 @@
 name: Opening Night Broadcast
 
+# Thin "check & send" workflow — reads existing scored data, generates consensus, sends email.
+# Heavy lifting (gather, rebuild, score) is handled by the data pipeline:
+#   update-show-status → gather-reviews → rebuild → llm-ensemble-score
+#   opening-night-reviews (5 AM UTC) → SERP discovery → gather-reviews → rebuild → score
+# The 5 AM run catches shows where data is already ready (scored overnight).
+# The 8 AM run catches shows whose scoring finished between 5-8 AM.
+
 on:
   schedule:
-    - cron: '0 5 * * *'  # 5 AM UTC = ~midnight ET — sends preview to owner
+    - cron: '0 5 * * *'   # 5 AM UTC = midnight ET — first check
+    - cron: '0 8 * * *'   # 8 AM UTC = 3 AM ET — catch-up after pipeline finishes
   workflow_dispatch:
     inputs:
       lookback_days:
@@ -23,7 +31,7 @@ permissions:
 jobs:
   broadcast:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -141,61 +149,8 @@ jobs:
           FORMSPREE_WESTEND_SUBSCRIBER_API_KEY: ${{ secrets.FORMSPREE_WESTEND_SUBSCRIBER_API_KEY }}
         run: node scripts/sync-followers.js
 
-      - name: Discover reviews from outlets (SERP)
-        if: steps.check.outputs.pending_shows != ''
-        continue-on-error: true
-        env:
-          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
-          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
-          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
-        run: |
-          IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.pending_shows }}"
-          for SHOW in "${SHOWS[@]}"; do
-            echo "Discovering reviews for $SHOW..."
-            node scripts/discover-opening-night-reviews.js --show="$SHOW" --tiers=1,2 || true
-          done
-
-      - name: Gather reviews from aggregators
-        if: always() && steps.check.outputs.pending_shows != ''
-        env:
-          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
-          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
-        run: |
-          npx playwright install chromium 2>/dev/null || true
-          node scripts/gather-reviews.js --shows=${{ steps.check.outputs.pending_shows }}
-
-      - name: Rebuild reviews.json
-        if: always() && steps.check.outputs.pending_shows != ''
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: node scripts/rebuild-all-reviews.js
-
-      - name: Score reviews (LLM ensemble)
-        if: always() && steps.check.outputs.pending_shows != ''
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: |
-          # Score unscored reviews for the opening-night shows
-          IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.pending_shows }}"
-          for SHOW in "${SHOWS[@]}"; do
-            echo "Scoring reviews for $SHOW..."
-            npx ts-node scripts/llm-scoring/index.ts --show="$SHOW" --ensemble --run-calibration=false || true
-          done
-
-      - name: Rebuild after scoring
-        if: always() && steps.check.outputs.pending_shows != ''
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: node scripts/rebuild-all-reviews.js
-
       - name: Generate consensus
-        if: always() && steps.check.outputs.pending_shows != ''
+        if: steps.check.outputs.pending_shows != ''
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
@@ -205,7 +160,7 @@ jobs:
           done
 
       - name: Send broadcast
-        if: always() && steps.check.outputs.pending_shows != ''
+        if: steps.check.outputs.pending_shows != ''
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
@@ -237,12 +192,6 @@ jobs:
           fi
 
 
-      - name: Push review-texts to private repo
-        if: always()
-        uses: ./.github/actions/push-review-texts
-        with:
-          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-          message: "data: Opening Night Broadcast — Commit data"
       - name: Commit data
         if: always()
         run: |
