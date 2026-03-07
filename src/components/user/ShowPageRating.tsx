@@ -147,7 +147,7 @@ export default function ShowPageRating({
   if (!featureFlags.userAccounts) return null;
 
   return (
-    <div className="mt-2 pt-2 border-t border-white/[0.06]">
+    <div className="mt-2 pt-2 -mb-2 border-t border-white/[0.06]">
       {/* Header */}
       <div className="flex items-center gap-2 mb-1">
         <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">My Rating &amp; Review</h3>
@@ -198,19 +198,6 @@ export default function ShowPageRating({
                 : '\u00A0'}
             </span>
           </div>
-          <button
-            type="button"
-            onClick={() => {
-              setEditingReview(null);
-              setCurrentRating(null);
-              lastSavedId.current = null;
-              setShowPanel(false);
-              handleRatingChange(latestReview.rating);
-            }}
-            className="text-xs text-gray-500 hover:text-brand transition-colors whitespace-nowrap mt-1"
-          >
-            + New Viewing
-          </button>
         </div>
       ) : (
         <StarRating
@@ -226,7 +213,7 @@ export default function ShowPageRating({
         <div className="mt-2 space-y-1.5">
           {reviews.filter(r => r.id !== latestReview?.id).slice(0, 3).map(review => (
             <div key={review.id} className="group/viewing flex items-center gap-1.5 text-sm text-gray-500">
-              <StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel />
+              <StarRating rating={review.rating} onRatingChange={() => {}} size="md" readOnly hideLabel />
               <div className="flex items-center gap-0.5 sm:opacity-0 sm:group-hover/viewing:opacity-100 transition-opacity">
                 <button type="button" onClick={() => handleEdit(review)} className="p-1 text-gray-500 hover:text-white transition-colors" aria-label="Edit this viewing">
                   <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -256,11 +243,26 @@ export default function ShowPageRating({
         </div>
       )}
 
-      {/* Link to diary */}
+      {/* New viewing + link to diary */}
       {latestReview && !showPanel && (
-        <Link href="/my-shows" className="inline-block mt-1 text-xs text-gray-500 hover:text-brand transition-colors">
-          See all my Ratings &amp; Reviews
-        </Link>
+        <div className="flex items-center gap-3 mt-1">
+          <button
+            type="button"
+            onClick={() => {
+              setEditingReview(null);
+              setCurrentRating(null);
+              lastSavedId.current = null;
+              setShowPanel(false);
+              handleRatingChange(latestReview.rating);
+            }}
+            className="text-xs text-gray-500 hover:text-brand transition-colors whitespace-nowrap"
+          >
+            + New Viewing
+          </button>
+          <Link href="/my-shows" className="text-xs text-gray-500 hover:text-brand transition-colors">
+            See all my Ratings &amp; Reviews
+          </Link>
+        </div>
       )}
 
       {/* Review panel */}
