@@ -63,6 +63,32 @@ jobs:
             -ignore 'maximum number of inputs' \
             .github/workflows/*.yml
 
+  dependency-audit:
+    name: Dependency Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    continue-on-error: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: npm audit (high + critical)
+        id: audit
+        run: npm audit --audit-level=high
+      - name: Alert on vulnerabilities
+        if: failure()
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+        run: |
+          if [ -n "$DISCORD_WEBHOOK_ALERTS" ]; then
+            curl -s -X POST -H "Content-Type: application/json" \
+              -d '{"content": "**npm audit** found high/critical vulnerabilities. Check the latest test.yml run."}' \
+              "$DISCORD_WEBHOOK_ALERTS"
+          fi
+
   data-validation:
     name: Data Validation
     runs-on: ubuntu-latest
