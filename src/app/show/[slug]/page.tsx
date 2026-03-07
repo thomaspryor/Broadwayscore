@@ -495,7 +495,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
           {/* Links row: Official Site, Tickets, Trailer, Lottery/Rush + Watchlist */}
           <div className="flex items-center gap-2 mt-4 flex-nowrap">
-            <div className="flex flex-wrap gap-2 min-w-0">
+            <div className="flex flex-wrap gap-2 min-w-0 flex-1">
               {/* Official Website */}
               {show.officialUrl && (
                 <TicketLink
