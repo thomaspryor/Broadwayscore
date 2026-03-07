@@ -287,6 +287,16 @@ function validateImageUrls(shows) {
   const urlRegex = /^(https?:\/\/.+|\/images\/.+)/;
   let invalid = 0;
 
+  // Known "Coming Soon" placeholder asset IDs from TodayTix/Contentful.
+  // Keep in sync with COMING_SOON_ASSET_IDS in fetch-show-images-auto.js.
+  const COMING_SOON_ASSET_IDS = new Set([
+    '74xXALpVG4Bdn59x8L9OYN', '42EOxYmUHQE0Xuza0dUlJm', '1Ya0iMOMWjrOvnZPMv9y8k',
+    '6W6O3eG33mXg3uJes4DBQ2', 'Y2lDO0gaKjUKp333ZG3zW', '3khjL5U7k9860pnRWY6wxe',
+    '3kXlmb7NIDQUq2fEi8FK8C', '2NXMbF8ZGgylEVESpiUIlf', '4dVF8DYwWDn4B5OFSi3x3c',
+  ]);
+  const getAssetId = (url) => { const m = url && url.match(/ctfassets\.net\/[^/]+\/([^/]+)/); return m ? m[1] : null; };
+  let placeholders = 0;
+
   for (const show of shows) {
     if (show.images) {
       for (const [key, url] of Object.entries(show.images)) {
@@ -294,12 +304,20 @@ function validateImageUrls(shows) {
           error(`Show "${show.title}" has invalid ${key} URL: "${url}"`);
           invalid++;
         }
+        // Check for known placeholder images that slipped through
+        if (url && typeof url === 'string') {
+          const aid = getAssetId(url);
+          if (aid && COMING_SOON_ASSET_IDS.has(aid)) {
+            error(`Show "${show.title}" (${show.id}) has "Coming Soon" placeholder ${key} image — needs re-fetch`);
+            placeholders++;
+          }
+        }
       }
     }
   }
 
-  if (invalid === 0) {
-    ok('All image URLs are valid');
+  if (invalid === 0 && placeholders === 0) {
+    ok('All image URLs are valid (no placeholders)');
   }
 }
 

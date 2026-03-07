@@ -459,6 +459,63 @@ async function fetchFromIBDB(show) {
   return null;
 }
 
+// Fetch show poster from ShowScore (show-score.com)
+// ShowScore hosts poster images on CloudFront. We scrape the OG image or poster from the page.
+async function fetchFromShowScore(show) {
+  const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
+  if (!SCRAPINGBEE_KEY) return null;
+
+  const category = show.category || 'broadway';
+  const ssCategory = category === 'off-broadway' ? 'off-broadway-shows'
+    : category === 'west-end' ? 'london-shows'
+    : 'broadway-shows';
+
+  // ShowScore slugs: lowercase, hyphens, no special chars
+  const slug = show.title.toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/['']/g, '').replace(/&/g, 'and')
+    .replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+
+  const ssUrl = `https://www.show-score.com/${ssCategory}/${slug}`;
+  console.log(`   Trying ShowScore: ${ssUrl}`);
+
+  try {
+    const resp = await fetch(
+      `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(ssUrl)}&render_js=false`,
+      { signal: AbortSignal.timeout(20000) }
+    );
+    if (!resp.ok) {
+      console.log(`   ✗ ShowScore page not found (${resp.status})`);
+      return null;
+    }
+    const html = await resp.text();
+
+    // Extract poster image from CloudFront CDN
+    // Pattern: d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/NNNN/medium_...
+    const posterMatch = html.match(/https:\/\/d4ov6iqsvotvt\.cloudfront\.net\/uploads\/show\/poster_image\/\d+\/medium_[^"'<\s]+\.(jpg|jpeg|png)/i);
+    if (posterMatch) {
+      const posterUrl = posterMatch[0];
+      // Build thumbnail URL by replacing 'medium_' with 'preview_'
+      const thumbUrl = posterUrl.replace('/medium_', '/preview_');
+      console.log(`   ✓ Found poster via ShowScore`);
+      return { thumbnail: thumbUrl, poster: posterUrl, hero: null };
+    }
+
+    // Fallback: try OG image meta tag
+    const ogMatch = html.match(/property="og:image"\s+content="([^"]+)"/i);
+    if (ogMatch && ogMatch[1] && ogMatch[1].includes('cloudfront.net')) {
+      console.log(`   ✓ Found OG image via ShowScore`);
+      return { thumbnail: ogMatch[1], poster: ogMatch[1], hero: null };
+    }
+
+    console.log(`   ✗ No poster image found on ShowScore page`);
+  } catch (err) {
+    console.log(`   ✗ ShowScore fetch failed: ${err.message}`);
+  }
+  return null;
+}
+
 // Detect shows with bad images (identical poster/thumbnail/hero from Playbill)
 function hasBadImages(showId) {
   const showDir = path.join(IMAGES_DIR, showId);
@@ -1514,7 +1571,7 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
       };
     }
 
-    console.log(`   API match found but missing image data, falling back to page scrape`);
+    console.log(`   API match found but all images are placeholders, trying other sources`);
   }
 
   // When --verify is active, collect candidates from all tiers and pick the best
@@ -1589,6 +1646,22 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
   const ibdbImages = await fetchFromIBDB(show);
   if (ibdbImages && (ibdbImages.thumbnail || ibdbImages.poster)) {
     const candidate = await verifyAndCollect(ibdbImages, show, 'IBDB', verifyCtx);
+    if (candidate) {
+      candidates.push(candidate);
+      if (candidate.verifyResult?.imageType === 'promotional_art' &&
+          candidate.verifyResult?.confidence === 'high') {
+        console.log(`   ★ Promotional art found at high confidence — using this`);
+        return candidate.images;
+      }
+      if (!verifyCtx) return candidate.images;
+    }
+    if (verifyCtx && !candidate) console.log(`   Falling through to Google Images...`);
+  }
+
+  // Step 3.5: Try ShowScore poster images
+  const showScoreImages = await fetchFromShowScore(show);
+  if (showScoreImages && (showScoreImages.thumbnail || showScoreImages.poster)) {
+    const candidate = await verifyAndCollect(showScoreImages, show, 'ShowScore', verifyCtx);
     if (candidate) {
       candidates.push(candidate);
       if (candidate.verifyResult?.imageType === 'promotional_art' &&
