@@ -217,12 +217,7 @@ export default function ShowPageRating({
           {reviews.filter(r => r.id !== latestReview?.id).slice(0, 3).map(review => (
             <div key={review.id} className="group/viewing flex items-center gap-1.5 text-sm text-gray-500">
               <StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel />
-              <span className="text-xs text-gray-500 min-w-[70px]">
-                {review.date_seen
-                  ? new Date(review.date_seen + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-                  : '\u00A0'}
-              </span>
-              <div className="flex items-center gap-0.5 opacity-0 group-hover/viewing:opacity-100 transition-opacity">
+              <div className="hidden sm:flex items-center gap-0.5 opacity-0 group-hover/viewing:opacity-100 transition-opacity">
                 <button type="button" onClick={() => handleEdit(review)} className="p-1 text-gray-500 hover:text-white transition-colors" aria-label="Edit this viewing">
                   <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -241,6 +236,11 @@ export default function ShowPageRating({
                   </button>
                 )}
               </div>
+              <span className="text-xs text-gray-500">
+                {review.date_seen
+                  ? new Date(review.date_seen + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                  : '\u00A0'}
+              </span>
             </div>
           ))}
         </div>
@@ -248,7 +248,7 @@ export default function ShowPageRating({
 
       {/* Link to diary */}
       {latestReview && !showPanel && (
-        <Link href="/my-shows" className="inline-block mt-3 text-xs text-gray-500 hover:text-brand transition-colors">
+        <Link href="/my-shows" className="inline-block mt-2 text-xs text-gray-500 hover:text-brand transition-colors">
           See all my Ratings &amp; Reviews
         </Link>
       )}
