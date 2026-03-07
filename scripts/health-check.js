@@ -589,9 +589,11 @@ async function createTriageIssue(allResults, history) {
   const title = `Auto-Triage: ${errors.length} persistent error${errors.length > 1 ? 's' : ''} (day ${history.consecutiveErrorDays})`;
 
   try {
-    const escapedBody = issueBody.replace(/'/g, "'\\''");
+    // Write body to temp file to avoid shell escaping issues
+    const bodyFile = '/tmp/triage-issue-body.json';
+    fs.writeFileSync(bodyFile, issueBody);
     execSync(
-      `gh issue create --title "${title}" --label auto-triage --label automated --body '${escapedBody}'`,
+      `gh issue create --title "${title}" --label auto-triage --label automated --body-file "${bodyFile}"`,
       { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
     );
     console.log(`[Triage] Created auto-triage issue: ${title}`);
