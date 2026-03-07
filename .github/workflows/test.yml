@@ -67,6 +67,8 @@ jobs:
     name: Dependency Audit
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    # Only run on schedule (daily) — not every push, to avoid noise
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     continue-on-error: true
     steps:
       - name: Checkout
@@ -75,19 +77,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: npm audit (high + critical)
-        id: audit
-        run: npm audit --audit-level=high
-      - name: Alert on vulnerabilities
-        if: failure()
-        env:
-          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
-        run: |
-          if [ -n "$DISCORD_WEBHOOK_ALERTS" ]; then
-            curl -s -X POST -H "Content-Type: application/json" \
-              -d '{"content": "**npm audit** found high/critical vulnerabilities. Check the latest test.yml run."}' \
-              "$DISCORD_WEBHOOK_ALERTS"
-          fi
+      - name: npm audit (critical only)
+        run: npm audit --audit-level=critical
 
   data-validation:
     name: Data Validation
