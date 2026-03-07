@@ -3,6 +3,7 @@
 import { useState, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ShowPageRating from '@/components/user/ShowPageRating';
+import StarRating from '@/components/user/StarRating';
 import type { UserReview } from '@/types/user';
 
 /**
@@ -115,6 +116,17 @@ function ShowRatingFixtureInner() {
             isAuthenticated={true}
             authLoading={false}
           />
+        </div>
+
+        {/* Star size showcase — renders half-stars at every size to catch SVG rendering bugs */}
+        <div className="mt-8" data-testid="star-showcase">
+          <h2 className="text-sm font-bold text-gray-400 mb-3">Half-Star Rendering (all sizes)</h2>
+          {(['xs', 'sm', 'md', 'lg'] as const).map(size => (
+            <div key={size} className="flex items-center gap-3 mb-2">
+              <span className="text-xs text-gray-500 w-8">{size}</span>
+              <StarRating rating={3.5} onRatingChange={() => {}} size={size} readOnly hideLabel />
+            </div>
+          ))}
         </div>
       </div>
     </div>
