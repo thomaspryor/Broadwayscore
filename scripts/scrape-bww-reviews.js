@@ -938,34 +938,13 @@ async function processShow(show, showId, options = {}) {
 }
 
 // ---------------------------------------------------------------------------
-// Git checkpoint (CI only)
+// Git checkpoint (CI only) — aggregator-archive is now in private repo,
+// pushed via push-aggregator-archive action at workflow end (if: always()).
+// This function is retained as a no-op so callers don't need updating.
 // ---------------------------------------------------------------------------
 
 function gitCheckpoint(count, total, label) {
-  if (!process.env.GITHUB_ACTIONS) return;
-
-  const { execSync } = require('child_process');
-  try {
-    execSync('git add data/aggregator-archive/', { stdio: 'pipe' });
-    const staged = execSync('git diff --cached --name-only', { stdio: 'pipe' }).toString().trim().split('\n').filter(Boolean).length;
-    if (staged > 0) {
-      execSync(`git commit -m "data: BWW checkpoint ${count}/${total} — ${staged} files (${label})"`, { stdio: 'pipe' });
-      // Push with retry
-      for (let i = 1; i <= 5; i++) {
-        try {
-          execSync('git push origin main', { stdio: 'pipe' });
-          console.log(`  [GIT] Checkpoint ${count}/${total}: ${staged} files pushed`);
-          break;
-        } catch (e) {
-          execSync('git pull --rebase -X theirs origin main', { stdio: 'pipe' }).toString();
-          const backoff = Math.floor(Math.random() * 11 + 5) * 1000;
-          require('child_process').execSync(`sleep ${backoff / 1000}`);
-        }
-      }
-    }
-  } catch (e) {
-    console.log(`  [GIT] Checkpoint failed: ${e.message.slice(0, 80)}`);
-  }
+  // No-op: aggregator-archive is gitignored, pushed by composite action
 }
 
 // ---------------------------------------------------------------------------

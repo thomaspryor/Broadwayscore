@@ -47,6 +47,10 @@ jobs:
         uses: ./.github/actions/checkout-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -75,40 +79,12 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Playbill Verdict scrape"
-
-      - name: Commit and push changes
+      - name: Push aggregator-archive to private repo (PV)
         if: always()
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/
-          git diff --staged --quiet || git commit -m "chore: Update Playbill Verdict review data"
-
-          MAX_RETRIES=5
-          RETRY_COUNT=0
-          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-            echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
-            git checkout -- . 2>/dev/null || true
-            git clean -fd 2>/dev/null || true
-            if git pull --rebase -X theirs origin main; then
-              if git push origin main; then
-                echo "Successfully pushed changes"
-                exit 0
-              fi
-            else
-              echo "Rebase failed, aborting and retrying..."
-              git rebase --abort 2>/dev/null || true
-            fi
-            RETRY_COUNT=$((RETRY_COUNT + 1))
-            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
-              WAIT_TIME=$((10 + RANDOM % 20))
-              echo "Waiting $WAIT_TIME seconds before retry..."
-              sleep $WAIT_TIME
-              git fetch origin main
-            fi
-          done
-          echo "Failed to push after $MAX_RETRIES attempts"
-          exit 1
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Playbill Verdict aggregator archive"
 
   scrape-nyc-theatre:
     runs-on: ubuntu-latest
@@ -131,6 +107,10 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Checkout review-texts (private repo)
         uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
@@ -160,40 +140,12 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: NYC Theatre roundup scrape"
-
-      - name: Commit and push changes
+      - name: Push aggregator-archive to private repo (NYC)
         if: always()
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/
-          git diff --staged --quiet || git commit -m "chore: Update NYC Theatre roundup data"
-
-          MAX_RETRIES=5
-          RETRY_COUNT=0
-          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-            echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
-            git checkout -- . 2>/dev/null || true
-            git clean -fd 2>/dev/null || true
-            if git pull --rebase -X theirs origin main; then
-              if git push origin main; then
-                echo "Successfully pushed changes"
-                exit 0
-              fi
-            else
-              echo "Rebase failed, aborting and retrying..."
-              git rebase --abort 2>/dev/null || true
-            fi
-            RETRY_COUNT=$((RETRY_COUNT + 1))
-            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
-              WAIT_TIME=$((10 + RANDOM % 20))
-              echo "Waiting $WAIT_TIME seconds before retry..."
-              sleep $WAIT_TIME
-              git fetch origin main
-            fi
-          done
-          echo "Failed to push after $MAX_RETRIES attempts"
-          exit 1
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: NYC Theatre aggregator archive"
 
   scrape-lbo-roundups:
     runs-on: ubuntu-latest
@@ -214,6 +166,10 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Checkout review-texts (private repo)
         uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
@@ -243,15 +199,12 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: LBO roundup scrape"
-
-      - name: Commit and push changes
+      - name: Push aggregator-archive to private repo (LBO)
         if: always()
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/
-          git diff --staged --quiet || git commit -m "chore: Update LBO roundup data"
-          bash scripts/lib/push-with-retry.sh 5 main
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: LBO roundup aggregator archive"
 
   # Rebuild reviews.json after aggregator data is committed
   rebuild:
