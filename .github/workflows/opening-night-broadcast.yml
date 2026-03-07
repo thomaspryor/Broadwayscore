@@ -167,6 +167,7 @@ jobs:
         run: |
           # Preview mode by default (cron + manual without send_to_all)
           # Only send to all subscribers when explicitly approved via manual dispatch
+          LOOKBACK=${{ inputs.lookback_days || 2 }}
           SEND_TO_FLAG=""
           if [ "${{ inputs.send_to_all }}" != "true" ]; then
             SEND_TO_FLAG="--send-to=$OWNER_EMAIL"
@@ -178,7 +179,7 @@ jobs:
           # Broadway broadcast (skip if no Broadway shows)
           if [ -n "${{ steps.find.outputs.broadway }}" ]; then
             echo "--- Broadway broadcast ---"
-            node scripts/send-opening-night-broadcast.js --market=broadway --budget=60 $SEND_TO_FLAG
+            node scripts/send-opening-night-broadcast.js --market=broadway --budget=60 --lookback=$LOOKBACK $SEND_TO_FLAG
           else
             echo "No Broadway shows to broadcast"
           fi
@@ -186,7 +187,7 @@ jobs:
           # West End broadcast (skip if no WE shows)
           if [ -n "${{ steps.find.outputs.westend }}" ]; then
             echo "--- West End broadcast ---"
-            node scripts/send-opening-night-broadcast.js --market=west-end --budget=35 $SEND_TO_FLAG
+            node scripts/send-opening-night-broadcast.js --market=west-end --budget=35 --lookback=$LOOKBACK $SEND_TO_FLAG
           else
             echo "No West End shows to broadcast"
           fi
