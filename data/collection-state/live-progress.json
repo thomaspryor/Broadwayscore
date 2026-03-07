@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-07T05:12:21.757Z",
-  "processed": 531,
-  "failed": 134,
-  "successRate": "79.8%",
+  "updatedAt": "2026-03-07T05:15:17.016Z",
+  "processed": 538,
+  "failed": 137,
+  "successRate": "79.7%",
   "tierBreakdown": {
-    "playwright": 277,
+    "playwright": 281,
     "amp": 26,
     "browserbase": 36,
     "directCookies": 6,
-    "scrapingbee": 97,
+    "scrapingbee": 100,
     "brightdata": 0,
-    "archiveToday": 27,
-    "archive": 127
+    "archiveToday": 29,
+    "archive": 128
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-03-06T20:31:10.393Z",
-      "event": "bb-session",
-      "session": "4a8dcda8",
-      "url": "https://nypost.com/2019/10/17/little-shop-of-horrors-review-jonathan-groff-tammy"
-    },
-    {
-      "t": "2026-03-06T20:31:12.244Z",
-      "event": "bb-cookie-inject",
-      "domain": "nypost.com"
-    },
     {
       "t": "2026-03-06T20:35:51.022Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-07T05:02:01.076Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-07T05:14:55.530Z",
+      "event": "bb-session",
+      "session": "45d1274a",
+      "url": "https://www.thestage.co.uk/reviews/shadowlands-review-aldwych-theatre-london-hug"
+    },
+    {
+      "t": "2026-03-07T05:14:56.731Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }

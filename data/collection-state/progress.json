@@ -530,7 +530,14 @@
     "oh-mary-west-end-2025/independent--alice-saville.json",
     "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
     "ragtime-2025/ap--mark-kennedy.json",
-    "ragtime-2025/billboard--joe-lynch.json"
+    "ragtime-2025/billboard--joe-lynch.json",
+    "ragtime-2025/people--unknown.json",
+    "ragtime-2025/playbill--logan-culwell-block.json",
+    "ragtime-2025/theater-life--samuel-l-leiter.json",
+    "shadowlands-west-end-2026/artsdesk--helen-hawkins.json",
+    "shadowlands-west-end-2026/financialtimes--sarah-hemming.json",
+    "shadowlands-west-end-2026/independent--alice-saville.json",
+    "shadowlands-west-end-2026/telegraph--dominic-cavendish.json"
   ],
   "failed": [
     "it-walks-around-the-house-at-night-west-end-2026/broadwayworld--unknown.json",
@@ -666,7 +673,10 @@
     "oh-mary-west-end-2025/standard--nick-curtis.json",
     "oliver-west-end-2024/thestage--sam-marlowe.json",
     "perfect-crime-off-broadway-1987/billboard--bww-news-desk.json",
-    "ragtime-2025/america-magazine--weinert-kendt.json"
+    "ragtime-2025/america-magazine--weinert-kendt.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "schmigadoon-2026/rollingstone--alan-sepinwall.json",
+    "shadowlands-west-end-2026/thestage--holly-o-mahony.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -947,7 +957,11 @@
       "pen-pals-off-broadway-2025/theater-life--barry-gordin.json",
       "what-we-did-before-our-moth-days-off-broadway-2026/theatermania--unknown.json",
       "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
-      "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json"
+      "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
+      "ragtime-2025/people--unknown.json",
+      "ragtime-2025/playbill--logan-culwell-block.json",
+      "ragtime-2025/theater-life--samuel-l-leiter.json",
+      "shadowlands-west-end-2026/financialtimes--sarah-hemming.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -1120,7 +1134,10 @@
       "paranormal-activity-west-end-2025/times-uk--rachel-halliburton.json",
       "los-soles-truncos-off-broadway-2025/broadwaynews--aa-cristi.json",
       "les-miserables-west-end-2021/times-uk--clive-davis.json",
-      "oh-mary-west-end-2025/independent--alice-saville.json"
+      "oh-mary-west-end-2025/independent--alice-saville.json",
+      "ragtime-2025/america-magazine--weinert-kendt.json",
+      "shadowlands-west-end-2026/independent--alice-saville.json",
+      "shadowlands-west-end-2026/telegraph--dominic-cavendish.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1150,7 +1167,9 @@
       "data/review-texts/oh-mary-west-end-2025/independent--alice-saville.json",
       "data/review-texts/harry-potter-2021/usatoday--kelly-lawler.json",
       "data/review-texts/harry-potter-and-the-cursed-child-both-parts-west-end-2021/thestage--mark-shenton.json",
-      "data/review-texts/heathers-the-musical-off-broadway-2025/usatoday--elysa-gardner.json"
+      "data/review-texts/heathers-the-musical-off-broadway-2025/usatoday--elysa-gardner.json",
+      "data/review-texts/perfect-crime-off-broadway-1987/billboard--bww-news-desk.json",
+      "data/review-texts/shadowlands-west-end-2026/thestage--holly-o-mahony.json"
     ],
     "archive": [
       "tru-off-broadway-2026/theatermania--unknown.json",
@@ -1279,11 +1298,12 @@
       "matilda-the-musical-west-end-2021/thestage--mark-shenton.json",
       "maybe-happy-ending-2024/talkinbroadway--matthew-murray.json",
       "ragtime-2025/ap--mark-kennedy.json",
-      "ragtime-2025/billboard--joe-lynch.json"
+      "ragtime-2025/billboard--joe-lynch.json",
+      "shadowlands-west-end-2026/artsdesk--helen-hawkins.json"
     ]
   },
   "startTime": "2026-03-06T17:15:52.929Z",
-  "lastProcessed": "ragtime-2025/billboard--joe-lynch.json",
+  "lastProcessed": "shadowlands-west-end-2026/thestage--holly-o-mahony.json",
   "log": [
     {
       "t": "2026-03-06T18:51:51.105Z",
@@ -1702,6 +1722,17 @@
       "t": "2026-03-07T05:02:01.076Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-07T05:14:55.530Z",
+      "event": "bb-session",
+      "session": "45d1274a",
+      "url": "https://www.thestage.co.uk/reviews/shadowlands-review-aldwych-theatre-london-hug"
+    },
+    {
+      "t": "2026-03-07T05:14:56.731Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
