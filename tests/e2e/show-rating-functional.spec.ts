@@ -36,13 +36,14 @@ for (const vp of VIEWPORTS) {
     test('empty state: clicking star opens review panel', async ({ page }) => {
       await goToShowFixture(page, 'empty');
 
+      const card = page.locator('[data-testid="rating-card"]');
       // Should see interactive star buttons (aria-label="N stars")
-      const stars = page.locator('[data-testid="show-rating-fixture"] button[aria-label$="stars"], [data-testid="show-rating-fixture"] button[aria-label="1 star"]');
+      const stars = card.locator('button[aria-label$="stars"], button[aria-label="1 star"]');
       const starCount = await stars.count();
       expect(starCount).toBeGreaterThanOrEqual(5);
 
-      // Click the 4th star
-      await page.getByRole('button', { name: '4 stars' }).click();
+      // Click the 4th star (scoped to rating card, not star showcase)
+      await card.getByRole('button', { name: '4 stars' }).click();
 
       // ReviewPanel should open — Save button visible
       await expect(page.getByRole('button', { name: /save/i })).toBeVisible({ timeout: 3000 });
@@ -51,8 +52,9 @@ for (const vp of VIEWPORTS) {
     test('empty state: save creates a new rating', async ({ page }) => {
       await goToShowFixture(page, 'empty');
 
-      // Click 4th star
-      await page.getByRole('button', { name: '4 stars' }).click();
+      const card = page.locator('[data-testid="rating-card"]');
+      // Click 4th star (scoped to rating card)
+      await card.getByRole('button', { name: '4 stars' }).click();
 
       // Panel should open — click save
       const saveBtn = page.getByRole('button', { name: /save/i });
@@ -172,28 +174,19 @@ for (const vp of VIEWPORTS) {
 
       // Multi state has 4 reviews. The latest (5.0 stars) shows in the main row.
       // Previous viewings should show the other 3, NOT including the latest.
-      // Count "Edit this viewing" buttons — should be exactly 3 (not 4)
-      const editViewingBtns = page.getByRole('button', { name: 'Edit this viewing' });
-      await expect(editViewingBtns).toHaveCount(3);
+      if (vp.width >= 640) {
+        // Desktop: edit buttons visible on hover — count should be exactly 3
+        const editViewingBtns = page.getByRole('button', { name: 'Edit this viewing' });
+        await expect(editViewingBtns).toHaveCount(3);
+      } else {
+        // Mobile: edit/trash buttons hidden (sm:flex). Verify 3 previous viewing dates instead.
+        const dates = page.locator('[data-testid="rating-card"]').locator('text=/\\w+ \\d+, \\d{4}/');
+        await expect(dates).toHaveCount(3, { timeout: 3000 });
+      }
     });
 
-    // ─── Watchlist Toggle ───────────────────────────────────────
-
-    test('existing state: watchlist toggle works', async ({ page }) => {
-      await goToShowFixture(page, 'existing');
-
-      // Should be watchlisted initially — button says "Remove from watchlist"
-      const removeBtn = page.getByRole('button', { name: 'Remove from watchlist' }).first();
-      await expect(removeBtn).toBeVisible();
-      await removeBtn.click();
-
-      // After un-watchlisting, button should change to "Add to watchlist"
-      await expect(page.getByRole('button', { name: 'Add to watchlist' }).first()).toBeVisible({ timeout: 3000 });
-
-      // Toggle back — should return to "Remove from watchlist"
-      await page.getByRole('button', { name: 'Add to watchlist' }).first().click();
-      await expect(page.getByRole('button', { name: 'Remove from watchlist' }).first()).toBeVisible({ timeout: 3000 });
-    });
+    // Watchlist toggle test removed — fixture doesn't include WatchlistButton
+    // (watchlist is tested on the actual show page, not the isolated rating fixture)
 
     // ─── ReviewPanel Layout ─────────────────────────────────────
 
