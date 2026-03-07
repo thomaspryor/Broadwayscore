@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-07T11:22:50.030Z",
-  "processed": 124,
-  "failed": 26,
-  "successRate": "82.7%",
+  "updatedAt": "2026-03-07T11:27:25.838Z",
+  "processed": 133,
+  "failed": 27,
+  "successRate": "83.1%",
   "tierBreakdown": {
-    "playwright": 40,
+    "playwright": 42,
     "amp": 24,
-    "browserbase": 4,
-    "directCookies": 2,
+    "browserbase": 6,
+    "directCookies": 3,
     "scrapingbee": 24,
     "brightdata": 0,
-    "archiveToday": 13,
-    "archive": 46
+    "archiveToday": 14,
+    "archive": 51
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 11,
   "recentActivity": [
-    {
-      "t": "2026-03-07T10:49:42.495Z",
-      "event": "bb-session",
-      "session": "c38bb851",
-      "url": "https://www.nytimes.com/2026/02/17/theater/the-dinosaurs-review-chalfant-marvel-"
-    },
-    {
-      "t": "2026-03-07T10:49:43.501Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-07T10:50:57.957Z",
       "event": "bb-session",
@@ -91,6 +80,50 @@
       "t": "2026-03-07T11:06:55.601Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-07T11:22:57.310Z",
+      "event": "bb-session",
+      "session": "757f2e5d",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
+    },
+    {
+      "t": "2026-03-07T11:22:58.486Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-07T11:23:44.077Z",
+      "event": "bb-session",
+      "session": "28f418bd",
+      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
+    },
+    {
+      "t": "2026-03-07T11:23:45.265Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-07T11:24:24.262Z",
+      "event": "bb-session",
+      "session": "b8fdcaf7",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-07T11:24:25.320Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-07T11:26:50.347Z",
+      "event": "bb-session",
+      "session": "d0c2b80a",
+      "url": "https://observer.com/2025/07/theater-review-heathers-off-broadway-revival/"
+    },
+    {
+      "t": "2026-03-07T11:26:51.467Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
     }
   ]
 }
