@@ -1,12 +1,11 @@
 {
   "applinks": {
-    "apps": [],
     "details": [
       {
-        "appID": "2837Q6TK6Y.com.broadwayscorecard.app",
-        "paths": [
-          "/show/*",
-          "/auth/callback"
+        "appIDs": ["2837Q6TK6Y.com.broadwayscorecard.app"],
+        "components": [
+          { "/": "/show/*", "comment": "Show detail pages" },
+          { "/": "/auth/callback", "comment": "Auth callback" }
         ]
       }
     ]
