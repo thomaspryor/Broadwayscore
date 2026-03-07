@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-07T04:18:07.283Z",
-  "processed": 422,
-  "failed": 83,
-  "successRate": "83.6%",
+  "updatedAt": "2026-03-07T04:20:21.632Z",
+  "processed": 430,
+  "failed": 85,
+  "successRate": "83.5%",
   "tierBreakdown": {
-    "playwright": 198,
+    "playwright": 204,
     "amp": 26,
-    "browserbase": 32,
+    "browserbase": 34,
     "directCookies": 6,
-    "scrapingbee": 83,
+    "scrapingbee": 84,
     "brightdata": 0,
     "archiveToday": 19,
     "archive": 112
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-03-06T20:15:48.383Z",
-      "event": "bb-session",
-      "session": "13f20ed7",
-      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
-    },
-    {
-      "t": "2026-03-06T20:15:49.409Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-06T20:19:49.404Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-07T04:09:59.396Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-07T04:19:40.695Z",
+      "event": "bb-session",
+      "session": "09a69db0",
+      "url": "https://www.amny.com/entertainment/little-shop-of-horrors-off-broadway-1-3640251"
+    },
+    {
+      "t": "2026-03-07T04:19:42.052Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }

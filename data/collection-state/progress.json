@@ -421,7 +421,15 @@
     "im-sorry-prime-minister-west-end-2026/telegraph--dominic-cavendish.json",
     "im-sorry-prime-minister-west-end-2026/thestage--dave-fargnoli.json",
     "im-sorry-prime-minister-west-end-2026/west-end-best-friend--chris-abbott.json",
-    "into-the-woods-west-end-2025/i-paper--unknown.json"
+    "into-the-woods-west-end-2025/i-paper--unknown.json",
+    "just-in-time-2025/theater-scene--joel-benjamin.json",
+    "les-miserables-west-end-2021/artsdesk--aleks-sierz.json",
+    "les-miserables-west-end-2021/london-theatre--mark-shenton.json",
+    "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json",
+    "little-shop-of-horrors-off-broadway-2019/amny--unknown.json",
+    "little-shop-of-horrors-off-broadway-2019/chicagotribune--chris-jones.json",
+    "little-shop-of-horrors-off-broadway-2019/dailybeast--adam-hetrick.json",
+    "little-shop-of-horrors-off-broadway-2019/nysr--jesse-oxfeld.json"
   ],
   "failed": [
     "it-walks-around-the-house-at-night-west-end-2026/broadwayworld--unknown.json",
@@ -506,7 +514,9 @@
     "heathers-the-musical-off-broadway-2025/northjerseycom--robert-feldberg.json",
     "heathers-the-musical-off-broadway-2025/usatoday--elysa-gardner.json",
     "hercules-west-end-2025/thestage--sam-marlowe.json",
-    "high-noon-west-end-2025/times-uk--clive-davis.json"
+    "high-noon-west-end-2025/times-uk--clive-davis.json",
+    "les-miserables-west-end-2021/standard--nick-curtis.json",
+    "les-miserables-west-end-2021/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -708,7 +718,13 @@
       "im-sorry-prime-minister-west-end-2026/london-theatre--matt-wolf.json",
       "im-sorry-prime-minister-west-end-2026/thestage--dave-fargnoli.json",
       "im-sorry-prime-minister-west-end-2026/west-end-best-friend--chris-abbott.json",
-      "into-the-woods-west-end-2025/i-paper--unknown.json"
+      "into-the-woods-west-end-2025/i-paper--unknown.json",
+      "just-in-time-2025/theater-scene--joel-benjamin.json",
+      "les-miserables-west-end-2021/artsdesk--aleks-sierz.json",
+      "les-miserables-west-end-2021/london-theatre--mark-shenton.json",
+      "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json",
+      "little-shop-of-horrors-off-broadway-2019/dailybeast--adam-hetrick.json",
+      "little-shop-of-horrors-off-broadway-2019/nysr--jesse-oxfeld.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -770,7 +786,9 @@
       "data/review-texts/masquerade-off-broadway-2025/nypost--johnny-oleksinski.json",
       "masquerade-off-broadway-2025/nypost--johnny-oleksinski.json",
       "data/review-texts/masquerade-off-broadway-2025/observer--david-cote.json",
-      "masquerade-off-broadway-2025/observer--david-cote.json"
+      "masquerade-off-broadway-2025/observer--david-cote.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/amny--unknown.json",
+      "little-shop-of-horrors-off-broadway-2019/amny--unknown.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json",
@@ -863,7 +881,8 @@
       "high-noon-west-end-2025/telegraph--dominic-cavendish.json",
       "im-sorry-prime-minister-west-end-2026/daily-mail--patrick-marmion.json",
       "im-sorry-prime-minister-west-end-2026/independent--alice-saville.json",
-      "im-sorry-prime-minister-west-end-2026/telegraph--dominic-cavendish.json"
+      "im-sorry-prime-minister-west-end-2026/telegraph--dominic-cavendish.json",
+      "little-shop-of-horrors-off-broadway-2019/chicagotribune--chris-jones.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1003,7 +1022,7 @@
     ]
   },
   "startTime": "2026-03-06T17:15:52.929Z",
-  "lastProcessed": "into-the-woods-west-end-2025/i-paper--unknown.json",
+  "lastProcessed": "little-shop-of-horrors-off-broadway-2019/nysr--jesse-oxfeld.json",
   "log": [
     {
       "t": "2026-03-06T18:51:51.105Z",
@@ -1367,6 +1386,17 @@
       "t": "2026-03-07T04:09:59.396Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-07T04:19:40.695Z",
+      "event": "bb-session",
+      "session": "09a69db0",
+      "url": "https://www.amny.com/entertainment/little-shop-of-horrors-off-broadway-1-3640251"
+    },
+    {
+      "t": "2026-03-07T04:19:42.052Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
