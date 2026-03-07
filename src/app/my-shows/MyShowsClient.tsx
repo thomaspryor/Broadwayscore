@@ -544,8 +544,44 @@ export default function MyShowsClient() {
                 </div>
               )}
 
-              {/* Past shows section — grouped by year in grid view */}
+              {/* Past shows section — grouped by year (skipped when sorting by rating) */}
               {pastReviews.length > 0 && (() => {
+                // When sorting by rating, show a flat list — year grouping doesn't apply
+                if (diarySort === 'rating-desc') {
+                  const hasOtherSections = upcomingReviews.length > 0 || upcomingWatchlistEntries.length > 0 || toBeRatedEntries.length > 0;
+                  return (
+                    <div>
+                      {hasOtherSections && (
+                        <div className="flex items-center justify-between mb-3">
+                          <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">All Rated</h3>
+                          <span className="text-[11px] text-gray-500">{pastReviews.length} {pastReviews.length === 1 ? 'entry' : 'entries'}</span>
+                        </div>
+                      )}
+                      {diaryView === 'list' ? (
+                        <div className="space-y-2">
+                          {pastReviews.map(review => (
+                            <DiaryCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={async () => { await effectiveDeleteReview(review.id); showToast?.('Rating deleted.', 'info'); }} />
+                          ))}
+                          <AddShowCard context="diary" variant="list" onOpen={() => {
+                            const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add a show to diary"], [aria-label="Rate a show"]');
+                            btn?.click();
+                          }} />
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                          {pastReviews.map(review => (
+                            <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={async () => { await effectiveDeleteReview(review.id); showToast?.('Rating deleted.', 'info'); }} />
+                          ))}
+                          <AddShowCard context="diary" onOpen={() => {
+                            const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add a show to diary"], [aria-label="Rate a show"]');
+                            btn?.click();
+                          }} />
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+
                 // Group past reviews by year (from date_seen or created_at)
                 const reviewsByYear: Record<string, UserReview[]> = {};
                 for (const review of pastReviews) {
@@ -568,7 +604,7 @@ export default function MyShowsClient() {
                     {sortedYears.map((year, yearIdx) => (
                       <div key={year}>
                         {showYearHeaders && (
-                          <div className="flex items-center justify-between mb-3">
+                          <div className={`flex items-center justify-between mb-3${diaryView === 'list' && yearIdx > 0 ? ' pt-4 border-t border-white/[0.06]' : ''}`}>
                             <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">{year}</h3>
                             <span className="text-[11px] text-gray-500">{reviewsByYear[year].length} {reviewsByYear[year].length === 1 ? 'entry' : 'entries'}</span>
                           </div>
