@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import type Fuse from 'fuse.js';
 import { supabaseRestInsert } from '@/lib/supabase-rest';
+import { Modal, ModalCloseButton } from '@/components/show-cards';
 
 // Mezzanine JSON shape
 interface MezzEntry {
@@ -377,8 +378,8 @@ export default function MezzanineImport({
   }
 
   return (
-    <div className="fixed inset-0 z-[100] bg-black/70 flex items-end sm:items-center justify-center" onClick={e => { if (e.target === e.currentTarget) handleClose(); }}>
-      <div className="bg-surface-raised w-full sm:w-[520px] sm:max-h-[80vh] max-h-[90vh] rounded-t-2xl sm:rounded-2xl border border-white/10 shadow-2xl flex flex-col overflow-hidden">
+    <Modal isOpen={true} onClose={handleClose} maxWidth="lg" bottomSheet ariaLabel="Import from Mezzanine">
+      <div className="flex flex-col overflow-hidden max-h-[85vh]">
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
           <h3 className="text-base font-bold text-white">
@@ -388,11 +389,7 @@ export default function MezzanineImport({
             {step === 'importing' && 'Importing...'}
             {step === 'done' && 'Import Complete'}
           </h3>
-          <button onClick={handleClose} className="p-1 text-gray-400 hover:text-white" aria-label="Close">
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+          <ModalCloseButton onClick={handleClose} />
         </div>
 
         {/* Content */}
@@ -513,7 +510,7 @@ export default function MezzanineImport({
           </div>
         )}
       </div>
-    </div>
+    </Modal>
   );
 }
 

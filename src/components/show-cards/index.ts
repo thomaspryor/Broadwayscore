@@ -11,3 +11,4 @@ export type { ShowListCardProps } from './ShowListCard';
 export { default as MiniShowCard } from './MiniShowCard';
 export type { MiniShowCardProps } from './MiniShowCard';
 export type { ShowCardShow, ScoreModeParam, AudienceGrade } from './types';
+export { default as Modal, ModalCloseButton } from './Modal';

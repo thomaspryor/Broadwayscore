@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useCallback } from 'react';
+import { Modal, ModalCloseButton } from '@/components/show-cards';
 
 type SignInContext = 'rating' | 'watchlist' | 'generic';
 
@@ -25,45 +25,10 @@ const CONTEXT_SUBTEXT: Record<SignInContext, string> = {
 };
 
 export default function SignInModal({ isOpen, onClose, onSignIn, context = 'generic', loading = false }: SignInModalProps) {
-  // Close on Escape
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (e.key === 'Escape') onClose();
-  }, [onClose]);
-
-  useEffect(() => {
-    if (isOpen) {
-      document.addEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'hidden';
-      return () => {
-        document.removeEventListener('keydown', handleKeyDown);
-        document.body.style.overflow = '';
-      };
-    }
-  }, [isOpen, handleKeyDown]);
-
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-[80] flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
-        onClick={onClose}
-      />
-
-      {/* Modal */}
-      <div className="relative w-full max-w-sm bg-[#1a1a24] rounded-2xl border border-white/10 shadow-2xl p-6 animate-in fade-in zoom-in-95 duration-200">
-        {/* Close button */}
-        <button
-          type="button"
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors"
-          aria-label="Close"
-        >
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
+    <Modal isOpen={isOpen} onClose={onClose} zIndex={80} maxWidth="sm" ariaLabel="Sign in">
+      <div className="p-6">
+        <ModalCloseButton onClick={onClose} className="absolute top-4 right-4" />
 
         {/* Logo */}
         <div className="flex items-center justify-center mb-4">
@@ -116,6 +81,6 @@ export default function SignInModal({ isOpen, onClose, onSignIn, context = 'gene
           By signing in, you agree to our Terms of Service and Privacy Policy.
         </p>
       </div>
-    </div>
+    </Modal>
   );
 }
