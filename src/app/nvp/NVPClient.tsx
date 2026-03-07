@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/audience-grade-utils';
 import ShowImage from '@/components/ShowImage';
+import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import { getScoreTier, ScoreBadge, StatusBadge, FormatPill, ProductionPill, ToggleBar, ScoreToggle } from '@/components/show-cards';
 import type { ScoreTier } from '@/components/show-cards';
 
@@ -274,7 +275,8 @@ function NVPPageInner({ shows, offBroadway }: { shows: NVPShow[]; offBroadway: N
                 style={{ animationDelay: `${index * 30}ms` }}
               >
                 {/* Thumbnail */}
-                <div className="flex-shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-lg overflow-hidden bg-surface-overlay">
+                <div className="relative flex-shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-lg overflow-hidden bg-surface-overlay">
+                  <ShowPageBookmark showId={show.id} size="sm" />
                   <ShowImage
                     sources={[
                       show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'thumbnail') : null,

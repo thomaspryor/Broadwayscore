@@ -3,6 +3,7 @@ import type { ComputedShow } from '@/lib/data-types';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import { ScoreBadge } from '@/components/show-cards';
+import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 
 export default function RelatedShows({ shows, title = 'You Might Also Like' }: { shows: ComputedShow[]; title?: string }) {
   if (shows.length === 0) return null;
@@ -18,6 +19,7 @@ export default function RelatedShows({ shows, title = 'You Might Also Like' }: {
             className="flex-shrink-0 w-28 sm:w-32 group"
           >
             <div className="relative rounded-lg overflow-hidden bg-surface-overlay aspect-[2/3] mb-1.5">
+              <ShowPageBookmark showId={show.id} size="sm" />
               <ShowImage
                 sources={[
                   show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'card') : null,

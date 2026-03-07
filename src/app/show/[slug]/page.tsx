@@ -19,7 +19,6 @@ import { getBlogReviewByShowSlug } from '@/lib/data-reviews-blog';
 import { GOLD_LIST_MAP } from '@/config/gold-lists';
 import { GoldListBadge } from '@/components/gold-list/GoldListBadge';
 import { featureFlags } from '@/config/feature-flags';
-import { isOffWestEndVenue } from '@/lib/venue-classification';
 import type { ComputedShow } from '@/lib/data-types';
 import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, BASE_URL, toAbsoluteUrl } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -44,7 +43,7 @@ import TicketLink from '@/components/TicketLink';
 import { getComparisonsForShow } from '@/config/comparisons';
 import ShowPageRatingConnected from '@/components/user/ShowPageRatingConnected';
 import ShowPageWatchlistButton from '@/components/user/ShowPageWatchlistButton';
-import ShowPageAddToListButton from '@/components/user/ShowPageAddToListButton';
+import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 
 export const revalidate = 86400;
 
@@ -282,7 +281,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           <div className="flex gap-4 sm:gap-6">
             {/* Poster Card + pills underneath on mobile */}
             <div className="flex-shrink-0 w-28 sm:w-36 lg:w-40 flex flex-col gap-2">
-              <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
+              <div className="relative aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
+                <ShowPageBookmark showId={show.id} />
                 <ShowImage
                   sources={[
                     show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'poster') : null,
@@ -306,9 +306,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               {/* Compact pill labels under poster — mobile only */}
               <div className="flex sm:hidden flex-wrap justify-center gap-x-1.5 gap-y-0.5 text-[9px] font-semibold uppercase tracking-wide leading-none" data-testid="show-pills-poster">
                 {show.category && show.category !== 'broadway' && (
-                  show.category === 'west-end' && isOffWestEndVenue(show.venue)
-                    ? <span className="text-violet-400">Off-West End</span>
-                    : <span className={show.category === 'west-end' ? 'text-teal-400' : 'text-indigo-400'}>{show.category === 'west-end' ? 'West End' : 'Off-Bway'}</span>
+                  <span className={show.category === 'west-end' ? 'text-teal-400' : 'text-indigo-400'}>{show.category === 'west-end' ? 'West End' : 'Off-Bway'}</span>
                 )}
                 <span className={show.type === 'musical' ? 'text-purple-400' : 'text-blue-400'}>{show.type === 'musical' ? 'Musical' : 'Play'}</span>
                 <span className={show.isRevival ? 'text-gray-400' : 'text-amber-400'}>{show.isRevival ? 'Revival' : 'Original'}</span>
@@ -320,7 +318,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             <div className="flex-1 min-w-0">
               {/* Pills row — desktop only (mobile pills moved below poster) */}
               <div className="hidden sm:flex flex-wrap items-center gap-1.5 mb-2" data-testid="show-pills-row">
-                <CategoryBadge category={show.category === 'west-end' && isOffWestEndVenue(show.venue) ? 'off-west-end' : show.category} />
+                <CategoryBadge category={show.category} />
                 <FormatPill type={show.type} />
                 <ProductionPill isRevival={show.isRevival === true} />
                 {show.limitedRun && <LimitedRunBadge />}
@@ -554,11 +552,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               )}
             </div>
 
-            {/* Watchlist + Add to List — right-aligned */}
-            <div className="flex items-center gap-1.5 ml-auto flex-shrink-0">
-              <ShowPageAddToListButton showId={show.id} />
-              <ShowPageWatchlistButton showId={show.id} />
-            </div>
+            {/* Watchlist button — right-aligned */}
+            <ShowPageWatchlistButton showId={show.id} />
           </div>
 
           {/* User Rating — feature-flagged */}
