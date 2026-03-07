@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-07T04:23:51.392Z",
-  "processed": 438,
-  "failed": 87,
-  "successRate": "83.4%",
+  "updatedAt": "2026-03-07T04:27:03.126Z",
+  "processed": 447,
+  "failed": 88,
+  "successRate": "83.6%",
   "tierBreakdown": {
-    "playwright": 209,
+    "playwright": 216,
     "amp": 26,
-    "browserbase": 34,
+    "browserbase": 36,
     "directCookies": 6,
-    "scrapingbee": 87,
+    "scrapingbee": 88,
     "brightdata": 0,
-    "archiveToday": 20,
+    "archiveToday": 21,
     "archive": 112
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-03-06T20:19:49.404Z",
-      "event": "bb-session",
-      "session": "270c80c2",
-      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
-    },
-    {
-      "t": "2026-03-06T20:19:50.503Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-06T20:22:50.099Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-07T04:19:42.052Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-07T04:24:01.407Z",
+      "event": "bb-session",
+      "session": "2c00805b",
+      "url": "https://www.amny.com/news/review-marcel-on-the-train-finds-bravery/"
+    },
+    {
+      "t": "2026-03-07T04:24:02.817Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     }
