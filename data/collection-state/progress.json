@@ -589,7 +589,16 @@
     "the-lion-king-west-end-2021/telegraph--david-gritten.json",
     "the-lion-king-west-end-2021/whatsonstage--daisy-bowie.json",
     "the-little-mermaid-the-musical-off-broadway-2026/stageandcinema--unknown.json",
-    "the-monsters-off-broadway-2026/theater-pizzazz--ron-fassler.json"
+    "the-monsters-off-broadway-2026/theater-pizzazz--ron-fassler.json",
+    "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
+    "the-mousetrap-west-end-2021/telegraph--unknown.json",
+    "the-mousetrap-west-end-2021/whatsonstage--whatsonstage-reviewer.json",
+    "the-office-a-musical-parody-off-broadway-2018/dailybeast--unknown.json",
+    "the-office-a-musical-parody-off-broadway-2018/one-minute-critic--arun-george.json",
+    "the-office-a-musical-parody-off-broadway-2018/rollingstone--unknown.json",
+    "the-office-a-musical-parody-off-broadway-2018/stageandcinema--unknown.json",
+    "the-office-a-musical-parody-off-broadway-2018/thepopbreak--rob-crowther-iv.json",
+    "the-outsiders-2024/culturesauce--thom-geier.json"
   ],
   "failed": [
     "mexodus-off-broadway-2026/nytg--austin-fimmano.json",
@@ -751,7 +760,8 @@
     "the-lion-king-1997/familyvacationcritic--unknown.json",
     "the-lion-king-1997/talkinbroadway--matthew-murray.json",
     "the-lion-king-west-end-2021/telegraph--unknown.json",
-    "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json"
+    "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
+    "the-mousetrap-west-end-2021/thestage--john-thaxter.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1052,7 +1062,15 @@
       "the-lion-king-west-end-2021/standard--nicholas-de-jongh.json",
       "the-lion-king-west-end-2021/whatsonstage--daisy-bowie.json",
       "the-little-mermaid-the-musical-off-broadway-2026/stageandcinema--unknown.json",
-      "the-monsters-off-broadway-2026/theater-pizzazz--ron-fassler.json"
+      "the-monsters-off-broadway-2026/theater-pizzazz--ron-fassler.json",
+      "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
+      "the-mousetrap-west-end-2021/telegraph--unknown.json",
+      "the-mousetrap-west-end-2021/whatsonstage--whatsonstage-reviewer.json",
+      "the-office-a-musical-parody-off-broadway-2018/dailybeast--unknown.json",
+      "the-office-a-musical-parody-off-broadway-2018/rollingstone--unknown.json",
+      "the-office-a-musical-parody-off-broadway-2018/stageandcinema--unknown.json",
+      "the-office-a-musical-parody-off-broadway-2018/thepopbreak--rob-crowther-iv.json",
+      "the-outsiders-2024/culturesauce--thom-geier.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -1246,7 +1264,8 @@
       "data/review-texts/shadowlands-west-end-2026/independent--alice-saville.json",
       "data/review-texts/the-devil-wears-prada-west-end-2024/independent--alice-saville.json",
       "data/review-texts/manic-street-creature-west-end-2026/broadwayworld--unknown.json",
-      "data/review-texts/the-lion-king-1997/talkinbroadway--matthew-murray.json"
+      "data/review-texts/the-lion-king-1997/talkinbroadway--matthew-murray.json",
+      "data/review-texts/the-mousetrap-west-end-2021/thestage--john-thaxter.json"
     ],
     "archive": [
       "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
@@ -1432,11 +1451,12 @@
       "matilda-the-musical-west-end-2021/telegraph--unknown.json",
       "maybe-happy-ending-2024/talkinbroadway--matthew-murray.json",
       "the-great-gatsby-2024/theater-pizzazz--ron-fassler.json",
-      "the-lion-king-west-end-2021/telegraph--david-gritten.json"
+      "the-lion-king-west-end-2021/telegraph--david-gritten.json",
+      "the-office-a-musical-parody-off-broadway-2018/one-minute-critic--arun-george.json"
     ]
   },
   "startTime": "2026-03-07T09:54:22.824Z",
-  "lastProcessed": "the-monsters-off-broadway-2026/theater-pizzazz--ron-fassler.json",
+  "lastProcessed": "the-outsiders-2024/culturesauce--thom-geier.json",
   "log": [
     {
       "t": "2026-03-07T10:49:42.495Z",
@@ -1701,6 +1721,17 @@
       "t": "2026-03-07T19:07:48.227Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-07T19:37:07.263Z",
+      "event": "bb-session",
+      "session": "bfb062b1",
+      "url": "https://www.thestage.co.uk/reviews/2004/the-mousetrap-review-at-st-martins-theat"
+    },
+    {
+      "t": "2026-03-07T19:37:08.634Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
