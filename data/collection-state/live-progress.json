@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-07T04:09:03.482Z",
-  "processed": 396,
-  "failed": 79,
-  "successRate": "83.4%",
+  "updatedAt": "2026-03-07T04:13:06.813Z",
+  "processed": 404,
+  "failed": 81,
+  "successRate": "83.3%",
   "tierBreakdown": {
-    "playwright": 179,
+    "playwright": 185,
     "amp": 26,
     "browserbase": 32,
     "directCookies": 6,
-    "scrapingbee": 76,
+    "scrapingbee": 78,
     "brightdata": 0,
-    "archiveToday": 18,
+    "archiveToday": 19,
     "archive": 112
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-06T20:14:00.046Z",
-      "event": "bb-session",
-      "session": "258f44f1",
-      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
-    },
-    {
-      "t": "2026-03-06T20:14:01.053Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-06T20:15:48.383Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-07T04:07:25.639Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-07T04:09:57.956Z",
+      "event": "bb-session",
+      "session": "224b289f",
+      "url": "http://www.northjersey.com/arts-and-entertainment/theater/revisiting-the-dark-si"
+    },
+    {
+      "t": "2026-03-07T04:09:59.396Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
