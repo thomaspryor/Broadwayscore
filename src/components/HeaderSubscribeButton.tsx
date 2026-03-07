@@ -72,7 +72,7 @@ export default function HeaderSubscribeButton() {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="ml-1 px-3 py-1.5 text-sm font-semibold text-white bg-brand hover:bg-brand-hover rounded-lg transition-colors"
+        className="ml-1 px-3 py-1.5 text-sm font-semibold text-white bg-brand hover:bg-brand-hover rounded-lg transition-colors whitespace-nowrap"
       >
         Get the Scorecard
       </button>
