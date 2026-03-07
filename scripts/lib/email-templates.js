@@ -266,14 +266,14 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
       ${consensusHtml}
       ${metaHtml}
       ${reviewCount > 0 ? `<tr><td style="padding:20px 24px 0;" align="center">
-        <a href="${escapeHtml(showUrl)}#critic-reviews" style="display:inline-block;padding:10px 24px;background-color:rgba(255,255,255,0.08);color:#d4a574;font-size:13px;font-weight:600;text-decoration:none;border-radius:6px;border:1px solid rgba(212,165,116,0.2);font-family:${FONT};">Scan All ${reviewCount} Reviews</a>
+        <a href="${escapeHtml(showUrl)}#critic-reviews" style="display:inline-block;padding:12px 32px;background-color:#d4a574;color:#0f0f14;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;font-family:${FONT};">See The Reviews</a>
       </td></tr>` : ''}
       <tr><td style="padding-bottom:20px;"></td></tr>
     </table>
   </td></tr>
   ${otherHtml}
   <tr><td style="padding:8px 0 32px;" align="center">
-    <a href="${escapeHtml(showUrl)}" style="display:inline-block;padding:12px 32px;background-color:#d4a574;color:#0f0f14;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;font-family:${FONT};">View Full Details</a>
+    <a href="${escapeHtml(showUrl)}" style="display:inline-block;padding:10px 24px;background-color:rgba(255,255,255,0.08);color:#d4a574;font-size:13px;font-weight:600;text-decoration:none;border-radius:6px;border:1px solid rgba(212,165,116,0.2);font-family:${FONT};">View Full Details</a>
   </td></tr>
   ${buildFooterHtml(showTitle, showId, email, market)}
 </table>
@@ -384,7 +384,7 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
       ${consensusHtml}
       ${metaHtml}
       ${reviewCount > 0 ? `<tr><td style="padding:20px 24px 0;" align="center">
-        <a href="${escapeHtml(show.showUrl)}#critic-reviews" style="display:inline-block;padding:10px 24px;background-color:rgba(255,255,255,0.08);color:#d4a574;font-size:13px;font-weight:600;text-decoration:none;border-radius:6px;border:1px solid rgba(212,165,116,0.2);font-family:${FONT};">Scan All ${reviewCount} Reviews</a>
+        <a href="${escapeHtml(show.showUrl)}#critic-reviews" style="display:inline-block;padding:12px 32px;background-color:#d4a574;color:#0f0f14;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;font-family:${FONT};">See The Reviews</a>
       </td></tr>` : ''}
       <tr><td style="padding-bottom:20px;"></td></tr>
     </table>
@@ -410,7 +410,7 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
   </td></tr>
   ${showCards.join('')}
   <tr><td style="padding:8px 0 32px;" align="center">
-    <a href="${browseUrl}" style="display:inline-block;padding:12px 32px;background-color:#d4a574;color:#0f0f14;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;font-family:${FONT};">Browse All Shows</a>
+    <a href="${browseUrl}" style="display:inline-block;padding:10px 24px;background-color:rgba(255,255,255,0.08);color:#d4a574;font-size:13px;font-weight:600;text-decoration:none;border-radius:6px;border:1px solid rgba(212,165,116,0.2);font-family:${FONT};">Browse All Shows</a>
   </td></tr>
   ${buildBroadcastFooterHtml(email, market)}
 </table>
