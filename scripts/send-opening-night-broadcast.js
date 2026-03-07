@@ -189,7 +189,7 @@ async function main() {
   }
 
   if (readyShows.length === 0) {
-    console.log('\nNo shows are ready for broadcast (need 12+ scored reviews)');
+    console.log(`\nNo shows are ready for broadcast (need ${MIN_REVIEWS}+ scored reviews)`);
     process.exit(0);
   }
 
