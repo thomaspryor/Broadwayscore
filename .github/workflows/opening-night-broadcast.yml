@@ -184,6 +184,10 @@ jobs:
           fi
 
           if [ "${{ inputs.send_to_all }}" != "true" ]; then
+            if [ -z "$OWNER_EMAIL" ]; then
+              echo "::error::OWNER_EMAIL secret is not set — cannot run in preview mode"
+              exit 1
+            fi
             SEND_TO_FLAG="--send-to=$OWNER_EMAIL"
             echo "** PREVIEW MODE — sending to owner only. To send to all: re-run with send_to_all=true **"
           else
