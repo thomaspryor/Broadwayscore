@@ -784,18 +784,16 @@ function DiaryGridCard({ review, show, onDelete }: { review: UserReview; show?: 
           </button>
         )}
       </Link>
-      {/* Stars + date below image */}
+      {/* Stars + date below image — fixed height for consistent grid cards */}
       <div className="px-2 py-1.5 text-center">
-        {review.rating > 0 && (
-          <div className="flex justify-center gap-0.5 mb-0.5">
-            <MiniStars rating={review.rating} size="sm" />
-          </div>
-        )}
-        {review.date_seen && (
-          <p className="text-[11px] font-medium text-amber-400 truncate">
-            {new Date(review.date_seen + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-          </p>
-        )}
+        <div className="flex justify-center gap-0.5 mb-0.5 min-h-[14px]">
+          {review.rating > 0 && <MiniStars rating={review.rating} size="sm" />}
+        </div>
+        <p className="text-[11px] font-medium text-amber-400 truncate min-h-[1em]">
+          {review.date_seen
+            ? new Date(review.date_seen + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+            : '\u00A0'}
+        </p>
       </div>
     </div>
   );
@@ -1338,7 +1336,7 @@ function AddShowCard({ context, variant = 'grid', onOpen }: { context: 'diary' |
         type="button"
         onClick={onOpen}
         className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl border-2 border-dashed border-white/10 hover:border-white/20 hover:bg-white/[0.03] transition-colors text-gray-500 hover:text-gray-300"
-        aria-label={context === 'diary' ? 'Add a show to diary' : 'Add to watchlist'}
+        aria-label={context === 'diary' ? 'Rate a new show' : 'Add a new show to watchlist'}
       >
         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -1352,7 +1350,7 @@ function AddShowCard({ context, variant = 'grid', onOpen }: { context: 'diary' |
       type="button"
       onClick={onOpen}
       className="flex flex-col rounded-xl border-2 border-dashed border-white/10 hover:border-white/20 hover:bg-white/[0.03] transition-colors text-gray-500 hover:text-gray-300 overflow-hidden"
-      aria-label={context === 'diary' ? 'Add a show to diary' : 'Add to watchlist'}
+      aria-label={context === 'diary' ? 'Rate a new show' : 'Add a new show to watchlist'}
     >
       {/* Placeholder area matching image aspect ratio */}
       <div className="aspect-[2/3] flex flex-col items-center justify-center">
