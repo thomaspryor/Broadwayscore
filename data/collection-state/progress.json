@@ -159,7 +159,8 @@
     "the-homecoming-2007/whatsonstage--sarah-crompton.json",
     "the-king-and-i-2015/amny--matt-windman.json",
     "the-little-foxes-1981/washpost--peter-marks.json",
-    "the-music-man-2000/washpost--peter-marks.json"
+    "the-music-man-2000/washpost--peter-marks.json",
+    "the-rose-tattoo-1995/chicagotribune--chris-jones.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -1404,7 +1405,16 @@
     "the-real-thing-2014/washpost--peter-marks.json",
     "the-realistic-joneses-2014/ap--mark-kennedy.json",
     "the-realistic-joneses-2014/washpost--peter-marks.json",
-    "the-ritz-2007/playbill--unknown.json"
+    "the-ritz-2007/playbill--unknown.json",
+    "the-road-to-mecca-2012/northjerseycom--robert-feldberg.json",
+    "the-road-to-mecca-2012/village-voice--michael-musto.json",
+    "the-scottsboro-boys-2010/chicagotribune--chris-jones.json",
+    "the-scottsboro-boys-2010/northjerseycom--robert-feldberg.json",
+    "the-scottsboro-boys-2010/ny1--roma-torre.json",
+    "the-seagull-2008/ap--unknown.json",
+    "the-seagull-2008/usatoday--unknown.json",
+    "the-shark-is-broken-2023/talkinbroadway--matthew-murray.json",
+    "the-snow-geese-2013/northjerseycom--robert-feldberg.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1567,7 +1577,8 @@
       "american-buffalo-1983/chicagotribune--chris-jones.json",
       "once-upon-a-one-more-time-2023/chicagotribune--chris-jones.json",
       "sunset-boulevard-2017/pages-on-stages--mason-pilevsky.json",
-      "the-homecoming-2007/independent--alice-saville.json"
+      "the-homecoming-2007/independent--alice-saville.json",
+      "the-rose-tattoo-1995/chicagotribune--chris-jones.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1918,7 +1929,13 @@
       "data/review-texts/the-real-thing-2014/washpost--peter-marks.json",
       "data/review-texts/the-realistic-joneses-2014/ap--mark-kennedy.json",
       "data/review-texts/the-realistic-joneses-2014/washpost--peter-marks.json",
-      "data/review-texts/the-ritz-2007/playbill--unknown.json"
+      "data/review-texts/the-ritz-2007/playbill--unknown.json",
+      "data/review-texts/the-road-to-mecca-2012/northjerseycom--robert-feldberg.json",
+      "data/review-texts/the-scottsboro-boys-2010/northjerseycom--robert-feldberg.json",
+      "data/review-texts/the-seagull-2008/ap--unknown.json",
+      "data/review-texts/the-seagull-2008/usatoday--unknown.json",
+      "data/review-texts/the-shark-is-broken-2023/talkinbroadway--matthew-murray.json",
+      "data/review-texts/the-snow-geese-2013/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
       "you-got-older-off-broadway-2026/timeout--unknown.json",
@@ -1957,7 +1974,7 @@
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "the-ritz-2007/playbill--unknown.json",
+  "lastProcessed": "the-snow-geese-2013/northjerseycom--robert-feldberg.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -2624,6 +2641,39 @@
       "t": "2026-03-08T11:26:35.632Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-08T11:28:06.318Z",
+      "event": "bb-session",
+      "session": "3f45945f",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/137548378_Tale_of_isolati"
+    },
+    {
+      "t": "2026-03-08T11:28:07.435Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-08T11:31:36.464Z",
+      "event": "bb-session",
+      "session": "db63ae4f",
+      "url": "https://www.northjersey.com/arts_entertainment/106428223_Musical_about_an_outrag"
+    },
+    {
+      "t": "2026-03-08T11:31:37.556Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-08T11:34:48.469Z",
+      "event": "bb-session",
+      "session": "b54ac963",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/229208661_Theater_review_"
+    },
+    {
+      "t": "2026-03-08T11:34:49.626Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
