@@ -1,6 +1,7 @@
 'use client';
 
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
 
@@ -107,6 +108,7 @@ export default function AnalyticsWrapper() {
   return (
     <>
       <Analytics />
+      <SpeedInsights />
       {GA_MEASUREMENT_ID && (
         <>
           <Script
