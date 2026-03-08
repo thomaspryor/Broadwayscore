@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-08T15:31:39.441Z",
-  "processed": 185,
-  "failed": 1308,
-  "successRate": "12.4%",
+  "updatedAt": "2026-03-08T15:33:07.804Z",
+  "processed": 191,
+  "failed": 1312,
+  "successRate": "12.7%",
   "tierBreakdown": {
-    "playwright": 86,
+    "playwright": 90,
     "amp": 16,
-    "browserbase": 26,
+    "browserbase": 28,
     "directCookies": 0,
     "scrapingbee": 42,
     "brightdata": 0,
     "archiveToday": 391,
-    "archive": 40
+    "archive": 41
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-03-08T11:12:14.086Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-03-08T11:13:37.459Z",
-      "event": "bb-session",
-      "session": "e044be05",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/the-other-place-revie"
-    },
     {
       "t": "2026-03-08T11:13:38.630Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "t": "2026-03-08T11:34:49.626Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-08T15:32:43.311Z",
+      "event": "bb-session",
+      "session": "e27188ec",
+      "url": "http://www.hollywoodreporter.com/review/cats-theater-review-915947"
+    },
+    {
+      "t": "2026-03-08T15:32:44.780Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
