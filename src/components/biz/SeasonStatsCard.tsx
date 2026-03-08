@@ -4,6 +4,7 @@
  */
 
 import Link from 'next/link';
+import { formatCurrency } from '@/lib/formatting';
 
 interface SeasonStatsCardProps {
   season: string;
@@ -11,16 +12,6 @@ interface SeasonStatsCardProps {
   recoupedCount: number;
   totalShows: number;
   recoupedShows: string[];
-}
-
-function formatCurrency(amount: number): string {
-  if (amount >= 1_000_000) {
-    return `$${(amount / 1_000_000).toFixed(1)}M`;
-  }
-  if (amount >= 1_000) {
-    return `$${(amount / 1_000).toFixed(0)}K`;
-  }
-  return `$${amount}`;
 }
 
 export default function SeasonStatsCard({

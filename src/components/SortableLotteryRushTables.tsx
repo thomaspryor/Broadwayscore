@@ -4,29 +4,14 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { ScoreBadge } from '@/components/show-cards';
-
-type SortDirection = 'asc' | 'desc';
+import { SortIcon } from '@/components/SortIcon';
+import type { SortDirection } from '@/lib/formatting';
 
 function TicketIcon({ className }: { className?: string }) {
   return (
     <svg className={className || "w-4 h-4"} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
     </svg>
-  );
-}
-
-function SortIcon({ direction, active }: { direction: SortDirection | null; active: boolean }) {
-  if (!active) {
-    return (
-      <span className="ml-1 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">
-        ↕
-      </span>
-    );
-  }
-  return (
-    <span className="ml-1 text-brand">
-      {direction === 'asc' ? '↑' : '↓'}
-    </span>
   );
 }
 
