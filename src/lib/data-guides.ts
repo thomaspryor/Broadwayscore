@@ -68,9 +68,19 @@ function loadEditorials(): EditorialsData {
   }
 }
 
-export function getGuideEditorial(slug: string): EditorialEntry | null {
+export function getGuideEditorial(slug: string, actualShowCount?: number): EditorialEntry | null {
   const data = loadEditorials();
-  return data.guides[slug] || null;
+  const entry = data.guides[slug] || null;
+  if (!entry) return null;
+
+  // If the editorial references a show count that's way off from reality, it's stale.
+  // Stale editorials mention specific shows that no longer match — misleading for users and SEO.
+  if (actualShowCount !== undefined && entry.showCount > 0) {
+    const drift = Math.abs(entry.showCount - actualShowCount) / entry.showCount;
+    if (actualShowCount === 0 || drift > 0.5) return null;
+  }
+
+  return entry;
 }
 
 // --- Date/Season Helpers ---

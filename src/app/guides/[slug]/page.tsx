@@ -43,22 +43,25 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const { year } = parseGuideSlug(params.slug);
 
   const metaTitle = interpolateTemplate(config.metaTitleTemplate, vars);
-  const metaDescription = interpolateTemplate(config.metaDescriptionTemplate, vars);
+  const metaDescription = shows.length > 0
+    ? interpolateTemplate(config.metaDescriptionTemplate, vars)
+    : `${config.title} — guide by Broadway Scorecard. Check back soon for updated listings.`;
   const canonicalUrl = `${BASE_URL}/guides/${params.slug}`;
 
   // Top show poster for OG image
   const topPoster = shows[0]?.images?.hero || shows[0]?.images?.poster;
   const ogImageUrl = topPoster ? toAbsoluteUrl(topPoster) : `${BASE_URL}/og/home.png`;
 
-  // Noindex year pages older than 3 years
+  // Noindex year pages older than 3 years, or empty guide pages
   const currentYear = new Date().getFullYear();
   const isOldYearPage = year !== undefined && year < currentYear - 2;
+  const isEmpty = shows.length === 0;
 
   return {
     title: metaTitle,
     description: metaDescription,
     alternates: { canonical: canonicalUrl },
-    ...(isOldYearPage && {
+    ...((isOldYearPage || isEmpty) && {
       robots: { index: false, follow: true },
     }),
     openGraph: {
@@ -96,8 +99,8 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
   const vars = buildTemplateVars(metadata);
   const { year } = parseGuideSlug(params.slug);
 
-  // Editorial intro (LLM or fallback)
-  const editorial = getGuideEditorial(params.slug);
+  // Editorial intro (LLM or fallback) — skip editorial if show count drifted significantly
+  const editorial = getGuideEditorial(params.slug, shows.length);
   const intro = editorial?.intro || interpolateTemplate(config.introFallback, vars);
 
   // H1
@@ -190,13 +193,17 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
         <div className="mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">{h1}</h1>
 
-          {/* Editorial Intro */}
-          <p className="text-gray-300 leading-relaxed text-base sm:text-lg">{intro}</p>
+          {/* Editorial Intro — hidden on empty pages to avoid stale show references */}
+          {shows.length > 0 && (
+            <p className="text-gray-300 leading-relaxed text-base sm:text-lg">{intro}</p>
+          )}
 
           {/* Meta line */}
-          <p className="text-gray-500 text-sm mt-3">
-            {shows.length} {shows.length === 1 ? 'show' : 'shows'} | Last updated: {metadata.monthYear}
-          </p>
+          {shows.length > 0 && (
+            <p className="text-gray-500 text-sm mt-3">
+              {shows.length} {shows.length === 1 ? 'show' : 'shows'} | Last updated: {metadata.monthYear}
+            </p>
+          )}
         </div>
 
         {/* Year Page Navigation */}
@@ -368,9 +375,9 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
           /* Empty State */
           <div className="card p-6 sm:p-8 text-center">
             <div className="text-3xl sm:text-4xl mb-4">🎭</div>
-            <h2 className="text-lg sm:text-xl font-bold text-white mb-2">No Shows Currently</h2>
+            <h2 className="text-lg sm:text-xl font-bold text-white mb-2">No Shows Right Now</h2>
             <p className="text-gray-400 text-sm sm:text-base mb-6">
-              There are no shows matching this guide right now. Check back soon as Broadway is always changing!
+              There are no shows matching this guide at the moment. This page updates automatically — check back soon!
             </p>
             {relatedGuides.length > 0 && (
               <div className="flex flex-wrap justify-center gap-2">
