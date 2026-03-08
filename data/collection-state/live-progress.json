@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-08T01:45:33.103Z",
-  "processed": 2,
-  "failed": 11,
-  "successRate": "15.4%",
+  "updatedAt": "2026-03-08T01:49:33.891Z",
+  "processed": 6,
+  "failed": 17,
+  "successRate": "26.1%",
   "tierBreakdown": {
     "playwright": 1,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 5,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 1
+    "archiveToday": 2,
+    "archive": 3
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -25,6 +25,50 @@
       "t": "2026-03-08T01:43:50.891Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-08T01:45:52.046Z",
+      "event": "bb-session",
+      "session": "f662e65f",
+      "url": "http://theater.nytimes.com/2004/10/22/theater/reviews/22BROO.html"
+    },
+    {
+      "t": "2026-03-08T01:45:53.543Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-08T01:47:35.313Z",
+      "event": "bb-session",
+      "session": "e3a99988",
+      "url": "https://www.hollywoodreporter.com/movies/movie-news/how-dance-ohio-sundance-revi"
+    },
+    {
+      "t": "2026-03-08T01:47:36.634Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-08T01:47:59.073Z",
+      "event": "bb-session",
+      "session": "2f911eef",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/new-york-new-york-broadway-revi"
+    },
+    {
+      "t": "2026-03-08T01:48:00.443Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-08T01:49:15.374Z",
+      "event": "bb-session",
+      "session": "cef3f687",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/new-york-new-york-kander-ebb-mu"
+    },
+    {
+      "t": "2026-03-08T01:49:16.606Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
