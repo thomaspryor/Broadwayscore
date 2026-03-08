@@ -344,6 +344,12 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], westEndSho
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows, skipFirstMusicals]);
 
+  // Treat shows that closed today as still "playing" — people should see them on closing day
+  const todayStr = useMemo(() => new Date().toISOString().slice(0, 10), []);
+  const isEffectivelyOpen = useCallback((show: HomepageShow) => {
+    return show.status === 'open' || (show.status === 'closed' && show.closingDate === todayStr);
+  }, [todayStr]);
+
   const filteredAndSortedShows = useMemo(() => {
     // When searching, include ALL shows (ignore status/type filters)
     // fuseResults is null while Fuse.js loads — show fuzzy results once ready,
@@ -360,24 +366,27 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], westEndSho
         // Only show shows with audience buzz data
         return show.audienceCombinedScore !== null;
       } else {
-        // Show all open shows (TBD badge for <5 reviews) + scored closed shows
-        if (show.status === 'open') return true;
+        // Show all open shows + closed-today shows (TBD badge for <5 reviews) + scored closed shows
+        if (isEffectivelyOpen(show)) return true;
         return show.criticScore && show.criticScore.reviewCount !== undefined && show.criticScore.reviewCount >= 5;
       }
     });
 
-    // Status filter
+    // Status filter (closed-today shows count as "open" for filtering purposes)
     if (statusFilter === 'closing_soon') {
       // Filter for shows closing within 90 days
       const now = new Date();
       const ninetyDaysFromNow = new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000);
       result = result.filter(show => {
-        if (show.status !== 'open' || !show.closingDate) return false;
+        if (!isEffectivelyOpen(show) || !show.closingDate) return false;
         const closing = new Date(show.closingDate);
-        return closing > now && closing <= ninetyDaysFromNow;
+        return closing >= now && closing <= ninetyDaysFromNow;
       });
     } else if (statusFilter !== 'all') {
-      result = result.filter(show => show.status === statusFilter);
+      result = result.filter(show => {
+        if (statusFilter === 'open') return isEffectivelyOpen(show);
+        return show.status === statusFilter;
+      });
     }
 
     // Type filter
@@ -437,7 +446,7 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], westEndSho
     }
 
     return result;
-  }, [allShows, fuseResults, statusFilter, type, searchQuery, sort, scoreMode]);
+  }, [allShows, fuseResults, statusFilter, type, searchQuery, sort, scoreMode, isEffectivelyOpen]);
 
   // Hide status chip when it would be redundant
   const shouldHideStatus = statusFilter !== 'all';
