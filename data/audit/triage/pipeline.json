@@ -1,7 +1,7 @@
 {
   "system": "pipeline",
   "status": "warn",
-  "lastChecked": "2026-03-08T06:12:51.700Z",
+  "lastChecked": "2026-03-08T07:28:33.545Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -24,12 +24,12 @@
     {
       "name": "Pipeline: weekly-grosses",
       "status": "warn",
-      "message": "Last success 15d ago (threshold: 10d)"
+      "message": "Last success 16d ago (threshold: 10d)"
     },
     {
       "name": "Pipeline: weekly-integrity",
       "status": "pass",
-      "message": "Last success 1h ago"
+      "message": "Last success 3h ago"
     },
     {
       "name": "Pipeline: test",

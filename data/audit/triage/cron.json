@@ -1,20 +1,20 @@
 {
   "system": "cron",
   "status": "warn",
-  "lastChecked": "2026-03-08T06:12:51.701Z",
+  "lastChecked": "2026-03-08T07:28:33.546Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Cron: Update Show Status",
-      "status": "pass",
-      "message": "11h ago, success"
+      "status": "warn",
+      "message": "Last run failed (1h ago)"
     },
     {
       "name": "Cron: Rebuild Reviews",
       "status": "pass",
-      "message": "0h ago, "
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: Collect Review Texts",
@@ -29,12 +29,12 @@
     {
       "name": "Cron: Test Suite",
       "status": "warn",
-      "message": "Last run failed (0h ago)"
+      "message": "Last run failed (1h ago)"
     },
     {
       "name": "Cron: Opening Night Broadcast",
       "status": "pass",
-      "message": "1h ago, success"
+      "message": "2h ago, success"
     }
   ]
 }
