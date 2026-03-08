@@ -630,11 +630,13 @@ async function updateShowStatuses() {
         }
       }
     }
+  }
 
-    if (!dryRun) {
-      saveShows(data);
-      console.log('');
-      console.log('✅ shows.json updated successfully');
+  // Always stamp lastUpdated so health check knows the workflow ran
+  if (!dryRun) {
+    saveShows(data);
+    if (updates.length > 0) {
+      console.log('\n✅ shows.json updated successfully');
     }
   }
 
