@@ -7,7 +7,12 @@ import type Fuse from 'fuse.js';
 import FooterEmailCapture from '@/components/FooterEmailCapture';
 import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from '@/components/show-cards';
 import type { ScoreModeParam } from '@/components/show-cards';
-import { hasEnoughReviews } from '@/config/score-buckets';
+
+export interface FeaturedRowData {
+  title: string;
+  shows: HomepageShow[];
+  viewAllHref: string;
+}
 
 // Serialized show data passed from server component
 export interface HomepageShow {
@@ -41,6 +46,7 @@ interface HomePageClientProps {
   totalReviews: number;
   skipHero?: boolean;
   skipFirstMusicals?: boolean;
+  featuredRows?: FeaturedRowData[];
 }
 
 // URL parameter values
@@ -65,6 +71,7 @@ const statusParamToFilter: Record<StatusParam, StatusFilter> = {
   all: 'all',
 };
 
+const INITIAL_SHOW_COUNT = 20;
 
 function SearchIcon() {
   return (
@@ -83,13 +90,72 @@ function ChevronRightIcon() {
 }
 
 function ShowCardList({ shows, hideStatus, scoreMode }: { shows: HomepageShow[]; hideStatus: boolean; scoreMode: ScoreModeParam }) {
+  const [visibleCount, setVisibleCount] = useState(INITIAL_SHOW_COUNT);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
+  // Reset visible count when shows change (filter/sort)
+  useEffect(() => {
+    setVisibleCount(INITIAL_SHOW_COUNT);
+  }, [shows]);
+
+  // IntersectionObserver to load more cards as user scrolls
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel || visibleCount >= shows.length) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisibleCount(prev => Math.min(prev + 20, shows.length));
+        }
+      },
+      { rootMargin: '400px' }
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [visibleCount, shows.length]);
+
+  const visibleShows = shows.length <= INITIAL_SHOW_COUNT ? shows : shows.slice(0, visibleCount);
+
   return (
     <div className="space-y-3" role="list" aria-label="Broadway shows">
-      {shows.map((show, index) => (
+      {visibleShows.map((show, index) => (
         <ShowListCard key={show.id} show={show} index={index} hideStatus={hideStatus} scoreMode={scoreMode} showCategoryBadge />
       ))}
+      {visibleCount < shows.length && (
+        <div ref={sentinelRef} className="h-px" aria-hidden="true" />
+      )}
     </div>
   );
+}
+
+// Lazy-render section — only renders children when scrolled into view
+function LazySection({ children, fallbackHeight = '200px' }: { children: React.ReactNode; fallbackHeight?: string }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  if (isVisible) return <>{children}</>;
+
+  return <div ref={ref} style={{ minHeight: fallbackHeight }} />;
 }
 
 // Featured row with horizontal scroll
@@ -120,7 +186,7 @@ function FeaturedRow({ title, shows, viewAllHref }: { title: string; shows: Home
 }
 
 // Inner component that uses searchParams
-function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], westEndShows = [], totalShows, totalReviews, skipHero, skipFirstMusicals }: HomePageClientProps) {
+function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], westEndShows = [], totalShows, totalReviews, skipHero, skipFirstMusicals, featuredRows = [] }: HomePageClientProps) {
   const initialSearchParams = useSearchParams();
 
   // Local state for instant updates (no full-page reload)
@@ -264,103 +330,17 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], westEndSho
     return () => { cancelled = true; };
   }, [searchQuery, getFuse]);
 
-  // Featured rows data - only shows opened in last 12 months
-  const twelveMonthsAgo = useMemo(() => {
-    const date = new Date();
-    date.setMonth(date.getMonth() - 12);
-    return date;
-  }, []);
-
+  // Featured rows are pre-computed server-side — no client-side filtering/sorting needed
+  // bestNewMusicals is still needed for the inline shelf when skipFirstMusicals is false
   const bestNewMusicals = useMemo(() => {
+    if (skipFirstMusicals) return []; // Server renders it via FeaturedRowServer
+    const twelveMonthsAgo = new Date();
+    twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
+    const cutoff = twelveMonthsAgo.toISOString().slice(0, 10);
     return shows
-      .filter(show => {
-        const isMusical = show.type === 'musical';
-        const openDate = new Date(show.openingDate);
-        return isMusical && show.status === 'open' && openDate >= twelveMonthsAgo && show.criticScore?.score;
-      })
+      .filter(show => show.type === 'musical' && show.status === 'open' && show.openingDate >= cutoff && show.criticScore?.score)
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
-  }, [shows, twelveMonthsAgo]);
-
-  const bestNewPlays = useMemo(() => {
-    return shows
-      .filter(show => {
-        const openDate = new Date(show.openingDate);
-        return show.type === 'play' && show.status === 'open' && openDate >= twelveMonthsAgo && show.criticScore?.score;
-      })
-      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
-  }, [shows, twelveMonthsAgo]);
-
-  // Tony Winning Shows - shows tagged as tony-winner
-  const tonyWinners = useMemo(() => {
-    return shows
-      .filter(show => {
-        if (show.status !== 'open') return false;
-        const tags = show.tags?.map(t => t.toLowerCase()) || [];
-        return tags.includes('tony-winner');
-      })
-      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
-  }, [shows]);
-
-  // Date Night - romantic or drama shows (not family-oriented)
-  const dateNightShows = useMemo(() => {
-    return shows
-      .filter(show => {
-        if (show.status !== 'open') return false;
-        const tags = show.tags?.map(t => t.toLowerCase()) || [];
-        const ageRec = show.ageRecommendation?.toLowerCase() || '';
-        return (tags.includes('romantic') || tags.includes('drama')) &&
-               !ageRec.includes('ages 6') &&
-               !ageRec.includes('ages 8');
-      })
-      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
-  }, [shows]);
-
-  // Shows for Kids - family-friendly shows
-  const kidsShows = useMemo(() => {
-    return shows
-      .filter(show => {
-        if (show.status !== 'open') return false;
-        const tags = show.tags?.map(t => t.toLowerCase()) || [];
-        const ageRec = show.ageRecommendation?.toLowerCase() || '';
-        return tags.includes('family') ||
-               tags.includes('accessible') ||
-               ageRec.includes('ages 6') ||
-               ageRec.includes('ages 8') ||
-               ageRec.includes('all ages');
-      })
-      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
-  }, [shows]);
-
-  // Closing Soon - shows with closing dates within 60 days
-  const closingSoonShows = useMemo(() => {
-    const now = new Date();
-    return shows
-      .filter(show => {
-        if (show.status !== 'open' || !show.closingDate) return false;
-        const closing = new Date(show.closingDate);
-        const diffDays = Math.ceil((closing.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-        return diffDays > 0 && diffDays <= 60;
-      })
-      .sort((a, b) => new Date(a.closingDate!).getTime() - new Date(b.closingDate!).getTime());
-  }, [shows]);
-
-  // Jukebox Musicals
-  const jukeboxMusicals = useMemo(() => {
-    return shows
-      .filter(show => {
-        if (show.status !== 'open') return false;
-        const tags = show.tags?.map(t => t.toLowerCase()) || [];
-        return tags.includes('jukebox');
-      })
-      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
-  }, [shows]);
-
-  // Best Off-Broadway shows (sorted by score)
-  const bestOffBroadway = useMemo(() => {
-    return offBroadwayShows
-      .filter(show => show.criticScore?.score && hasEnoughReviews(show.criticScore.reviewCount ?? 0, show.category, (show.criticScore.tier1Count ?? 0) + (show.criticScore.tier2Count ?? 0)))
-      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
-  }, [offBroadwayShows]);
+  }, [shows, skipFirstMusicals]);
 
   const filteredAndSortedShows = useMemo(() => {
     // When searching, include ALL shows (ignore status/type filters)
@@ -408,10 +388,11 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], westEndSho
 
     // Sort - when filtering by closing_soon, default to sorting by closing date
     if (statusFilter === 'closing_soon') {
+      // ISO date strings are lexicographically sortable — avoids new Date() overhead
       result.sort((a, b) => {
-        const aClose = a.closingDate ? new Date(a.closingDate).getTime() : Infinity;
-        const bClose = b.closingDate ? new Date(b.closingDate).getTime() : Infinity;
-        return aClose - bClose;
+        const aClose = a.closingDate || '\uffff';
+        const bClose = b.closingDate || '\uffff';
+        return aClose < bClose ? -1 : aClose > bClose ? 1 : 0;
       });
     } else {
       result.sort((a, b) => {
@@ -447,8 +428,8 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], westEndSho
             return a.title.toLowerCase().localeCompare(b.title.toLowerCase());
           case 'recent':
           default:
-            // Most recent opening date first
-            return new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime();
+            // Most recent opening date first (ISO date strings are lexicographically sortable)
+            return b.openingDate < a.openingDate ? -1 : b.openingDate > a.openingDate ? 1 : 0;
         }
       });
     }
@@ -678,49 +659,19 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], westEndSho
         </div>
       )}
 
-      {/* Featured Rows */}
-      <div className="mt-8 pt-8 border-t border-white/5">
-        <FeaturedRow
-          title="Best Recent Plays"
-          shows={bestNewPlays}
-          viewAllHref="/browse/best-recent-plays"
-        />
-        <FeaturedRow
-          title="Upcoming"
-          shows={upcomingShows}
-          viewAllHref="/browse/upcoming-broadway-shows"
-        />
-        <FeaturedRow
-          title="Best Off-Broadway"
-          shows={bestOffBroadway}
-          viewAllHref="/off-broadway"
-        />
-        <FeaturedRow
-          title="Tony Winning Shows"
-          shows={tonyWinners}
-          viewAllHref="/browse/tony-winners-on-broadway"
-        />
-        <FeaturedRow
-          title="Perfect for Date Night"
-          shows={dateNightShows}
-          viewAllHref="/browse/broadway-shows-for-date-night"
-        />
-        <FeaturedRow
-          title="Great for Kids"
-          shows={kidsShows}
-          viewAllHref="/browse/broadway-shows-for-kids"
-        />
-        <FeaturedRow
-          title="Closing Soon"
-          shows={closingSoonShows}
-          viewAllHref="/browse/broadway-shows-closing-soon"
-        />
-        <FeaturedRow
-          title="Jukebox Musicals"
-          shows={jukeboxMusicals}
-          viewAllHref="/browse/jukebox-musicals-on-broadway"
-        />
-      </div>
+      {/* Featured Rows — data pre-computed server-side, lazy-rendered on scroll */}
+      <LazySection fallbackHeight="800px">
+        <div className="mt-8 pt-8 border-t border-white/5">
+          {featuredRows.map((row) => (
+            <FeaturedRow
+              key={row.title}
+              title={row.title}
+              shows={row.shows}
+              viewAllHref={row.viewAllHref}
+            />
+          ))}
+        </div>
+      </LazySection>
 
       {/* Email Capture */}
       <div id="subscribe" className="mt-8 max-w-md mx-auto">
