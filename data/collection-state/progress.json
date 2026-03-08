@@ -1,46 +1,66 @@
 {
   "processed": [
-    "spare-parts-off-broadway-2026/deadline--stephanie-bunbury.json",
-    "spare-parts-off-broadway-2026/theatermania--unknown.json",
-    "spare-parts-off-broadway-2026/timeout--adam-feldman.json",
-    "spare-parts-off-broadway-2026/ap--mark-kennedy.json",
-    "spare-parts-off-broadway-2026/independent--alice-saville.json"
+    "punch-2025/nytg--caroline-cao.json",
+    "punch-2025/nytg--unknown.json",
+    "punch-2025/vulture--sara-holdren.json",
+    "punch-2025/ew--emlyn-travis.json",
+    "punch-2025/theatermania--david-gordon.json",
+    "punch-2025/theatre-reviews-limited--david-roberts.json",
+    "punch-2025/thewrap--robert-hofler.json",
+    "punch-2025/timeout--adam-feldman.json",
+    "punch-2025/theatrely--juan-a-ramirez.json",
+    "punch-2025/theatrely--kobi-kassal.json",
+    "punch-2025/amny--unknown.json",
+    "punch-2025/chicagotribune--chris-jones.json",
+    "punch-2025/culturesauce--thom-geier.json",
+    "punch-2025/dailybeast--meg-masseron.json",
+    "punch-2025/dailybeast--tim-teeman.json",
+    "punch-2025/one-minute-critic--aa-cristi.json",
+    "punch-2025/one-minute-critic--jacob-dunne.json",
+    "punch-2025/one-minute-critic--matthew-wexler.json",
+    "punch-2025/pages-on-stages--mason-pilevsky.json"
   ],
-  "failed": [],
+  "failed": [
+    "punch-2025/nytimes--elisabeth-vincentelli.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "spare-parts-off-broadway-2026/timeout--adam-feldman.json"
+      "punch-2025/nytg--unknown.json",
+      "punch-2025/theatermania--david-gordon.json",
+      "punch-2025/theatre-reviews-limited--david-roberts.json",
+      "punch-2025/timeout--adam-feldman.json",
+      "punch-2025/amny--unknown.json",
+      "punch-2025/culturesauce--thom-geier.json",
+      "punch-2025/dailybeast--meg-masseron.json",
+      "punch-2025/one-minute-critic--jacob-dunne.json",
+      "punch-2025/one-minute-critic--matthew-wexler.json",
+      "punch-2025/pages-on-stages--mason-pilevsky.json"
     ],
-    "amp": [],
-    "browserbase": [
-      "data/review-texts/spare-parts-off-broadway-2026/deadline--stephanie-bunbury.json",
-      "spare-parts-off-broadway-2026/deadline--stephanie-bunbury.json"
+    "amp": [
+      "data/review-texts/punch-2025/thewrap--robert-hofler.json",
+      "punch-2025/thewrap--robert-hofler.json"
     ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
-      "spare-parts-off-broadway-2026/independent--alice-saville.json"
+      "punch-2025/theatrely--juan-a-ramirez.json",
+      "punch-2025/theatrely--kobi-kassal.json",
+      "punch-2025/chicagotribune--chris-jones.json"
     ],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/punch-2025/nytimes--elisabeth-vincentelli.json"
+    ],
     "archive": [
-      "spare-parts-off-broadway-2026/theatermania--unknown.json",
-      "spare-parts-off-broadway-2026/ap--mark-kennedy.json"
+      "punch-2025/nytg--caroline-cao.json",
+      "punch-2025/vulture--sara-holdren.json",
+      "punch-2025/ew--emlyn-travis.json",
+      "punch-2025/dailybeast--tim-teeman.json",
+      "punch-2025/one-minute-critic--aa-cristi.json"
     ]
   },
-  "startTime": "2026-03-08T05:58:14.224Z",
-  "lastProcessed": "spare-parts-off-broadway-2026/independent--alice-saville.json",
-  "log": [
-    {
-      "t": "2026-03-08T05:58:18.192Z",
-      "event": "bb-session",
-      "session": "73f222e3",
-      "url": "https://deadline.com/2023/09/poor-things-review-yorgos-lanthimos-emma-stone-veni"
-    },
-    {
-      "t": "2026-03-08T05:58:19.569Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    }
-  ]
+  "startTime": "2026-03-08T05:57:34.787Z",
+  "lastProcessed": "punch-2025/pages-on-stages--mason-pilevsky.json",
+  "log": []
 }
