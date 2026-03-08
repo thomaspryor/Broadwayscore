@@ -239,7 +239,17 @@
     "mamma-mia-west-end-2021/nytimes--elisabeth-vincentelli.json",
     "marcel-on-the-train-off-broadway-2026/nytg--joe-dziemianowicz.json",
     "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
-    "matilda-the-musical-west-end-2021/nytimes--ben-brantley.json"
+    "matilda-the-musical-west-end-2021/nytimes--ben-brantley.json",
+    "night-side-songs-off-broadway-2026/vulture--jonathan-mandell.json",
+    "schmigadoon-2026/hollywood-reporter--daniel-fienberg.json",
+    "the-lion-king-west-end-2021/nytimes--ben-brantley.json",
+    "the-lion-king-west-end-2021/variety--greg-evans.json",
+    "the-phantom-of-the-opera-west-end-1986/nytimes--walter-kerr.json",
+    "the-phantom-of-the-opera-west-end-1986/variety--richard-hummler.json",
+    "wicked-west-end-2021/nytimes--ben-brantley.json",
+    "wicked-west-end-2021/variety--charles-isherwood.json",
+    "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
+    "all-my-sons-west-end-2025/timeout--unknown.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -2420,7 +2430,10 @@
       "chinese-republicans-off-broadway-2026/nyt-theater--jonathan-mandell.json",
       "data-off-broadway-2026/nytg--allison-considine.json",
       "heathers-the-musical-off-broadway-2025/nytg--caroline-cao.json",
-      "marcel-on-the-train-off-broadway-2026/nytg--joe-dziemianowicz.json"
+      "marcel-on-the-train-off-broadway-2026/nytg--joe-dziemianowicz.json",
+      "night-side-songs-off-broadway-2026/vulture--jonathan-mandell.json",
+      "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
+      "all-my-sons-west-end-2025/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/vulture--helen-shaw.json",
@@ -2449,7 +2462,13 @@
       "data/review-texts/new-york-new-york-2023/hollywood-reporter--angie-han.json",
       "data/review-texts/new-york-new-york-2023/hollywood-reporter--angie-han.json",
       "data/review-texts/back-to-the-future-west-end-2021/variety--frank-rizzo.json",
-      "back-to-the-future-west-end-2021/variety--frank-rizzo.json"
+      "back-to-the-future-west-end-2021/variety--frank-rizzo.json",
+      "data/review-texts/the-lion-king-west-end-2021/variety--greg-evans.json",
+      "the-lion-king-west-end-2021/variety--greg-evans.json",
+      "data/review-texts/the-phantom-of-the-opera-west-end-1986/variety--richard-hummler.json",
+      "the-phantom-of-the-opera-west-end-1986/variety--richard-hummler.json",
+      "data/review-texts/wicked-west-end-2021/variety--charles-isherwood.json",
+      "wicked-west-end-2021/variety--charles-isherwood.json"
     ],
     "browserbase": [
       "data/review-texts/brooklyn-2004/nytimes--ben-brantley.json",
@@ -2488,7 +2507,11 @@
       "data/review-texts/cats-the-jellicle-ball-off-broadway-2024/amny--matt-windman.json",
       "cats-the-jellicle-ball-off-broadway-2024/amny--matt-windman.json",
       "data/review-texts/matilda-the-musical-west-end-2021/nytimes--ben-brantley.json",
-      "matilda-the-musical-west-end-2021/nytimes--ben-brantley.json"
+      "matilda-the-musical-west-end-2021/nytimes--ben-brantley.json",
+      "data/review-texts/schmigadoon-2026/hollywood-reporter--daniel-fienberg.json",
+      "schmigadoon-2026/hollywood-reporter--daniel-fienberg.json",
+      "data/review-texts/the-phantom-of-the-opera-west-end-1986/nytimes--walter-kerr.json",
+      "the-phantom-of-the-opera-west-end-1986/nytimes--walter-kerr.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2535,7 +2558,9 @@
       "dracula-west-end-2025/nytimes--houman-barekat.json",
       "the-hunger-games-on-stage-west-end-2025/nytimes--alexis-soloski.json",
       "oh-mary-off-broadway-2024/broadwaynews--brittani-samuel.json",
-      "oh-mary-off-broadway-2024/chicagotribune--chris-jones.json"
+      "oh-mary-off-broadway-2024/chicagotribune--chris-jones.json",
+      "the-lion-king-west-end-2021/nytimes--ben-brantley.json",
+      "wicked-west-end-2021/nytimes--ben-brantley.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -3004,7 +3029,7 @@
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "matilda-the-musical-west-end-2021/nytimes--ben-brantley.json",
+  "lastProcessed": "all-my-sons-west-end-2025/timeout--unknown.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -3774,6 +3799,28 @@
     },
     {
       "t": "2026-03-08T17:43:36.443Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-08T17:44:01.642Z",
+      "event": "bb-session",
+      "session": "b57b93d8",
+      "url": "https://www.hollywoodreporter.com/tv/tv-reviews/schmigadoon-1234982706/"
+    },
+    {
+      "t": "2026-03-08T17:44:02.924Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-08T17:44:37.529Z",
+      "event": "bb-session",
+      "session": "00a99a27",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=940DE6D8153CF937A25751C0"
+    },
+    {
+      "t": "2026-03-08T17:44:38.856Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-08T17:43:50.554Z",
-  "processed": 240,
+  "updatedAt": "2026-03-08T17:45:41.700Z",
+  "processed": 250,
   "failed": 2056,
-  "successRate": "10.5%",
+  "successRate": "10.8%",
   "tierBreakdown": {
-    "playwright": 119,
-    "amp": 27,
-    "browserbase": 37,
+    "playwright": 122,
+    "amp": 33,
+    "browserbase": 41,
     "directCookies": 0,
-    "scrapingbee": 44,
+    "scrapingbee": 46,
     "brightdata": 0,
     "archiveToday": 407,
     "archive": 53
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-03-08T11:26:35.632Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-03-08T11:28:06.318Z",
-      "event": "bb-session",
-      "session": "3f45945f",
-      "url": "https://www.northjersey.com/arts_entertainment/theater/137548378_Tale_of_isolati"
-    },
-    {
-      "t": "2026-03-08T11:28:07.435Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-03-08T11:31:36.464Z",
-      "event": "bb-session",
-      "session": "db63ae4f",
-      "url": "https://www.northjersey.com/arts_entertainment/106428223_Musical_about_an_outrag"
-    },
     {
       "t": "2026-03-08T11:31:37.556Z",
       "event": "bb-cookie-inject",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-03-08T17:43:36.443Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-08T17:44:01.642Z",
+      "event": "bb-session",
+      "session": "b57b93d8",
+      "url": "https://www.hollywoodreporter.com/tv/tv-reviews/schmigadoon-1234982706/"
+    },
+    {
+      "t": "2026-03-08T17:44:02.924Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-08T17:44:37.529Z",
+      "event": "bb-session",
+      "session": "00a99a27",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=940DE6D8153CF937A25751C0"
+    },
+    {
+      "t": "2026-03-08T17:44:38.856Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
