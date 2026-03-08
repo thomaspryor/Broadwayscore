@@ -1,75 +1,138 @@
 {
-  "runDate": "2026-03-08T05:12:03.507Z",
+  "runDate": "2026-03-08T05:18:02.913Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "spare-parts-off-broadway-2026",
+    "showFilter": "punch-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 4,
+    "processed": 26,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "20.0%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 12,
+    "amp": 2,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 4,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 7
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
-    "ampAttempts": 0,
-    "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier1Attempts": 12,
+    "tier1Success": 12,
+    "ampAttempts": 1,
+    "ampSuccess": 1,
+    "tier1_5Attempts": 2,
+    "tier1_5Success": 2,
+    "tier2Attempts": 4,
+    "tier2Success": 4,
+    "tier3Attempts": 3,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 4,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 4,
-    "urlDiscoverySuccess": 0,
+    "totalFailed": 0,
+    "scrapingBeeCreditsUsed": 42,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.5,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "spare-parts-off-broadway-2026/theatermania--unknown.json"
+    "punch-2025/nytg--caroline-cao.json",
+    "punch-2025/nytg--unknown.json",
+    "punch-2025/nytimes--elisabeth-vincentelli.json",
+    "punch-2025/vulture--sara-holdren.json",
+    "punch-2025/deadline--unknown.json",
+    "punch-2025/ew--emlyn-travis.json",
+    "punch-2025/theatermania--david-gordon.json",
+    "punch-2025/theatre-reviews-limited--david-roberts.json",
+    "punch-2025/thewrap--robert-hofler.json",
+    "punch-2025/timeout--adam-feldman.json",
+    "punch-2025/theatrely--juan-a-ramirez.json",
+    "punch-2025/theatrely--kobi-kassal.json",
+    "punch-2025/amny--unknown.json",
+    "punch-2025/chicagotribune--chris-jones.json",
+    "punch-2025/culturesauce--thom-geier.json",
+    "punch-2025/dailybeast--meg-masseron.json",
+    "punch-2025/dailybeast--tim-teeman.json",
+    "punch-2025/one-minute-critic--aa-cristi.json",
+    "punch-2025/one-minute-critic--jacob-dunne.json",
+    "punch-2025/one-minute-critic--matthew-wexler.json",
+    "punch-2025/pages-on-stages--mason-pilevsky.json",
+    "punch-2025/talkinbroadway--howard-miller.json",
+    "punch-2025/the-interested-bystander--cary-wong.json",
+    "punch-2025/theater-life--samuel-l-leiter.json",
+    "punch-2025/theater-scene--darryl-reilly.json",
+    "punch-2025/whatsonstage--unknown.json"
   ],
-  "failed": [
-    "spare-parts-off-broadway-2026/deadline--stephanie-bunbury.json",
-    "spare-parts-off-broadway-2026/timeout--adam-feldman.json",
-    "spare-parts-off-broadway-2026/ap--mark-kennedy.json",
-    "spare-parts-off-broadway-2026/independent--alice-saville.json"
-  ],
+  "failed": [],
   "tierDetails": {
-    "playwright": [],
-    "amp": [],
-    "browserbase": [],
+    "playwright": [
+      "punch-2025/theatermania--david-gordon.json",
+      "punch-2025/theatre-reviews-limited--david-roberts.json",
+      "punch-2025/culturesauce--thom-geier.json",
+      "punch-2025/dailybeast--meg-masseron.json",
+      "punch-2025/one-minute-critic--aa-cristi.json",
+      "punch-2025/one-minute-critic--jacob-dunne.json",
+      "punch-2025/one-minute-critic--matthew-wexler.json",
+      "punch-2025/pages-on-stages--mason-pilevsky.json",
+      "punch-2025/the-interested-bystander--cary-wong.json",
+      "punch-2025/theater-life--samuel-l-leiter.json",
+      "punch-2025/theater-scene--darryl-reilly.json",
+      "punch-2025/whatsonstage--unknown.json"
+    ],
+    "amp": [
+      "data/review-texts/punch-2025/thewrap--robert-hofler.json",
+      "punch-2025/thewrap--robert-hofler.json"
+    ],
+    "browserbase": [
+      "data/review-texts/punch-2025/deadline--unknown.json",
+      "punch-2025/deadline--unknown.json",
+      "data/review-texts/punch-2025/amny--unknown.json",
+      "punch-2025/amny--unknown.json"
+    ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "punch-2025/theatrely--juan-a-ramirez.json",
+      "punch-2025/theatrely--kobi-kassal.json",
+      "punch-2025/chicagotribune--chris-jones.json",
+      "punch-2025/dailybeast--tim-teeman.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "spare-parts-off-broadway-2026/theatermania--unknown.json"
+      "punch-2025/nytg--caroline-cao.json",
+      "punch-2025/nytg--unknown.json",
+      "punch-2025/nytimes--elisabeth-vincentelli.json",
+      "punch-2025/vulture--sara-holdren.json",
+      "punch-2025/ew--emlyn-travis.json",
+      "punch-2025/timeout--adam-feldman.json",
+      "punch-2025/talkinbroadway--howard-miller.json"
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "punch-2025/nytg--unknown.json",
+      "oldUrl": "https://www.newyorktheatreguide.com/reviews/caroline-off-broadway-review-chloe-grace-moretz",
+      "newUrl": "https://www.newyorktheatreguide.com/reviews/punch-broadway-review"
+    },
+    {
+      "reviewId": "punch-2025/whatsonstage--unknown.json",
+      "oldUrl": "https://www.whatsonstage.com/news/the-importance-of-being-earnest-review-three-scene-stealers-make-this-a-comedy-cracker_1696568/",
+      "newUrl": "https://www.whatsonstage.com/news/punch-at-the-young-vic-review_1668215/"
+    }
+  ]
 }
