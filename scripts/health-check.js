@@ -13,6 +13,7 @@
  *   G. SEO Health (1) — index coverage and traffic anomalies
  *   H. Cron Health (6) — are critical scheduled workflows running?
  *   I. Secrets Health (1) — last check-secrets-health run status
+ *   J. API Credits (1) — ScrapingBee credit balance
  *
  * Progressive alerting:
  *   - Email digest: always (daily summary email via Resend — the single source of truth)
@@ -100,6 +101,10 @@ const AUTO_FIX_PLAYBOOK = [
   // Secrets — needs manual rotation
   { match: /^Secrets:/, urgency: 'fix-now',
     humanAction: 'A secret or API key may be expiring. On your Mac, open Claude Code and say: "Check which secrets need rotation and rotate them."' },
+
+  // API Credits — needs attention if low
+  { match: /^Credits:/, urgency: 'this-week',
+    humanAction: 'ScrapingBee credits are running low. Check usage at app.scrapingbee.com and consider upgrading or reducing scraping frequency.' },
 ];
 
 function getPlaybookEntry(checkName) {
@@ -640,7 +645,42 @@ function checkSecretsHealth() {
   ];
 }
 
-// --- Category J: Workflow Runs (last 24h summary via GitHub API) ---
+// --- Category J: API Credits ---
+
+function checkAPICredits() {
+  const apiKey = process.env.SCRAPINGBEE_API_KEY;
+  if (!apiKey) {
+    return [{ name: 'Credits: ScrapingBee', status: 'warn', message: 'Skipped — no SCRAPINGBEE_API_KEY available' }];
+  }
+
+  return [
+    runCheck('Credits: ScrapingBee', () => {
+      try {
+        const result = execSync(
+          `curl -s "https://app.scrapingbee.com/api/v1/usage?api_key=${apiKey}"`,
+          { encoding: 'utf8', timeout: 10000, stdio: ['pipe', 'pipe', 'pipe'] }
+        ).trim();
+        const usage = JSON.parse(result);
+        const remaining = usage.max_api_credit - usage.used_api_credit;
+        const pctUsed = Math.round((usage.used_api_credit / usage.max_api_credit) * 100);
+        const pctRemaining = 100 - pctUsed;
+        const remainingK = Math.round(remaining / 1000);
+
+        if (pctRemaining <= 5) {
+          return { name: 'Credits: ScrapingBee', status: 'error', message: `${remainingK}k credits left (${pctRemaining}% remaining)`, hint: 'Upgrade plan or reduce scraping. Check app.scrapingbee.com for renewal date.' };
+        }
+        if (pctRemaining <= 15) {
+          return { name: 'Credits: ScrapingBee', status: 'warn', message: `${remainingK}k credits left (${pctRemaining}% remaining)`, hint: 'Monitor usage — may run out before renewal.' };
+        }
+        return { name: 'Credits: ScrapingBee', status: 'pass', message: `${remainingK}k credits left (${pctRemaining}% remaining)` };
+      } catch (err) {
+        return { name: 'Credits: ScrapingBee', status: 'warn', message: `API check failed: ${err.message.substring(0, 80)}` };
+      }
+    }),
+  ];
+}
+
+// --- Category K: Workflow Runs (last 24h summary via GitHub API) ---
 
 async function getWorkflowRunSummary() {
   if (!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN) {
@@ -1115,7 +1155,7 @@ function saveHistory(history) {
 // --- Discord Notifications ---
 
 async function sendDailyReport(results, history) {
-  const categories = { Freshness: [], Sync: [], Pipelines: [], Quality: [], Cookies: [], CWV: [], SEO: [], Cron: [], Secrets: [] };
+  const categories = { Freshness: [], Sync: [], Pipelines: [], Quality: [], Cookies: [], CWV: [], SEO: [], Cron: [], Secrets: [], Credits: [] };
   for (const r of results) {
     if (r.name.startsWith('Freshness:')) categories.Freshness.push(r);
     else if (r.name.startsWith('Sync:')) categories.Sync.push(r);
@@ -1126,6 +1166,7 @@ async function sendDailyReport(results, history) {
     else if (r.name.startsWith('SEO:')) categories.SEO.push(r);
     else if (r.name.startsWith('Cron:')) categories.Cron.push(r);
     else if (r.name.startsWith('Secrets:')) categories.Secrets.push(r);
+    else if (r.name.startsWith('Credits:')) categories.Credits.push(r);
   }
 
   const catSummary = (checks) => {
@@ -1176,6 +1217,7 @@ async function sendDailyReport(results, history) {
     { name: 'SEO', value: catSummary(categories.SEO), inline: true },
     { name: 'Cron', value: catSummary(categories.Cron), inline: true },
     { name: 'Secrets', value: catSummary(categories.Secrets), inline: true },
+    { name: 'Credits', value: catSummary(categories.Credits), inline: true },
   ];
 
   const webhookUrl = process.env.DISCORD_WEBHOOK_REPORTS;
@@ -1239,6 +1281,7 @@ async function main() {
     ...checkSEO(),
     ...checkCronHealth(),
     ...checkSecretsHealth(),
+    ...checkAPICredits(),
   ];
 
   // Print console summary
