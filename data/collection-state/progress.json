@@ -184,7 +184,13 @@
     "friends-the-musical-parody-off-broadway-2022/theater-pizzazz--adam-cohen.json",
     "hercules-west-end-2025/broadwayworld--kat-mokrynski.json",
     "hercules-west-end-2025/the-express--stefan-kyriazis.json",
-    "hold-on-to-your-butts-off-broadway-2026/whatsonstage--taylor-vaughan.json"
+    "hold-on-to-your-butts-off-broadway-2026/whatsonstage--taylor-vaughan.json",
+    "my-neighbour-totoro-west-end-2025/artsdesk--saskia-baron.json",
+    "the-hunger-games-on-stage-west-end-2025/standard--nick-curtis.json",
+    "aint-no-mo-2022/nyt-theater--jonathan-mandell.json",
+    "buena-vista-social-club-off-broadway-2023/vulture--jackson-mchenry.json",
+    "cats-the-jellicle-ball-off-broadway-2024/hollywood-reporter--frank-scheck.json",
+    "death-of-a-salesman-2022/nyt-theater--jonathan-mandell.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -1494,7 +1500,11 @@
     "austentatious-an-improvised-jane-austen-novel-west-end-2025/times-uk--unknown.json",
     "im-sorry-prime-minister-west-end-2026/thestage--unknown.json",
     "im-sorry-prime-minister-west-end-2026/times-uk--unknown.json",
-    "marie-and-rosetta-west-end-2026/times-uk--unknown.json"
+    "marie-and-rosetta-west-end-2026/times-uk--unknown.json",
+    "paranormal-activity-west-end-2025/financialtimes--paul-raven.json",
+    "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/times-uk--clive-davis.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
+    "bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1584,7 +1594,11 @@
       "dracula-west-end-2025/i-paper--fiona-mountford.json",
       "friends-the-musical-parody-off-broadway-2022/stagebuddy--bill-crouch.json",
       "hercules-west-end-2025/the-express--stefan-kyriazis.json",
-      "hold-on-to-your-butts-off-broadway-2026/whatsonstage--taylor-vaughan.json"
+      "hold-on-to-your-butts-off-broadway-2026/whatsonstage--taylor-vaughan.json",
+      "my-neighbour-totoro-west-end-2025/artsdesk--saskia-baron.json",
+      "the-hunger-games-on-stage-west-end-2025/standard--nick-curtis.json",
+      "aint-no-mo-2022/nyt-theater--jonathan-mandell.json",
+      "death-of-a-salesman-2022/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [
       "data/review-texts/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/vulture--helen-shaw.json",
@@ -1630,7 +1644,9 @@
       "data/review-texts/casa-valentina-2014/access-atlanta--david-rooney.json",
       "casa-valentina-2014/access-atlanta--david-rooney.json",
       "data/review-texts/the-king-and-i-2015/amny--matt-windman.json",
-      "the-king-and-i-2015/amny--matt-windman.json"
+      "the-king-and-i-2015/amny--matt-windman.json",
+      "data/review-texts/cats-the-jellicle-ball-off-broadway-2024/hollywood-reporter--frank-scheck.json",
+      "cats-the-jellicle-ball-off-broadway-2024/hollywood-reporter--frank-scheck.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2111,11 +2127,12 @@
       "the-phantom-of-the-opera-west-end-1986/timeout-london--andrzej-lukowski.json",
       "friends-the-musical-parody-off-broadway-2022/broadwayworld--victoria-ordin.json",
       "friends-the-musical-parody-off-broadway-2022/theater-pizzazz--adam-cohen.json",
-      "hercules-west-end-2025/broadwayworld--kat-mokrynski.json"
+      "hercules-west-end-2025/broadwayworld--kat-mokrynski.json",
+      "buena-vista-social-club-off-broadway-2023/vulture--jackson-mchenry.json"
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "marie-and-rosetta-west-end-2026/times-uk--unknown.json",
+  "lastProcessed": "death-of-a-salesman-2022/nyt-theater--jonathan-mandell.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -2815,6 +2832,17 @@
       "t": "2026-03-08T11:34:49.626Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-08T15:32:43.311Z",
+      "event": "bb-session",
+      "session": "e27188ec",
+      "url": "http://www.hollywoodreporter.com/review/cats-theater-review-915947"
+    },
+    {
+      "t": "2026-03-08T15:32:44.780Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
