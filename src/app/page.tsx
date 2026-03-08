@@ -4,10 +4,11 @@ import type { Metadata } from 'next';
 import { getBroadwayShows, getOffBroadwayShows, getWestEndShows, getDataStats, getUpcomingShows } from '@/lib/data-core';
 import type { ComputedShow } from '@/lib/data-types';
 import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
+import { hasEnoughReviews } from '@/config/score-buckets';
 import { BASE_URL, generateHomepageFAQSchema } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import HomePageClient from '@/components/HomePageClient';
-import type { HomepageShow } from '@/components/HomePageClient';
+import type { HomepageShow, FeaturedRowData } from '@/components/HomePageClient';
 import FeaturedRowServer from '@/components/FeaturedRowServer';
 
 const homeOgImageUrl = `${BASE_URL}/og/home.png`;
@@ -79,6 +80,72 @@ export default function HomePage() {
     .slice(0, 10)
     .map(serializeShow);
 
+  // Pre-compute ALL featured rows server-side to avoid 700+ item iterations on client hydration
+  const bestNewPlaysShows = allShows
+    .filter(s => s.type === 'play' && s.status === 'open' && new Date(s.openingDate) >= twelveMonthsAgo && s.criticScore?.score)
+    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
+    .map(serializeShow);
+
+  const tonyWinnersShows = allShows
+    .filter(s => s.status === 'open' && s.tags?.some(t => t.toLowerCase() === 'tony-winner'))
+    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
+    .map(serializeShow);
+
+  const dateNightShowsList = allShows
+    .filter(s => {
+      if (s.status !== 'open') return false;
+      const tags = s.tags?.map(t => t.toLowerCase()) || [];
+      const ageRec = s.ageRecommendation?.toLowerCase() || '';
+      return (tags.includes('romantic') || tags.includes('drama')) && !ageRec.includes('ages 6') && !ageRec.includes('ages 8');
+    })
+    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
+    .map(serializeShow);
+
+  const kidsShowsList = allShows
+    .filter(s => {
+      if (s.status !== 'open') return false;
+      const tags = s.tags?.map(t => t.toLowerCase()) || [];
+      const ageRec = s.ageRecommendation?.toLowerCase() || '';
+      return tags.includes('family') || tags.includes('accessible') || ageRec.includes('ages 6') || ageRec.includes('ages 8') || ageRec.includes('all ages');
+    })
+    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
+    .map(serializeShow);
+
+  const now = new Date();
+  const closingSoonShowsList = allShows
+    .filter(s => {
+      if (s.status !== 'open' || !s.closingDate) return false;
+      const closing = new Date(s.closingDate);
+      const diffDays = Math.ceil((closing.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+      return diffDays > 0 && diffDays <= 60;
+    })
+    .sort((a, b) => new Date(a.closingDate!).getTime() - new Date(b.closingDate!).getTime())
+    .map(serializeShow);
+
+  const jukeboxMusicalsList = allShows
+    .filter(s => s.status === 'open' && s.tags?.some(t => t.toLowerCase() === 'jukebox'))
+    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
+    .map(serializeShow);
+
+  const bestOffBroadwayList = obShows
+    .filter(s => s.criticScore?.score && hasEnoughReviews(
+      s.criticScore.reviewCount ?? 0, s.category,
+      (s.criticScore.tier1Count ?? 0) + (s.criticScore.tier2Count ?? 0)
+    ))
+    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
+    .map(serializeShow);
+
+  const featuredRows: FeaturedRowData[] = [
+    { title: 'Best Recent Plays', shows: bestNewPlaysShows, viewAllHref: '/browse/best-recent-plays' },
+    { title: 'Upcoming', shows: upcomingShows.map(serializeShow), viewAllHref: '/browse/upcoming-broadway-shows' },
+    { title: 'Best Off-Broadway', shows: bestOffBroadwayList, viewAllHref: '/off-broadway' },
+    { title: 'Tony Winning Shows', shows: tonyWinnersShows, viewAllHref: '/browse/tony-winners-on-broadway' },
+    { title: 'Perfect for Date Night', shows: dateNightShowsList, viewAllHref: '/browse/broadway-shows-for-date-night' },
+    { title: 'Great for Kids', shows: kidsShowsList, viewAllHref: '/browse/broadway-shows-for-kids' },
+    { title: 'Closing Soon', shows: closingSoonShowsList, viewAllHref: '/browse/broadway-shows-closing-soon' },
+    { title: 'Jukebox Musicals', shows: jukeboxMusicalsList, viewAllHref: '/browse/jukebox-musicals-on-broadway' },
+  ];
+
   const featuredPosterUrls = bestNewMusicalsShows
     .slice(0, 4)
     .map(s => {
@@ -121,6 +188,7 @@ export default function HomePage() {
           totalReviews={stats.totalReviews}
           skipHero
           skipFirstMusicals
+          featuredRows={featuredRows}
         />
       </Suspense>
     </>
