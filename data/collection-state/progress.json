@@ -205,7 +205,13 @@
     "oh-mary-off-broadway-2024/new-york-sun--elysa-gardner.json",
     "oh-mary-off-broadway-2024/theatermania--zachary-stewart.json",
     "stereophonic-off-broadway-2023/new-york-sun--elysa-gardner.json",
-    "buena-vista-social-club-off-broadway-2023/theatrely--kobi-kassal.json"
+    "buena-vista-social-club-off-broadway-2023/theatrely--kobi-kassal.json",
+    "beetlejuice-2019/ny1--roma-torre.json",
+    "buena-vista-social-club-off-broadway-2023/culturesauce--thom-geier.json",
+    "cats-the-jellicle-ball-off-broadway-2024/amny--matt-windman.json",
+    "cats-the-jellicle-ball-off-broadway-2024/ap--unknown.json",
+    "cats-the-jellicle-ball-off-broadway-2024/huffpost--unknown.json",
+    "cats-the-jellicle-ball-off-broadway-2024/nbcny--robert-kahn.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -1574,7 +1580,11 @@
     "yellow-face-2024/nypost--johnny-oleksinski.json",
     "mother-play-2024/forward--jesse-green.json",
     "aint-no-mo-2022/usatoday--matthew-j-palm.json",
-    "all-my-sons-2008/usatoday--elysa-gardner.json"
+    "all-my-sons-2008/usatoday--elysa-gardner.json",
+    "angels-in-america-2018/rollingstone--peter-travers.json",
+    "angels-in-america-2018/usatoday--charles-isherwood.json",
+    "buena-vista-social-club-off-broadway-2023/talkinbroadway--howard-miller.json",
+    "clybourne-park-2012/usatoday--elysa-gardner.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1676,7 +1686,10 @@
       "oh-mary-off-broadway-2024/new-york-sun--elysa-gardner.json",
       "oh-mary-off-broadway-2024/theatermania--zachary-stewart.json",
       "stereophonic-off-broadway-2023/new-york-sun--elysa-gardner.json",
-      "buena-vista-social-club-off-broadway-2023/theatrely--kobi-kassal.json"
+      "buena-vista-social-club-off-broadway-2023/theatrely--kobi-kassal.json",
+      "beetlejuice-2019/ny1--roma-torre.json",
+      "buena-vista-social-club-off-broadway-2023/culturesauce--thom-geier.json",
+      "cats-the-jellicle-ball-off-broadway-2024/nbcny--robert-kahn.json"
     ],
     "amp": [
       "data/review-texts/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/vulture--helen-shaw.json",
@@ -1731,7 +1744,9 @@
       "data/review-texts/buena-vista-social-club-off-broadway-2023/washington-square-news--ethan-li.json",
       "buena-vista-social-club-off-broadway-2023/washington-square-news--ethan-li.json",
       "data/review-texts/gary-a-sequel-to-titus-andronicus-2019/nypost--joe-dziemianowicz.json",
-      "gary-a-sequel-to-titus-andronicus-2019/nypost--joe-dziemianowicz.json"
+      "gary-a-sequel-to-titus-andronicus-2019/nypost--joe-dziemianowicz.json",
+      "data/review-texts/cats-the-jellicle-ball-off-broadway-2024/amny--matt-windman.json",
+      "cats-the-jellicle-ball-off-broadway-2024/amny--matt-windman.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2172,7 +2187,8 @@
       "data/review-texts/waitress-2016/washpost--peter-marks.json",
       "data/review-texts/waitress-2021/off-script-with-dan-dwyer--dan-dwyer.json",
       "data/review-texts/war-horse-2011/chicagotribune--unknown.json",
-      "data/review-texts/contact-2000/renew-here--simplecirc-inc.json"
+      "data/review-texts/contact-2000/renew-here--simplecirc-inc.json",
+      "data/review-texts/buena-vista-social-club-off-broadway-2023/talkinbroadway--howard-miller.json"
     ],
     "archive": [
       "you-got-older-off-broadway-2026/timeout--unknown.json",
@@ -2218,11 +2234,13 @@
       "buena-vista-social-club-off-broadway-2023/vulture--jackson-mchenry.json",
       "all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json",
       "cats-the-jellicle-ball-off-broadway-2024/newsday--unknown.json",
-      "living-on-love-2015/new-jersey-newsroom--ronni-reich.json"
+      "living-on-love-2015/new-jersey-newsroom--ronni-reich.json",
+      "cats-the-jellicle-ball-off-broadway-2024/ap--unknown.json",
+      "cats-the-jellicle-ball-off-broadway-2024/huffpost--unknown.json"
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "all-my-sons-2008/usatoday--elysa-gardner.json",
+  "lastProcessed": "clybourne-park-2012/usatoday--elysa-gardner.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -2972,6 +2990,17 @@
       "t": "2026-03-08T15:38:26.458Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-08T15:43:41.298Z",
+      "event": "bb-session",
+      "session": "1ab16048",
+      "url": "http://www.amny.com/entertainment/cats-broadway-revival-classic-musical-is-back-"
+    },
+    {
+      "t": "2026-03-08T15:43:42.695Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
