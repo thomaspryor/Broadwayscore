@@ -11,6 +11,37 @@ const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, normali
 
 const bwwDir = path.join(__dirname, '../data/aggregator-archive/bww-roundups');
 
+// Fix 1: Load shows.json for production-year validation
+const showsPath = path.join(__dirname, '../data/shows.json');
+let showsBySlug = {};
+try {
+  const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+  const showsList = showsData.shows || showsData;
+  const showsArray = Array.isArray(showsList) ? showsList : Object.values(showsList);
+  for (const s of showsArray) {
+    if (s.id) showsBySlug[s.id] = s;
+  }
+} catch (e) {
+  console.error('Warning: Could not load shows.json — skipping production-year validation');
+}
+
+// Fix 2: Load outlet registry for cross-reference validation
+let validOutletIds = new Set();
+try {
+  const registry = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/outlet-registry.json'), 'utf8'));
+  validOutletIds = new Set(Object.keys(registry.outlets));
+  if (registry._aliasIndex) {
+    for (const [alias] of Object.entries(registry._aliasIndex)) {
+      if (alias !== '_note') validOutletIds.add(alias);
+    }
+  }
+  for (const outlet of Object.values(registry.outlets)) {
+    if (outlet.aliases) outlet.aliases.forEach(a => validOutletIds.add(a));
+  }
+} catch (e) {
+  console.error('Warning: Could not load outlet-registry.json — skipping outlet cross-reference');
+}
+
 /**
  * Normalize outlet using the canonical module.
  * Returns { name, outletId } structure expected by this script.
@@ -167,23 +198,67 @@ function extractReviewsFromFile(filePath, showId) {
   return { reviews: [], method: 'none' };
 }
 
+/**
+ * Fix 1: Check if a review's publish date is too early for the show's production.
+ * Uses previewDate if available, otherwise openingDate. Threshold: 400 days
+ * (generous to account for early preview coverage).
+ */
+function isWrongProduction(review, show) {
+  if (!show || !review.publishDate) return false;
+  const earliestDate = show.previewDate || show.openingDate;
+  if (!earliestDate) return false;
+  const pub = new Date(review.publishDate);
+  const earliest = new Date(earliestDate);
+  const daysBefore = (earliest - pub) / (1000 * 60 * 60 * 24);
+  return daysBefore > 400;
+}
+
+/**
+ * Fix 2: Check if an outlet ID is known in the registry.
+ */
+function isKnownOutlet(outletId) {
+  if (validOutletIds.size === 0) return true; // Registry not loaded, skip check
+  return validOutletIds.has(outletId);
+}
+
 // Main
 const files = fs.readdirSync(bwwDir).filter(f => f.endsWith('.html'));
 
 console.error('Extracting BWW Review Roundup reviews:\n');
 
 const allReviews = [];
+let wrongProdCount = 0;
+let unknownOutletCount = 0;
+
 for (const file of files.sort()) {
   const filePath = path.join(bwwDir, file);
   const showId = file.replace('.html', '');
+  const show = showsBySlug[showId];
 
   const { reviews, method } = extractReviewsFromFile(filePath, showId);
+
+  // Post-extraction validation
+  for (const review of reviews) {
+    // Fix 1: Flag reviews from wrong production
+    if (isWrongProduction(review, show)) {
+      review.wrongProduction = true;
+      review.wrongProductionReason = `Published ${review.publishDate}, show opens ${show.previewDate || show.openingDate} — likely earlier production`;
+      wrongProdCount++;
+    }
+    // Fix 2: Flag unknown outlets
+    if (!isKnownOutlet(review.outletId)) {
+      review._unknownOutlet = true;
+      unknownOutletCount++;
+    }
+  }
 
   console.error(`${showId}: ${reviews.length} reviews (${method})`);
   allReviews.push(...reviews);
 }
 
 console.error(`\nTotal reviews extracted: ${allReviews.length}`);
+if (wrongProdCount > 0) console.error(`  Wrong-production flagged: ${wrongProdCount}`);
+if (unknownOutletCount > 0) console.error(`  Unknown outlets flagged: ${unknownOutletCount}`);
 
 // Output JSON to stdout
 console.log(JSON.stringify(allReviews, null, 2));

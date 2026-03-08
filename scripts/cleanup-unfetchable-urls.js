@@ -15,7 +15,9 @@ const path = require('path');
 const DRY_RUN = process.argv.includes('--dry-run');
 const reviewTextsDir = path.join(__dirname, '..', 'data', 'review-texts');
 
-const SOCIAL_DOMAINS = ['facebook.com', 'twitter.com', 'x.com', 'instagram.com', 'youtube.com', 'youtu.be', 'reddit.com', 'tiktok.com'];
+const { SOCIAL_DOMAINS, REFERENCE_DOMAINS } = require('./lib/domain-filters');
+// Convert sets to arrays for backward-compat with the .some() usage below
+const SOCIAL_DOMAINS_ARR = [...SOCIAL_DOMAINS];
 const NON_REVIEW_DOMAINS = ['wikipedia.org', 'en.wikipedia.org'];
 
 const results = { relative: [], social: [], nonReview: [], malformed: [], total: 0 };
@@ -57,7 +59,7 @@ for (const showDir of showDirs) {
 
       if (!category && hostname) {
         // 2. Social media
-        if (SOCIAL_DOMAINS.some(d => hostname === d || hostname.endsWith('.' + d))) {
+        if (SOCIAL_DOMAINS_ARR.some(d => hostname === d || hostname.endsWith('.' + d))) {
           category = 'social';
           newReason = 'wrong_content';
           detail = `Social media URL (${hostname})`;
