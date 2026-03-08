@@ -7,7 +7,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { JSDOM } = require('jsdom');
+const cheerio = require('cheerio');
 
 const archivePath = path.join(__dirname, '../data/aggregator-archive/show-score');
 const urlsPath = path.join(__dirname, '../data/show-score-urls.json');
@@ -38,8 +38,7 @@ function detectCategory(html, showId) {
 }
 
 function extractShowData(html, showId, sourceUrl) {
-  const dom = new JSDOM(html);
-  const doc = dom.window.document;
+  const $ = cheerio.load(html);
 
   const category = detectCategory(html, showId);
   const result = {
@@ -53,28 +52,26 @@ function extractShowData(html, showId, sourceUrl) {
   };
 
   // Check page title to confirm we have the right page
-  const titleElement = doc.querySelector('title');
-  const title = titleElement?.textContent || '';
+  const title = $('title').text() || '';
 
-  if (!title.includes('Show Score') || title.includes('NYC Theatre Reviews and Tickets</title>')) {
+  if (!title.includes('Show Score') || title.includes('NYC Theatre Reviews and Tickets')) {
     console.log(`  Warning: ${showId} - appears to be wrong page (title: ${title.slice(0, 60)}...)`);
     return null;
   }
 
   // Extract audience score from JSON-LD
-  const jsonLdScripts = doc.querySelectorAll('script[type="application/ld+json"]');
-  for (const script of jsonLdScripts) {
+  $('script[type="application/ld+json"]').each(function () {
     try {
-      const data = JSON.parse(script.textContent);
+      const data = JSON.parse($(this).html());
       if (data.aggregateRating) {
         result.audienceScore = data.aggregateRating.ratingValue;
         result.audienceReviewCount = data.aggregateRating.reviewCount;
-        break;
+        return false; // break
       }
     } catch (e) {
       // Skip invalid JSON-LD
     }
-  }
+  });
 
   // Extract critic review count from heading
   const criticHeadingMatch = html.match(/Critic Reviews\s*\((\d+)\)/);
@@ -83,49 +80,47 @@ function extractShowData(html, showId, sourceUrl) {
   }
 
   // Extract individual critic reviews
-  const reviewTiles = doc.querySelectorAll('.review-tile-v2.-critic');
-
-  for (const tile of reviewTiles) {
+  $('.review-tile-v2.-critic').each(function () {
+    const tile = $(this);
     const review = {};
 
     // Get outlet name from image alt text
-    const outletImg = tile.querySelector('.user-avatar-v2 img');
-    if (outletImg) {
-      review.outlet = outletImg.getAttribute('alt') || null;
+    const outletImg = tile.find('.user-avatar-v2 img');
+    if (outletImg.length) {
+      review.outlet = outletImg.attr('alt') || null;
     }
 
     // Get date
-    const dateEl = tile.querySelector('.review-tile-v2__date');
-    if (dateEl) {
-      review.date = dateEl.textContent.trim();
+    const dateEl = tile.find('.review-tile-v2__date');
+    if (dateEl.length) {
+      review.date = dateEl.text().trim();
     }
 
     // Get author
-    const authorEl = tile.querySelector('.review-tile-v2__authors a');
-    if (authorEl) {
-      review.author = authorEl.textContent.trim();
+    const authorEl = tile.find('.review-tile-v2__authors a');
+    if (authorEl.length) {
+      review.author = authorEl.text().trim();
     }
 
     // Get excerpt
-    const excerptEl = tile.querySelector('.review-tile-v2__review p');
-    if (excerptEl) {
-      // Remove "Read more" link text
-      let excerpt = excerptEl.textContent.trim();
+    const excerptEl = tile.find('.review-tile-v2__review p');
+    if (excerptEl.length) {
+      let excerpt = excerptEl.text().trim();
       excerpt = excerpt.replace(/Read more\s*$/i, '').trim();
       review.excerpt = excerpt || null;
     }
 
     // Get review URL
-    const reviewLink = tile.querySelector('.review-tile-v2__review a[href*="http"]');
-    if (reviewLink) {
-      review.url = reviewLink.getAttribute('href');
+    const reviewLink = tile.find('.review-tile-v2__review a[href*="http"]');
+    if (reviewLink.length) {
+      review.url = reviewLink.attr('href');
     }
 
     // Only add if we have meaningful data
     if (review.outlet || review.author) {
       result.criticReviews.push(review);
     }
-  }
+  });
 
   return result;
 }

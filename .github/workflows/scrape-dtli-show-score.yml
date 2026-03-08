@@ -274,7 +274,7 @@ jobs:
         id: extract-ss
         run: |
           if [ -f scripts/extract-show-score-reviews.js ]; then
-            node --max-old-space-size=7168 scripts/extract-show-score-reviews.js
+            node scripts/extract-show-score-reviews.js
           else
             echo "Show Score extraction script not found, skipping"
           fi
