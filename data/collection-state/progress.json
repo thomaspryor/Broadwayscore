@@ -43,7 +43,15 @@
     "art-2025/thestage--unknown.json",
     "be-more-chill-2019/out-magazine--david-clarke.json",
     "beautiful-the-carole-king-musical-2014/northjerseycom--robert-feldberg.json",
-    "beetlejuice-west-end-2026/thestage--unknown.json"
+    "beetlejuice-west-end-2026/thestage--unknown.json",
+    "just-in-time-2025/timeout--adam-feldman.json",
+    "and-juliet-2022/city-beat--brian-scott-lipton.json",
+    "bug-2026/nysr--roma-torre.json",
+    "elf-2024/nyt-theater--jonathan-mandell.json",
+    "new-york-new-york-2023/nytimes--elisabeth-vincentelli.json",
+    "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/vulture--helen-shaw.json",
+    "rent-1996/variety--steven-suskin.json",
+    "casa-valentina-2014/access-atlanta--david-rooney.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -304,7 +312,9 @@
     "carousel-2018/usatoday--charles-isherwood.json",
     "carousel-2018/zeal-nyc--chris-caggiano.json",
     "cat-on-a-hot-tin-roof-2013/northjerseycom--robert-feldberg.json",
-    "catch-me-if-you-can-2011/scheckontheater--frank-scheck.json"
+    "catch-me-if-you-can-2011/scheckontheater--frank-scheck.json",
+    "cats-1982/curtainup--elyse-sommer.json",
+    "chaplin-2012/ap--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -325,9 +335,17 @@
       "all-my-sons-2008/frontmezzjunkies--steven-ross.json",
       "art-2025/thestage--unknown.json",
       "be-more-chill-2019/out-magazine--david-clarke.json",
-      "beetlejuice-west-end-2026/thestage--unknown.json"
+      "beetlejuice-west-end-2026/thestage--unknown.json",
+      "just-in-time-2025/timeout--adam-feldman.json",
+      "bug-2026/nysr--roma-torre.json",
+      "elf-2024/nyt-theater--jonathan-mandell.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/vulture--helen-shaw.json",
+      "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/vulture--helen-shaw.json",
+      "data/review-texts/rent-1996/variety--steven-suskin.json",
+      "rent-1996/variety--steven-suskin.json"
+    ],
     "browserbase": [
       "data/review-texts/brooklyn-2004/nytimes--ben-brantley.json",
       "brooklyn-2004/nytimes--ben-brantley.json",
@@ -350,7 +368,9 @@
       "take-me-out-2003/deadline--greg-evans.json",
       "data/review-texts/waiting-for-godot-2025/deadline--unknown.json",
       "waiting-for-godot-2025/deadline--unknown.json",
-      "data/review-texts/new-york-new-york-2023/hollywood-reporter--angie-han.json"
+      "data/review-texts/new-york-new-york-2023/hollywood-reporter--angie-han.json",
+      "data/review-texts/casa-valentina-2014/access-atlanta--david-rooney.json",
+      "casa-valentina-2014/access-atlanta--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -429,7 +449,8 @@
       "data/review-texts/cabaret-2024/usatoday--charles-isherwood.json",
       "data/review-texts/call-me-izzy-2025/exeunt-magazine--cameron-kelsall.json",
       "data/review-texts/carousel-2018/off-script-with-dan-dwyer--dan-dwyer.json",
-      "data/review-texts/carousel-2018/usatoday--charles-isherwood.json"
+      "data/review-texts/carousel-2018/usatoday--charles-isherwood.json",
+      "data/review-texts/cats-1982/curtainup--elyse-sommer.json"
     ],
     "archive": [
       "you-got-older-off-broadway-2026/timeout--unknown.json",
@@ -440,11 +461,13 @@
       "woman-in-mind-west-end-2025/timeout-london--andrzej-lukowski.json",
       "a-chorus-line-2006/thestage--david-benedict.json",
       "amazing-grace-2015/loyola-phoenix--layne-hillesland.json",
-      "beautiful-the-carole-king-musical-2014/northjerseycom--robert-feldberg.json"
+      "beautiful-the-carole-king-musical-2014/northjerseycom--robert-feldberg.json",
+      "and-juliet-2022/city-beat--brian-scott-lipton.json",
+      "new-york-new-york-2023/nytimes--elisabeth-vincentelli.json"
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "catch-me-if-you-can-2011/scheckontheater--frank-scheck.json",
+  "lastProcessed": "chaplin-2012/ap--mark-kennedy.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -808,6 +831,17 @@
       "t": "2026-03-08T03:22:16.391Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-08T04:14:48.572Z",
+      "event": "bb-session",
+      "session": "341d61fe",
+      "url": "http://www.hollywoodreporter.com/review/harvey-fiersteins-casa-valentina-theater"
+    },
+    {
+      "t": "2026-03-08T04:14:49.677Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
