@@ -5,6 +5,7 @@ import {
   getAudienceGradeClasses,
 } from '@/lib/audience-grade-utils';
 import type { AudienceBuzzData } from '@/lib/data-types';
+import { ExternalLinkIcon } from '@/components/icons';
 
 interface AudienceBuzzCardProps {
   buzz: AudienceBuzzData;
@@ -76,7 +77,7 @@ function RedditIcon({ className }: { className?: string }) {
 }
 
 // External link icon
-function ExternalLinkIcon({ className }: { className?: string }) {
+: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="12" height="12">
       <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />

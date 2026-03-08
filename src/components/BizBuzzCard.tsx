@@ -4,6 +4,8 @@ import { useState } from 'react';
 import type { ShowCommercial, RecoupmentTrend } from '@/lib/data-types';
 import { getDesignationBadgeStyle, getTrendColor, getTrendIcon } from '@/config/commercial';
 import RecoupmentProgressBar from './RecoupmentProgressBar';
+import { ChevronDownIcon } from '@/components/icons';
+import { formatCurrency } from '@/lib/formatting';
 
 interface BizBuzzCardProps {
   commercial: ShowCommercial;
@@ -12,17 +14,6 @@ interface BizBuzzCardProps {
   weeklyGross?: number | null;
   showStatus?: 'open' | 'closed' | 'previews' | 'upcoming';
   allTimeGross?: number | null;
-}
-
-function formatCurrency(value: number | null | undefined): string {
-  if (value == null) return '—';
-  if (value >= 1_000_000) {
-    return `$${(value / 1_000_000).toFixed(1)}M`;
-  }
-  if (value >= 1_000) {
-    return `$${(value / 1_000).toFixed(0)}K`;
-  }
-  return `$${value.toLocaleString()}`;
 }
 
 function formatWithEstimate(formatted: string, isEstimate: boolean): string {
@@ -63,7 +54,7 @@ function RecoupmentBadge({ recouped }: { recouped: boolean | null }) {
   );
 }
 
-function ChevronDown({ className }: { className?: string }) {
+: { className?: string }) {
   return (
     <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -256,7 +247,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
               onClick={() => setIsExpanded(!isExpanded)}
               className="flex items-center gap-1 text-sm text-gray-400 hover:text-gray-300 transition-colors"
             >
-              <ChevronDown className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+              <ChevronDownIcon className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
               {isExpanded ? 'Hide details' : 'Show details'}
             </button>
 

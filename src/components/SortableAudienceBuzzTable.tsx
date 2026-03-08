@@ -2,8 +2,8 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-
-type SortDirection = 'asc' | 'desc';
+import { SortIcon } from '@/components/SortIcon';
+import { SortDirection } from '@/lib/formatting';
 
 interface AudienceBuzzSource {
   score: number;
@@ -45,7 +45,7 @@ function getGradeFromScore(score: number): { grade: string; color: string } {
   return { grade: 'F', color: '#6b7280' };
 }
 
-function SortIcon({ direction, active }: { direction: SortDirection | null; active: boolean }) {
+: { direction: SortDirection | null; active: boolean }) {
   if (!active) {
     return (
       <span className="ml-1 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">
