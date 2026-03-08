@@ -705,23 +705,35 @@ function fetchJSON(url, headers) {
  *   Yellow: 1+ warnings OR 1-2 errors → "BSC Daily: 2 warnings — [first warning name]"
  *   Red: 3+ errors OR any error 2+ consecutive days → "BSC Daily: ACTION NEEDED — [first error name]"
  */
-function getDigestSubject(results, history) {
+function getDigestSubject(results, history, autoFixResults) {
   const errors = results.filter(r => r.status === 'error');
   const warns = results.filter(r => r.status === 'warn');
   const total = results.length;
   const passed = results.filter(r => r.status === 'pass').length;
+  const fixMap = autoFixResults || {};
 
-  if (errors.length >= 3 || (errors.length > 0 && (history.consecutiveErrorDays || 0) >= 2)) {
-    const first = errors[0]?.name || 'unknown';
+  // Only count items that are NOT auto-fixed AND are actionable (not LOW priority)
+  const isActionable = (r) => {
+    const entry = getPlaybookEntry(r.name);
+    return !entry || entry.urgency !== 'low';
+  };
+  const unfixedErrors = errors.filter(r => !fixMap[r.name]?.fixed && isActionable(r));
+  const unfixedWarns = warns.filter(r => !fixMap[r.name]?.fixed && isActionable(r));
+  const autoFixedCount = Object.values(fixMap).filter(f => f.fixed).length;
+
+  if (unfixedErrors.length >= 3 || (unfixedErrors.length > 0 && (history.consecutiveErrorDays || 0) >= 2)) {
+    const first = unfixedErrors[0]?.name || 'unknown';
     return `BSC Daily: ACTION NEEDED — ${first}`;
   }
-  if (errors.length > 0) {
-    const first = errors[0]?.name || 'unknown';
-    return `BSC Daily: ${errors.length} error${errors.length > 1 ? 's' : ''} — ${first}`;
+  if (unfixedErrors.length > 0) {
+    return `BSC Daily: ${unfixedErrors.length} error${unfixedErrors.length > 1 ? 's' : ''} need attention`;
   }
-  if (warns.length > 0) {
-    const first = warns[0]?.name || 'unknown';
-    return `BSC Daily: ${warns.length} warning${warns.length > 1 ? 's' : ''} — ${first}`;
+  if (unfixedWarns.length > 0) {
+    const autoNote = autoFixedCount > 0 ? ` (${autoFixedCount} auto-fixed)` : '';
+    return `BSC Daily: ${unfixedWarns.length} warning${unfixedWarns.length > 1 ? 's' : ''}${autoNote}`;
+  }
+  if (autoFixedCount > 0) {
+    return `BSC Daily: All clear — ${autoFixedCount} issue${autoFixedCount > 1 ? 's' : ''} auto-fixed`;
   }
   return `BSC Daily: All clear (${passed}/${total} passed)`;
 }
@@ -807,10 +819,22 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
       `;
     }
 
-    // Needs attention section (with urgency + plain-English instructions)
+    // Needs attention section — only FIX NOW and THIS WEEK shown; LOW items just get a count
     let needsAttentionHtml = '';
     if (needsAttention.length > 0) {
-      const items = needsAttention.map(r => {
+      const actionable = [];
+      const lowCount = { count: 0 };
+      for (const r of needsAttention) {
+        const entry = getPlaybookEntry(r.name);
+        const urgencyLevel = entry ? entry.urgency : 'low';
+        if (urgencyLevel === 'low') {
+          lowCount.count++;
+        } else {
+          actionable.push(r);
+        }
+      }
+
+      const items = actionable.map(r => {
         const entry = getPlaybookEntry(r.name);
         const urgency = entry ? URGENCY_LABELS[entry.urgency] || URGENCY_LABELS['low'] : URGENCY_LABELS['low'];
         const instruction = entry
@@ -828,10 +852,22 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
           ${failNote}
         </div>`;
       }).join('');
-      needsAttentionHtml = `
-        <h3 style="color:#f39c12;margin:24px 0 8px;">Needs Your Attention</h3>
-        ${items}
-      `;
+
+      const lowNote = lowCount.count > 0
+        ? `<p style="color:#666;font-size:12px;margin-top:8px;">+ ${lowCount.count} low-priority item${lowCount.count > 1 ? 's' : ''} monitoring themselves (no action needed)</p>`
+        : '';
+
+      if (actionable.length > 0) {
+        needsAttentionHtml = `
+          <h3 style="color:#f39c12;margin:24px 0 8px;">Needs Your Attention</h3>
+          ${items}
+          ${lowNote}
+        `;
+      } else if (lowCount.count > 0) {
+        needsAttentionHtml = `
+          <p style="color:#666;font-size:12px;margin:24px 0 8px;">${lowCount.count} low-priority item${lowCount.count > 1 ? 's' : ''} monitoring themselves (no action needed)</p>
+        `;
+      }
     }
 
     actionHtml = autoFixedHtml + needsAttentionHtml;
