@@ -14,8 +14,6 @@ import {
   getTrendIcon,
 } from '@/config/commercial';
 import type { CommercialDesignation, RecoupmentTrend } from '@/lib/data-types';
-import { SortIcon } from '@/components/SortIcon';
-import { SortDirection, formatCurrency } from '@/lib/formatting';
 
 interface ShowData {
   slug: string;
@@ -36,6 +34,37 @@ interface AllShowsTableProps {
 }
 
 type SortColumn = 'title' | 'designation' | 'capitalization' | 'gross' | 'totalGross' | 'recoupment';
+type SortDirection = 'asc' | 'desc';
+
+function formatCurrency(amount: number | null): string {
+  if (amount === null) return '—';
+  if (amount >= 1_000_000_000) {
+    return `$${(amount / 1_000_000_000).toFixed(1)}B`;
+  }
+  if (amount >= 1_000_000) {
+    return `$${(amount / 1_000_000).toFixed(1)}M`;
+  }
+  if (amount >= 1_000) {
+    return `$${(amount / 1_000).toFixed(0)}K`;
+  }
+  return `$${amount}`;
+}
+
+function SortIcon({ active, direction }: { active: boolean; direction: SortDirection }) {
+  if (!active) {
+    return (
+      <span className="ml-1 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">
+        ↕
+      </span>
+    );
+  }
+  return (
+    <span className="ml-1 text-brand">
+      {direction === 'asc' ? '↑' : '↓'}
+    </span>
+  );
+}
+
 export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTableProps) {
   const [sortColumn, setSortColumn] = useState<SortColumn>('designation');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');

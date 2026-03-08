@@ -2,8 +2,8 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { SortIcon } from '@/components/SortIcon';
-import type { SortDirection } from '@/lib/formatting';
+
+type SortDirection = 'asc' | 'desc';
 
 interface AudienceBuzzSource {
   score: number;
@@ -43,6 +43,21 @@ function getGradeFromScore(score: number): { grade: string; color: string } {
   if (score >= 53) return { grade: 'C-', color: '#b91c1c' };
   if (score >= 48) return { grade: 'D', color: '#991b1b' };
   return { grade: 'F', color: '#6b7280' };
+}
+
+function SortIcon({ direction, active }: { direction: SortDirection | null; active: boolean }) {
+  if (!active) {
+    return (
+      <span className="ml-1 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">
+        ↕
+      </span>
+    );
+  }
+  return (
+    <span className="ml-1 text-brand">
+      {direction === 'asc' ? '↑' : '↓'}
+    </span>
+  );
 }
 
 type BuzzColumn = 'show' | 'score' | 'showScore' | 'mezzanine' | 'reddit' | 'grade';
