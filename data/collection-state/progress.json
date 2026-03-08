@@ -1,116 +1,27 @@
 {
   "processed": [
-    "art-2025/rollingstone--tim-chan.json",
-    "art-2025/nyt-theater--unknown.json",
-    "art-2025/nytg--kyle-turner.json",
-    "art-2025/nypost--entertainment-critic.json",
-    "art-2025/observer--david-cote.json",
-    "art-2025/theatermania--hayley-levitt.json",
-    "art-2025/theatermania--zachary-stewart.json",
-    "art-2025/theatre-reviews-limited--david-roberts.json",
-    "art-2025/timeout--adam-feldman.json",
-    "art-2025/timeout--regina-robbins.json",
-    "art-2025/timeout--time-out.json",
-    "art-2025/wsj--unknown.json",
-    "art-2025/ap--unknown.json",
-    "art-2025/slantmagazine--unknown.json",
-    "art-2025/telegraph--dominic-cavendish.json",
-    "art-2025/times-uk--susie-goldsbrough.json",
-    "art-2025/washpost--naveen-kumar.json"
+    "spare-parts-off-broadway-2026/theatermania--unknown.json"
   ],
   "failed": [
-    "art-2025/hollywood-reporter--caitlin-huston.json",
-    "art-2025/whatsonstage--unknown.json",
-    "art-2025/nytimes--elisabeth-vincentelli.json",
-    "art-2025/thewrap--robert-hofler.json",
-    "art-2025/one-minute-critic--matthew-wexler.json",
-    "art-2025/one-minute-critic--one-minute-critic.json",
-    "art-2025/thestage--unknown.json"
+    "spare-parts-off-broadway-2026/deadline--stephanie-bunbury.json",
+    "spare-parts-off-broadway-2026/timeout--adam-feldman.json",
+    "spare-parts-off-broadway-2026/ap--mark-kennedy.json",
+    "spare-parts-off-broadway-2026/independent--alice-saville.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "art-2025/nyt-theater--unknown.json",
-      "art-2025/theatre-reviews-limited--david-roberts.json",
-      "art-2025/times-uk--susie-goldsbrough.json",
-      "art-2025/washpost--naveen-kumar.json"
-    ],
+    "playwright": [],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/art-2025/hollywood-reporter--caitlin-huston.json",
-      "data/review-texts/art-2025/nypost--entertainment-critic.json",
-      "art-2025/nypost--entertainment-critic.json",
-      "data/review-texts/art-2025/observer--david-cote.json",
-      "art-2025/observer--david-cote.json"
-    ],
-    "directCookies": [
-      "art-2025/wsj--unknown.json"
-    ],
-    "scrapingbee": [
-      "art-2025/telegraph--dominic-cavendish.json"
-    ],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/art-2025/whatsonstage--unknown.json"
-    ],
+    "archiveToday": [],
     "archive": [
-      "art-2025/rollingstone--tim-chan.json",
-      "art-2025/nytg--kyle-turner.json",
-      "art-2025/theatermania--hayley-levitt.json",
-      "art-2025/theatermania--zachary-stewart.json",
-      "art-2025/timeout--adam-feldman.json",
-      "art-2025/timeout--regina-robbins.json",
-      "art-2025/timeout--time-out.json",
-      "art-2025/ap--unknown.json",
-      "art-2025/slantmagazine--unknown.json"
+      "spare-parts-off-broadway-2026/theatermania--unknown.json"
     ]
   },
-  "startTime": "2026-03-08T05:11:49.015Z",
-  "lastProcessed": "art-2025/washpost--naveen-kumar.json",
-  "log": [
-    {
-      "t": "2026-03-08T05:11:49.998Z",
-      "event": "bb-session",
-      "session": "1889b6a9",
-      "url": "https://www.hollywoodreporter.com/business/business-news/broadway-box-office-ham"
-    },
-    {
-      "t": "2026-03-08T05:11:51.475Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-08T05:13:38.057Z",
-      "event": "bb-session",
-      "session": "a252816e",
-      "url": "https://nypost.com/author/johnny-oleksinski/page/5/"
-    },
-    {
-      "t": "2026-03-08T05:13:39.420Z",
-      "event": "bb-cookie-inject",
-      "domain": "nypost.com"
-    },
-    {
-      "t": "2026-03-08T05:13:54.391Z",
-      "event": "bb-session",
-      "session": "a9be050b",
-      "url": "https://observer.com/2025/09/art-review-james-corden-neil-patrick-harris-bobby-c"
-    },
-    {
-      "t": "2026-03-08T05:13:55.816Z",
-      "event": "bb-cookie-inject",
-      "domain": "observer.com"
-    },
-    {
-      "t": "2026-03-08T05:15:19.783Z",
-      "event": "bb-session",
-      "session": "fa72b571",
-      "url": "https://www.wsj.com/articles/art-review-james-cordens-comic-master-class-on-broa"
-    },
-    {
-      "t": "2026-03-08T05:15:21.240Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    }
-  ]
+  "startTime": "2026-03-08T05:25:37.505Z",
+  "lastProcessed": "spare-parts-off-broadway-2026/independent--alice-saville.json",
+  "log": []
 }
