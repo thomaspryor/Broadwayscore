@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-02-15T14:38:47.415Z",
+  "generatedAt": "2026-03-08T14:57:45.968Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 67,
-    "newlyFlagged": 67,
-    "alreadyFlagged": 0,
-    "criticsAffected": 8,
-    "showsAffected": 66,
-    "avgSimilarity": 78,
-    "avgScoreDiff": 3.3
+    "totalSyndicatedPairs": 46,
+    "newlyFlagged": 0,
+    "alreadyFlagged": 46,
+    "criticsAffected": 0,
+    "showsAffected": 0,
+    "avgSimilarity": 0,
+    "avgScoreDiff": 0
   },
   "syndicationPairs": [
     {
@@ -17,7 +17,7 @@
       "secondaryOutlets": [
         "nydailynews"
       ],
-      "count": 55
+      "count": 0
     },
     {
       "critic": "kathleen campion",
@@ -25,7 +25,7 @@
       "secondaryOutlets": [
         "front-row-center"
       ],
-      "count": 3
+      "count": 0
     },
     {
       "critic": "tulis mccall",
@@ -33,7 +33,7 @@
       "secondaryOutlets": [
         "front-row-center"
       ],
-      "count": 3
+      "count": 0
     },
     {
       "critic": "stanford friedman",
@@ -41,7 +41,7 @@
       "secondaryOutlets": [
         "front-row-center"
       ],
-      "count": 2
+      "count": 0
     },
     {
       "critic": "david rooney",
@@ -49,7 +49,7 @@
       "secondaryOutlets": [
         "reuters"
       ],
-      "count": 1
+      "count": 0
     },
     {
       "critic": "alexandra lipari",
@@ -57,7 +57,7 @@
       "secondaryOutlets": [
         "entertainmenthour"
       ],
-      "count": 1
+      "count": 0
     },
     {
       "critic": "zachary stewart",
@@ -65,7 +65,7 @@
       "secondaryOutlets": [
         "whatsonstage"
       ],
-      "count": 1
+      "count": 0
     },
     {
       "critic": "david gordon",
@@ -73,813 +73,128 @@
       "secondaryOutlets": [
         "whatsonstage"
       ],
-      "count": 1
+      "count": 0
+    },
+    {
+      "critic": "mark kennedy",
+      "primaryOutlet": "ap",
+      "secondaryOutlets": [
+        "abc-news",
+        "collider",
+        "washington-times",
+        "minneapolis-star-tribune"
+      ],
+      "count": 0
+    },
+    {
+      "critic": "jennifer farrar",
+      "primaryOutlet": "ap",
+      "secondaryOutlets": [
+        "abc-news",
+        "minneapolis-star-tribune"
+      ],
+      "count": 0
     }
   ],
-  "flagged": [
+  "flagged": [],
+  "authorMismatches": [
     {
-      "critic": "Alexandra Lipari",
-      "showId": "the-father-2016",
-      "primaryOutlet": "newsday",
-      "secondaryOutlet": "entertainmenthour",
-      "primaryFile": "newsday--alexandra-lipari.json",
-      "secondaryFile": "entertainmenthour--alexandra-lipari.json",
-      "similarity": 100,
-      "primaryScore": 77,
-      "secondaryScore": 76,
-      "scoreDiff": 1
+      "showId": "birthday-candles-2022",
+      "file": "nytimes--jesse-green.json",
+      "fileCritic": "jesse-green",
+      "detectedAuthor": "Maya Phillips",
+      "pattern": "tail"
     },
     {
-      "critic": "Chris Jones",
-      "showId": "a-dolls-house-2023",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 86,
-      "primaryScore": 77,
-      "secondaryScore": 78,
-      "scoreDiff": 1
+      "showId": "bullets-over-broadway-2014",
+      "file": "stageandcinema--andy-propst.json",
+      "fileCritic": "andy-propst",
+      "detectedAuthor": "Paulanne Simmons",
+      "pattern": "head"
     },
     {
-      "critic": "Chris Jones",
-      "showId": "aint-no-mo-2022",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 81,
-      "primaryScore": 82,
-      "secondaryScore": 80,
-      "scoreDiff": 2
+      "showId": "frozen-2018",
+      "file": "insidethemagic--cristina-sanza.json",
+      "fileCritic": "cristina-sanza",
+      "detectedAuthor": "Theater Cristina",
+      "pattern": "tail"
     },
     {
-      "critic": "Chris Jones",
-      "showId": "almost-famous-2022",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 81,
-      "primaryScore": 63,
-      "secondaryScore": 76,
-      "scoreDiff": 13
+      "showId": "glengarry-glen-ross-2025",
+      "file": "theater-scene--joseph-pisano.json",
+      "fileCritic": "joseph-pisano",
+      "detectedAuthor": "Dan Rubins",
+      "pattern": "tail"
     },
     {
-      "critic": "Chris Jones",
-      "showId": "american-buffalo-2022",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 92,
-      "primaryScore": 61,
-      "secondaryScore": 71,
-      "scoreDiff": 10
+      "showId": "grey-house-2023",
+      "file": "slash-film--caroline-cao.json",
+      "fileCritic": "caroline-cao",
+      "detectedAuthor": "Loren Noveck",
+      "pattern": "tail"
     },
     {
-      "critic": "Chris Jones",
-      "showId": "appropriate-2023",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 77,
-      "primaryScore": 93,
-      "secondaryScore": 93,
-      "scoreDiff": 0
+      "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
+      "file": "hollywood-reporter--david-rooney.json",
+      "fileCritic": "david-rooney",
+      "detectedAuthor": "Frank Scheck",
+      "pattern": "head"
     },
     {
-      "critic": "Chris Jones",
-      "showId": "art-2025",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 75,
-      "primaryScore": 78,
-      "secondaryScore": 78,
-      "scoreDiff": 0
+      "showId": "how-i-learned-to-drive-2022",
+      "file": "nytimes--jesse-green.json",
+      "fileCritic": "jesse-green",
+      "detectedAuthor": "Maya Phillips",
+      "pattern": "tail"
     },
     {
-      "critic": "Chris Jones",
-      "showId": "back-to-the-future-2023",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 75,
-      "primaryScore": 43,
-      "secondaryScore": 43,
-      "scoreDiff": 0
+      "showId": "hughie-2016",
+      "file": "huffpost--michael-glitz.json",
+      "fileCritic": "michael-glitz",
+      "detectedAuthor": "Patrick Maley",
+      "pattern": "tail"
     },
     {
-      "critic": "Chris Jones",
-      "showId": "be-more-chill-2019",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 76,
-      "primaryScore": 53,
-      "secondaryScore": 60,
-      "scoreDiff": 7
+      "showId": "in-transit-2016",
+      "file": "dctheatrescene--lorraine-treanor.json",
+      "fileCritic": "lorraine-treanor",
+      "detectedAuthor": "Jonathan Mandell",
+      "pattern": "tail"
     },
     {
-      "critic": "Chris Jones",
-      "showId": "bob-fosses-dancin-2023",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 80,
-      "primaryScore": 63,
-      "secondaryScore": 71,
-      "scoreDiff": 8
+      "showId": "once-upon-a-one-more-time-2023",
+      "file": "ap--mark-kennedy.json",
+      "fileCritic": "mark-kennedy",
+      "detectedAuthor": "Loren Noveck",
+      "pattern": "tail"
     },
     {
-      "critic": "Chris Jones",
-      "showId": "boop-2025",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 78,
-      "primaryScore": 82,
-      "secondaryScore": 81,
-      "scoreDiff": 1
+      "showId": "once-upon-a-one-more-time-2023",
+      "file": "talkinbroadway--matthew-murray.json",
+      "fileCritic": "matthew-murray",
+      "detectedAuthor": "Loren Noveck",
+      "pattern": "tail"
     },
     {
-      "critic": "Chris Jones",
-      "showId": "bug-2026",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 70,
-      "primaryScore": 79,
-      "secondaryScore": 79,
-      "scoreDiff": 0
+      "showId": "peter-and-the-starcatcher-2012",
+      "file": "stageandcinema--jonas-schwartz.json",
+      "fileCritic": "jonas-schwartz",
+      "detectedAuthor": "Sarah Taylor Ellis",
+      "pattern": "head"
     },
     {
-      "critic": "Chris Jones",
-      "showId": "chess-2025",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 87,
-      "primaryScore": 79,
-      "secondaryScore": 81,
-      "scoreDiff": 2
+      "showId": "the-great-gatsby-2024",
+      "file": "theater-scene--deirdre-donovan.json",
+      "fileCritic": "deirdre-donovan",
+      "detectedAuthor": "Marc Bruni",
+      "pattern": "head"
     },
     {
-      "critic": "Chris Jones",
-      "showId": "cult-of-love-2024",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 81,
-      "primaryScore": 64,
-      "secondaryScore": 80,
-      "scoreDiff": 16
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "doubt-2024",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 57,
-      "primaryScore": 87,
-      "secondaryScore": 83,
-      "scoreDiff": 4
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "eureka-day-2024",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 88,
-      "primaryScore": 60,
-      "secondaryScore": 61,
-      "scoreDiff": 1
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "fat-ham-2023",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 78,
-      "primaryScore": 81,
-      "secondaryScore": 82,
-      "scoreDiff": 1
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "floyd-collins-2025",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 88,
-      "primaryScore": 64,
-      "secondaryScore": 52,
-      "scoreDiff": 12
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 84,
-      "primaryScore": 78,
-      "secondaryScore": 77,
-      "scoreDiff": 1
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "funny-girl-2022",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 81,
-      "primaryScore": 71,
-      "secondaryScore": 71,
-      "scoreDiff": 0
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "hangmen-2022",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 90,
-      "primaryScore": 92,
-      "secondaryScore": 91,
-      "scoreDiff": 1
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "heart-of-rock-and-roll-2024",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 50,
-      "primaryScore": 82,
-      "secondaryScore": 75,
-      "scoreDiff": 7
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "hells-kitchen-2024",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 71,
-      "primaryScore": 77,
-      "secondaryScore": 77,
-      "scoreDiff": 0
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "here-lies-love-2023",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 83,
-      "primaryScore": 87,
-      "secondaryScore": 81,
-      "scoreDiff": 6
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "hillary-and-clinton-2019",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 74,
-      "primaryScore": 77,
-      "secondaryScore": 77,
-      "scoreDiff": 0
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "home-2024",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 89,
-      "primaryScore": 82,
-      "secondaryScore": 82,
-      "scoreDiff": 0
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "i-need-that-2023",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 81,
-      "primaryScore": 70,
-      "secondaryScore": 74,
-      "scoreDiff": 4
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "jajas-african-hair-braiding-2023",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 83,
-      "primaryScore": 79,
-      "secondaryScore": 79,
-      "scoreDiff": 0
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "just-in-time-2025",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 88,
-      "primaryScore": 80,
-      "secondaryScore": 82,
-      "scoreDiff": 2
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "kpop-2022",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 82,
-      "primaryScore": 60,
-      "secondaryScore": 62,
-      "scoreDiff": 2
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "lempicka-2024",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 83,
-      "primaryScore": 44,
-      "secondaryScore": 43,
-      "scoreDiff": 1
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "liberation-2025",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 80,
-      "primaryScore": 79,
-      "secondaryScore": 78,
-      "scoreDiff": 1
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "mamma-mia-2025",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 60,
-      "primaryScore": 81,
-      "secondaryScore": 89,
-      "scoreDiff": 8
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "marjorie-prime-2025",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 67,
-      "primaryScore": 82,
-      "secondaryScore": 78,
-      "scoreDiff": 4
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "mary-jane-2024",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 73,
-      "primaryScore": 82,
-      "secondaryScore": 81,
-      "scoreDiff": 1
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "network-2018",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 92,
-      "primaryScore": 88,
-      "secondaryScore": 82,
-      "scoreDiff": 6
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "oedipus-2025",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 76,
-      "primaryScore": 90,
-      "secondaryScore": 82,
-      "scoreDiff": 8
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "oh-mary-2024",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 88,
-      "primaryScore": 82,
-      "secondaryScore": 79,
-      "scoreDiff": 3
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "parade-2023",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 83,
-      "primaryScore": 63,
-      "secondaryScore": 63,
-      "scoreDiff": 0
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "patriots-2024",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 59,
-      "primaryScore": 80,
-      "secondaryScore": 79,
-      "scoreDiff": 1
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "pictures-from-home-2023",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 90,
-      "primaryScore": 77,
-      "secondaryScore": 77,
-      "scoreDiff": 0
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "prayer-for-the-french-republic-2024",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 81,
-      "primaryScore": 78,
-      "secondaryScore": 81,
-      "scoreDiff": 3
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "purlie-victorious-2023",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 83,
-      "primaryScore": 92,
-      "secondaryScore": 92,
-      "scoreDiff": 0
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "ragtime-2025",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 87,
-      "primaryScore": 79,
-      "secondaryScore": 77,
-      "scoreDiff": 2
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "real-women-have-curves-2025",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 93,
-      "primaryScore": 79,
-      "secondaryScore": 78,
-      "scoreDiff": 1
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "some-like-it-hot-2022",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 92,
-      "primaryScore": 76,
-      "secondaryScore": 77,
-      "scoreDiff": 1
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "spamalot-2023",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 87,
-      "primaryScore": 74,
-      "secondaryScore": 74,
-      "scoreDiff": 0
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "stephen-sondheims-old-friends-2025",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 88,
-      "primaryScore": 78,
-      "secondaryScore": 78,
-      "scoreDiff": 0
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "stereophonic-2024",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 68,
-      "primaryScore": 93,
-      "secondaryScore": 93,
-      "scoreDiff": 0
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "stranger-things-2024",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 78,
-      "primaryScore": 76,
-      "secondaryScore": 76,
-      "scoreDiff": 0
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "suffs-2024",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 77,
-      "primaryScore": 77,
-      "secondaryScore": 78,
-      "scoreDiff": 1
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "the-kite-runner-2022",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 85,
-      "primaryScore": 45,
-      "secondaryScore": 44,
-      "scoreDiff": 1
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "the-lehman-trilogy-2021",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 69,
-      "primaryScore": 94,
-      "secondaryScore": 94,
-      "scoreDiff": 0
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "the-minutes-2022",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 78,
-      "primaryScore": 80,
-      "secondaryScore": 81,
-      "scoreDiff": 1
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "the-outsiders-2024",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 81,
-      "primaryScore": 45,
-      "secondaryScore": 63,
-      "scoreDiff": 18
-    },
-    {
-      "critic": "Chris Jones",
-      "showId": "the-wiz-2024",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 82,
-      "primaryScore": 76,
-      "secondaryScore": 76,
-      "scoreDiff": 0
-    },
-    {
-      "critic": "David Gordon",
-      "showId": "merrily-we-roll-along-2023",
-      "primaryOutlet": "theatermania",
-      "secondaryOutlet": "whatsonstage",
-      "primaryFile": "theatermania--david-gordon.json",
-      "secondaryFile": "whatsonstage--david-gordon.json",
-      "similarity": 76,
-      "primaryScore": 90,
-      "secondaryScore": 94,
-      "scoreDiff": 4
-    },
-    {
-      "critic": "David Rooney",
-      "showId": "catch-me-if-you-can-2011",
-      "primaryOutlet": "hollywood-reporter",
-      "secondaryOutlet": "reuters",
-      "primaryFile": "hollywood-reporter--david-rooney.json",
-      "secondaryFile": "reuters--david-rooney.json",
-      "similarity": 87,
-      "primaryScore": 81,
-      "secondaryScore": 81,
-      "scoreDiff": 0
-    },
-    {
-      "critic": "Kathleen Campion",
-      "showId": "a-view-from-the-bridge-2015",
-      "primaryOutlet": "nytg",
-      "secondaryOutlet": "front-row-center",
-      "primaryFile": "nytg--kathleen-campion.json",
-      "secondaryFile": "front-row-center--kathleen-campion.json",
-      "similarity": 71,
-      "primaryScore": 91,
-      "secondaryScore": 82,
-      "scoreDiff": 9
-    },
-    {
-      "critic": "Kathleen Campion",
-      "showId": "an-american-in-paris-2015",
-      "primaryOutlet": "nytg",
-      "secondaryOutlet": "front-row-center",
-      "primaryFile": "nytg--kathleen-campion.json",
-      "secondaryFile": "front-row-center--kathleen-campion.json",
-      "similarity": 57,
-      "primaryScore": 82,
-      "secondaryScore": 82,
-      "scoreDiff": 0
-    },
-    {
-      "critic": "Kathleen Campion",
-      "showId": "heisenberg-2016",
-      "primaryOutlet": "nytg",
-      "secondaryOutlet": "front-row-center",
-      "primaryFile": "nytg--kathleen-campion.json",
-      "secondaryFile": "front-row-center--kathleen-campion.json",
-      "similarity": 73,
-      "primaryScore": 82,
-      "secondaryScore": 86,
-      "scoreDiff": 4
-    },
-    {
-      "critic": "Stanford Friedman",
-      "showId": "fool-for-love-2015",
-      "primaryOutlet": "nytg",
-      "secondaryOutlet": "front-row-center",
-      "primaryFile": "nytg--stanford-friedman.json",
-      "secondaryFile": "front-row-center--stanford-friedman.json",
-      "similarity": 57,
-      "primaryScore": 82,
-      "secondaryScore": 80,
-      "scoreDiff": 2
-    },
-    {
-      "critic": "Stanford Friedman",
-      "showId": "king-charles-iii-2015",
-      "primaryOutlet": "nytg",
-      "secondaryOutlet": "front-row-center",
-      "primaryFile": "nytg--stanford-friedman.json",
-      "secondaryFile": "front-row-center--stanford-friedman.json",
-      "similarity": 59,
-      "primaryScore": 76,
-      "secondaryScore": 76,
-      "scoreDiff": 0
-    },
-    {
-      "critic": "Tulis McCall",
-      "showId": "fun-home-2015",
-      "primaryOutlet": "nytg",
-      "secondaryOutlet": "front-row-center",
-      "primaryFile": "nytg--tulis-mccall.json",
-      "secondaryFile": "front-row-center--tulis-mccall.json",
-      "similarity": 59,
-      "primaryScore": 100,
-      "secondaryScore": 96,
-      "scoreDiff": 4
-    },
-    {
-      "critic": "Tulis McCall",
-      "showId": "something-rotten-2015",
-      "primaryOutlet": "nytg",
-      "secondaryOutlet": "front-row-center",
-      "primaryFile": "nytg--tulis-mccall.json",
-      "secondaryFile": "front-row-center--tulis-mccall.json",
-      "similarity": 67,
-      "primaryScore": 41,
-      "secondaryScore": 63,
-      "scoreDiff": 22
-    },
-    {
-      "critic": "Tulis McCall",
-      "showId": "the-audience-2015",
-      "primaryOutlet": "nytg",
-      "secondaryOutlet": "front-row-center",
-      "primaryFile": "nytg--tulis-mccall.json",
-      "secondaryFile": "front-row-center--tulis-mccall.json",
-      "similarity": 63,
-      "primaryScore": 75,
-      "secondaryScore": 76,
-      "scoreDiff": 1
-    },
-    {
-      "critic": "Zachary Stewart",
-      "showId": "appropriate-2023",
-      "primaryOutlet": "theatermania",
-      "secondaryOutlet": "whatsonstage",
-      "primaryFile": "theatermania--zachary-stewart.json",
-      "secondaryFile": "whatsonstage--zachary-stewart.json",
-      "similarity": 84,
-      "primaryScore": 95,
-      "secondaryScore": 80,
-      "scoreDiff": 15
+      "showId": "the-piano-lesson-2022",
+      "file": "nytimes--jesse-green.json",
+      "fileCritic": "jesse-green",
+      "detectedAuthor": "Maya Phillips",
+      "pattern": "tail"
     }
   ]
 }

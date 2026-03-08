@@ -45,7 +45,34 @@ const KNOWN_SYNDICATION = {
   'alexandra lipari': { primary: 'newsday', secondary: ['entertainmenthour'] },
   'zachary stewart': { primary: 'theatermania', secondary: ['whatsonstage'] },
   'david gordon': { primary: 'theatermania', secondary: ['whatsonstage'] },
+  'mark kennedy': { primary: 'ap', secondary: ['abc-news', 'collider', 'washington-times', 'minneapolis-star-tribune'] },
+  'jennifer farrar': { primary: 'ap', secondary: ['abc-news', 'minneapolis-star-tribune'] },
 };
+
+// --- AP wire syndication signals ---
+// STRICT: requires strong signals that this IS an AP article, not just quoting one.
+// Many reviews quote AP excerpts in roundup pages — those are NOT syndication.
+const AP_STRONG_SIGNALS = [
+  // AP byline at start: "By Mark Kennedy, AP" or "By Mark Kennedy\nAP Drama Writer"
+  { regex: /(?:^|\n)\s*(?:by\s+)?(?:Mark Kennedy|Jennifer Farrar|Michael Kuchwara|Jocelyn Noveck),?\s*(?:AP|Associated Press)/im, where: 'head' },
+  // "AP Drama/Theater Writer" byline near start
+  { regex: /(?:^|\n)\s*(?:by\s+)?\w+ \w+\s*\n\s*AP (?:Drama|Theater|Theatre|Entertainment) (?:Writer|Critic)/im, where: 'head' },
+  // AP credit at end: "Mark Kennedy is at twitter.com/KennedyTwits"
+  { regex: /Kennedy is at (?:http|twitter)/i, where: 'tail' },
+  // AP copyright at end
+  { regex: /(?:Copyright|©).*Associated Press/i, where: 'tail' },
+];
+
+function detectAPContent(fullText) {
+  if (!fullText || fullText.length < 100) return false;
+  const head = fullText.slice(0, 300);
+  const tail = fullText.slice(-300);
+  for (const sig of AP_STRONG_SIGNALS) {
+    const text = sig.where === 'head' ? head : tail;
+    if (sig.regex.test(text)) return true;
+  }
+  return false;
+}
 
 // Outlet tier lookup — reads from outlet-registry.json (source of truth)
 const { getTier } = require('./lib/outlet-tiers');
@@ -197,6 +224,62 @@ for (const [key, revs] of multiOutlet) {
   }
 }
 
+// --- AP content scan (catches misattributed AP wire stories) ---
+console.log('\n--- AP Content Scan ---');
+let apFlagged = 0;
+const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
+  if (SHOW_FILTER && d !== SHOW_FILTER) return false;
+  return fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory();
+});
+
+for (const showId of showDirs) {
+  const showDir = path.join(REVIEW_TEXTS_DIR, showId);
+  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+
+  for (const file of files) {
+    // Skip AP's own files — we only want to catch non-AP outlets with AP content
+    if (file.startsWith('ap--')) continue;
+    // Skip already-flagged files
+    const filePath = path.join(showDir, file);
+    try {
+      const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      if (data.isSyndicatedDuplicate || data.duplicateOf || data.crossOutletDuplicate) continue;
+      if (data.wrongShow || data.wrongProduction) continue;
+
+      if (data.fullText && detectAPContent(data.fullText)) {
+        // Find the AP file for this show
+        const apFile = files.find(f => f.startsWith('ap--'));
+        const apRef = apFile ? `${showId}/${apFile}` : null;
+
+        console.log(`  AP content in non-AP file: ${showId}/${file}${apRef ? ' → primary: ' + apRef : ''}`);
+
+        if (!DRY_RUN) {
+          data.isSyndicatedDuplicate = true;
+          data.syndicatedPrimaryFile = apRef;
+          data._apContentDetected = true;
+          fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+          filesWritten++;
+        }
+
+        flagged.push({
+          critic: 'AP wire',
+          showId,
+          primaryOutlet: 'ap',
+          secondaryOutlet: file.split('--')[0],
+          primaryFile: apFile || 'unknown',
+          secondaryFile: file,
+          similarity: 100,
+          primaryScore: null,
+          secondaryScore: null,
+          scoreDiff: 0,
+        });
+        apFlagged++;
+      }
+    } catch { /* skip corrupt files */ }
+  }
+}
+console.log(`AP content detected in ${apFlagged} non-AP files`);
+
 // --- Results ---
 console.log(`\n=== RESULTS ===`);
 console.log(`New syndicated duplicates found: ${flagged.length}`);
@@ -237,6 +320,87 @@ if (flagged.length > 0) {
   console.log(`>10 pt diff: ${flagged.filter(f => f.scoreDiff > 10).length}`);
 }
 
+// --- Author mismatch scan ---
+console.log('\n--- Author Mismatch Scan ---');
+const BYLINE_PATTERNS = [
+  // "By Name" as standalone line near start (not mid-sentence "by Name")
+  { regex: /(?:^|\n)\s*(?:review )?by\s+([A-Z][a-z]{2,} [A-Z][a-z]{2,}(?:\s+[A-Z][a-z]{2,})?)\s*(?:\n|$|,|\|)/m, where: 'head' },
+  // "Name is a critic/writer/editor/theater correspondent" at end
+  { regex: /([A-Z][a-z]{2,} [A-Z][a-z]{2,}(?:\s+[A-Z][a-z]{2,})?)\s+is (?:a |an |the )?(?:theater |theatre |drama |entertainment )?(?:critic|writer|editor|reviewer|correspondent|columnist|contributor)\b/i, where: 'tail' },
+  // "Reviewed by Name" as standalone pattern
+  { regex: /\breviewed by\s+([A-Z][a-z]{2,} [A-Z][a-z]{2,}(?:\s+[A-Z][a-z]{2,})?)\s*(?:\n|$|\.)/i, where: 'tail' },
+];
+
+let mismatchCount = 0;
+const mismatches = [];
+
+for (const showId of showDirs) {
+  const showDir = path.join(REVIEW_TEXTS_DIR, showId);
+  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+
+  for (const file of files) {
+    const filePath = path.join(showDir, file);
+    try {
+      const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      if (!data.fullText || data.fullText.length < 100) continue;
+      if (data.isSyndicatedDuplicate || data.duplicateOf || data.crossOutletDuplicate) continue;
+      if (data.wrongShow || data.wrongProduction || data.isRoundupArticle) continue;
+
+      // Extract critic name from filename
+      const parts = file.replace('.json', '').split('--');
+      if (parts.length < 2) continue;
+      const fileCritic = parts[1].replace(/-/g, ' ').toLowerCase();
+      if (fileCritic === 'unknown') continue;
+
+      const head = data.fullText.slice(0, 300);
+      const tail = data.fullText.slice(-500);
+
+      for (const pattern of BYLINE_PATTERNS) {
+        const textToCheck = pattern.where === 'head' ? head : pattern.where === 'tail' ? tail : data.fullText;
+        const match = textToCheck.match(pattern.regex);
+        if (!match) continue;
+
+        const detectedAuthor = match[1].toLowerCase().trim();
+        // Check if detected author matches file critic (fuzzy — first+last name, nickname tolerance)
+        const detectedParts = detectedAuthor.split(/\s+/);
+        const fileParts = fileCritic.split(/\s+/);
+        const lastNameMatch = detectedParts[detectedParts.length - 1] === fileParts[fileParts.length - 1];
+        const firstNameMatch = detectedParts[0] === fileParts[0];
+        // Nickname tolerance: "steve" matches "steven", "vicki" matches "victoria", etc.
+        const firstNameStartMatch = detectedParts[0].slice(0, 3) === fileParts[0].slice(0, 3);
+
+        // Skip if any name part matches (exact or nickname prefix)
+        if (lastNameMatch || firstNameMatch || (firstNameStartMatch && detectedParts[detectedParts.length - 1] === fileParts[fileParts.length - 1])) {
+          continue; // Names match — not a mismatch
+        }
+        {
+          mismatchCount++;
+          mismatches.push({
+            showId, file,
+            fileCritic: parts[1],
+            detectedAuthor: match[1],
+            pattern: pattern.where,
+          });
+          if (VERBOSE) {
+            console.log(`  MISMATCH: ${showId}/${file} — file says "${parts[1]}", text says "${match[1]}"`);
+          }
+          break; // One mismatch per file is enough
+        }
+      }
+    } catch { /* skip */ }
+  }
+}
+
+console.log(`Author mismatches found: ${mismatchCount}`);
+if (mismatchCount > 0 && !VERBOSE) {
+  console.log('  (run with --verbose to see details)');
+  // Show first 10
+  for (const m of mismatches.slice(0, 10)) {
+    console.log(`  ${m.showId}/${m.file}: file="${m.fileCritic}" text="${m.detectedAuthor}"`);
+  }
+  if (mismatches.length > 10) console.log(`  ... and ${mismatches.length - 10} more`);
+}
+
 // --- Write audit report ---
 const report = {
   generatedAt: new Date().toISOString(),
@@ -257,6 +421,7 @@ const report = {
     count: flagged.filter(f => f.critic.toLowerCase() === critic).length,
   })),
   flagged: flagged.sort((a, b) => a.critic.localeCompare(b.critic) || a.showId.localeCompare(b.showId)),
+  authorMismatches: mismatches,
 };
 
 if (!fs.existsSync(AUDIT_DIR)) fs.mkdirSync(AUDIT_DIR, { recursive: true });
