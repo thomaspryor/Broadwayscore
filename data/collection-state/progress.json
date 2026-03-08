@@ -214,7 +214,17 @@
     "the-piano-lesson-2022/timeout--adam-feldman.json",
     "the-waverly-gallery-2018/nypost--johnny-oleksinski.json",
     "the-wiz-2024/indiewire--sarah-shachat.json",
-    "wolf-hall-parts-one-and-two-2015/timeout--adam-feldman.json"
+    "wolf-hall-parts-one-and-two-2015/timeout--adam-feldman.json",
+    "yellow-face-2024/nypost--johnny-oleksinski.json",
+    "mother-play-2024/forward--jesse-green.json",
+    "a-tale-of-two-cities-2008/ap--unknown.json",
+    "a-tale-of-two-cities-2008/ny1--unknown.json",
+    "a-time-to-kill-2013/northjerseycom--robert-feldberg.json",
+    "act-one-2014/northjerseycom--robert-feldberg.json",
+    "after-midnight-2013/northjerseycom--robert-feldberg.json",
+    "aint-no-mo-2022/usatoday--charles-isherwood.json",
+    "aint-no-mo-2022/usatoday--matthew-j-palm.json",
+    "airline-highway-2015/windy-city-media-group--mary-shen-barnidge.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -292,7 +302,11 @@
       "data/review-texts/a-streetcar-named-desire-1988/backstage--erik-haagensen.json",
       "data/review-texts/a-streetcar-named-desire-1992/backstage--erik-haagensen.json",
       "data/review-texts/a-streetcar-named-desire-2005/backstage--erik-haagensen.json",
-      "data/review-texts/a-tale-of-two-cities-2008/amny--unknown.json"
+      "data/review-texts/a-tale-of-two-cities-2008/amny--unknown.json",
+      "data/review-texts/a-tale-of-two-cities-2008/ap--unknown.json",
+      "data/review-texts/a-tale-of-two-cities-2008/ny1--unknown.json",
+      "data/review-texts/aint-no-mo-2022/usatoday--charles-isherwood.json",
+      "data/review-texts/airline-highway-2015/windy-city-media-group--mary-shen-barnidge.json"
     ],
     "archive": [
       "you-got-older-off-broadway-2026/timeout--unknown.json",
@@ -305,7 +319,7 @@
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "wolf-hall-parts-one-and-two-2015/timeout--adam-feldman.json",
+  "lastProcessed": "airline-highway-2015/windy-city-media-group--mary-shen-barnidge.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -581,6 +595,39 @@
       "t": "2026-03-08T02:49:56.122Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-08T02:53:53.144Z",
+      "event": "bb-session",
+      "session": "9e79c909",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/228574491_Theater_review_"
+    },
+    {
+      "t": "2026-03-08T02:53:54.279Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-08T02:54:38.266Z",
+      "event": "bb-session",
+      "session": "67904f10",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/biographical-play-sho"
+    },
+    {
+      "t": "2026-03-08T02:54:39.436Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-08T02:55:41.806Z",
+      "event": "bb-session",
+      "session": "726015fd",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/230451301_Theater_review_"
+    },
+    {
+      "t": "2026-03-08T02:55:42.996Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
