@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-03-07T22:00:44.568Z",
+  "runDate": "2026-03-07T22:25:46.136Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
@@ -12,23 +12,23 @@
   },
   "summary": {
     "processed": 2,
-    "failed": 0,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "66.7%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
     "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -50,14 +50,15 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "you-got-older-off-broadway-2026/timeout--unknown.json",
+    "you-got-older-off-broadway-2026/nysun--elysa-gardner.json",
+    "you-got-older-off-broadway-2026/timeout--unknown.json"
+  ],
+  "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json"
   ],
-  "failed": [],
   "tierDetails": {
     "playwright": [
-      "you-got-older-off-broadway-2026/timeout--unknown.json",
-      "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json"
+      "you-got-older-off-broadway-2026/nysun--elysa-gardner.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -65,7 +66,9 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "you-got-older-off-broadway-2026/timeout--unknown.json"
+    ]
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
