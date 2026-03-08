@@ -368,7 +368,16 @@
     "bigfoot-off-broadway-2026/nypost--unknown.json",
     "bigfoot-off-broadway-2026/theatermania--hayley-levitt.json",
     "bigfoot-off-broadway-2026/timeout--adam-feldman.json",
-    "bigfoot-off-broadway-2026/timeout--unknown.json"
+    "bigfoot-off-broadway-2026/timeout--unknown.json",
+    "bloodlove-off-broadway-2026/theatermania--linda-buchwald.json",
+    "bloodlove-off-broadway-2026/theatermania--rachel-graham.json",
+    "book-of-mormon-2011/ew--thom-geier.json",
+    "book-of-mormon-2011/guardian--ben-brantley.json",
+    "broken-glass-west-end-2026/guardian--arifa-akbar.json",
+    "buena-vista-social-club-2025/broadwaynews--brittani-samuel.json",
+    "buena-vista-social-club-2025/timeout--adam-feldman.json",
+    "bug-2026/theatre-reviews-limited--david-roberts.json",
+    "bug-2026/timeout--adam-feldman.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -2457,7 +2466,8 @@
     "la-ternura-off-broadway-2025/nytg--unknown.json",
     "los-soles-truncos-off-broadway-2025/nytg--unknown.json",
     "six-2021/newyorker--naomi-fry.json",
-    "aladdin-2014/new-jersey-newsroom--michael-sommers.json"
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "book-of-mormon-2011/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2624,7 +2634,13 @@
       "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json",
       "and-juliet-2022/theatermania--hayley-levitt.json",
       "and-juliet-2022/theatermania--jesse-green.json",
-      "bigfoot-off-broadway-2026/theatermania--hayley-levitt.json"
+      "bigfoot-off-broadway-2026/theatermania--hayley-levitt.json",
+      "bloodlove-off-broadway-2026/theatermania--linda-buchwald.json",
+      "bloodlove-off-broadway-2026/theatermania--rachel-graham.json",
+      "book-of-mormon-2011/guardian--ben-brantley.json",
+      "buena-vista-social-club-2025/timeout--adam-feldman.json",
+      "bug-2026/theatre-reviews-limited--david-roberts.json",
+      "bug-2026/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/vulture--helen-shaw.json",
@@ -2822,7 +2838,10 @@
       "arcadia-west-end-2026/guardian--arifa-akbar.json",
       "bigfoot-off-broadway-2026/nypost--unknown.json",
       "bigfoot-off-broadway-2026/timeout--adam-feldman.json",
-      "bigfoot-off-broadway-2026/timeout--unknown.json"
+      "bigfoot-off-broadway-2026/timeout--unknown.json",
+      "book-of-mormon-2011/ew--thom-geier.json",
+      "broken-glass-west-end-2026/guardian--arifa-akbar.json",
+      "buena-vista-social-club-2025/broadwaynews--brittani-samuel.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -3341,7 +3360,7 @@
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "bigfoot-off-broadway-2026/timeout--unknown.json",
+  "lastProcessed": "bug-2026/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -4309,6 +4328,17 @@
     },
     {
       "t": "2026-03-08T18:26:30.327Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-08T18:30:51.017Z",
+      "event": "bb-session",
+      "session": "891807d2",
+      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
+    },
+    {
+      "t": "2026-03-08T18:30:52.208Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
