@@ -15,7 +15,7 @@ for (const s of shows) {
     try {
       const d = JSON.parse(fs.readFileSync(path.join(sd, f), 'utf-8'));
       if (d.llmScore || !d.fullText || d.fullText.length < 50) continue;
-      if (d.wrongShow || d.wrongProduction || d.isMultiShowReview) continue;
+      if (d.wrongShow || d.wrongProduction) continue;
 
       const showTitle = s.replace(/-\d{4}$/, '').replace(/-/g, ' ');
       const result = assessTextQuality(d.fullText, showTitle);

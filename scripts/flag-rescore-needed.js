@@ -66,7 +66,7 @@ if (cleanupMode) {
         // Check if unscorable
         const unscorable =
           data.duplicateOf || data.wrongShow || data.wrongProduction || data.wrongAttribution || data.contentTier === 'invalid' ||
-          data.isMultiShowReview || data.isRoundupArticle || data.rejectionReason ||
+          data.isRoundupArticle || data.rejectionReason ||
           (data.showNotMentioned && !data.bwwExcerpt && !data.dtliExcerpt && !data.showScoreExcerpt);
         if (unscorable) {
           cleaned++;
@@ -123,7 +123,7 @@ for (const show of shows) {
 
       // Skip unscorable reviews — don't flag files that the scorer will skip anyway
       if (data.duplicateOf || data.wrongShow || data.wrongProduction || data.wrongAttribution || data.contentTier === 'invalid') continue;
-      if (data.isMultiShowReview || data.isRoundupArticle || data.rejectionReason) continue;
+      if (data.isRoundupArticle || data.rejectionReason) continue;
 
       // Skip if already flagged for rescore
       if (data.needsRescore) {

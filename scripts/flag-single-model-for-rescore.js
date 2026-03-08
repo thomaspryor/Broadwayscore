@@ -48,7 +48,7 @@ function main() {
 
       // Skip unscorable reviews — don't flag files that the scorer will skip anyway
       if (data.duplicateOf || data.wrongShow || data.wrongProduction || data.wrongAttribution || data.contentTier === 'invalid') continue;
-      if (data.isMultiShowReview || data.isRoundupArticle || data.rejectionReason) continue;
+      if (data.isRoundupArticle || data.rejectionReason) continue;
 
       singleModelTotal++;
       const tier = data.contentTier || 'unknown';

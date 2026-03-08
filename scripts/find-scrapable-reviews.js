@@ -44,12 +44,12 @@ for (const showId of shows) {
       if (!hasLlm) noLlm++;
       if (!hasScore) noScore++;
 
-      if (hasUrl && !hasFullText && !data.isMultiShowReview && !data.wrongShow && !data.wrongProduction) {
+      if (hasUrl && !hasFullText && !data.wrongShow && !data.wrongProduction) {
         scrapable.push({ showId, file: f, url: data.url, hasExcerpt, outlet: data.outlet || data.outletId });
         showsNeedingScrape.set(showId, (showsNeedingScrape.get(showId) || 0) + 1);
       }
 
-      if ((hasFullText || hasExcerpt) && !hasLlm && !data.isMultiShowReview && !data.wrongShow) {
+      if ((hasFullText || hasExcerpt) && !hasLlm && !data.wrongShow) {
         needsScoring.push({ showId, file: f, textLen: hasFullText ? data.fullText.length : 0, hasExcerpt });
       }
 
