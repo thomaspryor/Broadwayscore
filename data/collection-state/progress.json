@@ -387,7 +387,16 @@
     "my-fair-lady-2018/vulture--steven-suskin.json",
     "ragtime-1998/vulture--unknown.json",
     "saint-joan-2018/vulture--elysa-gardner.json",
-    "summer-2018/vulture--jesse-oxfeld.json"
+    "summer-2018/vulture--jesse-oxfeld.json",
+    "the-merchant-of-venice-1973/hollywood-reporter--david-rooney.json",
+    "the-wiz-1975/vulture--unknown.json",
+    "a-streetcar-named-desire-2012/newsday--linda-winer.json",
+    "annie-1997/ew--jessica-shaw.json",
+    "beetlejuice-2022/bg-independent-news--unknown.json",
+    "death-of-a-salesman-1975/newsday--linda-winer.json",
+    "doubt-2005/thewrap--robert-hofler.json",
+    "good-people-2011/review--unknown.json",
+    "kinky-boots-off-broadway-2026/timeout--adam-feldman.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -2478,13 +2487,7 @@
     "six-2021/newyorker--naomi-fry.json",
     "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
     "book-of-mormon-2011/wsj--terry-teachout.json",
-    "hadestown-2019/wsj--terry-teachout.json",
-    "hold-on-to-your-butts-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
-    "im-sorry-prime-minister-west-end-2026/timeout-london--unknown.json",
-    "jerome-off-broadway-2025/wsj--joel-lobenthal.json",
-    "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
-    "magic-mike-live-west-end-2021/timeout-london--unknown.json",
-    "six-2021/wsj--unknown.json"
+    "a-chorus-line-2006/belleville-news-democrat--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2661,7 +2664,9 @@
       "company-1993/nytg--allison-considine.json",
       "my-fair-lady-2018/vulture--steven-suskin.json",
       "saint-joan-2018/vulture--elysa-gardner.json",
-      "summer-2018/vulture--jesse-oxfeld.json"
+      "summer-2018/vulture--jesse-oxfeld.json",
+      "beetlejuice-2022/bg-independent-news--unknown.json",
+      "kinky-boots-off-broadway-2026/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/vulture--helen-shaw.json",
@@ -2791,7 +2796,11 @@
       "data/review-texts/dreamgirls-2026/hollywood-reporter--frank-scheck.json",
       "dreamgirls-2026/hollywood-reporter--frank-scheck.json",
       "data/review-texts/lombardi-2010/vulture--mike-vaccaro.json",
-      "lombardi-2010/vulture--mike-vaccaro.json"
+      "lombardi-2010/vulture--mike-vaccaro.json",
+      "data/review-texts/the-merchant-of-venice-1973/hollywood-reporter--david-rooney.json",
+      "the-merchant-of-venice-1973/hollywood-reporter--david-rooney.json",
+      "data/review-texts/good-people-2011/review--unknown.json",
+      "good-people-2011/review--unknown.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json",
@@ -2869,38 +2878,7 @@
       "bigfoot-off-broadway-2026/timeout--unknown.json",
       "book-of-mormon-2011/ew--thom-geier.json",
       "broken-glass-west-end-2026/guardian--arifa-akbar.json",
-      "buena-vista-social-club-2025/broadwaynews--brittani-samuel.json",
-      "burnout-paradise-off-broadway-2026/thewrap--unknown.json",
-      "chess-2025/broadwaynews--michael-abourizk.json",
-      "chicago-1996/ew--melissa-rose-bernardo.json",
-      "chinese-republicans-off-broadway-2026/nbcnews--unknown.json",
-      "chinese-republicans-off-broadway-2026/thewrap--unknown.json",
-      "death-becomes-her-2024/broadwaynews--brittani-samuel.json",
-      "death-of-a-salesman-2026/newsday--linda-winer.json",
-      "hadestown-2019/ew--jessica-derschowitz.json",
-      "hadestown-2019/guardian--adrian-horton.json",
-      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
-      "hercules-west-end-2025/guardian--arifa-akbar.json",
-      "hold-on-to-your-butts-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
-      "im-sorry-prime-minister-west-end-2026/timeout-london--unknown.json",
-      "it-walks-around-the-house-at-night-west-end-2026/guardian--unknown.json",
-      "it-walks-around-the-house-at-night-west-end-2026/timeout--unknown.json",
-      "just-in-time-2025/broadwaynews--brittani-samuel.json",
-      "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json",
-      "magic-mike-live-west-end-2021/timeout-london--unknown.json",
-      "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json",
-      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
-      "maybe-happy-ending-2024/guardian--adrian-horton.json",
-      "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
-      "my-neighbour-totoro-west-end-2025/guardian--arifa-akbar.json",
-      "oh-mary-2024/broadwaynews--brittani-samuel.json",
-      "oh-mary-west-end-2025/guardian--arifa-akbar.json",
-      "oliver-west-end-2024/guardian--arifa-akbar.json",
-      "operation-mincemeat-2025/broadwaynews--brittani-samuel.json",
-      "operation-mincemeat-2025/guardian--kate-wyver.json",
-      "operation-mincemeat-west-end-2024/guardian--emma-john.json",
-      "paddington-the-musical-west-end-2025/guardian--arifa-akbar.json",
-      "shadowlands-west-end-2026/guardian--arifa-akbar.json"
+      "buena-vista-social-club-2025/broadwaynews--brittani-samuel.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -3329,7 +3307,8 @@
       "data/review-texts/the-hunger-games-on-stage-west-end-2025/broadwayworld--cindy-marcolina.json",
       "data/review-texts/titanique-west-end-2024/standard--nick-curtis.json",
       "data/review-texts/chess-2025/newyorker--michael-schulman.json",
-      "data/review-texts/chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json"
+      "data/review-texts/chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
+      "data/review-texts/a-chorus-line-2006/belleville-news-democrat--unknown.json"
     ],
     "archive": [
       "you-got-older-off-broadway-2026/timeout--unknown.json",
@@ -3417,11 +3396,16 @@
       "aladdin-2014/wsj--terry-teachout.json",
       "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
       "la-bete-1991/hollywood-reporter--frank-scheck.json",
-      "ragtime-1998/vulture--unknown.json"
+      "ragtime-1998/vulture--unknown.json",
+      "the-wiz-1975/vulture--unknown.json",
+      "a-streetcar-named-desire-2012/newsday--linda-winer.json",
+      "annie-1997/ew--jessica-shaw.json",
+      "death-of-a-salesman-1975/newsday--linda-winer.json",
+      "doubt-2005/thewrap--robert-hofler.json"
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "summer-2018/vulture--jesse-oxfeld.json",
+  "lastProcessed": "kinky-boots-off-broadway-2026/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -4446,6 +4430,39 @@
       "t": "2026-03-08T19:25:06.568Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-08T19:25:53.087Z",
+      "event": "bb-session",
+      "session": "a1c7f26f",
+      "url": "http://www.hollywoodreporter.com/review/merchant-venice-starring-al-pacino-45210"
+    },
+    {
+      "t": "2026-03-08T19:25:54.081Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-08T19:29:23.265Z",
+      "event": "bb-session",
+      "session": "a520b6fa",
+      "url": "http://www.newsday.com/entertainment/theater/latest-streetcar-solid-aggressive-e"
+    },
+    {
+      "t": "2026-03-08T19:29:24.308Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-08T19:30:34.810Z",
+      "event": "bb-session",
+      "session": "496fc933",
+      "url": "http://theater.nytimes.com/2011/03/04/theater/reviews/04good.html"
+    },
+    {
+      "t": "2026-03-08T19:30:35.961Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

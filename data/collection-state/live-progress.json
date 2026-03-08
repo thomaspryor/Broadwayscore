@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-03-08T19:25:48.901Z",
-  "processed": 388,
-  "failed": 2088,
-  "successRate": "15.7%",
+  "updatedAt": "2026-03-08T19:31:00.935Z",
+  "processed": 397,
+  "failed": 2089,
+  "successRate": "16.0%",
   "tierBreakdown": {
-    "playwright": 173,
+    "playwright": 175,
     "amp": 57,
-    "browserbase": 69,
+    "browserbase": 73,
     "directCookies": 2,
     "scrapingbee": 72,
     "brightdata": 0,
-    "archiveToday": 426,
-    "archive": 86
+    "archiveToday": 427,
+    "archive": 91
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-03-08T18:20:54.588Z",
-      "event": "bb-session",
-      "session": "e49f69a0",
-      "url": "https://www.hollywoodreporter.com/review/little-mermaid-live-review-1252669"
-    },
-    {
-      "t": "2026-03-08T18:20:55.816Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-08T18:21:42.032Z",
-      "event": "bb-session",
-      "session": "b8d84fa6",
-      "url": "https://www.hollywoodreporter.com/news/general-news/gary-a-sequel-titus-andronic"
-    },
-    {
-      "t": "2026-03-08T18:21:43.179Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-08T18:24:32.806Z",
-      "event": "bb-session",
-      "session": "bb170362",
-      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
-    },
-    {
-      "t": "2026-03-08T18:24:34.088Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-08T18:25:27.418Z",
       "event": "bb-session",
@@ -124,6 +91,39 @@
       "t": "2026-03-08T19:25:06.568Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-08T19:25:53.087Z",
+      "event": "bb-session",
+      "session": "a1c7f26f",
+      "url": "http://www.hollywoodreporter.com/review/merchant-venice-starring-al-pacino-45210"
+    },
+    {
+      "t": "2026-03-08T19:25:54.081Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-08T19:29:23.265Z",
+      "event": "bb-session",
+      "session": "a520b6fa",
+      "url": "http://www.newsday.com/entertainment/theater/latest-streetcar-solid-aggressive-e"
+    },
+    {
+      "t": "2026-03-08T19:29:24.308Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-08T19:30:34.810Z",
+      "event": "bb-session",
+      "session": "496fc933",
+      "url": "http://theater.nytimes.com/2011/03/04/theater/reviews/04good.html"
+    },
+    {
+      "t": "2026-03-08T19:30:35.961Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
