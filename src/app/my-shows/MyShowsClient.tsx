@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useRef, useCallback, useDeferredValue, useId } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback, useId } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { featureFlags } from '@/config/feature-flags';
@@ -12,7 +12,7 @@ import StarRating from '@/components/user/StarRating';
 import { useToastSafe } from '@/components/ui/Toast';
 import type { UserReview, WatchlistEntry, ShowLookup } from '@/types/user';
 import dynamic from 'next/dynamic';
-import type Fuse from 'fuse.js';
+import { ShowSearchDropdown } from '@/components/show-cards';
 import MezzanineImport from './MezzanineImport';
 
 const ListsTab = dynamic(() => import('./ListsTab').catch(() => {
@@ -1238,13 +1238,6 @@ interface SearchShow {
   category?: string;
 }
 
-function formatSearchSubtitle(show: SearchShow): string {
-  const parts: string[] = [];
-  if (show.venue) parts.push(show.venue);
-  if (show.od) parts.push(show.od.slice(0, 4));
-  return parts.join(' · ') || '';
-}
-
 function AddShowSearch({
   context,
   onAddToWatchlist,
@@ -1258,51 +1251,8 @@ function AddShowSearch({
 }) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const [query, setQuery] = useState('');
-  const deferredQuery = useDeferredValue(query);
-  const [results, setResults] = useState<SearchShow[]>([]);
-  const [shows, setShows] = useState<SearchShow[]>([]);
-  const fuseRef = useRef<Fuse<SearchShow> | null>(null);
-  const [dataReady, setDataReady] = useState(false);
-  const fetchedRef = useRef(false);
-  const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [addingId, setAddingId] = useState<string | null>(null);
-
-  const ensureData = useCallback(async () => {
-    if (fetchedRef.current) return;
-    fetchedRef.current = true;
-    try {
-      const [res, { default: FuseClass }] = await Promise.all([
-        fetch('/data/search-shows.json'),
-        import('fuse.js/basic') as Promise<{ default: typeof Fuse }>,
-      ]);
-      const data: SearchShow[] = await res.json();
-      fuseRef.current = new FuseClass(data, {
-        keys: [{ name: 'title', weight: 0.8 }, { name: 'venue', weight: 0.2 }],
-        threshold: 0.35,
-        ignoreLocation: true,
-        minMatchCharLength: 2,
-      });
-      setShows(data);
-      setDataReady(true);
-    } catch {
-      fetchedRef.current = false;
-    }
-  }, []);
-
-  // Compute results from deferred query
-  const filteredResults = useMemo(() => {
-    if (deferredQuery.length < 2 || !fuseRef.current) return [];
-    const fuseResults = fuseRef.current.search(deferredQuery, { limit: 6 }).map(r => r.item);
-    const q = deferredQuery.toLowerCase();
-    const substring = shows.filter(s =>
-      s.title.toLowerCase().includes(q) && !fuseResults.some(r => r.id === s.id)
-    );
-    return [...fuseResults, ...substring].slice(0, 6);
-  }, [deferredQuery, dataReady, shows]);
-
-  useEffect(() => { setResults(filteredResults); }, [filteredResults]);
 
   // Close on outside click
   useEffect(() => {
@@ -1310,21 +1260,14 @@ function AddShowSearch({
     function handleClick(e: MouseEvent) {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
         setIsOpen(false);
-        setQuery('');
       }
     }
     document.addEventListener('mousedown', handleClick);
     return () => document.removeEventListener('mousedown', handleClick);
   }, [isOpen]);
 
-  // Focus input when opening
-  useEffect(() => {
-    if (isOpen) { ensureData(); setTimeout(() => inputRef.current?.focus(), 50); }
-  }, [isOpen, ensureData]);
-
-  const handleSelect = async (show: SearchShow) => {
+  const handleSelect = async (show: { id: string; slug: string }) => {
     if (context === 'watchlist') {
-      // Always add directly — stay on the watchlist page
       if (!existingWatchlistIds.has(show.id)) {
         setAddingId(show.id);
         try {
@@ -1333,13 +1276,10 @@ function AddShowSearch({
           setAddingId(null);
         }
       }
-      // Close search (card will appear in the grid via state update)
     } else {
-      // Diary — go to show page with ?rate=1
       router.push(`/show/${show.slug}?rate=1`);
     }
     setIsOpen(false);
-    setQuery('');
   };
 
   if (!isOpen) {
@@ -1361,91 +1301,23 @@ function AddShowSearch({
 
   return (
     <div ref={containerRef} className="relative">
-      <div className="flex items-center gap-1.5">
-        <div className="relative">
-          <input
-            ref={inputRef}
-            type="text"
-            value={query}
-            onChange={e => setQuery(e.target.value)}
-            onKeyDown={e => {
-              if (e.key === 'Escape') { setIsOpen(false); setQuery(''); }
-              if (e.key === 'Enter' && results.length > 0) { handleSelect(results[0]); }
-            }}
-            placeholder={context === 'diary' ? 'Search to rate...' : 'Search to add...'}
-            className="w-40 sm:w-52 px-3 py-1.5 pl-8 text-xs bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand/50"
-          />
-          <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-        </div>
-        <button
-          type="button"
-          onClick={() => { setIsOpen(false); setQuery(''); }}
-          className="p-1 text-gray-500 hover:text-white"
-          aria-label="Close search"
-        >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-
-      {/* Dropdown results */}
-      {query.length >= 2 && (
-        <div className="absolute top-full right-0 mt-1.5 w-[calc(100vw-2rem)] sm:w-80 bg-surface-raised border border-white/10 rounded-lg shadow-xl overflow-hidden z-[80] max-h-72 overflow-y-auto">
-          {results.length > 0 ? results.map(show => {
-            const alreadyReviewed = existingReviewIds.has(show.id);
-            const alreadyWatchlisted = existingWatchlistIds.has(show.id);
-            const isAdding = addingId === show.id;
-            return (
-              <button
-                key={show.id}
-                onClick={() => handleSelect(show)}
-                disabled={isAdding}
-                className="w-full flex items-center gap-2.5 px-3 py-2 text-left hover:bg-white/5 transition-colors disabled:opacity-50"
-              >
-                {show.images?.thumbnail ? (
-                  <img src={show.images.thumbnail} alt="" className="w-9 h-9 rounded object-cover flex-shrink-0" />
-                ) : (
-                  <div className="w-9 h-9 rounded bg-white/10 flex-shrink-0" />
-                )}
-                <div className="flex-1 min-w-0">
-                  <div className="text-sm font-medium text-white truncate">{show.title}</div>
-                  <div className="text-[10px] text-gray-500 flex items-center gap-1.5">
-                    <span className={`px-1 py-0.5 rounded font-medium ${
-                      show.status === 'open' ? 'bg-green-500/20 text-green-400' :
-                      show.status === 'previews' ? 'bg-yellow-500/20 text-yellow-400' :
-                      'bg-gray-500/20 text-gray-400'
-                    }`}>
-                      {show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'Previews' : 'Closed'}
-                    </span>
-                    <span className="truncate">{formatSearchSubtitle(show)}</span>
-                  </div>
-                </div>
-                {/* Action hint */}
-                <div className="flex-shrink-0 text-[10px] text-gray-500">
-                  {context === 'diary' ? (
-                    alreadyReviewed ? <span className="text-green-400">Rated</span> : <span>Rate</span>
-                  ) : (
-                    isAdding ? (
-                      <span className="animate-pulse">Adding...</span>
-                    ) : alreadyWatchlisted ? (
-                      <span className="text-green-400">Added</span>
-                    ) : (
-                      <span>+ Add</span>
-                    )
-                  )}
-                </div>
-              </button>
-            );
-          }) : (
-            <div className="px-3 py-4 text-center text-xs text-gray-500">
-              No shows found for &ldquo;{query}&rdquo;
-            </div>
-          )}
-        </div>
-      )}
+      <ShowSearchDropdown
+        placeholder={context === 'diary' ? 'Search to rate...' : 'Search to add...'}
+        onSelect={handleSelect}
+        onClose={() => setIsOpen(false)}
+        align="right"
+        isDisabled={(show) => addingId === show.id}
+        renderAction={(show) => {
+          if (context === 'diary') {
+            return existingReviewIds.has(show.id)
+              ? <span className="text-green-400">Rated</span>
+              : <span>Rate</span>;
+          }
+          if (addingId === show.id) return <span className="animate-pulse">Adding...</span>;
+          if (existingWatchlistIds.has(show.id)) return <span className="text-green-400">Added</span>;
+          return <span>+ Add</span>;
+        }}
+      />
     </div>
   );
 }
