@@ -1060,14 +1060,9 @@ function extractShowScoreReviews(html, showId) {
   while ((match = outletUrlPattern.exec(html)) !== null) {
     const url = match[1];
 
-    // Skip non-review URLs (video platforms, social media, etc.)
-    const skipDomains = [
-      'youtube.com', 'youtu.be', 'vimeo.com',
-      'twitter.com', 'x.com', 'facebook.com', 'instagram.com',
-      'spotify.com', 'apple.com', 'music.amazon.com',
-      'show-score.com'  // Skip internal links
-    ];
-    if (skipDomains.some(domain => url.includes(domain))) {
+    // Skip non-review URLs (social media, ticket sites, aggregators, etc.)
+    const { isBlockedReviewUrl } = require('./lib/domain-filters');
+    if (isBlockedReviewUrl(url)) {
       continue;
     }
 
