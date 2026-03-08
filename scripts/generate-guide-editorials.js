@@ -27,34 +27,39 @@ const OUTPUT_FILE = path.join(ROOT, 'data', 'guide-editorials.json');
 const MAX_FILE_SIZE = 500 * 1024; // 500KB
 const MAX_RETRIES = 3;
 
+// Broadway-only filter — matches isBroadwayShow() in src/lib/data-core.ts
+function isBroadway(s) {
+  return !s.category || s.category === 'broadway';
+}
+
 // Guide definitions (mirrors src/config/guide-pages.ts)
 const GUIDE_DEFS = [
-  { slug: 'best-broadway-shows', title: 'Best Broadway Shows', filter: (s) => s.status === 'open' && (s.criticScore?.score ?? 0) > 0, yearPages: [2020, 2021, 2022, 2023, 2024, 2025, 2026] },
-  { slug: 'best-broadway-musicals', title: 'Best Broadway Musicals', filter: (s) => s.status === 'open' && s.type === 'musical', yearPages: [2020, 2021, 2022, 2023, 2024, 2025, 2026] },
-  { slug: 'best-broadway-plays', title: 'Best Broadway Plays', filter: (s) => s.status === 'open' && s.type === 'play', yearPages: [2020, 2021, 2022, 2023, 2024, 2025, 2026] },
+  { slug: 'best-broadway-shows', title: 'Best Broadway Shows', filter: (s) => isBroadway(s) && s.status === 'open' && (s.criticScore?.score ?? 0) > 0, yearPages: [2020, 2021, 2022, 2023, 2024, 2025, 2026] },
+  { slug: 'best-broadway-musicals', title: 'Best Broadway Musicals', filter: (s) => isBroadway(s) && s.status === 'open' && s.type === 'musical', yearPages: [2020, 2021, 2022, 2023, 2024, 2025, 2026] },
+  { slug: 'best-broadway-plays', title: 'Best Broadway Plays', filter: (s) => isBroadway(s) && s.status === 'open' && s.type === 'play', yearPages: [2020, 2021, 2022, 2023, 2024, 2025, 2026] },
   { slug: 'best-broadway-shows-for-kids', title: 'Best Broadway Shows for Kids', filter: (s) => {
-    if (s.status !== 'open') return false;
+    if (!isBroadway(s) || s.status !== 'open') return false;
     const tags = (s.tags || []).map(t => t.toLowerCase());
     const ageRec = (s.ageRecommendation || '').toLowerCase();
     return tags.includes('family') || tags.includes('accessible') || ageRec.includes('ages 6') || ageRec.includes('ages 8') || ageRec.includes('all ages');
   }},
   { slug: 'best-new-broadway-shows', title: 'Best New Broadway Shows', filter: (s) => {
-    if (s.status !== 'open') return false;
+    if (!isBroadway(s) || s.status !== 'open') return false;
     const now = new Date();
     const seasonStartYear = now.getMonth() >= 8 ? now.getFullYear() : now.getFullYear() - 1;
     return new Date(s.openingDate) >= new Date(`${seasonStartYear}-09-01`);
   }},
   { slug: 'cheap-broadway-tickets', title: 'Cheap Broadway Tickets', filter: (s) => {
-    if (s.status !== 'open') return false;
+    if (!isBroadway(s) || s.status !== 'open') return false;
     const tags = (s.tags || []).map(t => t.toLowerCase());
     return tags.includes('lottery') || tags.includes('rush');
   }},
   { slug: 'broadway-shows-closing-soon', title: 'Broadway Shows Closing Soon', filter: (s) => {
-    if (s.status !== 'open' || !s.closingDate) return false;
+    if (!isBroadway(s) || s.status !== 'open' || !s.closingDate) return false;
     const diffDays = Math.ceil((new Date(s.closingDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
     return diffDays > 0 && diffDays <= 60;
   }},
-  { slug: 'highest-rated-broadway-shows', title: 'Highest Rated Broadway Shows of All Time', filter: (s) => (s.criticScore?.score ?? 0) >= 70 },
+  { slug: 'highest-rated-broadway-shows', title: 'Highest Rated Broadway Shows of All Time', filter: (s) => isBroadway(s) && (s.criticScore?.score ?? 0) >= 70 },
 ];
 
 function getCurrentMonthYear() {
@@ -231,7 +236,8 @@ async function main() {
     try {
       const guideShows = getShowsForGuide(def, shows, consensus, null);
       if (guideShows.length === 0) {
-        console.log('  Skipped — no matching shows');
+        console.log('  No matching shows — clearing stale editorial');
+        delete editorials.guides[def.slug];
         continue;
       }
       console.log(`  Generating from ${guideShows.length} shows...`);
@@ -303,7 +309,7 @@ async function main() {
   // Update metadata
   editorials._meta = {
     lastGenerated: new Date().toISOString(),
-    updatePolicy: 'Monthly on 1st of month',
+    updatePolicy: 'Every deploy (pre-build) + monthly on 1st',
   };
 
   // Save with size check
