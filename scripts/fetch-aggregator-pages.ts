@@ -477,6 +477,7 @@ async function main() {
       const notFound = loadNotFoundForAggregator(aggregator);
       let skippedNotFound = 0;
       let skippedMarket = 0;
+      let fetchCount = 0;
 
       for (const showId of showIds) {
         const show = shows[showId];
@@ -501,6 +502,7 @@ async function main() {
         console.log(`[${showId}] Fetching...`);
         const result = await fetchAggregatorPage(browser, aggregator, showId, shows, showScoreUrls, dtliSlugMap);
         results.push(result);
+        fetchCount++;
 
         if (result.success) {
           console.log(`[${showId}] Success`);
@@ -516,6 +518,12 @@ async function main() {
           if (isNotFound) {
             notFound[showId] = new Date().toISOString().split('T')[0];
           }
+        }
+
+        // Checkpoint not-found cache every 50 fetches (survives timeouts)
+        if (fetchCount % 50 === 0) {
+          saveNotFoundForAggregator(aggregator, notFound);
+          console.log(`  [checkpoint] Saved not-found cache (${Object.keys(notFound).length} entries)`);
         }
 
         // Small delay between requests
