@@ -1598,8 +1598,11 @@ showDirs.forEach(showId => {
             if (daysBefore > threshold) refWouldBeExcluded = true;
           }
           if (refWouldBeExcluded) stats.dupeRefExcludedRecovered = (stats.dupeRefExcludedRecovered || 0) + 1;
-          // Verify fingerprints still match — flag may be stale after text re-fetch
-          if (!refAlsoDupe && !refWouldBeExcluded && data.fullText && refData.fullText) {
+          // Verify fingerprints still match — flag may be stale after text re-fetch or deletion
+          if (!data.fullText) {
+            // fullText was deleted (e.g., wrong attribution) — duplicateTextOf is stale
+            staleFlag = true;
+          } else if (!refAlsoDupe && !refWouldBeExcluded && data.fullText && refData.fullText) {
             const thisFp = computeContentFingerprint(data.fullText);
             const refFp = computeContentFingerprint(refData.fullText);
             if (thisFp && refFp && thisFp !== refFp) {
