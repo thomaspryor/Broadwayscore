@@ -36,6 +36,118 @@ const PIPELINE_DIR = path.join(AUDIT_DIR, 'pipeline-health');
 const TRIAGE_DIR = path.join(AUDIT_DIR, 'triage');
 const HISTORY_FILE = path.join(AUDIT_DIR, 'health-check-history.json');
 
+// --- Auto-Fix Playbook ---
+// Maps health check names (regex) to automated fixes or human-readable instructions.
+// `workflow`: dispatched automatically via `gh workflow run` (user sees "Auto-fixed").
+// `humanAction`: plain-English instruction for non-technical user (no jargon).
+// `urgency`: 'fix-now' (red), 'this-week' (yellow), 'low' (gray).
+
+const AUTO_FIX_PLAYBOOK = [
+  // Freshness — all auto-fixable via workflow dispatch
+  { match: /^Freshness: reviews\.json$/, urgency: 'fix-now', workflow: 'rebuild-reviews.yml',
+    humanFallback: 'The review scores database is out of date. This usually fixes itself overnight.' },
+  { match: /^Freshness: shows\.json$/, urgency: 'fix-now', workflow: 'update-show-status.yml',
+    humanFallback: 'The show database is out of date. This usually fixes itself overnight.' },
+  { match: /^Freshness: grosses\.json$/, urgency: 'this-week', workflow: 'weekly-grosses.yml',
+    humanFallback: 'Box office data is out of date. Updated weekly — may just be a slow week.' },
+  { match: /^Freshness: audience-buzz\.json$/, urgency: 'this-week', workflow: 'update-show-score.yml',
+    humanFallback: 'Audience scores are out of date.' },
+  { match: /^Freshness: commercial\.json$/, urgency: 'low', workflow: 'update-commercial.yml',
+    humanFallback: 'Commercial data is out of date.' },
+  { match: /^Freshness: critic-consensus\.json$/, urgency: 'low', workflow: 'update-critic-consensus.yml',
+    humanFallback: 'Critic consensus summaries are out of date.' },
+  { match: /^Freshness: lottery-rush\.json$/, urgency: 'low', workflow: 'update-lottery-rush.yml',
+    humanFallback: 'Lottery/rush data is out of date.' },
+
+  // Sync — some auto-fixable
+  { match: /^Sync: review-texts vs reviews\.json$/, urgency: 'fix-now', workflow: 'rebuild-reviews.yml',
+    humanFallback: 'Review database is out of sync with source files.' },
+  { match: /^Sync: open show coverage$/, urgency: 'this-week',
+    humanAction: 'Some open shows are missing reviews or grosses data. Open Claude Code and say: "Check which open shows are missing data and collect reviews for them."' },
+  { match: /^Sync: baseline drift$/, urgency: 'this-week',
+    humanAction: 'The data counts have drifted from the last known-good baseline. Open Claude Code and say: "Run validate-data.js and update the validation baseline."' },
+
+  // Pipeline — warn-only, no auto-fix needed (they run on schedule)
+  { match: /^Pipeline:/, urgency: 'low',
+    humanAction: "A scheduled pipeline hasn't run recently. It may just be delayed — check again tomorrow." },
+
+  // Quality — needs investigation
+  { match: /^Quality:/, urgency: 'this-week',
+    humanAction: 'The percentage of scored reviews has dropped. Open Claude Code and say: "Check why the scored review percentage dropped and fix it."' },
+
+  // Cookies — requires human action on Mac
+  { match: /^Cookies:/, urgency: 'fix-now',
+    humanAction: 'A paywall cookie has expired. On your Mac, open Claude Code and say: "Refresh the expired paywall cookies — check which ones need updating."' },
+
+  // CWV — needs investigation
+  { match: /^CWV:/, urgency: 'this-week',
+    humanAction: 'Website performance has degraded. Open Claude Code and say: "Check the Core Web Vitals report and fix any performance regressions."' },
+
+  // SEO — needs investigation
+  { match: /^SEO:/, urgency: 'this-week',
+    humanAction: 'SEO health has degraded. Open Claude Code and say: "Check the SEO health report and fix any issues."' },
+
+  // Cron — the workflows should self-heal, but may need manual dispatch
+  { match: /^Cron:/, urgency: 'low',
+    humanAction: "A scheduled job hasn't run recently. It'll likely run on its next schedule. If it persists, open Claude Code and say: \"Check why the cron jobs aren't running.\"" },
+
+  // Secrets — needs manual rotation
+  { match: /^Secrets:/, urgency: 'fix-now',
+    humanAction: 'A secret or API key may be expiring. On your Mac, open Claude Code and say: "Check which secrets need rotation and rotate them."' },
+];
+
+function getPlaybookEntry(checkName) {
+  for (const entry of AUTO_FIX_PLAYBOOK) {
+    if (entry.match.test(checkName)) return entry;
+  }
+  return null;
+}
+
+// Attempt auto-fix by dispatching a GitHub Actions workflow.
+// Returns { fixed: true/false, message: string }
+async function tryAutoFix(checkResult) {
+  const entry = getPlaybookEntry(checkResult.name);
+  if (!entry || !entry.workflow) return { fixed: false };
+
+  // Guard: max 2 auto-fix attempts per system per day
+  const category = checkResult.name.split(':')[0].trim().toLowerCase();
+  const triageFile = path.join(TRIAGE_DIR, `${category}.json`);
+  try {
+    if (fs.existsSync(triageFile)) {
+      const triage = readJSON(triageFile);
+      if ((triage.autoFixAttempts || 0) >= 2) {
+        console.log(`[Auto-Fix] Skipping ${checkResult.name} — already attempted ${triage.autoFixAttempts} times today`);
+        return { fixed: false, message: 'Max auto-fix attempts reached for today' };
+      }
+    }
+  } catch {}
+
+  // Dispatch the workflow
+  try {
+    execSync(
+      `gh workflow run "${entry.workflow}"`,
+      { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
+    );
+    console.log(`[Auto-Fix] Dispatched ${entry.workflow} for ${checkResult.name}`);
+
+    // Increment auto-fix attempt counter
+    try {
+      let triage = {};
+      if (fs.existsSync(triageFile)) triage = readJSON(triageFile);
+      triage.autoFixAttempts = (triage.autoFixAttempts || 0) + 1;
+      triage.lastAutoFix = new Date().toISOString();
+      triage.lastAutoFixWorkflow = entry.workflow;
+      fs.mkdirSync(path.dirname(triageFile), { recursive: true });
+      fs.writeFileSync(triageFile, JSON.stringify(triage, null, 2) + '\n');
+    } catch {}
+
+    return { fixed: true, workflow: entry.workflow };
+  } catch (err) {
+    console.error(`[Auto-Fix] Failed to dispatch ${entry.workflow}: ${err.message.substring(0, 100)}`);
+    return { fixed: false, message: `Dispatch failed: ${err.message.substring(0, 80)}` };
+  }
+}
+
 // --- Helpers ---
 
 function hoursAgo(dateStr) {
@@ -622,7 +734,7 @@ function getStatusIcon(status) {
   return status === 'pass' ? '&#9989;' : status === 'warn' ? '&#9888;&#65039;' : '&#10060;';
 }
 
-async function sendEmailDigest(results, history, workflowSummary) {
+async function sendEmailDigest(results, history, workflowSummary, autoFixResults) {
   const apiKey = process.env.RESEND_API_KEY;
   const ownerEmail = process.env.OWNER_EMAIL;
 
@@ -631,7 +743,7 @@ async function sendEmailDigest(results, history, workflowSummary) {
     return;
   }
 
-  const subject = getDigestSubject(results, history);
+  const subject = getDigestSubject(results, history, autoFixResults);
   const errors = results.filter(r => r.status === 'error');
   const warns = results.filter(r => r.status === 'warn');
   const passed = results.filter(r => r.status === 'pass');
@@ -655,18 +767,74 @@ async function sendEmailDigest(results, history, workflowSummary) {
     </tr>`;
   }).join('');
 
-  // Action needed section (errors + warnings)
+  // Action section — split into auto-fixed and needs-your-attention
   let actionHtml = '';
-  if (errors.length > 0 || warns.length > 0) {
-    const items = [...errors, ...warns].map(r => {
-      const icon = r.status === 'error' ? '&#10060;' : '&#9888;&#65039;';
-      const hint = r.hint ? `<br><span style="color:#888;font-size:12px;">&#8594; ${r.hint}</span>` : '';
-      return `<li style="margin-bottom:8px;color:#ddd;">${icon} <strong>${r.name}</strong>: ${r.message}${hint}</li>`;
-    }).join('');
-    actionHtml = `
-      <h3 style="color:#f39c12;margin:24px 0 8px;">Action Needed</h3>
-      <ul style="padding-left:20px;margin:0;">${items}</ul>
-    `;
+  const actionItems = [...errors, ...warns];
+  const autoFixMap = autoFixResults || {};
+
+  if (actionItems.length > 0) {
+    const URGENCY_LABELS = {
+      'fix-now': { label: 'FIX NOW', bg: '#e74c3c', color: '#fff' },
+      'this-week': { label: 'THIS WEEK', bg: '#f39c12', color: '#fff' },
+      'low': { label: 'LOW', bg: '#555', color: '#ccc' },
+    };
+
+    const autoFixed = [];
+    const needsAttention = [];
+    for (const r of actionItems) {
+      const fix = autoFixMap[r.name];
+      if (fix && fix.fixed) {
+        autoFixed.push(r);
+      } else {
+        needsAttention.push(r);
+      }
+    }
+
+    // Auto-fixed section (green — no action needed from user)
+    let autoFixedHtml = '';
+    if (autoFixed.length > 0) {
+      const items = autoFixed.map(r => {
+        const fix = autoFixMap[r.name];
+        return `<div style="padding:8px 12px;margin-bottom:6px;background:#1a3a1a;border-left:3px solid #2ecc71;border-radius:4px;">
+          <span style="color:#2ecc71;font-weight:bold;">&#9989; Auto-fixed</span>
+          <span style="color:#ccc;margin-left:8px;">${r.name.split(': ').pop()}</span>
+          <br><span style="color:#888;font-size:12px;">Triggered ${fix.workflow} — should resolve within ~30 min</span>
+        </div>`;
+      }).join('');
+      autoFixedHtml = `
+        <h3 style="color:#2ecc71;margin:24px 0 8px;">Auto-Fixed (no action needed)</h3>
+        ${items}
+      `;
+    }
+
+    // Needs attention section (with urgency + plain-English instructions)
+    let needsAttentionHtml = '';
+    if (needsAttention.length > 0) {
+      const items = needsAttention.map(r => {
+        const entry = getPlaybookEntry(r.name);
+        const urgency = entry ? URGENCY_LABELS[entry.urgency] || URGENCY_LABELS['low'] : URGENCY_LABELS['low'];
+        const instruction = entry
+          ? (entry.humanAction || entry.humanFallback || r.message)
+          : r.message;
+        const fix = autoFixMap[r.name];
+        const failNote = fix && fix.message
+          ? `<br><span style="color:#e74c3c;font-size:11px;">Auto-fix failed: ${fix.message}</span>`
+          : '';
+
+        return `<div style="padding:10px 12px;margin-bottom:8px;background:#2a1a1a;border-left:3px solid ${urgency.bg};border-radius:4px;">
+          <span style="display:inline-block;padding:2px 8px;border-radius:3px;background:${urgency.bg};color:${urgency.color};font-size:11px;font-weight:bold;">${urgency.label}</span>
+          <span style="color:#ddd;margin-left:8px;font-weight:bold;">${r.name.split(': ').pop()}</span>
+          <p style="color:#bbb;margin:6px 0 0;font-size:13px;line-height:1.4;">${instruction}</p>
+          ${failNote}
+        </div>`;
+      }).join('');
+      needsAttentionHtml = `
+        <h3 style="color:#f39c12;margin:24px 0 8px;">Needs Your Attention</h3>
+        ${items}
+      `;
+    }
+
+    actionHtml = autoFixedHtml + needsAttentionHtml;
   }
 
   // Workflow runs section
@@ -1057,6 +1225,20 @@ async function main() {
   // Write per-system triage state files
   writeTriageState(allResults);
 
+  // Auto-fix: attempt to dispatch fix workflows for known issues
+  const autoFixResults = {};
+  const fixableResults = allResults.filter(r => r.status === 'error' || r.status === 'warn');
+  for (const r of fixableResults) {
+    const entry = getPlaybookEntry(r.name);
+    if (entry && entry.workflow) {
+      autoFixResults[r.name] = await tryAutoFix(r);
+    }
+  }
+  const autoFixedCount = Object.values(autoFixResults).filter(f => f.fixed).length;
+  if (autoFixedCount > 0) {
+    console.log(`[Auto-Fix] Fixed ${autoFixedCount} issue(s) automatically`);
+  }
+
   // Get workflow run summary for the digest
   const workflowSummary = await getWorkflowRunSummary();
   if (workflowSummary.skipped) {
@@ -1066,7 +1248,7 @@ async function main() {
   }
 
   // Send email digest (throws on failure → triggers notify-failure)
-  await sendEmailDigest(allResults, history, workflowSummary);
+  await sendEmailDigest(allResults, history, workflowSummary, autoFixResults);
 
   // Send Discord notifications
   await sendDailyReport(allResults, history);
