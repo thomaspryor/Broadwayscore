@@ -37,7 +37,9 @@
     "a-night-with-janis-joplin-2013/thestage--paul-vale.json",
     "a-night-with-janis-joplin-2013/whatsonstage--charlotte-vickers.json",
     "all-my-sons-2008/frontmezzjunkies--steven-ross.json",
-    "amazing-grace-2015/loyola-phoenix--layne-hillesland.json"
+    "amazing-grace-2015/loyola-phoenix--layne-hillesland.json",
+    "amazing-grace-2015/nwi-times--philip-potempa.json",
+    "an-act-of-god-2016/toronto-star--the-toronto-star.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -234,7 +236,15 @@
     "allegiance-2015/huffpost--michael-glitz.json",
     "almost-famous-2022/talkinbroadway--matthew-murray.json",
     "almost-famous-2022/usatoday--charles-isherwood.json",
-    "amazing-grace-2015/hinsdale-living--brian-kirst.json"
+    "amazing-grace-2015/hinsdale-living--brian-kirst.json",
+    "amazing-grace-2015/northjerseycom--robert-feldberg.json",
+    "amazing-grace-2015/usatoday--elysa-gardner.json",
+    "american-buffalo-2022/usatoday--charles-isherwood.json",
+    "american-buffalo-2022/usatoday--kelly-lawler.json",
+    "american-idiot-2010/ap--michael-kuchwara.json",
+    "american-idiot-2010/ny1--roma-torre.json",
+    "american-psycho-2016/usatoday--elysa-gardner.json",
+    "an-enemy-of-the-people-1971/northjerseycom--robert-feldberg.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -286,7 +296,9 @@
       "passing-strange-2008/guardian--kate-wyver.json",
       "richard-iii-2013/guardian--susannah-clapp.json",
       "the-price-1999/timeout--adam-feldman.json",
-      "woman-in-mind-west-end-2025/guardian--arifa-akbar.json"
+      "woman-in-mind-west-end-2025/guardian--arifa-akbar.json",
+      "amazing-grace-2015/nwi-times--philip-potempa.json",
+      "an-act-of-god-2016/toronto-star--the-toronto-star.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -323,7 +335,11 @@
       "data/review-texts/allegiance-2015/huffpost--michael-glitz.json",
       "data/review-texts/almost-famous-2022/usatoday--charles-isherwood.json",
       "data/review-texts/almost-famous-2022/talkinbroadway--matthew-murray.json",
-      "data/review-texts/amazing-grace-2015/hinsdale-living--brian-kirst.json"
+      "data/review-texts/amazing-grace-2015/hinsdale-living--brian-kirst.json",
+      "data/review-texts/amazing-grace-2015/usatoday--elysa-gardner.json",
+      "data/review-texts/american-buffalo-2022/usatoday--charles-isherwood.json",
+      "data/review-texts/american-buffalo-2022/usatoday--kelly-lawler.json",
+      "data/review-texts/american-psycho-2016/usatoday--elysa-gardner.json"
     ],
     "archive": [
       "you-got-older-off-broadway-2026/timeout--unknown.json",
@@ -337,7 +353,7 @@
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "amazing-grace-2015/loyola-phoenix--layne-hillesland.json",
+  "lastProcessed": "an-enemy-of-the-people-1971/northjerseycom--robert-feldberg.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -644,6 +660,28 @@
     },
     {
       "t": "2026-03-08T02:55:42.996Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-08T03:07:31.394Z",
+      "event": "bb-session",
+      "session": "e1031d0a",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/a-wretch-s-search-for"
+    },
+    {
+      "t": "2026-03-08T03:07:32.429Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-08T03:15:10.072Z",
+      "event": "bb-session",
+      "session": "a1357898",
+      "url": "http://www.northjersey.com/arts_entertainment/theater/171672031_Theater_review__"
+    },
+    {
+      "t": "2026-03-08T03:15:11.115Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
     }
