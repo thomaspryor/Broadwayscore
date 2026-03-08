@@ -1,6 +1,9 @@
 name: Enrich IBDB Dates
 
 on:
+  schedule:
+    # Weekly on Wednesdays at 7 AM UTC (2 AM EST) — catch newly announced closing dates
+    - cron: '0 7 * * 3'
   workflow_dispatch:
     inputs:
       mode:
@@ -62,14 +65,23 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
         run: |
           FLAGS=""
+          MODE="${{ inputs.mode || 'enrich' }}"
 
           # Mode flags
-          if [ "${{ inputs.mode }}" = "verify" ]; then
+          if [ "$MODE" = "verify" ]; then
             FLAGS="$FLAGS --verify --dry-run"
-          elif [ "${{ inputs.mode }}" = "force" ]; then
+          elif [ "$MODE" = "force" ]; then
             FLAGS="$FLAGS --force"
           else
             FLAGS="$FLAGS --missing-only"
+          fi
+
+          # Scheduled runs: only enrich open/previews shows (skip 700+ closed shows)
+          STATUS="${{ inputs.status || '' }}"
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            FLAGS="$FLAGS --status=open"
+          elif [ -n "$STATUS" ] && [ "$STATUS" != "all" ]; then
+            FLAGS="$FLAGS --status=$STATUS"
           fi
 
           # Show filter
@@ -77,22 +89,17 @@ jobs:
             FLAGS="$FLAGS --show=${{ inputs.show }}"
           fi
 
-          # Status filter
-          if [ -n "${{ inputs.status }}" ] && [ "${{ inputs.status }}" != "all" ]; then
-            FLAGS="$FLAGS --status=${{ inputs.status }}"
-          fi
-
           echo "Running: node scripts/enrich-ibdb-dates.js $FLAGS"
           node scripts/enrich-ibdb-dates.js $FLAGS
 
       - name: Check for changes
-        if: inputs.mode != 'verify'
+        if: (inputs.mode || 'enrich') != 'verify'
         id: git-check
         run: |
           git diff --exit-code data/shows.json || echo "changes=true" >> $GITHUB_OUTPUT
 
       - name: Commit and push changes
-        if: always() && steps.git-check.outputs.changes == 'true' && inputs.mode != 'verify'
+        if: always() && steps.git-check.outputs.changes == 'true' && (inputs.mode || 'enrich') != 'verify'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -101,8 +108,11 @@ jobs:
           SHOW_MSG=""
           if [ -n "${{ inputs.show }}" ]; then
             SHOW_MSG=" for ${{ inputs.show }}"
+          elif [ "${{ github.event_name }}" = "schedule" ]; then
+            SHOW_MSG=" (weekly scheduled)"
           fi
 
+          git add data/shows.json
           git commit -m "data: Enrich IBDB dates${SHOW_MSG}"
 
           bash scripts/lib/push-with-retry.sh
