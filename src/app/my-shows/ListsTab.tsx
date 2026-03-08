@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef, useMemo, useDeferredValue } f
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useUserLists } from '@/hooks/useUserLists';
+import { useToastSafe } from '@/components/ui/Toast';
 import type { UserList, ListItem, ShowLookup } from '@/types/user';
 import type Fuse from 'fuse.js';
 import {
@@ -41,6 +42,7 @@ interface ListsTabProps {
 export default function ListsTab({ userId, showMap, isMockMode, createTrigger = 0 }: ListsTabProps) {
   const searchParams = useSearchParams();
   const activeListId = searchParams.get('list');
+  const { showToast } = useToastSafe();
 
   const {
     lists: realLists, loading: realLoading, getLists, getListItems,
@@ -117,20 +119,25 @@ export default function ListsTab({ userId, showMap, isMockMode, createTrigger = 
   };
 
   const handleDeleteList = async (listId: string) => {
+    const name = lists.find(l => l.id === listId)?.name || 'List';
     await deleteList(listId);
     navigateToList(null);
+    showToast?.(`"${name}" deleted.`, 'info');
   };
 
   const handleAddToList = async (listId: string, showId: string) => {
     await addToList(listId, showId);
-    // Refresh items
     const items = await getListItems(listId);
     setListItems(items);
+    const showTitle = showMap[showId]?.title || 'Show';
+    showToast?.(`Added "${showTitle}" to list.`, 'success');
   };
 
   const handleRemoveFromList = async (listId: string, showId: string) => {
     await removeFromList(listId, showId);
     setListItems(prev => prev.filter(i => i.show_id !== showId));
+    const showTitle = showMap[showId]?.title || 'Show';
+    showToast?.(`Removed "${showTitle}" from list.`, 'info');
   };
 
   // Detail view
@@ -148,6 +155,8 @@ export default function ListsTab({ userId, showMap, isMockMode, createTrigger = 
           onAddShow={(showId) => handleAddToList(activeListId, showId)}
           onRemoveShow={(showId) => handleRemoveFromList(activeListId, showId)}
           onReorder={(itemIds, positions) => {
+            // Save previous state for undo
+            const previousItems = [...listItems];
             // Optimistic: reorder local state immediately
             const idOrder = new Map(itemIds.map((id, i) => [id, i]));
             setListItems(prev => {
@@ -156,8 +165,8 @@ export default function ListsTab({ userId, showMap, isMockMode, createTrigger = 
             });
             // Persist in background
             reorderList(activeListId, itemIds, positions).catch(() => {
-              // On failure, refresh from server to revert
-              getListItems(activeListId).then(items => setListItems(items));
+              setListItems(previousItems);
+              showToast?.('Reorder failed — reverted.', 'error');
             });
           }}
         />
@@ -298,6 +307,7 @@ function ListDetailView({
   const [showAddSearch, setShowAddSearch] = useState(false);
   const [confirmRemoveId, setConfirmRemoveId] = useState<string | null>(null);
   const confirmTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const deleteTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const overflowRef = useRef<HTMLDivElement>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
 
@@ -392,7 +402,11 @@ function ListDetailView({
               {!confirmDelete ? (
                 <button
                   type="button"
-                  onClick={() => setConfirmDelete(true)}
+                  onClick={() => {
+                    setConfirmDelete(true);
+                    if (deleteTimerRef.current) clearTimeout(deleteTimerRef.current);
+                    deleteTimerRef.current = setTimeout(() => setConfirmDelete(false), 4000);
+                  }}
                   className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-400 hover:bg-white/5 transition-colors"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -427,7 +441,16 @@ function ListDetailView({
         </div>
       ) : items.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-sm text-gray-400 mb-4">This list is empty. Add some shows!</p>
+          <div className="text-4xl mb-3">🎭</div>
+          <h3 className="text-lg font-bold text-white mb-1">No shows yet</h3>
+          <p className="text-sm text-gray-400 mb-4">Add shows to start building this list.</p>
+          <button
+            type="button"
+            onClick={() => setShowAddSearch(true)}
+            className="inline-block px-5 py-2.5 text-sm font-semibold text-black bg-[#FFD700] rounded-lg hover:bg-[#e6c200] transition-colors"
+          >
+            Add a Show
+          </button>
         </div>
       ) : list.is_ranked ? (
         /* Ranked list — drag-to-reorder enabled */
