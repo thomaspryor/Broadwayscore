@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-03-03",
+    "lastUpdated": "2026-03-08",
     "version": "2.0.0"
   },
   "outlets": {
@@ -1768,18 +1768,6 @@
       "domain": "twi-ny.com",
       "accessModel": "free"
     },
-    "america-magazine": {
-      "displayName": "America Magazine",
-      "tier": 3,
-      "aliases": [
-        "america-magazine",
-        "america magazine",
-        "america",
-        "america-magazine-rob-weinert-kendt"
-      ],
-      "domain": "americamagazine.org",
-      "accessModel": "free"
-    },
     "katrina-stuart-santiago": {
       "displayName": "Katrina Stuart Santiago",
       "tier": 3,
@@ -2480,17 +2468,22 @@
       "accessModel": "defunct"
     },
     "british-theatre": {
-      "displayName": "British Theatre",
+      "displayName": "British Theatre Guide",
       "tier": 3,
       "aliases": [
         "british-theatre",
         "british theatre",
         "britishtheatrecom",
-        "britishtheatre"
+        "britishtheatre",
+        "british-theatre-guide",
+        "british theatre guide"
       ],
       "domain": "britishtheatre.com",
       "region": "london",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domainAliases": [
+        "britishtheatreguide.info"
+      ]
     },
     "sfgate": {
       "displayName": "SFGate",
@@ -4043,14 +4036,6 @@
       ],
       "accessModel": "free"
     },
-    "the-virginian-pilot": {
-      "displayName": "The Virginian Pilot",
-      "tier": 3,
-      "aliases": [
-        "the-virginian-pilot"
-      ],
-      "accessModel": "paywalled"
-    },
     "times-union": {
       "displayName": "Times Union",
       "tier": 3,
@@ -4656,7 +4641,8 @@
       "displayName": "Reviewing The Drama",
       "tier": 3,
       "aliases": [
-        "reviewing-the-drama"
+        "reviewing-the-drama",
+        "review"
       ],
       "accessModel": "free"
     },
@@ -4699,15 +4685,6 @@
         "stannswarehouseorg"
       ],
       "accessModel": "defunct"
-    },
-    "british-theatre-guide": {
-      "displayName": "British Theatre Guide",
-      "tier": 3,
-      "aliases": [
-        "british-theatre-guide"
-      ],
-      "region": "london",
-      "accessModel": "free"
     },
     "broadway-showbiz": {
       "displayName": "Broadway Showbiz",
@@ -4869,8 +4846,12 @@
       "displayName": "American Theater Web",
       "tier": 3,
       "aliases": [
-        "american-theater-web"
-      ]
+        "american-theater-web",
+        "america-magazine",
+        "america magazine",
+        "america"
+      ],
+      "domain": "americamagazine.org"
     },
     "desertlocalnews": {
       "displayName": "Desertlocalnews",
@@ -5629,14 +5610,6 @@
       "aliases": [
         "oscar-review"
       ]
-    },
-    "review": {
-      "displayName": "Review",
-      "tier": 3,
-      "aliases": [
-        "review"
-      ],
-      "accessModel": "defunct"
     },
     "entertainment-today": {
       "displayName": "Entertainment Today",
@@ -7271,7 +7244,8 @@
       "displayName": "The Virginian-Pilot",
       "tier": 3,
       "aliases": [
-        "virginian-pilot"
+        "virginian-pilot",
+        "the-virginian-pilot"
       ],
       "accessModel": "paywalled"
     },
