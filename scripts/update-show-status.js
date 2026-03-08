@@ -311,6 +311,13 @@ async function refreshTodayTixDates(data, updates) {
       continue;
     }
 
+    // Don't auto-close if closingDate is still in the future — TodayTix listing may have
+    // been removed early (presale ended, etc.) but the show is still running
+    if (show.closingDate && show.closingDate >= today) {
+      console.log(`  ⚠️  ${show.title} (${cat}): missing from TodayTix ${daysMissing} days but closingDate ${show.closingDate} is still future — skipping auto-close`);
+      continue;
+    }
+
     // Circuit breaker
     if (autoCloseCount >= MAX_AUTO_CLOSE) {
       console.log(`  ⚠️ Circuit breaker: ${MAX_AUTO_CLOSE} auto-closes reached, skipping remaining`);
