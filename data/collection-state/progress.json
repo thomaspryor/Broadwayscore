@@ -1,7 +1,11 @@
 {
   "processed": [
     "you-got-older-off-broadway-2026/nysun--elysa-gardner.json",
-    "you-got-older-off-broadway-2026/timeout--unknown.json"
+    "you-got-older-off-broadway-2026/timeout--unknown.json",
+    "brooklyn-2004/nytimes--ben-brantley.json",
+    "gem-of-the-ocean-2004/nytimes--ben-brantley.json",
+    "good-vibrations-2005/nytimes--ben-brantley.json",
+    "how-to-dance-in-ohio-2023/hollywood-reporter--angie-han.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -14,7 +18,13 @@
     "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/times-uk--clive-davis.json",
     "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
     "all-shook-up-2005/nytimes--ben-brantley.json",
-    "bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json"
+    "bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json",
+    "escape-to-margaritaville-2018/vulture--jesse-green.json",
+    "gary-a-sequel-to-titus-andronicus-2019/vulture--jesse-green.json",
+    "john-lithgow-stories-by-heart-2018/vulture--jesse-green.json",
+    "linda-vista-2019/variety--marilyn-stasio.json",
+    "new-york-new-york-2023/hollywood-reporter--angie-han.json",
+    "ohio-state-murders-2022/hollywood-reporter--anita-gates.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -22,19 +32,28 @@
       "you-got-older-off-broadway-2026/nysun--elysa-gardner.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/brooklyn-2004/nytimes--ben-brantley.json",
+      "brooklyn-2004/nytimes--ben-brantley.json",
+      "data/review-texts/how-to-dance-in-ohio-2023/hollywood-reporter--angie-han.json",
+      "how-to-dance-in-ohio-2023/hollywood-reporter--angie-han.json",
+      "data/review-texts/new-york-new-york-2023/hollywood-reporter--angie-han.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/all-shook-up-2005/nytimes--ben-brantley.json"
+      "data/review-texts/all-shook-up-2005/nytimes--ben-brantley.json",
+      "data/review-texts/gary-a-sequel-to-titus-andronicus-2019/vulture--jesse-green.json"
     ],
     "archive": [
-      "you-got-older-off-broadway-2026/timeout--unknown.json"
+      "you-got-older-off-broadway-2026/timeout--unknown.json",
+      "gem-of-the-ocean-2004/nytimes--ben-brantley.json",
+      "good-vibrations-2005/nytimes--ben-brantley.json"
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json",
+  "lastProcessed": "ohio-state-murders-2022/hollywood-reporter--anita-gates.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -46,6 +65,50 @@
       "t": "2026-03-08T01:43:50.891Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-08T01:45:52.046Z",
+      "event": "bb-session",
+      "session": "f662e65f",
+      "url": "http://theater.nytimes.com/2004/10/22/theater/reviews/22BROO.html"
+    },
+    {
+      "t": "2026-03-08T01:45:53.543Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-08T01:47:35.313Z",
+      "event": "bb-session",
+      "session": "e3a99988",
+      "url": "https://www.hollywoodreporter.com/movies/movie-news/how-dance-ohio-sundance-revi"
+    },
+    {
+      "t": "2026-03-08T01:47:36.634Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-08T01:47:59.073Z",
+      "event": "bb-session",
+      "session": "2f911eef",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/new-york-new-york-broadway-revi"
+    },
+    {
+      "t": "2026-03-08T01:48:00.443Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-08T01:49:15.374Z",
+      "event": "bb-session",
+      "session": "cef3f687",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/new-york-new-york-kander-ebb-mu"
+    },
+    {
+      "t": "2026-03-08T01:49:16.606Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
