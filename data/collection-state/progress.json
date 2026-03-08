@@ -26,7 +26,8 @@
     "richard-iii-2013/guardian--susannah-clapp.json",
     "sunset-boulevard-2024/nydailynews--chris-jones.json",
     "take-me-out-2003/deadline--greg-evans.json",
-    "tammy-faye-2024/new-york-sun--unknown.json"
+    "tammy-faye-2024/new-york-sun--unknown.json",
+    "the-price-1999/timeout--adam-feldman.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -94,7 +95,16 @@
     "the-nap-2018/nypost--johnny-oleksinski.json",
     "the-normal-heart-2011/san-jose-mercury-news--chuck-barney.json",
     "the-norman-conquests-2009/nydailynews--joe-dziemianowicz.json",
-    "the-norman-conquests-2009/observer--rex-reed.json"
+    "the-norman-conquests-2009/observer--rex-reed.json",
+    "the-norman-conquests-2009/timeout--david-cote.json",
+    "the-parisian-woman-2017/observer--rex-reed.json",
+    "the-piano-lesson-2022/timeout--adam-feldman.json",
+    "the-play-that-goes-wrong-2017/theatermania--adam-feldman.json",
+    "the-price-2017/guardian--jesse-green.json",
+    "the-price-2017/observer--rex-reed.json",
+    "the-price-2017/theatermania--jesse-green.json",
+    "the-real-thing-2014/observer--rex-reed.json",
+    "the-testament-of-mary-2013/observer--rex-reed.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -136,7 +146,8 @@
       "faith-healer-2006/guardian--mark-lawson.json",
       "les-liaisons-dangereuses-1987/timeout--david-cote.json",
       "passing-strange-2008/guardian--kate-wyver.json",
-      "richard-iii-2013/guardian--susannah-clapp.json"
+      "richard-iii-2013/guardian--susannah-clapp.json",
+      "the-price-1999/timeout--adam-feldman.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -154,7 +165,7 @@
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "the-norman-conquests-2009/observer--rex-reed.json",
+  "lastProcessed": "the-testament-of-mary-2013/observer--rex-reed.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -296,6 +307,39 @@
     },
     {
       "t": "2026-03-08T02:08:25.015Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-08T02:13:46.803Z",
+      "event": "bb-session",
+      "session": "5b7dcf58",
+      "url": "https://observer.com/2017/03/the-price-broadway-review-arthur-miller/"
+    },
+    {
+      "t": "2026-03-08T02:13:48.159Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-08T02:14:48.996Z",
+      "event": "bb-session",
+      "session": "d1005809",
+      "url": "https://observer.com/2014/11/broadway-review-the-real-thing-starring-ewan-mcgreg"
+    },
+    {
+      "t": "2026-03-08T02:14:50.356Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-08T02:15:21.334Z",
+      "event": "bb-session",
+      "session": "3917f2d8",
+      "url": "https://observer.com/2013/04/fiona-shaw-is-divine-in-colm-toibins-the-testament-"
+    },
+    {
+      "t": "2026-03-08T02:15:22.728Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
     }
