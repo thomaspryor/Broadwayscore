@@ -893,20 +893,6 @@ async function main(): Promise<void> {
         // Fall through to excerpts
       } else {
         // Text is valid or low-suspicion - use it
-        // For multi-show reviews, try to trim to the relevant section
-        if ((data as any).isMultiShowReview && data.showId) {
-          const showTitle = showTitles.get(data.showId);
-          if (showTitle) {
-            const trimResult = trimMultiShowText(data.fullText, showTitle, data.showId);
-            if (trimResult.trimmed && !trimResult.trimFailed) {
-              if (options.verbose) {
-                console.log(`  Trimmed multi-show text: ${trimResult.originalLength} → ${trimResult.trimmedLength} chars (${trimResult.method})`);
-              }
-              return trimResult.text;
-            }
-            // trimFailed: fall through to use full text — V5 prompt handles multi-show content
-          }
-        }
         return data.fullText;
       }
     }
@@ -1107,25 +1093,43 @@ async function main(): Promise<void> {
       }
     }
 
-    // Multi-show detection: skip roundup articles (but not combined reviews)
+    // Multi-show detection: flag multi-show reviews for trimming, skip only roundup articles
     if (scorableText && reviewFile.showId && !reviewFile.isCombinedReview) {
       const multiShowResult = detectMultiShow(scorableText, reviewFile.showId);
 
-      if (multiShowResult.recommendation === 'skip') {
-        console.log(`SKIPPED (multi-show: ${multiShowResult.reason})`);
-        // Mark the file so it's not retried
+      if (multiShowResult.isMultiShowReview) {
+        // Flag the file for future runs
         if (!options.dryRun) {
           const fileData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
           fileData.isMultiShowReview = true;
           fileData.multiShowReason = multiShowResult.reason;
           saveReviewFile(filePath, fileData);
         }
-        skipped++;
-        continue;
+        // Trim reviewFile.fullText so the scorer receives only the relevant section
+        const showTitle = showTitles.get(reviewFile.showId);
+        if (showTitle && reviewFile.fullText) {
+          const trimResult = trimMultiShowText(reviewFile.fullText, showTitle, reviewFile.showId);
+          if (trimResult.trimmed && !trimResult.trimFailed) {
+            reviewFile.fullText = trimResult.text;
+            console.log(`(multi-show: trimmed ${trimResult.originalLength}→${trimResult.trimmedLength} chars) `);
+          } else {
+            console.log(`(multi-show: ${multiShowResult.reason}, trim failed — scoring full text) `);
+          }
+        }
       }
+    }
 
-      if (multiShowResult.recommendation === 'warn' && options.verbose) {
-        console.log(`(WARNING: ${multiShowResult.reason}) `);
+    // For pre-flagged multi-show reviews (from previous runs), trim fullText before scoring
+    if ((reviewFile as any).isMultiShowReview && reviewFile.fullText) {
+      const showTitle = showTitles.get(reviewFile.showId);
+      if (showTitle) {
+        const trimResult = trimMultiShowText(reviewFile.fullText, showTitle, reviewFile.showId);
+        if (trimResult.trimmed && !trimResult.trimFailed) {
+          reviewFile.fullText = trimResult.text;
+          if (options.verbose) {
+            console.log(`  Pre-flagged multi-show: trimmed ${trimResult.originalLength}→${trimResult.trimmedLength} chars`);
+          }
+        }
       }
     }
 

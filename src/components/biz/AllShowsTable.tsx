@@ -14,8 +14,6 @@ import {
   getTrendIcon,
 } from '@/config/commercial';
 import type { CommercialDesignation, RecoupmentTrend } from '@/lib/data-types';
-import { SortIcon } from '@/components/SortIcon';
-import { SortDirection, formatCurrency } from '@/lib/formatting';
 
 interface ShowData {
   slug: string;
@@ -36,7 +34,23 @@ interface AllShowsTableProps {
 }
 
 type SortColumn = 'title' | 'designation' | 'capitalization' | 'gross' | 'totalGross' | 'recoupment';
-: { active: boolean; direction: SortDirection }) {
+type SortDirection = 'asc' | 'desc';
+
+function formatCurrency(amount: number | null): string {
+  if (amount === null) return '—';
+  if (amount >= 1_000_000_000) {
+    return `$${(amount / 1_000_000_000).toFixed(1)}B`;
+  }
+  if (amount >= 1_000_000) {
+    return `$${(amount / 1_000_000).toFixed(1)}M`;
+  }
+  if (amount >= 1_000) {
+    return `$${(amount / 1_000).toFixed(0)}K`;
+  }
+  return `$${amount}`;
+}
+
+function SortIcon({ active, direction }: { active: boolean; direction: SortDirection }) {
   if (!active) {
     return (
       <span className="ml-1 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">
