@@ -364,10 +364,9 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], westEndSho
 
   const filteredAndSortedShows = useMemo(() => {
     // When searching, include ALL shows (ignore status/type filters)
-    // fuseResults is null while Fuse.js loads — show fuzzy results once ready,
-    // fall through to normal filtering while loading (avoids empty flash)
-    if (searchQuery && fuseResults !== null) {
-      return fuseResults;
+    // Fuse results come from async effect (lazy-loaded fuse.js)
+    if (searchQuery) {
+      return fuseResults || [];
     }
 
     // Non-search filtering: apply score mode, status, and type filters

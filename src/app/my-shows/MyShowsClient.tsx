@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useRef, useCallback, useId } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback, useDeferredValue, useId } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { featureFlags } from '@/config/feature-flags';
@@ -12,9 +12,8 @@ import StarRating from '@/components/user/StarRating';
 import { useToastSafe } from '@/components/ui/Toast';
 import type { UserReview, WatchlistEntry, ShowLookup } from '@/types/user';
 import dynamic from 'next/dynamic';
+import type Fuse from 'fuse.js';
 import MezzanineImport from './MezzanineImport';
-import { useShowSearch } from '@/hooks/useShowSearch';
-import { useClickOutside } from '@/hooks/useClickOutside';
 
 const ListsTab = dynamic(() => import('./ListsTab'), {
   loading: () => <div className="text-center py-12 text-gray-500">Loading lists...</div>,
@@ -1257,13 +1256,64 @@ function AddShowSearch({
 }) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const { query, setQuery, results, ensureData } = useShowSearch<SearchShow>();
+  const [query, setQuery] = useState('');
+  const deferredQuery = useDeferredValue(query);
+  const [results, setResults] = useState<SearchShow[]>([]);
+  const [shows, setShows] = useState<SearchShow[]>([]);
+  const fuseRef = useRef<Fuse<SearchShow> | null>(null);
+  const [dataReady, setDataReady] = useState(false);
+  const fetchedRef = useRef(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [addingId, setAddingId] = useState<string | null>(null);
 
-  const closeSearch = useCallback(() => { setIsOpen(false); setQuery(''); }, [setQuery]);
-  useClickOutside(containerRef, closeSearch, isOpen);
+  const ensureData = useCallback(async () => {
+    if (fetchedRef.current) return;
+    fetchedRef.current = true;
+    try {
+      const [res, { default: FuseClass }] = await Promise.all([
+        fetch('/data/search-shows.json'),
+        import('fuse.js/basic') as Promise<{ default: typeof Fuse }>,
+      ]);
+      const data: SearchShow[] = await res.json();
+      fuseRef.current = new FuseClass(data, {
+        keys: [{ name: 'title', weight: 0.8 }, { name: 'venue', weight: 0.2 }],
+        threshold: 0.35,
+        ignoreLocation: true,
+        minMatchCharLength: 2,
+      });
+      setShows(data);
+      setDataReady(true);
+    } catch {
+      fetchedRef.current = false;
+    }
+  }, []);
+
+  // Compute results from deferred query
+  const filteredResults = useMemo(() => {
+    if (deferredQuery.length < 2 || !fuseRef.current) return [];
+    const fuseResults = fuseRef.current.search(deferredQuery, { limit: 6 }).map(r => r.item);
+    const q = deferredQuery.toLowerCase();
+    const substring = shows.filter(s =>
+      s.title.toLowerCase().includes(q) && !fuseResults.some(r => r.id === s.id)
+    );
+    return [...fuseResults, ...substring].slice(0, 6);
+  }, [deferredQuery, dataReady, shows]);
+
+  useEffect(() => { setResults(filteredResults); }, [filteredResults]);
+
+  // Close on outside click
+  useEffect(() => {
+    if (!isOpen) return;
+    function handleClick(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+        setQuery('');
+      }
+    }
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [isOpen]);
 
   // Focus input when opening
   useEffect(() => {
