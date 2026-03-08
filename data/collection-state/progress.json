@@ -8,7 +8,12 @@
     "how-to-dance-in-ohio-2023/hollywood-reporter--angie-han.json",
     "rent-1996/nytimes--ben-brantley.json",
     "sight-unseen-2004/nytimes--ben-brantley.json",
-    "the-violet-hour-2003/nytimes--ben-brantley.json"
+    "the-violet-hour-2003/nytimes--ben-brantley.json",
+    "a-christmas-carol-2001/timeout--adam-feldman.json",
+    "a-delicate-balance-1996/timeout--david-cote.json",
+    "a-view-from-the-bridge-2015/guardian--lyn-gardner.json",
+    "art-2025/deadline--natalie-oganesyan.json",
+    "burn-this-1987/timeout--adam-feldman.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -34,12 +39,20 @@
     "the-shark-is-broken-2023/hollywood-reporter--angie-han.json",
     "the-whos-tommy-2024/hollywood-reporter--angie-han.json",
     "uncle-vanya-2024/vulture--helen-shaw.json",
-    "waitress-2021/vulture--helen-shaw.json"
+    "waitress-2021/vulture--helen-shaw.json",
+    "aint-no-mo-2022/observer--rex-reed.json",
+    "all-the-way-2014/observer--rex-reed.json",
+    "almost-famous-2022/timeout--adam-feldman.json",
+    "american-buffalo-2022/observer--jesse-green.json",
+    "appropriate-2023/timeout--adam-feldman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "you-got-older-off-broadway-2026/nysun--elysa-gardner.json"
+      "you-got-older-off-broadway-2026/nysun--elysa-gardner.json",
+      "a-christmas-carol-2001/timeout--adam-feldman.json",
+      "a-delicate-balance-1996/timeout--david-cote.json",
+      "a-view-from-the-bridge-2015/guardian--lyn-gardner.json"
     ],
     "amp": [],
     "browserbase": [
@@ -51,7 +64,9 @@
       "data/review-texts/sight-unseen-2004/nytimes--ben-brantley.json",
       "sight-unseen-2004/nytimes--ben-brantley.json",
       "data/review-texts/the-violet-hour-2003/nytimes--ben-brantley.json",
-      "the-violet-hour-2003/nytimes--ben-brantley.json"
+      "the-violet-hour-2003/nytimes--ben-brantley.json",
+      "data/review-texts/art-2025/deadline--natalie-oganesyan.json",
+      "art-2025/deadline--natalie-oganesyan.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -64,11 +79,12 @@
       "you-got-older-off-broadway-2026/timeout--unknown.json",
       "gem-of-the-ocean-2004/nytimes--ben-brantley.json",
       "good-vibrations-2005/nytimes--ben-brantley.json",
-      "rent-1996/nytimes--ben-brantley.json"
+      "rent-1996/nytimes--ben-brantley.json",
+      "burn-this-1987/timeout--adam-feldman.json"
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "waitress-2021/vulture--helen-shaw.json",
+  "lastProcessed": "burn-this-1987/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -146,6 +162,17 @@
       "t": "2026-03-08T01:50:32.568Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-08T01:52:17.043Z",
+      "event": "bb-session",
+      "session": "c10eb12d",
+      "url": "https://deadline.com/2025/09/marlon-wayans-negative-him-reviews-critics-12365519"
+    },
+    {
+      "t": "2026-03-08T01:52:18.584Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

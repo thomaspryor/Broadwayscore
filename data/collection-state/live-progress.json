@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-08T01:50:56.272Z",
-  "processed": 9,
-  "failed": 24,
-  "successRate": "27.3%",
+  "updatedAt": "2026-03-08T01:52:42.376Z",
+  "processed": 14,
+  "failed": 29,
+  "successRate": "32.6%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 4,
     "amp": 0,
-    "browserbase": 9,
+    "browserbase": 11,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 2,
-    "archive": 4
+    "archive": 5
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -91,6 +91,17 @@
       "t": "2026-03-08T01:50:32.568Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-08T01:52:17.043Z",
+      "event": "bb-session",
+      "session": "c10eb12d",
+      "url": "https://deadline.com/2025/09/marlon-wayans-negative-him-reviews-critics-12365519"
+    },
+    {
+      "t": "2026-03-08T01:52:18.584Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
