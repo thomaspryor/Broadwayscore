@@ -1384,7 +1384,17 @@
     "the-music-man-2022/washpost--peter-marks.json",
     "the-mystery-of-edwin-drood-2012/ap--mark-kennedy.json",
     "the-mystery-of-edwin-drood-2012/northjerseycom--robert-feldberg.json",
-    "the-nance-2013/ap--unknown.json"
+    "the-nance-2013/ap--unknown.json",
+    "the-nance-2013/washpost--unknown.json",
+    "the-nap-2018/curtainup--elyse-sommer.json",
+    "the-normal-heart-2011/scheckontheater--frank-scheck.json",
+    "the-other-place-2013/washpost--peter-marks.json",
+    "the-parisian-woman-2017/zeal-nyc--jil-picariello.json",
+    "the-peewee-herman-show-2010/usatoday--elysa-gardner.json",
+    "the-people-in-the-picture-2011/northjerseycom--robert-feldberg.json",
+    "the-people-in-the-picture-2011/philadelphia-inquirer--howard-shapiro.json",
+    "the-performers-2012/ap--mark-kennedy.json",
+    "the-phantom-of-the-opera-1988/businessworld--sam-marcelo.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1884,7 +1894,13 @@
       "data/review-texts/the-mountaintop-2011/northjerseycom--robert-feldberg.json",
       "data/review-texts/the-music-man-2022/washpost--peter-marks.json",
       "data/review-texts/the-mystery-of-edwin-drood-2012/ap--mark-kennedy.json",
-      "data/review-texts/the-mystery-of-edwin-drood-2012/northjerseycom--robert-feldberg.json"
+      "data/review-texts/the-mystery-of-edwin-drood-2012/northjerseycom--robert-feldberg.json",
+      "data/review-texts/the-nance-2013/washpost--unknown.json",
+      "data/review-texts/the-nap-2018/curtainup--elyse-sommer.json",
+      "data/review-texts/the-other-place-2013/washpost--peter-marks.json",
+      "data/review-texts/the-peewee-herman-show-2010/usatoday--elysa-gardner.json",
+      "data/review-texts/the-people-in-the-picture-2011/northjerseycom--robert-feldberg.json",
+      "data/review-texts/the-performers-2012/ap--mark-kennedy.json"
     ],
     "archive": [
       "you-got-older-off-broadway-2026/timeout--unknown.json",
@@ -1923,7 +1939,7 @@
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "the-nance-2013/ap--unknown.json",
+  "lastProcessed": "the-phantom-of-the-opera-1988/businessworld--sam-marcelo.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -2505,6 +2521,39 @@
     },
     {
       "t": "2026-03-08T11:11:15.556Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-08T11:12:12.992Z",
+      "event": "bb-session",
+      "session": "9991caf5",
+      "url": "https://www.washingtonpost.com/entertainment/review-nathan-lane-shines-in-the-na"
+    },
+    {
+      "t": "2026-03-08T11:12:14.086Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-08T11:13:37.459Z",
+      "event": "bb-session",
+      "session": "e044be05",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/the-other-place-revie"
+    },
+    {
+      "t": "2026-03-08T11:13:38.630Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-08T11:14:20.959Z",
+      "event": "bb-session",
+      "session": "6b6caca2",
+      "url": "https://www.northjersey.com/arts_entertainment/120942159_Grandmother_paints_a_po"
+    },
+    {
+      "t": "2026-03-08T11:14:22.137Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
     }
