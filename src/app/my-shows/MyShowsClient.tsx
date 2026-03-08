@@ -13,7 +13,7 @@ import { useToastSafe } from '@/components/ui/Toast';
 import type { UserReview, WatchlistEntry, ShowLookup } from '@/types/user';
 import dynamic from 'next/dynamic';
 import { ShowSearchDropdown } from '@/components/show-cards';
-import MezzanineImport from './MezzanineImport';
+const MezzanineImport = dynamic(() => import('./MezzanineImport'), { ssr: false });
 
 const ListsTab = dynamic(() => import('./ListsTab').catch(() => {
   return { default: () => <div className="text-center py-12 text-red-400">Failed to load lists. Please refresh the page.</div> };

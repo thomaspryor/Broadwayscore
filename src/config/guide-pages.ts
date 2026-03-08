@@ -92,7 +92,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     slug: 'best-broadway-shows-for-kids',
     title: 'Best Broadway Shows for Kids',
     h1Template: 'Best Broadway Shows for Kids & Families ({year})',
-    metaTitleTemplate: 'Best Broadway Shows for Kids {year} | Family-Friendly Theater',
+    metaTitleTemplate: 'Best Broadway Shows for Kids in NYC ({year})',
     metaDescriptionTemplate: 'Find the {count} best family-friendly Broadway shows for kids in {year}. Age-appropriate productions perfect for young theatergoers.',
     introFallback: 'Looking for the perfect Broadway show for your family? These {count} productions are age-appropriate, engaging, and perfect for introducing children to live theater.',
     filter: (show) => {
@@ -222,8 +222,8 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     slug: 'best-broadway-shows-2020s',
     title: 'Best Broadway Shows of the 2020s',
     h1Template: 'Best Broadway Shows of the 2020s (So Far)',
-    metaTitleTemplate: 'Best Broadway Shows of the 2020s | Top Shows 2020-Present',
-    metaDescriptionTemplate: 'The {count} best Broadway shows of the 2020s. From pandemic reopening to today, these are the top-rated productions of the decade.',
+    metaTitleTemplate: 'Best Broadway Shows of the 2020s — Ranked by Critics',
+    metaDescriptionTemplate: 'The {count} highest-rated Broadway shows since 2020, ranked by aggregated critic scores from 400+ outlets. From Stereophonic to Sunset Blvd.',
     introFallback: "The 2020s have seen Broadway's remarkable comeback. From the pandemic shutdown to triumphant reopening, these {count} shows represent the best of the current decade.",
     filter: (show) => {
       const openDate = new Date(show.openingDate);
