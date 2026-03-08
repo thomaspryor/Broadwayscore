@@ -76,9 +76,10 @@ const AUTO_FIX_PLAYBOOK = [
   { match: /^Quality:/, urgency: 'this-week',
     humanAction: 'The percentage of scored reviews has dropped. Open Claude Code and say: "Check why the scored review percentage dropped and fix it."' },
 
-  // Cookies — requires human action on Mac
+  // Cookies — requires human action on Mac. Urgency escalates with proximity.
   { match: /^Cookies:/, urgency: 'fix-now',
-    humanAction: 'A paywall cookie has expired. On your Mac, open Claude Code and say: "Refresh the expired paywall cookies — check which ones need updating."' },
+    humanAction: 'A paywall cookie needs refreshing. On your Mac, open Claude Code and say: "Refresh the expired paywall cookies — check which ones need updating."',
+    useCountdown: true },
 
   // CWV — needs investigation
   { match: /^CWV:/, urgency: 'this-week',
@@ -481,11 +482,21 @@ function checkCookieExpiration() {
       .map(d => `${d.outlet}${d.isCritical ? '*' : ''}: ${d.daysLeft <= 0 ? 'EXPIRED' : d.daysLeft + 'd left'}`)
       .join(', ');
 
+    // Include per-cookie countdown for the digest
+    const cookieCountdowns = details.map(d => {
+      const days = Math.round(d.daysLeft);
+      if (days < 0) return `${d.outlet}: EXPIRED (${Math.abs(days)}d ago)`;
+      if (days < 3) return `${d.outlet}: ${days}d left`;
+      if (days < 7) return `${d.outlet}: ${days}d left`;
+      return null;
+    }).filter(Boolean);
+
     results.push({
       name: 'Cookies: expiration',
       status,
       message: `${expired} expired, ${expiring} expiring <${COOKIE_WARN_DAYS}d — ${summary}`,
       hint: 'Run: python3 scripts/extract-safari-cookies.py then gh secret set <NAME> < /tmp/<file>.txt',
+      cookieCountdowns,
     });
   } else {
     results.push({
@@ -773,6 +784,9 @@ function getDigestSubject(results, history, autoFixResults) {
   const unfixedWarns = warns.filter(r => !fixMap[r.name]?.fixed && isActionable(r));
   const autoFixedCount = Object.values(fixMap).filter(f => f.fixed).length;
 
+  if (unfixedErrors.length > 0 && (history.consecutiveErrorDays || 0) >= 5) {
+    return `BSC URGENT (day ${history.consecutiveErrorDays}): ${unfixedErrors.length} unresolved error${unfixedErrors.length > 1 ? 's' : ''}`;
+  }
   if (unfixedErrors.length >= 3 || (unfixedErrors.length > 0 && (history.consecutiveErrorDays || 0) >= 2)) {
     const first = unfixedErrors[0]?.name || 'unknown';
     return `BSC Daily: ACTION NEEDED — ${first}`;
@@ -878,17 +892,36 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
       const lowCount = { count: 0 };
       for (const r of needsAttention) {
         const entry = getPlaybookEntry(r.name);
-        const urgencyLevel = entry ? entry.urgency : 'low';
+        let urgencyLevel = entry ? entry.urgency : 'low';
+
+        // Smart escalation: if auto-fix was attempted but issue persists 3+ days, upgrade urgency
+        const fix = autoFixMap[r.name];
+        if (fix && !fix.fixed && fix.message) {
+          // Auto-fix failed — escalate
+          if (urgencyLevel === 'low') urgencyLevel = 'this-week';
+        }
+        // Check triage history for persistent issues
+        const checkSlug = r.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
+        try {
+          const triageFile = path.join(TRIAGE_DIR, `autofix-${checkSlug}.json`);
+          if (fs.existsSync(triageFile)) {
+            const triage = readJSON(triageFile);
+            if ((triage.autoFixAttempts || 0) >= 2 && urgencyLevel === 'low') {
+              urgencyLevel = 'this-week'; // Tried to auto-fix twice and still broken
+            }
+          }
+        } catch {}
+
         if (urgencyLevel === 'low') {
           lowCount.count++;
         } else {
-          actionable.push(r);
+          actionable.push({ ...r, _escalatedUrgency: urgencyLevel });
         }
       }
 
       const items = actionable.map(r => {
         const entry = getPlaybookEntry(r.name);
-        const urgency = entry ? URGENCY_LABELS[entry.urgency] || URGENCY_LABELS['low'] : URGENCY_LABELS['low'];
+        const urgency = URGENCY_LABELS[r._escalatedUrgency || (entry ? entry.urgency : 'low')] || URGENCY_LABELS['low'];
         const instruction = entry
           ? (entry.humanAction || entry.humanFallback || r.message)
           : r.message;
@@ -897,9 +930,15 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
           ? `<br><span style="color:#e74c3c;font-size:11px;">Couldn't auto-fix. ${entry?.workflow ? `<a href="https://github.com/thomaspryor/Broadwayscore/actions/workflows/${entry.workflow}" style="color:#e74c3c;text-decoration:underline;">Tap to retry manually</a>` : ''}</span>`
           : '';
 
+        // Show per-cookie countdowns if available
+        const countdowns = (entry?.useCountdown && r.cookieCountdowns?.length > 0)
+          ? `<p style="color:#f39c12;margin:4px 0 0;font-size:12px;">${r.cookieCountdowns.join(' · ')}</p>`
+          : '';
+
         return `<div style="padding:10px 12px;margin-bottom:8px;background:#2a1a1a;border-left:3px solid ${urgency.bg};border-radius:4px;">
           <span style="display:inline-block;padding:2px 8px;border-radius:3px;background:${urgency.bg};color:${urgency.color};font-size:11px;font-weight:bold;">${urgency.label}</span>
           <span style="color:#ddd;margin-left:8px;font-weight:bold;">${r.name.split(': ').pop()}</span>
+          ${countdowns}
           <p style="color:#bbb;margin:6px 0 0;font-size:13px;line-height:1.4;">${instruction}</p>
           ${failNote}
         </div>`;
