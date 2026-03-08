@@ -5673,9 +5673,18 @@ async function processReview(review) {
       review._urlDiscovered = true;
       review.fabricatedEntry = false; // prevent re-triggering SERP on retry
     } else {
-      console.log(`  [${reason}] No URL found via SERP, skipping`);
-      stats.totalFailed++;
-      return { success: false, error: `${reason}_no_url_discovered` };
+      // For collector-flagged wrongShow files with existing URLs, fall through to re-fetch
+      // (the URL is correct, the scraper just got wrong content last time)
+      const isCollectorFlagged = review.wrongShow && typeof review.wrongShowReason === 'string'
+        && review.wrongShowReason.startsWith('Collector LLM');
+      if (isCollectorFlagged && review.url) {
+        console.log(`  [${reason}] No new URL via SERP — re-fetching existing URL (collector-flagged)`);
+        review._wrongShowRetrying = true;
+      } else {
+        console.log(`  [${reason}] No URL found via SERP, skipping`);
+        stats.totalFailed++;
+        return { success: false, error: `${reason}_no_url_discovered` };
+      }
     }
   }
 
