@@ -85,4 +85,5 @@ jobs:
         if: failure()
         uses: ./.github/actions/notify-failure
         with:
-          webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          title: 'Regenerate Tier Configs Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
