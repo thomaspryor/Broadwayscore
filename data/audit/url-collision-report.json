@@ -1,1029 +1,12 @@
 {
-  "generatedAt": "2026-03-08T06:23:01.614Z",
+  "generatedAt": "2026-03-08T06:27:27.287Z",
   "summary": {
-    "total": 61,
-    "high": 17,
-    "medium": 6,
-    "low": 38
+    "total": 25,
+    "high": 0,
+    "medium": 2,
+    "low": 23
   },
   "collisions": [
-    {
-      "url": "http://www.northjersey.com/arts_entertainment/109130504_Aim_high__shoot_wildly.html?page=all",
-      "normalizedUrl": "https://northjersey.com/arts_entertainment/109130504_aim_high__shoot_wildly.html",
-      "candidates": [
-        {
-          "showId": "13-2008",
-          "file": "northjerseycom--robert-feldberg.json",
-          "publishDate": null,
-          "openingDate": "2008-10-05",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "northjerseycom"
-        },
-        {
-          "showId": "a-free-man-of-color-2010",
-          "file": "northjerseycom--robert-feldberg.json",
-          "publishDate": null,
-          "openingDate": "2010-11-18",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "northjerseycom"
-        },
-        {
-          "showId": "job-2024",
-          "file": "northjerseycom--robert-feldberg.json",
-          "publishDate": null,
-          "openingDate": "2024-07-30",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "northjerseycom"
-        }
-      ],
-      "suggestedWinner": "job-2024",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
-      "url": "http://www.nypost.com/p/entertainment/theater/all_well_that_ends_well_in_overstuffed_JiEAki6yNsi6pOWRCH1obO",
-      "normalizedUrl": "https://nypost.com/p/entertainment/theater/all_well_that_ends_well_in_overstuffed_jieaki6ynsi6powrch1obo",
-      "candidates": [
-        {
-          "showId": "13-2008",
-          "file": "nypost--elisabeth-vincentelli.json",
-          "publishDate": null,
-          "openingDate": "2008-10-05",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nypost"
-        },
-        {
-          "showId": "job-2024",
-          "file": "nypost--elisabeth-vincentelli.json",
-          "publishDate": null,
-          "openingDate": "2024-07-30",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nypost"
-        },
-        {
-          "showId": "well-2006",
-          "file": "nypost--elisabeth-vincentelli.json",
-          "publishDate": null,
-          "openingDate": "2006-03-30",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nypost"
-        }
-      ],
-      "suggestedWinner": "job-2024",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
-      "url": "http://www.backstage.com/bso/news_reviews/nyc/review_display.jsp?vnu_content_id=1003949583",
-      "normalizedUrl": "https://backstage.com/bso/news_reviews/nyc/review_display.jsp",
-      "candidates": [
-        {
-          "showId": "33-variations-2009",
-          "file": "backstage--david-sheward.json",
-          "publishDate": "April 22, 2014",
-          "openingDate": "2009-03-09",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "backstage"
-        },
-        {
-          "showId": "guys-and-dolls-2009",
-          "file": "backstage--adam-perlman.json",
-          "publishDate": null,
-          "openingDate": "2009-03-01",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "backstage"
-        },
-        {
-          "showId": "impressionism-2009",
-          "file": "backstage--david-sheward.json",
-          "publishDate": null,
-          "openingDate": "2009-03-24",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "backstage"
-        },
-        {
-          "showId": "next-to-normal-2009",
-          "file": "backstage--erik-haagensen.json",
-          "publishDate": null,
-          "openingDate": "2009-04-15",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "backstage"
-        }
-      ],
-      "suggestedWinner": "next-to-normal-2009",
-      "reason": "publishDate April 22, 2014 is 1870+ days from all openings; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
-      "url": "http://www.bloomberg.com/apps/news?pid=20601098&sid=aucncfQtSIGI&refer=movie",
-      "normalizedUrl": "https://bloomberg.com/apps/news",
-      "candidates": [
-        {
-          "showId": "33-variations-2009",
-          "file": "bloomberg--john-simon.json",
-          "publishDate": null,
-          "openingDate": "2009-03-09",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "bloomberg"
-        },
-        {
-          "showId": "a-behanding-in-spokane-2010",
-          "file": "bloomberg--john-simon.json",
-          "publishDate": null,
-          "openingDate": "2010-03-04",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "bloomberg"
-        },
-        {
-          "showId": "billy-elliot-the-musical-2008",
-          "file": "bloomberg--john-simon.json",
-          "publishDate": null,
-          "openingDate": "2008-11-13",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "bloomberg"
-        },
-        {
-          "showId": "come-fly-away-2010",
-          "file": "bloomberg--john-simon.json",
-          "publishDate": null,
-          "openingDate": "2010-03-25",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "bloomberg"
-        },
-        {
-          "showId": "enron-2010",
-          "file": "bloomberg--john-simon.json",
-          "publishDate": null,
-          "openingDate": "2010-04-27",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "bloomberg"
-        },
-        {
-          "showId": "everyday-rapture-2010",
-          "file": "bloomberg--john-simon.json",
-          "publishDate": null,
-          "openingDate": "2010-04-29",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "bloomberg"
-        },
-        {
-          "showId": "fences-2010",
-          "file": "bloomberg--john-simon.json",
-          "publishDate": null,
-          "openingDate": "2010-04-26",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "bloomberg"
-        },
-        {
-          "showId": "god-of-carnage-2009",
-          "file": "bloomberg--john-simon.json",
-          "publishDate": null,
-          "openingDate": "2009-03-22",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "bloomberg"
-        },
-        {
-          "showId": "impressionism-2009",
-          "file": "bloomberg--john-simon.json",
-          "publishDate": null,
-          "openingDate": "2009-03-24",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "bloomberg"
-        },
-        {
-          "showId": "in-the-heights-2008",
-          "file": "bloomberg--john-simon.json",
-          "publishDate": null,
-          "openingDate": "2008-03-09",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "bloomberg"
-        },
-        {
-          "showId": "jersey-boys-2005",
-          "file": "bloomberg--john-simon.json",
-          "publishDate": null,
-          "openingDate": "2005-11-06",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "bloomberg"
-        },
-        {
-          "showId": "lend-me-a-tenor-2010",
-          "file": "bloomberg--john-simon.json",
-          "publishDate": null,
-          "openingDate": "2010-04-04",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "bloomberg"
-        },
-        {
-          "showId": "mary-stuart-2009",
-          "file": "bloomberg--john-simon.json",
-          "publishDate": null,
-          "openingDate": "2009-04-19",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "bloomberg"
-        },
-        {
-          "showId": "million-dollar-quartet-2010",
-          "file": "bloomberg--john-simon.json",
-          "publishDate": null,
-          "openingDate": "2010-04-11",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "bloomberg"
-        },
-        {
-          "showId": "next-fall-2010",
-          "file": "bloomberg--john-simon.json",
-          "publishDate": null,
-          "openingDate": "2010-03-11",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "bloomberg"
-        },
-        {
-          "showId": "next-to-normal-2009",
-          "file": "bloomberg--jeremy-gerard.json",
-          "publishDate": null,
-          "openingDate": "2009-04-15",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "bloomberg"
-        },
-        {
-          "showId": "red-2010",
-          "file": "bloomberg--john-simon.json",
-          "publishDate": null,
-          "openingDate": "2010-04-01",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "bloomberg"
-        },
-        {
-          "showId": "rock-of-ages-2009",
-          "file": "bloomberg--john-simon.json",
-          "publishDate": null,
-          "openingDate": "2009-04-07",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "bloomberg"
-        },
-        {
-          "showId": "sondheim-on-sondheim-2010",
-          "file": "bloomberg--john-simon.json",
-          "publishDate": null,
-          "openingDate": "2010-04-22",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "bloomberg"
-        },
-        {
-          "showId": "waiting-for-godot-2009",
-          "file": "bloomberg--john-simon.json",
-          "publishDate": null,
-          "openingDate": "2009-04-30",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "bloomberg"
-        }
-      ],
-      "suggestedWinner": "everyday-rapture-2010",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
-      "url": "http://abcnews.go.com/Entertainment/wireStory?id=11864828",
-      "normalizedUrl": "https://abcnews.go.com/entertainment/wirestory",
-      "candidates": [
-        {
-          "showId": "a-life-in-the-theatre-2010",
-          "file": "ap--mark-kennedy.json",
-          "publishDate": null,
-          "openingDate": "2010-10-12",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ap"
-        },
-        {
-          "showId": "a-little-night-music-2009",
-          "file": "ap--jocelyn-noveck.json",
-          "publishDate": null,
-          "openingDate": "2009-12-13",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ap"
-        },
-        {
-          "showId": "a-little-night-music-2009",
-          "file": "ap--michael-kuchwara.json",
-          "publishDate": null,
-          "openingDate": "2009-12-13",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ap"
-        },
-        {
-          "showId": "anything-goes-2011",
-          "file": "ap--jocelyn-noveck.json",
-          "publishDate": null,
-          "openingDate": "2011-04-07",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ap"
-        },
-        {
-          "showId": "arcadia-2011",
-          "file": "ap--mark-kennedy.json",
-          "publishDate": null,
-          "openingDate": "2011-03-17",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ap"
-        },
-        {
-          "showId": "baby-its-you-2011",
-          "file": "ap--mark-kennedy.json",
-          "publishDate": "April 27, 2011",
-          "openingDate": "2011-04-27",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ap"
-        },
-        {
-          "showId": "born-yesterday-2011",
-          "file": "ap--mark-kennedy.json",
-          "publishDate": null,
-          "openingDate": "2011-04-24",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "ap"
-        },
-        {
-          "showId": "good-people-2011",
-          "file": "ap--jennifer-farrar.json",
-          "publishDate": null,
-          "openingDate": "2011-03-03",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ap"
-        },
-        {
-          "showId": "how-to-succeed-in-business-without-really-trying-2011",
-          "file": "ap--mark-kennedy.json",
-          "publishDate": null,
-          "openingDate": "2011-03-27",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ap"
-        },
-        {
-          "showId": "jerusalem-2011",
-          "file": "ap--mark-kennedy.json",
-          "publishDate": null,
-          "openingDate": "2011-04-21",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ap"
-        },
-        {
-          "showId": "la-bete-2010",
-          "file": "ap--mark-kennedy.json",
-          "publishDate": null,
-          "openingDate": "2010-10-14",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ap"
-        },
-        {
-          "showId": "looped-2010",
-          "file": "ap--mark-kennedy.json",
-          "publishDate": null,
-          "openingDate": "2010-03-14",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "ap"
-        },
-        {
-          "showId": "master-class-2011",
-          "file": "ap--mark-kennedy.json",
-          "publishDate": null,
-          "openingDate": "2011-07-07",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "ap"
-        },
-        {
-          "showId": "million-dollar-quartet-2010",
-          "file": "ap--michael-kuchwara.json",
-          "publishDate": null,
-          "openingDate": "2010-04-11",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ap"
-        },
-        {
-          "showId": "red-2010",
-          "file": "ap--michael-kuchwara.json",
-          "publishDate": null,
-          "openingDate": "2010-04-01",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ap"
-        },
-        {
-          "showId": "sister-act-2011",
-          "file": "ap--mark-kennedy.json",
-          "publishDate": null,
-          "openingDate": "2011-04-20",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ap"
-        },
-        {
-          "showId": "the-house-of-blue-leaves-2011",
-          "file": "ap--mark-kennedy.json",
-          "publishDate": null,
-          "openingDate": "2011-04-25",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ap"
-        },
-        {
-          "showId": "the-peewee-herman-show-2010",
-          "file": "ap--mark-kennedy.json",
-          "publishDate": null,
-          "openingDate": "2010-11-11",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ap"
-        },
-        {
-          "showId": "war-horse-2011",
-          "file": "ap--mark-kennedy.json",
-          "publishDate": null,
-          "openingDate": "2011-04-14",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ap"
-        },
-        {
-          "showId": "women-on-the-verge-of-a-nervous-breakdown-2010",
-          "file": "ap--mark-kennedy.json",
-          "publishDate": null,
-          "openingDate": "2010-11-04",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ap"
-        },
-        {
-          "showId": "wonderland-2011",
-          "file": "ap--mark-kennedy.json",
-          "publishDate": null,
-          "openingDate": "2011-04-17",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "ap"
-        }
-      ],
-      "suggestedWinner": "baby-its-you-2011",
-      "reason": "publishDate April 27, 2011 is 0 days from baby-its-you-2011 opening (2011-04-27)",
-      "confidence": "high"
-    },
-    {
-      "url": "https://www.nytheatre.com/nytheatre/showpage.php?t=litt9131",
-      "normalizedUrl": "https://nytheatre.com/nytheatre/showpage.php",
-      "candidates": [
-        {
-          "showId": "a-little-night-music-1973",
-          "file": "nytheatre--martin-denton.json",
-          "publishDate": null,
-          "openingDate": "1973-02-25",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nytheatre"
-        },
-        {
-          "showId": "american-idiot-2010",
-          "file": "nytheatre--martin-denton.json",
-          "publishDate": null,
-          "openingDate": "2010-04-20",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nytheatre"
-        },
-        {
-          "showId": "billy-elliot-the-musical-2008",
-          "file": "nytheatre--martin-denton.json",
-          "publishDate": null,
-          "openingDate": "2008-11-13",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nytheatre"
-        },
-        {
-          "showId": "bloody-bloody-andrew-jackson-2010",
-          "file": "nytheatre--martin-denton.json",
-          "publishDate": null,
-          "openingDate": "2010-10-13",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "nytheatre"
-        },
-        {
-          "showId": "in-the-heights-2008",
-          "file": "nytheatre--martin-denton.json",
-          "publishDate": null,
-          "openingDate": "2008-03-09",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nytheatre"
-        },
-        {
-          "showId": "lombardi-2010",
-          "file": "nytheatre--david-fuller.json",
-          "publishDate": null,
-          "openingDate": "2010-10-21",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nytheatre"
-        },
-        {
-          "showId": "million-dollar-quartet-2010",
-          "file": "nytheatre--martin-denton.json",
-          "publishDate": null,
-          "openingDate": "2010-04-11",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "nytheatre"
-        },
-        {
-          "showId": "next-fall-2010",
-          "file": "nytheatre--stan-richardson.json",
-          "publishDate": null,
-          "openingDate": "2010-03-11",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nytheatre"
-        },
-        {
-          "showId": "next-to-normal-2009",
-          "file": "nytheatre--jo-ann-rosen.json",
-          "publishDate": null,
-          "openingDate": "2009-04-15",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nytheatre"
-        },
-        {
-          "showId": "south-pacific-2008",
-          "file": "nytheatre--martin-denton.json",
-          "publishDate": null,
-          "openingDate": "2008-04-03",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nytheatre"
-        },
-        {
-          "showId": "the-peewee-herman-show-2010",
-          "file": "nytheatre--david-gordon.json",
-          "publishDate": null,
-          "openingDate": "2010-11-11",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nytheatre"
-        },
-        {
-          "showId": "the-pitmen-painters-2010",
-          "file": "nytheatre--jason-s-grossman.json",
-          "publishDate": null,
-          "openingDate": "2010-09-30",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nytheatre"
-        },
-        {
-          "showId": "women-on-the-verge-of-a-nervous-breakdown-2010",
-          "file": "nytheatre--saviana-stanescu.json",
-          "publishDate": null,
-          "openingDate": "2010-11-04",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nytheatre"
-        }
-      ],
-      "suggestedWinner": "the-peewee-herman-show-2010",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=M1ILVG",
-      "normalizedUrl": "https://lightingandsoundamerica.com/news/story.asp",
-      "candidates": [
-        {
-          "showId": "a-view-from-the-bridge-2015",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "November 19th, 2015",
-          "openingDate": "2015-11-12",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "all-in-comedy-about-love-2024",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "January 2nd, 2025",
-          "openingDate": "2024-12-22",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "all-my-sons-2008",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "May 2nd, 2019",
-          "openingDate": "2008-10-16",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "beetlejuice-2022",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "April 26th, 2019",
-          "openingDate": "2022-04-08",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "betrayal-2013",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "September 12th, 2019",
-          "openingDate": "2013-10-27",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "bigfoot-off-broadway-2026",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": null,
-          "openingDate": "2026-03-01",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "blackout-songs-2026",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "February 3rd, 2026",
-          "openingDate": null,
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "burnout-paradise-2026",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "November 15th, 2024",
-          "openingDate": null,
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "caroline-or-change-2021",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "November 4th, 2021",
-          "openingDate": "2021-10-27",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "cats-1982",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "August 8th, 2016",
-          "openingDate": "1982-10-07",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "chicken-and-biscuits-2021",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "October 12th, 2021",
-          "openingDate": "2021-10-10",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "clydes-2021",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "November 30th, 2021",
-          "openingDate": "2021-11-23",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "cost-of-living-2022",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "October 12th, 2022",
-          "openingDate": "2022-10-03",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "data-2026",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "February 2nd, 2026",
-          "openingDate": null,
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "elf-2024",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "December 5th, 2024",
-          "openingDate": "2024-11-17",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "floyd-collins-2025",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "April 30th, 2025",
-          "openingDate": "2025-04-21",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "April 29th, 2022",
-          "openingDate": "2022-04-20",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "glengarry-glen-ross-2025",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "April 7th, 2025",
-          "openingDate": "2025-03-31",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "good-night-and-good-luck-2025",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "April 4th, 2025",
-          "openingDate": "2025-04-03",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "into-the-woods-2022",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "July 18th, 2022",
-          "openingDate": "2022-08-06",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "job-2024",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "August 6th, 2024",
-          "openingDate": "2024-07-30",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "john-lithgow-stories-by-heart-2018",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "January 12th, 2018",
-          "openingDate": "2018-01-11",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "kiss-me-kate-2019",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "March 14th, 2019",
-          "openingDate": "2019-03-14",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "left-on-tenth-2024",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "October 31st, 2024",
-          "openingDate": "2024-10-23",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "lobby-hero-2018",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "April 11th, 2018",
-          "openingDate": "2018-03-26",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "mcneal-2024",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "October 8th, 2024",
-          "openingDate": "2024-09-30",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "mother-russia-off-broadway-2026",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": null,
-          "openingDate": "2026-03-03",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "my-name-is-lucy-barton-2020",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "January 15th, 2020",
-          "openingDate": "2020-01-15",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "ohio-state-murders-2022",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "December 19th, 2022",
-          "openingDate": "2022-12-08",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "once-upon-a-mattress-2024",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "August 12th, 2024",
-          "openingDate": "2024-08-12",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "othello-2025",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "April 1st, 2025",
-          "openingDate": "2025-03-23",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "pen-pals-2025",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "December 16th, 2024",
-          "openingDate": null,
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "ragtime-2009",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "October 16th, 2025",
-          "openingDate": "2009-11-15",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "she-loves-me-2016",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "March 25th, 2016",
-          "openingDate": "2016-03-17",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "the-color-purple-2015",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "December 10th, 2015",
-          "openingDate": "2015-12-10",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "the-waterfall-2026",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "February 18th, 2026",
-          "openingDate": null,
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "this-is-my-favorite-song-2024",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "December 3rd, 2024",
-          "openingDate": null,
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "ulysses-2026",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "January 29th, 2026",
-          "openingDate": null,
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "waitress-2021",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "April 25th, 2016",
-          "openingDate": "2021-09-02",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "lighting-and-sound-america"
-        }
-      ],
-      "suggestedWinner": "mother-russia-off-broadway-2026",
-      "reason": "publishDate November 19th, 2015 is NaN+ days from all openings; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
-      "url": "https://nypost.com/2022/04/14/american-buffalo-review-rockwell-and-fishburne-battle-on-broadway/?utm_source=dlvr.it&utm_medium=twitter",
-      "normalizedUrl": "https://nypost.com/2022/04/14/american-buffalo-review-rockwell-and-fishburne-battle-on-broadway",
-      "candidates": [
-        {
-          "showId": "american-buffalo-2008",
-          "file": "nypost--johnny-oleksinski.json",
-          "publishDate": "April 14, 2022",
-          "openingDate": "2008-11-17",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nypost"
-        },
-        {
-          "showId": "american-buffalo-2022",
-          "file": "nypost--johnny-oleksinski.json",
-          "publishDate": "April 15, 2022",
-          "openingDate": "2022-04-14",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "nypost"
-        }
-      ],
-      "suggestedWinner": "american-buffalo-2022",
-      "reason": "publishDate April 15, 2022 is 1 days from american-buffalo-2022 opening (2022-04-14); next closest is 4896 days from american-buffalo-2008",
-      "confidence": "high"
-    },
     {
       "url": "https://www.hollywoodreporter.com/business/business-news/broadway-box-office-hamilton-brings-in-3-8-million-ragtime-begins-previews-1236389545/",
       "normalizedUrl": "https://hollywoodreporter.com/business/business-news/broadway-box-office-hamilton-brings-in-3-8-million-ragtime-begins-previews-1236389545",
@@ -1050,60 +33,6 @@
       "suggestedWinner": "waiting-for-godot-2025",
       "reason": "Only one candidate has score/fullText",
       "confidence": "medium"
-    },
-    {
-      "url": "https://nypost.com/author/johnny-oleksinski/page/5/",
-      "normalizedUrl": "https://nypost.com/author/johnny-oleksinski/page/5",
-      "candidates": [
-        {
-          "showId": "art-2025",
-          "file": "nypost--entertainment-critic.json",
-          "publishDate": null,
-          "openingDate": "2025-09-16",
-          "hasScore": false,
-          "hasFullText": true,
-          "outletId": "nypost"
-        },
-        {
-          "showId": "waiting-for-godot-2025",
-          "file": "nypost--entertainment-critic.json",
-          "publishDate": null,
-          "openingDate": "2025-09-28",
-          "hasScore": false,
-          "hasFullText": true,
-          "outletId": "nypost"
-        }
-      ],
-      "suggestedWinner": "waiting-for-godot-2025",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/english-kings-killing-foreigners-review-soho-theatre-london",
-      "normalizedUrl": "https://thestage.co.uk/reviews/english-kings-killing-foreigners-review-soho-theatre-london",
-      "candidates": [
-        {
-          "showId": "art-2025",
-          "file": "thestage--unknown.json",
-          "publishDate": null,
-          "openingDate": "2025-09-16",
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "thestage"
-        },
-        {
-          "showId": "waiting-for-godot-2025",
-          "file": "thestage--unknown.json",
-          "publishDate": null,
-          "openingDate": "2025-09-28",
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "thestage"
-        }
-      ],
-      "suggestedWinner": "waiting-for-godot-2025",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
     },
     {
       "url": "https://www.bloomberg.com/news/2011-04-26/stiller-sings-in-leaves-arianda-steals-yesterday-review.html",
@@ -1133,114 +62,6 @@
       "confidence": "low"
     },
     {
-      "url": "https://www.washingtonpost.com/entertainment/theater/2025/03/20/operation-mincemeat-buena-vista-social-club/",
-      "normalizedUrl": "https://washingtonpost.com/entertainment/theater/2025/03/20/operation-mincemeat-buena-vista-social-club",
-      "candidates": [
-        {
-          "showId": "buena-vista-social-club-2025",
-          "file": "washpost--naveen-kumar.json",
-          "publishDate": "2025-03-21",
-          "openingDate": "2025-03-19",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "washpost"
-        },
-        {
-          "showId": "operation-mincemeat-2025",
-          "file": "washpost--naveen-kumar.json",
-          "publishDate": null,
-          "openingDate": "2025-03-20",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "washpost"
-        }
-      ],
-      "suggestedWinner": "buena-vista-social-club-2025",
-      "reason": "publishDate 2025-03-21 is 2 days from buena-vista-social-club-2025 opening (2025-03-19)",
-      "confidence": "high"
-    },
-    {
-      "url": "https://ew.com/theater-reviews/2019/04/16/burn-this-review/?srsltid=AfmBOoorNlgNOMPPJRTOTQGFhvTkAjOOJlXR_09wxw2ITSTRvJlseruX",
-      "normalizedUrl": "https://ew.com/theater-reviews/2019/04/16/burn-this-review",
-      "candidates": [
-        {
-          "showId": "burn-this-1987",
-          "file": "ew--leah-greenblatt.json",
-          "publishDate": null,
-          "openingDate": "1987-10-14",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ew"
-        },
-        {
-          "showId": "burn-this-2019",
-          "file": "ew--leah-greenblatt.json",
-          "publishDate": "April 16, 2019",
-          "openingDate": "2019-04-16",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ew"
-        }
-      ],
-      "suggestedWinner": "burn-this-2019",
-      "reason": "publishDate April 16, 2019 is 0 days from burn-this-2019 opening (2019-04-16)",
-      "confidence": "high"
-    },
-    {
-      "url": "https://www.theguardian.com/stage/2019/apr/16/burn-this-review-adam-driver-keri-russell?CMP=twt_a-culture_b-gdnculture",
-      "normalizedUrl": "https://theguardian.com/stage/2019/apr/16/burn-this-review-adam-driver-keri-russell",
-      "candidates": [
-        {
-          "showId": "burn-this-2019",
-          "file": "guardian--alexis-soloski.json",
-          "publishDate": "2019-04-17",
-          "openingDate": "2019-04-16",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "guardian"
-        },
-        {
-          "showId": "pied-a-terre-off-broadway-2026",
-          "file": "guardian--alexis-soloski.json",
-          "publishDate": null,
-          "openingDate": "2026-03-01",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "guardian"
-        }
-      ],
-      "suggestedWinner": "burn-this-2019",
-      "reason": "publishDate 2019-04-17 is 1 days from burn-this-2019 opening (2019-04-16)",
-      "confidence": "high"
-    },
-    {
-      "url": "https://ew.com/article/2016/07/31/cats-ew-stage-review/?srsltid=AfmBOoqPCARzSNVJ9oTOF2jMo446EJOtZbz8_zYDn8A07s9_qoNnp0fG",
-      "normalizedUrl": "https://ew.com/article/2016/07/31/cats-ew-stage-review",
-      "candidates": [
-        {
-          "showId": "cats-1982",
-          "file": "ew--melissa-rose-bernardo.json",
-          "publishDate": "July 31st, 2016",
-          "openingDate": "1982-10-07",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ew"
-        },
-        {
-          "showId": "cats-2016",
-          "file": "ew--melissa-rose-bernardo.json",
-          "publishDate": "2016-07-31",
-          "openingDate": "2016-07-31",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ew"
-        }
-      ],
-      "suggestedWinner": "cats-2016",
-      "reason": "publishDate July 31st, 2016 is NaN+ days from all openings; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
       "url": "https://www.washingtonpost.com/entertainment/theater/2025/04/27/dead-outlaw-floyd-collins-broadway/",
       "normalizedUrl": "https://washingtonpost.com/entertainment/theater/2025/04/27/dead-outlaw-floyd-collins-broadway",
       "candidates": [
@@ -1266,33 +87,6 @@
       "suggestedWinner": "dead-outlaw-2025",
       "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
       "confidence": "low"
-    },
-    {
-      "url": "https://www.newyorker.com/magazine/2016/11/07/gay-reflections-onstage",
-      "normalizedUrl": "https://newyorker.com/magazine/2016/11/07/gay-reflections-onstage",
-      "candidates": [
-        {
-          "showId": "falsettos-2016",
-          "file": "newyorker--hilton-als-2016-bway.json",
-          "publishDate": "2016-10-31",
-          "openingDate": "2016-10-27",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "newyorker"
-        },
-        {
-          "showId": "the-front-page-2016",
-          "file": "newyorker--hilton-als.json",
-          "publishDate": null,
-          "openingDate": "2016-10-20",
-          "hasScore": false,
-          "hasFullText": true,
-          "outletId": "newyorker"
-        }
-      ],
-      "suggestedWinner": "falsettos-2016",
-      "reason": "publishDate 2016-10-31 is 4 days from falsettos-2016 opening (2016-10-27)",
-      "confidence": "high"
     },
     {
       "url": "https://www.broadwayworld.com/off-broadway/article/BWW-Review-FRIENDS-THE-MUSICAL-PARODY-Cleverly-and-Lovingly-Pokes-Fun-at-the-Iconic-Sitcom-20171104",
@@ -1403,7 +197,7 @@
       "confidence": "low"
     },
     {
-      "url": "http://theaterpizzazz.com/friends-musical-parody/",
+      "url": "https://theaterpizzazz.com/friends-musical-parody/",
       "normalizedUrl": "https://theaterpizzazz.com/friends-musical-parody",
       "candidates": [
         {
@@ -1457,33 +251,6 @@
       "confidence": "low"
     },
     {
-      "url": "https://www.timeout.com/newyork/theater/gary-sequel-to-titus-andronicus-review-nathan-lane-taylor-mac",
-      "normalizedUrl": "https://timeout.com/newyork/theater/gary-sequel-to-titus-andronicus-review-nathan-lane-taylor-mac",
-      "candidates": [
-        {
-          "showId": "gary-a-sequel-to-titus-andronicus-2019",
-          "file": "timeout--adam-feldman.json",
-          "publishDate": null,
-          "openingDate": "2019-04-21",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "timeout"
-        },
-        {
-          "showId": "titus-andronicus-off-broadway-2026",
-          "file": "timeout--adam-feldman.json",
-          "publishDate": null,
-          "openingDate": "2026-03-17",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "timeout"
-        }
-      ],
-      "suggestedWinner": "titus-andronicus-off-broadway-2026",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
       "url": "https://www.newyorker.com/magazine/2025/04/14/glengarry-glen-ross-good-night-and-good-luck-theatre-review-broadway",
       "normalizedUrl": "https://newyorker.com/magazine/2025/04/14/glengarry-glen-ross-good-night-and-good-luck-theatre-review-broadway",
       "candidates": [
@@ -1511,67 +278,31 @@
       "confidence": "medium"
     },
     {
-      "url": "http://www.sfgate.com/cgi-bin/article.cgi?f=/n/a/2012/04/01/entertainment/e172405D83.DTL",
-      "normalizedUrl": "https://sfgate.com/cgi-bin/article.cgi",
+      "url": "http://deadline.com/2015/04/ken-watanabe-king-and-i-peter-sarsgaard-hamlet-opening-review-1201411292/",
+      "normalizedUrl": "https://deadline.com/2015/04/ken-watanabe-king-and-i-peter-sarsgaard-hamlet-opening-review-1201411292",
       "candidates": [
         {
-          "showId": "gore-vidals-the-best-man-2012",
-          "file": "ap--mark-kennedy.json",
-          "publishDate": null,
-          "openingDate": "2012-04-01",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ap"
-        },
-        {
-          "showId": "relatively-speaking-2011",
-          "file": "ap--mark-kennedy.json",
-          "publishDate": null,
-          "openingDate": "2011-10-20",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ap"
-        },
-        {
-          "showId": "stick-fly-2011",
-          "file": "ap--mark-kennedy.json",
-          "publishDate": null,
-          "openingDate": "2011-12-08",
+          "showId": "hamlet-2026",
+          "file": "deadline--jeremy-gerard.json",
+          "publishDate": "April 16th, 2015",
+          "openingDate": null,
           "hasScore": true,
           "hasFullText": false,
-          "outletId": "ap"
-        }
-      ],
-      "suggestedWinner": "gore-vidals-the-best-man-2012",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
-      "url": "https://ew.com/gypsy-review-audra-mcdonald-comes-up-roses-broadway-revival-8764592?taid=6764fac40c2e330001f9b696&utm_campaign=trueAnthem%3A+New+Content+%28Feed%29&utm_medium=trueAnthem&utm_source=twitter",
-      "normalizedUrl": "https://ew.com/gypsy-review-audra-mcdonald-comes-up-roses-broadway-revival-8764592",
-      "candidates": [
-        {
-          "showId": "gypsy-1974",
-          "file": "ew--kathryn-vandervalk.json",
-          "publishDate": null,
-          "openingDate": "1974-09-23",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ew"
+          "outletId": "deadline"
         },
         {
-          "showId": "gypsy-2024",
-          "file": "ew--kathryn-vandervalk.json",
-          "publishDate": "December 20, 2024",
-          "openingDate": "2024-12-19",
+          "showId": "the-king-and-i-2015",
+          "file": "deadline--jeremy-gerard.json",
+          "publishDate": null,
+          "openingDate": "2015-04-16",
           "hasScore": true,
           "hasFullText": true,
-          "outletId": "ew"
+          "outletId": "deadline"
         }
       ],
-      "suggestedWinner": "gypsy-2024",
-      "reason": "publishDate December 20, 2024 is 1 days from gypsy-2024 opening (2024-12-19)",
-      "confidence": "high"
+      "suggestedWinner": "the-king-and-i-2015",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
     },
     {
       "url": "https://broadwaynews.com/2021/12/07/review-harry-potter-and-the-cursed-child-retains-its-magic-and-its-heart/",
@@ -1655,87 +386,6 @@
       "confidence": "low"
     },
     {
-      "url": "https://www.latimes.com/entertainment-arts/story/2024-10-10/broadway-fall-theater-season-yellow-face-job-good-bones",
-      "normalizedUrl": "https://latimes.com/entertainment-arts/story/2024-10-10/broadway-fall-theater-season-yellow-face-job-good-bones",
-      "candidates": [
-        {
-          "showId": "job-2024",
-          "file": "latimes--charles-mcnulty.json",
-          "publishDate": null,
-          "openingDate": "2024-07-30",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "latimes"
-        },
-        {
-          "showId": "yellow-face-2024",
-          "file": "latimes--unknown.json",
-          "publishDate": null,
-          "openingDate": "2024-10-01",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "latimes"
-        }
-      ],
-      "suggestedWinner": "yellow-face-2024",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
-      "url": "https://www.washingtonpost.com/entertainment/theater/2024/10/10/our-town-broadway-katie-holmes-jim-parsons/#:~:text=The%20Broadway%20revival%20presents%20an,who's%20considered%20ordinary%20in%20America.&amp;text=That's%20a%20job%20for%20other,hopefully%20become%20the%20new%20one.",
-      "normalizedUrl": "https://washingtonpost.com/entertainment/theater/2024/10/10/our-town-broadway-katie-holmes-jim-parsons",
-      "candidates": [
-        {
-          "showId": "job-2024",
-          "file": "washpost--naveen-kumar.json",
-          "publishDate": null,
-          "openingDate": "2024-07-30",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "washpost"
-        },
-        {
-          "showId": "our-town-2024",
-          "file": "washpost--naveen-kumar.json",
-          "publishDate": "October 10, 2024",
-          "openingDate": "2024-10-10",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "washpost"
-        }
-      ],
-      "suggestedWinner": "our-town-2024",
-      "reason": "publishDate October 10, 2024 is 0 days from our-town-2024 opening (2024-10-10)",
-      "confidence": "high"
-    },
-    {
-      "url": "https://www.thedailybeast.com/kiss-me-kate-in-this-broadway-revival-shell-also-kick-your-butt?source=articles&via=rss&utm_source=dlvr.it&utm_medium=twitter",
-      "normalizedUrl": "https://thedailybeast.com/kiss-me-kate-in-this-broadway-revival-shell-also-kick-your-butt",
-      "candidates": [
-        {
-          "showId": "kiss-me-kate-1999",
-          "file": "dailybeast--tim-teeman.json",
-          "publishDate": null,
-          "openingDate": "1999-11-18",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "dailybeast"
-        },
-        {
-          "showId": "kiss-me-kate-2019",
-          "file": "dailybeast--tim-teeman.json",
-          "publishDate": "March 14, 2019",
-          "openingDate": "2019-03-14",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "dailybeast"
-        }
-      ],
-      "suggestedWinner": "kiss-me-kate-2019",
-      "reason": "publishDate March 14, 2019 is 0 days from kiss-me-kate-2019 opening (2019-03-14)",
-      "confidence": "high"
-    },
-    {
       "url": "https://newyorktheater.me/2025/10/29/nothing-can-take-you-from-the-hand-of-god-review/",
       "normalizedUrl": "https://newyorktheater.me/2025/10/29/nothing-can-take-you-from-the-hand-of-god-review",
       "candidates": [
@@ -1761,33 +411,6 @@
       "suggestedWinner": "little-bear-ridge-road-2025",
       "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
       "confidence": "low"
-    },
-    {
-      "url": "https://www.thewrap.com/little-bear-ridge-road-broadway-review-laurie-metcalf-micah-stock/",
-      "normalizedUrl": "https://thewrap.com/little-bear-ridge-road-broadway-review-laurie-metcalf-micah-stock",
-      "candidates": [
-        {
-          "showId": "liberation-2025",
-          "file": "thewrap--unknown.json",
-          "publishDate": null,
-          "openingDate": "2025-10-28",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "thewrap"
-        },
-        {
-          "showId": "little-bear-ridge-road-2025",
-          "file": "thewrap--robert-hofler.json",
-          "publishDate": "2025-10-30",
-          "openingDate": "2025-10-30",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "thewrap"
-        }
-      ],
-      "suggestedWinner": "little-bear-ridge-road-2025",
-      "reason": "publishDate 2025-10-30 is 0 days from little-bear-ridge-road-2025 opening (2025-10-30)",
-      "confidence": "high"
     },
     {
       "url": "https://www.theguardian.com/stage/2021/nov/18/little-women-the-musical-review-park-theatre-london",
@@ -1817,33 +440,6 @@
       "confidence": "low"
     },
     {
-      "url": "https://nypost.com/2022/04/29/macbeth-broadway-review-daniel-craig-play-is-a-disaster/",
-      "normalizedUrl": "https://nypost.com/2022/04/29/macbeth-broadway-review-daniel-craig-play-is-a-disaster",
-      "candidates": [
-        {
-          "showId": "macbeth-2013",
-          "file": "nypost--johnny-oleksinski.json",
-          "publishDate": "April 29th, 2022",
-          "openingDate": "2013-11-21",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "nypost"
-        },
-        {
-          "showId": "macbeth-2022",
-          "file": "nypost--johnny-oleksinski.json",
-          "publishDate": "April 29, 2022",
-          "openingDate": "2022-04-28",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "nypost"
-        }
-      ],
-      "suggestedWinner": "macbeth-2022",
-      "reason": "publishDate April 29th, 2022 is NaN+ days from all openings; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
       "url": "https://www.wsj.com/articles/mother-russia-review-a-comedy-of-soviet-collapse-52b39689?gaa_at=eafs&gaa_n=AWEtsqeQa-ZkGlC7gcJOCmF7h7KN93WY7rrjEJP_7t-BGcBhcyOYA4yAeF8I&gaa_ts=69a6a256&gaa_sig=BN4Sqw7YPbs4znVloyJFRamcTHrQIRRRaJaJYslT-tfvbOFjukPveqJ99_EWwjSgeQAzp8U6UOnTsJdFhp5YvA%3D%3D",
       "normalizedUrl": "https://wsj.com/articles/mother-russia-review-a-comedy-of-soviet-collapse-52b39689",
       "candidates": [
@@ -1867,42 +463,6 @@
         }
       ],
       "suggestedWinner": "mother-russia-off-broadway-2026",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2643152",
-      "normalizedUrl": "https://talkinbroadway.com/allthatchat_new/d.php",
-      "candidates": [
-        {
-          "showId": "night-side-songs-off-broadway-2026",
-          "file": "talkinbroadway--unknown.json",
-          "publishDate": null,
-          "openingDate": "2026-03-02",
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "talkinbroadway"
-        },
-        {
-          "showId": "spread-off-broadway-2026",
-          "file": "talkinbroadway--unknown.json",
-          "publishDate": null,
-          "openingDate": "2026-03-02",
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "talkinbroadway"
-        },
-        {
-          "showId": "what-we-did-before-our-moth-days-off-broadway-2026",
-          "file": "talkinbroadway--unknown.json",
-          "publishDate": null,
-          "openingDate": "2026-03-05",
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "talkinbroadway"
-        }
-      ],
-      "suggestedWinner": "what-we-did-before-our-moth-days-off-broadway-2026",
       "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
       "confidence": "low"
     },
@@ -1961,123 +521,6 @@
       "confidence": "low"
     },
     {
-      "url": "https://ew.com/oh-mary-review-cole-escola-american-farce-is-funniest-play-on-broadway-8676908?srsltid=AfmBOoqowr6i0HwFgvZ_qZKr-djjulpYw8RB1rZvnpV8xAd5K5aM3n1j",
-      "normalizedUrl": "https://ew.com/oh-mary-review-cole-escola-american-farce-is-funniest-play-on-broadway-8676908",
-      "candidates": [
-        {
-          "showId": "oh-mary-2024",
-          "file": "ew--christian-holub.json",
-          "publishDate": "2024-07-11",
-          "openingDate": "2024-07-11",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ew"
-        },
-        {
-          "showId": "oh-mary-2024",
-          "file": "ew--kristen-baldwin.json",
-          "publishDate": "July 10, 2024",
-          "openingDate": "2024-07-11",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ew"
-        },
-        {
-          "showId": "oh-mary-off-broadway-2024",
-          "file": "ew--christian-holub.json",
-          "publishDate": "2024-07-11",
-          "openingDate": "2024-02-08",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ew"
-        }
-      ],
-      "suggestedWinner": "oh-mary-2024",
-      "reason": "publishDate 2024-07-11 is 0 days from oh-mary-2024 but also 1 days from oh-mary-2024",
-      "confidence": "medium"
-    },
-    {
-      "url": "https://www.nydailynews.com/2024/07/11/broadway-review-mary-todd-lincoln-farce-oh-mary-is-hilarious-take-on-controversial-first-lady/",
-      "normalizedUrl": "https://nydailynews.com/2024/07/11/broadway-review-mary-todd-lincoln-farce-oh-mary-is-hilarious-take-on-controversial-first-lady",
-      "candidates": [
-        {
-          "showId": "oh-mary-2024",
-          "file": "nydailynews--chris-jones.json",
-          "publishDate": "2024-07-11",
-          "openingDate": "2024-07-11",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "nydailynews"
-        },
-        {
-          "showId": "oh-mary-off-broadway-2024",
-          "file": "nydailynews--chris-jones.json",
-          "publishDate": "July 11, 2024",
-          "openingDate": "2024-02-08",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "nydailynews"
-        }
-      ],
-      "suggestedWinner": "oh-mary-2024",
-      "reason": "publishDate 2024-07-11 is 0 days from oh-mary-2024 opening (2024-07-11); next closest is 154 days from oh-mary-off-broadway-2024",
-      "confidence": "high"
-    },
-    {
-      "url": "https://www.thedailybeast.com/oklahoma-on-broadway-is-dark-and-differentbrilliantly-so?source=facebook&via=desktop",
-      "normalizedUrl": "https://thedailybeast.com/oklahoma-on-broadway-is-dark-and-differentbrilliantly-so",
-      "candidates": [
-        {
-          "showId": "oklahoma-2002",
-          "file": "dailybeast--tim-teeman.json",
-          "publishDate": null,
-          "openingDate": "2002-03-21",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "dailybeast"
-        },
-        {
-          "showId": "oklahoma-2019",
-          "file": "dailybeast--tim-teeman.json",
-          "publishDate": "April 7, 2019",
-          "openingDate": "2019-04-07",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "dailybeast"
-        }
-      ],
-      "suggestedWinner": "oklahoma-2019",
-      "reason": "publishDate April 7, 2019 is 0 days from oklahoma-2019 opening (2019-04-07)",
-      "confidence": "high"
-    },
-    {
-      "url": "https://nypost.com/2024/10/10/entertainment/our-town-review-revival-starring-jim-parsons-and-katie-holmes-doesnt-hit-home/",
-      "normalizedUrl": "https://nypost.com/2024/10/10/entertainment/our-town-review-revival-starring-jim-parsons-and-katie-holmes-doesnt-hit-home",
-      "candidates": [
-        {
-          "showId": "our-town-2002",
-          "file": "nypost--johnny-oleksinski.json",
-          "publishDate": "October 10th, 2024",
-          "openingDate": "2002-12-04",
-          "hasScore": false,
-          "hasFullText": true,
-          "outletId": "nypost"
-        },
-        {
-          "showId": "our-town-2024",
-          "file": "nypost--johnny-oleksinski.json",
-          "publishDate": "October 10, 2024",
-          "openingDate": "2024-10-10",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "nypost"
-        }
-      ],
-      "suggestedWinner": "our-town-2024",
-      "reason": "publishDate October 10th, 2024 is NaN+ days from all openings; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
       "url": "https://www.latimes.com/entertainment-arts/story/2024-11-12/directors-remake-sunset-blvd-romeo-juliet-and-our-town-for-a-new-broadway-era",
       "normalizedUrl": "https://latimes.com/entertainment-arts/story/2024-11-12/directors-remake-sunset-blvd-romeo-juliet-and-our-town-for-a-new-broadway-era",
       "candidates": [
@@ -2086,7 +529,7 @@
           "file": "latimes--charles-mcnulty.json",
           "publishDate": null,
           "openingDate": "2024-10-10",
-          "hasScore": false,
+          "hasScore": true,
           "hasFullText": true,
           "outletId": "latimes"
         },
@@ -2132,328 +575,58 @@
       "confidence": "low"
     },
     {
-      "url": "https://deadline.com/2025/09/broadway-box-office-ragtime-hamilton-1236566097/",
-      "normalizedUrl": "https://deadline.com/2025/09/broadway-box-office-ragtime-hamilton-1236566097",
+      "url": "http://www.towleroad.com/2017/04/present-laughter/",
+      "normalizedUrl": "https://towleroad.com/2017/04/present-laughter",
       "candidates": [
         {
-          "showId": "punch-2025",
-          "file": "deadline--unknown.json",
-          "publishDate": "September 29, 2025",
-          "openingDate": "2025-09-29",
+          "showId": "present-laughter-2010",
+          "file": "towleroad--naveen-kumar.json",
+          "publishDate": "April 6th, 2017",
+          "openingDate": "2010-01-21",
           "hasScore": true,
-          "hasFullText": false,
-          "outletId": "deadline"
+          "hasFullText": true,
+          "outletId": "towleroad"
         },
         {
-          "showId": "waiting-for-godot-2025",
-          "file": "deadline--unknown.json",
-          "publishDate": null,
-          "openingDate": "2025-09-28",
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "deadline"
-        }
-      ],
-      "suggestedWinner": "punch-2025",
-      "reason": "publishDate September 29, 2025 is 0 days from punch-2025 opening (2025-09-29)",
-      "confidence": "high"
-    },
-    {
-      "url": "https://www.nydailynews.com/entertainment/music-arts/twelfth-night-richard-iii-theater-reviews-article-1.1511003",
-      "normalizedUrl": "https://nydailynews.com/entertainment/music-arts/twelfth-night-richard-iii-theater-reviews-article-1.1511003",
-      "candidates": [
-        {
-          "showId": "richard-iii-2013",
-          "file": "nydailynews--unknown.json",
-          "publishDate": null,
-          "openingDate": "2013-11-10",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "nydailynews"
-        },
-        {
-          "showId": "twelfth-night-1972",
-          "file": "nydailynews--joe-dziemianowicz.json",
-          "publishDate": null,
-          "openingDate": "1972-03-02",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "nydailynews"
-        },
-        {
-          "showId": "twelfth-night-1998",
-          "file": "nydailynews--joe-dziemianowicz.json",
-          "publishDate": null,
-          "openingDate": "1998-07-16",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "nydailynews"
-        }
-      ],
-      "suggestedWinner": "richard-iii-2013",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
-      "url": "https://ew.com/stereophonic-review-broadway-8635241",
-      "normalizedUrl": "https://ew.com/stereophonic-review-broadway-8635241",
-      "candidates": [
-        {
-          "showId": "rock-n-roll-2007",
-          "file": "ew--dalton-ross.json",
-          "publishDate": null,
-          "openingDate": "2007-11-04",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "ew"
-        },
-        {
-          "showId": "stereophonic-2024",
-          "file": "ew--dalton-ross.json",
-          "publishDate": "April 19, 2024",
-          "openingDate": "2024-04-19",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ew"
-        }
-      ],
-      "suggestedWinner": "stereophonic-2024",
-      "reason": "publishDate April 19, 2024 is 0 days from stereophonic-2024 opening (2024-04-19)",
-      "confidence": "high"
-    },
-    {
-      "url": "https://www.timeout.com/newyork/theater/stereophonic-broadway-play-review-david-adjmi-will-butler",
-      "normalizedUrl": "https://timeout.com/newyork/theater/stereophonic-broadway-play-review-david-adjmi-will-butler",
-      "candidates": [
-        {
-          "showId": "rock-n-roll-2007",
-          "file": "timeout--adam-feldman.json",
-          "publishDate": null,
-          "openingDate": "2007-11-04",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "timeout"
-        },
-        {
-          "showId": "stereophonic-2024",
-          "file": "timeout--adam-feldman.json",
-          "publishDate": "April 19, 2024",
-          "openingDate": "2024-04-19",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "timeout"
-        }
-      ],
-      "suggestedWinner": "stereophonic-2024",
-      "reason": "publishDate April 19, 2024 is 0 days from stereophonic-2024 opening (2024-04-19)",
-      "confidence": "high"
-    },
-    {
-      "url": "https://www.wsj.com/articles/spamalot-review-king-arthur-monty-python-broadway-eric-idle-james-monroe-iglehart-ethan-slater-musical-comedy-42160743?gaa_at=eafs&gaa_n=AWEtsqdktTtSCvFIAlorRAQn_GL8S-GVMt7mspZycXDpZmukD8ZoCvBoSVyH&gaa_ts=69951fc9&gaa_sig=v63wGszN8vY0R_iZE4bEdv2xBw10MJr5YwTQOXtZTxLTGcVodu9PohDKJHH88fAiKGRBRKc3a2VBRg7R_3a-2g%3D%3D",
-      "normalizedUrl": "https://wsj.com/articles/spamalot-review-king-arthur-monty-python-broadway-eric-idle-james-monroe-iglehart-ethan-slater-musical-comedy-42160743",
-      "candidates": [
-        {
-          "showId": "spamalot-2023",
-          "file": "wsj--charles-isherwood.json",
-          "publishDate": "November 16, 2023",
-          "openingDate": "2023-11-16",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "wsj"
-        },
-        {
-          "showId": "spamalot-off-broadway-2026",
-          "file": "wsj--charles-isherwood.json",
-          "publishDate": null,
-          "openingDate": "2026-06-27",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "wsj"
-        }
-      ],
-      "suggestedWinner": "spamalot-2023",
-      "reason": "publishDate November 16, 2023 is 0 days from spamalot-2023 opening (2023-11-16)",
-      "confidence": "high"
-    },
-    {
-      "url": "https://ew.com/theater/sweeney-todd-the-demon-barber-of-fleet-street-review-josh-groban-annaleigh-ashford/",
-      "normalizedUrl": "https://ew.com/theater/sweeney-todd-the-demon-barber-of-fleet-street-review-josh-groban-annaleigh-ashford",
-      "candidates": [
-        {
-          "showId": "sweeney-todd-1979",
-          "file": "ew--emlyn-travis.json",
-          "publishDate": null,
-          "openingDate": "1979-03-01",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ew"
-        },
-        {
-          "showId": "sweeney-todd-2023",
-          "file": "ew--emlyn-travis.json",
-          "publishDate": "March 26, 2023",
-          "openingDate": "2023-03-26",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ew"
-        },
-        {
-          "showId": "sweeney-todd-2023",
-          "file": "ew--joey-nolfi.json",
-          "publishDate": "March 27, 2023",
-          "openingDate": "2023-03-26",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ew"
-        }
-      ],
-      "suggestedWinner": "sweeney-todd-2023",
-      "reason": "publishDate March 26, 2023 is 0 days from sweeney-todd-2023 but also 1 days from sweeney-todd-2023",
-      "confidence": "medium"
-    },
-    {
-      "url": "https://www.bloomberg.com/news/articles/2023-03-27/sweeney-todd-josh-groban-and-annaleigh-ashford-broadway-review?utm_source=google&utm_medium=bd&cmpId=google",
-      "normalizedUrl": "https://bloomberg.com/news/articles/2023-03-27/sweeney-todd-josh-groban-and-annaleigh-ashford-broadway-review",
-      "candidates": [
-        {
-          "showId": "sweeney-todd-1989",
-          "file": "bloomberg--mark-leydorf.json",
-          "publishDate": null,
-          "openingDate": "1989-09-14",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "bloomberg"
-        },
-        {
-          "showId": "sweeney-todd-2023",
-          "file": "bloomberg--mark-leydorf.json",
-          "publishDate": null,
-          "openingDate": "2023-03-26",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "bloomberg"
-        }
-      ],
-      "suggestedWinner": "sweeney-todd-2023",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
-      "url": "https://www.broadwaynews.com/the-broadway-review-tammy-faye-underplays-tammy-faye/?utm_source=sniply&utm_campaign=sniply&utm_medium=sniply",
-      "normalizedUrl": "https://broadwaynews.com/the-broadway-review-tammy-faye-underplays-tammy-faye",
-      "candidates": [
-        {
-          "showId": "tammy-faye",
-          "file": "broadwaynews--brittani-samuel.json",
-          "publishDate": "November 15, 2024",
+          "showId": "the-play-that-goes-wrong-2019",
+          "file": "towleroad--naveen-kumar.json",
+          "publishDate": "April 6th, 2017",
           "openingDate": null,
           "hasScore": true,
           "hasFullText": false,
-          "outletId": "broadwaynews"
-        },
-        {
-          "showId": "tammy-faye-2024",
-          "file": "broadwaynews--brittani-samuel.json",
-          "publishDate": "November 15, 2024",
-          "openingDate": "2024-11-14",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "broadwaynews"
+          "outletId": "towleroad"
         }
       ],
-      "suggestedWinner": "tammy-faye-2024",
-      "reason": "publishDate November 15, 2024 is 1 days from tammy-faye-2024 opening (2024-11-14)",
-      "confidence": "high"
-    },
-    {
-      "url": "https://ew.com/tammy-faye-review-broadway-musical-elton-john-8743171",
-      "normalizedUrl": "https://ew.com/tammy-faye-review-broadway-musical-elton-john-8743171",
-      "candidates": [
-        {
-          "showId": "tammy-faye",
-          "file": "ew--emlyn-travis.json",
-          "publishDate": "November 14, 2024",
-          "openingDate": null,
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "ew"
-        },
-        {
-          "showId": "tammy-faye-2024",
-          "file": "ew--emlyn-travis.json",
-          "publishDate": "November 14, 2024",
-          "openingDate": "2024-11-14",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ew"
-        },
-        {
-          "showId": "tammy-faye-2024",
-          "file": "ew--joey-nolfi.json",
-          "publishDate": "November 15, 2024",
-          "openingDate": "2024-11-14",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ew"
-        }
-      ],
-      "suggestedWinner": "tammy-faye-2024",
-      "reason": "publishDate November 14, 2024 is 0 days from tammy-faye-2024 but also 1 days from tammy-faye-2024",
-      "confidence": "medium"
-    },
-    {
-      "url": "https://deadline.com/2022/02/music-man-broadway-review-hugh-jackman-sutton-foster-1234928014/#pagetop",
-      "normalizedUrl": "https://deadline.com/2022/02/music-man-broadway-review-hugh-jackman-sutton-foster-1234928014",
-      "candidates": [
-        {
-          "showId": "the-music-man-2000",
-          "file": "deadline--greg-evans.json",
-          "publishDate": "February 10th, 2022",
-          "openingDate": "2000-04-27",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "deadline"
-        },
-        {
-          "showId": "the-music-man-2022",
-          "file": "deadline--greg-evans.json",
-          "publishDate": "February 10, 2022",
-          "openingDate": "2022-02-10",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "deadline"
-        }
-      ],
-      "suggestedWinner": "the-music-man-2022",
-      "reason": "publishDate February 10th, 2022 is NaN+ days from all openings; defaulting to most recent production",
+      "suggestedWinner": "present-laughter-2010",
+      "reason": "publishDate April 6th, 2017 is NaN+ days from all openings; defaulting to most recent production",
       "confidence": "low"
     },
     {
-      "url": "https://www.startribune.com/entertainment/celebrities/186401511.html?refer=y",
-      "normalizedUrl": "https://startribune.com/entertainment/celebrities/186401511.html",
+      "url": "https://www.wolfentertainmentguide.com/viewpage.aspx?cat=theater&record=6960",
+      "normalizedUrl": "https://wolfentertainmentguide.com/viewpage.aspx",
       "candidates": [
         {
-          "showId": "the-other-place-2013",
-          "file": "ap--mark-kennedy.json",
-          "publishDate": null,
-          "openingDate": "2013-01-10",
+          "showId": "sweat-2017",
+          "file": "wolf-entertainment-guide--william-wolf.json",
+          "publishDate": "November 14th, 2016",
+          "openingDate": "2017-03-26",
           "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ap"
+          "hasFullText": false,
+          "outletId": "wolf-entertainment-guide"
         },
         {
-          "showId": "the-other-place-2026",
-          "file": "ap--mark-kennedy.json",
-          "publishDate": "January 10, 2013",
+          "showId": "the-play-that-goes-wrong-2019",
+          "file": "wolf-entertainment-guide--william-wolf.json",
+          "publishDate": "April 7th, 2017",
           "openingDate": null,
-          "hasScore": false,
+          "hasScore": true,
           "hasFullText": false,
-          "outletId": "ap"
+          "outletId": "wolf-entertainment-guide"
         }
       ],
-      "suggestedWinner": "the-other-place-2013",
-      "reason": "Only one candidate has score/fullText",
-      "confidence": "medium"
+      "suggestedWinner": "sweat-2017",
+      "reason": "publishDate November 14th, 2016 is NaN+ days from all openings; defaulting to most recent production",
+      "confidence": "low"
     },
     {
       "url": "https://www.theguardian.com/stage/1986/oct/11/theatre.artsfeatures",
@@ -2483,30 +656,30 @@
       "confidence": "low"
     },
     {
-      "url": "https://nypost.com/2022/10/13/the-piano-lesson-broadway-review-a-blisteringly-acted-drama/",
-      "normalizedUrl": "https://nypost.com/2022/10/13/the-piano-lesson-broadway-review-a-blisteringly-acted-drama",
+      "url": "http://thebroadwayblog.com/?s=the+play+that+goes+wrong",
+      "normalizedUrl": "https://thebroadwayblog.com",
       "candidates": [
         {
-          "showId": "the-piano-lesson-1990",
-          "file": "nypost--johnny-oleksinski.json",
-          "publishDate": "October 13th, 2022",
-          "openingDate": "1990-04-16",
+          "showId": "the-play-that-goes-wrong-2019",
+          "file": "broadway-blog--samuel-l-leiter.json",
+          "publishDate": "April 3rd, 2017",
+          "openingDate": null,
           "hasScore": true,
           "hasFullText": false,
-          "outletId": "nypost"
+          "outletId": "broadway-blog"
         },
         {
-          "showId": "the-piano-lesson-2022",
-          "file": "nypost--johnny-oleksinski.json",
-          "publishDate": "October 14, 2022",
-          "openingDate": "2022-10-13",
+          "showId": "the-play-that-goes-wrong-off-broadway-2019",
+          "file": "broadway-blog--samuel-l-leiter.json",
+          "publishDate": "2026-02-05",
+          "openingDate": "2019-02-11",
           "hasScore": true,
-          "hasFullText": true,
-          "outletId": "nypost"
+          "hasFullText": false,
+          "outletId": "broadway-blog"
         }
       ],
-      "suggestedWinner": "the-piano-lesson-2022",
-      "reason": "publishDate October 13th, 2022 is NaN+ days from all openings; defaulting to most recent production",
+      "suggestedWinner": "the-play-that-goes-wrong-off-broadway-2019",
+      "reason": "publishDate 2026-02-05 is 2551+ days from all openings; defaulting to most recent production",
       "confidence": "low"
     }
   ]
