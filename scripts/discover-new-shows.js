@@ -16,7 +16,7 @@ const { fetchPage, cleanup } = require('./lib/scraper');
 const { parseShortDate } = require('./lib/show-score-status');
 const { checkKnownShow, detectPlayFromTitle } = require('./lib/known-shows');
 const { slugify, checkForDuplicate } = require('./lib/deduplication');
-const { batchLookupIBDBDates } = require('./lib/ibdb-dates');
+const { batchLookupIBDBDates, checkIBDBForPriorProductions } = require('./lib/ibdb-dates');
 const { getTheaterAddress } = require('./lib/venue-addresses');
 const { splitCombinedCredits } = require('./lib/credit-splitting');
 const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendations } = require('./lib/broadway-com-runtimes');
@@ -1109,6 +1109,29 @@ async function discoverShows() {
     return { show, detectedType, isRevival, confidence };
   });
 
+  // Stage 3: IBDB revival detection for shows not yet identified as revivals
+  // Only for OB/WE shows where known-shows and cross-reference didn't find a match
+  const undetected = revivalDetection.filter(d => !d.isRevival && d.detectedType !== 'special');
+  if (undetected.length > 0 && !dryRun) {
+    console.log(`\n🔍 Stage 3: Checking IBDB for prior productions of ${undetected.length} undetected show(s)...`);
+    const RATE_LIMIT_MS = 1500;
+    for (let i = 0; i < undetected.length; i++) {
+      const det = undetected[i];
+      const result = await checkIBDBForPriorProductions(det.show.title);
+      if (result.isRevival) {
+        det.isRevival = true;
+        if (result.confidence === 'high') det.confidence = 'high';
+        console.log(`  🔄 IBDB revival confirmed: "${det.show.title}" (${result.priorProductionCount} prior productions)`);
+      }
+      // Mark as checked so nightly runs don't re-query
+      det.show._ibdbRevivalChecked = true;
+      if (i < undetected.length - 1) {
+        await new Promise(r => setTimeout(r, RATE_LIMIT_MS));
+      }
+    }
+    console.log('');
+  }
+
   for (const { show, detectedType, isRevival, confidence } of revivalDetection) {
     const typeLabel = isRevival ? '🔄 REVIVAL' : detectedType === 'play' ? '🎭 PLAY' : '🎵 MUSICAL';
     const confidenceLabel = confidence === 'high' ? '✓' : confidence === 'medium' ? '~' : '?';
@@ -1220,6 +1243,11 @@ async function discoverShows() {
       // Persist TodayTix category for future type detection (backfill on re-runs)
       if (show.todayTixCategory) {
         showEntry.todayTixCategory = show.todayTixCategory;
+      }
+
+      // Cache IBDB revival check to prevent re-querying on future runs
+      if (show._ibdbRevivalChecked) {
+        showEntry.ibdbRevivalChecked = true;
       }
 
       // Set category for non-Broadway shows
