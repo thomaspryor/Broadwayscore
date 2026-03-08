@@ -6,6 +6,7 @@
 import Link from 'next/link';
 import { getTrendColor, getTrendIcon } from '@/config/commercial';
 import type { RecoupmentTrend } from '@/lib/data-types';
+import { formatCurrency } from '@/lib/formatting';
 
 interface ApproachingRecoupmentCardProps {
   slug: string;
@@ -15,16 +16,6 @@ interface ApproachingRecoupmentCardProps {
   estimatedRecoupmentPct: [number, number];
   trend: RecoupmentTrend;
   weeklyGross?: number | null;
-}
-
-function formatCurrency(amount: number): string {
-  if (amount >= 1_000_000) {
-    return `$${(amount / 1_000_000).toFixed(1)}M`;
-  }
-  if (amount >= 1_000) {
-    return `$${(amount / 1_000).toFixed(0)}K`;
-  }
-  return `$${amount}`;
 }
 
 const TREND_LABELS: Record<RecoupmentTrend, string> = {

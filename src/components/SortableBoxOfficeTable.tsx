@@ -2,8 +2,8 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-
-type SortDirection = 'asc' | 'desc';
+import { SortIcon } from '@/components/SortIcon';
+import { SortDirection, formatCurrency, formatNumber, formatPercent } from '@/lib/formatting';
 
 interface ShowGrossesData {
   show: {
@@ -28,30 +28,6 @@ interface ShowGrossesData {
   } | null | undefined;
 }
 
-function formatCurrency(amount: number | null | undefined): string {
-  if (amount === null || amount === undefined) return '—';
-  if (amount >= 1000000000) {
-    return `$${(amount / 1000000000).toFixed(1)}B`;
-  }
-  if (amount >= 1000000) {
-    return `$${(amount / 1000000).toFixed(1)}M`;
-  }
-  if (amount >= 1000) {
-    return `$${(amount / 1000).toFixed(0)}K`;
-  }
-  return `$${amount.toLocaleString()}`;
-}
-
-function formatNumber(num: number | null | undefined): string {
-  if (num === null || num === undefined) return '—';
-  return num.toLocaleString();
-}
-
-function formatPercent(pct: number | null | undefined): string {
-  if (pct === null || pct === undefined) return '—';
-  return `${pct.toFixed(1)}%`;
-}
-
 function ChangeIndicator({ current, previous }: { current: number | null | undefined; previous: number | null | undefined }) {
   if (current === null || current === undefined || previous === null || previous === undefined) {
     return null;
@@ -67,7 +43,7 @@ function ChangeIndicator({ current, previous }: { current: number | null | undef
   );
 }
 
-function SortIcon({ direction, active }: { direction: SortDirection | null; active: boolean }) {
+: { direction: SortDirection | null; active: boolean }) {
   if (!active) {
     return (
       <span className="ml-1 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">
