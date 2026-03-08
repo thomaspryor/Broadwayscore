@@ -377,7 +377,17 @@
     "buena-vista-social-club-2025/broadwaynews--brittani-samuel.json",
     "buena-vista-social-club-2025/timeout--adam-feldman.json",
     "bug-2026/theatre-reviews-limited--david-roberts.json",
-    "bug-2026/timeout--adam-feldman.json"
+    "bug-2026/timeout--adam-feldman.json",
+    "company-1993/nytg--allison-considine.json",
+    "dreamgirls-2026/hollywood-reporter--frank-scheck.json",
+    "dreamgirls-2026/variety--david-rooney.json",
+    "la-bete-1991/hollywood-reporter--frank-scheck.json",
+    "la-cage-aux-folles-2004/vulture--scott-brown.json",
+    "lombardi-2010/vulture--mike-vaccaro.json",
+    "my-fair-lady-2018/vulture--steven-suskin.json",
+    "ragtime-1998/vulture--unknown.json",
+    "saint-joan-2018/vulture--elysa-gardner.json",
+    "summer-2018/vulture--jesse-oxfeld.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -2640,7 +2650,11 @@
       "book-of-mormon-2011/guardian--ben-brantley.json",
       "buena-vista-social-club-2025/timeout--adam-feldman.json",
       "bug-2026/theatre-reviews-limited--david-roberts.json",
-      "bug-2026/timeout--adam-feldman.json"
+      "bug-2026/timeout--adam-feldman.json",
+      "company-1993/nytg--allison-considine.json",
+      "my-fair-lady-2018/vulture--steven-suskin.json",
+      "saint-joan-2018/vulture--elysa-gardner.json",
+      "summer-2018/vulture--jesse-oxfeld.json"
     ],
     "amp": [
       "data/review-texts/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/vulture--helen-shaw.json",
@@ -2697,7 +2711,9 @@
       "data/review-texts/wicked-2003/variety--charles-isherwood.json",
       "wicked-2003/variety--charles-isherwood.json",
       "data/review-texts/and-juliet-2022/thewrap--robert-hofler.json",
-      "and-juliet-2022/thewrap--robert-hofler.json"
+      "and-juliet-2022/thewrap--robert-hofler.json",
+      "data/review-texts/dreamgirls-2026/variety--david-rooney.json",
+      "dreamgirls-2026/variety--david-rooney.json"
     ],
     "browserbase": [
       "data/review-texts/brooklyn-2004/nytimes--ben-brantley.json",
@@ -2764,10 +2780,15 @@
       "data/review-texts/titus-andronicus-off-broadway-2026/hollywood-reporter--frank-scheck.json",
       "titus-andronicus-off-broadway-2026/hollywood-reporter--frank-scheck.json",
       "data/review-texts/all-out-2025/deadline--unknown.json",
-      "all-out-2025/deadline--unknown.json"
+      "all-out-2025/deadline--unknown.json",
+      "data/review-texts/dreamgirls-2026/hollywood-reporter--frank-scheck.json",
+      "dreamgirls-2026/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/lombardi-2010/vulture--mike-vaccaro.json",
+      "lombardi-2010/vulture--mike-vaccaro.json"
     ],
     "directCookies": [
-      "the-lion-king-1997/vulture--john-simon.json"
+      "the-lion-king-1997/vulture--john-simon.json",
+      "la-cage-aux-folles-2004/vulture--scott-brown.json"
     ],
     "scrapingbee": [
       "faith-healer-2006/guardian--mark-lawson.json",
@@ -3356,11 +3377,13 @@
       "wicked-2003/vulture--bilge-eberi.json",
       "aladdin-2014/ew--thom-geier.json",
       "aladdin-2014/wsj--terry-teachout.json",
-      "an-ark-off-broadway-2026/wsj--charles-isherwood.json"
+      "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
+      "la-bete-1991/hollywood-reporter--frank-scheck.json",
+      "ragtime-1998/vulture--unknown.json"
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "bug-2026/timeout--adam-feldman.json",
+  "lastProcessed": "summer-2018/vulture--jesse-oxfeld.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -4341,6 +4364,50 @@
       "t": "2026-03-08T18:30:52.208Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-08T19:22:35.328Z",
+      "event": "bb-session",
+      "session": "aa43638c",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/dreamgirls-theater-review-10040"
+    },
+    {
+      "t": "2026-03-08T19:22:36.521Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-08T19:23:41.232Z",
+      "event": "bb-session",
+      "session": "4be181fd",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/dreamgirls-theater-review"
+    },
+    {
+      "t": "2026-03-08T19:23:42.301Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-08T19:24:00.856Z",
+      "event": "bb-session",
+      "session": "66fa577c",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/la-bete-theater-review-10041212"
+    },
+    {
+      "t": "2026-03-08T19:24:01.861Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-08T19:25:05.389Z",
+      "event": "bb-session",
+      "session": "0aeea96a",
+      "url": "http://www.nypost.com/p/entertainment/theater/broadway_tackles_the_in_vince_able"
+    },
+    {
+      "t": "2026-03-08T19:25:06.568Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
