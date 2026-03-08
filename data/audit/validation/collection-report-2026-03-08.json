@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-03-08T05:17:18.022Z",
+  "runDate": "2026-03-08T05:19:10.215Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
@@ -17,25 +17,25 @@
     "successRate": "70.8%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 1,
     "amp": 0,
-    "browserbase": 5,
-    "directCookies": 1,
-    "scrapingbee": 1,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 4,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 9
+    "archiveToday": 0,
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 4,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 4,
-    "tier1_5Success": 3,
-    "tier2Attempts": 1,
-    "tier2Success": 1,
-    "tier3Attempts": 6,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 1,
     "tier3_6Success": 1,
@@ -80,40 +80,17 @@
   "failed": [],
   "tierDetails": {
     "playwright": [
-      "art-2025/nyt-theater--unknown.json",
-      "art-2025/theatre-reviews-limited--david-roberts.json",
-      "art-2025/times-uk--susie-goldsbrough.json",
-      "art-2025/washpost--naveen-kumar.json"
+      "spare-parts-off-broadway-2026/theatermania--unknown.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/art-2025/hollywood-reporter--caitlin-huston.json",
-      "data/review-texts/art-2025/nypost--entertainment-critic.json",
-      "art-2025/nypost--entertainment-critic.json",
-      "data/review-texts/art-2025/observer--david-cote.json",
-      "art-2025/observer--david-cote.json"
-    ],
-    "directCookies": [
-      "art-2025/wsj--unknown.json"
-    ],
+    "browserbase": [],
+    "directCookies": [],
     "scrapingbee": [
       "art-2025/telegraph--dominic-cavendish.json"
     ],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/art-2025/whatsonstage--unknown.json"
-    ],
-    "archive": [
-      "art-2025/rollingstone--tim-chan.json",
-      "art-2025/nytg--kyle-turner.json",
-      "art-2025/theatermania--hayley-levitt.json",
-      "art-2025/theatermania--zachary-stewart.json",
-      "art-2025/timeout--adam-feldman.json",
-      "art-2025/timeout--regina-robbins.json",
-      "art-2025/timeout--time-out.json",
-      "art-2025/ap--unknown.json",
-      "art-2025/slantmagazine--unknown.json"
-    ]
+    "archiveToday": [],
+    "archive": []
   },
   "failuresByOutlet": {},
   "urlDiscoveries": [
