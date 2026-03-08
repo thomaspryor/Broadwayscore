@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-08T02:01:23.938Z",
-  "processed": 23,
-  "failed": 50,
-  "successRate": "31.5%",
+  "updatedAt": "2026-03-08T02:04:34.029Z",
+  "processed": 27,
+  "failed": 56,
+  "successRate": "32.5%",
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 9,
     "amp": 0,
-    "browserbase": 17,
+    "browserbase": 19,
     "directCookies": 0,
-    "scrapingbee": 3,
+    "scrapingbee": 4,
     "brightdata": 0,
     "archiveToday": 3,
     "archive": 5
   },
-  "browserbaseSessions": 11,
+  "browserbaseSessions": 12,
   "recentActivity": [
-    {
-      "t": "2026-03-08T01:45:52.046Z",
-      "event": "bb-session",
-      "session": "f662e65f",
-      "url": "http://theater.nytimes.com/2004/10/22/theater/reviews/22BROO.html"
-    },
-    {
-      "t": "2026-03-08T01:45:53.543Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-08T01:47:35.313Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-08T02:01:07.862Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-08T02:03:27.619Z",
+      "event": "bb-session",
+      "session": "1856f7a6",
+      "url": "https://deadline.com/2022/04/take-me-out-broadway-review-jesse-tyler-fergoson-je"
+    },
+    {
+      "t": "2026-03-08T02:03:29.022Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
     }
