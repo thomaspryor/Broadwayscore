@@ -30,8 +30,8 @@ export function generateMetadata({ params }: { params: { season: string } }): Me
   const season = allSeasons.find(s => s.label === params.season);
   if (!season) return {};
 
-  const title = `Tony Awards Predictions ${season.label} Season`;
-  const description = `Data-driven Tony predictions for the ${season.label} Broadway season. Every eligible show ranked by blended critic + audience scores.`;
+  const title = `Tony Awards Predictions ${season.label} — Who Will Win?`;
+  const description = `Data-driven Tony predictions for the ${season.label} Broadway season. Every eligible show ranked by blended critic + audience scores. Updated as new reviews come in.`;
 
   return {
     title,
