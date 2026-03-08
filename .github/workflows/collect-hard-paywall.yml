@@ -71,7 +71,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
@@ -87,7 +87,7 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '20'
           cache: 'npm'
@@ -364,7 +364,7 @@ jobs:
           fi
 
       - name: Upload collection report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: hard-paywall-report-${{ inputs.domain }}
@@ -421,7 +421,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
@@ -437,7 +437,7 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '20'
           cache: 'npm'
@@ -605,7 +605,7 @@ jobs:
           fi
 
       - name: Upload collection report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: hard-paywall-report-${{ matrix.domain }}
@@ -628,7 +628,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
@@ -644,7 +644,7 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '20'
           cache: 'npm'

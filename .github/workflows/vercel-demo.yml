@@ -18,7 +18,7 @@ jobs:
       group: vercel-demo-deploy
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
@@ -26,7 +26,7 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '20'
           cache: 'npm'
@@ -64,7 +64,7 @@ jobs:
           "
 
       - name: Cache Next.js build
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .next/cache
           key: nextjs-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}

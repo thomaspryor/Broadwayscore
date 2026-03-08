@@ -38,7 +38,7 @@ jobs:
       we_new_count: ${{ steps.discover.outputs.we_new_count }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: main
 
@@ -52,7 +52,7 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "20"
 
@@ -249,7 +249,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout to read pending shows
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: main
 
@@ -259,7 +259,7 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Create issue for new shows
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const fs = require('fs');
@@ -323,7 +323,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout to filter previews shows
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: main
 
@@ -371,7 +371,7 @@ jobs:
 
       - name: Trigger data agent workflow
         if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             // Check if the gather-reviews workflow exists
@@ -394,7 +394,7 @@ jobs:
 
       - name: Trigger Reddit sentiment workflow
         if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             // Trigger Reddit sentiment scraping for newly opened shows
@@ -415,7 +415,7 @@ jobs:
 
       - name: Trigger Show Score workflow
         if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             // Trigger Show Score scraping for newly opened shows
@@ -436,7 +436,7 @@ jobs:
 
       - name: Trigger Mezzanine workflow
         if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             // Trigger Mezzanine scraping for newly opened shows
@@ -457,7 +457,7 @@ jobs:
 
       - name: Trigger image fetching workflow
         if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             // Trigger image fetching + archival for newly opened shows
@@ -478,7 +478,7 @@ jobs:
 
       - name: Trigger cast backfill for new shows
         if: steps.filter.outputs.cast_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             // Trigger IBDB cast scraping for each new show (including previews)
@@ -504,7 +504,7 @@ jobs:
 
       - name: Trigger WE outlet-based SERP collection for new WE shows
         if: needs.update-shows.outputs.we_new_count != '' && needs.update-shows.outputs.we_new_count != '0'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             // Trigger outlet-based SERP collection for new West End shows
@@ -527,7 +527,7 @@ jobs:
 
       - name: Trigger social media post for opened shows
         if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             // Post to social media for each newly opened show
@@ -552,7 +552,7 @@ jobs:
 
       - name: Trigger review text collection for opened shows
         if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             // Trigger full text collection for each newly opened show
@@ -584,7 +584,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: main
 
@@ -594,7 +594,7 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "20"
 
@@ -643,7 +643,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: main
 
