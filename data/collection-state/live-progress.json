@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-08T15:41:27.338Z",
-  "processed": 206,
-  "failed": 1367,
-  "successRate": "13.1%",
+  "updatedAt": "2026-03-08T15:45:18.709Z",
+  "processed": 212,
+  "failed": 1371,
+  "successRate": "13.4%",
   "tierBreakdown": {
-    "playwright": 98,
+    "playwright": 101,
     "amp": 18,
-    "browserbase": 33,
+    "browserbase": 35,
     "directCookies": 0,
     "scrapingbee": 43,
     "brightdata": 0,
-    "archiveToday": 392,
-    "archive": 44
+    "archiveToday": 393,
+    "archive": 46
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-03-08T11:24:19.534Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-03-08T11:24:56.068Z",
-      "event": "bb-session",
-      "session": "da0053e4",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/the-real-thing-on-bro"
-    },
     {
       "t": "2026-03-08T11:24:57.152Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "t": "2026-03-08T15:38:26.458Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-08T15:43:41.298Z",
+      "event": "bb-session",
+      "session": "1ab16048",
+      "url": "http://www.amny.com/entertainment/cats-broadway-revival-classic-musical-is-back-"
+    },
+    {
+      "t": "2026-03-08T15:43:42.695Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
