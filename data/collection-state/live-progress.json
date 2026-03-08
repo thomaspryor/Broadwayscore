@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-03-07T22:25:44.019Z",
+  "updatedAt": "2026-03-08T01:45:33.103Z",
   "processed": 2,
-  "failed": 1,
-  "successRate": "66.7%",
+  "failed": 11,
+  "successRate": "15.4%",
   "tierBreakdown": {
     "playwright": 1,
     "amp": 0,
@@ -10,9 +10,21 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-03-08T01:43:49.539Z",
+      "event": "bb-session",
+      "session": "2c2ca810",
+      "url": "http://theater.nytimes.com/2005/03/25/theater/reviews/25elvi.html?position=&amp;"
+    },
+    {
+      "t": "2026-03-08T01:43:50.891Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
