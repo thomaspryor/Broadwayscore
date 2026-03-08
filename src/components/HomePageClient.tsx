@@ -1,11 +1,13 @@
 'use client';
 
-import { useMemo, useCallback, useState, useRef, useEffect, startTransition, Suspense } from 'react';
+import { useMemo, useCallback, useState, useRef, useEffect, startTransition, Suspense, lazy } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import type Fuse from 'fuse.js';
-import FooterEmailCapture from '@/components/FooterEmailCapture';
 import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from '@/components/show-cards';
+
+// Lazy-load below-fold email capture to reduce initial hydration cost
+const FooterEmailCapture = lazy(() => import('@/components/FooterEmailCapture'));
 import type { ScoreModeParam } from '@/components/show-cards';
 
 export interface FeaturedRowData {
@@ -673,9 +675,11 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], westEndSho
         </div>
       </LazySection>
 
-      {/* Email Capture */}
+      {/* Email Capture — lazy-loaded since it's below the fold */}
       <div id="subscribe" className="mt-8 max-w-md mx-auto">
-        <FooterEmailCapture />
+        <Suspense fallback={<div className="h-24" />}>
+          <FooterEmailCapture />
+        </Suspense>
       </div>
 
     </div>
