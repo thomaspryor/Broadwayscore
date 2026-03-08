@@ -1,0 +1,57 @@
+name: Cleanup Stale Multi-Show Flags
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (no file changes)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Checkout review-texts (private repo)
+        uses: actions/checkout@v4
+        with:
+          repository: thomaspryor/broadway-review-texts
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          path: data/review-texts
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run cleanup script
+        run: |
+          ARGS=""
+          if [ "${{ inputs.dry_run }}" == "true" ]; then
+            ARGS="--dry-run"
+          fi
+          node scripts/cleanup-stale-multishow-flags.js $ARGS
+
+      - name: Push review-texts to private repo
+        if: inputs.dry_run != 'true'
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Cleanup stale isMultiShowReview flags (threshold raised to 5)"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
