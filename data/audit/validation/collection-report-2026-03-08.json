@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-03-08T05:35:15.942Z",
+  "runDate": "2026-03-08T10:29:26.771Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 150,
+    "maxReviews": 0,
     "priority": "all",
     "showFilter": "art-2025",
     "aggressive": false,
@@ -11,41 +11,41 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 12,
-    "failed": 6,
+    "processed": 13,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "66.7%"
+    "successRate": "86.7%"
   },
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 11,
     "amp": 0,
-    "browserbase": 3,
-    "directCookies": 1,
+    "browserbase": 0,
+    "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 5
+    "archiveToday": 0,
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 8,
-    "tier1Success": 6,
+    "tier1Attempts": 12,
+    "tier1Success": 11,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 3,
-    "tier1_5Success": 2,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
     "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 6,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier3_6Attempts": 2,
-    "tier3_6Success": 2,
-    "tier4Attempts": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 2,
-    "browserbaseSessionsUsed": 3,
-    "browserbaseMinutesUsed": 1,
-    "urlDiscoveryAttempts": 2,
+    "totalFailed": 2,
+    "scrapingBeeCreditsUsed": 1,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -59,92 +59,48 @@
     "art-2025/timeout--adam-feldman.json",
     "art-2025/timeout--regina-robbins.json",
     "art-2025/timeout--time-out.json",
-    "art-2025/wsj--unknown.json",
+    "art-2025/ap--unknown.json",
+    "art-2025/slantmagazine--unknown.json",
     "art-2025/times-uk--susie-goldsbrough.json",
     "art-2025/washpost--naveen-kumar.json"
   ],
   "failed": [
-    "art-2025/hollywood-reporter--caitlin-huston.json",
-    "art-2025/whatsonstage--unknown.json",
     "art-2025/thewrap--robert-hofler.json",
-    "art-2025/ap--unknown.json",
-    "art-2025/slantmagazine--unknown.json",
-    "art-2025/telegraph--dominic-cavendish.json"
+    "art-2025/wsj--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
       "art-2025/nyt-theater--unknown.json",
+      "art-2025/nytg--kyle-turner.json",
+      "art-2025/observer--david-cote.json",
+      "art-2025/theatermania--hayley-levitt.json",
+      "art-2025/theatermania--zachary-stewart.json",
       "art-2025/theatre-reviews-limited--david-roberts.json",
       "art-2025/timeout--adam-feldman.json",
-      "art-2025/slantmagazine--unknown.json",
+      "art-2025/timeout--regina-robbins.json",
+      "art-2025/timeout--time-out.json",
       "art-2025/times-uk--susie-goldsbrough.json",
       "art-2025/washpost--naveen-kumar.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/art-2025/hollywood-reporter--caitlin-huston.json",
-      "data/review-texts/art-2025/observer--david-cote.json",
-      "art-2025/observer--david-cote.json"
-    ],
-    "directCookies": [
-      "art-2025/wsj--unknown.json"
-    ],
+    "browserbase": [],
+    "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/art-2025/whatsonstage--unknown.json",
-      "data/review-texts/art-2025/ap--unknown.json"
-    ],
+    "archiveToday": [],
     "archive": [
-      "art-2025/nytg--kyle-turner.json",
-      "art-2025/theatermania--hayley-levitt.json",
-      "art-2025/theatermania--zachary-stewart.json",
-      "art-2025/timeout--regina-robbins.json",
-      "art-2025/timeout--time-out.json"
+      "art-2025/ap--unknown.json",
+      "art-2025/slantmagazine--unknown.json"
     ]
   },
   "failuresByOutlet": {
-    "NY1": {
-      "count": 2,
-      "domain": "ny1.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Zeal NYC": {
-      "count": 2,
-      "domain": "zealnyc.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "ScheckOnTheater": {
+    "The Wall Street Journal": {
       "count": 1,
-      "domain": "scheckonthearts.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Associated Press": {
-      "count": 1,
-      "domain": "bigstory.ap.org",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Labor Press": {
-      "count": 1,
-      "domain": "laborpress.org",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "new-york-new-york-2023/hollywood-reporter--angie-han.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/new-york-new-york-broadway-review-1235394031/",
-      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/new-york-new-york-kander-ebb-musical-broadway-lin-manuel-miranda-1235249123/"
-    }
-  ]
+  "urlDiscoveries": []
 }
