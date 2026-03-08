@@ -1,7 +1,7 @@
 {
   "system": "cwv",
   "status": "warn",
-  "lastChecked": "2026-03-08T07:28:33.546Z",
+  "lastChecked": "2026-03-08T14:18:29.371Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -9,7 +9,7 @@
     {
       "name": "CWV: performance",
       "status": "warn",
-      "message": "Threshold violations: Mobile TBT 992ms"
+      "message": "Threshold violations: Mobile LCP 4.5s, Mobile TBT 720ms"
     }
   ]
 }

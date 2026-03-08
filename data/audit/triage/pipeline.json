@@ -1,7 +1,7 @@
 {
   "system": "pipeline",
   "status": "warn",
-  "lastChecked": "2026-03-08T07:28:33.545Z",
+  "lastChecked": "2026-03-08T14:18:29.371Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -19,7 +19,7 @@
     {
       "name": "Pipeline: collect-review-texts",
       "status": "pass",
-      "message": "Last success 0h ago"
+      "message": "Last success 3h ago"
     },
     {
       "name": "Pipeline: weekly-grosses",
@@ -29,12 +29,12 @@
     {
       "name": "Pipeline: weekly-integrity",
       "status": "pass",
-      "message": "Last success 3h ago"
+      "message": "Last success 9h ago"
     },
     {
       "name": "Pipeline: test",
       "status": "warn",
-      "message": "Last success 3d ago (threshold: 2d)"
+      "message": "Last success 4d ago (threshold: 2d)"
     }
   ]
 }
