@@ -28,7 +28,8 @@
     "take-me-out-2003/deadline--greg-evans.json",
     "tammy-faye-2024/new-york-sun--unknown.json",
     "the-price-1999/timeout--adam-feldman.json",
-    "the-year-of-magical-thinking-2007/theatermania--pete-hempstead.json"
+    "the-year-of-magical-thinking-2007/theatermania--pete-hempstead.json",
+    "waiting-for-godot-2025/deadline--unknown.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -114,7 +115,16 @@
     "title-of-show-2008/nypost--unknown.json",
     "title-of-show-2008/theatermania--unknown.json",
     "title-of-show-2008/wsj--unknown.json",
-    "to-kill-a-mockingbird-2018/broadwaynews--elizabeth-bradley.json"
+    "to-kill-a-mockingbird-2018/broadwaynews--elizabeth-bradley.json",
+    "torch-song-2018/broadwaynews--matt-windman.json",
+    "torch-song-2018/observer--rex-reed.json",
+    "travesties-2018/observer--rex-reed.json",
+    "true-west-2019/broadwaynews--charles-isherwood.json",
+    "waiting-for-godot-2013/theatermania--david-finkle.json",
+    "waitress-2016/observer--rex-reed.json",
+    "war-paint-2017/guardian--jesse-green.json",
+    "what-the-constitution-means-to-me-2019/observer--rex-reed.json",
+    "wolf-hall-parts-one-and-two-2015/guardian--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -150,7 +160,9 @@
       "data/review-texts/punch-2025/deadline--unknown.json",
       "punch-2025/deadline--unknown.json",
       "data/review-texts/take-me-out-2003/deadline--greg-evans.json",
-      "take-me-out-2003/deadline--greg-evans.json"
+      "take-me-out-2003/deadline--greg-evans.json",
+      "data/review-texts/waiting-for-godot-2025/deadline--unknown.json",
+      "waiting-for-godot-2025/deadline--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -180,7 +192,7 @@
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "to-kill-a-mockingbird-2018/broadwaynews--elizabeth-bradley.json",
+  "lastProcessed": "wolf-hall-parts-one-and-two-2015/guardian--jesse-green.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -355,6 +367,61 @@
     },
     {
       "t": "2026-03-08T02:15:22.728Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-08T02:19:45.299Z",
+      "event": "bb-session",
+      "session": "0b870a23",
+      "url": "https://observer.com/2018/11/torch-song-broadway-review-harvey-fierstein/"
+    },
+    {
+      "t": "2026-03-08T02:19:46.638Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-08T02:20:28.911Z",
+      "event": "bb-session",
+      "session": "517305ac",
+      "url": "https://observer.com/2018/04/travesties-broadway-review-tom-stoppard/"
+    },
+    {
+      "t": "2026-03-08T02:20:30.154Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-08T02:21:38.228Z",
+      "event": "bb-session",
+      "session": "fd065d76",
+      "url": "https://deadline.com/2025/09/broadway-box-office-ragtime-hamilton-1236566097/"
+    },
+    {
+      "t": "2026-03-08T02:21:39.527Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-08T02:21:51.783Z",
+      "event": "bb-session",
+      "session": "30e829f2",
+      "url": "https://observer.com/2016/04/waitress-sara-bareilles-broadway-musical-review/"
+    },
+    {
+      "t": "2026-03-08T02:21:53.182Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-08T02:23:09.315Z",
+      "event": "bb-session",
+      "session": "bba3c8d9",
+      "url": "https://observer.com/2019/04/what-the-constitution-means-to-me-broadway-review/"
+    },
+    {
+      "t": "2026-03-08T02:23:10.598Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
     }
