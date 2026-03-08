@@ -105,39 +105,61 @@ export default function ListsTab({ userId, showMap, isMockMode, createTrigger = 
   };
 
   const handleCreateList = async (name: string, description: string | null, isRanked: boolean) => {
-    const newList = await createList(name, description, isRanked);
-    if (newList) {
-      setShowModal(null);
-      navigateToList(newList.id);
+    try {
+      const newList = await createList(name, description, isRanked);
+      if (newList) {
+        setShowModal(null);
+        navigateToList(newList.id);
+      } else {
+        showToast?.('Failed to create list.', 'error');
+      }
+    } catch {
+      showToast?.('Failed to create list.', 'error');
     }
   };
 
   const handleUpdateList = async (listId: string, name: string, description: string | null, isRanked: boolean) => {
-    await updateList(listId, { name, description, is_ranked: isRanked });
-    setShowModal(null);
-    setEditingList(null);
+    try {
+      await updateList(listId, { name, description, is_ranked: isRanked });
+      setShowModal(null);
+      setEditingList(null);
+    } catch {
+      showToast?.('Failed to update list.', 'error');
+    }
   };
 
   const handleDeleteList = async (listId: string) => {
     const name = lists.find(l => l.id === listId)?.name || 'List';
-    await deleteList(listId);
-    navigateToList(null);
-    showToast?.(`"${name}" deleted.`, 'info');
+    try {
+      await deleteList(listId);
+      navigateToList(null);
+      showToast?.(`"${name}" deleted.`, 'info');
+    } catch {
+      showToast?.('Failed to delete list.', 'error');
+    }
   };
 
   const handleAddToList = async (listId: string, showId: string) => {
-    await addToList(listId, showId);
-    const items = await getListItems(listId);
-    setListItems(items);
-    const showTitle = showMap[showId]?.title || 'Show';
-    showToast?.(`Added "${showTitle}" to list.`, 'success');
+    try {
+      await addToList(listId, showId);
+      const items = await getListItems(listId);
+      setListItems(items);
+      const showTitle = showMap[showId]?.title || 'Show';
+      showToast?.(`Added "${showTitle}" to list.`, 'success');
+    } catch {
+      showToast?.('Failed to add show.', 'error');
+    }
   };
 
   const handleRemoveFromList = async (listId: string, showId: string) => {
-    await removeFromList(listId, showId);
-    setListItems(prev => prev.filter(i => i.show_id !== showId));
-    const showTitle = showMap[showId]?.title || 'Show';
-    showToast?.(`Removed "${showTitle}" from list.`, 'info');
+    try {
+      await removeFromList(listId, showId);
+      setListItems(prev => prev.filter(i => i.show_id !== showId));
+      const showTitle = showMap[showId]?.title || 'Show';
+      showToast?.(`Removed "${showTitle}" from list.`, 'info');
+    } catch {
+      showToast?.('Failed to remove show.', 'error');
+    }
   };
 
   // Detail view
@@ -310,6 +332,14 @@ function ListDetailView({
   const deleteTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const overflowRef = useRef<HTMLDivElement>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
+
+  // Clean up timers on unmount
+  useEffect(() => {
+    return () => {
+      if (confirmTimerRef.current) clearTimeout(confirmTimerRef.current);
+      if (deleteTimerRef.current) clearTimeout(deleteTimerRef.current);
+    };
+  }, []);
 
   // DnD sensors — pointer needs 5px distance, touch needs 200ms delay to avoid scroll conflicts
   const pointerSensor = useSensor(PointerSensor, { activationConstraint: { distance: 5 } });
@@ -656,16 +686,16 @@ function ListItemContent({
       {/* Remove button — 2-step confirm with 4s auto-reset */}
       {!isDragOverlay && onRemove && onConfirmRemove && onCancelRemove && (
         confirmRemoveId === item.id ? (
-          <div className="relative z-[1] flex items-center gap-2">
+          <div className="relative z-[1] flex items-center gap-1">
             <button
               type="button"
               onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRemove(item.show_id); onCancelRemove(); }}
-              className="text-xs font-medium text-red-400 hover:text-red-300"
+              className="text-xs font-medium text-red-400 hover:text-red-300 px-2 py-1.5 min-h-[36px] flex items-center"
             >Remove?</button>
             <button
               type="button"
               onClick={(e) => { e.preventDefault(); e.stopPropagation(); onCancelRemove(); }}
-              className="text-xs text-gray-500 hover:text-white"
+              className="text-xs text-gray-500 hover:text-white px-2 py-1.5 min-h-[36px] flex items-center"
             >No</button>
           </div>
         ) : (
@@ -843,8 +873,19 @@ function ListModal({
   const [isRanked, setIsRanked] = useState(list?.is_ranked || false);
   const [showDescription, setShowDescription] = useState(!!list?.description);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [saving, setSaving] = useState(false);
 
-  const canSave = name.trim().length > 0;
+  const canSave = name.trim().length > 0 && !saving;
+
+  const handleSave = async () => {
+    if (!canSave) return;
+    setSaving(true);
+    try {
+      await onSave(name.trim(), description.trim() || null, isRanked);
+    } finally {
+      setSaving(false);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center">
@@ -862,11 +903,11 @@ function ListModal({
           </h3>
           <button
             type="button"
-            onClick={() => canSave && onSave(name.trim(), description.trim() || null, isRanked)}
+            onClick={handleSave}
             disabled={!canSave}
             className={`text-sm font-bold ${canSave ? 'text-brand hover:text-brand/80' : 'text-gray-600'}`}
           >
-            Save
+            {saving ? '...' : 'Save'}
           </button>
         </div>
 
