@@ -1283,8 +1283,9 @@ async function main() {
     console.log(`[Workflows] ${workflowSummary.succeeded} succeeded, ${workflowSummary.failed} failed (${workflowSummary.total} total in last 24h)`);
   }
 
-  // Send email digest (throws on failure → triggers notify-failure)
-  await sendEmailDigest(allResults, history, workflowSummary, autoFixResults);
+  // Email digest disabled — replaced by BSC Daily action email (see daily-action-email.yml)
+  // Discord notifications still fire below for monitoring
+  // await sendEmailDigest(allResults, history, workflowSummary, autoFixResults);
 
   // Send Discord notifications
   await sendDailyReport(allResults, history);
