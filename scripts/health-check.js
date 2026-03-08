@@ -15,7 +15,8 @@
  *   I. Secrets Health (1) — last check-secrets-health run status
  *
  * Progressive alerting:
- *   - #weekly-reports: always (daily summary)
+ *   - Email digest: always (daily summary email via Resend — the single source of truth)
+ *   - #weekly-reports: always (Discord daily summary)
  *   - #alerts: only after 2+ consecutive error days
  *
  * Triage state: writes per-system files to data/audit/triage/ for auto-triage pipeline.
@@ -515,6 +516,279 @@ function checkSecretsHealth() {
   ];
 }
 
+// --- Category J: Workflow Runs (last 24h summary via GitHub API) ---
+
+async function getWorkflowRunSummary() {
+  if (!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN) {
+    return { total: 0, failed: 0, succeeded: 0, failedRuns: [], skipped: true };
+  }
+
+  const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
+  const owner = 'thomaspryor';
+  const repo = 'Broadwayscore';
+
+  try {
+    // Use REST API with per_page=100 (covers most days in 1-2 calls)
+    const results = [];
+    let page = 1;
+    const maxPages = 3; // Cap at 300 runs to avoid rate limit issues
+
+    while (page <= maxPages) {
+      const url = `https://api.github.com/repos/${owner}/${repo}/actions/runs?created=%3E${since}&per_page=100&page=${page}`;
+      const response = await fetchJSON(url, { 'Authorization': `token ${token}`, 'User-Agent': 'bsc-health-check' });
+      if (!response || !response.workflow_runs) break;
+      results.push(...response.workflow_runs);
+      if (response.workflow_runs.length < 100) break;
+      page++;
+    }
+
+    const completed = results.filter(r => r.status === 'completed');
+    const failed = completed.filter(r => r.conclusion === 'failure');
+
+    return {
+      total: completed.length,
+      failed: failed.length,
+      succeeded: completed.filter(r => r.conclusion === 'success').length,
+      failedRuns: failed.slice(0, 5).map(r => ({
+        name: r.name,
+        url: r.html_url,
+        created: r.created_at,
+      })),
+      skipped: false,
+    };
+  } catch (err) {
+    console.error(`[Workflows] API error: ${err.message}`);
+    return { total: 0, failed: 0, succeeded: 0, failedRuns: [], skipped: true, error: err.message };
+  }
+}
+
+// Simple HTTPS GET that returns parsed JSON
+function fetchJSON(url, headers) {
+  return new Promise((resolve, reject) => {
+    const parsedUrl = new URL(url);
+    const req = require('https').request({
+      hostname: parsedUrl.hostname,
+      path: parsedUrl.pathname + parsedUrl.search,
+      method: 'GET',
+      headers: { ...headers, 'Accept': 'application/json' },
+    }, (res) => {
+      let body = '';
+      res.on('data', chunk => body += chunk);
+      res.on('end', () => {
+        try { resolve(JSON.parse(body)); } catch { resolve(null); }
+      });
+    });
+    req.on('error', reject);
+    req.setTimeout(15000, () => { req.destroy(); reject(new Error('Timeout')); });
+    req.end();
+  });
+}
+
+// --- Email Digest ---
+
+/**
+ * Subject line spec:
+ *   Green: 0 errors, <=2 warnings → "BSC Daily: All clear (27/27 passed)"
+ *   Yellow: 1+ warnings OR 1-2 errors → "BSC Daily: 2 warnings — [first warning name]"
+ *   Red: 3+ errors OR any error 2+ consecutive days → "BSC Daily: ACTION NEEDED — [first error name]"
+ */
+function getDigestSubject(results, history) {
+  const errors = results.filter(r => r.status === 'error');
+  const warns = results.filter(r => r.status === 'warn');
+  const total = results.length;
+  const passed = results.filter(r => r.status === 'pass').length;
+
+  if (errors.length >= 3 || (errors.length > 0 && (history.consecutiveErrorDays || 0) >= 2)) {
+    const first = errors[0]?.name || 'unknown';
+    return `BSC Daily: ACTION NEEDED — ${first}`;
+  }
+  if (errors.length > 0) {
+    const first = errors[0]?.name || 'unknown';
+    return `BSC Daily: ${errors.length} error${errors.length > 1 ? 's' : ''} — ${first}`;
+  }
+  if (warns.length > 0) {
+    const first = warns[0]?.name || 'unknown';
+    return `BSC Daily: ${warns.length} warning${warns.length > 1 ? 's' : ''} — ${first}`;
+  }
+  return `BSC Daily: All clear (${passed}/${total} passed)`;
+}
+
+function getStatusColor(status) {
+  return status === 'pass' ? '#2ecc71' : status === 'warn' ? '#f39c12' : '#e74c3c';
+}
+
+function getStatusIcon(status) {
+  return status === 'pass' ? '&#9989;' : status === 'warn' ? '&#9888;&#65039;' : '&#10060;';
+}
+
+async function sendEmailDigest(results, history, workflowSummary) {
+  const apiKey = process.env.RESEND_API_KEY;
+  const ownerEmail = process.env.OWNER_EMAIL;
+
+  if (!apiKey || !ownerEmail) {
+    console.log('[Email Digest] RESEND_API_KEY or OWNER_EMAIL not set, skipping');
+    return;
+  }
+
+  const subject = getDigestSubject(results, history);
+  const errors = results.filter(r => r.status === 'error');
+  const warns = results.filter(r => r.status === 'warn');
+  const passed = results.filter(r => r.status === 'pass');
+
+  // Group by category
+  const categories = {};
+  for (const r of results) {
+    const cat = r.name.split(':')[0].trim();
+    if (!categories[cat]) categories[cat] = [];
+    categories[cat].push(r);
+  }
+
+  // Build category summary rows
+  const catRows = Object.entries(categories).map(([cat, checks]) => {
+    const catPassed = checks.filter(c => c.status === 'pass').length;
+    const catTotal = checks.length;
+    const worst = checks.some(c => c.status === 'error') ? 'error' : checks.some(c => c.status === 'warn') ? 'warn' : 'pass';
+    return `<tr>
+      <td style="padding:6px 12px;border-bottom:1px solid #333;color:#ccc;">${getStatusIcon(worst)} ${cat}</td>
+      <td style="padding:6px 12px;border-bottom:1px solid #333;color:${getStatusColor(worst)};text-align:center;">${catPassed}/${catTotal}</td>
+    </tr>`;
+  }).join('');
+
+  // Action needed section (errors + warnings)
+  let actionHtml = '';
+  if (errors.length > 0 || warns.length > 0) {
+    const items = [...errors, ...warns].map(r => {
+      const icon = r.status === 'error' ? '&#10060;' : '&#9888;&#65039;';
+      const hint = r.hint ? `<br><span style="color:#888;font-size:12px;">&#8594; ${r.hint}</span>` : '';
+      return `<li style="margin-bottom:8px;color:#ddd;">${icon} <strong>${r.name}</strong>: ${r.message}${hint}</li>`;
+    }).join('');
+    actionHtml = `
+      <h3 style="color:#f39c12;margin:24px 0 8px;">Action Needed</h3>
+      <ul style="padding-left:20px;margin:0;">${items}</ul>
+    `;
+  }
+
+  // Workflow runs section
+  let workflowHtml = '';
+  if (workflowSummary && !workflowSummary.skipped) {
+    const failedList = workflowSummary.failedRuns.length > 0
+      ? workflowSummary.failedRuns.map(r => `<li style="color:#e74c3c;margin-bottom:4px;"><a href="${r.url}" style="color:#e74c3c;">${r.name}</a></li>`).join('')
+      : '';
+    workflowHtml = `
+      <h3 style="color:#aaa;margin:24px 0 8px;">Workflow Runs (24h)</h3>
+      <p style="color:#ccc;margin:4px 0;">
+        ${workflowSummary.succeeded} succeeded, ${workflowSummary.failed} failed (${workflowSummary.total} total)
+      </p>
+      ${failedList ? `<ul style="padding-left:20px;margin:4px 0;">${failedList}</ul>` : ''}
+    `;
+  }
+
+  // Overall status banner
+  const overallStatus = errors.length > 0 ? 'error' : warns.length > 0 ? 'warn' : 'pass';
+  const bannerColor = getStatusColor(overallStatus);
+  const bannerText = errors.length > 0
+    ? `${errors.length} error${errors.length > 1 ? 's' : ''}, ${warns.length} warning${warns.length > 1 ? 's' : ''}`
+    : warns.length > 0
+    ? `${warns.length} warning${warns.length > 1 ? 's' : ''}`
+    : `All ${passed.length} checks passed`;
+
+  const consecutiveInfo = history.consecutiveErrorDays > 0
+    ? `<p style="color:#e74c3c;font-size:13px;margin:4px 0;">&#9888;&#65039; Day ${history.consecutiveErrorDays} of consecutive errors</p>`
+    : history.lastCleanStreak > 1
+    ? `<p style="color:#2ecc71;font-size:13px;margin:4px 0;">&#9989; ${history.lastCleanStreak} day clean streak</p>`
+    : '';
+
+  const html = `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#1a1a2e;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <div style="max-width:560px;margin:0 auto;padding:20px;">
+    <!-- Banner -->
+    <div style="background:#16213e;border-left:4px solid ${bannerColor};padding:16px 20px;border-radius:8px;margin-bottom:20px;">
+      <h2 style="color:${bannerColor};margin:0 0 4px;font-size:18px;">${bannerText}</h2>
+      ${consecutiveInfo}
+      <p style="color:#666;font-size:12px;margin:4px 0 0;">broadwayscorecard.com &middot; ${new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}</p>
+    </div>
+
+    <!-- Health Status Table -->
+    <table style="width:100%;border-collapse:collapse;background:#16213e;border-radius:8px;overflow:hidden;">
+      <thead>
+        <tr style="border-bottom:2px solid #333;">
+          <th style="padding:8px 12px;text-align:left;color:#888;font-size:12px;text-transform:uppercase;">Category</th>
+          <th style="padding:8px 12px;text-align:center;color:#888;font-size:12px;text-transform:uppercase;">Status</th>
+        </tr>
+      </thead>
+      <tbody>${catRows}</tbody>
+    </table>
+
+    ${actionHtml}
+    ${workflowHtml}
+
+    <!-- Footer -->
+    <p style="color:#555;font-size:11px;margin-top:24px;text-align:center;">
+      Broadway Scorecard Daily Digest &middot; <a href="https://github.com/thomaspryor/Broadwayscore/actions" style="color:#555;">Actions</a>
+    </p>
+  </div>
+</body>
+</html>`;
+
+  // Send via Resend — throw on failure so health-check exits non-zero
+  // (triggers notify-failure → Discord, avoiding bootstrap circularity)
+  return new Promise((resolve, reject) => {
+    const data = JSON.stringify({
+      from: 'Broadway Scorecard <alerts@broadwayscorecard.com>',
+      to: [ownerEmail],
+      subject,
+      html,
+    });
+
+    const req = require('https').request({
+      hostname: 'api.resend.com',
+      path: '/emails',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Length': Buffer.byteLength(data),
+      },
+    }, (res) => {
+      let body = '';
+      res.on('data', chunk => body += chunk);
+      res.on('end', () => {
+        if (res.statusCode >= 200 && res.statusCode < 300) {
+          console.log('[Email Digest] Daily digest sent successfully');
+          resolve(true);
+        } else {
+          const errMsg = `[Email Digest] Failed: ${res.statusCode} ${body}`;
+          console.error(errMsg);
+          // Don't throw for rate limits during soak period — just warn
+          if (res.statusCode === 429) {
+            console.error('[Email Digest] Rate limited — digest not sent');
+            resolve(false);
+          } else {
+            reject(new Error(errMsg));
+          }
+        }
+      });
+    });
+
+    req.on('error', (err) => {
+      console.error('[Email Digest] Request error:', err.message);
+      reject(err);
+    });
+
+    req.setTimeout(15000, () => {
+      req.destroy();
+      reject(new Error('[Email Digest] Request timed out'));
+    });
+
+    req.write(data);
+    req.end();
+  });
+}
+
 // --- Triage State (per-system files) ---
 
 function writeTriageState(allResults) {
@@ -782,6 +1056,17 @@ async function main() {
 
   // Write per-system triage state files
   writeTriageState(allResults);
+
+  // Get workflow run summary for the digest
+  const workflowSummary = await getWorkflowRunSummary();
+  if (workflowSummary.skipped) {
+    console.log('[Workflows] Skipped — no GH_TOKEN available');
+  } else {
+    console.log(`[Workflows] ${workflowSummary.succeeded} succeeded, ${workflowSummary.failed} failed (${workflowSummary.total} total in last 24h)`);
+  }
+
+  // Send email digest (throws on failure → triggers notify-failure)
+  await sendEmailDigest(allResults, history, workflowSummary);
 
   // Send Discord notifications
   await sendDailyReport(allResults, history);
