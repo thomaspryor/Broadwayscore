@@ -65,6 +65,7 @@ import { ReviewTextFile, ScoringPipelineOptions, PipelineRunSummary } from './ty
 const { assessTextQuality, detectGarbageFromReasoning } = require('../lib/content-quality.js');
 
 import { detectMultiShow } from './multi-show-detector';
+import { trimMultiShowText } from './trim-multi-show';
 import { PROMPT_VERSION, SYSTEM_PROMPT_V5, buildPromptV5, BUCKET_RANGES } from './config';
 import { isScoreable } from './is-scoreable';
 
@@ -892,6 +893,20 @@ async function main(): Promise<void> {
         // Fall through to excerpts
       } else {
         // Text is valid or low-suspicion - use it
+        // For multi-show reviews, try to trim to the relevant section
+        if ((data as any).isMultiShowReview && data.showId) {
+          const showTitle = showTitles.get(data.showId);
+          if (showTitle) {
+            const trimResult = trimMultiShowText(data.fullText, showTitle, data.showId);
+            if (trimResult.trimmed && !trimResult.trimFailed) {
+              if (options.verbose) {
+                console.log(`  Trimmed multi-show text: ${trimResult.originalLength} → ${trimResult.trimmedLength} chars (${trimResult.method})`);
+              }
+              return trimResult.text;
+            }
+            // trimFailed: fall through to use full text — V5 prompt handles multi-show content
+          }
+        }
         return data.fullText;
       }
     }
@@ -1035,6 +1050,9 @@ async function main(): Promise<void> {
 
   for (let i = 0; i < finalFiles.length; i++) {
     const { path: filePath, data: reviewFile } = finalFiles[i];
+
+    // Attach human-readable show title for LLM context (input-builder uses it)
+    (reviewFile as any).showTitle = showTitles.get(reviewFile.showId) || undefined;
 
     // Progress
     const showName = reviewFile.showId;

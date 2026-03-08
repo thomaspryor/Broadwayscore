@@ -14,7 +14,7 @@ for (const s of shows) {
                       (d.dtliExcerpt && d.dtliExcerpt.length > 30) ||
                       (d.showScoreExcerpt && d.showScoreExcerpt.length > 30);
       const hasLlm = d.llmScore && d.llmScore.score;
-      if (hasText && !hasLlm && !d.wrongShow && !d.wrongProduction && !d.isMultiShowReview) {
+      if (hasText && !hasLlm && !d.wrongShow && !d.wrongProduction) {
         unscored.push({
           showId: s, file: f,
           textLen: d.fullText ? d.fullText.length : 0,

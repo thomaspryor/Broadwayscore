@@ -289,7 +289,7 @@ jobs:
                   const fp = path.join(showDir, f);
                   const r = JSON.parse(fs.readFileSync(fp, "utf8"));
                   if (r.wrongProduction || r.wrongShow || r.wrongAttribution) return;
-                  if (r.duplicateOf || r.rejectionReason || r.isRoundupArticle || r.isMultiShowReview) return;
+                  if (r.duplicateOf || r.rejectionReason || r.isRoundupArticle) return;
                   if (r.contentTier === "invalid") return;
                   if (garbageSuffix.has(d + "/" + f)) return;
                   const hasText = r.fullText && r.fullText.length > 100;

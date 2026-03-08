@@ -79,6 +79,12 @@ const SKIP_TITLES = new Set([
   'broadway', 'giant', 'molly',
   'baby', 'brothers', 'doubt', 'dream', 'race', 'rain', 'rose',
   'the audience', 'the performers', 'the news', 'the price', 'the visit',
+  // Common words/names that are also show titles — verified false positives in Mar 2026 audit (710 files)
+  'the first', 'parade', 'just in time', 'english', 'holiday', 'care',
+  'dorothy', 'working', 'emily', 'wanted', 'buddy', 'stanley', 'jackie',
+  'fosse', 'sugar', 'irene', 'data', 'brooklyn', 'mail', 'marilyn',
+  'legend', 'bent', 'contact', 'stomp', 'stages', 'raisin', 'betty',
+  'lenny', 'sylvia', 'carrie', 'stanley',
 ]);
 
 /**

@@ -165,7 +165,7 @@ jobs:
                 try {
                   const r = JSON.parse(fs.readFileSync(path.join(base,d,f),'utf8'));
                   if (r.wrongProduction || r.wrongShow || r.wrongAttribution) return;
-                  if (r.duplicateOf || r.rejectionReason || r.isRoundupArticle || r.isMultiShowReview) return;
+                  if (r.duplicateOf || r.rejectionReason || r.isRoundupArticle) return;
                   if (r.contentTier === 'invalid') return;
                   const hasText = r.fullText && r.fullText.length > 100;
                   const hasExcerpt = r.bwwExcerpt || r.dtliExcerpt || r.showScoreExcerpt || r.pvExcerpt || r.nycExcerpt || (r.excerpt && r.excerpt.length > 50);
@@ -196,7 +196,7 @@ jobs:
                     const r = JSON.parse(fs.readFileSync(path.join(base,d,f),'utf8'));
                     if (!r.needsRescore || r.rescoreCompletedAt) return;
                     if (r.duplicateOf || r.wrongShow || r.wrongProduction || r.wrongAttribution || r.contentTier === 'invalid') return;
-                    if (r.isMultiShowReview || r.isRoundupArticle || r.rejectionReason) return;
+                    if (r.isRoundupArticle || r.rejectionReason) return;
                     if (r.showNotMentioned && !r.bwwExcerpt && !r.dtliExcerpt && !r.showScoreExcerpt) return;
                     n++;
                   } catch(e) {}
@@ -514,7 +514,7 @@ jobs:
                   const fp = path.join(base,d,f);
                   const r = JSON.parse(fs.readFileSync(fp,'utf8'));
                   if (r.llmScore || r.wrongShow || r.wrongProduction || r.wrongAttribution) return;
-                  if (r.duplicateOf || r.rejectionReason || r.isRoundupArticle || r.isMultiShowReview) return;
+                  if (r.duplicateOf || r.rejectionReason || r.isRoundupArticle) return;
                   if (r.contentTier === 'invalid') return;
                   if (garbageSuffix.has(d + '/' + f)) return;
                   const hasText = r.fullText && r.fullText.length > 100;
