@@ -8,7 +8,7 @@ import ReviewBody from '@/components/reviews/ReviewBody';
 import StressTest from '@/components/reviews/StressTest';
 import AuthorCard from '@/components/reviews/AuthorCard';
 import { AUTHOR } from '@/config/author';
-import { BASE_URL, toAbsoluteUrl } from '@/lib/seo';
+import { BASE_URL, toAbsoluteUrl, generateBreadcrumbSchema } from '@/lib/seo';
 import { getDataStats } from '@/lib/data-core';
 
 export function generateStaticParams() {
@@ -109,11 +109,17 @@ export default function ReviewPage({ params }: { params: { slug: string } }) {
     },
   };
 
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: BASE_URL },
+    { name: 'Reviews', url: `${BASE_URL}/reviews` },
+    { name: review.show, url: `${BASE_URL}/reviews/${review.slug}` },
+  ]);
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([reviewSchema, breadcrumbSchema]) }}
       />
 
       <Breadcrumb items={[
