@@ -285,7 +285,15 @@
     "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
     "chess-2025/hollywood-reporter--angie-han.json",
     "chinese-republicans-off-broadway-2026/nytg--unknown.json",
-    "data-off-broadway-2026/nyt-theater--jonathan-mandell.json"
+    "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nytimes--ben-brantley.json",
+    "death-becomes-her-2024/newyorker--helen-shaw.json",
+    "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+    "drunk-romeo-and-juliet-off-broadway-2025/nytg--unknown.json",
+    "giant-2026/nytimes--houman-barekat.json",
+    "hadestown-2019/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/nyt-theater--jonathan-mandell.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -2367,7 +2375,9 @@
     "wicked-2003/the-chronicle--howard-gollop.json",
     "you-got-older-off-broadway-2026/nysr--frank-scheck.json",
     "chess-2025/newyorker--michael-schulman.json",
-    "chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json"
+    "chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
+    "dirty-books-off-broadway-2025/nytg--unknown.json",
+    "hadestown-2019/newyorker--hilton-als.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2511,7 +2521,10 @@
       "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
       "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
       "chinese-republicans-off-broadway-2026/nytg--unknown.json",
-      "data-off-broadway-2026/nyt-theater--jonathan-mandell.json"
+      "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+      "drunk-romeo-and-juliet-off-broadway-2025/nytg--unknown.json",
+      "hamilton-2015/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [
       "data/review-texts/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/vulture--helen-shaw.json",
@@ -2599,7 +2612,11 @@
       "data/review-texts/an-ark-off-broadway-2026/hollywood-reporter--frank-scheck.json",
       "an-ark-off-broadway-2026/hollywood-reporter--frank-scheck.json",
       "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
-      "chess-2025/hollywood-reporter--angie-han.json"
+      "chess-2025/hollywood-reporter--angie-han.json",
+      "data/review-texts/hadestown-2019/hollywood-reporter--david-rooney.json",
+      "hadestown-2019/hollywood-reporter--david-rooney.json",
+      "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json",
+      "hamilton-2015/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2651,7 +2668,9 @@
       "wicked-west-end-2021/nytimes--ben-brantley.json",
       "and-juliet-2022/nydailynews--chris-jones.json",
       "les-miserables-west-end-2021/daily-mail--patrick-marmion.json",
-      "broken-glass-west-end-2026/nytimes--unknown.json"
+      "broken-glass-west-end-2026/nytimes--unknown.json",
+      "data-off-broadway-2026/nytimes--ben-brantley.json",
+      "death-becomes-her-2024/newyorker--helen-shaw.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -3145,11 +3164,12 @@
       "matilda-the-musical-west-end-2021/thestage--mark-shenton.json",
       "the-play-that-goes-wrong-west-end-2021/broadwayworld--michael-dale.json",
       "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/broadwayworld--aliya-al-hassan.json",
-      "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json"
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
+      "giant-2026/nytimes--houman-barekat.json"
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+  "lastProcessed": "hamilton-2015/nyt-theater--jonathan-mandell.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -3998,6 +4018,28 @@
       "t": "2026-03-08T18:08:34.264Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-08T18:10:51.492Z",
+      "event": "bb-session",
+      "session": "8bf22c96",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-08T18:10:52.854Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-08T18:11:13.170Z",
+      "event": "bb-session",
+      "session": "5435f8f4",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-08T18:11:14.557Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

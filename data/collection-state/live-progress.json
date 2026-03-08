@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-08T18:09:26.924Z",
-  "processed": 286,
-  "failed": 2080,
-  "successRate": "12.1%",
+  "updatedAt": "2026-03-08T18:11:34.117Z",
+  "processed": 294,
+  "failed": 2082,
+  "successRate": "12.4%",
   "tierBreakdown": {
-    "playwright": 140,
+    "playwright": 143,
     "amp": 37,
-    "browserbase": 47,
+    "browserbase": 51,
     "directCookies": 0,
-    "scrapingbee": 49,
+    "scrapingbee": 51,
     "brightdata": 0,
     "archiveToday": 426,
-    "archive": 63
+    "archive": 64
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-03-08T15:38:25.254Z",
-      "event": "bb-session",
-      "session": "14f8457b",
-      "url": "https://nypost.com/2019/04/21/gary-review-nathan-lanes-titus-sequel-is-a-stinker"
-    },
-    {
-      "t": "2026-03-08T15:38:26.458Z",
-      "event": "bb-cookie-inject",
-      "domain": "nypost.com"
-    },
-    {
-      "t": "2026-03-08T15:43:41.298Z",
-      "event": "bb-session",
-      "session": "1ab16048",
-      "url": "http://www.amny.com/entertainment/cats-broadway-revival-classic-musical-is-back-"
-    },
-    {
-      "t": "2026-03-08T15:43:42.695Z",
-      "event": "bb-cookie-inject",
-      "domain": "amny.com"
-    },
     {
       "t": "2026-03-08T17:43:35.007Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-08T18:08:34.264Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-08T18:10:51.492Z",
+      "event": "bb-session",
+      "session": "8bf22c96",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-08T18:10:52.854Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-08T18:11:13.170Z",
+      "event": "bb-session",
+      "session": "5435f8f4",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-08T18:11:14.557Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
