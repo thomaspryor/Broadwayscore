@@ -244,7 +244,17 @@
     "american-idiot-2010/ap--michael-kuchwara.json",
     "american-idiot-2010/ny1--roma-torre.json",
     "american-psycho-2016/usatoday--elysa-gardner.json",
-    "an-enemy-of-the-people-1971/northjerseycom--robert-feldberg.json"
+    "an-enemy-of-the-people-1971/northjerseycom--robert-feldberg.json",
+    "an-enemy-of-the-people-2012/northjerseycom--robert-feldberg.json",
+    "an-enemy-of-the-people-2012/philadelphia-inquirer--howard-shapiro.json",
+    "angels-in-america-2018/broadwayworld--michael-dale.json",
+    "angels-in-america-2018/rollingstone--peter-travers.json",
+    "angels-in-america-2018/usatoday--charles-isherwood.json",
+    "ann-2013/ap--mark-kennedy.json",
+    "ann-2013/ny1--roma-torre.json",
+    "annie-1977/amny--matt-windman.json",
+    "annie-1997/amny--matt-windman.json",
+    "annie-2012/ap--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -339,7 +349,9 @@
       "data/review-texts/amazing-grace-2015/usatoday--elysa-gardner.json",
       "data/review-texts/american-buffalo-2022/usatoday--charles-isherwood.json",
       "data/review-texts/american-buffalo-2022/usatoday--kelly-lawler.json",
-      "data/review-texts/american-psycho-2016/usatoday--elysa-gardner.json"
+      "data/review-texts/american-psycho-2016/usatoday--elysa-gardner.json",
+      "data/review-texts/angels-in-america-2018/broadwayworld--michael-dale.json",
+      "data/review-texts/ann-2013/ap--mark-kennedy.json"
     ],
     "archive": [
       "you-got-older-off-broadway-2026/timeout--unknown.json",
@@ -353,7 +365,7 @@
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "an-enemy-of-the-people-1971/northjerseycom--robert-feldberg.json",
+  "lastProcessed": "annie-2012/ap--mark-kennedy.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -684,6 +696,39 @@
       "t": "2026-03-08T03:15:11.115Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-08T03:16:09.781Z",
+      "event": "bb-session",
+      "session": "099aa6ae",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/171672031_Theater_review_"
+    },
+    {
+      "t": "2026-03-08T03:16:10.815Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-08T03:19:57.110Z",
+      "event": "bb-session",
+      "session": "6e6ff789",
+      "url": "https://india.nydailynews.com/newsarticle/4a30606ab06ae47c8609b8558f64c44b/revie"
+    },
+    {
+      "t": "2026-03-08T03:19:58.434Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-03-08T03:22:15.216Z",
+      "event": "bb-session",
+      "session": "80256aa4",
+      "url": "http://www.amny.com/urbanite-1.812039/theater-review-annie-1-5-stars-1.4202762"
+    },
+    {
+      "t": "2026-03-08T03:22:16.391Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
