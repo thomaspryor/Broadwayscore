@@ -373,7 +373,7 @@ export function getAllTheaterSlugs(): string[] {
 const BEST_OF_CONFIG: Record<BestOfCategory, { title: string; description: string; filter: (show: ComputedShow) => boolean }> = {
   'musicals': {
     title: 'Best Broadway Musicals',
-    description: 'Every Broadway musical ranked by aggregated critic scores from NYT, Variety, Vulture & 400+ outlets. Updated weekly.',
+    description: 'Every Broadway musical ranked by aggregated critic scores from NYT, Variety, Vulture & 400+ outlets. See which are must-sees right now. Updated weekly.',
     filter: (show) => show.type === 'musical' && show.status === 'open',
   },
   'plays': {
@@ -383,7 +383,7 @@ const BEST_OF_CONFIG: Record<BestOfCategory, { title: string; description: strin
   },
   'new-shows': {
     title: 'Best New Broadway Shows',
-    description: 'The highest-rated shows that opened in the current season.',
+    description: 'The highest-rated Broadway shows that opened this season, ranked by aggregated critic scores from NYT, Variety, Vulture & 400+ outlets.',
     filter: (show) => {
       const openDate = new Date(show.openingDate);
       const now = new Date();
@@ -394,12 +394,12 @@ const BEST_OF_CONFIG: Record<BestOfCategory, { title: string; description: strin
   },
   'highest-rated': {
     title: 'Top 10 Highest Rated Broadway Shows',
-    description: 'The 10 highest-rated Broadway shows right now based on 400+ aggregated critic reviews. The definitive list.',
+    description: 'The 10 highest-rated Broadway shows right now based on aggregated critic scores from NYT, Variety, Vulture & 400+ outlets. Updated weekly.',
     filter: (show) => show.status === 'open' && show.criticScore?.score !== undefined,
   },
   'family': {
     title: 'Best Broadway Shows for Families',
-    description: 'Family-friendly Broadway shows perfect for all ages.',
+    description: 'The best Broadway shows for kids and families, ranked by critics. Find age-appropriate musicals and plays the whole family will love.',
     filter: (show) => {
       const ageRec = show.ageRecommendation?.toLowerCase() || '';
       const tags = show.tags?.map(t => t.toLowerCase()) || [];
@@ -413,7 +413,7 @@ const BEST_OF_CONFIG: Record<BestOfCategory, { title: string; description: strin
   },
   'comedy': {
     title: 'Best Broadway Comedies',
-    description: 'The funniest shows on Broadway right now, ranked by aggregated critic scores from 400+ outlets. Updated weekly.',
+    description: 'The funniest shows on Broadway right now, ranked by aggregated critic scores from 400+ outlets. Find the laughs you need. Updated weekly.',
     filter: (show) => {
       const tags = show.tags?.map(t => t.toLowerCase()) || [];
       return show.status === 'open' && tags.includes('comedy');
@@ -421,7 +421,7 @@ const BEST_OF_CONFIG: Record<BestOfCategory, { title: string; description: strin
   },
   'drama': {
     title: 'Best Broadway Dramas',
-    description: 'Powerful dramatic productions currently captivating Broadway audiences.',
+    description: 'The best dramas on Broadway right now, ranked by aggregated critic scores from 400+ outlets. Powerful plays currently captivating audiences and critics alike.',
     filter: (show) => {
       const tags = show.tags?.map(t => t.toLowerCase()) || [];
       return show.status === 'open' && tags.includes('drama');
