@@ -277,7 +277,15 @@
     "all-out-2025/nytg--gillian-russo.json",
     "an-ark-off-broadway-2026/hollywood-reporter--frank-scheck.json",
     "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
-    "back-to-the-future-west-end-2021/variety--david-benedict.json"
+    "back-to-the-future-west-end-2021/variety--david-benedict.json",
+    "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+    "bigfoot-off-broadway-2026/vulture--unknown.json",
+    "broken-glass-west-end-2026/nytimes--unknown.json",
+    "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+    "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+    "chess-2025/hollywood-reporter--angie-han.json",
+    "chinese-republicans-off-broadway-2026/nytg--unknown.json",
+    "data-off-broadway-2026/nyt-theater--jonathan-mandell.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -2357,7 +2365,9 @@
     "the-lion-king-west-end-2021/thestage--unknown.json",
     "titanique-west-end-2024/standard--nick-curtis.json",
     "wicked-2003/the-chronicle--howard-gollop.json",
-    "you-got-older-off-broadway-2026/nysr--frank-scheck.json"
+    "you-got-older-off-broadway-2026/nysr--frank-scheck.json",
+    "chess-2025/newyorker--michael-schulman.json",
+    "chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2496,7 +2506,12 @@
       "masquerade-off-broadway-2025/nysr--frank-scheck.json",
       "matilda-the-musical-west-end-2021/the-express--julie-carpenter.json",
       "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
-      "all-out-2025/nytg--gillian-russo.json"
+      "all-out-2025/nytg--gillian-russo.json",
+      "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+      "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+      "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+      "chinese-republicans-off-broadway-2026/nytg--unknown.json",
+      "data-off-broadway-2026/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [
       "data/review-texts/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/vulture--helen-shaw.json",
@@ -2533,7 +2548,9 @@
       "data/review-texts/wicked-west-end-2021/variety--charles-isherwood.json",
       "wicked-west-end-2021/variety--charles-isherwood.json",
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
-      "back-to-the-future-west-end-2021/variety--david-benedict.json"
+      "back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "data/review-texts/bigfoot-off-broadway-2026/vulture--unknown.json",
+      "bigfoot-off-broadway-2026/vulture--unknown.json"
     ],
     "browserbase": [
       "data/review-texts/brooklyn-2004/nytimes--ben-brantley.json",
@@ -2580,7 +2597,9 @@
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
       "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
       "data/review-texts/an-ark-off-broadway-2026/hollywood-reporter--frank-scheck.json",
-      "an-ark-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+      "an-ark-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
+      "chess-2025/hollywood-reporter--angie-han.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2631,7 +2650,8 @@
       "the-lion-king-west-end-2021/nytimes--ben-brantley.json",
       "wicked-west-end-2021/nytimes--ben-brantley.json",
       "and-juliet-2022/nydailynews--chris-jones.json",
-      "les-miserables-west-end-2021/daily-mail--patrick-marmion.json"
+      "les-miserables-west-end-2021/daily-mail--patrick-marmion.json",
+      "broken-glass-west-end-2026/nytimes--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -3058,7 +3078,9 @@
       "data/review-texts/paddington-the-musical-west-end-2025/broadwayworld--christiana-rose.json",
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/broadwayworld--alexander-cohen.json",
       "data/review-texts/the-hunger-games-on-stage-west-end-2025/broadwayworld--cindy-marcolina.json",
-      "data/review-texts/titanique-west-end-2024/standard--nick-curtis.json"
+      "data/review-texts/titanique-west-end-2024/standard--nick-curtis.json",
+      "data/review-texts/chess-2025/newyorker--michael-schulman.json",
+      "data/review-texts/chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json"
     ],
     "archive": [
       "you-got-older-off-broadway-2026/timeout--unknown.json",
@@ -3127,7 +3149,7 @@
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "back-to-the-future-west-end-2021/variety--david-benedict.json",
+  "lastProcessed": "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -3943,6 +3965,39 @@
       "t": "2026-03-08T18:03:26.915Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-08T18:05:26.254Z",
+      "event": "bb-session",
+      "session": "aa4b9be9",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-08T18:05:27.431Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-08T18:07:11.765Z",
+      "event": "bb-session",
+      "session": "c8f4be24",
+      "url": "https://www.newyorker.com/magazine/2025/11/17/nicholas-christopher-broadways-gra"
+    },
+    {
+      "t": "2026-03-08T18:07:12.984Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-08T18:08:32.950Z",
+      "event": "bb-session",
+      "session": "a7992732",
+      "url": "https://www.nytimes.com/2026/02/27/theater/chinese-republicans-review-alex-lin.h"
+    },
+    {
+      "t": "2026-03-08T18:08:34.264Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
