@@ -157,7 +157,8 @@
     "rent-1996/broadway-space--kari-olmon.json",
     "the-homecoming-2007/independent--alice-saville.json",
     "the-homecoming-2007/whatsonstage--sarah-crompton.json",
-    "the-king-and-i-2015/amny--matt-windman.json"
+    "the-king-and-i-2015/amny--matt-windman.json",
+    "the-little-foxes-1981/washpost--peter-marks.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -1364,7 +1365,16 @@
     "the-iceman-cometh-2018/zeal-nyc--jil-picariello.json",
     "the-inheritance-2019/usatoday--charles-isherwood.json",
     "the-king-and-i-2015/ap--jennifer-farrar.json",
-    "the-king-and-i-2015/off-script-with-dan-dwyer--dan-dwyer.json"
+    "the-king-and-i-2015/off-script-with-dan-dwyer--dan-dwyer.json",
+    "the-king-and-i-2015/washpost--peter-marks.json",
+    "the-last-five-years-2025/hypable--unknown.json",
+    "the-lifespan-of-a-fact-2018/washpost--peter-marks.json",
+    "the-little-dog-laughed-2006/washpost--peter-marks.json",
+    "the-little-foxes-2017/off-script-with-dan-dwyer--dan-dwyer.json",
+    "the-little-foxes-2017/our-theater-blog--tamara-beck.json",
+    "the-little-foxes-2017/pop-dust--thomas-burns-scully.json",
+    "the-little-mermaid-2008/washpost--peter-marks.json",
+    "the-lyons-2012/ap--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1438,7 +1448,8 @@
       "sunday-in-the-park-with-george-2017/out-magazine--michael-musto.json",
       "rodgers-hammersteins-cinderella-2013/theatermania--hayley-levitt.json",
       "cats-1982/reflections-in-the-light--lauren-yarger.json",
-      "the-homecoming-2007/whatsonstage--sarah-crompton.json"
+      "the-homecoming-2007/whatsonstage--sarah-crompton.json",
+      "the-little-foxes-1981/washpost--peter-marks.json"
     ],
     "amp": [
       "data/review-texts/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/vulture--helen-shaw.json",
@@ -1848,7 +1859,15 @@
       "data/review-texts/the-house-of-blue-leaves-2011/washpost--peter-marks.json",
       "data/review-texts/the-humans-2016/off-script-with-dan-dwyer--dan-dwyer.json",
       "data/review-texts/the-humans-2016/whatsonstage--scott-mitchell.json",
-      "data/review-texts/the-king-and-i-2015/off-script-with-dan-dwyer--dan-dwyer.json"
+      "data/review-texts/the-king-and-i-2015/off-script-with-dan-dwyer--dan-dwyer.json",
+      "data/review-texts/the-king-and-i-2015/washpost--peter-marks.json",
+      "data/review-texts/the-last-five-years-2025/hypable--unknown.json",
+      "data/review-texts/the-lifespan-of-a-fact-2018/washpost--peter-marks.json",
+      "data/review-texts/the-little-dog-laughed-2006/washpost--peter-marks.json",
+      "data/review-texts/the-little-foxes-2017/off-script-with-dan-dwyer--dan-dwyer.json",
+      "data/review-texts/the-little-foxes-2017/pop-dust--thomas-burns-scully.json",
+      "data/review-texts/the-little-mermaid-2008/washpost--peter-marks.json",
+      "data/review-texts/the-lyons-2012/ap--mark-kennedy.json"
     ],
     "archive": [
       "you-got-older-off-broadway-2026/timeout--unknown.json",
@@ -1887,7 +1906,7 @@
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "the-king-and-i-2015/off-script-with-dan-dwyer--dan-dwyer.json",
+  "lastProcessed": "the-lyons-2012/ap--mark-kennedy.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -2361,6 +2380,61 @@
       "t": "2026-03-08T10:53:32.498Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-08T10:55:29.594Z",
+      "event": "bb-session",
+      "session": "0c55742f",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/the-king-and-i-a-sump"
+    },
+    {
+      "t": "2026-03-08T10:55:30.640Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-08T10:58:01.966Z",
+      "event": "bb-session",
+      "session": "d9d09f36",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/the-lifespan-of-a-fac"
+    },
+    {
+      "t": "2026-03-08T10:58:03.118Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-08T10:58:26.735Z",
+      "event": "bb-session",
+      "session": "5c700180",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/2006/11/14/the-little-dog-laugh"
+    },
+    {
+      "t": "2026-03-08T10:58:27.736Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-08T11:01:00.808Z",
+      "event": "bb-session",
+      "session": "32654237",
+      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2008/01/10/AR2008011003281"
+    },
+    {
+      "t": "2026-03-08T11:01:01.973Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-08T11:01:22.837Z",
+      "event": "bb-session",
+      "session": "cb1e4b68",
+      "url": "https://www.washingtonpost.com/entertainment/review-nicky-silvers-terrific-the-l"
+    },
+    {
+      "t": "2026-03-08T11:01:23.760Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
