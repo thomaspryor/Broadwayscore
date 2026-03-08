@@ -1119,7 +1119,7 @@ async function discoverShows() {
       const det = undetected[i];
       const showYear = det.show.openingDate ? parseInt(det.show.openingDate.split('-')[0]) :
                        det.show.previewsStartDate ? parseInt(det.show.previewsStartDate.split('-')[0]) : null;
-      const result = await checkIBDBForPriorProductions(det.show.title, { currentYear: showYear });
+      const result = await checkIBDBForPriorProductions(det.show.title, { currentYear: showYear, showCategory: 'off-broadway' });
       if (result.isRevival) {
         det.isRevival = true;
         if (result.confidence === 'high') det.confidence = 'high';
