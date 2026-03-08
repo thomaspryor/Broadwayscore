@@ -1,25 +1,30 @@
 {
-  "timestamp": "2026-03-08T04:48:57.815Z",
+  "timestamp": "2026-03-08T06:23:18.475Z",
   "hasIssues": true,
   "current": {
+    "date": "2026-03-08",
+    "totalReviews": 31094,
+    "unknownOutlets": 55,
+    "duplicates": 0,
+    "syncDelta": 13040
+  },
+  "previous": {
     "date": "2026-03-08",
     "totalReviews": 31111,
     "unknownOutlets": 67,
     "duplicates": 35,
     "syncDelta": 13064
   },
-  "previous": {
-    "date": "2026-03-01",
-    "totalReviews": 30248,
-    "unknownOutlets": 47,
-    "duplicates": 49,
-    "syncDelta": 12984
-  },
   "issues": [
+    {
+      "type": "review_count_decrease",
+      "severity": "warning",
+      "message": "Review count decreased by 17 (0.1%) from 31111 to 31094"
+    },
     {
       "type": "unknown_outlets",
       "severity": "critical",
-      "message": "67 reviews have unknown outlets",
+      "message": "55 reviews have unknown outlets",
       "examples": [
         {
           "file": "data/review-texts/11-to-midnight-off-broadway-2026/unknown--ryan-leeds.json",
@@ -27,18 +32,8 @@
           "outlet": "Unknown"
         },
         {
-          "file": "data/review-texts/1984-2017/is-intense-in-a-way-ive-never-seen-on-broadway--duncan-macmillan.json",
-          "outletId": "is-intense-in-a-way-ive-never-seen-on-broadway",
-          "outlet": "is-intense-in-a-way-ive-never-seen-on-broadway"
-        },
-        {
           "file": "data/review-texts/a-dolls-house-part-2-2017/unknown--david-sheward.json",
           "outletId": "unknown"
-        },
-        {
-          "file": "data/review-texts/act-one-2014/its-a-brave-writer-who-would-contrive-this-show--moss-hart.json",
-          "outletId": "its-a-brave-writer-who-would-contrive-this-show",
-          "outlet": "its-a-brave-writer-who-would-contrive-this-show"
         },
         {
           "file": "data/review-texts/airline-highway-2015/unknown--drew-shanahan.json",
@@ -64,71 +59,28 @@
         {
           "file": "data/review-texts/american-buffalo-2022/unknown--david-sheward.json",
           "outletId": "unknown"
-        }
-      ]
-    },
-    {
-      "type": "duplicates",
-      "severity": "critical",
-      "message": "35 duplicate reviews detected",
-      "examples": [
-        {
-          "file": "data/review-texts/be-more-chill-2019/theater-news-online--michael-appler.json",
-          "key": "be-more-chill-2019|the-theatre-times|michael appler"
         },
         {
-          "file": "data/review-texts/bigfoot-off-broadway-2026/nysr--unknown.json",
-          "key": "bigfoot-off-broadway-2026|nysr|michael sommers"
+          "file": "data/review-texts/an-american-in-paris-2015/unknown--roy-berko.json",
+          "outletId": "unknown"
         },
         {
-          "file": "data/review-texts/broken-glass-west-end-2026/independent--unknown.json",
-          "key": "broken-glass-west-end-2026|independent|alice saville"
-        },
-        {
-          "file": "data/review-texts/falsettos-2016/newyorker--hilton-als.json",
-          "key": "falsettos-2016|newyorker|hilton als"
-        },
-        {
-          "file": "data/review-texts/hadestown-2019/washpost--unknown.json",
-          "key": "hadestown-2019|washpost|peter marks"
-        },
-        {
-          "file": "data/review-texts/hamilton-2015/nytimes--unknown.json",
-          "key": "hamilton-2015|nytimes|ben brantley"
-        },
-        {
-          "file": "data/review-texts/high-noon-west-end-2025/timeout-london--andrzej-lukowski.json",
-          "key": "high-noon-west-end-2025|timeout-london|andrzej lukowski"
-        },
-        {
-          "file": "data/review-texts/hold-on-to-your-butts-off-broadway-2026/timeout-london--dave-calhoun.json",
-          "key": "hold-on-to-your-butts-off-broadway-2026|timeout-london|dave calhoun"
-        },
-        {
-          "file": "data/review-texts/im-sorry-prime-minister-west-end-2026/standard--unknown.json",
-          "key": "im-sorry-prime-minister-west-end-2026|standard|nick curtis"
-        },
-        {
-          "file": "data/review-texts/im-sorry-prime-minister-west-end-2026/thestage--unknown.json",
-          "key": "im-sorry-prime-minister-west-end-2026|thestage|dave fargnoli"
+          "file": "data/review-texts/an-ark-off-broadway-2026/unknown--thom-geier.json",
+          "outletId": "unknown",
+          "outlet": "Unknown"
         }
       ]
     },
     {
       "type": "sync_delta",
       "severity": "critical",
-      "message": "review-texts (31111) and reviews.json (18047) are out of sync by 13064 reviews"
-    },
-    {
-      "type": "unknown_outlets_degradation",
-      "severity": "warning",
-      "message": "Unknown outlets increased from 47 to 67"
+      "message": "review-texts (31094) and reviews.json (18054) are out of sync by 13040 reviews"
     }
   ],
   "summary": {
-    "totalReviews": 31111,
-    "unknownOutlets": 67,
-    "duplicates": 35,
-    "syncDelta": 13064
+    "totalReviews": 31094,
+    "unknownOutlets": 55,
+    "duplicates": 0,
+    "syncDelta": 13040
   }
 }
