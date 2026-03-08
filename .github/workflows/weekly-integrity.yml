@@ -216,13 +216,9 @@ jobs:
           script: |
             const fs = require('fs');
             const report = fs.readFileSync('data/integrity-report.md', 'utf8');
-            await github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: `Data Integrity Issues - ${new Date().toISOString().split('T')[0]}`,
-              body: report,
-              labels: ['data-quality', 'automated']
-            });
+            // Issue creation disabled — daily digest email covers data integrity
+            console.log('Data integrity issues found — see daily digest email for details');
+            console.log(report.substring(0, 500));
 
       - name: Notify on failure
         if: failure()
