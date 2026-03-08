@@ -9,7 +9,7 @@ import type { OffBroadwayShow } from '@/components/OffBroadwayPageClient';
 import { featureFlags } from '@/config/feature-flags';
 
 export const metadata: Metadata = {
-  title: 'Off-Broadway Scorecard - NYC Off-Broadway Show Ratings & Reviews',
+  title: 'Best Off-Broadway Shows (2026) — NYC Reviews & Ratings',
   description: 'CriticScore ratings for Off-Broadway shows in New York City, aggregated from The New York Times, Vulture, Variety, Time Out, and more.',
   alternates: {
     canonical: `${BASE_URL}/off-broadway`,
