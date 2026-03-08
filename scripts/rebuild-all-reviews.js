@@ -1814,6 +1814,13 @@ showDirs.forEach(showId => {
         return;
       }
 
+      // Skip reviews flagged as wrong author attribution
+      // Flagged by detect-syndicated-duplicates.js author mismatch scanner
+      if (data.wrongAttribution === true) {
+        stats.skippedWrongAttribution = (stats.skippedWrongAttribution || 0) + 1;
+        return;
+      }
+
       // Garbage review guard: skip reviews where critic name matches a creative team member
       // of the SAME show (indicates scraped cast/crew info, not a real review)
       const criticLower = (data.criticName || '').toLowerCase().trim();
