@@ -64,9 +64,14 @@ function isHeadingLine(line: string): boolean {
     if (words.length >= 2) return true;
   }
 
-  // Short line ending without period (likely a heading, not prose)
-  if (trimmed.length <= 80 && !/[.!?,;:]$/.test(trimmed) && /[A-Z]/.test(trimmed)) {
-    return true;
+  // Short standalone line that looks like a title (starts with capital, no trailing punct,
+  // and is very short — under 50 chars). Only match if preceded/followed by blank lines
+  // to reduce false positives on dialogue or short prose sentences.
+  // This is checked at the caller level via context, so we keep this conservative.
+  if (trimmed.length <= 50 && trimmed.length >= 5 && !/[.!?,;:"]$/.test(trimmed) && /^[A-Z"']/.test(trimmed)) {
+    // Must look title-like: at least 2 capitalized words or contain quotes
+    const capWords = trimmed.match(/\b[A-Z][a-z]+/g);
+    if (capWords && capWords.length >= 2) return true;
   }
 
   return false;

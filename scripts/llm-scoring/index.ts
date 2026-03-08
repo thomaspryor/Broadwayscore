@@ -897,7 +897,10 @@ async function main(): Promise<void> {
       }
     }
 
-    // Fall back to excerpts
+    // Fall back to excerpts (multi-show reviews with garbage fullText use excerpts directly — no trimming needed)
+    if (data.isMultiShowReview && options.verbose) {
+      console.log(`  Multi-show review falling back to excerpts (fullText was garbage/missing)`);
+    }
     const excerpts: string[] = [];
     if (data.bwwExcerpt) excerpts.push(data.bwwExcerpt);
     if (data.dtliExcerpt && data.dtliExcerpt !== data.bwwExcerpt) {
@@ -1038,7 +1041,7 @@ async function main(): Promise<void> {
     const { path: filePath, data: reviewFile } = finalFiles[i];
 
     // Attach human-readable show title for LLM context (input-builder uses it)
-    (reviewFile as any).showTitle = showTitles.get(reviewFile.showId) || undefined;
+    reviewFile.showTitle = showTitles.get(reviewFile.showId) || undefined;
 
     // Progress
     const showName = reviewFile.showId;
@@ -1120,7 +1123,7 @@ async function main(): Promise<void> {
     }
 
     // For pre-flagged multi-show reviews (from previous runs), trim fullText before scoring
-    if ((reviewFile as any).isMultiShowReview && reviewFile.fullText) {
+    if (reviewFile.isMultiShowReview && reviewFile.fullText) {
       const showTitle = showTitles.get(reviewFile.showId);
       if (showTitle) {
         const trimResult = trimMultiShowText(reviewFile.fullText, showTitle, reviewFile.showId);

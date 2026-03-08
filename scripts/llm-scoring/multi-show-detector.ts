@@ -84,7 +84,7 @@ const SKIP_TITLES = new Set([
   'dorothy', 'working', 'emily', 'wanted', 'buddy', 'stanley', 'jackie',
   'fosse', 'sugar', 'irene', 'data', 'brooklyn', 'mail', 'marilyn',
   'legend', 'bent', 'contact', 'stomp', 'stages', 'raisin', 'betty',
-  'lenny', 'sylvia', 'carrie', 'stanley',
+  'lenny', 'sylvia', 'carrie',
 ]);
 
 /**
