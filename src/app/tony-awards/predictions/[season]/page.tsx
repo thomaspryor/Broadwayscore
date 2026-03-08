@@ -132,14 +132,54 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
               : `The ${season.label} Tony season data includes all eligible shows ranked by blended critic and audience scores.`,
         },
       },
+      {
+        '@type': 'Question',
+        name: 'How are Tony predictions calculated on Broadway Scorecard?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Tony predictions use a blended score combining aggregated critic reviews (from 400+ outlets including NYT, Variety, and Vulture) with audience grades from multiple platforms. This combined approach historically predicts winners more accurately than critics or audiences alone.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'What is a blended score?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'A blended score combines the CriticScore (aggregated from professional reviews, weighted by outlet tier) with audience data (from platforms like Show-Score and Mezzanine) at a 50/50 ratio. This captures both critical acclaim and audience reception.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'How often are Tony predictions updated?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Predictions update automatically as new reviews are published and audience scores change. During awards season (April through June), rankings can shift daily as last-minute reviews come in.',
+        },
+      },
     ],
   };
+
+  // ItemList per Tony category — matches visible page structure
+  const categoryItemLists = categories.filter(cat => cat.shows.length > 0).map(cat => ({
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `${cat.title} - Tony Awards ${season.label}`,
+    itemListElement: cat.shows.slice(0, 10).map((show, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: {
+        '@type': 'TheaterEvent',
+        name: show.title,
+        url: `${BASE_URL}/show/${show.slug}`,
+      },
+    })),
+  }));
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify([faqSchema, breadcrumbSchema]) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([faqSchema, breadcrumbSchema, ...categoryItemLists]) }}
       />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
