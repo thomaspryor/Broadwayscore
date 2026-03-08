@@ -308,13 +308,10 @@ jobs:
               ? `🎭 New Show: ${shows[0].title}`
               : `🎭 ${shows.length} New Shows Discovered`;
 
-            await github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: title,
-              body: issueBody,
-              labels: ['new-show', 'needs-review-data', 'automated']
-            });
+            // Issue creation disabled — pipeline auto-handles new shows
+            // (gather-reviews, image fetch, IBDB enrichment all trigger automatically)
+            console.log(`Discovered ${shows.length} new show(s): ${slugs.join(', ')}`);
+            console.log('Skipping issue creation — pipeline handles these automatically');
 
   # Optional: Trigger review data gathering workflow
   # Note: Only triggers for shows that have opened (not previews)
