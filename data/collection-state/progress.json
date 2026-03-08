@@ -158,7 +158,8 @@
     "the-homecoming-2007/independent--alice-saville.json",
     "the-homecoming-2007/whatsonstage--sarah-crompton.json",
     "the-king-and-i-2015/amny--matt-windman.json",
-    "the-little-foxes-1981/washpost--peter-marks.json"
+    "the-little-foxes-1981/washpost--peter-marks.json",
+    "the-music-man-2000/washpost--peter-marks.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -1374,7 +1375,16 @@
     "the-little-foxes-2017/our-theater-blog--tamara-beck.json",
     "the-little-foxes-2017/pop-dust--thomas-burns-scully.json",
     "the-little-mermaid-2008/washpost--peter-marks.json",
-    "the-lyons-2012/ap--mark-kennedy.json"
+    "the-lyons-2012/ap--mark-kennedy.json",
+    "the-lyons-2012/northjerseycom--robert-feldberg.json",
+    "the-merchant-of-venice-1973/backstage--david-sheward.json",
+    "the-miracle-worker-2010/chicagotribune--chris-jones.json",
+    "the-mountaintop-2011/northjerseycom--robert-feldberg.json",
+    "the-music-man-2022/rollingstone--jon-blistein.json",
+    "the-music-man-2022/washpost--peter-marks.json",
+    "the-mystery-of-edwin-drood-2012/ap--mark-kennedy.json",
+    "the-mystery-of-edwin-drood-2012/northjerseycom--robert-feldberg.json",
+    "the-nance-2013/ap--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1449,7 +1459,8 @@
       "rodgers-hammersteins-cinderella-2013/theatermania--hayley-levitt.json",
       "cats-1982/reflections-in-the-light--lauren-yarger.json",
       "the-homecoming-2007/whatsonstage--sarah-crompton.json",
-      "the-little-foxes-1981/washpost--peter-marks.json"
+      "the-little-foxes-1981/washpost--peter-marks.json",
+      "the-music-man-2000/washpost--peter-marks.json"
     ],
     "amp": [
       "data/review-texts/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/vulture--helen-shaw.json",
@@ -1867,7 +1878,13 @@
       "data/review-texts/the-little-foxes-2017/off-script-with-dan-dwyer--dan-dwyer.json",
       "data/review-texts/the-little-foxes-2017/pop-dust--thomas-burns-scully.json",
       "data/review-texts/the-little-mermaid-2008/washpost--peter-marks.json",
-      "data/review-texts/the-lyons-2012/ap--mark-kennedy.json"
+      "data/review-texts/the-lyons-2012/ap--mark-kennedy.json",
+      "data/review-texts/the-lyons-2012/northjerseycom--robert-feldberg.json",
+      "data/review-texts/the-merchant-of-venice-1973/backstage--david-sheward.json",
+      "data/review-texts/the-mountaintop-2011/northjerseycom--robert-feldberg.json",
+      "data/review-texts/the-music-man-2022/washpost--peter-marks.json",
+      "data/review-texts/the-mystery-of-edwin-drood-2012/ap--mark-kennedy.json",
+      "data/review-texts/the-mystery-of-edwin-drood-2012/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
       "you-got-older-off-broadway-2026/timeout--unknown.json",
@@ -1906,7 +1923,7 @@
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "the-lyons-2012/ap--mark-kennedy.json",
+  "lastProcessed": "the-nance-2013/ap--unknown.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -2435,6 +2452,61 @@
       "t": "2026-03-08T11:01:23.760Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-08T11:01:51.549Z",
+      "event": "bb-session",
+      "session": "097aa82c",
+      "url": "https://www.northjersey.com/arts_entertainment/148629865_Lavin_back_on_Broadway_"
+    },
+    {
+      "t": "2026-03-08T11:01:52.590Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-08T11:08:48.887Z",
+      "event": "bb-session",
+      "session": "5359e2b4",
+      "url": "https://www.northjersey.com/arts_entertainment/131843148__Mountaintop__provides_"
+    },
+    {
+      "t": "2026-03-08T11:08:49.896Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-08T11:09:56.757Z",
+      "event": "bb-session",
+      "session": "d8fd26d2",
+      "url": "https://www.washingtonpost.com/theater_dance/2022/02/11/music-man-broadway-revie"
+    },
+    {
+      "t": "2026-03-08T11:09:57.844Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-08T11:10:34.336Z",
+      "event": "bb-session",
+      "session": "1a4d62c5",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-broadway-reviv"
+    },
+    {
+      "t": "2026-03-08T11:10:35.362Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-08T11:11:14.468Z",
+      "event": "bb-session",
+      "session": "880887e7",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/179235381_Theater_review_"
+    },
+    {
+      "t": "2026-03-08T11:11:15.556Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
