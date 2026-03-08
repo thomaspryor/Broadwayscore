@@ -7,6 +7,8 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
+import { SortIcon } from '@/components/SortIcon';
+import { SortDirection, formatCurrency } from '@/lib/formatting';
 
 interface RecoupmentShow {
   slug: string;
@@ -22,38 +24,11 @@ interface RecoupmentTableProps {
 }
 
 type SortColumn = 'title' | 'weeks' | 'capitalization' | 'date';
-type SortDirection = 'asc' | 'desc';
-
-function formatCurrency(amount: number): string {
-  if (amount >= 1_000_000) {
-    return `$${(amount / 1_000_000).toFixed(1)}M`;
-  }
-  if (amount >= 1_000) {
-    return `$${(amount / 1_000).toFixed(0)}K`;
-  }
-  return `$${amount}`;
-}
-
 function formatDate(dateStr: string): string {
   // Input: "2025-01" or "2024-06"
   const [year, month] = dateStr.split('-');
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   return `${months[parseInt(month) - 1]} ${year}`;
-}
-
-function SortIcon({ active, direction }: { active: boolean; direction: SortDirection }) {
-  if (!active) {
-    return (
-      <span className="ml-1 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">
-        ↕
-      </span>
-    );
-  }
-  return (
-    <span className="ml-1 text-brand">
-      {direction === 'asc' ? '↑' : '↓'}
-    </span>
-  );
 }
 
 export default function RecoupmentTable({ shows }: RecoupmentTableProps) {
