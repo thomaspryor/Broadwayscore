@@ -42,6 +42,9 @@ data/review-texts/
 # Aggregator archive (copyrighted scraped HTML — stored in private repo thomaspryor/broadway-review-texts)
 data/aggregator-archive/
 
+# Cleanup backups (contain copyrighted review text)
+data/audit/cleanup-backups/
+
 # Subscriber/follower PII (generated fresh each workflow run)
 data/subscribers.json
 data/subscribers-westend.json
