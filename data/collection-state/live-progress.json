@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-08T02:24:22.123Z",
-  "processed": 30,
-  "failed": 93,
-  "successRate": "24.4%",
+  "updatedAt": "2026-03-08T02:27:40.319Z",
+  "processed": 32,
+  "failed": 101,
+  "successRate": "24.1%",
   "tierBreakdown": {
     "playwright": 10,
     "amp": 0,
     "browserbase": 21,
     "directCookies": 0,
-    "scrapingbee": 5,
+    "scrapingbee": 6,
     "brightdata": 0,
-    "archiveToday": 8,
-    "archive": 5
+    "archiveToday": 11,
+    "archive": 6
   },
-  "browserbaseSessions": 21,
+  "browserbaseSessions": 22,
   "recentActivity": [
-    {
-      "t": "2026-03-08T02:03:27.619Z",
-      "event": "bb-session",
-      "session": "1856f7a6",
-      "url": "https://deadline.com/2022/04/take-me-out-broadway-review-jesse-tyler-fergoson-je"
-    },
-    {
-      "t": "2026-03-08T02:03:29.022Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
     {
       "t": "2026-03-08T02:08:23.541Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-08T02:23:10.598Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-08T02:24:24.562Z",
+      "event": "bb-session",
+      "session": "7ff45f7c",
+      "url": "https://observer.com/2015/04/wolf-hall-brings-out-the-best-in-ben-miles-and-nath"
+    },
+    {
+      "t": "2026-03-08T02:24:26.024Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
     }
