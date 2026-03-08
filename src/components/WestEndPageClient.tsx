@@ -208,7 +208,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
       if (!cancelled) {
         setFuseResults(fuse.search(searchQuery).map(r => r.item));
       }
-    });
+    }).catch(() => { /* Fuse load failed — fallback to unfiltered results */ });
     return () => { cancelled = true; };
   }, [searchQuery, getFuse]);
 
