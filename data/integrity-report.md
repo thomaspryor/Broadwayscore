@@ -1,49 +1,45 @@
-# Data Integrity Report - 2026-03-01
+# Data Integrity Report - 2026-03-08
 
 ## Summary
 
 | Metric | Current | Previous | Change |
 |--------|---------|----------|--------|
-| Total Reviews | 30248 | 24156 | +6092 |
-| Unknown Outlets | 47 | 32 | +15 |
-| Duplicates | 49 | 0 | +49 |
-| Sync Delta | 12984 | 7677 | +5307 |
+| Total Reviews | 31111 | 30248 | +863 |
+| Unknown Outlets | 67 | 47 | +20 |
+| Duplicates | 35 | 49 | -14 |
+| Sync Delta | 13064 | 12984 | +80 |
 
 ## Issues Found
 
 ### 🔴 unknown_outlets
 
-47 reviews have unknown outlets
+67 reviews have unknown outlets
 
 **Examples:**
+- `data/review-texts/11-to-midnight-off-broadway-2026/unknown--ryan-leeds.json` (outletId: unknown) (outlet: Unknown)
 - `data/review-texts/1984-2017/is-intense-in-a-way-ive-never-seen-on-broadway--duncan-macmillan.json` (outletId: is-intense-in-a-way-ive-never-seen-on-broadway) (outlet: is-intense-in-a-way-ive-never-seen-on-broadway)
-- `data/review-texts/a-moon-for-the-misbegotten-2007/click-here--unknown.json` (outletId: click-here) (outlet: Click here)
+- `data/review-texts/a-dolls-house-part-2-2017/unknown--david-sheward.json` (outletId: unknown)
 - `data/review-texts/act-one-2014/its-a-brave-writer-who-would-contrive-this-show--moss-hart.json` (outletId: its-a-brave-writer-who-would-contrive-this-show) (outlet: its-a-brave-writer-who-would-contrive-this-show)
-- `data/review-texts/allegiance-2015/tackles-an-underexplored-dark-chapter-in-our-history--george-takei.json` (outletId: tackles-an-underexplored-dark-chapter-in-our-history) (outlet: tackles-an-underexplored-dark-chapter-in-our-history)
-- `data/review-texts/amazing-grace-2015/break-point--eric-metaxas.json` (outletId: break-point) (outlet: break-point)
+- `data/review-texts/airline-highway-2015/unknown--drew-shanahan.json` (outletId: unknown)
 
 ### 🔴 duplicates
 
-49 duplicate reviews detected
+35 duplicate reviews detected
 
 **Examples:**
-- `data/review-texts/1984-2017/nbcny--robert-kahn.json`
-- `data/review-texts/a-dolls-house-part-2-2017/nbcny--robert-kahn.json`
-- `data/review-texts/anna-christie-1977/one-minute-critic--matthew-wexler.json`
 - `data/review-texts/be-more-chill-2019/theater-news-online--michael-appler.json`
-- `data/review-texts/blackout-songs-off-broadway-2026/one-minute-critic--emily-chackerian.json`
+- `data/review-texts/bigfoot-off-broadway-2026/nysr--unknown.json`
+- `data/review-texts/broken-glass-west-end-2026/independent--unknown.json`
+- `data/review-texts/falsettos-2016/newyorker--hilton-als.json`
+- `data/review-texts/hadestown-2019/washpost--unknown.json`
 
 ### 🔴 sync_delta
 
-review-texts (30248) and reviews.json (17264) are out of sync by 12984 reviews
+review-texts (31111) and reviews.json (18047) are out of sync by 13064 reviews
 
 ### 🟡 unknown_outlets_degradation
 
-Unknown outlets increased from 32 to 47
-
-### 🟡 duplicates_degradation
-
-Duplicates increased from 0 to 49
+Unknown outlets increased from 47 to 67
 
 ## Recommendations
 
@@ -53,4 +49,4 @@ Duplicates increased from 0 to 49
 
 ---
 
-*Report generated: 2026-03-01T05:00:06.267Z*
+*Report generated: 2026-03-08T04:48:57.815Z*
