@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-08T17:45:41.700Z",
-  "processed": 250,
-  "failed": 2056,
-  "successRate": "10.8%",
+  "updatedAt": "2026-03-08T17:48:27.164Z",
+  "processed": 257,
+  "failed": 2059,
+  "successRate": "11.1%",
   "tierBreakdown": {
-    "playwright": 122,
+    "playwright": 126,
     "amp": 33,
-    "browserbase": 41,
+    "browserbase": 43,
     "directCookies": 0,
-    "scrapingbee": 46,
+    "scrapingbee": 47,
     "brightdata": 0,
-    "archiveToday": 407,
-    "archive": 53
+    "archiveToday": 410,
+    "archive": 54
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-03-08T11:31:37.556Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-03-08T11:34:48.469Z",
-      "event": "bb-session",
-      "session": "b54ac963",
-      "url": "https://www.northjersey.com/arts_entertainment/theater/229208661_Theater_review_"
-    },
     {
       "t": "2026-03-08T11:34:49.626Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "t": "2026-03-08T17:44:38.856Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-08T17:46:48.740Z",
+      "event": "bb-session",
+      "session": "f073b901",
+      "url": "https://deadline.com/2019/10/little-shop-of-horrors-review-jonathan-groff-tammy-"
+    },
+    {
+      "t": "2026-03-08T17:46:49.981Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

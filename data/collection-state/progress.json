@@ -249,7 +249,14 @@
     "wicked-west-end-2021/nytimes--ben-brantley.json",
     "wicked-west-end-2021/variety--charles-isherwood.json",
     "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
-    "all-my-sons-west-end-2025/timeout--unknown.json"
+    "all-my-sons-west-end-2025/timeout--unknown.json",
+    "and-juliet-2022/nydailynews--chris-jones.json",
+    "hamilton-west-end-2021/timeout--andrzej-lukowsksi.json",
+    "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
+    "paddington-the-musical-west-end-2025/musical-theatre-review--lisa-martlandbr.json",
+    "all-my-sons-west-end-2025/broadwayworld--michael-dale.json",
+    "an-ark-off-broadway-2026/nysr--frank-scheck.json",
+    "an-ark-off-broadway-2026/nysr--roma-torre.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -2307,7 +2314,10 @@
     "thoughts-of-a-colored-man-2021/usatoday--charles-isherwood.json",
     "topdog-underdog-2022/rollingstone--david-fear.json",
     "tuck-everlasting-2016/usatoday--elysa-gardner.json",
-    "what-the-constitution-means-to-me-2019/usatoday--kelly-lawler.json"
+    "what-the-constitution-means-to-me-2019/usatoday--kelly-lawler.json",
+    "an-ark-off-broadway-2026/new-jersey-newsroom--micheal-sommers.json",
+    "an-ark-off-broadway-2026/ap--mark-kennedy.json",
+    "an-ark-off-broadway-2026/usatoday--elysa-gardner.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2433,7 +2443,11 @@
       "marcel-on-the-train-off-broadway-2026/nytg--joe-dziemianowicz.json",
       "night-side-songs-off-broadway-2026/vulture--jonathan-mandell.json",
       "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
-      "all-my-sons-west-end-2025/timeout--unknown.json"
+      "all-my-sons-west-end-2025/timeout--unknown.json",
+      "hamilton-west-end-2021/timeout--andrzej-lukowsksi.json",
+      "paddington-the-musical-west-end-2025/musical-theatre-review--lisa-martlandbr.json",
+      "an-ark-off-broadway-2026/nysr--frank-scheck.json",
+      "an-ark-off-broadway-2026/nysr--roma-torre.json"
     ],
     "amp": [
       "data/review-texts/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/vulture--helen-shaw.json",
@@ -2511,7 +2525,9 @@
       "data/review-texts/schmigadoon-2026/hollywood-reporter--daniel-fienberg.json",
       "schmigadoon-2026/hollywood-reporter--daniel-fienberg.json",
       "data/review-texts/the-phantom-of-the-opera-west-end-1986/nytimes--walter-kerr.json",
-      "the-phantom-of-the-opera-west-end-1986/nytimes--walter-kerr.json"
+      "the-phantom-of-the-opera-west-end-1986/nytimes--walter-kerr.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
+      "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2560,7 +2576,8 @@
       "oh-mary-off-broadway-2024/broadwaynews--brittani-samuel.json",
       "oh-mary-off-broadway-2024/chicagotribune--chris-jones.json",
       "the-lion-king-west-end-2021/nytimes--ben-brantley.json",
-      "wicked-west-end-2021/nytimes--ben-brantley.json"
+      "wicked-west-end-2021/nytimes--ben-brantley.json",
+      "and-juliet-2022/nydailynews--chris-jones.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2970,7 +2987,10 @@
       "data/review-texts/wonderland-2011/northjerseycom--robert-feldberg.json",
       "data/review-texts/xanadu-2007/washpost--peter-marks.json",
       "data/review-texts/young-frankenstein-2007/ny1--unknown.json",
-      "data/review-texts/young-frankenstein-2007/washpost--peter-marks.json"
+      "data/review-texts/young-frankenstein-2007/washpost--peter-marks.json",
+      "data/review-texts/an-ark-off-broadway-2026/new-jersey-newsroom--micheal-sommers.json",
+      "data/review-texts/an-ark-off-broadway-2026/ap--mark-kennedy.json",
+      "data/review-texts/an-ark-off-broadway-2026/usatoday--elysa-gardner.json"
     ],
     "archive": [
       "you-got-older-off-broadway-2026/timeout--unknown.json",
@@ -3025,11 +3045,12 @@
       "stereophonic-off-broadway-2023/dailybeast--tim-teeman.json",
       "little-shop-of-horrors-off-broadway-2019/nytimes--ben-brantley.json",
       "mamma-mia-west-end-2021/nytimes--elisabeth-vincentelli.json",
-      "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json"
+      "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+      "all-my-sons-west-end-2025/broadwayworld--michael-dale.json"
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "all-my-sons-west-end-2025/timeout--unknown.json",
+  "lastProcessed": "an-ark-off-broadway-2026/usatoday--elysa-gardner.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -3823,6 +3844,17 @@
       "t": "2026-03-08T17:44:38.856Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-08T17:46:48.740Z",
+      "event": "bb-session",
+      "session": "f073b901",
+      "url": "https://deadline.com/2019/10/little-shop-of-horrors-review-jonathan-groff-tammy-"
+    },
+    {
+      "t": "2026-03-08T17:46:49.981Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
