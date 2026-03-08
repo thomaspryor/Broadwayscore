@@ -4,9 +4,8 @@ import { useEffect, useCallback, useState, useRef } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserLists } from '@/hooks/useUserLists';
 import { useToastSafe } from '@/components/ui/Toast';
-import { savePendingAction } from '@/lib/deferred-auth';
+import { savePendingAction, getPendingAction, clearPendingAction } from '@/lib/deferred-auth';
 import { featureFlags } from '@/config/feature-flags';
-import { useClickOutside } from '@/hooks/useClickOutside';
 
 interface ShowPageAddToListButtonProps {
   showId: string;
@@ -23,14 +22,39 @@ export default function ShowPageAddToListButton({ showId }: ShowPageAddToListBut
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const hasAutoOpened = useRef(false);
+  const [listsReady, setListsReady] = useState(false);
+
   useEffect(() => {
     if (isAuthenticated && user) {
-      getLists();
+      getLists().then(() => setListsReady(true));
     }
   }, [isAuthenticated, user, getLists]);
 
-  const closeDropdown = useCallback(() => { setOpen(false); setCreating(false); setNewName(''); }, []);
-  useClickOutside(dropdownRef, closeDropdown, open);
+  // Auto-open dropdown after deferred auth (user tapped List before signing in)
+  useEffect(() => {
+    if (!isAuthenticated || !user || hasAutoOpened.current || !listsReady) return;
+    const pending = getPendingAction();
+    if (pending?.type === 'add-to-list' && pending.showId === showId) {
+      hasAutoOpened.current = true;
+      clearPendingAction();
+      setOpen(true);
+    }
+  }, [isAuthenticated, user, listsReady, showId]);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setOpen(false);
+        setCreating(false);
+        setNewName('');
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [open]);
 
   // Focus input when creating
   useEffect(() => {

@@ -880,7 +880,29 @@ async function checkIBDBForPriorProductions(title, options = {}) {
     console.log(`  📊 IBDB results: ${results.length} raw, ${validResults.length} title-matched, ${uniqueUrls.length} unique production URLs`);
 
     if (uniqueUrls.length >= 2) {
-      // Multiple distinct production pages = revival
+      // Multiple distinct production pages found
+      // Transfer detection: if our show predates all IBDB results, it's the original
+      if (options.currentYear) {
+        try {
+          const firstPageDates = await extractDatesFromIBDBPage(uniqueUrls[0]);
+          if (firstPageDates.openingDate) {
+            const ibdbYear = parseInt(firstPageDates.openingDate.split('-')[0]);
+            if (options.currentYear < ibdbYear) {
+              console.log(`  ➡️  Transfer detected (not revival): our show (${options.currentYear}) predates IBDB production (${ibdbYear})`);
+              return {
+                isRevival: false,
+                priorProductionCount: uniqueUrls.length,
+                urls: uniqueUrls,
+                confidence: 'high',
+                isTransfer: true
+              };
+            }
+          }
+        } catch (e) {
+          console.log(`  ⚠️  Transfer check failed: ${e.message} — defaulting to revival`);
+        }
+      }
+
       console.log(`  🔄 Revival detected: ${uniqueUrls.length} prior IBDB productions for "${title}"`);
       for (const u of uniqueUrls) console.log(`     ${u}`);
       return {
