@@ -283,7 +283,7 @@ export class EnsembleReviewScorer {
     // Build rich input context using input-builder
     const reviewData: ReviewInputData = {
       showId: reviewFile.showId,
-      showTitle: (reviewFile as any).showTitle,
+      showTitle: reviewFile.showTitle,
       outletId: reviewFile.outletId,
       outlet: reviewFile.outlet,
       criticName: reviewFile.criticName,

@@ -39,6 +39,10 @@ export interface ReviewTextFile {
   scoreStatus?: string;
   /** True if this review covers 2 shows in depth (not a roundup) */
   isCombinedReview?: boolean;
+  /** True if multi-show detector flagged this review */
+  isMultiShowReview?: boolean;
+  /** Human-readable show title (injected at scoring time from shows.json) */
+  showTitle?: string;
 }
 
 /**
