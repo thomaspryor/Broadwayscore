@@ -22,7 +22,11 @@
     "mcneal-2024/nydailynews--chris-jones.json",
     "oklahoma-2002/nydailynews--chris-jones.json",
     "passing-strange-2008/guardian--kate-wyver.json",
-    "punch-2025/deadline--unknown.json"
+    "punch-2025/deadline--unknown.json",
+    "richard-iii-2013/guardian--susannah-clapp.json",
+    "sunset-boulevard-2024/nydailynews--chris-jones.json",
+    "take-me-out-2003/deadline--greg-evans.json",
+    "tammy-faye-2024/new-york-sun--unknown.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -74,7 +78,13 @@
     "our-mothers-brief-affair-2016/observer--rex-reed.json",
     "parade-2023/observer--jesse-green.json",
     "patriots-2024/guardian--adrian-horton.json",
-    "picnic-2013/observer--rex-reed.json"
+    "picnic-2013/observer--rex-reed.json",
+    "ragtime-2009/nydailynews--joe-dziemianowicz.json",
+    "stereophonic-2024/observer--jesse-green.json",
+    "suffs-2024/guardian--adrian-horton.json",
+    "the-crucible-2016/observer--rex-reed.json",
+    "the-crucible-2016/theatermania--jesse-green.json",
+    "the-drowsy-chaperone-2006/theatermania--david-finkle.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -85,7 +95,9 @@
       "a-view-from-the-bridge-2015/guardian--lyn-gardner.json",
       "elf-2024/new-york-sun--unknown.json",
       "mcneal-2024/nydailynews--chris-jones.json",
-      "oklahoma-2002/nydailynews--chris-jones.json"
+      "oklahoma-2002/nydailynews--chris-jones.json",
+      "sunset-boulevard-2024/nydailynews--chris-jones.json",
+      "tammy-faye-2024/new-york-sun--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -105,13 +117,16 @@
       "data/review-texts/kinky-boots-off-broadway-2026/newsday--matt-windman.json",
       "kinky-boots-off-broadway-2026/newsday--matt-windman.json",
       "data/review-texts/punch-2025/deadline--unknown.json",
-      "punch-2025/deadline--unknown.json"
+      "punch-2025/deadline--unknown.json",
+      "data/review-texts/take-me-out-2003/deadline--greg-evans.json",
+      "take-me-out-2003/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "faith-healer-2006/guardian--mark-lawson.json",
       "les-liaisons-dangereuses-1987/timeout--david-cote.json",
-      "passing-strange-2008/guardian--kate-wyver.json"
+      "passing-strange-2008/guardian--kate-wyver.json",
+      "richard-iii-2013/guardian--susannah-clapp.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -128,7 +143,7 @@
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "punch-2025/deadline--unknown.json",
+  "lastProcessed": "the-drowsy-chaperone-2006/theatermania--david-finkle.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -248,6 +263,17 @@
     },
     {
       "t": "2026-03-08T02:01:07.862Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-08T02:03:27.619Z",
+      "event": "bb-session",
+      "session": "1856f7a6",
+      "url": "https://deadline.com/2022/04/take-me-out-broadway-review-jesse-tyler-fergoson-je"
+    },
+    {
+      "t": "2026-03-08T02:03:29.022Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
     }
