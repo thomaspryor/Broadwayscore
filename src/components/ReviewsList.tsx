@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { getOutletLogoUrl, getOutletConfig } from '@/config/outlet-logos';
 import { featureFlags } from '@/config/feature-flags';
 import { getScoreColorClass } from '@/components/show-cards';
-import { ChevronDownIcon, ChevronUpIcon, ExternalLinkIcon } from '@/components/icons';
 
 interface Review {
   showId: string;
@@ -29,7 +28,7 @@ interface ReviewsListProps {
   initialCount?: number;
 }
 
-: { className?: string }) {
+function ChevronDownIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -37,7 +36,7 @@ interface ReviewsListProps {
   );
 }
 
-: { className?: string }) {
+function ChevronUpIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
@@ -132,7 +131,7 @@ function TopCriticLabel() {
   );
 }
 
-: { className?: string }) {
+function ExternalLinkIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
