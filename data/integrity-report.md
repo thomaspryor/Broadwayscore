@@ -4,16 +4,12 @@
 
 | Metric | Current | Previous | Change |
 |--------|---------|----------|--------|
-| Total Reviews | 31094 | 31111 | -17 |
-| Unknown Outlets | 55 | 67 | -12 |
-| Duplicates | 0 | 35 | -35 |
-| Sync Delta | 13040 | 13064 | -24 |
+| Total Reviews | 31310 | 31310 | - |
+| Unknown Outlets | 55 | 58 | -3 |
+| Duplicates | 0 | 0 | - |
+| Sync Delta | 13256 | 13256 | - |
 
 ## Issues Found
-
-### 🟡 review_count_decrease
-
-Review count decreased by 17 (0.1%) from 31111 to 31094
 
 ### 🔴 unknown_outlets
 
@@ -28,14 +24,13 @@ Review count decreased by 17 (0.1%) from 31111 to 31094
 
 ### 🔴 sync_delta
 
-review-texts (31094) and reviews.json (18054) are out of sync by 13040 reviews
+review-texts (31310) and reviews.json (18054) are out of sync by 13256 reviews
 
 ## Recommendations
 
 - Run `node scripts/audit-outlet-registry.js` to identify and add missing outlets
 - Run `node scripts/rebuild-all-reviews.js` to sync reviews.json with review-texts
-- Investigate missing reviews - check recent git history for deleted files
 
 ---
 
-*Report generated: 2026-03-08T06:23:18.475Z*
+*Report generated: 2026-03-08T06:31:11.345Z*
