@@ -229,7 +229,17 @@
     "the-rose-tattoo-2019/nysr--melissa-rose-bernardo.json",
     "topdog-underdog-2022/stagebuddy--elyse-trevers.json",
     "war-paint-2017/around-the-town-chicago--alan-bresloff.json",
-    "woman-in-mind-west-end-2025/thestage--sam-marlowe.json"
+    "woman-in-mind-west-end-2025/thestage--sam-marlowe.json",
+    "an-ark-off-broadway-2026/nytg--kyle-turner.json",
+    "back-to-the-future-west-end-2021/variety--frank-rizzo.json",
+    "chinese-republicans-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nytg--allison-considine.json",
+    "heathers-the-musical-off-broadway-2025/nytg--caroline-cao.json",
+    "little-shop-of-horrors-off-broadway-2019/nytimes--ben-brantley.json",
+    "mamma-mia-west-end-2021/nytimes--elisabeth-vincentelli.json",
+    "marcel-on-the-train-off-broadway-2026/nytg--joe-dziemianowicz.json",
+    "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+    "matilda-the-musical-west-end-2021/nytimes--ben-brantley.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -2405,7 +2415,12 @@
       "the-rose-tattoo-2019/nysr--melissa-rose-bernardo.json",
       "topdog-underdog-2022/stagebuddy--elyse-trevers.json",
       "war-paint-2017/around-the-town-chicago--alan-bresloff.json",
-      "woman-in-mind-west-end-2025/thestage--sam-marlowe.json"
+      "woman-in-mind-west-end-2025/thestage--sam-marlowe.json",
+      "an-ark-off-broadway-2026/nytg--kyle-turner.json",
+      "chinese-republicans-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "data-off-broadway-2026/nytg--allison-considine.json",
+      "heathers-the-musical-off-broadway-2025/nytg--caroline-cao.json",
+      "marcel-on-the-train-off-broadway-2026/nytg--joe-dziemianowicz.json"
     ],
     "amp": [
       "data/review-texts/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/vulture--helen-shaw.json",
@@ -2432,7 +2447,9 @@
       "data/review-texts/new-york-new-york-2023/hollywood-reporter--angie-han.json",
       "data/review-texts/new-york-new-york-2023/hollywood-reporter--angie-han.json",
       "data/review-texts/new-york-new-york-2023/hollywood-reporter--angie-han.json",
-      "data/review-texts/new-york-new-york-2023/hollywood-reporter--angie-han.json"
+      "data/review-texts/new-york-new-york-2023/hollywood-reporter--angie-han.json",
+      "data/review-texts/back-to-the-future-west-end-2021/variety--frank-rizzo.json",
+      "back-to-the-future-west-end-2021/variety--frank-rizzo.json"
     ],
     "browserbase": [
       "data/review-texts/brooklyn-2004/nytimes--ben-brantley.json",
@@ -2469,7 +2486,9 @@
       "data/review-texts/gary-a-sequel-to-titus-andronicus-2019/nypost--joe-dziemianowicz.json",
       "gary-a-sequel-to-titus-andronicus-2019/nypost--joe-dziemianowicz.json",
       "data/review-texts/cats-the-jellicle-ball-off-broadway-2024/amny--matt-windman.json",
-      "cats-the-jellicle-ball-off-broadway-2024/amny--matt-windman.json"
+      "cats-the-jellicle-ball-off-broadway-2024/amny--matt-windman.json",
+      "data/review-texts/matilda-the-musical-west-end-2021/nytimes--ben-brantley.json",
+      "matilda-the-musical-west-end-2021/nytimes--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2978,11 +2997,14 @@
       "oh-mary-off-broadway-2024/njcom--christopher-kelly.json",
       "oh-mary-off-broadway-2024/usatoday--patrick-ryan.json",
       "something-rotten-2015/usatoday--elysa-gardner.json",
-      "stereophonic-off-broadway-2023/dailybeast--tim-teeman.json"
+      "stereophonic-off-broadway-2023/dailybeast--tim-teeman.json",
+      "little-shop-of-horrors-off-broadway-2019/nytimes--ben-brantley.json",
+      "mamma-mia-west-end-2021/nytimes--elisabeth-vincentelli.json",
+      "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "what-the-constitution-means-to-me-2019/usatoday--kelly-lawler.json",
+  "lastProcessed": "matilda-the-musical-west-end-2021/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -3743,6 +3765,17 @@
       "t": "2026-03-08T15:43:42.695Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-08T17:43:35.007Z",
+      "event": "bb-session",
+      "session": "945796b2",
+      "url": "http://theater.nytimes.com/2013/04/12/theater/reviews/matilda-the-musical-at-shu"
+    },
+    {
+      "t": "2026-03-08T17:43:36.443Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

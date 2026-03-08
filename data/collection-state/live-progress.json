@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-08T17:33:10.126Z",
-  "processed": 230,
+  "updatedAt": "2026-03-08T17:43:50.554Z",
+  "processed": 240,
   "failed": 2056,
-  "successRate": "10.1%",
+  "successRate": "10.5%",
   "tierBreakdown": {
-    "playwright": 114,
-    "amp": 25,
-    "browserbase": 35,
+    "playwright": 119,
+    "amp": 27,
+    "browserbase": 37,
     "directCookies": 0,
     "scrapingbee": 44,
     "brightdata": 0,
     "archiveToday": 407,
-    "archive": 50
+    "archive": 53
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-03-08T11:24:57.152Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-03-08T11:26:34.350Z",
-      "event": "bb-session",
-      "session": "1ad08837",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/the-realistic-joneses"
-    },
     {
       "t": "2026-03-08T11:26:35.632Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "t": "2026-03-08T15:43:42.695Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-08T17:43:35.007Z",
+      "event": "bb-session",
+      "session": "945796b2",
+      "url": "http://theater.nytimes.com/2013/04/12/theater/reviews/matilda-the-musical-at-shu"
+    },
+    {
+      "t": "2026-03-08T17:43:36.443Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
