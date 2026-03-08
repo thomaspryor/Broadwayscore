@@ -81,6 +81,35 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
       .map(s => ({ title: s.title, slug: s.slug })),
   });
 
+  // FAQ schema — only include questions for data that exists (avoids undefined in static build)
+  const theaterFaqQuestions: { name: string; text: string }[] = [];
+  if (theater.currentShow) {
+    theaterFaqQuestions.push({
+      name: \`What show is currently playing at \${theater.name}?\`,
+      text: \`\${theater.currentShow.title} is currently playing at \${theater.name}.\${theater.address ? \` The theater is located at \${theater.address}.\` : ''}\`,
+    });
+  }
+  if (theater.capacity) {
+    theaterFaqQuestions.push({
+      name: \`How many seats does \${theater.name} have?\`,
+      text: \`\${theater.name} has a seating capacity of \${theater.capacity.toLocaleString()}.\`,
+    });
+  }
+  theaterFaqQuestions.push({
+    name: \`How many shows have played at \${theater.name}?\`,
+    text: \`\${theater.showCount} shows have played at \${theater.name}.\`,
+  });
+
+  const theaterFaqSchema = theaterFaqQuestions.length >= 2 ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: theaterFaqQuestions.map(q => ({
+      '@type': 'Question',
+      name: q.name,
+      acceptedAnswer: { '@type': 'Answer', text: q.text },
+    })),
+  } : null;
+
   // Compute stats
   const pastShowCount = theater.allShows.filter(s => s.status === 'closed').length;
   const scoredShows = theater.allShows.filter(s => s.criticScore?.score != null);
@@ -113,7 +142,7 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, theaterSchema]).replace(/</g, '\\u003c') }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, theaterSchema, ...(theaterFaqSchema ? [theaterFaqSchema] : [])]).replace(/</g, '\\u003c') }}
       />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
         {/* Breadcrumb */}
