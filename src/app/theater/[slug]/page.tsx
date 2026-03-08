@@ -85,19 +85,19 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
   const theaterFaqQuestions: { name: string; text: string }[] = [];
   if (theater.currentShow) {
     theaterFaqQuestions.push({
-      name: \`What show is currently playing at \${theater.name}?\`,
-      text: \`\${theater.currentShow.title} is currently playing at \${theater.name}.\${theater.address ? \` The theater is located at \${theater.address}.\` : ''}\`,
+      name: `What show is currently playing at ${theater.name}?`,
+      text: `${theater.currentShow.title} is currently playing at ${theater.name}.${theater.address ? ` The theater is located at ${theater.address}.` : ''}`,
     });
   }
   if (theater.capacity) {
     theaterFaqQuestions.push({
-      name: \`How many seats does \${theater.name} have?\`,
-      text: \`\${theater.name} has a seating capacity of \${theater.capacity.toLocaleString()}.\`,
+      name: `How many seats does ${theater.name} have?`,
+      text: `${theater.name} has a seating capacity of ${theater.capacity.toLocaleString()}.`,
     });
   }
   theaterFaqQuestions.push({
-    name: \`How many shows have played at \${theater.name}?\`,
-    text: \`\${theater.showCount} shows have played at \${theater.name}.\`,
+    name: `How many shows have played at ${theater.name}?`,
+    text: `${theater.showCount} shows have played at ${theater.name}.`,
   });
 
   const theaterFaqSchema = theaterFaqQuestions.length >= 2 ? {
