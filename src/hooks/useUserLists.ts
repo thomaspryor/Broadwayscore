@@ -214,17 +214,17 @@ export function useUserLists(userId: string | null) {
 
       if (err) throw err;
 
-      // Optimistic update
+      // Optimistic update — only increment if show wasn't already in the list
       setLists(prev => prev.map(l => {
         if (l.id !== listId) return l;
-        const count = (l.item_count || 0) + 1;
-        const previews = l.preview_show_ids || [];
         const allIds = l.all_show_ids || [];
+        if (allIds.includes(showId)) return l; // Already in list, no-op
+        const previews = l.preview_show_ids || [];
         return {
           ...l,
-          item_count: count,
+          item_count: (l.item_count || 0) + 1,
           preview_show_ids: previews.length < 4 ? [...previews, showId] : previews,
-          all_show_ids: allIds.includes(showId) ? allIds : [...allIds, showId],
+          all_show_ids: [...allIds, showId],
           updated_at: new Date().toISOString(),
         };
       }));
@@ -248,13 +248,20 @@ export function useUserLists(userId: string | null) {
 
       if (err) throw err;
 
-      // Optimistic update
+      // Optimistic update — backfill preview if a preview show was removed
       setLists(prev => prev.map(l => {
         if (l.id !== listId) return l;
-        const count = Math.max(0, (l.item_count || 0) - 1);
-        const previews = (l.preview_show_ids || []).filter(id => id !== showId);
         const allIds = (l.all_show_ids || []).filter(id => id !== showId);
-        return { ...l, item_count: count, preview_show_ids: previews, all_show_ids: allIds };
+        const previews = (l.preview_show_ids || []).filter(id => id !== showId);
+        // Backfill preview from remaining shows if under 4
+        if (previews.length < 4) {
+          const previewSet = new Set(previews);
+          for (const id of allIds) {
+            if (previews.length >= 4) break;
+            if (!previewSet.has(id)) { previews.push(id); previewSet.add(id); }
+          }
+        }
+        return { ...l, item_count: Math.max(0, (l.item_count || 0) - 1), preview_show_ids: previews, all_show_ids: allIds };
       }));
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to remove from list';
