@@ -193,7 +193,13 @@
     "death-of-a-salesman-2022/nyt-theater--jonathan-mandell.json",
     "oh-mary-off-broadway-2024/nyt-theater--jonathan-mandell.json",
     "oh-mary-off-broadway-2024/variety--christian-lewis.json",
-    "all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json"
+    "all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json",
+    "beautiful-little-fool-west-end-2026/timeout-london--tim-bano.json",
+    "buena-vista-social-club-off-broadway-2023/new-york-sun--elysa-gardner.json",
+    "buena-vista-social-club-off-broadway-2023/theatermania--zachary-stewart.json",
+    "buena-vista-social-club-off-broadway-2023/washington-square-news--ethan-li.json",
+    "cats-the-jellicle-ball-off-broadway-2024/newsday--unknown.json",
+    "gary-a-sequel-to-titus-andronicus-2019/nypost--joe-dziemianowicz.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -1524,7 +1530,11 @@
     "all-the-way-2014/observer--rex-reed.json",
     "almost-famous-2022/timeout--adam-feldman.json",
     "american-buffalo-2022/observer--jesse-green.json",
-    "appropriate-2023/timeout--adam-feldman.json"
+    "appropriate-2023/timeout--adam-feldman.json",
+    "contact-2000/renew-here--simplecirc-inc.json",
+    "disgraced-2014/observer--rex-reed.json",
+    "eclipsed-2016/observer--rex-reed.json",
+    "farinelli-and-the-king-2017/observer--rex-reed.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1619,7 +1629,10 @@
       "the-hunger-games-on-stage-west-end-2025/standard--nick-curtis.json",
       "aint-no-mo-2022/nyt-theater--jonathan-mandell.json",
       "death-of-a-salesman-2022/nyt-theater--jonathan-mandell.json",
-      "oh-mary-off-broadway-2024/nyt-theater--jonathan-mandell.json"
+      "oh-mary-off-broadway-2024/nyt-theater--jonathan-mandell.json",
+      "beautiful-little-fool-west-end-2026/timeout-london--tim-bano.json",
+      "buena-vista-social-club-off-broadway-2023/new-york-sun--elysa-gardner.json",
+      "buena-vista-social-club-off-broadway-2023/theatermania--zachary-stewart.json"
     ],
     "amp": [
       "data/review-texts/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/vulture--helen-shaw.json",
@@ -1670,7 +1683,11 @@
       "the-king-and-i-2015/amny--matt-windman.json",
       "data/review-texts/cats-the-jellicle-ball-off-broadway-2024/hollywood-reporter--frank-scheck.json",
       "cats-the-jellicle-ball-off-broadway-2024/hollywood-reporter--frank-scheck.json",
-      "data/review-texts/new-york-new-york-2023/hollywood-reporter--angie-han.json"
+      "data/review-texts/new-york-new-york-2023/hollywood-reporter--angie-han.json",
+      "data/review-texts/buena-vista-social-club-off-broadway-2023/washington-square-news--ethan-li.json",
+      "buena-vista-social-club-off-broadway-2023/washington-square-news--ethan-li.json",
+      "data/review-texts/gary-a-sequel-to-titus-andronicus-2019/nypost--joe-dziemianowicz.json",
+      "gary-a-sequel-to-titus-andronicus-2019/nypost--joe-dziemianowicz.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2109,7 +2126,8 @@
       "data/review-texts/waitress-2016/usatoday--elysa-gardner.json",
       "data/review-texts/waitress-2016/washpost--peter-marks.json",
       "data/review-texts/waitress-2021/off-script-with-dan-dwyer--dan-dwyer.json",
-      "data/review-texts/war-horse-2011/chicagotribune--unknown.json"
+      "data/review-texts/war-horse-2011/chicagotribune--unknown.json",
+      "data/review-texts/contact-2000/renew-here--simplecirc-inc.json"
     ],
     "archive": [
       "you-got-older-off-broadway-2026/timeout--unknown.json",
@@ -2153,11 +2171,12 @@
       "friends-the-musical-parody-off-broadway-2022/theater-pizzazz--adam-cohen.json",
       "hercules-west-end-2025/broadwayworld--kat-mokrynski.json",
       "buena-vista-social-club-off-broadway-2023/vulture--jackson-mchenry.json",
-      "all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json"
+      "all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json",
+      "cats-the-jellicle-ball-off-broadway-2024/newsday--unknown.json"
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "appropriate-2023/timeout--adam-feldman.json",
+  "lastProcessed": "gary-a-sequel-to-titus-andronicus-2019/nypost--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -2890,6 +2909,23 @@
       "t": "2026-03-08T15:34:15.676Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-08T15:36:44.064Z",
+      "event": "bb-session",
+      "session": "bd8fc39a",
+      "url": "https://nyunews.com/arts/performing/2025/03/20/buena-vista-social-club/"
+    },
+    {
+      "t": "2026-03-08T15:38:25.254Z",
+      "event": "bb-session",
+      "session": "14f8457b",
+      "url": "https://nypost.com/2019/04/21/gary-review-nathan-lanes-titus-sequel-is-a-stinker"
+    },
+    {
+      "t": "2026-03-08T15:38:26.458Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
