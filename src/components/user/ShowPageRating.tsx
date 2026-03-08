@@ -49,6 +49,7 @@ export default function ShowPageRating({
   const [editingReview, setEditingReview] = useState<UserReview | null>(null);
   const [saving, setSaving] = useState(false);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const confirmDeleteTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastSavedId = useRef<string | null>(null);
 
   useEffect(() => {
@@ -144,6 +145,12 @@ export default function ShowPageRating({
     }
   }, [onDeleteReview, editingReview]);
 
+  const triggerConfirmDelete = useCallback((reviewId: string) => {
+    setConfirmDeleteId(reviewId);
+    if (confirmDeleteTimerRef.current) clearTimeout(confirmDeleteTimerRef.current);
+    confirmDeleteTimerRef.current = setTimeout(() => setConfirmDeleteId(null), 4000);
+  }, []);
+
   if (!featureFlags.userAccounts) return null;
 
   return (
@@ -182,7 +189,7 @@ export default function ShowPageRating({
               ) : (
                 <button
                   type="button"
-                  onClick={() => setConfirmDeleteId(latestReview.id)}
+                  onClick={() => triggerConfirmDelete(latestReview.id)}
                   className="p-1.5 text-gray-500 hover:text-red-400 transition-colors"
                   aria-label="Delete rating"
                 >
@@ -226,7 +233,7 @@ export default function ShowPageRating({
                     <button type="button" onClick={() => setConfirmDeleteId(null)} className="text-gray-500 hover:text-white">No</button>
                   </span>
                 ) : (
-                  <button type="button" onClick={() => setConfirmDeleteId(review.id)} className="p-1 text-gray-500 hover:text-red-400 transition-colors" aria-label="Delete this viewing">
+                  <button type="button" onClick={() => triggerConfirmDelete(review.id)} className="p-1 text-gray-500 hover:text-red-400 transition-colors" aria-label="Delete this viewing">
                     <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>
