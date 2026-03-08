@@ -222,7 +222,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     title: 'Broadway Shows Closing Soon',
     h1: 'Broadway Shows Closing Soon',
     metaTitle: `Broadway Shows Closing Soon — Last Chance (${CURRENT_YEAR})`,
-    metaDescription: 'Broadway shows ending their runs soon. See which productions are closing in the next 60 days and grab tickets before they\'re gone forever.',
+    metaDescription: 'These Broadway shows are closing soon — see exact closing dates and grab tickets before they\'re gone. Updated weekly with the latest announcements.',
     intro: 'Time is running out to see these Broadway productions! Whether they\'re limited engagements or shows that have announced their closing dates, these productions will be gone soon. If any of these have been on your must-see list, now is the time to act. Once a show closes on Broadway, there\'s no guarantee it will return. Don\'t let these slip away - book your tickets before it\'s too late.',
     filter: (show) => {
       return show.status === 'open' && isClosingWithinDays(show, 60);
@@ -314,7 +314,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'broadway-lottery-shows',
     title: 'Broadway Shows with Lotteries',
     h1: 'Broadway Shows with Lotteries',
-    metaTitle: `Broadway Lottery Shows - Win Cheap Tickets (${CURRENT_YEAR})`,
+    metaTitle: `Broadway Lottery Shows — Win $30 Tickets (${CURRENT_YEAR})`,
     metaDescription: 'Broadway shows offering digital lotteries for discounted tickets. Enter daily for your chance to see top shows at a fraction of the price.',
     intro: 'Broadway lotteries offer an incredible opportunity to see top shows at deeply discounted prices - often $30-40 for orchestra seats that normally cost hundreds. Most lotteries are digital and can be entered via apps like TodayTix or the show\'s official website. Enter early in the day for evening performances, and don\'t be discouraged if you don\'t win right away - persistence pays off! These shows all currently offer lottery programs.',
     filter: (show) => {
@@ -330,7 +330,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'broadway-rush-tickets',
     title: 'Broadway Rush Ticket Shows',
     h1: 'Broadway Rush Ticket Shows',
-    metaTitle: `Broadway Rush Tickets - Same-Day Deals (${CURRENT_YEAR})`,
+    metaTitle: `Broadway Rush Tickets — Every Show with Same-Day Deals (${CURRENT_YEAR})`,
     metaDescription: 'Broadway shows offering same-day rush tickets. Get discounted seats by arriving early at the box office or checking online portals.',
     intro: 'Rush tickets are same-day discounted tickets sold at the box office, typically when doors open or a few hours before showtime. Unlike lotteries, rush tickets are first-come, first-served, rewarding those willing to arrive early. Some shows also offer digital rush through apps. Prices typically range from $30-50, making Broadway accessible to those on a budget. Here are the shows currently offering rush ticket programs.',
     filter: (show) => {
@@ -409,7 +409,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'best-broadway-show-right-now',
     title: 'The Best Broadway Show Right Now',
     h1: 'The Best Broadway Show Right Now',
-    metaTitle: `The #1 Best Broadway Show Right Now (${CURRENT_YEAR})`,
+    metaTitle: `The #1 Best Broadway Show Right Now (${CURRENT_YEAR}) — Data Says...`,
     metaDescription: 'What\'s the single best show on Broadway today? Based on our aggregated CriticScore ratings, here\'s our top pick for the best show to see right now.',
     intro: 'If you could only see one Broadway show, which should it be? Based on our comprehensive analysis of critic reviews, we\'ve identified the single best show currently playing on Broadway. This isn\'t just about popularity or longevity - it\'s about quality as measured by the people who see the most theater: professional critics. Whether you\'re a first-timer or a seasoned theatergoer, this is the show that delivers the best experience right now.',
     filter: (show) => {
@@ -424,8 +424,8 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'best-broadway-musicals',
     title: 'Best Broadway Musicals',
     h1: 'Best Broadway Musicals',
-    metaTitle: `Best Broadway Musicals (${CURRENT_YEAR})`,
-    metaDescription: 'The highest-rated musicals currently playing on Broadway. From new hits to long-running classics, find your next must-see musical.',
+    metaTitle: `Best Broadway Musicals (${CURRENT_YEAR}) — Ranked by 400+ Critics`,
+    metaDescription: 'Every Broadway musical ranked by aggregated critic scores from NYT, Variety, Vulture & 400+ outlets. See which musicals are must-sees and which to skip.',
     intro: 'Broadway musicals represent the pinnacle of theatrical entertainment, combining compelling stories with unforgettable songs, spectacular staging, and incredible performances. These are the highest-rated musicals currently playing on Broadway, as determined by aggregated critic reviews. Whether you\'re looking for a classic, a new hit, or something in between, these productions deliver the very best of what musical theater has to offer.',
     filter: (show) => {
       if (show.status !== 'open') return false;

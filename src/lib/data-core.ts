@@ -373,12 +373,12 @@ export function getAllTheaterSlugs(): string[] {
 const BEST_OF_CONFIG: Record<BestOfCategory, { title: string; description: string; filter: (show: ComputedShow) => boolean }> = {
   'musicals': {
     title: 'Best Broadway Musicals',
-    description: 'The highest-rated musicals currently playing on Broadway, ranked by CriticScore.',
+    description: 'Every Broadway musical ranked by aggregated critic scores from NYT, Variety, Vulture & 400+ outlets. Updated weekly.',
     filter: (show) => show.type === 'musical' && show.status === 'open',
   },
   'plays': {
     title: 'Best Broadway Plays',
-    description: 'The highest-rated plays currently on Broadway, ranked by CriticScore.',
+    description: 'Every Broadway play ranked by aggregated critic scores from 400+ outlets. Find the must-see dramas and comedies playing now.',
     filter: (show) => show.type === 'play' && show.status === 'open',
   },
   'new-shows': {
@@ -394,7 +394,7 @@ const BEST_OF_CONFIG: Record<BestOfCategory, { title: string; description: strin
   },
   'highest-rated': {
     title: 'Top 10 Highest Rated Broadway Shows',
-    description: 'The absolute best shows on Broadway right now, based on aggregated critic reviews.',
+    description: 'The 10 highest-rated Broadway shows right now based on 400+ aggregated critic reviews. The definitive list.',
     filter: (show) => show.status === 'open' && show.criticScore?.score !== undefined,
   },
   'family': {
@@ -413,7 +413,7 @@ const BEST_OF_CONFIG: Record<BestOfCategory, { title: string; description: strin
   },
   'comedy': {
     title: 'Best Broadway Comedies',
-    description: 'The funniest shows on Broadway, from hilarious musicals to laugh-out-loud plays.',
+    description: 'The funniest shows on Broadway right now, ranked by aggregated critic scores from 400+ outlets. Updated weekly.',
     filter: (show) => {
       const tags = show.tags?.map(t => t.toLowerCase()) || [];
       return show.status === 'open' && tags.includes('comedy');
