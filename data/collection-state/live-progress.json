@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-08T01:49:33.891Z",
-  "processed": 6,
-  "failed": 17,
-  "successRate": "26.1%",
+  "updatedAt": "2026-03-08T01:50:56.272Z",
+  "processed": 9,
+  "failed": 24,
+  "successRate": "27.3%",
   "tierBreakdown": {
     "playwright": 1,
     "amp": 0,
-    "browserbase": 5,
+    "browserbase": 9,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 2,
-    "archive": 3
+    "archive": 4
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -69,6 +69,28 @@
       "t": "2026-03-08T01:49:16.606Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-08T01:49:53.243Z",
+      "event": "bb-session",
+      "session": "ff93e524",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9e05e4d6143ef935a15756c0"
+    },
+    {
+      "t": "2026-03-08T01:49:54.677Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-08T01:50:31.049Z",
+      "event": "bb-session",
+      "session": "79937a14",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;html_title=&amp;tol"
+    },
+    {
+      "t": "2026-03-08T01:50:32.568Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
