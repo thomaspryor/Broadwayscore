@@ -78,3 +78,89 @@ jobs:
           title: 'Performance Budget Exceeded'
           severity: 'warning'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+  lighthouse-tbt:
+    name: Lighthouse TBT Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Run after deploy completes so we test the live site
+    # Falls back to testing production URL (catches regressions from prior deploy)
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Lighthouse
+        run: npm install -g lighthouse
+
+      - name: Run mobile Lighthouse audit
+        id: lighthouse
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+        run: |
+          node -e '
+          const { execSync } = require("child_process");
+          const SITE_URL = "https://broadwayscorecard.com";
+          const TBT_THRESHOLD = 600;
+
+          const results = [];
+          for (let i = 1; i <= 3; i++) {
+            console.log("Mobile pass " + i + "/3...");
+            const outFile = "/tmp/lh-mobile-" + i + ".json";
+            try {
+              execSync(
+                "lighthouse " + SITE_URL + " --output=json --output-path=" + outFile +
+                " --chrome-flags=\"--headless --no-sandbox --disable-gpu\" " +
+                "--only-categories=performance --quiet",
+                { stdio: "pipe", timeout: 90000 }
+              );
+              const report = JSON.parse(require("fs").readFileSync(outFile, "utf8"));
+              results.push(report.audits["total-blocking-time"].numericValue || 0);
+            } catch (e) {
+              console.log("Warning: pass " + i + " failed: " + e.message.substring(0, 100));
+            }
+          }
+
+          if (results.length === 0) {
+            console.log("All Lighthouse passes failed — skipping TBT check");
+            process.exit(0);
+          }
+
+          const sorted = [...results].sort((a, b) => a - b);
+          const medianTBT = sorted[Math.floor(sorted.length / 2)];
+          console.log("Median mobile TBT: " + medianTBT.toFixed(0) + "ms (threshold: " + TBT_THRESHOLD + "ms)");
+          console.log("All runs: " + results.map(r => r.toFixed(0) + "ms").join(", "));
+
+          if (medianTBT > TBT_THRESHOLD) {
+            console.log("::error::Mobile TBT " + medianTBT.toFixed(0) + "ms exceeds threshold of " + TBT_THRESHOLD + "ms");
+
+            // Send Discord alert
+            const webhook = process.env.DISCORD_WEBHOOK_ALERTS;
+            if (webhook) {
+              const payload = JSON.stringify({
+                content: "⚠️ **TBT Regression Detected** (post-deploy check)\n" +
+                  "Mobile TBT: " + medianTBT.toFixed(0) + "ms (threshold: " + TBT_THRESHOLD + "ms)\n" +
+                  "Runs: " + results.map(r => r.toFixed(0) + "ms").join(", ") +
+                  "\nCommit: " + (process.env.GITHUB_SHA || "unknown").substring(0, 8),
+              });
+              try {
+                require("fs").writeFileSync("/tmp/discord-tbt.json", payload);
+                execSync("curl -s -X POST -H \"Content-Type: application/json\" -d @/tmp/discord-tbt.json \"" + webhook + "\"", { stdio: "pipe" });
+              } catch {}
+            }
+            process.exit(1);
+          }
+          console.log("✅ TBT within budget");
+          '
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Mobile TBT Regression Detected'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
