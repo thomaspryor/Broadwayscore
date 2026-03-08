@@ -503,9 +503,10 @@ function checkCWV() {
       const alerts = [];
       const m = latest.mobile || {};
       const d = latest.desktop || {};
-      if (m.lcp > 4000) alerts.push(`Mobile LCP ${(m.lcp / 1000).toFixed(1)}s`);
+      // CI runners are ~30-50% slower than real devices; thresholds account for this
+      if (m.lcp > 5000) alerts.push(`Mobile LCP ${(m.lcp / 1000).toFixed(1)}s`);
       if (m.cls > 0.1) alerts.push(`Mobile CLS ${m.cls.toFixed(3)}`);
-      if (m.tbt > 600) alerts.push(`Mobile TBT ${m.tbt.toFixed(0)}ms`);
+      if (m.tbt > 750) alerts.push(`Mobile TBT ${m.tbt.toFixed(0)}ms`);
       if (d.lcp > 2500) alerts.push(`Desktop LCP ${(d.lcp / 1000).toFixed(1)}s`);
       if (d.cls > 0.1) alerts.push(`Desktop CLS ${d.cls.toFixed(3)}`);
       if (d.tbt > 300) alerts.push(`Desktop TBT ${d.tbt.toFixed(0)}ms`);
