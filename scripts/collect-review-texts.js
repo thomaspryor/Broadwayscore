@@ -5328,6 +5328,8 @@ function findReviewsToProcess() {
           incompleteReason: data.incompleteReason || null,
           fabricatedEntry: data.fabricatedEntry || false,
           fetchAttempts: fileAttempts,
+          wrongShow: data.wrongShow || false,
+          wrongShowReason: data.wrongShowReason || null,
         });
       } catch (e) {
         console.error(`Error reading ${filePath}: ${e.message}`);
