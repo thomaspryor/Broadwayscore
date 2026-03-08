@@ -1,34 +1,34 @@
 {
-  "runDate": "2026-03-08T05:12:03.507Z",
+  "runDate": "2026-03-08T05:19:10.215Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "spare-parts-off-broadway-2026",
+    "showFilter": "art-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 4,
+    "processed": 17,
+    "failed": 7,
     "skipped": 0,
-    "successRate": "20.0%"
+    "successRate": "70.8%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 4,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -37,39 +37,97 @@
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 4,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 4,
-    "urlDiscoverySuccess": 0,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 21,
+    "browserbaseSessionsUsed": 4,
+    "browserbaseMinutesUsed": 1.3,
+    "urlDiscoveryAttempts": 11,
+    "urlDiscoverySuccess": 7,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "spare-parts-off-broadway-2026/theatermania--unknown.json"
+    "art-2025/rollingstone--tim-chan.json",
+    "art-2025/nyt-theater--unknown.json",
+    "art-2025/nytg--kyle-turner.json",
+    "art-2025/nypost--entertainment-critic.json",
+    "art-2025/observer--david-cote.json",
+    "art-2025/theatermania--hayley-levitt.json",
+    "art-2025/theatermania--zachary-stewart.json",
+    "art-2025/theatre-reviews-limited--david-roberts.json",
+    "art-2025/timeout--adam-feldman.json",
+    "art-2025/timeout--regina-robbins.json",
+    "art-2025/timeout--time-out.json",
+    "art-2025/wsj--unknown.json",
+    "art-2025/ap--unknown.json",
+    "art-2025/slantmagazine--unknown.json",
+    "art-2025/telegraph--dominic-cavendish.json",
+    "art-2025/times-uk--susie-goldsbrough.json",
+    "art-2025/washpost--naveen-kumar.json"
   ],
   "failed": [
-    "spare-parts-off-broadway-2026/deadline--stephanie-bunbury.json",
-    "spare-parts-off-broadway-2026/timeout--adam-feldman.json",
-    "spare-parts-off-broadway-2026/ap--mark-kennedy.json",
-    "spare-parts-off-broadway-2026/independent--alice-saville.json"
+    "art-2025/hollywood-reporter--caitlin-huston.json",
+    "art-2025/whatsonstage--unknown.json",
+    "art-2025/nytimes--elisabeth-vincentelli.json",
+    "art-2025/thewrap--robert-hofler.json",
+    "art-2025/one-minute-critic--matthew-wexler.json",
+    "art-2025/one-minute-critic--one-minute-critic.json",
+    "art-2025/thestage--unknown.json"
   ],
+  "failed": [],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "spare-parts-off-broadway-2026/theatermania--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "art-2025/telegraph--dominic-cavendish.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "spare-parts-off-broadway-2026/theatermania--unknown.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "art-2025/nytg--kyle-turner.json",
+      "oldUrl": "https://www.newyorktheatreguide.com/reviews/saturday-church-off-broadway-review",
+      "newUrl": "https://www.newyorktheatreguide.com/reviews/art-broadway-review-bobby-cannavale-james-corden-neil-patrick-harris"
+    },
+    {
+      "reviewId": "art-2025/nytimes--elisabeth-vincentelli.json",
+      "oldUrl": "https://www.nytimes.com/2025/09/16/theater/art-review-cannavale-corden-neil-patrick-harris.html",
+      "newUrl": "https://www.nytimes.com/2025/05/22/theater/corden-cannavale-harris-broadway-art.html"
+    },
+    {
+      "reviewId": "art-2025/theatermania--zachary-stewart.json",
+      "oldUrl": "https://www.theatermania.com/news/review-in-color-theories-julio-torres-explains-why-youre-so-blue_1802462/",
+      "newUrl": "https://www.theatermania.com/news/white-a-blank-page-or-canvas-or-is-it-art-proves-forever-fashionable-in-a-starry-broadway-revival_1803635/"
+    },
+    {
+      "reviewId": "art-2025/timeout--regina-robbins.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/and-then-we-were-no-more-review",
+      "newUrl": "https://www.timeout.com/newyork/theater/art-broadway-review-revival-play-james-corden-bobby-cannavale-neil-patrick-harris"
+    },
+    {
+      "reviewId": "art-2025/timeout--time-out.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/waiting-for-godot-revival-broadway-review-keanu-reeves-alex-winter-jamie-lloyd",
+      "newUrl": "https://www.timeout.com/newyork/theater/art-broadway-review-revival-play-james-corden-bobby-cannavale-neil-patrick-harris"
+    },
+    {
+      "reviewId": "art-2025/telegraph--dominic-cavendish.json",
+      "oldUrl": "https://www.telegraph.co.uk/theatre/what-to-see/the-producers-garrick-theatre-review/",
+      "newUrl": "https://www.telegraph.co.uk/theatre/what-to-see/arts-council-has-been-totally-humiliated/"
+    },
+    {
+      "reviewId": "art-2025/times-uk--susie-goldsbrough.json",
+      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/art-review-james-corden-broadway-sx6frth52?gaa_at=eafs&gaa_n=AWEtsqdZDl9bfw6TbUTu2zcEgM7ubPPrAe2lcqgV9Xk4p0OCLp2g7ph91GfW&gaa_ts=69976b4c&gaa_sig=Xov5GyOzgCc30241HGsNM_1ZGmsbemNCVYHt0jHqoL4rgj02Q2yKX1PzCLSt-ENFkIAHgDBYhsh00024BSPcCw%3D%3D",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/art-review-james-corden-broadway-sx6frth52?gaa_at=eafs&gaa_n=AWEtsqeevqVNqPO05eKHCEBDL6UlQbpahKcP1Z09iWgLQ4bVHNRQi5a1HM0J&gaa_ts=69ad09cb&gaa_sig=MnARf64rZmjeIZJ9hmSqg5F5FSHvq_v1wHe9CFPf8bTDeYopOfZ8x_ru95XZy174HJIb_WCcKsaWPPy8YTWDSw%3D%3D"
+    }
+  ]
 }
