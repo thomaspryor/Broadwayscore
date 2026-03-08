@@ -1,9 +1,9 @@
 'use client';
 
-import { useMemo, useCallback, useState, startTransition, Suspense } from 'react';
+import { useMemo, useCallback, useState, useRef, useEffect, startTransition, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import Fuse from 'fuse.js';
+import type Fuse from 'fuse.js';
 import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from '@/components/show-cards';
 import type { ScoreModeParam } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
@@ -164,24 +164,46 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews }: OffBroadwayPa
     window.history.replaceState({}, '', '/off-broadway');
   }, []);
 
-  // Fuse.js for fuzzy search
-  const fuse = useMemo(() => new Fuse(shows, {
-    keys: [
-      { name: 'title', weight: 0.6 },
-      { name: 'venue', weight: 0.2 },
-      { name: 'creativeTeamSearch', weight: 0.2 },
-    ],
-    threshold: 0.35,
-    ignoreLocation: true,
-    minMatchCharLength: 2,
-    getFn: (obj, path) => {
-      const key = Array.isArray(path) ? path[0] : path;
-      if (key === 'creativeTeamSearch') {
-        return (obj as OffBroadwayShow).creativeTeam?.map(m => m.name).join(', ') || '';
+  // Fuse.js — lazy-loaded on first search keystroke to reduce initial bundle
+  const fuseRef = useRef<Fuse<OffBroadwayShow> | null>(null);
+  const fuseDataRef = useRef(shows);
+  fuseDataRef.current = shows;
+
+  const getFuse = useCallback(async () => {
+    if (fuseRef.current) return fuseRef.current;
+    const FuseModule = (await import('fuse.js/basic')).default;
+    fuseRef.current = new FuseModule(fuseDataRef.current, {
+      keys: [
+        { name: 'title', weight: 0.6 },
+        { name: 'venue', weight: 0.2 },
+        { name: 'creativeTeamSearch', weight: 0.2 },
+      ],
+      threshold: 0.35,
+      ignoreLocation: true,
+      minMatchCharLength: 2,
+      getFn: (obj, path) => {
+        const key = Array.isArray(path) ? path[0] : path;
+        if (key === 'creativeTeamSearch') {
+          return (obj as OffBroadwayShow).creativeTeam?.map(m => m.name).join(', ') || '';
+        }
+        return FuseModule.config.getFn(obj, path);
+      },
+    });
+    return fuseRef.current;
+  }, []);
+
+  // Async search results from lazy-loaded Fuse
+  const [fuseResults, setFuseResults] = useState<OffBroadwayShow[] | null>(null);
+  useEffect(() => {
+    if (!searchQuery) { setFuseResults(null); return; }
+    let cancelled = false;
+    getFuse().then(fuse => {
+      if (!cancelled) {
+        setFuseResults(fuse.search(searchQuery).map(r => r.item));
       }
-      return Fuse.config.getFn(obj, path);
-    },
-  }), [shows]);
+    });
+    return () => { cancelled = true; };
+  }, [searchQuery, getFuse]);
 
   // Featured rows
   const topRecentShows = useMemo(() => {
@@ -216,8 +238,9 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews }: OffBroadwayPa
   }, [shows]);
 
   const filteredAndSortedShows = useMemo(() => {
-    if (searchQuery) {
-      return fuse.search(searchQuery).map(result => result.item);
+    // fuseResults is null while Fuse.js loads — fall through to normal filtering (avoids empty flash)
+    if (searchQuery && fuseResults !== null) {
+      return fuseResults;
     }
 
     let result = shows.filter(show => {
@@ -272,7 +295,7 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews }: OffBroadwayPa
     });
 
     return result;
-  }, [shows, fuse, statusFilter, type, searchQuery, sort, scoreMode]);
+  }, [shows, fuseResults, statusFilter, type, searchQuery, sort, scoreMode]);
 
   const shouldHideStatus = statusFilter !== 'all';
 
