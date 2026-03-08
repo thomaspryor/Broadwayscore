@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-03-08T05:51:47.839Z",
-  "processed": 23,
-  "failed": 2,
-  "successRate": "92.0%",
+  "updatedAt": "2026-03-08T05:59:37.667Z",
+  "processed": 5,
+  "failed": 0,
+  "successRate": "100.0%",
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 1,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 4,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 7
+    "archiveToday": 0,
+    "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-03-08T05:58:18.192Z",
+      "event": "bb-session",
+      "session": "73f222e3",
+      "url": "https://deadline.com/2023/09/poor-things-review-yorgos-lanthimos-emma-stone-veni"
+    },
+    {
+      "t": "2026-03-08T05:58:19.569Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    }
+  ]
 }
