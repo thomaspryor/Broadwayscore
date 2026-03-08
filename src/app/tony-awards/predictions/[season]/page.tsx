@@ -137,7 +137,7 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
         name: 'How are Tony predictions calculated on Broadway Scorecard?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Tony predictions use a blended score combining aggregated critic reviews (from 400+ outlets including NYT, Variety, and Vulture) with audience grades from multiple platforms. This combined approach historically predicts winners more accurately than critics or audiences alone.',
+          text: 'Tony predictions use a blended score combining aggregated critic reviews (from 420+ outlets including NYT, Variety, and Vulture) with audience grades from multiple platforms. This combined approach historically predicts winners more accurately than critics or audiences alone.',
         },
       },
       {
