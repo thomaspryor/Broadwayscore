@@ -257,16 +257,21 @@ try {
   warn('Could not read browse page');
 }
 
-// BrowseListClient tier1And2Count
+// tier1And2Count passed to ScoreBadge (may be in BrowseListClient or ShowListCard after refactors)
 try {
-  const blc = fs.readFileSync(path.join(SRC_DIR, 'components', 'BrowseListClient.tsx'), 'utf8');
-  if (blc.includes('tier1And2Count')) {
-    ok('BrowseListClient passes tier1And2Count to ScoreBadge');
+  const filesToCheck = ['components/BrowseListClient.tsx', 'components/show-cards/ShowListCard.tsx'];
+  const found = filesToCheck.some(f => {
+    try {
+      return fs.readFileSync(path.join(SRC_DIR, f), 'utf8').includes('tier1And2Count');
+    } catch { return false; }
+  });
+  if (found) {
+    ok('tier1And2Count passed to ScoreBadge in browse card pipeline');
   } else {
-    error('BrowseListClient missing tier1And2Count on ScoreBadge — T3-only guard disabled');
+    error('tier1And2Count missing from both BrowseListClient and ShowListCard — T3-only guard disabled');
   }
 } catch (e) {
-  warn('Could not read BrowseListClient.tsx');
+  warn('Could not check tier1And2Count in browse card files');
 }
 
 // ===== 6. COPY CHECKS =====

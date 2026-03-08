@@ -114,7 +114,10 @@ function countReviewTexts() {
                       (outletId && knownOutlets.has(outletId.replace(/-/g, ' '))) ||
                       (outlet && knownOutlets.has(outlet.replace(/-/g, ' ')));
 
-      if (!isKnown && (outletId || outlet)) {
+      // Skip files already flagged as excluded - they won't affect scoring
+      const isExcluded = data.duplicateOf || data.wrongProduction || data.wrongShow || data.wrongUrl;
+
+      if (!isKnown && !isExcluded && (outletId || outlet)) {
         unknownOutlets++;
         if (unknownOutletsList.length < 10) {
           unknownOutletsList.push({
@@ -125,20 +128,22 @@ function countReviewTexts() {
         }
       }
 
-      // Check for duplicates (same show + outlet + critic)
-      const criticName = (data.criticName || 'unknown').toLowerCase().trim();
+      // Check for duplicates (same show + outlet + critic) - skip excluded files
+      if (!isExcluded) {
+        const criticName = (data.criticName || 'unknown').toLowerCase().trim();
       const key = `${showDir}|${outletId || outlet}|${criticName}`;
 
       if (reviewKeys.has(key)) {
-        duplicates++;
-        if (duplicatesList.length < 10) {
-          duplicatesList.push({
-            file: path.join('data/review-texts', showDir, file),
-            key
-          });
+          duplicates++;
+          if (duplicatesList.length < 10) {
+            duplicatesList.push({
+              file: path.join('data/review-texts', showDir, file),
+              key
+            });
+          }
+        } else {
+          reviewKeys.add(key);
         }
-      } else {
-        reviewKeys.add(key);
       }
     }
   }
