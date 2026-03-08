@@ -84,7 +84,17 @@
     "suffs-2024/guardian--adrian-horton.json",
     "the-crucible-2016/observer--rex-reed.json",
     "the-crucible-2016/theatermania--jesse-green.json",
-    "the-drowsy-chaperone-2006/theatermania--david-finkle.json"
+    "the-drowsy-chaperone-2006/theatermania--david-finkle.json",
+    "the-drowsy-chaperone-2006/timeout--david-cote.json",
+    "the-elephant-man-2014/observer--rex-reed.json",
+    "the-kite-runner-2022/timeout--adam-feldman.json",
+    "the-lehman-trilogy-2021/observer--jesse-green.json",
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "the-little-mermaid-2008/nypost--clive-barnes.json",
+    "the-nap-2018/nypost--johnny-oleksinski.json",
+    "the-normal-heart-2011/san-jose-mercury-news--chuck-barney.json",
+    "the-norman-conquests-2009/nydailynews--joe-dziemianowicz.json",
+    "the-norman-conquests-2009/observer--rex-reed.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -132,7 +142,8 @@
     "archiveToday": [
       "data/review-texts/all-shook-up-2005/nytimes--ben-brantley.json",
       "data/review-texts/gary-a-sequel-to-titus-andronicus-2019/vulture--jesse-green.json",
-      "data/review-texts/oslo-2017/abc-news--unknown.json"
+      "data/review-texts/oslo-2017/abc-news--unknown.json",
+      "data/review-texts/the-normal-heart-2011/san-jose-mercury-news--chuck-barney.json"
     ],
     "archive": [
       "you-got-older-off-broadway-2026/timeout--unknown.json",
@@ -143,7 +154,7 @@
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "the-drowsy-chaperone-2006/theatermania--david-finkle.json",
+  "lastProcessed": "the-norman-conquests-2009/observer--rex-reed.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -276,6 +287,17 @@
       "t": "2026-03-08T02:03:29.022Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-08T02:08:23.541Z",
+      "event": "bb-session",
+      "session": "88641df7",
+      "url": "https://observer.com/2021/10/the-lehman-trilogy-broadway-review/"
+    },
+    {
+      "t": "2026-03-08T02:08:25.015Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
     }
   ]
 }

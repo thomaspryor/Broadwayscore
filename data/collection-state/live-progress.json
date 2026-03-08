@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-03-08T02:04:34.029Z",
+  "updatedAt": "2026-03-08T02:11:31.913Z",
   "processed": 27,
-  "failed": 56,
-  "successRate": "32.5%",
+  "failed": 66,
+  "successRate": "29.0%",
   "tierBreakdown": {
     "playwright": 9,
     "amp": 0,
@@ -10,22 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 4,
     "brightdata": 0,
-    "archiveToday": 3,
+    "archiveToday": 4,
     "archive": 5
   },
-  "browserbaseSessions": 12,
+  "browserbaseSessions": 13,
   "recentActivity": [
-    {
-      "t": "2026-03-08T01:47:35.313Z",
-      "event": "bb-session",
-      "session": "e3a99988",
-      "url": "https://www.hollywoodreporter.com/movies/movie-news/how-dance-ohio-sundance-revi"
-    },
-    {
-      "t": "2026-03-08T01:47:36.634Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-08T01:47:59.073Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-08T02:03:29.022Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-08T02:08:23.541Z",
+      "event": "bb-session",
+      "session": "88641df7",
+      "url": "https://observer.com/2021/10/the-lehman-trilogy-broadway-review/"
+    },
+    {
+      "t": "2026-03-08T02:08:25.015Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
     }
   ]
 }
