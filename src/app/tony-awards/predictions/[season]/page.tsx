@@ -163,14 +163,14 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
   const categoryItemLists = categories.filter(cat => cat.shows.length > 0).map(cat => ({
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: \`\${cat.title} - Tony Awards \${season.label}\`,
+    name: `${cat.title} - Tony Awards ${season.label}`,
     itemListElement: cat.shows.slice(0, 10).map((show, i) => ({
       '@type': 'ListItem',
       position: i + 1,
       item: {
         '@type': 'TheaterEvent',
         name: show.title,
-        url: \`\${BASE_URL}/show/\${show.slug}\`,
+        url: `${BASE_URL}/show/${show.slug}`,
       },
     })),
   }));
