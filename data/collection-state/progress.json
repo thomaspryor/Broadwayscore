@@ -29,7 +29,9 @@
     "tammy-faye-2024/new-york-sun--unknown.json",
     "the-price-1999/timeout--adam-feldman.json",
     "the-year-of-magical-thinking-2007/theatermania--pete-hempstead.json",
-    "waiting-for-godot-2025/deadline--unknown.json"
+    "waiting-for-godot-2025/deadline--unknown.json",
+    "woman-in-mind-west-end-2025/guardian--arifa-akbar.json",
+    "woman-in-mind-west-end-2025/timeout-london--andrzej-lukowski.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -124,7 +126,15 @@
     "waitress-2016/observer--rex-reed.json",
     "war-paint-2017/guardian--jesse-green.json",
     "what-the-constitution-means-to-me-2019/observer--rex-reed.json",
-    "wolf-hall-parts-one-and-two-2015/guardian--jesse-green.json"
+    "wolf-hall-parts-one-and-two-2015/guardian--jesse-green.json",
+    "wolf-hall-parts-one-and-two-2015/observer--rex-reed.json",
+    "wolf-hall-parts-one-and-two-2015/timeout--adam-feldman.json",
+    "yellow-face-2024/nypost--johnny-oleksinski.json",
+    "company-2021/theatrely--david-gordon.json",
+    "gypsy-2024/theatrely--zachary-stewart.json",
+    "mother-play-2024/forward--jesse-green.json",
+    "newsies-the-musical-2012/forward--jesse-green.json",
+    "swept-away-2024/theatrely--david-ng.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -170,7 +180,8 @@
       "les-liaisons-dangereuses-1987/timeout--david-cote.json",
       "passing-strange-2008/guardian--kate-wyver.json",
       "richard-iii-2013/guardian--susannah-clapp.json",
-      "the-price-1999/timeout--adam-feldman.json"
+      "the-price-1999/timeout--adam-feldman.json",
+      "woman-in-mind-west-end-2025/guardian--arifa-akbar.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -181,18 +192,22 @@
       "data/review-texts/title-of-show-2008/nydailynews--unknown.json",
       "data/review-texts/title-of-show-2008/nypost--unknown.json",
       "data/review-texts/title-of-show-2008/theatermania--unknown.json",
-      "data/review-texts/title-of-show-2008/wsj--unknown.json"
+      "data/review-texts/title-of-show-2008/wsj--unknown.json",
+      "data/review-texts/company-2021/theatrely--david-gordon.json",
+      "data/review-texts/gypsy-2024/theatrely--zachary-stewart.json",
+      "data/review-texts/swept-away-2024/theatrely--david-ng.json"
     ],
     "archive": [
       "you-got-older-off-broadway-2026/timeout--unknown.json",
       "gem-of-the-ocean-2004/nytimes--ben-brantley.json",
       "good-vibrations-2005/nytimes--ben-brantley.json",
       "rent-1996/nytimes--ben-brantley.json",
-      "burn-this-1987/timeout--adam-feldman.json"
+      "burn-this-1987/timeout--adam-feldman.json",
+      "woman-in-mind-west-end-2025/timeout-london--andrzej-lukowski.json"
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "wolf-hall-parts-one-and-two-2015/guardian--jesse-green.json",
+  "lastProcessed": "swept-away-2024/theatrely--david-ng.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -422,6 +437,17 @@
     },
     {
       "t": "2026-03-08T02:23:10.598Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-08T02:24:24.562Z",
+      "event": "bb-session",
+      "session": "7ff45f7c",
+      "url": "https://observer.com/2015/04/wolf-hall-brings-out-the-best-in-ben-miles-and-nath"
+    },
+    {
+      "t": "2026-03-08T02:24:26.024Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
     }
