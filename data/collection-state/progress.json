@@ -190,7 +190,9 @@
     "aint-no-mo-2022/nyt-theater--jonathan-mandell.json",
     "buena-vista-social-club-off-broadway-2023/vulture--jackson-mchenry.json",
     "cats-the-jellicle-ball-off-broadway-2024/hollywood-reporter--frank-scheck.json",
-    "death-of-a-salesman-2022/nyt-theater--jonathan-mandell.json"
+    "death-of-a-salesman-2022/nyt-theater--jonathan-mandell.json",
+    "oh-mary-off-broadway-2024/nyt-theater--jonathan-mandell.json",
+    "oh-mary-off-broadway-2024/variety--christian-lewis.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -1504,7 +1506,15 @@
     "paranormal-activity-west-end-2025/financialtimes--paul-raven.json",
     "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/times-uk--clive-davis.json",
     "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
-    "bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json"
+    "bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json",
+    "escape-to-margaritaville-2018/vulture--jesse-green.json",
+    "john-lithgow-stories-by-heart-2018/vulture--jesse-green.json",
+    "linda-vista-2019/variety--marilyn-stasio.json",
+    "new-york-new-york-2023/hollywood-reporter--angie-han.json",
+    "ohio-state-murders-2022/hollywood-reporter--anita-gates.json",
+    "on-a-clear-day-you-can-see-forever-2011/vulture--jesse-green.json",
+    "rodgers-hammersteins-cinderella-2013/vulture--jesse-green.json",
+    "the-collaboration-2022/hollywood-reporter--anita-gates.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1598,7 +1608,8 @@
       "my-neighbour-totoro-west-end-2025/artsdesk--saskia-baron.json",
       "the-hunger-games-on-stage-west-end-2025/standard--nick-curtis.json",
       "aint-no-mo-2022/nyt-theater--jonathan-mandell.json",
-      "death-of-a-salesman-2022/nyt-theater--jonathan-mandell.json"
+      "death-of-a-salesman-2022/nyt-theater--jonathan-mandell.json",
+      "oh-mary-off-broadway-2024/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [
       "data/review-texts/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/vulture--helen-shaw.json",
@@ -1616,7 +1627,9 @@
       "data/review-texts/new-york-new-york-2023/hollywood-reporter--angie-han.json",
       "data/review-texts/cats-1982/hollywood-reporter--frank-scheck.json",
       "cats-1982/hollywood-reporter--frank-scheck.json",
-      "data/review-texts/new-york-new-york-2023/hollywood-reporter--angie-han.json"
+      "data/review-texts/new-york-new-york-2023/hollywood-reporter--angie-han.json",
+      "data/review-texts/oh-mary-off-broadway-2024/variety--christian-lewis.json",
+      "oh-mary-off-broadway-2024/variety--christian-lewis.json"
     ],
     "browserbase": [
       "data/review-texts/brooklyn-2004/nytimes--ben-brantley.json",
@@ -1646,7 +1659,8 @@
       "data/review-texts/the-king-and-i-2015/amny--matt-windman.json",
       "the-king-and-i-2015/amny--matt-windman.json",
       "data/review-texts/cats-the-jellicle-ball-off-broadway-2024/hollywood-reporter--frank-scheck.json",
-      "cats-the-jellicle-ball-off-broadway-2024/hollywood-reporter--frank-scheck.json"
+      "cats-the-jellicle-ball-off-broadway-2024/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/new-york-new-york-2023/hollywood-reporter--angie-han.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2132,7 +2146,7 @@
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "death-of-a-salesman-2022/nyt-theater--jonathan-mandell.json",
+  "lastProcessed": "the-collaboration-2022/hollywood-reporter--anita-gates.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -2841,6 +2855,28 @@
     },
     {
       "t": "2026-03-08T15:32:44.780Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-08T15:33:19.452Z",
+      "event": "bb-session",
+      "session": "488c4cf0",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/new-york-new-york-broadway-revi"
+    },
+    {
+      "t": "2026-03-08T15:33:20.635Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-08T15:34:14.363Z",
+      "event": "bb-session",
+      "session": "8617d4f7",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/new-york-new-york-kander-ebb-mu"
+    },
+    {
+      "t": "2026-03-08T15:34:15.676Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
