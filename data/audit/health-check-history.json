@@ -1,11 +1,11 @@
 {
-  "lastRun": "2026-03-07T23:19:53.895Z",
-  "consecutiveErrorDays": 0,
+  "lastRun": "2026-03-08T05:44:23.603Z",
+  "consecutiveErrorDays": 1,
   "results": [
     {
       "name": "Freshness: reviews.json",
       "status": "pass",
-      "message": "23h old"
+      "message": "6h old"
     },
     {
       "name": "Freshness: shows.json",
@@ -15,12 +15,12 @@
     {
       "name": "Freshness: grosses.json",
       "status": "pass",
-      "message": "3d old"
+      "message": "4d old"
     },
     {
       "name": "Freshness: audience-buzz.json",
       "status": "pass",
-      "message": "23h old"
+      "message": "1d old"
     },
     {
       "name": "Freshness: commercial.json",
@@ -30,7 +30,7 @@
     {
       "name": "Freshness: critic-consensus.json",
       "status": "pass",
-      "message": "15h old"
+      "message": "1h old"
     },
     {
       "name": "Freshness: lottery-rush.json",
@@ -40,7 +40,7 @@
     {
       "name": "Sync: review-texts vs reviews.json",
       "status": "pass",
-      "message": "31094 files, 18043 reviews (surplus: 13051)"
+      "message": "Skipped — review-texts not checked out (private repo)"
     },
     {
       "name": "Sync: open show coverage",
@@ -50,12 +50,12 @@
     {
       "name": "Sync: baseline drift",
       "status": "pass",
-      "message": "2301 shows, 141 open, 18043 reviews (all at or above baseline)"
+      "message": "2301 shows, 141 open, 17942 reviews (all at or above baseline)"
     },
     {
       "name": "Pipeline: rebuild-reviews",
       "status": "warn",
-      "message": "Last success 12d ago (threshold: 2d)"
+      "message": "Last success 13d ago (threshold: 2d)"
     },
     {
       "name": "Pipeline: update-show-status",
@@ -65,7 +65,7 @@
     {
       "name": "Pipeline: collect-review-texts",
       "status": "pass",
-      "message": "Last success 1h ago"
+      "message": "Last success 0h ago"
     },
     {
       "name": "Pipeline: weekly-grosses",
@@ -75,7 +75,7 @@
     {
       "name": "Pipeline: weekly-integrity",
       "status": "pass",
-      "message": "Last success 7d ago"
+      "message": "Last success 1h ago"
     },
     {
       "name": "Pipeline: test",
@@ -85,12 +85,12 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.7% scored (18043/18286)"
+      "message": "98.4% scored (17942/18242)"
     },
     {
       "name": "Cookies: expiration",
       "status": "warn",
-      "message": "1 expired, 0 expiring <7d — newsday: EXPIRED"
+      "message": "data/cookies/ not found"
     },
     {
       "name": "CWV: performance",
@@ -103,14 +103,39 @@
       "message": "Last SEO check unknown ago (>14d)"
     },
     {
-      "name": "Cron: health",
-      "status": "warn",
-      "message": "Skipped — no GH_TOKEN available (local run)"
+      "name": "Cron: Update Show Status",
+      "status": "pass",
+      "message": "10h ago, success"
+    },
+    {
+      "name": "Cron: Rebuild Reviews",
+      "status": "pass",
+      "message": "0h ago, "
+    },
+    {
+      "name": "Cron: Collect Review Texts",
+      "status": "pass",
+      "message": "0h ago, "
+    },
+    {
+      "name": "Cron: LLM Ensemble Score",
+      "status": "pass",
+      "message": "0h ago, "
+    },
+    {
+      "name": "Cron: Test Suite",
+      "status": "pass",
+      "message": "0h ago, "
+    },
+    {
+      "name": "Cron: Opening Night Broadcast",
+      "status": "pass",
+      "message": "0h ago, "
     },
     {
       "name": "Secrets: health",
-      "status": "warn",
-      "message": "Skipped — no GH_TOKEN available (local run)"
+      "status": "pass",
+      "message": "Last check passed (6d ago)"
     }
   ],
   "lastCleanStreak": 0
