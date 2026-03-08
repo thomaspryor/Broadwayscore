@@ -145,9 +145,16 @@ jobs:
             echo "has_pending=true" >> $GITHUB_OUTPUT
           fi
 
+      # Record pipeline health timestamp (always, even if no show changes)
+      - name: Record pipeline success
+        if: always() && steps.validate.outcome != 'failure'
+        run: |
+          mkdir -p data/audit/pipeline-health
+          date -u > data/audit/pipeline-health/update-show-status.last-success
+
       # Step 5: Commit and push changes (skip if validation failed)
       - name: Commit and push changes
-        if: always() && steps.git-check.outputs.changes == 'true' && steps.validate.outcome != 'failure'
+        if: always() && steps.validate.outcome != 'failure'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -157,6 +164,13 @@ jobs:
           fi
           git add data/show-score-urls.json 2>/dev/null || true
           git add data/show-score-candidates.json 2>/dev/null || true
+          git add data/audit/pipeline-health/ 2>/dev/null || true
+
+          # Only commit if there are staged changes
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
 
           # Create appropriate commit message
           if [ "${{ steps.discover.outputs.new_shows_count }}" != "" ] && [ "${{ steps.discover.outputs.new_shows_count }}" != "0" ]; then
