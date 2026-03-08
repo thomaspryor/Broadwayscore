@@ -15,7 +15,9 @@ import dynamic from 'next/dynamic';
 import type Fuse from 'fuse.js';
 import MezzanineImport from './MezzanineImport';
 
-const ListsTab = dynamic(() => import('./ListsTab'), {
+const ListsTab = dynamic(() => import('./ListsTab').catch(() => {
+  return { default: () => <div className="text-center py-12 text-red-400">Failed to load lists. Please refresh the page.</div> };
+}), {
   loading: () => <div className="text-center py-12 text-gray-500">Loading lists...</div>,
 });
 
