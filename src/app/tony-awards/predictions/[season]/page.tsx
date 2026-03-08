@@ -159,11 +159,27 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
     ],
   };
 
+  // ItemList per Tony category — matches visible page structure
+  const categoryItemLists = categories.filter(cat => cat.shows.length > 0).map(cat => ({
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: \`\${cat.title} - Tony Awards \${season.label}\`,
+    itemListElement: cat.shows.slice(0, 10).map((show, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: {
+        '@type': 'TheaterEvent',
+        name: show.title,
+        url: \`\${BASE_URL}/show/\${show.slug}\`,
+      },
+    })),
+  }));
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify([faqSchema, breadcrumbSchema]) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([faqSchema, breadcrumbSchema, ...categoryItemLists]) }}
       />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
