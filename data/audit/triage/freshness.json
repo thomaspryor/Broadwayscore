@@ -1,15 +1,15 @@
 {
   "system": "freshness",
   "status": "error",
-  "lastChecked": "2026-03-08T06:12:51.700Z",
+  "lastChecked": "2026-03-08T07:28:33.545Z",
   "lastAlertTimestamp": null,
-  "autoFixAttempts": 1,
+  "autoFixAttempts": 2,
   "escalationState": "monitoring",
   "details": [
     {
       "name": "Freshness: reviews.json",
       "status": "pass",
-      "message": "6h old"
+      "message": "7h old"
     },
     {
       "name": "Freshness: shows.json",
@@ -34,7 +34,7 @@
     {
       "name": "Freshness: critic-consensus.json",
       "status": "pass",
-      "message": "1h old"
+      "message": "2h old"
     },
     {
       "name": "Freshness: lottery-rush.json",
@@ -42,6 +42,6 @@
       "message": "6d old"
     }
   ],
-  "lastAutoFix": "2026-03-08T06:12:53.118Z",
+  "lastAutoFix": "2026-03-08T07:28:35.047Z",
   "lastAutoFixWorkflow": "update-show-status.yml"
 }
