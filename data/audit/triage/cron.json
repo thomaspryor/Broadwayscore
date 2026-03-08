@@ -1,7 +1,7 @@
 {
   "system": "cron",
   "status": "pass",
-  "lastChecked": "2026-03-07T23:21:08.883Z",
+  "lastChecked": "2026-03-08T05:44:23.606Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,12 +9,12 @@
     {
       "name": "Cron: Update Show Status",
       "status": "pass",
-      "message": "4h ago, success"
+      "message": "10h ago, success"
     },
     {
       "name": "Cron: Rebuild Reviews",
       "status": "pass",
-      "message": "0h ago, skipped"
+      "message": "0h ago, "
     },
     {
       "name": "Cron: Collect Review Texts",
@@ -24,7 +24,7 @@
     {
       "name": "Cron: LLM Ensemble Score",
       "status": "pass",
-      "message": "1h ago, success"
+      "message": "0h ago, "
     },
     {
       "name": "Cron: Test Suite",
@@ -34,7 +34,7 @@
     {
       "name": "Cron: Opening Night Broadcast",
       "status": "pass",
-      "message": "15h ago, success"
+      "message": "0h ago, "
     }
   ]
 }
