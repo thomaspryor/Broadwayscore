@@ -159,7 +159,10 @@
         "mark-kennedy"
       ],
       "domain": "apnews.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domainAliases": [
+        "abcnews.go.com"
+      ]
     },
     "nypost": {
       "displayName": "New York Post",
@@ -7297,7 +7300,10 @@
       ],
       "domain": "thetimes.co.uk",
       "region": "london",
-      "accessModel": "paywalled"
+      "accessModel": "paywalled",
+      "domainAliases": [
+        "thetimes.com"
+      ]
     },
     "standard": {
       "displayName": "Evening Standard",
@@ -7328,7 +7334,10 @@
       ],
       "domain": "independent.co.uk",
       "region": "london",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domainAliases": [
+        "the-independent.com"
+      ]
     },
     "i-paper": {
       "displayName": "The i",
@@ -7356,7 +7365,10 @@
       ],
       "domain": "theatreandtonic.com",
       "region": "london",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domainAliases": [
+        "theatreandtonic.co.uk"
+      ]
     },
     "thereviewshub": {
       "displayName": "The Reviews Hub",
@@ -7447,7 +7459,10 @@
       "tier": 3,
       "domain": "theatrebee.co.uk",
       "region": "london",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domainAliases": [
+        "theatrebee.com"
+      ]
     },
     "tim-talks-theatre-uk": {
       "displayName": "Tim Talks Theatre",
@@ -7648,7 +7663,10 @@
       ],
       "domain": "londontheatre.co.uk",
       "region": "london",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domainAliases": [
+        "londontheatre1.com"
+      ]
     },
     "timeout-london": {
       "displayName": "Time Out London",
@@ -8495,6 +8513,17 @@
         "b1039"
       ],
       "domain": "b1039.com",
+      "accessModel": "free"
+    },
+    "washington-square-news": {
+      "displayName": "Washington Square News",
+      "tier": 3,
+      "aliases": [
+        "washington-square-news",
+        "washington square news",
+        "wsn"
+      ],
+      "domain": "nyunews.com",
       "accessModel": "free"
     }
   },
