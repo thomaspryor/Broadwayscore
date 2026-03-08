@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-03-08T02:11:31.913Z",
-  "processed": 27,
-  "failed": 66,
-  "successRate": "29.0%",
+  "updatedAt": "2026-03-08T02:16:06.651Z",
+  "processed": 28,
+  "failed": 75,
+  "successRate": "27.2%",
   "tierBreakdown": {
     "playwright": 9,
     "amp": 0,
     "browserbase": 19,
     "directCookies": 0,
-    "scrapingbee": 4,
+    "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 4,
     "archive": 5
   },
-  "browserbaseSessions": 13,
+  "browserbaseSessions": 16,
   "recentActivity": [
-    {
-      "t": "2026-03-08T01:47:59.073Z",
-      "event": "bb-session",
-      "session": "2f911eef",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/new-york-new-york-broadway-revi"
-    },
-    {
-      "t": "2026-03-08T01:48:00.443Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-08T01:49:15.374Z",
-      "event": "bb-session",
-      "session": "cef3f687",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/new-york-new-york-kander-ebb-mu"
-    },
-    {
-      "t": "2026-03-08T01:49:16.606Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-08T01:49:53.243Z",
-      "event": "bb-session",
-      "session": "ff93e524",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9e05e4d6143ef935a15756c0"
-    },
-    {
-      "t": "2026-03-08T01:49:54.677Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-08T01:50:31.049Z",
       "event": "bb-session",
@@ -122,6 +89,39 @@
     },
     {
       "t": "2026-03-08T02:08:25.015Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-08T02:13:46.803Z",
+      "event": "bb-session",
+      "session": "5b7dcf58",
+      "url": "https://observer.com/2017/03/the-price-broadway-review-arthur-miller/"
+    },
+    {
+      "t": "2026-03-08T02:13:48.159Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-08T02:14:48.996Z",
+      "event": "bb-session",
+      "session": "d1005809",
+      "url": "https://observer.com/2014/11/broadway-review-the-real-thing-starring-ewan-mcgreg"
+    },
+    {
+      "t": "2026-03-08T02:14:50.356Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-08T02:15:21.334Z",
+      "event": "bb-session",
+      "session": "3917f2d8",
+      "url": "https://observer.com/2013/04/fiona-shaw-is-divine-in-colm-toibins-the-testament-"
+    },
+    {
+      "t": "2026-03-08T02:15:22.728Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
     }
