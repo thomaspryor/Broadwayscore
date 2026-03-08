@@ -727,6 +727,12 @@ async function sendCriticalAlert(results, history) {
 // --- Main ---
 
 async function main() {
+  const isCI = !!process.env.CI || !!process.env.GITHUB_ACTIONS;
+
+  if (!isCI) {
+    console.log('⚠️  LOCAL RUN — history/triage/alerts will NOT be updated (stale local data would corrupt CI state)\n');
+  }
+
   console.log('=== Broadway Scorecard Daily Health Check ===\n');
 
   const allResults = [
@@ -753,7 +759,13 @@ async function main() {
 
   console.log(`\n--- Summary: ${totalPassed} passed, ${totalWarn} warnings, ${totalError} errors (${allResults.length} total) ---\n`);
 
-  // Progressive alerting
+  // Local runs: print results only, skip all side effects
+  if (!isCI) {
+    console.log('ℹ️  Run in CI (data-health-check.yml) for full alerting and triage state updates.');
+    return;
+  }
+
+  // Progressive alerting (CI only)
   const history = loadHistory();
   const hadErrors = totalError > 0;
 
