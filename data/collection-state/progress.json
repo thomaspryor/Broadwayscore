@@ -5,7 +5,10 @@
     "brooklyn-2004/nytimes--ben-brantley.json",
     "gem-of-the-ocean-2004/nytimes--ben-brantley.json",
     "good-vibrations-2005/nytimes--ben-brantley.json",
-    "how-to-dance-in-ohio-2023/hollywood-reporter--angie-han.json"
+    "how-to-dance-in-ohio-2023/hollywood-reporter--angie-han.json",
+    "rent-1996/nytimes--ben-brantley.json",
+    "sight-unseen-2004/nytimes--ben-brantley.json",
+    "the-violet-hour-2003/nytimes--ben-brantley.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -24,7 +27,14 @@
     "john-lithgow-stories-by-heart-2018/vulture--jesse-green.json",
     "linda-vista-2019/variety--marilyn-stasio.json",
     "new-york-new-york-2023/hollywood-reporter--angie-han.json",
-    "ohio-state-murders-2022/hollywood-reporter--anita-gates.json"
+    "ohio-state-murders-2022/hollywood-reporter--anita-gates.json",
+    "on-a-clear-day-you-can-see-forever-2011/vulture--jesse-green.json",
+    "rodgers-hammersteins-cinderella-2013/vulture--jesse-green.json",
+    "the-collaboration-2022/hollywood-reporter--anita-gates.json",
+    "the-shark-is-broken-2023/hollywood-reporter--angie-han.json",
+    "the-whos-tommy-2024/hollywood-reporter--angie-han.json",
+    "uncle-vanya-2024/vulture--helen-shaw.json",
+    "waitress-2021/vulture--helen-shaw.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -37,7 +47,11 @@
       "brooklyn-2004/nytimes--ben-brantley.json",
       "data/review-texts/how-to-dance-in-ohio-2023/hollywood-reporter--angie-han.json",
       "how-to-dance-in-ohio-2023/hollywood-reporter--angie-han.json",
-      "data/review-texts/new-york-new-york-2023/hollywood-reporter--angie-han.json"
+      "data/review-texts/new-york-new-york-2023/hollywood-reporter--angie-han.json",
+      "data/review-texts/sight-unseen-2004/nytimes--ben-brantley.json",
+      "sight-unseen-2004/nytimes--ben-brantley.json",
+      "data/review-texts/the-violet-hour-2003/nytimes--ben-brantley.json",
+      "the-violet-hour-2003/nytimes--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -49,11 +63,12 @@
     "archive": [
       "you-got-older-off-broadway-2026/timeout--unknown.json",
       "gem-of-the-ocean-2004/nytimes--ben-brantley.json",
-      "good-vibrations-2005/nytimes--ben-brantley.json"
+      "good-vibrations-2005/nytimes--ben-brantley.json",
+      "rent-1996/nytimes--ben-brantley.json"
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "ohio-state-murders-2022/hollywood-reporter--anita-gates.json",
+  "lastProcessed": "waitress-2021/vulture--helen-shaw.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -109,6 +124,28 @@
       "t": "2026-03-08T01:49:16.606Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-08T01:49:53.243Z",
+      "event": "bb-session",
+      "session": "ff93e524",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9e05e4d6143ef935a15756c0"
+    },
+    {
+      "t": "2026-03-08T01:49:54.677Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-08T01:50:31.049Z",
+      "event": "bb-session",
+      "session": "79937a14",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;html_title=&amp;tol"
+    },
+    {
+      "t": "2026-03-08T01:50:32.568Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
