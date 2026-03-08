@@ -1394,7 +1394,17 @@
     "the-people-in-the-picture-2011/northjerseycom--robert-feldberg.json",
     "the-people-in-the-picture-2011/philadelphia-inquirer--howard-shapiro.json",
     "the-performers-2012/ap--mark-kennedy.json",
-    "the-phantom-of-the-opera-1988/businessworld--sam-marcelo.json"
+    "the-phantom-of-the-opera-1988/businessworld--sam-marcelo.json",
+    "the-phantom-of-the-opera-1988/the-philippine-star--rosalinda-orosa.json",
+    "the-philanthropist-2009/dailybeast--john-anderson.json",
+    "the-pitmen-painters-2010/backstage--unknown.json",
+    "the-pitmen-painters-2010/village-voice--michael-feingold.json",
+    "the-play-that-goes-wrong-2017/washpost--peter-marks.json",
+    "the-price-2017/washpost--peter-marks.json",
+    "the-real-thing-2014/washpost--peter-marks.json",
+    "the-realistic-joneses-2014/ap--mark-kennedy.json",
+    "the-realistic-joneses-2014/washpost--peter-marks.json",
+    "the-ritz-2007/playbill--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1900,7 +1910,15 @@
       "data/review-texts/the-other-place-2013/washpost--peter-marks.json",
       "data/review-texts/the-peewee-herman-show-2010/usatoday--elysa-gardner.json",
       "data/review-texts/the-people-in-the-picture-2011/northjerseycom--robert-feldberg.json",
-      "data/review-texts/the-performers-2012/ap--mark-kennedy.json"
+      "data/review-texts/the-performers-2012/ap--mark-kennedy.json",
+      "data/review-texts/the-philanthropist-2009/dailybeast--john-anderson.json",
+      "data/review-texts/the-pitmen-painters-2010/backstage--unknown.json",
+      "data/review-texts/the-play-that-goes-wrong-2017/washpost--peter-marks.json",
+      "data/review-texts/the-price-2017/washpost--peter-marks.json",
+      "data/review-texts/the-real-thing-2014/washpost--peter-marks.json",
+      "data/review-texts/the-realistic-joneses-2014/ap--mark-kennedy.json",
+      "data/review-texts/the-realistic-joneses-2014/washpost--peter-marks.json",
+      "data/review-texts/the-ritz-2007/playbill--unknown.json"
     ],
     "archive": [
       "you-got-older-off-broadway-2026/timeout--unknown.json",
@@ -1939,7 +1957,7 @@
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "the-phantom-of-the-opera-1988/businessworld--sam-marcelo.json",
+  "lastProcessed": "the-ritz-2007/playbill--unknown.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -2556,6 +2574,56 @@
       "t": "2026-03-08T11:14:22.137Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-08T11:17:08.847Z",
+      "event": "bb-session",
+      "session": "29a24558",
+      "url": "https://www.thedailybeast.com/the-philanthropist-broadway-review"
+    },
+    {
+      "t": "2026-03-08T11:23:40.700Z",
+      "event": "bb-session",
+      "session": "429c9fa2",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/the-play-that-goes-wr"
+    },
+    {
+      "t": "2026-03-08T11:23:41.663Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-08T11:24:18.436Z",
+      "event": "bb-session",
+      "session": "6425b29c",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-the-price-on-b"
+    },
+    {
+      "t": "2026-03-08T11:24:19.534Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-08T11:24:56.068Z",
+      "event": "bb-session",
+      "session": "da0053e4",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/the-real-thing-on-bro"
+    },
+    {
+      "t": "2026-03-08T11:24:57.152Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-08T11:26:34.350Z",
+      "event": "bb-session",
+      "session": "1ad08837",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/the-realistic-joneses"
+    },
+    {
+      "t": "2026-03-08T11:26:35.632Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
