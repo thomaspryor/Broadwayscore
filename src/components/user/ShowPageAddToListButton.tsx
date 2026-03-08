@@ -4,7 +4,7 @@ import { useEffect, useCallback, useState, useRef } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserLists } from '@/hooks/useUserLists';
 import { useToastSafe } from '@/components/ui/Toast';
-import { savePendingAction } from '@/lib/deferred-auth';
+import { savePendingAction, getPendingAction, clearPendingAction } from '@/lib/deferred-auth';
 import { featureFlags } from '@/config/feature-flags';
 
 interface ShowPageAddToListButtonProps {
@@ -22,11 +22,25 @@ export default function ShowPageAddToListButton({ showId }: ShowPageAddToListBut
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const hasAutoOpened = useRef(false);
+  const [listsReady, setListsReady] = useState(false);
+
   useEffect(() => {
     if (isAuthenticated && user) {
-      getLists();
+      getLists().then(() => setListsReady(true));
     }
   }, [isAuthenticated, user, getLists]);
+
+  // Auto-open dropdown after deferred auth (user tapped List before signing in)
+  useEffect(() => {
+    if (!isAuthenticated || !user || hasAutoOpened.current || !listsReady) return;
+    const pending = getPendingAction();
+    if (pending?.type === 'add-to-list' && pending.showId === showId) {
+      hasAutoOpened.current = true;
+      clearPendingAction();
+      setOpen(true);
+    }
+  }, [isAuthenticated, user, listsReady, showId]);
 
   // Close dropdown on outside click
   useEffect(() => {
