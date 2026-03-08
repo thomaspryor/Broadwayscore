@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-08T18:11:34.117Z",
-  "processed": 294,
-  "failed": 2082,
-  "successRate": "12.4%",
+  "updatedAt": "2026-03-08T18:13:44.366Z",
+  "processed": 301,
+  "failed": 2085,
+  "successRate": "12.6%",
   "tierBreakdown": {
-    "playwright": 143,
-    "amp": 37,
-    "browserbase": 51,
+    "playwright": 145,
+    "amp": 39,
+    "browserbase": 53,
     "directCookies": 0,
-    "scrapingbee": 51,
+    "scrapingbee": 52,
     "brightdata": 0,
     "archiveToday": 426,
-    "archive": 64
+    "archive": 66
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 11,
   "recentActivity": [
-    {
-      "t": "2026-03-08T17:43:35.007Z",
-      "event": "bb-session",
-      "session": "945796b2",
-      "url": "http://theater.nytimes.com/2013/04/12/theater/reviews/matilda-the-musical-at-shu"
-    },
-    {
-      "t": "2026-03-08T17:43:36.443Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-08T17:44:01.642Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-08T18:11:14.557Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-08T18:13:01.868Z",
+      "event": "bb-session",
+      "session": "ae5c8398",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-08T18:13:03.150Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
