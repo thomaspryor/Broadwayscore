@@ -132,6 +132,14 @@ jobs:
         run: node scripts/strip-stale-single-model-scores.js --apply
         continue-on-error: true
 
+      - name: Detect syndicated duplicates and author mismatches
+        run: node scripts/detect-syndicated-duplicates.js
+        continue-on-error: true
+
+      - name: Apply audit flags to review-text files
+        run: node scripts/apply-audit-flags.js
+        continue-on-error: true
+
       - name: Rebuild reviews.json
         env:
           ALLOW_DRIFT: ${{ github.event.inputs.allow_drift }}

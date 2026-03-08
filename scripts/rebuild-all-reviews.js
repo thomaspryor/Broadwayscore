@@ -1817,7 +1817,23 @@ showDirs.forEach(showId => {
         return;
       }
 
-      // Skip reviews flagged as wrong author attribution
+      // Handle reviews where fullText is from wrong author but excerpts may be valid
+      // Soft flag: keeps excerpts, distrusts fullText. Set by apply-audit-flags.js or collect-review-texts.js
+      if (data.fullTextWrongAuthor === true) {
+        delete data.fullText;
+        delete data.assignedScore;
+        delete data.ensembleData;
+        const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt);
+        data.contentTier = hasExcerpt ? 'excerpt' : 'stub';
+        if (!hasExcerpt) {
+          stats.skippedFullTextWrongAuthor = (stats.skippedFullTextWrongAuthor || 0) + 1;
+          return;
+        }
+        stats.fullTextWrongAuthorKeptAsExcerpt = (stats.fullTextWrongAuthorKeptAsExcerpt || 0) + 1;
+        // Falls through — included as excerpt-only review
+      }
+
+      // Skip reviews flagged as wrong author attribution (hard block — both fullText AND excerpts are bad)
       // Flagged by detect-syndicated-duplicates.js author mismatch scanner
       if (data.wrongAttribution === true) {
         stats.skippedWrongAttribution = (stats.skippedWrongAttribution || 0) + 1;
@@ -1999,6 +2015,20 @@ showDirs.forEach(showId => {
             }
           }
         }
+      }
+
+      // Handle fullTextWrongAuthor at second guard point too
+      if (data.fullTextWrongAuthor === true) {
+        delete data.fullText;
+        delete data.assignedScore;
+        delete data.ensembleData;
+        const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt);
+        data.contentTier = hasExcerpt ? 'excerpt' : 'stub';
+        if (!hasExcerpt) {
+          stats.skippedFullTextWrongAuthor = (stats.skippedFullTextWrongAuthor || 0) + 1;
+          return;
+        }
+        // Falls through — included as excerpt-only
       }
 
       // Skip misattributed reviews (LLM-hallucinated critic/outlet combos)
@@ -2907,6 +2937,12 @@ console.log(`  Skipped (director cross-check): ${stats.skippedDirectorMismatch |
 console.log(`  Skipped (URL-year cross-production): ${stats.skippedUrlYearMismatch || 0}`);
 console.log(`  Skipped (URL-year standalone): ${stats.skippedUrlYearStandalone || 0}`);
 console.log(`  Skipped (wrong content/reasoning): ${stats.skippedWrongContent || 0}`);
+if (stats.skippedFullTextWrongAuthor > 0) {
+  console.log(`  Skipped (fullTextWrongAuthor, no excerpts): ${stats.skippedFullTextWrongAuthor}`);
+}
+if (stats.fullTextWrongAuthorKeptAsExcerpt > 0) {
+  console.log(`  Kept as excerpt (fullTextWrongAuthor with excerpts): ${stats.fullTextWrongAuthorKeptAsExcerpt}`);
+}
 console.log(`  Skipped (rejection reason): ${stats.skippedRejectionReason || 0}`);
 console.log(`  Skipped (roundup article): ${stats.skippedRoundup || 0}`);
 console.log(`  Skipped (duplicate text flag): ${stats.skippedDuplicateText || 0}`);

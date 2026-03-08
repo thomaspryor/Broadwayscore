@@ -4615,15 +4615,28 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   const bylineResult = extractByline(cleanedText, { excludeNames: bylineExcludeNames });
   if (bylineResult.found) {
     const expectedCritic = data.criticName || review.critic || '';
-    if (expectedCritic && !matchesCritic(bylineResult.name, expectedCritic)) {
+    if (expectedCritic && expectedCritic !== 'Unknown' && !matchesCritic(bylineResult.name, expectedCritic)) {
       data.misattributedFullText = true;
       data.extractedByline = bylineResult.name;
       data.expectedCritic = expectedCritic;
       console.log(`    ⚠ Byline mismatch: found "${bylineResult.name}", expected "${expectedCritic}"`);
+      // Strong mismatch at start of text = high confidence the fullText is from someone else.
+      // Flag as fullTextWrongAuthor so rebuild keeps excerpts but distrusts fullText.
+      // Only flag on position='start' (byline at top of article = strongest signal).
+      if (bylineResult.position === 'start' && !data.fullTextWrongAuthor) {
+        data.fullTextWrongAuthor = true;
+        data._authorMismatch = `Byline at ${bylineResult.position}: "${bylineResult.name}", expected "${expectedCritic}"`;
+        console.log(`    → Flagged fullTextWrongAuthor (byline at start of text)`);
+      }
     } else {
       delete data.misattributedFullText;
       delete data.extractedByline;
       delete data.expectedCritic;
+      // Clear stale fullTextWrongAuthor if byline now matches (re-fetched correct text)
+      if (data.fullTextWrongAuthor && data._authorMismatch && data._authorMismatch.startsWith('Byline at')) {
+        delete data.fullTextWrongAuthor;
+        delete data._authorMismatch;
+      }
     }
   }
 
