@@ -329,7 +329,17 @@
     "the-amazing-sex-life-of-rabbits-off-broadway-2026/nyt-theater--unknown.json",
     "the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
     "the-dinosaurs-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
-    "the-great-gatsby-2024/nytimes--maya-phillips.json"
+    "the-great-gatsby-2024/nytimes--maya-phillips.json",
+    "the-infinite-wrench-off-broadway-2025/nytg--unknown.json",
+    "the-lion-king-1997/nytimes--ben-brantley.json",
+    "the-lion-king-1997/vulture--john-simon.json",
+    "the-lion-king-west-end-2021/variety--matt-wolf.json",
+    "the-little-mermaid-the-musical-off-broadway-2026/hollywood-reporter--robyn-bahr.json",
+    "the-unknown-off-broadway-2026/nytimes--helen-shaw.json",
+    "titus-andronicus-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+    "two-strangers-bway-2025/nyt-theater--unknown.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/nytg--gillian-russo.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/nytg--kyle-turner.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -2571,7 +2581,11 @@
       "pied-a-terre-off-broadway-2026/nytg--unknown.json",
       "ragtime-2025/nyt-theater--unknown.json",
       "silver-manhattan-off-broadway-2026/nytg--unknown.json",
-      "the-amazing-sex-life-of-rabbits-off-broadway-2026/nyt-theater--unknown.json"
+      "the-amazing-sex-life-of-rabbits-off-broadway-2026/nyt-theater--unknown.json",
+      "the-infinite-wrench-off-broadway-2025/nytg--unknown.json",
+      "two-strangers-bway-2025/nyt-theater--unknown.json",
+      "what-we-did-before-our-moth-days-off-broadway-2026/nytg--gillian-russo.json",
+      "what-we-did-before-our-moth-days-off-broadway-2026/nytg--kyle-turner.json"
     ],
     "amp": [
       "data/review-texts/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/vulture--helen-shaw.json",
@@ -2622,7 +2636,9 @@
       "data/review-texts/starlight-express-west-end-2024/variety--david-benedict.json",
       "starlight-express-west-end-2024/variety--david-benedict.json",
       "data/review-texts/the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
-      "the-book-of-mormon-west-end-2024/variety--steven-suskin.json"
+      "the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
+      "data/review-texts/the-lion-king-west-end-2021/variety--matt-wolf.json",
+      "the-lion-king-west-end-2021/variety--matt-wolf.json"
     ],
     "browserbase": [
       "data/review-texts/brooklyn-2004/nytimes--ben-brantley.json",
@@ -2683,9 +2699,15 @@
       "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
       "mj-2022/hollywood-reporter--lovia-gyarkye.json",
       "data/review-texts/oh-mary-2024/hollywood-reporter--david-rooney.json",
-      "oh-mary-2024/hollywood-reporter--david-rooney.json"
+      "oh-mary-2024/hollywood-reporter--david-rooney.json",
+      "data/review-texts/the-little-mermaid-the-musical-off-broadway-2026/hollywood-reporter--robyn-bahr.json",
+      "the-little-mermaid-the-musical-off-broadway-2026/hollywood-reporter--robyn-bahr.json",
+      "data/review-texts/titus-andronicus-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "titus-andronicus-off-broadway-2026/hollywood-reporter--frank-scheck.json"
     ],
-    "directCookies": [],
+    "directCookies": [
+      "the-lion-king-1997/vulture--john-simon.json"
+    ],
     "scrapingbee": [
       "faith-healer-2006/guardian--mark-lawson.json",
       "les-liaisons-dangereuses-1987/timeout--david-cote.json",
@@ -2743,7 +2765,8 @@
       "night-side-songs-off-broadway-2026/nytimes--laura-collins-hughes.json",
       "romeo-and-juliet-suite-off-broadway-2026/nytimes--gia-kourlas.json",
       "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
-      "the-dinosaurs-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
+      "the-dinosaurs-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+      "the-unknown-off-broadway-2026/nytimes--helen-shaw.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -3251,11 +3274,12 @@
       "ragtime-2025/nytimes--unknown.json",
       "schmigadoon-2026/nytimes--margaret-lyons.json",
       "schmigadoon-2026/vulture--rhoda-feng.json",
-      "the-great-gatsby-2024/nytimes--maya-phillips.json"
+      "the-great-gatsby-2024/nytimes--maya-phillips.json",
+      "the-lion-king-1997/nytimes--ben-brantley.json"
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "the-great-gatsby-2024/nytimes--maya-phillips.json",
+  "lastProcessed": "what-we-did-before-our-moth-days-off-broadway-2026/nytg--kyle-turner.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -4168,6 +4192,28 @@
     },
     {
       "t": "2026-03-08T18:15:32.382Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-08T18:20:54.588Z",
+      "event": "bb-session",
+      "session": "e49f69a0",
+      "url": "https://www.hollywoodreporter.com/review/little-mermaid-live-review-1252669"
+    },
+    {
+      "t": "2026-03-08T18:20:55.816Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-08T18:21:42.032Z",
+      "event": "bb-session",
+      "session": "b8d84fa6",
+      "url": "https://www.hollywoodreporter.com/news/general-news/gary-a-sequel-titus-andronic"
+    },
+    {
+      "t": "2026-03-08T18:21:43.179Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
