@@ -918,7 +918,9 @@ async function checkIBDBForPriorProductions(title, options = {}) {
             return { isTransfer: true, ibdbYear };
           }
           // IBDB production was still running when our show opened → concurrent transfer
-          if (!pageDates.closingDate) {
+          // But only if the production is recent (within 10 years) — old shows without
+          // closing dates are just missing data, not "still running"
+          if (!pageDates.closingDate && (options.currentYear - ibdbYear) <= 10) {
             console.log(`  ➡️  Transfer detected: Broadway production (${ibdbYear}) still running — concurrent with our ${showCategory} show`);
             return { isTransfer: true, ibdbYear };
           }
