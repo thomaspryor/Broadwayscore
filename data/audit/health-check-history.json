@@ -1,6 +1,6 @@
 {
-  "lastRun": "2026-03-08T06:06:16.487Z",
-  "consecutiveErrorDays": 2,
+  "lastRun": "2026-03-08T06:12:51.699Z",
+  "consecutiveErrorDays": 3,
   "results": [
     {
       "name": "Freshness: reviews.json",
@@ -30,7 +30,7 @@
     {
       "name": "Freshness: critic-consensus.json",
       "status": "pass",
-      "message": "0h old"
+      "message": "1h old"
     },
     {
       "name": "Freshness: lottery-rush.json",
@@ -49,8 +49,8 @@
     },
     {
       "name": "Sync: baseline drift",
-      "status": "pass",
-      "message": "2301 shows, 141 open, 17944 reviews (all at or above baseline)"
+      "status": "warn",
+      "message": "Reviews dropped: 18000 vs baseline 18047"
     },
     {
       "name": "Pipeline: rebuild-reviews",
@@ -85,7 +85,7 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.4% scored (17944/18230)"
+      "message": "98.7% scored (18000/18229)"
     },
     {
       "name": "Cookies: expiration",
@@ -105,7 +105,7 @@
     {
       "name": "Cron: Update Show Status",
       "status": "pass",
-      "message": "10h ago, success"
+      "message": "11h ago, success"
     },
     {
       "name": "Cron: Rebuild Reviews",
@@ -115,12 +115,12 @@
     {
       "name": "Cron: Collect Review Texts",
       "status": "pass",
-      "message": "0h ago, success"
+      "message": "0h ago, "
     },
     {
       "name": "Cron: LLM Ensemble Score",
       "status": "pass",
-      "message": "0h ago, "
+      "message": "0h ago, success"
     },
     {
       "name": "Cron: Test Suite",
@@ -130,7 +130,7 @@
     {
       "name": "Cron: Opening Night Broadcast",
       "status": "pass",
-      "message": "0h ago, success"
+      "message": "1h ago, success"
     },
     {
       "name": "Secrets: health",

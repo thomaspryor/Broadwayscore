@@ -1,9 +1,9 @@
 {
   "system": "freshness",
   "status": "error",
-  "lastChecked": "2026-03-08T06:06:16.488Z",
+  "lastChecked": "2026-03-08T06:12:51.700Z",
   "lastAlertTimestamp": null,
-  "autoFixAttempts": 0,
+  "autoFixAttempts": 1,
   "escalationState": "monitoring",
   "details": [
     {
@@ -34,12 +34,14 @@
     {
       "name": "Freshness: critic-consensus.json",
       "status": "pass",
-      "message": "0h old"
+      "message": "1h old"
     },
     {
       "name": "Freshness: lottery-rush.json",
       "status": "pass",
       "message": "6d old"
     }
-  ]
+  ],
+  "lastAutoFix": "2026-03-08T06:12:53.118Z",
+  "lastAutoFixWorkflow": "update-show-status.yml"
 }
