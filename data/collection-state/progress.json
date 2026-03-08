@@ -15,7 +15,11 @@
     "art-2025/deadline--natalie-oganesyan.json",
     "burn-this-1987/timeout--adam-feldman.json",
     "elf-2024/new-york-sun--unknown.json",
-    "faith-healer-2006/guardian--mark-lawson.json"
+    "faith-healer-2006/guardian--mark-lawson.json",
+    "indecent-2017/observer--rex-reed.json",
+    "kinky-boots-off-broadway-2026/newsday--matt-windman.json",
+    "les-liaisons-dangereuses-1987/timeout--david-cote.json",
+    "mcneal-2024/nydailynews--chris-jones.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -54,7 +58,13 @@
     "ghost-the-musical-2012/timeout--david-cote.json",
     "hamlet-2009/nydailynews--joe-dziemianowicz.json",
     "hedwig-and-the-angry-inch-2014/observer--rex-reed.json",
-    "here-lies-love-2023/observer--jesse-green.json"
+    "here-lies-love-2023/observer--jesse-green.json",
+    "illinoise-2024/timeout--adam-feldman.json",
+    "inherit-the-wind-2007/nypost--clive-barnes.json",
+    "is-he-dead-2007/nypost--clive-barnes.json",
+    "junk-2017/observer--rex-reed.json",
+    "mary-jane-2024/ew--joey-nolfi.json",
+    "motown-the-musical-2013/observer--rex-reed.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -63,7 +73,8 @@
       "a-christmas-carol-2001/timeout--adam-feldman.json",
       "a-delicate-balance-1996/timeout--david-cote.json",
       "a-view-from-the-bridge-2015/guardian--lyn-gardner.json",
-      "elf-2024/new-york-sun--unknown.json"
+      "elf-2024/new-york-sun--unknown.json",
+      "mcneal-2024/nydailynews--chris-jones.json"
     ],
     "amp": [],
     "browserbase": [
@@ -77,11 +88,16 @@
       "data/review-texts/the-violet-hour-2003/nytimes--ben-brantley.json",
       "the-violet-hour-2003/nytimes--ben-brantley.json",
       "data/review-texts/art-2025/deadline--natalie-oganesyan.json",
-      "art-2025/deadline--natalie-oganesyan.json"
+      "art-2025/deadline--natalie-oganesyan.json",
+      "data/review-texts/indecent-2017/observer--rex-reed.json",
+      "indecent-2017/observer--rex-reed.json",
+      "data/review-texts/kinky-boots-off-broadway-2026/newsday--matt-windman.json",
+      "kinky-boots-off-broadway-2026/newsday--matt-windman.json"
     ],
     "directCookies": [],
     "scrapingbee": [
-      "faith-healer-2006/guardian--mark-lawson.json"
+      "faith-healer-2006/guardian--mark-lawson.json",
+      "les-liaisons-dangereuses-1987/timeout--david-cote.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -97,7 +113,7 @@
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "here-lies-love-2023/observer--jesse-green.json",
+  "lastProcessed": "motown-the-musical-2013/observer--rex-reed.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -186,6 +202,28 @@
       "t": "2026-03-08T01:52:18.584Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-08T01:54:15.259Z",
+      "event": "bb-session",
+      "session": "d1a6f5d7",
+      "url": "https://observer.com/2017/06/indecent-broadway-not-closing-paula-vogel/"
+    },
+    {
+      "t": "2026-03-08T01:54:16.603Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-08T01:54:38.446Z",
+      "event": "bb-session",
+      "session": "129723b2",
+      "url": "https://www.newsday.com/news/new-york/theater-review-kinky-boots-2-5-stars-f2493"
+    },
+    {
+      "t": "2026-03-08T01:54:39.752Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
     }
   ]
 }

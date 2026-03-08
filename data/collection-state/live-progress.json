@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-08T01:54:08.783Z",
-  "processed": 16,
-  "failed": 37,
-  "successRate": "30.2%",
+  "updatedAt": "2026-03-08T01:57:45.443Z",
+  "processed": 20,
+  "failed": 43,
+  "successRate": "31.7%",
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 6,
     "amp": 0,
-    "browserbase": 11,
+    "browserbase": 15,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 2,
     "archive": 5
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -102,6 +102,28 @@
       "t": "2026-03-08T01:52:18.584Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-08T01:54:15.259Z",
+      "event": "bb-session",
+      "session": "d1a6f5d7",
+      "url": "https://observer.com/2017/06/indecent-broadway-not-closing-paula-vogel/"
+    },
+    {
+      "t": "2026-03-08T01:54:16.603Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-08T01:54:38.446Z",
+      "event": "bb-session",
+      "session": "129723b2",
+      "url": "https://www.newsday.com/news/new-york/theater-review-kinky-boots-2-5-stars-f2493"
+    },
+    {
+      "t": "2026-03-08T01:54:39.752Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
     }
   ]
 }
