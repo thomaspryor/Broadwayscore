@@ -215,6 +215,12 @@ test('current review-texts pass validation', () => {
           path.join(reviewTextsDir, showDir, file), 'utf8'
         ));
 
+        // Skip excluded files (already flagged and won't affect scoring)
+        if (data.duplicateOf || data.wrongProduction || data.wrongShow || data.wrongUrl) continue;
+
+        // Skip excluded files (already flagged and won't affect scoring)
+        if (data.duplicateOf || data.wrongProduction || data.wrongShow || data.wrongUrl) continue;
+
         // Skip inherently unresolvable outlet IDs:
         // - "unknown" outletId from web search sourcing
         // - junk/sentence IDs with more than 5 hyphens (e.g., "plenty-of-joy-and-pleasures-to-offer")
@@ -383,6 +389,12 @@ test('zero resolvable unknown outlets', () => {
         const data = JSON.parse(fs.readFileSync(
           path.join(reviewTextsDir, showDir, file), 'utf8'
         ));
+
+        // Skip excluded files (already flagged and won't affect scoring)
+        if (data.duplicateOf || data.wrongProduction || data.wrongShow || data.wrongUrl) continue;
+
+        // Skip excluded files (already flagged and won't affect scoring)
+        if (data.duplicateOf || data.wrongProduction || data.wrongShow || data.wrongUrl) continue;
 
         const outletId = (data.outletId || '').toLowerCase();
         const hyphenCount = (outletId.match(/-/g) || []).length;

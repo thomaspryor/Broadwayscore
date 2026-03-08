@@ -164,6 +164,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Auto-close expired shows
+        run: node scripts/auto-close-expired-shows.js
+
       - name: Run data validation
         run: node scripts/validate-data.js
 

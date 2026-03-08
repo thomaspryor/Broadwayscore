@@ -19,7 +19,7 @@ const fs = require('fs');
 const path = require('path');
 const { matchTitleToShow, loadShows, cleanExternalTitle, titleWordsMatch } = require('./lib/show-matching');
 const { validatePageMatchesShow } = require('./lib/page-validator');
-const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile } = require('./lib/review-normalization');
+const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet } = require('./lib/review-normalization');
 const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
 const cheerio = require('cheerio');
 
@@ -354,6 +354,12 @@ function saveReviewFromPlaybill(showId, reviewInfo) {
     criticName = outletName; // The "outlet" is actually the critic name
     outletName = 'New York Stage Review';
   }
+
+  // Skip junk outlets (ticket pages, ads, etc.)
+  if (isJunkOutlet(outletName)) return 'skipped';
+
+  // Skip junk outlets (ticket pages, ads, etc.)
+  if (isJunkOutlet(outletName)) return 'skipped';
 
   // Normalize outlet using the shared normalization system
   const outletId = normalizeOutlet(outletName) || normalizeOutlet(reviewInfo.outletDomain) || reviewInfo.outletDomain;
