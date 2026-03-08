@@ -648,6 +648,114 @@ function buildBroadcastApprovalHtml(shows, approvalUrl, market) {
 </body></html>`;
 }
 
+function buildDailyDigestHtml(changes, date) {
+  const brandColor = '#d4a574';
+  const siteUrl = 'https://broadwayscorecard.com';
+
+  function sectionHeader(title) {
+    return `<tr><td style="padding:20px 20px 8px;">
+      <p style="margin:0;font-size:11px;font-weight:600;color:rgba(212,165,116,0.6);text-transform:uppercase;letter-spacing:0.8px;font-family:${FONT};">${escapeHtml(title)}</p>
+    </td></tr>`;
+  }
+
+  function showLink(title, slug) {
+    return `<a href="${siteUrl}/show/${slug}" style="color:rgba(255,255,255,0.85);text-decoration:underline;text-decoration-color:rgba(255,255,255,0.2);text-underline-offset:2px;">${escapeHtml(title)}</a>`;
+  }
+
+  function row(content) {
+    return `<tr><td style="padding:4px 20px;font-size:14px;color:rgba(255,255,255,0.85);line-height:1.5;font-family:${FONT};border-left:2px solid ${brandColor};">&#8226;&nbsp; ${content}</td></tr>`;
+  }
+
+  const sections = [];
+
+  // New Shows
+  if (changes.newShows.length > 0) {
+    let html = sectionHeader(`New Shows (${changes.newShows.length})`);
+    for (const s of changes.newShows) {
+      const typeLabel = s.type === 'musical' ? 'Musical' : 'Play';
+      const statusLabel = s.status === 'previews' ? ' &middot; In Previews' : s.status === 'upcoming' ? ' &middot; Upcoming' : '';
+      html += row(`${showLink(s.title, s.slug)} &mdash; ${typeLabel}${statusLabel}${s.venue ? ` &middot; ${escapeHtml(s.venue)}` : ''}`);
+    }
+    sections.push(html);
+  }
+
+  // New Reviews
+  if (changes.newReviews.length > 0) {
+    const totalAdded = changes.newReviews.reduce((sum, r) => sum + r.added, 0);
+    let html = sectionHeader(`New Reviews (${totalAdded} across ${changes.newReviews.length} show${changes.newReviews.length !== 1 ? 's' : ''})`);
+    const sorted = [...changes.newReviews].sort((a, b) => b.added - a.added);
+    for (const r of sorted) {
+      html += row(`${showLink(r.title, r.slug)} &mdash; +${r.added} review${r.added !== 1 ? 's' : ''} (${r.total} total)`);
+    }
+    sections.push(html);
+  }
+
+  // Score Changes
+  if (changes.scoreChanges.length > 0) {
+    let html = sectionHeader(`Score Changes (${changes.scoreChanges.length})`);
+    for (const s of changes.scoreChanges) {
+      const { bg: fromBg } = s.from != null ? getScoreColor(s.from) : { bg: '#6b7280' };
+      const { bg: toBg } = getScoreColor(s.to);
+      const arrow = s.direction === 'up' ? '&#9650;' : s.direction === 'down' ? '&#9660;' : '&#9733;';
+      const arrowColor = s.direction === 'up' ? '#22c55e' : s.direction === 'down' ? '#ef4444' : brandColor;
+      const fromLabel = s.from != null ? `<span style="color:${fromBg};font-weight:700;">${s.from}</span>` : '<span style="color:#6b7280;">—</span>';
+      html += row(`${showLink(s.title, s.slug)} &mdash; ${fromLabel} <span style="color:${arrowColor};font-size:10px;">${arrow}</span> <span style="color:${toBg};font-weight:700;">${s.to}</span>`);
+    }
+    sections.push(html);
+  }
+
+  // Audience Grade Changes
+  if (changes.audienceChanges.length > 0) {
+    let html = sectionHeader(`Audience Grade Changes (${changes.audienceChanges.length})`);
+    for (const a of changes.audienceChanges) {
+      const fromLabel = a.from || '—';
+      html += row(`${showLink(a.title, a.slug)} &mdash; ${fromLabel} &rarr; <span style="font-weight:700;">${a.to}</span>`);
+    }
+    sections.push(html);
+  }
+
+  const totalChanges = changes.newShows.length + changes.newReviews.length +
+    changes.scoreChanges.length + changes.audienceChanges.length;
+
+  return `<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"></head>
+<body bgcolor="#0f0f14" style="margin:0;padding:0;background-color:#0f0f14;background:#0f0f14;font-family:${FONT};">
+<table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0f0f14" style="background-color:#0f0f14;background:#0f0f14;padding:32px 16px;">
+<tr><td align="center" bgcolor="#0f0f14">
+<table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+
+  <tr><td style="padding-bottom:20px;border-bottom:1px solid rgba(212,165,116,0.2);">
+    <span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">Broadway</span><span style="font-size:22px;font-weight:800;color:${brandColor};letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span>
+  </td></tr>
+
+  <tr><td style="padding:28px 0 8px;">
+    <h1 style="margin:0;font-size:22px;font-weight:700;color:#ffffff;line-height:1.3;font-family:${FONT};">Daily Digest &mdash; ${escapeHtml(date)}</h1>
+    <p style="margin:8px 0 0;font-size:14px;color:rgba(255,255,255,0.5);font-family:${FONT};">${totalChanges} change${totalChanges !== 1 ? 's' : ''} detected</p>
+  </td></tr>
+
+  <tr><td style="padding:16px 0;">
+    <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#1a1a24" style="background-color:#1a1a24;background:#1a1a24;border-radius:12px;border:1px solid rgba(212,165,116,0.12);">
+      ${sections.join('<tr><td style="padding:8px 0;"><hr style="border:none;border-top:1px solid rgba(255,255,255,0.06);margin:0 20px;"></td></tr>')}
+      <tr><td style="padding-bottom:12px;"></td></tr>
+    </table>
+  </td></tr>
+
+  <tr><td style="padding:12px 0;">
+    <a href="${siteUrl}" style="display:inline-block;padding:10px 24px;background:${brandColor};color:#1a1a1a;font-size:14px;font-weight:600;border-radius:8px;text-decoration:none;font-family:${FONT};">View Live Site</a>
+  </td></tr>
+
+  <tr><td style="padding-top:20px;border-top:1px solid rgba(255,255,255,0.06);">
+    <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.25);line-height:1.6;font-family:${FONT};">
+      Daily digest from <a href="${siteUrl}" style="color:${brandColor};">Broadway Scorecard</a>. Sent automatically each morning.
+    </p>
+  </td></tr>
+
+</table>
+</td></tr>
+</table>
+</body></html>`;
+}
+
 module.exports = {
   FONT,
   postJSON,
@@ -665,4 +773,5 @@ module.exports = {
   buildFeedbackThankYouEmail,
   buildFixApprovalEmail,
   buildBroadcastApprovalHtml,
+  buildDailyDigestHtml,
 };
