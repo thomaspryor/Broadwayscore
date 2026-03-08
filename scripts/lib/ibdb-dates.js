@@ -468,7 +468,9 @@ function parseIBDBDate(dateStr) {
  * /broadway-production/the-24-hour-plays-2009-485386 → "the 24 hour plays 2009"
  */
 function extractTitleFromIBDBUrl(url) {
-  const slug = (url.split('/broadway-production/')[1] || '');
+  // Handle all production URL types: broadway, off-broadway, tour
+  const prodMatch = url.match(/\/(broadway-production|off-broadway-production|tour-production)\/(.+)/);
+  const slug = prodMatch ? prodMatch[2] : (url.split('/broadway-production/')[1] || '');
   // Strip trailing numeric IBDB ID (3+ digits at end)
   return slug.replace(/-\d{3,}$/, '').replace(/-/g, ' ').trim();
 }
@@ -751,6 +753,165 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+/**
+ * Check IBDB for prior productions of a given title to detect revivals.
+ * Uses SERP to find production pages — if multiple distinct productions exist,
+ * the current show is a revival. Does NOT scrape individual pages.
+ *
+ * @param {string} title - Show title to check
+ * @param {Object} options
+ * @param {number} [options.currentYear] - Year of the current production
+ * @returns {Promise<{isRevival: boolean, priorProductionCount: number, urls: string[], confidence: string}>}
+ */
+async function checkIBDBForPriorProductions(title, options = {}) {
+  const notFound = { isRevival: false, priorProductionCount: 0, urls: [], confidence: 'none' };
+
+  // Guard: skip short/generic titles
+  if (!title || title.length < 5) {
+    console.log(`  ⏭️  Skipping "${title}" — title too short for IBDB revival check`);
+    return notFound;
+  }
+
+  // Guard: skip revues, concerts, galas, benefits
+  if (/\b(revue|concert|in concert|gala|benefit|celebration)\b/i.test(title)) {
+    console.log(`  ⏭️  Skipping "${title}" — appears to be a revue/concert/gala`);
+    return notFound;
+  }
+
+  try {
+    // Search IBDB for any production pages matching this title
+    // Simple query — filter production URLs from results afterward
+    const query = `site:ibdb.com "${title}"`;
+    console.log(`  🔍 Revival check SERP: ${query}`);
+
+    let results = [];
+
+    // Production URL patterns on IBDB
+    const isProductionUrl = (url) =>
+      url.includes('/broadway-production/') ||
+      url.includes('/off-broadway-production/') ||
+      url.includes('/tour-production/');
+
+    // Try ScrapingBee Google SERP
+    const scrapingBeeKey = process.env.SCRAPINGBEE_API_KEY;
+    if (scrapingBeeKey) {
+      try {
+        const url = `https://app.scrapingbee.com/api/v1/store/google?` +
+          `api_key=${scrapingBeeKey}` +
+          `&search=${encodeURIComponent(query)}`;
+
+        const resp = await fetch(url);
+        if (resp.ok) {
+          const data = await resp.json();
+          const organic = data.organic_results || [];
+          results = organic
+            .filter(r => r.url && isProductionUrl(r.url))
+            .map(r => ({ url: r.url, title: r.title || '' }));
+        }
+      } catch (e) {
+        console.log(`  ⚠️  ScrapingBee SERP failed: ${e.message}`);
+      }
+    }
+
+    // Fallback: Bright Data SERP
+    if (results.length === 0) {
+      const brightToken = process.env.BRIGHTDATA_TOKEN;
+      if (brightToken) {
+        try {
+          const resp = await fetch('https://api.brightdata.com/serp/req', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${brightToken}`
+            },
+            body: JSON.stringify({
+              query: query,
+              search_engine: 'google',
+              country: 'us'
+            })
+          });
+
+          if (resp.ok) {
+            const data = await resp.json();
+            const organic = data.organic || [];
+            results = organic
+              .filter(r => r.link && isProductionUrl(r.link))
+              .map(r => ({ url: r.link, title: r.title || '' }));
+          }
+        } catch (e) {
+          console.log(`  ⚠️  Bright Data SERP failed: ${e.message}`);
+        }
+      }
+    }
+
+    if (results.length === 0) {
+      console.log(`  📎 No IBDB production results for "${title}"`);
+      return notFound;
+    }
+
+    // Filter to results that actually match the title
+    // Stricter than general titleMatchScore: require exact or near-exact match
+    // to prevent "The Unknown" matching "The Unknown Soldier and His Wife"
+    const validResults = results.filter(r => {
+      const score = titleMatchScore(title, r.url, r.title);
+      if (score < 8) return false;
+
+      // Additional check: the URL slug title must be close in length to our title
+      // This prevents short titles from matching longer, unrelated titles
+      const urlTitle = extractTitleFromIBDBUrl(r.url);
+      const normSearch = normalizeForTitleMatch(title);
+      const normUrl = normalizeForTitleMatch(urlTitle);
+
+      // If slug is >50% longer than our title, it's likely a different show
+      if (normUrl.length > normSearch.length * 1.5 && normSearch.length < 20) {
+        return false;
+      }
+      // If our title is >50% longer than slug, also suspicious
+      if (normSearch.length > normUrl.length * 1.5 && normUrl.length < 20) {
+        return false;
+      }
+
+      return true;
+    });
+
+    // Deduplicate by URL (SERP can return same page twice)
+    const uniqueUrls = [...new Set(validResults.map(r => r.url))];
+
+    console.log(`  📊 IBDB results: ${results.length} raw, ${validResults.length} title-matched, ${uniqueUrls.length} unique production URLs`);
+
+    if (uniqueUrls.length >= 2) {
+      // Multiple distinct production pages = revival
+      console.log(`  🔄 Revival detected: ${uniqueUrls.length} prior IBDB productions for "${title}"`);
+      for (const u of uniqueUrls) console.log(`     ${u}`);
+      return {
+        isRevival: true,
+        priorProductionCount: uniqueUrls.length,
+        urls: uniqueUrls,
+        confidence: 'high'
+      };
+    }
+
+    if (uniqueUrls.length === 1) {
+      // Single production page — could be the current production itself
+      // Only flag as revival if the URL clearly points to a different era
+      // (We can't rely on year extraction from URLs, so single-match = inconclusive)
+      console.log(`  ➡️  Single IBDB production found for "${title}" — inconclusive (could be current production)`);
+      return {
+        isRevival: false,
+        priorProductionCount: 1,
+        urls: uniqueUrls,
+        confidence: 'low'
+      };
+    }
+
+    return notFound;
+
+  } catch (e) {
+    console.log(`  ⚠️  IBDB revival check failed for "${title}": ${e.message}`);
+    return notFound;
+  }
+}
+
 module.exports = {
   searchIBDB,
   extractDatesFromIBDBPage,
@@ -762,5 +923,6 @@ module.exports = {
   parseIBDBDate,
   extractTitleFromIBDBUrl,
   normalizeForTitleMatch,
-  titleMatchScore
+  titleMatchScore,
+  checkIBDBForPriorProductions
 };
