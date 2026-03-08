@@ -19,7 +19,7 @@ Exceptions: Pure data updates, documentation, clearly broken bug fixes.
 Git-triggered builds are **BLOCKED** (`exit 0` in dashboard). Deploys ONLY via Vercel CLI in `vercel-deploy.yml`:
 - Builds on GitHub Actions (`vercel build --prod`) → uploads (`vercel deploy --prebuilt --prod`). Free, bypasses Vercel git integration.
 - Pushes touching `src/`, `public/`, `content/`, config, key `data/*.json` → auto-deploy. Data-only pushes → no deploy.
-- Manual deploy: `gh workflow run "Deploy to Vercel"`. Secret: `VERCEL_TOKEN`.
+- Manual deploy: `gh workflow run "Deploy to Vercel"`.
 - **DO NOT:** remove `exit 0` from dashboard, add `ignoreCommand` to vercel.json, use deploy hooks/API, remove `--prod` flag.
 - **Preview:** `vercel-preview.yml` — same approach without `--prod`, triggers on `staging`.
 - **"Pushed" ≠ "Deployed"** — confirm workflow triggered, check status before ending session. If failed → fix. If in-progress → tell user the run ID.
@@ -39,18 +39,10 @@ Multiple concurrent sessions. Context expires without warning. Uncommitted work 
 ### 7. Batch Scripts MUST Checkpoint
 Scripts processing >10 items in CI: save progress incrementally, `if: always()` on commit/push steps, 5-retry push with `--rebase -X theirs`.
 
-### 7a. Private Review-Texts Repo
-**NEVER commit copyrighted text or API keys to public repo** (DMCA risk).
-- `data/review-texts/` → private repo `thomaspryor/broadway-review-texts`, gitignored. CI: `checkout-review-texts/` + `push-review-texts/`.
-- Secret: `REVIEW_TEXTS_TOKEN` (PAT, `repo` scope). Guard: `test.yml` fails if review-text files leak.
-- New workflows MUST include both composite actions. Local changes: `bash scripts/sync-review-texts.sh` before ending session.
-
-### 7a-2. Private Aggregator Archive
-`data/aggregator-archive/` → same private repo (`aggregator-archive/` subdir), gitignored. CI: `checkout-aggregator-archive/` + `push-aggregator-archive/`. Guard in `test.yml`. New workflows MUST use both actions.
-
-### 7b. Private Core Data Repo
-9 JSON files in `thomaspryor/broadway-scorecard-data`. CI: `checkout-core-data/` + `push-core-data/` (with `if: always()`). PAT: `REVIEW_TEXTS_TOKEN`. All gitignored.
-- New workflows MUST include `checkout-core-data`. Writers MUST also include `push-core-data`.
+### 7a. Private Repos (see `memory/private-repos.md`)
+**NEVER commit copyrighted text, PII, or API keys to public repo** (DMCA/privacy risk).
+- Review texts, aggregator archive, core data → private repos, all gitignored. CI uses composite actions.
+- Guard: `test.yml` fails if private files leak. New workflows MUST include checkout/push actions.
 - **Session data check:** `npm run data:check` at start. Missing → `./scripts/setup-local-data.sh`.
 
 ### 8. Design System
@@ -67,7 +59,7 @@ Use shared components from `src/components/show-cards/` — never create custom 
 - **Card layout: `[Thumbnail] [Info] [Score]`** — three flex children. Test with real data edge cases.
 
 ### 9. Roadmap Discipline
-Read roadmap: `gh issue view 50 --repo thomaspryor/Broadwayscore`
+Read roadmap: `gh issue view 1 --repo thomaspryor/broadway-scorecard-data`
 - **Finishing session:** Move completed items to "Recently Done" (with date). Post comment summarizing work.
 - **New discoveries:** Add to Backlog section + comment. Don't context-switch.
 

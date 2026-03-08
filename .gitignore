@@ -42,9 +42,13 @@ data/review-texts/
 # Aggregator archive (copyrighted scraped HTML — stored in private repo thomaspryor/broadway-review-texts)
 data/aggregator-archive/
 
-# Subscriber PII (generated fresh each workflow run via sync-followers.js)
+# Subscriber/follower PII (generated fresh each workflow run)
 data/subscribers.json
 data/subscribers-westend.json
+data/followers.json
+
+# User-submitted feedback with PII
+data/pending-fixes/
 
 # Opening night broadcast dedup state (regenerated from Formspree sync + send receipts)
 data/opening-night-sent.json
