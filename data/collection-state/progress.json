@@ -19,7 +19,10 @@
     "indecent-2017/observer--rex-reed.json",
     "kinky-boots-off-broadway-2026/newsday--matt-windman.json",
     "les-liaisons-dangereuses-1987/timeout--david-cote.json",
-    "mcneal-2024/nydailynews--chris-jones.json"
+    "mcneal-2024/nydailynews--chris-jones.json",
+    "oklahoma-2002/nydailynews--chris-jones.json",
+    "passing-strange-2008/guardian--kate-wyver.json",
+    "punch-2025/deadline--unknown.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -64,7 +67,14 @@
     "is-he-dead-2007/nypost--clive-barnes.json",
     "junk-2017/observer--rex-reed.json",
     "mary-jane-2024/ew--joey-nolfi.json",
-    "motown-the-musical-2013/observer--rex-reed.json"
+    "motown-the-musical-2013/observer--rex-reed.json",
+    "old-times-2015/observer--rex-reed.json",
+    "once-upon-a-mattress-2024/timeout--adam-feldman.json",
+    "oslo-2017/abc-news--unknown.json",
+    "our-mothers-brief-affair-2016/observer--rex-reed.json",
+    "parade-2023/observer--jesse-green.json",
+    "patriots-2024/guardian--adrian-horton.json",
+    "picnic-2013/observer--rex-reed.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -74,7 +84,8 @@
       "a-delicate-balance-1996/timeout--david-cote.json",
       "a-view-from-the-bridge-2015/guardian--lyn-gardner.json",
       "elf-2024/new-york-sun--unknown.json",
-      "mcneal-2024/nydailynews--chris-jones.json"
+      "mcneal-2024/nydailynews--chris-jones.json",
+      "oklahoma-2002/nydailynews--chris-jones.json"
     ],
     "amp": [],
     "browserbase": [
@@ -92,17 +103,21 @@
       "data/review-texts/indecent-2017/observer--rex-reed.json",
       "indecent-2017/observer--rex-reed.json",
       "data/review-texts/kinky-boots-off-broadway-2026/newsday--matt-windman.json",
-      "kinky-boots-off-broadway-2026/newsday--matt-windman.json"
+      "kinky-boots-off-broadway-2026/newsday--matt-windman.json",
+      "data/review-texts/punch-2025/deadline--unknown.json",
+      "punch-2025/deadline--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "faith-healer-2006/guardian--mark-lawson.json",
-      "les-liaisons-dangereuses-1987/timeout--david-cote.json"
+      "les-liaisons-dangereuses-1987/timeout--david-cote.json",
+      "passing-strange-2008/guardian--kate-wyver.json"
     ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/all-shook-up-2005/nytimes--ben-brantley.json",
-      "data/review-texts/gary-a-sequel-to-titus-andronicus-2019/vulture--jesse-green.json"
+      "data/review-texts/gary-a-sequel-to-titus-andronicus-2019/vulture--jesse-green.json",
+      "data/review-texts/oslo-2017/abc-news--unknown.json"
     ],
     "archive": [
       "you-got-older-off-broadway-2026/timeout--unknown.json",
@@ -113,7 +128,7 @@
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "motown-the-musical-2013/observer--rex-reed.json",
+  "lastProcessed": "punch-2025/deadline--unknown.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -224,6 +239,17 @@
       "t": "2026-03-08T01:54:39.752Z",
       "event": "bb-cookie-inject",
       "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-08T02:01:06.490Z",
+      "event": "bb-session",
+      "session": "8cafadbd",
+      "url": "https://deadline.com/2025/09/broadway-box-office-ragtime-hamilton-1236566097/"
+    },
+    {
+      "t": "2026-03-08T02:01:07.862Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

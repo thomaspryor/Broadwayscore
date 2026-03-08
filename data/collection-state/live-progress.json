@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-08T01:57:45.443Z",
-  "processed": 20,
-  "failed": 43,
-  "successRate": "31.7%",
+  "updatedAt": "2026-03-08T02:01:23.938Z",
+  "processed": 23,
+  "failed": 50,
+  "successRate": "31.5%",
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 7,
     "amp": 0,
-    "browserbase": 15,
+    "browserbase": 17,
     "directCookies": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 2,
+    "archiveToday": 3,
     "archive": 5
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 11,
   "recentActivity": [
-    {
-      "t": "2026-03-08T01:43:49.539Z",
-      "event": "bb-session",
-      "session": "2c2ca810",
-      "url": "http://theater.nytimes.com/2005/03/25/theater/reviews/25elvi.html?position=&amp;"
-    },
-    {
-      "t": "2026-03-08T01:43:50.891Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-08T01:45:52.046Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-08T01:54:39.752Z",
       "event": "bb-cookie-inject",
       "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-08T02:01:06.490Z",
+      "event": "bb-session",
+      "session": "8cafadbd",
+      "url": "https://deadline.com/2025/09/broadway-box-office-ragtime-hamilton-1236566097/"
+    },
+    {
+      "t": "2026-03-08T02:01:07.862Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
