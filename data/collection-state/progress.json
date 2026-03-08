@@ -349,7 +349,16 @@
     "wicked-2003/vulture--bilge-eberi.json",
     "11-to-midnight-off-broadway-2026/nbcnews--matthew-goldman.json",
     "age-is-a-feeling-off-broadway-2024/guardian--mark-fisher.json",
-    "aladdin-2014/ew--thom-geier.json"
+    "aladdin-2014/ew--thom-geier.json",
+    "aladdin-2014/theatermania--charles-isherwood.json",
+    "aladdin-2014/wsj--terry-teachout.json",
+    "all-my-sons-west-end-2025/guardian--arifa-akbar.json",
+    "all-my-sons-west-end-2025/timeout-london--andrzej-lukowski.json",
+    "all-out-2025/deadline--unknown.json",
+    "all-out-2025/ew--unknown.json",
+    "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json",
+    "amaze-magic-off-broadway-2025/thewrap--unknown.json",
+    "an-ark-off-broadway-2026/wsj--charles-isherwood.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -2437,7 +2446,8 @@
     "la-llamada-off-broadway-2024/nytg--unknown.json",
     "la-ternura-off-broadway-2025/nytg--unknown.json",
     "los-soles-truncos-off-broadway-2025/nytg--unknown.json",
-    "six-2021/newyorker--naomi-fry.json"
+    "six-2021/newyorker--naomi-fry.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2598,7 +2608,10 @@
       "what-we-did-before-our-moth-days-off-broadway-2026/nytg--kyle-turner.json",
       "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json",
       "11-to-midnight-off-broadway-2026/nbcnews--matthew-goldman.json",
-      "age-is-a-feeling-off-broadway-2024/guardian--mark-fisher.json"
+      "age-is-a-feeling-off-broadway-2024/guardian--mark-fisher.json",
+      "aladdin-2014/theatermania--charles-isherwood.json",
+      "all-my-sons-west-end-2025/timeout-london--andrzej-lukowski.json",
+      "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json"
     ],
     "amp": [
       "data/review-texts/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/vulture--helen-shaw.json",
@@ -2718,7 +2731,9 @@
       "data/review-texts/the-little-mermaid-the-musical-off-broadway-2026/hollywood-reporter--robyn-bahr.json",
       "the-little-mermaid-the-musical-off-broadway-2026/hollywood-reporter--robyn-bahr.json",
       "data/review-texts/titus-andronicus-off-broadway-2026/hollywood-reporter--frank-scheck.json",
-      "titus-andronicus-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+      "titus-andronicus-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/all-out-2025/deadline--unknown.json",
+      "all-out-2025/deadline--unknown.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json"
@@ -2783,7 +2798,10 @@
       "the-dinosaurs-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
       "the-unknown-off-broadway-2026/nytimes--helen-shaw.json",
       "what-we-did-before-our-moth-days-off-broadway-2026/nytimes--helen-shaw.json",
-      "wicked-2003/newyorker--john-lahr.json"
+      "wicked-2003/newyorker--john-lahr.json",
+      "all-my-sons-west-end-2025/guardian--arifa-akbar.json",
+      "all-out-2025/ew--unknown.json",
+      "amaze-magic-off-broadway-2025/thewrap--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -3296,11 +3314,13 @@
       "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json",
       "wicked-2003/nytimes--charles-isherwood.json",
       "wicked-2003/vulture--bilge-eberi.json",
-      "aladdin-2014/ew--thom-geier.json"
+      "aladdin-2014/ew--thom-geier.json",
+      "aladdin-2014/wsj--terry-teachout.json",
+      "an-ark-off-broadway-2026/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "aladdin-2014/ew--thom-geier.json",
+  "lastProcessed": "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -4237,6 +4257,39 @@
       "t": "2026-03-08T18:21:43.179Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-08T18:24:32.806Z",
+      "event": "bb-session",
+      "session": "bb170362",
+      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
+    },
+    {
+      "t": "2026-03-08T18:24:34.088Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-08T18:25:27.418Z",
+      "event": "bb-session",
+      "session": "1e666f0b",
+      "url": "https://deadline.com/2026/02/jake-shane-broadway-all-out-comedy-about-ambition-1"
+    },
+    {
+      "t": "2026-03-08T18:25:28.729Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-08T18:26:29.213Z",
+      "event": "bb-session",
+      "session": "eb008ddd",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-08T18:26:30.327Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
