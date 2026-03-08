@@ -1,4 +1,7 @@
 // Server component — loads data at build time, passes serialized props to client
+import fs from 'fs';
+import path from 'path';
+import crypto from 'crypto';
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { getBroadwayShows, getOffBroadwayShows, getWestEndShows, getDataStats, getUpcomingShows } from '@/lib/data-core';
@@ -63,6 +66,19 @@ export default function HomePage() {
   const allShows = getBroadwayShows();
   const stats = getDataStats();
   const upcomingShows = getUpcomingShows();
+
+  // Split active vs archive shows for lazy-loading perf optimization
+  const activeShows = allShows.filter(s => s.status !== 'closed');
+  const archiveShows = allShows.filter(s =>
+    s.status === 'closed' &&
+    s.criticScore && s.criticScore.reviewCount !== undefined && s.criticScore.reviewCount >= 5
+  );
+
+  // Write archive JSON to public/data/ for client-side lazy fetch
+  const archiveJson = JSON.stringify(archiveShows.map(serializeShow));
+  const archiveHash = crypto.createHash('md5').update(archiveJson).digest('hex').slice(0, 8);
+  const archivePath = path.join(process.cwd(), 'public/data/homepage-archive.json');
+  fs.writeFileSync(archivePath, archiveJson);
   const obShows = getOffBroadwayShows().filter(s =>
     (s.status === 'open' || s.status === 'previews') &&
     s.criticScore && s.criticScore.reviewCount !== undefined && s.criticScore.reviewCount >= 5
@@ -180,7 +196,8 @@ export default function HomePage() {
       </div>
       <Suspense>
         <HomePageClient
-          shows={allShows.map(serializeShow)}
+          shows={activeShows.map(serializeShow)}
+          archiveHash={archiveHash}
           upcomingShows={upcomingShows.map(serializeShow)}
           offBroadwayShows={obShows.map(serializeShow)}
           westEndShows={weShows.map(serializeShow)}

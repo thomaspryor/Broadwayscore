@@ -41,6 +41,7 @@ export interface HomepageShow {
 
 interface HomePageClientProps {
   shows: HomepageShow[];
+  archiveHash?: string;
   upcomingShows: HomepageShow[];
   offBroadwayShows?: HomepageShow[];
   westEndShows?: HomepageShow[];
@@ -188,7 +189,7 @@ function FeaturedRow({ title, shows, viewAllHref }: { title: string; shows: Home
 }
 
 // Inner component that uses searchParams
-function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], westEndShows = [], totalShows, totalReviews, skipHero, skipFirstMusicals, featuredRows = [] }: HomePageClientProps) {
+function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [], westEndShows = [], totalShows, totalReviews, skipHero, skipFirstMusicals, featuredRows = [] }: HomePageClientProps) {
   const initialSearchParams = useSearchParams();
 
   // Local state for instant updates (no full-page reload)
@@ -219,11 +220,33 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], westEndSho
     });
   }, []);
 
+  // Archive shows — lazy-loaded on demand when user filters to all/closed or searches
+  const [archiveShows, setArchiveShows] = useState<HomepageShow[] | null>(null);
+  const archiveFetchedRef = useRef(false);
+
+  const fetchArchive = useCallback(async () => {
+    if (archiveFetchedRef.current) return;
+    archiveFetchedRef.current = true;
+    try {
+      const cacheBust = archiveHash ? `?v=${archiveHash}` : '';
+      const res = await fetch(`/data/homepage-archive.json${cacheBust}`);
+      const data: HomepageShow[] = await res.json();
+      setArchiveShows(data);
+    } catch (e) {
+      console.error('Failed to load archive shows:', e);
+      archiveFetchedRef.current = false; // allow retry
+    }
+  }, [archiveHash]);
+
   // When OB toggle is active, show ONLY OB shows (not mixed with Broadway)
   const allShows = useMemo(() => {
     if (includeOB && offBroadwayShows.length > 0) return offBroadwayShows;
+    if (archiveShows) {
+      const ids = new Set(shows.map(s => s.id));
+      return [...shows, ...archiveShows.filter(s => !ids.has(s.id))];
+    }
     return shows;
-  }, [shows, offBroadwayShows, includeOB]);
+  }, [shows, offBroadwayShows, includeOB, archiveShows]);
 
   // Separate synchronous state for search input to avoid startTransition dropping keystrokes
   const [searchInput, setSearchInput] = useState(() => initialSearchParams.get('q') || '');
@@ -281,17 +304,32 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], westEndSho
     window.history.replaceState({}, '', '/');
   }, []);
 
-  // Search should span ALL shows (Broadway + OB + West End) regardless of toggle state
+  // Search should span ALL shows (Broadway + OB + West End + archive) regardless of toggle state
   const allShowsForSearch = useMemo(() => {
-    const ids = new Set(shows.map(s => s.id));
+    const base = archiveShows ? [...shows, ...archiveShows] : shows;
+    const ids = new Set(base.map(s => s.id));
     const extra = [...offBroadwayShows, ...westEndShows].filter(s => !ids.has(s.id));
-    return extra.length > 0 ? [...shows, ...extra] : shows;
-  }, [shows, offBroadwayShows, westEndShows]);
+    return extra.length > 0 ? [...base, ...extra] : base;
+  }, [shows, offBroadwayShows, westEndShows, archiveShows]);
+
+  // Trigger archive fetch when user needs closed shows or searches
+  useEffect(() => {
+    if (statusFilter === 'all' || statusFilter === 'closed' || searchQuery) {
+      fetchArchive();
+    }
+  }, [statusFilter, searchQuery, fetchArchive]);
 
   // Fuse.js — lazy-loaded on first search keystroke to reduce initial bundle
   const fuseRef = useRef<Fuse<HomepageShow> | null>(null);
   const fuseDataRef = useRef(allShowsForSearch);
   fuseDataRef.current = allShowsForSearch;
+
+  // Invalidate Fuse index when archive loads so search includes all shows
+  useEffect(() => {
+    if (archiveShows) {
+      fuseRef.current = null;
+    }
+  }, [archiveShows]);
 
   const getFuse = useCallback(async () => {
     if (fuseRef.current) return fuseRef.current;
@@ -589,7 +627,15 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], westEndSho
       <h2 className="sr-only">Broadway Shows</h2>
       <ShowCardList shows={filteredAndSortedShows} hideStatus={shouldHideStatus} scoreMode={scoreMode} />
 
-      {filteredAndSortedShows.length === 0 && (
+      {filteredAndSortedShows.length === 0 && !archiveShows && (statusFilter === 'all' || statusFilter === 'closed') && (
+        <div className="space-y-3" role="status" aria-label="Loading shows">
+          {[1, 2, 3, 4, 5].map(i => (
+            <div key={i} className="animate-pulse h-24 bg-surface-overlay rounded-xl" />
+          ))}
+        </div>
+      )}
+
+      {filteredAndSortedShows.length === 0 && (archiveShows || (statusFilter !== 'all' && statusFilter !== 'closed')) && (
         <div className="card text-center py-16 px-6" role="status" aria-live="polite">
           <div className="w-16 h-16 rounded-full bg-surface-overlay mx-auto mb-4 flex items-center justify-center">
             <svg className="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
