@@ -43,6 +43,7 @@ import TicketLink from '@/components/TicketLink';
 import { getComparisonsForShow } from '@/config/comparisons';
 import ShowPageRatingConnected from '@/components/user/ShowPageRatingConnected';
 import ShowPageWatchlistButton from '@/components/user/ShowPageWatchlistButton';
+import ShowPageAddToListButton from '@/components/user/ShowPageAddToListButton';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 
 export const revalidate = 86400;
@@ -552,7 +553,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               )}
             </div>
 
-            {/* Watchlist button — right-aligned */}
+            {/* Watchlist + List buttons — right-aligned */}
+            <ShowPageAddToListButton showId={show.id} />
             <ShowPageWatchlistButton showId={show.id} />
           </div>
 
