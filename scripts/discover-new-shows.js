@@ -1117,7 +1117,9 @@ async function discoverShows() {
     const RATE_LIMIT_MS = 1500;
     for (let i = 0; i < undetected.length; i++) {
       const det = undetected[i];
-      const result = await checkIBDBForPriorProductions(det.show.title);
+      const showYear = det.show.openingDate ? parseInt(det.show.openingDate.split('-')[0]) :
+                       det.show.previewsStartDate ? parseInt(det.show.previewsStartDate.split('-')[0]) : null;
+      const result = await checkIBDBForPriorProductions(det.show.title, { currentYear: showYear });
       if (result.isRevival) {
         det.isRevival = true;
         if (result.confidence === 'high') det.confidence = 'high';

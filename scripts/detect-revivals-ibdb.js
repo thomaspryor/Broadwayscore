@@ -96,7 +96,9 @@ async function main() {
     const show = shows[i];
     console.log(`\n📌 [${i + 1}/${shows.length}] Checking "${show.title}" (${show.id})...`);
 
-    const result = await checkIBDBForPriorProductions(show.title);
+    const showYear = show.openingDate ? parseInt(show.openingDate.split('-')[0]) :
+                     show.previewsStartDate ? parseInt(show.previewsStartDate.split('-')[0]) : null;
+    const result = await checkIBDBForPriorProductions(show.title, { currentYear: showYear });
 
     if (result.isRevival) {
       changes.push({
@@ -106,6 +108,8 @@ async function main() {
         urls: result.urls,
         confidence: result.confidence
       });
+    } else if (result.isTransfer) {
+      console.log(`  ℹ️  "${show.title}" is a transfer (original production), not a revival`);
     }
 
     checked.push(show.id);

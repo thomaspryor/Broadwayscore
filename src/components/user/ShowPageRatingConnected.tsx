@@ -125,6 +125,13 @@ function ShowPageRatingInner({
     const pending = getPendingAction();
     if (!pending || pending.showId !== showId) return;
 
+    // For 'add-to-list' without listId, let ShowPageAddToListButton handle it
+    // (it auto-opens the dropdown after auth and clears the pending action itself)
+    if (pending.type === 'add-to-list' && !pending.listId) {
+      hasExecutedPending.current = true;
+      return;
+    }
+
     hasExecutedPending.current = true;
     clearPendingAction();
 
@@ -161,9 +168,6 @@ function ShowPageRatingInner({
       }).catch(() => {
         showToast?.('Failed to add to watchlist.', 'error');
       });
-    } else if (pending.type === 'add-to-list' && !pending.listId) {
-      // User tapped "Add to List" before signing in — no specific list was chosen yet
-      showToast?.('Signed in! Tap the List button to add to a list.', 'success');
     } else if (pending.type === 'add-to-list' && pending.listId) {
       addToList(pending.listId, showId).then(() => {
         showToast?.(<>Added to <a href={`/my-shows?tab=lists&list=${pending.listId}`} className="underline hover:text-white/90">your list</a></>, 'success');
