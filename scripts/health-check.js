@@ -87,7 +87,13 @@ const AUTO_FIX_PLAYBOOK = [
   { match: /^SEO:/, urgency: 'this-week',
     humanAction: 'SEO health has degraded. Open Claude Code and say: "Check the SEO health report and fix any issues."' },
 
-  // Cron — the workflows should self-heal, but may need manual dispatch
+  // Cron — auto-dispatch for critical ones, low-priority for the rest
+  { match: /^Cron: Rebuild Reviews$/, urgency: 'low', workflow: 'rebuild-reviews.yml',
+    humanFallback: 'The review rebuild pipeline may be stalled.' },
+  { match: /^Cron: Update Show Status$/, urgency: 'low', workflow: 'update-show-status.yml',
+    humanFallback: 'Show status updates may be stalled.' },
+  { match: /^Cron: Collect Review Texts$/, urgency: 'low', workflow: 'collect-review-texts.yml',
+    humanFallback: 'Review text collection may be stalled.' },
   { match: /^Cron:/, urgency: 'low',
     humanAction: "A scheduled job hasn't run recently. It'll likely run on its next schedule. If it persists, open Claude Code and say: \"Check why the cron jobs aren't running.\"" },
 
@@ -109,14 +115,17 @@ async function tryAutoFix(checkResult) {
   const entry = getPlaybookEntry(checkResult.name);
   if (!entry || !entry.workflow) return { fixed: false };
 
-  // Guard: max 2 auto-fix attempts per system per day
-  const category = checkResult.name.split(':')[0].trim().toLowerCase();
-  const triageFile = path.join(TRIAGE_DIR, `${category}.json`);
+  // Guard: max 2 auto-fix attempts per check per day (resets at midnight UTC)
+  const checkSlug = checkResult.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
+  const triageFile = path.join(TRIAGE_DIR, `autofix-${checkSlug}.json`);
   try {
     if (fs.existsSync(triageFile)) {
       const triage = readJSON(triageFile);
-      if ((triage.autoFixAttempts || 0) >= 2) {
-        console.log(`[Auto-Fix] Skipping ${checkResult.name} — already attempted ${triage.autoFixAttempts} times today`);
+      const lastFixDate = triage.lastAutoFix ? new Date(triage.lastAutoFix).toISOString().slice(0, 10) : null;
+      const todayDate = new Date().toISOString().slice(0, 10);
+      const attemptsToday = lastFixDate === todayDate ? (triage.autoFixAttempts || 0) : 0;
+      if (attemptsToday >= 2) {
+        console.log(`[Auto-Fix] Skipping ${checkResult.name} — already attempted ${attemptsToday} times today`);
         return { fixed: false, message: 'Max auto-fix attempts reached for today' };
       }
     }
@@ -130,11 +139,13 @@ async function tryAutoFix(checkResult) {
     );
     console.log(`[Auto-Fix] Dispatched ${entry.workflow} for ${checkResult.name}`);
 
-    // Increment auto-fix attempt counter
+    // Increment auto-fix attempt counter (per-check, resets daily)
     try {
       let triage = {};
       if (fs.existsSync(triageFile)) triage = readJSON(triageFile);
-      triage.autoFixAttempts = (triage.autoFixAttempts || 0) + 1;
+      const lastFixDate = triage.lastAutoFix ? new Date(triage.lastAutoFix).toISOString().slice(0, 10) : null;
+      const todayDate = new Date().toISOString().slice(0, 10);
+      triage.autoFixAttempts = (lastFixDate === todayDate ? (triage.autoFixAttempts || 0) : 0) + 1;
       triage.lastAutoFix = new Date().toISOString();
       triage.lastAutoFixWorkflow = entry.workflow;
       fs.mkdirSync(path.dirname(triageFile), { recursive: true });
@@ -843,7 +854,7 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
           : r.message;
         const fix = autoFixMap[r.name];
         const failNote = fix && fix.message
-          ? `<br><span style="color:#e74c3c;font-size:11px;">Auto-fix failed: ${fix.message}</span>`
+          ? `<br><span style="color:#e74c3c;font-size:11px;">Couldn't auto-fix. ${entry?.workflow ? `<a href="https://github.com/thomaspryor/Broadwayscore/actions/workflows/${entry.workflow}" style="color:#e74c3c;text-decoration:underline;">Tap to retry manually</a>` : ''}</span>`
           : '';
 
         return `<div style="padding:10px 12px;margin-bottom:8px;background:#2a1a1a;border-left:3px solid ${urgency.bg};border-radius:4px;">
@@ -890,7 +901,9 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
   }
 
   // Overall status banner
-  const overallStatus = errors.length > 0 ? 'error' : warns.length > 0 ? 'warn' : 'pass';
+  const unfixedErrors = errors.filter(r => !autoFixResults?.[r.name]?.fixed);
+  const unfixedWarns = warns.filter(r => !autoFixResults?.[r.name]?.fixed);
+  const overallStatus = unfixedErrors.length > 0 ? 'error' : unfixedWarns.length > 0 ? 'warn' : 'pass';
   const bannerColor = getStatusColor(overallStatus);
   const bannerText = errors.length > 0
     ? `${errors.length} error${errors.length > 1 ? 's' : ''}, ${warns.length} warning${warns.length > 1 ? 's' : ''}`
@@ -973,7 +986,9 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
             console.error('[Email Digest] Rate limited — digest not sent');
             resolve(false);
           } else {
-            reject(new Error(errMsg));
+            // Don't crash health check for email failures — log and continue
+            console.error(errMsg);
+            resolve(false);
           }
         }
       });
@@ -1264,11 +1279,19 @@ async function main() {
 
   // Auto-fix: attempt to dispatch fix workflows for known issues
   const autoFixResults = {};
+  const dispatchedWorkflows = new Set();
   const fixableResults = allResults.filter(r => r.status === 'error' || r.status === 'warn');
   for (const r of fixableResults) {
     const entry = getPlaybookEntry(r.name);
     if (entry && entry.workflow) {
-      autoFixResults[r.name] = await tryAutoFix(r);
+      // Skip if same workflow already dispatched this run (dedup Pipeline vs Freshness)
+      if (dispatchedWorkflows.has(entry.workflow)) {
+        autoFixResults[r.name] = { fixed: true, workflow: entry.workflow, deduped: true };
+        continue;
+      }
+      const result = await tryAutoFix(r);
+      autoFixResults[r.name] = result;
+      if (result.fixed) dispatchedWorkflows.add(entry.workflow);
     }
   }
   const autoFixedCount = Object.values(autoFixResults).filter(f => f.fixed).length;
@@ -1284,9 +1307,8 @@ async function main() {
     console.log(`[Workflows] ${workflowSummary.succeeded} succeeded, ${workflowSummary.failed} failed (${workflowSummary.total} total in last 24h)`);
   }
 
-  // Email digest disabled — replaced by BSC Daily action email (see daily-action-email.yml)
-  // Discord notifications still fire below for monitoring
-  // await sendEmailDigest(allResults, history, workflowSummary, autoFixResults);
+  // Send email digest (throws on failure → triggers notify-failure)
+  await sendEmailDigest(allResults, history, workflowSummary, autoFixResults);
 
   // Send Discord notifications
   await sendDailyReport(allResults, history);

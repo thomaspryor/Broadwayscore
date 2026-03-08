@@ -148,7 +148,7 @@ export function detectMultiShow(
 
     const mentions = countMentions(lowerText, title);
 
-    if (mentions >= 3) {
+    if (mentions >= 5) {
       otherShows.push({ title, mentions });
     }
   }
@@ -160,18 +160,18 @@ export function detectMultiShow(
     return { isMultiShowReview: false, otherShows: [], recommendation: 'score' };
   }
 
-  // If 2+ other shows have 3+ mentions each, this is likely a roundup
+  // If 2+ other shows have 5+ mentions each, this is likely a roundup
   if (otherShows.length >= 2) {
     return {
       isMultiShowReview: true,
       otherShows,
       recommendation: 'skip',
-      reason: `Roundup article: ${otherShows.length} other shows mentioned 3+ times (${otherShows.slice(0, 3).map(s => s.title).join(', ')})`
+      reason: `Roundup article: ${otherShows.length} other shows mentioned 5+ times (${otherShows.slice(0, 3).map(s => s.title).join(', ')})`
     };
   }
 
-  // If 1 other show has 5+ mentions, likely a comparison article
-  if (otherShows[0].mentions >= 5) {
+  // If 1 other show has 7+ mentions, likely a comparison article
+  if (otherShows[0].mentions >= 7) {
     return {
       isMultiShowReview: true,
       otherShows,
@@ -180,7 +180,7 @@ export function detectMultiShow(
     };
   }
 
-  // 1 other show with 3-4 mentions — just warn
+  // 1 other show with 5-6 mentions — just warn
   return {
     isMultiShowReview: false,
     otherShows,
