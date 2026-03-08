@@ -164,7 +164,17 @@
     "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/times-uk--clive-davis.json",
     "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
     "bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json",
-    "escape-to-margaritaville-2018/vulture--jesse-green.json"
+    "escape-to-margaritaville-2018/vulture--jesse-green.json",
+    "john-lithgow-stories-by-heart-2018/vulture--jesse-green.json",
+    "linda-vista-2019/variety--marilyn-stasio.json",
+    "new-york-new-york-2023/hollywood-reporter--angie-han.json",
+    "ohio-state-murders-2022/hollywood-reporter--anita-gates.json",
+    "on-a-clear-day-you-can-see-forever-2011/vulture--jesse-green.json",
+    "rodgers-hammersteins-cinderella-2013/vulture--jesse-green.json",
+    "the-collaboration-2022/hollywood-reporter--anita-gates.json",
+    "the-shark-is-broken-2023/hollywood-reporter--angie-han.json",
+    "the-whos-tommy-2024/hollywood-reporter--angie-han.json",
+    "uncle-vanya-2024/vulture--helen-shaw.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -205,7 +215,8 @@
       "data/review-texts/take-me-out-2003/deadline--greg-evans.json",
       "take-me-out-2003/deadline--greg-evans.json",
       "data/review-texts/waiting-for-godot-2025/deadline--unknown.json",
-      "waiting-for-godot-2025/deadline--unknown.json"
+      "waiting-for-godot-2025/deadline--unknown.json",
+      "data/review-texts/new-york-new-york-2023/hollywood-reporter--angie-han.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -254,7 +265,7 @@
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "escape-to-margaritaville-2018/vulture--jesse-green.json",
+  "lastProcessed": "uncle-vanya-2024/vulture--helen-shaw.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -508,6 +519,28 @@
       "t": "2026-03-08T02:40:59.923Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-08T02:48:32.165Z",
+      "event": "bb-session",
+      "session": "54b46772",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/new-york-new-york-broadway-revi"
+    },
+    {
+      "t": "2026-03-08T02:48:33.301Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-08T02:49:55.024Z",
+      "event": "bb-session",
+      "session": "1d7c4503",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/new-york-new-york-kander-ebb-mu"
+    },
+    {
+      "t": "2026-03-08T02:49:56.122Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
