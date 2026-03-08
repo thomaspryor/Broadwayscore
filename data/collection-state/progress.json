@@ -396,7 +396,15 @@
     "death-of-a-salesman-1975/newsday--linda-winer.json",
     "doubt-2005/thewrap--robert-hofler.json",
     "good-people-2011/review--unknown.json",
-    "kinky-boots-off-broadway-2026/timeout--adam-feldman.json"
+    "kinky-boots-off-broadway-2026/timeout--adam-feldman.json",
+    "la-bete-1991/newsday--linda-winer.json",
+    "la-bete-1991/nypost--elisabeth-vincentelli.json",
+    "macbeth-2013/nydailynews--joe-dziemianowicz.json",
+    "matilda-the-musical-2013/ew--thom-geier.json",
+    "pal-joey-2008/thewrap--unknown.json",
+    "rain-2010/ew--unknown.json",
+    "shucked-2023/music-city-review--unknown.json",
+    "the-25th-annual-putnam-county-spelling-bee-2005/newsweek--unknown.json"
   ],
   "failed": [
     "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
@@ -2487,7 +2495,9 @@
     "six-2021/newyorker--naomi-fry.json",
     "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
     "book-of-mormon-2011/wsj--terry-teachout.json",
-    "a-chorus-line-2006/belleville-news-democrat--unknown.json"
+    "a-chorus-line-2006/belleville-news-democrat--unknown.json",
+    "la-bete-1991/new-jersey-newsroom--michael-sommers.json",
+    "the-robber-bridegroom-1976/deadline--jeremy-gerard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2666,7 +2676,8 @@
       "saint-joan-2018/vulture--elysa-gardner.json",
       "summer-2018/vulture--jesse-oxfeld.json",
       "beetlejuice-2022/bg-independent-news--unknown.json",
-      "kinky-boots-off-broadway-2026/timeout--adam-feldman.json"
+      "kinky-boots-off-broadway-2026/timeout--adam-feldman.json",
+      "the-25th-annual-putnam-county-spelling-bee-2005/newsweek--unknown.json"
     ],
     "amp": [
       "data/review-texts/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/vulture--helen-shaw.json",
@@ -2800,7 +2811,9 @@
       "data/review-texts/the-merchant-of-venice-1973/hollywood-reporter--david-rooney.json",
       "the-merchant-of-venice-1973/hollywood-reporter--david-rooney.json",
       "data/review-texts/good-people-2011/review--unknown.json",
-      "good-people-2011/review--unknown.json"
+      "good-people-2011/review--unknown.json",
+      "data/review-texts/la-bete-1991/nypost--elisabeth-vincentelli.json",
+      "la-bete-1991/nypost--elisabeth-vincentelli.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json",
@@ -3308,7 +3321,9 @@
       "data/review-texts/titanique-west-end-2024/standard--nick-curtis.json",
       "data/review-texts/chess-2025/newyorker--michael-schulman.json",
       "data/review-texts/chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
-      "data/review-texts/a-chorus-line-2006/belleville-news-democrat--unknown.json"
+      "data/review-texts/a-chorus-line-2006/belleville-news-democrat--unknown.json",
+      "data/review-texts/la-bete-1991/new-jersey-newsroom--michael-sommers.json",
+      "data/review-texts/the-robber-bridegroom-1976/deadline--jeremy-gerard.json"
     ],
     "archive": [
       "you-got-older-off-broadway-2026/timeout--unknown.json",
@@ -3401,11 +3416,17 @@
       "a-streetcar-named-desire-2012/newsday--linda-winer.json",
       "annie-1997/ew--jessica-shaw.json",
       "death-of-a-salesman-1975/newsday--linda-winer.json",
-      "doubt-2005/thewrap--robert-hofler.json"
+      "doubt-2005/thewrap--robert-hofler.json",
+      "la-bete-1991/newsday--linda-winer.json",
+      "macbeth-2013/nydailynews--joe-dziemianowicz.json",
+      "matilda-the-musical-2013/ew--thom-geier.json",
+      "pal-joey-2008/thewrap--unknown.json",
+      "rain-2010/ew--unknown.json",
+      "shucked-2023/music-city-review--unknown.json"
     ]
   },
   "startTime": "2026-03-07T22:22:26.483Z",
-  "lastProcessed": "kinky-boots-off-broadway-2026/timeout--adam-feldman.json",
+  "lastProcessed": "the-robber-bridegroom-1976/deadline--jeremy-gerard.json",
   "log": [
     {
       "t": "2026-03-08T01:43:49.539Z",
@@ -4463,6 +4484,28 @@
       "t": "2026-03-08T19:30:35.961Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-08T19:34:15.009Z",
+      "event": "bb-session",
+      "session": "fcd93ad4",
+      "url": "http://www.newsday.com/entertainment/theater/bete-a-tour-de-force-for-a-gross-ma"
+    },
+    {
+      "t": "2026-03-08T19:34:16.106Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-08T19:36:33.509Z",
+      "event": "bb-session",
+      "session": "9c28fb94",
+      "url": "http://www.nypost.com/p/entertainment/theater/beastly_fun_from_mad_to_verse_Yr5C"
+    },
+    {
+      "t": "2026-03-08T19:36:34.597Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
