@@ -231,8 +231,8 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from rebuild-reviews'
 
-      - name: Trigger deploy (core data changed)
-        if: always() && steps.changes.outputs.has_changes == 'true'
+      - name: Trigger deploy (always — ensures out-of-band data pushes get deployed)
+        if: always()
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
