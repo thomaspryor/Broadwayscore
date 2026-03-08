@@ -69,13 +69,13 @@ function reDetect(text, targetShowId) {
     const overlap = titleWords.filter(w => targetIdWords.includes(w)).length;
     if (overlap > 0 && overlap >= titleWords.length * 0.5) continue;
     const mentions = countMentions(lowerText, title);
-    if (mentions >= 3) otherShows.push({ title, mentions });
+    if (mentions >= 5) otherShows.push({ title, mentions });
   }
 
   otherShows.sort((a, b) => b.mentions - a.mentions);
 
   if (otherShows.length >= 2) return { isMultiShowReview: true, otherShows, recommendation: 'skip' };
-  if (otherShows.length === 1 && otherShows[0].mentions >= 5) return { isMultiShowReview: true, otherShows, recommendation: 'warn' };
+  if (otherShows.length === 1 && otherShows[0].mentions >= 7) return { isMultiShowReview: true, otherShows, recommendation: 'warn' };
   return { isMultiShowReview: false, otherShows };
 }
 
@@ -114,7 +114,7 @@ function walkDir(dir) {
           stillFlagged++;
           // Update reason if it changed
           const newReason = result.recommendation === 'skip'
-            ? `Roundup article: ${result.otherShows.length} other shows mentioned 3+ times (${result.otherShows.slice(0, 3).map(s => s.title).join(', ')})`
+            ? `Roundup article: ${result.otherShows.length} other shows mentioned 5+ times (${result.otherShows.slice(0, 3).map(s => s.title).join(', ')})`
             : `Comparison article: "${result.otherShows[0].title}" mentioned ${result.otherShows[0].mentions} times`;
           if (!dryRun && newReason !== data.multiShowReason) {
             data.multiShowReason = newReason;
