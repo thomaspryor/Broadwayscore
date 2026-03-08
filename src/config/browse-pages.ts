@@ -330,7 +330,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'broadway-rush-tickets',
     title: 'Broadway Rush Ticket Shows',
     h1: 'Broadway Rush Ticket Shows',
-    metaTitle: `Broadway Rush Tickets — Every Show with Same-Day Deals (${CURRENT_YEAR})`,
+    metaTitle: `Broadway Rush Tickets — Same-Day Deals for Every Show (${CURRENT_YEAR})`,
     metaDescription: 'Broadway shows offering same-day rush tickets. Get discounted seats by arriving early at the box office or checking online portals.',
     intro: 'Rush tickets are same-day discounted tickets sold at the box office, typically when doors open or a few hours before showtime. Unlike lotteries, rush tickets are first-come, first-served, rewarding those willing to arrive early. Some shows also offer digital rush through apps. Prices typically range from $30-50, making Broadway accessible to those on a budget. Here are the shows currently offering rush ticket programs.',
     filter: (show) => {
@@ -424,7 +424,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'best-broadway-musicals',
     title: 'Best Broadway Musicals',
     h1: 'Best Broadway Musicals',
-    metaTitle: `Best Broadway Musicals (${CURRENT_YEAR}) — Ranked by 400+ Critics`,
+    metaTitle: `Best Broadway Musicals (${CURRENT_YEAR}) — Ranked by Critics`,
     metaDescription: 'Every Broadway musical ranked by aggregated critic scores from NYT, Variety, Vulture & 400+ outlets. See which musicals are must-sees and which to skip.',
     intro: 'Broadway musicals represent the pinnacle of theatrical entertainment, combining compelling stories with unforgettable songs, spectacular staging, and incredible performances. These are the highest-rated musicals currently playing on Broadway, as determined by aggregated critic reviews. Whether you\'re looking for a classic, a new hit, or something in between, these productions deliver the very best of what musical theater has to offer.',
     filter: (show) => {
