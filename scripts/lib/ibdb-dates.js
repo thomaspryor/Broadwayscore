@@ -779,44 +779,53 @@ async function checkIBDBForPriorProductions(title, options = {}) {
   }
 
   try {
-    // Search IBDB for any production pages matching this title
-    // Simple query — filter production URLs from results afterward
-    const query = `site:ibdb.com "${title}"`;
-    console.log(`  🔍 Revival check SERP: ${query}`);
+    // Search IBDB for production pages matching this title
+    // Two targeted queries work better than one broad query — Google returns
+    // cast/staff pages for site:ibdb.com, drowning out production pages.
+    const prodPaths = [
+      'ibdb.com/broadway-production',
+      'ibdb.com/off-broadway-production'
+    ];
 
     let results = [];
-
-    // Production URL patterns on IBDB
-    const isProductionUrl = (url) =>
-      url.includes('/broadway-production/') ||
-      url.includes('/off-broadway-production/') ||
-      url.includes('/tour-production/');
-
-    // Try ScrapingBee Google SERP
     const scrapingBeeKey = process.env.SCRAPINGBEE_API_KEY;
-    if (scrapingBeeKey) {
-      try {
-        const url = `https://app.scrapingbee.com/api/v1/store/google?` +
-          `api_key=${scrapingBeeKey}` +
-          `&search=${encodeURIComponent(query)}`;
 
-        const resp = await fetch(url);
-        if (resp.ok) {
-          const data = await resp.json();
-          const organic = data.organic_results || [];
-          results = organic
-            .filter(r => r.url && isProductionUrl(r.url))
-            .map(r => ({ url: r.url, title: r.title || '' }));
+    for (const prodPath of prodPaths) {
+      const query = `site:${prodPath} "${title}"`;
+      console.log(`  🔍 Revival check SERP: ${query}`);
+
+      if (scrapingBeeKey) {
+        try {
+          const url = `https://app.scrapingbee.com/api/v1/store/google?` +
+            `api_key=${scrapingBeeKey}` +
+            `&search=${encodeURIComponent(query)}`;
+
+          const resp = await fetch(url);
+          if (resp.ok) {
+            const data = await resp.json();
+            const organic = data.organic_results || [];
+            const pageResults = organic
+              .filter(r => r.url && (r.url.includes('/broadway-production/') || r.url.includes('/off-broadway-production/') || r.url.includes('/tour-production/')))
+              .map(r => ({ url: r.url, title: r.title || '' }));
+            results.push(...pageResults);
+          }
+        } catch (e) {
+          console.log(`  ⚠️  ScrapingBee SERP failed: ${e.message}`);
         }
-      } catch (e) {
-        console.log(`  ⚠️  ScrapingBee SERP failed: ${e.message}`);
+      }
+
+      // Rate limit between SERP calls
+      if (prodPath !== prodPaths[prodPaths.length - 1]) {
+        await sleep(500);
       }
     }
 
-    // Fallback: Bright Data SERP
+    // Fallback: Bright Data SERP (single broad query)
     if (results.length === 0) {
       const brightToken = process.env.BRIGHTDATA_TOKEN;
       if (brightToken) {
+        const query = `site:ibdb.com "${title}"`;
+        console.log(`  🔍 Revival check fallback SERP: ${query}`);
         try {
           const resp = await fetch('https://api.brightdata.com/serp/req', {
             method: 'POST',
@@ -835,7 +844,7 @@ async function checkIBDBForPriorProductions(title, options = {}) {
             const data = await resp.json();
             const organic = data.organic || [];
             results = organic
-              .filter(r => r.link && isProductionUrl(r.link))
+              .filter(r => r.link && (r.link.includes('/broadway-production/') || r.link.includes('/off-broadway-production/') || r.link.includes('/tour-production/')))
               .map(r => ({ url: r.link, title: r.title || '' }));
           }
         } catch (e) {
@@ -879,27 +888,70 @@ async function checkIBDBForPriorProductions(title, options = {}) {
 
     console.log(`  📊 IBDB results: ${results.length} raw, ${validResults.length} title-matched, ${uniqueUrls.length} unique production URLs`);
 
-    if (uniqueUrls.length >= 2) {
-      // Multiple distinct production pages found
-      // Transfer detection: if our show predates all IBDB results, it's the original
-      if (options.currentYear) {
-        try {
-          const firstPageDates = await extractDatesFromIBDBPage(uniqueUrls[0]);
-          if (firstPageDates.openingDate) {
-            const ibdbYear = parseInt(firstPageDates.openingDate.split('-')[0]);
-            if (options.currentYear < ibdbYear) {
-              console.log(`  ➡️  Transfer detected (not revival): our show (${options.currentYear}) predates IBDB production (${ibdbYear})`);
-              return {
-                isRevival: false,
-                priorProductionCount: uniqueUrls.length,
-                urls: uniqueUrls,
-                confidence: 'high',
-                isTransfer: true
-              };
-            }
+    if (uniqueUrls.length === 0) {
+      return notFound;
+    }
+
+    // Check if any SERP title explicitly says "Revival"
+    const revivalResults = validResults.filter(r =>
+      /–\s.*revival/i.test(r.title) || /\bRevival\b/.test(r.title)
+    );
+
+    // For OB/WE shows: finding ANY Broadway production page means the show existed
+    // on Broadway before → current production is likely a revival (unless it's a transfer)
+    const showCategory = options.showCategory || '';
+    const isNonBroadway = ['off-broadway', 'west-end'].includes(showCategory);
+    const hasBroadwayUrl = validResults.some(r => r.url.includes('/broadway-production/'));
+
+    // Helper: check if a production is a transfer (not a revival)
+    // Transfer = our show predates the IBDB production, OR the IBDB production
+    // was still running when our show opened (concurrent = transfer, not revival)
+    async function isTransferNotRevival(ibdbUrl) {
+      if (!options.currentYear) return { isTransfer: false };
+      try {
+        const pageDates = await extractDatesFromIBDBPage(ibdbUrl);
+        if (pageDates.openingDate) {
+          const ibdbYear = parseInt(pageDates.openingDate.split('-')[0]);
+          // Our show predates the IBDB production → we're the original
+          if (options.currentYear < ibdbYear) {
+            console.log(`  ➡️  Transfer detected: our show (${options.currentYear}) predates IBDB production (${ibdbYear})`);
+            return { isTransfer: true, ibdbYear };
           }
-        } catch (e) {
-          console.log(`  ⚠️  Transfer check failed: ${e.message} — defaulting to revival`);
+          // IBDB production was still running when our show opened → concurrent transfer
+          if (!pageDates.closingDate) {
+            console.log(`  ➡️  Transfer detected: Broadway production (${ibdbYear}) still running — concurrent with our ${showCategory} show`);
+            return { isTransfer: true, ibdbYear };
+          }
+          const closingYear = parseInt(pageDates.closingDate.split('-')[0]);
+          if (closingYear >= options.currentYear) {
+            console.log(`  ➡️  Transfer detected: Broadway production closed ${closingYear}, same year or after our show (${options.currentYear})`);
+            return { isTransfer: true, ibdbYear };
+          }
+          return { isTransfer: false, ibdbYear };
+        }
+      } catch (e) {
+        console.log(`  ⚠️  Transfer check failed: ${e.message}`);
+      }
+      return { isTransfer: false };
+    }
+
+    if (uniqueUrls.length >= 2) {
+      // Multiple distinct production pages — strong revival signal
+      // But check for transfer first (for OB/WE shows)
+      if (isNonBroadway && hasBroadwayUrl) {
+        // Find the most recent Broadway production URL and check transfer
+        const bwayUrl = validResults.find(r => r.url.includes('/broadway-production/'))?.url;
+        if (bwayUrl) {
+          const transferCheck = await isTransferNotRevival(bwayUrl);
+          if (transferCheck.isTransfer) {
+            return {
+              isRevival: false,
+              priorProductionCount: uniqueUrls.length,
+              urls: uniqueUrls,
+              confidence: 'high',
+              isTransfer: true
+            };
+          }
         }
       }
 
@@ -913,17 +965,53 @@ async function checkIBDBForPriorProductions(title, options = {}) {
       };
     }
 
+    // Single production page found
     if (uniqueUrls.length === 1) {
-      // Single production page — could be the current production itself
-      // Only flag as revival if the URL clearly points to a different era
-      // (We can't rely on year extraction from URLs, so single-match = inconclusive)
-      console.log(`  ➡️  Single IBDB production found for "${title}" — inconclusive (could be current production)`);
-      return {
-        isRevival: false,
-        priorProductionCount: 1,
-        urls: uniqueUrls,
-        confidence: 'low'
-      };
+      // For Broadway shows: check if the SERP title says "Revival"
+      if (!isNonBroadway) {
+        if (revivalResults.length > 0) {
+          console.log(`  🔄 Revival detected: IBDB title says "Revival" for "${title}"`);
+          console.log(`     ${uniqueUrls[0]}`);
+          return {
+            isRevival: true,
+            priorProductionCount: 1,
+            urls: uniqueUrls,
+            confidence: 'high'
+          };
+        }
+        console.log(`  ➡️  Single IBDB production for "${title}" — title says "Original", not a revival`);
+        return { isRevival: false, priorProductionCount: 1, urls: uniqueUrls, confidence: 'medium' };
+      }
+
+      // For OB/WE shows: any Broadway production page = prior existence
+      if (hasBroadwayUrl) {
+        const transferCheck = await isTransferNotRevival(uniqueUrls[0]);
+        if (transferCheck.isTransfer) {
+          return {
+            isRevival: false,
+            priorProductionCount: 1,
+            urls: uniqueUrls,
+            confidence: 'high',
+            isTransfer: true
+          };
+        }
+        if (transferCheck.ibdbYear) {
+          console.log(`  🔄 Revival detected: Broadway production (${transferCheck.ibdbYear}) predates our ${showCategory} show (${options.currentYear})`);
+        } else {
+          console.log(`  🔄 Revival likely: Broadway production exists for "${title}" (${showCategory} show)`);
+        }
+        console.log(`     ${uniqueUrls[0]}`);
+        return {
+          isRevival: true,
+          priorProductionCount: 1,
+          urls: uniqueUrls,
+          confidence: transferCheck.ibdbYear ? 'high' : 'medium'
+        };
+      }
+
+      // OB production page found for OB show — could be current production
+      console.log(`  ➡️  Single non-Broadway IBDB production for "${title}" — inconclusive`);
+      return { isRevival: false, priorProductionCount: 1, urls: uniqueUrls, confidence: 'low' };
     }
 
     return notFound;

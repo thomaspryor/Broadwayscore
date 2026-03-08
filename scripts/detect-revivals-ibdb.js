@@ -35,6 +35,7 @@ const showFilter = showArg ? showArg.split('=')[1] : null;
 
 const catArg = args.find(a => a.startsWith('--category='));
 const categoryFilter = catArg ? catArg.split('=')[1] : 'off-broadway';
+// Broadway shows have no category field — use --category=broadway to target them
 
 function loadShows() {
   return JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
@@ -68,8 +69,12 @@ async function main() {
       process.exit(1);
     }
   } else {
-    // Filter to target category
-    shows = shows.filter(s => s.category === categoryFilter);
+    // Filter to target category (Broadway shows have no category field)
+    if (categoryFilter === 'broadway') {
+      shows = shows.filter(s => !s.category);
+    } else {
+      shows = shows.filter(s => s.category === categoryFilter);
+    }
 
     // Only check shows that haven't been checked and aren't already marked as revivals
     shows = shows.filter(s =>
@@ -98,7 +103,8 @@ async function main() {
 
     const showYear = show.openingDate ? parseInt(show.openingDate.split('-')[0]) :
                      show.previewsStartDate ? parseInt(show.previewsStartDate.split('-')[0]) : null;
-    const result = await checkIBDBForPriorProductions(show.title, { currentYear: showYear });
+    const showCategory = show.category || 'broadway';
+    const result = await checkIBDBForPriorProductions(show.title, { currentYear: showYear, showCategory });
 
     if (result.isRevival) {
       changes.push({
