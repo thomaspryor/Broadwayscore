@@ -15,7 +15,14 @@
     "the-tempest-globe-west-end-2026/whatsonstage--alun-hood.json",
     "the-spy-who-came-in-from-the-cold-west-end-2025/city-am--unknown.json",
     "the-spy-who-came-in-from-the-cold-west-end-2025/thereviewshub--unknown.json",
-    "the-spy-who-came-in-from-the-cold-west-end-2025/artsdesk--aleks-sierz.json"
+    "the-spy-who-came-in-from-the-cold-west-end-2025/artsdesk--aleks-sierz.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/artsdesk--for-aleks-sierz.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/city-am--chris-dorrell.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/everything-theatre--cerys-baker.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/independent--alice-saville.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/independent--unknown.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/standard--nick-curtis.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/whatsonstage--sarah-crompton.json"
   ],
   "failed": [
     "dracula-west-end-2025/times-uk--clive-davis.json",
@@ -37,15 +44,25 @@
       "the-mousetrap-west-end-2021/whatsonstage--whatsonstage-reviewer.json",
       "the-tempest-globe-west-end-2026/whatsonstage--alun-hood.json",
       "the-spy-who-came-in-from-the-cold-west-end-2025/thereviewshub--unknown.json",
-      "the-spy-who-came-in-from-the-cold-west-end-2025/artsdesk--aleks-sierz.json"
+      "the-spy-who-came-in-from-the-cold-west-end-2025/artsdesk--aleks-sierz.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/artsdesk--for-aleks-sierz.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/everything-theatre--cerys-baker.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/standard--nick-curtis.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/whatsonstage--sarah-crompton.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/dracula-west-end-2025/nytimes--houman-barekat.json",
+      "dracula-west-end-2025/nytimes--houman-barekat.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "dracula-west-end-2025/guardian--arifa-akbar.json",
       "dracula-west-end-2025/independent--alice-saville.json",
-      "the-spy-who-came-in-from-the-cold-west-end-2025/city-am--unknown.json"
+      "the-spy-who-came-in-from-the-cold-west-end-2025/city-am--unknown.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/city-am--chris-dorrell.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/independent--alice-saville.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/independent--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -55,16 +72,16 @@
     "archive": []
   },
   "startTime": "2026-03-09T14:46:37.990Z",
-  "lastProcessed": "the-spy-who-came-in-from-the-cold-west-end-2025/artsdesk--aleks-sierz.json",
+  "lastProcessed": "the-spy-who-came-in-from-the-cold-west-end-2025/whatsonstage--sarah-crompton.json",
   "log": [
     {
-      "t": "2026-03-09T14:51:21.007Z",
+      "t": "2026-03-09T14:47:08.679Z",
       "event": "bb-session",
-      "session": "aba3b141",
-      "url": "https://www.thestage.co.uk/reviews/paranormal-activity-review-ambassadors-theatr"
+      "session": "5273bde1",
+      "url": "https://www.nytimes.com/2026/02/18/theater/dracula-cynthia-erivo.html"
     },
     {
-      "t": "2026-03-09T14:51:22.241Z",
+      "t": "2026-03-09T14:47:09.930Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
