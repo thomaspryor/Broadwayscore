@@ -430,7 +430,15 @@
     "data-off-broadway-2026/nysr--david-finkle.json",
     "data-off-broadway-2026/nysr--roma-torre.json",
     "data-off-broadway-2026/theater-scene--victor-gluck.json",
-    "death-becomes-her-2024/the-interested-bystander--cary-wong.json"
+    "death-becomes-her-2024/the-interested-bystander--cary-wong.json",
+    "death-becomes-her-2024/theater-scene--joel-benjamin.json",
+    "deep-azure-globe-west-end-2026/whatsonstage--sarah-crompton.json",
+    "dracula-west-end-2025/artsdesk--rachel-halliburton.json",
+    "dracula-west-end-2025/financialtimes--sarah-hemming.json",
+    "dracula-west-end-2025/i-paper--fiona-mountford.json",
+    "dracula-west-end-2025/independent--alice-saville.json",
+    "dracula-west-end-2025/london-theatre--olivia-rook.json",
+    "dracula-west-end-2025/whatsonstage--sarah-crompton.json"
   ],
   "failed": [
     "paranormal-activity-west-end-2025/thestage--tim-wicker.json",
@@ -481,7 +489,9 @@
     "cabaret-at-the-kit-kat-club-west-end-2021/artsdesk--david-nice.json",
     "calf-scramble-off-broadway-2026/times-uk--chloe-rabinowitz.json",
     "chess-2025/thestage--unknown.json",
-    "cold-war-choir-practice-off-broadway-2026/times-uk--unknown.json"
+    "cold-war-choir-practice-off-broadway-2026/times-uk--unknown.json",
+    "deep-azure-globe-west-end-2026/thestage--unknown.json",
+    "dracula-west-end-2025/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -776,7 +786,14 @@
       "data-off-broadway-2026/nysr--david-finkle.json",
       "data-off-broadway-2026/nysr--roma-torre.json",
       "data-off-broadway-2026/theater-scene--victor-gluck.json",
-      "death-becomes-her-2024/the-interested-bystander--cary-wong.json"
+      "death-becomes-her-2024/the-interested-bystander--cary-wong.json",
+      "death-becomes-her-2024/theater-scene--joel-benjamin.json",
+      "deep-azure-globe-west-end-2026/whatsonstage--sarah-crompton.json",
+      "dracula-west-end-2025/artsdesk--rachel-halliburton.json",
+      "dracula-west-end-2025/financialtimes--sarah-hemming.json",
+      "dracula-west-end-2025/i-paper--fiona-mountford.json",
+      "dracula-west-end-2025/london-theatre--olivia-rook.json",
+      "dracula-west-end-2025/whatsonstage--sarah-crompton.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -906,7 +923,8 @@
       "buena-vista-social-club-2025/latimes--nicholas-ducassi.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/independent--alexandra-pollard.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json",
-      "chamber-magic-off-broadway-2022/culturesauce--unknown.json"
+      "chamber-magic-off-broadway-2022/culturesauce--unknown.json",
+      "dracula-west-end-2025/independent--alice-saville.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -926,7 +944,8 @@
       "data/review-texts/garry-starr-classic-penguins-garrick-west-end-2026/timeout--unknown.json",
       "data/review-texts/arcadia-west-end-2026/usatoday--mike-fischer.json",
       "data/review-texts/broken-glass-west-end-2026/thestage--unknown.json",
-      "data/review-texts/chess-2025/thestage--unknown.json"
+      "data/review-texts/chess-2025/thestage--unknown.json",
+      "data/review-texts/deep-azure-globe-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
@@ -979,7 +998,7 @@
     ]
   },
   "startTime": "2026-03-09T14:46:28.645Z",
-  "lastProcessed": "death-becomes-her-2024/the-interested-bystander--cary-wong.json",
+  "lastProcessed": "dracula-west-end-2025/whatsonstage--sarah-crompton.json",
   "log": [
     {
       "t": "2026-03-09T14:51:21.007Z",
@@ -1209,6 +1228,17 @@
     },
     {
       "t": "2026-03-09T19:20:51.477Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-09T19:24:15.769Z",
+      "event": "bb-session",
+      "session": "e9c34ed9",
+      "url": "https://www.thestage.co.uk/reviews/deep-azure-review-sam-wanamaker-playhouse-sha"
+    },
+    {
+      "t": "2026-03-09T19:24:17.298Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }

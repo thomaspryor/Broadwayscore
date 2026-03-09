@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-09T19:22:48.204Z",
-  "processed": 431,
-  "failed": 49,
-  "successRate": "89.8%",
+  "updatedAt": "2026-03-09T19:25:31.637Z",
+  "processed": 439,
+  "failed": 51,
+  "successRate": "89.6%",
   "tierBreakdown": {
-    "playwright": 291,
+    "playwright": 298,
     "amp": 26,
     "browserbase": 26,
     "directCookies": 1,
-    "scrapingbee": 69,
+    "scrapingbee": 70,
     "brightdata": 0,
-    "archiveToday": 17,
+    "archiveToday": 18,
     "archive": 47
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-03-09T15:50:41.792Z",
-      "event": "bb-session",
-      "session": "1b8462bb",
-      "url": "https://www.nytimes.com/2026/02/27/theater/chinese-republicans-review-alex-lin.h"
-    },
-    {
-      "t": "2026-03-09T15:50:42.841Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-09T15:53:18.077Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-09T19:20:51.477Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-09T19:24:15.769Z",
+      "event": "bb-session",
+      "session": "e9c34ed9",
+      "url": "https://www.thestage.co.uk/reviews/deep-azure-review-sam-wanamaker-playhouse-sha"
+    },
+    {
+      "t": "2026-03-09T19:24:17.298Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
