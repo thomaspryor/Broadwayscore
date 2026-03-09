@@ -485,7 +485,15 @@
     "hercules-west-end-2025/standard--nick-curtis.json",
     "hercules-west-end-2025/the-express--stefan-kyriazis.json",
     "hercules-west-end-2025/theatre-weekly--greg-stewart.json",
-    "hercules-west-end-2025/times-uk--clive-davis.json"
+    "hercules-west-end-2025/times-uk--clive-davis.json",
+    "hercules-west-end-2025/whatsonstage--sarah-crompton.json",
+    "hold-on-to-your-butts-off-broadway-2026/aaron-in-nyc--aaron.json",
+    "im-sorry-prime-minister-west-end-2026/all-that-dazzles-uk--harry-bower.json",
+    "im-sorry-prime-minister-west-end-2026/daily-mail--patrick-marmion.json",
+    "im-sorry-prime-minister-west-end-2026/london-theatre--matt-wolf.json",
+    "im-sorry-prime-minister-west-end-2026/telegraph--dominic-cavendish.json",
+    "im-sorry-prime-minister-west-end-2026/west-end-best-friend--chris-abbott.json",
+    "into-the-woods-west-end-2025/i-paper--unknown.json"
   ],
   "failed": [
     "paranormal-activity-west-end-2025/thestage--tim-wicker.json",
@@ -581,7 +589,9 @@
     "hamilton-2015/broadwayworld--michael-dale.json",
     "harry-potter-2021/broadwayworld--michael-dale.json",
     "heathers-the-musical-off-broadway-2025/northjerseycom--robert-feldberg.json",
-    "hercules-west-end-2025/thestage--sam-marlowe.json"
+    "hercules-west-end-2025/thestage--sam-marlowe.json",
+    "im-sorry-prime-minister-west-end-2026/independent--alice-saville.json",
+    "im-sorry-prime-minister-west-end-2026/thestage--dave-fargnoli.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -912,7 +922,13 @@
       "hercules-west-end-2025/standard--nick-curtis.json",
       "hercules-west-end-2025/the-express--stefan-kyriazis.json",
       "hercules-west-end-2025/theatre-weekly--greg-stewart.json",
-      "hercules-west-end-2025/times-uk--clive-davis.json"
+      "hercules-west-end-2025/times-uk--clive-davis.json",
+      "hercules-west-end-2025/whatsonstage--sarah-crompton.json",
+      "hold-on-to-your-butts-off-broadway-2026/aaron-in-nyc--aaron.json",
+      "im-sorry-prime-minister-west-end-2026/all-that-dazzles-uk--harry-bower.json",
+      "im-sorry-prime-minister-west-end-2026/london-theatre--matt-wolf.json",
+      "im-sorry-prime-minister-west-end-2026/west-end-best-friend--chris-abbott.json",
+      "into-the-woods-west-end-2025/i-paper--unknown.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -1059,7 +1075,8 @@
       "harry-potter-and-the-cursed-child-both-parts-west-end-2021/independent--jack-shepherd.json",
       "harry-potter-and-the-cursed-child-both-parts-west-end-2021/telegraph--dominic-cavendish.json",
       "hercules-west-end-2025/daily-mail--patrick-marmion.json",
-      "hercules-west-end-2025/independent--alice-saville.json"
+      "hercules-west-end-2025/independent--alice-saville.json",
+      "im-sorry-prime-minister-west-end-2026/telegraph--dominic-cavendish.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1093,7 +1110,9 @@
       "data/review-texts/giant-2026/thestage--dave-fargnoli.json",
       "data/review-texts/hamilton-2015/broadwayworld--michael-dale.json",
       "data/review-texts/harry-potter-2021/broadwayworld--michael-dale.json",
-      "data/review-texts/heathers-the-musical-off-broadway-2025/northjerseycom--robert-feldberg.json"
+      "data/review-texts/heathers-the-musical-off-broadway-2025/northjerseycom--robert-feldberg.json",
+      "data/review-texts/im-sorry-prime-minister-west-end-2026/independent--alice-saville.json",
+      "data/review-texts/im-sorry-prime-minister-west-end-2026/thestage--dave-fargnoli.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
@@ -1151,11 +1170,12 @@
       "calf-scramble-off-broadway-2026/times-uk--chloe-rabinowitz.json",
       "hamilton-2015/ap--mark-kennedy.json",
       "hamilton-west-end-2021/daily-mail--quentin-letts.json",
-      "harry-potter-2021/usatoday--kelly-lawler.json"
+      "harry-potter-2021/usatoday--kelly-lawler.json",
+      "im-sorry-prime-minister-west-end-2026/daily-mail--patrick-marmion.json"
     ]
   },
   "startTime": "2026-03-09T14:46:28.645Z",
-  "lastProcessed": "hercules-west-end-2025/times-uk--clive-davis.json",
+  "lastProcessed": "into-the-woods-west-end-2025/i-paper--unknown.json",
   "log": [
     {
       "t": "2026-03-09T14:51:21.007Z",
@@ -1519,6 +1539,17 @@
       "t": "2026-03-09T20:31:01.856Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-09T20:36:49.424Z",
+      "event": "bb-session",
+      "session": "dc56e4be",
+      "url": "https://www.thestage.co.uk/reviews/im-sorry-prime-minister-review-apollo-theatre"
+    },
+    {
+      "t": "2026-03-09T20:36:51.100Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
