@@ -1,9 +1,12 @@
 name: Update Reddit Sentiment
 
 on:
-  # Run monthly (Reddit sentiment doesn't change fast)
+  # Run twice monthly: fresh data every ~2 weeks, with retry safety
   schedule:
-    - cron: '0 10 1 * *'  # 1st of each month at 10am UTC
+    - cron: '0 10 1 * *'   # 1st of each month at 10am UTC
+    - cron: '0 10 4 * *'   # 4th — retry if 1st failed (skips if fresh)
+    - cron: '0 10 15 * *'  # 15th — mid-month refresh
+    - cron: '0 10 18 * *'  # 18th — retry if 15th failed (skips if fresh)
   # Allow manual trigger
   workflow_dispatch:
     inputs:
@@ -54,10 +57,42 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+      - name: Check if retry run should skip (data already fresh)
+        id: freshness
+        if: github.event_name == 'schedule'
+        run: |
+          # On retry dates (4th, 18th), skip if data was updated in last 5 days
+          DAY=$(date -u +%d)
+          if [ "$DAY" = "04" ] || [ "$DAY" = "18" ]; then
+            RESULT=$(node -e "
+              const data = require('./data/audience-buzz.json');
+              const last = data._meta?.lastUpdated || '2000-01-01';
+              const daysAgo = Math.floor((Date.now() - new Date(last).getTime()) / 86400000);
+              console.log(daysAgo < 5 ? 'fresh' : 'stale');
+              console.error('Last updated: ' + last + ' (' + daysAgo + ' days ago)');
+            " 2>&1 >/dev/null || echo "stale")
+            SKIP_LINE=$(node -e "
+              const data = require('./data/audience-buzz.json');
+              const last = data._meta?.lastUpdated || '2000-01-01';
+              const daysAgo = Math.floor((Date.now() - new Date(last).getTime()) / 86400000);
+              console.log(daysAgo < 5 ? 'true' : 'false');
+            ")
+            echo "skip=$SKIP_LINE" >> $GITHUB_OUTPUT
+            if [ "$SKIP_LINE" = "true" ]; then
+              echo "✓ Reddit data is fresh, skipping retry run"
+            else
+              echo "⚠ Reddit data is stale, running retry"
+            fi
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Backup audience-buzz.json
+        if: steps.freshness.outputs.skip != 'true'
         run: cp data/audience-buzz.json data/audience-buzz.backup.json
 
       - name: Run Reddit sentiment scraper
+        if: steps.freshness.outputs.skip != 'true'
         id: scrape
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
@@ -80,6 +115,7 @@ jobs:
           node scripts/scrape-reddit-sentiment.js $ARGS
 
       - name: Validate output
+        if: steps.freshness.outputs.skip != 'true'
         run: |
           # Check for NaN, null scores, or corruption
           node -e "
@@ -98,6 +134,7 @@ jobs:
           "
 
       - name: Recalculate all combined scores
+        if: steps.freshness.outputs.skip != 'true'
         run: node scripts/recalculate-audience-buzz.js
 
       - name: Restore backup on failure
@@ -110,7 +147,7 @@ jobs:
 
       # Always try to commit, even if script had errors (continue-on-error above)
       - name: Commit and push changes
-        if: always()  # Run even if previous step failed/timed out
+        if: always() && steps.freshness.outputs.skip != 'true'
         run: |
           # Core data files pushed to private repo by push-core-data action
 
@@ -129,14 +166,14 @@ jobs:
 
 
       - name: Push core data to private repo
-        if: always()
+        if: always() && steps.freshness.outputs.skip != 'true'
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from update-reddit-sentiment'
 
       - name: Dispatch deploy
-        if: always()
+        if: always() && steps.freshness.outputs.skip != 'true'
         uses: ./.github/actions/dispatch-deploy
 
       - name: Notify on failure
