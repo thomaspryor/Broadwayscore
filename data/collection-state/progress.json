@@ -26,12 +26,22 @@
     "romeo-and-juliet-west-end-2026/vulture--unknown.json",
     "romeo-and-juliet-west-end-2026/ew--unknown.json",
     "romeo-and-juliet-west-end-2026/newsday--linda-winer.json",
-    "romeo-and-juliet-west-end-2026/nydailynews--joe-dziemianowicz.json"
+    "romeo-and-juliet-west-end-2026/nydailynews--joe-dziemianowicz.json",
+    "romeo-and-juliet-west-end-2026/timeout--adam-feldman.json",
+    "romeo-and-juliet-west-end-2026/timeout--david-cote.json",
+    "romeo-and-juliet-west-end-2026/wsj--terry-teachout.json",
+    "romeo-and-juliet-west-end-2026/cititour--brian-scott-lipton.json",
+    "romeo-and-juliet-west-end-2026/theatrely--unknown.json",
+    "romeo-and-juliet-west-end-2026/amny--matt-windman.json",
+    "romeo-and-juliet-west-end-2026/financialtimes--brendan-lemon.json",
+    "romeo-and-juliet-west-end-2026/london-box-office--camille-leadbeater.json",
+    "romeo-and-juliet-west-end-2026/london-box-office--phil-willmott.json"
   ],
   "failed": [
     "paranormal-activity-west-end-2025/thestage--tim-wicker.json",
     "paranormal-activity-west-end-2025/thestage--tom-wicker.json",
-    "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json"
+    "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
+    "romeo-and-juliet-west-end-2026/ap--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -54,26 +64,36 @@
       "the-devil-wears-prada-west-end-2024/standard--martin-robinson.json",
       "the-devil-wears-prada-west-end-2024/theatre-weekly--greg-stewart.json",
       "romeo-and-juliet-west-end-2026/nytg--gillian-russo.json",
-      "romeo-and-juliet-west-end-2026/nydailynews--joe-dziemianowicz.json"
+      "romeo-and-juliet-west-end-2026/nydailynews--joe-dziemianowicz.json",
+      "romeo-and-juliet-west-end-2026/timeout--adam-feldman.json",
+      "romeo-and-juliet-west-end-2026/timeout--david-cote.json",
+      "romeo-and-juliet-west-end-2026/wsj--terry-teachout.json",
+      "romeo-and-juliet-west-end-2026/theatrely--unknown.json",
+      "romeo-and-juliet-west-end-2026/financialtimes--brendan-lemon.json",
+      "romeo-and-juliet-west-end-2026/london-box-office--camille-leadbeater.json",
+      "romeo-and-juliet-west-end-2026/london-box-office--phil-willmott.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/romeo-and-juliet-west-end-2026/hollywood-reporter--unknown.json",
       "romeo-and-juliet-west-end-2026/hollywood-reporter--unknown.json",
       "data/review-texts/romeo-and-juliet-west-end-2026/newsday--linda-winer.json",
-      "romeo-and-juliet-west-end-2026/newsday--linda-winer.json"
+      "romeo-and-juliet-west-end-2026/newsday--linda-winer.json",
+      "data/review-texts/romeo-and-juliet-west-end-2026/amny--matt-windman.json",
+      "romeo-and-juliet-west-end-2026/amny--matt-windman.json"
     ],
     "directCookies": [],
     "scrapingbee": [
-      "les-miserables-west-end-2021/times-uk--clive-davis.json",
-      "garry-starr-classic-penguins-garrick-west-end-2026/everything-theatre-uk--jess-gonzalez.json",
-      "les-liaisons-dangereuses-west-end-2026/timeout--unknown.json"
+      "paranormal-activity-west-end-2025/lost-in-theatreland--amy-rye.json",
+      "paranormal-activity-west-end-2025/metro-uk--brooke-ivey-johnson.json",
+      "the-devil-wears-prada-west-end-2024/independent--alice-saville.json",
+      "romeo-and-juliet-west-end-2026/cititour--brian-scott-lipton.json"
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/deep-azure-globe-west-end-2026/thestage--unknown.json",
-      "data/review-texts/garry-starr-classic-penguins-garrick-west-end-2026/broadwayworld--franco-milazzo.json",
-      "data/review-texts/les-liaisons-dangereuses-west-end-2026/broadwayworld--michael-dale.json"
+      "data/review-texts/paranormal-activity-west-end-2025/thestage--tim-wicker.json",
+      "data/review-texts/paranormal-activity-west-end-2025/thestage--tom-wicker.json",
+      "data/review-texts/romeo-and-juliet-west-end-2026/ap--mark-kennedy.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
@@ -82,38 +102,27 @@
     ]
   },
   "startTime": "2026-03-09T14:46:28.645Z",
-  "lastProcessed": "romeo-and-juliet-west-end-2026/nydailynews--joe-dziemianowicz.json",
+  "lastProcessed": "romeo-and-juliet-west-end-2026/london-box-office--phil-willmott.json",
   "log": [
     {
-      "t": "2026-03-09T14:47:08.679Z",
+      "t": "2026-03-09T14:51:21.007Z",
       "event": "bb-session",
-      "session": "5273bde1",
-      "url": "https://www.nytimes.com/2026/02/18/theater/dracula-cynthia-erivo.html"
+      "session": "aba3b141",
+      "url": "https://www.thestage.co.uk/reviews/paranormal-activity-review-ambassadors-theatr"
     },
     {
-      "t": "2026-03-09T14:47:09.930Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-09T14:51:31.540Z",
-      "event": "bb-session",
-      "session": "cfdb5e31",
-      "url": "https://www.thestage.co.uk/reviews/2004/the-mousetrap-review-at-st-martins-theat"
-    },
-    {
-      "t": "2026-03-09T14:51:32.850Z",
+      "t": "2026-03-09T14:51:22.241Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     },
     {
-      "t": "2026-03-09T14:53:38.998Z",
+      "t": "2026-03-09T14:53:14.927Z",
       "event": "bb-session",
-      "session": "355a2e0b",
-      "url": "https://www.thestage.co.uk/reviews/the-tempest-review-sam-wanamaker-playhouse-sh"
+      "session": "2174f80b",
+      "url": "https://www.thestage.co.uk/reviews/paranormal-activity-review-ambassadors-theatr"
     },
     {
-      "t": "2026-03-09T14:53:40.313Z",
+      "t": "2026-03-09T14:53:16.208Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     },
@@ -149,6 +158,28 @@
       "t": "2026-03-09T14:57:07.906Z",
       "event": "bb-cookie-inject",
       "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-09T15:01:48.091Z",
+      "event": "bb-session",
+      "session": "a4881ae2",
+      "url": "http://www.amny.com/urbanite-1.812039/theater-review-romeo-and-juliet-2-stars-1."
+    },
+    {
+      "t": "2026-03-09T15:01:49.375Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-09T15:02:19.886Z",
+      "event": "bb-session",
+      "session": "5c527b3b",
+      "url": "https://www.amny.com/entertainment/broadway/review-romeo-and-juliet-gen-z-broadw"
+    },
+    {
+      "t": "2026-03-09T15:02:21.142Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
