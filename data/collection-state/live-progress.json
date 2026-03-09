@@ -1,28 +1,28 @@
 {
-  "updatedAt": "2026-03-09T14:53:15.963Z",
-  "processed": 17,
-  "failed": 3,
-  "successRate": "85.0%",
+  "updatedAt": "2026-03-09T15:01:19.245Z",
+  "processed": 23,
+  "failed": 7,
+  "successRate": "76.7%",
   "tierBreakdown": {
-    "playwright": 14,
+    "playwright": 18,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 2,
+    "archiveToday": 3,
     "archive": 1
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
-      "t": "2026-03-09T14:50:44.206Z",
+      "t": "2026-03-09T14:46:13.433Z",
       "event": "bb-session",
-      "session": "b31b0698",
-      "url": "https://www.thestage.co.uk/long-reviews/moulin-rouge-the-musical-review-piccadil"
+      "session": "8a3ab0b2",
+      "url": "http://www.hollywoodreporter.com/review/cyrano-de-bergerac-broadway-theater-revi"
     },
     {
-      "t": "2026-03-09T14:50:45.328Z",
+      "t": "2026-03-09T14:46:14.724Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     },
@@ -58,6 +58,28 @@
       "t": "2026-03-09T14:52:17.834Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-09T14:57:26.913Z",
+      "event": "bb-session",
+      "session": "055f4e14",
+      "url": "http://www.northjersey.com/arts_entertainment/theater/173838871_Broadway_review_"
+    },
+    {
+      "t": "2026-03-09T14:57:28.129Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-09T15:00:40.271Z",
+      "event": "bb-session",
+      "session": "3c930a1c",
+      "url": "https://www.thestage.co.uk/reviews/burlesque-review-savoy-theatre-london-christi"
+    },
+    {
+      "t": "2026-03-09T15:00:41.535Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }

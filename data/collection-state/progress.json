@@ -16,12 +16,22 @@
     "burlesque-west-end-2026/london-theatre--anya-ryan.json",
     "burlesque-west-end-2026/radio-times--joanna-magill.json",
     "burlesque-west-end-2026/telegraph--claire-allfree.json",
-    "burlesque-west-end-2026/the-express--stefan-kryiazis.json"
+    "burlesque-west-end-2026/the-express--stefan-kryiazis.json",
+    "cyrano-de-bergerac-west-end-2026/slantmagazine--dan-rubins.json",
+    "death-note-the-musical-west-end-2026/london-box-office--stuart-king.json",
+    "burlesque-west-end-2026/city-am--adam-bloodworth.json",
+    "burlesque-west-end-2026/standard--nick-curtis.json",
+    "cyrano-de-bergerac-west-end-2026/i-paper--sam-marlowe.json",
+    "cyrano-de-bergerac-west-end-2026/independent--paul-taylor.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/ew--tanner-stransky.json",
     "cyrano-de-bergerac-west-end-2026/wsj--terry-teachout.json",
-    "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json"
+    "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
+    "cyrano-de-bergerac-west-end-2026/backstage--erik-haagensen.json",
+    "cyrano-de-bergerac-west-end-2026/northjerseycom--robert-feldberg.json",
+    "cyrano-de-bergerac-west-end-2026/standard--fiona-mountford.json",
+    "burlesque-west-end-2026/thestage--paul-vale.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -39,34 +49,46 @@
       "burlesque-west-end-2026/london-theatre--anya-ryan.json",
       "burlesque-west-end-2026/radio-times--joanna-magill.json",
       "burlesque-west-end-2026/telegraph--claire-allfree.json",
-      "burlesque-west-end-2026/the-express--stefan-kryiazis.json"
+      "burlesque-west-end-2026/the-express--stefan-kryiazis.json",
+      "cyrano-de-bergerac-west-end-2026/slantmagazine--dan-rubins.json",
+      "death-note-the-musical-west-end-2026/london-box-office--stuart-king.json",
+      "burlesque-west-end-2026/standard--nick-curtis.json",
+      "cyrano-de-bergerac-west-end-2026/i-paper--sam-marlowe.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/cyrano-de-bergerac-west-end-2026/hollywood-reporter--david-rooney.json",
+      "cyrano-de-bergerac-west-end-2026/hollywood-reporter--david-rooney.json",
+      "data/review-texts/cyrano-de-bergerac-west-end-2026/newsday--linda-winer.json",
+      "cyrano-de-bergerac-west-end-2026/newsday--linda-winer.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
-      "my-neighbour-totoro-west-end-2025/independent--annabel-nugent.json"
+      "cyrano-de-bergerac-west-end-2026/ew--nick-romano.json",
+      "cyrano-de-bergerac-west-end-2026/backstage--erik-haagensen.json",
+      "cyrano-de-bergerac-west-end-2026/independent--paul-taylor.json"
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/moulin-rouge-the-musical-west-end-2021/thestage--tim-bano.json",
-      "data/review-texts/moulin-rouge-the-musical-west-end-2021/usatoday--brandy-mcdonnell.json"
+      "data/review-texts/cyrano-de-bergerac-west-end-2026/wsj--terry-teachout.json",
+      "data/review-texts/cyrano-de-bergerac-west-end-2026/northjerseycom--robert-feldberg.json",
+      "data/review-texts/burlesque-west-end-2026/thestage--paul-vale.json"
     ],
     "archive": [
-      "moulin-rouge-the-musical-west-end-2021/independent--ava-wong-davies.json"
+      "burlesque-west-end-2026/city-am--adam-bloodworth.json"
     ]
   },
   "startTime": "2026-03-09T14:46:12.396Z",
-  "lastProcessed": "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
+  "lastProcessed": "cyrano-de-bergerac-west-end-2026/independent--paul-taylor.json",
   "log": [
     {
-      "t": "2026-03-09T14:50:44.206Z",
+      "t": "2026-03-09T14:46:13.433Z",
       "event": "bb-session",
-      "session": "b31b0698",
-      "url": "https://www.thestage.co.uk/long-reviews/moulin-rouge-the-musical-review-piccadil"
+      "session": "8a3ab0b2",
+      "url": "http://www.hollywoodreporter.com/review/cyrano-de-bergerac-broadway-theater-revi"
     },
     {
-      "t": "2026-03-09T14:50:45.328Z",
+      "t": "2026-03-09T14:46:14.724Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     },
@@ -102,6 +124,28 @@
       "t": "2026-03-09T14:52:17.834Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-09T14:57:26.913Z",
+      "event": "bb-session",
+      "session": "055f4e14",
+      "url": "http://www.northjersey.com/arts_entertainment/theater/173838871_Broadway_review_"
+    },
+    {
+      "t": "2026-03-09T14:57:28.129Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-09T15:00:40.271Z",
+      "event": "bb-session",
+      "session": "3c930a1c",
+      "url": "https://www.thestage.co.uk/reviews/burlesque-review-savoy-theatre-london-christi"
+    },
+    {
+      "t": "2026-03-09T15:00:41.535Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
