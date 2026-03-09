@@ -9,13 +9,14 @@ import { featureFlags } from '@/config/feature-flags';
 
 interface ShowPageBookmarkProps {
   showId: string;
-  /** 'sm' for card thumbnails, 'md' for show page poster (default) */
-  size?: 'sm' | 'md';
+  /** 'sm' for card thumbnails, 'md' for show page poster (default), 'compact' for v2 mobile header */
+  size?: 'sm' | 'md' | 'compact';
 }
 
 const SIZES = {
   sm: { button: 'w-6 h-6 top-1 right-1', icon: 'w-3 h-3' },
   md: { button: 'w-8 h-8 top-2 right-2', icon: 'w-4 h-4' },
+  compact: { button: 'w-6 h-6 top-1 right-1', icon: 'w-3 h-3' },
 };
 
 /**
@@ -74,8 +75,8 @@ export default function ShowPageBookmark({ showId, size = 'md' }: ShowPageBookma
       disabled={loading}
       className={`absolute ${s.button} z-10 flex items-center justify-center rounded-full transition-all ${
         watched
-          ? 'bg-black/60 text-amber-400 scale-100'
-          : `bg-black/40 text-white/70 hover:text-white hover:bg-black/60${size === 'sm' ? ' sm:opacity-0 sm:group-hover:opacity-100' : ''}`
+          ? `${size === 'compact' ? 'bg-black/40' : 'bg-black/50'} text-amber-400 scale-100`
+          : `${size === 'compact' ? 'bg-black/15 text-white/30' : 'bg-black/25 text-white/50'} hover:text-white hover:bg-black/50${size === 'sm' ? ' sm:opacity-0 sm:group-hover:opacity-100' : ''}`
       } ${loading ? 'opacity-50' : ''}`}
       aria-label={watched ? 'Remove from watchlist' : 'Add to watchlist'}
     >

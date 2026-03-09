@@ -153,7 +153,7 @@ function validateReviewFile(filePath, validOutlets, seenReviews) {
   }
 
   // Skip files excluded from rebuild (duplicates, wrong production, etc.)
-  if (data.duplicateOf || data.wrongProduction || data.wrongShow || data.wrongAttribution || data.isRoundupArticle) {
+  if (data.duplicateOf || data.wrongProduction || data.wrongShow || data.wrongUrl || data.wrongAttribution || data.isRoundupArticle) {
     return { errors, warnings, skipped: true };
   }
 

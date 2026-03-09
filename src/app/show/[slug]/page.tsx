@@ -298,7 +298,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             <div className="flex gap-4">
               <div className="flex-shrink-0 w-28">
                 <div className="relative aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
-                  <ShowPageBookmark showId={show.id} />
+                  <ShowPageBookmark showId={show.id} size="compact" />
                   <ShowImage
                     sources={[
                       show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'poster') : null,
@@ -322,36 +322,36 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               </div>
               <div className="flex-1 min-w-0">
                 {/* Pills */}
-                <div className="flex flex-wrap gap-1.5 mb-1.5">
+                <div className="flex flex-wrap gap-1.5 mb-2">
                   {show.category && show.category !== 'broadway' && (
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[9px] leading-none font-semibold uppercase tracking-wide ${show.category === 'west-end' ? 'bg-teal-500/15 text-teal-400 border border-teal-500/30' : 'bg-indigo-500/15 text-indigo-400 border border-indigo-500/30'}`}>
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] leading-none font-semibold uppercase tracking-wide ${show.category === 'west-end' ? 'bg-teal-500/15 text-teal-400 border border-teal-500/30' : 'bg-indigo-500/15 text-indigo-400 border border-indigo-500/30'}`}>
                       {show.category === 'west-end' ? 'West End' : 'Off-Bway'}
                     </span>
                   )}
-                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[9px] leading-none font-semibold uppercase tracking-wide ${show.type === 'musical' ? 'bg-purple-500/15 text-purple-400 border border-purple-500/30' : 'bg-blue-500/15 text-blue-400 border border-blue-500/30'}`}>
+                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] leading-none font-semibold uppercase tracking-wide ${show.type === 'musical' ? 'bg-purple-500/15 text-purple-400 border border-purple-500/30' : 'bg-blue-500/15 text-blue-400 border border-blue-500/30'}`}>
                     {show.type === 'musical' ? 'Musical' : 'Play'}
                   </span>
                   {show.isRevival && (
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] leading-none font-semibold uppercase tracking-wide bg-gray-500/15 text-gray-400 border border-gray-500/30">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] leading-none font-semibold uppercase tracking-wide bg-gray-500/15 text-gray-400 border border-gray-500/30">
                       Revival
                     </span>
                   )}
                   {show.limitedRun && (
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] leading-none font-semibold uppercase tracking-wide bg-rose-500/15 text-rose-400 border border-rose-500/30">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] leading-none font-semibold uppercase tracking-wide bg-rose-500/15 text-rose-400 border border-rose-500/30">
                       Limited
                     </span>
                   )}
                 </div>
                 {/* Title */}
-                <h1 className="text-xl font-extrabold text-white tracking-tight leading-tight mb-1.5">
+                <h1 className="text-2xl font-extrabold text-white tracking-tight leading-tight mb-2">
                   {show.title}
                 </h1>
                 {/* Meta — stacked for clarity */}
-                <div className="text-gray-400 text-xs space-y-0.5 leading-relaxed">
+                <div className="text-gray-400 text-sm space-y-0.5 leading-relaxed">
                   {isWestEnd || isOffBroadway ? (
-                    <div className="text-gray-300">{show.venue}</div>
+                    <div className="text-gray-300 font-medium">{show.venue}</div>
                   ) : (
-                    <div><Link href={`/theater/${slugify(show.venue)}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link></div>
+                    <div><Link href={`/theater/${slugify(show.venue)}`} className="text-gray-300 font-medium hover:text-brand transition-colors">{show.venue}</Link></div>
                   )}
                   {show.runtime && <div>{show.runtime}</div>}
                   {show.status === 'previews' || show.status === 'upcoming' ? (
@@ -370,45 +370,46 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               </div>
             </div>
 
-            {/* Row 2: Dual Score Boxes */}
-            <div className="flex gap-2 mt-4 pt-4 border-t border-white/5">
-              {/* Critic Score */}
-              <a href="#critic-reviews" className="flex items-start gap-2 flex-1 min-w-0">
-                <div className={`w-13 h-13 rounded-lg flex items-center justify-center flex-shrink-0 ${scoreColorClass}`} style={{ width: '3.25rem', height: '3.25rem' }}>
-                  <span className="text-lg font-extrabold">
-                    {showTBD ? 'TBD' : roundedScore}
-                  </span>
-                </div>
-                <div className="pt-0.5 min-w-0">
-                  {showTBD ? (
-                    <div className="text-xs font-bold text-gray-400">Awaiting Reviews</div>
-                  ) : sentiment && (
-                    <div className={`text-xs font-bold ${sentiment.colorClass}`}>{sentiment.label}</div>
-                  )}
-                  <div className="text-[10px] text-gray-500 leading-snug">
-                    {reviewCount > 0 ? `${reviewCount} critic ${reviewCount === 1 ? 'review' : 'reviews'}` : 'No reviews yet'}
+            {/* Row 2: Dual Score Boxes + Rating + Links — single separator */}
+            <div className="mt-4 pt-4 border-t border-white/10 space-y-4">
+              {/* Score boxes */}
+              <div className="flex gap-3">
+                {/* Critic Score */}
+                <a href="#critic-reviews" className="flex items-center gap-2 flex-1 min-w-0">
+                  <div className={`w-14 h-14 rounded-lg flex items-center justify-center flex-shrink-0 ${scoreColorClass}`}>
+                    <span className="text-2xl font-extrabold">
+                      {showTBD ? 'TBD' : roundedScore}
+                    </span>
                   </div>
-                </div>
-              </a>
-              {/* Audience Score */}
-              {hasAudience && audienceGrade && (
-                <a href="#audience" className="flex items-start gap-2 flex-1 min-w-0">
-                  <div className="rounded-lg flex items-center justify-center flex-shrink-0 text-base font-extrabold" style={{ width: '3.25rem', height: '3.25rem', background: audienceGrade.color, color: audienceGrade.textColor }}>
-                    {audienceGrade.grade}
-                  </div>
-                  <div className="pt-0.5 min-w-0">
-                    <div className="text-xs font-bold" style={{ color: audienceGrade.color }}>{audienceGrade.label}</div>
-                    <div className="text-[10px] text-gray-500 leading-snug">
-                      {totalAudienceCount.toLocaleString()} audience reviews
+                  <div className="min-w-0">
+                    {showTBD ? (
+                      <div className="text-sm font-bold text-gray-400">Awaiting Reviews</div>
+                    ) : sentiment && (
+                      <div className={`text-sm font-bold truncate ${sentiment.colorClass}`}>{sentiment.label}</div>
+                    )}
+                    <div className="text-xs text-gray-500 leading-snug truncate">
+                      {reviewCount > 0 ? `${reviewCount} critic ${reviewCount === 1 ? 'review' : 'reviews'}` : 'No reviews yet'}
                     </div>
                   </div>
                 </a>
-              )}
-            </div>
+                {/* Audience Score */}
+                {hasAudience && audienceGrade && (
+                  <a href="#audience" className="flex items-center gap-2 flex-1 min-w-0">
+                    <div className="w-14 h-14 rounded-lg flex items-center justify-center flex-shrink-0 text-xl font-extrabold" style={{ background: audienceGrade.color, color: audienceGrade.textColor }}>
+                      {audienceGrade.grade}
+                    </div>
+                    <div className="min-w-0">
+                      <div className="text-sm font-bold truncate" style={{ color: audienceGrade.color }}>{audienceGrade.label}</div>
+                      <div className="text-xs text-gray-500 leading-snug truncate">
+                        {totalAudienceCount.toLocaleString()} audience reviews
+                      </div>
+                    </div>
+                  </a>
+                )}
+              </div>
 
-            {/* Row 3: User Rating + Watchlist */}
-            <div className="mt-4 pt-4 border-t border-white/5">
-              <div className="flex items-center justify-between gap-3">
+              {/* User Rating + Watchlist — aligned on same baseline */}
+              <div className="flex items-end justify-between">
                 <div className="flex-1 min-w-0">
                   <ShowPageRatingConnected
                     showId={show.id}
@@ -417,62 +418,59 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                     closingDate={show.closingDate}
                   />
                 </div>
-                <div className="flex items-center gap-2 flex-shrink-0">
-                  <ShowPageAddToListButton showId={show.id} />
-                  <ShowPageWatchlistButton showId={show.id} />
-                </div>
+                <ShowPageWatchlistButton showId={show.id} />
               </div>
-            </div>
 
-            {/* Row 4: Action Links */}
-            <div className="flex flex-wrap gap-2 mt-4">
-              {show.officialUrl && (
-                <TicketLink
-                  showName={show.title}
-                  showId={show.id}
-                  platform="Official Site"
-                  url={show.officialUrl}
-                  pageType="show"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10"
-                >
-                  <GlobeIcon />
-                  Official Site
-                </TicketLink>
-              )}
-              {show.ticketLinks && show.ticketLinks.length > 0 && show.status !== 'closed' && show.ticketLinks.map((link, i) => (
-                <TicketLink
-                  key={i}
-                  showName={show.title}
-                  showId={show.id}
-                  platform={link.platform}
-                  url={link.url}
-                  pageType="show"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10"
-                >
-                  <TicketIcon />
-                  {link.platform}
-                </TicketLink>
-              ))}
-              {show.trailerUrl && (
-                <a
-                  href={show.trailerUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10"
-                >
-                  <PlayIcon />
-                  Trailer
-                </a>
-              )}
-              {featureFlags.discountTickets && lotteryRush && show.status !== 'closed' && (
-                <a
-                  href="#discount-tickets"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 hover:text-emerald-300 text-xs leading-none font-medium transition-colors border border-emerald-500/30"
-                >
-                  <TicketIcon />
-                  {lotteryRush.lottery ? `$${lotteryRush.lottery.price} Lottery` : lotteryRush.rush ? `$${lotteryRush.rush.price} Rush` : 'Discount Tickets'}
-                </a>
-              )}
+              {/* Action Links — single row, horizontal scroll */}
+              <div className="flex gap-2 overflow-x-auto flex-nowrap -mx-5 px-5 pb-1 scrollbar-hide">
+                {show.officialUrl && (
+                  <TicketLink
+                    showName={show.title}
+                    showId={show.id}
+                    platform="Official Site"
+                    url={show.officialUrl}
+                    pageType="show"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10 whitespace-nowrap flex-shrink-0"
+                  >
+                    <GlobeIcon />
+                    Official Site
+                  </TicketLink>
+                )}
+                {show.ticketLinks && show.ticketLinks.length > 0 && show.status !== 'closed' && show.ticketLinks.map((link, i) => (
+                  <TicketLink
+                    key={i}
+                    showName={show.title}
+                    showId={show.id}
+                    platform={link.platform}
+                    url={link.url}
+                    pageType="show"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10 whitespace-nowrap flex-shrink-0"
+                  >
+                    <TicketIcon />
+                    {link.platform}
+                  </TicketLink>
+                ))}
+                {show.trailerUrl && (
+                  <a
+                    href={show.trailerUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10 whitespace-nowrap flex-shrink-0"
+                  >
+                    <PlayIcon />
+                    Trailer
+                  </a>
+                )}
+                {featureFlags.discountTickets && lotteryRush && show.status !== 'closed' && (
+                  <a
+                    href="#discount-tickets"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 hover:text-emerald-300 text-xs leading-none font-medium transition-colors border border-emerald-500/30 whitespace-nowrap flex-shrink-0"
+                  >
+                    <TicketIcon />
+                    {lotteryRush.lottery ? `$${lotteryRush.lottery.price} Lottery` : lotteryRush.rush ? `$${lotteryRush.rush.price} Rush` : 'Discount Tickets'}
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         )}
@@ -872,6 +870,48 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               <h2 className="text-lg font-bold text-white">Critic Reviews</h2>
               <span className="text-sm text-gray-400 font-medium">{show.criticScore.reviewCount} {show.criticScore.reviewCount === 1 ? 'review' : 'reviews'}</span>
             </div>
+
+            {/* Breakdown bar — shown when redesign moves it out of the header card */}
+            {featureFlags.showPageRedesign && (() => {
+              const revs = show.criticScore?.reviews || [];
+              const pos = revs.filter(r => r.reviewScore >= 65).length;
+              const mix = revs.filter(r => r.reviewScore >= 55 && r.reviewScore < 65).length;
+              const neg = revs.filter(r => r.reviewScore < 55).length;
+              const tot = revs.length;
+              if (tot === 0) return null;
+              const posPct = Math.round((pos / tot) * 100);
+              const mixPct = Math.round((mix / tot) * 100);
+              const negPct = 100 - posPct - mixPct;
+              return (
+                <div className="sm:hidden space-y-1.5 mb-4">
+                  <div className="h-2.5 rounded-full overflow-hidden flex bg-surface-overlay">
+                    {posPct > 0 && <div className="bg-score-great h-full" style={{ width: `${posPct}%` }} />}
+                    {mixPct > 0 && <div className="bg-score-tepid h-full" style={{ width: `${mixPct}%` }} />}
+                    {negPct > 0 && <div className="bg-score-skip h-full" style={{ width: `${negPct}%` }} />}
+                  </div>
+                  <div className="flex items-center gap-3 text-xs">
+                    {pos > 0 && (
+                      <div className="flex items-center gap-1">
+                        <div className="w-2.5 h-2.5 rounded-sm bg-score-great" />
+                        <span className="text-gray-400">{pos} Positive</span>
+                      </div>
+                    )}
+                    {mix > 0 && (
+                      <div className="flex items-center gap-1">
+                        <div className="w-2.5 h-2.5 rounded-sm bg-score-tepid" />
+                        <span className="text-gray-400">{mix} Mixed</span>
+                      </div>
+                    )}
+                    {neg > 0 && (
+                      <div className="flex items-center gap-1">
+                        <div className="w-2.5 h-2.5 rounded-sm bg-score-skip" />
+                        <span className="text-gray-400">{neg} Negative</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })()}
 
             <ReviewsList reviews={show.criticScore.reviews.map(r => ({
               ...r,
