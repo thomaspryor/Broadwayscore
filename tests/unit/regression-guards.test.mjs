@@ -75,18 +75,11 @@ const CRITICAL_PATTERNS = [
       'titleFamilies must iterate ALL shows (forEach), not filter to Broadway-only. ' +
       'WE/OB shows need title families for wrongProduction classification.',
   },
-  // EXCERPT_FIELDS must be the single source of truth for excerpt field names.
-  // Adding a new excerpt source only requires updating this one list.
+  // excerpt-fields.js is the single source of truth for excerpt field names.
+  // All consumers (text-quality.js, is-scoreable, index.ts, input-builder.ts,
+  // merge-slug-directories.js, consolidate-duplicate-reviews.js) must import from it.
   {
-    file: 'scripts/lib/text-quality.js',
-    pattern: 'const EXCERPT_FIELDS',
-    description:
-      'EXCERPT_FIELDS must be defined as the canonical excerpt fields list. ' +
-      'input-builder.ts and other consumers import this — do not hardcode excerpt lists elsewhere.',
-  },
-  // lboRoundupExcerpt must be in the canonical list.
-  {
-    file: 'scripts/lib/text-quality.js',
+    file: 'scripts/lib/excerpt-fields.js',
     pattern: 'lboRoundupExcerpt',
     description:
       'lboRoundupExcerpt must be in EXCERPT_FIELDS. WE reviews from LBO roundups ' +

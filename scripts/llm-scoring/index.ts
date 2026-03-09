@@ -63,7 +63,7 @@ import { ReviewTextFile, ScoringPipelineOptions, PipelineRunSummary } from './ty
 // Import content quality module for garbage detection
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { assessTextQuality, detectGarbageFromReasoning } = require('../lib/content-quality.js');
-const { EXCERPT_FIELDS } = require('../lib/text-quality.js');
+const { EXCERPT_FIELDS, hasExcerpt: hasAnyExcerptField } = require('../lib/excerpt-fields');
 
 import { detectMultiShow } from './multi-show-detector';
 import { trimMultiShowText } from './trim-multi-show';
@@ -804,7 +804,7 @@ async function main(): Promise<void> {
       // Modern scores with textSource provenance: only rescore if scored on excerpt
       if (d.llmMetadata?.textSource?.type === 'fullText') return false;
       // Old scores without provenance: require excerpt field as indicator
-      return EXCERPT_FIELDS.some((ef: {field: string}) => !!d[ef.field]);
+      return hasAnyExcerptField(d);
     });
     console.log(`Filtering to stale-scored reviews (fullText + old excerpt-based score): ${filesToProcess.length} reviews\n`);
   } else if (options.upgradeEnsemble) {
@@ -904,8 +904,8 @@ async function main(): Promise<void> {
     }
     // Build deduped excerpt string from all sources (uses canonical EXCERPT_FIELDS)
     const excerpts: string[] = [];
-    for (const ef of EXCERPT_FIELDS) {
-      const val = data[ef.field];
+    for (const field of EXCERPT_FIELDS) {
+      const val = data[field];
       if (val && !excerpts.some(e => e === val)) {
         excerpts.push(val);
       }
@@ -1053,8 +1053,8 @@ async function main(): Promise<void> {
 
       if (qualityResult.quality === 'garbage' && qualityResult.confidence === 'high') {
         // Check if we have good excerpts to fall back to
-        const hasGoodExcerpts = EXCERPT_FIELDS.some((ef: {field: string}) => {
-          const val = (reviewFile as any)[ef.field];
+        const hasGoodExcerpts = EXCERPT_FIELDS.some((field: string) => {
+          const val = (reviewFile as any)[field];
           return val && val.length >= 50;
         });
 

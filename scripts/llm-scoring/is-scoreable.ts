@@ -7,12 +7,8 @@
  * scripts, and workflow counting steps.
  */
 
-// Canonical excerpt field list — single source of truth in text-quality.js
-const { EXCERPT_FIELDS } = require('../lib/text-quality.js');
-
-function hasAnyExcerpt(data: Record<string, any>): boolean {
-  return EXCERPT_FIELDS.some((ef: {field: string}) => !!data[ef.field]);
-}
+// Canonical excerpt field list — single source of truth in excerpt-fields.js
+const { hasExcerpt: hasAnyExcerpt } = require('../lib/excerpt-fields');
 
 export function isScoreable(data: Record<string, any>): boolean {
   if (data.duplicateOf || data.wrongShow || data.wrongProduction || data.wrongAttribution || data.contentTier === 'invalid') return false;

@@ -60,8 +60,10 @@ const MERGE_SINGLE_FIELDS = [
   'llmScore', 'llmMetadata', 'ensembleData',
   'contentVerification', 'textQuality', 'textStatus', 'archivePath',
 ];
-const EXCERPT_FIELDS = [
-  'dtliExcerpt', 'bwwExcerpt', 'showScoreExcerpt', 'playbillExcerpt',
+const { EXCERPT_FIELDS: _CANONICAL_EXCERPTS } = require('./lib/excerpt-fields');
+const EXCERPT_AND_AGG_FIELDS = [
+  ..._CANONICAL_EXCERPTS,
+  'playbillExcerpt',  // legacy field
   'dtliThumb', 'bwwThumb', 'dtliUrl', 'bwwRoundupUrl',
 ];
 
@@ -69,7 +71,7 @@ function mergeInto(winner, donor) {
   for (const field of MERGE_SINGLE_FIELDS) {
     if (winner[field] == null && donor[field] != null) winner[field] = donor[field];
   }
-  for (const field of EXCERPT_FIELDS) {
+  for (const field of EXCERPT_AND_AGG_FIELDS) {
     if (!winner[field] && donor[field]) winner[field] = donor[field];
   }
   if (donor.sources && Array.isArray(donor.sources)) {

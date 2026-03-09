@@ -70,8 +70,10 @@ const MERGE_SINGLE_FIELDS = [
 ];
 
 // Source-specific excerpt fields — always keep from both sides
-const EXCERPT_FIELDS = [
-  'dtliExcerpt', 'bwwExcerpt', 'showScoreExcerpt', 'playbillExcerpt',
+const { EXCERPT_FIELDS: _CANONICAL_EXCERPTS } = require('./lib/excerpt-fields');
+const EXCERPT_MERGE_FIELDS = [
+  ..._CANONICAL_EXCERPTS,
+  'playbillExcerpt',  // legacy field
   'dtliThumb', 'bwwThumb', 'dtliUrl', 'bwwRoundupUrl',
 ];
 
@@ -87,7 +89,7 @@ function mergeInto(winner, donor) {
   }
 
   // Always merge excerpt fields (these come from different sources)
-  for (const field of EXCERPT_FIELDS) {
+  for (const field of EXCERPT_MERGE_FIELDS) {
     if (!winner[field] && donor[field]) {
       winner[field] = donor[field];
     }

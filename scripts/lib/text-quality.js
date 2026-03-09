@@ -5,18 +5,19 @@
  * Does NOT use character count as a proxy for quality.
  */
 
-/**
- * Canonical list of excerpt fields — SINGLE SOURCE OF TRUTH.
- * When adding a new aggregator/excerpt source, add it here.
- * Used by: getBestTextForScoring(), input-builder.ts, is-scoreable.ts, index.ts
- */
-const EXCERPT_FIELDS = [
-  { field: 'showScoreExcerpt', name: 'Show Score' },
-  { field: 'dtliExcerpt', name: 'DTLI' },
-  { field: 'bwwExcerpt', name: 'BWW' },
-  { field: 'nycTheatreExcerpt', name: 'NYC Theatre' },
-  { field: 'lboRoundupExcerpt', name: 'LBO Roundup' },
-];
+// Excerpt field names — imported from excerpt-fields.js (single source of truth).
+// The objects add display names for use in getBestTextForScoring().
+const { EXCERPT_FIELDS: _EXCERPT_FIELD_NAMES } = require('./excerpt-fields');
+const EXCERPT_FIELDS = _EXCERPT_FIELD_NAMES.map(field => ({
+  field,
+  name: {
+    showScoreExcerpt: 'Show Score',
+    dtliExcerpt: 'DTLI',
+    bwwExcerpt: 'BWW',
+    nycTheatreExcerpt: 'NYC Theatre',
+    lboRoundupExcerpt: 'LBO Roundup',
+  }[field] || field,
+}));
 
 // Verdict language patterns - indicates the critic's final assessment
 const VERDICT_PATTERNS = [
