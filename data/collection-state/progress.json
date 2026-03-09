@@ -7,11 +7,21 @@
     "cyrano-de-bergerac-west-end-2026/theatrely--juan-a-ramirez.json",
     "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--kit-benjamin.json",
     "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--marian-pashley.json",
-    "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--stuart-king.json"
+    "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--stuart-king.json",
+    "as-you-like-it-globe-west-end-2026/london-box-office--nicky-allpress.json",
+    "as-you-like-it-globe-west-end-2026/london-box-office--phil-willmott.json",
+    "as-you-like-it-globe-west-end-2026/london-box-office--stuart-king.json",
+    "blood-of-my-blood-west-end-2026/london-box-office--stuart-king.json",
+    "burlesque-west-end-2026/independent--alice-saville.json",
+    "burlesque-west-end-2026/london-theatre--anya-ryan.json",
+    "burlesque-west-end-2026/radio-times--joanna-magill.json",
+    "burlesque-west-end-2026/telegraph--claire-allfree.json",
+    "burlesque-west-end-2026/the-express--stefan-kryiazis.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/ew--tanner-stransky.json",
-    "cyrano-de-bergerac-west-end-2026/wsj--terry-teachout.json"
+    "cyrano-de-bergerac-west-end-2026/wsj--terry-teachout.json",
+    "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -20,7 +30,16 @@
       "cyrano-de-bergerac-west-end-2026/theatrely--juan-a-ramirez.json",
       "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--kit-benjamin.json",
       "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--marian-pashley.json",
-      "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--stuart-king.json"
+      "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--stuart-king.json",
+      "as-you-like-it-globe-west-end-2026/london-box-office--nicky-allpress.json",
+      "as-you-like-it-globe-west-end-2026/london-box-office--phil-willmott.json",
+      "as-you-like-it-globe-west-end-2026/london-box-office--stuart-king.json",
+      "blood-of-my-blood-west-end-2026/london-box-office--stuart-king.json",
+      "burlesque-west-end-2026/independent--alice-saville.json",
+      "burlesque-west-end-2026/london-theatre--anya-ryan.json",
+      "burlesque-west-end-2026/radio-times--joanna-magill.json",
+      "burlesque-west-end-2026/telegraph--claire-allfree.json",
+      "burlesque-west-end-2026/the-express--stefan-kryiazis.json"
     ],
     "amp": [],
     "browserbase": [
@@ -40,7 +59,7 @@
     "archive": []
   },
   "startTime": "2026-03-09T14:46:12.396Z",
-  "lastProcessed": "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--stuart-king.json",
+  "lastProcessed": "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
   "log": [
     {
       "t": "2026-03-09T14:46:13.433Z",
@@ -74,6 +93,17 @@
       "t": "2026-03-09T14:48:58.901Z",
       "event": "bb-cookie-inject",
       "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-09T14:52:16.550Z",
+      "event": "bb-session",
+      "session": "8a5cb5ec",
+      "url": "http://www.amny.com/urbanite-1.812039/theater-review-cyrano-de-bergerac-2-stars-"
+    },
+    {
+      "t": "2026-03-09T14:52:17.834Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
