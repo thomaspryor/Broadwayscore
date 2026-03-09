@@ -39,9 +39,12 @@ const outletRegistry = fs.existsSync(outletRegistryPath)
   : { outlets: {} };
 const outletRegionMap = {};
 for (const [id, info] of Object.entries(outletRegistry.outlets || {})) {
-  if (info.region) outletRegionMap[id] = info.region;
-  if (info.aliases && info.region) {
-    for (const alias of info.aliases) outletRegionMap[alias.toLowerCase()] = info.region;
+  const region = info.region || (info.market === 'west-end' ? 'london' : null);
+  if (region) {
+    outletRegionMap[id] = region;
+    if (info.aliases) {
+      for (const alias of info.aliases) outletRegionMap[alias.toLowerCase()] = region;
+    }
   }
 }
 // Outlets that genuinely cover BOTH Broadway and West End markets.
