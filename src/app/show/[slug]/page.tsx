@@ -378,7 +378,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               {/* Score boxes */}
               <div className="flex gap-3">
                 {/* Critic Score */}
-                <a href="#critic-reviews" className="flex items-center gap-2 flex-[1.5] min-w-0">
+                <a href="#critic-reviews" className="flex items-center gap-2 flex-1 min-w-0">
                   <div className={`w-14 h-14 rounded-lg flex items-center justify-center flex-shrink-0 ${scoreColorClass}`}>
                     <span className="text-2xl font-extrabold">
                       {showTBD ? 'TBD' : roundedScore}
