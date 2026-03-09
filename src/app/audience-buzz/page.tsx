@@ -11,13 +11,13 @@ import { featureFlags } from '@/config/feature-flags';
 
 export const metadata: Metadata = {
   title: 'Broadway Audience Scorecard - What Real Theatergoers Think',
-  description: 'AudienceGrade ratings for Broadway shows from Show Score, Mezzanine, and Reddit. See which shows audiences love, like, or loathe based on real reviews.',
+  description: 'AudienceGrade ratings for Broadway shows from Show Score, Mezzanine, Theatr, and Reddit. See which shows audiences love, like, or loathe based on real reviews.',
   alternates: {
     canonical: `${BASE_URL}/audience-buzz`,
   },
   openGraph: {
     title: 'Broadway Audience Scorecard - Real Broadway Audience Ratings',
-    description: 'What do audiences really think? Combined AudienceGrade ratings from Show Score, Mezzanine, and Reddit for every Broadway show.',
+    description: 'What do audiences really think? Combined AudienceGrade ratings from Show Score, Mezzanine, Theatr, and Reddit for every Broadway show.',
     url: `${BASE_URL}/audience-buzz`,
     type: 'article',
   },
@@ -33,7 +33,7 @@ const faqSchema = {
       name: 'What is AudienceGrade?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'AudienceGrade is our aggregated audience letter grade combining ratings from Show Score, Mezzanine, and Reddit r/Broadway discussions. It represents what real theatergoers think, separate from professional critic reviews.',
+        text: 'AudienceGrade is our aggregated audience letter grade combining ratings from Show Score, Mezzanine, Theatr, and Reddit r/Broadway discussions. It represents what real theatergoers think, separate from professional critic reviews.',
       },
     },
     {
@@ -41,7 +41,7 @@ const faqSchema = {
       name: 'How is the AudienceGrade calculated?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'We combine three sources — Show Score, Mezzanine, and Reddit — weighted proportionally by their number of reviews. More reviews means more weight. No single source can account for more than 80% of the total. Reddit requires a minimum of 50 classified comments to be included.',
+        text: 'We combine four sources — Show Score, Mezzanine, Theatr, and Reddit — weighted proportionally by their number of reviews. More reviews means more weight. No single source can account for more than 80% of the total. Reddit requires a minimum of 50 classified comments to be included.',
       },
     },
     {
@@ -133,7 +133,7 @@ export default function AudienceBuzzPage() {
         <div className="mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-white">Broadway Audience Scorecard</h1>
           <p className="text-gray-400 mt-2">
-            What real theatergoers think. Combined AudienceGrade ratings from Show Score, Mezzanine, and Reddit.
+            What real theatergoers think. Combined AudienceGrade ratings from Show Score, Mezzanine, Theatr, and Reddit.
           </p>
           <p className="text-sm text-gray-500 mt-1">
             {showsWithBuzz.length} shows · {totalReviews.toLocaleString()}+ audience reviews · Updated {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
@@ -144,9 +144,9 @@ export default function AudienceBuzzPage() {
         <div className="card p-5 mb-8 bg-gradient-to-r from-red-500/5 to-emerald-500/5 border-white/10">
           <h2 className="font-bold text-white mb-2">How AudienceGrade Works</h2>
           <p className="text-sm text-gray-400 mb-3">
-            We combine three audience sources into a single AudienceGrade letter grade. Each source is weighted proportionally by its number of reviews — more reviews means more influence. No single source can exceed 80% of the total weight.
+            We combine four audience sources into a single AudienceGrade letter grade. Each source is weighted proportionally by its number of reviews — more reviews means more influence. No single source can exceed 80% of the total weight.
           </p>
-          <div className="grid sm:grid-cols-3 gap-4 text-sm text-gray-400">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm text-gray-400">
             <div>
               <h3 className="font-semibold text-white mb-1">Show Score</h3>
               <p>Audience reviews with detailed 0-100 scores. Often the largest sample size.</p>
@@ -154,6 +154,10 @@ export default function AudienceBuzzPage() {
             <div>
               <h3 className="font-semibold text-white mb-1">Mezzanine</h3>
               <p>iOS app with verified ticket holders rating shows 1-5 stars.</p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-white mb-1">Theatr</h3>
+              <p>Broadway community app with three-way sentiment: like, dislike, or mixed.</p>
             </div>
             <div>
               <h3 className="font-semibold text-white mb-1">Reddit</h3>
@@ -230,7 +234,7 @@ export default function AudienceBuzzPage() {
         {/* Data Source Note */}
         <div className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-6">
           <p>
-            Audience data aggregated from Show Score, Mezzanine app, and Reddit r/Broadway.
+            Audience data aggregated from Show Score, Mezzanine app, Theatr, and Reddit r/Broadway.
             Sources weighted proportionally by review count (80% cap per source). Updated weekly.
           </p>
         </div>
