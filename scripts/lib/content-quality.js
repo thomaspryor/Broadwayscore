@@ -1103,11 +1103,12 @@ function classifyContentTier(review) {
   const charCount = fullText.length;
 
   // Check for excerpts
-  const hasExcerpt = !!(review.dtliExcerpt || review.bwwExcerpt || review.showScoreExcerpt);
+  const hasExcerpt = !!(review.dtliExcerpt || review.bwwExcerpt || review.showScoreExcerpt || review.lboRoundupExcerpt);
   const longestExcerptLen = Math.max(
     (review.dtliExcerpt || '').length,
     (review.bwwExcerpt || '').length,
-    (review.showScoreExcerpt || '').length
+    (review.showScoreExcerpt || '').length,
+    (review.lboRoundupExcerpt || '').length
   );
 
   // T5: INVALID - Check first (garbage, wrong show, corrupted)

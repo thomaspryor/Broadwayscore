@@ -20,7 +20,7 @@ fs.readdirSync(dir).forEach(showDir => {
     .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json')
     .forEach(f => {
       const d = JSON.parse(fs.readFileSync(path.join(showPath, f)));
-      if (!d.assignedScore && (d.fullText || d.dtliExcerpt || d.bwwExcerpt || d.showScoreExcerpt)) {
+      if (!d.assignedScore && (d.fullText || d.dtliExcerpt || d.bwwExcerpt || d.showScoreExcerpt || d.nycTheatreExcerpt || d.lboRoundupExcerpt)) {
         count++;
       }
     });

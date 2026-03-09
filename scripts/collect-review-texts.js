@@ -4591,7 +4591,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       // Null out wrong fullText so it can't be scored — keep URL for URL discovery on next run
       data.wrongFullText = data.fullText;
       data.fullText = null;
-      data.contentTier = (data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt) ? 'excerpt' : 'needs-rescrape';
+      data.contentTier = (data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt) ? 'excerpt' : 'needs-rescrape';
       console.log(`    ⚠ Heuristic fallback — show not mentioned in text — fullText nulled: ${showCheck.reason}`);
     } else {
       delete data.showNotMentioned;
@@ -4714,7 +4714,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     if (showMeta) {
       const contentMatch = verifyFullTextContent(cleanedText, showMeta);
       if (contentMatch.verdict === 'confident_mismatch' && contentMatch.negativeSignalCount >= 2) {
-        const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt);
+        const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
         data.wrongFullText = data.fullText;
         data.fullText = null;
         data.contentMismatchNote = contentMatch.negativeSignals.join('; ');
@@ -4746,7 +4746,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
 
     // Auto-null fullText on high/medium confidence wrong article (completely wrong show/content)
     if (contentVerification.wrongArticle && isHighConfidence && data.fullText) {
-      const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt);
+      const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
       data.wrongFullText = data.fullText;
       data.fullText = null;
       data.wrongShow = true;
@@ -4760,7 +4760,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     // so LLM often misidentifies the production as "wrong" when it's actually correct.
     const showCat = _showsJsonCache?.shows?.find(s => s.id === data.showId)?.category;
     if (contentVerification.wrongProduction && isHighConfidence && data.fullText && showCat !== 'off-broadway') {
-      const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt);
+      const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
       data.wrongFullText = data.fullText;
       data.fullText = null;
       data.wrongProduction = true;
@@ -4772,7 +4772,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
 
     // Auto-null fullText on high/medium confidence film/TV content
     if (contentVerification.isFilmTv && isHighConfidence && data.fullText) {
-      const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt);
+      const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
       data.wrongFullText = data.fullText;
       data.fullText = null;
       data.wrongShow = true;
@@ -5793,7 +5793,7 @@ async function processReview(review) {
       try {
         // Get excerpt and show metadata from existing review data
         const reviewData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
-        const excerpt = reviewData.dtliExcerpt || reviewData.bwwExcerpt || reviewData.showScoreExcerpt || '';
+        const excerpt = reviewData.dtliExcerpt || reviewData.bwwExcerpt || reviewData.showScoreExcerpt || reviewData.lboRoundupExcerpt || '';
         const showId = reviewData.showId || review.showId || '';
 
         // Look up show metadata for richer context

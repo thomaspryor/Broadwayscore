@@ -128,7 +128,7 @@ function buildUserPrompt(review, sourceData, showTitle) {
   }
 
   // Always include excerpts as supplementary context
-  const excerptFields = ['dtliExcerpt', 'bwwExcerpt', 'showScoreExcerpt', 'nycTheatreExcerpt'];
+  const excerptFields = ['dtliExcerpt', 'bwwExcerpt', 'showScoreExcerpt', 'nycTheatreExcerpt', 'lboRoundupExcerpt'];
   for (const field of excerptFields) {
     if (sourceData[field]) {
       const label = field.replace('Excerpt', '').toUpperCase();
