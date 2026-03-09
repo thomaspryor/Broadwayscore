@@ -76,7 +76,17 @@
     "dracula-west-end-2025/nytimes--houman-barekat.json",
     "drunk-romeo-and-juliet-off-broadway-2025/nytg--unknown.json",
     "hadestown-2019/hollywood-reporter--david-rooney.json",
-    "hamilton-2015/hollywood-reporter--david-rooney.json"
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/nyt-theater--jonathan-mandell.json",
+    "hercules-west-end-2025/nytimes--matt-wolf.json",
+    "hercules-west-end-2025/variety--david-benedict.json",
+    "just-in-time-2025/newyorker--unknown.json",
+    "just-in-time-2025/nytimes--adam-feldman.json",
+    "la-ternura-off-broadway-2025/nyt-theater--unknown.json",
+    "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+    "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json",
+    "little-shop-of-horrors-off-broadway-2019/nytimes--ben-brantley.json",
+    "mamma-mia-west-end-2021/variety--matt-wolf.json"
   ],
   "failed": [
     "paranormal-activity-west-end-2025/thestage--tim-wicker.json",
@@ -143,7 +153,10 @@
       "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
       "data-off-broadway-2026/nytg--allison-considine.json",
       "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
-      "drunk-romeo-and-juliet-off-broadway-2025/nytg--unknown.json"
+      "drunk-romeo-and-juliet-off-broadway-2025/nytg--unknown.json",
+      "hamilton-2015/nyt-theater--jonathan-mandell.json",
+      "just-in-time-2025/nytimes--adam-feldman.json",
+      "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -153,7 +166,11 @@
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
       "back-to-the-future-west-end-2021/variety--david-benedict.json",
       "data/review-texts/bigfoot-off-broadway-2026/vulture--unknown.json",
-      "bigfoot-off-broadway-2026/vulture--unknown.json"
+      "bigfoot-off-broadway-2026/vulture--unknown.json",
+      "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
+      "hercules-west-end-2025/variety--david-benedict.json",
+      "data/review-texts/mamma-mia-west-end-2021/variety--matt-wolf.json",
+      "mamma-mia-west-end-2021/variety--matt-wolf.json"
     ],
     "browserbase": [
       "data/review-texts/romeo-and-juliet-west-end-2026/hollywood-reporter--unknown.json",
@@ -171,7 +188,9 @@
       "data/review-texts/hadestown-2019/hollywood-reporter--david-rooney.json",
       "hadestown-2019/hollywood-reporter--david-rooney.json",
       "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json",
-      "hamilton-2015/hollywood-reporter--david-rooney.json"
+      "hamilton-2015/hollywood-reporter--david-rooney.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -185,7 +204,8 @@
       "chess-2025/newyorker--michael-schulman.json",
       "data-off-broadway-2026/nytimes--ben-brantley.json",
       "death-becomes-her-2024/newyorker--helen-shaw.json",
-      "dracula-west-end-2025/nytimes--houman-barekat.json"
+      "dracula-west-end-2025/nytimes--houman-barekat.json",
+      "just-in-time-2025/newyorker--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -202,11 +222,14 @@
       "romeo-and-juliet-west-end-2026/ew--unknown.json",
       "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
       "just-in-time-2025/newsday--unknown.json",
-      "just-in-time-2025/billboard--unknown.json"
+      "just-in-time-2025/billboard--unknown.json",
+      "hercules-west-end-2025/nytimes--matt-wolf.json",
+      "la-ternura-off-broadway-2025/nyt-theater--unknown.json",
+      "little-shop-of-horrors-off-broadway-2019/nytimes--ben-brantley.json"
     ]
   },
   "startTime": "2026-03-09T14:46:28.645Z",
-  "lastProcessed": "hamilton-2015/hollywood-reporter--david-rooney.json",
+  "lastProcessed": "mamma-mia-west-end-2021/variety--matt-wolf.json",
   "log": [
     {
       "t": "2026-03-09T14:51:21.007Z",
@@ -359,6 +382,17 @@
     },
     {
       "t": "2026-03-09T15:53:37.792Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-09T15:56:03.034Z",
+      "event": "bb-session",
+      "session": "5fa85c65",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-09T15:56:04.027Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }

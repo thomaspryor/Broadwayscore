@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-09T15:53:50.059Z",
-  "processed": 77,
+  "updatedAt": "2026-03-09T15:56:41.310Z",
+  "processed": 87,
   "failed": 13,
-  "successRate": "85.6%",
+  "successRate": "87.0%",
   "tierBreakdown": {
-    "playwright": 48,
-    "amp": 8,
-    "browserbase": 16,
+    "playwright": 51,
+    "amp": 12,
+    "browserbase": 18,
     "directCookies": 0,
-    "scrapingbee": 11,
+    "scrapingbee": 12,
     "brightdata": 0,
     "archiveToday": 6,
-    "archive": 6
+    "archive": 9
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-03-09T14:57:06.663Z",
-      "event": "bb-session",
-      "session": "d4d126bd",
-      "url": "https://www.newsday.com/entertainment/theater/romeo-and-juliet-review-not-in-blo"
-    },
-    {
-      "t": "2026-03-09T14:57:07.906Z",
-      "event": "bb-cookie-inject",
-      "domain": "newsday.com"
-    },
     {
       "t": "2026-03-09T15:01:48.091Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-09T15:53:37.792Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-09T15:56:03.034Z",
+      "event": "bb-session",
+      "session": "5fa85c65",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-09T15:56:04.027Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
