@@ -379,7 +379,7 @@ const ARTICLE_BOUNDARY_PATTERNS = [
   /now playing at the [A-Z][a-z]+ Theatre/gi,
   /currently running at the [A-Z][a-z]+ Theatre/gi,
   /playing at the [A-Z][a-z]+ Theatre/gi,
-  /(?:playing|running|opens?|opened|performs?|performing|staged|is) at the (Belasco|St\. James|Winter Garden|Booth|Lyceum|Shubert|Imperial|Majestic|Broadhurst|Barrymore|Palace|Lunt-Fontanne|Gershwin|Marquis|Nederlander|Neil Simon|Rodgers|Schoenfeld|Brooks Atkinson|Circle in the Square|Helen Hayes|Jacobs|Eugene O'Neill|Longacre|Ambassador|Cort|Gerald Schoenfeld|Stephen Sondheim|Vivian Beaumont|August Wilson|Music Box|Lyric|Al Hirschfeld|American Airlines)/gi,
+  /(?:playing|running|opens?|opened|performs?|performing|staged|is) at the (Belasco|St\. James|Winter Garden|Booth|Lyceum|Shubert|Imperial|Majestic|Broadhurst|Barrymore|Palace|Lunt-Fontanne|Gershwin|Marquis|Nederlander|Neil Simon|Rodgers|Schoenfeld|Brooks Atkinson|Circle in the Square|Helen Hayes|Jacobs|Eugene O'Neill|Longacre|Ambassador|Cort|Gerald Schoenfeld|Stephen Sondheim|Vivian Beaumont|August Wilson|Music Box|Lyric|Al Hirschfeld|American Airlines|Gielgud|Savoy|Old Vic|Young Vic|Donmar|Wyndham|Noël Coward|Noel Coward|Harold Pinter|Gillian Lynne|Phoenix|Apollo|Criterion|Dominion|Garrick|Piccadilly|Playhouse|Vaudeville|Duke of York|Duchess|Fortune|Globe|Shakespeare's Globe|Barbican|National Theatre|Olivier|Lyttelton|Dorfman|Almeida|Menier Chocolate Factory)/gi,
   /The (?:charming|brilliant|stunning|captivating|delightful|exciting|thrilling) new (?:musical|play|revival)/gi,
   /The most recent revival of/gi,
   /Director [A-Z][a-z]+ [A-Z][a-z]+…$/gm,  // EW article teasers end with director name + ellipsis
@@ -1240,6 +1240,10 @@ function getScrapingPriority(review) {
       return hasUrl
         ? { priority: 3, reason: 'Stub with URL - attempt scraping' }
         : { priority: 0, reason: 'Stub without URL - lowest priority' };
+    case 'needs-rescrape':
+      return hasUrl
+        ? { priority: 5, reason: 'Needs rescrape with URL - previous text was garbage' }
+        : { priority: 2, reason: 'Needs rescrape without URL - find URL first' };
     case 'invalid':
       return { priority: -1, reason: 'Invalid - needs manual review or deletion' };
     case 'complete':

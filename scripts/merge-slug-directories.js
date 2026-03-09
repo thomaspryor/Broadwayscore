@@ -35,7 +35,7 @@ const ORPHAN_MAP = {
   'tammy-faye': 'tammy-faye-2024',
 };
 
-const CONTENT_TIER_RANK = { complete: 5, truncated: 4, excerpt: 3, stub: 2, invalid: 1 };
+const CONTENT_TIER_RANK = { complete: 5, truncated: 4, excerpt: 3, 'needs-rescrape': 2, stub: 2, invalid: 1 };
 
 function scoreFile(data) {
   let s = 0;

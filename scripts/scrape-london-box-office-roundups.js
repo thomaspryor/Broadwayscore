@@ -510,8 +510,8 @@ function saveLBOReview(showId, reviewInfo) {
     if (reviewInfo.excerpt) {
       existing.data.lboRoundupExcerpt = reviewInfo.excerpt;
     }
-    if (reviewInfo.score !== null && !existing.data.score && !existing.data.compositeScore) {
-      existing.data.score = reviewInfo.score;
+    if (reviewInfo.score !== null && !existing.data.originalScore) {
+      existing.data.originalScore = reviewInfo.score;
       existing.data.scoreSource = 'lbo-star-rating';
       existing.data.scorePriority = 'P0';
     }
@@ -548,8 +548,8 @@ function saveLBOReview(showId, reviewInfo) {
     const data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
     if (!data.lboRoundupExcerpt) {
       if (reviewInfo.excerpt) data.lboRoundupExcerpt = reviewInfo.excerpt;
-      if (reviewInfo.score !== null && !data.score) {
-        data.score = reviewInfo.score;
+      if (reviewInfo.score !== null && !data.originalScore) {
+        data.originalScore = reviewInfo.score;
         data.scoreSource = 'lbo-star-rating';
         data.scorePriority = 'P0';
       }
