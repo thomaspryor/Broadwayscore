@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-09T05:44:33.401Z",
-  "processed": 149,
-  "failed": 51,
-  "successRate": "74.5%",
+  "updatedAt": "2026-03-09T05:49:05.689Z",
+  "processed": 158,
+  "failed": 52,
+  "successRate": "75.2%",
   "tierBreakdown": {
-    "playwright": 67,
+    "playwright": 71,
     "amp": 20,
-    "browserbase": 16,
+    "browserbase": 18,
     "directCookies": 1,
-    "scrapingbee": 34,
+    "scrapingbee": 38,
     "brightdata": 0,
     "archiveToday": 27,
     "archive": 32
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-03-09T04:58:18.131Z",
-      "event": "bb-session",
-      "session": "f35fba54",
-      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
-    },
-    {
-      "t": "2026-03-09T04:58:19.299Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-09T05:01:26.219Z",
-      "event": "bb-session",
-      "session": "997a349d",
-      "url": "https://deadline.com/2026/02/jake-shane-broadway-all-out-comedy-about-ambition-1"
-    },
-    {
-      "t": "2026-03-09T05:01:27.404Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
     {
       "t": "2026-03-09T05:02:01.871Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-03-09T05:44:10.020Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-09T05:44:43.021Z",
+      "event": "bb-session",
+      "session": "2ad5566e",
+      "url": "https://observer.com/2025/07/theater-review-heathers-off-broadway-revival/"
+    },
+    {
+      "t": "2026-03-09T05:44:44.332Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-09T05:47:12.120Z",
+      "event": "bb-session",
+      "session": "c5dcae58",
+      "url": "https://www.wsj.com/articles/jerome-robbins-by-himself-review-the-dancer-from-th"
+    },
+    {
+      "t": "2026-03-09T05:47:13.628Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
