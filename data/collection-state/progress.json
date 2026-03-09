@@ -443,7 +443,8 @@
     "friends-the-musical-parody-off-broadway-2022/says-me-says-mom--jeryl-marcus.json",
     "friends-the-musical-parody-off-broadway-2022/stagebuddy--bill-crouch.json",
     "hadestown-2019/amny--matt-windman.json",
-    "hadestown-2019/chicagotribune--chris-jones.json"
+    "hadestown-2019/chicagotribune--chris-jones.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json"
   ],
   "failed": [
     "paranormal-activity-west-end-2025/thestage--tim-wicker.json",
@@ -501,7 +502,16 @@
     "garry-starr-classic-penguins-garrick-west-end-2026/everything-theatre-uk--jess-gonzalez.json",
     "giant-2026/ap--jennifer-farrar.json",
     "giant-2026/london-theatre--julia-rank.json",
-    "giant-2026/thestage--dave-fargnoli.json"
+    "giant-2026/thestage--dave-fargnoli.json",
+    "the-book-of-mormon-west-end-2024/thestage--unknown.json",
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "hadestown-2019/newyorker--hilton-als.json",
+    "six-2021/newyorker--naomi-fry.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "aladdin-2014/wsj--terry-teachout.json",
+    "garry-starr-classic-penguins-garrick-west-end-2026/timeout--unknown.json",
+    "jerome-off-broadway-2025/wsj--joel-lobenthal.json",
+    "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -962,7 +972,8 @@
       "data/review-texts/broken-glass-west-end-2026/thestage--unknown.json",
       "data/review-texts/chess-2025/thestage--unknown.json",
       "data/review-texts/deep-azure-globe-west-end-2026/thestage--unknown.json",
-      "data/review-texts/giant-2026/thestage--dave-fargnoli.json"
+      "data/review-texts/giant-2026/thestage--dave-fargnoli.json",
+      "data/review-texts/garry-starr-classic-penguins-garrick-west-end-2026/timeout--unknown.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
@@ -1013,11 +1024,12 @@
       "chess-2025/daily-mail--milly-veitch.json",
       "chess-2025/ny1--frank-dilella.json",
       "friends-the-musical-parody-off-broadway-2022/stagebuddy--bill-crouch.json",
-      "garry-starr-classic-penguins-garrick-west-end-2026/everything-theatre-uk--jess-gonzalez.json"
+      "garry-starr-classic-penguins-garrick-west-end-2026/everything-theatre-uk--jess-gonzalez.json",
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json"
     ]
   },
   "startTime": "2026-03-09T14:46:28.645Z",
-  "lastProcessed": "hadestown-2019/chicagotribune--chris-jones.json",
+  "lastProcessed": "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
   "log": [
     {
       "t": "2026-03-09T14:51:21.007Z",
@@ -1282,6 +1294,28 @@
       "t": "2026-03-09T19:34:04.367Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-09T19:41:11.800Z",
+      "event": "bb-session",
+      "session": "437658d8",
+      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
+    },
+    {
+      "t": "2026-03-09T19:41:13.380Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-09T19:43:36.157Z",
+      "event": "bb-session",
+      "session": "c989c07f",
+      "url": "https://www.wsj.com/articles/jerome-robbins-by-himself-review-the-dancer-from-th"
+    },
+    {
+      "t": "2026-03-09T19:43:37.466Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
