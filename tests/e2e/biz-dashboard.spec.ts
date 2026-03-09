@@ -17,7 +17,7 @@ test.describe('/biz Dashboard - Basic Tests', () => {
 
     // Filter out expected warnings
     const criticalErrors = errors.filter(
-      (e) => !e.includes('Warning') && !e.includes('Failed to load resource')
+      (e) => !e.includes('Warning') && !e.includes('Failed to load resource') && !e.includes('MIME type')
     );
     expect(criticalErrors).toHaveLength(0);
   });

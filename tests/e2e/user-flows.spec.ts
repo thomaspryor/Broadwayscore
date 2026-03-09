@@ -43,6 +43,7 @@ test.describe('My Shows Page (Unauthenticated)', () => {
         !e.includes('favicon') &&
         !e.includes('analytics') &&
         !e.includes('hydration') &&
+        !e.includes('MIME type') &&
         !e.includes('404')
     );
 

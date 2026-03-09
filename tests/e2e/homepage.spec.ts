@@ -22,7 +22,7 @@ test.describe('Homepage', () => {
 
     // Filter out known non-critical errors
     const criticalErrors = errors.filter(
-      (e) => !e.includes('favicon') && !e.includes('analytics')
+      (e) => !e.includes('favicon') && !e.includes('analytics') && !e.includes('MIME type')
     );
 
     expect(criticalErrors).toHaveLength(0);

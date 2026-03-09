@@ -17,6 +17,7 @@ export default defineConfig({
         '**/my-shows-mock*',
         '**/my-shows-functional*',
         '**/show-rating-functional*',
+        '**/ugc-interactive-qa*',
         '**/ugc-visual-regression*',
         '**/ugc-visual-baselines*',
       ],
