@@ -9,7 +9,19 @@
     "paranormal-activity-west-end-2025/london-theatre--the-anonymous-critic.json",
     "paranormal-activity-west-end-2025/lost-in-theatreland--amy-rye.json",
     "paranormal-activity-west-end-2025/metro-uk--brooke-ivey-johnson.json",
-    "paranormal-activity-west-end-2025/theatre-weekly--greg-stewart.json"
+    "paranormal-activity-west-end-2025/theatre-weekly--greg-stewart.json",
+    "paranormal-activity-west-end-2025/times-uk--rachel-halliburton.json",
+    "paranormal-activity-west-end-2025/whatsonstage--rachel-agyekum.json",
+    "the-devil-wears-prada-west-end-2024/artsdesk--matt-wolf.json",
+    "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+    "the-devil-wears-prada-west-end-2024/financialtimes--financial-times.json",
+    "the-devil-wears-prada-west-end-2024/financialtimes--sarah-hemming.json",
+    "the-devil-wears-prada-west-end-2024/independent--alice-saville.json",
+    "the-devil-wears-prada-west-end-2024/london-theatre--olivia-rook.json"
+  ],
+  "failed": [
+    "paranormal-activity-west-end-2025/thestage--tim-wicker.json",
+    "paranormal-activity-west-end-2025/thestage--tom-wicker.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -21,23 +33,55 @@
       "paranormal-activity-west-end-2025/artsdesk--gary-naylor.json",
       "paranormal-activity-west-end-2025/london-theatre--matt-wolf-writing.json",
       "paranormal-activity-west-end-2025/london-theatre--the-anonymous-critic.json",
-      "paranormal-activity-west-end-2025/theatre-weekly--greg-stewart.json"
+      "paranormal-activity-west-end-2025/theatre-weekly--greg-stewart.json",
+      "paranormal-activity-west-end-2025/times-uk--rachel-halliburton.json",
+      "paranormal-activity-west-end-2025/whatsonstage--rachel-agyekum.json",
+      "the-devil-wears-prada-west-end-2024/artsdesk--matt-wolf.json",
+      "the-devil-wears-prada-west-end-2024/financialtimes--financial-times.json",
+      "the-devil-wears-prada-west-end-2024/financialtimes--sarah-hemming.json",
+      "the-devil-wears-prada-west-end-2024/london-theatre--olivia-rook.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/dracula-west-end-2025/nytimes--houman-barekat.json",
-      "dracula-west-end-2025/nytimes--houman-barekat.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
       "paranormal-activity-west-end-2025/lost-in-theatreland--amy-rye.json",
-      "paranormal-activity-west-end-2025/metro-uk--brooke-ivey-johnson.json"
+      "paranormal-activity-west-end-2025/metro-uk--brooke-ivey-johnson.json",
+      "the-devil-wears-prada-west-end-2024/independent--alice-saville.json"
     ],
     "brightdata": [],
-    "archiveToday": [],
-    "archive": []
+    "archiveToday": [
+      "data/review-texts/paranormal-activity-west-end-2025/thestage--tim-wicker.json",
+      "data/review-texts/paranormal-activity-west-end-2025/thestage--tom-wicker.json"
+    ],
+    "archive": [
+      "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json"
+    ]
   },
   "startTime": "2026-03-09T14:46:28.645Z",
-  "lastProcessed": "paranormal-activity-west-end-2025/theatre-weekly--greg-stewart.json",
-  "log": []
+  "lastProcessed": "the-devil-wears-prada-west-end-2024/london-theatre--olivia-rook.json",
+  "log": [
+    {
+      "t": "2026-03-09T14:51:21.007Z",
+      "event": "bb-session",
+      "session": "aba3b141",
+      "url": "https://www.thestage.co.uk/reviews/paranormal-activity-review-ambassadors-theatr"
+    },
+    {
+      "t": "2026-03-09T14:51:22.241Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-09T14:53:14.927Z",
+      "event": "bb-session",
+      "session": "2174f80b",
+      "url": "https://www.thestage.co.uk/reviews/paranormal-activity-review-ambassadors-theatr"
+    },
+    {
+      "t": "2026-03-09T14:53:16.208Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }
