@@ -59,7 +59,7 @@ const articleSchema = {
     },
   },
   datePublished: '2024-01-01',
-  dateModified: '2026-02-16',
+  dateModified: '2026-03-09',
   mainEntityOfPage: {
     '@type': 'WebPage',
     '@id': `${BASE_URL}/methodology`,
@@ -113,7 +113,7 @@ const faqSchema = {
       name: 'What is AudienceGrade?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'The AudienceGrade aggregates theatergoer sentiment from Show Score, Mezzanine, and Reddit (r/Broadway) into letter grades from A+ (90-100) through F (below 48). Sources are weighted dynamically based on sample size, with no single source dominating the final score. Reddit sentiment is analyzed from actual attendee comments only — boycotts, source material opinions, and secondhand takes are filtered out.',
+        text: 'The AudienceGrade aggregates theatergoer sentiment from Show Score, Mezzanine, Theatr, and Reddit (r/Broadway) into letter grades from A+ (90-100) through F (below 48). Sources are weighted dynamically based on sample size, with no single source dominating the final score. Reddit sentiment is analyzed from actual attendee comments only — boycotts, source material opinions, and secondhand takes are filtered out.',
       },
     },
     {
@@ -349,7 +349,7 @@ export default function MethodologyPage() {
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">Sources</h3>
           <p className="text-gray-300 text-sm mb-3">
-            We aggregate audience sentiment from three platforms:
+            We aggregate audience sentiment from four platforms:
           </p>
           <div className="space-y-3">
             <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
@@ -369,6 +369,16 @@ export default function MethodologyPage() {
               </div>
               <p className="text-gray-300 text-sm">
                 Theater enthusiast app with star ratings and reviews
+              </p>
+            </div>
+
+            <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-teal-400">👍</span>
+                <span className="text-white font-medium">Theatr</span>
+              </div>
+              <p className="text-gray-300 text-sm">
+                Broadway community app with three-way sentiment (like, dislike, mixed). Score is calculated as weighted approval: likes count fully, mixed counts half, dislikes count zero.
               </p>
             </div>
 
@@ -481,7 +491,7 @@ export default function MethodologyPage() {
             </li>
             <li className="flex items-start gap-2">
               <span className="text-brand">•</span>
-              <span><strong className="text-white">AudienceGrade:</strong> Aggregated audience sentiment from Show Score, Mezzanine, and Reddit discussions</span>
+              <span><strong className="text-white">AudienceGrade:</strong> Aggregated audience sentiment from Show Score, Mezzanine, Theatr, and Reddit discussions</span>
             </li>
           </ul>
         </section>
@@ -513,7 +523,7 @@ export default function MethodologyPage() {
 
         {/* Version */}
         <div className="text-center text-gray-500 text-sm pt-4">
-          <p>Methodology Version 2.1.1 — Last updated February 2026</p>
+          <p>Methodology Version 2.2.0 — Last updated March 2026</p>
         </div>
       </div>
       </div>
