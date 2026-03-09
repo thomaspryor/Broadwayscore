@@ -48,6 +48,13 @@ function ExternalLinkIcon() {
   );
 }
 
+/** Ensure URLs have https:// prefix (defense-in-depth for legacy data) */
+function ensureHttps(url: string | undefined | null): string | undefined {
+  if (!url) return undefined;
+  if (/^https?:\/\//i.test(url)) return url;
+  return 'https://' + url;
+}
+
 export default function LotteryRushCard({ data, showStatus }: LotteryRushCardProps) {
   // Don't show for closed shows
   if (showStatus === 'closed') return null;
@@ -78,19 +85,21 @@ export default function LotteryRushCard({ data, showStatus }: LotteryRushCardPro
               <span className="text-xl font-bold text-white">${data.lottery.price}</span>
             </div>
             <div className="space-y-2 text-sm">
+              {data.lottery.time && (
               <div className="flex items-start gap-2 text-gray-400">
                 <ClockIcon />
                 <span>{data.lottery.time}</span>
               </div>
-              <p className="text-gray-400">{data.lottery.instructions}</p>
+              )}
+              {data.lottery.instructions && <p className="text-gray-400">{data.lottery.instructions}</p>}
               {data.lottery.url && (
                 <a
-                  href={data.lottery.url}
+                  href={ensureHttps(data.lottery.url)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-purple-400 hover:text-purple-300 font-medium transition-colors mt-1"
                 >
-                  Enter on {data.lottery.platform}
+                  {data.lottery.platform ? `Enter on ${data.lottery.platform}` : 'Enter lottery'}
                   <ExternalLinkIcon />
                 </a>
               )}
@@ -109,15 +118,15 @@ export default function LotteryRushCard({ data, showStatus }: LotteryRushCardPro
               <span className="text-xl font-bold text-white">${data.specialLottery.price}</span>
             </div>
             <div className="space-y-2 text-sm">
-              <p className="text-gray-400">{data.specialLottery.instructions}</p>
+              {data.specialLottery.instructions && <p className="text-gray-400">{data.specialLottery.instructions}</p>}
               {data.specialLottery.url && (
                 <a
-                  href={data.specialLottery.url}
+                  href={ensureHttps(data.specialLottery.url)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-amber-400 hover:text-amber-300 font-medium transition-colors mt-1"
                 >
-                  Enter on {data.specialLottery.platform}
+                  {data.specialLottery.platform ? `Enter on ${data.specialLottery.platform}` : 'Enter lottery'}
                   <ExternalLinkIcon />
                 </a>
               )}
@@ -138,20 +147,22 @@ export default function LotteryRushCard({ data, showStatus }: LotteryRushCardPro
               <span className="text-xl font-bold text-white">${data.rush.price}</span>
             </div>
             <div className="space-y-2 text-sm">
+              {data.rush.time && (
               <div className="flex items-start gap-2 text-gray-400">
                 <ClockIcon />
                 <span>{data.rush.time}</span>
               </div>
+              )}
               {data.rush.location && (
                 <div className="flex items-start gap-2 text-gray-400">
                   <LocationIcon />
                   <span>{data.rush.location}</span>
                 </div>
               )}
-              <p className="text-gray-400">{data.rush.instructions}</p>
+              {data.rush.instructions && <p className="text-gray-400">{data.rush.instructions}</p>}
               {data.rush.url && (
                 <a
-                  href={data.rush.url}
+                  href={ensureHttps(data.rush.url)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 font-medium transition-colors mt-1"
@@ -175,19 +186,21 @@ export default function LotteryRushCard({ data, showStatus }: LotteryRushCardPro
               <span className="text-xl font-bold text-white">${data.digitalRush.price}</span>
             </div>
             <div className="space-y-2 text-sm">
+              {data.digitalRush.time && (
               <div className="flex items-start gap-2 text-gray-400">
                 <ClockIcon />
                 <span>{data.digitalRush.time}</span>
               </div>
-              <p className="text-gray-400">{data.digitalRush.instructions}</p>
+              )}
+              {data.digitalRush.instructions && <p className="text-gray-400">{data.digitalRush.instructions}</p>}
               {data.digitalRush.url && (
                 <a
-                  href={data.digitalRush.url}
+                  href={ensureHttps(data.digitalRush.url)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-blue-400 hover:text-blue-300 font-medium transition-colors mt-1"
                 >
-                  Get on {data.digitalRush.platform}
+                  {data.digitalRush.platform ? `Get on ${data.digitalRush.platform}` : 'Get rush tickets'}
                   <ExternalLinkIcon />
                 </a>
               )}
@@ -206,17 +219,19 @@ export default function LotteryRushCard({ data, showStatus }: LotteryRushCardPro
               <span className="text-xl font-bold text-white">${data.studentRush.price}</span>
             </div>
             <div className="space-y-2 text-sm">
+              {data.studentRush.time && (
               <div className="flex items-start gap-2 text-gray-400">
                 <ClockIcon />
                 <span>{data.studentRush.time}</span>
               </div>
+              )}
               {data.studentRush.location && (
                 <div className="flex items-start gap-2 text-gray-400">
                   <LocationIcon />
                   <span>{data.studentRush.location}</span>
                 </div>
               )}
-              <p className="text-gray-400">{data.studentRush.instructions}</p>
+              {data.studentRush.instructions && <p className="text-gray-400">{data.studentRush.instructions}</p>}
             </div>
           </div>
         )}
@@ -232,11 +247,13 @@ export default function LotteryRushCard({ data, showStatus }: LotteryRushCardPro
               <span className="text-xl font-bold text-white">${data.standingRoom.price}</span>
             </div>
             <div className="space-y-2 text-sm">
+              {data.standingRoom.time && (
               <div className="flex items-start gap-2 text-gray-400">
                 <ClockIcon />
                 <span>{data.standingRoom.time}</span>
               </div>
-              <p className="text-gray-400">{data.standingRoom.instructions}</p>
+              )}
+              {data.standingRoom.instructions && <p className="text-gray-400">{data.standingRoom.instructions}</p>}
             </div>
           </div>
         )}

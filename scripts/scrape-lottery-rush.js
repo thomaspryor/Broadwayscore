@@ -923,15 +923,139 @@ function cleanClosedShows(existing) {
   return changes;
 }
 
+// ==================== URL & Price Sanitization ====================
+
+/** Known generic/useless URLs that don't link to a specific show */
+const GENERIC_URLS = [
+  'my.socialtoaster.com/st/rush_select/',
+  'my.socialtoaster.com/st/lottery_select/',
+];
+
+function isGenericUrl(url) {
+  if (!url) return false;
+  const lower = url.toLowerCase();
+  return GENERIC_URLS.some(g => lower.includes(g));
+}
+
 /**
- * Post-merge cleanup: fix cross-source duplicates that can't be caught
- * in per-source post-processing (which only sees one source at a time).
+ * Normalize a URL: ensure https:// prefix, strip trailing whitespace.
+ * Returns null for generic/useless URLs.
  */
-function postMergeCleanup(existing) {
+function normalizeUrl(url) {
+  if (!url || typeof url !== 'string') return null;
+  url = url.trim();
+  if (isGenericUrl(url)) return null;
+  if (!/^https?:\/\//i.test(url)) {
+    url = 'https://' + url;
+  }
+  return url;
+}
+
+/** Known intentional fractional prices (e.g., Club 2064 = $20.64) */
+const ALLOWED_FRACTIONAL_PRICES = new Set([20.64]);
+
+/** Validate a price: must be positive, integer (for lottery/rush/SRO), and within range. */
+function validatePrice(price, field, showId) {
+  if (typeof price !== 'number' || isNaN(price)) return null;
+  if (price <= 0) {
+    console.warn(`  [Sanitize] ${showId}.${field}: Removed $0 price`);
+    return null;
+  }
+  if (price > 200) {
+    console.warn(`  [Sanitize] ${showId}.${field}: Removed $${price} price (>$200, likely error)`);
+    return null;
+  }
+  // Lottery, rush, and SRO prices are almost always whole dollars.
+  // Allow known intentional fractional prices (e.g., $20.64 for Club 2064).
+  if (!Number.isInteger(price) && !ALLOWED_FRACTIONAL_PRICES.has(price)) {
+    const rounded = Math.round(price);
+    console.warn(`  [Sanitize] ${showId}.${field}: Rounded $${price} → $${rounded}`);
+    return rounded;
+  }
+  return price;
+}
+
+/**
+ * Sanitize all data before writing. Catches classes of problems:
+ * 1. Empty entries (metadata only, zero programs)
+ * 2. Invalid/suspicious prices ($0, fractional, out-of-range)
+ * 3. Missing https:// on URLs
+ * 4. Generic SocialToaster URLs that don't link to a specific show
+ * 5. Duplicate rush/digitalRush with same platform+price
+ * 6. Null-valued fields
+ */
+function sanitizeData(existing) {
   const fixes = [];
+  const PROGRAM_FIELDS = [
+    'lottery', 'rush', 'digitalRush', 'studentRush', 'standingRoom',
+    'specialLottery', 'under30', 'special', 'studentTickets', 'militaryTickets',
+  ];
 
   for (const [showId, show] of Object.entries(existing.shows)) {
-    // 1. Remove rush that duplicates lottery (same price, digital/null rush)
+    // --- Remove null-valued top-level fields ---
+    for (const key of Object.keys(show)) {
+      if (show[key] === null && key !== '_lastScrapedFrom' && key !== '_lastScrapedAt') {
+        delete show[key];
+      }
+    }
+
+    // --- Validate prices and normalize URLs on every program field ---
+    for (const field of PROGRAM_FIELDS) {
+      if (!show[field]) continue;
+
+      // Price validation
+      if ('price' in show[field]) {
+        const cleaned = validatePrice(show[field].price, field, showId);
+        if (cleaned === null) {
+          // Invalid price → remove the whole program (a program without a price is useless)
+          delete show[field];
+          fixes.push(`${showId}: Removed ${field} (invalid price)`);
+          continue;
+        }
+        show[field].price = cleaned;
+      }
+      if ('priceWeekend' in show[field]) {
+        const cleaned = validatePrice(show[field].priceWeekend, field + '.priceWeekend', showId);
+        if (cleaned === null) {
+          delete show[field].priceWeekend;
+        } else {
+          show[field].priceWeekend = cleaned;
+        }
+      }
+
+      // URL normalization — replace generic URLs with null, add https://
+      if ('url' in show[field]) {
+        const normalized = normalizeUrl(show[field].url);
+        if (normalized) {
+          if (normalized !== show[field].url) {
+            fixes.push(`${showId}.${field}: Fixed URL → ${normalized}`);
+          }
+          show[field].url = normalized;
+        } else if (show[field].url) {
+          fixes.push(`${showId}.${field}: Removed generic/invalid URL`);
+          delete show[field].url;
+        }
+      }
+    }
+
+    // --- Deduplicate rush/digitalRush with same platform+price ---
+    if (show.rush && show.digitalRush) {
+      const samePlatform = show.rush.platform && show.digitalRush.platform &&
+        show.rush.platform.toLowerCase() === show.digitalRush.platform.toLowerCase();
+      if (samePlatform && show.rush.price === show.digitalRush.price) {
+        // Keep digitalRush (has more detail typically), remove rush
+        if (show.rush.type === 'digital' || !show.rush.location) {
+          // Merge any extra fields from rush into digitalRush
+          for (const k of ['time', 'instructions', 'location']) {
+            if (show.rush[k] && !show.digitalRush[k]) show.digitalRush[k] = show.rush[k];
+          }
+          delete show.rush;
+          fixes.push(`${showId}: Removed duplicate rush (same as digitalRush, ${show.digitalRush.platform} $${show.digitalRush.price})`);
+        }
+      }
+    }
+
+    // --- Deduplicate rush that duplicates lottery (same price, digital rush without location) ---
     if (show.lottery && show.rush) {
       if (show.lottery.price === show.rush.price &&
           (show.rush.type === 'digital' || !show.rush.location) &&
@@ -941,23 +1065,21 @@ function postMergeCleanup(existing) {
       }
     }
 
-    // 2. Remove non-integer standingRoom prices (always misclassified — SRO is whole dollars)
+    // --- Remove non-integer standingRoom prices (SRO is always whole dollars) ---
     if (show.standingRoom && !Number.isInteger(show.standingRoom.price)) {
       fixes.push(`${showId}: Removed standingRoom $${show.standingRoom.price} (non-integer, likely misclassified)`);
       delete show.standingRoom;
     }
 
-    // 3. Deduplicate lottery & specialLottery with null platform handling
+    // --- Deduplicate lottery & specialLottery ---
     if (show.lottery && show.specialLottery) {
       const priceDiff = Math.abs(show.lottery.price - show.specialLottery.price);
       const priceClose = priceDiff < 2 || priceDiff / Math.max(show.lottery.price, show.specialLottery.price) < 0.1;
-      // Null platform matches anything
+      const normPlatform = (p) => (p || '').toLowerCase().replace(/\s*(lottery|digital)\s*/g, '').trim();
       const platformMatch = !show.lottery.platform || !show.specialLottery.platform ||
-        show.lottery.platform.toLowerCase().replace(/\s*(lottery|digital)\s*/g, '').trim() ===
-        show.specialLottery.platform.toLowerCase().replace(/\s*(lottery|digital)\s*/g, '').trim();
+        normPlatform(show.lottery.platform) === normPlatform(show.specialLottery.platform);
       if (priceClose && platformMatch) {
         if (show.specialLottery.name && show.specialLottery.name !== 'Special Lottery') {
-          // specialLottery IS the lottery — merge lottery details into specialLottery, then remove lottery
           for (const k of ['platform', 'url', 'time', 'instructions']) {
             if (!show.specialLottery[k] && show.lottery[k]) {
               show.specialLottery[k] = show.lottery[k];
@@ -972,14 +1094,7 @@ function postMergeCleanup(existing) {
       }
     }
 
-    // 4. Remove null-valued top-level fields
-    for (const key of Object.keys(show)) {
-      if (show[key] === null && key !== '_lastScrapedFrom' && key !== '_lastScrapedAt') {
-        delete show[key];
-      }
-    }
-
-    // 5. If specialLottery is the only lottery-type program, promote to lottery
+    // --- Promote lone specialLottery → lottery ---
     if (show.specialLottery && !show.lottery) {
       show.lottery = {
         type: 'digital',
@@ -989,17 +1104,23 @@ function postMergeCleanup(existing) {
         time: show.specialLottery.time || show.specialLottery.instructions,
         instructions: show.specialLottery.instructions,
       };
-      // Clean null values from promoted entry
       for (const k of Object.keys(show.lottery)) {
         if (show.lottery[k] === null || show.lottery[k] === undefined) delete show.lottery[k];
       }
       delete show.specialLottery;
       fixes.push(`${showId}: Promoted specialLottery → lottery (only lottery program)`);
     }
+
+    // --- Remove empty entries (metadata only, zero programs) ---
+    const hasPrograms = PROGRAM_FIELDS.some(f => show[f]);
+    if (!hasPrograms) {
+      delete existing.shows[showId];
+      fixes.push(`${showId}: Removed empty entry (no programs)`);
+    }
   }
 
-  if (fixes.length > 0 && verbose) {
-    console.log(`\n[PostMerge] ${fixes.length} fixes:`);
+  if (fixes.length > 0) {
+    console.log(`\n[Sanitize] ${fixes.length} fixes applied:`);
     fixes.forEach(f => console.log(`  - ${f}`));
   }
 
@@ -1071,8 +1192,8 @@ async function main() {
     }
   }
 
-  // Post-merge cleanup: fix cross-source duplicates
-  const mergeFixCount = postMergeCleanup(existing);
+  // Sanitize all data: prices, URLs, duplicates, empty entries
+  const sanitizeFixes = sanitizeData(existing);
 
   // Clean closed shows
   const closedChanges = cleanClosedShows(existing);
