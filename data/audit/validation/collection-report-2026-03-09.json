@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-03-09T14:56:20.315Z",
+  "runDate": "2026-03-09T15:03:23.292Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-holy-rosenbergs-west-end-2026,the-mousetrap-west-end-2021,the-spy-who-came-in-from-the-cold-west-end-2025,the-tempest-globe-west-end-2026,dracula-west-end-2025",
+    "showFilter": "a-midsummer-nights-dream-globe-west-end-2026,as-you-like-it-globe-west-end-2026,blood-of-my-blood-west-end-2026,burlesque-west-end-2026,cyrano-de-bergerac-west-end-2026,death-note-the-musical-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,120 +12,142 @@
   },
   "summary": {
     "processed": 23,
-    "failed": 4,
+    "failed": 8,
     "skipped": 0,
-    "successRate": "85.2%"
+    "successRate": "74.2%"
   },
   "tierBreakdown": {
-    "playwright": 16,
+    "playwright": 18,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 6,
+    "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 0
+    "archiveToday": 4,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 21,
-    "tier1Success": 18,
-    "ampAttempts": 0,
+    "tier1Attempts": 26,
+    "tier1Success": 19,
+    "ampAttempts": 1,
     "ampSuccess": 0,
-    "tier1_5Attempts": 3,
-    "tier1_5Success": 1,
+    "tier1_5Attempts": 7,
+    "tier1_5Success": 2,
     "tier2Attempts": 10,
-    "tier2Success": 7,
-    "tier3Attempts": 5,
+    "tier2Success": 6,
+    "tier3Attempts": 8,
     "tier3Success": 0,
-    "tier3_6Attempts": 2,
-    "tier3_6Success": 2,
-    "tier4Attempts": 5,
+    "tier3_6Attempts": 4,
+    "tier3_6Success": 4,
+    "tier4Attempts": 11,
     "tier4Success": 0,
-    "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 73,
-    "browserbaseSessionsUsed": 3,
-    "browserbaseMinutesUsed": 1.2,
-    "urlDiscoveryAttempts": 3,
-    "urlDiscoverySuccess": 1,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 65,
+    "browserbaseSessionsUsed": 7,
+    "browserbaseMinutesUsed": 2.4,
+    "urlDiscoveryAttempts": 5,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "dracula-west-end-2025/nytimes--houman-barekat.json",
-    "dracula-west-end-2025/guardian--arifa-akbar.json",
-    "dracula-west-end-2025/artsdesk--rachel-halliburton.json",
-    "dracula-west-end-2025/financialtimes--sarah-hemming.json",
-    "dracula-west-end-2025/i-paper--fiona-mountford.json",
-    "dracula-west-end-2025/independent--alice-saville.json",
-    "dracula-west-end-2025/london-theatre--olivia-rook.json",
-    "dracula-west-end-2025/whatsonstage--sarah-crompton.json",
-    "the-holy-rosenbergs-west-end-2026/whatsonstage--unknown.json",
-    "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
-    "the-mousetrap-west-end-2021/telegraph--unknown.json",
-    "the-mousetrap-west-end-2021/whatsonstage--whatsonstage-reviewer.json",
-    "the-tempest-globe-west-end-2026/whatsonstage--alun-hood.json",
-    "the-spy-who-came-in-from-the-cold-west-end-2025/city-am--unknown.json",
-    "the-spy-who-came-in-from-the-cold-west-end-2025/thereviewshub--unknown.json",
-    "the-spy-who-came-in-from-the-cold-west-end-2025/artsdesk--aleks-sierz.json",
-    "the-spy-who-came-in-from-the-cold-west-end-2025/artsdesk--for-aleks-sierz.json",
-    "the-spy-who-came-in-from-the-cold-west-end-2025/city-am--chris-dorrell.json",
-    "the-spy-who-came-in-from-the-cold-west-end-2025/everything-theatre--cerys-baker.json",
-    "the-spy-who-came-in-from-the-cold-west-end-2025/independent--alice-saville.json",
-    "the-spy-who-came-in-from-the-cold-west-end-2025/independent--unknown.json",
-    "the-spy-who-came-in-from-the-cold-west-end-2025/standard--nick-curtis.json",
-    "the-spy-who-came-in-from-the-cold-west-end-2025/whatsonstage--sarah-crompton.json"
+    "cyrano-de-bergerac-west-end-2026/hollywood-reporter--david-rooney.json",
+    "cyrano-de-bergerac-west-end-2026/nytg--gillian-russo.json",
+    "cyrano-de-bergerac-west-end-2026/ew--nick-romano.json",
+    "cyrano-de-bergerac-west-end-2026/newsday--linda-winer.json",
+    "cyrano-de-bergerac-west-end-2026/theatrely--juan-a-ramirez.json",
+    "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--kit-benjamin.json",
+    "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--marian-pashley.json",
+    "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--stuart-king.json",
+    "as-you-like-it-globe-west-end-2026/london-box-office--nicky-allpress.json",
+    "as-you-like-it-globe-west-end-2026/london-box-office--phil-willmott.json",
+    "as-you-like-it-globe-west-end-2026/london-box-office--stuart-king.json",
+    "blood-of-my-blood-west-end-2026/london-box-office--stuart-king.json",
+    "burlesque-west-end-2026/independent--alice-saville.json",
+    "burlesque-west-end-2026/london-theatre--anya-ryan.json",
+    "burlesque-west-end-2026/radio-times--joanna-magill.json",
+    "burlesque-west-end-2026/telegraph--claire-allfree.json",
+    "burlesque-west-end-2026/the-express--stefan-kryiazis.json",
+    "cyrano-de-bergerac-west-end-2026/slantmagazine--dan-rubins.json",
+    "death-note-the-musical-west-end-2026/london-box-office--stuart-king.json",
+    "burlesque-west-end-2026/city-am--adam-bloodworth.json",
+    "burlesque-west-end-2026/standard--nick-curtis.json",
+    "cyrano-de-bergerac-west-end-2026/i-paper--sam-marlowe.json",
+    "cyrano-de-bergerac-west-end-2026/independent--paul-taylor.json"
   ],
   "failed": [
-    "dracula-west-end-2025/times-uk--clive-davis.json",
-    "the-mousetrap-west-end-2021/thestage--john-thaxter.json",
-    "the-tempest-globe-west-end-2026/british-theatre--howard-loxton.json",
-    "the-tempest-globe-west-end-2026/thestage--unknown.json"
+    "cyrano-de-bergerac-west-end-2026/ew--tanner-stransky.json",
+    "cyrano-de-bergerac-west-end-2026/wsj--terry-teachout.json",
+    "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
+    "cyrano-de-bergerac-west-end-2026/backstage--erik-haagensen.json",
+    "cyrano-de-bergerac-west-end-2026/northjerseycom--robert-feldberg.json",
+    "cyrano-de-bergerac-west-end-2026/standard--fiona-mountford.json",
+    "burlesque-west-end-2026/thestage--paul-vale.json",
+    "cyrano-de-bergerac-west-end-2026/thestage--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
-      "dracula-west-end-2025/artsdesk--rachel-halliburton.json",
-      "dracula-west-end-2025/financialtimes--sarah-hemming.json",
-      "dracula-west-end-2025/i-paper--fiona-mountford.json",
-      "dracula-west-end-2025/london-theatre--olivia-rook.json",
-      "dracula-west-end-2025/whatsonstage--sarah-crompton.json",
-      "the-holy-rosenbergs-west-end-2026/whatsonstage--unknown.json",
-      "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
-      "the-mousetrap-west-end-2021/telegraph--unknown.json",
-      "the-mousetrap-west-end-2021/whatsonstage--whatsonstage-reviewer.json",
-      "the-tempest-globe-west-end-2026/whatsonstage--alun-hood.json",
-      "the-spy-who-came-in-from-the-cold-west-end-2025/thereviewshub--unknown.json",
-      "the-spy-who-came-in-from-the-cold-west-end-2025/artsdesk--aleks-sierz.json",
-      "the-spy-who-came-in-from-the-cold-west-end-2025/artsdesk--for-aleks-sierz.json",
-      "the-spy-who-came-in-from-the-cold-west-end-2025/everything-theatre--cerys-baker.json",
-      "the-spy-who-came-in-from-the-cold-west-end-2025/standard--nick-curtis.json",
-      "the-spy-who-came-in-from-the-cold-west-end-2025/whatsonstage--sarah-crompton.json"
+      "cyrano-de-bergerac-west-end-2026/nytg--gillian-russo.json",
+      "cyrano-de-bergerac-west-end-2026/theatrely--juan-a-ramirez.json",
+      "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--kit-benjamin.json",
+      "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--marian-pashley.json",
+      "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--stuart-king.json",
+      "as-you-like-it-globe-west-end-2026/london-box-office--nicky-allpress.json",
+      "as-you-like-it-globe-west-end-2026/london-box-office--phil-willmott.json",
+      "as-you-like-it-globe-west-end-2026/london-box-office--stuart-king.json",
+      "blood-of-my-blood-west-end-2026/london-box-office--stuart-king.json",
+      "burlesque-west-end-2026/independent--alice-saville.json",
+      "burlesque-west-end-2026/london-theatre--anya-ryan.json",
+      "burlesque-west-end-2026/radio-times--joanna-magill.json",
+      "burlesque-west-end-2026/telegraph--claire-allfree.json",
+      "burlesque-west-end-2026/the-express--stefan-kryiazis.json",
+      "cyrano-de-bergerac-west-end-2026/slantmagazine--dan-rubins.json",
+      "death-note-the-musical-west-end-2026/london-box-office--stuart-king.json",
+      "burlesque-west-end-2026/standard--nick-curtis.json",
+      "cyrano-de-bergerac-west-end-2026/i-paper--sam-marlowe.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/dracula-west-end-2025/nytimes--houman-barekat.json",
-      "dracula-west-end-2025/nytimes--houman-barekat.json"
+      "data/review-texts/cyrano-de-bergerac-west-end-2026/hollywood-reporter--david-rooney.json",
+      "cyrano-de-bergerac-west-end-2026/hollywood-reporter--david-rooney.json",
+      "data/review-texts/cyrano-de-bergerac-west-end-2026/newsday--linda-winer.json",
+      "cyrano-de-bergerac-west-end-2026/newsday--linda-winer.json"
     ],
     "directCookies": [],
     "scrapingbee": [
-      "dracula-west-end-2025/guardian--arifa-akbar.json",
-      "dracula-west-end-2025/independent--alice-saville.json",
-      "the-spy-who-came-in-from-the-cold-west-end-2025/city-am--unknown.json",
-      "the-spy-who-came-in-from-the-cold-west-end-2025/city-am--chris-dorrell.json",
-      "the-spy-who-came-in-from-the-cold-west-end-2025/independent--alice-saville.json",
-      "the-spy-who-came-in-from-the-cold-west-end-2025/independent--unknown.json"
+      "cyrano-de-bergerac-west-end-2026/ew--nick-romano.json",
+      "cyrano-de-bergerac-west-end-2026/backstage--erik-haagensen.json",
+      "cyrano-de-bergerac-west-end-2026/independent--paul-taylor.json"
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/the-mousetrap-west-end-2021/thestage--john-thaxter.json",
-      "data/review-texts/the-tempest-globe-west-end-2026/thestage--unknown.json"
+      "data/review-texts/cyrano-de-bergerac-west-end-2026/wsj--terry-teachout.json",
+      "data/review-texts/cyrano-de-bergerac-west-end-2026/northjerseycom--robert-feldberg.json",
+      "data/review-texts/burlesque-west-end-2026/thestage--paul-vale.json",
+      "data/review-texts/cyrano-de-bergerac-west-end-2026/thestage--unknown.json"
     ],
-    "archive": []
+    "archive": [
+      "burlesque-west-end-2026/city-am--adam-bloodworth.json"
+    ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "amNY": {
+      "count": 1,
+      "domain": "amny.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    }
+  },
   "urlDiscoveries": [
     {
-      "reviewId": "the-holy-rosenbergs-west-end-2026/whatsonstage--unknown.json",
-      "oldUrl": "https://www.whatsonstage.com/news/critics-circle-theatre-awards-announces-the-nominations-for-the-empty-space-peter-brook-award_1712999/",
-      "newUrl": "https://www.whatsonstage.com/news/the-holy-rosenbergs_9607/"
+      "reviewId": "cyrano-de-bergerac-west-end-2026/ew--tanner-stransky.json",
+      "oldUrl": "http://www.ew.com/ew/article/0,,20364394_20638271,00.html",
+      "newUrl": "https://ew.com/theater/james-mcavoy-reprise-cyrano-de-bergerac/?srsltid=AfmBOoq0ldaErAOdZn31d4byOaBLwSr14Pjf5jEz7S82UJTUuTbn5B4A"
+    },
+    {
+      "reviewId": "cyrano-de-bergerac-west-end-2026/newsday--linda-winer.json",
+      "oldUrl": "http://www.newsday.com/entertainment/theater/cyrano-review-not-one-for-the-ages-1.4098426",
+      "newUrl": "https://www.newsday.com/news/new-york/theater-review-cyrano-de-bergerac-2-stars-b94596"
     }
   ]
 }
