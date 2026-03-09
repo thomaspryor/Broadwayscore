@@ -2,7 +2,7 @@ name: Collect Review Texts
 
 # Prevent un-filtered runs from duplicating each other; show-targeted runs are independent
 concurrency:
-  group: collect-reviews-${{ github.event.inputs.show_filter || 'global' }}-${{ github.event.inputs.content_tier || 'all' }}-${{ github.event.inputs.domain_filter || 'any' }}-${{ github.event.inputs.exclude_domains && 'excl' || 'noexcl' }}-${{ github.event.inputs.reason_filter || 'any-reason' }}
+  group: collect-reviews-${{ github.event.inputs.show_filter || 'global' }}-${{ github.event.inputs.content_tier || 'all' }}-${{ github.event.inputs.domain_filter || 'any' }}-${{ github.event.inputs.exclude_domains && 'excl' || 'noexcl' }}-${{ github.event.inputs.reason_filter || 'any-reason' }}-${{ github.event.inputs.market_filter || 'all-markets' }}
   cancel-in-progress: false
 
 on:
@@ -12,6 +12,8 @@ on:
     # Weekly backlog sweep: Sunday midnight UTC — targets not_attempted reviews that the
     # daily runs never reach (daily prioritizes open shows, closed-show backlog gets starved)
     - cron: '0 0 * * 0'
+    # Daily WE/OB collection: 8 AM UTC — dedicated run so non-Broadway markets don't starve
+    - cron: '0 8 * * *'
   workflow_dispatch:
     inputs:
       batch_size:
@@ -86,6 +88,10 @@ on:
         description: 'Filter by incompleteReason (comma-separated: paywall,scraper_garbage,not_attempted,url_dead,bot_blocked,etc.)'
         required: false
         default: ''
+      market_filter:
+        description: 'Filter by market (west-end, off-broadway). Matches show ID suffix.'
+        required: false
+        default: ''
 
 ## PARALLEL RUNS: Max 5 simultaneous runs recommended.
 ## Browserbase daily limit is 30 sessions; default 5/run × 5 runs = 25 (safe).
@@ -152,19 +158,35 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" == "schedule" ]; then
             DAY=$(date -u +%u)  # 7 = Sunday
+            HOUR=$(date -u +%H)
             # Sunday = weekly backlog sweep targeting not_attempted reviews
             # (no HOUR check — GHA cron can delay 30+ min past midnight)
             if [ "$DAY" = "7" ]; then
               echo "max_reviews=150" >> $GITHUB_OUTPUT
               echo "reason_filter=not_attempted" >> $GITHUB_OUTPUT
+              echo "market_filter=" >> $GITHUB_OUTPUT
               echo "Weekly backlog sweep: targeting not_attempted reviews"
+            elif [ "$HOUR" = "08" ] || [ "$HOUR" = "09" ]; then
+              # 8 AM UTC run: alternate WE (even days) and OB (odd days)
+              DAY_OF_MONTH=$(date -u +%d)
+              if [ $((DAY_OF_MONTH % 2)) -eq 0 ]; then
+                echo "market_filter=west-end" >> $GITHUB_OUTPUT
+                echo "Dedicated WE collection run"
+              else
+                echo "market_filter=off-broadway" >> $GITHUB_OUTPUT
+                echo "Dedicated OB collection run"
+              fi
+              echo "max_reviews=150" >> $GITHUB_OUTPUT
+              echo "reason_filter=" >> $GITHUB_OUTPUT
             else
               echo "max_reviews=150" >> $GITHUB_OUTPUT
               echo "reason_filter=" >> $GITHUB_OUTPUT
+              echo "market_filter=" >> $GITHUB_OUTPUT
             fi
           else
             echo "max_reviews=${{ inputs.max_reviews }}" >> $GITHUB_OUTPUT
             echo "reason_filter=${{ inputs.reason_filter }}" >> $GITHUB_OUTPUT
+            echo "market_filter=" >> $GITHUB_OUTPUT
           fi
 
       - name: Run review collection
@@ -244,6 +266,7 @@ jobs:
           DOMAIN_FILTER: ${{ inputs.domain_filter }}
           EXCLUDE_DOMAINS: ${{ inputs.exclude_domains }}
           INCOMPLETE_REASON_FILTER: ${{ steps.sched.outputs.reason_filter || inputs.reason_filter }}
+          MARKET_FILTER: ${{ steps.sched.outputs.market_filter || inputs.market_filter }}
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           ARGS=""
@@ -413,6 +436,7 @@ jobs:
           DOMAIN_FILTER="${{ inputs.domain_filter }}"
           EXCLUDE_DOMAINS="${{ inputs.exclude_domains }}"
           REASON_FILTER="${{ steps.sched.outputs.reason_filter || inputs.reason_filter }}"
+          MARKET_FILTER="${{ steps.sched.outputs.market_filter || inputs.market_filter }}"
 
           gh workflow run "Collect Review Texts" \
             -f max_reviews=${{ steps.sched.outputs.max_reviews || '150' }} \
@@ -428,6 +452,7 @@ jobs:
             -f domain_filter="$DOMAIN_FILTER" \
             -f exclude_domains="$EXCLUDE_DOMAINS" \
             -f reason_filter="$REASON_FILTER" \
+            -f market_filter="$MARKET_FILTER" \
             -f chain=true \
             -f remaining_batches="$NEXT_BATCHES" \
             -f chain_browserbase_budget="$NEXT_BB_BUDGET"
@@ -576,6 +601,7 @@ jobs:
           DOMAIN_FILTER: ${{ inputs.domain_filter }}
           EXCLUDE_DOMAINS: ${{ inputs.exclude_domains }}
           INCOMPLETE_REASON_FILTER: ${{ inputs.reason_filter }}
+          MARKET_FILTER: ${{ inputs.market_filter }}
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           ARGS=""

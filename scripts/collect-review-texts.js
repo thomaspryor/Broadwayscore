@@ -167,6 +167,7 @@ const CONFIG = {
   domainFilter: (process.env.DOMAIN_FILTER || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean), // Filter by URL domain(s)
   excludeDomains: (process.env.EXCLUDE_DOMAINS || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean), // Exclude these domains
   incompleteReasonFilter: (process.env.INCOMPLETE_REASON_FILTER || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean), // Filter by incompleteReason
+  marketFilter: process.env.MARKET_FILTER || '', // Filter by market: west-end, off-broadway (matches show ID suffix)
   archiveFirst: process.env.ARCHIVE_FIRST !== 'false', // Archive.org first for older reviews (opt-OUT via ARCHIVE_FIRST=false)
 
   // API Keys
@@ -5193,6 +5194,7 @@ function findReviewsToProcess() {
 
   for (const showId of shows) {
     if (CONFIG.showFilter && !CONFIG.showFilterSet.has(showId)) continue;
+    if (CONFIG.marketFilter && !showId.includes(CONFIG.marketFilter)) continue;
 
     const showDir = path.join(CONFIG.reviewTextsDir, showId);
     const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json'));
