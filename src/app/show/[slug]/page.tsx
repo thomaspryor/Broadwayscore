@@ -414,6 +414,19 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               {/* Full-width separator */}
               <div className="-mx-5 border-t border-white/10" />
 
+              {/* User Rating — compact, internal border stripped */}
+              <div className="[&>div]:border-t-0 [&>div]:mt-0 [&>div]:pt-0 [&>div]:-mb-0">
+                <ShowPageRatingConnected
+                  showId={show.id}
+                  showTitle={show.title}
+                  previewDate={show.previewsStartDate}
+                  closingDate={show.closingDate}
+                />
+              </div>
+
+              {/* Full-width separator */}
+              <div className="-mx-5 border-t border-white/10" />
+
               {/* Action Links + Watchlist — single row, horizontal scroll */}
               <div className="flex gap-2 overflow-x-auto flex-nowrap -mx-5 px-5 pb-1 scrollbar-hide">
                 {show.officialUrl && (
@@ -468,15 +481,6 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 <ShowPageWatchlistButton showId={show.id} />
               </div>
             </div>
-          </div>
-          {/* User Rating — outside the card, lightweight */}
-          <div className="mt-3 px-1 [&>div]:border-t-0 [&>div]:mt-0 [&>div]:pt-0">
-            <ShowPageRatingConnected
-              showId={show.id}
-              showTitle={show.title}
-              previewDate={show.previewsStartDate}
-              closingDate={show.closingDate}
-            />
           </div>
         )}
 
