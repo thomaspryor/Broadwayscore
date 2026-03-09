@@ -38,6 +38,8 @@ const KNOWN_DUPLICATES = {
   'hamilton': ['hamilton', 'hamilton an american musical'],
   'wicked': ['wicked', 'wicked the musical'],
   'aladdin': ['aladdin', 'disneys aladdin', 'aladdin the musical'],
+  'the lion king': ['the lion king', 'lion king', 'disneys the lion king', 'the lion king the musical'],
+  'hercules': ['hercules', 'disneys hercules', 'hercules the musical'],
   'frozen': ['frozen', 'disneys frozen', 'frozen the musical'],
   'shrek': ['shrek', 'shrek the musical'],
   'matilda': ['matilda', 'matilda the musical'],

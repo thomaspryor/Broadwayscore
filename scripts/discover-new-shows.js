@@ -60,6 +60,15 @@ const NON_THEATER_PATTERNS = [
   'jazz at lincoln center', // jazz concerts, not theater
 ];
 
+// West End-specific additional patterns — shared by TodayTix London, OLT, and ShowScore candidate processing
+const WE_EXTRA_PATTERNS = [
+  'dining experience', 'candlelight', 'by candlelight',
+  'discovering dinosaurs', 'prehistoric planet',
+  'classic penguins', // comedy fringe acts
+];
+// Solo performer names (no show title) — likely concerts not theater
+const WE_SOLO_PERFORMER_PATTERN = /^[A-Z][a-z]+ [A-Z][a-z]+$/; // "FirstName LastName" only
+
 // Known non-show titles that TodayTix lists but aren't theatrical productions
 const EXCLUDED_TITLES = [
   'the museum of broadway',
@@ -265,15 +274,6 @@ async function fetchShowsFromTodayTixLondon() {
     return !isNonTheaterContent(s) && !isOneNightShow(s);
   });
 
-  // West End-specific additional filters
-  const WE_EXTRA_PATTERNS = [
-    'dining experience', 'candlelight', 'by candlelight',
-    'discovering dinosaurs', 'prehistoric planet',
-    'classic penguins', // comedy fringe acts
-  ];
-  // Solo performer names (no show title) — likely concerts not theater
-  const soloPerformerPattern = /^[A-Z][a-z]+ [A-Z][a-z]+$/; // "FirstName LastName" only
-
   const seen = new Set();
   const showsList = [];
   for (const show of westEndShows) {
@@ -283,7 +283,7 @@ async function fetchShowsFromTodayTixLondon() {
     const titleLower = title.toLowerCase();
     if (WE_EXTRA_PATTERNS.some(p => titleLower.includes(p))) continue;
     // Skip likely solo concerts (just a person's name)
-    if (soloPerformerPattern.test(title) && !titleLower.includes('musical') && !titleLower.includes('play')) continue;
+    if (WE_SOLO_PERFORMER_PATTERN.test(title) && !titleLower.includes('musical') && !titleLower.includes('play')) continue;
 
     seen.add(title);
     showsList.push({
@@ -300,6 +300,104 @@ async function fetchShowsFromTodayTixLondon() {
 
   console.log(`TodayTix London API: ${allShows.length} total London shows, ${westEndShows.length} West End-tagged, ${showsList.length} unique`);
   return showsList;
+}
+
+// ── Official London Theatre (SOLT) — supplementary WE discovery source ──
+
+const OLT_URL = 'https://officiallondontheatre.com/theatre-tickets/';
+
+async function fetchShowsFromOfficialLondonTheatre() {
+  console.log('Fetching West End shows from Official London Theatre (SOLT)...');
+
+  const result = await fetchPage(OLT_URL, { renderJs: false });
+  const html = result.content;
+
+  if (html.length < 3000) {
+    console.log(`  OLT: content suspiciously short (${html.length} bytes), skipping`);
+    return [];
+  }
+
+  // Parse JSON-LD TheaterEvent blocks (each is a standalone <script type="application/ld+json">)
+  const dom = new JSDOM(html);
+  const ldScripts = dom.window.document.querySelectorAll('script[type="application/ld+json"]');
+  const shows = [];
+  const seen = new Set();
+
+  for (const script of ldScripts) {
+    try {
+      const data = JSON.parse(script.textContent);
+      // Only accept objects where @type is exactly "TheaterEvent" (string, not array)
+      if (typeof data['@type'] !== 'string' || data['@type'] !== 'TheaterEvent') continue;
+      // Skip any with subEvent nesting (season containers)
+      if (data.subEvent) continue;
+
+      const title = (data.name || '').trim()
+        .replace(/&#8217;|&#8216;|[\u2018\u2019]/g, "'")  // Curly quotes → straight
+        .replace(/&#8220;|&#8221;|[\u201C\u201D]/g, '"')  // Curly double quotes → straight
+        .replace(/&#8211;|[\u2013]/g, '–').replace(/&#8212;|[\u2014]/g, '—')
+        .replace(/&#038;/g, '&').replace(/&amp;/g, '&');
+      if (!title || title.length < 3 || seen.has(title.toLowerCase())) continue;
+
+      // Apply shared filters
+      const titleLower = title.toLowerCase();
+      if (NON_THEATER_PATTERNS.some(p => titleLower.includes(p))) continue;
+      if (WE_EXTRA_PATTERNS.some(p => titleLower.includes(p))) continue;
+      if (WE_SOLO_PERFORMER_PATTERN.test(title) && !titleLower.includes('musical') && !titleLower.includes('play')) continue;
+
+      const venue = (typeof data.location === 'object' ? data.location.name : data.location) || 'TBA';
+      const endDate = data.endDate === 'null' || data.endDate === null ? null : data.endDate || null;
+
+      seen.add(titleLower);
+      shows.push({
+        title,
+        venue,
+        slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+        openingDate: data.startDate || null,
+        closingDate: endDate,
+        category: 'west-end',
+        description: (data.description || '').substring(0, 500),
+      });
+    } catch (e) {
+      // Skip malformed JSON-LD blocks
+    }
+  }
+
+  // Guards
+  if (shows.length > 100) {
+    console.log(`  ⚠️  OLT returned ${shows.length} shows (expected ~75). Possible data issue — capping at 100.`);
+    shows.length = 100;
+  }
+  if (shows.length < 5 && shows.length > 0) {
+    console.log(`  ⚠️  OLT returned only ${shows.length} shows (expected ~75). Possible partial fetch — discarding.`);
+    return [];
+  }
+
+  console.log(`  OLT: ${ldScripts.length} JSON-LD blocks, ${shows.length} TheaterEvent shows parsed`);
+  return shows;
+}
+
+// ── Cross-source divergence logging ──
+
+function logWESourceDivergence(todayTixShows, oltShows) {
+  if (todayTixShows.length === 0 || oltShows.length === 0) return; // Can't compare
+
+  const normalize = (t) => t.toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/^(the|a|an) /, '').trim();
+  const ttTitles = new Set(todayTixShows.map(s => normalize(s.title)));
+  const oltTitles = new Set(oltShows.map(s => normalize(s.title)));
+
+  const oltOnly = [...oltTitles].filter(t => !ttTitles.has(t));
+  const ttOnly = [...ttTitles].filter(t => !oltTitles.has(t));
+  const overlap = [...oltTitles].filter(t => ttTitles.has(t)).length;
+
+  console.log(`  WE source overlap: ${overlap} shared, ${oltOnly.length} OLT-only, ${ttOnly.length} TodayTix-only`);
+  if (oltOnly.length > 0) {
+    const display = oltOnly.slice(0, 10);
+    console.log(`  OLT-only shows: ${display.join(', ')}${oltOnly.length > 10 ? ` ...+${oltOnly.length - 10} more` : ''}`);
+  }
+  if (ttOnly.length > 0) {
+    const display = ttOnly.slice(0, 10);
+    console.log(`  TodayTix-only shows: ${display.join(', ')}${ttOnly.length > 10 ? ` ...+${ttOnly.length - 10} more` : ''}`);
+  }
 }
 
 // ── TodayTix search for ShowScore candidate validation ──
@@ -495,12 +593,6 @@ async function consumeShowScoreCandidatesFile() {
   let ttMissing = 0;
   let filteredNonTheater = 0;
   let filteredOneNight = 0;
-
-  // West End-specific extra non-theater patterns
-  const WE_EXTRA_PATTERNS = [
-    'dining experience', 'candlelight', 'by candlelight',
-    'discovering dinosaurs', 'prehistoric planet',
-  ];
 
   for (const candidate of candidates) {
     const titleLower = candidate.title.toLowerCase();
@@ -779,15 +871,41 @@ async function discoverShows() {
   }
   console.log('');
 
-  // West End discovery via TodayTix London API
+  // West End discovery via TodayTix London API + Official London Theatre (SOLT)
   if (includeWestEnd) {
-    try {
-      const westEndShows = await fetchShowsFromTodayTixLondon();
-      console.log(`Found ${westEndShows.length} West End shows via TodayTix London API`);
-      discoveredShows.push(...westEndShows);
-    } catch (e) {
-      console.log(`⚠️  TodayTix London API failed (${e.message}), skipping West End discovery`);
+    // Fetch both sources in parallel
+    const [todayTixResult, oltResult] = await Promise.allSettled([
+      fetchShowsFromTodayTixLondon(),
+      fetchShowsFromOfficialLondonTheatre()
+    ]);
+
+    const todayTixWEShows = todayTixResult.status === 'fulfilled' ? todayTixResult.value : [];
+    const oltShows = oltResult.status === 'fulfilled' ? oltResult.value : [];
+
+    if (todayTixResult.status === 'rejected') {
+      console.log(`⚠️  TodayTix London API failed (${todayTixResult.reason?.message}), continuing with OLT`);
+    } else {
+      console.log(`Found ${todayTixWEShows.length} West End shows via TodayTix London API`);
+      if (todayTixWEShows.length > 0 && todayTixWEShows.length < 20) {
+        console.log(`⚠️  WARNING: TodayTix London returned unusually few shows (${todayTixWEShows.length}). Expected 50+.`);
+      }
     }
+
+    if (oltResult.status === 'rejected') {
+      console.log(`⚠️  OLT fetch failed (${oltResult.reason?.message}), continuing with TodayTix only`);
+    } else {
+      console.log(`Found ${oltShows.length} West End shows via Official London Theatre`);
+    }
+
+    if (todayTixWEShows.length === 0 && oltShows.length === 0) {
+      console.log(`⚠️  CRITICAL: Both West End sources returned 0 shows — check API/scraper health`);
+    }
+
+    // Cross-source divergence logging (diagnostic)
+    logWESourceDivergence(todayTixWEShows, oltShows);
+
+    // TodayTix first (richer metadata with todayTixCategory), OLT second — dedup pipeline handles overlap
+    discoveredShows.push(...todayTixWEShows, ...oltShows);
     console.log('');
   }
 
