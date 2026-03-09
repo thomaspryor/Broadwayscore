@@ -84,7 +84,7 @@ export function LotteryTable({ data }: LotteryTableProps) {
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     } else {
       setSortColumn(column);
-      setSortDirection(column === 'show' || column === 'platform' ? 'asc' : 'asc');
+      setSortDirection(column === 'score' ? 'desc' : 'asc');
     }
   };
 
@@ -260,7 +260,7 @@ export function RushTable({ data }: RushTableProps) {
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     } else {
       setSortColumn(column);
-      setSortDirection(column === 'show' || column === 'type' ? 'asc' : 'asc');
+      setSortDirection(column === 'score' ? 'desc' : 'asc');
     }
   };
 
