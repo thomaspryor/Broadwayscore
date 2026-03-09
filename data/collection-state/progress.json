@@ -42,7 +42,17 @@
     "sinatra-the-musical-west-end-2026/london-box-office--john-yap.json",
     "sinatra-the-musical-west-end-2026/london-box-office--phil-willmott.json",
     "the-choir-of-man-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
-    "romeo-and-juliet-west-end-2026/nytimes--unknown.json"
+    "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
+    "hadestown-west-end-2024/variety--marilyn-stasio.json",
+    "just-in-time-2025/hollywood-reporter--unknown.json",
+    "oh-mary-west-end-2025/variety--unknown.json",
+    "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
+    "just-in-time-2025/newsday--unknown.json",
+    "just-in-time-2025/amny--unknown.json",
+    "just-in-time-2025/billboard--unknown.json",
+    "matilda-the-musical-west-end-2021/whatsonstage--andy-plaice.json",
+    "stranger-things-2024/northjerseycom--unknown.json",
+    "stranger-things-2024/people--unknown.json"
   ],
   "failed": [
     "paranormal-activity-west-end-2025/thestage--tim-wicker.json",
@@ -87,16 +97,28 @@
       "romeo-and-juliet-west-end-2026/slantmagazine--dan-rubins.json",
       "sinatra-the-musical-west-end-2026/london-box-office--john-yap.json",
       "sinatra-the-musical-west-end-2026/london-box-office--phil-willmott.json",
-      "the-choir-of-man-west-end-2026/london-box-office--shehrazade-zafar-arif.json"
+      "the-choir-of-man-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+      "matilda-the-musical-west-end-2021/whatsonstage--andy-plaice.json",
+      "stranger-things-2024/northjerseycom--unknown.json",
+      "stranger-things-2024/people--unknown.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
+      "hadestown-west-end-2024/variety--marilyn-stasio.json",
+      "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
+      "oh-mary-west-end-2025/variety--unknown.json"
+    ],
     "browserbase": [
       "data/review-texts/romeo-and-juliet-west-end-2026/hollywood-reporter--unknown.json",
       "romeo-and-juliet-west-end-2026/hollywood-reporter--unknown.json",
       "data/review-texts/romeo-and-juliet-west-end-2026/newsday--linda-winer.json",
       "romeo-and-juliet-west-end-2026/newsday--linda-winer.json",
       "data/review-texts/romeo-and-juliet-west-end-2026/amny--matt-windman.json",
-      "romeo-and-juliet-west-end-2026/amny--matt-windman.json"
+      "romeo-and-juliet-west-end-2026/amny--matt-windman.json",
+      "data/review-texts/just-in-time-2025/hollywood-reporter--unknown.json",
+      "just-in-time-2025/hollywood-reporter--unknown.json",
+      "data/review-texts/just-in-time-2025/amny--unknown.json",
+      "just-in-time-2025/amny--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -116,11 +138,14 @@
     "archive": [
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
       "romeo-and-juliet-west-end-2026/vulture--unknown.json",
-      "romeo-and-juliet-west-end-2026/ew--unknown.json"
+      "romeo-and-juliet-west-end-2026/ew--unknown.json",
+      "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
+      "just-in-time-2025/newsday--unknown.json",
+      "just-in-time-2025/billboard--unknown.json"
     ]
   },
   "startTime": "2026-03-09T14:46:28.645Z",
-  "lastProcessed": "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
+  "lastProcessed": "stranger-things-2024/people--unknown.json",
   "log": [
     {
       "t": "2026-03-09T14:51:21.007Z",
@@ -209,6 +234,28 @@
       "t": "2026-03-09T15:04:12.924Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-09T15:42:26.657Z",
+      "event": "bb-session",
+      "session": "5771d14a",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/sarah-hyland-broadway-cast-of-j"
+    },
+    {
+      "t": "2026-03-09T15:42:27.715Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-09T15:43:17.739Z",
+      "event": "bb-session",
+      "session": "679f76cc",
+      "url": "https://www.amny.com/entertainment/broadway/broadway-sarah-hyland-just-in-time-o"
+    },
+    {
+      "t": "2026-03-09T15:43:18.897Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
