@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-09T05:28:54.531Z",
-  "processed": 123,
-  "failed": 47,
-  "successRate": "72.4%",
+  "updatedAt": "2026-03-09T05:38:08.425Z",
+  "processed": 130,
+  "failed": 50,
+  "successRate": "72.2%",
   "tierBreakdown": {
-    "playwright": 53,
+    "playwright": 56,
     "amp": 20,
     "browserbase": 16,
     "directCookies": 1,
-    "scrapingbee": 29,
+    "scrapingbee": 31,
     "brightdata": 0,
     "archiveToday": 27,
-    "archive": 23
+    "archive": 27
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-09T04:46:42.199Z",
-      "event": "bb-session",
-      "session": "3ef80aeb",
-      "url": "https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24"
-    },
-    {
-      "t": "2026-03-09T04:46:43.490Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-03-09T04:47:20.796Z",
-      "event": "bb-session",
-      "session": "7f900f2d",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
-    },
-    {
-      "t": "2026-03-09T04:47:22.122Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-09T04:48:43.050Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-03-09T05:09:52.171Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-09T05:28:57.306Z",
+      "event": "bb-session",
+      "session": "33313c9a",
+      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
+    },
+    {
+      "t": "2026-03-09T05:28:58.625Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-09T05:29:26.824Z",
+      "event": "bb-session",
+      "session": "404c75a3",
+      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
+    },
+    {
+      "t": "2026-03-09T05:29:28.154Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
