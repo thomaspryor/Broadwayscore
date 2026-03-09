@@ -38,8 +38,9 @@ function loadReviewTexts(showId) {
     try {
       const data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf-8'));
 
-      // Skip reviews flagged as wrong production or wrong show
-      if (data.wrongProduction || data.wrongShow) continue;
+      // Skip excluded reviews
+      if (data.duplicateOf || data.wrongProduction || data.wrongShow || data.wrongAttribution ||
+          data.isRoundupArticle || data.rejectionReason || data.contentTier === 'invalid') continue;
 
       // Collect all available text (prefer full text, fall back to excerpts)
       const textParts = [];
@@ -49,6 +50,8 @@ function loadReviewTexts(showId) {
         if (data.dtliExcerpt) textParts.push(data.dtliExcerpt);
         if (data.bwwExcerpt) textParts.push(data.bwwExcerpt);
         if (data.showScoreExcerpt) textParts.push(data.showScoreExcerpt);
+        if (data.nycTheatreExcerpt) textParts.push(data.nycTheatreExcerpt);
+        if (data.lboRoundupExcerpt) textParts.push(data.lboRoundupExcerpt);
       }
 
       if (textParts.length > 0) {

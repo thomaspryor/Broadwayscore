@@ -2706,9 +2706,10 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
 
           if (!data.lboRoundupExcerpt) {
             data.lboRoundupExcerpt = lboReview.excerpt;
-            if (lboReview.score !== null && lboReview.score !== undefined && !data.score) {
-              data.score = lboReview.score;
+            if (lboReview.score !== null && lboReview.score !== undefined && !data.originalScore) {
+              data.originalScore = lboReview.score;
               data.scoreSource = 'lbo-star-rating';
+              data.scorePriority = 'P0';
             }
             if (!data.sources) data.sources = [];
             if (!data.sources.includes('lbo-roundup')) data.sources.push('lbo-roundup');

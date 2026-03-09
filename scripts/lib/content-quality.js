@@ -1240,6 +1240,10 @@ function getScrapingPriority(review) {
       return hasUrl
         ? { priority: 3, reason: 'Stub with URL - attempt scraping' }
         : { priority: 0, reason: 'Stub without URL - lowest priority' };
+    case 'needs-rescrape':
+      return hasUrl
+        ? { priority: 5, reason: 'Needs rescrape with URL - previous text was garbage' }
+        : { priority: 2, reason: 'Needs rescrape without URL - find URL first' };
     case 'invalid':
       return { priority: -1, reason: 'Invalid - needs manual review or deletion' };
     case 'complete':
