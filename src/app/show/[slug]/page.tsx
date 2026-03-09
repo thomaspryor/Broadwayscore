@@ -427,57 +427,59 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               {/* Full-width separator */}
               <div className="-mx-5 border-t border-white/10" />
 
-              {/* Action Links + Watchlist — single row, horizontal scroll */}
-              <div className="flex gap-2 overflow-x-auto flex-nowrap -mx-5 px-5 pb-1 scrollbar-hide">
-                {show.officialUrl && (
-                  <TicketLink
-                    showName={show.title}
-                    showId={show.id}
-                    platform="Official Site"
-                    url={show.officialUrl}
-                    pageType="show"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10 whitespace-nowrap flex-shrink-0"
-                  >
-                    <GlobeIcon />
-                    Official Site
-                  </TicketLink>
-                )}
-                {show.ticketLinks && show.ticketLinks.length > 0 && show.status !== 'closed' && show.ticketLinks.map((link, i) => (
-                  <TicketLink
-                    key={i}
-                    showName={show.title}
-                    showId={show.id}
-                    platform={link.platform}
-                    url={link.url}
-                    pageType="show"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10 whitespace-nowrap flex-shrink-0"
-                  >
-                    <TicketIcon />
-                    {link.platform}
-                  </TicketLink>
-                ))}
-                {show.trailerUrl && (
-                  <a
-                    href={show.trailerUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10 whitespace-nowrap flex-shrink-0"
-                  >
-                    <PlayIcon />
-                    Trailer
-                  </a>
-                )}
-                {featureFlags.discountTickets && lotteryRush && show.status !== 'closed' && (
-                  <a
-                    href="#discount-tickets"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 hover:text-emerald-300 text-xs leading-none font-medium transition-colors border border-emerald-500/30 whitespace-nowrap flex-shrink-0"
-                  >
-                    <TicketIcon />
-                    {lotteryRush.lottery ? `$${lotteryRush.lottery.price} Lottery` : lotteryRush.rush ? `$${lotteryRush.rush.price} Rush` : 'Discount Tickets'}
-                  </a>
-                )}
-                {/* Spacer pushes watchlist right */}
-                <div className="flex-1 min-w-[8px] flex-shrink-0" />
+              {/* Action Links + Watchlist — links scroll, watchlist always visible */}
+              <div className="flex items-center gap-2">
+                <div className="flex-1 min-w-0 overflow-x-auto flex-nowrap scrollbar-hide">
+                  <div className="flex gap-2 pb-1">
+                    {show.officialUrl && (
+                      <TicketLink
+                        showName={show.title}
+                        showId={show.id}
+                        platform="Official Site"
+                        url={show.officialUrl}
+                        pageType="show"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10 whitespace-nowrap flex-shrink-0"
+                      >
+                        <GlobeIcon />
+                        Official Site
+                      </TicketLink>
+                    )}
+                    {show.ticketLinks && show.ticketLinks.length > 0 && show.status !== 'closed' && show.ticketLinks.map((link, i) => (
+                      <TicketLink
+                        key={i}
+                        showName={show.title}
+                        showId={show.id}
+                        platform={link.platform}
+                        url={link.url}
+                        pageType="show"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10 whitespace-nowrap flex-shrink-0"
+                      >
+                        <TicketIcon />
+                        {link.platform}
+                      </TicketLink>
+                    ))}
+                    {show.trailerUrl && (
+                      <a
+                        href={show.trailerUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10 whitespace-nowrap flex-shrink-0"
+                      >
+                        <PlayIcon />
+                        Trailer
+                      </a>
+                    )}
+                    {featureFlags.discountTickets && lotteryRush && show.status !== 'closed' && (
+                      <a
+                        href="#discount-tickets"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 hover:text-emerald-300 text-xs leading-none font-medium transition-colors border border-emerald-500/30 whitespace-nowrap flex-shrink-0"
+                      >
+                        <TicketIcon />
+                        {lotteryRush.lottery ? `$${lotteryRush.lottery.price} Lottery` : lotteryRush.rush ? `$${lotteryRush.rush.price} Rush` : 'Discount Tickets'}
+                      </a>
+                    )}
+                  </div>
+                </div>
                 <ShowPageWatchlistButton showId={show.id} />
               </div>
             </div>
