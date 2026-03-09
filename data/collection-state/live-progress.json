@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-09T04:57:55.094Z",
-  "processed": 84,
-  "failed": 26,
-  "successRate": "76.4%",
+  "updatedAt": "2026-03-09T05:01:51.839Z",
+  "processed": 92,
+  "failed": 28,
+  "successRate": "76.7%",
   "tierBreakdown": {
-    "playwright": 31,
+    "playwright": 35,
     "amp": 20,
-    "browserbase": 14,
+    "browserbase": 16,
     "directCookies": 1,
-    "scrapingbee": 17,
+    "scrapingbee": 19,
     "brightdata": 0,
     "archiveToday": 18,
-    "archive": 18
+    "archive": 19
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 11,
   "recentActivity": [
-    {
-      "t": "2026-03-09T04:38:31.076Z",
-      "event": "bb-session",
-      "session": "aa72aab7",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
-    },
-    {
-      "t": "2026-03-09T04:38:32.385Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-09T04:41:32.970Z",
       "event": "bb-session",
@@ -113,6 +102,28 @@
       "t": "2026-03-09T04:53:01.108Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-09T04:58:18.131Z",
+      "event": "bb-session",
+      "session": "f35fba54",
+      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
+    },
+    {
+      "t": "2026-03-09T04:58:19.299Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-09T05:01:26.219Z",
+      "event": "bb-session",
+      "session": "997a349d",
+      "url": "https://deadline.com/2026/02/jake-shane-broadway-all-out-comedy-about-ambition-1"
+    },
+    {
+      "t": "2026-03-09T05:01:27.404Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
