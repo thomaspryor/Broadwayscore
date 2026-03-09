@@ -1,0 +1,160 @@
+#!/usr/bin/env node
+/**
+ * posthog-weekly-insights.js — Query PostHog API and create a GitHub issue summary.
+ *
+ * Env: POSTHOG_PERSONAL_API_KEY, GITHUB_TOKEN (auto-provided in CI)
+ * Usage: node scripts/posthog-weekly-insights.js
+ */
+
+const API_BASE = 'https://us.posthog.com';
+const PROJECT_ID = '332742';
+const API_KEY = process.env.POSTHOG_PERSONAL_API_KEY;
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const REPO = 'thomaspryor/Broadwayscore';
+
+async function phQuery(hogql) {
+  const res = await fetch(`${API_BASE}/api/projects/${PROJECT_ID}/query/`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ query: { kind: 'HogQLQuery', query: hogql } }),
+  });
+  if (!res.ok) throw new Error(`PostHog API ${res.status}: ${await res.text()}`);
+  const data = await res.json();
+  return data.results || [];
+}
+
+async function getTopPages() {
+  return phQuery(`
+    SELECT properties.$pathname AS page, count() AS views, count(DISTINCT person_id) AS users
+    FROM events
+    WHERE event = '$pageview' AND timestamp > now() - interval 7 day
+    GROUP BY page ORDER BY views DESC LIMIT 20
+  `);
+}
+
+async function getTopEvents() {
+  return phQuery(`
+    SELECT event, count() AS total, count(DISTINCT person_id) AS users
+    FROM events
+    WHERE timestamp > now() - interval 7 day
+      AND event NOT IN ('$pageview', '$pageleave', '$autocapture', '$rageclick', '$feature_flag_called')
+    GROUP BY event ORDER BY total DESC LIMIT 15
+  `);
+}
+
+async function getTrafficSummary() {
+  return phQuery(`
+    SELECT
+      count(DISTINCT person_id) AS unique_users,
+      countIf(event = '$pageview') AS pageviews,
+      countIf(event = '$session_start') AS sessions
+    FROM events
+    WHERE timestamp > now() - interval 7 day
+  `);
+}
+
+async function getRageClicks() {
+  return phQuery(`
+    SELECT properties.$pathname AS page, count() AS rage_clicks
+    FROM events
+    WHERE event = '$rageclick' AND timestamp > now() - interval 7 day
+    GROUP BY page ORDER BY rage_clicks DESC LIMIT 10
+  `);
+}
+
+async function getSearchTerms() {
+  return phQuery(`
+    SELECT properties.query AS term, count() AS searches
+    FROM events
+    WHERE event = 'search_performed' AND timestamp > now() - interval 7 day
+      AND properties.query IS NOT NULL AND properties.query != ''
+    GROUP BY term ORDER BY searches DESC LIMIT 15
+  `);
+}
+
+async function getTicketClicks() {
+  return phQuery(`
+    SELECT properties.show_name AS show, properties.platform AS platform, count() AS clicks
+    FROM events
+    WHERE event = 'ticket_link_click' AND timestamp > now() - interval 7 day
+    GROUP BY show, platform ORDER BY clicks DESC LIMIT 15
+  `);
+}
+
+function mdTable(headers, rows) {
+  if (!rows || rows.length === 0) return '_No data_\n';
+  const lines = [];
+  lines.push(`| ${headers.join(' | ')} |`);
+  lines.push(`| ${headers.map(() => '---').join(' | ')} |`);
+  for (const row of rows) {
+    lines.push(`| ${row.map(v => String(v ?? '—')).join(' | ')} |`);
+  }
+  return lines.join('\n') + '\n';
+}
+
+async function main() {
+  if (!API_KEY) { console.error('POSTHOG_PERSONAL_API_KEY not set'); process.exit(1); }
+
+  console.log('Querying PostHog...');
+
+  const [traffic, topPages, topEvents, rageClicks, searchTerms, ticketClicks] = await Promise.all([
+    getTrafficSummary().catch(e => { console.warn('Traffic query failed:', e.message); return []; }),
+    getTopPages().catch(e => { console.warn('Top pages failed:', e.message); return []; }),
+    getTopEvents().catch(e => { console.warn('Events failed:', e.message); return []; }),
+    getRageClicks().catch(e => { console.warn('Rage clicks failed:', e.message); return []; }),
+    getSearchTerms().catch(e => { console.warn('Search terms failed:', e.message); return []; }),
+    getTicketClicks().catch(e => { console.warn('Ticket clicks failed:', e.message); return []; }),
+  ]);
+
+  const now = new Date();
+  const weekAgo = new Date(now - 7 * 86400000);
+  const dateRange = `${weekAgo.toISOString().slice(0, 10)} to ${now.toISOString().slice(0, 10)}`;
+
+  let body = `## Weekly Analytics Summary\n**Period:** ${dateRange}\n\n`;
+
+  // Traffic overview
+  if (traffic.length > 0) {
+    const [users, pageviews, sessions] = traffic[0];
+    body += `### Traffic Overview\n`;
+    body += `- **Unique Users:** ${Number(users).toLocaleString()}\n`;
+    body += `- **Pageviews:** ${Number(pageviews).toLocaleString()}\n`;
+    body += `- **Sessions:** ${Number(sessions).toLocaleString()}\n\n`;
+  }
+
+  body += `### Top Pages\n${mdTable(['Page', 'Views', 'Users'], topPages)}\n`;
+  body += `### Custom Events\n${mdTable(['Event', 'Count', 'Users'], topEvents)}\n`;
+  body += `### Ticket Clicks\n${mdTable(['Show', 'Platform', 'Clicks'], ticketClicks)}\n`;
+  body += `### Search Terms\n${mdTable(['Query', 'Searches'], searchTerms)}\n`;
+  body += `### Rage Clicks (UX friction)\n${mdTable(['Page', 'Rage Clicks'], rageClicks)}\n`;
+  body += `---\n🤖 Auto-generated by PostHog Weekly Insights\n`;
+
+  console.log('\n' + body);
+
+  // Create GitHub issue
+  if (GITHUB_TOKEN) {
+    const title = `PostHog Weekly Insights — ${now.toISOString().slice(0, 10)}`;
+    const res = await fetch(`https://api.github.com/repos/${REPO}/issues`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${GITHUB_TOKEN}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title,
+        body,
+        labels: ['analytics', 'automated'],
+      }),
+    });
+    if (res.ok) {
+      const issue = await res.json();
+      console.log(`Created issue: ${issue.html_url}`);
+    } else {
+      console.error(`GitHub issue creation failed: ${res.status} ${await res.text()}`);
+    }
+  }
+}
+
+main().catch(e => { console.error(e); process.exit(1); });

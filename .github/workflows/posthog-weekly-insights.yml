@@ -1,0 +1,26 @@
+name: PostHog Weekly Insights
+on:
+  schedule:
+    - cron: '0 14 * * 1'  # Monday 2 PM UTC (9 AM EST)
+  workflow_dispatch: {}
+
+jobs:
+  insights:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Query PostHog and create issue
+        env:
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/posthog-weekly-insights.js
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'PostHog Weekly Insights Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

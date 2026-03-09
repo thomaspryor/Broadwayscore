@@ -1,0 +1,97 @@
+name: Lighthouse Post-Deploy Audit
+on:
+  workflow_run:
+    workflows: ["Deploy to Vercel"]
+    types: [completed]
+  workflow_dispatch: {}
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install Lighthouse
+        run: npm install -g lighthouse chrome-launcher
+      - name: Run Lighthouse audits
+        id: audit
+        run: |
+          URLS=(
+            "https://broadwayscorecard.com/"
+            "https://broadwayscorecard.com/show/wicked"
+            "https://broadwayscorecard.com/browse/best-broadway-musicals"
+          )
+          RESULTS=""
+          ALL_PASS=true
+
+          for url in "${URLS[@]}"; do
+            echo "Testing: $url"
+            # Run 3 times, take best scores
+            BEST_PERF=0; BEST_A11Y=0; BEST_BP=0; BEST_SEO=0
+            for i in 1 2 3; do
+              OUTPUT=$(lighthouse "$url" \
+                --chrome-flags="--headless --no-sandbox" \
+                --output=json --quiet 2>/dev/null || echo '{}')
+              PERF=$(echo "$OUTPUT" | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');try{const j=JSON.parse(d);console.log(Math.round((j.categories?.performance?.score||0)*100))}catch{console.log(0)}")
+              A11Y=$(echo "$OUTPUT" | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');try{const j=JSON.parse(d);console.log(Math.round((j.categories?.accessibility?.score||0)*100))}catch{console.log(0)}")
+              BP=$(echo "$OUTPUT" | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');try{const j=JSON.parse(d);console.log(Math.round((j.categories?.['best-practices']?.score||0)*100))}catch{console.log(0)}")
+              SEO=$(echo "$OUTPUT" | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');try{const j=JSON.parse(d);console.log(Math.round((j.categories?.seo?.score||0)*100))}catch{console.log(0)}")
+              [ "$PERF" -gt "$BEST_PERF" ] && BEST_PERF=$PERF
+              [ "$A11Y" -gt "$BEST_A11Y" ] && BEST_A11Y=$A11Y
+              [ "$BP" -gt "$BEST_BP" ] && BEST_BP=$BP
+              [ "$SEO" -gt "$BEST_SEO" ] && BEST_SEO=$SEO
+            done
+
+            # Determine status emoji
+            perf_status=$( [ "$BEST_PERF" -ge 70 ] && echo "🟢" || echo "🔴" )
+            a11y_status=$( [ "$BEST_A11Y" -ge 90 ] && echo "🟢" || echo "🔴" )
+            bp_status=$( [ "$BEST_BP" -ge 80 ] && echo "🟢" || echo "🔴" )
+            seo_status=$( [ "$BEST_SEO" -ge 90 ] && echo "🟢" || echo "🔴" )
+
+            PAGE=$(echo "$url" | sed 's|https://broadwayscorecard.com||' | sed 's|^$|/|')
+            RESULTS="${RESULTS}| ${PAGE} | ${perf_status} ${BEST_PERF} | ${a11y_status} ${BEST_A11Y} | ${bp_status} ${BEST_BP} | ${seo_status} ${BEST_SEO} |\n"
+
+            # Check thresholds
+            [ "$BEST_PERF" -lt 70 ] || [ "$BEST_A11Y" -lt 90 ] || [ "$BEST_BP" -lt 80 ] || [ "$BEST_SEO" -lt 90 ] && ALL_PASS=false
+          done
+
+          # Build summary
+          BODY="## Lighthouse Post-Deploy Audit\n\n"
+          BODY="${BODY}| Page | Performance | Accessibility | Best Practices | SEO |\n"
+          BODY="${BODY}| --- | --- | --- | --- | --- |\n"
+          BODY="${BODY}${RESULTS}\n"
+          BODY="${BODY}Thresholds: Perf ≥70, A11y ≥90, BP ≥80, SEO ≥90\n\n"
+          BODY="${BODY}---\n🤖 Auto-generated after Vercel deploy\n"
+
+          echo -e "$BODY" >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "$ALL_PASS" = false ]; then
+            echo "has_regression=true" >> "$GITHUB_OUTPUT"
+            echo -e "$BODY" > /tmp/lighthouse-body.md
+          fi
+
+      - name: Create issue on regression
+        if: steps.audit.outputs.has_regression == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Close previous lighthouse issues
+          gh issue list --repo thomaspryor/Broadwayscore --label lighthouse --state open --json number -q '.[].number' | while read num; do
+            gh issue close "$num" --repo thomaspryor/Broadwayscore 2>/dev/null || true
+          done
+          # Create new issue
+          gh issue create --repo thomaspryor/Broadwayscore \
+            --title "Lighthouse regression detected — $(date +%Y-%m-%d)" \
+            --body-file /tmp/lighthouse-body.md \
+            --label lighthouse,automated
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Lighthouse Post-Deploy Audit Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

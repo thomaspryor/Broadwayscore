@@ -6,8 +6,8 @@ import Script from 'next/script';
 import { useEffect, useState } from 'react';
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
-const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID;
 const SENTRY_DSN = process.env.NEXT_PUBLIC_SENTRY_DSN;
+const POSTHOG_KEY = 'phc_xVenlxA1HzyJz0Yj1j3UkF9JVLCPe86Td6vQEK41SF7';
 
 export default function AnalyticsWrapper() {
   const [isDisabled, setIsDisabled] = useState(false);
@@ -16,6 +16,24 @@ export default function AnalyticsWrapper() {
     const disabled = localStorage.getItem('va-disable') === 'true';
     setIsDisabled(disabled);
   }, []);
+
+  // PostHog — session recordings, heatmaps, autocapture (replaces Clarity)
+  useEffect(() => {
+    if (isDisabled) return;
+    import('posthog-js').then(({ default: posthog }) => {
+      posthog.init(POSTHOG_KEY, {
+        api_host: 'https://us.i.posthog.com',
+        autocapture: true,
+        capture_pageview: true,
+        capture_pageleave: true,
+        enable_heatmaps: true,
+        session_recording: { maskAllInputs: false },
+        loaded: (ph) => {
+          if (process.env.NODE_ENV === 'development') ph.opt_out_capturing();
+        },
+      });
+    });
+  }, [isDisabled]);
 
   // Lightweight Sentry init — loads SDK from CDN, no npm dependency
   // Deferred to idle time to avoid blocking critical rendering (TBT reduction)
@@ -48,7 +66,7 @@ export default function AnalyticsWrapper() {
               /^safari(-web)?-extension:\/\//i,
               /^webkit-masked-url:\/\//i,
               /translate\.google/,
-              /clarity\.ms/,
+              /posthog\.com/,
               /googletagmanager\.com/,
             ],
             ignoreErrors: [
@@ -124,17 +142,6 @@ export default function AnalyticsWrapper() {
             `}
           </Script>
         </>
-      )}
-      {CLARITY_ID && (
-        <Script id="clarity-init" strategy="lazyOnload">
-          {`
-            (function(c,l,a,r,i,t,y){
-              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window,document,"clarity","script","${CLARITY_ID}");
-          `}
-        </Script>
       )}
     </>
   );
