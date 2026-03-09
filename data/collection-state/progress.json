@@ -38,7 +38,14 @@
     "hercules-west-end-2025/variety--david-benedict.json",
     "just-in-time-2025/newyorker--unknown.json",
     "just-in-time-2025/nytimes--adam-feldman.json",
-    "la-ternura-off-broadway-2025/nyt-theater--unknown.json"
+    "la-ternura-off-broadway-2025/nyt-theater--unknown.json",
+    "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+    "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json",
+    "little-shop-of-horrors-off-broadway-2019/nytimes--ben-brantley.json",
+    "mamma-mia-west-end-2021/variety--matt-wolf.json",
+    "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+    "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
+    "maybe-happy-ending-2024/vulture--sara-holdren.json"
   ],
   "failed": [
     "an-ark-off-broadway-2026/new-jersey-newsroom--micheal-sommers.json",
@@ -61,7 +68,10 @@
     "titanique-west-end-2024/standard--nick-curtis.json",
     "dirty-books-off-broadway-2025/nytg--unknown.json",
     "hadestown-2019/newyorker--hilton-als.json",
-    "la-llamada-off-broadway-2024/nytg--unknown.json"
+    "la-llamada-off-broadway-2024/nytg--unknown.json",
+    "la-ternura-off-broadway-2025/nytg--unknown.json",
+    "los-soles-truncos-off-broadway-2025/nytg--unknown.json",
+    "maybe-happy-ending-2024/newyorker--naomi-fry.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -84,7 +94,8 @@
       "drunk-romeo-and-juliet-off-broadway-2025/nytg--unknown.json",
       "hamilton-2015/nyt-theater--jonathan-mandell.json",
       "heathers-the-musical-off-broadway-2025/nytg--caroline-cao.json",
-      "just-in-time-2025/nytimes--adam-feldman.json"
+      "just-in-time-2025/nytimes--adam-feldman.json",
+      "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -94,7 +105,9 @@
       "data/review-texts/bigfoot-off-broadway-2026/vulture--unknown.json",
       "bigfoot-off-broadway-2026/vulture--unknown.json",
       "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
-      "hercules-west-end-2025/variety--david-benedict.json"
+      "hercules-west-end-2025/variety--david-benedict.json",
+      "data/review-texts/mamma-mia-west-end-2021/variety--matt-wolf.json",
+      "mamma-mia-west-end-2021/variety--matt-wolf.json"
     ],
     "browserbase": [
       "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
@@ -102,7 +115,9 @@
       "data/review-texts/hadestown-2019/hollywood-reporter--david-rooney.json",
       "hadestown-2019/hollywood-reporter--david-rooney.json",
       "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json",
-      "hamilton-2015/hollywood-reporter--david-rooney.json"
+      "hamilton-2015/hollywood-reporter--david-rooney.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -132,18 +147,23 @@
       "data/review-texts/paddington-the-musical-west-end-2025/broadwayworld--christiana-rose.json",
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/broadwayworld--alexander-cohen.json",
       "data/review-texts/the-hunger-games-on-stage-west-end-2025/broadwayworld--cindy-marcolina.json",
-      "data/review-texts/titanique-west-end-2024/standard--nick-curtis.json"
+      "data/review-texts/titanique-west-end-2024/standard--nick-curtis.json",
+      "data/review-texts/maybe-happy-ending-2024/newyorker--naomi-fry.json"
     ],
     "archive": [
       "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
       "matilda-the-musical-west-end-2021/thestage--lisa-martland.json",
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
       "hercules-west-end-2025/nytimes--matt-wolf.json",
-      "la-ternura-off-broadway-2025/nyt-theater--unknown.json"
+      "la-ternura-off-broadway-2025/nyt-theater--unknown.json",
+      "little-shop-of-horrors-off-broadway-2019/nytimes--ben-brantley.json",
+      "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+      "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
+      "maybe-happy-ending-2024/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-03-09T04:19:45.856Z",
-  "lastProcessed": "la-ternura-off-broadway-2025/nyt-theater--unknown.json",
+  "lastProcessed": "maybe-happy-ending-2024/vulture--sara-holdren.json",
   "log": [
     {
       "t": "2026-03-09T04:38:31.076Z",
@@ -177,6 +197,28 @@
       "t": "2026-03-09T04:41:54.190Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-09T04:43:36.454Z",
+      "event": "bb-session",
+      "session": "93c108a3",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-09T04:43:37.671Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-09T04:46:42.199Z",
+      "event": "bb-session",
+      "session": "3ef80aeb",
+      "url": "https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24"
+    },
+    {
+      "t": "2026-03-09T04:46:43.490Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }

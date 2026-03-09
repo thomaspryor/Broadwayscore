@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-09T04:43:17.217Z",
-  "processed": 39,
-  "failed": 21,
-  "successRate": "65.0%",
+  "updatedAt": "2026-03-09T04:47:17.840Z",
+  "processed": 46,
+  "failed": 24,
+  "successRate": "65.7%",
   "tierBreakdown": {
-    "playwright": 19,
-    "amp": 8,
-    "browserbase": 6,
+    "playwright": 20,
+    "amp": 10,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 8,
     "brightdata": 0,
-    "archiveToday": 16,
-    "archive": 5
+    "archiveToday": 17,
+    "archive": 9
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-03-09T04:38:31.076Z",
@@ -47,6 +47,28 @@
       "t": "2026-03-09T04:41:54.190Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-09T04:43:36.454Z",
+      "event": "bb-session",
+      "session": "93c108a3",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-09T04:43:37.671Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-09T04:46:42.199Z",
+      "event": "bb-session",
+      "session": "3ef80aeb",
+      "url": "https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24"
+    },
+    {
+      "t": "2026-03-09T04:46:43.490Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
