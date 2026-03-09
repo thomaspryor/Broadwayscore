@@ -1,22 +1,55 @@
 {
   "processed": [
-    "1536-west-end-2026/london-box-office--stuart-king.json"
+    "my-neighbour-totoro-west-end-2025/independent--annabel-nugent.json",
+    "moulin-rouge-the-musical-west-end-2021/timeout-london--unknown.json",
+    "my-neighbour-totoro-west-end-2025/guardian--arifa-akbar.json",
+    "moulin-rouge-the-musical-west-end-2021/artsdesk--marianka-swain.json",
+    "moulin-rouge-the-musical-west-end-2021/independent--ava-wong-davies.json",
+    "moulin-rouge-the-musical-west-end-2021/london-theatre--suzy-evans.json",
+    "moulin-rouge-the-musical-west-end-2021/standard--nick-curtis.json"
   ],
-  "failed": [],
+  "failed": [
+    "moulin-rouge-the-musical-west-end-2021/thestage--tim-bano.json",
+    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
+    "moulin-rouge-the-musical-west-end-2021/usatoday--brandy-mcdonnell.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "1536-west-end-2026/london-box-office--stuart-king.json"
+      "moulin-rouge-the-musical-west-end-2021/timeout-london--unknown.json",
+      "my-neighbour-totoro-west-end-2025/guardian--arifa-akbar.json",
+      "moulin-rouge-the-musical-west-end-2021/artsdesk--marianka-swain.json",
+      "moulin-rouge-the-musical-west-end-2021/london-theatre--suzy-evans.json",
+      "moulin-rouge-the-musical-west-end-2021/standard--nick-curtis.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "my-neighbour-totoro-west-end-2025/independent--annabel-nugent.json"
+    ],
     "brightdata": [],
-    "archiveToday": [],
-    "archive": []
+    "archiveToday": [
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/thestage--tim-bano.json",
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/usatoday--brandy-mcdonnell.json"
+    ],
+    "archive": [
+      "moulin-rouge-the-musical-west-end-2021/independent--ava-wong-davies.json"
+    ]
   },
-  "startTime": "2026-03-09T14:33:07.627Z",
-  "lastProcessed": "1536-west-end-2026/london-box-office--stuart-king.json",
-  "log": []
+  "startTime": "2026-03-09T14:46:27.576Z",
+  "lastProcessed": "moulin-rouge-the-musical-west-end-2021/usatoday--brandy-mcdonnell.json",
+  "log": [
+    {
+      "t": "2026-03-09T14:50:44.206Z",
+      "event": "bb-session",
+      "session": "b31b0698",
+      "url": "https://www.thestage.co.uk/long-reviews/moulin-rouge-the-musical-review-piccadil"
+    },
+    {
+      "t": "2026-03-09T14:50:45.328Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }
