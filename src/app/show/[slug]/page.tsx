@@ -370,12 +370,15 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               </div>
             </div>
 
-            {/* Row 2: Dual Score Boxes + Rating + Links — single separator */}
-            <div className="mt-4 pt-4 border-t border-white/10 space-y-4">
+            {/* Row 2: Dual Score Boxes + Rating + Links */}
+            <div className="mt-4 space-y-4">
+              {/* Full-width separator */}
+              <div className="-mx-5 border-t border-white/10" />
+
               {/* Score boxes */}
               <div className="flex gap-3">
                 {/* Critic Score */}
-                <a href="#critic-reviews" className="flex items-center gap-2 flex-1 min-w-0">
+                <a href="#critic-reviews" className="flex items-center gap-2 flex-[1.5] min-w-0">
                   <div className={`w-14 h-14 rounded-lg flex items-center justify-center flex-shrink-0 ${scoreColorClass}`}>
                     <span className="text-2xl font-extrabold">
                       {showTBD ? 'TBD' : roundedScore}
@@ -383,9 +386,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   </div>
                   <div className="min-w-0">
                     {showTBD ? (
-                      <div className="text-sm font-bold text-gray-400">Awaiting Reviews</div>
+                      <div className="text-base font-bold text-gray-400">Awaiting Reviews</div>
                     ) : sentiment && (
-                      <div className={`text-sm font-bold truncate ${sentiment.colorClass}`}>{sentiment.label}</div>
+                      <div className={`text-base font-bold truncate ${sentiment.colorClass}`}>{sentiment.label}</div>
                     )}
                     <div className="text-xs text-gray-500 leading-snug truncate">
                       {reviewCount > 0 ? `${reviewCount} critic ${reviewCount === 1 ? 'review' : 'reviews'}` : 'No reviews yet'}
@@ -399,7 +402,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                       {audienceGrade.grade}
                     </div>
                     <div className="min-w-0">
-                      <div className="text-sm font-bold truncate" style={{ color: audienceGrade.color }}>{audienceGrade.label}</div>
+                      <div className="text-base font-bold truncate" style={{ color: audienceGrade.color }}>{audienceGrade.label}</div>
                       <div className="text-xs text-gray-500 leading-snug truncate">
                         {totalAudienceCount.toLocaleString()} audience reviews
                       </div>
@@ -420,6 +423,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 </div>
                 <ShowPageWatchlistButton showId={show.id} />
               </div>
+
+              {/* Separator between stars and links */}
+              <div className="-mx-5 border-t border-white/10" />
 
               {/* Action Links — single row, horizontal scroll */}
               <div className="flex gap-2 overflow-x-auto flex-nowrap -mx-5 px-5 pb-1 scrollbar-hide">
@@ -767,7 +773,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
         {/* Gold List Badges */}
         {featureFlags.goldLists && goldListMemberships.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-6">
+          <div className="flex gap-2 mb-6 overflow-x-auto scrollbar-hide">
             {goldListMemberships.map(m => {
               const listConfig = GOLD_LIST_MAP[m.listType];
               if (!listConfig) return null;
@@ -775,7 +781,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 <Link
                   key={`${m.listType}-${m.season}`}
                   href={`/lists/${m.listType}/${m.season}`}
-                  className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium ${listConfig.bgClass} ${listConfig.color} border ${listConfig.borderClass} hover:brightness-125 transition-all`}
+                  className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium whitespace-nowrap flex-shrink-0 ${listConfig.bgClass} ${listConfig.color} border ${listConfig.borderClass} hover:brightness-125 transition-all`}
                 >
                   <GoldListBadge type={m.listType} size="xs" />
                   <span>{listConfig.shortTitle} Gold List #{m.rank}</span>

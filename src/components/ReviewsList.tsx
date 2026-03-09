@@ -162,7 +162,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
           <span aria-hidden="true">{review.reviewScore}</span>
         </div>
         <OutletLogo outlet={review.outlet} />
-        <div className="flex items-center justify-between gap-2 flex-1 min-w-0">
+        <div className="flex items-center justify-between gap-2 flex-1 min-w-0 self-center">
           <div className="flex items-center gap-1.5 min-w-0">
             {featureFlags.criticPages && review.outletSlug ? (
               <Link href={`/critics/outlets/${review.outletSlug}`} className="font-bold text-white text-sm sm:text-base truncate hover:text-brand transition-colors">{review.outlet}</Link>
