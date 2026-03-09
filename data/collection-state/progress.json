@@ -157,7 +157,17 @@
     "hercules-west-end-2025/timeout--andrzej-lukowski.json",
     "im-sorry-prime-minister-west-end-2026/timeout-london--unknown.json",
     "into-the-woods-west-end-2025/guardian--arifa-akbar.json",
-    "it-walks-around-the-house-at-night-west-end-2026/timeout--unknown.json"
+    "it-walks-around-the-house-at-night-west-end-2026/timeout--unknown.json",
+    "just-in-time-2025/broadwaynews--brittani-samuel.json",
+    "just-in-time-2025/observer--rex-reed.json",
+    "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024/nydailynews--unknown.json",
+    "la-llamada-off-broadway-2024/broadwaynews--aa-cristi.json",
+    "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
+    "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json",
+    "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
+    "little-shop-of-horrors-off-broadway-2019/theatermania--zachary-stewart.json",
+    "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
+    "marcel-on-the-train-off-broadway-2026/new-york-sun--elysa-gardner.json"
   ],
   "failed": [
     "an-ark-off-broadway-2026/new-jersey-newsroom--micheal-sommers.json",
@@ -286,7 +296,10 @@
       "heathers-the-musical-off-broadway-2025/new-york-sun--elysa-gardner.json",
       "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
       "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json",
-      "hercules-west-end-2025/timeout--andrzej-lukowski.json"
+      "hercules-west-end-2025/timeout--andrzej-lukowski.json",
+      "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024/nydailynews--unknown.json",
+      "little-shop-of-horrors-off-broadway-2019/theatermania--zachary-stewart.json",
+      "marcel-on-the-train-off-broadway-2026/new-york-sun--elysa-gardner.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -328,7 +341,13 @@
       "data/review-texts/all-out-2025/deadline--unknown.json",
       "all-out-2025/deadline--unknown.json",
       "data/review-texts/heathers-the-musical-off-broadway-2025/observer--david-cote.json",
-      "heathers-the-musical-off-broadway-2025/observer--david-cote.json"
+      "heathers-the-musical-off-broadway-2025/observer--david-cote.json",
+      "data/review-texts/just-in-time-2025/observer--rex-reed.json",
+      "just-in-time-2025/observer--rex-reed.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
+      "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
+      "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json"
@@ -371,7 +390,9 @@
       "hercules-west-end-2025/guardian--arifa-akbar.json",
       "im-sorry-prime-minister-west-end-2026/timeout-london--unknown.json",
       "into-the-woods-west-end-2025/guardian--arifa-akbar.json",
-      "it-walks-around-the-house-at-night-west-end-2026/timeout--unknown.json"
+      "it-walks-around-the-house-at-night-west-end-2026/timeout--unknown.json",
+      "just-in-time-2025/broadwaynews--brittani-samuel.json",
+      "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -435,11 +456,13 @@
       "dirty-books-off-broadway-2025/broadwaynews--chloe-rabinowitz.json",
       "hamilton-2015/wsj--terry-teachout.json",
       "harry-potter-2021/wsj--terry-teachout.json",
-      "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json"
+      "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json",
+      "la-llamada-off-broadway-2024/broadwaynews--aa-cristi.json",
+      "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json"
     ]
   },
   "startTime": "2026-03-09T04:19:45.856Z",
-  "lastProcessed": "jerome-off-broadway-2025/wsj--joel-lobenthal.json",
+  "lastProcessed": "marcel-on-the-train-off-broadway-2026/new-york-sun--elysa-gardner.json",
   "log": [
     {
       "t": "2026-03-09T04:38:31.076Z",
@@ -671,6 +694,39 @@
       "t": "2026-03-09T05:47:13.628Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-09T05:49:19.490Z",
+      "event": "bb-session",
+      "session": "da374c46",
+      "url": "https://observer.com/2025/04/just-in-time-broadway-review-jonathan-groff-dazzles"
+    },
+    {
+      "t": "2026-03-09T05:49:20.882Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-09T05:49:58.308Z",
+      "event": "bb-session",
+      "session": "0e54f616",
+      "url": "https://deadline.com/2019/10/little-shop-of-horrors-review-jonathan-groff-tammy-"
+    },
+    {
+      "t": "2026-03-09T05:49:59.728Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-09T05:50:36.672Z",
+      "event": "bb-session",
+      "session": "edafeea9",
+      "url": "https://nypost.com/2019/10/17/little-shop-of-horrors-review-jonathan-groff-tammy"
+    },
+    {
+      "t": "2026-03-09T05:50:37.988Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
