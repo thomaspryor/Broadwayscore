@@ -17,11 +17,21 @@
     "the-devil-wears-prada-west-end-2024/financialtimes--financial-times.json",
     "the-devil-wears-prada-west-end-2024/financialtimes--sarah-hemming.json",
     "the-devil-wears-prada-west-end-2024/independent--alice-saville.json",
-    "the-devil-wears-prada-west-end-2024/london-theatre--olivia-rook.json"
+    "the-devil-wears-prada-west-end-2024/london-theatre--olivia-rook.json",
+    "the-devil-wears-prada-west-end-2024/standard--india-block.json",
+    "the-devil-wears-prada-west-end-2024/standard--martin-robinson.json",
+    "the-devil-wears-prada-west-end-2024/theatre-weekly--greg-stewart.json",
+    "romeo-and-juliet-west-end-2026/hollywood-reporter--unknown.json",
+    "romeo-and-juliet-west-end-2026/nytg--gillian-russo.json",
+    "romeo-and-juliet-west-end-2026/vulture--unknown.json",
+    "romeo-and-juliet-west-end-2026/ew--unknown.json",
+    "romeo-and-juliet-west-end-2026/newsday--linda-winer.json",
+    "romeo-and-juliet-west-end-2026/nydailynews--joe-dziemianowicz.json"
   ],
   "failed": [
     "paranormal-activity-west-end-2025/thestage--tim-wicker.json",
-    "paranormal-activity-west-end-2025/thestage--tom-wicker.json"
+    "paranormal-activity-west-end-2025/thestage--tom-wicker.json",
+    "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -39,10 +49,20 @@
       "the-devil-wears-prada-west-end-2024/artsdesk--matt-wolf.json",
       "the-devil-wears-prada-west-end-2024/financialtimes--financial-times.json",
       "the-devil-wears-prada-west-end-2024/financialtimes--sarah-hemming.json",
-      "the-devil-wears-prada-west-end-2024/london-theatre--olivia-rook.json"
+      "the-devil-wears-prada-west-end-2024/london-theatre--olivia-rook.json",
+      "the-devil-wears-prada-west-end-2024/standard--india-block.json",
+      "the-devil-wears-prada-west-end-2024/standard--martin-robinson.json",
+      "the-devil-wears-prada-west-end-2024/theatre-weekly--greg-stewart.json",
+      "romeo-and-juliet-west-end-2026/nytg--gillian-russo.json",
+      "romeo-and-juliet-west-end-2026/nydailynews--joe-dziemianowicz.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/romeo-and-juliet-west-end-2026/hollywood-reporter--unknown.json",
+      "romeo-and-juliet-west-end-2026/hollywood-reporter--unknown.json",
+      "data/review-texts/romeo-and-juliet-west-end-2026/newsday--linda-winer.json",
+      "romeo-and-juliet-west-end-2026/newsday--linda-winer.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "paranormal-activity-west-end-2025/lost-in-theatreland--amy-rye.json",
@@ -55,11 +75,13 @@
       "data/review-texts/paranormal-activity-west-end-2025/thestage--tom-wicker.json"
     ],
     "archive": [
-      "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json"
+      "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+      "romeo-and-juliet-west-end-2026/vulture--unknown.json",
+      "romeo-and-juliet-west-end-2026/ew--unknown.json"
     ]
   },
   "startTime": "2026-03-09T14:46:28.645Z",
-  "lastProcessed": "the-devil-wears-prada-west-end-2024/london-theatre--olivia-rook.json",
+  "lastProcessed": "romeo-and-juliet-west-end-2026/nydailynews--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-03-09T14:51:21.007Z",
@@ -82,6 +104,39 @@
       "t": "2026-03-09T14:53:16.208Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-09T14:55:14.953Z",
+      "event": "bb-session",
+      "session": "a4ee1347",
+      "url": "http://www.hollywoodreporter.com/review/orlando-bloom-romeo-juliet-theater-63250"
+    },
+    {
+      "t": "2026-03-09T14:55:16.189Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-09T14:56:09.360Z",
+      "event": "bb-session",
+      "session": "72ffafff",
+      "url": "http://www.newsday.com/entertainment/theater/romeo-and-juliet-review-not-in-bloo"
+    },
+    {
+      "t": "2026-03-09T14:56:10.555Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-09T14:57:06.663Z",
+      "event": "bb-session",
+      "session": "d4d126bd",
+      "url": "https://www.newsday.com/entertainment/theater/romeo-and-juliet-review-not-in-blo"
+    },
+    {
+      "t": "2026-03-09T14:57:07.906Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
     }
   ]
 }
