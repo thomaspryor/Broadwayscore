@@ -1,110 +1,131 @@
 {
-  "runDate": "2026-03-09T14:52:51.426Z",
+  "runDate": "2026-03-09T14:56:20.315Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "man-to-man-west-end-2026,midnight-a-new-original-musical-by-todrick-hall-west-end-2026,moulin-rouge-the-musical-west-end-2021,much-ado-about-nothing-globe-west-end-2026,my-neighbour-totoro-west-end-2025",
+    "showFilter": "the-holy-rosenbergs-west-end-2026,the-mousetrap-west-end-2021,the-spy-who-came-in-from-the-cold-west-end-2025,the-tempest-globe-west-end-2026,dracula-west-end-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 16,
+    "processed": 23,
     "failed": 4,
     "skipped": 0,
-    "successRate": "80.0%"
+    "successRate": "85.2%"
   },
   "tierBreakdown": {
-    "playwright": 14,
+    "playwright": 16,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 6,
     "brightdata": 0,
     "archiveToday": 2,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 16,
-    "tier1Success": 14,
+    "tier1Attempts": 21,
+    "tier1Success": 18,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
-    "tier1_5Success": 0,
-    "tier2Attempts": 3,
-    "tier2Success": 2,
-    "tier3Attempts": 3,
+    "tier1_5Attempts": 3,
+    "tier1_5Success": 1,
+    "tier2Attempts": 10,
+    "tier2Success": 7,
+    "tier3Attempts": 5,
     "tier3Success": 0,
     "tier3_6Attempts": 2,
     "tier3_6Success": 2,
-    "tier4Attempts": 2,
+    "tier4Attempts": 5,
     "tier4Success": 0,
     "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 23,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.3,
+    "scrapingBeeCreditsUsed": 73,
+    "browserbaseSessionsUsed": 3,
+    "browserbaseMinutesUsed": 1.2,
     "urlDiscoveryAttempts": 3,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "my-neighbour-totoro-west-end-2025/independent--annabel-nugent.json",
-    "moulin-rouge-the-musical-west-end-2021/timeout-london--unknown.json",
-    "my-neighbour-totoro-west-end-2025/guardian--arifa-akbar.json",
-    "moulin-rouge-the-musical-west-end-2021/artsdesk--marianka-swain.json",
-    "moulin-rouge-the-musical-west-end-2021/independent--ava-wong-davies.json",
-    "moulin-rouge-the-musical-west-end-2021/london-theatre--suzy-evans.json",
-    "moulin-rouge-the-musical-west-end-2021/standard--nick-curtis.json",
-    "moulin-rouge-the-musical-west-end-2021/whatsonstage--sarah-crompton.json",
-    "my-neighbour-totoro-west-end-2025/standard--nick-curtis.json",
-    "my-neighbour-totoro-west-end-2025/whatsonstage--unknown.json",
-    "man-to-man-west-end-2026/london-box-office--phil-willmott.json",
-    "man-to-man-west-end-2026/london-box-office--stuart-king.json",
-    "much-ado-about-nothing-globe-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
-    "much-ado-about-nothing-globe-west-end-2026/london-box-office--stacey-tyler.json",
-    "much-ado-about-nothing-globe-west-end-2026/london-box-office--stuart-king.json",
-    "much-ado-about-nothing-globe-west-end-2026/london-box-office--thomas-michael-voss.json"
+    "dracula-west-end-2025/nytimes--houman-barekat.json",
+    "dracula-west-end-2025/guardian--arifa-akbar.json",
+    "dracula-west-end-2025/artsdesk--rachel-halliburton.json",
+    "dracula-west-end-2025/financialtimes--sarah-hemming.json",
+    "dracula-west-end-2025/i-paper--fiona-mountford.json",
+    "dracula-west-end-2025/independent--alice-saville.json",
+    "dracula-west-end-2025/london-theatre--olivia-rook.json",
+    "dracula-west-end-2025/whatsonstage--sarah-crompton.json",
+    "the-holy-rosenbergs-west-end-2026/whatsonstage--unknown.json",
+    "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
+    "the-mousetrap-west-end-2021/telegraph--unknown.json",
+    "the-mousetrap-west-end-2021/whatsonstage--whatsonstage-reviewer.json",
+    "the-tempest-globe-west-end-2026/whatsonstage--alun-hood.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/city-am--unknown.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/thereviewshub--unknown.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/artsdesk--aleks-sierz.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/artsdesk--for-aleks-sierz.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/city-am--chris-dorrell.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/everything-theatre--cerys-baker.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/independent--alice-saville.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/independent--unknown.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/standard--nick-curtis.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/whatsonstage--sarah-crompton.json"
   ],
   "failed": [
-    "moulin-rouge-the-musical-west-end-2021/thestage--tim-bano.json",
-    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
-    "moulin-rouge-the-musical-west-end-2021/usatoday--brandy-mcdonnell.json",
-    "my-neighbour-totoro-west-end-2025/times-uk--clive-davis.json"
+    "dracula-west-end-2025/times-uk--clive-davis.json",
+    "the-mousetrap-west-end-2021/thestage--john-thaxter.json",
+    "the-tempest-globe-west-end-2026/british-theatre--howard-loxton.json",
+    "the-tempest-globe-west-end-2026/thestage--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
-      "moulin-rouge-the-musical-west-end-2021/timeout-london--unknown.json",
-      "my-neighbour-totoro-west-end-2025/guardian--arifa-akbar.json",
-      "moulin-rouge-the-musical-west-end-2021/artsdesk--marianka-swain.json",
-      "moulin-rouge-the-musical-west-end-2021/london-theatre--suzy-evans.json",
-      "moulin-rouge-the-musical-west-end-2021/standard--nick-curtis.json",
-      "moulin-rouge-the-musical-west-end-2021/whatsonstage--sarah-crompton.json",
-      "my-neighbour-totoro-west-end-2025/standard--nick-curtis.json",
-      "my-neighbour-totoro-west-end-2025/whatsonstage--unknown.json",
-      "man-to-man-west-end-2026/london-box-office--phil-willmott.json",
-      "man-to-man-west-end-2026/london-box-office--stuart-king.json",
-      "much-ado-about-nothing-globe-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
-      "much-ado-about-nothing-globe-west-end-2026/london-box-office--stacey-tyler.json",
-      "much-ado-about-nothing-globe-west-end-2026/london-box-office--stuart-king.json",
-      "much-ado-about-nothing-globe-west-end-2026/london-box-office--thomas-michael-voss.json"
+      "dracula-west-end-2025/artsdesk--rachel-halliburton.json",
+      "dracula-west-end-2025/financialtimes--sarah-hemming.json",
+      "dracula-west-end-2025/i-paper--fiona-mountford.json",
+      "dracula-west-end-2025/london-theatre--olivia-rook.json",
+      "dracula-west-end-2025/whatsonstage--sarah-crompton.json",
+      "the-holy-rosenbergs-west-end-2026/whatsonstage--unknown.json",
+      "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
+      "the-mousetrap-west-end-2021/telegraph--unknown.json",
+      "the-mousetrap-west-end-2021/whatsonstage--whatsonstage-reviewer.json",
+      "the-tempest-globe-west-end-2026/whatsonstage--alun-hood.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/thereviewshub--unknown.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/artsdesk--aleks-sierz.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/artsdesk--for-aleks-sierz.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/everything-theatre--cerys-baker.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/standard--nick-curtis.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/whatsonstage--sarah-crompton.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/dracula-west-end-2025/nytimes--houman-barekat.json",
+      "dracula-west-end-2025/nytimes--houman-barekat.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
-      "my-neighbour-totoro-west-end-2025/independent--annabel-nugent.json"
+      "dracula-west-end-2025/guardian--arifa-akbar.json",
+      "dracula-west-end-2025/independent--alice-saville.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/city-am--unknown.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/city-am--chris-dorrell.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/independent--alice-saville.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/independent--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/moulin-rouge-the-musical-west-end-2021/thestage--tim-bano.json",
-      "data/review-texts/moulin-rouge-the-musical-west-end-2021/usatoday--brandy-mcdonnell.json"
+      "data/review-texts/the-mousetrap-west-end-2021/thestage--john-thaxter.json",
+      "data/review-texts/the-tempest-globe-west-end-2026/thestage--unknown.json"
     ],
-    "archive": [
-      "moulin-rouge-the-musical-west-end-2021/independent--ava-wong-davies.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "the-holy-rosenbergs-west-end-2026/whatsonstage--unknown.json",
+      "oldUrl": "https://www.whatsonstage.com/news/critics-circle-theatre-awards-announces-the-nominations-for-the-empty-space-peter-brook-award_1712999/",
+      "newUrl": "https://www.whatsonstage.com/news/the-holy-rosenbergs_9607/"
+    }
+  ]
 }
