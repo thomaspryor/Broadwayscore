@@ -25,7 +25,7 @@ No calibration needed vs ShowScore (mean diff: -2.3 pts across 135 shows).
 - ~230 matched to our shows.json with 10+ votes
 
 ## Script
-`scripts/scrape-theatr-audience.js` — 2s delay between requests, MIN_VOTES=10.
+`scripts/scrape-theatr-audience.js` — 2s delay between requests, MIN_VOTES=1 (no floor, consistent with SS/Mezz).
 Manual overrides in `THEATR_OVERRIDES` for title mismatches.
 
 ## Workflow
