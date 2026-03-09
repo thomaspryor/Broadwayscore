@@ -1,90 +1,125 @@
 {
-  "runDate": "2026-03-09T14:55:58.765Z",
+  "runDate": "2026-03-09T14:59:58.855Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "1536-west-end-2026,avenue-q-west-end-2026,equus-west-end-2026,ivanov-west-end-2026,sting-west-end-2026",
+    "showFilter": "deep-azure-globe-west-end-2026,garry-starr-classic-penguins-garrick-west-end-2026,inter-alia-west-end-2026,kinky-boots-the-musical-west-end-2026,les-liaisons-dangereuses-west-end-2026,les-miserables-west-end-2021",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 5,
+    "processed": 18,
+    "failed": 4,
     "skipped": 0,
-    "successRate": "44.4%"
+    "successRate": "81.8%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 9,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 2
+    "archiveToday": 3,
+    "archive": 5
   },
   "statistics": {
-    "tier1Attempts": 6,
-    "tier1Success": 2,
+    "tier1Attempts": 16,
+    "tier1Success": 10,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier2Attempts": 3,
-    "tier2Success": 0,
-    "tier3Attempts": 2,
+    "tier1_5Attempts": 4,
+    "tier1_5Success": 2,
+    "tier2Attempts": 9,
+    "tier2Success": 4,
+    "tier3Attempts": 6,
     "tier3Success": 0,
-    "tier3_6Attempts": 2,
-    "tier3_6Success": 2,
-    "tier4Attempts": 1,
-    "tier4Success": 0,
-    "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 11,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
+    "tier3_6Attempts": 3,
+    "tier3_6Success": 3,
+    "tier4Attempts": 5,
+    "tier4Success": 1,
+    "totalFailed": 3,
+    "scrapingBeeCreditsUsed": 61,
+    "browserbaseSessionsUsed": 4,
+    "browserbaseMinutesUsed": 1.1,
     "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "sting-west-end-2026/newsday--unknown.json",
-    "equus-west-end-2026/standard--nick-curtis.json",
-    "equus-west-end-2026/telegraph--dominic-cavendish.json",
-    "avenue-q-west-end-2026/whatsonstage--alex-wood.json"
+    "deep-azure-globe-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "les-miserables-west-end-2021/artsdesk--aleks-sierz.json",
+    "les-miserables-west-end-2021/daily-mail--patrick-marmion.json",
+    "les-miserables-west-end-2021/i-paper--jeff-robson.json",
+    "les-miserables-west-end-2021/the-sun--thea-jacobs.json",
+    "les-miserables-west-end-2021/times-uk--clive-davis.json",
+    "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json",
+    "les-liaisons-dangereuses-west-end-2026/hollywood-reporter--unknown.json",
+    "les-liaisons-dangereuses-west-end-2026/newsday--unknown.json",
+    "les-liaisons-dangereuses-west-end-2026/thewrap--unknown.json",
+    "les-liaisons-dangereuses-west-end-2026/timeout--unknown.json",
+    "inter-alia-west-end-2026/london-box-office--stuart-king.json",
+    "kinky-boots-the-musical-west-end-2026/london-box-office--davor-golub.json",
+    "kinky-boots-the-musical-west-end-2026/london-box-office--jack-watson.json",
+    "kinky-boots-the-musical-west-end-2026/london-box-office--the-break-a-leggers.json",
+    "les-liaisons-dangereuses-west-end-2026/london-box-office--phil-willmott.json",
+    "les-liaisons-dangereuses-west-end-2026/telegraph--unknown.json",
+    "kinky-boots-the-musical-west-end-2026/whatsonstage--unknown.json"
   ],
   "failed": [
-    "sting-west-end-2026/ew--unknown.json",
-    "ivanov-west-end-2026/playbill--unknown.json",
-    "sting-west-end-2026/ap--unknown.json",
-    "sting-west-end-2026/huffpost--unknown.json",
-    "avenue-q-west-end-2026/london-theatre--unknown.json"
+    "deep-azure-globe-west-end-2026/thestage--unknown.json",
+    "garry-starr-classic-penguins-garrick-west-end-2026/broadwayworld--franco-milazzo.json",
+    "garry-starr-classic-penguins-garrick-west-end-2026/everything-theatre-uk--jess-gonzalez.json",
+    "les-liaisons-dangereuses-west-end-2026/broadwayworld--michael-dale.json"
   ],
   "tierDetails": {
     "playwright": [
-      "equus-west-end-2026/standard--nick-curtis.json",
-      "avenue-q-west-end-2026/whatsonstage--alex-wood.json"
+      "deep-azure-globe-west-end-2026/timeout-london--andrzej-lukowski.json",
+      "les-miserables-west-end-2021/artsdesk--aleks-sierz.json",
+      "les-miserables-west-end-2021/i-paper--jeff-robson.json",
+      "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json",
+      "inter-alia-west-end-2026/london-box-office--stuart-king.json",
+      "kinky-boots-the-musical-west-end-2026/london-box-office--davor-golub.json",
+      "kinky-boots-the-musical-west-end-2026/london-box-office--jack-watson.json",
+      "les-liaisons-dangereuses-west-end-2026/london-box-office--phil-willmott.json",
+      "kinky-boots-the-musical-west-end-2026/whatsonstage--unknown.json"
+    ],
+    "amp": [],
+    "browserbase": [
+      "data/review-texts/les-liaisons-dangereuses-west-end-2026/hollywood-reporter--unknown.json",
+      "les-liaisons-dangereuses-west-end-2026/hollywood-reporter--unknown.json",
+      "data/review-texts/les-liaisons-dangereuses-west-end-2026/newsday--unknown.json",
+      "les-liaisons-dangereuses-west-end-2026/newsday--unknown.json"
+    ],
+    "directCookies": [],
+    "scrapingbee": [
+      "les-miserables-west-end-2021/times-uk--clive-davis.json",
+      "garry-starr-classic-penguins-garrick-west-end-2026/everything-theatre-uk--jess-gonzalez.json",
+      "les-liaisons-dangereuses-west-end-2026/timeout--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/ivanov-west-end-2026/playbill--unknown.json",
-      "data/review-texts/sting-west-end-2026/huffpost--unknown.json"
+      "data/review-texts/deep-azure-globe-west-end-2026/thestage--unknown.json",
+      "data/review-texts/garry-starr-classic-penguins-garrick-west-end-2026/broadwayworld--franco-milazzo.json",
+      "data/review-texts/les-liaisons-dangereuses-west-end-2026/broadwayworld--michael-dale.json"
     ],
     "archive": [
-      "sting-west-end-2026/newsday--unknown.json",
-      "equus-west-end-2026/telegraph--dominic-cavendish.json"
+      "les-miserables-west-end-2021/daily-mail--patrick-marmion.json",
+      "les-miserables-west-end-2021/the-sun--thea-jacobs.json",
+      "les-liaisons-dangereuses-west-end-2026/thewrap--unknown.json",
+      "kinky-boots-the-musical-west-end-2026/london-box-office--the-break-a-leggers.json",
+      "les-liaisons-dangereuses-west-end-2026/telegraph--unknown.json"
     ]
   },
-  "failuresByOutlet": {
-    "Associated Press": {
-      "count": 1,
-      "domain": "olneyenterprise.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
+  "failuresByOutlet": {},
+  "urlDiscoveries": [
+    {
+      "reviewId": "les-liaisons-dangereuses-west-end-2026/newsday--unknown.json",
+      "oldUrl": "http://www.newsday.com/entertainment/theater/schreiber-mcteer-play-with-fire-in-les-liaisons-dangereuses-1.12521474",
+      "newUrl": "https://www.newsday.com/entertainment/theater/les-liaisons-dangereuses-review-visceral-revival-d22784"
     }
-  },
-  "urlDiscoveries": []
+  ]
 }
