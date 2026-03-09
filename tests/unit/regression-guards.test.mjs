@@ -75,6 +75,16 @@ const CRITICAL_PATTERNS = [
       'titleFamilies must iterate ALL shows (forEach), not filter to Broadway-only. ' +
       'WE/OB shows need title families for wrongProduction classification.',
   },
+  // lboRoundupExcerpt must be in scoring text sources.
+  // 26+ WE reviews have ONLY lboRoundupExcerpt — if missing from getBestTextForScoring,
+  // they silently fail with "Review text too short or missing."
+  {
+    file: 'scripts/lib/text-quality.js',
+    pattern: 'lboRoundupExcerpt',
+    description:
+      'lboRoundupExcerpt must be in excerpt fields list. WE reviews from LBO roundups ' +
+      'often have no other text source — omitting this field silently blocks scoring.',
+  },
 ];
 
 /**
