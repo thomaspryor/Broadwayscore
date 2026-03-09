@@ -30,7 +30,7 @@ const showLimit = limitArg ? parseInt(limitArg.split('=')[1]) : null;
 const dryRun = args.includes('--dry-run');
 const verbose = args.includes('--verbose');
 
-const MIN_VOTES = 10; // Minimum total votes (likes+dislikes+mixed) — consistent with SS/Mezz having no floor
+const MIN_VOTES = 1; // No floor — consistent with ShowScore/Mezzanine (weighting handles low counts)
 const STATS_DELAY_MS = 2000; // 2s between show-stats requests
 const USER_AGENT = 'Theatr/184 CFNetwork/3860.400.51 Darwin/25.3.0';
 
