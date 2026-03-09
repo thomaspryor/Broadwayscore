@@ -11,7 +11,6 @@
     "paranormal-activity-west-end-2025/metro-uk--brooke-ivey-johnson.json",
     "paranormal-activity-west-end-2025/theatre-weekly--greg-stewart.json"
   ],
-  "failed": [],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
@@ -25,7 +24,10 @@
       "paranormal-activity-west-end-2025/theatre-weekly--greg-stewart.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/dracula-west-end-2025/nytimes--houman-barekat.json",
+      "dracula-west-end-2025/nytimes--houman-barekat.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "paranormal-activity-west-end-2025/lost-in-theatreland--amy-rye.json",

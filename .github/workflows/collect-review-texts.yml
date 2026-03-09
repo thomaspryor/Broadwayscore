@@ -12,8 +12,7 @@ on:
     # Weekly backlog sweep: Sunday midnight UTC — targets not_attempted reviews that the
     # daily runs never reach (daily prioritizes open shows, closed-show backlog gets starved)
     - cron: '0 0 * * 0'
-    # Daily WE/OB collection: 8 AM UTC — dedicated run so non-Broadway markets don't starve
-    - cron: '0 8 * * *'
+    # WE/OB collection moved to collect-we-ob-reviews.yml (separate concurrency group)
   workflow_dispatch:
     inputs:
       batch_size:
@@ -158,7 +157,6 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" == "schedule" ]; then
             DAY=$(date -u +%u)  # 7 = Sunday
-            HOUR=$(date -u +%H)
             # Sunday = weekly backlog sweep targeting not_attempted reviews
             # (no HOUR check — GHA cron can delay 30+ min past midnight)
             if [ "$DAY" = "7" ]; then
@@ -166,18 +164,6 @@ jobs:
               echo "reason_filter=not_attempted" >> $GITHUB_OUTPUT
               echo "market_filter=" >> $GITHUB_OUTPUT
               echo "Weekly backlog sweep: targeting not_attempted reviews"
-            elif [ "$HOUR" = "08" ] || [ "$HOUR" = "09" ]; then
-              # 8 AM UTC run: alternate WE (even days) and OB (odd days)
-              DAY_OF_MONTH=$(date -u +%d)
-              if [ $((DAY_OF_MONTH % 2)) -eq 0 ]; then
-                echo "market_filter=west-end" >> $GITHUB_OUTPUT
-                echo "Dedicated WE collection run"
-              else
-                echo "market_filter=off-broadway" >> $GITHUB_OUTPUT
-                echo "Dedicated OB collection run"
-              fi
-              echo "max_reviews=150" >> $GITHUB_OUTPUT
-              echo "reason_filter=" >> $GITHUB_OUTPUT
             else
               echo "max_reviews=150" >> $GITHUB_OUTPUT
               echo "reason_filter=" >> $GITHUB_OUTPUT

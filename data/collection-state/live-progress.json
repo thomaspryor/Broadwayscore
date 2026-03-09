@@ -6,13 +6,25 @@
   "tierBreakdown": {
     "playwright": 8,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-03-09T14:47:08.679Z",
+      "event": "bb-session",
+      "session": "5273bde1",
+      "url": "https://www.nytimes.com/2026/02/18/theater/dracula-cynthia-erivo.html"
+    },
+    {
+      "t": "2026-03-09T14:47:09.930Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
