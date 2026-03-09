@@ -2186,7 +2186,7 @@ function createReviewFile(showId, reviewData, options = {}) {
   // These are unfetchable and unverifiable — likely aggregator artifacts.
   // Named critics may legitimately have no URL (from ShowScore excerpts).
   if (!review.url && normalizedCriticName === 'unknown') {
-    const hasExcerpt = review.bwwExcerpt || review.dtliExcerpt || review.showScoreExcerpt || review.playbillExcerpt;
+    const hasExcerpt = review.bwwExcerpt || review.dtliExcerpt || review.showScoreExcerpt || review.playbillExcerpt || review.nycTheatreExcerpt || review.lboRoundupExcerpt;
     if (!hasExcerpt) {
       console.log(`    ✗ Skipping ${filename}: no URL and no excerpt — unfetchable/unverifiable`);
       return 'nullUrl';

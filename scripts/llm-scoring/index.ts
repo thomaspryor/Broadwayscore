@@ -803,7 +803,7 @@ async function main(): Promise<void> {
       // Modern scores with textSource provenance: only rescore if scored on excerpt
       if (d.llmMetadata?.textSource?.type === 'fullText') return false;
       // Old scores without provenance: require excerpt field as indicator
-      return !!(d.bwwExcerpt || d.dtliExcerpt || d.showScoreExcerpt || (d as any).lboRoundupExcerpt);
+      return !!(d.bwwExcerpt || d.dtliExcerpt || d.showScoreExcerpt || (d as any).nycTheatreExcerpt || (d as any).lboRoundupExcerpt);
     });
     console.log(`Filtering to stale-scored reviews (fullText + old excerpt-based score): ${filesToProcess.length} reviews\n`);
   } else if (options.upgradeEnsemble) {
