@@ -209,7 +209,7 @@ export function convertStarRating(stars: number, maxStars: number): number {
 // AUDIENCE WEIGHTING
 // ===========================================
 // Actual weighting logic is in scripts/lib/audience-weighting.js:
-// All sources (Show Score, Mezzanine, Reddit) weighted proportionally
+// All sources (Show Score, Mezzanine, Theatr, Reddit) weighted proportionally
 // by review count volume, with 80% cap per source.
 // The constants below are kept for backward compatibility (engine.ts import)
 // but are NOT used by the active audience scoring pipeline.
