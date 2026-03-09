@@ -1,18 +1,52 @@
 {
-  "updatedAt": "2026-03-09T14:33:16.343Z",
-  "processed": 1,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-03-09T14:50:30.421Z",
+  "processed": 8,
+  "failed": 2,
+  "successRate": "80.0%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 5,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-03-09T14:46:13.433Z",
+      "event": "bb-session",
+      "session": "8a3ab0b2",
+      "url": "http://www.hollywoodreporter.com/review/cyrano-de-bergerac-broadway-theater-revi"
+    },
+    {
+      "t": "2026-03-09T14:46:14.724Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-09T14:48:09.567Z",
+      "event": "bb-session",
+      "session": "8700b1ea",
+      "url": "http://www.newsday.com/entertainment/theater/cyrano-review-not-one-for-the-ages-"
+    },
+    {
+      "t": "2026-03-09T14:48:10.996Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-09T14:48:57.510Z",
+      "event": "bb-session",
+      "session": "c7b595ea",
+      "url": "https://www.newsday.com/news/new-york/theater-review-cyrano-de-bergerac-2-stars-"
+    },
+    {
+      "t": "2026-03-09T14:48:58.901Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    }
+  ]
 }

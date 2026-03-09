@@ -1,22 +1,79 @@
 {
   "processed": [
-    "1536-west-end-2026/london-box-office--stuart-king.json"
+    "cyrano-de-bergerac-west-end-2026/hollywood-reporter--david-rooney.json",
+    "cyrano-de-bergerac-west-end-2026/nytg--gillian-russo.json",
+    "cyrano-de-bergerac-west-end-2026/ew--nick-romano.json",
+    "cyrano-de-bergerac-west-end-2026/newsday--linda-winer.json",
+    "cyrano-de-bergerac-west-end-2026/theatrely--juan-a-ramirez.json",
+    "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--kit-benjamin.json",
+    "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--marian-pashley.json",
+    "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--stuart-king.json"
   ],
-  "failed": [],
+  "failed": [
+    "cyrano-de-bergerac-west-end-2026/ew--tanner-stransky.json",
+    "cyrano-de-bergerac-west-end-2026/wsj--terry-teachout.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "1536-west-end-2026/london-box-office--stuart-king.json"
+      "cyrano-de-bergerac-west-end-2026/nytg--gillian-russo.json",
+      "cyrano-de-bergerac-west-end-2026/theatrely--juan-a-ramirez.json",
+      "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--kit-benjamin.json",
+      "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--marian-pashley.json",
+      "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--stuart-king.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/cyrano-de-bergerac-west-end-2026/hollywood-reporter--david-rooney.json",
+      "cyrano-de-bergerac-west-end-2026/hollywood-reporter--david-rooney.json",
+      "data/review-texts/cyrano-de-bergerac-west-end-2026/newsday--linda-winer.json",
+      "cyrano-de-bergerac-west-end-2026/newsday--linda-winer.json"
+    ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "cyrano-de-bergerac-west-end-2026/ew--nick-romano.json"
+    ],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/cyrano-de-bergerac-west-end-2026/wsj--terry-teachout.json"
+    ],
     "archive": []
   },
-  "startTime": "2026-03-09T14:33:07.627Z",
-  "lastProcessed": "1536-west-end-2026/london-box-office--stuart-king.json",
-  "log": []
+  "startTime": "2026-03-09T14:46:12.396Z",
+  "lastProcessed": "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--stuart-king.json",
+  "log": [
+    {
+      "t": "2026-03-09T14:46:13.433Z",
+      "event": "bb-session",
+      "session": "8a3ab0b2",
+      "url": "http://www.hollywoodreporter.com/review/cyrano-de-bergerac-broadway-theater-revi"
+    },
+    {
+      "t": "2026-03-09T14:46:14.724Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-09T14:48:09.567Z",
+      "event": "bb-session",
+      "session": "8700b1ea",
+      "url": "http://www.newsday.com/entertainment/theater/cyrano-review-not-one-for-the-ages-"
+    },
+    {
+      "t": "2026-03-09T14:48:10.996Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-09T14:48:57.510Z",
+      "event": "bb-session",
+      "session": "c7b595ea",
+      "url": "https://www.newsday.com/news/new-york/theater-review-cyrano-de-bergerac-2-stars-"
+    },
+    {
+      "t": "2026-03-09T14:48:58.901Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    }
+  ]
 }
