@@ -6,12 +6,22 @@
     "les-miserables-west-end-2021/i-paper--jeff-robson.json",
     "les-miserables-west-end-2021/the-sun--thea-jacobs.json",
     "les-miserables-west-end-2021/times-uk--clive-davis.json",
-    "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json"
+    "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json",
+    "les-liaisons-dangereuses-west-end-2026/hollywood-reporter--unknown.json",
+    "les-liaisons-dangereuses-west-end-2026/newsday--unknown.json",
+    "les-liaisons-dangereuses-west-end-2026/thewrap--unknown.json",
+    "les-liaisons-dangereuses-west-end-2026/timeout--unknown.json",
+    "inter-alia-west-end-2026/london-box-office--stuart-king.json",
+    "kinky-boots-the-musical-west-end-2026/london-box-office--davor-golub.json",
+    "kinky-boots-the-musical-west-end-2026/london-box-office--jack-watson.json",
+    "kinky-boots-the-musical-west-end-2026/london-box-office--the-break-a-leggers.json",
+    "les-liaisons-dangereuses-west-end-2026/london-box-office--phil-willmott.json"
   ],
   "failed": [
     "deep-azure-globe-west-end-2026/thestage--unknown.json",
     "garry-starr-classic-penguins-garrick-west-end-2026/broadwayworld--franco-milazzo.json",
-    "garry-starr-classic-penguins-garrick-west-end-2026/everything-theatre-uk--jess-gonzalez.json"
+    "garry-starr-classic-penguins-garrick-west-end-2026/everything-theatre-uk--jess-gonzalez.json",
+    "les-liaisons-dangereuses-west-end-2026/broadwayworld--michael-dale.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -19,27 +29,40 @@
       "deep-azure-globe-west-end-2026/timeout-london--andrzej-lukowski.json",
       "les-miserables-west-end-2021/artsdesk--aleks-sierz.json",
       "les-miserables-west-end-2021/i-paper--jeff-robson.json",
-      "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json"
+      "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json",
+      "inter-alia-west-end-2026/london-box-office--stuart-king.json",
+      "kinky-boots-the-musical-west-end-2026/london-box-office--davor-golub.json",
+      "kinky-boots-the-musical-west-end-2026/london-box-office--jack-watson.json",
+      "les-liaisons-dangereuses-west-end-2026/london-box-office--phil-willmott.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/les-liaisons-dangereuses-west-end-2026/hollywood-reporter--unknown.json",
+      "les-liaisons-dangereuses-west-end-2026/hollywood-reporter--unknown.json",
+      "data/review-texts/les-liaisons-dangereuses-west-end-2026/newsday--unknown.json",
+      "les-liaisons-dangereuses-west-end-2026/newsday--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "les-miserables-west-end-2021/times-uk--clive-davis.json",
-      "garry-starr-classic-penguins-garrick-west-end-2026/everything-theatre-uk--jess-gonzalez.json"
+      "garry-starr-classic-penguins-garrick-west-end-2026/everything-theatre-uk--jess-gonzalez.json",
+      "les-liaisons-dangereuses-west-end-2026/timeout--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/deep-azure-globe-west-end-2026/thestage--unknown.json",
-      "data/review-texts/garry-starr-classic-penguins-garrick-west-end-2026/broadwayworld--franco-milazzo.json"
+      "data/review-texts/garry-starr-classic-penguins-garrick-west-end-2026/broadwayworld--franco-milazzo.json",
+      "data/review-texts/les-liaisons-dangereuses-west-end-2026/broadwayworld--michael-dale.json"
     ],
     "archive": [
       "les-miserables-west-end-2021/daily-mail--patrick-marmion.json",
-      "les-miserables-west-end-2021/the-sun--thea-jacobs.json"
+      "les-miserables-west-end-2021/the-sun--thea-jacobs.json",
+      "les-liaisons-dangereuses-west-end-2026/thewrap--unknown.json",
+      "kinky-boots-the-musical-west-end-2026/london-box-office--the-break-a-leggers.json"
     ]
   },
   "startTime": "2026-03-09T14:46:24.439Z",
-  "lastProcessed": "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json",
+  "lastProcessed": "les-liaisons-dangereuses-west-end-2026/london-box-office--phil-willmott.json",
   "log": [
     {
       "t": "2026-03-09T14:48:21.694Z",
@@ -51,6 +74,39 @@
       "t": "2026-03-09T14:48:23.064Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-09T14:55:42.625Z",
+      "event": "bb-session",
+      "session": "bf1e8649",
+      "url": "http://www.hollywoodreporter.com/review/les-liaisons-dangereuses-942316"
+    },
+    {
+      "t": "2026-03-09T14:55:43.910Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-09T14:56:14.333Z",
+      "event": "bb-session",
+      "session": "4c998d82",
+      "url": "http://www.newsday.com/entertainment/theater/schreiber-mcteer-play-with-fire-in-"
+    },
+    {
+      "t": "2026-03-09T14:56:15.503Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-09T14:57:01.112Z",
+      "event": "bb-session",
+      "session": "2df4d5de",
+      "url": "https://www.newsday.com/entertainment/theater/les-liaisons-dangereuses-review-vi"
+    },
+    {
+      "t": "2026-03-09T14:57:02.338Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
     }
   ]
 }
