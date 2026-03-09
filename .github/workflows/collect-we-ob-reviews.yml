@@ -1,0 +1,146 @@
+name: Collect WE/OB Review Texts
+
+# Dedicated daily collection for West End and Off-Broadway markets.
+# The main collect-review-texts.yml processes 150/batch across all markets,
+# starving WE/OB reviews behind the 18K+ Broadway backlog.
+# This workflow uses MARKET_FILTER to collect only one market per run.
+
+on:
+  schedule:
+    # Daily at 8 AM UTC — WE on even days, OB on odd days
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+    inputs:
+      market:
+        description: 'Market to collect (west-end or off-broadway)'
+        required: true
+        default: 'west-end'
+        type: choice
+        options:
+          - west-end
+          - off-broadway
+
+concurrency:
+  group: collect-we-ob-${{ inputs.market || 'scheduled' }}
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: write
+      actions: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Create directories
+        run: |
+          mkdir -p data/archives/reviews
+          mkdir -p data/audit/validation
+          mkdir -p data/collection-state
+
+      - name: Clear progress state
+        run: rm -f data/collection-state/progress.json
+
+      - name: Determine market
+        id: market
+        run: |
+          if [ "${{ github.event_name }}" == "schedule" ]; then
+            DAY_OF_MONTH=$(date -u +%d)
+            if [ $((DAY_OF_MONTH % 2)) -eq 0 ]; then
+              echo "market=west-end" >> $GITHUB_OUTPUT
+              echo "Scheduled: West End collection (even day)"
+            else
+              echo "market=off-broadway" >> $GITHUB_OUTPUT
+              echo "Scheduled: Off-Broadway collection (odd day)"
+            fi
+          else
+            echo "market=${{ inputs.market }}" >> $GITHUB_OUTPUT
+            echo "Manual: ${{ inputs.market }} collection"
+          fi
+
+      - name: Configure git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Collect review texts (${{ steps.market.outputs.market }})
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          THESTAGE_EMAIL: ${{ secrets.THESTAGE_EMAIL }}
+          THESTAGE_PASSWORD: ${{ secrets.THESTAGE_PASSWORD }}
+          FT_EMAIL: ${{ secrets.FT_EMAIL }}
+          FT_PASSWORD: ${{ secrets.FT_PASSWORD }}
+          FT_COOKIES: ${{ secrets.FT_COOKIES }}
+          TIMEOUT_COOKIES: ${{ secrets.TIMEOUT_COOKIES }}
+          TELEGRAPH_COOKIES: ${{ secrets.TELEGRAPH_COOKIES }}
+          THETIMES_COOKIES: ${{ secrets.THETIMES_COOKIES }}
+          STANDARD_COOKIES: ${{ secrets.STANDARD_COOKIES }}
+          INDEPENDENT_COOKIES: ${{ secrets.INDEPENDENT_COOKIES }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: mcp_unlocker
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_ENABLED: 'true'
+          BROWSERBASE_MAX_SESSIONS_PER_RUN: '10'
+          BATCH_SIZE: '10'
+          MAX_REVIEWS: '150'
+          MARKET_FILTER: ${{ steps.market.outputs.market }}
+          RETRY_FAILED: 'true'
+          ARCHIVE_FIRST: 'true'
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: node scripts/collect-review-texts.js
+
+      - name: Validate data
+        if: always()
+        run: node scripts/validate-data.js
+
+      - name: Push review-texts
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Collect ${{ steps.market.outputs.market }} review texts"
+
+      - name: Trigger rebuild
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run "Rebuild Reviews Data" \
+            -f reason="Post ${{ steps.market.outputs.market }} collection"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'WE/OB Collection Failed (${{ steps.market.outputs.market }})'
+          severity: 'low'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
