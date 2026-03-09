@@ -45,7 +45,17 @@
     "mamma-mia-west-end-2021/variety--matt-wolf.json",
     "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
     "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
-    "maybe-happy-ending-2024/vulture--sara-holdren.json"
+    "maybe-happy-ending-2024/vulture--sara-holdren.json",
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "mj-2022/vulture--helen-shaw.json",
+    "moulin-rouge-2019/nytimes--ben-brantley.json",
+    "night-side-songs-off-broadway-2026/nytg--kyle-turner.json",
+    "night-side-songs-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "night-side-songs-off-broadway-2026/vulture--jonathan-mandell.json",
+    "oh-mary-2024/hollywood-reporter--david-rooney.json",
+    "oh-mary-2024/nytimes--erik-piepenburg.json",
+    "oh-mary-2024/vulture--helen-shaw.json",
+    "paddington-the-musical-west-end-2025/variety--david-benedict.json"
   ],
   "failed": [
     "an-ark-off-broadway-2026/new-jersey-newsroom--micheal-sommers.json",
@@ -95,7 +105,9 @@
       "hamilton-2015/nyt-theater--jonathan-mandell.json",
       "heathers-the-musical-off-broadway-2025/nytg--caroline-cao.json",
       "just-in-time-2025/nytimes--adam-feldman.json",
-      "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json"
+      "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json",
+      "night-side-songs-off-broadway-2026/nytg--kyle-turner.json",
+      "night-side-songs-off-broadway-2026/vulture--jonathan-mandell.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -107,7 +119,9 @@
       "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
       "hercules-west-end-2025/variety--david-benedict.json",
       "data/review-texts/mamma-mia-west-end-2021/variety--matt-wolf.json",
-      "mamma-mia-west-end-2021/variety--matt-wolf.json"
+      "mamma-mia-west-end-2021/variety--matt-wolf.json",
+      "data/review-texts/paddington-the-musical-west-end-2025/variety--david-benedict.json",
+      "paddington-the-musical-west-end-2025/variety--david-benedict.json"
     ],
     "browserbase": [
       "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
@@ -117,7 +131,11 @@
       "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json",
       "hamilton-2015/hollywood-reporter--david-rooney.json",
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
-      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json"
+      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "data/review-texts/oh-mary-2024/hollywood-reporter--david-rooney.json",
+      "oh-mary-2024/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -128,7 +146,9 @@
       "data-off-broadway-2026/nytimes--ben-brantley.json",
       "death-becomes-her-2024/newyorker--helen-shaw.json",
       "dracula-west-end-2025/nytimes--houman-barekat.json",
-      "just-in-time-2025/newyorker--unknown.json"
+      "just-in-time-2025/newyorker--unknown.json",
+      "night-side-songs-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "oh-mary-2024/nytimes--erik-piepenburg.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -159,11 +179,14 @@
       "little-shop-of-horrors-off-broadway-2019/nytimes--ben-brantley.json",
       "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
       "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
-      "maybe-happy-ending-2024/vulture--sara-holdren.json"
+      "maybe-happy-ending-2024/vulture--sara-holdren.json",
+      "mj-2022/vulture--helen-shaw.json",
+      "moulin-rouge-2019/nytimes--ben-brantley.json",
+      "oh-mary-2024/vulture--helen-shaw.json"
     ]
   },
   "startTime": "2026-03-09T04:19:45.856Z",
-  "lastProcessed": "maybe-happy-ending-2024/vulture--sara-holdren.json",
+  "lastProcessed": "paddington-the-musical-west-end-2025/variety--david-benedict.json",
   "log": [
     {
       "t": "2026-03-09T04:38:31.076Z",
@@ -219,6 +242,28 @@
       "t": "2026-03-09T04:46:43.490Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-09T04:47:20.796Z",
+      "event": "bb-session",
+      "session": "7f900f2d",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-03-09T04:47:22.122Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-09T04:48:43.050Z",
+      "event": "bb-session",
+      "session": "4f7b9c04",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
+    },
+    {
+      "t": "2026-03-09T04:48:44.372Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
