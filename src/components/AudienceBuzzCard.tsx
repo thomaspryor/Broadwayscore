@@ -75,6 +75,15 @@ function RedditIcon({ className }: { className?: string }) {
   );
 }
 
+// Theatr icon (theater masks)
+function TheatrIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+      <path d="M11.5 1C6.81 1 3 4.81 3 9.5c0 1.91.63 3.67 1.7 5.09L3 21l6.41-1.7C10.83 19.73 11.15 19.5 11.5 19.5c4.69 0 8.5-3.81 8.5-8.5S16.19 1 11.5 1zM8 8c.83 0 1.5.67 1.5 1.5S8.83 11 8 11s-1.5-.67-1.5-1.5S7.17 8 8 8zm7 5H9c-.28 0-.5-.22-.5-.5s.22-.5.5-.5h6c.28 0 .5.22.5.5s-.22.5-.5.5zm0-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+    </svg>
+  );
+}
+
 // External link icon
 function ExternalLinkIcon({ className }: { className?: string }) {
   return (
@@ -145,7 +154,7 @@ function SourceCard({ name, icon, score, reviewCount, starRating, url, comingSoo
 export default function AudienceBuzzCard({ buzz, showScoreUrl, limitedSources }: AudienceBuzzCardProps) {
   const grade = getAudienceGrade(buzz.combinedScore);
   const colors = getAudienceGradeClasses(buzz.combinedScore);
-  const { showScore, mezzanine, reddit } = buzz.sources;
+  const { showScore, mezzanine, reddit, theatr } = buzz.sources;
 
   return (
     <div className="card p-5 sm:p-6 mb-8">
@@ -168,7 +177,7 @@ export default function AudienceBuzzCard({ buzz, showScoreUrl, limitedSources }:
             <div className={`text-lg font-bold ${colors.textClass}`}>{grade.label}</div>
             <div className="text-sm text-gray-400">
               Based on {formatReviewCount(
-                (showScore?.reviewCount || 0) + (mezzanine?.reviewCount || 0) + (reddit?.reviewCount || 0)
+                (showScore?.reviewCount || 0) + (mezzanine?.reviewCount || 0) + (reddit?.reviewCount || 0) + (theatr?.reviewCount || 0)
               )} audience reviews
             </div>
           </div>
@@ -199,6 +208,15 @@ export default function AudienceBuzzCard({ buzz, showScoreUrl, limitedSources }:
           volumeLabel="mentions"
           comingSoon={!reddit}
         />
+        {theatr && (
+          <SourceCard
+            name="Theatr"
+            icon={<TheatrIcon className="text-teal-400" />}
+            score={theatr.score}
+            reviewCount={theatr.reviewCount}
+            volumeLabel="votes"
+          />
+        )}
       </div>
 
       {/* Limited sources note for historical shows */}
