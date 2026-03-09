@@ -91,7 +91,17 @@
     "all-my-sons-west-end-2025/timeout--unknown.json",
     "all-my-sons-west-end-2025/timeout-london--andrzej-lukowski.json",
     "all-out-2025/deadline--unknown.json",
-    "all-out-2025/ew--unknown.json"
+    "all-out-2025/ew--unknown.json",
+    "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json",
+    "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
+    "and-juliet-2022/theatermania--hayley-levitt.json",
+    "and-juliet-2022/theatermania--jesse-green.json",
+    "and-juliet-2022/thewrap--robert-hofler.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/timeout--unknown.json",
+    "arcadia-west-end-2026/guardian--arifa-akbar.json",
+    "bigfoot-off-broadway-2026/theatermania--hayley-levitt.json",
+    "bigfoot-off-broadway-2026/timeout--adam-feldman.json",
+    "bigfoot-off-broadway-2026/timeout--unknown.json"
   ],
   "failed": [
     "an-ark-off-broadway-2026/new-jersey-newsroom--micheal-sommers.json",
@@ -160,7 +170,11 @@
       "age-is-a-feeling-off-broadway-2024/guardian--mark-fisher.json",
       "aladdin-2014/theatermania--charles-isherwood.json",
       "all-my-sons-west-end-2025/timeout--unknown.json",
-      "all-my-sons-west-end-2025/timeout-london--andrzej-lukowski.json"
+      "all-my-sons-west-end-2025/timeout-london--andrzej-lukowski.json",
+      "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json",
+      "and-juliet-2022/theatermania--hayley-levitt.json",
+      "and-juliet-2022/theatermania--jesse-green.json",
+      "bigfoot-off-broadway-2026/theatermania--hayley-levitt.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -224,7 +238,11 @@
       "the-unknown-off-broadway-2026/nytimes--helen-shaw.json",
       "what-we-did-before-our-moth-days-off-broadway-2026/nytimes--helen-shaw.json",
       "all-my-sons-west-end-2025/guardian--arifa-akbar.json",
-      "all-out-2025/ew--unknown.json"
+      "all-out-2025/ew--unknown.json",
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/timeout--unknown.json",
+      "arcadia-west-end-2026/guardian--arifa-akbar.json",
+      "bigfoot-off-broadway-2026/timeout--adam-feldman.json",
+      "bigfoot-off-broadway-2026/timeout--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -266,11 +284,13 @@
       "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json",
       "wicked-2003/nytimes--charles-isherwood.json",
       "wicked-2003/vulture--bilge-eberi.json",
-      "aladdin-2014/ew--thom-geier.json"
+      "aladdin-2014/ew--thom-geier.json",
+      "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
+      "and-juliet-2022/thewrap--robert-hofler.json"
     ]
   },
   "startTime": "2026-03-09T04:19:45.856Z",
-  "lastProcessed": "all-out-2025/ew--unknown.json",
+  "lastProcessed": "bigfoot-off-broadway-2026/timeout--unknown.json",
   "log": [
     {
       "t": "2026-03-09T04:38:31.076Z",
@@ -392,6 +412,17 @@
       "t": "2026-03-09T05:01:27.404Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-09T05:02:01.871Z",
+      "event": "bb-session",
+      "session": "a04ea918",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-09T05:02:03.134Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
