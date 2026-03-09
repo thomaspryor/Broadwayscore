@@ -80,9 +80,9 @@ const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
 const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
 const showById = new Map(showsData.shows.map(s => [s.id, s]));
 
-// Build title families for revival lookup
+// Build title families for revival lookup — all markets, not just Broadway
 const titleFamilies = new Map();
-showsData.shows.filter(s => !s.category).forEach(s => {
+showsData.shows.forEach(s => {
   const baseTitle = s.title.toLowerCase().replace(/['']/g, "'").trim();
   if (!titleFamilies.has(baseTitle)) titleFamilies.set(baseTitle, []);
   titleFamilies.get(baseTitle).push(s);

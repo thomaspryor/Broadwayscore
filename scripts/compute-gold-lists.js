@@ -43,13 +43,13 @@ const { isOfficialBroadwayTheater } = require('./lib/broadway-theaters');
 
 function isBroadway(show) {
   if (!show) return false;
-  if (show.id.includes('west-end')) return false;
+  if (show.category && show.category !== 'broadway') return false;
   return isOfficialBroadwayTheater(show.venue);
 }
 
 function isWestEnd(show) {
   if (!show) return false;
-  return show.id.includes('west-end');
+  return show.category === 'west-end';
 }
 
 // ============================================
