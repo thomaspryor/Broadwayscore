@@ -35,13 +35,23 @@
     "romeo-and-juliet-west-end-2026/amny--matt-windman.json",
     "romeo-and-juliet-west-end-2026/financialtimes--brendan-lemon.json",
     "romeo-and-juliet-west-end-2026/london-box-office--camille-leadbeater.json",
-    "romeo-and-juliet-west-end-2026/london-box-office--phil-willmott.json"
+    "romeo-and-juliet-west-end-2026/london-box-office--phil-willmott.json",
+    "romeo-and-juliet-west-end-2026/london-box-office--stuart-king.json",
+    "romeo-and-juliet-west-end-2026/nbcny--robert-kahn.json",
+    "romeo-and-juliet-west-end-2026/slantmagazine--dan-rubins.json",
+    "sinatra-the-musical-west-end-2026/london-box-office--john-yap.json",
+    "sinatra-the-musical-west-end-2026/london-box-office--phil-willmott.json",
+    "the-choir-of-man-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+    "romeo-and-juliet-west-end-2026/nytimes--unknown.json"
   ],
   "failed": [
     "paranormal-activity-west-end-2025/thestage--tim-wicker.json",
     "paranormal-activity-west-end-2025/thestage--tom-wicker.json",
     "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
-    "romeo-and-juliet-west-end-2026/ap--mark-kennedy.json"
+    "romeo-and-juliet-west-end-2026/ap--mark-kennedy.json",
+    "romeo-and-juliet-west-end-2026/northjerseycom--robert-feldberg.json",
+    "romeo-and-juliet-west-end-2026/thestage--unknown.json",
+    "sinatra-the-musical-west-end-2026/telegraph--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -71,7 +81,13 @@
       "romeo-and-juliet-west-end-2026/theatrely--unknown.json",
       "romeo-and-juliet-west-end-2026/financialtimes--brendan-lemon.json",
       "romeo-and-juliet-west-end-2026/london-box-office--camille-leadbeater.json",
-      "romeo-and-juliet-west-end-2026/london-box-office--phil-willmott.json"
+      "romeo-and-juliet-west-end-2026/london-box-office--phil-willmott.json",
+      "romeo-and-juliet-west-end-2026/london-box-office--stuart-king.json",
+      "romeo-and-juliet-west-end-2026/nbcny--robert-kahn.json",
+      "romeo-and-juliet-west-end-2026/slantmagazine--dan-rubins.json",
+      "sinatra-the-musical-west-end-2026/london-box-office--john-yap.json",
+      "sinatra-the-musical-west-end-2026/london-box-office--phil-willmott.json",
+      "the-choir-of-man-west-end-2026/london-box-office--shehrazade-zafar-arif.json"
     ],
     "amp": [],
     "browserbase": [
@@ -87,20 +103,24 @@
       "paranormal-activity-west-end-2025/lost-in-theatreland--amy-rye.json",
       "paranormal-activity-west-end-2025/metro-uk--brooke-ivey-johnson.json",
       "the-devil-wears-prada-west-end-2024/independent--alice-saville.json",
-      "romeo-and-juliet-west-end-2026/cititour--brian-scott-lipton.json"
+      "romeo-and-juliet-west-end-2026/cititour--brian-scott-lipton.json",
+      "romeo-and-juliet-west-end-2026/nytimes--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/paranormal-activity-west-end-2025/thestage--tim-wicker.json",
       "data/review-texts/paranormal-activity-west-end-2025/thestage--tom-wicker.json",
-      "data/review-texts/romeo-and-juliet-west-end-2026/ap--mark-kennedy.json"
+      "data/review-texts/romeo-and-juliet-west-end-2026/ap--mark-kennedy.json",
+      "data/review-texts/romeo-and-juliet-west-end-2026/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
-      "burlesque-west-end-2026/city-am--adam-bloodworth.json"
+      "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+      "romeo-and-juliet-west-end-2026/vulture--unknown.json",
+      "romeo-and-juliet-west-end-2026/ew--unknown.json"
     ]
   },
   "startTime": "2026-03-09T14:46:28.645Z",
-  "lastProcessed": "romeo-and-juliet-west-end-2026/london-box-office--phil-willmott.json",
+  "lastProcessed": "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
   "log": [
     {
       "t": "2026-03-09T14:51:21.007Z",
@@ -178,6 +198,17 @@
       "t": "2026-03-09T15:02:21.142Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-09T15:04:11.626Z",
+      "event": "bb-session",
+      "session": "c4d6a262",
+      "url": "http://www.northjersey.com/arts_entertainment/theater/224523281_Theater_review__"
+    },
+    {
+      "t": "2026-03-09T15:04:12.924Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
