@@ -38,11 +38,13 @@ const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = requir
 const outletRegistry = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf8'));
 const outletRegionMap = {};  // outletId -> region (e.g., 'london')
 for (const [id, info] of Object.entries(outletRegistry.outlets)) {
-  if (info.region) outletRegionMap[id] = info.region;
+  // Use explicit region, or infer from market (west-end → london)
+  const region = info.region || (info.market === 'west-end' ? 'london' : null);
+  if (region) outletRegionMap[id] = region;
   // Also map aliases to the same region
-  if (info.aliases && info.region) {
+  if (info.aliases && region) {
     for (const alias of info.aliases) {
-      outletRegionMap[alias] = info.region;
+      outletRegionMap[alias] = region;
     }
   }
 }
