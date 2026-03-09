@@ -294,7 +294,8 @@ function scanReviewFiles() {
         if (data.llmPullQuote && !OVERWRITE) { stats.skipped++; continue; }
 
         // Skip garbage / wrong show / roundup articles
-        if (data.wrongProduction || data.wrongShow || data.isRoundupArticle) { stats.skipped++; continue; }
+        if (data.wrongProduction || data.wrongShow || data.wrongAttribution || data.duplicateOf ||
+            data.isRoundupArticle || data.rejectionReason || data.contentTier === 'invalid') { stats.skipped++; continue; }
 
         // Skip truncated/incomplete reviews — best quote is likely behind the paywall
         if (data.textStatus === 'truncated' || ['truncated', 'stub', 'excerpt'].includes(data.contentTier)) {
