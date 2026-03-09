@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-09T16:01:01.915Z",
-  "processed": 97,
+  "updatedAt": "2026-03-09T16:03:22.727Z",
+  "processed": 107,
   "failed": 13,
-  "successRate": "88.2%",
+  "successRate": "89.2%",
   "tierBreakdown": {
-    "playwright": 53,
-    "amp": 12,
-    "browserbase": 22,
+    "playwright": 55,
+    "amp": 16,
+    "browserbase": 24,
     "directCookies": 0,
-    "scrapingbee": 14,
+    "scrapingbee": 16,
     "brightdata": 0,
     "archiveToday": 6,
-    "archive": 13
+    "archive": 16
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-03-09T15:04:11.626Z",
-      "event": "bb-session",
-      "session": "c4d6a262",
-      "url": "http://www.northjersey.com/arts_entertainment/theater/224523281_Theater_review__"
-    },
-    {
-      "t": "2026-03-09T15:04:12.924Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
     {
       "t": "2026-03-09T15:42:26.657Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-09T16:00:40.346Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-09T16:01:05.918Z",
+      "event": "bb-session",
+      "session": "11fe9c72",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
+    },
+    {
+      "t": "2026-03-09T16:01:07.178Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
