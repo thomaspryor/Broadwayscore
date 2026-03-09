@@ -414,24 +414,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               {/* Full-width separator */}
               <div className="-mx-5 border-t border-white/10" />
 
-              {/* User Rating — full width so internal border spans card */}
-              <div className="[&>div]:border-t-0 [&>div]:mt-0 [&>div]:pt-0 [&>div]:-mb-0">
-                <ShowPageRatingConnected
-                  showId={show.id}
-                  showTitle={show.title}
-                  previewDate={show.previewsStartDate}
-                  closingDate={show.closingDate}
-                />
-              </div>
-              {/* Watchlist — right-aligned */}
-              <div className="flex justify-end -mt-2">
-                <ShowPageWatchlistButton showId={show.id} />
-              </div>
-
-              {/* Separator between stars and links */}
-              <div className="-mx-5 border-t border-white/10" />
-
-              {/* Action Links — single row, horizontal scroll */}
+              {/* Action Links + Watchlist — single row, horizontal scroll */}
               <div className="flex gap-2 overflow-x-auto flex-nowrap -mx-5 px-5 pb-1 scrollbar-hide">
                 {show.officialUrl && (
                   <TicketLink
@@ -480,8 +463,20 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                     {lotteryRush.lottery ? `$${lotteryRush.lottery.price} Lottery` : lotteryRush.rush ? `$${lotteryRush.rush.price} Rush` : 'Discount Tickets'}
                   </a>
                 )}
+                {/* Spacer pushes watchlist right */}
+                <div className="flex-1 min-w-[8px] flex-shrink-0" />
+                <ShowPageWatchlistButton showId={show.id} />
               </div>
             </div>
+          </div>
+          {/* User Rating — outside the card, lightweight */}
+          <div className="mt-3 px-1 [&>div]:border-t-0 [&>div]:mt-0 [&>div]:pt-0">
+            <ShowPageRatingConnected
+              showId={show.id}
+              showTitle={show.title}
+              previewDate={show.previewsStartDate}
+              closingDate={show.closingDate}
+            />
           </div>
         )}
 
