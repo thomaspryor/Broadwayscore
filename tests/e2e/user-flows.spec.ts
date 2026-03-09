@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { filterNonCriticalErrors } from './helpers/console-errors';
 
 /**
  * E2E tests for user account flows (UGC).
@@ -38,14 +39,7 @@ test.describe('My Shows Page (Unauthenticated)', () => {
     await page.goto('/my-shows');
     await page.waitForLoadState('networkidle');
 
-    const criticalErrors = errors.filter(
-      e =>
-        !e.includes('favicon') &&
-        !e.includes('analytics') &&
-        !e.includes('hydration') &&
-        !e.includes('MIME type') &&
-        !e.includes('Failed to load resource')
-    );
+    const criticalErrors = filterNonCriticalErrors(errors);
 
     expect(criticalErrors.length).toBe(0);
   });

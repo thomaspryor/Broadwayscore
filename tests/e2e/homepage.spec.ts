@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { filterNonCriticalErrors } from './helpers/console-errors';
 
 test.describe('Homepage', () => {
   test.beforeEach(async ({ page }) => {
@@ -21,9 +22,7 @@ test.describe('Homepage', () => {
     await page.waitForLoadState('networkidle');
 
     // Filter out known non-critical errors
-    const criticalErrors = errors.filter(
-      (e) => !e.includes('favicon') && !e.includes('analytics') && !e.includes('MIME type') && !e.includes('Failed to load resource')
-    );
+    const criticalErrors = filterNonCriticalErrors(errors);
 
     expect(criticalErrors).toHaveLength(0);
   });

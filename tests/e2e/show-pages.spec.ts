@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { filterNonCriticalErrors } from './helpers/console-errors';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -59,14 +60,7 @@ test.describe('Show Detail Pages', () => {
     }
 
     // Filter out non-critical errors
-    const criticalErrors = errors.filter(
-      (e) =>
-        !e.includes('favicon') &&
-        !e.includes('analytics') &&
-        !e.includes('hydration') &&
-        !e.includes('MIME type') &&
-        !e.includes('Failed to load resource')
-    );
+    const criticalErrors = filterNonCriticalErrors(errors);
 
     if (criticalErrors.length > 0) {
       console.log('Console errors found:', criticalErrors);

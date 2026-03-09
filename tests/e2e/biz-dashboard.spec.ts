@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { filterNonCriticalErrors } from './helpers/console-errors';
 
 test.describe('/biz Dashboard - Basic Tests', () => {
   test.beforeEach(async ({ page }) => {
@@ -16,9 +17,7 @@ test.describe('/biz Dashboard - Basic Tests', () => {
     await page.waitForLoadState('networkidle');
 
     // Filter out expected warnings
-    const criticalErrors = errors.filter(
-      (e) => !e.includes('Warning') && !e.includes('Failed to load resource') && !e.includes('MIME type')
-    );
+    const criticalErrors = filterNonCriticalErrors(errors);
     expect(criticalErrors).toHaveLength(0);
   });
 
