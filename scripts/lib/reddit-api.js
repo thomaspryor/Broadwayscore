@@ -34,6 +34,11 @@ let lastRequestTime = 0;
 // Proxy state
 let brightDataDown = false;
 
+// Circuit breaker: abort early if all sources are consistently failing
+let consecutiveFailures = 0;
+const CIRCUIT_BREAKER_THRESHOLD = 15; // After 15 consecutive failures across all sources, abort
+let circuitBroken = false;
+
 // Session stats
 const stats = {
   redditDirect: 0,
@@ -223,6 +228,27 @@ function fetchRedditDirect(url) {
  * Fetch URL with direct Reddit access, fallback to ScrapingBee
  */
 async function fetchWithFallback(url, retryCount = 0) {
+  // Circuit breaker: if too many consecutive failures, stop wasting time
+  if (circuitBroken) {
+    throw new Error('Circuit breaker open: all Reddit sources failing consistently. Aborting to save time.');
+  }
+
+  try {
+    const result = await _fetchWithFallbackInner(url, retryCount);
+    // Success — reset circuit breaker counter
+    consecutiveFailures = 0;
+    return result;
+  } catch (e) {
+    consecutiveFailures++;
+    if (consecutiveFailures >= CIRCUIT_BREAKER_THRESHOLD && !circuitBroken) {
+      circuitBroken = true;
+      console.error(`\n⚠ CIRCUIT BREAKER: ${consecutiveFailures} consecutive failures across all Reddit sources. Stopping further requests to avoid wasting the remaining timeout.`);
+    }
+    throw e;
+  }
+}
+
+async function _fetchWithFallbackInner(url, retryCount = 0) {
   // Check if we should try Reddit direct again after cooldown
   if (useScrapingBee && (Date.now() - scrapingBeeSwitchTime) > SCRAPINGBEE_COOLDOWN) {
     console.log('  Cooldown elapsed, retrying Reddit direct...');
@@ -271,7 +297,7 @@ async function fetchWithFallback(url, retryCount = 0) {
       if (retryCount < MAX_RETRIES) {
         stats.backoffRetries++;
         await sleep(delay);
-        return fetchWithFallback(url, retryCount + 1);
+        return _fetchWithFallbackInner(url, retryCount + 1);
       }
       // Max retries — try proxies
       return switchToProxy(url);
@@ -433,7 +459,7 @@ async function collectCommentsFromPosts(subreddit, posts, maxComments = 1000) {
  * Get session stats
  */
 function getStats() {
-  return { ...stats, rateLimitCount, usingScrapingBee: useScrapingBee };
+  return { ...stats, rateLimitCount, usingScrapingBee: useScrapingBee, circuitBroken, consecutiveFailures };
 }
 
 /**

@@ -662,6 +662,11 @@ async function main() {
   if (sessionStats.usingScrapingBee) {
     console.log(`  (ended on proxy fallback)`);
   }
+  if (sessionStats.circuitBroken) {
+    console.error(`\n⚠ Circuit breaker tripped after ${sessionStats.consecutiveFailures} consecutive failures.`);
+    console.error('All Reddit data sources were unavailable. Exiting with error so retry cron fires.');
+    process.exit(1);
+  }
 }
 
 main().catch(e => {
