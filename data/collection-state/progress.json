@@ -438,7 +438,12 @@
     "dracula-west-end-2025/i-paper--fiona-mountford.json",
     "dracula-west-end-2025/independent--alice-saville.json",
     "dracula-west-end-2025/london-theatre--olivia-rook.json",
-    "dracula-west-end-2025/whatsonstage--sarah-crompton.json"
+    "dracula-west-end-2025/whatsonstage--sarah-crompton.json",
+    "drunk-shakespeare-off-broadway-2022/one-minute-critic--unknown.json",
+    "friends-the-musical-parody-off-broadway-2022/says-me-says-mom--jeryl-marcus.json",
+    "friends-the-musical-parody-off-broadway-2022/stagebuddy--bill-crouch.json",
+    "hadestown-2019/amny--matt-windman.json",
+    "hadestown-2019/chicagotribune--chris-jones.json"
   ],
   "failed": [
     "paranormal-activity-west-end-2025/thestage--tim-wicker.json",
@@ -491,7 +496,12 @@
     "chess-2025/thestage--unknown.json",
     "cold-war-choir-practice-off-broadway-2026/times-uk--unknown.json",
     "deep-azure-globe-west-end-2026/thestage--unknown.json",
-    "dracula-west-end-2025/times-uk--clive-davis.json"
+    "dracula-west-end-2025/times-uk--clive-davis.json",
+    "garry-starr-classic-penguins-garrick-west-end-2026/broadwayworld--franco-milazzo.json",
+    "garry-starr-classic-penguins-garrick-west-end-2026/everything-theatre-uk--jess-gonzalez.json",
+    "giant-2026/ap--jennifer-farrar.json",
+    "giant-2026/london-theatre--julia-rank.json",
+    "giant-2026/thestage--dave-fargnoli.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -793,7 +803,8 @@
       "dracula-west-end-2025/financialtimes--sarah-hemming.json",
       "dracula-west-end-2025/i-paper--fiona-mountford.json",
       "dracula-west-end-2025/london-theatre--olivia-rook.json",
-      "dracula-west-end-2025/whatsonstage--sarah-crompton.json"
+      "dracula-west-end-2025/whatsonstage--sarah-crompton.json",
+      "friends-the-musical-parody-off-broadway-2022/says-me-says-mom--jeryl-marcus.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -849,7 +860,9 @@
       "data/review-texts/oh-mary-2024/hollywood-reporter--david-rooney.json",
       "oh-mary-2024/hollywood-reporter--david-rooney.json",
       "data/review-texts/buena-vista-social-club-2025/amny--matt-windman.json",
-      "buena-vista-social-club-2025/amny--matt-windman.json"
+      "buena-vista-social-club-2025/amny--matt-windman.json",
+      "data/review-texts/hadestown-2019/amny--matt-windman.json",
+      "hadestown-2019/amny--matt-windman.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json"
@@ -924,7 +937,10 @@
       "cabaret-at-the-kit-kat-club-west-end-2021/independent--alexandra-pollard.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json",
       "chamber-magic-off-broadway-2022/culturesauce--unknown.json",
-      "dracula-west-end-2025/independent--alice-saville.json"
+      "dracula-west-end-2025/independent--alice-saville.json",
+      "drunk-shakespeare-off-broadway-2022/one-minute-critic--unknown.json",
+      "garry-starr-classic-penguins-garrick-west-end-2026/broadwayworld--franco-milazzo.json",
+      "hadestown-2019/chicagotribune--chris-jones.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -945,7 +961,8 @@
       "data/review-texts/arcadia-west-end-2026/usatoday--mike-fischer.json",
       "data/review-texts/broken-glass-west-end-2026/thestage--unknown.json",
       "data/review-texts/chess-2025/thestage--unknown.json",
-      "data/review-texts/deep-azure-globe-west-end-2026/thestage--unknown.json"
+      "data/review-texts/deep-azure-globe-west-end-2026/thestage--unknown.json",
+      "data/review-texts/giant-2026/thestage--dave-fargnoli.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
@@ -994,11 +1011,13 @@
       "chess-2025/ap--mark-kennedy.json",
       "calf-scramble-off-broadway-2026/times-uk--chloe-rabinowitz.json",
       "chess-2025/daily-mail--milly-veitch.json",
-      "chess-2025/ny1--frank-dilella.json"
+      "chess-2025/ny1--frank-dilella.json",
+      "friends-the-musical-parody-off-broadway-2022/stagebuddy--bill-crouch.json",
+      "garry-starr-classic-penguins-garrick-west-end-2026/everything-theatre-uk--jess-gonzalez.json"
     ]
   },
   "startTime": "2026-03-09T14:46:28.645Z",
-  "lastProcessed": "dracula-west-end-2025/whatsonstage--sarah-crompton.json",
+  "lastProcessed": "hadestown-2019/chicagotribune--chris-jones.json",
   "log": [
     {
       "t": "2026-03-09T14:51:21.007Z",
@@ -1241,6 +1260,28 @@
       "t": "2026-03-09T19:24:17.298Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-09T19:33:42.487Z",
+      "event": "bb-session",
+      "session": "d743626e",
+      "url": "https://www.thestage.co.uk/reviews/giant-review-harold-pinter-theatre-london-joh"
+    },
+    {
+      "t": "2026-03-09T19:33:43.840Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-09T19:34:02.993Z",
+      "event": "bb-session",
+      "session": "cbf85016",
+      "url": "https://www.amny.com/entertainment/hadestown-review-1-29924932/"
+    },
+    {
+      "t": "2026-03-09T19:34:04.367Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }

@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-09T19:25:31.637Z",
-  "processed": 439,
-  "failed": 51,
-  "successRate": "89.6%",
+  "updatedAt": "2026-03-09T19:34:31.045Z",
+  "processed": 444,
+  "failed": 56,
+  "successRate": "88.8%",
   "tierBreakdown": {
-    "playwright": 298,
+    "playwright": 299,
     "amp": 26,
-    "browserbase": 26,
+    "browserbase": 28,
     "directCookies": 1,
-    "scrapingbee": 70,
+    "scrapingbee": 73,
     "brightdata": 0,
-    "archiveToday": 18,
-    "archive": 47
+    "archiveToday": 19,
+    "archive": 49
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-03-09T15:53:18.077Z",
-      "event": "bb-session",
-      "session": "9123803a",
-      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
-    },
-    {
-      "t": "2026-03-09T15:53:18.982Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-09T15:53:36.784Z",
-      "event": "bb-session",
-      "session": "c3aee85a",
-      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
-    },
-    {
-      "t": "2026-03-09T15:53:37.792Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-09T15:56:03.034Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-09T19:24:17.298Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-09T19:33:42.487Z",
+      "event": "bb-session",
+      "session": "d743626e",
+      "url": "https://www.thestage.co.uk/reviews/giant-review-harold-pinter-theatre-london-joh"
+    },
+    {
+      "t": "2026-03-09T19:33:43.840Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-09T19:34:02.993Z",
+      "event": "bb-session",
+      "session": "cbf85016",
+      "url": "https://www.amny.com/entertainment/hadestown-review-1-29924932/"
+    },
+    {
+      "t": "2026-03-09T19:34:04.367Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
