@@ -248,6 +248,18 @@ function isJunkExcerpt(text) {
   const datePatterns = first50.match(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d+/gi) || [];
   if (datePatterns.length >= 2) return true;
 
+  // ROT-1 / garbled text detection (Newsday anti-scraping cipher)
+  // Garbled text has near-zero common English word ratio
+  if (text.length >= 40) {
+    const words = text.toLowerCase().split(/\s+/).filter(w => w.length >= 2);
+    if (words.length >= 5) {
+      const commonWords = new Set(['the', 'and', 'of', 'to', 'a', 'in', 'is', 'it', 'that', 'for', 'was', 'on', 'are', 'with', 'as', 'but', 'this', 'his', 'her', 'not', 'has', 'had', 'an', 'be', 'at', 'by', 'or', 'its', 'from', 'who', 'than', 'if', 'so', 'no', 'more']);
+      const commonCount = words.filter(w => commonWords.has(w)).length;
+      const ratio = commonCount / words.length;
+      if (ratio < 0.03) return true;
+    }
+  }
+
   return false;
 }
 
@@ -667,8 +679,22 @@ function isGenericQuote(text) {
 function trimToCompleteSentence(text) {
   if (!text) return text;
   const trimmed = text.trim();
+
+  // Detect broken contractions: text ending with a known contraction stub + apostrophe
+  // (e.g., "he'", "it'", "wasn'", "wouldn'"). These are truncated at HTML entity boundaries.
+  // Must check BEFORE the general punctuation test, since ' matches the ['] class.
+  // Only targets known contraction patterns — possessives and title quotes are left alone.
+  const contractionMatch = trimmed.match(/(^|\s)(he|she|it|we|they|who|wasn|wouldn|couldn|didn|don|isn|aren|won|haven|hasn|shouldn|mustn|weren|hadn|I)['\u2019]$/);
+  if (contractionMatch) {
+    const match = trimmed.match(/^(.*[.!?"\u201D])\s/s);
+    if (match && match[1].length >= 40) return match[1].trim();
+    return trimmed;
+  }
+
   // Already ends with sentence-ending punctuation
-  if (/[.!?"\u201D')]\s*$/.test(trimmed)) return trimmed;
+  if (/[.!?"\u201D)]\s*$/.test(trimmed)) return trimmed;
+  // Closing single quote after punctuation is valid: e.g., "for me.'"
+  if (/[.!?][')\u2019]\s*$/.test(trimmed)) return trimmed;
   // Find the last sentence-ending punctuation
   const match = trimmed.match(/^(.*[.!?"\u201D'])\s*\S+.*$/s);
   if (match && match[1].length >= 40) return match[1].trim();
@@ -1460,6 +1486,8 @@ showDirs.forEach(showId => {
   const seenUrlsGlobal = new Map();
   // Track content fingerprints per outlet to catch same text under different critic names
   const seenFingerprintsByOutlet = new Map();
+  // Track content fingerprints globally (cross-outlet) to catch same article under different outlet variations
+  const seenFingerprintsGlobal = new Map();
 
   files.forEach(file => {
     try {
@@ -2156,6 +2184,32 @@ showDirs.forEach(showId => {
         }
       }
 
+      // Outlet-as-critic dedup: if the critic name matches the outlet name, this is likely
+      // a scraper that couldn't extract the real critic name. Skip if a real named critic
+      // already exists at this outlet.
+      if (data.criticName) {
+        const rawCritic = data.criticName.toLowerCase().trim();
+        const rawOutlet = (data.outlet || '').toLowerCase().trim();
+        const rawOutletId = (data.outletId || '').toLowerCase().trim();
+        const displayName = (getOutletDisplayName(outletKey) || '').toLowerCase().trim();
+        const isCriticSameAsOutlet = rawCritic === rawOutlet || rawCritic === rawOutletId || rawCritic === displayName || criticKey === outletKey;
+
+        if (isCriticSameAsOutlet) {
+          let namedCriticExists = false;
+          for (const existingKey of seenKeys) {
+            const [existingOutlet, existingCritic] = existingKey.split('|');
+            if (existingOutlet === outletKey && existingCritic !== criticKey && !/^(unknown|unnamed)$/.test(existingCritic)) {
+              namedCriticExists = true;
+              break;
+            }
+          }
+          if (namedCriticExists) {
+            stats.skippedOutletAsCriticDedup = (stats.skippedOutletAsCriticDedup || 0) + 1;
+            return;
+          }
+        }
+      }
+
       // First-name prefix dedup: "jesse" at "nytimes" matches "jessegreen" at "nytimes"
       // This catches files like nytimes--jesse.json vs nytimes--jesse-green.json
       let prefixDuplicate = false;
@@ -2230,6 +2284,15 @@ showDirs.forEach(showId => {
             return;
           }
           seenFingerprintsByOutlet.set(fpKey, file);
+
+          // Cross-outlet fingerprint dedup: same article filed under different outlet names
+          if (seenFingerprintsGlobal.has(fingerprint)) {
+            const winner = seenFingerprintsGlobal.get(fingerprint);
+            console.log(`  [CROSS-OUTLET FINGERPRINT DEDUP] ${showId}/${file}: same text as ${winner} (keeping ${winner})`);
+            stats.skippedCrossOutletFingerprintDedup = (stats.skippedCrossOutletFingerprintDedup || 0) + 1;
+            return;
+          }
+          seenFingerprintsGlobal.set(fingerprint, file);
         }
       }
 
@@ -2362,7 +2425,12 @@ showDirs.forEach(showId => {
           data._showStatus = showStatusMap[showId];
           const raw = selectBestExcerpt(data, showTitleMap[showId]);
           if (raw && isJunkExcerpt(raw)) return null;
-          return normalizeQuoteWrapping(raw);
+          const quote = normalizeQuoteWrapping(raw);
+          // Reject quotes ending with broken contractions (truncated at HTML entity boundaries)
+          if (quote && /(^|\s)(he|she|it|we|they|who|wasn|wouldn|couldn|didn|don|isn|aren|won|haven|hasn|shouldn|mustn|weren|hadn|I)['\u2019]$/.test(quote)) {
+            return null;
+          }
+          return quote;
         })(),
         dtliThumb: data.dtliThumb || null,
         bwwThumb: data.bwwThumb || null,

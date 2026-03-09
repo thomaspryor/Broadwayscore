@@ -145,6 +145,19 @@ for (const show of visibleShows) {
       return b.s - a.s;
     });
 
+  // PullQuote dedup: if two reviews share the same quote text, null out the duplicate.
+  // First occurrence wins (higher-tier, higher-score due to sort order above).
+  const seenQuotes = new Set();
+  for (const entry of reviewEntries) {
+    if (entry.q) {
+      if (seenQuotes.has(entry.q)) {
+        delete entry.q;
+      } else {
+        seenQuotes.add(entry.q);
+      }
+    }
+  }
+
   // Audience detail
   let audienceDetail = null;
   if (buzz && buzz.combinedScore != null) {
