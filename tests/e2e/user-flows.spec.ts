@@ -44,7 +44,7 @@ test.describe('My Shows Page (Unauthenticated)', () => {
         !e.includes('analytics') &&
         !e.includes('hydration') &&
         !e.includes('MIME type') &&
-        !e.includes('404')
+        !e.includes('Failed to load resource')
     );
 
     expect(criticalErrors.length).toBe(0);

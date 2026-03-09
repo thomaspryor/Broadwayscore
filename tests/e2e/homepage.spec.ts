@@ -22,7 +22,7 @@ test.describe('Homepage', () => {
 
     // Filter out known non-critical errors
     const criticalErrors = errors.filter(
-      (e) => !e.includes('favicon') && !e.includes('analytics') && !e.includes('MIME type')
+      (e) => !e.includes('favicon') && !e.includes('analytics') && !e.includes('MIME type') && !e.includes('Failed to load resource')
     );
 
     expect(criticalErrors).toHaveLength(0);

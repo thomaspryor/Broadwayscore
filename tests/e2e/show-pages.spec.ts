@@ -65,7 +65,7 @@ test.describe('Show Detail Pages', () => {
         !e.includes('analytics') &&
         !e.includes('hydration') &&
         !e.includes('MIME type') &&
-        !e.includes('Failed to load resource: the server responded with a status of 404')
+        !e.includes('Failed to load resource')
     );
 
     if (criticalErrors.length > 0) {

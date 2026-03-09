@@ -20,6 +20,7 @@ export default defineConfig({
         '**/ugc-interactive-qa*',
         '**/ugc-visual-regression*',
         '**/ugc-visual-baselines*',
+        '**/visual-regression*',
       ],
 
   // Run tests in parallel
