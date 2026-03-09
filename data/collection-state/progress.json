@@ -446,7 +446,11 @@
     "hadestown-2019/chicagotribune--chris-jones.json",
     "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
     "the-office-a-musical-parody-off-broadway-2018/theatrely--unknown.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/artsdesk--david-nice.json"
+    "cabaret-at-the-kit-kat-club-west-end-2021/artsdesk--david-nice.json",
+    "hadestown-2019/medium--christian-lewis.json",
+    "hadestown-2019/theater-life--barry-gordin.json",
+    "hadestown-2019/washpost--peter-marks.json",
+    "hadestown-2019/washpost--unknown.json"
   ],
   "failed": [
     "paranormal-activity-west-end-2025/thestage--tim-wicker.json",
@@ -531,7 +535,13 @@
     "broken-glass-west-end-2026/thestage--unknown.json",
     "calf-scramble-off-broadway-2026/times-uk--chloe-rabinowitz.json",
     "chess-2025/thestage--unknown.json",
-    "cold-war-choir-practice-off-broadway-2026/times-uk--unknown.json"
+    "cold-war-choir-practice-off-broadway-2026/times-uk--unknown.json",
+    "dracula-west-end-2025/times-uk--clive-davis.json",
+    "garry-starr-classic-penguins-garrick-west-end-2026/broadwayworld--franco-milazzo.json",
+    "garry-starr-classic-penguins-garrick-west-end-2026/everything-theatre-uk--jess-gonzalez.json",
+    "giant-2026/ap--jennifer-farrar.json",
+    "giant-2026/london-theatre--julia-rank.json",
+    "giant-2026/thestage--dave-fargnoli.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -834,7 +844,12 @@
       "dracula-west-end-2025/i-paper--fiona-mountford.json",
       "dracula-west-end-2025/london-theatre--olivia-rook.json",
       "dracula-west-end-2025/whatsonstage--sarah-crompton.json",
-      "friends-the-musical-parody-off-broadway-2022/says-me-says-mom--jeryl-marcus.json"
+      "friends-the-musical-parody-off-broadway-2022/says-me-says-mom--jeryl-marcus.json",
+      "garry-starr-classic-penguins-garrick-west-end-2026/everything-theatre-uk--jess-gonzalez.json",
+      "hadestown-2019/medium--christian-lewis.json",
+      "hadestown-2019/theater-life--barry-gordin.json",
+      "hadestown-2019/washpost--peter-marks.json",
+      "hadestown-2019/washpost--unknown.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -971,7 +986,8 @@
       "drunk-shakespeare-off-broadway-2022/one-minute-critic--unknown.json",
       "garry-starr-classic-penguins-garrick-west-end-2026/broadwayworld--franco-milazzo.json",
       "hadestown-2019/chicagotribune--chris-jones.json",
-      "the-office-a-musical-parody-off-broadway-2018/theatrely--unknown.json"
+      "the-office-a-musical-parody-off-broadway-2018/theatrely--unknown.json",
+      "garry-starr-classic-penguins-garrick-west-end-2026/broadwayworld--franco-milazzo.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1000,7 +1016,9 @@
       "data/review-texts/aladdin-2014/thestage--mark-shenton.json",
       "data/review-texts/all-my-sons-west-end-2025/thestage--sam-marlowe.json",
       "data/review-texts/arcadia-west-end-2026/usatoday--mike-fischer.json",
-      "data/review-texts/broken-glass-west-end-2026/thestage--unknown.json"
+      "data/review-texts/broken-glass-west-end-2026/thestage--unknown.json",
+      "data/review-texts/chess-2025/thestage--unknown.json",
+      "data/review-texts/giant-2026/thestage--dave-fargnoli.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
@@ -1054,11 +1072,12 @@
       "garry-starr-classic-penguins-garrick-west-end-2026/everything-theatre-uk--jess-gonzalez.json",
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
       "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
-      "cabaret-at-the-kit-kat-club-west-end-2021/artsdesk--david-nice.json"
+      "cabaret-at-the-kit-kat-club-west-end-2021/artsdesk--david-nice.json",
+      "calf-scramble-off-broadway-2026/times-uk--chloe-rabinowitz.json"
     ]
   },
   "startTime": "2026-03-09T14:46:28.645Z",
-  "lastProcessed": "cold-war-choir-practice-off-broadway-2026/times-uk--unknown.json",
+  "lastProcessed": "hadestown-2019/washpost--unknown.json",
   "log": [
     {
       "t": "2026-03-09T14:51:21.007Z",
@@ -1387,6 +1406,28 @@
     },
     {
       "t": "2026-03-09T20:04:20.933Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-09T20:11:32.502Z",
+      "event": "bb-session",
+      "session": "b23c71e5",
+      "url": "https://www.thestage.co.uk/opinion/can-chess-break-free-from-its-chequered-broad"
+    },
+    {
+      "t": "2026-03-09T20:11:33.842Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-09T20:18:38.354Z",
+      "event": "bb-session",
+      "session": "090841e8",
+      "url": "https://www.thestage.co.uk/news/production-news/giant-starring-john-lithgow-land"
+    },
+    {
+      "t": "2026-03-09T20:18:39.867Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
