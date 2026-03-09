@@ -32,9 +32,9 @@ const shows = showsData.shows;
 // Build Broadway shows indexed by ID
 const showById = new Map(shows.map(s => [s.id, s]));
 
-// Build title → production families (Broadway only)
+// Build title → production families (all markets)
 const titleFamilies = new Map();
-shows.filter(s => !s.category).forEach(s => {
+shows.forEach(s => {
   const baseTitle = s.title.toLowerCase().replace(/['']/g, "'").trim();
   if (!titleFamilies.has(baseTitle)) titleFamilies.set(baseTitle, []);
   titleFamilies.get(baseTitle).push(s);
