@@ -167,8 +167,8 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
       contextParts.push('These are selected quotes from the review and may not represent the full verdict.');
 
       // 2D: Count available unique excerpts for single-excerpt warning
-      const availableExcerpts = [review.bwwExcerpt, review.dtliExcerpt, review.showScoreExcerpt, review.nycTheatreExcerpt, review.lboRoundupExcerpt]
-        .filter(e => e && e.length >= 30);
+      const availableExcerpts = textQuality.EXCERPT_FIELDS.map((ef: {field: string}) => (review as any)[ef.field])
+        .filter((e: string) => e && e.length >= 30);
       const uniqueExcerpts = new Set(availableExcerpts);
       if (uniqueExcerpts.size === 1) {
         contextParts.push('\n## Single Excerpt Warning');
@@ -179,7 +179,7 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
 
   // 4. Aggregator context (ONLY for non-complete texts)
   const includesAggregatorContext = textQualityStatus !== 'complete' &&
-    !!(review.bwwThumb || review.dtliThumb || review.bwwScore != null || review.bwwExcerpt || review.dtliExcerpt || review.showScoreExcerpt || review.nycTheatreExcerpt);
+    !!(review.bwwThumb || review.dtliThumb || review.bwwScore != null || textQuality.EXCERPT_FIELDS.some((ef: {field: string}) => (review as any)[ef.field]));
 
   if (includesAggregatorContext) {
     contextParts.push(`\n## Aggregator Context (for reference only)`);
@@ -238,8 +238,8 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
 
   // 2D: Force low confidence for single-excerpt scoring
   if (textQualityStatus === 'excerpt-only') {
-    const availableExcerpts = [review.bwwExcerpt, review.dtliExcerpt, review.showScoreExcerpt, review.nycTheatreExcerpt, review.lboRoundupExcerpt]
-      .filter(e => e && e.length >= 30);
+    const availableExcerpts = textQuality.EXCERPT_FIELDS.map((ef: {field: string}) => (review as any)[ef.field])
+      .filter((e: string) => e && e.length >= 30);
     const uniqueExcerpts = new Set(availableExcerpts);
     if (uniqueExcerpts.size <= 1) {
       confidence = 'low';

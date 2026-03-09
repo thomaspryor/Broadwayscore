@@ -5,6 +5,19 @@
  * Does NOT use character count as a proxy for quality.
  */
 
+/**
+ * Canonical list of excerpt fields — SINGLE SOURCE OF TRUTH.
+ * When adding a new aggregator/excerpt source, add it here.
+ * Used by: getBestTextForScoring(), input-builder.ts, is-scoreable.ts, index.ts
+ */
+const EXCERPT_FIELDS = [
+  { field: 'showScoreExcerpt', name: 'Show Score' },
+  { field: 'dtliExcerpt', name: 'DTLI' },
+  { field: 'bwwExcerpt', name: 'BWW' },
+  { field: 'nycTheatreExcerpt', name: 'NYC Theatre' },
+  { field: 'lboRoundupExcerpt', name: 'LBO Roundup' },
+];
+
 // Verdict language patterns - indicates the critic's final assessment
 const VERDICT_PATTERNS = [
   // Positive verdicts
@@ -365,14 +378,8 @@ function getBestTextForScoring(review) {
     });
   }
 
-  // Add aggregator excerpts
-  const excerptFields = [
-    { field: 'showScoreExcerpt', name: 'Show Score' },
-    { field: 'dtliExcerpt', name: 'DTLI' },
-    { field: 'bwwExcerpt', name: 'BWW' },
-    { field: 'nycTheatreExcerpt', name: 'NYC Theatre' },
-    { field: 'lboRoundupExcerpt', name: 'LBO Roundup' }
-  ];
+  // Add aggregator excerpts — uses canonical EXCERPT_FIELDS list (single source of truth)
+  const excerptFields = EXCERPT_FIELDS;
 
   for (const { field, name } of excerptFields) {
     const excerpt = review[field];
@@ -549,6 +556,7 @@ function cleanText(text) {
 }
 
 module.exports = {
+  EXCERPT_FIELDS,
   hasVerdict,
   checkTruncation,
   checkCorruption,

@@ -75,14 +75,21 @@ const CRITICAL_PATTERNS = [
       'titleFamilies must iterate ALL shows (forEach), not filter to Broadway-only. ' +
       'WE/OB shows need title families for wrongProduction classification.',
   },
-  // lboRoundupExcerpt must be in scoring text sources.
-  // 26+ WE reviews have ONLY lboRoundupExcerpt — if missing from getBestTextForScoring,
-  // they silently fail with "Review text too short or missing."
+  // EXCERPT_FIELDS must be the single source of truth for excerpt field names.
+  // Adding a new excerpt source only requires updating this one list.
+  {
+    file: 'scripts/lib/text-quality.js',
+    pattern: 'const EXCERPT_FIELDS',
+    description:
+      'EXCERPT_FIELDS must be defined as the canonical excerpt fields list. ' +
+      'input-builder.ts and other consumers import this — do not hardcode excerpt lists elsewhere.',
+  },
+  // lboRoundupExcerpt must be in the canonical list.
   {
     file: 'scripts/lib/text-quality.js',
     pattern: 'lboRoundupExcerpt',
     description:
-      'lboRoundupExcerpt must be in excerpt fields list. WE reviews from LBO roundups ' +
+      'lboRoundupExcerpt must be in EXCERPT_FIELDS. WE reviews from LBO roundups ' +
       'often have no other text source — omitting this field silently blocks scoring.',
   },
 ];
