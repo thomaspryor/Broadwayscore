@@ -75,11 +75,11 @@ function RedditIcon({ className }: { className?: string }) {
   );
 }
 
-// Theatr icon (theater masks)
+// Theatr icon (thumbs up — their core sentiment is likes/dislikes/mixed)
 function TheatrIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-      <path d="M11.5 1C6.81 1 3 4.81 3 9.5c0 1.91.63 3.67 1.7 5.09L3 21l6.41-1.7C10.83 19.73 11.15 19.5 11.5 19.5c4.69 0 8.5-3.81 8.5-8.5S16.19 1 11.5 1zM8 8c.83 0 1.5.67 1.5 1.5S8.83 11 8 11s-1.5-.67-1.5-1.5S7.17 8 8 8zm7 5H9c-.28 0-.5-.22-.5-.5s.22-.5.5-.5h6c.28 0 .5.22.5.5s-.22.5-.5.5zm0-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+      <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
     </svg>
   );
 }
