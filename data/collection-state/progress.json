@@ -1,22 +1,38 @@
 {
   "processed": [
-    "1536-west-end-2026/london-box-office--stuart-king.json"
+    "sting-west-end-2026/newsday--unknown.json",
+    "equus-west-end-2026/standard--nick-curtis.json",
+    "equus-west-end-2026/telegraph--dominic-cavendish.json",
+    "avenue-q-west-end-2026/whatsonstage--alex-wood.json"
   ],
-  "failed": [],
+  "failed": [
+    "sting-west-end-2026/ew--unknown.json",
+    "ivanov-west-end-2026/playbill--unknown.json",
+    "sting-west-end-2026/ap--unknown.json",
+    "sting-west-end-2026/huffpost--unknown.json",
+    "avenue-q-west-end-2026/london-theatre--unknown.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "1536-west-end-2026/london-box-office--stuart-king.json"
+      "equus-west-end-2026/standard--nick-curtis.json",
+      "avenue-q-west-end-2026/whatsonstage--alex-wood.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
-    "archive": []
+    "archiveToday": [
+      "data/review-texts/ivanov-west-end-2026/playbill--unknown.json",
+      "data/review-texts/sting-west-end-2026/huffpost--unknown.json"
+    ],
+    "archive": [
+      "sting-west-end-2026/newsday--unknown.json",
+      "equus-west-end-2026/telegraph--dominic-cavendish.json"
+    ]
   },
-  "startTime": "2026-03-09T14:33:07.627Z",
-  "lastProcessed": "1536-west-end-2026/london-box-office--stuart-king.json",
+  "startTime": "2026-03-09T14:43:01.128Z",
+  "lastProcessed": "avenue-q-west-end-2026/whatsonstage--alex-wood.json",
   "log": []
 }
