@@ -414,16 +414,17 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               {/* Full-width separator */}
               <div className="-mx-5 border-t border-white/10" />
 
-              {/* User Rating + Watchlist — aligned on same baseline */}
-              <div className="flex items-end justify-between">
-                <div className="flex-1 min-w-0">
-                  <ShowPageRatingConnected
-                    showId={show.id}
-                    showTitle={show.title}
-                    previewDate={show.previewsStartDate}
-                    closingDate={show.closingDate}
-                  />
-                </div>
+              {/* User Rating — full width so internal border spans card */}
+              <div className="[&>div]:border-t-0 [&>div]:mt-0 [&>div]:pt-0 [&>div]:-mb-0">
+                <ShowPageRatingConnected
+                  showId={show.id}
+                  showTitle={show.title}
+                  previewDate={show.previewsStartDate}
+                  closingDate={show.closingDate}
+                />
+              </div>
+              {/* Watchlist — right-aligned */}
+              <div className="flex justify-end -mt-2">
                 <ShowPageWatchlistButton showId={show.id} />
               </div>
 
