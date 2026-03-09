@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-03-09T14:33:16.343Z",
-  "processed": 1,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-03-09T14:55:36.417Z",
+  "processed": 7,
+  "failed": 3,
+  "successRate": "70.0%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 4,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 0
+    "archiveToday": 2,
+    "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-03-09T14:48:21.694Z",
+      "event": "bb-session",
+      "session": "6290bbfe",
+      "url": "https://www.thestage.co.uk/reviews/deep-azure-review-sam-wanamaker-playhouse-sha"
+    },
+    {
+      "t": "2026-03-09T14:48:23.064Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }

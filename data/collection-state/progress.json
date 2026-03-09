@@ -1,22 +1,56 @@
 {
   "processed": [
-    "1536-west-end-2026/london-box-office--stuart-king.json"
+    "deep-azure-globe-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "les-miserables-west-end-2021/artsdesk--aleks-sierz.json",
+    "les-miserables-west-end-2021/daily-mail--patrick-marmion.json",
+    "les-miserables-west-end-2021/i-paper--jeff-robson.json",
+    "les-miserables-west-end-2021/the-sun--thea-jacobs.json",
+    "les-miserables-west-end-2021/times-uk--clive-davis.json",
+    "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json"
   ],
-  "failed": [],
+  "failed": [
+    "deep-azure-globe-west-end-2026/thestage--unknown.json",
+    "garry-starr-classic-penguins-garrick-west-end-2026/broadwayworld--franco-milazzo.json",
+    "garry-starr-classic-penguins-garrick-west-end-2026/everything-theatre-uk--jess-gonzalez.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "1536-west-end-2026/london-box-office--stuart-king.json"
+      "deep-azure-globe-west-end-2026/timeout-london--andrzej-lukowski.json",
+      "les-miserables-west-end-2021/artsdesk--aleks-sierz.json",
+      "les-miserables-west-end-2021/i-paper--jeff-robson.json",
+      "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "les-miserables-west-end-2021/times-uk--clive-davis.json",
+      "garry-starr-classic-penguins-garrick-west-end-2026/everything-theatre-uk--jess-gonzalez.json"
+    ],
     "brightdata": [],
-    "archiveToday": [],
-    "archive": []
+    "archiveToday": [
+      "data/review-texts/deep-azure-globe-west-end-2026/thestage--unknown.json",
+      "data/review-texts/garry-starr-classic-penguins-garrick-west-end-2026/broadwayworld--franco-milazzo.json"
+    ],
+    "archive": [
+      "les-miserables-west-end-2021/daily-mail--patrick-marmion.json",
+      "les-miserables-west-end-2021/the-sun--thea-jacobs.json"
+    ]
   },
-  "startTime": "2026-03-09T14:33:07.627Z",
-  "lastProcessed": "1536-west-end-2026/london-box-office--stuart-king.json",
-  "log": []
+  "startTime": "2026-03-09T14:46:24.439Z",
+  "lastProcessed": "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json",
+  "log": [
+    {
+      "t": "2026-03-09T14:48:21.694Z",
+      "event": "bb-session",
+      "session": "6290bbfe",
+      "url": "https://www.thestage.co.uk/reviews/deep-azure-review-sam-wanamaker-playhouse-sha"
+    },
+    {
+      "t": "2026-03-09T14:48:23.064Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }
