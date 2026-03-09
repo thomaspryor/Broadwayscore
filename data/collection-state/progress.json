@@ -432,7 +432,15 @@
     "im-sorry-prime-minister-west-end-2026/london-theatre--matt-wolf.json",
     "im-sorry-prime-minister-west-end-2026/telegraph--dominic-cavendish.json",
     "im-sorry-prime-minister-west-end-2026/west-end-best-friend--chris-abbott.json",
-    "into-the-woods-west-end-2025/i-paper--unknown.json"
+    "into-the-woods-west-end-2025/i-paper--unknown.json",
+    "into-the-woods-west-end-2025/independent--louis-chilton.json",
+    "into-the-woods-west-end-2025/standard--nick-curtis.json",
+    "just-in-time-2025/theater-scene--joel-benjamin.json",
+    "les-miserables-west-end-2021/artsdesk--aleks-sierz.json",
+    "les-miserables-west-end-2021/daily-mail--patrick-marmion.json",
+    "les-miserables-west-end-2021/i-paper--jeff-robson.json",
+    "les-miserables-west-end-2021/london-theatre--mark-shenton.json",
+    "les-miserables-west-end-2021/the-sun--thea-jacobs.json"
   ],
   "failed": [
     "an-ark-off-broadway-2026/new-jersey-newsroom--micheal-sommers.json",
@@ -531,7 +539,9 @@
     "harry-potter-2021/usatoday--kelly-lawler.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
     "hercules-west-end-2025/thestage--sam-marlowe.json",
-    "im-sorry-prime-minister-west-end-2026/thestage--dave-fargnoli.json"
+    "im-sorry-prime-minister-west-end-2026/thestage--dave-fargnoli.json",
+    "into-the-woods-west-end-2025/thestage--sam-marlowe.json",
+    "it-walks-around-the-house-at-night-west-end-2026/broadwayworld--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -788,7 +798,12 @@
       "im-sorry-prime-minister-west-end-2026/all-that-dazzles-uk--harry-bower.json",
       "im-sorry-prime-minister-west-end-2026/london-theatre--matt-wolf.json",
       "im-sorry-prime-minister-west-end-2026/west-end-best-friend--chris-abbott.json",
-      "into-the-woods-west-end-2025/i-paper--unknown.json"
+      "into-the-woods-west-end-2025/i-paper--unknown.json",
+      "into-the-woods-west-end-2025/standard--nick-curtis.json",
+      "just-in-time-2025/theater-scene--joel-benjamin.json",
+      "les-miserables-west-end-2021/artsdesk--aleks-sierz.json",
+      "les-miserables-west-end-2021/i-paper--jeff-robson.json",
+      "les-miserables-west-end-2021/london-theatre--mark-shenton.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -933,7 +948,8 @@
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
       "hercules-west-end-2025/independent--alice-saville.json",
       "im-sorry-prime-minister-west-end-2026/independent--alice-saville.json",
-      "im-sorry-prime-minister-west-end-2026/telegraph--dominic-cavendish.json"
+      "im-sorry-prime-minister-west-end-2026/telegraph--dominic-cavendish.json",
+      "into-the-woods-west-end-2025/independent--louis-chilton.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -976,7 +992,9 @@
       "data/review-texts/deep-azure-globe-west-end-2026/thestage--unknown.json",
       "data/review-texts/giant-2026/thestage--dave-fargnoli.json",
       "data/review-texts/harry-potter-2021/usatoday--kelly-lawler.json",
-      "data/review-texts/im-sorry-prime-minister-west-end-2026/thestage--dave-fargnoli.json"
+      "data/review-texts/im-sorry-prime-minister-west-end-2026/thestage--dave-fargnoli.json",
+      "data/review-texts/into-the-woods-west-end-2025/thestage--sam-marlowe.json",
+      "data/review-texts/it-walks-around-the-house-at-night-west-end-2026/broadwayworld--unknown.json"
     ],
     "archive": [
       "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
@@ -1052,11 +1070,13 @@
       "heathers-the-musical-off-broadway-2025/frontmezzjunkies--ross.json",
       "heathers-the-musical-off-broadway-2025/northjerseycom--robert-feldberg.json",
       "hercules-west-end-2025/daily-mail--patrick-marmion.json",
-      "im-sorry-prime-minister-west-end-2026/daily-mail--patrick-marmion.json"
+      "im-sorry-prime-minister-west-end-2026/daily-mail--patrick-marmion.json",
+      "les-miserables-west-end-2021/daily-mail--patrick-marmion.json",
+      "les-miserables-west-end-2021/the-sun--thea-jacobs.json"
     ]
   },
   "startTime": "2026-03-09T04:19:45.856Z",
-  "lastProcessed": "into-the-woods-west-end-2025/i-paper--unknown.json",
+  "lastProcessed": "les-miserables-west-end-2021/the-sun--thea-jacobs.json",
   "log": [
     {
       "t": "2026-03-09T04:38:31.076Z",
@@ -1363,6 +1383,17 @@
     },
     {
       "t": "2026-03-09T11:47:53.107Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-09T11:50:37.835Z",
+      "event": "bb-session",
+      "session": "7c36f133",
+      "url": "https://www.thestage.co.uk/reviews/into-the-woods-review-bridge-theatre-london-s"
+    },
+    {
+      "t": "2026-03-09T11:50:39.205Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }

@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-09T11:48:26.386Z",
-  "processed": 433,
-  "failed": 97,
+  "updatedAt": "2026-03-09T11:55:07.074Z",
+  "processed": 441,
+  "failed": 99,
   "successRate": "81.7%",
   "tierBreakdown": {
-    "playwright": 253,
+    "playwright": 258,
     "amp": 22,
     "browserbase": 26,
     "directCookies": 1,
-    "scrapingbee": 88,
+    "scrapingbee": 89,
     "brightdata": 0,
-    "archiveToday": 40,
-    "archive": 74
+    "archiveToday": 42,
+    "archive": 76
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-03-09T05:44:08.714Z",
-      "event": "bb-session",
-      "session": "d5f828a5",
-      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
-    },
-    {
-      "t": "2026-03-09T05:44:10.020Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-09T05:44:43.021Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-09T11:47:53.107Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-09T11:50:37.835Z",
+      "event": "bb-session",
+      "session": "7c36f133",
+      "url": "https://www.thestage.co.uk/reviews/into-the-woods-review-bridge-theatre-london-s"
+    },
+    {
+      "t": "2026-03-09T11:50:39.205Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
