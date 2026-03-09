@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-09T04:39:14.382Z",
-  "processed": 22,
-  "failed": 18,
-  "successRate": "55.0%",
+  "updatedAt": "2026-03-09T04:41:47.474Z",
+  "processed": 31,
+  "failed": 19,
+  "successRate": "62.0%",
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 16,
     "amp": 6,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 3,
+    "scrapingbee": 7,
     "brightdata": 0,
     "archiveToday": 16,
     "archive": 3
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-03-09T04:38:31.076Z",
@@ -23,6 +23,17 @@
     },
     {
       "t": "2026-03-09T04:38:32.385Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-09T04:41:32.970Z",
+      "event": "bb-session",
+      "session": "2852bc2b",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-09T04:41:34.136Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
