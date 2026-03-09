@@ -174,7 +174,7 @@
           "thumbnail": "/images/shows/bug-2026/thumbnail.webp",
           "openingDate": "2026-01-08",
           "closingDate": "2026-03-08",
-          "status": "closed",
+          "status": "open",
           "isRevival": true
         },
         {
@@ -3570,8 +3570,8 @@
           "title": "All My Sons",
           "slug": "all-my-sons-west-end",
           "rank": 1,
-          "value": 91.3,
-          "displayValue": "91.3",
+          "value": 90.3,
+          "displayValue": "90.3",
           "season": "2025-2026",
           "venue": "Wyndham's Theatre",
           "type": "play",
@@ -3750,8 +3750,8 @@
           "title": "Hadestown",
           "slug": "hadestown-west-end",
           "rank": 3,
-          "value": 75.3,
-          "displayValue": "75.3",
+          "value": 75.9,
+          "displayValue": "75.9",
           "season": "2023-2024",
           "venue": "Lyric Theatre",
           "type": "musical",
@@ -3910,8 +3910,8 @@
           "title": "The Book of Mormon",
           "slug": "the-book-of-mormon-west-end",
           "rank": 1,
-          "value": 76.5,
-          "displayValue": "76.5",
+          "value": 78.2,
+          "displayValue": "78.2",
           "season": "2012-2013",
           "venue": "Prince of Wales Theatre",
           "type": "musical",
@@ -3928,8 +3928,8 @@
           "title": "Matilda The Musical",
           "slug": "matilda-the-musical-west-end",
           "rank": 1,
-          "value": 85.2,
-          "displayValue": "85.2",
+          "value": 86.2,
+          "displayValue": "86.2",
           "season": "2011-2012",
           "venue": "Cambridge Theatre",
           "type": "musical",
@@ -4014,26 +4014,10 @@
       ],
       "all-time": [
         {
-          "showId": "all-my-sons-west-end-2025",
-          "title": "All My Sons",
-          "slug": "all-my-sons-west-end",
-          "rank": 1,
-          "value": 91.3,
-          "displayValue": "91.3",
-          "season": "2025-2026",
-          "venue": "Wyndham's Theatre",
-          "type": "play",
-          "thumbnail": "https://images.ctfassets.net/6pezt69ih962/34GJdxpet9jlA3GsACzLll/772af7ebd6a675b245676f43a975c228/8212_05_AMS_TTG_Triptych_1080x1080px.jpg?fm=webp&q=90",
-          "openingDate": "2025-11-14",
-          "closingDate": null,
-          "status": "open",
-          "isRevival": true
-        },
-        {
           "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
           "title": "Harry Potter And The Cursed Child: Both Parts",
           "slug": "harry-potter-and-the-cursed-child-both-parts-west-end",
-          "rank": 2,
+          "rank": 1,
           "value": 90.4,
           "displayValue": "90.4",
           "season": "2016-2017",
@@ -4044,6 +4028,22 @@
           "closingDate": null,
           "status": "open",
           "isRevival": false
+        },
+        {
+          "showId": "all-my-sons-west-end-2025",
+          "title": "All My Sons",
+          "slug": "all-my-sons-west-end",
+          "rank": 2,
+          "value": 90.3,
+          "displayValue": "90.3",
+          "season": "2025-2026",
+          "venue": "Wyndham's Theatre",
+          "type": "play",
+          "thumbnail": "https://images.ctfassets.net/6pezt69ih962/34GJdxpet9jlA3GsACzLll/772af7ebd6a675b245676f43a975c228/8212_05_AMS_TTG_Triptych_1080x1080px.jpg?fm=webp&q=90",
+          "openingDate": "2025-11-14",
+          "closingDate": null,
+          "status": "open",
+          "isRevival": true
         },
         {
           "showId": "hamilton-west-end-2021",
@@ -4078,10 +4078,26 @@
           "isRevival": false
         },
         {
+          "showId": "matilda-the-musical-west-end-2021",
+          "title": "Matilda The Musical",
+          "slug": "matilda-the-musical-west-end",
+          "rank": 5,
+          "value": 86.2,
+          "displayValue": "86.2",
+          "season": "2011-2012",
+          "venue": "Cambridge Theatre",
+          "type": "musical",
+          "thumbnail": "https://images.ctfassets.net/6pezt69ih962/2gIsErMihZJm30lS7osQXh/c48b9a6e80d459d707b7bf64bddb6aa0/1080x1080__1_.jpg?fm=webp&q=90",
+          "openingDate": "2011-11-24",
+          "closingDate": null,
+          "status": "open",
+          "isRevival": false
+        },
+        {
           "showId": "paddington-the-musical-west-end-2025",
           "title": "Paddington The Musical",
           "slug": "paddington-the-musical-west-end",
-          "rank": 5,
+          "rank": 6,
           "value": 85.9,
           "displayValue": "85.9",
           "season": "2025-2026",
@@ -4089,22 +4105,6 @@
           "type": "musical",
           "thumbnail": "https://images.ctfassets.net/6pezt69ih962/1pFRKk0aJ73H0926kr5TJA/a1d17707c55257e62d0bd95f800c4e61/_1080x1080px.jpg?fm=webp&q=90",
           "openingDate": "2025-11-01",
-          "closingDate": null,
-          "status": "open",
-          "isRevival": false
-        },
-        {
-          "showId": "matilda-the-musical-west-end-2021",
-          "title": "Matilda The Musical",
-          "slug": "matilda-the-musical-west-end",
-          "rank": 6,
-          "value": 85.2,
-          "displayValue": "85.2",
-          "season": "2011-2012",
-          "venue": "Cambridge Theatre",
-          "type": "musical",
-          "thumbnail": "https://images.ctfassets.net/6pezt69ih962/2gIsErMihZJm30lS7osQXh/c48b9a6e80d459d707b7bf64bddb6aa0/1080x1080__1_.jpg?fm=webp&q=90",
-          "openingDate": "2011-11-24",
           "closingDate": null,
           "status": "open",
           "isRevival": false
@@ -4290,8 +4290,8 @@
           "title": "The Book of Mormon",
           "slug": "the-book-of-mormon-west-end",
           "rank": 18,
-          "value": 76.5,
-          "displayValue": "76.5",
+          "value": 78.2,
+          "displayValue": "78.2",
           "season": "2012-2013",
           "venue": "Prince of Wales Theatre",
           "type": "musical",
@@ -4318,10 +4318,26 @@
           "isRevival": false
         },
         {
+          "showId": "hadestown-west-end-2024",
+          "title": "Hadestown",
+          "slug": "hadestown-west-end",
+          "rank": 20,
+          "value": 75.9,
+          "displayValue": "75.9",
+          "season": "2023-2024",
+          "venue": "Lyric Theatre",
+          "type": "musical",
+          "thumbnail": "https://images.ctfassets.net/6pezt69ih962/50OlFSkFrYjTYQV21oUWYD/91c9aa27aab8ff1141d27dace78622d4/HTD-2174W-MiscDec-TodayTix-Updates-KeyArt-1080x1080-v1.jpg?fm=webp&q=90",
+          "openingDate": "2024-02-22",
+          "closingDate": null,
+          "status": "open",
+          "isRevival": false
+        },
+        {
           "showId": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026",
           "title": "The Unlikely Pilgrimage of Harold Fry",
           "slug": "the-unlikely-pilgrimage-of-harold-fry-west-end",
-          "rank": 20,
+          "rank": 21,
           "value": 75.7,
           "displayValue": "75.7",
           "season": "2025-2026",
@@ -4330,22 +4346,6 @@
           "thumbnail": "https://images.ctfassets.net/6pezt69ih962/6BKMChpeDt2BFeu2cYaXXk/d97beb2b221a319732e87956793cb8a1/HF_TTG_SAFEZONES.png?fm=webp&q=90",
           "openingDate": "2026-01-29",
           "closingDate": "2026-04-18",
-          "status": "open",
-          "isRevival": false
-        },
-        {
-          "showId": "hadestown-west-end-2024",
-          "title": "Hadestown",
-          "slug": "hadestown-west-end",
-          "rank": 21,
-          "value": 75.3,
-          "displayValue": "75.3",
-          "season": "2023-2024",
-          "venue": "Lyric Theatre",
-          "type": "musical",
-          "thumbnail": "https://images.ctfassets.net/6pezt69ih962/50OlFSkFrYjTYQV21oUWYD/91c9aa27aab8ff1141d27dace78622d4/HTD-2174W-MiscDec-TodayTix-Updates-KeyArt-1080x1080-v1.jpg?fm=webp&q=90",
-          "openingDate": "2024-02-22",
-          "closingDate": null,
           "status": "open",
           "isRevival": false
         },
@@ -12160,7 +12160,7 @@
           "thumbnail": "/images/shows/all-out-2025/thumbnail.webp",
           "openingDate": "2025-12-12",
           "closingDate": "2026-03-08",
-          "status": "closed",
+          "status": "open",
           "isRevival": false
         },
         {
@@ -19412,7 +19412,7 @@
           "thumbnail": "/images/shows/bug-2026/thumbnail.webp",
           "openingDate": "2026-01-08",
           "closingDate": "2026-03-08",
-          "status": "closed",
+          "status": "open",
           "isRevival": true
         },
         {
@@ -19428,7 +19428,7 @@
           "thumbnail": "/images/shows/all-out-2025/thumbnail.webp",
           "openingDate": "2025-12-12",
           "closingDate": "2026-03-08",
-          "status": "closed",
+          "status": "open",
           "isRevival": false
         },
         {
@@ -19768,7 +19768,7 @@
           "thumbnail": "/images/shows/bug-2026/thumbnail.webp",
           "openingDate": "2026-01-08",
           "closingDate": "2026-03-08",
-          "status": "closed",
+          "status": "open",
           "isRevival": true
         },
         {
@@ -19800,7 +19800,7 @@
           "thumbnail": "/images/shows/all-out-2025/thumbnail.webp",
           "openingDate": "2025-12-12",
           "closingDate": "2026-03-08",
-          "status": "closed",
+          "status": "open",
           "isRevival": false
         },
         {
@@ -22353,7 +22353,7 @@
       {
         "listType": "critical-gold-west-end",
         "season": "all-time",
-        "rank": 1
+        "rank": 2
       }
     ],
     "paddington-the-musical-west-end-2025": [
@@ -22365,7 +22365,7 @@
       {
         "listType": "critical-gold-west-end",
         "season": "all-time",
-        "rank": 5
+        "rank": 6
       }
     ],
     "the-producers-west-end-2025": [
@@ -22413,7 +22413,7 @@
       {
         "listType": "critical-gold-west-end",
         "season": "all-time",
-        "rank": 20
+        "rank": 21
       }
     ],
     "deep-azure-globe-west-end-2026": [
@@ -22485,7 +22485,7 @@
       {
         "listType": "critical-gold-west-end",
         "season": "all-time",
-        "rank": 21
+        "rank": 20
       }
     ],
     "witness-for-the-prosecution-west-end-2022": [
@@ -22564,7 +22564,7 @@
       {
         "listType": "critical-gold-west-end",
         "season": "all-time",
-        "rank": 2
+        "rank": 1
       }
     ],
     "showstopper-the-improvised-musical-west-end-2023": [
@@ -22600,7 +22600,7 @@
       {
         "listType": "critical-gold-west-end",
         "season": "all-time",
-        "rank": 6
+        "rank": 5
       }
     ],
     "wicked-west-end-2021": [
