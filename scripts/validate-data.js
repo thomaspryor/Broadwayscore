@@ -2859,10 +2859,11 @@ function validateCrossMarketContamination() {
   try {
     reg = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
     for (const [id, info] of Object.entries(reg.outlets)) {
-      if (info.region) {
-        outletRegionMap[id] = info.region;
+      const region = info.region || (info.market === 'west-end' ? 'london' : null);
+      if (region) {
+        outletRegionMap[id] = region;
         if (info.aliases) {
-          for (const alias of info.aliases) outletRegionMap[alias] = info.region;
+          for (const alias of info.aliases) outletRegionMap[alias] = region;
         }
       }
     }
