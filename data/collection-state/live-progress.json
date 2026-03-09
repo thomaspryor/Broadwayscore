@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-09T14:48:58.385Z",
-  "processed": 9,
-  "failed": 1,
-  "successRate": "90.0%",
+  "updatedAt": "2026-03-09T14:55:03.236Z",
+  "processed": 16,
+  "failed": 4,
+  "successRate": "80.0%",
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 12,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 2,
     "archive": 0
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-03-09T14:47:08.679Z",
@@ -25,6 +25,28 @@
       "t": "2026-03-09T14:47:09.930Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-09T14:51:31.540Z",
+      "event": "bb-session",
+      "session": "cfdb5e31",
+      "url": "https://www.thestage.co.uk/reviews/2004/the-mousetrap-review-at-st-martins-theat"
+    },
+    {
+      "t": "2026-03-09T14:51:32.850Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-09T14:53:38.998Z",
+      "event": "bb-session",
+      "session": "355a2e0b",
+      "url": "https://www.thestage.co.uk/reviews/the-tempest-review-sam-wanamaker-playhouse-sh"
+    },
+    {
+      "t": "2026-03-09T14:53:40.313Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }

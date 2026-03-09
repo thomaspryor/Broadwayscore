@@ -8,10 +8,20 @@
     "dracula-west-end-2025/independent--alice-saville.json",
     "dracula-west-end-2025/london-theatre--olivia-rook.json",
     "dracula-west-end-2025/whatsonstage--sarah-crompton.json",
-    "the-holy-rosenbergs-west-end-2026/whatsonstage--unknown.json"
+    "the-holy-rosenbergs-west-end-2026/whatsonstage--unknown.json",
+    "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
+    "the-mousetrap-west-end-2021/telegraph--unknown.json",
+    "the-mousetrap-west-end-2021/whatsonstage--whatsonstage-reviewer.json",
+    "the-tempest-globe-west-end-2026/whatsonstage--alun-hood.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/city-am--unknown.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/thereviewshub--unknown.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/artsdesk--aleks-sierz.json"
   ],
   "failed": [
-    "dracula-west-end-2025/times-uk--clive-davis.json"
+    "dracula-west-end-2025/times-uk--clive-davis.json",
+    "the-mousetrap-west-end-2021/thestage--john-thaxter.json",
+    "the-tempest-globe-west-end-2026/british-theatre--howard-loxton.json",
+    "the-tempest-globe-west-end-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -21,7 +31,13 @@
       "dracula-west-end-2025/i-paper--fiona-mountford.json",
       "dracula-west-end-2025/london-theatre--olivia-rook.json",
       "dracula-west-end-2025/whatsonstage--sarah-crompton.json",
-      "the-holy-rosenbergs-west-end-2026/whatsonstage--unknown.json"
+      "the-holy-rosenbergs-west-end-2026/whatsonstage--unknown.json",
+      "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
+      "the-mousetrap-west-end-2021/telegraph--unknown.json",
+      "the-mousetrap-west-end-2021/whatsonstage--whatsonstage-reviewer.json",
+      "the-tempest-globe-west-end-2026/whatsonstage--alun-hood.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/thereviewshub--unknown.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/artsdesk--aleks-sierz.json"
     ],
     "amp": [],
     "browserbase": [
@@ -31,14 +47,18 @@
     "directCookies": [],
     "scrapingbee": [
       "dracula-west-end-2025/guardian--arifa-akbar.json",
-      "dracula-west-end-2025/independent--alice-saville.json"
+      "dracula-west-end-2025/independent--alice-saville.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/city-am--unknown.json"
     ],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/the-mousetrap-west-end-2021/thestage--john-thaxter.json",
+      "data/review-texts/the-tempest-globe-west-end-2026/thestage--unknown.json"
+    ],
     "archive": []
   },
   "startTime": "2026-03-09T14:46:37.990Z",
-  "lastProcessed": "the-holy-rosenbergs-west-end-2026/whatsonstage--unknown.json",
+  "lastProcessed": "the-spy-who-came-in-from-the-cold-west-end-2025/artsdesk--aleks-sierz.json",
   "log": [
     {
       "t": "2026-03-09T14:47:08.679Z",
@@ -50,6 +70,28 @@
       "t": "2026-03-09T14:47:09.930Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-09T14:51:31.540Z",
+      "event": "bb-session",
+      "session": "cfdb5e31",
+      "url": "https://www.thestage.co.uk/reviews/2004/the-mousetrap-review-at-st-martins-theat"
+    },
+    {
+      "t": "2026-03-09T14:51:32.850Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-09T14:53:38.998Z",
+      "event": "bb-session",
+      "session": "355a2e0b",
+      "url": "https://www.thestage.co.uk/reviews/the-tempest-review-sam-wanamaker-playhouse-sh"
+    },
+    {
+      "t": "2026-03-09T14:53:40.313Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
