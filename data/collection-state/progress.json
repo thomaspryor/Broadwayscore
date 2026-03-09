@@ -444,7 +444,8 @@
     "friends-the-musical-parody-off-broadway-2022/stagebuddy--bill-crouch.json",
     "hadestown-2019/amny--matt-windman.json",
     "hadestown-2019/chicagotribune--chris-jones.json",
-    "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json"
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
+    "the-office-a-musical-parody-off-broadway-2018/theatrely--unknown.json"
   ],
   "failed": [
     "paranormal-activity-west-end-2025/thestage--tim-wicker.json",
@@ -511,7 +512,16 @@
     "aladdin-2014/wsj--terry-teachout.json",
     "garry-starr-classic-penguins-garrick-west-end-2026/timeout--unknown.json",
     "jerome-off-broadway-2025/wsj--joel-lobenthal.json",
-    "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json"
+    "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
+    "perfect-crime-off-broadway-1987/broadwaynews--bww-news-desk.json",
+    "sweetmeats-west-end-2026/guardian--anya-ryan.json",
+    "the-play-that-goes-wrong-off-broadway-2019/broadwaynews--julie-musbach.json",
+    "two-strangers-bway-2025/guardian--unknown.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/wsj--charles-isherwood.json",
+    "zack-off-broadway-2026/nydailynews--logan-culwell.json",
+    "aladdin-2014/thestage--mark-shenton.json",
+    "all-my-sons-west-end-2025/thestage--sam-marlowe.json",
+    "arcadia-west-end-2026/usatoday--mike-fischer.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -950,7 +960,8 @@
       "dracula-west-end-2025/independent--alice-saville.json",
       "drunk-shakespeare-off-broadway-2022/one-minute-critic--unknown.json",
       "garry-starr-classic-penguins-garrick-west-end-2026/broadwayworld--franco-milazzo.json",
-      "hadestown-2019/chicagotribune--chris-jones.json"
+      "hadestown-2019/chicagotribune--chris-jones.json",
+      "the-office-a-musical-parody-off-broadway-2018/theatrely--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -973,7 +984,12 @@
       "data/review-texts/chess-2025/thestage--unknown.json",
       "data/review-texts/deep-azure-globe-west-end-2026/thestage--unknown.json",
       "data/review-texts/giant-2026/thestage--dave-fargnoli.json",
-      "data/review-texts/garry-starr-classic-penguins-garrick-west-end-2026/timeout--unknown.json"
+      "data/review-texts/garry-starr-classic-penguins-garrick-west-end-2026/timeout--unknown.json",
+      "data/review-texts/perfect-crime-off-broadway-1987/broadwaynews--bww-news-desk.json",
+      "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/broadwaynews--julie-musbach.json",
+      "data/review-texts/aladdin-2014/thestage--mark-shenton.json",
+      "data/review-texts/all-my-sons-west-end-2025/thestage--sam-marlowe.json",
+      "data/review-texts/arcadia-west-end-2026/usatoday--mike-fischer.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
@@ -1025,11 +1041,12 @@
       "chess-2025/ny1--frank-dilella.json",
       "friends-the-musical-parody-off-broadway-2022/stagebuddy--bill-crouch.json",
       "garry-starr-classic-penguins-garrick-west-end-2026/everything-theatre-uk--jess-gonzalez.json",
-      "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json"
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
+      "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json"
     ]
   },
   "startTime": "2026-03-09T14:46:28.645Z",
-  "lastProcessed": "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
+  "lastProcessed": "arcadia-west-end-2026/usatoday--mike-fischer.json",
   "log": [
     {
       "t": "2026-03-09T14:51:21.007Z",
@@ -1316,6 +1333,39 @@
       "t": "2026-03-09T19:43:37.466Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-09T19:54:49.897Z",
+      "event": "bb-session",
+      "session": "d097fca0",
+      "url": "https://www.wsj.com/articles/what-we-did-before-our-moth-days-review-wallace-sha"
+    },
+    {
+      "t": "2026-03-09T19:54:51.396Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-09T19:59:47.815Z",
+      "event": "bb-session",
+      "session": "5faf54e3",
+      "url": "https://www.thestage.co.uk/reviews/aladdin"
+    },
+    {
+      "t": "2026-03-09T19:59:49.244Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-09T20:01:45.460Z",
+      "event": "bb-session",
+      "session": "5d19d766",
+      "url": "https://www.thestage.co.uk/reviews/all-my-sons-review-wyndhams-theatre-london-br"
+    },
+    {
+      "t": "2026-03-09T20:01:47.021Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
