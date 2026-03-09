@@ -1823,7 +1823,7 @@ showDirs.forEach(showId => {
         delete data.fullText;
         delete data.assignedScore;
         delete data.ensembleData;
-        const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.lboRoundupExcerpt);
+        const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
         data.contentTier = hasExcerpt ? 'excerpt' : 'stub';
         if (!hasExcerpt) {
           stats.skippedFullTextWrongAuthor = (stats.skippedFullTextWrongAuthor || 0) + 1;
@@ -2022,7 +2022,7 @@ showDirs.forEach(showId => {
         delete data.fullText;
         delete data.assignedScore;
         delete data.ensembleData;
-        const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.lboRoundupExcerpt);
+        const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
         data.contentTier = hasExcerpt ? 'excerpt' : 'stub';
         if (!hasExcerpt) {
           stats.skippedFullTextWrongAuthor = (stats.skippedFullTextWrongAuthor || 0) + 1;
@@ -2386,7 +2386,7 @@ showDirs.forEach(showId => {
         review.designation = data.designation;
       } else if (review.outletId === 'nytimes' || (data.outletId || '').startsWith('nytimes')) {
         // Auto-detect NYT Critics' Pick from review text or archived HTML
-        const text = data.fullText || data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || '';
+        const text = data.fullText || data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt || '';
         const textHasPick = /CRITIC['\u2019]?S PICK/i.test(text);
         let archiveHasPick = false;
         if (!textHasPick && data.archivePath) {

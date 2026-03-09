@@ -73,7 +73,7 @@ if (audit.authorMismatches && audit.authorMismatches.length > 0) {
       continue;
     }
 
-    const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt);
+    const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
     const action = hasExcerpt ? 'fullTextWrongAuthor (has excerpts)' : 'fullTextWrongAuthor (stub)';
 
     console.log(`  ${dryRun ? 'WOULD APPLY' : 'APPLYING'}: ${m.showId}/${m.file}`);

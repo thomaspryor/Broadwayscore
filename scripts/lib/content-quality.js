@@ -1103,7 +1103,7 @@ function classifyContentTier(review) {
   const charCount = fullText.length;
 
   // Check for excerpts
-  const hasExcerpt = !!(review.dtliExcerpt || review.bwwExcerpt || review.showScoreExcerpt || review.lboRoundupExcerpt);
+  const hasExcerpt = !!(review.dtliExcerpt || review.bwwExcerpt || review.showScoreExcerpt || review.nycTheatreExcerpt || review.lboRoundupExcerpt);
   const longestExcerptLen = Math.max(
     (review.dtliExcerpt || '').length,
     (review.bwwExcerpt || '').length,
