@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-09T07:03:40.936Z",
-  "processed": 364,
-  "failed": 86,
-  "successRate": "80.9%",
+  "updatedAt": "2026-03-09T11:24:52.166Z",
+  "processed": 373,
+  "failed": 87,
+  "successRate": "81.1%",
   "tierBreakdown": {
-    "playwright": 209,
+    "playwright": 217,
     "amp": 22,
     "browserbase": 24,
     "directCookies": 1,
     "scrapingbee": 73,
     "brightdata": 0,
-    "archiveToday": 36,
-    "archive": 64
+    "archiveToday": 37,
+    "archive": 65
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-03-09T05:28:57.306Z",
-      "event": "bb-session",
-      "session": "33313c9a",
-      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
-    },
-    {
-      "t": "2026-03-09T05:28:58.625Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-09T05:29:26.824Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-09T05:50:37.988Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-09T11:24:10.976Z",
+      "event": "bb-session",
+      "session": "d361706d",
+      "url": "https://www.thestage.co.uk/reviews/deep-azure-review-sam-wanamaker-playhouse-sha"
+    },
+    {
+      "t": "2026-03-09T11:24:12.208Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
