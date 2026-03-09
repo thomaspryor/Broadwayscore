@@ -411,6 +411,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 )}
               </div>
 
+              {/* Full-width separator */}
+              <div className="-mx-5 border-t border-white/10" />
+
               {/* User Rating + Watchlist — aligned on same baseline */}
               <div className="flex items-end justify-between">
                 <div className="flex-1 min-w-0">
