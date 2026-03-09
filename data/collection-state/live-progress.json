@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-09T11:45:01.261Z",
-  "processed": 424,
-  "failed": 96,
-  "successRate": "81.5%",
+  "updatedAt": "2026-03-09T11:48:26.386Z",
+  "processed": 433,
+  "failed": 97,
+  "successRate": "81.7%",
   "tierBreakdown": {
-    "playwright": 247,
+    "playwright": 253,
     "amp": 22,
     "browserbase": 26,
     "directCookies": 1,
-    "scrapingbee": 86,
+    "scrapingbee": 88,
     "brightdata": 0,
-    "archiveToday": 39,
-    "archive": 73
+    "archiveToday": 40,
+    "archive": 74
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-03-09T05:43:48.788Z",
-      "event": "bb-session",
-      "session": "bfdc970b",
-      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
-    },
-    {
-      "t": "2026-03-09T05:43:50.157Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-09T05:44:08.714Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-09T11:29:03.110Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-09T11:47:51.771Z",
+      "event": "bb-session",
+      "session": "b24bc4a0",
+      "url": "https://www.thestage.co.uk/reviews/im-sorry-prime-minister-review-apollo-theatre"
+    },
+    {
+      "t": "2026-03-09T11:47:53.107Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
