@@ -110,6 +110,12 @@ async function refreshAccessToken() {
   accessToken = data.content.accessToken;
   latestRefreshToken = data.content.refreshToken;
   console.log('  Access token refreshed successfully');
+
+  // Persist new refresh token IMMEDIATELY — if the script crashes later,
+  // we won't lose the rotated token (old one is already burned).
+  const tokenPath = path.join(__dirname, '../data/theatr-refresh-token.tmp');
+  fs.writeFileSync(tokenPath, latestRefreshToken);
+
   return { accessToken, refreshToken: latestRefreshToken };
 }
 
@@ -210,6 +216,8 @@ function matchTheatrToShows(theatrShows, ourShows) {
     }
 
     // Prefix matching (handles "Two Strangers (Carry a Cake Across New York)" vs "Two Strangers")
+    const isBroadway = theatr.eventCategory === 'Broadway';
+    const prefixCandidates = [];
     for (const show of ourShows) {
       const showNorm = normalize(show.title);
       const shorter = theatrNorm.length <= showNorm.length ? theatrNorm : showNorm;
@@ -217,13 +225,24 @@ function matchTheatrToShows(theatrShows, ourShows) {
 
       if (shorter.length >= 8 && longer.startsWith(shorter + ' ')) {
         const ratio = shorter.length / longer.length;
-        if (ratio >= 0.5) {
+        if (ratio >= 0.3) {
           const start = show.previewsStartDate || show.openingDate;
           if (!start || start <= today) {
-            matches.push({ theatr, show, confidence: 'prefix' });
-            break;
+            prefixCandidates.push(show);
           }
         }
+      }
+    }
+    if (prefixCandidates.length > 0) {
+      // Apply same category/recency filtering as exact matches
+      const sameCategory = prefixCandidates.filter(s => {
+        if (isBroadway) return !s.category || s.category === 'broadway';
+        return s.category === 'off-broadway';
+      });
+      const eligible = sameCategory.length > 0 ? sameCategory : prefixCandidates.filter(s => s.category !== 'west-end');
+      const best = eligible.sort((a, b) => (b.openingDate || '').localeCompare(a.openingDate || ''))[0];
+      if (best) {
+        matches.push({ theatr, show: best, confidence: 'prefix' });
       }
     }
   }
@@ -394,11 +413,9 @@ async function main() {
     console.log(`Saved audience-buzz.json`);
   }
 
-  // 6. Save updated refresh token for CI to persist
+  // 6. Refresh token already persisted immediately after rotation (line ~113)
   if (latestRefreshToken) {
-    const tokenPath = path.join(__dirname, '../data/theatr-refresh-token.tmp');
-    fs.writeFileSync(tokenPath, latestRefreshToken);
-    console.log(`New refresh token saved to ${tokenPath}`);
+    console.log(`Refresh token was persisted to data/theatr-refresh-token.tmp`);
   }
 
   // Summary
