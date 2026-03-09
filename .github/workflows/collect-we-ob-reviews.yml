@@ -4,6 +4,7 @@ name: Collect WE/OB Review Texts
 # The main collect-review-texts.yml processes 150/batch across all markets,
 # starving WE/OB reviews behind the 18K+ Broadway backlog.
 # This workflow uses MARKET_FILTER to collect only one market per run.
+# Chains up to 2 additional runs to clear backlogs (450 reviews max/market/day).
 
 on:
   schedule:
@@ -19,6 +20,14 @@ on:
         options:
           - west-end
           - off-broadway
+      max_reviews:
+        description: 'Max reviews per run (0 = unlimited)'
+        required: false
+        default: '150'
+      remaining_chains:
+        description: 'Remaining chain dispatches (0 = no chaining)'
+        required: false
+        default: '0'
 
 concurrency:
   group: collect-we-ob-${{ inputs.market || 'scheduled' }}
@@ -111,7 +120,7 @@ jobs:
           BROWSERBASE_ENABLED: 'true'
           BROWSERBASE_MAX_SESSIONS_PER_RUN: '10'
           BATCH_SIZE: '10'
-          MAX_REVIEWS: '150'
+          MAX_REVIEWS: ${{ inputs.max_reviews || '150' }}
           MARKET_FILTER: ${{ steps.market.outputs.market }}
           RETRY_FAILED: 'true'
           ARCHIVE_FIRST: 'true'
@@ -128,6 +137,61 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Collect ${{ steps.market.outputs.market }} review texts"
+
+      - name: Count remaining uncollected
+        if: always()
+        id: remaining
+        run: |
+          MARKET="${{ steps.market.outputs.market }}"
+          REMAINING=$(node -e "
+            const fs = require('fs'), path = require('path');
+            const base = 'data/review-texts';
+            const dirs = fs.readdirSync(base).filter(d => d.includes('$MARKET') && fs.statSync(path.join(base, d)).isDirectory());
+            let n = 0;
+            for (const d of dirs) {
+              for (const f of fs.readdirSync(path.join(base, d)).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json')) {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(base, d, f), 'utf8'));
+                  if (r.assignedScore || r.duplicateOf || r.wrongShow || r.wrongProduction ||
+                      r.wrongAttribution || r.contentTier === 'invalid' || r.isRoundupArticle ||
+                      r.rejectionReason) continue;
+                  const hasText = r.fullText || r.bwwExcerpt || r.dtliExcerpt || r.showScoreExcerpt ||
+                                  r.nycTheatreExcerpt || r.lboRoundupExcerpt;
+                  if (!hasText && r.url && r.url.startsWith('http')) n++;
+                } catch {}
+              }
+            }
+            console.log(n);
+          ")
+          echo "remaining=$REMAINING" >> $GITHUB_OUTPUT
+          echo "$MARKET reviews still needing collection: $REMAINING"
+
+      - name: Chain next collection batch
+        if: always() && fromJSON(steps.remaining.outputs.remaining) > 5
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          MARKET="${{ steps.market.outputs.market }}"
+          # Scheduled runs get 2 chains (450 total). Manual runs chain if remaining_chains > 0.
+          if [ "${{ github.event_name }}" == "schedule" ]; then
+            CHAINS_LEFT=2
+          else
+            CHAINS_LEFT="${{ inputs.remaining_chains }}"
+            CHAINS_LEFT="${CHAINS_LEFT:-0}"
+          fi
+
+          if [ "$CHAINS_LEFT" -le 0 ] 2>/dev/null; then
+            echo "No remaining chains. Done."
+            exit 0
+          fi
+
+          NEXT_CHAINS=$((CHAINS_LEFT - 1))
+          echo "Dispatching chain ($NEXT_CHAINS chains remaining after this)..."
+
+          gh workflow run "Collect WE/OB Review Texts" \
+            -f market="$MARKET" \
+            -f max_reviews=150 \
+            -f remaining_chains="$NEXT_CHAINS"
 
       - name: Trigger rebuild
         if: always()

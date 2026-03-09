@@ -2005,7 +2005,7 @@ showDirs.forEach(showId => {
       // If a review in an OLDER production's directory mentions a NEWER production's director,
       // it's almost certainly filed under the wrong show (validated pattern, zero false positives)
       if (multiProdDirectorGuard[showId]) {
-        const text = (data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || '').toLowerCase();
+        const text = (data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.lboRoundupExcerpt || '').toLowerCase();
         if (text.length >= 30) {
           for (const [dirName, newerId] of multiProdDirectorGuard[showId]) {
             if (text.includes(dirName)) {
@@ -2301,7 +2301,7 @@ showDirs.forEach(showId => {
 
       // CHECK: Flag reviews that SHOULD have LLM scores but don't
       // These have scorable text but were never run through LLM scoring
-      const scorableText = data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || '';
+      const scorableText = data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt || '';
       const hasScorableText = scorableText.length >= 100;
       const hasLlmScore = data.llmScore && data.llmScore.score;
 

@@ -553,7 +553,7 @@ if (!TASK_FILTER || TASK_FILTER === 'F') {
             data.garbageFullText = data.fullText;
             data.fullText = null;
             data.garbageReason = `Error/404 page content`;
-            data.contentTier = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt ? 'excerpt' : 'needs-rescrape';
+            data.contentTier = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.lboRoundupExcerpt ? 'excerpt' : 'needs-rescrape';
             fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
           }
           nulled++;

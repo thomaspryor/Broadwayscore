@@ -34,7 +34,7 @@ for (const d of dirs) {
       }
 
       const ft = data.fullText.trim();
-      const excerpts = [data.dtliExcerpt, data.bwwExcerpt, data.showScoreExcerpt, data.nycTheatreExcerpt].filter(Boolean);
+      const excerpts = [data.dtliExcerpt, data.bwwExcerpt, data.showScoreExcerpt, data.nycTheatreExcerpt, data.lboRoundupExcerpt].filter(Boolean);
       const isExactCopy = excerpts.some(e => e.trim() === ft);
 
       if (!isExactCopy) {

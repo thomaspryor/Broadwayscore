@@ -137,7 +137,7 @@ for (const showDir of showDirs) {
         const result = verifyFullTextContent(data.fullText, show);
 
         if (result.verdict === 'confident_mismatch') {
-          const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt);
+          const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
           const entry = {
             file: relPath,
             showTitle: show.title,

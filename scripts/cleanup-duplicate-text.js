@@ -165,7 +165,7 @@ for (const pair of PAIRS) {
   }
 
   // Merge excerpts if keep file lacks them
-  for (const field of ["dtliExcerpt", "bwwExcerpt", "showScoreExcerpt", "nycTheatreExcerpt"]) {
+  for (const field of ["dtliExcerpt", "bwwExcerpt", "showScoreExcerpt", "nycTheatreExcerpt", "lboRoundupExcerpt"]) {
     if (!keepData[field] && deleteData[field]) {
       if (!dryRun) keepData[field] = deleteData[field];
       console.log(`  MERGE ${field}: ${pair.show}/${pair.delete} → ${pair.keep}`);

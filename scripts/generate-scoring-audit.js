@@ -130,7 +130,7 @@ for (const showId of showDirs) {
       if (data.llmMetadata?.textSource?.type === 'excerpt' ||
           data.llmMetadata?.textSource?.status === 'excerpt-only') {
         if (data.llmScore && data.llmScore.confidence !== 'low') {
-          const excerpts = [data.dtliExcerpt, data.bwwExcerpt, data.showScoreExcerpt, data.nycTheatreExcerpt]
+          const excerpts = [data.dtliExcerpt, data.bwwExcerpt, data.showScoreExcerpt, data.nycTheatreExcerpt, data.lboRoundupExcerpt]
             .filter(e => e && e.length >= 30);
           const uniqueExcerpts = new Set(excerpts);
           if (uniqueExcerpts.size <= 1) {
