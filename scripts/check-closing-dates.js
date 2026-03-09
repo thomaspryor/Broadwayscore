@@ -89,7 +89,7 @@ async function checkClosingDates() {
   console.log('');
 
   const data = loadShows();
-  const openShows = data.shows.filter(s => s.status === 'open');
+  const openShows = data.shows.filter(s => s.status === 'open' && (!s.category || s.category === 'broadway'));
   const showsWithoutClosingDate = openShows.filter(s => !s.closingDate);
   const showsWithClosingDate = openShows.filter(s => s.closingDate);
 
