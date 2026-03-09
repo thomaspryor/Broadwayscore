@@ -456,7 +456,16 @@
     "man-and-boy-west-end-2026/standard--unknown.json",
     "man-and-boy-west-end-2026/telegraph--dominic-cavendish.json",
     "man-and-boy-west-end-2026/whatsonstage--sarah-crompton.json",
-    "manic-street-creature-west-end-2026/artsdesk--gary-naylor.json"
+    "manic-street-creature-west-end-2026/artsdesk--gary-naylor.json",
+    "manic-street-creature-west-end-2026/west-end-best-friend--marina-holmes-smith.json",
+    "manic-street-creature-west-end-2026/whatsonstage--unknown.json",
+    "marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
+    "marie-and-rosetta-west-end-2026/london-theatre--unknown.json",
+    "masquerade-off-broadway-2025/culturesauce--thom-geier.json",
+    "masquerade-off-broadway-2025/nysr--frank-scheck.json",
+    "masquerade-off-broadway-2025/slantmagazine--dan-rubins.json",
+    "masquerade-off-broadway-2025/washpost--naveen-kumar.json",
+    "matilda-the-musical-west-end-2021/artsdesk--carole-woddis.json"
   ],
   "failed": [
     "an-ark-off-broadway-2026/new-jersey-newsroom--micheal-sommers.json",
@@ -561,7 +570,8 @@
     "les-miserables-west-end-2021/times-uk--clive-davis.json",
     "magic-mike-live-west-end-2021/thestage--francesca-peschier.json",
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
-    "manic-street-creature-west-end-2026/broadwayworld--unknown.json"
+    "manic-street-creature-west-end-2026/broadwayworld--unknown.json",
+    "masquerade-off-broadway-2025/one-minute-critic--one-minute-critic.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -833,7 +843,14 @@
       "mamma-mia-west-end-2021/standard--jessie-thompson.json",
       "man-and-boy-west-end-2026/standard--unknown.json",
       "man-and-boy-west-end-2026/whatsonstage--sarah-crompton.json",
-      "manic-street-creature-west-end-2026/artsdesk--gary-naylor.json"
+      "manic-street-creature-west-end-2026/artsdesk--gary-naylor.json",
+      "manic-street-creature-west-end-2026/west-end-best-friend--marina-holmes-smith.json",
+      "manic-street-creature-west-end-2026/whatsonstage--unknown.json",
+      "marie-and-rosetta-west-end-2026/london-theatre--unknown.json",
+      "masquerade-off-broadway-2025/culturesauce--thom-geier.json",
+      "masquerade-off-broadway-2025/nysr--frank-scheck.json",
+      "masquerade-off-broadway-2025/washpost--naveen-kumar.json",
+      "matilda-the-musical-west-end-2021/artsdesk--carole-woddis.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -887,7 +904,9 @@
       "data/review-texts/hadestown-2019/amny--matt-windman.json",
       "hadestown-2019/amny--matt-windman.json",
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/amny--unknown.json",
-      "little-shop-of-horrors-off-broadway-2019/amny--unknown.json"
+      "little-shop-of-horrors-off-broadway-2019/amny--unknown.json",
+      "data/review-texts/marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
+      "marcel-on-the-train-off-broadway-2026/amny--matt-windman.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json"
@@ -983,7 +1002,9 @@
       "im-sorry-prime-minister-west-end-2026/telegraph--dominic-cavendish.json",
       "into-the-woods-west-end-2025/independent--louis-chilton.json",
       "man-and-boy-west-end-2026/independent--alice-saville.json",
-      "man-and-boy-west-end-2026/telegraph--dominic-cavendish.json"
+      "man-and-boy-west-end-2026/telegraph--dominic-cavendish.json",
+      "manic-street-creature-west-end-2026/broadwayworld--unknown.json",
+      "masquerade-off-broadway-2025/one-minute-critic--one-minute-critic.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1110,11 +1131,12 @@
       "les-miserables-west-end-2021/the-sun--thea-jacobs.json",
       "little-shop-of-horrors-off-broadway-2019/chicagotribune--chris-jones.json",
       "little-shop-of-horrors-off-broadway-2019/talkinbroadway--unknown.json",
-      "maltby-and-shires-about-time-off-broadway-2026/latimes--charles-mcnulty.json"
+      "maltby-and-shires-about-time-off-broadway-2026/latimes--charles-mcnulty.json",
+      "masquerade-off-broadway-2025/slantmagazine--dan-rubins.json"
     ]
   },
   "startTime": "2026-03-09T04:19:45.856Z",
-  "lastProcessed": "manic-street-creature-west-end-2026/broadwayworld--unknown.json",
+  "lastProcessed": "matilda-the-musical-west-end-2021/artsdesk--carole-woddis.json",
   "log": [
     {
       "t": "2026-03-09T04:38:31.076Z",
@@ -1456,6 +1478,17 @@
       "t": "2026-03-09T11:58:36.538Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-09T12:05:11.717Z",
+      "event": "bb-session",
+      "session": "c1a851de",
+      "url": "https://www.amny.com/news/review-marcel-on-the-train-finds-bravery/"
+    },
+    {
+      "t": "2026-03-09T12:05:12.907Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
