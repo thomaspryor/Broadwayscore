@@ -11,7 +11,7 @@ export function isScoreable(data: Record<string, any>): boolean {
   // fullTextWrongAuthor: fullText is from wrong author but excerpts may be valid.
   // Scoreable only if there's excerpt content to score from (not fullText).
   if (data.fullTextWrongAuthor) {
-    const hasExcerpt = data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || (data as any).nycTheatreExcerpt;
+    const hasExcerpt = data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || (data as any).nycTheatreExcerpt || (data as any).lboRoundupExcerpt;
     if (!hasExcerpt) return false;
     // Has excerpts — fall through to remaining checks (will be scored from excerpts only)
   }
@@ -20,7 +20,7 @@ export function isScoreable(data: Record<string, any>): boolean {
   if (data.isRoundupArticle) return false;
   if (data.rejectionReason) return false;
   if (data.showNotMentioned) {
-    const hasExcerpt = data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || (data as any).nycTheatreExcerpt;
+    const hasExcerpt = data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || (data as any).nycTheatreExcerpt || (data as any).lboRoundupExcerpt;
     if (!hasExcerpt) return false;
   }
   return true;

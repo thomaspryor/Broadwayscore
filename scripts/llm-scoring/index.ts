@@ -803,7 +803,7 @@ async function main(): Promise<void> {
       // Modern scores with textSource provenance: only rescore if scored on excerpt
       if (d.llmMetadata?.textSource?.type === 'fullText') return false;
       // Old scores without provenance: require excerpt field as indicator
-      return !!(d.bwwExcerpt || d.dtliExcerpt || d.showScoreExcerpt);
+      return !!(d.bwwExcerpt || d.dtliExcerpt || d.showScoreExcerpt || (d as any).lboRoundupExcerpt);
     });
     console.log(`Filtering to stale-scored reviews (fullText + old excerpt-based score): ${filesToProcess.length} reviews\n`);
   } else if (options.upgradeEnsemble) {
@@ -916,6 +916,10 @@ async function main(): Promise<void> {
         (data as any).nycTheatreExcerpt !== data.dtliExcerpt &&
         (data as any).nycTheatreExcerpt !== data.showScoreExcerpt) {
       excerpts.push((data as any).nycTheatreExcerpt);
+    }
+    if ((data as any).lboRoundupExcerpt &&
+        !excerpts.some(e => e === (data as any).lboRoundupExcerpt)) {
+      excerpts.push((data as any).lboRoundupExcerpt);
     }
 
     if (excerpts.length > 0) {
@@ -1063,7 +1067,8 @@ async function main(): Promise<void> {
         const hasGoodExcerpts = (reviewFile.bwwExcerpt && reviewFile.bwwExcerpt.length >= 50) ||
                                 (reviewFile.dtliExcerpt && reviewFile.dtliExcerpt.length >= 50) ||
                                 (reviewFile.showScoreExcerpt && reviewFile.showScoreExcerpt.length >= 50) ||
-                                ((reviewFile as any).nycTheatreExcerpt && (reviewFile as any).nycTheatreExcerpt.length >= 50);
+                                ((reviewFile as any).nycTheatreExcerpt && (reviewFile as any).nycTheatreExcerpt.length >= 50) ||
+                                ((reviewFile as any).lboRoundupExcerpt && (reviewFile as any).lboRoundupExcerpt.length >= 50);
 
         if (!hasGoodExcerpts) {
           // Skip scoring - content is garbage AND no excerpts to fall back to

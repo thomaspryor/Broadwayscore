@@ -1823,7 +1823,7 @@ showDirs.forEach(showId => {
         delete data.fullText;
         delete data.assignedScore;
         delete data.ensembleData;
-        const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt);
+        const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.lboRoundupExcerpt);
         data.contentTier = hasExcerpt ? 'excerpt' : 'stub';
         if (!hasExcerpt) {
           stats.skippedFullTextWrongAuthor = (stats.skippedFullTextWrongAuthor || 0) + 1;
@@ -2022,7 +2022,7 @@ showDirs.forEach(showId => {
         delete data.fullText;
         delete data.assignedScore;
         delete data.ensembleData;
-        const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt);
+        const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.lboRoundupExcerpt);
         data.contentTier = hasExcerpt ? 'excerpt' : 'stub';
         if (!hasExcerpt) {
           stats.skippedFullTextWrongAuthor = (stats.skippedFullTextWrongAuthor || 0) + 1;
@@ -2095,7 +2095,7 @@ showDirs.forEach(showId => {
         }
 
         if (data.showNotMentioned === true) {
-          const hasExcerpt = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt;
+          const hasExcerpt = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt;
           if (!hasExcerpt) {
             stats.skippedShowNotMentioned = (stats.skippedShowNotMentioned || 0) + 1;
             return;
