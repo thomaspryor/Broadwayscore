@@ -199,11 +199,19 @@ export default function ShowPageRating({
                 </button>
               )}
             </div>
-            <span className="text-xs text-gray-500">
-              {latestReview.date_seen
-                ? new Date(latestReview.date_seen + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-                : '\u00A0'}
-            </span>
+            {latestReview.date_seen ? (
+              <span className="text-xs text-gray-500">
+                {new Date(latestReview.date_seen + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+              </span>
+            ) : (
+              <button
+                type="button"
+                onClick={() => handleEdit(latestReview)}
+                className="text-xs text-gray-500 hover:text-brand transition-colors"
+              >
+                + Date
+              </button>
+            )}
           </div>
           {latestReview.review_text && (
             <p className="text-sm text-gray-400 mt-1.5 italic line-clamp-3">{latestReview.review_text}</p>
