@@ -11,7 +11,17 @@
     "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
     "all-out-2025/nytg--gillian-russo.json",
     "an-ark-off-broadway-2026/nytg--kyle-turner.json",
-    "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json"
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
+    "back-to-the-future-west-end-2021/variety--david-benedict.json",
+    "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+    "bigfoot-off-broadway-2026/vulture--unknown.json",
+    "broken-glass-west-end-2026/nytimes--unknown.json",
+    "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+    "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+    "chess-2025/hollywood-reporter--angie-han.json",
+    "chess-2025/newyorker--michael-schulman.json",
+    "chinese-republicans-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "chinese-republicans-off-broadway-2026/nytg--unknown.json"
   ],
   "failed": [
     "an-ark-off-broadway-2026/new-jersey-newsroom--micheal-sommers.json",
@@ -42,16 +52,30 @@
       "matilda-the-musical-west-end-2021/whatsonstage--andy-plaice.json",
       "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
       "all-out-2025/nytg--gillian-russo.json",
-      "an-ark-off-broadway-2026/nytg--kyle-turner.json"
+      "an-ark-off-broadway-2026/nytg--kyle-turner.json",
+      "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+      "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+      "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+      "chinese-republicans-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "chinese-republicans-off-broadway-2026/nytg--unknown.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
-      "hadestown-west-end-2024/variety--marilyn-stasio.json"
+      "hadestown-west-end-2024/variety--marilyn-stasio.json",
+      "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "data/review-texts/bigfoot-off-broadway-2026/vulture--unknown.json",
+      "bigfoot-off-broadway-2026/vulture--unknown.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
+      "chess-2025/hollywood-reporter--angie-han.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
-      "my-neighbour-totoro-west-end-2025/independent--annabel-nugent.json"
+      "my-neighbour-totoro-west-end-2025/independent--annabel-nugent.json",
+      "broken-glass-west-end-2026/nytimes--unknown.json",
+      "chess-2025/newyorker--michael-schulman.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -79,6 +103,18 @@
     ]
   },
   "startTime": "2026-03-09T04:19:45.856Z",
-  "lastProcessed": "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
-  "log": []
+  "lastProcessed": "chinese-republicans-off-broadway-2026/nytg--unknown.json",
+  "log": [
+    {
+      "t": "2026-03-09T04:38:31.076Z",
+      "event": "bb-session",
+      "session": "aa72aab7",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-09T04:38:32.385Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    }
+  ]
 }
