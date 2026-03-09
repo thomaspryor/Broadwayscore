@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-09T15:51:36.229Z",
-  "processed": 69,
-  "failed": 11,
-  "successRate": "86.3%",
+  "updatedAt": "2026-03-09T15:53:50.059Z",
+  "processed": 77,
+  "failed": 13,
+  "successRate": "85.6%",
   "tierBreakdown": {
-    "playwright": 45,
+    "playwright": 48,
     "amp": 8,
-    "browserbase": 12,
+    "browserbase": 16,
     "directCookies": 0,
-    "scrapingbee": 8,
+    "scrapingbee": 11,
     "brightdata": 0,
     "archiveToday": 6,
     "archive": 6
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-03-09T14:55:14.953Z",
-      "event": "bb-session",
-      "session": "a4ee1347",
-      "url": "http://www.hollywoodreporter.com/review/orlando-bloom-romeo-juliet-theater-63250"
-    },
-    {
-      "t": "2026-03-09T14:55:16.189Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-09T14:56:09.360Z",
-      "event": "bb-session",
-      "session": "72ffafff",
-      "url": "http://www.newsday.com/entertainment/theater/romeo-and-juliet-review-not-in-bloo"
-    },
-    {
-      "t": "2026-03-09T14:56:10.555Z",
-      "event": "bb-cookie-inject",
-      "domain": "newsday.com"
-    },
     {
       "t": "2026-03-09T14:57:06.663Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-09T15:50:42.841Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-09T15:53:18.077Z",
+      "event": "bb-session",
+      "session": "9123803a",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-09T15:53:18.982Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-09T15:53:36.784Z",
+      "event": "bb-session",
+      "session": "c3aee85a",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-09T15:53:37.792Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
