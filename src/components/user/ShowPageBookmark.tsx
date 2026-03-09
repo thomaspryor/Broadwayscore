@@ -14,9 +14,9 @@ interface ShowPageBookmarkProps {
 }
 
 const SIZES = {
-  sm: { button: 'w-6 h-6 top-1 right-1', icon: 'w-3 h-3' },
-  md: { button: 'w-8 h-8 top-2 right-2', icon: 'w-4 h-4' },
-  compact: { button: 'w-6 h-6 top-1 right-1', icon: 'w-3 h-3' },
+  sm: { button: 'top-1 right-1 p-1', icon: 'w-4 h-5' },
+  md: { button: 'top-1.5 right-1.5 p-1', icon: 'w-5 h-6' },
+  compact: { button: 'top-1 right-1 p-0.5', icon: 'w-4 h-5' },
 };
 
 /**
@@ -73,15 +73,22 @@ export default function ShowPageBookmark({ showId, size = 'md' }: ShowPageBookma
       type="button"
       onClick={handleToggle}
       disabled={loading}
-      className={`absolute ${s.button} z-10 flex items-center justify-center rounded-full transition-all ${
+      className={`absolute ${s.button} z-10 flex items-center justify-center transition-all ${
         watched
-          ? `${size === 'compact' ? 'bg-black/40' : 'bg-black/50'} text-amber-400 scale-100`
-          : `${size === 'compact' ? 'bg-black/15 text-white/30' : 'bg-black/25 text-white/50'} hover:text-white hover:bg-black/50${size === 'sm' ? ' sm:opacity-0 sm:group-hover:opacity-100' : ''}`
+          ? 'drop-shadow-md'
+          : `${size === 'sm' ? 'sm:opacity-0 sm:group-hover:opacity-100' : ''}`
       } ${loading ? 'opacity-50' : ''}`}
       aria-label={watched ? 'Remove from watchlist' : 'Add to watchlist'}
     >
-      <svg className={s.icon} viewBox="0 0 24 24" fill={watched ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={2}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+      <svg className={`${s.icon} drop-shadow-lg`} viewBox="0 0 24 24">
+        {/* Bookmark shape — filled semi-transparent dark when unwatched, solid gold when watched */}
+        <path
+          d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
+          fill={watched ? '#f59e0b' : 'rgba(0,0,0,0.45)'}
+          stroke={watched ? '#fbbf24' : 'rgba(255,255,255,0.6)'}
+          strokeWidth={1.5}
+          strokeLinejoin="round"
+        />
       </svg>
     </button>
   );
