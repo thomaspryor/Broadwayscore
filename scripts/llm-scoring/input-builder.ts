@@ -29,6 +29,7 @@ export interface ReviewInputData {
   dtliExcerpt?: string | null;
   showScoreExcerpt?: string | null;
   nycTheatreExcerpt?: string | null;
+  lboRoundupExcerpt?: string | null;
 
   // Aggregator thumbs
   bwwThumb?: string | null;
@@ -166,7 +167,7 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
       contextParts.push('These are selected quotes from the review and may not represent the full verdict.');
 
       // 2D: Count available unique excerpts for single-excerpt warning
-      const availableExcerpts = [review.bwwExcerpt, review.dtliExcerpt, review.showScoreExcerpt, review.nycTheatreExcerpt]
+      const availableExcerpts = [review.bwwExcerpt, review.dtliExcerpt, review.showScoreExcerpt, review.nycTheatreExcerpt, review.lboRoundupExcerpt]
         .filter(e => e && e.length >= 30);
       const uniqueExcerpts = new Set(availableExcerpts);
       if (uniqueExcerpts.size === 1) {
@@ -213,9 +214,9 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
       if (review.bwwExcerpt && review.bwwExcerpt !== textResult.text && review.bwwExcerpt !== review.dtliExcerpt && review.bwwExcerpt !== review.showScoreExcerpt) {
         excerpts.push(`BWW excerpt: "${review.bwwExcerpt}"`);
       }
-      if ((review as any).lboRoundupExcerpt && (review as any).lboRoundupExcerpt !== textResult.text &&
-          !excerpts.some(e => e.includes((review as any).lboRoundupExcerpt))) {
-        excerpts.push(`LBO Roundup excerpt: "${(review as any).lboRoundupExcerpt}"`);
+      if (review.lboRoundupExcerpt && review.lboRoundupExcerpt !== textResult.text &&
+          !excerpts.some(e => e.includes(review.lboRoundupExcerpt))) {
+        excerpts.push(`LBO Roundup excerpt: "${review.lboRoundupExcerpt}"`);
       }
 
       if (excerpts.length > 0) {
@@ -237,7 +238,7 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
 
   // 2D: Force low confidence for single-excerpt scoring
   if (textQualityStatus === 'excerpt-only') {
-    const availableExcerpts = [review.bwwExcerpt, review.dtliExcerpt, review.showScoreExcerpt, review.nycTheatreExcerpt]
+    const availableExcerpts = [review.bwwExcerpt, review.dtliExcerpt, review.showScoreExcerpt, review.nycTheatreExcerpt, review.lboRoundupExcerpt]
       .filter(e => e && e.length >= 30);
     const uniqueExcerpts = new Set(availableExcerpts);
     if (uniqueExcerpts.size <= 1) {
@@ -271,6 +272,9 @@ export function combineExcerpts(review: ReviewInputData): string {
   if (review.nycTheatreExcerpt && review.nycTheatreExcerpt !== review.showScoreExcerpt &&
       review.nycTheatreExcerpt !== review.dtliExcerpt && review.nycTheatreExcerpt !== review.bwwExcerpt) {
     excerpts.push(review.nycTheatreExcerpt);
+  }
+  if (review.lboRoundupExcerpt && !excerpts.some(e => e === review.lboRoundupExcerpt)) {
+    excerpts.push(review.lboRoundupExcerpt);
   }
 
   return excerpts.join('\n\n');

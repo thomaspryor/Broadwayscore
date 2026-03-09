@@ -370,7 +370,8 @@ function getBestTextForScoring(review) {
     { field: 'showScoreExcerpt', name: 'Show Score' },
     { field: 'dtliExcerpt', name: 'DTLI' },
     { field: 'bwwExcerpt', name: 'BWW' },
-    { field: 'nycTheatreExcerpt', name: 'NYC Theatre' }
+    { field: 'nycTheatreExcerpt', name: 'NYC Theatre' },
+    { field: 'lboRoundupExcerpt', name: 'LBO Roundup' }
   ];
 
   for (const { field, name } of excerptFields) {
