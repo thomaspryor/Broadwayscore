@@ -1,0 +1,37 @@
+name: Collection Coverage Report
+on:
+  schedule:
+    - cron: '0 15 * * 1'  # Monday 3 PM UTC (10 AM EST, after PostHog insights at 2 PM)
+  workflow_dispatch: {}
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+      - name: Generate coverage report
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/collection-coverage-dashboard.js --issue
+      - name: Commit coverage data
+        if: always()
+        run: |
+          git add data/audit/collection-coverage.json data/audit/collection-coverage-history.json || true
+          git diff --staged --quiet && exit 0
+          git commit -m "data: Update collection coverage report [skip ci]"
+          bash scripts/lib/push-with-retry.sh 5 main
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Collection Coverage Report Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

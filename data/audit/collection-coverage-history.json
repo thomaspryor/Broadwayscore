@@ -1,0 +1,36 @@
+{
+  "snapshots": [
+    {
+      "date": "2026-03-09",
+      "total": 32168,
+      "active": 19900,
+      "hasFullText": 16388,
+      "hasExcerpts": 3275,
+      "uncollected": 234,
+      "flagged": 12268,
+      "byContentTier": {
+        "complete": 14775,
+        "stub": 202,
+        "excerpt": 3115,
+        "truncated": 1608,
+        "unknown": 177,
+        "invalid": 16,
+        "needs-rescrape": 4
+      },
+      "byOutletTier": {
+        "1": {
+          "total": 5517,
+          "complete": 3834
+        },
+        "2": {
+          "total": 8623,
+          "complete": 6692
+        },
+        "3": {
+          "total": 5757,
+          "complete": 4249
+        }
+      }
+    }
+  ]
+}
