@@ -63,6 +63,7 @@ import { ReviewTextFile, ScoringPipelineOptions, PipelineRunSummary } from './ty
 // Import content quality module for garbage detection
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { assessTextQuality, detectGarbageFromReasoning } = require('../lib/content-quality.js');
+const { EXCERPT_FIELDS } = require('../lib/text-quality.js');
 
 import { detectMultiShow } from './multi-show-detector';
 import { trimMultiShowText } from './trim-multi-show';
@@ -803,7 +804,7 @@ async function main(): Promise<void> {
       // Modern scores with textSource provenance: only rescore if scored on excerpt
       if (d.llmMetadata?.textSource?.type === 'fullText') return false;
       // Old scores without provenance: require excerpt field as indicator
-      return !!(d.bwwExcerpt || d.dtliExcerpt || d.showScoreExcerpt || (d as any).nycTheatreExcerpt || (d as any).lboRoundupExcerpt);
+      return EXCERPT_FIELDS.some((ef: {field: string}) => !!d[ef.field]);
     });
     console.log(`Filtering to stale-scored reviews (fullText + old excerpt-based score): ${filesToProcess.length} reviews\n`);
   } else if (options.upgradeEnsemble) {
@@ -901,25 +902,13 @@ async function main(): Promise<void> {
     if (data.isMultiShowReview && options.verbose) {
       console.log(`  Multi-show review falling back to excerpts (fullText was garbage/missing)`);
     }
+    // Build deduped excerpt string from all sources (uses canonical EXCERPT_FIELDS)
     const excerpts: string[] = [];
-    if (data.bwwExcerpt) excerpts.push(data.bwwExcerpt);
-    if (data.dtliExcerpt && data.dtliExcerpt !== data.bwwExcerpt) {
-      excerpts.push(data.dtliExcerpt);
-    }
-    if (data.showScoreExcerpt &&
-        data.showScoreExcerpt !== data.bwwExcerpt &&
-        data.showScoreExcerpt !== data.dtliExcerpt) {
-      excerpts.push(data.showScoreExcerpt);
-    }
-    if ((data as any).nycTheatreExcerpt &&
-        (data as any).nycTheatreExcerpt !== data.bwwExcerpt &&
-        (data as any).nycTheatreExcerpt !== data.dtliExcerpt &&
-        (data as any).nycTheatreExcerpt !== data.showScoreExcerpt) {
-      excerpts.push((data as any).nycTheatreExcerpt);
-    }
-    if ((data as any).lboRoundupExcerpt &&
-        !excerpts.some(e => e === (data as any).lboRoundupExcerpt)) {
-      excerpts.push((data as any).lboRoundupExcerpt);
+    for (const ef of EXCERPT_FIELDS) {
+      const val = data[ef.field];
+      if (val && !excerpts.some(e => e === val)) {
+        excerpts.push(val);
+      }
     }
 
     if (excerpts.length > 0) {
@@ -1064,11 +1053,10 @@ async function main(): Promise<void> {
 
       if (qualityResult.quality === 'garbage' && qualityResult.confidence === 'high') {
         // Check if we have good excerpts to fall back to
-        const hasGoodExcerpts = (reviewFile.bwwExcerpt && reviewFile.bwwExcerpt.length >= 50) ||
-                                (reviewFile.dtliExcerpt && reviewFile.dtliExcerpt.length >= 50) ||
-                                (reviewFile.showScoreExcerpt && reviewFile.showScoreExcerpt.length >= 50) ||
-                                ((reviewFile as any).nycTheatreExcerpt && (reviewFile as any).nycTheatreExcerpt.length >= 50) ||
-                                ((reviewFile as any).lboRoundupExcerpt && (reviewFile as any).lboRoundupExcerpt.length >= 50);
+        const hasGoodExcerpts = EXCERPT_FIELDS.some((ef: {field: string}) => {
+          const val = (reviewFile as any)[ef.field];
+          return val && val.length >= 50;
+        });
 
         if (!hasGoodExcerpts) {
           // Skip scoring - content is garbage AND no excerpts to fall back to
