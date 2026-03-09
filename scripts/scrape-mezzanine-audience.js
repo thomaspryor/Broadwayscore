@@ -320,6 +320,7 @@ function updateAudienceBuzz(match) {
         showScore: null,
         mezzanine: null,
         reddit: null,
+        theatr: null,
       }
     };
   }
@@ -348,7 +349,7 @@ function updateAudienceBuzz(match) {
     else show.designation = 'Loathing';
 
     if (verbose) {
-      console.log(`  Weights: SS ${weights.showScore}%, Mezz ${weights.mezzanine}%, Reddit ${weights.reddit}%`);
+      console.log(`  Weights: SS ${weights.showScore}%, Mezz ${weights.mezzanine}%, Reddit ${weights.reddit}%, Theatr ${weights.theatr}%`);
     }
   }
 }

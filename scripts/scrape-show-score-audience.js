@@ -691,6 +691,7 @@ function updateAudienceBuzz(showId, showTitle, showScoreData) {
         showScore: null,
         mezzanine: null,
         reddit: null,
+        theatr: null,
       }
     };
   }
@@ -717,7 +718,7 @@ function updateAudienceBuzz(showId, showTitle, showScoreData) {
 
     // Log the weights used
     if (verbose) {
-      console.log(`  Weights: SS ${weights.showScore}%, Mezz ${weights.mezzanine}%, Reddit ${weights.reddit}%`);
+      console.log(`  Weights: SS ${weights.showScore}%, Mezz ${weights.mezzanine}%, Reddit ${weights.reddit}%, Theatr ${weights.theatr}%`);
     }
   }
 }

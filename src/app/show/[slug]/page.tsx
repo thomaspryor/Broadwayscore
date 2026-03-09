@@ -701,10 +701,11 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           // Minimum 5 total reviews across all sources to display
           const totalReviews = (audienceBuzz.sources.showScore?.reviewCount || 0)
             + (audienceBuzz.sources.mezzanine?.reviewCount || 0)
-            + (audienceBuzz.sources.reddit?.reviewCount || 0);
+            + (audienceBuzz.sources.reddit?.reviewCount || 0)
+            + (audienceBuzz.sources.theatr?.reviewCount || 0);
           return totalReviews >= 5;
         })() ? (() => {
-          const sourceCount = [audienceBuzz.sources.showScore, audienceBuzz.sources.mezzanine, audienceBuzz.sources.reddit].filter(Boolean).length;
+          const sourceCount = [audienceBuzz.sources.showScore, audienceBuzz.sources.mezzanine, audienceBuzz.sources.reddit, audienceBuzz.sources.theatr].filter(Boolean).length;
           const showYear = show.openingDate ? parseInt(show.openingDate.substring(0, 4)) : null;
           const isHistorical = show.status === 'closed' && showYear !== null && showYear < 2015;
           return (

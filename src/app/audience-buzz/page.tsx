@@ -85,7 +85,8 @@ export default function AudienceBuzzPage() {
       // Minimum 5 total reviews across all sources
       const total = (item.buzz.sources.showScore?.reviewCount || 0)
         + (item.buzz.sources.mezzanine?.reviewCount || 0)
-        + (item.buzz.sources.reddit?.reviewCount || 0);
+        + (item.buzz.sources.reddit?.reviewCount || 0)
+        + (item.buzz.sources.theatr?.reviewCount || 0);
       return total >= 5;
     })
     .sort((a, b) => (b.buzz?.combinedScore || 0) - (a.buzz?.combinedScore || 0));
@@ -104,7 +105,8 @@ export default function AudienceBuzzPage() {
     return sum +
       (buzz.sources.showScore?.reviewCount || 0) +
       (buzz.sources.mezzanine?.reviewCount || 0) +
-      (buzz.sources.reddit?.reviewCount || 0);
+      (buzz.sources.reddit?.reviewCount || 0) +
+      (buzz.sources.theatr?.reviewCount || 0);
   }, 0);
 
   const breadcrumbSchema = generateBreadcrumbSchema([

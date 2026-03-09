@@ -214,6 +214,7 @@ export interface AudienceBuzzData {
     showScore: AudienceBuzzSource | null;
     mezzanine: AudienceBuzzSource | null;
     reddit: AudienceBuzzSource | null;
+    theatr: AudienceBuzzSource | null;
   };
 }
 

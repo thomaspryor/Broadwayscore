@@ -465,7 +465,7 @@ function updateAudienceBuzz(showId, redditData) {
     else audienceBuzz.shows[showId].designation = 'Loathing';
 
     if (verbose) {
-      console.log(`  Weights: SS ${weights.showScore}%, Mezz ${weights.mezzanine}%, Reddit ${weights.reddit}%`);
+      console.log(`  Weights: SS ${weights.showScore}%, Mezz ${weights.mezzanine}%, Reddit ${weights.reddit}%, Theatr ${weights.theatr}%`);
     }
   }
 }

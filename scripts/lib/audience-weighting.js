@@ -62,6 +62,9 @@ function calculateCombinedScore(sources, showInfo) {
   if (sources.mezzanine?.score != null && sources.mezzanine.reviewCount > 0) {
     active.push({ name: 'mezzanine', score: sources.mezzanine.score, volume: sources.mezzanine.reviewCount });
   }
+  if (sources.theatr?.score != null && sources.theatr.reviewCount > 0) {
+    active.push({ name: 'theatr', score: sources.theatr.score, volume: sources.theatr.reviewCount });
+  }
   if (isRedditEligible(sources.reddit, showInfo)) {
     // Calibrate Reddit score to align with ShowScore/Mezzanine scale
     const calibrated = Math.min(sources.reddit.score + REDDIT_SCORE_CALIBRATION, REDDIT_CALIBRATION_CAP);
@@ -74,7 +77,7 @@ function calculateCombinedScore(sources, showInfo) {
 
   // Solo source — 100% weight, no ceiling needed
   if (active.length === 1) {
-    const weights = { showScore: 0, mezzanine: 0, reddit: 0 };
+    const weights = { showScore: 0, mezzanine: 0, reddit: 0, theatr: 0 };
     weights[active[0].name] = 100;
     return { score: Math.round(active[0].score), weights };
   }
@@ -100,7 +103,7 @@ function calculateCombinedScore(sources, showInfo) {
     combinedScore += w.score * w.weight;
   }
 
-  const weights = { showScore: 0, mezzanine: 0, reddit: 0 };
+  const weights = { showScore: 0, mezzanine: 0, reddit: 0, theatr: 0 };
   for (const w of weighted) {
     weights[w.name] = Math.round(w.weight * 100);
   }
