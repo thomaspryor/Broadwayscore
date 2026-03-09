@@ -2108,7 +2108,7 @@ function validateReviewTextQuality(shows) {
       }
 
       // Skip already-flagged reviews
-      if (data.wrongShow || data.wrongProduction || data.isRoundupArticle || data.isNotReview) continue;
+      if (data.wrongShow || data.wrongProduction || data.wrongUrl || data.duplicateOf || data.isRoundupArticle || data.isNotReview) continue;
 
       const critic = (data.criticName || '').trim();
       const outlet = (data.outlet || '').trim();
