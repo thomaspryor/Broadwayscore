@@ -64,27 +64,21 @@ jobs:
           # On retry dates (4th, 18th), skip if data was updated in last 5 days
           DAY=$(date -u +%d)
           if [ "$DAY" = "04" ] || [ "$DAY" = "18" ]; then
-            RESULT=$(node -e "
-              const data = require('./data/audience-buzz.json');
-              const last = data._meta?.lastUpdated || '2000-01-01';
-              const daysAgo = Math.floor((Date.now() - new Date(last).getTime()) / 86400000);
-              console.log(daysAgo < 5 ? 'fresh' : 'stale');
-              console.error('Last updated: ' + last + ' (' + daysAgo + ' days ago)');
-            " 2>&1 >/dev/null || echo "stale")
             SKIP_LINE=$(node -e "
               const data = require('./data/audience-buzz.json');
               const last = data._meta?.lastUpdated || '2000-01-01';
               const daysAgo = Math.floor((Date.now() - new Date(last).getTime()) / 86400000);
+              console.error('Last updated: ' + last + ' (' + daysAgo + ' days ago)');
               console.log(daysAgo < 5 ? 'true' : 'false');
             ")
-            echo "skip=$SKIP_LINE" >> $GITHUB_OUTPUT
-            if [ "$SKIP_LINE" = "true" ]; then
+            echo "skip=${SKIP_LINE}" >> "$GITHUB_OUTPUT"
+            if [ "${SKIP_LINE}" = "true" ]; then
               echo "✓ Reddit data is fresh, skipping retry run"
             else
               echo "⚠ Reddit data is stale, running retry"
             fi
           else
-            echo "skip=false" >> $GITHUB_OUTPUT
+            echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Backup audience-buzz.json
