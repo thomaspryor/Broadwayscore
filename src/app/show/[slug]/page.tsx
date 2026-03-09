@@ -255,6 +255,20 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   // Combine schemas, filtering out null FAQ schema
   const schemas = [showSchema, breadcrumbSchema, faqSchema].filter(Boolean);
 
+  // Pre-compute score variables for redesigned mobile header
+  const reviewCount = show.criticScore?.reviewCount || 0;
+  const tier1Count = show.criticScore?.tier1Count || 0;
+  const tier2Count = show.criticScore?.tier2Count || 0;
+  const showTBD = show.status === 'previews' || show.status === 'upcoming' || !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count);
+  const roundedScore = score ? Math.round(score) : null;
+  const sentiment = score ? getSentimentLabel(score) : null;
+  const scoreColorClass = (!showTBD && roundedScore !== null)
+    ? getScoreColorClass(roundedScore)
+    : 'bg-surface-overlay text-gray-400 border border-white/10';
+  const hasAudience = !showTBD && audienceBuzz != null && audienceBuzz.combinedScore != null && hasEnoughAudienceReviews(audienceBuzz);
+  const audienceGrade = hasAudience ? getAudienceGrade(audienceBuzz!.combinedScore!) : null;
+  const totalAudienceCount = audienceBuzz ? getTotalAudienceReviews(audienceBuzz) : 0;
+
   return (
     <>
       <script
@@ -277,8 +291,194 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           { label: show.title },
         ]} />
 
+        {/* Redesigned mobile header — feature-flagged, demo only */}
+        {featureFlags.showPageRedesign && (
+          <div className="sm:hidden card p-5 mb-6" data-testid="show-header-card-v2">
+            {/* Row 1: Image + Info */}
+            <div className="flex gap-4">
+              <div className="flex-shrink-0 w-28">
+                <div className="relative aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
+                  <ShowPageBookmark showId={show.id} />
+                  <ShowImage
+                    sources={[
+                      show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'poster') : null,
+                      show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'poster') : null,
+                      show.images?.hero ? getOptimizedImageUrl(show.images.hero, 'poster') : null,
+                    ]}
+                    alt={`${show.title} poster`}
+                    width={176}
+                    height={264}
+                    decoding="async"
+                    priority
+                    sizes="112px"
+                    className="w-full h-full object-cover"
+                    fallback={
+                      <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
+                        <span className="text-4xl text-gray-500">🎭</span>
+                      </div>
+                    }
+                  />
+                </div>
+              </div>
+              <div className="flex-1 min-w-0">
+                {/* Pills */}
+                <div className="flex flex-wrap gap-1.5 mb-1.5">
+                  {show.category && show.category !== 'broadway' && (
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[9px] leading-none font-semibold uppercase tracking-wide ${show.category === 'west-end' ? 'bg-teal-500/15 text-teal-400 border border-teal-500/30' : 'bg-indigo-500/15 text-indigo-400 border border-indigo-500/30'}`}>
+                      {show.category === 'west-end' ? 'West End' : 'Off-Bway'}
+                    </span>
+                  )}
+                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[9px] leading-none font-semibold uppercase tracking-wide ${show.type === 'musical' ? 'bg-purple-500/15 text-purple-400 border border-purple-500/30' : 'bg-blue-500/15 text-blue-400 border border-blue-500/30'}`}>
+                    {show.type === 'musical' ? 'Musical' : 'Play'}
+                  </span>
+                  {show.isRevival && (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] leading-none font-semibold uppercase tracking-wide bg-gray-500/15 text-gray-400 border border-gray-500/30">
+                      Revival
+                    </span>
+                  )}
+                  {show.limitedRun && (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] leading-none font-semibold uppercase tracking-wide bg-rose-500/15 text-rose-400 border border-rose-500/30">
+                      Limited
+                    </span>
+                  )}
+                </div>
+                {/* Title */}
+                <h1 className="text-xl font-extrabold text-white tracking-tight leading-tight mb-1.5">
+                  {show.title}
+                </h1>
+                {/* Meta — stacked for clarity */}
+                <div className="text-gray-400 text-xs space-y-0.5 leading-relaxed">
+                  {isWestEnd || isOffBroadway ? (
+                    <div className="text-gray-300">{show.venue}</div>
+                  ) : (
+                    <div><Link href={`/theater/${slugify(show.venue)}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link></div>
+                  )}
+                  {show.runtime && <div>{show.runtime}</div>}
+                  {show.status === 'previews' || show.status === 'upcoming' ? (
+                    formatDate(show.openingDate) ? <div>Opens {formatDate(show.openingDate)}</div> : null
+                  ) : (
+                    <>
+                      {formatDate(show.openingDate) && <div>Opened {formatDate(show.openingDate)}</div>}
+                      {show.closingDate && (
+                        <div className="text-amber-400">
+                          {show.status === 'closed' ? 'Closed' : 'Closes'} {formatDate(show.closingDate)}
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Row 2: Dual Score Boxes */}
+            <div className="flex gap-2 mt-4 pt-4 border-t border-white/5">
+              {/* Critic Score */}
+              <a href="#critic-reviews" className="flex items-start gap-2 flex-1 min-w-0">
+                <div className={`w-13 h-13 rounded-lg flex items-center justify-center flex-shrink-0 ${scoreColorClass}`} style={{ width: '3.25rem', height: '3.25rem' }}>
+                  <span className="text-lg font-extrabold">
+                    {showTBD ? 'TBD' : roundedScore}
+                  </span>
+                </div>
+                <div className="pt-0.5 min-w-0">
+                  {showTBD ? (
+                    <div className="text-xs font-bold text-gray-400">Awaiting Reviews</div>
+                  ) : sentiment && (
+                    <div className={`text-xs font-bold ${sentiment.colorClass}`}>{sentiment.label}</div>
+                  )}
+                  <div className="text-[10px] text-gray-500 leading-snug">
+                    {reviewCount > 0 ? `${reviewCount} critic ${reviewCount === 1 ? 'review' : 'reviews'}` : 'No reviews yet'}
+                  </div>
+                </div>
+              </a>
+              {/* Audience Score */}
+              {hasAudience && audienceGrade && (
+                <a href="#audience" className="flex items-start gap-2 flex-1 min-w-0">
+                  <div className="rounded-lg flex items-center justify-center flex-shrink-0 text-base font-extrabold" style={{ width: '3.25rem', height: '3.25rem', background: audienceGrade.color, color: audienceGrade.textColor }}>
+                    {audienceGrade.grade}
+                  </div>
+                  <div className="pt-0.5 min-w-0">
+                    <div className="text-xs font-bold" style={{ color: audienceGrade.color }}>{audienceGrade.label}</div>
+                    <div className="text-[10px] text-gray-500 leading-snug">
+                      {totalAudienceCount.toLocaleString()} audience reviews
+                    </div>
+                  </div>
+                </a>
+              )}
+            </div>
+
+            {/* Row 3: User Rating + Watchlist */}
+            <div className="mt-4 pt-4 border-t border-white/5">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <ShowPageRatingConnected
+                    showId={show.id}
+                    showTitle={show.title}
+                    previewDate={show.previewsStartDate}
+                    closingDate={show.closingDate}
+                  />
+                </div>
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <ShowPageAddToListButton showId={show.id} />
+                  <ShowPageWatchlistButton showId={show.id} />
+                </div>
+              </div>
+            </div>
+
+            {/* Row 4: Action Links */}
+            <div className="flex flex-wrap gap-2 mt-4">
+              {show.officialUrl && (
+                <TicketLink
+                  showName={show.title}
+                  showId={show.id}
+                  platform="Official Site"
+                  url={show.officialUrl}
+                  pageType="show"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10"
+                >
+                  <GlobeIcon />
+                  Official Site
+                </TicketLink>
+              )}
+              {show.ticketLinks && show.ticketLinks.length > 0 && show.status !== 'closed' && show.ticketLinks.map((link, i) => (
+                <TicketLink
+                  key={i}
+                  showName={show.title}
+                  showId={show.id}
+                  platform={link.platform}
+                  url={link.url}
+                  pageType="show"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10"
+                >
+                  <TicketIcon />
+                  {link.platform}
+                </TicketLink>
+              ))}
+              {show.trailerUrl && (
+                <a
+                  href={show.trailerUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10"
+                >
+                  <PlayIcon />
+                  Trailer
+                </a>
+              )}
+              {featureFlags.discountTickets && lotteryRush && show.status !== 'closed' && (
+                <a
+                  href="#discount-tickets"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 hover:text-emerald-300 text-xs leading-none font-medium transition-colors border border-emerald-500/30"
+                >
+                  <TicketIcon />
+                  {lotteryRush.lottery ? `$${lotteryRush.lottery.price} Lottery` : lotteryRush.rush ? `$${lotteryRush.rush.price} Rush` : 'Discount Tickets'}
+                </a>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Metacritic-style Header: Poster + Title/Score integrated */}
-        <div className="card p-5 sm:p-6 mb-6" data-testid="show-header-card">
+        <div className={`card p-5 sm:p-6 mb-6 ${featureFlags.showPageRedesign ? 'hidden sm:block' : ''}`} data-testid="show-header-card">
           <div className="flex gap-4 sm:gap-6">
             {/* Poster Card + pills underneath on mobile */}
             <div className="flex-shrink-0 w-28 sm:w-36 lg:w-40 flex flex-col gap-2">
