@@ -2,33 +2,29 @@
   "snapshots": [
     {
       "date": "2026-03-09",
-      "total": 32168,
-      "active": 19900,
-      "hasFullText": 16388,
-      "hasExcerpts": 3275,
-      "uncollected": 234,
-      "flagged": 12268,
-      "byContentTier": {
-        "complete": 14775,
-        "stub": 202,
-        "excerpt": 3115,
-        "truncated": 1608,
-        "unknown": 177,
-        "invalid": 16,
-        "needs-rescrape": 4
-      },
-      "byOutletTier": {
-        "1": {
-          "total": 5517,
-          "complete": 3834
+      "total": 32165,
+      "active": 19897,
+      "scored": 19442,
+      "explicitRating": 3101,
+      "fullText": 12902,
+      "excerpts": 2876,
+      "thumbOnly": 0,
+      "unscored": 455,
+      "byMarket": {
+        "broadway": {
+          "active": 18654,
+          "scored": 18398,
+          "fullText": 12468
         },
-        "2": {
-          "total": 8623,
-          "complete": 6692
+        "west-end": {
+          "active": 635,
+          "scored": 493,
+          "fullText": 82
         },
-        "3": {
-          "total": 5757,
-          "complete": 4249
+        "off-broadway": {
+          "active": 608,
+          "scored": 551,
+          "fullText": 352
         }
       }
     }
