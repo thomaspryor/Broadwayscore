@@ -110,7 +110,17 @@
     "broken-glass-west-end-2026/timeout--andrzej-lukowski.json",
     "broken-glass-west-end-2026/timeout-london--andrzej-lukowski.json",
     "buena-vista-social-club-2025/timeout--adam-feldman.json",
-    "bug-2026/theatre-reviews-limited--david-roberts.json"
+    "bug-2026/theatre-reviews-limited--david-roberts.json",
+    "bug-2026/timeout--adam-feldman.json",
+    "bug-2026/wsj--charles-isherwood.json",
+    "bughouse-off-broadway-2026/theatermania--linda-buchwald.json",
+    "burnout-paradise-off-broadway-2026/theatermania--zachary-stewart.json",
+    "burnout-paradise-off-broadway-2026/thewrap--unknown.json",
+    "burnout-paradise-off-broadway-2026/timeout--raven-snook.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/timeout-london--unknown.json",
+    "cats-the-jellicle-ball-2026/theatermania--zachary-stewart.json",
+    "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "chess-2025/timeout--adam-feldman.json"
   ],
   "failed": [
     "an-ark-off-broadway-2026/new-jersey-newsroom--micheal-sommers.json",
@@ -190,7 +200,15 @@
       "broken-glass-west-end-2026/timeout--andrzej-lukowski.json",
       "broken-glass-west-end-2026/timeout-london--andrzej-lukowski.json",
       "buena-vista-social-club-2025/timeout--adam-feldman.json",
-      "bug-2026/theatre-reviews-limited--david-roberts.json"
+      "bug-2026/theatre-reviews-limited--david-roberts.json",
+      "bug-2026/timeout--adam-feldman.json",
+      "bughouse-off-broadway-2026/theatermania--linda-buchwald.json",
+      "burnout-paradise-off-broadway-2026/theatermania--zachary-stewart.json",
+      "burnout-paradise-off-broadway-2026/timeout--raven-snook.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/timeout-london--unknown.json",
+      "cats-the-jellicle-ball-2026/theatermania--zachary-stewart.json",
+      "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "chess-2025/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -261,7 +279,8 @@
       "bigfoot-off-broadway-2026/timeout--unknown.json",
       "book-of-mormon-2011/ew--thom-geier.json",
       "book-of-mormon-2011/guardian--ben-brantley.json",
-      "broken-glass-west-end-2026/guardian--arifa-akbar.json"
+      "broken-glass-west-end-2026/guardian--arifa-akbar.json",
+      "burnout-paradise-off-broadway-2026/thewrap--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -305,11 +324,12 @@
       "wicked-2003/vulture--bilge-eberi.json",
       "aladdin-2014/ew--thom-geier.json",
       "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
-      "and-juliet-2022/thewrap--robert-hofler.json"
+      "and-juliet-2022/thewrap--robert-hofler.json",
+      "bug-2026/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-03-09T04:19:45.856Z",
-  "lastProcessed": "bug-2026/theatre-reviews-limited--david-roberts.json",
+  "lastProcessed": "chess-2025/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-03-09T04:38:31.076Z",
@@ -451,6 +471,17 @@
     },
     {
       "t": "2026-03-09T05:06:50.583Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-09T05:09:50.939Z",
+      "event": "bb-session",
+      "session": "42c16eb2",
+      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
+    },
+    {
+      "t": "2026-03-09T05:09:52.171Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
