@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-09T05:05:50.254Z",
-  "processed": 102,
-  "failed": 28,
-  "successRate": "78.5%",
+  "updatedAt": "2026-03-09T05:09:36.703Z",
+  "processed": 111,
+  "failed": 29,
+  "successRate": "79.3%",
   "tierBreakdown": {
-    "playwright": 39,
+    "playwright": 45,
     "amp": 20,
     "browserbase": 16,
     "directCookies": 1,
-    "scrapingbee": 23,
+    "scrapingbee": 26,
     "brightdata": 0,
     "archiveToday": 18,
     "archive": 21
   },
-  "browserbaseSessions": 12,
+  "browserbaseSessions": 13,
   "recentActivity": [
-    {
-      "t": "2026-03-09T04:41:52.821Z",
-      "event": "bb-session",
-      "session": "b2078044",
-      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
-    },
-    {
-      "t": "2026-03-09T04:41:54.190Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-09T04:43:36.454Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-09T05:02:03.134Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-09T05:06:49.347Z",
+      "event": "bb-session",
+      "session": "d41da39a",
+      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
+    },
+    {
+      "t": "2026-03-09T05:06:50.583Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
