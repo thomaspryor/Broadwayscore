@@ -483,7 +483,14 @@
     "mother-russia-off-broadway-2026/theater-life--samuel-l-leiter.json",
     "mother-russia-off-broadway-2026/theater-pizzazz--ron-fassler.json",
     "moulin-rouge-2019/njcom--christoher-kelly.json",
-    "moulin-rouge-2019/washpost--peter-marks.json"
+    "moulin-rouge-2019/washpost--peter-marks.json",
+    "moulin-rouge-the-musical-west-end-2021/artsdesk--marianka-swain.json",
+    "moulin-rouge-the-musical-west-end-2021/independent--ava-wong-davies.json",
+    "moulin-rouge-the-musical-west-end-2021/london-theatre--suzy-evans.json",
+    "moulin-rouge-the-musical-west-end-2021/standard--nick-curtis.json",
+    "moulin-rouge-the-musical-west-end-2021/whatsonstage--sarah-crompton.json",
+    "murder-she-didnt-write-west-end-2025/everything-theatre--steve-caplin.json",
+    "my-neighbour-totoro-west-end-2025/standard--nick-curtis.json"
   ],
   "failed": [
     "an-ark-off-broadway-2026/new-jersey-newsroom--micheal-sommers.json",
@@ -591,7 +598,10 @@
     "manic-street-creature-west-end-2026/broadwayworld--unknown.json",
     "masquerade-off-broadway-2025/one-minute-critic--one-minute-critic.json",
     "mj-2022/ap--mark-kennedy.json",
-    "mother-russia-off-broadway-2026/buy-tickets--unknown.json"
+    "mother-russia-off-broadway-2026/buy-tickets--unknown.json",
+    "moulin-rouge-the-musical-west-end-2021/thestage--tim-bano.json",
+    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
+    "moulin-rouge-the-musical-west-end-2021/usatoday--brandy-mcdonnell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -883,7 +893,13 @@
       "mother-russia-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
       "mother-russia-off-broadway-2026/theater-life--samuel-l-leiter.json",
       "mother-russia-off-broadway-2026/theater-pizzazz--ron-fassler.json",
-      "moulin-rouge-2019/washpost--peter-marks.json"
+      "moulin-rouge-2019/washpost--peter-marks.json",
+      "moulin-rouge-the-musical-west-end-2021/artsdesk--marianka-swain.json",
+      "moulin-rouge-the-musical-west-end-2021/london-theatre--suzy-evans.json",
+      "moulin-rouge-the-musical-west-end-2021/standard--nick-curtis.json",
+      "moulin-rouge-the-musical-west-end-2021/whatsonstage--sarah-crompton.json",
+      "murder-she-didnt-write-west-end-2025/everything-theatre--steve-caplin.json",
+      "my-neighbour-totoro-west-end-2025/standard--nick-curtis.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -1039,7 +1055,8 @@
       "manic-street-creature-west-end-2026/broadwayworld--unknown.json",
       "masquerade-off-broadway-2025/one-minute-critic--one-minute-critic.json",
       "matilda-the-musical-west-end-2021/telegraph--charles-spencer.json",
-      "moulin-rouge-2019/njcom--christoher-kelly.json"
+      "moulin-rouge-2019/njcom--christoher-kelly.json",
+      "moulin-rouge-the-musical-west-end-2021/independent--ava-wong-davies.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1085,7 +1102,9 @@
       "data/review-texts/im-sorry-prime-minister-west-end-2026/thestage--dave-fargnoli.json",
       "data/review-texts/into-the-woods-west-end-2025/thestage--sam-marlowe.json",
       "data/review-texts/it-walks-around-the-house-at-night-west-end-2026/broadwayworld--unknown.json",
-      "data/review-texts/magic-mike-live-west-end-2021/thestage--francesca-peschier.json"
+      "data/review-texts/magic-mike-live-west-end-2021/thestage--francesca-peschier.json",
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/thestage--tim-bano.json",
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/usatoday--brandy-mcdonnell.json"
     ],
     "archive": [
       "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
@@ -1174,7 +1193,7 @@
     ]
   },
   "startTime": "2026-03-09T04:19:45.856Z",
-  "lastProcessed": "moulin-rouge-2019/washpost--peter-marks.json",
+  "lastProcessed": "my-neighbour-totoro-west-end-2025/standard--nick-curtis.json",
   "log": [
     {
       "t": "2026-03-09T04:38:31.076Z",
@@ -1527,6 +1546,17 @@
       "t": "2026-03-09T12:05:12.907Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-09T12:15:28.796Z",
+      "event": "bb-session",
+      "session": "12fdea2a",
+      "url": "https://www.thestage.co.uk/long-reviews/moulin-rouge-the-musical-review-piccadil"
+    },
+    {
+      "t": "2026-03-09T12:15:30.235Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
