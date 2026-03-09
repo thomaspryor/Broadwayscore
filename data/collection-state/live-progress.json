@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-09T04:50:12.716Z",
-  "processed": 56,
-  "failed": 24,
-  "successRate": "70.0%",
+  "updatedAt": "2026-03-09T04:53:53.916Z",
+  "processed": 64,
+  "failed": 26,
+  "successRate": "71.1%",
   "tierBreakdown": {
-    "playwright": 22,
-    "amp": 12,
-    "browserbase": 12,
+    "playwright": 24,
+    "amp": 14,
+    "browserbase": 14,
     "directCookies": 0,
-    "scrapingbee": 10,
+    "scrapingbee": 12,
     "brightdata": 0,
-    "archiveToday": 17,
-    "archive": 12
+    "archiveToday": 18,
+    "archive": 14
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
       "t": "2026-03-09T04:38:31.076Z",
@@ -89,6 +89,28 @@
     },
     {
       "t": "2026-03-09T04:48:44.372Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-09T04:52:06.240Z",
+      "event": "bb-session",
+      "session": "75d7dc84",
+      "url": "https://www.newyorker.com/magazine/2026/02/02/ragtime-cases-the-landmark-it-almo"
+    },
+    {
+      "t": "2026-03-09T04:52:07.682Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-09T04:52:59.884Z",
+      "event": "bb-session",
+      "session": "6f1cb617",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/schmigadoon-musical-apple-tv-br"
+    },
+    {
+      "t": "2026-03-09T04:53:01.108Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
