@@ -445,7 +445,8 @@
     "hadestown-2019/amny--matt-windman.json",
     "hadestown-2019/chicagotribune--chris-jones.json",
     "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
-    "the-office-a-musical-parody-off-broadway-2018/theatrely--unknown.json"
+    "the-office-a-musical-parody-off-broadway-2018/theatrely--unknown.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/artsdesk--david-nice.json"
   ],
   "failed": [
     "paranormal-activity-west-end-2025/thestage--tim-wicker.json",
@@ -521,7 +522,16 @@
     "zack-off-broadway-2026/nydailynews--logan-culwell.json",
     "aladdin-2014/thestage--mark-shenton.json",
     "all-my-sons-west-end-2025/thestage--sam-marlowe.json",
-    "arcadia-west-end-2026/usatoday--mike-fischer.json"
+    "arcadia-west-end-2026/usatoday--mike-fischer.json",
+    "beaches-2026/around-the-town-chicago--unknown.json",
+    "beaches-2026/chicago-critic--tom-williams.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/backstage--david-sheward.json",
+    "broken-glass-west-end-2026/thestage--unknown.json",
+    "calf-scramble-off-broadway-2026/times-uk--chloe-rabinowitz.json",
+    "chess-2025/thestage--unknown.json",
+    "cold-war-choir-practice-off-broadway-2026/times-uk--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -989,7 +999,8 @@
       "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/broadwaynews--julie-musbach.json",
       "data/review-texts/aladdin-2014/thestage--mark-shenton.json",
       "data/review-texts/all-my-sons-west-end-2025/thestage--sam-marlowe.json",
-      "data/review-texts/arcadia-west-end-2026/usatoday--mike-fischer.json"
+      "data/review-texts/arcadia-west-end-2026/usatoday--mike-fischer.json",
+      "data/review-texts/broken-glass-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
@@ -1042,11 +1053,12 @@
       "friends-the-musical-parody-off-broadway-2022/stagebuddy--bill-crouch.json",
       "garry-starr-classic-penguins-garrick-west-end-2026/everything-theatre-uk--jess-gonzalez.json",
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
-      "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json"
+      "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/artsdesk--david-nice.json"
     ]
   },
   "startTime": "2026-03-09T14:46:28.645Z",
-  "lastProcessed": "arcadia-west-end-2026/usatoday--mike-fischer.json",
+  "lastProcessed": "cold-war-choir-practice-off-broadway-2026/times-uk--unknown.json",
   "log": [
     {
       "t": "2026-03-09T14:51:21.007Z",
@@ -1364,6 +1376,17 @@
     },
     {
       "t": "2026-03-09T20:01:47.021Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-09T20:04:19.555Z",
+      "event": "bb-session",
+      "session": "0e2da73e",
+      "url": "https://www.thestage.co.uk/reviews/broken-glass-review-young-vic-london-arthur-m"
+    },
+    {
+      "t": "2026-03-09T20:04:20.933Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
