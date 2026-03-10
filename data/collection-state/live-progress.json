@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-10T19:45:58.020Z",
-  "processed": 360,
+  "updatedAt": "2026-03-10T19:48:11.342Z",
+  "processed": 370,
   "failed": 110,
-  "successRate": "76.6%",
+  "successRate": "77.1%",
   "tierBreakdown": {
-    "playwright": 263,
+    "playwright": 268,
     "amp": 22,
-    "browserbase": 34,
+    "browserbase": 36,
     "directCookies": 3,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 76,
-    "archive": 66
+    "archive": 70
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-10T17:54:41.713Z",
-      "event": "bb-session",
-      "session": "329ccebf",
-      "url": "https://www.newyorker.com/goings-on-about-town/just-in-time#:~:text=In%20the%20l"
-    },
-    {
-      "t": "2026-03-10T17:54:43.156Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
     {
       "t": "2026-03-10T17:57:09.589Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-10T19:40:06.542Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-10T19:47:58.241Z",
+      "event": "bb-session",
+      "session": "6af9ca87",
+      "url": "https://www.amny.com/entertainment/little-shop-of-horrors-off-broadway-1-3640251"
+    },
+    {
+      "t": "2026-03-10T19:47:59.451Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     }
