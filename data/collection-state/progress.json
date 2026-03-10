@@ -756,7 +756,14 @@
     "data-2026/nytg--allison-considine.json",
     "doubt-a-parable/nytg--gillian-russo.json",
     "doubt-a-parable/nytimes--jesse-green.json",
-    "doubt-a-parable/vulture--sara-holdren.json"
+    "doubt-a-parable/vulture--sara-holdren.json",
+    "elf-2024/vulture--jackson-mchenry.json",
+    "god-of-carnage-2009/newyorker--john-lahr.json",
+    "hamlet-2026/nytimes--charles-isherwood.json",
+    "harry-potter-and-the-cursed-child-parts-one-and-two/hollywood-reporter--david-rooney.json",
+    "harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json",
+    "harry-potter-and-the-cursed-child-parts-one-and-two/variety--marilyn-stasio.json",
+    "heathers-the-musical-2025/nytimes--ben-brantley.json"
   ],
   "failed": [
     "paranormal-activity-west-end-2025/thestage--tim-wicker.json",
@@ -941,7 +948,10 @@
     "bells-are-ringing-2001/nytimes--ben-brantley.json",
     "bob-fosses-dancin-2023/variety--charles-isherwood.json",
     "camelot-2023/newyorker--helen-shaw.json",
-    "dead-outlaw-2025/nytg--gillian-russo.json"
+    "dead-outlaw-2025/nytg--gillian-russo.json",
+    "heisenberg-2016/act-three-the-reviews--doug-marino.json",
+    "in-the-heights-2008/newyorker--hilton-als.json",
+    "irving-berlins-white-christmas-2009/variety--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1485,7 +1495,9 @@
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
       "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
       "data/review-texts/the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
-      "the-unknown-off-broadway-2026/thewrap--robert-hofler.json"
+      "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
+      "data/review-texts/harry-potter-and-the-cursed-child-parts-one-and-two/variety--marilyn-stasio.json",
+      "harry-potter-and-the-cursed-child-parts-one-and-two/variety--marilyn-stasio.json"
     ],
     "browserbase": [
       "data/review-texts/romeo-and-juliet-west-end-2026/hollywood-reporter--unknown.json",
@@ -1521,7 +1533,9 @@
       "data/review-texts/beetlejuice-west-end-2026/hollywood-reporter--david-rooney.json",
       "beetlejuice-west-end-2026/hollywood-reporter--david-rooney.json",
       "data/review-texts/betrayal-2000/hollywood-reporter--david-rooney.json",
-      "betrayal-2000/hollywood-reporter--david-rooney.json"
+      "betrayal-2000/hollywood-reporter--david-rooney.json",
+      "data/review-texts/harry-potter-and-the-cursed-child-parts-one-and-two/hollywood-reporter--david-rooney.json",
+      "harry-potter-and-the-cursed-child-parts-one-and-two/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json",
@@ -1697,7 +1711,10 @@
       "data/review-texts/witness-for-the-prosecution-west-end-2022/thestage--david-benedict.json",
       "data/review-texts/zack-off-broadway-2026/vanityfair--marnie-hanel.json",
       "data/review-texts/bells-are-ringing-2001/nytimes--ben-brantley.json",
-      "data/review-texts/camelot-2023/newyorker--helen-shaw.json"
+      "data/review-texts/camelot-2023/newyorker--helen-shaw.json",
+      "data/review-texts/heisenberg-2016/act-three-the-reviews--doug-marino.json",
+      "data/review-texts/in-the-heights-2008/newyorker--hilton-als.json",
+      "data/review-texts/irving-berlins-white-christmas-2009/variety--david-rooney.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
@@ -1823,11 +1840,16 @@
       "american-buffalo-2008/vulture--helen-shaw.json",
       "animal-wisdom-2022/nytimes--ben-brantley.json",
       "doubt-a-parable/nytimes--jesse-green.json",
-      "doubt-a-parable/vulture--sara-holdren.json"
+      "doubt-a-parable/vulture--sara-holdren.json",
+      "elf-2024/vulture--jackson-mchenry.json",
+      "god-of-carnage-2009/newyorker--john-lahr.json",
+      "hamlet-2026/nytimes--charles-isherwood.json",
+      "harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json",
+      "heathers-the-musical-2025/nytimes--ben-brantley.json"
     ]
   },
   "startTime": "2026-03-09T14:46:28.645Z",
-  "lastProcessed": "doubt-a-parable/vulture--sara-holdren.json",
+  "lastProcessed": "irving-berlins-white-christmas-2009/variety--david-rooney.json",
   "log": [
     {
       "t": "2026-03-09T14:51:21.007Z",
@@ -2323,6 +2345,39 @@
       "t": "2026-03-10T06:19:38.671Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-10T06:20:56.582Z",
+      "event": "bb-session",
+      "session": "929d9802",
+      "url": "https://www.hollywoodreporter.com/review/harry-potter-cursed-child-theater-revie"
+    },
+    {
+      "t": "2026-03-10T06:20:57.541Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-10T06:24:35.315Z",
+      "event": "bb-session",
+      "session": "03c0c49d",
+      "url": "https://www.newyorker.com/magazine/2008/03/31/crossing-over"
+    },
+    {
+      "t": "2026-03-10T06:24:36.250Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-10T06:24:58.202Z",
+      "event": "bb-session",
+      "session": "9651e72c",
+      "url": "https://variety.com/2013/film/features/twickenham-1200471981/attachment/family-t"
+    },
+    {
+      "t": "2026-03-10T06:24:59.198Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
