@@ -1,49 +1,37 @@
 {
-  "updatedAt": "2026-03-10T09:48:40.305Z",
-  "processed": 107,
-  "failed": 43,
-  "successRate": "71.3%",
+  "updatedAt": "2026-03-10T09:56:35.348Z",
+  "processed": 5,
+  "failed": 5,
+  "successRate": "50.0%",
   "tierBreakdown": {
-    "playwright": 87,
-    "amp": 14,
+    "playwright": 0,
+    "amp": 10,
     "browserbase": 0,
-    "directCookies": 1,
+    "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 35,
-    "archive": 12
+    "archiveToday": 3,
+    "archive": 0
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-03-10T09:07:23.090Z",
+      "t": "2026-03-10T09:54:28.456Z",
       "event": "bb-session",
-      "session": "d41b2a17",
+      "session": "0749cf37",
       "url": "https://www.nytimes.com/2026/03/06/theater/jordan-fein-broken-glass.html"
     },
     {
-      "t": "2026-03-10T09:07:55.284Z",
+      "t": "2026-03-10T09:54:50.925Z",
       "event": "bb-session",
-      "session": "3df710a4",
+      "session": "8f5497f1",
       "url": "https://www.nytimes.com/2026/02/18/theater/dracula-cynthia-erivo.html"
     },
     {
-      "t": "2026-03-10T09:09:22.249Z",
+      "t": "2026-03-10T09:55:58.547Z",
       "event": "bb-session",
-      "session": "1ca78f3a",
-      "url": "https://www.nytimes.com/2025/11/12/theater/hunger-games-live-london.html"
-    },
-    {
-      "t": "2026-03-10T09:32:00.924Z",
-      "event": "bb-session",
-      "session": "51c47184",
-      "url": "https://www.thestage.co.uk/reviews/burlesque-review-savoy-theatre-london-christi"
-    },
-    {
-      "t": "2026-03-10T09:32:44.156Z",
-      "event": "bb-login-fail",
-      "domain": "thestage.co.uk",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    36 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
+      "session": "e9a948c9",
+      "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
     }
   ]
 }
