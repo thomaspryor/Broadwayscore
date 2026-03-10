@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-10T19:39:59.424Z",
-  "processed": 342,
-  "failed": 108,
-  "successRate": "76.0%",
+  "updatedAt": "2026-03-10T19:42:05.762Z",
+  "processed": 351,
+  "failed": 109,
+  "successRate": "76.3%",
   "tierBreakdown": {
-    "playwright": 253,
+    "playwright": 258,
     "amp": 22,
-    "browserbase": 32,
-    "directCookies": 4,
+    "browserbase": 34,
+    "directCookies": 2,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 75,
-    "archive": 60
+    "archive": 63
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-03-10T17:51:44.792Z",
-      "event": "bb-session",
-      "session": "9c4a8c71",
-      "url": "https://www.nytimes.com/2026/01/26/theater/data-review.html"
-    },
-    {
-      "t": "2026-03-10T17:51:46.244Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-10T17:54:41.713Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-10T18:05:27.963Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-10T19:40:05.462Z",
+      "event": "bb-session",
+      "session": "62122055",
+      "url": "https://www.amny.com/entertainment/hadestown-review-1-29924932/"
+    },
+    {
+      "t": "2026-03-10T19:40:06.542Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
