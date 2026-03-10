@@ -130,7 +130,15 @@
     "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
     "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json",
     "little-shop-of-horrors-off-broadway-2019/nytimes--ben-brantley.json",
-    "mj-2022/hollywood-reporter--lovia-gyarkye.json"
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "mj-2022/vulture--helen-shaw.json",
+    "moulin-rouge-2019/nytimes--ben-brantley.json",
+    "night-side-songs-off-broadway-2026/nytg--kyle-turner.json",
+    "night-side-songs-off-broadway-2026/vulture--jonathan-mandell.json",
+    "oh-mary-2024/hollywood-reporter--david-rooney.json",
+    "oh-mary-2024/nytimes--erik-piepenburg.json",
+    "pied-a-terre-off-broadway-2026/nytg--unknown.json",
+    "ragtime-2025/newyorker--unknown.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -181,7 +189,9 @@
     "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
     "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
     "maybe-happy-ending-2024/newyorker--naomi-fry.json",
-    "maybe-happy-ending-2024/vulture--sara-holdren.json"
+    "maybe-happy-ending-2024/vulture--sara-holdren.json",
+    "night-side-songs-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "oh-mary-2024/vulture--helen-shaw.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -286,7 +296,10 @@
       "drunk-romeo-and-juliet-off-broadway-2025/nytg--unknown.json",
       "hamilton-2015/nyt-theater--jonathan-mandell.json",
       "just-in-time-2025/nytimes--adam-feldman.json",
-      "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json"
+      "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json",
+      "night-side-songs-off-broadway-2026/nytg--kyle-turner.json",
+      "night-side-songs-off-broadway-2026/vulture--jonathan-mandell.json",
+      "pied-a-terre-off-broadway-2026/nytg--unknown.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -322,7 +335,9 @@
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
       "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
       "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
-      "mj-2022/hollywood-reporter--lovia-gyarkye.json"
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "data/review-texts/oh-mary-2024/hollywood-reporter--david-rooney.json",
+      "oh-mary-2024/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [
       "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json"
@@ -365,7 +380,10 @@
       "data/review-texts/data-off-broadway-2026/nytimes--ben-brantley.json",
       "data/review-texts/just-in-time-2025/newyorker--unknown.json",
       "data/review-texts/marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
-      "data/review-texts/masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json"
+      "data/review-texts/masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
+      "data/review-texts/maybe-happy-ending-2024/vulture--sara-holdren.json",
+      "data/review-texts/maybe-happy-ending-2024/newyorker--naomi-fry.json",
+      "data/review-texts/night-side-songs-off-broadway-2026/nytimes--laura-collins-hughes.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/timeout--andrzej-lukowski.json",
@@ -380,11 +398,15 @@
       "matilda-the-musical-west-end-2021/thestage--mark-shenton.json",
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
       "death-becomes-her-2024/newyorker--helen-shaw.json",
-      "little-shop-of-horrors-off-broadway-2019/nytimes--ben-brantley.json"
+      "little-shop-of-horrors-off-broadway-2019/nytimes--ben-brantley.json",
+      "mj-2022/vulture--helen-shaw.json",
+      "moulin-rouge-2019/nytimes--ben-brantley.json",
+      "oh-mary-2024/nytimes--erik-piepenburg.json",
+      "ragtime-2025/newyorker--unknown.json"
     ]
   },
   "startTime": "2026-03-10T09:53:53.378Z",
-  "lastProcessed": "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+  "lastProcessed": "ragtime-2025/newyorker--unknown.json",
   "log": [
     {
       "t": "2026-03-10T09:54:28.456Z",
@@ -531,6 +553,50 @@
       "t": "2026-03-10T13:14:32.380Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-10T13:14:48.316Z",
+      "event": "bb-session",
+      "session": "e5d58ac7",
+      "url": "https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24"
+    },
+    {
+      "t": "2026-03-10T13:14:49.752Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-10T13:15:24.904Z",
+      "event": "bb-session",
+      "session": "8d721c6e",
+      "url": "https://www.nytimes.com/2026/03/03/theater/night-side-songs-review.html"
+    },
+    {
+      "t": "2026-03-10T13:15:26.112Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-10T13:16:36.419Z",
+      "event": "bb-session",
+      "session": "e2bcbf7d",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
+    },
+    {
+      "t": "2026-03-10T13:16:38.007Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-10T13:20:58.620Z",
+      "event": "bb-session",
+      "session": "21bec1af",
+      "url": "https://www.newyorker.com/magazine/2026/02/02/ragtime-cases-the-landmark-it-almo"
+    },
+    {
+      "t": "2026-03-10T13:21:00.009Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
