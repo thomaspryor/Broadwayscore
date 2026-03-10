@@ -1,17 +1,16 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-03T05:49:53.435Z",
-    "totalScanned": 26579,
-    "flagged": 21,
+    "generatedAt": "2026-03-10T05:45:51.907Z",
+    "totalScanned": 27058,
+    "flagged": 19,
     "byType": {
-      "garbage_scrape": 4,
-      "awards_coverage": 3,
-      "preview_article": 2,
+      "garbage_scrape": 3,
+      "awards_coverage": 5,
+      "preview_article": 3,
       "obituary": 1,
-      "news_article": 6,
-      "cast_announcement": 1,
+      "news_article": 5,
       "press_release": 1,
-      "interview": 3
+      "interview": 1
     }
   },
   "flagged": [
@@ -21,7 +20,7 @@
       "type": "garbage_scrape",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Please upgrade your browser | LLM: NOT_REVIEW. The text primarily describes the background of George Takei and the premise of the music",
+      "evidence": "Please upgrade your browser | LLM: NOT_REVIEW. The text primarily provides background information about George Takei's personal experie",
       "outlet": "womens-voices-for-change",
       "critic": "Alexandra MacAaron",
       "score": 77
@@ -32,7 +31,7 @@
       "type": "awards_coverage",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Tony winners | LLM: NOT_REVIEW. The text poses questions and expresses opinions about the creative choices behind the mu",
+      "evidence": "Tony winners | LLM: NOT_REVIEW. The text poses questions about the creative choices and the suitability of the project f",
       "outlet": "The Faster Times",
       "critic": "Jonathan Mandell",
       "score": 62
@@ -54,7 +53,7 @@
       "type": "awards_coverage",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Tony nominations | LLM: NOT_REVIEW. This text is an interview with the playwright and an actor from the play, not a critical",
+      "evidence": "Tony nominations | LLM: NOT_REVIEW. This text is an interview with the playwright and an actor from the play, not an evaluat",
       "outlet": "TheaterMania",
       "critic": "Andy Propst",
       "score": 82
@@ -65,21 +64,10 @@
       "type": "garbage_scrape",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "BROWSER UPDATE | LLM: NOT_REVIEW. The text provides a brief description of the play and its author, but it doesn't offer a",
+      "evidence": "BROWSER UPDATE | LLM: NOT_REVIEW. While the text mentions \"Eclipsed\" and its author, it primarily focuses on Danai Gurira'",
       "outlet": "The Wall Street Journal",
       "critic": "Terry Teachout",
       "score": 93
-    },
-    {
-      "showId": "fun-home-2015",
-      "file": "ew--leah-greenblatt.json",
-      "type": "preview_article",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "First look at",
-      "outlet": "Entertainment Weekly",
-      "critic": "Leah Greenblatt",
-      "score": 83
     },
     {
       "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
@@ -104,17 +92,6 @@
       "score": 76
     },
     {
-      "showId": "indecent-2017",
-      "file": "theatermania--charles-isherwood.json",
-      "type": "news_article",
-      "confidence": "high",
-      "method": "heuristic+llm",
-      "evidence": "closing notice | LLM: NOT_REVIEW. This text primarily reports on the extension of the show's run due to audience response,",
-      "outlet": "TheaterMania",
-      "critic": "Charles Isherwood",
-      "score": 82
-    },
-    {
       "showId": "la-bete-2010",
       "file": "nytimes--ben-brantley.json",
       "type": "news_article",
@@ -137,6 +114,17 @@
       "score": 75
     },
     {
+      "showId": "meteor-shower-2017",
+      "file": "theatermania--jesse-green.json",
+      "type": "awards_coverage",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "Award winners | LLM: NOT_REVIEW: This text is a news piece or announcement about the play \"Meteor Shower,\" providing cast",
+      "outlet": "TheaterMania",
+      "critic": "Jesse Green",
+      "score": 43
+    },
+    {
       "showId": "motown-the-musical-2016",
       "file": "nbcny--robert-kahn.json",
       "type": "news_article",
@@ -148,26 +136,37 @@
       "score": 77
     },
     {
-      "showId": "network-2018",
-      "file": "guardian--jesse-green.json",
-      "type": "cast_announcement",
-      "confidence": "high",
-      "method": "heuristic+llm",
-      "evidence": "will star in | LLM: NOT_REVIEW: This text is a news announcement about an upcoming production, not a review of a perform",
-      "outlet": "The Guardian",
-      "critic": "Jesse Green",
-      "score": 80
-    },
-    {
       "showId": "new-york-new-york-2023",
       "file": "amny--matt-windman.json",
       "type": "news_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "final performance | LLM: NOT_REVIEW. While it mentions \"New York, New York,\" it primarily discusses \"Chicago\" and the works o",
+      "evidence": "final performance | LLM: NOT_REVIEW. While it mentions \"New York, New York,\" the text primarily discusses \"Chicago\" and Kande",
       "outlet": "amNY",
       "critic": "Matt Windman",
       "score": 60
+    },
+    {
+      "showId": "on-your-feet-2015",
+      "file": "perez-hilton--perez-hilton.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "Sneak Peek | LLM: NOT_REVIEW. The text consists of celebrity news headlines and gossip, not a critical evaluation of a",
+      "outlet": "Perez Hilton",
+      "critic": "Perez Hilton",
+      "score": 85
+    },
+    {
+      "showId": "pippin-2013",
+      "file": "theatermania--charles-isherwood.json",
+      "type": "awards_coverage",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "Award winners | LLM: NOT_REVIEW: This text is a list of Outer Critics Circle Award winners and presenters, not an evaluat",
+      "outlet": "TheaterMania",
+      "critic": "Charles Isherwood",
+      "score": 84
     },
     {
       "showId": "skeleton-crew-2022",
@@ -186,21 +185,10 @@
       "type": "news_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "close on | LLM: NOT_REVIEW. The text focuses on the play's context and parallels with the theater industry's struggl",
+      "evidence": "close on | LLM: NOT_REVIEW. The text focuses on the play's context and the playwright's comments, rather than evalua",
       "outlet": "The Hollywood Reporter",
       "critic": "Anita Gates",
       "score": 76
-    },
-    {
-      "showId": "sunset-boulevard-2017",
-      "file": "wsj--terry-teachout.json",
-      "type": "garbage_scrape",
-      "confidence": "high",
-      "method": "heuristic+llm",
-      "evidence": "BROWSER UPDATE | LLM: NOT_REVIEW. The provided text is a collection of article titles and snippets from The Wall Street Jo",
-      "outlet": "The Wall Street Journal",
-      "critic": "Terry Teachout",
-      "score": 75
     },
     {
       "showId": "sweat-2017",
@@ -208,21 +196,21 @@
       "type": "press_release",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "announce the | LLM: NOT_REVIEW. The text focuses more on the play's relevance and timing in relation to the political cl",
+      "evidence": "announce the | LLM: NOT_REVIEW. The text focuses more on the play's relevance and timing in relation to current events a",
       "outlet": "edge-new-york",
       "critic": "Steve Weinstein",
       "score": 63
     },
     {
-      "showId": "sweat-2017",
-      "file": "theater-life--barry-gordin.json",
-      "type": "interview",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "in an interview",
-      "outlet": "Theater Life",
-      "critic": "Barry Gordin",
-      "score": 84
+      "showId": "the-crucible-2016",
+      "file": "out-magazine--michael-musto.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "Sneak Peek | LLM: NOT_REVIEW. The text mentions \"The Crucible\" in passing as a witch drama Trump could love, but it's ",
+      "outlet": "Out Magazine",
+      "critic": "Michael Musto",
+      "score": 64
     },
     {
       "showId": "the-mountaintop-2011",
@@ -230,21 +218,10 @@
       "type": "interview",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "in an interview | LLM: NOT_REVIEW. The text discusses public perception of Martin Luther King Jr. and doesn't evaluate a sp",
+      "evidence": "in an interview | LLM: NOT_REVIEW. The text discusses public perception of Martin Luther King Jr. and doesn't evaluate a th",
       "outlet": "Wall Street Journal",
       "critic": "Terry Teachout",
       "score": 47
-    },
-    {
-      "showId": "waiting-for-godot-2013",
-      "file": "guardian--jesse-green.json",
-      "type": "interview",
-      "confidence": "high",
-      "method": "heuristic+llm",
-      "evidence": "in an interview | LLM: NOT_REVIEW. While it mentions reviews and quotes from them, the primary focus is on Ian McKellen's p",
-      "outlet": "The Guardian",
-      "critic": "Jesse Green",
-      "score": 63
     }
   ]
 }
