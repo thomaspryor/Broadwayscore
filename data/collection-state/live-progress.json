@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-10T13:21:25.124Z",
-  "processed": 139,
-  "failed": 51,
-  "successRate": "73.2%",
+  "updatedAt": "2026-03-10T13:24:41.148Z",
+  "processed": 146,
+  "failed": 54,
+  "successRate": "73.0%",
   "tierBreakdown": {
-    "playwright": 104,
+    "playwright": 107,
     "amp": 18,
     "browserbase": 16,
-    "directCookies": 1,
+    "directCookies": 2,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 39,
-    "archive": 17
+    "archiveToday": 41,
+    "archive": 20
   },
-  "browserbaseSessions": 14,
+  "browserbaseSessions": 16,
   "recentActivity": [
-    {
-      "t": "2026-03-10T12:57:25.406Z",
-      "event": "bb-session",
-      "session": "040e4068",
-      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
-    },
-    {
-      "t": "2026-03-10T12:57:26.634Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-10T12:57:43.807Z",
-      "event": "bb-session",
-      "session": "7422cc9b",
-      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
-    },
-    {
-      "t": "2026-03-10T12:57:45.085Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-10T12:58:07.247Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-10T13:21:00.009Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-10T13:21:41.748Z",
+      "event": "bb-session",
+      "session": "b14842fb",
+      "url": "https://www.nytimes.com/2026/03/03/arts/dance/romeo-and-juliet-suite-armory-revi"
+    },
+    {
+      "t": "2026-03-10T13:21:42.993Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-10T13:22:52.141Z",
+      "event": "bb-session",
+      "session": "6ab8714f",
+      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
+    },
+    {
+      "t": "2026-03-10T13:22:53.423Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
