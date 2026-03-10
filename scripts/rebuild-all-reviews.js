@@ -1574,6 +1574,12 @@ showDirs.forEach(showId => {
       // But only if the referenced file exists and is NOT also flagged as a duplicate
       // AND the reference wouldn't be excluded by other guards (prevents both files being dropped)
       if (data.duplicateOf) {
+        // Sentinel values like "known-outlet-copy-exists" indicate a confirmed duplicate
+        // even without a specific reference file — always skip these
+        if (!data.duplicateOf.endsWith('.json')) {
+          stats.skippedDuplicateOf = (stats.skippedDuplicateOf || 0) + 1;
+          return;
+        }
         const refPath = path.join(showDir, data.duplicateOf);
         let refAlsoDupe = false;
         let refExcluded = false;
