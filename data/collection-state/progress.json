@@ -750,7 +750,13 @@
     "a-life-in-the-theatre-2010/newyorker--john-lahr.json",
     "american-buffalo-2008/vulture--helen-shaw.json",
     "an-ark-2026/nytg--kyle-turner.json",
-    "animal-wisdom-2022/nytimes--ben-brantley.json"
+    "animal-wisdom-2022/nytimes--ben-brantley.json",
+    "beetlejuice-west-end-2026/hollywood-reporter--david-rooney.json",
+    "betrayal-2000/hollywood-reporter--david-rooney.json",
+    "data-2026/nytg--allison-considine.json",
+    "doubt-a-parable/nytg--gillian-russo.json",
+    "doubt-a-parable/nytimes--jesse-green.json",
+    "doubt-a-parable/vulture--sara-holdren.json"
   ],
   "failed": [
     "paranormal-activity-west-end-2025/thestage--tim-wicker.json",
@@ -931,7 +937,11 @@
     "wicked-west-end-2021/independent--paul-taylor.json",
     "witness-for-the-prosecution-west-end-2022/thestage--david-benedict.json",
     "witness-for-the-prosecution-west-end-2022/times-uk--clive-davis.json",
-    "zack-off-broadway-2026/vanityfair--marnie-hanel.json"
+    "zack-off-broadway-2026/vanityfair--marnie-hanel.json",
+    "bells-are-ringing-2001/nytimes--ben-brantley.json",
+    "bob-fosses-dancin-2023/variety--charles-isherwood.json",
+    "camelot-2023/newyorker--helen-shaw.json",
+    "dead-outlaw-2025/nytg--gillian-russo.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1445,7 +1455,9 @@
       "wicked-west-end-2021/whatsonstage--editorial-staff.json",
       "witness-for-the-prosecution-west-end-2022/whatsonstage--theo-bosanquet.json",
       "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
-      "an-ark-2026/nytg--kyle-turner.json"
+      "an-ark-2026/nytg--kyle-turner.json",
+      "data-2026/nytg--allison-considine.json",
+      "doubt-a-parable/nytg--gillian-russo.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -1505,7 +1517,11 @@
       "data/review-texts/hadestown-2019/amny--matt-windman.json",
       "hadestown-2019/amny--matt-windman.json",
       "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
-      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json"
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
+      "data/review-texts/beetlejuice-west-end-2026/hollywood-reporter--david-rooney.json",
+      "beetlejuice-west-end-2026/hollywood-reporter--david-rooney.json",
+      "data/review-texts/betrayal-2000/hollywood-reporter--david-rooney.json",
+      "betrayal-2000/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json",
@@ -1679,7 +1695,9 @@
       "data/review-texts/the-tempest-globe-west-end-2026/thestage--unknown.json",
       "data/review-texts/the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--paul-vale.json",
       "data/review-texts/witness-for-the-prosecution-west-end-2022/thestage--david-benedict.json",
-      "data/review-texts/zack-off-broadway-2026/vanityfair--marnie-hanel.json"
+      "data/review-texts/zack-off-broadway-2026/vanityfair--marnie-hanel.json",
+      "data/review-texts/bells-are-ringing-2001/nytimes--ben-brantley.json",
+      "data/review-texts/camelot-2023/newyorker--helen-shaw.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
@@ -1803,11 +1821,13 @@
       "witness-for-the-prosecution-west-end-2022/lost-in-theatreland--amy-rye.json",
       "a-life-in-the-theatre-2010/newyorker--john-lahr.json",
       "american-buffalo-2008/vulture--helen-shaw.json",
-      "animal-wisdom-2022/nytimes--ben-brantley.json"
+      "animal-wisdom-2022/nytimes--ben-brantley.json",
+      "doubt-a-parable/nytimes--jesse-green.json",
+      "doubt-a-parable/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-03-09T14:46:28.645Z",
-  "lastProcessed": "animal-wisdom-2022/nytimes--ben-brantley.json",
+  "lastProcessed": "doubt-a-parable/vulture--sara-holdren.json",
   "log": [
     {
       "t": "2026-03-09T14:51:21.007Z",
@@ -2259,6 +2279,50 @@
       "t": "2026-03-10T06:16:07.177Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-10T06:17:31.114Z",
+      "event": "bb-session",
+      "session": "541564c8",
+      "url": "https://www.hollywoodreporter.com/review/beetlejuice-theater-review-1204616"
+    },
+    {
+      "t": "2026-03-10T06:17:32.075Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-10T06:17:56.192Z",
+      "event": "bb-session",
+      "session": "e52762a3",
+      "url": "https://www.hollywoodreporter.com/review/tom-hiddleston-betrayal-theater-review-"
+    },
+    {
+      "t": "2026-03-10T06:17:57.219Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-10T06:18:17.871Z",
+      "event": "bb-session",
+      "session": "6896fa52",
+      "url": "https://variety.com/2023/legit/reviews/bob-fosses-dancin-review-broadway-1235555"
+    },
+    {
+      "t": "2026-03-10T06:18:18.893Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-10T06:19:37.446Z",
+      "event": "bb-session",
+      "session": "7564094a",
+      "url": "https://www.newyorker.com/culture/the-theatre/review-camelot-aaron-sorkin-bartle"
+    },
+    {
+      "t": "2026-03-10T06:19:38.671Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
