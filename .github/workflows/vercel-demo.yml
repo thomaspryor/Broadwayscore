@@ -78,14 +78,10 @@ jobs:
             console.log(src);
           "
 
-      - name: Cache Next.js build (demo-specific — keyed on flags + deps to bust on flag changes)
-        uses: actions/cache@v4
-        with:
-          path: .next/cache
-          key: nextjs-demo-v2-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ hashFiles('src/config/feature-flags.ts') }}
-          restore-keys: |
-            nextjs-demo-v2-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ hashFiles('src/config/feature-flags.ts') }}
-            nextjs-demo-v2-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
+      # NO build cache for demo — source rewrite + cache = stale pages forever.
+      # Demo builds every 8h; the ~3min penalty is worth guaranteed correctness.
+      - name: Clear any leftover build cache
+        run: rm -rf .next/cache
 
       - name: Build (all features enabled)
         env:
