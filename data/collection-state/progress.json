@@ -767,7 +767,8 @@
     "aladdin-2014/wsj--terry-teachout.json",
     "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
     "just-in-time-2025/theater-scene--joel-benjamin.json",
-    "manic-street-creature-west-end-2026/broadwayworld--unknown.json"
+    "manic-street-creature-west-end-2026/broadwayworld--unknown.json",
+    "stranger-things-2024/broadwayworld--alexander-cohen.json"
   ],
   "failed": [
     "paranormal-activity-west-end-2025/thestage--tim-wicker.json",
@@ -991,7 +992,16 @@
     "shadowlands-west-end-2026/thestage--holly-o-mahony.json",
     "shadowlands-west-end-2026/thestage--mahony.json",
     "shadowlands-west-end-2026/times-uk--clive-davis.json",
-    "six-2021/pages-on-stages--mason-pilevsky.json"
+    "six-2021/pages-on-stages--mason-pilevsky.json",
+    "six-the-musical-west-end-2021/standard--fiona-mountford.json",
+    "six-the-musical-west-end-2021/theatre-bee-uk--theatre-bee-uk.json",
+    "starlight-express-west-end-2024/thestage--paul-vale.json",
+    "stranger-things-2024/thestage--dave-fargnoli.json",
+    "stranger-things-2024/times-uk--clive-davis.json",
+    "the-book-of-mormon-west-end-2024/independent--peter-marks.json",
+    "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
+    "the-hunger-games-on-stage-west-end-2025/independent--unknown.json",
+    "the-hunger-games-on-stage-west-end-2025/thestage--holly-omahony.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1762,7 +1772,11 @@
       "data/review-texts/paranormal-activity-west-end-2025/thestage--tim-wicker.json",
       "data/review-texts/paranormal-activity-west-end-2025/thestage--tom-wicker.json",
       "data/review-texts/shadowlands-west-end-2026/thestage--holly-o-mahony.json",
-      "data/review-texts/shadowlands-west-end-2026/thestage--mahony.json"
+      "data/review-texts/shadowlands-west-end-2026/thestage--mahony.json",
+      "data/review-texts/stranger-things-2024/thestage--dave-fargnoli.json",
+      "data/review-texts/the-book-of-mormon-west-end-2024/independent--peter-marks.json",
+      "data/review-texts/the-hunger-games-on-stage-west-end-2025/independent--unknown.json",
+      "data/review-texts/the-hunger-games-on-stage-west-end-2025/thestage--holly-omahony.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
@@ -1896,11 +1910,12 @@
       "heathers-the-musical-2025/nytimes--ben-brantley.json",
       "aladdin-2014/wsj--terry-teachout.json",
       "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
-      "manic-street-creature-west-end-2026/broadwayworld--unknown.json"
+      "manic-street-creature-west-end-2026/broadwayworld--unknown.json",
+      "stranger-things-2024/broadwayworld--alexander-cohen.json"
     ]
   },
   "startTime": "2026-03-09T14:46:28.645Z",
-  "lastProcessed": "six-2021/pages-on-stages--mason-pilevsky.json",
+  "lastProcessed": "the-hunger-games-on-stage-west-end-2025/thestage--holly-omahony.json",
   "log": [
     {
       "t": "2026-03-09T14:51:21.007Z",
@@ -2515,6 +2530,28 @@
     },
     {
       "t": "2026-03-10T06:41:21.077Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-10T06:43:07.910Z",
+      "event": "bb-session",
+      "session": "4b5a1a39",
+      "url": "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-"
+    },
+    {
+      "t": "2026-03-10T06:43:09.308Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-10T06:46:16.074Z",
+      "event": "bb-session",
+      "session": "c2da247a",
+      "url": "https://www.thestage.co.uk/reviews/the-hunger-games-on-stage-review-troubadour-c"
+    },
+    {
+      "t": "2026-03-10T06:46:17.522Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
