@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-03-10T13:46:50.723Z",
-  "processed": 224,
-  "failed": 66,
-  "successRate": "77.2%",
+  "updatedAt": "2026-03-10T17:55:15.328Z",
+  "processed": 227,
+  "failed": 73,
+  "successRate": "75.7%",
   "tierBreakdown": {
     "playwright": 159,
     "amp": 22,
@@ -10,33 +10,11 @@
     "directCookies": 2,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 50,
-    "archive": 37
+    "archiveToday": 53,
+    "archive": 40
   },
-  "browserbaseSessions": 30,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-10T13:39:09.180Z",
-      "event": "bb-session",
-      "session": "58099a4b",
-      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
-    },
-    {
-      "t": "2026-03-10T13:39:10.521Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-10T13:40:44.272Z",
-      "event": "bb-session",
-      "session": "0c8640a8",
-      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
-    },
-    {
-      "t": "2026-03-10T13:40:45.399Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-10T13:41:06.858Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-10T13:46:16.933Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-10T17:51:44.792Z",
+      "event": "bb-session",
+      "session": "9c4a8c71",
+      "url": "https://www.nytimes.com/2026/01/26/theater/data-review.html"
+    },
+    {
+      "t": "2026-03-10T17:51:46.244Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-10T17:54:41.713Z",
+      "event": "bb-session",
+      "session": "329ccebf",
+      "url": "https://www.newyorker.com/goings-on-about-town/just-in-time#:~:text=In%20the%20l"
+    },
+    {
+      "t": "2026-03-10T17:54:43.156Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
