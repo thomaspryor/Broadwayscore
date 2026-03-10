@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-03-10T13:44:52.969Z",
-  "processed": 214,
+  "updatedAt": "2026-03-10T13:46:48.657Z",
+  "processed": 224,
   "failed": 66,
-  "successRate": "76.4%",
+  "successRate": "77.2%",
   "tierBreakdown": {
-    "playwright": 154,
+    "playwright": 159,
     "amp": 22,
-    "browserbase": 24,
+    "browserbase": 30,
     "directCookies": 2,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 50,
-    "archive": 35
+    "archive": 37
   },
-  "browserbaseSessions": 27,
+  "browserbaseSessions": 30,
   "recentActivity": [
-    {
-      "t": "2026-03-10T13:26:22.133Z",
-      "event": "bb-session",
-      "session": "db3027c6",
-      "url": "https://www.nytimes.com/2026/03/05/theater/what-we-did-before-our-moth-days-revi"
-    },
-    {
-      "t": "2026-03-10T13:26:23.314Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-10T13:28:47.149Z",
-      "event": "bb-session",
-      "session": "6b2b1dd3",
-      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
-    },
-    {
-      "t": "2026-03-10T13:28:48.381Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-10T13:29:18.534Z",
-      "event": "bb-session",
-      "session": "49f958b9",
-      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
-    },
-    {
-      "t": "2026-03-10T13:29:19.804Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-10T13:39:09.180Z",
       "event": "bb-session",
@@ -122,6 +89,39 @@
     },
     {
       "t": "2026-03-10T13:44:03.123Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-10T13:44:55.877Z",
+      "event": "bb-session",
+      "session": "807e8133",
+      "url": "https://nypost.com/2025/09/29/entertainment/masquerade-review-secretive-off-broa"
+    },
+    {
+      "t": "2026-03-10T13:44:57.152Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-10T13:45:17.893Z",
+      "event": "bb-session",
+      "session": "868e9ccc",
+      "url": "https://observer.com/2025/09/review-masquerade-phantom-of-the-opera-experience-i"
+    },
+    {
+      "t": "2026-03-10T13:45:19.147Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-10T13:46:15.726Z",
+      "event": "bb-session",
+      "session": "adbd625e",
+      "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-r"
+    },
+    {
+      "t": "2026-03-10T13:46:16.933Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
     }

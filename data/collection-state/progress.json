@@ -213,7 +213,17 @@
     "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
     "marcel-on-the-train-off-broadway-2026/new-york-sun--elysa-gardner.json",
     "marcel-on-the-train-off-broadway-2026/theatermania--zachary-stewart.json",
-    "marcel-on-the-train-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json"
+    "marcel-on-the-train-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
+    "masquerade-off-broadway-2025/nypost--johnny-oleksinski.json",
+    "masquerade-off-broadway-2025/observer--david-cote.json",
+    "masquerade-off-broadway-2025/theatermania--meg-masseron.json",
+    "masquerade-off-broadway-2025/timeout--adam-feldman.json",
+    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+    "maybe-happy-ending-2024/guardian--adrian-horton.json",
+    "maybe-happy-ending-2024/new-york-sun--broadway-scorecard.json",
+    "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+    "maybe-happy-ending-2024/theatermania--jesse-green.json",
+    "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -439,7 +449,12 @@
       "little-shop-of-horrors-off-broadway-2019/theatermania--zachary-stewart.json",
       "marcel-on-the-train-off-broadway-2026/new-york-sun--elysa-gardner.json",
       "marcel-on-the-train-off-broadway-2026/theatermania--zachary-stewart.json",
-      "marcel-on-the-train-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json"
+      "marcel-on-the-train-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
+      "masquerade-off-broadway-2025/theatermania--meg-masseron.json",
+      "masquerade-off-broadway-2025/timeout--adam-feldman.json",
+      "maybe-happy-ending-2024/guardian--adrian-horton.json",
+      "maybe-happy-ending-2024/theatermania--jesse-green.json",
+      "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -489,7 +504,13 @@
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
       "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
-      "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json"
+      "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
+      "data/review-texts/masquerade-off-broadway-2025/nypost--johnny-oleksinski.json",
+      "masquerade-off-broadway-2025/nypost--johnny-oleksinski.json",
+      "data/review-texts/masquerade-off-broadway-2025/observer--david-cote.json",
+      "masquerade-off-broadway-2025/observer--david-cote.json",
+      "data/review-texts/maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+      "maybe-happy-ending-2024/nypost--johnny-oleksinski.json"
     ],
     "directCookies": [
       "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json",
@@ -584,11 +605,13 @@
       "just-in-time-2025/broadwaynews--brittani-samuel.json",
       "just-in-time-2025/newsday--unknown.json",
       "la-llamada-off-broadway-2024/broadwaynews--aa-cristi.json",
-      "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json"
+      "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
+      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+      "maybe-happy-ending-2024/new-york-sun--broadway-scorecard.json"
     ]
   },
   "startTime": "2026-03-10T09:53:53.378Z",
-  "lastProcessed": "marcel-on-the-train-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
+  "lastProcessed": "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
   "log": [
     {
       "t": "2026-03-10T09:54:28.456Z",
@@ -920,6 +943,39 @@
     },
     {
       "t": "2026-03-10T13:44:03.123Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-10T13:44:55.877Z",
+      "event": "bb-session",
+      "session": "807e8133",
+      "url": "https://nypost.com/2025/09/29/entertainment/masquerade-review-secretive-off-broa"
+    },
+    {
+      "t": "2026-03-10T13:44:57.152Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-10T13:45:17.893Z",
+      "event": "bb-session",
+      "session": "868e9ccc",
+      "url": "https://observer.com/2025/09/review-masquerade-phantom-of-the-opera-experience-i"
+    },
+    {
+      "t": "2026-03-10T13:45:19.147Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-10T13:46:15.726Z",
+      "event": "bb-session",
+      "session": "adbd625e",
+      "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-r"
+    },
+    {
+      "t": "2026-03-10T13:46:16.933Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
     }
