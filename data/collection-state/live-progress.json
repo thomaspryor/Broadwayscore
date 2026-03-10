@@ -1,32 +1,20 @@
 {
-  "updatedAt": "2026-03-10T12:56:03.418Z",
-  "processed": 119,
-  "failed": 41,
-  "successRate": "74.4%",
+  "updatedAt": "2026-03-10T13:00:19.521Z",
+  "processed": 126,
+  "failed": 44,
+  "successRate": "74.1%",
   "tierBreakdown": {
-    "playwright": 96,
+    "playwright": 99,
     "amp": 18,
-    "browserbase": 4,
+    "browserbase": 10,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 32,
-    "archive": 11
+    "archiveToday": 34,
+    "archive": 12
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-03-10T09:54:28.456Z",
-      "event": "bb-session",
-      "session": "0749cf37",
-      "url": "https://www.nytimes.com/2026/03/06/theater/jordan-fein-broken-glass.html"
-    },
-    {
-      "t": "2026-03-10T09:54:50.925Z",
-      "event": "bb-session",
-      "session": "8f5497f1",
-      "url": "https://www.nytimes.com/2026/02/18/theater/dracula-cynthia-erivo.html"
-    },
     {
       "t": "2026-03-10T09:55:58.547Z",
       "event": "bb-session",
@@ -83,6 +71,61 @@
       "t": "2026-03-10T12:55:34.390Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-10T12:56:09.807Z",
+      "event": "bb-session",
+      "session": "6cc54111",
+      "url": "https://www.nytimes.com/2026/01/26/theater/data-review.html"
+    },
+    {
+      "t": "2026-03-10T12:56:11.049Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-10T12:57:25.406Z",
+      "event": "bb-session",
+      "session": "040e4068",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-10T12:57:26.634Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-10T12:57:43.807Z",
+      "event": "bb-session",
+      "session": "7422cc9b",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-10T12:57:45.085Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-10T12:58:07.247Z",
+      "event": "bb-session",
+      "session": "8b073a2b",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/sarah-hyland-broadway-cast-of-j"
+    },
+    {
+      "t": "2026-03-10T12:58:08.452Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-10T13:00:06.342Z",
+      "event": "bb-session",
+      "session": "7e6dc8db",
+      "url": "https://www.newyorker.com/goings-on-about-town/just-in-time#:~:text=In%20the%20l"
+    },
+    {
+      "t": "2026-03-10T13:00:07.720Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
