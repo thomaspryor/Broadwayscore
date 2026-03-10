@@ -710,7 +710,15 @@
     "the-rat-trap-west-end-2026/london-theatre--julia-rank.json",
     "the-rat-trap-west-end-2026/standard--nick-curtis.json",
     "the-rat-trap-west-end-2026/whatsonstage--maygan-forbes.json",
-    "the-reservoir-off-broadway-2026/atlantic--unknown.json"
+    "the-reservoir-off-broadway-2026/atlantic--unknown.json",
+    "the-tempest-globe-west-end-2026/whatsonstage--alun-hood.json",
+    "the-unknown-off-broadway-2026/1-minute-critic--matthew-wexler.json",
+    "the-unknown-off-broadway-2026/nysr--frank-scheck.json",
+    "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/financialtimes--financial-times.json",
+    "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/standard--nick-curtis.json",
+    "titanique-west-end-2024/all-that-dazzles-uk--daz-gale.json",
+    "titanique-west-end-2024/artsdesk--gary-naylor.json",
+    "titanique-west-end-2024/london-theatre--olivia-rook.json"
   ],
   "failed": [
     "paranormal-activity-west-end-2025/thestage--tim-wicker.json",
@@ -881,7 +889,9 @@
     "the-play-that-goes-wrong-off-broadway-2019/broadway-blog--samuel-l-leiter.json",
     "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
     "the-rat-trap-west-end-2026/thestage--unknown.json",
-    "the-tempest-globe-west-end-2026/british-theatre--howard-loxton.json"
+    "the-tempest-globe-west-end-2026/british-theatre--howard-loxton.json",
+    "the-tempest-globe-west-end-2026/thestage--unknown.json",
+    "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--paul-vale.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1368,7 +1378,15 @@
       "the-rat-trap-west-end-2026/london-theatre--julia-rank.json",
       "the-rat-trap-west-end-2026/standard--nick-curtis.json",
       "the-rat-trap-west-end-2026/whatsonstage--maygan-forbes.json",
-      "the-reservoir-off-broadway-2026/atlantic--unknown.json"
+      "the-reservoir-off-broadway-2026/atlantic--unknown.json",
+      "the-tempest-globe-west-end-2026/whatsonstage--alun-hood.json",
+      "the-unknown-off-broadway-2026/1-minute-critic--matthew-wexler.json",
+      "the-unknown-off-broadway-2026/nysr--frank-scheck.json",
+      "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/financialtimes--financial-times.json",
+      "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/standard--nick-curtis.json",
+      "titanique-west-end-2024/all-that-dazzles-uk--daz-gale.json",
+      "titanique-west-end-2024/artsdesk--gary-naylor.json",
+      "titanique-west-end-2024/london-theatre--olivia-rook.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -1598,7 +1616,9 @@
       "data/review-texts/the-book-of-mormon-west-end-2024/independent--peter-marks.json",
       "data/review-texts/the-hunger-games-on-stage-west-end-2025/independent--unknown.json",
       "data/review-texts/the-hunger-games-on-stage-west-end-2025/thestage--holly-omahony.json",
-      "data/review-texts/the-rat-trap-west-end-2026/thestage--unknown.json"
+      "data/review-texts/the-rat-trap-west-end-2026/thestage--unknown.json",
+      "data/review-texts/the-tempest-globe-west-end-2026/thestage--unknown.json",
+      "data/review-texts/the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--paul-vale.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
@@ -1713,7 +1733,7 @@
     ]
   },
   "startTime": "2026-03-09T14:46:28.645Z",
-  "lastProcessed": "the-tempest-globe-west-end-2026/british-theatre--howard-loxton.json",
+  "lastProcessed": "titanique-west-end-2024/london-theatre--olivia-rook.json",
   "log": [
     {
       "t": "2026-03-09T14:51:21.007Z",
@@ -2130,6 +2150,28 @@
     },
     {
       "t": "2026-03-10T06:01:16.620Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-10T06:03:08.840Z",
+      "event": "bb-session",
+      "session": "1818a6a1",
+      "url": "https://www.thestage.co.uk/reviews/the-tempest-review-sam-wanamaker-playhouse-sh"
+    },
+    {
+      "t": "2026-03-10T06:03:09.950Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-10T06:05:29.977Z",
+      "event": "bb-session",
+      "session": "e9053bc4",
+      "url": "https://www.thestage.co.uk/reviews/the-unlikely-pilgrimage-of-harold-fry-review-"
+    },
+    {
+      "t": "2026-03-10T06:05:30.986Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
