@@ -659,7 +659,14 @@
     "the-book-of-mormon-west-end-2024/whatsonstage--theo-bosanquet.json",
     "the-great-gatsby-2024/theater-pizzazz--ron-fassler.json",
     "the-holy-rosenbergs-west-end-2026/whatsonstage--unknown.json",
-    "the-hunger-games-on-stage-west-end-2025/bww--cindy-marcolina.json"
+    "the-hunger-games-on-stage-west-end-2025/bww--cindy-marcolina.json",
+    "the-hunger-games-on-stage-west-end-2025/financialtimes--unknown.json",
+    "the-hunger-games-on-stage-west-end-2025/i-paper--unknown.json",
+    "the-hunger-games-on-stage-west-end-2025/standard--nick-curtis.json",
+    "the-hunger-games-on-stage-west-end-2025/theatre-weekly--greg-stewart.json",
+    "the-lion-king-1997/broadwayworld--albert-gutierrez.json",
+    "the-lion-king-1997/broadwayworld--michael-quintos.json",
+    "the-lion-king-1997/broadwayworld--tyler-hinton.json"
   ],
   "failed": [
     "paranormal-activity-west-end-2025/thestage--tim-wicker.json",
@@ -821,7 +828,10 @@
     "stranger-things-2024/broadwayworld--alexander-cohen.json",
     "stranger-things-2024/thestage--dave-fargnoli.json",
     "stranger-things-2024/times-uk--clive-davis.json",
-    "the-book-of-mormon-west-end-2024/independent--peter-marks.json"
+    "the-book-of-mormon-west-end-2024/independent--peter-marks.json",
+    "the-hunger-games-on-stage-west-end-2025/independent--unknown.json",
+    "the-hunger-games-on-stage-west-end-2025/thestage--holly-omahony.json",
+    "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1273,7 +1283,12 @@
       "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/culturesauce--thom-geier.json",
       "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/exeunt-magazine--lane-williamson.json",
       "the-book-of-mormon-west-end-2024/whatsonstage--theo-bosanquet.json",
-      "the-holy-rosenbergs-west-end-2026/whatsonstage--unknown.json"
+      "the-holy-rosenbergs-west-end-2026/whatsonstage--unknown.json",
+      "the-hunger-games-on-stage-west-end-2025/financialtimes--unknown.json",
+      "the-hunger-games-on-stage-west-end-2025/i-paper--unknown.json",
+      "the-hunger-games-on-stage-west-end-2025/standard--nick-curtis.json",
+      "the-hunger-games-on-stage-west-end-2025/theatre-weekly--greg-stewart.json",
+      "the-lion-king-1997/broadwayworld--tyler-hinton.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -1500,7 +1515,9 @@
       "data/review-texts/shadowlands-west-end-2026/thestage--mahony.json",
       "data/review-texts/starlight-express-west-end-2024/thestage--paul-vale.json",
       "data/review-texts/stranger-things-2024/thestage--dave-fargnoli.json",
-      "data/review-texts/the-book-of-mormon-west-end-2024/independent--peter-marks.json"
+      "data/review-texts/the-book-of-mormon-west-end-2024/independent--peter-marks.json",
+      "data/review-texts/the-hunger-games-on-stage-west-end-2025/independent--unknown.json",
+      "data/review-texts/the-hunger-games-on-stage-west-end-2025/thestage--holly-omahony.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
@@ -1595,11 +1612,13 @@
       "the-book-of-mormon-west-end-2024/independent--paul-taylor.json",
       "the-book-of-mormon-west-end-2024/times-uk--libby-purves.json",
       "the-great-gatsby-2024/theater-pizzazz--ron-fassler.json",
-      "the-hunger-games-on-stage-west-end-2025/bww--cindy-marcolina.json"
+      "the-hunger-games-on-stage-west-end-2025/bww--cindy-marcolina.json",
+      "the-lion-king-1997/broadwayworld--albert-gutierrez.json",
+      "the-lion-king-1997/broadwayworld--michael-quintos.json"
     ]
   },
   "startTime": "2026-03-09T14:46:28.645Z",
-  "lastProcessed": "the-hunger-games-on-stage-west-end-2025/bww--cindy-marcolina.json",
+  "lastProcessed": "the-lion-king-1997/broadwayworld--tyler-hinton.json",
   "log": [
     {
       "t": "2026-03-09T14:51:21.007Z",
@@ -1996,6 +2015,17 @@
       "t": "2026-03-10T05:44:58.950Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-10T05:49:08.217Z",
+      "event": "bb-session",
+      "session": "900012ad",
+      "url": "https://www.thestage.co.uk/reviews/the-hunger-games-on-stage-review-troubadour-c"
+    },
+    {
+      "t": "2026-03-10T05:49:09.196Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }

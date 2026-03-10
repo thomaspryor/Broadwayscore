@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-10T05:47:03.862Z",
-  "processed": 660,
-  "failed": 160,
-  "successRate": "80.5%",
+  "updatedAt": "2026-03-10T05:50:27.161Z",
+  "processed": 667,
+  "failed": 163,
+  "successRate": "80.4%",
   "tierBreakdown": {
-    "playwright": 448,
+    "playwright": 453,
     "amp": 26,
     "browserbase": 30,
     "directCookies": 2,
     "scrapingbee": 102,
     "brightdata": 0,
-    "archiveToday": 56,
-    "archive": 93
+    "archiveToday": 58,
+    "archive": 95
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-03-09T19:54:49.897Z",
-      "event": "bb-session",
-      "session": "d097fca0",
-      "url": "https://www.wsj.com/articles/what-we-did-before-our-moth-days-review-wallace-sha"
-    },
-    {
-      "t": "2026-03-09T19:54:51.396Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-09T19:59:47.815Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-10T05:44:58.950Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-10T05:49:08.217Z",
+      "event": "bb-session",
+      "session": "900012ad",
+      "url": "https://www.thestage.co.uk/reviews/the-hunger-games-on-stage-review-troubadour-c"
+    },
+    {
+      "t": "2026-03-10T05:49:09.196Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
