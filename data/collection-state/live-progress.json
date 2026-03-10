@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-10T05:44:52.944Z",
-  "processed": 651,
-  "failed": 159,
-  "successRate": "80.4%",
+  "updatedAt": "2026-03-10T05:47:03.862Z",
+  "processed": 660,
+  "failed": 160,
+  "successRate": "80.5%",
   "tierBreakdown": {
-    "playwright": 444,
+    "playwright": 448,
     "amp": 26,
-    "browserbase": 28,
+    "browserbase": 30,
     "directCookies": 2,
     "scrapingbee": 102,
     "brightdata": 0,
-    "archiveToday": 55,
-    "archive": 89
+    "archiveToday": 56,
+    "archive": 93
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-09T19:43:36.157Z",
-      "event": "bb-session",
-      "session": "c989c07f",
-      "url": "https://www.wsj.com/articles/jerome-robbins-by-himself-review-the-dancer-from-th"
-    },
-    {
-      "t": "2026-03-09T19:43:37.466Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-09T19:54:49.897Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-10T05:43:40.862Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-10T05:44:58.020Z",
+      "event": "bb-session",
+      "session": "ba7b85fe",
+      "url": "https://www.amny.com/entertainment/theater/spelling-bee-returns-nails-every-word"
+    },
+    {
+      "t": "2026-03-10T05:44:58.950Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
