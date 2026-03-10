@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-10T13:24:41.148Z",
-  "processed": 146,
-  "failed": 54,
-  "successRate": "73.0%",
+  "updatedAt": "2026-03-10T13:28:06.757Z",
+  "processed": 154,
+  "failed": 56,
+  "successRate": "73.3%",
   "tierBreakdown": {
-    "playwright": 107,
-    "amp": 18,
+    "playwright": 111,
+    "amp": 20,
     "browserbase": 16,
     "directCookies": 2,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 41,
-    "archive": 20
+    "archiveToday": 43,
+    "archive": 23
   },
-  "browserbaseSessions": 16,
+  "browserbaseSessions": 18,
   "recentActivity": [
-    {
-      "t": "2026-03-10T12:58:07.247Z",
-      "event": "bb-session",
-      "session": "8b073a2b",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/sarah-hyland-broadway-cast-of-j"
-    },
-    {
-      "t": "2026-03-10T12:58:08.452Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-10T13:00:06.342Z",
-      "event": "bb-session",
-      "session": "7e6dc8db",
-      "url": "https://www.newyorker.com/goings-on-about-town/just-in-time#:~:text=In%20the%20l"
-    },
-    {
-      "t": "2026-03-10T13:00:07.720Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
     {
       "t": "2026-03-10T13:01:06.903Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-03-10T13:22:53.423Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-10T13:24:47.628Z",
+      "event": "bb-session",
+      "session": "b7b94db9",
+      "url": "https://www.nytimes.com/2026/02/12/theater/the-unknown-review-sean-hayes.html"
+    },
+    {
+      "t": "2026-03-10T13:24:48.889Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-10T13:26:22.133Z",
+      "event": "bb-session",
+      "session": "db3027c6",
+      "url": "https://www.nytimes.com/2026/03/05/theater/what-we-did-before-our-moth-days-revi"
+    },
+    {
+      "t": "2026-03-10T13:26:23.314Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
