@@ -203,7 +203,17 @@
     "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json",
     "just-in-time-2025/broadwaynews--brittani-samuel.json",
     "just-in-time-2025/newsday--unknown.json",
-    "just-in-time-2025/observer--rex-reed.json"
+    "just-in-time-2025/observer--rex-reed.json",
+    "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024/nydailynews--unknown.json",
+    "la-llamada-off-broadway-2024/broadwaynews--aa-cristi.json",
+    "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
+    "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json",
+    "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
+    "little-shop-of-horrors-off-broadway-2019/theatermania--zachary-stewart.json",
+    "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
+    "marcel-on-the-train-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "marcel-on-the-train-off-broadway-2026/theatermania--zachary-stewart.json",
+    "marcel-on-the-train-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -423,7 +433,13 @@
       "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json",
       "heathers-the-musical-off-broadway-2025/new-york-sun--elysa-gardner.json",
       "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
-      "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json"
+      "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json",
+      "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024/nydailynews--unknown.json",
+      "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json",
+      "little-shop-of-horrors-off-broadway-2019/theatermania--zachary-stewart.json",
+      "marcel-on-the-train-off-broadway-2026/new-york-sun--elysa-gardner.json",
+      "marcel-on-the-train-off-broadway-2026/theatermania--zachary-stewart.json",
+      "marcel-on-the-train-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -469,7 +485,11 @@
       "data/review-texts/heathers-the-musical-off-broadway-2025/observer--david-cote.json",
       "heathers-the-musical-off-broadway-2025/observer--david-cote.json",
       "data/review-texts/just-in-time-2025/observer--rex-reed.json",
-      "just-in-time-2025/observer--rex-reed.json"
+      "just-in-time-2025/observer--rex-reed.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
+      "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
+      "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json"
     ],
     "directCookies": [
       "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json",
@@ -562,11 +582,13 @@
       "hamilton-2015/wsj--terry-teachout.json",
       "harry-potter-2021/wsj--terry-teachout.json",
       "just-in-time-2025/broadwaynews--brittani-samuel.json",
-      "just-in-time-2025/newsday--unknown.json"
+      "just-in-time-2025/newsday--unknown.json",
+      "la-llamada-off-broadway-2024/broadwaynews--aa-cristi.json",
+      "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json"
     ]
   },
   "startTime": "2026-03-10T09:53:53.378Z",
-  "lastProcessed": "just-in-time-2025/observer--rex-reed.json",
+  "lastProcessed": "marcel-on-the-train-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
   "log": [
     {
       "t": "2026-03-10T09:54:28.456Z",
@@ -878,6 +900,28 @@
       "t": "2026-03-10T13:42:46.983Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-10T13:43:26.437Z",
+      "event": "bb-session",
+      "session": "bd5c8c2e",
+      "url": "https://deadline.com/2019/10/little-shop-of-horrors-review-jonathan-groff-tammy-"
+    },
+    {
+      "t": "2026-03-10T13:43:27.796Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-10T13:44:01.861Z",
+      "event": "bb-session",
+      "session": "7b75b5eb",
+      "url": "https://nypost.com/2019/10/17/little-shop-of-horrors-review-jonathan-groff-tammy"
+    },
+    {
+      "t": "2026-03-10T13:44:03.123Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
