@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-10T20:39:33.127Z",
-  "processed": 509,
-  "failed": 171,
-  "successRate": "74.9%",
+  "updatedAt": "2026-03-10T20:43:06.324Z",
+  "processed": 518,
+  "failed": 172,
+  "successRate": "75.1%",
   "tierBreakdown": {
-    "playwright": 374,
+    "playwright": 381,
     "amp": 22,
-    "browserbase": 38,
+    "browserbase": 40,
     "directCookies": 3,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 94,
-    "archive": 102
+    "archiveToday": 95,
+    "archive": 103
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-03-10T17:57:32.572Z",
-      "event": "bb-session",
-      "session": "8b80e7f6",
-      "url": "https://www.nytimes.com/2026/03/03/theater/night-side-songs-review.html"
-    },
-    {
-      "t": "2026-03-10T17:57:33.904Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-10T17:58:14.400Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-10T19:49:29.047Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-10T20:41:34.337Z",
+      "event": "bb-session",
+      "session": "ee167641",
+      "url": "https://www.amny.com/entertainment/theater/spelling-bee-returns-nails-every-word"
+    },
+    {
+      "t": "2026-03-10T20:41:35.596Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     }
