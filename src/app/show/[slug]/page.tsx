@@ -296,9 +296,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           <div className="sm:hidden card p-5 mb-6" data-testid="show-header-card-v2">
             {/* Row 1: Image + Info */}
             <div className="flex gap-4">
-              <div className="flex-shrink-0 w-28">
-                <div className="relative aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
-                  <ShowPageBookmark showId={show.id} size="compact" />
+              <div className="flex-shrink-0 w-28 relative">
+                <ShowPageBookmark showId={show.id} size="compact" />
+                <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
                   <ShowImage
                     sources={[
                       show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'poster') : null,
@@ -491,8 +491,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           <div className="flex gap-4 sm:gap-6">
             {/* Poster Card + pills underneath on mobile */}
             <div className="flex-shrink-0 w-28 sm:w-36 lg:w-40 flex flex-col gap-2">
-              <div className="relative aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
+              <div className="relative aspect-[2/3]">
                 <ShowPageBookmark showId={show.id} />
+                <div className="absolute inset-0 rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
                 <ShowImage
                   sources={[
                     show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'poster') : null,
@@ -512,6 +513,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                     </div>
                   }
                 />
+                </div>
               </div>
               {/* Compact pill labels under poster — mobile only */}
               <div className="flex sm:hidden flex-wrap justify-center gap-x-1.5 gap-y-0.5 text-[9px] font-semibold uppercase tracking-wide leading-none" data-testid="show-pills-poster">

@@ -170,7 +170,7 @@ export default function ShowPageRating({
         <div>
           <StarRating rating={latestReview.rating} onRatingChange={handleRatingChange} size="md" readOnly hideLabel />
           {/* Controls row: edit · delete · date · new viewing · all ratings */}
-          <div className="group/latest flex items-center flex-wrap gap-x-1.5 gap-y-0.5 mt-1">
+          <div className="group/latest flex items-center gap-1.5 mt-1">
             <div className="flex items-center gap-0.5 sm:opacity-0 sm:group-hover/latest:opacity-100 transition-opacity">
               <button
                 type="button"
