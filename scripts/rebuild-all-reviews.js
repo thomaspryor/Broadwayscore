@@ -26,7 +26,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, isJunkOutlet } = require('./lib/review-normalization');
+const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, isJunkOutlet, loadCriticRegistry } = require('./lib/review-normalization');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
@@ -72,6 +72,9 @@ for (const [id, info] of Object.entries(outletRegistry.outlets)) {
     }
   }
 }
+
+// Load critic registry for resolving "unknown" outlet reviews
+const criticRegistry = loadCriticRegistry();
 
 // Human review queue — flagged items written to data/audit/needs-human-review.json
 const humanReviewQueue = [];
@@ -2153,11 +2156,29 @@ showDirs.forEach(showId => {
         }
       }
 
+      // Critic-registry outlet resolution: when a review has an "unknown" outlet but the
+      // critic is in the registry with a known primaryOutlet, resolve the outlet before dedup.
+      // This fixes Show-Score shadow entries where no known-outlet file exists in the directory.
+      const rawOutletKey = normalizeOutletCanonical(data.outletId || data.outlet);
+      const rawCriticKey = normalizeCriticCanonical(data.criticName || 'unknown');
+      if (/^(unknown|unnamed)$/.test(rawOutletKey) && !/^(unknown|unnamed)$/.test(rawCriticKey)) {
+        const registryEntry = criticRegistry.critics && criticRegistry.critics[rawCriticKey];
+        if (registryEntry && registryEntry.primaryOutlet && !registryEntry.isFreelancer) {
+          const resolvedOutlet = registryEntry.primaryOutlet;
+          const resolvedDisplayName = getOutletDisplayName(resolvedOutlet);
+          console.log(`  [REGISTRY RESOLVE] ${showId}/${file}: unknown → ${resolvedOutlet} (${resolvedDisplayName}) via critic ${rawCriticKey}`);
+          data.outletId = resolvedOutlet;
+          data.outlet = resolvedDisplayName;
+          stats.resolvedUnknownOutlet = (stats.resolvedUnknownOutlet || 0) + 1;
+          if (!stats.resolvedUnknownOutletDetails) stats.resolvedUnknownOutletDetails = [];
+          stats.resolvedUnknownOutletDetails.push(`${showId}/${file}: unknown → ${resolvedOutlet}`);
+        }
+      }
+
       // Create deduplication key — use canonical normalization to catch merged outlets
       const outletKey = normalizeOutletCanonical(data.outletId || data.outlet);
       const criticKey = normalizeCriticCanonical(data.criticName || 'unknown');
       const dedupKey = `${outletKey}|${criticKey}`;
-
       // Skip exact duplicates (keep first occurrence)
       if (seenKeys.has(dedupKey)) {
         stats.skippedDuplicate++;
@@ -2180,6 +2201,24 @@ showDirs.forEach(showId => {
         }
         if (namedCriticExists) {
           stats.skippedUnknownCriticDedup = (stats.skippedUnknownCriticDedup || 0) + 1;
+          return;
+        }
+      }
+
+      // Unknown-outlet dedup: if the outlet is "unknown" but a file from a real outlet
+      // exists for this same critic in this show's directory, skip the unknown entry.
+      // This catches Show-Score shadow entries (e.g., unknown--samuel-l-leiter.json) when
+      // a real outlet file exists (e.g., theater-life--samuel-l-leiter.json).
+      // We check the directory (not seenKeys) because the known-outlet file may have been
+      // filtered by other guards (e.g., duplicateOf).
+      if (/^(unknown|unnamed)$/.test(outletKey) && !/^(unknown|unnamed)$/.test(criticKey)) {
+        const criticSuffix = `--${criticKey}.json`;
+        const knownOutletFileExists = files.some(f =>
+          f !== file && f.endsWith(criticSuffix) && !(/^(unknown|unnamed)--/.test(f))
+        );
+        if (knownOutletFileExists) {
+          console.log(`  [UNKNOWN-OUTLET DEDUP] ${showId}/${file}: critic ${criticKey} has known-outlet file in directory (skipping)`);
+          stats.skippedUnknownOutletDedup = (stats.skippedUnknownOutletDedup || 0) + 1;
           return;
         }
       }
@@ -2831,6 +2870,7 @@ const output = {
       skippedDuplicateText: stats.skippedDuplicateText || 0,
       skippedFingerprintDedup: stats.skippedFingerprintDedup || 0,
       skippedUnknownCriticDedup: stats.skippedUnknownCriticDedup || 0,
+      skippedUnknownOutletDedup: stats.skippedUnknownOutletDedup || 0,
       skippedWrongProduction: stats.skippedWrongProduction || 0,
       skippedFabricated: stats.skippedFabricated || 0,
       skippedCrossShowUrl: stats.skippedCrossShowUrl || 0,
@@ -3029,6 +3069,7 @@ if (stats.staleContentVerificationCleared > 0) {
   console.log(`  Recovered (stale contentVerification — text fetched after verification): ${stats.staleContentVerificationCleared}`);
 }
 console.log(`  Skipped (unknown critic dedup): ${stats.skippedUnknownCriticDedup || 0}`);
+console.log(`  Skipped (unknown outlet dedup): ${stats.skippedUnknownOutletDedup || 0}`);
 console.log(`  Skipped (fingerprint dedup): ${stats.skippedFingerprintDedup || 0}`);
 console.log(`  Skipped (cross-show duplicate text): ${stats.skippedCrossShowDupe || 0}`);
 if (stats.crossShowDupeDetails && stats.crossShowDupeDetails.length > 0) {
