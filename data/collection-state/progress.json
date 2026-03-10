@@ -981,7 +981,17 @@
     "my-neighbour-totoro-west-end-2025/times-uk--clive-davis.json",
     "oh-mary-west-end-2025/standard--nick-curtis.json",
     "oh-mary-west-end-2025/thestage--holly-o-mahony.json",
-    "oh-mary-west-end-2025/thestage--mahony.json"
+    "oh-mary-west-end-2025/thestage--mahony.json",
+    "oliver-west-end-2024/thestage--sam-marlowe.json",
+    "paddington-the-musical-west-end-2025/thestage--sam-marlowe.json",
+    "paranormal-activity-west-end-2025/thestage--tim-wicker.json",
+    "paranormal-activity-west-end-2025/thestage--tom-wicker.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "schmigadoon-2026/rollingstone--alan-sepinwall.json",
+    "shadowlands-west-end-2026/thestage--holly-o-mahony.json",
+    "shadowlands-west-end-2026/thestage--mahony.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "six-2021/pages-on-stages--mason-pilevsky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1747,7 +1757,12 @@
       "data/review-texts/in-the-heights-2008/newyorker--hilton-als.json",
       "data/review-texts/irving-berlins-white-christmas-2009/variety--david-rooney.json",
       "data/review-texts/oh-mary-west-end-2025/thestage--holly-o-mahony.json",
-      "data/review-texts/oh-mary-west-end-2025/thestage--mahony.json"
+      "data/review-texts/oh-mary-west-end-2025/thestage--mahony.json",
+      "data/review-texts/paddington-the-musical-west-end-2025/thestage--sam-marlowe.json",
+      "data/review-texts/paranormal-activity-west-end-2025/thestage--tim-wicker.json",
+      "data/review-texts/paranormal-activity-west-end-2025/thestage--tom-wicker.json",
+      "data/review-texts/shadowlands-west-end-2026/thestage--holly-o-mahony.json",
+      "data/review-texts/shadowlands-west-end-2026/thestage--mahony.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
@@ -1885,7 +1900,7 @@
     ]
   },
   "startTime": "2026-03-09T14:46:28.645Z",
-  "lastProcessed": "oh-mary-west-end-2025/thestage--mahony.json",
+  "lastProcessed": "six-2021/pages-on-stages--mason-pilevsky.json",
   "log": [
     {
       "t": "2026-03-09T14:51:21.007Z",
@@ -2445,6 +2460,61 @@
     },
     {
       "t": "2026-03-10T06:34:26.627Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-10T06:35:48.547Z",
+      "event": "bb-session",
+      "session": "62f2566d",
+      "url": "https://www.thestage.co.uk/reviews/paddington-the-musical-review-savoy-theatre-l"
+    },
+    {
+      "t": "2026-03-10T06:35:49.856Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-10T06:37:02.877Z",
+      "event": "bb-session",
+      "session": "c0820e22",
+      "url": "https://www.thestage.co.uk/reviews/paranormal-activity-review-ambassadors-theatr"
+    },
+    {
+      "t": "2026-03-10T06:37:06.335Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-10T06:38:17.790Z",
+      "event": "bb-session",
+      "session": "657e720e",
+      "url": "https://www.thestage.co.uk/reviews/paranormal-activity-review-ambassadors-theatr"
+    },
+    {
+      "t": "2026-03-10T06:38:19.127Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-10T06:40:06.716Z",
+      "event": "bb-session",
+      "session": "a8f8ebe6",
+      "url": "https://www.thestage.co.uk/reviews/shadowlands-review-aldwych-theatre-london-hug"
+    },
+    {
+      "t": "2026-03-10T06:40:08.175Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-10T06:41:19.659Z",
+      "event": "bb-session",
+      "session": "0de08415",
+      "url": "https://www.thestage.co.uk/reviews/shadowlands-review-aldwych-theatre-london-hug"
+    },
+    {
+      "t": "2026-03-10T06:41:21.077Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
