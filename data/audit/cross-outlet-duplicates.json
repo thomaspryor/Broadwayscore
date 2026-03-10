@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-08T06:28:48.464Z",
+    "generatedAt": "2026-03-10T05:48:37.420Z",
     "threshold": 40,
-    "showsScanned": 1182,
-    "reviewsScanned": 25856,
-    "duplicatesFound": 90,
+    "showsScanned": 1286,
+    "reviewsScanned": 26706,
+    "duplicatesFound": 76,
     "byMethod": {
       "similarity+llm": [
         {
@@ -113,21 +113,6 @@
           "textSource": "excerpts"
         },
         {
-          "showId": "la-bete-2010",
-          "method": "similarity+llm",
-          "similarity": 48,
-          "primaryFile": "northjerseycom--robert-feldberg.json",
-          "primaryOutlet": "NorthJersey.com",
-          "primaryCritic": "Robert Feldberg",
-          "secondaryFile": "ny1--roma-torre.json",
-          "secondaryOutlet": "NY1",
-          "secondaryCritic": "Roma Torre",
-          "primaryScore": 41,
-          "secondaryScore": 80,
-          "scoreDiff": 39,
-          "textSource": "excerpts"
-        },
-        {
           "showId": "lobby-hero-2018",
           "method": "similarity+llm",
           "similarity": 57,
@@ -156,6 +141,36 @@
           "secondaryScore": 15,
           "scoreDiff": 1,
           "textSource": "fullText"
+        },
+        {
+          "showId": "oklahoma-2019",
+          "method": "similarity+llm",
+          "similarity": 69,
+          "primaryFile": "chicagotribune--chris-jones-bway.json",
+          "primaryOutlet": "Chicago Tribune",
+          "primaryCritic": "Chris Jones",
+          "secondaryFile": "charles-isherwood--broadway-news.json",
+          "secondaryOutlet": "Charles Isherwood",
+          "secondaryCritic": "Broadway News",
+          "primaryScore": 64,
+          "secondaryScore": 79,
+          "scoreDiff": 15,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "paddington-the-musical-west-end-2025",
+          "method": "similarity+llm",
+          "similarity": 40,
+          "primaryFile": "broadwaynews--stephi-wild.json",
+          "primaryOutlet": "Broadway News",
+          "primaryCritic": "Stephi Wild",
+          "secondaryFile": "broadwayworld--christiana-rose.json",
+          "secondaryOutlet": "BroadwayWorld",
+          "secondaryCritic": "Christiana Rose",
+          "primaryScore": 50,
+          "secondaryScore": 81,
+          "scoreDiff": 31,
+          "textSource": "excerpts"
         },
         {
           "showId": "paradise-square-2022",
@@ -352,21 +367,6 @@
           "primaryScore": 76,
           "secondaryScore": null,
           "scoreDiff": 76,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "cult-of-love-2024",
-          "method": "similarity",
-          "similarity": 95,
-          "primaryFile": "talkinbroadway--matthew-murray.json",
-          "primaryOutlet": "Talkin' Broadway",
-          "primaryCritic": "Matthew Murray",
-          "secondaryFile": "exeunt-magazine--loren-noveck.json",
-          "secondaryOutlet": "Exeunt NYC",
-          "secondaryCritic": "Loren Noveck",
-          "primaryScore": 76,
-          "secondaryScore": 61,
-          "scoreDiff": 15,
           "textSource": "fullText"
         },
         {
@@ -608,6 +608,21 @@
           "secondaryScore": 76,
           "scoreDiff": 0,
           "textSource": "fullText"
+        },
+        {
+          "showId": "john-proctor-is-the-villain-west-end-2026",
+          "method": "similarity",
+          "similarity": 85,
+          "primaryFile": "ew--emlyn-travis.json",
+          "primaryOutlet": "Entertainment Weekly",
+          "primaryCritic": "Emlyn Travis",
+          "secondaryFile": "nysr--melissa-rose-bernardo.json",
+          "secondaryOutlet": "New York Stage Review",
+          "secondaryCritic": "Melissa Rose Bernardo",
+          "primaryScore": 92,
+          "secondaryScore": null,
+          "scoreDiff": 92,
+          "textSource": "excerpts"
         },
         {
           "showId": "king-charles-iii-2015",
@@ -1062,66 +1077,6 @@
       ],
       "fingerprint": [
         {
-          "showId": "a-view-from-the-bridge-2010",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "british-theatre--philip-fisher.json",
-          "primaryOutlet": "British Theatre Guide",
-          "primaryCritic": "Philip Fisher",
-          "secondaryFile": "british-theatre-guide--philip-fisher.json",
-          "secondaryOutlet": "British Theatre Guide",
-          "secondaryCritic": "Philip Fisher",
-          "primaryScore": 72,
-          "secondaryScore": null,
-          "scoreDiff": 72,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "a-view-from-the-bridge-2010",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "review--robin-riegelhaupt.json",
-          "primaryOutlet": "Reviewing The Drama",
-          "primaryCritic": "Robin Riegelhaupt",
-          "secondaryFile": "reviewing-the-drama--robin-riegelhaupt.json",
-          "secondaryOutlet": "Reviewing The Drama",
-          "secondaryCritic": "Robin Riegelhaupt",
-          "primaryScore": 82,
-          "secondaryScore": null,
-          "scoreDiff": 82,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "a-view-from-the-bridge-2015",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "british-theatre--philip-fisher.json",
-          "primaryOutlet": "British Theatre Guide",
-          "primaryCritic": "Philip Fisher",
-          "secondaryFile": "british-theatre-guide--philip-fisher.json",
-          "secondaryOutlet": "British Theatre Guide",
-          "secondaryCritic": "Philip Fisher",
-          "primaryScore": 72,
-          "secondaryScore": null,
-          "scoreDiff": 72,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "allegiance-2015",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "america-magazine--andy-propst.json",
-          "primaryOutlet": "American Theater Web",
-          "primaryCritic": "Andy Propst",
-          "secondaryFile": "american-theater-web--andy-propst.json",
-          "secondaryOutlet": "American Theater Web",
-          "secondaryCritic": "Andy Propst",
-          "primaryScore": 62,
-          "secondaryScore": 67,
-          "scoreDiff": 5,
-          "textSource": "excerpts"
-        },
-        {
           "showId": "august-osage-county-2007",
           "method": "fingerprint",
           "similarity": 100,
@@ -1134,81 +1089,6 @@
           "primaryScore": 90,
           "secondaryScore": 92,
           "scoreDiff": 2,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "baby-its-you-2011",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "ap--mark-kennedy.json",
-          "primaryOutlet": "Associated Press",
-          "primaryCritic": "Mark Kennedy",
-          "secondaryFile": "abc-news--mark-kennedy.json",
-          "secondaryOutlet": "ABC News",
-          "secondaryCritic": "Mark Kennedy",
-          "primaryScore": 43,
-          "secondaryScore": 59,
-          "scoreDiff": 16,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "beetlejuice-2022",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "the-virginian-pilot--page-laws.json",
-          "primaryOutlet": "The Virginian-Pilot",
-          "primaryCritic": "Page Laws",
-          "secondaryFile": "virginian-pilot--page-laws.json",
-          "secondaryOutlet": "The Virginian-Pilot",
-          "secondaryCritic": "Page Laws",
-          "primaryScore": 61,
-          "secondaryScore": 59,
-          "scoreDiff": 2,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "china-doll-2015",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "america-magazine--andy-propst.json",
-          "primaryOutlet": "American Theater Web",
-          "primaryCritic": "Andy Propst",
-          "secondaryFile": "american-theater-web--andy-propst.json",
-          "secondaryOutlet": "American Theater Web",
-          "secondaryCritic": "Andy Propst",
-          "primaryScore": 45,
-          "secondaryScore": 63,
-          "scoreDiff": 18,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "death-of-a-salesman-2012",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "thestage--elyse-trevers.json",
-          "primaryOutlet": "Stage Buddy",
-          "primaryCritic": "Elyse Trevers",
-          "secondaryFile": "stagebuddy--elyse-trevers.json",
-          "secondaryOutlet": "Stage Buddy",
-          "secondaryCritic": "Elyse Trevers",
-          "primaryScore": 77,
-          "secondaryScore": null,
-          "scoreDiff": 77,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "eclipsed-2016",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "america-magazine--andy-propst.json",
-          "primaryOutlet": "American Theater Web",
-          "primaryCritic": "Andy Propst",
-          "secondaryFile": "american-theater-web--andy-propst.json",
-          "secondaryOutlet": "American Theater Web",
-          "secondaryCritic": "Andy Propst",
-          "primaryScore": 88,
-          "secondaryScore": 82,
-          "scoreDiff": 6,
           "textSource": "excerpts"
         },
         {
@@ -1242,51 +1122,6 @@
           "textSource": "excerpts"
         },
         {
-          "showId": "fiddler-on-the-roof-2015",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "america-magazine--andy-propst.json",
-          "primaryOutlet": "American Theater Web",
-          "primaryCritic": "Andy Propst",
-          "secondaryFile": "american-theater-web--andy-propst.json",
-          "secondaryOutlet": "American Theater Web",
-          "secondaryCritic": "Andy Propst",
-          "primaryScore": 88,
-          "secondaryScore": 85,
-          "scoreDiff": 3,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "les-liaisons-dangereuses-2008",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "british-theatre--philip-fisher.json",
-          "primaryOutlet": "British Theatre Guide",
-          "primaryCritic": "Philip Fisher",
-          "secondaryFile": "british-theatre-guide--philip-fisher.json",
-          "secondaryOutlet": "British Theatre Guide",
-          "secondaryCritic": "Philip Fisher",
-          "primaryScore": 88,
-          "secondaryScore": null,
-          "scoreDiff": 88,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "les-liaisons-dangereuses-2008",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "review--robin-riegelhaupt.json",
-          "primaryOutlet": "Reviewing The Drama",
-          "primaryCritic": "Robin Riegelhaupt",
-          "secondaryFile": "reviewing-the-drama--robin-riegelhaupt.json",
-          "secondaryOutlet": "Reviewing The Drama",
-          "secondaryCritic": "Robin Riegelhaupt",
-          "primaryScore": 34,
-          "secondaryScore": null,
-          "scoreDiff": 34,
-          "textSource": "excerpts"
-        },
-        {
           "showId": "macbeth-2008",
           "method": "fingerprint",
           "similarity": 100,
@@ -1302,21 +1137,6 @@
           "textSource": "excerpts"
         },
         {
-          "showId": "misery-2015",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "america-magazine--andy-propst.json",
-          "primaryOutlet": "American Theater Web",
-          "primaryCritic": "Andy Propst",
-          "secondaryFile": "american-theater-web--andy-propst.json",
-          "secondaryOutlet": "American Theater Web",
-          "secondaryCritic": "Andy Propst",
-          "primaryScore": 58,
-          "secondaryScore": 63,
-          "scoreDiff": 5,
-          "textSource": "excerpts"
-        },
-        {
           "showId": "next-fall-2010",
           "method": "fingerprint",
           "similarity": 100,
@@ -1329,36 +1149,6 @@
           "primaryScore": 66,
           "secondaryScore": 78,
           "scoreDiff": 12,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "perfect-crime-off-broadway-1987",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "unknown--quan-lam.json",
-          "primaryOutlet": "Unknown",
-          "primaryCritic": "Quan Lam",
-          "secondaryFile": "woman-around-town--quan-lam.json",
-          "secondaryOutlet": "Woman Around Town",
-          "secondaryCritic": "Quan Lam",
-          "primaryScore": 73,
-          "secondaryScore": 73,
-          "scoreDiff": 0,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "waitress-2021",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "review--robin-riegelhaupt.json",
-          "primaryOutlet": "Reviewing The Drama",
-          "primaryCritic": "Robin Riegelhaupt",
-          "secondaryFile": "reviewing-the-drama--robin-riegelhaupt.json",
-          "secondaryOutlet": "Reviewing The Drama",
-          "secondaryCritic": "Robin Riegelhaupt",
-          "primaryScore": 82,
-          "secondaryScore": null,
-          "scoreDiff": 82,
           "textSource": "excerpts"
         }
       ]
@@ -1396,51 +1186,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "a-view-from-the-bridge-2010",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "british-theatre--philip-fisher.json",
-      "primaryOutlet": "British Theatre Guide",
-      "primaryCritic": "Philip Fisher",
-      "secondaryFile": "british-theatre-guide--philip-fisher.json",
-      "secondaryOutlet": "British Theatre Guide",
-      "secondaryCritic": "Philip Fisher",
-      "primaryScore": 72,
-      "secondaryScore": null,
-      "scoreDiff": 72,
-      "textSource": "excerpts"
-    },
-    {
-      "showId": "a-view-from-the-bridge-2010",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "review--robin-riegelhaupt.json",
-      "primaryOutlet": "Reviewing The Drama",
-      "primaryCritic": "Robin Riegelhaupt",
-      "secondaryFile": "reviewing-the-drama--robin-riegelhaupt.json",
-      "secondaryOutlet": "Reviewing The Drama",
-      "secondaryCritic": "Robin Riegelhaupt",
-      "primaryScore": 82,
-      "secondaryScore": null,
-      "scoreDiff": 82,
-      "textSource": "excerpts"
-    },
-    {
-      "showId": "a-view-from-the-bridge-2015",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "british-theatre--philip-fisher.json",
-      "primaryOutlet": "British Theatre Guide",
-      "primaryCritic": "Philip Fisher",
-      "secondaryFile": "british-theatre-guide--philip-fisher.json",
-      "secondaryOutlet": "British Theatre Guide",
-      "secondaryCritic": "Philip Fisher",
-      "primaryScore": 72,
-      "secondaryScore": null,
-      "scoreDiff": 72,
-      "textSource": "excerpts"
-    },
-    {
       "showId": "act-one-2014",
       "method": "similarity+llm",
       "similarity": 60,
@@ -1454,21 +1199,6 @@
       "secondaryScore": 58,
       "scoreDiff": 22,
       "textSource": "fullText"
-    },
-    {
-      "showId": "allegiance-2015",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "america-magazine--andy-propst.json",
-      "primaryOutlet": "American Theater Web",
-      "primaryCritic": "Andy Propst",
-      "secondaryFile": "american-theater-web--andy-propst.json",
-      "secondaryOutlet": "American Theater Web",
-      "secondaryCritic": "Andy Propst",
-      "primaryScore": 62,
-      "secondaryScore": 67,
-      "scoreDiff": 5,
-      "textSource": "excerpts"
     },
     {
       "showId": "an-act-of-god-2016",
@@ -1531,21 +1261,6 @@
       "textSource": "excerpts"
     },
     {
-      "showId": "baby-its-you-2011",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "ap--mark-kennedy.json",
-      "primaryOutlet": "Associated Press",
-      "primaryCritic": "Mark Kennedy",
-      "secondaryFile": "abc-news--mark-kennedy.json",
-      "secondaryOutlet": "ABC News",
-      "secondaryCritic": "Mark Kennedy",
-      "primaryScore": 43,
-      "secondaryScore": 59,
-      "scoreDiff": 16,
-      "textSource": "fullText"
-    },
-    {
       "showId": "beautiful-the-carole-king-musical-2014",
       "method": "similarity",
       "similarity": 92,
@@ -1559,21 +1274,6 @@
       "secondaryScore": 74,
       "scoreDiff": 2,
       "textSource": "fullText"
-    },
-    {
-      "showId": "beetlejuice-2022",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "the-virginian-pilot--page-laws.json",
-      "primaryOutlet": "The Virginian-Pilot",
-      "primaryCritic": "Page Laws",
-      "secondaryFile": "virginian-pilot--page-laws.json",
-      "secondaryOutlet": "The Virginian-Pilot",
-      "secondaryCritic": "Page Laws",
-      "primaryScore": 61,
-      "secondaryScore": 59,
-      "scoreDiff": 2,
-      "textSource": "excerpts"
     },
     {
       "showId": "chaplin-2012",
@@ -1591,21 +1291,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "china-doll-2015",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "america-magazine--andy-propst.json",
-      "primaryOutlet": "American Theater Web",
-      "primaryCritic": "Andy Propst",
-      "secondaryFile": "american-theater-web--andy-propst.json",
-      "secondaryOutlet": "American Theater Web",
-      "secondaryCritic": "Andy Propst",
-      "primaryScore": 45,
-      "secondaryScore": 63,
-      "scoreDiff": 18,
-      "textSource": "excerpts"
-    },
-    {
       "showId": "company-2006",
       "method": "similarity",
       "similarity": 78,
@@ -1618,21 +1303,6 @@
       "primaryScore": 76,
       "secondaryScore": null,
       "scoreDiff": 76,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "cult-of-love-2024",
-      "method": "similarity",
-      "similarity": 95,
-      "primaryFile": "talkinbroadway--matthew-murray.json",
-      "primaryOutlet": "Talkin' Broadway",
-      "primaryCritic": "Matthew Murray",
-      "secondaryFile": "exeunt-magazine--loren-noveck.json",
-      "secondaryOutlet": "Exeunt NYC",
-      "secondaryCritic": "Loren Noveck",
-      "primaryScore": 76,
-      "secondaryScore": 61,
-      "scoreDiff": 15,
       "textSource": "fullText"
     },
     {
@@ -1651,21 +1321,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "death-of-a-salesman-2012",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "thestage--elyse-trevers.json",
-      "primaryOutlet": "Stage Buddy",
-      "primaryCritic": "Elyse Trevers",
-      "secondaryFile": "stagebuddy--elyse-trevers.json",
-      "secondaryOutlet": "Stage Buddy",
-      "secondaryCritic": "Elyse Trevers",
-      "primaryScore": 77,
-      "secondaryScore": null,
-      "scoreDiff": 77,
-      "textSource": "excerpts"
-    },
-    {
       "showId": "disaster-2016",
       "method": "similarity",
       "similarity": 93,
@@ -1679,21 +1334,6 @@
       "secondaryScore": 83,
       "scoreDiff": 1,
       "textSource": "fullText"
-    },
-    {
-      "showId": "eclipsed-2016",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "america-magazine--andy-propst.json",
-      "primaryOutlet": "American Theater Web",
-      "primaryCritic": "Andy Propst",
-      "secondaryFile": "american-theater-web--andy-propst.json",
-      "secondaryOutlet": "American Theater Web",
-      "secondaryCritic": "Andy Propst",
-      "primaryScore": 88,
-      "secondaryScore": 82,
-      "scoreDiff": 6,
-      "textSource": "excerpts"
     },
     {
       "showId": "end-of-the-rainbow-2012",
@@ -1783,21 +1423,6 @@
       "primaryScore": 74,
       "secondaryScore": 76,
       "scoreDiff": 2,
-      "textSource": "excerpts"
-    },
-    {
-      "showId": "fiddler-on-the-roof-2015",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "america-magazine--andy-propst.json",
-      "primaryOutlet": "American Theater Web",
-      "primaryCritic": "Andy Propst",
-      "secondaryFile": "american-theater-web--andy-propst.json",
-      "secondaryOutlet": "American Theater Web",
-      "secondaryCritic": "Andy Propst",
-      "primaryScore": 88,
-      "secondaryScore": 85,
-      "scoreDiff": 3,
       "textSource": "excerpts"
     },
     {
@@ -2011,6 +1636,21 @@
       "textSource": "fullText"
     },
     {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "method": "similarity",
+      "similarity": 85,
+      "primaryFile": "ew--emlyn-travis.json",
+      "primaryOutlet": "Entertainment Weekly",
+      "primaryCritic": "Emlyn Travis",
+      "secondaryFile": "nysr--melissa-rose-bernardo.json",
+      "secondaryOutlet": "New York Stage Review",
+      "secondaryCritic": "Melissa Rose Bernardo",
+      "primaryScore": 92,
+      "secondaryScore": null,
+      "scoreDiff": 92,
+      "textSource": "excerpts"
+    },
+    {
       "showId": "king-charles-iii-2015",
       "method": "similarity",
       "similarity": 74,
@@ -2039,51 +1679,6 @@
       "secondaryScore": 52,
       "scoreDiff": 5,
       "textSource": "fullText"
-    },
-    {
-      "showId": "la-bete-2010",
-      "method": "similarity+llm",
-      "similarity": 48,
-      "primaryFile": "northjerseycom--robert-feldberg.json",
-      "primaryOutlet": "NorthJersey.com",
-      "primaryCritic": "Robert Feldberg",
-      "secondaryFile": "ny1--roma-torre.json",
-      "secondaryOutlet": "NY1",
-      "secondaryCritic": "Roma Torre",
-      "primaryScore": 41,
-      "secondaryScore": 80,
-      "scoreDiff": 39,
-      "textSource": "excerpts"
-    },
-    {
-      "showId": "les-liaisons-dangereuses-2008",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "british-theatre--philip-fisher.json",
-      "primaryOutlet": "British Theatre Guide",
-      "primaryCritic": "Philip Fisher",
-      "secondaryFile": "british-theatre-guide--philip-fisher.json",
-      "secondaryOutlet": "British Theatre Guide",
-      "secondaryCritic": "Philip Fisher",
-      "primaryScore": 88,
-      "secondaryScore": null,
-      "scoreDiff": 88,
-      "textSource": "excerpts"
-    },
-    {
-      "showId": "les-liaisons-dangereuses-2008",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "review--robin-riegelhaupt.json",
-      "primaryOutlet": "Reviewing The Drama",
-      "primaryCritic": "Robin Riegelhaupt",
-      "secondaryFile": "reviewing-the-drama--robin-riegelhaupt.json",
-      "secondaryOutlet": "Reviewing The Drama",
-      "secondaryCritic": "Robin Riegelhaupt",
-      "primaryScore": 34,
-      "secondaryScore": null,
-      "scoreDiff": 34,
-      "textSource": "excerpts"
     },
     {
       "showId": "lobby-hero-2018",
@@ -2176,21 +1771,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "misery-2015",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "america-magazine--andy-propst.json",
-      "primaryOutlet": "American Theater Web",
-      "primaryCritic": "Andy Propst",
-      "secondaryFile": "american-theater-web--andy-propst.json",
-      "secondaryOutlet": "American Theater Web",
-      "secondaryCritic": "Andy Propst",
-      "primaryScore": 58,
-      "secondaryScore": 63,
-      "scoreDiff": 5,
-      "textSource": "excerpts"
-    },
-    {
       "showId": "mothers-and-sons-2014",
       "method": "similarity",
       "similarity": 89,
@@ -2266,6 +1846,21 @@
       "textSource": "fullText"
     },
     {
+      "showId": "oklahoma-2019",
+      "method": "similarity+llm",
+      "similarity": 69,
+      "primaryFile": "chicagotribune--chris-jones-bway.json",
+      "primaryOutlet": "Chicago Tribune",
+      "primaryCritic": "Chris Jones",
+      "secondaryFile": "charles-isherwood--broadway-news.json",
+      "secondaryOutlet": "Charles Isherwood",
+      "secondaryCritic": "Broadway News",
+      "primaryScore": 64,
+      "secondaryScore": 79,
+      "scoreDiff": 15,
+      "textSource": "fullText"
+    },
+    {
       "showId": "on-the-twentieth-century-2015",
       "method": "similarity",
       "similarity": 78,
@@ -2296,6 +1891,21 @@
       "textSource": "fullText"
     },
     {
+      "showId": "paddington-the-musical-west-end-2025",
+      "method": "similarity+llm",
+      "similarity": 40,
+      "primaryFile": "broadwaynews--stephi-wild.json",
+      "primaryOutlet": "Broadway News",
+      "primaryCritic": "Stephi Wild",
+      "secondaryFile": "broadwayworld--christiana-rose.json",
+      "secondaryOutlet": "BroadwayWorld",
+      "secondaryCritic": "Christiana Rose",
+      "primaryScore": 50,
+      "secondaryScore": 81,
+      "scoreDiff": 31,
+      "textSource": "excerpts"
+    },
+    {
       "showId": "parade-2023",
       "method": "similarity",
       "similarity": 88,
@@ -2324,21 +1934,6 @@
       "secondaryScore": 61,
       "scoreDiff": 61,
       "textSource": "fullText"
-    },
-    {
-      "showId": "perfect-crime-off-broadway-1987",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "unknown--quan-lam.json",
-      "primaryOutlet": "Unknown",
-      "primaryCritic": "Quan Lam",
-      "secondaryFile": "woman-around-town--quan-lam.json",
-      "secondaryOutlet": "Woman Around Town",
-      "secondaryCritic": "Quan Lam",
-      "primaryScore": 73,
-      "secondaryScore": 73,
-      "scoreDiff": 0,
-      "textSource": "excerpts"
     },
     {
       "showId": "present-laughter-2017",
@@ -2684,21 +2279,6 @@
       "secondaryScore": 80,
       "scoreDiff": 1,
       "textSource": "fullText"
-    },
-    {
-      "showId": "waitress-2021",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "review--robin-riegelhaupt.json",
-      "primaryOutlet": "Reviewing The Drama",
-      "primaryCritic": "Robin Riegelhaupt",
-      "secondaryFile": "reviewing-the-drama--robin-riegelhaupt.json",
-      "secondaryOutlet": "Reviewing The Drama",
-      "secondaryCritic": "Robin Riegelhaupt",
-      "primaryScore": 82,
-      "secondaryScore": null,
-      "scoreDiff": 82,
-      "textSource": "excerpts"
     },
     {
       "showId": "war-paint-2017",
