@@ -168,8 +168,9 @@ export default function ShowPageRating({
       {/* Stars + edit state */}
       {latestReview && !showPanel ? (
         <div>
-          <div className="group/latest flex items-center gap-1.5">
-            <StarRating rating={latestReview.rating} onRatingChange={handleRatingChange} size="md" readOnly hideLabel />
+          <StarRating rating={latestReview.rating} onRatingChange={handleRatingChange} size="md" readOnly hideLabel />
+          {/* Controls row: edit · delete · date · new viewing · all ratings */}
+          <div className="group/latest flex items-center flex-wrap gap-x-1.5 gap-y-0.5 mt-1">
             <div className="flex items-center gap-0.5 sm:opacity-0 sm:group-hover/latest:opacity-100 transition-opacity">
               <button
                 type="button"
@@ -182,7 +183,7 @@ export default function ShowPageRating({
                 </svg>
               </button>
               {confirmDeleteId === latestReview.id ? (
-                <span className="flex items-center gap-1 text-xs">
+                <span className="flex items-center gap-1 text-[11px]">
                   <button type="button" onClick={() => handleDelete(latestReview.id)} className="text-red-400 hover:text-red-300 font-medium">Delete?</button>
                   <button type="button" onClick={() => setConfirmDeleteId(null)} className="text-gray-500 hover:text-white">Cancel</button>
                 </span>
@@ -212,6 +213,24 @@ export default function ShowPageRating({
                 + Date
               </button>
             )}
+            <span className="text-gray-600 text-[10px]">·</span>
+            <button
+              type="button"
+              onClick={() => {
+                setEditingReview(null);
+                setCurrentRating(null);
+                lastSavedId.current = null;
+                setShowPanel(false);
+                handleRatingChange(latestReview.rating);
+              }}
+              className="text-[11px] text-gray-500 hover:text-brand transition-colors whitespace-nowrap"
+            >
+              + New Viewing
+            </button>
+            <span className="text-gray-600 text-[10px]">·</span>
+            <Link href="/my-shows" className="text-[11px] text-gray-500 hover:text-brand transition-colors whitespace-nowrap">
+              All Ratings
+            </Link>
           </div>
           {latestReview.review_text && (
             <p className="text-sm text-gray-400 mt-1.5 italic line-clamp-3">{latestReview.review_text}</p>
@@ -263,29 +282,6 @@ export default function ShowPageRating({
               )}
             </div>
           ))}
-        </div>
-      )}
-
-      {/* New viewing + link to diary */}
-      {latestReview && !showPanel && (
-        <div className="flex items-center gap-2 mt-1.5">
-          <button
-            type="button"
-            onClick={() => {
-              setEditingReview(null);
-              setCurrentRating(null);
-              lastSavedId.current = null;
-              setShowPanel(false);
-              handleRatingChange(latestReview.rating);
-            }}
-            className="text-[11px] text-gray-500 hover:text-brand transition-colors whitespace-nowrap"
-          >
-            + New Viewing
-          </button>
-          <span className="text-gray-600">·</span>
-          <Link href="/my-shows" className="text-[11px] text-gray-500 hover:text-brand transition-colors whitespace-nowrap">
-            All Ratings &amp; Reviews
-          </Link>
         </div>
       )}
 
