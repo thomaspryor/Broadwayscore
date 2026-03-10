@@ -763,7 +763,9 @@
     "harry-potter-and-the-cursed-child-parts-one-and-two/hollywood-reporter--david-rooney.json",
     "harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json",
     "harry-potter-and-the-cursed-child-parts-one-and-two/variety--marilyn-stasio.json",
-    "heathers-the-musical-2025/nytimes--ben-brantley.json"
+    "heathers-the-musical-2025/nytimes--ben-brantley.json",
+    "aladdin-2014/wsj--terry-teachout.json",
+    "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json"
   ],
   "failed": [
     "paranormal-activity-west-end-2025/thestage--tim-wicker.json",
@@ -951,7 +953,15 @@
     "dead-outlaw-2025/nytg--gillian-russo.json",
     "heisenberg-2016/act-three-the-reviews--doug-marino.json",
     "in-the-heights-2008/newyorker--hilton-als.json",
-    "irving-berlins-white-christmas-2009/variety--david-rooney.json"
+    "irving-berlins-white-christmas-2009/variety--david-rooney.json",
+    "the-book-of-mormon-west-end-2024/thestage--unknown.json",
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "hadestown-2019/newyorker--hilton-als.json",
+    "six-2021/newyorker--naomi-fry.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "sweetmeats-west-end-2026/guardian--anya-ryan.json",
+    "two-strangers-bway-2025/guardian--unknown.json",
+    "zack-off-broadway-2026/nydailynews--logan-culwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1845,11 +1855,13 @@
       "god-of-carnage-2009/newyorker--john-lahr.json",
       "hamlet-2026/nytimes--charles-isherwood.json",
       "harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json",
-      "heathers-the-musical-2025/nytimes--ben-brantley.json"
+      "heathers-the-musical-2025/nytimes--ben-brantley.json",
+      "aladdin-2014/wsj--terry-teachout.json",
+      "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json"
     ]
   },
   "startTime": "2026-03-09T14:46:28.645Z",
-  "lastProcessed": "irving-berlins-white-christmas-2009/variety--david-rooney.json",
+  "lastProcessed": "zack-off-broadway-2026/nydailynews--logan-culwell.json",
   "log": [
     {
       "t": "2026-03-09T14:51:21.007Z",
@@ -2378,6 +2390,17 @@
       "t": "2026-03-10T06:24:59.198Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-10T06:30:54.374Z",
+      "event": "bb-session",
+      "session": "b0351994",
+      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
+    },
+    {
+      "t": "2026-03-10T06:30:55.792Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
