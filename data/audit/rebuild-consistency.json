@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-09T21:07:26.647Z",
+  "generatedAt": "2026-03-10T06:56:45.110Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -320,6 +320,14 @@
       "outlet": "ap",
       "critic": "Mark Kennedy",
       "detail": "humanReviewScore 64 (mixed) overrides explicit \"5/5\" (=100, positive)"
+    },
+    {
+      "type": "human-override-vs-explicit-grade",
+      "severity": "high",
+      "showId": "man-and-boy-west-end-2026",
+      "outlet": "guardian",
+      "critic": "Arifa Akbar",
+      "detail": "humanReviewScore 48 (mixed) overrides explicit \"100\" (=100, positive)"
     },
     {
       "type": "human-override-vs-explicit-grade",
