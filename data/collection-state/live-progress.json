@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-10T09:28:13.006Z",
-  "processed": 41,
-  "failed": 29,
-  "successRate": "58.6%",
+  "updatedAt": "2026-03-10T09:33:50.612Z",
+  "processed": 49,
+  "failed": 31,
+  "successRate": "61.3%",
   "tierBreakdown": {
-    "playwright": 28,
+    "playwright": 35,
     "amp": 14,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 26,
-    "archive": 6
+    "archiveToday": 28,
+    "archive": 7
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-03-10T09:07:23.090Z",
@@ -32,6 +32,18 @@
       "event": "bb-session",
       "session": "1ca78f3a",
       "url": "https://www.nytimes.com/2025/11/12/theater/hunger-games-live-london.html"
+    },
+    {
+      "t": "2026-03-10T09:32:00.924Z",
+      "event": "bb-session",
+      "session": "51c47184",
+      "url": "https://www.thestage.co.uk/reviews/burlesque-review-savoy-theatre-london-christi"
+    },
+    {
+      "t": "2026-03-10T09:32:44.156Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    36 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
     }
   ]
 }
