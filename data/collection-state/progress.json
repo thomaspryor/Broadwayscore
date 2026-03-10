@@ -46,7 +46,14 @@
     "back-to-the-future-west-end-2021/independent--clarisse-loughrey.json",
     "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json",
     "back-to-the-future-west-end-2021/whatsonstage--sarah-crompton.json",
-    "broken-glass-west-end-2026/artsdesk--unknown.json"
+    "broken-glass-west-end-2026/artsdesk--unknown.json",
+    "broken-glass-west-end-2026/london-box-office--stuart-king.json",
+    "broken-glass-west-end-2026/london-theatre--julia-rank.json",
+    "broken-glass-west-end-2026/standard--india-block.json",
+    "broken-glass-west-end-2026/standard--nick-curtis.json",
+    "broken-glass-west-end-2026/telegraph--dominic-cavendish.json",
+    "broken-glass-west-end-2026/whatsonstage--sarah-crompton.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/i-paper--fiona-mountford.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -71,7 +78,10 @@
     "the-phantom-of-the-opera-west-end-1986/guardian--michael-billington.json",
     "the-rat-trap-west-end-2026/guardian--david-jays.json",
     "the-rat-trap-west-end-2026/timeout-london--unknown.json",
-    "all-my-sons-west-end-2025/independent--alice-saville.json"
+    "all-my-sons-west-end-2025/independent--alice-saville.json",
+    "broken-glass-west-end-2026/independent--alice-saville.json",
+    "burlesque-west-end-2026/thestage--paul-vale.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/artsdesk--david-nice.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -110,7 +120,14 @@
       "arcadia-west-end-2026/london-box-office--stuart-king.json",
       "back-to-the-future-west-end-2021/artsdesk--gary-naylor.json",
       "back-to-the-future-west-end-2021/whatsonstage--sarah-crompton.json",
-      "broken-glass-west-end-2026/artsdesk--unknown.json"
+      "broken-glass-west-end-2026/artsdesk--unknown.json",
+      "broken-glass-west-end-2026/london-box-office--stuart-king.json",
+      "broken-glass-west-end-2026/london-theatre--julia-rank.json",
+      "broken-glass-west-end-2026/standard--india-block.json",
+      "broken-glass-west-end-2026/standard--nick-curtis.json",
+      "broken-glass-west-end-2026/telegraph--dominic-cavendish.json",
+      "broken-glass-west-end-2026/whatsonstage--sarah-crompton.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/i-paper--fiona-mountford.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -152,7 +169,9 @@
       "data/review-texts/the-phantom-of-the-opera-west-end-1986/guardian--michael-billington.json",
       "data/review-texts/the-rat-trap-west-end-2026/guardian--david-jays.json",
       "data/review-texts/the-rat-trap-west-end-2026/timeout-london--unknown.json",
-      "data/review-texts/all-my-sons-west-end-2025/independent--alice-saville.json"
+      "data/review-texts/all-my-sons-west-end-2025/independent--alice-saville.json",
+      "data/review-texts/broken-glass-west-end-2026/independent--alice-saville.json",
+      "data/review-texts/burlesque-west-end-2026/thestage--paul-vale.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/timeout--andrzej-lukowski.json",
@@ -163,7 +182,7 @@
     ]
   },
   "startTime": "2026-03-10T09:53:53.378Z",
-  "lastProcessed": "broken-glass-west-end-2026/artsdesk--unknown.json",
+  "lastProcessed": "cabaret-at-the-kit-kat-club-west-end-2021/i-paper--fiona-mountford.json",
   "log": [
     {
       "t": "2026-03-10T09:54:28.456Z",
@@ -188,6 +207,18 @@
       "event": "bb-session",
       "session": "6dc7d55c",
       "url": "https://www.nytimes.com/2025/11/12/theater/hunger-games-live-london.html"
+    },
+    {
+      "t": "2026-03-10T10:10:48.534Z",
+      "event": "bb-session",
+      "session": "7a7409c1",
+      "url": "https://www.thestage.co.uk/reviews/burlesque-review-savoy-theatre-london-christi"
+    },
+    {
+      "t": "2026-03-10T10:11:27.379Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    28 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
     }
   ]
 }
