@@ -702,7 +702,15 @@
     "the-play-that-goes-wrong-west-end-2021/whatsonstage--michael-coveney.json",
     "the-producers-west-end-2025/all-that-dazzles-uk--daz-gale.json",
     "the-producers-west-end-2025/artsdesk--gary-naylor.json",
-    "the-producers-west-end-2025/city-am--adam-bloodworth.json"
+    "the-producers-west-end-2025/city-am--adam-bloodworth.json",
+    "the-producers-west-end-2025/independent--louis-chilton.json",
+    "the-producers-west-end-2025/london-theatre--anya-ryan.json",
+    "the-producers-west-end-2025/standard--nick-curtis.json",
+    "the-producers-west-end-2025/times-uk--dominic-maxwell.json",
+    "the-rat-trap-west-end-2026/london-theatre--julia-rank.json",
+    "the-rat-trap-west-end-2026/standard--nick-curtis.json",
+    "the-rat-trap-west-end-2026/whatsonstage--maygan-forbes.json",
+    "the-reservoir-off-broadway-2026/atlantic--unknown.json"
   ],
   "failed": [
     "paranormal-activity-west-end-2025/thestage--tim-wicker.json",
@@ -871,7 +879,9 @@
     "the-lion-king-1997/familyvacationcritic--unknown.json",
     "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
     "the-play-that-goes-wrong-off-broadway-2019/broadway-blog--samuel-l-leiter.json",
-    "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json"
+    "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
+    "the-rat-trap-west-end-2026/thestage--unknown.json",
+    "the-tempest-globe-west-end-2026/british-theatre--howard-loxton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1351,7 +1361,14 @@
       "the-play-that-goes-wrong-west-end-2021/whatsonstage--michael-coveney.json",
       "the-producers-west-end-2025/all-that-dazzles-uk--daz-gale.json",
       "the-producers-west-end-2025/artsdesk--gary-naylor.json",
-      "the-producers-west-end-2025/city-am--adam-bloodworth.json"
+      "the-producers-west-end-2025/city-am--adam-bloodworth.json",
+      "the-producers-west-end-2025/london-theatre--anya-ryan.json",
+      "the-producers-west-end-2025/standard--nick-curtis.json",
+      "the-producers-west-end-2025/times-uk--dominic-maxwell.json",
+      "the-rat-trap-west-end-2026/london-theatre--julia-rank.json",
+      "the-rat-trap-west-end-2026/standard--nick-curtis.json",
+      "the-rat-trap-west-end-2026/whatsonstage--maygan-forbes.json",
+      "the-reservoir-off-broadway-2026/atlantic--unknown.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -1580,7 +1597,8 @@
       "data/review-texts/stranger-things-2024/thestage--dave-fargnoli.json",
       "data/review-texts/the-book-of-mormon-west-end-2024/independent--peter-marks.json",
       "data/review-texts/the-hunger-games-on-stage-west-end-2025/independent--unknown.json",
-      "data/review-texts/the-hunger-games-on-stage-west-end-2025/thestage--holly-omahony.json"
+      "data/review-texts/the-hunger-games-on-stage-west-end-2025/thestage--holly-omahony.json",
+      "data/review-texts/the-rat-trap-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
@@ -1690,11 +1708,12 @@
       "the-play-that-goes-wrong-off-broadway-2019/dctheatrescene--deb-miller.json",
       "the-play-that-goes-wrong-off-broadway-2019/stagebizcom--danny-groner.json",
       "the-play-that-goes-wrong-west-end-2021/thestage--unknown.json",
-      "the-play-that-goes-wrong-west-end-2021/times-uk--dominic-maxwell.json"
+      "the-play-that-goes-wrong-west-end-2021/times-uk--dominic-maxwell.json",
+      "the-producers-west-end-2025/independent--louis-chilton.json"
     ]
   },
   "startTime": "2026-03-09T14:46:28.645Z",
-  "lastProcessed": "the-producers-west-end-2025/city-am--adam-bloodworth.json",
+  "lastProcessed": "the-tempest-globe-west-end-2026/british-theatre--howard-loxton.json",
   "log": [
     {
       "t": "2026-03-09T14:51:21.007Z",
@@ -2100,6 +2119,17 @@
     },
     {
       "t": "2026-03-10T05:49:09.196Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-10T06:01:15.439Z",
+      "event": "bb-session",
+      "session": "75063029",
+      "url": "https://www.thestage.co.uk/reviews/the-rat-trap-review-park-theatre-london-noel-"
+    },
+    {
+      "t": "2026-03-10T06:01:16.620Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
