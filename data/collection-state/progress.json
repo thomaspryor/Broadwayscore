@@ -743,7 +743,14 @@
     "wicked-west-end-2021/standard--jessie-thompson.json",
     "wicked-west-end-2021/thestage--paul-vale.json",
     "wicked-west-end-2021/whatsonstage--editorial-staff.json",
-    "witness-for-the-prosecution-west-end-2022/artsdesk--heather-neill.json"
+    "witness-for-the-prosecution-west-end-2022/artsdesk--heather-neill.json",
+    "witness-for-the-prosecution-west-end-2022/lost-in-theatreland--amy-rye.json",
+    "witness-for-the-prosecution-west-end-2022/whatsonstage--theo-bosanquet.json",
+    "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "a-life-in-the-theatre-2010/newyorker--john-lahr.json",
+    "american-buffalo-2008/vulture--helen-shaw.json",
+    "an-ark-2026/nytg--kyle-turner.json",
+    "animal-wisdom-2022/nytimes--ben-brantley.json"
   ],
   "failed": [
     "paranormal-activity-west-end-2025/thestage--tim-wicker.json",
@@ -921,7 +928,10 @@
     "titanique-west-end-2024/times-uk--clive-davis.json",
     "wicked-2003/village-voice--michael-feingold.json",
     "wicked-west-end-2021/huffpost--marshall-fine.json",
-    "wicked-west-end-2021/independent--paul-taylor.json"
+    "wicked-west-end-2021/independent--paul-taylor.json",
+    "witness-for-the-prosecution-west-end-2022/thestage--david-benedict.json",
+    "witness-for-the-prosecution-west-end-2022/times-uk--clive-davis.json",
+    "zack-off-broadway-2026/vanityfair--marnie-hanel.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1432,7 +1442,10 @@
       "wicked-2003/broadwayworld--tyler-hinton.json",
       "wicked-west-end-2021/financialtimes--unknown.json",
       "wicked-west-end-2021/standard--jessie-thompson.json",
-      "wicked-west-end-2021/whatsonstage--editorial-staff.json"
+      "wicked-west-end-2021/whatsonstage--editorial-staff.json",
+      "witness-for-the-prosecution-west-end-2022/whatsonstage--theo-bosanquet.json",
+      "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+      "an-ark-2026/nytg--kyle-turner.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -1664,7 +1677,9 @@
       "data/review-texts/the-hunger-games-on-stage-west-end-2025/thestage--holly-omahony.json",
       "data/review-texts/the-rat-trap-west-end-2026/thestage--unknown.json",
       "data/review-texts/the-tempest-globe-west-end-2026/thestage--unknown.json",
-      "data/review-texts/the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--paul-vale.json"
+      "data/review-texts/the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--paul-vale.json",
+      "data/review-texts/witness-for-the-prosecution-west-end-2022/thestage--david-benedict.json",
+      "data/review-texts/zack-off-broadway-2026/vanityfair--marnie-hanel.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
@@ -1784,11 +1799,15 @@
       "wicked-2003/broadwayworld--lynn-beaver.json",
       "wicked-2003/broadwayworld--marriage-matinee.json",
       "wicked-west-end-2021/thestage--paul-vale.json",
-      "witness-for-the-prosecution-west-end-2022/artsdesk--heather-neill.json"
+      "witness-for-the-prosecution-west-end-2022/artsdesk--heather-neill.json",
+      "witness-for-the-prosecution-west-end-2022/lost-in-theatreland--amy-rye.json",
+      "a-life-in-the-theatre-2010/newyorker--john-lahr.json",
+      "american-buffalo-2008/vulture--helen-shaw.json",
+      "animal-wisdom-2022/nytimes--ben-brantley.json"
     ]
   },
   "startTime": "2026-03-09T14:46:28.645Z",
-  "lastProcessed": "witness-for-the-prosecution-west-end-2022/artsdesk--heather-neill.json",
+  "lastProcessed": "animal-wisdom-2022/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-03-09T14:51:21.007Z",
@@ -2227,6 +2246,17 @@
     },
     {
       "t": "2026-03-10T06:05:30.986Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-10T06:16:06.198Z",
+      "event": "bb-session",
+      "session": "ec3f5753",
+      "url": "https://www.thestage.co.uk/long-reviews/witness-for-the-prosecution-county-hall-"
+    },
+    {
+      "t": "2026-03-10T06:16:07.177Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
