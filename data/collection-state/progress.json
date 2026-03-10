@@ -642,7 +642,15 @@
     "starlight-express-west-end-2024/times-uk--clive-davis.json",
     "starlight-express-west-end-2024/west-end-best-friend--jenny-ell.json",
     "starlight-express-west-end-2024/whatsonstage--sarah-crompton.json",
-    "stranger-things-2024/ap--mark-kennedy.json"
+    "stranger-things-2024/ap--mark-kennedy.json",
+    "stranger-things-2024/theater-scene--joseph-pisano.json",
+    "stranger-things-the-first-shadow-west-end-2023/artsdesk--mert-dilek.json",
+    "stranger-things-the-first-shadow-west-end-2023/everything-theatre--xi-ye.json",
+    "stranger-things-the-first-shadow-west-end-2023/lost-in-theatreland--jill-johnson.json",
+    "stranger-things-the-first-shadow-west-end-2023/telegraph--dominic-cavendish.json",
+    "sweetmeats-west-end-2026/artsdesk--aleks-sierz.json",
+    "sweetmeats-west-end-2026/standard--maya-chandran.json",
+    "sweetmeats-west-end-2026/whatsonstage--rachel-agyekum.json"
   ],
   "failed": [
     "paranormal-activity-west-end-2025/thestage--tim-wicker.json",
@@ -801,7 +809,9 @@
     "six-the-musical-west-end-2021/standard--fiona-mountford.json",
     "six-the-musical-west-end-2021/theatre-bee-uk--theatre-bee-uk.json",
     "starlight-express-west-end-2024/thestage--paul-vale.json",
-    "stranger-things-2024/broadwayworld--alexander-cohen.json"
+    "stranger-things-2024/broadwayworld--alexander-cohen.json",
+    "stranger-things-2024/thestage--dave-fargnoli.json",
+    "stranger-things-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1243,7 +1253,13 @@
       "starlight-express-west-end-2024/times-uk--clive-davis.json",
       "starlight-express-west-end-2024/west-end-best-friend--jenny-ell.json",
       "starlight-express-west-end-2024/whatsonstage--sarah-crompton.json",
-      "stranger-things-2024/ap--mark-kennedy.json"
+      "stranger-things-2024/ap--mark-kennedy.json",
+      "stranger-things-2024/theater-scene--joseph-pisano.json",
+      "stranger-things-the-first-shadow-west-end-2023/artsdesk--mert-dilek.json",
+      "stranger-things-the-first-shadow-west-end-2023/everything-theatre--xi-ye.json",
+      "sweetmeats-west-end-2026/artsdesk--aleks-sierz.json",
+      "sweetmeats-west-end-2026/standard--maya-chandran.json",
+      "sweetmeats-west-end-2026/whatsonstage--rachel-agyekum.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -1466,7 +1482,8 @@
       "data/review-texts/paranormal-activity-west-end-2025/thestage--tom-wicker.json",
       "data/review-texts/shadowlands-west-end-2026/thestage--holly-o-mahony.json",
       "data/review-texts/shadowlands-west-end-2026/thestage--mahony.json",
-      "data/review-texts/starlight-express-west-end-2024/thestage--paul-vale.json"
+      "data/review-texts/starlight-express-west-end-2024/thestage--paul-vale.json",
+      "data/review-texts/stranger-things-2024/thestage--dave-fargnoli.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
@@ -1555,11 +1572,13 @@
       "ragtime-2025/billboard--joe-lynch.json",
       "showstopper-the-improvised-musical-west-end-2023/telegraph--dominic-cavendish.json",
       "six-2021/ap--unknown.json",
-      "six-the-musical-west-end-2021/thestage--mark-shenton.json"
+      "six-the-musical-west-end-2021/thestage--mark-shenton.json",
+      "stranger-things-the-first-shadow-west-end-2023/lost-in-theatreland--jill-johnson.json",
+      "stranger-things-the-first-shadow-west-end-2023/telegraph--dominic-cavendish.json"
     ]
   },
   "startTime": "2026-03-09T14:46:28.645Z",
-  "lastProcessed": "stranger-things-2024/broadwayworld--alexander-cohen.json",
+  "lastProcessed": "sweetmeats-west-end-2026/whatsonstage--rachel-agyekum.json",
   "log": [
     {
       "t": "2026-03-09T14:51:21.007Z",
@@ -1932,6 +1951,17 @@
     },
     {
       "t": "2026-03-09T20:36:51.100Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-10T05:43:39.699Z",
+      "event": "bb-session",
+      "session": "98990eae",
+      "url": "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-"
+    },
+    {
+      "t": "2026-03-10T05:43:40.862Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }

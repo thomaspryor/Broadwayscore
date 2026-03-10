@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-10T01:36:09.117Z",
-  "processed": 643,
-  "failed": 157,
+  "updatedAt": "2026-03-10T05:44:52.944Z",
+  "processed": 651,
+  "failed": 159,
   "successRate": "80.4%",
   "tierBreakdown": {
-    "playwright": 438,
+    "playwright": 444,
     "amp": 26,
     "browserbase": 28,
     "directCookies": 2,
     "scrapingbee": 102,
     "brightdata": 0,
-    "archiveToday": 54,
-    "archive": 87
+    "archiveToday": 55,
+    "archive": 89
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-03-09T19:41:11.800Z",
-      "event": "bb-session",
-      "session": "437658d8",
-      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
-    },
-    {
-      "t": "2026-03-09T19:41:13.380Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-09T19:43:36.157Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-09T20:36:51.100Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-10T05:43:39.699Z",
+      "event": "bb-session",
+      "session": "98990eae",
+      "url": "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-"
+    },
+    {
+      "t": "2026-03-10T05:43:40.862Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
