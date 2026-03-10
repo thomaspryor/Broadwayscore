@@ -230,7 +230,10 @@
     "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
     "maybe-happy-ending-2024/vulture--sara-holdren.json",
     "night-side-songs-off-broadway-2026/nytimes--laura-collins-hughes.json",
-    "oh-mary-2024/vulture--helen-shaw.json"
+    "oh-mary-2024/vulture--helen-shaw.json",
+    "all-my-sons-west-end-2025/timeout--andrzej-lukowski.json",
+    "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
+    "hadestown-2019/guardian--adrian-horton.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -311,7 +314,14 @@
     "six-2021/newyorker--naomi-fry.json",
     "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
     "the-unknown-off-broadway-2026/nytimes--helen-shaw.json",
-    "what-we-did-before-our-moth-days-off-broadway-2026/nytimes--helen-shaw.json"
+    "what-we-did-before-our-moth-days-off-broadway-2026/nytimes--helen-shaw.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/timeout--unknown.json",
+    "bigfoot-off-broadway-2026/timeout--adam-feldman.json",
+    "bigfoot-off-broadway-2026/timeout--unknown.json",
+    "burnout-paradise-off-broadway-2026/thewrap--unknown.json",
+    "chinese-republicans-off-broadway-2026/thewrap--unknown.json",
+    "hadestown-2019/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -474,7 +484,8 @@
       "masquerade-off-broadway-2025/timeout--adam-feldman.json",
       "maybe-happy-ending-2024/guardian--adrian-horton.json",
       "maybe-happy-ending-2024/theatermania--jesse-green.json",
-      "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json"
+      "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
+      "hadestown-2019/guardian--adrian-horton.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -598,7 +609,12 @@
       "data/review-texts/romeo-and-juliet-suite-off-broadway-2026/nytimes--gia-kourlas.json",
       "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
       "data/review-texts/the-unknown-off-broadway-2026/nytimes--helen-shaw.json",
-      "data/review-texts/what-we-did-before-our-moth-days-off-broadway-2026/nytimes--helen-shaw.json"
+      "data/review-texts/what-we-did-before-our-moth-days-off-broadway-2026/nytimes--helen-shaw.json",
+      "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/timeout--unknown.json",
+      "data/review-texts/bigfoot-off-broadway-2026/timeout--adam-feldman.json",
+      "data/review-texts/bigfoot-off-broadway-2026/timeout--unknown.json",
+      "data/review-texts/burnout-paradise-off-broadway-2026/thewrap--unknown.json",
+      "data/review-texts/chinese-republicans-off-broadway-2026/thewrap--unknown.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/timeout--andrzej-lukowski.json",
@@ -643,11 +659,13 @@
       "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
       "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
       "maybe-happy-ending-2024/vulture--sara-holdren.json",
-      "oh-mary-2024/vulture--helen-shaw.json"
+      "oh-mary-2024/vulture--helen-shaw.json",
+      "all-my-sons-west-end-2025/timeout--andrzej-lukowski.json",
+      "an-ark-off-broadway-2026/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-03-10T09:53:53.378Z",
-  "lastProcessed": "what-we-did-before-our-moth-days-off-broadway-2026/nytimes--helen-shaw.json",
+  "lastProcessed": "hadestown-2019/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-03-10T09:54:28.456Z",
@@ -1102,6 +1120,28 @@
       "t": "2026-03-10T18:02:03.662Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-10T18:03:23.275Z",
+      "event": "bb-session",
+      "session": "0ce6cbcc",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-10T18:03:24.654Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-10T18:05:26.441Z",
+      "event": "bb-session",
+      "session": "b3e8a96e",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
+    },
+    {
+      "t": "2026-03-10T18:05:27.963Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

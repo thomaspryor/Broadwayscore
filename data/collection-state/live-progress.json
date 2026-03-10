@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-10T18:03:05.170Z",
-  "processed": 231,
-  "failed": 79,
-  "successRate": "74.5%",
+  "updatedAt": "2026-03-10T18:07:10.583Z",
+  "processed": 234,
+  "failed": 86,
+  "successRate": "73.1%",
   "tierBreakdown": {
-    "playwright": 159,
+    "playwright": 160,
     "amp": 22,
     "browserbase": 32,
     "directCookies": 2,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 58,
-    "archive": 43
+    "archiveToday": 63,
+    "archive": 45
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-03-10T13:45:17.893Z",
-      "event": "bb-session",
-      "session": "868e9ccc",
-      "url": "https://observer.com/2025/09/review-masquerade-phantom-of-the-opera-experience-i"
-    },
-    {
-      "t": "2026-03-10T13:45:19.147Z",
-      "event": "bb-cookie-inject",
-      "domain": "observer.com"
-    },
-    {
-      "t": "2026-03-10T13:46:15.726Z",
-      "event": "bb-session",
-      "session": "adbd625e",
-      "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-r"
-    },
-    {
-      "t": "2026-03-10T13:46:16.933Z",
-      "event": "bb-cookie-inject",
-      "domain": "nypost.com"
-    },
     {
       "t": "2026-03-10T17:51:44.792Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-10T18:02:03.662Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-10T18:03:23.275Z",
+      "event": "bb-session",
+      "session": "0ce6cbcc",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-10T18:03:24.654Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-10T18:05:26.441Z",
+      "event": "bb-session",
+      "session": "b3e8a96e",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
+    },
+    {
+      "t": "2026-03-10T18:05:27.963Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
