@@ -109,7 +109,16 @@
     "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
     "an-ark-off-broadway-2026/nytg--kyle-turner.json",
     "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
-    "bigfoot-off-broadway-2026/nytg--caroline-cao.json"
+    "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+    "bigfoot-off-broadway-2026/vulture--unknown.json",
+    "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+    "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+    "chess-2025/hollywood-reporter--angie-han.json",
+    "chinese-republicans-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "chinese-republicans-off-broadway-2026/nytg--unknown.json",
+    "chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
+    "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nytg--allison-considine.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -151,7 +160,8 @@
     "les-miserables-west-end-2021/daily-mail--patrick-marmion.json",
     "les-miserables-west-end-2021/times-uk--clive-davis.json",
     "man-and-boy-west-end-2026/independent--alice-saville.json",
-    "bigfoot-off-broadway-2026/talkinbroadway--marc-miller.json"
+    "bigfoot-off-broadway-2026/talkinbroadway--marc-miller.json",
+    "chess-2025/newyorker--michael-schulman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -245,7 +255,13 @@
       "my-neighbour-totoro-west-end-2025/independent--annabel-nugent.json",
       "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
       "an-ark-off-broadway-2026/nytg--kyle-turner.json",
-      "bigfoot-off-broadway-2026/nytg--caroline-cao.json"
+      "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+      "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+      "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+      "chinese-republicans-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "chinese-republicans-off-broadway-2026/nytg--unknown.json",
+      "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "data-off-broadway-2026/nytg--allison-considine.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -263,9 +279,16 @@
       "data/review-texts/the-lion-king-west-end-2021/variety--matt-wolf.json",
       "the-lion-king-west-end-2021/variety--matt-wolf.json",
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
-      "hadestown-west-end-2024/variety--marilyn-stasio.json"
+      "hadestown-west-end-2024/variety--marilyn-stasio.json",
+      "data/review-texts/bigfoot-off-broadway-2026/vulture--unknown.json",
+      "bigfoot-off-broadway-2026/vulture--unknown.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
+      "chess-2025/hollywood-reporter--angie-han.json",
+      "data/review-texts/chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
+      "chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json"
+    ],
     "directCookies": [
       "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json"
     ],
@@ -302,7 +325,8 @@
       "data/review-texts/into-the-woods-west-end-2025/independent--louis-chilton.json",
       "data/review-texts/les-miserables-west-end-2021/daily-mail--patrick-marmion.json",
       "data/review-texts/man-and-boy-west-end-2026/independent--alice-saville.json",
-      "data/review-texts/bigfoot-off-broadway-2026/talkinbroadway--marc-miller.json"
+      "data/review-texts/bigfoot-off-broadway-2026/talkinbroadway--marc-miller.json",
+      "data/review-texts/chess-2025/newyorker--michael-schulman.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/timeout--andrzej-lukowski.json",
@@ -319,7 +343,7 @@
     ]
   },
   "startTime": "2026-03-10T09:53:53.378Z",
-  "lastProcessed": "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+  "lastProcessed": "data-off-broadway-2026/nytg--allison-considine.json",
   "log": [
     {
       "t": "2026-03-10T09:54:28.456Z",
@@ -356,6 +380,39 @@
       "event": "bb-login-fail",
       "domain": "thestage.co.uk",
       "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    28 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-03-10T12:53:06.351Z",
+      "event": "bb-session",
+      "session": "38c62f1c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-10T12:53:07.540Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-10T12:54:13.872Z",
+      "event": "bb-session",
+      "session": "2680e10d",
+      "url": "https://www.newyorker.com/magazine/2025/11/17/nicholas-christopher-broadways-gra"
+    },
+    {
+      "t": "2026-03-10T12:54:15.279Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-10T12:55:32.955Z",
+      "event": "bb-session",
+      "session": "3845eeca",
+      "url": "https://www.nytimes.com/2026/02/27/theater/chinese-republicans-review-alex-lin.h"
+    },
+    {
+      "t": "2026-03-10T12:55:34.390Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

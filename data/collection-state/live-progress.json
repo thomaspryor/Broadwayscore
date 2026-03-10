@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-10T12:52:00.191Z",
-  "processed": 110,
-  "failed": 40,
-  "successRate": "73.3%",
+  "updatedAt": "2026-03-10T12:56:03.418Z",
+  "processed": 119,
+  "failed": 41,
+  "successRate": "74.4%",
   "tierBreakdown": {
-    "playwright": 90,
-    "amp": 16,
-    "browserbase": 0,
+    "playwright": 96,
+    "amp": 18,
+    "browserbase": 4,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 31,
+    "archiveToday": 32,
     "archive": 11
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-03-10T09:54:28.456Z",
@@ -50,6 +50,39 @@
       "event": "bb-login-fail",
       "domain": "thestage.co.uk",
       "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    28 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-03-10T12:53:06.351Z",
+      "event": "bb-session",
+      "session": "38c62f1c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-10T12:53:07.540Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-10T12:54:13.872Z",
+      "event": "bb-session",
+      "session": "2680e10d",
+      "url": "https://www.newyorker.com/magazine/2025/11/17/nicholas-christopher-broadways-gra"
+    },
+    {
+      "t": "2026-03-10T12:54:15.279Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-10T12:55:32.955Z",
+      "event": "bb-session",
+      "session": "3845eeca",
+      "url": "https://www.nytimes.com/2026/02/27/theater/chinese-republicans-review-alex-lin.h"
+    },
+    {
+      "t": "2026-03-10T12:55:34.390Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
