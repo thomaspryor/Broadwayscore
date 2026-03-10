@@ -765,7 +765,9 @@
     "harry-potter-and-the-cursed-child-parts-one-and-two/variety--marilyn-stasio.json",
     "heathers-the-musical-2025/nytimes--ben-brantley.json",
     "aladdin-2014/wsj--terry-teachout.json",
-    "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json"
+    "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
+    "just-in-time-2025/theater-scene--joel-benjamin.json",
+    "manic-street-creature-west-end-2026/broadwayworld--unknown.json"
   ],
   "failed": [
     "paranormal-activity-west-end-2025/thestage--tim-wicker.json",
@@ -971,7 +973,15 @@
     "giant-2026/ap--jennifer-farrar.json",
     "giant-2026/london-theatre--julia-rank.json",
     "hadestown-west-end-2024/times-uk--clive-davis.json",
-    "hercules-west-end-2025/thestage--sam-marlowe.json"
+    "hercules-west-end-2025/thestage--sam-marlowe.json",
+    "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "mj-2022/ap--mark-kennedy.json",
+    "mother-russia-off-broadway-2026/buy-tickets--unknown.json",
+    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
+    "my-neighbour-totoro-west-end-2025/times-uk--clive-davis.json",
+    "oh-mary-west-end-2025/standard--nick-curtis.json",
+    "oh-mary-west-end-2025/thestage--holly-o-mahony.json",
+    "oh-mary-west-end-2025/thestage--mahony.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1487,7 +1497,8 @@
       "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
       "an-ark-2026/nytg--kyle-turner.json",
       "data-2026/nytg--allison-considine.json",
-      "doubt-a-parable/nytg--gillian-russo.json"
+      "doubt-a-parable/nytg--gillian-russo.json",
+      "just-in-time-2025/theater-scene--joel-benjamin.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -1734,7 +1745,9 @@
       "data/review-texts/camelot-2023/newyorker--helen-shaw.json",
       "data/review-texts/heisenberg-2016/act-three-the-reviews--doug-marino.json",
       "data/review-texts/in-the-heights-2008/newyorker--hilton-als.json",
-      "data/review-texts/irving-berlins-white-christmas-2009/variety--david-rooney.json"
+      "data/review-texts/irving-berlins-white-christmas-2009/variety--david-rooney.json",
+      "data/review-texts/oh-mary-west-end-2025/thestage--holly-o-mahony.json",
+      "data/review-texts/oh-mary-west-end-2025/thestage--mahony.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
@@ -1867,11 +1880,12 @@
       "harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json",
       "heathers-the-musical-2025/nytimes--ben-brantley.json",
       "aladdin-2014/wsj--terry-teachout.json",
-      "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json"
+      "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
+      "manic-street-creature-west-end-2026/broadwayworld--unknown.json"
     ]
   },
   "startTime": "2026-03-09T14:46:28.645Z",
-  "lastProcessed": "hercules-west-end-2025/thestage--sam-marlowe.json",
+  "lastProcessed": "oh-mary-west-end-2025/thestage--mahony.json",
   "log": [
     {
       "t": "2026-03-09T14:51:21.007Z",
@@ -2411,6 +2425,28 @@
       "t": "2026-03-10T06:30:55.792Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-10T06:33:10.105Z",
+      "event": "bb-session",
+      "session": "efafe3d4",
+      "url": "https://www.thestage.co.uk/reviews/oh-mary-review-trafalgar-theatre-london"
+    },
+    {
+      "t": "2026-03-10T06:33:11.411Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-10T06:34:25.278Z",
+      "event": "bb-session",
+      "session": "56440228",
+      "url": "https://www.thestage.co.uk/reviews/oh-mary-review-trafalgar-theatre-london"
+    },
+    {
+      "t": "2026-03-10T06:34:26.627Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
