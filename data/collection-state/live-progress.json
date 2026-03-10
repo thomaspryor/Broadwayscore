@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-10T19:48:11.342Z",
-  "processed": 370,
-  "failed": 110,
-  "successRate": "77.1%",
+  "updatedAt": "2026-03-10T19:49:47.451Z",
+  "processed": 379,
+  "failed": 111,
+  "successRate": "77.3%",
   "tierBreakdown": {
-    "playwright": 268,
+    "playwright": 273,
     "amp": 22,
-    "browserbase": 36,
+    "browserbase": 38,
     "directCookies": 3,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 76,
-    "archive": 70
+    "archive": 73
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-03-10T17:57:09.589Z",
-      "event": "bb-session",
-      "session": "e4935aaa",
-      "url": "https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24"
-    },
-    {
-      "t": "2026-03-10T17:57:11.148Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
     {
       "t": "2026-03-10T17:57:32.572Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-10T19:47:59.451Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-10T19:49:27.986Z",
+      "event": "bb-session",
+      "session": "86685d00",
+      "url": "https://www.amny.com/news/review-marcel-on-the-train-finds-bravery/"
+    },
+    {
+      "t": "2026-03-10T19:49:29.047Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     }
