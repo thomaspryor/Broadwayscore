@@ -14,9 +14,9 @@ interface ShowPageBookmarkProps {
 }
 
 const SIZES = {
-  sm: { button: 'top-0 right-0 p-0', icon: 'w-5 h-6' },
-  md: { button: 'top-0 right-0 p-0', icon: 'w-6 h-7' },
-  compact: { button: 'top-0 right-0 p-0', icon: 'w-5 h-6' },
+  sm: { button: '-top-px -right-px p-0', icon: 'w-7 h-8' },
+  md: { button: '-top-px -right-px p-0', icon: 'w-8 h-9' },
+  compact: { button: '-top-px -right-px p-0', icon: 'w-7 h-8' },
 };
 
 /**
@@ -81,12 +81,11 @@ export default function ShowPageBookmark({ showId, size = 'md' }: ShowPageBookma
       aria-label={watched ? 'Remove from watchlist' : 'Add to watchlist'}
     >
       <svg className={`${s.icon} drop-shadow-lg`} viewBox="0 0 24 24">
-        {/* Bookmark shape — filled semi-transparent dark when unwatched, solid gold when watched */}
         <path
           d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
-          fill={watched ? '#f59e0b' : 'rgba(0,0,0,0.45)'}
-          stroke={watched ? '#fbbf24' : 'rgba(255,255,255,0.6)'}
-          strokeWidth={1.5}
+          fill={watched ? '#f59e0b' : 'rgba(0,0,0,0.55)'}
+          stroke={watched ? '#fbbf24' : 'rgba(255,255,255,0.75)'}
+          strokeWidth={1.8}
           strokeLinejoin="round"
         />
       </svg>
