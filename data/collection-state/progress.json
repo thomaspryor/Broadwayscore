@@ -4,18 +4,32 @@
     "hercules-west-end-2025/variety--david-benedict.json",
     "mamma-mia-west-end-2021/variety--matt-wolf.json",
     "paddington-the-musical-west-end-2025/variety--david-benedict.json",
-    "paddington-the-musical-west-end-2025/variety--ellise-shafer.json"
+    "paddington-the-musical-west-end-2025/variety--ellise-shafer.json",
+    "the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
+    "the-lion-king-west-end-2021/variety--matt-wolf.json",
+    "all-my-sons-west-end-2025/timeout--andrzej-lukowski.json",
+    "back-to-the-future-west-end-2021/timeout--adam-feldman.json",
+    "broken-glass-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/timeout-london--unknown.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
     "the-lion-king-west-end-2021/thestage--unknown.json",
     "broken-glass-west-end-2026/nytimes--unknown.json",
     "dracula-west-end-2025/nytimes--houman-barekat.json",
-    "hercules-west-end-2025/nytimes--matt-wolf.json"
+    "hercules-west-end-2025/nytimes--matt-wolf.json",
+    "the-hunger-games-on-stage-west-end-2025/nytimes--alexis-soloski.json",
+    "all-my-sons-west-end-2025/guardian--arifa-akbar.json",
+    "arcadia-west-end-2026/guardian--arifa-akbar.json",
+    "broken-glass-west-end-2026/guardian--arifa-akbar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "back-to-the-future-west-end-2021/timeout--adam-feldman.json",
+      "broken-glass-west-end-2026/timeout-london--andrzej-lukowski.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/timeout-london--unknown.json"
+    ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
       "back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -26,7 +40,11 @@
       "data/review-texts/paddington-the-musical-west-end-2025/variety--david-benedict.json",
       "paddington-the-musical-west-end-2025/variety--david-benedict.json",
       "data/review-texts/paddington-the-musical-west-end-2025/variety--ellise-shafer.json",
-      "paddington-the-musical-west-end-2025/variety--ellise-shafer.json"
+      "paddington-the-musical-west-end-2025/variety--ellise-shafer.json",
+      "data/review-texts/the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
+      "the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
+      "data/review-texts/the-lion-king-west-end-2021/variety--matt-wolf.json",
+      "the-lion-king-west-end-2021/variety--matt-wolf.json"
     ],
     "browserbase": [],
     "directCookies": [],
@@ -35,12 +53,18 @@
     "archiveToday": [
       "data/review-texts/broken-glass-west-end-2026/nytimes--unknown.json",
       "data/review-texts/dracula-west-end-2025/nytimes--houman-barekat.json",
-      "data/review-texts/hercules-west-end-2025/nytimes--matt-wolf.json"
+      "data/review-texts/hercules-west-end-2025/nytimes--matt-wolf.json",
+      "data/review-texts/the-hunger-games-on-stage-west-end-2025/nytimes--alexis-soloski.json",
+      "data/review-texts/all-my-sons-west-end-2025/guardian--arifa-akbar.json",
+      "data/review-texts/arcadia-west-end-2026/guardian--arifa-akbar.json",
+      "data/review-texts/broken-glass-west-end-2026/guardian--arifa-akbar.json"
     ],
-    "archive": []
+    "archive": [
+      "all-my-sons-west-end-2025/timeout--andrzej-lukowski.json"
+    ]
   },
   "startTime": "2026-03-10T08:30:17.520Z",
-  "lastProcessed": "paddington-the-musical-west-end-2025/variety--ellise-shafer.json",
+  "lastProcessed": "cabaret-at-the-kit-kat-club-west-end-2021/timeout-london--unknown.json",
   "log": [
     {
       "t": "2026-03-10T08:30:40.856Z",
@@ -59,6 +83,12 @@
       "event": "bb-session",
       "session": "49a8db64",
       "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
+    },
+    {
+      "t": "2026-03-10T08:33:38.909Z",
+      "event": "bb-session",
+      "session": "7d326ded",
+      "url": "https://www.nytimes.com/2025/11/12/theater/hunger-games-live-london.html"
     }
   ]
 }
