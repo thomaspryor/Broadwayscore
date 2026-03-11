@@ -654,7 +654,14 @@
     "stranger-things-the-first-shadow-west-end-2023/lost-in-theatreland--jill-johnson.json",
     "the-unknown-off-broadway-2026/1-minute-critic--matthew-wexler.json",
     "witness-for-the-prosecution-west-end-2022/artsdesk--heather-neill.json",
-    "witness-for-the-prosecution-west-end-2022/lost-in-theatreland--amy-rye.json"
+    "witness-for-the-prosecution-west-end-2022/lost-in-theatreland--amy-rye.json",
+    "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "hello-dolly-1995/nytimes--jesse-green.json",
+    "m-butterfly-1988/nytimes--ben-brantley.json",
+    "once-upon-a-mattress-1996/vulture--christopher-bonanos.json",
+    "the-crucible-1991/nytimes--ben-brantley.json",
+    "the-unknown-2026/nytimes--alexis-soloski.json",
+    "you-got-older-2026/nytimes--charles-isherwood.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -1091,7 +1098,10 @@
     "the-tempest-globe-west-end-2026/british-theatre--howard-loxton.json",
     "titanique-west-end-2024/thestage--paul-vale.json",
     "titanique-west-end-2024/times-uk--clive-davis.json",
-    "witness-for-the-prosecution-west-end-2022/times-uk--clive-davis.json"
+    "witness-for-the-prosecution-west-end-2022/times-uk--clive-davis.json",
+    "the-crucible-1991/vulture--jesse-green.json",
+    "american-son-2018/broadwaynews--charles-isherwood.json",
+    "bernhardthamlet-2018/broadwaynews--elizabeth-bradley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1563,7 +1573,9 @@
       "passing-strange-2008/guardian--kate-wyver.json",
       "ragtime-2009/theatre-reviews-limited--joseph-verlezza.json",
       "sexual-misconduct-of-the-middle-classes-off-broadway-2026/new-york-sun--elysa-gardner.json",
-      "the-unknown-off-broadway-2026/1-minute-critic--matthew-wexler.json"
+      "the-unknown-off-broadway-2026/1-minute-critic--matthew-wexler.json",
+      "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+      "the-crucible-1991/nytimes--ben-brantley.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -1647,7 +1659,9 @@
       "data/review-texts/little-shop-of-horrors-2019/deadline--greg-evans.json",
       "little-shop-of-horrors-2019/deadline--greg-evans.json",
       "data/review-texts/moulin-rouge-the-musical-review/deadline--greg-evans.json",
-      "moulin-rouge-the-musical-review/deadline--greg-evans.json"
+      "moulin-rouge-the-musical-review/deadline--greg-evans.json",
+      "data/review-texts/m-butterfly-1988/nytimes--ben-brantley.json",
+      "m-butterfly-1988/nytimes--ben-brantley.json"
     ],
     "directCookies": [
       "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json",
@@ -1809,7 +1823,9 @@
       "data/review-texts/she-loves-me-2016/reviewing-the-drama--robin-riegelhaupt.json",
       "data/review-texts/shrek-the-musical-2008/newsday--linda-winer-bway.json",
       "data/review-texts/shadowlands-west-end-2026/independent--alice-saville.json",
-      "data/review-texts/the-devil-wears-prada-west-end-2024/independent--alice-saville.json"
+      "data/review-texts/the-devil-wears-prada-west-end-2024/independent--alice-saville.json",
+      "data/review-texts/the-crucible-1991/vulture--jesse-green.json",
+      "data/review-texts/bernhardthamlet-2018/broadwaynews--elizabeth-bradley.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/timeout--andrzej-lukowski.json",
@@ -1955,11 +1971,15 @@
       "purpose/deadline--greg-evans.json",
       "stranger-things-the-first-shadow-west-end-2023/lost-in-theatreland--jill-johnson.json",
       "witness-for-the-prosecution-west-end-2022/artsdesk--heather-neill.json",
-      "witness-for-the-prosecution-west-end-2022/lost-in-theatreland--amy-rye.json"
+      "witness-for-the-prosecution-west-end-2022/lost-in-theatreland--amy-rye.json",
+      "hello-dolly-1995/nytimes--jesse-green.json",
+      "once-upon-a-mattress-1996/vulture--christopher-bonanos.json",
+      "the-unknown-2026/nytimes--alexis-soloski.json",
+      "you-got-older-2026/nytimes--charles-isherwood.json"
     ]
   },
   "startTime": "2026-03-10T09:53:53.378Z",
-  "lastProcessed": "witness-for-the-prosecution-west-end-2022/times-uk--clive-davis.json",
+  "lastProcessed": "bernhardthamlet-2018/broadwaynews--elizabeth-bradley.json",
   "log": [
     {
       "t": "2026-03-10T09:54:28.456Z",
@@ -2805,6 +2825,34 @@
       "t": "2026-03-11T04:58:03.083Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-11T05:50:01.797Z",
+      "event": "bb-session",
+      "session": "dc51139f",
+      "url": "https://www.nytimes.com/2017/10/26/theater/review-m-butterfly-david-henry-hwang-"
+    },
+    {
+      "t": "2026-03-11T05:50:02.886Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-11T05:50:41.998Z",
+      "event": "bb-session",
+      "session": "851b8fed",
+      "url": "http://www.nytimes.com/2016/04/01/theater/review-in-arthur-millers-crucible-firs"
+    },
+    {
+      "t": "2026-03-11T05:50:43.090Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-11T05:55:33.058Z",
+      "event": "bb-session",
+      "session": "10bb31e2",
+      "url": "https://broadway.news/2018/09/25/review-an-exploration-of-female-power-in-bernha"
     }
   ]
 }
