@@ -108,7 +108,14 @@
     "hadestown-2019/ew--jessica-derschowitz.json",
     "hadestown-2019/theatermania--jesse-green.json",
     "hadestown-2019/timeout--adam-feldman.json",
-    "hamilton-2015/theatermania--adam-hetrick.json"
+    "hamilton-2015/theatermania--adam-hetrick.json",
+    "hamilton-2015/wsj--terry-teachout.json",
+    "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json",
+    "heathers-the-musical-off-broadway-2025/new-york-sun--elysa-gardner.json",
+    "heathers-the-musical-off-broadway-2025/observer--david-cote.json",
+    "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
+    "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json",
+    "hercules-west-end-2025/timeout--andrzej-lukowski.json"
   ],
   "failed": [
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json",
@@ -121,7 +128,10 @@
     "wicked-2003/vulture--bilge-eberi.json",
     "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
     "arcadia-west-end-2026/guardian--arifa-akbar.json",
-    "hadestown-2019/guardian--adrian-horton.json"
+    "hadestown-2019/guardian--adrian-horton.json",
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "hold-on-to-your-butts-off-broadway-2026/guardian--chris-wiegand.json",
+    "im-sorry-prime-minister-west-end-2026/timeout-london--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -188,7 +198,11 @@
       "hadestown-2019/ew--jessica-derschowitz.json",
       "hadestown-2019/theatermania--jesse-green.json",
       "hadestown-2019/timeout--adam-feldman.json",
-      "hamilton-2015/theatermania--adam-hetrick.json"
+      "hamilton-2015/theatermania--adam-hetrick.json",
+      "heathers-the-musical-off-broadway-2025/new-york-sun--elysa-gardner.json",
+      "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
+      "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json",
+      "hercules-west-end-2025/timeout--andrzej-lukowski.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -228,7 +242,9 @@
       "data/review-texts/night-side-songs-off-broadway-2026/nytimes--laura-collins-hughes.json",
       "night-side-songs-off-broadway-2026/nytimes--laura-collins-hughes.json",
       "data/review-texts/oh-mary-2024/hollywood-reporter--david-rooney.json",
-      "oh-mary-2024/hollywood-reporter--david-rooney.json"
+      "oh-mary-2024/hollywood-reporter--david-rooney.json",
+      "data/review-texts/heathers-the-musical-off-broadway-2025/observer--david-cote.json",
+      "heathers-the-musical-off-broadway-2025/observer--david-cote.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json"
@@ -240,7 +256,9 @@
       "data/review-texts/death-becomes-her-2024/newyorker--helen-shaw.json",
       "data/review-texts/wicked-2003/vulture--bilge-eberi.json",
       "data/review-texts/arcadia-west-end-2026/guardian--arifa-akbar.json",
-      "data/review-texts/hadestown-2019/guardian--adrian-horton.json"
+      "data/review-texts/hadestown-2019/guardian--adrian-horton.json",
+      "data/review-texts/hold-on-to-your-butts-off-broadway-2026/guardian--chris-wiegand.json",
+      "data/review-texts/im-sorry-prime-minister-west-end-2026/timeout-london--unknown.json"
     ],
     "archive": [
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
@@ -269,11 +287,13 @@
       "bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
       "chinese-republicans-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
       "cold-war-choir-practice-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
-      "dirty-books-off-broadway-2025/broadwaynews--chloe-rabinowitz.json"
+      "dirty-books-off-broadway-2025/broadwaynews--chloe-rabinowitz.json",
+      "hamilton-2015/wsj--terry-teachout.json",
+      "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json"
     ]
   },
   "startTime": "2026-03-11T13:15:22.957Z",
-  "lastProcessed": "hamilton-2015/theatermania--adam-hetrick.json",
+  "lastProcessed": "im-sorry-prime-minister-west-end-2026/timeout-london--unknown.json",
   "log": [
     {
       "t": "2026-03-11T13:19:37.516Z",
@@ -406,6 +426,39 @@
       "t": "2026-03-11T13:52:35.289Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T14:03:52.114Z",
+      "event": "bb-session",
+      "session": "ac9937ea",
+      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
+    },
+    {
+      "t": "2026-03-11T14:03:53.512Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T14:04:12.584Z",
+      "event": "bb-session",
+      "session": "40578d71",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-11T14:04:13.984Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T14:05:24.197Z",
+      "event": "bb-session",
+      "session": "4634fd6c",
+      "url": "https://observer.com/2025/07/theater-review-heathers-off-broadway-revival/"
+    },
+    {
+      "t": "2026-03-11T14:05:25.697Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
     }
   ]
 }

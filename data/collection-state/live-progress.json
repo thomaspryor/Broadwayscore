@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-03-11T14:03:49.194Z",
-  "processed": 109,
-  "failed": 11,
-  "successRate": "90.8%",
+  "updatedAt": "2026-03-11T14:06:39.324Z",
+  "processed": 116,
+  "failed": 14,
+  "successRate": "89.2%",
   "tierBreakdown": {
-    "playwright": 63,
+    "playwright": 67,
     "amp": 20,
-    "browserbase": 16,
+    "browserbase": 18,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 5,
-    "archive": 27
+    "archiveToday": 7,
+    "archive": 29
   },
-  "browserbaseSessions": 12,
+  "browserbaseSessions": 15,
   "recentActivity": [
-    {
-      "t": "2026-03-11T13:25:32.625Z",
-      "event": "bb-session",
-      "session": "25182303",
-      "url": "https://www.newyorker.com/magazine/2024/12/02/death-becomes-her-theatre-review-b"
-    },
-    {
-      "t": "2026-03-11T13:25:34.127Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-03-11T13:26:03.488Z",
-      "event": "bb-session",
-      "session": "45df0bec",
-      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
-    },
-    {
-      "t": "2026-03-11T13:26:04.879Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-11T13:26:52.606Z",
-      "event": "bb-session",
-      "session": "b4af19ed",
-      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
-    },
-    {
-      "t": "2026-03-11T13:26:53.955Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-11T13:27:34.547Z",
       "event": "bb-session",
@@ -124,6 +91,39 @@
       "t": "2026-03-11T13:52:35.289Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T14:03:52.114Z",
+      "event": "bb-session",
+      "session": "ac9937ea",
+      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
+    },
+    {
+      "t": "2026-03-11T14:03:53.512Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T14:04:12.584Z",
+      "event": "bb-session",
+      "session": "40578d71",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-11T14:04:13.984Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T14:05:24.197Z",
+      "event": "bb-session",
+      "session": "4634fd6c",
+      "url": "https://observer.com/2025/07/theater-review-heathers-off-broadway-revival/"
+    },
+    {
+      "t": "2026-03-11T14:05:25.697Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
     }
   ]
 }
