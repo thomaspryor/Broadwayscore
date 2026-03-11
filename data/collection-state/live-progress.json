@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-11T13:48:10.494Z",
-  "processed": 62,
-  "failed": 8,
-  "successRate": "88.6%",
+  "updatedAt": "2026-03-11T13:52:31.018Z",
+  "processed": 71,
+  "failed": 9,
+  "successRate": "88.8%",
   "tierBreakdown": {
-    "playwright": 24,
+    "playwright": 31,
     "amp": 20,
     "browserbase": 16,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 19
+    "archiveToday": 3,
+    "archive": 21
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 11,
   "recentActivity": [
-    {
-      "t": "2026-03-11T13:19:37.516Z",
-      "event": "bb-session",
-      "session": "3944d857",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
-    },
-    {
-      "t": "2026-03-11T13:19:39.198Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-11T13:21:51.782Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-11T13:33:47.023Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-11T13:49:28.738Z",
+      "event": "bb-session",
+      "session": "d5a3267a",
+      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
+    },
+    {
+      "t": "2026-03-11T13:49:30.209Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
