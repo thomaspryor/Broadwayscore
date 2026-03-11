@@ -1341,7 +1341,17 @@
     "machinal-2014/wsj--terry-teachout.json",
     "mean-girls-2018/broadwaynews--charles-isherwood.json",
     "new-york-new-york-2023/wsj--charles-isherwood.json",
-    "newsies-the-musical-2012/wsj--terry-teachout.json"
+    "newsies-the-musical-2012/wsj--terry-teachout.json",
+    "next-to-normal-2009/wsj--terry-teachout.json",
+    "no-mans-land-2013/wsj--terry-teachout.json",
+    "oh-hello-on-broadway-2016/wsj--terry-teachout.json",
+    "oklahoma-2002/wsj--terry-teachout.json",
+    "oklahoma-2019/broadwaynews--charles-isherwood.json",
+    "oklahoma-2019/wsj--terry-teachout.json",
+    "old-times-2015/wsj--unknown.json",
+    "on-the-town-2014/wsj--terry-teachout.json",
+    "once-2012/wsj--terry-teachout.json",
+    "one-man-two-guvnors-2012/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2104,7 +2114,8 @@
       "data/review-texts/hold-on-to-your-butts-2026/timeout-london--dave-calhoun.json",
       "data/review-texts/la-bete-1991/wsj--terry-teachout.json",
       "data/review-texts/les-liaisons-dangereuses-1987/timeout--david-cote.json",
-      "data/review-texts/hello-dolly-2017/broadwaynews--charles-isherwood.json"
+      "data/review-texts/hello-dolly-2017/broadwaynews--charles-isherwood.json",
+      "data/review-texts/oklahoma-2019/broadwaynews--charles-isherwood.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/timeout--andrzej-lukowski.json",
@@ -2263,7 +2274,7 @@
     ]
   },
   "startTime": "2026-03-10T09:53:53.378Z",
-  "lastProcessed": "newsies-the-musical-2012/wsj--terry-teachout.json",
+  "lastProcessed": "one-man-two-guvnors-2012/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-03-10T09:54:28.456Z",
@@ -3221,6 +3232,111 @@
     },
     {
       "t": "2026-03-11T08:20:55.085Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T08:22:20.958Z",
+      "event": "bb-session",
+      "session": "3d345b0c",
+      "url": "https://www.wsj.com/articles/SB124040013168146153"
+    },
+    {
+      "t": "2026-03-11T08:22:22.547Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T08:23:34.809Z",
+      "event": "bb-session",
+      "session": "68827f93",
+      "url": "https://www.wsj.com/articles/SB10001424052702304870304579190550406516666"
+    },
+    {
+      "t": "2026-03-11T08:23:36.083Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T08:24:43.201Z",
+      "event": "bb-session",
+      "session": "17b6b01d",
+      "url": "https://www.wsj.com/articles/oh-hello-on-broadway-review-an-evening-of-inspired-"
+    },
+    {
+      "t": "2026-03-11T08:24:44.576Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T08:26:03.555Z",
+      "event": "bb-session",
+      "session": "622a5f51",
+      "url": "https://www.wsj.com/articles/oklahoma-and-the-cradle-will-rock-review-playing-at"
+    },
+    {
+      "t": "2026-03-11T08:26:04.948Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T08:27:29.757Z",
+      "event": "bb-session",
+      "session": "6ef150e7",
+      "url": "https://broadway.news/2019/04/07/review-a-distracted-oklahoma-skims-the-emotiona"
+    },
+    {
+      "t": "2026-03-11T08:27:33.011Z",
+      "event": "bb-session",
+      "session": "f699397c",
+      "url": "https://www.wsj.com/articles/oklahoma-review-a-bold-reimagining-of-a-classic-115"
+    },
+    {
+      "t": "2026-03-11T08:27:34.603Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T08:28:56.129Z",
+      "event": "bb-session",
+      "session": "ecbba14d",
+      "url": "https://www.wsj.com/article_email/old-times-review-made-in-england-assembled-on-"
+    },
+    {
+      "t": "2026-03-11T08:28:57.631Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T08:29:40.090Z",
+      "event": "bb-session",
+      "session": "0ef4059d",
+      "url": "https://www.wsj.com/articles/on-the-town-review-sailors-ashore-1414008025"
+    },
+    {
+      "t": "2026-03-11T08:29:41.464Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T08:30:51.928Z",
+      "event": "bb-session",
+      "session": "d35f770e",
+      "url": "https://www.wsj.com/articles/SB10001424052702304299304577349593017819316"
+    },
+    {
+      "t": "2026-03-11T08:30:53.257Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T08:32:03.064Z",
+      "event": "bb-session",
+      "session": "88e4772b",
+      "url": "https://www.wsj.com/articles/SB10001424052702304743704577379503806067550"
+    },
+    {
+      "t": "2026-03-11T08:32:04.575Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
