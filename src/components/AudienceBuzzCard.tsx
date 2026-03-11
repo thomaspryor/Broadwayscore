@@ -3,6 +3,7 @@
 import {
   getAudienceGrade,
   getAudienceGradeClasses,
+  getTotalAudienceReviews,
 } from '@/lib/audience-grade-utils';
 import type { AudienceBuzzData } from '@/lib/data-types';
 
@@ -178,9 +179,7 @@ export default function AudienceBuzzCard({ buzz, showScoreUrl, limitedSources }:
           <div>
             <div className={`text-lg font-bold ${colors.textClass}`}>{grade.label}</div>
             <div className="text-sm text-gray-400">
-              Based on {formatReviewCount(
-                (showScore?.reviewCount || 0) + (mezzanine?.reviewCount || 0) + (reddit?.reviewCount || 0) + (theatr?.reviewCount || 0)
-              )} audience reviews
+              Based on {formatReviewCount(getTotalAudienceReviews(buzz))} audience reviews
             </div>
           </div>
         </div>

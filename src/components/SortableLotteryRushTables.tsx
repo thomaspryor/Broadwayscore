@@ -331,7 +331,7 @@ export function StandingRoomTable({ data }: StandingRoomTableProps) {
                   <td className="py-3 px-4 text-right">
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-gray-500/15 border border-gray-500/30 text-gray-300 font-semibold">
                       <TicketIcon className="w-3.5 h-3.5" />
-                      ${price}
+                      {price != null ? `$${price}` : '—'}
                     </span>
                   </td>
                   <td className="py-3 px-4 text-center hidden md:table-cell">
