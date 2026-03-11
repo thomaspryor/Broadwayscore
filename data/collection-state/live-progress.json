@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-11T14:26:18.118Z",
-  "processed": 189,
+  "updatedAt": "2026-03-11T14:28:16.412Z",
+  "processed": 199,
   "failed": 21,
-  "successRate": "90.0%",
+  "successRate": "90.5%",
   "tierBreakdown": {
-    "playwright": 123,
+    "playwright": 131,
     "amp": 20,
-    "browserbase": 28,
+    "browserbase": 30,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 8,
-    "archive": 41
+    "archive": 42
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-03-11T14:03:52.114Z",
-      "event": "bb-session",
-      "session": "ac9937ea",
-      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
-    },
-    {
-      "t": "2026-03-11T14:03:53.512Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-11T14:04:12.584Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-11T14:23:52.182Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T14:26:39.188Z",
+      "event": "bb-session",
+      "session": "1f175e36",
+      "url": "https://observer.com/2024/04/review-flashy-and-fake-great-gatsby-caps-a-weak-sea"
+    },
+    {
+      "t": "2026-03-11T14:26:40.179Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
     }
   ]
 }
