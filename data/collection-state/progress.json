@@ -661,7 +661,8 @@
     "once-upon-a-mattress-1996/vulture--christopher-bonanos.json",
     "the-crucible-1991/nytimes--ben-brantley.json",
     "the-unknown-2026/nytimes--alexis-soloski.json",
-    "you-got-older-2026/nytimes--charles-isherwood.json"
+    "you-got-older-2026/nytimes--charles-isherwood.json",
+    "falsettos-1992/wsj--terry-teachout.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -1101,7 +1102,16 @@
     "witness-for-the-prosecution-west-end-2022/times-uk--clive-davis.json",
     "the-crucible-1991/vulture--jesse-green.json",
     "american-son-2018/broadwaynews--charles-isherwood.json",
-    "bernhardthamlet-2018/broadwaynews--elizabeth-bradley.json"
+    "bernhardthamlet-2018/broadwaynews--elizabeth-bradley.json",
+    "burn-this-2019/broadwaynews--charles-isherwood.json",
+    "carousel-2018/broadwaynews--charles-isherwood.json",
+    "children-of-a-lesser-god-2018/broadwaynews--elizabeth-bradley.json",
+    "choir-boy-2019/broadwaynews--elizabeth-bradley.json",
+    "end-of-the-rainbow-west-end-2026/new-jersey-newsroom--michael-sommers.json",
+    "escape-to-margaritaville-2018/broadwaynews--elizabeth-bradley.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/broadwaynews--charles-isherwood.json",
+    "frozen-2018/broadwaynews--charles-isherwood.json",
+    "gettin-the-band-back-together-2018/broadwaynews--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1825,7 +1835,13 @@
       "data/review-texts/shadowlands-west-end-2026/independent--alice-saville.json",
       "data/review-texts/the-devil-wears-prada-west-end-2024/independent--alice-saville.json",
       "data/review-texts/the-crucible-1991/vulture--jesse-green.json",
-      "data/review-texts/bernhardthamlet-2018/broadwaynews--elizabeth-bradley.json"
+      "data/review-texts/bernhardthamlet-2018/broadwaynews--elizabeth-bradley.json",
+      "data/review-texts/burn-this-2019/broadwaynews--charles-isherwood.json",
+      "data/review-texts/carousel-2018/broadwaynews--charles-isherwood.json",
+      "data/review-texts/children-of-a-lesser-god-2018/broadwaynews--elizabeth-bradley.json",
+      "data/review-texts/choir-boy-2019/broadwaynews--elizabeth-bradley.json",
+      "data/review-texts/escape-to-margaritaville-2018/broadwaynews--elizabeth-bradley.json",
+      "data/review-texts/frankie-and-johnny-in-the-clair-de-lune-2019/broadwaynews--charles-isherwood.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/timeout--andrzej-lukowski.json",
@@ -1975,11 +1991,12 @@
       "hello-dolly-1995/nytimes--jesse-green.json",
       "once-upon-a-mattress-1996/vulture--christopher-bonanos.json",
       "the-unknown-2026/nytimes--alexis-soloski.json",
-      "you-got-older-2026/nytimes--charles-isherwood.json"
+      "you-got-older-2026/nytimes--charles-isherwood.json",
+      "falsettos-1992/wsj--terry-teachout.json"
     ]
   },
   "startTime": "2026-03-10T09:53:53.378Z",
-  "lastProcessed": "bernhardthamlet-2018/broadwaynews--elizabeth-bradley.json",
+  "lastProcessed": "gettin-the-band-back-together-2018/broadwaynews--charles-isherwood.json",
   "log": [
     {
       "t": "2026-03-10T09:54:28.456Z",
@@ -2853,6 +2870,53 @@
       "event": "bb-session",
       "session": "10bb31e2",
       "url": "https://broadway.news/2018/09/25/review-an-exploration-of-female-power-in-bernha"
+    },
+    {
+      "t": "2026-03-11T05:55:40.835Z",
+      "event": "bb-session",
+      "session": "1ebb9ea0",
+      "url": "https://broadway.news/2019/04/16/review-a-blazing-adam-driver-commands-the-stage"
+    },
+    {
+      "t": "2026-03-11T05:55:53.400Z",
+      "event": "bb-session",
+      "session": "f05b96a1",
+      "url": "https://broadway.news/2018/04/12/review-multi-layered-carousel-finds-new-depth/"
+    },
+    {
+      "t": "2026-03-11T05:55:57.419Z",
+      "event": "bb-session",
+      "session": "ae8717c9",
+      "url": "https://broadway.news/2018/04/11/review-children-lesser-god-struggles-connect/"
+    },
+    {
+      "t": "2026-03-11T05:56:00.249Z",
+      "event": "bb-session",
+      "session": "6728deee",
+      "url": "https://broadway.news/2019/01/08/review-choir-boy-vibrates-with-emotion-moves-wi"
+    },
+    {
+      "t": "2026-03-11T05:57:02.326Z",
+      "event": "bb-session",
+      "session": "2bba40ce",
+      "url": "https://broadway.news/2018/03/15/review-escape-margaritaville-concocted-musical-"
+    },
+    {
+      "t": "2026-03-11T05:57:05.440Z",
+      "event": "bb-session",
+      "session": "4d000c94",
+      "url": "https://www.wsj.com/articles/falsettos-review-boundary-pushing-no-more-147761460"
+    },
+    {
+      "t": "2026-03-11T05:57:06.543Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T05:57:27.090Z",
+      "event": "bb-session",
+      "session": "85e7087d",
+      "url": "https://broadway.news/2019/05/30/review-a-blending-of-the-prosaic-and-poetry-in-"
     }
   ]
 }
