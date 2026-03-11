@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-11T13:27:15.625Z",
-  "processed": 24,
+  "updatedAt": "2026-03-11T13:30:34.107Z",
+  "processed": 34,
   "failed": 6,
-  "successRate": "80.0%",
+  "successRate": "85.0%",
   "tierBreakdown": {
-    "playwright": 13,
-    "amp": 6,
-    "browserbase": 6,
+    "playwright": 15,
+    "amp": 10,
+    "browserbase": 10,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 2,
-    "archive": 5
+    "archive": 9
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-03-11T13:19:37.516Z",
@@ -67,6 +67,28 @@
     },
     {
       "t": "2026-03-11T13:26:53.955Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-11T13:27:34.547Z",
+      "event": "bb-session",
+      "session": "5afaf521",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/sarah-hyland-broadway-cast-of-j"
+    },
+    {
+      "t": "2026-03-11T13:27:36.011Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-11T13:28:04.602Z",
+      "event": "bb-session",
+      "session": "da533da8",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-11T13:28:06.082Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
