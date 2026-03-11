@@ -205,7 +205,7 @@ export default function AudienceBuzzCard({ buzz, showScoreUrl, limitedSources }:
           name="Reddit"
           icon={<RedditIcon className="text-orange-400" />}
           score={reddit?.score ?? null}
-          reviewCount={reddit?.totalComments ?? reddit?.reviewCount ?? null}
+          reviewCount={reddit?.reviewCount ?? null}
           volumeLabel="mentions"
           comingSoon={!reddit}
         />
