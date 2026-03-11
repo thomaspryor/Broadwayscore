@@ -1,86 +1,20 @@
 {
-  "updatedAt": "2026-03-11T08:33:20.366Z",
+  "updatedAt": "2026-03-11T08:43:09.433Z",
   "processed": 678,
-  "failed": 672,
-  "successRate": "50.2%",
+  "failed": 682,
+  "successRate": "49.9%",
   "tierBreakdown": {
-    "playwright": 6,
-    "amp": 2,
-    "browserbase": 0,
-    "directCookies": 0,
+    "playwright": 481,
+    "amp": 32,
+    "browserbase": 50,
+    "directCookies": 4,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 183,
     "archive": 153
   },
-  "browserbaseSessions": 14,
+  "browserbaseSessions": 20,
   "recentActivity": [
-    {
-      "t": "2026-03-11T08:20:55.085Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-11T08:22:20.958Z",
-      "event": "bb-session",
-      "session": "3d345b0c",
-      "url": "https://www.wsj.com/articles/SB124040013168146153"
-    },
-    {
-      "t": "2026-03-11T08:22:22.547Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-11T08:23:34.809Z",
-      "event": "bb-session",
-      "session": "68827f93",
-      "url": "https://www.wsj.com/articles/SB10001424052702304870304579190550406516666"
-    },
-    {
-      "t": "2026-03-11T08:23:36.083Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-11T08:24:43.201Z",
-      "event": "bb-session",
-      "session": "17b6b01d",
-      "url": "https://www.wsj.com/articles/oh-hello-on-broadway-review-an-evening-of-inspired-"
-    },
-    {
-      "t": "2026-03-11T08:24:44.576Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-11T08:26:03.555Z",
-      "event": "bb-session",
-      "session": "622a5f51",
-      "url": "https://www.wsj.com/articles/oklahoma-and-the-cradle-will-rock-review-playing-at"
-    },
-    {
-      "t": "2026-03-11T08:26:04.948Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-11T08:27:29.757Z",
-      "event": "bb-session",
-      "session": "6ef150e7",
-      "url": "https://broadway.news/2019/04/07/review-a-distracted-oklahoma-skims-the-emotiona"
-    },
-    {
-      "t": "2026-03-11T08:27:33.011Z",
-      "event": "bb-session",
-      "session": "f699397c",
-      "url": "https://www.wsj.com/articles/oklahoma-review-a-bold-reimagining-of-a-classic-115"
-    },
-    {
-      "t": "2026-03-11T08:27:34.603Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-11T08:28:56.129Z",
       "event": "bb-session",
@@ -122,6 +56,72 @@
     },
     {
       "t": "2026-03-11T08:32:04.575Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T08:33:23.644Z",
+      "event": "bb-session",
+      "session": "2fd19c31",
+      "url": "https://www.wsj.com/articles/SB10001424127887324883604578398663691234567"
+    },
+    {
+      "t": "2026-03-11T08:33:25.021Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T08:34:31.536Z",
+      "event": "bb-session",
+      "session": "1746cfd7",
+      "url": "https://www.wsj.com/articles/othello-review-denzel-washingtons-dismal-revival-1d"
+    },
+    {
+      "t": "2026-03-11T08:34:32.990Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T08:35:41.377Z",
+      "event": "bb-session",
+      "session": "98013367",
+      "url": "https://www.wsj.com/articles/SB10001424052970203687504577001573005508658"
+    },
+    {
+      "t": "2026-03-11T08:35:42.889Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T08:36:54.626Z",
+      "event": "bb-session",
+      "session": "d9c8df06",
+      "url": "https://www.wsj.com/articles/parade-review-a-broadway-musical-of-american-bigotr"
+    },
+    {
+      "t": "2026-03-11T08:36:55.951Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T08:38:10.204Z",
+      "event": "bb-session",
+      "session": "adb2c646",
+      "url": "https://www.wsj.com/articles/SB120345678901234567"
+    },
+    {
+      "t": "2026-03-11T08:38:11.573Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T08:39:15.212Z",
+      "event": "bb-session",
+      "session": "7d28da98",
+      "url": "https://www.wsj.com/articles/patriots-review-on-broadway-putin-peter-morgan-russ"
+    },
+    {
+      "t": "2026-03-11T08:39:16.575Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
