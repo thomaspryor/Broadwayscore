@@ -418,6 +418,7 @@ async function scrapeNYCTheatreRoundups() {
 
   // Filter to shows from 2023+ (NYC Theatre only covers recent shows)
   let recentShows = shows.filter(s => {
+    if (s.status === 'closed') return false; // Skip closed shows — they won't get new reviews
     const opening = new Date(s.openingDate);
     return opening >= new Date('2023-01-01');
   });
