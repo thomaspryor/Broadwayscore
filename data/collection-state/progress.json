@@ -637,7 +637,8 @@
     "burn-this-1987/timeout--adam-feldman.json",
     "faith-healer-2006/guardian--mark-lawson.json",
     "hamlet-2026/theatermania--zachary-stewart.json",
-    "heathers-the-musical-2025/nypost--elisabeth-vincentelli.json"
+    "heathers-the-musical-2025/nypost--elisabeth-vincentelli.json",
+    "into-the-woods-2002/wsj--charles-isherwood.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -911,7 +912,16 @@
     "gettin-the-band-back-together-2018/broadwaynews--charles-isherwood.json",
     "head-over-heels-2018/broadwaynews--charles-isherwood.json",
     "head-over-heels-2018/theater-reviews-from-my-seat--joe-lombardi.json",
-    "heathers-the-musical-2025/ew--kyle-anderson.json"
+    "heathers-the-musical-2025/ew--kyle-anderson.json",
+    "hedda-gabler-2009/wsj--terry-teachout.json",
+    "hello-dolly-2017/broadwaynews--charles-isherwood.json",
+    "hold-on-to-your-butts-2026/timeout-london--dave-calhoun.json",
+    "how-to-succeed-in-business-without-really-trying-2011/newsday--linda-winer.json",
+    "how-to-succeed-in-business-without-really-trying-2011/theatermania--david-rooney.json",
+    "indecent-2017/theatermania--jesse-green.json",
+    "is-he-dead-2007/ew--thom-geier.json",
+    "it-shoulda-been-you-2015/new-jersey-newsroom--michael-sommers.json",
+    "jackals-off-broadway-2026/guardian--michael-billington.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1586,7 +1596,9 @@
       "data/review-texts/dear-evan-hansen-2016/reviewing-the-drama--robin-riegelhaupt.json",
       "data/review-texts/falsettos-2016/reviewing-the-drama--robin-riegelhaupt.json",
       "data/review-texts/head-over-heels-2018/broadwaynews--charles-isherwood.json",
-      "data/review-texts/head-over-heels-2018/theater-reviews-from-my-seat--joe-lombardi.json"
+      "data/review-texts/head-over-heels-2018/theater-reviews-from-my-seat--joe-lombardi.json",
+      "data/review-texts/hold-on-to-your-butts-2026/timeout-london--dave-calhoun.json",
+      "data/review-texts/it-shoulda-been-you-2015/new-jersey-newsroom--michael-sommers.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/timeout--andrzej-lukowski.json",
@@ -1724,11 +1736,12 @@
       "hamlet-2026/nytimes--charles-isherwood.json",
       "heathers-the-musical-2025/nytimes--ben-brantley.json",
       "she-loves-me-1994/nytimes--ben-brantley.json",
-      "skylight-1996/nytimes--ben-brantley.json"
+      "skylight-1996/nytimes--ben-brantley.json",
+      "into-the-woods-2002/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-03-10T09:53:53.378Z",
-  "lastProcessed": "heathers-the-musical-2025/nypost--elisabeth-vincentelli.json",
+  "lastProcessed": "jackals-off-broadway-2026/guardian--michael-billington.json",
   "log": [
     {
       "t": "2026-03-10T09:54:28.456Z",
@@ -2299,6 +2312,39 @@
       "t": "2026-03-11T04:19:43.945Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-11T04:20:02.501Z",
+      "event": "bb-session",
+      "session": "1281d74d",
+      "url": "https://www.wsj.com/articles/SB123456789012345678"
+    },
+    {
+      "t": "2026-03-11T04:20:03.770Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T04:22:21.247Z",
+      "event": "bb-session",
+      "session": "6b83632b",
+      "url": "https://www.newsday.com/entertainment/theater/daniel-radcliffe-knows-how-to-succ"
+    },
+    {
+      "t": "2026-03-11T04:22:22.372Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-11T04:22:53.103Z",
+      "event": "bb-session",
+      "session": "0af3e597",
+      "url": "https://www.wsj.com/articles/into-the-woods-broadway-steven-sondheim-review-jame"
+    },
+    {
+      "t": "2026-03-11T04:22:54.268Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
