@@ -643,7 +643,9 @@
     "kinky-boots-off-broadway-2026/wsj--terry-teachout.json",
     "little-shop-of-horrors-2019/deadline--greg-evans.json",
     "little-shop-of-horrors-2019/nydailynews--chris-jones.json",
-    "little-shop-of-horrors-2019/theatre-reviews-limited--david-roberts.json"
+    "little-shop-of-horrors-2019/theatre-reviews-limited--david-roberts.json",
+    "moulin-rouge-the-musical-review/deadline--greg-evans.json",
+    "mrs-doubtfire-2021/wsj--unknown.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -951,7 +953,15 @@
     "machinal-2014/wsj--terry-teachout.json",
     "mary-poppins-2006/nypost--clive-barnes.json",
     "master-class-2011/ew--melissa-rose-bernardo.json",
-    "mcneal-2024/observer--rex-reed.json"
+    "mcneal-2024/observer--rex-reed.json",
+    "mean-girls-2018/broadwaynews--charles-isherwood.json",
+    "memphis-2009/nydailynews--joe-dziemianowicz-bway.json",
+    "misery-2015/observer--rex-reed.json",
+    "miss-saigon-2017/observer--rex-reed.json",
+    "mothers-and-sons-2014/newsday--linda-winer.json",
+    "motown-the-musical-2013/wsj--terry-teachout.json",
+    "my-fair-lady-2018/wsj--terry-teachout.json",
+    "natasha-pierre-and-the-great-comet-of-1812-2016/theatermania--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1501,7 +1511,9 @@
       "data/review-texts/kinky-boots-2026/nypost--elisabeth-vincentelli.json",
       "kinky-boots-2026/nypost--elisabeth-vincentelli.json",
       "data/review-texts/little-shop-of-horrors-2019/deadline--greg-evans.json",
-      "little-shop-of-horrors-2019/deadline--greg-evans.json"
+      "little-shop-of-horrors-2019/deadline--greg-evans.json",
+      "data/review-texts/moulin-rouge-the-musical-review/deadline--greg-evans.json",
+      "moulin-rouge-the-musical-review/deadline--greg-evans.json"
     ],
     "directCookies": [
       "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json",
@@ -1641,7 +1653,8 @@
       "data/review-texts/la-bete-1991/new-jersey-newsroom--michael-sommers.json",
       "data/review-texts/la-bete-1991/wsj--terry-teachout.json",
       "data/review-texts/les-liaisons-dangereuses-1987/timeout--david-cote.json",
-      "data/review-texts/m-butterfly-2017/newnownextcom--michael-musto.json"
+      "data/review-texts/m-butterfly-2017/newnownextcom--michael-musto.json",
+      "data/review-texts/memphis-2009/nydailynews--joe-dziemianowicz-bway.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/timeout--andrzej-lukowski.json",
@@ -1781,11 +1794,12 @@
       "she-loves-me-1994/nytimes--ben-brantley.json",
       "skylight-1996/nytimes--ben-brantley.json",
       "into-the-woods-2002/wsj--charles-isherwood.json",
-      "kinky-boots-off-broadway-2026/wsj--terry-teachout.json"
+      "kinky-boots-off-broadway-2026/wsj--terry-teachout.json",
+      "mrs-doubtfire-2021/wsj--unknown.json"
     ]
   },
   "startTime": "2026-03-10T09:53:53.378Z",
-  "lastProcessed": "mcneal-2024/observer--rex-reed.json",
+  "lastProcessed": "natasha-pierre-and-the-great-comet-of-1812-2016/theatermania--charles-isherwood.json",
   "log": [
     {
       "t": "2026-03-10T09:54:28.456Z",
@@ -2477,6 +2491,83 @@
       "t": "2026-03-11T04:45:36.205Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-11T04:46:47.568Z",
+      "event": "bb-session",
+      "session": "8d696cb4",
+      "url": "https://observer.com/2015/11/misery-on-broadway-laurie-metcalf-and-bruce-willis-"
+    },
+    {
+      "t": "2026-03-11T04:46:48.725Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-11T04:47:09.085Z",
+      "event": "bb-session",
+      "session": "538d434c",
+      "url": "https://observer.com/2017/03/miss-saigon-broadway-revival-review/"
+    },
+    {
+      "t": "2026-03-11T04:47:10.212Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-11T04:47:55.878Z",
+      "event": "bb-session",
+      "session": "a405a130",
+      "url": "https://www.newsday.com/entertainment/review-b-way-s-mothers-and-sons-gentle-mov"
+    },
+    {
+      "t": "2026-03-11T04:47:57.140Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-11T04:48:18.730Z",
+      "event": "bb-session",
+      "session": "d3ab6e2f",
+      "url": "https://www.wsj.com/articles/SB10001424052702304402104579509770825649320"
+    },
+    {
+      "t": "2026-03-11T04:48:20.107Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T04:49:29.341Z",
+      "event": "bb-session",
+      "session": "d0387351",
+      "url": "https://deadline.com/2019/07/moulin-rouge-musical-broadway-review-alex-timbers-1"
+    },
+    {
+      "t": "2026-03-11T04:49:30.508Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-11T04:49:44.310Z",
+      "event": "bb-session",
+      "session": "f956db3f",
+      "url": "https://www.wsj.com/articles/mrs-doubtfire-jerry-zacks-robin-williams-rob-mcclur"
+    },
+    {
+      "t": "2026-03-11T04:49:45.464Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T04:50:14.828Z",
+      "event": "bb-session",
+      "session": "91430a32",
+      "url": "https://www.wsj.com/articles/my-fair-lady-review-a-loverly-revival-1524164401"
+    },
+    {
+      "t": "2026-03-11T04:50:16.018Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
