@@ -1331,7 +1331,17 @@
     "the-tempest-globe-west-end-2026/british-theatre--howard-loxton.json",
     "titanique-west-end-2024/thestage--paul-vale.json",
     "titanique-west-end-2024/times-uk--clive-davis.json",
-    "witness-for-the-prosecution-west-end-2022/times-uk--clive-davis.json"
+    "witness-for-the-prosecution-west-end-2022/times-uk--clive-davis.json",
+    "hello-dolly-2017/broadwaynews--charles-isherwood.json",
+    "job-2024/wsj--terry-teachout.json",
+    "king-kong-2018/broadwaynews--charles-isherwood.json",
+    "latin-history-for-morons-2017/broadwaynews--elizabeth-bradley.json",
+    "lobby-hero-2018/broadwaynews--elizabeth-bradley.json",
+    "m-butterfly-2017/broadwaynews--charles-isherwood.json",
+    "machinal-2014/wsj--terry-teachout.json",
+    "mean-girls-2018/broadwaynews--charles-isherwood.json",
+    "new-york-new-york-2023/wsj--charles-isherwood.json",
+    "newsies-the-musical-2012/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2093,7 +2103,8 @@
       "data/review-texts/picnic-2013/newsday--steve-parks.json",
       "data/review-texts/hold-on-to-your-butts-2026/timeout-london--dave-calhoun.json",
       "data/review-texts/la-bete-1991/wsj--terry-teachout.json",
-      "data/review-texts/les-liaisons-dangereuses-1987/timeout--david-cote.json"
+      "data/review-texts/les-liaisons-dangereuses-1987/timeout--david-cote.json",
+      "data/review-texts/hello-dolly-2017/broadwaynews--charles-isherwood.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/timeout--andrzej-lukowski.json",
@@ -2252,7 +2263,7 @@
     ]
   },
   "startTime": "2026-03-10T09:53:53.378Z",
-  "lastProcessed": "witness-for-the-prosecution-west-end-2022/times-uk--clive-davis.json",
+  "lastProcessed": "newsies-the-musical-2012/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-03-10T09:54:28.456Z",
@@ -3173,6 +3184,45 @@
       "event": "bb-session",
       "session": "85e7087d",
       "url": "https://broadway.news/2019/05/30/review-a-blending-of-the-prosaic-and-poetry-in-"
+    },
+    {
+      "t": "2026-03-11T08:17:53.674Z",
+      "event": "bb-session",
+      "session": "0938e5ee",
+      "url": "https://broadway.news/2018/02/22/review-bernadette-peters-shimmers-delights-hell"
+    },
+    {
+      "t": "2026-03-11T08:18:37.876Z",
+      "event": "bb-session",
+      "session": "4a72a808",
+      "url": "https://www.wsj.com/articles/theater-review-machinal-1389305827"
+    },
+    {
+      "t": "2026-03-11T08:18:39.400Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T08:19:55.851Z",
+      "event": "bb-session",
+      "session": "4a0b332e",
+      "url": "https://www.wsj.com/articles/new-york-new-york-review-a-big-budget-broadway-musi"
+    },
+    {
+      "t": "2026-03-11T08:19:57.312Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T08:20:53.587Z",
+      "event": "bb-session",
+      "session": "4665ec4f",
+      "url": "https://www.wsj.com/articles/SB10001424052702304459804577281372846072462"
+    },
+    {
+      "t": "2026-03-11T08:20:55.085Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
