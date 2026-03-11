@@ -61,26 +61,51 @@ async function searchScrapingBee(query) {
   }));
 }
 
+const BD_CUSTOMER = process.env.BRIGHTDATA_CUSTOMER || 'hl_a2c64a47';
+const BD_ZONE = process.env.BRIGHTDATA_SERP_ZONE || 'serp_api1';
+
 async function searchBrightData(query) {
-  const res = await fetch('https://api.brightdata.com/serp/req', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${BRIGHTDATA_TOKEN}`,
-    },
-    body: JSON.stringify({
-      query: query,
-      search_engine: 'google',
-      country: 'us',
-    }),
-    signal: AbortSignal.timeout(30000),
-  });
-  if (!res.ok) throw new Error(`BrightData ${res.status}`);
-  const data = await res.json();
-  return (data.organic || []).slice(0, 5).map(r => ({
-    url: (r.link || r.url || '').toLowerCase(),
-    title: r.title || '',
-  }));
+  // Step 1: Submit async request
+  const submitRes = await fetch(
+    `https://api.brightdata.com/serp/req?customer=${BD_CUSTOMER}&zone=${BD_ZONE}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${BRIGHTDATA_TOKEN}`,
+      },
+      body: JSON.stringify({ query: { q: query, gl: 'us' } }),
+      signal: AbortSignal.timeout(15000),
+    }
+  );
+  if (!submitRes.ok) throw new Error(`BrightData submit ${submitRes.status}`);
+  const submitData = await submitRes.json();
+  const responseId = submitData.response_id;
+  if (!responseId) throw new Error('No response_id');
+
+  // Step 2: Poll for results (max 20s)
+  for (let i = 0; i < 10; i++) {
+    await sleep(2000);
+    const pollRes = await fetch(
+      `https://api.brightdata.com/serp/get_result?response_id=${responseId}`,
+      {
+        headers: { 'Authorization': `Bearer ${BRIGHTDATA_TOKEN}` },
+        signal: AbortSignal.timeout(10000),
+      }
+    );
+    if (pollRes.status === 202) continue;
+    if (!pollRes.ok) throw new Error(`BrightData poll ${pollRes.status}`);
+    const data = await pollRes.json();
+    if (data.organic) {
+      return data.organic.slice(0, 5).map(r => ({
+        url: (r.link || r.url || '').toLowerCase(),
+        title: r.title || '',
+      }));
+    }
+    if (data.response_id) continue;
+    return [];
+  }
+  throw new Error('BrightData timeout (20s)');
 }
 
 function normalizeUrl(url) {

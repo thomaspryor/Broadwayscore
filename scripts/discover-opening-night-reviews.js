@@ -153,28 +153,54 @@ async function _serpViaScrapingBee(query, apiKey, nbResults) {
   return [];
 }
 
+const BD_CUSTOMER = process.env.BRIGHTDATA_CUSTOMER || 'hl_a2c64a47';
+const BD_ZONE = process.env.BRIGHTDATA_SERP_ZONE || 'serp_api1';
+
 async function _serpViaBrightData(query) {
   try {
-    const res = await fetch('https://api.brightdata.com/serp/req', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${BRIGHTDATA_TOKEN}`,
-      },
-      body: JSON.stringify({
-        query: query,
-        search_engine: 'google',
-        country: 'us',
-      }),
-      signal: AbortSignal.timeout(30000),
-    });
-    if (!res.ok) throw new Error(`BrightData SERP ${res.status}`);
-    const data = await res.json();
-    // BrightData SERP API returns { organic: [{link, title, ...}] }
-    return (data.organic || []).slice(0, 5).map(r => ({
-      url: r.link || r.url || '',
-      title: r.title || '',
-    }));
+    // Step 1: Submit async SERP request
+    const submitRes = await fetch(
+      `https://api.brightdata.com/serp/req?customer=${BD_CUSTOMER}&zone=${BD_ZONE}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${BRIGHTDATA_TOKEN}`,
+        },
+        body: JSON.stringify({ query: { q: query, gl: 'us' } }),
+        signal: AbortSignal.timeout(15000),
+      }
+    );
+    if (!submitRes.ok) throw new Error(`BrightData submit ${submitRes.status}: ${(await submitRes.text()).slice(0, 200)}`);
+    const submitData = await submitRes.json();
+    const responseId = submitData.response_id;
+    if (!responseId) throw new Error('No response_id from BrightData');
+
+    // Step 2: Poll for results (max 20s)
+    for (let i = 0; i < 10; i++) {
+      await new Promise(r => setTimeout(r, 2000));
+      const pollRes = await fetch(
+        `https://api.brightdata.com/serp/get_result?response_id=${responseId}`,
+        {
+          headers: { 'Authorization': `Bearer ${BRIGHTDATA_TOKEN}` },
+          signal: AbortSignal.timeout(10000),
+        }
+      );
+      if (pollRes.status === 202) continue; // Still processing
+      if (!pollRes.ok) throw new Error(`BrightData poll ${pollRes.status}`);
+      const data = await pollRes.json();
+      if (data.organic) {
+        return data.organic.slice(0, 5).map(r => ({
+          url: r.link || r.url || '',
+          title: r.title || '',
+        }));
+      }
+      // If no organic results yet, keep polling
+      if (data.response_id) continue;
+      return []; // Empty results
+    }
+    console.log('    ⚠ BrightData SERP timeout (20s) — returning empty');
+    return [];
   } catch (err) {
     console.log(`    ✗ BrightData SERP error: ${err.message}`);
     return [];
