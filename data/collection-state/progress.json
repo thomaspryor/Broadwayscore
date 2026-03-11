@@ -634,7 +634,8 @@
     "a-delicate-balance-1996/timeout--david-cote.json",
     "a-view-from-the-bridge-2015/guardian--lyn-gardner.json",
     "beautiful-little-fool-west-end-2026/timeout-london--tim-bano.json",
-    "burn-this-1987/timeout--adam-feldman.json"
+    "burn-this-1987/timeout--adam-feldman.json",
+    "faith-healer-2006/guardian--mark-lawson.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -891,7 +892,16 @@
     "dear-evan-hansen-2016/reviewing-the-drama--robin-riegelhaupt.json",
     "elling-2010/newsday--linda-winer.json",
     "end-of-the-rainbow-west-end-2026/new-jersey-newsroom--michael-sommers.json",
-    "equus-2008/nypost--elisabeth-vincentelli.json"
+    "equus-2008/nypost--elisabeth-vincentelli.json",
+    "equus-2008/theatermania--brian-scott-lipton.json",
+    "escape-to-margaritaville-2018/broadwaynews--elizabeth-bradley.json",
+    "escape-to-margaritaville-2018/onandoffbroadwaytheaterreviews--richard-seff.json",
+    "everyday-rapture-2010/newsday--unknown.json",
+    "falsettos-1992/wsj--terry-teachout.json",
+    "falsettos-2016/reviewing-the-drama--robin-riegelhaupt.json",
+    "fat-ham-2023/theatermania--adam-feldman.json",
+    "fish-in-the-dark-2015/newsday--unknown.json",
+    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/harlem-community-news--linda-armstrong.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1355,7 +1365,8 @@
       "a-delicate-balance-1996/timeout--david-cote.json",
       "a-view-from-the-bridge-2015/guardian--lyn-gardner.json",
       "beautiful-little-fool-west-end-2026/timeout-london--tim-bano.json",
-      "burn-this-1987/timeout--adam-feldman.json"
+      "burn-this-1987/timeout--adam-feldman.json",
+      "faith-healer-2006/guardian--mark-lawson.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -1559,7 +1570,8 @@
       "data/review-texts/children-of-a-lesser-god-2018/theater-reviews-from-my-seat--joe-lombardi.json",
       "data/review-texts/contact-2000/renew-here--simplecirc-inc.json",
       "data/review-texts/dear-evan-hansen-2016/review--robin-riegelhaupt.json",
-      "data/review-texts/dear-evan-hansen-2016/reviewing-the-drama--robin-riegelhaupt.json"
+      "data/review-texts/dear-evan-hansen-2016/reviewing-the-drama--robin-riegelhaupt.json",
+      "data/review-texts/falsettos-2016/reviewing-the-drama--robin-riegelhaupt.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/timeout--andrzej-lukowski.json",
@@ -1701,7 +1713,7 @@
     ]
   },
   "startTime": "2026-03-10T09:53:53.378Z",
-  "lastProcessed": "equus-2008/nypost--elisabeth-vincentelli.json",
+  "lastProcessed": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/harlem-community-news--linda-armstrong.json",
   "log": [
     {
       "t": "2026-03-10T09:54:28.456Z",
@@ -2222,6 +2234,39 @@
       "t": "2026-03-10T20:41:35.596Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-11T04:12:54.530Z",
+      "event": "bb-session",
+      "session": "39f0ba63",
+      "url": "https://www.newsday.com/entertainment/theater/sheree-rene-scott-s-likable-everyd"
+    },
+    {
+      "t": "2026-03-11T04:12:55.665Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-11T04:13:39.923Z",
+      "event": "bb-session",
+      "session": "60c3d563",
+      "url": "https://www.wsj.com/articles/falsettos-review-boundary-pushing-no-more-147761460"
+    },
+    {
+      "t": "2026-03-11T04:13:41.064Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T04:15:45.746Z",
+      "event": "bb-session",
+      "session": "f9e1255c",
+      "url": "https://www.newsday.com/entertainment/theater/fish-in-the-dark-review-larry-davi"
+    },
+    {
+      "t": "2026-03-11T04:15:46.983Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
     }
   ]
 }

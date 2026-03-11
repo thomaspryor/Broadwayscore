@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-03-10T21:57:07.463Z",
-  "processed": 635,
-  "failed": 255,
-  "successRate": "71.3%",
+  "updatedAt": "2026-03-11T04:16:21.190Z",
+  "processed": 636,
+  "failed": 264,
+  "successRate": "70.7%",
   "tierBreakdown": {
-    "playwright": 460,
+    "playwright": 461,
     "amp": 32,
     "browserbase": 40,
     "directCookies": 3,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 119,
+    "archiveToday": 120,
     "archive": 136
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-03-10T17:58:14.400Z",
-      "event": "bb-session",
-      "session": "8f3d9fc8",
-      "url": "https://www.nytimes.com/2026/03/03/arts/dance/romeo-and-juliet-suite-armory-revi"
-    },
-    {
-      "t": "2026-03-10T17:58:15.991Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-10T17:59:30.984Z",
-      "event": "bb-session",
-      "session": "078a8827",
-      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
-    },
-    {
-      "t": "2026-03-10T17:59:32.476Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-10T18:00:38.747Z",
-      "event": "bb-session",
-      "session": "428442b3",
-      "url": "https://www.nytimes.com/2026/02/12/theater/the-unknown-review-sean-hayes.html"
-    },
-    {
-      "t": "2026-03-10T18:00:40.214Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-10T18:02:02.300Z",
       "event": "bb-session",
@@ -124,6 +91,39 @@
       "t": "2026-03-10T20:41:35.596Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-11T04:12:54.530Z",
+      "event": "bb-session",
+      "session": "39f0ba63",
+      "url": "https://www.newsday.com/entertainment/theater/sheree-rene-scott-s-likable-everyd"
+    },
+    {
+      "t": "2026-03-11T04:12:55.665Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-11T04:13:39.923Z",
+      "event": "bb-session",
+      "session": "60c3d563",
+      "url": "https://www.wsj.com/articles/falsettos-review-boundary-pushing-no-more-147761460"
+    },
+    {
+      "t": "2026-03-11T04:13:41.064Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T04:15:45.746Z",
+      "event": "bb-session",
+      "session": "f9e1255c",
+      "url": "https://www.newsday.com/entertainment/theater/fish-in-the-dark-review-larry-davi"
+    },
+    {
+      "t": "2026-03-11T04:15:46.983Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
     }
   ]
 }
