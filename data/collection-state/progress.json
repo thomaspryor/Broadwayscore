@@ -70,7 +70,16 @@
     "aladdin-2014/wsj--terry-teachout.json",
     "all-my-sons-west-end-2025/guardian--arifa-akbar.json",
     "all-my-sons-west-end-2025/timeout--andrzej-lukowski.json",
-    "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json"
+    "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json",
+    "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
+    "and-juliet-2022/theatermania--hayley-levitt.json",
+    "and-juliet-2022/theatermania--jesse-green.json",
+    "and-juliet-2022/thewrap--robert-hofler.json",
+    "back-to-the-future-west-end-2021/timeout--adam-feldman.json",
+    "bigfoot-off-broadway-2026/theatermania--hayley-levitt.json",
+    "bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
+    "bloodlove-off-broadway-2026/theatermania--linda-buchwald.json",
+    "bloodlove-off-broadway-2026/theatermania--rachel-graham.json"
   ],
   "failed": [
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json",
@@ -81,7 +90,8 @@
     "hadestown-2019/newyorker--hilton-als.json",
     "six-2021/newyorker--naomi-fry.json",
     "wicked-2003/vulture--bilge-eberi.json",
-    "aladdin-2014/new-jersey-newsroom--michael-sommers.json"
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "arcadia-west-end-2026/guardian--arifa-akbar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -116,7 +126,13 @@
       "aladdin-2014/ew--thom-geier.json",
       "aladdin-2014/theatermania--charles-isherwood.json",
       "all-my-sons-west-end-2025/guardian--arifa-akbar.json",
-      "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json"
+      "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json",
+      "and-juliet-2022/theatermania--hayley-levitt.json",
+      "and-juliet-2022/theatermania--jesse-green.json",
+      "back-to-the-future-west-end-2021/timeout--adam-feldman.json",
+      "bigfoot-off-broadway-2026/theatermania--hayley-levitt.json",
+      "bloodlove-off-broadway-2026/theatermania--linda-buchwald.json",
+      "bloodlove-off-broadway-2026/theatermania--rachel-graham.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -166,7 +182,8 @@
     "archiveToday": [
       "data/review-texts/chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
       "data/review-texts/death-becomes-her-2024/newyorker--helen-shaw.json",
-      "data/review-texts/wicked-2003/vulture--bilge-eberi.json"
+      "data/review-texts/wicked-2003/vulture--bilge-eberi.json",
+      "data/review-texts/arcadia-west-end-2026/guardian--arifa-akbar.json"
     ],
     "archive": [
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
@@ -189,11 +206,14 @@
       "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json",
       "wicked-2003/nytimes--charles-isherwood.json",
       "aladdin-2014/wsj--terry-teachout.json",
-      "all-my-sons-west-end-2025/timeout--andrzej-lukowski.json"
+      "all-my-sons-west-end-2025/timeout--andrzej-lukowski.json",
+      "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
+      "and-juliet-2022/thewrap--robert-hofler.json",
+      "bigfoot-off-broadway-2026/thewrap--robert-hofler.json"
     ]
   },
   "startTime": "2026-03-11T13:15:22.957Z",
-  "lastProcessed": "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json",
+  "lastProcessed": "bloodlove-off-broadway-2026/theatermania--rachel-graham.json",
   "log": [
     {
       "t": "2026-03-11T13:19:37.516Z",
@@ -313,6 +333,17 @@
     },
     {
       "t": "2026-03-11T13:49:30.209Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T13:52:33.866Z",
+      "event": "bb-session",
+      "session": "4b66ebb9",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-11T13:52:35.289Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
