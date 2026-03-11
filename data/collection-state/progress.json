@@ -499,7 +499,17 @@
     "stranger-things-the-first-shadow-west-end-2023/everything-theatre--xi-ye.json",
     "stranger-things-the-first-shadow-west-end-2023/lost-in-theatreland--jill-johnson.json",
     "stranger-things-the-first-shadow-west-end-2023/telegraph--dominic-cavendish.json",
-    "sweetmeats-west-end-2026/artsdesk--aleks-sierz.json"
+    "sweetmeats-west-end-2026/artsdesk--aleks-sierz.json",
+    "sweetmeats-west-end-2026/whatsonstage--rachel-agyekum.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/culturesauce--thom-geier.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/exeunt-magazine--lane-williamson.json",
+    "the-book-of-mormon-west-end-2024/independent--paul-taylor.json",
+    "the-book-of-mormon-west-end-2024/london-box-office--oliver-mitford.json",
+    "the-book-of-mormon-west-end-2024/times-uk--libby-purves.json",
+    "the-devil-wears-prada-west-end-2024/artsdesk--matt-wolf.json",
+    "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+    "the-devil-wears-prada-west-end-2024/financialtimes--financial-times.json"
   ],
   "failed": [
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json",
@@ -954,7 +964,14 @@
       "stranger-things-2024/theater-scene--joseph-pisano.json",
       "stranger-things-the-first-shadow-west-end-2023/artsdesk--mert-dilek.json",
       "stranger-things-the-first-shadow-west-end-2023/everything-theatre--xi-ye.json",
-      "sweetmeats-west-end-2026/artsdesk--aleks-sierz.json"
+      "sweetmeats-west-end-2026/artsdesk--aleks-sierz.json",
+      "sweetmeats-west-end-2026/whatsonstage--rachel-agyekum.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/culturesauce--thom-geier.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/exeunt-magazine--lane-williamson.json",
+      "the-book-of-mormon-west-end-2024/london-box-office--oliver-mitford.json",
+      "the-devil-wears-prada-west-end-2024/artsdesk--matt-wolf.json",
+      "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+      "the-devil-wears-prada-west-end-2024/financialtimes--financial-times.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -1010,7 +1027,9 @@
       "data/review-texts/the-great-gatsby-2024/observer--david-cote.json",
       "the-great-gatsby-2024/observer--david-cote.json",
       "data/review-texts/buena-vista-social-club-2025/amny--matt-windman.json",
-      "buena-vista-social-club-2025/amny--matt-windman.json"
+      "buena-vista-social-club-2025/amny--matt-windman.json",
+      "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json",
@@ -1018,7 +1037,8 @@
     ],
     "scrapingbee": [
       "stranger-things-the-first-shadow-west-end-2023/lost-in-theatreland--jill-johnson.json",
-      "stranger-things-the-first-shadow-west-end-2023/telegraph--dominic-cavendish.json"
+      "stranger-things-the-first-shadow-west-end-2023/telegraph--dominic-cavendish.json",
+      "the-book-of-mormon-west-end-2024/independent--paul-taylor.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1145,11 +1165,12 @@
       "six-the-musical-west-end-2021/london-box-office--stuart-king.json",
       "six-the-musical-west-end-2021/thestage--mark-shenton.json",
       "starlight-express-west-end-2024/independent--tim-bano.json",
-      "starlight-express-west-end-2024/london-box-office--camille-leadbeater.json"
+      "starlight-express-west-end-2024/london-box-office--camille-leadbeater.json",
+      "the-book-of-mormon-west-end-2024/times-uk--libby-purves.json"
     ]
   },
   "startTime": "2026-03-11T13:15:22.957Z",
-  "lastProcessed": "sweetmeats-west-end-2026/artsdesk--aleks-sierz.json",
+  "lastProcessed": "the-devil-wears-prada-west-end-2024/financialtimes--financial-times.json",
   "log": [
     {
       "t": "2026-03-11T13:19:37.516Z",
@@ -1423,6 +1444,17 @@
     },
     {
       "t": "2026-03-11T14:42:34.501Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-11T20:20:21.673Z",
+      "event": "bb-session",
+      "session": "1cf24ae4",
+      "url": "https://www.amny.com/entertainment/theater/spelling-bee-returns-nails-every-word"
+    },
+    {
+      "t": "2026-03-11T20:20:22.768Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     }
