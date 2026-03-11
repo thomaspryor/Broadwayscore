@@ -162,7 +162,10 @@
       "_lastScrapedAt": "2026-03-09T10:45:01.279Z",
       "digitalRush": {
         "platform": "Telecharge",
-        "price": 49
+        "price": 49,
+        "url": "https://rush.telecharge.com",
+        "time": "Opens 12 AM day before, closes 3 PM. Winners drawn at 10 AM and 3 PM.",
+        "instructions": "Enter online at rush.telecharge.com. Winners notified by email with 5 hours to claim and purchase. Limit 2 tickets per entry."
       }
     },
     "hadestown-2019": {
@@ -184,7 +187,9 @@
     },
     "hamilton-2015": {
       "standingRoom": {
-        "price": 40
+        "price": 40,
+        "time": "When box office opens (Mon-Sat 10 AM, Sun 11 AM), sold-out performances only",
+        "instructions": "Purchase in person at Richard Rodgers Theatre box office. Up to 21 SRO tickets when every seat is sold. Not guaranteed on any given day."
       },
       "_lastScrapedFrom": "playbill",
       "_lastScrapedAt": "2026-03-09T10:45:01.279Z",
@@ -225,7 +230,9 @@
         "instructions": "On sale when the box office opens on a first-come, first-served basis"
       },
       "standingRoom": {
-        "price": 69
+        "price": 69,
+        "time": "10 AM Monday–Saturday; noon Sunday",
+        "instructions": "Purchase in person at Circle in the Square Theatre box office. Limit 2 per person. Non-transferable."
       },
       "_lastScrapedFrom": "playbill",
       "_lastScrapedAt": "2026-03-09T10:45:01.279Z"
@@ -282,7 +289,9 @@
         "instructions": "Submit online form"
       },
       "standingRoom": {
-        "price": 35
+        "price": 35,
+        "time": "2 hours before curtain, sold-out performances only",
+        "instructions": "Purchase in person at Neil Simon Theatre box office (250 W 52nd St). Limit 2 per person."
       },
       "_lastScrapedFrom": "playbill",
       "_lastScrapedAt": "2026-03-09T10:45:01.279Z"
@@ -338,7 +347,10 @@
       "_lastScrapedAt": "2026-03-09T10:45:01.279Z",
       "digitalRush": {
         "platform": "Telecharge",
-        "price": 59
+        "price": 59,
+        "url": "https://rush.telecharge.com",
+        "time": "Opens 12 AM day before, closes 3 PM. Winners drawn at 10 AM and 3 PM.",
+        "instructions": "Enter online at rush.telecharge.com. Up to 2 tickets per entry. Winners notified by email with limited window to claim."
       }
     },
     "the-outsiders-2024": {
@@ -374,7 +386,9 @@
     },
     "ragtime-2025": {
       "studentRush": {
-        "price": 32
+        "price": 32,
+        "time": "2 hours before curtain at box office (opens 10 AM Mon-Sat, 12 PM Sun)",
+        "instructions": "Arrive at Vivian Beaumont Theatre box office 2 hours before performance. Valid student ID required (high school, college, or graduate). Limit 2 per person. Subject to availability."
       },
       "lottery": {
         "type": "digital",
@@ -416,13 +430,18 @@
     "stranger-things-2024": {
       "rush": {
         "type": "general",
-        "price": 40
+        "price": 40,
+        "time": "10 AM Monday-Saturday, 12 PM Sunday",
+        "location": "Marquis Theatre box office (210 W 46th St)",
+        "instructions": "In person, first-come first-served. Up to 2 tickets per person for that day's performance."
       },
       "lottery": {
         "type": "digital",
         "platform": "Broadway Direct",
         "url": "https://lottery.broadwaydirect.com/show/st-nyc/",
-        "price": 45
+        "price": 45,
+        "time": "Opens 10 AM ET day before, closes 2 PM ET. Winners notified within minutes.",
+        "instructions": "Enter at lottery.broadwaydirect.com. One entry per day, up to 2 tickets per entry. Winners have 60 minutes to claim and pay."
       },
       "_lastScrapedFrom": "bwayrush",
       "_lastScrapedAt": "2026-03-09T10:44:25.243Z"
@@ -430,12 +449,18 @@
     "two-strangers-bway-2025": {
       "rush": {
         "type": "general",
-        "price": 42
+        "price": 42,
+        "time": "10 AM on the day of each performance",
+        "location": "Longacre Theatre box office (220 W 48th St)",
+        "instructions": "In person, first-come first-served. Limit 2 tickets per person."
       },
       "lottery": {
         "type": "digital",
         "platform": "Telecharge",
-        "price": 48
+        "url": "https://rush.telecharge.com",
+        "price": 48,
+        "time": "Opens 12 AM ET day before, closes with drawings at 10 AM and 3 PM ET",
+        "instructions": "Enter at rush.telecharge.com. One entry per person per day. Limit 2 tickets per entry. Winners notified by email with limited window to purchase."
       },
       "_lastScrapedFrom": "bwayrush",
       "_lastScrapedAt": "2026-03-09T10:44:25.243Z"
@@ -451,7 +476,9 @@
         "instructions": "A limited number of tickets will be sold via a digital lottery"
       },
       "studentRush": {
-        "price": 69
+        "price": 69,
+        "time": "When box office opens (typically 10 AM), select Tue-Thu performances",
+        "instructions": "Purchase in person at Gershwin Theatre box office. Valid college or university student ID required. Limit 2 tickets per person. Subject to availability."
       },
       "militaryTickets": {
         "price": 79
