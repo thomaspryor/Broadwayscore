@@ -26,6 +26,7 @@ interface CastSectionProps {
   currentCastUpdatedAt?: string | null;
   replacements?: CastMemberOBC[] | null;
   showStatus: string;
+  category?: string;
   actorSlugs?: Record<string, string>;  // ibdbPersonId → slug
   tonyMap?: Record<string, ShowTonyInfo>;  // ibdbPersonId → Tony info for this show
 }
@@ -95,7 +96,7 @@ function CastList({ cast, initialCount = INITIAL_COUNT, actorSlugs, tonyMap }: {
   );
 }
 
-export default function CastSection({ openingNightCast, currentCast, currentCastUpdatedAt, replacements, showStatus, actorSlugs, tonyMap }: CastSectionProps) {
+export default function CastSection({ openingNightCast, currentCast, currentCastUpdatedAt, replacements, showStatus, category, actorSlugs, tonyMap }: CastSectionProps) {
   const hasOBC = openingNightCast.length > 0;
   const hasCurrentCast = currentCast && currentCast.length > 0;
   const hasReplacements = replacements && replacements.length > 0;
@@ -124,7 +125,7 @@ export default function CastSection({ openingNightCast, currentCast, currentCast
         {hasOBC && (
           <>
             <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">
-              Original Broadway Cast
+              {category === 'broadway' || !category ? 'Original Broadway Cast' : category === 'west-end' ? 'Original West End Cast' : 'Original Cast'}
             </h2>
             <CastList cast={openingNightCast} actorSlugs={actorSlugs} tonyMap={tonyMap} />
           </>

@@ -39,7 +39,7 @@ DOMAIN_GROUPS = {
     "nytimes": {
         "domains": [".nytimes.com", "nytimes.com"],
         "output": "nytimes.json",
-        "secret_name": "NYTIMES_COOKIES",
+        "secret_name": "NYT_COOKIES",
     },
     "wapo": {
         "domains": [".washingtonpost.com", "washingtonpost.com"],
