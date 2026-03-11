@@ -96,18 +96,43 @@ function slugifyHostname(str) {
     .replace(/^-|-$/g, '');
 }
 
+const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
+const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
+let _scrapingBeeExhausted = false;
+
 /**
- * Search Google via ScrapingBee SERP API.
+ * Search Google via ScrapingBee SERP API, with BrightData SERP fallback.
+ * Falls back to BrightData when ScrapingBee returns 401/403/429 (credits exhausted).
  */
 async function searchGoogle(query, apiKey, nbResults = 5) {
-  let url = `https://app.scrapingbee.com/api/v1/store/google?api_key=${apiKey}&search=${encodeURIComponent(query)}&nb_results=${nbResults}`;
+  // Try ScrapingBee first (unless already exhausted)
+  if (!_scrapingBeeExhausted && apiKey) {
+    const results = await _serpViaScrapingBee(query, apiKey, nbResults);
+    if (results !== null) return results;
+  }
+
+  // Fallback to BrightData SERP API
+  if (BRIGHTDATA_TOKEN) {
+    return await _serpViaBrightData(query);
+  }
+
+  return [];
+}
+
+async function _serpViaScrapingBee(query, apiKey, nbResults) {
+  const url = `https://app.scrapingbee.com/api/v1/store/google?api_key=${apiKey}&search=${encodeURIComponent(query)}&nb_results=${nbResults}`;
 
   for (let attempt = 0; attempt < 3; attempt++) {
     try {
       const res = await fetch(url, { signal: AbortSignal.timeout(30000) });
       if (!res.ok) {
         const status = res.status;
-        if ((status === 429 || status >= 500) && attempt < 2) {
+        if (status === 401 || status === 403 || status === 429) {
+          console.log(`    ⚠ ScrapingBee SERP exhausted (${status}) — falling back to BrightData`);
+          _scrapingBeeExhausted = true;
+          return null; // Signal to try BrightData
+        }
+        if (status >= 500 && attempt < 2) {
           console.log(`    SERP ${status}, retrying in ${(attempt + 1) * 5}s...`);
           await new Promise(r => setTimeout(r, (attempt + 1) * 5000));
           continue;
@@ -126,6 +151,34 @@ async function searchGoogle(query, apiKey, nbResults = 5) {
     }
   }
   return [];
+}
+
+async function _serpViaBrightData(query) {
+  try {
+    const res = await fetch('https://api.brightdata.com/serp/req', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${BRIGHTDATA_TOKEN}`,
+      },
+      body: JSON.stringify({
+        query: query,
+        search_engine: 'google',
+        country: 'us',
+      }),
+      signal: AbortSignal.timeout(30000),
+    });
+    if (!res.ok) throw new Error(`BrightData SERP ${res.status}`);
+    const data = await res.json();
+    // BrightData SERP API returns { organic: [{link, title, ...}] }
+    return (data.organic || []).slice(0, 5).map(r => ({
+      url: r.link || r.url || '',
+      title: r.title || '',
+    }));
+  } catch (err) {
+    console.log(`    ✗ BrightData SERP error: ${err.message}`);
+    return [];
+  }
 }
 
 /**
@@ -262,9 +315,8 @@ function serpResultMentionsShow(resultTitle, resultUrl, showTitle) {
 }
 
 async function main() {
-  const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
-  if (!SCRAPINGBEE_KEY) {
-    console.error('Missing SCRAPINGBEE_API_KEY');
+  if (!SCRAPINGBEE_KEY && !BRIGHTDATA_TOKEN) {
+    console.error('Missing SCRAPINGBEE_API_KEY and BRIGHTDATA_TOKEN — need at least one');
     process.exit(1);
   }
 
@@ -451,12 +503,14 @@ async function main() {
     await sleep(500);
   }
 
-  // === Strategy 2: Google News SERP ===
+  // === Strategy 2: Google News SERP (ScrapingBee only — no BrightData news equivalent) ===
   console.log(`\nStrategy 2: Google News search...`);
 
+  if (_scrapingBeeExhausted || !SCRAPINGBEE_KEY) {
+    console.log('  Skipping news search (ScrapingBee exhausted or unavailable)');
+  } else {
   const newsQuery = `"${showTitle}" ${reviewKeyword}${dateFilter}`;
   try {
-    // Use date range filtering via after:/before: operators in query
     let newsUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(newsQuery)}&nb_results=10&search_type=news`;
 
     let results = [];
@@ -464,7 +518,12 @@ async function main() {
       try {
         const res = await fetch(newsUrl, { signal: AbortSignal.timeout(30000) });
         if (!res.ok) {
-          if ((res.status === 429 || res.status >= 500) && attempt < 2) {
+          if (res.status === 401 || res.status === 403 || res.status === 429) {
+            console.log(`    ⚠ ScrapingBee exhausted (${res.status}) — skipping news search`);
+            _scrapingBeeExhausted = true;
+            break;
+          }
+          if (res.status >= 500 && attempt < 2) {
             await new Promise(r => setTimeout(r, (attempt + 1) * 5000));
             continue;
           }
@@ -576,8 +635,12 @@ async function main() {
   } catch (err) {
     console.error(`  Error in news search: ${err.message}`);
   }
+  } // end else (ScrapingBee not exhausted)
 
   console.log(`\nResults: ${discovered} new reviews discovered, ${skippedDupe} duplicates skipped, ${skippedCovered} outlets skipped (2+ reviews), ${searched} SERP calls made`);
+  if (_scrapingBeeExhausted && BRIGHTDATA_TOKEN) {
+    console.log('Note: ScrapingBee credits exhausted — used BrightData SERP as fallback');
+  }
 }
 
 main().catch(err => {
