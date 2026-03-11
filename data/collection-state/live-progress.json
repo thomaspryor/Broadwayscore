@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-11T13:30:34.107Z",
-  "processed": 34,
+  "updatedAt": "2026-03-11T13:35:58.869Z",
+  "processed": 44,
   "failed": 6,
-  "successRate": "85.0%",
+  "successRate": "88.0%",
   "tierBreakdown": {
-    "playwright": 15,
-    "amp": 10,
-    "browserbase": 10,
+    "playwright": 17,
+    "amp": 12,
+    "browserbase": 16,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 2,
-    "archive": 9
+    "archive": 13
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-03-11T13:19:37.516Z",
@@ -89,6 +89,39 @@
     },
     {
       "t": "2026-03-11T13:28:06.082Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-11T13:30:36.815Z",
+      "event": "bb-session",
+      "session": "c7276384",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-03-11T13:30:38.155Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-11T13:33:21.095Z",
+      "event": "bb-session",
+      "session": "eefb768e",
+      "url": "https://www.nytimes.com/2026/03/03/theater/night-side-songs-review.html"
+    },
+    {
+      "t": "2026-03-11T13:33:22.395Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-11T13:33:45.652Z",
+      "event": "bb-session",
+      "session": "045e1c5e",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
+    },
+    {
+      "t": "2026-03-11T13:33:47.023Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
