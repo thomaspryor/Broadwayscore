@@ -8,10 +8,20 @@
     "bigfoot-off-broadway-2026/vulture--unknown.json",
     "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
     "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
-    "chinese-republicans-off-broadway-2026/nyt-theater--jonathan-mandell.json"
+    "chinese-republicans-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nytg--allison-considine.json",
+    "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+    "drunk-romeo-and-juliet-off-broadway-2025/nytg--unknown.json",
+    "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+    "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json",
+    "little-shop-of-horrors-off-broadway-2019/nytimes--ben-brantley.json",
+    "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+    "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json"
   ],
   "failed": [
-    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theatre-is-easy--brooke-viegut.json"
+    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theatre-is-easy--brooke-viegut.json",
+    "chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -21,23 +31,49 @@
       "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
       "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
       "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
-      "chinese-republicans-off-broadway-2026/nyt-theater--jonathan-mandell.json"
+      "chinese-republicans-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "data-off-broadway-2026/nytg--allison-considine.json",
+      "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+      "drunk-romeo-and-juliet-off-broadway-2025/nytg--unknown.json",
+      "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json"
     ],
     "amp": [
       "data/review-texts/bigfoot-off-broadway-2026/vulture--unknown.json",
       "bigfoot-off-broadway-2026/vulture--unknown.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json"
+    ],
     "archive": [
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json",
-      "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json"
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
+      "little-shop-of-horrors-off-broadway-2019/nytimes--ben-brantley.json",
+      "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+      "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json"
     ]
   },
   "startTime": "2026-03-11T08:30:45.419Z",
-  "lastProcessed": "chinese-republicans-off-broadway-2026/nyt-theater--jonathan-mandell.json",
-  "log": []
+  "lastProcessed": "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
+  "log": [
+    {
+      "t": "2026-03-11T08:32:48.083Z",
+      "event": "bb-session",
+      "session": "d26b7392",
+      "url": "https://www.nytimes.com/2026/02/27/theater/chinese-republicans-review-alex-lin.h"
+    },
+    {
+      "t": "2026-03-11T08:33:34.572Z",
+      "event": "bb-session",
+      "session": "44cebf99",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    }
+  ]
 }
