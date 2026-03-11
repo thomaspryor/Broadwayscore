@@ -7,11 +7,21 @@
     "bigfoot-off-broadway-2026/vulture--unknown.json",
     "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
     "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
-    "data-off-broadway-2026/nyt-theater--jonathan-mandell.json"
+    "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nytg--allison-considine.json",
+    "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+    "drunk-romeo-and-juliet-off-broadway-2025/nytg--unknown.json",
+    "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+    "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json",
+    "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+    "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
+    "night-side-songs-off-broadway-2026/nytg--kyle-turner.json",
+    "night-side-songs-off-broadway-2026/vulture--jonathan-mandell.json"
   ],
   "failed": [
     "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
-    "chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json"
+    "chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
+    "night-side-songs-off-broadway-2026/nytimes--laura-collins-hughes.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -21,32 +31,56 @@
       "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
       "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
       "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
-      "data-off-broadway-2026/nyt-theater--jonathan-mandell.json"
+      "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "data-off-broadway-2026/nytg--allison-considine.json",
+      "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+      "drunk-romeo-and-juliet-off-broadway-2025/nytg--unknown.json",
+      "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json",
+      "night-side-songs-off-broadway-2026/nytg--kyle-turner.json",
+      "night-side-songs-off-broadway-2026/vulture--jonathan-mandell.json"
     ],
     "amp": [
       "data/review-texts/bigfoot-off-broadway-2026/vulture--unknown.json",
       "bigfoot-off-broadway-2026/vulture--unknown.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
-      "data/review-texts/chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json"
+      "data/review-texts/chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
+      "data/review-texts/night-side-songs-off-broadway-2026/nytimes--laura-collins-hughes.json"
     ],
     "archive": [
-      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theatre-is-easy--brooke-viegut.json"
+      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theatre-is-easy--brooke-viegut.json",
+      "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+      "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json"
     ]
   },
   "startTime": "2026-03-11T09:12:46.353Z",
-  "lastProcessed": "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+  "lastProcessed": "night-side-songs-off-broadway-2026/vulture--jonathan-mandell.json",
   "log": [
     {
       "t": "2026-03-11T09:15:24.573Z",
       "event": "bb-session",
       "session": "a4638acf",
       "url": "https://www.nytimes.com/2026/02/27/theater/chinese-republicans-review-alex-lin.h"
+    },
+    {
+      "t": "2026-03-11T09:16:14.985Z",
+      "event": "bb-session",
+      "session": "485476ab",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-11T09:17:57.329Z",
+      "event": "bb-session",
+      "session": "4866378a",
+      "url": "https://www.nytimes.com/2026/03/03/theater/night-side-songs-review.html"
     }
   ]
 }
