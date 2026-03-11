@@ -140,7 +140,16 @@
     "death-becomes-her-2024/newyorker--helen-shaw.json",
     "wicked-2003/vulture--bilge-eberi.json",
     "arcadia-west-end-2026/guardian--arifa-akbar.json",
-    "hadestown-2019/guardian--adrian-horton.json"
+    "hadestown-2019/guardian--adrian-horton.json",
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "maybe-happy-ending-2024/guardian--adrian-horton.json",
+    "maybe-happy-ending-2024/new-york-sun--broadway-scorecard.json",
+    "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+    "maybe-happy-ending-2024/theatermania--jesse-green.json",
+    "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
+    "maybe-happy-ending-2024/timeout--adam-feldman.json",
+    "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/theatermania--rachel-graham.json",
+    "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/timeout--adam-feldman.json"
   ],
   "failed": [
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json",
@@ -161,7 +170,8 @@
     "the-lion-king-west-end-2021/thestage--unknown.json",
     "hadestown-2019/newyorker--hilton-als.json",
     "six-2021/newyorker--naomi-fry.json",
-    "aladdin-2014/new-jersey-newsroom--michael-sommers.json"
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "im-sorry-prime-minister-west-end-2026/timeout-london--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -246,7 +256,13 @@
       "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json",
       "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
       "arcadia-west-end-2026/guardian--arifa-akbar.json",
-      "hadestown-2019/guardian--adrian-horton.json"
+      "hadestown-2019/guardian--adrian-horton.json",
+      "maybe-happy-ending-2024/guardian--adrian-horton.json",
+      "maybe-happy-ending-2024/theatermania--jesse-green.json",
+      "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
+      "maybe-happy-ending-2024/timeout--adam-feldman.json",
+      "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/theatermania--rachel-graham.json",
+      "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -296,7 +312,9 @@
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
       "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
       "data/review-texts/masquerade-off-broadway-2025/observer--david-cote.json",
-      "masquerade-off-broadway-2025/observer--david-cote.json"
+      "masquerade-off-broadway-2025/observer--david-cote.json",
+      "data/review-texts/maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+      "maybe-happy-ending-2024/nypost--johnny-oleksinski.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json"
@@ -310,6 +328,7 @@
       "data/review-texts/arcadia-west-end-2026/guardian--arifa-akbar.json",
       "data/review-texts/hadestown-2019/guardian--adrian-horton.json",
       "data/review-texts/hold-on-to-your-butts-off-broadway-2026/guardian--chris-wiegand.json",
+      "data/review-texts/im-sorry-prime-minister-west-end-2026/timeout-london--unknown.json",
       "data/review-texts/im-sorry-prime-minister-west-end-2026/timeout-london--unknown.json"
     ],
     "archive": [
@@ -348,11 +367,13 @@
       "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json",
       "death-becomes-her-2024/newyorker--helen-shaw.json",
-      "wicked-2003/vulture--bilge-eberi.json"
+      "wicked-2003/vulture--bilge-eberi.json",
+      "harry-potter-2021/wsj--terry-teachout.json",
+      "maybe-happy-ending-2024/new-york-sun--broadway-scorecard.json"
     ]
   },
   "startTime": "2026-03-11T13:15:22.957Z",
-  "lastProcessed": "hadestown-2019/guardian--adrian-horton.json",
+  "lastProcessed": "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-03-11T13:19:37.516Z",
@@ -562,6 +583,28 @@
       "t": "2026-03-11T14:09:36.725Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-11T14:17:24.475Z",
+      "event": "bb-session",
+      "session": "5bf9314a",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-11T14:17:25.692Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T14:18:15.866Z",
+      "event": "bb-session",
+      "session": "1a60a4fc",
+      "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-r"
+    },
+    {
+      "t": "2026-03-11T14:18:16.918Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }

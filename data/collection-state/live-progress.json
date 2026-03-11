@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-11T14:17:19.220Z",
-  "processed": 141,
-  "failed": 19,
-  "successRate": "88.1%",
+  "updatedAt": "2026-03-11T14:19:13.571Z",
+  "processed": 150,
+  "failed": 20,
+  "successRate": "88.2%",
   "tierBreakdown": {
-    "playwright": 81,
+    "playwright": 87,
     "amp": 20,
-    "browserbase": 26,
+    "browserbase": 28,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 7,
-    "archive": 36
+    "archiveToday": 8,
+    "archive": 38
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-11T13:33:45.652Z",
-      "event": "bb-session",
-      "session": "045e1c5e",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
-    },
-    {
-      "t": "2026-03-11T13:33:47.023Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-11T13:49:28.738Z",
-      "event": "bb-session",
-      "session": "d5a3267a",
-      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
-    },
-    {
-      "t": "2026-03-11T13:49:30.209Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-11T13:52:33.866Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-11T14:09:36.725Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-11T14:17:24.475Z",
+      "event": "bb-session",
+      "session": "5bf9314a",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-11T14:17:25.692Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T14:18:15.866Z",
+      "event": "bb-session",
+      "session": "1a60a4fc",
+      "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-r"
+    },
+    {
+      "t": "2026-03-11T14:18:16.918Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
