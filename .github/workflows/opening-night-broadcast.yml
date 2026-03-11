@@ -240,7 +240,7 @@ jobs:
           done
 
       - name: Commit data
-        if: always()
+        if: always() && steps.find.outputs.has_shows == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -251,14 +251,14 @@ jobs:
 
 
       - name: Push core data to private repo
-        if: always()
+        if: always() && steps.find.outputs.has_shows == 'true'
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from opening-night-broadcast'
 
       - name: Trigger deploy (core data changed)
-        if: always()
+        if: always() && steps.find.outputs.has_shows == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
