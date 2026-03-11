@@ -416,16 +416,18 @@ async function scrapeNYCTheatreRoundups() {
   const shows = loadShows();
   console.log(`Loaded ${shows.length} shows from shows.json`);
 
-  // Filter to shows from 2023+ (NYC Theatre only covers recent shows)
-  let recentShows = shows.filter(s => {
-    if (s.status === 'closed') return false; // Skip closed shows — they won't get new reviews
-    const opening = new Date(s.openingDate);
-    return opening >= new Date('2023-01-01');
-  });
-
-  // Apply --shows filter if provided (check both slug and id)
+  // Filter shows — exclude closed shows and pre-2023 unless targeted
+  let recentShows;
   if (targetShowIds) {
-    recentShows = recentShows.filter(s => targetShowIds.includes(s.id) || targetShowIds.includes(s.slug));
+    // Targeted mode: process any show regardless of status/date
+    recentShows = shows.filter(s => targetShowIds.includes(s.id) || targetShowIds.includes(s.slug));
+  } else {
+    // Batch mode: skip closed shows (won't get new reviews) and pre-2023
+    recentShows = shows.filter(s => {
+      if (s.status === 'closed') return false;
+      const opening = new Date(s.openingDate);
+      return opening >= new Date('2023-01-01');
+    });
   }
 
   console.log(`Processing ${recentShows.length} shows from 2023+\n`);
