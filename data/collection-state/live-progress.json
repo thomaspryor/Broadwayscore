@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-11T14:22:31.385Z",
-  "processed": 170,
+  "updatedAt": "2026-03-11T14:24:29.300Z",
+  "processed": 180,
   "failed": 20,
-  "successRate": "89.5%",
+  "successRate": "90.0%",
   "tierBreakdown": {
-    "playwright": 107,
+    "playwright": 115,
     "amp": 20,
     "browserbase": 28,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 8,
-    "archive": 38
+    "archive": 40
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-03-11T13:52:33.866Z",
-      "event": "bb-session",
-      "session": "4b66ebb9",
-      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
-    },
-    {
-      "t": "2026-03-11T13:52:35.289Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-11T14:03:52.114Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-11T14:18:16.918Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-11T14:23:51.018Z",
+      "event": "bb-session",
+      "session": "c6b611f6",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-03-11T14:23:52.182Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

@@ -169,7 +169,17 @@
     "operation-mincemeat-2025/timeout--adam-feldman.json",
     "operation-mincemeat-2025/timeout--holly-williams.json",
     "paddington-the-musical-west-end-2025/guardian--arifa-akbar.json",
-    "paddington-the-musical-west-end-2025/musical-theatre-review--lisa-martlandbr.json"
+    "paddington-the-musical-west-end-2025/musical-theatre-review--lisa-martlandbr.json",
+    "paranormal-activity-west-end-2025/timeout--andrzej-lukowski.json",
+    "paranormal-activity-west-end-2025/timeout--unknown.json",
+    "pen-pals-off-broadway-2025/nbcnews--suzanne-ordas.json",
+    "pen-pals-off-broadway-2025/theatermania--dan-rubins.json",
+    "perfect-crime-off-broadway-1987/broadwaynews--bww-news-desk.json",
+    "perfect-crime-off-broadway-1987/nydailynews--editorial-staff.json",
+    "ragtime-2025/timeout--adam-feldman.json",
+    "ragtime-2025/wsj--charles-isherwood.json",
+    "shadowlands-west-end-2026/timeout--andrzej-lukowski.json",
+    "shadowlands-west-end-2026/timeout-london--andrzej-lukowski.json"
   ],
   "failed": [
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json",
@@ -302,7 +312,15 @@
       "operation-mincemeat-2025/timeout--adam-feldman.json",
       "operation-mincemeat-2025/timeout--holly-williams.json",
       "paddington-the-musical-west-end-2025/guardian--arifa-akbar.json",
-      "paddington-the-musical-west-end-2025/musical-theatre-review--lisa-martlandbr.json"
+      "paddington-the-musical-west-end-2025/musical-theatre-review--lisa-martlandbr.json",
+      "paranormal-activity-west-end-2025/timeout--andrzej-lukowski.json",
+      "paranormal-activity-west-end-2025/timeout--unknown.json",
+      "pen-pals-off-broadway-2025/nbcnews--suzanne-ordas.json",
+      "pen-pals-off-broadway-2025/theatermania--dan-rubins.json",
+      "perfect-crime-off-broadway-1987/nydailynews--editorial-staff.json",
+      "ragtime-2025/timeout--adam-feldman.json",
+      "shadowlands-west-end-2026/timeout--andrzej-lukowski.json",
+      "shadowlands-west-end-2026/timeout-london--andrzej-lukowski.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -409,11 +427,13 @@
       "death-becomes-her-2024/newyorker--helen-shaw.json",
       "wicked-2003/vulture--bilge-eberi.json",
       "harry-potter-2021/wsj--terry-teachout.json",
-      "maybe-happy-ending-2024/new-york-sun--broadway-scorecard.json"
+      "maybe-happy-ending-2024/new-york-sun--broadway-scorecard.json",
+      "perfect-crime-off-broadway-1987/broadwaynews--bww-news-desk.json",
+      "ragtime-2025/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-03-11T13:15:22.957Z",
-  "lastProcessed": "paddington-the-musical-west-end-2025/musical-theatre-review--lisa-martlandbr.json",
+  "lastProcessed": "shadowlands-west-end-2026/timeout-london--andrzej-lukowski.json",
   "log": [
     {
       "t": "2026-03-11T13:19:37.516Z",
@@ -645,6 +665,17 @@
       "t": "2026-03-11T14:18:16.918Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-11T14:23:51.018Z",
+      "event": "bb-session",
+      "session": "c6b611f6",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-03-11T14:23:52.182Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
