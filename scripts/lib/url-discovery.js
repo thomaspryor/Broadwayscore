@@ -1,7 +1,7 @@
 /**
  * URL Discovery via Google SERP (shared module)
  *
- * Provider chain: ScrapingBee SERP API → Bright Data Web Unlocker (Google HTML).
+ * Provider chain: ScrapingBee SERP API → Bright Data SERP API → Bright Data Web Unlocker.
  *
  * Used by:
  * - collect-review-texts.js (full text collection — has its own inline copy)
@@ -255,9 +255,8 @@ async function _serpViaScrapingBee(query, apiKey, log, dateRange) {
 }
 
 /**
- * Search via Bright Data Web Unlocker → Google HTML.
- * Parses organic results from Google's HTML response.
- * Ported from collect-review-texts.js _serpViaBrightData().
+ * Search via Bright Data SERP API (structured JSON, async polling).
+ * Falls back to Web Unlocker (HTML parsing) if SERP API unavailable.
  * @param {string} query - Google search query
  * @param {string} apiKey - Bright Data API token
  * @param {Function} log - Logging function
@@ -267,11 +266,79 @@ async function _serpViaScrapingBee(query, apiKey, log, dateRange) {
 async function _serpViaBrightData(query, apiKey, log, dateRange) {
   if (!apiKey || _brightDataConsecutiveFailures >= MAX_CONSECUTIVE_FAILURES) return null;
 
-  const axios = require('axios');
-  const zoneName = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
   const fmtD = d => d.toISOString().split('T')[0];
   const dateQuery = dateRange ? ` after:${fmtD(dateRange.dateMin)} before:${fmtD(dateRange.dateMax)}` : '';
-  let googleUrl = `https://www.google.com/search?q=${encodeURIComponent(query + dateQuery)}&num=10&hl=en`;
+  const fullQuery = query + dateQuery;
+
+  // Try SERP API first (structured JSON, more reliable)
+  const serpResult = await _serpViaBrightDataSerpApi(fullQuery, apiKey, log);
+  if (serpResult !== null) return serpResult;
+
+  // Fallback: Web Unlocker (HTML parsing)
+  return _serpViaBrightDataWebUnlocker(fullQuery, apiKey, log);
+}
+
+const _BD_CUSTOMER = process.env.BRIGHTDATA_CUSTOMER || 'hl_a2c64a47';
+const _BD_SERP_ZONE = process.env.BRIGHTDATA_SERP_ZONE || 'serp_api1';
+
+async function _serpViaBrightDataSerpApi(query, apiKey, log) {
+  try {
+    const submitRes = await fetch(
+      `https://api.brightdata.com/serp/req?customer=${_BD_CUSTOMER}&zone=${_BD_SERP_ZONE}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({ query: { q: query, gl: 'us' } }),
+        signal: AbortSignal.timeout(15000),
+      }
+    );
+    if (!submitRes.ok) {
+      log(`    ✗ BD SERP API submit ${submitRes.status} — trying Web Unlocker`);
+      return null; // Fall through to Web Unlocker
+    }
+    const submitData = await submitRes.json();
+    const responseId = submitData.response_id;
+    if (!responseId) return null;
+
+    // Poll for results (max 20s)
+    for (let i = 0; i < 10; i++) {
+      await new Promise(r => setTimeout(r, 2000));
+      const pollRes = await fetch(
+        `https://api.brightdata.com/serp/get_result?response_id=${responseId}`,
+        {
+          headers: { 'Authorization': `Bearer ${apiKey}` },
+          signal: AbortSignal.timeout(10000),
+        }
+      );
+      if (pollRes.status === 202) continue;
+      if (!pollRes.ok) return null;
+      const data = await pollRes.json();
+      if (data.organic) {
+        _brightDataConsecutiveFailures = 0;
+        return data.organic.slice(0, 10).map(r => ({
+          url: r.link || r.url || '',
+          title: r.title || '',
+        }));
+      }
+      if (data.response_id) continue;
+      _brightDataConsecutiveFailures = 0;
+      return [];
+    }
+    log('    ⚠ BD SERP API timeout (20s) — trying Web Unlocker');
+    return null;
+  } catch (error) {
+    log(`    ✗ BD SERP API error: ${error.message} — trying Web Unlocker`);
+    return null;
+  }
+}
+
+async function _serpViaBrightDataWebUnlocker(query, apiKey, log) {
+  const axios = require('axios');
+  const zoneName = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
+  const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}&num=10&hl=en`;
 
   try {
     const response = await axios.post('https://api.brightdata.com/request', {
@@ -288,16 +355,16 @@ async function _serpViaBrightData(query, apiKey, log, dateRange) {
 
     const data = response.data;
 
-    // SERP API zone returns structured JSON with organic results
+    // Structured JSON response (unlikely from Web Unlocker but handle it)
     if (data && typeof data === 'object' && Array.isArray(data.organic)) {
-      _brightDataConsecutiveFailures = 0; // Reset on success
+      _brightDataConsecutiveFailures = 0;
       return data.organic.slice(0, 10).map(r => ({
         url: r.link || r.url || '',
         title: r.title || '',
       }));
     }
 
-    // Fallback: Web Unlocker zone returns raw HTML — parse it
+    // Raw HTML — parse with regex
     const html = typeof data === 'string' ? data : '';
     if (!html || html.length < 500) return [];
 
@@ -325,11 +392,11 @@ async function _serpViaBrightData(query, apiKey, log, dateRange) {
       titleIdx++;
     }
 
-    _brightDataConsecutiveFailures = 0; // Reset on success
+    _brightDataConsecutiveFailures = 0;
     return results.slice(0, 10);
   } catch (error) {
     _brightDataConsecutiveFailures++;
-    log(`    ✗ Bright Data SERP error (${_brightDataConsecutiveFailures}/${MAX_CONSECUTIVE_FAILURES}): ${error.message}`);
+    log(`    ✗ Bright Data Web Unlocker error (${_brightDataConsecutiveFailures}/${MAX_CONSECUTIVE_FAILURES}): ${error.message}`);
     if (_brightDataConsecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
       log(`    ⚠ Bright Data SERP disabled after ${MAX_CONSECUTIVE_FAILURES} consecutive failures`);
     }
@@ -343,7 +410,7 @@ async function _serpViaBrightData(query, apiKey, log, dateRange) {
 
 /**
  * Discover correct URL for a review via Google SERP search.
- * Provider chain: ScrapingBee → Bright Data Web Unlocker.
+ * Provider chain: ScrapingBee → Bright Data SERP API → Web Unlocker.
  *
  * @param {Object} review - Review object with showId, outletId, outlet, url
  * @param {string} scrapingBeeKey - ScrapingBee API key (can be empty)
