@@ -116,9 +116,9 @@ interface SourceCardProps {
 function SourceCard({ name, icon, score, reviewCount, starRating, url, comingSoon, volumeLabel }: SourceCardProps) {
   const inner = (
     <>
-      <div className="flex items-center gap-2 mb-2">
-        {icon}
-        <span className="text-[10px] sm:text-xs font-medium text-gray-400 uppercase tracking-wide whitespace-nowrap">{name}</span>
+      <div className="flex items-center gap-1.5 mb-2 min-w-0">
+        <span className="shrink-0">{icon}</span>
+        <span className="text-[10px] sm:text-xs font-medium text-gray-400 uppercase tracking-wide truncate">{name}</span>
       </div>
       {comingSoon ? (
         <div className="text-sm text-gray-500">Coming soon</div>
@@ -160,7 +160,7 @@ export default function AudienceBuzzCard({ buzz, showScoreUrl, limitedSources }:
 
   return (
     <div className="card p-5 sm:p-6 mb-8">
-      <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">AudienceGrade</h2>
+      <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Audience Grade</h2>
 
       {/* Main Grade Badge */}
       <div className={`rounded-xl p-4 border mb-4 ${colors.bgClass} ${colors.borderClass}`}>
