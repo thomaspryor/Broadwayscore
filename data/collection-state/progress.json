@@ -6,7 +6,17 @@
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/blogcritics--jon-sobel.json",
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theater-scene--darryl-reilly.json",
     "matilda-the-musical-west-end-2021/thestage--mark-shenton.json",
-    "matilda-the-musical-west-end-2021/whatsonstage--andy-plaice.json"
+    "matilda-the-musical-west-end-2021/whatsonstage--andy-plaice.json",
+    "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
+    "an-ark-off-broadway-2026/nytg--kyle-turner.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
+    "back-to-the-future-west-end-2021/variety--david-benedict.json",
+    "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+    "bigfoot-off-broadway-2026/vulture--unknown.json",
+    "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+    "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+    "chess-2025/hollywood-reporter--angie-han.json",
+    "chess-2025/newyorker--michael-schulman.json"
   ],
   "failed": [
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json",
@@ -18,13 +28,25 @@
     "playwright": [
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/blogcritics--jon-sobel.json",
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theater-scene--darryl-reilly.json",
-      "matilda-the-musical-west-end-2021/whatsonstage--andy-plaice.json"
+      "matilda-the-musical-west-end-2021/whatsonstage--andy-plaice.json",
+      "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
+      "an-ark-off-broadway-2026/nytg--kyle-turner.json",
+      "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+      "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+      "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
-      "hadestown-west-end-2024/variety--marilyn-stasio.json"
+      "hadestown-west-end-2024/variety--marilyn-stasio.json",
+      "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "data/review-texts/bigfoot-off-broadway-2026/vulture--unknown.json",
+      "bigfoot-off-broadway-2026/vulture--unknown.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
+      "chess-2025/hollywood-reporter--angie-han.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -32,10 +54,24 @@
     "archive": [
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
       "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
-      "matilda-the-musical-west-end-2021/thestage--mark-shenton.json"
+      "matilda-the-musical-west-end-2021/thestage--mark-shenton.json",
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
+      "chess-2025/newyorker--michael-schulman.json"
     ]
   },
   "startTime": "2026-03-11T13:15:22.957Z",
-  "lastProcessed": "the-lion-king-west-end-2021/thestage--unknown.json",
-  "log": []
+  "lastProcessed": "chess-2025/newyorker--michael-schulman.json",
+  "log": [
+    {
+      "t": "2026-03-11T13:19:37.516Z",
+      "event": "bb-session",
+      "session": "3944d857",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-11T13:19:39.198Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    }
+  ]
 }
