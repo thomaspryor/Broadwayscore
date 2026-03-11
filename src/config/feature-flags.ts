@@ -24,11 +24,11 @@ function has(name: string): boolean {
 }
 
 export const featureFlags = {
-  get discountTickets() { return has('discountTickets'); },
+  get discountTickets() { return true; }, // launched — flag retained for cleanup
   get criticPages() { return has('criticPages'); },
   get creativePages() { return has('creativePages'); },
   get castChanges() { return has('castChanges'); },
-  get boxOffice() { return has('boxOffice'); },
+  get boxOffice() { return true; }, // launched — flag retained for cleanup
   get goldLists() { return has('goldLists'); },
   get commercial() { return has('commercial'); },
   get awards() { return has('awards'); },
