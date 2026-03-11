@@ -147,6 +147,31 @@ function getExistingUrls(showId) {
 }
 
 /**
+ * Count existing reviews per outlet domain for a show.
+ * Returns Map<domain, count> for outlets with 2+ reviews.
+ */
+function getOutletReviewCounts(showId) {
+  const counts = new Map(); // domain → count
+  const dir = path.join(REVIEW_TEXTS_DIR, showId);
+  if (!fs.existsSync(dir)) return counts;
+
+  for (const file of fs.readdirSync(dir)) {
+    if (!file.endsWith('.json')) continue;
+    try {
+      const data = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
+      // Skip flagged/invalid reviews
+      if (data.wrongShow || data.wrongProduction || data.duplicateOf) continue;
+      const outlet = data.outlet || file.split('--')[0];
+      const domain = OUTLET_DOMAINS[outlet] || OUTLET_DOMAINS[normalizeOutlet(outlet)];
+      if (domain) {
+        counts.set(domain, (counts.get(domain) || 0) + 1);
+      }
+    } catch { /* skip */ }
+  }
+  return counts;
+}
+
+/**
  * Extract outlet ID from a URL domain.
  */
 function domainToOutletId(url) {
@@ -287,6 +312,7 @@ async function main() {
 
   // Get existing URLs to dedup
   const existingUrls = getExistingUrls(showId);
+  const outletCounts = getOutletReviewCounts(showId);
   console.log(`Existing review files: ${existingUrls.size} URLs\n`);
 
   // Ensure review-texts directory exists
@@ -298,6 +324,7 @@ async function main() {
   let discovered = 0;
   let searched = 0;
   let skippedDupe = 0;
+  let skippedCovered = 0;
 
   // === Strategy 1: Site-specific SERP for each outlet ===
   const TIER1_OUTLETS = isWestEnd ? TIER1_OUTLETS_WE : TIER1_OUTLETS_BW;
@@ -315,6 +342,12 @@ async function main() {
     const domain = OUTLET_DOMAINS[outletId];
     if (!domain || searchedDomains.has(domain)) continue;
     searchedDomains.add(domain);
+
+    // Skip outlets that already have 2+ reviews for this show (saves 25 SERP credits each)
+    if ((outletCounts.get(domain) || 0) >= 2) {
+      skippedCovered++;
+      continue;
+    }
 
     const query = `site:${domain} "${showTitle}" ${reviewKeyword}${year ? ` ${year}` : ''}${dateFilter}`;
 
@@ -544,7 +577,7 @@ async function main() {
     console.error(`  Error in news search: ${err.message}`);
   }
 
-  console.log(`\nResults: ${discovered} new reviews discovered, ${skippedDupe} duplicates skipped, ${searched} SERP calls made`);
+  console.log(`\nResults: ${discovered} new reviews discovered, ${skippedDupe} duplicates skipped, ${skippedCovered} outlets skipped (2+ reviews), ${searched} SERP calls made`);
 }
 
 main().catch(err => {

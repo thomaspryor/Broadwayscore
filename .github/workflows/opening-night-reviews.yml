@@ -30,16 +30,25 @@ jobs:
         uses: ./.github/actions/checkout-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-      - name: Find recently opened shows
+      - name: Find recently opened shows (scheduled search days)
         id: find
         run: |
           LOOKBACK=${{ inputs.lookback_days || 14 }}
-          SHOWS=$(node -e "
+          # Find shows opened in lookback window, but only SERP-search on scheduled days:
+          # Days 0-1: full search (all outlets)
+          # Day 3: search outlets with <2 reviews
+          # Day 7: search outlets with <2 reviews
+          # Day 14: final sweep
+          # Other days: skip SERP (saves ~75% of daily SERP calls)
+          RESULT=$(node -e "
             const shows = require('./data/shows.json').shows;
             const now = new Date();
             const cutoff = new Date(now);
             cutoff.setDate(cutoff.getDate() - $LOOKBACK);
             cutoff.setHours(0,0,0,0);
+
+            const SEARCH_DAYS = [0, 1, 3, 7, 14];
+            const GATHER_MAX_DAYS = 3; // Only dispatch gather-reviews for shows ≤3 days old
 
             const opened = shows.filter(s => {
               if (s.status !== 'open' || !s.openingDate) return false;
@@ -48,18 +57,41 @@ jobs:
               return d >= cutoff && d <= now;
             });
 
-            if (opened.length > 0) {
-              console.log(opened.map(s => s.id).join(','));
+            // Partition into SERP-eligible and gather-eligible
+            const serpShows = [];
+            const gatherShows = [];
+
+            for (const s of opened) {
+              const daysSinceOpening = Math.floor((now - new Date(s.openingDate)) / (1000 * 60 * 60 * 24));
+              const isSearchDay = SEARCH_DAYS.includes(daysSinceOpening);
+              if (isSearchDay) serpShows.push(s.id);
+              if (daysSinceOpening <= GATHER_MAX_DAYS) gatherShows.push(s.id);
             }
+
+            // Output as JSON for structured parsing
+            console.log(JSON.stringify({
+              serp: serpShows,
+              gather: gatherShows,
+              all: opened.map(s => s.id)
+            }));
           ")
 
-          if [ -z "$SHOWS" ]; then
+          if [ -z "$RESULT" ] || [ "$RESULT" = '{"serp":[],"gather":[],"all":[]}' ]; then
             echo "No recently opened shows found"
             echo "has_shows=false" >> $GITHUB_OUTPUT
           else
-            echo "Recently opened shows: $SHOWS"
+            SERP_SHOWS=$(echo "$RESULT" | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');const j=JSON.parse(d);console.log(j.serp.join(','))")
+            GATHER_SHOWS=$(echo "$RESULT" | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');const j=JSON.parse(d);console.log(j.gather.join(','))")
+            ALL_SHOWS=$(echo "$RESULT" | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');const j=JSON.parse(d);console.log(j.all.join(','))")
+
+            echo "All recently opened shows: $ALL_SHOWS"
+            echo "SERP-eligible (scheduled day): $SERP_SHOWS"
+            echo "Gather-eligible (≤3 days): $GATHER_SHOWS"
+
             echo "has_shows=true" >> $GITHUB_OUTPUT
-            echo "shows=$SHOWS" >> $GITHUB_OUTPUT
+            echo "shows=$ALL_SHOWS" >> $GITHUB_OUTPUT
+            echo "serp_shows=$SERP_SHOWS" >> $GITHUB_OUTPUT
+            echo "gather_shows=$GATHER_SHOWS" >> $GITHUB_OUTPUT
           fi
 
       - name: Check if gather-reviews already running
@@ -93,13 +125,19 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
-      - name: Discover reviews via SERP
-        if: steps.find.outputs.has_shows == 'true'
+      - name: Discover reviews via SERP (scheduled days only)
+        if: steps.find.outputs.has_shows == 'true' && steps.find.outputs.serp_shows != ''
         continue-on-error: true
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: |
-          IFS=',' read -ra SHOWS <<< "${{ steps.find.outputs.shows }}"
+          SERP_SHOWS="${{ steps.find.outputs.serp_shows }}"
+          if [ -z "$SERP_SHOWS" ]; then
+            echo "No shows eligible for SERP today (not a scheduled search day)"
+            exit 0
+          fi
+          IFS=',' read -ra SHOWS <<< "$SERP_SHOWS"
+          echo "SERP searching ${#SHOWS[@]} shows (scheduled search day)"
           for SHOW in "${SHOWS[@]}"; do
             echo "=== Discovering reviews for $SHOW ==="
             node scripts/discover-opening-night-reviews.js --show="$SHOW" --tiers=1,2 || true
@@ -114,18 +152,22 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Opening night SERP discoveries'
 
-      - name: Trigger gather-reviews
-        if: steps.find.outputs.has_shows == 'true' && steps.guard.outputs.should_trigger == 'true'
+      - name: Trigger gather-reviews (≤3 days only)
+        if: steps.find.outputs.has_shows == 'true' && steps.guard.outputs.should_trigger == 'true' && steps.find.outputs.gather_shows != ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          SHOWS="${{ steps.find.outputs.shows }}"
-          echo "Triggering gather-reviews for opening night: $SHOWS"
+          GATHER_SHOWS="${{ steps.find.outputs.gather_shows }}"
+          if [ -z "$GATHER_SHOWS" ]; then
+            echo "No shows ≤3 days old — skipping gather-reviews dispatch"
+            exit 0
+          fi
+          echo "Triggering gather-reviews for shows ≤3 days old: $GATHER_SHOWS"
           gh workflow run "Gather Review Data" \
-            -f shows="$SHOWS" \
+            -f shows="$GATHER_SHOWS" \
             -f parallel_jobs=1 \
             -f max_tier=3
-          echo "Gather reviews triggered for: $SHOWS"
+          echo "Gather reviews triggered for: $GATHER_SHOWS"
 
       - name: Audit T1/T2 coverage gaps
         if: steps.find.outputs.has_shows == 'true'

@@ -982,10 +982,16 @@ async function main() {
   const shows = loadShows();
   console.log(`Loaded ${shows.length} shows\n`);
 
-  // Filter shows
+  // Filter shows — exclude closed shows (won't get new reviews) and pre-2023 unless targeted
   let targetShows = shows;
   if (targetShowIds) {
     targetShows = shows.filter(s => targetShowIds.includes(s.id) || targetShowIds.includes(s.slug));
+  } else {
+    targetShows = shows.filter(s => {
+      if (s.status === 'closed') return false;
+      const opening = s.openingDate ? new Date(s.openingDate) : null;
+      return opening && opening >= new Date('2023-01-01');
+    });
   }
 
   // In verify mode, pick 5 representative shows
