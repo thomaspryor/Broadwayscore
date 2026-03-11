@@ -26,8 +26,8 @@ const KNOWN_ALIASES = {
   'cursed child': 'harry-potter',
 
   // Lion King variations
-  'the lion king': 'the-lion-king-1997',
-  'lion king': 'the-lion-king-1997',
+  'the lion king': 'the-lion-king',
+  'lion king': 'the-lion-king',
 
   // Beautiful Noise variations
   'a beautiful noise': 'a-beautiful-noise-2022',
