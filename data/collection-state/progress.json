@@ -641,7 +641,9 @@
     "into-the-woods-2002/wsj--charles-isherwood.json",
     "kinky-boots-2026/nypost--elisabeth-vincentelli.json",
     "kinky-boots-off-broadway-2026/wsj--terry-teachout.json",
-    "little-shop-of-horrors-2019/deadline--greg-evans.json"
+    "little-shop-of-horrors-2019/deadline--greg-evans.json",
+    "little-shop-of-horrors-2019/nydailynews--chris-jones.json",
+    "little-shop-of-horrors-2019/theatre-reviews-limited--david-roberts.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -941,7 +943,15 @@
     "latin-history-for-morons-2017/broadwaynews--elizabeth-bradley.json",
     "leopoldstadt-2022/newsweek--joe-westerfield.json",
     "leopoldstadt-2022/wsj--terry-teachout.json",
-    "les-liaisons-dangereuses-1987/timeout--david-cote.json"
+    "les-liaisons-dangereuses-1987/timeout--david-cote.json",
+    "lobby-hero-2018/broadwaynews--elizabeth-bradley.json",
+    "love-letters-1989/ew--thom-geier.json",
+    "m-butterfly-2017/broadwaynews--charles-isherwood.json",
+    "m-butterfly-2017/newnownextcom--michael-musto.json",
+    "machinal-2014/wsj--terry-teachout.json",
+    "mary-poppins-2006/nypost--clive-barnes.json",
+    "master-class-2011/ew--melissa-rose-bernardo.json",
+    "mcneal-2024/observer--rex-reed.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1407,7 +1417,9 @@
       "beautiful-little-fool-west-end-2026/timeout-london--tim-bano.json",
       "burn-this-1987/timeout--adam-feldman.json",
       "faith-healer-2006/guardian--mark-lawson.json",
-      "hamlet-2026/theatermania--zachary-stewart.json"
+      "hamlet-2026/theatermania--zachary-stewart.json",
+      "little-shop-of-horrors-2019/nydailynews--chris-jones.json",
+      "little-shop-of-horrors-2019/theatre-reviews-limited--david-roberts.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -1628,7 +1640,8 @@
       "data/review-texts/kiss-me-kate-2019/theater-reviews-from-my-seat--joe-lombardi.json",
       "data/review-texts/la-bete-1991/new-jersey-newsroom--michael-sommers.json",
       "data/review-texts/la-bete-1991/wsj--terry-teachout.json",
-      "data/review-texts/les-liaisons-dangereuses-1987/timeout--david-cote.json"
+      "data/review-texts/les-liaisons-dangereuses-1987/timeout--david-cote.json",
+      "data/review-texts/m-butterfly-2017/newnownextcom--michael-musto.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/timeout--andrzej-lukowski.json",
@@ -1772,7 +1785,7 @@
     ]
   },
   "startTime": "2026-03-10T09:53:53.378Z",
-  "lastProcessed": "little-shop-of-horrors-2019/deadline--greg-evans.json",
+  "lastProcessed": "mcneal-2024/observer--rex-reed.json",
   "log": [
     {
       "t": "2026-03-10T09:54:28.456Z",
@@ -2431,6 +2444,39 @@
       "t": "2026-03-11T04:39:35.435Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-11T04:42:49.770Z",
+      "event": "bb-session",
+      "session": "b6a5075d",
+      "url": "https://www.wsj.com/articles/theater-review-machinal-1389305827"
+    },
+    {
+      "t": "2026-03-11T04:42:51.166Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T04:44:09.955Z",
+      "event": "bb-session",
+      "session": "aa5b144d",
+      "url": "https://www.nypost.com/seven/11172006/entertainment/theater/no_stoppin_this_popp"
+    },
+    {
+      "t": "2026-03-11T04:44:11.249Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-11T04:45:35.023Z",
+      "event": "bb-session",
+      "session": "9d572799",
+      "url": "https://observer.com/2024/09/mcneal-review-broadway-ayad-akhtar-lincoln-center/"
+    },
+    {
+      "t": "2026-03-11T04:45:36.205Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
     }
   ]
 }
