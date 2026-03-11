@@ -13,9 +13,11 @@ export const MIN_AUDIENCE_REVIEWS = 15;
  * Get total audience review count across all sources.
  */
 export function getTotalAudienceReviews(buzz: AudienceBuzzData): number {
-  return (buzz.sources?.showScore?.reviewCount ?? 0)
-    + (buzz.sources?.mezzanine?.reviewCount ?? 0)
-    + (buzz.sources?.reddit?.reviewCount ?? 0);
+  if (!buzz.sources) return 0;
+  return Object.values(buzz.sources).reduce(
+    (sum, source) => sum + (source?.reviewCount ?? 0),
+    0
+  );
 }
 
 /**

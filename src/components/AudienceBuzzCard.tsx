@@ -210,15 +210,13 @@ export default function AudienceBuzzCard({ buzz, showScoreUrl, limitedSources }:
           volumeLabel="mentions"
           comingSoon={!reddit}
         />
-        {theatr && (
-          <SourceCard
-            name="Theatr"
-            icon={<TheatrIcon className="text-teal-400" />}
-            score={theatr.score}
-            reviewCount={theatr.reviewCount}
-            volumeLabel="votes"
-          />
-        )}
+        <SourceCard
+          name="Theatr"
+          icon={<TheatrIcon className="text-teal-400" />}
+          score={theatr?.score ?? null}
+          reviewCount={theatr?.reviewCount ?? null}
+          volumeLabel="votes"
+        />
       </div>
 
       {/* Limited sources note for historical shows */}

@@ -214,12 +214,14 @@ export default function RushPage() {
   ]);
 
   // Stats
-  const cheapestRush = showsWithRush[0];
-  const cheapestPrice = Math.min(
-    cheapestRush?.rushData?.rush?.price || 999,
-    cheapestRush?.rushData?.digitalRush?.price || 999,
-    cheapestRush?.rushData?.studentRush?.price || 999
-  );
+  const cheapestRush = showsWithRush.length > 0 ? showsWithRush[0] : null;
+  const cheapestPrice = cheapestRush
+    ? Math.min(
+        cheapestRush.rushData?.rush?.price || 999,
+        cheapestRush.rushData?.digitalRush?.price || 999,
+        cheapestRush.rushData?.studentRush?.price || 999
+      )
+    : null;
 
   const boxOfficeRushCount = showsWithRush.filter(item => item.rushData?.rush?.type === 'general').length;
   const digitalRushCount = showsWithRush.filter(item => item.rushData?.digitalRush || item.rushData?.rush?.type === 'digital').length;
@@ -253,9 +255,9 @@ export default function RushPage() {
         {/* Quick Stats */}
         <div className="grid grid-cols-3 gap-4 mb-8">
           <div className="card p-4 text-center">
-            <div className="text-2xl font-bold text-emerald-400">${cheapestPrice}</div>
+            <div className="text-2xl font-bold text-emerald-400">{cheapestPrice !== null ? `$${cheapestPrice}` : '—'}</div>
             <div className="text-xs text-gray-500 mt-1">Cheapest Rush</div>
-            <div className="text-xs text-gray-400 truncate">{cheapestRush?.show.title}</div>
+            <div className="text-xs text-gray-400 truncate">{cheapestRush?.show.title ?? '—'}</div>
           </div>
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-white">{boxOfficeRushCount}</div>

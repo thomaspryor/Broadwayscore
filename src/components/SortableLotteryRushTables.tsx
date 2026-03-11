@@ -214,6 +214,139 @@ export function LotteryTable({ data }: LotteryTableProps) {
   );
 }
 
+// ============ STANDING ROOM TABLE ============
+
+interface SROData {
+  standingRoom: { price: number; time?: string; instructions?: string } | null;
+  lottery?: { price: number } | null;
+  rush?: { price: number } | null;
+}
+
+interface ShowSROData {
+  show: {
+    slug: string;
+    title: string;
+    status: string;
+    images?: { thumbnail?: string } | null;
+    criticScore?: { score?: number | null; reviewCount?: number | null } | null;
+  };
+  sroData: SROData;
+}
+
+type SROColumn = 'show' | 'price' | 'score';
+
+interface StandingRoomTableProps {
+  data: ShowSROData[];
+}
+
+export function StandingRoomTable({ data }: StandingRoomTableProps) {
+  const [sortColumn, setSortColumn] = useState<SROColumn>('price');
+  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+
+  const handleSort = (column: SROColumn) => {
+    if (sortColumn === column) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortColumn(column);
+      setSortDirection(column === 'score' ? 'desc' : 'asc');
+    }
+  };
+
+  const sortedData = useMemo(() => {
+    return [...data].sort((a, b) => {
+      let aVal: string | number | null = null;
+      let bVal: string | number | null = null;
+
+      switch (sortColumn) {
+        case 'show':
+          aVal = a.show.title.toLowerCase();
+          bVal = b.show.title.toLowerCase();
+          break;
+        case 'price':
+          aVal = a.sroData.standingRoom?.price || 999;
+          bVal = b.sroData.standingRoom?.price || 999;
+          break;
+        case 'score':
+          aVal = a.show.criticScore?.score ?? null;
+          bVal = b.show.criticScore?.score ?? null;
+          break;
+      }
+
+      if (aVal === null && bVal === null) return 0;
+      if (aVal === null) return 1;
+      if (bVal === null) return -1;
+
+      if (typeof aVal === 'string' && typeof bVal === 'string') {
+        return sortDirection === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+      }
+
+      const numA = aVal as number;
+      const numB = bVal as number;
+      return sortDirection === 'asc' ? numA - numB : numB - numA;
+    });
+  }, [data, sortColumn, sortDirection]);
+
+  const headerClass = "py-3 px-4 text-gray-400 font-medium cursor-pointer hover:text-white transition-colors select-none group";
+
+  return (
+    <div className="card overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-white/10 bg-surface-overlay">
+              <th className="text-left py-3 px-4 text-gray-400 font-medium">#</th>
+              <th className={`text-left ${headerClass}`} onClick={() => handleSort('show')}>
+                Show
+                <SortIcon direction={sortDirection} active={sortColumn === 'show'} />
+              </th>
+              <th className={`text-right ${headerClass}`} onClick={() => handleSort('price')}>
+                Price
+                <SortIcon direction={sortDirection} active={sortColumn === 'price'} />
+              </th>
+              <th className={`text-center hidden md:table-cell ${headerClass}`} onClick={() => handleSort('score')}>
+                Score
+                <SortIcon direction={sortDirection} active={sortColumn === 'score'} />
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {sortedData.map((item, index) => {
+              const price = item.sroData.standingRoom?.price;
+              const score = item.show.criticScore?.score;
+
+              return (
+                <tr key={item.show.slug} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                  <td className="py-3 px-4">
+                    <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
+                      index < 3 ? 'bg-accent-gold text-gray-900' : 'text-gray-500'
+                    }`}>
+                      {index + 1}
+                    </span>
+                  </td>
+                  <td className="py-3 px-4">
+                    <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium">
+                      {item.show.title}
+                    </Link>
+                  </td>
+                  <td className="py-3 px-4 text-right">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-gray-500/15 border border-gray-500/30 text-gray-300 font-semibold">
+                      <TicketIcon className="w-3.5 h-3.5" />
+                      ${price}
+                    </span>
+                  </td>
+                  <td className="py-3 px-4 text-center hidden md:table-cell">
+                    <ScoreBadge score={score} size="sm" showCrown />
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
 // ============ RUSH TABLE ============
 
 interface RushInfo {

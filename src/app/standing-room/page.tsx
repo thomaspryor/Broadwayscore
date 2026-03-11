@@ -8,6 +8,7 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import { ComputedShow } from '@/lib/engine';
 import { featureFlags } from '@/config/feature-flags';
 import { ScoreBadge } from '@/components/show-cards';
+import { StandingRoomTable } from '@/components/SortableLotteryRushTables';
 
 export const metadata: Metadata = {
   title: 'Broadway Standing Room Only (SRO) Tickets',
@@ -165,10 +166,10 @@ export default function StandingRoomPage() {
   ]);
 
   // Stats
-  const cheapestSRO = showsWithSRO[0];
-  const avgPrice = Math.round(
-    showsWithSRO.reduce((sum, item) => sum + (item.sroData?.standingRoom?.price || 0), 0) / showsWithSRO.length
-  );
+  const cheapestSRO = showsWithSRO.length > 0 ? showsWithSRO[0] : null;
+  const avgPrice = showsWithSRO.length > 0
+    ? Math.round(showsWithSRO.reduce((sum, item) => sum + (item.sroData?.standingRoom?.price || 0), 0) / showsWithSRO.length)
+    : null;
 
   return (
     <>
@@ -199,16 +200,16 @@ export default function StandingRoomPage() {
         {/* Quick Stats */}
         <div className="grid grid-cols-3 gap-4 mb-8">
           <div className="card p-4 text-center">
-            <div className="text-2xl font-bold text-gray-300">${cheapestSRO?.sroData?.standingRoom?.price}</div>
+            <div className="text-2xl font-bold text-gray-300">{cheapestSRO ? `$${cheapestSRO.sroData?.standingRoom?.price}` : '—'}</div>
             <div className="text-xs text-gray-500 mt-1">Cheapest SRO</div>
-            <div className="text-xs text-gray-400 truncate">{cheapestSRO?.show.title}</div>
+            <div className="text-xs text-gray-400 truncate">{cheapestSRO?.show.title ?? '—'}</div>
           </div>
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-white">{showsWithSRO.length}</div>
             <div className="text-xs text-gray-500 mt-1">Shows with SRO</div>
           </div>
           <div className="card p-4 text-center">
-            <div className="text-2xl font-bold text-gray-400">${avgPrice}</div>
+            <div className="text-2xl font-bold text-gray-400">{avgPrice !== null ? `$${avgPrice}` : '—'}</div>
             <div className="text-xs text-gray-500 mt-1">Average Price</div>
           </div>
         </div>
@@ -236,7 +237,14 @@ export default function StandingRoomPage() {
           </ul>
         </div>
 
-        {/* Show List */}
+        {/* Sortable Table */}
+        <div className="mb-8">
+          <h2 className="text-lg font-bold text-white mb-3">All Standing Room</h2>
+          <StandingRoomTable data={showsWithSRO.map(item => ({ show: item.show, sroData: item.sroData! }))} />
+        </div>
+
+        {/* Detailed View */}
+        <h2 className="text-lg font-bold text-white mb-3">Detailed View</h2>
         <div className="space-y-3">
           {showsWithSRO.map((item, index) => (
             <SROShowCard

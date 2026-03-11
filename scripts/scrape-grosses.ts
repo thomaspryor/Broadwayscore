@@ -28,6 +28,12 @@ const HISTORY_PATH = path.join(__dirname, '../data/grosses-history.json');
 const DRY_RUN = process.argv.includes('--dry-run');
 const MIN_SHOWS = 20;
 
+// Long-running shows expected in every weekly scrape. Soft-warn (not hard-fail)
+// so the pipeline doesn't break when a show closes — but surfaces the gap loudly.
+const EXPECTED_SHOWS = [
+  'hamilton', 'wicked', 'the-lion-king', 'moulin-rouge', 'hadestown', 'mj',
+];
+
 // ============================================================
 // Interfaces (unchanged)
 // ============================================================
@@ -471,6 +477,30 @@ function validateWeekEnding(weekEnding: string): boolean {
   return true;
 }
 
+function warnMissingExpectedShows(matchedSlugs: string[]): void {
+  const slugSet = new Set(matchedSlugs);
+  const missing = EXPECTED_SHOWS.filter(s => !slugSet.has(s));
+  if (missing.length > 0) {
+    console.error(`⚠ EXPECTED SHOWS MISSING from scraped data: ${missing.join(', ')}`);
+    console.error(`  This may indicate a show-matching alias bug or a show closure.`);
+    console.error(`  If a show has closed, remove it from EXPECTED_SHOWS in scrape-grosses.ts.`);
+  }
+}
+
+function validateDropCount(
+  matchedCount: number,
+  existingGrosses: GrossesData | null
+): boolean {
+  if (!existingGrosses) return true;
+  const existingThisWeekCount = Object.values(existingGrosses.shows).filter(s => s.thisWeek).length;
+  const dropped = existingThisWeekCount - matchedCount;
+  if (dropped > 5) {
+    console.error(`GUARD: ${dropped} shows dropped from previous week (${existingThisWeekCount} → ${matchedCount}). Aborting write.`);
+    return false;
+  }
+  return true;
+}
+
 function checkWoWDeltas(
   newData: Record<string, ShowGrosses>,
   existingGrosses: GrossesData | null
@@ -621,6 +651,9 @@ async function scrapeGrosses(): Promise<void> {
     process.exit(1);
   }
 
+  // Warn if expected long-running shows are missing (soft — pipeline continues)
+  warnMissingExpectedShows(matchedRows.map(r => r.slug));
+
   // Load existing grosses data
   let existingGrosses: GrossesData | null = null;
   if (fs.existsSync(GROSSES_PATH)) {
@@ -632,12 +665,9 @@ async function scrapeGrosses(): Promise<void> {
     }
   }
 
-  // Compare match count with existing data
-  if (existingGrosses) {
-    const existingThisWeekCount = Object.values(existingGrosses.shows).filter(s => s.thisWeek).length;
-    if (matchedCount < existingThisWeekCount - 5) {
-      console.warn(`⚠ Matched ${matchedCount} vs ${existingThisWeekCount} last week — ${existingThisWeekCount - matchedCount} fewer shows`);
-    }
+  // Hard-fail if too many shows dropped vs previous week
+  if (!validateDropCount(matchedCount, existingGrosses)) {
+    process.exit(1);
   }
 
   // Build grosses data structure

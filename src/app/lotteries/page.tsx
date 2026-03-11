@@ -187,10 +187,12 @@ export default function LotteriesPage() {
   ]);
 
   // Stats
-  const cheapestLottery = showsWithLottery[0];
-  const avgPrice = showsWithLottery.reduce((sum, item) => {
-    return sum + (item.lotteryData?.lottery?.price || item.lotteryData?.specialLottery?.price || 0);
-  }, 0) / showsWithLottery.length;
+  const cheapestLottery = showsWithLottery.length > 0 ? showsWithLottery[0] : null;
+  const avgPrice = showsWithLottery.length > 0
+    ? showsWithLottery.reduce((sum, item) => {
+        return sum + (item.lotteryData?.lottery?.price || item.lotteryData?.specialLottery?.price || 0);
+      }, 0) / showsWithLottery.length
+    : null;
 
   return (
     <>
@@ -222,17 +224,17 @@ export default function LotteriesPage() {
         <div className="grid grid-cols-3 gap-4 mb-8">
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-purple-400">
-              ${cheapestLottery?.lotteryData?.specialLottery?.price || cheapestLottery?.lotteryData?.lottery?.price}
+              {cheapestLottery ? `$${cheapestLottery.lotteryData?.specialLottery?.price || cheapestLottery.lotteryData?.lottery?.price}` : '—'}
             </div>
             <div className="text-xs text-gray-500 mt-1">Cheapest Lottery</div>
-            <div className="text-xs text-gray-400 truncate">{cheapestLottery?.show.title}</div>
+            <div className="text-xs text-gray-400 truncate">{cheapestLottery?.show.title ?? '—'}</div>
           </div>
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-white">{showsWithLottery.length}</div>
             <div className="text-xs text-gray-500 mt-1">Shows with Lotteries</div>
           </div>
           <div className="card p-4 text-center">
-            <div className="text-2xl font-bold text-gray-300">${Math.round(avgPrice)}</div>
+            <div className="text-2xl font-bold text-gray-300">{avgPrice !== null ? `$${Math.round(avgPrice)}` : '—'}</div>
             <div className="text-xs text-gray-500 mt-1">Avg Lottery Price</div>
           </div>
         </div>
