@@ -639,7 +639,9 @@
     "hamlet-2026/theatermania--zachary-stewart.json",
     "heathers-the-musical-2025/nypost--elisabeth-vincentelli.json",
     "into-the-woods-2002/wsj--charles-isherwood.json",
-    "kinky-boots-2026/nypost--elisabeth-vincentelli.json"
+    "kinky-boots-2026/nypost--elisabeth-vincentelli.json",
+    "kinky-boots-off-broadway-2026/wsj--terry-teachout.json",
+    "little-shop-of-horrors-2019/deadline--greg-evans.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -931,7 +933,15 @@
     "king-lear-2019/theater-reviews-from-my-seat--joe-lombardi.json",
     "kinky-boots-2013/theatermania--charles-isherwood.json",
     "kinky-boots-2026/ew--thom-geier.json",
-    "kinky-boots-2026/nydailynews--joe-dziemianowicz.json"
+    "kinky-boots-2026/nydailynews--joe-dziemianowicz.json",
+    "kiss-me-kate-2019/theater-reviews-from-my-seat--joe-lombardi.json",
+    "kpop-2022/wsj--terry-teachout.json",
+    "la-bete-1991/new-jersey-newsroom--michael-sommers.json",
+    "la-bete-1991/wsj--terry-teachout.json",
+    "latin-history-for-morons-2017/broadwaynews--elizabeth-bradley.json",
+    "leopoldstadt-2022/newsweek--joe-westerfield.json",
+    "leopoldstadt-2022/wsj--terry-teachout.json",
+    "les-liaisons-dangereuses-1987/timeout--david-cote.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1477,7 +1487,9 @@
       "data/review-texts/heathers-the-musical-2025/nypost--elisabeth-vincentelli.json",
       "heathers-the-musical-2025/nypost--elisabeth-vincentelli.json",
       "data/review-texts/kinky-boots-2026/nypost--elisabeth-vincentelli.json",
-      "kinky-boots-2026/nypost--elisabeth-vincentelli.json"
+      "kinky-boots-2026/nypost--elisabeth-vincentelli.json",
+      "data/review-texts/little-shop-of-horrors-2019/deadline--greg-evans.json",
+      "little-shop-of-horrors-2019/deadline--greg-evans.json"
     ],
     "directCookies": [
       "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json",
@@ -1612,7 +1624,11 @@
       "data/review-texts/hold-on-to-your-butts-2026/timeout-london--dave-calhoun.json",
       "data/review-texts/it-shoulda-been-you-2015/new-jersey-newsroom--michael-sommers.json",
       "data/review-texts/jersey-boys-2005/the-journal-news--jacques-le-sourd.json",
-      "data/review-texts/king-lear-2019/theater-reviews-from-my-seat--joe-lombardi.json"
+      "data/review-texts/king-lear-2019/theater-reviews-from-my-seat--joe-lombardi.json",
+      "data/review-texts/kiss-me-kate-2019/theater-reviews-from-my-seat--joe-lombardi.json",
+      "data/review-texts/la-bete-1991/new-jersey-newsroom--michael-sommers.json",
+      "data/review-texts/la-bete-1991/wsj--terry-teachout.json",
+      "data/review-texts/les-liaisons-dangereuses-1987/timeout--david-cote.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/timeout--andrzej-lukowski.json",
@@ -1751,11 +1767,12 @@
       "heathers-the-musical-2025/nytimes--ben-brantley.json",
       "she-loves-me-1994/nytimes--ben-brantley.json",
       "skylight-1996/nytimes--ben-brantley.json",
-      "into-the-woods-2002/wsj--charles-isherwood.json"
+      "into-the-woods-2002/wsj--charles-isherwood.json",
+      "kinky-boots-off-broadway-2026/wsj--terry-teachout.json"
     ]
   },
   "startTime": "2026-03-10T09:53:53.378Z",
-  "lastProcessed": "kinky-boots-2026/nypost--elisabeth-vincentelli.json",
+  "lastProcessed": "little-shop-of-horrors-2019/deadline--greg-evans.json",
   "log": [
     {
       "t": "2026-03-10T09:54:28.456Z",
@@ -2381,6 +2398,39 @@
       "t": "2026-03-11T04:33:27.804Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-11T04:35:03.988Z",
+      "event": "bb-session",
+      "session": "f804ceb7",
+      "url": "https://www.wsj.com/articles/kpop-review-circle-in-the-square-theatre-broadway-1"
+    },
+    {
+      "t": "2026-03-11T04:35:05.311Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T04:37:43.281Z",
+      "event": "bb-session",
+      "session": "6260eb5f",
+      "url": "https://www.wsj.com/articles/leopoldstadt-review-tom-stoppards-final-play-is-a-h"
+    },
+    {
+      "t": "2026-03-11T04:37:44.533Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T04:39:34.208Z",
+      "event": "bb-session",
+      "session": "acf0dbf7",
+      "url": "https://deadline.com/2019/10/little-shop-of-horrors-review-jonathan-groff-tammy-"
+    },
+    {
+      "t": "2026-03-11T04:39:35.435Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

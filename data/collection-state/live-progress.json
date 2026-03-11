@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-03-11T04:33:44.313Z",
-  "processed": 640,
-  "failed": 290,
-  "successRate": "68.8%",
+  "updatedAt": "2026-03-11T04:39:47.647Z",
+  "processed": 642,
+  "failed": 298,
+  "successRate": "68.3%",
   "tierBreakdown": {
     "playwright": 462,
     "amp": 32,
-    "browserbase": 44,
+    "browserbase": 46,
     "directCookies": 3,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 126,
-    "archive": 137
+    "archiveToday": 130,
+    "archive": 138
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 13,
   "recentActivity": [
-    {
-      "t": "2026-03-10T20:41:35.596Z",
-      "event": "bb-cookie-inject",
-      "domain": "amny.com"
-    },
-    {
-      "t": "2026-03-11T04:12:54.530Z",
-      "event": "bb-session",
-      "session": "39f0ba63",
-      "url": "https://www.newsday.com/entertainment/theater/sheree-rene-scott-s-likable-everyd"
-    },
-    {
-      "t": "2026-03-11T04:12:55.665Z",
-      "event": "bb-cookie-inject",
-      "domain": "newsday.com"
-    },
-    {
-      "t": "2026-03-11T04:13:39.923Z",
-      "event": "bb-session",
-      "session": "60c3d563",
-      "url": "https://www.wsj.com/articles/falsettos-review-boundary-pushing-no-more-147761460"
-    },
-    {
-      "t": "2026-03-11T04:13:41.064Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-11T04:15:45.746Z",
-      "event": "bb-session",
-      "session": "f9e1255c",
-      "url": "https://www.newsday.com/entertainment/theater/fish-in-the-dark-review-larry-davi"
-    },
     {
       "t": "2026-03-11T04:15:46.983Z",
       "event": "bb-cookie-inject",
@@ -124,6 +91,39 @@
       "t": "2026-03-11T04:33:27.804Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-11T04:35:03.988Z",
+      "event": "bb-session",
+      "session": "f804ceb7",
+      "url": "https://www.wsj.com/articles/kpop-review-circle-in-the-square-theatre-broadway-1"
+    },
+    {
+      "t": "2026-03-11T04:35:05.311Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T04:37:43.281Z",
+      "event": "bb-session",
+      "session": "6260eb5f",
+      "url": "https://www.wsj.com/articles/leopoldstadt-review-tom-stoppards-final-play-is-a-h"
+    },
+    {
+      "t": "2026-03-11T04:37:44.533Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T04:39:34.208Z",
+      "event": "bb-session",
+      "session": "acf0dbf7",
+      "url": "https://deadline.com/2019/10/little-shop-of-horrors-review-jonathan-groff-tammy-"
+    },
+    {
+      "t": "2026-03-11T04:39:35.435Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
