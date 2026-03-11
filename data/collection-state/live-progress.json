@@ -1,37 +1,20 @@
 {
-  "updatedAt": "2026-03-11T04:16:21.190Z",
-  "processed": 636,
-  "failed": 264,
-  "successRate": "70.7%",
+  "updatedAt": "2026-03-11T04:19:59.587Z",
+  "processed": 638,
+  "failed": 272,
+  "successRate": "70.1%",
   "tierBreakdown": {
-    "playwright": 461,
+    "playwright": 462,
     "amp": 32,
-    "browserbase": 40,
+    "browserbase": 42,
     "directCookies": 3,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 120,
+    "archiveToday": 122,
     "archive": 136
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-03-10T18:02:02.300Z",
-      "event": "bb-session",
-      "session": "ea16cd80",
-      "url": "https://www.nytimes.com/2026/03/05/theater/what-we-did-before-our-moth-days-revi"
-    },
-    {
-      "t": "2026-03-10T18:02:03.662Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-10T18:03:23.275Z",
-      "event": "bb-session",
-      "session": "0ce6cbcc",
-      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
-    },
     {
       "t": "2026-03-10T18:03:24.654Z",
       "event": "bb-cookie-inject",
@@ -124,6 +107,23 @@
       "t": "2026-03-11T04:15:46.983Z",
       "event": "bb-cookie-inject",
       "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-11T04:17:53.529Z",
+      "event": "bb-session",
+      "session": "daf974ba",
+      "url": "https://broadway.news/2018/07/26/review-head-over-heels-cant-find-the-beat/"
+    },
+    {
+      "t": "2026-03-11T04:19:42.402Z",
+      "event": "bb-session",
+      "session": "d3ed3641",
+      "url": "https://nypost.com/2014/03/31/heathers-still-cliques-in-musical-re-imagining/"
+    },
+    {
+      "t": "2026-03-11T04:19:43.945Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }

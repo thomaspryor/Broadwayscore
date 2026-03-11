@@ -635,7 +635,9 @@
     "a-view-from-the-bridge-2015/guardian--lyn-gardner.json",
     "beautiful-little-fool-west-end-2026/timeout-london--tim-bano.json",
     "burn-this-1987/timeout--adam-feldman.json",
-    "faith-healer-2006/guardian--mark-lawson.json"
+    "faith-healer-2006/guardian--mark-lawson.json",
+    "hamlet-2026/theatermania--zachary-stewart.json",
+    "heathers-the-musical-2025/nypost--elisabeth-vincentelli.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -901,7 +903,15 @@
     "falsettos-2016/reviewing-the-drama--robin-riegelhaupt.json",
     "fat-ham-2023/theatermania--adam-feldman.json",
     "fish-in-the-dark-2015/newsday--unknown.json",
-    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/harlem-community-news--linda-armstrong.json"
+    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/harlem-community-news--linda-armstrong.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/broadwaynews--charles-isherwood.json",
+    "frozen-2018/broadwaynews--charles-isherwood.json",
+    "frozen-2018/onandoffbroadwaytheaterreviews--richard-seff.json",
+    "fully-committed-2016/theatermania--adam-feldman.json",
+    "gettin-the-band-back-together-2018/broadwaynews--charles-isherwood.json",
+    "head-over-heels-2018/broadwaynews--charles-isherwood.json",
+    "head-over-heels-2018/theater-reviews-from-my-seat--joe-lombardi.json",
+    "heathers-the-musical-2025/ew--kyle-anderson.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1366,7 +1376,8 @@
       "a-view-from-the-bridge-2015/guardian--lyn-gardner.json",
       "beautiful-little-fool-west-end-2026/timeout-london--tim-bano.json",
       "burn-this-1987/timeout--adam-feldman.json",
-      "faith-healer-2006/guardian--mark-lawson.json"
+      "faith-healer-2006/guardian--mark-lawson.json",
+      "hamlet-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -1442,7 +1453,9 @@
       "data/review-texts/marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
       "marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
       "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
-      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json"
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
+      "data/review-texts/heathers-the-musical-2025/nypost--elisabeth-vincentelli.json",
+      "heathers-the-musical-2025/nypost--elisabeth-vincentelli.json"
     ],
     "directCookies": [
       "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json",
@@ -1571,7 +1584,9 @@
       "data/review-texts/contact-2000/renew-here--simplecirc-inc.json",
       "data/review-texts/dear-evan-hansen-2016/review--robin-riegelhaupt.json",
       "data/review-texts/dear-evan-hansen-2016/reviewing-the-drama--robin-riegelhaupt.json",
-      "data/review-texts/falsettos-2016/reviewing-the-drama--robin-riegelhaupt.json"
+      "data/review-texts/falsettos-2016/reviewing-the-drama--robin-riegelhaupt.json",
+      "data/review-texts/head-over-heels-2018/broadwaynews--charles-isherwood.json",
+      "data/review-texts/head-over-heels-2018/theater-reviews-from-my-seat--joe-lombardi.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/timeout--andrzej-lukowski.json",
@@ -1713,7 +1728,7 @@
     ]
   },
   "startTime": "2026-03-10T09:53:53.378Z",
-  "lastProcessed": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/harlem-community-news--linda-armstrong.json",
+  "lastProcessed": "heathers-the-musical-2025/nypost--elisabeth-vincentelli.json",
   "log": [
     {
       "t": "2026-03-10T09:54:28.456Z",
@@ -2267,6 +2282,23 @@
       "t": "2026-03-11T04:15:46.983Z",
       "event": "bb-cookie-inject",
       "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-11T04:17:53.529Z",
+      "event": "bb-session",
+      "session": "daf974ba",
+      "url": "https://broadway.news/2018/07/26/review-head-over-heels-cant-find-the-beat/"
+    },
+    {
+      "t": "2026-03-11T04:19:42.402Z",
+      "event": "bb-session",
+      "session": "d3ed3641",
+      "url": "https://nypost.com/2014/03/31/heathers-still-cliques-in-musical-re-imagining/"
+    },
+    {
+      "t": "2026-03-11T04:19:43.945Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
