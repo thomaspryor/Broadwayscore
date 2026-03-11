@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-11T04:24:23.026Z",
-  "processed": 639,
-  "failed": 281,
-  "successRate": "69.5%",
+  "updatedAt": "2026-03-11T04:33:44.313Z",
+  "processed": 640,
+  "failed": 290,
+  "successRate": "68.8%",
   "tierBreakdown": {
     "playwright": 462,
     "amp": 32,
-    "browserbase": 42,
+    "browserbase": 44,
     "directCookies": 3,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 124,
+    "archiveToday": 126,
     "archive": 137
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-03-10T19:47:59.451Z",
-      "event": "bb-cookie-inject",
-      "domain": "amny.com"
-    },
-    {
-      "t": "2026-03-10T19:49:27.986Z",
-      "event": "bb-session",
-      "session": "86685d00",
-      "url": "https://www.amny.com/news/review-marcel-on-the-train-finds-bravery/"
-    },
-    {
-      "t": "2026-03-10T19:49:29.047Z",
-      "event": "bb-cookie-inject",
-      "domain": "amny.com"
-    },
-    {
-      "t": "2026-03-10T20:41:34.337Z",
-      "event": "bb-session",
-      "session": "ee167641",
-      "url": "https://www.amny.com/entertainment/theater/spelling-bee-returns-nails-every-word"
-    },
     {
       "t": "2026-03-10T20:41:35.596Z",
       "event": "bb-cookie-inject",
@@ -124,6 +102,28 @@
       "t": "2026-03-11T04:22:54.268Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T04:27:28.677Z",
+      "event": "bb-session",
+      "session": "85e1e157",
+      "url": "https://www.wsj.com/articles/just-for-us-review-alex-edelman-brings-his-disarmin"
+    },
+    {
+      "t": "2026-03-11T04:27:29.859Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-11T04:33:26.631Z",
+      "event": "bb-session",
+      "session": "fe7229cf",
+      "url": "http://nypost.com/2013/04/05/youll-get-a-kick-out-of-kinky-boots/"
+    },
+    {
+      "t": "2026-03-11T04:33:27.804Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
