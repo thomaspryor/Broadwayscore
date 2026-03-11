@@ -13,6 +13,7 @@ const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 const { JSDOM } = require('jsdom');
+const { resolveOutletFromCritic, resolveOutletFromUrl } = require('./lib/review-normalization');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -375,7 +376,30 @@ async function scrapeShowPage(page, ssSlug) {
 }
 
 function createReviewFile(showId, review) {
-  const outletId = outletNameToId(review.outlet || 'unknown');
+  // Resolve outlet if null — try critic registry, then URL domain
+  let outletName = review.outlet;
+  if (!outletName && review.critic) {
+    const resolved = resolveOutletFromCritic(review.critic);
+    if (resolved) {
+      outletName = resolved.displayName;
+      console.log(`    Resolved outlet from critic "${review.critic}": ${outletName}${resolved.isFreelancer ? ' (freelancer)' : ''}`);
+    }
+  }
+  if (!outletName && review.url) {
+    const urlResolved = resolveOutletFromUrl(review.url);
+    if (urlResolved) {
+      outletName = urlResolved.displayName;
+      console.log(`    Resolved outlet from URL: ${outletName}`);
+    }
+  }
+  if (!outletName) {
+    if (review.critic) {
+      console.warn(`    WARNING: Could not resolve outlet for critic "${review.critic}" — using "unknown"`);
+    }
+    outletName = 'unknown';
+  }
+
+  const outletId = outletNameToId(outletName);
   const criticSlug = (review.critic || 'unknown').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   const filename = `${outletId}--${criticSlug}.json`;
   const filePath = path.join(REVIEW_TEXTS_DIR, showId, filename);
@@ -385,7 +409,7 @@ function createReviewFile(showId, review) {
 
   const data = {
     showId,
-    outlet: review.outlet,
+    outlet: outletName !== 'unknown' ? outletName : null,
     outletId,
     criticName: review.critic || null,
     url: review.url || null,

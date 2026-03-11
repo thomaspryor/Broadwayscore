@@ -17,6 +17,8 @@ const {
   findExistingReviewFile,
   generateReviewFilename,
   getOutletDisplayName,
+  resolveOutletFromCritic,
+  resolveOutletFromUrl,
 } = require('./lib/review-normalization');
 
 const showScorePath = path.join(__dirname, '../data/show-score.json');
@@ -47,16 +49,43 @@ function main() {
     const showDir = path.join(reviewTextsDir, showId);
 
     for (const review of data.criticReviews) {
-      if (!review.outlet) {
-        totalSkipped++;
-        continue;
+      let resolvedOutlet = review.outlet;
+
+      // If outlet is null/empty, try to resolve from critic registry or URL
+      if (!resolvedOutlet) {
+        // Strategy 1: Look up critic in registry to find their primary outlet
+        if (review.author) {
+          const resolved = resolveOutletFromCritic(review.author);
+          if (resolved) {
+            resolvedOutlet = resolved.displayName;
+            console.log(`  Resolved outlet from critic "${review.author}": ${resolvedOutlet}${resolved.isFreelancer ? ' (freelancer)' : ''}`);
+          }
+        }
+
+        // Strategy 2: Try to resolve outlet from the review URL domain
+        if (!resolvedOutlet && review.url) {
+          const urlResolved = resolveOutletFromUrl(review.url);
+          if (urlResolved) {
+            resolvedOutlet = urlResolved.displayName;
+            console.log(`  Resolved outlet from URL "${review.url}": ${resolvedOutlet}`);
+          }
+        }
+
+        // If still null, skip — but log a warning so we know about it
+        if (!resolvedOutlet) {
+          const criticInfo = review.author ? ` (critic: ${review.author})` : '';
+          const urlInfo = review.url ? ` (url: ${review.url})` : '';
+          console.warn(`  WARNING: Skipping review with null outlet${criticInfo}${urlInfo} — not in critic registry`);
+          totalSkipped++;
+          continue;
+        }
       }
 
-      const outletId = normalizeOutlet(review.outlet);
+      const outletId = normalizeOutlet(resolvedOutlet);
       const criticId = normalizeCritic(review.author || 'unknown');
 
       // Check for existing file using fuzzy matching (handles alias differences)
-      const existing = findExistingReviewFile(showDir, review.outlet, review.author);
+      const existing = findExistingReviewFile(showDir, resolvedOutlet, review.author);
 
       if (existing) {
         // Existing file found — enrich with showScoreExcerpt if missing
@@ -79,13 +108,13 @@ function main() {
         fs.mkdirSync(showDir, { recursive: true });
       }
 
-      const filename = generateReviewFilename(review.outlet, review.author || 'unknown');
+      const filename = generateReviewFilename(resolvedOutlet, review.author || 'unknown');
       const filePath = path.join(showDir, filename);
 
       const reviewData = {
         showId,
         outletId,
-        outlet: getOutletDisplayName(outletId) || review.outlet,
+        outlet: getOutletDisplayName(outletId) || resolvedOutlet,
         criticName: review.author || null,
         url: review.url || null,
         publishDate: review.date || null,

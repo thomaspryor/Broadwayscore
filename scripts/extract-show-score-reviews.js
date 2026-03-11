@@ -8,6 +8,7 @@
 const fs = require('fs');
 const path = require('path');
 const cheerio = require('cheerio');
+const { resolveOutletFromCritic, resolveOutletFromUrl } = require('./lib/review-normalization');
 
 const archivePath = path.join(__dirname, '../data/aggregator-archive/show-score');
 const urlsPath = path.join(__dirname, '../data/show-score-urls.json');
@@ -114,6 +115,25 @@ function extractShowData(html, showId, sourceUrl) {
     const reviewLink = tile.find('.review-tile-v2__review a[href*="http"]');
     if (reviewLink.length) {
       review.url = reviewLink.attr('href');
+    }
+
+    // Resolve null outlet from critic registry or review URL
+    if (!review.outlet && review.author) {
+      const resolved = resolveOutletFromCritic(review.author);
+      if (resolved) {
+        review.outlet = resolved.displayName;
+        review._outletResolvedFrom = 'critic-registry';
+      }
+    }
+    if (!review.outlet && review.url) {
+      const urlResolved = resolveOutletFromUrl(review.url);
+      if (urlResolved) {
+        review.outlet = urlResolved.displayName;
+        review._outletResolvedFrom = 'url-domain';
+      }
+    }
+    if (!review.outlet && review.author) {
+      console.warn(`    WARNING: Could not resolve outlet for critic "${review.author}" — will be "unknown"`);
     }
 
     // Only add if we have meaningful data

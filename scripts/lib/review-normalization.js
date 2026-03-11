@@ -676,6 +676,37 @@ function validateCriticOutlet(critic, outlet) {
 }
 
 /**
+ * Resolve an outlet name from a critic name using the critic registry.
+ * Useful when Show-Score extraction gets a null outlet (missing avatar alt text)
+ * but has a valid critic name — we can look up their primaryOutlet.
+ *
+ * @param {string} criticName - The critic's name (display name or slug)
+ * @returns {{ outletId: string, displayName: string, isFreelancer: boolean } | null}
+ */
+function resolveOutletFromCritic(criticName) {
+  if (!criticName) return null;
+
+  const registry = loadCriticRegistry();
+  if (!registry || !registry.critics) return null;
+
+  // Normalize critic name to slug format for lookup
+  const criticSlug = normalizeCritic(criticName);
+  if (criticSlug === 'unknown') return null;
+
+  const criticEntry = registry.critics[criticSlug];
+  if (!criticEntry || !criticEntry.primaryOutlet) return null;
+
+  const outletId = criticEntry.primaryOutlet;
+  const displayName = getOutletDisplayName(outletId);
+
+  return {
+    outletId,
+    displayName: displayName || outletId,
+    isFreelancer: !!criticEntry.isFreelancer,
+  };
+}
+
+/**
  * Clear the critic registry cache (for testing or after regeneration).
  */
 function clearCriticRegistryCache() {
@@ -1065,6 +1096,7 @@ module.exports = {
   findExistingReviewFile,
   validateCriticOutlet,
   loadCriticRegistry,
+  resolveOutletFromCritic,
   clearCriticRegistryCache,
   resolveOutletFromUrl,
   clearDomainCache,

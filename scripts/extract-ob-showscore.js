@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { JSDOM } = require('jsdom');
+const { resolveOutletFromCritic, resolveOutletFromUrl } = require('./lib/review-normalization');
 
 const archivePath = 'data/aggregator-archive/show-score';
 const urlsData = JSON.parse(fs.readFileSync('data/show-score-urls.json', 'utf8'));
@@ -38,11 +39,32 @@ for (const [showId, url] of Object.entries(urlsData.shows)) {
   const criticReviews = [];
   const tiles = doc.querySelectorAll('.review-tile-v2.-critic');
   for (const tile of tiles) {
-    const outlet = tile.querySelector('.user-avatar-v2 img')?.getAttribute('alt') || 'Unknown';
+    let outlet = tile.querySelector('.user-avatar-v2 img')?.getAttribute('alt') || null;
     const date = tile.querySelector('.review-tile-v2__date')?.textContent?.trim() || '';
     const author = tile.querySelector('.review-tile-v2__authors a')?.textContent?.trim() || '';
     const excerpt = tile.querySelector('.review-tile-v2__review p')?.textContent?.replace(/Read more$/i, '').trim() || '';
     const reviewUrl = tile.querySelector('a[href]')?.getAttribute('href') || '';
+
+    // Resolve null outlet from critic registry or review URL
+    if (!outlet && author) {
+      const resolved = resolveOutletFromCritic(author);
+      if (resolved) {
+        outlet = resolved.displayName;
+      }
+    }
+    if (!outlet && reviewUrl) {
+      const urlResolved = resolveOutletFromUrl(reviewUrl);
+      if (urlResolved) {
+        outlet = urlResolved.displayName;
+      }
+    }
+    if (!outlet) {
+      if (author) {
+        console.warn(`  WARNING: Could not resolve outlet for critic "${author}" in ${showId}`);
+      }
+      outlet = 'Unknown';
+    }
+
     if (excerpt) {
       criticReviews.push({ outlet, date, author, excerpt, url: reviewUrl });
     }
