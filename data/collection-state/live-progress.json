@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-11T14:29:46.190Z",
-  "processed": 209,
-  "failed": 21,
-  "successRate": "90.9%",
+  "updatedAt": "2026-03-11T14:31:18.808Z",
+  "processed": 218,
+  "failed": 22,
+  "successRate": "90.8%",
   "tierBreakdown": {
-    "playwright": 138,
+    "playwright": 145,
     "amp": 20,
     "browserbase": 30,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 8,
-    "archive": 45
+    "archive": 47
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-03-11T14:04:12.584Z",
-      "event": "bb-session",
-      "session": "40578d71",
-      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
-    },
-    {
-      "t": "2026-03-11T14:04:13.984Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-11T14:05:24.197Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-11T14:26:40.179Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-11T14:30:40.759Z",
+      "event": "bb-session",
+      "session": "0df19cc2",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-03-11T14:30:42.058Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
