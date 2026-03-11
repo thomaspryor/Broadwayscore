@@ -2404,9 +2404,9 @@ function validateCrossFileKeys(shows) {
       for (const key of grossesKeys) {
         if (!slugSet.has(key)) {
           if (idSet.has(key)) {
-            warn(`grosses.json key "${key}" is a show ID, not a slug. Should be "${idToSlug.get(key)}"`);
+            error(`grosses.json key "${key}" is a show ID, not a slug. Should be "${idToSlug.get(key)}"`);
           } else {
-            warn(`grosses.json key "${key}" not found in shows.json (orphan entry)`);
+            error(`grosses.json key "${key}" not found in shows.json (orphan entry — remove it)`);
           }
           issues++;
         }
@@ -3105,6 +3105,10 @@ function runValidation() {
   validateReviewTextDuplicates(shows);
   console.log('');
   validateNoHardcodedOutletLists();
+  console.log('');
+  validateShowMatchingAliases(shows);
+  console.log('');
+  validateLotteryRushData(shows);
 
   // Summary
   console.log('');
@@ -3159,6 +3163,86 @@ function runValidation() {
   }
 
   process.exit(0);
+}
+
+/**
+ * Validate show-matching.js aliases point to valid slugs in shows.json.
+ * Prevents scraper mismatches from broken alias → slug mappings.
+ */
+function validateShowMatchingAliases(shows) {
+  info('Checking show-matching.js alias targets...');
+  const aliasFile = path.join(__dirname, 'lib', 'show-matching.js');
+  if (!fs.existsSync(aliasFile)) {
+    warn('show-matching.js not found, skipping alias validation');
+    return;
+  }
+
+  const slugSet = new Set(shows.map(s => s.slug));
+  const content = fs.readFileSync(aliasFile, 'utf8');
+
+  // Extract KNOWN_ALIASES entries: 'key': 'slug-value'
+  const aliasPattern = /['"]([^'"]+)['"]\s*:\s*['"]([^'"]+)['"]/g;
+  let match;
+  let checked = 0;
+  let issues = 0;
+  while ((match = aliasPattern.exec(content)) !== null) {
+    const alias = match[1];
+    const target = match[2];
+    // Skip non-slug values (URLs, etc)
+    if (target.includes('/') || target.includes('.')) continue;
+    checked++;
+    if (!slugSet.has(target)) {
+      warn(`show-matching.js alias "${alias}" → "${target}" — target slug not found in shows.json`);
+      issues++;
+    }
+  }
+
+  if (issues === 0 && checked > 0) {
+    ok(`All ${checked} show-matching aliases point to valid slugs`);
+  }
+}
+
+/**
+ * Validate lottery-rush.json for duplicate entries and orphaned show IDs.
+ * Catches: digitalRush duplicating lottery (same platform), entries for shows not in shows.json.
+ */
+function validateLotteryRushData(shows) {
+  info('Checking lottery-rush.json...');
+  const lotteryFile = path.join(DATA_DIR, 'lottery-rush.json');
+  if (!fs.existsSync(lotteryFile)) {
+    warn('lottery-rush.json not found, skipping');
+    return;
+  }
+
+  let lotteryData;
+  try {
+    lotteryData = JSON.parse(fs.readFileSync(lotteryFile, 'utf8'));
+  } catch (e) {
+    error(`lottery-rush.json parse error: ${e.message}`);
+    return;
+  }
+
+  const idSet = new Set(shows.map(s => s.id));
+  const entries = lotteryData.shows || lotteryData;
+  let issues = 0;
+
+  for (const [showId, data] of Object.entries(entries)) {
+    if (showId.startsWith('_')) continue;
+
+    // Check for digitalRush duplicating lottery (same platform)
+    if (data.digitalRush && data.lottery) {
+      const rushPlatform = (data.digitalRush.platform || '').toLowerCase();
+      const lotteryPlatform = (data.lottery.platform || '').toLowerCase();
+      if (rushPlatform && lotteryPlatform && rushPlatform === lotteryPlatform) {
+        warn(`lottery-rush.json "${showId}": digitalRush and lottery both use "${data.lottery.platform}" — likely duplicate entry`);
+        issues++;
+      }
+    }
+  }
+
+  if (issues === 0) {
+    ok('No duplicate lottery/rush entries detected');
+  }
 }
 
 runValidation();
