@@ -128,8 +128,8 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus }: S
         <p className="text-yellow-500/80 text-xs mb-3 text-center">Schedule may be outdated</p>
       )}
 
-      {/* Day list */}
-      <div className="space-y-0">
+      {/* Day list — max-w keeps day names close to times on wide screens */}
+      <div className="space-y-0 max-w-sm mx-auto">
         {week.map((day, i) => {
           const isDark = !day.m && !day.e;
           const isToday = i === todayIdx;
