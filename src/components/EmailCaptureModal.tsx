@@ -9,6 +9,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { track } from '@vercel/analytics';
 import { Modal, ModalCloseButton } from '@/components/show-cards';
 
+const FORMSPREE_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || '';
+
 export type GateTrigger =
   | 'csv_download'
   | 'json_download'
@@ -114,6 +116,30 @@ export default function EmailCaptureModal({
         capturedAt: new Date().toISOString(),
         trigger,
       };
+
+      // Submit to Formspree so the email is actually captured server-side
+      if (FORMSPREE_SUBSCRIBER_FORM_ID) {
+        const body: Record<string, string> = {
+          email: userData.email,
+          source: `modal-${trigger}`,
+        };
+        if (userData.name) body.firstName = userData.name;
+        const res = await fetch(`https://formspree.io/f/${FORMSPREE_SUBSCRIBER_FORM_ID}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        if (!res.ok) {
+          setError('Something went wrong. Please try again.');
+          setIsSubmitting(false);
+          return;
+        }
+        // Mark as subscribed so inline forms (header/footer) don't nag again
+        try {
+          localStorage.setItem('bsc_email_subscribed_broadway', 'true');
+          window.dispatchEvent(new Event('bsc_subscribed'));
+        } catch { /* noop */ }
+      }
 
       // Track email capture
       track('email_captured', {
