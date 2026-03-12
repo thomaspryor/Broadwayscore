@@ -3229,12 +3229,16 @@ function validateLotteryRushData(shows) {
   for (const [showId, data] of Object.entries(entries)) {
     if (showId.startsWith('_')) continue;
 
-    // Check for digitalRush duplicating lottery (same platform)
+    // Check for digitalRush duplicating lottery (same platform AND same price = true duplicate)
     if (data.digitalRush && data.lottery) {
       const rushPlatform = (data.digitalRush.platform || '').toLowerCase();
       const lotteryPlatform = (data.lottery.platform || '').toLowerCase();
       if (rushPlatform && lotteryPlatform && rushPlatform === lotteryPlatform) {
-        warn(`lottery-rush.json "${showId}": digitalRush and lottery both use "${data.lottery.platform}" — likely duplicate entry`);
+        if (data.digitalRush.price === data.lottery.price) {
+          warn(`lottery-rush.json "${showId}": digitalRush and lottery both use "${data.lottery.platform}" at $${data.lottery.price} — duplicate entry`);
+        } else {
+          // Different prices = likely different programs (e.g., day-of rush vs day-before lottery)
+        }
         issues++;
       }
     }
