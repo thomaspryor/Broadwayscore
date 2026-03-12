@@ -911,7 +911,17 @@
     "the-kite-runner-2022/wsj--charles-isherwood.json",
     "the-last-ship-2014/wsj--terry-teachout.json",
     "the-lehman-trilogy-2021/observer--jesse-green.json",
-    "the-lieutenant-of-inishmore-2006/nydailynews--joe-dziemianowicz-bway.json"
+    "the-lieutenant-of-inishmore-2006/nydailynews--joe-dziemianowicz-bway.json",
+    "the-little-dog-laughed-2006/nydailynews--joe-dziemianowicz-bway.json",
+    "the-little-mermaid-2008/wsj--terry-teachout.json",
+    "the-maids-off-broadway-2026/ew--unknown.json",
+    "the-maids-off-broadway-2026/nydailynews--unknown.json",
+    "the-merchant-of-venice-1973/new-jersey-newsroom--michael-sommers.json",
+    "the-merchant-of-venice-1989/newsday--linda-winer.json",
+    "the-merchant-of-venice-2010/wsj--terry-teachout.json",
+    "the-minutes-2022/wsj--terry-teachout.json",
+    "the-mountaintop-2011/wsj--terry-teachout.json",
+    "the-music-man-2022/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1493,7 +1503,9 @@
       "data/review-texts/the-ferryman-2018/theater-reviews-from-my-seat--joe-lombardi.json",
       "data/review-texts/the-full-monty-2000/newsday--linda-winer.json",
       "data/review-texts/the-iceman-cometh-2018/broadwaynews--charles-isherwood.json",
-      "data/review-texts/the-lieutenant-of-inishmore-2006/nydailynews--joe-dziemianowicz-bway.json"
+      "data/review-texts/the-lieutenant-of-inishmore-2006/nydailynews--joe-dziemianowicz-bway.json",
+      "data/review-texts/the-little-dog-laughed-2006/nydailynews--joe-dziemianowicz-bway.json",
+      "data/review-texts/the-merchant-of-venice-1973/new-jersey-newsroom--michael-sommers.json"
     ],
     "archive": [
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
@@ -1653,7 +1665,7 @@
     ]
   },
   "startTime": "2026-03-11T13:15:22.957Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nydailynews--joe-dziemianowicz-bway.json",
+  "lastProcessed": "the-music-man-2022/wsj--charles-isherwood.json",
   "log": [
     {
       "t": "2026-03-11T13:19:37.516Z",
@@ -2045,6 +2057,61 @@
       "t": "2026-03-12T04:25:46.731Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-12T04:28:21.331Z",
+      "event": "bb-session",
+      "session": "74d9fcdd",
+      "url": "https://www.wsj.com/articles/SB122946405052662905"
+    },
+    {
+      "t": "2026-03-12T04:28:22.758Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-12T04:31:48.144Z",
+      "event": "bb-session",
+      "session": "97b5986e",
+      "url": "https://www.newsday.com/entertainment/theater/al-pacino-s-merchant-of-venice-eve"
+    },
+    {
+      "t": "2026-03-12T04:31:49.626Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-12T04:32:19.230Z",
+      "event": "bb-session",
+      "session": "d30247e0",
+      "url": "https://www.wsj.com/articles/SB10001424052748704658204575611653158234076"
+    },
+    {
+      "t": "2026-03-12T04:32:20.633Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-12T04:33:52.405Z",
+      "event": "bb-session",
+      "session": "b288a862",
+      "url": "https://www.wsj.com/articles/the-minutes-review-tracy-letts-takes-on-small-town-"
+    },
+    {
+      "t": "2026-03-12T04:33:53.736Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-12T04:35:33.090Z",
+      "event": "bb-session",
+      "session": "7902f229",
+      "url": "https://www.wsj.com/articles/the-music-man-review-hugh-jackman-and-sutton-foster"
+    },
+    {
+      "t": "2026-03-12T04:35:34.542Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
