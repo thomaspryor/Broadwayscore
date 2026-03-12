@@ -1,31 +1,18 @@
 {
-  "updatedAt": "2026-03-12T08:58:24.594Z",
-  "processed": 140,
-  "failed": 10,
-  "successRate": "93.3%",
+  "updatedAt": "2026-03-12T09:04:56.871Z",
+  "processed": 8,
+  "failed": 2,
+  "successRate": "80.0%",
   "tierBreakdown": {
-    "playwright": 89,
+    "playwright": 0,
     "amp": 14,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 18,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 26
+    "archiveToday": 0,
+    "archive": 1
   },
-  "browserbaseSessions": 1,
-  "recentActivity": [
-    {
-      "t": "2026-03-12T08:33:54.281Z",
-      "event": "bb-session",
-      "session": "05b1c861",
-      "url": "https://www.thestage.co.uk/reviews/manic-street-creature-review-kiln-theatre-lon"
-    },
-    {
-      "t": "2026-03-12T08:34:32.810Z",
-      "event": "bb-login-fail",
-      "domain": "thestage.co.uk",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    33 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
