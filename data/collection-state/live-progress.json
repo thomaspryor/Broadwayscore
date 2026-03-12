@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-12T20:11:27.908Z",
-  "processed": 313,
-  "failed": 57,
-  "successRate": "84.6%",
+  "updatedAt": "2026-03-12T20:12:55.855Z",
+  "processed": 322,
+  "failed": 58,
+  "successRate": "84.7%",
   "tierBreakdown": {
-    "playwright": 213,
+    "playwright": 219,
     "amp": 34,
-    "browserbase": 10,
+    "browserbase": 12,
     "directCookies": 1,
-    "scrapingbee": 34,
+    "scrapingbee": 35,
     "brightdata": 0,
     "archiveToday": 22,
-    "archive": 43
+    "archive": 44
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-03-12T19:01:52.808Z",
-      "event": "bb-session",
-      "session": "bdfdc3fe",
-      "url": "https://observer.com/2025/09/review-masquerade-phantom-of-the-opera-experience-i"
-    },
-    {
-      "t": "2026-03-12T19:01:54.122Z",
-      "event": "bb-cookie-inject",
-      "domain": "observer.com"
-    },
     {
       "t": "2026-03-12T19:03:23.303Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-12T19:57:41.205Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-12T20:11:31.403Z",
+      "event": "bb-session",
+      "session": "442a17aa",
+      "url": "https://www.amny.com/entertainment/hadestown-review-1-29924932/"
+    },
+    {
+      "t": "2026-03-12T20:11:33.020Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
