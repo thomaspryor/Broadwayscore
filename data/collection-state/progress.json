@@ -1431,7 +1431,17 @@
     "a-dolls-house-part-2-2017/off-script-with-dan-dwyer--dan-dwyer.json",
     "a-gentlemans-guide-to-love-and-murder-2013/ap--jennifer-farrar.json",
     "a-life-in-the-theatre-2010/broadwayworld--michael-dale.json",
-    "a-life-in-the-theatre-2010/village-voice--michael-feingold.json"
+    "a-life-in-the-theatre-2010/village-voice--michael-feingold.json",
+    "a-little-night-music-2009/ny1--roma-torre.json",
+    "a-man-for-all-seasons-2008/ap--unknown.json",
+    "a-man-for-all-seasons-2008/talkinbroadway--unknown.json",
+    "a-man-for-all-seasons-2008/usatoday--elysa-gardner.json",
+    "a-night-with-janis-joplin-2013/northjerseycom--robert-feldberg.json",
+    "a-night-with-janis-joplin-2013/thestage--paul-vale.json",
+    "a-raisin-in-the-sun-2014/ap--mark-kennedy.json",
+    "a-raisin-in-the-sun-2014/ny1--roma-torre.json",
+    "a-steady-rain-2009/ap--michael-kuchwara.json",
+    "a-strange-loop-2022/usatoday--elysa-gardner.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2150,7 +2160,15 @@
       "data/review-texts/a-dolls-house-part-2-2017/bsonarts--bruce-smith.json",
       "data/review-texts/a-dolls-house-part-2-2017/off-script-with-dan-dwyer--dan-dwyer.json",
       "data/review-texts/a-gentlemans-guide-to-love-and-murder-2013/ap--jennifer-farrar.json",
-      "data/review-texts/a-life-in-the-theatre-2010/broadwayworld--michael-dale.json"
+      "data/review-texts/a-life-in-the-theatre-2010/broadwayworld--michael-dale.json",
+      "data/review-texts/a-man-for-all-seasons-2008/talkinbroadway--unknown.json",
+      "data/review-texts/a-man-for-all-seasons-2008/usatoday--elysa-gardner.json",
+      "data/review-texts/a-night-with-janis-joplin-2013/northjerseycom--robert-feldberg.json",
+      "data/review-texts/a-night-with-janis-joplin-2013/thestage--paul-vale.json",
+      "data/review-texts/a-raisin-in-the-sun-2014/ap--mark-kennedy.json",
+      "data/review-texts/a-raisin-in-the-sun-2014/ny1--roma-torre.json",
+      "data/review-texts/a-steady-rain-2009/ap--michael-kuchwara.json",
+      "data/review-texts/a-strange-loop-2022/usatoday--elysa-gardner.json"
     ],
     "archive": [
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
@@ -2319,7 +2337,7 @@
     ]
   },
   "startTime": "2026-03-11T13:15:22.957Z",
-  "lastProcessed": "a-life-in-the-theatre-2010/village-voice--michael-feingold.json",
+  "lastProcessed": "a-strange-loop-2022/usatoday--elysa-gardner.json",
   "log": [
     {
       "t": "2026-03-11T13:19:37.516Z",
@@ -3114,6 +3132,39 @@
       "event": "bb-session",
       "session": "b921fa39",
       "url": "https://bsonarts.com/2017/04/27/dolls-house-part-2-lucas-hnath/?utm_source=feedb"
+    },
+    {
+      "t": "2026-03-12T11:16:55.058Z",
+      "event": "bb-session",
+      "session": "88129695",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/227339681_Theater_review_"
+    },
+    {
+      "t": "2026-03-12T11:16:56.396Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-12T11:18:37.156Z",
+      "event": "bb-session",
+      "session": "6ab3bf2e",
+      "url": "https://www.thestage.co.uk/reviews/a-night-with-janis-joplin-the-musical-review-"
+    },
+    {
+      "t": "2026-03-12T11:18:38.477Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-12T11:21:50.591Z",
+      "event": "bb-session",
+      "session": "1db97d00",
+      "url": "https://www.nytimes.com/aponline/2009/09/29/arts/AP-US-Theater-Review-Steady-Rai"
+    },
+    {
+      "t": "2026-03-12T11:21:51.731Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
