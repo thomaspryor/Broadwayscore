@@ -20,8 +20,11 @@ const EmailCaptureModal = dynamic(() => import('@/components/EmailCaptureModal')
 
 const STORAGE_KEY = 'bsc_user_data';
 const SUBSCRIBED_KEY = 'bsc_email_subscribed';
+const SUBSCRIBED_MARKET_KEY = 'bsc_email_subscribed_broadway';
 const PAGE_VIEW_KEY = 'bsc_page_views';
 const LAST_VISIT_KEY = 'bsc_last_visit';
+const RECAPTURED_KEY = 'bsc_recaptured';
+const FORMSPREE_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || '';
 
 interface ProGateContextValue {
   /** Whether the user has submitted their email */
@@ -69,6 +72,29 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
         const parsed = JSON.parse(saved) as CapturedUserData;
         setUserData(parsed);
         setHasEmail(true);
+
+        // Re-capture: if user submitted via the modal before the Formspree fix
+        // (Jan 29 – Mar 12, 2026), silently POST their saved email to Formspree
+        const alreadyRecaptured = localStorage.getItem(RECAPTURED_KEY) === 'true';
+        const alreadySubscribed = localStorage.getItem(SUBSCRIBED_KEY) === 'true'
+          || localStorage.getItem(SUBSCRIBED_MARKET_KEY) === 'true';
+        if (!alreadyRecaptured && !alreadySubscribed && parsed.email && FORMSPREE_SUBSCRIBER_FORM_ID) {
+          fetch(`https://formspree.io/f/${FORMSPREE_SUBSCRIBER_FORM_ID}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: parsed.email,
+              source: `recapture-${parsed.trigger || 'unknown'}`,
+              ...(parsed.name ? { firstName: parsed.name } : {}),
+            }),
+          }).then(res => {
+            if (res.ok) {
+              localStorage.setItem(RECAPTURED_KEY, 'true');
+              localStorage.setItem(SUBSCRIBED_MARKET_KEY, 'true');
+              window.dispatchEvent(new Event('bsc_subscribed'));
+            }
+          }).catch(() => { /* silent fail, will retry next visit */ });
+        }
       } else if (loopsSubscribed) {
         // User subscribed via Formspree (header, footer, homepage banner, show follow)
         // Treat as having email so we don't nag them again
