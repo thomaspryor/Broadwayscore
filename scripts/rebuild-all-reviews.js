@@ -1677,6 +1677,30 @@ showDirs.forEach(showId => {
         // Fall through — don't skip
       }
 
+      // Promote contentVerification flags to top-level if not already set
+      // (contentVerification may be set by a different pipeline than the one that creates the file)
+      if (data.contentVerification && (data.contentVerification.confidence === 'high' || data.contentVerification.confidence === 'medium')) {
+        const cv = data.contentVerification;
+        let promoted = false;
+        if (cv.wrongProduction === true && data.wrongProduction !== true) {
+          data.wrongProduction = true;
+          promoted = true;
+        }
+        if (cv.wrongArticle === true && data.wrongShow !== true) {
+          data.wrongShow = true;
+          promoted = true;
+        }
+        if (cv.isFilmTv === true && data.wrongShow !== true) {
+          data.wrongShow = true;
+          promoted = true;
+        }
+        if (promoted) {
+          data.contentVerificationPromoted = `rebuild: promoted from contentVerification (${cv.verifiedBy}, ${cv.confidence})`;
+          stats.contentVerificationPromoted = (stats.contentVerificationPromoted || 0) + 1;
+          try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+        }
+      }
+
       // Skip wrong-production reviews (e.g., off-Broadway reviews filed under Broadway show)
       if (data.wrongProduction === true) {
         stats.skippedWrongProduction = (stats.skippedWrongProduction || 0) + 1;
@@ -3029,6 +3053,9 @@ console.log(`  Skipped (duplicate URL): ${stats.skippedDuplicateUrl || 0}`);
 console.log(`  Skipped (cross-outlet duplicate URL): ${stats.skippedCrossOutletDuplicateUrl || 0}`);
 console.log(`  Skipped (corrupted/invalid JSON): ${stats.skippedCorrupted || 0}`);
 console.log(`  Skipped (wrong production): ${stats.skippedWrongProduction || 0}`);
+if (stats.contentVerificationPromoted > 0) {
+  console.log(`  ⚠️  contentVerification → top-level promoted: ${stats.contentVerificationPromoted}`);
+}
 console.log(`  Skipped (fabricated entry): ${stats.skippedFabricated || 0}`);
 console.log(`  Skipped (cross-show URL dedup): ${stats.skippedCrossShowUrl || 0}`);
 console.log(`  Skipped (cross-market outlet): ${stats.skippedCrossMarket || 0}`);
