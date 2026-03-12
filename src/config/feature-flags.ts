@@ -40,5 +40,5 @@ export const featureFlags = {
   get sectionJumpLinks() { return has('sectionJumpLinks'); },
   get userAccounts() { return has('userAccounts'); },
   get showPageRedesign() { return has('showPageRedesign'); },
-  get showtimes() { return has('showtimes'); },
+  get showtimes() { return true; }, // launched — flag retained for cleanup
 };

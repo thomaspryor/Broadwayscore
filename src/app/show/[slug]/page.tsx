@@ -1025,7 +1025,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
         {/* Showtimes — Broadway only */}
         <div id="showtimes" className="scroll-mt-20" />
-        {featureFlags.showtimes && !isWestEnd && !isOffBroadway && showSchedule &&
+        {!isWestEnd && !isOffBroadway && showSchedule &&
           (show.status === 'open' || show.status === 'previews') && (
           <ShowtimesCard
             schedule={showSchedule}
