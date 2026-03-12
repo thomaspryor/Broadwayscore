@@ -1,129 +1,31 @@
 {
-  "updatedAt": "2026-03-12T08:23:14.460Z",
-  "processed": 683,
-  "failed": 567,
-  "successRate": "54.6%",
+  "updatedAt": "2026-03-12T08:35:16.257Z",
+  "processed": 7,
+  "failed": 3,
+  "successRate": "70.0%",
   "tierBreakdown": {
-    "playwright": 470,
-    "amp": 24,
-    "browserbase": 38,
-    "directCookies": 2,
-    "scrapingbee": 24,
+    "playwright": 3,
+    "amp": 6,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 78,
-    "archive": 158
+    "archiveToday": 1,
+    "archive": 1
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-03-12T06:22:42.849Z",
+      "t": "2026-03-12T08:33:54.281Z",
       "event": "bb-session",
-      "session": "427d6a02",
+      "session": "05b1c861",
       "url": "https://www.thestage.co.uk/reviews/manic-street-creature-review-kiln-theatre-lon"
     },
     {
-      "t": "2026-03-12T06:22:44.106Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-03-12T06:28:50.087Z",
-      "event": "bb-session",
-      "session": "912ad156",
-      "url": "https://www.wsj.com/articles/purpose-review-dramatic-overdrive-on-broadway-41ba9"
-    },
-    {
-      "t": "2026-03-12T06:28:51.325Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-12T06:30:29.994Z",
-      "event": "bb-session",
-      "session": "53af657e",
-      "url": "https://www.wsj.com/articles/shucked-review-broadway-musical-corn-puns-116818516"
-    },
-    {
-      "t": "2026-03-12T06:30:31.360Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-12T06:32:12.967Z",
-      "event": "bb-session",
-      "session": "cff05fe4",
-      "url": "https://www.wsj.com/articles/side-show-review-twin-bill-1414450800"
-    },
-    {
-      "t": "2026-03-12T06:32:14.222Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-12T06:34:16.393Z",
-      "event": "bb-session",
-      "session": "ba4153ec",
-      "url": "https://www.wsj.com/articles/SB120801896275542179"
-    },
-    {
-      "t": "2026-03-12T06:34:17.639Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-12T06:35:47.255Z",
-      "event": "bb-session",
-      "session": "11a6a568",
-      "url": "https://www.wsj.com/articles/stereophonic-review-david-adjmi-will-butler-broadwa"
-    },
-    {
-      "t": "2026-03-12T06:35:48.488Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-12T06:37:21.532Z",
-      "event": "bb-session",
-      "session": "b9224073",
-      "url": "https://www.wsj.com/articles/summer-the-donna-summer-musical-review-disco-fever-"
-    },
-    {
-      "t": "2026-03-12T06:37:22.775Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-12T06:38:51.417Z",
-      "event": "bb-session",
-      "session": "5aabe5ee",
-      "url": "https://www.wsj.com/articles/SB120384465891234567"
-    },
-    {
-      "t": "2026-03-12T06:38:52.716Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-12T06:40:27.232Z",
-      "event": "bb-session",
-      "session": "e84b514b",
-      "url": "https://www.wsj.com/articles/sunday-in-the-park-with-george-review-sondheim-musi"
-    },
-    {
-      "t": "2026-03-12T06:40:28.658Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-12T06:42:04.955Z",
-      "event": "bb-session",
-      "session": "ba0af5ca",
-      "url": "https://www.wsj.com/articles/sunset-blvd-review-nicole-scherzingers-norma-desmon"
-    },
-    {
-      "t": "2026-03-12T06:42:06.252Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "t": "2026-03-12T08:34:32.810Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    33 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
     }
   ]
 }
