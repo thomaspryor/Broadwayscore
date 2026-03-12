@@ -576,6 +576,43 @@ jobs:
               }
             }
 
+      - name: Submit new show pages to Google Indexing API + IndexNow
+        continue-on-error: true
+        env:
+          GOOGLE_INDEXING_KEY: ${{ secrets.GOOGLE_INDEXING_KEY }}
+        run: |
+          # Submit ALL new + opened shows (not just opened) — pages should be indexed as soon as discovered
+          NEW_SLUGS="${{ needs.update-shows.outputs.new_slugs }}"
+          OPENED_SLUGS="${{ needs.update-shows.outputs.opened_slugs }}"
+          ALL_SLUGS=$(echo "$NEW_SLUGS,$OPENED_SLUGS" | tr ',' '\n' | sort -u | tr '\n' ',' | sed 's/,$//')
+          ALL_SLUGS=$(echo "$ALL_SLUGS" | sed 's/^,//')
+
+          if [ -z "$ALL_SLUGS" ] || [ "$ALL_SLUGS" = "" ]; then
+            echo "No new show slugs to submit"
+            exit 0
+          fi
+
+          echo "Submitting show pages to search engines: $ALL_SLUGS"
+
+          # Convert show IDs to URL slugs
+          SLUGS=$(node -e "
+            const shows = require('./data/shows.json').shows;
+            const ids = '$ALL_SLUGS'.split(',').filter(Boolean);
+            const slugs = ids.map(id => {
+              const s = shows.find(x => x.id === id);
+              return s ? (s.slug || s.id) : id;
+            });
+            console.log(slugs.join(','));
+          ")
+
+          # Google Indexing API
+          if [ -n "$GOOGLE_INDEXING_KEY" ]; then
+            node scripts/submit-google-indexing.js --shows "$SLUGS" || true
+          fi
+
+          # IndexNow (Bing, Yandex, etc.)
+          node scripts/submit-indexnow.js --shows "$SLUGS" || true
+
   # Safety net: catch open shows that slipped through without review collection
   catchup-zero-review-shows:
     needs: update-shows
