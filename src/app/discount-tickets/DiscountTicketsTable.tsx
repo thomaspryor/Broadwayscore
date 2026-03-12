@@ -110,8 +110,8 @@ function DetailPanel({ row }: { row: DiscountShowRow }) {
   if (!hasSections) return null;
 
   return (
-    <tr className="bg-white/[0.02]">
-      <td colSpan={6} className="px-4 pt-0 pb-3">
+    <tr className="bg-white/[0.02] border-b border-white/5">
+      <td colSpan={6} className="px-4 py-2">
         <div className="flex flex-col sm:flex-row gap-2">
           {row.lottery && (
             <div className="flex-1 bg-purple-500/10 border border-purple-500/20 rounded-lg p-3">
@@ -298,7 +298,7 @@ export function DiscountTicketsTable({ rows }: DiscountTicketsTableProps) {
               return (
                 <Fragment key={row.slug}>
                   <tr
-                    className={`border-b border-white/5 hover:bg-white/5 transition-colors ${hasDetails ? 'cursor-pointer' : ''}`}
+                    className={`border-b border-white/5 hover:bg-white/5 transition-colors ${hasDetails ? 'cursor-pointer' : ''} ${isExpanded ? 'border-b-0' : ''}`}
                     onClick={() => hasDetails && setExpandedSlug(isExpanded ? null : row.slug)}
                     aria-expanded={hasDetails ? isExpanded : undefined}
                   >
