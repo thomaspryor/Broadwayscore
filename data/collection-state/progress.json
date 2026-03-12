@@ -375,7 +375,17 @@
     "magic-mike-live-west-end-2021/london-box-office--nicola-wright.json",
     "mamma-mia-west-end-2021/london-box-office--daniel-perks.json",
     "mamma-mia-west-end-2021/london-theatre--alan-bird.json",
-    "mamma-mia-west-end-2021/standard--jessie-thompson.json"
+    "mamma-mia-west-end-2021/standard--jessie-thompson.json",
+    "man-and-boy-west-end-2026/financialtimes--unknown.json",
+    "man-and-boy-west-end-2026/london-box-office--stuart-king.json",
+    "man-and-boy-west-end-2026/telegraph--dominic-cavendish.json",
+    "man-and-boy-west-end-2026/whatsonstage--sarah-crompton.json",
+    "manic-street-creature-west-end-2026/broadwayworld--unknown.json",
+    "manic-street-creature-west-end-2026/london-theatre--unknown.json",
+    "manic-street-creature-west-end-2026/standard--unknown.json",
+    "manic-street-creature-west-end-2026/west-end-best-friend--marina-holmes-smith.json",
+    "marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
+    "marie-and-rosetta-west-end-2026/all-that-dazzles-uk--daz-gale.json"
   ],
   "failed": [
     "cold-war-choir-practice-off-broadway-2026/talkinbroadway--kimberly-ramirez.json",
@@ -697,7 +707,14 @@
       "little-shop-of-horrors-off-broadway-2019/dailybeast--adam-hetrick.json",
       "little-shop-of-horrors-off-broadway-2019/nysr--melissa-rose-bernardo.json",
       "mamma-mia-west-end-2021/london-theatre--alan-bird.json",
-      "mamma-mia-west-end-2021/standard--jessie-thompson.json"
+      "mamma-mia-west-end-2021/standard--jessie-thompson.json",
+      "man-and-boy-west-end-2026/financialtimes--unknown.json",
+      "man-and-boy-west-end-2026/london-box-office--stuart-king.json",
+      "man-and-boy-west-end-2026/whatsonstage--sarah-crompton.json",
+      "manic-street-creature-west-end-2026/london-theatre--unknown.json",
+      "manic-street-creature-west-end-2026/standard--unknown.json",
+      "manic-street-creature-west-end-2026/west-end-best-friend--marina-holmes-smith.json",
+      "marie-and-rosetta-west-end-2026/all-that-dazzles-uk--daz-gale.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -749,7 +766,9 @@
       "data/review-texts/hadestown-2019/amny--matt-windman.json",
       "hadestown-2019/amny--matt-windman.json",
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/amny--unknown.json",
-      "little-shop-of-horrors-off-broadway-2019/amny--unknown.json"
+      "little-shop-of-horrors-off-broadway-2019/amny--unknown.json",
+      "data/review-texts/marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
+      "marcel-on-the-train-off-broadway-2026/amny--matt-windman.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json"
@@ -796,7 +815,8 @@
       "harry-potter-and-the-cursed-child-both-parts-west-end-2021/telegraph--dominic-cavendish.json",
       "im-sorry-prime-minister-west-end-2026/daily-mail--patrick-marmion.json",
       "into-the-woods-west-end-2025/independent--louis-chilton.json",
-      "little-shop-of-horrors-off-broadway-2019/chicagotribune--chris-jones.json"
+      "little-shop-of-horrors-off-broadway-2019/chicagotribune--chris-jones.json",
+      "man-and-boy-west-end-2026/telegraph--dominic-cavendish.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -883,11 +903,12 @@
       "les-miserables-west-end-2021/times-uk--clive-davis.json",
       "little-shop-of-horrors-off-broadway-2019/talkinbroadway--unknown.json",
       "magic-mike-live-west-end-2021/london-box-office--nicola-wright.json",
-      "mamma-mia-west-end-2021/london-box-office--daniel-perks.json"
+      "mamma-mia-west-end-2021/london-box-office--daniel-perks.json",
+      "manic-street-creature-west-end-2026/broadwayworld--unknown.json"
     ]
   },
   "startTime": "2026-03-12T13:55:19.125Z",
-  "lastProcessed": "mamma-mia-west-end-2021/standard--jessie-thompson.json",
+  "lastProcessed": "marie-and-rosetta-west-end-2026/all-that-dazzles-uk--daz-gale.json",
   "log": [
     {
       "t": "2026-03-12T19:01:52.808Z",
@@ -1029,6 +1050,17 @@
     },
     {
       "t": "2026-03-12T20:30:26.805Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-12T20:33:13.934Z",
+      "event": "bb-session",
+      "session": "9aa9c319",
+      "url": "https://www.amny.com/news/review-marcel-on-the-train-finds-bravery/"
+    },
+    {
+      "t": "2026-03-12T20:33:15.328Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     }
