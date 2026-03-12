@@ -201,6 +201,7 @@ export default function RootLayout({
               <div>
                 <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">Deals & Tickets</h4>
                 <ul className="space-y-2 text-sm text-gray-400">
+                  <li><Link href="/discount-tickets" className="hover:text-white transition-colors">All Discount Tickets</Link></li>
                   <li><Link href="/best-value" className="hover:text-white transition-colors">Best Value Tickets</Link></li>
                   <li><Link href="/lotteries" className="hover:text-white transition-colors">Lottery Tickets</Link></li>
                   <li><Link href="/rush" className="hover:text-white transition-colors">Rush Tickets</Link></li>
