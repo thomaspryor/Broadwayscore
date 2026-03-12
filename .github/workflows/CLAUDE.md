@@ -494,8 +494,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 ## `vercel-demo.yml`
 - **Runs:** Every 8 hours (6 AM, 2 PM, 10 PM UTC), or manually
 - **Does:** Builds and deploys to `demo.broadwayscorecard.com` with ALL feature flags enabled. For partner meetings (TodayTix, ShowScore) where feature-flagged content needs to be visible.
-- **Key difference from production:** Overrides `NEXT_PUBLIC_FEATURES` env var to include all 13 flags. Deploys WITHOUT `--prod` (cannot touch production). Uses `vercel alias set` to assign `demo.broadwayscorecard.com`.
+- **Key difference from production:** Rewrites `feature-flags.ts` source at build time to enable ALL flags (auto-extracted from getter names — no manual sync needed). Deploys WITHOUT `--prod` (cannot touch production). Uses `vercel alias set` to assign `demo.broadwayscorecard.com`.
 - **Concurrency group:** `vercel-demo-deploy` (separate from production and preview)
 - **Requires:** VERCEL_TOKEN, REVIEW_TEXTS_TOKEN (for checkout-core-data)
 - **Manual trigger:** `gh workflow run "Deploy Demo Site"`
-- **Note:** If a new feature flag is added to `feature-flags.ts`, also add it to the `NEXT_PUBLIC_FEATURES` line in this workflow.
