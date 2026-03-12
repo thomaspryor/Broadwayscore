@@ -901,7 +901,17 @@
     "the-heiress-2012/wsj--terry-teachout.json",
     "the-hills-of-california-2024/theatre-reviews-limited--david-roberts.json",
     "the-hills-of-california-2024/wsj--charles-isherwood.json",
-    "the-homecoming-2007/wsj--mark-richardson.json"
+    "the-homecoming-2007/wsj--mark-richardson.json",
+    "the-house-of-blue-leaves-2011/wsj--terry-teachout.json",
+    "the-humans-2016/wsj--terry-teachout.json",
+    "the-iceman-cometh-2018/broadwaynews--charles-isherwood.json",
+    "the-iceman-cometh-2018/wsj--terry-teachout.json",
+    "the-importance-of-being-earnest-2011/timeout--david-cote.json",
+    "the-kite-runner-2022/timeout--adam-feldman.json",
+    "the-kite-runner-2022/wsj--charles-isherwood.json",
+    "the-last-ship-2014/wsj--terry-teachout.json",
+    "the-lehman-trilogy-2021/observer--jesse-green.json",
+    "the-lieutenant-of-inishmore-2006/nydailynews--joe-dziemianowicz-bway.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1481,7 +1491,9 @@
       "data/review-texts/the-assembled-parties-2013/wsj--terry-teachout.json",
       "data/review-texts/the-encounter-2016/nypost--unknown.json",
       "data/review-texts/the-ferryman-2018/theater-reviews-from-my-seat--joe-lombardi.json",
-      "data/review-texts/the-full-monty-2000/newsday--linda-winer.json"
+      "data/review-texts/the-full-monty-2000/newsday--linda-winer.json",
+      "data/review-texts/the-iceman-cometh-2018/broadwaynews--charles-isherwood.json",
+      "data/review-texts/the-lieutenant-of-inishmore-2006/nydailynews--joe-dziemianowicz-bway.json"
     ],
     "archive": [
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
@@ -1641,7 +1653,7 @@
     ]
   },
   "startTime": "2026-03-11T13:15:22.957Z",
-  "lastProcessed": "the-homecoming-2007/wsj--mark-richardson.json",
+  "lastProcessed": "the-lieutenant-of-inishmore-2006/nydailynews--joe-dziemianowicz-bway.json",
   "log": [
     {
       "t": "2026-03-11T13:19:37.516Z",
@@ -1950,6 +1962,89 @@
       "t": "2026-03-11T21:08:23.494Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-12T04:15:24.007Z",
+      "event": "bb-session",
+      "session": "d23cce7b",
+      "url": "https://www.wsj.com/articles/SB10001424052748704107204576164272108574548"
+    },
+    {
+      "t": "2026-03-12T04:15:25.520Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-12T04:16:55.727Z",
+      "event": "bb-session",
+      "session": "2de21be1",
+      "url": "https://www.wsj.com/articles/the-humans-review-dated-drama-kitchen-sink-and-all-"
+    },
+    {
+      "t": "2026-03-12T04:16:57.046Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-12T04:17:29.818Z",
+      "event": "bb-session",
+      "session": "bd4b4cc0",
+      "url": "https://broadway.news/2018/04/26/review-denzel-washington-radiates-iceman-cometh"
+    },
+    {
+      "t": "2026-03-12T04:17:33.856Z",
+      "event": "bb-session",
+      "session": "10791ff8",
+      "url": "https://www.wsj.com/articles/the-iceman-cometh-review-denzel-washington-shines-i"
+    },
+    {
+      "t": "2026-03-12T04:17:35.279Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-12T04:19:04.096Z",
+      "event": "bb-session",
+      "session": "ced0fda9",
+      "url": "https://www.wsj.com/articles/the-iceman-cometh-and-saint-joan-reviews-stars-in-t"
+    },
+    {
+      "t": "2026-03-12T04:19:05.359Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-12T04:22:10.157Z",
+      "event": "bb-session",
+      "session": "a0299cae",
+      "url": "https://www.wsj.com/articles/the-kite-runner-review-khaled-hosseini-matthew-span"
+    },
+    {
+      "t": "2026-03-12T04:22:11.557Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-12T04:23:51.467Z",
+      "event": "bb-session",
+      "session": "e8f61c7c",
+      "url": "https://www.wsj.com/articles/theater-review-the-last-ship-1414020603"
+    },
+    {
+      "t": "2026-03-12T04:23:52.785Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-12T04:25:45.239Z",
+      "event": "bb-session",
+      "session": "e3e16998",
+      "url": "https://observer.com/2021/10/the-lehman-trilogy-broadway-review/"
+    },
+    {
+      "t": "2026-03-12T04:25:46.731Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
     }
   ]
 }
