@@ -225,7 +225,7 @@ async function scrapeBwayRush() {
   // Extract schedule data from raw HTML before markdown conversion (independent try/catch)
   if (result.format === 'html') {
     try {
-      extractAndWriteScheduleData(result.content);
+      await extractAndWriteScheduleData(result.content);
     } catch (err) {
       console.error(`[Schedule] Extraction failed (non-fatal): ${err.message}`);
       if (verbose) console.error(err.stack);
@@ -259,15 +259,14 @@ async function scrapeBwayRush() {
 // ==================== Schedule Extraction ====================
 
 /**
- * Extract schedule data from bwayrush.com SvelteKit hydration payload.
- * The page embeds shows as JS objects with `thisweek` arrays (7 entries, Mon-Sun).
- * Each entry: {m: "HH:MM"|null, e: "HH:MM"|null}
+ * Extract schedule data from bwayrush.com.
+ * 1. Parse initial HTML for thisweek + build bwayrush-ID-to-title mapping
+ * 2. Fetch future weeks via /api/calendar?currentMonday=X&direction=next
+ * 3. Store all weeks (current + future) per show
  */
-function extractAndWriteScheduleData(html) {
+async function extractAndWriteScheduleData(html) {
   console.log('\n[Schedule] Extracting schedule data from HTML...');
 
-  // Find the SvelteKit data payload: data:{shows:[...],currentMonday:"YYYYMMDD"
-  // The shows array and currentMonday are inside a `data:` property in the kit.start() call
   const mondayMatch = html.match(/currentMonday:"(\d{8})"/);
   if (!mondayMatch) {
     console.error('[Schedule] Could not find currentMonday in HTML — skipping');
@@ -276,8 +275,6 @@ function extractAndWriteScheduleData(html) {
   const currentMonday = mondayMatch[1];
   console.log(`[Schedule] Current Monday: ${currentMonday}`);
 
-  // Discard past weeks: if currentMonday is before today, the data is stale but still valid
-  // (bwayrush updates on Monday, so mid-week the data is for the current week)
   const mondayDate = new Date(
     parseInt(currentMonday.slice(0, 4)),
     parseInt(currentMonday.slice(4, 6)) - 1,
@@ -291,13 +288,12 @@ function extractAndWriteScheduleData(html) {
   }
 
   // Extract the shows array from the JS payload using bracket matching
-  // (nested arrays/objects make simple regex insufficient)
   const showsStart = html.indexOf('shows:[');
   if (showsStart === -1) {
     console.error('[Schedule] Could not find shows array in HTML — skipping');
     return;
   }
-  const arrayStart = showsStart + 6; // index of '['
+  const arrayStart = showsStart + 6;
   let depth = 0;
   let arrayEnd = -1;
   for (let i = arrayStart; i < html.length; i++) {
@@ -310,12 +306,8 @@ function extractAndWriteScheduleData(html) {
   }
   let showsJs = html.slice(arrayStart, arrayEnd);
 
-  // Convert JS object notation to JSON
-  // Replace void 0 with null
   showsJs = showsJs.replace(/void 0/g, 'null');
-  // Quote unquoted keys: {key: or ,key: (but not inside strings)
   showsJs = showsJs.replace(/([{,])\s*(\w+)\s*:/g, '$1"$2":');
-  // Handle trailing commas
   showsJs = showsJs.replace(/,\s*([}\]])/g, '$1');
 
   let shows;
@@ -335,14 +327,13 @@ function extractAndWriteScheduleData(html) {
     return;
   }
 
-  // Map shows to our IDs and extract schedule data
+  // Build bwayrush numeric ID → our show ID mapping, and store thisweek data
+  const bwayIdToOurId = {};  // bwayrush numeric id → our show id
   const scheduleShows = {};
   const unmatched = [];
 
   for (const show of shows) {
-    if (!show.title || !show.thisweek || !Array.isArray(show.thisweek) || show.thisweek.length !== 7) {
-      continue;
-    }
+    if (!show.title || !show.id) continue;
 
     const resolved = resolveShowId(show.title);
     if (!resolved) {
@@ -350,11 +341,15 @@ function extractAndWriteScheduleData(html) {
       continue;
     }
 
-    scheduleShows[resolved.id] = {
-      weeks: {
-        [currentMonday]: show.thisweek,
-      },
-    };
+    bwayIdToOurId[show.id] = resolved.id;
+
+    if (show.thisweek && Array.isArray(show.thisweek) && show.thisweek.length === 7) {
+      scheduleShows[resolved.id] = {
+        weeks: {
+          [currentMonday]: show.thisweek,
+        },
+      };
+    }
   }
 
   const matchedCount = Object.keys(scheduleShows).length;
@@ -370,6 +365,50 @@ function extractAndWriteScheduleData(html) {
     return;
   }
 
+  // Fetch future weeks via bwayrush calendar API
+  const MAX_FUTURE_WEEKS = 7;
+  let fetchMonday = currentMonday;
+  let futureWeeksFetched = 0;
+
+  for (let w = 0; w < MAX_FUTURE_WEEKS; w++) {
+    try {
+      const url = `https://bwayrush.com/api/calendar?currentMonday=${fetchMonday}&direction=next`;
+      const resp = await fetch(url);
+      if (!resp.ok) {
+        console.warn(`[Schedule] Calendar API returned ${resp.status} for ${fetchMonday} — stopping`);
+        break;
+      }
+      const data = await resp.json();
+      if (!data.currentMonday || !Array.isArray(data.calendar)) {
+        console.warn('[Schedule] Unexpected calendar API response — stopping');
+        break;
+      }
+
+      const weekMonday = data.currentMonday;
+      let weekMatched = 0;
+
+      for (const entry of data.calendar) {
+        const ourId = bwayIdToOurId[entry.id];
+        if (!ourId || !Array.isArray(entry.calendar) || entry.calendar.length !== 7) continue;
+
+        if (!scheduleShows[ourId]) {
+          scheduleShows[ourId] = { weeks: {} };
+        }
+        scheduleShows[ourId].weeks[weekMonday] = entry.calendar;
+        weekMatched++;
+      }
+
+      console.log(`[Schedule] Week ${weekMonday}: ${weekMatched} shows`);
+      fetchMonday = weekMonday;
+      futureWeeksFetched++;
+    } catch (err) {
+      console.warn(`[Schedule] Calendar API fetch failed: ${err.message} — stopping`);
+      break;
+    }
+  }
+
+  console.log(`[Schedule] Fetched ${futureWeeksFetched} future weeks`);
+
   if (dryRun) {
     console.log(`[Schedule] [Dry Run] Would write ${matchedCount} shows to show-schedules.json`);
     return;
@@ -384,7 +423,7 @@ function extractAndWriteScheduleData(html) {
   };
 
   fs.writeFileSync(SCHEDULE_PATH, JSON.stringify(output, null, 2) + '\n');
-  console.log(`[Schedule] Wrote show-schedules.json with ${matchedCount} shows`);
+  console.log(`[Schedule] Wrote show-schedules.json with ${Object.keys(scheduleShows).length} shows, ${futureWeeksFetched + 1} weeks`);
 }
 
 function parseBwayRushMarkdown(markdown) {
