@@ -682,7 +682,17 @@
     "antigone-this-play-i-read-in-high-school-off-broadway-2026/nytg--kyle-turner.json",
     "bughouse-off-broadway-2026/nytg--caroline-cao.json",
     "bughouse-off-broadway-2026/theatermania--unknown.json",
-    "bughouse-off-broadway-2026/culturesauce--unknown.json"
+    "bughouse-off-broadway-2026/culturesauce--unknown.json",
+    "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "cold-war-choir-practice-off-broadway-2026/nytg--amelia-merrill.json",
+    "cold-war-choir-practice-off-broadway-2026/vulture--sara-holdren.json",
+    "every-brilliant-thing-2026/nytimes--unknown.json",
+    "an-ark-off-broadway-2026/ew--thom-geier.json",
+    "cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json",
+    "cold-war-choir-practice-off-broadway-2026/timeout--adam-feldman.json",
+    "every-brilliant-thing-2026/deadline--greg-evans.json",
+    "oh-mary-2024/ew--thom-geier.json",
+    "cold-war-choir-practice-off-broadway-2026/culturesauce--thom-geier.json"
   ],
   "failed": [
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json",
@@ -1825,7 +1835,13 @@
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/nytg--kyle-turner.json",
       "bughouse-off-broadway-2026/nytg--caroline-cao.json",
       "bughouse-off-broadway-2026/theatermania--unknown.json",
-      "bughouse-off-broadway-2026/culturesauce--unknown.json"
+      "bughouse-off-broadway-2026/culturesauce--unknown.json",
+      "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "cold-war-choir-practice-off-broadway-2026/nytg--amelia-merrill.json",
+      "an-ark-off-broadway-2026/ew--thom-geier.json",
+      "cold-war-choir-practice-off-broadway-2026/timeout--adam-feldman.json",
+      "oh-mary-2024/ew--thom-geier.json",
+      "cold-war-choir-practice-off-broadway-2026/culturesauce--thom-geier.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -1851,7 +1867,9 @@
       "data/review-texts/noises-off-2001/hollywood-reporter--david-rooney.json",
       "noises-off-2001/hollywood-reporter--david-rooney.json",
       "data/review-texts/the-father-1981/hollywood-reporter--david-rooney.json",
-      "the-father-1981/hollywood-reporter--david-rooney.json"
+      "the-father-1981/hollywood-reporter--david-rooney.json",
+      "data/review-texts/cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json",
+      "cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json"
     ],
     "browserbase": [
       "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
@@ -1891,7 +1909,9 @@
       "data/review-texts/betrayal-2000/hollywood-reporter--david-rooney.json",
       "betrayal-2000/hollywood-reporter--david-rooney.json",
       "data/review-texts/children-of-a-lesser-god-1980/hollywood-reporter--david-rooney.json",
-      "children-of-a-lesser-god-1980/hollywood-reporter--david-rooney.json"
+      "children-of-a-lesser-god-1980/hollywood-reporter--david-rooney.json",
+      "data/review-texts/every-brilliant-thing-2026/deadline--greg-evans.json",
+      "every-brilliant-thing-2026/deadline--greg-evans.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json",
@@ -1921,7 +1941,8 @@
       "woman-in-mind-west-end-2025/guardian--arifa-akbar.json",
       "john-proctor-is-the-villain-west-end-2026/cititour--brian-scott-lipton.json",
       "sexual-misconduct-of-the-middle-classes-off-broadway-2026/cititour--brian-scott-lipton.json",
-      "tristan-und-isolde-off-broadway-2026/nytimes--unknown.json"
+      "tristan-und-isolde-off-broadway-2026/nytimes--unknown.json",
+      "every-brilliant-thing-2026/nytimes--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2164,11 +2185,12 @@
       "the-phantom-of-the-opera-west-end-2021/timeout-london--andrzej-lukowski.json",
       "waitress-2021/wsj--terry-teachout.json",
       "west-side-story-2020/wsj--terry-teachout.json",
-      "you-got-older-2026/timeout--adam-feldman.json"
+      "you-got-older-2026/timeout--adam-feldman.json",
+      "cold-war-choir-practice-off-broadway-2026/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-03-11T13:15:22.957Z",
-  "lastProcessed": "women-on-the-verge-of-a-nervous-breakdown-2010/wsj--terry-teachout.json",
+  "lastProcessed": "cold-war-choir-practice-off-broadway-2026/culturesauce--thom-geier.json",
   "log": [
     {
       "t": "2026-03-11T13:19:37.516Z",
@@ -2902,6 +2924,17 @@
       "t": "2026-03-12T06:42:06.252Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-12T10:42:16.230Z",
+      "event": "bb-session",
+      "session": "b95237ff",
+      "url": "https://deadline.com/2026/03/broadway-box-office-daniel-radcliffe-every-brillian"
+    },
+    {
+      "t": "2026-03-12T10:42:17.490Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
