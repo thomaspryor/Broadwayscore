@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-12T19:12:12.312Z",
-  "processed": 186,
+  "updatedAt": "2026-03-12T19:14:13.244Z",
+  "processed": 196,
   "failed": 24,
-  "successRate": "88.6%",
+  "successRate": "89.1%",
   "tierBreakdown": {
-    "playwright": 125,
+    "playwright": 132,
     "amp": 30,
-    "browserbase": 4,
+    "browserbase": 6,
     "directCookies": 1,
     "scrapingbee": 25,
     "brightdata": 0,
     "archiveToday": 15,
-    "archive": 18
+    "archive": 20
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-03-12T19:01:52.808Z",
@@ -47,6 +47,17 @@
       "t": "2026-03-12T19:09:33.656Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-12T19:12:43.818Z",
+      "event": "bb-session",
+      "session": "bb23bb81",
+      "url": "https://observer.com/2024/04/review-flashy-and-fake-great-gatsby-caps-a-weak-sea"
+    },
+    {
+      "t": "2026-03-12T19:12:45.049Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
     }
   ]
 }
