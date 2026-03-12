@@ -1491,7 +1491,17 @@
     "ann-2013/ap--mark-kennedy.json",
     "ann-2013/ny1--roma-torre.json",
     "annie-1977/amny--matt-windman.json",
-    "annie-1977/northjerseycom--robert-feldberg.json"
+    "annie-1977/northjerseycom--robert-feldberg.json",
+    "annie-2012/ap--jennifer-farrar.json",
+    "annie-2012/ap--mark-kennedy.json",
+    "anything-goes-2011/scheckontheater--frank-scheck.json",
+    "anything-goes-2011/stageandcinema--jonas-schwartz.json",
+    "anything-goes-2011/usatoday--elysa-gardner.json",
+    "anything-goes-2011/washpost--peter-marks.json",
+    "appropriate-2023/washpost--peter-marks.json",
+    "assassins-2004/ap--michael-kuchwara.json",
+    "august-osage-county-2007/time--unknown.json",
+    "avenue-q-2003/ap--michael-kuchwara.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2259,7 +2269,14 @@
       "data/review-texts/an-enemy-of-the-people-2024/washpost--peter-marks.json",
       "data/review-texts/anastasia-2017/washpost--peter-marks.json",
       "data/review-texts/ann-2013/ap--mark-kennedy.json",
-      "data/review-texts/annie-1977/northjerseycom--robert-feldberg.json"
+      "data/review-texts/annie-1977/northjerseycom--robert-feldberg.json",
+      "data/review-texts/annie-2012/ap--jennifer-farrar.json",
+      "data/review-texts/anything-goes-2011/usatoday--elysa-gardner.json",
+      "data/review-texts/anything-goes-2011/washpost--peter-marks.json",
+      "data/review-texts/appropriate-2023/washpost--peter-marks.json",
+      "data/review-texts/assassins-2004/ap--michael-kuchwara.json",
+      "data/review-texts/august-osage-county-2007/time--unknown.json",
+      "data/review-texts/avenue-q-2003/ap--michael-kuchwara.json"
     ],
     "archive": [
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
@@ -2429,7 +2446,7 @@
     ]
   },
   "startTime": "2026-03-11T13:15:22.957Z",
-  "lastProcessed": "annie-1977/northjerseycom--robert-feldberg.json",
+  "lastProcessed": "avenue-q-2003/ap--michael-kuchwara.json",
   "log": [
     {
       "t": "2026-03-11T13:19:37.516Z",
@@ -3466,6 +3483,28 @@
       "t": "2026-03-12T11:52:54.118Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-12T11:53:43.386Z",
+      "event": "bb-session",
+      "session": "3cfd03e0",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-bullying-and-c"
+    },
+    {
+      "t": "2026-03-12T11:53:44.761Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-12T11:54:36.534Z",
+      "event": "bb-session",
+      "session": "73d630d5",
+      "url": "https://www.washingtonpost.com/lifestyle/style/anything-goes-on-broadway-sublime"
+    },
+    {
+      "t": "2026-03-12T11:54:37.848Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
