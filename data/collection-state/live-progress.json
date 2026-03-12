@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-03-12T11:04:43.560Z",
+  "updatedAt": "2026-03-12T11:11:35.629Z",
   "processed": 724,
-  "failed": 696,
-  "successRate": "51.0%",
+  "failed": 706,
+  "successRate": "50.6%",
   "tierBreakdown": {
     "playwright": 498,
     "amp": 26,
@@ -10,28 +10,11 @@
     "directCookies": 2,
     "scrapingbee": 30,
     "brightdata": 0,
-    "archiveToday": 101,
+    "archiveToday": 108,
     "archive": 163
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-03-12T06:34:16.393Z",
-      "event": "bb-session",
-      "session": "ba4153ec",
-      "url": "https://www.wsj.com/articles/SB120801896275542179"
-    },
-    {
-      "t": "2026-03-12T06:34:17.639Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-12T06:35:47.255Z",
-      "event": "bb-session",
-      "session": "11a6a568",
-      "url": "https://www.wsj.com/articles/stereophonic-review-david-adjmi-will-butler-broadwa"
-    },
     {
       "t": "2026-03-12T06:35:48.488Z",
       "event": "bb-cookie-inject",
@@ -124,6 +107,23 @@
       "t": "2026-03-12T11:03:53.924Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-12T11:05:27.643Z",
+      "event": "bb-session",
+      "session": "771965fd",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/12/11/christmas-carol-broadway"
+    },
+    {
+      "t": "2026-03-12T11:05:28.924Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-12T11:07:23.593Z",
+      "event": "bb-session",
+      "session": "b921fa39",
+      "url": "https://bsonarts.com/2017/04/27/dolls-house-part-2-lucas-hnath/?utm_source=feedb"
     }
   ]
 }

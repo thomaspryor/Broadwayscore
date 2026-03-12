@@ -1421,7 +1421,17 @@
     "a-bronx-tale-2007/zeal-nyc--sheila-kogan.json",
     "a-bronx-tale-the-musical-2016/talkinbroadway--matthew-murray.json",
     "a-chorus-line-2006/washpost--peter-marks.json",
-    "a-christmas-carol-2019/chicagotribune--chris-jones-bway.json"
+    "a-christmas-carol-2019/chicagotribune--chris-jones-bway.json",
+    "a-christmas-carol-2022/washpost--peter-marks.json",
+    "a-christmas-story-the-musical-2012/ap--mark-kennedy.json",
+    "a-christmas-story-the-musical-2012/stageandcinema--lynn-nichols.json",
+    "a-christmas-story-the-musical-2012/usatoday--elysa-gardner.json",
+    "a-dolls-house-part-2-2017/broadway-blog--matthew-wexler.json",
+    "a-dolls-house-part-2-2017/bsonarts--bruce-smith.json",
+    "a-dolls-house-part-2-2017/off-script-with-dan-dwyer--dan-dwyer.json",
+    "a-gentlemans-guide-to-love-and-murder-2013/ap--jennifer-farrar.json",
+    "a-life-in-the-theatre-2010/broadwayworld--michael-dale.json",
+    "a-life-in-the-theatre-2010/village-voice--michael-feingold.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2133,7 +2143,14 @@
       "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/talkinbroadway--nancy-grossman.json",
       "data/review-texts/a-bronx-tale-the-musical-2016/talkinbroadway--matthew-murray.json",
       "data/review-texts/a-chorus-line-2006/washpost--peter-marks.json",
-      "data/review-texts/a-christmas-carol-2019/chicagotribune--chris-jones-bway.json"
+      "data/review-texts/a-christmas-carol-2019/chicagotribune--chris-jones-bway.json",
+      "data/review-texts/a-christmas-carol-2022/washpost--peter-marks.json",
+      "data/review-texts/a-christmas-story-the-musical-2012/usatoday--elysa-gardner.json",
+      "data/review-texts/a-dolls-house-part-2-2017/broadway-blog--matthew-wexler.json",
+      "data/review-texts/a-dolls-house-part-2-2017/bsonarts--bruce-smith.json",
+      "data/review-texts/a-dolls-house-part-2-2017/off-script-with-dan-dwyer--dan-dwyer.json",
+      "data/review-texts/a-gentlemans-guide-to-love-and-murder-2013/ap--jennifer-farrar.json",
+      "data/review-texts/a-life-in-the-theatre-2010/broadwayworld--michael-dale.json"
     ],
     "archive": [
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
@@ -2302,7 +2319,7 @@
     ]
   },
   "startTime": "2026-03-11T13:15:22.957Z",
-  "lastProcessed": "a-christmas-carol-2019/chicagotribune--chris-jones-bway.json",
+  "lastProcessed": "a-life-in-the-theatre-2010/village-voice--michael-feingold.json",
   "log": [
     {
       "t": "2026-03-11T13:19:37.516Z",
@@ -3080,6 +3097,23 @@
       "t": "2026-03-12T11:03:53.924Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-12T11:05:27.643Z",
+      "event": "bb-session",
+      "session": "771965fd",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/12/11/christmas-carol-broadway"
+    },
+    {
+      "t": "2026-03-12T11:05:28.924Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-12T11:07:23.593Z",
+      "event": "bb-session",
+      "session": "b921fa39",
+      "url": "https://bsonarts.com/2017/04/27/dolls-house-part-2-lucas-hnath/?utm_source=feedb"
     }
   ]
 }
