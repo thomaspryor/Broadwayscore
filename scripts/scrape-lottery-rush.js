@@ -1036,6 +1036,21 @@ function sanitizeData(existing) {
           delete show[field].url;
         }
       }
+
+      // Auto-populate URL from known platform when missing
+      if (show[field].platform && !show[field].url) {
+        const PLATFORM_URLS = {
+          'telecharge': 'https://rush.telecharge.com',
+          'luckyseat': 'https://www.luckyseat.com',
+          'todaytix': 'https://www.todaytix.com',
+          'broadway direct': 'https://lottery.broadwaydirect.com',
+        };
+        const fallbackUrl = PLATFORM_URLS[show[field].platform.toLowerCase()];
+        if (fallbackUrl) {
+          show[field].url = fallbackUrl;
+          fixes.push(`${showId}.${field}: Auto-populated URL from platform "${show[field].platform}" → ${fallbackUrl}`);
+        }
+      }
     }
 
     // --- Deduplicate rush/digitalRush with same platform+price ---
