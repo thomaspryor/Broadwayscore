@@ -52,17 +52,19 @@ function formatPercent(pct: number | null | undefined): string {
   return `${pct.toFixed(1)}%`;
 }
 
-function ChangeIndicator({ current, previous }: { current: number | null | undefined; previous: number | null | undefined }) {
+function ChangeIndicator({ current, previous, mode = 'percent' }: { current: number | null | undefined; previous: number | null | undefined; mode?: 'percent' | 'points' }) {
   if (current === null || current === undefined || previous === null || previous === undefined) {
     return null;
   }
-  const change = ((current - previous) / previous) * 100;
+  // 'percent' = percentage change ((new-old)/old*100), used for gross/attendance
+  // 'points' = percentage point change (new-old), used for capacity which is already a %
+  const change = mode === 'points' ? (current - previous) : ((current - previous) / previous) * 100;
   if (Math.abs(change) < 0.1) return null;
 
   const isPositive = change > 0;
   return (
     <span className={`text-xs ml-1 ${isPositive ? 'text-emerald-400' : 'text-red-400'}`}>
-      {isPositive ? '↑' : '↓'}{Math.abs(change).toFixed(1)}%
+      {isPositive ? '↑' : '↓'}{Math.abs(change).toFixed(1)}{mode === 'points' ? 'pp' : '%'}
     </span>
   );
 }
@@ -146,7 +148,7 @@ export function ThisWeekTable({ data }: ThisWeekTableProps) {
     });
   }, [data, sortColumn, sortDirection]);
 
-  const headerClass = "py-3 px-4 text-gray-400 font-medium cursor-pointer hover:text-white transition-colors select-none group";
+  const headerClass = "py-3 px-2 sm:px-4 text-gray-400 font-medium cursor-pointer hover:text-white transition-colors select-none group text-sm";
 
   return (
     <div className="card overflow-hidden">
@@ -154,7 +156,7 @@ export function ThisWeekTable({ data }: ThisWeekTableProps) {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-white/10 bg-surface-overlay">
-              <th className="text-left py-3 px-4 text-gray-400 font-medium">#</th>
+              <th className="text-left py-3 px-2 sm:px-4 text-gray-400 font-medium text-sm w-6 sm:w-8 hidden sm:table-cell">#</th>
               <th
                 className={`text-left ${headerClass}`}
                 onClick={() => handleSort('show')}
@@ -163,17 +165,18 @@ export function ThisWeekTable({ data }: ThisWeekTableProps) {
                 <SortIcon direction={sortDirection} active={sortColumn === 'show'} />
               </th>
               <th
-                className={`text-right ${headerClass}`}
+                className={`text-right ${headerClass} whitespace-nowrap`}
                 onClick={() => handleSort('gross')}
               >
                 Gross
                 <SortIcon direction={sortDirection} active={sortColumn === 'gross'} />
               </th>
               <th
-                className={`text-right hidden sm:table-cell ${headerClass}`}
+                className={`text-right whitespace-nowrap ${headerClass}`}
                 onClick={() => handleSort('capacity')}
               >
-                Capacity
+                <span className="hidden sm:inline">Capacity</span>
+                <span className="sm:hidden">Cap</span>
                 <SortIcon direction={sortDirection} active={sortColumn === 'capacity'} />
               </th>
               <th
@@ -195,36 +198,37 @@ export function ThisWeekTable({ data }: ThisWeekTableProps) {
           <tbody>
             {sortedData.map((item, index) => (
               <tr key={item.show.slug} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                <td className="py-3 px-4">
+                <td className="py-3 px-2 sm:px-4 w-6 sm:w-8 hidden sm:table-cell">
                   <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
                     index < 3 ? 'bg-accent-gold text-gray-900' : 'text-gray-500'
                   }`}>
                     {index + 1}
                   </span>
                 </td>
-                <td className="py-3 px-4">
-                  <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium">
+                <td className="py-3 px-2 sm:px-4 min-w-0">
+                  <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium text-sm sm:text-base truncate block">
                     {item.show.title}
                   </Link>
                 </td>
-                <td className="py-3 px-4 text-right text-white font-medium">
+                <td className="py-3 px-2 sm:px-4 text-right text-white font-medium whitespace-nowrap">
                   {formatCurrency(item.grosses?.thisWeek?.gross)}
                   <ChangeIndicator
                     current={item.grosses?.thisWeek?.gross}
                     previous={item.grosses?.thisWeek?.grossPrevWeek}
                   />
                 </td>
-                <td className="py-3 px-4 text-right text-gray-300 hidden sm:table-cell">
+                <td className="py-3 px-2 sm:px-4 text-right text-gray-300 whitespace-nowrap">
                   {formatPercent(item.grosses?.thisWeek?.capacity)}
                   <ChangeIndicator
                     current={item.grosses?.thisWeek?.capacity}
                     previous={item.grosses?.thisWeek?.capacityPrevWeek}
+                    mode="points"
                   />
                 </td>
-                <td className="py-3 px-4 text-right text-gray-300 hidden md:table-cell">
+                <td className="py-3 px-2 sm:px-4 text-right text-gray-300 hidden md:table-cell">
                   {item.grosses?.thisWeek?.atp ? `$${item.grosses.thisWeek.atp.toFixed(0)}` : '—'}
                 </td>
-                <td className="py-3 px-4 text-right text-gray-300 hidden lg:table-cell">
+                <td className="py-3 px-2 sm:px-4 text-right text-gray-300 hidden lg:table-cell">
                   {formatNumber(item.grosses?.thisWeek?.attendance)}
                 </td>
               </tr>
@@ -301,7 +305,7 @@ export function AllTimeTable({ data }: AllTimeTableProps) {
     });
   }, [data, sortColumn, sortDirection]);
 
-  const headerClass = "py-3 px-4 text-gray-400 font-medium cursor-pointer hover:text-white transition-colors select-none group";
+  const headerClass = "py-3 px-2 sm:px-4 text-gray-400 font-medium cursor-pointer hover:text-white transition-colors select-none group text-sm";
 
   return (
     <div className="card overflow-hidden">
@@ -309,7 +313,7 @@ export function AllTimeTable({ data }: AllTimeTableProps) {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-white/10 bg-surface-overlay">
-              <th className="text-left py-3 px-4 text-gray-400 font-medium">#</th>
+              <th className="text-left py-3 px-2 sm:px-4 text-gray-400 font-medium text-sm w-6 sm:w-8 hidden sm:table-cell">#</th>
               <th
                 className={`text-left ${headerClass}`}
                 onClick={() => handleSort('show')}
@@ -318,17 +322,19 @@ export function AllTimeTable({ data }: AllTimeTableProps) {
                 <SortIcon direction={sortDirection} active={sortColumn === 'show'} />
               </th>
               <th
-                className={`text-right ${headerClass}`}
+                className={`text-right whitespace-nowrap ${headerClass}`}
                 onClick={() => handleSort('gross')}
               >
-                Total Gross
+                <span className="hidden sm:inline">Total Gross</span>
+                <span className="sm:hidden">Gross</span>
                 <SortIcon direction={sortDirection} active={sortColumn === 'gross'} />
               </th>
               <th
-                className={`text-right hidden sm:table-cell ${headerClass}`}
+                className={`text-right whitespace-nowrap ${headerClass}`}
                 onClick={() => handleSort('performances')}
               >
-                Performances
+                <span className="hidden sm:inline">Performances</span>
+                <span className="sm:hidden">Perfs</span>
                 <SortIcon direction={sortDirection} active={sortColumn === 'performances'} />
               </th>
               <th
@@ -350,28 +356,28 @@ export function AllTimeTable({ data }: AllTimeTableProps) {
           <tbody>
             {sortedData.map((item, index) => (
               <tr key={item.show.slug} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                <td className="py-3 px-4">
+                <td className="py-3 px-2 sm:px-4 w-6 sm:w-8 hidden sm:table-cell">
                   <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
                     index < 3 ? 'bg-accent-gold text-gray-900' : 'text-gray-500'
                   }`}>
                     {index + 1}
                   </span>
                 </td>
-                <td className="py-3 px-4">
-                  <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium">
+                <td className="py-3 px-2 sm:px-4 min-w-0">
+                  <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium text-sm sm:text-base truncate block">
                     {item.show.title}
                   </Link>
                 </td>
-                <td className="py-3 px-4 text-right text-white font-medium">
+                <td className="py-3 px-2 sm:px-4 text-right text-white font-medium whitespace-nowrap">
                   {formatCurrency(item.grosses?.allTime?.gross)}
                 </td>
-                <td className="py-3 px-4 text-right text-gray-300 hidden sm:table-cell">
+                <td className="py-3 px-2 sm:px-4 text-right text-gray-300 whitespace-nowrap">
                   {formatNumber(item.grosses?.allTime?.performances)}
                 </td>
-                <td className="py-3 px-4 text-right text-gray-300 hidden md:table-cell">
+                <td className="py-3 px-2 sm:px-4 text-right text-gray-300 hidden md:table-cell">
                   {formatNumber(item.grosses?.allTime?.attendance)}
                 </td>
-                <td className="py-3 px-4 text-center hidden lg:table-cell">
+                <td className="py-3 px-2 sm:px-4 text-center hidden lg:table-cell">
                   <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
                     item.show.status === 'open'
                       ? 'bg-emerald-500/15 text-emerald-400'
