@@ -94,48 +94,110 @@ function PriceCell({ price, url, color, bgColor }: { price: number; url?: string
   return badge;
 }
 
+function ClockIcon() {
+  return (
+    <svg className="w-3.5 h-3.5 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+  );
+}
+
+function ActionLinkIcon() {
+  return (
+    <svg className="w-3.5 h-3.5 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+    </svg>
+  );
+}
+
 function DetailPanel({ row }: { row: DiscountShowRow }) {
-  const sections: { label: string; color: string; items: string[] }[] = [];
-
-  if (row.lottery) {
-    const items: string[] = [];
-    items.push(row.lottery.label + (row.lottery.platform ? ` via ${row.lottery.platform}` : ''));
-    if (row.lottery.time) items.push(row.lottery.time);
-    if (row.lottery.instructions) items.push(row.lottery.instructions);
-    sections.push({ label: 'Lottery', color: 'text-purple-300', items });
-  }
-
-  if (row.rush) {
-    const items: string[] = [];
-    items.push(row.rush.label + (row.rush.platform ? ` via ${row.rush.platform}` : ''));
-    if (row.rush.time) items.push(row.rush.time);
-    if (row.rush.location) items.push(row.rush.location);
-    if (row.rush.instructions) items.push(row.rush.instructions);
-    sections.push({ label: 'Rush', color: 'text-emerald-300', items });
-  }
-
-  if (row.sro) {
-    const items: string[] = [];
-    if (row.sro.time) items.push(row.sro.time);
-    if (row.sro.instructions) items.push(row.sro.instructions);
-    if (items.length === 0) items.push('Available when show is sold out');
-    sections.push({ label: 'Standing Room', color: 'text-gray-300', items });
-  }
-
-  if (sections.length === 0) return null;
+  const hasSections = row.lottery || row.rush || row.sro;
+  if (!hasSections) return null;
 
   return (
     <tr className="bg-white/[0.02]">
-      <td colSpan={6} className="px-4 py-3">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-          {sections.map(section => (
-            <div key={section.label}>
-              <div className={`font-semibold ${section.color} mb-1`}>{section.label}</div>
-              {section.items.map((item, i) => (
-                <p key={i} className="text-gray-400 text-xs leading-relaxed">{item}</p>
-              ))}
+      <td colSpan={6} className="px-4 pb-4 pt-1">
+        <div className="flex flex-col sm:flex-row gap-2">
+          {row.lottery && (
+            <div className="flex-1 bg-purple-500/10 border border-purple-500/20 rounded-lg p-3">
+              <div className="flex items-start justify-between gap-2 mb-2">
+                <span className="font-semibold text-purple-300 text-sm">{row.lottery.label}</span>
+                <span className="font-bold text-white text-lg">${row.lottery.price}</span>
+              </div>
+              {row.lottery.time && (
+                <div className="flex items-start gap-1.5 text-gray-400 text-xs mb-1">
+                  <ClockIcon />
+                  <span>{row.lottery.time}</span>
+                </div>
+              )}
+              {row.lottery.instructions && (
+                <p className="text-gray-400 text-xs leading-relaxed">{row.lottery.instructions}</p>
+              )}
+              {row.lottery.url && (
+                <a
+                  href={ensureHttps(row.lottery.url)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-purple-400 hover:text-purple-300 font-medium text-xs mt-2 transition-colors"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  Enter on {row.lottery.platform || 'website'}
+                  <ActionLinkIcon />
+                </a>
+              )}
             </div>
-          ))}
+          )}
+
+          {row.rush && (
+            <div className="flex-1 bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3">
+              <div className="flex items-start justify-between gap-2 mb-2">
+                <span className="font-semibold text-emerald-300 text-sm">{row.rush.label}</span>
+                <span className="font-bold text-white text-lg">${row.rush.price}</span>
+              </div>
+              {row.rush.time && (
+                <div className="flex items-start gap-1.5 text-gray-400 text-xs mb-1">
+                  <ClockIcon />
+                  <span>{row.rush.time}</span>
+                </div>
+              )}
+              {row.rush.location && (
+                <p className="text-gray-400 text-xs">{row.rush.location}</p>
+              )}
+              {row.rush.instructions && (
+                <p className="text-gray-400 text-xs leading-relaxed">{row.rush.instructions}</p>
+              )}
+              {row.rush.url && (
+                <a
+                  href={ensureHttps(row.rush.url)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 font-medium text-xs mt-2 transition-colors"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  Get on {row.rush.platform || 'website'}
+                  <ActionLinkIcon />
+                </a>
+              )}
+            </div>
+          )}
+
+          {row.sro && (
+            <div className="flex-1 bg-gray-500/10 border border-gray-500/20 rounded-lg p-3">
+              <div className="flex items-start justify-between gap-2 mb-2">
+                <span className="font-semibold text-gray-300 text-sm">Standing Room</span>
+                <span className="font-bold text-white text-lg">${row.sro.price}</span>
+              </div>
+              {row.sro.time && (
+                <div className="flex items-start gap-1.5 text-gray-400 text-xs mb-1">
+                  <ClockIcon />
+                  <span>{row.sro.time}</span>
+                </div>
+              )}
+              {row.sro.instructions && (
+                <p className="text-gray-400 text-xs leading-relaxed">{row.sro.instructions}</p>
+              )}
+            </div>
+          )}
         </div>
       </td>
     </tr>

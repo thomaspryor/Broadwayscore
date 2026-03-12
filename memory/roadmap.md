@@ -44,7 +44,7 @@
 ## LOW PRIORITY / BACKLOG
 
 **iOS App:** Widget, Spotlight search, iPad layout, Android, Share sheet, App Clips, Siri
-**Infrastructure:** Show images to CDN (173MB/deploy), prune low-value static pages, domain retry intelligence
+**Infrastructure:** Show images to CDN (173MB/deploy), prune low-value static pages, domain retry intelligence, ~~ScrapingBee SERP credit optimization~~ → DONE (3.3M→968K credits/month + BrightData fallback)
 **Code Quality:** _(No active items — useSortableTable + component consolidation complete)_
 **Data/Scoring:** LLM prompt contamination audit, cross-aggregator excerpt enrichment, Playwright critic resolution, 14 author-byline mismatches need manual review (audit report in data/audit/syndicated-duplicates.json)
 **Lists Enhancements:** Public/shareable lists, "Add to List" from Diary/Watchlist rows, smart list suggestions (auto-suggest based on diary), drag handle discoverability (animation/tooltip), list import from Diary (bulk add seen shows), list count in header stats bar, notes per list item
@@ -52,6 +52,9 @@
 **Code Quality:** ~~Regression protection for critical patterns~~ → DONE (grep-based guards in CI). ~~Linter/IDE revert root cause~~ → DONE (concurrent sessions, not auto-formatter).
 
 ## Recently Completed
+
+### Week of 2026-03-12
+- **ScrapingBee SERP credit optimization** — Reduced usage from ~3.3M credits/month to ~968K (fits 1M budget). 4 fixes: scheduled search days (0,1,3,7,14), gather dispatch ≤3 days, closed show filter on 3 aggregator scrapers, skip outlets with 2+ reviews. BrightData SERP API as transparent fallback when SB exhausts (100% top-result quality match). Applied to discover-opening-night-reviews.js + url-discovery.js (covers gather-reviews, collect-outlet-reviews).
 
 ### Week of 2026-03-09
 - **Theatr audience data integration** — New 4th audience source. Scraper (`scrape-theatr-audience.js`), weekly CI workflow, AudienceBuzzCard UI (4-source layout), methodology/audience-buzz/llms.txt updated. 228 shows with Theatr data, 26 open BW shows affected (+2.2 avg score bump). MIN_VOTES=1 (consistent with ShowScore/Mezzanine). Icons: bar-chart for ShowScore, thumbs-up for Theatr.
