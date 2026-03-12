@@ -15,6 +15,21 @@ function TicketIcon({ className }: { className?: string }) {
   );
 }
 
+function ExternalLinkIcon() {
+  return (
+    <svg className="w-3 h-3 inline-block ml-0.5 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+    </svg>
+  );
+}
+
+/** Ensure URLs have https:// prefix */
+function ensureHttps(url: string | undefined | null): string | undefined {
+  if (!url) return undefined;
+  if (/^https?:\/\//i.test(url)) return url;
+  return 'https://' + url;
+}
+
 function SortIcon({ direction, active }: { direction: SortDirection | null; active: boolean }) {
   if (!active) {
     return (
@@ -144,7 +159,7 @@ export function LotteryTable({ data }: LotteryTableProps) {
                 <SortIcon direction={sortDirection} active={sortColumn === 'price'} />
               </th>
               <th className={`text-left hidden sm:table-cell ${headerClass}`} onClick={() => handleSort('platform')}>
-                Platform
+                Enter via
                 <SortIcon direction={sortDirection} active={sortColumn === 'platform'} />
               </th>
               <th className={`text-center hidden md:table-cell ${headerClass}`} onClick={() => handleSort('score')}>
@@ -181,8 +196,20 @@ export function LotteryTable({ data }: LotteryTableProps) {
                       ${price}
                     </span>
                   </td>
-                  <td className="py-3 px-4 text-gray-300 hidden sm:table-cell">
-                    {lottery?.platform || special?.platform || '—'}
+                  <td className="py-3 px-4 hidden sm:table-cell">
+                    {(() => {
+                      const platform = lottery?.platform || special?.platform;
+                      const url = ensureHttps(lottery?.url || special?.url);
+                      if (!platform) return <span className="text-gray-500">—</span>;
+                      if (url) {
+                        return (
+                          <a href={url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-purple-400 hover:text-purple-300 font-medium transition-colors">
+                            {platform}<ExternalLinkIcon />
+                          </a>
+                        );
+                      }
+                      return <span className="text-gray-300">{platform}</span>;
+                    })()}
                   </td>
                   <td className="py-3 px-4 text-center hidden md:table-cell">
                     <ScoreBadge score={score} size="sm" showCrown />
@@ -461,7 +488,7 @@ export function RushTable({ data }: RushTableProps) {
                 <SortIcon direction={sortDirection} active={sortColumn === 'price'} />
               </th>
               <th className={`text-left hidden sm:table-cell ${headerClass}`} onClick={() => handleSort('type')}>
-                Type
+                Enter via
                 <SortIcon direction={sortDirection} active={sortColumn === 'type'} />
               </th>
               <th className={`text-center hidden md:table-cell ${headerClass}`} onClick={() => handleSort('score')}>
@@ -504,10 +531,25 @@ export function RushTable({ data }: RushTableProps) {
                       ${cheapestPrice}
                     </span>
                   </td>
-                  <td className="py-3 px-4 text-gray-300 hidden sm:table-cell">
-                    <div className="flex flex-wrap gap-1">
-                      {rush && <span className="text-emerald-400">Box Office</span>}
-                      {digital && <span className="text-blue-400">{rush ? ' + Digital' : 'Digital'}</span>}
+                  <td className="py-3 px-4 hidden sm:table-cell">
+                    <div className="flex flex-wrap gap-1 items-center">
+                      {rush && (() => {
+                        const url = ensureHttps(rush.url);
+                        const label = rush.platform || 'Box Office';
+                        if (url) {
+                          return <a href={url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-emerald-400 hover:text-emerald-300 font-medium transition-colors">{label}<ExternalLinkIcon /></a>;
+                        }
+                        return <span className="text-emerald-400">{label}</span>;
+                      })()}
+                      {digital && (() => {
+                        const url = ensureHttps(digital.url);
+                        const label = digital.platform || 'Digital';
+                        const prefix = rush ? ' + ' : '';
+                        if (url) {
+                          return <>{prefix && <span className="text-gray-500">{prefix}</span>}<a href={url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium transition-colors">{label}<ExternalLinkIcon /></a></>;
+                        }
+                        return <span className="text-blue-400">{prefix}{label}</span>;
+                      })()}
                       {student && <span className="text-pink-400">{rush || digital ? ' + Student' : 'Student'}</span>}
                     </div>
                   </td>
