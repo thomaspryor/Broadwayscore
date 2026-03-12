@@ -1,26 +1,43 @@
 {
-  "totalCandidates": 9,
-  "cdxFound": 5,
-  "cdxNotFound": 2,
-  "recovered": 5,
+  "totalCandidates": 48,
+  "cdxFound": 34,
+  "cdxNotFound": 6,
+  "recovered": 33,
   "recoveredByTier": {
-    "1": 2,
+    "1": 15,
     "2": 0,
-    "3": 3
+    "3": 18
   },
   "recoveredByDomain": {
-    "timeout.com": 1,
+    "hollywoodreporter.com": 4,
     "washingtonpost.com": 1,
-    "broadwayworld.com": 1,
-    "justretiring.com": 1,
+    "vulture.com": 3,
+    "nytimes.com": 5,
+    "timeout.com": 2,
+    "entertainmenthour.blogspot.com": 1,
+    "zealnyc.com": 1,
+    "caroleditosti.com": 1,
+    "wamc.org": 1,
+    "troyrecord.com": 1,
+    "bostonglobe.com": 3,
+    "seattletimes.com": 1,
+    "flipsidereviews.blogspot.com": 1,
+    "blog.timesunion.com": 1,
+    "tapinto.net": 1,
+    "2ontheaisle.wordpress.com": 1,
+    "theaterlife.com": 2,
+    "theatrereviews.com": 1,
+    "thinkingtheaternyc.com": 1,
     "chicagotribune.com": 1
   },
-  "tooShort": 0,
+  "tooShort": 5,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 2,
-  "notInArchive": 2,
-  "domainSkipped": 0,
-  "circuitBrokenDomains": []
+  "errors": 7,
+  "notInArchive": 6,
+  "domainSkipped": 1,
+  "circuitBrokenDomains": [
+    "onandoffbroadwaytheaterreviews.com"
+  ]
 }
