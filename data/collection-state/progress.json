@@ -205,7 +205,16 @@
     "the-reservoir-off-broadway-2026/theatermania--jonas-schwartz.json",
     "the-reservoir-off-broadway-2026/theatermania--zachary-stewart.json",
     "the-reservoir-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
-    "the-unknown-off-broadway-2026/theatermania--zachary-stewart.json"
+    "the-unknown-off-broadway-2026/theatermania--zachary-stewart.json",
+    "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
+    "trash-off-broadway-2026/theatermania--unknown.json",
+    "tru-off-broadway-2026/theatermania--unknown.json",
+    "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "wicked-2003/theatermania--barbara-siegelscott-siegel.json",
+    "wicked-2003/theatermania--david-gordon.json",
+    "wicked-2003/wsj--terry-teachout.json",
+    "you-got-older-off-broadway-2026/theatermania--zachary-stewart.json",
+    "you-got-older-off-broadway-2026/timeout--unknown.json"
   ],
   "failed": [
     "cold-war-choir-practice-off-broadway-2026/talkinbroadway--kimberly-ramirez.json",
@@ -231,7 +240,8 @@
     "hamilton-2015/wsj--terry-teachout.json",
     "harry-potter-2021/wsj--terry-teachout.json",
     "la-llamada-off-broadway-2024/broadwaynews--aa-cristi.json",
-    "sweetmeats-west-end-2026/guardian--anya-ryan.json"
+    "sweetmeats-west-end-2026/guardian--anya-ryan.json",
+    "two-strangers-bway-2025/guardian--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -374,7 +384,14 @@
       "the-reservoir-off-broadway-2026/theatermania--jonas-schwartz.json",
       "the-reservoir-off-broadway-2026/theatermania--zachary-stewart.json",
       "the-reservoir-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
-      "the-unknown-off-broadway-2026/theatermania--zachary-stewart.json"
+      "the-unknown-off-broadway-2026/theatermania--zachary-stewart.json",
+      "trash-off-broadway-2026/theatermania--unknown.json",
+      "tru-off-broadway-2026/theatermania--unknown.json",
+      "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "wicked-2003/theatermania--barbara-siegelscott-siegel.json",
+      "wicked-2003/theatermania--david-gordon.json",
+      "you-got-older-off-broadway-2026/theatermania--zachary-stewart.json",
+      "you-got-older-off-broadway-2026/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -487,11 +504,13 @@
       "the-lion-king-west-end-2021/timeout-london--ben-walters.json",
       "the-play-that-goes-wrong-off-broadway-2019/broadwaynews--julie-musbach.json",
       "the-play-that-goes-wrong-west-end-2021/timeout-london--unknown.json",
-      "the-reservoir-off-broadway-2026/broadwaynews--nicole-rosky.json"
+      "the-reservoir-off-broadway-2026/broadwaynews--nicole-rosky.json",
+      "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
+      "wicked-2003/wsj--terry-teachout.json"
     ]
   },
   "startTime": "2026-03-12T13:55:19.125Z",
-  "lastProcessed": "the-unknown-off-broadway-2026/theatermania--zachary-stewart.json",
+  "lastProcessed": "you-got-older-off-broadway-2026/timeout--unknown.json",
   "log": [
     {
       "t": "2026-03-12T19:01:52.808Z",
@@ -536,6 +555,17 @@
       "t": "2026-03-12T19:12:45.049Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-12T19:17:35.184Z",
+      "event": "bb-session",
+      "session": "5c800755",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-03-12T19:17:36.370Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

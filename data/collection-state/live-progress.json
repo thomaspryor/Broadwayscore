@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-12T19:16:20.644Z",
-  "processed": 206,
-  "failed": 24,
+  "updatedAt": "2026-03-12T19:18:18.377Z",
+  "processed": 215,
+  "failed": 25,
   "successRate": "89.6%",
   "tierBreakdown": {
-    "playwright": 139,
+    "playwright": 146,
     "amp": 30,
     "browserbase": 6,
     "directCookies": 1,
     "scrapingbee": 25,
     "brightdata": 0,
     "archiveToday": 15,
-    "archive": 23
+    "archive": 25
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-03-12T19:01:52.808Z",
@@ -58,6 +58,17 @@
       "t": "2026-03-12T19:12:45.049Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-12T19:17:35.184Z",
+      "event": "bb-session",
+      "session": "5c800755",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-03-12T19:17:36.370Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
