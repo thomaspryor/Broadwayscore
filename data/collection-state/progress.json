@@ -660,7 +660,9 @@
     "passing-strange-2008/guardian--kate-wyver.json",
     "ragtime-2009/theatre-reviews-limited--joseph-verlezza.json",
     "richard-iii-2013/guardian--susannah-clapp.json",
-    "the-phantom-of-the-opera-west-end-2021/timeout-london--andrzej-lukowski.json"
+    "the-phantom-of-the-opera-west-end-2021/timeout-london--andrzej-lukowski.json",
+    "the-price-1999/timeout--adam-feldman.json",
+    "the-price-2017/guardian--jesse-green.json"
   ],
   "failed": [
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json",
@@ -941,7 +943,15 @@
     "the-pirate-queen-2007/newsday--linda-winer-bway.json",
     "the-pitmen-painters-2010/nypost--elisabeth-vincentelli.json",
     "the-play-that-goes-wrong-2017/theatermania--adam-feldman.json",
-    "the-play-that-goes-wrong-2017/wsj--terry-teachout.json"
+    "the-play-that-goes-wrong-2017/wsj--terry-teachout.json",
+    "the-present-2017/wsj--terry-teachout.json",
+    "the-price-2017/observer--rex-reed.json",
+    "the-price-2017/reviewing-the-drama--robin-riegelhaupt.json",
+    "the-price-2017/theatermania--jesse-green.json",
+    "the-price-2017/wsj--terry-teachout.json",
+    "the-prom-2018/broadwaynews--elizabeth-bradley.json",
+    "the-real-thing-2014/observer--rex-reed.json",
+    "the-real-thing-2014/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1401,7 +1411,8 @@
       "burn-this-1987/timeout--adam-feldman.json",
       "faith-healer-2006/guardian--mark-lawson.json",
       "hamlet-2026/theatermania--zachary-stewart.json",
-      "ragtime-2009/theatre-reviews-limited--joseph-verlezza.json"
+      "ragtime-2009/theatre-reviews-limited--joseph-verlezza.json",
+      "the-price-2017/guardian--jesse-green.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -1492,7 +1503,8 @@
       "the-crucible-1991/nytimes--ben-brantley.json",
       "you-got-older-2026/nytimes--charles-isherwood.json",
       "passing-strange-2008/guardian--kate-wyver.json",
-      "richard-iii-2013/guardian--susannah-clapp.json"
+      "richard-iii-2013/guardian--susannah-clapp.json",
+      "the-price-1999/timeout--adam-feldman.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1529,7 +1541,9 @@
       "data/review-texts/the-nance-2013/wsj--unknown.json",
       "data/review-texts/the-normal-heart-2011/san-jose-mercury-news--chuck-barney.json",
       "data/review-texts/the-parisian-woman-2017/broadwaynews--charles-isherwood.json",
-      "data/review-texts/the-pirate-queen-2007/newsday--linda-winer-bway.json"
+      "data/review-texts/the-pirate-queen-2007/newsday--linda-winer-bway.json",
+      "data/review-texts/the-price-2017/reviewing-the-drama--robin-riegelhaupt.json",
+      "data/review-texts/the-prom-2018/broadwaynews--elizabeth-bradley.json"
     ],
     "archive": [
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
@@ -1690,7 +1704,7 @@
     ]
   },
   "startTime": "2026-03-11T13:15:22.957Z",
-  "lastProcessed": "the-play-that-goes-wrong-2017/wsj--terry-teachout.json",
+  "lastProcessed": "the-real-thing-2014/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-03-11T13:19:37.516Z",
@@ -2229,6 +2243,67 @@
     },
     {
       "t": "2026-03-12T04:52:25.818Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-12T04:53:56.113Z",
+      "event": "bb-session",
+      "session": "d74f0ffc",
+      "url": "https://www.wsj.com/articles/the-present-review-chekhovs-gun-takes-center-stage-"
+    },
+    {
+      "t": "2026-03-12T04:53:57.567Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-12T04:56:42.289Z",
+      "event": "bb-session",
+      "session": "d2d97293",
+      "url": "https://observer.com/2017/03/the-price-broadway-review-arthur-miller/"
+    },
+    {
+      "t": "2026-03-12T04:56:43.852Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-12T04:58:13.527Z",
+      "event": "bb-session",
+      "session": "87ddf2db",
+      "url": "https://www.wsj.com/articles/the-price-review-a-miller-revival-worth-the-cost-14"
+    },
+    {
+      "t": "2026-03-12T04:58:15.045Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-12T05:00:12.737Z",
+      "event": "bb-session",
+      "session": "1de75bcf",
+      "url": "https://broadway.news/2018/11/15/review-the-prom-finds-meaning-amid-the-glitz/"
+    },
+    {
+      "t": "2026-03-12T05:00:16.221Z",
+      "event": "bb-session",
+      "session": "28a1b1e4",
+      "url": "https://observer.com/2014/11/broadway-review-the-real-thing-starring-ewan-mcgreg"
+    },
+    {
+      "t": "2026-03-12T05:00:17.665Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-12T05:00:57.803Z",
+      "event": "bb-session",
+      "session": "414dcb61",
+      "url": "https://www.wsj.com/articles/theater-review-the-real-thing-1414096800"
+    },
+    {
+      "t": "2026-03-12T05:00:59.236Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
