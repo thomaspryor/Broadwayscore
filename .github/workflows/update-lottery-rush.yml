@@ -42,7 +42,7 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
-          if [[ -n $(git status --porcelain data/lottery-rush.json data/shows.json) ]]; then
+          if [[ -n $(git status --porcelain data/lottery-rush.json data/shows.json data/show-schedules.json) ]]; then
             echo "has_changes=true" >> $GITHUB_OUTPUT
             echo "Changes detected in lottery/rush data"
           else
@@ -55,10 +55,10 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add data/lottery-rush.json
-          git commit -m "chore: Update lottery/rush data from BwayRush + Playbill
+          git add data/lottery-rush.json data/show-schedules.json
+          git commit -m "chore: Update lottery/rush + schedule data from BwayRush + Playbill
 
-          Automated weekly update of Broadway lottery and rush ticket policies.
+          Automated weekly update of Broadway lottery/rush policies and showtimes.
 
           Co-Authored-By: GitHub Action <action@github.com>"
           bash scripts/lib/push-with-retry.sh

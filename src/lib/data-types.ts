@@ -382,6 +382,16 @@ export interface ShowLotteryRush {
   specialLottery?: SpecialLotteryInfo | null;
 }
 
+// Showtimes / Weekly Schedule
+export interface DaySchedule {
+  m: string | null;  // matinee "HH:MM" (24h) or null
+  e: string | null;  // evening "HH:MM" (24h) or null
+}
+export type WeekSchedule = [DaySchedule, DaySchedule, DaySchedule, DaySchedule, DaySchedule, DaySchedule, DaySchedule];
+export interface ShowSchedule {
+  weeks: Record<string, WeekSchedule>;  // key = Monday date YYYYMMDD
+}
+
 // Cast Changes
 export interface CastMember {
   name: string;

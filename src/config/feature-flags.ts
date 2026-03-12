@@ -10,7 +10,7 @@ const enabledFeatures = new Set(
 
 // Features auto-enabled on demo.broadwayscorecard.com (runtime check).
 // Uses getters so the check runs each time the flag is read (client-side).
-const DEMO_FEATURES = new Set(['userAccounts', 'showPageRedesign']);
+const DEMO_FEATURES = new Set(['userAccounts', 'showPageRedesign', 'showtimes']);
 
 function isDemo(): boolean {
   if (typeof window === 'undefined') return false;
@@ -40,4 +40,5 @@ export const featureFlags = {
   get sectionJumpLinks() { return has('sectionJumpLinks'); },
   get userAccounts() { return has('userAccounts'); },
   get showPageRedesign() { return has('showPageRedesign'); },
+  get showtimes() { return has('showtimes'); },
 };

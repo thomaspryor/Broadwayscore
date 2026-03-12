@@ -56,30 +56,38 @@ export default function DiscountTicketsPage() {
     const hasAny = data.lottery || data.specialLottery || data.rush || data.digitalRush || data.studentRush || data.standingRoom;
     if (!hasAny) continue;
 
+    // Pick the cheapest lottery option
     let lottery: DiscountShowRow['lottery'] = null;
+    const lotteryOptions: DiscountShowRow['lottery'][] = [];
     if (data.lottery) {
-      lottery = {
+      lotteryOptions.push({
         price: data.lottery.price,
         label: 'Digital Lottery',
         platform: data.lottery.platform || null,
         url: data.lottery.url || null,
         time: data.lottery.time || null,
         instructions: data.lottery.instructions || null,
-      };
-    } else if (data.specialLottery) {
-      lottery = {
+      });
+    }
+    if (data.specialLottery) {
+      lotteryOptions.push({
         price: data.specialLottery.price,
         label: data.specialLottery.name,
         platform: data.specialLottery.platform || null,
         url: data.specialLottery.url || null,
         time: null,
         instructions: data.specialLottery.instructions || null,
-      };
+      });
+    }
+    if (lotteryOptions.length > 0) {
+      lottery = lotteryOptions.sort((a, b) => a!.price - b!.price)[0];
     }
 
+    // Pick the cheapest rush option
     let rush: DiscountShowRow['rush'] = null;
+    const rushOptions: DiscountShowRow['rush'][] = [];
     if (data.rush) {
-      rush = {
+      rushOptions.push({
         price: data.rush.price,
         label: 'Rush',
         platform: data.rush.platform || null,
@@ -87,9 +95,10 @@ export default function DiscountTicketsPage() {
         time: data.rush.time || null,
         location: data.rush.location || null,
         instructions: data.rush.instructions || null,
-      };
-    } else if (data.digitalRush) {
-      rush = {
+      });
+    }
+    if (data.digitalRush) {
+      rushOptions.push({
         price: data.digitalRush.price,
         label: 'Digital Rush',
         platform: data.digitalRush.platform || null,
@@ -97,9 +106,10 @@ export default function DiscountTicketsPage() {
         time: data.digitalRush.time || null,
         location: null,
         instructions: data.digitalRush.instructions || null,
-      };
-    } else if (data.studentRush) {
-      rush = {
+      });
+    }
+    if (data.studentRush) {
+      rushOptions.push({
         price: data.studentRush.price,
         label: 'Student Rush',
         platform: data.studentRush.platform || null,
@@ -107,7 +117,10 @@ export default function DiscountTicketsPage() {
         time: data.studentRush.time || null,
         location: data.studentRush.location || null,
         instructions: data.studentRush.instructions || null,
-      };
+      });
+    }
+    if (rushOptions.length > 0) {
+      rush = rushOptions.sort((a, b) => a!.price - b!.price)[0];
     }
 
     const sro: DiscountShowRow['sro'] = data.standingRoom ? {
@@ -119,7 +132,7 @@ export default function DiscountTicketsPage() {
     rows.push({ slug: show.slug, title: show.title, score: show.criticScore?.score ?? null, lottery, rush, sro });
   }
 
-  rows.sort((a, b) => (b.score ?? -1) - (a.score ?? -1));
+  rows.sort((a, b) => (b.score ?? -Infinity) - (a.score ?? -Infinity));
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
