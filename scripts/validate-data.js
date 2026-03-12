@@ -3244,8 +3244,36 @@ function validateLotteryRushData(shows) {
     }
   }
 
-  if (issues === 0) {
-    ok('No duplicate lottery/rush entries detected');
+  // Check for digital lotteries/rush with platform but no URL
+  const KNOWN_PLATFORM_URLS = {
+    'telecharge': 'https://rush.telecharge.com',
+    'luckyseat': 'https://www.luckyseat.com',
+    'todaytix': 'https://www.todaytix.com',
+    'broadway direct': 'https://lottery.broadwaydirect.com',
+  };
+  let missingUrls = 0;
+
+  for (const [showId, data] of Object.entries(entries)) {
+    if (showId.startsWith('_')) continue;
+    const types = [
+      { name: 'lottery', entry: data.lottery },
+      { name: 'digitalRush', entry: data.digitalRush },
+    ];
+    for (const { name, entry } of types) {
+      if (entry && entry.platform && !entry.url) {
+        const knownUrl = KNOWN_PLATFORM_URLS[(entry.platform || '').toLowerCase()];
+        warn(`lottery-rush.json "${showId}": ${name} has platform "${entry.platform}" but no url${knownUrl ? ` (expected: ${knownUrl})` : ''}`);
+        missingUrls++;
+      }
+    }
+  }
+
+  if (missingUrls > 0) {
+    warn(`${missingUrls} lottery/rush entries have platform but no URL — users can't click through`);
+  }
+
+  if (issues === 0 && missingUrls === 0) {
+    ok('No duplicate lottery/rush entries or missing URLs detected');
   }
 }
 
