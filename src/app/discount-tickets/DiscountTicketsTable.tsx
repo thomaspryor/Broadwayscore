@@ -3,6 +3,7 @@
 import { Fragment, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { ScoreBadge } from '@/components/show-cards';
+import { ensureHttps } from '@/lib/url-utils';
 
 type SortDirection = 'asc' | 'desc';
 type SortColumn = 'show' | 'lottery' | 'rush' | 'sro' | 'score';
@@ -64,15 +65,9 @@ function ChevronIcon({ open }: { open: boolean }) {
 function ExternalLinkIcon() {
   return (
     <svg className="w-3 h-3 inline-block ml-0.5 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
     </svg>
   );
-}
-
-function ensureHttps(url: string | null | undefined): string | undefined {
-  if (!url) return undefined;
-  if (/^https?:\/\//i.test(url)) return url;
-  return 'https://' + url;
 }
 
 function PriceCell({ price, url, color, bgColor }: { price: number; url?: string; color: string; bgColor: string }) {

@@ -1,6 +1,7 @@
 'use client';
 
 import type { ShowLotteryRush } from '@/lib/data-types';
+import { ensureHttps } from '@/lib/url-utils';
 
 interface LotteryRushCardProps {
   data: ShowLotteryRush;
@@ -48,12 +49,7 @@ function ExternalLinkIcon() {
   );
 }
 
-/** Ensure URLs have https:// prefix (defense-in-depth for legacy data) */
-function ensureHttps(url: string | undefined | null): string | undefined {
-  if (!url) return undefined;
-  if (/^https?:\/\//i.test(url)) return url;
-  return 'https://' + url;
-}
+
 
 export default function LotteryRushCard({ data, showStatus }: LotteryRushCardProps) {
   // Don't show for closed shows

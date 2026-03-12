@@ -3262,14 +3262,14 @@ function validateLotteryRushData(shows) {
     for (const { name, entry } of types) {
       if (entry && entry.platform && !entry.url) {
         const knownUrl = KNOWN_PLATFORM_URLS[(entry.platform || '').toLowerCase()];
-        warn(`lottery-rush.json "${showId}": ${name} has platform "${entry.platform}" but no url${knownUrl ? ` (expected: ${knownUrl})` : ''}`);
+        error(`lottery-rush.json "${showId}": ${name} has platform "${entry.platform}" but no url${knownUrl ? ` (expected: ${knownUrl})` : ''}`);
         missingUrls++;
       }
     }
   }
 
   if (missingUrls > 0) {
-    warn(`${missingUrls} lottery/rush entries have platform but no URL — users can't click through`);
+    error(`${missingUrls} lottery/rush entries have platform but no URL — users can't click through`);
   }
 
   if (issues === 0 && missingUrls === 0) {

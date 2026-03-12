@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { ScoreBadge } from '@/components/show-cards';
+import { ensureHttps } from '@/lib/url-utils';
 
 type SortDirection = 'asc' | 'desc';
 
@@ -18,16 +19,9 @@ function TicketIcon({ className }: { className?: string }) {
 function ExternalLinkIcon() {
   return (
     <svg className="w-3 h-3 inline-block ml-0.5 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
     </svg>
   );
-}
-
-/** Ensure URLs have https:// prefix */
-function ensureHttps(url: string | undefined | null): string | undefined {
-  if (!url) return undefined;
-  if (/^https?:\/\//i.test(url)) return url;
-  return 'https://' + url;
 }
 
 function SortIcon({ direction, active }: { direction: SortDirection | null; active: boolean }) {
@@ -114,8 +108,8 @@ export function LotteryTable({ data }: LotteryTableProps) {
           bVal = b.show.title.toLowerCase();
           break;
         case 'price':
-          aVal = a.lotteryData.specialLottery?.price || a.lotteryData.lottery?.price || 999;
-          bVal = b.lotteryData.specialLottery?.price || b.lotteryData.lottery?.price || 999;
+          aVal = a.lotteryData.specialLottery?.price ?? a.lotteryData.lottery?.price ?? 999;
+          bVal = b.lotteryData.specialLottery?.price ?? b.lotteryData.lottery?.price ?? 999;
           break;
         case 'platform':
           aVal = a.lotteryData.lottery?.platform?.toLowerCase() || '';
@@ -189,6 +183,10 @@ export function LotteryTable({ data }: LotteryTableProps) {
                     <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium">
                       {item.show.title}
                     </Link>
+                    {(() => {
+                      const platform = lottery?.platform || special?.platform;
+                      return platform ? <span className="block text-xs text-gray-500 sm:hidden">{platform}</span> : null;
+                    })()}
                   </td>
                   <td className="py-3 px-4 text-right">
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-purple-500/15 border border-purple-500/30 text-purple-300 font-semibold">
@@ -292,8 +290,8 @@ export function StandingRoomTable({ data }: StandingRoomTableProps) {
           bVal = b.show.title.toLowerCase();
           break;
         case 'price':
-          aVal = a.sroData.standingRoom?.price || 999;
-          bVal = b.sroData.standingRoom?.price || 999;
+          aVal = a.sroData.standingRoom?.price ?? 999;
+          bVal = b.sroData.standingRoom?.price ?? 999;
           break;
         case 'score':
           aVal = a.show.criticScore?.score ?? null;
@@ -332,7 +330,7 @@ export function StandingRoomTable({ data }: StandingRoomTableProps) {
                 Price
                 <SortIcon direction={sortDirection} active={sortColumn === 'price'} />
               </th>
-              <th className="text-left py-3 px-4 text-gray-400 font-medium hidden sm:table-cell">Box Office</th>
+              <th className="text-left py-3 px-4 text-gray-400 font-medium hidden sm:table-cell">Official Site</th>
               <th className={`text-center hidden md:table-cell ${headerClass}`} onClick={() => handleSort('score')}>
                 Score
                 <SortIcon direction={sortDirection} active={sortColumn === 'score'} />
@@ -357,6 +355,7 @@ export function StandingRoomTable({ data }: StandingRoomTableProps) {
                     <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium">
                       {item.show.title}
                     </Link>
+                    {item.show.venue && <span className="block text-xs text-gray-500 sm:hidden">{item.show.venue}</span>}
                   </td>
                   <td className="py-3 px-4 text-right">
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-gray-500/15 border border-gray-500/30 text-gray-300 font-semibold">
@@ -450,14 +449,14 @@ export function RushTable({ data }: RushTableProps) {
           break;
         case 'price':
           aVal = Math.min(
-            a.rushData.rush?.price || 999,
-            a.rushData.digitalRush?.price || 999,
-            a.rushData.studentRush?.price || 999
+            a.rushData.rush?.price ?? 999,
+            a.rushData.digitalRush?.price ?? 999,
+            a.rushData.studentRush?.price ?? 999
           );
           bVal = Math.min(
-            b.rushData.rush?.price || 999,
-            b.rushData.digitalRush?.price || 999,
-            b.rushData.studentRush?.price || 999
+            b.rushData.rush?.price ?? 999,
+            b.rushData.digitalRush?.price ?? 999,
+            b.rushData.studentRush?.price ?? 999
           );
           break;
         case 'type':
@@ -518,9 +517,9 @@ export function RushTable({ data }: RushTableProps) {
               const digital = item.rushData.digitalRush;
               const student = item.rushData.studentRush;
               const cheapestPrice = Math.min(
-                rush?.price || 999,
-                digital?.price || 999,
-                student?.price || 999
+                rush?.price ?? 999,
+                digital?.price ?? 999,
+                student?.price ?? 999
               );
               const rushType = rush ? 'Box Office' : digital ? 'Digital' : 'Student';
               const score = item.show.criticScore?.score;
@@ -538,6 +537,7 @@ export function RushTable({ data }: RushTableProps) {
                     <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium">
                       {item.show.title}
                     </Link>
+                    <span className="block text-xs text-gray-500 sm:hidden">{rushType}</span>
                   </td>
                   <td className="py-3 px-4 text-right">
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-semibold">
