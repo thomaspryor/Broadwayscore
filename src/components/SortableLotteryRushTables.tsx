@@ -256,6 +256,8 @@ interface ShowSROData {
     status: string;
     images?: { thumbnail?: string } | null;
     criticScore?: { score?: number | null; reviewCount?: number | null } | null;
+    officialUrl?: string;
+    venue?: string;
   };
   sroData: SROData;
 }
@@ -330,6 +332,7 @@ export function StandingRoomTable({ data }: StandingRoomTableProps) {
                 Price
                 <SortIcon direction={sortDirection} active={sortColumn === 'price'} />
               </th>
+              <th className="text-left py-3 px-4 text-gray-400 font-medium hidden sm:table-cell">Box Office</th>
               <th className={`text-center hidden md:table-cell ${headerClass}`} onClick={() => handleSort('score')}>
                 Score
                 <SortIcon direction={sortDirection} active={sortColumn === 'score'} />
@@ -360,6 +363,16 @@ export function StandingRoomTable({ data }: StandingRoomTableProps) {
                       <TicketIcon className="w-3.5 h-3.5" />
                       {price != null ? `$${price}` : '—'}
                     </span>
+                  </td>
+                  <td className="py-3 px-4 hidden sm:table-cell">
+                    {item.show.officialUrl ? (
+                      <a href={item.show.officialUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-gray-300 hover:text-white font-medium transition-colors text-sm">
+                        {item.show.venue ? item.show.venue.replace(/ Theatre| Theater/i, '') : 'Official site'}
+                        <ExternalLinkIcon />
+                      </a>
+                    ) : (
+                      <span className="text-gray-500">In person</span>
+                    )}
                   </td>
                   <td className="py-3 px-4 text-center hidden md:table-cell">
                     <ScoreBadge score={score} size="sm" showCrown />
@@ -401,6 +414,7 @@ interface ShowRushData {
     status: string;
     images?: { thumbnail?: string } | null;
     criticScore?: { score?: number | null; reviewCount?: number | null } | null;
+    officialUrl?: string;
   };
   rushData: RushData;
 }
@@ -534,7 +548,7 @@ export function RushTable({ data }: RushTableProps) {
                   <td className="py-3 px-4 hidden sm:table-cell">
                     <div className="flex flex-wrap gap-1 items-center">
                       {rush && (() => {
-                        const url = ensureHttps(rush.url);
+                        const url = ensureHttps(rush.url) || (rush.platform ? undefined : item.show.officialUrl);
                         const label = rush.platform || 'Box Office';
                         if (url) {
                           return <a href={url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-emerald-400 hover:text-emerald-300 font-medium transition-colors">{label}<ExternalLinkIcon /></a>;
