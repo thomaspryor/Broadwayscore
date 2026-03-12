@@ -729,7 +729,9 @@
     "amaze-magic-2025/hollywood-soapbox--john-soltes.json",
     "amaze-magic-2025/woman-around-town--alix-cohen.json",
     "amazing-grace-2015/nwi-times--philip-potempa.json",
-    "an-american-in-paris-2015/broadwayworld--roy-berko.json"
+    "an-american-in-paris-2015/broadwayworld--roy-berko.json",
+    "an-american-in-paris-2015/playbill--ariane-bevelier.json",
+    "angels-in-america-2018/melindas-malarky--melinda-pressler.json"
   ],
   "failed": [
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json",
@@ -1481,7 +1483,15 @@
     "american-psycho-2016/usatoday--elysa-gardner.json",
     "american-son-2018/gotham-playgoer--robert-sholiton.json",
     "american-son-2018/washpost--peter-marks.json",
-    "an-act-of-god-2016/washpost--unknown.json"
+    "an-act-of-god-2016/washpost--unknown.json",
+    "an-enemy-of-the-people-1971/northjerseycom--robert-feldberg.json",
+    "an-enemy-of-the-people-2012/philadelphia-inquirer--howard-shapiro.json",
+    "an-enemy-of-the-people-2024/washpost--peter-marks.json",
+    "anastasia-2017/washpost--peter-marks.json",
+    "ann-2013/ap--mark-kennedy.json",
+    "ann-2013/ny1--roma-torre.json",
+    "annie-1977/amny--matt-windman.json",
+    "annie-1977/northjerseycom--robert-feldberg.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1987,7 +1997,8 @@
       "a-view-from-the-bridge-2010/whatsonstage--mark-valencia.json",
       "allegiance-2015/film-festival-traveler--kevin-filipski.json",
       "amaze-magic-2025/hollywood-soapbox--john-soltes.json",
-      "amaze-magic-2025/woman-around-town--alix-cohen.json"
+      "amaze-magic-2025/woman-around-town--alix-cohen.json",
+      "angels-in-america-2018/melindas-malarky--melinda-pressler.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -2243,7 +2254,12 @@
       "data/review-texts/american-buffalo-2022/washpost--peter-marks.json",
       "data/review-texts/american-psycho-2016/usatoday--elysa-gardner.json",
       "data/review-texts/american-son-2018/washpost--peter-marks.json",
-      "data/review-texts/an-act-of-god-2016/washpost--unknown.json"
+      "data/review-texts/an-act-of-god-2016/washpost--unknown.json",
+      "data/review-texts/an-enemy-of-the-people-1971/northjerseycom--robert-feldberg.json",
+      "data/review-texts/an-enemy-of-the-people-2024/washpost--peter-marks.json",
+      "data/review-texts/anastasia-2017/washpost--peter-marks.json",
+      "data/review-texts/ann-2013/ap--mark-kennedy.json",
+      "data/review-texts/annie-1977/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
@@ -2408,11 +2424,12 @@
       "every-brilliant-thing-2026/usatoday--patrick-ryan.json",
       "friends-the-musical-parody-off-broadway-2022/zeal-nyc--megan-wrappe.json",
       "the-price-1999/wsj--terry-teachout.json",
-      "a-chorus-line-2006/telegraph--tim-robey.json"
+      "a-chorus-line-2006/telegraph--tim-robey.json",
+      "an-american-in-paris-2015/playbill--ariane-bevelier.json"
     ]
   },
   "startTime": "2026-03-11T13:15:22.957Z",
-  "lastProcessed": "an-american-in-paris-2015/broadwayworld--roy-berko.json",
+  "lastProcessed": "annie-1977/northjerseycom--robert-feldberg.json",
   "log": [
     {
       "t": "2026-03-11T13:19:37.516Z",
@@ -3383,6 +3400,72 @@
       "t": "2026-03-12T11:47:12.401Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-12T11:49:22.387Z",
+      "event": "bb-session",
+      "session": "230f6927",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/171672031_Theater_review_"
+    },
+    {
+      "t": "2026-03-12T11:49:23.702Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-12T11:50:06.637Z",
+      "event": "bb-session",
+      "session": "bd2fdcb1",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/03/18/enemy-people-broadway-re"
+    },
+    {
+      "t": "2026-03-12T11:50:07.884Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-12T11:50:31.353Z",
+      "event": "bb-session",
+      "session": "ac2b6e48",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-anastasia-is-a"
+    },
+    {
+      "t": "2026-03-12T11:50:32.668Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-12T11:51:05.049Z",
+      "event": "bb-session",
+      "session": "4a9a83b4",
+      "url": "https://india.nydailynews.com/newsarticle/4a30606ab06ae47c8609b8558f64c44b/revie"
+    },
+    {
+      "t": "2026-03-12T11:51:06.391Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-03-12T11:51:58.016Z",
+      "event": "bb-session",
+      "session": "6d97c969",
+      "url": "https://www.amny.com/urbanite-1.812039/theater-review-annie-1-5-stars-1.4202762"
+    },
+    {
+      "t": "2026-03-12T11:51:59.320Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-12T11:52:52.873Z",
+      "event": "bb-session",
+      "session": "6a2cfacb",
+      "url": "http://www.northjersey.com/arts_entertainment/theater/178047031_Theater_review__"
+    },
+    {
+      "t": "2026-03-12T11:52:54.118Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
