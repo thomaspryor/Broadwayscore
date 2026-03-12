@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-03-12T10:58:20.642Z",
-  "processed": 723,
-  "failed": 687,
-  "successRate": "51.3%",
+  "updatedAt": "2026-03-12T11:04:43.560Z",
+  "processed": 724,
+  "failed": 696,
+  "successRate": "51.0%",
   "tierBreakdown": {
     "playwright": 498,
     "amp": 26,
@@ -10,22 +10,11 @@
     "directCookies": 2,
     "scrapingbee": 30,
     "brightdata": 0,
-    "archiveToday": 98,
-    "archive": 162
+    "archiveToday": 101,
+    "archive": 163
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-03-12T06:32:12.967Z",
-      "event": "bb-session",
-      "session": "cff05fe4",
-      "url": "https://www.wsj.com/articles/side-show-review-twin-bill-1414450800"
-    },
-    {
-      "t": "2026-03-12T06:32:14.222Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-12T06:34:16.393Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-12T10:51:21.840Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-12T11:03:52.578Z",
+      "event": "bb-session",
+      "session": "647abbd2",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/2006/10/06/a-chorus-line-back-i"
+    },
+    {
+      "t": "2026-03-12T11:03:53.924Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
