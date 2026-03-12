@@ -65,17 +65,19 @@ jobs:
           # vercel build ignores ALL env overrides (.env.local, shell env,
           # .vercel/.env.*.local rewrites) — it uses Vercel project settings.
           # Nuclear fix: rewrite the source file to hardcode all features ON.
+          # Auto-extracts flag names from source — no manual sync needed.
           node -e "
             const fs = require('fs');
-            const ALL = 'discountTickets,criticPages,creativePages,castChanges,boxOffice,goldLists,commercial,awards,tonyPredictions,castPages,westEnd,offBroadway,tonyPeople,userAccounts,showPageRedesign,showtimes,sectionJumpLinks';
-            let src = fs.readFileSync('src/config/feature-flags.ts', 'utf8');
-            src = src.replace(
+            const src = fs.readFileSync('src/config/feature-flags.ts', 'utf8');
+            const flags = [...src.matchAll(/get\s+(\w+)\(\)/g)].map(m => m[1]);
+            if (flags.length < 5) { console.error('Only found', flags.length, 'flags — aborting'); process.exit(1); }
+            const ALL = flags.join(',');
+            const out = src.replace(
               /\(process\.env\.NEXT_PUBLIC_FEATURES \|\| ''\)/,
               \"'\" + ALL + \"'\"
             );
-            fs.writeFileSync('src/config/feature-flags.ts', src);
-            console.log('Feature flags source rewritten. Inlined:', ALL);
-            console.log(src);
+            fs.writeFileSync('src/config/feature-flags.ts', out);
+            console.log('Feature flags source rewritten. Inlined', flags.length, 'flags:', ALL);
           "
 
       # NO build cache for demo — source rewrite + cache = stale pages forever.
@@ -86,7 +88,6 @@ jobs:
       - name: Build (all features enabled)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          NEXT_PUBLIC_FEATURES: "discountTickets,criticPages,creativePages,castChanges,boxOffice,goldLists,commercial,awards,tonyPredictions,castPages,westEnd,offBroadway,tonyPeople,userAccounts,showPageRedesign,showtimes,sectionJumpLinks"
         run: vercel build --token=$VERCEL_TOKEN
 
       - name: Deploy
