@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-03-12T05:02:40.914Z",
+  "updatedAt": "2026-03-12T05:08:52.384Z",
   "processed": 663,
-  "failed": 287,
-  "successRate": "69.8%",
+  "failed": 297,
+  "successRate": "69.1%",
   "tierBreakdown": {
     "playwright": 457,
     "amp": 24,
@@ -10,33 +10,11 @@
     "directCookies": 2,
     "scrapingbee": 20,
     "brightdata": 0,
-    "archiveToday": 36,
+    "archiveToday": 41,
     "archive": 155
   },
-  "browserbaseSessions": 28,
+  "browserbaseSessions": 30,
   "recentActivity": [
-    {
-      "t": "2026-03-12T04:46:26.327Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-12T04:48:16.228Z",
-      "event": "bb-session",
-      "session": "34787c73",
-      "url": "https://www.newsday.com/entertainment/theater/the-performers-review-porn-comedy-"
-    },
-    {
-      "t": "2026-03-12T04:48:17.644Z",
-      "event": "bb-cookie-inject",
-      "domain": "newsday.com"
-    },
-    {
-      "t": "2026-03-12T04:49:12.387Z",
-      "event": "bb-session",
-      "session": "da3ceb5c",
-      "url": "https://www.wsj.com/articles/the-piano-lesson-review-fraught-notes-of-family-his"
-    },
     {
       "t": "2026-03-12T04:49:13.909Z",
       "event": "bb-cookie-inject",
@@ -124,6 +102,28 @@
       "t": "2026-03-12T05:00:59.236Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-12T05:02:43.474Z",
+      "event": "bb-session",
+      "session": "6e97750f",
+      "url": "https://www.wsj.com/articles/SB10001424052702304157204579509233838468248"
+    },
+    {
+      "t": "2026-03-12T05:02:45.042Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-12T05:04:33.884Z",
+      "event": "bb-session",
+      "session": "dcb1d1c1",
+      "url": "https://www.newsday.com/entertainment/theater/the-break-of-noon-by-neil-labute-t"
+    },
+    {
+      "t": "2026-03-12T05:04:35.442Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
     }
   ]
 }

@@ -951,7 +951,17 @@
     "the-price-2017/wsj--terry-teachout.json",
     "the-prom-2018/broadwaynews--elizabeth-bradley.json",
     "the-real-thing-2014/observer--rex-reed.json",
-    "the-real-thing-2014/wsj--terry-teachout.json"
+    "the-real-thing-2014/wsj--terry-teachout.json",
+    "the-realistic-joneses-2014/wsj--terry-teachout.json",
+    "the-ritz-2007/newsday--linda-winer.json",
+    "the-road-to-mecca-2012/ew--melissa-rose-bernardo.json",
+    "the-robber-bridegroom-1976/deadline--jeremy-gerard.json",
+    "the-robber-bridegroom-1976/ew--jesse-oxfeld.json",
+    "the-robber-bridegroom-1976/newsday--linda-winer.json",
+    "the-robber-bridegroom-1976/thewrap--robert-hofler.json",
+    "the-rose-tattoo-2019/wsj--terry-teachout.json",
+    "the-royal-family-2009/nydailynews--joe-dziemianowicz-bway.json",
+    "the-royal-family-2009/theatermania--david-finkle.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1543,7 +1553,12 @@
       "data/review-texts/the-parisian-woman-2017/broadwaynews--charles-isherwood.json",
       "data/review-texts/the-pirate-queen-2007/newsday--linda-winer-bway.json",
       "data/review-texts/the-price-2017/reviewing-the-drama--robin-riegelhaupt.json",
-      "data/review-texts/the-prom-2018/broadwaynews--elizabeth-bradley.json"
+      "data/review-texts/the-prom-2018/broadwaynews--elizabeth-bradley.json",
+      "data/review-texts/the-robber-bridegroom-1976/deadline--jeremy-gerard.json",
+      "data/review-texts/the-robber-bridegroom-1976/ew--jesse-oxfeld.json",
+      "data/review-texts/the-robber-bridegroom-1976/newsday--linda-winer.json",
+      "data/review-texts/the-robber-bridegroom-1976/thewrap--robert-hofler.json",
+      "data/review-texts/the-royal-family-2009/nydailynews--joe-dziemianowicz-bway.json"
     ],
     "archive": [
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
@@ -1704,7 +1719,7 @@
     ]
   },
   "startTime": "2026-03-11T13:15:22.957Z",
-  "lastProcessed": "the-real-thing-2014/wsj--terry-teachout.json",
+  "lastProcessed": "the-royal-family-2009/theatermania--david-finkle.json",
   "log": [
     {
       "t": "2026-03-11T13:19:37.516Z",
@@ -2306,6 +2321,28 @@
       "t": "2026-03-12T05:00:59.236Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-12T05:02:43.474Z",
+      "event": "bb-session",
+      "session": "6e97750f",
+      "url": "https://www.wsj.com/articles/SB10001424052702304157204579509233838468248"
+    },
+    {
+      "t": "2026-03-12T05:02:45.042Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-12T05:04:33.884Z",
+      "event": "bb-session",
+      "session": "dcb1d1c1",
+      "url": "https://www.newsday.com/entertainment/theater/the-break-of-noon-by-neil-labute-t"
+    },
+    {
+      "t": "2026-03-12T05:04:35.442Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
     }
   ]
 }
