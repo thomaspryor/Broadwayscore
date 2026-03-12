@@ -6,11 +6,15 @@ name: Opening Night Broadcast
 #   opening-night-reviews (5 AM UTC) → SERP discovery → gather-reviews → rebuild → score
 # The 5 AM run catches shows where data is already ready (scored overnight).
 # The 8 AM run catches shows whose scoring finished between 5-8 AM.
+# The workflow_run trigger catches scoring completions same-night (no cron delay).
 
 on:
   schedule:
     - cron: '0 5 * * *'   # 5 AM UTC = midnight ET — first check
     - cron: '0 8 * * *'   # 8 AM UTC = 3 AM ET — catch-up after pipeline finishes
+  workflow_run:
+    workflows: ["LLM Ensemble Score Reviews"]
+    types: [completed]
   workflow_dispatch:
     inputs:
       lookback_days:
@@ -36,6 +40,8 @@ jobs:
   broadcast:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    # Skip if triggered by a failed scoring run
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -170,8 +176,10 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
         run: |
-          # Preview mode by default (cron + manual without send_to_all)
-          # Only send to all subscribers when explicitly approved via manual dispatch
+          # Send modes:
+          # - workflow_run (scoring completed) → send to all (night-of delivery)
+          # - workflow_dispatch with send_to_all=true → send to all
+          # - cron / workflow_dispatch without send_to_all → preview to owner only
           LOOKBACK=${{ inputs.lookback_days || 2 }}
           SEND_TO_FLAG=""
 
@@ -183,15 +191,18 @@ jobs:
             export BROADCAST_HOUR=5
           fi
 
-          if [ "${{ inputs.send_to_all }}" != "true" ]; then
+          # workflow_run = scoring just completed → auto-send to all subscribers (night-of delivery)
+          if [ "${{ github.event_name }}" = "workflow_run" ]; then
+            echo "** SCORING COMPLETED — auto-sending to all subscribers (night-of mode) **"
+          elif [ "${{ inputs.send_to_all }}" = "true" ]; then
+            echo "** SENDING TO ALL SUBSCRIBERS (manual dispatch) **"
+          else
             if [ -z "$OWNER_EMAIL" ]; then
               echo "::error::OWNER_EMAIL secret is not set — cannot run in preview mode"
               exit 1
             fi
             SEND_TO_FLAG="--send-to=$OWNER_EMAIL"
             echo "** PREVIEW MODE — sending to owner only. To send to all: re-run with send_to_all=true **"
-          else
-            echo "** SENDING TO ALL SUBSCRIBERS **"
           fi
 
           # Broadway broadcast (skip if no Broadway shows)
