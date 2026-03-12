@@ -18,22 +18,24 @@ export default function AnalyticsWrapper() {
   }, []);
 
   // PostHog — session recordings, heatmaps, autocapture (replaces Clarity)
+  // Runs unconditionally on mount — independent of the Vercel Analytics va-disable flag.
   useEffect(() => {
-    if (isDisabled) return;
     import('posthog-js').then(({ default: posthog }) => {
+      if (posthog.__loaded) return; // guard against React Strict Mode double-invoke
       posthog.init(POSTHOG_KEY, {
         api_host: 'https://us.i.posthog.com',
         autocapture: true,
         capture_pageview: true,
         capture_pageleave: true,
         enable_heatmaps: true,
+        person_profiles: 'identified_only',
         session_recording: { maskAllInputs: false },
         loaded: (ph) => {
           if (process.env.NODE_ENV === 'development') ph.opt_out_capturing();
         },
       });
     });
-  }, [isDisabled]);
+  }, []);
 
   // Lightweight Sentry init — loads SDK from CDN, no npm dependency
   // Deferred to idle time to avoid blocking critical rendering (TBT reduction)
