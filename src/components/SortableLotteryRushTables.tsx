@@ -366,7 +366,7 @@ export function StandingRoomTable({ data }: StandingRoomTableProps) {
                   </td>
                   <td className="py-3 px-4 hidden sm:table-cell">
                     {item.show.officialUrl ? (
-                      <a href={item.show.officialUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-gray-300 hover:text-white font-medium transition-colors text-sm">
+                      <a href={ensureHttps(item.show.officialUrl) || '#'} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-gray-300 hover:text-white font-medium transition-colors text-sm">
                         {item.show.venue ? item.show.venue.replace(/ Theatre| Theater/i, '') : 'Official site'}
                         <ExternalLinkIcon />
                       </a>
@@ -548,7 +548,7 @@ export function RushTable({ data }: RushTableProps) {
                   <td className="py-3 px-4 hidden sm:table-cell">
                     <div className="flex flex-wrap gap-1 items-center">
                       {rush && (() => {
-                        const url = ensureHttps(rush.url) || (rush.platform ? undefined : item.show.officialUrl);
+                        const url = ensureHttps(rush.url) || (rush.platform ? undefined : ensureHttps(item.show.officialUrl));
                         const label = rush.platform || 'Box Office';
                         if (url) {
                           return <a href={url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-emerald-400 hover:text-emerald-300 font-medium transition-colors">{label}<ExternalLinkIcon /></a>;
