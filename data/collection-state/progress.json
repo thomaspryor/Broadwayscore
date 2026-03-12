@@ -675,7 +675,10 @@
     "tristan-und-isolde-off-broadway-2026/nytimes--unknown.json",
     "burnout-paradise-off-broadway-2026/theatermania--unknown.json",
     "manic-street-creature-west-end-2026/timeout--unknown.json",
-    "what-we-did-before-our-moth-days-off-broadway-2026/theatrely--unknown.json"
+    "what-we-did-before-our-moth-days-off-broadway-2026/theatrely--unknown.json",
+    "manic-street-creature-west-end-2026/london-theatre--unknown.json",
+    "manic-street-creature-west-end-2026/standard--unknown.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/timeout--adam-feldman.json"
   ],
   "failed": [
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json",
@@ -1061,7 +1064,14 @@
     "a-beautiful-noise-the-neil-diamond-musical-2022/broadwayworld--cary-ginell.json",
     "bughouse-off-broadway-2026/talkinbroadway--unknown.json",
     "data-off-broadway-2026/one-minute-critic--lindsay-b-davis.json",
-    "jesa-off-broadway-2026/playbill--unknown.json"
+    "jesa-off-broadway-2026/playbill--unknown.json",
+    "manic-street-creature-west-end-2026/thestage--unknown.json",
+    "the-book-of-mormon-west-end-2024/thestage--unknown.json",
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "hadestown-2019/newyorker--hilton-als.json",
+    "six-2021/newyorker--naomi-fry.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "sweetmeats-west-end-2026/guardian--anya-ryan.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1528,7 +1538,10 @@
       "burnout-paradise-off-broadway-2026/nyt-theater--unknown.json",
       "burnout-paradise-off-broadway-2026/theatermania--unknown.json",
       "manic-street-creature-west-end-2026/timeout--unknown.json",
-      "what-we-did-before-our-moth-days-off-broadway-2026/theatrely--unknown.json"
+      "what-we-did-before-our-moth-days-off-broadway-2026/theatrely--unknown.json",
+      "manic-street-creature-west-end-2026/london-theatre--unknown.json",
+      "manic-street-creature-west-end-2026/standard--unknown.json",
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -1690,7 +1703,8 @@
       "data/review-texts/9-to-5-2009/broadwayworld--jeffrey-ellis.json",
       "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/broadwayworld--brett-cullum.json",
       "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/broadwayworld--cary-ginell.json",
-      "data/review-texts/bughouse-off-broadway-2026/talkinbroadway--unknown.json"
+      "data/review-texts/bughouse-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/manic-street-creature-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
@@ -1854,7 +1868,7 @@
     ]
   },
   "startTime": "2026-03-11T13:15:22.957Z",
-  "lastProcessed": "jesa-off-broadway-2026/playbill--unknown.json",
+  "lastProcessed": "sweetmeats-west-end-2026/guardian--anya-ryan.json",
   "log": [
     {
       "t": "2026-03-11T13:19:37.516Z",
@@ -2478,6 +2492,17 @@
       "t": "2026-03-12T05:04:35.442Z",
       "event": "bb-cookie-inject",
       "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-12T06:22:42.849Z",
+      "event": "bb-session",
+      "session": "427d6a02",
+      "url": "https://www.thestage.co.uk/reviews/manic-street-creature-review-kiln-theatre-lon"
+    },
+    {
+      "t": "2026-03-12T06:22:44.106Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
