@@ -723,7 +723,8 @@
     "kinky-boots-2013/cititour--brian-scott-lipton.json",
     "kinky-boots-2026/cititour--brian-scott-lipton.json",
     "summer-1976-2023/cititour--brian-scott-lipton.json",
-    "a-chorus-line-2006/telegraph--tim-robey.json"
+    "a-chorus-line-2006/telegraph--tim-robey.json",
+    "a-view-from-the-bridge-2010/whatsonstage--mark-valencia.json"
   ],
   "failed": [
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json",
@@ -1441,7 +1442,16 @@
     "a-raisin-in-the-sun-2014/ap--mark-kennedy.json",
     "a-raisin-in-the-sun-2014/ny1--roma-torre.json",
     "a-steady-rain-2009/ap--michael-kuchwara.json",
-    "a-strange-loop-2022/usatoday--elysa-gardner.json"
+    "a-strange-loop-2022/usatoday--elysa-gardner.json",
+    "a-streetcar-named-desire-2012/ap--mark-kennedy.json",
+    "a-streetcar-named-desire-2012/stageandcinema--jonas-schwartz.json",
+    "a-tale-of-two-cities-2008/amny--unknown.json",
+    "a-tale-of-two-cities-2008/ap--unknown.json",
+    "a-tale-of-two-cities-2008/ny1--unknown.json",
+    "a-time-to-kill-2013/northjerseycom--robert-feldberg.json",
+    "a-view-from-the-bridge-2015/washpost--peter-marks.json",
+    "act-one-2014/northjerseycom--robert-feldberg.json",
+    "after-midnight-2013/ap--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1943,7 +1953,8 @@
       "the-disappear-2026/ew--thom-geier.json",
       "the-phantom-of-the-opera-west-end-2021/guardian--michael-billington.json",
       "ulysses-2026/ew--thom-geier.json",
-      "you-got-older-2026/theatermania--hayley-levitt.json"
+      "you-got-older-2026/theatermania--hayley-levitt.json",
+      "a-view-from-the-bridge-2010/whatsonstage--mark-valencia.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -2168,7 +2179,15 @@
       "data/review-texts/a-raisin-in-the-sun-2014/ap--mark-kennedy.json",
       "data/review-texts/a-raisin-in-the-sun-2014/ny1--roma-torre.json",
       "data/review-texts/a-steady-rain-2009/ap--michael-kuchwara.json",
-      "data/review-texts/a-strange-loop-2022/usatoday--elysa-gardner.json"
+      "data/review-texts/a-strange-loop-2022/usatoday--elysa-gardner.json",
+      "data/review-texts/a-streetcar-named-desire-2012/ap--mark-kennedy.json",
+      "data/review-texts/a-tale-of-two-cities-2008/amny--unknown.json",
+      "data/review-texts/a-tale-of-two-cities-2008/ap--unknown.json",
+      "data/review-texts/a-tale-of-two-cities-2008/ny1--unknown.json",
+      "data/review-texts/a-time-to-kill-2013/northjerseycom--robert-feldberg.json",
+      "data/review-texts/a-view-from-the-bridge-2015/washpost--peter-marks.json",
+      "data/review-texts/act-one-2014/northjerseycom--robert-feldberg.json",
+      "data/review-texts/after-midnight-2013/ap--mark-kennedy.json"
     ],
     "archive": [
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
@@ -2337,7 +2356,7 @@
     ]
   },
   "startTime": "2026-03-11T13:15:22.957Z",
-  "lastProcessed": "a-strange-loop-2022/usatoday--elysa-gardner.json",
+  "lastProcessed": "after-midnight-2013/ap--mark-kennedy.json",
   "log": [
     {
       "t": "2026-03-11T13:19:37.516Z",
@@ -3165,6 +3184,50 @@
       "t": "2026-03-12T11:21:51.731Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-12T11:25:38.697Z",
+      "event": "bb-session",
+      "session": "e58b66c7",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-broadway-reviv"
+    },
+    {
+      "t": "2026-03-12T11:25:40.177Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-12T11:27:25.569Z",
+      "event": "bb-session",
+      "session": "0a9b33f1",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/228574491_Theater_review_"
+    },
+    {
+      "t": "2026-03-12T11:27:26.811Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-12T11:28:20.593Z",
+      "event": "bb-session",
+      "session": "7aea5365",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/a-view-from-the-bridg"
+    },
+    {
+      "t": "2026-03-12T11:28:22.141Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-12T11:28:47.459Z",
+      "event": "bb-session",
+      "session": "d07cc6d2",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/biographical-play-sho"
+    },
+    {
+      "t": "2026-03-12T11:28:48.695Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
