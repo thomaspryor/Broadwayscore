@@ -728,7 +728,8 @@
     "allegiance-2015/film-festival-traveler--kevin-filipski.json",
     "amaze-magic-2025/hollywood-soapbox--john-soltes.json",
     "amaze-magic-2025/woman-around-town--alix-cohen.json",
-    "amazing-grace-2015/nwi-times--philip-potempa.json"
+    "amazing-grace-2015/nwi-times--philip-potempa.json",
+    "an-american-in-paris-2015/broadwayworld--roy-berko.json"
   ],
   "failed": [
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json",
@@ -1471,7 +1472,16 @@
     "amazing-grace-2015/hinsdale-living--brian-kirst.json",
     "amazing-grace-2015/northjerseycom--robert-feldberg.json",
     "amazing-grace-2015/usatoday--elysa-gardner.json",
-    "amelie-a-new-musical-2017/washpost--peter-marks.json"
+    "amelie-a-new-musical-2017/washpost--peter-marks.json",
+    "american-buffalo-2022/usatoday--charles-isherwood.json",
+    "american-buffalo-2022/usatoday--kelly-lawler.json",
+    "american-buffalo-2022/washpost--peter-marks.json",
+    "american-idiot-2010/ap--michael-kuchwara.json",
+    "american-idiot-2010/ny1--roma-torre.json",
+    "american-psycho-2016/usatoday--elysa-gardner.json",
+    "american-son-2018/gotham-playgoer--robert-sholiton.json",
+    "american-son-2018/washpost--peter-marks.json",
+    "an-act-of-god-2016/washpost--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2084,7 +2094,8 @@
       "kinky-boots-2013/cititour--brian-scott-lipton.json",
       "kinky-boots-2026/cititour--brian-scott-lipton.json",
       "summer-1976-2023/cititour--brian-scott-lipton.json",
-      "amazing-grace-2015/nwi-times--philip-potempa.json"
+      "amazing-grace-2015/nwi-times--philip-potempa.json",
+      "an-american-in-paris-2015/broadwayworld--roy-berko.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2226,7 +2237,13 @@
       "data/review-texts/amazing-grace-2015/hinsdale-living--brian-kirst.json",
       "data/review-texts/amazing-grace-2015/northjerseycom--robert-feldberg.json",
       "data/review-texts/amazing-grace-2015/usatoday--elysa-gardner.json",
-      "data/review-texts/amelie-a-new-musical-2017/washpost--peter-marks.json"
+      "data/review-texts/amelie-a-new-musical-2017/washpost--peter-marks.json",
+      "data/review-texts/american-buffalo-2022/usatoday--charles-isherwood.json",
+      "data/review-texts/american-buffalo-2022/usatoday--kelly-lawler.json",
+      "data/review-texts/american-buffalo-2022/washpost--peter-marks.json",
+      "data/review-texts/american-psycho-2016/usatoday--elysa-gardner.json",
+      "data/review-texts/american-son-2018/washpost--peter-marks.json",
+      "data/review-texts/an-act-of-god-2016/washpost--unknown.json"
     ],
     "archive": [
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
@@ -2395,7 +2412,7 @@
     ]
   },
   "startTime": "2026-03-11T13:15:22.957Z",
-  "lastProcessed": "amelie-a-new-musical-2017/washpost--peter-marks.json",
+  "lastProcessed": "an-american-in-paris-2015/broadwayworld--roy-berko.json",
   "log": [
     {
       "t": "2026-03-11T13:19:37.516Z",
@@ -3331,6 +3348,39 @@
     },
     {
       "t": "2026-03-12T11:44:19.105Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-12T11:44:58.281Z",
+      "event": "bb-session",
+      "session": "946fac47",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/04/15/american-buffalo-review-"
+    },
+    {
+      "t": "2026-03-12T11:44:59.572Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-12T11:46:47.324Z",
+      "event": "bb-session",
+      "session": "9e4a19a2",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/american-son-review-k"
+    },
+    {
+      "t": "2026-03-12T11:46:48.623Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-12T11:47:11.229Z",
+      "event": "bb-session",
+      "session": "d79d4708",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-jim-parsons-ca"
+    },
+    {
+      "t": "2026-03-12T11:47:12.401Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
     }
