@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-03-12T10:46:56.185Z",
-  "processed": 701,
-  "failed": 669,
-  "successRate": "51.2%",
+  "updatedAt": "2026-03-12T10:50:34.508Z",
+  "processed": 710,
+  "failed": 670,
+  "successRate": "51.4%",
   "tierBreakdown": {
-    "playwright": 481,
+    "playwright": 490,
     "amp": 26,
     "browserbase": 40,
     "directCookies": 2,
@@ -13,19 +13,8 @@
     "archiveToday": 82,
     "archive": 161
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-12T06:28:50.087Z",
-      "event": "bb-session",
-      "session": "912ad156",
-      "url": "https://www.wsj.com/articles/purpose-review-dramatic-overdrive-on-broadway-41ba9"
-    },
-    {
-      "t": "2026-03-12T06:28:51.325Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-12T06:30:29.994Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-12T10:42:17.490Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-12T10:47:38.254Z",
+      "event": "bb-session",
+      "session": "44264bc2",
+      "url": "http://www.wsj.com/articles/cats-review-frisky-and-fragmented-1470336422"
+    },
+    {
+      "t": "2026-03-12T10:47:39.715Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
