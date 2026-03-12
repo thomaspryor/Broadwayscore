@@ -270,7 +270,12 @@
     "oh-mary-2024/vulture--helen-shaw.json",
     "paddington-the-musical-west-end-2025/variety--david-benedict.json",
     "paddington-the-musical-west-end-2025/variety--ellise-shafer.json",
-    "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json"
+    "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json",
+    "wicked-2003/vulture--bilge-eberi.json",
+    "dirty-books-off-broadway-2025/broadwaynews--chloe-rabinowitz.json",
+    "every-brilliant-thing-2026/deadline--greg-evans.json",
+    "hamilton-2015/wsj--terry-teachout.json",
+    "la-llamada-off-broadway-2024/broadwaynews--aa-cristi.json"
   ],
   "failed": [
     "cold-war-choir-practice-off-broadway-2026/talkinbroadway--kimberly-ramirez.json",
@@ -311,7 +316,12 @@
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
     "the-lion-king-west-end-2021/thestage--unknown.json",
     "hadestown-2019/newyorker--hilton-als.json",
-    "six-2021/newyorker--naomi-fry.json"
+    "six-2021/newyorker--naomi-fry.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
+    "chinese-republicans-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
+    "cold-war-choir-practice-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
+    "harry-potter-2021/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -546,7 +556,9 @@
       "data/review-texts/the-great-gatsby-2024/observer--david-cote.json",
       "the-great-gatsby-2024/observer--david-cote.json",
       "data/review-texts/buena-vista-social-club-2025/amny--matt-windman.json",
-      "buena-vista-social-club-2025/amny--matt-windman.json"
+      "buena-vista-social-club-2025/amny--matt-windman.json",
+      "data/review-texts/every-brilliant-thing-2026/deadline--greg-evans.json",
+      "every-brilliant-thing-2026/deadline--greg-evans.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json"
@@ -605,7 +617,9 @@
       "data/review-texts/la-llamada-off-broadway-2024/broadwaynews--aa-cristi.json",
       "data/review-texts/an-ark-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "data/review-texts/and-juliet-2022/broadway-blog--joey-sims.json",
-      "data/review-texts/book-of-mormon-2011/backstage--david-sheward.json"
+      "data/review-texts/book-of-mormon-2011/backstage--david-sheward.json",
+      "data/review-texts/chinese-republicans-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
+      "data/review-texts/cold-war-choir-practice-off-broadway-2026/broadwaynews--chloe-rabinowitz.json"
     ],
     "archive": [
       "hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -638,11 +652,15 @@
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
       "moulin-rouge-2019/nytimes--ben-brantley.json",
       "oh-mary-2024/vulture--helen-shaw.json",
-      "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json"
+      "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json",
+      "wicked-2003/vulture--bilge-eberi.json",
+      "dirty-books-off-broadway-2025/broadwaynews--chloe-rabinowitz.json",
+      "hamilton-2015/wsj--terry-teachout.json",
+      "la-llamada-off-broadway-2024/broadwaynews--aa-cristi.json"
     ]
   },
   "startTime": "2026-03-12T13:55:19.125Z",
-  "lastProcessed": "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json",
+  "lastProcessed": "la-llamada-off-broadway-2024/broadwaynews--aa-cristi.json",
   "log": [
     {
       "t": "2026-03-12T19:01:52.808Z",
@@ -709,6 +727,50 @@
       "t": "2026-03-12T19:39:01.522Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-12T19:48:36.681Z",
+      "event": "bb-session",
+      "session": "6c539b1f",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-12T19:48:41.803Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-12T19:56:44.772Z",
+      "event": "bb-session",
+      "session": "bc015d76",
+      "url": "https://deadline.com/2026/03/broadway-box-office-daniel-radcliffe-every-brillian"
+    },
+    {
+      "t": "2026-03-12T19:56:46.246Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-12T19:56:59.311Z",
+      "event": "bb-session",
+      "session": "05762d79",
+      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
+    },
+    {
+      "t": "2026-03-12T19:57:00.734Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-12T19:57:39.791Z",
+      "event": "bb-session",
+      "session": "5190f18a",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-12T19:57:41.205Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

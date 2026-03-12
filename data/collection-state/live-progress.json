@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-12T19:48:07.874Z",
-  "processed": 271,
-  "failed": 39,
-  "successRate": "87.4%",
+  "updatedAt": "2026-03-12T19:59:54.067Z",
+  "processed": 276,
+  "failed": 44,
+  "successRate": "86.3%",
   "tierBreakdown": {
     "playwright": 185,
     "amp": 34,
-    "browserbase": 8,
+    "browserbase": 10,
     "directCookies": 1,
     "scrapingbee": 33,
     "brightdata": 0,
-    "archiveToday": 18,
-    "archive": 31
+    "archiveToday": 20,
+    "archive": 35
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-03-12T19:01:52.808Z",
@@ -80,6 +80,50 @@
       "t": "2026-03-12T19:39:01.522Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-12T19:48:36.681Z",
+      "event": "bb-session",
+      "session": "6c539b1f",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-12T19:48:41.803Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-12T19:56:44.772Z",
+      "event": "bb-session",
+      "session": "bc015d76",
+      "url": "https://deadline.com/2026/03/broadway-box-office-daniel-radcliffe-every-brillian"
+    },
+    {
+      "t": "2026-03-12T19:56:46.246Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-12T19:56:59.311Z",
+      "event": "bb-session",
+      "session": "05762d79",
+      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
+    },
+    {
+      "t": "2026-03-12T19:57:00.734Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-12T19:57:39.791Z",
+      "event": "bb-session",
+      "session": "5190f18a",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-12T19:57:41.205Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
