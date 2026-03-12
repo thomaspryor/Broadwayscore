@@ -72,7 +72,7 @@ function ExternalLinkIcon() {
 
 function PriceCell({ price, url, color, bgColor }: { price: number; url?: string; color: string; bgColor: string }) {
   const badge = (
-    <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-lg border text-sm font-semibold ${bgColor} ${color}`}>
+    <span className={`inline-flex items-center gap-0.5 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md sm:rounded-lg border text-xs sm:text-sm font-semibold ${bgColor} ${color}`}>
       ${price}
       {url && <ExternalLinkIcon />}
     </span>
@@ -259,7 +259,7 @@ export function DiscountTicketsTable({ rows }: DiscountTicketsTableProps) {
     });
   }, [rows, sortColumn, sortDirection]);
 
-  const headerClass = "py-3 px-3 text-gray-400 font-medium cursor-pointer hover:text-white transition-colors select-none group text-sm";
+  const headerClass = "py-3 px-1.5 sm:px-3 text-gray-400 font-medium cursor-pointer hover:text-white transition-colors select-none group text-sm";
 
   return (
     <div className="card overflow-hidden">
@@ -267,7 +267,7 @@ export function DiscountTicketsTable({ rows }: DiscountTicketsTableProps) {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-white/10 bg-surface-overlay">
-              <th className="text-left py-3 px-3 text-gray-400 font-medium text-sm w-8">#</th>
+              <th className="text-left py-3 px-2 sm:px-3 text-gray-400 font-medium text-sm w-6 sm:w-8 hidden sm:table-cell">#</th>
               <th className={`text-left ${headerClass}`} onClick={() => handleSort('show')}>
                 Show
                 <SortIcon direction={sortDirection} active={sortColumn === 'show'} />
@@ -280,7 +280,7 @@ export function DiscountTicketsTable({ rows }: DiscountTicketsTableProps) {
                 Rush
                 <SortIcon direction={sortDirection} active={sortColumn === 'rush'} />
               </th>
-              <th className={`text-center hidden sm:table-cell ${headerClass}`} onClick={() => handleSort('sro')}>
+              <th className={`text-center ${headerClass}`} onClick={() => handleSort('sro')}>
                 SRO
                 <SortIcon direction={sortDirection} active={sortColumn === 'sro'} />
               </th>
@@ -302,26 +302,28 @@ export function DiscountTicketsTable({ rows }: DiscountTicketsTableProps) {
                     onClick={() => hasDetails && setExpandedSlug(isExpanded ? null : row.slug)}
                     aria-expanded={hasDetails ? isExpanded : undefined}
                   >
-                    <td className="py-3 px-3">
+                    <td className="py-3 px-2 sm:px-3 w-6 sm:w-8 hidden sm:table-cell">
                       <span className="text-gray-500 text-xs font-bold">
                         {index + 1}
                       </span>
                     </td>
-                    <td className="py-3 px-3">
-                      <div className="flex items-center gap-2">
+                    <td className="py-3 px-2 sm:px-3">
+                      <div className="flex items-center gap-1.5 min-w-0">
                         <Link
                           href={`/show/${row.slug}`}
-                          className="text-white hover:text-brand transition-colors font-medium"
+                          className="text-white hover:text-brand transition-colors font-medium text-sm sm:text-base truncate"
                           onClick={(e) => e.stopPropagation()}
                         >
                           {row.title}
                         </Link>
                         {hasDetails && (
-                          <ChevronIcon open={isExpanded} />
+                          <span className="shrink-0">
+                            <ChevronIcon open={isExpanded} />
+                          </span>
                         )}
                       </div>
                     </td>
-                    <td className="py-3 px-3 text-center" onClick={(e) => e.stopPropagation()}>
+                    <td className="py-3 px-1.5 sm:px-3 text-center whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
                       {row.lottery ? (
                         <PriceCell
                           price={row.lottery.price}
@@ -333,7 +335,7 @@ export function DiscountTicketsTable({ rows }: DiscountTicketsTableProps) {
                         <span className="text-gray-600">—</span>
                       )}
                     </td>
-                    <td className="py-3 px-3 text-center" onClick={(e) => e.stopPropagation()}>
+                    <td className="py-3 px-1.5 sm:px-3 text-center whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
                       {row.rush ? (
                         <PriceCell
                           price={row.rush.price}
@@ -345,7 +347,7 @@ export function DiscountTicketsTable({ rows }: DiscountTicketsTableProps) {
                         <span className="text-gray-600">—</span>
                       )}
                     </td>
-                    <td className="py-3 px-3 text-center hidden sm:table-cell" onClick={(e) => e.stopPropagation()}>
+                    <td className="py-3 px-1.5 sm:px-3 text-center whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
                       {row.sro ? (
                         <PriceCell
                           price={row.sro.price}
@@ -357,7 +359,7 @@ export function DiscountTicketsTable({ rows }: DiscountTicketsTableProps) {
                         <span className="text-gray-600">—</span>
                       )}
                     </td>
-                    <td className="py-3 px-3 text-center hidden md:table-cell">
+                    <td className="py-3 px-2 sm:px-3 text-center hidden md:table-cell">
                       <ScoreBadge score={row.score} size="sm" showCrown />
                     </td>
                   </tr>
