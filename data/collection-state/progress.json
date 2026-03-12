@@ -254,7 +254,17 @@
     "bigfoot-off-broadway-2026/theater-scene--darryl-reilly.json",
     "bigfoot-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
     "bloodlove-off-broadway-2026/one-minute-critic--unknown.json",
-    "broken-glass-west-end-2026/london-box-office--stuart-king.json"
+    "broken-glass-west-end-2026/london-box-office--stuart-king.json",
+    "broken-glass-west-end-2026/london-theatre--julia-rank.json",
+    "broken-glass-west-end-2026/standard--india-block.json",
+    "broken-glass-west-end-2026/standard--nick-curtis.json",
+    "broken-glass-west-end-2026/telegraph--dominic-cavendish.json",
+    "broken-glass-west-end-2026/whatsonstage--sarah-crompton.json",
+    "buena-vista-social-club-2025/amny--matt-windman.json",
+    "buena-vista-social-club-2025/latimes--nicholas-ducassi.json",
+    "buena-vista-social-club-2025/washpost--naveen-kumar.json",
+    "burnout-paradise-off-broadway-2026/culturesauce--thom-geier.json",
+    "burnout-paradise-off-broadway-2026/stageandcinema--paola-bellu.json"
   ],
   "failed": [
     "cold-war-choir-practice-off-broadway-2026/talkinbroadway--kimberly-ramirez.json",
@@ -473,7 +483,14 @@
       "bigfoot-off-broadway-2026/theater-scene--darryl-reilly.json",
       "bigfoot-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
       "bloodlove-off-broadway-2026/one-minute-critic--unknown.json",
-      "broken-glass-west-end-2026/london-box-office--stuart-king.json"
+      "broken-glass-west-end-2026/london-box-office--stuart-king.json",
+      "broken-glass-west-end-2026/london-theatre--julia-rank.json",
+      "broken-glass-west-end-2026/standard--india-block.json",
+      "broken-glass-west-end-2026/standard--nick-curtis.json",
+      "broken-glass-west-end-2026/whatsonstage--sarah-crompton.json",
+      "buena-vista-social-club-2025/washpost--naveen-kumar.json",
+      "burnout-paradise-off-broadway-2026/culturesauce--thom-geier.json",
+      "burnout-paradise-off-broadway-2026/stageandcinema--paola-bellu.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -513,7 +530,9 @@
       "data/review-texts/maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
       "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
       "data/review-texts/the-great-gatsby-2024/observer--david-cote.json",
-      "the-great-gatsby-2024/observer--david-cote.json"
+      "the-great-gatsby-2024/observer--david-cote.json",
+      "data/review-texts/buena-vista-social-club-2025/amny--matt-windman.json",
+      "buena-vista-social-club-2025/amny--matt-windman.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json"
@@ -549,7 +568,9 @@
       "heathers-the-musical-off-broadway-2025/cititour--brian-scott-lipton.json",
       "oh-mary-2024/cititour--brian-scott-lipton.json",
       "back-to-the-future-west-end-2021/independent--clarisse-loughrey.json",
-      "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json"
+      "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json",
+      "broken-glass-west-end-2026/telegraph--dominic-cavendish.json",
+      "buena-vista-social-club-2025/latimes--nicholas-ducassi.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -569,7 +590,8 @@
       "data/review-texts/every-brilliant-thing-2026/deadline--greg-evans.json",
       "data/review-texts/la-llamada-off-broadway-2024/broadwaynews--aa-cristi.json",
       "data/review-texts/an-ark-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "data/review-texts/and-juliet-2022/broadway-blog--joey-sims.json"
+      "data/review-texts/and-juliet-2022/broadway-blog--joey-sims.json",
+      "data/review-texts/book-of-mormon-2011/backstage--david-sheward.json"
     ],
     "archive": [
       "hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -602,7 +624,7 @@
     ]
   },
   "startTime": "2026-03-12T13:55:19.125Z",
-  "lastProcessed": "broken-glass-west-end-2026/london-box-office--stuart-king.json",
+  "lastProcessed": "burnout-paradise-off-broadway-2026/stageandcinema--paola-bellu.json",
   "log": [
     {
       "t": "2026-03-12T19:01:52.808Z",
@@ -658,6 +680,17 @@
       "t": "2026-03-12T19:17:36.370Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-12T19:39:00.239Z",
+      "event": "bb-session",
+      "session": "3a8b87e4",
+      "url": "https://www.amny.com/entertainment/broadway/review-buena-vista-social-clunk/"
+    },
+    {
+      "t": "2026-03-12T19:39:01.522Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
