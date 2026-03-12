@@ -296,12 +296,16 @@ async function _serpViaBrightDataSerpApi(query, apiKey, log) {
       }
     );
     if (!submitRes.ok) {
-      log(`    ✗ BD SERP API submit ${submitRes.status} — trying Web Unlocker`);
+      _brightDataConsecutiveFailures++;
+      log(`    ✗ BD SERP API submit ${submitRes.status} (${_brightDataConsecutiveFailures}/${MAX_CONSECUTIVE_FAILURES}) — trying Web Unlocker`);
       return null; // Fall through to Web Unlocker
     }
     const submitData = await submitRes.json();
     const responseId = submitData.response_id;
-    if (!responseId) return null;
+    if (!responseId) {
+      _brightDataConsecutiveFailures++;
+      return null;
+    }
 
     // Poll for results (max 20s)
     for (let i = 0; i < 10; i++) {
@@ -314,7 +318,10 @@ async function _serpViaBrightDataSerpApi(query, apiKey, log) {
         }
       );
       if (pollRes.status === 202) continue;
-      if (!pollRes.ok) return null;
+      if (!pollRes.ok) {
+        _brightDataConsecutiveFailures++;
+        return null;
+      }
       const data = await pollRes.json();
       if (data.organic) {
         _brightDataConsecutiveFailures = 0;
@@ -327,9 +334,11 @@ async function _serpViaBrightDataSerpApi(query, apiKey, log) {
       _brightDataConsecutiveFailures = 0;
       return [];
     }
+    _brightDataConsecutiveFailures++;
     log('    ⚠ BD SERP API timeout (20s) — trying Web Unlocker');
     return null;
   } catch (error) {
+    _brightDataConsecutiveFailures++;
     log(`    ✗ BD SERP API error: ${error.message} — trying Web Unlocker`);
     return null;
   }

@@ -99,6 +99,7 @@ function slugifyHostname(str) {
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 let _scrapingBeeExhausted = false;
+let _loggedNoProviders = false;
 
 /**
  * Search Google via ScrapingBee SERP API, with BrightData SERP fallback.
@@ -116,6 +117,10 @@ async function searchGoogle(query, apiKey, nbResults = 5) {
     return await _serpViaBrightData(query);
   }
 
+  if (!_loggedNoProviders) {
+    console.log('    ⚠ All SERP providers unavailable — no search results');
+    _loggedNoProviders = true;
+  }
   return [];
 }
 
