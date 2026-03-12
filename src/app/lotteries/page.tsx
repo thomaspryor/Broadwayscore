@@ -169,7 +169,7 @@ export default function LotteriesPage() {
 
   // Get shows with lottery data, sorted by lottery price (cheapest first)
   const showsWithLottery = allShows
-    .filter(show => show.status === 'open')
+    .filter(show => show.status === 'open' || show.status === 'preview')
     .map(show => ({
       show,
       lotteryData: getLotteryRush(show.id),

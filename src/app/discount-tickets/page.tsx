@@ -49,7 +49,7 @@ export default function DiscountTicketsPage() {
   const rows: DiscountShowRow[] = [];
 
   for (const show of allShows) {
-    if (show.status !== 'open') continue;
+    if (show.status !== 'open' && show.status !== 'preview') continue;
     const data = getLotteryRush(show.id);
     if (!data) continue;
 

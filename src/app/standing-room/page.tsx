@@ -152,7 +152,7 @@ export default function StandingRoomPage() {
 
   // Get shows with SRO data, sorted by price (cheapest first)
   const showsWithSRO = allShows
-    .filter(show => show.status === 'open')
+    .filter(show => show.status === 'open' || show.status === 'preview')
     .map(show => ({
       show,
       sroData: getLotteryRush(show.id),
