@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-12T20:30:22.260Z",
-  "processed": 367,
-  "failed": 63,
-  "successRate": "85.3%",
+  "updatedAt": "2026-03-12T20:32:02.437Z",
+  "processed": 376,
+  "failed": 64,
+  "successRate": "85.5%",
   "tierBreakdown": {
-    "playwright": 248,
+    "playwright": 252,
     "amp": 34,
-    "browserbase": 12,
+    "browserbase": 14,
     "directCookies": 1,
-    "scrapingbee": 41,
+    "scrapingbee": 42,
     "brightdata": 0,
     "archiveToday": 24,
-    "archive": 55
+    "archive": 58
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-03-12T19:09:32.338Z",
-      "event": "bb-session",
-      "session": "894aa3c6",
-      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
-    },
-    {
-      "t": "2026-03-12T19:09:33.656Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-12T19:12:43.818Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-12T20:22:09.051Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-12T20:30:25.244Z",
+      "event": "bb-session",
+      "session": "2aff4ebd",
+      "url": "https://www.amny.com/entertainment/little-shop-of-horrors-off-broadway-1-3640251"
+    },
+    {
+      "t": "2026-03-12T20:30:26.805Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }

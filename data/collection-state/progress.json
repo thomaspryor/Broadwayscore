@@ -366,7 +366,16 @@
     "les-miserables-west-end-2021/artsdesk--aleks-sierz.json",
     "les-miserables-west-end-2021/daily-mail--patrick-marmion.json",
     "les-miserables-west-end-2021/times-uk--clive-davis.json",
-    "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json"
+    "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json",
+    "little-shop-of-horrors-off-broadway-2019/amny--unknown.json",
+    "little-shop-of-horrors-off-broadway-2019/chicagotribune--chris-jones.json",
+    "little-shop-of-horrors-off-broadway-2019/dailybeast--adam-hetrick.json",
+    "little-shop-of-horrors-off-broadway-2019/nysr--melissa-rose-bernardo.json",
+    "little-shop-of-horrors-off-broadway-2019/talkinbroadway--unknown.json",
+    "magic-mike-live-west-end-2021/london-box-office--nicola-wright.json",
+    "mamma-mia-west-end-2021/london-box-office--daniel-perks.json",
+    "mamma-mia-west-end-2021/london-theatre--alan-bird.json",
+    "mamma-mia-west-end-2021/standard--jessie-thompson.json"
   ],
   "failed": [
     "cold-war-choir-practice-off-broadway-2026/talkinbroadway--kimberly-ramirez.json",
@@ -431,7 +440,8 @@
     "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
     "harry-potter-2021/usatoday--kelly-lawler.json",
     "heathers-the-musical-off-broadway-2025/northjerseycom--robert-feldberg.json",
-    "hercules-west-end-2025/thestage--sam-marlowe.json"
+    "hercules-west-end-2025/thestage--sam-marlowe.json",
+    "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -683,7 +693,11 @@
       "into-the-woods-west-end-2025/whatsonstage--unknown.json",
       "just-in-time-2025/theater-scene--joel-benjamin.json",
       "les-miserables-west-end-2021/artsdesk--aleks-sierz.json",
-      "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json"
+      "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json",
+      "little-shop-of-horrors-off-broadway-2019/dailybeast--adam-hetrick.json",
+      "little-shop-of-horrors-off-broadway-2019/nysr--melissa-rose-bernardo.json",
+      "mamma-mia-west-end-2021/london-theatre--alan-bird.json",
+      "mamma-mia-west-end-2021/standard--jessie-thompson.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -733,7 +747,9 @@
       "data/review-texts/every-brilliant-thing-2026/deadline--greg-evans.json",
       "every-brilliant-thing-2026/deadline--greg-evans.json",
       "data/review-texts/hadestown-2019/amny--matt-windman.json",
-      "hadestown-2019/amny--matt-windman.json"
+      "hadestown-2019/amny--matt-windman.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/amny--unknown.json",
+      "little-shop-of-horrors-off-broadway-2019/amny--unknown.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json"
@@ -779,7 +795,8 @@
       "harry-potter-and-the-cursed-child-both-parts-west-end-2021/independent--jack-shepherd.json",
       "harry-potter-and-the-cursed-child-both-parts-west-end-2021/telegraph--dominic-cavendish.json",
       "im-sorry-prime-minister-west-end-2026/daily-mail--patrick-marmion.json",
-      "into-the-woods-west-end-2025/independent--louis-chilton.json"
+      "into-the-woods-west-end-2025/independent--louis-chilton.json",
+      "little-shop-of-horrors-off-broadway-2019/chicagotribune--chris-jones.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -863,11 +880,14 @@
       "hercules-west-end-2025/the-express--stefan-kyriazis.json",
       "just-in-time-2025/billboard--unknown.json",
       "les-miserables-west-end-2021/daily-mail--patrick-marmion.json",
-      "les-miserables-west-end-2021/times-uk--clive-davis.json"
+      "les-miserables-west-end-2021/times-uk--clive-davis.json",
+      "little-shop-of-horrors-off-broadway-2019/talkinbroadway--unknown.json",
+      "magic-mike-live-west-end-2021/london-box-office--nicola-wright.json",
+      "mamma-mia-west-end-2021/london-box-office--daniel-perks.json"
     ]
   },
   "startTime": "2026-03-12T13:55:19.125Z",
-  "lastProcessed": "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json",
+  "lastProcessed": "mamma-mia-west-end-2021/standard--jessie-thompson.json",
   "log": [
     {
       "t": "2026-03-12T19:01:52.808Z",
@@ -1000,6 +1020,17 @@
       "t": "2026-03-12T20:22:09.051Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-12T20:30:25.244Z",
+      "event": "bb-session",
+      "session": "2aff4ebd",
+      "url": "https://www.amny.com/entertainment/little-shop-of-horrors-off-broadway-1-3640251"
+    },
+    {
+      "t": "2026-03-12T20:30:26.805Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
