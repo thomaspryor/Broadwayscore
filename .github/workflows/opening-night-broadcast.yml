@@ -191,10 +191,8 @@ jobs:
             export BROADCAST_HOUR=5
           fi
 
-          # workflow_run = scoring just completed → auto-send to all subscribers (night-of delivery)
-          if [ "${{ github.event_name }}" = "workflow_run" ]; then
-            echo "** SCORING COMPLETED — auto-sending to all subscribers (night-of mode) **"
-          elif [ "${{ inputs.send_to_all }}" = "true" ]; then
+          # workflow_run = scoring just completed → preview to owner (manual send_to_all for full blast)
+          if [ "${{ inputs.send_to_all }}" = "true" ]; then
             echo "** SENDING TO ALL SUBSCRIBERS (manual dispatch) **"
           else
             if [ -z "$OWNER_EMAIL" ]; then
