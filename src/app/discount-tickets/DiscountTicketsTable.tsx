@@ -111,7 +111,7 @@ function DetailPanel({ row }: { row: DiscountShowRow }) {
 
   return (
     <tr className="bg-white/[0.02]">
-      <td colSpan={6} className="px-4 pb-4 pt-1">
+      <td colSpan={6} className="px-4 pt-0 pb-3">
         <div className="flex flex-col sm:flex-row gap-2">
           {row.lottery && (
             <div className="flex-1 bg-purple-500/10 border border-purple-500/20 rounded-lg p-3">
