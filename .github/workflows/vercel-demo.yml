@@ -86,7 +86,7 @@ jobs:
       - name: Build (all features enabled)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          NEXT_PUBLIC_FEATURES: "discountTickets,criticPages,creativePages,castChanges,boxOffice,goldLists,commercial,awards,tonyPredictions,castPages,westEnd,offBroadway,tonyPeople,userAccounts,showPageRedesign"
+          NEXT_PUBLIC_FEATURES: "discountTickets,criticPages,creativePages,castChanges,boxOffice,goldLists,commercial,awards,tonyPredictions,castPages,westEnd,offBroadway,tonyPeople,userAccounts,showPageRedesign,showtimes"
         run: vercel build --token=$VERCEL_TOKEN
 
       - name: Deploy

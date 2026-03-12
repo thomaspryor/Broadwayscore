@@ -50,6 +50,7 @@ const allShows = loadShows().filter(s => !s.category || s.category === 'broadway
 // Override map for titles fuzzy matching can't handle
 const TITLE_OVERRIDES = {
   '& Juliet': 'and-juliet-2022',
+  'Titaníque': 'titanique-2026',
 };
 
 // ==================== HTTP Utilities ====================
@@ -289,31 +290,42 @@ function extractAndWriteScheduleData(html) {
     console.warn(`[Schedule] currentMonday is ${daysSinceMonday} days old — data may be stale`);
   }
 
-  // Extract the shows array from the JS payload
-  // Pattern: shows:[{...},{...},...],currentMonday:
-  const showsMatch = html.match(/shows:(\[(?:\{[^}]*\}[,\s]*)*\]),\s*currentMonday:/s);
-  if (!showsMatch) {
+  // Extract the shows array from the JS payload using bracket matching
+  // (nested arrays/objects make simple regex insufficient)
+  const showsStart = html.indexOf('shows:[');
+  if (showsStart === -1) {
     console.error('[Schedule] Could not find shows array in HTML — skipping');
     return;
   }
+  const arrayStart = showsStart + 6; // index of '['
+  let depth = 0;
+  let arrayEnd = -1;
+  for (let i = arrayStart; i < html.length; i++) {
+    if (html[i] === '[') depth++;
+    else if (html[i] === ']') { depth--; if (depth === 0) { arrayEnd = i + 1; break; } }
+  }
+  if (arrayEnd === -1) {
+    console.error('[Schedule] Could not find end of shows array — skipping');
+    return;
+  }
+  let showsJs = html.slice(arrayStart, arrayEnd);
 
-  // Convert JS object notation to JSON (keys are unquoted)
-  let showsJson = showsMatch[1];
-  // Quote unquoted keys: {key: → {"key":
-  showsJson = showsJson.replace(/([{,])\s*(\w+)\s*:/g, '$1"$2":');
-  // Replace null (already valid JSON) — no-op but be safe
-  // Handle trailing commas before ] or }
-  showsJson = showsJson.replace(/,\s*([}\]])/g, '$1');
+  // Convert JS object notation to JSON
+  // Replace void 0 with null
+  showsJs = showsJs.replace(/void 0/g, 'null');
+  // Quote unquoted keys: {key: or ,key: (but not inside strings)
+  showsJs = showsJs.replace(/([{,])\s*(\w+)\s*:/g, '$1"$2":');
+  // Handle trailing commas
+  showsJs = showsJs.replace(/,\s*([}\]])/g, '$1');
 
   let shows;
   try {
-    shows = JSON.parse(showsJson);
+    shows = JSON.parse(showsJs);
   } catch (err) {
     console.error(`[Schedule] JSON parse failed: ${err.message}`);
     if (verbose) {
-      // Show a snippet around the error for debugging
       const pos = parseInt(err.message.match(/position (\d+)/)?.[1] || '0');
-      console.error(`[Schedule] Near position ${pos}: ...${showsJson.slice(Math.max(0, pos - 50), pos + 50)}...`);
+      console.error(`[Schedule] Near position ${pos}: ...${showsJs.slice(Math.max(0, pos - 50), pos + 50)}...`);
     }
     return;
   }
