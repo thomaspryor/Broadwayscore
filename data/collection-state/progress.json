@@ -1101,7 +1101,17 @@
     "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
     "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json",
     "the-lion-king-1997/familyvacationcritic--unknown.json",
-    "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json"
+    "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
+    "the-play-that-goes-wrong-off-broadway-2019/broadway-blog--samuel-l-leiter.json",
+    "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
+    "the-tempest-globe-west-end-2026/british-theatre--howard-loxton.json",
+    "titanique-west-end-2024/thestage--paul-vale.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "witness-for-the-prosecution-west-end-2022/times-uk--clive-davis.json",
+    "job-2024/wsj--terry-teachout.json",
+    "purpose-2025/wsj--charles-isherwood.json",
+    "relatively-speaking-2011/wsj--terry-teachout.json",
+    "shucked-2023/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1899,7 +1909,7 @@
     ]
   },
   "startTime": "2026-03-11T13:15:22.957Z",
-  "lastProcessed": "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
+  "lastProcessed": "shucked-2023/wsj--charles-isherwood.json",
   "log": [
     {
       "t": "2026-03-11T13:19:37.516Z",
@@ -2534,6 +2544,28 @@
       "t": "2026-03-12T06:22:44.106Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-12T06:28:50.087Z",
+      "event": "bb-session",
+      "session": "912ad156",
+      "url": "https://www.wsj.com/articles/purpose-review-dramatic-overdrive-on-broadway-41ba9"
+    },
+    {
+      "t": "2026-03-12T06:28:51.325Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-12T06:30:29.994Z",
+      "event": "bb-session",
+      "session": "53af657e",
+      "url": "https://www.wsj.com/articles/shucked-review-broadway-musical-corn-puns-116818516"
+    },
+    {
+      "t": "2026-03-12T06:30:31.360Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
