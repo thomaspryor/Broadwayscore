@@ -126,10 +126,33 @@ async function main() {
       // Runtime (only if show doesn't have one yet)
       if (!show.runtime) {
         if (ttShow.runningTime && ttShow.runningTime.minutes) {
-          const runtime = formatRuntime(ttShow.runningTime.minutes);
-          if (!DRY_RUN) show.runtime = runtime;
-          parts.push(`runtime=${runtime}`);
-          runtimeEnriched++;
+          const mins = ttShow.runningTime.minutes;
+          const display = ttShow.runningTime.display || '';
+
+          // Sanity checks: TodayTix data can be wrong (e.g., EBT listed as 2h30m)
+          let skip = false;
+          if (mins > 240) {
+            console.log(`  ⚠️  Skipping suspicious runtime: ${mins}min (>4h) — likely wrong`);
+            skip = true;
+          }
+          if (show.intermissions === 0 && mins > 150) {
+            console.log(`  ⚠️  Skipping suspicious runtime: ${mins}min with no intermission — likely wrong`);
+            skip = true;
+          }
+          if (/inc\.?\s*intermission/i.test(display) && show.intermissions === 0) {
+            console.log(`  ⚠️  Skipping runtime: TodayTix says "${display}" but show has 0 intermissions — mismatch`);
+            skip = true;
+          }
+
+          if (!skip) {
+            const runtime = formatRuntime(mins);
+            if (!DRY_RUN) show.runtime = runtime;
+            parts.push(`runtime=${runtime}`);
+            runtimeEnriched++;
+          } else {
+            parts.push('runtime skipped (suspicious)');
+            noRuntime++;
+          }
         } else {
           parts.push('no runtime');
           noRuntime++;
