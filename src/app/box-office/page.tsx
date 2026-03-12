@@ -57,8 +57,10 @@ export default function BoxOfficePage() {
   const lastUpdated = getGrossesLastUpdated();
 
   // Get shows with grosses data, sorted by this week's gross
+  // Include any show with thisWeek data (not just 'open' — shows that closed during
+  // the reporting week still have valid grosses for that week)
   const showsWithGrosses = allShows
-    .filter(show => show.status === 'open')
+    .filter(show => show.status === 'open' || show.status === 'closed')
     .map(show => ({
       show,
       grosses: getShowGrosses(show.slug),

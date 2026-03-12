@@ -189,11 +189,14 @@ function splitShowTheater(text: string): { show: string; theater: string } | nul
 
 let allShows: any[] | null = null;
 
-function findMatchingSlug(bwwTitle: string): string | null {
+function findMatchingSlug(bwwTitle: string, market: string = 'broadway'): string | null {
   if (!allShows) {
     allShows = loadShowsFromMatching();
   }
-  const match = matchTitleToShow(bwwTitle, allShows);
+  // Always pass market hint — BroadwayWorld only lists Broadway shows,
+  // and without it the matcher picks the most recent production which
+  // may be a West End or Off-Broadway version of the same title.
+  const match = matchTitleToShow(bwwTitle, allShows, { market });
   if (match && match.confidence === 'high') {
     return match.show.slug;
   }

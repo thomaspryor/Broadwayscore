@@ -188,7 +188,8 @@ function resolveShowId(externalTitle) {
     return { id: TITLE_OVERRIDES[externalTitle], confidence: 'override' };
   }
 
-  const match = matchTitleToShow(externalTitle, allShows);
+  // BwayRush.com is Broadway-only — pass market hint to avoid cross-market mismatches
+  const match = matchTitleToShow(externalTitle, allShows, { market: 'broadway' });
 
   // Only accept high-confidence matches
   if (match && match.confidence === 'high') {

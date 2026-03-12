@@ -321,7 +321,9 @@ async function scrapeAllTime(): Promise<void> {
 
         for (const row of rows) {
           // Use shared show-matching utility — high confidence only for financial data
-          const match = matchTitleToShow(row.showTitle, shows);
+          // BWW all-time data is Broadway-only — pass market hint to prevent
+          // cross-market contamination (e.g., Cats matching to cats-2016 instead of cats-1982)
+          const match = matchTitleToShow(row.showTitle, shows, { market: 'broadway' });
 
           if (match && match.confidence === 'high') {
             const slug = match.show.slug || match.show.id;
