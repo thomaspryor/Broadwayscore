@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { Fragment, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { ScoreBadge } from '@/components/show-cards';
 
@@ -301,16 +301,14 @@ export function DiscountTicketsTable({ rows }: DiscountTicketsTableProps) {
               const hasDetails = row.lottery || row.rush || row.sro;
 
               return (
-                <>
+                <Fragment key={row.slug}>
                   <tr
-                    key={row.slug}
                     className={`border-b border-white/5 hover:bg-white/5 transition-colors ${hasDetails ? 'cursor-pointer' : ''}`}
                     onClick={() => hasDetails && setExpandedSlug(isExpanded ? null : row.slug)}
+                    aria-expanded={hasDetails ? isExpanded : undefined}
                   >
                     <td className="py-3 px-3">
-                      <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
-                        index < 3 ? 'bg-accent-gold text-gray-900' : 'text-gray-500'
-                      }`}>
+                      <span className="text-gray-500 text-xs font-bold">
                         {index + 1}
                       </span>
                     </td>
@@ -328,7 +326,7 @@ export function DiscountTicketsTable({ rows }: DiscountTicketsTableProps) {
                         )}
                       </div>
                     </td>
-                    <td className="py-3 px-3 text-center" onClick={(e) => row.lottery?.url && e.stopPropagation()}>
+                    <td className="py-3 px-3 text-center" onClick={(e) => e.stopPropagation()}>
                       {row.lottery ? (
                         <PriceCell
                           price={row.lottery.price}
@@ -340,7 +338,7 @@ export function DiscountTicketsTable({ rows }: DiscountTicketsTableProps) {
                         <span className="text-gray-600">—</span>
                       )}
                     </td>
-                    <td className="py-3 px-3 text-center" onClick={(e) => row.rush?.url && e.stopPropagation()}>
+                    <td className="py-3 px-3 text-center" onClick={(e) => e.stopPropagation()}>
                       {row.rush ? (
                         <PriceCell
                           price={row.rush.price}
@@ -352,7 +350,7 @@ export function DiscountTicketsTable({ rows }: DiscountTicketsTableProps) {
                         <span className="text-gray-600">—</span>
                       )}
                     </td>
-                    <td className="py-3 px-3 text-center hidden sm:table-cell">
+                    <td className="py-3 px-3 text-center hidden sm:table-cell" onClick={(e) => e.stopPropagation()}>
                       {row.sro ? (
                         <PriceCell
                           price={row.sro.price}
@@ -368,8 +366,8 @@ export function DiscountTicketsTable({ rows }: DiscountTicketsTableProps) {
                       <ScoreBadge score={row.score} size="sm" showCrown />
                     </td>
                   </tr>
-                  {isExpanded && <DetailPanel key={`${row.slug}-detail`} row={row} />}
-                </>
+                  {isExpanded && <DetailPanel row={row} />}
+                </Fragment>
               );
             })}
           </tbody>

@@ -205,6 +205,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     // Lottery and Rush pages - high value for discount ticket seekers
     {
+      url: `${BASE_URL}/discount-tickets`,
+      lastModified: showsDate,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
       url: `${BASE_URL}/lotteries`,
       lastModified: showsDate,
       changeFrequency: 'weekly',
