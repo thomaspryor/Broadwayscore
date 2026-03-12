@@ -128,7 +128,7 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus }: S
         <p className="text-yellow-500/80 text-xs mb-3 text-center">Schedule may be outdated</p>
       )}
 
-      {/* Day list — max-w keeps day names close to times on wide screens */}
+      {/* Day list — two-column grid: day names tight to left-aligned times */}
       <div className="space-y-0 max-w-sm mx-auto">
         {week.map((day, i) => {
           const isDark = !day.m && !day.e;
@@ -140,7 +140,7 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus }: S
                 isToday ? 'bg-white/[0.03] -mx-2 px-2 rounded' : ''
               }`}
             >
-              <span className={`w-10 text-sm font-medium ${
+              <span className={`w-10 shrink-0 text-sm font-medium ${
                 isToday ? 'text-brand' : isDark ? 'text-gray-500' : 'text-gray-300'
               }`}>
                 {DAY_NAMES[i]}
@@ -148,7 +148,7 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus }: S
               {isToday && (
                 <span className="text-[10px] text-brand/70 uppercase tracking-wider mr-2">today</span>
               )}
-              <span className={`ml-auto text-sm ${isDark ? 'text-gray-600' : 'text-white'}`}>
+              <span className={`text-sm ${isDark ? 'text-gray-600' : 'text-white'}`}>
                 {isDark ? (
                   <span className="text-gray-600">&mdash;</span>
                 ) : (
