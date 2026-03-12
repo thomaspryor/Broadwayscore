@@ -28,6 +28,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
+const { isScoreable } = require('./lib/is-scoreable');
 const { extractScore: extractScoreRuleBased } = require('./lib/score-extractors');
 
 // ---------------------------------------------------------------------------
@@ -606,7 +607,7 @@ function findMissingRatings() {
       const filePath = path.join(showDir, file);
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        if (data.rejectionReason || data.duplicateOf || data.wrongShow || data.wrongProduction) continue;
+        if (!isScoreable(data)) continue;
         if (data.originalScore) continue;
 
         const outletId = data.outletId || '';

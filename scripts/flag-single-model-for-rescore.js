@@ -13,6 +13,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { isScoreable } = require('./lib/is-scoreable');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const apply = process.argv.includes('--apply');
@@ -47,8 +48,7 @@ function main() {
       if (!data.llmScore || data.ensembleData) continue;
 
       // Skip unscorable reviews — don't flag files that the scorer will skip anyway
-      if (data.duplicateOf || data.wrongShow || data.wrongProduction || data.wrongAttribution || data.contentTier === 'invalid') continue;
-      if (data.isRoundupArticle || data.rejectionReason) continue;
+      if (!isScoreable(data)) continue;
 
       singleModelTotal++;
       const tier = data.contentTier || 'unknown';

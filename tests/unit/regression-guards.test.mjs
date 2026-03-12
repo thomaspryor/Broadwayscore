@@ -15,7 +15,7 @@
 
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
-import { readFileSync } from 'fs';
+import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 
 const ROOT = join(import.meta.dirname, '..', '..');
@@ -85,12 +85,52 @@ const CRITICAL_PATTERNS = [
       'lboRoundupExcerpt must be in EXCERPT_FIELDS. WE reviews from LBO roundups ' +
       'often have no other text source — omitting this field silently blocks scoring.',
   },
+  // Scoring gate scripts must use isScoreable() from lib, not inline flag checks.
+  // Inline checks miss new flags when they're added to is-scoreable.js.
+  {
+    file: 'scripts/flag-single-model-for-rescore.js',
+    pattern: 'isScoreable',
+    description:
+      'Must use isScoreable() for scoreability checks, not inline flag checks. ' +
+      'Inline checks miss new exclusion flags when they are added.',
+  },
+  {
+    file: 'scripts/flag-rescore-needed.js',
+    pattern: 'isScoreable',
+    description:
+      'Must use isScoreable() for scoreability checks, not inline flag checks. ' +
+      'Inline checks miss new exclusion flags when they are added.',
+  },
+  {
+    file: 'scripts/recover-explicit-ratings.js',
+    pattern: 'isScoreable',
+    description:
+      'Must use isScoreable() for scoreability checks, not inline flag checks. ' +
+      'Inline checks miss new exclusion flags when they are added.',
+  },
 ];
 
 /**
  * Negative patterns: things that must NOT appear in a file.
  * Each entry: { file, pattern, description }
  */
+/**
+ * Directory-level forbidden patterns: scanned across all .js files in a directory.
+ * Each entry: { dir, pattern, description }
+ */
+const DIRECTORY_FORBIDDEN_PATTERNS = [
+  // Never delete entire contentVerification object — it nukes classification
+  // fields like wrongProduction, isFilmTv. Delete individual session subfields instead.
+  {
+    dir: 'scripts',
+    glob: '*.js',
+    pattern: /delete\s+\w+\.contentVerification\s*[;\n]/,
+    description:
+      'Must not delete entire contentVerification object — it nukes wrongProduction/isFilmTv flags. ' +
+      'Delete individual session subfields (wrongArticle, verifiedAt, verifiedBy, reasoning) instead.',
+  },
+];
+
 const FORBIDDEN_PATTERNS = [
   // Never use ID string matching for market detection in gold lists
   {
@@ -154,6 +194,40 @@ describe('Regression Guards — must NOT exist', () => {
         !found,
         `FORBIDDEN PATTERN DETECTED in ${file}!\n` +
           `Found: ${pattern}\n` +
+          `Reason: ${description}`
+      );
+    });
+  }
+});
+
+describe('Regression Guards — directory-level forbidden patterns', () => {
+  for (const { dir, glob, pattern, description } of DIRECTORY_FORBIDDEN_PATTERNS) {
+    test(`${dir}/${glob}: forbid ${pattern.source}`, () => {
+      const dirPath = join(ROOT, dir);
+      const ext = glob.replace('*', '');
+      const files = readdirSync(dirPath).filter(f => f.endsWith(ext));
+      const violations = [];
+
+      for (const file of files) {
+        const filePath = join(dirPath, file);
+        try {
+          const content = readFileSync(filePath, 'utf8');
+          if (pattern.test(content)) {
+            violations.push(file);
+          }
+          // Reset regex lastIndex for next file
+          pattern.lastIndex = 0;
+        } catch (err) {
+          // Skip unreadable files
+        }
+      }
+
+      assert.strictEqual(
+        violations.length,
+        0,
+        `FORBIDDEN PATTERN in ${dir}/:\n` +
+          `Pattern: ${pattern}\n` +
+          `Found in: ${violations.join(', ')}\n` +
           `Reason: ${description}`
       );
     });

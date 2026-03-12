@@ -68,8 +68,13 @@ for (const entry of manifest) {
   }
 
   if (entry.action === 'unflagRestore') {
-    // Restore wrongFullText → fullText
-    delete data.contentVerification;
+    // Restore wrongFullText → fullText — clear verification-session fields, preserve classification fields
+    if (data.contentVerification) {
+      const VERIFICATION_SESSION_FIELDS = ['wrongArticle', 'verifiedAt', 'verifiedBy', 'reasoning'];
+      for (const field of VERIFICATION_SESSION_FIELDS) {
+        delete data.contentVerification[field];
+      }
+    }
     if (data.wrongFullText && !data.fullText) {
       data.fullText = data.wrongFullText;
       delete data.wrongFullText;

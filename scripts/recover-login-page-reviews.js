@@ -368,9 +368,12 @@ async function main() {
         delete data.incompleteReason;
         delete data.incompleteDetail;
       }
-      // Clear stale content verification since text changed
+      // Clear stale verification-session fields, preserve classification fields (wrongProduction, isFilmTv, etc.)
       if (data.contentVerification) {
-        delete data.contentVerification;
+        const VERIFICATION_SESSION_FIELDS = ['wrongArticle', 'verifiedAt', 'verifiedBy', 'reasoning'];
+        for (const field of VERIFICATION_SESSION_FIELDS) {
+          delete data.contentVerification[field];
+        }
       }
 
       fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');

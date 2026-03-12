@@ -64,11 +64,7 @@ if (cleanupMode) {
         scanned++;
         if (!data.needsRescore) continue;
         // Check if unscorable
-        const unscorable =
-          data.duplicateOf || data.wrongShow || data.wrongProduction || data.wrongAttribution || data.contentTier === 'invalid' ||
-          data.isRoundupArticle || data.rejectionReason ||
-          (data.showNotMentioned && !data.bwwExcerpt && !data.dtliExcerpt && !data.showScoreExcerpt);
-        if (unscorable) {
+        if (!isScoreable(data)) {
           cleaned++;
           cleanedFiles.push(`${show}/${file}`);
           if (!dryRun) {
@@ -122,8 +118,7 @@ for (const show of shows) {
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
       // Skip unscorable reviews — don't flag files that the scorer will skip anyway
-      if (data.duplicateOf || data.wrongShow || data.wrongProduction || data.wrongAttribution || data.contentTier === 'invalid') continue;
-      if (data.isRoundupArticle || data.rejectionReason) continue;
+      if (!isScoreable(data)) continue;
 
       // Skip if already flagged for rescore
       if (data.needsRescore) {
