@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { Fragment, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { ScoreBadge } from '@/components/show-cards';
@@ -20,6 +20,33 @@ function ExternalLinkIcon() {
   return (
     <svg className="w-3 h-3 inline-block ml-0.5 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+    </svg>
+  );
+}
+
+function ChevronIcon({ open }: { open: boolean }) {
+  return (
+    <svg
+      className={`w-4 h-4 text-gray-500 transition-transform ${open ? 'rotate-180' : ''}`}
+      fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+    </svg>
+  );
+}
+
+function ClockIcon() {
+  return (
+    <svg className="w-3.5 h-3.5 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+  );
+}
+
+function ActionLinkIcon() {
+  return (
+    <svg className="w-3.5 h-3.5 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
     </svg>
   );
 }
@@ -87,6 +114,7 @@ interface LotteryTableProps {
 export function LotteryTable({ data }: LotteryTableProps) {
   const [sortColumn, setSortColumn] = useState<LotteryColumn>('score');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
+  const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
 
   const handleSort = (column: LotteryColumn) => {
     if (sortColumn === column) {
@@ -169,9 +197,15 @@ export function LotteryTable({ data }: LotteryTableProps) {
               const special = item.lotteryData.specialLottery;
               const price = special?.price || lottery?.price;
               const score = item.show.criticScore?.score;
+              const isExpanded = expandedSlug === item.show.slug;
+              const hasDetails = !!(lottery || special);
 
               return (
-                <tr key={item.show.slug} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                <Fragment key={item.show.slug}>
+                  <tr
+                    className={`border-b border-white/5 hover:bg-white/5 transition-colors ${hasDetails ? 'cursor-pointer' : ''} ${isExpanded ? 'border-b-0' : ''}`}
+                    onClick={() => hasDetails && setExpandedSlug(isExpanded ? null : item.show.slug)}
+                  >
                   <td className="py-3 px-4">
                     <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
                       index < 3 ? 'bg-accent-gold text-gray-900' : 'text-gray-500'
@@ -180,9 +214,12 @@ export function LotteryTable({ data }: LotteryTableProps) {
                     </span>
                   </td>
                   <td className="py-3 px-4">
-                    <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium">
-                      {item.show.title}
-                    </Link>
+                    <div className="flex items-center gap-2">
+                      <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium" onClick={(e) => e.stopPropagation()}>
+                        {item.show.title}
+                      </Link>
+                      {hasDetails && <ChevronIcon open={isExpanded} />}
+                    </div>
                     {(() => {
                       const platform = lottery?.platform || special?.platform;
                       return platform ? <span className="block text-xs text-gray-500 sm:hidden">{platform}</span> : null;
@@ -194,7 +231,7 @@ export function LotteryTable({ data }: LotteryTableProps) {
                       ${price}
                     </span>
                   </td>
-                  <td className="py-3 px-4 hidden sm:table-cell">
+                  <td className="py-3 px-4 hidden sm:table-cell" onClick={(e) => e.stopPropagation()}>
                     {(() => {
                       const platform = lottery?.platform || special?.platform;
                       const url = ensureHttps(lottery?.url || special?.url);
@@ -229,7 +266,68 @@ export function LotteryTable({ data }: LotteryTableProps) {
                       )}
                     </div>
                   </td>
-                </tr>
+                  </tr>
+                  {isExpanded && (
+                    <tr className="bg-white/[0.02] border-b border-white/5">
+                      <td colSpan={6} className="px-4 py-2">
+                        <div className="flex flex-col sm:flex-row gap-2">
+                          {lottery && (
+                            <div className="flex-1 bg-purple-500/10 border border-purple-500/20 rounded-lg p-3">
+                              <div className="flex items-start justify-between gap-2 mb-2">
+                                <span className="font-semibold text-purple-300 text-sm">{lottery.type ? `${lottery.type} Lottery` : 'Digital Lottery'}</span>
+                                <span className="font-bold text-white text-lg">${lottery.price}</span>
+                              </div>
+                              {lottery.time && (
+                                <div className="flex items-start gap-1.5 text-gray-400 text-xs mb-1">
+                                  <ClockIcon />
+                                  <span>{lottery.time}</span>
+                                </div>
+                              )}
+                              {lottery.instructions && (
+                                <p className="text-gray-400 text-xs leading-relaxed">{lottery.instructions}</p>
+                              )}
+                              {lottery.url && (
+                                <a
+                                  href={ensureHttps(lottery.url)}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1.5 text-purple-400 hover:text-purple-300 font-medium text-xs mt-2 transition-colors"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  Enter on {lottery.platform || 'website'}
+                                  <ActionLinkIcon />
+                                </a>
+                              )}
+                            </div>
+                          )}
+                          {special && (
+                            <div className="flex-1 bg-purple-500/10 border border-purple-500/20 rounded-lg p-3">
+                              <div className="flex items-start justify-between gap-2 mb-2">
+                                <span className="font-semibold text-purple-300 text-sm">{special.name}</span>
+                                <span className="font-bold text-white text-lg">${special.price}</span>
+                              </div>
+                              {special.instructions && (
+                                <p className="text-gray-400 text-xs leading-relaxed">{special.instructions}</p>
+                              )}
+                              {special.url && (
+                                <a
+                                  href={ensureHttps(special.url)}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1.5 text-purple-400 hover:text-purple-300 font-medium text-xs mt-2 transition-colors"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  Enter on {special.platform || 'website'}
+                                  <ActionLinkIcon />
+                                </a>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </Fragment>
               );
             })}
           </tbody>
@@ -269,6 +367,7 @@ interface StandingRoomTableProps {
 export function StandingRoomTable({ data }: StandingRoomTableProps) {
   const [sortColumn, setSortColumn] = useState<SROColumn>('price');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+  const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
 
   const handleSort = (column: SROColumn) => {
     if (sortColumn === column) {
@@ -339,11 +438,18 @@ export function StandingRoomTable({ data }: StandingRoomTableProps) {
           </thead>
           <tbody>
             {sortedData.map((item, index) => {
-              const price = item.sroData.standingRoom?.price;
+              const sro = item.sroData.standingRoom;
+              const price = sro?.price;
               const score = item.show.criticScore?.score;
+              const isExpanded = expandedSlug === item.show.slug;
+              const hasDetails = !!sro;
 
               return (
-                <tr key={item.show.slug} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                <Fragment key={item.show.slug}>
+                  <tr
+                    className={`border-b border-white/5 hover:bg-white/5 transition-colors ${hasDetails ? 'cursor-pointer' : ''} ${isExpanded ? 'border-b-0' : ''}`}
+                    onClick={() => hasDetails && setExpandedSlug(isExpanded ? null : item.show.slug)}
+                  >
                   <td className="py-3 px-4">
                     <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
                       index < 3 ? 'bg-accent-gold text-gray-900' : 'text-gray-500'
@@ -352,9 +458,12 @@ export function StandingRoomTable({ data }: StandingRoomTableProps) {
                     </span>
                   </td>
                   <td className="py-3 px-4">
-                    <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium">
-                      {item.show.title}
-                    </Link>
+                    <div className="flex items-center gap-2">
+                      <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium" onClick={(e) => e.stopPropagation()}>
+                        {item.show.title}
+                      </Link>
+                      {hasDetails && <ChevronIcon open={isExpanded} />}
+                    </div>
                     {item.show.venue && <span className="block text-xs text-gray-500 sm:hidden">{item.show.venue}</span>}
                   </td>
                   <td className="py-3 px-4 text-right">
@@ -363,7 +472,7 @@ export function StandingRoomTable({ data }: StandingRoomTableProps) {
                       {price != null ? `$${price}` : '—'}
                     </span>
                   </td>
-                  <td className="py-3 px-4 hidden sm:table-cell">
+                  <td className="py-3 px-4 hidden sm:table-cell" onClick={(e) => e.stopPropagation()}>
                     {item.show.officialUrl ? (
                       <a href={ensureHttps(item.show.officialUrl) || '#'} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-gray-300 hover:text-white font-medium transition-colors text-sm">
                         {item.show.venue ? item.show.venue.replace(/ Theatre| Theater/i, '') : 'Official site'}
@@ -376,7 +485,43 @@ export function StandingRoomTable({ data }: StandingRoomTableProps) {
                   <td className="py-3 px-4 text-center hidden md:table-cell">
                     <ScoreBadge score={score} size="sm" showCrown />
                   </td>
-                </tr>
+                  </tr>
+                  {isExpanded && sro && (
+                    <tr className="bg-white/[0.02] border-b border-white/5">
+                      <td colSpan={5} className="px-4 py-2">
+                        <div className="flex flex-col sm:flex-row gap-2">
+                          <div className="flex-1 bg-gray-500/10 border border-gray-500/20 rounded-lg p-3">
+                            <div className="flex items-start justify-between gap-2 mb-2">
+                              <span className="font-semibold text-gray-300 text-sm">Standing Room</span>
+                              <span className="font-bold text-white text-lg">${sro.price}</span>
+                            </div>
+                            {sro.time && (
+                              <div className="flex items-start gap-1.5 text-gray-400 text-xs mb-1">
+                                <ClockIcon />
+                                <span>{sro.time}</span>
+                              </div>
+                            )}
+                            {sro.instructions && (
+                              <p className="text-gray-400 text-xs leading-relaxed">{sro.instructions}</p>
+                            )}
+                            {item.show.officialUrl && (
+                              <a
+                                href={ensureHttps(item.show.officialUrl) || '#'}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1.5 text-gray-400 hover:text-gray-300 font-medium text-xs mt-2 transition-colors"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                Official site
+                                <ActionLinkIcon />
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </Fragment>
               );
             })}
           </tbody>
@@ -401,7 +546,7 @@ interface RushInfo {
 interface RushData {
   rush: RushInfo | null;
   digitalRush?: RushInfo | null;
-  studentRush?: { price: number; time?: string } | null;
+  studentRush?: RushInfo | null;
   lottery?: { price: number } | null;
   standingRoom?: { price: number } | null;
 }
@@ -427,6 +572,7 @@ interface RushTableProps {
 export function RushTable({ data }: RushTableProps) {
   const [sortColumn, setSortColumn] = useState<RushColumn>('score');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
+  const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
 
   const handleSort = (column: RushColumn) => {
     if (sortColumn === column) {
@@ -523,9 +669,15 @@ export function RushTable({ data }: RushTableProps) {
               );
               const rushType = rush ? 'Box Office' : digital ? 'Digital' : 'Student';
               const score = item.show.criticScore?.score;
+              const isExpanded = expandedSlug === item.show.slug;
+              const hasDetails = !!(rush || digital || student);
 
               return (
-                <tr key={item.show.slug} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                <Fragment key={item.show.slug}>
+                  <tr
+                    className={`border-b border-white/5 hover:bg-white/5 transition-colors ${hasDetails ? 'cursor-pointer' : ''} ${isExpanded ? 'border-b-0' : ''}`}
+                    onClick={() => hasDetails && setExpandedSlug(isExpanded ? null : item.show.slug)}
+                  >
                   <td className="py-3 px-4">
                     <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
                       index < 3 ? 'bg-accent-gold text-gray-900' : 'text-gray-500'
@@ -534,9 +686,12 @@ export function RushTable({ data }: RushTableProps) {
                     </span>
                   </td>
                   <td className="py-3 px-4">
-                    <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium">
-                      {item.show.title}
-                    </Link>
+                    <div className="flex items-center gap-2">
+                      <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium" onClick={(e) => e.stopPropagation()}>
+                        {item.show.title}
+                      </Link>
+                      {hasDetails && <ChevronIcon open={isExpanded} />}
+                    </div>
                     <span className="block text-xs text-gray-500 sm:hidden">{rushType}</span>
                   </td>
                   <td className="py-3 px-4 text-right">
@@ -545,7 +700,7 @@ export function RushTable({ data }: RushTableProps) {
                       ${cheapestPrice}
                     </span>
                   </td>
-                  <td className="py-3 px-4 hidden sm:table-cell">
+                  <td className="py-3 px-4 hidden sm:table-cell" onClick={(e) => e.stopPropagation()}>
                     <div className="flex flex-wrap gap-1 items-center">
                       {rush && (() => {
                         const url = ensureHttps(rush.url) || (rush.platform ? undefined : ensureHttps(item.show.officialUrl));
@@ -587,7 +742,118 @@ export function RushTable({ data }: RushTableProps) {
                       )}
                     </div>
                   </td>
-                </tr>
+                  </tr>
+                  {isExpanded && (
+                    <tr className="bg-white/[0.02] border-b border-white/5">
+                      <td colSpan={6} className="px-4 py-2">
+                        <div className="flex flex-col sm:flex-row gap-2">
+                          {rush && (
+                            <div className="flex-1 bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3">
+                              <div className="flex items-start justify-between gap-2 mb-2">
+                                <span className="font-semibold text-emerald-300 text-sm">Box Office Rush</span>
+                                <span className="font-bold text-white text-lg">${rush.price}</span>
+                              </div>
+                              {rush.time && (
+                                <div className="flex items-start gap-1.5 text-gray-400 text-xs mb-1">
+                                  <ClockIcon />
+                                  <span>{rush.time}</span>
+                                </div>
+                              )}
+                              {rush.location && (
+                                <p className="text-gray-400 text-xs">{rush.location}</p>
+                              )}
+                              {rush.instructions && (
+                                <p className="text-gray-400 text-xs leading-relaxed">{rush.instructions}</p>
+                              )}
+                              {(() => {
+                                const url = ensureHttps(rush.url) || (rush.platform ? undefined : ensureHttps(item.show.officialUrl));
+                                if (url) {
+                                  return (
+                                    <a
+                                      href={url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="inline-flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 font-medium text-xs mt-2 transition-colors"
+                                      onClick={(e) => e.stopPropagation()}
+                                    >
+                                      Enter on {rush.platform || 'website'}
+                                      <ActionLinkIcon />
+                                    </a>
+                                  );
+                                }
+                                return null;
+                              })()}
+                            </div>
+                          )}
+                          {digital && (
+                            <div className="flex-1 bg-blue-500/10 border border-blue-500/20 rounded-lg p-3">
+                              <div className="flex items-start justify-between gap-2 mb-2">
+                                <span className="font-semibold text-blue-300 text-sm">Digital Rush</span>
+                                <span className="font-bold text-white text-lg">${digital.price}</span>
+                              </div>
+                              {digital.time && (
+                                <div className="flex items-start gap-1.5 text-gray-400 text-xs mb-1">
+                                  <ClockIcon />
+                                  <span>{digital.time}</span>
+                                </div>
+                              )}
+                              {digital.location && (
+                                <p className="text-gray-400 text-xs">{digital.location}</p>
+                              )}
+                              {digital.instructions && (
+                                <p className="text-gray-400 text-xs leading-relaxed">{digital.instructions}</p>
+                              )}
+                              {digital.url && (
+                                <a
+                                  href={ensureHttps(digital.url)}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1.5 text-blue-400 hover:text-blue-300 font-medium text-xs mt-2 transition-colors"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  Enter on {digital.platform || 'website'}
+                                  <ActionLinkIcon />
+                                </a>
+                              )}
+                            </div>
+                          )}
+                          {student && (
+                            <div className="flex-1 bg-pink-500/10 border border-pink-500/20 rounded-lg p-3">
+                              <div className="flex items-start justify-between gap-2 mb-2">
+                                <span className="font-semibold text-pink-300 text-sm">Student Rush</span>
+                                <span className="font-bold text-white text-lg">${student.price}</span>
+                              </div>
+                              {student.time && (
+                                <div className="flex items-start gap-1.5 text-gray-400 text-xs mb-1">
+                                  <ClockIcon />
+                                  <span>{student.time}</span>
+                                </div>
+                              )}
+                              {student.location && (
+                                <p className="text-gray-400 text-xs">{student.location}</p>
+                              )}
+                              {student.instructions && (
+                                <p className="text-gray-400 text-xs leading-relaxed">{student.instructions}</p>
+                              )}
+                              {student.url && (
+                                <a
+                                  href={ensureHttps(student.url)}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1.5 text-pink-400 hover:text-pink-300 font-medium text-xs mt-2 transition-colors"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  Enter on {student.platform || 'website'}
+                                  <ActionLinkIcon />
+                                </a>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </Fragment>
               );
             })}
           </tbody>
