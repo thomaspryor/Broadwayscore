@@ -81,7 +81,10 @@ When wrapping up a task, recommend the best next task or follow-up. Don't just s
 ### 14. Fix Systematically, Not One-Off (MANDATORY)
 **Every fix MUST include prevention.** When fixing any bug: (1) fix the instance, (2) fix the class of problem so it can't recur. One-off fixes are wasted work — this system is automated and set-and-forget. Ask: "How do I prevent this permanently?" Add types, helpers, tests, or lint rules. Run `/test` after every fix.
 
-### 15. Test Before Committing (MANDATORY)
+### 15. Verify External File Modifications (MANDATORY)
+When a file is modified externally (linter, other session, hook), `git diff` it immediately. Verify every prior fix in that file survives. External tools silently revert intentional changes — never accept their output without diffing.
+
+### 16. Test Before Committing (MANDATORY)
 **Never commit code changes without passing the test gate.** Before EVERY commit touching `src/`, `scripts/`, or config:
 1. `npx tsc --noEmit` — zero errors in changed files (pre-existing errors in other files OK)
 2. `npx next lint` — no new warnings in changed files
@@ -93,7 +96,7 @@ When wrapping up a task, recommend the best next task or follow-up. Don't just s
 - **Backend/auth/data-flow changes: `npm run build` is NOT enough.** Verify the actual user flow works (e.g., deferred auth → save, hook state after re-render). Trace the full code path before pushing.
 - **Scoring verification: use the engine, not manual scripts.** `engine.ts` is source of truth.
 
-### 16. Prompt Changes Require A/B Distribution Check (MANDATORY)
+### 17. Prompt Changes Require A/B Distribution Check (MANDATORY)
 **NEVER rescore >100 reviews without the built-in A/B check.** Pipeline auto-runs 50-review comparison; aborts if bucket shift >5% or mean drift >5pts. Override with `--force-full-run` only after investigating. (v5.3 lesson: $420 rescore made scores worse.)
 
 ---
