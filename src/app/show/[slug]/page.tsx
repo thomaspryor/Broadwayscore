@@ -7,6 +7,7 @@ import { getShowAwards } from '@/lib/data-awards';
 import { getAudienceBuzz, getShowScoreUrl, getAudienceGrade, getTotalAudienceReviews, hasEnoughAudienceReviews } from '@/lib/data-audience';
 import { getCriticConsensus } from '@/lib/data-consensus';
 import { getLotteryRush } from '@/lib/data-lottery';
+import { getShowSchedule, getScheduleCurrentMonday, getScheduleLastUpdated } from '@/lib/data-showtimes';
 import { getShowCommercial, getRecoupmentTrend } from '@/lib/data-commercial';
 import { getCastChanges } from '@/lib/data-cast';
 import { getShowCastFile } from '@/lib/data-cast-obc';
@@ -30,6 +31,7 @@ import AwardsCard from '@/components/AwardsCard';
 import AudienceBuzzCard from '@/components/AudienceBuzzCard';
 import HowThisWorks from '@/components/HowThisWorks';
 import LotteryRushCard from '@/components/LotteryRushCard';
+import ShowtimesCard from '@/components/ShowtimesCard';
 import BizBuzzCard from '@/components/BizBuzzCard';
 import CastUpdatesCard from '@/components/CastUpdatesCard';
 import CastSection from '@/components/CastSection';
@@ -229,6 +231,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const audienceBuzz = getAudienceBuzz(show.id);
   const consensus = getCriticConsensus(show.id);
   const lotteryRush = getLotteryRush(show.id);
+  const showSchedule = getShowSchedule(show.id);
   const commercial = getShowCommercial(show.slug);
   const castChangesData = getCastChanges(show.id);
   const castFile = getShowCastFile(show.id);
@@ -1018,6 +1021,18 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               <p className="text-gray-400 text-sm">Financial data not available yet.</p>
             </section>
           ) : null
+        )}
+
+        {/* Showtimes — Broadway only */}
+        <div id="showtimes" className="scroll-mt-20" />
+        {featureFlags.showtimes && !isWestEnd && !isOffBroadway && showSchedule &&
+          (show.status === 'open' || show.status === 'previews') && (
+          <ShowtimesCard
+            schedule={showSchedule}
+            currentMonday={getScheduleCurrentMonday()}
+            lastUpdated={getScheduleLastUpdated()}
+            showStatus={show.status}
+          />
         )}
 
         {/* Lottery/Rush Tickets — Broadway only */}

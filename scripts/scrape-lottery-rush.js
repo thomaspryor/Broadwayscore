@@ -30,6 +30,7 @@ const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const BWAYRUSH_URL = 'https://bwayrush.com/';
 const PLAYBILL_URL = 'https://playbill.com/article/broadway-rush-lottery-and-standing-room-only-policies-com-116003';
 const OUTPUT_PATH = path.join(__dirname, '../data/lottery-rush.json');
+const SCHEDULE_PATH = path.join(__dirname, '../data/show-schedules.json');
 const SHOWS_PATH = path.join(__dirname, '../data/shows.json');
 
 // CLI args
@@ -220,6 +221,16 @@ async function scrapeBwayRush() {
     return {};
   }
 
+  // Extract schedule data from raw HTML before markdown conversion (independent try/catch)
+  if (result.format === 'html') {
+    try {
+      extractAndWriteScheduleData(result.content);
+    } catch (err) {
+      console.error(`[Schedule] Extraction failed (non-fatal): ${err.message}`);
+      if (verbose) console.error(err.stack);
+    }
+  }
+
   // Convert HTML to pseudo-markdown if needed (preserving link structure)
   if (result.format === 'html') {
     if (verbose) console.log('[BwayRush] Converting HTML to markdown links...');
@@ -242,6 +253,126 @@ async function scrapeBwayRush() {
 
   console.log(`[BwayRush] Parsed ${showCount} shows from markdown`);
   return mapBwayRushToShows(rawData);
+}
+
+// ==================== Schedule Extraction ====================
+
+/**
+ * Extract schedule data from bwayrush.com SvelteKit hydration payload.
+ * The page embeds shows as JS objects with `thisweek` arrays (7 entries, Mon-Sun).
+ * Each entry: {m: "HH:MM"|null, e: "HH:MM"|null}
+ */
+function extractAndWriteScheduleData(html) {
+  console.log('\n[Schedule] Extracting schedule data from HTML...');
+
+  // Find the SvelteKit data payload: data:{shows:[...],currentMonday:"YYYYMMDD"
+  // The shows array and currentMonday are inside a `data:` property in the kit.start() call
+  const mondayMatch = html.match(/currentMonday:"(\d{8})"/);
+  if (!mondayMatch) {
+    console.error('[Schedule] Could not find currentMonday in HTML — skipping');
+    return;
+  }
+  const currentMonday = mondayMatch[1];
+  console.log(`[Schedule] Current Monday: ${currentMonday}`);
+
+  // Discard past weeks: if currentMonday is before today, the data is stale but still valid
+  // (bwayrush updates on Monday, so mid-week the data is for the current week)
+  const mondayDate = new Date(
+    parseInt(currentMonday.slice(0, 4)),
+    parseInt(currentMonday.slice(4, 6)) - 1,
+    parseInt(currentMonday.slice(6, 8))
+  );
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const daysSinceMonday = Math.floor((today - mondayDate) / (1000 * 60 * 60 * 24));
+  if (daysSinceMonday > 10) {
+    console.warn(`[Schedule] currentMonday is ${daysSinceMonday} days old — data may be stale`);
+  }
+
+  // Extract the shows array from the JS payload
+  // Pattern: shows:[{...},{...},...],currentMonday:
+  const showsMatch = html.match(/shows:(\[(?:\{[^}]*\}[,\s]*)*\]),\s*currentMonday:/s);
+  if (!showsMatch) {
+    console.error('[Schedule] Could not find shows array in HTML — skipping');
+    return;
+  }
+
+  // Convert JS object notation to JSON (keys are unquoted)
+  let showsJson = showsMatch[1];
+  // Quote unquoted keys: {key: → {"key":
+  showsJson = showsJson.replace(/([{,])\s*(\w+)\s*:/g, '$1"$2":');
+  // Replace null (already valid JSON) — no-op but be safe
+  // Handle trailing commas before ] or }
+  showsJson = showsJson.replace(/,\s*([}\]])/g, '$1');
+
+  let shows;
+  try {
+    shows = JSON.parse(showsJson);
+  } catch (err) {
+    console.error(`[Schedule] JSON parse failed: ${err.message}`);
+    if (verbose) {
+      // Show a snippet around the error for debugging
+      const pos = parseInt(err.message.match(/position (\d+)/)?.[1] || '0');
+      console.error(`[Schedule] Near position ${pos}: ...${showsJson.slice(Math.max(0, pos - 50), pos + 50)}...`);
+    }
+    return;
+  }
+
+  if (!Array.isArray(shows) || shows.length < 15) {
+    console.error(`[Schedule] Only found ${shows?.length || 0} shows — expected 15+, skipping write`);
+    return;
+  }
+
+  // Map shows to our IDs and extract schedule data
+  const scheduleShows = {};
+  const unmatched = [];
+
+  for (const show of shows) {
+    if (!show.title || !show.thisweek || !Array.isArray(show.thisweek) || show.thisweek.length !== 7) {
+      continue;
+    }
+
+    const resolved = resolveShowId(show.title);
+    if (!resolved) {
+      unmatched.push(show.title);
+      continue;
+    }
+
+    scheduleShows[resolved.id] = {
+      weeks: {
+        [currentMonday]: show.thisweek,
+      },
+    };
+  }
+
+  const matchedCount = Object.keys(scheduleShows).length;
+  console.log(`[Schedule] Matched ${matchedCount} shows, ${unmatched.length} unmatched`);
+
+  if (unmatched.length > 0 && verbose) {
+    console.log('[Schedule] Unmatched titles:');
+    unmatched.forEach(t => console.log(`  - ${t}`));
+  }
+
+  if (matchedCount < 15) {
+    console.error(`[Schedule] Only matched ${matchedCount} shows — expected 15+, skipping write`);
+    return;
+  }
+
+  if (dryRun) {
+    console.log(`[Schedule] [Dry Run] Would write ${matchedCount} shows to show-schedules.json`);
+    return;
+  }
+
+  // Write schedule data (overwrite entirely — always trust source of truth)
+  const output = {
+    lastUpdated: new Date().toISOString(),
+    source: 'https://bwayrush.com/',
+    currentMonday,
+    shows: scheduleShows,
+  };
+
+  fs.writeFileSync(SCHEDULE_PATH, JSON.stringify(output, null, 2) + '\n');
+  console.log(`[Schedule] Wrote show-schedules.json with ${matchedCount} shows`);
 }
 
 function parseBwayRushMarkdown(markdown) {
