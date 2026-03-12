@@ -126,7 +126,17 @@
     "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024/nydailynews--unknown.json",
     "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
     "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json",
-    "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json"
+    "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
+    "little-shop-of-horrors-off-broadway-2019/theatermania--zachary-stewart.json",
+    "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
+    "marcel-on-the-train-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "marcel-on-the-train-off-broadway-2026/theatermania--zachary-stewart.json",
+    "marcel-on-the-train-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
+    "marie-and-rosetta-west-end-2026/timeout-london--caroline-mcginn.json",
+    "masquerade-off-broadway-2025/observer--david-cote.json",
+    "masquerade-off-broadway-2025/theatermania--meg-masseron.json",
+    "masquerade-off-broadway-2025/timeout--adam-feldman.json",
+    "matilda-the-musical-west-end-2021/guardian--imogen-carter.json"
   ],
   "failed": [
     "cold-war-choir-practice-off-broadway-2026/talkinbroadway--kimberly-ramirez.json",
@@ -230,7 +240,15 @@
       "it-walks-around-the-house-at-night-west-end-2026/timeout-london--unknown.json",
       "just-in-time-2025/observer--rex-reed.json",
       "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024/nydailynews--unknown.json",
-      "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json"
+      "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
+      "little-shop-of-horrors-off-broadway-2019/theatermania--zachary-stewart.json",
+      "marcel-on-the-train-off-broadway-2026/new-york-sun--elysa-gardner.json",
+      "marcel-on-the-train-off-broadway-2026/theatermania--zachary-stewart.json",
+      "marcel-on-the-train-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
+      "marie-and-rosetta-west-end-2026/timeout-london--caroline-mcginn.json",
+      "masquerade-off-broadway-2025/theatermania--meg-masseron.json",
+      "masquerade-off-broadway-2025/timeout--adam-feldman.json",
+      "matilda-the-musical-west-end-2021/guardian--imogen-carter.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -264,7 +282,10 @@
       "data/review-texts/cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json",
       "cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/masquerade-off-broadway-2025/observer--david-cote.json",
+      "masquerade-off-broadway-2025/observer--david-cote.json"
+    ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json"
     ],
@@ -324,10 +345,23 @@
       "wicked-2003/variety--charles-isherwood.json",
       "aladdin-2014/ew--thom-geier.json",
       "aladdin-2014/wsj--terry-teachout.json",
-      "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json"
+      "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
+      "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json"
     ]
   },
   "startTime": "2026-03-12T13:55:19.125Z",
-  "lastProcessed": "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
-  "log": []
+  "lastProcessed": "matilda-the-musical-west-end-2021/guardian--imogen-carter.json",
+  "log": [
+    {
+      "t": "2026-03-12T19:01:52.808Z",
+      "event": "bb-session",
+      "session": "bdfdc3fe",
+      "url": "https://observer.com/2025/09/review-masquerade-phantom-of-the-opera-experience-i"
+    },
+    {
+      "t": "2026-03-12T19:01:54.122Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    }
+  ]
 }

@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-03-12T15:04:17.038Z",
-  "processed": 127,
+  "updatedAt": "2026-03-12T19:02:31.967Z",
+  "processed": 137,
   "failed": 23,
-  "successRate": "84.7%",
+  "successRate": "85.6%",
   "tierBreakdown": {
-    "playwright": 75,
+    "playwright": 83,
     "amp": 30,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 1,
     "scrapingbee": 22,
     "brightdata": 0,
     "archiveToday": 15,
-    "archive": 14
+    "archive": 15
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-03-12T19:01:52.808Z",
+      "event": "bb-session",
+      "session": "bdfdc3fe",
+      "url": "https://observer.com/2025/09/review-masquerade-phantom-of-the-opera-experience-i"
+    },
+    {
+      "t": "2026-03-12T19:01:54.122Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    }
+  ]
 }
