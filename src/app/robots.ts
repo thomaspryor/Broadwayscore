@@ -14,11 +14,11 @@ export default function robots(): MetadataRoute.Robots {
 
   return {
     rules: [
-      // Search engines (ALLOWED — index us for search results)
-      { userAgent: 'Googlebot', allow: '/' },
-      { userAgent: 'Bingbot', allow: '/' },
-      { userAgent: 'Slurp', allow: '/' },
-      { userAgent: 'DuckDuckBot', allow: '/' },
+      // Search engines (ALLOWED — index us, but not BTC co-branded page)
+      { userAgent: 'Googlebot', allow: '/', disallow: '/beat-the-critics' },
+      { userAgent: 'Bingbot', allow: '/', disallow: '/beat-the-critics' },
+      { userAgent: 'Slurp', allow: '/', disallow: '/beat-the-critics' },
+      { userAgent: 'DuckDuckBot', allow: '/', disallow: '/beat-the-critics' },
       // AI search bots (ALLOWED — shows us in AI search results with citations)
       { userAgent: 'OAI-SearchBot', allow: '/' },
       { userAgent: 'PerplexityBot', allow: '/' },

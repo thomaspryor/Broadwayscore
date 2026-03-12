@@ -11,6 +11,7 @@ import { BeatTheCriticsClient } from './BeatTheCriticsClient';
 export const metadata = {
   title: 'Beat the Critics | TodayTix x Broadway Scorecard',
   description: 'Pick Tony Award winners and compete against top critics and the CriticScore algorithm. Win free TodayTix tickets.',
+  robots: { index: false, follow: false },
 };
 
 export interface ActorNominee {
