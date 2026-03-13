@@ -19,7 +19,7 @@ const fs = require('fs');
 const path = require('path');
 const { matchTitleToShow, loadShows, cleanExternalTitle, titleWordsMatch } = require('./lib/show-matching');
 const { validatePageMatchesShow } = require('./lib/page-validator');
-const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet } = require('./lib/review-normalization');
+const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
 const cheerio = require('cheerio');
 
@@ -379,25 +379,10 @@ function saveReviewFromPlaybill(showId, reviewInfo) {
       existing.data.playbillVerdictUrl = reviewInfo.url;
       changed = true;
     }
-    // Promote playbillVerdictUrl to primary url when existing content is bad
-    // (truncated/stub/excerpt or missing fullText). Announcement URLs from SERP
-    // discovery often rank above actual review URLs on Google.
-    if (reviewInfo.url && existing.data.url !== reviewInfo.url) {
-      const badContent = !existing.data.fullText
-        || (existing.data.contentTier && existing.data.contentTier !== 'complete')
-        || existing.data.needsRefetch;
-      if (badContent) {
-        existing.data.urlCorrectedFrom = existing.data.url;
-        existing.data.urlCorrectedReason = 'Replaced with playbillVerdictUrl — original had bad/missing content';
-        existing.data.url = reviewInfo.url;
-        // Clear stale text so collect-review-texts re-fetches from correct URL
-        existing.data.fullText = null;
-        existing.data.textStatus = null;
-        existing.data.contentTier = null;
-        existing.data.needsRefetch = true;
-        changed = true;
-        stats.urlCorrected = (stats.urlCorrected || 0) + 1;
-      }
+    // Upgrade primary URL if existing content is bad (shared helper)
+    if (maybeUpgradeUrl(existing.data, reviewInfo.url, 'playbill-verdict')) {
+      changed = true;
+      stats.urlCorrected = (stats.urlCorrected || 0) + 1;
     }
     if (!existing.data.url && reviewInfo.url) {
       existing.data.url = reviewInfo.url;

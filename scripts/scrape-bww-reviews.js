@@ -30,7 +30,7 @@ const https = require('https');
 const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
 const { validatePageMatchesShow } = require('./lib/page-validator');
-const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet } = require('./lib/review-normalization');
+const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
 
@@ -765,9 +765,11 @@ function saveReview(showId, reviewData, options = {}) {
       changed = true;
     }
 
-    // Set url only if file has no URL
+    // Set url if file has no URL, or upgrade if existing content is bad
     if (reviewData.url && !existing.data.url) {
       existing.data.url = reviewData.url;
+      changed = true;
+    } else if (maybeUpgradeUrl(existing.data, reviewData.url, 'bww-reviews')) {
       changed = true;
     }
 

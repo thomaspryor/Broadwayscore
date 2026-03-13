@@ -16,7 +16,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { validatePageMatchesShow } = require('./lib/page-validator');
-const { normalizeOutletFull, slugify: canonicalSlugify, findExistingReviewFile, generateReviewFilename } = require('./lib/review-normalization');
+const { normalizeOutletFull, slugify: canonicalSlugify, findExistingReviewFile, generateReviewFilename, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { excerptMentionsWrongShow } = require('./lib/excerpt-validation');
 
 // Paths
@@ -681,11 +681,14 @@ function saveReview(review) {
 
     let updated = false;
 
-    // Always update URL if we have one and existing doesn't
+    // Always update URL if we have one and existing doesn't, or upgrade if content is bad
     if (!existing.url && review.url) {
       existing.url = review.url;
       updated = true;
       console.log(`      Added URL to ${existingFilename}`);
+    } else if (maybeUpgradeUrl(existing, review.url, 'bww-roundup')) {
+      updated = true;
+      console.log(`      Upgraded URL on ${existingFilename} (bad content)`);
     }
 
     if (!existing.bwwExcerpt && review.bwwExcerpt) {

@@ -1073,6 +1073,28 @@ function isProfileUrl(url) {
   return false;
 }
 
+/**
+ * Upgrade a review file's primary URL when an aggregator provides a better one.
+ * Only replaces when existing content is bad (truncated/stub/excerpt/missing).
+ * Returns true if the URL was upgraded (caller should mark file as changed).
+ */
+function maybeUpgradeUrl(existingData, newUrl, source) {
+  if (!newUrl || existingData.url === newUrl) return false;
+  // Only upgrade if current content is bad
+  const badContent = !existingData.fullText
+    || (existingData.contentTier && existingData.contentTier !== 'complete')
+    || existingData.needsRefetch;
+  if (!badContent) return false;
+  existingData.urlCorrectedFrom = existingData.url;
+  existingData.urlCorrectedReason = `Replaced with ${source} URL — original had bad/missing content`;
+  existingData.url = newUrl;
+  existingData.fullText = null;
+  existingData.textStatus = null;
+  existingData.contentTier = null;
+  existingData.needsRefetch = true;
+  return true;
+}
+
 module.exports = {
   normalizeOutlet,
   normalizeOutletFull,
@@ -1094,6 +1116,7 @@ module.exports = {
   loadOutletRegistry,
   levenshteinDistance,
   findExistingReviewFile,
+  maybeUpgradeUrl,
   validateCriticOutlet,
   loadCriticRegistry,
   resolveOutletFromCritic,

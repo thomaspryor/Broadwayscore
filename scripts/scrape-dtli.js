@@ -15,7 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { isJunkOutlet } = require('./lib/review-normalization');
+const { isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 
 // Paths
@@ -393,6 +393,10 @@ function saveReview(review) {
     }
     if (!existing.dtliUrl && review.dtliUrl) {
       existing.dtliUrl = review.dtliUrl;
+      updated = true;
+    }
+    // Upgrade primary URL if existing content is bad and DTLI has the review URL
+    if (review.url && maybeUpgradeUrl(existing, review.url, 'dtli')) {
       updated = true;
     }
 
