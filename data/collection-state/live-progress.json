@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-13T19:01:32.537Z",
-  "processed": 42,
-  "failed": 9,
-  "successRate": "82.4%",
+  "updatedAt": "2026-03-13T19:08:09.928Z",
+  "processed": 49,
+  "failed": 12,
+  "successRate": "80.3%",
   "tierBreakdown": {
-    "playwright": 23,
-    "amp": 6,
-    "browserbase": 12,
+    "playwright": 26,
+    "amp": 8,
+    "browserbase": 14,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 5,
-    "archive": 10
+    "archiveToday": 8,
+    "archive": 12
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 11,
   "recentActivity": [
-    {
-      "t": "2026-03-13T18:55:07.097Z",
-      "event": "bb-session",
-      "session": "109f7fac",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
-    },
-    {
-      "t": "2026-03-13T18:55:08.515Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-13T18:56:54.489Z",
       "event": "bb-session",
@@ -91,6 +80,50 @@
       "t": "2026-03-13T19:00:21.215Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T19:01:53.028Z",
+      "event": "bb-session",
+      "session": "26ece713",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-03-13T19:01:54.304Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T19:03:35.890Z",
+      "event": "bb-session",
+      "session": "79f4f7ca",
+      "url": "https://www.nytimes.com/2026/02/23/theater/mother-russia-review.html"
+    },
+    {
+      "t": "2026-03-13T19:03:37.302Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-13T19:05:15.877Z",
+      "event": "bb-session",
+      "session": "f7ee29bc",
+      "url": "https://www.nytimes.com/2019/07/25/theater/moulin-rouge-review.html"
+    },
+    {
+      "t": "2026-03-13T19:05:16.953Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-13T19:07:07.389Z",
+      "event": "bb-session",
+      "session": "6441cd9b",
+      "url": "https://www.nytimes.com/2026/03/03/theater/night-side-songs-review.html"
+    },
+    {
+      "t": "2026-03-13T19:07:08.931Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
