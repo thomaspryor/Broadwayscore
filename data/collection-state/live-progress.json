@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-13T11:06:03.538Z",
-  "processed": 44,
-  "failed": 6,
-  "successRate": "88.0%",
+  "updatedAt": "2026-03-13T11:07:55.171Z",
+  "processed": 53,
+  "failed": 7,
+  "successRate": "88.3%",
   "tierBreakdown": {
-    "playwright": 26,
-    "amp": 12,
-    "browserbase": 2,
+    "playwright": 29,
+    "amp": 14,
+    "browserbase": 10,
     "directCookies": 0,
     "scrapingbee": 7,
     "brightdata": 0,
     "archiveToday": 4,
-    "archive": 4
+    "archive": 5
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-03-13T10:58:48.048Z",
@@ -56,6 +56,50 @@
     },
     {
       "t": "2026-03-13T11:04:26.411Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T11:06:06.460Z",
+      "event": "bb-session",
+      "session": "fa3fed51",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-13T11:06:08.730Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T11:06:28.612Z",
+      "event": "bb-session",
+      "session": "2827653a",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-13T11:06:30.045Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T11:06:59.896Z",
+      "event": "bb-session",
+      "session": "fc105e97",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/sarah-hyland-broadway-cast-of-j"
+    },
+    {
+      "t": "2026-03-13T11:07:02.091Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T11:07:32.410Z",
+      "event": "bb-session",
+      "session": "7a86a5b9",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-13T11:07:33.883Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
