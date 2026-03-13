@@ -170,6 +170,28 @@ jobs:
             -f max_tier=3
           echo "Gather reviews triggered for: $GATHER_SHOWS"
 
+      - name: Trigger Reddit sentiment for recently opened shows
+        if: steps.find.outputs.has_shows == 'true'
+        continue-on-error: true
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Reddit discussion exists by opening night — trigger sentiment scrape
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'update-reddit-sentiment.yml',
+                ref: 'main',
+                inputs: {
+                  shows: '${{ steps.find.outputs.shows }}'
+                }
+              });
+              console.log('Triggered Reddit sentiment for: ${{ steps.find.outputs.shows }}');
+            } catch (e) {
+              console.log('Reddit sentiment trigger failed:', e.message);
+            }
+
       - name: Audit T1/T2 coverage gaps
         if: steps.find.outputs.has_shows == 'true'
         id: coverage
