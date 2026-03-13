@@ -1442,6 +1442,22 @@ const crossShowFingerprints = new Map();
   stats.preOpeningFlagged = preOpenFlagged;
 }
 
+// --- Known syndication pairs (runtime dedup) ---
+// Same critic publishes at primary + secondary outlets simultaneously.
+// Secondary copies are skipped even without isSyndicatedDuplicate flag on file.
+const KNOWN_SYNDICATION_PAIRS = {
+  'chris jones': { primary: 'chicagotribune', secondary: ['nydailynews'] },
+  'kathleen campion': { primary: 'nytg', secondary: ['front-row-center'] },
+  'tulis mccall': { primary: 'nytg', secondary: ['front-row-center'] },
+  'stanford friedman': { primary: 'nytg', secondary: ['front-row-center'] },
+  'david rooney': { primary: 'hollywood-reporter', secondary: ['reuters'] },
+  'alexandra lipari': { primary: 'newsday', secondary: ['entertainmenthour'] },
+  'zachary stewart': { primary: 'theatermania', secondary: ['whatsonstage'] },
+  'david gordon': { primary: 'theatermania', secondary: ['whatsonstage'] },
+  'mark kennedy': { primary: 'ap', secondary: ['abc-news', 'collider', 'washington-times', 'minneapolis-star-tribune'] },
+  'jennifer farrar': { primary: 'ap', secondary: ['abc-news', 'minneapolis-star-tribune'] },
+};
+
 showDirs.forEach(showId => {
   // Skip Broadway shows in previews — they haven't opened yet, all reviews are wrong-production
   // Off-Broadway and West End shows commonly get reviewed during previews, so don't skip them
@@ -1912,6 +1928,24 @@ showDirs.forEach(showId => {
       if (data.isSyndicatedDuplicate === true) {
         stats.skippedSyndicated = (stats.skippedSyndicated || 0) + 1;
         return;
+      }
+
+      // Runtime known-syndication dedup — catches unflagged secondary copies.
+      // e.g. Chris Jones publishes in Chicago Tribune (primary) AND NY Daily News (secondary).
+      // If primary file exists for this show, skip the secondary even without file-level flag.
+      {
+        const criticSynd = (data.criticName || '').toLowerCase().trim();
+        const outletSynd = normalizeOutletCanonical(data.outletId || data.outlet || '');
+        const syndConfig = KNOWN_SYNDICATION_PAIRS[criticSynd];
+        if (syndConfig && syndConfig.secondary.includes(outletSynd)) {
+          const primaryPrefix = `${syndConfig.primary}--`;
+          const criticSlug = criticSynd.replace(/\s+/g, '-');
+          const hasPrimary = allJsonFiles.some(f => f.startsWith(primaryPrefix) && f.includes(criticSlug));
+          if (hasPrimary) {
+            stats.skippedSyndicated = (stats.skippedSyndicated || 0) + 1;
+            return;
+          }
+        }
       }
 
       // Skip cross-outlet duplicates (different critic, same text across outlets)
