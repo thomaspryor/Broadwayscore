@@ -180,10 +180,11 @@ export function ThisWeekTable({ data }: ThisWeekTableProps) {
                 <SortIcon direction={sortDirection} active={sortColumn === 'capacity'} />
               </th>
               <th
-                className={`text-right hidden md:table-cell ${headerClass}`}
+                className={`text-right whitespace-nowrap ${headerClass}`}
                 onClick={() => handleSort('atp')}
               >
-                Avg Ticket
+                <span className="hidden sm:inline">Avg Ticket</span>
+                <span className="sm:hidden">ATP</span>
                 <SortIcon direction={sortDirection} active={sortColumn === 'atp'} />
               </th>
               <th
@@ -225,7 +226,7 @@ export function ThisWeekTable({ data }: ThisWeekTableProps) {
                     mode="points"
                   />
                 </td>
-                <td className="py-3 px-2 sm:px-4 text-right text-gray-300 hidden md:table-cell">
+                <td className="py-3 px-2 sm:px-4 text-right text-gray-300 whitespace-nowrap">
                   {item.grosses?.thisWeek?.atp ? `$${item.grosses.thisWeek.atp.toFixed(0)}` : '—'}
                 </td>
                 <td className="py-3 px-2 sm:px-4 text-right text-gray-300 hidden lg:table-cell">
