@@ -91,6 +91,10 @@ on:
         description: 'Filter by market (west-end, off-broadway). Matches show ID suffix.'
         required: false
         default: ''
+      review_filter:
+        description: 'Only process these specific review filenames (comma-separated, e.g. "nytimes--unknown.json,vulture--sara-holdren.json"). FAST PATH: skips all other files.'
+        required: false
+        default: ''
 
 ## PARALLEL RUNS: Max 5 simultaneous runs recommended.
 ## Browserbase daily limit is 30 sessions; default 5/run × 5 runs = 25 (safe).
@@ -253,6 +257,7 @@ jobs:
           EXCLUDE_DOMAINS: ${{ inputs.exclude_domains }}
           INCOMPLETE_REASON_FILTER: ${{ steps.sched.outputs.reason_filter || inputs.reason_filter }}
           MARKET_FILTER: ${{ steps.sched.outputs.market_filter || inputs.market_filter }}
+          REVIEW_FILTER: ${{ inputs.review_filter }}
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           ARGS=""
@@ -600,6 +605,7 @@ jobs:
           EXCLUDE_DOMAINS: ${{ inputs.exclude_domains }}
           INCOMPLETE_REASON_FILTER: ${{ inputs.reason_filter }}
           MARKET_FILTER: ${{ inputs.market_filter }}
+          REVIEW_FILTER: ${{ inputs.review_filter }}
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           ARGS=""
