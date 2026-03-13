@@ -297,9 +297,21 @@ jobs:
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
 
-      # Rebuild is now triggered automatically via workflow_run when this workflow completes.
-      # Pull quote extraction runs inline during rebuild (step 7 of rebuild-reviews.yml).
-      # No explicit dispatch needed for either.
+      # Belt-and-suspenders: explicitly dispatch rebuild since workflow_run events
+      # can be silently dropped by GitHub during high-activity periods.
+      - name: Trigger rebuild
+        if: steps.push.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Skip if a rebuild is already running or was triggered recently
+          RUNNING=$(gh run list --workflow="Rebuild Reviews Data" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          if [ "$RUNNING" -gt 0 ]; then
+            echo "Rebuild already running — skipping dispatch"
+            exit 0
+          fi
+          echo "Dispatching rebuild..."
+          gh workflow run "Rebuild Reviews Data" -f reason="Auto-triggered by collect-review-texts" || echo "Rebuild dispatch failed (non-critical — workflow_run backup exists)"
 
       - name: Notify on failure
         if: failure()
@@ -635,5 +647,5 @@ jobs:
             data/audit/validation/collection-report-*.json
           retention-days: 30
 
-  # Rebuild is now triggered automatically via workflow_run when this workflow completes.
-  # No explicit dispatch needed — works for both single and parallel modes.
+  # Rebuild also triggered via workflow_run as backup, but explicit dispatch above
+  # is more reliable during high-activity periods.
