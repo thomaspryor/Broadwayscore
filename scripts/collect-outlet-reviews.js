@@ -205,6 +205,10 @@ const NON_REVIEW_URL_PATTERNS = [
   /\/award/i, /\/tony-?award/i, /\/nomination/i, /tony-nomin/i, /roundtable/i,
   /\/ticket/i, /\/deals?\b/i, /\/discount/i, /\/lottery\b/i, /\/rush\b/i,
   /\/cast-?announcement/i, /\/casting\b/i,
+  // Announcement/preview articles (not reviews) — TheaterMania, Playbill, BWW commonly rank these above reviews
+  /returning-to-broadway/i, /coming-to-broadway/i, /will-star-in/i,
+  /announces?-(its|their|the|new|a)-/i, /announces?-cast/i, /announces?-.*-run\b/i,
+  /set-to-(star|open|debut|premiere)/i, /to-make-(his|her|their)-broadway/i,
   // Closing/ending articles — only match "closing"/"closes" (not "close" which is Glenn Close's name)
   /broadway.{0,30}clos(es|ing)|clos(es|ing).{0,30}broadway/i, /-to-end-(its|their)-broadway/i,
   // Listing/show-info pages (TheaterMania, WhatsOnStage, LondonTheatre)

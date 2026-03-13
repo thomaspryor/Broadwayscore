@@ -373,12 +373,37 @@ function saveReviewFromPlaybill(showId, reviewInfo) {
   // Check for existing file BEFORE creating — use cross-scraper dedup
   const existing = findExistingReviewFile(showDir, outletName, criticName || null);
   if (existing && existing.data) {
-    // File exists for this outlet (+critic) — just add playbillVerdictUrl
+    // File exists for this outlet (+critic) — add playbillVerdictUrl
+    let changed = false;
     if (!existing.data.playbillVerdictUrl) {
       existing.data.playbillVerdictUrl = reviewInfo.url;
-      if (!existing.data.url && reviewInfo.url) {
+      changed = true;
+    }
+    // Promote playbillVerdictUrl to primary url when existing content is bad
+    // (truncated/stub/excerpt or missing fullText). Announcement URLs from SERP
+    // discovery often rank above actual review URLs on Google.
+    if (reviewInfo.url && existing.data.url !== reviewInfo.url) {
+      const badContent = !existing.data.fullText
+        || (existing.data.contentTier && existing.data.contentTier !== 'complete')
+        || existing.data.needsRefetch;
+      if (badContent) {
+        existing.data.urlCorrectedFrom = existing.data.url;
+        existing.data.urlCorrectedReason = 'Replaced with playbillVerdictUrl — original had bad/missing content';
         existing.data.url = reviewInfo.url;
+        // Clear stale text so collect-review-texts re-fetches from correct URL
+        existing.data.fullText = null;
+        existing.data.textStatus = null;
+        existing.data.contentTier = null;
+        existing.data.needsRefetch = true;
+        changed = true;
+        stats.urlCorrected = (stats.urlCorrected || 0) + 1;
       }
+    }
+    if (!existing.data.url && reviewInfo.url) {
+      existing.data.url = reviewInfo.url;
+      changed = true;
+    }
+    if (changed) {
       const sources = new Set(existing.data.sources || [existing.data.source || '']);
       sources.add('playbill-verdict');
       existing.data.sources = Array.from(sources).filter(Boolean);
