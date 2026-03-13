@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-13T19:08:09.928Z",
-  "processed": 49,
-  "failed": 12,
-  "successRate": "80.3%",
+  "updatedAt": "2026-03-13T19:11:41.047Z",
+  "processed": 58,
+  "failed": 13,
+  "successRate": "81.7%",
   "tierBreakdown": {
-    "playwright": 26,
-    "amp": 8,
-    "browserbase": 14,
+    "playwright": 29,
+    "amp": 12,
+    "browserbase": 16,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 8,
-    "archive": 12
+    "archiveToday": 9,
+    "archive": 15
   },
-  "browserbaseSessions": 11,
+  "browserbaseSessions": 13,
   "recentActivity": [
-    {
-      "t": "2026-03-13T18:56:54.489Z",
-      "event": "bb-session",
-      "session": "a9f13df4",
-      "url": "https://www.nytimes.com/2026/03/12/theater/every-brilliant-thing-review-daniel-r"
-    },
-    {
-      "t": "2026-03-13T18:56:55.829Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-13T18:57:09.607Z",
-      "event": "bb-session",
-      "session": "907b5f6e",
-      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
-    },
-    {
-      "t": "2026-03-13T18:57:10.891Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-13T18:57:26.613Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-03-13T19:07:08.931Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-13T19:08:21.720Z",
+      "event": "bb-session",
+      "session": "b187e3a7",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
+    },
+    {
+      "t": "2026-03-13T19:08:23.100Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T19:10:38.350Z",
+      "event": "bb-session",
+      "session": "ffc119f6",
+      "url": "https://www.nytimes.com/2025/10/16/theater/ragtime-review-henry-debessonet.html"
+    },
+    {
+      "t": "2026-03-13T19:10:39.840Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
