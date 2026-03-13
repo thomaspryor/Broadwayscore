@@ -4760,8 +4760,8 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     // Off-Broadway shows are exempt: they commonly transfer from regional theaters,
     // so LLM often misidentifies the production as "wrong" when it's actually correct.
     const showCat = _showsJsonCache?.shows?.find(s => s.id === data.showId)?.category;
-    if (data.wrongProductionOverride) {
-      console.log(`    ⚠ wrongProductionOverride set — skipping wrongProduction check`);
+    if (data.wrongProductionOverride || data.wrongProductionManualClear) {
+      console.log(`    ⚠ wrongProductionOverride/ManualClear set — skipping wrongProduction check`);
     } else if (contentVerification.wrongProduction && isHighConfidence && data.fullText && showCat !== 'off-broadway') {
       const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
       data.wrongFullText = data.fullText;

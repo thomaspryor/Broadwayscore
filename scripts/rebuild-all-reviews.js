@@ -1406,7 +1406,7 @@ const crossShowFingerprints = new Map();
     for (const f of fs.readdirSync(sDir).filter(x => x.endsWith('.json'))) {
       try {
         const d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8'));
-        if (d.wrongProduction || d.wrongShow) continue;
+        if (d.wrongProduction || d.wrongShow || d.wrongProductionManualClear) continue;
         let reviewDate = null;
         if (d.publishDate) {
           const cleaned = d.publishDate.replace(/(\d+)(?:st|nd|rd|th)\b/g, '$1');
@@ -1715,7 +1715,14 @@ showDirs.forEach(showId => {
 
         let promoted = false;
         if (!cvIsStale) {
-          if (cv.wrongProduction === true && data.wrongProduction !== true && !data.wrongProductionOverride) {
+          // Only promote wrongProduction if:
+          // 1. Not already flagged, no override/manual clear
+          // 2. LLM confidence is high or medium (skip low — likely temporal proximity override)
+          const wpConfidence = cv.confidence || 'medium';
+          const isHighMediumConfidence = wpConfidence === 'high' || wpConfidence === 'medium';
+          if (cv.wrongProduction === true && data.wrongProduction !== true
+              && !data.wrongProductionOverride && !data.wrongProductionManualClear
+              && isHighMediumConfidence) {
             data.wrongProduction = true;
             promoted = true;
           }
@@ -1829,7 +1836,7 @@ showDirs.forEach(showId => {
         const outletRegion = outletRegionMap[canonicalOutlet] || outletRegionMap[rawOutlet];
         if (outletRegion !== 'london') {
           // Mark file permanently so future rebuilds skip it faster (line 1507) and it's visible on disk
-          if (!data.wrongProduction && !data.wrongProductionOverride) {
+          if (!data.wrongProduction && !data.wrongProductionOverride && !data.wrongProductionManualClear) {
             data.wrongProduction = true;
             data.wrongProductionNote = `Cross-market: US outlet "${rawOutlet}" reviewing west-end show`;
             try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
@@ -1858,7 +1865,7 @@ showDirs.forEach(showId => {
         }
         if (outletRegion === 'london' || urlIsUK) {
           // Mark file permanently so future rebuilds skip it faster (line 1507) and it's visible on disk
-          if (!data.wrongProduction && !data.wrongProductionOverride) {
+          if (!data.wrongProduction && !data.wrongProductionOverride && !data.wrongProductionManualClear) {
             data.wrongProduction = true;
             data.wrongProductionNote = `Cross-market: London outlet "${rawOutlet}" reviewing ${showCategory} show`;
             try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
@@ -1885,7 +1892,7 @@ showDirs.forEach(showId => {
           console.log(`  [PRE-OPENING] ${showId}/${file}: published ${daysBefore} days before opening (${data.publishDate} vs ${openDate.toISOString().split('T')[0]})`);
           stats.skippedPreOpening = (stats.skippedPreOpening || 0) + 1;
           // Also flag the source file for future reference
-          if (!data.wrongProduction && !data.wrongProductionOverride) {
+          if (!data.wrongProduction && !data.wrongProductionOverride && !data.wrongProductionManualClear) {
             data.wrongProduction = true;
             data.wrongProductionNote = `Review published ${daysBefore} days before show opened — likely reviewing a different production`;
             fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
@@ -2075,6 +2082,7 @@ showDirs.forEach(showId => {
       // This guard is independent of multiProdYearGuard (doesn't require sibling productions in DB).
       // WE/OB exempt: they commonly transfer from fringe/regional, so URL years mismatch legitimately
       if (!data.publishDate && data.url && showDateMap[showId] && !data.wrongProduction
+          && !data.wrongProductionManualClear
           && showCategory !== 'west-end' && showCategory !== 'off-broadway') {
         const showYear = showDateMap[showId].getFullYear();
         // Extract years from URL bounded by path separators, hyphens, underscores, dots, or string end
