@@ -26,6 +26,10 @@ on:
       # NOTE: data/audit/seo-* is NOT listed here, so SEO health check pushes won't trigger deploys
   workflow_dispatch: # Manual trigger
 
+permissions:
+  contents: write
+  actions: write   # needed for gh workflow run (watermark dispatch)
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -179,21 +183,13 @@ jobs:
           done
           echo "Smoke test passed — production is live"
 
-      - name: Update deploy watermark
+      - name: Dispatch async watermark update
         if: success()
         continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          # Update watermark with counts from this successful deploy
-          node scripts/pre-deploy-check.js > /dev/null 2>&1 || true
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add data/audit/deploy-watermark.json 2>/dev/null || true
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "chore: Update deploy watermark [skip ci]" || true
-            bash scripts/lib/push-with-retry.sh 3 main || true
-          fi
+          gh workflow run "Update Deploy Watermark" || echo "::warning::Watermark dispatch failed (non-critical)"
 
       - name: Notify search engines of updated sitemap
         if: success()
