@@ -2096,10 +2096,15 @@ function createReviewFile(showId, reviewData, options = {}) {
           return true;
         }
 
-        // Check URL match
+        // Check URL match — merge instead of skipping to capture new metadata
         if (reviewData.url && normalizeUrl(existingReview.url) === normalizeUrl(reviewData.url)) {
-          console.log(`    Skipping ${filename} (URL already exists in ${existingFile})`);
-          return 'duplicate';
+          const merged = mergeReviews(existingReview, {
+            ...reviewData,
+            source: reviewData.source || 'gather-reviews',
+          });
+          fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(merged, null, 2));
+          console.log(`    ⟳ URL match: merged ${filename} into ${existingFile}`);
+          return true;
         }
       } catch (e) {
         // Skip files that can't be parsed
