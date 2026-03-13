@@ -68,6 +68,12 @@ function isPrincipalCast(member, totalSourceSize) {
   // these labels genuinely mean non-principal ensemble.
   const isSmallCast = totalSourceSize <= 5;
 
+  // For solo shows (1 cast member), replace generic roles with "Narrator"
+  // One-person shows shouldn't display "Ensemble" — it's misleading
+  if (totalSourceSize === 1 && /^(Ensemble|Performer|Cast)$/i.test(role)) {
+    member.role = 'Narrator';
+  }
+
   // Exact match on generic non-principal roles (skip for small casts)
   if (!isSmallCast && NON_PRINCIPAL_ROLE_RE.test(role)) return false;
 

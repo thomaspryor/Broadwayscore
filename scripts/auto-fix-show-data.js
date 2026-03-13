@@ -232,10 +232,18 @@ async function fetchCreativeTeamFromTodayTix(show, todayTixInfo) {
 async function generateSynopsisWithLLM(show) {
   if (!ANTHROPIC_API_KEY) return null;
 
-  const prompt = `Write a brief, engaging synopsis (2-3 sentences, ~100 words) for the Broadway show "${show.title}".
+  const castInfo = show.cast && show.cast.length > 0
+    ? `Starring: ${show.cast.map(c => c.name).join(', ')}.` : '';
+  const creativeInfo = show.creativeTeam && show.creativeTeam.length > 0
+    ? `Creative team: ${show.creativeTeam.map(c => `${c.name} (${c.role})`).join(', ')}.` : '';
+  const prompt = `Write a brief, factual synopsis (2-3 sentences, ~100 words) for the Broadway show "${show.title}".
 It's a ${show.type || 'play'} playing at ${show.venue || 'a Broadway theater'}.
-Write in present tense, focus on the story/premise, and make it sound exciting for potential theatergoers.
-Do not include any marketing language or ticket information.
+${castInfo}
+${creativeInfo}
+Write in present tense. Focus on the SPECIFIC plot/premise of this show — what is it actually about?
+Do not write generic descriptions that could apply to any show.
+Do not include marketing language or ticket information.
+If you don't know the specific plot, say so rather than writing something vague.
 Just return the synopsis text, nothing else.`;
 
   return callClaudeAPI(prompt, 200);
@@ -368,6 +376,18 @@ async function fixCreativeTeam(show, todayTixIds) {
     if (creativeTeam && creativeTeam.length >= 1) {
       // Filter out garbage names (LLM sometimes returns descriptions)
       creativeTeam = creativeTeam.filter(m => m.name && m.name.length <= 80);
+      // Dedup: if same person appears in multiple roles, keep only the first
+      // (LLMs hallucinate people into roles — e.g. playwright listed as director)
+      const seen = new Set();
+      creativeTeam = creativeTeam.filter(m => {
+        const key = m.name.toLowerCase().trim();
+        if (seen.has(key)) {
+          console.log(`    ⚠️  Dropped duplicate creative team entry: ${m.name} (${m.role})`);
+          return false;
+        }
+        seen.add(key);
+        return true;
+      });
       if (creativeTeam.length >= 1) {
         show.creativeTeam = creativeTeam;
         return `Generated creative team via Claude for ${show.title} (${creativeTeam.length} members)`;

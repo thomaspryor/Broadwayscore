@@ -2296,6 +2296,20 @@ function validateCreativeTeamDuplicateNames(shows) {
 
     for (const [name, roles] of Object.entries(nameCount)) {
       if (roles.length > 1) {
+        // Check if someone is listed as both writer and director AND another person
+        // is also listed as director — this indicates an LLM hallucination
+        const hasDirector = roles.some(r => /^director$/i.test(r));
+        const hasWriter = roles.some(r => /playwright|book|writer|author/i.test(r));
+        if (hasDirector && hasWriter) {
+          // Check if there's ANOTHER director in the creative team
+          const otherDirectors = show.creativeTeam.filter(m =>
+            m.name.toLowerCase().trim() !== name &&
+            /^director$/i.test(m.role)
+          );
+          if (otherDirectors.length > 0) {
+            error(`[creative-dup-name] "${show.title}" (${show.id}): "${name}" listed as both writer AND director, but "${otherDirectors[0].name}" is also director — remove incorrect director entry`);
+          }
+        }
         warn(`[creative-dup-name] "${show.title}" (${show.id}): "${name}" appears ${roles.length} times with roles: ${roles.join(', ')} — consider merging`);
         issues++;
       }
