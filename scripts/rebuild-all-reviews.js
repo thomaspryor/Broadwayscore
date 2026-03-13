@@ -1703,6 +1703,16 @@ showDirs.forEach(showId => {
           }
         }
 
+        // Staleness guard 2: if verification was done on different content than current fullText,
+        // skip promotion. The verifier may have re-scraped the URL and gotten a different page.
+        if (!cvIsStale && cv.contentHash && data.fullText) {
+          const currentHash = crypto.createHash('md5').update(data.fullText.substring(0, 2500)).digest('hex');
+          if (cv.contentHash !== currentHash) {
+            cvIsStale = true;
+            stats.contentHashMismatchSkippedPromotion = (stats.contentHashMismatchSkippedPromotion || 0) + 1;
+          }
+        }
+
         let promoted = false;
         if (!cvIsStale) {
           if (cv.wrongProduction === true && data.wrongProduction !== true) {
