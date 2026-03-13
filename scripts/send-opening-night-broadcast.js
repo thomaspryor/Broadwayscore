@@ -312,15 +312,21 @@ async function main() {
   }
 
   // Determine how many to send (resume from previous partial send)
+  // Uses address-based dedup (not just count) to prevent duplicates even if
+  // subscriber list order changes or checkpoint count drifts between runs
   const broadcastKey = `${MARKET}:` + showsForEmail.map(s => s.showId).sort().join('+');
   const previousSent = sentData.shows[broadcastKey];
   const alreadySentCount = previousSent?.sentCount || 0;
+  const alreadySentEmails = new Set(previousSent?.sentEmails || []);
 
   if (alreadySentCount > 0) {
-    console.log(`Resuming from previous partial send: ${alreadySentCount} already sent`);
+    console.log(`Resuming from previous partial send: ${alreadySentCount} already sent (${alreadySentEmails.size} tracked by address)`);
   }
 
-  const toSend = subscribers.slice(alreadySentCount, alreadySentCount + BUDGET_CAP);
+  // Filter out already-sent emails by address, then apply budget cap
+  const toSend = subscribers
+    .filter(email => !alreadySentEmails.has(email))
+    .slice(0, BUDGET_CAP);
 
   if (toSend.length === 0) {
     console.log('All subscribers already sent — marking complete');
@@ -332,11 +338,10 @@ async function main() {
     process.exit(0);
   }
 
-  // Build subject line
-  const baseSubject = showsForEmail.length === 1
+  // Build subject line — never put [PREVIEW] in subject, it confuses subscribers if leaked
+  const subject = showsForEmail.length === 1
     ? `${showsForEmail[0].showTitle} is now open, and the critic reviews are in`
     : `${showsForEmail.length} shows opened ${MARKET === 'west-end' ? 'in the West End' : 'on Broadway'} — the reviews are in`;
-  const subject = SEND_TO ? `[PREVIEW] ${baseSubject}` : baseSubject;
 
   console.log(`\nSubject: ${subject}`);
   console.log(`Sending to ${toSend.length} subscribers (offset ${alreadySentCount})...`);
@@ -374,14 +379,16 @@ async function main() {
       });
 
       sentCount++;
+      alreadySentEmails.add(email);
       consecutiveErrors = 0;
       console.log(`  Sent to ${email.replace(/(.{2}).*(@.*)/, '$1***$2')} (${sentCount - alreadySentCount}/${toSend.length})`);
 
-      // Checkpoint every 25 sends
+      // Checkpoint every 25 sends — includes sentEmails for address-level dedup on resume
       if ((sentCount - alreadySentCount) % 25 === 0) {
         sentData.shows[broadcastKey] = {
           sentAt: new Date().toISOString(),
           sentCount,
+          sentEmails: [...alreadySentEmails],
           subscriberCount: subscribers.length,
           reviewCount: showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0),
           completed: false,
@@ -410,6 +417,7 @@ async function main() {
             'Authorization': `Bearer ${RESEND_API_KEY}`,
           });
           sentCount++;
+          alreadySentEmails.add(email);
           consecutiveErrors = 0;
           console.log(`  Retry successful for ${email.replace(/(.{2}).*(@.*)/, '$1***$2')}`);
         } catch (retryErr) {
@@ -441,6 +449,7 @@ async function main() {
     const completionData = {
       sentAt: new Date().toISOString(),
       sentCount,
+      sentEmails: [...alreadySentEmails],
       subscriberCount: subscribers.length,
       reviewCount: showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0),
       completed: allSent,
