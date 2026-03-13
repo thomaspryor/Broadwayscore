@@ -436,7 +436,7 @@ function titleToSlug(title) {
  * If a target year is provided, picks the production with closest opening year.
  * Otherwise, picks the most recent production.
  */
-function pickBestProduction(matches, targetYear, preferredMarket) {
+function pickBestProduction(matches, targetYear, preferredMarket, prefer) {
   if (matches.length === 1) return matches[0];
 
   // Market-aware filtering: if a preferred market is specified (e.g., 'broadway',
@@ -456,12 +456,18 @@ function pickBestProduction(matches, targetYear, preferredMarket) {
   }
 
   if (!targetYear) {
-    // No date hint — prefer most recent production, but warn about ambiguity
+    // No date hint — use prefer option to pick original vs most recent.
+    // 'original' = earliest opening (for financial/cumulative data like all-time grosses)
+    // 'recent' = most recent opening (default, for reviews/news)
+    const strategy = prefer || 'recent';
     const ids = matches.map(m => m.id).join(', ');
-    console.warn(`  ⚠️  [AMBIGUOUS MATCH] ${matches.length} productions for "${matches[0].title}" (${ids}) — no year hint provided, picking most recent. Pass { year } to disambiguate.`);
+    console.warn(`  ⚠️  [AMBIGUOUS MATCH] ${matches.length} productions for "${matches[0].title}" (${ids}) — no year hint, picking ${strategy}. Pass { year } to disambiguate.`);
     return matches.reduce((best, show) => {
       const showYear = show.openingDate ? new Date(show.openingDate).getFullYear() : 0;
       const bestYear = best.openingDate ? new Date(best.openingDate).getFullYear() : 0;
+      if (strategy === 'original') {
+        return showYear < bestYear ? show : best;
+      }
       return showYear > bestYear ? show : best;
     });
   }
@@ -483,6 +489,7 @@ function pickBestProduction(matches, targetYear, preferredMarket) {
  * @param {Object} [options] - Optional settings
  * @param {number} [options.year] - Publication year for multi-production disambiguation
  * @param {string} [options.market] - Preferred market ('broadway'|'west-end'|'off-broadway') for cross-market disambiguation
+ * @param {string} [options.prefer] - 'recent' (default) or 'original' — which production to pick when ambiguous with no year hint
  * @returns {{ show: Object, confidence: 'high'|'medium' } | null}
  */
 function matchTitleToShow(externalTitle, shows, options) {
@@ -490,6 +497,7 @@ function matchTitleToShow(externalTitle, shows, options) {
 
   const targetYear = options?.year || null;
   const preferredMarket = options?.market || null;
+  const prefer = options?.prefer || null;
   const cleaned = cleanExternalTitle(externalTitle);
   const lowerCleaned = cleaned.toLowerCase().trim();
   if (!lowerCleaned) return null;
@@ -522,7 +530,7 @@ function matchTitleToShow(externalTitle, shows, options) {
       }
     }
     if (exactMatches.length > 0) {
-      return { show: pickBestProduction(exactMatches, targetYear, preferredMarket), confidence: 'high' };
+      return { show: pickBestProduction(exactMatches, targetYear, preferredMarket, prefer), confidence: 'high' };
     }
 
     // 2. Known aliases → slug → show (collect all for multi-production disambiguation)
@@ -540,7 +548,7 @@ function matchTitleToShow(externalTitle, shows, options) {
         }
       }
       if (aliasMatches.length > 0) {
-        return { show: pickBestProduction(aliasMatches, targetYear, preferredMarket), confidence: 'high' };
+        return { show: pickBestProduction(aliasMatches, targetYear, preferredMarket, prefer), confidence: 'high' };
       }
     }
 
@@ -572,7 +580,7 @@ function matchTitleToShow(externalTitle, shows, options) {
       }
     }
     if (normalizedMatches.length > 0) {
-      return { show: pickBestProduction(normalizedMatches, targetYear, preferredMarket), confidence: 'high' };
+      return { show: pickBestProduction(normalizedMatches, targetYear, preferredMarket, prefer), confidence: 'high' };
     }
   }
 
@@ -588,7 +596,7 @@ function matchTitleToShow(externalTitle, shows, options) {
         }
       }
       if (wordMatches.length > 0) {
-        return { show: pickBestProduction(wordMatches, targetYear, preferredMarket), confidence: 'medium' };
+        return { show: pickBestProduction(wordMatches, targetYear, preferredMarket, prefer), confidence: 'medium' };
       }
     }
   }

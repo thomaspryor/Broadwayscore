@@ -321,9 +321,9 @@ async function scrapeAllTime(): Promise<void> {
 
         for (const row of rows) {
           // Use shared show-matching utility — high confidence only for financial data
-          // BWW all-time data is Broadway-only — pass market hint to prevent
-          // cross-market contamination (e.g., Cats matching to cats-2016 instead of cats-1982)
-          const match = matchTitleToShow(row.showTitle, shows, { market: 'broadway' });
+          // BWW all-time data is Broadway-only, and cumulative stats belong to the
+          // original production (e.g., Cats 7401 perfs = 1982 original, not 2016 revival)
+          const match = matchTitleToShow(row.showTitle, shows, { market: 'broadway', prefer: 'original' });
 
           if (match && match.confidence === 'high') {
             const slug = match.show.slug || match.show.id;
