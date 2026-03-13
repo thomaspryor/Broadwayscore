@@ -851,19 +851,21 @@ function extractScore(html, text, outletId) {
  * ONLY check HTML for structural indicators — never search review text,
  * because phrases like "critics pick up on" cause false positives.
  */
-function extractNYTCriticsPick(html, _text) {
-  if (!html) return null;
-
+function extractNYTCriticsPick(html, text) {
   // Structured data: {"criticsPick": true} in JSON-LD
-  if (/"criticsPick"\s*:\s*true/i.test(html)) return 'Critics_Pick';
+  if (html && /"criticsPick"\s*:\s*true/i.test(html)) return 'Critics_Pick';
 
   // NYT HTML markup: the Critics' Pick badge has specific class/element patterns
-  if (/class="[^"]*critics?-?pick[^"]*"/i.test(html)) return 'Critics_Pick';
-  if (/data-testid="[^"]*critics?-?pick[^"]*"/i.test(html)) return 'Critics_Pick';
+  if (html && /class="[^"]*critics?-?pick[^"]*"/i.test(html)) return 'Critics_Pick';
+  if (html && /data-testid="[^"]*critics?-?pick[^"]*"/i.test(html)) return 'Critics_Pick';
 
   // The actual badge text as a standalone label (not in a sentence)
   // Requires apostrophe to avoid matching "critics pick up on..."
-  if (/>\s*Critic['']s\s+Pick\s*</i.test(html)) return 'Critics_Pick';
+  if (html && />\s*Critic['']s\s+Pick\s*</i.test(html)) return 'Critics_Pick';
+
+  // Fallback: check text content (BWW roundup excerpts, review body)
+  // Matches "Critic's Pick" as a standalone designation phrase
+  if (text && /\bCritic[''\u2019]s\s+Pick\b/i.test(text)) return 'Critics_Pick';
 
   return null;
 }

@@ -469,6 +469,12 @@ async function main() {
       console.log(`${subscribers.length - sentCount} remaining — will continue on next cron run`);
     }
   } else {
+    // Track preview sends to prevent duplicate previews for same show+hour
+    const previewKey = `preview:${broadcastKey}:${process.env.BROADCAST_HOUR || 'manual'}`;
+    const alreadyPreviewed = !!sentData.shows[previewKey];
+    sentData.shows[previewKey] = { sentAt: new Date().toISOString(), previewTo: SEND_TO };
+    saveSentData(sentData);
+
     console.log(`\nPreview sent to ${SEND_TO}`);
 
     // Send approval email (only on 5 AM cron, not 8 AM)
@@ -478,6 +484,8 @@ async function main() {
 
     if (!HMAC_SECRET) {
       console.log('No APPROVAL_HMAC_SECRET — skipping approval email');
+    } else if (alreadyPreviewed) {
+      console.log('Preview already sent for this show+hour — skipping duplicate approval email');
     } else if (BROADCAST_HOUR === '8') {
       console.log('8 AM run — skipping approval email (sent at 5 AM)');
     } else if (!OWNER_EMAIL) {
