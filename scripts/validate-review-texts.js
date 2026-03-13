@@ -200,14 +200,23 @@ function validateReviewFile(filePath, validOutlets, seenReviews) {
   const reviewKey = `${showId}::${generateReviewKey(data.outletId, data.outlet, data.criticName)}`;
 
   if (seenReviews.has(reviewKey)) {
-    const existingFile = seenReviews.get(reviewKey);
-    errors.push({
-      file: relativePath,
-      check: 'duplicate_review',
-      message: `Duplicate review (same outlet+critic): also in ${existingFile}`
-    });
+    const existing = seenReviews.get(reviewKey);
+    // Same outlet+critic but different URL = likely different articles (e.g. timeout-london reviews different productions)
+    if (data.url && existing.url && data.url !== existing.url) {
+      warnings.push({
+        file: relativePath,
+        check: 'duplicate_review',
+        message: `Same outlet+critic as ${existing.file} but different URL — verify these are distinct reviews`
+      });
+    } else {
+      errors.push({
+        file: relativePath,
+        check: 'duplicate_review',
+        message: `Duplicate review (same outlet+critic): also in ${existing.file}`
+      });
+    }
   } else {
-    seenReviews.set(reviewKey, relativePath);
+    seenReviews.set(reviewKey, { file: relativePath, url: data.url || null });
   }
 
   return { errors, warnings };
