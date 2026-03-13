@@ -16,13 +16,23 @@
     "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
     "data-off-broadway-2026/nytg--allison-considine.json",
     "death-becomes-her-2024/newyorker--helen-shaw.json",
-    "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json"
+    "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+    "drunk-romeo-and-juliet-off-broadway-2025/nytg--unknown.json",
+    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
+    "every-brilliant-thing-2026/nytg--unknown.json",
+    "hadestown-2019/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/nyt-theater--jonathan-mandell.json",
+    "hercules-west-end-2025/nytimes--matt-wolf.json",
+    "hercules-west-end-2025/variety--david-benedict.json"
   ],
   "failed": [
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theatre-is-easy--brooke-viegut.json",
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
     "the-lion-king-west-end-2021/thestage--unknown.json",
-    "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json"
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
+    "every-brilliant-thing-2026/nytimes--unknown.json",
+    "hadestown-2019/newyorker--hilton-als.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -37,31 +47,43 @@
       "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
       "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
       "data-off-broadway-2026/nytg--allison-considine.json",
-      "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json"
+      "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+      "drunk-romeo-and-juliet-off-broadway-2025/nytg--unknown.json",
+      "every-brilliant-thing-2026/nytg--unknown.json",
+      "hamilton-2015/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
-      "back-to-the-future-west-end-2021/variety--david-benedict.json"
+      "back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
+      "hercules-west-end-2025/variety--david-benedict.json"
     ],
     "browserbase": [
       "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
-      "chess-2025/hollywood-reporter--angie-han.json"
+      "chess-2025/hollywood-reporter--angie-han.json",
+      "data/review-texts/hadestown-2019/hollywood-reporter--david-rooney.json",
+      "hadestown-2019/hollywood-reporter--david-rooney.json",
+      "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json",
+      "hamilton-2015/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json"
+      "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
+      "data/review-texts/every-brilliant-thing-2026/nytimes--unknown.json"
     ],
     "archive": [
       "touch-off-broadway-2026/broadwayworld--marina-kennedy.json",
       "touch-off-broadway-2026/epoch-times--judd-hollander.json",
       "touch-off-broadway-2026/plays-to-see--austin-fimmano.json",
-      "death-becomes-her-2024/newyorker--helen-shaw.json"
+      "death-becomes-her-2024/newyorker--helen-shaw.json",
+      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
+      "hercules-west-end-2025/nytimes--matt-wolf.json"
     ]
   },
   "startTime": "2026-03-13T19:36:12.449Z",
-  "lastProcessed": "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+  "lastProcessed": "hercules-west-end-2025/variety--david-benedict.json",
   "log": [
     {
       "t": "2026-03-13T19:43:23.732Z",
@@ -71,6 +93,39 @@
     },
     {
       "t": "2026-03-13T19:43:25.198Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T19:44:56.684Z",
+      "event": "bb-session",
+      "session": "d59d8f00",
+      "url": "https://www.nytimes.com/2026/03/12/theater/every-brilliant-thing-review-daniel-r"
+    },
+    {
+      "t": "2026-03-13T19:44:58.047Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-13T19:46:00.068Z",
+      "event": "bb-session",
+      "session": "6b55137a",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-13T19:46:01.388Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T19:46:19.686Z",
+      "event": "bb-session",
+      "session": "867cdd96",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-13T19:46:21.214Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
