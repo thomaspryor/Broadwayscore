@@ -70,14 +70,6 @@ function getTodayIndex(mondayStr: string): number {
   return -1;
 }
 
-/** Get YYYY-MM-DD for a day offset from Monday */
-function getDayDate(mondayStr: string, dayIndex: number): string {
-  const monday = parseMonday(mondayStr);
-  const day = new Date(monday);
-  day.setDate(monday.getDate() + dayIndex);
-  return `${day.getFullYear()}-${String(day.getMonth() + 1).padStart(2, '0')}-${String(day.getDate()).padStart(2, '0')}`;
-}
-
 export default function ShowtimesCard({ schedule, currentMonday, showStatus, todayTixUrl }: ShowtimesCardProps) {
   // Don't render for closed shows or if no weeks data
   const weekKeys = useMemo(() => Object.keys(schedule.weeks).sort(), [schedule.weeks]);
@@ -142,17 +134,12 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tod
         {week.map((day, i) => {
           const isDark = !day.m && !day.e;
           const isToday = i === todayIdx;
-          const hasShow = !isDark;
-          const ticketUrl = hasShow && todayTixUrl ? `${todayTixUrl}?date=${getDayDate(selectedMonday, i)}` : null;
-          const Row = ticketUrl ? 'a' : 'div';
-          const rowProps = ticketUrl ? { href: ticketUrl, target: '_blank', rel: 'noopener noreferrer' } : {};
           return (
-            <Row
+            <div
               key={i}
-              {...rowProps}
               className={`flex items-center py-2.5 border-b border-white/5 last:border-0 ${
                 isToday ? 'bg-white/[0.03] -mx-2 px-2 rounded' : ''
-              } ${ticketUrl ? 'hover:bg-white/[0.05] transition-colors cursor-pointer group' : ''}`}
+              }`}
             >
               <span className={`w-10 shrink-0 text-sm font-medium ${
                 isToday ? 'text-brand' : isDark ? 'text-gray-500' : 'text-gray-300'
@@ -173,12 +160,7 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tod
                   </>
                 )}
               </span>
-              {ticketUrl && (
-                <svg className="w-3.5 h-3.5 ml-2 text-gray-600 group-hover:text-gray-400 transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              )}
-            </Row>
+            </div>
           );
         })}
       </div>
