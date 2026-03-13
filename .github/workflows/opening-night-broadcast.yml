@@ -4,14 +4,24 @@ name: Opening Night Broadcast
 # Heavy lifting (gather, rebuild, score) is handled by the data pipeline:
 #   update-show-status → gather-reviews → rebuild → llm-ensemble-score
 #   opening-night-reviews (5 AM UTC) → SERP discovery → gather-reviews → rebuild → score
-# The 5 AM run catches shows where data is already ready (scored overnight).
-# The 8 AM run catches shows whose scoring finished between 5-8 AM.
-# The workflow_run trigger catches scoring completions same-night (no cron delay).
+#
+# Polling: Every 30 min from 1-8 AM UTC (8 PM-3 AM ET) on opening nights.
+# If shows aren't ready (need 12+ reviews, 3+ T1, 3+ T2), dispatches gather-reviews
+# and re-dispatches itself. Max 8 retries (4 hours). Stops once broadcast sends or
+# no pending shows remain.
 
 on:
   schedule:
-    - cron: '0 5 * * *'   # 5 AM UTC = midnight ET — first check
-    - cron: '0 8 * * *'   # 8 AM UTC = 3 AM ET — catch-up after pipeline finishes
+    - cron: '0 1 * * *'    # 1 AM UTC = 8 PM ET — first check (curtain call)
+    - cron: '30 1 * * *'   # 1:30 AM UTC = 8:30 PM ET
+    - cron: '0 2 * * *'    # 2 AM UTC = 9 PM ET
+    - cron: '30 2 * * *'   # 2:30 AM UTC = 9:30 PM ET
+    - cron: '0 3 * * *'    # 3 AM UTC = 10 PM ET
+    - cron: '30 3 * * *'   # 3:30 AM UTC = 10:30 PM ET
+    - cron: '0 4 * * *'    # 4 AM UTC = 11 PM ET
+    - cron: '30 4 * * *'   # 4:30 AM UTC = 11:30 PM ET
+    - cron: '0 5 * * *'    # 5 AM UTC = midnight ET
+    - cron: '0 8 * * *'    # 8 AM UTC = 3 AM ET — final catch-up
   workflow_run:
     workflows: ["LLM Ensemble Score Reviews"]
     types: [completed]
@@ -171,6 +181,7 @@ jobs:
 
       - name: Send broadcast
         if: steps.check.outputs.pending_shows != ''
+        id: broadcast
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
@@ -183,7 +194,7 @@ jobs:
           LOOKBACK=${{ inputs.lookback_days || 2 }}
           SEND_TO_FLAG=""
 
-          # Detect which cron run this is (5 AM or 8 AM UTC) for approval email dedup
+          # Detect which cron run this is for approval email dedup
           CURRENT_HOUR=$(date -u +%H)
           if [ "$CURRENT_HOUR" -ge 7 ] && [ "$CURRENT_HOUR" -le 9 ]; then
             export BROADCAST_HOUR=8
@@ -203,10 +214,16 @@ jobs:
             echo "** PREVIEW MODE — sending to owner only. To send to all: re-run with send_to_all=true **"
           fi
 
+          SENT="false"
+
           # Broadway broadcast (skip if no Broadway shows)
           if [ -n "${{ steps.find.outputs.broadway }}" ]; then
             echo "--- Broadway broadcast ---"
-            node scripts/send-opening-night-broadcast.js --market=broadway --budget=60 --lookback=$LOOKBACK $SEND_TO_FLAG
+            OUTPUT=$(node scripts/send-opening-night-broadcast.js --market=broadway --budget=60 --lookback=$LOOKBACK $SEND_TO_FLAG 2>&1) || true
+            echo "$OUTPUT"
+            if echo "$OUTPUT" | grep -q "broadcast complete\|Preview sent to\|Done:"; then
+              SENT="true"
+            fi
           else
             echo "No Broadway shows to broadcast"
           fi
@@ -214,9 +231,32 @@ jobs:
           # West End broadcast (skip if no WE shows)
           if [ -n "${{ steps.find.outputs.westend }}" ]; then
             echo "--- West End broadcast ---"
-            node scripts/send-opening-night-broadcast.js --market=west-end --budget=35 --lookback=$LOOKBACK $SEND_TO_FLAG
+            OUTPUT=$(node scripts/send-opening-night-broadcast.js --market=west-end --budget=35 --lookback=$LOOKBACK $SEND_TO_FLAG 2>&1) || true
+            echo "$OUTPUT"
+            if echo "$OUTPUT" | grep -q "broadcast complete\|Preview sent to\|Done:"; then
+              SENT="true"
+            fi
           else
             echo "No West End shows to broadcast"
+          fi
+
+          echo "broadcast_sent=$SENT" >> $GITHUB_OUTPUT
+
+      - name: Gather more reviews if not ready
+        if: steps.check.outputs.pending_shows != '' && steps.broadcast.outputs.broadcast_sent != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "Shows not ready for broadcast — triggering gather-reviews to collect more"
+          PENDING="${{ steps.check.outputs.pending_shows }}"
+
+          # Check if gather is already running
+          RUNNING=$(gh run list --workflow="Gather Review Data" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          if [ "$RUNNING" -gt 0 ]; then
+            echo "Gather already running — skipping dispatch"
+          else
+            echo "Dispatching gather-reviews for: $PENDING"
+            gh workflow run "Gather Review Data" -f shows="$PENDING" || echo "Gather dispatch failed"
           fi
 
       - name: Send push notifications (mobile app)

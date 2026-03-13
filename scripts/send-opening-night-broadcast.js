@@ -45,7 +45,9 @@ const SENT_PATH = path.join(DATA_DIR, 'opening-night-sent.json');
 const OUTLET_REGISTRY_PATH = path.join(DATA_DIR, 'outlet-registry.json');
 const FROM_EMAIL = 'updates@broadwayscorecard.com';
 const SITE_NAME = MARKET === 'west-end' ? 'West End Scorecard' : 'Broadway Scorecard';
-const MIN_REVIEWS = 8;
+const MIN_REVIEWS = 12;
+const MIN_T1_REVIEWS = 3;
+const MIN_T2_REVIEWS = 3;
 const DEFAULT_BUDGET_CAP = 95; // Leave headroom for per-show follow emails (Resend 100/day)
 const BUDGET_CAP = BUDGET_ARG ? parseInt(BUDGET_ARG.split('=')[1], 10) : DEFAULT_BUDGET_CAP;
 
@@ -177,24 +179,7 @@ async function main() {
     process.exit(0);
   }
 
-  // Check readiness (12+ scored reviews)
-  const readyShows = [];
-  for (const show of pendingShows) {
-    const showId = show.id || show.slug;
-    const stats = getReviewStats(reviewsArr, showId);
-    if (stats.reviewCount >= MIN_REVIEWS) {
-      readyShows.push({ show, stats });
-    } else {
-      console.log(`  ${show.title}: Not ready (${stats.reviewCount}/${MIN_REVIEWS} reviews)`);
-    }
-  }
-
-  if (readyShows.length === 0) {
-    console.log(`\nNo shows are ready for broadcast (need ${MIN_REVIEWS}+ scored reviews)`);
-    process.exit(0);
-  }
-
-  // Load outlet registry for tier-weighted scoring
+  // Load outlet registry for tier-weighted scoring and readiness checks
   const outletRegistry = loadJSON(OUTLET_REGISTRY_PATH) || {};
   const outlets = outletRegistry.outlets || outletRegistry;
 
@@ -203,17 +188,35 @@ async function main() {
     return (entry && entry.tier) || 3; // Default to Tier 3
   }
 
-  // Log tier coverage for readiness diagnostics
-  for (const { show, stats } of readyShows) {
+  // Check readiness: 12+ total, 3+ T1, 3+ T2
+  const readyShows = [];
+  for (const show of pendingShows) {
     const showId = show.id || show.slug;
+    const stats = getReviewStats(reviewsArr, showId);
     const showReviews = reviewsArr.filter(r => r.showId === showId && r.assignedScore != null);
     const t1Count = showReviews.filter(r => getOutletTier(r.outletId) === 1).length;
     const t2Count = showReviews.filter(r => getOutletTier(r.outletId) === 2).length;
     const t3Count = showReviews.filter(r => getOutletTier(r.outletId) === 3).length;
-    console.log(`  ${show.title}: ${stats.reviewCount} reviews (T1:${t1Count} T2:${t2Count} T3:${t3Count})`);
-    if (t1Count < 3) {
-      console.log(`    ⚠ Low T1 coverage (${t1Count} of expected 5+)`);
+
+    const totalOk = stats.reviewCount >= MIN_REVIEWS;
+    const t1Ok = t1Count >= MIN_T1_REVIEWS;
+    const t2Ok = t2Count >= MIN_T2_REVIEWS;
+
+    if (totalOk && t1Ok && t2Ok) {
+      readyShows.push({ show, stats, t1Count, t2Count, t3Count });
+      console.log(`  ✅ ${show.title}: ${stats.reviewCount} reviews (T1:${t1Count} T2:${t2Count} T3:${t3Count})`);
+    } else {
+      const reasons = [];
+      if (!totalOk) reasons.push(`${stats.reviewCount}/${MIN_REVIEWS} total`);
+      if (!t1Ok) reasons.push(`T1:${t1Count}/${MIN_T1_REVIEWS}`);
+      if (!t2Ok) reasons.push(`T2:${t2Count}/${MIN_T2_REVIEWS}`);
+      console.log(`  ⏳ ${show.title}: Not ready — ${reasons.join(', ')} (T1:${t1Count} T2:${t2Count} T3:${t3Count})`);
     }
+  }
+
+  if (readyShows.length === 0) {
+    console.log(`\nNo shows are ready for broadcast (need ${MIN_REVIEWS}+ reviews, ${MIN_T1_REVIEWS}+ T1, ${MIN_T2_REVIEWS}+ T2)`);
+    process.exit(0);
   }
 
   // Build show data for email template
