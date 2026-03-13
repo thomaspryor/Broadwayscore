@@ -1,14 +1,46 @@
 {
-  "timestamp": "2026-03-13T17:15:08.935Z",
+  "timestamp": "2026-03-13T19:05:25.363Z",
   "threshold": 5,
   "shows": [
     {
-      "showId": "drunk-shakespeare-off-broadway-2022",
-      "oldMean": 78.7,
-      "newMean": 70,
-      "delta": 8.7,
+      "showId": "macbeth-1982",
+      "oldMean": 46,
+      "newMean": 26,
+      "delta": 20,
+      "oldCount": 2,
+      "newCount": 1
+    },
+    {
+      "showId": "macbeth-1988",
+      "oldMean": 44,
+      "newMean": 33,
+      "delta": 11,
       "oldCount": 3,
       "newCount": 2
+    },
+    {
+      "showId": "macbeth-1981",
+      "oldMean": 44.3,
+      "newMean": 33.5,
+      "delta": 10.8,
+      "oldCount": 3,
+      "newCount": 2
+    },
+    {
+      "showId": "macbeth-2000",
+      "oldMean": 47.3,
+      "newMean": 38,
+      "delta": 9.3,
+      "oldCount": 3,
+      "newCount": 2
+    },
+    {
+      "showId": "carrie-1988",
+      "oldMean": 67,
+      "newMean": 74,
+      "delta": 7,
+      "oldCount": 4,
+      "newCount": 3
     }
   ]
 }
