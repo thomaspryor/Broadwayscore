@@ -195,7 +195,7 @@ export function LotteryTable({ data }: LotteryTableProps) {
             {sortedData.map((item, index) => {
               const lottery = item.lotteryData.lottery;
               const special = item.lotteryData.specialLottery;
-              const price = special?.price || lottery?.price;
+              const price = special?.price ?? lottery?.price;
               const score = item.show.criticScore?.score;
               const isExpanded = expandedSlug === item.show.slug;
               const hasDetails = !!(lottery || special);
@@ -205,6 +205,7 @@ export function LotteryTable({ data }: LotteryTableProps) {
                   <tr
                     className={`border-b border-white/5 hover:bg-white/5 transition-colors ${hasDetails ? 'cursor-pointer' : ''} ${isExpanded ? 'border-b-0' : ''}`}
                     onClick={() => hasDetails && setExpandedSlug(isExpanded ? null : item.show.slug)}
+                    aria-expanded={hasDetails ? isExpanded : undefined}
                   >
                   <td className="py-3 px-4">
                     <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
@@ -228,7 +229,7 @@ export function LotteryTable({ data }: LotteryTableProps) {
                   <td className="py-3 px-4 text-right">
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-purple-500/15 border border-purple-500/30 text-purple-300 font-semibold">
                       <TicketIcon className="w-3.5 h-3.5" />
-                      ${price}
+                      {price != null ? `$${price}` : '—'}
                     </span>
                   </td>
                   <td className="py-3 px-4 hidden sm:table-cell" onClick={(e) => e.stopPropagation()}>
@@ -449,6 +450,7 @@ export function StandingRoomTable({ data }: StandingRoomTableProps) {
                   <tr
                     className={`border-b border-white/5 hover:bg-white/5 transition-colors ${hasDetails ? 'cursor-pointer' : ''} ${isExpanded ? 'border-b-0' : ''}`}
                     onClick={() => hasDetails && setExpandedSlug(isExpanded ? null : item.show.slug)}
+                    aria-expanded={hasDetails ? isExpanded : undefined}
                   >
                   <td className="py-3 px-4">
                     <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
@@ -677,6 +679,7 @@ export function RushTable({ data }: RushTableProps) {
                   <tr
                     className={`border-b border-white/5 hover:bg-white/5 transition-colors ${hasDetails ? 'cursor-pointer' : ''} ${isExpanded ? 'border-b-0' : ''}`}
                     onClick={() => hasDetails && setExpandedSlug(isExpanded ? null : item.show.slug)}
+                    aria-expanded={hasDetails ? isExpanded : undefined}
                   >
                   <td className="py-3 px-4">
                     <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
