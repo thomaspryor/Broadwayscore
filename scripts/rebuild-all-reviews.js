@@ -1715,7 +1715,7 @@ showDirs.forEach(showId => {
 
         let promoted = false;
         if (!cvIsStale) {
-          if (cv.wrongProduction === true && data.wrongProduction !== true) {
+          if (cv.wrongProduction === true && data.wrongProduction !== true && !data.wrongProductionOverride) {
             data.wrongProduction = true;
             promoted = true;
           }
@@ -1829,7 +1829,7 @@ showDirs.forEach(showId => {
         const outletRegion = outletRegionMap[canonicalOutlet] || outletRegionMap[rawOutlet];
         if (outletRegion !== 'london') {
           // Mark file permanently so future rebuilds skip it faster (line 1507) and it's visible on disk
-          if (!data.wrongProduction) {
+          if (!data.wrongProduction && !data.wrongProductionOverride) {
             data.wrongProduction = true;
             data.wrongProductionNote = `Cross-market: US outlet "${rawOutlet}" reviewing west-end show`;
             try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
@@ -1858,7 +1858,7 @@ showDirs.forEach(showId => {
         }
         if (outletRegion === 'london' || urlIsUK) {
           // Mark file permanently so future rebuilds skip it faster (line 1507) and it's visible on disk
-          if (!data.wrongProduction) {
+          if (!data.wrongProduction && !data.wrongProductionOverride) {
             data.wrongProduction = true;
             data.wrongProductionNote = `Cross-market: London outlet "${rawOutlet}" reviewing ${showCategory} show`;
             try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
@@ -1885,7 +1885,7 @@ showDirs.forEach(showId => {
           console.log(`  [PRE-OPENING] ${showId}/${file}: published ${daysBefore} days before opening (${data.publishDate} vs ${openDate.toISOString().split('T')[0]})`);
           stats.skippedPreOpening = (stats.skippedPreOpening || 0) + 1;
           // Also flag the source file for future reference
-          if (!data.wrongProduction) {
+          if (!data.wrongProduction && !data.wrongProductionOverride) {
             data.wrongProduction = true;
             data.wrongProductionNote = `Review published ${daysBefore} days before show opened — likely reviewing a different production`;
             fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
