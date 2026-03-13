@@ -275,7 +275,7 @@ export function LotteryTable({ data }: LotteryTableProps) {
                           {lottery && (
                             <div className="flex-1 bg-purple-500/10 border border-purple-500/20 rounded-lg p-3">
                               <div className="flex items-start justify-between gap-2 mb-2">
-                                <span className="font-semibold text-purple-300 text-sm">{lottery.type ? `${lottery.type} Lottery` : 'Digital Lottery'}</span>
+                                <span className="font-semibold text-purple-300 text-sm">{lottery.type ? `${lottery.type.charAt(0).toUpperCase() + lottery.type.slice(1)} Lottery` : 'Digital Lottery'}</span>
                                 <span className="font-bold text-white text-lg">${lottery.price}</span>
                               </div>
                               {lottery.time && (
