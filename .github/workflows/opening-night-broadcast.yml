@@ -37,6 +37,16 @@ on:
         required: false
         type: boolean
         default: false
+      approved_shows:
+        description: 'Comma-separated show IDs from approval link (overrides discovery)'
+        required: false
+        type: string
+        default: ''
+      approved_market:
+        description: 'Market from approval link (broadway or west-end)'
+        required: false
+        type: string
+        default: ''
 
 permissions:
   contents: write
@@ -72,27 +82,36 @@ jobs:
         id: find
         run: |
           LOOKBACK=${{ inputs.lookback_days || 2 }}
-          SHOWS=$(node -e "
-            const shows = require('./data/shows.json').shows;
-            const now = new Date();
-            const cutoff = new Date(now);
-            cutoff.setDate(cutoff.getDate() - $LOOKBACK);
-            cutoff.setHours(0,0,0,0);
 
-            const opened = shows.filter(s => {
-              if (s.status !== 'open' || !s.openingDate) return false;
-              // Only broadcast for Broadway and West End — skip OB/OWE
-              const cat = s.category || 'broadway';
-              if (cat !== 'broadway' && cat !== 'west-end') return false;
-              const d = new Date(s.openingDate);
-              d.setHours(0,0,0,0);
-              return d >= cutoff && d <= now;
-            });
+          # If approval link passed specific shows, use them directly (Fix G)
+          APPROVED_SHOWS="${{ inputs.approved_shows }}"
+          APPROVED_MARKET="${{ inputs.approved_market }}"
+          if [ -n "$APPROVED_SHOWS" ]; then
+            echo "Using approved shows from approval link: $APPROVED_SHOWS"
+            SHOWS="$APPROVED_SHOWS"
+          else
+            SHOWS=$(node -e "
+              const shows = require('./data/shows.json').shows;
+              const now = new Date();
+              const cutoff = new Date(now);
+              cutoff.setDate(cutoff.getDate() - $LOOKBACK);
+              cutoff.setHours(0,0,0,0);
 
-            if (opened.length > 0) {
-              console.log(opened.map(s => s.id).join(','));
-            }
-          ")
+              const opened = shows.filter(s => {
+                if (s.status !== 'open' || !s.openingDate) return false;
+                // Only broadcast for Broadway and West End — skip OB/OWE
+                const cat = s.category || 'broadway';
+                if (cat !== 'broadway' && cat !== 'west-end') return false;
+                const d = new Date(s.openingDate);
+                d.setHours(0,0,0,0);
+                return d >= cutoff && d <= now;
+              });
+
+              if (opened.length > 0) {
+                console.log(opened.map(s => s.id).join(','));
+              }
+            ")
+          fi
 
           if [ -z "$SHOWS" ]; then
             echo "No recently opened shows found"

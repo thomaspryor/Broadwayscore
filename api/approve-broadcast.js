@@ -111,6 +111,8 @@ module.exports = async (req, res) => {
       inputs: {
         send_to_all: 'true',
         lookback_days: lookbackDays,
+        approved_shows: shows || '',
+        approved_market: market || '',
       }
     }, ghToken);
   } catch (err) {
