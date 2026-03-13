@@ -102,13 +102,16 @@ async function discoverShows() {
     const title = match[2].trim()
       .replace(/&amp;/g, '&')
       .replace(/&#39;/g, "'")
+      .replace(/&#x27;/g, "'")
       .replace(/&quot;/g, '"')
       .replace(/&nbsp;/g, ' ');
 
     // Skip navigation/utility slugs and duplicates
     if (seen.has(slug)) continue;
-    if (['shows', 'broadway-guide', 'discount-broadway-tickets'].includes(slug)) continue;
+    if (['shows', 'broadway-guide', 'discount-broadway-tickets', 'tickets', 'find-by-date'].includes(slug)) continue;
     if (title.length < 2) continue;
+    // Skip generic navigation links
+    if (['Shows', 'Tickets', 'Shows (tickets)'].includes(title)) continue;
 
     seen.add(slug);
     shows.push({
@@ -173,6 +176,10 @@ const BROADWAY_COM_OVERRIDES = {
   'BOOP! The Betty Boop Musical': 'boop-2025',
   'A Wonderful World': 'a-wonderful-world-the-louis-armstrong-musical-2024',
   'Buena Vista Social Club™': 'buena-vista-social-club-2025',
+  'MJ': 'mj-2022',
+  'SIX: The Musical': 'six-2021',
+  'Joe Turner\'s Come and Gone': 'joe-turners-come-and-gone-2009',
+  'Beaches': 'beaches-2026',
 };
 
 function matchBroadwayComToShows(bcShows, ourShows) {
@@ -203,8 +210,9 @@ function matchBroadwayComToShows(bcShows, ourShows) {
     // Exact normalized title match
     const candidates = ourByNorm.get(bcNorm);
     if (candidates && candidates.length > 0) {
-      // Prefer most recent Broadway production that has started
+      // Prefer most recent Broadway production that has started or is in previews
       const started = candidates.filter(s => {
+        if (s.status === 'open' || s.status === 'previews') return true;
         const start = s.previewsStartDate || s.openingDate;
         return !start || start <= today;
       });
@@ -228,9 +236,13 @@ function matchBroadwayComToShows(bcShows, ourShows) {
       if (shorter.length >= 8 && longer.startsWith(shorter + ' ')) {
         const ratio = shorter.length / longer.length;
         if (ratio >= 0.3) {
-          const start = show.previewsStartDate || show.openingDate;
-          if (!start || start <= today) {
+          if (show.status === 'open' || show.status === 'previews') {
             prefixCandidates.push(show);
+          } else {
+            const start = show.previewsStartDate || show.openingDate;
+            if (!start || start <= today) {
+              prefixCandidates.push(show);
+            }
           }
         }
       }
