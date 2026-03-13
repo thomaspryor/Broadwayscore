@@ -115,42 +115,33 @@ function formatReviewCount(count: number): string {
 interface SourceCardProps {
   name: string;
   icon: React.ReactNode;
-  score: number | null;
+  score: number;
   reviewCount: number | null;
   starRating?: number;
   url?: string;
-  comingSoon?: boolean;
   volumeLabel?: string;
 }
 
-function SourceCard({ name, icon, score, reviewCount, starRating, url, comingSoon, volumeLabel }: SourceCardProps) {
+function SourceCard({ name, icon, score, reviewCount, starRating, url, volumeLabel }: SourceCardProps) {
   const inner = (
     <>
       <div className="flex items-center gap-1.5 mb-2 min-w-0">
         <span className="shrink-0">{icon}</span>
         <span className="text-[10px] sm:text-xs font-medium text-gray-400 uppercase tracking-wide truncate">{name}</span>
       </div>
-      {comingSoon ? (
-        <div className="text-sm text-gray-500">Coming soon</div>
-      ) : score !== null ? (
-        <>
-          <div className="text-xl font-bold text-white">
-            {starRating ? `${starRating}/5` : `${score}%`}
-          </div>
-          {reviewCount !== null && (
-            <div className="flex items-center gap-1 text-xs text-gray-500 mt-0.5">
-              {formatReviewCount(reviewCount)} {volumeLabel || 'reviews'}
-              {url && <ExternalLinkIcon className="text-gray-500" />}
-            </div>
-          )}
-        </>
-      ) : (
-        <div className="text-sm text-gray-500">No data</div>
+      <div className="text-xl font-bold text-white">
+        {starRating ? `${starRating}/5` : `${score}%`}
+      </div>
+      {reviewCount !== null && (
+        <div className="flex items-center gap-1 text-xs text-gray-500 mt-0.5">
+          {formatReviewCount(reviewCount)} {volumeLabel || 'reviews'}
+          {url && <ExternalLinkIcon className="text-gray-500" />}
+        </div>
       )}
     </>
   );
 
-  const className = `flex-1 basis-0 min-w-0 bg-surface-overlay rounded-lg p-3 border border-white/5 hover:bg-white/5 transition-colors ${url ? 'hover:border-white/10' : ''} ${comingSoon ? 'opacity-50' : ''}`;
+  const className = `flex-1 basis-0 min-w-0 bg-surface-overlay rounded-lg p-3 border border-white/5 hover:bg-white/5 transition-colors ${url ? 'hover:border-white/10' : ''}`;
 
   if (url) {
     return (
@@ -194,44 +185,53 @@ export default function AudienceBuzzCard({ buzz, showScoreUrl, limitedSources }:
         </div>
       </div>
 
-      {/* Source Cards Row */}
+      {/* Source Cards Row — only show sources with data */}
       <div className="flex gap-2 sm:gap-3 items-stretch">
-        <SourceCard
-          name="Show Score"
-          icon={<ShowScoreIcon className="text-yellow-400" />}
-          score={showScore?.score ?? null}
-          reviewCount={showScore?.reviewCount ?? null}
-          url={showScoreUrl}
-        />
-        <SourceCard
-          name="Mezzanine"
-          icon={<MezzanineIcon className="text-purple-400" />}
-          score={mezzanine?.score ?? null}
-          reviewCount={mezzanine?.reviewCount ?? null}
-          starRating={mezzanine?.starRating}
-        />
-        <SourceCard
-          name="Reddit"
-          icon={<RedditIcon className="text-orange-400" />}
-          score={reddit?.score ?? null}
-          reviewCount={reddit?.reviewCount ?? null}
-          volumeLabel="mentions"
-          comingSoon={!reddit}
-        />
-        <SourceCard
-          name="Theatr"
-          icon={<TheatrIcon className="text-teal-400" />}
-          score={theatr?.score ?? null}
-          reviewCount={theatr?.reviewCount ?? null}
-          volumeLabel="votes"
-        />
-        <SourceCard
-          name="Broadway.com"
-          icon={<BroadwayComIcon className="text-blue-400" />}
-          score={broadwayCom?.score ?? null}
-          reviewCount={broadwayCom?.reviewCount ?? null}
-          starRating={broadwayCom?.starRating}
-        />
+        {showScore?.score != null && (
+          <SourceCard
+            name="Show Score"
+            icon={<ShowScoreIcon className="text-yellow-400" />}
+            score={showScore.score}
+            reviewCount={showScore.reviewCount ?? null}
+            url={showScoreUrl}
+          />
+        )}
+        {mezzanine?.score != null && (
+          <SourceCard
+            name="Mezzanine"
+            icon={<MezzanineIcon className="text-purple-400" />}
+            score={mezzanine.score}
+            reviewCount={mezzanine.reviewCount ?? null}
+            starRating={mezzanine.starRating}
+          />
+        )}
+        {reddit?.score != null && (
+          <SourceCard
+            name="Reddit"
+            icon={<RedditIcon className="text-orange-400" />}
+            score={reddit.score}
+            reviewCount={reddit.reviewCount ?? null}
+            volumeLabel="mentions"
+          />
+        )}
+        {theatr?.score != null && (
+          <SourceCard
+            name="Theatr"
+            icon={<TheatrIcon className="text-teal-400" />}
+            score={theatr.score}
+            reviewCount={theatr.reviewCount ?? null}
+            volumeLabel="votes"
+          />
+        )}
+        {broadwayCom?.score != null && (
+          <SourceCard
+            name="Broadway.com"
+            icon={<BroadwayComIcon className="text-blue-400" />}
+            score={broadwayCom.score}
+            reviewCount={broadwayCom.reviewCount ?? null}
+            starRating={broadwayCom.starRating}
+          />
+        )}
       </div>
 
       {/* Limited sources note for historical shows */}
