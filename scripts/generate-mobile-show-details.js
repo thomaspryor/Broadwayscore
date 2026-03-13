@@ -195,6 +195,13 @@ for (const show of visibleShows) {
           c: buzz.sources.theatr.reviewCount,
         };
       }
+      if (buzz.sources.broadwayCom) {
+        sources.bc = {
+          s: buzz.sources.broadwayCom.score,
+          c: buzz.sources.broadwayCom.reviewCount,
+          sr: buzz.sources.broadwayCom.starRating || null,
+        };
+      }
       if (Object.keys(sources).length > 0) {
         audienceDetail.sources = sources;
       }
