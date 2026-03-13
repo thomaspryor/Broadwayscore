@@ -309,7 +309,16 @@
     "the-office-a-musical-parody-off-broadway-2018/rollingstone--unknown.json",
     "the-outsiders-2024/culturesauce--thom-geier.json",
     "the-play-that-goes-wrong-west-end-2021/london-theatre--dom-ohanlon.json",
-    "the-play-that-goes-wrong-west-end-2021/standard--fiona-mountford.json"
+    "the-play-that-goes-wrong-west-end-2021/standard--fiona-mountford.json",
+    "the-play-that-goes-wrong-west-end-2021/times-uk--dominic-maxwell.json",
+    "the-producers-west-end-2025/london-theatre--anya-ryan.json",
+    "the-producers-west-end-2025/times-uk--dominic-maxwell.json",
+    "the-unknown-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "wicked-west-end-2021/financialtimes--unknown.json",
+    "wicked-west-end-2021/standard--jessie-thompson.json",
+    "wicked-west-end-2021/thestage--paul-vale.json",
+    "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "skylight-1996/nytimes--ben-brantley.json"
   ],
   "failed": [
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theatre-is-easy--brooke-viegut.json",
@@ -352,7 +361,23 @@
     "mother-russia-off-broadway-2026/buy-tickets--unknown.json",
     "six-2021/pages-on-stages--mason-pilevsky.json",
     "six-the-musical-west-end-2021/standard--fiona-mountford.json",
-    "six-the-musical-west-end-2021/theatre-bee-uk--theatre-bee-uk.json"
+    "six-the-musical-west-end-2021/theatre-bee-uk--theatre-bee-uk.json",
+    "titanique-west-end-2024/thestage--paul-vale.json",
+    "job-2024/wsj--terry-teachout.json",
+    "relatively-speaking-2011/wsj--terry-teachout.json",
+    "sondheim-on-sondheim-2010/wsj--terry-teachout.json",
+    "the-father-2016/wsj--terry-teachout.json",
+    "the-glass-menagerie-2013/wsj--terry-teachout.json",
+    "the-glass-menagerie-2017/wsj--terry-teachout.json",
+    "the-great-society-2019/wsj--edward-rothstein.json",
+    "the-great-society-2019/wsj--terry-teachout.json",
+    "the-height-of-the-storm-2019/wsj--terry-teachout.json",
+    "the-heiress-2012/wsj--terry-teachout.json",
+    "the-hills-of-california-2024/wsj--charles-isherwood.json",
+    "the-house-of-blue-leaves-2011/wsj--terry-teachout.json",
+    "the-iceman-cometh-2018/wsj--terry-teachout.json",
+    "the-mountaintop-2011/wsj--terry-teachout.json",
+    "the-mystery-of-edwin-drood-2012/nydailynews--joe-dziemianowicz-bway.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -575,7 +600,12 @@
       "the-office-a-musical-parody-off-broadway-2018/rollingstone--unknown.json",
       "the-outsiders-2024/culturesauce--thom-geier.json",
       "the-play-that-goes-wrong-west-end-2021/london-theatre--dom-ohanlon.json",
-      "the-play-that-goes-wrong-west-end-2021/standard--fiona-mountford.json"
+      "the-play-that-goes-wrong-west-end-2021/standard--fiona-mountford.json",
+      "the-producers-west-end-2025/london-theatre--anya-ryan.json",
+      "the-unknown-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "wicked-west-end-2021/financialtimes--unknown.json",
+      "wicked-west-end-2021/standard--jessie-thompson.json",
+      "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -617,7 +647,8 @@
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json",
-      "starlight-express-west-end-2024/times-uk--clive-davis.json"
+      "starlight-express-west-end-2024/times-uk--clive-davis.json",
+      "the-producers-west-end-2025/times-uk--dominic-maxwell.json"
     ],
     "scrapingbee": [],
     "brightdata": [],
@@ -709,11 +740,14 @@
       "operation-mincemeat-west-end-2024/times-uk--clive-davis.json",
       "six-the-musical-west-end-2021/thestage--mark-shenton.json",
       "the-book-of-mormon-west-end-2024/times-uk--libby-purves.json",
-      "the-lion-king-west-end-2021/shy-strange-manic--kariss-ainsworth.json"
+      "the-lion-king-west-end-2021/shy-strange-manic--kariss-ainsworth.json",
+      "the-play-that-goes-wrong-west-end-2021/times-uk--dominic-maxwell.json",
+      "wicked-west-end-2021/thestage--paul-vale.json",
+      "skylight-1996/nytimes--ben-brantley.json"
     ]
   },
   "startTime": "2026-03-13T19:36:12.449Z",
-  "lastProcessed": "the-play-that-goes-wrong-west-end-2021/standard--fiona-mountford.json",
+  "lastProcessed": "the-mystery-of-edwin-drood-2012/nydailynews--joe-dziemianowicz-bway.json",
   "log": [
     {
       "t": "2026-03-13T19:43:23.732Z",
@@ -846,6 +880,116 @@
       "t": "2026-03-13T22:54:48.890Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-13T23:02:28.973Z",
+      "event": "bb-session",
+      "session": "191d68f5",
+      "url": "https://www.wsj.com/articles/the-father-review-frank-langella-gives-a-devastatin"
+    },
+    {
+      "t": "2026-03-13T23:02:30.568Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-13T23:03:20.486Z",
+      "event": "bb-session",
+      "session": "2058e391",
+      "url": "https://www.wsj.com/articles/SB10001424052702303448204579169010736188762"
+    },
+    {
+      "t": "2026-03-13T23:03:22.259Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-13T23:04:28.854Z",
+      "event": "bb-session",
+      "session": "cde5dc77",
+      "url": "https://www.wsj.com/articles/the-glass-menagerie-review-shattered-illusions-1489"
+    },
+    {
+      "t": "2026-03-13T23:04:30.647Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-13T23:05:38.249Z",
+      "event": "bb-session",
+      "session": "d380e108",
+      "url": "https://www.wsj.com/articles/the-great-society-review-a-most-complicated-history"
+    },
+    {
+      "t": "2026-03-13T23:05:39.825Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-13T23:06:50.970Z",
+      "event": "bb-session",
+      "session": "d1a8673b",
+      "url": "https://www.wsj.com/articles/the-great-society-review-lbj-gets-the-full-treatmen"
+    },
+    {
+      "t": "2026-03-13T23:06:52.825Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-13T23:07:56.803Z",
+      "event": "bb-session",
+      "session": "251783ff",
+      "url": "https://www.wsj.com/articles/the-height-of-the-storm-review-jonathan-pryce-and-e"
+    },
+    {
+      "t": "2026-03-13T23:07:58.447Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-13T23:09:19.448Z",
+      "event": "bb-session",
+      "session": "a77ee562",
+      "url": "https://www.wsj.com/articles/SB10001424052970204712904578092590446398098"
+    },
+    {
+      "t": "2026-03-13T23:09:20.957Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-13T23:10:39.064Z",
+      "event": "bb-session",
+      "session": "dec58a97",
+      "url": "https://www.wsj.com/arts-culture/theater/the-hills-of-california-review-jez-butt"
+    },
+    {
+      "t": "2026-03-13T23:10:40.646Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-13T23:12:03.469Z",
+      "event": "bb-session",
+      "session": "092b466b",
+      "url": "https://www.wsj.com/articles/SB10001424052748704107204576164272108574548"
+    },
+    {
+      "t": "2026-03-13T23:12:05.094Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-13T23:13:19.390Z",
+      "event": "bb-session",
+      "session": "8ae9d9d4",
+      "url": "https://www.wsj.com/articles/the-iceman-cometh-review-denzel-washington-shines-i"
+    },
+    {
+      "t": "2026-03-13T23:13:21.089Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
