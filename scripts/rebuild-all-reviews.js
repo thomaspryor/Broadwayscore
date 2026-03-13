@@ -981,6 +981,14 @@ function getBestScore(data) {
         stats.staleContentVerificationCleared = (stats.staleContentVerificationCleared || 0) + 1;
       }
     }
+    // Also clear if verification was done on different content than current fullText
+    if (cvWrongArticle && data.contentVerification.contentHash && data.fullText) {
+      const currentHash = crypto.createHash('md5').update(data.fullText.substring(0, 2500)).digest('hex');
+      if (data.contentVerification.contentHash !== currentHash) {
+        cvWrongArticle = false;
+        stats.staleContentVerificationCleared = (stats.staleContentVerificationCleared || 0) + 1;
+      }
+    }
     const hasOriginalFullText = data.fullText && data.fullText.trim().length > 100 && !data.fullTextRecoveredFrom && !cvWrongArticle;
     const effectiveConfidence = (!hasOriginalFullText && confidence !== 'low') ? 'low' : confidence;
 
