@@ -189,6 +189,12 @@ for (const show of visibleShows) {
           sent: buzz.sources.reddit.sentiment || null,
         };
       }
+      if (buzz.sources.theatr) {
+        sources.th = {
+          s: buzz.sources.theatr.score,
+          c: buzz.sources.theatr.reviewCount,
+        };
+      }
       if (Object.keys(sources).length > 0) {
         audienceDetail.sources = sources;
       }
