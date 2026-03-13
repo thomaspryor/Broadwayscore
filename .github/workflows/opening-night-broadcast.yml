@@ -219,7 +219,7 @@ jobs:
           # Broadway broadcast (skip if no Broadway shows)
           if [ -n "${{ steps.find.outputs.broadway }}" ]; then
             echo "--- Broadway broadcast ---"
-            OUTPUT=$(node scripts/send-opening-night-broadcast.js --market=broadway --budget=60 --lookback=$LOOKBACK $SEND_TO_FLAG 2>&1) || true
+            OUTPUT=$(node scripts/send-opening-night-broadcast.js --market=broadway --budget=100 --lookback=$LOOKBACK $SEND_TO_FLAG 2>&1) || true
             echo "$OUTPUT"
             if echo "$OUTPUT" | grep -q "broadcast complete\|Preview sent to\|Done:"; then
               SENT="true"
