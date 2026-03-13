@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-13T06:10:03.557Z",
-  "processed": 7,
+  "updatedAt": "2026-03-13T06:12:09.410Z",
+  "processed": 17,
   "failed": 3,
-  "successRate": "70.0%",
+  "successRate": "85.0%",
   "tierBreakdown": {
-    "playwright": 3,
-    "amp": 0,
-    "browserbase": 2,
+    "playwright": 8,
+    "amp": 2,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingbee": 3,
+    "scrapingbee": 5,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 0
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-03-13T06:02:49.500Z",
@@ -47,6 +47,28 @@
       "t": "2026-03-13T06:09:52.977Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-13T06:10:07.785Z",
+      "event": "bb-session",
+      "session": "15d7263e",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-13T06:10:09.233Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-13T06:11:31.010Z",
+      "event": "bb-session",
+      "session": "42dc41a7",
+      "url": "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing"
+    },
+    {
+      "t": "2026-03-13T06:11:32.736Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
