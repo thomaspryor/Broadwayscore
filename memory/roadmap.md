@@ -46,7 +46,7 @@
 **iOS App:** Widget, Spotlight search, iPad layout, Android, Share sheet, App Clips, Siri
 **Infrastructure:** Show images to CDN (173MB/deploy), prune low-value static pages, domain retry intelligence, ~~ScrapingBee SERP credit optimization~~ → DONE (3.3M→968K credits/month + BrightData fallback)
 **Code Quality:**
-18. **TypeScript strictness cleanup** — Fix pre-existing TS errors, add proper types, remove `any` casts, add null checks across src/.
+18. ~~**TypeScript strictness cleanup**~~ → DONE. Zero TS errors, zero `as any` casts. Added Window.gtag/Sentry declarations, SentryEvent interface, GoldListType narrowing.
 19. **Unit test coverage** — engine.ts DONE (37 tests, in CI). Remaining: data-core.ts, rebuild pipeline.
 20. **Script hardening** — Standardize scripts/: consistent error handling, TypeScript migration, structured logging.
 21. ~~**Custom ESLint rules**~~ → Phase 1 DONE. Investigation found most proposed rules had 0 violations. Implemented as regression guards instead: contentVerification deletion guard, isScoreable import guards for 3 scoring scripts. Remaining items (#18-20, 22-23) still open.

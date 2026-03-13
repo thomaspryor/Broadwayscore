@@ -107,4 +107,86 @@ describe('Email Capture Integrity', () => {
       'ProGateContext must include recapture logic for users who submitted via the broken modal'
     );
   });
+
+  test('critical Formspree form IDs are set in .env', () => {
+    // If these env vars are missing at build time, email capture silently breaks
+    // because components use `if (FORMSPREE_FORM_ID)` guards that skip the POST
+    let envContent;
+    try {
+      envContent = readFileSync(join(ROOT, '.env'), 'utf8');
+    } catch {
+      // .env may not exist in CI (secrets injected via env) — skip
+      return;
+    }
+
+    const REQUIRED_FORM_IDS = [
+      'NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID',
+      'NEXT_PUBLIC_FORMSPREE_FOLLOW_FORM_ID',
+      'FORMSPREE_SUBSCRIBER_FORM_ID',
+      'FORMSPREE_SUBSCRIBER_API_KEY',
+      'FORMSPREE_TOKEN',
+    ];
+
+    const missing = [];
+    for (const key of REQUIRED_FORM_IDS) {
+      const regex = new RegExp(`^${key}=.+`, 'm');
+      if (!regex.test(envContent)) {
+        missing.push(key);
+      }
+    }
+
+    assert.deepStrictEqual(
+      missing,
+      [],
+      `These Formspree env vars are missing or empty in .env:\n` +
+      missing.map(k => `  - ${k}`).join('\n') +
+      `\n\nWithout these, email capture silently fails (components skip the POST).`
+    );
+  });
+
+  test('no hardcoded Formspree form IDs in components (use env vars)', () => {
+    // Hardcoded form IDs are fragile — if the form is deleted/rotated on
+    // Formspree, submissions silently go to the void. All components should
+    // use env vars so form IDs can be rotated in one place.
+    const files = findTsxFiles(SRC_DIR);
+    const violations = [];
+
+    // Pattern: formspree.io/f/ followed by a literal form ID (not a variable)
+    const hardcodedPattern = /formspree\.io\/f\/[a-z]{8,}/;
+
+    for (const file of files) {
+      const content = readFileSync(file, 'utf8');
+      if (file.includes('.test.') || file.includes('.spec.')) continue;
+
+      // Check each line for hardcoded form IDs
+      const lines = content.split('\n');
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        if (hardcodedPattern.test(line)) {
+          // Allow fallbacks with || (env var with hardcoded default) but flag them
+          const relative = file.replace(ROOT + '/', '');
+          violations.push(`${relative}:${i + 1}`);
+        }
+      }
+    }
+
+    // These are known fallbacks — acceptable for now but tracked
+    // If this list grows, we should centralize form IDs
+    const KNOWN_FALLBACKS = [
+      'src/app/feedback/page.tsx',
+      'src/app/submit-review/page.tsx',
+    ];
+
+    const unexpected = violations.filter(v =>
+      !KNOWN_FALLBACKS.some(known => v.startsWith(known))
+    );
+
+    assert.deepStrictEqual(
+      unexpected,
+      [],
+      `These files have hardcoded Formspree form IDs (should use env vars):\n` +
+      unexpected.map(f => `  - ${f}`).join('\n') +
+      `\n\nUse process.env.NEXT_PUBLIC_FORMSPREE_*_FORM_ID instead.`
+    );
+  });
 });

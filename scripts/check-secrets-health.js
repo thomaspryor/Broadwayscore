@@ -215,6 +215,57 @@ async function checkResend() {
   return { name: 'Resend', status: 'warn', message: `Unexpected status ${res.status}` };
 }
 
+async function checkFormspreeSubscribers() {
+  const apiKey = process.env.FORMSPREE_SUBSCRIBER_API_KEY;
+  const formId = process.env.FORMSPREE_SUBSCRIBER_FORM_ID;
+  if (!apiKey || !formId) return { name: 'Formspree (Subscribers)', status: 'skip', message: 'API key or form ID not set' };
+
+  const res = await httpsGet(`https://formspree.io/api/0/forms/${formId}/submissions?limit=10`, {
+    'Authorization': `Bearer ${apiKey}`,
+    'Accept': 'application/json',
+  });
+
+  if (res.status === 401 || res.status === 403) return { name: 'Formspree (Subscribers)', status: 'fail', message: 'API key invalid — cannot verify email capture' };
+  if (res.status !== 200) return { name: 'Formspree (Subscribers)', status: 'warn', message: `Unexpected status ${res.status}` };
+
+  try {
+    const data = JSON.parse(res.body);
+    const submissions = data.submissions || [];
+    if (submissions.length === 0) {
+      return { name: 'Formspree (Subscribers)', status: 'warn', message: 'Zero submissions found — email capture may be broken' };
+    }
+    // Check most recent submission age
+    const newest = submissions[0];
+    const newestDate = newest._date ? new Date(newest._date) : null;
+    if (newestDate) {
+      const daysAgo = Math.floor((Date.now() - newestDate.getTime()) / (1000 * 60 * 60 * 24));
+      if (daysAgo > 14) {
+        return { name: 'Formspree (Subscribers)', status: 'warn', message: `Last submission was ${daysAgo} days ago — email capture may be broken` };
+      }
+      return { name: 'Formspree (Subscribers)', status: 'pass', message: `Form active (last submission ${daysAgo}d ago, ${submissions.length} recent)` };
+    }
+    return { name: 'Formspree (Subscribers)', status: 'pass', message: `Form accessible (${submissions.length} submissions)` };
+  } catch {
+    return { name: 'Formspree (Subscribers)', status: 'pass', message: 'API key valid (could not parse submissions)' };
+  }
+}
+
+async function checkFormspreeFeedback() {
+  const apiKey = process.env.FORMSPREE_TOKEN;
+  if (!apiKey) return { name: 'Formspree (Feedback)', status: 'skip', message: 'Token not set' };
+
+  // Feedback form ID from the hardcoded fallback
+  const formId = 'mojdjwqo';
+  const res = await httpsGet(`https://formspree.io/api/0/forms/${formId}/submissions?limit=1`, {
+    'Authorization': `Bearer ${apiKey}`,
+    'Accept': 'application/json',
+  });
+
+  if (res.status === 401 || res.status === 403) return { name: 'Formspree (Feedback)', status: 'fail', message: 'Token invalid' };
+  if (res.status === 200) return { name: 'Formspree (Feedback)', status: 'pass', message: 'Token valid, form accessible' };
+  return { name: 'Formspree (Feedback)', status: 'warn', message: `Unexpected status ${res.status}` };
+}
+
 // --- Main ---
 
 async function main() {
@@ -230,6 +281,8 @@ async function main() {
     checkVercel,
     checkSentry,
     checkResend,
+    checkFormspreeSubscribers,
+    checkFormspreeFeedback,
   ];
 
   // Run all checks in parallel
