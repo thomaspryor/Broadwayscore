@@ -155,6 +155,7 @@ async function processVerify(items) {
         outletName: r.outlet || r.outletId || '',
         criticName: r.criticName || '',
         openingDate: show?.openingDate || '',
+        publishDate: r.publishDate || '',
         venue: show?.venue || '',
         market: show?.category || 'broadway',
       });
@@ -243,6 +244,7 @@ async function processRecover(items) {
         outletName: r.outlet || r.outletId || '',
         criticName: r.criticName || '',
         openingDate: show?.openingDate || '',
+        publishDate: r.publishDate || '',
         venue: show?.venue || '',
         market: show?.category || 'broadway',
       });
