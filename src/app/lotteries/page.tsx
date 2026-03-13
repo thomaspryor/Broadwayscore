@@ -176,8 +176,8 @@ export default function LotteriesPage() {
     }))
     .filter(item => item.lotteryData?.lottery || item.lotteryData?.specialLottery)
     .sort((a, b) => {
-      const priceA = a.lotteryData?.specialLottery?.price || a.lotteryData?.lottery?.price || 999;
-      const priceB = b.lotteryData?.specialLottery?.price || b.lotteryData?.lottery?.price || 999;
+      const priceA = a.lotteryData?.specialLottery?.price ?? a.lotteryData?.lottery?.price ?? 999;
+      const priceB = b.lotteryData?.specialLottery?.price ?? b.lotteryData?.lottery?.price ?? 999;
       return priceA - priceB;
     });
 
@@ -190,7 +190,7 @@ export default function LotteriesPage() {
   const cheapestLottery = showsWithLottery.length > 0 ? showsWithLottery[0] : null;
   const avgPrice = showsWithLottery.length > 0
     ? showsWithLottery.reduce((sum, item) => {
-        return sum + (item.lotteryData?.lottery?.price || item.lotteryData?.specialLottery?.price || 0);
+        return sum + (item.lotteryData?.lottery?.price ?? item.lotteryData?.specialLottery?.price ?? 0);
       }, 0) / showsWithLottery.length
     : null;
 
@@ -224,7 +224,7 @@ export default function LotteriesPage() {
         <div className="grid grid-cols-3 gap-4 mb-8">
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-purple-400">
-              {cheapestLottery ? `$${cheapestLottery.lotteryData?.specialLottery?.price || cheapestLottery.lotteryData?.lottery?.price}` : '—'}
+              {cheapestLottery ? `$${cheapestLottery.lotteryData?.specialLottery?.price ?? cheapestLottery.lotteryData?.lottery?.price}` : '—'}
             </div>
             <div className="text-xs text-gray-500 mt-1">Cheapest Lottery</div>
             <div className="text-xs text-gray-400 truncate">{cheapestLottery?.show.title ?? '—'}</div>
@@ -274,14 +274,17 @@ export default function LotteriesPage() {
         <div className="mt-8 pt-6 border-t border-white/5">
           <h2 className="text-lg font-bold text-white mb-3">More Ways to Save</h2>
           <div className="flex flex-wrap gap-3">
+            <Link href="/discount-tickets" className="text-brand hover:text-brand-hover transition-colors text-sm">
+              All Discount Tickets →
+            </Link>
             <Link href="/rush" className="text-brand hover:text-brand-hover transition-colors text-sm">
               Rush Tickets →
             </Link>
-            <Link href="/browse/broadway-lottery-shows" className="text-brand hover:text-brand-hover transition-colors text-sm">
-              Browse Lottery Shows →
+            <Link href="/standing-room" className="text-brand hover:text-brand-hover transition-colors text-sm">
+              Standing Room →
             </Link>
-            <Link href="/browse/broadway-rush-tickets" className="text-brand hover:text-brand-hover transition-colors text-sm">
-              Browse Rush Shows →
+            <Link href="/best-value" className="text-brand hover:text-brand-hover transition-colors text-sm">
+              Best Value →
             </Link>
           </div>
         </div>

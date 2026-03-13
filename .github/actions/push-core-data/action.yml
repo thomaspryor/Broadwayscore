@@ -17,20 +17,26 @@ runs:
       shell: bash
       run: |
         # SAFETY: Only copy files that the workflow actually modified.
-        # Compares data/ (post-script) against the original checkout (cloned at
-        # workflow start). Prevents stale copies of unmodified files from
-        # overwriting concurrent updates by other workflows.
+        # Compares data/ (post-script) against the SAVED snapshot from workflow
+        # start (not the current data/ which may have been reverted by git
+        # checkout -- . in push-with-retry.sh). Falls back to checkout diff
+        # if no snapshot exists (backwards compat).
         MODIFIED=""
         for f in shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json outlet-registry.json diary-shows.json; do
-          if [ -f "data/$f" ]; then
+          # Use saved snapshot if available (protected from git checkout reverts)
+          COMPARE_SOURCE="data/$f"
+          if [ -f "/tmp/core-data-snapshot/$f" ]; then
+            COMPARE_SOURCE="/tmp/core-data-snapshot/$f"
+          fi
+          if [ -f "$COMPARE_SOURCE" ]; then
             if [ ! -f "/tmp/core-data-checkout/$f" ]; then
               # New file — always copy
-              cp -f "data/$f" /tmp/core-data-checkout/
+              cp -f "$COMPARE_SOURCE" /tmp/core-data-checkout/
               MODIFIED="$MODIFIED $f"
               echo "  New file: $f"
-            elif ! diff -q "data/$f" "/tmp/core-data-checkout/$f" > /dev/null 2>&1; then
+            elif ! diff -q "$COMPARE_SOURCE" "/tmp/core-data-checkout/$f" > /dev/null 2>&1; then
               # File was modified by this workflow
-              cp -f "data/$f" /tmp/core-data-checkout/
+              cp -f "$COMPARE_SOURCE" /tmp/core-data-checkout/
               MODIFIED="$MODIFIED $f"
               echo "  Modified: $f"
             fi

@@ -6,7 +6,6 @@ import type { ShowLotteryRush } from '@/lib/data-types';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { ComputedShow } from '@/lib/engine';
-import { featureFlags } from '@/config/feature-flags';
 import { ScoreBadge } from '@/components/show-cards';
 import { StandingRoomTable } from '@/components/SortableLotteryRushTables';
 
@@ -158,7 +157,7 @@ export default function StandingRoomPage() {
       sroData: getLotteryRush(show.id),
     }))
     .filter(item => item.sroData?.standingRoom)
-    .sort((a, b) => (a.sroData?.standingRoom?.price || 999) - (b.sroData?.standingRoom?.price || 999));
+    .sort((a, b) => (a.sroData?.standingRoom?.price ?? 999) - (b.sroData?.standingRoom?.price ?? 999));
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
@@ -168,7 +167,7 @@ export default function StandingRoomPage() {
   // Stats
   const cheapestSRO = showsWithSRO.length > 0 ? showsWithSRO[0] : null;
   const avgPrice = showsWithSRO.length > 0
-    ? Math.round(showsWithSRO.reduce((sum, item) => sum + (item.sroData?.standingRoom?.price || 0), 0) / showsWithSRO.length)
+    ? Math.round(showsWithSRO.reduce((sum, item) => sum + (item.sroData?.standingRoom?.price ?? 0), 0) / showsWithSRO.length)
     : null;
 
   return (
@@ -260,17 +259,18 @@ export default function StandingRoomPage() {
         <div className="mt-8 pt-6 border-t border-white/5">
           <h2 className="text-lg font-bold text-white mb-3">More Ways to Save</h2>
           <div className="flex flex-wrap gap-3">
+            <Link href="/discount-tickets" className="text-brand hover:text-brand-hover transition-colors text-sm">
+              All Discount Tickets →
+            </Link>
             <Link href="/lotteries" className="text-brand hover:text-brand-hover transition-colors text-sm">
               Lottery Tickets →
             </Link>
             <Link href="/rush" className="text-brand hover:text-brand-hover transition-colors text-sm">
               Rush Tickets →
             </Link>
-            {featureFlags.discountTickets && (
-              <Link href="/best-value" className="text-brand hover:text-brand-hover transition-colors text-sm">
-                Best Value Tickets →
-              </Link>
-            )}
+            <Link href="/best-value" className="text-brand hover:text-brand-hover transition-colors text-sm">
+              Best Value →
+            </Link>
           </div>
         </div>
 

@@ -327,6 +327,9 @@ export default function BestValuePage() {
         <div className="mt-8 pt-6 border-t border-white/5">
           <h2 className="text-lg font-bold text-white mb-3">Browse by Type</h2>
           <div className="flex flex-wrap gap-3">
+            <Link href="/discount-tickets" className="text-brand hover:text-brand-hover transition-colors text-sm">
+              All Discount Tickets →
+            </Link>
             <Link href="/lotteries" className="text-brand hover:text-brand-hover transition-colors text-sm">
               Lottery Tickets →
             </Link>

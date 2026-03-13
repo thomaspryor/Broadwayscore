@@ -86,7 +86,7 @@ function RushShowCard({ show, rushData, index }: RushShowCardProps) {
 
   // Get the cheapest rush price to display prominently
   const rushOptions = [rush, digitalRush, studentRush].filter(Boolean);
-  const cheapestRush = rushOptions.sort((a, b) => (a?.price || 999) - (b?.price || 999))[0];
+  const cheapestRush = rushOptions.sort((a, b) => (a?.price ?? 999) - (b?.price ?? 999))[0];
 
   return (
     <Link
@@ -196,14 +196,14 @@ export default function RushPage() {
     .filter(item => item.rushData?.rush || item.rushData?.digitalRush || item.rushData?.studentRush)
     .sort((a, b) => {
       const priceA = Math.min(
-        a.rushData?.rush?.price || 999,
-        a.rushData?.digitalRush?.price || 999,
-        a.rushData?.studentRush?.price || 999
+        a.rushData?.rush?.price ?? 999,
+        a.rushData?.digitalRush?.price ?? 999,
+        a.rushData?.studentRush?.price ?? 999
       );
       const priceB = Math.min(
-        b.rushData?.rush?.price || 999,
-        b.rushData?.digitalRush?.price || 999,
-        b.rushData?.studentRush?.price || 999
+        b.rushData?.rush?.price ?? 999,
+        b.rushData?.digitalRush?.price ?? 999,
+        b.rushData?.studentRush?.price ?? 999
       );
       return priceA - priceB;
     });
@@ -217,9 +217,9 @@ export default function RushPage() {
   const cheapestRush = showsWithRush.length > 0 ? showsWithRush[0] : null;
   const cheapestPrice = cheapestRush
     ? Math.min(
-        cheapestRush.rushData?.rush?.price || 999,
-        cheapestRush.rushData?.digitalRush?.price || 999,
-        cheapestRush.rushData?.studentRush?.price || 999
+        cheapestRush.rushData?.rush?.price ?? 999,
+        cheapestRush.rushData?.digitalRush?.price ?? 999,
+        cheapestRush.rushData?.studentRush?.price ?? 999
       )
     : null;
 
@@ -317,14 +317,17 @@ export default function RushPage() {
         <div className="mt-8 pt-6 border-t border-white/5">
           <h2 className="text-lg font-bold text-white mb-3">More Ways to Save</h2>
           <div className="flex flex-wrap gap-3">
+            <Link href="/discount-tickets" className="text-brand hover:text-brand-hover transition-colors text-sm">
+              All Discount Tickets →
+            </Link>
             <Link href="/lotteries" className="text-brand hover:text-brand-hover transition-colors text-sm">
               Lottery Tickets →
             </Link>
-            <Link href="/browse/broadway-rush-tickets" className="text-brand hover:text-brand-hover transition-colors text-sm">
-              Browse Rush Shows →
+            <Link href="/standing-room" className="text-brand hover:text-brand-hover transition-colors text-sm">
+              Standing Room →
             </Link>
-            <Link href="/browse/broadway-lottery-shows" className="text-brand hover:text-brand-hover transition-colors text-sm">
-              Browse Lottery Shows →
+            <Link href="/best-value" className="text-brand hover:text-brand-hover transition-colors text-sm">
+              Best Value →
             </Link>
           </div>
         </div>

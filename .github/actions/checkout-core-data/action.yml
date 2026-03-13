@@ -61,3 +61,13 @@ runs:
           exit 1
         fi
         echo "Core data restored from private repo ($(ls /tmp/core-data-checkout/*.json | wc -l) files)"
+
+        # Save a snapshot that survives git checkout -- . in push-with-retry.sh.
+        # Some core data files (audience-buzz.json, shows.json, outlet-registry.json)
+        # may be tracked in the public repo, and git checkout reverts them to stale
+        # versions. This snapshot preserves the private repo's authoritative state.
+        rm -rf /tmp/core-data-snapshot
+        mkdir -p /tmp/core-data-snapshot
+        for f in /tmp/core-data-checkout/*.json; do
+          [ -f "$f" ] && cp -f "$f" /tmp/core-data-snapshot/
+        done
