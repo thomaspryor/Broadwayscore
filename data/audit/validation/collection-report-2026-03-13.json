@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-03-13T06:50:40.417Z",
+  "runDate": "2026-03-13T07:05:17.662Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
@@ -11,40 +11,40 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 21,
+    "processed": 19,
     "failed": 1,
     "skipped": 0,
-    "successRate": "95.5%"
+    "successRate": "95.0%"
   },
   "tierBreakdown": {
-    "playwright": 10,
-    "amp": 2,
-    "browserbase": 6,
+    "playwright": 11,
+    "amp": 4,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 6,
+    "scrapingbee": 4,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 11,
-    "tier1Success": 10,
-    "ampAttempts": 1,
-    "ampSuccess": 1,
-    "tier1_5Attempts": 4,
-    "tier1_5Success": 3,
-    "tier2Attempts": 7,
-    "tier2Success": 6,
-    "tier3Attempts": 5,
+    "tier1Attempts": 12,
+    "tier1Success": 11,
+    "ampAttempts": 2,
+    "ampSuccess": 2,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 6,
+    "tier2Success": 4,
+    "tier3Attempts": 8,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 3,
+    "tier4Attempts": 4,
     "tier4Success": 0,
     "totalFailed": 1,
-    "scrapingBeeCreditsUsed": 60,
-    "browserbaseSessionsUsed": 4,
-    "browserbaseMinutesUsed": 1.2,
+    "scrapingBeeCreditsUsed": 40,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
@@ -55,7 +55,6 @@
     "every-brilliant-thing-2026/deadline--greg-evans.json",
     "every-brilliant-thing-2026/deadline--unknown.json",
     "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
-    "every-brilliant-thing-2026/nydailynews--unknown.json",
     "every-brilliant-thing-2026/thewrap--robert-hofler.json",
     "every-brilliant-thing-2026/timeout--unknown.json",
     "every-brilliant-thing-2026/cititour--brian-scott-lipton.json",
@@ -68,7 +67,6 @@
     "every-brilliant-thing-2026/nysr--unknown.json",
     "every-brilliant-thing-2026/one-minute-critic--unknown.json",
     "every-brilliant-thing-2026/playbill--unknown.json",
-    "every-brilliant-thing-2026/slantmagazine--unknown.json",
     "every-brilliant-thing-2026/the-la-times--unknown.json",
     "every-brilliant-thing-2026/usatoday--patrick-ryan.json"
   ],
@@ -81,37 +79,32 @@
       "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
       "every-brilliant-thing-2026/timeout--unknown.json",
       "every-brilliant-thing-2026/theatrely--unknown.json",
+      "every-brilliant-thing-2026/amny--matt-windman.json",
+      "every-brilliant-thing-2026/chicagotribune--chris-jones.json",
       "every-brilliant-thing-2026/culturesauce--unknown.json",
       "every-brilliant-thing-2026/exeunt-magazine--lane-williamson.json",
       "every-brilliant-thing-2026/nysr--unknown.json",
       "every-brilliant-thing-2026/one-minute-critic--unknown.json",
-      "every-brilliant-thing-2026/playbill--unknown.json",
-      "every-brilliant-thing-2026/slantmagazine--unknown.json"
+      "every-brilliant-thing-2026/playbill--unknown.json"
     ],
     "amp": [
+      "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
+      "every-brilliant-thing-2026/deadline--unknown.json",
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
       "every-brilliant-thing-2026/thewrap--robert-hofler.json"
     ],
-    "browserbase": [
-      "data/review-texts/every-brilliant-thing-2026/deadline--greg-evans.json",
-      "every-brilliant-thing-2026/deadline--greg-evans.json",
-      "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
-      "every-brilliant-thing-2026/deadline--unknown.json",
-      "data/review-texts/every-brilliant-thing-2026/amny--matt-windman.json",
-      "every-brilliant-thing-2026/amny--matt-windman.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
       "every-brilliant-thing-2026/nytimes--unknown.json",
-      "every-brilliant-thing-2026/nydailynews--unknown.json",
       "every-brilliant-thing-2026/cititour--brian-scott-lipton.json",
-      "every-brilliant-thing-2026/chicagotribune--chris-jones.json",
       "every-brilliant-thing-2026/independent--unknown.json",
       "every-brilliant-thing-2026/the-la-times--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
+      "every-brilliant-thing-2026/deadline--greg-evans.json",
       "every-brilliant-thing-2026/usatoday--patrick-ryan.json"
     ]
   },
