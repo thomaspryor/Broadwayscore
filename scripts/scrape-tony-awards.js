@@ -294,7 +294,7 @@ function matchShow(showName, year) {
   }
 
   // Fallback: use the shared show-matching library (260+ aliases)
-  const sharedMatch = matchTitleToShow(showName, shows, { year });
+  const sharedMatch = matchTitleToShow(showName, shows, { market: 'broadway', year });
   if (sharedMatch && sharedMatch.show) {
     return sharedMatch.show;
   }

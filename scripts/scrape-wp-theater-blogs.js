@@ -452,7 +452,7 @@ async function scrapeSite(site, shows) {
 
     // Match title to show — ALWAYS pass year hint (P0 from pre-mortem review)
     const postYear = postDate ? new Date(postDate).getFullYear() : null;
-    const match = matchTitleToShow(titleForMatching, shows, postYear ? { year: postYear } : undefined);
+    const match = matchTitleToShow(titleForMatching, shows, { market: 'broadway', ...(postYear ? { year: postYear } : {}) });
     if (!match) {
       siteStats.skippedNoMatch++;
       continue;

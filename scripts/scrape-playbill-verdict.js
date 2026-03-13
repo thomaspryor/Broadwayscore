@@ -682,7 +682,7 @@ async function scrapePlaybillVerdict() {
 
     // Extract year from article date for multi-production disambiguation
     const articleYear = article.publishDate ? new Date(article.publishDate).getFullYear() : null;
-    const match = matchTitleToShow(article.title, shows, articleYear ? { year: articleYear } : undefined);
+    const match = matchTitleToShow(article.title, shows, { market: 'broadway', ...(articleYear ? { year: articleYear } : {}) });
     if (match) {
       const showId = match.show.id;
 

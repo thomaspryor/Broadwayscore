@@ -176,9 +176,11 @@ export function getDataStats() {
   const broadwayShows = getBroadwayShows();
   const totalReviews = broadwayShows.reduce((sum, show) => sum + (show.criticScore?.reviewCount || 0), 0);
 
-  // Count unique outlets and critics from reviews data
-  const uniqueOutlets = new Set(baseReviews.map(r => r.outletId));
-  const uniqueCritics = new Set(baseReviews.map(r => r.criticName).filter(Boolean));
+  // Count unique outlets and critics from Broadway reviews only (consistent with show counts)
+  const broadwaySlugs = new Set(broadwayShows.map(s => s.slug));
+  const broadwayReviews = baseReviews.filter(r => broadwaySlugs.has(r.showId));
+  const uniqueOutlets = new Set(broadwayReviews.map(r => r.outletId));
+  const uniqueCritics = new Set(broadwayReviews.map(r => r.criticName).filter(Boolean));
 
   return {
     totalShows: broadwayShows.filter(s => (s.criticScore?.reviewCount || 0) > 0).length,
@@ -556,9 +558,10 @@ export function getRelatedShows(show: ComputedShow, limit = 6): ComputedShow[] {
     const allShows = getAllShows();
     const idMap = new Map(allShows.map(s => [s.id, s]));
     const slugMap = new Map(allShows.map(s => [s.slug, s]));
+    const showMarket = show.category || 'broadway';
     return entry.relatedIds
       .map((id: string) => idMap.get(id) || slugMap.get(id))
-      .filter((s): s is ComputedShow => s != null && !isSameShow(s, show))
+      .filter((s): s is ComputedShow => s != null && !isSameShow(s, show) && (s.category || 'broadway') === showMarket)
       .slice(0, limit);
   }
   return getRelatedShowsAlgorithmic(show, limit);
@@ -570,9 +573,10 @@ export function getRelatedShowsOpen(show: ComputedShow, limit = 6): ComputedShow
     const allShows = getAllShows();
     const idMap = new Map(allShows.map(s => [s.id, s]));
     const slugMap = new Map(allShows.map(s => [s.slug, s]));
+    const showMarket = show.category || 'broadway';
     return entry.relatedOpenIds
       .map((id: string) => idMap.get(id) || slugMap.get(id))
-      .filter((s): s is ComputedShow => s != null && (s.status === 'open' || s.status === 'previews' || s.status === 'upcoming') && !isSameShow(s, show))
+      .filter((s): s is ComputedShow => s != null && (s.status === 'open' || s.status === 'previews' || s.status === 'upcoming') && !isSameShow(s, show) && (s.category || 'broadway') === showMarket)
       .slice(0, limit);
   }
   // Fallback: filter algorithmic results to open/previews/upcoming
@@ -587,9 +591,10 @@ export function getRelatedShowsClosed(show: ComputedShow, limit = 6): ComputedSh
     const allShows = getAllShows();
     const idMap = new Map(allShows.map(s => [s.id, s]));
     const slugMap = new Map(allShows.map(s => [s.slug, s]));
+    const showMarket = show.category || 'broadway';
     return entry.relatedClosedIds
       .map((id: string) => idMap.get(id) || slugMap.get(id))
-      .filter((s): s is ComputedShow => s != null && s.status === 'closed' && !isSameShow(s, show))
+      .filter((s): s is ComputedShow => s != null && s.status === 'closed' && !isSameShow(s, show) && (s.category || 'broadway') === showMarket)
       .slice(0, limit);
   }
   // Fallback: filter algorithmic results to closed

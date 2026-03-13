@@ -168,7 +168,7 @@ function matchResultToShow(result, config, shows) {
 
   candidateTitle = cleanExternalTitle(candidateTitle);
   const serpYear = extractYearFromSerpResult(result);
-  const matched = matchTitleToShow(candidateTitle, shows, serpYear ? { year: serpYear } : undefined);
+  const matched = matchTitleToShow(candidateTitle, shows, { market: 'broadway', ...(serpYear ? { year: serpYear } : {}) });
   if (!matched?.show) return null;
 
   // Guard against false matches where candidate and show share only one short word

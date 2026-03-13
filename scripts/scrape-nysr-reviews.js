@@ -385,7 +385,7 @@ async function scrapeNYSRReviews() {
 
     // Match title to show (pass year for multi-production disambiguation)
     const postYear = postDate ? new Date(postDate).getFullYear() : null;
-    const match = matchTitleToShow(cleanTitle, shows, postYear ? { year: postYear } : undefined);
+    const match = matchTitleToShow(cleanTitle, shows, { market: 'broadway', ...(postYear ? { year: postYear } : {}) });
     if (!match) {
       stats.skippedNoMatch++;
       continue;

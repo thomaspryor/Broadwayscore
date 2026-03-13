@@ -433,7 +433,7 @@ function matchRuntimesToShows(runtimeEntries, shows) {
   let unmatched = 0;
 
   for (const entry of runtimeEntries) {
-    const match = matchTitleToShow(entry.title, shows);
+    const match = matchTitleToShow(entry.title, shows, { market: 'broadway' });
     if (match) {
       const showId = match.show.id;
       enrichments[showId] = {
@@ -467,7 +467,7 @@ async function batchScrapeAgeRecommendations(runtimeEntries, shows, enrichments)
   for (const entry of runtimeEntries) {
     if (!entry.broadwayComUrl) continue;
 
-    const match = matchTitleToShow(entry.title, shows);
+    const match = matchTitleToShow(entry.title, shows, { market: 'broadway' });
     if (!match) continue;
 
     const showId = match.show.id;

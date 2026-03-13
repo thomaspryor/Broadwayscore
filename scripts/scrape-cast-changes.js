@@ -904,7 +904,7 @@ ${batchText}`;
         if (!lead.showTitle || !lead.name) continue;
 
         // Match show title to show ID
-        const match = matchTitleToShow(lead.showTitle, allShows);
+        const match = matchTitleToShow(lead.showTitle, allShows, { market: 'broadway', prefer: 'open' });
         if (!match) {
           if (verbose) console.log(`    [Reddit] No show match for "${lead.showTitle}"`);
           continue;

@@ -32,8 +32,8 @@ export const metadata: Metadata = {
     default: 'Broadway Scorecard - Aggregated Broadway Show Ratings',
     template: '%s | Broadway Scorecard',
   },
-  description: 'Comprehensive Broadway show ratings combining critic reviews, AudienceGrade ratings, and community buzz. Find the best shows on Broadway with transparent, data-driven scores.',
-  keywords: ['Broadway', 'theater', 'musicals', 'reviews', 'ratings', 'scorecard', 'critic reviews', 'AudienceGrade'],
+  description: 'Comprehensive theater ratings combining critic reviews, AudienceGrade ratings, and community buzz. Find the best shows on Broadway, the West End, and Off-Broadway with transparent, data-driven scores.',
+  keywords: ['Broadway', 'West End', 'Off-Broadway', 'theater', 'musicals', 'reviews', 'ratings', 'scorecard', 'critic reviews', 'AudienceGrade'],
   authors: [{ name: 'Broadway Scorecard' }],
   openGraph: {
     type: 'website',
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     url: BASE_URL,
     siteName: 'Broadway Scorecard',
     title: 'Broadway Scorecard - Aggregated Broadway Show Ratings',
-    description: 'Comprehensive Broadway show ratings combining critic reviews, AudienceGrade ratings, and community buzz.',
+    description: 'Comprehensive theater ratings combining critic reviews, AudienceGrade ratings, and community buzz for Broadway, West End, and Off-Broadway.',
     images: [{
       url: homeOgImageUrl,
       width: 1200,
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Broadway Scorecard',
-    description: 'Aggregated Broadway show ratings from critics, audiences, and community buzz.',
+    description: 'Aggregated theater ratings from critics, audiences, and community buzz for Broadway, West End, and Off-Broadway.',
     images: [{
       url: homeOgImageUrl,
       width: 1200,
