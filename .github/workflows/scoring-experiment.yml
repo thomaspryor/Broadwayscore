@@ -79,7 +79,7 @@ jobs:
 
             Co-Authored-By: Claude <noreply@anthropic.com>"
 
-            git push origin main
+            bash scripts/lib/push-with-retry.sh
           fi
       - name: Notify on failure
         if: failure()

@@ -127,17 +127,7 @@ jobs:
             else
               git commit -m "chore: Collect review texts for $show (overnight batch)" || true
 
-              # Push with retry
-              for attempt in 1 2 3 4 5; do
-                if git push origin main 2>/dev/null; then
-                  echo "Pushed successfully"
-                  break
-                else
-                  echo "Push failed, attempt $attempt - pulling and retrying..."
-                  git pull --rebase origin main || true
-                  sleep $((RANDOM % 10 + 5))
-                fi
-              done
+              bash scripts/lib/push-with-retry.sh
             fi
 
             PROCESSED=$((PROCESSED + 1))

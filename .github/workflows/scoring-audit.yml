@@ -59,7 +59,7 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "audit: Monthly scoring audit $(date +%Y-%m-%d)"
-            git push origin main
+            bash scripts/lib/push-with-retry.sh
           fi
 
       - name: Create GitHub issue with audit digest
