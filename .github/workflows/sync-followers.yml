@@ -1,0 +1,57 @@
+name: Sync Followers & Subscribers
+
+on:
+  schedule:
+    - cron: '0 12 * * *'  # Daily at noon UTC (7 AM ET)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-followers
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Sync from Formspree → local JSON + Resend segments
+        env:
+          FORMSPREE_FOLLOW_API_KEY: ${{ secrets.FORMSPREE_FOLLOW_API_KEY }}
+          FORMSPREE_SUBSCRIBER_API_KEY: ${{ secrets.FORMSPREE_SUBSCRIBER_API_KEY }}
+          FORMSPREE_FOLLOW_FORM_ID: ${{ secrets.FORMSPREE_FOLLOW_FORM_ID }}
+          FORMSPREE_SUBSCRIBER_FORM_ID: ${{ secrets.FORMSPREE_SUBSCRIBER_FORM_ID }}
+          FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID: ${{ secrets.FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID }}
+          FORMSPREE_WESTEND_SUBSCRIBER_API_KEY: ${{ secrets.FORMSPREE_WESTEND_SUBSCRIBER_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: node scripts/sync-followers.js
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/followers.json data/subscribers.json data/subscribers-westend.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No subscriber changes"
+          else
+            git commit -m "data: Sync followers & subscribers"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Sync Followers Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
