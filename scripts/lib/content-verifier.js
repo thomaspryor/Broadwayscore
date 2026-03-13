@@ -14,6 +14,16 @@
  */
 
 const https = require('https');
+const crypto = require('crypto');
+
+/**
+ * Hash the first 2500 chars of text — used to detect when contentVerification
+ * was done on different content than the stored fullText.
+ */
+function contentHash(text) {
+  if (!text) return null;
+  return crypto.createHash('md5').update(text.substring(0, 2500)).digest('hex');
+}
 
 // ============================================================
 // LLM Provider Implementations (cheapest → most expensive)
@@ -328,7 +338,8 @@ Set isValid=true only if the content is a review of the ${mc.label} production a
         wrongProduction: parsed.wrongProduction || false,
         isFilmTv: parsed.isFilmTv || false,
         reasoning: parsed.reasoning || '',
-        verifiedBy: `llm:${result.provider}`
+        verifiedBy: `llm:${result.provider}`,
+        contentHash: contentHash(scrapedText)
       };
     }
 
@@ -442,7 +453,8 @@ function heuristicVerify({ scrapedText, excerpt, showTitle }) {
     wrongArticle,
     wrongProduction: false, // Heuristics can't reliably detect this
     isFilmTv: false, // Heuristics can't reliably detect this
-    verifiedBy: 'heuristic'
+    verifiedBy: 'heuristic',
+    contentHash: contentHash(scrapedText)
   };
 }
 
@@ -467,5 +479,6 @@ function quickValidityCheck(text, showTitle) {
 module.exports = {
   verifyContent,
   heuristicVerify,
-  quickValidityCheck
+  quickValidityCheck,
+  contentHash
 };
