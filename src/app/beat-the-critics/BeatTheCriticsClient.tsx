@@ -212,6 +212,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
   const [shuffleSeed] = useState(() => Math.floor(Math.random() * 1000000));
   const [emailSubmitted, setEmailSubmitted] = useState(false);
   const [emailSubmitting, setEmailSubmitting] = useState(false);
+  const [emailError, setEmailError] = useState('');
   const emailRef = useRef<HTMLInputElement>(null);
   const currentTier = data.tiers[currentTierIdx];
   const currentCategory = currentTier?.categories[currentCatIdx];
@@ -264,21 +265,37 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
 
   const handleEmailSave = useCallback(async () => {
     const email = emailRef.current?.value?.trim().toLowerCase();
-    if (!email || !email.includes('@') || !email.includes('.')) return;
+    if (!email || !email.includes('@') || !email.includes('.')) {
+      setEmailError('Please enter a valid email address.');
+      return;
+    }
+    setEmailError('');
     setEmailSubmitting(true);
     try {
       const formId = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID;
-      if (formId) {
-        const res = await fetch(`https://formspree.io/f/${formId}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, source: 'beat-the-critics' }),
-        });
-        if (!res.ok) { setEmailSubmitting(false); return; }
+      if (!formId) {
+        setEmailError('Email capture is temporarily unavailable.');
+        return;
       }
+      const res = await fetch(`https://formspree.io/f/${formId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, source: 'beat-the-critics' }),
+      });
+      if (!res.ok) {
+        setEmailError('Something went wrong. Please try again.');
+        return;
+      }
+      // Persist so ProGateContext recapture logic knows this user subscribed
+      try {
+        const existing = JSON.parse(localStorage.getItem('bsc_user_data') || '{}');
+        existing.email = email;
+        localStorage.setItem('bsc_user_data', JSON.stringify(existing));
+        localStorage.setItem('bsc_email_subscribed_broadway', 'true');
+      } catch { /* localStorage unavailable */ }
       setEmailSubmitted(true);
     } catch {
-      // silent fail
+      setEmailError('Network error. Please try again.');
     } finally {
       setEmailSubmitting(false);
     }
@@ -593,6 +610,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
                 {emailSubmitting ? 'Saving...' : 'Save'}
               </button>
             </div>
+            {emailError && <p className="text-red-400 text-xs mb-2">{emailError}</p>}
             <label className="flex items-start gap-2.5 text-left cursor-pointer"><input type="checkbox" defaultChecked className="mt-0.5 accent-[#ff1368] w-4 h-4" /><span className="text-xs text-gray-400 leading-relaxed">Enter me ({entriesEarned} {entriesEarned === 1 ? 'entry' : 'entries'}) in the drawing to win <strong className="text-brand">free TodayTix tickets</strong></span></label>
           </div>
         )}

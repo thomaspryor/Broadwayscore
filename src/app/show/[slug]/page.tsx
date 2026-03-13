@@ -7,7 +7,7 @@ import { getShowAwards } from '@/lib/data-awards';
 import { getAudienceBuzz, getShowScoreUrl, getAudienceGrade, getTotalAudienceReviews, hasEnoughAudienceReviews } from '@/lib/data-audience';
 import { getCriticConsensus } from '@/lib/data-consensus';
 import { getLotteryRush } from '@/lib/data-lottery';
-import { getShowSchedule, getScheduleCurrentMonday, getScheduleLastUpdated } from '@/lib/data-showtimes';
+import { getShowSchedule, getScheduleCurrentMonday } from '@/lib/data-showtimes';
 import { getShowCommercial, getRecoupmentTrend } from '@/lib/data-commercial';
 import { getCastChanges } from '@/lib/data-cast';
 import { getShowCastFile } from '@/lib/data-cast-obc';
@@ -1032,7 +1032,6 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           <ShowtimesCard
             schedule={showSchedule}
             currentMonday={getScheduleCurrentMonday()}
-            lastUpdated={getScheduleLastUpdated()}
             showStatus={show.status}
             todayTixUrl={show.ticketLinks?.find(l => l.platform === 'TodayTix')?.url}
           />

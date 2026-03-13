@@ -1,12 +1,11 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import type { ShowSchedule, WeekSchedule } from '@/lib/data-types';
 
 interface ShowtimesCardProps {
   schedule: ShowSchedule;
   currentMonday: string;
-  lastUpdated: string;
   showStatus: string;
   todayTixUrl?: string;
 }
@@ -52,18 +51,10 @@ function getWeekLabel(mondayStr: string, currentMonday: string): string {
   return `Week of ${formatWeekRange(target)}`;
 }
 
-/** Check if data is stale (currentMonday >10 days ago) */
-function isStale(currentMonday: string): boolean {
-  const monday = parseMonday(currentMonday);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  return (today.getTime() - monday.getTime()) / (1000 * 60 * 60 * 24) > 10;
-}
-
 /** Get today's day index (0=Mon, 6=Sun) or -1 if not in this week */
-function getTodayIndex(mondayStr: string): number {
+function getTodayIndex(mondayStr: string, now: Date): number {
   const monday = parseMonday(mondayStr);
-  const today = new Date();
+  const today = new Date(now);
   today.setHours(0, 0, 0, 0);
   const diff = Math.round((today.getTime() - monday.getTime()) / (1000 * 60 * 60 * 24));
   if (diff >= 0 && diff <= 6) return diff;
@@ -76,17 +67,32 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tod
 
   const [weekIndex, setWeekIndex] = useState(0);
 
+  // Use client-side date for staleness + today highlight (not SSG build time)
+  const [clientNow, setClientNow] = useState<Date | null>(null);
+  useEffect(() => { setClientNow(new Date()); }, []);
+
+  // Clamp weekIndex if data changes and current index is out of bounds
+  const clampedIndex = Math.min(weekIndex, Math.max(0, weekKeys.length - 1));
+  if (clampedIndex !== weekIndex) setWeekIndex(clampedIndex);
+
   if (showStatus === 'closed' || weekKeys.length === 0 || !currentMonday) return null;
 
-  const selectedMonday = weekKeys[weekIndex];
+  const selectedMonday = weekKeys[clampedIndex];
   const week: WeekSchedule = schedule.weeks[selectedMonday];
   const weekLabel = getWeekLabel(selectedMonday, currentMonday);
   const weekRange = formatWeekRange(parseMonday(selectedMonday));
-  const todayIdx = getTodayIndex(selectedMonday);
-  const stale = isStale(currentMonday);
+  const todayIdx = clientNow ? getTodayIndex(selectedMonday, clientNow) : -1;
+  const isAllDark = week.every(day => !day.m && !day.e);
 
-  const canPrev = weekIndex > 0;
-  const canNext = weekIndex < weekKeys.length - 1;
+  const staleCheck = clientNow ? (() => {
+    const monday = parseMonday(currentMonday);
+    const today = new Date(clientNow);
+    today.setHours(0, 0, 0, 0);
+    return (today.getTime() - monday.getTime()) / (1000 * 60 * 60 * 24) > 10;
+  })() : false;
+
+  const canPrev = clampedIndex > 0;
+  const canNext = clampedIndex < weekKeys.length - 1;
 
   return (
     <section className="card p-5 sm:p-6 mb-6 scroll-mt-20">
@@ -103,7 +109,7 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tod
         <button
           onClick={() => setWeekIndex(i => i - 1)}
           disabled={!canPrev}
-          className="p-1 rounded text-gray-400 hover:text-white disabled:opacity-30 disabled:cursor-default transition-colors"
+          className="p-2.5 -m-1.5 rounded text-gray-400 hover:text-white disabled:opacity-30 disabled:cursor-default transition-colors"
           aria-label="Previous week"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
@@ -117,7 +123,7 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tod
         <button
           onClick={() => setWeekIndex(i => i + 1)}
           disabled={!canNext}
-          className="p-1 rounded text-gray-400 hover:text-white disabled:opacity-30 disabled:cursor-default transition-colors"
+          className="p-2.5 -m-1.5 rounded text-gray-400 hover:text-white disabled:opacity-30 disabled:cursor-default transition-colors"
           aria-label="Next week"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
@@ -125,18 +131,24 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tod
       </div>
 
       {/* Staleness warning */}
-      {stale && (
+      {staleCheck && (
         <p className="text-yellow-500/80 text-xs mb-3 text-center">Schedule may be outdated</p>
       )}
 
+      {/* All-dark week message */}
+      {isAllDark && (
+        <p className="text-gray-400 text-sm text-center py-4">No performances this week</p>
+      )}
+
       {/* Day list — right-aligned times, tight max-width for readability */}
-      <div className="space-y-0 max-w-xs mx-auto">
+      {!isAllDark && <div className="space-y-0 max-w-xs mx-auto">
         {week.map((day, i) => {
           const isDark = !day.m && !day.e;
           const isToday = i === todayIdx;
           return (
             <div
               key={i}
+              aria-current={isToday ? 'date' : undefined}
               className={`flex items-center py-2.5 border-b border-white/5 last:border-0 ${
                 isToday ? 'bg-white/[0.03] -mx-2 px-2 rounded' : ''
               }`}
@@ -163,7 +175,7 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tod
             </div>
           );
         })}
-      </div>
+      </div>}
 
       {/* Footer */}
       <div className="mt-3 text-center">
@@ -180,8 +192,8 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tod
             </svg>
           </a>
         )}
-        <p className="text-gray-500 text-xs">
-          Schedule via{' '}
+        <p className="text-gray-600 text-[11px]">
+          via{' '}
           <a href="https://bwayrush.com/" target="_blank" rel="noopener noreferrer" className="hover:text-gray-400 underline underline-offset-2">
             bwayrush.com
           </a>
