@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-13T11:58:17.587Z",
-  "processed": 132,
+  "updatedAt": "2026-03-13T12:00:34.424Z",
+  "processed": 142,
   "failed": 20,
-  "successRate": "86.8%",
+  "successRate": "87.7%",
   "tierBreakdown": {
-    "playwright": 65,
+    "playwright": 70,
     "amp": 8,
     "browserbase": 12,
     "directCookies": 0,
-    "scrapingbee": 24,
+    "scrapingbee": 26,
     "brightdata": 0,
     "archiveToday": 9,
-    "archive": 18
+    "archive": 21
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-03-13T11:06:06.460Z",
-      "event": "bb-session",
-      "session": "fa3fed51",
-      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
-    },
-    {
-      "t": "2026-03-13T11:06:08.730Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-13T11:06:28.612Z",
-      "event": "bb-session",
-      "session": "2827653a",
-      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
-    },
-    {
-      "t": "2026-03-13T11:06:30.045Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-13T11:06:59.896Z",
       "event": "bb-session",
@@ -125,6 +103,28 @@
       "t": "2026-03-13T11:57:42.895Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-13T11:59:37.282Z",
+      "event": "bb-session",
+      "session": "9389f840",
+      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
+    },
+    {
+      "t": "2026-03-13T11:59:38.613Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-13T11:59:58.209Z",
+      "event": "bb-session",
+      "session": "141eee1b",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-13T12:00:00.719Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

@@ -131,7 +131,17 @@
     "every-brilliant-thing-2026/deadline--unknown.json",
     "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
     "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
-    "every-brilliant-thing-2026/thewrap--robert-hofler.json"
+    "every-brilliant-thing-2026/thewrap--robert-hofler.json",
+    "every-brilliant-thing-2026/timeout--unknown.json",
+    "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json",
+    "hadestown-2019/ew--jessica-derschowitz.json",
+    "hadestown-2019/guardian--adrian-horton.json",
+    "hadestown-2019/theatermania--jesse-green.json",
+    "hadestown-2019/timeout--adam-feldman.json",
+    "hamilton-2015/theatermania--adam-hetrick.json",
+    "hamilton-2015/wsj--terry-teachout.json",
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json"
   ],
   "failed": [
     "the-monsters-off-broadway-2026/talkinbroadway--james-wilson.json",
@@ -222,7 +232,12 @@
       "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
       "dracula-west-end-2025/guardian--arifa-akbar.json",
       "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
-      "every-brilliant-thing-2026/theatermania--kenji-fujishima.json"
+      "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
+      "every-brilliant-thing-2026/timeout--unknown.json",
+      "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json",
+      "hadestown-2019/theatermania--jesse-green.json",
+      "hadestown-2019/timeout--adam-feldman.json",
+      "hamilton-2015/theatermania--adam-hetrick.json"
     ],
     "amp": [
       "data/review-texts/bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
@@ -272,7 +287,9 @@
       "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json",
       "book-of-mormon-2011/ew--thom-geier.json",
       "chicago-1996/ew--melissa-rose-bernardo.json",
-      "chicago-1996/nydailynews--joe-dziemianowicz.json"
+      "chicago-1996/nydailynews--joe-dziemianowicz.json",
+      "hadestown-2019/ew--jessica-derschowitz.json",
+      "hadestown-2019/guardian--adrian-horton.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -304,11 +321,14 @@
       "and-juliet-2022/thewrap--robert-hofler.json",
       "cold-war-choir-practice-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
       "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
-      "dirty-books-off-broadway-2025/broadwaynews--chloe-rabinowitz.json"
+      "dirty-books-off-broadway-2025/broadwaynews--chloe-rabinowitz.json",
+      "hamilton-2015/wsj--terry-teachout.json",
+      "harry-potter-2021/wsj--terry-teachout.json",
+      "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json"
     ]
   },
   "startTime": "2026-03-13T11:26:35.873Z",
-  "lastProcessed": "every-brilliant-thing-2026/thewrap--robert-hofler.json",
+  "lastProcessed": "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json",
   "log": [
     {
       "t": "2026-03-13T10:58:48.048Z",
@@ -464,6 +484,28 @@
       "t": "2026-03-13T11:57:42.895Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-13T11:59:37.282Z",
+      "event": "bb-session",
+      "session": "9389f840",
+      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
+    },
+    {
+      "t": "2026-03-13T11:59:38.613Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-13T11:59:58.209Z",
+      "event": "bb-session",
+      "session": "141eee1b",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-13T12:00:00.719Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
