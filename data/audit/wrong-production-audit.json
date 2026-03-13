@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-03-13T20:00:33.145Z",
+  "timestamp": "2026-03-13T20:24:26.956Z",
   "stats": {
     "totalReviews": 30854,
-    "alreadyFlagged": 9208,
+    "alreadyFlagged": 9210,
     "dateGuardCatches": 131,
     "directorMismatch": 1095,
-    "tvFilmSignals": 3465,
+    "tvFilmSignals": 3464,
     "londonSignals": 997,
     "offBroadwaySignals": 1074,
     "yearMismatch": 84,
@@ -28572,20 +28572,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 2\""
-        }
-      ]
-    },
-    {
-      "showId": "la-llamada-off-broadway-2024",
-      "file": "broadwaynews--aa-cristi.json",
-      "score": null,
-      "publishDate": "May 7, 2024",
-      "url": "https://www.broadwayworld.com/off-broadway/article/LA-LLAMADA-US-Premiere-to-Open-at-Repertorio-Espaol-This-Spring-20240212",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
