@@ -145,7 +145,11 @@
     "maybe-happy-ending-2024/guardian--adrian-horton.json",
     "maybe-happy-ending-2024/new-york-sun--broadway-scorecard.json",
     "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
-    "maybe-happy-ending-2024/theatermania--jesse-green.json"
+    "maybe-happy-ending-2024/theatermania--jesse-green.json",
+    "every-brilliant-thing-2026/nypost--johnny-oleksinski.json",
+    "every-brilliant-thing-2026/the-la-times--unknown.json",
+    "death-becomes-her-2024/newyorker--helen-shaw.json",
+    "hercules-west-end-2025/nytimes--matt-wolf.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -160,7 +164,13 @@
     "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
     "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
     "harry-potter-2021/wsj--terry-teachout.json",
-    "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json"
+    "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
+    "every-brilliant-thing-2026/vulture--sara-holdren.json",
+    "every-brilliant-thing-2026/wsj--charles-isherwood.json",
+    "the-book-of-mormon-west-end-2024/thestage--unknown.json",
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
+    "hadestown-2019/newyorker--hilton-als.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -299,7 +309,9 @@
       "data/review-texts/masquerade-off-broadway-2025/observer--david-cote.json",
       "masquerade-off-broadway-2025/observer--david-cote.json",
       "data/review-texts/maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
-      "maybe-happy-ending-2024/nypost--johnny-oleksinski.json"
+      "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+      "data/review-texts/every-brilliant-thing-2026/nypost--johnny-oleksinski.json",
+      "every-brilliant-thing-2026/nypost--johnny-oleksinski.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json"
@@ -322,7 +334,9 @@
       "hadestown-2019/guardian--adrian-horton.json",
       "just-in-time-2025/broadwaynews--brittani-samuel.json",
       "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json",
-      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json"
+      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+      "every-brilliant-thing-2026/the-la-times--unknown.json",
+      "death-becomes-her-2024/newyorker--helen-shaw.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -330,7 +344,9 @@
       "data/review-texts/death-becomes-her-2024/newyorker--helen-shaw.json",
       "data/review-texts/hercules-west-end-2025/nytimes--matt-wolf.json",
       "data/review-texts/mj-2022/vulture--helen-shaw.json",
-      "data/review-texts/oh-mary-2024/nytimes--erik-piepenburg.json"
+      "data/review-texts/oh-mary-2024/nytimes--erik-piepenburg.json",
+      "data/review-texts/every-brilliant-thing-2026/vulture--sara-holdren.json",
+      "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json"
     ],
     "archive": [
       "every-brilliant-thing-2026/usatoday--patrick-ryan.json",
@@ -355,11 +371,12 @@
       "just-in-time-2025/newsday--unknown.json",
       "la-llamada-off-broadway-2024/broadwaynews--aa-cristi.json",
       "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
-      "maybe-happy-ending-2024/new-york-sun--broadway-scorecard.json"
+      "maybe-happy-ending-2024/new-york-sun--broadway-scorecard.json",
+      "hercules-west-end-2025/nytimes--matt-wolf.json"
     ]
   },
   "startTime": "2026-03-13T03:37:52.112Z",
-  "lastProcessed": "maybe-happy-ending-2024/theatermania--jesse-green.json",
+  "lastProcessed": "hercules-west-end-2025/nytimes--matt-wolf.json",
   "log": [
     {
       "t": "2026-03-13T03:38:54.108Z",
@@ -624,6 +641,28 @@
       "t": "2026-03-13T05:00:56.326Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-13T05:10:48.334Z",
+      "event": "bb-session",
+      "session": "f5094c01",
+      "url": "https://nypost.com/2026/03/12/entertainment/every-brilliant-thing-review-daniel-"
+    },
+    {
+      "t": "2026-03-13T05:10:49.932Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-13T05:11:10.837Z",
+      "event": "bb-session",
+      "session": "316db0ee",
+      "url": "https://www.wsj.com/articles/every-brilliant-thing-review-daniel-radcliffes-spir"
+    },
+    {
+      "t": "2026-03-13T05:11:12.510Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
