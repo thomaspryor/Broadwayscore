@@ -295,7 +295,13 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # Core data files pushed to private repo by push-core-data action
           # Subscriber files are ephemeral (recreated from Formspree each run)
-          git add --force data/opening-night-sent.json 2>/dev/null || true
+          # opening-night-sent.json is gitignored but must persist — force-add with explicit error check
+          if [ -f data/opening-night-sent.json ]; then
+            git add --force data/opening-night-sent.json
+            echo "Staged opening-night-sent.json for commit"
+          else
+            echo "WARNING: opening-night-sent.json not found — sent tracking will be lost"
+          fi
           bash scripts/lib/push-with-retry.sh
 
 

@@ -64,7 +64,12 @@ function loadJSON(filePath) {
 }
 
 function saveSentData(data) {
-  fs.writeFileSync(SENT_PATH, JSON.stringify(data, null, 2));
+  try {
+    fs.writeFileSync(SENT_PATH, JSON.stringify(data, null, 2));
+  } catch (err) {
+    console.error(`ERROR: Failed to save sent-tracking data to ${SENT_PATH}: ${err.message}`);
+    console.error('WARNING: Sent-tracking state may be lost — risk of duplicate sends on next run');
+  }
 }
 
 /**
@@ -170,9 +175,17 @@ async function main() {
   }
 
   // Filter out already-completed broadcasts (skip in preview mode)
+  // Check BOTH individual show IDs and broadcastKey to prevent double sends
+  // when show combinations change between runs (e.g., new show added mid-night)
   const pendingShows = SEND_TO ? recentlyOpened : recentlyOpened.filter(s => {
-    const sent = sentData.shows[s.id || s.slug];
-    return !sent || !sent.completed;
+    const showId = s.id || s.slug;
+    // Check individual show tracking first (most reliable)
+    const individualSent = sentData.shows[showId];
+    if (individualSent && individualSent.completed) {
+      console.log(`  Skipping ${s.title} — already broadcast (individual tracking)`);
+      return false;
+    }
+    return true;
   });
 
   if (pendingShows.length === 0) {
@@ -425,13 +438,19 @@ async function main() {
   // Final save (skip tracking in preview mode)
   if (!SEND_TO) {
     const allSent = sentCount >= subscribers.length;
-    sentData.shows[broadcastKey] = {
+    const completionData = {
       sentAt: new Date().toISOString(),
       sentCount,
       subscriberCount: subscribers.length,
       reviewCount: showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0),
       completed: allSent,
     };
+    // Write broadcastKey (for resume logic)
+    sentData.shows[broadcastKey] = completionData;
+    // Also write individual show IDs (prevents double-send when show combinations change)
+    for (const s of showsForEmail) {
+      sentData.shows[s.showId] = { ...completionData, broadcastKey };
+    }
     saveSentData(sentData);
 
     console.log(`\nDone: ${sentCount - alreadySentCount} sent this run, ${sentCount} total`);
