@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-13T04:19:05.293Z",
-  "processed": 26,
-  "failed": 3,
-  "successRate": "89.7%",
+  "updatedAt": "2026-03-13T04:24:35.437Z",
+  "processed": 33,
+  "failed": 6,
+  "successRate": "84.6%",
   "tierBreakdown": {
-    "playwright": 14,
+    "playwright": 18,
     "amp": 2,
-    "browserbase": 12,
+    "browserbase": 18,
     "directCookies": 0,
     "scrapingbee": 4,
     "brightdata": 0,
-    "archiveToday": 1,
+    "archiveToday": 3,
     "archive": 1
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 9,
   "recentActivity": [
-    {
-      "t": "2026-03-13T03:38:54.108Z",
-      "event": "bb-session",
-      "session": "27c0deca",
-      "url": "https://www.nytimes.com/2026/02/17/theater/daniel-radcliffe-every-brilliant-thin"
-    },
-    {
-      "t": "2026-03-13T03:38:55.642Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-13T03:39:11.587Z",
       "event": "bb-session",
@@ -80,6 +69,61 @@
       "t": "2026-03-13T04:18:21.785Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T04:20:49.351Z",
+      "event": "bb-session",
+      "session": "eff07d3e",
+      "url": "https://www.newyorker.com/magazine/2024/12/02/death-becomes-her-theatre-review-b"
+    },
+    {
+      "t": "2026-03-13T04:20:50.934Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-13T04:21:21.924Z",
+      "event": "bb-session",
+      "session": "95945df9",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-13T04:21:23.316Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T04:21:55.870Z",
+      "event": "bb-session",
+      "session": "935e13ed",
+      "url": "https://variety.com/2019/legit/reviews/hadestown-review-musical-broadway-1203191"
+    },
+    {
+      "t": "2026-03-13T04:21:57.615Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-13T04:22:13.238Z",
+      "event": "bb-session",
+      "session": "cc9e162c",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-13T04:22:14.960Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T04:23:32.260Z",
+      "event": "bb-session",
+      "session": "cf9a1153",
+      "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
+    },
+    {
+      "t": "2026-03-13T04:23:33.618Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
