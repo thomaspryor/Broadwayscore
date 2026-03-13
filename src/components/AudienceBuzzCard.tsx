@@ -141,7 +141,7 @@ function SourceCard({ name, icon, score, reviewCount, starRating, url, volumeLab
     </>
   );
 
-  const className = `flex-1 basis-0 min-w-0 bg-surface-overlay rounded-lg p-3 border border-white/5 hover:bg-white/5 transition-colors ${url ? 'hover:border-white/10' : ''}`;
+  const className = `flex-1 min-w-[72px] bg-surface-overlay rounded-lg p-3 border border-white/5 hover:bg-white/5 transition-colors ${url ? 'hover:border-white/10' : ''}`;
 
   if (url) {
     return (
@@ -186,7 +186,7 @@ export default function AudienceBuzzCard({ buzz, showScoreUrl, limitedSources }:
       </div>
 
       {/* Source Cards Row — only show sources with data */}
-      <div className="flex gap-2 sm:gap-3 items-stretch">
+      <div className="flex flex-wrap gap-2 sm:gap-3 items-stretch">
         {showScore?.score != null && (
           <SourceCard
             name="Show Score"

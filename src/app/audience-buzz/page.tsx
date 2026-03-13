@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { getBroadwayShows } from '@/lib/data-core';
-import { getAudienceBuzz, getAudienceBuzzLastUpdated, getAudienceGrade } from '@/lib/data-audience';
+import { getAudienceBuzz, getAudienceBuzzLastUpdated, getAudienceGrade, MIN_AUDIENCE_REVIEWS } from '@/lib/data-audience';
 import type { AudienceBuzzData } from '@/lib/data-types';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -82,13 +82,12 @@ export default function AudienceBuzzPage() {
     }))
     .filter(item => {
       if (!item.buzz || item.buzz.combinedScore <= 0) return false;
-      // Minimum 5 total reviews across all sources
       const total = (item.buzz.sources.showScore?.reviewCount || 0)
         + (item.buzz.sources.mezzanine?.reviewCount || 0)
         + (item.buzz.sources.reddit?.reviewCount || 0)
         + (item.buzz.sources.theatr?.reviewCount || 0)
         + (item.buzz.sources.broadwayCom?.reviewCount || 0);
-      return total >= 5;
+      return total >= MIN_AUDIENCE_REVIEWS;
     })
     .sort((a, b) => (b.buzz?.combinedScore || 0) - (a.buzz?.combinedScore || 0));
 
