@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-13T11:04:16.235Z",
-  "processed": 34,
+  "updatedAt": "2026-03-13T11:06:03.538Z",
+  "processed": 44,
   "failed": 6,
-  "successRate": "85.0%",
+  "successRate": "88.0%",
   "tierBreakdown": {
-    "playwright": 21,
-    "amp": 10,
-    "browserbase": 0,
+    "playwright": 26,
+    "amp": 12,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 4,
+    "scrapingbee": 7,
     "brightdata": 0,
     "archiveToday": 4,
     "archive": 4
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-03-13T10:58:48.048Z",
@@ -47,6 +47,17 @@
       "t": "2026-03-13T11:03:54.031Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-13T11:04:24.960Z",
+      "event": "bb-session",
+      "session": "60c4196a",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-13T11:04:26.411Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
