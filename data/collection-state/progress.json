@@ -9,9 +9,14 @@
     "bughouse-off-broadway-2026/nytg--caroline-cao.json",
     "every-brilliant-thing-2026/nytimes--unknown.json",
     "bughouse-off-broadway-2026/theatermania--linda-buchwald.json",
-    "bughouse-off-broadway-2026/theatermania--unknown.json"
+    "bughouse-off-broadway-2026/theatermania--unknown.json",
+    "every-brilliant-thing-2026/deadline--greg-evans.json",
+    "every-brilliant-thing-2026/one-minute-critic--unknown.json",
+    "every-brilliant-thing-2026/playbill--unknown.json"
   ],
-  "failed": [],
+  "failed": [
+    "every-brilliant-thing-2026/usatoday--patrick-ryan.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
@@ -22,23 +27,29 @@
       "bughouse-off-broadway-2026/theater-life--unknown.json",
       "bughouse-off-broadway-2026/nytg--caroline-cao.json",
       "bughouse-off-broadway-2026/theatermania--linda-buchwald.json",
-      "bughouse-off-broadway-2026/theatermania--unknown.json"
+      "bughouse-off-broadway-2026/theatermania--unknown.json",
+      "every-brilliant-thing-2026/one-minute-critic--unknown.json",
+      "every-brilliant-thing-2026/playbill--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/bughouse-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
-      "bughouse-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
+      "bughouse-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+      "data/review-texts/every-brilliant-thing-2026/deadline--greg-evans.json",
+      "every-brilliant-thing-2026/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "every-brilliant-thing-2026/nytimes--unknown.json"
     ],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/every-brilliant-thing-2026/usatoday--patrick-ryan.json"
+    ],
     "archive": []
   },
   "startTime": "2026-03-13T01:08:11.959Z",
-  "lastProcessed": "bughouse-off-broadway-2026/theatermania--unknown.json",
+  "lastProcessed": "every-brilliant-thing-2026/usatoday--patrick-ryan.json",
   "log": [
     {
       "t": "2026-03-13T01:09:14.539Z",
@@ -50,6 +61,17 @@
       "t": "2026-03-13T01:09:16.025Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-13T01:10:54.970Z",
+      "event": "bb-session",
+      "session": "288e2374",
+      "url": "https://deadline.com/2026/03/broadway-box-office-daniel-radcliffe-every-brillian"
+    },
+    {
+      "t": "2026-03-13T01:10:56.627Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
