@@ -199,6 +199,12 @@ jobs:
             node scripts/generate-critic-consensus.js --show="$SHOW" || true
           done
 
+      - name: Generate mobile data (pre-computed scores for email)
+        if: steps.check.outputs.pending_shows != ''
+        run: |
+          node scripts/generate-mobile-data.js
+          node scripts/generate-mobile-show-details.js
+
       - name: Send broadcast
         if: steps.check.outputs.pending_shows != ''
         id: broadcast
