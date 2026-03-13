@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-03-13T19:05:33.029Z",
+  "timestamp": "2026-03-13T19:21:20.738Z",
   "stats": {
     "totalReviews": 30854,
-    "alreadyFlagged": 9191,
+    "alreadyFlagged": 9196,
     "dateGuardCatches": 133,
-    "directorMismatch": 1097,
-    "tvFilmSignals": 3467,
+    "directorMismatch": 1096,
+    "tvFilmSignals": 3466,
     "londonSignals": 997,
-    "offBroadwaySignals": 1076,
+    "offBroadwaySignals": 1075,
     "yearMismatch": 84,
     "noPublishDate": 9245
   },
@@ -30287,20 +30287,6 @@
     },
     {
       "showId": "little-shop-of-horrors-off-broadway-2019",
-      "file": "nytg--gillian-russo.json",
-      "score": 85,
-      "publishDate": "2023-10-26",
-      "url": "https://www.newyorktheatreguide.com/theatre-news/news/why-little-shop-of-horrors-still-blossoms-off-broadway",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "little-shop-of-horrors-off-broadway-2019",
       "file": "nytimes--ben-brantley.json",
       "score": 84,
       "publishDate": "October 18th, 2019",
@@ -31570,20 +31556,6 @@
       "score": 77,
       "publishDate": "March 21st, 2017",
       "url": "https://www.timeout.com/london/theatre/mamma-mia",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"phyllida lloyd\" from mamma-mia-2025"
-        }
-      ]
-    },
-    {
-      "showId": "mamma-mia-west-end-2021",
-      "file": "variety--matt-wolf.json",
-      "score": 74,
-      "publishDate": "2015-09-03",
-      "url": "https://variety.com/2019/vintage/features/mamma-mia-musical-anniversary-1203178922/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -73844,19 +73816,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"cherry lane\""
-        }
-      ]
-    },
-    {
-      "showId": "just-in-time-2025",
-      "file": "hollywood-reporter--unknown.json",
-      "publishDate": "2025-09-03",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/sarah-hyland-broadway-cast-of-just-in-time-1236359505/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },

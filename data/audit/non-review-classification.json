@@ -1,14 +1,14 @@
 {
   "meta": {
-    "generatedAt": "2026-03-13T19:01:08.382Z",
+    "generatedAt": "2026-03-13T19:16:41.965Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 31515,
-      "inReviewsJson": 16771,
+      "inReviewsJson": 16788,
       "skippedExcluded": 11,
       "withFullText": 31,
-      "excerptOnly": 2131,
+      "excerptOnly": 2134,
       "llmClassified": 30,
       "heuristicFlagged": 1,
       "nonReviewsFound": 0,
@@ -17,7 +17,7 @@
       "llmCalls": 31,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14598
+      "skippedAlreadyClassified": 14612
     },
     "calibration": null
   },
@@ -30,7 +30,7 @@
       "outletId": "chicago-reader",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a listing or announcement related to the show, possibly indicating a closing or recommendation, but it does not contain evaluative content. The presence of tags like 'Closing (Theater and Galleries)' and 'Recommended' suggests a news or listing item rather than a review itself.",
+      "reasoning": "This appears to be a listing or announcement related to the show, possibly indicating a closing or recommendation, but it does not contain any evaluative content. The presence of tags like 'Closing (Theater and Galleries)' and 'Recommended' suggests a news or listing item rather than a review itself",
       "currentScore": 86
     },
     {
@@ -39,8 +39,8 @@
       "outlet": "The Daily Beast",
       "outletId": "dailybeast",
       "contentType": "news",
-      "confidence": "low",
-      "reasoning": "The article mentions the Tony Awards eligibility deadline, suggesting it's a news piece about the Broadway season rather than a review of \"Dead Outlaw.\"",
+      "confidence": "medium",
+      "reasoning": "The article discusses the Tony Awards eligibility deadline and the rush of shows opening before the cutoff, which is a news item rather than a review of a specific show.",
       "currentScore": 72
     },
     {
@@ -50,7 +50,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and themes of \"Eclipsed\" and provides historical context, but it does not offer a critical evaluation or opinion on the quality of the production itself. The truncated portion appears to be about other shows.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated theater news.",
       "currentScore": 82
     },
     {
@@ -60,7 +60,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a list of theater-related items and links, suggesting a directory or advertisement rather than a review of a specific show.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
       "currentScore": 82
     },
     {
@@ -70,7 +70,7 @@
       "outletId": "bloomberg",
       "contentType": "news",
       "confidence": "medium",
-      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and its pre-Broadway run, with a brief mention of \"First Date\" only in photo captions. It does not offer a critical evaluation of \"First Date.\"",
+      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in photo captions. It does not offer a review or evaluation of \"First Date.\"",
       "currentScore": 60
     },
     {
@@ -80,7 +80,7 @@
       "outletId": "huffpost",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be a collection of news headlines and trending topics, rather than a review of 'First Date'. The truncated middle section makes it difficult to be certain.",
+      "reasoning": "The article appears to be a collection of news headlines and trending topics, rather than a review of 'First Date'. The presence of sections like 'What's Hot' and trending articles indicates a news aggregation format.",
       "currentScore": 62
     },
     {
@@ -100,7 +100,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical 'Groundhog Day' and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
       "currentScore": 81
     },
     {
@@ -110,7 +110,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a snippet of a larger article, likely a review, but the provided text is incomplete and only contains copyright information and a subscription prompt. Without the actual review content, it cannot be classified as a review.",
+      "reasoning": "This appears to be a snippet of a WSJ article, likely behind a paywall. Without the full text, it's impossible to determine the content, but the presence of a byline and subscription prompt suggests news or feature content rather than a review.",
       "currentScore": 95
     },
     {
@@ -120,7 +120,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there is no evaluative content or opinion offered about the show itself in this excerpt.",
+      "reasoning": "This is a 'Goings On' newsletter, which lists various cultural events and short blurbs about them. While 'Liberation' is mentioned, there is no evaluative content about the show itself.",
       "currentScore": 88
     },
     {
@@ -150,7 +150,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors'. It lacks any evaluative content about the show.",
+      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
       "currentScore": 73
     },
     {
@@ -160,7 +160,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated, but the available text seems to be a news snippet or advertisement for a WSJ subscription, rather than a review of 'Parade'.",
+      "reasoning": "The provided text appears to be a truncated news article snippet, possibly related to the Wall Street Journal, and does not contain any evaluative content about the show \"Parade\".",
       "currentScore": 78
     },
     {
@@ -180,7 +180,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer a critical evaluation or recommendation. It also includes an interview excerpt, further suggesting it's not solely a review.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production. It focuses on the show's concept and historical relevance.",
       "currentScore": 83
     },
     {
@@ -190,7 +190,7 @@
       "outletId": "broadwayworld",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article discusses the background and inspiration for Lynn Nottage's play \"Sweat,\" including her research process and the social issues it addresses, but it does not offer a critical evaluation of the production itself. It also includes a roundup of other Broadway news.",
+      "reasoning": "The article discusses the background and inspiration for Lynn Nottage's play \"Sweat,\" including her research process and the social issues it addresses. While it mentions the play, it does not offer a critical evaluation of the production itself.",
       "currentScore": 90
     },
     {
@@ -200,7 +200,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -210,7 +210,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content present.",
+      "reasoning": "The article consists of production credits and ticket information, which is more aligned with a news item or listing than a review. There is no evaluative content.",
       "currentScore": 64
     },
     {
@@ -220,7 +220,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's closest to news or listings.",
       "currentScore": 78
     },
     {
@@ -230,7 +230,7 @@
       "outletId": "vulture",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the set design and the playwright's intentions, but does not offer an evaluation or recommendation of the show's quality. It's more of a feature about the play's themes and context.",
+      "reasoning": "The article describes the set design and the playwright's intentions, but it does not offer an evaluation or opinion on the quality of the production itself. It's more of a feature about the show's themes and design choices.",
       "currentScore": 64
     },
     {
@@ -240,7 +240,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater, not a review of a specific production.",
+      "reasoning": "The text appears to be a collection of links and keywords related to theater, rather than a review of a specific production. It lacks any evaluative content about 'Three Tall Women'.",
       "currentScore": 89
     },
     {
@@ -268,13 +268,13 @@
     }
   ],
   "reviewsConfirmed": [
-    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/blogcritics--jon-sobel.json",
-    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
-    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json",
-    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theater-scene--darryl-reilly.json",
-    "touch-off-broadway-2026/talkinbroadway--howard-miller.json",
-    "touch-off-broadway-2026/theater-pizzazz--beatrice-williams-rude.json",
-    "touch-off-broadway-2026/theater-scene--victor-gluck.json"
+    "a-delicate-balance-2014/timeout--david-cote.json",
+    "how-to-succeed-in-business-without-really-trying-2011/chicagotribune--unknown.json",
+    "side-show-2014/timeout--david-cote.json",
+    "the-elephant-man-2014/timeout--david-cote.json",
+    "the-house-of-blue-leaves-2011/chicagotribune--unknown.json",
+    "the-lion-king-1997/timeout--jenna-scherer.json",
+    "the-real-thing-2014/timeout--david-cote.json"
   ],
   "perShowSummary": []
 }
