@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-13T18:54:30.937Z",
+  "timestamp": "2026-03-13T19:05:33.029Z",
   "stats": {
-    "totalReviews": 31500,
-    "alreadyFlagged": 9723,
+    "totalReviews": 30854,
+    "alreadyFlagged": 9191,
     "dateGuardCatches": 133,
-    "directorMismatch": 1100,
-    "tvFilmSignals": 3473,
-    "londonSignals": 998,
-    "offBroadwaySignals": 1078,
+    "directorMismatch": 1097,
+    "tvFilmSignals": 3467,
+    "londonSignals": 997,
+    "offBroadwaySignals": 1076,
     "yearMismatch": 84,
-    "noPublishDate": 9289
+    "noPublishDate": 9245
   },
   "findings": [
     {
@@ -2015,20 +2015,6 @@
     },
     {
       "showId": "a-streetcar-named-desire-2012",
-      "file": "nytimes--jesse-green.json",
-      "score": 38,
-      "publishDate": "2012-04-23",
-      "url": "https://www.nytimes.com/2012/04/23/theater/reviews/a-streetcar-named-desire-at-the-broadhurst-theater.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "a-streetcar-named-desire-2012",
       "file": "variety--marilyn-stasio.json",
       "score": 72,
       "publishDate": null,
@@ -3332,20 +3318,6 @@
     },
     {
       "showId": "aladdin-2014",
-      "file": "timeout--adam-feldman.json",
-      "score": 72,
-      "publishDate": "March 20, 2014",
-      "url": "https://www.timeout.com/newyork/theater/aladdin-1",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "aladdin-2014",
       "file": "uinterview--danny-graugnard.json",
       "score": 76,
       "publishDate": "March 24, 2014",
@@ -4549,20 +4521,6 @@
       "score": 82,
       "publishDate": "April 14th, 2022",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/laurence-fishburne-sam-rockwell-darren-criss-american-buffalo-broadway-revival-1235028155/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "american-buffalo-2022",
-      "file": "nytimes--jesse-green.json",
-      "score": 82,
-      "publishDate": "April 15, 2022",
-      "url": "https://www.nytimes.com/2022/04/14/theater/american-buffalo-review.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -5956,6 +5914,30 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"paramount\""
+        }
+      ]
+    },
+    {
+      "showId": "antigone-this-play-i-read-in-high-school-off-broadway-2026",
+      "file": "nyt-theater--anna-ziegler.json",
+      "score": null,
+      "publishDate": "February 8, 2026",
+      "url": "https://publictheater.org/productions/season/2526/antigone-this-play-i-read-in-high-school/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
@@ -8685,20 +8667,6 @@
       "file": "nytimes--elisabeth-vincentelli.json",
       "score": 78,
       "publishDate": "December 13, 2023",
-      "url": "https://www.nytimes.com/2023/12/13/theater/buena-vista-social-club-review.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"saheem ali\" from buena-vista-social-club-2025"
-        }
-      ]
-    },
-    {
-      "showId": "buena-vista-social-club-off-broadway-2023",
-      "file": "nytimes--jesse-green.json",
-      "score": 72,
-      "publishDate": "November 21, 2024",
       "url": "https://www.nytimes.com/2023/12/13/theater/buena-vista-social-club-review.html",
       "findings": [
         {
@@ -14962,6 +14930,20 @@
       ]
     },
     {
+      "showId": "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026",
+      "file": "theater-scene--darryl-reilly.json",
+      "score": 63,
+      "publishDate": "May 4th, 2019",
+      "url": "http://www.theaterscene.net/plays/offbway-plays/entangled/darryl-reilly/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
       "showId": "equus-2008",
       "file": "newsday--linda-winer-bway.json",
       "publishDate": "2008-09-28",
@@ -15231,20 +15213,6 @@
       "file": "ew--unknown.json",
       "publishDate": "2026-03-12",
       "url": "https://ew.com/every-brilliant-thing-review-daniel-radcliffe-casts-spell-on-broadway-11921829?srsltid=AfmBOoqT1qOcoVl1Rb9szjq5ef_Ef-PrNs_15RHLyIs_uiARGwq0tXlD",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hbo max\""
-        }
-      ]
-    },
-    {
-      "showId": "every-brilliant-thing-2026",
-      "file": "theatermania--kenji-fujishima.json",
-      "score": 60,
-      "publishDate": "2026-03-13",
-      "url": "https://www.theatermania.com/news/review-daniel-radcliffe-invites-us-to-cherish-every-brilliant-thing_1827748/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -19192,20 +19160,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"pilot episode\""
-        }
-      ]
-    },
-    {
-      "showId": "glengarry-glen-ross-2005",
-      "file": "chicagotribune--chris-jones.json",
-      "score": 62,
-      "publishDate": null,
-      "url": "https://www.chicagotribune.com/entertainment/theater/theaterloop/sc-ent-1209-glengarry-broadway-review-20121210,0,976516.column?track=rss",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"daniel sullivan\" from glengarry-glen-ross-2012"
         }
       ]
     },
@@ -31803,20 +31757,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "marvins-room-2017",
-      "file": "amny--matt-windman.json",
-      "score": 42,
-      "publishDate": null,
-      "url": "https://www.amny.com/entertainment/marvin-s-room-review-uneven-drama-misses-the-mark-1.13773562",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -55111,20 +55051,6 @@
     },
     {
       "showId": "the-lion-king-1997",
-      "file": "timeout--adam-feldman.json",
-      "score": 88,
-      "publishDate": "March 29, 2012",
-      "url": "https://www.timeout.com/newyork/theater/the-lion-king-on-broadway-tickets-reviews-and-video",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-1997",
       "file": "timeout--jenna-scherer.json",
       "score": 84,
       "publishDate": "June 18, 2014",
@@ -61013,20 +60939,6 @@
       ]
     },
     {
-      "showId": "touch-off-broadway-2026",
-      "file": "woman-around-town--alix-cohen.json",
-      "score": 84,
-      "publishDate": "August 25th, 2016",
-      "url": "http://www.womanaroundtown.com/sections/playing-around/touch-what-is-it-to-connect",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"paramount\""
-        }
-      ]
-    },
-    {
       "showId": "translations-2007",
       "file": "variety--charles-isherwood.json",
       "score": 52,
@@ -63811,20 +63723,6 @@
     },
     {
       "showId": "whos-afraid-of-virginia-woolf-2012",
-      "file": "chicagotribune--chris-jones.json",
-      "score": 79,
-      "publishDate": "October 14, 2012",
-      "url": "https://www.chicagotribune.com/entertainment/theater/theaterloop/ct-ent-1014-woolf-broadway-review-20121014,0,1880359.column",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
-        }
-      ]
-    },
-    {
-      "showId": "whos-afraid-of-virginia-woolf-2012",
       "file": "ew--thom-geier.json",
       "score": 88,
       "publishDate": "October 14, 2012",
@@ -64170,25 +64068,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "wolf-hall-parts-one-and-two-2015",
-      "file": "amny--matt-windman.json",
-      "score": 38,
-      "publishDate": null,
-      "url": "https://www.amny.com/entertainment/wolf-hall-theater-review-2-5-stars-1.10233163",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -69099,20 +68978,6 @@
     },
     {
       "showId": "eclipsed-2016",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "score": 78,
-      "publishDate": null,
-      "url": "https://www.nydailynews.com/2016/03/06/lupita-nyongo-powerful-in-danai-guriras-eclipsed-review/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "eclipsed-2016",
       "file": "nypost--elisabeth-vincentelli.json",
       "score": 76,
       "publishDate": "March 7, 2016",
@@ -73013,20 +72878,6 @@
           "severity": "MEDIUM",
           "detail": "Published 48d before show (March 7, 2024 vs 2024-04-24)"
         },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
-        }
-      ]
-    },
-    {
-      "showId": "illinoise-2024",
-      "file": "nytimes--jesse-green.json",
-      "score": 90,
-      "publishDate": "April 26, 2024",
-      "url": "https://www.nytimes.com/2024/03/07/theater/illinoise-review-sufjan-stevens-justin-pick.html",
-      "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
@@ -86005,25 +85856,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "the-seagull-2008",
-      "file": "nytimes--jesse-green.json",
-      "score": 49,
-      "publishDate": null,
-      "url": "https://www.nytimes.com/2008/03/14/theater/reviews/14seag.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"classic stage\""
         }
       ]
     },
