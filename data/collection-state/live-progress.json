@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-13T20:51:44.495Z",
-  "processed": 266,
-  "failed": 35,
-  "successRate": "88.4%",
+  "updatedAt": "2026-03-13T22:55:35.252Z",
+  "processed": 289,
+  "failed": 37,
+  "successRate": "88.7%",
   "tierBreakdown": {
-    "playwright": 190,
+    "playwright": 203,
     "amp": 18,
-    "browserbase": 14,
+    "browserbase": 16,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 14,
-    "archive": 59
+    "archive": 68
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-13T19:43:23.732Z",
-      "event": "bb-session",
-      "session": "7f6bacc9",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
-    },
-    {
-      "t": "2026-03-13T19:43:25.198Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-13T19:44:56.684Z",
-      "event": "bb-session",
-      "session": "d59d8f00",
-      "url": "https://www.nytimes.com/2026/03/12/theater/every-brilliant-thing-review-daniel-r"
-    },
-    {
-      "t": "2026-03-13T19:44:58.047Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-13T19:46:00.068Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-13T19:55:06.304Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T22:50:35.575Z",
+      "event": "bb-session",
+      "session": "99ece76d",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-13T22:50:37.296Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-13T22:54:47.231Z",
+      "event": "bb-session",
+      "session": "d5015d4d",
+      "url": "https://www.amny.com/entertainment/little-shop-of-horrors-off-broadway-1-3640251"
+    },
+    {
+      "t": "2026-03-13T22:54:48.890Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
