@@ -1397,14 +1397,19 @@ async function searchBWWRoundup(show, year) {
   // Fall back to HTTP fetch (works for older BWW pages with static content)
   for (const url of searchUrls) {
     const result = await searchAggregator('BWW', url);
-    if (result.found && result.html && result.html.includes('Review Roundup')) {
+    // Validate we got an actual article page, not the BWW homepage (301 redirect false positive).
+    // Homepage contains "Review Roundup" text in article listings, causing false matches.
+    if (result.found && result.html && result.html.includes('Review Roundup') &&
+        (result.html.includes('BlogPosting') || result.html.includes('articleBody') || result.html.includes('Photo Credit:'))) {
       console.log(`    ✓ Found at: ${url}`);
       return { url, html: result.html };
     }
     await sleep(200);
   }
 
-  // Final fallback: Google search for the BWW roundup page
+  // Priority 4: Google SERP search — BWW uses unpredictable URL formats
+  // (e.g., "Tony-Winner-Daniel-Radcliffe-Stars-in-..." instead of "{SHOW}-Opens-on-Broadway-...")
+  // so SERP discovery is essential, not just a fallback.
   const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
   if (SCRAPINGBEE_KEY) {
     try {
