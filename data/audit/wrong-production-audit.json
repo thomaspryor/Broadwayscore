@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-03-13T19:21:20.738Z",
+  "timestamp": "2026-03-13T19:45:08.809Z",
   "stats": {
     "totalReviews": 30854,
-    "alreadyFlagged": 9196,
-    "dateGuardCatches": 133,
-    "directorMismatch": 1096,
-    "tvFilmSignals": 3466,
+    "alreadyFlagged": 9208,
+    "dateGuardCatches": 131,
+    "directorMismatch": 1095,
+    "tvFilmSignals": 3465,
     "londonSignals": 997,
-    "offBroadwaySignals": 1075,
+    "offBroadwaySignals": 1074,
     "yearMismatch": 84,
     "noPublishDate": 9245
   },
@@ -11301,20 +11301,6 @@
     },
     {
       "showId": "chicago-1996",
-      "file": "ew--melissa-rose-bernardo.json",
-      "score": 61,
-      "publishDate": "1996-10-18",
-      "url": "https://ew.com/article/1996/10/18/chicago-returns-broadway/?srsltid=AfmBOop0trraYca_4m7q6mAkYnVhIRA28djMtpBnhvaUpPlWko2NpFZZ",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bob fosse\" from chicago-1975"
-        }
-      ]
-    },
-    {
-      "showId": "chicago-1996",
       "file": "nydailynews--howard-kissel.json",
       "score": 88,
       "publishDate": "November 14, 1996",
@@ -15213,6 +15199,20 @@
       "file": "ew--unknown.json",
       "publishDate": "2026-03-12",
       "url": "https://ew.com/every-brilliant-thing-review-daniel-radcliffe-casts-spell-on-broadway-11921829?srsltid=AfmBOoqT1qOcoVl1Rb9szjq5ef_Ef-PrNs_15RHLyIs_uiARGwq0tXlD",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
+        }
+      ]
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
+      "file": "theatermania--kenji-fujishima.json",
+      "score": 60,
+      "publishDate": "2026-03-13",
+      "url": "https://www.theatermania.com/news/review-daniel-radcliffe-invites-us-to-cherish-every-brilliant-thing_1827748/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -63634,25 +63634,6 @@
     },
     {
       "showId": "what-we-did-before-our-moth-days-off-broadway-2026",
-      "file": "nytg--gillian-russo.json",
-      "score": null,
-      "publishDate": "2025-09-09",
-      "url": "https://www.newyorktheatreguide.com/theatre-news/news/wallace-shawn-andre-gregory-reunite-with-what-we-did-before-our-moth-days",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 177d before show (2025-09-09 vs 2026-03-05)"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"onscreen\""
-        }
-      ]
-    },
-    {
-      "showId": "what-we-did-before-our-moth-days-off-broadway-2026",
       "file": "one-minute-critic--unknown.json",
       "score": null,
       "publishDate": "2026-02-14",
@@ -63835,19 +63816,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
-      "file": "vulture--bilge-eberi.json",
-      "publishDate": "2023-10-24",
-      "url": "https://www.vulture.com/article/wicked-broadway-kristin-chenoweth-idina-menzel-interview.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"onscreen\""
         }
       ]
     },
@@ -67304,20 +67272,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"barrow street\""
-        }
-      ]
-    },
-    {
-      "showId": "bughouse-off-broadway-2026",
-      "file": "theatermania--linda-buchwald.json",
-      "score": null,
-      "publishDate": "January 15, 2026",
-      "url": "https://www.theatermania.com/news/bughouse-to-have-world-premiere-at-vineyard-theatre_1814945/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 55d before show (January 15, 2026 vs 2026-03-11)"
         }
       ]
     },
@@ -71456,20 +71410,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "hamilton-2015",
-      "file": "theatermania--adam-hetrick.json",
-      "score": 88,
-      "publishDate": "August 6, 2015",
-      "url": "https://www.theatermania.com/news/john-kander-presents-lin-manuel-miranda-with-2015-drama-critics-circle-award-for-hamilton_72960/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
         }
       ]
     },
