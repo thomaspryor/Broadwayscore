@@ -1,18 +1,31 @@
 {
-  "updatedAt": "2026-03-13T10:35:01.266Z",
-  "processed": 19,
-  "failed": 1,
-  "successRate": "95.0%",
+  "updatedAt": "2026-03-13T10:37:33.026Z",
+  "processed": 28,
+  "failed": 2,
+  "successRate": "93.3%",
   "tierBreakdown": {
-    "playwright": 14,
+    "playwright": 20,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 2
+    "archiveToday": 2,
+    "archive": 4
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-03-13T10:35:33.447Z",
+      "event": "bb-session",
+      "session": "0e12e21f",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-13T10:37:15.085Z",
+      "event": "bb-session",
+      "session": "2556ee25",
+      "url": "https://www.nytimes.com/2026/03/03/theater/night-side-songs-review.html"
+    }
+  ]
 }
