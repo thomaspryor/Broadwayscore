@@ -55,13 +55,23 @@
     "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json",
     "heathers-the-musical-off-broadway-2025/new-york-sun--elysa-gardner.json",
     "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
-    "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json"
+    "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json",
+    "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024/nydailynews--unknown.json",
+    "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
+    "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json",
+    "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
+    "little-shop-of-horrors-off-broadway-2019/theatermania--zachary-stewart.json",
+    "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
+    "marcel-on-the-train-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "marcel-on-the-train-off-broadway-2026/theatermania--zachary-stewart.json",
+    "marcel-on-the-train-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json"
   ],
   "failed": [
     "the-monsters-off-broadway-2026/talkinbroadway--james-wilson.json",
     "night-side-songs-off-broadway-2026/nytimes--laura-collins-hughes.json",
     "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
-    "an-ark-off-broadway-2026/wsj--charles-isherwood.json"
+    "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
+    "la-llamada-off-broadway-2024/broadwaynews--aa-cristi.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -97,7 +107,10 @@
       "burnout-paradise-off-broadway-2026/timeout--raven-snook.json",
       "cold-war-choir-practice-off-broadway-2026/timeout--adam-feldman.json",
       "heathers-the-musical-off-broadway-2025/new-york-sun--elysa-gardner.json",
-      "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json"
+      "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json",
+      "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024/nydailynews--unknown.json",
+      "marcel-on-the-train-off-broadway-2026/new-york-sun--elysa-gardner.json",
+      "marcel-on-the-train-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json"
     ],
     "amp": [
       "data/review-texts/cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json",
@@ -105,7 +118,11 @@
     ],
     "browserbase": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
-      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json"
+      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
+      "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
+      "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -113,7 +130,9 @@
       "the-monsters-off-broadway-2026/nytimes--brittani-samuel.json",
       "burnout-paradise-off-broadway-2026/theatermania--zachary-stewart.json",
       "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json",
-      "bughouse-off-broadway-2026/theatermania--unknown.json"
+      "bughouse-off-broadway-2026/theatermania--unknown.json",
+      "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json",
+      "la-llamada-off-broadway-2024/broadwaynews--aa-cristi.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -138,11 +157,14 @@
       "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
       "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json",
       "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json",
-      "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json"
+      "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
+      "little-shop-of-horrors-off-broadway-2019/theatermania--zachary-stewart.json",
+      "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
+      "marcel-on-the-train-off-broadway-2026/theatermania--zachary-stewart.json"
     ]
   },
   "startTime": "2026-03-13T10:30:15.426Z",
-  "lastProcessed": "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json",
+  "lastProcessed": "marcel-on-the-train-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
   "log": [
     {
       "t": "2026-03-13T10:35:33.447Z",
@@ -161,6 +183,18 @@
       "event": "bb-session",
       "session": "5cd0fbc3",
       "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-13T10:47:55.031Z",
+      "event": "bb-session",
+      "session": "6c75d97c",
+      "url": "https://deadline.com/2019/10/little-shop-of-horrors-review-jonathan-groff-tammy-"
+    },
+    {
+      "t": "2026-03-13T10:48:33.030Z",
+      "event": "bb-session",
+      "session": "4d0694a3",
+      "url": "https://nypost.com/2019/10/17/little-shop-of-horrors-review-jonathan-groff-tammy"
     }
   ]
 }
