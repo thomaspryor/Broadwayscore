@@ -3,7 +3,6 @@
 // Use this on show pages to check if a show is on any Gold List
 
 import type { GoldListMembership } from './data-types';
-import type { GoldListType } from '@/config/gold-lists';
 import computedData from '../../data/gold-lists-computed.json';
 
 export interface ComputedGoldListEntry {
@@ -26,7 +25,7 @@ interface ComputedGoldLists {
 const data = computedData as unknown as ComputedGoldLists;
 
 /** Get all Gold List memberships for a show (by showId) */
-export function getShowGoldListMemberships(showId: string): GoldListMembership[] {
+function getShowGoldListMemberships(showId: string): GoldListMembership[] {
   const memberships = data.memberships[showId];
   if (!memberships) return [];
   return memberships as GoldListMembership[];
@@ -35,11 +34,6 @@ export function getShowGoldListMemberships(showId: string): GoldListMembership[]
 /** Get season-only memberships (exclude all-time) */
 export function getShowSeasonGoldLists(showId: string): GoldListMembership[] {
   return getShowGoldListMemberships(showId).filter(m => m.season !== 'all-time');
-}
-
-/** Check if a show is on any Gold List */
-export function isOnGoldList(showId: string): boolean {
-  return (data.memberships[showId]?.length ?? 0) > 0;
 }
 
 /** Get all seasons that have Gold List data */

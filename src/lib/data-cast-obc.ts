@@ -3,7 +3,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import type { ShowCastFile, CastMemberOBC } from './data-types';
+import type { ShowCastFile } from './data-types';
 
 const CAST_DIR = path.join(process.cwd(), 'data', 'cast');
 
@@ -33,29 +33,6 @@ function loadAllCastFiles(): Map<string, ShowCastFile> {
 }
 
 /**
- * Get OBC cast for a show by ID
- */
-export function getShowOBC(showId: string): CastMemberOBC[] | null {
-  const cache = loadAllCastFiles();
-  const data = cache.get(showId);
-  if (!data || !data.openingNightCast || data.openingNightCast.length === 0) return null;
-  return data.openingNightCast;
-}
-
-/**
- * Get current cast for a show by ID (open shows only)
- */
-export function getShowCurrentCast(showId: string): { cast: CastMemberOBC[]; updatedAt: string | null } | null {
-  const cache = loadAllCastFiles();
-  const data = cache.get(showId);
-  if (!data || !data.currentCast || data.currentCast.length === 0) return null;
-  return {
-    cast: data.currentCast,
-    updatedAt: data.currentCastUpdatedAt || null,
-  };
-}
-
-/**
  * Get full cast file for a show
  */
 export function getShowCastFile(showId: string): ShowCastFile | null {
@@ -63,22 +40,3 @@ export function getShowCastFile(showId: string): ShowCastFile | null {
   return cache.get(showId) || null;
 }
 
-/**
- * Check if any cast data exists for a show
- */
-export function hasShowCast(showId: string): boolean {
-  const cache = loadAllCastFiles();
-  return cache.has(showId);
-}
-
-/**
- * Get count of shows with cast data
- */
-export function getCastDataStats(): { showsWithCast: number; totalCastMembers: number } {
-  const cache = loadAllCastFiles();
-  let totalCastMembers = 0;
-  for (const data of Array.from(cache.values())) {
-    totalCastMembers += data.openingNightCast?.length || 0;
-  }
-  return { showsWithCast: cache.size, totalCastMembers };
-}

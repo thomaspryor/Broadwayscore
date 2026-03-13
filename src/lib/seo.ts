@@ -80,37 +80,6 @@ export function generateBreadcrumbSchema(items: { name: string; url: string }[])
   };
 }
 
-// Review Schema - Individual critic review
-export function generateReviewSchema(review: {
-  outlet: string;
-  criticName?: string;
-  score: number;
-  url: string;
-  publishDate: string;
-  excerpt?: string;
-}) {
-  return {
-    '@type': 'Review',
-    author: {
-      '@type': review.criticName ? 'Person' : 'Organization',
-      name: review.criticName || review.outlet,
-    },
-    publisher: {
-      '@type': 'Organization',
-      name: review.outlet,
-    },
-    datePublished: review.publishDate,
-    reviewRating: {
-      '@type': 'Rating',
-      ratingValue: toFiveStarScale(review.score),
-      bestRating: 5,
-      worstRating: 1,
-    },
-    url: review.url,
-    ...(review.excerpt && { reviewBody: review.excerpt }),
-  };
-}
-
 // TheaterEvent Schema with full details (enhanced)
 export function generateShowSchema(show: ComputedShow, lastUpdated?: string) {
   const isWestEnd = show.category === 'west-end';
@@ -724,87 +693,6 @@ export function generateGoldListFAQSchema(config: {
   };
 }
 
-// Person Schema - For creative team detail pages (directors, playwrights, etc.)
-export function generateCreativePersonSchema(profile: {
-  name: string;
-  slug: string;
-  category: string;
-  showCount: number;
-  scoredShowCount: number;
-  avgScore: number | null;
-  shows: Array<{ title: string; slug: string }>;
-}, routePath: string, jobTitle: string, verbPast?: string) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: profile.name,
-    url: `${BASE_URL}/${routePath}/${profile.slug}`,
-    jobTitle,
-    knowsAbout: 'Broadway Theater',
-    description: `${profile.name} has ${verbPast ? verbPast + ' ' : ''}${profile.showCount} Broadway show${profile.showCount !== 1 ? 's' : ''}${profile.avgScore !== null && profile.scoredShowCount >= 3 ? ` with an average critic score of ${profile.avgScore}/100` : ''}.`,
-    ...(profile.avgScore !== null && profile.scoredShowCount >= 3 && {
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: toFiveStarScale(profile.avgScore),
-        bestRating: 5,
-        worstRating: 1,
-        ratingCount: profile.scoredShowCount,
-      },
-    }),
-  };
-}
-
-// FAQ Schema - For creative team detail pages
-export function generateCreativeFAQSchema(profile: {
-  name: string;
-  category: string;
-  showCount: number;
-  scoredShowCount: number;
-  avgScore: number | null;
-  highScore: number | null;
-  openShowCount: number;
-  shows: Array<{ title: string; score: number | null; status: string }>;
-}, categoryLabel: string, verbPast: string) {
-  const faqs: { question: string; answer: string }[] = [];
-
-  faqs.push({
-    question: `How many Broadway shows has ${profile.name} ${verbPast}?`,
-    answer: `${profile.name} has ${verbPast} ${profile.showCount} Broadway show${profile.showCount !== 1 ? 's' : ''}${profile.avgScore !== null && profile.scoredShowCount >= 3 ? `, with an average critic score of ${profile.avgScore}/100` : ''}.`,
-  });
-
-  if (profile.highScore !== null) {
-    const best = profile.shows.filter(s => s.score !== null).sort((a, b) => (b.score || 0) - (a.score || 0))[0];
-    if (best) {
-      faqs.push({
-        question: `What is ${profile.name}'s highest-rated Broadway show?`,
-        answer: `${profile.name}'s highest-rated show is ${best.title} with a critic score of ${best.score}/100.`,
-      });
-    }
-  }
-
-  if (profile.openShowCount > 0) {
-    const running = profile.shows.filter(s => s.status === 'open' || s.status === 'previews' || s.status === 'upcoming');
-    faqs.push({
-      question: `Does ${profile.name} have any shows currently on Broadway?`,
-      answer: `Yes, ${profile.name} currently has ${running.length} show${running.length !== 1 ? 's' : ''} on Broadway: ${running.map(s => s.title).join(', ')}.`,
-    });
-  } else {
-    faqs.push({
-      question: `Does ${profile.name} have any shows currently on Broadway?`,
-      answer: `No, ${profile.name} does not currently have any shows running on Broadway.`,
-    });
-  }
-
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.map(faq => ({
-      '@type': 'Question',
-      name: faq.question,
-      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
-    })),
-  };
-}
 
 // Person Schema - For unified creative team pages (/creative/[slug])
 export function generateUnifiedCreativePersonSchema(profile: {
@@ -986,7 +874,3 @@ export function generateHomepageFAQSchema(stats: { totalShows: number; totalRevi
   };
 }
 
-// Helper to render schema as JSON-LD script
-export function schemaToJsonLd(schema: Record<string, unknown> | Record<string, unknown>[]) {
-  return JSON.stringify(schema);
-}

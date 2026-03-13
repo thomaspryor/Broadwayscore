@@ -340,11 +340,6 @@ export function getCreativeProfiles(category: CreativeCategory): CreativeProfile
   return categoryProfiles.get(category) || [];
 }
 
-export function getCreativeBySlug(category: CreativeCategory, slug: string): CreativeProfile | undefined {
-  ensureBuilt();
-  return categorySlugs.get(category)?.get(slug);
-}
-
 export function getCreativeSlugs(category: CreativeCategory): string[] {
   ensureBuilt();
   const slugMap = categorySlugs.get(category);

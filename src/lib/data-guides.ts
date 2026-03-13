@@ -90,12 +90,12 @@ const MONTH_NAMES = [
   'July', 'August', 'September', 'October', 'November', 'December',
 ];
 
-export function getCurrentMonthYear(): string {
+function getCurrentMonthYear(): string {
   const now = new Date();
   return `${MONTH_NAMES[now.getMonth()]} ${now.getFullYear()}`;
 }
 
-export function getCurrentSeason(): string {
+function getCurrentSeason(): string {
   const now = new Date();
   const year = now.getFullYear();
   // Broadway season starts September 1

@@ -117,7 +117,7 @@ function ensureNameIndex() {
 /**
  * Get all Tony nominations for a person by IBDB person ID
  */
-export function getTonyNominationsByPersonId(ibdbPersonId: string): TonyNomination[] {
+function getTonyNominationsByPersonId(ibdbPersonId: string): TonyNomination[] {
   ensurePersonIndex();
   return byPersonId!.get(ibdbPersonId) || [];
 }
@@ -125,7 +125,7 @@ export function getTonyNominationsByPersonId(ibdbPersonId: string): TonyNominati
 /**
  * Get all Tony nominations for a show by show ID
  */
-export function getTonyNominationsByShowId(showId: string): TonyNomination[] {
+function getTonyNominationsByShowId(showId: string): TonyNomination[] {
   ensureShowIndex();
   return byShowId!.get(showId) || [];
 }
@@ -149,22 +149,9 @@ export function getPersonTonyStats(ibdbPersonId: string): PersonTonyStats | null
 }
 
 /**
- * Check if a person won a Tony for a specific show
- */
-export function hasPersonTonyForShow(ibdbPersonId: string, showId: string): { nominated: boolean; won: boolean } {
-  const entries = getTonyNominationsByPersonId(ibdbPersonId);
-  const showEntries = entries.filter(n => n.showId === showId);
-  if (showEntries.length === 0) return { nominated: false, won: false };
-  return {
-    nominated: true,
-    won: showEntries.some(n => n.won),
-  };
-}
-
-/**
  * Get all Tony nominations for a person by name (for creative profiles without ibdbPersonId)
  */
-export function getTonyNominationsByName(name: string): TonyNomination[] {
+function getTonyNominationsByName(name: string): TonyNomination[] {
   ensureNameIndex();
   return byName!.get(name) || [];
 }
@@ -280,13 +267,6 @@ export function getTonyLeaderboard(): LeaderboardEntry[] {
   entries.sort((a, b) => b.wins - a.wins || b.nominations - a.nominations);
   leaderboardCache = entries;
   return entries;
-}
-
-/**
- * Get the last-updated date for Tony nominations data
- */
-export function getTonyNominationsLastUpdated(): string {
-  return data._meta.lastUpdated;
 }
 
 /**

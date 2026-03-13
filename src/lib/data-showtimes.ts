@@ -34,9 +34,3 @@ export function getScheduleLastUpdated(): string {
   return schedules.lastUpdated;
 }
 
-/**
- * Check if a show has schedule data
- */
-export function hasSchedule(showId: string): boolean {
-  return !!schedules.shows[showId];
-}

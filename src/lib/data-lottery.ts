@@ -54,7 +54,7 @@ export function getLotteryRushLastUpdated(): string {
 /**
  * Get all show IDs that have lottery programs
  */
-export function getAllLotteryShowIds(): string[] {
+function getAllLotteryShowIds(): string[] {
   return Object.entries(lotteryRush.shows)
     .filter(([_, data]) => data.lottery || data.specialLottery)
     .map(([id]) => id);
@@ -63,7 +63,7 @@ export function getAllLotteryShowIds(): string[] {
 /**
  * Get all show IDs that have rush programs
  */
-export function getAllRushShowIds(): string[] {
+function getAllRushShowIds(): string[] {
   return Object.entries(lotteryRush.shows)
     .filter(([_, data]) => data.rush || data.digitalRush || data.studentRush)
     .map(([id]) => id);

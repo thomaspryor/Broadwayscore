@@ -80,7 +80,7 @@ export interface TonyCategory {
  * Falls back to critic-only when no audience data available.
  * Rejects audience scores outside 0-100 range as invalid.
  */
-export function computeBlendedScoreForShow(
+function computeBlendedScoreForShow(
   criticScore: number | null,
   audienceScore: number | null | undefined,
 ): number | null {
@@ -166,7 +166,7 @@ export function hasNominationsBeenAnnounced(season: TonySeasonWindow): boolean {
 /**
  * Build a map of categoryTitle → Set<showId> for nominees in a given season.
  */
-export function getNomineesForSeason(season: TonySeasonWindow): Map<string, Set<string>> {
+function getNomineesForSeason(season: TonySeasonWindow): Map<string, Set<string>> {
   const awardsShows = getAwardsShows();
   const awardsSeason = toAwardsSeason(season.label);
   const map = new Map<string, Set<string>>();
@@ -279,16 +279,9 @@ export function getTonySeasonWindowFor(ceremonyYear: number): TonySeasonWindow {
 }
 
 /** Convert our label format to awards.json format: "2024-2025" → "2024-25" */
-export function toAwardsSeason(label: string): string {
+function toAwardsSeason(label: string): string {
   const parts = label.split('-');
   return `${parts[0]}-${parts[1].slice(2)}`;
-}
-
-/** Convert awards.json format to our label: "2024-25" → "2024-2025" */
-export function fromAwardsSeason(s: string): string {
-  const [start, endShort] = s.split('-');
-  const century = endShort === '00' ? parseInt(start.slice(0, 2)) + 1 : start.slice(0, 2);
-  return `${start}-${century}${endShort}`;
 }
 
 const FIRST_PREDICTION_SEASON = 2014; // ceremony year — gives us 2013-2014 as first season
@@ -559,16 +552,6 @@ function computeAccuracyWithScorer(
  * Ranks actual Tony NOMINEES by compositeScore and checks whether the
  * best-reviewed nominee wins.
  */
-export function computeAccuracyStats(allShows: ComputedShow[]): AccuracyStats {
-  const showMap = new Map(allShows.map(s => [s.id, s]));
-  const current = getTonySeasonWindow();
-  const seasons = getAllPredictionSeasons().filter(s => s.ceremonyYear < current.ceremonyYear);
-  const { winnersMap, nomineesMap } = buildAwardsMaps();
-
-  return computeAccuracyWithScorer(showMap, seasons, winnersMap, nomineesMap,
-    (show) => show.compositeScore);
-}
-
 export interface BlendedAccuracyStats extends AccuracyStats {
   /** Headline blended stats (same as base rank1WinPct etc.) */
   blendedRank1WinPct: number;
