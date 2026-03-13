@@ -168,6 +168,7 @@ const CONFIG = {
   excludeDomains: (process.env.EXCLUDE_DOMAINS || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean), // Exclude these domains
   incompleteReasonFilter: (process.env.INCOMPLETE_REASON_FILTER || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean), // Filter by incompleteReason
   marketFilter: process.env.MARKET_FILTER || '', // Filter by market: west-end, off-broadway (matches show ID suffix)
+  reviewFilter: new Set((process.env.REVIEW_FILTER || '').split(',').map(s => s.trim()).filter(Boolean)), // Filter to specific review filenames
   archiveFirst: process.env.ARCHIVE_FIRST !== 'false', // Archive.org first for older reviews (opt-OUT via ARCHIVE_FIRST=false)
 
   // API Keys
@@ -5204,6 +5205,9 @@ function findReviewsToProcess() {
     const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json'));
 
     for (const file of files) {
+      // Skip if review_filter is active and this file isn't in it
+      if (CONFIG.reviewFilter.size > 0 && !CONFIG.reviewFilter.has(file)) continue;
+
       const filePath = path.join(showDir, file);
       const reviewId = `${showId}/${file}`;
 
