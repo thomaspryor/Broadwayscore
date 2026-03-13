@@ -283,7 +283,7 @@ jobs:
       - name: Trigger deploy (always — ensures out-of-band data pushes get deployed)
         if: always()
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           # Deploy dedup: skip if a deploy was ALREADY triggered after our rebuild started.
           # This prevents spam while ensuring stale deploys don't block fresh ones.
@@ -311,7 +311,7 @@ jobs:
       - name: Auto-trigger LLM scoring if needed
         id: scoring-trigger
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           # Count reviews needing LLM scoring (have scorable text, no score)
           # Excludes reviews the scorer will skip: roundups, garbage, no text, duplicates
