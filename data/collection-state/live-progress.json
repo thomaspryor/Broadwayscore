@@ -1,28 +1,39 @@
 {
-  "updatedAt": "2026-03-13T02:45:53.176Z",
-  "processed": 5,
-  "failed": 1,
-  "successRate": "83.3%",
+  "updatedAt": "2026-03-13T03:40:12.065Z",
+  "processed": 9,
+  "failed": 0,
+  "successRate": "100.0%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 5,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 0
+    "archiveToday": 0,
+    "archive": 1
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-03-13T02:44:55.722Z",
+      "t": "2026-03-13T03:38:54.108Z",
       "event": "bb-session",
-      "session": "d420fba2",
+      "session": "27c0deca",
+      "url": "https://www.nytimes.com/2026/02/17/theater/daniel-radcliffe-every-brilliant-thin"
+    },
+    {
+      "t": "2026-03-13T03:38:55.642Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-13T03:39:11.587Z",
+      "event": "bb-session",
+      "session": "d9a9a72d",
       "url": "https://deadline.com/2026/03/broadway-box-office-daniel-radcliffe-every-brillian"
     },
     {
-      "t": "2026-03-13T02:44:57.130Z",
+      "t": "2026-03-13T03:39:13.008Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
     }
