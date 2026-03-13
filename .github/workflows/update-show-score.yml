@@ -69,9 +69,22 @@ jobs:
           ARGS=""
           if [ -n "${{ github.event.inputs.show }}" ]; then
             ARGS="$ARGS --show=${{ github.event.inputs.show }}"
-          fi
-          if [ -n "${{ github.event.inputs.shows }}" ]; then
+          elif [ -n "${{ github.event.inputs.shows }}" ]; then
             ARGS="$ARGS --shows=${{ github.event.inputs.shows }}"
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            # Manual/API trigger without filter: default to recently opened shows (≤14 days)
+            RECENT=$(node -e "
+              const shows = require('./data/shows.json').shows;
+              const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 14);
+              const recent = shows.filter(s => s.status === 'open' && s.openingDate && new Date(s.openingDate) >= cutoff);
+              console.log(recent.map(s => s.id).join(','));
+            ")
+            if [ -n "$RECENT" ]; then
+              echo "No show filter provided — defaulting to recently opened: $RECENT"
+              ARGS="$ARGS --shows=$RECENT"
+            else
+              echo "No show filter and no recent openings — processing all open shows"
+            fi
           fi
           if [ -n "${{ github.event.inputs.limit }}" ]; then
             ARGS="$ARGS --limit=${{ github.event.inputs.limit }}"
