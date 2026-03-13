@@ -116,7 +116,15 @@
     "every-brilliant-thing-2026/thewrap--robert-hofler.json",
     "every-brilliant-thing-2026/timeout--unknown.json",
     "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json",
-    "hadestown-2019/ew--jessica-derschowitz.json"
+    "hadestown-2019/ew--jessica-derschowitz.json",
+    "hadestown-2019/timeout--adam-feldman.json",
+    "hamilton-2015/theatermania--adam-hetrick.json",
+    "hamilton-2015/wsj--terry-teachout.json",
+    "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json",
+    "heathers-the-musical-off-broadway-2025/new-york-sun--elysa-gardner.json",
+    "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
+    "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json",
+    "it-walks-around-the-house-at-night-west-end-2026/timeout-london--unknown.json"
   ],
   "failed": [
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theatre-is-easy--brooke-viegut.json",
@@ -142,7 +150,9 @@
     "arcadia-west-end-2026/guardian--arifa-akbar.json",
     "book-of-mormon-2011/guardian--ben-brantley.json",
     "dracula-west-end-2025/guardian--arifa-akbar.json",
-    "every-brilliant-thing-2026/guardian--jesse-hassenger.json"
+    "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
+    "hadestown-2019/guardian--adrian-horton.json",
+    "harry-potter-2021/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -218,7 +228,14 @@
       "drunk-romeo-and-juliet-off-broadway-2025/theatermania--unknown.json",
       "every-brilliant-thing-2026/timeout--unknown.json",
       "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json",
-      "hadestown-2019/ew--jessica-derschowitz.json"
+      "hadestown-2019/ew--jessica-derschowitz.json",
+      "hadestown-2019/timeout--adam-feldman.json",
+      "hamilton-2015/theatermania--adam-hetrick.json",
+      "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json",
+      "heathers-the-musical-off-broadway-2025/new-york-sun--elysa-gardner.json",
+      "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
+      "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json",
+      "it-walks-around-the-house-at-night-west-end-2026/timeout-london--unknown.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -286,7 +303,8 @@
       "data/review-texts/arcadia-west-end-2026/guardian--arifa-akbar.json",
       "data/review-texts/book-of-mormon-2011/guardian--ben-brantley.json",
       "data/review-texts/dracula-west-end-2025/guardian--arifa-akbar.json",
-      "data/review-texts/every-brilliant-thing-2026/guardian--jesse-hassenger.json"
+      "data/review-texts/every-brilliant-thing-2026/guardian--jesse-hassenger.json",
+      "data/review-texts/hadestown-2019/guardian--adrian-horton.json"
     ],
     "archive": [
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
@@ -312,11 +330,12 @@
       "and-juliet-2022/thewrap--robert-hofler.json",
       "cold-war-choir-practice-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
       "cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json",
-      "dirty-books-off-broadway-2025/broadwaynews--chloe-rabinowitz.json"
+      "dirty-books-off-broadway-2025/broadwaynews--chloe-rabinowitz.json",
+      "hamilton-2015/wsj--terry-teachout.json"
     ]
   },
   "startTime": "2026-03-13T18:31:40.145Z",
-  "lastProcessed": "hadestown-2019/ew--jessica-derschowitz.json",
+  "lastProcessed": "it-walks-around-the-house-at-night-west-end-2026/timeout-london--unknown.json",
   "log": [
     {
       "t": "2026-03-13T18:55:07.097Z",
@@ -515,6 +534,28 @@
       "t": "2026-03-13T19:29:27.908Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-13T19:31:27.090Z",
+      "event": "bb-session",
+      "session": "3bdb11b8",
+      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
+    },
+    {
+      "t": "2026-03-13T19:31:28.365Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-13T19:32:04.703Z",
+      "event": "bb-session",
+      "session": "9275526a",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-13T19:32:07.025Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

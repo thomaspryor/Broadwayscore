@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-13T19:30:41.435Z",
-  "processed": 117,
-  "failed": 24,
-  "successRate": "83.0%",
+  "updatedAt": "2026-03-13T19:34:33.269Z",
+  "processed": 125,
+  "failed": 26,
+  "successRate": "82.8%",
   "tierBreakdown": {
-    "playwright": 72,
+    "playwright": 79,
     "amp": 22,
     "browserbase": 18,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 17,
-    "archive": 24
+    "archiveToday": 18,
+    "archive": 25
   },
-  "browserbaseSessions": 18,
+  "browserbaseSessions": 20,
   "recentActivity": [
-    {
-      "t": "2026-03-13T19:03:35.890Z",
-      "event": "bb-session",
-      "session": "79f4f7ca",
-      "url": "https://www.nytimes.com/2026/02/23/theater/mother-russia-review.html"
-    },
-    {
-      "t": "2026-03-13T19:03:37.302Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-13T19:05:15.877Z",
-      "event": "bb-session",
-      "session": "f7ee29bc",
-      "url": "https://www.nytimes.com/2019/07/25/theater/moulin-rouge-review.html"
-    },
-    {
-      "t": "2026-03-13T19:05:16.953Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-13T19:07:07.389Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-13T19:29:27.908Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-13T19:31:27.090Z",
+      "event": "bb-session",
+      "session": "3bdb11b8",
+      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
+    },
+    {
+      "t": "2026-03-13T19:31:28.365Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-13T19:32:04.703Z",
+      "event": "bb-session",
+      "session": "9275526a",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-13T19:32:07.025Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
