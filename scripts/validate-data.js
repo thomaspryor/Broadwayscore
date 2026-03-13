@@ -2307,7 +2307,8 @@ function validateCreativeTeamDuplicateNames(shows) {
             /^director$/i.test(m.role)
           );
           if (otherDirectors.length > 0) {
-            error(`[creative-dup-name] "${show.title}" (${show.id}): "${name}" listed as both writer AND director, but "${otherDirectors[0].name}" is also director — remove incorrect director entry`);
+            // Downgrade to warning: legitimate co-writer/co-director combos exist (SIX, 1984, Baby It's You)
+            warn(`[creative-dup-name] "${show.title}" (${show.id}): "${name}" listed as both writer AND co-director with "${otherDirectors[0].name}" — verify this is intentional`);
           }
         }
         warn(`[creative-dup-name] "${show.title}" (${show.id}): "${name}" appears ${roles.length} times with roles: ${roles.join(', ')} — consider merging`);
