@@ -9,19 +9,9 @@
     "every-brilliant-thing-2026/timeout--unknown.json",
     "every-brilliant-thing-2026/cititour--brian-scott-lipton.json",
     "every-brilliant-thing-2026/theatrely--unknown.json",
-    "every-brilliant-thing-2026/amny--matt-windman.json",
-    "every-brilliant-thing-2026/chicagotribune--chris-jones.json",
-    "every-brilliant-thing-2026/culturesauce--unknown.json",
-    "every-brilliant-thing-2026/exeunt-magazine--lane-williamson.json",
-    "every-brilliant-thing-2026/nysr--unknown.json",
-    "every-brilliant-thing-2026/one-minute-critic--unknown.json",
-    "every-brilliant-thing-2026/playbill--unknown.json",
-    "every-brilliant-thing-2026/the-la-times--unknown.json",
-    "every-brilliant-thing-2026/usatoday--patrick-ryan.json"
+    "every-brilliant-thing-2026/amny--matt-windman.json"
   ],
-  "failed": [
-    "every-brilliant-thing-2026/independent--unknown.json"
-  ],
+  "failed": [],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
@@ -30,61 +20,25 @@
       "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
       "every-brilliant-thing-2026/timeout--unknown.json",
       "every-brilliant-thing-2026/theatrely--unknown.json",
-      "every-brilliant-thing-2026/culturesauce--unknown.json",
-      "every-brilliant-thing-2026/exeunt-magazine--lane-williamson.json",
-      "every-brilliant-thing-2026/nysr--unknown.json",
-      "every-brilliant-thing-2026/one-minute-critic--unknown.json",
-      "every-brilliant-thing-2026/playbill--unknown.json"
+      "every-brilliant-thing-2026/amny--matt-windman.json"
     ],
     "amp": [
+      "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
+      "every-brilliant-thing-2026/deadline--unknown.json",
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
       "every-brilliant-thing-2026/thewrap--robert-hofler.json"
     ],
-    "browserbase": [
-      "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
-      "every-brilliant-thing-2026/deadline--unknown.json",
-      "data/review-texts/every-brilliant-thing-2026/amny--matt-windman.json",
-      "every-brilliant-thing-2026/amny--matt-windman.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
       "every-brilliant-thing-2026/nytimes--unknown.json",
-      "every-brilliant-thing-2026/cititour--brian-scott-lipton.json",
-      "every-brilliant-thing-2026/chicagotribune--chris-jones.json",
-      "every-brilliant-thing-2026/the-la-times--unknown.json"
+      "every-brilliant-thing-2026/cititour--brian-scott-lipton.json"
     ],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/every-brilliant-thing-2026/independent--unknown.json"
-    ],
-    "archive": [
-      "every-brilliant-thing-2026/usatoday--patrick-ryan.json"
-    ]
+    "archiveToday": [],
+    "archive": []
   },
-  "startTime": "2026-03-13T07:57:09.638Z",
-  "lastProcessed": "every-brilliant-thing-2026/usatoday--patrick-ryan.json",
-  "log": [
-    {
-      "t": "2026-03-13T07:57:48.119Z",
-      "event": "bb-session",
-      "session": "278944cc",
-      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
-    },
-    {
-      "t": "2026-03-13T07:57:49.789Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
-    {
-      "t": "2026-03-13T07:59:17.888Z",
-      "event": "bb-session",
-      "session": "5cf32c34",
-      "url": "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing"
-    },
-    {
-      "t": "2026-03-13T07:59:19.428Z",
-      "event": "bb-cookie-inject",
-      "domain": "amny.com"
-    }
-  ]
+  "startTime": "2026-03-13T08:08:43.009Z",
+  "lastProcessed": "every-brilliant-thing-2026/amny--matt-windman.json",
+  "log": []
 }
