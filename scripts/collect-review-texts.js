@@ -5159,6 +5159,10 @@ function findReviewsToProcess() {
     console.log('  ⚠ Could not load shows.json for prioritization');
   }
 
+  if (CONFIG.reviewFilter.size > 0) {
+    console.log(`  🎯 FAST PATH: Only processing ${CONFIG.reviewFilter.size} specific file(s): ${[...CONFIG.reviewFilter].join(', ')}`);
+  }
+
   const shows = fs.readdirSync(CONFIG.reviewTextsDir)
     .filter(f => fs.statSync(path.join(CONFIG.reviewTextsDir, f)).isDirectory());
 
