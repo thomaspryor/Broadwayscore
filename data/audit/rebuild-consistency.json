@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-13T21:01:46.057Z",
+  "generatedAt": "2026-03-13T23:11:01.533Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -148,6 +148,14 @@
     {
       "type": "rating-score-mismatch",
       "severity": "high",
+      "showId": "soul-doctor-2013",
+      "outlet": "timeout",
+      "critic": "Adam Feldman",
+      "detail": "originalRating \"5/5\" (=100) vs score 59 (source: llmScore-lowconf)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
       "showId": "summer-1976-2023",
       "outlet": "theater-life",
       "critic": "Samuel L. Leiter",
@@ -160,6 +168,14 @@
       "outlet": "nytimes",
       "critic": "Elisabeth Vincentelli",
       "detail": "Critics_Pick but score=45 (source: llmScore)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "the-glass-menagerie-2017",
+      "outlet": "timeout",
+      "critic": "David Cote",
+      "detail": "originalRating \"1/5\" (=20) vs score 89 (source: llmScore-thumb-validated)"
     },
     {
       "type": "rating-score-mismatch",
