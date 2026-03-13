@@ -491,6 +491,14 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Manual trigger:** `gh workflow run "Check SEO Health"`
 - **Note:** Audit data pushes do NOT trigger Vercel deploys (seo-* paths not in deploy trigger list). Commit uses `[skip ci]`.
 
+## `update-deploy-watermark.yml`
+- **Runs:** Dispatched by `vercel-deploy.yml` after each successful production deploy
+- **Does:** Commits updated `data/audit/deploy-watermark.json` (show/review counts) used by `pre-deploy-check.js` as a regression baseline
+- **Why async:** Push retries on concurrent branches took ~2 min inline. Moved to separate workflow to unblock deploy completion.
+- **Concurrency:** `deploy-watermark-update` group, `cancel-in-progress: true` (only latest watermark matters)
+- **Requires:** REVIEW_TEXTS_TOKEN (for checkout-core-data — reads shows.json/reviews.json)
+- **If it fails:** Pre-deploy check uses a slightly stale baseline. Absolute floors (500 shows, 10K reviews) are the real safety net.
+
 ## `vercel-demo.yml`
 - **Runs:** Every 8 hours (6 AM, 2 PM, 10 PM UTC), or manually
 - **Does:** Builds and deploys to `demo.broadwayscorecard.com` with ALL feature flags enabled. For partner meetings (TodayTix, ShowScore) where feature-flagged content needs to be visible.
