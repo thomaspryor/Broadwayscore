@@ -214,11 +214,16 @@ function classifyPost(post, showTitle) {
  * Search with multiple strategies to capture audience reactions
  * Prioritizes audience posts, excludes industry posts, includes neutral as fallback
  */
-async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { category = '' } = {}) {
+async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { category = '', previewsStartDate = null } = {}) {
   const cleanTitle = showTitle.replace(/[()]/g, '').trim();
   const isWestEnd = category === 'west-end';
   const isOffBroadway = category === 'off-broadway';
   const marketName = isWestEnd ? 'West End' : isOffBroadway ? 'Off-Broadway' : 'Broadway';
+
+  // Only count posts from after previews start — pre-preview hype/debate is not audience reaction
+  const earliestPostDate = previewsStartDate
+    ? new Date(previewsStartDate).getTime() / 1000
+    : null;
 
   // Audience-focused search strategies (ordered by relevance)
   // For shows with movie adaptations, prioritize market-specific terms
@@ -264,6 +269,12 @@ async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { cat
 
         // Filter to last 2 years — skip decade-old noise
         if (post.created_utc && post.created_utc < TWO_YEARS_AGO) {
+          filteredByDate++;
+          continue;
+        }
+
+        // Filter out pre-preview posts — only audience reactions from people who could have seen it
+        if (earliestPostDate && post.created_utc && post.created_utc < earliestPostDate) {
           filteredByDate++;
           continue;
         }
@@ -323,7 +334,10 @@ async function processShow(show) {
 
   let searchResult;
   try {
-    searchResult = await searchAudiencePosts(subreddit, show.title, 10000, { category: show.category });
+    searchResult = await searchAudiencePosts(subreddit, show.title, 10000, {
+      category: show.category,
+      previewsStartDate: show.previewsStartDate || show.previewDate || null,
+    });
   } catch (e) {
     console.error(`  Search failed: ${e.message}`);
     return null;
