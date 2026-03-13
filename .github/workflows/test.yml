@@ -92,7 +92,9 @@ jobs:
         with:
           node-version: '20'
       - name: Run unit tests (no-data-dependency)
-        run: node --test tests/unit/regression-guards.test.mjs tests/unit/sample.test.mjs tests/unit/sanity.test.mjs tests/unit/score-conversion-rules.test.mjs
+        run: |
+          node --test tests/unit/regression-guards.test.mjs tests/unit/sample.test.mjs tests/unit/sanity.test.mjs tests/unit/score-conversion-rules.test.mjs
+          npx tsx --test tests/unit/engine.test.ts
 
   data-validation:
     name: Data Validation
