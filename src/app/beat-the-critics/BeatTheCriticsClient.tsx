@@ -212,6 +212,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
   const [shuffleSeed] = useState(() => Math.floor(Math.random() * 1000000));
   const [emailSubmitted, setEmailSubmitted] = useState(false);
   const [emailSubmitting, setEmailSubmitting] = useState(false);
+  const emailRef = useRef<HTMLInputElement>(null);
   const currentTier = data.tiers[currentTierIdx];
   const currentCategory = currentTier?.categories[currentCatIdx];
   const totalCategoriesInTier = currentTier?.categories.length ?? 0;
@@ -261,9 +262,26 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
     }
   }, [currentTierIdx, data.tiers]);
 
-  const handleEmailSave = useCallback(() => {
+  const handleEmailSave = useCallback(async () => {
+    const email = emailRef.current?.value?.trim().toLowerCase();
+    if (!email || !email.includes('@') || !email.includes('.')) return;
     setEmailSubmitting(true);
-    setTimeout(() => { setEmailSubmitting(false); setEmailSubmitted(true); }, 1500);
+    try {
+      const formId = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID;
+      if (formId) {
+        const res = await fetch(`https://formspree.io/f/${formId}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, source: 'beat-the-critics' }),
+        });
+        if (!res.ok) { setEmailSubmitting(false); return; }
+      }
+      setEmailSubmitted(true);
+    } catch {
+      // silent fail
+    } finally {
+      setEmailSubmitting(false);
+    }
   }, []);
 
   const shareText = useCallback(() => {
@@ -570,7 +588,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
             <h3 className="text-base font-bold">Get your results on Tony night</h3>
             <p className="text-sm text-gray-400 mt-1.5 mb-4">We&apos;ll email you a scorecard showing how you stacked up against the critics.</p>
             <div className="flex gap-2 mb-3">
-              <input type="email" placeholder="you@email.com" className="flex-1 px-4 py-3.5 rounded-xl border border-white/10 bg-surface-raised text-white text-sm outline-none focus:border-[#ff1368] transition-colors placeholder:text-gray-500" />
+              <input ref={emailRef} type="email" placeholder="you@email.com" className="flex-1 px-4 py-3.5 rounded-xl border border-white/10 bg-surface-raised text-white text-sm outline-none focus:border-[#ff1368] transition-colors placeholder:text-gray-500" />
               <button onClick={handleEmailSave} disabled={emailSubmitting} className="px-6 py-3.5 rounded-xl bg-[#ff1368] text-white text-sm font-bold hover:bg-[#e6115e] transition-colors whitespace-nowrap disabled:opacity-60">
                 {emailSubmitting ? 'Saving...' : 'Save'}
               </button>
