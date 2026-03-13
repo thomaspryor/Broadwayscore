@@ -139,13 +139,13 @@ jobs:
           BUILD_SECS: ${{ steps.build.outputs.build_seconds }}
         run: |
           echo "Build took ${BUILD_SECS}s"
-          # Warn if build exceeds 15 minutes (900s) — typical is ~7-8 min
-          if [ "$BUILD_SECS" -gt 900 ]; then
-            echo "::warning::Build took ${BUILD_SECS}s (>15 min) — investigate for regressions"
+          # Warn if build step exceeds 5 minutes (300s) — typical is ~2 min
+          if [ "$BUILD_SECS" -gt 300 ]; then
+            echo "::warning::Build took ${BUILD_SECS}s (>5 min) — investigate for regressions"
           fi
-          # Fail-loud if build exceeds 25 minutes — something is very wrong
-          if [ "$BUILD_SECS" -gt 1500 ]; then
-            echo "::error::Build took ${BUILD_SECS}s (>25 min) — likely regression in build pipeline"
+          # Fail-loud if build step exceeds 10 minutes — something is very wrong
+          if [ "$BUILD_SECS" -gt 600 ]; then
+            echo "::error::Build took ${BUILD_SECS}s (>10 min) — likely regression in build pipeline"
           fi
 
       - name: Smoke test production

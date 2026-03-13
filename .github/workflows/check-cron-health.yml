@@ -76,11 +76,63 @@ jobs:
             echo "✅ All critical crons healthy"
           fi
 
+      - name: Check deploy duration regression
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Get last 5 successful deploy runs and their durations
+          DEPLOY_WARN_MINS=8
+          DEPLOY_FAIL_MINS=12
+
+          RUNS=$(gh run list --workflow=vercel-deploy.yml --status=success --limit=5 \
+            --json createdAt,updatedAt,databaseId 2>/dev/null || echo '[]')
+          COUNT=$(echo "$RUNS" | jq 'length')
+
+          if [ "$COUNT" -eq 0 ]; then
+            echo "No recent successful deploys found — skipping duration check"
+            exit 0
+          fi
+
+          MAX_MINS=0
+          TOTAL_MINS=0
+          SLOW_RUNS=""
+
+          for i in $(seq 0 $((COUNT - 1))); do
+            CREATED=$(echo "$RUNS" | jq -r ".[$i].createdAt")
+            UPDATED=$(echo "$RUNS" | jq -r ".[$i].updatedAt")
+            RUN_ID=$(echo "$RUNS" | jq -r ".[$i].databaseId")
+
+            START=$(date -d "$CREATED" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$CREATED" +%s 2>/dev/null || echo "0")
+            END=$(date -d "$UPDATED" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$UPDATED" +%s 2>/dev/null || echo "0")
+            DURATION_MINS=$(( (END - START) / 60 ))
+
+            TOTAL_MINS=$((TOTAL_MINS + DURATION_MINS))
+            if [ "$DURATION_MINS" -gt "$MAX_MINS" ]; then MAX_MINS=$DURATION_MINS; fi
+            if [ "$DURATION_MINS" -gt "$DEPLOY_WARN_MINS" ]; then
+              SLOW_RUNS="${SLOW_RUNS}  Run ${RUN_ID}: ${DURATION_MINS}min\n"
+            fi
+          done
+
+          AVG_MINS=$((TOTAL_MINS / COUNT))
+          echo "Deploy durations (last ${COUNT}): avg=${AVG_MINS}min, max=${MAX_MINS}min (warn>${DEPLOY_WARN_MINS}min, fail>${DEPLOY_FAIL_MINS}min)"
+
+          if [ "$AVG_MINS" -gt "$DEPLOY_FAIL_MINS" ]; then
+            echo "::error::Deploy duration regression! Average ${AVG_MINS}min exceeds ${DEPLOY_FAIL_MINS}min threshold."
+            echo -e "Slow runs:\n${SLOW_RUNS}"
+            echo "Investigate: something was added to the deploy pipeline that shouldn't be there."
+            exit 1
+          elif [ "$AVG_MINS" -gt "$DEPLOY_WARN_MINS" ]; then
+            echo "::warning::Deploy durations trending high — average ${AVG_MINS}min (warn threshold: ${DEPLOY_WARN_MINS}min)"
+            echo -e "Slow runs:\n${SLOW_RUNS}"
+          else
+            echo "✅ Deploy durations healthy"
+          fi
+
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure
         with:
-          title: 'Critical Cron Workflows Stopped Running'
+          title: 'Cron Health Check Failed (stale crons or deploy regression)'
           severity: 'critical'
           email: 'true'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
