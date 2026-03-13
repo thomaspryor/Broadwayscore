@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-13T19:47:04.358Z",
-  "processed": 25,
-  "failed": 6,
-  "successRate": "80.6%",
+  "updatedAt": "2026-03-13T19:51:57.602Z",
+  "processed": 34,
+  "failed": 7,
+  "successRate": "82.9%",
   "tierBreakdown": {
-    "playwright": 14,
+    "playwright": 17,
     "amp": 4,
-    "browserbase": 6,
+    "browserbase": 12,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 2,
-    "archive": 6
+    "archive": 9
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-03-13T19:43:23.732Z",
@@ -56,6 +56,39 @@
     },
     {
       "t": "2026-03-13T19:46:21.214Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T19:47:08.306Z",
+      "event": "bb-session",
+      "session": "f784808c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/sarah-hyland-broadway-cast-of-j"
+    },
+    {
+      "t": "2026-03-13T19:47:09.694Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T19:47:39.297Z",
+      "event": "bb-session",
+      "session": "b34e7e83",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-13T19:47:40.582Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T19:48:44.027Z",
+      "event": "bb-session",
+      "session": "01d33ba0",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-03-13T19:48:45.477Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }

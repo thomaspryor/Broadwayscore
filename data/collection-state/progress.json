@@ -24,7 +24,16 @@
     "hamilton-2015/hollywood-reporter--david-rooney.json",
     "hamilton-2015/nyt-theater--jonathan-mandell.json",
     "hercules-west-end-2025/nytimes--matt-wolf.json",
-    "hercules-west-end-2025/variety--david-benedict.json"
+    "hercules-west-end-2025/variety--david-benedict.json",
+    "just-in-time-2025/hollywood-reporter--unknown.json",
+    "just-in-time-2025/nytimes--adam-feldman.json",
+    "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+    "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+    "masquerade-off-broadway-2025/nytg--gillian-russo.json",
+    "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
+    "maybe-happy-ending-2024/vulture--sara-holdren.json",
+    "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/nytg--kyle-turner.json",
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json"
   ],
   "failed": [
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theatre-is-easy--brooke-viegut.json",
@@ -32,7 +41,8 @@
     "the-lion-king-west-end-2021/thestage--unknown.json",
     "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
     "every-brilliant-thing-2026/nytimes--unknown.json",
-    "hadestown-2019/newyorker--hilton-als.json"
+    "hadestown-2019/newyorker--hilton-als.json",
+    "mj-2022/vulture--helen-shaw.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -50,7 +60,10 @@
       "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
       "drunk-romeo-and-juliet-off-broadway-2025/nytg--unknown.json",
       "every-brilliant-thing-2026/nytg--unknown.json",
-      "hamilton-2015/nyt-theater--jonathan-mandell.json"
+      "hamilton-2015/nyt-theater--jonathan-mandell.json",
+      "just-in-time-2025/nytimes--adam-feldman.json",
+      "masquerade-off-broadway-2025/nytg--gillian-russo.json",
+      "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/nytg--kyle-turner.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -64,7 +77,13 @@
       "data/review-texts/hadestown-2019/hollywood-reporter--david-rooney.json",
       "hadestown-2019/hollywood-reporter--david-rooney.json",
       "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json",
-      "hamilton-2015/hollywood-reporter--david-rooney.json"
+      "hamilton-2015/hollywood-reporter--david-rooney.json",
+      "data/review-texts/just-in-time-2025/hollywood-reporter--unknown.json",
+      "just-in-time-2025/hollywood-reporter--unknown.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -79,11 +98,14 @@
       "touch-off-broadway-2026/plays-to-see--austin-fimmano.json",
       "death-becomes-her-2024/newyorker--helen-shaw.json",
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
-      "hercules-west-end-2025/nytimes--matt-wolf.json"
+      "hercules-west-end-2025/nytimes--matt-wolf.json",
+      "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+      "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
+      "maybe-happy-ending-2024/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-03-13T19:36:12.449Z",
-  "lastProcessed": "hercules-west-end-2025/variety--david-benedict.json",
+  "lastProcessed": "mj-2022/vulture--helen-shaw.json",
   "log": [
     {
       "t": "2026-03-13T19:43:23.732Z",
@@ -126,6 +148,39 @@
     },
     {
       "t": "2026-03-13T19:46:21.214Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T19:47:08.306Z",
+      "event": "bb-session",
+      "session": "f784808c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/sarah-hyland-broadway-cast-of-j"
+    },
+    {
+      "t": "2026-03-13T19:47:09.694Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T19:47:39.297Z",
+      "event": "bb-session",
+      "session": "b34e7e83",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-13T19:47:40.582Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T19:48:44.027Z",
+      "event": "bb-session",
+      "session": "01d33ba0",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-03-13T19:48:45.477Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
