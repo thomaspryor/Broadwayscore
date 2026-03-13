@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-13T05:37:51.506Z",
-  "processed": 223,
-  "failed": 26,
-  "successRate": "89.6%",
+  "updatedAt": "2026-03-13T05:41:28.617Z",
+  "processed": 231,
+  "failed": 28,
+  "successRate": "89.2%",
   "tierBreakdown": {
-    "playwright": 138,
+    "playwright": 141,
     "amp": 22,
     "browserbase": 38,
     "directCookies": 1,
-    "scrapingbee": 23,
+    "scrapingbee": 27,
     "brightdata": 0,
     "archiveToday": 7,
-    "archive": 34
+    "archive": 35
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-03-13T04:54:14.096Z",
-      "event": "bb-session",
-      "session": "8ad0de96",
-      "url": "https://deadline.com/2019/10/little-shop-of-horrors-review-jonathan-groff-tammy-"
-    },
-    {
-      "t": "2026-03-13T04:54:15.609Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
     {
       "t": "2026-03-13T04:55:03.804Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-13T05:27:18.220Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-13T05:38:02.997Z",
+      "event": "bb-session",
+      "session": "3d761a97",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-03-13T05:38:04.525Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
