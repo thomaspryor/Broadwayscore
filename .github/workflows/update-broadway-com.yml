@@ -2,8 +2,8 @@ name: Update Broadway.com Data
 
 on:
   schedule:
-    # Weekly on Sundays at 3 PM UTC (10 AM EST), after Theatr at 2 PM
-    - cron: '0 15 * * 0'
+    # Weekly on Sundays at 4 PM UTC (11 AM EST), after DTLI/ShowScore at 3 PM
+    - cron: '0 16 * * 0'
   workflow_dispatch:
     inputs:
       show:

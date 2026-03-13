@@ -1679,25 +1679,41 @@ showDirs.forEach(showId => {
 
       // Promote contentVerification flags to top-level if not already set
       // (contentVerification may be set by a different pipeline than the one that creates the file)
+      // IMPORTANT: Skip promotion if contentVerification is stale — i.e., the fullText was
+      // fetched AFTER verification ran. The verification was done on old/bad content.
       if (data.contentVerification && (data.contentVerification.confidence === 'high' || data.contentVerification.confidence === 'medium')) {
         const cv = data.contentVerification;
+
+        // Staleness check: if text was fetched after verification, skip promotion
+        let cvIsStale = false;
+        if (data.textFetchedAt && cv.verifiedAt) {
+          const fetchedAt = new Date(data.textFetchedAt).getTime();
+          const verifiedAt = new Date(cv.verifiedAt).getTime();
+          if (fetchedAt > verifiedAt) {
+            cvIsStale = true;
+            stats.staleContentVerificationSkippedPromotion = (stats.staleContentVerificationSkippedPromotion || 0) + 1;
+          }
+        }
+
         let promoted = false;
-        if (cv.wrongProduction === true && data.wrongProduction !== true) {
-          data.wrongProduction = true;
-          promoted = true;
-        }
-        if (cv.wrongArticle === true && data.wrongShow !== true) {
-          data.wrongShow = true;
-          promoted = true;
-        }
-        if (cv.isFilmTv === true && data.wrongShow !== true) {
-          data.wrongShow = true;
-          promoted = true;
-        }
-        if (promoted) {
-          data.contentVerificationPromoted = `rebuild: promoted from contentVerification (${cv.verifiedBy}, ${cv.confidence})`;
-          stats.contentVerificationPromoted = (stats.contentVerificationPromoted || 0) + 1;
-          try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+        if (!cvIsStale) {
+          if (cv.wrongProduction === true && data.wrongProduction !== true) {
+            data.wrongProduction = true;
+            promoted = true;
+          }
+          if (cv.wrongArticle === true && data.wrongShow !== true) {
+            data.wrongShow = true;
+            promoted = true;
+          }
+          if (cv.isFilmTv === true && data.wrongShow !== true) {
+            data.wrongShow = true;
+            promoted = true;
+          }
+          if (promoted) {
+            data.contentVerificationPromoted = `rebuild: promoted from contentVerification (${cv.verifiedBy}, ${cv.confidence})`;
+            stats.contentVerificationPromoted = (stats.contentVerificationPromoted || 0) + 1;
+            try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+          }
         }
       }
 
