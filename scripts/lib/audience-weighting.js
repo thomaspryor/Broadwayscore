@@ -108,7 +108,7 @@ function calculateCombinedScore(sources, showInfo) {
     combinedScore += w.score * w.weight;
   }
 
-  const weights = { showScore: 0, mezzanine: 0, reddit: 0, theatr: 0 };
+  const weights = { showScore: 0, mezzanine: 0, reddit: 0, theatr: 0, broadwayCom: 0 };
   for (const w of weighted) {
     weights[w.name] = Math.round(w.weight * 100);
   }

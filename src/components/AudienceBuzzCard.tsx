@@ -130,7 +130,7 @@ function SourceCard({ name, icon, score, reviewCount, starRating, url, volumeLab
         <span className="text-[10px] sm:text-xs font-medium text-gray-400 uppercase tracking-wide truncate">{name}</span>
       </div>
       <div className="text-xl font-bold text-white">
-        {starRating ? `${starRating}/5` : `${score}%`}
+        {starRating != null ? `${starRating}/5` : `${score}%`}
       </div>
       {reviewCount !== null && (
         <div className="flex items-center gap-1 text-xs text-gray-500 mt-0.5">
