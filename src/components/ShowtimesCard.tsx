@@ -2,12 +2,16 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import type { ShowSchedule, WeekSchedule } from '@/lib/data-types';
+import TicketLink from '@/components/TicketLink';
 
 interface ShowtimesCardProps {
   schedule: ShowSchedule;
   currentMonday: string;
   showStatus: string;
   todayTixUrl?: string;
+  showName?: string;
+  showId?: string;
+  showSlug?: string;
 }
 
 const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -61,7 +65,7 @@ function getTodayIndex(mondayStr: string, now: Date): number {
   return -1;
 }
 
-export default function ShowtimesCard({ schedule, currentMonday, showStatus, todayTixUrl }: ShowtimesCardProps) {
+export default function ShowtimesCard({ schedule, currentMonday, showStatus, todayTixUrl, showName, showId, showSlug }: ShowtimesCardProps) {
   // Don't render for closed shows or if no weeks data
   const weekKeys = useMemo(() => Object.keys(schedule.weeks).sort(), [schedule.weeks]);
 
@@ -180,17 +184,20 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tod
       {/* Footer */}
       <div className="mt-3 text-center">
         {todayTixUrl && (
-          <a
-            href={todayTixUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <TicketLink
+            showName={showName ?? ''}
+            showId={showId ?? ''}
+            showSlug={showSlug}
+            platform="TodayTix"
+            url={todayTixUrl}
+            pageType="showtimes"
             className="inline-flex items-center gap-1.5 text-brand hover:text-brand/80 text-sm font-medium transition-colors mb-2"
           >
             Get Tickets on TodayTix
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
-          </a>
+          </TicketLink>
         )}
         <p className="text-gray-600 text-[11px]">
           via{' '}

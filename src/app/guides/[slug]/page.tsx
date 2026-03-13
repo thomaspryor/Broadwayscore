@@ -325,9 +325,14 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                         <TicketLink
                           showName={show.title}
                           showId={show.id}
+                          showSlug={show.slug}
+                          showStatus={show.status}
+                          showCategory={show.category}
+                          showScore={show.criticScore?.score ?? null}
                           platform="Official Site"
                           url={show.officialUrl}
                           pageType="guide"
+                          totalLinks={(ticketLinks?.length ?? 0) + 1}
                           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10 min-h-[44px] sm:min-h-0"
                         >
                           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -342,9 +347,15 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                           key={i}
                           showName={show.title}
                           showId={show.id}
+                          showSlug={show.slug}
+                          showStatus={show.status}
+                          showCategory={show.category}
+                          showScore={show.criticScore?.score ?? null}
                           platform={link.platform}
                           url={link.url}
                           pageType="guide"
+                          linkPosition={i}
+                          totalLinks={ticketLinks.length}
                           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10 min-h-[44px] sm:min-h-0"
                         >
                           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
