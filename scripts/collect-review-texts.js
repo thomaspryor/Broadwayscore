@@ -4459,6 +4459,8 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     delete data.contentVerification.verifiedAt;
     delete data.contentVerification.verifiedBy;
     delete data.contentVerification.reasoning;
+    delete data.contentVerification.confidence;
+    delete data.contentVerification.isValid;
   }
   data.fullText = cleanedText;
   data.isFullReview = cleanedText.length > 1500;
@@ -4742,7 +4744,8 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       issues: contentVerification.issues,
       reasoning: contentVerification.reasoning,
       verifiedBy: contentVerification.verifiedBy,
-      verifiedAt: new Date().toISOString()
+      verifiedAt: new Date().toISOString(),
+      contentHash: contentVerification.contentHash || null
     };
 
     const isHighConfidence = contentVerification.confidence === 'high' || contentVerification.confidence === 'medium';
