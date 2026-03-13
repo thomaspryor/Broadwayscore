@@ -659,8 +659,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                     {/* Review breakdown bar */}
                     {(() => {
                       const revs = show.criticScore?.reviews || [];
-                      const pos = revs.filter(r => r.reviewScore >= 65).length;
-                      const mix = revs.filter(r => r.reviewScore >= 55 && r.reviewScore < 65).length;
+                      const pos = revs.filter(r => r.reviewScore >= 70).length;
+                      const mix = revs.filter(r => r.reviewScore >= 55 && r.reviewScore < 70).length;
                       const neg = revs.filter(r => r.reviewScore < 55).length;
                       const tot = revs.length;
                       if (tot === 0 || showTBD) return null;
@@ -914,8 +914,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             {/* Breakdown bar — shown when redesign moves it out of the header card */}
             {featureFlags.showPageRedesign && (() => {
               const revs = show.criticScore?.reviews || [];
-              const pos = revs.filter(r => r.reviewScore >= 65).length;
-              const mix = revs.filter(r => r.reviewScore >= 55 && r.reviewScore < 65).length;
+              const pos = revs.filter(r => r.reviewScore >= 70).length;
+              const mix = revs.filter(r => r.reviewScore >= 55 && r.reviewScore < 70).length;
               const neg = revs.filter(r => r.reviewScore < 55).length;
               const tot = revs.length;
               if (tot === 0) return null;

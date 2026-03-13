@@ -10,8 +10,8 @@ export default function AnimatedScoreDistribution({ reviews }: AnimatedScoreDist
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const high = reviews.filter(r => r.reviewScore >= 65).length;
-  const medium = reviews.filter(r => r.reviewScore >= 55 && r.reviewScore < 65).length;
+  const high = reviews.filter(r => r.reviewScore >= 70).length;
+  const medium = reviews.filter(r => r.reviewScore >= 55 && r.reviewScore < 70).length;
   const low = reviews.filter(r => r.reviewScore < 55).length;
   const total = reviews.length;
 
