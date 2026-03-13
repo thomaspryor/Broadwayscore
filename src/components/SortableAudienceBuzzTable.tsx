@@ -20,6 +20,7 @@ interface AudienceBuzzData {
     mezzanine: AudienceBuzzSource | null;
     reddit: AudienceBuzzSource | null;
     theatr: AudienceBuzzSource | null;
+    broadwayCom: AudienceBuzzSource | null;
   };
 }
 
@@ -61,7 +62,7 @@ function SortIcon({ direction, active }: { direction: SortDirection | null; acti
   );
 }
 
-type BuzzColumn = 'show' | 'score' | 'showScore' | 'mezzanine' | 'reddit' | 'theatr' | 'grade';
+type BuzzColumn = 'show' | 'score' | 'showScore' | 'mezzanine' | 'reddit' | 'theatr' | 'broadwayCom' | 'grade';
 
 interface AudienceBuzzTableProps {
   data: ShowBuzzData[];
@@ -109,6 +110,10 @@ export function AudienceBuzzTable({ data }: AudienceBuzzTableProps) {
         case 'theatr':
           aVal = a.buzz?.sources.theatr?.score ?? null;
           bVal = b.buzz?.sources.theatr?.score ?? null;
+          break;
+        case 'broadwayCom':
+          aVal = a.buzz?.sources.broadwayCom?.score ?? null;
+          bVal = b.buzz?.sources.broadwayCom?.score ?? null;
           break;
         case 'grade':
           aVal = a.buzz?.combinedScore ?? null;
@@ -162,6 +167,10 @@ export function AudienceBuzzTable({ data }: AudienceBuzzTableProps) {
               <th className={`text-center hidden lg:table-cell ${headerClass}`} onClick={() => handleSort('theatr')}>
                 Theatr
                 <SortIcon direction={sortDirection} active={sortColumn === 'theatr'} />
+              </th>
+              <th className={`text-center hidden lg:table-cell ${headerClass}`} onClick={() => handleSort('broadwayCom')}>
+                Broadway.com
+                <SortIcon direction={sortDirection} active={sortColumn === 'broadwayCom'} />
               </th>
             </tr>
           </thead>
@@ -220,6 +229,13 @@ export function AudienceBuzzTable({ data }: AudienceBuzzTableProps) {
                   <td className="py-3 px-4 text-center hidden lg:table-cell">
                     {buzz?.sources.theatr ? (
                       <span className="text-gray-400 text-sm">{buzz.sources.theatr.reviewCount.toLocaleString()} votes</span>
+                    ) : (
+                      <span className="text-gray-500">—</span>
+                    )}
+                  </td>
+                  <td className="py-3 px-4 text-center hidden lg:table-cell">
+                    {buzz?.sources.broadwayCom ? (
+                      <span className="text-gray-400 text-sm">{buzz.sources.broadwayCom.reviewCount.toLocaleString()} reviews</span>
                     ) : (
                       <span className="text-gray-500">—</span>
                     )}

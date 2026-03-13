@@ -87,6 +87,15 @@ function TheatrIcon({ className }: { className?: string }) {
   );
 }
 
+// Broadway.com icon (star — verified ticket buyer star ratings)
+function BroadwayComIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+    </svg>
+  );
+}
+
 // External link icon
 function ExternalLinkIcon({ className }: { className?: string }) {
   return (
@@ -157,7 +166,7 @@ function SourceCard({ name, icon, score, reviewCount, starRating, url, comingSoo
 export default function AudienceBuzzCard({ buzz, showScoreUrl, limitedSources }: AudienceBuzzCardProps) {
   const grade = getAudienceGrade(buzz.combinedScore);
   const colors = getAudienceGradeClasses(buzz.combinedScore);
-  const { showScore, mezzanine, reddit, theatr } = buzz.sources;
+  const { showScore, mezzanine, reddit, theatr, broadwayCom } = buzz.sources;
 
   return (
     <div className="card p-5 sm:p-6 mb-8">
@@ -215,6 +224,13 @@ export default function AudienceBuzzCard({ buzz, showScoreUrl, limitedSources }:
           score={theatr?.score ?? null}
           reviewCount={theatr?.reviewCount ?? null}
           volumeLabel="votes"
+        />
+        <SourceCard
+          name="Broadway.com"
+          icon={<BroadwayComIcon className="text-blue-400" />}
+          score={broadwayCom?.score ?? null}
+          reviewCount={broadwayCom?.reviewCount ?? null}
+          starRating={broadwayCom?.starRating}
         />
       </div>
 
