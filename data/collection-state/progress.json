@@ -149,7 +149,14 @@
     "every-brilliant-thing-2026/nypost--johnny-oleksinski.json",
     "every-brilliant-thing-2026/the-la-times--unknown.json",
     "death-becomes-her-2024/newyorker--helen-shaw.json",
-    "hercules-west-end-2025/nytimes--matt-wolf.json"
+    "hercules-west-end-2025/nytimes--matt-wolf.json",
+    "mj-2022/vulture--helen-shaw.json",
+    "oh-mary-2024/nytimes--erik-piepenburg.json",
+    "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
+    "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
+    "every-brilliant-thing-2026/nydailynews--chris-jones.json",
+    "every-brilliant-thing-2026/thewrap--robert-hofler.json",
+    "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -170,7 +177,10 @@
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
     "the-lion-king-west-end-2021/thestage--unknown.json",
     "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
-    "hadestown-2019/newyorker--hilton-als.json"
+    "hadestown-2019/newyorker--hilton-als.json",
+    "six-2021/newyorker--naomi-fry.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "harry-potter-2021/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -253,7 +263,8 @@
       "matilda-the-musical-west-end-2021/guardian--imogen-carter.json",
       "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json",
       "maybe-happy-ending-2024/guardian--adrian-horton.json",
-      "maybe-happy-ending-2024/theatermania--jesse-green.json"
+      "maybe-happy-ending-2024/theatermania--jesse-green.json",
+      "every-brilliant-thing-2026/guardian--jesse-hassenger.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -273,7 +284,9 @@
       "data/review-texts/wicked-2003/variety--charles-isherwood.json",
       "wicked-2003/variety--charles-isherwood.json",
       "data/review-texts/cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json",
-      "cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json"
+      "cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json",
+      "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
+      "every-brilliant-thing-2026/thewrap--robert-hofler.json"
     ],
     "browserbase": [
       "data/review-texts/every-brilliant-thing-2026/nytimes--unknown.json",
@@ -336,7 +349,8 @@
       "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json",
       "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
       "every-brilliant-thing-2026/the-la-times--unknown.json",
-      "death-becomes-her-2024/newyorker--helen-shaw.json"
+      "death-becomes-her-2024/newyorker--helen-shaw.json",
+      "every-brilliant-thing-2026/nydailynews--chris-jones.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -372,11 +386,15 @@
       "la-llamada-off-broadway-2024/broadwaynews--aa-cristi.json",
       "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
       "maybe-happy-ending-2024/new-york-sun--broadway-scorecard.json",
-      "hercules-west-end-2025/nytimes--matt-wolf.json"
+      "hercules-west-end-2025/nytimes--matt-wolf.json",
+      "mj-2022/vulture--helen-shaw.json",
+      "oh-mary-2024/nytimes--erik-piepenburg.json",
+      "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
+      "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json"
     ]
   },
   "startTime": "2026-03-13T03:37:52.112Z",
-  "lastProcessed": "hercules-west-end-2025/nytimes--matt-wolf.json",
+  "lastProcessed": "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
   "log": [
     {
       "t": "2026-03-13T03:38:54.108Z",
@@ -661,6 +679,28 @@
     },
     {
       "t": "2026-03-13T05:11:12.510Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-13T05:15:09.941Z",
+      "event": "bb-session",
+      "session": "71a31a2d",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-13T05:15:11.530Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-13T05:16:28.413Z",
+      "event": "bb-session",
+      "session": "5fdd8cf1",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-13T05:16:30.033Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
