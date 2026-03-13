@@ -13,7 +13,17 @@
     "touch-off-broadway-2026/theater-pizzazz--beatrice-williams-rude.json",
     "touch-off-broadway-2026/theater-scene--victor-gluck.json",
     "touch-off-broadway-2026/woman-around-town--alix-cohen.json",
-    "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json"
+    "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
+    "an-ark-off-broadway-2026/nytg--kyle-turner.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
+    "back-to-the-future-west-end-2021/variety--david-benedict.json",
+    "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+    "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+    "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+    "chess-2025/hollywood-reporter--angie-han.json",
+    "chess-2025/newyorker--michael-schulman.json",
+    "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nyt-theater--jonathan-mandell.json"
   ],
   "failed": [
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theatre-is-easy--brooke-viegut.json",
@@ -35,10 +45,22 @@
       "hold-on-to-your-butts-off-broadway-2026/west-end-best-friend--kate-soper.json",
       "touch-off-broadway-2026/theater-scene--victor-gluck.json",
       "touch-off-broadway-2026/woman-around-town--alix-cohen.json",
-      "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json"
+      "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
+      "an-ark-off-broadway-2026/nytg--kyle-turner.json",
+      "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+      "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+      "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+      "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "data-off-broadway-2026/nyt-theater--jonathan-mandell.json"
     ],
-    "amp": [],
-    "browserbase": [],
+    "amp": [
+      "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "back-to-the-future-west-end-2021/variety--david-benedict.json"
+    ],
+    "browserbase": [
+      "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
+      "chess-2025/hollywood-reporter--angie-han.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -53,10 +75,24 @@
       "hold-on-to-your-butts-off-broadway-2026/timeout-london--dave-calhoun.json",
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json",
       "touch-off-broadway-2026/talkinbroadway--howard-miller.json",
-      "touch-off-broadway-2026/theater-pizzazz--beatrice-williams-rude.json"
+      "touch-off-broadway-2026/theater-pizzazz--beatrice-williams-rude.json",
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
+      "chess-2025/newyorker--michael-schulman.json"
     ]
   },
   "startTime": "2026-03-13T18:31:40.145Z",
-  "lastProcessed": "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
-  "log": []
+  "lastProcessed": "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+  "log": [
+    {
+      "t": "2026-03-13T18:55:07.097Z",
+      "event": "bb-session",
+      "session": "109f7fac",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-13T18:55:08.515Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    }
+  ]
 }
