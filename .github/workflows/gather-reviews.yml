@@ -362,12 +362,6 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: node scripts/rebuild-all-reviews.js
 
-      - name: Regenerate mobile data
-        run: |
-          node scripts/generate-mobile-data.js
-          node scripts/generate-mobile-show-details.js
-        continue-on-error: true
-
       - name: Push review-texts to private repo
         if: always()
         uses: ./.github/actions/push-review-texts
