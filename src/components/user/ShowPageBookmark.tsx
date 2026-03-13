@@ -14,9 +14,9 @@ interface ShowPageBookmarkProps {
 }
 
 const SIZES = {
-  sm: { button: '-top-1 -right-0.5 p-0', icon: 'w-7 h-8' },
-  md: { button: '-top-1 -right-0.5 p-0', icon: 'w-8 h-9' },
-  compact: { button: '-top-1 -right-0.5 p-0', icon: 'w-7 h-8' },
+  sm: { button: 'top-0.5 right-0.5 p-0', icon: 'w-7 h-8' },
+  md: { button: 'top-1 right-1 p-0', icon: 'w-8 h-9' },
+  compact: { button: 'top-0.5 right-0.5 p-0', icon: 'w-7 h-8' },
 };
 
 /**
