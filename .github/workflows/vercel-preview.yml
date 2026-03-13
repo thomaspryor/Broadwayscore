@@ -104,12 +104,20 @@ jobs:
         env:
           PREVIEW_URL: ${{ steps.deploy.outputs.url }}
         run: |
-          echo "Waiting 15s for preview to propagate..."
-          sleep 15
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$PREVIEW_URL/")
-          echo "Homepage returned HTTP $STATUS"
-          if [ "$STATUS" != "200" ]; then
-            echo "::error::Preview smoke test failed — homepage returned HTTP $STATUS"
+          # Poll until preview returns 200, up to 60s (typically <10s)
+          OK=false
+          for attempt in $(seq 1 12); do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$PREVIEW_URL/")
+            if [ "$STATUS" = "200" ]; then
+              echo "Homepage returned HTTP 200 (attempt ${attempt})"
+              OK=true
+              break
+            fi
+            echo "Homepage returned HTTP ${STATUS} — retrying in 5s (attempt ${attempt}/12)"
+            sleep 5
+          done
+          if [ "$OK" != "true" ]; then
+            echo "::error::Preview smoke test failed — homepage never returned HTTP 200 after 60s"
             exit 1
           fi
           echo "Preview is live at $PREVIEW_URL"

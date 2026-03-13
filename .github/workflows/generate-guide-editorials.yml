@@ -2,14 +2,17 @@ name: Generate Guide Editorials
 
 on:
   schedule:
-    # Monthly on 1st at 3 AM UTC
-    - cron: '0 3 1 * *'
+    # Weekly on Mondays at 3 AM UTC (shows open/close weekly)
+    - cron: '0 3 * * 1'
   workflow_dispatch:
 
 jobs:
   generate-editorials:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    concurrency:
+      group: editorial-generation
+      cancel-in-progress: false
 
     steps:
       - name: Checkout code
@@ -53,7 +56,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to guide editorials"
           else
-            git commit -m "chore: Update guide page editorials (automated monthly)"
+            git commit -m "chore: Update guide page editorials (automated weekly)"
             bash scripts/lib/push-with-retry.sh
           fi
 
