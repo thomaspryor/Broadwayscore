@@ -26,12 +26,22 @@
     "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
     "the-mousetrap-west-end-2021/variety--unknown.json",
     "the-holy-rosenbergs-west-end-2026/timeout--unknown.json",
-    "every-brilliant-thing-2026/nysr--frank-scheck.json"
+    "every-brilliant-thing-2026/nysr--frank-scheck.json",
+    "garry-starr-classic-penguins-garrick-west-end-2026/west-end-best-friend--livvy-perrett.json",
+    "into-the-woods-west-end-2025/london-theatre--marianka-swain.json",
+    "marie-and-rosetta-west-end-2026/financialtimes--unknown.json",
+    "matilda-the-musical-west-end-2021/thestage--mark-shenton.json",
+    "my-neighbour-totoro-west-end-2025/independent--annabel-nugent.json",
+    "the-holy-rosenbergs-west-end-2026/london-theatre--unknown.json",
+    "the-holy-rosenbergs-west-end-2026/standard--unknown.json"
   ],
   "failed": [
     "the-monsters-off-broadway-2026/talkinbroadway--james-wilson.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/thestage--tim-bano.json",
-    "dracula-west-end-2025/thestage--sam-marlowe.json"
+    "dracula-west-end-2025/thestage--sam-marlowe.json",
+    "the-book-of-mormon-west-end-2024/thestage--unknown.json",
+    "the-holy-rosenbergs-west-end-2026/thestage--unknown.json",
+    "the-lion-king-west-end-2021/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -51,7 +61,12 @@
       "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
       "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
       "the-holy-rosenbergs-west-end-2026/timeout--unknown.json",
-      "every-brilliant-thing-2026/nysr--frank-scheck.json"
+      "every-brilliant-thing-2026/nysr--frank-scheck.json",
+      "garry-starr-classic-penguins-garrick-west-end-2026/west-end-best-friend--livvy-perrett.json",
+      "into-the-woods-west-end-2025/london-theatre--marianka-swain.json",
+      "marie-and-rosetta-west-end-2026/financialtimes--unknown.json",
+      "the-holy-rosenbergs-west-end-2026/london-theatre--unknown.json",
+      "the-holy-rosenbergs-west-end-2026/standard--unknown.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -71,26 +86,24 @@
       "mother-russia-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
       "the-monsters-off-broadway-2026/nytimes--brittani-samuel.json",
       "burnout-paradise-off-broadway-2026/theatermania--zachary-stewart.json",
-      "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json",
-      "bughouse-off-broadway-2026/theatermania--unknown.json",
-      "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json",
-      "la-llamada-off-broadway-2024/broadwaynews--aa-cristi.json",
-      "mother-russia-off-broadway-2026/theatermania--linda-buchwald.json"
+      "my-neighbour-totoro-west-end-2025/independent--annabel-nugent.json"
     ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/the-monsters-off-broadway-2026/talkinbroadway--james-wilson.json",
       "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/thestage--tim-bano.json",
-      "data/review-texts/dracula-west-end-2025/thestage--sam-marlowe.json"
+      "data/review-texts/dracula-west-end-2025/thestage--sam-marlowe.json",
+      "data/review-texts/the-holy-rosenbergs-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
       "mother-russia-off-broadway-2026/vulture--sara-holdren.json",
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
-      "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json"
+      "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
+      "matilda-the-musical-west-end-2021/thestage--mark-shenton.json"
     ]
   },
   "startTime": "2026-03-13T10:30:15.426Z",
-  "lastProcessed": "every-brilliant-thing-2026/nysr--frank-scheck.json",
+  "lastProcessed": "the-lion-king-west-end-2021/thestage--unknown.json",
   "log": [
     {
       "t": "2026-03-13T10:58:48.048Z",
@@ -111,6 +124,17 @@
     },
     {
       "t": "2026-03-13T11:00:22.722Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-13T11:03:52.665Z",
+      "event": "bb-session",
+      "session": "4ffd372a",
+      "url": "https://www.thestage.co.uk/reviews/the-holy-rosenbergs-review-menier-chocolate-f"
+    },
+    {
+      "t": "2026-03-13T11:03:54.031Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }

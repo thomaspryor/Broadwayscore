@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-13T11:00:46.465Z",
-  "processed": 27,
-  "failed": 3,
-  "successRate": "90.0%",
+  "updatedAt": "2026-03-13T11:04:16.235Z",
+  "processed": 34,
+  "failed": 6,
+  "successRate": "85.0%",
   "tierBreakdown": {
-    "playwright": 16,
+    "playwright": 21,
     "amp": 10,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 8,
+    "scrapingbee": 4,
     "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 3
+    "archiveToday": 4,
+    "archive": 4
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-03-13T10:58:48.048Z",
@@ -34,6 +34,17 @@
     },
     {
       "t": "2026-03-13T11:00:22.722Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-13T11:03:52.665Z",
+      "event": "bb-session",
+      "session": "4ffd372a",
+      "url": "https://www.thestage.co.uk/reviews/the-holy-rosenbergs-review-menier-chocolate-f"
+    },
+    {
+      "t": "2026-03-13T11:03:54.031Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
