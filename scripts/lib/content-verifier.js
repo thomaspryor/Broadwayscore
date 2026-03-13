@@ -207,11 +207,12 @@ async function callWithFallback(prompt) {
  * @param {string} params.outletName - Outlet name
  * @param {string} params.criticName - Critic name
  * @param {string} [params.openingDate] - Opening date (YYYY-MM-DD) for temporal context
+ * @param {string} [params.publishDate] - Review publish date (YYYY-MM-DD) — used with openingDate to prevent false wrongProduction flags
  * @param {string} [params.venue] - Venue name
  * @param {string} [params.market] - Market: 'broadway' (default), 'west-end', 'off-broadway'
  * @returns {Object} { isValid, confidence, issues, truncated, wrongArticle, wrongProduction, isFilmTv, reasoning, verifiedBy }
  */
-async function verifyContent({ scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue, market }) {
+async function verifyContent({ scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue, market, publishDate }) {
   if (!scrapedText || scrapedText.length < 200) {
     return {
       isValid: false,
@@ -270,8 +271,18 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
   const mc = marketConfig[effectiveMarket] || marketConfig['broadway'];
 
   const dateContext = openingDate ? `\n- ${mc.dateLabel}: ${openingDate}` : '';
+  const publishDateContext = publishDate ? `\n- Review publish date: ${publishDate}` : '';
   const venueContext = venue ? `\n- ${mc.venueLabel}: ${venue}` : '';
   const excerptContext = excerpt ? `\n- Known excerpt: "${excerpt.substring(0, 300)}"` : '';
+
+  // Temporal proximity: if review published within 14 days of opening, very likely correct production
+  let temporalHint = '';
+  if (openingDate && publishDate) {
+    const daysDiff = Math.abs((new Date(publishDate) - new Date(openingDate)) / 86400000);
+    if (daysDiff <= 14) {
+      temporalHint = `\n\n**IMPORTANT**: This review was published ${daysDiff <= 1 ? 'on opening night' : `within ${Math.round(daysDiff)} days of the ${mc.label} opening`}. Reviews published near opening night are almost always reviewing the current ${mc.label} production, NOT a prior production. Be very cautious about flagging wrongProduction for opening-week reviews. Do NOT hallucinate prior productions that may not exist.`;
+    }
+  }
 
   const wrongProdList = mc.wrongProdExamples.map(e => `   - ${e}`).join('\n');
 
@@ -283,7 +294,7 @@ I scraped what should be a ${mc.label} theater review. Verify if the content is 
 - Show: "${showTitle}"
 - Market: ${mc.label}
 - Outlet: ${outletName}
-- Critic: ${criticName || 'Unknown'}${dateContext}${venueContext}${excerptContext}
+- Critic: ${criticName || 'Unknown'}${dateContext}${publishDateContext}${venueContext}${excerptContext}
 
 **Scraped Content (first 2500 chars):**
 ${scrapedText.substring(0, 2500)}
@@ -316,7 +327,7 @@ ${wrongProdList}
 
 5. **Junk content**: Is this mostly navigation, footer, cookie notices, or non-article content?
 
-Set isValid=true only if the content is a review of the ${mc.label} production and is not truncated/junk.`;
+Set isValid=true only if the content is a review of the ${mc.label} production and is not truncated/junk.${temporalHint}`;
 
   const result = await callWithFallback(prompt);
 
@@ -329,15 +340,30 @@ Set isValid=true only if the content is a review of the ${mc.label} production a
     const jsonMatch = result.text.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
       const parsed = JSON.parse(jsonMatch[0]);
+      let wpFlag = parsed.wrongProduction || false;
+      let wpConfidence = parsed.confidence || 'medium';
+      let wpReasoning = parsed.reasoning || '';
+
+      // Safety check: if LLM says wrongProduction but review published within 14 days
+      // of opening, downgrade confidence — LLMs hallucinate prior productions frequently
+      if (wpFlag && openingDate && publishDate) {
+        const daysDiff = Math.abs((new Date(publishDate) - new Date(openingDate)) / 86400000);
+        if (daysDiff <= 14) {
+          console.log(`    ⚠ LLM wrongProduction overridden: review published ${Math.round(daysDiff)}d from opening — downgrading to low confidence`);
+          wpConfidence = 'low';
+          wpReasoning = `[OVERRIDE: review within ${Math.round(daysDiff)}d of opening, likely correct production] ${wpReasoning}`;
+        }
+      }
+
       return {
         isValid: parsed.isValid ?? true,
-        confidence: parsed.confidence || 'medium',
+        confidence: wpFlag ? wpConfidence : (parsed.confidence || 'medium'),
         issues: parsed.issues || [],
         truncated: parsed.truncated || false,
         wrongArticle: parsed.wrongArticle || false,
-        wrongProduction: parsed.wrongProduction || false,
+        wrongProduction: wpFlag,
         isFilmTv: parsed.isFilmTv || false,
-        reasoning: parsed.reasoning || '',
+        reasoning: wpFlag ? wpReasoning : (parsed.reasoning || ''),
         verifiedBy: `llm:${result.provider}`,
         contentHash: contentHash(scrapedText)
       };
