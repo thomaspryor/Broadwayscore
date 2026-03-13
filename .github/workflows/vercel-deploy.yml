@@ -66,18 +66,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Refresh guide editorials
-        continue-on-error: true
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: |
-          node scripts/generate-guide-editorials.js
-          if git diff --quiet data/guide-editorials.json 2>/dev/null; then
-            echo "No editorial changes"
-          else
-            echo "Editorials refreshed — will be included in this build"
-          fi
-
       - name: Pre-deploy data integrity check
         run: node scripts/pre-deploy-check.js
 
@@ -186,7 +174,7 @@ jobs:
           fi
           echo "Smoke test passed — production is live"
 
-      - name: Update deploy watermark and editorials
+      - name: Update deploy watermark
         if: success()
         continue-on-error: true
         run: |
@@ -194,11 +182,11 @@ jobs:
           node scripts/pre-deploy-check.js > /dev/null 2>&1 || true
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/audit/deploy-watermark.json data/guide-editorials.json 2>/dev/null || true
+          git add data/audit/deploy-watermark.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "chore: Update deploy watermark and guide editorials [skip ci]" || true
+            git commit -m "chore: Update deploy watermark [skip ci]" || true
             bash scripts/lib/push-with-retry.sh 3 main || true
           fi
 
