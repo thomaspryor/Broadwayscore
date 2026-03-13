@@ -306,6 +306,8 @@ Analyze the content and respond with ONLY valid JSON (no markdown fences):
   "isValid": true/false,
   "confidence": "high"/"medium"/"low",
   "wrongArticle": true/false,
+  "articleType": "review"/"preview"/"interview"/"news"/"feature"/"box-office"/"obituary"/"listicle"/"other",
+  "articleTypeConfidence": "high"/"medium"/"low",
   "wrongProduction": true/false,
   "isFilmTv": true/false,
   "truncated": true/false,
@@ -315,7 +317,15 @@ Analyze the content and respond with ONLY valid JSON (no markdown fences):
 
 **Check these specific things:**
 
-1. **Wrong article**: Is this about a completely different show, or not a theater review at all (news article, obituary, listicle, etc.)?
+1. **Article type (CRITICAL)**: Is this a REVIEW — a critic evaluating a show after seeing it and giving their opinion? Or is it something else:
+   - **preview**: written before opening, previewing what to expect
+   - **interview**: conversation with cast/creatives
+   - **news/feature**: reporting on the show (casting, box office, closings)
+   - **box-office**: grosses/financial data
+   Set wrongArticle=true if it is NOT a review. Set articleType to the correct category.
+   A review MUST contain the critic's assessment of the show's quality.
+
+2. **Wrong article (legacy)**: Is this about a completely different show, or not a theater review at all?
 
 2. **Wrong production** (IMPORTANT): Is this reviewing a NON-${mc.label} production of "${showTitle}"? Red flags:
 ${wrongProdList}
@@ -361,6 +371,8 @@ Set isValid=true only if the content is a review of the ${mc.label} production a
         issues: parsed.issues || [],
         truncated: parsed.truncated || false,
         wrongArticle: parsed.wrongArticle || false,
+        articleType: parsed.articleType || 'review',
+        articleTypeConfidence: parsed.articleTypeConfidence || 'medium',
         wrongProduction: wpFlag,
         isFilmTv: parsed.isFilmTv || false,
         reasoning: wpFlag ? wpReasoning : (parsed.reasoning || ''),

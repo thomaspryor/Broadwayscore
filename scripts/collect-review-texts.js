@@ -4736,6 +4736,8 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       truncated: contentVerification.truncated,
       wrongArticle: contentVerification.wrongArticle,
       wrongProduction: contentVerification.wrongProduction,
+      articleType: contentVerification.articleType,
+      articleTypeConfidence: contentVerification.articleTypeConfidence,
       isFilmTv: contentVerification.isFilmTv,
       issues: contentVerification.issues,
       reasoning: contentVerification.reasoning,
@@ -4745,15 +4747,21 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
 
     const isHighConfidence = contentVerification.confidence === 'high' || contentVerification.confidence === 'medium';
 
-    // Auto-null fullText on high/medium confidence wrong article (completely wrong show/content)
-    if (contentVerification.wrongArticle && isHighConfidence && data.fullText) {
-      const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
-      data.wrongFullText = data.fullText;
-      data.fullText = null;
-      data.wrongShow = true;
-      data.wrongShowReason = `Collector LLM: wrong article (${contentVerification.confidence}) — ${(contentVerification.reasoning || '').substring(0, 200)}`;
-      data.contentTier = hasExcerpts ? 'excerpt' : 'needs-rescrape';
-      console.log(`    ✗ LLM: Wrong article (${contentVerification.confidence}) — fullText nulled`);
+    // Auto-invalidate on HIGH confidence wrong article type (preview, interview, news, etc.)
+    // Medium confidence → log warning only (21% LLM error rate on article classification)
+    if (contentVerification.wrongArticle) {
+      const artConf = contentVerification.articleTypeConfidence || 'medium';
+      const artType = contentVerification.articleType || 'unknown';
+      if (artConf === 'high' && data.fullText) {
+        data.wrongFullText = data.fullText;
+        data.fullText = null;
+        data.contentTier = 'invalid';
+        data.incompleteReason = 'non_review';
+        data.wrongShowReason = `Collector LLM: not a review (${artType}, confidence: ${artConf}) — ${(contentVerification.reasoning || '').substring(0, 200)}`;
+        console.log(`    ✗ LLM: Not a review — ${artType} (${artConf} confidence) — fullText nulled, contentTier=invalid`);
+      } else if (artConf === 'medium') {
+        console.log(`    ⚠ LLM: Possibly not a review — ${artType} (medium confidence) — no action taken`);
+      }
     }
 
     // Auto-null fullText on high/medium confidence wrong production (tour, regional, off-Broadway, etc.)
