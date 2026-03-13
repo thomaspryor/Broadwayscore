@@ -456,11 +456,20 @@ function pickBestProduction(matches, targetYear, preferredMarket, prefer) {
   }
 
   if (!targetYear) {
-    // No date hint — use prefer option to pick original vs most recent.
-    // 'original' = earliest opening (for financial/cumulative data like all-time grosses)
+    // No date hint — use prefer option to pick the right production.
+    // 'open' = currently-running production (for weekly grosses, lottery/rush)
+    // 'original' = earliest opening (for cumulative all-time data)
     // 'recent' = most recent opening (default, for reviews/news)
     const strategy = prefer || 'recent';
     const ids = matches.map(m => m.id).join(', ');
+
+    // For 'open' strategy: if exactly one production is currently running, pick it
+    if (strategy === 'open') {
+      const openShows = matches.filter(m => m.status === 'open' || m.status === 'previews');
+      if (openShows.length === 1) return openShows[0];
+      // Fall through to 'recent' if 0 or 2+ are open
+    }
+
     console.warn(`  ⚠️  [AMBIGUOUS MATCH] ${matches.length} productions for "${matches[0].title}" (${ids}) — no year hint, picking ${strategy}. Pass { year } to disambiguate.`);
     return matches.reduce((best, show) => {
       const showYear = show.openingDate ? new Date(show.openingDate).getFullYear() : 0;

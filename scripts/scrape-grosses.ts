@@ -193,10 +193,10 @@ function findMatchingSlug(bwwTitle: string, market: string = 'broadway'): string
   if (!allShows) {
     allShows = loadShowsFromMatching();
   }
-  // Always pass market hint — BroadwayWorld only lists Broadway shows,
-  // and without it the matcher picks the most recent production which
-  // may be a West End or Off-Broadway version of the same title.
-  const match = matchTitleToShow(bwwTitle, allShows, { market });
+  // Always pass market + prefer hints — BroadwayWorld only lists Broadway shows,
+  // and weekly grosses belong to the currently-running production (e.g., Chicago
+  // 1996 revival, not Chicago 1975 original).
+  const match = matchTitleToShow(bwwTitle, allShows, { market, prefer: 'open' });
   if (match && match.confidence === 'high') {
     return match.show.slug;
   }

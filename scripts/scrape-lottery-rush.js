@@ -188,8 +188,8 @@ function resolveShowId(externalTitle) {
     return { id: TITLE_OVERRIDES[externalTitle], confidence: 'override' };
   }
 
-  // BwayRush.com is Broadway-only — pass market hint to avoid cross-market mismatches
-  const match = matchTitleToShow(externalTitle, allShows, { market: 'broadway' });
+  // BwayRush.com is Broadway-only, and lotteries are for currently-running shows
+  const match = matchTitleToShow(externalTitle, allShows, { market: 'broadway', prefer: 'open' });
 
   // Only accept high-confidence matches
   if (match && match.confidence === 'high') {
