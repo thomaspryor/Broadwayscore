@@ -32,7 +32,16 @@
     "every-brilliant-thing-2026/nytimes--unknown.json",
     "hadestown-2019/hollywood-reporter--david-rooney.json",
     "hamilton-2015/hollywood-reporter--david-rooney.json",
-    "hamilton-2015/nyt-theater--jonathan-mandell.json"
+    "hamilton-2015/nyt-theater--jonathan-mandell.json",
+    "hercules-west-end-2025/variety--david-benedict.json",
+    "just-in-time-2025/hollywood-reporter--unknown.json",
+    "just-in-time-2025/nytimes--adam-feldman.json",
+    "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+    "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json",
+    "mamma-mia-west-end-2021/variety--matt-wolf.json",
+    "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+    "masquerade-off-broadway-2025/nytg--gillian-russo.json",
+    "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json"
   ],
   "failed": [
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theatre-is-easy--brooke-viegut.json",
@@ -42,7 +51,8 @@
     "touch-off-broadway-2026/broadwayworld--marina-kennedy.json",
     "touch-off-broadway-2026/epoch-times--judd-hollander.json",
     "touch-off-broadway-2026/plays-to-see--austin-fimmano.json",
-    "hadestown-2019/newyorker--hilton-als.json"
+    "hadestown-2019/newyorker--hilton-als.json",
+    "hercules-west-end-2025/nytimes--matt-wolf.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -66,11 +76,18 @@
       "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
       "drunk-romeo-and-juliet-off-broadway-2025/nytg--unknown.json",
       "every-brilliant-thing-2026/nytg--unknown.json",
-      "hamilton-2015/nyt-theater--jonathan-mandell.json"
+      "hamilton-2015/nyt-theater--jonathan-mandell.json",
+      "just-in-time-2025/nytimes--adam-feldman.json",
+      "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json",
+      "masquerade-off-broadway-2025/nytg--gillian-russo.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
-      "back-to-the-future-west-end-2021/variety--david-benedict.json"
+      "back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
+      "hercules-west-end-2025/variety--david-benedict.json",
+      "data/review-texts/mamma-mia-west-end-2021/variety--matt-wolf.json",
+      "mamma-mia-west-end-2021/variety--matt-wolf.json"
     ],
     "browserbase": [
       "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
@@ -80,7 +97,11 @@
       "data/review-texts/hadestown-2019/hollywood-reporter--david-rooney.json",
       "hadestown-2019/hollywood-reporter--david-rooney.json",
       "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json",
-      "hamilton-2015/hollywood-reporter--david-rooney.json"
+      "hamilton-2015/hollywood-reporter--david-rooney.json",
+      "data/review-texts/just-in-time-2025/hollywood-reporter--unknown.json",
+      "just-in-time-2025/hollywood-reporter--unknown.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -89,7 +110,8 @@
       "data/review-texts/touch-off-broadway-2026/blogcritics--jon-sobel.json",
       "data/review-texts/touch-off-broadway-2026/broadwayworld--marina-kennedy.json",
       "data/review-texts/touch-off-broadway-2026/epoch-times--judd-hollander.json",
-      "data/review-texts/touch-off-broadway-2026/plays-to-see--austin-fimmano.json"
+      "data/review-texts/touch-off-broadway-2026/plays-to-see--austin-fimmano.json",
+      "data/review-texts/hercules-west-end-2025/nytimes--matt-wolf.json"
     ],
     "archive": [
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
@@ -99,11 +121,13 @@
       "touch-off-broadway-2026/theater-pizzazz--beatrice-williams-rude.json",
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
       "chess-2025/newyorker--michael-schulman.json",
-      "death-becomes-her-2024/newyorker--helen-shaw.json"
+      "death-becomes-her-2024/newyorker--helen-shaw.json",
+      "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+      "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json"
     ]
   },
   "startTime": "2026-03-13T18:31:40.145Z",
-  "lastProcessed": "hamilton-2015/nyt-theater--jonathan-mandell.json",
+  "lastProcessed": "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
   "log": [
     {
       "t": "2026-03-13T18:55:07.097Z",
@@ -146,6 +170,39 @@
     },
     {
       "t": "2026-03-13T18:57:27.964Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T18:58:42.457Z",
+      "event": "bb-session",
+      "session": "726810ad",
+      "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
+    },
+    {
+      "t": "2026-03-13T18:58:43.647Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-13T18:59:50.809Z",
+      "event": "bb-session",
+      "session": "de23d170",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/sarah-hyland-broadway-cast-of-j"
+    },
+    {
+      "t": "2026-03-13T18:59:52.135Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T19:00:19.842Z",
+      "event": "bb-session",
+      "session": "fcbb45a6",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-13T19:00:21.215Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }

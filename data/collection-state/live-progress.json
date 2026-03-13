@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-13T18:57:49.955Z",
-  "processed": 33,
-  "failed": 8,
-  "successRate": "80.5%",
+  "updatedAt": "2026-03-13T19:01:32.537Z",
+  "processed": 42,
+  "failed": 9,
+  "successRate": "82.4%",
   "tierBreakdown": {
-    "playwright": 20,
-    "amp": 2,
-    "browserbase": 8,
+    "playwright": 23,
+    "amp": 6,
+    "browserbase": 12,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 4,
-    "archive": 8
+    "archiveToday": 5,
+    "archive": 10
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-03-13T18:55:07.097Z",
@@ -56,6 +56,39 @@
     },
     {
       "t": "2026-03-13T18:57:27.964Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T18:58:42.457Z",
+      "event": "bb-session",
+      "session": "726810ad",
+      "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
+    },
+    {
+      "t": "2026-03-13T18:58:43.647Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-13T18:59:50.809Z",
+      "event": "bb-session",
+      "session": "de23d170",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/sarah-hyland-broadway-cast-of-j"
+    },
+    {
+      "t": "2026-03-13T18:59:52.135Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T19:00:19.842Z",
+      "event": "bb-session",
+      "session": "fcbb45a6",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-13T19:00:21.215Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
