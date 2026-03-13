@@ -312,6 +312,28 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: node scripts/scrape-bww-reviews.js --type=roundup --shows=${{ inputs.shows }}
 
+      - name: Scrape LBO roundups for West End target shows
+        continue-on-error: true
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: |
+          # Only run if any target shows are West End
+          WE_SHOWS=$(node -e "
+            const shows = require('./data/shows.json').shows;
+            const targets = '${{ inputs.shows }}'.split(',');
+            const we = targets.filter(id => {
+              const s = shows.find(x => x.id === id);
+              return s && s.category === 'west-end';
+            });
+            console.log(we.join(','));
+          ")
+          if [ -n "$WE_SHOWS" ]; then
+            echo "Running LBO roundups for WE shows: $WE_SHOWS"
+            node scripts/scrape-london-box-office-roundups.js --shows=$WE_SHOWS
+          else
+            echo "No WE shows in target list — skipping LBO"
+          fi
+
       - name: Push review-texts to private repo
         if: always()
         uses: ./.github/actions/push-review-texts
@@ -323,7 +345,7 @@ jobs:
         uses: ./.github/actions/push-aggregator-archive
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-          message: "data: Add aggregator data (PV + NYC Theatre + BWW Roundups) for ${{ inputs.shows }}"
+          message: "data: Add aggregator data (PV + NYC Theatre + BWW + LBO Roundups) for ${{ inputs.shows }}"
 
   # Step 4: Rebuild reviews.json after all batches and aggregators complete
   rebuild:
