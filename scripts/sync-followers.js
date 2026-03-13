@@ -186,7 +186,9 @@ async function syncResendContacts(subscribers, segmentId, segmentName, resendApi
   const subscriberSet = new Set(subscribers);
   let created = 0, resubscribed = 0, unsubscribed = 0, errors = 0;
 
-  // Upsert active subscribers
+  const delay = (ms) => new Promise(r => setTimeout(r, ms));
+
+  // Upsert active subscribers (rate limit: 2 req/sec → 600ms between calls)
   for (const email of subscribers) {
     const existing = existingContacts.get(email);
     if (existing && !existing.unsubscribed) continue; // Already active
@@ -206,6 +208,7 @@ async function syncResendContacts(subscribers, segmentId, segmentName, resendApi
         if (errors <= 3) console.error(`  Error upserting ${email.replace(/(.{2}).*(@.*)/, '$1***$2')}: ${err.message}`);
       }
     }
+    await delay(1000);
   }
 
   // Mark removed subscribers as unsubscribed in Resend
@@ -220,6 +223,7 @@ async function syncResendContacts(subscribers, segmentId, segmentName, resendApi
         errors++;
         if (errors <= 3) console.error(`  Error unsubscribing ${email.replace(/(.{2}).*(@.*)/, '$1***$2')}: ${err.message}`);
       }
+      await delay(1000);
     }
   }
 

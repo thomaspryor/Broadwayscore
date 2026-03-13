@@ -188,10 +188,8 @@ jobs:
         run: node scripts/enrich-cast-from-files.js
         continue-on-error: true
 
-      - name: Regenerate mobile data (browse + detail JSONs)
-        run: |
-          node scripts/generate-mobile-data.js
-          node scripts/generate-mobile-show-details.js
+      - name: Regenerate mobile detail JSONs
+        run: node scripts/generate-mobile-show-details.js
         continue-on-error: true
 
       - name: Get new review count
