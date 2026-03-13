@@ -144,7 +144,24 @@ jobs:
         env:
           ALLOW_DRIFT: ${{ github.event.inputs.allow_drift }}
           ALLOW_REGRESSION: ${{ github.event.inputs.allow_regression }}
-        run: node scripts/rebuild-all-reviews.js
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          # First attempt
+          if node scripts/rebuild-all-reviews.js; then
+            echo "Rebuild succeeded on first attempt"
+            exit 0
+          fi
+
+          echo ""
+          echo "⚠️  Rebuild failed (likely stale checkout) — re-cloning review-texts and retrying..."
+          echo ""
+
+          # Re-clone review-texts fresh (fixes stale/partial checkout from concurrent pushes)
+          rm -rf data/review-texts
+          git clone --depth 1 "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" data/review-texts
+
+          # Retry rebuild
+          node scripts/rebuild-all-reviews.js
 
       - name: Audit wrong-production reviews
         run: node scripts/audit-wrong-production.js
