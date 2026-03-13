@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-13T05:23:39.991Z",
-  "processed": 187,
-  "failed": 22,
+  "updatedAt": "2026-03-13T05:26:17.790Z",
+  "processed": 196,
+  "failed": 23,
   "successRate": "89.5%",
   "tierBreakdown": {
-    "playwright": 109,
+    "playwright": 116,
     "amp": 20,
     "browserbase": 36,
     "directCookies": 1,
-    "scrapingbee": 21,
+    "scrapingbee": 22,
     "brightdata": 0,
     "archiveToday": 7,
-    "archive": 29
+    "archive": 30
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-03-13T04:50:07.837Z",
-      "event": "bb-session",
-      "session": "b7ac114a",
-      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
-    },
-    {
-      "t": "2026-03-13T04:50:09.283Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-13T04:50:43.678Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-13T05:16:30.033Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-13T05:24:02.554Z",
+      "event": "bb-session",
+      "session": "dba733ad",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-03-13T05:24:04.106Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
