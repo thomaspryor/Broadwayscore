@@ -48,10 +48,10 @@
 **Code Quality:**
 18. ~~**TypeScript strictness cleanup**~~ → DONE. Zero TS errors, zero `as any` casts. Added Window.gtag/Sentry declarations, SentryEvent interface, GoldListType narrowing.
 19. **Unit test coverage** — engine.ts DONE (37 tests, in CI). Remaining: data-core.ts, rebuild pipeline.
-20. **Script hardening** — Standardize scripts/: consistent error handling, TypeScript migration, structured logging.
-21. ~~**Custom ESLint rules**~~ → Phase 1 DONE. Investigation found most proposed rules had 0 violations. Implemented as regression guards instead: contentVerification deletion guard, isScoreable import guards for 3 scoring scripts. Remaining items (#18-20, 22-23) still open.
-22. ~~**Dead code removal**~~ → DONE. Removed ~736 lines from 12 src/ files (32 dead exports/functions). Verified via grep + build.
-23. **CI workflow cleanup** — Refactor shared steps into composite actions, reduce duplication across 100+ workflows.
+20. **Script hardening** — Assessed: 130 CI scripts mostly well-structured. No critical gaps (JSON writes use stringify, Node 20+ handles rejections). Remaining: TS migration for top scripts, structured logging. LOW priority.
+21. ~~**Custom ESLint rules**~~ → Phase 1 DONE. Regression guards instead: contentVerification deletion guard, isScoreable import guards for 3 scripts.
+22. ~~**Dead code removal**~~ → DONE. Removed ~736 lines from 12 src/ files (32 dead exports/functions).
+23. ~~**CI workflow cleanup**~~ → Phase 1 DONE. Migrated 15 workflows from inline git push retry loops to shared `push-with-retry.sh` (-281 lines). 7 remaining are GitLab mirrors or special patterns. Remaining: composite action for checkout+setup+install.
 **Data/Scoring:** LLM prompt contamination audit, cross-aggregator excerpt enrichment, Playwright critic resolution, 14 author-byline mismatches need manual review (audit report in data/audit/syndicated-duplicates.json)
 **Lists Enhancements:** Public/shareable lists, "Add to List" from Diary/Watchlist rows, smart list suggestions (auto-suggest based on diary), drag handle discoverability (animation/tooltip), list import from Diary (bulk add seen shows), list count in header stats bar, notes per list item
 **SEO:** FAQ schema on show detail pages
@@ -60,7 +60,11 @@
 ## Recently Completed
 
 ### Week of 2026-03-12
-- **Regression guards for code quality** — Added CI guards: ban whole-object contentVerification deletion (scans all scripts), require isScoreable() import in 3 scoring-gate scripts. Fixed 2 contentVerification bugs, migrated 3 scripts from inline flag checks to isScoreable(). Investigation found most proposed ESLint rules had 0 actual violations — regression guards are right-sized.
+- **Regression guards for code quality** — CI guards: contentVerification deletion guard, isScoreable() import guards. Fixed 2 bugs, migrated 3 scripts.
+- **Dead code removal** — Removed ~736 lines from 12 src/ files (32 dead exports/functions).
+- **Engine unit tests** — 37 tests for engine.ts pure functions, running in CI via tsx.
+- **TypeScript strictness** — Zero TS errors, zero `as any` casts. Window.gtag/Sentry declarations, SentryEvent interface.
+- **CI workflow cleanup** — Migrated 15 workflows from inline git push to push-with-retry.sh (-281 lines boilerplate).
 - **Dead code removal** — Removed ~736 lines from 12 src/ files. 32 dead exports/functions removed or de-exported across data modules and components (SortableBizBuzzTables, gold-lists, seo, cast, tony, etc.). Verified via grep + build.
 - **Engine unit tests** — 37 tests for engine.ts pure functions (computeCriticScore, computeAudienceScore, compositeScore, confidence, outlet config). Running in CI via tsx.
 - **ScrapingBee SERP credit optimization** — Reduced usage from ~3.3M credits/month to ~968K (fits 1M budget). 4 fixes: scheduled search days (0,1,3,7,14), gather dispatch ≤3 days, closed show filter on 3 aggregator scrapers, skip outlets with 2+ reviews. BrightData SERP API as transparent fallback when SB exhausts (100% top-result quality match). Applied to discover-opening-night-reviews.js + url-discovery.js (covers gather-reviews, collect-outlet-reviews).
