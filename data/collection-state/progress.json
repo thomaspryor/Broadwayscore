@@ -74,7 +74,13 @@
     "wicked-2003/variety--charles-isherwood.json",
     "wicked-2003/vulture--bilge-eberi.json",
     "11-to-midnight-off-broadway-2026/nbcnews--matthew-goldman.json",
-    "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json"
+    "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
+    "age-is-a-feeling-off-broadway-2024/guardian--mark-fisher.json",
+    "aladdin-2014/ew--thom-geier.json",
+    "aladdin-2014/theatermania--charles-isherwood.json",
+    "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json",
+    "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
+    "and-juliet-2022/theatermania--hayley-levitt.json"
   ],
   "failed": [
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theatre-is-easy--brooke-viegut.json",
@@ -92,7 +98,11 @@
     "ragtime-2025/nytimes--unknown.json",
     "six-2021/newyorker--naomi-fry.json",
     "the-great-gatsby-2024/nytimes--maya-phillips.json",
-    "the-monsters-off-broadway-2026/nytimes--brittani-samuel.json"
+    "the-monsters-off-broadway-2026/nytimes--brittani-samuel.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "aladdin-2014/wsj--terry-teachout.json",
+    "all-my-sons-west-end-2025/guardian--arifa-akbar.json",
+    "all-my-sons-west-end-2025/timeout--andrzej-lukowski.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -134,7 +144,12 @@
       "what-we-did-before-our-moth-days-off-broadway-2026/nytg--gillian-russo.json",
       "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json",
       "11-to-midnight-off-broadway-2026/nbcnews--matthew-goldman.json",
-      "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json"
+      "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
+      "age-is-a-feeling-off-broadway-2024/guardian--mark-fisher.json",
+      "aladdin-2014/ew--thom-geier.json",
+      "aladdin-2014/theatermania--charles-isherwood.json",
+      "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json",
+      "and-juliet-2022/theatermania--hayley-levitt.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -190,7 +205,9 @@
       "data/review-texts/night-side-songs-off-broadway-2026/nytimes--laura-collins-hughes.json",
       "data/review-texts/ragtime-2025/nytimes--unknown.json",
       "data/review-texts/the-great-gatsby-2024/nytimes--maya-phillips.json",
-      "data/review-texts/the-monsters-off-broadway-2026/nytimes--brittani-samuel.json"
+      "data/review-texts/the-monsters-off-broadway-2026/nytimes--brittani-samuel.json",
+      "data/review-texts/all-my-sons-west-end-2025/guardian--arifa-akbar.json",
+      "data/review-texts/all-my-sons-west-end-2025/timeout--andrzej-lukowski.json"
     ],
     "archive": [
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
@@ -211,11 +228,12 @@
       "the-lion-king-1997/nytimes--ben-brantley.json",
       "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json",
       "wicked-2003/nytimes--charles-isherwood.json",
-      "wicked-2003/vulture--bilge-eberi.json"
+      "wicked-2003/vulture--bilge-eberi.json",
+      "an-ark-off-broadway-2026/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-03-13T18:31:40.145Z",
-  "lastProcessed": "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
+  "lastProcessed": "and-juliet-2022/theatermania--hayley-levitt.json",
   "log": [
     {
       "t": "2026-03-13T18:55:07.097Z",
@@ -381,6 +399,28 @@
       "t": "2026-03-13T19:14:55.135Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-13T19:18:53.446Z",
+      "event": "bb-session",
+      "session": "60f8038b",
+      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
+    },
+    {
+      "t": "2026-03-13T19:18:54.716Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-13T19:21:33.863Z",
+      "event": "bb-session",
+      "session": "c939d4cb",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-13T19:21:35.272Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
