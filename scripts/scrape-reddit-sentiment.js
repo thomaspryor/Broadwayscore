@@ -307,8 +307,8 @@ async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { cat
     console.log(`    Added ${result.length - audiencePosts.length} neutral posts to reach ${result.length} total`);
   }
 
-  // Deduplicated volume counts (unique posts only)
-  const dedupedTotalPosts = seenIds.size;
+  // Deduplicated volume counts — only posts that passed date/dedup filters
+  const dedupedTotalPosts = audiencePosts.length + neutralPosts.length;
   const dedupedTotalComments = [...audiencePosts, ...neutralPosts].reduce((sum, p) => sum + (p.num_comments || 0), 0);
 
   return {
