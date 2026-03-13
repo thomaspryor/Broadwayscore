@@ -130,7 +130,7 @@ export default function GoldListSeasonPage({ params }: { params: { listType: str
         {/* Header */}
         <div className="mb-6">
           <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3 inline-flex items-center gap-2">
-            <GoldListBadge type={listType as any} size="md" />
+            <GoldListBadge type={listType as GoldListType} size="md" />
             <span>{config.title}</span>
           </h1>
           <p className="text-gray-300 leading-relaxed">

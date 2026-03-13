@@ -31,7 +31,7 @@ test.describe('Data Validation', () => {
     const duplicates = ids.filter((id: string, i: number) => ids.indexOf(id) !== i);
 
     if (duplicates.length > 0) {
-      throw new Error(`Duplicate show IDs found: ${[...new Set(duplicates)].join(', ')}`);
+      throw new Error(`Duplicate show IDs found: ${Array.from(new Set(duplicates)).join(', ')}`);
     }
   });
 
@@ -40,7 +40,7 @@ test.describe('Data Validation', () => {
     const duplicates = slugs.filter((slug: string, i: number) => slugs.indexOf(slug) !== i);
 
     if (duplicates.length > 0) {
-      throw new Error(`Duplicate show slugs found: ${[...new Set(duplicates)].join(', ')}`);
+      throw new Error(`Duplicate show slugs found: ${Array.from(new Set(duplicates)).join(', ')}`);
     }
   });
 

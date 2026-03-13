@@ -5,6 +5,18 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
 
+interface SentryEvent {
+  exception?: { values?: Array<{ stacktrace?: { frames?: Array<{ filename?: string }> } }> };
+}
+
+declare global {
+  interface Window {
+    Sentry?: {
+      init: (config: Record<string, unknown>) => void;
+    };
+  }
+}
+
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 const SENTRY_DSN = process.env.NEXT_PUBLIC_SENTRY_DSN;
 const POSTHOG_KEY = 'phc_xVenlxA1HzyJz0Yjlj3UkF9JVLCPe86Td6vQEK41SF7';
@@ -51,7 +63,7 @@ export default function AnalyticsWrapper() {
       script.src = 'https://browser.sentry-cdn.com/8.52.1/bundle.min.js';
       script.crossOrigin = 'anonymous';
       script.onload = () => {
-        const SentrySDK = (window as any).Sentry;
+        const SentrySDK = window.Sentry;
         if (typeof SentrySDK !== 'undefined') {
           SentrySDK.init({
             dsn: SENTRY_DSN,
@@ -88,11 +100,11 @@ export default function AnalyticsWrapper() {
               /Script error\.?$/i,
               /Non-Error promise rejection captured/i,
             ],
-            beforeSend(event: any) {
+            beforeSend(event: SentryEvent) {
               const frames =
                 event?.exception?.values?.[0]?.stacktrace?.frames;
               if (!frames || frames.length === 0) return null;
-              const hasOurCode = frames.some((f: any) =>
+              const hasOurCode = frames.some((f) =>
                 f.filename &&
                 /broadwayscorecard\.(com|vercel\.app)/.test(f.filename)
               );
