@@ -1,54 +1,20 @@
 {
-  "updatedAt": "2026-03-13T12:00:34.424Z",
-  "processed": 142,
+  "updatedAt": "2026-03-13T12:03:11.155Z",
+  "processed": 152,
   "failed": 20,
-  "successRate": "87.7%",
+  "successRate": "88.4%",
   "tierBreakdown": {
-    "playwright": 70,
+    "playwright": 76,
     "amp": 8,
-    "browserbase": 12,
+    "browserbase": 18,
     "directCookies": 0,
-    "scrapingbee": 26,
+    "scrapingbee": 27,
     "brightdata": 0,
     "archiveToday": 9,
     "archive": 21
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-03-13T11:06:59.896Z",
-      "event": "bb-session",
-      "session": "fc105e97",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/sarah-hyland-broadway-cast-of-j"
-    },
-    {
-      "t": "2026-03-13T11:07:02.091Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-13T11:07:32.410Z",
-      "event": "bb-session",
-      "session": "7a86a5b9",
-      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
-    },
-    {
-      "t": "2026-03-13T11:07:33.883Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-13T11:08:53.439Z",
-      "event": "bb-session",
-      "session": "4527724c",
-      "url": "https://www.nytimes.com/2026/02/12/theater/the-monsters-review.html"
-    },
-    {
-      "t": "2026-03-13T11:36:33.670Z",
-      "event": "bb-session",
-      "session": "8d2817ed",
-      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
-    },
     {
       "t": "2026-03-13T11:44:29.012Z",
       "event": "bb-session",
@@ -63,11 +29,16 @@
     {
       "t": "2026-03-13T11:46:17.495Z",
       "event": "bb-session",
-      "session": "d0dc49b4",
-      "url": "https://nypost.com/2019/10/17/little-shop-of-horrors-review-jonathan-groff-tammy"
+      "session": "a68357fe",
+      "url": "https://www.thestage.co.uk/long-reviews/dracula-review-noel-coward-theatre-kip-w"
     },
     {
-      "t": "2026-03-13T11:48:59.948Z",
+      "t": "2026-03-13T11:46:18.771Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-13T11:48:15.412Z",
       "event": "bb-session",
       "session": "f4e08f6d",
       "url": "https://www.thestage.co.uk/reviews/the-holy-rosenbergs-review-menier-chocolate-f"
@@ -120,6 +91,39 @@
       "t": "2026-03-13T12:00:00.719Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-13T12:01:35.099Z",
+      "event": "bb-session",
+      "session": "849f9712",
+      "url": "https://www.newsday.com/entertainment/music/bobby-darin-just-in-time-broadway-ap"
+    },
+    {
+      "t": "2026-03-13T12:01:36.287Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-13T12:02:09.042Z",
+      "event": "bb-session",
+      "session": "adb07ee0",
+      "url": "https://deadline.com/2019/10/little-shop-of-horrors-review-jonathan-groff-tammy-"
+    },
+    {
+      "t": "2026-03-13T12:02:10.341Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-13T12:02:47.068Z",
+      "event": "bb-session",
+      "session": "ac707335",
+      "url": "https://nypost.com/2019/10/17/little-shop-of-horrors-review-jonathan-groff-tammy"
+    },
+    {
+      "t": "2026-03-13T12:02:48.309Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
