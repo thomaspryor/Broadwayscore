@@ -1,14 +1,14 @@
 {
-  "updatedAt": "2026-03-13T11:51:39.695Z",
-  "processed": 102,
+  "updatedAt": "2026-03-13T11:53:29.845Z",
+  "processed": 112,
   "failed": 20,
-  "successRate": "83.6%",
+  "successRate": "84.8%",
   "tierBreakdown": {
-    "playwright": 44,
+    "playwright": 53,
     "amp": 4,
     "browserbase": 10,
     "directCookies": 0,
-    "scrapingbee": 21,
+    "scrapingbee": 22,
     "brightdata": 0,
     "archiveToday": 9,
     "archive": 15
@@ -96,11 +96,16 @@
     {
       "t": "2026-03-13T11:46:17.495Z",
       "event": "bb-session",
-      "session": "d0dc49b4",
-      "url": "https://nypost.com/2019/10/17/little-shop-of-horrors-review-jonathan-groff-tammy"
+      "session": "a68357fe",
+      "url": "https://www.thestage.co.uk/long-reviews/dracula-review-noel-coward-theatre-kip-w"
     },
     {
-      "t": "2026-03-13T11:48:59.948Z",
+      "t": "2026-03-13T11:46:18.771Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-13T11:48:15.412Z",
       "event": "bb-session",
       "session": "f4e08f6d",
       "url": "https://www.thestage.co.uk/reviews/the-holy-rosenbergs-review-menier-chocolate-f"

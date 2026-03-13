@@ -101,7 +101,17 @@
     "all-my-sons-west-end-2025/timeout--andrzej-lukowski.json",
     "and-juliet-2022/theatermania--hayley-levitt.json",
     "and-juliet-2022/theatermania--jesse-green.json",
-    "and-juliet-2022/thewrap--robert-hofler.json"
+    "and-juliet-2022/thewrap--robert-hofler.json",
+    "arcadia-west-end-2026/guardian--arifa-akbar.json",
+    "bloodlove-off-broadway-2026/theatermania--rachel-graham.json",
+    "book-of-mormon-2011/ew--thom-geier.json",
+    "book-of-mormon-2011/guardian--ben-brantley.json",
+    "broken-glass-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "buena-vista-social-club-2025/timeout--adam-feldman.json",
+    "bughouse-off-broadway-2026/theatermania--linda-buchwald.json",
+    "bughouse-off-broadway-2026/theatermania--unknown.json",
+    "burnout-paradise-off-broadway-2026/timeout--raven-snook.json",
+    "cats-the-jellicle-ball-2026/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "the-monsters-off-broadway-2026/talkinbroadway--james-wilson.json",
@@ -171,7 +181,16 @@
       "aladdin-2014/theatermania--charles-isherwood.json",
       "all-my-sons-west-end-2025/guardian--arifa-akbar.json",
       "and-juliet-2022/theatermania--hayley-levitt.json",
-      "and-juliet-2022/theatermania--jesse-green.json"
+      "and-juliet-2022/theatermania--jesse-green.json",
+      "arcadia-west-end-2026/guardian--arifa-akbar.json",
+      "bloodlove-off-broadway-2026/theatermania--rachel-graham.json",
+      "book-of-mormon-2011/guardian--ben-brantley.json",
+      "broken-glass-west-end-2026/timeout-london--andrzej-lukowski.json",
+      "buena-vista-social-club-2025/timeout--adam-feldman.json",
+      "bughouse-off-broadway-2026/theatermania--linda-buchwald.json",
+      "bughouse-off-broadway-2026/theatermania--unknown.json",
+      "burnout-paradise-off-broadway-2026/timeout--raven-snook.json",
+      "cats-the-jellicle-ball-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [
       "data/review-texts/bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
@@ -212,14 +231,20 @@
       "chicago-1996/nydailynews--joe-dziemianowicz.json",
       "hadestown-2019/ew--jessica-derschowitz.json",
       "hadestown-2019/guardian--adrian-horton.json",
-      "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json"
+      "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json",
+      "book-of-mormon-2011/ew--thom-geier.json"
     ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/the-monsters-off-broadway-2026/talkinbroadway--james-wilson.json",
-      "data/review-texts/marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
-      "data/review-texts/the-monsters-off-broadway-2026/nytimes--brittani-samuel.json",
-      "data/review-texts/meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/theatermania--rachel-graham.json"
+      "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/thestage--tim-bano.json",
+      "data/review-texts/dracula-west-end-2025/thestage--sam-marlowe.json",
+      "data/review-texts/the-holy-rosenbergs-west-end-2026/thestage--unknown.json",
+      "data/review-texts/wicked-2003/vulture--bilge-eberi.json",
+      "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/thestage--tim-bano.json",
+      "data/review-texts/dracula-west-end-2025/thestage--sam-marlowe.json",
+      "data/review-texts/the-holy-rosenbergs-west-end-2026/thestage--unknown.json",
+      "data/review-texts/the-monsters-off-broadway-2026/talkinbroadway--james-wilson.json"
     ],
     "archive": [
       "mother-russia-off-broadway-2026/vulture--sara-holdren.json",
@@ -240,7 +265,7 @@
     ]
   },
   "startTime": "2026-03-13T11:26:35.873Z",
-  "lastProcessed": "and-juliet-2022/thewrap--robert-hofler.json",
+  "lastProcessed": "cats-the-jellicle-ball-2026/theatermania--zachary-stewart.json",
   "log": [
     {
       "t": "2026-03-13T10:58:48.048Z",
@@ -356,11 +381,16 @@
     {
       "t": "2026-03-13T11:46:17.495Z",
       "event": "bb-session",
-      "session": "d0dc49b4",
-      "url": "https://nypost.com/2019/10/17/little-shop-of-horrors-review-jonathan-groff-tammy"
+      "session": "a68357fe",
+      "url": "https://www.thestage.co.uk/long-reviews/dracula-review-noel-coward-theatre-kip-w"
     },
     {
-      "t": "2026-03-13T11:48:59.948Z",
+      "t": "2026-03-13T11:46:18.771Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-13T11:48:15.412Z",
       "event": "bb-session",
       "session": "f4e08f6d",
       "url": "https://www.thestage.co.uk/reviews/the-holy-rosenbergs-review-menier-chocolate-f"
