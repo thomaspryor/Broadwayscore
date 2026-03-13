@@ -52,7 +52,17 @@
     "just-in-time-2025/hollywood-reporter--unknown.json",
     "just-in-time-2025/nytimes--adam-feldman.json",
     "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
-    "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json"
+    "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json",
+    "mamma-mia-west-end-2021/variety--matt-wolf.json",
+    "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+    "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
+    "maybe-happy-ending-2024/vulture--sara-holdren.json",
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "mj-2022/vulture--helen-shaw.json",
+    "moulin-rouge-2019/nytimes--ben-brantley.json",
+    "night-side-songs-off-broadway-2026/nytg--kyle-turner.json",
+    "night-side-songs-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "night-side-songs-off-broadway-2026/vulture--jonathan-mandell.json"
   ],
   "failed": [
     "the-monsters-off-broadway-2026/talkinbroadway--james-wilson.json",
@@ -94,7 +104,9 @@
       "every-brilliant-thing-2026/nytg--unknown.json",
       "hamilton-2015/nyt-theater--jonathan-mandell.json",
       "just-in-time-2025/nytimes--adam-feldman.json",
-      "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json"
+      "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json",
+      "night-side-songs-off-broadway-2026/nytg--kyle-turner.json",
+      "night-side-songs-off-broadway-2026/vulture--jonathan-mandell.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -110,7 +122,9 @@
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
       "back-to-the-future-west-end-2021/variety--david-benedict.json",
       "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
-      "hercules-west-end-2025/variety--david-benedict.json"
+      "hercules-west-end-2025/variety--david-benedict.json",
+      "data/review-texts/mamma-mia-west-end-2021/variety--matt-wolf.json",
+      "mamma-mia-west-end-2021/variety--matt-wolf.json"
     ],
     "browserbase": [
       "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
@@ -122,7 +136,9 @@
       "data/review-texts/just-in-time-2025/hollywood-reporter--unknown.json",
       "just-in-time-2025/hollywood-reporter--unknown.json",
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
-      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json"
+      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -132,7 +148,9 @@
       "my-neighbour-totoro-west-end-2025/independent--annabel-nugent.json",
       "chess-2025/newyorker--michael-schulman.json",
       "death-becomes-her-2024/newyorker--helen-shaw.json",
-      "every-brilliant-thing-2026/nytimes--unknown.json"
+      "every-brilliant-thing-2026/nytimes--unknown.json",
+      "moulin-rouge-2019/nytimes--ben-brantley.json",
+      "night-side-songs-off-broadway-2026/nytimes--laura-collins-hughes.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -146,11 +164,15 @@
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
       "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
       "matilda-the-musical-west-end-2021/thestage--mark-shenton.json",
-      "hercules-west-end-2025/nytimes--matt-wolf.json"
+      "hercules-west-end-2025/nytimes--matt-wolf.json",
+      "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+      "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
+      "maybe-happy-ending-2024/vulture--sara-holdren.json",
+      "mj-2022/vulture--helen-shaw.json"
     ]
   },
   "startTime": "2026-03-13T10:30:15.426Z",
-  "lastProcessed": "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json",
+  "lastProcessed": "night-side-songs-off-broadway-2026/vulture--jonathan-mandell.json",
   "log": [
     {
       "t": "2026-03-13T10:58:48.048Z",
@@ -237,6 +259,17 @@
     },
     {
       "t": "2026-03-13T11:07:33.883Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T11:08:53.439Z",
+      "event": "bb-session",
+      "session": "0da37c33",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-03-13T11:08:55.038Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
