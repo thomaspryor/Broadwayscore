@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-13T11:50:06.744Z",
-  "processed": 93,
-  "failed": 19,
-  "successRate": "83.0%",
+  "updatedAt": "2026-03-13T11:51:39.695Z",
+  "processed": 102,
+  "failed": 20,
+  "successRate": "83.6%",
   "tierBreakdown": {
-    "playwright": 40,
+    "playwright": 44,
     "amp": 4,
     "browserbase": 10,
     "directCookies": 0,
     "scrapingbee": 21,
     "brightdata": 0,
     "archiveToday": 9,
-    "archive": 10
+    "archive": 15
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-03-13T11:03:52.665Z",
-      "event": "bb-session",
-      "session": "4ffd372a",
-      "url": "https://www.thestage.co.uk/reviews/the-holy-rosenbergs-review-menier-chocolate-f"
-    },
-    {
-      "t": "2026-03-13T11:03:54.031Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
     {
       "t": "2026-03-13T11:04:24.960Z",
       "event": "bb-session",
@@ -125,6 +114,17 @@
       "t": "2026-03-13T11:48:16.636Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-13T11:50:33.946Z",
+      "event": "bb-session",
+      "session": "358f6b76",
+      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
+    },
+    {
+      "t": "2026-03-13T11:50:35.232Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
