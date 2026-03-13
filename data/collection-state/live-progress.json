@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-13T11:13:57.492Z",
-  "processed": 82,
-  "failed": 8,
-  "successRate": "91.1%",
+  "updatedAt": "2026-03-13T11:21:45.133Z",
+  "processed": 89,
+  "failed": 11,
+  "successRate": "89.0%",
   "tierBreakdown": {
-    "playwright": 37,
-    "amp": 24,
+    "playwright": 40,
+    "amp": 26,
     "browserbase": 14,
     "directCookies": 1,
-    "scrapingbee": 11,
+    "scrapingbee": 13,
     "brightdata": 0,
-    "archiveToday": 4,
-    "archive": 14
+    "archiveToday": 5,
+    "archive": 16
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 11,
   "recentActivity": [
-    {
-      "t": "2026-03-13T10:58:48.048Z",
-      "event": "bb-session",
-      "session": "48164a75",
-      "url": "https://www.thestage.co.uk/long-reviews/cabaret-review-eddie-redmayne-jessie-buc"
-    },
-    {
-      "t": "2026-03-13T10:58:49.454Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
     {
       "t": "2026-03-13T11:00:21.142Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-13T11:10:43.251Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T11:21:26.353Z",
+      "event": "bb-session",
+      "session": "1f96e1f2",
+      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
+    },
+    {
+      "t": "2026-03-13T11:21:27.977Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
