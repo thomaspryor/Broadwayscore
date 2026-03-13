@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-13T04:27:03.208Z",
-  "processed": 43,
-  "failed": 6,
-  "successRate": "87.8%",
+  "updatedAt": "2026-03-13T04:34:09.168Z",
+  "processed": 51,
+  "failed": 8,
+  "successRate": "86.4%",
   "tierBreakdown": {
-    "playwright": 20,
-    "amp": 6,
-    "browserbase": 24,
+    "playwright": 22,
+    "amp": 10,
+    "browserbase": 26,
     "directCookies": 0,
-    "scrapingbee": 4,
+    "scrapingbee": 6,
     "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 4
+    "archiveToday": 5,
+    "archive": 5
   },
-  "browserbaseSessions": 12,
+  "browserbaseSessions": 14,
   "recentActivity": [
-    {
-      "t": "2026-03-13T04:15:48.206Z",
-      "event": "bb-session",
-      "session": "a5ca7d16",
-      "url": "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing"
-    },
-    {
-      "t": "2026-03-13T04:15:49.784Z",
-      "event": "bb-cookie-inject",
-      "domain": "amny.com"
-    },
-    {
-      "t": "2026-03-13T04:18:20.335Z",
-      "event": "bb-session",
-      "session": "88f783e0",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
-    },
-    {
-      "t": "2026-03-13T04:18:21.785Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-13T04:20:49.351Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-13T04:26:49.060Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T04:31:24.111Z",
+      "event": "bb-session",
+      "session": "22772a4d",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
+    },
+    {
+      "t": "2026-03-13T04:31:25.629Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-13T04:32:36.354Z",
+      "event": "bb-session",
+      "session": "3d982296",
+      "url": "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html"
+    },
+    {
+      "t": "2026-03-13T04:32:37.768Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
