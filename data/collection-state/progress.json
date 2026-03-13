@@ -8,9 +8,20 @@
     "every-brilliant-thing-2026/timeout--unknown.json",
     "every-brilliant-thing-2026/one-minute-critic--unknown.json",
     "every-brilliant-thing-2026/playbill--unknown.json",
-    "every-brilliant-thing-2026/usatoday--patrick-ryan.json"
+    "every-brilliant-thing-2026/usatoday--patrick-ryan.json",
+    "every-brilliant-thing-2026/deadline--unknown.json",
+    "every-brilliant-thing-2026/ew--unknown.json",
+    "every-brilliant-thing-2026/nypost--unknown.json",
+    "every-brilliant-thing-2026/theatermania--unknown.json",
+    "every-brilliant-thing-2026/theatrely--unknown.json",
+    "every-brilliant-thing-2026/amny--unknown.json",
+    "every-brilliant-thing-2026/culturesauce--unknown.json",
+    "every-brilliant-thing-2026/latimes--unknown.json"
   ],
-  "failed": [],
+  "failed": [
+    "the-book-of-mormon-west-end-2024/thestage--unknown.json",
+    "the-lion-king-west-end-2021/thestage--unknown.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
@@ -18,18 +29,29 @@
       "every-brilliant-thing-2026/nysr--unknown.json",
       "every-brilliant-thing-2026/timeout--unknown.json",
       "every-brilliant-thing-2026/one-minute-critic--unknown.json",
-      "every-brilliant-thing-2026/playbill--unknown.json"
+      "every-brilliant-thing-2026/playbill--unknown.json",
+      "every-brilliant-thing-2026/theatermania--unknown.json",
+      "every-brilliant-thing-2026/theatrely--unknown.json",
+      "every-brilliant-thing-2026/culturesauce--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/every-brilliant-thing-2026/nytimes--unknown.json",
       "every-brilliant-thing-2026/nytimes--unknown.json",
       "data/review-texts/every-brilliant-thing-2026/deadline--greg-evans.json",
-      "every-brilliant-thing-2026/deadline--greg-evans.json"
+      "every-brilliant-thing-2026/deadline--greg-evans.json",
+      "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
+      "every-brilliant-thing-2026/deadline--unknown.json",
+      "data/review-texts/every-brilliant-thing-2026/nypost--unknown.json",
+      "every-brilliant-thing-2026/nypost--unknown.json",
+      "data/review-texts/every-brilliant-thing-2026/amny--unknown.json",
+      "every-brilliant-thing-2026/amny--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
-      "every-brilliant-thing-2026/independent--unknown.json"
+      "every-brilliant-thing-2026/independent--unknown.json",
+      "every-brilliant-thing-2026/ew--unknown.json",
+      "every-brilliant-thing-2026/latimes--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -38,7 +60,7 @@
     ]
   },
   "startTime": "2026-03-13T03:37:52.112Z",
-  "lastProcessed": "every-brilliant-thing-2026/usatoday--patrick-ryan.json",
+  "lastProcessed": "the-lion-king-west-end-2021/thestage--unknown.json",
   "log": [
     {
       "t": "2026-03-13T03:38:54.108Z",
@@ -61,6 +83,39 @@
       "t": "2026-03-13T03:39:13.008Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-13T04:14:30.362Z",
+      "event": "bb-session",
+      "session": "6d97e502",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-13T04:14:32.212Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-13T04:15:04.576Z",
+      "event": "bb-session",
+      "session": "fab66010",
+      "url": "https://nypost.com/2026/03/12/entertainment/every-brilliant-thing-review-daniel-"
+    },
+    {
+      "t": "2026-03-13T04:15:06.081Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-13T04:15:48.206Z",
+      "event": "bb-session",
+      "session": "a5ca7d16",
+      "url": "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing"
+    },
+    {
+      "t": "2026-03-13T04:15:49.784Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
