@@ -146,8 +146,13 @@ jobs:
           ALLOW_REGRESSION: ${{ github.event.inputs.allow_regression }}
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
+          FORCE_FLAG=""
+          if [ "$ALLOW_REGRESSION" = "true" ]; then
+            FORCE_FLAG="--force-write"
+          fi
+
           # First attempt
-          if node scripts/rebuild-all-reviews.js; then
+          if node scripts/rebuild-all-reviews.js $FORCE_FLAG; then
             echo "Rebuild succeeded on first attempt"
             exit 0
           fi
@@ -161,7 +166,7 @@ jobs:
           git clone --depth 1 "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" data/review-texts
 
           # Retry rebuild
-          node scripts/rebuild-all-reviews.js
+          node scripts/rebuild-all-reviews.js $FORCE_FLAG
 
       - name: Audit wrong-production reviews
         run: node scripts/audit-wrong-production.js
