@@ -94,7 +94,9 @@ function buildFooterHtml(showTitle, showId, email, market) {
 }
 
 function buildBroadcastFooterHtml(email, market) {
-  const unsubscribeUrl = buildUnsubscribeUrl(email, market);
+  // When email is null, use Resend's broadcast unsubscribe variable (for Broadcasts API)
+  // When email is provided, use our custom unsubscribe URL (for transactional/preview sends)
+  const unsubscribeUrl = email ? buildUnsubscribeUrl(email, market) : '{{{ RESEND_UNSUBSCRIBE_URL }}}';
   const isWE = market === 'west-end';
   const siteName = isWE ? 'West End Scorecard' : 'Broadway Scorecard';
   const siteUrl = isWE ? 'https://broadwayscorecard.com/west-end' : 'https://broadwayscorecard.com';

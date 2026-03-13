@@ -10,7 +10,7 @@
  *
  * Multiple shows opening the same night are coalesced into a single email.
  *
- * Usage: node scripts/send-opening-night-broadcast.js [--dry-run] [--lookback=DAYS] [--market=broadway|west-end] [--budget=N] [--send-to=EMAIL]
+ * Usage: node scripts/send-opening-night-broadcast.js [--dry-run] [--lookback=DAYS] [--market=broadway|west-end] [--send-to=EMAIL]
  *
  * --send-to=EMAIL  Preview mode: send to a single email only, skip sent-tracking.
  *                  Use this to review the email before approving a full send.
@@ -31,7 +31,6 @@ const LOOKBACK_ARG = process.argv.find(a => a.startsWith('--lookback='));
 const LOOKBACK_DAYS = LOOKBACK_ARG ? parseInt(LOOKBACK_ARG.split('=')[1], 10) : 2;
 const MARKET_ARG = process.argv.find(a => a.startsWith('--market='));
 const MARKET = MARKET_ARG ? MARKET_ARG.split('=')[1] : 'broadway'; // 'broadway' or 'west-end'
-const BUDGET_ARG = process.argv.find(a => a.startsWith('--budget='));
 const SEND_TO_ARG = process.argv.find(a => a.startsWith('--send-to='));
 const SEND_TO = SEND_TO_ARG ? SEND_TO_ARG.split('=')[1] : null; // Preview mode: send to single email only
 
@@ -49,8 +48,11 @@ const MIN_REVIEWS = 12;
 const MIN_T1_REVIEWS = 3;
 const MIN_T2_REVIEWS = 3;
 const MIN_HIGH_CONFIDENCE = 8; // Require 8+ reviews with high/medium confidence (full-text scored)
-const DEFAULT_BUDGET_CAP = 95; // Leave headroom for per-show follow emails (Resend 100/day)
-const BUDGET_CAP = BUDGET_ARG ? parseInt(BUDGET_ARG.split('=')[1], 10) : DEFAULT_BUDGET_CAP;
+
+// Resend segment IDs for Broadcasts API
+const RESEND_SEGMENT_ID = MARKET === 'west-end'
+  ? '0b17260b-6a72-4a5a-a700-7b7526f18d87'
+  : '472ec5ef-d7cc-4c48-8007-c0a6a302e7a4';
 
 // Tier weights — must match src/config/scoring.ts
 const TIER_WEIGHTS = { 1: 1.0, 2: 0.75, 3: 0.35 };
@@ -128,7 +130,7 @@ async function main() {
   console.log(`Opening Night Broadcast (${MARKET})`);
   console.log('=======================\n');
   if (DRY_RUN) console.log('** DRY RUN — no emails will be sent **\n');
-  console.log(`Market: ${MARKET}, Budget: ${BUDGET_CAP}, Subscribers file: ${path.basename(SUBSCRIBERS_PATH)}`);
+  console.log(`Market: ${MARKET}, Segment: ${RESEND_SEGMENT_ID}`);
 
   // Load data
   const showsData = loadJSON(SHOWS_PATH);
@@ -142,18 +144,14 @@ async function main() {
 
   const consensus = loadJSON(CONSENSUS_PATH) || {};
 
-  let subscribers;
   if (SEND_TO) {
-    // Preview mode: send to single email, skip subscriber file
-    subscribers = [SEND_TO];
     console.log(`** PREVIEW MODE — sending to ${SEND_TO} only **\n`);
   } else {
+    // Full sends go via Broadcasts API (targets Resend segment directly)
+    // Still log subscriber count for visibility
     const subscribersData = loadJSON(SUBSCRIBERS_PATH);
-    if (!subscribersData || !subscribersData.subscribers || subscribersData.subscribers.length === 0) {
-      console.log('No subscribers found — nothing to broadcast');
-      process.exit(0);
-    }
-    subscribers = subscribersData.subscribers; // Already sorted alphabetically
+    const subCount = subscribersData?.subscribers?.length || 0;
+    console.log(`Subscribers in local file: ${subCount} (Broadcasts API sends to Resend segment)`);
   }
 
   // Load or init sent tracking
@@ -294,181 +292,112 @@ async function main() {
     console.log(`  - ${s.showTitle}: score ${s.score || 'TBD'}, ${s.reviewCount} reviews`);
   }
 
-  // Budget gate
-  console.log(`\nSubscribers: ${subscribers.length}`);
-
-  if (subscribers.length > BUDGET_CAP) {
-    const msg = `Opening night broadcast: ${subscribers.length} subscribers exceeds budget cap of ${BUDGET_CAP}. Sending to first ${BUDGET_CAP}.`;
-    console.warn(`WARNING: ${msg}`);
-    await sendAlert({
-      title: 'Opening Night Broadcast Budget Warning',
-      description: msg,
-      severity: 'warning',
-      fields: [
-        { name: 'Subscribers', value: String(subscribers.length) },
-        { name: 'Budget Cap', value: String(BUDGET_CAP) },
-      ],
-    });
-  }
-
-  // Determine how many to send (resume from previous partial send)
-  // Uses address-based dedup (not just count) to prevent duplicates even if
-  // subscriber list order changes or checkpoint count drifts between runs
-  const broadcastKey = `${MARKET}:` + showsForEmail.map(s => s.showId).sort().join('+');
-  const previousSent = sentData.shows[broadcastKey];
-  const alreadySentCount = previousSent?.sentCount || 0;
-  const alreadySentEmails = new Set(previousSent?.sentEmails || []);
-
-  if (alreadySentCount > 0) {
-    console.log(`Resuming from previous partial send: ${alreadySentCount} already sent (${alreadySentEmails.size} tracked by address)`);
-  }
-
-  // Filter out already-sent emails by address, then apply budget cap
-  const toSend = subscribers
-    .filter(email => !alreadySentEmails.has(email))
-    .slice(0, BUDGET_CAP);
-
-  if (toSend.length === 0) {
-    console.log('All subscribers already sent — marking complete');
-    sentData.shows[broadcastKey] = {
-      ...previousSent,
-      completed: true,
-    };
-    saveSentData(sentData);
-    process.exit(0);
-  }
-
   // Build subject line — never put [PREVIEW] in subject, it confuses subscribers if leaked
   const subject = showsForEmail.length === 1
     ? `${showsForEmail[0].showTitle} is now open, and the critic reviews are in`
     : `${showsForEmail.length} shows opened ${MARKET === 'west-end' ? 'in the West End' : 'on Broadway'} — the reviews are in`;
 
   console.log(`\nSubject: ${subject}`);
-  console.log(`Sending to ${toSend.length} subscribers (offset ${alreadySentCount})...`);
+
+  // Check if already broadcast
+  const broadcastKey = `${MARKET}:` + showsForEmail.map(s => s.showId).sort().join('+');
+  const previousSent = sentData.shows[broadcastKey];
+
+  if (previousSent?.completed && !SEND_TO) {
+    console.log('Broadcast already completed for this show combination — nothing to do');
+    process.exit(0);
+  }
 
   if (DRY_RUN) {
-    console.log('\n[DRY RUN] Would send to:');
-    for (const email of toSend.slice(0, 10)) {
-      console.log(`  ${email.replace(/(.{2}).*(@.*)/, '$1***$2')}`);
-    }
-    if (toSend.length > 10) console.log(`  ... and ${toSend.length - 10} more`);
-
-    // Show HTML preview
-    const html = buildBroadcastOpeningNightHtml(showsForEmail, 'preview@test.com', MARKET);
-    console.log(`\nEmail HTML length: ${html.length} chars`);
-    console.log('Has unsubscribe link:', html.includes('/unsubscribe'));
+    console.log(`\n[DRY RUN] Would broadcast to Resend segment: ${RESEND_SEGMENT_ID}`);
+    const html = buildBroadcastOpeningNightHtml(showsForEmail, null, MARKET);
+    console.log(`Email HTML length: ${html.length} chars`);
+    console.log('Has Resend unsubscribe variable:', html.includes('RESEND_UNSUBSCRIBE_URL'));
     console.log('Has score card:', html.includes('font-size:32px'));
     process.exit(0);
   }
 
-  // Send emails
-  let sentCount = alreadySentCount;
-  let consecutiveErrors = 0;
-
-  for (const email of toSend) {
-    const html = buildBroadcastOpeningNightHtml(showsForEmail, email, MARKET);
+  if (SEND_TO) {
+    // Preview mode: send single transactional email (with custom unsubscribe link)
+    console.log(`\nSending preview to ${SEND_TO}...`);
+    const html = buildBroadcastOpeningNightHtml(showsForEmail, SEND_TO, MARKET);
 
     try {
       await postJSON('https://api.resend.com/emails', {
         from: `${SITE_NAME} <${FROM_EMAIL}>`,
-        to: [email],
+        to: [SEND_TO],
         subject,
         html,
       }, {
         'Authorization': `Bearer ${RESEND_API_KEY}`,
       });
-
-      sentCount++;
-      alreadySentEmails.add(email);
-      consecutiveErrors = 0;
-      console.log(`  Sent to ${email.replace(/(.{2}).*(@.*)/, '$1***$2')} (${sentCount - alreadySentCount}/${toSend.length})`);
-
-      // Checkpoint every 25 sends — includes sentEmails for address-level dedup on resume
-      if ((sentCount - alreadySentCount) % 25 === 0) {
-        sentData.shows[broadcastKey] = {
-          sentAt: new Date().toISOString(),
-          sentCount,
-          sentEmails: [...alreadySentEmails],
-          subscriberCount: subscribers.length,
-          reviewCount: showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0),
-          completed: false,
-        };
-        saveSentData(sentData);
-        console.log(`  [Checkpoint] Saved at ${sentCount} total sends`);
-      }
-
-      // Rate limit: 200ms between sends
-      await sleep(200);
+      console.log(`Preview sent to ${SEND_TO}`);
     } catch (err) {
-      consecutiveErrors++;
-      console.error(`  ERROR sending to ${email.replace(/(.{2}).*(@.*)/, '$1***$2')}: ${err.message}`);
+      console.error(`ERROR sending preview: ${err.message}`);
+      process.exit(1);
+    }
+  } else {
+    // Full send via Broadcasts API — one API call sends to entire Resend segment
+    // Resend handles dedup, delivery, and provides open/click analytics in dashboard
+    console.log(`\nSending broadcast via Resend Broadcasts API...`);
+    console.log(`  Segment: ${RESEND_SEGMENT_ID} (${MARKET})`);
 
-      // Retry on 429 (rate limit)
-      if (err.message.includes('429')) {
-        console.log('  Rate limited — waiting 60s before retry...');
-        await sleep(60000);
-        try {
-          await postJSON('https://api.resend.com/emails', {
-            from: `${SITE_NAME} <${FROM_EMAIL}>`,
-            to: [email],
-            subject,
-            html,
-          }, {
-            'Authorization': `Bearer ${RESEND_API_KEY}`,
-          });
-          sentCount++;
-          alreadySentEmails.add(email);
-          consecutiveErrors = 0;
-          console.log(`  Retry successful for ${email.replace(/(.{2}).*(@.*)/, '$1***$2')}`);
-        } catch (retryErr) {
-          console.error(`  Retry also failed: ${retryErr.message}`);
-          // Exit non-zero on persistent rate limit so notify-failure triggers
-          if (retryErr.message.includes('429')) {
-            console.error('Resend rate limit exhausted — exiting with error');
-            process.exitCode = 1;
-          }
-        }
-      }
+    // Build HTML without per-subscriber email (uses {{{ RESEND_UNSUBSCRIBE_URL }}} variable)
+    const html = buildBroadcastOpeningNightHtml(showsForEmail, null, MARKET);
 
-      // Abort on 5 consecutive errors
-      if (consecutiveErrors >= 5) {
-        console.error('5 consecutive errors — aborting');
-        await sendAlert({
-          title: 'Opening Night Broadcast Send Errors',
-          description: `5 consecutive errors. Last: ${err.message}. Sent ${sentCount - alreadySentCount}/${toSend.length} in this run.`,
-          severity: 'error',
-        });
-        break;
+    const broadcastName = `Opening Night: ${showsForEmail.map(s => s.showTitle).join(', ')} (${new Date().toISOString().slice(0, 10)})`;
+
+    try {
+      // Create broadcast and send immediately
+      const result = await postJSON('https://api.resend.com/broadcasts', {
+        segment_id: RESEND_SEGMENT_ID,
+        from: `${SITE_NAME} <${FROM_EMAIL}>`,
+        subject,
+        html,
+        name: broadcastName,
+      }, {
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
+      });
+
+      const broadcastId = result.id;
+      console.log(`  Broadcast created: ${broadcastId}`);
+
+      // Send the broadcast
+      await postJSON(`https://api.resend.com/broadcasts/${broadcastId}/send`, {}, {
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
+      });
+
+      console.log(`  Broadcast sent to all contacts in segment`);
+
+      // Mark as complete
+      const completionData = {
+        sentAt: new Date().toISOString(),
+        broadcastId,
+        method: 'broadcasts-api',
+        segmentId: RESEND_SEGMENT_ID,
+        reviewCount: showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0),
+        completed: true,
+      };
+      sentData.shows[broadcastKey] = completionData;
+      for (const s of showsForEmail) {
+        sentData.shows[s.showId] = { ...completionData, broadcastKey };
       }
+      saveSentData(sentData);
+
+      console.log(`\nBroadcast complete — check Resend dashboard for open/click analytics`);
+    } catch (err) {
+      console.error(`ERROR sending broadcast: ${err.message}`);
+      await sendAlert({
+        title: 'Opening Night Broadcast Failed',
+        description: `Broadcasts API error: ${err.message}`,
+        severity: 'error',
+      });
+      process.exit(1);
     }
   }
 
-  // Final save (skip tracking in preview mode)
-  if (!SEND_TO) {
-    const allSent = sentCount >= subscribers.length;
-    const completionData = {
-      sentAt: new Date().toISOString(),
-      sentCount,
-      sentEmails: [...alreadySentEmails],
-      subscriberCount: subscribers.length,
-      reviewCount: showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0),
-      completed: allSent,
-    };
-    // Write broadcastKey (for resume logic)
-    sentData.shows[broadcastKey] = completionData;
-    // Also write individual show IDs (prevents double-send when show combinations change)
-    for (const s of showsForEmail) {
-      sentData.shows[s.showId] = { ...completionData, broadcastKey };
-    }
-    saveSentData(sentData);
-
-    console.log(`\nDone: ${sentCount - alreadySentCount} sent this run, ${sentCount} total`);
-    if (allSent) {
-      console.log('All subscribers sent — broadcast complete');
-    } else {
-      console.log(`${subscribers.length - sentCount} remaining — will continue on next cron run`);
-    }
-  } else {
+  // Post-send actions (preview mode only: approval email)
+  if (SEND_TO) {
     // Track preview sends to prevent duplicate previews for same show+hour
     const previewKey = `preview:${broadcastKey}:${process.env.BROADCAST_HOUR || 'manual'}`;
     const alreadyPreviewed = !!sentData.shows[previewKey];

@@ -177,7 +177,7 @@ jobs:
         if: steps.check.outputs.pending_shows != ''
         run: npm ci
 
-      - name: Sync subscribers
+      - name: Sync subscribers (Formspree → local + Resend segment)
         if: steps.check.outputs.pending_shows != ''
         env:
           FORMSPREE_FOLLOW_API_KEY: ${{ secrets.FORMSPREE_FOLLOW_API_KEY }}
@@ -186,6 +186,7 @@ jobs:
           FORMSPREE_SUBSCRIBER_FORM_ID: ${{ secrets.FORMSPREE_SUBSCRIBER_FORM_ID }}
           FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID: ${{ secrets.FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID }}
           FORMSPREE_WESTEND_SUBSCRIBER_API_KEY: ${{ secrets.FORMSPREE_WESTEND_SUBSCRIBER_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: node scripts/sync-followers.js
 
       - name: Generate consensus
@@ -238,9 +239,9 @@ jobs:
           # Broadway broadcast (skip if no Broadway shows)
           if [ -n "${{ steps.find.outputs.broadway }}" ]; then
             echo "--- Broadway broadcast ---"
-            OUTPUT=$(node scripts/send-opening-night-broadcast.js --market=broadway --budget=100 --lookback=$LOOKBACK $SEND_TO_FLAG 2>&1) || true
+            OUTPUT=$(node scripts/send-opening-night-broadcast.js --market=broadway --lookback=$LOOKBACK $SEND_TO_FLAG 2>&1) || true
             echo "$OUTPUT"
-            if echo "$OUTPUT" | grep -q "broadcast complete\|Preview sent to\|Done:"; then
+            if echo "$OUTPUT" | grep -q "Broadcast complete\|Preview sent to\|broadcast complete"; then
               SENT="true"
             fi
           else
@@ -250,9 +251,9 @@ jobs:
           # West End broadcast (skip if no WE shows)
           if [ -n "${{ steps.find.outputs.westend }}" ]; then
             echo "--- West End broadcast ---"
-            OUTPUT=$(node scripts/send-opening-night-broadcast.js --market=west-end --budget=35 --lookback=$LOOKBACK $SEND_TO_FLAG 2>&1) || true
+            OUTPUT=$(node scripts/send-opening-night-broadcast.js --market=west-end --lookback=$LOOKBACK $SEND_TO_FLAG 2>&1) || true
             echo "$OUTPUT"
-            if echo "$OUTPUT" | grep -q "broadcast complete\|Preview sent to\|Done:"; then
+            if echo "$OUTPUT" | grep -q "Broadcast complete\|Preview sent to\|broadcast complete"; then
               SENT="true"
             fi
           else
