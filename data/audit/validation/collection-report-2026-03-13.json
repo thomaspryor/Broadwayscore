@@ -1,69 +1,89 @@
 {
-  "runDate": "2026-03-13T00:59:11.006Z",
+  "runDate": "2026-03-13T01:11:53.897Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "every-brilliant-thing-2026",
+    "showFilter": "every-brilliant-thing-2026,entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026,public-charge-off-broadway-2026,bughouse-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 0,
+    "processed": 13,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "92.9%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 10,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 1
+    "archiveToday": 1,
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Attempts": 10,
+    "tier1Success": 10,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
-    "tier2Attempts": 1,
+    "tier1_5Attempts": 2,
+    "tier1_5Success": 2,
+    "tier2Attempts": 2,
     "tier2Success": 1,
-    "tier3Attempts": 0,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 0,
+    "totalFailed": 1,
     "scrapingBeeCreditsUsed": 10,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.4,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "every-brilliant-thing-2026/playbill--unknown.json",
+    "bughouse-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "bughouse-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "bughouse-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "bughouse-off-broadway-2026/exeunt-magazine--loren-noveck.json",
+    "bughouse-off-broadway-2026/front-row-center--kendra-jones.json",
+    "bughouse-off-broadway-2026/theater-life--unknown.json",
+    "bughouse-off-broadway-2026/nytg--caroline-cao.json",
     "every-brilliant-thing-2026/nytimes--unknown.json",
+    "bughouse-off-broadway-2026/theatermania--linda-buchwald.json",
+    "bughouse-off-broadway-2026/theatermania--unknown.json",
     "every-brilliant-thing-2026/deadline--greg-evans.json",
     "every-brilliant-thing-2026/one-minute-critic--unknown.json",
+    "every-brilliant-thing-2026/playbill--unknown.json"
+  ],
+  "failed": [
     "every-brilliant-thing-2026/usatoday--patrick-ryan.json"
   ],
-  "failed": [],
   "tierDetails": {
     "playwright": [
-      "every-brilliant-thing-2026/playbill--unknown.json",
-      "every-brilliant-thing-2026/one-minute-critic--unknown.json"
+      "bughouse-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "bughouse-off-broadway-2026/new-york-sun--elysa-gardner.json",
+      "bughouse-off-broadway-2026/exeunt-magazine--loren-noveck.json",
+      "bughouse-off-broadway-2026/front-row-center--kendra-jones.json",
+      "bughouse-off-broadway-2026/theater-life--unknown.json",
+      "bughouse-off-broadway-2026/nytg--caroline-cao.json",
+      "bughouse-off-broadway-2026/theatermania--linda-buchwald.json",
+      "bughouse-off-broadway-2026/theatermania--unknown.json",
+      "every-brilliant-thing-2026/one-minute-critic--unknown.json",
+      "every-brilliant-thing-2026/playbill--unknown.json"
     ],
     "amp": [],
     "browserbase": [
+      "data/review-texts/bughouse-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+      "bughouse-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
       "data/review-texts/every-brilliant-thing-2026/deadline--greg-evans.json",
       "every-brilliant-thing-2026/deadline--greg-evans.json"
     ],
@@ -72,10 +92,10 @@
       "every-brilliant-thing-2026/nytimes--unknown.json"
     ],
     "brightdata": [],
-    "archiveToday": [],
-    "archive": [
-      "every-brilliant-thing-2026/usatoday--patrick-ryan.json"
-    ]
+    "archiveToday": [
+      "data/review-texts/every-brilliant-thing-2026/usatoday--patrick-ryan.json"
+    ],
+    "archive": []
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
