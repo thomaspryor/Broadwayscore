@@ -2944,6 +2944,24 @@ const output = {
 // Write output
 fs.writeFileSync(reviewsJsonPath, JSON.stringify(output, null, 2));
 
+// Sync deploy watermark so pre-deploy-check.js doesn't block on intentional count changes.
+// This prevents the scenario where a legitimate cleanup (e.g., excluding wrongProduction reviews)
+// causes every subsequent deploy to fail until someone manually fixes the watermark.
+{
+  const watermarkPath = path.join(__dirname, '..', 'data', 'audit', 'deploy-watermark.json');
+  try {
+    const showsForWatermark = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
+    const showCount = (showsForWatermark.shows || []).length;
+    const newWatermark = { showCount, reviewCount: allReviews.length, updatedAt: new Date().toISOString() };
+    const dir = path.dirname(watermarkPath);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(watermarkPath, JSON.stringify(newWatermark, null, 2) + '\n');
+    console.log(`\n📌 Deploy watermark synced: ${showCount} shows, ${allReviews.length} reviews`);
+  } catch (e) {
+    console.log(`\n⚠️  Could not sync deploy watermark: ${e.message}`);
+  }
+}
+
 // ========================================
 // 4: POST-REBUILD EXCERPT AUDIT (Layer 2)
 // ========================================
