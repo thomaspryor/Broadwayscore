@@ -2,13 +2,14 @@
 
 /**
  * Generate editorial introductions for guide pages using Claude API.
- * Runs monthly (1st of month) to create fresh, dated content for SEO guides.
+ * Runs weekly (Monday 3 AM UTC) to create fresh, dated content for SEO guides.
  *
  * Safety guards:
  * - Output file size assertion (max 500KB)
  * - Schema validation on each editorial entry
  * - 3 retries with exponential backoff on API failures
- * - Preserves existing editorials on partial failure
+ * - Atomic write: only overwrites output file after ALL editorials succeed
+ * - Batch-parallel API calls (5 concurrent) for speed
  */
 
 import fs from 'fs';
@@ -227,101 +228,110 @@ async function main() {
   } catch {}
 
   const monthYear = getCurrentMonthYear();
-  let processed = 0;
-  let errors = 0;
+  const BATCH_SIZE = 5;
+  const BATCH_DELAY_MS = 2000; // 2s between batches to stay well within rate limits
 
-  // Process base guides
+  // Collect all work items (base guides + year variants)
+  const workItems = [];
+
   for (const def of GUIDE_DEFS) {
-    console.log(`\n${def.slug}`);
-    try {
-      const guideShows = getShowsForGuide(def, shows, consensus, null);
-      if (guideShows.length === 0) {
-        console.log('  No matching shows — clearing stale editorial');
-        delete editorials.guides[def.slug];
-        continue;
+    const guideShows = getShowsForGuide(def, shows, consensus, null);
+    if (guideShows.length === 0) {
+      console.log(`${def.slug}: No matching shows — clearing stale editorial`);
+      delete editorials.guides[def.slug];
+      continue;
+    }
+    workItems.push({ slug: def.slug, def, year: null, guideShows });
+
+    if (def.yearPages) {
+      for (const year of def.yearPages) {
+        const yearShows = getShowsForGuide(def, shows, consensus, year);
+        if (yearShows.length === 0) continue;
+        workItems.push({ slug: `${def.slug}-${year}`, def, year, guideShows: yearShows });
       }
-      console.log(`  Generating from ${guideShows.length} shows...`);
-      const intro = await generateEditorial(def, guideShows, monthYear, null);
-
-      const entry = {
-        intro,
-        monthYear,
-        lastUpdated: new Date().toISOString().split('T')[0],
-        showCount: guideShows.length,
-      };
-
-      if (validateEditorialEntry(entry)) {
-        editorials.guides[def.slug] = entry;
-        console.log(`  OK: "${intro.slice(0, 60)}..."`);
-        processed++;
-      } else {
-        console.error('  INVALID entry — skipped');
-        errors++;
-      }
-
-      await new Promise(r => setTimeout(r, 1000));
-    } catch (err) {
-      console.error(`  ERROR: ${err.message}`);
-      errors++;
     }
   }
 
-  // Process year variants
-  for (const def of GUIDE_DEFS) {
-    if (!def.yearPages) continue;
+  console.log(`\n${workItems.length} editorials to generate (batch size: ${BATCH_SIZE})\n`);
 
-    for (const year of def.yearPages) {
-      const yearSlug = `${def.slug}-${year}`;
-      console.log(`\n${yearSlug}`);
-      try {
-        const guideShows = getShowsForGuide(def, shows, consensus, year);
-        if (guideShows.length === 0) {
-          console.log('  Skipped — no matching shows');
-          continue;
+  // Process in batches — atomic: all must succeed before writing
+  const results = new Map(); // slug → entry
+  let errors = 0;
+
+  for (let i = 0; i < workItems.length; i += BATCH_SIZE) {
+    const batch = workItems.slice(i, i + BATCH_SIZE);
+    const batchNum = Math.floor(i / BATCH_SIZE) + 1;
+    const totalBatches = Math.ceil(workItems.length / BATCH_SIZE);
+    console.log(`Batch ${batchNum}/${totalBatches}: ${batch.map(w => w.slug).join(', ')}`);
+
+    const batchResults = await Promise.all(
+      batch.map(async ({ slug, def, year, guideShows }) => {
+        try {
+          const intro = await generateEditorial(def, guideShows, monthYear, year);
+          const entry = {
+            intro,
+            ...(year ? { year } : { monthYear }),
+            lastUpdated: new Date().toISOString().split('T')[0],
+            showCount: guideShows.length,
+          };
+
+          if (validateEditorialEntry(entry)) {
+            console.log(`  ✓ ${slug}`);
+            return { slug, entry, ok: true };
+          } else {
+            console.error(`  ✗ ${slug}: INVALID entry`);
+            return { slug, ok: false };
+          }
+        } catch (err) {
+          console.error(`  ✗ ${slug}: ${err.message}`);
+          return { slug, ok: false };
         }
-        console.log(`  Generating from ${guideShows.length} shows for ${year}...`);
-        const intro = await generateEditorial(def, guideShows, monthYear, year);
+      })
+    );
 
-        const entry = {
-          intro,
-          year,
-          lastUpdated: new Date().toISOString().split('T')[0],
-          showCount: guideShows.length,
-        };
-
-        if (validateEditorialEntry(entry)) {
-          editorials.guides[yearSlug] = entry;
-          console.log(`  OK: "${intro.slice(0, 60)}..."`);
-          processed++;
-        } else {
-          console.error('  INVALID entry — skipped');
-          errors++;
-        }
-
-        await new Promise(r => setTimeout(r, 1000));
-      } catch (err) {
-        console.error(`  ERROR: ${err.message}`);
+    for (const r of batchResults) {
+      if (r.ok) {
+        results.set(r.slug, r.entry);
+      } else {
         errors++;
       }
     }
+
+    // Delay between batches (skip after last batch)
+    if (i + BATCH_SIZE < workItems.length) {
+      await new Promise(r => setTimeout(r, BATCH_DELAY_MS));
+    }
+  }
+
+  // Atomic write guard: only overwrite file if ALL editorials succeeded
+  if (errors > 0) {
+    console.error(`\n${errors} editorial(s) failed. Preserving existing file — no partial writes.`);
+    process.exit(1);
+  }
+
+  // Apply all results to editorials object
+  for (const [slug, entry] of results) {
+    editorials.guides[slug] = entry;
   }
 
   // Update metadata
   editorials._meta = {
     lastGenerated: new Date().toISOString(),
-    updatePolicy: 'Every deploy (pre-build) + monthly on 1st',
+    updatePolicy: 'Weekly (Monday 3 AM UTC)',
   };
 
-  // Save with size check
+  // Save with size check — write to temp file first, then atomic rename
   const output = JSON.stringify(editorials, null, 2);
   if (Buffer.byteLength(output) > MAX_FILE_SIZE) {
     console.error(`\nFATAL: Output file exceeds ${MAX_FILE_SIZE / 1024}KB limit (${Buffer.byteLength(output)} bytes). Not saving.`);
     process.exit(1);
   }
 
-  fs.writeFileSync(OUTPUT_FILE, output);
+  const tmpFile = OUTPUT_FILE + '.tmp';
+  fs.writeFileSync(tmpFile, output);
+  fs.renameSync(tmpFile, OUTPUT_FILE);
 
-  console.log(`\nDone! Processed: ${processed}, Errors: ${errors}`);
+  console.log(`\nDone! Generated: ${results.size}, Errors: ${errors}`);
   console.log(`Saved to: data/guide-editorials.json (${Buffer.byteLength(output)} bytes)`);
 }
 
