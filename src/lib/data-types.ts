@@ -215,6 +215,7 @@ export interface AudienceBuzzData {
     mezzanine: AudienceBuzzSource | null;
     reddit: AudienceBuzzSource | null;
     theatr: AudienceBuzzSource | null;
+    broadwayCom: AudienceBuzzSource | null;
   };
 }
 

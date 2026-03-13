@@ -1,7 +1,8 @@
 /**
  * Shared audience weighting module
  *
- * Calculates combined audience buzz score from Show Score, Mezzanine, and Reddit sources.
+ * Calculates combined audience buzz score from Show Score, Mezzanine, Theatr,
+ * Broadway.com, and Reddit sources.
  * Pure proportional weighting by reviewCount volume with an 80% single-source ceiling.
  *
  * Reddit quality gates:
@@ -11,7 +12,8 @@
  *
  * Used by: scrape-reddit-sentiment.js, recalculate-audience-buzz.js,
  *          scrape-mezzanine-audience.js, scrape-show-score-audience.js,
- *          merge-reddit-shards.js, merge-show-score-shards.js
+ *          scrape-broadway-com-audience.js, merge-reddit-shards.js,
+ *          merge-show-score-shards.js
  */
 
 const MIN_REDDIT_ITEMS = 50;
@@ -49,7 +51,7 @@ function isRedditEligible(reddit, showInfo) {
 /**
  * Calculate combined Audience Buzz score with proportional weighting
  *
- * @param {object} sources - { showScore?: { score, reviewCount }, mezzanine?: { score, reviewCount }, reddit?: { score, reviewCount } }
+ * @param {object} sources - { showScore?, mezzanine?, theatr?, broadwayCom?, reddit? } each with { score, reviewCount }
  * @param {object} [showInfo] - { closingDate?: string, status?: string } — pass to enable Reddit recency gate
  * @returns {{ score: number|null, weights: object|null }}
  */
@@ -65,6 +67,9 @@ function calculateCombinedScore(sources, showInfo) {
   if (sources.theatr?.score != null && sources.theatr.reviewCount > 0) {
     active.push({ name: 'theatr', score: sources.theatr.score, volume: sources.theatr.reviewCount });
   }
+  if (sources.broadwayCom?.score != null && sources.broadwayCom.reviewCount > 0) {
+    active.push({ name: 'broadwayCom', score: sources.broadwayCom.score, volume: sources.broadwayCom.reviewCount });
+  }
   if (isRedditEligible(sources.reddit, showInfo)) {
     // Calibrate Reddit score to align with ShowScore/Mezzanine scale
     const calibrated = Math.min(sources.reddit.score + REDDIT_SCORE_CALIBRATION, REDDIT_CALIBRATION_CAP);
@@ -77,7 +82,7 @@ function calculateCombinedScore(sources, showInfo) {
 
   // Solo source — 100% weight, no ceiling needed
   if (active.length === 1) {
-    const weights = { showScore: 0, mezzanine: 0, reddit: 0, theatr: 0 };
+    const weights = { showScore: 0, mezzanine: 0, reddit: 0, theatr: 0, broadwayCom: 0 };
     weights[active[0].name] = 100;
     return { score: Math.round(active[0].score), weights };
   }
