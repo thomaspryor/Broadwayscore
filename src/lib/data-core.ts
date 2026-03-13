@@ -177,8 +177,8 @@ export function getDataStats() {
   const totalReviews = broadwayShows.reduce((sum, show) => sum + (show.criticScore?.reviewCount || 0), 0);
 
   // Count unique outlets and critics from Broadway reviews only (consistent with show counts)
-  const broadwaySlugs = new Set(broadwayShows.map(s => s.slug));
-  const broadwayReviews = baseReviews.filter(r => broadwaySlugs.has(r.showId));
+  const broadwayIds = new Set(broadwayShows.map(s => s.id));
+  const broadwayReviews = baseReviews.filter(r => broadwayIds.has(r.showId));
   const uniqueOutlets = new Set(broadwayReviews.map(r => r.outletId));
   const uniqueCritics = new Set(broadwayReviews.map(r => r.criticName).filter(Boolean));
 
