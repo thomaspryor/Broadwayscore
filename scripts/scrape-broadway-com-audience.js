@@ -180,6 +180,12 @@ const BROADWAY_COM_OVERRIDES = {
   'SIX: The Musical': 'six-2021',
   'Joe Turner\'s Come and Gone': 'joe-turners-come-and-gone-2009',
   'Beaches': 'beaches-2026',
+  'The Lost Boys, A New Musical': 'the-lost-boys-2026',
+  'Dolly: A True Original Musical': 'dolly-an-original-musical-2026',
+  'Pied-à-Terre': 'pied-a-terre-off-broadway-2026',
+  'Meat Suit, or the shitshow of motherhood': 'meat-suit-or-the-stshow-of-motherhood-off-broadway-2026',
+  'Galileo': 'galileo-2026',
+  'Sexual Misconduct of the Middle Classes': 'sexual-misconduct-of-the-middle-classes-off-broadway-2026',
 };
 
 function matchBroadwayComToShows(bcShows, ourShows) {
@@ -438,6 +444,31 @@ async function main() {
 
     fs.writeFileSync(audienceBuzzPath, JSON.stringify(audienceBuzz, null, 2));
     console.log(`Saved audience-buzz.json (${newEntryCount} entries)`);
+  }
+
+  // Inflation check: compare Broadway.com scores vs other sources
+  if (updated > 0) {
+    const diffs = [];
+    for (const [id, show] of Object.entries(audienceBuzz.shows)) {
+      const src = show.sources;
+      if (!src || !src.broadwayCom) continue;
+      const bc = src.broadwayCom.score;
+      const others = [];
+      if (src.showScore) others.push(src.showScore.score);
+      if (src.mezzanine) others.push(src.mezzanine.score);
+      if (src.theatr) others.push(src.theatr.score);
+      if (others.length === 0) continue;
+      const avg = others.reduce((a, b) => a + b, 0) / others.length;
+      diffs.push(bc - avg);
+    }
+    if (diffs.length >= 10) {
+      const avgBias = diffs.reduce((a, b) => a + b, 0) / diffs.length;
+      console.log(`\nInflation check: Broadway.com avg bias = ${avgBias >= 0 ? '+' : ''}${avgBias.toFixed(1)} points vs other sources (N=${diffs.length})`);
+      if (avgBias > 10) {
+        console.warn(`⚠ Broadway.com scores are ${avgBias.toFixed(1)} points higher than other sources on average.`);
+        console.warn('  Consider adding a calibration offset in audience-weighting.js');
+      }
+    }
   }
 
   // Summary: unmatched shows
