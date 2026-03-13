@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 const SENTRY_DSN = process.env.NEXT_PUBLIC_SENTRY_DSN;
-const POSTHOG_KEY = 'phc_xVenlxA1HzyJz0Yj1j3UkF9JVLCPe86Td6vQEK41SF7';
+const POSTHOG_KEY = 'phc_xVenlxA1HzyJz0Yjlj3UkF9JVLCPe86Td6vQEK41SF7';
 
 export default function AnalyticsWrapper() {
   const [isDisabled, setIsDisabled] = useState(false);
