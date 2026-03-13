@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-03-13T18:40:28.661Z",
+  "generatedAt": "2026-03-13T18:53:13.325Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 98,
+    "avgScoreDiff": 2
   },
   "syndicationPairs": [
     {
@@ -96,7 +96,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Shania Russell",
+      "showId": "bug-2026",
+      "primaryOutlet": "cbsnews",
+      "secondaryOutlet": "ew",
+      "primaryFile": "cbsnews--shania-russell.json",
+      "secondaryFile": "ew--shania-russell.json",
+      "similarity": 98,
+      "primaryScore": 78,
+      "secondaryScore": 80,
+      "scoreDiff": 2
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "frozen-2018",
