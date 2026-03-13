@@ -1,22 +1,80 @@
 {
   "processed": [
-    "every-brilliant-thing-2026/nytimes--unknown.json"
+    "every-brilliant-thing-2026/nytg--unknown.json",
+    "every-brilliant-thing-2026/nytimes--unknown.json",
+    "every-brilliant-thing-2026/deadline--greg-evans.json",
+    "every-brilliant-thing-2026/deadline--unknown.json",
+    "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
+    "every-brilliant-thing-2026/nydailynews--unknown.json",
+    "every-brilliant-thing-2026/thewrap--robert-hofler.json",
+    "every-brilliant-thing-2026/timeout--unknown.json",
+    "every-brilliant-thing-2026/cititour--brian-scott-lipton.json"
   ],
-  "failed": [],
+  "failed": [
+    "every-brilliant-thing-2026/wsj--unknown.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
-    "amp": [],
-    "browserbase": [],
+    "playwright": [
+      "every-brilliant-thing-2026/nytg--unknown.json",
+      "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
+      "every-brilliant-thing-2026/timeout--unknown.json"
+    ],
+    "amp": [
+      "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
+      "every-brilliant-thing-2026/thewrap--robert-hofler.json"
+    ],
+    "browserbase": [
+      "data/review-texts/every-brilliant-thing-2026/deadline--greg-evans.json",
+      "every-brilliant-thing-2026/deadline--greg-evans.json",
+      "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
+      "every-brilliant-thing-2026/deadline--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
-      "every-brilliant-thing-2026/nytimes--unknown.json"
+      "every-brilliant-thing-2026/nytimes--unknown.json",
+      "every-brilliant-thing-2026/nydailynews--unknown.json",
+      "every-brilliant-thing-2026/cititour--brian-scott-lipton.json"
     ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-03-13T06:38:12.481Z",
-  "lastProcessed": "every-brilliant-thing-2026/nytimes--unknown.json",
-  "log": []
+  "startTime": "2026-03-13T06:44:10.965Z",
+  "lastProcessed": "every-brilliant-thing-2026/cititour--brian-scott-lipton.json",
+  "log": [
+    {
+      "t": "2026-03-13T06:44:13.422Z",
+      "event": "bb-session",
+      "session": "046eb450",
+      "url": "https://www.wsj.com/articles/every-brilliant-thing-review-daniel-radcliffes-spir"
+    },
+    {
+      "t": "2026-03-13T06:44:14.769Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-13T06:46:15.804Z",
+      "event": "bb-session",
+      "session": "9ce0185d",
+      "url": "https://deadline.com/2026/03/broadway-box-office-daniel-radcliffe-every-brillian"
+    },
+    {
+      "t": "2026-03-13T06:46:17.261Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-13T06:46:29.009Z",
+      "event": "bb-session",
+      "session": "8ea80eb1",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-13T06:46:30.460Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    }
+  ]
 }
