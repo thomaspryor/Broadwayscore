@@ -1,22 +1,33 @@
 {
   "processed": [
-    "every-brilliant-thing-2026/playbill--unknown.json",
+    "bughouse-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "bughouse-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "bughouse-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "bughouse-off-broadway-2026/exeunt-magazine--loren-noveck.json",
+    "bughouse-off-broadway-2026/front-row-center--kendra-jones.json",
+    "bughouse-off-broadway-2026/theater-life--unknown.json",
+    "bughouse-off-broadway-2026/nytg--caroline-cao.json",
     "every-brilliant-thing-2026/nytimes--unknown.json",
-    "every-brilliant-thing-2026/deadline--greg-evans.json",
-    "every-brilliant-thing-2026/one-minute-critic--unknown.json",
-    "every-brilliant-thing-2026/usatoday--patrick-ryan.json"
+    "bughouse-off-broadway-2026/theatermania--linda-buchwald.json",
+    "bughouse-off-broadway-2026/theatermania--unknown.json"
   ],
   "failed": [],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "every-brilliant-thing-2026/playbill--unknown.json",
-      "every-brilliant-thing-2026/one-minute-critic--unknown.json"
+      "bughouse-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "bughouse-off-broadway-2026/new-york-sun--elysa-gardner.json",
+      "bughouse-off-broadway-2026/exeunt-magazine--loren-noveck.json",
+      "bughouse-off-broadway-2026/front-row-center--kendra-jones.json",
+      "bughouse-off-broadway-2026/theater-life--unknown.json",
+      "bughouse-off-broadway-2026/nytg--caroline-cao.json",
+      "bughouse-off-broadway-2026/theatermania--linda-buchwald.json",
+      "bughouse-off-broadway-2026/theatermania--unknown.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/every-brilliant-thing-2026/deadline--greg-evans.json",
-      "every-brilliant-thing-2026/deadline--greg-evans.json"
+      "data/review-texts/bughouse-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+      "bughouse-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -24,23 +35,21 @@
     ],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "every-brilliant-thing-2026/usatoday--patrick-ryan.json"
-    ]
+    "archive": []
   },
-  "startTime": "2026-03-13T00:57:51.815Z",
-  "lastProcessed": "every-brilliant-thing-2026/usatoday--patrick-ryan.json",
+  "startTime": "2026-03-13T01:08:11.959Z",
+  "lastProcessed": "bughouse-off-broadway-2026/theatermania--unknown.json",
   "log": [
     {
-      "t": "2026-03-13T00:58:22.218Z",
+      "t": "2026-03-13T01:09:14.539Z",
       "event": "bb-session",
-      "session": "47945e08",
-      "url": "https://deadline.com/2026/03/broadway-box-office-daniel-radcliffe-every-brillian"
+      "session": "beed27f4",
+      "url": "https://www.nytimes.com/2026/03/12/theater/bughouse-review-henry-darger.html"
     },
     {
-      "t": "2026-03-13T00:58:23.711Z",
+      "t": "2026-03-13T01:09:16.025Z",
       "event": "bb-cookie-inject",
-      "domain": "deadline.com"
+      "domain": "nytimes.com"
     }
   ]
 }
