@@ -1,6 +1,8 @@
 {
   "processed": [
-    "every-brilliant-thing-2026/nyt-theater--unknown.json",
+    "every-brilliant-thing-2026/nytg--unknown.json",
+    "every-brilliant-thing-2026/independent--unknown.json",
+    "every-brilliant-thing-2026/nysr--unknown.json",
     "every-brilliant-thing-2026/nytimes--unknown.json",
     "every-brilliant-thing-2026/deadline--greg-evans.json",
     "every-brilliant-thing-2026/timeout--unknown.json",
@@ -124,7 +126,16 @@
     "it-walks-around-the-house-at-night-west-end-2026/timeout-london--unknown.json",
     "just-in-time-2025/broadwaynews--brittani-samuel.json",
     "just-in-time-2025/newsday--unknown.json",
-    "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024/nydailynews--unknown.json"
+    "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024/nydailynews--unknown.json",
+    "la-llamada-off-broadway-2024/broadwaynews--aa-cristi.json",
+    "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
+    "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json",
+    "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
+    "little-shop-of-horrors-off-broadway-2019/theatermania--zachary-stewart.json",
+    "marcel-on-the-train-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "marcel-on-the-train-off-broadway-2026/theatermania--zachary-stewart.json",
+    "marcel-on-the-train-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
+    "marie-and-rosetta-west-end-2026/timeout-london--caroline-mcginn.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -138,7 +149,8 @@
     "six-2021/newyorker--naomi-fry.json",
     "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
     "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
-    "harry-potter-2021/wsj--terry-teachout.json"
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -210,16 +222,68 @@
       "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
       "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json",
       "it-walks-around-the-house-at-night-west-end-2026/timeout-london--unknown.json",
-      "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024/nydailynews--unknown.json"
+      "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024/nydailynews--unknown.json",
+      "little-shop-of-horrors-off-broadway-2019/theatermania--zachary-stewart.json",
+      "marcel-on-the-train-off-broadway-2026/new-york-sun--elysa-gardner.json",
+      "marcel-on-the-train-off-broadway-2026/theatermania--zachary-stewart.json",
+      "marcel-on-the-train-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
+      "marie-and-rosetta-west-end-2026/timeout-london--caroline-mcginn.json"
     ],
     "amp": [
-      "data/review-texts/every-brilliant-thing-2026/variety--aramide-tinubu.json",
-      "every-brilliant-thing-2026/variety--aramide-tinubu.json",
-      "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
-      "every-brilliant-thing-2026/thewrap--robert-hofler.json"
+      "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
+      "hercules-west-end-2025/variety--david-benedict.json",
+      "data/review-texts/mamma-mia-west-end-2021/variety--matt-wolf.json",
+      "mamma-mia-west-end-2021/variety--matt-wolf.json",
+      "data/review-texts/paddington-the-musical-west-end-2025/variety--david-benedict.json",
+      "paddington-the-musical-west-end-2025/variety--david-benedict.json",
+      "data/review-texts/paddington-the-musical-west-end-2025/variety--ellise-shafer.json",
+      "paddington-the-musical-west-end-2025/variety--ellise-shafer.json",
+      "data/review-texts/the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
+      "the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
+      "data/review-texts/the-lion-king-west-end-2021/variety--matt-wolf.json",
+      "the-lion-king-west-end-2021/variety--matt-wolf.json",
+      "data/review-texts/wicked-2003/variety--charles-isherwood.json",
+      "wicked-2003/variety--charles-isherwood.json",
+      "data/review-texts/cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json",
+      "cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json"
     ],
-    "browserbase": [],
-    "directCookies": [],
+    "browserbase": [
+      "data/review-texts/every-brilliant-thing-2026/nytimes--unknown.json",
+      "every-brilliant-thing-2026/nytimes--unknown.json",
+      "data/review-texts/every-brilliant-thing-2026/deadline--greg-evans.json",
+      "every-brilliant-thing-2026/deadline--greg-evans.json",
+      "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
+      "every-brilliant-thing-2026/deadline--unknown.json",
+      "data/review-texts/every-brilliant-thing-2026/nypost--unknown.json",
+      "every-brilliant-thing-2026/nypost--unknown.json",
+      "data/review-texts/every-brilliant-thing-2026/amny--unknown.json",
+      "every-brilliant-thing-2026/amny--unknown.json",
+      "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
+      "chess-2025/hollywood-reporter--angie-han.json",
+      "data/review-texts/hadestown-2019/hollywood-reporter--david-rooney.json",
+      "hadestown-2019/hollywood-reporter--david-rooney.json",
+      "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
+      "hadestown-west-end-2024/variety--marilyn-stasio.json",
+      "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json",
+      "hamilton-2015/hollywood-reporter--david-rooney.json",
+      "data/review-texts/just-in-time-2025/hollywood-reporter--unknown.json",
+      "just-in-time-2025/hollywood-reporter--unknown.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "data/review-texts/oh-mary-2024/hollywood-reporter--david-rooney.json",
+      "oh-mary-2024/hollywood-reporter--david-rooney.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
+      "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
+      "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json"
+    ],
+    "directCookies": [
+      "the-lion-king-1997/vulture--john-simon.json"
+    ],
     "scrapingbee": [
       "every-brilliant-thing-2026/independent--unknown.json",
       "every-brilliant-thing-2026/ew--unknown.json",
@@ -236,11 +300,16 @@
       "chicago-1996/nydailynews--joe-dziemianowicz.json",
       "hadestown-2019/ew--jessica-derschowitz.json",
       "hadestown-2019/guardian--adrian-horton.json",
-      "just-in-time-2025/broadwaynews--brittani-samuel.json"
+      "just-in-time-2025/broadwaynews--brittani-samuel.json",
+      "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json"
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/every-brilliant-thing-2026/vulture--sara-holdren.json"
+      "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
+      "data/review-texts/death-becomes-her-2024/newyorker--helen-shaw.json",
+      "data/review-texts/hercules-west-end-2025/nytimes--matt-wolf.json",
+      "data/review-texts/mj-2022/vulture--helen-shaw.json",
+      "data/review-texts/oh-mary-2024/nytimes--erik-piepenburg.json"
     ],
     "archive": [
       "every-brilliant-thing-2026/usatoday--patrick-ryan.json",
@@ -262,11 +331,13 @@
       "dirty-books-off-broadway-2025/broadwaynews--chloe-rabinowitz.json",
       "hamilton-2015/wsj--terry-teachout.json",
       "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json",
-      "just-in-time-2025/newsday--unknown.json"
+      "just-in-time-2025/newsday--unknown.json",
+      "la-llamada-off-broadway-2024/broadwaynews--aa-cristi.json",
+      "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json"
     ]
   },
   "startTime": "2026-03-13T03:37:52.112Z",
-  "lastProcessed": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024/nydailynews--unknown.json",
+  "lastProcessed": "marie-and-rosetta-west-end-2026/timeout-london--caroline-mcginn.json",
   "log": [
     {
       "t": "2026-03-13T03:38:54.108Z",
@@ -487,6 +558,28 @@
       "t": "2026-03-13T04:50:45.286Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-13T04:54:14.096Z",
+      "event": "bb-session",
+      "session": "8ad0de96",
+      "url": "https://deadline.com/2019/10/little-shop-of-horrors-review-jonathan-groff-tammy-"
+    },
+    {
+      "t": "2026-03-13T04:54:15.609Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-13T04:55:03.804Z",
+      "event": "bb-session",
+      "session": "cca232d2",
+      "url": "https://nypost.com/2019/10/17/little-shop-of-horrors-review-jonathan-groff-tammy"
+    },
+    {
+      "t": "2026-03-13T04:55:05.354Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
