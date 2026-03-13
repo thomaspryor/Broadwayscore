@@ -1,0 +1,28 @@
+name: Setup Node.js
+description: Sets up Node.js 20, installs npm dependencies, and optionally configures git for bot commits
+
+inputs:
+  configure-git:
+    description: Configure git user.name/email for github-actions[bot] commits
+    required: false
+    default: 'false'
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      shell: bash
+      run: npm ci
+
+    - name: Configure git
+      if: inputs.configure-git == 'true'
+      shell: bash
+      run: |
+        git config --local user.name "github-actions[bot]"
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
