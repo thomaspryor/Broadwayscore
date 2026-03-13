@@ -364,6 +364,12 @@ async function main() {
     try {
       const { status, data: html } = await httpsGet(bc.url);
 
+      if (status >= 400) {
+        // Hard error: 4xx/5xx means site is blocking or broken — don't treat as "no data"
+        console.error(`  HTTP_ERROR ${show.id}: ${status}`);
+        errors++;
+        continue;
+      }
       if (status !== 200) {
         if (verbose) console.log(`  SKIP ${show.id}: HTTP ${status}`);
         skipped++;
@@ -402,15 +408,20 @@ async function main() {
 
   console.log(`\nResults: ${updated} updated, ${skipped} skipped, ${errors} errors`);
 
-  // Success rate guard
+  // Success rate guard [CHANGED: fix 0/0 NaN bypass — Claude + Pre-mortem]
   const processed = updated + skipped + errors;
-  if (processed > 0) {
-    const successRate = updated / processed;
-    if (successRate < 0.5) {
-      console.error(`\u26A0 Guard: Only ${updated}/${processed} shows returned scores (${(successRate * 100).toFixed(0)}% < 50%)`);
-      console.error('Possible systemic failure. Check if Broadway.com is blocking requests.');
-    }
+  if (processed === 0) {
+    console.error('\u26A0 Guard: 0 shows processed — discovery may have failed. Aborting save.');
+    process.exit(1);
   }
+  const successRate = updated / processed;
+  if (successRate < 0.5) {
+    console.error(`\u26A0 Guard: Only ${updated}/${processed} shows returned scores (${(successRate * 100).toFixed(0)}% < 50%)`);
+    console.error('Possible systemic failure. Check if Broadway.com is blocking requests.');
+  }
+
+  // Entry-count regression check [CHANGED: prevent truncated data push — Pre-mortem]
+  const prevEntryCount = Object.keys(audienceBuzz.shows).length;
 
   // 4. Save
   if (!dryRun && updated > 0) {
@@ -418,8 +429,15 @@ async function main() {
     if (!audienceBuzz._meta.sources.includes('Broadway.com')) {
       audienceBuzz._meta.sources.push('Broadway.com');
     }
+    // Verify entry count didn't regress
+    const newEntryCount = Object.keys(audienceBuzz.shows).length;
+    if (newEntryCount < prevEntryCount * 0.8) {
+      console.error(`\u26A0 Guard: Entry count dropped from ${prevEntryCount} to ${newEntryCount}. Aborting save.`);
+      process.exit(1);
+    }
+
     fs.writeFileSync(audienceBuzzPath, JSON.stringify(audienceBuzz, null, 2));
-    console.log(`Saved audience-buzz.json`);
+    console.log(`Saved audience-buzz.json (${newEntryCount} entries)`);
   }
 
   // Summary: unmatched shows
