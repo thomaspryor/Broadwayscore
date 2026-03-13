@@ -99,7 +99,7 @@ function getReviewStats(reviews, showId) {
   let positive = 0, mixed = 0, negative = 0;
 
   for (const r of showReviews) {
-    if (r.assignedScore >= 75) positive++;
+    if (r.assignedScore >= 70) positive++;
     else if (r.assignedScore >= 55) mixed++;
     else negative++;
   }
@@ -232,16 +232,24 @@ async function main() {
     const showConsensus = consensusShows[showId] || consensusShows[show.slug];
     const consensusText = showConsensus?.text || showConsensus?.consensus || null;
 
-    // Compute tier-weighted score (matches website's engine.ts)
+    // Compute tier-weighted score (matches website's engine.ts including confidence weights)
     const showReviews = reviewsArr.filter(r => r.showId === showId && r.assignedScore != null);
     let avgScore = null;
     if (showReviews.length > 0) {
       let weightedSum = 0, totalWeight = 0;
       for (const r of showReviews) {
         const tier = getOutletTier(r.outletId);
-        const weight = TIER_WEIGHTS[tier] || 0.35;
-        weightedSum += r.assignedScore * weight;
-        totalWeight += weight;
+        const tierWeight = TIER_WEIGHTS[tier] || 0.35;
+        // Confidence weight must match engine.ts: full=1.0, truncated=0.85, excerpt/stub=0.5 (0.75 if thumb)
+        let confidenceWeight = 1.0;
+        if (r.contentTier === 'excerpt' || r.contentTier === 'stub') {
+          const hasThumb = !!(r.dtliThumb || r.bwwThumb) && !r.needsReview;
+          confidenceWeight = hasThumb ? 0.75 : 0.5;
+        } else if (r.contentTier === 'truncated') {
+          confidenceWeight = 0.85;
+        }
+        weightedSum += r.assignedScore * tierWeight * confidenceWeight;
+        totalWeight += tierWeight * confidenceWeight;
       }
       avgScore = totalWeight > 0 ? Math.round(weightedSum / totalWeight) : null;
     }
