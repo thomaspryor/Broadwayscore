@@ -65,6 +65,7 @@
 - **Unit tests** — engine.ts (37 tests) + data-core.ts (81 tests, 31 suites). Both in CI via tsx.
 - **TypeScript strictness** — Zero TS errors, zero `as any` casts. Window.gtag/Sentry declarations, SentryEvent interface.
 - **CI workflow cleanup** — Push-with-retry migration (15 workflows, -281 lines) + setup-node composite action (10 workflows, -48 lines). Total: -369 lines boilerplate.
+- **Creative team data fix** — Removed 8 hallucinated director entries from 7 shows (Into the Woods, Frozen, South Pacific, Passion, Gypsy, Sunday in the Park, Master Harold). Downgraded co-writer/co-director validation to warning. validate-data.js: 11 errors → 0.
 - **ScrapingBee SERP credit optimization** — Reduced usage from ~3.3M credits/month to ~968K (fits 1M budget). 4 fixes: scheduled search days (0,1,3,7,14), gather dispatch ≤3 days, closed show filter on 3 aggregator scrapers, skip outlets with 2+ reviews. BrightData SERP API as transparent fallback when SB exhausts (100% top-result quality match). Applied to discover-opening-night-reviews.js + url-discovery.js (covers gather-reviews, collect-outlet-reviews).
 
 ### Week of 2026-03-09
