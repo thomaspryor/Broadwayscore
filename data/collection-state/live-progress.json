@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-13T19:11:41.047Z",
-  "processed": 58,
-  "failed": 13,
-  "successRate": "81.7%",
+  "updatedAt": "2026-03-13T19:16:04.109Z",
+  "processed": 65,
+  "failed": 16,
+  "successRate": "80.2%",
   "tierBreakdown": {
-    "playwright": 29,
-    "amp": 12,
+    "playwright": 32,
+    "amp": 16,
     "browserbase": 16,
-    "directCookies": 0,
+    "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 9,
-    "archive": 15
+    "archiveToday": 11,
+    "archive": 16
   },
-  "browserbaseSessions": 13,
+  "browserbaseSessions": 15,
   "recentActivity": [
-    {
-      "t": "2026-03-13T18:57:26.613Z",
-      "event": "bb-session",
-      "session": "fc3981cc",
-      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
-    },
-    {
-      "t": "2026-03-13T18:57:27.964Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-13T18:58:42.457Z",
-      "event": "bb-session",
-      "session": "726810ad",
-      "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
-    },
-    {
-      "t": "2026-03-13T18:58:43.647Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-13T18:59:50.809Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-03-13T19:10:39.840Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-13T19:12:40.363Z",
+      "event": "bb-session",
+      "session": "1003c734",
+      "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jor"
+    },
+    {
+      "t": "2026-03-13T19:12:41.838Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-13T19:14:53.736Z",
+      "event": "bb-session",
+      "session": "b94eae43",
+      "url": "https://www.nytimes.com/2026/02/12/theater/the-monsters-review.html"
+    },
+    {
+      "t": "2026-03-13T19:14:55.135Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
