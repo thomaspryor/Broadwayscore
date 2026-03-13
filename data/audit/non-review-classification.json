@@ -1,27 +1,38 @@
 {
   "meta": {
-    "generatedAt": "2026-03-13T17:17:48.703Z",
+    "generatedAt": "2026-03-13T18:37:21.337Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 32181,
-      "inReviewsJson": 16834,
-      "skippedExcluded": 18,
-      "withFullText": 26,
-      "excerptOnly": 2181,
-      "llmClassified": 25,
+      "inReviewsJson": 16844,
+      "skippedExcluded": 11,
+      "withFullText": 54,
+      "excerptOnly": 2183,
+      "llmClassified": 49,
       "heuristicFlagged": 1,
-      "nonReviewsFound": 0,
-      "uncertainCases": 23,
-      "budgetUsed": 0.0025999999999999994,
-      "llmCalls": 26,
+      "nonReviewsFound": 1,
+      "uncertainCases": 21,
+      "budgetUsed": 0.005,
+      "llmCalls": 50,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14609
+      "skippedAlreadyClassified": 14596
     },
     "calibration": null
   },
-  "nonReviews": [],
+  "nonReviews": [
+    {
+      "file": "patriots-2024/deadline--pete-hammond.json",
+      "showId": "patriots-2024",
+      "outlet": "Deadline",
+      "outletId": "deadline",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This article announces the Broadway transfer of 'Patriots,' including dates, cast, and creative team. It does not contain any evaluation or opinion about the quality of the show.",
+      "currentScore": 82
+    }
+  ],
   "uncertainCases": [
     {
       "file": "amazing-grace-2015/chicago-reader--jack-helbig.json",
@@ -30,7 +41,7 @@
       "outletId": "chicago-reader",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a listing or announcement related to the show, possibly a closing notice, rather than a review. It lacks evaluative content and reads more like a news item or event listing.",
+      "reasoning": "The article appears to be a listing or announcement related to the show, possibly indicating a closing or recommendation, but it does not contain evaluative content. It's more likely a news item or listing than a review itself, given the lack of critical assessment.",
       "currentScore": 86
     },
     {
@@ -39,8 +50,8 @@
       "outlet": "The Daily Beast",
       "outletId": "dailybeast",
       "contentType": "news",
-      "confidence": "low",
-      "reasoning": "The article mentions the Tony Awards eligibility deadline, suggesting it's a news piece about the Broadway season rather than a review of 'Dead Outlaw.'",
+      "confidence": "medium",
+      "reasoning": "The article discusses the Tony Awards eligibility deadline and the rush of shows opening before the cutoff, which is a news item rather than a review of a specific show.",
       "currentScore": 72
     },
     {
@@ -50,7 +61,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and themes of \"Eclipsed\" and provides historical context, but it does not offer a critical evaluation or opinion about the quality of the production itself. The text also includes unrelated news items about other shows.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion on the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -70,7 +81,7 @@
       "outletId": "bloomberg",
       "contentType": "news",
       "confidence": "medium",
-      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and its pre-Broadway run, with a brief mention of \"First Date\" only in photo captions. It does not offer a critical evaluation of \"First Date.\"",
+      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in photo captions. It does not offer a review or evaluation of \"First Date.\"",
       "currentScore": 60
     },
     {
@@ -80,7 +91,7 @@
       "outletId": "huffpost",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be a collection of news headlines and trending topics, rather than a review of 'First Date'. The presence of sections like 'What's Hot' and trending articles suggests a news aggregation format.",
+      "reasoning": "The article appears to be a collection of news headlines and trending topics, rather than a review of 'First Date'. The presence of sections like 'What's Hot' and trending articles indicates a news aggregation format.",
       "currentScore": 62
     },
     {
@@ -90,7 +101,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain evaluative content about \"Funny Girl\".",
       "currentScore": 62
     },
     {
@@ -100,7 +111,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
+      "reasoning": "The article describes the plot and background of the musical 'Groundhog Day' and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
       "currentScore": 81
     },
     {
@@ -110,7 +121,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a snippet of a Wall Street Journal article, likely behind a paywall. Without the full text, it's impossible to determine if it's a review, but the presence of a subscription prompt suggests it's not just a brief notice.",
+      "reasoning": "This appears to be a snippet of a larger article, likely a review, but the provided text is incomplete and only contains copyright information and a subscription prompt. Without the actual review content, it cannot be classified as a review.",
       "currentScore": 95
     },
     {
@@ -120,7 +131,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there's no evaluative content to classify it as a review.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of cultural events.",
       "currentScore": 88
     },
     {
@@ -150,7 +161,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
+      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.' It lacks any evaluative content about the show.",
       "currentScore": 73
     },
     {
@@ -160,7 +171,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated and contains elements like 'Continue reading your article with a WSJ subscription' and 'America Needs Its Small Banks', suggesting it's a news feed or aggregator rather than a review of 'Parade'.",
+      "reasoning": "The article appears to be truncated and promotes a WSJ subscription, suggesting it's a news snippet or advertisement rather than a review of 'Parade'.",
       "currentScore": 78
     },
     {
@@ -180,7 +191,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but it does not offer a critical evaluation or opinion about the quality of the production. It focuses on the show's concept and historical significance.",
       "currentScore": 83
     },
     {
@@ -190,7 +201,7 @@
       "outletId": "broadwayworld",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the background and context of the play \"Sweat,\" including the playwright's research process and the real-world events that inspired the story. While it mentions the play, it does not offer a critical evaluation of its artistic merits.",
+      "reasoning": "The article discusses the background and inspiration for Lynn Nottage's play \"Sweat,\" including her research process and the social issues it addresses. While it describes the play's themes, it does not offer a critical evaluation of the production itself.",
       "currentScore": 90
     },
     {
@@ -200,7 +211,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a list of links and search terms, not an article. It does mention 'Broadway review subscriptions' and 'Musical theatre reviews' but does not contain a review itself.",
       "currentScore": 42
     },
     {
@@ -210,7 +221,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
+      "reasoning": "The article consists of production credits and ticket information, which is more aligned with a news item or listing than a review. There is no evaluative content present.",
       "currentScore": 64
     },
     {
@@ -230,28 +241,8 @@
       "outletId": "vulture",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the set design and the playwright's intentions, but does not offer an evaluation or recommendation of the show itself. It reads more like a feature piece about the play's themes and context.",
+      "reasoning": "The article describes the set design and the playwright's intentions, but it does not offer an evaluation or opinion on the quality of the production itself. It's more of a feature piece about the show's themes and design elements.",
       "currentScore": 64
-    },
-    {
-      "file": "three-tall-women-2018/talkinbroadway--matthew-murray.json",
-      "showId": "three-tall-women-2018",
-      "outlet": "Talkin' Broadway",
-      "outletId": "talkinbroadway",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "The text appears to be a collection of links and categories related to theater, rather than a review of a specific production.",
-      "currentScore": 89
-    },
-    {
-      "file": "yellow-face-2024/joysauce--janvi-sai.json",
-      "showId": "yellow-face-2024",
-      "outlet": "joysauce",
-      "outletId": "joysauce",
-      "contentType": "preview",
-      "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" in advance of its opening, but does not offer a critical evaluation or opinion about the quality of the production itself. It includes background information and setting the stage for the show, which is characteristic of a preview ",
-      "currentScore": 78
     }
   ],
   "heuristicFlags": [
@@ -268,8 +259,39 @@
     }
   ],
   "reviewsConfirmed": [
-    "every-brilliant-thing-2026/nydailynews--chris-jones.json",
-    "every-brilliant-thing-2026/theatermania--kenji-fujishima.json"
+    "a-christmas-story-the-musical-2012/theatermania--charles-isherwood.json",
+    "a-soldiers-play-2020/theatermania--jesse-green.json",
+    "airline-highway-2015/seth-saith--seth-arkin.json",
+    "amazing-grace-2015/seth-saith--seth-arkin.json",
+    "burlesque-west-end-2026/city-am--adam-bloodworth.json",
+    "burlesque-west-end-2026/independent--alice-saville.json",
+    "burlesque-west-end-2026/london-theatre--anya-ryan.json",
+    "burlesque-west-end-2026/telegraph--claire-allfree.json",
+    "burlesque-west-end-2026/the-express--stefan-kryiazis.json",
+    "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "burlesque-west-end-2026/times-uk--clive-davis.json",
+    "burlesque-west-end-2026/west-end-best-friend--laura-harris.json",
+    "burlesque-west-end-2026/whatsonstage--alex-wood.json",
+    "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+    "burnout-paradise-off-broadway-2026/theatermania--zachary-stewart.json",
+    "call-me-izzy-2025/washpost--naveen-kumar.json",
+    "casa-valentina-2014/theatermania--charles-isherwood.json",
+    "deep-azure-globe-west-end-2026/london-theatre--matt-wolf.json",
+    "desire-under-the-elms-2009/nytimes--ben-brantley.json",
+    "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
+    "fool-for-love-2015/northjerseycom--bob-goepfert.json",
+    "friends-the-musical-parody-off-broadway-2022/manhattan-digest--ryan-leeds.json",
+    "here-lies-love-2023/hollywood-reporter--angie-han.json",
+    "marjorie-prime-2025/vulture--sara-holdren.json",
+    "once-2012/usatoday--elysa-gardner.json",
+    "the-new-one-2018/timeout--adam-feldman.json",
+    "the-roommate-2024/talkinbroadway--matthew-murray.json"
   ],
-  "perShowSummary": []
+  "perShowSummary": [
+    {
+      "showId": "patriots-2024",
+      "currentCount": 33,
+      "removed": 1
+    }
+  ]
 }

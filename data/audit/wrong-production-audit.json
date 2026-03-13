@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-03-13T17:22:23.540Z",
+  "timestamp": "2026-03-13T18:41:44.529Z",
   "stats": {
     "totalReviews": 31500,
     "alreadyFlagged": 9723,
     "dateGuardCatches": 133,
     "directorMismatch": 1100,
-    "tvFilmSignals": 3472,
-    "londonSignals": 999,
-    "offBroadwaySignals": 1079,
+    "tvFilmSignals": 3473,
+    "londonSignals": 998,
+    "offBroadwaySignals": 1078,
     "yearMismatch": 84,
     "noPublishDate": 9289
   },
@@ -15241,6 +15241,20 @@
     },
     {
       "showId": "every-brilliant-thing-2026",
+      "file": "theatermania--kenji-fujishima.json",
+      "score": 60,
+      "publishDate": "2026-03-13",
+      "url": "https://www.theatermania.com/news/review-daniel-radcliffe-invites-us-to-cherish-every-brilliant-thing_1827748/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
+        }
+      ]
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
       "file": "usatoday--patrick-ryan.json",
       "publishDate": "2026-02-20",
       "url": "https://www.usatoday.com/story/entertainment/tv/2026/02/20/daniel-radcliffe-every-brilliant-thing-broadway/88644758007/",
@@ -28624,7 +28638,7 @@
     {
       "showId": "la-traviata-off-broadway-2026",
       "file": "observer--gabrielle-ferrari.json",
-      "score": null,
+      "score": 66,
       "publishDate": "October 28th, 2022",
       "url": "https://observer.com/2022/10/review-nadine-sierra-is-a-force-of-nature-as-violetta-in-la-traviata-at-the-met-opera/",
       "findings": [
@@ -61001,7 +61015,7 @@
     {
       "showId": "touch-off-broadway-2026",
       "file": "woman-around-town--alix-cohen.json",
-      "score": null,
+      "score": 84,
       "publishDate": "August 25th, 2016",
       "url": "http://www.womanaroundtown.com/sections/playing-around/touch-what-is-it-to-connect",
       "findings": [
@@ -67487,6 +67501,7 @@
     {
       "showId": "burlesque-west-end-2026",
       "file": "radio-times--joanna-magill.json",
+      "score": 79,
       "publishDate": "2025-07-23",
       "url": "https://www.radiotimes.com/going-out/tickets/burlesque-the-musical-review/",
       "findings": [
@@ -68875,6 +68890,7 @@
     {
       "showId": "deep-azure-globe-west-end-2026",
       "file": "london-theatre--matt-wolf.json",
+      "score": 78,
       "publishDate": "2026-02-18",
       "url": "https://www.londontheatre.co.uk/reviews/deep-azure-review-sam-wanamaker-playhouse",
       "findings": [
@@ -69479,25 +69495,6 @@
       "publishDate": "2026-03-13",
       "url": "https://nystagereview.com/2026/03/12/every-brilliant-thing-daniel-radcliffe-performs-magic-of-an-emotional-kind/",
       "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"barrow street\""
-        }
-      ]
-    },
-    {
-      "showId": "every-brilliant-thing-2026",
-      "file": "theatermania--kenji-fujishima.json",
-      "score": 60,
-      "publishDate": "2026-03-13",
-      "url": "https://www.theatermania.com/news/daniel-radcliffe-returning-to-broadway-in-every-brilliant-thing_1809666/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        },
         {
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
@@ -83484,7 +83481,7 @@
     {
       "showId": "the-encounter-2016",
       "file": "a-younger-theatre--camilla-gurtler.json",
-      "score": null,
+      "score": 90,
       "publishDate": "February 17th, 2016",
       "url": "http://www.ayoungertheatre.com/review-the-encounter-barbican/",
       "findings": [
@@ -84287,7 +84284,7 @@
     {
       "showId": "the-homecoming-2007",
       "file": "london-theatre--matt-wolf.json",
-      "score": null,
+      "score": 73,
       "publishDate": "December 8th, 2023",
       "url": "https://www.londontheatre.co.uk/reviews/the-homecoming-review-young-vic",
       "findings": [
