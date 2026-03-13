@@ -4,6 +4,7 @@ import { getBroadwayShows } from '@/lib/data-core';
 import { getLotteryRush, getLotteryRushLastUpdated } from '@/lib/data-lottery';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { DiscountTicketsTable, type DiscountShowRow } from './DiscountTicketsTable';
+import { DiscountTicketsNav } from '@/components/DiscountTicketsNav';
 
 export const metadata: Metadata = {
   title: 'Cheap Broadway Tickets - Lotteries, Rush & Standing Room',
@@ -158,7 +159,7 @@ export default function DiscountTicketsPage() {
           All Shows
         </Link>
 
-        <div className="mb-8">
+        <div className="mb-6">
           <h1 className="text-3xl sm:text-4xl font-bold text-white">Discount Broadway Tickets</h1>
           <p className="text-gray-400 mt-2">
             Every lottery, rush, and standing room option for Broadway shows in one place.
@@ -168,25 +169,9 @@ export default function DiscountTicketsPage() {
           </p>
         </div>
 
-        <DiscountTicketsTable rows={rows} />
+        <DiscountTicketsNav active="all" />
 
-        <div className="mt-8 pt-6 border-t border-white/5">
-          <h2 className="text-lg font-bold text-white mb-3">Browse by Type</h2>
-          <div className="flex flex-wrap gap-3">
-            <Link href="/lotteries" className="text-brand hover:text-brand-hover transition-colors text-sm">
-              Lottery Tickets →
-            </Link>
-            <Link href="/rush" className="text-brand hover:text-brand-hover transition-colors text-sm">
-              Rush Tickets →
-            </Link>
-            <Link href="/standing-room" className="text-brand hover:text-brand-hover transition-colors text-sm">
-              Standing Room →
-            </Link>
-            <Link href="/best-value" className="text-brand hover:text-brand-hover transition-colors text-sm">
-              Best Value →
-            </Link>
-          </div>
-        </div>
+        <DiscountTicketsTable rows={rows} />
 
         <div className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-6">
           <p>

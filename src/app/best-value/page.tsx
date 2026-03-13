@@ -7,6 +7,8 @@ import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { ComputedShow } from '@/lib/engine';
 import { ScoreBadge } from '@/components/show-cards';
+import { DiscountTicketsNav } from '@/components/DiscountTicketsNav';
+import { BestValueTable, type BestValueRow } from './BestValueTable';
 
 export const metadata: Metadata = {
   title: 'Best Value Broadway Tickets - Cheapest Ways to See Shows',
@@ -240,9 +242,9 @@ export default function BestValuePage() {
 
   // Stats
   const cheapestShow = showsWithDiscounts[0];
-  const avgCheapestPrice = Math.round(
-    showsWithDiscounts.reduce((sum, item) => sum + item.cheapestPrice, 0) / showsWithDiscounts.length
-  );
+  const avgCheapestPrice = showsWithDiscounts.length > 0
+    ? Math.round(showsWithDiscounts.reduce((sum, item) => sum + item.cheapestPrice, 0) / showsWithDiscounts.length)
+    : 0;
   const multiOptionShows = showsWithDiscounts.filter(item => item.optionCount >= 3).length;
 
   return (
@@ -261,7 +263,7 @@ export default function BestValuePage() {
           All Shows
         </Link>
 
-        <div className="mb-8">
+        <div className="mb-6">
           <h1 className="text-3xl sm:text-4xl font-bold text-white">Best Value Broadway Tickets</h1>
           <p className="text-gray-400 mt-2">
             Every discount ticket option for every show, sorted by cheapest price. Compare lotteries, rush, student deals, and standing room.
@@ -270,6 +272,8 @@ export default function BestValuePage() {
             {showsWithDiscounts.length} shows with discount tickets · Updated {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
           </p>
         </div>
+
+        <DiscountTicketsNav active="best-value" />
 
         {/* Quick Stats */}
         <div className="grid grid-cols-3 gap-4 mb-8">
@@ -310,7 +314,28 @@ export default function BestValuePage() {
           </div>
         </div>
 
-        {/* Show List */}
+        {/* Sortable Table */}
+        <div className="mb-8">
+          <h2 className="text-lg font-bold text-white mb-3">All Shows by Price</h2>
+          <BestValueTable rows={showsWithDiscounts.map(item => {
+            const options = getDiscountOptions(item.discountData);
+            const best = options[0];
+            return {
+              slug: item.show.slug,
+              title: item.show.title,
+              score: item.show.criticScore?.score ?? null,
+              bestPrice: item.cheapestPrice,
+              bestType: best?.label ?? '',
+              bestColor: best?.color ?? 'text-gray-300',
+              bestBgColor: best?.bgColor ?? 'bg-gray-500/15 border-gray-500/30',
+              optionCount: item.optionCount,
+              allOptions: options.map(o => ({ price: o.price, label: o.label, color: o.color, bgColor: o.bgColor })),
+            } satisfies BestValueRow;
+          })} />
+        </div>
+
+        {/* Detailed View */}
+        <h2 className="text-lg font-bold text-white mb-3">Detailed View</h2>
         <div className="space-y-3">
           {showsWithDiscounts.map((item, index) => (
             <ValueShowCard
@@ -321,25 +346,6 @@ export default function BestValuePage() {
               index={index}
             />
           ))}
-        </div>
-
-        {/* Related Links */}
-        <div className="mt-8 pt-6 border-t border-white/5">
-          <h2 className="text-lg font-bold text-white mb-3">Browse by Type</h2>
-          <div className="flex flex-wrap gap-3">
-            <Link href="/discount-tickets" className="text-brand hover:text-brand-hover transition-colors text-sm">
-              All Discount Tickets →
-            </Link>
-            <Link href="/lotteries" className="text-brand hover:text-brand-hover transition-colors text-sm">
-              Lottery Tickets →
-            </Link>
-            <Link href="/rush" className="text-brand hover:text-brand-hover transition-colors text-sm">
-              Rush Tickets →
-            </Link>
-            <Link href="/standing-room" className="text-brand hover:text-brand-hover transition-colors text-sm">
-              Standing Room →
-            </Link>
-          </div>
         </div>
 
         {/* Data Source Note */}

@@ -8,6 +8,7 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import { ComputedShow } from '@/lib/engine';
 import { RushTable } from '@/components/SortableLotteryRushTables';
 import { ScoreBadge } from '@/components/show-cards';
+import { DiscountTicketsNav } from '@/components/DiscountTicketsNav';
 
 export const metadata: Metadata = {
   title: 'Broadway Rush Tickets - Same-Day Discount Tickets',
@@ -242,7 +243,7 @@ export default function RushPage() {
           All Shows
         </Link>
 
-        <div className="mb-8">
+        <div className="mb-6">
           <h1 className="text-3xl sm:text-4xl font-bold text-white">Broadway Rush Tickets</h1>
           <p className="text-gray-400 mt-2">
             Same-day discounted tickets available at the box office or through digital apps. First-come, first-served means if you arrive early, you&apos;re guaranteed a seat.
@@ -251,6 +252,8 @@ export default function RushPage() {
             {showsWithRush.length} shows with rush tickets · Updated {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
           </p>
         </div>
+
+        <DiscountTicketsNav active="rush" />
 
         {/* Quick Stats */}
         <div className="grid grid-cols-3 gap-4 mb-8">
@@ -311,25 +314,6 @@ export default function RushPage() {
               index={index}
             />
           ))}
-        </div>
-
-        {/* Related Links */}
-        <div className="mt-8 pt-6 border-t border-white/5">
-          <h2 className="text-lg font-bold text-white mb-3">More Ways to Save</h2>
-          <div className="flex flex-wrap gap-3">
-            <Link href="/discount-tickets" className="text-brand hover:text-brand-hover transition-colors text-sm">
-              All Discount Tickets →
-            </Link>
-            <Link href="/lotteries" className="text-brand hover:text-brand-hover transition-colors text-sm">
-              Lottery Tickets →
-            </Link>
-            <Link href="/standing-room" className="text-brand hover:text-brand-hover transition-colors text-sm">
-              Standing Room →
-            </Link>
-            <Link href="/best-value" className="text-brand hover:text-brand-hover transition-colors text-sm">
-              Best Value →
-            </Link>
-          </div>
         </div>
 
         {/* Data Source Note */}

@@ -5214,7 +5214,8 @@ function findReviewsToProcess() {
       const reviewId = `${showId}/${file}`;
 
       // Skip permanently failed (3+ failures across runs)
-      if (permanentlyFailed.has(reviewId)) continue;
+      // Bypass when explicitly targeting files (review_filter or show_filter) — always retry
+      if (permanentlyFailed.has(reviewId) && CONFIG.reviewFilter.size === 0 && !CONFIG.showFilter) continue;
       // Skip already processed in this run
       if (state.processed.includes(reviewId)) continue;
       // Skip failed unless retry mode
