@@ -18,10 +18,20 @@
     "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
     "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
     "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
-    "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json"
+    "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "hadestown-west-end-2024/variety--marilyn-stasio.json",
+    "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+    "oh-mary-west-end-2025/variety--unknown.json",
+    "paranormal-activity-west-end-2025/variety--unknown.json",
+    "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
+    "the-mousetrap-west-end-2021/variety--unknown.json",
+    "the-holy-rosenbergs-west-end-2026/timeout--unknown.json",
+    "every-brilliant-thing-2026/nysr--frank-scheck.json"
   ],
   "failed": [
-    "the-monsters-off-broadway-2026/talkinbroadway--james-wilson.json"
+    "the-monsters-off-broadway-2026/talkinbroadway--james-wilson.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/thestage--tim-bano.json",
+    "dracula-west-end-2025/thestage--sam-marlowe.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -39,9 +49,22 @@
       "an-ark-off-broadway-2026/nytg--kyle-turner.json",
       "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
       "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
-      "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json"
+      "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "the-holy-rosenbergs-west-end-2026/timeout--unknown.json",
+      "every-brilliant-thing-2026/nysr--frank-scheck.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
+      "hadestown-west-end-2024/variety--marilyn-stasio.json",
+      "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
+      "oh-mary-west-end-2025/variety--unknown.json",
+      "data/review-texts/paranormal-activity-west-end-2025/variety--unknown.json",
+      "paranormal-activity-west-end-2025/variety--unknown.json",
+      "data/review-texts/the-mousetrap-west-end-2021/variety--unknown.json",
+      "the-mousetrap-west-end-2021/variety--unknown.json"
+    ],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
@@ -51,14 +74,40 @@
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/the-monsters-off-broadway-2026/talkinbroadway--james-wilson.json"
+      "data/review-texts/the-monsters-off-broadway-2026/talkinbroadway--james-wilson.json",
+      "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/thestage--tim-bano.json",
+      "data/review-texts/dracula-west-end-2025/thestage--sam-marlowe.json"
     ],
     "archive": [
       "mother-russia-off-broadway-2026/vulture--sara-holdren.json",
-      "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json"
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
+      "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json"
     ]
   },
   "startTime": "2026-03-13T10:30:15.426Z",
-  "lastProcessed": "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
-  "log": []
+  "lastProcessed": "every-brilliant-thing-2026/nysr--frank-scheck.json",
+  "log": [
+    {
+      "t": "2026-03-13T10:58:48.048Z",
+      "event": "bb-session",
+      "session": "48164a75",
+      "url": "https://www.thestage.co.uk/long-reviews/cabaret-review-eddie-redmayne-jessie-buc"
+    },
+    {
+      "t": "2026-03-13T10:58:49.454Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-13T11:00:21.142Z",
+      "event": "bb-session",
+      "session": "eda3d1e3",
+      "url": "https://www.thestage.co.uk/long-reviews/dracula-review-noel-coward-theatre-kip-w"
+    },
+    {
+      "t": "2026-03-13T11:00:22.722Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }
