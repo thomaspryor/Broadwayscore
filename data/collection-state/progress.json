@@ -34,7 +34,17 @@
     "trash-off-broadway-2026/theatermania--unknown.json",
     "body-count-off-broadway-2026/theater-scene--tony-marinelli.json",
     "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
-    "an-ark-off-broadway-2026/nytg--kyle-turner.json"
+    "an-ark-off-broadway-2026/nytg--kyle-turner.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
+    "back-to-the-future-west-end-2021/variety--david-benedict.json",
+    "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+    "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+    "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+    "chess-2025/hollywood-reporter--angie-han.json",
+    "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nytg--allison-considine.json",
+    "death-becomes-her-2024/newyorker--helen-shaw.json"
   ],
   "failed": [
     "the-devil-wears-prada-west-end-2024/broadwayworld--unknown.json",
@@ -83,10 +93,22 @@
       "trash-off-broadway-2026/theatermania--unknown.json",
       "body-count-off-broadway-2026/theater-scene--tony-marinelli.json",
       "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
-      "an-ark-off-broadway-2026/nytg--kyle-turner.json"
+      "an-ark-off-broadway-2026/nytg--kyle-turner.json",
+      "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+      "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+      "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+      "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "data-off-broadway-2026/nytg--allison-considine.json"
     ],
-    "amp": [],
-    "browserbase": [],
+    "amp": [
+      "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "back-to-the-future-west-end-2021/variety--david-benedict.json"
+    ],
+    "browserbase": [
+      "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
+      "chess-2025/hollywood-reporter--angie-han.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -101,11 +123,13 @@
     "archive": [
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
       "the-devil-wears-prada-west-end-2024/london-box-office--stuart-king.json",
-      "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json"
+      "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
+      "death-becomes-her-2024/newyorker--helen-shaw.json"
     ]
   },
   "startTime": "2026-03-14T16:00:17.600Z",
-  "lastProcessed": "an-ark-off-broadway-2026/nytg--kyle-turner.json",
+  "lastProcessed": "death-becomes-her-2024/newyorker--helen-shaw.json",
   "log": [
     {
       "t": "2026-03-14T16:02:23.759Z",
@@ -128,6 +152,17 @@
       "t": "2026-03-14T16:09:12.954Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-14T18:46:02.080Z",
+      "event": "bb-session",
+      "session": "af56fbaf",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-14T18:46:03.758Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
