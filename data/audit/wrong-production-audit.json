@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-14T11:59:15.525Z",
+  "timestamp": "2026-03-14T12:09:09.249Z",
   "stats": {
     "totalReviews": 31306,
     "alreadyFlagged": 9466,
     "dateGuardCatches": 125,
     "directorMismatch": 1120,
-    "tvFilmSignals": 3485,
+    "tvFilmSignals": 3486,
     "londonSignals": 1014,
     "offBroadwaySignals": 1087,
     "yearMismatch": 94,
-    "noPublishDate": 9400
+    "noPublishDate": 9399
   },
   "findings": [
     {
@@ -55595,6 +55595,20 @@
       "score": 76,
       "publishDate": null,
       "url": "https://www.austinchronicle.com/arts/review-the-lion-king-roars-strong-12141775/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-1997",
+      "file": "timeout--adam-feldman.json",
+      "score": 85,
+      "publishDate": "March 29th, 2012",
+      "url": "http://www.timeout.com/newyork/theater/the-lion-king-1",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
