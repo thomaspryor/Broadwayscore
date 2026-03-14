@@ -165,7 +165,16 @@
     "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/nytg--kyle-turner.json",
     "mj-2022/hollywood-reporter--lovia-gyarkye.json",
     "mj-2022/vulture--helen-shaw.json",
-    "mother-russia-off-broadway-2026/nytg--amelia-merrill.json"
+    "mother-russia-off-broadway-2026/nytg--amelia-merrill.json",
+    "moulin-rouge-2019/nytimes--ben-brantley.json",
+    "night-side-songs-off-broadway-2026/nytg--kyle-turner.json",
+    "night-side-songs-off-broadway-2026/vulture--jonathan-mandell.json",
+    "oh-mary-2024/hollywood-reporter--david-rooney.json",
+    "oh-mary-2024/nytimes--erik-piepenburg.json",
+    "oh-mary-2024/vulture--helen-shaw.json",
+    "pied-a-terre-off-broadway-2026/nytg--unknown.json",
+    "ragtime-2025/nyt-theater--unknown.json",
+    "ragtime-2025/nytimes--unknown.json"
   ],
   "failed": [
     "deep-azure-globe-west-end-2026/nytimes--unknown.json",
@@ -201,7 +210,8 @@
     "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
     "every-brilliant-thing-2026/nytimes--helen-shaw.json",
     "hadestown-2019/newyorker--hilton-als.json",
-    "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json"
+    "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+    "six-2021/newyorker--naomi-fry.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -316,7 +326,11 @@
       "just-in-time-2025/nytimes--adam-feldman.json",
       "masquerade-off-broadway-2025/nytg--gillian-russo.json",
       "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/nytg--kyle-turner.json",
-      "mother-russia-off-broadway-2026/nytg--amelia-merrill.json"
+      "mother-russia-off-broadway-2026/nytg--amelia-merrill.json",
+      "night-side-songs-off-broadway-2026/nytg--kyle-turner.json",
+      "night-side-songs-off-broadway-2026/vulture--jonathan-mandell.json",
+      "pied-a-terre-off-broadway-2026/nytg--unknown.json",
+      "ragtime-2025/nyt-theater--unknown.json"
     ],
     "amp": [
       "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
@@ -348,7 +362,9 @@
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
       "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
       "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
-      "mj-2022/hollywood-reporter--lovia-gyarkye.json"
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "data/review-texts/oh-mary-2024/hollywood-reporter--david-rooney.json",
+      "oh-mary-2024/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -412,11 +428,15 @@
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
       "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
       "maybe-happy-ending-2024/vulture--sara-holdren.json",
-      "mj-2022/vulture--helen-shaw.json"
+      "mj-2022/vulture--helen-shaw.json",
+      "moulin-rouge-2019/nytimes--ben-brantley.json",
+      "oh-mary-2024/nytimes--erik-piepenburg.json",
+      "oh-mary-2024/vulture--helen-shaw.json",
+      "ragtime-2025/nytimes--unknown.json"
     ]
   },
   "startTime": "2026-03-14T08:23:12.185Z",
-  "lastProcessed": "mother-russia-off-broadway-2026/nytg--amelia-merrill.json",
+  "lastProcessed": "six-2021/newyorker--naomi-fry.json",
   "log": [
     {
       "t": "2026-03-14T08:23:26.634Z",
@@ -498,6 +518,17 @@
     },
     {
       "t": "2026-03-14T09:34:23.361Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-14T09:35:15.922Z",
+      "event": "bb-session",
+      "session": "d3593eb7",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
+    },
+    {
+      "t": "2026-03-14T09:35:17.099Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }

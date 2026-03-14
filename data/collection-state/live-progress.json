@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-14T09:34:53.256Z",
-  "processed": 166,
-  "failed": 34,
-  "successRate": "83.0%",
+  "updatedAt": "2026-03-14T09:36:07.951Z",
+  "processed": 175,
+  "failed": 35,
+  "successRate": "83.3%",
   "tierBreakdown": {
-    "playwright": 111,
+    "playwright": 115,
     "amp": 16,
-    "browserbase": 12,
+    "browserbase": 14,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 16,
-    "archive": 41
+    "archive": 45
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-03-14T08:23:26.634Z",
@@ -95,6 +95,17 @@
     },
     {
       "t": "2026-03-14T09:34:23.361Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-14T09:35:15.922Z",
+      "event": "bb-session",
+      "session": "d3593eb7",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
+    },
+    {
+      "t": "2026-03-14T09:35:17.099Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
