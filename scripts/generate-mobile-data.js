@@ -230,9 +230,7 @@ const mobileShows = visibleShows.map(show => {
   const buzz = audienceBuzz[show.id];
   let audienceGrade = null;
   if (buzz && buzz.combinedScore != null) {
-    const totalReviews = (buzz.sources?.showScore?.reviewCount || 0)
-      + (buzz.sources?.mezzanine?.reviewCount || 0)
-      + (buzz.sources?.reddit?.reviewCount || 0);
+    const totalReviews = Object.values(buzz.sources || {}).reduce((sum, s) => sum + (s?.reviewCount || 0), 0);
     if (totalReviews >= MIN_AUDIENCE_REVIEWS) {
       audienceGrade = getAudienceGrade(buzz.combinedScore);
     }
