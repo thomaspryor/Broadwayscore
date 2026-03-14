@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-14T15:53:58.572Z",
+  "timestamp": "2026-03-14T16:20:58.017Z",
   "stats": {
     "totalReviews": 31310,
-    "alreadyFlagged": 9491,
+    "alreadyFlagged": 9492,
     "dateGuardCatches": 125,
     "directorMismatch": 1119,
     "tvFilmSignals": 3482,
-    "londonSignals": 1012,
+    "londonSignals": 1011,
     "offBroadwaySignals": 1084,
     "yearMismatch": 95,
     "noPublishDate": 9398
@@ -67011,20 +67011,6 @@
       ]
     },
     {
-      "showId": "beautiful-little-fool-west-end-2026",
-      "file": "standard--nick-curtis.json",
-      "score": 42,
-      "publishDate": "January 26, 2026",
-      "url": "https://www.standard.co.uk/culture/theatre/beautiful-little-fool-southwark-playhouse-borough-review-b1268145.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
       "showId": "beautiful-the-carole-king-musical-2014",
       "file": "the-globe-and-mail--kelly-nestruck.json",
       "score": 65,
@@ -84048,7 +84034,7 @@
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
