@@ -364,7 +364,16 @@
     "every-brilliant-thing-2026/usatoday--patrick-ryan.json",
     "friends-the-musical-parody-off-broadway-2022/says-me-says-mom--jeryl-marcus.json",
     "friends-the-musical-parody-off-broadway-2022/stagebuddy--bill-crouch.json",
-    "friends-the-musical-parody-off-broadway-2022/theater-life--iris-wiener.json"
+    "friends-the-musical-parody-off-broadway-2022/theater-life--iris-wiener.json",
+    "friends-the-musical-parody-off-broadway-2022/zeal-nyc--megan-wrappe.json",
+    "hadestown-2019/amny--matt-windman.json",
+    "hadestown-2019/chicagotribune--chris-jones.json",
+    "hadestown-2019/medium--christian-lewis.json",
+    "hadestown-2019/theater-life--barry-gordin.json",
+    "hadestown-2019/washpost--peter-marks.json",
+    "hadestown-2019/washpost--unknown.json",
+    "hamilton-2015/ap--mark-kennedy.json",
+    "hamilton-2015/broadwayworld--michael-dale.json"
   ],
   "failed": [
     "deep-azure-globe-west-end-2026/nytimes--unknown.json",
@@ -451,7 +460,8 @@
     "chess-2025/one-minute-critic--matthew-wexler.json",
     "cold-war-choir-practice-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "every-brilliant-thing-2026/independent--unknown.json",
-    "every-brilliant-thing-2026/one-minute-critic--unknown.json"
+    "every-brilliant-thing-2026/one-minute-critic--unknown.json",
+    "giant-2026/ap--jennifer-farrar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -716,7 +726,13 @@
       "every-brilliant-thing-2026/playbill--unknown.json",
       "every-brilliant-thing-2026/the-la-times--unknown.json",
       "friends-the-musical-parody-off-broadway-2022/says-me-says-mom--jeryl-marcus.json",
-      "friends-the-musical-parody-off-broadway-2022/theater-life--iris-wiener.json"
+      "friends-the-musical-parody-off-broadway-2022/theater-life--iris-wiener.json",
+      "hadestown-2019/chicagotribune--chris-jones.json",
+      "hadestown-2019/medium--christian-lewis.json",
+      "hadestown-2019/theater-life--barry-gordin.json",
+      "hadestown-2019/washpost--peter-marks.json",
+      "hadestown-2019/washpost--unknown.json",
+      "hamilton-2015/ap--mark-kennedy.json"
     ],
     "amp": [
       "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
@@ -764,7 +780,9 @@
       "data/review-texts/buena-vista-social-club-2025/amny--matt-windman.json",
       "buena-vista-social-club-2025/amny--matt-windman.json",
       "data/review-texts/every-brilliant-thing-2026/amny--matt-windman.json",
-      "every-brilliant-thing-2026/amny--matt-windman.json"
+      "every-brilliant-thing-2026/amny--matt-windman.json",
+      "data/review-texts/hadestown-2019/amny--matt-windman.json",
+      "hadestown-2019/amny--matt-windman.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json"
@@ -901,11 +919,13 @@
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json",
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theatre-is-easy--brooke-viegut.json",
       "every-brilliant-thing-2026/usatoday--patrick-ryan.json",
-      "friends-the-musical-parody-off-broadway-2022/stagebuddy--bill-crouch.json"
+      "friends-the-musical-parody-off-broadway-2022/stagebuddy--bill-crouch.json",
+      "friends-the-musical-parody-off-broadway-2022/zeal-nyc--megan-wrappe.json",
+      "hamilton-2015/broadwayworld--michael-dale.json"
     ]
   },
   "startTime": "2026-03-14T08:23:12.185Z",
-  "lastProcessed": "friends-the-musical-parody-off-broadway-2022/theater-life--iris-wiener.json",
+  "lastProcessed": "hamilton-2015/broadwayworld--michael-dale.json",
   "log": [
     {
       "t": "2026-03-14T08:23:26.634Z",
@@ -1053,6 +1073,17 @@
     },
     {
       "t": "2026-03-14T11:18:26.885Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-14T11:26:48.038Z",
+      "event": "bb-session",
+      "session": "d4b0fced",
+      "url": "https://www.amny.com/entertainment/hadestown-review-1-29924932/"
+    },
+    {
+      "t": "2026-03-14T11:26:49.515Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     }

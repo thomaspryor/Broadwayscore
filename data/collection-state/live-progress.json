@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-14T11:26:35.164Z",
-  "processed": 365,
-  "failed": 85,
-  "successRate": "81.1%",
+  "updatedAt": "2026-03-14T11:28:37.791Z",
+  "processed": 374,
+  "failed": 86,
+  "successRate": "81.3%",
   "tierBreakdown": {
-    "playwright": 261,
+    "playwright": 267,
     "amp": 24,
-    "browserbase": 20,
+    "browserbase": 22,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 44,
-    "archive": 84
+    "archive": 86
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-03-14T09:29:32.682Z",
-      "event": "bb-session",
-      "session": "b1271764",
-      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
-    },
-    {
-      "t": "2026-03-14T09:29:33.838Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-14T09:29:49.039Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-14T11:18:26.885Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-14T11:26:48.038Z",
+      "event": "bb-session",
+      "session": "d4b0fced",
+      "url": "https://www.amny.com/entertainment/hadestown-review-1-29924932/"
+    },
+    {
+      "t": "2026-03-14T11:26:49.515Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     }
