@@ -393,8 +393,16 @@ async function runFullScrape(className) {
   let productions = filterNYCOrLondon(allProductions)
     .filter(p => (p.diaryEntriesCount || p.ratingsCount || 0) > 0);
 
-  // Sort by entry count descending (big shows first — most valuable data)
-  productions.sort((a, b) => (b.diaryEntriesCount || b.ratingsCount || 0) - (a.diaryEntriesCount || a.ratingsCount || 0));
+  // Sort by most recent first — if we get cut off, we want current shows covered
+  // Falls back to entry count for shows without dates
+  productions.sort((a, b) => {
+    const dateA = a.updatedAt || a.createdAt || '';
+    const dateB = b.updatedAt || b.createdAt || '';
+    if (dateA && dateB) return dateB.localeCompare(dateA); // newest first
+    if (dateA) return -1;
+    if (dateB) return 1;
+    return (b.diaryEntriesCount || 0) - (a.diaryEntriesCount || 0); // fallback: biggest first
+  });
 
   console.log(`Filtered to ${productions.length} NYC/London productions with entries\n`);
 
