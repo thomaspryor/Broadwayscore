@@ -132,7 +132,7 @@ function fetchRaw(url) {
 async function discoverRoundupUrls() {
   console.log('Fetching LBO sitemap...');
 
-  const xml = await fetchRaw('https://londonboxoffice.co.uk/news-sitemap.xml');
+  const xml = await fetchRaw('https://www.londonboxoffice.co.uk/news-sitemap.xml');
   const $ = cheerio.load(xml, { xmlMode: true });
 
   const roundups = [];
