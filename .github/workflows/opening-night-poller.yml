@@ -1,0 +1,195 @@
+name: Opening Night Poller
+
+# Fast review discovery for opening nights. Runs 4 layers:
+#   1. Aggregators (BWW RR, Show Score, DTLI) — fastest
+#   2. RSS feeds (Variety, NYT, Guardian) — free
+#   3. Direct site search (outlet search endpoints) — instant
+#   4. SERP backup (Google) — catches the rest
+#
+# Polls every 15 min from 2-7 AM UTC (9 PM-2 AM ET) on opening nights.
+# Creates review files for newly discovered reviews.
+# After discovery: triggers collect → rebuild → score pipeline chain.
+#
+# Separate from opening-night-broadcast.yml (thin check & send).
+# This does the heavy discovery lifting.
+
+on:
+  schedule:
+    # Every 15 min from 2-7 AM UTC (9 PM-2 AM ET)
+    - cron: '0 2 * * *'
+    - cron: '15 2 * * *'
+    - cron: '30 2 * * *'
+    - cron: '45 2 * * *'
+    - cron: '0 3 * * *'
+    - cron: '15 3 * * *'
+    - cron: '30 3 * * *'
+    - cron: '45 3 * * *'
+    - cron: '0 4 * * *'
+    - cron: '15 4 * * *'
+    - cron: '30 4 * * *'
+    - cron: '45 4 * * *'
+    - cron: '0 5 * * *'
+    - cron: '30 5 * * *'
+    - cron: '0 6 * * *'
+    - cron: '0 7 * * *'
+  workflow_dispatch:
+    inputs:
+      show_id:
+        description: 'Show ID to poll (leave empty for auto-discovery)'
+        required: false
+        type: string
+        default: ''
+      lookback_days:
+        description: 'Days back to check for openings (default 2)'
+        required: false
+        type: number
+        default: 2
+      skip_serp:
+        description: 'Skip SERP layer (save API credits)'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: opening-night-poller
+  cancel-in-progress: true
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Find shows to poll
+        id: find
+        run: |
+          LOOKBACK=${{ inputs.lookback_days || 2 }}
+          INPUT_SHOW="${{ inputs.show_id }}"
+
+          if [ -n "$INPUT_SHOW" ]; then
+            echo "Using manual show: $INPUT_SHOW"
+            echo "shows=$INPUT_SHOW" >> $GITHUB_OUTPUT
+            echo "has_shows=true" >> $GITHUB_OUTPUT
+          else
+            SHOWS=$(node -e "
+              const shows = require('./data/shows.json').shows;
+              const now = new Date();
+              const cutoff = new Date(now);
+              cutoff.setDate(cutoff.getDate() - $LOOKBACK);
+              cutoff.setHours(0,0,0,0);
+              const opened = shows.filter(s => {
+                if (s.status !== 'open' || !s.openingDate) return false;
+                const cat = s.category || 'broadway';
+                if (cat !== 'broadway' && cat !== 'west-end') return false;
+                const d = new Date(s.openingDate);
+                d.setHours(0,0,0,0);
+                return d >= cutoff && d <= now;
+              });
+              if (opened.length > 0) console.log(opened.map(s => s.id).join(','));
+            ")
+
+            if [ -z "$SHOWS" ]; then
+              echo "No recently opened shows"
+              echo "has_shows=false" >> $GITHUB_OUTPUT
+            else
+              echo "Recently opened shows: $SHOWS"
+              echo "shows=$SHOWS" >> $GITHUB_OUTPUT
+              echo "has_shows=true" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      # Early exit if no shows — skip Node setup entirely
+      - name: Early exit check
+        if: steps.find.outputs.has_shows != 'true'
+        run: echo "No shows to poll. Exiting."
+
+      - uses: actions/setup-node@v4
+        if: steps.find.outputs.has_shows == 'true'
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        if: steps.find.outputs.has_shows == 'true'
+        run: npm ci
+
+      - name: Install Playwright
+        if: steps.find.outputs.has_shows == 'true'
+        run: npx playwright install chromium
+
+      - name: Run poller for each show
+        if: steps.find.outputs.has_shows == 'true'
+        id: poll
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+        run: |
+          IFS=',' read -ra SHOW_ARRAY <<< "${{ steps.find.outputs.shows }}"
+          ANY_NEW=false
+          ANY_READY=false
+          SKIP_SERP_FLAG=""
+          if [ "${{ inputs.skip_serp }}" = "true" ]; then
+            SKIP_SERP_FLAG="--skip-serp"
+          fi
+
+          for SHOW_ID in "${SHOW_ARRAY[@]}"; do
+            echo "════════════════════════════════════════"
+            echo "Polling: $SHOW_ID"
+            echo "════════════════════════════════════════"
+            node scripts/opening-night-poller.js --show="$SHOW_ID" $SKIP_SERP_FLAG 2>&1 || true
+
+            # Check if files were created
+            CREATED=$(git status --porcelain data/review-texts/ | wc -l | tr -d ' ')
+            if [ "$CREATED" -gt 0 ]; then
+              ANY_NEW=true
+              echo "  → $CREATED new review files"
+            fi
+          done
+
+          echo "any_new=$ANY_NEW" >> $GITHUB_OUTPUT
+
+      - name: Commit new review files
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        run: |
+          cd data/review-texts
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "data: Opening night poller — new reviews discovered [skip ci]"
+          bash ../../scripts/lib/push-with-retry.sh 5 main
+
+      - name: Trigger pipeline chain (collect → rebuild → score)
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          SHOWS="${{ steps.find.outputs.shows }}"
+          echo "Triggering collect for: $SHOWS"
+          gh workflow run "Collect Review Texts" \
+            -f show_filter="$SHOWS" \
+            -f max_reviews=100 \
+            -f batch_size=10
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Opening Night Poller Failed'
+          severity: 'critical'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
