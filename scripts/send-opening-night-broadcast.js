@@ -23,7 +23,7 @@ const fs = require('fs');
 const path = require('path');
 const { sendAlert } = require('./lib/discord-notify');
 const {
-  postJSON, sleep, buildBroadcastOpeningNightHtml, buildBroadcastApprovalHtml,
+  postJSON, sleep, buildBroadcastOpeningNightHtml, buildBroadcastApprovalHtml, buildUnsubscribeUrl,
 } = require('./lib/email-templates');
 
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -316,8 +316,20 @@ async function main() {
 
   if (SEND_TO) {
     // Preview mode: send single transactional email (with custom unsubscribe link)
+    // Dedup: skip if we already previewed this show combination today (prevents spam from workflow_run triggers)
+    const today = new Date().toISOString().slice(0, 10);
+    const previewKey = `preview:${broadcastKey}:${today}`;
+    if (sentData.shows[previewKey]?.sentAt) {
+      console.log(`\nPreview already sent today for this show combination — skipping`);
+      console.log(`  Previous preview: ${sentData.shows[previewKey].sentAt}`);
+      process.exit(0);
+    }
+
     console.log(`\nSending preview to ${SEND_TO}...`);
     const html = buildBroadcastOpeningNightHtml(showsForEmail, SEND_TO, MARKET);
+
+    // Build unsubscribe URL for List-Unsubscribe header (RFC 8058)
+    const unsubUrl = buildUnsubscribeUrl(SEND_TO, MARKET);
 
     try {
       await postJSON('https://api.resend.com/emails', {
@@ -325,6 +337,10 @@ async function main() {
         to: [SEND_TO],
         subject,
         html,
+        headers: {
+          'List-Unsubscribe': `<${unsubUrl}>`,
+          'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+        },
       }, {
         'Authorization': `Bearer ${RESEND_API_KEY}`,
       });
@@ -395,10 +411,11 @@ async function main() {
 
   // Post-send actions (preview mode only: approval email)
   if (SEND_TO) {
-    // Track preview sends to prevent duplicate previews for same show+hour
-    const previewKey = `preview:${broadcastKey}:${process.env.BROADCAST_HOUR || 'manual'}`;
-    const alreadyPreviewed = !!sentData.shows[previewKey];
-    sentData.shows[previewKey] = { sentAt: new Date().toISOString(), previewTo: SEND_TO };
+    // Track preview send using today-based key (matches dedup check above)
+    const today2 = new Date().toISOString().slice(0, 10);
+    const previewKey2 = `preview:${broadcastKey}:${today2}`;
+    const alreadyPreviewed = !!sentData.shows[previewKey2];
+    sentData.shows[previewKey2] = { sentAt: new Date().toISOString(), previewTo: SEND_TO };
     saveSentData(sentData);
 
     console.log(`\nPreview sent to ${SEND_TO}`);

@@ -22,9 +22,6 @@ on:
     - cron: '30 4 * * *'   # 4:30 AM UTC = 11:30 PM ET
     - cron: '0 5 * * *'    # 5 AM UTC = midnight ET
     - cron: '0 8 * * *'    # 8 AM UTC = 3 AM ET — final catch-up
-  workflow_run:
-    workflows: ["LLM Ensemble Score Reviews"]
-    types: [completed]
   workflow_dispatch:
     inputs:
       lookback_days:
