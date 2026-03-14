@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-14T08:04:22.062Z",
+  "timestamp": "2026-03-14T08:47:42.483Z",
   "stats": {
-    "totalReviews": 31150,
-    "alreadyFlagged": 9343,
+    "totalReviews": 31154,
+    "alreadyFlagged": 9349,
     "dateGuardCatches": 127,
-    "directorMismatch": 1114,
-    "tvFilmSignals": 3486,
-    "londonSignals": 1016,
+    "directorMismatch": 1113,
+    "tvFilmSignals": 3487,
+    "londonSignals": 1015,
     "offBroadwaySignals": 1088,
     "yearMismatch": 94,
-    "noPublishDate": 9426
+    "noPublishDate": 9425
   },
   "findings": [
     {
@@ -23774,6 +23774,20 @@
     },
     {
       "showId": "hercules-west-end-2025",
+      "file": "times-uk--clive-davis.json",
+      "score": 42,
+      "publishDate": "2025-06-24",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/hercules-review-mighty-muses-save-disneys-musclebound-musical-wp3rcgnz6",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "hercules-west-end-2025",
       "file": "variety--david-benedict.json",
       "score": 49,
       "publishDate": "2025-06-24",
@@ -26433,20 +26447,6 @@
       "score": 86,
       "publishDate": "2025-12-12",
       "url": "https://www.theguardian.com/stage/2025/dec/12/into-the-woods-review-bridge-theatre-london",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2025",
-      "file": "independent--louis-chilton.json",
-      "score": 80,
-      "publishDate": "December 12th, 2025",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/into-the-woods-bridge-theatre-sondheim-review-b2883199.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -76555,20 +76555,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
-        }
-      ]
-    },
-    {
-      "showId": "manic-street-creature-west-end-2026",
-      "file": "broadwayworld--unknown.json",
-      "score": 75,
-      "publishDate": "2026-03-02",
-      "url": "https://www.broadwayworld.com/westend/article/Guest-Blog-Director-Kirsty-Patrick-Ward-on-Collaboration-Rejuvenation-and-Development-of-MANIC-STREET-CREATURE-20260302",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
