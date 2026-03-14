@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-03-14T08:45:19.277Z",
-  "processed": 131,
-  "failed": 19,
-  "successRate": "87.3%",
+  "updatedAt": "2026-03-14T09:15:55.680Z",
+  "processed": 139,
+  "failed": 21,
+  "successRate": "86.9%",
   "tierBreakdown": {
-    "playwright": 88,
+    "playwright": 95,
     "amp": 16,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 8,
+    "archiveToday": 9,
     "archive": 35
   },
   "browserbaseSessions": 1,
@@ -20,6 +20,17 @@
       "event": "bb-session",
       "session": "7a4c3ba4",
       "url": "https://www.nytimes.com/2026/03/05/theater/chadwick-boseman-deep-azure.html"
+    },
+    {
+      "t": "2026-03-14T09:14:17.384Z",
+      "event": "bb-session",
+      "session": "67b9adf0",
+      "url": "https://www.nytimes.com/2026/03/05/theater/chadwick-boseman-deep-azure.html"
+    },
+    {
+      "t": "2026-03-14T09:14:18.446Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
