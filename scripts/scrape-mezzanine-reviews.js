@@ -58,9 +58,18 @@ const checkpointPath = path.join(reviewsDir, '_checkpoint.json');
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
+const TRANSIENT_ERRORS = ['ECONNRESET', 'ETIMEDOUT', 'ENOTFOUND', 'EPIPE', 'EAI_AGAIN', 'socket hang up'];
+
+function isTransientError(err) {
+  return TRANSIENT_ERRORS.some(code => err.message.includes(code)) || err.message.includes('Request timeout');
+}
+
 let totalRequests = 0;
 
-function queryParse(className, body, retries = 0) {
+// [FIX: P0 #2 — renamed inner 'body' to 'resBody' to avoid shadowing the request payload]
+// [FIX: P0 #1 — added retry for transient network errors (ECONNRESET, timeout, etc.)]
+// [FIX: P1 #16 — retry on 500/503 server errors]
+function queryParse(className, requestBody, retries = 0) {
   return new Promise((resolve, reject) => {
     totalRequests++;
     if (totalRequests > maxRequests) {
@@ -68,7 +77,7 @@ function queryParse(className, body, retries = 0) {
       return;
     }
 
-    const data = JSON.stringify(body);
+    const data = JSON.stringify(requestBody);
     const req = https.request({
       hostname: 'api.theaterdiary.com',
       path: '/parse/classes/' + className,
@@ -80,36 +89,62 @@ function queryParse(className, body, retries = 0) {
         'Content-Length': Buffer.byteLength(data),
       }
     }, res => {
-      let body = '';
-      res.on('data', c => body += c);
+      let resBody = '';
+      res.on('data', c => resBody += c);
       res.on('end', async () => {
         if (res.statusCode === 401 || res.statusCode === 403) {
           reject(new Error(`Authentication failed (${res.statusCode}). Session token may have expired.\nRe-intercept Mezzanine iOS app via mitmproxy to get a fresh token.`));
           return;
         }
-        if (res.statusCode === 429) {
+        // Retry on 429, 500, 502, 503
+        if (res.statusCode === 429 || res.statusCode >= 500) {
           if (retries < MAX_RETRIES) {
             const backoff = Math.min(30000 * Math.pow(2, retries), 300000);
-            console.warn(`  Rate limited (429). Backing off ${backoff / 1000}s (retry ${retries + 1}/${MAX_RETRIES})...`);
+            console.warn(`  Server ${res.statusCode}. Backing off ${backoff / 1000}s (retry ${retries + 1}/${MAX_RETRIES})...`);
             await sleep(backoff);
-            totalRequests--; // don't count retries against cap
+            totalRequests--;
             try {
-              resolve(await queryParse(className, body, retries + 1));
+              resolve(await queryParse(className, requestBody, retries + 1));
             } catch (e) { reject(e); }
             return;
           }
-          reject(new Error('Rate limited after max retries. Try again later.'));
+          reject(new Error(`Server error ${res.statusCode} after max retries.`));
           return;
         }
-        try { resolve(JSON.parse(body)); }
-        catch (e) { reject(new Error('JSON parse error: ' + body.substring(0, 200))); }
+        try { resolve(JSON.parse(resBody)); }
+        catch (e) { reject(new Error('JSON parse error: ' + resBody.substring(0, 200))); }
       });
     });
-    req.on('error', reject);
-    req.setTimeout(30000, () => { req.destroy(); reject(new Error('Request timeout')); });
+
+    // Retry transient network errors
+    req.on('error', async (err) => {
+      if (isTransientError(err) && retries < MAX_RETRIES) {
+        const backoff = Math.min(5000 * Math.pow(2, retries), 60000);
+        console.warn(`  Network error: ${err.message}. Retrying in ${backoff / 1000}s (${retries + 1}/${MAX_RETRIES})...`);
+        await sleep(backoff);
+        totalRequests--;
+        try {
+          resolve(await queryParse(className, requestBody, retries + 1));
+        } catch (e) { reject(e); }
+        return;
+      }
+      reject(err);
+    });
+
+    req.setTimeout(30000, () => { req.destroy(); });
     req.write(data);
     req.end();
   });
+}
+
+/**
+ * Write JSON file atomically — write to .tmp then rename.
+ * [FIX: P1 #6/#7 — prevents corrupt files on crash]
+ */
+function writeJsonAtomic(filePath, data) {
+  const tmp = filePath + '.tmp';
+  fs.writeFileSync(tmp, JSON.stringify(data, null, 2));
+  fs.renameSync(tmp, filePath);
 }
 
 function queryParseGet(path_) {
@@ -293,7 +328,8 @@ async function fetchEntriesForProduction(productionId, className) {
     let useSkip = skip;
     if (skip >= PARSE_MAX_SKIP && lastCreatedAt) {
       // Cursor-based: fetch entries created after the last one we saw
-      where.createdAt = { '$gt': { __type: 'Date', iso: lastCreatedAt } };
+      // [FIX: P1 #5 — use $gte not $gt to avoid losing entries with identical timestamps]
+      where.createdAt = { '$gte': { __type: 'Date', iso: lastCreatedAt } };
       useSkip = 0;
     }
 
@@ -438,13 +474,43 @@ async function runFullScrape(className) {
     process.exit(1);
   }
 
-  // 8. Scrape each production
+  // 8. Set up graceful shutdown on Ctrl+C
+  // [FIX: P2 #12 — save checkpoint on SIGINT instead of losing progress]
+  let shuttingDown = false;
+  function saveCheckpointAndExit() {
+    if (shuttingDown) return;
+    shuttingDown = true;
+    console.log('\n\nSIGINT received — saving checkpoint...');
+    checkpoint.totalRequests = totalRequests;
+    writeJsonAtomic(checkpointPath, checkpoint);
+    writeJsonAtomic(indexPath, index);
+    console.log(`Checkpoint saved. ${Object.keys(checkpoint.completed).length} productions completed. Use --resume to continue.`);
+    process.exit(0);
+  }
+  process.on('SIGINT', saveCheckpointAndExit);
+  process.on('SIGTERM', saveCheckpointAndExit);
+
+  // 9. Set up log file for monitoring
+  // [FIX: P2 #14 — write log to file so overnight runs can be monitored]
+  const logPath = path.join(reviewsDir, '_run.log');
+  const logStream = fs.createWriteStream(logPath, { flags: 'a' });
+  function log(msg) {
+    console.log(msg);
+    logStream.write(`[${new Date().toISOString()}] ${msg}\n`);
+  }
+
+  log(`\n=== Run started at ${new Date().toISOString()} ===`);
+  log(`Productions to process: ${productions.length}`);
+
+  // 10. Scrape each production
   let fetched = 0;
   let errors = 0;
   let totalEntries = 0;
   const startTime = Date.now();
 
   for (let i = 0; i < productions.length; i++) {
+    if (shuttingDown) break;
+
     const p = productions[i];
     const name = p.show?.name || p.showName || 'Unknown';
     const expectedCount = p.diaryEntriesCount || p.ratingsCount || 0;
@@ -454,11 +520,11 @@ async function runFullScrape(className) {
       try {
         await runCanaryCheck(className);
       } catch (e) {
-        console.error(`\nCANARY FAILED at production ${i}: ${e.message}`);
-        console.error('Stopping to prevent writing empty data. Use --resume to continue with a fresh token.');
+        log(`CANARY FAILED at production ${i}: ${e.message}`);
+        log('Stopping to prevent writing empty data. Use --resume to continue with a fresh token.');
         checkpoint.totalRequests = totalRequests;
-        fs.writeFileSync(checkpointPath, JSON.stringify(checkpoint));
-        fs.writeFileSync(indexPath, JSON.stringify(index, null, 2));
+        writeJsonAtomic(checkpointPath, checkpoint);
+        writeJsonAtomic(indexPath, index);
         break;
       }
     }
@@ -468,10 +534,10 @@ async function runFullScrape(className) {
 
       // Warn if we got 0 entries for a production that should have them
       if (entries.length === 0 && expectedCount > 10) {
-        console.warn(`  ⚠ SUSPICIOUS: ${name} returned 0 entries but expected ${expectedCount}. Possible auth issue.`);
+        log(`  ⚠ SUSPICIOUS: ${name} returned 0 entries but expected ${expectedCount}. Possible auth issue.`);
       }
 
-      // Save per-production file
+      // Save per-production file atomically
       const outFile = path.join(reviewsDir, `${p.objectId}.json`);
       const outData = {
         productionId: p.objectId,
@@ -486,7 +552,7 @@ async function runFullScrape(className) {
         totalEntries: entries.length,
         entries: entries,
       };
-      fs.writeFileSync(outFile, JSON.stringify(outData, null, 2));
+      writeJsonAtomic(outFile, outData);
 
       // Update index (metadata only — no nested review arrays)
       index[p.objectId] = {
@@ -498,32 +564,37 @@ async function runFullScrape(className) {
       };
 
       // Update checkpoint with fetchedCount for corruption detection
-      // [CHANGED: store fetchedCount in checkpoint — Pre-mortem P0]
       checkpoint.completed[p.objectId] = { fetchedCount: entries.length };
       checkpoint.totalRequests = totalRequests;
-      fs.writeFileSync(checkpointPath, JSON.stringify(checkpoint));
-      fs.writeFileSync(indexPath, JSON.stringify(index, null, 2));
+      writeJsonAtomic(checkpointPath, checkpoint);
+      writeJsonAtomic(indexPath, index);
 
       fetched++;
       totalEntries += entries.length;
 
+      // Progress with ETA [FIX: P2 #11]
       const mismatch = Math.abs(entries.length - expectedCount) > 2 ? ' ⚠ MISMATCH' : '';
-      if (verbose || (i + 1) % 25 === 0 || mismatch) {
-        const elapsed = ((Date.now() - startTime) / 1000 / 60).toFixed(1);
-        console.log(`  [${i + 1}/${productions.length}] ${name}: ${entries.length}/${expectedCount} entries (${elapsed}min)${mismatch}`);
+      const shouldLog = verbose || (i + 1) % 25 === 0 || mismatch;
+      if (shouldLog) {
+        const elapsedMin = (Date.now() - startTime) / 1000 / 60;
+        const rate = fetched / elapsedMin; // productions per minute
+        const remaining = productions.length - (i + 1);
+        const etaMin = rate > 0 ? (remaining / rate).toFixed(0) : '?';
+        const etaHrs = rate > 0 ? (remaining / rate / 60).toFixed(1) : '?';
+        log(`  [${i + 1}/${productions.length}] ${name}: ${entries.length}/${expectedCount} entries | ${elapsedMin.toFixed(1)}min elapsed, ~${etaHrs}h remaining | ${totalEntries.toLocaleString()} total${mismatch}`);
       }
     } catch (e) {
       errors++;
-      console.error(`  ERROR [${i + 1}/${productions.length}] ${name}: ${e.message}`);
+      log(`  ERROR [${i + 1}/${productions.length}] ${name}: ${e.message}`);
 
       // Save checkpoint on error
       checkpoint.totalRequests = totalRequests;
-      fs.writeFileSync(checkpointPath, JSON.stringify(checkpoint));
-      fs.writeFileSync(indexPath, JSON.stringify(index, null, 2));
+      writeJsonAtomic(checkpointPath, checkpoint);
+      writeJsonAtomic(indexPath, index);
 
       // If it's an auth, canary, or cap error, stop entirely
       if (e.message.includes('Authentication') || e.message.includes('Request cap') || e.message.includes('CANARY')) {
-        console.error('\nStopping due to critical error. Use --resume to continue later.');
+        log('Stopping due to critical error. Use --resume to continue later.');
         break;
       }
     }
