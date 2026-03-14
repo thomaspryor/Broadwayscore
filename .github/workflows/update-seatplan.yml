@@ -59,6 +59,18 @@ jobs:
           # shellcheck disable=SC2086
           node scripts/scrape-seatplan-audience.js $ARGS
 
+      - name: Save core data snapshot
+        if: always() && inputs.dry_run != true
+        run: |
+          # push-core-data compares data/ against /tmp/core-data-snapshot/ to detect changes.
+          # push-with-retry.sh runs git checkout which reverts data/, so snapshot first.
+          mkdir -p /tmp/core-data-snapshot
+          for f in audience-buzz.json; do
+            if [ -f "data/$f" ]; then
+              cp -f "data/$f" /tmp/core-data-snapshot/
+            fi
+          done
+
       - name: Push core data to private repo
         if: always() && inputs.dry_run != true
         uses: ./.github/actions/push-core-data
