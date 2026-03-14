@@ -1,12 +1,19 @@
-name: Theatr Review Discovery
+name: Theatr Comment Scraper
 
 on:
   workflow_dispatch:
+    inputs:
+      max_shows:
+        description: 'Max shows to scrape (0 = all)'
+        default: '5'
+      mode:
+        description: 'discover or scrape'
+        default: 'scrape'
 
 jobs:
-  discover:
+  scrape:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 120
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -16,10 +23,19 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Run Theatr review discovery
+      - name: Run Theatr comment scraper
         env:
           THEATR_REFRESH_TOKEN: ${{ secrets.THEATR_REFRESH_TOKEN }}
-        run: node scripts/scrape-theatr-reviews.js --discover --verbose
+        run: |
+          if [ "${{ inputs.mode }}" = "discover" ]; then
+            node scripts/scrape-theatr-reviews.js --discover --verbose
+          else
+            MAX_FLAG=""
+            if [ "${{ inputs.max_shows }}" != "0" ]; then
+              MAX_FLAG="--max-shows=${{ inputs.max_shows }}"
+            fi
+            node scripts/scrape-theatr-reviews.js $MAX_FLAG --verbose
+          fi
 
       - name: Update refresh token secret
         if: always()
@@ -33,10 +49,11 @@ jobs:
             echo "Refresh token rotated"
           fi
 
-      - name: Upload discovery results
+      - name: Upload results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: theatr-discovery
-          path: data/audience-reviews/theatr/_discovery.json
+          name: theatr-comments
+          path: |
+            data/audience-reviews/theatr/
           if-no-files-found: warn
