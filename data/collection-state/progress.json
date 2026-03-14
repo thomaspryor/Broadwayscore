@@ -117,7 +117,16 @@
     "death-becomes-her-2024/nydailynews--chris-jones.json",
     "death-becomes-her-2024/theatermania--jesse-green.json",
     "death-becomes-her-2024/timeout--adam-feldman.json",
-    "deep-azure-globe-west-end-2026/timeout-london--andrzej-lukowski.json"
+    "deep-azure-globe-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
+    "every-brilliant-thing-2026/deadline--unknown.json",
+    "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
+    "every-brilliant-thing-2026/thewrap--robert-hofler.json",
+    "every-brilliant-thing-2026/timeout--unknown.json",
+    "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json",
+    "hadestown-2019/ew--jessica-derschowitz.json",
+    "hadestown-2019/timeout--adam-feldman.json",
+    "hamilton-2015/wsj--terry-teachout.json"
   ],
   "failed": [
     "the-devil-wears-prada-west-end-2024/broadwayworld--unknown.json",
@@ -137,7 +146,8 @@
     "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
     "six-2021/newyorker--naomi-fry.json",
     "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
-    "all-my-sons-west-end-2025/timeout--andrzej-lukowski.json"
+    "all-my-sons-west-end-2025/timeout--andrzej-lukowski.json",
+    "harry-potter-2021/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -223,7 +233,13 @@
       "death-becomes-her-2024/nydailynews--chris-jones.json",
       "death-becomes-her-2024/theatermania--jesse-green.json",
       "death-becomes-her-2024/timeout--adam-feldman.json",
-      "deep-azure-globe-west-end-2026/timeout-london--andrzej-lukowski.json"
+      "deep-azure-globe-west-end-2026/timeout-london--andrzej-lukowski.json",
+      "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
+      "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
+      "every-brilliant-thing-2026/timeout--unknown.json",
+      "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json",
+      "hadestown-2019/ew--jessica-derschowitz.json",
+      "hadestown-2019/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -239,7 +255,9 @@
       "data/review-texts/wicked-2003/variety--charles-isherwood.json",
       "wicked-2003/variety--charles-isherwood.json",
       "data/review-texts/bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
-      "bigfoot-off-broadway-2026/thewrap--robert-hofler.json"
+      "bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
+      "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
+      "every-brilliant-thing-2026/thewrap--robert-hofler.json"
     ],
     "browserbase": [
       "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
@@ -255,7 +273,9 @@
       "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
       "mj-2022/hollywood-reporter--lovia-gyarkye.json",
       "data/review-texts/oh-mary-2024/hollywood-reporter--david-rooney.json",
-      "oh-mary-2024/hollywood-reporter--david-rooney.json"
+      "oh-mary-2024/hollywood-reporter--david-rooney.json",
+      "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
+      "every-brilliant-thing-2026/deadline--unknown.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json"
@@ -295,11 +315,12 @@
       "aladdin-2014/ew--thom-geier.json",
       "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
       "and-juliet-2022/thewrap--robert-hofler.json",
-      "cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json"
+      "cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json",
+      "hamilton-2015/wsj--terry-teachout.json"
     ]
   },
   "startTime": "2026-03-14T16:00:17.600Z",
-  "lastProcessed": "deep-azure-globe-west-end-2026/timeout-london--andrzej-lukowski.json",
+  "lastProcessed": "harry-potter-2021/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-03-14T16:02:23.759Z",
@@ -430,6 +451,39 @@
     },
     {
       "t": "2026-03-14T19:07:46.914Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-14T19:14:35.436Z",
+      "event": "bb-session",
+      "session": "ff970323",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-14T19:14:37.195Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-14T19:15:54.194Z",
+      "event": "bb-session",
+      "session": "b7a4a1e9",
+      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
+    },
+    {
+      "t": "2026-03-14T19:15:55.788Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-14T19:16:14.459Z",
+      "event": "bb-session",
+      "session": "5f616378",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-14T19:16:17.923Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

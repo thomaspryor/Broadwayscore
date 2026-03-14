@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-03-14T19:14:24.137Z",
-  "processed": 118,
-  "failed": 18,
-  "successRate": "86.8%",
+  "updatedAt": "2026-03-14T19:17:07.967Z",
+  "processed": 127,
+  "failed": 19,
+  "successRate": "87.0%",
   "tierBreakdown": {
-    "playwright": 82,
-    "amp": 14,
-    "browserbase": 14,
+    "playwright": 88,
+    "amp": 16,
+    "browserbase": 16,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 10,
-    "archive": 21
+    "archive": 22
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 13,
   "recentActivity": [
-    {
-      "t": "2026-03-14T18:46:02.080Z",
-      "event": "bb-session",
-      "session": "af56fbaf",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
-    },
-    {
-      "t": "2026-03-14T18:46:03.758Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-14T18:48:39.550Z",
-      "event": "bb-session",
-      "session": "b128b781",
-      "url": "https://www.nytimes.com/2026/03/05/theater/chadwick-boseman-deep-azure.html"
-    },
-    {
-      "t": "2026-03-14T18:48:41.261Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-14T18:51:38.072Z",
-      "event": "bb-session",
-      "session": "9612860b",
-      "url": "https://www.nytimes.com/2026/03/12/theater/every-brilliant-thing-review-daniel-r"
-    },
-    {
-      "t": "2026-03-14T18:51:39.570Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-14T18:52:33.163Z",
       "event": "bb-session",
@@ -122,6 +89,39 @@
     },
     {
       "t": "2026-03-14T19:07:46.914Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-14T19:14:35.436Z",
+      "event": "bb-session",
+      "session": "ff970323",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-14T19:14:37.195Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-14T19:15:54.194Z",
+      "event": "bb-session",
+      "session": "b7a4a1e9",
+      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
+    },
+    {
+      "t": "2026-03-14T19:15:55.788Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-14T19:16:14.459Z",
+      "event": "bb-session",
+      "session": "5f616378",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-14T19:16:17.923Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
