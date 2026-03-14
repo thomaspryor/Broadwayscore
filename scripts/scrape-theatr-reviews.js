@@ -278,35 +278,53 @@ async function runDiscovery() {
 async function fetchShowComments(showId) {
   const allComments = [];
   let page = 1;
-  const pageSize = 50; // conservative page size
+  const pageSize = 50;
+  const MAX_PAGES = 100; // safety limit — no show should have 5000+ comments
 
-  while (true) {
+  while (page <= MAX_PAGES) {
     const { status, data } = await httpsRequest('https://appapi.theatr-app.com/comments/query', {
       method: 'POST',
       headers: authHeaders(),
       body: {
         filters: [
           { field: 'showId', op: '==', value: showId },
-          { field: 'rootId', op: '==', value: '' }, // top-level comments only
+          { field: 'rootId', op: '==', value: '' },
         ],
-        orderBy: [{ field: 'uploadedAt', direction: 'desc' }], // newest first
+        orderBy: [{ field: 'uploadedAt', direction: 'desc' }],
         pageSize,
         current: page,
       },
     });
 
-    if (status !== 200) break;
+    if (status !== 200) {
+      if (verbose) console.log(`    Page ${page} returned ${status}, stopping`);
+      break;
+    }
 
-    // Handle both response shapes
+    // Parse response — try all possible shapes
     const content = data.content || data;
-    const records = content.records || content.data || [];
+    const records = content.records || content.data || content.comments || content.items || [];
+
+    if (verbose && page === 1) {
+      // Log response shape on first page to debug pagination
+      const keys = Object.keys(content);
+      console.log(`    Response keys: ${keys.join(', ')} | records: ${records.length} | total: ${content.total || '?'}`);
+    }
+
     if (!Array.isArray(records) || records.length === 0) break;
 
     allComments.push(...records);
-    page++;
 
+    // Stop conditions: got fewer than pageSize, or reached total
     if (records.length < pageSize) break;
+    if (content.total && allComments.length >= content.total) break;
+
+    page++;
     await sleep(DELAY_BETWEEN_REQUESTS_MS);
+  }
+
+  if (page > MAX_PAGES) {
+    console.warn(`    Hit MAX_PAGES (${MAX_PAGES}) for show ${showId} — may have more comments`);
   }
 
   return allComments;
