@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-14T04:34:32.494Z",
-  "processed": 33,
-  "failed": 13,
-  "successRate": "71.7%",
+  "updatedAt": "2026-03-14T04:38:03.790Z",
+  "processed": 41,
+  "failed": 15,
+  "successRate": "73.2%",
   "tierBreakdown": {
-    "playwright": 21,
-    "amp": 4,
-    "browserbase": 4,
+    "playwright": 23,
+    "amp": 6,
+    "browserbase": 12,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 8,
-    "archive": 8
+    "archiveToday": 9,
+    "archive": 9
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
       "t": "2026-03-14T04:14:54.616Z",
@@ -58,6 +58,61 @@
       "t": "2026-03-14T04:34:09.596Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-14T04:35:27.667Z",
+      "event": "bb-session",
+      "session": "638ebf18",
+      "url": "https://www.nytimes.com/2026/03/12/theater/every-brilliant-thing-review-daniel-r"
+    },
+    {
+      "t": "2026-03-14T04:35:28.932Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-14T04:36:30.732Z",
+      "event": "bb-session",
+      "session": "ace0c058",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-14T04:36:31.946Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-14T04:36:48.045Z",
+      "event": "bb-session",
+      "session": "c6f36686",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-14T04:36:49.480Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-14T04:37:20.556Z",
+      "event": "bb-session",
+      "session": "a3a6a606",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/sarah-hyland-broadway-cast-of-j"
+    },
+    {
+      "t": "2026-03-14T04:37:21.706Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-14T04:37:50.778Z",
+      "event": "bb-session",
+      "session": "aa9ea2ef",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-14T04:37:51.892Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
