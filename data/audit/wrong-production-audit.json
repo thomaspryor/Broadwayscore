@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-14T08:56:26.996Z",
+  "timestamp": "2026-03-14T09:42:05.346Z",
   "stats": {
     "totalReviews": 31157,
-    "alreadyFlagged": 9350,
+    "alreadyFlagged": 9357,
     "dateGuardCatches": 126,
     "directorMismatch": 1112,
-    "tvFilmSignals": 3486,
-    "londonSignals": 1014,
+    "tvFilmSignals": 3487,
+    "londonSignals": 1015,
     "offBroadwaySignals": 1088,
     "yearMismatch": 94,
-    "noPublishDate": 9429
+    "noPublishDate": 9419
   },
   "findings": [
     {
@@ -15514,6 +15514,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hbo max\""
+        }
+      ]
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
+      "file": "theater-scene--darryl-reilly.json",
+      "score": 78,
+      "publishDate": "2026-03-12",
+      "url": "https://theaterscene.org/2026/03/every-brilliant-thing/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -69292,6 +69306,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "deep-azure-globe-west-end-2026",
+      "file": "nytimes--unknown.json",
+      "publishDate": "2026-03-05",
+      "url": "https://www.nytimes.com/2026/03/05/theater/chadwick-boseman-deep-azure.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
