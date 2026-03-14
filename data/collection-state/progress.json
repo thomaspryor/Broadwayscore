@@ -88,7 +88,16 @@
     "wicked-2003/nytimes--charles-isherwood.json",
     "wicked-2003/variety--charles-isherwood.json",
     "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
-    "aladdin-2014/ew--thom-geier.json"
+    "aladdin-2014/ew--thom-geier.json",
+    "aladdin-2014/theatermania--charles-isherwood.json",
+    "all-my-sons-west-end-2025/guardian--arifa-akbar.json",
+    "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json",
+    "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
+    "and-juliet-2022/theatermania--hayley-levitt.json",
+    "and-juliet-2022/theatermania--jesse-green.json",
+    "and-juliet-2022/thewrap--robert-hofler.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/timeout--adam-feldman.json",
+    "arcadia-west-end-2026/guardian--arifa-akbar.json"
   ],
   "failed": [
     "the-devil-wears-prada-west-end-2024/broadwayworld--unknown.json",
@@ -107,7 +116,8 @@
     "hercules-west-end-2025/nytimes--matt-wolf.json",
     "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
     "six-2021/newyorker--naomi-fry.json",
-    "aladdin-2014/new-jersey-newsroom--michael-sommers.json"
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "all-my-sons-west-end-2025/timeout--andrzej-lukowski.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -168,7 +178,14 @@
       "the-unknown-off-broadway-2026/nytg--joe-dziemianowicz.json",
       "two-strangers-bway-2025/nyt-theater--unknown.json",
       "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json",
-      "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json"
+      "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
+      "aladdin-2014/theatermania--charles-isherwood.json",
+      "all-my-sons-west-end-2025/guardian--arifa-akbar.json",
+      "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json",
+      "and-juliet-2022/theatermania--hayley-levitt.json",
+      "and-juliet-2022/theatermania--jesse-green.json",
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/timeout--adam-feldman.json",
+      "arcadia-west-end-2026/guardian--arifa-akbar.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -214,7 +231,8 @@
       "data/review-texts/into-the-woods-west-end-2025/independent--louis-chilton.json",
       "data/review-texts/every-brilliant-thing-2026/nytimes--helen-shaw.json",
       "data/review-texts/hercules-west-end-2025/nytimes--matt-wolf.json",
-      "data/review-texts/masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json"
+      "data/review-texts/masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
+      "data/review-texts/all-my-sons-west-end-2025/timeout--andrzej-lukowski.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
@@ -234,11 +252,13 @@
       "the-lion-king-1997/nytimes--ben-brantley.json",
       "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json",
       "wicked-2003/nytimes--charles-isherwood.json",
-      "aladdin-2014/ew--thom-geier.json"
+      "aladdin-2014/ew--thom-geier.json",
+      "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
+      "and-juliet-2022/thewrap--robert-hofler.json"
     ]
   },
   "startTime": "2026-03-14T16:00:17.600Z",
-  "lastProcessed": "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+  "lastProcessed": "arcadia-west-end-2026/guardian--arifa-akbar.json",
   "log": [
     {
       "t": "2026-03-14T16:02:23.759Z",
@@ -360,6 +380,17 @@
       "t": "2026-03-14T19:01:48.086Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-14T19:07:45.269Z",
+      "event": "bb-session",
+      "session": "02b896e1",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-14T19:07:46.914Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
