@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-14T18:46:50.695Z",
-  "processed": 45,
-  "failed": 11,
-  "successRate": "80.4%",
+  "updatedAt": "2026-03-14T18:54:55.444Z",
+  "processed": 52,
+  "failed": 14,
+  "successRate": "78.8%",
   "tierBreakdown": {
-    "playwright": 38,
+    "playwright": 41,
     "amp": 2,
-    "browserbase": 2,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 6,
-    "archive": 5
+    "archiveToday": 8,
+    "archive": 6
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-03-14T16:02:23.759Z",
@@ -47,6 +47,61 @@
       "t": "2026-03-14T18:46:03.758Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-14T18:48:39.550Z",
+      "event": "bb-session",
+      "session": "b128b781",
+      "url": "https://www.nytimes.com/2026/03/05/theater/chadwick-boseman-deep-azure.html"
+    },
+    {
+      "t": "2026-03-14T18:48:41.261Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-14T18:51:38.072Z",
+      "event": "bb-session",
+      "session": "9612860b",
+      "url": "https://www.nytimes.com/2026/03/12/theater/every-brilliant-thing-review-daniel-r"
+    },
+    {
+      "t": "2026-03-14T18:51:39.570Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-14T18:52:33.163Z",
+      "event": "bb-session",
+      "session": "591c1d7f",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-14T18:52:34.706Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-14T18:52:51.203Z",
+      "event": "bb-session",
+      "session": "7ca43e2f",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-14T18:52:52.693Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-14T18:53:53.003Z",
+      "event": "bb-session",
+      "session": "6d22683e",
+      "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
+    },
+    {
+      "t": "2026-03-14T18:53:54.593Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
