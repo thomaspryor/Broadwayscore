@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-03-14T12:09:09.249Z",
+  "timestamp": "2026-03-14T12:42:59.857Z",
   "stats": {
     "totalReviews": 31306,
-    "alreadyFlagged": 9466,
+    "alreadyFlagged": 9471,
     "dateGuardCatches": 125,
     "directorMismatch": 1120,
-    "tvFilmSignals": 3486,
+    "tvFilmSignals": 3482,
     "londonSignals": 1014,
-    "offBroadwaySignals": 1087,
-    "yearMismatch": 94,
+    "offBroadwaySignals": 1084,
+    "yearMismatch": 95,
     "noPublishDate": 9399
   },
   "findings": [
@@ -40150,25 +40150,6 @@
     },
     {
       "showId": "paranormal-activity-west-end-2025",
-      "file": "london-theatre--the-anonymous-critic.json",
-      "score": 90,
-      "publishDate": "2025-12-17",
-      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=24798",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"paramount\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "paranormal-activity-west-end-2025",
       "file": "lost-in-theatreland--amy-rye.json",
       "score": 63,
       "publishDate": "2025-12-16",
@@ -43126,19 +43107,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"paramount\""
-        }
-      ]
-    },
-    {
-      "showId": "ragtime-2025",
-      "file": "playbill--logan-culwell-block.json",
-      "publishDate": "2025-10-16",
-      "url": "https://playbill.com/article/read-the-reviews-for-the-ragtime-revival-on-broadway",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -51442,6 +51410,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2011 (8x) more than 2013 (0x). 2011 matches production: book-of-mormon-2011"
         }
       ]
     },
@@ -55389,11 +55362,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
         }
       ]
     },
@@ -55408,11 +55376,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
         }
       ]
     },
@@ -55427,11 +55390,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
         }
       ]
     },
@@ -55822,20 +55780,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
-      "file": "telegraph--unknown.json",
-      "score": 72,
-      "publishDate": "2009-10-19",
-      "url": "https://www.telegraph.co.uk/culture/theatre/6371871/The-Lion-King-marks-10th-anniversary-Culture-Minute.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -81012,6 +80956,20 @@
     },
     {
       "showId": "starlight-express-west-end-2024",
+      "file": "london-box-office--camille-leadbeater.json",
+      "score": 84,
+      "publishDate": "2024-12-02",
+      "url": "https://www.londonboxoffice.co.uk/news/post/starlight-express-london-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "starlight-express-west-end-2024",
       "file": "london-theatre--marianka-swain.json",
       "score": 80,
       "publishDate": "2024-06-30",
@@ -81562,19 +81520,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-2024",
-      "file": "people--unknown.json",
-      "publishDate": "2025-04-22",
-      "url": "https://people.com/sadie-sink-attends-stranger-things-first-shadow-poses-photos-broadway-cast-11719683",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Contains TV/film keyword: \"season 4\""
         }
       ]
     },
