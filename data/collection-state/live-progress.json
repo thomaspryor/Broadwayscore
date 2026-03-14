@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-14T19:33:10.973Z",
-  "processed": 170,
-  "failed": 26,
-  "successRate": "86.7%",
+  "updatedAt": "2026-03-14T19:36:57.360Z",
+  "processed": 178,
+  "failed": 28,
+  "successRate": "86.4%",
   "tierBreakdown": {
-    "playwright": 121,
+    "playwright": 129,
     "amp": 16,
     "browserbase": 24,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 12,
+    "archiveToday": 13,
     "archive": 28
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-14T19:01:46.486Z",
-      "event": "bb-session",
-      "session": "3d7228ce",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
-    },
-    {
-      "t": "2026-03-14T19:01:48.086Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-14T19:07:45.269Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-14T19:31:38.858Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-14T19:33:46.902Z",
+      "event": "bb-session",
+      "session": "cae9a995",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-14T19:33:48.635Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
