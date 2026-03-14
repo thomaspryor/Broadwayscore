@@ -24,8 +24,37 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { calculateCombinedScore } = require('./lib/audience-weighting');
-const { matchTitleToShow, titleToSlug } = require('./lib/show-matching');
-const { fetchWithBrightData } = require('./lib/scraper');
+
+const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
+const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
+
+/**
+ * Fetch page via BrightData Web Unlocker (inlined to avoid scraper.js Playwright dependency)
+ */
+function fetchWithBrightData(url) {
+  if (!BRIGHTDATA_TOKEN) return Promise.resolve(null);
+  const body = JSON.stringify({ zone: BRIGHTDATA_ZONE, url, format: 'raw' });
+  return new Promise((resolve, reject) => {
+    const req = https.request('https://api.brightdata.com/request', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${BRIGHTDATA_TOKEN}`,
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(body),
+      },
+    }, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        if (res.statusCode === 200) resolve({ content: data });
+        else reject(new Error(`BrightData HTTP ${res.statusCode}`));
+      });
+    });
+    req.on('error', reject);
+    req.setTimeout(30000, () => { req.destroy(); reject(new Error('BrightData timeout')); });
+    req.end(body);
+  });
+}
 
 // --- CLI args ---
 const args = process.argv.slice(2);
