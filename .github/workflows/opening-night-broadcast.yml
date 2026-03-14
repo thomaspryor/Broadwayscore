@@ -151,9 +151,14 @@ jobs:
             try { sent = JSON.parse(fs.readFileSync(sentPath, 'utf8')).shows || {}; } catch {}
 
             const shows = '$SHOWS'.split(',');
+            const today = new Date().toISOString().slice(0, 10);
             const pending = shows.filter(id => {
-              // Check both individual show key and combined key
+              // Skip if full broadcast completed
               if (sent[id] && sent[id].completed) return false;
+              // Skip if preview already sent today (prevent repeated previews on each scoring run)
+              const previewKeys = Object.keys(sent).filter(k => k.startsWith('preview:') && k.includes(id));
+              const previewedToday = previewKeys.some(k => sent[k]?.sentAt?.startsWith(today));
+              if (previewedToday) return false;
               return true;
             });
 
