@@ -1,38 +1,27 @@
 {
   "meta": {
-    "generatedAt": "2026-03-14T02:58:13.012Z",
+    "generatedAt": "2026-03-14T05:12:48.136Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 31796,
-      "inReviewsJson": 16867,
+      "totalFiles": 31795,
+      "inReviewsJson": 16866,
       "skippedExcluded": 11,
-      "withFullText": 59,
+      "withFullText": 30,
       "excerptOnly": 2098,
-      "llmClassified": 49,
+      "llmClassified": 29,
       "heuristicFlagged": 1,
-      "nonReviewsFound": 1,
-      "uncertainCases": 20,
-      "budgetUsed": 0.005,
-      "llmCalls": 50,
+      "nonReviewsFound": 0,
+      "uncertainCases": 22,
+      "budgetUsed": 0.0029999999999999988,
+      "llmCalls": 30,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14699
+      "skippedAlreadyClassified": 14727
     },
     "calibration": null
   },
-  "nonReviews": [
-    {
-      "file": "the-royal-family-2009/berkshire-eagle--unknown.json",
-      "showId": "the-royal-family-2009",
-      "outlet": "The Berkshire Eagle",
-      "outletId": "berkshire-eagle",
-      "contentType": "feature",
-      "confidence": "high",
-      "reasoning": "The article discusses the history and personal connection of the author to the play \"The Royal Family,\" rather than evaluating a specific production of it.",
-      "currentScore": 78
-    }
-  ],
+  "nonReviews": [],
   "uncertainCases": [
     {
       "file": "amazing-grace-2015/chicago-reader--jack-helbig.json",
@@ -41,7 +30,7 @@
       "outletId": "chicago-reader",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a listing or announcement related to the show, possibly indicating a closing or recommendation, but it does not contain evaluative content. It's more akin to a news item or listing.",
+      "reasoning": "This appears to be a listing or announcement related to the show, possibly indicating a closing or recommendation, but it does not contain evaluative content. The presence of tags like 'Closing (Theater and Galleries)' and 'Recommended' suggests a news or listing item rather than a review itself.",
       "currentScore": 86
     },
     {
@@ -51,7 +40,7 @@
       "outletId": "dailybeast",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article mentions the Tony Awards eligibility deadline, suggesting it's a news piece about the Broadway season rather than a review of \"Dead Outlaw.\"",
+      "reasoning": "The article mentions the Tony Awards eligibility deadline, suggesting it's a news piece about the Broadway season rather than a review of 'Dead Outlaw.'",
       "currentScore": 72
     },
     {
@@ -61,7 +50,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and themes of \"Eclipsed\" and provides historical context, but it does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items about other shows.",
       "currentScore": 82
     },
     {
@@ -71,7 +60,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than an actual article. It does mention 'Broadway review subscriptions' and 'Music album reviews' but does not contain a review of Fences.",
+      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show.",
       "currentScore": 82
     },
     {
@@ -91,7 +80,7 @@
       "outletId": "huffpost",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be a collection of news headlines and trending topics, lacking any evaluative content about 'First Date' or any other theatrical production. The presence of 'Critics Give Nicki Minaj Holy Hell' suggests it is a news aggregator.",
+      "reasoning": "The article appears to be a collection of news headlines and trending topics, not a review of 'First Date'. The mention of 'critics' is in the context of a news headline about Nicki Minaj.",
       "currentScore": 62
     },
     {
@@ -131,7 +120,7 @@
       "outletId": "frequentbusinesstraveler",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and setting of \"Once on This Island\" without offering a critical evaluation or opinion. It focuses on introducing the story and characters, indicating a preview rather than a review.",
+      "reasoning": "The article describes the plot and setting of \"Once on This Island\" but does not offer a critical evaluation or opinion about the quality of the production. It reads like a preview or descriptive piece before a review.",
       "currentScore": 82
     },
     {
@@ -141,7 +130,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
       "currentScore": 89
     },
     {
@@ -161,7 +150,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated, but the available text suggests it's a news item related to the Wall Street Journal, not a review of 'Parade'.",
+      "reasoning": "The provided text appears to be a snippet from a news article or advertisement, possibly related to the Wall Street Journal, and does not contain any evaluative content about the show \"Parade.\"",
       "currentScore": 78
     },
     {
@@ -171,7 +160,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
+      "reasoning": "The text is a list of categories and links related to musical theatre, not a review of a specific show.",
       "currentScore": 80
     },
     {
@@ -181,7 +170,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's a feature rather than a review.",
+      "reasoning": "The article describes the show and its context, but it does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
       "currentScore": 83
     },
     {
@@ -191,7 +180,7 @@
       "outletId": "broadwayworld",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the background and context of the play \"Sweat,\" including the playwright's research process and the real-world events that inspired the story. While it mentions the play, it does not offer a critical evaluation of its artistic merits.",
+      "reasoning": "The article discusses the background and inspiration for Lynn Nottage's play \"Sweat,\" including her research process and the social issues it addresses. While it provides context, it does not offer a critical evaluation of the play's artistic merits or overall quality.",
       "currentScore": 90
     },
     {
@@ -201,7 +190,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "The text appears to be a collection of search terms or categories related to theater, rather than a review of a specific show. It lacks any evaluative content.",
       "currentScore": 42
     },
     {
@@ -211,7 +200,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
+      "reasoning": "The article consists of production credits and ticket information, which is more aligned with a news item or listing than a review. There is no evaluative content present.",
       "currentScore": 64
     },
     {
@@ -221,7 +210,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review of a specific production.",
+      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific show.",
       "currentScore": 78
     },
     {
@@ -233,6 +222,26 @@
       "confidence": "medium",
       "reasoning": "The article describes the set design and the playwright's intentions, but it does not offer an evaluation or opinion on the quality of the production itself. It's more of a feature about the show's themes and design choices.",
       "currentScore": 64
+    },
+    {
+      "file": "three-tall-women-2018/talkinbroadway--matthew-murray.json",
+      "showId": "three-tall-women-2018",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a collection of links and categories related to theater, not a review of a specific production.",
+      "currentScore": 89
+    },
+    {
+      "file": "yellow-face-2024/joysauce--janvi-sai.json",
+      "showId": "yellow-face-2024",
+      "outlet": "joysauce",
+      "outletId": "joysauce",
+      "contentType": "preview",
+      "confidence": "medium",
+      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" in advance of its opening, but does not offer a critical evaluation or opinion on the quality of the production. It includes background information and setting the stage for the show, which is characteristic of a preview article.",
+      "currentScore": 78
     }
   ],
   "heuristicFlags": [
@@ -249,40 +258,13 @@
     }
   ],
   "reviewsConfirmed": [
-    "oh-mary-2024/nytimes--jesse-green.json",
-    "on-the-town-2014/timeout--unknown.json",
-    "outside-mullingar-2014/nydailynews--unknown.json",
-    "pictures-from-home-2023/nytimes--jesse-green.json",
-    "prima-facie-2023/amny--matt-windman.json",
-    "something-rotten-2015/amny--unknown.json",
-    "spring-awakening-2015/huffpost--unknown.json",
-    "straight-white-men-2018/timeout--adam-feldman.json",
-    "sweeney-todd-2023/theatrely--unknown.json",
-    "take-me-out-2022/observer--unknown.json",
-    "the-25th-annual-putnam-county-spelling-bee-2005/amny--matt-windman.json",
-    "the-cherry-orchard-2016/nydailynews--unknown.json",
-    "the-devil-wears-prada-west-end-2024/london-theatre-1--chris-omaweng.json",
-    "the-glass-menagerie-2013/amny--unknown.json",
-    "the-glass-menagerie-2013/nbcny--unknown.json",
-    "the-glass-menagerie-2013/nydailynews--unknown.json",
-    "the-glass-menagerie-2013/thewrap--unknown.json",
-    "the-glass-menagerie-2013/timeout--unknown.json",
-    "the-merchant-of-venice-2010/timeout--unknown.json",
-    "the-new-one-2018/ny1--roma-torre.json",
-    "the-other-place-off-broadway-2026/whatsonstage--sarah-crompton.json",
-    "the-price-2017/chicagotribune--chris-jones.json",
-    "the-river-2014/amny--unknown.json",
-    "the-sign-in-sidney-brusteins-window-2023/american-theater-web--unknown.json",
-    "the-sign-in-sidney-brusteins-window-2023/amny--matt-windman.json",
-    "the-sign-in-sidney-brusteins-window-2023/nytimes--jesse-green.json",
-    "the-unknown-off-broadway-2026/timeout--adam-feldman.json",
-    "the-velocity-of-autumn-2014/nydailynews--unknown.json"
+    "tina-2019/ny1--roma-torre.json",
+    "to-kill-a-mockingbird-2018/jeremy-gerard--david-cote.json",
+    "to-kill-a-mockingbird-2018/latimes--unknown.json",
+    "to-kill-a-mockingbird-2018/timeout--adam-feldman.json",
+    "violet-2014/timeout--unknown.json",
+    "west-side-story-2020/abc-news-14--bob-miller.json",
+    "what-the-constitution-means-to-me-2019/los-angeles-daily-news--dany-margolies.json"
   ],
-  "perShowSummary": [
-    {
-      "showId": "the-royal-family-2009",
-      "currentCount": 8,
-      "removed": 1
-    }
-  ]
+  "perShowSummary": []
 }
