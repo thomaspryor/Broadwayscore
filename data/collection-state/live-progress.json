@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-14T09:37:34.459Z",
-  "processed": 185,
-  "failed": 35,
-  "successRate": "84.1%",
+  "updatedAt": "2026-03-14T09:42:29.750Z",
+  "processed": 192,
+  "failed": 38,
+  "successRate": "83.5%",
   "tierBreakdown": {
-    "playwright": 122,
-    "amp": 16,
+    "playwright": 125,
+    "amp": 18,
     "browserbase": 14,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 16,
-    "archive": 47
+    "archiveToday": 18,
+    "archive": 50
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
       "t": "2026-03-14T08:23:26.634Z",
@@ -108,6 +108,17 @@
       "t": "2026-03-14T09:35:17.099Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-14T09:41:49.996Z",
+      "event": "bb-session",
+      "session": "87aa7027",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-14T09:41:51.278Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

@@ -184,7 +184,14 @@
     "the-reservoir-off-broadway-2026/nytg--gillian-russo.json",
     "the-unknown-off-broadway-2026/nytg--joe-dziemianowicz.json",
     "two-strangers-bway-2025/nyt-theater--unknown.json",
-    "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json"
+    "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json",
+    "wicked-2003/nytimes--charles-isherwood.json",
+    "wicked-2003/variety--charles-isherwood.json",
+    "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
+    "aladdin-2014/ew--thom-geier.json",
+    "aladdin-2014/theatermania--charles-isherwood.json",
+    "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json",
+    "an-ark-off-broadway-2026/wsj--charles-isherwood.json"
   ],
   "failed": [
     "deep-azure-globe-west-end-2026/nytimes--unknown.json",
@@ -221,7 +228,10 @@
     "every-brilliant-thing-2026/nytimes--helen-shaw.json",
     "hadestown-2019/newyorker--hilton-als.json",
     "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
-    "six-2021/newyorker--naomi-fry.json"
+    "six-2021/newyorker--naomi-fry.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "aladdin-2014/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -347,7 +357,10 @@
       "the-reservoir-off-broadway-2026/nytg--gillian-russo.json",
       "the-unknown-off-broadway-2026/nytg--joe-dziemianowicz.json",
       "two-strangers-bway-2025/nyt-theater--unknown.json",
-      "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json"
+      "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json",
+      "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
+      "aladdin-2014/theatermania--charles-isherwood.json",
+      "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json"
     ],
     "amp": [
       "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
@@ -365,7 +378,9 @@
       "data/review-texts/the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
       "the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
       "data/review-texts/the-lion-king-west-end-2021/variety--matt-wolf.json",
-      "the-lion-king-west-end-2021/variety--matt-wolf.json"
+      "the-lion-king-west-end-2021/variety--matt-wolf.json",
+      "data/review-texts/wicked-2003/variety--charles-isherwood.json",
+      "wicked-2003/variety--charles-isherwood.json"
     ],
     "browserbase": [
       "data/review-texts/deep-azure-globe-west-end-2026/nytimes--unknown.json",
@@ -404,7 +419,9 @@
       "data/review-texts/the-reservoir-off-broadway-2026/talkinbroadway--howard-miller.json",
       "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
       "data/review-texts/every-brilliant-thing-2026/nytimes--helen-shaw.json",
-      "data/review-texts/marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json"
+      "data/review-texts/marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+      "data/review-texts/what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json",
+      "data/review-texts/aladdin-2014/wsj--terry-teachout.json"
     ],
     "archive": [
       "into-the-woods-west-end-2025/nytimes--unknown.json",
@@ -453,11 +470,14 @@
       "oh-mary-2024/vulture--helen-shaw.json",
       "ragtime-2025/nytimes--unknown.json",
       "the-great-gatsby-2024/nytimes--maya-phillips.json",
-      "the-lion-king-1997/nytimes--ben-brantley.json"
+      "the-lion-king-1997/nytimes--ben-brantley.json",
+      "wicked-2003/nytimes--charles-isherwood.json",
+      "aladdin-2014/ew--thom-geier.json",
+      "an-ark-off-broadway-2026/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-03-14T08:23:12.185Z",
-  "lastProcessed": "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json",
+  "lastProcessed": "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
   "log": [
     {
       "t": "2026-03-14T08:23:26.634Z",
@@ -552,6 +572,17 @@
       "t": "2026-03-14T09:35:17.099Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-14T09:41:49.996Z",
+      "event": "bb-session",
+      "session": "87aa7027",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-14T09:41:51.278Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
