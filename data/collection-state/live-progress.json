@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-14T19:40:23.265Z",
-  "processed": 187,
-  "failed": 29,
-  "successRate": "86.6%",
+  "updatedAt": "2026-03-14T19:42:07.583Z",
+  "processed": 196,
+  "failed": 30,
+  "successRate": "86.7%",
   "tierBreakdown": {
-    "playwright": 138,
+    "playwright": 145,
     "amp": 16,
-    "browserbase": 24,
+    "browserbase": 26,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 13,
-    "archive": 28
+    "archive": 29
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-03-14T19:14:35.436Z",
-      "event": "bb-session",
-      "session": "ff970323",
-      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
-    },
-    {
-      "t": "2026-03-14T19:14:37.195Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
     {
       "t": "2026-03-14T19:15:54.194Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-14T19:38:27.710Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-14T19:41:15.137Z",
+      "event": "bb-session",
+      "session": "3d168246",
+      "url": "https://observer.com/2024/04/review-flashy-and-fake-great-gatsby-caps-a-weak-sea"
+    },
+    {
+      "t": "2026-03-14T19:41:16.776Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
     }
   ]
 }

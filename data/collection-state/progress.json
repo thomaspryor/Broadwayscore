@@ -186,7 +186,16 @@
     "perfect-crime-off-broadway-1987/nydailynews--editorial-staff.json",
     "ragtime-2025/timeout--adam-feldman.json",
     "shadowlands-west-end-2026/timeout-london--andrzej-lukowski.json",
-    "six-2021/timeout--adam-feldman.json"
+    "six-2021/timeout--adam-feldman.json",
+    "spread-off-broadway-2026/theatermania--unknown.json",
+    "stranger-things-2024/timeout--adam-feldman.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/newsweek--lauren-giella.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/theatermania--zachary-stewart.json",
+    "the-amazing-sex-life-of-rabbits-off-broadway-2026/theatermania--pete-hempstead.json",
+    "the-great-gatsby-2024/observer--david-cote.json",
+    "the-great-gatsby-2024/timeout--adam-feldman.json",
+    "the-hunger-games-on-stage-west-end-2025/timeout-london--unknown.json",
+    "the-lion-king-1997/timeout--adam-feldman.json"
   ],
   "failed": [
     "the-devil-wears-prada-west-end-2024/broadwayworld--unknown.json",
@@ -217,7 +226,8 @@
     "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
     "all-my-sons-west-end-2025/timeout--andrzej-lukowski.json",
     "harry-potter-2021/wsj--terry-teachout.json",
-    "ragtime-2025/wsj--charles-isherwood.json"
+    "ragtime-2025/wsj--charles-isherwood.json",
+    "sweetmeats-west-end-2026/guardian--anya-ryan.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -359,7 +369,14 @@
       "perfect-crime-off-broadway-1987/nydailynews--editorial-staff.json",
       "ragtime-2025/timeout--adam-feldman.json",
       "shadowlands-west-end-2026/timeout-london--andrzej-lukowski.json",
-      "six-2021/timeout--adam-feldman.json"
+      "six-2021/timeout--adam-feldman.json",
+      "spread-off-broadway-2026/theatermania--unknown.json",
+      "stranger-things-2024/timeout--adam-feldman.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/newsweek--lauren-giella.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/theatermania--zachary-stewart.json",
+      "the-amazing-sex-life-of-rabbits-off-broadway-2026/theatermania--pete-hempstead.json",
+      "the-great-gatsby-2024/timeout--adam-feldman.json",
+      "the-hunger-games-on-stage-west-end-2025/timeout-london--unknown.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -403,7 +420,9 @@
       "data/review-texts/masquerade-off-broadway-2025/observer--david-cote.json",
       "masquerade-off-broadway-2025/observer--david-cote.json",
       "data/review-texts/maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
-      "maybe-happy-ending-2024/nypost--johnny-oleksinski.json"
+      "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+      "data/review-texts/the-great-gatsby-2024/observer--david-cote.json",
+      "the-great-gatsby-2024/observer--david-cote.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json"
@@ -453,11 +472,12 @@
       "maybe-happy-ending-2024/new-york-sun--broadway-scorecard.json",
       "into-the-woods-west-end-2025/independent--louis-chilton.json",
       "hercules-west-end-2025/nytimes--matt-wolf.json",
-      "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json"
+      "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
+      "the-lion-king-1997/timeout--adam-feldman.json"
     ]
   },
   "startTime": "2026-03-14T16:00:17.600Z",
-  "lastProcessed": "six-2021/timeout--adam-feldman.json",
+  "lastProcessed": "the-lion-king-1997/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-03-14T16:02:23.759Z",
@@ -700,6 +720,17 @@
       "t": "2026-03-14T19:38:27.710Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-14T19:41:15.137Z",
+      "event": "bb-session",
+      "session": "3d168246",
+      "url": "https://observer.com/2024/04/review-flashy-and-fake-great-gatsby-caps-a-weak-sea"
+    },
+    {
+      "t": "2026-03-14T19:41:16.776Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
     }
   ]
 }
