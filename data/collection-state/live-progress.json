@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-14T11:49:12.571Z",
-  "processed": 414,
-  "failed": 96,
-  "successRate": "81.2%",
+  "updatedAt": "2026-03-14T11:57:02.742Z",
+  "processed": 417,
+  "failed": 103,
+  "successRate": "80.2%",
   "tierBreakdown": {
     "playwright": 291,
     "amp": 24,
-    "browserbase": 26,
+    "browserbase": 28,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 47,
-    "archive": 103
+    "archiveToday": 48,
+    "archive": 105
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-03-14T09:34:22.122Z",
-      "event": "bb-session",
-      "session": "41c30c1f",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
-    },
-    {
-      "t": "2026-03-14T09:34:23.361Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-14T09:35:15.922Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-14T11:44:53.134Z",
       "event": "bb-cookie-inject",
       "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-03-14T11:56:45.257Z",
+      "event": "bb-session",
+      "session": "04f09c74",
+      "url": "https://www.nytimes.com/2026/03/12/theater/every-brilliant-thing-review-daniel-r"
+    },
+    {
+      "t": "2026-03-14T11:56:46.496Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
