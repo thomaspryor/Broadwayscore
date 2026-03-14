@@ -14,14 +14,24 @@
     "marie-and-rosetta-west-end-2026/london-theatre--theo-bosanquet.json",
     "marie-and-rosetta-west-end-2026/west-end-best-friend--nick-wayne.json",
     "sweetmeats-west-end-2026/artsdesk--aleks-sierz.json",
-    "the-devil-wears-prada-west-end-2024/artsdesk--matt-wolf.json"
+    "the-devil-wears-prada-west-end-2024/artsdesk--matt-wolf.json",
+    "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+    "the-devil-wears-prada-west-end-2024/financialtimes--financial-times.json",
+    "the-devil-wears-prada-west-end-2024/financialtimes--sarah-hemming.json",
+    "the-devil-wears-prada-west-end-2024/london-box-office--stuart-king.json",
+    "the-devil-wears-prada-west-end-2024/london-theatre--olivia-rook.json",
+    "the-devil-wears-prada-west-end-2024/theatre-weekly--greg-stewart.json",
+    "beautiful-little-fool-west-end-2026/guardian--emma-john.json"
   ],
   "failed": [
     "the-devil-wears-prada-west-end-2024/broadwayworld--unknown.json",
     "the-holy-rosenbergs-west-end-2026/theatre-weekly--unknown.json",
     "the-holy-rosenbergs-west-end-2026/thestage--unknown.json",
     "sweetmeats-west-end-2026/guardian--anya-ryan.json",
-    "sweetmeats-west-end-2026/timeout-london--nina-culley.json"
+    "sweetmeats-west-end-2026/timeout-london--nina-culley.json",
+    "the-devil-wears-prada-west-end-2024/independent--alice-saville.json",
+    "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
+    "beautiful-little-fool-west-end-2026/thestage--sam-marlowe.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -40,7 +50,12 @@
       "marie-and-rosetta-west-end-2026/london-theatre--theo-bosanquet.json",
       "marie-and-rosetta-west-end-2026/west-end-best-friend--nick-wayne.json",
       "sweetmeats-west-end-2026/artsdesk--aleks-sierz.json",
-      "the-devil-wears-prada-west-end-2024/artsdesk--matt-wolf.json"
+      "the-devil-wears-prada-west-end-2024/artsdesk--matt-wolf.json",
+      "the-devil-wears-prada-west-end-2024/financialtimes--financial-times.json",
+      "the-devil-wears-prada-west-end-2024/financialtimes--sarah-hemming.json",
+      "the-devil-wears-prada-west-end-2024/london-theatre--olivia-rook.json",
+      "the-devil-wears-prada-west-end-2024/theatre-weekly--greg-stewart.json",
+      "beautiful-little-fool-west-end-2026/guardian--emma-john.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -50,12 +65,17 @@
     "archiveToday": [
       "data/review-texts/the-devil-wears-prada-west-end-2024/broadwayworld--unknown.json",
       "data/review-texts/the-holy-rosenbergs-west-end-2026/thestage--unknown.json",
-      "data/review-texts/sweetmeats-west-end-2026/timeout-london--nina-culley.json"
+      "data/review-texts/sweetmeats-west-end-2026/timeout-london--nina-culley.json",
+      "data/review-texts/the-devil-wears-prada-west-end-2024/independent--alice-saville.json",
+      "data/review-texts/beautiful-little-fool-west-end-2026/thestage--sam-marlowe.json"
     ],
-    "archive": []
+    "archive": [
+      "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+      "the-devil-wears-prada-west-end-2024/london-box-office--stuart-king.json"
+    ]
   },
   "startTime": "2026-03-14T16:00:17.600Z",
-  "lastProcessed": "the-devil-wears-prada-west-end-2024/artsdesk--matt-wolf.json",
+  "lastProcessed": "beautiful-little-fool-west-end-2026/guardian--emma-john.json",
   "log": [
     {
       "t": "2026-03-14T16:02:23.759Z",
@@ -65,6 +85,17 @@
     },
     {
       "t": "2026-03-14T16:02:25.217Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-14T16:09:10.326Z",
+      "event": "bb-session",
+      "session": "9c837a7e",
+      "url": "https://www.thestage.co.uk/reviews/beautiful-little-fool-review-southwark-playho"
+    },
+    {
+      "t": "2026-03-14T16:09:12.954Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
