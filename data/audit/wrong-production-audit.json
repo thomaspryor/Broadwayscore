@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-14T08:47:42.483Z",
+  "timestamp": "2026-03-14T08:56:26.996Z",
   "stats": {
-    "totalReviews": 31154,
-    "alreadyFlagged": 9349,
-    "dateGuardCatches": 127,
-    "directorMismatch": 1113,
-    "tvFilmSignals": 3487,
-    "londonSignals": 1015,
+    "totalReviews": 31157,
+    "alreadyFlagged": 9350,
+    "dateGuardCatches": 126,
+    "directorMismatch": 1112,
+    "tvFilmSignals": 3486,
+    "londonSignals": 1014,
     "offBroadwaySignals": 1088,
     "yearMismatch": 94,
-    "noPublishDate": 9425
+    "noPublishDate": 9429
   },
   "findings": [
     {
@@ -35381,25 +35381,6 @@
     },
     {
       "showId": "moulin-rouge-the-musical-west-end-2021",
-      "file": "standard--nick-curtis.json",
-      "score": 65,
-      "publishDate": "2022-01-21",
-      "url": "https://www.standard.co.uk/culture/theatre/moulin-rouge-the-musical-musical-review-piccadilly-london-b977840.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"on screen\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "moulin-rouge-the-musical-west-end-2021",
       "file": "telegraph--dominic-cavendish.json",
       "score": 80,
       "publishDate": "2022-01-20",
@@ -39265,25 +39246,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 324d before show (2023-05-10 vs 2024-03-29)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
-        }
-      ]
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
-      "file": "london-box-office--stuart-king.json",
-      "score": 80,
-      "publishDate": "2023-05-26",
-      "url": "https://www.londonboxoffice.co.uk/news/post/operation-mincemeat-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 308d before show (2023-05-26 vs 2024-03-29)"
         },
         {
           "type": "DIRECTOR_MISMATCH",
