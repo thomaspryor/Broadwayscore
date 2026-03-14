@@ -30,9 +30,10 @@ const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normali
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
-const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
+const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES, OUTLET_VERIFIED_SOURCES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
+const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb } = require('./lib/rebuild-helpers');
 
 // Load outlet registry for cross-market guard
 const outletRegistry = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf8'));
@@ -79,30 +80,7 @@ const criticRegistry = loadCriticRegistry();
 // Human review queue — flagged items written to data/audit/needs-human-review.json
 const humanReviewQueue = [];
 
-function normalizeThumb(thumb) {
-  if (thumb === 'Meh' || thumb === 'Flat') return 'Flat';
-  return thumb; // 'Up' or 'Down'
-}
-
-const MONTH_TO_NUM = { january:'01', february:'02', march:'03', april:'04', may:'05', june:'06', july:'07', august:'08', september:'09', october:'10', november:'11', december:'12' };
-function normalizePublishDate(dateStr) {
-  if (!dateStr) return null;
-  if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return dateStr;
-  // ISO timestamp: "2018-04-22T20:11:20-04:00"
-  const isoTs = dateStr.match(/^(\d{4}-\d{2}-\d{2})T/);
-  if (isoTs) return isoTs[1];
-  // "Month Day, Year" or "Month DayOrd, Year"
-  const mdy = dateStr.match(/^(\w+)\s+(\d{1,2})(?:st|nd|rd|th)?,?\s+(\d{4})$/i);
-  if (mdy && MONTH_TO_NUM[mdy[1].toLowerCase()]) {
-    return `${mdy[3]}-${MONTH_TO_NUM[mdy[1].toLowerCase()]}-${mdy[2].padStart(2, '0')}`;
-  }
-  // Garbage values
-  if (/previous production/i.test(dateStr)) return null;
-  // Last resort: JS Date
-  const d = new Date(dateStr);
-  if (!isNaN(d.getTime())) return d.toISOString().slice(0, 10);
-  return null;
-}
+// normalizeThumb, normalizePublishDate — imported from ./lib/rebuild-helpers
 
 function flagForHumanReview(data, reason, detail) {
   humanReviewQueue.push({
@@ -135,136 +113,9 @@ const reviewsJsonPath = path.join(__dirname, '../data/reviews.json');
 
 // decodeHtmlEntities imported from ./lib/text-cleaning
 
-/**
- * Fix mojibake: UTF-8 bytes misinterpreted as Latin-1/CP1252.
- * Common in scraped text where encoding was mangled.
- */
-function fixMojibake(text) {
-  if (!text) return text;
-  // Three-byte UTF-8 sequences stored as raw bytes (â + two control chars)
-  return text
-    // Smart quotes
-    .replace(/\u00e2\u0080\u0099/g, '\u2019')   // ' right single quote
-    .replace(/\u00e2\u0080\u0098/g, '\u2018')   // ' left single quote
-    .replace(/\u00e2\u0080\u009c/g, '\u201c')   // " left double quote
-    .replace(/\u00e2\u0080\u009d/g, '\u201d')   // " right double quote
-    // Dashes and ellipsis
-    .replace(/\u00e2\u0080\u0094/g, '\u2014')   // — em dash
-    .replace(/\u00e2\u0080\u0093/g, '\u2013')   // – en dash
-    .replace(/\u00e2\u0080\u00a6/g, '\u2026')   // … ellipsis
-    // Also handle the text-rendered versions (â€™, â€", etc.)
-    .replace(/â€™/g, '\u2019')
-    .replace(/â€˜/g, '\u2018')
-    .replace(/â€œ/g, '\u201c')
-    .replace(/â€\u009d/g, '\u201d')
-    .replace(/â€"/g, '\u2014')
-    .replace(/â€"/g, '\u2013')
-    .replace(/â€¦/g, '\u2026')
-    // Two-byte Latin characters
-    .replace(/Ã©/g, 'é')
-    .replace(/Ã¨/g, 'è')
-    .replace(/Ã¯/g, 'ï')
-    .replace(/Ã¼/g, 'ü')
-    .replace(/Ã¶/g, 'ö')
-    .replace(/Ã´/g, 'ô')
-    .replace(/Ã®/g, 'î')
-    .replace(/Ã¢/g, 'â')
-    .replace(/Ã /g, 'à');
-}
+// fixMojibake, fixMissingPeriods — imported from ./lib/rebuild-helpers
 
-/**
- * Fix missing periods between concatenated text segments.
- * Common in NYSR (star rating subtitle + review body) and aggregator excerpts.
- */
-function fixMissingPeriods(text) {
-  if (!text) return text;
-  let result = text;
-
-  // After a 4-digit year followed by a capital letter starting a new sentence
-  // e.g., "circa 1915 There's" → "circa 1915. There's"
-  result = result.replace(/(\d{4})\s+([A-Z][a-z])/g, '$1. $2');
-
-  // After "No Comment" running into "BY AUTHOR" (Chelsea Community News)
-  result = result.replace(/No Comment\s*(BY\s)/i, 'No Comment. $1');
-
-  // After photo credit parenthetical running into review text
-  // e.g., "(Joan Marcus)Listen" → "(Joan Marcus). Listen"
-  result = result.replace(/\)([A-Z][a-z])/g, '). $1');
-
-  // After "Darkness" running into next word (WaPo motto concatenation)
-  result = result.replace(/Darkness([A-Z][a-z])/g, 'Darkness. $1');
-
-  return result;
-}
-
-/**
- * Detect if text looks like website navigation/junk rather than review content
- */
-function isJunkExcerpt(text) {
-  if (!text) return true;
-
-  // Patterns that indicate website chrome/navigation
-  const junkPatterns = [
-    /^Home\s+(Legit|News|Reviews)/i,                    // "Home Legit Reviews..."
-    /^\d{1,2}:\d{2}\s*(AM|PM)\s*(PT|ET|CT)/i,          // "5:30pm PT"
-    /Plus Icon.*Latest/i,                               // "Plus Icon Aramide Tinubu Latest"
-    /See All\s+[A-Z]/i,                                 // "See All Matthew Murphy"
-    /\d+ (day|week|month|hour)s? ago/i,                // "1 day ago"
-    /Related Stories/i,                                 // "Related Stories"
-    /By [A-Z][a-z]+ [A-Z][a-z]+ Plus Icon/i,           // "By Author Name Plus Icon"
-    /TV Review.*TV Review/i,                            // Multiple "TV Review" = sidebar
-    /Photo:/i,                                          // Photo credits
-    /Matthew Murphy\s+[A-Z]/,                           // Photo credit pattern
-    /\bdefineSlot\b|\bsetTargeting\b|\bgoogletag\b/i,  // Ad code
-    /blogherads/i,                                      // Ad code
-    /^NYC Events,?\s+Restaurants/i,                     // Cititour site navigation
-    /Cititour\.com\s*Review/i,                          // Cititour site branding
-    /^(Facebook|Twitter|Pinterest|Threads)\s+(Twitter|Facebook|Pinterest|X\b)/i,  // Social sharing buttons
-    /^Visit the Site/i,                                 // Cititour show info metadata
-    /^Tickets from \$/i,                                // Ticket pricing metadata
-    /By clicking submit/i,                              // Observer privacy consent
-    /<a\s+href=/i,                                      // Raw HTML in text
-    /^Home\s*[>|]/i,                                    // Breadcrumb navigation (Mashable)
-    /newsletter in your inbox/i,                        // Newsletter signup (Time Out)
-    /Get all the top news.*discount/i,                  // Newsletter promo (BWW)
-    /Open\/Close Dates/i,                               // Show metadata (Cititour)
-    /\bprivacy policy\b/i,                              // Privacy/legal boilerplate
-    /^Skip to (content|main)/i,                         // Navigation skip link (TheWrap, ChicagoTribune, BroadwayNews)
-    /^Democracy Dies/i,                                 // Washington Post motto
-    /^Q:\s/i,                                           // Quiz widget sidebar (The Times UK)
-    /^Posted on\s+\w+\s+\d/i,                           // WordPress metadata (Chelsea Community News)
-    /^This article was published more than/i,            // WaPo stale article warning
-    /^Listen\d+\s*min/i,                                // WaPo audio player metadata
-    /rose lovers|Bachelor in Paradise|couples grapple/i, // Wrong show content (reality TV)
-    /^(MUSIC|THEATER).*Add Topic/i,                      // USA Today CMS navigation junk
-    /^Trump says|^Biden|^Senate\s+(votes|passes)/i,      // AP/news feed content (wrong page)
-    /Keep Watching|mins ago\s/i,                          // NBC broadcast crawl / news feed
-    /Hear this story/i,                                   // Audio player prompt
-  ];
-
-  for (const pattern of junkPatterns) {
-    if (pattern.test(text)) return true;
-  }
-
-  // If first 50 chars contain multiple timestamps/dates, likely junk
-  const first50 = text.substring(0, 50);
-  const datePatterns = first50.match(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d+/gi) || [];
-  if (datePatterns.length >= 2) return true;
-
-  // ROT-1 / garbled text detection (Newsday anti-scraping cipher)
-  // Garbled text has near-zero common English word ratio
-  if (text.length >= 40) {
-    const words = text.toLowerCase().split(/\s+/).filter(w => w.length >= 2);
-    if (words.length >= 5) {
-      const commonWords = new Set(['the', 'and', 'of', 'to', 'a', 'in', 'is', 'it', 'that', 'for', 'was', 'on', 'are', 'with', 'as', 'but', 'this', 'his', 'her', 'not', 'has', 'had', 'an', 'be', 'at', 'by', 'or', 'its', 'from', 'who', 'than', 'if', 'so', 'no', 'more']);
-      const commonCount = words.filter(w => commonWords.has(w)).length;
-      const ratio = commonCount / words.length;
-      if (ratio < 0.03) return true;
-    }
-  }
-
-  return false;
-}
+// isJunkExcerpt — imported from ./lib/rebuild-helpers
 
 /**
  * Clean excerpt text from aggregator sources
@@ -637,72 +488,7 @@ function extractExcerptFromFullText(fullText, showTitle) {
 // Cross-show validation: dry-run by default (log but don't suppress)
 const CROSS_SHOW_DRY_RUN = process.env.DRY_RUN_CROSS_SHOW !== 'false';
 
-/**
- * Quality gate for LLM-extracted pull quotes. Rejects generic or scene-setting
- * quotes that don't add value over aggregator excerpts.
- */
-function isGenericQuote(text) {
-  if (!text) return true;
-  const lower = text.toLowerCase().trim();
-
-  // Generic praise/criticism that could apply to any show
-  const genericPatterns = [
-    /^(it('s| is)|this is) (a )?(must[- ]see|worth seeing|not to be missed)\b/,
-    /^don'?t miss (it|this)/,
-    /^(highly )?recommended\.?$/,
-    /^(go )?see (it|this show)/,
-    /^a (great|good|wonderful|terrible|bad) show\.?$/,
-  ];
-
-  // Scene-setting openers
-  const sceneSettingPatterns = [
-    /^when the (curtain|lights|house lights|show) /,
-    /^at the [a-z]+ the(a|u)tre/,
-    /^on a recent (evening|night|afternoon)/,
-    /^(walking|stepping) into the /,
-    /^the (stage|set) (is|was) (bare|dark|set)/,
-  ];
-
-  for (const p of [...genericPatterns, ...sceneSettingPatterns]) {
-    if (p.test(lower)) return true;
-  }
-
-  // Short quotes whose entire evaluative content is "must-see" or "not to be missed"
-  if (lower.length < 100 && /(must[- ]see|not to be missed|highly recommended)\b/.test(lower)) {
-    return true;
-  }
-
-  return false;
-}
-
-/**
- * Trim a quote to the last complete sentence (ending in . ! ? or closing quote).
- * Returns the original if it already ends cleanly or no sentence boundary is found.
- */
-function trimToCompleteSentence(text) {
-  if (!text) return text;
-  const trimmed = text.trim();
-
-  // Detect broken contractions: text ending with a known contraction stub + apostrophe
-  // (e.g., "he'", "it'", "wasn'", "wouldn'"). These are truncated at HTML entity boundaries.
-  // Must check BEFORE the general punctuation test, since ' matches the ['] class.
-  // Only targets known contraction patterns — possessives and title quotes are left alone.
-  const contractionMatch = trimmed.match(/(^|\s)(he|she|it|we|they|who|wasn|wouldn|couldn|didn|don|isn|aren|won|haven|hasn|shouldn|mustn|weren|hadn|I)['\u2019]$/);
-  if (contractionMatch) {
-    const match = trimmed.match(/^(.*[.!?"\u201D])\s/s);
-    if (match && match[1].length >= 40) return match[1].trim();
-    return trimmed;
-  }
-
-  // Already ends with sentence-ending punctuation
-  if (/[.!?"\u201D)]\s*$/.test(trimmed)) return trimmed;
-  // Closing single quote after punctuation is valid: e.g., "for me.'"
-  if (/[.!?][')\u2019]\s*$/.test(trimmed)) return trimmed;
-  // Find the last sentence-ending punctuation
-  const match = trimmed.match(/^(.*[.!?"\u201D'])\s*\S+.*$/s);
-  if (match && match[1].length >= 40) return match[1].trim();
-  return trimmed;
-}
+// isGenericQuote, trimToCompleteSentence — imported from ./lib/rebuild-helpers
 
 function selectBestExcerpt(data, showTitle) {
   const showId = data.showId;
@@ -848,20 +634,7 @@ function selectBestExcerpt(data, showTitle) {
   return null;
 }
 
-/**
- * Strip wrapping quotation marks from excerpt so frontend can add them consistently.
- * Handles straight quotes, curly quotes, and mixed pairs.
- */
-function normalizeQuoteWrapping(text) {
-  if (!text) return text;
-  let result = text.trim();
-  // Strip matching outer quotes (straight, curly, or mixed)
-  if ((result.startsWith('"') || result.startsWith('\u201c')) &&
-      (result.endsWith('"') || result.endsWith('\u201d'))) {
-    result = result.slice(1, -1).trim();
-  }
-  return result;
-}
+// normalizeQuoteWrapping — imported from ./lib/rebuild-helpers
 
 // Stats tracking
 const stats = {
@@ -897,309 +670,60 @@ const skippedReviews = [];
 
 // parseStarRating, parseLetterGrade, parseOriginalScore — imported from scripts/lib/score-parsers.js
 
+// getBestScore — core logic imported from ./lib/rebuild-helpers as _getBestScoreCore.
+// This wrapper passes module-level stats/flagForHumanReview and adds extra stat tracking.
 function getBestScore(data) {
-  // Skip if explicitly marked as TO_BE_CALCULATED
-  if (data.scoreStatus === 'TO_BE_CALCULATED') {
-    return null;
-  }
+  const result = _getBestScoreCore(data, { stats, flagForHumanReview });
 
-  // Priority 0: Human-reviewed score (manual override from audit queue)
-  // These are set after reviewing flagged reviews where LLM and thumbs disagree.
-  // Highest priority — a deliberate human decision always wins.
-  if (data.humanReviewScore && data.humanReviewScore >= 1 && data.humanReviewScore <= 100) {
-    return { score: data.humanReviewScore, source: 'human-review' };
-  }
-
-  // Priority 0.5: Parse originalScore field (aggregator-provided, outlet-verified)
-  // Ratings like "4/5 stars", "B+", "★★★★☆" come from the aggregator or scraper
-  // and are more reliable than regex extraction from fullText, which can match
-  // garbage sidebar content or unrelated embedded articles.
-  //
-  // EXCEPTION: For West End shows, ShowScore originalScores are downgraded to P1 level
-  // because ShowScore WE ratings haven't been validated and are known to inflate
-  // (e.g., reporting 5/5 when actual review was 4/5). LLM scores take priority.
-  const isShowScoreSource = data.source === 'show-score' || data.source === 'show-score-playwright' || data.source === 'showscore-roundup';
-  const isWestEnd = data._showCategory === 'west-end';
-  // Downgrade ShowScore-sourced WE ratings UNLESS the score was extracted directly from
-  // the outlet's own HTML (json-ld, guardian-api, star SVGs, etc.) — those are reliable.
-  const outletVerifiedSources = new Set([
-    'json-ld', 'meta-itemprop', 'guardian-api', 'wos-star-images', 'stage-star-svg',
-    'telegraph-svg', 'dailymail-rating-img', 'fivestar-widget', 'star-class',
-    'unicode-stars', 'numeric-stars', 'original-star-rating', 'timeout-star-widget',
-  ]);
-  const isOutletVerified = outletVerifiedSources.has(data.scoreSource);
-  const downgradeShowScore = isShowScoreSource && isWestEnd && !isOutletVerified;
-
-  if (data.originalScore && !downgradeShowScore) {
-    // Skip low-confidence originalScores — these are often misreads from page templates
-    // (e.g., "1/5" from a star icon in a sidebar, "D" from a page element)
-    if (data.scoreConfidence === 'low' || data.scoreSource === 'star-icon') {
-      stats.skippedLowConfidenceOriginal = (stats.skippedLowConfidenceOriginal || 0) + 1;
-      // Fall through to LLM scoring instead
-    } else {
-      const parsed = parseOriginalScore(data.originalScore, data.outletId);
-      if (parsed !== null) {
-        // Direction guard: flag for human review if originalScore wildly conflicts with LLM.
-        // Still USES the originalScore (explicit data has priority), but surfaces the conflict.
-        const llm = data.llmScore && data.llmScore.score;
-        const llmConf = data.llmScore && data.llmScore.confidence;
-        if (llm && llmConf !== 'low' && Math.abs(parsed - llm) > 25) {
-          const parsedBucket = parsed >= 70 ? 'positive' : parsed <= 40 ? 'negative' : 'mixed';
-          const llmBucket = llm >= 70 ? 'positive' : llm <= 40 ? 'negative' : 'mixed';
-          if (parsedBucket !== llmBucket) {
-            flagForHumanReview(data, 'originalScore-llm-conflict',
-              `originalScore "${data.originalScore}" (=${parsed}, bucket=${parsedBucket}) vs LLM ${llm} (bucket=${llmBucket}, conf=${llmConf})`);
-          }
-        }
-        return { score: parsed, source: 'originalScore-priority0' };
+  // Extra stat tracking (not part of core scoring logic):
+  // Borderline rave detection, bwwScore-LLM divergence, thumb-LLM disagreement at P1
+  if (result && result.source === 'llmScore' && data.llmScore) {
+    // Flag if BOTH thumbs agree with each other but disagree with LLM direction
+    const llmThumb = data.llmScore.score >= 70 ? 'Up' : data.llmScore.score >= 55 ? 'Flat' : 'Down';
+    const dtli = data.dtliThumb ? normalizeThumb(data.dtliThumb) : null;
+    const bww = data.bwwThumb ? normalizeThumb(data.bwwThumb) : null;
+    if (dtli && bww && dtli === bww && dtli !== llmThumb) {
+      flagForHumanReview(data, 'both-thumbs-disagree-with-llm',
+        `LLM=${data.llmScore.score} (${llmThumb}), both thumbs=${data.dtliThumb}`);
+    }
+    // bwwScore-LLM divergence stat
+    if (data.bwwScore != null) {
+      const bwwNorm = data.bwwScore * 10;
+      if (Math.abs(bwwNorm - data.llmScore.score) > 30) {
+        stats.bwwScoreLlmConflicts = (stats.bwwScoreLlmConflicts || 0) + 1;
+      }
+    }
+    // Borderline rave detection
+    if (data.llmScore.score >= 78 && data.llmScore.score <= 82 && data.llmScore.confidence !== 'low') {
+      stats.borderlineRaves = (stats.borderlineRaves || 0) + 1;
+      const dtliUp = data.dtliThumb && normalizeThumb(data.dtliThumb) === 'Up';
+      const bwwUp = data.bwwThumb && normalizeThumb(data.bwwThumb) === 'Up';
+      const bwwHigh = data.bwwScore != null && data.bwwScore >= 8;
+      const corroboratingSignals = (dtliUp ? 1 : 0) + (bwwUp ? 1 : 0) + (bwwHigh ? 1 : 0);
+      if (corroboratingSignals >= 2) {
+        flagForHumanReview(data, 'borderline-rave',
+          `LLM=${data.llmScore.score} (high conf), thumbs/bwwScore suggest rave. Calibration shows 62% of true raves score 78-82.`);
+        stats.borderlineRavesFlagged = (stats.borderlineRavesFlagged || 0) + 1;
       }
     }
   }
 
-  // Priority 1 (formerly 0b): Explicit rating extraction from fullText
-  // REMOVED — now handled at collection time by LLM extraction.
-  // Reviews with explicit ratings will have originalScore pre-populated,
-  // caught by Priority 0.5 above.
-
-  // Priority 2: LLM score (HIGH/MEDIUM confidence only)
-  if (data.llmScore && data.llmScore.score) {
-    const confidence = data.llmScore.confidence;
-    const needsReview = data.ensembleData?.needsReview;
-
-    // Downgrade confidence when scoring from excerpt-only text
-    // Audit showed ~50% error rate on excerpt-only high/medium confidence scores
-    // Also downgrade when fullText was recovered from garbage — the LLM scored the excerpt, not the recovered text
-    // Also downgrade when contentVerification flagged the article as wrong — the text is from a different article
-    // Detect stale contentVerification: if text was fetched AFTER verification, the verification
-    // is outdated (text may have been replaced/updated). Ignore wrongArticle in that case.
-    let cvWrongArticle = data.contentVerification && data.contentVerification.wrongArticle === true;
-    if (cvWrongArticle && data.textFetchedAt && data.contentVerification.verifiedAt) {
-      const fetchedAt = new Date(data.textFetchedAt).getTime();
-      const verifiedAt = new Date(data.contentVerification.verifiedAt).getTime();
-      if (fetchedAt > verifiedAt) {
-        cvWrongArticle = false;
-        stats.staleContentVerificationCleared = (stats.staleContentVerificationCleared || 0) + 1;
-      }
-    }
-    // Also clear if verification was done on different content than current fullText
-    if (cvWrongArticle && data.contentVerification.contentHash && data.fullText) {
-      const currentHash = crypto.createHash('md5').update(data.fullText.substring(0, 2500)).digest('hex');
-      if (data.contentVerification.contentHash !== currentHash) {
-        cvWrongArticle = false;
-        stats.staleContentVerificationCleared = (stats.staleContentVerificationCleared || 0) + 1;
-      }
-    }
-    const hasOriginalFullText = data.fullText && data.fullText.trim().length > 100 && !data.fullTextRecoveredFrom && !cvWrongArticle;
-    const effectiveConfidence = (!hasOriginalFullText && confidence !== 'low') ? 'low' : confidence;
-
-    // High/medium confidence: use directly
-    if (effectiveConfidence !== 'low' && !needsReview) {
-      // ENSEMBLE QUALITY GATE: Block ALL single-model scores without ensemble validation
-      const hasEnsemble = !!data.ensembleData;
-      if (!hasEnsemble) {
-        // BLOCK: single-model scores require ensemble validation, always
-        stats.blockedSingleModel = (stats.blockedSingleModel || 0) + 1;
-        // Fall through to lower-priority sources (originalScore, bucket, thumb)
-      } else {
-        // Has ensemble — proceed with existing validation
-        // Flag if BOTH thumbs agree with each other but disagree with LLM direction
-        const llmThumb = data.llmScore.score >= 70 ? 'Up' : data.llmScore.score >= 55 ? 'Flat' : 'Down';
-        const dtli = data.dtliThumb ? normalizeThumb(data.dtliThumb) : null;
-        const bww = data.bwwThumb ? normalizeThumb(data.bwwThumb) : null;
-        if (dtli && bww && dtli === bww && dtli !== llmThumb) {
-          flagForHumanReview(data, 'both-thumbs-disagree-with-llm',
-            `LLM=${data.llmScore.score} (${llmThumb}), both thumbs=${data.dtliThumb}`);
-        }
-        // Track bwwScore-LLM divergence as stat counter (not human-review flag — too noisy)
-        if (data.bwwScore != null) {
-          const bwwNorm = data.bwwScore * 10;
-          if (Math.abs(bwwNorm - data.llmScore.score) > 30) {
-            stats.bwwScoreLlmConflicts = (stats.bwwScoreLlmConflicts || 0) + 1;
-          }
-        }
-        // Borderline rave detection: ensemble score 78-82 with high confidence
-        // Calibration data shows 50% of true raves are misclassified, with 62% scoring 78-82.
-        // Flag these for human review so they can be manually promoted if warranted.
-        if (data.llmScore.score >= 78 && data.llmScore.score <= 82 && data.llmScore.confidence !== 'low') {
-          stats.borderlineRaves = (stats.borderlineRaves || 0) + 1;
-          // Only flag when we have corroborating evidence of rave-level reception
-          const dtliUp = data.dtliThumb && normalizeThumb(data.dtliThumb) === 'Up';
-          const bwwUp = data.bwwThumb && normalizeThumb(data.bwwThumb) === 'Up';
-          const bwwHigh = data.bwwScore != null && data.bwwScore >= 8;
-          const corroboratingSignals = (dtliUp ? 1 : 0) + (bwwUp ? 1 : 0) + (bwwHigh ? 1 : 0);
-          if (corroboratingSignals >= 2) {
-            flagForHumanReview(data, 'borderline-rave',
-              `LLM=${data.llmScore.score} (high conf), thumbs/bwwScore suggest rave. Calibration shows 62% of true raves score 78-82.`);
-            stats.borderlineRavesFlagged = (stats.borderlineRavesFlagged || 0) + 1;
-          }
-        }
-        return { score: data.llmScore.score, source: 'llmScore' };
-      }
-    }
-  }
-
-  // Priority 3: Thumb-validated confidence upgrade for low-confidence LLM scores
-  // Instead of overriding the LLM's nuanced score with a blunt thumb value (Up=80, Down=35),
-  // use thumbs to VALIDATE the LLM score. The LLM already sees thumb data in its prompt
-  // (input-builder.ts passes "Aggregator verdicts: DTLI: Up, BWW: Up"), so its score already
-  // incorporates that signal. Thumbs boost confidence; they don't replace the score.
-  // ENSEMBLE QUALITY GATE: Only allow thumb-validation for ensemble-scored reviews
-  const hasLowConfLlm = data.llmScore?.score && !!data.ensembleData &&
-    (data.llmScore.confidence === 'low' || data.ensembleData?.needsReview ||
-     !(data.fullText && data.fullText.trim().length > 100 && !data.fullTextRecoveredFrom));
-
-  if (hasLowConfLlm) {
-    const dtliThumbNorm = data.dtliThumb ? normalizeThumb(data.dtliThumb) : null;
-    const bwwThumbNorm = data.bwwThumb ? normalizeThumb(data.bwwThumb) : null;
-    const llmScore = data.llmScore.score;
-    const llmBucket = scoreToBucket(llmScore);
-
-    const thumbDirection = (thumb) => {
-      if (thumb === 'Up') return 'positive';
-      if (thumb === 'Down') return 'negative';
-      return 'neutral'; // Flat/Meh
-    };
-    const bucketDirection = (bucket) => {
-      if (bucket === 'Rave' || bucket === 'Positive') return 'positive';
-      if (bucket === 'Negative' || bucket === 'Pan') return 'negative';
-      return 'neutral'; // Mixed
-    };
-
-    const dtliIsMeh = dtliThumbNorm === 'Flat';
-    const bwwIsMeh = bwwThumbNorm === 'Flat';
-    const llmDir = bucketDirection(llmBucket);
-
-    // Convert bwwScore (1-10) to thumb-equivalent direction
-    const bwwScoreDir = data.bwwScore != null
-      ? (data.bwwScore >= 7 ? 'positive' : data.bwwScore <= 3 ? 'negative' : 'neutral')
-      : null;
-
-    // Track when bwwThumb and bwwScore disagree directionally (data quality signal)
-    if (bwwThumbNorm && bwwScoreDir && bwwScoreDir !== 'neutral') {
-      const thumbDir = thumbDirection(bwwThumbNorm);
+  // bwwInternalConflicts stat (thumb vs score direction mismatch)
+  if (data.bwwThumb && data.bwwScore != null) {
+    const bwwThumbNorm = normalizeThumb(data.bwwThumb);
+    const bwwScoreDir = data.bwwScore >= 7 ? 'positive' : data.bwwScore <= 3 ? 'negative' : 'neutral';
+    if (bwwScoreDir !== 'neutral') {
+      const thumbDir = bwwThumbNorm === 'Up' ? 'positive' : bwwThumbNorm === 'Down' ? 'negative' : 'neutral';
       if (thumbDir !== 'neutral' && thumbDir !== bwwScoreDir) {
         stats.bwwInternalConflicts = (stats.bwwInternalConflicts || 0) + 1;
       }
     }
-
-    // Check how many non-Meh thumbs agree with LLM direction
-    const thumbDirs = [];
-    if (dtliThumbNorm && !dtliIsMeh) thumbDirs.push(thumbDirection(dtliThumbNorm));
-    if (bwwThumbNorm && !bwwIsMeh) thumbDirs.push(thumbDirection(bwwThumbNorm));
-    // bwwScore as additional directional signal (only when bwwThumb absent to avoid double-counting)
-    if (bwwScoreDir && bwwScoreDir !== 'neutral' && !bwwThumbNorm) thumbDirs.push(bwwScoreDir);
-    const agreeing = thumbDirs.filter(d => d === llmDir).length;
-    const disagreeing = thumbDirs.filter(d => d !== llmDir && d !== 'neutral').length;
-
-    if (agreeing > 0 && disagreeing === 0) {
-      // Thumbs validate LLM direction → upgrade to medium confidence, keep LLM's nuanced score
-      stats.thumbValidatedLlm = (stats.thumbValidatedLlm || 0) + 1;
-      return { score: llmScore, source: agreeing >= 2 ? 'llmScore-thumb-validated' : 'llmScore-thumb-boosted' };
-    }
-
-    if (disagreeing > 0 && agreeing === 0) {
-      // Thumbs disagree with LLM direction → flag for review but still use LLM score
-      // Both thumbs disagreeing is stronger signal
-      if (disagreeing >= 2) {
-        flagForHumanReview(data, 'both-thumbs-disagree-with-llm',
-          `LLM=${llmScore} (${llmBucket}), thumbs=${dtliThumbNorm || '-'}/${bwwThumbNorm || '-'}`);
-      }
-      // Use LLM score but keep as low confidence (thumbs couldn't validate it)
-    }
-
-    // Meh thumbs or mixed signals: don't change confidence, fall through to P4
   }
 
-  // P3b: Downgraded ShowScore originalScore (WE shows only)
-  // ShowScore star ratings aren't trusted at P0.5 (known inflation), but they're more
-  // reliable than low-confidence LLM scores. A 3/5 star rating should score ~60, not 25.
-  // Placed here so star ratings beat low-conf LLM but lose to high/medium-conf LLM.
-  if (downgradeShowScore && data.originalScore) {
-    const parsed = parseOriginalScore(data.originalScore, data.outletId);
-    if (parsed !== null) {
-      stats.showScoreDowngradedFallback = (stats.showScoreDowngradedFallback || 0) + 1;
-      return { score: parsed, source: 'originalScore-showscore-downgraded' };
-    }
-  }
-
-  // Priority 4: LLM score fallback (low confidence, needs review, or excerpt-only - when no thumb available)
-  if (data.llmScore && data.llmScore.score) {
-    const confidence = data.llmScore.confidence;
-    const needsReview = data.ensembleData?.needsReview;
-    const isExcerptOnly = !(data.fullText && data.fullText.trim().length > 100 && !data.fullTextRecoveredFrom);
-    const hasEnsemble = !!data.ensembleData;
-
-    // ENSEMBLE QUALITY GATE: Block ALL single-model scores (no ensembleData)
-    if (!hasEnsemble) {
-      stats.blockedSingleModel = (stats.blockedSingleModel || 0) + 1;
-      // Fall through to assignedScore/bucket/thumb fallbacks
-    } else if (confidence === 'low' || isExcerptOnly) {
-      return { score: data.llmScore.score, source: 'llmScore-lowconf' };
-    } else if (needsReview) {
-      return { score: data.llmScore.score, source: 'llmScore-review' };
-    }
-  }
-
-  // P4: Existing assignedScore (if valid AND has a known source)
-  if (data.assignedScore && data.assignedScore >= 1 && data.assignedScore <= 100) {
-    // Check if this has a legitimate source
-    const validSources = ['llmScore', 'originalScore', 'bucket', 'thumb',
-                          'llmScore-thumb-validated', 'llmScore-thumb-boosted',
-                          'extracted-grade', 'extracted-rating', 'extracted-unicode-stars',
-                          'extracted-thumbs', 'extracted-strong-positive', 'extracted-strong-negative',
-                          'sentiment-rave', 'sentiment-strong-positive', 'sentiment-positive', 'sentiment-mixed-positive',
-                          'sentiment-mixed', 'sentiment-mixed-negative', 'sentiment-negative',
-                          'sentiment-strong-negative', 'sentiment-pan', 'manual', 'manual-excerpt'];
-
-    if (data.scoreSource && validSources.some(s => data.scoreSource.includes(s))) {
-      return { score: data.assignedScore, source: 'assignedScore' };
-    }
-
-    // Also accept if there's evidence of how it was scored (thumb data, etc.)
-    if (data.dtliThumb || data.bwwThumb || data.originalScore || data.bucket) {
-      return { score: data.assignedScore, source: 'assignedScore' };
-    }
-  }
-
-
-  // P5: Bucket mapping
-  if (data.bucket && BUCKET_TO_SCORE[data.bucket]) {
-    return { score: BUCKET_TO_SCORE[data.bucket], source: 'bucket' };
-  }
-
-  // P5.5: bwwScore fallback (more granular than thumb mapping)
-  if (data.bwwScore != null && data.bwwScore >= 1 && data.bwwScore <= 10) {
-    return { score: data.bwwScore * 10, source: 'bwwScore-fallback' };
-  }
-
-  // P6: Thumb mappings (dtli first, then bww)
-  if (data.dtliThumb && THUMB_TO_SCORE[data.dtliThumb]) {
-    return { score: THUMB_TO_SCORE[data.dtliThumb], source: 'thumb' };
-  }
-  if (data.bwwThumb && THUMB_TO_SCORE[data.bwwThumb]) {
-    return { score: THUMB_TO_SCORE[data.bwwThumb], source: 'thumb' };
-  }
-  if (data.thumb && THUMB_TO_SCORE[data.thumb]) {
-    return { score: THUMB_TO_SCORE[data.thumb], source: 'thumb' };
-  }
-
-  // NO DEFAULT - return null to skip this review
-  return null;
+  return result;
 }
 
-function scoreToBucket(score) {
-  if (score >= 83) return 'Rave';
-  if (score >= 70) return 'Positive';
-  if (score >= 55) return 'Mixed';
-  if (score >= 35) return 'Negative';
-  return 'Pan';
-}
-
-function scoreToThumb(score) {
-  if (score >= 70) return 'Up';
-  if (score >= 55) return 'Flat';
-  return 'Down';
-}
+// scoreToBucket, scoreToThumb — imported from ./lib/rebuild-helpers
 
 // Main execution
 console.log('=== REBUILDING ALL REVIEWS ===\n');

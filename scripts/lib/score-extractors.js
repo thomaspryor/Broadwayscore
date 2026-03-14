@@ -913,6 +913,33 @@ function extractDesignation(html, text, outletId) {
   return null;
 }
 
+// ===================================================
+// SCORE-TO-BUCKET/THUMB CONVERTERS — canonical thresholds.
+// Import these instead of hardcoding boundary values.
+// ===================================================
+
+function scoreToBucket(score) {
+  if (score >= 83) return 'Rave';
+  if (score >= 70) return 'Positive';
+  if (score >= 55) return 'Mixed';
+  if (score >= 35) return 'Negative';
+  return 'Pan';
+}
+
+function scoreToThumb(score) {
+  if (score >= 70) return 'Up';
+  if (score >= 55) return 'Flat';
+  return 'Down';
+}
+
+// Outlets that use outlet-verified originalScore sources (not ShowScore aggregator data).
+// Used by getBestScore() to decide whether to trust originalScore at P0.5 vs P3b.
+const OUTLET_VERIFIED_SOURCES = new Set([
+  'json-ld', 'meta-itemprop', 'guardian-api', 'wos-star-images', 'stage-star-svg',
+  'telegraph-svg', 'dailymail-rating-img', 'fivestar-widget', 'star-class',
+  'unicode-stars', 'numeric-stars', 'original-star-rating', 'timeout-star-widget',
+]);
+
 module.exports = {
   extractScore,
   extractDesignation,
@@ -932,6 +959,9 @@ module.exports = {
   BUCKET_SCORES,
   THUMB_SCORES,
   starsToNumeric,
+  scoreToBucket,
+  scoreToThumb,
+  OUTLET_VERIFIED_SOURCES,
   OUTLET_EXTRACTORS,
   EXTRACTOR_VERSION
 };
