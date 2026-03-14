@@ -166,7 +166,10 @@
     "moulin-rouge-the-musical-west-end-2021/timeout-london--unknown.json",
     "my-neighbour-totoro-west-end-2025/guardian--arifa-akbar.json",
     "night-side-songs-off-broadway-2026/timeout--unknown.json",
-    "oh-mary-2024/ew--thom-geier.json"
+    "oh-mary-2024/ew--thom-geier.json",
+    "into-the-woods-west-end-2025/independent--louis-chilton.json",
+    "hercules-west-end-2025/nytimes--matt-wolf.json",
+    "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json"
   ],
   "failed": [
     "the-devil-wears-prada-west-end-2024/broadwayworld--unknown.json",
@@ -187,7 +190,14 @@
     "six-2021/newyorker--naomi-fry.json",
     "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
     "all-my-sons-west-end-2025/timeout--andrzej-lukowski.json",
-    "harry-potter-2021/wsj--terry-teachout.json"
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "the-book-of-mormon-west-end-2024/thestage--unknown.json",
+    "the-devil-wears-prada-west-end-2024/broadwayworld--unknown.json",
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "every-brilliant-thing-2026/nytimes--helen-shaw.json",
+    "hadestown-2019/newyorker--hilton-als.json",
+    "six-2021/newyorker--naomi-fry.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -373,7 +383,9 @@
       "data/review-texts/every-brilliant-thing-2026/nytimes--helen-shaw.json",
       "data/review-texts/hercules-west-end-2025/nytimes--matt-wolf.json",
       "data/review-texts/masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
-      "data/review-texts/all-my-sons-west-end-2025/timeout--andrzej-lukowski.json"
+      "data/review-texts/all-my-sons-west-end-2025/timeout--andrzej-lukowski.json",
+      "data/review-texts/the-devil-wears-prada-west-end-2024/broadwayworld--unknown.json",
+      "data/review-texts/every-brilliant-thing-2026/nytimes--helen-shaw.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
@@ -400,11 +412,14 @@
       "hamilton-2015/wsj--terry-teachout.json",
       "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
       "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
-      "maybe-happy-ending-2024/new-york-sun--broadway-scorecard.json"
+      "maybe-happy-ending-2024/new-york-sun--broadway-scorecard.json",
+      "into-the-woods-west-end-2025/independent--louis-chilton.json",
+      "hercules-west-end-2025/nytimes--matt-wolf.json",
+      "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json"
     ]
   },
   "startTime": "2026-03-14T16:00:17.600Z",
-  "lastProcessed": "oh-mary-2024/ew--thom-geier.json",
+  "lastProcessed": "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
   "log": [
     {
       "t": "2026-03-14T16:02:23.759Z",
@@ -614,6 +629,17 @@
       "t": "2026-03-14T19:22:01.999Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-14T19:31:37.366Z",
+      "event": "bb-session",
+      "session": "090b15a6",
+      "url": "https://www.nytimes.com/2026/03/12/theater/every-brilliant-thing-review-daniel-r"
+    },
+    {
+      "t": "2026-03-14T19:31:38.858Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
