@@ -1,14 +1,71 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-13T20:57:12.384Z",
+    "generatedAt": "2026-03-14T01:42:06.871Z",
     "description": "LLM-classified wrong-show results from title-mention guard candidates",
-    "total": 0,
-    "classified": 0,
-    "wrongShow": 0,
-    "correct": 0,
-    "uncertain": 0,
+    "total": 7,
+    "classified": 7,
+    "wrongShow": 1,
+    "correct": 5,
+    "uncertain": 1,
     "errors": 0,
-    "applied": 0
+    "applied": 1
   },
-  "results": []
+  "results": [
+    {
+      "showId": "casa-valentina-2014",
+      "showTitle": "Casa Valentina",
+      "file": "newsday--linda-winer.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions Harvey Fierstein, the playwright of Casa Valentina, and Joe Mantello, the director. It also discusses the themes of gender and sexuality, which are central to the play."
+    },
+    {
+      "showId": "a-raisin-in-the-sun-2014",
+      "showTitle": "A Raisin in the Sun",
+      "file": "vulture--jesse-green.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions Denzel Washington, the second Broadway revival of Lorraine Hansberry's classic, and the character Walter, all of which are associated with the 2014 production of \"A Raisin in the Sun.\""
+    },
+    {
+      "showId": "choir-boy-2019",
+      "showTitle": "Choir Boy",
+      "file": "timeout--adam-feldman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the Manhattan Theatre Club production, cast members (Pope, Ashe, Chuck Cooper, Austin Pendleton), and the director Trip Cullman, all associated with 'Choir Boy'. It also discusses the play's themes and McCraney's voice, aligning with the show's content."
+    },
+    {
+      "showId": "betty-buckley-random-notes-off-broadway-2026",
+      "showTitle": "Betty Buckley: Random Notes",
+      "file": "nydailynews--unknown.json",
+      "verdict": "WRONG_SHOW",
+      "confidence": "high",
+      "reasoning": "The review is for \"The Old Friends\", a play by Horton Foote. While Betty Buckley is mentioned in the review, it's in reference to her role in that play, not her own show \"Betty Buckley: Random Notes\"."
+    },
+    {
+      "showId": "im-almost-there-off-broadway-2026",
+      "showTitle": "I'm Almost There",
+      "file": "here--unknown.json",
+      "verdict": "UNCERTAIN",
+      "confidence": "medium",
+      "reasoning": "The review excerpts are short and generic, making it difficult to determine if they are about \"I'm Almost There.\" The mentions of 'Edinburgh Fringe' and 'Todd' don't definitively link to the show."
+    },
+    {
+      "showId": "the-winslow-boy-2013",
+      "showTitle": "The Winslow Boy",
+      "file": "ew--thom-geier.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions characters (Mr. Winslow, Kate), and the director (Lindsay Posner) of 'The Winslow Boy', indicating it is about the correct show."
+    },
+    {
+      "showId": "the-bridges-of-madison-county-2014",
+      "showTitle": "The Bridges of Madison County",
+      "file": "timeout--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the book, movie, composer Jason Robert Brown, writer Marsha Norman, director Bartlett Sher, and actors Steven Pasquale and Kelli O'Hara, all associated with \"The Bridges of Madison County\" musical. It also mentions the Gerald Schoenfeld Theatre, where the show played."
+    }
+  ]
 }
