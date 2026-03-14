@@ -146,7 +146,17 @@
     "masquerade-off-broadway-2025/theatermania--meg-masseron.json",
     "masquerade-off-broadway-2025/timeout--adam-feldman.json",
     "matilda-the-musical-west-end-2021/guardian--imogen-carter.json",
-    "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json"
+    "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json",
+    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+    "maybe-happy-ending-2024/guardian--adrian-horton.json",
+    "maybe-happy-ending-2024/new-york-sun--broadway-scorecard.json",
+    "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+    "maybe-happy-ending-2024/theatermania--jesse-green.json",
+    "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
+    "maybe-happy-ending-2024/timeout--adam-feldman.json",
+    "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/theatermania--rachel-graham.json",
+    "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/timeout--adam-feldman.json",
+    "mj-2022/theatermania--jesse-green.json"
   ],
   "failed": [
     "the-devil-wears-prada-west-end-2024/broadwayworld--unknown.json",
@@ -275,7 +285,14 @@
       "masquerade-off-broadway-2025/theatermania--meg-masseron.json",
       "masquerade-off-broadway-2025/timeout--adam-feldman.json",
       "matilda-the-musical-west-end-2021/guardian--imogen-carter.json",
-      "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json"
+      "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json",
+      "maybe-happy-ending-2024/guardian--adrian-horton.json",
+      "maybe-happy-ending-2024/theatermania--jesse-green.json",
+      "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
+      "maybe-happy-ending-2024/timeout--adam-feldman.json",
+      "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/theatermania--rachel-graham.json",
+      "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/timeout--adam-feldman.json",
+      "mj-2022/theatermania--jesse-green.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -317,7 +334,9 @@
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
       "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
       "data/review-texts/masquerade-off-broadway-2025/observer--david-cote.json",
-      "masquerade-off-broadway-2025/observer--david-cote.json"
+      "masquerade-off-broadway-2025/observer--david-cote.json",
+      "data/review-texts/maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+      "maybe-happy-ending-2024/nypost--johnny-oleksinski.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json"
@@ -359,11 +378,13 @@
       "and-juliet-2022/thewrap--robert-hofler.json",
       "cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json",
       "hamilton-2015/wsj--terry-teachout.json",
-      "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json"
+      "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
+      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+      "maybe-happy-ending-2024/new-york-sun--broadway-scorecard.json"
     ]
   },
   "startTime": "2026-03-14T16:00:17.600Z",
-  "lastProcessed": "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json",
+  "lastProcessed": "mj-2022/theatermania--jesse-green.json",
   "log": [
     {
       "t": "2026-03-14T16:02:23.759Z",
@@ -562,6 +583,17 @@
       "t": "2026-03-14T19:20:46.800Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-14T19:22:00.461Z",
+      "event": "bb-session",
+      "session": "649d3eb9",
+      "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-r"
+    },
+    {
+      "t": "2026-03-14T19:22:01.999Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
