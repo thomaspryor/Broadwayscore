@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-14T12:42:59.857Z",
+  "timestamp": "2026-03-14T13:44:10.590Z",
   "stats": {
     "totalReviews": 31306,
-    "alreadyFlagged": 9471,
+    "alreadyFlagged": 9488,
     "dateGuardCatches": 125,
-    "directorMismatch": 1120,
+    "directorMismatch": 1119,
     "tvFilmSignals": 3482,
-    "londonSignals": 1014,
+    "londonSignals": 1012,
     "offBroadwaySignals": 1084,
     "yearMismatch": 95,
-    "noPublishDate": 9399
+    "noPublishDate": 9396
   },
   "findings": [
     {
@@ -7433,20 +7433,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "betrayal-2000",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 85,
-      "publishDate": "September 5th, 2019",
-      "url": "https://www.hollywoodreporter.com/review/tom-hiddleston-betrayal-theater-review-1234384",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from betrayal-2019"
         }
       ]
     },
@@ -38723,6 +38709,20 @@
       ]
     },
     {
+      "showId": "once-on-this-island-2002",
+      "file": "nytimes--jesse-green.json",
+      "score": 88,
+      "publishDate": "December 3rd, 2017",
+      "url": "https://www.nytimes.com/2017/12/03/theater/review-once-on-this-island-revived-and-ravishing.html?_r=0",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from once-on-this-island-2017"
+        }
+      ]
+    },
+    {
       "showId": "once-on-this-island-2017",
       "file": "frequentbusinesstraveler--jonathan-spira.json",
       "score": 82,
@@ -45528,20 +45528,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
-        }
-      ]
-    },
-    {
-      "showId": "skylight-1996",
-      "file": "nytimes--ben-brantley.json",
-      "score": 85,
-      "publishDate": "April 2nd, 2015",
-      "url": "http://www.nytimes.com/2015/04/03/theater/review-skylight-with-carey-mulligan-and-bill-nighy-opens-on-broadway.html?_r=0",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from skylight-2015"
         }
       ]
     },
@@ -64560,11 +64546,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1265d before show (2019-04-11 vs 2022-09-27)"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -73665,20 +73646,6 @@
     },
     {
       "showId": "indecent-2017",
-      "file": "act-three-the-reviews--doug-marino.json",
-      "score": 86,
-      "publishDate": "June 14th, 2016",
-      "url": "https://dougmarino.blogspot.com/2016/06/indecent.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "indecent-2017",
       "file": "amny--matt-windman.json",
       "score": 75,
       "publishDate": "May 17th, 2016",
@@ -81682,6 +81649,20 @@
       ]
     },
     {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "lost-in-theatreland--jill-johnson.json",
+      "score": 89,
+      "publishDate": "2023-12-18",
+      "url": "https://lostintheatreland.co.uk/stranger-things-the-first-shadow-review-phoenix-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "suffs-2024",
       "file": "chelsea-community-news--michael-musto.json",
       "score": 78,
@@ -85733,19 +85714,6 @@
       ]
     },
     {
-      "showId": "the-mousetrap-west-end-2021",
-      "file": "telegraph--unknown.json",
-      "publishDate": "2012-11-18",
-      "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/9686732/Agatha-Christies-The-Mousetrap-celebrates-its-60th-anniversary-with-star-studded-show.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "the-nap-2018",
       "file": "deadline--greg-evans.json",
       "score": 38,
@@ -87587,20 +87555,6 @@
       ]
     },
     {
-      "showId": "titanique-west-end-2024",
-      "file": "london-box-office--stuart-king.json",
-      "score": 86,
-      "publishDate": "2025-01-10",
-      "url": "https://www.londonboxoffice.co.uk/news/post/titanique-west-end-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
       "showId": "title-of-show-2008",
       "file": "newsday--linda-winer-bway.json",
       "score": 62,
@@ -88551,6 +88505,58 @@
     },
     {
       "showId": "wicked-2003",
+      "file": "broadwayworld--armando-urdiales.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Wicked",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "broadwayworld--christina-mancuso.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Wicked",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "broadwayworld--courtney-symes.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Wicked",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "broadwayworld--emily-short.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Wicked",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
       "file": "broadwayworld--jared-fessler.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
@@ -88565,19 +88571,6 @@
     {
       "showId": "wicked-2003",
       "file": "broadwayworld--katrina-fageol.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
-      "file": "broadwayworld--lauren-gienow.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
       "findings": [
@@ -88617,32 +88610,6 @@
     {
       "showId": "wicked-2003",
       "file": "broadwayworld--marriage-matinee.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
-      "file": "broadwayworld--nicole-ackman.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
-      "file": "broadwayworld--tyler-hinton.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
       "findings": [
