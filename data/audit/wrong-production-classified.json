@@ -1,34 +1,16 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-14T12:04:36.803Z",
+    "generatedAt": "2026-03-14T12:38:40.827Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 85,
-    "classified": 1,
+    "total": 82,
+    "classified": 0,
     "wrongProduction": 0,
-    "correctProduction": 1,
+    "correctProduction": 0,
     "uncertain": 0,
     "errors": 0,
     "wrongHighConfidence": 0,
     "wrongMediumConfidence": 0
   },
-  "results": [
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "timeout--adam-feldman.json",
-      "outlet": "Time Out New York",
-      "criticName": "Adam Feldman",
-      "publishDate": "March 29th, 2012",
-      "originalSignals": [
-        "year 1998 in text matches revival the-lion-king-west-end-2021",
-        "modern references: twitter"
-      ],
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review mentions Julie Taymor, the Minskoff Theatre, and the Elton John/Tim Rice score, all associated with the 1997 Broadway production. It also states the show premiered 'decades after its 1998 premiere,' which is close enough to the 1997 opening to be considered correct."
-    }
-  ]
+  "results": []
 }
