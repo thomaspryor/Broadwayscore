@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-14T10:10:33.074Z",
+  "timestamp": "2026-03-14T10:54:00.631Z",
   "stats": {
     "totalReviews": 31306,
-    "alreadyFlagged": 9454,
-    "dateGuardCatches": 126,
+    "alreadyFlagged": 9464,
+    "dateGuardCatches": 125,
     "directorMismatch": 1120,
-    "tvFilmSignals": 3488,
-    "londonSignals": 1015,
+    "tvFilmSignals": 3486,
+    "londonSignals": 1014,
     "offBroadwaySignals": 1087,
     "yearMismatch": 94,
-    "noPublishDate": 9401
+    "noPublishDate": 9400
   },
   "findings": [
     {
@@ -11490,19 +11490,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "chess-2025",
-      "file": "ny1--frank-dilella.json",
-      "publishDate": "2025-10-17",
-      "url": "https://ny1.com/nyc/all-boroughs/news/2025/10/16/frank-dilella-s-theater-picks--chess--liberation-and-more",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"big screen\""
         }
       ]
     },
@@ -50986,30 +50973,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "the-amazing-sex-life-of-rabbits-off-broadway-2026",
-      "file": "nbcnews--unknown.json",
-      "score": null,
-      "publishDate": "2026-01-09",
-      "url": "https://www.iloveny.com/thebeat/post/off-broadway-premiere-of-the-amazing-sex-life-of-rabbits-will-open-at-soho-playhouse-on-march-2nd/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 52d before show (2026-01-09 vs 2026-03-02)"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
