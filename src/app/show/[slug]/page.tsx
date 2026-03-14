@@ -826,8 +826,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           </div>
         )}
 
-        {/* Page Being Built / Historical Production banner — for shows with no reviews yet */}
-        {show.status !== 'previews' && (!show.criticScore || show.criticScore.reviewCount === 0) && (() => {
+        {/* Page Being Built / Historical Production banner — for shows with no reviews yet (skip upcoming/previews — they naturally don't have reviews) */}
+        {show.status !== 'previews' && show.status !== 'upcoming' && (!show.criticScore || show.criticScore.reviewCount === 0) && (() => {
           const bannerYear = show.openingDate ? parseInt(show.openingDate.substring(0, 4)) : null;
           const isHistoricalBanner = show.status === 'closed' && bannerYear !== null && bannerYear < 2024;
           return (
@@ -1051,7 +1051,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         {/* Showtimes — Broadway only */}
         <div id="showtimes" className="scroll-mt-20" />
         {!isWestEnd && !isOffBroadway && showSchedule &&
-          (show.status === 'open' || show.status === 'previews') && (
+          (show.status === 'open' || show.status === 'previews' || show.status === 'upcoming') && (
           <ShowtimesCard
             schedule={showSchedule}
             currentMonday={getScheduleCurrentMonday()}
