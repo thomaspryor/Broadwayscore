@@ -175,32 +175,21 @@ async function runDiscovery() {
   }
 
   // 3. Probe endpoints
+  // [CHANGED: reduced from 20+ to ~12 most likely endpoints — GPT-4o]
   const endpoints = [
-    // Show-level review/reaction endpoints
+    // Show-level endpoints (most likely based on REST conventions)
     `/shows/${testShow.id}/reviews`,
     `/shows/${testShow.id}/reactions`,
     `/shows/${testShow.id}/comments`,
     `/shows/${testShow.id}/feed`,
-    `/shows/${testShow.id}/activity`,
-    `/shows/${testShow.id}/ratings`,
-    `/shows/${testShow.id}/posts`,
-    `/shows/${testShow.id}/discussions`,
     // V1 variants
     `/v1/shows/${testShow.id}/reviews`,
     `/v1/shows/${testShow.id}/reactions`,
-    `/v1/shows/${testShow.id}/comments`,
     `/v1/shows/${testShow.id}/feed`,
-    // Top-level endpoints
-    `/reviews`,
-    `/v1/reviews`,
-    `/reactions`,
-    `/v1/reactions`,
-    `/feed`,
-    `/v1/feed`,
-    // Show detail (might contain review data)
+    // Show detail (might embed review data)
     `/shows/${testShow.id}`,
     `/v1/shows/${testShow.id}`,
-    // User activity
+    // Alternate naming patterns
     `/show-reactions/${testShow.id}`,
     `/show-reviews/${testShow.id}`,
     `/show-comments/${testShow.id}`,

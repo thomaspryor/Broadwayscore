@@ -10,8 +10,10 @@
  *   --max-productions=N  Limit to N productions (for testing)
  *   --max-requests=N   Cap total API requests (default: 15000)
  *   --resume           Resume from checkpoint
+ *   --force-recheck-empty  Re-process productions that returned 0 entries (recovery from token expiry)
  *   --dry-run          Print what would be fetched without fetching
  *   --verbose          Print detailed progress
+ *   --verify           Cross-validate fetched data against expected counts
  *
  * Environment variables:
  *   MEZZANINE_APP_ID       - Parse Application ID (required)
@@ -32,6 +34,7 @@ const maxProdArg = args.find(a => a.startsWith('--max-productions='));
 const maxProductions = maxProdArg ? parseInt(maxProdArg.split('=')[1]) : null;
 const maxReqArg = args.find(a => a.startsWith('--max-requests='));
 const maxRequests = maxReqArg ? parseInt(maxReqArg.split('=')[1]) : 15000;
+const forceRecheckEmpty = args.includes('--force-recheck-empty');
 
 // ---- Config ----
 const APP_ID = process.env.MEZZANINE_APP_ID;
@@ -41,6 +44,8 @@ const BATCH_SIZE = 1000; // Parse max per query
 const DELAY_WITHIN_PRODUCTION_MS = 500; // between paginated requests for same production
 const DELAY_BETWEEN_PRODUCTIONS_MS = 2000; // between different productions
 const MAX_RETRIES = 3;
+const CANARY_INTERVAL = 50; // re-check auth every N productions
+const PARSE_MAX_SKIP = 10000; // Parse Server hard limit on skip parameter
 
 // ---- Paths ----
 const dataDir = path.join(__dirname, '../data');
@@ -230,22 +235,87 @@ function filterNYCOrLondon(productions) {
   });
 }
 
+/**
+ * Canary check: fetch a known-good production to verify auth is still valid.
+ * Parse Server returns {"results": []} on expired tokens instead of 401,
+ * so we must verify against a production we KNOW has entries.
+ * [CHANGED: detect silent token expiry — Claude + Pre-mortem P0]
+ */
+let canaryProductionId = null;
+let canaryExpectedMin = 0;
+
+function setCanaryProduction(productions) {
+  // Pick the production with the most entries as canary
+  const best = productions.reduce((a, b) =>
+    (a.diaryEntriesCount || 0) > (b.diaryEntriesCount || 0) ? a : b
+  );
+  canaryProductionId = best.objectId;
+  canaryExpectedMin = Math.max(1, Math.floor((best.diaryEntriesCount || 1) * 0.5));
+  console.log(`Canary production: ${best.show?.name || best.showName} (${best.objectId}, expect ≥${canaryExpectedMin} entries)`);
+}
+
+async function runCanaryCheck(className) {
+  if (!canaryProductionId) return;
+  const res = await queryParse(className, {
+    limit: 1,
+    where: {
+      production: { __type: 'Pointer', className: 'Production', objectId: canaryProductionId }
+    },
+    count: 1,
+    _method: 'GET',
+  });
+  const count = res.count !== undefined ? res.count : (res.results || []).length;
+  if (count < canaryExpectedMin) {
+    throw new Error(
+      `CANARY FAILED: Expected ≥${canaryExpectedMin} entries for canary production, got ${count}. ` +
+      `Session token has likely expired. Re-intercept via mitmproxy.`
+    );
+  }
+  if (verbose) console.log(`  Canary check passed (${count} entries)`);
+}
+
+/**
+ * Fetch all entries for a production, handling Parse's 10K skip limit
+ * by using createdAt-based cursor pagination for large collections.
+ * [CHANGED: handle >10K entries per production — Claude P1]
+ */
 async function fetchEntriesForProduction(productionId, className) {
   const allEntries = [];
   let skip = 0;
+  let lastCreatedAt = null; // cursor for >10K fallback
 
   while (true) {
+    // If we're approaching the 10K skip limit, switch to cursor-based pagination
+    const where = {
+      production: { __type: 'Pointer', className: 'Production', objectId: productionId }
+    };
+
+    let useSkip = skip;
+    if (skip >= PARSE_MAX_SKIP && lastCreatedAt) {
+      // Cursor-based: fetch entries created after the last one we saw
+      where.createdAt = { '$gt': { __type: 'Date', iso: lastCreatedAt } };
+      useSkip = 0;
+    }
+
     const res = await queryParse(className, {
       limit: BATCH_SIZE,
-      skip,
-      where: {
-        production: { __type: 'Pointer', className: 'Production', objectId: productionId }
-      },
+      skip: useSkip,
+      where,
+      order: 'createdAt', // consistent ordering for cursor pagination
       _method: 'GET',
     });
 
     if (!res.results || res.results.length === 0) break;
-    allEntries.push(...res.results);
+
+    // Deduplicate by objectId in case of overlap
+    const existingIds = new Set(allEntries.map(e => e.objectId));
+    const newEntries = res.results.filter(e => !existingIds.has(e.objectId));
+    allEntries.push(...newEntries);
+
+    // Track cursor for >10K fallback
+    const lastEntry = res.results[res.results.length - 1];
+    lastCreatedAt = lastEntry.createdAt;
+
     skip += res.results.length;
 
     if (res.results.length < BATCH_SIZE) break;
@@ -292,22 +362,57 @@ async function runFullScrape(className) {
 
   console.log(`Filtered to ${productions.length} NYC/London productions with entries\n`);
 
-  // 4. Load checkpoint / index
+  // 4. Set up canary production for auth verification
+  // [CHANGED: canary check to detect silent token expiry — Claude + Pre-mortem P0]
+  if (productions.length > 0) {
+    setCanaryProduction(productions);
+  }
+
+  // Log max diaryEntriesCount to verify 10K skip limit concern
+  const maxEntries = Math.max(...productions.map(p => p.diaryEntriesCount || 0));
+  console.log(`Largest production has ${maxEntries} expected entries`);
+  if (maxEntries > PARSE_MAX_SKIP) {
+    console.log(`  ⚠ Exceeds Parse 10K skip limit — will use cursor-based pagination`);
+  }
+
+  // 5. Load checkpoint / index
   ensureDir(reviewsDir);
   let index = {};
   if (fs.existsSync(indexPath)) {
     index = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
   }
 
-  let checkpoint = { completedIds: [], totalRequests: 0 };
+  // [CHANGED: checkpoint stores {id, fetchedCount} not just IDs — Pre-mortem P0]
+  let checkpoint = { completed: {}, totalRequests: 0 };
   if (resumeMode && fs.existsSync(checkpointPath)) {
     checkpoint = JSON.parse(fs.readFileSync(checkpointPath, 'utf8'));
-    console.log(`Resuming from checkpoint: ${checkpoint.completedIds.length} completed, ${checkpoint.totalRequests} requests so far`);
+    // Migrate old format (completedIds array → completed object)
+    if (checkpoint.completedIds && !checkpoint.completed) {
+      checkpoint.completed = {};
+      for (const id of checkpoint.completedIds) {
+        checkpoint.completed[id] = { fetchedCount: -1 }; // unknown from old format
+      }
+      delete checkpoint.completedIds;
+    }
+    console.log(`Resuming from checkpoint: ${Object.keys(checkpoint.completed).length} completed, ${checkpoint.totalRequests} requests so far`);
   }
 
-  const completedSet = new Set(checkpoint.completedIds);
+  const completedSet = new Set(Object.keys(checkpoint.completed));
 
-  // 5. Filter out already-completed
+  // [CHANGED: --force-recheck-empty re-processes productions with 0 entries — Pre-mortem]
+  if (forceRecheckEmpty) {
+    let rechecked = 0;
+    for (const [id, meta] of Object.entries(checkpoint.completed)) {
+      if (meta.fetchedCount === 0) {
+        completedSet.delete(id);
+        delete checkpoint.completed[id];
+        rechecked++;
+      }
+    }
+    if (rechecked > 0) console.log(`Force-rechecking ${rechecked} productions that had 0 entries`);
+  }
+
+  // 6. Filter out already-completed
   productions = productions.filter(p => !completedSet.has(p.objectId));
   if (maxProductions) productions = productions.slice(0, maxProductions);
   console.log(`To process: ${productions.length} productions\n`);
@@ -323,7 +428,17 @@ async function runFullScrape(className) {
     return;
   }
 
-  // 6. Scrape each production
+  // 7. Run initial canary check before starting
+  // [CHANGED: canary check to detect silent token expiry — Claude + Pre-mortem P0]
+  console.log('Running initial canary check...');
+  try {
+    await runCanaryCheck(className);
+  } catch (e) {
+    console.error('CANARY FAILED:', e.message);
+    process.exit(1);
+  }
+
+  // 8. Scrape each production
   let fetched = 0;
   let errors = 0;
   let totalEntries = 0;
@@ -334,8 +449,27 @@ async function runFullScrape(className) {
     const name = p.show?.name || p.showName || 'Unknown';
     const expectedCount = p.diaryEntriesCount || p.ratingsCount || 0;
 
+    // Periodic canary check to detect mid-run token expiry
+    if (i > 0 && i % CANARY_INTERVAL === 0) {
+      try {
+        await runCanaryCheck(className);
+      } catch (e) {
+        console.error(`\nCANARY FAILED at production ${i}: ${e.message}`);
+        console.error('Stopping to prevent writing empty data. Use --resume to continue with a fresh token.');
+        checkpoint.totalRequests = totalRequests;
+        fs.writeFileSync(checkpointPath, JSON.stringify(checkpoint));
+        fs.writeFileSync(indexPath, JSON.stringify(index, null, 2));
+        break;
+      }
+    }
+
     try {
       const entries = await fetchEntriesForProduction(p.objectId, className);
+
+      // Warn if we got 0 entries for a production that should have them
+      if (entries.length === 0 && expectedCount > 10) {
+        console.warn(`  ⚠ SUSPICIOUS: ${name} returned 0 entries but expected ${expectedCount}. Possible auth issue.`);
+      }
 
       // Save per-production file
       const outFile = path.join(reviewsDir, `${p.objectId}.json`);
@@ -354,7 +488,7 @@ async function runFullScrape(className) {
       };
       fs.writeFileSync(outFile, JSON.stringify(outData, null, 2));
 
-      // Update index
+      // Update index (metadata only — no nested review arrays)
       index[p.objectId] = {
         showName: name,
         expectedCount,
@@ -363,8 +497,9 @@ async function runFullScrape(className) {
         status: 'complete',
       };
 
-      // Update checkpoint
-      checkpoint.completedIds.push(p.objectId);
+      // Update checkpoint with fetchedCount for corruption detection
+      // [CHANGED: store fetchedCount in checkpoint — Pre-mortem P0]
+      checkpoint.completed[p.objectId] = { fetchedCount: entries.length };
       checkpoint.totalRequests = totalRequests;
       fs.writeFileSync(checkpointPath, JSON.stringify(checkpoint));
       fs.writeFileSync(indexPath, JSON.stringify(index, null, 2));
@@ -386,8 +521,8 @@ async function runFullScrape(className) {
       fs.writeFileSync(checkpointPath, JSON.stringify(checkpoint));
       fs.writeFileSync(indexPath, JSON.stringify(index, null, 2));
 
-      // If it's an auth or cap error, stop entirely
-      if (e.message.includes('Authentication') || e.message.includes('Request cap')) {
+      // If it's an auth, canary, or cap error, stop entirely
+      if (e.message.includes('Authentication') || e.message.includes('Request cap') || e.message.includes('CANARY')) {
         console.error('\nStopping due to critical error. Use --resume to continue later.');
         break;
       }
