@@ -255,7 +255,17 @@
     "broken-glass-west-end-2026/london-box-office--stuart-king.json",
     "broken-glass-west-end-2026/london-theatre--julia-rank.json",
     "broken-glass-west-end-2026/standard--nick-curtis.json",
-    "broken-glass-west-end-2026/telegraph--dominic-cavendish.json"
+    "broken-glass-west-end-2026/telegraph--dominic-cavendish.json",
+    "buena-vista-social-club-2025/amny--matt-windman.json",
+    "buena-vista-social-club-2025/latimes--nicholas-ducassi.json",
+    "buena-vista-social-club-2025/washpost--naveen-kumar.json",
+    "bughouse-off-broadway-2026/theater-life--unknown.json",
+    "burnout-paradise-off-broadway-2026/culturesauce--thom-geier.json",
+    "burnout-paradise-off-broadway-2026/stageandcinema--paola-bellu.json",
+    "burnout-paradise-off-broadway-2026/theater-pizzazz--samuel-l-leiter.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/artsdesk--david-nice.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/i-paper--fiona-mountford.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/london-theatre--suzy-evans.json"
   ],
   "failed": [
     "the-devil-wears-prada-west-end-2024/broadwayworld--unknown.json",
@@ -496,7 +506,15 @@
       "broken-glass-west-end-2026/london-box-office--stuart-king.json",
       "broken-glass-west-end-2026/london-theatre--julia-rank.json",
       "broken-glass-west-end-2026/standard--nick-curtis.json",
-      "broken-glass-west-end-2026/telegraph--dominic-cavendish.json"
+      "broken-glass-west-end-2026/telegraph--dominic-cavendish.json",
+      "buena-vista-social-club-2025/latimes--nicholas-ducassi.json",
+      "buena-vista-social-club-2025/washpost--naveen-kumar.json",
+      "bughouse-off-broadway-2026/theater-life--unknown.json",
+      "burnout-paradise-off-broadway-2026/culturesauce--thom-geier.json",
+      "burnout-paradise-off-broadway-2026/stageandcinema--paola-bellu.json",
+      "burnout-paradise-off-broadway-2026/theater-pizzazz--samuel-l-leiter.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/i-paper--fiona-mountford.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/london-theatre--suzy-evans.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -542,7 +560,9 @@
       "data/review-texts/maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
       "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
       "data/review-texts/the-great-gatsby-2024/observer--david-cote.json",
-      "the-great-gatsby-2024/observer--david-cote.json"
+      "the-great-gatsby-2024/observer--david-cote.json",
+      "data/review-texts/buena-vista-social-club-2025/amny--matt-windman.json",
+      "buena-vista-social-club-2025/amny--matt-windman.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json"
@@ -608,11 +628,12 @@
       "and-juliet-2022/ap--unknown.json",
       "and-juliet-2022/broadway-blog--joey-sims.json",
       "back-to-the-future-west-end-2021/independent--clarisse-loughrey.json",
-      "book-of-mormon-2011/chicagotribune--unknown.json"
+      "book-of-mormon-2011/chicagotribune--unknown.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/artsdesk--david-nice.json"
     ]
   },
   "startTime": "2026-03-14T16:00:17.600Z",
-  "lastProcessed": "broken-glass-west-end-2026/telegraph--dominic-cavendish.json",
+  "lastProcessed": "cabaret-at-the-kit-kat-club-west-end-2021/london-theatre--suzy-evans.json",
   "log": [
     {
       "t": "2026-03-14T16:02:23.759Z",
@@ -877,6 +898,17 @@
       "t": "2026-03-14T19:44:50.103Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-14T20:05:10.178Z",
+      "event": "bb-session",
+      "session": "dcc3a03f",
+      "url": "https://www.amny.com/entertainment/broadway/review-buena-vista-social-clunk/"
+    },
+    {
+      "t": "2026-03-14T20:05:11.681Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }

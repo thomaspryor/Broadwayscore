@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-14T20:05:07.555Z",
-  "processed": 256,
+  "updatedAt": "2026-03-14T20:07:22.004Z",
+  "processed": 266,
   "failed": 40,
-  "successRate": "86.5%",
+  "successRate": "86.9%",
   "tierBreakdown": {
-    "playwright": 195,
+    "playwright": 203,
     "amp": 16,
-    "browserbase": 26,
+    "browserbase": 28,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 16,
-    "archive": 41
+    "archive": 42
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-03-14T19:16:14.459Z",
-      "event": "bb-session",
-      "session": "5f616378",
-      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
-    },
-    {
-      "t": "2026-03-14T19:16:17.923Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-14T19:18:35.556Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-14T19:44:50.103Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-14T20:05:10.178Z",
+      "event": "bb-session",
+      "session": "dcc3a03f",
+      "url": "https://www.amny.com/entertainment/broadway/review-buena-vista-social-clunk/"
+    },
+    {
+      "t": "2026-03-14T20:05:11.681Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
