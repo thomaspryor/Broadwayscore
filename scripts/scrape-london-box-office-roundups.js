@@ -614,7 +614,31 @@ async function scrapeLBORoundups() {
   const weShows = shows.filter(s => s.category === 'west-end');
   console.log(`Loaded ${weShows.length} West End shows from shows.json\n`);
 
-  // Discover roundup + individual review URLs from sitemap
+  // Step 1: Check curated roundup URL map first (most reliable)
+  const matchedRoundups = [];
+  const curatedMapPath = path.join(__dirname, '../data/lbo-roundup-urls.json');
+  let curatedMap = {};
+  try {
+    const mapData = JSON.parse(fs.readFileSync(curatedMapPath, 'utf8'));
+    curatedMap = mapData.shows || {};
+    console.log(`Loaded ${Object.keys(curatedMap).length} curated LBO roundup URLs`);
+  } catch (e) {
+    console.log('No curated LBO roundup map found — will use sitemap discovery');
+  }
+
+  // Match curated URLs to target shows
+  const curatedMatchedIds = new Set();
+  for (const [showId, url] of Object.entries(curatedMap)) {
+    if (targetShowIds && !targetShowIds.includes(showId)) continue;
+    const show = weShows.find(s => s.id === showId);
+    if (show) {
+      matchedRoundups.push({ url, show, extractedTitle: show.title });
+      curatedMatchedIds.add(showId);
+      console.log(`  [CURATED] ${show.title} → ${url}`);
+    }
+  }
+
+  // Step 2: Discover additional roundup + individual review URLs from sitemap
   let roundupUrls = [];
   let individualUrls = [];
   try {
@@ -626,15 +650,14 @@ async function scrapeLBORoundups() {
     console.log('Falling back to targeted shows with Google SERP...');
   }
 
-  // Match roundup URLs to shows
-  const matchedRoundups = [];
-
+  // Match sitemap roundup URLs to shows (skip already-curated ones)
   for (const url of roundupUrls) {
     const extractedTitle = extractShowTitleFromUrl(url);
     if (!extractedTitle) continue;
 
     const match = matchTitleToShow(extractedTitle, weShows, { market: 'west-end' });
     if (match && match.show) {
+      if (curatedMatchedIds.has(match.show.id)) continue; // Already have curated URL
       if (targetShowIds && !targetShowIds.includes(match.show.id)) continue;
       matchedRoundups.push({ url, show: match.show, extractedTitle });
     }
