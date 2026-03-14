@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-14T11:36:20.881Z",
-  "processed": 390,
-  "failed": 90,
-  "successRate": "81.3%",
+  "updatedAt": "2026-03-14T11:40:36.891Z",
+  "processed": 398,
+  "failed": 92,
+  "successRate": "81.2%",
   "tierBreakdown": {
-    "playwright": 275,
+    "playwright": 279,
     "amp": 24,
-    "browserbase": 22,
+    "browserbase": 24,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 46,
-    "archive": 95
+    "archive": 98
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-03-14T09:29:49.039Z",
-      "event": "bb-session",
-      "session": "4236c7e6",
-      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
-    },
-    {
-      "t": "2026-03-14T09:29:50.168Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-14T09:30:29.760Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-14T11:26:49.515Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-14T11:37:05.991Z",
+      "event": "bb-session",
+      "session": "08147d6b",
+      "url": "https://www.amny.com/news/review-marcel-on-the-train-finds-bravery/"
+    },
+    {
+      "t": "2026-03-14T11:37:07.424Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     }
