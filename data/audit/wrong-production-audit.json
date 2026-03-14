@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-14T20:21:44.212Z",
+  "timestamp": "2026-03-14T20:56:45.516Z",
   "stats": {
     "totalReviews": 31310,
     "alreadyFlagged": 9494,
     "dateGuardCatches": 125,
     "directorMismatch": 1119,
-    "tvFilmSignals": 3481,
-    "londonSignals": 1012,
+    "tvFilmSignals": 3483,
+    "londonSignals": 1011,
     "offBroadwaySignals": 1085,
     "yearMismatch": 95,
     "noPublishDate": 9394
@@ -31852,6 +31852,11 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 842d before show (2019-09-08 vs 2021-12-28)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -32005,6 +32010,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2001 (3x) more than 2025 (0x). 2001 matches production: mamma-mia-2001"
+        }
+      ]
+    },
+    {
+      "showId": "mamma-mia-west-end-2021",
+      "file": "london-box-office--daniel-perks.json",
+      "score": 44,
+      "publishDate": "2014-09-11",
+      "url": "https://www.londonboxoffice.co.uk/news/post/mamma-mia-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -36197,11 +36216,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 871d before show (2022-10-19 vs 2025-03-08)"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
