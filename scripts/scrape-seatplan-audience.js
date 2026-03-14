@@ -265,11 +265,12 @@ async function main() {
 
     // Validate: page title should match our show title
     if (data.showName) {
-      const pageTitle = data.showName.toLowerCase().trim();
-      const ourTitle = title.toLowerCase().trim();
-      // Simple containment check — page title should contain our title or vice versa
-      if (!pageTitle.includes(ourTitle.split(':')[0].split('(')[0].trim()) &&
-          !ourTitle.includes(pageTitle.split(':')[0].split('(')[0].trim())) {
+      // Normalize both: strip accents, & → and, lowercase, strip punctuation
+      const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9\s]/g, '').trim();
+      const pageNorm = norm(data.showName.split(':')[0].split('(')[0]);
+      const ourNorm = norm(title.split(':')[0].split('(')[0]);
+      if (!pageNorm.includes(ourNorm) && !ourNorm.includes(pageNorm)) {
         console.log(`  ⚠️  Title mismatch! Page: "${data.showName}" vs Ours: "${title}" — SKIPPING`);
         stats.skipped++;
         if (i < toProcess.length - 1) await sleep(RATE_LIMIT_MS);
