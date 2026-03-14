@@ -30,7 +30,7 @@ const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normali
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
-const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES, OUTLET_VERIFIED_SOURCES } = require('./lib/score-extractors');
+const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb } = require('./lib/rebuild-helpers');
@@ -98,10 +98,6 @@ function flagForHumanReview(data, reason, detail) {
     flaggedAt: new Date().toISOString()
   });
 }
-
-// Score mappings — imported from shared source of truth
-const THUMB_TO_SCORE = THUMB_SCORES;
-const BUCKET_TO_SCORE = BUCKET_SCORES;
 
 // EXPLICIT RATING EXTRACTION removed — now handled at collection time
 // by LLM extraction (scripts/lib/llm-score-extractor.js).
