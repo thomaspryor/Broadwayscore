@@ -2963,7 +2963,23 @@ async function main() {
   console.log(`reviews_created=${totalCreated}`);
 }
 
-main().catch(err => {
-  console.error('Fatal error:', err);
-  process.exit(1);
-});
+// Allow importing as a module (for opening-night-poller.js) without running CLI
+if (require.main === module) {
+  main().catch(err => {
+    console.error('Fatal error:', err);
+    process.exit(1);
+  });
+}
+
+module.exports = {
+  searchDTLI,
+  searchShowScore,
+  searchBWWRoundup,
+  extractDTLIReviews,
+  extractShowScoreReviews,
+  extractBWWRoundupReviews,
+  createReviewFile,
+  gatherReviewsForShow,
+  loadShowData,
+  getGlobalUrlIndex,
+};
