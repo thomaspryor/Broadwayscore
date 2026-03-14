@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-14T09:27:46.900Z",
-  "processed": 149,
-  "failed": 31,
-  "successRate": "82.8%",
+  "updatedAt": "2026-03-14T09:30:09.174Z",
+  "processed": 157,
+  "failed": 33,
+  "successRate": "82.6%",
   "tierBreakdown": {
-    "playwright": 103,
+    "playwright": 107,
     "amp": 16,
-    "browserbase": 4,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 14,
-    "archive": 36
+    "archiveToday": 15,
+    "archive": 38
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-03-14T08:23:26.634Z",
@@ -40,6 +40,39 @@
     },
     {
       "t": "2026-03-14T09:27:27.763Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-14T09:28:29.592Z",
+      "event": "bb-session",
+      "session": "eaf7b27c",
+      "url": "https://www.nytimes.com/2026/03/12/theater/every-brilliant-thing-review-daniel-r"
+    },
+    {
+      "t": "2026-03-14T09:28:30.783Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-14T09:29:32.682Z",
+      "event": "bb-session",
+      "session": "b1271764",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-14T09:29:33.838Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-14T09:29:49.039Z",
+      "event": "bb-session",
+      "session": "4236c7e6",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-14T09:29:50.168Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }

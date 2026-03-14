@@ -148,7 +148,15 @@
     "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
     "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
     "chess-2025/hollywood-reporter--angie-han.json",
-    "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json"
+    "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nytg--allison-considine.json",
+    "death-becomes-her-2024/newyorker--helen-shaw.json",
+    "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
+    "hadestown-2019/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/nyt-theater--jonathan-mandell.json"
   ],
   "failed": [
     "deep-azure-globe-west-end-2026/nytimes--unknown.json",
@@ -181,7 +189,9 @@
     "the-producers-west-end-2025/whatsonstage--unknown.json",
     "the-reservoir-off-broadway-2026/talkinbroadway--howard-miller.json",
     "wicked-2003/huron-daily--jake-coyle.json",
-    "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json"
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
+    "every-brilliant-thing-2026/nytimes--helen-shaw.json",
+    "hadestown-2019/newyorker--hilton-als.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -288,7 +298,11 @@
       "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
       "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
       "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
-      "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json"
+      "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "data-off-broadway-2026/nytg--allison-considine.json",
+      "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+      "hamilton-2015/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [
       "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
@@ -312,7 +326,11 @@
       "data/review-texts/deep-azure-globe-west-end-2026/nytimes--unknown.json",
       "deep-azure-globe-west-end-2026/nytimes--unknown.json",
       "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
-      "chess-2025/hollywood-reporter--angie-han.json"
+      "chess-2025/hollywood-reporter--angie-han.json",
+      "data/review-texts/hadestown-2019/hollywood-reporter--david-rooney.json",
+      "hadestown-2019/hollywood-reporter--david-rooney.json",
+      "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json",
+      "hamilton-2015/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -331,7 +349,8 @@
       "data/review-texts/heathers-the-musical-off-broadway-2025/ap--unknown.json",
       "data/review-texts/the-lion-king-1997/message-boards--unknown.json",
       "data/review-texts/the-reservoir-off-broadway-2026/talkinbroadway--howard-miller.json",
-      "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json"
+      "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
+      "data/review-texts/every-brilliant-thing-2026/nytimes--helen-shaw.json"
     ],
     "archive": [
       "into-the-woods-west-end-2025/nytimes--unknown.json",
@@ -369,11 +388,13 @@
       "moulin-rouge-the-musical-west-end-2021/london-box-office--stuart-king.json",
       "my-neighbour-totoro-west-end-2025/london-box-office--miriam-gibson.json",
       "operation-mincemeat-west-end-2024/london-box-office--stuart-king.json",
-      "heathers-the-musical-off-broadway-2025/huffpost--unknown.json"
+      "heathers-the-musical-off-broadway-2025/huffpost--unknown.json",
+      "death-becomes-her-2024/newyorker--helen-shaw.json",
+      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json"
     ]
   },
   "startTime": "2026-03-14T08:23:12.185Z",
-  "lastProcessed": "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+  "lastProcessed": "hamilton-2015/nyt-theater--jonathan-mandell.json",
   "log": [
     {
       "t": "2026-03-14T08:23:26.634Z",
@@ -400,6 +421,39 @@
     },
     {
       "t": "2026-03-14T09:27:27.763Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-14T09:28:29.592Z",
+      "event": "bb-session",
+      "session": "eaf7b27c",
+      "url": "https://www.nytimes.com/2026/03/12/theater/every-brilliant-thing-review-daniel-r"
+    },
+    {
+      "t": "2026-03-14T09:28:30.783Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-14T09:29:32.682Z",
+      "event": "bb-session",
+      "session": "b1271764",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-14T09:29:33.838Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-14T09:29:49.039Z",
+      "event": "bb-session",
+      "session": "4236c7e6",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-14T09:29:50.168Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
