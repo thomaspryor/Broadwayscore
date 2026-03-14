@@ -404,7 +404,16 @@
     "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/nysr--roma-torre.json",
     "mj-2022/exeunt-magazine--juliet-hindell.json",
     "mj-2022/theater-life--patrick-christiano.json",
-    "mj-2022/theater-scene--joel-benjamin.json"
+    "mj-2022/theater-scene--joel-benjamin.json",
+    "mother-russia-off-broadway-2026/exeunt-magazine--carol-rocamora.json",
+    "mother-russia-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "mother-russia-off-broadway-2026/theater-life--samuel-l-leiter.json",
+    "mother-russia-off-broadway-2026/theater-pizzazz--ron-fassler.json",
+    "moulin-rouge-2019/njcom--christoher-kelly.json",
+    "moulin-rouge-2019/washpost--peter-marks.json",
+    "night-side-songs-off-broadway-2026/dc-theater-arts--deb-miller.json",
+    "night-side-songs-off-broadway-2026/nysr--unknown.json",
+    "night-side-songs-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "failed": [
     "deep-azure-globe-west-end-2026/nytimes--unknown.json",
@@ -501,7 +510,8 @@
     "masquerade-off-broadway-2025/one-minute-critic--one-minute-critic.json",
     "mj-2022/ap--mark-kennedy.json",
     "mj-2022/usatoday--david-rooney.json",
-    "mother-russia-off-broadway-2026/buy-tickets--unknown.json"
+    "mother-russia-off-broadway-2026/buy-tickets--unknown.json",
+    "night-side-songs-off-broadway-2026/one-minute-critic--matthew-wexler.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -789,7 +799,14 @@
       "maybe-happy-ending-2024/theater-scene--victor-gluck.json",
       "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/nysr--roma-torre.json",
       "mj-2022/theater-life--patrick-christiano.json",
-      "mj-2022/theater-scene--joel-benjamin.json"
+      "mj-2022/theater-scene--joel-benjamin.json",
+      "mother-russia-off-broadway-2026/exeunt-magazine--carol-rocamora.json",
+      "mother-russia-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+      "mother-russia-off-broadway-2026/theater-life--samuel-l-leiter.json",
+      "moulin-rouge-2019/washpost--peter-marks.json",
+      "night-side-songs-off-broadway-2026/dc-theater-arts--deb-miller.json",
+      "night-side-songs-off-broadway-2026/nysr--unknown.json",
+      "night-side-songs-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
     ],
     "amp": [
       "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
@@ -841,7 +858,9 @@
       "data/review-texts/hadestown-2019/amny--matt-windman.json",
       "hadestown-2019/amny--matt-windman.json",
       "data/review-texts/marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
-      "marcel-on-the-train-off-broadway-2026/amny--matt-windman.json"
+      "marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
+      "data/review-texts/mj-2022/usatoday--david-rooney.json",
+      "mj-2022/usatoday--david-rooney.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json"
@@ -997,11 +1016,14 @@
       "little-shop-of-horrors-off-broadway-2019/chicagotribune--chris-jones.json",
       "masquerade-off-broadway-2025/slantmagazine--dan-rubins.json",
       "maybe-happy-ending-2024/talkinbroadway--matthew-murray.json",
-      "mj-2022/exeunt-magazine--juliet-hindell.json"
+      "mj-2022/exeunt-magazine--juliet-hindell.json",
+      "mother-russia-off-broadway-2026/theater-pizzazz--ron-fassler.json",
+      "moulin-rouge-2019/njcom--christoher-kelly.json",
+      "night-side-songs-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ]
   },
   "startTime": "2026-03-14T08:23:12.185Z",
-  "lastProcessed": "mother-russia-off-broadway-2026/buy-tickets--unknown.json",
+  "lastProcessed": "night-side-songs-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
   "log": [
     {
       "t": "2026-03-14T08:23:26.634Z",
@@ -1173,6 +1195,17 @@
       "t": "2026-03-14T11:37:07.424Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-14T11:44:51.651Z",
+      "event": "bb-session",
+      "session": "3df03079",
+      "url": "https://broncoswire.usatoday.com/story/entertainment/arts/2022/02/02/mj-musical-"
+    },
+    {
+      "t": "2026-03-14T11:44:53.134Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }

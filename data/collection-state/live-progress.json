@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-14T11:44:37.674Z",
-  "processed": 405,
-  "failed": 95,
-  "successRate": "81.0%",
+  "updatedAt": "2026-03-14T11:49:10.780Z",
+  "processed": 414,
+  "failed": 96,
+  "successRate": "81.2%",
   "tierBreakdown": {
-    "playwright": 284,
+    "playwright": 291,
     "amp": 24,
-    "browserbase": 24,
+    "browserbase": 26,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 47,
-    "archive": 100
+    "archive": 103
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-03-14T09:30:29.760Z",
-      "event": "bb-session",
-      "session": "ec9e759a",
-      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
-    },
-    {
-      "t": "2026-03-14T09:30:30.971Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-14T09:34:22.122Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-14T11:37:07.424Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-14T11:44:51.651Z",
+      "event": "bb-session",
+      "session": "3df03079",
+      "url": "https://broncoswire.usatoday.com/story/entertainment/arts/2022/02/02/mj-musical-"
+    },
+    {
+      "t": "2026-03-14T11:44:53.134Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }
