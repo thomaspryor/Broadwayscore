@@ -1,6 +1,6 @@
 {
-  "lastRun": "2026-03-13T07:41:40.086Z",
-  "consecutiveErrorDays": 1,
+  "lastRun": "2026-03-14T07:32:50.615Z",
+  "consecutiveErrorDays": 2,
   "results": [
     {
       "name": "Freshness: reviews.json",
@@ -9,33 +9,33 @@
     },
     {
       "name": "Freshness: shows.json",
-      "status": "warn",
-      "message": "3d old (warn threshold: 2d)"
+      "status": "error",
+      "message": "4d old (error threshold: 4d)"
     },
     {
       "name": "Freshness: grosses.json",
       "status": "pass",
-      "message": "1d old"
+      "message": "2d old"
     },
     {
       "name": "Freshness: audience-buzz.json",
       "status": "pass",
-      "message": "1d old"
+      "message": "2d old"
     },
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "2d old"
+      "message": "3d old"
     },
     {
       "name": "Freshness: critic-consensus.json",
       "status": "pass",
-      "message": "2h old"
+      "message": "1d old"
     },
     {
       "name": "Freshness: lottery-rush.json",
       "status": "pass",
-      "message": "4d old"
+      "message": "5d old"
     },
     {
       "name": "Sync: review-texts vs reviews.json",
@@ -50,12 +50,12 @@
     {
       "name": "Sync: baseline drift",
       "status": "pass",
-      "message": "2301 shows, 135 open, 17435 reviews (all at or above baseline)"
+      "message": "2301 shows, 135 open, 17560 reviews (all at or above baseline)"
     },
     {
       "name": "Pipeline: rebuild-reviews",
-      "status": "warn",
-      "message": "Last success 18d ago (threshold: 2d)"
+      "status": "pass",
+      "message": "Last success 2h ago"
     },
     {
       "name": "Pipeline: update-show-status",
@@ -65,27 +65,27 @@
     {
       "name": "Pipeline: collect-review-texts",
       "status": "pass",
-      "message": "Last success 0h ago"
+      "message": "Last success 5h ago"
     },
     {
       "name": "Pipeline: weekly-grosses",
       "status": "warn",
-      "message": "Last success 21d ago (threshold: 10d)"
+      "message": "Last success 22d ago (threshold: 10d)"
     },
     {
       "name": "Pipeline: weekly-integrity",
       "status": "pass",
-      "message": "Last success 5d ago"
+      "message": "Last success 6d ago"
     },
     {
       "name": "Pipeline: test",
-      "status": "warn",
-      "message": "Last success 4d ago (threshold: 2d)"
+      "status": "pass",
+      "message": "Last success 13h ago"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "99.3% scored (17435/17563)"
+      "message": "98.8% scored (17560/17771)"
     },
     {
       "name": "Cookies: expiration",
@@ -95,7 +95,7 @@
     {
       "name": "CWV: performance",
       "status": "pass",
-      "message": "All metrics within thresholds (5d ago)"
+      "message": "All metrics within thresholds (6d ago)"
     },
     {
       "name": "SEO: health",
@@ -110,37 +110,37 @@
     {
       "name": "Cron: Rebuild Reviews",
       "status": "pass",
-      "message": "0h ago, success"
+      "message": "2h ago, success"
     },
     {
       "name": "Cron: Collect Review Texts",
       "status": "pass",
-      "message": "0h ago, "
+      "message": "3h ago, "
     },
     {
       "name": "Cron: LLM Ensemble Score",
-      "status": "pass",
-      "message": "0h ago, "
+      "status": "warn",
+      "message": "Last run failed (1h ago)"
     },
     {
       "name": "Cron: Test Suite",
-      "status": "pass",
-      "message": "0h ago, success"
+      "status": "warn",
+      "message": "Last run failed (1h ago)"
     },
     {
       "name": "Cron: Opening Night Broadcast",
       "status": "pass",
-      "message": "1h ago, success"
+      "message": "2h ago, success"
     },
     {
       "name": "Secrets: health",
       "status": "pass",
-      "message": "Last check passed (4d ago)"
+      "message": "Last check passed (5d ago)"
     },
     {
       "name": "Credits: ScrapingBee",
       "status": "error",
-      "message": "14k credits left (1% remaining)"
+      "message": "0k credits left (0% remaining)"
     }
   ],
   "lastCleanStreak": 0
