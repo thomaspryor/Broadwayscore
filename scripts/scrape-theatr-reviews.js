@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 /**
- * Scrape individual audience reviews from Theatr (theatr-app.com) API.
+ * Scrape individual audience comments from Theatr (theatr-app.com) API.
  *
- * This script first discovers whether individual review endpoints exist,
- * then fetches them if available. Data is for private analysis only.
+ * Uses POST /comments/query to fetch user comments per show.
+ * Data is for private analysis only — not displayed on the site.
  *
  * Modes:
- *   --discover         Probe API for individual review/reaction endpoints
+ *   (default)          Scrape all show comments via /comments/query
+ *   --discover         Probe API for additional endpoints
  *   --max-shows=N      Limit to N shows (for testing)
  *   --max-requests=N   Cap total API requests (default: 5000)
  *   --resume           Resume from checkpoint
@@ -268,35 +269,61 @@ async function runDiscovery() {
   }
 }
 
-// ---- Full Scraper (only if discovery finds endpoints) ----
+// ---- Comments Scraper via POST /comments/query ----
 
-async function fetchShowReviews(showId, endpoint) {
-  const allReviews = [];
+/**
+ * Fetch all comments for a show using POST /comments/query
+ * The API uses body-based filtering (not URL path), with pagination via `current` (1-indexed).
+ */
+async function fetchShowComments(showId) {
+  const allComments = [];
   let page = 1;
+  const pageSize = 50; // conservative page size
 
   while (true) {
-    const url = `https://appapi.theatr-app.com${endpoint.replace('{id}', showId)}?page=${page}&pageSize=100`;
-    const { status, data } = await httpsRequest(url, { headers: authHeaders() });
+    const { status, data } = await httpsRequest('https://appapi.theatr-app.com/comments/query', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: {
+        filters: [
+          { field: 'showId', op: '==', value: showId },
+          { field: 'rootId', op: '==', value: '' }, // top-level comments only
+        ],
+        orderBy: [{ field: 'uploadedAt', direction: 'desc' }], // newest first
+        pageSize,
+        current: page,
+      },
+    });
 
-    if (status !== 200 || !data.success) break;
+    if (status !== 200) break;
 
-    const records = data.content?.records || data.content?.reviews || data.content || [];
+    // Handle both response shapes
+    const content = data.content || data;
+    const records = content.records || content.data || [];
     if (!Array.isArray(records) || records.length === 0) break;
 
-    allReviews.push(...records);
+    allComments.push(...records);
     page++;
 
-    if (records.length < 100) break;
+    if (records.length < pageSize) break;
     await sleep(DELAY_BETWEEN_REQUESTS_MS);
   }
 
-  return allReviews;
+  return allComments;
 }
 
-async function runFullScrape(endpoint) {
-  console.log('Theatr Individual Review Scraper');
-  console.log('================================\n');
-  console.log(`Endpoint pattern: ${endpoint}`);
+/**
+ * Write JSON file atomically
+ */
+function writeJsonAtomic(filePath, data) {
+  const tmp = filePath + '.tmp';
+  fs.writeFileSync(tmp, JSON.stringify(data, null, 2));
+  fs.renameSync(tmp, filePath);
+}
+
+async function runFullScrape() {
+  console.log('Theatr Comment Scraper');
+  console.log('======================\n');
   console.log(`Max requests: ${maxRequests}`);
   if (maxShows) console.log(`Max shows: ${maxShows}`);
   console.log('');
@@ -305,9 +332,31 @@ async function runFullScrape(endpoint) {
   console.log('Refreshing access token...');
   await refreshAccessToken();
 
-  // 2. Fetch all shows
+  // 2. Test comments endpoint with a quick probe
+  console.log('Testing /comments/query endpoint...');
+  const { status: testStatus, data: testData } = await httpsRequest('https://appapi.theatr-app.com/comments/query', {
+    method: 'POST',
+    headers: authHeaders(),
+    body: {
+      filters: [
+        { field: 'showId', op: '==', value: 'ZtXH4K6KAnrR6Map97PB' }, // Hamilton (popular)
+        { field: 'rootId', op: '==', value: '' },
+      ],
+      orderBy: [{ field: 'uploadedAt', direction: 'desc' }],
+      pageSize: 1,
+      current: 1,
+    },
+  });
+  if (testStatus !== 200) {
+    console.error(`Comments endpoint returned ${testStatus}. Aborting.`);
+    process.exit(1);
+  }
+  const testRecords = testData.content?.records || testData.content?.data || [];
+  console.log(`  Endpoint works! Sample comment: "${(testRecords[0]?.text || '').substring(0, 80)}..."\n`);
+
+  // 3. Fetch all shows
   console.log('Fetching all Theatr shows...');
-  const { data: showsData } = await httpsRequest('https://appapi.theatr-app.com/shows/query', {
+  const { data: showsResp } = await httpsRequest('https://appapi.theatr-app.com/shows/query', {
     method: 'POST',
     headers: authHeaders(),
     body: {
@@ -317,22 +366,28 @@ async function runFullScrape(endpoint) {
     },
   });
 
-  if (!showsData.success) {
+  if (!showsResp.success) {
     console.error('Failed to fetch shows');
     process.exit(1);
   }
 
-  let shows = showsData.content.records;
+  let shows = showsResp.content.records;
   console.log(`Fetched ${shows.length} shows`);
 
-  // 3. Load checkpoint
+  // 4. Load checkpoint
   ensureDir(reviewsDir);
-  let checkpoint = { completedIds: [], totalRequests: 0 };
+  let checkpoint = { completed: {}, totalRequests: 0 };
   if (resumeMode && fs.existsSync(checkpointPath)) {
     checkpoint = JSON.parse(fs.readFileSync(checkpointPath, 'utf8'));
-    console.log(`Resuming: ${checkpoint.completedIds.length} completed`);
+    // Migrate old format
+    if (checkpoint.completedIds && !checkpoint.completed) {
+      checkpoint.completed = {};
+      for (const id of checkpoint.completedIds) checkpoint.completed[id] = { commentCount: -1 };
+      delete checkpoint.completedIds;
+    }
+    console.log(`Resuming: ${Object.keys(checkpoint.completed).length} completed`);
   }
-  const completedSet = new Set(checkpoint.completedIds);
+  const completedSet = new Set(Object.keys(checkpoint.completed));
 
   shows = shows.filter(s => !completedSet.has(s.id));
   if (maxShows) shows = shows.slice(0, maxShows);
@@ -345,48 +400,67 @@ async function runFullScrape(endpoint) {
     return;
   }
 
-  // 4. Fetch reviews
+  // 5. Set up graceful shutdown
+  let shuttingDown = false;
   let index = fs.existsSync(indexPath) ? JSON.parse(fs.readFileSync(indexPath, 'utf8')) : {};
+  process.on('SIGINT', () => {
+    if (shuttingDown) return;
+    shuttingDown = true;
+    console.log('\nSIGINT — saving checkpoint...');
+    checkpoint.totalRequests = totalRequests;
+    writeJsonAtomic(checkpointPath, checkpoint);
+    writeJsonAtomic(indexPath, index);
+    process.exit(0);
+  });
+
+  // 6. Fetch comments for each show
   let fetched = 0;
-  let totalReviews = 0;
+  let totalComments = 0;
+  let showsWithComments = 0;
+  const startTime = Date.now();
 
   for (let i = 0; i < shows.length; i++) {
+    if (shuttingDown) break;
     const show = shows[i];
     try {
-      const reviews = await fetchShowReviews(show.id, endpoint);
+      const comments = await fetchShowComments(show.id);
 
-      if (reviews.length > 0) {
-        const outFile = path.join(reviewsDir, `${show.id}.json`);
-        fs.writeFileSync(outFile, JSON.stringify({
-          showId: show.id,
-          showName: show.name,
-          eventCategory: show.eventCategory,
-          fetchedAt: new Date().toISOString(),
-          totalReviews: reviews.length,
-          reviews,
-        }, null, 2));
+      // Save even if 0 comments (so we don't re-query on resume)
+      const outFile = path.join(reviewsDir, `${show.id}.json`);
+      writeJsonAtomic(outFile, {
+        showId: show.id,
+        showName: show.name,
+        eventCategory: show.eventCategory,
+        fetchedAt: new Date().toISOString(),
+        totalComments: comments.length,
+        comments,
+      });
 
-        index[show.id] = {
-          showName: show.name,
-          fetchedCount: reviews.length,
-          lastFetched: new Date().toISOString(),
-        };
+      index[show.id] = {
+        showName: show.name,
+        commentCount: comments.length,
+        lastFetched: new Date().toISOString(),
+      };
 
-        totalReviews += reviews.length;
-      }
-
-      checkpoint.completedIds.push(show.id);
+      checkpoint.completed[show.id] = { commentCount: comments.length };
       checkpoint.totalRequests = totalRequests;
-      fs.writeFileSync(checkpointPath, JSON.stringify(checkpoint));
-      if (Object.keys(index).length > 0) fs.writeFileSync(indexPath, JSON.stringify(index, null, 2));
+      writeJsonAtomic(checkpointPath, checkpoint);
+      writeJsonAtomic(indexPath, index);
 
       fetched++;
+      totalComments += comments.length;
+      if (comments.length > 0) showsWithComments++;
 
       if (verbose || (i + 1) % 25 === 0) {
-        console.log(`  [${i + 1}/${shows.length}] ${show.name}: ${reviews.length} reviews`);
+        const elapsedMin = (Date.now() - startTime) / 1000 / 60;
+        const rate = fetched / elapsedMin;
+        const etaMin = rate > 0 ? ((shows.length - (i + 1)) / rate).toFixed(0) : '?';
+        console.log(`  [${i + 1}/${shows.length}] ${show.name}: ${comments.length} comments | ${totalComments} total | ~${etaMin}min remaining`);
       }
     } catch (e) {
       console.error(`  ERROR ${show.name}: ${e.message}`);
+      checkpoint.totalRequests = totalRequests;
+      writeJsonAtomic(checkpointPath, checkpoint);
       if (e.message.includes('Request cap')) break;
     }
 
@@ -395,8 +469,10 @@ async function runFullScrape(endpoint) {
 
   console.log(`\n=== Results ===`);
   console.log(`Shows processed: ${fetched}`);
-  console.log(`Total reviews: ${totalReviews}`);
+  console.log(`Shows with comments: ${showsWithComments}`);
+  console.log(`Total comments: ${totalComments}`);
   console.log(`API requests: ${totalRequests}`);
+  console.log(`Elapsed: ${((Date.now() - startTime) / 1000 / 60).toFixed(1)} minutes`);
 }
 
 // ---- Main ----
@@ -407,18 +483,8 @@ async function main() {
     return;
   }
 
-  // For full scrape, require an endpoint pattern (found via --discover)
-  const endpointArg = args.find(a => a.startsWith('--endpoint='));
-  if (!endpointArg) {
-    console.log('Usage:');
-    console.log('  node scrape-theatr-reviews.js --discover               # Find available endpoints');
-    console.log('  node scrape-theatr-reviews.js --endpoint=/shows/{id}/reviews  # Scrape reviews');
-    console.log('');
-    console.log('Run --discover first to find which endpoints exist.');
-    process.exit(0);
-  }
-
-  await runFullScrape(endpointArg.split('=')[1]);
+  // Default mode: scrape comments via POST /comments/query
+  await runFullScrape();
 }
 
 main().catch(e => {
