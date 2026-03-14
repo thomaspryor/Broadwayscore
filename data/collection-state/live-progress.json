@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-14T04:51:56.873Z",
-  "processed": 113,
-  "failed": 23,
-  "successRate": "83.1%",
+  "updatedAt": "2026-03-14T04:54:21.816Z",
+  "processed": 121,
+  "failed": 25,
+  "successRate": "82.9%",
   "tierBreakdown": {
-    "playwright": 65,
+    "playwright": 71,
     "amp": 16,
     "browserbase": 18,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 15,
-    "archive": 30
+    "archiveToday": 16,
+    "archive": 32
   },
-  "browserbaseSessions": 13,
+  "browserbaseSessions": 15,
   "recentActivity": [
-    {
-      "t": "2026-03-14T04:34:08.284Z",
-      "event": "bb-session",
-      "session": "1f37be27",
-      "url": "https://www.nytimes.com/2019/05/02/theater/entangled-review-the-amoralists.html"
-    },
-    {
-      "t": "2026-03-14T04:34:09.596Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-14T04:35:27.667Z",
-      "event": "bb-session",
-      "session": "638ebf18",
-      "url": "https://www.nytimes.com/2026/03/12/theater/every-brilliant-thing-review-daniel-r"
-    },
-    {
-      "t": "2026-03-14T04:35:28.932Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-14T04:36:30.732Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-14T04:51:22.806Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-14T04:52:57.733Z",
+      "event": "bb-session",
+      "session": "0727ad0b",
+      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
+    },
+    {
+      "t": "2026-03-14T04:52:58.977Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-14T04:53:19.893Z",
+      "event": "bb-session",
+      "session": "26432ca7",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-14T04:53:21.156Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
