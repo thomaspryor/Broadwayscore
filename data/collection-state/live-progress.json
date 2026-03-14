@@ -1,26 +1,20 @@
 {
-  "updatedAt": "2026-03-14T09:47:01.291Z",
-  "processed": 211,
-  "failed": 39,
-  "successRate": "84.4%",
+  "updatedAt": "2026-03-14T09:49:12.005Z",
+  "processed": 219,
+  "failed": 41,
+  "successRate": "84.2%",
   "tierBreakdown": {
-    "playwright": 140,
-    "amp": 20,
-    "browserbase": 14,
+    "playwright": 146,
+    "amp": 22,
+    "browserbase": 16,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 19,
+    "archiveToday": 21,
     "archive": 53
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-03-14T08:23:26.634Z",
-      "event": "bb-session",
-      "session": "7a4c3ba4",
-      "url": "https://www.nytimes.com/2026/03/05/theater/chadwick-boseman-deep-azure.html"
-    },
     {
       "t": "2026-03-14T09:14:17.384Z",
       "event": "bb-session",
@@ -119,6 +113,17 @@
       "t": "2026-03-14T09:41:51.278Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-14T09:48:14.713Z",
+      "event": "bb-session",
+      "session": "19c5fd71",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-14T09:48:16.060Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

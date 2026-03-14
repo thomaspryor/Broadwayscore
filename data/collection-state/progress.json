@@ -210,7 +210,15 @@
     "cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json",
     "cold-war-choir-practice-off-broadway-2026/timeout--adam-feldman.json",
     "data-off-broadway-2026/theatermania--zachary-stewart.json",
-    "death-becomes-her-2024/chelsea-community-news--michael-musto.json"
+    "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
+    "death-becomes-her-2024/nydailynews--chris-jones.json",
+    "death-becomes-her-2024/theatermania--jesse-green.json",
+    "death-becomes-her-2024/timeout--adam-feldman.json",
+    "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
+    "every-brilliant-thing-2026/deadline--unknown.json",
+    "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
+    "every-brilliant-thing-2026/thewrap--robert-hofler.json",
+    "every-brilliant-thing-2026/timeout--unknown.json"
   ],
   "failed": [
     "deep-azure-globe-west-end-2026/nytimes--unknown.json",
@@ -251,7 +259,9 @@
     "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json",
     "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
     "aladdin-2014/wsj--terry-teachout.json",
-    "book-of-mormon-2011/guardian--ben-brantley.json"
+    "book-of-mormon-2011/guardian--ben-brantley.json",
+    "dracula-west-end-2025/guardian--arifa-akbar.json",
+    "every-brilliant-thing-2026/guardian--jesse-hassenger.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -395,7 +405,13 @@
       "chess-2025/timeout--adam-feldman.json",
       "chicago-1996/nydailynews--joe-dziemianowicz.json",
       "cold-war-choir-practice-off-broadway-2026/timeout--adam-feldman.json",
-      "data-off-broadway-2026/theatermania--zachary-stewart.json"
+      "data-off-broadway-2026/theatermania--zachary-stewart.json",
+      "death-becomes-her-2024/nydailynews--chris-jones.json",
+      "death-becomes-her-2024/theatermania--jesse-green.json",
+      "death-becomes-her-2024/timeout--adam-feldman.json",
+      "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
+      "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
+      "every-brilliant-thing-2026/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
@@ -417,7 +433,9 @@
       "data/review-texts/wicked-2003/variety--charles-isherwood.json",
       "wicked-2003/variety--charles-isherwood.json",
       "data/review-texts/and-juliet-2022/thewrap--robert-hofler.json",
-      "and-juliet-2022/thewrap--robert-hofler.json"
+      "and-juliet-2022/thewrap--robert-hofler.json",
+      "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
+      "every-brilliant-thing-2026/thewrap--robert-hofler.json"
     ],
     "browserbase": [
       "data/review-texts/deep-azure-globe-west-end-2026/nytimes--unknown.json",
@@ -433,7 +451,9 @@
       "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
       "mj-2022/hollywood-reporter--lovia-gyarkye.json",
       "data/review-texts/oh-mary-2024/hollywood-reporter--david-rooney.json",
-      "oh-mary-2024/hollywood-reporter--david-rooney.json"
+      "oh-mary-2024/hollywood-reporter--david-rooney.json",
+      "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
+      "every-brilliant-thing-2026/deadline--unknown.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json"
@@ -459,7 +479,9 @@
       "data/review-texts/marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
       "data/review-texts/what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json",
       "data/review-texts/aladdin-2014/wsj--terry-teachout.json",
-      "data/review-texts/book-of-mormon-2011/guardian--ben-brantley.json"
+      "data/review-texts/book-of-mormon-2011/guardian--ben-brantley.json",
+      "data/review-texts/dracula-west-end-2025/guardian--arifa-akbar.json",
+      "data/review-texts/every-brilliant-thing-2026/guardian--jesse-hassenger.json"
     ],
     "archive": [
       "into-the-woods-west-end-2025/nytimes--unknown.json",
@@ -518,7 +540,7 @@
     ]
   },
   "startTime": "2026-03-14T08:23:12.185Z",
-  "lastProcessed": "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
+  "lastProcessed": "every-brilliant-thing-2026/timeout--unknown.json",
   "log": [
     {
       "t": "2026-03-14T08:23:26.634Z",
@@ -624,6 +646,17 @@
       "t": "2026-03-14T09:41:51.278Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-14T09:48:14.713Z",
+      "event": "bb-session",
+      "session": "19c5fd71",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-14T09:48:16.060Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
