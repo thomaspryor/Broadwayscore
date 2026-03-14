@@ -482,7 +482,15 @@
     "starlight-express-west-end-2024/west-end-best-friend--jenny-ell.json",
     "stranger-things-2024/broadwayworld--alexander-cohen.json",
     "stranger-things-2024/people--unknown.json",
-    "stranger-things-2024/theater-scene--joseph-pisano.json"
+    "stranger-things-2024/theater-scene--joseph-pisano.json",
+    "stranger-things-the-first-shadow-west-end-2023/artsdesk--mert-dilek.json",
+    "stranger-things-the-first-shadow-west-end-2023/everything-theatre--xi-ye.json",
+    "stranger-things-the-first-shadow-west-end-2023/telegraph--dominic-cavendish.json",
+    "sweetmeats-west-end-2026/artsdesk--aleks-sierz.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/exeunt-magazine--lane-williamson.json",
+    "the-book-of-mormon-west-end-2024/independent--paul-taylor.json",
+    "the-book-of-mormon-west-end-2024/london-box-office--oliver-mitford.json"
   ],
   "failed": [
     "deep-azure-globe-west-end-2026/nytimes--unknown.json",
@@ -621,7 +629,9 @@
     "six-the-musical-west-end-2021/theatre-bee-uk--theatre-bee-uk.json",
     "starlight-express-west-end-2024/thestage--paul-vale.json",
     "stranger-things-2024/ap--mark-kennedy.json",
-    "stranger-things-2024/times-uk--clive-davis.json"
+    "stranger-things-2024/times-uk--clive-davis.json",
+    "stranger-things-the-first-shadow-west-end-2023/lost-in-theatreland--jill-johnson.json",
+    "the-book-of-mormon-west-end-2024/times-uk--libby-purves.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -969,7 +979,13 @@
       "starlight-express-west-end-2024/west-end-best-friend--jenny-ell.json",
       "stranger-things-2024/ap--mark-kennedy.json",
       "stranger-things-2024/people--unknown.json",
-      "stranger-things-2024/theater-scene--joseph-pisano.json"
+      "stranger-things-2024/theater-scene--joseph-pisano.json",
+      "stranger-things-the-first-shadow-west-end-2023/artsdesk--mert-dilek.json",
+      "stranger-things-the-first-shadow-west-end-2023/everything-theatre--xi-ye.json",
+      "stranger-things-the-first-shadow-west-end-2023/telegraph--dominic-cavendish.json",
+      "sweetmeats-west-end-2026/artsdesk--aleks-sierz.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/exeunt-magazine--lane-williamson.json",
+      "the-book-of-mormon-west-end-2024/london-box-office--oliver-mitford.json"
     ],
     "amp": [
       "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
@@ -1025,7 +1041,9 @@
       "data/review-texts/mj-2022/usatoday--david-rooney.json",
       "mj-2022/usatoday--david-rooney.json",
       "data/review-texts/every-brilliant-thing-2026/nytimes--helen-shaw.json",
-      "every-brilliant-thing-2026/nytimes--helen-shaw.json"
+      "every-brilliant-thing-2026/nytimes--helen-shaw.json",
+      "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json",
@@ -1087,7 +1105,8 @@
       "data/review-texts/harry-potter-2021/usatoday--kelly-lawler.json",
       "data/review-texts/hold-on-to-your-butts-off-broadway-2026/aaron-in-nyc--aaron.json",
       "data/review-texts/ragtime-2025/billboard--joe-lynch.json",
-      "data/review-texts/silver-manhattan-off-broadway-2026/front-row-center--holli-harms.json"
+      "data/review-texts/silver-manhattan-off-broadway-2026/front-row-center--holli-harms.json",
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/lost-in-theatreland--jill-johnson.json"
     ],
     "archive": [
       "into-the-woods-west-end-2025/nytimes--unknown.json",
@@ -1207,11 +1226,12 @@
       "starlight-express-west-end-2024/london-box-office--camille-leadbeater.json",
       "starlight-express-west-end-2024/london-box-office--stuart-king.json",
       "starlight-express-west-end-2024/london-theatre-1--terry-eastham.json",
-      "stranger-things-2024/broadwayworld--alexander-cohen.json"
+      "stranger-things-2024/broadwayworld--alexander-cohen.json",
+      "the-book-of-mormon-west-end-2024/independent--paul-taylor.json"
     ]
   },
   "startTime": "2026-03-14T08:23:12.185Z",
-  "lastProcessed": "stranger-things-2024/times-uk--clive-davis.json",
+  "lastProcessed": "the-book-of-mormon-west-end-2024/times-uk--libby-purves.json",
   "log": [
     {
       "t": "2026-03-14T08:23:26.634Z",
@@ -1405,6 +1425,17 @@
       "t": "2026-03-14T11:56:46.496Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-14T12:22:04.946Z",
+      "event": "bb-session",
+      "session": "aebfc093",
+      "url": "https://www.amny.com/entertainment/theater/spelling-bee-returns-nails-every-word"
+    },
+    {
+      "t": "2026-03-14T12:22:06.259Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }

@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-14T12:19:53.931Z",
-  "processed": 483,
-  "failed": 137,
+  "updatedAt": "2026-03-14T12:23:42.532Z",
+  "processed": 491,
+  "failed": 139,
   "successRate": "77.9%",
   "tierBreakdown": {
-    "playwright": 344,
+    "playwright": 350,
     "amp": 24,
-    "browserbase": 28,
+    "browserbase": 30,
     "directCookies": 2,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 54,
-    "archive": 118
+    "archiveToday": 55,
+    "archive": 119
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-14T09:35:15.922Z",
-      "event": "bb-session",
-      "session": "d3593eb7",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
-    },
-    {
-      "t": "2026-03-14T09:35:17.099Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-14T09:41:49.996Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-14T11:56:46.496Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-14T12:22:04.946Z",
+      "event": "bb-session",
+      "session": "aebfc093",
+      "url": "https://www.amny.com/entertainment/theater/spelling-bee-returns-nails-every-word"
+    },
+    {
+      "t": "2026-03-14T12:22:06.259Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
