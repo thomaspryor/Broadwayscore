@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-14T19:19:51.771Z",
-  "processed": 137,
+  "updatedAt": "2026-03-14T19:21:39.407Z",
+  "processed": 147,
   "failed": 19,
-  "successRate": "87.8%",
+  "successRate": "88.6%",
   "tierBreakdown": {
-    "playwright": 96,
+    "playwright": 104,
     "amp": 16,
-    "browserbase": 20,
+    "browserbase": 22,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 10,
-    "archive": 22
+    "archive": 23
   },
-  "browserbaseSessions": 15,
+  "browserbaseSessions": 16,
   "recentActivity": [
-    {
-      "t": "2026-03-14T18:53:53.003Z",
-      "event": "bb-session",
-      "session": "6d22683e",
-      "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
-    },
-    {
-      "t": "2026-03-14T18:53:54.593Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-14T18:56:47.675Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-14T19:19:28.093Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-14T19:20:44.518Z",
+      "event": "bb-session",
+      "session": "9aa9f237",
+      "url": "https://observer.com/2025/09/review-masquerade-phantom-of-the-opera-experience-i"
+    },
+    {
+      "t": "2026-03-14T19:20:46.800Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
     }
   ]
 }
