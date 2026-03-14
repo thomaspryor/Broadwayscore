@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-14T05:23:25.568Z",
+  "timestamp": "2026-03-14T08:04:22.062Z",
   "stats": {
-    "totalReviews": 31134,
-    "alreadyFlagged": 9342,
+    "totalReviews": 31150,
+    "alreadyFlagged": 9343,
     "dateGuardCatches": 127,
     "directorMismatch": 1114,
-    "tvFilmSignals": 3487,
+    "tvFilmSignals": 3486,
     "londonSignals": 1016,
     "offBroadwaySignals": 1088,
     "yearMismatch": 94,
-    "noPublishDate": 9407
+    "noPublishDate": 9426
   },
   "findings": [
     {
@@ -5549,20 +5549,6 @@
       "score": 45,
       "publishDate": "2017-04-28T07:37:22",
       "url": "https://thefrontrowcenter.com/2017/04/anastasia/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "anastasia-2017",
-      "file": "guardian--jesse-green.json",
-      "score": 44,
-      "publishDate": "April 25, 2017",
-      "url": "https://www.theguardian.com/stage/2025/dec/29/anastasia-musical-review-tone-deaf-adaptation",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
