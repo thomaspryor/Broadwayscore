@@ -101,6 +101,11 @@ data/bug-reviews.json
 # Individual audience review data (private analysis only — not for site display)
 data/audience-reviews/
 
+# Audience review scrapers (private — expose API endpoints and auth patterns)
+scripts/scrape-mezzanine-reviews.js
+scripts/scrape-theatr-reviews.js
+.github/workflows/theatr-review-discovery.yml
+
 # Diary/historical show data (stored in private repo thomaspryor/broadway-scorecard-data)
 data/diary-shows.json
 data/mezzanine-productions-raw.json
