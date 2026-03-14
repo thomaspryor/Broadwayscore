@@ -346,7 +346,17 @@
     "cold-war-choir-practice-off-broadway-2026/exeunt-magazine--loren-noveck.json",
     "cold-war-choir-practice-off-broadway-2026/nysr--frank-scheck.json",
     "data-off-broadway-2026/nysr--david-finkle.json",
-    "death-becomes-her-2024/the-interested-bystander--cary-wong.json"
+    "death-becomes-her-2024/the-interested-bystander--cary-wong.json",
+    "death-becomes-her-2024/theater-scene--joel-benjamin.json",
+    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/blogcritics--jon-sobel.json",
+    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/broadway-and-me--janice-c-simpson.json",
+    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json",
+    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theater-scene--darryl-reilly.json",
+    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theatre-is-easy--brooke-viegut.json",
+    "every-brilliant-thing-2026/amny--matt-windman.json",
+    "every-brilliant-thing-2026/chicagotribune--chris-jones.json",
+    "every-brilliant-thing-2026/culturesauce--unknown.json",
+    "every-brilliant-thing-2026/exeunt-magazine--lane-williamson.json"
   ],
   "failed": [
     "deep-azure-globe-west-end-2026/nytimes--unknown.json",
@@ -683,7 +693,14 @@
       "cold-war-choir-practice-off-broadway-2026/exeunt-magazine--loren-noveck.json",
       "cold-war-choir-practice-off-broadway-2026/nysr--frank-scheck.json",
       "data-off-broadway-2026/nysr--david-finkle.json",
-      "death-becomes-her-2024/the-interested-bystander--cary-wong.json"
+      "death-becomes-her-2024/the-interested-bystander--cary-wong.json",
+      "death-becomes-her-2024/theater-scene--joel-benjamin.json",
+      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/blogcritics--jon-sobel.json",
+      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/broadway-and-me--janice-c-simpson.json",
+      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theater-scene--darryl-reilly.json",
+      "every-brilliant-thing-2026/chicagotribune--chris-jones.json",
+      "every-brilliant-thing-2026/culturesauce--unknown.json",
+      "every-brilliant-thing-2026/exeunt-magazine--lane-williamson.json"
     ],
     "amp": [
       "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
@@ -729,7 +746,9 @@
       "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
       "every-brilliant-thing-2026/deadline--unknown.json",
       "data/review-texts/buena-vista-social-club-2025/amny--matt-windman.json",
-      "buena-vista-social-club-2025/amny--matt-windman.json"
+      "buena-vista-social-club-2025/amny--matt-windman.json",
+      "data/review-texts/every-brilliant-thing-2026/amny--matt-windman.json",
+      "every-brilliant-thing-2026/amny--matt-windman.json"
     ],
     "directCookies": [
       "the-lion-king-1997/vulture--john-simon.json"
@@ -860,11 +879,13 @@
       "and-juliet-2022/broadway-blog--joey-sims.json",
       "buena-vista-social-club-2025/latimes--nicholas-ducassi.json",
       "chess-2025/one-minute-critic--matthew-wexler.json",
-      "cold-war-choir-practice-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+      "cold-war-choir-practice-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json",
+      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theatre-is-easy--brooke-viegut.json"
     ]
   },
   "startTime": "2026-03-14T08:23:12.185Z",
-  "lastProcessed": "death-becomes-her-2024/the-interested-bystander--cary-wong.json",
+  "lastProcessed": "every-brilliant-thing-2026/exeunt-magazine--lane-williamson.json",
   "log": [
     {
       "t": "2026-03-14T08:23:26.634Z",
@@ -1001,6 +1022,17 @@
     },
     {
       "t": "2026-03-14T11:04:35.125Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-14T11:18:25.424Z",
+      "event": "bb-session",
+      "session": "1cf19b25",
+      "url": "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing"
+    },
+    {
+      "t": "2026-03-14T11:18:26.885Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     }
