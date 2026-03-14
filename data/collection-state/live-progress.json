@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-14T09:30:09.174Z",
-  "processed": 157,
-  "failed": 33,
-  "successRate": "82.6%",
+  "updatedAt": "2026-03-14T09:34:53.256Z",
+  "processed": 166,
+  "failed": 34,
+  "successRate": "83.0%",
   "tierBreakdown": {
-    "playwright": 107,
+    "playwright": 111,
     "amp": 16,
-    "browserbase": 8,
+    "browserbase": 12,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 15,
-    "archive": 38
+    "archiveToday": 16,
+    "archive": 41
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-03-14T08:23:26.634Z",
@@ -73,6 +73,28 @@
     },
     {
       "t": "2026-03-14T09:29:50.168Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-14T09:30:29.760Z",
+      "event": "bb-session",
+      "session": "ec9e759a",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-14T09:30:30.971Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-14T09:34:22.122Z",
+      "event": "bb-session",
+      "session": "41c30c1f",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-03-14T09:34:23.361Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }

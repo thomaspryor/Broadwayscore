@@ -156,7 +156,16 @@
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
     "hadestown-2019/hollywood-reporter--david-rooney.json",
     "hamilton-2015/hollywood-reporter--david-rooney.json",
-    "hamilton-2015/nyt-theater--jonathan-mandell.json"
+    "hamilton-2015/nyt-theater--jonathan-mandell.json",
+    "just-in-time-2025/nytimes--adam-feldman.json",
+    "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+    "masquerade-off-broadway-2025/nytg--gillian-russo.json",
+    "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
+    "maybe-happy-ending-2024/vulture--sara-holdren.json",
+    "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/nytg--kyle-turner.json",
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "mj-2022/vulture--helen-shaw.json",
+    "mother-russia-off-broadway-2026/nytg--amelia-merrill.json"
   ],
   "failed": [
     "deep-azure-globe-west-end-2026/nytimes--unknown.json",
@@ -191,7 +200,8 @@
     "wicked-2003/huron-daily--jake-coyle.json",
     "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
     "every-brilliant-thing-2026/nytimes--helen-shaw.json",
-    "hadestown-2019/newyorker--hilton-als.json"
+    "hadestown-2019/newyorker--hilton-als.json",
+    "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -302,7 +312,11 @@
       "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
       "data-off-broadway-2026/nytg--allison-considine.json",
       "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
-      "hamilton-2015/nyt-theater--jonathan-mandell.json"
+      "hamilton-2015/nyt-theater--jonathan-mandell.json",
+      "just-in-time-2025/nytimes--adam-feldman.json",
+      "masquerade-off-broadway-2025/nytg--gillian-russo.json",
+      "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/nytg--kyle-turner.json",
+      "mother-russia-off-broadway-2026/nytg--amelia-merrill.json"
     ],
     "amp": [
       "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
@@ -330,7 +344,11 @@
       "data/review-texts/hadestown-2019/hollywood-reporter--david-rooney.json",
       "hadestown-2019/hollywood-reporter--david-rooney.json",
       "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json",
-      "hamilton-2015/hollywood-reporter--david-rooney.json"
+      "hamilton-2015/hollywood-reporter--david-rooney.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -350,7 +368,8 @@
       "data/review-texts/the-lion-king-1997/message-boards--unknown.json",
       "data/review-texts/the-reservoir-off-broadway-2026/talkinbroadway--howard-miller.json",
       "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
-      "data/review-texts/every-brilliant-thing-2026/nytimes--helen-shaw.json"
+      "data/review-texts/every-brilliant-thing-2026/nytimes--helen-shaw.json",
+      "data/review-texts/marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json"
     ],
     "archive": [
       "into-the-woods-west-end-2025/nytimes--unknown.json",
@@ -390,11 +409,14 @@
       "operation-mincemeat-west-end-2024/london-box-office--stuart-king.json",
       "heathers-the-musical-off-broadway-2025/huffpost--unknown.json",
       "death-becomes-her-2024/newyorker--helen-shaw.json",
-      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json"
+      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
+      "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
+      "maybe-happy-ending-2024/vulture--sara-holdren.json",
+      "mj-2022/vulture--helen-shaw.json"
     ]
   },
   "startTime": "2026-03-14T08:23:12.185Z",
-  "lastProcessed": "hamilton-2015/nyt-theater--jonathan-mandell.json",
+  "lastProcessed": "mother-russia-off-broadway-2026/nytg--amelia-merrill.json",
   "log": [
     {
       "t": "2026-03-14T08:23:26.634Z",
@@ -454,6 +476,28 @@
     },
     {
       "t": "2026-03-14T09:29:50.168Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-14T09:30:29.760Z",
+      "event": "bb-session",
+      "session": "ec9e759a",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-14T09:30:30.971Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-14T09:34:22.122Z",
+      "event": "bb-session",
+      "session": "41c30c1f",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-03-14T09:34:23.361Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
