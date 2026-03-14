@@ -329,7 +329,8 @@ async function main() {
     const html = buildBroadcastOpeningNightHtml(showsForEmail, SEND_TO, MARKET);
 
     // Build unsubscribe URL for List-Unsubscribe header (RFC 8058)
-    const unsubUrl = buildUnsubscribeUrl(SEND_TO, MARKET);
+    // Must point to /api/unsubscribe (handles POST) — NOT /unsubscribe (GET-only client page)
+    const unsubUrl = `https://broadwayscorecard.com/api/unsubscribe?email=${encodeURIComponent(SEND_TO)}${MARKET === 'west-end' ? '&market=west-end' : ''}`;
 
     try {
       await postJSON('https://api.resend.com/emails', {
