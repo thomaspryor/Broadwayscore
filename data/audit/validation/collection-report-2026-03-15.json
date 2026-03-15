@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-03-15T04:26:11.577Z",
+  "runDate": "2026-03-15T04:57:07.691Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 150,
@@ -11,41 +11,41 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 68,
-    "failed": 866,
+    "processed": 77,
+    "failed": 877,
     "skipped": 0,
-    "successRate": "7.3%"
+    "successRate": "8.1%"
   },
   "tierBreakdown": {
-    "playwright": 44,
+    "playwright": 46,
     "amp": 2,
-    "browserbase": 20,
+    "browserbase": 22,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 33,
-    "archive": 15
+    "archiveToday": 40,
+    "archive": 21
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
-    "ampAttempts": 0,
+    "tier1Attempts": 14,
+    "tier1Success": 2,
+    "ampAttempts": 1,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier1_5Attempts": 3,
+    "tier1_5Success": 1,
+    "tier2Attempts": 10,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 10,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier3_6Attempts": 7,
+    "tier3_6Success": 7,
+    "tier4Attempts": 6,
     "tier4Success": 0,
-    "totalFailed": 91,
+    "totalFailed": 11,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 91,
+    "browserbaseSessionsUsed": 3,
+    "browserbaseMinutesUsed": 1.4,
+    "urlDiscoveryAttempts": 4,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -117,7 +117,16 @@
     "the-winslow-boy-2013/amny--unknown.json",
     "topdog-underdog-2022/yahya-abdul-mateen-ii--unknown.json",
     "war-paint-2017/around-the-town-chicago--alan-bresloff.json",
-    "whos-afraid-of-virginia-woolf-2012/chicagotribune--chris-jones.json"
+    "whos-afraid-of-virginia-woolf-2012/chicagotribune--chris-jones.json",
+    "chicago-1996/ap--michael-kuchwara.json",
+    "matilda-the-musical-west-end-2021/whatsonstage--michael-coveney.json",
+    "a-moon-for-the-misbegotten-2007/nytimes--ben-brantley.json",
+    "heisenberg-2016/vulture--jesse-green.json",
+    "natasha-pierre-and-the-great-comet-of-1812-2016/vulture--jesse-green.json",
+    "the-big-knife-2013/nytimes--ben-brantley.json",
+    "the-crucible-1991/vulture--jesse-green.json",
+    "the-real-thing-2014/nytimes--ben-brantley.json",
+    "living-on-love-2015/berkshire-on-stage--larry-murraygail-m-burns.json"
   ],
   "failed": [
     "dracula-west-end-2025/british-theatre--unknown.json",
@@ -985,7 +994,18 @@
     "thoughts-of-a-colored-man-2021/usatoday--charles-isherwood.json",
     "topdog-underdog-2022/rollingstone--david-fear.json",
     "tuck-everlasting-2016/usatoday--elysa-gardner.json",
-    "what-the-constitution-means-to-me-2019/usatoday--kelly-lawler.json"
+    "what-the-constitution-means-to-me-2019/usatoday--kelly-lawler.json",
+    "heathers-the-musical-off-broadway-2025/ew--unknown.json",
+    "the-lion-king-1997/message-boards--unknown.json",
+    "the-crucible-1991/nytimes--ben-brantley.json",
+    "a-chorus-line-2006/belleville-news-democrat--unknown.json",
+    "la-bete-1991/new-jersey-newsroom--michael-sommers.json",
+    "bernhardthamlet-2018/dctheatrescene--richard-seff.json",
+    "kinky-boots-off-broadway-2026/bloomberg--jeremy-gerard.json",
+    "la-bete-1991/ap--mark-kennedy.json",
+    "la-bete-1991/ny1--roma-torre.json",
+    "les-miserables-1987/ap--mark-kennedy.json",
+    "machinal-2014/ny1--roma-torre.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1032,7 +1052,9 @@
       "rodgers-hammersteins-cinderella-2013/tap-into--unknown.json",
       "the-assembled-parties-2013/london-theatre--matt-wolf.json",
       "the-waterfall-off-broadway-2026/front-row-center--brittany-crowell.json",
-      "war-paint-2017/around-the-town-chicago--alan-bresloff.json"
+      "war-paint-2017/around-the-town-chicago--alan-bresloff.json",
+      "matilda-the-musical-west-end-2021/whatsonstage--michael-coveney.json",
+      "the-big-knife-2013/nytimes--ben-brantley.json"
     ],
     "amp": [
       "data/review-texts/dracula-west-end-2025/variety--unknown.json",
@@ -1058,7 +1080,9 @@
       "data/review-texts/sunday-in-the-park-with-george-2008/amny--unknown.json",
       "sunday-in-the-park-with-george-2008/amny--unknown.json",
       "data/review-texts/topdog-underdog-2022/yahya-abdul-mateen-ii--unknown.json",
-      "topdog-underdog-2022/yahya-abdul-mateen-ii--unknown.json"
+      "topdog-underdog-2022/yahya-abdul-mateen-ii--unknown.json",
+      "data/review-texts/a-moon-for-the-misbegotten-2007/nytimes--ben-brantley.json",
+      "a-moon-for-the-misbegotten-2007/nytimes--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -1096,7 +1120,14 @@
       "data/review-texts/the-last-five-years-2025/ap--unknown.json",
       "data/review-texts/the-river-2014/inquirer--unknown.json",
       "data/review-texts/the-times-they-are-achangin-2006/wwwtheoldglobeorg--unknown.json",
-      "data/review-texts/time-and-the-conways-2017/huffpost--steven-suskin.json"
+      "data/review-texts/time-and-the-conways-2017/huffpost--steven-suskin.json",
+      "data/review-texts/the-lion-king-1997/message-boards--unknown.json",
+      "data/review-texts/the-crucible-1991/nytimes--ben-brantley.json",
+      "data/review-texts/la-bete-1991/new-jersey-newsroom--michael-sommers.json",
+      "data/review-texts/kinky-boots-off-broadway-2026/bloomberg--jeremy-gerard.json",
+      "data/review-texts/la-bete-1991/ap--mark-kennedy.json",
+      "data/review-texts/a-chorus-line-2006/belleville-news-democrat--unknown.json",
+      "data/review-texts/les-miserables-1987/ap--mark-kennedy.json"
     ],
     "archive": [
       "dracula-west-end-2025/broadwayworld--unknown.json",
@@ -1113,9 +1144,23 @@
       "motown-the-musical-2013/chicagotribune--unknown.json",
       "the-rose-tattoo-1995/chicagotribune--chris-jones.json",
       "the-winslow-boy-2013/amny--unknown.json",
-      "whos-afraid-of-virginia-woolf-2012/chicagotribune--chris-jones.json"
+      "whos-afraid-of-virginia-woolf-2012/chicagotribune--chris-jones.json",
+      "chicago-1996/ap--michael-kuchwara.json",
+      "heisenberg-2016/vulture--jesse-green.json",
+      "natasha-pierre-and-the-great-comet-of-1812-2016/vulture--jesse-green.json",
+      "the-crucible-1991/vulture--jesse-green.json",
+      "the-real-thing-2014/nytimes--ben-brantley.json",
+      "living-on-love-2015/berkshire-on-stage--larry-murraygail-m-burns.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "DC Theatre Scene": {
+      "count": 1,
+      "domain": "onandoffbroadwaytheaterreviews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
