@@ -77,7 +77,8 @@
     "the-crucible-1991/vulture--jesse-green.json",
     "the-real-thing-2014/nytimes--ben-brantley.json",
     "living-on-love-2015/berkshire-on-stage--larry-murraygail-m-burns.json",
-    "richard-iii-2013/guardian--susannah-clapp.json"
+    "richard-iii-2013/guardian--susannah-clapp.json",
+    "an-american-in-paris-2015/playbill--ariane-bevelier.json"
   ],
   "failed": [
     "dracula-west-end-2025/british-theatre--unknown.json",
@@ -1025,7 +1026,16 @@
     "a-bronx-tale-the-musical-2016/amny--matt-windman.json",
     "a-gentlemans-guide-to-love-and-murder-2013/amny--matt-windman.json",
     "aint-no-mo-2022/usatoday--matthew-j-palm.json",
-    "all-my-sons-2008/usatoday--elysa-gardner.json"
+    "all-my-sons-2008/usatoday--elysa-gardner.json",
+    "amazing-grace-2015/nwi-times--philip-potempa.json",
+    "amazing-grace-2015/windy-city-media-group--scott-c-morgan.json",
+    "american-psycho-2016/american-theater-web--unknown.json",
+    "an-american-in-paris-2015/broadwayworld--roy-berko.json",
+    "angels-in-america-2018/rollingstone--peter-travers.json",
+    "angels-in-america-2018/usatoday--charles-isherwood.json",
+    "ann-2013/amny--matt-windman.json",
+    "annie-2012/playbill--unknown.json",
+    "burn-this-2019/dctheatrescene--richard-seff.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1151,7 +1161,12 @@
       "data/review-texts/kinky-boots-off-broadway-2026/bloomberg--jeremy-gerard.json",
       "data/review-texts/la-bete-1991/ap--mark-kennedy.json",
       "data/review-texts/a-chorus-line-2006/belleville-news-democrat--unknown.json",
-      "data/review-texts/les-miserables-1987/ap--mark-kennedy.json"
+      "data/review-texts/les-miserables-1987/ap--mark-kennedy.json",
+      "data/review-texts/amazing-grace-2015/nwi-times--philip-potempa.json",
+      "data/review-texts/amazing-grace-2015/windy-city-media-group--scott-c-morgan.json",
+      "data/review-texts/american-psycho-2016/american-theater-web--unknown.json",
+      "data/review-texts/an-american-in-paris-2015/broadwayworld--roy-berko.json",
+      "data/review-texts/annie-2012/playbill--unknown.json"
     ],
     "archive": [
       "dracula-west-end-2025/broadwayworld--unknown.json",
@@ -1174,11 +1189,12 @@
       "natasha-pierre-and-the-great-comet-of-1812-2016/vulture--jesse-green.json",
       "the-crucible-1991/vulture--jesse-green.json",
       "the-real-thing-2014/nytimes--ben-brantley.json",
-      "living-on-love-2015/berkshire-on-stage--larry-murraygail-m-burns.json"
+      "living-on-love-2015/berkshire-on-stage--larry-murraygail-m-burns.json",
+      "an-american-in-paris-2015/playbill--ariane-bevelier.json"
     ]
   },
   "startTime": "2026-03-14T23:45:46.571Z",
-  "lastProcessed": "all-my-sons-2008/usatoday--elysa-gardner.json",
+  "lastProcessed": "burn-this-2019/dctheatrescene--richard-seff.json",
   "log": [
     {
       "t": "2026-03-14T23:47:47.877Z",
@@ -1502,6 +1518,17 @@
     },
     {
       "t": "2026-03-15T05:17:29.306Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-15T05:25:30.108Z",
+      "event": "bb-session",
+      "session": "b630ec2f",
+      "url": "https://www.amny.com/urbanite-1.812039/theater-review-ann-2-5-stars-1.4772260"
+    },
+    {
+      "t": "2026-03-15T05:25:31.424Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     }
