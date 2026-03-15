@@ -9,9 +9,20 @@
     "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
     "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
     "data-off-broadway-2026/nytg--allison-considine.json",
-    "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json"
+    "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
+    "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+    "masquerade-off-broadway-2025/nytg--gillian-russo.json",
+    "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
+    "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/nytg--kyle-turner.json",
+    "mother-russia-off-broadway-2026/nytg--amelia-merrill.json",
+    "night-side-songs-off-broadway-2026/nytg--kyle-turner.json",
+    "night-side-songs-off-broadway-2026/vulture--jonathan-mandell.json",
+    "pied-a-terre-off-broadway-2026/nytg--unknown.json"
   ],
-  "failed": [],
+  "failed": [
+    "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
@@ -23,19 +34,39 @@
       "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
       "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
       "data-off-broadway-2026/nytg--allison-considine.json",
-      "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json"
+      "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+      "masquerade-off-broadway-2025/nytg--gillian-russo.json",
+      "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/nytg--kyle-turner.json",
+      "mother-russia-off-broadway-2026/nytg--amelia-merrill.json",
+      "night-side-songs-off-broadway-2026/nytg--kyle-turner.json",
+      "night-side-songs-off-broadway-2026/vulture--jonathan-mandell.json",
+      "pied-a-terre-off-broadway-2026/nytg--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json"
+    ],
     "archive": [
-      "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json"
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
+      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
+      "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json"
     ]
   },
   "startTime": "2026-03-15T09:45:15.761Z",
-  "lastProcessed": "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
-  "log": []
+  "lastProcessed": "pied-a-terre-off-broadway-2026/nytg--unknown.json",
+  "log": [
+    {
+      "t": "2026-03-15T09:48:36.450Z",
+      "event": "bb-session",
+      "session": "78957d0d",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    }
+  ]
 }
