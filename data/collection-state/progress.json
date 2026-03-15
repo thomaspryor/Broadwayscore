@@ -43,7 +43,10 @@
     "the-tragedy-of-coriolanus-off-broadway-2026/theatermania--pete-hempstead.json",
     "uncle-vanya-2024/deadline--greg-evans.json",
     "allegiance-2015/sdamustang--andrew-walker.json",
-    "amazing-grace-2015/chicago-critic--tom-williams.json"
+    "amazing-grace-2015/chicago-critic--tom-williams.json",
+    "colin-quinn-long-story-short-2010/amny--unknown.json",
+    "come-from-away-2017/huffpost--steven-suskin.json",
+    "driving-miss-daisy-2010/great-performances-online--unknown.json"
   ],
   "failed": [
     "dracula-west-end-2025/british-theatre--unknown.json",
@@ -142,7 +145,14 @@
     "annie-2012/playbill--unknown.json",
     "bengal-tiger-at-the-baghdad-zoo-2011/thestage--siobhan-murphy.json",
     "burn-this-2019/dctheatrescene--richard-seff.json",
-    "clybourne-park-2012/usatoday--elysa-gardner.json"
+    "clybourne-park-2012/usatoday--elysa-gardner.json",
+    "come-back-little-sheba-2008/usatoday--elysa-gardner.json",
+    "equus-2008/chicagotribune--chris-jones.json",
+    "falsettos-2016/entries-are-now-being-accepted-online--unknown.json",
+    "frozen-2018/dctheatrescene--richard-seff.json",
+    "going-bacharach-the-songs-of-an-icon-off-broadway-2026/goingbacharachcom--unknown.json",
+    "grey-house-2023/stageandcinema--simi-horwitz.json",
+    "gypsy-2024/hartford-courant--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -177,7 +187,8 @@
       "rodgers-hammersteins-cinderella-2013/theatermania--hayley-levitt.json",
       "swept-away-2024/new-york-sun--elysa-gardner.json",
       "the-tragedy-of-coriolanus-off-broadway-2026/theatermania--pete-hempstead.json",
-      "amazing-grace-2015/chicago-critic--tom-williams.json"
+      "amazing-grace-2015/chicago-critic--tom-williams.json",
+      "driving-miss-daisy-2010/great-performances-online--unknown.json"
     ],
     "amp": [
       "data/review-texts/dracula-west-end-2025/variety--unknown.json",
@@ -191,7 +202,9 @@
       "data/review-texts/a-bronx-tale-the-musical-2016/amny--matt-windman.json",
       "data/review-texts/a-gentlemans-guide-to-love-and-murder-2013/amny--matt-windman.json",
       "data/review-texts/allegiance-2015/sdamustang--andrew-walker.json",
-      "allegiance-2015/sdamustang--andrew-walker.json"
+      "allegiance-2015/sdamustang--andrew-walker.json",
+      "data/review-texts/colin-quinn-long-story-short-2010/amny--unknown.json",
+      "colin-quinn-long-story-short-2010/amny--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -213,7 +226,10 @@
       "data/review-texts/american-psycho-2016/american-theater-web--unknown.json",
       "data/review-texts/an-american-in-paris-2015/broadwayworld--roy-berko.json",
       "data/review-texts/an-american-in-paris-2015/playbill--ariane-bevelier.json",
-      "data/review-texts/annie-2012/playbill--unknown.json"
+      "data/review-texts/annie-2012/playbill--unknown.json",
+      "data/review-texts/bengal-tiger-at-the-baghdad-zoo-2011/thestage--siobhan-murphy.json",
+      "data/review-texts/falsettos-2016/entries-are-now-being-accepted-online--unknown.json",
+      "data/review-texts/going-bacharach-the-songs-of-an-icon-off-broadway-2026/goingbacharachcom--unknown.json"
     ],
     "archive": [
       "dracula-west-end-2025/broadwayworld--unknown.json",
@@ -225,11 +241,12 @@
       "marvins-room-2017/nydailynews--joe-dziemianowicz.json",
       "miss-saigon-2017/nydailynews--joe-dziemianowicz.json",
       "present-laughter-2010/nydailynews--joe-dziemianowicz.json",
-      "significant-other-2017/nydailynews--joe-dziemianowicz.json"
+      "significant-other-2017/nydailynews--joe-dziemianowicz.json",
+      "come-from-away-2017/huffpost--steven-suskin.json"
     ]
   },
   "startTime": "2026-03-14T23:45:46.571Z",
-  "lastProcessed": "clybourne-park-2012/usatoday--elysa-gardner.json",
+  "lastProcessed": "gypsy-2024/hartford-courant--unknown.json",
   "log": [
     {
       "t": "2026-03-14T23:47:47.877Z",
@@ -335,6 +352,28 @@
       "t": "2026-03-15T02:12:31.218Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-15T02:19:20.247Z",
+      "event": "bb-session",
+      "session": "d759cc30",
+      "url": "http://www.amny.com/entertainment/colin-quinn-the-new-york-story-theater-review-"
+    },
+    {
+      "t": "2026-03-15T02:19:21.701Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-15T02:19:46.538Z",
+      "event": "bb-session",
+      "session": "199613fd",
+      "url": "https://www.thestage.co.uk/reviews/bengal-tiger-at-the-baghdad-zoo-review-young-"
+    },
+    {
+      "t": "2026-03-15T02:19:47.907Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }

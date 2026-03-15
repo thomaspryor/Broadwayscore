@@ -1,37 +1,20 @@
 {
-  "updatedAt": "2026-03-15T02:19:17.352Z",
-  "processed": 44,
-  "failed": 97,
-  "successRate": "31.2%",
+  "updatedAt": "2026-03-15T02:23:29.207Z",
+  "processed": 47,
+  "failed": 104,
+  "successRate": "31.1%",
   "tierBreakdown": {
-    "playwright": 31,
+    "playwright": 32,
     "amp": 2,
-    "browserbase": 8,
+    "browserbase": 10,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 17,
-    "archive": 10
+    "archiveToday": 20,
+    "archive": 11
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-03-14T23:47:47.877Z",
-      "event": "bb-session",
-      "session": "b969d5ae",
-      "url": "https://www.thestage.co.uk/long-reviews/dracula-review-noel-coward-theatre-kip-w"
-    },
-    {
-      "t": "2026-03-14T23:47:49.048Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-03-14T23:48:27.289Z",
-      "event": "bb-session",
-      "session": "ea1d5c2c",
-      "url": "https://www.nytimes.com/2026/02/18/theater/dracula-cynthia-erivo.html"
-    },
     {
       "t": "2026-03-14T23:48:28.576Z",
       "event": "bb-cookie-inject",
@@ -119,6 +102,28 @@
       "t": "2026-03-15T02:12:31.218Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-15T02:19:20.247Z",
+      "event": "bb-session",
+      "session": "d759cc30",
+      "url": "http://www.amny.com/entertainment/colin-quinn-the-new-york-story-theater-review-"
+    },
+    {
+      "t": "2026-03-15T02:19:21.701Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-15T02:19:46.538Z",
+      "event": "bb-session",
+      "session": "199613fd",
+      "url": "https://www.thestage.co.uk/reviews/bengal-tiger-at-the-baghdad-zoo-review-young-"
+    },
+    {
+      "t": "2026-03-15T02:19:47.907Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
