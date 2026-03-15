@@ -57,7 +57,9 @@
     "orphans-2013/artsdesk--helen-hawkins.json",
     "orphans-2013/theatre-weekly--nick-wayne.json",
     "orphans-2013/west-end-best-friend--brian-penn.json",
-    "present-laughter-2010/amny--matt-windman.json"
+    "present-laughter-2010/amny--matt-windman.json",
+    "rock-n-roll-2007/west-end-best-friend--erifyli-gigante.json",
+    "rodgers-hammersteins-cinderella-2013/tap-into--unknown.json"
   ],
   "failed": [
     "dracula-west-end-2025/british-theatre--unknown.json",
@@ -262,7 +264,15 @@
     "macbeth-2008/usatoday--elysa-gardner.json",
     "oh-hello-on-broadway-2016/rollingstone--alan-sepinwall.json",
     "reasons-to-be-pretty-2009/usatoday--elysa-gardner.json",
-    "red-2010/chicagotribune--chris-jones.json"
+    "red-2010/chicagotribune--chris-jones.json",
+    "rent-1996/playbill--unknown.json",
+    "rock-n-roll-2007/thestage--dave-fargnoli.json",
+    "rodgers-hammersteins-cinderella-2013/scene--philip-dorian.json",
+    "rodgers-hammersteins-cinderella-2013/stageandcinema--jonas-schwartz.json",
+    "sea-wall-a-life-2019/usatoday--charles-isherwood.json",
+    "shrek-the-musical-2008/usatoday--elysa-gardner.json",
+    "spongebob-squarepants-2017/amny--matt-windman.json",
+    "stereophonic-2024/thestage--lane-williamson.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -305,7 +315,9 @@
       "oleanna-2009/london-theatre--matt-wolf.json",
       "orphans-2013/artsdesk--helen-hawkins.json",
       "orphans-2013/theatre-weekly--nick-wayne.json",
-      "orphans-2013/west-end-best-friend--brian-penn.json"
+      "orphans-2013/west-end-best-friend--brian-penn.json",
+      "rock-n-roll-2007/west-end-best-friend--erifyli-gigante.json",
+      "rodgers-hammersteins-cinderella-2013/tap-into--unknown.json"
     ],
     "amp": [
       "data/review-texts/dracula-west-end-2025/variety--unknown.json",
@@ -355,7 +367,12 @@
       "data/review-texts/going-bacharach-the-songs-of-an-icon-off-broadway-2026/goingbacharachcom--unknown.json",
       "data/review-texts/hand-to-god-2015/broadwayworld--roy-berko.json",
       "data/review-texts/king-charles-iii-2015/london-theatre--mark-shenton.json",
-      "data/review-texts/king-kong-2018/canberra-times--unknown.json"
+      "data/review-texts/king-kong-2018/canberra-times--unknown.json",
+      "data/review-texts/rent-1996/playbill--unknown.json",
+      "data/review-texts/rodgers-hammersteins-cinderella-2013/scene--philip-dorian.json",
+      "data/review-texts/rock-n-roll-2007/thestage--dave-fargnoli.json",
+      "data/review-texts/spongebob-squarepants-2017/amny--matt-windman.json",
+      "data/review-texts/stereophonic-2024/thestage--lane-williamson.json"
     ],
     "archive": [
       "dracula-west-end-2025/broadwayworld--unknown.json",
@@ -373,7 +390,7 @@
     ]
   },
   "startTime": "2026-03-14T23:45:46.571Z",
-  "lastProcessed": "red-2010/chicagotribune--chris-jones.json",
+  "lastProcessed": "stereophonic-2024/thestage--lane-williamson.json",
   "log": [
     {
       "t": "2026-03-14T23:47:47.877Z",
@@ -556,6 +573,39 @@
       "t": "2026-03-15T02:36:06.614Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-15T02:51:30.908Z",
+      "event": "bb-session",
+      "session": "05349391",
+      "url": "https://www.thestage.co.uk/reviews/rock-n-roll-review-hampstead-theatre-london-t"
+    },
+    {
+      "t": "2026-03-15T02:51:32.428Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-15T02:51:37.782Z",
+      "event": "bb-session",
+      "session": "0a92ae26",
+      "url": "https://www.amny.com/entertainment/spongebob-squarepants-review-energetic-cast-b"
+    },
+    {
+      "t": "2026-03-15T02:51:39.321Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-15T02:54:35.898Z",
+      "event": "bb-session",
+      "session": "bac82aa5",
+      "url": "https://www.thestage.co.uk/reviews/stereophonic-review-at-john-golden-theatre-ne"
+    },
+    {
+      "t": "2026-03-15T02:54:37.441Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
