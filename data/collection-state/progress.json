@@ -126,7 +126,17 @@
     "hadestown-2019/hollywood-reporter--david-rooney.json",
     "hamilton-2015/hollywood-reporter--david-rooney.json",
     "hamilton-2015/nyt-theater--jonathan-mandell.json",
-    "hercules-west-end-2025/nytimes--matt-wolf.json"
+    "hercules-west-end-2025/nytimes--matt-wolf.json",
+    "hercules-west-end-2025/variety--david-benedict.json",
+    "just-in-time-2025/nytimes--adam-feldman.json",
+    "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+    "maybe-happy-ending-2024/vulture--sara-holdren.json",
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "mj-2022/vulture--helen-shaw.json",
+    "moulin-rouge-2019/nytimes--ben-brantley.json",
+    "oh-mary-2024/hollywood-reporter--david-rooney.json",
+    "oh-mary-2024/nytimes--erik-piepenburg.json",
+    "oh-mary-2024/vulture--helen-shaw.json"
   ],
   "failed": [
     "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
@@ -1059,7 +1069,8 @@
       "cold-war-choir-practice-off-broadway-2026/nysr--david-finkle.json",
       "mother-russia-off-broadway-2026/theatres-leiter-side--samuel-l-leiter.json",
       "you-got-older-off-broadway-2026/nysr--frank-scheck.json",
-      "hamilton-2015/nyt-theater--jonathan-mandell.json"
+      "hamilton-2015/nyt-theater--jonathan-mandell.json",
+      "just-in-time-2025/nytimes--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -1069,7 +1080,9 @@
       "data/review-texts/the-mousetrap-west-end-2021/variety--unknown.json",
       "the-mousetrap-west-end-2021/variety--unknown.json",
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
-      "back-to-the-future-west-end-2021/variety--david-benedict.json"
+      "back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
+      "hercules-west-end-2025/variety--david-benedict.json"
     ],
     "browserbase": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
@@ -1109,7 +1122,11 @@
       "data/review-texts/hadestown-2019/hollywood-reporter--david-rooney.json",
       "hadestown-2019/hollywood-reporter--david-rooney.json",
       "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json",
-      "hamilton-2015/hollywood-reporter--david-rooney.json"
+      "hamilton-2015/hollywood-reporter--david-rooney.json",
+      "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "data/review-texts/oh-mary-2024/hollywood-reporter--david-rooney.json",
+      "oh-mary-2024/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -1189,11 +1206,17 @@
       "into-the-woods-west-end-2025/independent--louis-chilton.json",
       "matilda-the-musical-west-end-2021/thestage--mark-shenton.json",
       "death-becomes-her-2024/newyorker--helen-shaw.json",
-      "hercules-west-end-2025/nytimes--matt-wolf.json"
+      "hercules-west-end-2025/nytimes--matt-wolf.json",
+      "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+      "maybe-happy-ending-2024/vulture--sara-holdren.json",
+      "mj-2022/vulture--helen-shaw.json",
+      "moulin-rouge-2019/nytimes--ben-brantley.json",
+      "oh-mary-2024/nytimes--erik-piepenburg.json",
+      "oh-mary-2024/vulture--helen-shaw.json"
     ]
   },
   "startTime": "2026-03-15T09:45:15.761Z",
-  "lastProcessed": "hercules-west-end-2025/nytimes--matt-wolf.json",
+  "lastProcessed": "oh-mary-2024/vulture--helen-shaw.json",
   "log": [
     {
       "t": "2026-03-15T09:48:36.450Z",
@@ -1481,6 +1504,39 @@
     },
     {
       "t": "2026-03-15T15:58:25.808Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-15T15:59:33.410Z",
+      "event": "bb-session",
+      "session": "825a6f6d",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-03-15T15:59:34.860Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-15T16:00:27.988Z",
+      "event": "bb-session",
+      "session": "40e9b2d7",
+      "url": "https://www.nytimes.com/2019/07/25/theater/moulin-rouge-review.html"
+    },
+    {
+      "t": "2026-03-15T16:00:29.583Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-15T16:00:51.334Z",
+      "event": "bb-session",
+      "session": "b8997bc3",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
+    },
+    {
+      "t": "2026-03-15T16:00:52.806Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
