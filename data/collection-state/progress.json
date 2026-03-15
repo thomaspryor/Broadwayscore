@@ -61,7 +61,11 @@
     "rock-n-roll-2007/west-end-best-friend--erifyli-gigante.json",
     "rodgers-hammersteins-cinderella-2013/tap-into--unknown.json",
     "sunday-in-the-park-with-george-2008/amny--unknown.json",
-    "the-assembled-parties-2013/london-theatre--matt-wolf.json"
+    "the-assembled-parties-2013/london-theatre--matt-wolf.json",
+    "the-rose-tattoo-1995/chicagotribune--chris-jones.json",
+    "the-waterfall-off-broadway-2026/front-row-center--brittany-crowell.json",
+    "the-winslow-boy-2013/amny--unknown.json",
+    "topdog-underdog-2022/yahya-abdul-mateen-ii--unknown.json"
   ],
   "failed": [
     "dracula-west-end-2025/british-theatre--unknown.json",
@@ -282,7 +286,13 @@
     "the-glass-menagerie-2013/chicagotribune--unknown.json",
     "the-hills-of-california-2024/times-uk--ann-treneman.json",
     "the-inheritance-2019/usatoday--charles-isherwood.json",
-    "the-last-five-years-2025/ap--unknown.json"
+    "the-last-five-years-2025/ap--unknown.json",
+    "the-river-2014/inquirer--unknown.json",
+    "the-times-they-are-achangin-2006/wwwtheoldglobeorg--unknown.json",
+    "thoughts-of-a-colored-man-2021/usatoday--charles-isherwood.json",
+    "time-and-the-conways-2017/huffpost--steven-suskin.json",
+    "tootsie-2019/dctheatrescene--richard-seff.json",
+    "topdog-underdog-2022/rollingstone--david-fear.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -328,7 +338,8 @@
       "orphans-2013/west-end-best-friend--brian-penn.json",
       "rock-n-roll-2007/west-end-best-friend--erifyli-gigante.json",
       "rodgers-hammersteins-cinderella-2013/tap-into--unknown.json",
-      "the-assembled-parties-2013/london-theatre--matt-wolf.json"
+      "the-assembled-parties-2013/london-theatre--matt-wolf.json",
+      "the-waterfall-off-broadway-2026/front-row-center--brittany-crowell.json"
     ],
     "amp": [
       "data/review-texts/dracula-west-end-2025/variety--unknown.json",
@@ -352,7 +363,9 @@
       "data/review-texts/present-laughter-2010/amny--matt-windman.json",
       "present-laughter-2010/amny--matt-windman.json",
       "data/review-texts/sunday-in-the-park-with-george-2008/amny--unknown.json",
-      "sunday-in-the-park-with-george-2008/amny--unknown.json"
+      "sunday-in-the-park-with-george-2008/amny--unknown.json",
+      "data/review-texts/topdog-underdog-2022/yahya-abdul-mateen-ii--unknown.json",
+      "topdog-underdog-2022/yahya-abdul-mateen-ii--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -387,7 +400,10 @@
       "data/review-texts/spongebob-squarepants-2017/amny--matt-windman.json",
       "data/review-texts/stereophonic-2024/thestage--lane-williamson.json",
       "data/review-texts/the-assembled-parties-2013/thestage--sam-marlowe.json",
-      "data/review-texts/the-last-five-years-2025/ap--unknown.json"
+      "data/review-texts/the-last-five-years-2025/ap--unknown.json",
+      "data/review-texts/the-river-2014/inquirer--unknown.json",
+      "data/review-texts/the-times-they-are-achangin-2006/wwwtheoldglobeorg--unknown.json",
+      "data/review-texts/time-and-the-conways-2017/huffpost--steven-suskin.json"
     ],
     "archive": [
       "dracula-west-end-2025/broadwayworld--unknown.json",
@@ -401,11 +417,13 @@
       "present-laughter-2010/nydailynews--joe-dziemianowicz.json",
       "significant-other-2017/nydailynews--joe-dziemianowicz.json",
       "come-from-away-2017/huffpost--steven-suskin.json",
-      "motown-the-musical-2013/chicagotribune--unknown.json"
+      "motown-the-musical-2013/chicagotribune--unknown.json",
+      "the-rose-tattoo-1995/chicagotribune--chris-jones.json",
+      "the-winslow-boy-2013/amny--unknown.json"
     ]
   },
   "startTime": "2026-03-14T23:45:46.571Z",
-  "lastProcessed": "the-last-five-years-2025/ap--unknown.json",
+  "lastProcessed": "topdog-underdog-2022/yahya-abdul-mateen-ii--unknown.json",
   "log": [
     {
       "t": "2026-03-14T23:47:47.877Z",
@@ -643,6 +661,28 @@
       "t": "2026-03-15T02:56:43.428Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-15T03:00:28.786Z",
+      "event": "bb-session",
+      "session": "74a6ffac",
+      "url": "http://www.amny.com/urbanite-1.812039/theater-review-the-winslow-boy-2-stars-1.6"
+    },
+    {
+      "t": "2026-03-15T03:00:30.328Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-15T03:04:08.883Z",
+      "event": "bb-session",
+      "session": "a5b788ca",
+      "url": "https://www.hollywoodreporter.com/t/yahya-abdul-mateen-ii/"
+    },
+    {
+      "t": "2026-03-15T03:04:10.362Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
