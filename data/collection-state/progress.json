@@ -13,7 +13,13 @@
     "dracula-west-end-2025/i-paper--fiona-mountford.json",
     "dracula-west-end-2025/london-theatre--olivia-rook.json",
     "marie-and-rosetta-west-end-2026/all-that-dazzles-uk--daz-gale.json",
-    "marie-and-rosetta-west-end-2026/financialtimes--unknown.json"
+    "marie-and-rosetta-west-end-2026/financialtimes--unknown.json",
+    "marie-and-rosetta-west-end-2026/london-box-office--stuart-king.json",
+    "marie-and-rosetta-west-end-2026/london-theatre--theo-bosanquet.json",
+    "marie-and-rosetta-west-end-2026/west-end-best-friend--nick-wayne.json",
+    "oh-mary-west-end-2025/artsdesk--demetrios-matheou.json",
+    "oh-mary-west-end-2025/london-box-office--stuart-king.json",
+    "oh-mary-west-end-2025/standard--nick.json"
   ],
   "failed": [
     "dracula-west-end-2025/british-theatre--unknown.json",
@@ -21,7 +27,11 @@
     "dracula-west-end-2025/independent--alice-saville.json",
     "dracula-west-end-2025/times-uk--clive-davis.json",
     "marie-and-rosetta-west-end-2026/broadwayworld--clementine-scott.json",
-    "marie-and-rosetta-west-end-2026/everything-theatre-uk--jess-gonzalez.json"
+    "marie-and-rosetta-west-end-2026/everything-theatre-uk--jess-gonzalez.json",
+    "oh-mary-west-end-2025/independent--alice-saville.json",
+    "oh-mary-west-end-2025/standard--nick-curtis.json",
+    "oh-mary-west-end-2025/thestage--holly-omahony.json",
+    "oh-mary-west-end-2025/thestage--mahony.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -37,7 +47,13 @@
       "dracula-west-end-2025/london-theatre--olivia-rook.json",
       "marie-and-rosetta-west-end-2026/all-that-dazzles-uk--daz-gale.json",
       "marie-and-rosetta-west-end-2026/everything-theatre-uk--jess-gonzalez.json",
-      "marie-and-rosetta-west-end-2026/financialtimes--unknown.json"
+      "marie-and-rosetta-west-end-2026/financialtimes--unknown.json",
+      "marie-and-rosetta-west-end-2026/london-box-office--stuart-king.json",
+      "marie-and-rosetta-west-end-2026/london-theatre--theo-bosanquet.json",
+      "marie-and-rosetta-west-end-2026/west-end-best-friend--nick-wayne.json",
+      "oh-mary-west-end-2025/artsdesk--demetrios-matheou.json",
+      "oh-mary-west-end-2025/london-box-office--stuart-king.json",
+      "oh-mary-west-end-2025/standard--nick.json"
     ],
     "amp": [
       "data/review-texts/dracula-west-end-2025/variety--unknown.json",
@@ -52,14 +68,18 @@
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/dracula-west-end-2025/thestage--sam-marlowe.json",
-      "data/review-texts/dracula-west-end-2025/independent--alice-saville.json"
+      "data/review-texts/dracula-west-end-2025/independent--alice-saville.json",
+      "data/review-texts/marie-and-rosetta-west-end-2026/broadwayworld--clementine-scott.json",
+      "data/review-texts/oh-mary-west-end-2025/independent--alice-saville.json",
+      "data/review-texts/oh-mary-west-end-2025/thestage--holly-omahony.json",
+      "data/review-texts/oh-mary-west-end-2025/thestage--mahony.json"
     ],
     "archive": [
       "dracula-west-end-2025/broadwayworld--unknown.json"
     ]
   },
   "startTime": "2026-03-14T23:45:46.571Z",
-  "lastProcessed": "marie-and-rosetta-west-end-2026/financialtimes--unknown.json",
+  "lastProcessed": "oh-mary-west-end-2025/thestage--mahony.json",
   "log": [
     {
       "t": "2026-03-14T23:47:47.877Z",
@@ -82,6 +102,28 @@
       "t": "2026-03-14T23:48:28.576Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-14T23:59:52.404Z",
+      "event": "bb-session",
+      "session": "548fda03",
+      "url": "https://www.thestage.co.uk/reviews/oh-mary-review-trafalgar-theatre-london"
+    },
+    {
+      "t": "2026-03-14T23:59:53.614Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-15T00:01:34.989Z",
+      "event": "bb-session",
+      "session": "a649eae8",
+      "url": "https://www.thestage.co.uk/reviews/oh-mary-review-trafalgar-theatre-london"
+    },
+    {
+      "t": "2026-03-15T00:01:36.215Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }

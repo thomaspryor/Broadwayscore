@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-14T23:56:59.557Z",
-  "processed": 14,
-  "failed": 6,
-  "successRate": "70.0%",
+  "updatedAt": "2026-03-15T00:01:54.113Z",
+  "processed": 20,
+  "failed": 10,
+  "successRate": "66.7%",
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 18,
     "amp": 2,
     "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 2,
+    "archiveToday": 6,
     "archive": 1
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-03-14T23:47:47.877Z",
@@ -36,6 +36,28 @@
       "t": "2026-03-14T23:48:28.576Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-14T23:59:52.404Z",
+      "event": "bb-session",
+      "session": "548fda03",
+      "url": "https://www.thestage.co.uk/reviews/oh-mary-review-trafalgar-theatre-london"
+    },
+    {
+      "t": "2026-03-14T23:59:53.614Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-15T00:01:34.989Z",
+      "event": "bb-session",
+      "session": "a649eae8",
+      "url": "https://www.thestage.co.uk/reviews/oh-mary-review-trafalgar-theatre-london"
+    },
+    {
+      "t": "2026-03-15T00:01:36.215Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
