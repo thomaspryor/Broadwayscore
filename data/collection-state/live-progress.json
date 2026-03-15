@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-15T11:03:31.207Z",
-  "processed": 91,
-  "failed": 99,
-  "successRate": "47.9%",
+  "updatedAt": "2026-03-15T11:04:23.666Z",
+  "processed": 94,
+  "failed": 106,
+  "successRate": "47.0%",
   "tierBreakdown": {
-    "playwright": 49,
+    "playwright": 50,
     "amp": 6,
-    "browserbase": 26,
+    "browserbase": 28,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 28,
-    "archive": 26
+    "archive": 27
   },
-  "browserbaseSessions": 14,
+  "browserbaseSessions": 15,
   "recentActivity": [
-    {
-      "t": "2026-03-15T10:44:56.708Z",
-      "event": "bb-session",
-      "session": "585ac18d",
-      "url": "https://www.hollywoodreporter.com/review/tom-hiddleston-betrayal-theater-review-"
-    },
-    {
-      "t": "2026-03-15T10:44:58.224Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-15T10:48:16.618Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-15T11:03:03.802Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-15T11:04:07.678Z",
+      "event": "bb-session",
+      "session": "6b7b87cb",
+      "url": "http://www.amny.com/entertainment/motown-the-musical-review-lively-broadway-run-"
+    },
+    {
+      "t": "2026-03-15T11:04:09.135Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     }
