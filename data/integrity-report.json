@@ -1,80 +1,112 @@
 {
-  "timestamp": "2026-03-08T14:30:42.021Z",
+  "timestamp": "2026-03-15T05:12:28.783Z",
   "hasIssues": true,
   "current": {
+    "date": "2026-03-15",
+    "totalReviews": 31996,
+    "unknownOutlets": 10,
+    "duplicates": 3,
+    "syncDelta": 14392
+  },
+  "previous": {
     "date": "2026-03-08",
     "totalReviews": 31751,
     "unknownOutlets": 49,
     "duplicates": 0,
     "syncDelta": 13697
   },
-  "previous": {
-    "date": "2026-03-08",
-    "totalReviews": 31751,
-    "unknownOutlets": 49,
-    "duplicates": 2,
-    "syncDelta": 13697
-  },
   "issues": [
     {
       "type": "unknown_outlets",
-      "severity": "critical",
-      "message": "49 reviews have unknown outlets",
+      "severity": "warning",
+      "message": "10 reviews have unknown outlets",
       "examples": [
         {
-          "file": "data/review-texts/11-to-midnight-off-broadway-2026/unknown--ryan-leeds.json",
-          "outletId": "unknown",
-          "outlet": "Unknown"
+          "file": "data/review-texts/driving-miss-daisy-2010/great-performances-online--unknown.json",
+          "outletId": "great-performances-online",
+          "outlet": "Great Performances Online"
         },
         {
-          "file": "data/review-texts/a-dolls-house-part-2-2017/unknown--david-sheward.json",
-          "outletId": "unknown"
+          "file": "data/review-texts/falsettos-2016/entries-are-now-being-accepted-online--unknown.json",
+          "outletId": "entries-are-now-being-accepted-online",
+          "outlet": "Entries are now being accepted online"
         },
         {
-          "file": "data/review-texts/airline-highway-2015/unknown--drew-shanahan.json",
-          "outletId": "unknown"
+          "file": "data/review-texts/going-bacharach-the-songs-of-an-icon-off-broadway-2026/goingbacharachcom--unknown.json",
+          "outletId": "goingbacharachcom",
+          "outlet": "GoingBacharach.com"
         },
         {
-          "file": "data/review-texts/allegiance-2015/unknown--kevin-filipski.json",
-          "outletId": "unknown"
+          "file": "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
+          "outletId": "here",
+          "outlet": "here"
         },
         {
-          "file": "data/review-texts/amazing-grace-2015/unknown--katy-walsh.json",
-          "outletId": "unknown"
+          "file": "data/review-texts/im-almost-there-off-broadway-2026/here--unknown.json",
+          "outletId": "here",
+          "outlet": "here"
         },
         {
-          "file": "data/review-texts/american-buffalo-2008/unknown--david-sheward.json",
-          "outletId": "unknown"
+          "file": "data/review-texts/pride-west-end-2026/thewallisorg--unknown.json",
+          "outletId": "thewallisorg",
+          "outlet": "TheWallis.org"
         },
         {
-          "file": "data/review-texts/american-buffalo-2022/unknown--david-sheward.json",
-          "outletId": "unknown"
+          "file": "data/review-texts/the-lion-king-1997/message-boards--unknown.json",
+          "outletId": "message-boards",
+          "outlet": "Message Boards"
         },
         {
-          "file": "data/review-texts/an-american-in-paris-2015/unknown--roy-berko.json",
-          "outletId": "unknown"
+          "file": "data/review-texts/the-times-they-are-achangin-2006/wwwtheoldglobeorg--unknown.json",
+          "outletId": "wwwtheoldglobeorg",
+          "outlet": "www.theoldglobe.org."
         },
         {
-          "file": "data/review-texts/an-ark-off-broadway-2026/unknown--thom-geier.json",
-          "outletId": "unknown",
-          "outlet": "Unknown"
+          "file": "data/review-texts/the-year-of-magical-thinking-2007/keencompanyorg--unknown.json",
+          "outletId": "keencompanyorg",
+          "outlet": "KeenCompany.org"
         },
         {
-          "file": "data/review-texts/be-more-chill-2019/unknown--david-sheward.json",
-          "outletId": "unknown"
+          "file": "data/review-texts/wicked-2003/huron-daily--jake-coyle.json",
+          "outletId": "huron-daily",
+          "outlet": "Huron Daily"
+        }
+      ]
+    },
+    {
+      "type": "duplicates",
+      "severity": "warning",
+      "message": "3 duplicate reviews detected",
+      "examples": [
+        {
+          "file": "data/review-texts/all-my-sons-west-end-2025/timeout-london--andrzej-lukowski.json",
+          "key": "all-my-sons-west-end-2025|timeout-london|andrzej lukowski"
+        },
+        {
+          "file": "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/timeout-london--unknown.json",
+          "key": "cabaret-at-the-kit-kat-club-west-end-2021|timeout-london|andrzej lukowski"
+        },
+        {
+          "file": "data/review-texts/punch-2025/deadline--unknown.json",
+          "key": "punch-2025|deadline|greg evans"
         }
       ]
     },
     {
       "type": "sync_delta",
       "severity": "critical",
-      "message": "review-texts (31751) and reviews.json (18054) are out of sync by 13697 reviews"
+      "message": "review-texts (31996) and reviews.json (17604) are out of sync by 14392 reviews"
+    },
+    {
+      "type": "duplicates_degradation",
+      "severity": "warning",
+      "message": "Duplicates increased from 0 to 3"
     }
   ],
   "summary": {
-    "totalReviews": 31751,
-    "unknownOutlets": 49,
-    "duplicates": 0,
-    "syncDelta": 13697
+    "totalReviews": 31996,
+    "unknownOutlets": 10,
+    "duplicates": 3,
+    "syncDelta": 14392
   }
 }
