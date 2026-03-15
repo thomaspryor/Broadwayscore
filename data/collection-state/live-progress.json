@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-15T11:04:23.666Z",
-  "processed": 94,
-  "failed": 106,
-  "successRate": "47.0%",
+  "updatedAt": "2026-03-15T11:05:40.161Z",
+  "processed": 98,
+  "failed": 112,
+  "successRate": "46.7%",
   "tierBreakdown": {
-    "playwright": 50,
+    "playwright": 52,
     "amp": 6,
-    "browserbase": 28,
+    "browserbase": 30,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 28,
-    "archive": 27
+    "archive": 28
   },
-  "browserbaseSessions": 15,
+  "browserbaseSessions": 16,
   "recentActivity": [
-    {
-      "t": "2026-03-15T10:48:16.618Z",
-      "event": "bb-session",
-      "session": "ba1d7720",
-      "url": "http://www.hollywoodreporter.com/review/cats-theater-review-915947?utm_source=fe"
-    },
-    {
-      "t": "2026-03-15T10:48:18.226Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-15T10:48:41.330Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-15T11:04:09.135Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-15T11:05:25.003Z",
+      "event": "bb-session",
+      "session": "52c4da4b",
+      "url": "http://www.amny.com/entertainment/sunday-in-the-park-with-george-review-jake-gyl"
+    },
+    {
+      "t": "2026-03-15T11:05:26.560Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     }
