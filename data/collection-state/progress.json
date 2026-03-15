@@ -1055,7 +1055,17 @@
     "kiss-me-kate-2019/usatoday--david-rooney.json",
     "kiss-me-kate-2019/usatoday--elysa-gardner.json",
     "la-bete-1991/ny1--roma-torre.json",
-    "macbeth-2008/amny--john-carucci.json"
+    "macbeth-2008/amny--john-carucci.json",
+    "macbeth-2008/usatoday--elysa-gardner.json",
+    "machinal-2014/ny1--roma-torre.json",
+    "no-mans-land-2013/amny--unknown.json",
+    "oh-hello-on-broadway-2016/rollingstone--alan-sepinwall.json",
+    "oklahoma-2019/dctheatrescene--richard-seff.json",
+    "oslo-2017/live-theatre-uk--stephen-collins.json",
+    "pretty-woman-the-musical-2018/dctheatrescene--richard-seff.json",
+    "reasons-to-be-pretty-2009/usatoday--elysa-gardner.json",
+    "red-2010/chicagotribune--chris-jones.json",
+    "rent-1996/playbill--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1218,7 +1228,7 @@
     ]
   },
   "startTime": "2026-03-14T23:45:46.571Z",
-  "lastProcessed": "macbeth-2008/amny--john-carucci.json",
+  "lastProcessed": "rent-1996/playbill--unknown.json",
   "log": [
     {
       "t": "2026-03-14T23:47:47.877Z",
@@ -1564,6 +1574,17 @@
     },
     {
       "t": "2026-03-15T05:35:56.159Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-15T05:36:50.532Z",
+      "event": "bb-session",
+      "session": "cd7850e6",
+      "url": "https://www.amny.com/urbanite-1.812039/theater-review-godot-2-stars-no-man-s-lan"
+    },
+    {
+      "t": "2026-03-15T05:36:51.793Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     }
