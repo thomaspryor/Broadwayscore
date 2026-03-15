@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-15T16:01:33.096Z",
-  "processed": 137,
-  "failed": 860,
-  "successRate": "13.7%",
+  "updatedAt": "2026-03-15T16:03:44.643Z",
+  "processed": 146,
+  "failed": 861,
+  "successRate": "14.5%",
   "tierBreakdown": {
-    "playwright": 68,
-    "amp": 10,
+    "playwright": 70,
+    "amp": 18,
     "browserbase": 42,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 34,
-    "archive": 45
+    "archive": 48
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 11,
   "recentActivity": [
-    {
-      "t": "2026-03-15T15:53:20.747Z",
-      "event": "bb-session",
-      "session": "96957d75",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
-    },
-    {
-      "t": "2026-03-15T15:53:22.345Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-15T15:54:23.121Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-15T16:00:52.806Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-15T16:02:28.530Z",
+      "event": "bb-session",
+      "session": "c65fabf1",
+      "url": "https://www.nytimes.com/2025/10/16/theater/ragtime-review-henry-debessonet.html"
+    },
+    {
+      "t": "2026-03-15T16:02:30.326Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
