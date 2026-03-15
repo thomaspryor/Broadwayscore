@@ -39,7 +39,9 @@
     "prince-of-broadway-2017/musical-theatre-review--ron-cohen.json",
     "rodgers-hammersteins-cinderella-2013/theatermania--hayley-levitt.json",
     "significant-other-2017/nydailynews--joe-dziemianowicz.json",
-    "swept-away-2024/new-york-sun--elysa-gardner.json"
+    "swept-away-2024/new-york-sun--elysa-gardner.json",
+    "the-tragedy-of-coriolanus-off-broadway-2026/theatermania--pete-hempstead.json",
+    "uncle-vanya-2024/deadline--greg-evans.json"
   ],
   "failed": [
     "dracula-west-end-2025/british-theatre--unknown.json",
@@ -112,7 +114,15 @@
     "the-elephant-man-2014/observer--rex-reed.json",
     "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
     "the-little-mermaid-2008/nypost--clive-barnes.json",
-    "the-nap-2018/nypost--johnny-oleksinski.json"
+    "the-nap-2018/nypost--johnny-oleksinski.json",
+    "the-norman-conquests-2009/nydailynews--joe-dziemianowicz.json",
+    "the-norman-conquests-2009/observer--rex-reed.json",
+    "the-parisian-woman-2017/observer--rex-reed.json",
+    "the-piano-lesson-2022/timeout--adam-feldman.json",
+    "the-price-1999/timeout--adam-feldman.json",
+    "the-waverly-gallery-2018/nypost--johnny-oleksinski.json",
+    "the-wiz-2024/indiewire--sarah-shachat.json",
+    "wolf-hall-parts-one-and-two-2015/timeout--adam-feldman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -145,7 +155,8 @@
       "lobby-hero-2018/theatre-reviews-limited--david-roberts.json",
       "prince-of-broadway-2017/musical-theatre-review--ron-cohen.json",
       "rodgers-hammersteins-cinderella-2013/theatermania--hayley-levitt.json",
-      "swept-away-2024/new-york-sun--elysa-gardner.json"
+      "swept-away-2024/new-york-sun--elysa-gardner.json",
+      "the-tragedy-of-coriolanus-off-broadway-2026/theatermania--pete-hempstead.json"
     ],
     "amp": [
       "data/review-texts/dracula-west-end-2025/variety--unknown.json",
@@ -153,7 +164,9 @@
     ],
     "browserbase": [
       "data/review-texts/dracula-west-end-2025/nytimes--houman-barekat.json",
-      "dracula-west-end-2025/nytimes--houman-barekat.json"
+      "dracula-west-end-2025/nytimes--houman-barekat.json",
+      "data/review-texts/uncle-vanya-2024/deadline--greg-evans.json",
+      "uncle-vanya-2024/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -168,7 +181,8 @@
       "data/review-texts/orphans-2013/timeout-london--anya-ryan.json",
       "data/review-texts/passing-strange-2008/guardian--kate-wyver.json",
       "data/review-texts/richard-iii-2013/guardian--susannah-clapp.json",
-      "data/review-texts/the-assembled-parties-2013/guardian--emma-john.json"
+      "data/review-texts/the-assembled-parties-2013/guardian--emma-john.json",
+      "data/review-texts/the-price-1999/timeout--adam-feldman.json"
     ],
     "archive": [
       "dracula-west-end-2025/broadwayworld--unknown.json",
@@ -184,7 +198,7 @@
     ]
   },
   "startTime": "2026-03-14T23:45:46.571Z",
-  "lastProcessed": "the-nap-2018/nypost--johnny-oleksinski.json",
+  "lastProcessed": "wolf-hall-parts-one-and-two-2015/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-03-14T23:47:47.877Z",
@@ -240,6 +254,17 @@
       "t": "2026-03-15T01:56:11.083Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-15T02:02:20.042Z",
+      "event": "bb-session",
+      "session": "6811ce30",
+      "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/"
+    },
+    {
+      "t": "2026-03-15T02:02:21.479Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
