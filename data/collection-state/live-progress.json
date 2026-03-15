@@ -1,61 +1,129 @@
 {
-  "updatedAt": "2026-03-15T10:41:44.736Z",
-  "processed": 120,
-  "failed": 30,
-  "successRate": "80.0%",
+  "updatedAt": "2026-03-15T10:59:14.053Z",
+  "processed": 77,
+  "failed": 43,
+  "successRate": "64.2%",
   "tierBreakdown": {
-    "playwright": 91,
-    "amp": 2,
-    "browserbase": 12,
+    "playwright": 43,
+    "amp": 6,
+    "browserbase": 22,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 21,
-    "archive": 22
+    "archiveToday": 26,
+    "archive": 20
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 11,
   "recentActivity": [
     {
-      "t": "2026-03-15T09:48:36.450Z",
+      "t": "2026-03-15T10:32:38.178Z",
       "event": "bb-session",
-      "session": "78957d0d",
-      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+      "session": "bfcb33a2",
+      "url": "http://www.nytimes.com/2014/08/21/theater/the-book-of-mormon-on-broadway-retains"
     },
     {
-      "t": "2026-03-15T09:54:21.272Z",
-      "event": "bb-session",
-      "session": "9157d31c",
-      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+      "t": "2026-03-15T10:32:39.698Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-03-15T09:59:50.732Z",
+      "t": "2026-03-15T10:39:13.932Z",
       "event": "bb-session",
-      "session": "1a99f1e1",
-      "url": "https://deadline.com/2019/10/little-shop-of-horrors-review-jonathan-groff-tammy-"
+      "session": "9ee6de6f",
+      "url": "https://www.thestage.co.uk/reviews/2018/matilda-musical-review-curve-leicester/"
     },
     {
-      "t": "2026-03-15T10:00:38.823Z",
-      "event": "bb-session",
-      "session": "31bc879c",
-      "url": "https://www.nydailynews.com/2019/10/17/theater-review-little-shop-of-horrors/"
+      "t": "2026-03-15T10:39:15.430Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     },
     {
-      "t": "2026-03-15T10:01:04.907Z",
+      "t": "2026-03-15T10:40:25.761Z",
       "event": "bb-session",
-      "session": "a1dabc28",
-      "url": "https://nypost.com/2019/10/17/little-shop-of-horrors-review-jonathan-groff-tammy"
+      "session": "c73389cc",
+      "url": "http://www.nytimes.com/2014/11/21/theater/a-delicate-balance-revival-stars-john-"
     },
     {
-      "t": "2026-03-15T10:10:43.707Z",
-      "event": "bb-session",
-      "session": "b9f6eaf1",
-      "url": "https://observer.com/2025/09/review-masquerade-phantom-of-the-opera-experience-i"
+      "t": "2026-03-15T10:40:27.184Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-03-15T10:39:45.547Z",
+      "t": "2026-03-15T10:44:56.708Z",
       "event": "bb-session",
-      "session": "281d7fa8",
-      "url": "https://www.amny.com/news/review-marcel-on-the-train-finds-bravery/"
+      "session": "585ac18d",
+      "url": "https://www.hollywoodreporter.com/review/tom-hiddleston-betrayal-theater-review-"
+    },
+    {
+      "t": "2026-03-15T10:44:58.224Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-15T10:48:16.618Z",
+      "event": "bb-session",
+      "session": "ba1d7720",
+      "url": "http://www.hollywoodreporter.com/review/cats-theater-review-915947?utm_source=fe"
+    },
+    {
+      "t": "2026-03-15T10:48:18.226Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-15T10:48:41.330Z",
+      "event": "bb-session",
+      "session": "ff5b6b0f",
+      "url": "http://www.nytimes.com/2016/08/01/theater/cats-broadway-revival-review.html?part"
+    },
+    {
+      "t": "2026-03-15T10:48:42.837Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-15T10:49:59.751Z",
+      "event": "bb-session",
+      "session": "19a59de3",
+      "url": "https://www.hollywoodreporter.com/review/children-of-a-lesser-god-theater-110187"
+    },
+    {
+      "t": "2026-03-15T10:50:01.275Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-15T10:53:52.350Z",
+      "event": "bb-session",
+      "session": "f831cea4",
+      "url": "http://www.hollywoodreporter.com/review/noises-theater-review-855656?utm_source="
+    },
+    {
+      "t": "2026-03-15T10:53:53.613Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-15T10:54:34.961Z",
+      "event": "bb-session",
+      "session": "7fddd23b",
+      "url": "https://www.nytimes.com/2017/12/03/theater/review-once-on-this-island-revived-an"
+    },
+    {
+      "t": "2026-03-15T10:54:36.481Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-15T10:58:55.730Z",
+      "event": "bb-session",
+      "session": "ca6538c4",
+      "url": "http://www.hollywoodreporter.com/review/laura-benanti-zachary-levi-she-875850?ut"
+    },
+    {
+      "t": "2026-03-15T10:58:57.333Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
