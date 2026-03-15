@@ -1,101 +1,41 @@
 {
   "processed": [
-    "every-brilliant-thing-2026/nytimes--helen-shaw.json",
-    "every-brilliant-thing-2026/deadline--unknown.json",
-    "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
-    "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
-    "every-brilliant-thing-2026/thewrap--robert-hofler.json",
-    "every-brilliant-thing-2026/timeout--unknown.json",
-    "every-brilliant-thing-2026/theatrely--unknown.json",
-    "every-brilliant-thing-2026/amny--matt-windman.json",
-    "every-brilliant-thing-2026/chicagotribune--chris-jones.json",
-    "every-brilliant-thing-2026/culturesauce--unknown.json",
-    "every-brilliant-thing-2026/exeunt-magazine--lane-williamson.json",
-    "every-brilliant-thing-2026/nysr--frank-scheck.json",
-    "every-brilliant-thing-2026/nysr--steven-suskin.json",
-    "every-brilliant-thing-2026/one-minute-critic--unknown.json",
-    "every-brilliant-thing-2026/the-la-times--unknown.json",
-    "every-brilliant-thing-2026/theater-scene--darryl-reilly.json"
+    "zack-off-broadway-2026/nysr--unknown.json",
+    "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
+    "an-ark-off-broadway-2026/nytg--kyle-turner.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
+    "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+    "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+    "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+    "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nyt-theater--jonathan-mandell.json"
   ],
   "failed": [
-    "every-brilliant-thing-2026/talkinbroadway--unknown.json",
-    "every-brilliant-thing-2026/cititour--brian-scott-lipton.json",
-    "every-brilliant-thing-2026/independent--unknown.json"
+    "heathers-the-musical-off-broadway-2025/ew--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
-      "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
-      "every-brilliant-thing-2026/timeout--unknown.json",
-      "every-brilliant-thing-2026/theatrely--unknown.json",
-      "every-brilliant-thing-2026/culturesauce--unknown.json",
-      "every-brilliant-thing-2026/exeunt-magazine--lane-williamson.json",
-      "every-brilliant-thing-2026/nysr--frank-scheck.json",
-      "every-brilliant-thing-2026/nysr--steven-suskin.json",
-      "every-brilliant-thing-2026/one-minute-critic--unknown.json",
-      "every-brilliant-thing-2026/the-la-times--unknown.json",
-      "every-brilliant-thing-2026/theater-scene--darryl-reilly.json"
+      "zack-off-broadway-2026/nysr--unknown.json",
+      "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
+      "an-ark-off-broadway-2026/nytg--kyle-turner.json",
+      "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+      "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+      "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+      "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "data-off-broadway-2026/nyt-theater--jonathan-mandell.json"
     ],
-    "amp": [
-      "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
-      "every-brilliant-thing-2026/thewrap--robert-hofler.json"
-    ],
-    "browserbase": [
-      "data/review-texts/every-brilliant-thing-2026/nytimes--helen-shaw.json",
-      "every-brilliant-thing-2026/nytimes--helen-shaw.json",
-      "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
-      "every-brilliant-thing-2026/deadline--unknown.json",
-      "data/review-texts/every-brilliant-thing-2026/amny--matt-windman.json",
-      "every-brilliant-thing-2026/amny--matt-windman.json"
-    ],
+    "amp": [],
+    "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/every-brilliant-thing-2026/talkinbroadway--unknown.json",
-      "data/review-texts/every-brilliant-thing-2026/cititour--brian-scott-lipton.json",
-      "data/review-texts/every-brilliant-thing-2026/independent--unknown.json"
-    ],
+    "archiveToday": [],
     "archive": [
-      "every-brilliant-thing-2026/chicagotribune--chris-jones.json"
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json"
     ]
   },
-  "startTime": "2026-03-15T07:03:19.081Z",
-  "lastProcessed": "every-brilliant-thing-2026/theater-scene--darryl-reilly.json",
-  "log": [
-    {
-      "t": "2026-03-15T07:04:19.633Z",
-      "event": "bb-session",
-      "session": "92b7ccb7",
-      "url": "https://www.nytimes.com/2026/03/12/theater/every-brilliant-thing-review-daniel-r"
-    },
-    {
-      "t": "2026-03-15T07:04:20.979Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-15T07:04:36.668Z",
-      "event": "bb-session",
-      "session": "75cd2373",
-      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
-    },
-    {
-      "t": "2026-03-15T07:04:38.105Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
-    {
-      "t": "2026-03-15T07:06:56.187Z",
-      "event": "bb-session",
-      "session": "65c333a1",
-      "url": "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing"
-    },
-    {
-      "t": "2026-03-15T07:06:57.785Z",
-      "event": "bb-cookie-inject",
-      "domain": "amny.com"
-    }
-  ]
+  "startTime": "2026-03-15T08:26:02.471Z",
+  "lastProcessed": "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+  "log": []
 }
