@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-15T11:23:42.408Z",
+  "timestamp": "2026-03-15T11:55:42.924Z",
   "stats": {
-    "totalReviews": 31330,
-    "alreadyFlagged": 9600,
+    "totalReviews": 31335,
+    "alreadyFlagged": 9601,
     "dateGuardCatches": 125,
-    "directorMismatch": 1102,
+    "directorMismatch": 1103,
     "tvFilmSignals": 3490,
     "londonSignals": 1017,
     "offBroadwaySignals": 1088,
     "yearMismatch": 91,
-    "noPublishDate": 9304
+    "noPublishDate": 9305
   },
   "findings": [
     {
@@ -26472,6 +26472,19 @@
       "score": 62,
       "publishDate": "December 12th, 2025",
       "url": "https://www.thestage.co.uk/reviews/into-the-woods-review-bridge-theatre-london-stephen-sondheim-jordan-fein",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "timeout--unknown.json",
+      "publishDate": "2026-01-15",
+      "url": "https://www.timeout.com/london/news/review-into-the-woods-bridge-theatre-121125",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
