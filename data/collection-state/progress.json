@@ -23,7 +23,11 @@
     "this-is-my-favorite-song-off-broadway-2024/nytg--kyle-turner.json",
     "a-view-from-the-bridge-2015/guardian--lyn-gardner.json",
     "blackout-songs-off-broadway-2026/ew--thom-geier.json",
-    "burn-the-floor-2009/nydailynews--unknown.json"
+    "burn-the-floor-2009/nydailynews--unknown.json",
+    "eclipsed-2016/nydailynews--unknown.json",
+    "elf-2024/san-jose-mercury-news--unknown.json",
+    "faith-healer-2006/guardian--mark-lawson.json",
+    "grease-2007/thewrap--unknown.json"
   ],
   "failed": [
     "dracula-west-end-2025/british-theatre--unknown.json",
@@ -62,7 +66,13 @@
     "almost-famous-2022/timeout--adam-feldman.json",
     "american-buffalo-2022/observer--jesse-green.json",
     "appropriate-2023/timeout--adam-feldman.json",
-    "brief-encounter-2010/nydailynews--joe-neumaier.json"
+    "brief-encounter-2010/nydailynews--joe-neumaier.json",
+    "disgraced-2014/observer--rex-reed.json",
+    "eclipsed-2016/observer--rex-reed.json",
+    "farinelli-and-the-king-2017/observer--rex-reed.json",
+    "ghost-the-musical-2012/timeout--david-cote.json",
+    "grease-2007/nydailynews--unknown.json",
+    "hamlet-2009/nydailynews--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -87,7 +97,9 @@
       "oh-mary-west-end-2025/standard--nick.json",
       "this-is-my-favorite-song-off-broadway-2024/nytg--kyle-turner.json",
       "a-view-from-the-bridge-2015/guardian--lyn-gardner.json",
-      "blackout-songs-off-broadway-2026/ew--thom-geier.json"
+      "blackout-songs-off-broadway-2026/ew--thom-geier.json",
+      "elf-2024/san-jose-mercury-news--unknown.json",
+      "faith-healer-2006/guardian--mark-lawson.json"
     ],
     "amp": [
       "data/review-texts/dracula-west-end-2025/variety--unknown.json",
@@ -110,11 +122,13 @@
     ],
     "archive": [
       "dracula-west-end-2025/broadwayworld--unknown.json",
-      "burn-the-floor-2009/nydailynews--unknown.json"
+      "burn-the-floor-2009/nydailynews--unknown.json",
+      "eclipsed-2016/nydailynews--unknown.json",
+      "grease-2007/thewrap--unknown.json"
     ]
   },
   "startTime": "2026-03-14T23:45:46.571Z",
-  "lastProcessed": "burn-the-floor-2009/nydailynews--unknown.json",
+  "lastProcessed": "hamlet-2009/nydailynews--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-03-14T23:47:47.877Z",
@@ -159,6 +173,17 @@
       "t": "2026-03-15T00:01:36.215Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-15T01:56:09.521Z",
+      "event": "bb-session",
+      "session": "4fd58faf",
+      "url": "http://www.nypost.com/seven/08202007/entertainment/theater/tv_aided_grease_frigh"
+    },
+    {
+      "t": "2026-03-15T01:56:11.083Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }

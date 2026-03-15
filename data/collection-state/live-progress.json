@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-15T01:55:20.564Z",
-  "processed": 24,
-  "failed": 37,
-  "successRate": "39.3%",
+  "updatedAt": "2026-03-15T01:57:04.641Z",
+  "processed": 28,
+  "failed": 43,
+  "successRate": "39.4%",
   "tierBreakdown": {
-    "playwright": 21,
+    "playwright": 23,
     "amp": 2,
     "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 6,
-    "archive": 2
+    "archive": 4
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-03-14T23:47:47.877Z",
@@ -58,6 +58,17 @@
       "t": "2026-03-15T00:01:36.215Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-15T01:56:09.521Z",
+      "event": "bb-session",
+      "session": "4fd58faf",
+      "url": "http://www.nypost.com/seven/08202007/entertainment/theater/tv_aided_grease_frigh"
+    },
+    {
+      "t": "2026-03-15T01:56:11.083Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
