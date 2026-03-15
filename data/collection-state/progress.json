@@ -169,7 +169,14 @@
     "deep-azure-globe-west-end-2026/timeout-london--andrzej-lukowski.json",
     "every-brilliant-thing-2026/deadline--unknown.json",
     "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
-    "every-brilliant-thing-2026/thewrap--robert-hofler.json"
+    "every-brilliant-thing-2026/thewrap--robert-hofler.json",
+    "every-brilliant-thing-2026/timeout--unknown.json",
+    "hadestown-2019/ew--jessica-derschowitz.json",
+    "hadestown-2019/timeout--adam-feldman.json",
+    "hamilton-2015/wsj--terry-teachout.json",
+    "it-walks-around-the-house-at-night-west-end-2026/timeout-london--unknown.json",
+    "little-shop-of-horrors-off-broadway-2019/theatermania--zachary-stewart.json",
+    "marcel-on-the-train-off-broadway-2026/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
@@ -1038,7 +1045,10 @@
     "arcadia-west-end-2026/guardian--arifa-akbar.json",
     "book-of-mormon-2011/guardian--ben-brantley.json",
     "dracula-west-end-2025/guardian--arifa-akbar.json",
-    "every-brilliant-thing-2026/guardian--jesse-hassenger.json"
+    "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "los-soles-truncos-off-broadway-2025/broadwaynews--aa-cristi.json",
+    "los-soles-truncos-off-broadway-2025/nypost--chloe-rabinowitz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1124,7 +1134,11 @@
       "death-becomes-her-2024/nydailynews--chris-jones.json",
       "death-becomes-her-2024/timeout--adam-feldman.json",
       "deep-azure-globe-west-end-2026/timeout-london--andrzej-lukowski.json",
-      "every-brilliant-thing-2026/theatermania--kenji-fujishima.json"
+      "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
+      "every-brilliant-thing-2026/timeout--unknown.json",
+      "hadestown-2019/ew--jessica-derschowitz.json",
+      "hadestown-2019/timeout--adam-feldman.json",
+      "it-walks-around-the-house-at-night-west-end-2026/timeout-london--unknown.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -1297,11 +1311,14 @@
       "bughouse-off-broadway-2026/theatermania--unknown.json",
       "cats-the-jellicle-ball-2026/theatermania--zachary-stewart.json",
       "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
-      "death-becomes-her-2024/theatermania--jesse-green.json"
+      "death-becomes-her-2024/theatermania--jesse-green.json",
+      "hamilton-2015/wsj--terry-teachout.json",
+      "little-shop-of-horrors-off-broadway-2019/theatermania--zachary-stewart.json",
+      "marcel-on-the-train-off-broadway-2026/theatermania--zachary-stewart.json"
     ]
   },
   "startTime": "2026-03-15T09:45:15.761Z",
-  "lastProcessed": "every-brilliant-thing-2026/thewrap--robert-hofler.json",
+  "lastProcessed": "marcel-on-the-train-off-broadway-2026/theatermania--zachary-stewart.json",
   "log": [
     {
       "t": "2026-03-15T09:48:36.450Z",
@@ -1646,6 +1663,28 @@
       "t": "2026-03-15T16:10:19.779Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-15T16:12:12.391Z",
+      "event": "bb-session",
+      "session": "010e46c8",
+      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
+    },
+    {
+      "t": "2026-03-15T16:12:13.962Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-15T16:12:33.558Z",
+      "event": "bb-session",
+      "session": "6677a700",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-15T16:12:35.291Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

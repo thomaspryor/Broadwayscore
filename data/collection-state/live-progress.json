@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-15T16:11:38.665Z",
-  "processed": 170,
-  "failed": 867,
-  "successRate": "16.4%",
+  "updatedAt": "2026-03-15T16:19:47.504Z",
+  "processed": 177,
+  "failed": 870,
+  "successRate": "16.9%",
   "tierBreakdown": {
-    "playwright": 82,
+    "playwright": 86,
     "amp": 22,
     "browserbase": 44,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 39,
-    "archive": 57
+    "archive": 60
   },
-  "browserbaseSessions": 12,
+  "browserbaseSessions": 14,
   "recentActivity": [
-    {
-      "t": "2026-03-15T15:54:54.387Z",
-      "event": "bb-session",
-      "session": "5ecb8beb",
-      "url": "https://www.nytimes.com/2026/03/05/theater/chadwick-boseman-deep-azure.html"
-    },
-    {
-      "t": "2026-03-15T15:54:56.044Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-15T15:55:33.035Z",
-      "event": "bb-session",
-      "session": "5f0c54be",
-      "url": "https://www.nytimes.com/2026/02/18/theater/dracula-cynthia-erivo.html"
-    },
-    {
-      "t": "2026-03-15T15:55:34.563Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-15T15:57:02.411Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-15T16:10:19.779Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-15T16:12:12.391Z",
+      "event": "bb-session",
+      "session": "010e46c8",
+      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
+    },
+    {
+      "t": "2026-03-15T16:12:13.962Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-15T16:12:33.558Z",
+      "event": "bb-session",
+      "session": "6677a700",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-15T16:12:35.291Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
