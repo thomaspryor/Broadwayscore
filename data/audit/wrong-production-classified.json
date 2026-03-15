@@ -1,33 +1,16 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-15T02:41:56.995Z",
+    "generatedAt": "2026-03-15T02:50:20.602Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 83,
-    "classified": 1,
+    "total": 82,
+    "classified": 0,
     "wrongProduction": 0,
-    "correctProduction": 1,
+    "correctProduction": 0,
     "uncertain": 0,
     "errors": 0,
     "wrongHighConfidence": 0,
     "wrongMediumConfidence": 0
   },
-  "results": [
-    {
-      "showId": "les-miserables-1987",
-      "showTitle": "Les Miserables",
-      "showYear": 1987,
-      "file": "amny--unknown.json",
-      "outlet": "AMNY",
-      "criticName": "MATT WINDMAN",
-      "publishDate": "2014-03-23",
-      "originalSignals": [
-        "publishDate 2014 is 27 years after original opening 1987"
-      ],
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review discusses a revival of Les Miserables, mentioning that the original Broadway production played from 1987-2003 and a 2006 revival. It also mentions cast members in the current production, indicating it is about the 1987 production's revival."
-    }
-  ]
+  "results": []
 }
