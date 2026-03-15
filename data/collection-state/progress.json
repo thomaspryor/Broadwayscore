@@ -76,7 +76,12 @@
     "hello-dolly-1995/nytimes--jesse-green.json",
     "indecent-2017/act-three-the-reviews--doug-marino.json",
     "noises-off-2001/hollywood-reporter--david-rooney.json",
-    "she-loves-me-1994/hollywood-reporter--david-rooney.json"
+    "she-loves-me-1994/hollywood-reporter--david-rooney.json",
+    "she-loves-me-1994/nytimes--ben-brantley.json",
+    "skylight-1996/nytimes--ben-brantley.json",
+    "the-crucible-1991/vulture--jesse-green.json",
+    "the-father-1981/hollywood-reporter--david-rooney.json",
+    "a-delicate-balance-1996/timeout--david-cote.json"
   ],
   "failed": [
     "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
@@ -121,7 +126,12 @@
     "on-a-clear-day-you-can-see-forever-2011/vulture--jesse-green.json",
     "once-on-this-island-2002/nytimes--jesse-green.json",
     "once-upon-a-mattress-1996/vulture--christopher-bonanos.json",
-    "rodgers-hammersteins-cinderella-2013/vulture--jesse-green.json"
+    "rodgers-hammersteins-cinderella-2013/vulture--jesse-green.json",
+    "the-collaboration-2022/hollywood-reporter--anita-gates.json",
+    "the-shark-is-broken-2023/hollywood-reporter--angie-han.json",
+    "the-whos-tommy-2024/hollywood-reporter--angie-han.json",
+    "uncle-vanya-2024/vulture--helen-shaw.json",
+    "waitress-2021/vulture--helen-shaw.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -168,7 +178,8 @@
       "garry-starr-classic-penguins-garrick-west-end-2026/west-end-best-friend--livvy-perrett.json",
       "into-the-woods-west-end-2025/london-theatre--marianka-swain.json",
       "my-neighbour-totoro-west-end-2025/independent--annabel-nugent.json",
-      "indecent-2017/act-three-the-reviews--doug-marino.json"
+      "indecent-2017/act-three-the-reviews--doug-marino.json",
+      "a-delicate-balance-1996/timeout--david-cote.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -200,7 +211,9 @@
       "data/review-texts/noises-off-2001/hollywood-reporter--david-rooney.json",
       "noises-off-2001/hollywood-reporter--david-rooney.json",
       "data/review-texts/she-loves-me-1994/hollywood-reporter--david-rooney.json",
-      "she-loves-me-1994/hollywood-reporter--david-rooney.json"
+      "she-loves-me-1994/hollywood-reporter--david-rooney.json",
+      "data/review-texts/the-father-1981/hollywood-reporter--david-rooney.json",
+      "the-father-1981/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -231,7 +244,8 @@
       "data/review-texts/cabaret-1987/vulture--jesse-green.json",
       "data/review-texts/cats-1982/nytimes--charles-isherwood.json",
       "data/review-texts/elf-2024/vulture--jackson-mchenry.json",
-      "data/review-texts/once-on-this-island-2002/nytimes--jesse-green.json"
+      "data/review-texts/once-on-this-island-2002/nytimes--jesse-green.json",
+      "data/review-texts/once-upon-a-mattress-1996/vulture--christopher-bonanos.json"
     ],
     "archive": [
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
@@ -253,11 +267,14 @@
       "masquerade-off-broadway-2025/theatermania--meg-masseron.json",
       "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/theatermania--rachel-graham.json",
       "perfect-crime-off-broadway-1987/nydailynews--editorial-staff.json",
-      "hello-dolly-1995/nytimes--jesse-green.json"
+      "hello-dolly-1995/nytimes--jesse-green.json",
+      "she-loves-me-1994/nytimes--ben-brantley.json",
+      "skylight-1996/nytimes--ben-brantley.json",
+      "the-crucible-1991/vulture--jesse-green.json"
     ]
   },
   "startTime": "2026-03-15T09:45:15.761Z",
-  "lastProcessed": "she-loves-me-1994/hollywood-reporter--david-rooney.json",
+  "lastProcessed": "a-delicate-balance-1996/timeout--david-cote.json",
   "log": [
     {
       "t": "2026-03-15T09:48:36.450Z",
@@ -413,6 +430,17 @@
     },
     {
       "t": "2026-03-15T10:58:57.333Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-15T10:59:35.768Z",
+      "event": "bb-session",
+      "session": "1b99abda",
+      "url": "http://www.hollywoodreporter.com/review/frank-langella-father-theater-review-883"
+    },
+    {
+      "t": "2026-03-15T10:59:37.068Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }

@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-15T10:59:14.053Z",
-  "processed": 77,
-  "failed": 43,
-  "successRate": "64.2%",
+  "updatedAt": "2026-03-15T11:00:10.556Z",
+  "processed": 82,
+  "failed": 48,
+  "successRate": "63.1%",
   "tierBreakdown": {
-    "playwright": 43,
+    "playwright": 44,
     "amp": 6,
-    "browserbase": 22,
+    "browserbase": 24,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 26,
-    "archive": 20
+    "archiveToday": 27,
+    "archive": 23
   },
-  "browserbaseSessions": 11,
+  "browserbaseSessions": 12,
   "recentActivity": [
-    {
-      "t": "2026-03-15T10:32:38.178Z",
-      "event": "bb-session",
-      "session": "bfcb33a2",
-      "url": "http://www.nytimes.com/2014/08/21/theater/the-book-of-mormon-on-broadway-retains"
-    },
-    {
-      "t": "2026-03-15T10:32:39.698Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-15T10:39:13.932Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-15T10:58:57.333Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-15T10:59:35.768Z",
+      "event": "bb-session",
+      "session": "1b99abda",
+      "url": "http://www.hollywoodreporter.com/review/frank-langella-father-theater-review-883"
+    },
+    {
+      "t": "2026-03-15T10:59:37.068Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
