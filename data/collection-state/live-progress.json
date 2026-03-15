@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-03-15T02:05:47.486Z",
+  "updatedAt": "2026-03-15T02:19:17.352Z",
   "processed": 44,
-  "failed": 87,
-  "successRate": "33.6%",
+  "failed": 97,
+  "successRate": "31.2%",
   "tierBreakdown": {
     "playwright": 31,
     "amp": 2,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 13,
+    "archiveToday": 17,
     "archive": 10
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-03-14T23:47:47.877Z",
@@ -108,6 +108,17 @@
       "event": "bb-session",
       "session": "43c811ef",
       "url": "http://www.sdamustang.com/arts-entertainment/2012/10/02/allegiance-2/"
+    },
+    {
+      "t": "2026-03-15T02:12:29.784Z",
+      "event": "bb-session",
+      "session": "094c2128",
+      "url": "http://www.amny.com/urbanite-1.812039/theater-review-ann-2-5-stars-1.4772260"
+    },
+    {
+      "t": "2026-03-15T02:12:31.218Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
