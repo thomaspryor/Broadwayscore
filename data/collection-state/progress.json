@@ -59,7 +59,9 @@
     "orphans-2013/west-end-best-friend--brian-penn.json",
     "present-laughter-2010/amny--matt-windman.json",
     "rock-n-roll-2007/west-end-best-friend--erifyli-gigante.json",
-    "rodgers-hammersteins-cinderella-2013/tap-into--unknown.json"
+    "rodgers-hammersteins-cinderella-2013/tap-into--unknown.json",
+    "sunday-in-the-park-with-george-2008/amny--unknown.json",
+    "the-assembled-parties-2013/london-theatre--matt-wolf.json"
   ],
   "failed": [
     "dracula-west-end-2025/british-theatre--unknown.json",
@@ -272,7 +274,15 @@
     "sea-wall-a-life-2019/usatoday--charles-isherwood.json",
     "shrek-the-musical-2008/usatoday--elysa-gardner.json",
     "spongebob-squarepants-2017/amny--matt-windman.json",
-    "stereophonic-2024/thestage--lane-williamson.json"
+    "stereophonic-2024/thestage--lane-williamson.json",
+    "suffs-2024/usatoday--melissa-ruggieri.json",
+    "tammy-faye-2024/stageandcinema--mike-mineo.json",
+    "the-assembled-parties-2013/thestage--sam-marlowe.json",
+    "the-collaboration-2022/times-uk--jesse-green.json",
+    "the-glass-menagerie-2013/chicagotribune--unknown.json",
+    "the-hills-of-california-2024/times-uk--ann-treneman.json",
+    "the-inheritance-2019/usatoday--charles-isherwood.json",
+    "the-last-five-years-2025/ap--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -317,7 +327,8 @@
       "orphans-2013/theatre-weekly--nick-wayne.json",
       "orphans-2013/west-end-best-friend--brian-penn.json",
       "rock-n-roll-2007/west-end-best-friend--erifyli-gigante.json",
-      "rodgers-hammersteins-cinderella-2013/tap-into--unknown.json"
+      "rodgers-hammersteins-cinderella-2013/tap-into--unknown.json",
+      "the-assembled-parties-2013/london-theatre--matt-wolf.json"
     ],
     "amp": [
       "data/review-texts/dracula-west-end-2025/variety--unknown.json",
@@ -339,7 +350,9 @@
       "data/review-texts/les-miserables-2006/amny--unknown.json",
       "les-miserables-2006/amny--unknown.json",
       "data/review-texts/present-laughter-2010/amny--matt-windman.json",
-      "present-laughter-2010/amny--matt-windman.json"
+      "present-laughter-2010/amny--matt-windman.json",
+      "data/review-texts/sunday-in-the-park-with-george-2008/amny--unknown.json",
+      "sunday-in-the-park-with-george-2008/amny--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -372,7 +385,9 @@
       "data/review-texts/rodgers-hammersteins-cinderella-2013/scene--philip-dorian.json",
       "data/review-texts/rock-n-roll-2007/thestage--dave-fargnoli.json",
       "data/review-texts/spongebob-squarepants-2017/amny--matt-windman.json",
-      "data/review-texts/stereophonic-2024/thestage--lane-williamson.json"
+      "data/review-texts/stereophonic-2024/thestage--lane-williamson.json",
+      "data/review-texts/the-assembled-parties-2013/thestage--sam-marlowe.json",
+      "data/review-texts/the-last-five-years-2025/ap--unknown.json"
     ],
     "archive": [
       "dracula-west-end-2025/broadwayworld--unknown.json",
@@ -390,7 +405,7 @@
     ]
   },
   "startTime": "2026-03-14T23:45:46.571Z",
-  "lastProcessed": "stereophonic-2024/thestage--lane-williamson.json",
+  "lastProcessed": "the-last-five-years-2025/ap--unknown.json",
   "log": [
     {
       "t": "2026-03-14T23:47:47.877Z",
@@ -604,6 +619,28 @@
     },
     {
       "t": "2026-03-15T02:54:37.441Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-15T02:55:01.818Z",
+      "event": "bb-session",
+      "session": "eb28c5f0",
+      "url": "http://www.amny.com/entertainment/sunday-in-the-park-with-george-review-jake-gyl"
+    },
+    {
+      "t": "2026-03-15T02:55:03.384Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-15T02:56:41.799Z",
+      "event": "bb-session",
+      "session": "c0b7a214",
+      "url": "https://www.thestage.co.uk/reviews/the-assembled-parties-review-hampstead-theatr"
+    },
+    {
+      "t": "2026-03-15T02:56:43.428Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
