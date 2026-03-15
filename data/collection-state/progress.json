@@ -47,7 +47,11 @@
     "colin-quinn-long-story-short-2010/amny--unknown.json",
     "come-from-away-2017/huffpost--steven-suskin.json",
     "driving-miss-daisy-2010/great-performances-online--unknown.json",
-    "jersey-boys-2005/here--unknown.json"
+    "jersey-boys-2005/here--unknown.json",
+    "kinky-boots-2013/broadwayworld--roy-berko.json",
+    "les-miserables-1987/amny--unknown.json",
+    "les-miserables-2006/amny--unknown.json",
+    "motown-the-musical-2013/chicagotribune--unknown.json"
   ],
   "failed": [
     "dracula-west-end-2025/british-theatre--unknown.json",
@@ -162,7 +166,13 @@
     "jesus-christ-superstar-2012/stageandcinema--jonas-schwartz.json",
     "king-charles-iii-2015/express-uk--neil-norman.json",
     "king-charles-iii-2015/london-theatre--mark-shenton.json",
-    "king-kong-2018/canberra-times--unknown.json"
+    "king-kong-2018/canberra-times--unknown.json",
+    "kiss-me-kate-2019/usatoday--david-rooney.json",
+    "kiss-me-kate-2019/usatoday--elysa-gardner.json",
+    "macbeth-2008/amny--john-carucci.json",
+    "macbeth-2008/usatoday--elysa-gardner.json",
+    "no-mans-land-2013/amny--unknown.json",
+    "oh-hello-on-broadway-2016/rollingstone--alan-sepinwall.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -199,7 +209,8 @@
       "the-tragedy-of-coriolanus-off-broadway-2026/theatermania--pete-hempstead.json",
       "amazing-grace-2015/chicago-critic--tom-williams.json",
       "driving-miss-daisy-2010/great-performances-online--unknown.json",
-      "jersey-boys-2005/here--unknown.json"
+      "jersey-boys-2005/here--unknown.json",
+      "kinky-boots-2013/broadwayworld--roy-berko.json"
     ],
     "amp": [
       "data/review-texts/dracula-west-end-2025/variety--unknown.json",
@@ -215,7 +226,11 @@
       "data/review-texts/allegiance-2015/sdamustang--andrew-walker.json",
       "allegiance-2015/sdamustang--andrew-walker.json",
       "data/review-texts/colin-quinn-long-story-short-2010/amny--unknown.json",
-      "colin-quinn-long-story-short-2010/amny--unknown.json"
+      "colin-quinn-long-story-short-2010/amny--unknown.json",
+      "data/review-texts/les-miserables-1987/amny--unknown.json",
+      "les-miserables-1987/amny--unknown.json",
+      "data/review-texts/les-miserables-2006/amny--unknown.json",
+      "les-miserables-2006/amny--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -242,7 +257,8 @@
       "data/review-texts/falsettos-2016/entries-are-now-being-accepted-online--unknown.json",
       "data/review-texts/going-bacharach-the-songs-of-an-icon-off-broadway-2026/goingbacharachcom--unknown.json",
       "data/review-texts/hand-to-god-2015/broadwayworld--roy-berko.json",
-      "data/review-texts/king-charles-iii-2015/london-theatre--mark-shenton.json"
+      "data/review-texts/king-charles-iii-2015/london-theatre--mark-shenton.json",
+      "data/review-texts/king-kong-2018/canberra-times--unknown.json"
     ],
     "archive": [
       "dracula-west-end-2025/broadwayworld--unknown.json",
@@ -255,11 +271,12 @@
       "miss-saigon-2017/nydailynews--joe-dziemianowicz.json",
       "present-laughter-2010/nydailynews--joe-dziemianowicz.json",
       "significant-other-2017/nydailynews--joe-dziemianowicz.json",
-      "come-from-away-2017/huffpost--steven-suskin.json"
+      "come-from-away-2017/huffpost--steven-suskin.json",
+      "motown-the-musical-2013/chicagotribune--unknown.json"
     ]
   },
   "startTime": "2026-03-14T23:45:46.571Z",
-  "lastProcessed": "king-kong-2018/canberra-times--unknown.json",
+  "lastProcessed": "oh-hello-on-broadway-2016/rollingstone--alan-sepinwall.json",
   "log": [
     {
       "t": "2026-03-14T23:47:47.877Z",
@@ -387,6 +404,50 @@
       "t": "2026-03-15T02:19:47.907Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-15T02:32:20.280Z",
+      "event": "bb-session",
+      "session": "086d95f7",
+      "url": "http://www.amny.com/entertainment/theater-review-les-miserables-2-stars-1.747913"
+    },
+    {
+      "t": "2026-03-15T02:32:21.672Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-15T02:32:34.822Z",
+      "event": "bb-session",
+      "session": "04d19f78",
+      "url": "http://www.amny.com/entertainment/theater-review-les-miserables-2-stars-1.747913"
+    },
+    {
+      "t": "2026-03-15T02:32:36.290Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-15T02:32:48.079Z",
+      "event": "bb-session",
+      "session": "1d70b954",
+      "url": "http://www.amny.com/urbanite-1.812039/theater-review-macbeth-1-star-1.6476856"
+    },
+    {
+      "t": "2026-03-15T02:32:49.589Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-15T02:33:33.539Z",
+      "event": "bb-session",
+      "session": "c02808e0",
+      "url": "http://www.amny.com/urbanite-1.812039/theater-review-godot-2-stars-no-man-s-land"
+    },
+    {
+      "t": "2026-03-15T02:33:34.948Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
