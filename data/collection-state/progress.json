@@ -51,7 +51,13 @@
     "kinky-boots-2013/broadwayworld--roy-berko.json",
     "les-miserables-1987/amny--unknown.json",
     "les-miserables-2006/amny--unknown.json",
-    "motown-the-musical-2013/chicagotribune--unknown.json"
+    "motown-the-musical-2013/chicagotribune--unknown.json",
+    "old-times-2015/theater-pizzazz--brian-scott-lipton.json",
+    "oleanna-2009/london-theatre--matt-wolf.json",
+    "orphans-2013/artsdesk--helen-hawkins.json",
+    "orphans-2013/theatre-weekly--nick-wayne.json",
+    "orphans-2013/west-end-best-friend--brian-penn.json",
+    "present-laughter-2010/amny--matt-windman.json"
   ],
   "failed": [
     "dracula-west-end-2025/british-theatre--unknown.json",
@@ -172,7 +178,11 @@
     "macbeth-2008/amny--john-carucci.json",
     "macbeth-2008/usatoday--elysa-gardner.json",
     "no-mans-land-2013/amny--unknown.json",
-    "oh-hello-on-broadway-2016/rollingstone--alan-sepinwall.json"
+    "oh-hello-on-broadway-2016/rollingstone--alan-sepinwall.json",
+    "oklahoma-2019/dctheatrescene--richard-seff.json",
+    "oslo-2017/live-theatre-uk--stephen-collins.json",
+    "pippin-2013/ap--associated-press.json",
+    "pretty-woman-the-musical-2018/dctheatrescene--richard-seff.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -210,7 +220,12 @@
       "amazing-grace-2015/chicago-critic--tom-williams.json",
       "driving-miss-daisy-2010/great-performances-online--unknown.json",
       "jersey-boys-2005/here--unknown.json",
-      "kinky-boots-2013/broadwayworld--roy-berko.json"
+      "kinky-boots-2013/broadwayworld--roy-berko.json",
+      "old-times-2015/theater-pizzazz--brian-scott-lipton.json",
+      "oleanna-2009/london-theatre--matt-wolf.json",
+      "orphans-2013/artsdesk--helen-hawkins.json",
+      "orphans-2013/theatre-weekly--nick-wayne.json",
+      "orphans-2013/west-end-best-friend--brian-penn.json"
     ],
     "amp": [
       "data/review-texts/dracula-west-end-2025/variety--unknown.json",
@@ -230,7 +245,9 @@
       "data/review-texts/les-miserables-1987/amny--unknown.json",
       "les-miserables-1987/amny--unknown.json",
       "data/review-texts/les-miserables-2006/amny--unknown.json",
-      "les-miserables-2006/amny--unknown.json"
+      "les-miserables-2006/amny--unknown.json",
+      "data/review-texts/present-laughter-2010/amny--matt-windman.json",
+      "present-laughter-2010/amny--matt-windman.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -276,7 +293,7 @@
     ]
   },
   "startTime": "2026-03-14T23:45:46.571Z",
-  "lastProcessed": "oh-hello-on-broadway-2016/rollingstone--alan-sepinwall.json",
+  "lastProcessed": "pretty-woman-the-musical-2018/dctheatrescene--richard-seff.json",
   "log": [
     {
       "t": "2026-03-14T23:47:47.877Z",
@@ -446,6 +463,17 @@
     },
     {
       "t": "2026-03-15T02:33:34.948Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-15T02:36:05.220Z",
+      "event": "bb-session",
+      "session": "5331c93d",
+      "url": "http://www.amny.com/entertainment/present-laughter-review-kevin-kline-shines-bri"
+    },
+    {
+      "t": "2026-03-15T02:36:06.614Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     }
