@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-15T05:13:52.863Z",
+  "timestamp": "2026-03-15T05:33:50.330Z",
   "stats": {
     "totalReviews": 31315,
-    "alreadyFlagged": 9526,
+    "alreadyFlagged": 9610,
     "dateGuardCatches": 125,
-    "directorMismatch": 1129,
-    "tvFilmSignals": 3496,
-    "londonSignals": 1019,
-    "offBroadwaySignals": 1089,
-    "yearMismatch": 97,
-    "noPublishDate": 9380
+    "directorMismatch": 1096,
+    "tvFilmSignals": 3490,
+    "londonSignals": 1016,
+    "offBroadwaySignals": 1088,
+    "yearMismatch": 91,
+    "noPublishDate": 9299
   },
   "findings": [
     {
@@ -2250,25 +2250,6 @@
     },
     {
       "showId": "a-view-from-the-bridge-2010",
-      "file": "amny--unknown.json",
-      "score": 61,
-      "publishDate": null,
-      "url": "http://www.amny.com/entertainment/a-view-from-the-bridge-review-mark-stong-in-ivo-van-hove-s-divisive-revival-1.11117578",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
-        }
-      ]
-    },
-    {
-      "showId": "a-view-from-the-bridge-2010",
       "file": "as-her-world-turns--erica-meyer.json",
       "score": 80,
       "publishDate": "January 7th, 2016",
@@ -2278,25 +2259,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
-        }
-      ]
-    },
-    {
-      "showId": "a-view-from-the-bridge-2010",
-      "file": "chicagotribune--unknown.json",
-      "score": 86,
-      "publishDate": null,
-      "url": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-view-bridge-broadway-review-ent-1112-20151112-column.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -2316,20 +2278,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "a-view-from-the-bridge-2010",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "http://www.nydailynews.com/entertainment/theater-arts/arthur-miller-view-bridge-revival-hit-article-1.2432715",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
         }
       ]
     },
@@ -4021,7 +3969,7 @@
       "showId": "all-the-way-2014",
       "file": "ap--unknown.json",
       "score": 83,
-      "publishDate": null,
+      "publishDate": "March 7, 2014",
       "url": "https://abcnews.go.com/Entertainment/wireStory/review-bryan-cranston-superb-22811530%20%20",
       "findings": [
         {
@@ -4612,20 +4560,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "american-buffalo-2008",
-      "file": "vulture--helen-shaw.json",
-      "score": 76,
-      "publishDate": "April 14, 2022",
-      "url": "https://www.vulture.com/2022/04/american-buffalo-laurence-fishburne-theater-review.html?utm_source=tw&utm_medium=s1&utm_campaign=vulture",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"neil pepe\" from american-buffalo-2022"
         }
       ]
     },
@@ -5362,20 +5296,6 @@
       "score": 35,
       "publishDate": null,
       "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from an-enemy-of-the-people-2024"
-        }
-      ]
-    },
-    {
-      "showId": "an-enemy-of-the-people-2012",
-      "file": "timeout--adam-feldman.json",
-      "score": 72,
-      "publishDate": null,
-      "url": "https://www.timeout.com/newyork/theater/an-enemy-of-the-people-broadway-review-jeremy-strong-michael-imperioli",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -7693,20 +7613,6 @@
     },
     {
       "showId": "betrayal-2019",
-      "file": "amny--unknown.json",
-      "score": 60,
-      "publishDate": null,
-      "url": "http://www.amny.com/urbanite-1.812039/theater-review-betrayal-2-5-stars-1.6328629",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"mike nichols\" from betrayal-2013"
-        }
-      ]
-    },
-    {
-      "showId": "betrayal-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 85,
       "publishDate": "September 6th, 2019",
@@ -7716,25 +7622,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "betrayal-2019",
-      "file": "chicagotribune--unknown.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "http://www.chicagotribune.com/entertainment/theater/sc-betrayal-daniel-craig-broadway-review,0,6501114.column",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"mike nichols\" from betrayal-2013"
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2013 (2x) more than 2019 (0x). 2013 matches production: betrayal-2013"
         }
       ]
     },
@@ -11158,44 +11045,6 @@
     },
     {
       "showId": "cats-the-jellicle-ball-off-broadway-2024",
-      "file": "theatermania--zachary-stewart.json",
-      "score": 92,
-      "publishDate": "2024-06-21",
-      "url": "https://www.theatermania.com/news/review-cats-the-jellicle-ball-is-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1743514/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
-        }
-      ]
-    },
-    {
-      "showId": "cats-the-jellicle-ball-off-broadway-2024",
-      "file": "thewrap--jason-clark.json",
-      "score": 49,
-      "publishDate": null,
-      "url": "http://www.thewrap.com/cats-broadway-review-andrew-lloyd-webbers-hit-is-back-for-a-10th-life/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trevor nunn\" from cats-2016"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "cats-the-jellicle-ball-off-broadway-2024",
       "file": "timeout--adam-feldman.json",
       "publishDate": "November 16, 2025",
       "url": "https://www.timeout.com/newyork/theater/cats-the-jellicle-ball-musical-review-andrew-lloyd-webber-ballroom",
@@ -12491,20 +12340,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
-      "showId": "company-2006",
-      "file": "chicagotribune--chris-jones.json",
-      "score": 76,
-      "publishDate": null,
-      "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-company-review-20211210-nlzpcv7br5bgtjbmp4n7jy732y-story.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marianne elliott\" from company-2021"
         }
       ]
     },
@@ -14874,7 +14709,7 @@
       "showId": "dracula-west-end-2025",
       "file": "timeout--andrzej-lukowski.json",
       "score": 64,
-      "publishDate": null,
+      "publishDate": "2026-02-17",
       "url": "https://www.timeout.com/london/news/review-dracula-starring-cynthia-erivo-at-the-noel-coward-theatre-021726",
       "findings": [
         {
@@ -19820,20 +19655,6 @@
     },
     {
       "showId": "glengarry-glen-ross-2012",
-      "file": "timeout--unknown.json",
-      "score": 71,
-      "publishDate": null,
-      "url": "https://www.timeout.com/newyork/theater/glengarry-glen-ross-broadway-review-kieran-culkin-bob-odenkirk-bill-burr-david-mamet",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
-        }
-      ]
-    },
-    {
-      "showId": "glengarry-glen-ross-2012",
       "file": "times-uk--harriet-alexander.json",
       "score": 82,
       "publishDate": null,
@@ -23896,7 +23717,7 @@
       "showId": "hercules-west-end-2025",
       "file": "timeout--andrzej-lukowski.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2026-01-15",
       "url": "https://www.timeout.com/london/news/review-disneys-hercules-at-theatre-royal-drury-lane-062425",
       "findings": [
         {
@@ -29629,25 +29450,6 @@
     },
     {
       "showId": "les-liaisons-dangereuses-2008",
-      "file": "thewrap--unknown.json",
-      "score": 44,
-      "publishDate": null,
-      "url": "http://www.thewrap.com/les-liaisons-dangereuses-broadway-review-liev-schreiber-janet-mcteer-bring-old-blighty-to-france/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"josie rourke\" from les-liaisons-dangereuses-2016"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
-        }
-      ]
-    },
-    {
-      "showId": "les-liaisons-dangereuses-2008",
       "file": "variety--matt-trueman.json",
       "score": 64,
       "publishDate": "December 21st, 2015",
@@ -29969,20 +29771,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2006 (2x) more than 2014 (0x). 2006 matches production: les-miserables-2006"
-        }
-      ]
-    },
-    {
-      "showId": "les-miserables-2014",
-      "file": "nydailynews--unknown.json",
-      "score": 67,
-      "publishDate": null,
-      "url": "http://www.nydailynews.com/entertainment/music-arts/les-miserables-theater-review-article-1.1729631",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -31937,25 +31725,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jack o'brien\" from macbeth-2013"
-        }
-      ]
-    },
-    {
-      "showId": "macbeth-2022",
-      "file": "chicagotribune--unknown.json",
-      "score": 63,
-      "publishDate": null,
-      "url": "http://www.chicagotribune.com/entertainment/theater/sc-ent-1121-macbeth-broadway-review-20131121,0,3454739.column",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jack o'brien\" from macbeth-2013"
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2013 (2x) more than 2022 (0x). 2013 matches production: macbeth-2013"
         }
       ]
     },
@@ -35260,20 +35029,6 @@
     },
     {
       "showId": "motown-the-musical-2016",
-      "file": "backstage--unknown.json",
-      "score": 72,
-      "publishDate": null,
-      "url": "http://www.backstage.com/review/ny-theater/broadway/motown-the-musical-bathes-berry-gordy-diana-ross/",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2013 (2x) more than 2016 (0x). 2013 matches production: motown-the-musical-2013"
-        }
-      ]
-    },
-    {
-      "showId": "motown-the-musical-2016",
       "file": "front-row-center--donna-herman.json",
       "score": 82,
       "publishDate": "2016-07-22T11:03:13",
@@ -38222,20 +37977,6 @@
     },
     {
       "showId": "oh-mary-off-broadway-2024",
-      "file": "chicagotribune--chris-jones.json",
-      "score": 87,
-      "publishDate": null,
-      "url": "https://www.chicagotribune.com/2024/07/11/review-oh-mary-on-broadway-is-about-an-unhinged-hilarious-mary-todd-lincoln/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
-        }
-      ]
-    },
-    {
-      "showId": "oh-mary-off-broadway-2024",
       "file": "cititour--brian-scott-lipton.json",
       "score": 92,
       "publishDate": "February 8, 2024",
@@ -38292,20 +38033,6 @@
     },
     {
       "showId": "oh-mary-off-broadway-2024",
-      "file": "nysr--unknown.json",
-      "score": 79,
-      "publishDate": null,
-      "url": "https://nystagereview.com/2024/07/11/oh-mary-lincoln-drinkin-and-todd/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
-        }
-      ]
-    },
-    {
-      "showId": "oh-mary-off-broadway-2024",
       "file": "nytg--amelia-merrill.json",
       "score": 76,
       "publishDate": "2024-02-09",
@@ -38348,20 +38075,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "oh-mary-off-broadway-2024",
-      "file": "vulture--jackson-mchenry.json",
-      "score": 82,
-      "publishDate": "January 12, 2026",
-      "url": "https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
         }
       ]
     },
@@ -38949,20 +38662,6 @@
       ]
     },
     {
-      "showId": "once-on-this-island-2002",
-      "file": "nytimes--jesse-green.json",
-      "score": 88,
-      "publishDate": "December 3rd, 2017",
-      "url": "https://www.nytimes.com/2017/12/03/theater/review-once-on-this-island-revived-and-ravishing.html?_r=0",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"michael arden\" from once-on-this-island-2017"
-        }
-      ]
-    },
-    {
       "showId": "once-on-this-island-2017",
       "file": "frequentbusinesstraveler--jonathan-spira.json",
       "score": 82,
@@ -39057,20 +38756,6 @@
       "score": 58,
       "publishDate": "1996-12-20",
       "url": "https://variety.com/1996/legit/reviews/once-upon-a-mattress-1117436971/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "once-upon-a-mattress-2024",
-      "file": "amny--matt-windman.json",
-      "score": 83,
-      "publishDate": null,
-      "url": "https://www.amny.com/entertainment/theater/sleepover-success-in-once-upon-a-mattress/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -42142,20 +41827,6 @@
     },
     {
       "showId": "present-laughter-2017",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "https://www.hollywoodreporter.com/review/present-laughter-theater-review-991396",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"george c. scott\" from present-laughter-1982"
-        }
-      ]
-    },
-    {
-      "showId": "present-laughter-2017",
       "file": "nbcny--robert-kahn.json",
       "score": 65,
       "publishDate": null,
@@ -44027,20 +43698,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "romeo-and-juliet-west-end-2026",
-      "file": "ap--mark-kennedy.json",
-      "score": 63,
-      "publishDate": null,
-      "url": "https://abcnews.go.com/Entertainment/wireStory/review-bloom-hard-cool-romeo-juliet-20313103",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"david leveaux\" from romeo-and-juliet-2013"
         }
       ]
     },
@@ -47107,20 +46764,6 @@
       ]
     },
     {
-      "showId": "spamalot-off-broadway-2026",
-      "file": "theatrely--unknown.json",
-      "score": 49,
-      "publishDate": null,
-      "url": "https://www.theatrely.com/post/the-spamalot-you-know-and-love-is-back-on-broadway-review",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2005 (2x) more than 2026 (0x). 2005 matches production: spamalot-2005"
-        }
-      ]
-    },
-    {
       "showId": "spare-parts-off-broadway-2026",
       "file": "wsj--jack-mccallum.json",
       "publishDate": null,
@@ -47328,20 +46971,6 @@
     },
     {
       "showId": "spring-awakening-2006",
-      "file": "amny--unknown.json",
-      "score": 80,
-      "publishDate": null,
-      "url": "http://www.amny.com/entertainment/spring-awakening-a-visually-stunning-revival-1.10896137",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"michael arden\" from spring-awakening-2015"
-        }
-      ]
-    },
-    {
-      "showId": "spring-awakening-2006",
       "file": "hollywood-reporter--unknown.json",
       "score": 57,
       "publishDate": null,
@@ -47361,20 +46990,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2015 (2x) more than 2006 (0x). 2015 matches production: spring-awakening-2015"
-        }
-      ]
-    },
-    {
-      "showId": "spring-awakening-2006",
-      "file": "nydailynews--unknown.json",
-      "score": 86,
-      "publishDate": null,
-      "url": "http://www.nydailynews.com/entertainment/theater-arts/deaf-west-delivers-winning-spring-awakening-broadway-article-1.2373093",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"michael arden\" from spring-awakening-2015"
         }
       ]
     },
@@ -52691,20 +52306,6 @@
     },
     {
       "showId": "the-color-purple-2005",
-      "file": "amny--unknown.json",
-      "score": 84,
-      "publishDate": null,
-      "url": "http://www.amny.com/entertainment/the-color-purple-review-jennifer-hudson-soars-in-revival-1.11215876",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2005",
       "file": "ap--unknown.json",
       "score": 80,
       "publishDate": null,
@@ -52737,20 +52338,6 @@
       "score": 75,
       "publishDate": "December 11th, 2015",
       "url": "https://www.broadwayworld.com/article/BWW-Review-Fine-Cast-Saves-THE-COLOR-PURPLE-From-John-Doyles-Bloodless-Direction-20151211",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2005",
-      "file": "chicagotribune--unknown.json",
-      "score": 89,
-      "publishDate": null,
-      "url": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-color-purple-broadway-review-ent-1210-20151210-column.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -52837,20 +52424,6 @@
     },
     {
       "showId": "the-color-purple-2005",
-      "file": "nydailynews--unknown.json",
-      "score": 77,
-      "publishDate": null,
-      "url": "http://www.nydailynews.com/entertainment/theater-arts/synthia-erivo-jennifer-hudson-shine-color-purple-article-1.2461515",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2005",
       "file": "nypost--elisabeth-vincentelli.json",
       "score": 76,
       "publishDate": "December 10th, 2015",
@@ -52893,38 +52466,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2005",
-      "file": "timeout--unknown.json",
-      "publishDate": null,
-      "url": "http://www.timeout.com/newyork/theater/the-color-purple",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2015 (2x) more than 2005 (0x). 2015 matches production: the-color-purple-2015"
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2015",
-      "file": "ap--unknown.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "https://abcnews.go.com/Entertainment/wireStory/review-cynthia-erivo-amazing-color-purple-revival-35706471",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -53361,20 +52902,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "the-crucible-1991",
-      "file": "nytimes--ben-brantley.json",
-      "score": 86,
-      "publishDate": "March 31st, 2016",
-      "url": "https://www.nytimes.com/2016/04/01/theater/review-in-arthur-millers-crucible-first-they-came-for-the-witches.html?partner=rss&emc=rss&_r=0",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ivo van hove\" from the-crucible-2016"
         }
       ]
     },
@@ -54455,20 +53982,6 @@
     },
     {
       "showId": "the-glass-menagerie-2017",
-      "file": "nbcny--unknown.json",
-      "score": 86,
-      "publishDate": null,
-      "url": "http://www.nbcnewyork.com/entertainment/the-scene/glass-menagerie-review-225354622.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john tiffany\" from the-glass-menagerie-2013"
-        }
-      ]
-    },
-    {
-      "showId": "the-glass-menagerie-2017",
       "file": "northjerseycom--robert-feldberg.json",
       "score": 45,
       "publishDate": null,
@@ -54501,44 +54014,6 @@
       "score": 92,
       "publishDate": null,
       "url": "https://www.nydailynews.com/entertainment/music-arts/glass-menagerie-theater-review-article-1.1467392",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john tiffany\" from the-glass-menagerie-2013"
-        }
-      ]
-    },
-    {
-      "showId": "the-glass-menagerie-2017",
-      "file": "thewrap--unknown.json",
-      "score": 79,
-      "publishDate": null,
-      "url": "http://www.thewrap.com/the-glass-menagerie-theater-review/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john tiffany\" from the-glass-menagerie-2013"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2013 (2x) more than 2017 (0x). 2013 matches production: the-glass-menagerie-2013"
-        }
-      ]
-    },
-    {
-      "showId": "the-glass-menagerie-2017",
-      "file": "wsj--edward-rothstein.json",
-      "score": 93,
-      "publishDate": null,
-      "url": "https://online.wsj.com/article/AP216f8806ddad4b8b9837a6702e4b81cb.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -55398,20 +54873,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "the-king-and-i-1985",
-      "file": "nytimes--ben-brantley.json",
-      "score": 84,
-      "publishDate": "April 16th, 2015",
-      "url": "http://www.nytimes.com/2015/04/17/theater/review-the-king-and-i-back-on-broadway.html?_r=0",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bartlett sher\" from the-king-and-i-2015"
         }
       ]
     },
@@ -62526,20 +61987,6 @@
     },
     {
       "showId": "waiting-for-godot-2009",
-      "file": "timeout--adam-feldman.json",
-      "score": 75,
-      "publishDate": null,
-      "url": "https://www.timeout.com/newyork/theater/waiting-for-godot-revival-broadway-review-keanu-reeves-alex-winter-jamie-lloyd",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from waiting-for-godot-2025"
-        }
-      ]
-    },
-    {
-      "showId": "waiting-for-godot-2009",
       "file": "variety--frank-rizzo.json",
       "score": 45,
       "publishDate": null,
@@ -62549,25 +61996,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"sean mathias\" from waiting-for-godot-2013"
-        }
-      ]
-    },
-    {
-      "showId": "waiting-for-godot-2013",
-      "file": "amny--matt-windman.json",
-      "score": 77,
-      "publishDate": null,
-      "url": "https://www.amny.com/entertainment/broadway/review-waiting-for-godot-keanu-reeves-alex-winter/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from waiting-for-godot-2025"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -80563,20 +79991,6 @@
       "score": 67,
       "publishDate": "2026-02-15",
       "url": "https://www.thestage.co.uk/reviews/shadowlands-review-aldwych-theatre-london-hugh-bonneville-maggie-siff",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "she-loves-me-1994",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 87,
-      "publishDate": "March 17th, 2016",
-      "url": "http://www.hollywoodreporter.com/review/laura-benanti-zachary-levi-she-875850?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+thr%2Freviews%2Ftheater+%28The+Hollywood+Reporter+-+Theater+Reviews%29",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

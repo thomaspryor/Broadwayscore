@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-15T05:13:45.224Z",
+  "generatedAt": "2026-03-15T05:33:42.703Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -48,14 +48,6 @@
       "outlet": "ew",
       "critic": "Dalton Ross",
       "detail": "originalRating \"A\" (=90) vs score 63 (source: human-review)"
-    },
-    {
-      "type": "rating-score-mismatch",
-      "severity": "high",
-      "showId": "hercules-west-end-2025",
-      "outlet": "timeout-london",
-      "critic": "Andrzej Lukowski",
-      "detail": "originalRating \"3/5\" (=60) vs score 38 (source: human-review)"
     },
     {
       "type": "designation-score-mismatch",
@@ -304,14 +296,6 @@
       "outlet": "ew",
       "critic": "Dalton Ross",
       "detail": "humanReviewScore 63 (mixed) overrides explicit \"A\" (=90, positive)"
-    },
-    {
-      "type": "human-override-vs-explicit-grade",
-      "severity": "high",
-      "showId": "hercules-west-end-2025",
-      "outlet": "timeout-london",
-      "critic": "Andrzej Lukowski",
-      "detail": "humanReviewScore 38 (negative) overrides explicit \"3/5\" (=60, mixed)"
     },
     {
       "type": "human-override-vs-explicit-grade",
