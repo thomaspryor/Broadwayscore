@@ -1,16 +1,50 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-15T04:31:31.830Z",
+    "generatedAt": "2026-03-15T05:01:43.239Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 82,
-    "classified": 0,
-    "wrongProduction": 0,
-    "correctProduction": 0,
+    "total": 84,
+    "classified": 2,
+    "wrongProduction": 1,
+    "correctProduction": 1,
     "uncertain": 0,
     "errors": 0,
-    "wrongHighConfidence": 0,
+    "wrongHighConfidence": 1,
     "wrongMediumConfidence": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "chicago-1996",
+      "showTitle": "Chicago",
+      "showYear": 1996,
+      "file": "ap--michael-kuchwara.json",
+      "outlet": "Associated Press",
+      "criticName": "Michael Kuchwara",
+      "publishDate": "November 18th, 2002",
+      "originalSignals": [
+        "modern references: twitter"
+      ],
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "The review mentions the Shubert Theatre, where the 1996 revival opened, and discusses the show as a long-running revival. It also mentions cast members associated with the 1996 production, such as Charlotte d'Amboise and Billy Zane."
+    },
+    {
+      "showId": "the-crucible-1991",
+      "showTitle": "The Crucible",
+      "showYear": 1991,
+      "file": "vulture--jesse-green.json",
+      "outlet": "Vulture",
+      "criticName": "Jesse Green",
+      "publishDate": "March 31st, 2016",
+      "originalSignals": [
+        "year 2016 in text matches revival the-crucible-2016",
+        "modern references: twitter, netflix"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "the-crucible-2016",
+      "reasoning": "The review mentions the 2016 revival directed by Ivo van Hove at the Walter Kerr theater, which is a different production than the one filed under (the-crucible-1991)."
+    }
+  ]
 }

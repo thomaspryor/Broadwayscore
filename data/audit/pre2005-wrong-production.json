@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-15T04:31:31.708Z",
+    "generatedAt": "2026-03-15T05:01:41.260Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 125,
+    "totalFlagged": 127,
     "highConfidence": 43,
-    "mediumConfidence": 82,
+    "mediumConfidence": 84,
     "lowConfidence": 0,
-    "reassignable": 64
+    "reassignable": 65
   },
   "results": [
     {
@@ -499,6 +499,21 @@
         "year 1975 in text matches revival chicago-1975"
       ],
       "textSnippet": "For a Broadway musical that has lasted thousands of performances, played three different theaters, gone through a head-spinning number of cast changes and is about to reach its 20-year anniversary, “C"
+    },
+    {
+      "showId": "chicago-1996",
+      "showTitle": "Chicago",
+      "showYear": 1996,
+      "file": "ap--michael-kuchwara.json",
+      "outlet": "Associated Press",
+      "criticName": "Michael Kuchwara",
+      "publishDate": "November 18th, 2002",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "modern references: twitter"
+      ],
+      "textSnippet": "Undated %mlink(STRY:; PHOTO:; AUDIO:%)\n\nNEW YORK (AP) _ A lot of Broadway musicals don't age very well, but the long-running revival of ``Chicago'' seems to have discovered the fountain of youth.\n\nJud"
     },
     {
       "showId": "chicago-1996",
@@ -1308,6 +1323,22 @@
         "revival cast/director match for sunday-in-the-park-with-george-2017: Jake Gyllenhaal, Annaleigh Ashford, Hudson Theatre, director: Sarna Lapine"
       ],
       "textSnippet": "The brand-new Hudson Theatre officially opened Thursday night with a star-studded new production of Steven Sondheim's \"Sunday in the Park With George.\" NY1's Roma Torre filed the following review. Ste"
+    },
+    {
+      "showId": "the-crucible-1991",
+      "showTitle": "The Crucible",
+      "showYear": 1991,
+      "file": "vulture--jesse-green.json",
+      "outlet": "Vulture",
+      "criticName": "Jesse Green",
+      "publishDate": "March 31st, 2016",
+      "confidence": "medium",
+      "suggestedShowId": "the-crucible-2016",
+      "signals": [
+        "year 2016 in text matches revival the-crucible-2016",
+        "modern references: twitter, netflix"
+      ],
+      "textSnippet": "Search\n \n\n \n \n \n\n \n\n \n \n\n \n\n \n \n \n\n \n\n \n\n \n \n\n \n \n\n \n \n \n \n \n \n \n \n \n \n \n\n \n\n \n \n \n \n\n \n \n \n \n \n \n \n \n \n \n Photo:\n \n Jan Versweyveld\n \n \n \n\n \n\n \n According to one survey of high-school lit teachers, T"
     },
     {
       "showId": "gypsy-1989",

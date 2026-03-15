@@ -1,20 +1,20 @@
 {
   "meta": {
-    "generatedAt": "2026-03-15T04:31:31.313Z",
+    "generatedAt": "2026-03-15T05:01:40.848Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 31996,
       "inReviewsJson": 16906,
       "skippedExcluded": 13,
-      "withFullText": 23,
-      "excerptOnly": 2081,
-      "llmClassified": 22,
+      "withFullText": 28,
+      "excerptOnly": 2076,
+      "llmClassified": 27,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
       "uncertainCases": 22,
-      "budgetUsed": 0.0023,
-      "llmCalls": 23,
+      "budgetUsed": 0.002799999999999999,
+      "llmCalls": 28,
       "rateLimitHits": 0,
       "errors": 1,
       "skippedAlreadyClassified": 14789
@@ -30,7 +30,7 @@
       "outletId": "chicago-reader",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be a listing or announcement related to the show, possibly indicating a closing or recommendation, but it does not contain any evaluative content. It's more likely a news item or listing than a review.",
+      "reasoning": "The text appears to be metadata and navigation elements from a website, not a review itself. It mentions 'closing' which suggests a news item, but the confidence is low due to lack of actual article content.",
       "currentScore": 86
     },
     {
@@ -39,8 +39,8 @@
       "outlet": "The Daily Beast",
       "outletId": "dailybeast",
       "contentType": "news",
-      "confidence": "low",
-      "reasoning": "The article discusses the Tony Awards eligibility deadline, which is a news item, but the excerpt is too short to be certain.",
+      "confidence": "medium",
+      "reasoning": "The article discusses the Tony Awards eligibility deadline and the rush of shows opening before the cutoff, which is a news item rather than a review of a specific show.",
       "currentScore": 72
     },
     {
@@ -50,7 +50,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also discusses other theater news.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion on the quality of the production. It also discusses other theater news.",
       "currentScore": 82
     },
     {
@@ -60,7 +60,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and search terms related to theater, rather than an actual article. It does mention 'Broadway review subscriptions' and 'Music album reviews' but does not contain a review of 'Fences'.",
+      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show.",
       "currentScore": 82
     },
     {
@@ -70,7 +70,7 @@
       "outletId": "bloomberg",
       "contentType": "news",
       "confidence": "medium",
-      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in photo captions, indicating it's not a review of the latter.",
+      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in photo captions. It does not offer a review or evaluation of \"First Date.\"",
       "currentScore": 60
     },
     {
@@ -80,7 +80,7 @@
       "outletId": "huffpost",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be a collection of news headlines and trending topics, lacking any evaluative content about \"First Date\" or any other theatrical production. The presence of ads and privacy policy information further suggests it is not a review.",
+      "reasoning": "The article appears to be a collection of news headlines and trending topics, rather than a review of 'First Date' or any other show. The presence of sections like 'What's Hot' and 'TRENDING IN Culture & Arts' further suggests a news aggregation format.",
       "currentScore": 62
     },
     {
@@ -90,7 +90,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain evaluative content about \"Funny Girl\".",
+      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific production.",
       "currentScore": 62
     },
     {
@@ -110,7 +110,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of various cultural events.",
       "currentScore": 88
     },
     {
@@ -120,7 +120,7 @@
       "outletId": "frequentbusinesstraveler",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and setting of \"Once on This Island\" without offering a critical evaluation or opinion on the quality of the production. It focuses on the story and characters, indicating a preview rather than a review.",
+      "reasoning": "The article describes the plot and setting of \"Once on This Island\" without offering a critical evaluation or opinion. It focuses on introducing the story and characters.",
       "currentScore": 82
     },
     {
@@ -150,7 +150,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated and contains elements of a news website, such as subscription prompts and time stamps. Without the full text, it's difficult to determine the exact content type, but it does not appear to be a review.",
+      "reasoning": "The provided text appears to be a truncated news article snippet, possibly related to the Wall Street Journal, and does not contain any evaluative content about the show \"Parade\".",
       "currentScore": 78
     },
     {
@@ -160,7 +160,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of categories and links related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -170,7 +170,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's a feature rather than a review.",
       "currentScore": 83
     },
     {
@@ -180,7 +180,7 @@
       "outletId": "broadwayworld",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the background and context of the play \"Sweat,\" including the playwright's research process and the real-world events that inspired the story. While it mentions the play, it does not offer a critical evaluation of its artistic merits.",
+      "reasoning": "The article discusses the background and inspiration for Lynn Nottage's play \"Sweat,\" including her research process and the social issues it addresses. While it mentions the play, it does not offer a critical evaluation of its artistic merits or provide a recommendation.",
       "currentScore": 90
     },
     {
@@ -190,7 +190,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -200,7 +200,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content present.",
+      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or show listing than a review. There is no evaluative content present.",
       "currentScore": 64
     },
     {
@@ -210,7 +210,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of theater-related links and search terms, not an article about a specific show. It does not contain any evaluative content.",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's closest to news due to the mention of updates.",
       "currentScore": 78
     },
     {
@@ -220,7 +220,7 @@
       "outletId": "vulture",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the set design and the playwright's intentions, but does not offer an evaluation or recommendation of the show itself. It's more of a feature about the play's themes and design choices.",
+      "reasoning": "The article describes the set design and the playwright's intentions, but does not offer an evaluation or recommendation of the show itself. It focuses on the context and themes rather than a critique.",
       "currentScore": 64
     },
     {
@@ -240,11 +240,17 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" in advance of its opening, but does not offer a critical evaluation or opinion about the quality of the production itself. It includes background information and setting the stage for the show, which is typical of a preview article",
+      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" in advance of its opening, but does not offer a critical evaluation or opinion about the quality of the production. It includes background information and observations about the play's themes and autobiographical elements.",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
-  "reviewsConfirmed": [],
+  "reviewsConfirmed": [
+    "a-moon-for-the-misbegotten-2007/nytimes--ben-brantley.json",
+    "chicago-1996/ap--michael-kuchwara.json",
+    "heisenberg-2016/vulture--jesse-green.json",
+    "natasha-pierre-and-the-great-comet-of-1812-2016/vulture--jesse-green.json",
+    "the-real-thing-2014/nytimes--ben-brantley.json"
+  ],
   "perShowSummary": []
 }
