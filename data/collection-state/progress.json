@@ -985,7 +985,17 @@
     "brief-encounter-2010/nydailynews--joe-neumaier.json",
     "disgraced-2014/observer--rex-reed.json",
     "eclipsed-2016/observer--rex-reed.json",
-    "farinelli-and-the-king-2017/observer--rex-reed.json"
+    "farinelli-and-the-king-2017/observer--rex-reed.json",
+    "ghost-the-musical-2012/timeout--david-cote.json",
+    "grease-2007/nydailynews--unknown.json",
+    "hamlet-2009/nydailynews--joe-dziemianowicz.json",
+    "hedwig-and-the-angry-inch-2014/observer--rex-reed.json",
+    "here-lies-love-2023/observer--jesse-green.json",
+    "illinoise-2024/timeout--adam-feldman.json",
+    "inherit-the-wind-2007/nypost--clive-barnes.json",
+    "is-he-dead-2007/nypost--clive-barnes.json",
+    "junk-2017/observer--rex-reed.json",
+    "mary-jane-2024/ew--joey-nolfi.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1135,7 +1145,7 @@
     ]
   },
   "startTime": "2026-03-14T23:45:46.571Z",
-  "lastProcessed": "farinelli-and-the-king-2017/observer--rex-reed.json",
+  "lastProcessed": "mary-jane-2024/ew--joey-nolfi.json",
   "log": [
     {
       "t": "2026-03-14T23:47:47.877Z",
@@ -1428,6 +1438,17 @@
       "t": "2026-03-15T04:45:00.080Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-15T05:10:42.813Z",
+      "event": "bb-session",
+      "session": "482b96e6",
+      "url": "https://www.nypost.com/seven/08202007/entertainment/theater/tv_aided_grease_frig"
+    },
+    {
+      "t": "2026-03-15T05:10:44.422Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
