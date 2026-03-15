@@ -119,7 +119,14 @@
     "into-the-woods-west-end-2025/independent--louis-chilton.json",
     "mother-russia-off-broadway-2026/theatres-leiter-side--samuel-l-leiter.json",
     "you-got-older-off-broadway-2026/nysr--frank-scheck.json",
-    "back-to-the-future-west-end-2021/variety--david-benedict.json"
+    "back-to-the-future-west-end-2021/variety--david-benedict.json",
+    "chess-2025/hollywood-reporter--angie-han.json",
+    "death-becomes-her-2024/newyorker--helen-shaw.json",
+    "deep-azure-globe-west-end-2026/nytimes--unknown.json",
+    "hadestown-2019/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/nyt-theater--jonathan-mandell.json",
+    "hercules-west-end-2025/nytimes--matt-wolf.json"
   ],
   "failed": [
     "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
@@ -978,7 +985,10 @@
     "matilda-the-musical-west-end-2021/thestage--mark-shenton.json",
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
     "the-lion-king-1997/message-boards--unknown.json",
-    "the-lion-king-west-end-2021/thestage--unknown.json"
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "dracula-west-end-2025/nytimes--houman-barekat.json",
+    "every-brilliant-thing-2026/nytimes--helen-shaw.json",
+    "hadestown-2019/newyorker--hilton-als.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1048,7 +1058,8 @@
       "an-ark-off-broadway-2026/culturesauce--thom-geier.json",
       "cold-war-choir-practice-off-broadway-2026/nysr--david-finkle.json",
       "mother-russia-off-broadway-2026/theatres-leiter-side--samuel-l-leiter.json",
-      "you-got-older-off-broadway-2026/nysr--frank-scheck.json"
+      "you-got-older-off-broadway-2026/nysr--frank-scheck.json",
+      "hamilton-2015/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -1090,7 +1101,15 @@
       "data/review-texts/motown-the-musical-2013/amny--matt-windman.json",
       "motown-the-musical-2013/amny--matt-windman.json",
       "data/review-texts/sunday-in-the-park-with-george-2008/amny--matt-windman.json",
-      "sunday-in-the-park-with-george-2008/amny--matt-windman.json"
+      "sunday-in-the-park-with-george-2008/amny--matt-windman.json",
+      "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
+      "chess-2025/hollywood-reporter--angie-han.json",
+      "data/review-texts/deep-azure-globe-west-end-2026/nytimes--unknown.json",
+      "deep-azure-globe-west-end-2026/nytimes--unknown.json",
+      "data/review-texts/hadestown-2019/hollywood-reporter--david-rooney.json",
+      "hadestown-2019/hollywood-reporter--david-rooney.json",
+      "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json",
+      "hamilton-2015/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -1127,7 +1146,9 @@
       "data/review-texts/im-sorry-prime-minister-west-end-2026/timeout--tom-wicker.json",
       "data/review-texts/im-sorry-prime-minister-west-end-2026/timeout--tom-wicker.json",
       "data/review-texts/into-the-woods-west-end-2025/daily-mail--unknown.json",
-      "data/review-texts/the-lion-king-1997/message-boards--unknown.json"
+      "data/review-texts/the-lion-king-1997/message-boards--unknown.json",
+      "data/review-texts/dracula-west-end-2025/nytimes--houman-barekat.json",
+      "data/review-texts/every-brilliant-thing-2026/nytimes--helen-shaw.json"
     ],
     "archive": [
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
@@ -1166,11 +1187,13 @@
       "11-to-midnight-off-broadway-2026/broadway-blog--ryan-leeds.json",
       "and-juliet-2022/city-beat--brian-scott-lipton.json",
       "into-the-woods-west-end-2025/independent--louis-chilton.json",
-      "matilda-the-musical-west-end-2021/thestage--mark-shenton.json"
+      "matilda-the-musical-west-end-2021/thestage--mark-shenton.json",
+      "death-becomes-her-2024/newyorker--helen-shaw.json",
+      "hercules-west-end-2025/nytimes--matt-wolf.json"
     ]
   },
   "startTime": "2026-03-15T09:45:15.761Z",
-  "lastProcessed": "back-to-the-future-west-end-2021/variety--david-benedict.json",
+  "lastProcessed": "hercules-west-end-2025/nytimes--matt-wolf.json",
   "log": [
     {
       "t": "2026-03-15T09:48:36.450Z",
@@ -1383,6 +1406,83 @@
       "t": "2026-03-15T11:05:26.560Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-15T15:53:20.747Z",
+      "event": "bb-session",
+      "session": "96957d75",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-15T15:53:22.345Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-15T15:54:23.121Z",
+      "event": "bb-session",
+      "session": "07b66291",
+      "url": "https://www.newyorker.com/magazine/2024/12/02/death-becomes-her-theatre-review-b"
+    },
+    {
+      "t": "2026-03-15T15:54:24.804Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-15T15:54:54.387Z",
+      "event": "bb-session",
+      "session": "5ecb8beb",
+      "url": "https://www.nytimes.com/2026/03/05/theater/chadwick-boseman-deep-azure.html"
+    },
+    {
+      "t": "2026-03-15T15:54:56.044Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-15T15:55:33.035Z",
+      "event": "bb-session",
+      "session": "5f0c54be",
+      "url": "https://www.nytimes.com/2026/02/18/theater/dracula-cynthia-erivo.html"
+    },
+    {
+      "t": "2026-03-15T15:55:34.563Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-15T15:57:02.411Z",
+      "event": "bb-session",
+      "session": "352b9991",
+      "url": "https://www.nytimes.com/2026/03/12/theater/every-brilliant-thing-review-daniel-r"
+    },
+    {
+      "t": "2026-03-15T15:57:03.914Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-15T15:58:06.601Z",
+      "event": "bb-session",
+      "session": "02e862d1",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-15T15:58:07.886Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-15T15:58:24.253Z",
+      "event": "bb-session",
+      "session": "0dda4b19",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-15T15:58:25.808Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
