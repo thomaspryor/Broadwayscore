@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-15T16:40:52.937Z",
-  "processed": 279,
-  "failed": 878,
-  "successRate": "24.1%",
+  "updatedAt": "2026-03-15T16:42:08.978Z",
+  "processed": 288,
+  "failed": 879,
+  "successRate": "24.7%",
   "tierBreakdown": {
-    "playwright": 152,
+    "playwright": 159,
     "amp": 24,
-    "browserbase": 48,
+    "browserbase": 50,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 43,
-    "archive": 93
+    "archive": 94
   },
-  "browserbaseSessions": 18,
+  "browserbaseSessions": 19,
   "recentActivity": [
-    {
-      "t": "2026-03-15T16:00:27.988Z",
-      "event": "bb-session",
-      "session": "40e9b2d7",
-      "url": "https://www.nytimes.com/2019/07/25/theater/moulin-rouge-review.html"
-    },
-    {
-      "t": "2026-03-15T16:00:29.583Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-15T16:00:51.334Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-15T16:31:27.945Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-15T16:41:48.578Z",
+      "event": "bb-session",
+      "session": "b057431a",
+      "url": "https://www.amny.com/entertainment/broadway/review-buena-vista-social-clunk/"
+    },
+    {
+      "t": "2026-03-15T16:41:50.332Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
