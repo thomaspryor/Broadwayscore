@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-15T08:18:34.959Z",
+  "timestamp": "2026-03-15T08:58:32.665Z",
   "stats": {
-    "totalReviews": 31317,
+    "totalReviews": 31321,
     "alreadyFlagged": 9608,
     "dateGuardCatches": 125,
     "directorMismatch": 1096,
-    "tvFilmSignals": 3490,
-    "londonSignals": 1016,
-    "offBroadwaySignals": 1088,
+    "tvFilmSignals": 3489,
+    "londonSignals": 1015,
+    "offBroadwaySignals": 1087,
     "yearMismatch": 91,
-    "noPublishDate": 9305
+    "noPublishDate": 9308
   },
   "findings": [
     {
@@ -6051,30 +6051,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"paramount\""
-        }
-      ]
-    },
-    {
-      "showId": "antigone-this-play-i-read-in-high-school-off-broadway-2026",
-      "file": "nyt-theater--anna-ziegler.json",
-      "score": null,
-      "publishDate": "February 8, 2026",
-      "url": "https://publictheater.org/productions/season/2526/antigone-this-play-i-read-in-high-school/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hbo max\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
