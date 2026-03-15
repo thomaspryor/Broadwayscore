@@ -1015,7 +1015,17 @@
     "the-nap-2018/nypost--johnny-oleksinski.json",
     "the-norman-conquests-2009/nydailynews--joe-dziemianowicz.json",
     "the-norman-conquests-2009/observer--rex-reed.json",
-    "the-parisian-woman-2017/observer--rex-reed.json"
+    "the-parisian-woman-2017/observer--rex-reed.json",
+    "the-piano-lesson-2022/timeout--adam-feldman.json",
+    "the-waverly-gallery-2018/nypost--johnny-oleksinski.json",
+    "the-wiz-2024/indiewire--sarah-shachat.json",
+    "wolf-hall-parts-one-and-two-2015/timeout--adam-feldman.json",
+    "yellow-face-2024/nypost--johnny-oleksinski.json",
+    "mother-play-2024/forward--jesse-green.json",
+    "a-bronx-tale-the-musical-2016/amny--matt-windman.json",
+    "a-gentlemans-guide-to-love-and-murder-2013/amny--matt-windman.json",
+    "aint-no-mo-2022/usatoday--matthew-j-palm.json",
+    "all-my-sons-2008/usatoday--elysa-gardner.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1094,7 +1104,9 @@
       "data/review-texts/topdog-underdog-2022/yahya-abdul-mateen-ii--unknown.json",
       "topdog-underdog-2022/yahya-abdul-mateen-ii--unknown.json",
       "data/review-texts/a-moon-for-the-misbegotten-2007/nytimes--ben-brantley.json",
-      "a-moon-for-the-misbegotten-2007/nytimes--ben-brantley.json"
+      "a-moon-for-the-misbegotten-2007/nytimes--ben-brantley.json",
+      "data/review-texts/a-bronx-tale-the-musical-2016/amny--matt-windman.json",
+      "data/review-texts/a-gentlemans-guide-to-love-and-murder-2013/amny--matt-windman.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -1166,7 +1178,7 @@
     ]
   },
   "startTime": "2026-03-14T23:45:46.571Z",
-  "lastProcessed": "the-parisian-woman-2017/observer--rex-reed.json",
+  "lastProcessed": "all-my-sons-2008/usatoday--elysa-gardner.json",
   "log": [
     {
       "t": "2026-03-14T23:47:47.877Z",
@@ -1470,6 +1482,28 @@
       "t": "2026-03-15T05:10:44.422Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-15T05:17:15.579Z",
+      "event": "bb-session",
+      "session": "88a025b4",
+      "url": "https://www.amny.com/entertainment/a-bronx-tale-review-chazz-palminteri-s-saga-b"
+    },
+    {
+      "t": "2026-03-15T05:17:17.003Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-15T05:17:27.899Z",
+      "event": "bb-session",
+      "session": "ceffe237",
+      "url": "https://www.amny.com/entertainment/theater-review-a-gentleman-s-guide-to-love-mu"
+    },
+    {
+      "t": "2026-03-15T05:17:29.306Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
