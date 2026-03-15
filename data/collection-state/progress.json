@@ -27,11 +27,21 @@
     "the-unknown-off-broadway-2026/nytg--joe-dziemianowicz.json",
     "trash-off-broadway-2026/nyt-theater--unknown.json",
     "trash-off-broadway-2026/nytg--unknown.json",
-    "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json"
+    "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json",
+    "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/timeout--adam-feldman.json",
+    "bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
+    "bloodlove-off-broadway-2026/theatermania--rachel-graham.json",
+    "bughouse-off-broadway-2026/theatermania--unknown.json",
+    "burnout-paradise-off-broadway-2026/timeout--raven-snook.json"
   ],
   "failed": [
     "heathers-the-musical-off-broadway-2025/ew--unknown.json",
-    "tru-off-broadway-2026/dailybeast--unknown.json"
+    "tru-off-broadway-2026/dailybeast--unknown.json",
+    "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
+    "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
+    "bigfoot-off-broadway-2026/theatermania--hayley-levitt.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -58,7 +68,9 @@
       "the-unknown-off-broadway-2026/nytg--joe-dziemianowicz.json",
       "trash-off-broadway-2026/nyt-theater--unknown.json",
       "trash-off-broadway-2026/nytg--unknown.json",
-      "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json"
+      "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json",
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/timeout--adam-feldman.json",
+      "burnout-paradise-off-broadway-2026/timeout--raven-snook.json"
     ],
     "amp": [],
     "browserbase": [
@@ -69,23 +81,36 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/tru-off-broadway-2026/dailybeast--unknown.json"
+      "data/review-texts/tru-off-broadway-2026/dailybeast--unknown.json",
+      "data/review-texts/11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
+      "data/review-texts/bigfoot-off-broadway-2026/theatermania--hayley-levitt.json"
     ],
     "archive": [
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
       "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
-      "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json"
+      "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
+      "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json",
+      "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json",
+      "bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
+      "bloodlove-off-broadway-2026/theatermania--rachel-graham.json",
+      "bughouse-off-broadway-2026/theatermania--unknown.json"
     ]
   },
   "startTime": "2026-03-15T09:04:32.364Z",
-  "lastProcessed": "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json",
+  "lastProcessed": "burnout-paradise-off-broadway-2026/timeout--raven-snook.json",
   "log": [
     {
       "t": "2026-03-15T09:07:11.587Z",
       "event": "bb-session",
       "session": "93e7464a",
       "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-15T09:10:54.340Z",
+      "event": "bb-session",
+      "session": "a602adb2",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
     }
   ]
 }
