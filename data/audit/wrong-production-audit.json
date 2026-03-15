@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-15T21:08:02.231Z",
+  "timestamp": "2026-03-15T23:46:47.331Z",
   "stats": {
     "totalReviews": 31349,
-    "alreadyFlagged": 9586,
+    "alreadyFlagged": 9595,
     "dateGuardCatches": 125,
     "directorMismatch": 1108,
     "tvFilmSignals": 3492,
-    "londonSignals": 1016,
+    "londonSignals": 1017,
     "offBroadwaySignals": 1089,
     "yearMismatch": 91,
     "noPublishDate": 9309
@@ -1029,20 +1029,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2014 (2x) more than 1996 (1x). 2014 matches production: a-delicate-balance-2014"
-        }
-      ]
-    },
-    {
-      "showId": "a-delicate-balance-1996",
-      "file": "timeout--david-cote.json",
-      "score": 83,
-      "publishDate": "November 20th, 2014",
-      "url": "http://www.timeout.com/newyork/theater/a-delicate-balance",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"pam mackinnon\" from a-delicate-balance-2014"
         }
       ]
     },
@@ -7447,20 +7433,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "betrayal-2000",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 85,
-      "publishDate": "September 5th, 2019",
-      "url": "https://www.hollywoodreporter.com/review/tom-hiddleston-betrayal-theater-review-1234384",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from betrayal-2019"
         }
       ]
     },
@@ -26482,6 +26454,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "london-theatre--marianka-swain.json",
+      "score": 87,
+      "publishDate": "December 12th, 2025",
+      "url": "https://www.londontheatre.co.uk/reviews/into-the-woods-review-bridge-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -51543,6 +51534,25 @@
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
+      "file": "nytimes--ben-brantley.json",
+      "score": 90,
+      "publishDate": "August 20th, 2014",
+      "url": "http://www.nytimes.com/2014/08/21/theater/the-book-of-mormon-on-broadway-retains-its-charms.html?_r=0",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
       "file": "telegraph--charles-spencer.json",
       "score": 82,
       "publishDate": "2013-03-22",
@@ -56260,20 +56270,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "the-music-man-2000",
-      "file": "washpost--peter-marks.json",
-      "score": 42,
-      "publishDate": "February 11th, 2022",
-      "url": "https://www.washingtonpost.com/theater-dance/2022/02/11/music-man-jackman-broadway/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jerry zaks\" from the-music-man-2022"
         }
       ]
     },
