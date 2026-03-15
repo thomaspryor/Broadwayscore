@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-15T16:25:31.831Z",
-  "processed": 207,
-  "failed": 870,
-  "successRate": "19.2%",
+  "updatedAt": "2026-03-15T16:27:17.115Z",
+  "processed": 216,
+  "failed": 871,
+  "successRate": "19.9%",
   "tierBreakdown": {
-    "playwright": 107,
+    "playwright": 113,
     "amp": 22,
     "browserbase": 46,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 41,
-    "archive": 68
+    "archive": 71
   },
-  "browserbaseSessions": 15,
+  "browserbaseSessions": 16,
   "recentActivity": [
-    {
-      "t": "2026-03-15T15:58:06.601Z",
-      "event": "bb-session",
-      "session": "02e862d1",
-      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
-    },
-    {
-      "t": "2026-03-15T15:58:07.886Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-15T15:58:24.253Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-15T16:21:26.414Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-15T16:26:11.866Z",
+      "event": "bb-session",
+      "session": "b272b4de",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-03-15T16:26:13.621Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

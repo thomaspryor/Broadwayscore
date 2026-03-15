@@ -206,7 +206,16 @@
     "operation-mincemeat-2025/theatre-reviews-limited--joseph-verlezza.json",
     "operation-mincemeat-2025/timeout--adam-feldman.json",
     "operation-mincemeat-2025/timeout--holly-williams.json",
-    "paddington-the-musical-west-end-2025/musical-theatre-review--lisa-martlandbr.json"
+    "paddington-the-musical-west-end-2025/musical-theatre-review--lisa-martlandbr.json",
+    "paranormal-activity-west-end-2025/timeout--andrzej-lukowski.json",
+    "paranormal-activity-west-end-2025/timeout-london--unknown.json",
+    "pen-pals-off-broadway-2025/theatermania--dan-rubins.json",
+    "ragtime-2025/timeout--adam-feldman.json",
+    "ragtime-2025/wsj--charles-isherwood.json",
+    "shadowlands-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "six-2021/timeout--adam-feldman.json",
+    "spread-off-broadway-2026/theatermania--unknown.json",
+    "stranger-things-2024/timeout--adam-feldman.json"
   ],
   "failed": [
     "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
@@ -1078,7 +1087,8 @@
     "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
     "harry-potter-2021/wsj--terry-teachout.json",
     "los-soles-truncos-off-broadway-2025/broadwaynews--aa-cristi.json",
-    "los-soles-truncos-off-broadway-2025/nypost--chloe-rabinowitz.json"
+    "los-soles-truncos-off-broadway-2025/nypost--chloe-rabinowitz.json",
+    "sweetmeats-west-end-2026/guardian--anya-ryan.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1189,7 +1199,13 @@
       "operation-mincemeat-2025/theatre-reviews-limited--joseph-verlezza.json",
       "operation-mincemeat-2025/timeout--adam-feldman.json",
       "operation-mincemeat-2025/timeout--holly-williams.json",
-      "paddington-the-musical-west-end-2025/musical-theatre-review--lisa-martlandbr.json"
+      "paddington-the-musical-west-end-2025/musical-theatre-review--lisa-martlandbr.json",
+      "paranormal-activity-west-end-2025/timeout--andrzej-lukowski.json",
+      "paranormal-activity-west-end-2025/timeout-london--unknown.json",
+      "ragtime-2025/timeout--adam-feldman.json",
+      "shadowlands-west-end-2026/timeout-london--andrzej-lukowski.json",
+      "six-2021/timeout--adam-feldman.json",
+      "stranger-things-2024/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -1377,11 +1393,14 @@
       "mother-russia-off-broadway-2026/theatermania--zachary-stewart.json",
       "moulin-rouge-2019/theatermania--jesse-green.json",
       "moulin-rouge-2019/theatermania--zachary-stewart.json",
-      "oh-mary-2024/theatermania--jesse-green.json"
+      "oh-mary-2024/theatermania--jesse-green.json",
+      "pen-pals-off-broadway-2025/theatermania--dan-rubins.json",
+      "ragtime-2025/wsj--charles-isherwood.json",
+      "spread-off-broadway-2026/theatermania--unknown.json"
     ]
   },
   "startTime": "2026-03-15T09:45:15.761Z",
-  "lastProcessed": "paddington-the-musical-west-end-2025/musical-theatre-review--lisa-martlandbr.json",
+  "lastProcessed": "sweetmeats-west-end-2026/guardian--anya-ryan.json",
   "log": [
     {
       "t": "2026-03-15T09:48:36.450Z",
@@ -1759,6 +1778,17 @@
       "t": "2026-03-15T16:21:26.414Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-15T16:26:11.866Z",
+      "event": "bb-session",
+      "session": "b272b4de",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-03-15T16:26:13.621Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
