@@ -1,0 +1,133 @@
+{
+  "runDate": "2026-03-15T00:02:09.335Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 100,
+    "priority": "all",
+    "showFilter": "marie-and-rosetta-west-end-2026,dracula-west-end-2025,oh-mary-west-end-2025",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 20,
+    "failed": 11,
+    "skipped": 0,
+    "successRate": "64.5%"
+  },
+  "tierBreakdown": {
+    "playwright": 18,
+    "amp": 2,
+    "browserbase": 2,
+    "directCookies": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 6,
+    "archive": 1
+  },
+  "statistics": {
+    "tier1Attempts": 26,
+    "tier1Success": 20,
+    "ampAttempts": 1,
+    "ampSuccess": 1,
+    "tier1_5Attempts": 4,
+    "tier1_5Success": 1,
+    "tier2Attempts": 7,
+    "tier2Success": 0,
+    "tier3Attempts": 8,
+    "tier3Success": 0,
+    "tier3_6Attempts": 6,
+    "tier3_6Success": 6,
+    "tier4Attempts": 4,
+    "tier4Success": 1,
+    "totalFailed": 10,
+    "scrapingBeeCreditsUsed": 0,
+    "browserbaseSessionsUsed": 4,
+    "browserbaseMinutesUsed": 1.1,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "dracula-west-end-2025/variety--unknown.json",
+    "oh-mary-west-end-2025/timeout--unknown.json",
+    "dracula-west-end-2025/broadwayworld--unknown.json",
+    "oh-mary-west-end-2025/times-uk--unknown.json",
+    "dracula-west-end-2025/nytimes--houman-barekat.json",
+    "dracula-west-end-2025/guardian--arifa-akbar.json",
+    "marie-and-rosetta-west-end-2026/timeout-london--caroline-mcginn.json",
+    "oh-mary-west-end-2025/guardian--arifa-akbar.json",
+    "dracula-west-end-2025/artsdesk--rachel-halliburton.json",
+    "dracula-west-end-2025/financialtimes--sarah-hemming.json",
+    "dracula-west-end-2025/i-paper--fiona-mountford.json",
+    "dracula-west-end-2025/london-theatre--olivia-rook.json",
+    "marie-and-rosetta-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+    "marie-and-rosetta-west-end-2026/financialtimes--unknown.json",
+    "marie-and-rosetta-west-end-2026/london-box-office--stuart-king.json",
+    "marie-and-rosetta-west-end-2026/london-theatre--theo-bosanquet.json",
+    "marie-and-rosetta-west-end-2026/west-end-best-friend--nick-wayne.json",
+    "oh-mary-west-end-2025/artsdesk--demetrios-matheou.json",
+    "oh-mary-west-end-2025/london-box-office--stuart-king.json",
+    "oh-mary-west-end-2025/standard--nick.json"
+  ],
+  "failed": [
+    "dracula-west-end-2025/british-theatre--unknown.json",
+    "dracula-west-end-2025/thestage--sam-marlowe.json",
+    "dracula-west-end-2025/independent--alice-saville.json",
+    "dracula-west-end-2025/times-uk--clive-davis.json",
+    "marie-and-rosetta-west-end-2026/broadwayworld--clementine-scott.json",
+    "marie-and-rosetta-west-end-2026/everything-theatre-uk--jess-gonzalez.json",
+    "oh-mary-west-end-2025/independent--alice-saville.json",
+    "oh-mary-west-end-2025/standard--nick-curtis.json",
+    "oh-mary-west-end-2025/thestage--holly-omahony.json",
+    "oh-mary-west-end-2025/thestage--mahony.json",
+    "oh-mary-west-end-2025/times-uk--clive-davis.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "oh-mary-west-end-2025/timeout--unknown.json",
+      "oh-mary-west-end-2025/times-uk--unknown.json",
+      "dracula-west-end-2025/guardian--arifa-akbar.json",
+      "marie-and-rosetta-west-end-2026/timeout-london--caroline-mcginn.json",
+      "oh-mary-west-end-2025/guardian--arifa-akbar.json",
+      "dracula-west-end-2025/artsdesk--rachel-halliburton.json",
+      "dracula-west-end-2025/financialtimes--sarah-hemming.json",
+      "dracula-west-end-2025/i-paper--fiona-mountford.json",
+      "dracula-west-end-2025/london-theatre--olivia-rook.json",
+      "marie-and-rosetta-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+      "marie-and-rosetta-west-end-2026/everything-theatre-uk--jess-gonzalez.json",
+      "marie-and-rosetta-west-end-2026/financialtimes--unknown.json",
+      "marie-and-rosetta-west-end-2026/london-box-office--stuart-king.json",
+      "marie-and-rosetta-west-end-2026/london-theatre--theo-bosanquet.json",
+      "marie-and-rosetta-west-end-2026/west-end-best-friend--nick-wayne.json",
+      "oh-mary-west-end-2025/artsdesk--demetrios-matheou.json",
+      "oh-mary-west-end-2025/london-box-office--stuart-king.json",
+      "oh-mary-west-end-2025/standard--nick.json"
+    ],
+    "amp": [
+      "data/review-texts/dracula-west-end-2025/variety--unknown.json",
+      "dracula-west-end-2025/variety--unknown.json"
+    ],
+    "browserbase": [
+      "data/review-texts/dracula-west-end-2025/nytimes--houman-barekat.json",
+      "dracula-west-end-2025/nytimes--houman-barekat.json"
+    ],
+    "directCookies": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [
+      "data/review-texts/dracula-west-end-2025/thestage--sam-marlowe.json",
+      "data/review-texts/dracula-west-end-2025/independent--alice-saville.json",
+      "data/review-texts/marie-and-rosetta-west-end-2026/broadwayworld--clementine-scott.json",
+      "data/review-texts/oh-mary-west-end-2025/independent--alice-saville.json",
+      "data/review-texts/oh-mary-west-end-2025/thestage--holly-omahony.json",
+      "data/review-texts/oh-mary-west-end-2025/thestage--mahony.json"
+    ],
+    "archive": [
+      "dracula-west-end-2025/broadwayworld--unknown.json"
+    ]
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
+}
