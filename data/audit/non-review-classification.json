@@ -1,23 +1,23 @@
 {
   "meta": {
-    "generatedAt": "2026-03-15T00:15:30.446Z",
+    "generatedAt": "2026-03-15T02:41:55.522Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 31997,
-      "inReviewsJson": 16903,
-      "skippedExcluded": 13,
-      "withFullText": 51,
-      "excerptOnly": 2104,
-      "llmClassified": 49,
+      "inReviewsJson": 16896,
+      "skippedExcluded": 17,
+      "withFullText": 37,
+      "excerptOnly": 2088,
+      "llmClassified": 36,
       "heuristicFlagged": 1,
       "nonReviewsFound": 0,
-      "uncertainCases": 21,
-      "budgetUsed": 0.005,
-      "llmCalls": 50,
+      "uncertainCases": 22,
+      "budgetUsed": 0.0036999999999999976,
+      "llmCalls": 37,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14735
+      "skippedAlreadyClassified": 14754
     },
     "calibration": null
   },
@@ -30,7 +30,7 @@
       "outletId": "chicago-reader",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be a listing or announcement related to the show, possibly indicating a closing or recommendation, but it does not contain evaluative content. It's more akin to a news item or listing.",
+      "reasoning": "The article appears to be a listing or announcement related to the show, possibly regarding its closing, rather than a review that evaluates the production's quality. The presence of tags like 'Closing (Theater and Galleries)' supports this classification.",
       "currentScore": 86
     },
     {
@@ -40,7 +40,7 @@
       "outletId": "dailybeast",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article mentions the Tony Awards eligibility deadline, which is a news item. It's a brief snippet, so confidence is low.",
+      "reasoning": "The article mentions the Tony Awards eligibility deadline, suggesting it's a news piece about the Broadway season rather than a review of \"Dead Outlaw.\"",
       "currentScore": 72
     },
     {
@@ -50,7 +50,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also discusses other theater news.",
+      "reasoning": "The article describes the plot and themes of \"Eclipsed\" but does not offer a critical evaluation or recommendation. It also includes unrelated news items about other productions.",
       "currentScore": 82
     },
     {
@@ -60,7 +60,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
+      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show.",
       "currentScore": 82
     },
     {
@@ -70,7 +70,7 @@
       "outletId": "bloomberg",
       "contentType": "news",
       "confidence": "medium",
-      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in a photo caption. It does not offer a review or evaluation of \"First Date.\"",
+      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in photo captions, indicating it is not a review of the latter.",
       "currentScore": 60
     },
     {
@@ -80,7 +80,7 @@
       "outletId": "huffpost",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be a collection of news headlines and trending topics, rather than a review of \"First Date.\"",
+      "reasoning": "The article appears to be a collection of news headlines and trending topics, rather than a review of 'First Date' or any other show. The mention of 'critics' is in the context of a news headline about Nicki Minaj.",
       "currentScore": 62
     },
     {
@@ -90,7 +90,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, including \"Broadway news updates\" and \"Music album reviews,\" but it does not contain any evaluative content about a specific production.",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain evaluative content about \"Funny Girl\".",
       "currentScore": 62
     },
     {
@@ -110,7 +110,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of various cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of various cultural events.",
       "currentScore": 88
     },
     {
@@ -130,7 +130,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of links and categories related to theater and music, rather than a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
       "currentScore": 89
     },
     {
@@ -170,7 +170,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on its quality. It also includes an interview excerpt, further suggesting it's a feature rather than a review.",
       "currentScore": 83
     },
     {
@@ -180,7 +180,7 @@
       "outletId": "broadwayworld",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article discusses the background and inspiration for Lynn Nottage's play \"Sweat,\" including her research process and the social issues it addresses. While it mentions the play, it does not offer a critical evaluation of its artistic merits or provide a recommendation.",
+      "reasoning": "The article discusses the background and inspiration for Lynn Nottage's play \"Sweat,\" including her research process and the social issues it addresses. While it provides context, it does not offer a critical evaluation of the play's artistic merits or provide a recommendation.",
       "currentScore": 90
     },
     {
@@ -200,7 +200,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
+      "reasoning": "The article consists of production credits and ticket information, which is more indicative of a news item or show listing than a review. There is no evaluative content.",
       "currentScore": 64
     },
     {
@@ -210,7 +210,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's closest to news due to the mention of updates.",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's likely a dynamically generated page or search result.",
       "currentScore": 78
     },
     {
@@ -220,7 +220,7 @@
       "outletId": "vulture",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the set design and the playwright's intentions, but does not offer an evaluation or recommendation of the show itself. It focuses on the context and meaning behind the production's choices.",
+      "reasoning": "The article describes the set design and the playwright's intentions, but does not offer an evaluation or recommendation of the show itself. It reads more like a feature piece about the play's themes and context.",
       "currentScore": 64
     },
     {
@@ -232,6 +232,16 @@
       "confidence": "low",
       "reasoning": "The text appears to be a collection of links and categories related to theater, rather than a review of a specific production.",
       "currentScore": 89
+    },
+    {
+      "file": "yellow-face-2024/joysauce--janvi-sai.json",
+      "showId": "yellow-face-2024",
+      "outlet": "joysauce",
+      "outletId": "joysauce",
+      "contentType": "preview",
+      "confidence": "medium",
+      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" in advance of its opening, but does not offer a critical evaluation or opinion about the quality of the production. It mentions the autobiographical nature of the play and the casting choices, but does not provide a verdict.",
+      "currentScore": 78
     }
   ],
   "heuristicFlags": [
@@ -248,34 +258,20 @@
     }
   ],
   "reviewsConfirmed": [
-    "a-soldiers-play-2020/timeout--adam-feldman.json",
-    "a-view-from-the-bridge-2010/chicagotribune--unknown.json",
-    "a-view-from-the-bridge-2015/nydailynews--joe-dziemianowicz.json",
-    "airline-highway-2015/hyde-park-herald--anne-spiselman.json",
-    "an-enemy-of-the-people-2012/timeout--adam-feldman.json",
-    "bandstand-2017/amny--matt-windman.json",
-    "catch-me-if-you-can-2011/nydailynews--joe-dziemianowicz.json",
-    "company-2021/chicagotribune--chris-jones.json",
-    "dear-evan-hansen-2016/timeout--adam-feldman.json",
-    "elf-2024/timeout--unknown.json",
-    "elling-2010/nydailynews--joe-dziemianowicz.json",
-    "fela-2012/amny--matt-windman.json",
-    "gettin-the-band-back-together-2018/chicagotribune--chris-jones.json",
-    "glengarry-glen-ross-2012/timeout--unknown.json",
-    "honeymoon-in-vegas-2015/nydailynews--unknown.json",
-    "kinky-boots-2013/nydailynews--joe-dziemianowicz.json",
-    "lend-me-a-tenor-2010/nydailynews--unknown.json",
-    "motown-the-musical-2013/amny--unknown.json",
-    "relatively-speaking-2011/amny--matt-windman.json",
-    "sunset-boulevard-2024/amny--matt-windman.json",
-    "sunset-boulevard-2024/timeout--adam-feldman.json",
-    "the-bands-visit-2017/amny--matt-windman.json",
-    "the-bridges-of-madison-county-2014/njarts--jay-lustig.json",
-    "the-color-purple-2005/amny--unknown.json",
-    "the-father-2016/timeout--adam-feldman.json",
-    "the-last-five-years-2025/amny--unknown.json",
-    "the-sign-in-sidney-brusteins-window-2023/thewrap--robert-hofler.json",
-    "tuck-everlasting-2016/artsatl--andrew-alexander.json"
+    "allegiance-2015/sdamustang--andrew-walker.json",
+    "betrayal-2013/amny--unknown.json",
+    "blackout-songs-off-broadway-2026/ew--thom-geier.json",
+    "burn-the-floor-2009/nydailynews--unknown.json",
+    "eclipsed-2016/nydailynews--unknown.json",
+    "indecent-2017/edge-new-york--winnie-mccroy.json",
+    "les-miserables-1987/amny--unknown.json",
+    "little-women-the-musical-off-broadway-2026/guardian--emma-john.json",
+    "lobby-hero-2018/theatre-reviews-limited--david-roberts.json",
+    "marvins-room-2017/nydailynews--joe-dziemianowicz.json",
+    "miss-saigon-2017/nydailynews--joe-dziemianowicz.json",
+    "swept-away-2024/new-york-sun--elysa-gardner.json",
+    "the-tragedy-of-coriolanus-off-broadway-2026/theatermania--pete-hempstead.json",
+    "twelfth-night-2013/amny--matt-windman.json"
   ],
   "perShowSummary": []
 }

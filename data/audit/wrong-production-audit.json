@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-15T00:19:57.355Z",
+  "timestamp": "2026-03-15T02:46:28.744Z",
   "stats": {
     "totalReviews": 31316,
-    "alreadyFlagged": 9501,
+    "alreadyFlagged": 9518,
     "dateGuardCatches": 125,
     "directorMismatch": 1129,
-    "tvFilmSignals": 3492,
-    "londonSignals": 1016,
-    "offBroadwaySignals": 1087,
+    "tvFilmSignals": 3495,
+    "londonSignals": 1018,
+    "offBroadwaySignals": 1089,
     "yearMismatch": 96,
-    "noPublishDate": 9395
+    "noPublishDate": 9384
   },
   "findings": [
     {
@@ -5169,6 +5169,7 @@
     {
       "showId": "an-act-of-god-2016",
       "file": "toronto-star--unknown.json",
+      "score": 89,
       "publishDate": null,
       "url": "http://www.thestar.com/entertainment/stage/2015/05/28/jim-parsons-divine-in-an-act-of-god-on-broadway.html",
       "findings": [
@@ -9252,6 +9253,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "burn-the-floor-2009",
+      "file": "nydailynews--unknown.json",
+      "score": 79,
+      "publishDate": "April 22, 2014",
+      "url": "http://www.nydailynews.com/entertainment/arts/2009/08/03/2009-08-03_broadways_ballroom_extravaganza_they_got_talent_to_burn.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -29846,6 +29861,7 @@
     {
       "showId": "les-miserables-2006",
       "file": "nydailynews--unknown.json",
+      "score": 67,
       "publishDate": null,
       "url": "http://www.nydailynews.com/entertainment/music-arts/les-miserables-theater-review-article-1.1729631",
       "findings": [
@@ -31706,6 +31722,19 @@
     },
     {
       "showId": "macbeth-2008",
+      "file": "newsday--unknown.json",
+      "publishDate": null,
+      "url": "http://www.newsday.com/entertainment/theater/macbeth-review-witches-outshine-ethan-hawke-1.6470795",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jack o'brien\" from macbeth-2013"
+        }
+      ]
+    },
+    {
+      "showId": "macbeth-2008",
       "file": "nypost--johnny-oleksinski.json",
       "score": 41,
       "publishDate": "April 29th, 2022",
@@ -31735,6 +31764,7 @@
     {
       "showId": "macbeth-2013",
       "file": "backstage--unknown.json",
+      "score": 88,
       "publishDate": null,
       "url": "http://www.backstage.com/review/ny-theater/broadway/macbeth-william-shakespeare-alan-cumming-the-national-theater-of-scotland/",
       "findings": [
@@ -38187,6 +38217,7 @@
     {
       "showId": "oh-mary-off-broadway-2024",
       "file": "chicagotribune--chris-jones.json",
+      "score": 87,
       "publishDate": null,
       "url": "https://www.chicagotribune.com/2024/07/11/review-oh-mary-on-broadway-is-about-an-unhinged-hilarious-mary-todd-lincoln/",
       "findings": [
@@ -38844,6 +38875,7 @@
     {
       "showId": "once-2012",
       "file": "amny--matt-windman.json",
+      "score": 84,
       "publishDate": null,
       "url": "https://www.amny.com/entertainment/theater/sleepover-success-in-once-upon-a-mattress/",
       "findings": [
@@ -41623,20 +41655,6 @@
     },
     {
       "showId": "present-laughter-2010",
-      "file": "amny--matt-windman.json",
-      "score": 63,
-      "publishDate": null,
-      "url": "http://www.amny.com/entertainment/present-laughter-review-kevin-kline-shines-bright-on-stage-1.13368085",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moritz von stuelpnagel\" from present-laughter-2017"
-        }
-      ]
-    },
-    {
-      "showId": "present-laughter-2010",
       "file": "broadwaynews--charles-isherwood.json",
       "score": 83,
       "publishDate": null,
@@ -41785,7 +41803,7 @@
       "showId": "present-laughter-2010",
       "file": "nydailynews--joe-dziemianowicz.json",
       "score": 80,
-      "publishDate": null,
+      "publishDate": "2017-04-06",
       "url": "http://www.nydailynews.com/entertainment/theater-arts/kevin-kline-preens-perfection-present-laughter-review-article-1.3021106",
       "findings": [
         {
@@ -47343,6 +47361,7 @@
     {
       "showId": "spring-awakening-2006",
       "file": "nydailynews--unknown.json",
+      "score": 86,
       "publishDate": null,
       "url": "http://www.nydailynews.com/entertainment/theater-arts/deaf-west-delivers-winning-spring-awakening-broadway-article-1.2373093",
       "findings": [
@@ -49863,6 +49882,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "swept-away-2024",
+      "file": "new-york-sun--elysa-gardner.json",
+      "score": 81,
+      "publishDate": "November 19, 2024",
+      "url": "https://www.nysun.com/article/swept-away-offers-assets-rarely-seen-in-contemporary-broadway-musicals-a-fresh-story-and-a-spiritual-journey",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"streaming series\""
         }
       ]
     },
@@ -60249,6 +60282,25 @@
       ]
     },
     {
+      "showId": "the-tragedy-of-coriolanus-off-broadway-2026",
+      "file": "theatermania--pete-hempstead.json",
+      "score": 78,
+      "publishDate": "February 14th, 2026",
+      "url": "https://www.theatermania.com/news/review-coriolanus-as-a-spectator-sport-bring-on-the-jumbotron_1824266/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"theater for a new audience\""
+        }
+      ]
+    },
+    {
       "showId": "the-trip-to-bountiful-2013",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 62,
@@ -62473,6 +62525,7 @@
     {
       "showId": "waiting-for-godot-2013",
       "file": "amny--matt-windman.json",
+      "score": 77,
       "publishDate": null,
       "url": "https://www.amny.com/entertainment/broadway/review-waiting-for-godot-keanu-reeves-alex-winter/",
       "findings": [
@@ -69764,6 +69817,20 @@
       "score": 74,
       "publishDate": "October 15th, 2015",
       "url": "http://www.nj.com/entertainment/index.ssf/2015/10/lupita_nyongo_eclipsed_review_public_theater.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "eclipsed-2016",
+      "file": "nydailynews--unknown.json",
+      "score": 74,
+      "publishDate": null,
+      "url": "http://www.nydailynews.com/entertainment/theater-arts/lupita-nyong-brilliant-bleak-blunt-eclipsed-article-1.2397495",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -77573,6 +77640,20 @@
     },
     {
       "showId": "miss-saigon-2017",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "score": 77,
+      "publishDate": "2017-03-24",
+      "url": "http://www.nydailynews.com/entertainment/theater-arts/saigon-love-war-chopper-returns-theater-review-article-1.3007083",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "miss-saigon-2017",
       "file": "scribicide--aaron-botwick.json",
       "score": 38,
       "publishDate": null,
@@ -78524,6 +78605,20 @@
       "score": 48,
       "publishDate": null,
       "url": "https://www.hollywoodreporter.com/movies/movie-reviews/oleanna-theater-review-93645/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "oleanna-2009",
+      "file": "london-theatre--matt-wolf.json",
+      "score": 72,
+      "publishDate": "July 30th, 2021",
+      "url": "https://www.londontheatre.co.uk/reviews/review-oleanna-at-the-arts-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
