@@ -1,114 +1,90 @@
 {
-  "runDate": "2026-03-15T07:09:50.772Z",
+  "runDate": "2026-03-15T09:01:38.872Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "every-brilliant-thing-2026",
+    "showFilter": "ice-queen-off-broadway-2026,pied-a-terre-off-broadway-2026,los-soles-truncos-off-broadway-2025,no-excuses-no-limits-off-broadway-2026,la-llamada-off-broadway-2024,la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024,la-ternura-off-broadway-2025,jerome-off-broadway-2025,age-is-a-feeling-off-broadway-2024,tru-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 16,
-    "failed": 3,
+    "processed": 5,
+    "failed": 9,
     "skipped": 0,
-    "successRate": "84.2%"
+    "successRate": "35.7%"
   },
   "tierBreakdown": {
-    "playwright": 11,
-    "amp": 2,
-    "browserbase": 6,
+    "playwright": 5,
+    "amp": 0,
+    "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 1
+    "archiveToday": 2,
+    "archive": 0
   },
   "statistics": {
     "tier1Attempts": 14,
-    "tier1Success": 11,
-    "ampAttempts": 1,
-    "ampSuccess": 1,
-    "tier1_5Attempts": 3,
-    "tier1_5Success": 3,
-    "tier2Attempts": 5,
+    "tier1Success": 12,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 0,
+    "tier2Attempts": 3,
     "tier2Success": 0,
-    "tier3Attempts": 7,
+    "tier3Attempts": 3,
     "tier3Success": 0,
-    "tier3_6Attempts": 3,
-    "tier3_6Success": 3,
+    "tier3_6Attempts": 2,
+    "tier3_6Success": 2,
     "tier4Attempts": 4,
-    "tier4Success": 0,
-    "totalFailed": 3,
+    "tier4Success": 1,
+    "totalFailed": 9,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 3,
+    "browserbaseSessionsUsed": 1,
     "browserbaseMinutesUsed": 0.6,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "every-brilliant-thing-2026/nytimes--helen-shaw.json",
-    "every-brilliant-thing-2026/deadline--unknown.json",
-    "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
-    "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
-    "every-brilliant-thing-2026/thewrap--robert-hofler.json",
-    "every-brilliant-thing-2026/timeout--unknown.json",
-    "every-brilliant-thing-2026/theatrely--unknown.json",
-    "every-brilliant-thing-2026/amny--matt-windman.json",
-    "every-brilliant-thing-2026/chicagotribune--chris-jones.json",
-    "every-brilliant-thing-2026/culturesauce--unknown.json",
-    "every-brilliant-thing-2026/exeunt-magazine--lane-williamson.json",
-    "every-brilliant-thing-2026/nysr--frank-scheck.json",
-    "every-brilliant-thing-2026/nysr--steven-suskin.json",
-    "every-brilliant-thing-2026/one-minute-critic--unknown.json",
-    "every-brilliant-thing-2026/the-la-times--unknown.json",
-    "every-brilliant-thing-2026/theater-scene--darryl-reilly.json"
+    "tru-off-broadway-2026/frontmezzjunkies--unknown.json",
+    "pied-a-terre-off-broadway-2026/nytg--unknown.json",
+    "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024/nydailynews--unknown.json",
+    "los-soles-truncos-off-broadway-2025/broadwaynews--aa-cristi.json",
+    "los-soles-truncos-off-broadway-2025/nypost--chloe-rabinowitz.json"
   ],
   "failed": [
-    "every-brilliant-thing-2026/talkinbroadway--unknown.json",
-    "every-brilliant-thing-2026/cititour--brian-scott-lipton.json",
-    "every-brilliant-thing-2026/independent--unknown.json"
+    "jerome-off-broadway-2025/talkinbroadway--unknown.json",
+    "tru-off-broadway-2026/dailybeast--unknown.json",
+    "tru-off-broadway-2026/playbill--unknown.json",
+    "la-llamada-off-broadway-2024/nytg--unknown.json",
+    "la-ternura-off-broadway-2025/nyt-theater--unknown.json",
+    "la-ternura-off-broadway-2025/nytg--unknown.json",
+    "los-soles-truncos-off-broadway-2025/nytg--unknown.json",
+    "jerome-off-broadway-2025/wsj--joel-lobenthal.json",
+    "la-ternura-off-broadway-2025/broadwaynews--aa-cristi.json"
   ],
   "tierDetails": {
     "playwright": [
-      "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
-      "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
-      "every-brilliant-thing-2026/timeout--unknown.json",
-      "every-brilliant-thing-2026/theatrely--unknown.json",
-      "every-brilliant-thing-2026/culturesauce--unknown.json",
-      "every-brilliant-thing-2026/exeunt-magazine--lane-williamson.json",
-      "every-brilliant-thing-2026/nysr--frank-scheck.json",
-      "every-brilliant-thing-2026/nysr--steven-suskin.json",
-      "every-brilliant-thing-2026/one-minute-critic--unknown.json",
-      "every-brilliant-thing-2026/the-la-times--unknown.json",
-      "every-brilliant-thing-2026/theater-scene--darryl-reilly.json"
+      "tru-off-broadway-2026/frontmezzjunkies--unknown.json",
+      "pied-a-terre-off-broadway-2026/nytg--unknown.json",
+      "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024/nydailynews--unknown.json",
+      "los-soles-truncos-off-broadway-2025/broadwaynews--aa-cristi.json",
+      "los-soles-truncos-off-broadway-2025/nypost--chloe-rabinowitz.json"
     ],
-    "amp": [
-      "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
-      "every-brilliant-thing-2026/thewrap--robert-hofler.json"
-    ],
-    "browserbase": [
-      "data/review-texts/every-brilliant-thing-2026/nytimes--helen-shaw.json",
-      "every-brilliant-thing-2026/nytimes--helen-shaw.json",
-      "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
-      "every-brilliant-thing-2026/deadline--unknown.json",
-      "data/review-texts/every-brilliant-thing-2026/amny--matt-windman.json",
-      "every-brilliant-thing-2026/amny--matt-windman.json"
-    ],
+    "amp": [],
+    "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/every-brilliant-thing-2026/talkinbroadway--unknown.json",
-      "data/review-texts/every-brilliant-thing-2026/cititour--brian-scott-lipton.json",
-      "data/review-texts/every-brilliant-thing-2026/independent--unknown.json"
+      "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json",
+      "data/review-texts/tru-off-broadway-2026/dailybeast--unknown.json"
     ],
-    "archive": [
-      "every-brilliant-thing-2026/chicagotribune--chris-jones.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
