@@ -1,16 +1,82 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-15T00:07:47.686Z",
+    "generatedAt": "2026-03-15T00:15:33.755Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 82,
-    "classified": 0,
-    "wrongProduction": 0,
+    "total": 86,
+    "classified": 4,
+    "wrongProduction": 4,
     "correctProduction": 0,
     "uncertain": 0,
     "errors": 0,
-    "wrongHighConfidence": 0,
+    "wrongHighConfidence": 4,
     "wrongMediumConfidence": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "burn-this-1987",
+      "showTitle": "Burn This",
+      "showYear": 1987,
+      "file": "timeout--adam-feldman.json",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "publishDate": "April 16th, 2019",
+      "originalSignals": [
+        "modern references: masks"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "burn-this-2019",
+      "reasoning": "The review mentions Adam Driver, Keri Russell, Brandon Uranowitz, and David Furr, who were in the 2019 production, not the 1987 production. It also mentions the Hudson Theatre, where the 2019 revival played."
+    },
+    {
+      "showId": "a-delicate-balance-1996",
+      "showTitle": "A Delicate Balance",
+      "showYear": 1996,
+      "file": "timeout--david-cote.json",
+      "outlet": "Time Out New York",
+      "criticName": "David Cote",
+      "publishDate": "November 20th, 2014",
+      "originalSignals": [
+        "revival text signals: revival, new revival",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "a-delicate-balance-2014",
+      "reasoning": "The review mentions Pam MacKinnon as the director and Glenn Close, John Lithgow, Martha Plimpton, Lindsay Duncan and Bob Balaban as cast members, which are all associated with the 2014 production. The review also mentions that it never saw the 1996 Lincoln Center revival."
+    },
+    {
+      "showId": "the-music-man-2000",
+      "showTitle": "The Music Man",
+      "showYear": 2000,
+      "file": "washpost--peter-marks.json",
+      "outlet": "The Washington Post",
+      "criticName": "Peter Marks",
+      "publishDate": "February 11th, 2022",
+      "originalSignals": [
+        "modern references: pandemic"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "the-music-man-2022",
+      "reasoning": "The review mentions Hugh Jackman, the Winter Garden Theatre, Jerry Zaks as director, and a pandemic-related delay, all associated with the 2022 production."
+    },
+    {
+      "showId": "anna-christie-1977",
+      "showTitle": "Anna Christie",
+      "showYear": 1977,
+      "file": "amny--matt-windman.json",
+      "outlet": "amNY",
+      "criticName": "Matt Windman",
+      "publishDate": null,
+      "originalSignals": [
+        "modern references: hamilton"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "The review discusses a production at St. Ann's Warehouse starring Michelle Williams and directed by Thomas Kail, which is an Off-Broadway production, not the 1977 Broadway production. It also mentions the 1993 Broadway revival with Natasha Richardson and Liam Neeson, further indicating it's not abou"
+    }
+  ]
 }
