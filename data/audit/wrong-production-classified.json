@@ -1,129 +1,219 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-15T10:47:06.006Z",
+    "generatedAt": "2026-03-15T11:11:51.280Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 90,
-    "classified": 7,
-    "wrongProduction": 7,
+    "total": 95,
+    "classified": 12,
+    "wrongProduction": 12,
     "correctProduction": 0,
     "uncertain": 0,
     "errors": 0,
-    "wrongHighConfidence": 7,
+    "wrongHighConfidence": 12,
     "wrongMediumConfidence": 0
   },
   "results": [
     {
-      "showId": "rent-1996",
-      "showTitle": "Rent",
-      "showYear": 1996,
-      "file": "ap--jennifer-farrar.json",
-      "outlet": "Associated Press",
-      "criticName": "Jennifer Farrar",
-      "publishDate": "August 17, 2011",
+      "showId": "the-rose-tattoo-1995",
+      "showTitle": "The Rose Tattoo",
+      "showYear": 1995,
+      "file": "chicagotribune--chris-jones.json",
+      "outlet": "Chicago Tribune",
+      "criticName": "Chris Jones",
+      "publishDate": "October 15th, 2019",
       "originalSignals": [
-        "publishDate 2011 is 15 years after original opening 1996"
+        "revival text signals: revival, new production",
+        "modern references: social media",
+        "no publishDate + revival signals + revivals exist"
       ],
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review explicitly states that it is about an \"off-Broadway revival\" of Rent, not the original Broadway production from 1996."
+      "targetShowId": "the-rose-tattoo-2019",
+      "reasoning": "The review mentions Marisa Tomei, Trip Cullman, and the Roundabout Theatre Company's American Airlines Theatre, all associated with the 2019 Broadway production."
     },
     {
-      "showId": "rent-1996",
-      "showTitle": "Rent",
-      "showYear": 1996,
-      "file": "backstage--suzy-evans.json",
-      "outlet": "Backstage",
-      "criticName": "Suzy Evans",
-      "publishDate": "August 11, 2011",
-      "originalSignals": [
-        "publishDate 2011 is 15 years after original opening 1996"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review mentions the show shuttering in 2008 and then opening Off-Broadway in a reinterpreted version. This indicates it is not about the original 1996 Broadway production."
-    },
-    {
-      "showId": "rent-1996",
-      "showTitle": "Rent",
-      "showYear": 1996,
-      "file": "broadway-space--kari-olmon.json",
-      "outlet": "Broadway Space",
-      "criticName": "Kari Olmon",
-      "publishDate": "August 11, 2011",
-      "originalSignals": [
-        "publishDate 2011 is 15 years after original opening 1996"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review mentions that Rent began previews at New World Stages in July, which is an Off-Broadway venue, and that it played its final performance at the Nederlander Theatre. This indicates that the review is about a different production than the 1996 Broadway production."
-    },
-    {
-      "showId": "cats-1982",
-      "showTitle": "Cats",
-      "showYear": 1982,
-      "file": "hollywood-reporter--frank-scheck.json",
+      "showId": "noises-off-2001",
+      "showTitle": "Noises Off",
+      "showYear": 2001,
+      "file": "hollywood-reporter--david-rooney.json",
       "outlet": "The Hollywood Reporter",
-      "criticName": "Frank Scheck",
-      "publishDate": "July 31st, 2016",
+      "criticName": "David Rooney",
+      "publishDate": "January 14th, 2016",
       "originalSignals": [
-        "revival director match for cats-2016: Andy Blankenbuehler"
+        "year 1982 in text matches revival noises-off-1983",
+        "year 2016 in text matches revival noises-off-2016",
+        "year 2015 in text matches revival noises-off-2016"
       ],
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
-      "targetShowId": "cats-2016",
-      "reasoning": "The review mentions new choreography by Andy Blankenbuehler, which is specific to the 2016 revival. It also discusses the show as a new version, indicating it's not the 1982 production."
+      "targetShowId": "noises-off-2016",
+      "reasoning": "The review mentions the 2016 production's cast (Megan Hilty, Campbell Scott, Andrea Martin), director (Jeremy Herrin), and venue (American Airlines Theatre). It also mentions the Roundabout Theatre Company, which produced the 2016 revival."
     },
     {
-      "showId": "cats-1982",
-      "showTitle": "Cats",
-      "showYear": 1982,
-      "file": "ap--mark-kennedy.json",
-      "outlet": "Associated Press",
-      "criticName": "Mark Kennedy",
-      "publishDate": "July 31st, 2016",
-      "originalSignals": [
-        "revival director match for cats-2016: Andy Blankenbuehler"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "cats-2016",
-      "reasoning": "The review mentions Andy Blankenbuehler, who was the choreographer for the 2016 revival, and discusses the show in the context of theatrical evolutions since 1982, suggesting it's about a more recent production."
-    },
-    {
-      "showId": "cats-1982",
-      "showTitle": "Cats",
-      "showYear": 1982,
-      "file": "nytimes--charles-isherwood.json",
+      "showId": "hello-dolly-1995",
+      "showTitle": "Hello, Dolly!",
+      "showYear": 1995,
+      "file": "nytimes--jesse-green.json",
       "outlet": "The New York Times",
-      "criticName": "Charles Isherwood",
-      "publishDate": "July 31st, 2016",
+      "criticName": "Jesse Green",
+      "publishDate": "February 22nd, 2018",
       "originalSignals": [
-        "revival director match for cats-2016: Andy Blankenbuehler"
+        "revival text signals: revival, restaged",
+        "no publishDate + revival signals + revivals exist"
       ],
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
-      "targetShowId": "cats-2016",
-      "reasoning": "The review explicitly refers to the production as a \"revival\" and mentions Andy Blankenbuehler, who directed the 2016 revival."
+      "targetShowId": "hello-dolly-2017",
+      "reasoning": "The review discusses Bernadette Peters taking over the role of Dolly Levi from Bette Midler and Donna Murphy, which occurred in the 2017 revival. The review also mentions Charlie Stemp, who was in the 2017 production."
     },
     {
-      "showId": "cats-1982",
-      "showTitle": "Cats",
-      "showYear": 1982,
-      "file": "wsj--terry-teachout.json",
-      "outlet": "The Wall Street Journal",
-      "criticName": "Terry Teachout",
-      "publishDate": "August 4th, 2016",
+      "showId": "a-delicate-balance-1996",
+      "showTitle": "A Delicate Balance",
+      "showYear": 1996,
+      "file": "timeout--david-cote.json",
+      "outlet": "Time Out New York",
+      "criticName": "David Cote",
+      "publishDate": "November 20th, 2014",
       "originalSignals": [
-        "revival director match for cats-2016: Andy Blankenbuehler"
+        "revival text signals: revival, new revival",
+        "no publishDate + revival signals + revivals exist"
       ],
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
-      "targetShowId": "cats-2016",
-      "reasoning": "The review mentions Andy Blankenbuehler, who directed the 2016 revival, and discusses the show as a current production. The publish date of August 4th, 2016, also aligns with the 2016 revival."
+      "targetShowId": "a-delicate-balance-2014",
+      "reasoning": "The review mentions the director Pam MacKinnon, Glenn Close, John Lithgow, Martha Plimpton, Lindsay Duncan and Bob Balaban, all of whom were in the 2014 production. It also mentions Santo Loquasto's set, which was for the 2014 production. The review also mentions that it did not see the 1996 revival"
+    },
+    {
+      "showId": "burn-this-1987",
+      "showTitle": "Burn This",
+      "showYear": 1987,
+      "file": "timeout--adam-feldman.json",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "publishDate": "April 16th, 2019",
+      "originalSignals": [
+        "modern references: masks"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "burn-this-2019",
+      "reasoning": "The review mentions the cast (Adam Driver, Keri Russell, Brandon Uranowitz, David Furr) and director (Michael Mayer) of the 2019 Broadway revival. It also mentions the Hudson Theatre, where the 2019 revival played."
+    },
+    {
+      "showId": "the-father-1981",
+      "showTitle": "The Father",
+      "showYear": 1981,
+      "file": "hollywood-reporter--david-rooney.json",
+      "outlet": "The Hollywood Reporter",
+      "criticName": "David Rooney",
+      "publishDate": "April 14th, 2016",
+      "originalSignals": [
+        "year 2016 in text matches revival the-father-2016",
+        "modern references: masks"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "the-father-2016",
+      "reasoning": "The review mentions Frank Langella, Kathryn Erbe, the Samuel J. Friedman Theater, and Scott Pask's set design, all associated with the 2016 Broadway production. The review also mentions the year 2016."
+    },
+    {
+      "showId": "skylight-1996",
+      "showTitle": "Skylight",
+      "showYear": 1996,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "April 2nd, 2015",
+      "originalSignals": [
+        "revival text signals: revival, this production",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "skylight-2015",
+      "reasoning": "The review mentions Carey Mulligan and Bill Nighy, who starred in the 2015 revival. It also mentions the Golden Theater, where the 2015 revival opened. The review also refers to the 1996 production as the 'original staging'"
+    },
+    {
+      "showId": "shadowlands-1990",
+      "showTitle": "Shadowlands",
+      "showYear": 1990,
+      "file": "theater-life--barry-gordin.json",
+      "outlet": "Theater Life",
+      "criticName": "Barry Gordin",
+      "publishDate": "2018-01-06T18:22:21",
+      "originalSignals": [
+        "publishDate 2018 is 28 years after original opening 1990",
+        "revival text signals: restaged, this production"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "The review mentions that the play is \"now restaged at Theatre Row's Acorn Theatre by Fellowship for Performing Arts\" and that \"This production, directed by Christa Scott-Reed, features Daniel Gerroll as Lewis and Robin Abramson as Davidman.\" This indicates that the review is about a regional product"
+    },
+    {
+      "showId": "children-of-a-lesser-god-1980",
+      "showTitle": "Children of a Lesser God",
+      "showYear": 1980,
+      "file": "hollywood-reporter--david-rooney.json",
+      "outlet": "The Hollywood Reporter",
+      "criticName": "David Rooney",
+      "publishDate": "April 11th, 2018",
+      "originalSignals": [
+        "year 2018 in text matches revival children-of-a-lesser-god-2018"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "children-of-a-lesser-god-2018",
+      "reasoning": "The review explicitly mentions the 2018 revival, Joshua Jackson, Lauren Ridloff, Kenny Leon, and Studio 54, all associated with the 2018 production. The review also mentions the original 1980 production, but is clearly about the 2018 revival."
+    },
+    {
+      "showId": "the-crucible-1991",
+      "showTitle": "The Crucible",
+      "showYear": 1991,
+      "file": "vulture--jesse-green.json",
+      "outlet": "Vulture",
+      "criticName": "Jesse Green",
+      "publishDate": "March 31st, 2016",
+      "originalSignals": [
+        "year 2016 in text matches revival the-crucible-2016",
+        "modern references: twitter, netflix"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "the-crucible-2016",
+      "reasoning": "The review mentions Ivo van Hove as the director and the Walter Kerr theater, both associated with the 2016 production. The review also mentions that the production 'opened tonight,' indicating it's a current review of the 2016 production."
+    },
+    {
+      "showId": "betrayal-2000",
+      "showTitle": "Betrayal",
+      "showYear": 2000,
+      "file": "hollywood-reporter--david-rooney.json",
+      "outlet": "The Hollywood Reporter",
+      "criticName": "David Rooney",
+      "publishDate": "September 5th, 2019",
+      "originalSignals": [
+        "modern references: netflix"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "betrayal-2019",
+      "reasoning": "The review mentions Tom Hiddleston, Zawe Ashton, Charlie Cox, and Jamie Lloyd, who were all part of the 2019 Broadway production of Betrayal. It also mentions the Bernard B. Jacobs Theatre, where the 2019 production was staged."
+    },
+    {
+      "showId": "the-music-man-2000",
+      "showTitle": "The Music Man",
+      "showYear": 2000,
+      "file": "washpost--peter-marks.json",
+      "outlet": "The Washington Post",
+      "criticName": "Peter Marks",
+      "publishDate": "February 11th, 2022",
+      "originalSignals": [
+        "modern references: pandemic"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "the-music-man-2022",
+      "reasoning": "The review mentions the Winter Garden Theatre, Hugh Jackman, Jerry Zaks, and a 2022 opening, all associated with the 2022 production, not the 2000 production."
     }
   ]
 }
