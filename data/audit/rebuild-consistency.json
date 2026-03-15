@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-15T15:31:43.439Z",
+  "generatedAt": "2026-03-15T17:25:07.845Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -128,14 +128,6 @@
       "outlet": "timeout",
       "critic": "David Cote",
       "detail": "originalRating \"1/5\" (=20) vs score 84 (source: llmScore-thumb-boosted)"
-    },
-    {
-      "type": "rating-score-mismatch",
-      "severity": "high",
-      "showId": "shadowlands-west-end-2026",
-      "outlet": "timeout-london",
-      "critic": "Andrzej Lukowski",
-      "detail": "originalRating \"3/5\" (=60) vs score 35 (source: human-review)"
     },
     {
       "type": "rating-score-mismatch",
@@ -344,14 +336,6 @@
       "outlet": "ew",
       "critic": "Kristen Baldwin",
       "detail": "humanReviewScore 45 (mixed) overrides explicit \"B+\" (=80, positive)"
-    },
-    {
-      "type": "human-override-vs-explicit-grade",
-      "severity": "high",
-      "showId": "shadowlands-west-end-2026",
-      "outlet": "timeout-london",
-      "critic": "Andrzej Lukowski",
-      "detail": "humanReviewScore 35 (negative) overrides explicit \"3/5\" (=60, mixed)"
     },
     {
       "type": "human-override-vs-explicit-grade",

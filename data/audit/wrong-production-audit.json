@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-15T12:32:08.751Z",
+  "timestamp": "2026-03-15T17:25:15.389Z",
   "stats": {
-    "totalReviews": 31335,
-    "alreadyFlagged": 9601,
+    "totalReviews": 31349,
+    "alreadyFlagged": 9586,
     "dateGuardCatches": 125,
-    "directorMismatch": 1103,
-    "tvFilmSignals": 3490,
-    "londonSignals": 1017,
-    "offBroadwaySignals": 1088,
+    "directorMismatch": 1108,
+    "tvFilmSignals": 3492,
+    "londonSignals": 1016,
+    "offBroadwaySignals": 1089,
     "yearMismatch": 91,
-    "noPublishDate": 9305
+    "noPublishDate": 9309
   },
   "findings": [
     {
@@ -1029,6 +1029,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2014 (2x) more than 1996 (1x). 2014 matches production: a-delicate-balance-2014"
+        }
+      ]
+    },
+    {
+      "showId": "a-delicate-balance-1996",
+      "file": "timeout--david-cote.json",
+      "score": null,
+      "publishDate": "November 20th, 2014",
+      "url": "http://www.timeout.com/newyork/theater/a-delicate-balance",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"pam mackinnon\" from a-delicate-balance-2014"
         }
       ]
     },
@@ -7433,6 +7447,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "betrayal-2000",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": null,
+      "publishDate": "September 5th, 2019",
+      "url": "https://www.hollywoodreporter.com/review/tom-hiddleston-betrayal-theater-review-1234384",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from betrayal-2019"
         }
       ]
     },
@@ -22133,6 +22161,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"big screen\""
+        }
+      ]
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "ap--mark-kennedy.json",
+      "score": 86,
+      "publishDate": "2015-08-06",
+      "url": "https://apnews.com/review-lin-manuel-mirandas-hamilton-is-a-rollicking-show-830d0df6b1444259aff3fda7359c1f44",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -43745,6 +43792,19 @@
     },
     {
       "showId": "romeo-and-juliet-west-end-2026",
+      "file": "hollywood-reporter--david-rooney.json",
+      "publishDate": null,
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/romeo-and-juliet-theater-review-kit-connor-rachel-zegler-shakespeare-jack-antonoff-1236043115/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david leveaux\" from romeo-and-juliet-2013"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
       "file": "wsj--charles-isherwood.json",
       "score": 59,
       "publishDate": null,
@@ -45462,6 +45522,20 @@
       "score": 63,
       "publishDate": "April 2nd, 2015",
       "url": "http://www.nydailynews.com/entertainment/theater-arts/skylight-review-carey-mulligan-bill-nighy-broadway-article-1.2171016",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from skylight-2015"
+        }
+      ]
+    },
+    {
+      "showId": "skylight-1996",
+      "file": "nytimes--ben-brantley.json",
+      "score": null,
+      "publishDate": "April 2nd, 2015",
+      "url": "http://www.nytimes.com/2015/04/03/theater/review-skylight-with-carey-mulligan-and-bill-nighy-opens-on-broadway.html?_r=0",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -56189,6 +56263,20 @@
       ]
     },
     {
+      "showId": "the-music-man-2000",
+      "file": "washpost--peter-marks.json",
+      "score": null,
+      "publishDate": "February 11th, 2022",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/02/11/music-man-jackman-broadway/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry zaks\" from the-music-man-2022"
+        }
+      ]
+    },
+    {
       "showId": "the-music-man-2022",
       "file": "amny--matt-windman.json",
       "score": 45,
@@ -64215,6 +64303,20 @@
     },
     {
       "showId": "wicked-2003",
+      "file": "nytimes--charles-isherwood.json",
+      "score": 76,
+      "publishDate": "August 21, 2014",
+      "url": "http://www.nytimes.com/2014/08/22/theater/a-decade-later-wicked-continues-to-be-catnip-for-tweens.html?_r=1",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
       "file": "variety--charles-isherwood.json",
       "score": 62,
       "publishDate": "October 30, 2003",
@@ -71759,20 +71861,6 @@
     },
     {
       "showId": "hamilton-2015",
-      "file": "ap--mark-kennedy.json",
-      "score": 86,
-      "publishDate": "2015-08-06",
-      "url": "https://apnews.com/review-lin-manuel-mirandas-hamilton-is-a-rollicking-show-830d0df6b1444259aff3fda7359c1f44",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "hamilton-2015",
       "file": "bobs-theater-blog--robert-sholiton.json",
       "score": 82,
       "publishDate": "October 13, 2016",
@@ -73507,6 +73595,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "indecent-2017",
+      "file": "act-three-the-reviews--doug-marino.json",
+      "score": null,
+      "publishDate": "June 14th, 2016",
+      "url": "https://dougmarino.blogspot.com/2016/06/indecent.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
         }
       ]
     },
@@ -86149,20 +86251,6 @@
       "score": 85,
       "publishDate": "2023-11-15",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-play-that-goes-wrong-duchess-theatre-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-play-that-goes-wrong-west-end-2021",
-      "file": "timeout-london--unknown.json",
-      "score": 72,
-      "publishDate": "September 15th, 2014",
-      "url": "https://www.timeout.com/london/theatre/the-play-that-goes-wrong-1",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
