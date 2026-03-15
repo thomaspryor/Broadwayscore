@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-15T16:08:33.690Z",
-  "processed": 162,
-  "failed": 865,
-  "successRate": "15.8%",
+  "updatedAt": "2026-03-15T16:11:38.665Z",
+  "processed": 170,
+  "failed": 867,
+  "successRate": "16.4%",
   "tierBreakdown": {
-    "playwright": 78,
-    "amp": 20,
-    "browserbase": 42,
+    "playwright": 82,
+    "amp": 22,
+    "browserbase": 44,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 37,
-    "archive": 55
+    "archiveToday": 39,
+    "archive": 57
   },
-  "browserbaseSessions": 11,
+  "browserbaseSessions": 12,
   "recentActivity": [
-    {
-      "t": "2026-03-15T15:54:23.121Z",
-      "event": "bb-session",
-      "session": "07b66291",
-      "url": "https://www.newyorker.com/magazine/2024/12/02/death-becomes-her-theatre-review-b"
-    },
-    {
-      "t": "2026-03-15T15:54:24.804Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
     {
       "t": "2026-03-15T15:54:54.387Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-15T16:02:30.326Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-15T16:10:18.159Z",
+      "event": "bb-session",
+      "session": "57c8b4be",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-15T16:10:19.779Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
