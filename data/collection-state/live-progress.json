@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-15T02:02:36.319Z",
-  "processed": 42,
-  "failed": 79,
-  "successRate": "34.7%",
+  "updatedAt": "2026-03-15T02:05:47.486Z",
+  "processed": 44,
+  "failed": 87,
+  "successRate": "33.6%",
   "tierBreakdown": {
-    "playwright": 30,
+    "playwright": 31,
     "amp": 2,
-    "browserbase": 4,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 11,
+    "archiveToday": 13,
     "archive": 10
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-03-14T23:47:47.877Z",
@@ -80,6 +80,34 @@
       "t": "2026-03-15T02:02:21.479Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-15T02:02:42.389Z",
+      "event": "bb-session",
+      "session": "effab121",
+      "url": "http://www.amny.com/entertainment/a-bronx-tale-review-chazz-palminteri-s-saga-be"
+    },
+    {
+      "t": "2026-03-15T02:02:43.991Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-15T02:02:56.056Z",
+      "event": "bb-session",
+      "session": "11237589",
+      "url": "http://www.amny.com/entertainment/theater-review-a-gentleman-s-guide-to-love-mur"
+    },
+    {
+      "t": "2026-03-15T02:02:57.566Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-15T02:03:57.144Z",
+      "event": "bb-session",
+      "session": "43c811ef",
+      "url": "http://www.sdamustang.com/arts-entertainment/2012/10/02/allegiance-2/"
     }
   ]
 }

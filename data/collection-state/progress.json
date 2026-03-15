@@ -41,7 +41,9 @@
     "significant-other-2017/nydailynews--joe-dziemianowicz.json",
     "swept-away-2024/new-york-sun--elysa-gardner.json",
     "the-tragedy-of-coriolanus-off-broadway-2026/theatermania--pete-hempstead.json",
-    "uncle-vanya-2024/deadline--greg-evans.json"
+    "uncle-vanya-2024/deadline--greg-evans.json",
+    "allegiance-2015/sdamustang--andrew-walker.json",
+    "amazing-grace-2015/chicago-critic--tom-williams.json"
   ],
   "failed": [
     "dracula-west-end-2025/british-theatre--unknown.json",
@@ -122,7 +124,15 @@
     "the-price-1999/timeout--adam-feldman.json",
     "the-waverly-gallery-2018/nypost--johnny-oleksinski.json",
     "the-wiz-2024/indiewire--sarah-shachat.json",
-    "wolf-hall-parts-one-and-two-2015/timeout--adam-feldman.json"
+    "wolf-hall-parts-one-and-two-2015/timeout--adam-feldman.json",
+    "yellow-face-2024/nypost--johnny-oleksinski.json",
+    "mother-play-2024/forward--jesse-green.json",
+    "a-bronx-tale-the-musical-2016/amny--matt-windman.json",
+    "a-gentlemans-guide-to-love-and-murder-2013/amny--matt-windman.json",
+    "aint-no-mo-2022/usatoday--matthew-j-palm.json",
+    "all-my-sons-2008/usatoday--elysa-gardner.json",
+    "amazing-grace-2015/nwi-times--philip-potempa.json",
+    "amazing-grace-2015/windy-city-media-group--scott-c-morgan.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -156,7 +166,8 @@
       "prince-of-broadway-2017/musical-theatre-review--ron-cohen.json",
       "rodgers-hammersteins-cinderella-2013/theatermania--hayley-levitt.json",
       "swept-away-2024/new-york-sun--elysa-gardner.json",
-      "the-tragedy-of-coriolanus-off-broadway-2026/theatermania--pete-hempstead.json"
+      "the-tragedy-of-coriolanus-off-broadway-2026/theatermania--pete-hempstead.json",
+      "amazing-grace-2015/chicago-critic--tom-williams.json"
     ],
     "amp": [
       "data/review-texts/dracula-west-end-2025/variety--unknown.json",
@@ -166,7 +177,11 @@
       "data/review-texts/dracula-west-end-2025/nytimes--houman-barekat.json",
       "dracula-west-end-2025/nytimes--houman-barekat.json",
       "data/review-texts/uncle-vanya-2024/deadline--greg-evans.json",
-      "uncle-vanya-2024/deadline--greg-evans.json"
+      "uncle-vanya-2024/deadline--greg-evans.json",
+      "data/review-texts/a-bronx-tale-the-musical-2016/amny--matt-windman.json",
+      "data/review-texts/a-gentlemans-guide-to-love-and-murder-2013/amny--matt-windman.json",
+      "data/review-texts/allegiance-2015/sdamustang--andrew-walker.json",
+      "allegiance-2015/sdamustang--andrew-walker.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -182,7 +197,9 @@
       "data/review-texts/passing-strange-2008/guardian--kate-wyver.json",
       "data/review-texts/richard-iii-2013/guardian--susannah-clapp.json",
       "data/review-texts/the-assembled-parties-2013/guardian--emma-john.json",
-      "data/review-texts/the-price-1999/timeout--adam-feldman.json"
+      "data/review-texts/the-price-1999/timeout--adam-feldman.json",
+      "data/review-texts/amazing-grace-2015/nwi-times--philip-potempa.json",
+      "data/review-texts/amazing-grace-2015/windy-city-media-group--scott-c-morgan.json"
     ],
     "archive": [
       "dracula-west-end-2025/broadwayworld--unknown.json",
@@ -198,7 +215,7 @@
     ]
   },
   "startTime": "2026-03-14T23:45:46.571Z",
-  "lastProcessed": "wolf-hall-parts-one-and-two-2015/timeout--adam-feldman.json",
+  "lastProcessed": "amazing-grace-2015/windy-city-media-group--scott-c-morgan.json",
   "log": [
     {
       "t": "2026-03-14T23:47:47.877Z",
@@ -265,6 +282,34 @@
       "t": "2026-03-15T02:02:21.479Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-15T02:02:42.389Z",
+      "event": "bb-session",
+      "session": "effab121",
+      "url": "http://www.amny.com/entertainment/a-bronx-tale-review-chazz-palminteri-s-saga-be"
+    },
+    {
+      "t": "2026-03-15T02:02:43.991Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-15T02:02:56.056Z",
+      "event": "bb-session",
+      "session": "11237589",
+      "url": "http://www.amny.com/entertainment/theater-review-a-gentleman-s-guide-to-love-mur"
+    },
+    {
+      "t": "2026-03-15T02:02:57.566Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-15T02:03:57.144Z",
+      "event": "bb-session",
+      "session": "43c811ef",
+      "url": "http://www.sdamustang.com/arts-entertainment/2012/10/02/allegiance-2/"
     }
   ]
 }
