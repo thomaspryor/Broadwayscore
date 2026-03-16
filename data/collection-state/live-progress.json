@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-16T04:51:56.447Z",
-  "processed": 391,
-  "failed": 1624,
-  "successRate": "19.4%",
+  "updatedAt": "2026-03-16T04:54:47.615Z",
+  "processed": 400,
+  "failed": 1625,
+  "successRate": "19.8%",
   "tierBreakdown": {
-    "playwright": 239,
+    "playwright": 247,
     "amp": 24,
     "browserbase": 52,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 52,
-    "archive": 118
+    "archiveToday": 53,
+    "archive": 119
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-03-15T16:12:33.558Z",
-      "event": "bb-session",
-      "session": "6677a700",
-      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
-    },
-    {
-      "t": "2026-03-15T16:12:35.291Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-15T16:21:24.827Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-16T04:50:55.338Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-16T04:54:21.872Z",
+      "event": "bb-session",
+      "session": "50c57e76",
+      "url": "https://www.thestage.co.uk/reviews/reviews/the-hunger-games-on-stage-review-trou"
+    },
+    {
+      "t": "2026-03-16T04:54:23.343Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
