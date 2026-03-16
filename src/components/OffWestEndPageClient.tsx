@@ -9,7 +9,7 @@ import type { ScoreModeParam } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
 
 // Serialized show data passed from server component
-export interface WestEndShow {
+export interface OffWestEndShow {
   id: string;
   slug: string;
   title: string;
@@ -22,18 +22,16 @@ export interface WestEndShow {
   reviewYearNote?: string;
   images?: { thumbnail?: string; poster?: string; hero?: string };
   criticScore?: { score?: number; reviewCount?: number; tier1Count?: number; tier2Count?: number };
-  isOffWestEnd?: boolean;
   audienceCombinedScore: number | null;
   audienceGrade: { grade: string; label: string; color: string; textColor: string; tooltip: string } | null;
   creativeTeam?: Array<{ name: string; role: string }>;
   category?: string;
 }
 
-interface WestEndPageClientProps {
-  shows: WestEndShow[];
+interface OffWestEndPageClientProps {
+  shows: OffWestEndShow[];
   totalShows: number;
   totalReviews: number;
-  scoredShows: number;
 }
 
 // URL parameter values
@@ -45,14 +43,14 @@ type StatusFilter = 'all' | 'open' | 'previews' | 'closed';
 
 // Defaults
 const DEFAULT_STATUS: StatusParam = 'now_playing';
-const DEFAULT_SORT: SortParam = 'recent';
+const DEFAULT_SORT: SortParam = 'score_desc';
 const DEFAULT_TYPE: TypeParam = 'all';
 const DEFAULT_SCORE_MODE: ScoreModeParam = 'critics';
 
-function weHasEnoughReviews(show: WestEndShow): boolean {
+function oweHasEnoughReviews(show: OffWestEndShow): boolean {
   const rc = show.criticScore?.reviewCount ?? 0;
   const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
-  return hasEnoughReviews(rc, 'west-end', t1t2);
+  return hasEnoughReviews(rc, 'off-west-end', t1t2);
 }
 
 // Map URL params to internal values
@@ -71,9 +69,9 @@ function SearchIcon() {
   );
 }
 
-function ShowCardList({ shows, hideStatus, scoreMode }: { shows: WestEndShow[]; hideStatus: boolean; scoreMode: ScoreModeParam }) {
+function ShowCardList({ shows, hideStatus, scoreMode }: { shows: OffWestEndShow[]; hideStatus: boolean; scoreMode: ScoreModeParam }) {
   return (
-    <div className="space-y-3" role="list" aria-label="West End shows">
+    <div className="space-y-3" role="list" aria-label="Off-West End shows">
       {shows.map((show, index) => (
         <ShowListCard key={show.id} show={show} index={index} hideStatus={hideStatus} scoreMode={scoreMode} />
       ))}
@@ -82,7 +80,7 @@ function ShowCardList({ shows, hideStatus, scoreMode }: { shows: WestEndShow[]; 
 }
 
 // Featured row with horizontal scroll
-function FeaturedRow({ title, shows }: { title: string; shows: WestEndShow[] }) {
+function FeaturedRow({ title, shows }: { title: string; shows: OffWestEndShow[] }) {
   if (shows.length <= 3) return null;
 
   return (
@@ -100,7 +98,7 @@ function FeaturedRow({ title, shows }: { title: string; shows: WestEndShow[] }) 
 }
 
 // Inner component that uses searchParams
-function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: WestEndPageClientProps) {
+function OffWestEndPageInner({ shows, totalShows, totalReviews }: OffWestEndPageClientProps) {
   const initialSearchParams = useSearchParams();
 
   const [filters, setFilters] = useState(() => ({
@@ -113,7 +111,6 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
     scoreMode: (['critics', 'audience'].includes(initialSearchParams.get('scoreMode') as string)
       ? initialSearchParams.get('scoreMode') as ScoreModeParam : DEFAULT_SCORE_MODE),
     q: initialSearchParams.get('q') || '',
-    venue: (initialSearchParams.get('venue') === 'all' ? 'all' : 'west-end-only') as 'all' | 'west-end-only',
   }));
 
   // Separate synchronous state for search input — startTransition drops keystrokes on controlled inputs
@@ -124,7 +121,6 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
   const type = filters.type;
   const scoreMode = filters.scoreMode;
   const searchQuery = filters.q;
-  const venueFilter = filters.venue;
   const statusFilter = statusParamToFilter[status];
 
   const updateParams = useCallback((updates: Record<string, string | null>) => {
@@ -136,8 +132,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
             key === 'status' ? DEFAULT_STATUS :
             key === 'sort' ? DEFAULT_SORT :
             key === 'type' ? DEFAULT_TYPE :
-            key === 'scoreMode' ? DEFAULT_SCORE_MODE :
-            key === 'venue' ? 'all' : '';
+            key === 'scoreMode' ? DEFAULT_SCORE_MODE : '';
         } else {
           (next as Record<string, string>)[key] = value;
         }
@@ -149,10 +144,9 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
       if (next.type !== DEFAULT_TYPE) urlParams.set('type', next.type);
       if (next.scoreMode !== DEFAULT_SCORE_MODE) urlParams.set('scoreMode', next.scoreMode);
       if (next.q) urlParams.set('q', next.q);
-      if (next.venue === 'all') urlParams.set('venue', next.venue);
 
       const paramString = urlParams.toString();
-      window.history.replaceState({}, '', paramString ? `/west-end?${paramString}` : '/west-end');
+      window.history.replaceState({}, '', paramString ? `/off-west-end?${paramString}` : '/off-west-end');
 
       return next;
     }));
@@ -166,13 +160,12 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
       type: DEFAULT_TYPE,
       scoreMode: DEFAULT_SCORE_MODE,
       q: '',
-      venue: 'all',
     });
-    window.history.replaceState({}, '', '/west-end');
+    window.history.replaceState({}, '', '/off-west-end');
   }, []);
 
   // Fuse.js — lazy-loaded on first search keystroke to reduce initial bundle
-  const fuseRef = useRef<Fuse<WestEndShow> | null>(null);
+  const fuseRef = useRef<Fuse<OffWestEndShow> | null>(null);
   const fuseDataRef = useRef(shows);
   fuseDataRef.current = shows;
 
@@ -191,7 +184,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
       getFn: (obj, path) => {
         const key = Array.isArray(path) ? path[0] : path;
         if (key === 'creativeTeamSearch') {
-          return (obj as WestEndShow).creativeTeam?.map(m => m.name).join(', ') || '';
+          return (obj as OffWestEndShow).creativeTeam?.map(m => m.name).join(', ') || '';
         }
         return FuseModule.config.getFn(obj, path);
       },
@@ -200,7 +193,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
   }, []);
 
   // Async search results from lazy-loaded Fuse
-  const [fuseResults, setFuseResults] = useState<WestEndShow[] | null>(null);
+  const [fuseResults, setFuseResults] = useState<OffWestEndShow[] | null>(null);
   useEffect(() => {
     if (!searchQuery) { setFuseResults(null); return; }
     let cancelled = false;
@@ -213,15 +206,22 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
   }, [searchQuery, getFuse]);
 
   // Featured rows
-  const topMusicals = useMemo(() => {
+  const topRecentShows = useMemo(() => {
+    const twelveMonthsAgo = new Date();
+    twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
     return shows
-      .filter(show => show.type === 'musical' && show.status === 'open' && show.criticScore?.score && weHasEnoughReviews(show))
+      .filter(show => {
+        if (!show.criticScore?.score || !oweHasEnoughReviews(show)) return false;
+        if (show.status === 'previews' || show.status === 'upcoming') return false;
+        const opened = new Date(show.openingDate);
+        return opened >= twelveMonthsAgo;
+      })
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows]);
 
   const topPlays = useMemo(() => {
     return shows
-      .filter(show => show.type === 'play' && show.status === 'open' && show.criticScore?.score && weHasEnoughReviews(show))
+      .filter(show => show.type === 'play' && show.status === 'open' && show.criticScore?.score && oweHasEnoughReviews(show))
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows]);
 
@@ -232,7 +232,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
         if (show.status !== 'open' || !show.closingDate) return false;
         const closing = new Date(show.closingDate);
         const diffDays = Math.ceil((closing.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-        return diffDays > 0 && diffDays <= 90 && weHasEnoughReviews(show);
+        return diffDays > 0 && diffDays <= 90 && oweHasEnoughReviews(show);
       })
       .sort((a, b) => new Date(a.closingDate!).getTime() - new Date(b.closingDate!).getTime());
   }, [shows]);
@@ -240,24 +240,19 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
   const filteredAndSortedShows = useMemo(() => {
     // fuseResults is null while Fuse.js loads — fall through to normal filtering (avoids empty flash)
     if (searchQuery && fuseResults !== null) {
-      let searchResults = fuseResults;
-      if (venueFilter === 'west-end-only') {
-        searchResults = searchResults.filter(show => !show.isOffWestEnd);
-      }
-      return searchResults;
+      return fuseResults;
     }
 
     let result = shows.filter(show => {
       if (scoreMode === 'audience') {
         return show.audienceCombinedScore !== null && show.status !== 'previews';
       } else {
-        // Only show shows with enough reviews for a score, plus previews/upcoming in "all" view
+        // Only show shows with enough reviews for a score, plus previews/upcoming in filtered views
         if (show.status === 'previews' || show.status === 'upcoming') {
-          // Previews/upcoming only visible when explicitly filtering for them or "all"
           return statusFilter === 'previews' || statusFilter === 'all';
         }
         // Open and closed shows: require minimum reviews for a score
-        return show.criticScore && weHasEnoughReviews(show);
+        return show.criticScore && oweHasEnoughReviews(show);
       }
     });
 
@@ -271,11 +266,6 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
       result = result.filter(show => type === 'musical' ? show.type === 'musical' : show.type !== 'musical');
     }
 
-    // Venue filter (Off-West End)
-    if (venueFilter === 'west-end-only') {
-      result = result.filter(show => !show.isOffWestEnd);
-    }
-
     // Sort
     result.sort((a, b) => {
       switch (sort) {
@@ -285,8 +275,8 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
             const bAud = (b.status === 'previews') ? -1 : (b.audienceCombinedScore ?? -1);
             return bAud - aAud;
           }
-          const aHasEnough = weHasEnoughReviews(a);
-          const bHasEnough = weHasEnoughReviews(b);
+          const aHasEnough = oweHasEnoughReviews(a);
+          const bHasEnough = oweHasEnoughReviews(b);
           const aScore = (a.status === 'previews' || !aHasEnough) ? -1 : (a.criticScore?.score ?? -1);
           const bScore = (b.status === 'previews' || !bHasEnough) ? -1 : (b.criticScore?.score ?? -1);
           return bScore - aScore;
@@ -305,7 +295,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
     });
 
     return result;
-  }, [shows, fuseResults, statusFilter, type, searchQuery, sort, scoreMode, venueFilter]);
+  }, [shows, fuseResults, statusFilter, type, searchQuery, sort, scoreMode]);
 
   const shouldHideStatus = statusFilter !== 'all';
 
@@ -314,24 +304,24 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
       {/* Hero */}
       <div className="mb-4 sm:mb-8">
         <h1 className="hidden sm:block text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
-          West End<span className="bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent">Scorecard</span><span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-pink-400 border border-pink-400/30 bg-pink-400/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">Beta</span>
+          Off-West End<span className="bg-gradient-to-r from-violet-400 to-violet-500 bg-clip-text text-transparent">Scorecard</span><span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-violet-400 border border-violet-400/30 bg-violet-400/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">Beta</span>
         </h1>
         <p className="text-gray-400 text-lg sm:text-xl">
-          Every show. Every review. One score.
+          London theatre beyond the West End.
         </p>
         <p className="text-gray-500 text-sm sm:text-base mt-1">
-          {scoredShows} scored shows. {totalReviews.toLocaleString()} critic reviews. And counting.
+          {totalShows} shows. {totalReviews.toLocaleString()} critic reviews. And counting.
         </p>
       </div>
 
-      {/* Top Musicals - Featured Shelf */}
-      {topMusicals.length > 0 && (
+      {/* Top Recent Shows - Featured Shelf */}
+      {topRecentShows.length > 3 && (
         <section className="mb-4 sm:mb-6">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-base font-bold text-white">Top Musicals</h2>
+            <h2 className="text-base font-bold text-white">Top Recent Shows</h2>
           </div>
           <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
-            {topMusicals.map((show, index) => (
+            {topRecentShows.map((show, index) => (
               <MiniShowCard key={show.id} show={show} priority={index < 2} />
             ))}
           </div>
@@ -340,12 +330,12 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
 
       {/* Search */}
       <div id="search" className="relative mb-4 sm:mb-6 scroll-mt-24" role="search">
-        <label htmlFor="we-show-search" className="sr-only">Search West End shows</label>
+        <label htmlFor="owe-show-search" className="sr-only">Search Off-West End shows</label>
         <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
           <SearchIcon />
         </div>
         <input
-          id="we-show-search"
+          id="owe-show-search"
           type="search"
           placeholder="Search shows, venues, directors..."
           value={searchInput}
@@ -381,22 +371,6 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
         />
       </div>
 
-      {/* Venue Filter */}
-      {shows.some(s => s.isOffWestEnd) && (
-        <div className="flex items-center gap-2 mb-3 text-sm">
-          <ToggleBar
-            label="VENUE:"
-            options={[
-              { value: 'west-end-only' as const, label: 'WEST END' },
-              { value: 'all' as const, label: '+ OFF-WEST END' },
-            ]}
-            value={venueFilter}
-            onChange={(v) => updateParams({ venue: v === 'west-end-only' ? null : v })}
-            ariaLabel="Filter by venue type"
-          />
-        </div>
-      )}
-
       {/* Status & Sort Filters */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-3 mb-4 sm:mb-6 text-sm">
         <ToggleBar
@@ -427,7 +401,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
       </div>
 
       {/* Show List */}
-      <h2 className="sr-only">West End Shows</h2>
+      <h2 className="sr-only">Off-West End Shows</h2>
       <ShowCardList shows={filteredAndSortedShows} hideStatus={shouldHideStatus} scoreMode={scoreMode} />
 
       {filteredAndSortedShows.length === 0 && (
@@ -445,7 +419,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
           </p>
           <button
             onClick={clearAllFilters}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-pill bg-brand/10 text-brand hover:bg-brand/20 transition-colors text-sm font-semibold"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-pill bg-violet-500/10 text-violet-400 hover:bg-violet-500/20 transition-colors text-sm font-semibold"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -457,7 +431,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
 
       <div className="mt-8 flex items-baseline justify-between text-sm text-gray-400">
         <span>{filteredAndSortedShows.length} shows</span>
-        <Link href="/methodology" prefetch={false} className="text-brand hover:text-brand-hover transition-colors">
+        <Link href="/methodology" prefetch={false} className="text-violet-400 hover:text-violet-300 transition-colors">
           How scores work →
         </Link>
       </div>
@@ -521,16 +495,16 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
 }
 
 // Main export with Suspense boundary for useSearchParams
-export default function WestEndPageClient(props: WestEndPageClientProps) {
+export default function OffWestEndPageClient(props: OffWestEndPageClientProps) {
   return (
     <Suspense fallback={
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="mb-8 sm:mb-10">
           <div className="text-4xl sm:text-6xl font-extrabold text-white mb-3 tracking-tight" aria-hidden="true">
-            West End<span className="bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent">Scorecard</span><span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-pink-400 border border-pink-400/30 bg-pink-400/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">Beta</span>
+            Off-West End<span className="bg-gradient-to-r from-violet-400 to-violet-500 bg-clip-text text-transparent">Scorecard</span><span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-violet-400 border border-violet-400/30 bg-violet-400/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">Beta</span>
           </div>
           <p className="text-gray-400 text-lg sm:text-xl">
-            Every show. Every review. One score.
+            London theatre beyond the West End.
           </p>
         </div>
         <div className="animate-pulse space-y-4">
@@ -544,7 +518,7 @@ export default function WestEndPageClient(props: WestEndPageClientProps) {
         </div>
       </div>
     }>
-      <WestEndPageInner {...props} />
+      <OffWestEndPageInner {...props} />
     </Suspense>
   );
 }

@@ -158,6 +158,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.85,
     },
+    // Off-West End page
+    {
+      url: `${BASE_URL}/off-west-end`,
+      lastModified: showsDate,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
     // Rankings hub page
     {
       url: `${BASE_URL}/rankings`,
