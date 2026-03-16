@@ -619,7 +619,8 @@ const stats = {
   ampAttempts: 0,      // AMP variant
   ampSuccess: 0,
   totalFailed: 0,
-  scrapingBeeCreditsUsed: 0,
+  scrapingBeePageCredits: 0,
+  scrapingBeeSerpCredits: 0,
   browserbaseSessionsUsed: 0,
   browserbaseMinutesUsed: 0,
   // Track failures by outlet for end-of-run reporting
@@ -2359,7 +2360,7 @@ async function fetchWithScrapingBee(url, useStealth = false) {
 
     const response = await axios.get('https://app.scrapingbee.com/api/v1/', requestConfig);
 
-    stats.scrapingBeeCreditsUsed += credits;
+    stats.scrapingBeePageCredits += credits;
 
     const html = response.data;
 
@@ -2898,7 +2899,7 @@ async function _serpViaScrapingBee(query) {
         params: { api_key: CONFIG.scrapingBeeKey, search: query },
         timeout: 30000,
       });
-      stats.scrapingBeeCreditsUsed += 1;
+      stats.scrapingBeeSerpCredits += 1;
       const data = response.data;
       _recordSerpResult(true);
       return (data.organic_results || data.results || []).map(r => ({
@@ -2925,11 +2926,72 @@ async function _serpViaScrapingBee(query) {
 }
 
 /**
- * Search via Bright Data Web Unlocker → Google HTML.
- * Parses organic results from Google's HTML response.
- * @returns {Array<{url: string, title: string}>} organic results
+ * Search via Bright Data SERP API (structured JSON, primary) → Web Unlocker (HTML parsing, fallback).
+ * @returns {Array<{url: string, title: string}>} organic results, null if provider is down
  */
+let _bdSerpConsecutiveFailures = 0;
+const BD_MAX_CONSECUTIVE_FAILURES = 5;
+const BD_SERP_CUSTOMER = process.env.BRIGHTDATA_CUSTOMER || 'hl_a2c64a47';
+const BD_SERP_ZONE = process.env.BRIGHTDATA_SERP_ZONE || 'serp_api1';
+
+async function _serpViaBrightDataSerpApi(query) {
+  if (!CONFIG.brightDataKey || _bdSerpConsecutiveFailures >= BD_MAX_CONSECUTIVE_FAILURES) return null;
+
+  try {
+    const submitRes = await axios.post(
+      `https://api.brightdata.com/serp/req?customer=${BD_SERP_CUSTOMER}&zone=${BD_SERP_ZONE}`,
+      { query: { q: query, gl: 'us' } },
+      {
+        headers: { 'Authorization': `Bearer ${CONFIG.brightDataKey}` },
+        timeout: 15000,
+      }
+    );
+    const responseId = submitRes.data?.response_id;
+    if (!responseId) { _bdSerpConsecutiveFailures++; return null; }
+
+    // Poll for results (max 20s)
+    for (let i = 0; i < 10; i++) {
+      await new Promise(r => setTimeout(r, 2000));
+      const pollRes = await axios.get(
+        `https://api.brightdata.com/serp/get_result?response_id=${responseId}`,
+        {
+          headers: { 'Authorization': `Bearer ${CONFIG.brightDataKey}` },
+          timeout: 10000,
+          validateStatus: () => true, // Don't throw on non-2xx
+        }
+      );
+      if (pollRes.status === 202) continue;
+      if (pollRes.status >= 400) { _bdSerpConsecutiveFailures++; return null; }
+      const data = pollRes.data;
+      if (data?.organic) {
+        _bdSerpConsecutiveFailures = 0;
+        return data.organic.slice(0, 10).map(r => ({
+          url: r.link || r.url || '',
+          title: r.title || '',
+        }));
+      }
+      if (data?.response_id) continue;
+      _bdSerpConsecutiveFailures = 0;
+      return [];
+    }
+    _bdSerpConsecutiveFailures++;
+    console.log('    ⚠ BD SERP API timeout (20s) — trying Web Unlocker');
+    return null;
+  } catch (error) {
+    _bdSerpConsecutiveFailures++;
+    console.log(`    ✗ BD SERP API error: ${error.message}`);
+    return null;
+  }
+}
+
 async function _serpViaBrightData(query) {
+  // Try structured SERP API first (reliable JSON), fall back to Web Unlocker (HTML parsing)
+  const serpApiResult = await _serpViaBrightDataSerpApi(query);
+  if (serpApiResult !== null) return serpApiResult;
+  return _serpViaBrightDataWebUnlocker(query);
+}
+
+async function _serpViaBrightDataWebUnlocker(query) {
   if (!CONFIG.brightDataKey) return null;
 
   const zoneName = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
@@ -3062,13 +3124,13 @@ async function discoverCorrectUrl(review) {
   console.log(`  [URL Discovery] Searching: ${query}`);
 
   try {
-    // Provider chain: ScrapingBee → Bright Data
+    // Provider chain: Bright Data first (cheap: $0.0015/q) → ScrapingBee fallback (25 credits/q)
     // null = provider failure (down/exhausted), [] = searched but no results
-    let results = await _serpViaScrapingBee(query);
-    let provider = 'scrapingbee';
+    let results = await _serpViaBrightData(query);
+    let provider = 'brightdata';
     if (!results) {
-      results = await _serpViaBrightData(query);
-      provider = 'brightdata';
+      results = await _serpViaScrapingBee(query);
+      provider = 'scrapingbee';
     }
 
     // Both providers down — return sentinel so caller doesn't penalize the review
@@ -3090,11 +3152,11 @@ async function discoverCorrectUrl(review) {
         stats.urlDiscoveryAttempts++; // counts against per-run cap
         const fallbackQuery = `"${showTitle}" "${outletName}" "${criticName}" ${reviewKeyword}${yearClause}`;
         console.log(`    Fallback search (no site:): ${fallbackQuery}`);
-        results = await _serpViaScrapingBee(fallbackQuery);
-        provider = 'scrapingbee-fallback';
+        results = await _serpViaBrightData(fallbackQuery);
+        provider = 'brightdata-fallback';
         if (!results) {
-          results = await _serpViaBrightData(fallbackQuery);
-          provider = 'brightdata-fallback';
+          results = await _serpViaScrapingBee(fallbackQuery);
+          provider = 'scrapingbee-fallback';
         }
         if (results === null) {
           console.log(`    ✗ All SERP providers unavailable`);
@@ -6154,7 +6216,8 @@ function generateReport() {
       tier4Attempts: stats.tier4Attempts,
       tier4Success: stats.tier4Success,
       totalFailed: stats.totalFailed,
-      scrapingBeeCreditsUsed: stats.scrapingBeeCreditsUsed,
+      scrapingBeePageCredits: stats.scrapingBeePageCredits,
+      scrapingBeeSerpCredits: stats.scrapingBeeSerpCredits,
       browserbaseSessionsUsed: stats.browserbaseSessionsUsed,
       browserbaseMinutesUsed: Math.round(stats.browserbaseMinutesUsed * 10) / 10,
       urlDiscoveryAttempts: stats.urlDiscoveryAttempts,
@@ -6191,7 +6254,8 @@ function generateReport() {
   console.log(`║ └─ Tier 4 (Archive.org): ${String(report.tierBreakdown.archive).padStart(31)} ║`);
   console.log(`${'╠' + '═'.repeat(58) + '╣'}`);
   console.log(`║ API USAGE                                                ║`);
-  console.log(`║ ├─ ScrapingBee credits: ${String(stats.scrapingBeeCreditsUsed).padStart(32)} ║`);
+  console.log(`║ ├─ SB page credits:    ${String(stats.scrapingBeePageCredits).padStart(32)} ║`);
+  console.log(`║ ├─ SB SERP credits:    ${String(stats.scrapingBeeSerpCredits).padStart(32)} ║`);
   console.log(`║ └─ Browserbase sessions: ${String(stats.browserbaseSessionsUsed).padStart(31)} ║`);
   if (stats.urlDiscoveryAttempts > 0) {
     console.log(`${'╠' + '═'.repeat(58) + '╣'}`);
