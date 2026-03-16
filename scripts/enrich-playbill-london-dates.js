@@ -19,6 +19,7 @@ const fs = require('fs');
 const path = require('path');
 const cheerio = require('cheerio');
 const { matchTitleToShow } = require('./lib/show-matching');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const PLAYBILL_URL = 'https://playbill.com/article/schedule-of-upcoming-london-shows';
@@ -148,7 +149,7 @@ async function main() {
   const allShows = data.shows;
 
   // Filter to West End shows
-  let weShows = allShows.filter(s => s.category === 'west-end');
+  let weShows = allShows.filter(s => isLondonMarket(s.category));
   console.log(`West End shows: ${weShows.length}`);
 
   if (showSlug) {
@@ -217,7 +218,7 @@ async function main() {
     // Match using all WE shows (not just candidates) for better matching
     const result = matchTitleToShow(entry.title, weShows, { market: 'west-end' });
 
-    if (!result || result.show.category !== 'west-end') {
+    if (!result || !isLondonMarket(result.show.category)) {
       unmatched.push(entry.title);
       continue;
     }

@@ -14,6 +14,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 
+const { isLondonMarket } = require('./lib/venue-classification');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
 
@@ -75,6 +76,7 @@ function getTodayTixCategory(ttShow) {
   if (subs.includes('Broadway')) return 'broadway';
   if (subs.includes('Off-Broadway') || subs.includes('Off Broadway')) return 'off-broadway';
   if (subs.includes('West End')) return 'west-end';
+  if (subs.includes('Off West End')) return 'off-west-end';
   return null;
 }
 
@@ -94,7 +96,8 @@ function matchShow(ttShow, shows, category) {
   // Filter to matching category AND currently open/previews (TodayTix only has active shows)
   const candidates = shows.filter(s => {
     const showCat = s.category || 'broadway';
-    if (showCat !== category) return false;
+    // For London markets, match both WE and OWE shows
+    if (isLondonMarket(category) ? !isLondonMarket(showCat) : showCat !== category) return false;
     // Skip closed shows — TodayTix only lists active shows, so matching
     // to a closed show is always wrong (different production)
     if (s.status === 'closed') return false;
@@ -195,12 +198,13 @@ async function main() {
   console.log('\n=== Processing London shows ===');
   const weShows = londonShows.filter(s => {
     const subs = (s.subcategories || []).map(sc => sc.name);
-    return subs.includes('West End');
+    return subs.includes('West End') || subs.includes('Off West End');
   });
-  console.log(`  ${weShows.length} West End shows from TodayTix`);
+  console.log(`  ${weShows.length} London shows from TodayTix`);
 
   for (const tt of weShows) {
-    const show = matchShow(tt, shows, 'west-end');
+    const ttCat = getTodayTixCategory(tt) || 'west-end';
+    const show = matchShow(tt, shows, ttCat);
     if (!show) { stats.skipped++; continue; }
     enrichShow(show, tt, 2);
   }

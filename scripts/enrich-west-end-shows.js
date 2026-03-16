@@ -10,6 +10,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 
+const { isLondonMarket } = require('./lib/venue-classification');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const IMAGES_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -96,7 +97,7 @@ async function main() {
   // Load shows
   const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
   const shows = showsData.shows || showsData;
-  const weShows = shows.filter(s => s.category === 'west-end');
+  const weShows = shows.filter(s => isLondonMarket(s.category));
   console.log(`Found ${weShows.length} West End shows in shows.json`);
 
   // Fetch TodayTix data

@@ -14,6 +14,7 @@ const fs = require('fs');
 const path = require('path');
 const { JSDOM } = require('jsdom');
 const { resolveOutletFromCritic, resolveOutletFromUrl } = require('./lib/review-normalization');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -442,7 +443,7 @@ async function main() {
 
   // Load our shows
   const shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
-  const weShows = shows.shows.filter(s => s.category === 'west-end');
+  const weShows = shows.shows.filter(s => isLondonMarket(s.category));
   console.log(`Our WE shows: ${weShows.length}\n`);
 
   // Load ShowScore data
