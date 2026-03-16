@@ -167,40 +167,17 @@ for (const show of visibleShows) {
     };
 
     if (buzz.sources) {
+      // Minified key map for mobile app payload
+      const KEY_MAP = { showScore: 'ss', mezzanine: 'mz', reddit: 'rd', theatr: 'th', broadwayCom: 'bc', seatplan: 'sp', lbo: 'lb' };
       const sources = {};
-      if (buzz.sources.showScore) {
-        sources.ss = {
-          s: buzz.sources.showScore.score,
-          c: buzz.sources.showScore.reviewCount,
-        };
-      }
-      if (buzz.sources.mezzanine) {
-        sources.mz = {
-          s: buzz.sources.mezzanine.score,
-          c: buzz.sources.mezzanine.reviewCount,
-          sr: buzz.sources.mezzanine.starRating || null,
-        };
-      }
-      if (buzz.sources.reddit) {
-        sources.rd = {
-          s: buzz.sources.reddit.score,
-          c: buzz.sources.reddit.reviewCount,
-          tp: buzz.sources.reddit.totalPosts || 0,
-          sent: buzz.sources.reddit.sentiment || null,
-        };
-      }
-      if (buzz.sources.theatr) {
-        sources.th = {
-          s: buzz.sources.theatr.score,
-          c: buzz.sources.theatr.reviewCount,
-        };
-      }
-      if (buzz.sources.broadwayCom) {
-        sources.bc = {
-          s: buzz.sources.broadwayCom.score,
-          c: buzz.sources.broadwayCom.reviewCount,
-          sr: buzz.sources.broadwayCom.starRating || null,
-        };
+      for (const [key, data] of Object.entries(buzz.sources)) {
+        if (!data || data.score == null) continue;
+        const minKey = KEY_MAP[key] || key;
+        const entry = { s: data.score, c: data.reviewCount };
+        if (data.starRating) entry.sr = data.starRating;
+        if (data.totalPosts) entry.tp = data.totalPosts;
+        if (data.sentiment) entry.sent = data.sentiment;
+        sources[minKey] = entry;
       }
       if (Object.keys(sources).length > 0) {
         audienceDetail.sources = sources;
