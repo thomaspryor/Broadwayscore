@@ -15,6 +15,7 @@
     "db:build:full": "node scripts/build-sqlite.js --include-text",
     "db:query": "node scripts/query.js",
     "test:aggregator": "node scripts/validate-aggregator-truth.js",
+    "test:smoke": "npx playwright test --project=chromium tests/e2e/smoke.spec.ts",
     "test:e2e": "npx playwright test",
     "test:e2e:ui": "npx playwright test --ui",
     "test:my-shows": "RUN_UGC_TESTS=1 TEST_BASE_URL=http://localhost:3456 npx playwright test tests/e2e/my-shows-mock.spec.ts",
