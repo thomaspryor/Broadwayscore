@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-16T04:49:31.074Z",
-  "processed": 382,
-  "failed": 1623,
-  "successRate": "19.1%",
+  "updatedAt": "2026-03-16T04:51:56.447Z",
+  "processed": 391,
+  "failed": 1624,
+  "successRate": "19.4%",
   "tierBreakdown": {
-    "playwright": 231,
+    "playwright": 239,
     "amp": 24,
     "browserbase": 52,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 51,
-    "archive": 117
+    "archiveToday": 52,
+    "archive": 118
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-03-15T16:12:12.391Z",
-      "event": "bb-session",
-      "session": "010e46c8",
-      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
-    },
-    {
-      "t": "2026-03-15T16:12:13.962Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-15T16:12:33.558Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-16T04:48:31.109Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-16T04:50:53.779Z",
+      "event": "bb-session",
+      "session": "f22566c8",
+      "url": "https://www.thestage.co.uk/reviews/it-walks-around-the-house-at-night-review-sou"
+    },
+    {
+      "t": "2026-03-16T04:50:55.338Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }

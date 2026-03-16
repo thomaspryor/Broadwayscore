@@ -381,7 +381,16 @@
     "garry-starr-classic-penguins-garrick-west-end-2026/times-uk--unknown.json",
     "hercules-west-end-2025/artsdesk--unknown.json",
     "hercules-west-end-2025/i-paper--unknown.json",
-    "im-sorry-prime-minister-west-end-2026/broadwayworld--gary-naylor.json"
+    "im-sorry-prime-minister-west-end-2026/broadwayworld--gary-naylor.json",
+    "into-the-woods-west-end-2025/times-uk--unknown.json",
+    "it-walks-around-the-house-at-night-west-end-2026/london-theatre--unknown.json",
+    "it-walks-around-the-house-at-night-west-end-2026/whatsonstage--unknown.json",
+    "magic-mike-live-west-end-2021/london-theatre--mark-shenton.json",
+    "magic-mike-live-west-end-2021/standard--henry-hitchings.json",
+    "man-and-boy-west-end-2026/artsdesk--demetrios-matheou.json",
+    "man-and-boy-west-end-2026/standard--nick-curtis.json",
+    "paranormal-activity-west-end-2025/financialtimes--unknown.json",
+    "paranormal-activity-west-end-2025/telegraph--unknown.json"
   ],
   "failed": [
     "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
@@ -2006,7 +2015,8 @@
     "the-holy-rosenbergs-west-end-2026/guardian--david-jays.json",
     "the-play-that-goes-wrong-west-end-2021/guardian--unknown.json",
     "back-to-the-future-west-end-2021/thestage--tim-bano.json",
-    "hercules-west-end-2025/times-uk--unknown.json"
+    "hercules-west-end-2025/times-uk--unknown.json",
+    "it-walks-around-the-house-at-night-west-end-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2241,7 +2251,15 @@
       "back-to-the-future-west-end-2021/british-theatre--unknown.json",
       "garry-starr-classic-penguins-garrick-west-end-2026/times-uk--unknown.json",
       "hercules-west-end-2025/artsdesk--unknown.json",
-      "hercules-west-end-2025/i-paper--unknown.json"
+      "hercules-west-end-2025/i-paper--unknown.json",
+      "into-the-woods-west-end-2025/times-uk--unknown.json",
+      "it-walks-around-the-house-at-night-west-end-2026/london-theatre--unknown.json",
+      "it-walks-around-the-house-at-night-west-end-2026/whatsonstage--unknown.json",
+      "magic-mike-live-west-end-2021/london-theatre--mark-shenton.json",
+      "magic-mike-live-west-end-2021/standard--henry-hitchings.json",
+      "man-and-boy-west-end-2026/artsdesk--demetrios-matheou.json",
+      "man-and-boy-west-end-2026/standard--nick-curtis.json",
+      "paranormal-activity-west-end-2025/financialtimes--unknown.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -2377,7 +2395,8 @@
       "data/review-texts/im-sorry-prime-minister-west-end-2026/timeout-london--tom-wicker.json",
       "data/review-texts/the-holy-rosenbergs-west-end-2026/guardian--david-jays.json",
       "data/review-texts/the-play-that-goes-wrong-west-end-2021/guardian--unknown.json",
-      "data/review-texts/back-to-the-future-west-end-2021/thestage--tim-bano.json"
+      "data/review-texts/back-to-the-future-west-end-2021/thestage--tim-bano.json",
+      "data/review-texts/it-walks-around-the-house-at-night-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
@@ -2496,11 +2515,12 @@
       "heathers-the-musical-off-broadway-2025/theater-pizzazz--ron-fassler.json",
       "hercules-west-end-2025/daily-mail--patrick-marmion.json",
       "hamilton-west-end-2021/nytimes--unknown.json",
-      "im-sorry-prime-minister-west-end-2026/broadwayworld--gary-naylor.json"
+      "im-sorry-prime-minister-west-end-2026/broadwayworld--gary-naylor.json",
+      "paranormal-activity-west-end-2025/telegraph--unknown.json"
     ]
   },
   "startTime": "2026-03-15T09:45:15.761Z",
-  "lastProcessed": "im-sorry-prime-minister-west-end-2026/broadwayworld--gary-naylor.json",
+  "lastProcessed": "paranormal-activity-west-end-2025/telegraph--unknown.json",
   "log": [
     {
       "t": "2026-03-15T09:48:36.450Z",
@@ -2953,6 +2973,17 @@
     },
     {
       "t": "2026-03-16T04:48:31.109Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-16T04:50:53.779Z",
+      "event": "bb-session",
+      "session": "f22566c8",
+      "url": "https://www.thestage.co.uk/reviews/it-walks-around-the-house-at-night-review-sou"
+    },
+    {
+      "t": "2026-03-16T04:50:55.338Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
