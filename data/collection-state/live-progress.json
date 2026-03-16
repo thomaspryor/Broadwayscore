@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-16T04:46:32.488Z",
-  "processed": 374,
-  "failed": 1621,
-  "successRate": "18.7%",
+  "updatedAt": "2026-03-16T04:49:31.074Z",
+  "processed": 382,
+  "failed": 1623,
+  "successRate": "19.1%",
   "tierBreakdown": {
-    "playwright": 224,
+    "playwright": 231,
     "amp": 24,
     "browserbase": 52,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 50,
-    "archive": 116
+    "archiveToday": 51,
+    "archive": 117
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-15T16:10:18.159Z",
-      "event": "bb-session",
-      "session": "57c8b4be",
-      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
-    },
-    {
-      "t": "2026-03-15T16:10:19.779Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
     {
       "t": "2026-03-15T16:12:12.391Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-16T04:42:39.015Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-16T04:48:29.785Z",
+      "event": "bb-session",
+      "session": "148fdf54",
+      "url": "https://www.thestage.co.uk/long-reviews/back-to-the-future-the-musical-adelphi-t"
+    },
+    {
+      "t": "2026-03-16T04:48:31.109Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
