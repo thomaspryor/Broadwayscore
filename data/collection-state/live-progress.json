@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-16T19:13:12.562Z",
-  "processed": 24,
-  "failed": 8,
-  "successRate": "75.0%",
+  "updatedAt": "2026-03-16T19:15:19.384Z",
+  "processed": 33,
+  "failed": 9,
+  "successRate": "78.6%",
   "tierBreakdown": {
-    "playwright": 27,
-    "amp": 2,
-    "browserbase": 4,
+    "playwright": 29,
+    "amp": 4,
+    "browserbase": 10,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 7,
-    "archive": 22
+    "archive": 25
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-03-16T19:08:03.771Z",
@@ -47,6 +47,39 @@
       "t": "2026-03-16T19:12:39.168Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-16T19:13:18.734Z",
+      "event": "bb-session",
+      "session": "c4d5d335",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-16T19:13:20.302Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-16T19:13:38.387Z",
+      "event": "bb-session",
+      "session": "53fcb7f6",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-16T19:13:39.997Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-16T19:14:36.587Z",
+      "event": "bb-session",
+      "session": "ebae7086",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-16T19:14:38.152Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
