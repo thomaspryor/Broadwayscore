@@ -552,6 +552,29 @@ jobs:
               }
             }
 
+      - name: Trigger Deep Research for opened shows
+        if: steps.filter.outputs.opened_shows != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'deep-research-commercial.yml',
+                ref: 'main',
+                inputs: {
+                  shows: '${{ steps.filter.outputs.opened_shows }}',
+                  model: 'o4-mini',
+                  budget: '20',
+                  max_shows: '3'
+                }
+              });
+              console.log('Triggered Deep Research for opened shows: ${{ steps.filter.outputs.opened_shows }}');
+            } catch (e) {
+              console.log('Deep Research trigger failed:', e.message);
+            }
+
       - name: Submit new show pages to Google Indexing API + IndexNow
         continue-on-error: true
         env:
