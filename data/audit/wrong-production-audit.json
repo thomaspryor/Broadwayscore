@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-16T06:29:50.982Z",
+  "timestamp": "2026-03-16T06:37:18.917Z",
   "stats": {
     "totalReviews": 31491,
     "alreadyFlagged": 9670,
     "dateGuardCatches": 126,
     "directorMismatch": 1112,
     "tvFilmSignals": 3493,
-    "londonSignals": 1020,
+    "londonSignals": 1019,
     "offBroadwaySignals": 1089,
     "yearMismatch": 91,
     "noPublishDate": 9372
@@ -81056,20 +81056,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
-        }
-      ]
-    },
-    {
-      "showId": "starlight-express-west-end-2024",
-      "file": "london-box-office--camille-leadbeater.json",
-      "score": 84,
-      "publishDate": "2024-12-02",
-      "url": "https://www.londonboxoffice.co.uk/news/post/starlight-express-london-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
