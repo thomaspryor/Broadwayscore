@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-03-16T05:03:38.766Z",
+  "timestamp": "2026-03-16T05:31:28.849Z",
   "stats": {
     "totalReviews": 31491,
     "alreadyFlagged": 9667,
     "dateGuardCatches": 126,
-    "directorMismatch": 1105,
-    "tvFilmSignals": 3495,
+    "directorMismatch": 1108,
+    "tvFilmSignals": 3493,
     "londonSignals": 1019,
     "offBroadwaySignals": 1089,
     "yearMismatch": 91,
@@ -30272,6 +30272,25 @@
       ]
     },
     {
+      "showId": "les-miserables-west-end-2021",
+      "file": "times-uk--clive-davis.json",
+      "score": 25,
+      "publishDate": "2020-01-17",
+      "url": "/people/Clive-Davis/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        }
+      ]
+    },
+    {
       "showId": "lestat-2006",
       "file": "variety--charles-isherwood.json",
       "score": 25,
@@ -31908,11 +31927,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 842d before show (2019-09-08 vs 2021-12-28)"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -32080,20 +32094,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2001 (3x) more than 2025 (0x). 2001 matches production: mamma-mia-2001"
-        }
-      ]
-    },
-    {
-      "showId": "mamma-mia-west-end-2021",
-      "file": "london-box-office--daniel-perks.json",
-      "score": 44,
-      "publishDate": "2014-09-11",
-      "url": "https://www.londonboxoffice.co.uk/news/post/mamma-mia-review",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -32982,11 +32982,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -33006,6 +33001,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "matilda-the-musical-west-end-2021",
+      "file": "standard--henry-hitchings.json",
+      "score": 94,
+      "publishDate": "2011-11-25",
+      "url": "http://www.thisislondon.co.uk/theatre/review-24014294-matilda-the-musical-cambridge-theatre---review.do",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
         }
       ]
     },
@@ -35399,6 +35408,7 @@
     {
       "showId": "moulin-rouge-the-musical-west-end-2021",
       "file": "broadwayworld--michael-rabice.json",
+      "score": 73,
       "publishDate": null,
       "url": "/chicago/article/BWW-CHICAGO-REVIEW-NATIONAL-TOUR-OF-MOULIN-ROUGE-THE-MUSICAL-at-Nederlander-Theatre-20220422",
       "findings": [
@@ -35412,6 +35422,7 @@
     {
       "showId": "moulin-rouge-the-musical-west-end-2021",
       "file": "broadwayworld--roy-berko.json",
+      "score": 73,
       "publishDate": null,
       "url": "/chicago/article/BWW-CHICAGO-REVIEW-NATIONAL-TOUR-OF-MOULIN-ROUGE-THE-MUSICAL-at-Nederlander-Theatre-20220422",
       "findings": [
@@ -77460,6 +77471,20 @@
       "score": 72,
       "publishDate": null,
       "url": "https://www.nbcnewyork.com/entertainment/the-scene/Review-Motown-BerryGordy-2016-387676831.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-the-musical-west-end-2021",
+      "file": "london-box-office--stuart-king.json",
+      "score": 72,
+      "publishDate": "2024-09-18",
+      "url": "https://www.londonboxoffice.co.uk/news/post/moulin-rouge-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
