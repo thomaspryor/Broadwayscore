@@ -2953,7 +2953,7 @@ async function _serpViaBrightDataSerpApi(query) {
     for (let i = 0; i < 10; i++) {
       await new Promise(r => setTimeout(r, 2000));
       const pollRes = await axios.get(
-        `https://api.brightdata.com/serp/get_result?response_id=${responseId}`,
+        `https://api.brightdata.com/serp/get_result?customer=${BD_SERP_CUSTOMER}&zone=${BD_SERP_ZONE}&response_id=${responseId}`,
         {
           headers: { 'Authorization': `Bearer ${CONFIG.brightDataKey}` },
           timeout: 10000,
@@ -2994,12 +2994,13 @@ async function _serpViaBrightData(query) {
 async function _serpViaBrightDataWebUnlocker(query) {
   if (!CONFIG.brightDataKey) return null;
 
-  const zoneName = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
-  const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}&num=10&hl=en`;
+  // Use SERP zone with synchronous /request endpoint (returns structured JSON)
+  // The Web Unlocker zone cannot access Google Search — BrightData blocks it
+  const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}&num=10&hl=en&gl=us`;
 
   try {
     const response = await axios.post('https://api.brightdata.com/request', {
-      zone: zoneName,
+      zone: BD_SERP_ZONE,
       url: googleUrl,
       format: 'raw',
     }, {
@@ -3010,41 +3011,35 @@ async function _serpViaBrightDataWebUnlocker(query) {
       timeout: 30000,
     });
 
-    const html = typeof response.data === 'string' ? response.data : '';
+    const data = response.data;
+
+    // Structured JSON response (preferred)
+    if (data && typeof data === 'object' && data.organic) {
+      return data.organic.slice(0, 10).map(r => ({
+        url: r.link || r.url || '',
+        title: r.title || '',
+      }));
+    }
+
+    // Fallback: HTML response — parse URLs
+    const html = typeof data === 'string' ? data : '';
     if (!html || html.length < 500) return [];
 
-    // Parse Google organic results from HTML
-    // Google wraps results in <div class="g"> blocks with <a href="URL"> links
-    // Also handles /url?q=ACTUAL_URL& redirect links
     const results = [];
-    // Match href values that look like real URLs (not google internal)
     const hrefRegex = /href="(https?:\/\/(?!(?:www\.)?google\.)[^"]+)"/g;
-    const titleRegex = /<h3[^>]*>([^<]+)<\/h3>/g;
-    let match;
-
-    // Extract all non-Google URLs linked from the page
     const seenUrls = new Set();
+    let match;
     while ((match = hrefRegex.exec(html)) !== null) {
       let url = match[1];
-      // Handle Google redirect URLs: /url?q=REAL_URL&sa=...
       if (url.includes('/url?q=')) {
         try { url = new URL(url).searchParams.get('q') || url; } catch (e) {}
       }
-      // Skip Google services, webcache, translate, etc
       if (url.includes('google.com') || url.includes('googleapis.com')) continue;
       if (url.includes('webcache.') || url.includes('translate.')) continue;
       if (seenUrls.has(url)) continue;
       seenUrls.add(url);
       results.push({ url, title: '' });
     }
-
-    // Try to attach titles from h3 tags (best effort)
-    let titleIdx = 0;
-    while ((match = titleRegex.exec(html)) !== null && titleIdx < results.length) {
-      results[titleIdx].title = match[1].replace(/&amp;/g, '&').replace(/&#39;/g, "'").replace(/&quot;/g, '"');
-      titleIdx++;
-    }
-
     return results.slice(0, 10);
   } catch (error) {
     console.log(`    ✗ Bright Data SERP failed: ${error.message}`);
