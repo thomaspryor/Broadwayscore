@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-16T19:51:43.440Z",
-  "processed": 32,
+  "updatedAt": "2026-03-16T19:53:51.989Z",
+  "processed": 42,
   "failed": 34,
-  "successRate": "48.5%",
+  "successRate": "55.3%",
   "tierBreakdown": {
-    "playwright": 14,
+    "playwright": 21,
     "amp": 38,
-    "browserbase": 16,
+    "browserbase": 18,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 9,
-    "archive": 19
+    "archive": 21
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-16T19:30:09.761Z",
-      "event": "bb-session",
-      "session": "684f62a7",
-      "url": "https://variety.com/2010/legit/reviews/colin-quinn-long-story-short-1117944203/"
-    },
-    {
-      "t": "2026-03-16T19:30:11.856Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-03-16T19:30:41.395Z",
-      "event": "bb-session",
-      "session": "5b517db3",
-      "url": "https://variety.com/2022/legit/reviews/death-of-a-salesman-review-wendell-pierce"
-    },
-    {
-      "t": "2026-03-16T19:30:43.669Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-03-16T19:31:29.480Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-16T19:37:32.192Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-16T19:52:14.957Z",
+      "event": "bb-session",
+      "session": "676ebe31",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-16T19:52:16.330Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-16T19:53:30.095Z",
+      "event": "bb-session",
+      "session": "ca461556",
+      "url": "https://www.nytimes.com/2019/05/02/theater/entangled-review-the-amoralists.html"
+    },
+    {
+      "t": "2026-03-16T19:53:31.432Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
