@@ -1,97 +1,18 @@
 {
-  "updatedAt": "2026-03-16T09:49:17.153Z",
-  "processed": 95,
-  "failed": 55,
-  "successRate": "63.3%",
+  "updatedAt": "2026-03-16T09:57:55.116Z",
+  "processed": 2,
+  "failed": 8,
+  "successRate": "20.0%",
   "tierBreakdown": {
-    "playwright": 69,
-    "amp": 19,
+    "playwright": 0,
+    "amp": 1,
     "browserbase": 0,
-    "directCookies": 1,
+    "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 48,
-    "archive": 16
+    "archiveToday": 7,
+    "archive": 2
   },
-  "browserbaseSessions": 9,
-  "recentActivity": [
-    {
-      "t": "2026-03-16T08:46:02.043Z",
-      "event": "bb-session",
-      "session": "d88a6a7a",
-      "url": "https://www.nytimes.com/2026/02/05/theater/arcadia-tom-stoppard-old-vic-london.h"
-    },
-    {
-      "t": "2026-03-16T08:47:29.978Z",
-      "event": "bb-session",
-      "session": "65088d7c",
-      "url": "http://www.nytimes.com/2014/08/21/theater/the-book-of-mormon-on-broadway-retains"
-    },
-    {
-      "t": "2026-03-16T08:48:50.782Z",
-      "event": "bb-session",
-      "session": "1e72ed7e",
-      "url": "https://www.nytimes.com/2022/11/25/theater/agatha-christie-the-mousetrap-broadwa"
-    },
-    {
-      "t": "2026-03-16T08:52:45.125Z",
-      "event": "bb-session",
-      "session": "0e57b6f1",
-      "url": "https://www.thestage.co.uk/long-reviews/back-to-the-future-the-musical-adelphi-t"
-    },
-    {
-      "t": "2026-03-16T08:53:25.328Z",
-      "event": "bb-login-fail",
-      "domain": "thestage.co.uk",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    39 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-03-16T08:56:39.858Z",
-      "event": "bb-session",
-      "session": "9e611637",
-      "url": "https://www.thestage.co.uk/reviews/it-walks-around-the-house-at-night-review-sou"
-    },
-    {
-      "t": "2026-03-16T08:57:18.199Z",
-      "event": "bb-login-fail",
-      "domain": "thestage.co.uk",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    39 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-03-16T09:08:55.441Z",
-      "event": "bb-session",
-      "session": "03dca8f0",
-      "url": "https://www.thestage.co.uk/reviews/paddington-the-musical-review-savoy-theatre-l"
-    },
-    {
-      "t": "2026-03-16T09:09:34.555Z",
-      "event": "bb-login-fail",
-      "domain": "thestage.co.uk",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    38 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
-    },
-    {
-      "t": "2026-03-16T09:13:00.685Z",
-      "event": "bb-session",
-      "session": "2045aa30",
-      "url": "https://www.thestage.co.uk/reviews/reviews/the-hunger-games-on-stage-review-trou"
-    },
-    {
-      "t": "2026-03-16T09:13:39.782Z",
-      "event": "bb-login-fail",
-      "domain": "thestage.co.uk",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    40 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-03-16T09:14:28.536Z",
-      "event": "bb-session",
-      "session": "0edb0cb0",
-      "url": "https://www.nytimes.com/2026/03/05/theater/chadwick-boseman-deep-azure.html"
-    },
-    {
-      "t": "2026-03-16T09:15:03.830Z",
-      "event": "bb-session",
-      "session": "c204d00c",
-      "url": "https://www.nytimes.com/2026/02/18/theater/dracula-cynthia-erivo.html"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
