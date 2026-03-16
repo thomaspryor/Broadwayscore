@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-16T19:48:01.362Z",
+    "generatedAt": "2026-03-16T20:36:29.927Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 123,
+    "totalFlagged": 124,
     "highConfidence": 40,
-    "mediumConfidence": 83,
+    "mediumConfidence": 84,
     "lowConfidence": 0,
     "reassignable": 61
   },
@@ -443,6 +443,21 @@
       "showId": "the-lion-king-1997",
       "showTitle": "The Lion King",
       "showYear": 1997,
+      "file": "variety--matt-wolf.json",
+      "outlet": "Variety",
+      "criticName": "Matt Wolf",
+      "publishDate": "November 17, 1997",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "modern references: masks"
+      ],
+      "textSnippet": "A new generation of cats just took over Broadway. Simply said, Julie Taymor‘s staging of Disney’s “The Lion King” is a marvel, a theatrical achievement unrivaled in its beauty, brains and ingenuity. L"
+    },
+    {
+      "showId": "the-lion-king-1997",
+      "showTitle": "The Lion King",
+      "showYear": 1997,
       "file": "vulture--john-simon.json",
       "outlet": "Vulture",
       "criticName": "John Simon",
@@ -452,7 +467,7 @@
       "signals": [
         "modern references: hamilton"
       ],
-      "textSnippet": "Home > Arts & Events > Theater > The Lion King Minskoff Theatre 200 W. 45th St., New York, NY 10036 40.757951 -73.985661 at Broadway See Map | Subway Directions work212-869-0550 Send to Phone Andile G"
+      "textSnippet": "Andile Gumbi, Chantel Riley, Alton Fitzgerald White, Buyi Zama, Gareth Saxe, Derek Johnson, Caleb McLaughlin, Alonie Dowden, Bobbi Bordley, Ben Jeffrey, Jeff Binder, Fred Berman, James Brown-Orleans, "
     },
     {
       "showId": "the-lion-king-1997",
@@ -955,6 +970,7 @@
       "signals": [
         "revival cast/director match for cats-2016: Leona Lewis, Tyler Hanes, Ricky Ubeda, director: Andy Blankenbuehler",
         "revival text signals: revival, this production",
+        "year 2026 in text matches revival cats-west-end-2026",
         "modern references: hamilton",
         "no publishDate + revival signals + revivals exist"
       ],
