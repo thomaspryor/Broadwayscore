@@ -1,0 +1,133 @@
+name: Weekly Scraper Cost Report
+
+on:
+  schedule:
+    - cron: '0 14 * * 1'  # Monday 2 PM UTC (9 AM EST), same as PostHog
+  workflow_dispatch: {}
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Collect scraper cost data from workflow logs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "# Weekly Scraper Cost Report" > /tmp/report.md
+          echo "" >> /tmp/report.md
+          echo "**Period:** $(date -d '7 days ago' '+%Y-%m-%d') to $(date '+%Y-%m-%d')" >> /tmp/report.md
+          echo "" >> /tmp/report.md
+
+          # Query recent workflow runs (last 7 days)
+          SINCE=$(date -d '7 days ago' '+%Y-%m-%dT00:00:00Z' 2>/dev/null || date -v-7d '+%Y-%m-%dT00:00:00Z')
+
+          # Count runs per workflow that uses scraping
+          echo "## Workflow Run Counts" >> /tmp/report.md
+          echo "" >> /tmp/report.md
+          echo "| Workflow | Runs | Success | Failed |" >> /tmp/report.md
+          echo "|----------|------|---------|--------|" >> /tmp/report.md
+
+          for wf in "Collect Review Texts" "Enrich IBDB Dates" "Bulk Show Score" "Auto-Maintain Show Data" "Scrape BWW Reviews" "Update Commercial" "Fix Platform Ticket Links" "Gather Review Data" "Opening Night Poller" "Opening Night Reviews"; do
+            TOTAL=$(gh run list --workflow="$wf" --created=">$SINCE" --json conclusion -q 'length' 2>/dev/null || echo "0")
+            SUCCESS=$(gh run list --workflow="$wf" --created=">$SINCE" --status=completed --json conclusion -q '[.[] | select(.conclusion=="success")] | length' 2>/dev/null || echo "0")
+            FAILED=$((TOTAL - SUCCESS))
+            if [ "$TOTAL" -gt 0 ]; then
+              echo "| $wf | $TOTAL | $SUCCESS | $FAILED |" >> /tmp/report.md
+            fi
+          done
+
+          echo "" >> /tmp/report.md
+
+          # Scraper Summary lines from recent runs
+          echo "## Scraper Cost Summary (from [Scraper Summary] logs)" >> /tmp/report.md
+          echo "" >> /tmp/report.md
+          echo "Aggregated from workflow logs containing \`[Scraper Summary]\`:" >> /tmp/report.md
+          echo "" >> /tmp/report.md
+          echo '```' >> /tmp/report.md
+
+          PW_TOTAL=0
+          BD_TOTAL=0
+          SB_TOTAL=0
+          SB_CREDITS_TOTAL=0
+
+          # Check last 20 runs of key workflows for [Scraper Summary] lines
+          for wf_id in $(gh api repos/$GITHUB_REPOSITORY/actions/workflows --jq '.workflows[].id' 2>/dev/null | head -50); do
+            for run_id in $(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/$wf_id/runs?created=>$SINCE&per_page=10" --jq '.workflow_runs[].id' 2>/dev/null); do
+              # Try to get logs (may fail for in-progress runs)
+              SUMMARY=$(gh run view "$run_id" --log 2>/dev/null | grep '\[Scraper Summary\]' 2>/dev/null || true)
+              if [ -n "$SUMMARY" ]; then
+                # Parse: [Scraper Summary] 1/1 Playwright (free), 3 BD (~$0.003)
+                PW=$(echo "$SUMMARY" | grep -oP '\d+/\d+ Playwright' | head -1 | grep -oP '^\d+' || echo "0")
+                BD=$(echo "$SUMMARY" | grep -oP '\d+ BD' | head -1 | grep -oP '^\d+' || echo "0")
+                SB=$(echo "$SUMMARY" | grep -oP '\d+ SB' | head -1 | grep -oP '^\d+' || echo "0")
+                SB_CR=$(echo "$SUMMARY" | grep -oP '\d+ credits' | head -1 | grep -oP '^\d+' || echo "0")
+                PW_TOTAL=$((PW_TOTAL + PW))
+                BD_TOTAL=$((BD_TOTAL + BD))
+                SB_TOTAL=$((SB_TOTAL + SB))
+                SB_CREDITS_TOTAL=$((SB_CREDITS_TOTAL + SB_CR))
+              fi
+            done
+          done
+
+          echo "Playwright (free):    $PW_TOTAL requests" >> /tmp/report.md
+          echo "BrightData:           $BD_TOTAL requests (~\$$(echo "scale=3; $BD_TOTAL * 0.001" | bc))" >> /tmp/report.md
+          echo "ScrapingBee:          $SB_TOTAL requests ($SB_CREDITS_TOTAL credits)" >> /tmp/report.md
+          echo '```' >> /tmp/report.md
+          echo "" >> /tmp/report.md
+
+          # SB credit check
+          echo "## ScrapingBee Credit Status" >> /tmp/report.md
+          echo "" >> /tmp/report.md
+
+          # Get from latest secrets health check
+          HEALTH_RUN=$(gh run list --workflow="Weekly Secret Health Check" --limit=1 --json databaseId -q '.[0].databaseId' 2>/dev/null)
+          if [ -n "$HEALTH_RUN" ]; then
+            SB_STATUS=$(gh run view "$HEALTH_RUN" --log 2>&1 | grep -i "ScrapingBee:" | head -1 || echo "Unknown")
+            echo "$SB_STATUS" >> /tmp/report.md
+          else
+            echo "No recent health check data" >> /tmp/report.md
+          fi
+
+          echo "" >> /tmp/report.md
+
+          # Collect-review-texts specific stats
+          echo "## Review Collection Stats (SB Page/SERP split)" >> /tmp/report.md
+          echo "" >> /tmp/report.md
+
+          LATEST_COLLECT=$(gh run list --workflow="Collect Review Texts" --limit=5 --status=completed --json databaseId -q '.[].databaseId' 2>/dev/null)
+          for run_id in $LATEST_COLLECT; do
+            SB_LINES=$(gh run view "$run_id" --log 2>/dev/null | grep -E "SB page credits:|SB SERP credits:" 2>/dev/null || true)
+            if [ -n "$SB_LINES" ]; then
+              echo '```' >> /tmp/report.md
+              echo "$SB_LINES" | sed 's/.*║ ├─ //' | sed 's/ ║$//' >> /tmp/report.md
+              echo '```' >> /tmp/report.md
+              break
+            fi
+          done
+
+          echo "" >> /tmp/report.md
+          echo "---" >> /tmp/report.md
+          echo "*Generated by scraper-cost-report workflow*" >> /tmp/report.md
+
+          cat /tmp/report.md
+
+      - name: Create GitHub issue
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TITLE="Scraper Cost Report — Week of $(date '+%Y-%m-%d')"
+          gh issue create \
+            --title "$TITLE" \
+            --label "cost-report" \
+            --body-file /tmp/report.md \
+            --repo $GITHUB_REPOSITORY
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Weekly Scraper Cost Report Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
