@@ -1193,6 +1193,8 @@ function extractShowScoreReviews(html, showId) {
 
   if (reviews.length > 0) {
     console.log(`    Extracted ${reviews.length} reviews from Show Score`);
+  } else if (html && html.length > 5000) {
+    console.log(`    ⚠️  Show Score page loaded (${(html.length / 1024).toFixed(0)}KB) but 0 reviews extracted — HTML structure may have changed`);
   }
 
   return reviews;
@@ -1216,6 +1218,9 @@ function extractDTLIReviews(html, showId, dtliUrl) {
     down: thumbDownMatch ? parseInt(thumbDownMatch[1]) : 0,
   };
   console.log(`    Found ${summary.up} UP, ${summary.meh} MEH, ${summary.down} DOWN`);
+  if (summary.up === 0 && summary.meh === 0 && summary.down === 0 && html.length > 5000) {
+    console.log(`    ⚠️  DTLI page loaded (${(html.length / 1024).toFixed(0)}KB) but 0 thumb images found — image URL pattern may have changed`);
+  }
 
   // Extract individual reviews from <div class="review-item"> blocks
   // Pattern matches each review item block
@@ -1474,6 +1479,7 @@ async function scrapeBWWRoundupWithPlaywright(url) {
     // Check we're on a real roundup page, not a 404 or homepage
     const title = await page.title();
     if (!title || !title.includes('Review Roundup')) {
+      console.log(`    BWW page title "${title || '(empty)'}" — not a roundup page`);
       await browser.close();
       return null;
     }
@@ -1696,6 +1702,8 @@ function extractBWWRoundupReviews(html, showId, bwwUrl) {
 
   if (reviews.length > 0) {
     console.log(`    Extracted ${reviews.length} reviews from BWW roundup (articleBody)`);
+  } else if (html && html.length > 5000) {
+    console.log(`    ⚠️  BWW roundup page loaded but 0 reviews extracted from both JSON-LD and articleBody`);
   }
 
   return reviews;

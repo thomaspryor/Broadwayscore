@@ -349,6 +349,9 @@ async function processShow(show) {
   console.log(`  Found ${posts.length} posts from audience-focused searches (last 2 years), ${totalPosts} total unique, ${totalComments} total comments`);
 
   if (posts.length === 0) {
+    if (totalPosts > 0) {
+      console.log(`  ⚠️  ${totalPosts} Reddit posts found but 0 survived filtering — date/classification filters may be too strict`);
+    }
     return null;
   }
 
