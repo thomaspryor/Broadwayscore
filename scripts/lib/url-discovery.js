@@ -12,6 +12,7 @@ const fs = require('fs');
 const path = require('path');
 const { domainMatchesExpected } = require('./scraper');
 const { isUrlYearOutsideWindow } = require('./content-filters');
+const { isLondonMarket } = require('./venue-classification');
 
 // Outlet-to-domain mapping for URL discovery via Google SERP
 const OUTLET_DOMAINS = {
@@ -460,7 +461,7 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   const outletName = review.outlet || outletId;
 
   // Use market-appropriate search term based on show category
-  const marketTerm = showInfo.category === 'west-end' ? 'West End review'
+  const marketTerm = isLondonMarket(showInfo.category) ? 'West End review'
     : showInfo.category === 'off-broadway' ? 'Off-Broadway review'
     : 'Broadway review';
 

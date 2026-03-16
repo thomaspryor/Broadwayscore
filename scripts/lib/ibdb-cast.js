@@ -30,6 +30,7 @@ const https = require('https');
 
 const { JSDOM } = require('jsdom');
 const { fetchPage } = require('./scraper');
+const { isLondonMarket } = require('./venue-classification');
 
 const RATE_LIMIT_MS = 1500;
 
@@ -347,7 +348,7 @@ async function lookupIBDBCast(title, options = {}) {
   };
 
   // IBDB is Broadway-only — skip for off-broadway and west-end shows
-  if (options.category && (options.category === 'off-broadway' || options.category === 'west-end')) {
+  if (options.category && (options.category === 'off-broadway' || isLondonMarket(options.category))) {
     console.log(`  ⏭️  Skipping IBDB lookup for ${options.category} show "${title}" (IBDB is Broadway-only)`);
     return notFound;
   }

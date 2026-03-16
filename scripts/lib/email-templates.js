@@ -8,6 +8,7 @@
  */
 
 const https = require('https');
+const { isLondonMarket } = require('./venue-classification');
 
 const FONT = "Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif";
 
@@ -77,12 +78,12 @@ function buildUnfollowUrl(showId, showTitle, email) {
 
 function buildUnsubscribeUrl(email, market) {
   const base = `https://broadwayscorecard.com/unsubscribe?email=${encodeURIComponent(email)}`;
-  return market === 'west-end' ? `${base}&market=west-end` : base;
+  return isLondonMarket(market) ? `${base}&market=west-end` : base;
 }
 
 function buildFooterHtml(showTitle, showId, email, market) {
   const unfollowUrl = buildUnfollowUrl(showId, showTitle, email);
-  const isWE = market === 'west-end';
+  const isWE = isLondonMarket(market);
   const siteName = isWE ? 'West End Scorecard' : 'Broadway Scorecard';
   const siteUrl = isWE ? 'https://broadwayscorecard.com/west-end' : 'https://broadwayscorecard.com';
   return `<tr><td style="padding-top:20px;border-top:1px solid rgba(255,255,255,0.06);">
@@ -97,7 +98,7 @@ function buildBroadcastFooterHtml(email, market) {
   // When email is null, use Resend's broadcast unsubscribe variable (for Broadcasts API)
   // When email is provided, use our custom unsubscribe URL (for transactional/preview sends)
   const unsubscribeUrl = email ? buildUnsubscribeUrl(email, market) : '{{{ RESEND_UNSUBSCRIBE_URL }}}';
-  const isWE = market === 'west-end';
+  const isWE = isLondonMarket(market);
   const siteName = isWE ? 'West End Scorecard' : 'Broadway Scorecard';
   const siteUrl = isWE ? 'https://broadwayscorecard.com/west-end' : 'https://broadwayscorecard.com';
   return `<tr><td style="padding-top:20px;border-top:1px solid rgba(255,255,255,0.06);">
@@ -110,7 +111,7 @@ function buildBroadcastFooterHtml(email, market) {
 
 function buildEmailHtml(showTitle, changes, showUrl, showId, email, market) {
   market = market || 'broadway';
-  const isWE = market === 'west-end';
+  const isWE = isLondonMarket(market);
   const siteNameFirst = isWE ? 'West End' : 'Broadway';
   const brandColor = isWE ? '#f472b6' : '#d4a574';
   const changesHtml = changes.map(c => {
@@ -151,7 +152,7 @@ function buildEmailHtml(showTitle, changes, showUrl, showId, email, market) {
 
 function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, showId, email, imageUrl, market) {
   market = market || 'broadway';
-  const isWE = market === 'west-end';
+  const isWE = isLondonMarket(market);
   const siteNameFirst = isWE ? 'West End' : 'Broadway';
   const brandColor = isWE ? '#f472b6' : '#d4a574';
   const sc = getScoreColor(openingChange.score);
@@ -296,7 +297,7 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
  */
 function buildBroadcastOpeningNightHtml(shows, email, market) {
   market = market || 'broadway';
-  const isWE = market === 'west-end';
+  const isWE = isLondonMarket(market);
   const siteNameFirst = isWE ? 'West End' : 'Broadway';
   const brandColor = isWE ? '#f472b6' : '#d4a574';
   const brandFaint = isWE ? 'rgba(244,114,182,0.12)' : 'rgba(212,165,116,0.12)';
@@ -579,7 +580,7 @@ ${verification && !verification.skipped ? (
  */
 function buildBroadcastApprovalHtml(shows, approvalUrl, market) {
   market = market || 'broadway';
-  const isWE = market === 'west-end';
+  const isWE = isLondonMarket(market);
   const marketLabel = isWE ? 'West End' : 'Broadway';
   const brandColor = isWE ? '#f472b6' : '#d4a574';
 

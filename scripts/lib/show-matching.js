@@ -15,6 +15,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { isLondonMarket } = require('./venue-classification');
 
 // ---------------------------------------------------------------------------
 // Known Aliases: External show titles → slugs in shows.json
@@ -440,13 +441,15 @@ function pickBestProduction(matches, targetYear, preferredMarket, prefer) {
   if (matches.length === 1) return matches[0];
 
   // Market-aware filtering: if a preferred market is specified (e.g., 'broadway',
-  // 'west-end', 'off-broadway'), filter to only matching productions first.
+  // 'west-end', 'off-west-end', 'off-broadway'), filter to only matching productions first.
   // This prevents cross-market contamination when the same title exists in multiple
   // markets (e.g., hamilton-2015 vs hamilton-west-end-2021).
   if (preferredMarket && matches.length > 1) {
     const marketMatches = matches.filter(m => {
       const cat = (m.category || '').toLowerCase();
       if (preferredMarket === 'broadway') return !cat || cat === 'broadway';
+      // For London markets, match both WE and OWE
+      if (isLondonMarket(preferredMarket)) return isLondonMarket(cat);
       return cat === preferredMarket;
     });
     if (marketMatches.length > 0) {
@@ -497,7 +500,7 @@ function pickBestProduction(matches, targetYear, preferredMarket, prefer) {
  * @param {Object[]} shows - Array of show objects from shows.json
  * @param {Object} [options] - Optional settings
  * @param {number} [options.year] - Publication year for multi-production disambiguation
- * @param {string} [options.market] - Preferred market ('broadway'|'west-end'|'off-broadway') for cross-market disambiguation
+ * @param {string} [options.market] - Preferred market ('broadway'|'west-end'|'off-west-end'|'off-broadway') for cross-market disambiguation
  * @param {string} [options.prefer] - 'recent' (default) or 'original' — which production to pick when ambiguous with no year hint
  * @returns {{ show: Object, confidence: 'high'|'medium' } | null}
  */

@@ -16,6 +16,7 @@
  */
 
 const puppeteer = require('puppeteer');
+const { isLondonMarket } = require('./lib/venue-classification');
 const fs = require('fs');
 const path = require('path');
 
@@ -213,7 +214,7 @@ async function scrapeBWW(page, showSlug, showTitle, year) {
 // ============================================================================
 
 async function searchOutlet(page, showTitle, year, outlet, { category = '' } = {}) {
-  const reviewKw = category === 'west-end' ? 'West End review'
+  const reviewKw = isLondonMarket(category) ? 'West End review'
     : category === 'off-broadway' ? 'Off-Broadway review' : 'Broadway review';
   const searchQuery = `"${showTitle}" ${reviewKw} ${year} site:${outlet.domain}`;
   const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`;

@@ -15,6 +15,7 @@
 const https = require('https');
 const http = require('http');
 const { URL } = require('url');
+const { isLondonMarket } = require('./venue-classification');
 
 /**
  * Search endpoint configuration.
@@ -108,7 +109,7 @@ const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
  * BW shows search with "broadway", WE shows with "london theatre".
  */
 function getMarketKeyword(market) {
-  if (market === 'west-end') return 'london+theatre';
+  if (isLondonMarket(market)) return 'london+theatre';
   return 'broadway';
 }
 

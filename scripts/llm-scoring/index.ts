@@ -69,6 +69,7 @@ import { detectMultiShow } from './multi-show-detector';
 import { trimMultiShowText } from './trim-multi-show';
 import { PROMPT_VERSION, SYSTEM_PROMPT_V5, buildPromptV5, BUCKET_RANGES } from './config';
 import { isScoreable } from './is-scoreable';
+const { isLondonMarket } = require('../lib/venue-classification');
 
 // ========================================
 // SEMVER COMPARISON
@@ -1147,7 +1148,7 @@ async function main(): Promise<void> {
           // WE shows get flagged because the Broadway-centric prompt says "not the current Broadway run".
           const showInfo = showPriority.get(reviewFile.showId || '');
           const isOffBroadway = showInfo?.category === 'off-broadway';
-          const isWestEnd = showInfo?.category === 'west-end';
+          const isWestEnd = isLondonMarket(showInfo?.category);
           if (rejection === 'wrong_show') {
             fileData.wrongShow = true;
           } else if (rejection === 'wrong_production' && !isOffBroadway && !isWestEnd) {
