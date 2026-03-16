@@ -6,11 +6,13 @@ import {
   getTotalAudienceReviews,
 } from '@/lib/audience-grade-utils';
 import type { AudienceBuzzData } from '@/lib/data-types';
+import { AUDIENCE_SOURCES, type AudienceSourceConfig } from '@/config/audience-sources';
 
 interface AudienceBuzzCardProps {
   buzz: AudienceBuzzData;
   showScoreUrl?: string;
   limitedSources?: boolean;
+  market?: 'broadway' | 'west-end';
 }
 
 // Heart icon for "Loving It"
@@ -154,10 +156,15 @@ function SourceCard({ name, icon, score, reviewCount, starRating, url, volumeLab
   return <div className={className}>{inner}</div>;
 }
 
-export default function AudienceBuzzCard({ buzz, showScoreUrl, limitedSources }: AudienceBuzzCardProps) {
+const SOURCE_ICONS: Record<string, (props: { className?: string }) => React.ReactNode> = {
+  showScore: ShowScoreIcon, mezzanine: MezzanineIcon, seatplan: ShowScoreIcon,
+  lbo: BroadwayComIcon, theatr: TheatrIcon, broadwayCom: BroadwayComIcon, reddit: RedditIcon,
+};
+
+export default function AudienceBuzzCard({ buzz, showScoreUrl, limitedSources, market }: AudienceBuzzCardProps) {
   const grade = getAudienceGrade(buzz.combinedScore);
   const colors = getAudienceGradeClasses(buzz.combinedScore);
-  const { showScore, mezzanine, reddit, theatr, broadwayCom } = buzz.sources;
+  const visibleSources = market ? AUDIENCE_SOURCES.filter(s => s.markets.includes(market)) : AUDIENCE_SOURCES;
 
   return (
     <div className="card p-5 sm:p-6 mb-8">
@@ -185,53 +192,25 @@ export default function AudienceBuzzCard({ buzz, showScoreUrl, limitedSources }:
         </div>
       </div>
 
-      {/* Source Cards Row — only show sources with data */}
+      {/* Source Cards Row — dynamically render sources with data */}
       <div className="flex flex-wrap gap-2 sm:gap-3 items-stretch">
-        {showScore?.score != null && (
-          <SourceCard
-            name="Show Score"
-            icon={<ShowScoreIcon className="text-yellow-400" />}
-            score={showScore.score}
-            reviewCount={showScore.reviewCount ?? null}
-            url={showScoreUrl}
-          />
-        )}
-        {mezzanine?.score != null && (
-          <SourceCard
-            name="Mezzanine"
-            icon={<MezzanineIcon className="text-purple-400" />}
-            score={mezzanine.score}
-            reviewCount={mezzanine.reviewCount ?? null}
-            starRating={mezzanine.starRating}
-          />
-        )}
-        {reddit?.score != null && (
-          <SourceCard
-            name="Reddit"
-            icon={<RedditIcon className="text-orange-400" />}
-            score={reddit.score}
-            reviewCount={reddit.reviewCount ?? null}
-            volumeLabel="mentions"
-          />
-        )}
-        {theatr?.score != null && (
-          <SourceCard
-            name="Theatr"
-            icon={<TheatrIcon className="text-teal-400" />}
-            score={theatr.score}
-            reviewCount={theatr.reviewCount ?? null}
-            volumeLabel="votes"
-          />
-        )}
-        {broadwayCom?.score != null && (
-          <SourceCard
-            name="Broadway.com"
-            icon={<BroadwayComIcon className="text-blue-400" />}
-            score={broadwayCom.score}
-            reviewCount={broadwayCom.reviewCount ?? null}
-            starRating={broadwayCom.starRating}
-          />
-        )}
+        {visibleSources.map(src => {
+          const data = buzz.sources[src.key];
+          if (!data || data.score == null) return null;
+          const IconComponent = SOURCE_ICONS[src.key] || ShowScoreIcon;
+          return (
+            <SourceCard
+              key={src.key}
+              name={src.name}
+              icon={<IconComponent className={src.iconColor} />}
+              score={data.score}
+              reviewCount={data.reviewCount ?? null}
+              starRating={src.showStarRating ? data.starRating : undefined}
+              url={src.key === 'showScore' ? showScoreUrl : undefined}
+              volumeLabel={src.volumeLabel}
+            />
+          );
+        })}
       </div>
 
       {/* Limited sources note for historical shows */}

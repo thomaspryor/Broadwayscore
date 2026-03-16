@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
+import { type AudienceSourceConfig } from '@/config/audience-sources';
 
 type SortDirection = 'asc' | 'desc';
 
@@ -15,13 +16,7 @@ interface AudienceBuzzData {
   title: string;
   designation: string;
   combinedScore: number;
-  sources: {
-    showScore: AudienceBuzzSource | null;
-    mezzanine: AudienceBuzzSource | null;
-    reddit: AudienceBuzzSource | null;
-    theatr: AudienceBuzzSource | null;
-    broadwayCom: AudienceBuzzSource | null;
-  };
+  sources: Record<string, AudienceBuzzSource | null>;
 }
 
 interface ShowBuzzData {
@@ -62,13 +57,14 @@ function SortIcon({ direction, active }: { direction: SortDirection | null; acti
   );
 }
 
-type BuzzColumn = 'show' | 'score' | 'showScore' | 'mezzanine' | 'reddit' | 'theatr' | 'broadwayCom' | 'grade';
+type BuzzColumn = 'show' | 'score' | 'grade' | string;
 
 interface AudienceBuzzTableProps {
   data: ShowBuzzData[];
+  sources?: AudienceSourceConfig[];
 }
 
-export function AudienceBuzzTable({ data }: AudienceBuzzTableProps) {
+export function AudienceBuzzTable({ data, sources }: AudienceBuzzTableProps) {
   const [sortColumn, setSortColumn] = useState<BuzzColumn>('score');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
 
@@ -86,39 +82,15 @@ export function AudienceBuzzTable({ data }: AudienceBuzzTableProps) {
       let aVal: string | number | null = null;
       let bVal: string | number | null = null;
 
-      switch (sortColumn) {
-        case 'show':
-          aVal = a.show.title.toLowerCase();
-          bVal = b.show.title.toLowerCase();
-          break;
-        case 'score':
-          aVal = a.buzz?.combinedScore ?? null;
-          bVal = b.buzz?.combinedScore ?? null;
-          break;
-        case 'showScore':
-          aVal = a.buzz?.sources.showScore?.score ?? null;
-          bVal = b.buzz?.sources.showScore?.score ?? null;
-          break;
-        case 'mezzanine':
-          aVal = a.buzz?.sources.mezzanine?.score ?? null;
-          bVal = b.buzz?.sources.mezzanine?.score ?? null;
-          break;
-        case 'reddit':
-          aVal = a.buzz?.sources.reddit?.score ?? null;
-          bVal = b.buzz?.sources.reddit?.score ?? null;
-          break;
-        case 'theatr':
-          aVal = a.buzz?.sources.theatr?.score ?? null;
-          bVal = b.buzz?.sources.theatr?.score ?? null;
-          break;
-        case 'broadwayCom':
-          aVal = a.buzz?.sources.broadwayCom?.score ?? null;
-          bVal = b.buzz?.sources.broadwayCom?.score ?? null;
-          break;
-        case 'grade':
-          aVal = a.buzz?.combinedScore ?? null;
-          bVal = b.buzz?.combinedScore ?? null;
-          break;
+      if (sortColumn === 'show') {
+        aVal = a.show.title.toLowerCase();
+        bVal = b.show.title.toLowerCase();
+      } else if (sortColumn === 'score' || sortColumn === 'grade') {
+        aVal = a.buzz?.combinedScore ?? null;
+        bVal = b.buzz?.combinedScore ?? null;
+      } else {
+        aVal = a.buzz?.sources[sortColumn]?.score ?? null;
+        bVal = b.buzz?.sources[sortColumn]?.score ?? null;
       }
 
       if (aVal === null && bVal === null) return 0;
@@ -152,26 +124,16 @@ export function AudienceBuzzTable({ data }: AudienceBuzzTableProps) {
                 Grade
                 <SortIcon direction={sortDirection} active={sortColumn === 'grade'} />
               </th>
-              <th className={`text-center hidden sm:table-cell ${headerClass}`} onClick={() => handleSort('showScore')}>
-                Show Score
-                <SortIcon direction={sortDirection} active={sortColumn === 'showScore'} />
-              </th>
-              <th className={`text-center hidden md:table-cell ${headerClass}`} onClick={() => handleSort('mezzanine')}>
-                Mezzanine
-                <SortIcon direction={sortDirection} active={sortColumn === 'mezzanine'} />
-              </th>
-              <th className={`text-center hidden lg:table-cell ${headerClass}`} onClick={() => handleSort('reddit')}>
-                Reddit
-                <SortIcon direction={sortDirection} active={sortColumn === 'reddit'} />
-              </th>
-              <th className={`text-center hidden lg:table-cell ${headerClass}`} onClick={() => handleSort('theatr')}>
-                Theatr
-                <SortIcon direction={sortDirection} active={sortColumn === 'theatr'} />
-              </th>
-              <th className={`text-center hidden lg:table-cell ${headerClass}`} onClick={() => handleSort('broadwayCom')}>
-                Broadway.com
-                <SortIcon direction={sortDirection} active={sortColumn === 'broadwayCom'} />
-              </th>
+              {sources?.map((src, i) => (
+                <th
+                  key={src.key}
+                  className={`text-center ${i < 1 ? 'hidden sm:table-cell' : i < 2 ? 'hidden md:table-cell' : 'hidden lg:table-cell'} ${headerClass}`}
+                  onClick={() => handleSort(src.key)}
+                >
+                  {src.name}
+                  <SortIcon direction={sortDirection} active={sortColumn === src.key} />
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody>
@@ -205,41 +167,18 @@ export function AudienceBuzzTable({ data }: AudienceBuzzTableProps) {
                       <span className="text-gray-500">—</span>
                     )}
                   </td>
-                  <td className="py-3 px-4 text-center hidden sm:table-cell">
-                    {buzz?.sources.showScore ? (
-                      <span className="text-gray-400 text-sm">{buzz.sources.showScore.reviewCount.toLocaleString()} reviews</span>
-                    ) : (
-                      <span className="text-gray-500">—</span>
-                    )}
-                  </td>
-                  <td className="py-3 px-4 text-center hidden md:table-cell">
-                    {buzz?.sources.mezzanine ? (
-                      <span className="text-gray-400 text-sm">{buzz.sources.mezzanine.reviewCount.toLocaleString()} reviews</span>
-                    ) : (
-                      <span className="text-gray-500">—</span>
-                    )}
-                  </td>
-                  <td className="py-3 px-4 text-center hidden lg:table-cell">
-                    {buzz?.sources.reddit ? (
-                      <span className="text-gray-400 text-sm">{buzz.sources.reddit.reviewCount} comments</span>
-                    ) : (
-                      <span className="text-gray-500">—</span>
-                    )}
-                  </td>
-                  <td className="py-3 px-4 text-center hidden lg:table-cell">
-                    {buzz?.sources.theatr ? (
-                      <span className="text-gray-400 text-sm">{buzz.sources.theatr.reviewCount.toLocaleString()} votes</span>
-                    ) : (
-                      <span className="text-gray-500">—</span>
-                    )}
-                  </td>
-                  <td className="py-3 px-4 text-center hidden lg:table-cell">
-                    {buzz?.sources.broadwayCom ? (
-                      <span className="text-gray-400 text-sm">{buzz.sources.broadwayCom.reviewCount.toLocaleString()} reviews</span>
-                    ) : (
-                      <span className="text-gray-500">—</span>
-                    )}
-                  </td>
+                  {sources?.map((src, i) => {
+                    const srcData = buzz?.sources[src.key];
+                    return (
+                      <td key={src.key} className={`py-3 px-4 text-center ${i < 1 ? 'hidden sm:table-cell' : i < 2 ? 'hidden md:table-cell' : 'hidden lg:table-cell'}`}>
+                        {srcData ? (
+                          <span className="text-gray-400 text-sm">{srcData.reviewCount.toLocaleString()} {src.volumeLabel}</span>
+                        ) : (
+                          <span className="text-gray-500">—</span>
+                        )}
+                      </td>
+                    );
+                  })}
                 </tr>
               );
             })}

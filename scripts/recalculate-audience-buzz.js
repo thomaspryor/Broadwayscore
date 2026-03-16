@@ -36,7 +36,8 @@ for (const [showId, show] of Object.entries(audienceBuzz.shows)) {
     else show.designation = 'Loathing';                 // D, F
 
     if (oldScore !== score) {
-      console.log(`${show.title}: ${oldScore} → ${score} (SS ${weights.showScore}%, Mezz ${weights.mezzanine}%, Reddit ${weights.reddit}%, Theatr ${weights.theatr}%, BC ${weights.broadwayCom}%)`);
+      const weightStr = Object.entries(weights).filter(([, v]) => v > 0).map(([k, v]) => `${k} ${v}%`).join(', ');
+      console.log(`${show.title}: ${oldScore} → ${score} (${weightStr})`);
       updated++;
     }
   }

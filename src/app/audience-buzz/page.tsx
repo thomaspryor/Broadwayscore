@@ -8,6 +8,17 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import { ComputedShow } from '@/lib/engine';
 import { AudienceBuzzTable } from '@/components/SortableAudienceBuzzTable';
 import { featureFlags } from '@/config/feature-flags';
+import { getSourcesForMarket } from '@/config/audience-sources';
+
+const SOURCE_DESCRIPTIONS: Record<string, string> = {
+  showScore: 'Audience reviews with detailed 0-100 scores. Often the largest sample size.',
+  mezzanine: 'iOS app with verified ticket holders rating shows 1-5 stars.',
+  theatr: 'Broadway community app with three-way sentiment: like, dislike, or mixed.',
+  broadwayCom: "Star ratings from verified ticket buyers on Broadway\u2019s largest ticket site.",
+  reddit: 'Sentiment analysis from r/Broadway. Requires 50+ comments. Excluded for shows closed 3+ years.',
+  seatplan: 'UK theater ticketing platform with 1K-8K verified audience reviews per show.',
+  lbo: 'Verified purchase reviews from London Box Office ticket buyers via Feefo.',
+};
 
 export const metadata: Metadata = {
   title: 'Broadway Audience Scorecard - What Real Theatergoers Think',
@@ -72,6 +83,7 @@ const gradeScale = [
 export default function AudienceBuzzPage() {
   const allShows = getBroadwayShows();
   const lastUpdated = getAudienceBuzzLastUpdated();
+  const marketSources = getSourcesForMarket('broadway');
 
   // Get all shows with audience buzz data
   const showsWithBuzz = allShows
@@ -82,11 +94,7 @@ export default function AudienceBuzzPage() {
     }))
     .filter(item => {
       if (!item.buzz || item.buzz.combinedScore <= 0) return false;
-      const total = (item.buzz.sources.showScore?.reviewCount || 0)
-        + (item.buzz.sources.mezzanine?.reviewCount || 0)
-        + (item.buzz.sources.reddit?.reviewCount || 0)
-        + (item.buzz.sources.theatr?.reviewCount || 0)
-        + (item.buzz.sources.broadwayCom?.reviewCount || 0);
+      const total = Object.values(item.buzz.sources || {}).reduce((sum, s) => sum + (s?.reviewCount || 0), 0);
       return total >= MIN_AUDIENCE_REVIEWS;
     })
     .sort((a, b) => (b.buzz?.combinedScore || 0) - (a.buzz?.combinedScore || 0));
@@ -100,14 +108,8 @@ export default function AudienceBuzzPage() {
   }, {} as Record<string, typeof showsWithBuzz>);
 
   const totalReviews = showsWithBuzz.reduce((sum, item) => {
-    const buzz = item.buzz;
-    if (!buzz) return sum;
-    return sum +
-      (buzz.sources.showScore?.reviewCount || 0) +
-      (buzz.sources.mezzanine?.reviewCount || 0) +
-      (buzz.sources.reddit?.reviewCount || 0) +
-      (buzz.sources.theatr?.reviewCount || 0) +
-      (buzz.sources.broadwayCom?.reviewCount || 0);
+    if (!item.buzz) return sum;
+    return sum + Object.values(item.buzz.sources || {}).reduce((s, src) => s + (src?.reviewCount || 0), 0);
   }, 0);
 
   const breadcrumbSchema = generateBreadcrumbSchema([
@@ -145,29 +147,15 @@ export default function AudienceBuzzPage() {
         <div className="card p-5 mb-8 bg-gradient-to-r from-red-500/5 to-emerald-500/5 border-white/10">
           <h2 className="font-bold text-white mb-2">How AudienceGrade Works</h2>
           <p className="text-sm text-gray-400 mb-3">
-            We combine five audience sources into a single AudienceGrade letter grade. Each source is weighted proportionally by its number of reviews — more reviews means more influence. No single source can exceed 80% of the total weight.
+            We combine {marketSources.length} audience sources into a single AudienceGrade letter grade. Each source is weighted proportionally by its number of reviews — more reviews means more influence. No single source can exceed 80% of the total weight.
           </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4 text-sm text-gray-400">
-            <div>
-              <h3 className="font-semibold text-white mb-1">Show Score</h3>
-              <p>Audience reviews with detailed 0-100 scores. Often the largest sample size.</p>
-            </div>
-            <div>
-              <h3 className="font-semibold text-white mb-1">Mezzanine</h3>
-              <p>iOS app with verified ticket holders rating shows 1-5 stars.</p>
-            </div>
-            <div>
-              <h3 className="font-semibold text-white mb-1">Theatr</h3>
-              <p>Broadway community app with three-way sentiment: like, dislike, or mixed.</p>
-            </div>
-            <div>
-              <h3 className="font-semibold text-white mb-1">Broadway.com</h3>
-              <p>Star ratings from verified ticket buyers on Broadway&apos;s largest ticket site.</p>
-            </div>
-            <div>
-              <h3 className="font-semibold text-white mb-1">Reddit</h3>
-              <p>Sentiment analysis from r/Broadway. Requires 50+ comments. Excluded for shows closed 3+ years.</p>
-            </div>
+          <div className={`grid sm:grid-cols-2 lg:grid-cols-${Math.min(marketSources.length, 5)} gap-4 text-sm text-gray-400`}>
+            {marketSources.map(src => (
+              <div key={src.key}>
+                <h3 className="font-semibold text-white mb-1">{src.name}</h3>
+                <p>{SOURCE_DESCRIPTIONS[src.key] || 'Audience reviews and ratings.'}</p>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -177,7 +165,7 @@ export default function AudienceBuzzPage() {
           <p className="text-gray-400 text-sm mb-4">
             Click column headers to sort. Shows ranked by combined AudienceGrade rating.
           </p>
-          <AudienceBuzzTable data={showsWithBuzz} />
+          <AudienceBuzzTable data={showsWithBuzz} sources={marketSources} />
         </section>
 
         {/* By Grade Breakdown */}
@@ -239,7 +227,7 @@ export default function AudienceBuzzPage() {
         {/* Data Source Note */}
         <div className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-6">
           <p>
-            Audience data aggregated from Show Score, Mezzanine app, Theatr, Broadway.com, and Reddit r/Broadway.
+            Audience data aggregated from {marketSources.map(s => s.name).join(', ')}.
             Sources weighted proportionally by review count (80% cap per source). Updated weekly.
           </p>
         </div>
