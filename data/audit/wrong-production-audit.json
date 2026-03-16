@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-16T09:26:23.404Z",
+  "timestamp": "2026-03-16T09:59:30.012Z",
   "stats": {
     "totalReviews": 31493,
-    "alreadyFlagged": 9674,
+    "alreadyFlagged": 9676,
     "dateGuardCatches": 126,
     "directorMismatch": 1112,
     "tvFilmSignals": 3493,
-    "londonSignals": 1019,
+    "londonSignals": 1024,
     "offBroadwaySignals": 1089,
     "yearMismatch": 91,
-    "noPublishDate": 9374
+    "noPublishDate": 9367
   },
   "findings": [
     {
@@ -79017,6 +79017,20 @@
       ]
     },
     {
+      "showId": "paranormal-activity-west-end-2025",
+      "file": "times-uk--unknown.json",
+      "score": 81,
+      "publishDate": "2025-12-16",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/paranormal-activity-review-this-play-is-as-terrifying-as-the-film-pqdnk35jz?gaa_at=eafs&gaa_n=AWEtsqfMFs74c11rCGzjzSQACFLnPeMXmIGPYiHusbGDDrlB6px-bQbODV4paMU3FMw%3D&gaa_ts=6942e560&gaa_sig=WUzTzzEDwsOjyivFp8crmKwOSRIrb_tJ-JaUMCs_30-8lC0m_vqfW2PS4v7FkdG2HWFtij6SujkgVTLB3G0pBw%3D%3D",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "passing-strange-2008",
       "file": "chicagotribune--chris-jones-bway.json",
       "score": 72,
@@ -85051,6 +85065,48 @@
     },
     {
       "showId": "the-holy-rosenbergs-west-end-2026",
+      "file": "artsdesk--aleks-sierz.json",
+      "score": 78,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/holy-rosenbergs-menier-chocolate-factory-review-still-timely-and-thought-provoking",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-holy-rosenbergs-west-end-2026",
+      "file": "broadwayworld--franco-milazzo.json",
+      "score": 70,
+      "publishDate": "2026-03-09",
+      "url": "https://www.broadwayworld.com/westend/article/Review-THE-HOLY-ROSENBERGS-Menier-Chocolate-Factory-20260309",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-holy-rosenbergs-west-end-2026",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 74,
+      "publishDate": "2026-03-09",
+      "url": "https://theatreweekly.com/review-the-holy-rosenbergs-at-the-menier-chocolate-factory/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-holy-rosenbergs-west-end-2026",
       "file": "timeout--unknown.json",
       "score": 73,
       "publishDate": "2026-03-10",
@@ -86351,6 +86407,20 @@
       "score": 85,
       "publishDate": "2023-11-15",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-play-that-goes-wrong-duchess-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "file": "timeout-london--unknown.json",
+      "score": 72,
+      "publishDate": "September 15th, 2014",
+      "url": "https://www.timeout.com/london/theatre/the-play-that-goes-wrong-1",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
