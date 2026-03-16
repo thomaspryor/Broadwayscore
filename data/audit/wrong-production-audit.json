@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-16T16:20:09.174Z",
+  "timestamp": "2026-03-16T17:35:24.384Z",
   "stats": {
-    "totalReviews": 31495,
-    "alreadyFlagged": 9670,
-    "dateGuardCatches": 126,
+    "totalReviews": 31517,
+    "alreadyFlagged": 9682,
+    "dateGuardCatches": 125,
     "directorMismatch": 1109,
-    "tvFilmSignals": 3493,
-    "londonSignals": 1024,
-    "offBroadwaySignals": 1091,
+    "tvFilmSignals": 3492,
+    "londonSignals": 1023,
+    "offBroadwaySignals": 1090,
     "yearMismatch": 91,
-    "noPublishDate": 9366
+    "noPublishDate": 9377
   },
   "findings": [
     {
@@ -6065,30 +6065,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"paramount\""
-        }
-      ]
-    },
-    {
-      "showId": "antigone-this-play-i-read-in-high-school-off-broadway-2026",
-      "file": "nyt-theater--anna-ziegler.json",
-      "score": null,
-      "publishDate": "February 8, 2026",
-      "url": "https://publictheater.org/productions/season/2526/antigone-this-play-i-read-in-high-school/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hbo max\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
@@ -36308,7 +36284,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 871d before show (2022-10-19 vs 2025-03-08)"
+          "detail": "Published 576d before show (2022-10-19 vs 2024-05-17)"
         },
         {
           "type": "TV_FILM_SIGNAL",
@@ -36332,7 +36308,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 871d before show (2022-10-19 vs 2025-03-08)"
+          "detail": "Published 576d before show (2022-10-19 vs 2024-05-17)"
         }
       ]
     },
@@ -36346,7 +36322,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 876d before show (2022-10-14 vs 2025-03-08)"
+          "detail": "Published 581d before show (2022-10-14 vs 2024-05-17)"
         }
       ]
     },
@@ -78397,11 +78373,6 @@
       "publishDate": "2024-07-26",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-13674445/Oliver-review-Dickens-writes-GEORGINA-BROWN.html",
       "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 141d before show (2024-07-26 vs 2024-12-14)"
-        },
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
