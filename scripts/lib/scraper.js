@@ -130,6 +130,17 @@ async function checkScrapingBeeCredits() {
 
 let playwright = null; // Lazy load only if needed
 
+// --- Per-run cost tracking ---
+const _scraperStats = {
+  bdRequests: 0,
+  sbRequests: 0,
+  sbCredits: 0,
+  pwAttempts: 0,
+  pwSuccess: 0,
+};
+
+function getScraperStats() { return { ..._scraperStats }; }
+
 /**
  * Fetch page using Bright Data Web Unlocker API (raw HTML output)
  */
@@ -172,6 +183,7 @@ async function fetchWithBrightData(url) {
       req.end(body);
     });
 
+    _scraperStats.bdRequests++;
     return {
       content: response,
       format: 'html',
@@ -209,6 +221,8 @@ async function fetchWithScrapingBee(url, options = {}) {
       }).on('error', reject);
     });
 
+    _scraperStats.sbRequests++;
+    _scraperStats.sbCredits += (options.renderJs !== false ? 5 : 1);
     return {
       content: response,
       format: 'html',
@@ -227,6 +241,7 @@ async function fetchWithScrapingBee(url, options = {}) {
  * @param {boolean} [options.fast] - Use domcontentloaded instead of networkidle (for simple public sites)
  */
 async function fetchWithPlaywright(url, options = {}) {
+  _scraperStats.pwAttempts++;
   try {
     if (!playwright) {
       playwright = await chromium.launch({
@@ -240,6 +255,7 @@ async function fetchWithPlaywright(url, options = {}) {
     const content = await page.content();
     await page.close();
 
+    _scraperStats.pwSuccess++;
     return {
       content,
       format: 'html',
@@ -321,6 +337,17 @@ async function fetchPage(url, options = {}) {
  * Clean up resources (call this when done with all scraping)
  */
 async function cleanup() {
+  // Print cost summary if any scraping happened
+  const s = _scraperStats;
+  const total = s.pwAttempts + s.bdRequests + s.sbRequests;
+  if (total > 0) {
+    const parts = [];
+    if (s.pwSuccess > 0 || s.pwAttempts > 0) parts.push(`${s.pwSuccess}/${s.pwAttempts} Playwright (free)`);
+    if (s.bdRequests > 0) parts.push(`${s.bdRequests} BD (~$${(s.bdRequests * 0.001).toFixed(3)})`);
+    if (s.sbRequests > 0) parts.push(`${s.sbRequests} SB (${s.sbCredits} credits)`);
+    console.log(`[Scraper Summary] ${parts.join(', ')}`);
+  }
+
   if (playwright) {
     await playwright.close();
     playwright = null;
@@ -336,5 +363,6 @@ module.exports = {
   domainMatchesExpected,
   DOMAIN_ALIAS_GROUPS,
   checkScrapingBeeCredits,
+  getScraperStats,
   get sbCreditsLow() { return _sbCreditsLow; },
 };
