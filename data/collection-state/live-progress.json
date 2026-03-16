@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-16T19:25:33.392Z",
-  "processed": 70,
-  "failed": 12,
-  "successRate": "85.4%",
+  "updatedAt": "2026-03-16T19:28:57.667Z",
+  "processed": 79,
+  "failed": 13,
+  "successRate": "85.9%",
   "tierBreakdown": {
-    "playwright": 45,
-    "amp": 16,
+    "playwright": 51,
+    "amp": 18,
     "browserbase": 16,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 8,
-    "archive": 37
+    "archive": 39
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 11,
   "recentActivity": [
-    {
-      "t": "2026-03-16T19:08:03.771Z",
-      "event": "bb-session",
-      "session": "1d1dfbfe",
-      "url": "http://www.amny.com/entertainment/you-re-a-good-man-charlie-brown-review-off-bro"
-    },
-    {
-      "t": "2026-03-16T19:08:05.480Z",
-      "event": "bb-cookie-inject",
-      "domain": "amny.com"
-    },
     {
       "t": "2026-03-16T19:11:12.808Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-16T19:19:52.547Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-16T19:26:11.239Z",
+      "event": "bb-session",
+      "session": "6e29341b",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-16T19:26:13.100Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

@@ -69,7 +69,16 @@
     "wicked-2003/variety--charles-isherwood.json",
     "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
     "aladdin-2014/ew--thom-geier.json",
-    "aladdin-2014/theatermania--charles-isherwood.json"
+    "aladdin-2014/theatermania--charles-isherwood.json",
+    "all-my-sons-west-end-2025/guardian--arifa-akbar.json",
+    "all-my-sons-west-end-2025/timeout-london--andrzej-lukowski.json",
+    "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json",
+    "and-juliet-2022/theatermania--hayley-levitt.json",
+    "and-juliet-2022/theatermania--jesse-green.json",
+    "and-juliet-2022/thewrap--robert-hofler.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/timeout--adam-feldman.json",
+    "arcadia-west-end-2026/guardian--arifa-akbar.json",
+    "arcadia-west-end-2026/timeout--unknown.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -83,7 +92,8 @@
     "hadestown-2019/newyorker--hilton-als.json",
     "oh-mary-2024/nytimes--erik-piepenburg.json",
     "six-2021/newyorker--naomi-fry.json",
-    "aladdin-2014/new-jersey-newsroom--michael-sommers.json"
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "an-ark-off-broadway-2026/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -132,7 +142,13 @@
       "trash-off-broadway-2026/nyt-theater--unknown.json",
       "trash-off-broadway-2026/nytg--unknown.json",
       "two-strangers-bway-2025/nyt-theater--unknown.json",
-      "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json"
+      "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json",
+      "all-my-sons-west-end-2025/guardian--arifa-akbar.json",
+      "and-juliet-2022/theatermania--hayley-levitt.json",
+      "and-juliet-2022/theatermania--jesse-green.json",
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/timeout--adam-feldman.json",
+      "arcadia-west-end-2026/guardian--arifa-akbar.json",
+      "arcadia-west-end-2026/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -150,7 +166,9 @@
       "data/review-texts/the-lion-king-west-end-2021/variety--matt-wolf.json",
       "the-lion-king-west-end-2021/variety--matt-wolf.json",
       "data/review-texts/wicked-2003/variety--charles-isherwood.json",
-      "wicked-2003/variety--charles-isherwood.json"
+      "wicked-2003/variety--charles-isherwood.json",
+      "data/review-texts/and-juliet-2022/thewrap--robert-hofler.json",
+      "and-juliet-2022/thewrap--robert-hofler.json"
     ],
     "browserbase": [
       "data/review-texts/youre-a-good-man-charlie-brown-off-broadway-2026/amny--matt-windman.json",
@@ -220,11 +238,13 @@
       "wicked-2003/nytimes--charles-isherwood.json",
       "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
       "aladdin-2014/ew--thom-geier.json",
-      "aladdin-2014/theatermania--charles-isherwood.json"
+      "aladdin-2014/theatermania--charles-isherwood.json",
+      "all-my-sons-west-end-2025/timeout-london--andrzej-lukowski.json",
+      "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json"
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "aladdin-2014/theatermania--charles-isherwood.json",
+  "lastProcessed": "arcadia-west-end-2026/timeout--unknown.json",
   "log": [
     {
       "t": "2026-03-16T19:08:03.771Z",
@@ -335,6 +355,17 @@
       "t": "2026-03-16T19:19:52.547Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-16T19:26:11.239Z",
+      "event": "bb-session",
+      "session": "6e29341b",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-16T19:26:13.100Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
