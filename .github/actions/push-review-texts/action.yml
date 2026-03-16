@@ -28,12 +28,51 @@ runs:
         git remote set-url origin "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" 2>/dev/null || \
           git remote add origin "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git"
 
+        # SAFETY: Pull remote changes FIRST so we don't overwrite data (e.g., fullText)
+        # that was fetched/committed by other processes while local changes were pending.
+        git pull --rebase origin main -q 2>/dev/null || true
+
         # Stage all changes
         git add -A
 
         # Check if there are changes to commit
         if git diff --staged --quiet; then
           echo "No review-texts changes to push"
+          exit 0
+        fi
+
+        # Protect fetched review text: for any staged review-text JSON where local has
+        # fullText=null but the committed (post-pull) version has fullText, restore it.
+        # This prevents rebuild metadata write-backs from wiping text fetched by another workflow.
+        node -e "
+          const fs = require('fs');
+          const { execSync } = require('child_process');
+          const staged = execSync('git diff --cached --name-only', { encoding: 'utf8' }).trim().split('\n').filter(Boolean);
+          let restored = 0;
+          for (const f of staged) {
+            if (!f.endsWith('.json') || f.includes('failed-fetches')) continue;
+            try {
+              const local = JSON.parse(fs.readFileSync(f, 'utf8'));
+              const committed = JSON.parse(execSync('git show HEAD:' + f, { encoding: 'utf8' }));
+              if (committed.fullText && !local.fullText) {
+                local.fullText = committed.fullText;
+                local.textFetchedAt = committed.textFetchedAt || local.textFetchedAt;
+                local.textWordCount = committed.textWordCount || local.textWordCount;
+                local.contentTier = committed.contentTier || local.contentTier;
+                local.fetchMethod = committed.fetchMethod || local.fetchMethod;
+                fs.writeFileSync(f, JSON.stringify(local, null, 2) + '\n');
+                restored++;
+                console.log('  Protected: ' + f + ' (restored ' + committed.fullText.length + ' chars of fullText)');
+              }
+            } catch (e) { /* new file or parse error — skip */ }
+          }
+          if (restored > 0) console.log('Protected ' + restored + ' review(s) from fullText loss');
+        " || true
+
+        # Re-stage after protection pass
+        git add -A
+        if git diff --staged --quiet; then
+          echo "No review-texts changes to push (all changes were stale)"
           exit 0
         fi
 
