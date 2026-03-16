@@ -7,7 +7,8 @@
     "the-mousetrap-west-end-2021/nytimes--unknown.json",
     "the-mousetrap-west-end-2021/variety--unknown.json",
     "shadowlands-west-end-2026/timeout--andrzej-lukowski.json",
-    "garry-starr-classic-penguins-garrick-west-end-2026/west-end-best-friend--livvy-perrett.json"
+    "garry-starr-classic-penguins-garrick-west-end-2026/west-end-best-friend--livvy-perrett.json",
+    "my-neighbour-totoro-west-end-2025/independent--annabel-nugent.json"
   ],
   "failed": [
     "arcadia-west-end-2026/nytimes--unknown.json",
@@ -41,13 +42,23 @@
     "moulin-rouge-the-musical-west-end-2021/broadwayworld--michael-rabice.json",
     "moulin-rouge-the-musical-west-end-2021/broadwayworld--misha-davenport.json",
     "moulin-rouge-the-musical-west-end-2021/broadwayworld--nicole-ackman.json",
-    "moulin-rouge-the-musical-west-end-2021/broadwayworld--roy-berko.json"
+    "moulin-rouge-the-musical-west-end-2021/broadwayworld--roy-berko.json",
+    "moulin-rouge-the-musical-west-end-2021/broadwayworld--samantha-wu.json",
+    "moulin-rouge-the-musical-west-end-2021/broadwayworld--sarah-dussome.json",
+    "moulin-rouge-the-musical-west-end-2021/broadwayworld--shelby-tyler.json",
+    "moulin-rouge-the-musical-west-end-2021/broadwayworld--stefani-chudnow.json",
+    "moulin-rouge-the-musical-west-end-2021/broadwayworld--steve-murray.json",
+    "moulin-rouge-the-musical-west-end-2021/broadwayworld--taylor-clemons.json",
+    "moulin-rouge-the-musical-west-end-2021/broadwayworld--tyler-hinton.json",
+    "paddington-the-musical-west-end-2025/independent--unknown.json",
+    "paddington-the-musical-west-end-2025/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "shadowlands-west-end-2026/timeout--andrzej-lukowski.json",
-      "garry-starr-classic-penguins-garrick-west-end-2026/west-end-best-friend--livvy-perrett.json"
+      "garry-starr-classic-penguins-garrick-west-end-2026/west-end-best-friend--livvy-perrett.json",
+      "my-neighbour-totoro-west-end-2025/independent--annabel-nugent.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -94,7 +105,16 @@
       "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--michael-rabice.json",
       "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--misha-davenport.json",
       "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--nicole-ackman.json",
-      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--roy-berko.json"
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--roy-berko.json",
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--samantha-wu.json",
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--sarah-dussome.json",
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--shelby-tyler.json",
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--stefani-chudnow.json",
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--steve-murray.json",
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--taylor-clemons.json",
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--tyler-hinton.json",
+      "data/review-texts/paddington-the-musical-west-end-2025/independent--unknown.json",
+      "data/review-texts/paddington-the-musical-west-end-2025/thestage--unknown.json"
     ],
     "archive": [
       "into-the-woods-west-end-2025/nytimes--unknown.json",
@@ -102,7 +122,7 @@
     ]
   },
   "startTime": "2026-03-16T08:45:39.122Z",
-  "lastProcessed": "moulin-rouge-the-musical-west-end-2021/broadwayworld--roy-berko.json",
+  "lastProcessed": "paddington-the-musical-west-end-2025/thestage--unknown.json",
   "log": [
     {
       "t": "2026-03-16T08:46:02.043Z",
@@ -145,6 +165,18 @@
       "event": "bb-login-fail",
       "domain": "thestage.co.uk",
       "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    39 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-03-16T09:08:55.441Z",
+      "event": "bb-session",
+      "session": "03dca8f0",
+      "url": "https://www.thestage.co.uk/reviews/paddington-the-musical-review-savoy-theatre-l"
+    },
+    {
+      "t": "2026-03-16T09:09:34.555Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    38 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
     }
   ]
 }
