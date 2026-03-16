@@ -7,6 +7,7 @@
 
 const { BUCKET_SCORES, THUMB_SCORES, scoreToBucket, scoreToThumb, OUTLET_VERIFIED_SOURCES } = require('./score-extractors');
 const { parseOriginalScore } = require('./score-parsers');
+const { decodeHtmlEntities } = require('./text-cleaning');
 
 // ===================================================
 // TEXT CLEANING
@@ -194,6 +195,105 @@ function normalizeQuoteWrapping(text) {
     result = result.slice(1, -1).trim();
   }
   return result;
+}
+
+// ===================================================
+// EXCERPT CLEANING
+// ===================================================
+
+/**
+ * Clean excerpt text from aggregator sources.
+ * Strips ad code, navigation boilerplate, photo credits, multi-critic concatenation.
+ * Truncates to 350 chars at sentence boundary. Returns null for junk/empty input.
+ */
+function cleanExcerpt(text) {
+  if (!text) return null;
+
+  let cleaned = fixMissingPeriods(fixMojibake(decodeHtmlEntities(text)));
+
+  // Reject URLs masquerading as excerpts
+  if (/^https?:\/\//i.test(cleaned.trim())) return null;
+
+  // --- Layer 1: Systematic excerpt quality gates ---
+  cleaned = cleaned.replace(/Average Rating:.*$/s, '');
+  cleaned = cleaned.replace(/\{\s*"@context".*$/s, '');
+  cleaned = cleaned.replace(/^\*?CRITIC[''\u2019]?S PICK\*?\s*/i, '');
+  cleaned = cleaned.replace(/^[A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-zA-Z'-]+,\s+[A-Z][\w\s&.'-]{2,40}:\s*/, '');
+  cleaned = cleaned.replace(/^[,\s]*:\s*/, '');
+  cleaned = cleaned.replace(/[\u0080-\u009F]/g, '');
+  cleaned = cleaned.replace(/â\s/g, '\u2014 ');
+  cleaned = cleaned.replace(/â$/, '\u2014');
+
+  // Strip navigation/boilerplate prefixes
+  cleaned = cleaned.replace(/^Skip to (content|main content)\s*/i, '');
+  cleaned = cleaned.replace(/^(This article was published more than[^.]*\.\s*)?Democracy Dies in Darkness\s*/i, '');
+  cleaned = cleaned.replace(/^Q:\s+[^?]*\?\s*/i, '');
+  cleaned = cleaned.replace(/^Posted on\s+\w+\s+\d{1,2},?\s+\d{4}\s*/i, '');
+  cleaned = cleaned.replace(/^No Comment\s*(BY\s+)?/i, '');
+  cleaned = cleaned.replace(/^Listen\s*\d+\s*min\s*/i, '');
+  cleaned = cleaned.replace(/^[A-Z][^.]{10,80}\.\s*\([A-Z][a-z]+ [A-Z][a-z]+\)\s*/i, '');
+  cleaned = cleaned.replace(/^Review by\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\s*(?:—\s*)?/i, '');
+  cleaned = cleaned.replace(/^[^|]{0,80}\|\s*Photo\s*:\s*[A-Z][a-z]+(?:\s+(?:and\s+)?[A-Z][a-z]+)*(?:\s+[A-Z][a-z]+)*\s+/i, '');
+
+  // Remove JavaScript/ad code patterns
+  cleaned = cleaned.replace(/blogherads\.[^;]+;?/gi, '');
+  cleaned = cleaned.replace(/\.defineSlot\([^)]+\)[^;]*;?/gi, '');
+  cleaned = cleaned.replace(/\.setTargeting\([^)]+\)[^;]*;?/gi, '');
+  cleaned = cleaned.replace(/\.addSize\([^)]+\)[^;]*;?/gi, '');
+  cleaned = cleaned.replace(/\.exemptFromSleep\(\)[^;]*;?/gi, '');
+  cleaned = cleaned.replace(/\.setClsOptimization\([^)]+\)[^;]*;?/gi, '');
+  cleaned = cleaned.replace(/\.setSubAdUnitPath\([^)]+\)[^;]*;?/gi, '');
+  cleaned = cleaned.replace(/googletag\.[^;]+;?/gi, '');
+  cleaned = cleaned.replace(/\(adsbygoogle\s*=\s*window\.adsbygoogle\s*\|\|\s*\[\]\)\.push\(\{[^}]*\}\);?\s*/g, '');
+  cleaned = cleaned.replace(/\[\s*["']mid-article\d*["'][^\]]*\]/gi, '');
+  cleaned = cleaned.replace(/Related Stories\s+[A-Z][^"]*$/gi, '');
+
+  // Remove photo credits mixed into text
+  cleaned = cleaned.replace(/\b[A-Z][a-z]+ [A-Z][a-z]+\s+(?=Thirty|The|In|When|After|Before|It|This|That|A|An)/g, '');
+
+  // Stop at next critic attribution (BWW roundups concatenate multiple critics)
+  const nextCriticMatch = cleaned.match(/\.\s+[A-Z][a-z]+(?:\s+[A-Z][a-z'-]+)?,\s+[A-Z][^:]+:/);
+  if (nextCriticMatch && nextCriticMatch.index > 50) {
+    cleaned = cleaned.substring(0, nextCriticMatch.index + 1);
+  }
+
+  // Strip trailing boilerplate
+  cleaned = cleaned.replace(/\s*By clicking submit[^]*$/i, '');
+  cleaned = cleaned.replace(/\s*<a\s+href=[^]*$/i, '');
+  cleaned = cleaned.replace(/\s*Copyright ©[^]*$/i, '');
+  cleaned = cleaned.replace(/\s*Visit the Site\S*[^]*$/i, '');
+  cleaned = cleaned.replace(/\s*(Read more|Continue reading|Read the full review)\.?\s*$/i, '');
+
+  // Normalize whitespace
+  cleaned = cleaned.replace(/\s+/g, ' ').trim();
+
+  // Skip if starts mid-word/mid-sentence (unless it's a quote)
+  if (/^[a-z]/.test(cleaned) && !cleaned.startsWith('"')) {
+    const sentenceStart = cleaned.search(/[.!?]\s+[A-Z]/);
+    if (sentenceStart > 0 && sentenceStart < cleaned.length - 50) {
+      cleaned = cleaned.substring(sentenceStart + 2);
+    } else {
+      return null;
+    }
+  }
+
+  // Skip junk excerpts
+  if (isJunkExcerpt(cleaned)) {
+    return null;
+  }
+
+  // Truncate to 350 chars at sentence boundary
+  if (cleaned.length > 350) {
+    const truncateAt = cleaned.lastIndexOf('.', 350);
+    cleaned = truncateAt > 100 ? cleaned.substring(0, truncateAt + 1) : cleaned.substring(0, 347) + '...';
+  }
+
+  // Final junk check
+  if (/defineSlot|setTargeting|blogherads|Plus Icon|adsbygoogle|googletag/i.test(cleaned)) {
+    return null;
+  }
+
+  return cleaned.length > 30 ? cleaned : null;
 }
 
 // ===================================================
@@ -428,6 +528,7 @@ module.exports = {
   isGenericQuote,
   trimToCompleteSentence,
   normalizeQuoteWrapping,
+  cleanExcerpt,
   // Scoring
   isContentVerificationActive,
   getBestScore,

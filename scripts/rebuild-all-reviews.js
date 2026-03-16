@@ -33,7 +33,7 @@ const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
-const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb } = require('./lib/rebuild-helpers');
+const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb } = require('./lib/rebuild-helpers');
 
 // Load outlet registry for cross-market guard
 const outletRegistry = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf8'));
@@ -113,127 +113,7 @@ const reviewsJsonPath = path.join(__dirname, '../data/reviews.json');
 
 // isJunkExcerpt — imported from ./lib/rebuild-helpers
 
-/**
- * Clean excerpt text from aggregator sources
- * Fixes: JavaScript/ad code, HTML entities, multi-critic concatenation
- */
-function cleanExcerpt(text, aggressive = false) {
-  if (!text) return null;
-
-  let cleaned = fixMissingPeriods(fixMojibake(decodeHtmlEntities(text)));
-
-  // Reject URLs masquerading as excerpts
-  if (/^https?:\/\//i.test(cleaned.trim())) return null;
-
-  // --- Layer 1: Systematic excerpt quality gates ---
-
-  // Strip "Average Rating: XX%" and everything after (BWW metadata leak)
-  cleaned = cleaned.replace(/Average Rating:.*$/s, '');
-
-  // Strip JSON-LD fragments (BWW page data)
-  cleaned = cleaned.replace(/\{\s*"@context".*$/s, '');
-
-  // Strip CRITIC'S PICK prefix (NYT designation leaked into excerpt)
-  cleaned = cleaned.replace(/^\*?CRITIC[''\u2019]?S PICK\*?\s*/i, '');
-
-  // Strip embedded critic attribution at start: "Laura Collins-Hughes, New York Times: "
-  // Only within first 80 chars and must match "Name Name, Outlet Words: " pattern
-  cleaned = cleaned.replace(/^[A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-zA-Z'-]+,\s+[A-Z][\w\s&.'-]{2,40}:\s*/, '');
-
-  // Strip leading colon/comma artifacts (from aggregator excerpt extraction)
-  // Must run AFTER attribution strip since `: "text"` may remain
-  cleaned = cleaned.replace(/^[,\s]*:\s*/, '');
-
-  // Strip control characters (U+0080–U+009F range — invisible C1 control codes)
-  cleaned = cleaned.replace(/[\u0080-\u009F]/g, '');
-
-  // Fix remaining mojibake: standalone â before whitespace → em-dash
-  cleaned = cleaned.replace(/â\s/g, '\u2014 ');
-  // Standalone â at end of text
-  cleaned = cleaned.replace(/â$/, '\u2014');
-
-  // --- End Layer 1 ---
-
-  // Strip navigation/boilerplate prefixes
-  cleaned = cleaned.replace(/^Skip to (content|main content)\s*/i, '');
-  cleaned = cleaned.replace(/^(This article was published more than[^.]*\.\s*)?Democracy Dies in Darkness\s*/i, '');
-  cleaned = cleaned.replace(/^Q:\s+[^?]*\?\s*/i, '');
-  cleaned = cleaned.replace(/^Posted on\s+\w+\s+\d{1,2},?\s+\d{4}\s*/i, '');
-  cleaned = cleaned.replace(/^No Comment\s*(BY\s+)?/i, '');
-  cleaned = cleaned.replace(/^Listen\s*\d+\s*min\s*/i, '');
-  // Strip WaPo photo captions: "Name as Character in 'Title'. (Photographer)"
-  cleaned = cleaned.replace(/^[A-Z][^.]{10,80}\.\s*\([A-Z][a-z]+ [A-Z][a-z]+\)\s*/i, '');
-  // Strip "Review by Author NAME —" or "Review by Author"
-  cleaned = cleaned.replace(/^Review by\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\s*(?:—\s*)?/i, '');
-
-  // Strip "| Photo:" caption artifacts
-  cleaned = cleaned.replace(/^[^|]{0,80}\|\s*Photo\s*:\s*[A-Z][a-z]+(?:\s+(?:and\s+)?[A-Z][a-z]+)*(?:\s+[A-Z][a-z]+)*\s+/i, '');
-
-  // Remove JavaScript/ad code patterns
-  cleaned = cleaned.replace(/blogherads\.[^;]+;?/gi, '');
-  cleaned = cleaned.replace(/\.defineSlot\([^)]+\)[^;]*;?/gi, '');
-  cleaned = cleaned.replace(/\.setTargeting\([^)]+\)[^;]*;?/gi, '');
-  cleaned = cleaned.replace(/\.addSize\([^)]+\)[^;]*;?/gi, '');
-  cleaned = cleaned.replace(/\.exemptFromSleep\(\)[^;]*;?/gi, '');
-  cleaned = cleaned.replace(/\.setClsOptimization\([^)]+\)[^;]*;?/gi, '');
-  cleaned = cleaned.replace(/\.setSubAdUnitPath\([^)]+\)[^;]*;?/gi, '');
-  cleaned = cleaned.replace(/googletag\.[^;]+;?/gi, '');
-  cleaned = cleaned.replace(/\(adsbygoogle\s*=\s*window\.adsbygoogle\s*\|\|\s*\[\]\)\.push\(\{[^}]*\}\);?\s*/g, '');
-  cleaned = cleaned.replace(/\[\s*["']mid-article\d*["'][^\]]*\]/gi, '');
-  cleaned = cleaned.replace(/Related Stories\s+[A-Z][^"]*$/gi, '');
-
-  // Remove photo credits mixed into text
-  cleaned = cleaned.replace(/\b[A-Z][a-z]+ [A-Z][a-z]+\s+(?=Thirty|The|In|When|After|Before|It|This|That|A|An)/g, '');
-
-  // Stop at next critic attribution (BWW roundups concatenate multiple critics)
-  const nextCriticMatch = cleaned.match(/\.\s+[A-Z][a-z]+(?:\s+[A-Z][a-z'-]+)?,\s+[A-Z][^:]+:/);
-  if (nextCriticMatch && nextCriticMatch.index > 50) {
-    cleaned = cleaned.substring(0, nextCriticMatch.index + 1);
-  }
-
-  // Strip Observer privacy consent and similar trailing boilerplate
-  cleaned = cleaned.replace(/\s*By clicking submit[^]*$/i, '');
-  cleaned = cleaned.replace(/\s*<a\s+href=[^]*$/i, '');
-  // Strip LA Times / newspaper copyright footers
-  cleaned = cleaned.replace(/\s*Copyright ©[^]*$/i, '');
-  // Strip "Visit the Site" show metadata (Cititour)
-  cleaned = cleaned.replace(/\s*Visit the Site\S*[^]*$/i, '');
-
-  // Strip trailing "Read more" / "Continue reading" / "Read the full review"
-  cleaned = cleaned.replace(/\s*(Read more|Continue reading|Read the full review)\.?\s*$/i, '');
-
-  // Normalize whitespace
-  cleaned = cleaned.replace(/\s+/g, ' ').trim();
-
-  // Skip if starts mid-word/mid-sentence (unless it's a quote)
-  if (/^[a-z]/.test(cleaned) && !cleaned.startsWith('"')) {
-    // Try to find the first complete sentence
-    const sentenceStart = cleaned.search(/[.!?]\s+[A-Z]/);
-    if (sentenceStart > 0 && sentenceStart < cleaned.length - 50) {
-      cleaned = cleaned.substring(sentenceStart + 2);
-    } else {
-      return null;
-    }
-  }
-
-  // Skip junk excerpts
-  if (isJunkExcerpt(cleaned)) {
-    return null;
-  }
-
-  // Truncate to 350 chars at sentence boundary
-  if (cleaned.length > 350) {
-    const truncateAt = cleaned.lastIndexOf('.', 350);
-    cleaned = truncateAt > 100 ? cleaned.substring(0, truncateAt + 1) : cleaned.substring(0, 347) + '...';
-  }
-
-  // Final junk check
-  if (/defineSlot|setTargeting|blogherads|Plus Icon|adsbygoogle|googletag/i.test(cleaned)) {
-    return null;
-  }
-
-  return cleaned.length > 30 ? cleaned : null;
-}
+// cleanExcerpt — imported from ./lib/rebuild-helpers
 
 /**
  * Extract a good opening excerpt from full review text
@@ -601,7 +481,7 @@ function selectBestExcerpt(data, showTitle) {
 
   // 5. Try dtliExcerpt with aggressive cleaning (aggregator-curated)
   if (data.dtliExcerpt) {
-    const cleaned = cleanExcerpt(data.dtliExcerpt, true);
+    const cleaned = cleanExcerpt(data.dtliExcerpt);
     if (cleaned && cleaned.length > 40) {
       const validated = validateExcerpt(cleaned, 'dtliExcerpt');
       if (validated) return validated;

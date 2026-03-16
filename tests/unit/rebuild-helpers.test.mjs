@@ -22,6 +22,7 @@ const {
   isGenericQuote,
   trimToCompleteSentence,
   normalizeQuoteWrapping,
+  cleanExcerpt,
   isContentVerificationActive,
   getBestScore,
   scoreToBucket,
@@ -595,5 +596,164 @@ describe('isContentVerificationActive', () => {
       contentVerification: { wrongArticle: true, verifiedAt: '2025-01-01T00:00:00Z' },
       textFetchedAt: '2025-06-01T00:00:00Z',
     }), false);
+  });
+});
+
+// ========================================
+// 6. cleanExcerpt
+// ========================================
+
+describe('cleanExcerpt', () => {
+  test('null/empty returns null', () => {
+    assert.strictEqual(cleanExcerpt(null), null);
+    assert.strictEqual(cleanExcerpt(''), null);
+  });
+
+  test('URL-only input returns null', () => {
+    assert.strictEqual(cleanExcerpt('https://example.com/review'), null);
+  });
+
+  test('valid review text passes through', () => {
+    const text = 'The musical is a stunning achievement that captivates the audience from start to finish.';
+    assert.strictEqual(cleanExcerpt(text), text);
+  });
+
+  test('ad code (googletag) stripped', () => {
+    const text = 'A brilliant show. googletag.cmd.push(function(){}); The performances were outstanding and memorable throughout.';
+    const result = cleanExcerpt(text);
+    assert.ok(result);
+    assert.ok(!result.includes('googletag'));
+    assert.ok(result.includes('brilliant'));
+  });
+
+  test('blogherads ad code stripped', () => {
+    const text = 'A moving production. blogherads.adq.push(123); The cast delivers unforgettable performances every night.';
+    const result = cleanExcerpt(text);
+    assert.ok(result);
+    assert.ok(!result.includes('blogherads'));
+  });
+
+  test('Skip to content boilerplate stripped', () => {
+    const text = 'Skip to content The show delivers a powerful emotional punch that leaves audiences breathless.';
+    const result = cleanExcerpt(text);
+    assert.ok(result);
+    assert.ok(!result.includes('Skip to content'));
+    assert.ok(result.includes('delivers'));
+  });
+
+  test('Democracy Dies in Darkness stripped', () => {
+    const text = 'Democracy Dies in Darkness The revival brings fresh energy to a classic musical that audiences will love.';
+    const result = cleanExcerpt(text);
+    assert.ok(result);
+    assert.ok(!result.includes('Democracy'));
+  });
+
+  test('CRITIC\'S PICK prefix stripped', () => {
+    const text = "CRITIC'S PICK A revelatory production that redefines what musical theater can achieve on Broadway.";
+    const result = cleanExcerpt(text);
+    assert.ok(result);
+    assert.ok(!result.includes("CRITIC'S PICK"));
+    assert.ok(result.startsWith('A revelatory'));
+  });
+
+  test('embedded critic attribution stripped', () => {
+    const text = 'Laura Collins-Hughes, New York Times: A brilliant new musical that soars from its opening number to its finale.';
+    const result = cleanExcerpt(text);
+    assert.ok(result);
+    assert.ok(!result.includes('Laura Collins'));
+    assert.ok(result.includes('brilliant'));
+  });
+
+  test('multi-critic truncation stops at second critic', () => {
+    const text = 'A stunning revival that breathes new life into a classic show and will delight audiences of all ages. Jesse Green, New York Times: The choreography is superb and innovative.';
+    const result = cleanExcerpt(text);
+    assert.ok(result);
+    assert.ok(result.includes('stunning'));
+    assert.ok(!result.includes('Jesse Green'));
+  });
+
+  test('mid-sentence lowercase recovery', () => {
+    const text = 'a wonderful experience. The show is a triumph of modern musical theater that will be remembered for years.';
+    const result = cleanExcerpt(text);
+    assert.ok(result);
+    assert.ok(result.startsWith('The show'));
+  });
+
+  test('mid-sentence lowercase with no recovery returns null', () => {
+    const result = cleanExcerpt('the end of a short thing');
+    assert.strictEqual(result, null);
+  });
+
+  test('junk excerpt rejected', () => {
+    assert.strictEqual(cleanExcerpt('Home Legit Reviews Broadway musical theater listings and information for New York City audiences.'), null);
+  });
+
+  test('truncation at 350 chars uses sentence boundary', () => {
+    // Build text > 350 chars with a period around char 200
+    const text = 'The production is a masterwork of theatrical storytelling. ' +
+      'Every element of the staging contributes to an immersive experience that transports audiences to another world entirely. ' +
+      'The performances are uniformly excellent across the entire cast. ' +
+      'The direction brings clarity and emotional depth to material that could easily become overwrought in lesser hands. ' +
+      'The choreography integrates seamlessly with the narrative to create moments of pure theatrical magic.';
+    const result = cleanExcerpt(text);
+    assert.ok(result);
+    assert.ok(result.length <= 351); // 350 + trailing period
+    assert.ok(result.endsWith('.'));
+  });
+
+  test('truncation without sentence boundary adds ellipsis', () => {
+    // Long text with no period in first 350 chars but > 350 total
+    const longWord = 'The production delivers an extraordinarily compelling and deeply moving theatrical experience that showcases the remarkable talents of every single member of the cast and crew who bring this magnificent story to life on the Broadway stage with passion, dedication, and an unwavering commitment to artistic excellence that audiences will find absolutely thrilling and unforgettable from start to finish and beyond';
+    const result = cleanExcerpt(longWord);
+    assert.ok(result);
+    assert.ok(result.endsWith('...'));
+  });
+
+  test('short excerpt (<30 chars) returns null', () => {
+    assert.strictEqual(cleanExcerpt('A good show.'), null);
+  });
+
+  test('HTML entities decoded', () => {
+    const text = 'The show &amp; its cast deliver performances that are both moving and technically brilliant throughout.';
+    const result = cleanExcerpt(text);
+    assert.ok(result);
+    assert.ok(result.includes('show & its'));
+    assert.ok(!result.includes('&amp;'));
+  });
+
+  test('trailing Read more stripped', () => {
+    const text = 'A powerful new drama that explores themes of identity and belonging with remarkable sensitivity and depth. Read more';
+    const result = cleanExcerpt(text);
+    assert.ok(result);
+    assert.ok(!result.includes('Read more'));
+  });
+
+  test('copyright footer stripped', () => {
+    const text = 'The revival is a triumph of theatrical storytelling that brings this classic work to vivid new life. Copyright © 2024 Los Angeles Times. All rights reserved.';
+    const result = cleanExcerpt(text);
+    assert.ok(result);
+    assert.ok(!result.includes('Copyright'));
+  });
+
+  test('control characters stripped', () => {
+    const text = 'A remarkable\u0085production\u008Athat showcases extraordinary talent and brings this beautiful story to vivid theatrical life.';
+    const result = cleanExcerpt(text);
+    assert.ok(result);
+    assert.ok(!result.includes('\u0085'));
+    assert.ok(!result.includes('\u008A'));
+  });
+
+  test('Average Rating metadata stripped', () => {
+    const text = 'A stunning musical achievement. Average Rating: 92% based on 45 reviews from major critics across the country.';
+    const result = cleanExcerpt(text);
+    assert.ok(result);
+    assert.ok(!result.includes('Average Rating'));
+  });
+
+  test('leading colon artifact stripped', () => {
+    const text = ': A brilliant revival that brings fresh energy and insight to this timeless classic musical theater piece.';
+    const result = cleanExcerpt(text);
+    assert.ok(result);
+    assert.ok(result.startsWith('A brilliant'));
   });
 });
