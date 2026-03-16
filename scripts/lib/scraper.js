@@ -18,7 +18,25 @@
  */
 
 const https = require('https');
+const path = require('path');
+const fs = require('fs');
 const { chromium } = require('playwright');
+
+// --- Domain-tier-skip: skip providers known to fail for specific domains ---
+// Sourced from collect-review-texts.js empirical data (30K+ collection results).
+let _domainTierSkip = null;
+function _getDomainSkips(url) {
+  if (!_domainTierSkip) {
+    try {
+      const skipPath = path.join(__dirname, '..', 'config', 'domain-tier-skip.json');
+      _domainTierSkip = JSON.parse(fs.readFileSync(skipPath, 'utf8'));
+    } catch { _domainTierSkip = {}; }
+  }
+  try {
+    const hostname = new URL(url).hostname.replace(/^www\./, '');
+    return new Set(_domainTierSkip[hostname] || []);
+  } catch { return new Set(); }
+}
 
 // --- Domain alias groups ---
 // Sites that legitimately redirect between each other
@@ -285,23 +303,28 @@ async function fetchWithPlaywright(url, options = {}) {
 async function fetchPage(url, options = {}) {
   const preferPlaywright = options.preferPlaywright || false;
   const isPublicSite = _isPlaywrightFirstDomain(url);
+  const skips = _getDomainSkips(url);
 
   console.log(`Fetching: ${url}`);
 
   // Playwright-first for known public sites (free, fast with domcontentloaded)
   // Also for BroadwayWorld (complex JS) and explicit preferPlaywright
   if (preferPlaywright || url.includes('broadwayworld.com') || isPublicSite) {
-    const label = isPublicSite ? 'public site' : 'complex site';
-    console.log(`  → Using Playwright (${label})...`);
-    const result = await fetchWithPlaywright(url, { fast: isPublicSite });
-    if (result) {
-      console.log(`  ✅ Success (Playwright, ${result.format})`);
-      return result;
+    if (skips.has('playwright')) {
+      console.log('  → Skipping Playwright (domain-tier-skip)');
+    } else {
+      const label = isPublicSite ? 'public site' : 'complex site';
+      console.log(`  → Using Playwright (${label})...`);
+      const result = await fetchWithPlaywright(url, { fast: isPublicSite });
+      if (result) {
+        console.log(`  ✅ Success (Playwright, ${result.format})`);
+        return result;
+      }
     }
   }
 
   // Try Bright Data (primary for non-public sites, fallback for public)
-  if (BRIGHTDATA_TOKEN) {
+  if (BRIGHTDATA_TOKEN && !skips.has('brightdata')) {
     console.log('  → Trying Bright Data...');
     const result = await fetchWithBrightData(url);
     if (result) {
@@ -310,8 +333,8 @@ async function fetchPage(url, options = {}) {
     }
   }
 
-  // Fall back to ScrapingBee (skip if credits exhausted)
-  if (SCRAPINGBEE_KEY && !_sbCreditsLow) {
+  // Fall back to ScrapingBee (skip if credits exhausted or domain-skipped)
+  if (SCRAPINGBEE_KEY && !_sbCreditsLow && !skips.has('scrapingbee')) {
     console.log('  → Trying ScrapingBee...');
     const result = await fetchWithScrapingBee(url, options);
     if (result) {
@@ -321,7 +344,7 @@ async function fetchPage(url, options = {}) {
   }
 
   // Last resort: Playwright (only if not already tried above)
-  if (!preferPlaywright && !isPublicSite && !url.includes('broadwayworld.com')) {
+  if (!preferPlaywright && !isPublicSite && !url.includes('broadwayworld.com') && !skips.has('playwright')) {
     console.log('  → Trying Playwright (last resort)...');
     const result = await fetchWithPlaywright(url);
     if (result) {
