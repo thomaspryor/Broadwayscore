@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-16T05:12:10.337Z",
-  "processed": 454,
-  "failed": 1631,
-  "successRate": "21.8%",
+  "updatedAt": "2026-03-16T05:14:46.572Z",
+  "processed": 462,
+  "failed": 1633,
+  "successRate": "22.1%",
   "tierBreakdown": {
-    "playwright": 285,
+    "playwright": 292,
     "amp": 24,
-    "browserbase": 54,
+    "browserbase": 56,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 54,
-    "archive": 134
+    "archive": 135
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-03-15T16:26:11.866Z",
-      "event": "bb-session",
-      "session": "b272b4de",
-      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
-    },
-    {
-      "t": "2026-03-15T16:26:13.621Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-15T16:28:06.481Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-16T05:00:04.593Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-16T05:12:27.344Z",
+      "event": "bb-session",
+      "session": "d3cf4fe0",
+      "url": "https://broncoswire.usatoday.com/story/entertainment/arts/2022/02/02/mj-musical-"
+    },
+    {
+      "t": "2026-03-16T05:12:28.867Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }
