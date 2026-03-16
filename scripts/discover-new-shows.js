@@ -262,14 +262,23 @@ async function fetchShowsFromTodayTixLondon() {
     const subcatNames = (s.subcategories || []).map(sc => sc.name);
     const isWestEnd = subcatNames.includes('West End') || subcatNames.includes('Broadway');
     const isOffWestEnd = subcatNames.includes('Off West End') && !isWestEnd;
+    const hasSubcategories = subcatNames.length > 0;
 
-    if (!isWestEnd && !isOffWestEnd) return false;
+    if (hasSubcategories) {
+      // When TodayTix provides subcategories, use them for WE/OWE classification
+      if (!isWestEnd && !isOffWestEnd) return false;
 
-    // Off West End shows need category-level filtering to exclude noise
-    if (isOffWestEnd) {
+      // Off West End shows need category-level filtering to exclude noise
+      if (isOffWestEnd) {
+        const isTheaterCategory = WE_THEATER_CATEGORIES.has(s.category?.name);
+        const hasTheaterSubcats = subcatNames.some(sc => WE_THEATER_SUBCATEGORIES.has(sc));
+        if (!isTheaterCategory && !hasTheaterSubcats) return false;
+      }
+    } else {
+      // FALLBACK: TodayTix removed subcategories (detected March 2026).
+      // All location=2 shows are London. Filter by top-level category instead.
       const isTheaterCategory = WE_THEATER_CATEGORIES.has(s.category?.name);
-      const hasTheaterSubcats = subcatNames.some(sc => WE_THEATER_SUBCATEGORIES.has(sc));
-      if (!isTheaterCategory && !hasTheaterSubcats) return false;
+      if (!isTheaterCategory) return false;
     }
 
     return !isNonTheaterContent(s) && !isOneNightShow(s);

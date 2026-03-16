@@ -132,6 +132,9 @@ jobs:
       - name: Stagger start
         run: sleep $(( ${{ matrix.shard }} * 30 ))
 
+      - name: Install Playwright
+        run: npx playwright install chromium
+
       - name: Run Show Score scraper (shard ${{ matrix.shard }})
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
