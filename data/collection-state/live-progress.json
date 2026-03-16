@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-16T11:39:40.485Z",
-  "processed": 193,
+  "updatedAt": "2026-03-16T11:42:03.202Z",
+  "processed": 203,
   "failed": 17,
-  "successRate": "91.9%",
+  "successRate": "92.3%",
   "tierBreakdown": {
-    "playwright": 120,
+    "playwright": 128,
     "amp": 14,
     "browserbase": 24,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 7,
-    "archive": 54
+    "archive": 56
   },
-  "browserbaseSessions": 18,
+  "browserbaseSessions": 19,
   "recentActivity": [
-    {
-      "t": "2026-03-16T11:17:40.451Z",
-      "event": "bb-session",
-      "session": "a35cd145",
-      "url": "https://www.nytimes.com/2025/10/16/theater/ragtime-review-henry-debessonet.html"
-    },
-    {
-      "t": "2026-03-16T11:17:42.067Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-16T11:19:11.763Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-16T11:36:38.542Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-16T11:41:32.237Z",
+      "event": "bb-session",
+      "session": "a65404fd",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-03-16T11:41:33.998Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
