@@ -1350,7 +1350,7 @@ async function discoverShows() {
         openingDate: openingDate || null,
         closingDate: show.closingDate || null,
         status: status,
-        type: detection.detectedType, // Auto-detected with revival logic
+        type: (detection.detectedType || 'play').toLowerCase(), // Auto-detected with revival logic
         isRevival: detection.isRevival || false,
         runtime: (runtimeEnrichments[show.id] && runtimeEnrichments[show.id].runtime) || null,
         intermissions: runtimeEnrichments[show.id] != null ? runtimeEnrichments[show.id].intermissions : null,
