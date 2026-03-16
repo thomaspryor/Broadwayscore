@@ -310,7 +310,15 @@ async function fetchShowsFromTodayTixLondon() {
     });
   }
 
-  console.log(`TodayTix London API: ${allShows.length} total London shows, ${westEndShows.length} West End-tagged, ${showsList.length} unique`);
+  console.log(`TodayTix London API: ${allShows.length} total London shows, ${westEndShows.length} West End-filtered, ${showsList.length} unique`);
+
+  // GUARD: If TodayTix returned shows but our filter dropped them all, something is wrong
+  if (allShows.length > 20 && westEndShows.length === 0) {
+    console.error(`⚠️  WARNING: TodayTix returned ${allShows.length} London shows but 0 passed WE filter — API may have changed`);
+  } else if (allShows.length > 50 && westEndShows.length < 10) {
+    console.error(`⚠️  WARNING: Only ${westEndShows.length}/${allShows.length} London shows passed WE filter — unusually low`);
+  }
+
   return showsList;
 }
 

@@ -154,6 +154,9 @@ async function scrapeTheatremonkey(weShows) {
 
   const indexEntries = parseTheatremonkeyIndex(indexHtml);
   console.log(`Found ${indexEntries.length} shows on Theatremonkey index`);
+  if (indexHtml.length > 10000 && indexEntries.length === 0) {
+    console.error('⚠️  WARNING: Theatremonkey page loaded but 0 shows parsed — HTML structure may have changed');
+  }
 
   // Match titles to our shows FIRST, then only fetch matched pages
   const matched = [];

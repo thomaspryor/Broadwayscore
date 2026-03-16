@@ -382,11 +382,18 @@ async function main() {
     process.exit(1);
   }
   console.log(`Fetched ${allProductions.length} productions with ratings`);
+  if (allProductions.length === 0) {
+    console.error('⚠️  CRITICAL: Mezzanine API returned 0 productions — session token may have expired');
+    process.exit(1);
+  }
 
   // 2. Filter productions by market
   const nycProductions = filterNYCProductions(allProductions);
   const londonProductions = filterLondonProductions(allProductions);
   console.log(`Filtered to ${nycProductions.length} NYC/Broadway + ${londonProductions.length} London/West End productions\n`);
+  if (allProductions.length > 50 && nycProductions.length === 0) {
+    console.error('⚠️  WARNING: 0 NYC productions from ' + allProductions.length + ' total — location filter may be broken');
+  }
 
   // 3. Get shows to process (all categories — match each against its market's pool)
   let shows = showsData.shows;

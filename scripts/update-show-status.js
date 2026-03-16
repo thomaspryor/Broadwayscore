@@ -169,6 +169,9 @@ async function refreshTodayTixDates(data, updates) {
     try {
       const ttShows = await fetchAllTodayTixShows(loc.id);
       console.log(`  TodayTix ${loc.label}: ${ttShows.length} shows`);
+      if (ttShows.length === 0) {
+        console.error(`  ⚠️  WARNING: TodayTix ${loc.label} returned 0 shows — API may be down or format changed`);
+      }
 
       for (const ttShow of ttShows) {
         seenTtIds.add(String(ttShow.id));
