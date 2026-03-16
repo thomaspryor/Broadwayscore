@@ -239,6 +239,57 @@ function extractIndividualReviews(html) {
   return reviews;
 }
 
+/**
+ * Fetch ALL reviews from Feefo API (paginated, free, no auth).
+ * Returns a map of product name → array of review objects.
+ */
+async function fetchAllFeefoReviews() {
+  const FEEFO_BASE = 'https://api.feefo.com/api/10/reviews/all?merchant_identifier=london-box-office-uk&page_size=100';
+  const allByProduct = {};
+  let page = 1;
+  let totalPages = 1;
+
+  console.log('📡 Fetching Feefo reviews...');
+
+  while (page <= totalPages) {
+    try {
+      const res = await httpsGet(`${FEEFO_BASE}&page=${page}`);
+      const data = JSON.parse(res.body);
+      const meta = data.summary?.meta || {};
+      totalPages = meta.pages || 1;
+
+      for (const r of data.reviews || []) {
+        const products = r.products_purchased || [];
+        const service = r.service || {};
+        const review = {
+          rating: service.rating?.rating || null,
+          date: r.last_updated_date?.split('T')[0] || null,
+          title: service.title || null,
+          body: service.review || null,
+          author: r.customer?.display_name || null,
+          verified: true, // All Feefo reviews are verified
+          source: 'feefo',
+        };
+
+        for (const product of products) {
+          if (!allByProduct[product]) allByProduct[product] = [];
+          allByProduct[product].push(review);
+        }
+      }
+
+      page++;
+      if (page <= totalPages) await sleep(1000); // gentle rate limit
+    } catch (e) {
+      console.log(`  ⚠️  Feefo page ${page} failed: ${e.message}`);
+      break;
+    }
+  }
+
+  const totalReviews = Object.values(allByProduct).reduce((s, arr) => s + arr.length, 0);
+  console.log(`  ✅ ${totalReviews} Feefo reviews across ${Object.keys(allByProduct).length} products`);
+  return allByProduct;
+}
+
 async function fetchLboPage(url) {
   try {
     const res = await httpsGet(url);
@@ -288,6 +339,9 @@ async function main() {
   }
 
   console.log(`   Processing: ${toProcess.length} shows\n`);
+
+  // Fetch all Feefo reviews once (16 API calls, free)
+  const feefoByProduct = dryRun ? {} : await fetchAllFeefoReviews();
 
   const stats = { processed: 0, found: 0, notFound: 0, errors: 0, skipped: 0 };
   const anchorResults = {};
@@ -411,21 +465,43 @@ async function main() {
         console.log(`  💾 Checkpoint saved (${i + 1} processed)`);
       }
 
-      // Extract individual reviews and save to flat file
-      const individualReviews = extractIndividualReviews(html);
-      if (individualReviews.length > 0) {
-        // Re-read reviews file fresh (same pattern as audience-buzz)
+      // Extract individual reviews from HTML + merge Feefo API reviews
+      const htmlReviews = extractIndividualReviews(html);
+      // Match Feefo reviews by normalized title
+      const titleNorm = title.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim();
+      const feefoReviews = [];
+      for (const [product, reviews] of Object.entries(feefoByProduct)) {
+        const productNorm = product.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim();
+        if (productNorm === titleNorm || productNorm.includes(titleNorm) || titleNorm.includes(productNorm)) {
+          feefoReviews.push(...reviews);
+        }
+      }
+
+      // Merge: HTML reviews first (more complete), then Feefo reviews not already present
+      // Dedup by date+author (same person, same day = same review)
+      const seen = new Set(htmlReviews.map(r => `${r.date}|${r.author}`));
+      const merged = [...htmlReviews.map(r => ({ ...r, source: 'html' }))];
+      for (const fr of feefoReviews) {
+        const key = `${fr.date}|${fr.author}`;
+        if (!seen.has(key)) {
+          merged.push(fr);
+          seen.add(key);
+        }
+      }
+
+      if (merged.length > 0) {
         let reviewsData = {};
         try { reviewsData = JSON.parse(fs.readFileSync(reviewsPath, 'utf8')); } catch { /* first run */ }
         reviewsData[show.id] = {
           title: show.title,
           totalReviews: data.reviewCount,
-          fetchedReviews: individualReviews.length,
+          fetchedReviews: merged.length,
           lastFetched: new Date().toISOString().slice(0, 10),
-          reviews: individualReviews,
+          reviews: merged,
         };
         fs.writeFileSync(reviewsPath, JSON.stringify(reviewsData, null, 2) + '\n');
-        console.log(`  📝 ${individualReviews.length} individual reviews saved`);
+        const feefoNew = merged.length - htmlReviews.length;
+        console.log(`  📝 ${merged.length} reviews saved (${htmlReviews.length} HTML${feefoNew > 0 ? ` + ${feefoNew} Feefo` : ''})`);
       }
     }
 
