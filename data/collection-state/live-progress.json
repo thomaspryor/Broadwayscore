@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-16T12:13:36.603Z",
-  "processed": 319,
-  "failed": 41,
+  "updatedAt": "2026-03-16T12:16:45.355Z",
+  "processed": 328,
+  "failed": 42,
   "successRate": "88.6%",
   "tierBreakdown": {
-    "playwright": 206,
+    "playwright": 212,
     "amp": 14,
     "browserbase": 26,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 11,
-    "archive": 93
+    "archiveToday": 12,
+    "archive": 96
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-03-16T11:30:38.022Z",
-      "event": "bb-session",
-      "session": "7007c8cb",
-      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
-    },
-    {
-      "t": "2026-03-16T11:30:39.504Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-16T11:31:01.945Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-16T11:55:23.866Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-16T12:15:16.818Z",
+      "event": "bb-session",
+      "session": "462d6164",
+      "url": "http://www.northjersey.com/arts-and-entertainment/theater/revisiting-the-dark-si"
+    },
+    {
+      "t": "2026-03-16T12:15:18.302Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }

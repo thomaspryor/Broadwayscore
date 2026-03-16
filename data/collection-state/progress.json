@@ -318,7 +318,16 @@
     "harry-potter-2021/melindas-malarky--melinda-pressler.json",
     "harry-potter-and-the-cursed-child-both-parts-west-end-2021/financialtimes--sarah-hemming.json",
     "harry-potter-and-the-cursed-child-both-parts-west-end-2021/independent--jack-shepherd.json",
-    "harry-potter-and-the-cursed-child-both-parts-west-end-2021/standard--henry-hitchings.json"
+    "harry-potter-and-the-cursed-child-both-parts-west-end-2021/standard--henry-hitchings.json",
+    "harry-potter-and-the-cursed-child-both-parts-west-end-2021/telegraph--dominic-cavendish.json",
+    "heathers-the-musical-off-broadway-2025/culturesauce--unknown.json",
+    "heathers-the-musical-off-broadway-2025/digital-journal--mark-papadatos.json",
+    "heathers-the-musical-off-broadway-2025/frontmezzjunkies--ross.json",
+    "heathers-the-musical-off-broadway-2025/nysr--david-finkle.json",
+    "heathers-the-musical-off-broadway-2025/off-off-online--jessica-taghap.json",
+    "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+    "heathers-the-musical-off-broadway-2025/theater-pizzazz--ron-fassler.json",
+    "hercules-west-end-2025/artsdesk--unknown.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -361,7 +370,8 @@
     "giant-2026/ap--jennifer-farrar.json",
     "hadestown-west-end-2024/times-uk--clive-davis.json",
     "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
-    "harry-potter-2021/times-uk--ann-treneman.json"
+    "harry-potter-2021/times-uk--ann-treneman.json",
+    "heathers-the-musical-off-broadway-2025/northjerseycom--robert-feldberg.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -571,7 +581,13 @@
       "harry-potter-2021/financialtimes--charles-isherwood.json",
       "harry-potter-2021/melindas-malarky--melinda-pressler.json",
       "harry-potter-and-the-cursed-child-both-parts-west-end-2021/financialtimes--sarah-hemming.json",
-      "harry-potter-and-the-cursed-child-both-parts-west-end-2021/standard--henry-hitchings.json"
+      "harry-potter-and-the-cursed-child-both-parts-west-end-2021/standard--henry-hitchings.json",
+      "harry-potter-and-the-cursed-child-both-parts-west-end-2021/telegraph--dominic-cavendish.json",
+      "heathers-the-musical-off-broadway-2025/culturesauce--unknown.json",
+      "heathers-the-musical-off-broadway-2025/nysr--david-finkle.json",
+      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+      "heathers-the-musical-off-broadway-2025/theater-pizzazz--ron-fassler.json",
+      "hercules-west-end-2025/artsdesk--unknown.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -631,7 +647,8 @@
       "data/review-texts/the-devil-wears-prada-west-end-2024/guardian--arifa-akbar.json",
       "data/review-texts/the-holy-rosenbergs-west-end-2026/guardian--david-jays.json",
       "data/review-texts/buena-vista-social-club-2025/cititour--brian-scott-lipton.json",
-      "data/review-texts/harry-potter-2021/cititour--brian-scott-lipton.json"
+      "data/review-texts/harry-potter-2021/cititour--brian-scott-lipton.json",
+      "data/review-texts/heathers-the-musical-off-broadway-2025/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
       "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
@@ -726,11 +743,14 @@
       "hamilton-2015/telegraph--unknown.json",
       "hamilton-west-end-2021/daily-mail--quentin-letts.json",
       "harry-potter-2021/broadwayworld--michael-dale.json",
-      "harry-potter-and-the-cursed-child-both-parts-west-end-2021/independent--jack-shepherd.json"
+      "harry-potter-and-the-cursed-child-both-parts-west-end-2021/independent--jack-shepherd.json",
+      "heathers-the-musical-off-broadway-2025/digital-journal--mark-papadatos.json",
+      "heathers-the-musical-off-broadway-2025/frontmezzjunkies--ross.json",
+      "heathers-the-musical-off-broadway-2025/off-off-online--jessica-taghap.json"
     ]
   },
   "startTime": "2026-03-16T10:39:31.889Z",
-  "lastProcessed": "harry-potter-and-the-cursed-child-both-parts-west-end-2021/standard--henry-hitchings.json",
+  "lastProcessed": "hercules-west-end-2025/artsdesk--unknown.json",
   "log": [
     {
       "t": "2026-03-16T11:10:32.644Z",
@@ -973,6 +993,17 @@
       "t": "2026-03-16T11:55:23.866Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-16T12:15:16.818Z",
+      "event": "bb-session",
+      "session": "462d6164",
+      "url": "http://www.northjersey.com/arts-and-entertainment/theater/revisiting-the-dark-si"
+    },
+    {
+      "t": "2026-03-16T12:15:18.302Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
