@@ -1,11 +1,13 @@
 /**
  * URL Discovery via Google SERP (shared module)
  *
- * Provider chain: ScrapingBee SERP API → Bright Data SERP API → Bright Data Web Unlocker.
+ * Default provider chain: Bright Data ($0.0015/q, async 4-20s) → ScrapingBee (25 credits/q, sync 1-3s).
+ * With preferSpeed=true: ScrapingBee first → Bright Data fallback.
  *
  * Used by:
  * - collect-review-texts.js (full text collection — has its own inline copy)
  * - rediscover-review-urls.js (URL rediscovery pre-processing)
+ * - opening-night-poller.js (time-sensitive — uses preferSpeed=true)
  */
 
 const fs = require('fs');
@@ -415,12 +417,47 @@ async function _serpViaBrightDataWebUnlocker(query, apiKey, log) {
 }
 
 // ============================================================================
+// SERP provider chain helper
+// ============================================================================
+
+/**
+ * Try SERP providers in order based on preferSpeed flag.
+ * Default (preferSpeed=false): BrightData first (cheap), ScrapingBee fallback (fast).
+ * preferSpeed=true: ScrapingBee first (sync ~1-3s), BrightData fallback.
+ *
+ * @returns {{ results: Array|null, provider: string }}
+ *   results=null means both providers are down; []=searched but nothing found.
+ */
+async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed) {
+  const primary = preferSpeed
+    ? { fn: _serpViaScrapingBee, key: scrapingBeeKey, name: 'scrapingbee' }
+    : { fn: _serpViaBrightData, key: brightDataKey, name: 'brightdata' };
+  const fallback = preferSpeed
+    ? { fn: _serpViaBrightData, key: brightDataKey, name: 'brightdata' }
+    : { fn: _serpViaScrapingBee, key: scrapingBeeKey, name: 'scrapingbee' };
+
+  let results = await primary.fn(query, primary.key, log, dateRange);
+  let provider = primary.name;
+  if (!results || results.length === 0) {
+    const fbResults = await fallback.fn(query, fallback.key, log, dateRange);
+    if (fbResults && fbResults.length > 0) {
+      results = fbResults;
+      provider = fallback.name;
+    } else if (!results && !fbResults) {
+      results = null; // Both providers down
+    }
+  }
+  return { results, provider };
+}
+
+// ============================================================================
 // Main discovery function
 // ============================================================================
 
 /**
  * Discover correct URL for a review via Google SERP search.
- * Provider chain: ScrapingBee → Bright Data SERP API → Web Unlocker.
+ * Default provider chain: Bright Data (cheap) → ScrapingBee (fast fallback).
+ * With preferSpeed=true: ScrapingBee (fast) → Bright Data (fallback).
  *
  * @param {Object} review - Review object with showId, outletId, outlet, url
  * @param {string} scrapingBeeKey - ScrapingBee API key (can be empty)
@@ -429,6 +466,7 @@ async function _serpViaBrightDataWebUnlocker(query, apiKey, log) {
  * @param {Function} [options.log] - Logging function (default: console.log)
  * @param {{ dateMin: Date, dateMax: Date }} [options.dateRange] - Optional date range for Google's tbs filter
  * @param {boolean} [options.returnMetadata] - If true, return { url, serpTitle } instead of just url
+ * @param {boolean} [options.preferSpeed] - If true, use ScrapingBee first (sync, ~1-3s) instead of BrightData (async, ~4-20s). Use for time-sensitive flows like opening night polling.
  * @returns {string|null|'__SERP_UNAVAILABLE__'|{url: string, serpTitle: string}} - Discovered URL (or object if returnMetadata)
  */
 async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
@@ -436,6 +474,7 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   const brightDataKey = options.brightDataKey || '';
   let dateRange = options.dateRange || null;
   const returnMetadata = options.returnMetadata || false;
+  const preferSpeed = options.preferSpeed || false;
 
   if (!scrapingBeeKey && !brightDataKey) return '__SERP_UNAVAILABLE__';
 
@@ -481,19 +520,8 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
 
   log(`  [URL Discovery] Searching: ${query}`);
 
-  // Provider chain: ScrapingBee → Bright Data
-  // null = provider failure (down/exhausted), [] = searched but no results
-  let results = await _serpViaScrapingBee(query, scrapingBeeKey, log, dateRange);
-  let provider = 'scrapingbee';
-  if (!results || results.length === 0) {
-    const bdResults = await _serpViaBrightData(query, brightDataKey, log, dateRange);
-    if (bdResults && bdResults.length > 0) {
-      results = bdResults;
-      provider = 'brightdata';
-    } else if (!results && !bdResults) {
-      results = null; // Both providers down
-    }
-  }
+  // Provider chain: BD first (cheap) unless preferSpeed (opening night → SB first)
+  let { results, provider } = await _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed);
 
   // Both providers down
   if (results === null) {
@@ -518,17 +546,8 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
         strippedQuery = `"${primaryTitle}" ${marketTerm}${yearClause} "${outletName}"${criticClause}`;
       }
       log(`    Retry with stripped title: ${strippedQuery}`);
-      results = await _serpViaScrapingBee(strippedQuery, scrapingBeeKey, log, dateRange);
-      provider = 'scrapingbee-stripped';
-      if (!results || results.length === 0) {
-        const bdResults = await _serpViaBrightData(strippedQuery, brightDataKey, log, dateRange);
-        if (bdResults && bdResults.length > 0) {
-          results = bdResults;
-          provider = 'brightdata-stripped';
-        } else if (!results && !bdResults) {
-          results = null;
-        }
-      }
+      ({ results, provider } = await _serpWithChain(strippedQuery, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed));
+      provider = provider ? provider + '-stripped' : null;
       if (results === null) {
         log('    ✗ All SERP providers unavailable');
         return '__SERP_UNAVAILABLE__';
@@ -542,12 +561,8 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     if (criticName && (domain || oldDomain)) {
       const fallbackQuery = `"${showInfo.title}" "${outletName}" "${criticName}" ${marketTerm}${yearClause}`;
       log(`    Fallback search (no site:): ${fallbackQuery}`);
-      results = await _serpViaScrapingBee(fallbackQuery, scrapingBeeKey, log, dateRange);
-      provider = 'scrapingbee-fallback';
-      if (!results) {
-        results = await _serpViaBrightData(fallbackQuery, brightDataKey, log, dateRange);
-        provider = 'brightdata-fallback';
-      }
+      ({ results, provider } = await _serpWithChain(fallbackQuery, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed));
+      provider = provider ? provider + '-fallback' : null;
       if (results === null) {
         log('    ✗ All SERP providers unavailable');
         return '__SERP_UNAVAILABLE__';

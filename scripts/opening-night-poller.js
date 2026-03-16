@@ -319,26 +319,35 @@ async function runSERPBackup(show, missingOutlets, knownUrls) {
       process.stdout.write(`  ${outlet.name}... `);
       calls++;
 
+      const reviewObj = {
+        showId: show.id,
+        outletId: outlet.id,
+        outlet: outlet.name,
+        criticName: 'Unknown',
+        url: '',
+      };
       const result = await discoverCorrectUrl(
-        show.id,
-        show.title,
-        outlet.id,
-        outlet.domain,
-        { year: new Date(show.openingDate).getFullYear() }
+        reviewObj,
+        process.env.SCRAPINGBEE_API_KEY || '',
+        {
+          brightDataKey: process.env.BRIGHTDATA_TOKEN || '',
+          preferSpeed: true, // Opening night — latency matters
+        }
       );
 
-      if (result && result.url && !knownUrls.has(result.url)) {
+      const url = (result && result !== '__SERP_UNAVAILABLE__') ? result : null;
+      if (url && !knownUrls.has(url)) {
         console.log('found');
         results.push({
           showId: show.id,
           outletId: outlet.id,
           outlet: outlet.name,
           criticName: 'Unknown',
-          url: result.url,
+          url,
           source: 'serp-discovery',
         });
       } else {
-        console.log(result ? 'already known' : 'not found');
+        console.log(url ? 'already known' : 'not found');
       }
     } catch (err) {
       console.log(`error: ${err.message}`);
