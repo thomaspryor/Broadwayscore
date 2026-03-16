@@ -21,6 +21,7 @@
  */
 const SOURCE_WEIGHTS = {
   'Deep Research': 1.2,        // Manually verified through extensive research - highest authority
+  'OpenAI Deep Research': 1.15, // Automated Deep Research via API - high authority with citations
   'SEC Form D': 1.0,           // Official government filing
   'Deadline': 0.9,             // Major entertainment trade publication
   'Variety': 0.9,              // Major entertainment trade publication

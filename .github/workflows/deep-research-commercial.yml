@@ -1,0 +1,177 @@
+name: Deep Research Commercial
+
+on:
+  workflow_dispatch:
+    inputs:
+      shows:
+        description: 'Comma-separated show slugs, or "all-tbd"'
+        required: true
+        type: string
+      model:
+        description: 'Model: o4-mini (cheap, ~$1-3) or o3 (thorough, ~$10-30)'
+        required: false
+        type: choice
+        options:
+          - 'o4-mini'
+          - 'o3'
+        default: 'o4-mini'
+      budget:
+        description: 'Max spend in dollars'
+        required: false
+        type: number
+        default: 50
+      max_shows:
+        description: 'Max shows per run'
+        required: false
+        type: number
+        default: 10
+      dry_run:
+        description: 'Dry run (no files written)'
+        required: false
+        type: boolean
+        default: false
+  workflow_call:
+    inputs:
+      shows:
+        required: true
+        type: string
+      model:
+        required: false
+        type: string
+        default: 'o4-mini'
+      budget:
+        required: false
+        type: number
+        default: 20
+      max_shows:
+        required: false
+        type: number
+        default: 3
+
+concurrency:
+  group: commercial-deep-research
+  cancel-in-progress: false
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run Deep Research
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          ARGS=""
+          INPUT_SHOWS="${{ inputs.shows }}"
+          if [ "$INPUT_SHOWS" = "all-tbd" ]; then
+            ARGS="$ARGS --all-tbd"
+          else
+            ARGS="$ARGS --shows=$INPUT_SHOWS"
+          fi
+
+          ARGS="$ARGS --model=${{ inputs.model || 'o4-mini' }}"
+          ARGS="$ARGS --budget=${{ inputs.budget || '50' }}"
+          ARGS="$ARGS --max-shows=${{ inputs.max_shows || '10' }}"
+
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+
+          echo "Running: node scripts/deep-research-commercial.js $ARGS"
+          node scripts/deep-research-commercial.js $ARGS
+
+      - name: Commit pending results
+        if: always() && inputs.dry_run != true
+        run: |
+          git add data/commercial-pending-review.json data/deep-research-cost-log.json data/deep-research-progress.json 2>/dev/null || true
+
+          if git diff --staged --quiet; then
+            echo "No pending results to commit"
+          else
+            git commit -m "data: Deep Research commercial results (pending review)
+
+          Model: ${{ inputs.model || 'o4-mini' }}
+          Shows: ${{ inputs.shows }}
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Deep Research Commercial Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Model:** ${{ inputs.model || 'o4-mini' }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Budget:** \$${{ inputs.budget || '50' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f data/commercial-pending-review.json ]; then
+            node -e "
+              const pending = require('./data/commercial-pending-review.json');
+              const shows = Object.entries(pending.shows || {});
+              console.log('- **Shows researched:** ' + shows.length);
+              const high = shows.filter(([,s]) => s.confidence === 'high').length;
+              const med = shows.filter(([,s]) => s.confidence === 'medium').length;
+              const low = shows.filter(([,s]) => s.confidence === 'low').length;
+              console.log('- **Confidence:** ' + high + ' high, ' + med + ' medium, ' + low + ' low');
+              console.log('');
+              console.log('### Results');
+              console.log('| Show | Designation | Cap | Recouped | Confidence |');
+              console.log('|------|------------|-----|----------|-----------|');
+              for (const [id, s] of shows) {
+                const cap = s.capitalization ? '\$' + (s.capitalization/1e6).toFixed(1) + 'M' : '?';
+                const rec = s.recouped != null ? (s.recouped ? 'Yes' : 'No') : '?';
+                console.log('| ' + (s.title || id) + ' | ' + (s.designation || 'TBD') + ' | ' + cap + ' | ' + rec + ' | ' + (s.confidence || '?') + ' |');
+              }
+              console.log('');
+              console.log('> Review pending file, then apply: node scripts/deep-research-commercial.js --apply');
+            " >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "Could not generate summary" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No pending results file generated." >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Cost log
+          if [ -f data/deep-research-cost-log.json ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            node -e "
+              const log = require('./data/deep-research-cost-log.json');
+              const total = log.reduce((sum, e) => sum + e.cost, 0);
+              console.log('### Cost');
+              console.log('- **Total:** \$' + total.toFixed(4));
+              console.log('- **Queries:** ' + log.length);
+            " >> $GITHUB_STEP_SUMMARY 2>/dev/null || true
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Deep Research Commercial Failed'
+          severity: 'critical'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
