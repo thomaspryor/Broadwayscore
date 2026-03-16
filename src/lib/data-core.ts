@@ -88,6 +88,13 @@ export function getOffBroadwayShows(): ComputedShow[] {
 }
 
 /**
+ * Get Off-West End shows only (excludes West End proper)
+ */
+export function getOffWestEndShows(): ComputedShow[] {
+  return getAllShows().filter(show => show.category === 'off-west-end');
+}
+
+/**
  * Get market stats for the header market picker
  */
 export function getMarketStats() {

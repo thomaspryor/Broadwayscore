@@ -157,7 +157,7 @@ export function getScoreBgColor(score: number | null): string {
  */
 export function hasEnoughReviews(reviewCount: number, category?: string, tier1And2Count?: number): boolean {
   let min = category === 'off-broadway' ? MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY
-    : category === 'west-end' ? MIN_REVIEWS_FOR_SCORE_WEST_END
+    : category === 'west-end' || category === 'off-west-end' ? MIN_REVIEWS_FOR_SCORE_WEST_END
     : MIN_REVIEWS_FOR_SCORE;
   if (tier1And2Count !== undefined && tier1And2Count === 0) {
     min += T3_ONLY_EXTRA_REVIEWS;
