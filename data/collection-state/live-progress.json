@@ -1,18 +1,74 @@
 {
-  "updatedAt": "2026-03-16T11:03:30.629Z",
-  "processed": 134,
-  "failed": 16,
-  "successRate": "89.3%",
+  "updatedAt": "2026-03-16T11:14:01.278Z",
+  "processed": 88,
+  "failed": 12,
+  "successRate": "88.0%",
   "tierBreakdown": {
-    "playwright": 106,
+    "playwright": 64,
     "amp": 10,
-    "browserbase": 0,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 6,
-    "archive": 23
+    "archive": 15
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-03-16T11:10:32.644Z",
+      "event": "bb-session",
+      "session": "91b0befd",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-16T11:10:34.152Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-16T11:11:55.074Z",
+      "event": "bb-session",
+      "session": "77873387",
+      "url": "https://www.newyorker.com/magazine/2024/12/02/death-becomes-her-theatre-review-b"
+    },
+    {
+      "t": "2026-03-16T11:11:56.642Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-16T11:12:42.215Z",
+      "event": "bb-session",
+      "session": "6629589e",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-16T11:12:43.751Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-16T11:13:01.114Z",
+      "event": "bb-session",
+      "session": "d1cfbda9",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-16T11:13:02.690Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-16T11:13:40.580Z",
+      "event": "bb-session",
+      "session": "22242deb",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-16T11:13:42.070Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    }
+  ]
 }
