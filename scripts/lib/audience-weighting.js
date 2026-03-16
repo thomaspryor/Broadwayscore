@@ -13,6 +13,7 @@
  * Used by: scrape-reddit-sentiment.js, recalculate-audience-buzz.js,
  *          scrape-mezzanine-audience.js, scrape-show-score-audience.js,
  *          scrape-broadway-com-audience.js, scrape-seatplan-audience.js,
+ *          scrape-lbo-audience.js,
  *          merge-reddit-shards.js, merge-show-score-shards.js
  */
 
