@@ -826,32 +826,22 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           </div>
         )}
 
-        {/* Page Being Built / Historical Production banner — for shows with no reviews yet (skip upcoming/previews — they naturally don't have reviews) */}
-        {show.status !== 'previews' && show.status !== 'upcoming' && (!show.criticScore || show.criticScore.reviewCount === 0) && (() => {
+        {/* Historical Production banner — for old closed shows with no reviews */}
+        {show.status === 'closed' && (!show.criticScore || show.criticScore.reviewCount === 0) && (() => {
           const bannerYear = show.openingDate ? parseInt(show.openingDate.substring(0, 4)) : null;
-          const isHistoricalBanner = show.status === 'closed' && bannerYear !== null && bannerYear < 2024;
+          if (bannerYear === null || bannerYear >= 2024) return null;
           return (
-            <div className={`card p-4 sm:p-5 mb-6 border ${isHistoricalBanner ? 'border-blue-500/20 bg-blue-500/5' : 'border-amber-500/20 bg-amber-500/5'}`}>
+            <div className="card p-4 sm:p-5 mb-6 border border-blue-500/20 bg-blue-500/5">
               <div className="flex items-start gap-3">
-                <div className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${isHistoricalBanner ? 'bg-blue-500/15' : 'bg-amber-500/15'}`}>
-                  {isHistoricalBanner ? (
-                    <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  ) : (
-                    <svg className="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                    </svg>
-                  )}
+                <div className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center bg-blue-500/15">
+                  <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
                 </div>
                 <div>
-                  <p className={`text-sm font-semibold ${isHistoricalBanner ? 'text-blue-300' : 'text-amber-300'}`}>
-                    {isHistoricalBanner ? 'Historical Production' : 'Page Under Construction'}
-                  </p>
+                  <p className="text-sm font-semibold text-blue-300">Historical Production</p>
                   <p className="text-xs text-gray-400 mt-0.5">
-                    {isHistoricalBanner
-                      ? `${isWestEnd ? 'West End Scorecard' : isOffBroadway ? 'Off-Broadway Scorecard' : 'Broadway Scorecard'}'s critic review coverage begins in ${isWestEnd ? '2020' : '2005'}. Cast, creative team, and production details are available for this historical production.`
-                      : 'This show page is currently being built and will be complete in a couple of days. Reviews and scores are on the way.'}
+                    {`${isWestEnd ? 'West End Scorecard' : isOffBroadway ? 'Off-Broadway Scorecard' : 'Broadway Scorecard'}'s critic review coverage begins in ${isWestEnd ? '2020' : '2005'}. Cast, creative team, and production details are available for this historical production.`}
                   </p>
                 </div>
               </div>
