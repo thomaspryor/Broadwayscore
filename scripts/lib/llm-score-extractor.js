@@ -310,12 +310,27 @@ function verifyInText(result, fullText) {
 
   // --- Star ratings ---
   if (result.type === 'stars') {
-    if (ft.includes('*') || ft.includes('★') || ft.includes('⭐') || ft.includes('☆')) return result;
-    if (lower.includes('out of four') || lower.includes('out of five') || lower.includes('out of 4') || lower.includes('out of 5')) return result;
-    if (lower.includes('%bd') || lower.includes('%2a')) return result;
-    if (lower.includes('two and a half') || lower.includes('three and a half') || lower.includes('one and a half') || lower.includes('two and one-half') || lower.includes('three and one-half')) return result;
+    // Restrict star verification to last 500 chars to avoid matching ratings
+    // for OTHER shows mentioned in the same article (common in USA Today, EW).
+    const last500 = ft.slice(-500);
+    const last500Lower = last500.toLowerCase();
+
+    // First: check if the specific X/Y rating appears near end of text (most reliable)
     const slashMatch = (result.raw || '').match(/([\d.½]+)\s*\/\s*(\d+)/);
-    if (slashMatch && (lower.includes(slashMatch[1] + '/' + slashMatch[2]) || lower.includes(slashMatch[1] + ' / ' + slashMatch[2]))) return result;
+    if (slashMatch && (last500Lower.includes(slashMatch[1] + '/' + slashMatch[2]) || last500Lower.includes(slashMatch[1] + ' / ' + slashMatch[2]))) return result;
+
+    // Check for "X out of Y" written out near end
+    if (last500Lower.includes('out of four') || last500Lower.includes('out of five') || last500Lower.includes('out of 4') || last500Lower.includes('out of 5')) return result;
+    if (last500Lower.includes('two and a half') || last500Lower.includes('three and a half') || last500Lower.includes('one and a half') || last500Lower.includes('two and one-half') || last500Lower.includes('three and one-half')) return result;
+
+    // Check for actual star symbols near end (★⭐☆) — require 2+ consecutive to avoid
+    // stray unicode. Single * is NOT sufficient (too many false positives from
+    // footnotes, markdown, emphasis markers).
+    if (/[★⭐]{2,}|[★⭐].*[★⭐☆]|☆/.test(last500)) return result;
+    if (/\*{2,}\s*(\/|out of)/i.test(last500)) return result;
+
+    // URL-encoded stars (rare, from HTML scraping artifacts)
+    if (last500Lower.includes('%bd') || last500Lower.includes('%2a')) return result;
 
     return null;
   }
