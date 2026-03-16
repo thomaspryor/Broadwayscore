@@ -128,3 +128,38 @@ data/outlet-registry.json
 
 # Mobile app (separate repo)
 BroadwayScorecard/data/theatr-refresh-token.tmp
+
+# Claude Code agent config (local tooling only)
+/CLAUDE.md
+/.claude/commands/
+/.claude/settings.json
+
+# Internal planning docs (root)
+/CAST-PLAN.md
+/EXPANSION-PLAN.md
+/FORMSPREE-SETUP.md
+/HISTORICAL-EXPANSION-PLAN.md
+/HISTORICAL-SHOWS-GUIDE.md
+/PLAN-commercial-update-automation.md
+/SETUP-USER-ACCOUNTS.md
+/SOFT-LAUNCH-PLAYBOOK.md
+/SPRINTS-commercial-update-automation.md
+/TEST-REVIEW-SUBMISSION.md
+/TESTING-GUIDE.md
+/plan.md
+/sprint-plan-llm-scoring-v5.md
+/debug-output.txt
+
+# Internal docs, plans, audit narratives
+/docs/
+/memory/
+/data/deep-research/
+/data/audit/**/*.md
+/data/audit/*.md
+/data/*.md
+/data/review-reports/
+
+# Scripts documentation (internal)
+/scripts/critic-reviews-agent/
+/scripts/lib/README.md
+/scripts/llm-scoring/CHANGELOG-v52.md
