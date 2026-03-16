@@ -348,7 +348,7 @@ function extractExcerptFromFullText(fullText, showTitle) {
  * Aggregator editors hand-pick evaluative quotes.
  *
  * Priority: llmPullQuote > LLM keyPhrases > showScoreExcerpt > bwwExcerpt >
- *           nycTheatreExcerpt > dtliExcerpt > fullText extract > existing pullQuote
+ *           nycTheatreExcerpt > stagedoorExcerpt > dtliExcerpt > fullText extract > existing pullQuote
  */
 // Cross-show validation: dry-run by default (log but don't suppress)
 const CROSS_SHOW_DRY_RUN = process.env.DRY_RUN_CROSS_SHOW !== 'false';
@@ -464,6 +464,15 @@ function selectBestExcerpt(data, showTitle) {
     const cleaned = cleanExcerpt(data.nycTheatreExcerpt);
     if (cleaned && cleaned.length > 40) {
       const validated = validateExcerpt(cleaned, 'nycTheatreExcerpt');
+      if (validated) return validated;
+    }
+  }
+
+  // 4b. Try stagedoorExcerpt (aggregator-curated, UK critics)
+  if (data.stagedoorExcerpt) {
+    const cleaned = cleanExcerpt(data.stagedoorExcerpt);
+    if (cleaned && cleaned.length > 20) {
+      const validated = validateExcerpt(cleaned, 'stagedoorExcerpt');
       if (validated) return validated;
     }
   }
@@ -1360,7 +1369,7 @@ showDirs.forEach(showId => {
         delete data.fullText;
         delete data.assignedScore;
         delete data.ensembleData;
-        const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
+        const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.stagedoorExcerpt || data.lboRoundupExcerpt);
         data.contentTier = hasExcerpt ? 'excerpt' : 'stub';
         if (!hasExcerpt) {
           stats.skippedFullTextWrongAuthor = (stats.skippedFullTextWrongAuthor || 0) + 1;
@@ -1560,7 +1569,7 @@ showDirs.forEach(showId => {
         delete data.fullText;
         delete data.assignedScore;
         delete data.ensembleData;
-        const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
+        const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.stagedoorExcerpt || data.lboRoundupExcerpt);
         data.contentTier = hasExcerpt ? 'excerpt' : 'stub';
         if (!hasExcerpt) {
           stats.skippedFullTextWrongAuthor = (stats.skippedFullTextWrongAuthor || 0) + 1;
@@ -2010,7 +2019,7 @@ showDirs.forEach(showId => {
         review.designation = data.designation;
       } else if (review.outletId === 'nytimes' || (data.outletId || '').startsWith('nytimes')) {
         // Auto-detect NYT Critics' Pick from review text or archived HTML
-        const text = data.fullText || data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt || '';
+        const text = data.fullText || data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.stagedoorExcerpt || data.lboRoundupExcerpt || '';
         const textHasPick = /CRITIC['\u2019]?S PICK/i.test(text);
         let archiveHasPick = false;
         if (!textHasPick && data.archivePath) {
