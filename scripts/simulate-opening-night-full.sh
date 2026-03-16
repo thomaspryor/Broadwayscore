@@ -94,12 +94,61 @@ cleanup() {
     # Sync review-text changes if any
     if [ -d data/review-texts/.git ]; then
       cd data/review-texts
+
+      # SAFETY: Pull remote changes FIRST to incorporate any data fetched/updated
+      # by other processes during the simulation (e.g., collect-review-texts adding
+      # fullText to files that the simulation's rebuild also touched for metadata).
+      # Without this pull, git add -A would commit the local (stale) version and
+      # overwrite the remote's newer fullText with null — a data loss bug.
+      git pull --rebase origin main -q 2>/dev/null || true
+
       CHANGED=$(git status --porcelain | wc -l | tr -d ' ')
       if [ "$CHANGED" -gt 0 ]; then
-        git add -A
-        git commit -m "data: Post-simulation sync ($SHOW_ID)" 2>/dev/null || true
-        git push origin main 2>/dev/null || echo "  ⚠️  Could not push review-texts"
-        echo "  Synced $CHANGED review-text changes to private repo"
+        # Protect fetched review text: for any modified review-text JSON,
+        # ensure we don't overwrite fullText/contentTier with stale values.
+        # If the file on disk has fullText=null but the committed version has it,
+        # restore the committed version's fetched-text fields before staging.
+        node -e "
+          const fs = require('fs');
+          const { execSync } = require('child_process');
+          const dirty = execSync('git diff --name-only', { encoding: 'utf8' }).trim().split('\n').filter(Boolean);
+          let restored = 0;
+          for (const f of dirty) {
+            if (!f.endsWith('.json') || f === 'failed-fetches.json' || f.includes('failed-fetches')) continue;
+            try {
+              const local = JSON.parse(fs.readFileSync(f, 'utf8'));
+              const committed = JSON.parse(execSync('git show HEAD:' + f, { encoding: 'utf8' }));
+              // If committed version has fullText but local doesn't, restore it
+              if (committed.fullText && !local.fullText) {
+                local.fullText = committed.fullText;
+                local.textFetchedAt = committed.textFetchedAt || local.textFetchedAt;
+                local.textWordCount = committed.textWordCount || local.textWordCount;
+                local.isFullReview = committed.isFullReview != null ? committed.isFullReview : local.isFullReview;
+                local.textStatus = committed.textStatus || local.textStatus;
+                local.contentTier = committed.contentTier || local.contentTier;
+                local.contentTierReason = committed.contentTierReason || local.contentTierReason;
+                local.wordCount = committed.wordCount || local.wordCount;
+                if (committed.contentVerification) {
+                  local.contentVerification = committed.contentVerification;
+                }
+                fs.writeFileSync(f, JSON.stringify(local, null, 2) + '\n');
+                restored++;
+                console.log('  Restored fullText for ' + f);
+              }
+            } catch (e) { /* file not in HEAD or parse error — skip */ }
+          }
+          if (restored > 0) console.log('  Protected ' + restored + ' file(s) from fullText data loss');
+        " 2>/dev/null || true
+
+        CHANGED=$(git status --porcelain | wc -l | tr -d ' ')
+        if [ "$CHANGED" -gt 0 ]; then
+          git add -A
+          git commit -m "data: Post-simulation sync ($SHOW_ID)" 2>/dev/null || true
+          git push origin main 2>/dev/null || echo "  ⚠️  Could not push review-texts"
+          echo "  Synced $CHANGED review-text changes to private repo"
+        else
+          echo "  No review-text changes after merging remote updates"
+        fi
       else
         echo "  No review-text changes to sync"
       fi

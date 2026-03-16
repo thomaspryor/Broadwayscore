@@ -34,13 +34,14 @@ const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extr
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb } = require('./lib/rebuild-helpers');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 // Load outlet registry for cross-market guard
 const outletRegistry = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf8'));
 const outletRegionMap = {};  // outletId -> region (e.g., 'london')
 for (const [id, info] of Object.entries(outletRegistry.outlets)) {
   // Use explicit region, or infer from market (west-end → london)
-  const region = info.region || (info.market === 'west-end' ? 'london' : null);
+  const region = info.region || (info.market === 'west-end' || info.market === 'off-west-end' ? 'london' : null);
   if (region) outletRegionMap[id] = region;
   // Also map aliases to the same region
   if (info.aliases && region) {
@@ -1007,7 +1008,7 @@ showDirs.forEach(showId => {
             const refPubDate = new Date(refData.publishDate);
             const openDate = showDateMap[showId];
             const daysBefore = Math.ceil((openDate - refPubDate) / (1000 * 60 * 60 * 24));
-            const isFlexCat = showCat === 'off-broadway' || showCat === 'west-end';
+            const isFlexCat = showCat === 'off-broadway' || isLondonMarket(showCat);
             const threshold = isFlexCat ? 1825 : 14;
             if (daysBefore > threshold) refExcluded = true;
           }
@@ -1044,7 +1045,7 @@ showDirs.forEach(showId => {
             const refPubDate = new Date(refData.publishDate);
             const openDate = showDateMap[showId];
             const daysBefore = Math.ceil((openDate - refPubDate) / (1000 * 60 * 60 * 24));
-            const isFlexCat = showCat === 'off-broadway' || showCat === 'west-end';
+            const isFlexCat = showCat === 'off-broadway' || isLondonMarket(showCat);
             const threshold = isFlexCat ? 1825 : 14;
             if (daysBefore > threshold) refWouldBeExcluded = true;
           }
@@ -1079,7 +1080,7 @@ showDirs.forEach(showId => {
       // These are false positives — WE/OB shows transfer from other venues, so URL years mismatch legitimately
       // Note: uses showCat (outer scope, line 1334) because showCategory is declared later in this callback
       if (data.wrongProduction === true && data.wrongProductionNote && data.wrongProductionNote.includes('URL contains year')
-          && (showCat === 'west-end' || showCat === 'off-broadway')) {
+          && (isLondonMarket(showCat) || showCat === 'off-broadway')) {
         data.wrongProduction = false;
         data.wrongProductionAutoCleared = `rebuild: WE/OB exempt from URL-year guard (was: ${data.wrongProductionNote})`;
         data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
@@ -1235,14 +1236,14 @@ showDirs.forEach(showId => {
         } catch (e) {}
       }
 
-      if (showCategory === 'west-end'
+      if (isLondonMarket(showCategory)
           && !DUAL_MARKET_OUTLETS.has(canonicalOutlet) && !DUAL_MARKET_OUTLETS.has(rawOutlet)) {
         const outletRegion = outletRegionMap[canonicalOutlet] || outletRegionMap[rawOutlet];
         if (outletRegion !== 'london') {
           // Mark file permanently so future rebuilds skip it faster (line 1507) and it's visible on disk
           if (!data.wrongProduction && !data.wrongProductionOverride && !data.wrongProductionManualClear) {
             data.wrongProduction = true;
-            data.wrongProductionNote = `Cross-market: US outlet "${rawOutlet}" reviewing west-end show`;
+            data.wrongProductionNote = `Cross-market: US outlet "${rawOutlet}" reviewing London show`;
             try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
           }
           stats.skippedCrossMarket = (stats.skippedCrossMarket || 0) + 1;
@@ -1290,7 +1291,7 @@ showDirs.forEach(showId => {
         const pubDate = new Date(data.publishDate);
         const openDate = showDateMap[showId];
         const daysBefore = Math.ceil((openDate - pubDate) / (1000 * 60 * 60 * 24));
-        const isFlexCategory = showCategory === 'off-broadway' || showCategory === 'west-end';
+        const isFlexCategory = showCategory === 'off-broadway' || isLondonMarket(showCategory);
         const threshold = isFlexCategory ? 1825 : 14;
         if (daysBefore > threshold) {
           console.log(`  [PRE-OPENING] ${showId}/${file}: published ${daysBefore} days before opening (${data.publishDate} vs ${openDate.toISOString().split('T')[0]})`);
@@ -1616,8 +1617,18 @@ showDirs.forEach(showId => {
               delete data.wrongFullText;
             }
             stats.showNotMentionedAutoCleared = (stats.showNotMentionedAutoCleared || 0) + 1;
-            // Write fix back to source file
-            try { fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n'); } catch (e) { console.warn('  Failed to write back showNotMentioned fix:', filePath, e.message); }
+            // Write fix back to source file — re-read from disk to avoid overwriting
+            // fields (e.g. fullText) that may have been updated by a concurrent process
+            try {
+              const sourceData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+              sourceData.showNotMentioned = false;
+              delete sourceData._showNotMentionedDiscoveryAttempted;
+              if (!sourceData.fullText && sourceData.wrongFullText) {
+                sourceData.fullText = sourceData.wrongFullText;
+                delete sourceData.wrongFullText;
+              }
+              fs.writeFileSync(filePath, JSON.stringify(sourceData, null, 2) + '\n');
+            } catch (e) { console.warn('  Failed to write back showNotMentioned fix:', filePath, e.message); }
           }
         }
 
@@ -2001,8 +2012,13 @@ showDirs.forEach(showId => {
         if (textHasPick || archiveHasPick) {
           review.designation = 'Critics_Pick';
           // Persist back to source file so it's not re-detected every rebuild
+          // Re-read from disk to avoid overwriting fields updated by concurrent processes
           data.designation = 'Critics_Pick';
-          try { fs.writeFileSync(filePath, JSON.stringify(data, null, 2)); } catch (e) { /* read-only in CI */ }
+          try {
+            const sourceData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+            sourceData.designation = 'Critics_Pick';
+            fs.writeFileSync(filePath, JSON.stringify(sourceData, null, 2));
+          } catch (e) { /* read-only in CI */ }
         }
       }
 

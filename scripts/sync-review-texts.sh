@@ -15,10 +15,53 @@ fi
 
 cd "$REVIEW_TEXTS_DIR"
 
+# SAFETY: Pull remote changes FIRST so we don't overwrite data (e.g., fullText)
+# that was fetched/committed by other processes while local changes were pending.
+git pull --rebase origin main -q 2>/dev/null || true
+
 # Check for changes
 git add -A
 if git diff --staged --quiet; then
   echo "No review-texts changes to sync."
+  exit 0
+fi
+
+# Protect fetched review text: for any staged review-text JSON where local has
+# fullText=null but the committed (post-pull) version has fullText, restore it.
+# This prevents simulation/rebuild metadata write-backs from wiping fetched text.
+node -e "
+  const fs = require('fs');
+  const { execSync } = require('child_process');
+  const staged = execSync('git diff --cached --name-only', { encoding: 'utf8' }).trim().split('\n').filter(Boolean);
+  let restored = 0;
+  for (const f of staged) {
+    if (!f.endsWith('.json') || f.includes('failed-fetches')) continue;
+    try {
+      const local = JSON.parse(fs.readFileSync(f, 'utf8'));
+      const committed = JSON.parse(execSync('git show HEAD:' + f, { encoding: 'utf8' }));
+      if (committed.fullText && !local.fullText) {
+        local.fullText = committed.fullText;
+        local.textFetchedAt = committed.textFetchedAt || local.textFetchedAt;
+        local.textWordCount = committed.textWordCount || local.textWordCount;
+        local.isFullReview = committed.isFullReview != null ? committed.isFullReview : local.isFullReview;
+        local.textStatus = committed.textStatus || local.textStatus;
+        local.contentTier = committed.contentTier || local.contentTier;
+        local.contentTierReason = committed.contentTierReason || local.contentTierReason;
+        local.wordCount = committed.wordCount || local.wordCount;
+        if (committed.contentVerification) local.contentVerification = committed.contentVerification;
+        fs.writeFileSync(f, JSON.stringify(local, null, 2) + '\n');
+        restored++;
+        console.log('  Restored fullText for ' + f);
+      }
+    } catch (e) { /* file not in HEAD or parse error — skip */ }
+  }
+  if (restored > 0) console.log('  Protected ' + restored + ' file(s) from fullText data loss');
+" 2>/dev/null || true
+
+# Re-stage after protection pass
+git add -A
+if git diff --staged --quiet; then
+  echo "No review-texts changes to sync (all changes were stale)."
   exit 0
 fi
 
@@ -29,7 +72,7 @@ echo "Changes: $CHANGED"
 COMMIT_MSG="${1:-data: Sync local review-texts changes}"
 git commit -m "$COMMIT_MSG" -m "Changed: $CHANGED"
 
-# Push with retry (same logic as CI composite action, simplified)
+# Push with retry
 for i in 1 2 3 4 5; do
   if git pull --rebase origin main 2>&1; then
     # Resolve any conflicts by keeping ours (local is always newer for local sessions)
