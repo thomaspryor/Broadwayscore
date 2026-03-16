@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-03-16T16:04:53.718Z",
+  "timestamp": "2026-03-16T16:20:09.174Z",
   "stats": {
     "totalReviews": 31495,
     "alreadyFlagged": 9670,
     "dateGuardCatches": 126,
-    "directorMismatch": 1103,
+    "directorMismatch": 1109,
     "tvFilmSignals": 3493,
     "londonSignals": 1024,
-    "offBroadwaySignals": 1090,
+    "offBroadwaySignals": 1091,
     "yearMismatch": 91,
     "noPublishDate": 9366
   },
@@ -58211,6 +58211,61 @@
     },
     {
       "showId": "the-play-that-goes-wrong-off-broadway-2019",
+      "file": "dctheatrescene--deb-miller.json",
+      "score": 92,
+      "publishDate": "For a previous production",
+      "url": "https://dcmetrotheaterarts.com/2019/02/20/review-the-play-that-goes-wrong-at-new-world-stages/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mark bell\" from the-play-that-goes-wrong-2017"
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-off-broadway-2019",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 62,
+      "publishDate": null,
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mark bell\" from the-play-that-goes-wrong-2017"
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-off-broadway-2019",
+      "file": "newyorker--michael-schulman.json",
+      "score": 75,
+      "publishDate": "April 6th, 2017",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mark bell\" from the-play-that-goes-wrong-2017"
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-off-broadway-2019",
+      "file": "nysr--david-finkle.json",
+      "score": 88,
+      "publishDate": "February 20, 2019",
+      "url": "http://nystagereview.com/2019/02/20/the-play-that-goes-wrong-rarely-does-anything-go-so-right/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mark bell\" from the-play-that-goes-wrong-2017"
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-off-broadway-2019",
       "file": "nytg--stanford-friedman.json",
       "score": 84,
       "publishDate": null,
@@ -58220,6 +58275,33 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-off-broadway-2019",
+      "file": "stagebizcom--danny-groner.json",
+      "score": 86,
+      "publishDate": "For a previous production",
+      "url": "http://www.huffingtonpost.com/entry/the-play-that-goes-wrong-staged-right_us_58e5ae7ce4b0ee31ab9534bf",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mark bell\" from the-play-that-goes-wrong-2017"
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-off-broadway-2019",
+      "file": "wsj--edward-rothstein.json",
+      "score": 81,
+      "publishDate": "April 6th, 2017",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mark bell\" from the-play-that-goes-wrong-2017"
         }
       ]
     },
@@ -72653,6 +72735,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hells-kitchen-2024",
+      "file": "chelsea-community-news--michael-musto.json",
+      "score": 79,
+      "publishDate": "2024-04-20T22:17:06-04:00",
+      "url": "https://chelseacommunitynews.com/2024/04/20/review-hells-kitchen-is-a-coming-of-age-musical-thats-in-all-the-right-alicia-keys/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
