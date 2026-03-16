@@ -1,7 +1,8 @@
 {
   "processed": [
     "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
-    "into-the-woods-west-end-2025/independent--unknown.json"
+    "into-the-woods-west-end-2025/independent--unknown.json",
+    "back-to-the-future-west-end-2021/variety--david-benedict.json"
   ],
   "failed": [
     "into-the-woods-west-end-2025/variety--unknown.json",
@@ -31,13 +32,24 @@
     "moulin-rouge-the-musical-west-end-2021/broadwayworld--roy-berko.json",
     "moulin-rouge-the-musical-west-end-2021/broadwayworld--samantha-wu.json",
     "moulin-rouge-the-musical-west-end-2021/broadwayworld--sarah-dussome.json",
-    "moulin-rouge-the-musical-west-end-2021/broadwayworld--shelby-tyler.json"
+    "moulin-rouge-the-musical-west-end-2021/broadwayworld--shelby-tyler.json",
+    "moulin-rouge-the-musical-west-end-2021/broadwayworld--stefani-chudnow.json",
+    "moulin-rouge-the-musical-west-end-2021/broadwayworld--steve-murray.json",
+    "moulin-rouge-the-musical-west-end-2021/broadwayworld--taylor-clemons.json",
+    "moulin-rouge-the-musical-west-end-2021/broadwayworld--tyler-hinton.json",
+    "paddington-the-musical-west-end-2025/independent--unknown.json",
+    "paddington-the-musical-west-end-2025/thestage--unknown.json",
+    "the-book-of-mormon-west-end-2024/thestage--unknown.json",
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "deep-azure-globe-west-end-2026/nytimes--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "amp": [
-      "data/review-texts/into-the-woods-west-end-2025/variety--unknown.json"
+      "data/review-texts/into-the-woods-west-end-2025/variety--unknown.json",
+      "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "back-to-the-future-west-end-2021/variety--david-benedict.json"
     ],
     "browserbase": [],
     "directCookies": [],
@@ -70,7 +82,14 @@
       "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--roy-berko.json",
       "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--samantha-wu.json",
       "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--sarah-dussome.json",
-      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--shelby-tyler.json"
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--shelby-tyler.json",
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--stefani-chudnow.json",
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--steve-murray.json",
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--taylor-clemons.json",
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--tyler-hinton.json",
+      "data/review-texts/paddington-the-musical-west-end-2025/independent--unknown.json",
+      "data/review-texts/paddington-the-musical-west-end-2025/thestage--unknown.json",
+      "data/review-texts/deep-azure-globe-west-end-2026/nytimes--unknown.json"
     ],
     "archive": [
       "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
@@ -78,6 +97,25 @@
     ]
   },
   "startTime": "2026-03-16T09:55:00.035Z",
-  "lastProcessed": "moulin-rouge-the-musical-west-end-2021/broadwayworld--shelby-tyler.json",
-  "log": []
+  "lastProcessed": "deep-azure-globe-west-end-2026/nytimes--unknown.json",
+  "log": [
+    {
+      "t": "2026-03-16T10:07:20.671Z",
+      "event": "bb-session",
+      "session": "dfb05a56",
+      "url": "https://www.thestage.co.uk/reviews/paddington-the-musical-review-savoy-theatre-l"
+    },
+    {
+      "t": "2026-03-16T10:07:59.330Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    40 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-03-16T10:08:45.137Z",
+      "event": "bb-session",
+      "session": "1779e803",
+      "url": "https://www.nytimes.com/2026/03/05/theater/chadwick-boseman-deep-azure.html"
+    }
+  ]
 }
