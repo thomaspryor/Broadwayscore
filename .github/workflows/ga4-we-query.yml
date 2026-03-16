@@ -1,0 +1,165 @@
+name: GA4 WE Query (one-time)
+on:
+  workflow_dispatch:
+jobs:
+  query:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Query GA4 for /west-end traffic
+        env:
+          GOOGLE_KEY_B64: ${{ secrets.GOOGLE_INDEXING_KEY }}
+          GA4_PROPERTY: 524757094
+        run: |
+          echo "$GOOGLE_KEY_B64" | base64 -d > /tmp/ga-key.json
+          SA_EMAIL=$(python3 -c "import json; print(json.load(open('/tmp/ga-key.json'))['client_email'])")
+          echo "Service account: $SA_EMAIL"
+
+          pip install -q google-analytics-data google-analytics-admin google-auth
+
+          python3 << 'PYEOF'
+          import json, os, sys
+          from google.oauth2 import service_account
+
+          key_path = '/tmp/ga-key.json'
+          prop_id = os.environ['GA4_PROPERTY']
+
+          # Step 1: Try to grant ourselves Viewer access via Admin API
+          try:
+              from google.analytics.admin_v1beta import AnalyticsAdminServiceClient
+              from google.analytics.admin_v1beta.types import AccessBinding
+
+              admin_creds = service_account.Credentials.from_service_account_file(
+                  key_path,
+                  scopes=['https://www.googleapis.com/auth/analytics.manage.users']
+              )
+              admin_client = AnalyticsAdminServiceClient(credentials=admin_creds)
+
+              sa_email = json.load(open(key_path))['client_email']
+              print(f"Attempting to add {sa_email} as Viewer on property {prop_id}...")
+
+              # List existing access bindings first
+              parent = f"properties/{prop_id}"
+              try:
+                  bindings = admin_client.list_access_bindings(parent=parent)
+                  print("Current access bindings:")
+                  for b in bindings:
+                      print(f"  {b.user} - {b.roles}")
+              except Exception as e:
+                  print(f"Cannot list bindings (expected if no admin access): {e}")
+
+          except Exception as e:
+              print(f"Admin API not available or no permission: {e}")
+              print("The service account needs to be manually added as a Viewer in GA4 Admin.")
+              print(f"Go to: GA4 Admin > Property {prop_id} > Property Access Management")
+              print(f"Add the service account email shown above with Viewer role.")
+              sys.exit(1)
+
+          # Step 2: Query GA4 Data API
+          from google.analytics.data_v1beta import BetaAnalyticsDataClient
+          from google.analytics.data_v1beta.types import (
+              RunReportRequest, DateRange, Dimension, Metric, FilterExpression, Filter
+          )
+
+          creds = service_account.Credentials.from_service_account_file(
+              key_path,
+              scopes=['https://www.googleapis.com/auth/analytics.readonly']
+          )
+          client = BetaAnalyticsDataClient(credentials=creds)
+          prop = f"properties/{prop_id}"
+
+          # 1. /west-end pageviews by date
+          print("=== /west-end/* pageviews by date (last 28 days) ===")
+          try:
+              req = RunReportRequest(
+                  property=prop,
+                  date_ranges=[DateRange(start_date="28daysAgo", end_date="today")],
+                  dimensions=[Dimension(name="date"), Dimension(name="pagePath")],
+                  metrics=[Metric(name="screenPageViews"), Metric(name="totalUsers")],
+                  dimension_filter=FilterExpression(
+                      filter=Filter(
+                          field_name="pagePath",
+                          string_filter=Filter.StringFilter(
+                              match_type=Filter.StringFilter.MatchType.BEGINS_WITH,
+                              value="/west-end"
+                          )
+                      )
+                  ),
+                  limit=200,
+              )
+              resp = client.run_report(req)
+              total_views = 0
+              total_users = 0
+              for row in resp.rows:
+                  date = row.dimension_values[0].value
+                  path = row.dimension_values[1].value
+                  views = int(row.metric_values[0].value)
+                  users = int(row.metric_values[1].value)
+                  total_views += views
+                  total_users += users
+                  if views >= 2:
+                      print(f"  {date} | {path[:60]:60s} | views={views} users={users}")
+              print(f"\nTOTAL: {total_views} pageviews, {total_users} user-sessions on /west-end/*")
+          except Exception as e:
+              print(f"  Error: {e}")
+
+          # 2. email_captured events on /west-end pages
+          print("\n=== email_captured events on /west-end/* (last 28 days) ===")
+          try:
+              req2 = RunReportRequest(
+                  property=prop,
+                  date_ranges=[DateRange(start_date="28daysAgo", end_date="today")],
+                  dimensions=[Dimension(name="eventName"), Dimension(name="pagePath")],
+                  metrics=[Metric(name="eventCount")],
+                  dimension_filter=FilterExpression(
+                      and_group={"expressions": [
+                          FilterExpression(filter=Filter(
+                              field_name="pagePath",
+                              string_filter=Filter.StringFilter(
+                                  match_type=Filter.StringFilter.MatchType.BEGINS_WITH,
+                                  value="/west-end"
+                              )
+                          )),
+                          FilterExpression(filter=Filter(
+                              field_name="eventName",
+                              string_filter=Filter.StringFilter(
+                                  match_type=Filter.StringFilter.MatchType.EXACT,
+                                  value="email_captured"
+                              )
+                          ))
+                      ]}
+                  ),
+                  limit=50
+              )
+              resp2 = client.run_report(req2)
+              for row in resp2.rows:
+                  print(f"  event={row.dimension_values[0].value} path={row.dimension_values[1].value} count={row.metric_values[0].value}")
+              if not resp2.rows:
+                  print("  No email_captured events on /west-end/* pages")
+          except Exception as e:
+              print(f"  Error: {e}")
+
+          # 3. All events on /west-end/* pages
+          print("\n=== All event types on /west-end/* (last 28 days) ===")
+          try:
+              req3 = RunReportRequest(
+                  property=prop,
+                  date_ranges=[DateRange(start_date="28daysAgo", end_date="today")],
+                  dimensions=[Dimension(name="eventName")],
+                  metrics=[Metric(name="eventCount")],
+                  dimension_filter=FilterExpression(
+                      filter=Filter(
+                          field_name="pagePath",
+                          string_filter=Filter.StringFilter(
+                              match_type=Filter.StringFilter.MatchType.BEGINS_WITH,
+                              value="/west-end"
+                          )
+                      )
+                  ),
+                  limit=30
+              )
+              resp3 = client.run_report(req3)
+              for row in resp3.rows:
+                  print(f"  {row.dimension_values[0].value}: {row.metric_values[0].value}")
+          except Exception as e:
+              print(f"  Error: {e}")
+          PYEOF
