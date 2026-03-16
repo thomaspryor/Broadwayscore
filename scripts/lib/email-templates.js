@@ -299,6 +299,9 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
   const isWE = market === 'west-end';
   const siteNameFirst = isWE ? 'West End' : 'Broadway';
   const brandColor = isWE ? '#f472b6' : '#d4a574';
+  const brandFaint = isWE ? 'rgba(244,114,182,0.12)' : 'rgba(212,165,116,0.12)';
+  const brandMuted = isWE ? 'rgba(244,114,182,0.6)' : 'rgba(212,165,116,0.6)';
+  const brandSubtle = isWE ? 'rgba(244,114,182,0.2)' : 'rgba(212,165,116,0.2)';
   const browseUrl = isWE ? 'https://broadwayscorecard.com/west-end' : 'https://broadwayscorecard.com';
   // Build a score card for each show
   const showCards = shows.map(show => {
@@ -351,7 +354,7 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
 
     const consensusHtml = show.consensusText ? `
       <tr><td style="padding:20px 24px 0;">
-        <p style="margin:0 0 6px;font-size:11px;font-weight:600;color:rgba(212,165,116,0.6);text-transform:uppercase;letter-spacing:0.8px;font-family:${FONT};">Critics' Take</p>
+        <p style="margin:0 0 6px;font-size:11px;font-weight:600;color:${brandMuted};text-transform:uppercase;letter-spacing:0.8px;font-family:${FONT};">Critics' Take</p>
         <p style="margin:0;font-size:14px;color:rgba(255,255,255,0.75);line-height:1.6;font-style:italic;font-family:${FONT};">"${escapeHtml(show.consensusText)}"</p>
       </td></tr>` : '';
 
@@ -371,7 +374,7 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
     <img src="${escapeHtml(show.imageUrl)}" alt="${escapeHtml(show.showTitle)}" width="560" style="display:block;width:100%;max-width:560px;height:auto;border-radius:12px;" />
   </td></tr>` : ''}
   <tr><td style="padding:16px 0;">
-    <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#1a1a24" style="background-color:#1a1a24;background:#1a1a24;border-radius:12px;border:1px solid rgba(212,165,116,0.12);">
+    <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#1a1a24" style="background-color:#1a1a24;background:#1a1a24;border-radius:12px;border:1px solid ${brandFaint};">
       <tr><td style="padding:24px;">
         <table cellpadding="0" cellspacing="0">
           <tr>
@@ -389,7 +392,7 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
       ${consensusHtml}
       ${metaHtml}
       ${reviewCount > 0 ? `<tr><td style="padding:20px 24px 0;" align="center">
-        <a href="${escapeHtml(show.showUrl)}#critic-reviews" style="display:inline-block;padding:12px 32px;background-color:#d4a574;color:#0f0f14;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;font-family:${FONT};">See The Reviews</a>
+        <a href="${escapeHtml(show.showUrl)}#critic-reviews" style="display:inline-block;padding:12px 32px;background-color:${brandColor};color:#0f0f14;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;font-family:${FONT};">See The Reviews</a>
       </td></tr>` : ''}
       <tr><td style="padding-bottom:20px;"></td></tr>
     </table>
@@ -407,7 +410,7 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
 <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0f0f14" style="background-color:#0f0f14;background:#0f0f14;padding:32px 16px;">
 <tr><td align="center" bgcolor="#0f0f14">
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
-  <tr><td style="padding-bottom:20px;border-bottom:1px solid rgba(212,165,116,0.2);">
+  <tr><td style="padding-bottom:20px;border-bottom:1px solid ${brandSubtle};">
     <span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">${siteNameFirst}</span><span style="font-size:22px;font-weight:800;color:${brandColor};letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span>
   </td></tr>
   <tr><td style="padding:28px 0 8px;">
@@ -415,7 +418,7 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
   </td></tr>
   ${showCards.join('')}
   <tr><td style="padding:8px 0 32px;" align="center">
-    <a href="${browseUrl}" style="display:inline-block;padding:10px 24px;background-color:rgba(255,255,255,0.08);color:#d4a574;font-size:13px;font-weight:600;text-decoration:none;border-radius:6px;border:1px solid rgba(212,165,116,0.2);font-family:${FONT};">Browse All Shows</a>
+    <a href="${browseUrl}" style="display:inline-block;padding:10px 24px;background-color:rgba(255,255,255,0.08);color:${brandColor};font-size:13px;font-weight:600;text-decoration:none;border-radius:6px;border:1px solid ${brandColor}33;font-family:${FONT};">Browse All Shows</a>
   </td></tr>
   ${buildBroadcastFooterHtml(email, market)}
 </table>
