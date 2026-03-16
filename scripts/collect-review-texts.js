@@ -366,7 +366,8 @@ const UNCOLLECTABLE_OUTLETS = (() => {
 })();
 
 // Domain alias matching — imported from shared lib (scraper.js)
-const { domainMatchesExpected } = require('./lib/scraper');
+const { domainMatchesExpected, checkScrapingBeeCredits } = require('./lib/scraper');
+const { discoverCorrectUrl: _sharedDiscoverUrl } = require('./lib/url-discovery');
 
 // Outlet-specific Playwright wait configurations
 // Some outlets render content via JS and need specific selectors/waits
@@ -2854,204 +2855,19 @@ async function resolveTimeoutListingUrl(review) {
 
 // ============================================================================
 // URL DISCOVERY - Find correct URLs for reviews with dead/fabricated links
+// Uses shared url-discovery.js module (BD-first SERP, date range filtering,
+// domain alias matching, stripped-title retries, URL year checks).
 // ============================================================================
 
-/**
- * Discover the correct URL for a review by searching Google.
- * Provider chain: ScrapingBee SERP API → Bright Data Web Unlocker (Google HTML).
- * Used when the existing URL returns 404 (common with ~88 fabricated web-search URLs).
- *
- * @param {Object} review - Review object with showId, outletId, outlet, criticName, url
- * @returns {string|null} - Discovered URL, or null if not found
- */
 const URL_DISCOVERY_MAX_PER_RUN = 250; // Cap SERP API calls to control costs
-let _showsJsonCache = null; // Cached shows.json data (static within a run)
-let _scrapingBeeSerpExhausted = false; // Track ScrapingBee SERP exhaustion
-// Rolling window health tracking — disables provider when 60%+ of last 20 calls fail
-const _serpResults = [];
-const SERP_WINDOW_SIZE = 20;
-const SERP_FAILURE_THRESHOLD = 0.6;
-function _recordSerpResult(success) {
-  _serpResults.push(success);
-  if (_serpResults.length > SERP_WINDOW_SIZE) _serpResults.shift();
-  if (_serpResults.length >= SERP_WINDOW_SIZE) {
-    const failures = _serpResults.filter(r => !r).length;
-    if (failures / SERP_WINDOW_SIZE >= SERP_FAILURE_THRESHOLD) {
-      _scrapingBeeSerpExhausted = true;
-    }
-  }
-}
+let _showsJsonCache = null; // Cached shows.json data (used by URL discovery + content validation)
 
 /**
- * Search via ScrapingBee SERP API (returns structured JSON).
- * @returns {Array<{url: string, title: string}>} organic results
+ * Thin wrapper around shared url-discovery.js discoverCorrectUrl.
+ * Adds per-run cap, stats tracking, and UNCOLLECTABLE_OUTLETS filter.
  */
-async function _serpViaScrapingBee(query) {
-  if (_scrapingBeeSerpExhausted || !CONFIG.scrapingBeeKey) return null;
-
-  const RETRYABLE_STATUSES = new Set([500, 502, 503]);
-  const MAX_ATTEMPTS = 2;
-  const RETRY_DELAY_MS = 3000;
-
-  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-    try {
-      const response = await axios.get('https://app.scrapingbee.com/api/v1/store/google', {
-        params: { api_key: CONFIG.scrapingBeeKey, search: query },
-        timeout: 30000,
-      });
-      stats.scrapingBeeSerpCredits += 1;
-      const data = response.data;
-      _recordSerpResult(true);
-      return (data.organic_results || data.results || []).map(r => ({
-        url: r.url || r.link,
-        title: r.title || '',
-      }));
-    } catch (error) {
-      const status = error.response?.status;
-      if (status === 401 || status === 403 || status === 429) {
-        _scrapingBeeSerpExhausted = true;
-        console.log(`    ⚠ ScrapingBee SERP exhausted (${status}) — switching to Bright Data for URL discovery`);
-        return null;
-      }
-      if (RETRYABLE_STATUSES.has(status) && attempt < MAX_ATTEMPTS) {
-        console.log(`    ↻ ScrapingBee SERP ${status}, retrying in ${RETRY_DELAY_MS / 1000}s (attempt ${attempt}/${MAX_ATTEMPTS})`);
-        await new Promise(r => setTimeout(r, RETRY_DELAY_MS));
-        continue;
-      }
-      _recordSerpResult(false);
-      return null;
-    }
-  }
-  return null;
-}
-
-/**
- * Search via Bright Data SERP API (structured JSON, primary) → Web Unlocker (HTML parsing, fallback).
- * @returns {Array<{url: string, title: string}>} organic results, null if provider is down
- */
-let _bdSerpConsecutiveFailures = 0;
-const BD_MAX_CONSECUTIVE_FAILURES = 5;
-const BD_SERP_CUSTOMER = process.env.BRIGHTDATA_CUSTOMER || 'hl_a2c64a47';
-const BD_SERP_ZONE = process.env.BRIGHTDATA_SERP_ZONE || 'serp_api1';
-
-async function _serpViaBrightDataSerpApi(query) {
-  if (!CONFIG.brightDataKey || _bdSerpConsecutiveFailures >= BD_MAX_CONSECUTIVE_FAILURES) return null;
-
-  try {
-    const submitRes = await axios.post(
-      `https://api.brightdata.com/serp/req?customer=${BD_SERP_CUSTOMER}&zone=${BD_SERP_ZONE}`,
-      { query: { q: query, gl: 'us' } },
-      {
-        headers: { 'Authorization': `Bearer ${CONFIG.brightDataKey}` },
-        timeout: 15000,
-      }
-    );
-    const responseId = submitRes.data?.response_id;
-    if (!responseId) { _bdSerpConsecutiveFailures++; return null; }
-
-    // Poll for results (max 20s)
-    for (let i = 0; i < 10; i++) {
-      await new Promise(r => setTimeout(r, 2000));
-      const pollRes = await axios.get(
-        `https://api.brightdata.com/serp/get_result?customer=${BD_SERP_CUSTOMER}&zone=${BD_SERP_ZONE}&response_id=${responseId}`,
-        {
-          headers: { 'Authorization': `Bearer ${CONFIG.brightDataKey}` },
-          timeout: 10000,
-          validateStatus: () => true, // Don't throw on non-2xx
-        }
-      );
-      if (pollRes.status === 202) continue;
-      if (pollRes.status >= 400) { _bdSerpConsecutiveFailures++; return null; }
-      const data = pollRes.data;
-      if (data?.organic) {
-        _bdSerpConsecutiveFailures = 0;
-        return data.organic.slice(0, 10).map(r => ({
-          url: r.link || r.url || '',
-          title: r.title || '',
-        }));
-      }
-      if (data?.response_id) continue;
-      _bdSerpConsecutiveFailures = 0;
-      return [];
-    }
-    _bdSerpConsecutiveFailures++;
-    console.log('    ⚠ BD SERP API timeout (20s) — trying Web Unlocker');
-    return null;
-  } catch (error) {
-    _bdSerpConsecutiveFailures++;
-    console.log(`    ✗ BD SERP API error: ${error.message}`);
-    return null;
-  }
-}
-
-async function _serpViaBrightData(query) {
-  // Try structured SERP API first (reliable JSON), fall back to Web Unlocker (HTML parsing)
-  const serpApiResult = await _serpViaBrightDataSerpApi(query);
-  if (serpApiResult !== null) return serpApiResult;
-  return _serpViaBrightDataWebUnlocker(query);
-}
-
-async function _serpViaBrightDataWebUnlocker(query) {
-  if (!CONFIG.brightDataKey) return null;
-
-  // Use SERP zone with synchronous /request endpoint (returns structured JSON)
-  // The Web Unlocker zone cannot access Google Search — BrightData blocks it
-  const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}&num=10&hl=en&gl=us`;
-
-  try {
-    const response = await axios.post('https://api.brightdata.com/request', {
-      zone: BD_SERP_ZONE,
-      url: googleUrl,
-      format: 'raw',
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${CONFIG.brightDataKey}`,
-      },
-      timeout: 30000,
-    });
-
-    const data = response.data;
-
-    // Structured JSON response (preferred)
-    if (data && typeof data === 'object' && data.organic) {
-      return data.organic.slice(0, 10).map(r => ({
-        url: r.link || r.url || '',
-        title: r.title || '',
-      }));
-    }
-
-    // Fallback: HTML response — parse URLs
-    const html = typeof data === 'string' ? data : '';
-    if (!html || html.length < 500) return [];
-
-    const results = [];
-    const hrefRegex = /href="(https?:\/\/(?!(?:www\.)?google\.)[^"]+)"/g;
-    const seenUrls = new Set();
-    let match;
-    while ((match = hrefRegex.exec(html)) !== null) {
-      let url = match[1];
-      if (url.includes('/url?q=')) {
-        try { url = new URL(url).searchParams.get('q') || url; } catch (e) {}
-      }
-      if (url.includes('google.com') || url.includes('googleapis.com')) continue;
-      if (url.includes('webcache.') || url.includes('translate.')) continue;
-      if (seenUrls.has(url)) continue;
-      seenUrls.add(url);
-      results.push({ url, title: '' });
-    }
-    return results.slice(0, 10);
-  } catch (error) {
-    console.log(`    ✗ Bright Data SERP failed: ${error.message}`);
-    return null;
-  }
-}
-
 async function discoverCorrectUrl(review) {
-  if (!axios) return null;
-  // Need at least one SERP provider
   if (!CONFIG.scrapingBeeKey && !CONFIG.brightDataKey) return null;
-  // Skip print-only outlets — no online content to discover
   if (UNCOLLECTABLE_OUTLETS.has((review.outletId || '').toLowerCase())) return null;
 
   // Per-run cap to prevent runaway SERP API costs
@@ -3063,176 +2879,26 @@ async function discoverCorrectUrl(review) {
 
   stats.urlDiscoveryAttempts++;
 
-  // Look up real show title from shows.json (handles apostrophes, special chars)
-  // Falls back to slug-derived title if lookup fails
-  let showTitle;
-  let showYear = '';
-  let showCategory = '';
-  try {
-    if (!_showsJsonCache) {
-      _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
-    }
-    const showEntry = _showsJsonCache.shows.find(s => s.id === review.showId);
-    if (showEntry) {
-      showTitle = showEntry.title;
-      showYear = (showEntry.openingDate || '').substring(0, 4);
-      showCategory = showEntry.category || '';
-    }
-  } catch (e) { /* fall through to slug-based */ }
+  // Delegate to shared url-discovery.js module (handles show lookup, market awareness,
+  // date range filtering, domain aliases, stripped-title retries, URL year checks,
+  // BD-first SERP ordering with preferSpeed support)
+  const result = await _sharedDiscoverUrl(review, CONFIG.scrapingBeeKey || '', {
+    brightDataKey: CONFIG.brightDataKey || '',
+    log: (msg) => console.log(msg),
+  });
 
-  if (!showTitle) {
-    showTitle = (review.showId || '')
-      .replace(/-\d{4}$/, '')
-      .replace(/-/g, ' ');
-    // Extract year from showId as fallback
-    const yearMatch = (review.showId || '').match(/-(\d{4})$/);
-    if (yearMatch) showYear = yearMatch[1];
+  if (result === '__SERP_UNAVAILABLE__') return '__SERP_UNAVAILABLE__';
+
+  if (result && result !== null) {
+    stats.urlDiscoverySuccess++;
+    stats.urlDiscoveryDetails.push({
+      reviewId: review.reviewId || `${review.showId}/${review.file}`,
+      oldUrl: review.url,
+      newUrl: result,
+    });
   }
 
-  if (!showTitle) return null;
-
-  // Market-aware review keyword for SERP queries
-  const reviewKeyword = isLondonMarket(showCategory) ? 'West End review'
-    : showCategory === 'off-broadway' ? 'Off-Broadway review'
-    : 'Broadway review';
-
-  // Get domain for the outlet
-  const outletId = (review.outletId || '').toLowerCase();
-  const domain = CONFIG.outletDomains[outletId];
-
-  // Build search query — include year to disambiguate revivals (Our Town 2024 vs 2009)
-  // Include critic name as an unquoted boost when available and trustworthy.
-  // Web-search sourced reviews often have fabricated critic names — skip those.
-  const yearClause = showYear ? ` ${showYear}` : '';
-  const criticName = (review.criticName && review.criticName !== 'Unknown'
-    && review.source !== 'web-search') ? review.criticName : '';
-  const criticClause = criticName ? ` ${criticName}` : '';
-  const outletName = review.outlet || outletId;
-
-  let query;
-  if (domain) {
-    query = `site:${domain} "${showTitle}" ${reviewKeyword}${yearClause}${criticClause}`;
-  } else {
-    query = `"${showTitle}" ${reviewKeyword}${yearClause} "${outletName}"${criticClause}`;
-  }
-
-  console.log(`  [URL Discovery] Searching: ${query}`);
-
-  try {
-    // Provider chain: Bright Data first (cheap: $0.0015/q) → ScrapingBee fallback (25 credits/q)
-    // null = provider failure (down/exhausted), [] = searched but no results
-    let results = await _serpViaBrightData(query);
-    let provider = 'brightdata';
-    if (!results) {
-      results = await _serpViaScrapingBee(query);
-      provider = 'scrapingbee';
-    }
-
-    // Both providers down — return sentinel so caller doesn't penalize the review
-    if (results === null) {
-      console.log(`    ✗ All SERP providers unavailable — skipping URL discovery (will NOT count as failure)`);
-      return '__SERP_UNAVAILABLE__';
-    }
-
-    // Extract the old URL's domain for comparison (needed for fallback condition)
-    let oldDomain = '';
-    try {
-      oldDomain = new URL(review.url).hostname.replace(/^www\./, '');
-    } catch (e) {}
-
-    if (!results.length) {
-      // Fallback: broader search without site: restriction, using outlet + critic name
-      // This catches articles Google didn't index under the domain (URL changes, redirects)
-      if (criticName && (domain || oldDomain)) {
-        stats.urlDiscoveryAttempts++; // counts against per-run cap
-        const fallbackQuery = `"${showTitle}" "${outletName}" "${criticName}" ${reviewKeyword}${yearClause}`;
-        console.log(`    Fallback search (no site:): ${fallbackQuery}`);
-        results = await _serpViaBrightData(fallbackQuery);
-        provider = 'brightdata-fallback';
-        if (!results) {
-          results = await _serpViaScrapingBee(fallbackQuery);
-          provider = 'scrapingbee-fallback';
-        }
-        if (results === null) {
-          console.log(`    ✗ All SERP providers unavailable`);
-          return '__SERP_UNAVAILABLE__';
-        }
-      }
-
-      if (!results || !results.length) {
-        console.log(`    ✗ No search results found (via ${provider})`);
-        return null;
-      }
-    }
-
-    // Find best matching result
-    const targetDomain = domain || oldDomain;
-    const showTitleLower = showTitle.toLowerCase();
-    // Also derive a short title from the showId slug for matching shows with subtitles
-    // e.g., "Cabaret at the Kit Kat Club" (shows.json) → "cabaret" (from cabaret-2024)
-    const shortTitle = (review.showId || '')
-      .replace(/-\d{4}$/, '')
-      .replace(/-/g, ' ')
-      .toLowerCase();
-    const shortSlug = shortTitle.replace(/\s+/g, '-');
-
-    for (const result of results.slice(0, 5)) {
-      const url = result.url;
-      if (!url) continue;
-
-      // Skip non-article URLs (homepage, category pages, search results, image attachments)
-      const urlLower = url.toLowerCase();
-      try { if (new URL(url).pathname === '/') continue; } catch (e) {} // homepage
-      if (urlLower.includes('/search?') || urlLower.includes('/tag/') || urlLower.includes('/category/')) continue;
-      if (urlLower.includes('/attachment/') || urlLower.match(/\.(jpg|jpeg|png|gif|webp)$/)) continue;
-
-      // Skip if same as the dead URL
-      if (url === review.url) continue;
-
-      // Check domain match
-      let urlDomain = '';
-      try {
-        urlDomain = new URL(url).hostname.replace(/^www\./, '');
-      } catch (e) { continue; }
-
-      if (targetDomain && !urlDomain.includes(targetDomain.replace(/^www\./, ''))) continue;
-
-      // Check relevance — use both full title and short title (from showId slug)
-      // Full title handles exact matches; short title handles subtitles like
-      // "Cabaret at the Kit Kat Club" where results just say "Cabaret"
-      const title = (result.title || '').toLowerCase();
-      const showSlugCheck = showTitleLower.replace(/\s+/g, '-');
-
-      const titleHasShow = title.includes(showTitleLower) || title.includes(shortTitle);
-      const urlHasShow = urlLower.includes(showSlugCheck) || urlLower.includes(shortSlug);
-      const reviewTerms = ['review', 'theater', 'theatre', 'stage', 'musical', 'broadway', 'west end'];
-      const titleHasReview = reviewTerms.some(t => title.includes(t));
-      const urlHasReview = reviewTerms.some(t => urlLower.includes(t));
-
-      // Require: (title mentions show) OR (URL contains show slug)
-      // AND at least one signal it's a review (title/URL contains review-related term)
-      // Exception: TimeOut embeds reviews in listing pages (no "review" in URL/title)
-      if (!titleHasShow && !urlHasShow) continue;
-      const isTimeoutListing = urlDomain.includes('timeout.com') && urlLower.includes('/theater/');
-      if (!titleHasReview && !urlHasReview && !isTimeoutListing) continue;
-
-      // Looks like a match
-      console.log(`    ✓ Found (via ${provider}): ${url}`);
-      stats.urlDiscoverySuccess++;
-      stats.urlDiscoveryDetails.push({
-        reviewId: review.reviewId || `${review.showId}/${review.file}`,
-        oldUrl: review.url,
-        newUrl: url,
-      });
-      return url;
-    }
-
-    console.log(`    ✗ No matching URL found in search results (via ${provider})`);
-    return null;
-  } catch (error) {
-    console.log(`    ✗ URL discovery failed: ${error.message}`);
-    return null;
-  }
+  return result;
 }
 
 // ============================================================================
