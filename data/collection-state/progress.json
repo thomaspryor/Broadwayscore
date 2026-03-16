@@ -2,7 +2,15 @@
   "processed": [
     "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
     "into-the-woods-west-end-2025/independent--unknown.json",
-    "back-to-the-future-west-end-2021/variety--david-benedict.json"
+    "back-to-the-future-west-end-2021/variety--david-benedict.json",
+    "hercules-west-end-2025/variety--david-benedict.json",
+    "paddington-the-musical-west-end-2025/variety--david-benedict.json",
+    "the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
+    "the-lion-king-west-end-2021/variety--matt-wolf.json",
+    "all-my-sons-west-end-2025/guardian--arifa-akbar.json",
+    "all-my-sons-west-end-2025/timeout-london--andrzej-lukowski.json",
+    "arcadia-west-end-2026/guardian--arifa-akbar.json",
+    "arcadia-west-end-2026/timeout--unknown.json"
   ],
   "failed": [
     "into-the-woods-west-end-2025/variety--unknown.json",
@@ -41,15 +49,29 @@
     "paddington-the-musical-west-end-2025/thestage--unknown.json",
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
     "the-lion-king-west-end-2021/thestage--unknown.json",
-    "deep-azure-globe-west-end-2026/nytimes--unknown.json"
+    "deep-azure-globe-west-end-2026/nytimes--unknown.json",
+    "hamilton-west-end-2021/nytimes--unknown.json",
+    "hercules-west-end-2025/nytimes--matt-wolf.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "all-my-sons-west-end-2025/guardian--arifa-akbar.json",
+      "arcadia-west-end-2026/guardian--arifa-akbar.json",
+      "arcadia-west-end-2026/timeout--unknown.json"
+    ],
     "amp": [
       "data/review-texts/into-the-woods-west-end-2025/variety--unknown.json",
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
-      "back-to-the-future-west-end-2021/variety--david-benedict.json"
+      "back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
+      "hercules-west-end-2025/variety--david-benedict.json",
+      "data/review-texts/paddington-the-musical-west-end-2025/variety--david-benedict.json",
+      "paddington-the-musical-west-end-2025/variety--david-benedict.json",
+      "data/review-texts/the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
+      "the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
+      "data/review-texts/the-lion-king-west-end-2021/variety--matt-wolf.json",
+      "the-lion-king-west-end-2021/variety--matt-wolf.json"
     ],
     "browserbase": [],
     "directCookies": [],
@@ -89,15 +111,18 @@
       "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--tyler-hinton.json",
       "data/review-texts/paddington-the-musical-west-end-2025/independent--unknown.json",
       "data/review-texts/paddington-the-musical-west-end-2025/thestage--unknown.json",
-      "data/review-texts/deep-azure-globe-west-end-2026/nytimes--unknown.json"
+      "data/review-texts/deep-azure-globe-west-end-2026/nytimes--unknown.json",
+      "data/review-texts/hamilton-west-end-2021/nytimes--unknown.json",
+      "data/review-texts/hercules-west-end-2025/nytimes--matt-wolf.json"
     ],
     "archive": [
       "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
-      "into-the-woods-west-end-2025/independent--unknown.json"
+      "into-the-woods-west-end-2025/independent--unknown.json",
+      "all-my-sons-west-end-2025/timeout-london--andrzej-lukowski.json"
     ]
   },
   "startTime": "2026-03-16T09:55:00.035Z",
-  "lastProcessed": "deep-azure-globe-west-end-2026/nytimes--unknown.json",
+  "lastProcessed": "arcadia-west-end-2026/timeout--unknown.json",
   "log": [
     {
       "t": "2026-03-16T10:07:20.671Z",
@@ -116,6 +141,18 @@
       "event": "bb-session",
       "session": "1779e803",
       "url": "https://www.nytimes.com/2026/03/05/theater/chadwick-boseman-deep-azure.html"
+    },
+    {
+      "t": "2026-03-16T10:10:16.797Z",
+      "event": "bb-session",
+      "session": "380d51fa",
+      "url": "https://www.nytimes.com/2017/12/28/theater/london-hamilton-pinocchio.html"
+    },
+    {
+      "t": "2026-03-16T10:11:28.536Z",
+      "event": "bb-session",
+      "session": "603475cc",
+      "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
     }
   ]
 }
