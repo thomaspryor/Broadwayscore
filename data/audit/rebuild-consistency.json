@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-16T13:56:16.120Z",
+  "generatedAt": "2026-03-16T15:05:55.320Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -36,6 +36,14 @@
     {
       "type": "rating-score-mismatch",
       "severity": "high",
+      "showId": "cold-war-choir-practice-off-broadway-2026",
+      "outlet": "nysr",
+      "critic": "David Finkle",
+      "detail": "originalRating \"4/5 stars\" (=80) vs score 52 (source: human-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
       "showId": "good-night-and-good-luck-2025",
       "outlet": "digital-journal",
       "critic": "Markos Papadatos",
@@ -48,14 +56,6 @@
       "outlet": "ew",
       "critic": "Dalton Ross",
       "detail": "originalRating \"A\" (=90) vs score 63 (source: human-review)"
-    },
-    {
-      "type": "rating-score-mismatch",
-      "severity": "high",
-      "showId": "hercules-west-end-2025",
-      "outlet": "timeout-london",
-      "critic": "Andrzej Lukowski",
-      "detail": "originalRating \"3/5\" (=60) vs score 38 (source: human-review)"
     },
     {
       "type": "designation-score-mismatch",
@@ -140,10 +140,10 @@
     {
       "type": "rating-score-mismatch",
       "severity": "high",
-      "showId": "shadowlands-west-end-2026",
-      "outlet": "timeout-london",
-      "critic": "Andrzej Lukowski",
-      "detail": "originalRating \"3/5\" (=60) vs score 35 (source: human-review)"
+      "showId": "soul-doctor-2013",
+      "outlet": "timeout",
+      "critic": "Adam Feldman",
+      "detail": "originalRating \"5/5\" (=100) vs score 59 (source: llmScore-lowconf)"
     },
     {
       "type": "rating-score-mismatch",
@@ -160,6 +160,14 @@
       "outlet": "nytimes",
       "critic": "Elisabeth Vincentelli",
       "detail": "Critics_Pick but score=45 (source: llmScore)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "the-glass-menagerie-2017",
+      "outlet": "timeout",
+      "critic": "David Cote",
+      "detail": "originalRating \"1/5\" (=20) vs score 89 (source: llmScore-thumb-validated)"
     },
     {
       "type": "rating-score-mismatch",
@@ -276,6 +284,14 @@
     {
       "type": "human-override-vs-explicit-grade",
       "severity": "high",
+      "showId": "cold-war-choir-practice-off-broadway-2026",
+      "outlet": "nysr",
+      "critic": "David Finkle",
+      "detail": "humanReviewScore 52 (mixed) overrides explicit \"4/5 stars\" (=80, positive)"
+    },
+    {
+      "type": "human-override-vs-explicit-grade",
+      "severity": "high",
       "showId": "good-night-and-good-luck-2025",
       "outlet": "digital-journal",
       "critic": "Markos Papadatos",
@@ -288,14 +304,6 @@
       "outlet": "ew",
       "critic": "Dalton Ross",
       "detail": "humanReviewScore 63 (mixed) overrides explicit \"A\" (=90, positive)"
-    },
-    {
-      "type": "human-override-vs-explicit-grade",
-      "severity": "high",
-      "showId": "hercules-west-end-2025",
-      "outlet": "timeout-london",
-      "critic": "Andrzej Lukowski",
-      "detail": "humanReviewScore 38 (negative) overrides explicit \"3/5\" (=60, mixed)"
     },
     {
       "type": "human-override-vs-explicit-grade",
@@ -348,14 +356,6 @@
     {
       "type": "human-override-vs-explicit-grade",
       "severity": "high",
-      "showId": "shadowlands-west-end-2026",
-      "outlet": "timeout-london",
-      "critic": "Andrzej Lukowski",
-      "detail": "humanReviewScore 35 (negative) overrides explicit \"3/5\" (=60, mixed)"
-    },
-    {
-      "type": "human-override-vs-explicit-grade",
-      "severity": "high",
       "showId": "waitress-2021",
       "outlet": "cititour",
       "critic": "Brian Scott Lipton",
@@ -368,6 +368,18 @@
       "outlet": "timeout",
       "critic": "David Cote",
       "detail": "humanReviewScore 75 (positive) overrides explicit \"1/5\" (=20, negative)"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
+      "showId": "im-sorry-prime-minister-west-end-2026",
+      "detail": "10/13 reviews (77%) scored exactly 60"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
+      "showId": "oh-mary-west-end-2025",
+      "detail": "8/14 reviews (57%) scored exactly 80"
     }
   ]
 }
