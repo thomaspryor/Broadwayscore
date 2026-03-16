@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-16T11:20:59.852Z",
+  "timestamp": "2026-03-16T11:54:05.996Z",
   "stats": {
     "totalReviews": 31493,
     "alreadyFlagged": 9669,
     "dateGuardCatches": 126,
     "directorMismatch": 1110,
     "tvFilmSignals": 3494,
-    "londonSignals": 1023,
+    "londonSignals": 1024,
     "offBroadwaySignals": 1090,
     "yearMismatch": 91,
     "noPublishDate": 9365
@@ -69892,6 +69892,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"barrow street\""
+        }
+      ]
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
+      "file": "deadline--unknown.json",
+      "score": 86,
+      "publishDate": "2026-03-13",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcliffe-1236750131/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
