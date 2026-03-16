@@ -27,7 +27,8 @@ if [ -z "$SHOW_ID" ]; then
     const now = new Date();
     const cutoff = new Date(now); cutoff.setDate(cutoff.getDate() - ${LOOKBACK}); cutoff.setHours(0,0,0,0);
     const opened = shows.filter(s => {
-      if (s.status !== 'open' || !s.openingDate) return false;
+      if (!s.openingDate) return false;
+      if (s.status !== 'open' && s.status !== 'upcoming') return false;
       const cat = s.category || 'broadway';
       if (cat !== 'broadway' && cat !== 'west-end') return false;
       const d = new Date(s.openingDate); d.setHours(0,0,0,0);
