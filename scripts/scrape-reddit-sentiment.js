@@ -35,6 +35,7 @@ const path = require('path');
 const { searchAllPosts, collectCommentsFromPosts, getStats } = require('./lib/reddit-api');
 const { classifyAllComments } = require('./lib/buzz-classifier');
 const { calculateCombinedScore } = require('./lib/audience-weighting');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 // Parse command line args
 const args = process.argv.slice(2);
@@ -58,7 +59,7 @@ const SUBREDDIT_BW = 'broadway';
 const SUBREDDIT_WE = 'TheWestEnd';
 function getSubreddit(show) {
   // OB shows search r/Broadway (r/OffBroadway doesn't exist)
-  return show.category === 'west-end' ? SUBREDDIT_WE : SUBREDDIT_BW;
+  return isLondonMarket(show.category) ? SUBREDDIT_WE : SUBREDDIT_BW;
 }
 const MAX_POST_AGE_DAYS = 730;  // 2 years — filters out decade-old noise
 const TWO_YEARS_AGO = Date.now() / 1000 - (MAX_POST_AGE_DAYS * 86400); // Unix timestamp
@@ -216,7 +217,7 @@ function classifyPost(post, showTitle) {
  */
 async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { category = '', previewsStartDate = null } = {}) {
   const cleanTitle = showTitle.replace(/[()]/g, '').trim();
-  const isWestEnd = category === 'west-end';
+  const isWestEnd = isLondonMarket(category);
   const isOffBroadway = category === 'off-broadway';
   const marketName = isWestEnd ? 'West End' : isOffBroadway ? 'Off-Broadway' : 'Broadway';
 

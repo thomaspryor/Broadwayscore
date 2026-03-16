@@ -18,6 +18,7 @@ const https = require('https');
 const { JSDOM } = require('jsdom');
 const { calculateCombinedScore } = require('./lib/audience-weighting');
 const { validatePageMatchesShow } = require('./lib/page-validator');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 // Parse command line args
 const args = process.argv.slice(2);
@@ -166,7 +167,7 @@ function generateCandidateUrls(show) {
   const isMusical = show.type === 'musical' ||
     (show.tags && show.tags.some(t => /musical/i.test(t)));
   const isOffBroadway = show.category === 'off-broadway';
-  const isWestEnd = show.category === 'west-end';
+  const isWestEnd = isLondonMarket(show.category);
 
   const candidates = [];
 
@@ -362,7 +363,7 @@ async function discoverShowScoreUrl(show) {
     try {
       if (verbose) console.log(`  Trying: ${url}`);
       const html = await fetchViaScrapingBee(url, 0); // No retries during discovery
-      if (isValidShowScorePage(html, url, show.title, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: show.category === 'west-end' })) {
+      if (isValidShowScorePage(html, url, show.title, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: isLondonMarket(show.category) })) {
         // Additional heading-based validation with LLM tiebreaker
         const pageValidation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
         if (!pageValidation.valid) {

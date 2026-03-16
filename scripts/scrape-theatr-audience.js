@@ -21,6 +21,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { calculateCombinedScore } = require('./lib/audience-weighting');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 // Parse command line args
 const args = process.argv.slice(2);
@@ -207,7 +208,7 @@ function matchTheatrToShows(theatrShows, ourShows) {
         if (isBroadway) return !s.category || s.category === 'broadway';
         return s.category === 'off-broadway';
       });
-      const eligible = sameCategory.length > 0 ? sameCategory : started.filter(s => s.category !== 'west-end');
+      const eligible = sameCategory.length > 0 ? sameCategory : started.filter(s => !isLondonMarket(s.category));
       const best = eligible.sort((a, b) => (b.openingDate || '').localeCompare(a.openingDate || ''))[0];
       if (best) {
         matches.push({ theatr, show: best, confidence: 'exact' });
@@ -239,7 +240,7 @@ function matchTheatrToShows(theatrShows, ourShows) {
         if (isBroadway) return !s.category || s.category === 'broadway';
         return s.category === 'off-broadway';
       });
-      const eligible = sameCategory.length > 0 ? sameCategory : prefixCandidates.filter(s => s.category !== 'west-end');
+      const eligible = sameCategory.length > 0 ? sameCategory : prefixCandidates.filter(s => !isLondonMarket(s.category));
       const best = eligible.sort((a, b) => (b.openingDate || '').localeCompare(a.openingDate || ''))[0];
       if (best) {
         matches.push({ theatr, show: best, confidence: 'prefix' });

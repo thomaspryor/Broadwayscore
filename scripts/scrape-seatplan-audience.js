@@ -24,6 +24,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { calculateCombinedScore } = require('./lib/audience-weighting');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
@@ -217,7 +218,7 @@ async function main() {
   const showsRaw = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
   const showsObj = showsRaw.shows || showsRaw;
   const allShows = Object.values(showsObj).filter(s => s && s.id);
-  const weShows = allShows.filter(s => s.category === 'west-end');
+  const weShows = allShows.filter(s => isLondonMarket(s.category));
 
   console.log(`📊 SeatPlan Audience Scraper`);
   console.log(`   West End shows: ${weShows.length}`);

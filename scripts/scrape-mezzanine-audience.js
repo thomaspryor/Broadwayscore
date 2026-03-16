@@ -18,6 +18,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { calculateCombinedScore } = require('./lib/audience-weighting');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 // Parse command line args
 const args = process.argv.slice(2);
@@ -421,8 +422,8 @@ async function main() {
   }
 
   // Split shows by market for correct pool matching
-  const nycShows = shows.filter(s => s.category !== 'west-end');
-  const weShows = shows.filter(s => s.category === 'west-end');
+  const nycShows = shows.filter(s => !isLondonMarket(s.category));
+  const weShows = shows.filter(s => isLondonMarket(s.category));
   console.log(`Matching ${nycShows.length} NYC shows + ${weShows.length} WE shows against their market pools...\n`);
 
   // 4. Match productions to shows (each market against its own pool)
