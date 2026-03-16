@@ -10,7 +10,13 @@ jobs:
           GOOGLE_KEY: ${{ secrets.GOOGLE_INDEXING_KEY }}
           GA4_PROPERTY: 524757094
         run: |
-          echo "$GOOGLE_KEY" > /tmp/ga-key.json
+          # Key may be raw JSON or base64-encoded
+          if echo "$GOOGLE_KEY" | python3 -c "import sys,json; json.load(sys.stdin)" 2>/dev/null; then
+            echo "$GOOGLE_KEY" > /tmp/ga-key.json
+          else
+            echo "$GOOGLE_KEY" | base64 -d > /tmp/ga-key.json
+          fi
+          echo "Key type: $(python3 -c "import json; d=json.load(open('/tmp/ga-key.json')); print(d.get('type','?'), d.get('client_email','?')[:30])")"
           pip install -q google-analytics-data google-auth
           python3 << 'PYEOF'
           import json, os
