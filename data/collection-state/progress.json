@@ -427,7 +427,15 @@
     "mamma-mia-west-end-2021/standard--jessie-thompson.json",
     "man-and-boy-west-end-2026/financialtimes--unknown.json",
     "man-and-boy-west-end-2026/london-box-office--stuart-king.json",
-    "man-and-boy-west-end-2026/telegraph--dominic-cavendish.json"
+    "man-and-boy-west-end-2026/telegraph--dominic-cavendish.json",
+    "manic-street-creature-west-end-2026/london-theatre--anya-ryan.json",
+    "manic-street-creature-west-end-2026/standard--unknown.json",
+    "manic-street-creature-west-end-2026/west-end-best-friend--marina-holmes-smith.json",
+    "marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
+    "marie-and-rosetta-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+    "marie-and-rosetta-west-end-2026/financialtimes--unknown.json",
+    "marie-and-rosetta-west-end-2026/london-box-office--stuart-king.json",
+    "marie-and-rosetta-west-end-2026/london-theatre--theo-bosanquet.json"
   ],
   "failed": [
     "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
@@ -2056,7 +2064,9 @@
     "it-walks-around-the-house-at-night-west-end-2026/thestage--unknown.json",
     "the-hunger-games-on-stage-west-end-2025/thestage--unknown.json",
     "hercules-west-end-2025/thestage--sam-marlowe.json",
-    "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json"
+    "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "marie-and-rosetta-west-end-2026/broadwayworld--clementine-scott.json",
+    "marie-and-rosetta-west-end-2026/everything-theatre-uk--jess-gonzalez.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2325,7 +2335,15 @@
       "mamma-mia-west-end-2021/standard--jessie-thompson.json",
       "man-and-boy-west-end-2026/financialtimes--unknown.json",
       "man-and-boy-west-end-2026/london-box-office--stuart-king.json",
-      "man-and-boy-west-end-2026/telegraph--dominic-cavendish.json"
+      "man-and-boy-west-end-2026/telegraph--dominic-cavendish.json",
+      "manic-street-creature-west-end-2026/london-theatre--anya-ryan.json",
+      "manic-street-creature-west-end-2026/standard--unknown.json",
+      "manic-street-creature-west-end-2026/west-end-best-friend--marina-holmes-smith.json",
+      "marie-and-rosetta-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+      "marie-and-rosetta-west-end-2026/everything-theatre-uk--jess-gonzalez.json",
+      "marie-and-rosetta-west-end-2026/financialtimes--unknown.json",
+      "marie-and-rosetta-west-end-2026/london-box-office--stuart-king.json",
+      "marie-and-rosetta-west-end-2026/london-theatre--theo-bosanquet.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -2405,7 +2423,9 @@
       "data/review-texts/buena-vista-social-club-2025/amny--matt-windman.json",
       "buena-vista-social-club-2025/amny--matt-windman.json",
       "data/review-texts/every-brilliant-thing-2026/amny--matt-windman.json",
-      "every-brilliant-thing-2026/amny--matt-windman.json"
+      "every-brilliant-thing-2026/amny--matt-windman.json",
+      "data/review-texts/marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
+      "marcel-on-the-train-off-broadway-2026/amny--matt-windman.json"
     ],
     "directCookies": [
       "the-play-that-goes-wrong-west-end-2021/times-uk--unknown.json"
@@ -2465,7 +2485,8 @@
       "data/review-texts/the-play-that-goes-wrong-west-end-2021/guardian--unknown.json",
       "data/review-texts/back-to-the-future-west-end-2021/thestage--tim-bano.json",
       "data/review-texts/it-walks-around-the-house-at-night-west-end-2026/thestage--unknown.json",
-      "data/review-texts/the-hunger-games-on-stage-west-end-2025/thestage--unknown.json"
+      "data/review-texts/the-hunger-games-on-stage-west-end-2025/thestage--unknown.json",
+      "data/review-texts/marie-and-rosetta-west-end-2026/broadwayworld--clementine-scott.json"
     ],
     "archive": [
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
@@ -2599,7 +2620,7 @@
     ]
   },
   "startTime": "2026-03-15T09:45:15.761Z",
-  "lastProcessed": "man-and-boy-west-end-2026/telegraph--dominic-cavendish.json",
+  "lastProcessed": "marie-and-rosetta-west-end-2026/london-theatre--theo-bosanquet.json",
   "log": [
     {
       "t": "2026-03-15T09:48:36.450Z",
@@ -3076,6 +3097,17 @@
       "t": "2026-03-16T04:54:23.343Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-16T05:00:03.131Z",
+      "event": "bb-session",
+      "session": "6b2d86fa",
+      "url": "https://www.amny.com/news/review-marcel-on-the-train-finds-bravery/"
+    },
+    {
+      "t": "2026-03-16T05:00:04.593Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
