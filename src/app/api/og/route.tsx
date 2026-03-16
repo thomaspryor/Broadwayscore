@@ -67,7 +67,7 @@ async function generateShowOG(
   category?: string
 ) {
   const scoreColor = getScoreColor(score, reviewCount);
-  const minReviews = category === 'off-broadway' ? 3 : 5;
+  const minReviews = (category === 'off-broadway' || category === 'west-end' || category === 'off-west-end') ? 3 : 5;
   const displayScore = reviewCount >= minReviews && score !== null ? Math.round(score) : null;
   const scoreLabel = displayScore ? getScoreLabel(displayScore) : 'Awaiting Reviews';
 

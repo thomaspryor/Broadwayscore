@@ -82,9 +82,9 @@ export function generateBreadcrumbSchema(items: { name: string; url: string }[])
 
 // TheaterEvent Schema with full details (enhanced)
 export function generateShowSchema(show: ComputedShow, lastUpdated?: string) {
-  const isWestEnd = show.category === 'west-end';
-  const country = isWestEnd ? 'GB' : 'US';
-  const currency = isWestEnd ? 'GBP' : 'USD';
+  const isLondon = show.category === 'west-end' || show.category === 'off-west-end';
+  const country = isLondon ? 'GB' : 'US';
+  const currency = isLondon ? 'GBP' : 'USD';
   const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'TheaterEvent',
@@ -107,7 +107,7 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string) {
 
   // Add aggregate rating if we have scores and sufficient reviews
   // Uses 1-5 star scale for Google rich snippet compatibility
-  const minReviewsForSchema = (isWestEnd || show.category === 'off-broadway') ? 3 : 5;
+  const minReviewsForSchema = (isLondon || show.category === 'off-broadway') ? 3 : 5;
   if (show.criticScore?.score && show.criticScore?.reviewCount >= minReviewsForSchema) {
     schema.aggregateRating = {
       '@type': 'AggregateRating',
@@ -232,7 +232,7 @@ export function generateItemListSchema(items: {
       // Organizer
       event.organizer = {
         '@type': 'Organization',
-        name: item.category === 'west-end' ? 'West End Scorecard' : item.category === 'off-broadway' ? 'Off-Broadway Scorecard' : 'Broadway Scorecard',
+        name: item.category === 'west-end' || item.category === 'off-west-end' ? 'West End Scorecard' : item.category === 'off-broadway' ? 'Off-Broadway Scorecard' : 'Broadway Scorecard',
         url: BASE_URL,
       };
 
@@ -250,7 +250,7 @@ export function generateItemListSchema(items: {
 
       // Ticket offers
       if (item.ticketLinks && item.ticketLinks.length > 0) {
-        const itemCurrency = item.category === 'west-end' ? 'GBP' : 'USD';
+        const itemCurrency = item.category === 'west-end' || item.category === 'off-west-end' ? 'GBP' : 'USD';
         event.offers = item.ticketLinks.map(link => ({
           '@type': 'Offer',
           url: link.url,
@@ -278,14 +278,14 @@ export function generateItemListSchema(items: {
 export function generateShowFAQSchema(show: ComputedShow) {
   const score = show.criticScore?.score ? Math.round(show.criticScore.score) : null;
   const reviewCount = show.criticScore?.reviewCount || 0;
-  const isWestEnd = show.category === 'west-end';
+  const isLondon = show.category === 'west-end' || show.category === 'off-west-end';
   const isOffBroadway = show.category === 'off-broadway';
-  const marketLabel = isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
+  const marketLabel = isLondon ? 'in London' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
 
   const faqs: { question: string; answer: string }[] = [];
 
   // Q: What is the score?
-  const minReviewsForFAQ = (isWestEnd || isOffBroadway) ? 3 : 5;
+  const minReviewsForFAQ = (isLondon || isOffBroadway) ? 3 : 5;
   if (score && reviewCount >= minReviewsForFAQ) {
     faqs.push({
       question: `What is the CriticScore for ${show.title}?`,
@@ -375,10 +375,10 @@ export function generateBrowseFAQSchema(
   pageTitle: string,
   shows: { title: string; slug: string; venue?: string; criticScore?: { score: number; reviewCount: number } | null; status?: string; closingDate?: string | null; type?: string; category?: string }[],
 ) {
-  const isWestEnd = shows.length > 0 && shows[0].category === 'west-end';
+  const isLondon = shows.length > 0 && (shows[0].category === 'west-end' || shows[0].category === 'off-west-end');
   const isOffBroadway = shows.length > 0 && shows[0].category === 'off-broadway';
-  const marketLabel = isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
-  const outletNames = isWestEnd
+  const marketLabel = isLondon ? 'in London' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
+  const outletNames = isLondon
     ? 'The Guardian, Telegraph, Time Out, and WhatsOnStage'
     : 'The New York Times, Vulture, and Variety';
   if (shows.length === 0) return null;
@@ -386,7 +386,7 @@ export function generateBrowseFAQSchema(
   const faqs: { question: string; answer: string }[] = [];
 
   // Q: What are the best shows in this category?
-  const minReviewsForBrowse = (isWestEnd || isOffBroadway) ? 3 : 5;
+  const minReviewsForBrowse = (isLondon || isOffBroadway) ? 3 : 5;
   const topShows = shows
     .filter(s => s.criticScore?.score && s.criticScore.reviewCount >= minReviewsForBrowse)
     .slice(0, 5);

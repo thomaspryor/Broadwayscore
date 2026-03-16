@@ -46,6 +46,7 @@ function RankBadge({ rank }: { rank: number }) {
 /** Get alt text suffix for a show's market */
 function getMarketLabel(category?: string): string {
   if (category === 'west-end') return 'West End';
+  if (category === 'off-west-end') return 'Off-West End';
   if (category === 'off-broadway') return 'Off-Broadway';
   return 'Broadway';
 }

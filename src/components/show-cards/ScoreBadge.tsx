@@ -118,8 +118,8 @@ export function ScoreBadge({ score, size = 'md', reviewCount, status, showCrown,
     );
   }
 
-  // Show TBD if fewer than minimum reviews (5 for Broadway, 3 for off-Broadway/West End; +2 if all T3)
-  let minReviews = (category === 'off-broadway' || category === 'west-end') ? 3 : 5;
+  // Show TBD if fewer than minimum reviews (5 for Broadway, 3 for off-Broadway/West End/Off-West End; +2 if all T3)
+  let minReviews = (category === 'off-broadway' || category === 'west-end' || category === 'off-west-end') ? 3 : 5;
   if (tier1And2Count !== undefined && tier1And2Count === 0) minReviews += 2;
   if (reviewCount !== undefined && reviewCount < minReviews) {
     return (

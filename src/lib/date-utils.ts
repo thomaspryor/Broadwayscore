@@ -72,7 +72,7 @@ export function formatOpeningDate(dateStr: string): string {
 
 /** Get the duration suffix for a market category */
 export function getDurationSuffix(category?: string): string {
-  if (category === 'west-end') return 'in the West End';
+  if (category === 'west-end' || category === 'off-west-end') return 'in London';
   if (category === 'off-broadway') return 'Off-Broadway';
   return 'on Broadway';
 }
