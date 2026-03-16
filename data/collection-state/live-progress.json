@@ -1,49 +1,18 @@
 {
-  "updatedAt": "2026-03-16T11:03:13.021Z",
-  "processed": 199,
-  "failed": 61,
-  "successRate": "76.5%",
+  "updatedAt": "2026-03-16T11:03:30.629Z",
+  "processed": 134,
+  "failed": 16,
+  "successRate": "89.3%",
   "tierBreakdown": {
-    "playwright": 118,
-    "amp": 17,
+    "playwright": 106,
+    "amp": 10,
     "browserbase": 0,
-    "directCookies": 1,
+    "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 50,
-    "archive": 72
+    "archiveToday": 6,
+    "archive": 23
   },
   "browserbaseSessions": 0,
-  "recentActivity": [
-    {
-      "t": "2026-03-16T10:07:20.671Z",
-      "event": "bb-session",
-      "session": "dfb05a56",
-      "url": "https://www.thestage.co.uk/reviews/paddington-the-musical-review-savoy-theatre-l"
-    },
-    {
-      "t": "2026-03-16T10:07:59.330Z",
-      "event": "bb-login-fail",
-      "domain": "thestage.co.uk",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    40 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-03-16T10:08:45.137Z",
-      "event": "bb-session",
-      "session": "1779e803",
-      "url": "https://www.nytimes.com/2026/03/05/theater/chadwick-boseman-deep-azure.html"
-    },
-    {
-      "t": "2026-03-16T10:10:16.797Z",
-      "event": "bb-session",
-      "session": "380d51fa",
-      "url": "https://www.nytimes.com/2017/12/28/theater/london-hamilton-pinocchio.html"
-    },
-    {
-      "t": "2026-03-16T10:11:28.536Z",
-      "event": "bb-session",
-      "session": "603475cc",
-      "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
-    }
-  ]
+  "recentActivity": []
 }
