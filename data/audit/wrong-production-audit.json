@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-16T15:40:12.368Z",
+  "timestamp": "2026-03-16T16:04:53.718Z",
   "stats": {
     "totalReviews": 31495,
-    "alreadyFlagged": 9664,
+    "alreadyFlagged": 9670,
     "dateGuardCatches": 126,
-    "directorMismatch": 1110,
-    "tvFilmSignals": 3494,
+    "directorMismatch": 1103,
+    "tvFilmSignals": 3493,
     "londonSignals": 1024,
     "offBroadwaySignals": 1090,
     "yearMismatch": 91,
-    "noPublishDate": 9372
+    "noPublishDate": 9366
   },
   "findings": [
     {
@@ -43876,34 +43876,6 @@
       ]
     },
     {
-      "showId": "romeo-and-juliet-west-end-2026",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 48,
-      "publishDate": null,
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/romeo-and-juliet-theater-review-kit-connor-rachel-zegler-shakespeare-jack-antonoff-1236043115/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"david leveaux\" from romeo-and-juliet-2013"
-        }
-      ]
-    },
-    {
-      "showId": "romeo-and-juliet-west-end-2026",
-      "file": "wsj--charles-isherwood.json",
-      "score": 59,
-      "publishDate": null,
-      "url": "https://www.wsj.com/articles/romeo-juliet-review-romance-on-broadway-rachel-zegler-kit-connor-sam-gold-6b43d781?mod=googlenewsfeed",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "romeo-juliet-2024",
       "file": "cititour--brian-scott-lipton.json",
       "score": 82,
@@ -58239,61 +58211,6 @@
     },
     {
       "showId": "the-play-that-goes-wrong-off-broadway-2019",
-      "file": "dctheatrescene--deb-miller.json",
-      "score": 92,
-      "publishDate": "For a previous production",
-      "url": "https://dcmetrotheaterarts.com/2019/02/20/review-the-play-that-goes-wrong-at-new-world-stages/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"mark bell\" from the-play-that-goes-wrong-2017"
-        }
-      ]
-    },
-    {
-      "showId": "the-play-that-goes-wrong-off-broadway-2019",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 62,
-      "publishDate": null,
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"mark bell\" from the-play-that-goes-wrong-2017"
-        }
-      ]
-    },
-    {
-      "showId": "the-play-that-goes-wrong-off-broadway-2019",
-      "file": "newyorker--michael-schulman.json",
-      "score": 75,
-      "publishDate": "April 6th, 2017",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"mark bell\" from the-play-that-goes-wrong-2017"
-        }
-      ]
-    },
-    {
-      "showId": "the-play-that-goes-wrong-off-broadway-2019",
-      "file": "nysr--david-finkle.json",
-      "score": 88,
-      "publishDate": "February 20, 2019",
-      "url": "http://nystagereview.com/2019/02/20/the-play-that-goes-wrong-rarely-does-anything-go-so-right/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"mark bell\" from the-play-that-goes-wrong-2017"
-        }
-      ]
-    },
-    {
-      "showId": "the-play-that-goes-wrong-off-broadway-2019",
       "file": "nytg--stanford-friedman.json",
       "score": 84,
       "publishDate": null,
@@ -58303,33 +58220,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "the-play-that-goes-wrong-off-broadway-2019",
-      "file": "stagebizcom--danny-groner.json",
-      "score": 86,
-      "publishDate": "For a previous production",
-      "url": "http://www.huffingtonpost.com/entry/the-play-that-goes-wrong-staged-right_us_58e5ae7ce4b0ee31ab9534bf",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"mark bell\" from the-play-that-goes-wrong-2017"
-        }
-      ]
-    },
-    {
-      "showId": "the-play-that-goes-wrong-off-broadway-2019",
-      "file": "wsj--edward-rothstein.json",
-      "score": 81,
-      "publishDate": "April 6th, 2017",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"mark bell\" from the-play-that-goes-wrong-2017"
         }
       ]
     },
