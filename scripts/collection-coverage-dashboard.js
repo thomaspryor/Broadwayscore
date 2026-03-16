@@ -22,6 +22,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const OUTLET_REGISTRY_PATH = path.join(__dirname, '..', 'data', 'outlet-registry.json');
@@ -85,6 +86,7 @@ function classifyReview(review) {
 }
 
 function getMarket(showId) {
+  if (showId.includes('-off-west-end-')) return 'off-west-end';
   if (showId.includes('-west-end-')) return 'west-end';
   if (showId.includes('-off-broadway-')) return 'off-broadway';
   return 'broadway';
@@ -122,7 +124,7 @@ function scanReviewTexts() {
 
   // Structure: market → segment → bucket
   const data = {};
-  const markets = ['broadway', 'west-end', 'off-broadway'];
+  const markets = ['broadway', 'west-end', 'off-west-end', 'off-broadway'];
   const segments = ['open', 'recent', 'rest'];
   for (const m of markets) {
     data[m] = {};
@@ -241,7 +243,7 @@ function generateMarkdown({ data, byOutlet }) {
   lines.push('');
 
   // Per-market breakdown
-  const marketNames = { broadway: 'Broadway', 'west-end': 'West End', 'off-broadway': 'Off-Broadway' };
+  const marketNames = { broadway: 'Broadway', 'west-end': 'West End', 'off-west-end': 'Off-West End', 'off-broadway': 'Off-Broadway' };
   const segNames = { open: 'Open/Previews', recent: 'Closed (last 3 seasons)', rest: 'Older inventory' };
 
   for (const [market, mLabel] of Object.entries(marketNames)) {
@@ -322,7 +324,7 @@ function updateHistory(data) {
     thumbOnly: g.thumbOnly,
     unscored: g.unscored,
     byMarket: Object.fromEntries(
-      ['broadway', 'west-end', 'off-broadway'].map(m => {
+      ['broadway', 'west-end', 'off-west-end', 'off-broadway'].map(m => {
         const mt = data[m]._total;
         const a = mt.total - mt.flagged;
         return [m, { active: a, scored: a - mt.unscored, fullText: mt.fullText + mt.fullTextThumb }];
@@ -385,7 +387,7 @@ async function main() {
     recentCutoff: RECENT_CUTOFF,
     grand: data._grand,
     markets: Object.fromEntries(
-      ['broadway', 'west-end', 'off-broadway'].map(m => [m, {
+      ['broadway', 'west-end', 'off-west-end', 'off-broadway'].map(m => [m, {
         total: data[m]._total,
         open: data[m].open,
         recent: data[m].recent,

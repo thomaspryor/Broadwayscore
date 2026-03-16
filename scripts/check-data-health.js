@@ -140,6 +140,7 @@ const parts = [`${showCount} shows`];
 if (categories['broadway']) parts.push(`${categories['broadway']} Broadway`);
 if (categories['off-broadway']) parts.push(`${categories['off-broadway']} Off-Broadway`);
 if (categories['west-end']) parts.push(`${categories['west-end']} West End`);
+if (categories['off-west-end']) parts.push(`${categories['off-west-end']} Off-West End`);
 const statsLine = `${parts[0]} (${parts.slice(1).join(', ')}), ${reviewCount} reviews`;
 
 // ── Step 3: Compare against baseline ──

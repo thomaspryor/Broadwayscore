@@ -25,6 +25,7 @@ const { sendAlert } = require('./lib/discord-notify');
 const {
   postJSON, sleep, buildBroadcastOpeningNightHtml, buildBroadcastApprovalHtml, buildUnsubscribeUrl,
 } = require('./lib/email-templates');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const LOOKBACK_ARG = process.argv.find(a => a.startsWith('--lookback='));
@@ -38,21 +39,21 @@ const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
 const REVIEWS_PATH = path.join(DATA_DIR, 'reviews.json');
 const CONSENSUS_PATH = path.join(DATA_DIR, 'critic-consensus.json');
-const SUBSCRIBERS_PATH = path.join(DATA_DIR, MARKET === 'west-end' ? 'subscribers-westend.json' : 'subscribers.json');
+const SUBSCRIBERS_PATH = path.join(DATA_DIR, isLondonMarket(MARKET) ? 'subscribers-westend.json' : 'subscribers.json');
 const SENT_PATH = path.join(DATA_DIR, 'opening-night-sent.json');
 
 const MOBILE_SHOWS_PATH = path.join(__dirname, '..', 'public', 'data', 'mobile-shows.json');
 const OUTLET_REGISTRY_PATH = path.join(DATA_DIR, 'outlet-registry.json');
 const FROM_EMAIL = 'updates@broadwayscorecard.com';
-const SITE_NAME = MARKET === 'west-end' ? 'West End Scorecard' : 'Broadway Scorecard';
+const SITE_NAME = isLondonMarket(MARKET) ? 'West End Scorecard' : 'Broadway Scorecard';
 // WE has ~15 reliable outlets vs Broadway's 40+; median WE show gets 10 scored reviews
-const MIN_REVIEWS = MARKET === 'west-end' ? 8 : 12;
+const MIN_REVIEWS = isLondonMarket(MARKET) ? 8 : 12;
 const MIN_T1_REVIEWS = 3;
-const MIN_T2_REVIEWS = MARKET === 'west-end' ? 2 : 3;
-const MIN_HIGH_CONFIDENCE = MARKET === 'west-end' ? 6 : 8;
+const MIN_T2_REVIEWS = isLondonMarket(MARKET) ? 2 : 3;
+const MIN_HIGH_CONFIDENCE = isLondonMarket(MARKET) ? 6 : 8;
 
 // Resend segment IDs for Broadcasts API
-const RESEND_SEGMENT_ID = MARKET === 'west-end'
+const RESEND_SEGMENT_ID = isLondonMarket(MARKET)
   ? '0b17260b-6a72-4a5a-a700-7b7526f18d87'
   : '472ec5ef-d7cc-4c48-8007-c0a6a302e7a4';
 
@@ -86,11 +87,11 @@ function findRecentlyOpenedShows(shows, lookbackDays) {
   return shows.filter(s => {
     if (s.status !== 'open' || !s.openingDate) return false;
     // Filter by market
-    if (MARKET === 'west-end') {
-      if (s.category !== 'west-end') return false;
+    if (isLondonMarket(MARKET)) {
+      if (!isLondonMarket(s.category)) return false;
     } else {
-      // Broadway: exclude off-broadway and west-end
-      if (s.category === 'off-broadway' || s.category === 'west-end') return false;
+      // Broadway: exclude off-broadway and London markets
+      if (s.category === 'off-broadway' || isLondonMarket(s.category)) return false;
     }
     const d = new Date(s.openingDate);
     d.setHours(0, 0, 0, 0);

@@ -21,6 +21,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Import deduplication module for duplicate detection
+const { isLondonMarket } = require('./lib/venue-classification');
 let checkForDuplicate;
 try {
   const dedup = require('./lib/deduplication');
@@ -124,6 +125,12 @@ function validateNoDuplicates(shows) {
 
   // Market-specific slug validation
   const weShowsMissing = shows.filter(s => s.category === 'west-end' && !s.slug.includes('west-end'));
+  const oweShowsMissing = shows.filter(s => s.category === 'off-west-end' && !s.slug.includes('off-west-end'));
+  if (oweShowsMissing.length > 0) {
+    warn(`${oweShowsMissing.length} Off-West End shows missing "off-west-end" in slug: ${oweShowsMissing.slice(0, 3).map(s => s.slug).join(', ')}${oweShowsMissing.length > 3 ? '...' : ''}`);
+  } else {
+    ok('All Off-West End slugs contain "off-west-end"');
+  }
   const obShowsMissing = shows.filter(s => s.category === 'off-broadway' && !s.slug.includes('off-broadway'));
   if (weShowsMissing.length > 0) {
     warn(`${weShowsMissing.length} West End shows missing "west-end" in slug: ${weShowsMissing.slice(0, 3).map(s => s.slug).join(', ')}${weShowsMissing.length > 3 ? '...' : ''}`);
@@ -2906,7 +2913,7 @@ function validateCrossMarketContamination() {
   }
 
   let issues = 0;
-  const weReviews = reviews.filter(r => showCategoryMap[r.showId] === 'west-end');
+  const weReviews = reviews.filter(r => isLondonMarket(showCategoryMap[r.showId]));
   for (const r of weReviews) {
     const oid = (r.outletId || r.outlet || '').toLowerCase();
     if (dualMarket.has(oid) || tier12Outlets.has(oid)) continue;
@@ -2927,7 +2934,7 @@ function validateCrossMarketContamination() {
   // Unlike forward guard, Tier 1/2 exemption does NOT apply here — London Tier 1 outlets
   // (Evening Standard, Times UK) never legitimately cover Broadway. Only isDualMarket outlets are exempt.
   let reverseIssues = 0;
-  const nonWeReviews = reviews.filter(r => showCategoryMap[r.showId] !== 'west-end');
+  const nonWeReviews = reviews.filter(r => !isLondonMarket(showCategoryMap[r.showId]));
   for (const r of nonWeReviews) {
     const oid = (r.outletId || r.outlet || '').toLowerCase();
     if (dualMarket.has(oid)) continue;  // Only dual-market exemption, NOT Tier 1/2

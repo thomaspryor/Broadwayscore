@@ -25,6 +25,7 @@ const { matchTitleToShow, loadShows, titleWordsMatch } = require('./lib/show-mat
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./lib/review-normalization');
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -104,7 +105,7 @@ async function googleSearchForShow(showTitle, category, year) {
   }
 
   // Use category-appropriate search term (don't search "broadway" for WE/OB shows)
-  const categoryLabel = category === 'west-end' ? 'west end'
+  const categoryLabel = isLondonMarket(category) ? 'west end'
     : category === 'off-broadway' ? 'off-broadway'
     : 'broadway';
   const yearSuffix = year ? ` ${year}` : '';

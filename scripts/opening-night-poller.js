@@ -42,6 +42,7 @@ const { checkRSSFeeds } = require('./lib/rss-discovery');
 const { searchOutletSites, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
 const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { validatePageMatchesShow } = require('./lib/page-validator');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 // Paths
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -113,7 +114,7 @@ function getMissingT1T2Outlets(showId, market) {
     if (outlet.tier > 2) continue;
     if (foundIds.has(outletId.toLowerCase())) continue;
     // Market filter
-    if (market === 'west-end' && !outlet.isDualMarket && outlet.region !== 'uk') continue;
+    if (isLondonMarket(market) && !outlet.isDualMarket && outlet.region !== 'uk') continue;
     if (market === 'broadway' && outlet.region === 'uk' && !outlet.isDualMarket) continue;
     missing.push({ id: outletId, name: outlet.displayName || outletId, tier: outlet.tier, domain: outlet.domain });
   }
@@ -159,7 +160,7 @@ async function runAggregators(show) {
   const results = [];
   const year = new Date(show.openingDate).getFullYear();
   const isOffBroadway = show.category === 'off-broadway';
-  const isWestEnd = show.category === 'west-end';
+  const isWestEnd = isLondonMarket(show.category);
 
   // 1a. DTLI
   try {
@@ -418,9 +419,9 @@ async function pollCycle() {
     process.exit(1);
   }
 
-  const market = show.category === 'west-end' ? 'west-end' : 'broadway';
+  const market = isLondonMarket(show.category) ? 'west-end' : 'broadway';
   const isOffBroadway = show.category === 'off-broadway';
-  const isWestEnd = show.category === 'west-end';
+  const isWestEnd = isLondonMarket(show.category);
   console.log(`Title: ${show.title}`);
   console.log(`Market: ${market}`);
 

@@ -8,6 +8,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SRC_DIR = path.join(__dirname, '..', 'src');
@@ -36,7 +37,7 @@ try {
   warn('Could not load outlet-registry.json — skipping outlet checks');
 }
 
-const markets = ['west-end', 'off-broadway'];
+const markets = ['west-end', 'off-west-end', 'off-broadway'];
 const marketsToCheck = targetMarket === 'all' ? markets : [targetMarket];
 
 console.log('');
@@ -281,7 +282,7 @@ console.log('\n--- Copy Checks ---');
 try {
   const seoContent = fs.readFileSync(path.join(SRC_DIR, 'lib', 'seo.ts'), 'utf8');
   for (const market of marketsToCheck) {
-    const marker = market === 'west-end' ? 'West End Scorecard' : 'Off-Broadway Scorecard';
+    const marker = market === 'west-end' ? 'West End Scorecard' : market === 'off-west-end' ? 'Off-West End Scorecard' : 'Off-Broadway Scorecard';
     if (seoContent.includes(marker)) {
       ok(`seo.ts references "${marker}"`);
     } else {

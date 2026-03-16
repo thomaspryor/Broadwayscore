@@ -19,6 +19,7 @@
 const fs = require('fs');
 const path = require('path');
 const { sendAlert } = require('./lib/discord-notify');
+const { isLondonMarket } = require('./lib/venue-classification');
 const {
   postJSON, sleep, escapeHtml, getScoreColor, getChangeAnchor,
   buildUnfollowUrl, buildFooterHtml, buildEmailHtml, buildOpeningNightHtml,
@@ -169,7 +170,7 @@ async function main() {
 
     const show = showsMap[showId];
     const showTitle = show?.title || showId;
-    const market = show?.category === 'west-end' ? 'west-end' : 'broadway';
+    const market = isLondonMarket(show?.category) ? 'west-end' : 'broadway';
     const siteBase = market === 'west-end' ? 'https://broadwayscorecard.com/west-end' : 'https://broadwayscorecard.com';
     const showUrl = `https://broadwayscorecard.com/show/${show?.slug || showId}`;
 

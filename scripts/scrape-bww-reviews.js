@@ -33,6 +33,7 @@ const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -418,7 +419,7 @@ async function discoverBwwRoundup(show, showId, options = {}) {
     if (!titleWordsMatch(searchTitle, urlSlug)) return false;
     // General non-Broadway check (tours, streaming, off-Broadway, etc.)
     // For off-Broadway shows, allow off-Broadway content through
-    if (isNotBroadway(urlSlug, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: show.category === 'west-end' })) {
+    if (isNotBroadway(urlSlug, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: isLondonMarket(show.category) })) {
       console.log(`  [SKIP] roundup: non-Broadway article: ${url.split('/article/')[1] || url}`);
       return false;
     }
@@ -911,7 +912,7 @@ async function processShow(show, showId, options = {}) {
       console.log(`    Extracted ${reviews.length} reviews from roundup (${format} format)${averageRating ? ` (avg: ${averageRating}%)` : ''}`);
 
       for (const review of reviews) {
-        if (review.outlet && isNotBroadway(review.outlet, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: show.category === 'west-end' })) {
+        if (review.outlet && isNotBroadway(review.outlet, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: isLondonMarket(show.category) })) {
           stats.skippedGuards++;
           continue;
         }

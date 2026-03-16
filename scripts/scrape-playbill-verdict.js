@@ -21,6 +21,7 @@ const { matchTitleToShow, loadShows, cleanExternalTitle, titleWordsMatch } = req
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
+const { isLondonMarket } = require('./lib/venue-classification');
 const cheerio = require('cheerio');
 
 // Paths
@@ -539,7 +540,7 @@ async function processShowViaGoogle(show, showId, shows) {
 
         const $ = cheerio.load(html);
         const pageTitle = $('title').text() + ' ' + $('h1').text();
-        if (isNotBroadway(pageTitle, { allowOffBroadway: showEntry && showEntry.category === 'off-broadway', allowWestEnd: showEntry && showEntry.category === 'west-end' })) {
+        if (isNotBroadway(pageTitle, { allowOffBroadway: showEntry && showEntry.category === 'off-broadway', allowWestEnd: showEntry && isLondonMarket(showEntry.category) })) {
           console.log(`    [SKIP] Article is not about Broadway: "${pageTitle.slice(0, 80)}"`);
           continue;
         }
@@ -749,7 +750,7 @@ async function scrapePlaybillVerdict() {
     // Validate the fetched article is about Broadway (not London, Chicago, film, etc.)
     const $article = cheerio.load(html);
     const articlePageTitle = $article('title').text() + ' ' + $article('h1').text();
-    if (isNotBroadway(articlePageTitle, { allowOffBroadway: matchedShow && matchedShow.category === 'off-broadway', allowWestEnd: matchedShow && matchedShow.category === 'west-end' })) {
+    if (isNotBroadway(articlePageTitle, { allowOffBroadway: matchedShow && matchedShow.category === 'off-broadway', allowWestEnd: matchedShow && isLondonMarket(matchedShow.category) })) {
       console.log(`    [SKIP] Article is not about Broadway: "${articlePageTitle.slice(0, 80)}"`);
       continue;
     }
