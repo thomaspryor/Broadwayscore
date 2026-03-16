@@ -1,24 +1,24 @@
 {
-  "runDate": "2026-03-16T17:21:53.151Z",
+  "runDate": "2026-03-16T19:22:36.119Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 10,
+    "maxReviews": 3,
     "priority": "all",
-    "showFilter": "aladdin-2014,mj-2022",
+    "showFilter": "",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 2,
+    "processed": 1,
+    "failed": 25,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "3.8%"
   },
   "tierBreakdown": {
     "playwright": 12,
-    "amp": 0,
+    "amp": 2,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
@@ -41,18 +41,43 @@
     "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 2,
+    "totalFailed": 3,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
+    "urlDiscoveryAttempts": 3,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "peter-and-the-starcatcher-2012/variety--marilyn-stasio.json"
+  ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
-    "mj-2022/ap--mark-kennedy.json"
+    "mj-2022/ap--mark-kennedy.json",
+    "all-my-sons-west-end-2025/nytg--mark-shenton.json",
+    "arcadia-west-end-2026/hollywood-reporter--david-rooney.json",
+    "arcadia-west-end-2026/nytimes--ben-brantley.json",
+    "arcadia-west-end-2026/variety--marilyn-stasio.json",
+    "arcadia-west-end-2026/vulture--scott-brown.json",
+    "back-to-the-future-west-end-2021/hollywood-reporter--frank-scheck.json",
+    "back-to-the-future-west-end-2021/nyt-theater--jonathan-mandell.json",
+    "back-to-the-future-west-end-2021/vulture--jackson-mchenry.json",
+    "bigfoot-off-broadway-2026/variety--marilyn-stasio.json",
+    "bloodlove-off-broadway-2026/nytimes--ben-brantley.json",
+    "bloodlove-off-broadway-2026/variety--steven-suskin.json",
+    "bloodlove-off-broadway-2026/vulture--christopher-bonanos.json",
+    "book-of-mormon-2011/nyt-theater--jonathan-mandell.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/nyt-theater--jonathan-mandell.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/nytg--amelia-merrill.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/nytimes--jesse-green.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/variety--naveen-kumar.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/vulture--sara-holdren.json",
+    "hadestown-west-end-2024/hollywood-reporter--david-rooney.json",
+    "hadestown-west-end-2024/nytimes--jesse-green.json",
+    "hadestown-west-end-2024/vulture--sara-holdren.json",
+    "hamilton-2015/hollywood-reporter--frank-scheck.json",
+    "hamilton-2015/newyorker--hilton-als.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -69,7 +94,10 @@
       "masquerade-off-broadway-2025/nytg--gillian-russo.json",
       "boeingboeing-2008/washpost--peter-marks.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/peter-and-the-starcatcher-2012/variety--marilyn-stasio.json",
+      "peter-and-the-starcatcher-2012/variety--marilyn-stasio.json"
+    ],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
