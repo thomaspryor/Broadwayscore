@@ -61,18 +61,6 @@ for (const [id, info] of Object.entries(outletRegistry.outlets || {})) {
     }
   }
 }
-// Also allow all Tier 1/2 outlets — they legitimately review West End shows
-// The cross-market guard targets Tier 3 / untiered regional US outlets (Fayetteville Flyer, etc.)
-// Uses outlet-registry.json tiers (not scoring.ts — registry IDs match review-text file IDs)
-const TIER_1_2_OUTLET_IDS = new Set();
-for (const [id, info] of Object.entries(outletRegistry.outlets)) {
-  if (info.tier === 1 || info.tier === 2) {
-    TIER_1_2_OUTLET_IDS.add(id);
-    if (info.aliases) {
-      for (const alias of info.aliases) TIER_1_2_OUTLET_IDS.add(alias.toLowerCase());
-    }
-  }
-}
 
 // Load critic registry for resolving "unknown" outlet reviews
 const criticRegistry = loadCriticRegistry();
