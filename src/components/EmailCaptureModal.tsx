@@ -104,7 +104,7 @@ export default function EmailCaptureModal({
   const showExtraFields = trigger === 'csv_download' || trigger === 'json_download' || trigger === 'page_view_limit';
 
   // Don't autoFocus for passive triggers — keyboard pop mid-scroll is jarring on mobile
-  const shouldAutoFocus = trigger !== 'scroll_depth' && trigger !== 'exit_intent';
+  const shouldAutoFocus = trigger !== 'scroll_depth' && trigger !== 'exit_intent' && trigger !== 'return_visitor';
 
   // Track modal shown
   useEffect(() => {

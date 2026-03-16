@@ -61,6 +61,7 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
   const [exitIntentFired, setExitIntentFired] = useState(false);
   // Track whether ANY passive modal (exit intent, scroll depth, page view limit) has fired this session
   const [passiveModalFired, setPassiveModalFired] = useState(false);
+  const [isReturnVisitor, setIsReturnVisitor] = useState(false);
   const [isClient, setIsClient] = useState(false);
 
   // Load saved user data on mount
@@ -103,14 +104,13 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
         setHasEmail(true);
       }
 
-      // Check if return visitor
+      // Check if return visitor (visited 1+ days ago, no email)
       const lastVisit = localStorage.getItem(LAST_VISIT_KEY);
       const now = Date.now();
       if (lastVisit) {
         const daysSinceVisit = (now - parseInt(lastVisit, 10)) / (1000 * 60 * 60 * 24);
-        // If they visited more than 1 day ago but don't have email, consider return visitor
-        if (daysSinceVisit > 1 && !saved) {
-          // Could trigger return visitor gate here
+        if (daysSinceVisit > 1 && !saved && !loopsSubscribed) {
+          setIsReturnVisitor(true);
         }
       }
       localStorage.setItem(LAST_VISIT_KEY, String(now));
@@ -154,13 +154,13 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
       if (e.clientY <= 0 && !modalOpen) {
         setExitIntentFired(true);
         setPassiveModalFired(true);
-        triggerGate('exit_intent');
+        triggerGate(isReturnVisitor ? 'return_visitor' : 'exit_intent');
       }
     };
 
     document.addEventListener('mouseleave', handleMouseLeave);
     return () => document.removeEventListener('mouseleave', handleMouseLeave);
-  }, [isClient, hasEmail, exitIntentFired, passiveModalFired, modalOpen, triggerGate]);
+  }, [isClient, hasEmail, exitIntentFired, passiveModalFired, isReturnVisitor, modalOpen, triggerGate]);
 
   // Mobile scroll-depth detection — replaces exit intent for touch devices
   const [scrollFired, setScrollFired] = useState(false);
@@ -193,13 +193,13 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
         fired = true;
         setScrollFired(true);
         setPassiveModalFired(true);
-        triggerGate('scroll_depth');
+        triggerGate(isReturnVisitor ? 'return_visitor' : 'scroll_depth');
       }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isClient, hasEmail, scrollFired, passiveModalFired, modalOpen, triggerGate]);
+  }, [isClient, hasEmail, scrollFired, passiveModalFired, isReturnVisitor, modalOpen, triggerGate]);
 
   const handleModalSubmit = useCallback((data: CapturedUserData) => {
     // Save to localStorage
