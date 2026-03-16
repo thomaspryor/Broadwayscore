@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-16T11:43:49.001Z",
-  "processed": 212,
-  "failed": 18,
-  "successRate": "92.2%",
+  "updatedAt": "2026-03-16T11:52:17.101Z",
+  "processed": 216,
+  "failed": 24,
+  "successRate": "90.0%",
   "tierBreakdown": {
-    "playwright": 133,
+    "playwright": 134,
     "amp": 14,
     "browserbase": 26,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 7,
-    "archive": 59
+    "archive": 62
   },
-  "browserbaseSessions": 20,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-03-16T11:22:45.532Z",
-      "event": "bb-session",
-      "session": "90ba1435",
-      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
-    },
-    {
-      "t": "2026-03-16T11:22:47.145Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-16T11:28:43.179Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-16T11:43:11.945Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-16T11:50:35.419Z",
+      "event": "bb-session",
+      "session": "6f692f30",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-16T11:50:36.958Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
