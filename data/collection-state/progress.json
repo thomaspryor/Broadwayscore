@@ -13,7 +13,17 @@
     "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
     "an-ark-off-broadway-2026/nytg--kyle-turner.json",
     "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
-    "back-to-the-future-west-end-2021/variety--david-benedict.json"
+    "back-to-the-future-west-end-2021/variety--david-benedict.json",
+    "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+    "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+    "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+    "chess-2025/hollywood-reporter--angie-han.json",
+    "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nytg--allison-considine.json",
+    "death-becomes-her-2024/newyorker--helen-shaw.json",
+    "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -47,7 +57,14 @@
       "into-the-woods-west-end-2025/daily-mail--unknown.json",
       "youre-a-good-man-charlie-brown-off-broadway-2026/theater-scene--darryl-reilly.json",
       "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
-      "an-ark-off-broadway-2026/nytg--kyle-turner.json"
+      "an-ark-off-broadway-2026/nytg--kyle-turner.json",
+      "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+      "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+      "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+      "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "data-off-broadway-2026/nytg--allison-considine.json",
+      "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -55,7 +72,9 @@
     ],
     "browserbase": [
       "data/review-texts/youre-a-good-man-charlie-brown-off-broadway-2026/amny--matt-windman.json",
-      "youre-a-good-man-charlie-brown-off-broadway-2026/amny--matt-windman.json"
+      "youre-a-good-man-charlie-brown-off-broadway-2026/amny--matt-windman.json",
+      "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
+      "chess-2025/hollywood-reporter--angie-han.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -89,11 +108,13 @@
       "maltby-and-shires-about-time-off-broadway-2026/theatermania--zachary-stewart.json",
       "youre-a-good-man-charlie-brown-off-broadway-2026/theatermania--david-gordon.json",
       "bughouse-off-broadway-2026/rollingstone--rhoda-feng.json",
-      "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json"
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
+      "death-becomes-her-2024/newyorker--helen-shaw.json",
+      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json"
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "back-to-the-future-west-end-2021/variety--david-benedict.json",
+  "lastProcessed": "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
   "log": [
     {
       "t": "2026-03-16T19:08:03.771Z",
@@ -105,6 +126,28 @@
       "t": "2026-03-16T19:08:05.480Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-16T19:11:12.808Z",
+      "event": "bb-session",
+      "session": "4e2e423a",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-16T19:11:14.357Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-16T19:12:37.732Z",
+      "event": "bb-session",
+      "session": "e5eebc32",
+      "url": "https://www.newyorker.com/magazine/2024/12/02/death-becomes-her-theatre-review-b"
+    },
+    {
+      "t": "2026-03-16T19:12:39.168Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }

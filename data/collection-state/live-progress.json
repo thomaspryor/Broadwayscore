@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-16T19:10:46.868Z",
-  "processed": 14,
+  "updatedAt": "2026-03-16T19:13:12.562Z",
+  "processed": 24,
   "failed": 8,
-  "successRate": "63.6%",
+  "successRate": "75.0%",
   "tierBreakdown": {
-    "playwright": 20,
+    "playwright": 27,
     "amp": 2,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 7,
-    "archive": 20
+    "archive": 22
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-03-16T19:08:03.771Z",
@@ -25,6 +25,28 @@
       "t": "2026-03-16T19:08:05.480Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-16T19:11:12.808Z",
+      "event": "bb-session",
+      "session": "4e2e423a",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-16T19:11:14.357Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-16T19:12:37.732Z",
+      "event": "bb-session",
+      "session": "e5eebc32",
+      "url": "https://www.newyorker.com/magazine/2024/12/02/death-becomes-her-theatre-review-b"
+    },
+    {
+      "t": "2026-03-16T19:12:39.168Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
