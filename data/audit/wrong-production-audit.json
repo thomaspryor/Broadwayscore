@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-03-16T23:20:50.182Z",
+  "timestamp": "2026-03-16T23:30:01.198Z",
   "stats": {
     "totalReviews": 31523,
-    "alreadyFlagged": 9529,
+    "alreadyFlagged": 9527,
     "dateGuardCatches": 133,
     "directorMismatch": 1105,
     "tvFilmSignals": 3470,
     "londonSignals": 1021,
-    "offBroadwaySignals": 1066,
+    "offBroadwaySignals": 1067,
     "yearMismatch": 92,
     "noPublishDate": 9429
   },
@@ -66851,6 +66851,20 @@
       "score": 50,
       "publishDate": null,
       "url": "https://theaterpizzazz.com/between-riverside-and-crazy/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "between-riverside-and-crazy-2022",
+      "file": "theatermania--jesse-green.json",
+      "score": 78,
+      "publishDate": "December 19, 2022",
+      "url": "https://www.theatermania.com/news/review-between-riverside-and-crazy-is-the-anti-tragedy-we-need-right-now_94698/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
