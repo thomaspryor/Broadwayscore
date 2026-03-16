@@ -292,6 +292,10 @@ function generateCandidateUrls(show) {
 
   const candidates = [];
 
+  // Try without leading "the-" (SeatPlan/LBO pattern — sites often drop articles)
+  const titleNoThe = titleSlug.startsWith('the-') ? titleSlug.replace(/^the-/, '') : null;
+  const titleNoMusical = titleSlug.endsWith('-the-musical') ? titleSlug.replace(/-the-musical$/, '') : null;
+
   if (isWestEnd) {
     // West End: try -west-end and -london suffixes
     candidates.push(
@@ -302,6 +306,12 @@ function generateCandidateUrls(show) {
       `${showSlug.replace(/-west-end$/, '')}-west-end`,
       `${showSlug.replace(/-west-end$/, '')}-london`,
     );
+    if (titleNoThe) {
+      candidates.push(`${titleNoThe}-west-end`, `${titleNoThe}-london`);
+    }
+    if (titleNoMusical) {
+      candidates.push(`${titleNoMusical}-west-end`, `${titleNoMusical}-london`);
+    }
     if (isMusical) {
       candidates.push(
         `${titleSlug}-the-musical-west-end`,
@@ -324,6 +334,12 @@ function generateCandidateUrls(show) {
       `${titleNoColonSlug}-broadway`,
       `${showSlug}-broadway`,
     );
+    if (titleNoThe) {
+      candidates.push(`${titleNoThe}-broadway`);
+    }
+    if (titleNoMusical) {
+      candidates.push(`${titleNoMusical}-broadway`);
+    }
     if (isMusical) {
       candidates.push(
         `${titleSlug}-the-musical-broadway`,
