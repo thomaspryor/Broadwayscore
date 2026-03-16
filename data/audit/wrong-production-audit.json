@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-16T22:10:18.231Z",
+  "timestamp": "2026-03-16T22:37:10.394Z",
   "stats": {
-    "totalReviews": 31525,
+    "totalReviews": 31526,
     "alreadyFlagged": 9335,
     "dateGuardCatches": 133,
-    "directorMismatch": 1107,
+    "directorMismatch": 1114,
     "tvFilmSignals": 3495,
     "londonSignals": 1025,
     "offBroadwaySignals": 1088,
     "yearMismatch": 92,
-    "noPublishDate": 9519
+    "noPublishDate": 9520
   },
   "findings": [
     {
@@ -58298,6 +58298,75 @@
     },
     {
       "showId": "the-play-that-goes-wrong-off-broadway-2019",
+      "file": "broadway-blog--samuel-l-leiter.json",
+      "score": 82,
+      "publishDate": "2026-02-05",
+      "url": "https://thebroadwayblog.com/?s=the+play+that+goes+wrong",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mark bell\" from the-play-that-goes-wrong-2017"
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-off-broadway-2019",
+      "file": "dctheatrescene--deb-miller.json",
+      "score": 92,
+      "publishDate": "For a previous production",
+      "url": "https://dcmetrotheaterarts.com/2019/02/20/review-the-play-that-goes-wrong-at-new-world-stages/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mark bell\" from the-play-that-goes-wrong-2017"
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-off-broadway-2019",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 62,
+      "publishDate": null,
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mark bell\" from the-play-that-goes-wrong-2017"
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-off-broadway-2019",
+      "file": "newyorker--michael-schulman.json",
+      "score": 75,
+      "publishDate": "April 6th, 2017",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mark bell\" from the-play-that-goes-wrong-2017"
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-off-broadway-2019",
+      "file": "nysr--david-finkle.json",
+      "score": 88,
+      "publishDate": "February 20, 2019",
+      "url": "http://nystagereview.com/2019/02/20/the-play-that-goes-wrong-rarely-does-anything-go-so-right/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mark bell\" from the-play-that-goes-wrong-2017"
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-off-broadway-2019",
       "file": "nytg--stanford-friedman.json",
       "score": 84,
       "publishDate": null,
@@ -58307,6 +58376,33 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-off-broadway-2019",
+      "file": "stagebizcom--danny-groner.json",
+      "score": 86,
+      "publishDate": "For a previous production",
+      "url": "http://www.huffingtonpost.com/entry/the-play-that-goes-wrong-staged-right_us_58e5ae7ce4b0ee31ab9534bf",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mark bell\" from the-play-that-goes-wrong-2017"
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-off-broadway-2019",
+      "file": "wsj--edward-rothstein.json",
+      "score": 81,
+      "publishDate": "April 6th, 2017",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mark bell\" from the-play-that-goes-wrong-2017"
         }
       ]
     },
@@ -66877,6 +66973,7 @@
     {
       "showId": "arcadia-west-end-2026",
       "file": "london-theatre--unknown.json",
+      "score": 78,
       "publishDate": "2026-02-05",
       "url": "https://www.londontheatre.co.uk/reviews/arcadia-review-old-vic",
       "findings": [
