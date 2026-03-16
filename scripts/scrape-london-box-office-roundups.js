@@ -27,6 +27,7 @@ const https = require('https');
 const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
 const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./lib/review-normalization');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -611,7 +612,7 @@ async function scrapeLBORoundups() {
 
   const shows = loadShows();
   // Filter to West End shows only
-  const weShows = shows.filter(s => s.category === 'west-end');
+  const weShows = shows.filter(s => isLondonMarket(s.category));
   console.log(`Loaded ${weShows.length} West End shows from shows.json\n`);
 
   // Step 1: Check curated roundup URL map first (most reliable)
@@ -763,6 +764,20 @@ async function scrapeLBORoundups() {
       } catch (err) {
         console.error(`  [ERROR] ${showId}: ${err.message}`);
         stats.errors.push(`${showId}: ${err.message}`);
+        continue;
+      }
+    }
+
+    // Validate: page title should mention the show we matched to
+    // Prevents misassignment when matchTitleToShow fuzzy-matches the wrong show
+    const pageTitleMatch = html.match(/<title[^>]*>([^<]+)<\/title>/i);
+    if (pageTitleMatch) {
+      const pageTitle = pageTitleMatch[1].toLowerCase();
+      const showWords = show.title.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 3);
+      const matchingWords = showWords.filter(w => pageTitle.includes(w));
+      if (matchingWords.length < Math.min(2, showWords.length)) {
+        console.log(`  [SKIP] Page title "${pageTitleMatch[1].substring(0, 60)}" doesn't match show "${show.title}" — misassignment`);
+        stats.skippedMismatch = (stats.skippedMismatch || 0) + 1;
         continue;
       }
     }
