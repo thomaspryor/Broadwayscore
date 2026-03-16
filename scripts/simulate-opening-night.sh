@@ -150,6 +150,8 @@ WP_OUTPUT=$(node -e "
     if (d.wrongProductionManualClear) cleared++;
     if (d.wrongProduction === true && !d.wrongProductionOverride && !d.wrongProductionManualClear) {
       blocked++;
+      // Only count as false positive if content is valid (not garbage SERP results)
+      if (d.contentTier === 'invalid' || d.contentTier === 'stub') continue;
       if (show && d.publishDate && show.openingDate) {
         const days = Math.abs((new Date(show.openingDate) - new Date(d.publishDate)) / 86400000);
         if (days <= 14) { falsePos++; console.log('FAIL|False positive: ' + f + ' (' + Math.round(days) + 'd)'); }
