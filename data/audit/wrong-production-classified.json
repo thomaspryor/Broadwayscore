@@ -1,16 +1,66 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-16T20:43:53.299Z",
+    "generatedAt": "2026-03-16T21:11:26.315Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 84,
-    "classified": 0,
-    "wrongProduction": 0,
+    "total": 88,
+    "classified": 3,
+    "wrongProduction": 3,
     "correctProduction": 0,
     "uncertain": 0,
     "errors": 0,
-    "wrongHighConfidence": 0,
+    "wrongHighConfidence": 3,
     "wrongMediumConfidence": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "the-elephant-man-2002",
+      "showTitle": "The Elephant Man",
+      "showYear": 2002,
+      "file": "ew--jason-clark.json",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Jason Clark",
+      "publishDate": null,
+      "originalSignals": [
+        "revival text signals: revival, this production",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "the-elephant-man-2014",
+      "reasoning": "The review mentions Scott Ellis as the director, which matches the 2014 production. It also mentions Patricia Clarkson, who was in the 2014 production."
+    },
+    {
+      "showId": "take-me-out-2003",
+      "showTitle": "Take Me Out",
+      "showYear": 2003,
+      "file": "nypost--johnny-oleksinski.json",
+      "outlet": "The New York Post",
+      "criticName": "Johnny Oleksinski",
+      "publishDate": null,
+      "originalSignals": [
+        "year 2022 in text matches revival take-me-out-2022"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "take-me-out-2022",
+      "reasoning": "The review explicitly mentions the year 2022 and discusses the play in the context of modern sensitivities, indicating it's about the 2022 revival."
+    },
+    {
+      "showId": "follies-2001",
+      "showTitle": "Follies",
+      "showYear": 2001,
+      "file": "bloomberg--jeremy-gerard.json",
+      "outlet": "Bloomberg News",
+      "criticName": "Jeremy Gerard",
+      "publishDate": null,
+      "originalSignals": [
+        "year 1971 in text matches revival follies-1971"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "follies-2011",
+      "reasoning": "The review mentions a 'latest' revival and the Marquis Theatre, which hosted the 2011 revival, not the 2001 production. It also references 1971, but in the context of the show's plot, not the production year."
+    }
+  ]
 }

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-16T20:48:01.082Z",
+  "timestamp": "2026-03-16T21:16:06.754Z",
   "stats": {
-    "totalReviews": 31521,
-    "alreadyFlagged": 9674,
-    "dateGuardCatches": 125,
-    "directorMismatch": 1108,
-    "tvFilmSignals": 3492,
-    "londonSignals": 1025,
+    "totalReviews": 31520,
+    "alreadyFlagged": 9333,
+    "dateGuardCatches": 133,
+    "directorMismatch": 1107,
+    "tvFilmSignals": 3495,
+    "londonSignals": 1024,
     "offBroadwaySignals": 1088,
     "yearMismatch": 92,
-    "noPublishDate": 9370
+    "noPublishDate": 9517
   },
   "findings": [
     {
@@ -329,20 +329,6 @@
       "score": 68,
       "publishDate": null,
       "url": "https://www.curtainup.com/bronxtalebway16.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "a-bronx-tale-2007",
-      "file": "hollywood-reporter--frank-scheck.json",
-      "score": 75,
-      "publishDate": "2016-02-15",
-      "url": "https://www.hollywoodreporter.com/review/a-bronx-tale-musical-theater-865401",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -9494,6 +9480,20 @@
       ]
     },
     {
+      "showId": "burnout-paradise-off-broadway-2026",
+      "file": "nysr--roma-torre.json",
+      "score": null,
+      "publishDate": "November 16, 2024",
+      "url": "https://nystagereview.com/2026/03/08/burnout-paradise-madhouse-multitasking/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 474d before show (November 16, 2024 vs 2026-03-05)"
+        }
+      ]
+    },
+    {
       "showId": "butley-2006",
       "file": "newsday--linda-winer.json",
       "score": 78,
@@ -11552,7 +11552,7 @@
     {
       "showId": "chicago-1975",
       "file": "variety--greg-evans.json",
-      "score": null,
+      "score": 91,
       "publishDate": "November 23rd, 1996",
       "url": "http://variety.com/1996/legit/reviews/chicago-4-1200447571/",
       "findings": [
@@ -12158,6 +12158,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "cold-war-choir-practice-off-broadway-2026",
+      "file": "theatermania--unknown.json",
+      "publishDate": "November 9, 2025",
+      "url": "https://www.theatermania.com/news/review-cold-war-choir-practice-wants-us-to-remember-the-80s_1827269/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 104d before show (November 9, 2025 vs 2026-02-21)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -18064,6 +18082,20 @@
     },
     {
       "showId": "frozen-2018",
+      "file": "forbes--hal-rubenstein.json",
+      "score": 35,
+      "publishDate": "March 23rd, 2018",
+      "url": "https://www.forbes.com/sites/halrubenstein/2018/03/23/frozen-broadway-musical-review/#5a854c971d8f",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "frozen-2018",
       "file": "front-row-center--tulis-mccall.json",
       "score": 92,
       "publishDate": "2018-04-06T13:58:20",
@@ -18096,6 +18128,20 @@
       "score": 65,
       "publishDate": "March 22nd, 2018",
       "url": "https://www.theguardian.com/stage/2018/mar/22/frozen-review-disney-hit-arrives-on-broadway-with-mixed-results",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "frozen-2018",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": 78,
+      "publishDate": "March 22, 2018",
+      "url": "https://www.hollywoodreporter.com/news/theater-review-frozen-1094192/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -26568,6 +26614,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "daily-mail--unknown.json",
+      "score": 85,
       "publishDate": "2025-12-19",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-15397945/PATRICK-MARMION-reviews-Woods-Bridge-Theatre-London-Subversive-enchanting-Sondheims-fairytale.html",
       "findings": [
@@ -30827,6 +30874,20 @@
     },
     {
       "showId": "little-shop-of-horrors-off-broadway-2019",
+      "file": "nytg--gillian-russo.json",
+      "score": 85,
+      "publishDate": "2023-10-26",
+      "url": "https://www.newyorktheatreguide.com/theatre-news/news/dont-feed-the-plants-but-do-pay-a-visit-to-little-shop-of-horrors",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "little-shop-of-horrors-off-broadway-2019",
       "file": "nytimes--ben-brantley.json",
       "score": 90,
       "publishDate": "October 18th, 2019",
@@ -32241,6 +32302,20 @@
       ]
     },
     {
+      "showId": "mamma-mia-west-end-2021",
+      "file": "variety--matt-wolf.json",
+      "score": 74,
+      "publishDate": "2015-09-03",
+      "url": "https://variety.com/1999/legit/reviews/mamma-mia-1200457147/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"phyllida lloyd\" from mamma-mia-2025"
+        }
+      ]
+    },
+    {
       "showId": "man-and-boy-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 62,
@@ -32884,7 +32959,7 @@
     {
       "showId": "masquerade-off-broadway-2025",
       "file": "nytg--gillian-russo.json",
-      "score": 87,
+      "score": 85,
       "publishDate": "September 29th, 2025",
       "url": "https://www.newyorktheatreguide.com/reviews/masquerade-off-broadway-review-immersive-phantom-of-the-opera",
       "findings": [
@@ -33854,6 +33929,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "merrily-we-roll-along-2023",
+      "file": "movieweb--mark-keizer.json",
+      "publishDate": null,
+      "url": "https://movieweb.com/merrily-we-roll-along-movie-2025-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -43115,20 +43203,6 @@
     },
     {
       "showId": "ragtime-2009",
-      "file": "theatre-reviews-limited--joseph-verlezza.json",
-      "score": 91,
-      "publishDate": "October 26th, 2025",
-      "url": "https://www.theatrereviews.com/broadway-review-ragtime-at-lincoln-center-theaters-vivian-beaumont-theater-currently-on/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"lear debessonet\" from ragtime-2025"
-        }
-      ]
-    },
-    {
-      "showId": "ragtime-2009",
       "file": "variety--david-rooney.json",
       "score": 88,
       "publishDate": "November 15, 2009",
@@ -45448,7 +45522,7 @@
     {
       "showId": "six-degrees-of-separation-1990",
       "file": "variety--marilyn-stasio.json",
-      "score": null,
+      "score": 74,
       "publishDate": "April 25th, 2017",
       "url": "http://variety.com/2017/legit/reviews/six-degrees-of-separation-review-allison-janney-broadway-1202395130/",
       "findings": [
@@ -52615,20 +52689,6 @@
     },
     {
       "showId": "the-color-purple-2005",
-      "file": "independent--emily-jupp.json",
-      "score": 64,
-      "publishDate": "July 16th, 2013",
-      "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/theatre-review-the-color-purple-menier-chocolate-factory-8710354.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2005",
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 65,
       "publishDate": null,
@@ -52643,25 +52703,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2005",
-      "file": "nypost--elisabeth-vincentelli.json",
-      "score": 76,
-      "publishDate": "December 10th, 2015",
-      "url": "http://nypost.com/2015/12/10/jennifer-hudsons-co-stars-steal-the-show-in-color-purple/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -64323,6 +64364,20 @@
       ]
     },
     {
+      "showId": "whos-afraid-of-virginia-woolf-2020",
+      "file": "theatermania--jesse-green.json",
+      "score": null,
+      "publishDate": "April 9, 2020",
+      "url": "https://www.theatermania.com/broadway/reviews/whos-afraid-of-virginia-woolf-broadway-review_91234.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        }
+      ]
+    },
+    {
       "showId": "wicked-2003",
       "file": "nytimes--charles-isherwood.json",
       "score": 76,
@@ -65102,20 +65157,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
-        }
-      ]
-    },
-    {
-      "showId": "a-christmas-carol-2019",
-      "file": "nytimes--alexis-soloski.json",
-      "score": 82,
-      "publishDate": "November 21, 2022",
-      "url": "https://www.nytimes.com/2019/11/20/theater/a-christmas-carol-review.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -67378,6 +67419,20 @@
       ]
     },
     {
+      "showId": "bloodlove-off-broadway-2026",
+      "file": "broadwaynews--nicole-rosky.json",
+      "score": null,
+      "publishDate": "2026-01-31",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-BLOODLOVE-Arrives-Off-Broadway-20260306",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 31d before show (2026-01-31 vs 2026-03-03)"
+        }
+      ]
+    },
+    {
       "showId": "bloody-bloody-andrew-jackson-2010",
       "file": "ew--simon-vozick-levinson.json",
       "score": 85,
@@ -67841,6 +67896,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"barrow street\""
+        }
+      ]
+    },
+    {
+      "showId": "bughouse-off-broadway-2026",
+      "file": "theatermania--linda-buchwald.json",
+      "score": null,
+      "publishDate": "January 15, 2026",
+      "url": "https://www.theatermania.com/news/review-the-life-of-prolific-outsider-artist-henry-darger-gets-slender-treatment-in-bughouse_1827480/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 55d before show (January 15, 2026 vs 2026-03-11)"
         }
       ]
     },
@@ -69827,20 +69896,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"barrow street\""
-        }
-      ]
-    },
-    {
-      "showId": "every-brilliant-thing-2026",
-      "file": "deadline--unknown.json",
-      "score": 86,
-      "publishDate": "2026-03-13",
-      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcliffe-1236750131/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -72433,6 +72488,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-2021",
+      "file": "broadwaynews--elizabeth-bradley.json",
+      "score": 86,
+      "publishDate": "April 22, 2018",
+      "url": "https://www.broadwaynews.com/review-harry-potter-cursed-child-brings-magic-broadway/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -77422,6 +77491,20 @@
     },
     {
       "showId": "mother-russia-off-broadway-2026",
+      "file": "broadwaynews--chloe-rabinowitz.json",
+      "score": null,
+      "publishDate": "2025-12-22",
+      "url": "https://www.broadwayworld.com/off-broadway/article/MOTHER-RUSSIA-Extends-Through-March-22-at-Signature-Theatre-20260305",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 71d before show (2025-12-22 vs 2026-03-03)"
+        }
+      ]
+    },
+    {
+      "showId": "mother-russia-off-broadway-2026",
       "file": "playbill--unknown.json",
       "publishDate": "2026-02-24",
       "url": "https://playbill.com/article/reviews-are-out-for-lauren-yees-mother-russia",
@@ -77870,6 +77953,20 @@
       ]
     },
     {
+      "showId": "night-side-songs-off-broadway-2026",
+      "file": "broadwaynews--chloe-rabinowitz.json",
+      "score": null,
+      "publishDate": "January 21, 2026",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-NIGHT-SIDE-SONGS-Opens-Off-Broadway-20260302",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 40d before show (January 21, 2026 vs 2026-03-02)"
+        }
+      ]
+    },
+    {
       "showId": "oedipus-2025",
       "file": "chicagotribune--chris-jones.json",
       "score": 88,
@@ -78160,7 +78257,7 @@
     {
       "showId": "oh-mary-2024",
       "file": "vulture--helen-shaw.json",
-      "score": 86,
+      "score": 92,
       "publishDate": "July 9, 2024",
       "url": "https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html",
       "findings": [
@@ -78977,7 +79074,7 @@
     {
       "showId": "passing-strange-2008",
       "file": "guardian--kate-wyver.json",
-      "score": null,
+      "score": 78,
       "publishDate": "May 22nd, 2024",
       "url": "https://www.theguardian.com/stage/article/2024/may/22/passing-strange-review-stew-giles-terera-young-vic-london",
       "findings": [
@@ -88666,6 +88763,32 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 177d before show (2025-09-09 vs 2026-03-05)"
+        }
+      ]
+    },
+    {
+      "showId": "what-we-did-before-our-moth-days-off-broadway-2026",
+      "file": "nytg--gillian-russo.json",
+      "score": null,
+      "publishDate": "2025-09-09",
+      "url": "https://www.newyorktheatreguide.com/reviews/what-we-did-before-our-moth-days-off-broadway-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 177d before show (2025-09-09 vs 2026-03-05)"
+        }
+      ]
+    },
+    {
+      "showId": "what-we-did-before-our-moth-days-off-broadway-2026",
+      "file": "theatermania--unknown.json",
+      "score": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 41d before show (January 23, 2026 vs 2026-03-05)"
         }
       ]
     },
