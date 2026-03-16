@@ -1,33 +1,16 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-16T20:36:30.879Z",
+    "generatedAt": "2026-03-16T20:43:53.299Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
     "total": 84,
-    "classified": 1,
+    "classified": 0,
     "wrongProduction": 0,
-    "correctProduction": 1,
+    "correctProduction": 0,
     "uncertain": 0,
     "errors": 0,
     "wrongHighConfidence": 0,
     "wrongMediumConfidence": 0
   },
-  "results": [
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "variety--matt-wolf.json",
-      "outlet": "Variety",
-      "criticName": "Matt Wolf",
-      "publishDate": "November 17, 1997",
-      "originalSignals": [
-        "modern references: masks"
-      ],
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review discusses the show as new, mentions Julie Taymor's staging, and is published in 1997, all indicating it's about the 1997 Broadway production."
-    }
-  ]
+  "results": []
 }
