@@ -1,0 +1,106 @@
+name: Enrich Playbill London Dates
+
+on:
+  schedule:
+    # Weekly on Thursdays at 8 AM UTC — catch newly announced WE shows
+    - cron: '0 8 * * 4'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Mode: enrich (fill missing), verify (compare only), force (overwrite all)'
+        required: true
+        default: 'enrich'
+        type: choice
+        options:
+          - enrich
+          - verify
+          - force
+      show:
+        description: 'Optional: specific show slug to process'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  enrich-dates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Run Playbill London date enrichment
+        id: enrich
+        run: |
+          FLAGS=""
+          MODE="${{ inputs.mode || 'enrich' }}"
+
+          if [ "$MODE" = "verify" ]; then
+            FLAGS="$FLAGS --verify --dry-run"
+          elif [ "$MODE" = "force" ]; then
+            FLAGS="$FLAGS --force"
+          fi
+
+          if [ -n "${{ inputs.show }}" ]; then
+            FLAGS="$FLAGS --show=${{ inputs.show }}"
+          fi
+
+          echo "Running: node scripts/enrich-playbill-london-dates.js $FLAGS"
+          node scripts/enrich-playbill-london-dates.js $FLAGS
+
+      - name: Check for changes
+        if: (inputs.mode || 'enrich') != 'verify'
+        id: git-check
+        run: |
+          git diff --exit-code data/shows.json || echo "changes=true" >> $GITHUB_OUTPUT
+
+      - name: Commit and push changes
+        if: always() && steps.git-check.outputs.changes == 'true' && (inputs.mode || 'enrich') != 'verify'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          SHOW_MSG=""
+          if [ -n "${{ inputs.show }}" ]; then
+            SHOW_MSG=" for ${{ inputs.show }}"
+          elif [ "${{ github.event_name }}" = "schedule" ]; then
+            SHOW_MSG=" (weekly scheduled)"
+          fi
+
+          git add data/shows.json
+          git commit -m "data: Enrich Playbill London dates${SHOW_MSG}"
+
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from enrich-playbill-london-dates'
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Playbill London Date Enrichment Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
