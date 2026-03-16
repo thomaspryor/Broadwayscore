@@ -506,7 +506,8 @@
     "into-the-woods-west-end-2025/daily-mail--unknown.json",
     "into-the-woods-west-end-2025/independent--unknown.json",
     "paddington-the-musical-west-end-2025/financialtimes--unknown.json",
-    "paddington-the-musical-west-end-2025/telegraph--unknown.json"
+    "paddington-the-musical-west-end-2025/telegraph--unknown.json",
+    "paddington-the-musical-west-end-2025/whatsonstage--unknown.json"
   ],
   "failed": [
     "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
@@ -2186,7 +2187,16 @@
     "moulin-rouge-the-musical-west-end-2021/broadwayworld--steve-murray.json",
     "moulin-rouge-the-musical-west-end-2021/broadwayworld--taylor-clemons.json",
     "moulin-rouge-the-musical-west-end-2021/broadwayworld--tyler-hinton.json",
-    "paddington-the-musical-west-end-2025/independent--unknown.json"
+    "paddington-the-musical-west-end-2025/independent--unknown.json",
+    "paddington-the-musical-west-end-2025/thestage--unknown.json",
+    "the-book-of-mormon-west-end-2024/thestage--unknown.json",
+    "the-hunger-games-on-stage-west-end-2025/thestage--unknown.json",
+    "the-lion-king-1997/message-boards--unknown.json",
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "dracula-west-end-2025/nytimes--houman-barekat.json",
+    "every-brilliant-thing-2026/nytimes--helen-shaw.json",
+    "hadestown-2019/newyorker--hilton-als.json",
+    "six-2021/newyorker--naomi-fry.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2521,7 +2531,8 @@
       "the-devil-wears-prada-west-end-2024/timeout--andrzej-lukowski.json",
       "the-holy-rosenbergs-west-end-2026/guardian--david-jays.json",
       "the-play-that-goes-wrong-west-end-2021/guardian--unknown.json",
-      "paddington-the-musical-west-end-2025/financialtimes--unknown.json"
+      "paddington-the-musical-west-end-2025/financialtimes--unknown.json",
+      "paddington-the-musical-west-end-2025/whatsonstage--unknown.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -2704,7 +2715,12 @@
       "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--steve-murray.json",
       "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--taylor-clemons.json",
       "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--tyler-hinton.json",
-      "data/review-texts/paddington-the-musical-west-end-2025/independent--unknown.json"
+      "data/review-texts/paddington-the-musical-west-end-2025/independent--unknown.json",
+      "data/review-texts/paddington-the-musical-west-end-2025/thestage--unknown.json",
+      "data/review-texts/the-hunger-games-on-stage-west-end-2025/thestage--unknown.json",
+      "data/review-texts/the-lion-king-1997/message-boards--unknown.json",
+      "data/review-texts/dracula-west-end-2025/nytimes--houman-barekat.json",
+      "data/review-texts/every-brilliant-thing-2026/nytimes--helen-shaw.json"
     ],
     "archive": [
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
@@ -2851,7 +2867,7 @@
     ]
   },
   "startTime": "2026-03-15T09:45:15.761Z",
-  "lastProcessed": "paddington-the-musical-west-end-2025/telegraph--unknown.json",
+  "lastProcessed": "six-2021/newyorker--naomi-fry.json",
   "log": [
     {
       "t": "2026-03-15T09:48:36.450Z",
@@ -3394,6 +3410,50 @@
       "t": "2026-03-16T05:35:40.422Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-16T05:45:17.935Z",
+      "event": "bb-session",
+      "session": "cc688f92",
+      "url": "https://www.thestage.co.uk/reviews/paddington-the-musical-review-savoy-theatre-l"
+    },
+    {
+      "t": "2026-03-16T05:45:19.168Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-16T05:47:03.164Z",
+      "event": "bb-session",
+      "session": "ade6fd00",
+      "url": "https://www.thestage.co.uk/reviews/reviews/the-hunger-games-on-stage-review-trou"
+    },
+    {
+      "t": "2026-03-16T05:47:04.457Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-16T05:50:33.400Z",
+      "event": "bb-session",
+      "session": "c9e5149c",
+      "url": "https://www.nytimes.com/2026/02/18/theater/dracula-cynthia-erivo.html"
+    },
+    {
+      "t": "2026-03-16T05:50:34.759Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-16T05:53:38.765Z",
+      "event": "bb-session",
+      "session": "5a0ea572",
+      "url": "https://www.nytimes.com/2026/03/12/theater/every-brilliant-thing-review-daniel-r"
+    },
+    {
+      "t": "2026-03-16T05:53:40.084Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
