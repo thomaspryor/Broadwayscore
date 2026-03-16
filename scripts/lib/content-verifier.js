@@ -15,6 +15,7 @@
 
 const https = require('https');
 const crypto = require('crypto');
+const { isLondonMarket } = require('./venue-classification');
 
 /**
  * Hash the first 2500 chars of text — used to detect when contentVerification
@@ -209,7 +210,7 @@ async function callWithFallback(prompt) {
  * @param {string} [params.openingDate] - Opening date (YYYY-MM-DD) for temporal context
  * @param {string} [params.publishDate] - Review publish date (YYYY-MM-DD) — used with openingDate to prevent false wrongProduction flags
  * @param {string} [params.venue] - Venue name
- * @param {string} [params.market] - Market: 'broadway' (default), 'west-end', 'off-broadway'
+ * @param {string} [params.market] - Market: 'broadway' (default), 'west-end', 'off-west-end', 'off-broadway'
  * @returns {Object} { isValid, confidence, issues, truncated, wrongArticle, wrongProduction, isFilmTv, reasoning, verifiedBy }
  */
 async function verifyContent({ scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue, market, publishDate }) {
@@ -250,6 +251,19 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
       wrongProdExamples: [
         'UK touring production, "on tour"',
         'Regional UK theater (not a West End venue)',
+        'Broadway / New York production',
+        'Edinburgh Fringe or other festival',
+        'Pre-West End tryout or transfer preview'
+      ]
+    },
+    'off-west-end': {
+      label: 'Off-West End',
+      description: 'shows performed in Off-West End theaters in London',
+      dateLabel: 'Off-West End opening date',
+      venueLabel: 'Off-West End venue',
+      wrongProdExamples: [
+        'UK touring production, "on tour"',
+        'Regional UK theater (not a London venue)',
         'Broadway / New York production',
         'Edinburgh Fringe or other festival',
         'Pre-West End tryout or transfer preview'

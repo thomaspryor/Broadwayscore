@@ -56,11 +56,24 @@ function httpGet(url, options = {}) {
     const timeout = options.timeout || 30000;
     const urlObj = new URL(url);
     const proto = urlObj.protocol === 'https:' ? https : require('http');
+    const method = options.method || 'GET';
+    const reqHeaders = Object.assign(
+      { 'User-Agent': 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0)' },
+      options.headers || {}
+    );
+    if (options.body) {
+      reqHeaders['Content-Type'] = reqHeaders['Content-Type'] || 'application/json';
+      reqHeaders['Content-Length'] = Buffer.byteLength(options.body);
+    }
+    // Add Authorization from BRIGHTDATA_TOKEN for BrightData API calls
+    if (urlObj.hostname === 'api.brightdata.com' && process.env.BRIGHTDATA_TOKEN) {
+      reqHeaders['Authorization'] = `Bearer ${process.env.BRIGHTDATA_TOKEN}`;
+    }
     const reqOptions = {
       hostname: urlObj.hostname,
       path: urlObj.pathname + urlObj.search,
-      method: 'GET',
-      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0)' },
+      method,
+      headers: reqHeaders,
       timeout,
     };
     const req = proto.request(reqOptions, (res) => {
@@ -71,6 +84,7 @@ function httpGet(url, options = {}) {
     });
     req.on('error', reject);
     req.on('timeout', () => { req.destroy(); reject(new Error('timeout')); });
+    if (options.body) req.write(options.body);
     req.end();
   });
 }
@@ -83,49 +97,131 @@ function normalizeShowName(name) {
     .trim();
 }
 
-async function serpVerifyTicketmaster(showTitle, existingUrl) {
-  const apiKey = process.env.SCRAPINGBEE_API_KEY;
-  if (!apiKey) return { status: 'skip', reason: 'no API key' };
+/**
+ * Match SERP results against a Ticketmaster URL for the given show.
+ * Returns { status, newUrl?, reason? } or null if no results to evaluate.
+ */
+function matchTicketmasterFromResults(results, showTitle, existingUrl) {
+  const tmPattern = /ticketmaster\.com\/.*tickets\/artist\/\d+/;
 
-  const query = `site:ticketmaster.com "${showTitle}" broadway tickets`;
+  for (const r of results) {
+    const url = r.url || r.link;
+    if (!url || !tmPattern.test(url)) continue;
+
+    const serpTitle = normalizeShowName(r.title || '');
+    const showNorm = normalizeShowName(showTitle);
+    const primaryTitle = showTitle.includes(':') ? normalizeShowName(showTitle.split(':')[0]) : showNorm;
+    const matched = [showNorm, primaryTitle].some(candidate => {
+      const words = candidate.split(' ').filter(w => w.length > 2);
+      const matchCount = words.filter(w => serpTitle.includes(w)).length;
+      return words.length === 0 || matchCount >= Math.ceil(words.length * 0.5);
+    });
+
+    if (matched) {
+      const cleanUrl = url.replace(/^http:/, 'https:').replace('://ticketmaster.com', '://www.ticketmaster.com');
+      if (cleanUrl === existingUrl) {
+        return { status: 'ok' };
+      }
+      return { status: 'updated', newUrl: cleanUrl };
+    }
+  }
+
+  return null; // No matching result found
+}
+
+/**
+ * SERP search via ScrapingBee (primary — uses Google search credits)
+ */
+async function serpViaScrapingBee(query) {
+  const apiKey = process.env.SCRAPINGBEE_API_KEY;
+  if (!apiKey) return null;
+
   const searchUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${apiKey}&search=${encodeURIComponent(query)}`;
+  const result = await httpGet(searchUrl);
+  if (result.statusCode !== 200) {
+    console.log(`    ScrapingBee SERP HTTP ${result.statusCode}`);
+    return null;
+  }
+
+  const data = JSON.parse(result.body);
+  return data.organic_results || data.results || [];
+}
+
+/**
+ * SERP search via BrightData SERP API (fallback — async polling)
+ */
+async function serpViaBrightData(query) {
+  const apiKey = process.env.BRIGHTDATA_TOKEN;
+  if (!apiKey) return null;
+
+  const customer = process.env.BRIGHTDATA_CUSTOMER || 'hl_a2c64a47';
+  const zone = process.env.BRIGHTDATA_SERP_ZONE || 'serp_api1';
 
   try {
-    const result = await httpGet(searchUrl);
-    if (result.statusCode !== 200) return { status: 'skip', reason: `SERP ${result.statusCode}` };
-
-    const data = JSON.parse(result.body);
-    const results = data.organic_results || data.results || [];
-    const tmPattern = /ticketmaster\.com\/.*tickets\/artist\/\d+/;
-
-    for (const r of results) {
-      const url = r.url || r.link;
-      if (!url || !tmPattern.test(url)) continue;
-
-      const serpTitle = normalizeShowName(r.title || '');
-      const showNorm = normalizeShowName(showTitle);
-      // Try both full title and primary title (before colon/subtitle) to avoid
-      // subtitle words diluting match ratio for short primary names
-      const primaryTitle = showTitle.includes(':') ? normalizeShowName(showTitle.split(':')[0]) : showNorm;
-      const matched = [showNorm, primaryTitle].some(candidate => {
-        const words = candidate.split(' ').filter(w => w.length > 2);
-        const matchCount = words.filter(w => serpTitle.includes(w)).length;
-        return words.length === 0 || matchCount >= Math.ceil(words.length * 0.5);
-      });
-
-      if (matched) {
-        const cleanUrl = url.replace(/^http:/, 'https:').replace('://ticketmaster.com', '://www.ticketmaster.com');
-        if (cleanUrl === existingUrl) {
-          return { status: 'ok' };
-        }
-        return { status: 'updated', newUrl: cleanUrl };
-      }
+    // Submit request
+    const submitResult = await httpGet(
+      `https://api.brightdata.com/serp/req?customer=${customer}&zone=${zone}`,
+      { method: 'POST', body: JSON.stringify({ query: { q: query, gl: 'us' } }) }
+    );
+    if (submitResult.statusCode !== 200) {
+      console.log(`    BrightData SERP submit HTTP ${submitResult.statusCode}`);
+      return null;
     }
+    const submitData = JSON.parse(submitResult.body);
+    const responseId = submitData.response_id;
+    if (!responseId) return null;
 
-    return { status: 'not_found', reason: 'no matching SERP result' };
+    // Poll for results (max 20s)
+    for (let i = 0; i < 10; i++) {
+      await new Promise(r => setTimeout(r, 2000));
+      const pollResult = await httpGet(
+        `https://api.brightdata.com/serp/get_result?response_id=${responseId}`,
+        { headers: { 'Authorization': `Bearer ${apiKey}` } }
+      );
+      if (pollResult.statusCode === 202) continue;
+      if (pollResult.statusCode !== 200) return null;
+
+      const data = JSON.parse(pollResult.body);
+      if (data.organic) {
+        return data.organic.slice(0, 10).map(r => ({
+          url: r.link || r.url || '',
+          title: r.title || '',
+        }));
+      }
+      if (data.response_id) continue;
+      return [];
+    }
+    console.log('    BrightData SERP timeout (20s)');
+    return null;
   } catch (e) {
-    return { status: 'skip', reason: e.message };
+    console.log(`    BrightData SERP error: ${e.message}`);
+    return null;
   }
+}
+
+async function serpVerifyTicketmaster(showTitle, existingUrl) {
+  const query = `site:ticketmaster.com "${showTitle}" broadway tickets`;
+
+  // Try ScrapingBee first (primary)
+  let results = await serpViaScrapingBee(query);
+  let source = 'ScrapingBee';
+
+  // Fallback to BrightData SERP API
+  if (!results) {
+    results = await serpViaBrightData(query);
+    source = 'BrightData';
+  }
+
+  // No SERP provider available — skip gracefully
+  if (!results) {
+    return { status: 'skip', reason: 'all SERP providers unavailable' };
+  }
+
+  console.log(`    (via ${source}, ${results.length} results)`);
+  const match = matchTicketmasterFromResults(results, showTitle, existingUrl);
+  if (match) return match;
+
+  return { status: 'not_found', reason: 'no matching SERP result' };
 }
 
 // ============================================================================

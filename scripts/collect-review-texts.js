@@ -93,6 +93,7 @@ const { assessTextQuality, isGarbageContent, validateShowMentioned, extractBylin
 const { resolveOutletFromUrl, getOutletDisplayName } = require('./lib/review-normalization');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 // Domain-specific tier ordering — prioritizes tiers by historical success rate per domain.
 // Generated from 30K+ review collection results. Tiers not listed for a domain stay in default order.
@@ -3034,7 +3035,7 @@ async function discoverCorrectUrl(review) {
   if (!showTitle) return null;
 
   // Market-aware review keyword for SERP queries
-  const reviewKeyword = showCategory === 'west-end' ? 'West End review'
+  const reviewKeyword = isLondonMarket(showCategory) ? 'West End review'
     : showCategory === 'off-broadway' ? 'Off-Broadway review'
     : 'Broadway review';
 

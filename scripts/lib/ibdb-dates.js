@@ -14,6 +14,7 @@
 
 const { JSDOM } = require('jsdom');
 const { fetchPage, cleanup } = require('./scraper');
+const { isLondonMarket } = require('./venue-classification');
 
 const IBDB_BASE = 'https://www.ibdb.com';
 const RATE_LIMIT_MS = 1500;
@@ -900,7 +901,7 @@ async function checkIBDBForPriorProductions(title, options = {}) {
     // For OB/WE shows: finding ANY Broadway production page means the show existed
     // on Broadway before → current production is likely a revival (unless it's a transfer)
     const showCategory = options.showCategory || '';
-    const isNonBroadway = ['off-broadway', 'west-end'].includes(showCategory);
+    const isNonBroadway = showCategory === 'off-broadway' || isLondonMarket(showCategory);
     const hasBroadwayUrl = validResults.some(r => r.url.includes('/broadway-production/'));
 
     // Helper: check if a production is a transfer (not a revival)

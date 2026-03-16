@@ -17,6 +17,10 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import Anthropic from '@anthropic-ai/sdk';
 
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const { isLondonMarket } = require('./lib/venue-classification');
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -355,10 +359,11 @@ async function main() {
         const showCategory = showCategoryMap[review.showId] || 'broadway';
         const expectedType = showCategory === 'off-broadway' ? 'Off-Broadway'
           : showCategory === 'west-end' ? 'West End'
+          : showCategory === 'off-west-end' ? 'Off-West End'
           : 'Broadway';
         const wrongTypes = showCategory === 'off-broadway'
           ? 'national tour, regional theater, film/TV adaptation, streaming special, or a BROADWAY (not Off-Broadway) production'
-          : showCategory === 'west-end'
+          : isLondonMarket(showCategory)
           ? 'national tour, regional theater, film/TV adaptation, streaming special, or a Broadway/Off-Broadway (not West End) production'
           : 'national tour, regional theater, pre-Broadway tryout, film/TV adaptation, streaming special';
         const contaminationPrompt = `You are a theater review classifier. Determine if this review is about a **${expectedType}** production or a NON-${expectedType.toUpperCase()} production (${wrongTypes}).
