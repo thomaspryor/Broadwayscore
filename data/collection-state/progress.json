@@ -50,7 +50,15 @@
     "hercules-west-end-2025/variety--david-benedict.json",
     "just-in-time-2025/nytimes--adam-feldman.json",
     "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
-    "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json"
+    "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+    "masquerade-off-broadway-2025/nytg--gillian-russo.json",
+    "maybe-happy-ending-2024/vulture--sara-holdren.json",
+    "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/nytg--kyle-turner.json",
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "mj-2022/vulture--helen-shaw.json",
+    "mother-russia-off-broadway-2026/nytg--amelia-merrill.json",
+    "night-side-songs-off-broadway-2026/nytg--kyle-turner.json",
+    "night-side-songs-off-broadway-2026/vulture--jonathan-mandell.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -87,7 +95,9 @@
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
     "the-lion-king-west-end-2021/thestage--unknown.json",
     "youre-a-good-man-charlie-brown-off-broadway-2026/theater-pizzazz--sandi-durell.json",
-    "hadestown-2019/newyorker--hilton-als.json"
+    "hadestown-2019/newyorker--hilton-als.json",
+    "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
+    "moulin-rouge-2019/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -114,7 +124,12 @@
       "data-off-broadway-2026/nytg--allison-considine.json",
       "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
       "hamilton-2015/nyt-theater--jonathan-mandell.json",
-      "just-in-time-2025/nytimes--adam-feldman.json"
+      "just-in-time-2025/nytimes--adam-feldman.json",
+      "masquerade-off-broadway-2025/nytg--gillian-russo.json",
+      "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/nytg--kyle-turner.json",
+      "mother-russia-off-broadway-2026/nytg--amelia-merrill.json",
+      "night-side-songs-off-broadway-2026/nytg--kyle-turner.json",
+      "night-side-songs-off-broadway-2026/vulture--jonathan-mandell.json"
     ],
     "amp": [
       "data/review-texts/peter-and-the-starcatcher-2012/variety--marilyn-stasio.json",
@@ -182,7 +197,9 @@
       "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json",
       "hamilton-2015/hollywood-reporter--david-rooney.json",
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
-      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json"
+      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -196,7 +213,9 @@
       "data/review-texts/mcneal-2024/variety--peter-marks.json",
       "data/review-texts/mike-birbiglia-the-old-man-and-the-pool-2022/variety--jesse-green.json",
       "data/review-texts/youre-a-good-man-charlie-brown-off-broadway-2026/cititour--brian-scott-lipton.json",
-      "data/review-texts/calf-scramble-off-broadway-2026/talkinbroadway--unknown.json"
+      "data/review-texts/calf-scramble-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
+      "data/review-texts/moulin-rouge-2019/nytimes--ben-brantley.json"
     ],
     "archive": [
       "into-the-woods-west-end-2025/nytimes--unknown.json",
@@ -222,11 +241,13 @@
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
       "hamilton-west-end-2021/nytimes--unknown.json",
       "hercules-west-end-2025/nytimes--matt-wolf.json",
-      "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json"
+      "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+      "maybe-happy-ending-2024/vulture--sara-holdren.json",
+      "mj-2022/vulture--helen-shaw.json"
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+  "lastProcessed": "night-side-songs-off-broadway-2026/vulture--jonathan-mandell.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -414,6 +435,28 @@
       "t": "2026-03-16T19:55:14.843Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-16T19:59:26.686Z",
+      "event": "bb-session",
+      "session": "8e2dc55b",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-03-16T19:59:28.100Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-16T20:00:47.923Z",
+      "event": "bb-session",
+      "session": "da2ffd5f",
+      "url": "https://www.nytimes.com/2019/07/25/theater/moulin-rouge-review.html"
+    },
+    {
+      "t": "2026-03-16T20:00:49.222Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
