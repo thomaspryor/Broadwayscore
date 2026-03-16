@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-16T19:18:50.717Z",
-  "processed": 43,
-  "failed": 9,
-  "successRate": "82.7%",
+  "updatedAt": "2026-03-16T19:22:10.253Z",
+  "processed": 51,
+  "failed": 11,
+  "successRate": "82.3%",
   "tierBreakdown": {
-    "playwright": 34,
-    "amp": 4,
-    "browserbase": 14,
+    "playwright": 36,
+    "amp": 10,
+    "browserbase": 16,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 7,
-    "archive": 28
+    "archiveToday": 8,
+    "archive": 30
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-03-16T19:08:03.771Z",
@@ -100,6 +100,28 @@
     },
     {
       "t": "2026-03-16T19:18:22.659Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-16T19:18:55.583Z",
+      "event": "bb-session",
+      "session": "db033928",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
+    },
+    {
+      "t": "2026-03-16T19:18:57.093Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-16T19:19:50.842Z",
+      "event": "bb-session",
+      "session": "edb4d570",
+      "url": "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html"
+    },
+    {
+      "t": "2026-03-16T19:19:52.547Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
