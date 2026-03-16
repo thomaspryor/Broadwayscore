@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-16T20:02:22.892Z",
-  "processed": 59,
-  "failed": 37,
-  "successRate": "61.5%",
+  "updatedAt": "2026-03-16T20:08:44.363Z",
+  "processed": 66,
+  "failed": 40,
+  "successRate": "62.3%",
   "tierBreakdown": {
-    "playwright": 28,
-    "amp": 40,
-    "browserbase": 26,
+    "playwright": 30,
+    "amp": 44,
+    "browserbase": 28,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 11,
-    "archive": 26
+    "archiveToday": 13,
+    "archive": 28
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 9,
   "recentActivity": [
-    {
-      "t": "2026-03-16T19:35:49.814Z",
-      "event": "bb-session",
-      "session": "389997df",
-      "url": "https://variety.com/2022/legit/reviews/mike-birbiglia-the-old-man-the-pool-revie"
-    },
-    {
-      "t": "2026-03-16T19:35:51.404Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-03-16T19:36:33.417Z",
-      "event": "bb-session",
-      "session": "d6a51a25",
-      "url": "https://variety.com/2022/legit/reviews/mike-birbiglia-the-old-man-and-the-pool-r"
-    },
-    {
-      "t": "2026-03-16T19:36:35.346Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-03-16T19:37:30.182Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-03-16T20:00:49.222Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-16T20:02:28.325Z",
+      "event": "bb-session",
+      "session": "2871ea3f",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
+    },
+    {
+      "t": "2026-03-16T20:02:29.634Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-16T20:07:26.937Z",
+      "event": "bb-session",
+      "session": "5d40fd0c",
+      "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jor"
+    },
+    {
+      "t": "2026-03-16T20:07:28.217Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
