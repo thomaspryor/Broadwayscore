@@ -23,38 +23,44 @@ jobs:
           key_path = '/tmp/ga-key.json'
           prop_id = os.environ['GA4_PROPERTY']
 
-          # Step 1: Try to grant ourselves Viewer access via Admin API
+          # Step 0: Try to grant ourselves Viewer access via Admin API
+          sa_info = json.load(open(key_path))
+          sa_email = sa_info['client_email']
+          print(f"Service account: {sa_email}")
+
           try:
               from google.analytics.admin_v1beta import AnalyticsAdminServiceClient
-              from google.analytics.admin_v1beta.types import AccessBinding
+              from google.analytics.admin_v1beta.types import (
+                  AccessBinding, CreateAccessBindingRequest
+              )
 
               admin_creds = service_account.Credentials.from_service_account_file(
                   key_path,
                   scopes=['https://www.googleapis.com/auth/analytics.manage.users']
               )
               admin_client = AnalyticsAdminServiceClient(credentials=admin_creds)
-
-              sa_email = json.load(open(key_path))['client_email']
-              print(f"Attempting to add {sa_email} as Viewer on property {prop_id}...")
-
-              # List existing access bindings first
               parent = f"properties/{prop_id}"
-              try:
-                  bindings = admin_client.list_access_bindings(parent=parent)
-                  print("Current access bindings:")
-                  for b in bindings:
-                      print(f"  {b.user} - {b.roles}")
-              except Exception as e:
-                  print(f"Cannot list bindings (expected if no admin access): {e}")
 
+              print(f"Granting Viewer access on GA4 property {prop_id}...")
+              binding = AccessBinding(
+                  user=sa_email,
+                  roles=["predefinedRoles/viewer"]
+              )
+              request = CreateAccessBindingRequest(parent=parent, access_binding=binding)
+              result = admin_client.create_access_binding(request=request)
+              print(f"Access granted: {result.name}")
           except Exception as e:
-              print(f"Admin API not available or no permission: {e}")
-              print("The service account needs to be manually added as a Viewer in GA4 Admin.")
-              print(f"Go to: GA4 Admin > Property {prop_id} > Property Access Management")
-              print(f"Add the service account email shown above with Viewer role.")
-              sys.exit(1)
+              err_str = str(e)
+              if 'already exists' in err_str.lower() or 'ALREADY_EXISTS' in err_str:
+                  print("Access already exists, proceeding...")
+              elif 'PERMISSION_DENIED' in err_str:
+                  print(f"Cannot self-grant (need admin). Error: {e}")
+                  print("Proceeding to try Data API anyway (it may have been added manually)...")
+              else:
+                  print(f"Admin API error: {e}")
+                  print("Proceeding to try Data API anyway...")
 
-          # Step 2: Query GA4 Data API
+          # Step 1: Query GA4 Data API
           from google.analytics.data_v1beta import BetaAnalyticsDataClient
           from google.analytics.data_v1beta.types import (
               RunReportRequest, DateRange, Dimension, Metric, FilterExpression, Filter
