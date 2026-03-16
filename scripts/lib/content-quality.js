@@ -980,12 +980,68 @@ const TRUNCATION_SIGNALS = {
   footer: [
     /privacy\s+policy/i,
     /terms\s+of\s+(use|service)/i,
-    /©\s*\d{4}/,
+    /^\s*©\s*(?:19|20)\d{2}/m,  // © at start of line only (not inline photo credits)
     /all\s+rights\s+reserved/i,
-    /cookie\s+(policy|settings)/i,
+    /cookie\s+(policy|settings|preferences)/i,
     /advertise\s+with\s+us/i,
+    /\bsubscribe\s+to\s+(?:our|the)\s+newsletter/i,
+    /\bsign\s+up\s+for\s+(?:our|the)\b/i,
+    /\brelated\s+(?:stories|articles|posts)\b/i,
+    /\brecommended\s+(?:videos|stories|for\s+you)\b/i,
+    /\bmore\s+from\s+(?:this|the)\b/i,
+    /\bpowered\s+by\b/i,
+    /\bshare\s+(?:this|on\s+(?:facebook|twitter|x))\b/i,
+    /\bfollow\s+us\s+on\b/i,
+    /\bleave\s+a\s+(?:comment|reply)\b/i,
+    /\bcomments?\s*(?:\(\d+\))?\s*$/im,
+    // These overlap with severe signals but must also be here so
+    // stripFooterContent removes them before severe detection runs.
+    // Only match at end of line to avoid mid-sentence false positives.
+    /\bread\s+more\s*\.{0,3}\s*$/im,
+    /\bcontinue\s+reading\s*$/im,
+    /\bclick\s+here\s+to\s+read\b/i,
+    /\byou\s+may\s+also\s+like\b/i,
   ]
 };
+
+/**
+ * Strip trailing footer content from scraped review text.
+ * Websites often append navigation, legal notices, and promotional content
+ * after the review. This function finds the earliest footer marker in the
+ * back portion of the text and returns everything before it.
+ *
+ * Only used for classification — does NOT modify stored fullText.
+ *
+ * @param {string} text - Raw scraped text
+ * @returns {string} Text with trailing footer removed
+ */
+function stripFooterContent(text) {
+  if (!text || text.length < 400) return text;
+
+  // Minimum chars of review content before we allow a cut.
+  // Prevents stripping a short review that happens to mention "privacy policy".
+  const MIN_REVIEW_CHARS = 600;
+
+  let cutPoint = text.length;
+  for (const pattern of TRUNCATION_SIGNALS.footer) {
+    // Search the back 40% of the text for footer markers
+    const searchStart = Math.max(0, Math.floor(text.length * 0.6));
+    const searchRegion = text.substring(searchStart);
+    const match = searchRegion.match(pattern);
+    if (match) {
+      const absoluteIndex = searchStart + match.index;
+      // Only cut if enough review content precedes the marker
+      if (absoluteIndex >= MIN_REVIEW_CHARS) {
+        cutPoint = Math.min(cutPoint, absoluteIndex);
+      }
+    }
+  }
+
+  if (cutPoint < text.length) {
+    return text.substring(0, cutPoint).trim();
+  }
+  return text;
+}
 
 /**
  * Detect truncation signals in text
@@ -999,9 +1055,14 @@ function detectTruncationSignals(text) {
   let severeCount = 0;
   let moderateCount = 0;
 
-  // Check severe signals
+  // Check severe signals.
+  // For long texts (1500+ chars), only check the first 70% — severe signals
+  // in the footer region (e.g., "Read More" in navigation links) are not paywalls.
+  const severeRegion = text.length >= 1500
+    ? text.substring(0, Math.floor(text.length * 0.7))
+    : text;
   for (const pattern of TRUNCATION_SIGNALS.severe) {
-    if (pattern.test(text)) {
+    if (pattern.test(severeRegion)) {
       signals.push('paywall_or_login_prompt');
       severeCount++;
       break; // One severe is enough
@@ -1017,20 +1078,24 @@ function detectTruncationSignals(text) {
     }
   }
 
-  // Check if text ends with proper punctuation (includes EW-style letter grades like B+, A-)
-  const trimmed = text.trim();
-  if (trimmed.length > 100 && !/[.!?"'"")\]]$/.test(trimmed) && !/[.!?]\s*[A-DF][+-]?$/.test(trimmed)) {
-    signals.push('no_ending_punctuation');
-    moderateCount++;
-  }
-
   // Check for footer junk (indicates text went past review ending)
+  let hasFooterJunk = false;
   const lastChunk = text.slice(-500);
   for (const pattern of TRUNCATION_SIGNALS.footer) {
     if (pattern.test(lastChunk)) {
+      hasFooterJunk = true;
       signals.push('has_footer_junk');
       break;
     }
+  }
+
+  // Check if text ends with proper punctuation (includes EW-style letter grades like B+, A-)
+  // When footer junk is present, don't penalize for bad ending — the review likely
+  // ends with proper punctuation before the footer.
+  const trimmed = text.trim();
+  if (!hasFooterJunk && trimmed.length > 100 && !/[.!?"'"")\]]$/.test(trimmed) && !/[.!?]\s*[A-DF][+-]?$/.test(trimmed)) {
+    signals.push('no_ending_punctuation');
+    moderateCount++;
   }
 
   return {
@@ -1160,11 +1225,26 @@ function classifyContentTier(review) {
   // T1: COMPLETE - Full review with no truncation issues
   // Check ending - allow URLs, ticket info at end (common footer pattern)
   const trimmed = fullText.trim();
-  const endsWithPunctuation = /[.!?"'"")\]]$/.test(trimmed);
-  const endsWithUrl = /\.(com|org|net|co\.uk)\/?$/.test(trimmed);
-  // EW-style letter grades (A+, B-, C, etc.) — require preceding period/sentence to avoid "plan B" false positives
-  const endsWithGrade = /[.!?]\s*[A-DF][+-]?$/.test(trimmed);
-  const hasProperEnding = endsWithPunctuation || endsWithUrl || endsWithGrade;
+  let hasProperEnding = /[.!?"'"")\]]$/.test(trimmed) ||
+    /\.(com|org|net|co\.uk)\/?$/.test(trimmed) ||
+    /[.!?]\s*[A-DF][+-]?$/.test(trimmed);
+
+  // If text has footer junk, the raw ending is unreliable.
+  // Look for proper sentence ending before the footer region.
+  if (!hasProperEnding && truncation.signals.includes('has_footer_junk')) {
+    const backRegion = fullText.slice(-500);
+    // Find earliest footer match position in last 500 chars
+    let earliestFooter = backRegion.length;
+    for (const pattern of TRUNCATION_SIGNALS.footer) {
+      const m = backRegion.match(pattern);
+      if (m && m.index < earliestFooter) earliestFooter = m.index;
+    }
+    // Check if text before footer has proper ending
+    const beforeFooter = fullText.slice(0, fullText.length - 500 + earliestFooter).trim();
+    if (/[.!?"'"")\]]$/.test(beforeFooter)) {
+      hasProperEnding = true;
+    }
+  }
 
   const isLongEnough = wordCount >= 300 && charCount >= 1500;
   const isVeryLong = wordCount >= 500; // Very long reviews are likely complete
@@ -1923,6 +2003,7 @@ module.exports = {
   // Content tier classification (5-tier taxonomy)
   classifyContentTier,
   detectTruncationSignals,
+  stripFooterContent,
   getScrapingPriority,
   countWords,
   // Phase 1: Post-scrape validation functions
