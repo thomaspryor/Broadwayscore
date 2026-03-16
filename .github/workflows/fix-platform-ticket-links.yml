@@ -35,6 +35,7 @@ jobs:
         id: fix
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
         run: node scripts/fix-platform-ticket-links.js
 
       - name: Enrich missing official site URLs (Broadway)
