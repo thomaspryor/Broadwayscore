@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-15T23:46:47.331Z",
+  "timestamp": "2026-03-16T05:03:38.766Z",
   "stats": {
-    "totalReviews": 31349,
-    "alreadyFlagged": 9595,
-    "dateGuardCatches": 125,
-    "directorMismatch": 1108,
-    "tvFilmSignals": 3492,
-    "londonSignals": 1017,
+    "totalReviews": 31491,
+    "alreadyFlagged": 9667,
+    "dateGuardCatches": 126,
+    "directorMismatch": 1105,
+    "tvFilmSignals": 3495,
+    "londonSignals": 1019,
     "offBroadwaySignals": 1089,
     "yearMismatch": 91,
-    "noPublishDate": 9309
+    "noPublishDate": 9384
   },
   "findings": [
     {
@@ -9116,20 +9116,6 @@
       ]
     },
     {
-      "showId": "burlesque-west-end-2026",
-      "file": "times-uk--clive-davis.json",
-      "score": 73,
-      "publishDate": "2025-07-22",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-review-explosive-energy-and-powerhouse-vocals-ctrrm7cbk?gaa_at=eafs&gaa_n=AWEtsqdYNpOadIVuEXRIlCdUZGQtAjGF-qOPIYfwUwioaZ9IrF197Ylku0lE&gaa_ts=69a82ab1&gaa_sig=Gx2kxSPfSmED7N6_XtrpA6gqMzomeBTOfT34VgYY4UmVDVR1rR_YCj99Ktyrnu9thzZ40CtJM4n-EqCzV2faJA%3D%3D",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
       "showId": "burn-the-floor-2009",
       "file": "ap--michael-kuchwara.json",
       "score": 42,
@@ -9815,20 +9801,6 @@
       "score": 62,
       "publishDate": "2025-10-18",
       "url": "https://www.timeout.com/london/theatre/cabaret-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
-        }
-      ]
-    },
-    {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "file": "times-uk--clive-davis.json",
-      "score": 73,
-      "publishDate": "June 16, 2023",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/cabaret-at-the-kit-kat-club-review-eddie-redmayne-and-jessie-buckley-dive-into-decadence-nxzttfczq?gaa_at=eafs&gaa_n=AWEtsqf0Rzql-lBTwMLHfj7ojtGBeOrRpLRyHJQq87uYuE9fNaMiorykJl7E&gaa_ts=69ae71d6&gaa_sig=p942vch4igF8iwYsIc5xtCdnQ5vEl_W6jatrAl5q2Pr-xwxU6GluFdhUExj4sJRQZRLxmkUyrMVHXMTlxpjAog%3D%3D",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -22314,6 +22286,30 @@
     },
     {
       "showId": "hamilton-west-end-2021",
+      "file": "nytimes--unknown.json",
+      "score": 89,
+      "publishDate": "2017-12-28",
+      "url": "https://www.nytimes.com/2017/12/28/theater/london-hamilton-pinocchio.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"thomas kail\" from hamilton-2015"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hamilton-west-end-2021",
       "file": "telegraph--dominic-cavendish.json",
       "score": 94,
       "publishDate": "2017-12-22",
@@ -23622,6 +23618,20 @@
     },
     {
       "showId": "hercules-west-end-2025",
+      "file": "artsdesk--unknown.json",
+      "score": 66,
+      "publishDate": null,
+      "url": "http://theartsdesk.com/theatre/hercules-theatre-royal-drury-lane-review-new-disney-stage-musical-no-lion-king",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "hercules-west-end-2025",
       "file": "broadwayworld--kat-mokrynski.json",
       "score": 71,
       "publishDate": null,
@@ -23654,6 +23664,20 @@
       "score": 63,
       "publishDate": "2025-06-24",
       "url": "https://www.theguardian.com/stage/2025/jun/24/hercules-review-disney-musical-theatre-royal-drury-lane",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "hercules-west-end-2025",
+      "file": "i-paper--unknown.json",
+      "score": 31,
+      "publishDate": "2025-06-24",
+      "url": "https://inews.co.uk/culture/hercules-musical-awful-review-3767364?srsltid=AfmBOoqoYMtD2Ypdbswl-bRa08vC04Wph2qV0xxd3kZuFwBdJUth07Ew",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -23752,6 +23776,20 @@
       "score": 72,
       "publishDate": "2026-01-15",
       "url": "https://www.timeout.com/london/news/review-disneys-hercules-at-theatre-royal-drury-lane-062425",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "hercules-west-end-2025",
+      "file": "timeout--unknown.json",
+      "score": 72,
+      "publishDate": "2026-01-15",
+      "url": "https://www.timeout.com/london/theatre/hercules",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -25244,6 +25282,20 @@
     },
     {
       "showId": "im-sorry-prime-minister-west-end-2026",
+      "file": "broadwayworld--gary-naylor.json",
+      "score": 74,
+      "publishDate": "2026-02-13",
+      "url": "https://www.broadwayworld.com/westend/article/Review-IM-SORRY-PRIME-MINISTER-starring-Griff-Rhys-Jones-Apollo-Theatre-20260213",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "im-sorry-prime-minister-west-end-2026",
       "file": "standard--nick-curtis.json",
       "score": 66,
       "publishDate": "2026-02-13",
@@ -25262,20 +25314,6 @@
       "score": 60,
       "publishDate": "2026-02-13",
       "url": "https://www.standard.co.uk/culture/theatre/i-m-sorry-prime-minister-review-apollo-theatre-b1270903.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "im-sorry-prime-minister-west-end-2026",
-      "file": "timeout-london--tom-wicker.json",
-      "score": 65,
-      "publishDate": "2026-02-13",
-      "url": "https://www.timeout.com/london/theatre/im-sorry-prime-minister-review",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -26524,6 +26562,20 @@
       "score": 94,
       "publishDate": "2026-01-15",
       "url": "https://www.timeout.com/london/news/review-into-the-woods-bridge-theatre-121125",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "times-uk--unknown.json",
+      "score": 93,
+      "publishDate": "2025-12-12",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/into-the-woods-review-bridge-theatre-gzw6h6f8b",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -30220,25 +30272,6 @@
       ]
     },
     {
-      "showId": "les-miserables-west-end-2021",
-      "file": "times-uk--clive-davis.json",
-      "score": 25,
-      "publishDate": "2020-01-17",
-      "url": "https://www.thetimes.co.uk/article/les-miserables-review-overlong-and-clunky-but-there-was-much-to-admire-in-the-performances-r6w7lmhj5",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james powell\" from les-miserables-2014"
-        }
-      ]
-    },
-    {
       "showId": "lestat-2006",
       "file": "variety--charles-isherwood.json",
       "score": 25,
@@ -31885,6 +31918,20 @@
     },
     {
       "showId": "magic-mike-live-west-end-2021",
+      "file": "standard--henry-hitchings.json",
+      "score": 66,
+      "publishDate": "2018-11-30",
+      "url": "https://www.standard.co.uk/culture/theatre/magic-mike-live-review-channing-tatums-show-is-light-on-story-but-heavy-on-vigorous-dry-humping-a4004511.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1124d before show (2018-11-30 vs 2021-12-28)"
+        }
+      ]
+    },
+    {
+      "showId": "magic-mike-live-west-end-2021",
       "file": "thestage--francesca-peschier.json",
       "score": 72,
       "publishDate": null,
@@ -32084,23 +32131,9 @@
     },
     {
       "showId": "mamma-mia-west-end-2021",
-      "file": "timeout--nina-caplan.json",
+      "file": "timeout-london--nina-caplan.json",
       "score": 78,
       "publishDate": "2025-10-01",
-      "url": "https://www.timeout.com/london/theatre/mamma-mia",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"phyllida lloyd\" from mamma-mia-2025"
-        }
-      ]
-    },
-    {
-      "showId": "mamma-mia-west-end-2021",
-      "file": "timeout-london--nina-caplan.json",
-      "score": 77,
-      "publishDate": "March 21st, 2017",
       "url": "https://www.timeout.com/london/theatre/mamma-mia",
       "findings": [
         {
@@ -32940,20 +32973,6 @@
     },
     {
       "showId": "matilda-the-musical-west-end-2021",
-      "file": "guardian--lyn-gardner.json",
-      "score": 94,
-      "publishDate": "2011-11-25",
-      "url": "https://www.theguardian.com/stage/2011/nov/25/matilda-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
-        }
-      ]
-    },
-    {
-      "showId": "matilda-the-musical-west-end-2021",
       "file": "london-box-office--danai-g-miliaraki.json",
       "score": 82,
       "publishDate": "2024-09-26",
@@ -32987,20 +33006,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "matilda-the-musical-west-end-2021",
-      "file": "standard--henry-hitchings.json",
-      "score": 94,
-      "publishDate": "2011-11-25",
-      "url": "https://www.standard.co.uk/go/london/theatre/matilda-the-musical-cambridge-theatre-review-7427774.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
         }
       ]
     },
@@ -33053,23 +33058,9 @@
     },
     {
       "showId": "matilda-the-musical-west-end-2021",
-      "file": "timeout--sam-marlowe.json",
+      "file": "timeout-london--sam-marlowe.json",
       "score": 80,
       "publishDate": "2011-11-24",
-      "url": "https://www.timeout.com/london/theatre/matilda-the-musical-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
-        }
-      ]
-    },
-    {
-      "showId": "matilda-the-musical-west-end-2021",
-      "file": "timeout-london--sam-marlowe.json",
-      "score": 82,
-      "publishDate": "January 1st, 2012",
       "url": "https://www.timeout.com/london/theatre/matilda-the-musical-review",
       "findings": [
         {
@@ -35383,6 +35374,46 @@
       "score": 82,
       "publishDate": "2022-01-21",
       "url": "https://theartsdesk.com/theatre/moulin-rouge-musical-piccadilly-theatre-review-spectacular-escapism",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-the-musical-west-end-2021",
+      "file": "broadwayworld--jay-irwin.json",
+      "score": 40,
+      "publishDate": null,
+      "url": "/chicago/article/BWW-CHICAGO-REVIEW-NATIONAL-TOUR-OF-MOULIN-ROUGE-THE-MUSICAL-at-Nederlander-Theatre-20220422",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"paramount\""
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-the-musical-west-end-2021",
+      "file": "broadwayworld--michael-rabice.json",
+      "publishDate": null,
+      "url": "/chicago/article/BWW-CHICAGO-REVIEW-NATIONAL-TOUR-OF-MOULIN-ROUGE-THE-MUSICAL-at-Nederlander-Theatre-20220422",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-the-musical-west-end-2021",
+      "file": "broadwayworld--roy-berko.json",
+      "publishDate": null,
+      "url": "/chicago/article/BWW-CHICAGO-REVIEW-NATIONAL-TOUR-OF-MOULIN-ROUGE-THE-MUSICAL-at-Nederlander-Theatre-20220422",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -39272,7 +39303,7 @@
     },
     {
       "showId": "operation-mincemeat-west-end-2024",
-      "file": "everything-theatre--lily-middleton.json",
+      "file": "everything-theatre-uk--lily-middleton.json",
       "score": 92,
       "publishDate": "2023-05-10",
       "url": "https://everything-theatre.co.uk/2023/05/review-operation-mincemeat-fortune-theatre/",
@@ -40197,23 +40228,9 @@
     },
     {
       "showId": "paranormal-activity-west-end-2025",
-      "file": "thestage--tim-wicker.json",
+      "file": "thestage--tom-wicker.json",
       "score": 80,
       "publishDate": "2025-12-17",
-      "url": "https://www.thestage.co.uk/reviews/paranormal-activity-review-ambassadors-theatre-london-felix-barrett",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"big screen\""
-        }
-      ]
-    },
-    {
-      "showId": "paranormal-activity-west-end-2025",
-      "file": "thestage--tom-wicker.json",
-      "score": 85,
-      "publishDate": "December 16th, 2025",
       "url": "https://www.thestage.co.uk/reviews/paranormal-activity-review-ambassadors-theatre-london-felix-barrett",
       "findings": [
         {
@@ -47755,7 +47772,7 @@
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "everything-theatre--xi-ye.json",
+      "file": "everything-theatre-uk--xi-ye.json",
       "score": 83,
       "publishDate": "2023-12-16",
       "url": "https://everything-theatre.co.uk/2023/12/review-stranger-things-the-first-shadow-phoenix-theatre/",
@@ -66037,7 +66054,7 @@
     },
     {
       "showId": "all-my-sons-west-end-2025",
-      "file": "everything-theatre--dave-b.json",
+      "file": "everything-theatre-uk--dave-b.json",
       "score": 92,
       "publishDate": "2025-11-23",
       "url": "https://everything-theatre.co.uk/2025/11/review-all-my-sons-wyndhams-theatre/",
@@ -66144,20 +66161,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "all-my-sons-west-end-2025",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 94,
-      "publishDate": "2025-11-22",
-      "url": "https://www.timeout.com/london/news/review-all-my-sons-starring-bran-cranston-at-wyndhams-theatre-112225",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -76461,6 +76464,20 @@
     },
     {
       "showId": "man-and-boy-west-end-2026",
+      "file": "artsdesk--demetrios-matheou.json",
+      "score": 75,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/man-and-boy-national-theatre-review-ben-daniels-dazzles-crook-who-feels-frighteningly-familiar",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "man-and-boy-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "score": 48,
       "publishDate": "2026-02-11",
@@ -76492,6 +76509,20 @@
       "file": "london-theatre--anya-ryan.json",
       "publishDate": null,
       "url": "https://www.londontheatre.co.uk/show/45586-man-and-boy",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "man-and-boy-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 75,
+      "publishDate": "2026-02-11",
+      "url": "https://www.standard.co.uk/culture/theatre/man-boy-review-rattigan-national-theatre-b1270541.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -80161,7 +80192,7 @@
     },
     {
       "showId": "shadowlands-west-end-2026",
-      "file": "thestage--holly-o-mahony.json",
+      "file": "thestage--holly-omahony.json",
       "score": 73,
       "publishDate": "2026-02-13",
       "url": "https://www.thestage.co.uk/reviews/shadowlands-review-aldwych-theatre-london-hugh-bonneville-maggie-siff",
@@ -86286,7 +86317,7 @@
     },
     {
       "showId": "the-playboy-of-the-western-world-west-end-2025",
-      "file": "london-theatre--holly-o-mahony.json",
+      "file": "london-theatre--holly-omahony.json",
       "score": 79,
       "publishDate": "2025-12-12",
       "url": "https://www.londontheatre.co.uk/reviews/the-playboy-of-the-western-world-review-national-theatre",

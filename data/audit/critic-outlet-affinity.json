@@ -1,13 +1,13 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-03-15",
+    "lastUpdated": "2026-03-16",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 32036,
-    "skippedFiles": 10103,
-    "totalCritics": 1619,
-    "registryCritics": 508,
-    "flaggedReviews": 42
+    "totalFilesScanned": 32178,
+    "skippedFiles": 10175,
+    "totalCritics": 1629,
+    "registryCritics": 516,
+    "flaggedReviews": 45
   },
   "flaggedReviews": [
     {
@@ -163,6 +163,17 @@
       "primaryOutlet": "talkinbroadway",
       "primaryShare": 95,
       "totalReviews": 167
+    },
+    {
+      "critic": "Roy Berko",
+      "criticSlug": "roy-berko",
+      "outlet": "royberkinfo",
+      "showId": "once-on-this-island-2017",
+      "file": "royberkinfo--roy-berko.json",
+      "outletShare": 9,
+      "primaryOutlet": "broadwayworld",
+      "primaryShare": 91,
+      "totalReviews": 11
     },
     {
       "critic": "Jackson McHenry",
@@ -327,7 +338,7 @@
       "outletShare": 4,
       "primaryOutlet": "independent",
       "primaryShare": 96,
-      "totalReviews": 24
+      "totalReviews": 23
     },
     {
       "critic": "Jonathan Warman",
@@ -394,6 +405,28 @@
       "primaryOutlet": "financialtimes",
       "primaryShare": 98,
       "totalReviews": 45
+    },
+    {
+      "critic": "Sarah Crompton",
+      "criticSlug": "sarah-crompton",
+      "outlet": "telegraph",
+      "showId": "an-american-in-paris-2015",
+      "file": "telegraph--sarah-crompton.json",
+      "outletShare": 10,
+      "primaryOutlet": "whatsonstage",
+      "primaryShare": 90,
+      "totalReviews": 21
+    },
+    {
+      "critic": "Sarah Crompton",
+      "criticSlug": "sarah-crompton",
+      "outlet": "telegraph",
+      "showId": "glengarry-glen-ross-2012",
+      "file": "telegraph--sarah-crompton.json",
+      "outletShare": 10,
+      "primaryOutlet": "whatsonstage",
+      "primaryShare": 90,
+      "totalReviews": 21
     },
     {
       "critic": "Patrick Ryan",
@@ -483,9 +516,9 @@
         "theatermania",
         "wsj",
         "talkinbroadway",
+        "thestage",
         "newsday",
         "chicagotribune",
-        "thestage",
         "nyt-theater",
         "amny",
         "ny1",
@@ -494,43 +527,48 @@
         "timeout",
         "backstage",
         "telegraph",
+        "whatsonstage",
         "london-box-office",
         "playbill",
+        "times-uk",
         "hollywood-reporter",
         "washpost",
         "nypost",
-        "whatsonstage",
+        "broadwayworld",
         "ew",
         "thewrap",
         "huffpost",
         "broadwaynews",
+        "nytimes",
         "cititour",
-        "broadwayworld",
         "bloomberg",
         "stagebuddy",
         "one-minute-critic",
-        "times-uk",
         "latimes",
         "vulture",
+        "standard",
+        "timeout-london",
         "northjerseycom",
         "buy-tickets",
         "culturesauce",
-        "nytimes",
+        "guardian",
         "theatrely",
         "dailybeast",
-        "standard",
         "dctheatrescene",
         "san-jose-mercury-news",
         "american-theater-web",
         "washington-times",
+        "artsdesk",
+        "variety",
+        "financialtimes",
         "here",
         "new-york-sun",
         "daily-mail",
+        "independent",
         "nbcny",
         "tapintonet",
         "abc-news",
         "theater-pizzazz",
-        "timeout-london",
         "billboard",
         "belleville-news-democrat",
         "slantmagazine",
@@ -545,7 +583,6 @@
         "time",
         "tap-into",
         "around-the-town-chicago",
-        "artsdesk",
         "theater-life",
         "london-theatre",
         "queerty",
@@ -556,14 +593,11 @@
         "british-theatre",
         "great-performances-online",
         "deadline",
-        "guardian",
         "nysr",
         "observer",
-        "variety",
         "culture-whisper",
         "ricky-martin",
         "entries-are-now-being-accepted-online",
-        "financialtimes",
         "harvard-magazine",
         "burlington-free-press",
         "goingbacharachcom",
@@ -610,7 +644,7 @@
         "corey-hawkins",
         "kenny-leon"
       ],
-      "totalReviews": 565
+      "totalReviews": 590
     },
     {
       "critic": "Ryan Leeds",
@@ -947,7 +981,7 @@
         "newyorker",
         "nypost"
       ],
-      "totalReviews": 600
+      "totalReviews": 601
     },
     {
       "critic": "Joel Benjamin",
@@ -1277,7 +1311,7 @@
         "london-theatre",
         "amny"
       ],
-      "totalReviews": 59
+      "totalReviews": 60
     },
     {
       "critic": "Alix Cohen",
@@ -1405,7 +1439,7 @@
         "artsdesk",
         "variety"
       ],
-      "totalReviews": 31
+      "totalReviews": 33
     },
     {
       "critic": "Simon Saltzman",
@@ -1569,7 +1603,7 @@
         "standard",
         "telegraph"
       ],
-      "totalReviews": 18
+      "totalReviews": 19
     },
     {
       "critic": "Sam Marlowe",
@@ -1579,22 +1613,21 @@
         "i-paper",
         "chicagotribune",
         "timeout",
-        "timeout-london",
         "london-theatre"
       ],
-      "totalReviews": 24
+      "totalReviews": 22
     },
     {
       "critic": "Tim Bano",
       "slug": "tim-bano",
       "outlets": [
         "thestage",
+        "timeout-london",
         "financialtimes",
         "standard",
-        "timeout-london",
         "independent"
       ],
-      "totalReviews": 14
+      "totalReviews": 15
     },
     {
       "critic": "Andrzej Lukowski",
@@ -1604,7 +1637,7 @@
         "timeout",
         "time"
       ],
-      "totalReviews": 70
+      "totalReviews": 69
     },
     {
       "critic": "Kevin Filipski",
@@ -1775,7 +1808,7 @@
         "artsdesk",
         "broadwayworld"
       ],
-      "totalReviews": 8
+      "totalReviews": 9
     },
     {
       "critic": "Marianka Swain",
@@ -1842,10 +1875,10 @@
       "critic": "Demetrios Matheou",
       "slug": "demetrios-matheou",
       "outlets": [
-        "hollywood-reporter",
-        "artsdesk"
+        "artsdesk",
+        "hollywood-reporter"
       ],
-      "totalReviews": 4
+      "totalReviews": 5
     },
     {
       "critic": "Chloe Rabinowitz",
@@ -2004,6 +2037,15 @@
       "totalReviews": 5
     },
     {
+      "critic": "David Jays",
+      "slug": "david-jays",
+      "outlets": [
+        "guardian",
+        "times-uk"
+      ],
+      "totalReviews": 3
+    },
+    {
       "critic": "Tom Wicker",
       "slug": "tom-wicker",
       "outlets": [
@@ -2013,7 +2055,7 @@
         "thestage",
         "timeout"
       ],
-      "totalReviews": 13
+      "totalReviews": 12
     },
     {
       "critic": "Chris Kompanek",
@@ -2063,6 +2105,15 @@
       "totalReviews": 3
     },
     {
+      "critic": "Holly O'Mahony",
+      "slug": "holly-o-mahony",
+      "outlets": [
+        "london-theatre",
+        "thestage"
+      ],
+      "totalReviews": 6
+    },
+    {
       "critic": "Michael Coveney",
       "slug": "michael-coveney",
       "outlets": [
@@ -2079,15 +2130,6 @@
         "talk-entertainment"
       ],
       "totalReviews": 3
-    },
-    {
-      "critic": "Holly O'Mahony",
-      "slug": "holly-o-mahony",
-      "outlets": [
-        "thestage",
-        "london-theatre"
-      ],
-      "totalReviews": 5
     },
     {
       "critic": "Merryn Johns",
