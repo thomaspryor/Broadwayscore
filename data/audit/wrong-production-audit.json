@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-16T17:51:33.474Z",
+  "timestamp": "2026-03-16T19:52:28.394Z",
   "stats": {
     "totalReviews": 31517,
-    "alreadyFlagged": 9682,
+    "alreadyFlagged": 9686,
     "dateGuardCatches": 125,
-    "directorMismatch": 1109,
-    "tvFilmSignals": 3492,
-    "londonSignals": 1023,
+    "directorMismatch": 1111,
+    "tvFilmSignals": 3493,
+    "londonSignals": 1027,
     "offBroadwaySignals": 1090,
     "yearMismatch": 91,
-    "noPublishDate": 9377
+    "noPublishDate": 9367
   },
   "findings": [
     {
@@ -26539,6 +26539,19 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
+      "file": "daily-mail--unknown.json",
+      "publishDate": "2025-12-19",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15397945/PATRICK-MARMION-reviews-Woods-Bridge-Theatre-London-Subversive-enchanting-Sondheims-fairytale.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
       "file": "guardian--arifa-akbar.json",
       "score": 86,
       "publishDate": "2025-12-12",
@@ -33005,6 +33018,20 @@
       "score": 88,
       "publishDate": "2011-11-27",
       "url": "https://www.theguardian.com/books/2011/nov/27/matilda-the-musical-roald-dahl",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
+        }
+      ]
+    },
+    {
+      "showId": "matilda-the-musical-west-end-2021",
+      "file": "guardian--lyn-gardner.json",
+      "score": 94,
+      "publishDate": "2011-11-25",
+      "url": "http://www.guardian.co.uk/stage/2011/nov/25/matilda-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -40847,6 +40874,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "peter-and-the-starcatcher-2012",
+      "file": "variety--marilyn-stasio.json",
+      "score": 88,
+      "publishDate": "April 15, 2012",
+      "url": "https://variety.com/2011/legit/reviews/peter-and-the-starcatcher-1117944804/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -65672,6 +65713,20 @@
     },
     {
       "showId": "a-view-from-the-bridge-2015",
+      "file": "guardian--lyn-gardner.json",
+      "score": 87,
+      "publishDate": "February 17th, 2015",
+      "url": "http://www.theguardian.com/stage/2015/feb/17/view-from-the-bridge-review-ivo-van-hove-arthur-miller",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-2015",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 78,
       "publishDate": "November 13, 2015",
@@ -75979,6 +76034,20 @@
       ]
     },
     {
+      "showId": "little-women-the-musical-off-broadway-2026",
+      "file": "guardian--emma-john.json",
+      "score": 70,
+      "publishDate": "November 18th, 2021",
+      "url": "https://www.theguardian.com/stage/2021/nov/18/little-women-the-musical-review-park-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "lobby-hero-2018",
       "file": "broadway-and-me--janice-c-simpson.json",
       "score": 79,
@@ -79003,6 +79072,20 @@
     },
     {
       "showId": "passing-strange-2008",
+      "file": "guardian--kate-wyver.json",
+      "score": null,
+      "publishDate": "May 22nd, 2024",
+      "url": "https://www.theguardian.com/stage/article/2024/may/22/passing-strange-review-stew-giles-terera-young-vic-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "passing-strange-2008",
       "file": "london-theatre--marianka-swain.json",
       "score": 82,
       "publishDate": "May 22nd, 2024",
@@ -79700,6 +79783,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "richard-iii-2013",
+      "file": "guardian--susannah-clapp.json",
+      "score": 63,
+      "publishDate": "July 12, 2014",
+      "url": "http://www.theguardian.com/stage/2014/jul/13/richard-iii-martin-freeman-trafalgar-studios-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
