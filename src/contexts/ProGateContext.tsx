@@ -59,6 +59,8 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
   const [modalTrigger, setModalTrigger] = useState<GateTrigger>('page_view_limit');
   const [modalBlocking, setModalBlocking] = useState(false);
   const [exitIntentFired, setExitIntentFired] = useState(false);
+  // Track whether ANY passive modal (exit intent, scroll depth, page view limit) has fired this session
+  const [passiveModalFired, setPassiveModalFired] = useState(false);
   const [isClient, setIsClient] = useState(false);
 
   // Load saved user data on mount
@@ -145,26 +147,27 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
   // Exit intent detection - fires when mouse leaves viewport toward top (desktop only)
   useEffect(() => {
     if (!emailCaptureConfig.exitIntent.enabled) return;
-    if (!isClient || hasEmail || exitIntentFired) return;
+    if (!isClient || hasEmail || exitIntentFired || passiveModalFired) return;
 
     const handleMouseLeave = (e: MouseEvent) => {
       // Only trigger when mouse leaves through the top of the viewport
       if (e.clientY <= 0 && !modalOpen) {
         setExitIntentFired(true);
+        setPassiveModalFired(true);
         triggerGate('exit_intent');
       }
     };
 
     document.addEventListener('mouseleave', handleMouseLeave);
     return () => document.removeEventListener('mouseleave', handleMouseLeave);
-  }, [isClient, hasEmail, exitIntentFired, modalOpen, triggerGate]);
+  }, [isClient, hasEmail, exitIntentFired, passiveModalFired, modalOpen, triggerGate]);
 
   // Mobile scroll-depth detection — replaces exit intent for touch devices
   const [scrollFired, setScrollFired] = useState(false);
   useEffect(() => {
     const config = emailCaptureConfig.mobileScrollGate;
     if (!config.enabled) return;
-    if (!isClient || hasEmail || scrollFired || exitIntentFired) return;
+    if (!isClient || hasEmail || scrollFired || passiveModalFired) return;
 
     // Only fire on touch devices (no fine pointer = mobile/tablet)
     const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
@@ -189,13 +192,14 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
       if (scrollPct >= config.scrollThreshold) {
         fired = true;
         setScrollFired(true);
+        setPassiveModalFired(true);
         triggerGate('scroll_depth');
       }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isClient, hasEmail, scrollFired, exitIntentFired, modalOpen, triggerGate]);
+  }, [isClient, hasEmail, scrollFired, passiveModalFired, modalOpen, triggerGate]);
 
   const handleModalSubmit = useCallback((data: CapturedUserData) => {
     // Save to localStorage
@@ -237,16 +241,17 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
       // Track in analytics
       track('biz_page_view', { page });
 
-      // Check if should show gate
+      // Check if should show gate (skip if already shown a passive modal this session)
       const totalViews = Object.values(views).reduce((sum: number, v) => sum + (v as number), 0);
-      if (totalViews >= pageViewThreshold && !hasEmail) {
+      if (totalViews >= pageViewThreshold && !hasEmail && !passiveModalFired) {
         // Show gate after short delay to let page render
+        setPassiveModalFired(true);
         setTimeout(() => triggerGate('page_view_limit'), 2000);
       }
     } catch {
       // localStorage not available
     }
-  }, [isClient, pageViewThreshold, hasEmail, triggerGate]);
+  }, [isClient, pageViewThreshold, hasEmail, passiveModalFired, triggerGate]);
 
   const trackBlockedAction = useCallback((action: string) => {
     track('csv_click_blocked', { action, had_email: hasEmail });
