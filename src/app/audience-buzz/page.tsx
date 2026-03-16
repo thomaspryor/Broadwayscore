@@ -8,27 +8,19 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import { ComputedShow } from '@/lib/engine';
 import { AudienceBuzzTable } from '@/components/SortableAudienceBuzzTable';
 import { featureFlags } from '@/config/feature-flags';
-import { getSourcesForMarket } from '@/config/audience-sources';
+import { getSourcesForMarket, getSourceNames, SOURCE_DESCRIPTIONS } from '@/config/audience-sources';
 
-const SOURCE_DESCRIPTIONS: Record<string, string> = {
-  showScore: 'Audience reviews with detailed 0-100 scores. Often the largest sample size.',
-  mezzanine: 'iOS app with verified ticket holders rating shows 1-5 stars.',
-  theatr: 'Broadway community app with three-way sentiment: like, dislike, or mixed.',
-  broadwayCom: "Star ratings from verified ticket buyers on Broadway\u2019s largest ticket site.",
-  reddit: 'Sentiment analysis from r/Broadway. Requires 50+ comments. Excluded for shows closed 3+ years.',
-  seatplan: 'UK theater ticketing platform with 1K-8K verified audience reviews per show.',
-  lbo: 'Verified purchase reviews from London Box Office ticket buyers via Feefo.',
-};
+const bwSourceNames = getSourceNames('broadway');
 
 export const metadata: Metadata = {
   title: 'Broadway Audience Scorecard - What Real Theatergoers Think',
-  description: 'AudienceGrade ratings for Broadway shows from Show Score, Mezzanine, Theatr, Broadway.com, and Reddit. See which shows audiences love, like, or loathe based on real reviews.',
+  description: `AudienceGrade ratings for Broadway shows from ${bwSourceNames}. See which shows audiences love, like, or loathe based on real reviews.`,
   alternates: {
     canonical: `${BASE_URL}/audience-buzz`,
   },
   openGraph: {
     title: 'Broadway Audience Scorecard - Real Broadway Audience Ratings',
-    description: 'What do audiences really think? Combined AudienceGrade ratings from Show Score, Mezzanine, Theatr, Broadway.com, and Reddit for every Broadway show.',
+    description: `What do audiences really think? Combined AudienceGrade ratings from ${bwSourceNames} for every Broadway show.`,
     url: `${BASE_URL}/audience-buzz`,
     type: 'article',
   },
@@ -44,7 +36,7 @@ const faqSchema = {
       name: 'What is AudienceGrade?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'AudienceGrade is our aggregated audience letter grade combining ratings from Show Score, Mezzanine, Theatr, Broadway.com, and Reddit r/Broadway discussions. It represents what real theatergoers think, separate from professional critic reviews.',
+        text: `AudienceGrade is our aggregated audience letter grade combining ratings from ${bwSourceNames}. It represents what real theatergoers think, separate from professional critic reviews.`,
       },
     },
     {
@@ -52,7 +44,7 @@ const faqSchema = {
       name: 'How is the AudienceGrade calculated?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'We combine five sources — Show Score, Mezzanine, Theatr, Broadway.com, and Reddit — weighted proportionally by their number of reviews. More reviews means more weight. No single source can account for more than 80% of the total. Reddit requires a minimum of 50 classified comments to be included.',
+        text: `We combine ${getSourcesForMarket('broadway').length} sources — ${bwSourceNames} — weighted proportionally by their number of reviews. More reviews means more weight. No single source can account for more than 80% of the total. Reddit requires a minimum of 50 classified comments to be included.`,
       },
     },
     {
@@ -149,7 +141,7 @@ export default function AudienceBuzzPage() {
           <p className="text-sm text-gray-400 mb-3">
             We combine {marketSources.length} audience sources into a single AudienceGrade letter grade. Each source is weighted proportionally by its number of reviews — more reviews means more influence. No single source can exceed 80% of the total weight.
           </p>
-          <div className={`grid sm:grid-cols-2 lg:grid-cols-${Math.min(marketSources.length, 5)} gap-4 text-sm text-gray-400`}>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4 text-sm text-gray-400">
             {marketSources.map(src => (
               <div key={src.key}>
                 <h3 className="font-semibold text-white mb-1">{src.name}</h3>

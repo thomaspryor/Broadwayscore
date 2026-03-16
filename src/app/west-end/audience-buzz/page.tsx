@@ -5,19 +5,13 @@ import { getAudienceBuzz, getAudienceBuzzLastUpdated, getAudienceGrade, MIN_AUDI
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { AudienceBuzzTable } from '@/components/SortableAudienceBuzzTable';
 import { featureFlags } from '@/config/feature-flags';
-import { getSourcesForMarket } from '@/config/audience-sources';
+import { getSourcesForMarket, getSourceNames, SOURCE_DESCRIPTIONS } from '@/config/audience-sources';
 
-const SOURCE_DESCRIPTIONS: Record<string, string> = {
-  showScore: 'Audience reviews with detailed 0-100 scores from the ShowScore platform.',
-  mezzanine: 'iOS app with verified ticket holders rating shows 1-5 stars.',
-  seatplan: 'UK theater ticketing platform with 1K-8K verified audience reviews per West End show.',
-  lbo: 'Verified purchase reviews from London Box Office ticket buyers via Feefo.',
-  reddit: 'Sentiment analysis from r/WestEnd and r/Theatre. Requires 50+ comments.',
-};
+const weSourceNames = getSourceNames('west-end');
 
 export const metadata: Metadata = {
   title: 'West End Audience Scorecard - What Real Theatregoers Think',
-  description: 'AudienceGrade ratings for West End shows from SeatPlan, London Box Office, Show Score, Mezzanine, and Reddit. See which shows audiences love based on verified reviews.',
+  description: `AudienceGrade ratings for West End shows from ${weSourceNames}. See which shows audiences love based on verified reviews.`,
   alternates: {
     canonical: `${BASE_URL}/west-end/audience-buzz`,
   },
@@ -111,7 +105,7 @@ export default function WestEndAudienceBuzzPage() {
           <p className="text-sm text-gray-400 mb-3">
             We combine {marketSources.length} audience sources into a single AudienceGrade letter grade. Each source is weighted proportionally by its number of reviews — more reviews means more influence. No single source can exceed 80% of the total weight.
           </p>
-          <div className={`grid sm:grid-cols-2 lg:grid-cols-${Math.min(marketSources.length, 5)} gap-4 text-sm text-gray-400`}>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4 text-sm text-gray-400">
             {marketSources.map(src => (
               <div key={src.key}>
                 <h3 className="font-semibold text-white mb-1">{src.name}</h3>

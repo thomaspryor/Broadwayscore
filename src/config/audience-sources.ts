@@ -33,3 +33,17 @@ export function getSourcesForMarket(market: 'broadway' | 'west-end'): AudienceSo
 export function getSourceConfig(key: string): AudienceSourceConfig | undefined {
   return AUDIENCE_SOURCES.find(s => s.key === key);
 }
+
+export const SOURCE_DESCRIPTIONS: Record<string, string> = {
+  showScore: 'Audience reviews with detailed 0-100 scores. Often the largest sample size.',
+  mezzanine: 'iOS app with verified ticket holders rating shows 1-5 stars.',
+  theatr: 'Broadway community app with three-way sentiment: like, dislike, or mixed.',
+  broadwayCom: "Star ratings from verified ticket buyers on Broadway\u2019s largest ticket site.",
+  reddit: 'Sentiment analysis from r/Broadway. Requires 50+ comments. Excluded for shows closed 3+ years.',
+  seatplan: 'UK theater ticketing platform with 1K-8K verified audience reviews per show.',
+  lbo: 'Verified purchase reviews from London Box Office ticket buyers via Feefo.',
+};
+
+export function getSourceNames(market: 'broadway' | 'west-end'): string {
+  return getSourcesForMarket(market).map(s => s.name).join(', ');
+}
