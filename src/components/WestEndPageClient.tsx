@@ -34,6 +34,7 @@ interface WestEndPageClientProps {
   totalShows: number;
   totalReviews: number;
   scoredShows: number;
+  bestOweShows?: WestEndShow[];
 }
 
 // URL parameter values
@@ -100,7 +101,7 @@ function FeaturedRow({ title, shows }: { title: string; shows: WestEndShow[] }) 
 }
 
 // Inner component that uses searchParams
-function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: WestEndPageClientProps) {
+function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, bestOweShows }: WestEndPageClientProps) {
   const initialSearchParams = useSearchParams();
 
   const [filters, setFilters] = useState(() => ({
@@ -516,6 +517,23 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
         <FeaturedRow title="Top Plays" shows={topPlays} />
         <FeaturedRow title="Closing Soon" shows={closingSoonShows} />
       </div>
+
+      {/* Best Off-West End — cross-promote */}
+      {bestOweShows && bestOweShows.length > 0 && (
+        <div className="mt-8 pt-8 border-t border-white/5">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-base font-bold text-white">Best Off-West End</h2>
+            <Link href="/off-west-end" className="text-sm text-violet-400 hover:text-violet-300 transition-colors">
+              View all →
+            </Link>
+          </div>
+          <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
+            {bestOweShows.map((show) => (
+              <MiniShowCard key={show.id} show={show} />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

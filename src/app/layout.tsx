@@ -168,6 +168,13 @@ export default function RootLayout({
                       <div className="text-[10px] text-gray-500">London</div>
                     </Link>
                   )}
+                  {featureFlags.westEnd && (
+                    <Link href="/off-west-end" className="flex-1 p-4 rounded-xl border border-white/[0.08] bg-white/[0.02] hover:border-violet-400/30 hover:bg-violet-400/[0.03] transition-colors text-center group">
+                      <div className="text-xl mb-1">&#127917;</div>
+                      <div className="text-sm font-bold text-white group-hover:text-violet-400 transition-colors">Off-West End</div>
+                      <div className="text-[10px] text-gray-500">London</div>
+                    </Link>
+                  )}
                 </div>
               </div>
             )}

@@ -479,6 +479,7 @@ export function getBrowseList(slug: string): BrowseList | undefined {
 
   const allShows = config.source === 'west-end' ? getWestEndShows()
     : config.source === 'off-broadway' ? getOffBroadwayShows()
+    : config.source === 'off-west-end' ? getOffWestEndShows()
     : getBroadwayShows();
 
   // Context for data-dependent filters and custom sorts
