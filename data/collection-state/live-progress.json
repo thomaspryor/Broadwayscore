@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-16T09:09:52.227Z",
-  "processed": 9,
-  "failed": 41,
-  "successRate": "18.0%",
+  "updatedAt": "2026-03-16T09:13:56.576Z",
+  "processed": 17,
+  "failed": 43,
+  "successRate": "28.3%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 10,
     "amp": 9,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 39,
-    "archive": 2
+    "archiveToday": 40,
+    "archive": 3
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-03-16T08:46:02.043Z",
@@ -68,6 +68,18 @@
       "event": "bb-login-fail",
       "domain": "thestage.co.uk",
       "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    38 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
+    },
+    {
+      "t": "2026-03-16T09:13:00.685Z",
+      "event": "bb-session",
+      "session": "2045aa30",
+      "url": "https://www.thestage.co.uk/reviews/reviews/the-hunger-games-on-stage-review-trou"
+    },
+    {
+      "t": "2026-03-16T09:13:39.782Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    40 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
     }
   ]
 }

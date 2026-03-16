@@ -8,7 +8,15 @@
     "the-mousetrap-west-end-2021/variety--unknown.json",
     "shadowlands-west-end-2026/timeout--andrzej-lukowski.json",
     "garry-starr-classic-penguins-garrick-west-end-2026/west-end-best-friend--livvy-perrett.json",
-    "my-neighbour-totoro-west-end-2025/independent--annabel-nugent.json"
+    "my-neighbour-totoro-west-end-2025/independent--annabel-nugent.json",
+    "paranormal-activity-west-end-2025/times-uk--unknown.json",
+    "paranormal-activity-west-end-2025/whatsonstage--unknown.json",
+    "sweetmeats-west-end-2026/london-theatre--aliya-al-hassan.json",
+    "the-holy-rosenbergs-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+    "the-holy-rosenbergs-west-end-2026/artsdesk--aleks-sierz.json",
+    "the-holy-rosenbergs-west-end-2026/broadwayworld--franco-milazzo.json",
+    "the-holy-rosenbergs-west-end-2026/theatre-weekly--greg-stewart.json",
+    "the-holy-rosenbergs-west-end-2026/whatsonstage--sarah-crompton.json"
   ],
   "failed": [
     "arcadia-west-end-2026/nytimes--unknown.json",
@@ -51,14 +59,23 @@
     "moulin-rouge-the-musical-west-end-2021/broadwayworld--taylor-clemons.json",
     "moulin-rouge-the-musical-west-end-2021/broadwayworld--tyler-hinton.json",
     "paddington-the-musical-west-end-2025/independent--unknown.json",
-    "paddington-the-musical-west-end-2025/thestage--unknown.json"
+    "paddington-the-musical-west-end-2025/thestage--unknown.json",
+    "the-book-of-mormon-west-end-2024/thestage--unknown.json",
+    "the-hunger-games-on-stage-west-end-2025/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "shadowlands-west-end-2026/timeout--andrzej-lukowski.json",
       "garry-starr-classic-penguins-garrick-west-end-2026/west-end-best-friend--livvy-perrett.json",
-      "my-neighbour-totoro-west-end-2025/independent--annabel-nugent.json"
+      "my-neighbour-totoro-west-end-2025/independent--annabel-nugent.json",
+      "paranormal-activity-west-end-2025/times-uk--unknown.json",
+      "paranormal-activity-west-end-2025/whatsonstage--unknown.json",
+      "sweetmeats-west-end-2026/london-theatre--aliya-al-hassan.json",
+      "the-holy-rosenbergs-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+      "the-holy-rosenbergs-west-end-2026/artsdesk--aleks-sierz.json",
+      "the-holy-rosenbergs-west-end-2026/theatre-weekly--greg-stewart.json",
+      "the-holy-rosenbergs-west-end-2026/whatsonstage--sarah-crompton.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -114,15 +131,17 @@
       "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--taylor-clemons.json",
       "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--tyler-hinton.json",
       "data/review-texts/paddington-the-musical-west-end-2025/independent--unknown.json",
-      "data/review-texts/paddington-the-musical-west-end-2025/thestage--unknown.json"
+      "data/review-texts/paddington-the-musical-west-end-2025/thestage--unknown.json",
+      "data/review-texts/the-hunger-games-on-stage-west-end-2025/thestage--unknown.json"
     ],
     "archive": [
       "into-the-woods-west-end-2025/nytimes--unknown.json",
-      "the-mousetrap-west-end-2021/nytimes--unknown.json"
+      "the-mousetrap-west-end-2021/nytimes--unknown.json",
+      "the-holy-rosenbergs-west-end-2026/broadwayworld--franco-milazzo.json"
     ]
   },
   "startTime": "2026-03-16T08:45:39.122Z",
-  "lastProcessed": "paddington-the-musical-west-end-2025/thestage--unknown.json",
+  "lastProcessed": "the-hunger-games-on-stage-west-end-2025/thestage--unknown.json",
   "log": [
     {
       "t": "2026-03-16T08:46:02.043Z",
@@ -177,6 +196,18 @@
       "event": "bb-login-fail",
       "domain": "thestage.co.uk",
       "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    38 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
+    },
+    {
+      "t": "2026-03-16T09:13:00.685Z",
+      "event": "bb-session",
+      "session": "2045aa30",
+      "url": "https://www.thestage.co.uk/reviews/reviews/the-hunger-games-on-stage-review-trou"
+    },
+    {
+      "t": "2026-03-16T09:13:39.782Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    40 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
     }
   ]
 }
