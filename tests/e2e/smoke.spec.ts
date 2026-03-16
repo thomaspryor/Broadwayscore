@@ -104,4 +104,33 @@ test.describe('Post-deploy smoke tests', () => {
     expect(visibleText).not.toMatch(/\bundefined\b/);
     expect(visibleText).not.toContain('NaN');
   });
+
+  test('biz page renders investment tracker', async ({ page }) => {
+    await page.goto('/biz');
+
+    const heading = page.locator('h1');
+    await expect(heading).toBeVisible({ timeout: 15000 });
+
+    // Has show data (table rows or show links)
+    const visibleText = await page.locator('body').innerText();
+    expect(visibleText.length).toBeGreaterThan(500);
+
+    expect(visibleText).not.toMatch(/\bundefined\b/);
+    expect(visibleText).not.toContain('NaN');
+  });
+
+  test('audience buzz page renders scores', async ({ page }) => {
+    await page.goto('/audience-buzz');
+
+    const heading = page.locator('h1');
+    await expect(heading).toBeVisible({ timeout: 15000 });
+
+    // Has show content
+    const showLinks = page.locator('a[href^="/show/"]');
+    await expect(showLinks.first()).toBeVisible({ timeout: 10000 });
+
+    const visibleText = await page.locator('body').innerText();
+    expect(visibleText).not.toMatch(/\bundefined\b/);
+    expect(visibleText).not.toContain('NaN');
+  });
 });
