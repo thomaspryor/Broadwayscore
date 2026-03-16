@@ -7,13 +7,23 @@
     "bughouse-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
     "bughouse-off-broadway-2026/rollingstone--rhoda-feng.json",
     "bughouse-off-broadway-2026/theater-scene--darryl-reilly.json",
-    "into-the-woods-west-end-2025/daily-mail--unknown.json"
+    "into-the-woods-west-end-2025/daily-mail--unknown.json",
+    "youre-a-good-man-charlie-brown-off-broadway-2026/amny--matt-windman.json",
+    "youre-a-good-man-charlie-brown-off-broadway-2026/theater-scene--darryl-reilly.json",
+    "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
+    "an-ark-off-broadway-2026/nytg--kyle-turner.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
+    "back-to-the-future-west-end-2021/variety--david-benedict.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
     "mj-2022/ap--mark-kennedy.json",
     "youre-a-good-man-charlie-brown-off-broadway-2026/cititour--brian-scott-lipton.json",
-    "calf-scramble-off-broadway-2026/talkinbroadway--unknown.json"
+    "calf-scramble-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-book-of-mormon-west-end-2024/thestage--unknown.json",
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "youre-a-good-man-charlie-brown-off-broadway-2026/talkinbroadway--matthew-murray.json",
+    "youre-a-good-man-charlie-brown-off-broadway-2026/theater-pizzazz--sandi-durell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -34,10 +44,19 @@
       "bughouse-off-broadway-2026/chicagotribune--emily-colucci-and.json",
       "bughouse-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
       "bughouse-off-broadway-2026/theater-scene--darryl-reilly.json",
-      "into-the-woods-west-end-2025/daily-mail--unknown.json"
+      "into-the-woods-west-end-2025/daily-mail--unknown.json",
+      "youre-a-good-man-charlie-brown-off-broadway-2026/theater-scene--darryl-reilly.json",
+      "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
+      "an-ark-off-broadway-2026/nytg--kyle-turner.json"
     ],
-    "amp": [],
-    "browserbase": [],
+    "amp": [
+      "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "back-to-the-future-west-end-2021/variety--david-benedict.json"
+    ],
+    "browserbase": [
+      "data/review-texts/youre-a-good-man-charlie-brown-off-broadway-2026/amny--matt-windman.json",
+      "youre-a-good-man-charlie-brown-off-broadway-2026/amny--matt-windman.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -47,7 +66,8 @@
       "data/review-texts/cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
       "data/review-texts/death-becomes-her-2024/newyorker--helen-shaw.json",
       "data/review-texts/youre-a-good-man-charlie-brown-off-broadway-2026/cititour--brian-scott-lipton.json",
-      "data/review-texts/calf-scramble-off-broadway-2026/talkinbroadway--unknown.json"
+      "data/review-texts/calf-scramble-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/youre-a-good-man-charlie-brown-off-broadway-2026/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "into-the-woods-west-end-2025/nytimes--unknown.json",
@@ -68,10 +88,23 @@
       "maybe-happy-ending-2024/vulture--sara-holdren.json",
       "maltby-and-shires-about-time-off-broadway-2026/theatermania--zachary-stewart.json",
       "youre-a-good-man-charlie-brown-off-broadway-2026/theatermania--david-gordon.json",
-      "bughouse-off-broadway-2026/rollingstone--rhoda-feng.json"
+      "bughouse-off-broadway-2026/rollingstone--rhoda-feng.json",
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json"
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "into-the-woods-west-end-2025/daily-mail--unknown.json",
-  "log": []
+  "lastProcessed": "back-to-the-future-west-end-2021/variety--david-benedict.json",
+  "log": [
+    {
+      "t": "2026-03-16T19:08:03.771Z",
+      "event": "bb-session",
+      "session": "1d1dfbfe",
+      "url": "http://www.amny.com/entertainment/you-re-a-good-man-charlie-brown-review-off-bro"
+    },
+    {
+      "t": "2026-03-16T19:08:05.480Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    }
+  ]
 }
