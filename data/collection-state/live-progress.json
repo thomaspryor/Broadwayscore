@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-16T05:21:03.068Z",
-  "processed": 496,
-  "failed": 1639,
-  "successRate": "23.2%",
+  "updatedAt": "2026-03-16T05:32:11.874Z",
+  "processed": 502,
+  "failed": 1643,
+  "successRate": "23.4%",
   "tierBreakdown": {
-    "playwright": 323,
+    "playwright": 329,
     "amp": 24,
     "browserbase": 56,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 55,
+    "archiveToday": 59,
     "archive": 138
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-03-15T16:31:26.213Z",
-      "event": "bb-session",
-      "session": "440fd44d",
-      "url": "http://www.wsj.com/articles/SB106748686155075900"
-    },
-    {
-      "t": "2026-03-15T16:31:27.945Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-15T16:41:48.578Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-16T05:17:50.102Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-16T05:27:27.478Z",
+      "event": "bb-session",
+      "session": "80f8cd0b",
+      "url": "https://www.nytimes.com/2026/02/05/theater/arcadia-tom-stoppard-old-vic-london.h"
+    },
+    {
+      "t": "2026-03-16T05:27:28.880Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

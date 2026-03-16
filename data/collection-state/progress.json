@@ -495,7 +495,13 @@
     "paranormal-activity-west-end-2025/artsdesk--gary-naylor.json",
     "paranormal-activity-west-end-2025/london-box-office--stuart-king.json",
     "paranormal-activity-west-end-2025/london-theatre--matt-wolf-writing.json",
-    "paranormal-activity-west-end-2025/theatre-weekly--greg-stewart.json"
+    "paranormal-activity-west-end-2025/theatre-weekly--greg-stewart.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/timeout--andrzej-lukowski.json",
+    "hamilton-west-end-2021/timeout--andrzej-lukowski.json",
+    "paranormal-activity-west-end-2025/timeout--unknown.json",
+    "starlight-express-west-end-2024/timeout--andrzej-lukowski.json",
+    "the-devil-wears-prada-west-end-2024/timeout--andrzej-lukowski.json",
+    "the-holy-rosenbergs-west-end-2026/guardian--david-jays.json"
   ],
   "failed": [
     "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
@@ -2136,7 +2142,11 @@
     "oh-mary-west-end-2025/standard--nick-curtis.json",
     "oh-mary-west-end-2025/thestage--holly-omahony.json",
     "oliver-west-end-2024/thestage--sam-marlowe.json",
-    "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json"
+    "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
+    "arcadia-west-end-2026/nytimes--unknown.json",
+    "six-the-musical-west-end-2021/nytimes--jesse-green.json",
+    "im-sorry-prime-minister-west-end-2026/timeout--tom-wicker.json",
+    "im-sorry-prime-minister-west-end-2026/timeout-london--tom-wicker.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2463,7 +2473,13 @@
       "paranormal-activity-west-end-2025/artsdesk--gary-naylor.json",
       "paranormal-activity-west-end-2025/london-box-office--stuart-king.json",
       "paranormal-activity-west-end-2025/london-theatre--matt-wolf-writing.json",
-      "paranormal-activity-west-end-2025/theatre-weekly--greg-stewart.json"
+      "paranormal-activity-west-end-2025/theatre-weekly--greg-stewart.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/timeout--andrzej-lukowski.json",
+      "hamilton-west-end-2021/timeout--andrzej-lukowski.json",
+      "paranormal-activity-west-end-2025/timeout--unknown.json",
+      "starlight-express-west-end-2024/timeout--andrzej-lukowski.json",
+      "the-devil-wears-prada-west-end-2024/timeout--andrzej-lukowski.json",
+      "the-holy-rosenbergs-west-end-2026/guardian--david-jays.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -2609,7 +2625,11 @@
       "data/review-texts/it-walks-around-the-house-at-night-west-end-2026/thestage--unknown.json",
       "data/review-texts/the-hunger-games-on-stage-west-end-2025/thestage--unknown.json",
       "data/review-texts/marie-and-rosetta-west-end-2026/broadwayworld--clementine-scott.json",
-      "data/review-texts/oh-mary-west-end-2025/thestage--holly-omahony.json"
+      "data/review-texts/oh-mary-west-end-2025/thestage--holly-omahony.json",
+      "data/review-texts/arcadia-west-end-2026/nytimes--unknown.json",
+      "data/review-texts/six-the-musical-west-end-2021/nytimes--jesse-green.json",
+      "data/review-texts/im-sorry-prime-minister-west-end-2026/timeout--tom-wicker.json",
+      "data/review-texts/im-sorry-prime-minister-west-end-2026/timeout-london--tom-wicker.json"
     ],
     "archive": [
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
@@ -2753,7 +2773,7 @@
     ]
   },
   "startTime": "2026-03-15T09:45:15.761Z",
-  "lastProcessed": "paranormal-activity-west-end-2025/theatre-weekly--greg-stewart.json",
+  "lastProcessed": "the-holy-rosenbergs-west-end-2026/guardian--david-jays.json",
   "log": [
     {
       "t": "2026-03-15T09:48:36.450Z",
@@ -3263,6 +3283,17 @@
       "t": "2026-03-16T05:17:50.102Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-16T05:27:27.478Z",
+      "event": "bb-session",
+      "session": "80f8cd0b",
+      "url": "https://www.nytimes.com/2026/02/05/theater/arcadia-tom-stoppard-old-vic-london.h"
+    },
+    {
+      "t": "2026-03-16T05:27:28.880Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
