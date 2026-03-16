@@ -133,6 +133,7 @@ function extractReviewData(html) {
       ratingAverage: data.ratingAverage,
       reviewsCount: data.reviewsCount,
       productionId: data.productionId || null,
+      ratings: data.ratings || null, // { "1": N, "2": N, "3": N, "4": N, "5": N }
     };
   } catch (e) {
     console.error(`  ⚠️  Failed to parse reviewsPanelData: ${e.message}`);
@@ -331,6 +332,7 @@ async function main() {
         reviewCount: data.reviewsCount,
         starRating: data.ratingAverage,
         lastUpdated: new Date().toISOString().slice(0, 10),
+        ...(data.ratings ? { ratingDistribution: data.ratings } : {}),
       };
 
       // Recalculate combined score
