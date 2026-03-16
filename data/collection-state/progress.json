@@ -202,7 +202,16 @@
     "perfect-crime-off-broadway-1987/nydailynews--editorial-staff.json",
     "ragtime-2025/timeout--adam-feldman.json",
     "ragtime-2025/wsj--charles-isherwood.json",
-    "six-2021/timeout--adam-feldman.json"
+    "six-2021/timeout--adam-feldman.json",
+    "spread-off-broadway-2026/theatermania--unknown.json",
+    "stranger-things-2024/timeout--adam-feldman.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/newsweek--lauren-giella.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/theatermania--zachary-stewart.json",
+    "the-amazing-sex-life-of-rabbits-off-broadway-2026/theatermania--pete-hempstead.json",
+    "the-great-gatsby-2024/observer--david-cote.json",
+    "the-great-gatsby-2024/timeout--adam-feldman.json",
+    "the-monsters-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "the-monsters-off-broadway-2026/theatermania--pete-hempstead.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -221,7 +230,8 @@
     "the-lion-king-1997/nytimes--ben-brantley.json",
     "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
     "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
-    "bigfoot-off-broadway-2026/thewrap--robert-hofler.json"
+    "bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
+    "the-lion-king-1997/timeout--adam-feldman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -353,7 +363,12 @@
       "pen-pals-off-broadway-2025/nbcnews--suzanne-ordas.json",
       "pen-pals-off-broadway-2025/theatermania--dan-rubins.json",
       "ragtime-2025/timeout--adam-feldman.json",
-      "six-2021/timeout--adam-feldman.json"
+      "six-2021/timeout--adam-feldman.json",
+      "stranger-things-2024/timeout--adam-feldman.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/newsweek--lauren-giella.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/theatermania--zachary-stewart.json",
+      "the-great-gatsby-2024/timeout--adam-feldman.json",
+      "the-monsters-off-broadway-2026/new-york-sun--elysa-gardner.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -395,7 +410,9 @@
       "data/review-texts/masquerade-off-broadway-2025/observer--david-cote.json",
       "masquerade-off-broadway-2025/observer--david-cote.json",
       "data/review-texts/maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
-      "maybe-happy-ending-2024/nypost--johnny-oleksinski.json"
+      "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+      "data/review-texts/the-great-gatsby-2024/observer--david-cote.json",
+      "the-great-gatsby-2024/observer--david-cote.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -465,11 +482,14 @@
       "moulin-rouge-2019/theatermania--jesse-green.json",
       "moulin-rouge-2019/theatermania--zachary-stewart.json",
       "perfect-crime-off-broadway-1987/nydailynews--editorial-staff.json",
-      "ragtime-2025/wsj--charles-isherwood.json"
+      "ragtime-2025/wsj--charles-isherwood.json",
+      "spread-off-broadway-2026/theatermania--unknown.json",
+      "the-amazing-sex-life-of-rabbits-off-broadway-2026/theatermania--pete-hempstead.json",
+      "the-monsters-off-broadway-2026/theatermania--pete-hempstead.json"
     ]
   },
   "startTime": "2026-03-16T10:39:31.889Z",
-  "lastProcessed": "six-2021/timeout--adam-feldman.json",
+  "lastProcessed": "the-monsters-off-broadway-2026/theatermania--pete-hempstead.json",
   "log": [
     {
       "t": "2026-03-16T11:10:32.644Z",
@@ -679,6 +699,17 @@
       "t": "2026-03-16T11:41:33.998Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-16T11:43:10.322Z",
+      "event": "bb-session",
+      "session": "15a808d7",
+      "url": "https://observer.com/2024/04/review-flashy-and-fake-great-gatsby-caps-a-weak-sea"
+    },
+    {
+      "t": "2026-03-16T11:43:11.945Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
     }
   ]
 }

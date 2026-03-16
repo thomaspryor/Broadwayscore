@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-16T11:42:03.202Z",
-  "processed": 203,
-  "failed": 17,
-  "successRate": "92.3%",
+  "updatedAt": "2026-03-16T11:43:47.168Z",
+  "processed": 212,
+  "failed": 18,
+  "successRate": "92.2%",
   "tierBreakdown": {
-    "playwright": 128,
+    "playwright": 133,
     "amp": 14,
-    "browserbase": 24,
+    "browserbase": 26,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 7,
-    "archive": 56
+    "archive": 59
   },
-  "browserbaseSessions": 19,
+  "browserbaseSessions": 20,
   "recentActivity": [
-    {
-      "t": "2026-03-16T11:19:11.763Z",
-      "event": "bb-session",
-      "session": "7ad2a441",
-      "url": "https://www.nytimes.com/1997/11/14/movies/theater-review-cub-comes-of-age-a-twic"
-    },
-    {
-      "t": "2026-03-16T11:19:13.268Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-16T11:22:45.532Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-16T11:41:33.998Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-16T11:43:10.322Z",
+      "event": "bb-session",
+      "session": "15a808d7",
+      "url": "https://observer.com/2024/04/review-flashy-and-fake-great-gatsby-caps-a-weak-sea"
+    },
+    {
+      "t": "2026-03-16T11:43:11.945Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
     }
   ]
 }
