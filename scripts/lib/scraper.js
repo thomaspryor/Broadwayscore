@@ -2,10 +2,10 @@
 /**
  * Universal Web Scraper with Fallback
  *
- * Tries multiple scraping services in order:
- * 1. Bright Data (primary - returns HTML via Web Unlocker)
- * 2. ScrapingBee (fallback - returns HTML)
- * 3. Playwright (last resort - requires browser)
+ * Tries multiple scraping services with smart ordering:
+ * - Public sites (IBDB, Broadway.com): Playwright first (free), then BD/SB
+ * - BroadwayWorld: Playwright first (complex JS rendering)
+ * - All other sites: Bright Data → ScrapingBee → Playwright
  *
  * Usage:
  *   const { fetchPage } = require('./lib/scraper');
@@ -41,6 +41,25 @@ for (const group of DOMAIN_ALIAS_GROUPS) {
   }
 }
 
+// --- Public sites that should try free Playwright before paid APIs ---
+// Only includes domains that actually flow through scraper.js's fetchPage().
+// BWW already has separate Playwright-first handling (line ~203).
+const PLAYWRIGHT_FIRST_DOMAINS = new Set([
+  'ibdb.com',        // Public theater database — simple HTML, no anti-bot
+  'broadway.com',    // Schedule/runtime pages — public, needs JS for some content
+  'broadway.org',    // Playbill/closing dates — public HTML
+]);
+
+/**
+ * Check if a URL's domain is in the Playwright-first set.
+ */
+function _isPlaywrightFirstDomain(url) {
+  try {
+    const hostname = new URL(url).hostname.replace(/^www\./, '');
+    return PLAYWRIGHT_FIRST_DOMAINS.has(hostname);
+  } catch { return false; }
+}
+
 /**
  * Check if an actual domain matches the expected domain, accounting for
  * subdomains (amp.nytimes.com vs nytimes.com) and known alias groups
@@ -60,7 +79,67 @@ const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 
+// --- SB credit pre-check ---
+let _sbCreditCheckDone = false;
+let _sbCreditsLow = false;
+
+/**
+ * Check ScrapingBee remaining credits. Call once per process.
+ * Returns true if credits are available, false if low/exhausted/missing key.
+ * Sets _sbCreditsLow flag which fetchPage() and SERP functions check.
+ */
+async function checkScrapingBeeCredits() {
+  if (_sbCreditCheckDone) return !_sbCreditsLow;
+  _sbCreditCheckDone = true;
+
+  if (!SCRAPINGBEE_KEY) return false;
+
+  return new Promise((resolve) => {
+    const req = https.get(
+      `https://app.scrapingbee.com/api/v1/usage?api_key=${SCRAPINGBEE_KEY}`,
+      { timeout: 5000 },
+      (res) => {
+        let body = '';
+        res.on('data', chunk => body += chunk);
+        res.on('end', () => {
+          try {
+            const data = JSON.parse(body);
+            const used = data.used_api_credit || 0;
+            const max = data.max_api_credit || 1;
+            const remaining = max - used;
+            const pctRemaining = (remaining / max) * 100;
+
+            if (remaining <= 0 || pctRemaining < 5) {
+              console.warn(`⚠️  ScrapingBee credits low: ${remaining} remaining (${pctRemaining.toFixed(1)}%) — skipping SB`);
+              _sbCreditsLow = true;
+              resolve(false);
+            } else {
+              console.log(`[SB Credits] ${remaining} remaining (${pctRemaining.toFixed(1)}%)`);
+              resolve(true);
+            }
+          } catch {
+            resolve(true); // Can't parse, assume OK
+          }
+        });
+      }
+    );
+    req.on('error', () => resolve(true)); // Network error, assume OK
+    req.on('timeout', () => { req.destroy(); resolve(true); });
+  });
+}
+
 let playwright = null; // Lazy load only if needed
+
+// --- Per-run cost tracking ---
+const _scraperStats = {
+  bdRequests: 0,
+  sbRequests: 0,
+  sbCredits: 0,
+  pwAttempts: 0,
+  pwSuccess: 0,
+};
+
+function getScraperStats() { return { ..._scraperStats }; }
 
 /**
  * Fetch page using Bright Data Web Unlocker API (raw HTML output)
@@ -104,6 +183,7 @@ async function fetchWithBrightData(url) {
       req.end(body);
     });
 
+    _scraperStats.bdRequests++;
     return {
       content: response,
       format: 'html',
@@ -141,6 +221,8 @@ async function fetchWithScrapingBee(url, options = {}) {
       }).on('error', reject);
     });
 
+    _scraperStats.sbRequests++;
+    _scraperStats.sbCredits += (options.renderJs !== false ? 5 : 1);
     return {
       content: response,
       format: 'html',
@@ -154,8 +236,12 @@ async function fetchWithScrapingBee(url, options = {}) {
 
 /**
  * Fetch page using Playwright (browser automation)
+ * @param {string} url
+ * @param {object} [options]
+ * @param {boolean} [options.fast] - Use domcontentloaded instead of networkidle (for simple public sites)
  */
-async function fetchWithPlaywright(url) {
+async function fetchWithPlaywright(url, options = {}) {
+  _scraperStats.pwAttempts++;
   try {
     if (!playwright) {
       playwright = await chromium.launch({
@@ -164,10 +250,12 @@ async function fetchWithPlaywright(url) {
     }
 
     const page = await playwright.newPage();
-    await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
+    const waitUntil = options.fast ? 'domcontentloaded' : 'networkidle';
+    await page.goto(url, { waitUntil, timeout: 30000 });
     const content = await page.content();
     await page.close();
 
+    _scraperStats.pwSuccess++;
     return {
       content,
       format: 'html',
@@ -196,22 +284,25 @@ async function fetchWithPlaywright(url) {
  */
 async function fetchPage(url, options = {}) {
   const preferPlaywright = options.preferPlaywright || false;
+  const isPublicSite = _isPlaywrightFirstDomain(url);
 
   console.log(`Fetching: ${url}`);
 
-  // Special case: BroadwayWorld often needs Playwright for complex JS rendering
-  if (preferPlaywright || url.includes('broadwayworld.com')) {
-    console.log('  → Using Playwright (complex site)...');
-    const result = await fetchWithPlaywright(url);
+  // Playwright-first for known public sites (free, fast with domcontentloaded)
+  // Also for BroadwayWorld (complex JS) and explicit preferPlaywright
+  if (preferPlaywright || url.includes('broadwayworld.com') || isPublicSite) {
+    const label = isPublicSite ? 'public site' : 'complex site';
+    console.log(`  → Using Playwright (${label})...`);
+    const result = await fetchWithPlaywright(url, { fast: isPublicSite });
     if (result) {
       console.log(`  ✅ Success (Playwright, ${result.format})`);
       return result;
     }
   }
 
-  // Try Bright Data first (primary)
+  // Try Bright Data (primary for non-public sites, fallback for public)
   if (BRIGHTDATA_TOKEN) {
-    console.log('  → Trying Bright Data (primary)...');
+    console.log('  → Trying Bright Data...');
     const result = await fetchWithBrightData(url);
     if (result) {
       console.log(`  ✅ Success (Bright Data, ${result.format})`);
@@ -219,9 +310,9 @@ async function fetchPage(url, options = {}) {
     }
   }
 
-  // Fall back to ScrapingBee
-  if (SCRAPINGBEE_KEY) {
-    console.log('  → Trying ScrapingBee (fallback)...');
+  // Fall back to ScrapingBee (skip if credits exhausted)
+  if (SCRAPINGBEE_KEY && !_sbCreditsLow) {
+    console.log('  → Trying ScrapingBee...');
     const result = await fetchWithScrapingBee(url, options);
     if (result) {
       console.log(`  ✅ Success (ScrapingBee, ${result.format})`);
@@ -229,8 +320,8 @@ async function fetchPage(url, options = {}) {
     }
   }
 
-  // Last resort: Playwright
-  if (!preferPlaywright) {
+  // Last resort: Playwright (only if not already tried above)
+  if (!preferPlaywright && !isPublicSite && !url.includes('broadwayworld.com')) {
     console.log('  → Trying Playwright (last resort)...');
     const result = await fetchWithPlaywright(url);
     if (result) {
@@ -246,6 +337,17 @@ async function fetchPage(url, options = {}) {
  * Clean up resources (call this when done with all scraping)
  */
 async function cleanup() {
+  // Print cost summary if any scraping happened
+  const s = _scraperStats;
+  const total = s.pwAttempts + s.bdRequests + s.sbRequests;
+  if (total > 0) {
+    const parts = [];
+    if (s.pwSuccess > 0 || s.pwAttempts > 0) parts.push(`${s.pwSuccess}/${s.pwAttempts} Playwright (free)`);
+    if (s.bdRequests > 0) parts.push(`${s.bdRequests} BD (~$${(s.bdRequests * 0.001).toFixed(3)})`);
+    if (s.sbRequests > 0) parts.push(`${s.sbRequests} SB (${s.sbCredits} credits)`);
+    console.log(`[Scraper Summary] ${parts.join(', ')}`);
+  }
+
   if (playwright) {
     await playwright.close();
     playwright = null;
@@ -260,4 +362,7 @@ module.exports = {
   cleanup,
   domainMatchesExpected,
   DOMAIN_ALIAS_GROUPS,
+  checkScrapingBeeCredits,
+  getScraperStats,
+  get sbCreditsLow() { return _sbCreditsLow; },
 };

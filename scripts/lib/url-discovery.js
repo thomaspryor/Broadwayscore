@@ -12,7 +12,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { domainMatchesExpected } = require('./scraper');
+const { domainMatchesExpected, sbCreditsLow } = require('./scraper');
 const { isUrlYearOutsideWindow } = require('./content-filters');
 const { isLondonMarket } = require('./venue-classification');
 
@@ -207,7 +207,7 @@ function _recordSerpResult(success) {
  * @returns {Array<{url: string, title: string}>|null} organic results, or null if provider unavailable
  */
 async function _serpViaScrapingBee(query, apiKey, log, dateRange) {
-  if (_scrapingBeeSerpExhausted || !apiKey) return null;
+  if (_scrapingBeeSerpExhausted || !apiKey || sbCreditsLow) return null;
 
   const axios = require('axios');
   const RETRYABLE_STATUSES = new Set([500, 502, 503]);
