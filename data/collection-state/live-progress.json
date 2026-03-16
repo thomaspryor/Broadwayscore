@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-16T11:21:56.312Z",
-  "processed": 116,
-  "failed": 14,
-  "successRate": "89.2%",
+  "updatedAt": "2026-03-16T11:23:40.522Z",
+  "processed": 124,
+  "failed": 16,
+  "successRate": "88.6%",
   "tierBreakdown": {
-    "playwright": 80,
-    "amp": 10,
+    "playwright": 81,
+    "amp": 12,
     "browserbase": 14,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 7,
-    "archive": 24
+    "archive": 30
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 11,
   "recentActivity": [
-    {
-      "t": "2026-03-16T11:10:32.644Z",
-      "event": "bb-session",
-      "session": "91b0befd",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
-    },
-    {
-      "t": "2026-03-16T11:10:34.152Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-16T11:11:55.074Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-16T11:19:13.268Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-16T11:22:45.532Z",
+      "event": "bb-session",
+      "session": "90ba1435",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-16T11:22:47.145Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
