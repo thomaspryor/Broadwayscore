@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-16T11:15:33.813Z",
-  "processed": 98,
-  "failed": 12,
-  "successRate": "89.1%",
+  "updatedAt": "2026-03-16T11:20:29.180Z",
+  "processed": 106,
+  "failed": 14,
+  "successRate": "88.3%",
   "tierBreakdown": {
-    "playwright": 69,
+    "playwright": 72,
     "amp": 10,
-    "browserbase": 10,
+    "browserbase": 14,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 6,
-    "archive": 19
+    "archiveToday": 7,
+    "archive": 22
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-03-16T11:10:32.644Z",
@@ -80,6 +80,50 @@
       "t": "2026-03-16T11:14:50.455Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-16T11:15:38.613Z",
+      "event": "bb-session",
+      "session": "cbaab027",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
+    },
+    {
+      "t": "2026-03-16T11:15:40.195Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-16T11:16:17.276Z",
+      "event": "bb-session",
+      "session": "d4f9c532",
+      "url": "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html"
+    },
+    {
+      "t": "2026-03-16T11:16:18.803Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-16T11:17:40.451Z",
+      "event": "bb-session",
+      "session": "a35cd145",
+      "url": "https://www.nytimes.com/2025/10/16/theater/ragtime-review-henry-debessonet.html"
+    },
+    {
+      "t": "2026-03-16T11:17:42.067Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-16T11:19:11.763Z",
+      "event": "bb-session",
+      "session": "7ad2a441",
+      "url": "https://www.nytimes.com/1997/11/14/movies/theater-review-cub-comes-of-age-a-twic"
+    },
+    {
+      "t": "2026-03-16T11:19:13.268Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
