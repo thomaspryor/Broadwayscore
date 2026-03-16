@@ -24,6 +24,7 @@ const path = require('path');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, getOutletDisplayName } = require('./lib/review-normalization');
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { OUTLET_DOMAINS: _OUTLET_DOMAINS } = require('./lib/url-discovery');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const SHOW_ARG = process.argv.find(a => a.startsWith('--show='));
@@ -371,7 +372,7 @@ async function main() {
   const showTitle = show.title;
   const year = (show.openingDate || '').substring(0, 4);
 
-  const isWestEnd = show.category === 'west-end';
+  const isWestEnd = isLondonMarket(show.category);
   const isOB = show.category === 'off-broadway';
   const marketLabel = isWestEnd ? 'West End' : isOB ? 'Off-Broadway' : 'Broadway';
   const reviewKeyword = isWestEnd ? 'West End review' : isOB ? 'Off-Broadway review' : 'Broadway review';

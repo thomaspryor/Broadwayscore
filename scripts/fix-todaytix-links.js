@@ -17,13 +17,14 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 
 // Market-aware TodayTix configuration
 function getTodayTixConfig(show) {
-  const isWestEnd = show.category === 'west-end';
+  const isWestEnd = isLondonMarket(show.category);
   return {
     location: isWestEnd ? 2 : 1,
     city: isWestEnd ? 'london' : 'nyc',

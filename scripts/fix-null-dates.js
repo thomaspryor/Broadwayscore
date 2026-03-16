@@ -10,6 +10,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
@@ -119,7 +120,7 @@ for (const show of shows) {
 
       // Validate: extracted year should be within ±2 of show year for WE/OB (wider tolerance)
       const showCat = showCategoryMap[show] || 'broadway';
-      const tolerance = (showCat === 'west-end' || showCat === 'off-broadway') ? 2 : 1;
+      const tolerance = (isLondonMarket(showCat) || showCat === 'off-broadway') ? 2 : 1;
       if (showYear && Math.abs(extractedYear - showYear) > tolerance) {
         yearMismatch++;
         continue;

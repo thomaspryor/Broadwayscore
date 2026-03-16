@@ -21,7 +21,7 @@ const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const dryRun = process.argv.includes('--dry-run');
 
 const dirs = fs.readdirSync(REVIEW_TEXTS_DIR)
-  .filter(d => d.includes('west-end') && fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory());
+  .filter(d => (d.includes('west-end') || d.includes('off-west-end')) && fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory());
 
 let renamed = 0, flagged = 0, skipped = 0, ambiguous = 0;
 

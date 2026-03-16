@@ -17,6 +17,7 @@
  *   node scripts/cleanup-we-cross-market.js --execute  # actually delete files
  */
 
+const { isLondonMarket } = require('./lib/venue-classification');
 const fs = require('fs');
 const path = require('path');
 
@@ -31,7 +32,7 @@ function main() {
   const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
   const weShowIds = new Set(
     showsData.shows
-      .filter(s => s.category === 'west-end')
+      .filter(s => isLondonMarket(s.category))
       .map(s => s.id)
   );
 

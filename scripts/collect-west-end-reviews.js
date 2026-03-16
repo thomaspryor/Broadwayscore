@@ -28,6 +28,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet, normalizeCritic } = require('./lib/review-normalization');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const DEFAULT_INPUT = path.join(__dirname, '..', 'data', 'west-end-reviews-input.json');

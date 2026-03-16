@@ -31,6 +31,7 @@ const path = require('path');
 const https = require('https');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const { isNotBroadway } = require('./lib/content-filters');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 // ==================== Configuration ====================
 
@@ -442,7 +443,7 @@ async function scrapeArticles(targetShows) {
 
           // Filter: check title/description for tour/non-Broadway content
           const searchText = `${result.title} ${result.description}`;
-          if (isNotBroadway(searchText, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: show.category === 'west-end' })) {
+          if (isNotBroadway(searchText, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: isLondonMarket(show.category) })) {
             if (verbose) console.log(`    [Skip] Non-Broadway: ${result.title}`);
             continue;
           }

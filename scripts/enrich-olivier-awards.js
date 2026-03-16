@@ -11,6 +11,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 const AWARDS_PATH = path.join(__dirname, '..', 'data', 'awards.json');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -181,7 +182,7 @@ function matchShowToId(showTitle, year, shows) {
 
   // Pass 1: WE shows — exact or substring/base match (wide year tolerance)
   for (const show of shows) {
-    if (show.category !== 'west-end') continue;
+    if (!isLondonMarket(show.category)) continue;
     const showNorm = normalizeTitle(show.title);
     const showBase = getBaseTitle(show.title);
     const showYear = parseInt(show.id.match(/(\d{4})$/)?.[1] || '0');
@@ -196,7 +197,7 @@ function matchShowToId(showTitle, year, shows) {
 
   // Pass 2: All other shows
   for (const show of shows) {
-    if (show.category === 'west-end') continue;
+    if (isLondonMarket(show.category)) continue;
     const showNorm = normalizeTitle(show.title);
     const showBase = getBaseTitle(show.title);
     const showYear = parseInt(show.id.match(/(\d{4})$/)?.[1] || '0');

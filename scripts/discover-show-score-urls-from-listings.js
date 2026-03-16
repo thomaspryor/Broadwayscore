@@ -19,6 +19,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 const DATA_DIR = path.join(__dirname, '../data');
 const URLS_PATH = path.join(DATA_DIR, 'show-score-urls.json');
@@ -390,6 +391,7 @@ async function main() {
     broadway: undefined, // default (not off-broadway and not west-end)
     'off-broadway': 'off-broadway',
     'west-end': 'west-end',
+    'off-west-end': 'off-west-end',
   };
 
   function findBestMatch(listing, ourCategory, listingVenue) {
@@ -435,13 +437,13 @@ async function main() {
 
     // Filter by category
     let filtered;
-    if (ourCategory === 'west-end') {
-      filtered = candidates.filter(s => s.category === 'west-end');
+    if (isLondonMarket(ourCategory)) {
+      filtered = candidates.filter(s => isLondonMarket(s.category));
     } else if (ourCategory === 'off-broadway') {
       filtered = candidates.filter(s => s.category === 'off-broadway');
     } else {
-      // Broadway: exclude OB and WE
-      filtered = candidates.filter(s => s.category !== 'off-broadway' && s.category !== 'west-end');
+      // Broadway: exclude OB and London markets
+      filtered = candidates.filter(s => s.category !== 'off-broadway' && !isLondonMarket(s.category));
     }
 
     if (filtered.length === 0) {

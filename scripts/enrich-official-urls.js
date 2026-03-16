@@ -15,6 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -150,7 +151,7 @@ function isBlockedDomain(url) {
  */
 function buildSearchQuery(show) {
   const cat = show.category || 'broadway';
-  const market = cat === 'west-end' ? 'west end' : 'broadway';
+  const market = isLondonMarket(cat) ? 'west end' : 'broadway';
 
   // For short/common titles, add disambiguators
   const words = show.title.split(/\s+/).filter(w => w.length > 2);

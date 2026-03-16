@@ -40,7 +40,7 @@ let skippedAlready = 0;
 let skippedLegit = 0;
 
 const dirs = fs.readdirSync(REVIEW_TEXTS_DIR)
-  .filter(d => d.includes('west-end') && fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory());
+  .filter(d => (d.includes('west-end') || d.includes('off-west-end')) && fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory());
 
 for (const dir of dirs) {
   const dirPath = path.join(REVIEW_TEXTS_DIR, dir);

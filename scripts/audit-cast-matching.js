@@ -15,6 +15,7 @@ const path = require('path');
 
 // Import the matching functions from ibdb-dates.js (canonical source)
 const { normalizeForTitleMatch, titleMatchScore, extractTitleFromIBDBUrl } = require('./lib/ibdb-dates');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 // Load data
 const shows = JSON.parse(fs.readFileSync('data/shows.json', 'utf8')).shows;
@@ -42,7 +43,7 @@ for (const f of files) {
   const category = show.category || 'broadway';
 
   // Rule 4: Skip OB/WE entirely
-  if (category === 'off-broadway' || category === 'west-end') {
+  if (category === 'off-broadway' || isLondonMarket(category)) {
     skipped.push({
       showId: cast.showId,
       title: show.title,

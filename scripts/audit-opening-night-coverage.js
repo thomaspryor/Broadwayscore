@@ -15,6 +15,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 
@@ -57,7 +58,7 @@ function loadJSON(filename) {
 }
 
 function getExpectedOutlets(category) {
-  if (category === 'west-end') return { core: WE_EXPECTED, frequent: [], keyT2: [] };
+  if (isLondonMarket(category)) return { core: WE_EXPECTED, frequent: [], keyT2: [] };
   if (category === 'off-broadway') return { core: OB_EXPECTED, frequent: [], keyT2: [] };
   // Broadway (default)
   return { core: BROADWAY_CORE_T1, frequent: BROADWAY_FREQUENT_T1, keyT2: BROADWAY_KEY_T2 };

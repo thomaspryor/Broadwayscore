@@ -22,6 +22,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const CAST_DIR = path.join(__dirname, '..', 'data', 'cast');
@@ -87,7 +88,7 @@ async function searchCast(title, year, category) {
   const apiKey = process.env.SCRAPINGBEE_API_KEY;
   if (!apiKey) throw new Error('SCRAPINGBEE_API_KEY not set');
 
-  const isWestEnd = category === 'west-end';
+  const isWestEnd = isLondonMarket(category);
   const location = isWestEnd ? 'west end london' : 'off-broadway new york';
 
   // Broad query — no site: filters (they eliminate too many valid results for OB/WE)

@@ -9,6 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const cheerio = require('cheerio');
 const { resolveOutletFromCritic, resolveOutletFromUrl } = require('./lib/review-normalization');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 const archivePath = path.join(__dirname, '../data/aggregator-archive/show-score');
 const urlsPath = path.join(__dirname, '../data/show-score-urls.json');
@@ -28,7 +29,9 @@ function detectCategory(html, showId) {
   // Use shows.json category if available
   const show = showsById[showId];
   if (show?.category === 'off-broadway') return 'off-broadway';
-  if (show?.category === 'west-end' || (showId && showId.includes('west-end'))) return 'west-end';
+  if (isLondonMarket(show?.category)) return show.category;
+  if (showId && showId.includes('off-west-end')) return 'off-west-end';
+  if (showId && showId.includes('west-end')) return 'west-end';
 
   // Fall back to page content detection
   const canonicalMatch = html.match(/<link rel="canonical" href="([^"]+)"/);
@@ -169,7 +172,7 @@ function main() {
 
   let successCount = 0;
   let failCount = 0;
-  const categoryCounts = { broadway: 0, 'off-broadway': 0, 'west-end': 0 };
+  const categoryCounts = { broadway: 0, 'off-broadway': 0, 'west-end': 0, 'off-west-end': 0 };
 
   for (const showId of [...allShowIds].sort()) {
     const archiveFile = path.join(archivePath, `${showId}.html`);
@@ -215,7 +218,7 @@ function main() {
   fs.writeFileSync(outputPath, JSON.stringify(showScoreData, null, 2));
 
   console.log(`\n=== Summary ===`);
-  console.log(`Successful: ${successCount} (Broadway: ${categoryCounts.broadway}, Off-Broadway: ${categoryCounts['off-broadway']}, West End: ${categoryCounts['west-end']})`);
+  console.log(`Successful: ${successCount} (Broadway: ${categoryCounts.broadway}, Off-Broadway: ${categoryCounts['off-broadway']}, West End: ${categoryCounts['west-end']}, Off-West End: ${categoryCounts['off-west-end']})`);
   console.log(`Failed/Skipped: ${failCount}`);
   console.log(`Output written to: ${outputPath}`);
 }

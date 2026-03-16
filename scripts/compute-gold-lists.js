@@ -49,13 +49,14 @@ function isBroadway(show) {
 
 function isWestEnd(show) {
   if (!show) return false;
-  return show.category === 'west-end';
+  return isLondonMarket(show.category);
 }
 
 // ============================================
 // Outlet tier lookup — from outlet-registry.json (single source of truth)
 // ============================================
 const { getTierWeight, TIER_WEIGHTS } = require('./lib/outlet-tiers');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 // Thresholds (must match src/config/gold-lists.ts)
 const THRESHOLDS = {
