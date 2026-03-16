@@ -23,23 +23,26 @@ runs:
         # if no snapshot exists (backwards compat).
         MODIFIED=""
         for f in shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json outlet-registry.json diary-shows.json; do
-          # Use saved snapshot if available (protected from git checkout reverts)
-          COMPARE_SOURCE="data/$f"
-          if [ -f "/tmp/core-data-snapshot/$f" ]; then
-            COMPARE_SOURCE="/tmp/core-data-snapshot/$f"
-          fi
-          if [ -f "$COMPARE_SOURCE" ]; then
-            if [ ! -f "/tmp/core-data-checkout/$f" ]; then
-              # New file — always copy
-              cp -f "$COMPARE_SOURCE" /tmp/core-data-checkout/
-              MODIFIED="$MODIFIED $f"
-              echo "  New file: $f"
-            elif ! diff -q "$COMPARE_SOURCE" "/tmp/core-data-checkout/$f" > /dev/null 2>&1; then
-              # File was modified by this workflow
-              cp -f "$COMPARE_SOURCE" /tmp/core-data-checkout/
+          # Compare data/$f (post-script working dir) against checkout (baseline).
+          # If data/$f was reverted by git checkout, fall back to snapshot as copy source.
+          if [ -f "data/$f" ] && [ -f "/tmp/core-data-checkout/$f" ]; then
+            if ! diff -q "data/$f" "/tmp/core-data-checkout/$f" > /dev/null 2>&1; then
+              cp -f "data/$f" /tmp/core-data-checkout/
               MODIFIED="$MODIFIED $f"
               echo "  Modified: $f"
             fi
+          elif [ -f "/tmp/core-data-snapshot/$f" ] && [ -f "/tmp/core-data-checkout/$f" ]; then
+            # data/$f missing or reverted — try snapshot (pre-revert copy)
+            if ! diff -q "/tmp/core-data-snapshot/$f" "/tmp/core-data-checkout/$f" > /dev/null 2>&1; then
+              cp -f "/tmp/core-data-snapshot/$f" /tmp/core-data-checkout/
+              MODIFIED="$MODIFIED $f"
+              echo "  Modified (from snapshot): $f"
+            fi
+          elif [ -f "data/$f" ] && [ ! -f "/tmp/core-data-checkout/$f" ]; then
+            # New file
+            cp -f "data/$f" /tmp/core-data-checkout/
+            MODIFIED="$MODIFIED $f"
+            echo "  New file: $f"
           fi
         done
         if [ -z "$MODIFIED" ]; then
