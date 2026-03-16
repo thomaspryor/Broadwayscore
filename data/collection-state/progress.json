@@ -220,7 +220,16 @@
     "the-outsiders-2024/theatermania--adam-feldman.json",
     "the-outsiders-2024/timeout--adam-feldman.json",
     "the-reservoir-off-broadway-2026/theatermania--zachary-stewart.json",
-    "the-reservoir-off-broadway-2026/theatre-reviews-limited--david-roberts.json"
+    "the-reservoir-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
+    "the-unknown-off-broadway-2026/theatermania--zachary-stewart.json",
+    "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
+    "the-unknown-off-broadway-2026/timeout--adam-feldman.json",
+    "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "wicked-2003/theatermania--barbara-siegelscott-siegel.json",
+    "wicked-2003/theatermania--david-gordon.json",
+    "wicked-2003/wsj--terry-teachout.json",
+    "you-got-older-off-broadway-2026/theatermania--zachary-stewart.json",
+    "you-got-older-off-broadway-2026/timeout--unknown.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -251,7 +260,8 @@
     "the-devil-wears-prada-west-end-2024/guardian--arifa-akbar.json",
     "the-holy-rosenbergs-west-end-2026/guardian--david-jays.json",
     "the-lion-king-1997/timeout--adam-feldman.json",
-    "the-reservoir-off-broadway-2026/broadwaynews--nicole-rosky.json"
+    "the-reservoir-off-broadway-2026/broadwaynews--nicole-rosky.json",
+    "two-strangers-bway-2025/guardian--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -392,7 +402,13 @@
       "deep-azure-globe-west-end-2026/guardian--unknown.json",
       "the-outsiders-2024/theatermania--adam-feldman.json",
       "the-outsiders-2024/timeout--adam-feldman.json",
-      "the-reservoir-off-broadway-2026/theatre-reviews-limited--david-roberts.json"
+      "the-reservoir-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
+      "the-unknown-off-broadway-2026/theatermania--zachary-stewart.json",
+      "the-unknown-off-broadway-2026/timeout--adam-feldman.json",
+      "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "wicked-2003/theatermania--barbara-siegelscott-siegel.json",
+      "wicked-2003/theatermania--david-gordon.json",
+      "you-got-older-off-broadway-2026/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -516,11 +532,14 @@
       "the-lion-king-1997/nytimes--ben-brantley.json",
       "bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
       "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json",
-      "the-reservoir-off-broadway-2026/theatermania--zachary-stewart.json"
+      "the-reservoir-off-broadway-2026/theatermania--zachary-stewart.json",
+      "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
+      "wicked-2003/wsj--terry-teachout.json",
+      "you-got-older-off-broadway-2026/theatermania--zachary-stewart.json"
     ]
   },
   "startTime": "2026-03-16T10:39:31.889Z",
-  "lastProcessed": "the-reservoir-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
+  "lastProcessed": "you-got-older-off-broadway-2026/timeout--unknown.json",
   "log": [
     {
       "t": "2026-03-16T11:10:32.644Z",
@@ -750,6 +769,17 @@
     },
     {
       "t": "2026-03-16T11:50:36.958Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-16T11:55:22.320Z",
+      "event": "bb-session",
+      "session": "3f60e454",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-03-16T11:55:23.866Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

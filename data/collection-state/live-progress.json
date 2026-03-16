@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-16T11:53:44.292Z",
-  "processed": 221,
-  "failed": 29,
-  "successRate": "88.4%",
+  "updatedAt": "2026-03-16T11:56:30.012Z",
+  "processed": 230,
+  "failed": 30,
+  "successRate": "88.5%",
   "tierBreakdown": {
-    "playwright": 137,
+    "playwright": 143,
     "amp": 14,
     "browserbase": 26,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 9,
-    "archive": 64
+    "archive": 67
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-16T11:28:43.179Z",
-      "event": "bb-session",
-      "session": "071bb9a1",
-      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
-    },
-    {
-      "t": "2026-03-16T11:28:44.765Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
     {
       "t": "2026-03-16T11:30:38.022Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-16T11:50:36.958Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-16T11:55:22.320Z",
+      "event": "bb-session",
+      "session": "3f60e454",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-03-16T11:55:23.866Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
