@@ -1,0 +1,123 @@
+name: GA4 WE Query (one-time)
+on:
+  workflow_dispatch:
+jobs:
+  query:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Query GA4 for /west-end traffic
+        env:
+          GOOGLE_KEY: ${{ secrets.GOOGLE_INDEXING_KEY }}
+          GA4_PROPERTY: 524757094
+        run: |
+          echo "$GOOGLE_KEY" > /tmp/ga-key.json
+          pip install -q google-analytics-data google-auth
+          python3 << 'PYEOF'
+          import json, os
+          from google.analytics.data_v1beta import BetaAnalyticsDataClient
+          from google.analytics.data_v1beta.types import (
+              RunReportRequest, DateRange, Dimension, Metric, FilterExpression, Filter
+          )
+          from google.oauth2 import service_account
+
+          creds = service_account.Credentials.from_service_account_file(
+              '/tmp/ga-key.json',
+              scopes=['https://www.googleapis.com/auth/analytics.readonly']
+          )
+          client = BetaAnalyticsDataClient(credentials=creds)
+          prop = f"properties/{os.environ['GA4_PROPERTY']}"
+
+          # 1. All /west-end pageviews by date
+          print("=== /west-end/* pageviews by date (last 28 days) ===")
+          req = RunReportRequest(
+              property=prop,
+              date_ranges=[DateRange(start_date="28daysAgo", end_date="today")],
+              dimensions=[Dimension(name="date"), Dimension(name="pagePath")],
+              metrics=[Metric(name="screenPageViews"), Metric(name="totalUsers")],
+              dimension_filter=FilterExpression(
+                  filter=Filter(
+                      field_name="pagePath",
+                      string_filter=Filter.StringFilter(
+                          match_type=Filter.StringFilter.MatchType.BEGINS_WITH,
+                          value="/west-end"
+                      )
+                  )
+              ),
+              limit=200,
+              order_bys=[{"dimension": {"dimension_name": "date", "order_type": "ALPHANUMERIC"}, "desc": True}]
+          )
+          resp = client.run_report(req)
+          total_views = 0
+          total_users = 0
+          for row in resp.rows:
+              date = row.dimension_values[0].value
+              path = row.dimension_values[1].value
+              views = int(row.metric_values[0].value)
+              users = int(row.metric_values[1].value)
+              total_views += views
+              total_users += users
+              if views >= 2:
+                  print(f"  {date} | {path[:60]:60s} | views={views} users={users}")
+          print(f"\nTOTAL: {total_views} pageviews, {total_users} user-sessions on /west-end/*")
+
+          # 2. Event count for email_captured on /west-end pages
+          print("\n=== email_captured events on /west-end/* (last 28 days) ===")
+          req2 = RunReportRequest(
+              property=prop,
+              date_ranges=[DateRange(start_date="28daysAgo", end_date="today")],
+              dimensions=[Dimension(name="eventName"), Dimension(name="pagePath")],
+              metrics=[Metric(name="eventCount")],
+              dimension_filter=FilterExpression(
+                  and_group={"expressions": [
+                      FilterExpression(filter=Filter(
+                          field_name="pagePath",
+                          string_filter=Filter.StringFilter(
+                              match_type=Filter.StringFilter.MatchType.BEGINS_WITH,
+                              value="/west-end"
+                          )
+                      )),
+                      FilterExpression(filter=Filter(
+                          field_name="eventName",
+                          string_filter=Filter.StringFilter(
+                              match_type=Filter.StringFilter.MatchType.EXACT,
+                              value="email_captured"
+                          )
+                      ))
+                  ]}
+              ),
+              limit=50
+          )
+          try:
+              resp2 = client.run_report(req2)
+              for row in resp2.rows:
+                  print(f"  event={row.dimension_values[0].value} path={row.dimension_values[1].value} count={row.metric_values[0].value}")
+              if not resp2.rows:
+                  print("  No email_captured events on /west-end/* pages")
+          except Exception as e:
+              print(f"  Error: {e}")
+
+          # 3. ALL events on /west-end/* pages
+          print("\n=== All events on /west-end/* (last 28 days) ===")
+          req3 = RunReportRequest(
+              property=prop,
+              date_ranges=[DateRange(start_date="28daysAgo", end_date="today")],
+              dimensions=[Dimension(name="eventName")],
+              metrics=[Metric(name="eventCount")],
+              dimension_filter=FilterExpression(
+                  filter=Filter(
+                      field_name="pagePath",
+                      string_filter=Filter.StringFilter(
+                          match_type=Filter.StringFilter.MatchType.BEGINS_WITH,
+                          value="/west-end"
+                      )
+                  )
+              ),
+              limit=30
+          )
+          try:
+              resp3 = client.run_report(req3)
+              for row in resp3.rows:
+                  print(f"  {row.dimension_values[0].value}: {row.metric_values[0].value}")
+          except Exception as e:
+              print(f"  Error: {e}")
+          PYEOF
