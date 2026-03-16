@@ -45,10 +45,11 @@ const MOBILE_SHOWS_PATH = path.join(__dirname, '..', 'public', 'data', 'mobile-s
 const OUTLET_REGISTRY_PATH = path.join(DATA_DIR, 'outlet-registry.json');
 const FROM_EMAIL = 'updates@broadwayscorecard.com';
 const SITE_NAME = MARKET === 'west-end' ? 'West End Scorecard' : 'Broadway Scorecard';
-const MIN_REVIEWS = 12;
+// WE has ~15 reliable outlets vs Broadway's 40+; median WE show gets 10 scored reviews
+const MIN_REVIEWS = MARKET === 'west-end' ? 8 : 12;
 const MIN_T1_REVIEWS = 3;
-const MIN_T2_REVIEWS = 3;
-const MIN_HIGH_CONFIDENCE = 8; // Require 8+ reviews with high/medium confidence (full-text scored)
+const MIN_T2_REVIEWS = MARKET === 'west-end' ? 2 : 3;
+const MIN_HIGH_CONFIDENCE = MARKET === 'west-end' ? 6 : 8;
 
 // Resend segment IDs for Broadcasts API
 const RESEND_SEGMENT_ID = MARKET === 'west-end'

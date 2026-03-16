@@ -105,11 +105,12 @@ READY_OUTPUT=$(node -e "
   const t1 = showRevs.filter(r => { const o = outlets[r.outletId]; return o && o.tier === 1; }).length;
   const t2 = showRevs.filter(r => { const o = outlets[r.outletId]; return o && o.tier === 2; }).length;
   const hiConf = showRevs.filter(r => r.scoreConfidence === 'high' || r.scoreConfidence === 'medium').length;
+  const isWE = '${MARKET}' === 'west-end';
   const checks = [
-    ['Total scored', showRevs.length, 12],
+    ['Total scored', showRevs.length, isWE ? 8 : 12],
     ['T1 reviews', t1, 3],
-    ['T2 reviews', t2, 3],
-    ['High-confidence', hiConf, 8],
+    ['T2 reviews', t2, isWE ? 2 : 3],
+    ['High-confidence', hiConf, isWE ? 6 : 8],
   ];
   let allOk = true;
   for (const [name, val, need] of checks) {
@@ -215,8 +216,8 @@ echo ""
 if echo "$DRY_OUTPUT" | grep -q "DRY RUN"; then pass "Dry run mode activated"
 else fail "Dry run mode not detected"; fi
 
-if echo "$DRY_OUTPUT" | grep -q "Would send to"; then pass "Email would be sent to subscribers"
-elif echo "$DRY_OUTPUT" | grep -qi "Not ready\|⏳"; then fail "Show failed readiness check in broadcast script"
+if echo "$DRY_OUTPUT" | grep -q "Would broadcast to\|Would send to"; then pass "Email would be sent to subscribers"
+elif echo "$DRY_OUTPUT" | grep -qi "No shows are ready\|Not ready"; then fail "Show failed readiness check in broadcast script"
 elif echo "$DRY_OUTPUT" | grep -qi "No recently opened\|nothing to broadcast"; then fail "Broadcast script found no recently opened shows"
 else warn "Could not parse broadcast output — review above"; fi
 
