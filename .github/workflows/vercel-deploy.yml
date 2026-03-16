@@ -184,12 +184,9 @@ jobs:
           echo "Smoke test passed — production is live"
 
       - name: Content smoke test (Playwright)
-        continue-on-error: true
         run: |
           npx playwright install chromium --with-deps > /dev/null 2>&1
-          npx playwright test --project=chromium tests/e2e/smoke.spec.ts 2>&1 || {
-            echo "::warning::Playwright content smoke test failed — production is live but pages may have rendering issues"
-          }
+          npx playwright test --project=chromium tests/e2e/smoke.spec.ts
 
       - name: Dispatch async watermark update
         if: success()
