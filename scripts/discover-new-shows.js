@@ -322,6 +322,60 @@ async function fetchShowsFromTodayTixLondon() {
   return showsList;
 }
 
+// ── Theatremonkey — supplementary WE discovery source (catches shows TodayTix/OLT miss) ──
+
+const TM_INDEX_URL = 'https://www.theatremonkey.com/shows/';
+
+async function fetchShowsFromTheatremonkey() {
+  console.log('Fetching West End shows from Theatremonkey...');
+  try {
+    const response = await fetch(TM_INDEX_URL, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0)', Accept: 'text/html' }
+    });
+    if (!response.ok) {
+      console.log(`  Theatremonkey returned HTTP ${response.status}`);
+      return [];
+    }
+    const html = await response.text();
+    const cheerio = require('cheerio');
+    const $ = cheerio.load(html);
+    const seen = new Set();
+    const showsList = [];
+
+    $('a[href*="/show/"]').each((_, el) => {
+      const href = $(el).attr('href') || '';
+      const match = href.match(/\/show\/([^/]+)\/?$/);
+      if (!match) return;
+      const slug = match[1];
+      if (slug === 'shows' || seen.has(slug)) return;
+      const title = $(el).text().trim();
+      if (title.length < 2 || /^(Read more|Show Details|Reviews)/i.test(title)) return;
+      seen.add(slug);
+
+      // Clean Disney's prefix for consistency
+      const cleanedTitle = title.replace(/^Disney's\s+/i, '');
+      showsList.push({
+        title: cleanedTitle,
+        venue: 'TBA', // TM index doesn't include venue
+        slug: cleanedTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+        openingDate: null, // Dates are on individual pages, not the index
+        closingDate: null,
+        category: 'west-end', // TM only lists WE shows; dedup pipeline handles classification
+        description: '',
+      });
+    });
+
+    console.log(`Theatremonkey: ${showsList.length} shows on index`);
+    if (html.length > 10000 && showsList.length === 0) {
+      console.error('⚠️  WARNING: Theatremonkey page loaded but 0 shows parsed — HTML structure may have changed');
+    }
+    return showsList;
+  } catch (err) {
+    console.log(`  Theatremonkey fetch failed: ${err.message}`);
+    return [];
+  }
+}
+
 // ── Official London Theatre (SOLT) — supplementary WE discovery source ──
 
 const OLT_URL = 'https://officiallondontheatre.com/theatre-tickets/';
@@ -893,17 +947,19 @@ async function discoverShows() {
 
   // West End discovery via TodayTix London API + Official London Theatre (SOLT)
   if (includeWestEnd) {
-    // Fetch both sources in parallel
-    const [todayTixResult, oltResult] = await Promise.allSettled([
+    // Fetch all three sources in parallel
+    const [todayTixResult, oltResult, tmResult] = await Promise.allSettled([
       fetchShowsFromTodayTixLondon(),
-      fetchShowsFromOfficialLondonTheatre()
+      fetchShowsFromOfficialLondonTheatre(),
+      fetchShowsFromTheatremonkey()
     ]);
 
     const todayTixWEShows = todayTixResult.status === 'fulfilled' ? todayTixResult.value : [];
     const oltShows = oltResult.status === 'fulfilled' ? oltResult.value : [];
+    const tmShows = tmResult.status === 'fulfilled' ? tmResult.value : [];
 
     if (todayTixResult.status === 'rejected') {
-      console.log(`⚠️  TodayTix London API failed (${todayTixResult.reason?.message}), continuing with OLT`);
+      console.log(`⚠️  TodayTix London API failed (${todayTixResult.reason?.message}), continuing with OLT + TM`);
     } else {
       console.log(`Found ${todayTixWEShows.length} West End shows via TodayTix London API`);
       if (todayTixWEShows.length > 0 && todayTixWEShows.length < 20) {
@@ -912,20 +968,26 @@ async function discoverShows() {
     }
 
     if (oltResult.status === 'rejected') {
-      console.log(`⚠️  OLT fetch failed (${oltResult.reason?.message}), continuing with TodayTix only`);
+      console.log(`⚠️  OLT fetch failed (${oltResult.reason?.message}), continuing with other sources`);
     } else {
       console.log(`Found ${oltShows.length} West End shows via Official London Theatre`);
     }
 
-    if (todayTixWEShows.length === 0 && oltShows.length === 0) {
-      console.log(`⚠️  CRITICAL: Both West End sources returned 0 shows — check API/scraper health`);
+    if (tmResult.status === 'rejected') {
+      console.log(`⚠️  Theatremonkey fetch failed (${tmResult.reason?.message}), continuing with other sources`);
+    } else {
+      console.log(`Found ${tmShows.length} West End shows via Theatremonkey`);
+    }
+
+    if (todayTixWEShows.length === 0 && oltShows.length === 0 && tmShows.length === 0) {
+      console.log(`⚠️  CRITICAL: All three West End sources returned 0 shows — check API/scraper health`);
     }
 
     // Cross-source divergence logging (diagnostic)
     logWESourceDivergence(todayTixWEShows, oltShows);
 
-    // TodayTix first (richer metadata with todayTixCategory), OLT second — dedup pipeline handles overlap
-    discoveredShows.push(...todayTixWEShows, ...oltShows);
+    // TodayTix first (richer metadata), OLT second, TM third — dedup pipeline handles overlap
+    discoveredShows.push(...todayTixWEShows, ...oltShows, ...tmShows);
     console.log('');
   }
 
