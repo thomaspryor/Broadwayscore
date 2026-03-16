@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-16T15:35:49.783Z",
+  "generatedAt": "2026-03-16T20:03:18.620Z",
   "summary": {
-    "totalShows": 2301,
+    "totalShows": 2320,
     "openShows": 135,
     "closedShows": 1997
   },
@@ -338,7 +338,6 @@
       "body-count-off-broadway-2026",
       "no-excuses-no-limits-off-broadway-2026",
       "pen-pals-off-broadway-2025",
-      "perfect-crime-off-broadway-1987",
       "11-to-midnight-off-broadway-2026",
       "romeo-and-juliet-suite-off-broadway-2026",
       "an-ark-off-broadway-2026",
@@ -638,8 +637,26 @@
         "title": "The Office! A Musical Parody",
         "issues": [
           {
+            "type": "missing_tickets",
+            "severity": "high"
+          },
+          {
             "type": "missing_age_rec",
             "severity": "low"
+          }
+        ]
+      },
+      {
+        "id": "perfect-crime-off-broadway-1987",
+        "title": "Perfect Crime",
+        "issues": [
+          {
+            "type": "missing_tickets",
+            "severity": "high"
+          },
+          {
+            "type": "no_closing_date",
+            "severity": "info"
           }
         ]
       },
@@ -1360,6 +1377,10 @@
             "severity": "medium"
           },
           {
+            "type": "missing_tickets",
+            "severity": "high"
+          },
+          {
             "type": "missing_cast",
             "severity": "medium"
           },
@@ -1484,6 +1505,10 @@
         "title": "The Play That Goes Wrong",
         "issues": [
           {
+            "type": "missing_tickets",
+            "severity": "high"
+          },
+          {
             "type": "missing_creative",
             "severity": "medium"
           },
@@ -1497,6 +1522,10 @@
         "id": "chamber-magic-off-broadway-2022",
         "title": "Chamber Magic",
         "issues": [
+          {
+            "type": "missing_tickets",
+            "severity": "high"
+          },
           {
             "type": "missing_age_rec",
             "severity": "low"
@@ -1660,6 +1689,7 @@
         "LOS SOLES TRUNCOS",
         "La Llamada",
         "Drunk Romeo & Juliet",
+        "Perfect Crime",
         "La Breve y Maravillosa Vida de Oscar Wao",
         "Drunk Shakespeare",
         "Age Is a Feeling",
@@ -1732,13 +1762,18 @@
         "The Play That Goes Wrong"
       ],
       "missing_tickets": [
+        "The Office! A Musical Parody",
+        "Perfect Crime",
         "Manic Street Creature",
         "I'm Every Woman, The Chaka Khan Musical",
         "Summerfolk",
         "It Walks Around The House At Night",
+        "Cabaret at the Kit Kat Club",
         "Dracula",
         "Garry Starr: Classic Penguins",
         "Operation Mincemeat",
+        "The Play That Goes Wrong",
+        "Chamber Magic",
         "The Hunger Games On Stage",
         "Broken Glass"
       ]
