@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-15T20:57:27.494Z",
-  "processed": 369,
-  "failed": 1616,
-  "successRate": "18.6%",
+  "updatedAt": "2026-03-16T04:46:32.488Z",
+  "processed": 374,
+  "failed": 1621,
+  "successRate": "18.7%",
   "tierBreakdown": {
-    "playwright": 220,
+    "playwright": 224,
     "amp": 24,
     "browserbase": 52,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 46,
-    "archive": 115
+    "archiveToday": 50,
+    "archive": 116
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-03-15T16:02:28.530Z",
-      "event": "bb-session",
-      "session": "c65fabf1",
-      "url": "https://www.nytimes.com/2025/10/16/theater/ragtime-review-henry-debessonet.html"
-    },
-    {
-      "t": "2026-03-15T16:02:30.326Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-15T16:10:18.159Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-15T16:58:13.563Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-16T04:42:37.449Z",
+      "event": "bb-session",
+      "session": "ca5a2811",
+      "url": "https://www.nytimes.com/2026/02/05/theater/arcadia-tom-stoppard-old-vic-london.h"
+    },
+    {
+      "t": "2026-03-16T04:42:39.015Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
