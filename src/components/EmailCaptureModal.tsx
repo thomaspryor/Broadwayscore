@@ -103,6 +103,9 @@ export default function EmailCaptureModal({
   // Only show extra fields (name, company, role) for biz-specific triggers
   const showExtraFields = trigger === 'csv_download' || trigger === 'json_download' || trigger === 'page_view_limit';
 
+  // Don't autoFocus for passive triggers — keyboard pop mid-scroll is jarring on mobile
+  const shouldAutoFocus = trigger !== 'scroll_depth' && trigger !== 'exit_intent';
+
   // Track modal shown
   useEffect(() => {
     if (isOpen) {
@@ -222,7 +225,7 @@ export default function EmailCaptureModal({
                 placeholder="you@gmail.com"
                 required
                 className="w-full px-4 py-3 bg-surface border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all"
-                autoFocus
+                autoFocus={shouldAutoFocus}
               />
             </div>
 
