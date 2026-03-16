@@ -139,14 +139,8 @@ function extractReviewData(html) {
   }
 }
 
-function buildSeatplanUrl(title) {
-  // Check manual overrides first
-  if (SEATPLAN_OVERRIDES[title]) {
-    return `https://seatplan.com/london/${SEATPLAN_OVERRIDES[title]}-tickets/`;
-  }
-
-  // Build slug from title: transliterate accents, lowercase, strip non-alphanumeric, hyphenate
-  const slug = title
+function titleToSlug(title) {
+  return title
     .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // é→e, ü→u, etc.
     .toLowerCase()
     .replace(/&/g, 'and')
@@ -154,8 +148,38 @@ function buildSeatplanUrl(title) {
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
     .trim();
+}
 
-  return `https://seatplan.com/london/${slug}-tickets/`;
+function buildSeatplanUrls(title) {
+  if (SEATPLAN_OVERRIDES[title]) {
+    return [`https://seatplan.com/london/${SEATPLAN_OVERRIDES[title]}-tickets/`];
+  }
+
+  const baseSlug = titleToSlug(title);
+  const variants = [baseSlug];
+
+  // Drop leading "the-" (The Lion King → lion-king)
+  if (baseSlug.startsWith('the-')) {
+    variants.push(baseSlug.replace(/^the-/, ''));
+  }
+  // Drop trailing "-the-musical" (SIX the Musical → six)
+  if (baseSlug.endsWith('-the-musical')) {
+    variants.push(baseSlug.replace(/-the-musical$/, ''));
+    // Also try without "the-" AND "-the-musical"
+    if (baseSlug.startsWith('the-')) {
+      variants.push(baseSlug.replace(/^the-/, '').replace(/-the-musical$/, ''));
+    }
+  }
+  // Drop trailing "-musical" (Kinky Boots The Musical → kinky-boots-the → kinky-boots)
+  if (baseSlug.endsWith('-musical') && !baseSlug.endsWith('-the-musical')) {
+    variants.push(baseSlug.replace(/-(?:a-)?musical$/, ''));
+  }
+  // Drop subtitle after colon/dash (Harry Potter And The Cursed Child: Both Parts → harry-potter)
+  const colonIdx = baseSlug.indexOf('-both-parts');
+  if (colonIdx > 0) variants.push(baseSlug.slice(0, colonIdx));
+
+  const unique = [...new Set(variants)];
+  return unique.map(s => `https://seatplan.com/london/${s}-tickets/`);
 }
 
 async function fetchSeatplanPage(url) {
@@ -222,23 +246,26 @@ async function main() {
 
     console.log(`[${i + 1}/${toProcess.length}] ${title} (${show.id})`);
 
-    const url = buildSeatplanUrl(title);
-    console.log(`  URL: ${url}`);
-
+    const urlVariants = buildSeatplanUrls(title);
     let html = null;
     let lastError = null;
 
-    for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
-      if (attempt > 0) {
-        console.log(`  Retry ${attempt}/${MAX_RETRIES}...`);
-        await sleep(RETRY_DELAY_MS * attempt);
+    for (const url of urlVariants) {
+      console.log(`  URL: ${url}`);
+      for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+        if (attempt > 0) {
+          console.log(`  Retry ${attempt}/${MAX_RETRIES}...`);
+          await sleep(RETRY_DELAY_MS * attempt);
+        }
+        try {
+          html = await fetchSeatplanPage(url);
+          break;
+        } catch (e) {
+          lastError = e;
+        }
       }
-      try {
-        html = await fetchSeatplanPage(url);
-        break;
-      } catch (e) {
-        lastError = e;
-      }
+      if (html) break;
+      if (urlVariants.indexOf(url) < urlVariants.length - 1) await sleep(RATE_LIMIT_MS);
     }
 
     if (!html) {
@@ -246,7 +273,7 @@ async function main() {
         console.log(`  ❌ All attempts failed: ${lastError.message}`);
         stats.errors++;
       } else {
-        console.log(`  ⏭️  Not found on SeatPlan (404)`);
+        console.log(`  ⏭️  Not found on SeatPlan (all variants 404)`);
         stats.notFound++;
       }
 

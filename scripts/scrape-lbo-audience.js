@@ -131,19 +131,35 @@ function buildLboUrlVariants(title) {
   const baseSlug = titleToSlug(title);
   variants.push(baseSlug);
 
-  // Try without leading "the-"
+  // Drop leading "the-" (The Lion King → lion-king)
   if (baseSlug.startsWith('the-')) {
     variants.push(baseSlug.replace(/^the-/, ''));
   }
 
-  // Try without trailing "-the-musical"
+  // Drop trailing "-the-musical" (SIX the Musical → six)
   if (baseSlug.endsWith('-the-musical')) {
     variants.push(baseSlug.replace(/-the-musical$/, ''));
+    if (baseSlug.startsWith('the-')) {
+      variants.push(baseSlug.replace(/^the-/, '').replace(/-the-musical$/, ''));
+    }
   }
 
-  // Try without trailing "-a-musical" or "-musical"
-  if (baseSlug.endsWith('-musical')) {
+  // Drop trailing "-musical" (Kinky Boots The Musical → kinky-boots)
+  if (baseSlug.endsWith('-musical') && !baseSlug.endsWith('-the-musical')) {
     variants.push(baseSlug.replace(/-(?:a-)?musical$/, ''));
+  }
+
+  // Drop subtitle after "both-parts" or long subtitles
+  const colonIdx = baseSlug.indexOf('-both-parts');
+  if (colonIdx > 0) variants.push(baseSlug.slice(0, colonIdx));
+
+  // For very long slugs, try just the first significant words
+  // (e.g., "stranger-things-the-first-shadow" → "stranger-things")
+  const parts = baseSlug.split('-');
+  if (parts.length > 4) {
+    // Try first 2-3 words
+    variants.push(parts.slice(0, 2).join('-'));
+    variants.push(parts.slice(0, 3).join('-'));
   }
 
   // Deduplicate
