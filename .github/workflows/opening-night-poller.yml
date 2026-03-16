@@ -106,7 +106,10 @@ jobs:
               cutoff.setDate(cutoff.getDate() - $LOOKBACK);
               cutoff.setHours(0,0,0,0);
               const opened = shows.filter(s => {
-                if (s.status !== 'open' || !s.openingDate) return false;
+                if (!s.openingDate) return false;
+                // Accept 'open' OR 'upcoming' with today's opening date
+                // (status flip can be lost to concurrent pushes)
+                if (s.status !== 'open' && s.status !== 'upcoming') return false;
                 const cat = s.category || 'broadway';
                 if (cat !== 'broadway' && cat !== 'west-end') return false;
                 const d = new Date(s.openingDate);
