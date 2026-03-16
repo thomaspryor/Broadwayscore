@@ -27,7 +27,7 @@ export interface BrowsePageConfig {
   sort?: 'score' | 'opening-date' | 'opening-date-asc' | 'closing-date' | 'title' | 'performances';
   limit?: number;
   relatedPages: string[]; // Slugs of related browse pages
-  source?: 'broadway' | 'west-end' | 'off-broadway'; // Data source (default: broadway)
+  source?: 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end'; // Data source (default: broadway)
 }
 
 // Helper to parse runtime string to minutes
@@ -842,6 +842,76 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     sort: 'opening-date',
     source: 'west-end',
     relatedPages: ['upcoming-west-end-shows', 'west-end-shows', 'new-broadway-shows-2026'],
+  },
+
+  // === Off-West End Browse Pages ===
+
+  'off-west-end-shows': {
+    slug: 'off-west-end-shows',
+    title: 'Off-West End Shows',
+    h1: 'Off-West End Shows — London Theatre Beyond the West End',
+    metaTitle: `Off-West End Shows Playing Now (${CURRENT_YEAR})`,
+    metaDescription: 'Every Off-West End show currently playing in London, ranked by CriticScore. Aggregated reviews from top UK theatre critics.',
+    intro: 'Every Off-West End show currently playing or in previews in London, ranked by aggregated CriticScore ratings. Off-West End is where London\'s most adventurous, innovative, and intimate theatre happens — from boundary-pushing new works at the Donmar Warehouse and Kiln Theatre to acclaimed revivals in fringe venues. We collect reviews from dozens of professional critics and combine them into a single weighted score. Whether you\'re a dedicated London theatregoer or looking beyond Shaftesbury Avenue, find your next show here.',
+    filter: (show) => show.status === 'open' || show.status === 'previews',
+    sort: 'score',
+    source: 'off-west-end',
+    relatedPages: ['best-off-west-end-shows', 'best-off-west-end-musicals', 'best-off-west-end-plays', 'upcoming-off-west-end-shows'],
+  },
+
+  'best-off-west-end-shows': {
+    slug: 'best-off-west-end-shows',
+    title: 'Best Off-West End Shows',
+    h1: 'Best Off-West End Shows — Top-Rated in London',
+    metaTitle: `Best Off-West End Shows (${CURRENT_YEAR}) — Ranked by Critics`,
+    metaDescription: 'The best Off-West End shows in London right now, ranked by aggregated CriticScore from The Guardian, Telegraph, Time Out, and more.',
+    intro: 'The highest-rated Off-West End shows currently playing in London, ranked by aggregated CriticScore. Only shows with at least three professional reviews qualify for this list, ensuring every ranking reflects a meaningful critical consensus. Off-West End consistently produces some of London\'s most acclaimed theatre — intimate venues, bold storytelling, and performances that rival anything in the West End. These are the Off-West End shows critics are raving about right now.',
+    filter: (show) => {
+      if (show.status !== 'open' && show.status !== 'previews') return false;
+      return (show.criticScore?.reviewCount ?? 0) >= 3;
+    },
+    sort: 'score',
+    source: 'off-west-end',
+    relatedPages: ['off-west-end-shows', 'best-off-west-end-musicals', 'best-off-west-end-plays', 'best-west-end-musicals'],
+  },
+
+  'best-off-west-end-musicals': {
+    slug: 'best-off-west-end-musicals',
+    title: 'Best Off-West End Musicals',
+    h1: 'Best Off-West End Musicals in London',
+    metaTitle: `Best Off-West End Musicals (${CURRENT_YEAR}) — Ranked`,
+    metaDescription: 'The best Off-West End musicals in London right now, ranked by CriticScore. Intimate, inventive musicals beyond the West End.',
+    intro: 'Off-West End is where some of the most inventive, daring, and intimate musicals in London come to life. From breakout hits that go on to transfer to the West End to hidden gems that thrive in smaller venues, these productions showcase the incredible range of musical theatre beyond Shaftesbury Avenue. Ranked by aggregated CriticScore from professional critics, these are the Off-West End musicals worth seeing right now.',
+    filter: (show) => (show.status === 'open' || show.status === 'previews') && show.type === 'musical' && (show.criticScore?.reviewCount ?? 0) >= 3,
+    sort: 'score',
+    source: 'off-west-end',
+    relatedPages: ['best-off-west-end-plays', 'off-west-end-shows', 'best-off-west-end-shows', 'best-west-end-musicals'],
+  },
+
+  'best-off-west-end-plays': {
+    slug: 'best-off-west-end-plays',
+    title: 'Best Off-West End Plays',
+    h1: 'Best Off-West End Plays in London',
+    metaTitle: `Best Off-West End Plays (${CURRENT_YEAR}) — Ranked`,
+    metaDescription: 'The best Off-West End plays in London right now, ranked by CriticScore. Dramas, comedies, and experimental works in intimate venues.',
+    intro: 'Off-West End is the beating heart of London\'s dramatic theatre scene. These plays — from searing dramas to sharp comedies to genre-defying experimental works — represent the full spectrum of what Off-West End does best: intimate storytelling in venues where you\'re close enough to see every expression on an actor\'s face. Ranked by aggregated CriticScore from professional critics, these are the Off-West End plays getting the best reviews right now.',
+    filter: (show) => (show.status === 'open' || show.status === 'previews') && show.type === 'play' && (show.criticScore?.reviewCount ?? 0) >= 3,
+    sort: 'score',
+    source: 'off-west-end',
+    relatedPages: ['best-off-west-end-musicals', 'off-west-end-shows', 'best-off-west-end-shows', 'best-west-end-plays'],
+  },
+
+  'upcoming-off-west-end-shows': {
+    slug: 'upcoming-off-west-end-shows',
+    title: 'Upcoming Off-West End Shows',
+    h1: 'Upcoming Off-West End Shows in London',
+    metaTitle: `Upcoming Off-West End Shows (${CURRENT_YEAR})`,
+    metaDescription: 'All upcoming Off-West End shows opening in London. New plays, musicals, and revivals coming to Off-West End venues, sorted by opening date.',
+    intro: 'Every Off-West End show announced for London venues, sorted by opening date. Off-West End is where tomorrow\'s West End hits get their start and where the most exciting new voices in theatre debut their work. From world premieres at iconic venues like the Donmar Warehouse and Almeida to transfers from regional theatres, these are the Off-West End productions on the horizon.',
+    filter: (show) => show.status === 'upcoming',
+    sort: 'opening-date-asc',
+    source: 'off-west-end',
+    relatedPages: ['off-west-end-shows', 'best-off-west-end-shows', 'upcoming-west-end-shows'],
   },
 
   // === Off-Broadway Browse Pages ===

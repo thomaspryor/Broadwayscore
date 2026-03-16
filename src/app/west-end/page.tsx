@@ -1,13 +1,13 @@
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { getWestEndShows } from '@/lib/data-core';
+import { getWestEndShows, getOffWestEndShows } from '@/lib/data-core';
 import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
+import { hasEnoughReviews } from '@/config/score-buckets';
 import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
 import WestEndPageClient from '@/components/WestEndPageClient';
 import type { WestEndShow } from '@/components/WestEndPageClient';
 import { featureFlags } from '@/config/feature-flags';
-import { isOffWestEndVenue } from '@/lib/venue-classification';
 
 export const metadata: Metadata = {
   title: 'West End Scorecard - London Theatre Ratings & Reviews',
@@ -86,6 +86,15 @@ export default function WestEndPage() {
   // Count reviews across scored WE shows only
   const totalReviews = scoredShows.reduce((sum, s) => sum + (s.criticScore?.reviewCount ?? 0), 0);
 
+  // Best Off-West End shows for featured row
+  const bestOweShows = getOffWestEndShows()
+    .filter(s => s.criticScore?.score && hasEnoughReviews(
+      s.criticScore.reviewCount ?? 0, s.category,
+      (s.criticScore.tier1Count ?? 0) + (s.criticScore.tier2Count ?? 0)
+    ))
+    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
+    .map(serializeShow);
+
   return (
     <>
       <script
@@ -99,6 +108,7 @@ export default function WestEndPage() {
           totalShows={scoredShows.length}
           totalReviews={totalReviews}
           scoredShows={scoredShows.length}
+          bestOweShows={bestOweShows}
         />
       </Suspense>
     </>
