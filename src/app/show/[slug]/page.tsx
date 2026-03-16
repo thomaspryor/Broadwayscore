@@ -76,10 +76,10 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const synopsisSnippet = show.synopsis
     ? show.synopsis.slice(0, 120).replace(/\s+\S*$/, '...')
     : '';
-  const isWestEndMeta = show.category === 'west-end';
+  const isLondonMeta = show.category === 'west-end' || show.category === 'off-west-end';
   const isOffBroadwayMeta = show.category === 'off-broadway';
-  const siteName = isWestEndMeta ? 'West End Scorecard' : isOffBroadwayMeta ? 'Off-Broadway Scorecard' : 'Broadway Scorecard';
-  const marketLabel = isWestEndMeta ? 'in the West End' : isOffBroadwayMeta ? 'Off-Broadway' : 'on Broadway';
+  const siteName = isLondonMeta ? 'West End Scorecard' : isOffBroadwayMeta ? 'Off-Broadway Scorecard' : 'Broadway Scorecard';
+  const marketLabel = isLondonMeta ? 'in the West End' : isOffBroadwayMeta ? 'Off-Broadway' : 'on Broadway';
   const statusLabel = show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'In Previews' : show.status === 'upcoming' ? 'Upcoming' : '';
   const description = score
     ? `${show.title} ${marketLabel} scores ${roundedScore}/100 from ${reviewCount} critic reviews.${statusLabel ? ` ${statusLabel} at ${show.venue}.` : ''} ${synopsisSnippet}`.trim().slice(0, 160)
@@ -211,7 +211,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
   const lastUpdated = getShowLastUpdated(show.id);
   const showSchema = generateShowSchema(show, lastUpdated || undefined);
-  const isWestEnd = show.category === 'west-end';
+  const isWestEnd = show.category === 'west-end' || show.category === 'off-west-end';
   const isOffBroadway = show.category === 'off-broadway';
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
@@ -329,8 +329,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 {/* Pills */}
                 <div className="flex flex-wrap gap-1.5 mb-2">
                   {show.category && show.category !== 'broadway' && (
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] leading-none font-semibold uppercase tracking-wide ${show.category === 'west-end' ? 'bg-teal-500/15 text-teal-400 border border-teal-500/30' : 'bg-indigo-500/15 text-indigo-400 border border-indigo-500/30'}`}>
-                      {show.category === 'west-end' ? 'West End' : 'Off-Bway'}
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] leading-none font-semibold uppercase tracking-wide ${show.category === 'west-end' ? 'bg-teal-500/15 text-teal-400 border border-teal-500/30' : show.category === 'off-west-end' ? 'bg-violet-500/15 text-violet-400 border border-violet-500/30' : 'bg-indigo-500/15 text-indigo-400 border border-indigo-500/30'}`}>
+                      {show.category === 'west-end' ? 'West End' : show.category === 'off-west-end' ? 'Off-West End' : 'Off-Bway'}
                     </span>
                   )}
                   <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] leading-none font-semibold uppercase tracking-wide ${show.type === 'musical' ? 'bg-purple-500/15 text-purple-400 border border-purple-500/30' : 'bg-blue-500/15 text-blue-400 border border-blue-500/30'}`}>
@@ -534,7 +534,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               {/* Compact pill labels under poster — mobile only */}
               <div className="flex sm:hidden flex-wrap justify-center gap-x-1.5 gap-y-0.5 text-[9px] font-semibold uppercase tracking-wide leading-none" data-testid="show-pills-poster">
                 {show.category && show.category !== 'broadway' && (
-                  <span className={show.category === 'west-end' ? 'text-teal-400' : 'text-indigo-400'}>{show.category === 'west-end' ? 'West End' : 'Off-Bway'}</span>
+                  <span className={show.category === 'west-end' ? 'text-teal-400' : show.category === 'off-west-end' ? 'text-violet-400' : 'text-indigo-400'}>{show.category === 'west-end' ? 'West End' : show.category === 'off-west-end' ? 'Off-West End' : 'Off-Bway'}</span>
                 )}
                 <span className={show.type === 'musical' ? 'text-purple-400' : 'text-blue-400'}>{show.type === 'musical' ? 'Musical' : 'Play'}</span>
                 <span className={show.isRevival ? 'text-gray-400' : 'text-amber-400'}>{show.isRevival ? 'Revival' : 'Original'}</span>
@@ -980,7 +980,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               buzz={audienceBuzz}
               showScoreUrl={audienceBuzz.sources.showScore ? getShowScoreUrl(show.id) : undefined}
               limitedSources={isHistorical && sourceCount <= 1}
-              market={show.category === 'west-end' ? 'west-end' : 'broadway'}
+              market={show.category === 'west-end' || show.category === 'off-west-end' ? 'west-end' : 'broadway'}
             />
           );
         })() : show.status === 'previews' || show.status === 'upcoming' ? (
@@ -1232,13 +1232,13 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             </h3>
             <div className="space-y-2">
               {otherProductions.map(prod => {
-                const market = prod.category === 'west-end' ? 'West End' : prod.category === 'off-broadway' ? 'Off-Broadway' : 'Broadway';
+                const market = prod.category === 'west-end' ? 'West End' : prod.category === 'off-west-end' ? 'Off-West End' : prod.category === 'off-broadway' ? 'Off-Broadway' : 'Broadway';
                 const year = prod.openingDate ? new Date(prod.openingDate).getFullYear() : null;
                 const statusLabel = prod.status === 'open' ? 'Now Playing' : prod.status === 'previews' ? 'In Previews' : prod.status === 'upcoming' ? 'Upcoming' : 'Closed';
                 return (
                   <Link key={prod.id} href={`/show/${prod.slug}`} className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5 transition-colors group">
                     <span className="text-sm text-white group-hover:text-brand transition-colors">{prod.title}{year ? ` (${year})` : ''}</span>
-                    <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium ${prod.category === 'west-end' ? 'bg-teal-500/20 text-teal-400' : prod.category === 'off-broadway' ? 'bg-indigo-500/20 text-indigo-400' : 'bg-amber-500/20 text-amber-400'}`}>{market}</span>
+                    <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium ${prod.category === 'west-end' ? 'bg-teal-500/20 text-teal-400' : prod.category === 'off-west-end' ? 'bg-violet-500/20 text-violet-400' : prod.category === 'off-broadway' ? 'bg-indigo-500/20 text-indigo-400' : 'bg-amber-500/20 text-amber-400'}`}>{market}</span>
                     <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${prod.status === 'open' ? 'bg-emerald-500/20 text-emerald-400' : prod.status === 'previews' ? 'bg-purple-500/20 text-purple-400' : prod.status === 'upcoming' ? 'bg-blue-500/20 text-blue-400' : 'bg-gray-500/20 text-gray-400'}`}>{statusLabel}</span>
                   </Link>
                 );

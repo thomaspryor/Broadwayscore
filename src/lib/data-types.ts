@@ -210,13 +210,7 @@ export interface AudienceBuzzData {
   title: string;
   designation: AudienceBuzzDesignation;
   combinedScore: number;
-  sources: {
-    showScore: AudienceBuzzSource | null;
-    mezzanine: AudienceBuzzSource | null;
-    reddit: AudienceBuzzSource | null;
-    theatr: AudienceBuzzSource | null;
-    broadwayCom: AudienceBuzzSource | null;
-  };
+  sources: Record<string, AudienceBuzzSource | null>;
 }
 
 // ============================================

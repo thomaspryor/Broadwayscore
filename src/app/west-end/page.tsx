@@ -30,7 +30,7 @@ function serializeShow(show: ReturnType<typeof getWestEndShows>[number]): WestEn
     slug: show.slug,
     title: show.title,
     venue: show.venue,
-    isOffWestEnd: isOffWestEndVenue(show.venue),
+    isOffWestEnd: show.category === 'off-west-end',
     openingDate: show.openingDate,
     closingDate: show.closingDate ?? undefined,
     status: show.status,
@@ -44,7 +44,7 @@ function serializeShow(show: ReturnType<typeof getWestEndShows>[number]): WestEn
     audienceCombinedScore: buzz && hasEnoughAudienceReviews(buzz) ? buzz.combinedScore : null,
     audienceGrade: buzz && hasEnoughAudienceReviews(buzz) ? getAudienceGrade(buzz.combinedScore) : null,
     creativeTeam: show.creativeTeam,
-    category: 'west-end',
+    category: (show.category as 'west-end' | 'off-west-end') || 'west-end',
   };
 }
 
