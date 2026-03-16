@@ -265,7 +265,7 @@ async function runRSSFeeds(showTitle, knownUrls) {
 /**
  * Run Layer 3: Direct Site Search
  */
-async function runSiteSearch(showTitle, missingOutletIds, knownUrls) {
+async function runSiteSearch(showTitle, missingOutletIds, knownUrls, market = 'broadway') {
   console.log('\n[Layer 3] Site Search...');
 
   // Only search outlets that have site-search configs AND are missing
@@ -282,6 +282,7 @@ async function runSiteSearch(showTitle, missingOutletIds, knownUrls) {
       knownUrls,
       verbose: true,
       skipJs: !process.env.SCRAPINGBEE_API_KEY, // Skip JS-rendered if no API key
+      market,
     });
     console.log(`  [Layer 3 Total] ${results.length} reviews from site search`);
     return results;
@@ -448,7 +449,7 @@ async function pollCycle() {
     const missingIds = getMissingT1T2Outlets(SHOW_ID, market)
       .map(o => o.id)
       .filter(id => !foundOutletIds.has(id.toLowerCase()));
-    siteSearchResults = await runSiteSearch(show.title, missingIds, knownUrls);
+    siteSearchResults = await runSiteSearch(show.title, missingIds, knownUrls, market);
   } else {
     console.log('\n[Layer 3] Site Search... SKIPPED (--skip-site-search)');
   }

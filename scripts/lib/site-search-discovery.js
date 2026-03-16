@@ -21,8 +21,10 @@ const { URL } = require('url');
  * Each entry: outlet search URL template + how to extract result links.
  *
  * {TITLE} is replaced with URL-encoded show title.
+ * {MARKET_KEYWORD} is replaced with market-specific keyword (broadway/london+theatre).
  * linkPattern extracts review URLs from the HTML response.
  * requiresJs: true means the search page needs JavaScript rendering.
+ * market: limits which markets this endpoint is used for (omit for all markets).
  */
 const SITE_SEARCH_ENDPOINTS = {
   // --- SSR (plain HTTP works) ---
@@ -32,6 +34,7 @@ const SITE_SEARCH_ENDPOINTS = {
     domain: 'nypost.com',
     linkPattern: /href="(https:\/\/nypost\.com\/\d{4}\/\d{2}\/\d{2}\/[^"]*review[^"]*)"/gi,
     requiresJs: false,
+    market: 'broadway',
   },
   'thewrap': {
     name: 'The Wrap',
@@ -39,6 +42,7 @@ const SITE_SEARCH_ENDPOINTS = {
     domain: 'thewrap.com',
     linkPattern: /href="(https:\/\/www\.thewrap\.com\/[^"]*review[^"]*)"/gi,
     requiresJs: false,
+    market: 'broadway',
   },
   'observer': {
     name: 'Observer',
@@ -46,10 +50,11 @@ const SITE_SEARCH_ENDPOINTS = {
     domain: 'observer.com',
     linkPattern: /href="(https:\/\/observer\.com\/\d{4}\/\d{2}\/[^"]*review[^"]*)"/gi,
     requiresJs: false,
+    market: 'broadway',
   },
   'daily-beast': {
     name: 'The Daily Beast',
-    url: 'https://www.thedailybeast.com/search?q={TITLE}+broadway+review',
+    url: 'https://www.thedailybeast.com/search?q={TITLE}+{MARKET_KEYWORD}+review',
     domain: 'thedailybeast.com',
     linkPattern: /href="(https:\/\/www\.thedailybeast\.com\/[^"]*)/gi,
     requiresJs: false,
@@ -72,21 +77,40 @@ const SITE_SEARCH_ENDPOINTS = {
   },
   'timeout': {
     name: 'Time Out',
-    url: 'https://www.timeout.com/search?q={TITLE}+broadway',
+    url: 'https://www.timeout.com/search?q={TITLE}+{MARKET_KEYWORD}',
     domain: 'timeout.com',
     linkPattern: /href="(https:\/\/www\.timeout\.com\/[^"]*review[^"]*)"/gi,
     requiresJs: true,
   },
   'ew': {
     name: 'Entertainment Weekly',
-    url: 'https://ew.com/search/?q={TITLE}+broadway+review',
+    url: 'https://ew.com/search/?q={TITLE}+{MARKET_KEYWORD}+review',
     domain: 'ew.com',
     linkPattern: /href="(https:\/\/ew\.com\/[^"]*review[^"]*)"/gi,
     requiresJs: true,
   },
+
+  // --- West End outlets (SSR) ---
+  'whatsonstage': {
+    name: 'WhatsOnStage',
+    url: 'https://www.whatsonstage.com/?s={TITLE}+review',
+    domain: 'whatsonstage.com',
+    linkPattern: /href="(https:\/\/www\.whatsonstage\.com\/[^"]*review[^"]*)"/gi,
+    requiresJs: false,
+    market: 'west-end',
+  },
 };
 
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
+
+/**
+ * Resolve {MARKET_KEYWORD} placeholder based on market.
+ * BW shows search with "broadway", WE shows with "london theatre".
+ */
+function getMarketKeyword(market) {
+  if (market === 'west-end') return 'london+theatre';
+  return 'broadway';
+}
 
 /**
  * Simple HTTP fetch (for SSR search pages)
@@ -170,16 +194,24 @@ function urlLooksLikeReview(url, showTitle) {
  * @returns {Promise<Array<{url, outletId, outlet, source}>>}
  */
 async function searchOutletSite(outletId, showTitle, options = {}) {
-  const { verbose = false, skipJs = false } = options;
+  const { verbose = false, skipJs = false, market = 'broadway' } = options;
   const config = SITE_SEARCH_ENDPOINTS[outletId];
   if (!config) return [];
+
+  // Skip outlets limited to a different market
+  if (config.market && config.market !== market) {
+    return [];
+  }
 
   if (config.requiresJs && skipJs) {
     if (verbose) console.log(`    Site search [${config.name}]: skipped (JS-rendered, skipJs=true)`);
     return [];
   }
 
-  const searchUrl = config.url.replace('{TITLE}', encodeURIComponent(showTitle));
+  const marketKeyword = getMarketKeyword(market);
+  const searchUrl = config.url
+    .replace('{TITLE}', encodeURIComponent(showTitle))
+    .replace('{MARKET_KEYWORD}', marketKeyword);
 
   try {
     let html;
@@ -232,13 +264,13 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
  * @returns {Promise<Array<{url, outletId, outlet, source}>>}
  */
 async function searchOutletSites(showTitle, outletIds, options = {}) {
-  const { knownUrls = new Set(), verbose = false, skipJs = false } = options;
+  const { knownUrls = new Set(), verbose = false, skipJs = false, market = 'broadway' } = options;
   const results = [];
 
   for (const outletId of outletIds) {
     if (!SITE_SEARCH_ENDPOINTS[outletId]) continue;
 
-    const found = await searchOutletSite(outletId, showTitle, { verbose, skipJs });
+    const found = await searchOutletSite(outletId, showTitle, { verbose, skipJs, market });
     for (const result of found) {
       if (!knownUrls.has(result.url)) {
         results.push(result);
