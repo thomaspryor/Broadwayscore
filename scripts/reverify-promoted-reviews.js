@@ -16,6 +16,7 @@
 const fs = require("fs");
 const path = require("path");
 const { verifyContent, contentHash } = require("./lib/content-verifier");
+const { isLondonMarket } = require("./lib/venue-classification");
 
 const dir = path.join(__dirname, "..", "data", "review-texts");
 const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "data", "shows.json"), "utf8"));
@@ -60,7 +61,8 @@ async function main() {
 
     // Determine market from show category
     let market = "broadway";
-    if (c.showId.includes("west-end")) market = "west-end";
+    if (c.showId.includes("off-west-end")) market = "off-west-end";
+    else if (c.showId.includes("west-end")) market = "west-end";
     else if (c.showId.includes("off-broadway")) market = "off-broadway";
 
     console.log(`Verifying: ${c.showId}/${c.file}`);
