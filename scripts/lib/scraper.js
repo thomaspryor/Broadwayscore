@@ -175,6 +175,12 @@ async function fetchWithPlaywright(url) {
     };
   } catch (error) {
     console.error(`⚠️  Playwright failed: ${error.message}`);
+    // If the browser is in a bad state (e.g. after a timeout), close and
+    // reset so the next call can relaunch a fresh instance.
+    if (playwright) {
+      try { await playwright.close(); } catch (_) {}
+      playwright = null;
+    }
     return null;
   }
 }

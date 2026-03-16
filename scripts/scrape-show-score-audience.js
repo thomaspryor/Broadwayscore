@@ -174,6 +174,11 @@ async function fetchViaPlaywright(url) {
     }
   } catch (error) {
     console.error(`  Playwright failed: ${error.message}`);
+    // Reset browser if it's in a bad state so next call relaunches
+    if (playwrightBrowser) {
+      try { await playwrightBrowser.close(); } catch (_) {}
+      playwrightBrowser = null;
+    }
     return null;
   }
 }
