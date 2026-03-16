@@ -18,6 +18,7 @@ export type GateTrigger =
   | 'json_download'
   | 'page_view_limit'
   | 'exit_intent'
+  | 'scroll_depth'
   | 'return_visitor';
 
 interface EmailCaptureModalProps {
@@ -66,6 +67,10 @@ function getTriggerCopy(trigger: GateTrigger, isWE: boolean): { heading: string;
     exit_intent: {
       heading: `Never Miss a New ${market} Show`,
       subheading: 'No spam, no schedule \u2014 just opening night scores. Unsubscribe anytime.',
+    },
+    scroll_depth: {
+      heading: `Never Miss a New ${market} Show`,
+      subheading: 'Get opening night scores delivered to your inbox. Unsubscribe anytime.',
     },
     return_visitor: {
       heading: `Never miss a new ${market} show`,

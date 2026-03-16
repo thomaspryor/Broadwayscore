@@ -33,6 +33,14 @@ interface EmailCaptureConfig {
     /** Scroll percentage (0-1) before showing */
     scrollThreshold: number;
   };
+  /** Mobile scroll-depth gate (replaces exit intent on touch devices) */
+  mobileScrollGate: {
+    enabled: boolean;
+    /** Scroll percentage (0-1) to trigger */
+    scrollThreshold: number;
+    /** Minimum seconds on page before triggering */
+    minTimeOnPageSec: number;
+  };
 }
 
 const presets: Record<string, EmailCaptureConfig> = {
@@ -49,6 +57,11 @@ const presets: Record<string, EmailCaptureConfig> = {
       enabled: true,
       scrollThreshold: 0.85,
     },
+    mobileScrollGate: {
+      enabled: false,
+      scrollThreshold: 0.65,
+      minTimeOnPageSec: 15,
+    },
   },
   aggressive: {
     excludedPaths: ['/feedback', '/submit-review'],
@@ -62,6 +75,11 @@ const presets: Record<string, EmailCaptureConfig> = {
     showFollowBanner: {
       enabled: true,
       scrollThreshold: 0.6,
+    },
+    mobileScrollGate: {
+      enabled: true,
+      scrollThreshold: 0.65,
+      minTimeOnPageSec: 10,
     },
   },
 };

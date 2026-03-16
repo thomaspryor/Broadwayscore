@@ -142,7 +142,7 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
     return () => window.removeEventListener('bsc_subscribed', handleSubscribed);
   }, []);
 
-  // Exit intent detection - fires when mouse leaves viewport toward top
+  // Exit intent detection - fires when mouse leaves viewport toward top (desktop only)
   useEffect(() => {
     if (!emailCaptureConfig.exitIntent.enabled) return;
     if (!isClient || hasEmail || exitIntentFired) return;
@@ -158,6 +158,44 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
     document.addEventListener('mouseleave', handleMouseLeave);
     return () => document.removeEventListener('mouseleave', handleMouseLeave);
   }, [isClient, hasEmail, exitIntentFired, modalOpen, triggerGate]);
+
+  // Mobile scroll-depth detection — replaces exit intent for touch devices
+  const [scrollFired, setScrollFired] = useState(false);
+  useEffect(() => {
+    const config = emailCaptureConfig.mobileScrollGate;
+    if (!config.enabled) return;
+    if (!isClient || hasEmail || scrollFired || exitIntentFired) return;
+
+    // Only fire on touch devices (no fine pointer = mobile/tablet)
+    const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+    if (!isTouchDevice) return;
+
+    const pageLoadTime = Date.now();
+    let fired = false;
+
+    const handleScroll = () => {
+      if (fired || modalOpen) return;
+
+      // Check time-on-page requirement
+      const elapsedSec = (Date.now() - pageLoadTime) / 1000;
+      if (elapsedSec < config.minTimeOnPageSec) return;
+
+      // Check scroll depth
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight <= 0) return;
+      const scrollPct = scrollTop / docHeight;
+
+      if (scrollPct >= config.scrollThreshold) {
+        fired = true;
+        setScrollFired(true);
+        triggerGate('scroll_depth');
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isClient, hasEmail, scrollFired, exitIntentFired, modalOpen, triggerGate]);
 
   const handleModalSubmit = useCallback((data: CapturedUserData) => {
     // Save to localStorage
