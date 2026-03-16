@@ -32,7 +32,17 @@
     "hercules-west-end-2025/variety--david-benedict.json",
     "just-in-time-2025/nytimes--adam-feldman.json",
     "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
-    "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json"
+    "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+    "masquerade-off-broadway-2025/nytg--gillian-russo.json",
+    "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
+    "maybe-happy-ending-2024/vulture--sara-holdren.json",
+    "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/nytg--kyle-turner.json",
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "mj-2022/vulture--helen-shaw.json",
+    "mother-russia-off-broadway-2026/nytg--amelia-merrill.json",
+    "moulin-rouge-2019/nytimes--ben-brantley.json",
+    "night-side-songs-off-broadway-2026/nytg--kyle-turner.json",
+    "night-side-songs-off-broadway-2026/vulture--jonathan-mandell.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -76,7 +86,12 @@
       "data-off-broadway-2026/nytg--allison-considine.json",
       "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
       "hamilton-2015/nyt-theater--jonathan-mandell.json",
-      "just-in-time-2025/nytimes--adam-feldman.json"
+      "just-in-time-2025/nytimes--adam-feldman.json",
+      "masquerade-off-broadway-2025/nytg--gillian-russo.json",
+      "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/nytg--kyle-turner.json",
+      "mother-russia-off-broadway-2026/nytg--amelia-merrill.json",
+      "night-side-songs-off-broadway-2026/nytg--kyle-turner.json",
+      "night-side-songs-off-broadway-2026/vulture--jonathan-mandell.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -94,7 +109,11 @@
       "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json",
       "hamilton-2015/hollywood-reporter--david-rooney.json",
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
-      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json"
+      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "data/review-texts/moulin-rouge-2019/nytimes--ben-brantley.json",
+      "moulin-rouge-2019/nytimes--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -133,11 +152,14 @@
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
       "hamilton-west-end-2021/nytimes--unknown.json",
       "hercules-west-end-2025/nytimes--matt-wolf.json",
-      "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json"
+      "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+      "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
+      "maybe-happy-ending-2024/vulture--sara-holdren.json",
+      "mj-2022/vulture--helen-shaw.json"
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+  "lastProcessed": "night-side-songs-off-broadway-2026/vulture--jonathan-mandell.json",
   "log": [
     {
       "t": "2026-03-16T19:08:03.771Z",
@@ -204,6 +226,28 @@
       "t": "2026-03-16T19:14:38.152Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-16T19:16:32.044Z",
+      "event": "bb-session",
+      "session": "888b3eb9",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-03-16T19:16:33.425Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-16T19:18:21.109Z",
+      "event": "bb-session",
+      "session": "0bd01989",
+      "url": "https://www.nytimes.com/2019/07/25/theater/moulin-rouge-review.html"
+    },
+    {
+      "t": "2026-03-16T19:18:22.659Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

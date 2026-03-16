@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-16T19:15:19.384Z",
-  "processed": 33,
+  "updatedAt": "2026-03-16T19:18:50.717Z",
+  "processed": 43,
   "failed": 9,
-  "successRate": "78.6%",
+  "successRate": "82.7%",
   "tierBreakdown": {
-    "playwright": 29,
+    "playwright": 34,
     "amp": 4,
-    "browserbase": 10,
+    "browserbase": 14,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 7,
-    "archive": 25
+    "archive": 28
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-03-16T19:08:03.771Z",
@@ -80,6 +80,28 @@
       "t": "2026-03-16T19:14:38.152Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-16T19:16:32.044Z",
+      "event": "bb-session",
+      "session": "888b3eb9",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-03-16T19:16:33.425Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-16T19:18:21.109Z",
+      "event": "bb-session",
+      "session": "0bd01989",
+      "url": "https://www.nytimes.com/2019/07/25/theater/moulin-rouge-review.html"
+    },
+    {
+      "t": "2026-03-16T19:18:22.659Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
