@@ -307,7 +307,9 @@ async function main() {
 
     // Validate: page title should match our show title
     if (data.pageTitle) {
-      const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      const norm = s => s
+        .replace(/&#0?39;/g, "'").replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&[a-z]+;/g, '')
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
         .toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9\s]/g, '').trim();
       const pageNorm = norm(data.pageTitle.split(':')[0].split('(')[0]);
       const ourNorm = norm(title.split(':')[0].split('(')[0]);
