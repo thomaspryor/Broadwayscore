@@ -6,10 +6,12 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
+import { usePathname } from 'next/navigation';
 import { track } from '@vercel/analytics';
 import { Modal, ModalCloseButton } from '@/components/show-cards';
 
 const FORMSPREE_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || '';
+const FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID || '';
 
 export type GateTrigger =
   | 'csv_download'
@@ -46,28 +48,32 @@ const ROLE_OPTIONS = [
   { value: 'other', label: 'Other' },
 ];
 
-const TRIGGER_COPY: Record<GateTrigger, { heading: string; subheading: string }> = {
-  csv_download: {
-    heading: 'CSV Export Coming Soon',
-    subheading: 'Be first to access Pro features including data exports, alerts, and historical data.',
-  },
-  json_download: {
-    heading: 'API Access Coming Soon',
-    subheading: 'Get early access to our data API for integrations and analysis.',
-  },
-  page_view_limit: {
-    heading: 'Want to see more?',
-    subheading: 'Enter your email for full access to Broadway investment data.',
-  },
-  exit_intent: {
-    heading: 'Never Miss a New Broadway Show',
-    subheading: 'No spam, no schedule \u2014 just opening night scores. Unsubscribe anytime.',
-  },
-  return_visitor: {
-    heading: 'Never miss a new Broadway show',
-    subheading: 'We\u2019ll email you the CriticScore when new shows open, plus what\u2019s closing soon.',
-  },
-};
+function getTriggerCopy(trigger: GateTrigger, isWE: boolean): { heading: string; subheading: string } {
+  const market = isWE ? 'West End' : 'Broadway';
+  const copies: Record<GateTrigger, { heading: string; subheading: string }> = {
+    csv_download: {
+      heading: 'CSV Export Coming Soon',
+      subheading: 'Be first to access Pro features including data exports, alerts, and historical data.',
+    },
+    json_download: {
+      heading: 'API Access Coming Soon',
+      subheading: 'Get early access to our data API for integrations and analysis.',
+    },
+    page_view_limit: {
+      heading: 'Want to see more?',
+      subheading: `Enter your email for full access to ${market} investment data.`,
+    },
+    exit_intent: {
+      heading: `Never Miss a New ${market} Show`,
+      subheading: 'No spam, no schedule \u2014 just opening night scores. Unsubscribe anytime.',
+    },
+    return_visitor: {
+      heading: `Never miss a new ${market} show`,
+      subheading: 'We\u2019ll email you the CriticScore when new shows open, plus what\u2019s closing soon.',
+    },
+  };
+  return copies[trigger];
+}
 
 export default function EmailCaptureModal({
   isOpen,
@@ -82,8 +88,12 @@ export default function EmailCaptureModal({
   const [role, setRole] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const pathname = usePathname();
 
-  const copy = TRIGGER_COPY[trigger];
+  const isWE = pathname?.startsWith('/west-end') ?? false;
+  const formId = isWE ? FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID : FORMSPREE_SUBSCRIBER_FORM_ID;
+  const marketKey = isWE ? 'west-end' : 'broadway';
+  const copy = getTriggerCopy(trigger, isWE);
 
   // Only show extra fields (name, company, role) for biz-specific triggers
   const showExtraFields = trigger === 'csv_download' || trigger === 'json_download' || trigger === 'page_view_limit';
@@ -118,13 +128,13 @@ export default function EmailCaptureModal({
       };
 
       // Submit to Formspree so the email is actually captured server-side
-      if (FORMSPREE_SUBSCRIBER_FORM_ID) {
+      if (formId) {
         const body: Record<string, string> = {
           email: userData.email,
           source: `modal-${trigger}`,
         };
         if (userData.name) body.firstName = userData.name;
-        const res = await fetch(`https://formspree.io/f/${FORMSPREE_SUBSCRIBER_FORM_ID}`, {
+        const res = await fetch(`https://formspree.io/f/${formId}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body),
@@ -136,7 +146,7 @@ export default function EmailCaptureModal({
         }
         // Mark as subscribed so inline forms (header/footer) don't nag again
         try {
-          localStorage.setItem('bsc_email_subscribed_broadway', 'true');
+          localStorage.setItem(`bsc_email_subscribed_${marketKey}`, 'true');
           window.dispatchEvent(new Event('bsc_subscribed'));
         } catch { /* noop */ }
       }
