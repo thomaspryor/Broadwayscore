@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-16T20:19:45.763Z",
-  "processed": 114,
+  "updatedAt": "2026-03-16T20:22:07.892Z",
+  "processed": 124,
   "failed": 42,
-  "successRate": "73.1%",
+  "successRate": "74.7%",
   "tierBreakdown": {
-    "playwright": 58,
+    "playwright": 66,
     "amp": 50,
-    "browserbase": 28,
+    "browserbase": 30,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 14,
-    "archive": 45
+    "archive": 46
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-03-16T19:37:30.182Z",
-      "event": "bb-session",
-      "session": "e0bf53f4",
-      "url": "https://variety.com/2011/legit/reviews/on-a-clear-day-you-can-see-forever-111794"
-    },
-    {
-      "t": "2026-03-16T19:37:32.192Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-03-16T19:52:14.957Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-16T20:07:28.217Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-16T20:20:24.835Z",
+      "event": "bb-session",
+      "session": "7ce1da1c",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-16T20:20:26.273Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
