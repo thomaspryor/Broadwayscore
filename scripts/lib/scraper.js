@@ -79,6 +79,55 @@ const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 
+// --- SB credit pre-check ---
+let _sbCreditCheckDone = false;
+let _sbCreditsLow = false;
+
+/**
+ * Check ScrapingBee remaining credits. Call once per process.
+ * Returns true if credits are available, false if low/exhausted/missing key.
+ * Sets _sbCreditsLow flag which fetchPage() and SERP functions check.
+ */
+async function checkScrapingBeeCredits() {
+  if (_sbCreditCheckDone) return !_sbCreditsLow;
+  _sbCreditCheckDone = true;
+
+  if (!SCRAPINGBEE_KEY) return false;
+
+  return new Promise((resolve) => {
+    const req = https.get(
+      `https://app.scrapingbee.com/api/v1/usage?api_key=${SCRAPINGBEE_KEY}`,
+      { timeout: 5000 },
+      (res) => {
+        let body = '';
+        res.on('data', chunk => body += chunk);
+        res.on('end', () => {
+          try {
+            const data = JSON.parse(body);
+            const used = data.used_api_credit || 0;
+            const max = data.max_api_credit || 1;
+            const remaining = max - used;
+            const pctRemaining = (remaining / max) * 100;
+
+            if (remaining <= 0 || pctRemaining < 5) {
+              console.warn(`⚠️  ScrapingBee credits low: ${remaining} remaining (${pctRemaining.toFixed(1)}%) — skipping SB`);
+              _sbCreditsLow = true;
+              resolve(false);
+            } else {
+              console.log(`[SB Credits] ${remaining} remaining (${pctRemaining.toFixed(1)}%)`);
+              resolve(true);
+            }
+          } catch {
+            resolve(true); // Can't parse, assume OK
+          }
+        });
+      }
+    );
+    req.on('error', () => resolve(true)); // Network error, assume OK
+    req.on('timeout', () => { req.destroy(); resolve(true); });
+  });
+}
+
 let playwright = null; // Lazy load only if needed
 
 /**
@@ -245,8 +294,8 @@ async function fetchPage(url, options = {}) {
     }
   }
 
-  // Fall back to ScrapingBee
-  if (SCRAPINGBEE_KEY) {
+  // Fall back to ScrapingBee (skip if credits exhausted)
+  if (SCRAPINGBEE_KEY && !_sbCreditsLow) {
     console.log('  → Trying ScrapingBee...');
     const result = await fetchWithScrapingBee(url, options);
     if (result) {
@@ -286,4 +335,6 @@ module.exports = {
   cleanup,
   domainMatchesExpected,
   DOMAIN_ALIAS_GROUPS,
+  checkScrapingBeeCredits,
+  get sbCreditsLow() { return _sbCreditsLow; },
 };
