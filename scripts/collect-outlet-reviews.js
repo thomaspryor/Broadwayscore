@@ -32,6 +32,7 @@ const path = require('path');
 const { discoverCorrectUrl, OUTLET_DOMAINS, calculateDateWindow } = require('./lib/url-discovery');
 const { generateReviewFilename, findExistingReviewFile, resolveOutletFromUrl } = require('./lib/review-normalization');
 const { domainMatchesExpected } = require('./lib/scraper');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -40,6 +41,11 @@ const REGISTRY_PATH = path.join(__dirname, '..', 'data', 'outlet-registry.json')
 // Hardcoded fallback outlet lists (used only if registry has no outlets for a market)
 const MARKET_OUTLETS_FALLBACK = {
   'west-end': {
+    tier1: ['guardian', 'telegraph', 'evening-standard', 'the-times-uk', 'dailymail'],
+    tier2: ['stage-uk', 'whatsonstage', 'timeout-london', 'independent', 'financial-times-uk', 'london-theatre', 'inews'],
+    tier3: ['the-arts-desk', 'everythingtheatre', 'thereviewshub', 'metro-uk', 'west-end-best-friend', 'londonist'],
+  },
+  'off-west-end': {
     tier1: ['guardian', 'telegraph', 'evening-standard', 'the-times-uk', 'dailymail'],
     tier2: ['stage-uk', 'whatsonstage', 'timeout-london', 'independent', 'financial-times-uk', 'london-theatre', 'inews'],
     tier3: ['the-arts-desk', 'everythingtheatre', 'thereviewshub', 'metro-uk', 'west-end-best-friend', 'londonist'],
@@ -56,7 +62,7 @@ const MARKET_OUTLETS_FALLBACK = {
   },
 };
 
-const VALID_MARKETS = ['broadway', 'off-broadway', 'west-end'];
+const VALID_MARKETS = ['broadway', 'off-broadway', 'west-end', 'off-west-end'];
 
 // Domains to exclude from broad T3 search results (aggregators, not outlets)
 const AGGREGATOR_DOMAINS = new Set([
@@ -136,8 +142,8 @@ function getTargetOutlets(market, minTier, maxTier, registry, maxOutlets) {
     const isLondon = info.region === 'london';
     const isDual = info.isDualMarket === true;
 
-    if (market === 'west-end') {
-      // West End: London-based outlets + dual-market outlets
+    if (isLondonMarket(market)) {
+      // West End / Off-West End: London-based outlets + dual-market outlets
       if (!isLondon && !isDual) continue;
     } else {
       // Broadway / Off-Broadway: non-London outlets + dual-market outlets

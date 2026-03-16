@@ -11,6 +11,7 @@
 const fs = require('fs');
 const path = require('path');
 
+const { isLondonMarket } = require('./lib/venue-classification');
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 const errorLogFile = path.join(__dirname, '../data/fetch-errors.json');
 
@@ -91,7 +92,7 @@ const _showCategories = (() => {
 
 function getReviewKeyword(showId) {
   const cat = _showCategories[showId] || '';
-  return cat === 'west-end' ? 'West End review'
+  return isLondonMarket(cat) ? 'West End review'
     : cat === 'off-broadway' ? 'Off-Broadway review'
     : 'Broadway review';
 }

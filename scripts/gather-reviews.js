@@ -59,6 +59,7 @@ const { LETTER_GRADES } = require('./lib/score-extractors');
 const { discoverCorrectUrl } = require('./lib/url-discovery');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
+const { isLondonMarket } = require('./lib/venue-classification');
 let chromium, playwright;
 try {
   playwright = require('playwright');
@@ -469,11 +470,11 @@ async function searchDTLI(show) {
 
   // PRIORITY: Suffix order depends on category
   const isOffBroadway = show.category === 'off-broadway';
-  const isWestEnd = show.category === 'west-end';
+  const isWestEnd = isLondonMarket(show.category);
   const allVariations = [];
 
   if (isWestEnd) {
-    // West End: try -west-end and -london suffixes
+    // West End / Off-West End: try -west-end and -london suffixes
     for (const base of baseVariations) {
       allVariations.push(base + '-west-end');
     }
@@ -610,7 +611,7 @@ async function searchShowScore(show) {
   const titleSlug = slugify(show.title);
   const titleNoColonSlug = slugify(show.title.replace(/:/g, ''));
   const isOffBroadway = show.category === 'off-broadway';
-  const isWestEnd = show.category === 'west-end';
+  const isWestEnd = isLondonMarket(show.category);
 
   // For musicals, Show Score often appends "-the-musical-broadway"
   const isMusical = show.type === 'musical';
@@ -625,8 +626,8 @@ async function searchShowScore(show) {
   // Build slug variations based on category
   let variations;
   if (isWestEnd) {
-    // West End: try -west-end and -london suffixes
-    const weSlug = show.slug.replace(/-west-end$/, '');
+    // West End / Off-West End: try -west-end and -london suffixes
+    const weSlug = show.slug.replace(/-(?:off-)?west-end$/, '');
     variations = [
       `${titleSlug}-west-end`,
       `${titleSlug}-london`,
@@ -1359,7 +1360,7 @@ async function searchBWWRoundup(show, year) {
   ];
 
   const searchUrls = [];
-  if (show.category === 'west-end') {
+  if (isLondonMarket(show.category)) {
     // West End BWW roundup URL patterns (broadwayworld.com/london/ subdomain + main domain)
     for (const title of titleVariations) {
       searchUrls.push(`https://www.broadwayworld.com/london/article/Review-Roundup-${title}-Opens-in-the-West-End-Updating-LIVE-${year}`);
@@ -1414,7 +1415,7 @@ async function searchBWWRoundup(show, year) {
   if (SCRAPINGBEE_KEY) {
     try {
       const titleForSearch = show.title.replace(/'/g, '');
-      const marketKeyword = (show.category === 'west-end') ? 'west end' : (show.category === 'off-broadway') ? 'off-broadway' : 'broadway';
+      const marketKeyword = isLondonMarket(show.category) ? 'west end' : (show.category === 'off-broadway') ? 'off-broadway' : 'broadway';
       const searchQuery = `site:broadwayworld.com/article "Review Roundup" "${titleForSearch}" ${marketKeyword} ${year}`;
       console.log(`    Trying Google search for BWW roundup...`);
       const apiUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(searchQuery)}&nb_results=5`;
@@ -2307,7 +2308,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
   const foundReviews = [];
   const outlets = loadOutlets();
   const isOffBroadway = show.category === 'off-broadway';
-  const isWestEnd = show.category === 'west-end';
+  const isWestEnd = isLondonMarket(show.category);
 
   // Per-show health tracking
   const health = {

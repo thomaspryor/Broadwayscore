@@ -20,6 +20,7 @@ const { batchLookupIBDBDates, checkIBDBForPriorProductions } = require('./lib/ib
 const { getTheaterAddress } = require('./lib/venue-addresses');
 const { splitCombinedCredits } = require('./lib/credit-splitting');
 const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendations } = require('./lib/broadway-com-runtimes');
+const { isLondonMarket, isOffWestEndVenue } = require('./lib/venue-classification');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'new-shows-pending.json');
@@ -292,7 +293,9 @@ async function fetchShowsFromTodayTixLondon() {
       slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
       openingDate: show.startDate || null,
       closingDate: show.endDate === 'null' ? null : show.endDate || null,
-      category: 'west-end',
+      category: isOffWestEndVenue(
+        (typeof show.venue === 'string' ? show.venue : show.venue?.name) || 'TBA'
+      ) ? 'off-west-end' : 'west-end',
       description: show.description || '',
       todayTixCategory: show.category?.name || null,
     });
@@ -578,7 +581,7 @@ async function consumeShowScoreCandidatesFile() {
 
   // Only consume OB and WE candidates (Broadway is well-covered by TodayTix)
   const candidates = allCandidates.filter(c =>
-    c.category === 'off-broadway' || c.category === 'west-end'
+    c.category === 'off-broadway' || isLondonMarket(c.category)
   );
 
   if (candidates.length === 0) {
@@ -609,14 +612,14 @@ async function consumeShowScoreCandidatesFile() {
       continue;
     }
     // WE extra patterns
-    if (candidate.category === 'west-end' && WE_EXTRA_PATTERNS.some(p => titleLower.includes(p))) {
+    if (isLondonMarket(candidate.category) && WE_EXTRA_PATTERNS.some(p => titleLower.includes(p))) {
       filteredNonTheater++;
       if (verbose) console.log(`  [FILTERED] "${candidate.title}" — WE extra pattern`);
       continue;
     }
 
     // Gate 2: Try TodayTix search for enrichment (optional, not required)
-    const location = candidate.category === 'west-end' ? 2 : 1;
+    const location = isLondonMarket(candidate.category) ? 2 : 1;
     let ttShow = null;
     try {
       ttShow = await searchTodayTixByTitle(candidate.title, location);
@@ -642,7 +645,7 @@ async function consumeShowScoreCandidatesFile() {
       if (candidate.category === 'off-broadway') {
         categoryMatch = subcatNames.includes('Off Broadway') ||
           (subcatNames.includes('Broadway') && !subcatNames.includes('Off Broadway')); // Some OB shows tagged as Broadway on TT
-      } else if (candidate.category === 'west-end') {
+      } else if (isLondonMarket(candidate.category)) {
         categoryMatch = subcatNames.includes('West End') || subcatNames.includes('Off West End');
       }
       if (!categoryMatch) {
@@ -657,7 +660,7 @@ async function consumeShowScoreCandidatesFile() {
       // Scrape Show Score for the actual press night ("Opens Mar 09") date.
       let openingDate = ttShow.startDate || null;
       let previewsStartDate = null;
-      if (candidate.category === 'west-end' || candidate.category === 'off-broadway') {
+      if (isLondonMarket(candidate.category) || candidate.category === 'off-broadway') {
         let ssData = null;
         try {
           ssData = await fetchShowScoreStatus(candidate.showScoreUrl);
@@ -921,7 +924,7 @@ async function discoverShows() {
       try {
         const candidatesData = JSON.parse(fs.readFileSync(CANDIDATES_PATH, 'utf8'));
         for (const c of (candidatesData.candidates || [])) {
-          if (c.category === 'off-broadway' || c.category === 'west-end') {
+          if (c.category === 'off-broadway' || isLondonMarket(c.category)) {
             processedCandidateUrls.add(c.showScoreUrl);
           }
         }
@@ -1023,9 +1026,11 @@ async function discoverShows() {
 
     // Market-aware slug and ID generation
     const slug = show.category === 'west-end' ? `${baseSlug}-west-end`
+               : show.category === 'off-west-end' ? `${baseSlug}-off-west-end`
                : show.category === 'off-broadway' ? `${baseSlug}-off-broadway`
                : baseSlug;
     const showId = show.category === 'west-end' ? `${baseSlug}-west-end-${idYear}`
+                 : show.category === 'off-west-end' ? `${baseSlug}-off-west-end-${idYear}`
                  : show.category === 'off-broadway' ? `${baseSlug}-off-broadway-${idYear}`
                  : `${baseSlug}-${idYear}`;
 
@@ -1054,10 +1059,10 @@ async function discoverShows() {
   }
 
   // IBDB date enrichment: get accurate preview/opening/closing dates
-  // Skip off-Broadway and West End shows — IBDB only covers Broadway
-  const broadwayNewShows = newShows.filter(s => s.category !== 'off-broadway' && s.category !== 'west-end');
+  // Skip off-Broadway and London shows — IBDB only covers Broadway
+  const broadwayNewShows = newShows.filter(s => s.category !== 'off-broadway' && !isLondonMarket(s.category));
   const offBroadwayNewShows = newShows.filter(s => s.category === 'off-broadway');
-  const westEndNewShows = newShows.filter(s => s.category === 'west-end');
+  const westEndNewShows = newShows.filter(s => isLondonMarket(s.category));
   if (offBroadwayNewShows.length > 0) {
     console.log(`⏭️  Skipping IBDB enrichment for ${offBroadwayNewShows.length} off-Broadway shows (IBDB is Broadway-only)`);
   }
@@ -1375,6 +1380,8 @@ async function discoverShows() {
         showEntry.category = 'off-broadway';
       } else if (show.category === 'west-end') {
         showEntry.category = 'west-end';
+      } else if (show.category === 'off-west-end') {
+        showEntry.category = 'off-west-end';
       }
 
       data.shows.push(showEntry);
@@ -1459,8 +1466,8 @@ async function discoverShows() {
     fs.appendFileSync(outputFile, `new_shows_count=${newShows.length}\n`);
     fs.appendFileSync(outputFile, `new_shows=${newShows.map(s => s.title).join(', ')}\n`);
     fs.appendFileSync(outputFile, `new_slugs=${newShows.map(s => s.slug).join(',')}\n`);
-    // WE-specific output for downstream triggers
-    const weNewShows = newShows.filter(s => s.category === 'west-end');
+    // WE-specific output for downstream triggers (includes off-west-end)
+    const weNewShows = newShows.filter(s => isLondonMarket(s.category));
     fs.appendFileSync(outputFile, `we_new_count=${weNewShows.length}\n`);
   }
 

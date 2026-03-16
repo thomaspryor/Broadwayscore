@@ -20,6 +20,8 @@ const path = require('path');
 // Load outlet configuration
 const outletsPath = path.join(__dirname, 'config', 'critic-outlets.json');
 const outletsConfig = JSON.parse(fs.readFileSync(outletsPath, 'utf8'));
+const { isLondonMarket } = require('./lib/venue-classification');
+
 const ALL_OUTLETS = [
   ...outletsConfig.tier1.map(o => ({ ...o, tier: 1 })),
   ...outletsConfig.tier2.map(o => ({ ...o, tier: 2 })),
@@ -42,7 +44,7 @@ async function searchForReview(showTitle, year, outlet, { category = '' } = {}) 
     throw new Error('ANTHROPIC_API_KEY environment variable required');
   }
 
-  const reviewKw = category === 'west-end' ? 'West End review'
+  const reviewKw = isLondonMarket(category) ? 'West End review'
     : category === 'off-broadway' ? 'Off-Broadway review' : 'Broadway review';
   const prompt = `Search for: "${showTitle}" ${reviewKw} ${year} site:${outlet.domain}
 
