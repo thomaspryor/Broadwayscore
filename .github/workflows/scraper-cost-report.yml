@@ -2,7 +2,7 @@ name: Weekly Scraper Cost Report
 
 on:
   schedule:
-    - cron: '0 14 * * 1'  # Monday 2 PM UTC (9 AM EST), same as PostHog
+    - cron: '0 14 * * 1'  # Monday 2 PM UTC (9 AM EST)
   workflow_dispatch: {}
 
 jobs:
@@ -12,107 +12,149 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Collect scraper cost data from workflow logs
+      - name: Collect data and build report
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "# Weekly Scraper Cost Report" > /tmp/report.md
-          echo "" >> /tmp/report.md
-          echo "**Period:** $(date -d '7 days ago' '+%Y-%m-%d') to $(date '+%Y-%m-%d')" >> /tmp/report.md
-          echo "" >> /tmp/report.md
-
-          # Query recent workflow runs (last 7 days)
           SINCE=$(date -d '7 days ago' '+%Y-%m-%dT00:00:00Z' 2>/dev/null || date -v-7d '+%Y-%m-%dT00:00:00Z')
+          PERIOD_START=$(date -d '7 days ago' '+%b %d' 2>/dev/null || date -v-7d '+%b %d')
+          PERIOD_END=$(date '+%b %d')
 
-          # Count runs per workflow that uses scraping
-          echo "## Workflow Run Counts" >> /tmp/report.md
-          echo "" >> /tmp/report.md
-          echo "| Workflow | Runs | Success | Failed |" >> /tmp/report.md
-          echo "|----------|------|---------|--------|" >> /tmp/report.md
-
-          for wf in "Collect Review Texts" "Enrich IBDB Dates" "Bulk Show Score" "Auto-Maintain Show Data" "Scrape BWW Reviews" "Update Commercial" "Fix Platform Ticket Links" "Gather Review Data" "Opening Night Poller" "Opening Night Reviews"; do
-            TOTAL=$(gh run list --workflow="$wf" --created=">$SINCE" --json conclusion -q 'length' 2>/dev/null || echo "0")
+          # --- Collect workflow run counts ---
+          WORKFLOW_ROWS=""
+          TOTAL_RUNS=0
+          TOTAL_FAILED=0
+          for wf in "Collect Review Texts" "Gather Review Data" "Opening Night Poller" "Opening Night Reviews" "Enrich IBDB Dates" "Bulk Show Score" "Auto-Maintain Show Data" "Scrape BWW Reviews" "Update Commercial" "Fix Platform Ticket Links"; do
+            RUNS=$(gh run list --workflow="$wf" --created=">$SINCE" --json conclusion -q 'length' 2>/dev/null || echo "0")
             SUCCESS=$(gh run list --workflow="$wf" --created=">$SINCE" --status=completed --json conclusion -q '[.[] | select(.conclusion=="success")] | length' 2>/dev/null || echo "0")
-            FAILED=$((TOTAL - SUCCESS))
-            if [ "$TOTAL" -gt 0 ]; then
-              echo "| $wf | $TOTAL | $SUCCESS | $FAILED |" >> /tmp/report.md
+            FAILED=$((RUNS - SUCCESS))
+            if [ "$RUNS" -gt 0 ]; then
+              TOTAL_RUNS=$((TOTAL_RUNS + RUNS))
+              TOTAL_FAILED=$((TOTAL_FAILED + FAILED))
+              FAIL_BADGE=""
+              if [ "$FAILED" -gt 0 ]; then
+                FAIL_BADGE="<span style='color:#dc2626;font-weight:bold'>$FAILED failed</span>"
+              fi
+              WORKFLOW_ROWS="$WORKFLOW_ROWS<tr><td style='padding:4px 12px'>$wf</td><td style='padding:4px 12px;text-align:center'>$RUNS</td><td style='padding:4px 12px;text-align:center'>$FAIL_BADGE</td></tr>"
             fi
           done
 
-          echo "" >> /tmp/report.md
-
-          # Scraper Summary lines from recent runs
-          echo "## Scraper Cost Summary (from [Scraper Summary] logs)" >> /tmp/report.md
-          echo "" >> /tmp/report.md
-          echo "Aggregated from workflow logs containing \`[Scraper Summary]\`:" >> /tmp/report.md
-          echo "" >> /tmp/report.md
-          echo '```' >> /tmp/report.md
-
-          PW_TOTAL=0
-          BD_TOTAL=0
-          SB_TOTAL=0
-          SB_CREDITS_TOTAL=0
-
-          # Check last 20 runs of key workflows for [Scraper Summary] lines
+          # --- Collect [Scraper Summary] data ---
+          PW_TOTAL=0; BD_TOTAL=0; SB_TOTAL=0; SB_CREDITS_TOTAL=0
           for wf_id in $(gh api repos/$GITHUB_REPOSITORY/actions/workflows --jq '.workflows[].id' 2>/dev/null | head -50); do
-            for run_id in $(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/$wf_id/runs?created=>$SINCE&per_page=10" --jq '.workflow_runs[].id' 2>/dev/null); do
-              # Try to get logs (may fail for in-progress runs)
+            for run_id in $(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/$wf_id/runs?created=>$SINCE&per_page=10&status=completed" --jq '.workflow_runs[].id' 2>/dev/null); do
               SUMMARY=$(gh run view "$run_id" --log 2>/dev/null | grep '\[Scraper Summary\]' 2>/dev/null || true)
               if [ -n "$SUMMARY" ]; then
-                # Parse: [Scraper Summary] 1/1 Playwright (free), 3 BD (~$0.003)
                 PW=$(echo "$SUMMARY" | grep -oP '\d+/\d+ Playwright' | head -1 | grep -oP '^\d+' || echo "0")
                 BD=$(echo "$SUMMARY" | grep -oP '\d+ BD' | head -1 | grep -oP '^\d+' || echo "0")
                 SB=$(echo "$SUMMARY" | grep -oP '\d+ SB' | head -1 | grep -oP '^\d+' || echo "0")
                 SB_CR=$(echo "$SUMMARY" | grep -oP '\d+ credits' | head -1 | grep -oP '^\d+' || echo "0")
-                PW_TOTAL=$((PW_TOTAL + PW))
-                BD_TOTAL=$((BD_TOTAL + BD))
-                SB_TOTAL=$((SB_TOTAL + SB))
-                SB_CREDITS_TOTAL=$((SB_CREDITS_TOTAL + SB_CR))
+                PW_TOTAL=$((PW_TOTAL + PW)); BD_TOTAL=$((BD_TOTAL + BD))
+                SB_TOTAL=$((SB_TOTAL + SB)); SB_CREDITS_TOTAL=$((SB_CREDITS_TOTAL + SB_CR))
               fi
             done
           done
+          BD_COST=$(echo "scale=2; $BD_TOTAL * 0.001" | bc)
 
-          echo "Playwright (free):    $PW_TOTAL requests" >> /tmp/report.md
-          echo "BrightData:           $BD_TOTAL requests (~\$$(echo "scale=3; $BD_TOTAL * 0.001" | bc))" >> /tmp/report.md
-          echo "ScrapingBee:          $SB_TOTAL requests ($SB_CREDITS_TOTAL credits)" >> /tmp/report.md
-          echo '```' >> /tmp/report.md
-          echo "" >> /tmp/report.md
-
-          # SB credit check
-          echo "## ScrapingBee Credit Status" >> /tmp/report.md
-          echo "" >> /tmp/report.md
-
-          # Get from latest secrets health check
+          # --- SB credit status ---
           HEALTH_RUN=$(gh run list --workflow="Weekly Secret Health Check" --limit=1 --json databaseId -q '.[0].databaseId' 2>/dev/null)
+          SB_STATUS="Unknown"
+          SB_COLOR="#6b7280"
           if [ -n "$HEALTH_RUN" ]; then
-            SB_STATUS=$(gh run view "$HEALTH_RUN" --log 2>&1 | grep -i "ScrapingBee:" | head -1 || echo "Unknown")
-            echo "$SB_STATUS" >> /tmp/report.md
-          else
-            echo "No recent health check data" >> /tmp/report.md
+            SB_RAW=$(gh run view "$HEALTH_RUN" --log 2>&1 | grep -oP 'ScrapingBee: .*' | head -1 || echo "")
+            if echo "$SB_RAW" | grep -qi "exhausted\|0%\|fail"; then
+              SB_STATUS="Exhausted — renews Apr 2"
+              SB_COLOR="#dc2626"
+            elif echo "$SB_RAW" | grep -qi "warn\|90%"; then
+              SB_STATUS=$(echo "$SB_RAW" | sed 's/ScrapingBee: //')
+              SB_COLOR="#f59e0b"
+            elif [ -n "$SB_RAW" ]; then
+              SB_STATUS=$(echo "$SB_RAW" | sed 's/ScrapingBee: //')
+              SB_COLOR="#10b981"
+            fi
           fi
 
-          echo "" >> /tmp/report.md
-
-          # Collect-review-texts specific stats
-          echo "## Review Collection Stats (SB Page/SERP split)" >> /tmp/report.md
-          echo "" >> /tmp/report.md
-
+          # --- SB page/SERP split ---
+          SB_PAGE="-"; SB_SERP="-"
           LATEST_COLLECT=$(gh run list --workflow="Collect Review Texts" --limit=5 --status=completed --json databaseId -q '.[].databaseId' 2>/dev/null)
           for run_id in $LATEST_COLLECT; do
             SB_LINES=$(gh run view "$run_id" --log 2>/dev/null | grep -E "SB page credits:|SB SERP credits:" 2>/dev/null || true)
             if [ -n "$SB_LINES" ]; then
-              echo '```' >> /tmp/report.md
-              echo "$SB_LINES" | sed 's/.*║ ├─ //' | sed 's/ ║$//' >> /tmp/report.md
-              echo '```' >> /tmp/report.md
+              SB_PAGE=$(echo "$SB_LINES" | grep "page" | grep -oP '\d+' | tail -1 || echo "0")
+              SB_SERP=$(echo "$SB_LINES" | grep "SERP" | grep -oP '\d+' | tail -1 || echo "0")
               break
             fi
           done
 
-          echo "" >> /tmp/report.md
-          echo "---" >> /tmp/report.md
-          echo "*Generated by scraper-cost-report workflow*" >> /tmp/report.md
+          # --- Determine if action needed ---
+          ACTION_NEEDED=""
+          if [ "$TOTAL_FAILED" -gt 5 ]; then
+            ACTION_NEEDED="$ACTION_NEEDED<li style='color:#dc2626'>$TOTAL_FAILED workflow failures this week — check logs</li>"
+          fi
+          if echo "$SB_STATUS" | grep -qi "exhausted"; then
+            ACTION_NEEDED="$ACTION_NEEDED<li style='color:#dc2626'>ScrapingBee credits exhausted (fallbacks active, renews Apr 2)</li>"
+          fi
+          if [ "$SB_CREDITS_TOTAL" -gt 50000 ]; then
+            ACTION_NEEDED="$ACTION_NEEDED<li style='color:#f59e0b'>High SB credit usage ($SB_CREDITS_TOTAL) — review if BD-first is working</li>"
+          fi
 
-          cat /tmp/report.md
+          BANNER=""
+          if [ -n "$ACTION_NEEDED" ]; then
+            BANNER="<div style='background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:12px 16px;margin-bottom:16px'><strong style='color:#dc2626'>Action needed:</strong><ul style='margin:8px 0 0 0;padding-left:20px'>$ACTION_NEEDED</ul></div>"
+          else
+            BANNER="<div style='background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:12px 16px;margin-bottom:16px'><strong style='color:#16a34a'>All clear.</strong> No action needed this week.</div>"
+          fi
+
+          # --- Build HTML email ---
+          cat > /tmp/report.html << HTMLEOF
+          <div style="font-family:-apple-system,system-ui,sans-serif;max-width:560px;color:#1f2937">
+            <h2 style="margin:0 0 4px 0;font-size:20px">Scraper Cost Report</h2>
+            <p style="color:#6b7280;margin:0 0 16px 0;font-size:13px">$PERIOD_START – $PERIOD_END</p>
+
+            $BANNER
+
+            <h3 style="font-size:15px;margin:20px 0 8px 0;border-bottom:1px solid #e5e7eb;padding-bottom:4px">Cost This Week</h3>
+            <table style="font-size:14px;border-collapse:collapse;width:100%">
+              <tr><td style="padding:6px 0;color:#6b7280">Playwright (free)</td><td style="padding:6px 0;text-align:right;font-weight:600">$PW_TOTAL requests</td><td style="padding:6px 0 6px 8px;color:#10b981;text-align:right">\$0</td></tr>
+              <tr><td style="padding:6px 0;color:#6b7280">BrightData</td><td style="padding:6px 0;text-align:right;font-weight:600">$BD_TOTAL requests</td><td style="padding:6px 0 6px 8px;text-align:right">~\$$BD_COST</td></tr>
+              <tr style="border-top:1px solid #e5e7eb"><td style="padding:6px 0;color:#6b7280">ScrapingBee</td><td style="padding:6px 0;text-align:right;font-weight:600">$SB_TOTAL requests</td><td style="padding:6px 0 6px 8px;text-align:right">$SB_CREDITS_TOTAL credits</td></tr>
+            </table>
+
+            <p style="font-size:12px;color:#9ca3af;margin:4px 0 0 0">SB breakdown (last collect run): page=$SB_PAGE, SERP=$SB_SERP</p>
+
+            <h3 style="font-size:15px;margin:20px 0 8px 0;border-bottom:1px solid #e5e7eb;padding-bottom:4px">ScrapingBee Credits</h3>
+            <p style="font-size:14px;margin:0"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:$SB_COLOR;margin-right:6px"></span>$SB_STATUS</p>
+
+            <h3 style="font-size:15px;margin:20px 0 8px 0;border-bottom:1px solid #e5e7eb;padding-bottom:4px">Workflow Runs ($TOTAL_RUNS total)</h3>
+            <table style="font-size:13px;border-collapse:collapse;width:100%">
+              <tr style="color:#6b7280"><th style="text-align:left;padding:4px 12px;font-weight:normal">Workflow</th><th style="padding:4px 12px;font-weight:normal">Runs</th><th style="padding:4px 12px;font-weight:normal">Issues</th></tr>
+              $WORKFLOW_ROWS
+            </table>
+
+            <p style="font-size:11px;color:#9ca3af;margin:20px 0 0 0">Broadway Scorecard automated report</p>
+          </div>
+          HTMLEOF
+
+          # --- Build markdown for GitHub issue ---
+          cat > /tmp/report.md << MDEOF
+          # Scraper Cost Report — $PERIOD_START – $PERIOD_END
+
+          ## Cost
+          | Provider | Requests | Cost |
+          |----------|----------|------|
+          | Playwright (free) | $PW_TOTAL | \$0 |
+          | BrightData | $BD_TOTAL | ~\$$BD_COST |
+          | ScrapingBee | $SB_TOTAL | $SB_CREDITS_TOTAL credits |
+
+          SB breakdown (last collect run): page=$SB_PAGE, SERP=$SB_SERP
+
+          ## ScrapingBee Credits
+          $SB_STATUS
+
+          ## Workflow Runs ($TOTAL_RUNS total, $TOTAL_FAILED failed)
+          MDEOF
+
+          cat /tmp/report.html
 
       - name: Create GitHub issue
         id: create-issue
@@ -133,19 +175,19 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: |
-          # Convert markdown to simple HTML for email
-          BODY=$(cat /tmp/report.md | sed 's/^# \(.*\)/<h2>\1<\/h2>/' | sed 's/^## \(.*\)/<h3>\1<\/h3>/' | sed 's/^```$/<pre>/' | sed 's/^```/<pre>/' | sed 's/$/<br>/' | sed 's/<pre><br>/<pre>/')
           ISSUE_URL="${{ steps.create-issue.outputs.issue_url }}"
+          # Append link to HTML
+          sed -i "s|Broadway Scorecard automated report|<a href=\"$ISSUE_URL\">View on GitHub</a> · Broadway Scorecard automated report|" /tmp/report.html
 
-          curl -s -X POST https://api.resend.com/emails \
+          jq -n \
+            --arg to "$OWNER_EMAIL" \
+            --arg subject "Scraper Cost Report — $(date '+%b %d')" \
+            --rawfile html /tmp/report.html \
+            '{from: "Broadway Scorecard <alerts@broadwayscorecard.com>", to: [$to], subject: $subject, html: $html}' \
+          | curl -s -X POST https://api.resend.com/emails \
             -H "Authorization: Bearer $RESEND_API_KEY" \
             -H "Content-Type: application/json" \
-            -d "$(jq -n \
-              --arg to "$OWNER_EMAIL" \
-              --arg subject "Scraper Cost Report — Week of $(date '+%Y-%m-%d')" \
-              --arg html "<div style=\"font-family:monospace;font-size:13px\">$BODY<br><br><a href=\"$ISSUE_URL\">View full report on GitHub</a></div>" \
-              '{from: "Broadway Scorecard <alerts@broadwayscorecard.com>", to: [$to], subject: $subject, html: $html}'
-            )" || echo "Email send failed (non-fatal)"
+            -d @- || echo "Email send failed (non-fatal)"
 
       - name: Notify on failure
         if: failure()
