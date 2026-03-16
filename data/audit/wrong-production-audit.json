@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-16T05:37:55.374Z",
+  "timestamp": "2026-03-16T05:56:27.017Z",
   "stats": {
     "totalReviews": 31491,
-    "alreadyFlagged": 9667,
+    "alreadyFlagged": 9669,
     "dateGuardCatches": 126,
-    "directorMismatch": 1108,
+    "directorMismatch": 1111,
     "tvFilmSignals": 3493,
     "londonSignals": 1019,
     "offBroadwaySignals": 1089,
     "yearMismatch": 91,
-    "noPublishDate": 9384
+    "noPublishDate": 9373
   },
   "findings": [
     {
@@ -9778,6 +9778,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "file": "timeout--andrzej-lukowski.json",
+      "score": 79,
+      "publishDate": "2025-10-18",
+      "url": "https://www.timeout.com/london/theatre/cabaret-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
         }
       ]
     },
@@ -22343,6 +22357,20 @@
     },
     {
       "showId": "hamilton-west-end-2021",
+      "file": "timeout--andrzej-lukowski.json",
+      "score": 84,
+      "publishDate": "2025-09-29",
+      "url": "https://www.timeout.com/london/theatre/hamilton-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"thomas kail\" from hamilton-2015"
+        }
+      ]
+    },
+    {
+      "showId": "hamilton-west-end-2021",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 96,
       "publishDate": "2017-12-21",
@@ -26473,6 +26501,20 @@
       "score": 92,
       "publishDate": null,
       "url": "https://www.washingtonpost.com/theater-dance/2022/07/10/into-the-woods-bareilles-sondheim/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "daily-mail--unknown.json",
+      "score": 82,
+      "publishDate": "2025-12-19",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15397945/PATRICK-MARMION-reviews-Woods-Bridge-Theatre-London-Subversive-enchanting-Sondheims-fairytale.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
