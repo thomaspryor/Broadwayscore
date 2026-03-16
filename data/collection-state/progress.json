@@ -5,17 +5,30 @@
     "oh-mary-west-end-2025/variety--unknown.json",
     "paranormal-activity-west-end-2025/variety--unknown.json",
     "the-mousetrap-west-end-2021/nytimes--unknown.json",
-    "the-mousetrap-west-end-2021/variety--unknown.json"
+    "the-mousetrap-west-end-2021/variety--unknown.json",
+    "shadowlands-west-end-2026/timeout--andrzej-lukowski.json",
+    "garry-starr-classic-penguins-garrick-west-end-2026/west-end-best-friend--livvy-perrett.json"
   ],
   "failed": [
     "arcadia-west-end-2026/nytimes--unknown.json",
     "into-the-woods-west-end-2025/variety--unknown.json",
     "six-the-musical-west-end-2021/nytimes--jesse-green.json",
-    "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json"
+    "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
+    "im-sorry-prime-minister-west-end-2026/timeout-london--tom-wicker.json",
+    "back-to-the-future-west-end-2021/thestage--tim-bano.json",
+    "hercules-west-end-2025/times-uk--unknown.json",
+    "into-the-woods-west-end-2025/independent--unknown.json",
+    "it-walks-around-the-house-at-night-west-end-2026/thestage--unknown.json",
+    "moulin-rouge-the-musical-west-end-2021/broadwayworld--aaron-wallace.json",
+    "moulin-rouge-the-musical-west-end-2021/broadwayworld--alan-portner.json",
+    "moulin-rouge-the-musical-west-end-2021/broadwayworld--alyson-eng.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "shadowlands-west-end-2026/timeout--andrzej-lukowski.json",
+      "garry-starr-classic-penguins-garrick-west-end-2026/west-end-best-friend--livvy-perrett.json"
+    ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
       "hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -34,7 +47,14 @@
     "archiveToday": [
       "data/review-texts/arcadia-west-end-2026/nytimes--unknown.json",
       "data/review-texts/six-the-musical-west-end-2021/nytimes--jesse-green.json",
-      "data/review-texts/the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json"
+      "data/review-texts/the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
+      "data/review-texts/im-sorry-prime-minister-west-end-2026/timeout-london--tom-wicker.json",
+      "data/review-texts/back-to-the-future-west-end-2021/thestage--tim-bano.json",
+      "data/review-texts/into-the-woods-west-end-2025/independent--unknown.json",
+      "data/review-texts/it-walks-around-the-house-at-night-west-end-2026/thestage--unknown.json",
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--aaron-wallace.json",
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--alan-portner.json",
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--alyson-eng.json"
     ],
     "archive": [
       "into-the-woods-west-end-2025/nytimes--unknown.json",
@@ -42,7 +62,7 @@
     ]
   },
   "startTime": "2026-03-16T08:45:39.122Z",
-  "lastProcessed": "the-mousetrap-west-end-2021/variety--unknown.json",
+  "lastProcessed": "moulin-rouge-the-musical-west-end-2021/broadwayworld--alyson-eng.json",
   "log": [
     {
       "t": "2026-03-16T08:46:02.043Z",
@@ -61,6 +81,30 @@
       "event": "bb-session",
       "session": "1e72ed7e",
       "url": "https://www.nytimes.com/2022/11/25/theater/agatha-christie-the-mousetrap-broadwa"
+    },
+    {
+      "t": "2026-03-16T08:52:45.125Z",
+      "event": "bb-session",
+      "session": "0e57b6f1",
+      "url": "https://www.thestage.co.uk/long-reviews/back-to-the-future-the-musical-adelphi-t"
+    },
+    {
+      "t": "2026-03-16T08:53:25.328Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    39 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-03-16T08:56:39.858Z",
+      "event": "bb-session",
+      "session": "9e611637",
+      "url": "https://www.thestage.co.uk/reviews/it-walks-around-the-house-at-night-review-sou"
+    },
+    {
+      "t": "2026-03-16T08:57:18.199Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    39 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
     }
   ]
 }
