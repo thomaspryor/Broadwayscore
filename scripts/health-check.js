@@ -195,7 +195,7 @@ function runCheck(name, fn) {
 
 const FRESHNESS_CHECKS = [
   { file: 'reviews.json', field: '_meta.lastUpdated', warnH: 48, errorH: 96, hint: 'Check rebuild-reviews workflow in Actions tab' },
-  { file: 'shows.json', field: '_meta.lastUpdated', warnH: 48, errorH: 96, hint: 'Check update-show-status workflow in Actions tab' },
+  { file: 'shows.json', field: '_meta.lastUpdated', warnH: 24, errorH: 36, hint: 'Check update-show-status workflow in Actions tab' },
   { file: 'grosses.json', field: 'lastUpdated', warnH: 240, errorH: 336, hint: 'Check weekly-grosses workflow in Actions tab' },
   { file: 'audience-buzz.json', field: '_meta.lastUpdated', warnH: 240, errorH: 336, hint: 'Check audience buzz workflows in Actions tab' },
   { file: 'commercial.json', field: '_meta.lastUpdated', warnH: 336, errorH: 504, hint: 'Check update-commercial workflow in Actions tab' },
@@ -227,6 +227,63 @@ function checkFreshness() {
         return { name: `Freshness: ${file}`, status: 'warn', message: `${formatAge(age)} old (warn threshold: ${formatAge(warnH)})`, hint };
       }
       return { name: `Freshness: ${file}`, status: 'pass', message: `${formatAge(age)} old` };
+    })
+  );
+}
+
+// --- Category A2: Push Verification ---
+// Detects silent push failures: workflow succeeds but data never reaches private repo.
+// Compares _meta.lastUpdated against last successful workflow run time.
+
+const PUSH_VERIFY_CHECKS = [
+  { file: 'shows.json', field: '_meta.lastUpdated', workflow: 'update-show-status.yml', name: 'Update Show Status', maxDriftH: 6 },
+];
+
+function checkPushVerification() {
+  if (!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN) {
+    return [{ name: 'Push verify: shows.json', status: 'warn', message: 'Skipped — no GH_TOKEN' }];
+  }
+
+  return PUSH_VERIFY_CHECKS.map(({ file, field, workflow, name, maxDriftH }) =>
+    runCheck(`Push verify: ${file}`, () => {
+      try {
+        // Get last successful workflow run time
+        const result = execSync(
+          `gh run list --workflow="${workflow}" --status=success --limit=1 --json createdAt -q '.[0].createdAt'`,
+          { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
+        ).trim();
+        if (!result) {
+          return { name: `Push verify: ${file}`, status: 'warn', message: `No successful ${name} runs found` };
+        }
+        const workflowTime = new Date(result);
+
+        // Get data timestamp from file
+        const filePath = path.join(DATA_DIR, file);
+        if (!fs.existsSync(filePath)) {
+          return { name: `Push verify: ${file}`, status: 'warn', message: 'File missing' };
+        }
+        const data = readJSON(filePath);
+        const value = field.split('.').reduce((obj, key) => obj && obj[key], data);
+        if (!value) {
+          return { name: `Push verify: ${file}`, status: 'warn', message: `No ${field} field` };
+        }
+        const dataTime = new Date(value);
+
+        // If workflow ran successfully but data timestamp is older by more than maxDriftH,
+        // the push likely failed silently
+        const driftH = (workflowTime.getTime() - dataTime.getTime()) / (1000 * 60 * 60);
+        if (driftH > maxDriftH) {
+          return {
+            name: `Push verify: ${file}`,
+            status: 'error',
+            message: `Data ${formatAge(hoursAgo(value))} old but ${name} succeeded ${formatAge(hoursAgo(result))} ago — push may have failed`,
+            hint: `Check ${workflow} logs for "No core data changes" or push errors`,
+          };
+        }
+        return { name: `Push verify: ${file}`, status: 'pass', message: `Data synced (${formatAge(hoursAgo(value))} old, workflow ${formatAge(hoursAgo(result))} ago)` };
+      } catch (err) {
+        return { name: `Push verify: ${file}`, status: 'warn', message: `Check failed: ${err.message.substring(0, 80)}` };
+      }
     })
   );
 }
@@ -1314,6 +1371,7 @@ async function main() {
 
   const allResults = [
     ...checkFreshness(),
+    ...checkPushVerification(),
     ...checkSync(),
     ...checkPipelines(),
     ...checkQuality(),
