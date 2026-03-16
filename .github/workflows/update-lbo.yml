@@ -63,7 +63,7 @@ jobs:
         if: always() && inputs.dry_run != true
         run: |
           mkdir -p /tmp/core-data-snapshot
-          for f in audience-buzz.json; do
+          for f in audience-buzz.json audience-reviews-lbo.json; do
             if [ -f "data/$f" ]; then
               cp -f "data/$f" /tmp/core-data-snapshot/
             fi

@@ -75,6 +75,7 @@ const LBO_OVERRIDES = {
 
 const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
 const showsPath = path.join(__dirname, '../data/shows.json');
+const reviewsPath = path.join(__dirname, '../data/audience-reviews-lbo.json');
 
 // --- HTTP helpers ---
 
@@ -195,6 +196,47 @@ function extractReviewData(html) {
     : null;
 
   return { rating, reviewCount, pageTitle };
+}
+
+/**
+ * Extract individual reviews from LBO HTML.
+ * Each review is a <div class="creview"> with schema.org markup.
+ */
+function extractIndividualReviews(html) {
+  const reviews = [];
+  // Decode common HTML entities
+  const decode = s => s
+    .replace(/&#0?39;/g, "'").replace(/&amp;/g, '&').replace(/&quot;/g, '"')
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&[a-z]+;/g, '').trim();
+
+  // Split on review containers
+  const blocks = html.split(/<div class="creview"/);
+  // Skip first block (before first review)
+  for (let i = 1; i < blocks.length; i++) {
+    const block = blocks[i];
+    try {
+      const ratingM = block.match(/itemprop="ratingValue"\s+content="(\d)"/);
+      const dateM = block.match(/itemprop="datePublished"\s+content="([^"]+)"/);
+      const titleM = block.match(/itemprop="name">([^<]+)<\/strong>/);
+      const bodyM = block.match(/itemprop="reviewBody"[^>]*>([^<]+)</);
+      const authorM = block.match(/itemprop="author"[^>]*>.*?itemprop="name">([^<]+)/s);
+      const verified = /verified/.test(block.slice(0, 200));
+
+      if (!titleM && !bodyM) continue; // Skip reviews with no text at all
+
+      reviews.push({
+        rating: ratingM ? parseInt(ratingM[1]) : null,
+        date: dateM ? dateM[1] : null,
+        title: titleM ? decode(titleM[1]) : null,
+        body: bodyM ? decode(bodyM[1]) : null,
+        author: authorM ? decode(authorM[1]) : null,
+        verified,
+      });
+    } catch {
+      // Skip malformed review blocks
+    }
+  }
+  return reviews;
 }
 
 async function fetchLboPage(url) {
@@ -367,6 +409,23 @@ async function main() {
 
       if ((i + 1) % CHECKPOINT_EVERY === 0) {
         console.log(`  💾 Checkpoint saved (${i + 1} processed)`);
+      }
+
+      // Extract individual reviews and save to flat file
+      const individualReviews = extractIndividualReviews(html);
+      if (individualReviews.length > 0) {
+        // Re-read reviews file fresh (same pattern as audience-buzz)
+        let reviewsData = {};
+        try { reviewsData = JSON.parse(fs.readFileSync(reviewsPath, 'utf8')); } catch { /* first run */ }
+        reviewsData[show.id] = {
+          title: show.title,
+          totalReviews: data.reviewCount,
+          fetchedReviews: individualReviews.length,
+          lastFetched: new Date().toISOString().slice(0, 10),
+          reviews: individualReviews,
+        };
+        fs.writeFileSync(reviewsPath, JSON.stringify(reviewsData, null, 2) + '\n');
+        console.log(`  📝 ${individualReviews.length} individual reviews saved`);
       }
     }
 
