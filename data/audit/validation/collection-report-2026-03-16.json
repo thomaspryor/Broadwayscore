@@ -1,94 +1,93 @@
 {
-  "runDate": "2026-03-16T21:59:55.366Z",
+  "runDate": "2026-03-16T22:26:45.585Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 10,
     "priority": "all",
-    "showFilter": "im-every-woman-the-chaka-khan-musical-west-end-2026,summerfolk-west-end-2026,arcadia-west-end-2026,the-phantom-of-the-opera-west-end-1986",
+    "showFilter": "hamilton-2015",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
-    "failed": 5,
+    "processed": 8,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "58.3%"
+    "successRate": "80.0%"
   },
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 1,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 5,
-    "archive": 0
+    "archiveToday": 2,
+    "archive": 6
   },
   "statistics": {
-    "tier1Attempts": 12,
-    "tier1Success": 7,
+    "tier1Attempts": 2,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 2,
-    "tier1_5Success": 0,
-    "tier2Attempts": 5,
+    "tier1_5Success": 2,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 6,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier3_6Attempts": 5,
-    "tier3_6Success": 5,
-    "tier4Attempts": 2,
-    "tier4Success": 1,
-    "totalFailed": 5,
+    "tier3_6Attempts": 2,
+    "tier3_6Success": 2,
+    "tier4Attempts": 5,
+    "tier4Success": 2,
+    "totalFailed": 2,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.9,
+    "browserbaseMinutesUsed": 0.5,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "arcadia-west-end-2026/london-theatre--unknown.json",
-    "arcadia-west-end-2026/whatsonstage--unknown.json",
-    "arcadia-west-end-2026/guardian--arifa-akbar.json",
-    "arcadia-west-end-2026/timeout--unknown.json",
-    "arcadia-west-end-2026/london-box-office--stuart-king.json",
-    "arcadia-west-end-2026/times-uk--unknown.json",
-    "the-phantom-of-the-opera-west-end-1986/standard--katie-rosseinsky.json"
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/nyt-theater--jonathan-mandell.json",
+    "hamilton-2015/theatermania--adam-feldman.json",
+    "hamilton-2015/wsj--terry-teachout.json",
+    "hamilton-2015/ap--mark-kennedy.json",
+    "hamilton-2015/broadwayworld--michael-dale.json",
+    "hamilton-2015/chicagotribune--unknown.json",
+    "hamilton-2015/telegraph--unknown.json"
   ],
   "failed": [
-    "arcadia-west-end-2026/nytimes--unknown.json",
-    "arcadia-west-end-2026/independent--unknown.json",
-    "arcadia-west-end-2026/thestage--unknown.json",
-    "summerfolk-west-end-2026/times-uk--unknown.json",
-    "the-phantom-of-the-opera-west-end-1986/guardian--michael-billington.json"
+    "hamilton-2015/backstage-barbie--backstage-barbie.json",
+    "hamilton-2015/washington-times--mark-kennedy.json"
   ],
   "tierDetails": {
     "playwright": [
-      "arcadia-west-end-2026/london-theatre--unknown.json",
-      "arcadia-west-end-2026/whatsonstage--unknown.json",
-      "arcadia-west-end-2026/guardian--arifa-akbar.json",
-      "arcadia-west-end-2026/timeout--unknown.json",
-      "arcadia-west-end-2026/london-box-office--stuart-king.json",
-      "arcadia-west-end-2026/times-uk--unknown.json",
-      "the-phantom-of-the-opera-west-end-1986/standard--katie-rosseinsky.json"
+      "hamilton-2015/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json",
+      "hamilton-2015/hollywood-reporter--david-rooney.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/arcadia-west-end-2026/nytimes--unknown.json",
-      "data/review-texts/arcadia-west-end-2026/independent--unknown.json",
-      "data/review-texts/arcadia-west-end-2026/thestage--unknown.json",
-      "data/review-texts/summerfolk-west-end-2026/times-uk--unknown.json",
-      "data/review-texts/the-phantom-of-the-opera-west-end-1986/guardian--michael-billington.json"
+      "data/review-texts/hamilton-2015/backstage-barbie--backstage-barbie.json",
+      "data/review-texts/hamilton-2015/washington-times--mark-kennedy.json"
     ],
-    "archive": []
+    "archive": [
+      "hamilton-2015/theatermania--adam-feldman.json",
+      "hamilton-2015/wsj--terry-teachout.json",
+      "hamilton-2015/ap--mark-kennedy.json",
+      "hamilton-2015/broadwayworld--michael-dale.json",
+      "hamilton-2015/chicagotribune--unknown.json",
+      "hamilton-2015/telegraph--unknown.json"
+    ]
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
