@@ -35,6 +35,9 @@ jobs:
         with:
           configure-git: 'true'
 
+      - name: Install Playwright
+        run: npx playwright install chromium
+
       - name: Run commercial data update
         id: update
         env:
