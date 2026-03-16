@@ -980,7 +980,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               buzz={audienceBuzz}
               showScoreUrl={audienceBuzz.sources.showScore ? getShowScoreUrl(show.id) : undefined}
               limitedSources={isHistorical && sourceCount <= 1}
-              market={show.category === 'west-end' || show.category === 'off-west-end' ? 'west-end' : 'broadway'}
+              market={(show.category as 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end') || 'broadway'}
             />
           );
         })() : show.status === 'previews' || show.status === 'upcoming' ? (

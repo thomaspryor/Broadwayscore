@@ -12,7 +12,7 @@ interface AudienceBuzzCardProps {
   buzz: AudienceBuzzData;
   showScoreUrl?: string;
   limitedSources?: boolean;
-  market?: 'broadway' | 'west-end';
+  market?: 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end';
 }
 
 // Heart icon for "Loving It"

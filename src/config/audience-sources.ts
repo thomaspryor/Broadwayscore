@@ -11,22 +11,22 @@ export interface AudienceSourceConfig {
   name: string;
   volumeLabel: string;
   iconColor: string;
-  markets: ('broadway' | 'west-end')[];
+  markets: ('broadway' | 'west-end' | 'off-broadway' | 'off-west-end')[];
   /** Whether this source shows starRating (X/5) instead of percentage */
   showStarRating?: boolean;
 }
 
 export const AUDIENCE_SOURCES: AudienceSourceConfig[] = [
-  { key: 'showScore', name: 'Show Score', volumeLabel: 'reviews', iconColor: 'text-yellow-400', markets: ['broadway', 'west-end'] },
-  { key: 'mezzanine', name: 'Mezzanine', volumeLabel: 'reviews', iconColor: 'text-purple-400', markets: ['broadway', 'west-end'], showStarRating: true },
-  { key: 'seatplan', name: 'SeatPlan', volumeLabel: 'reviews', iconColor: 'text-cyan-400', markets: ['west-end'], showStarRating: true },
-  { key: 'lbo', name: 'London Box Office', volumeLabel: 'reviews', iconColor: 'text-emerald-400', markets: ['west-end'], showStarRating: true },
-  { key: 'theatr', name: 'Theatr', volumeLabel: 'votes', iconColor: 'text-teal-400', markets: ['broadway'] },
-  { key: 'broadwayCom', name: 'Broadway.com', volumeLabel: 'reviews', iconColor: 'text-blue-400', markets: ['broadway'], showStarRating: true },
-  { key: 'reddit', name: 'Reddit', volumeLabel: 'mentions', iconColor: 'text-orange-400', markets: ['broadway', 'west-end'] },
+  { key: 'showScore', name: 'Show Score', volumeLabel: 'reviews', iconColor: 'text-yellow-400', markets: ['broadway', 'west-end', 'off-broadway', 'off-west-end'] },
+  { key: 'mezzanine', name: 'Mezzanine', volumeLabel: 'reviews', iconColor: 'text-purple-400', markets: ['broadway', 'west-end', 'off-broadway', 'off-west-end'], showStarRating: true },
+  { key: 'seatplan', name: 'SeatPlan', volumeLabel: 'reviews', iconColor: 'text-cyan-400', markets: ['west-end', 'off-west-end'], showStarRating: true },
+  { key: 'lbo', name: 'London Box Office', volumeLabel: 'reviews', iconColor: 'text-emerald-400', markets: ['west-end', 'off-west-end'], showStarRating: true },
+  { key: 'theatr', name: 'Theatr', volumeLabel: 'votes', iconColor: 'text-teal-400', markets: ['broadway', 'off-broadway'] },
+  { key: 'broadwayCom', name: 'Broadway.com', volumeLabel: 'reviews', iconColor: 'text-blue-400', markets: ['broadway', 'off-broadway'], showStarRating: true },
+  { key: 'reddit', name: 'Reddit', volumeLabel: 'mentions', iconColor: 'text-orange-400', markets: ['broadway', 'west-end', 'off-broadway', 'off-west-end'] },
 ];
 
-export function getSourcesForMarket(market: 'broadway' | 'west-end'): AudienceSourceConfig[] {
+export function getSourcesForMarket(market: 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end'): AudienceSourceConfig[] {
   return AUDIENCE_SOURCES.filter(s => s.markets.includes(market));
 }
 
@@ -44,6 +44,6 @@ export const SOURCE_DESCRIPTIONS: Record<string, string> = {
   lbo: 'Verified purchase reviews from London Box Office ticket buyers via Feefo.',
 };
 
-export function getSourceNames(market: 'broadway' | 'west-end'): string {
+export function getSourceNames(market: 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end'): string {
   return getSourcesForMarket(market).map(s => s.name).join(', ');
 }
