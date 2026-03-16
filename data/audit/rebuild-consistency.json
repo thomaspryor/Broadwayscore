@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-16T06:37:11.479Z",
+  "generatedAt": "2026-03-16T08:46:27.230Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -32,6 +32,14 @@
       "outlet": "broadwayworld",
       "critic": "Michael Dale",
       "detail": "originalRating \"4/5\" (=80) vs score 44 (source: human-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "cold-war-choir-practice-off-broadway-2026",
+      "outlet": "nysr",
+      "critic": "David Finkle",
+      "detail": "originalRating \"4/5 stars\" (=80) vs score 52 (source: human-review)"
     },
     {
       "type": "rating-score-mismatch",
@@ -272,6 +280,14 @@
       "outlet": "nydailynews",
       "critic": "Joe Dziemianowicz",
       "detail": "humanReviewScore 42 (mixed) overrides explicit \"80\" (=80, positive)"
+    },
+    {
+      "type": "human-override-vs-explicit-grade",
+      "severity": "high",
+      "showId": "cold-war-choir-practice-off-broadway-2026",
+      "outlet": "nysr",
+      "critic": "David Finkle",
+      "detail": "humanReviewScore 52 (mixed) overrides explicit \"4/5 stars\" (=80, positive)"
     },
     {
       "type": "human-override-vs-explicit-grade",
