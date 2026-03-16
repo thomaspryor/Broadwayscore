@@ -1,7 +1,7 @@
 {
   "system": "freshness",
   "status": "error",
-  "lastChecked": "2026-03-15T07:42:37.730Z",
+  "lastChecked": "2026-03-16T08:06:14.648Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -14,12 +14,12 @@
     {
       "name": "Freshness: shows.json",
       "status": "error",
-      "message": "5d old (error threshold: 4d)"
+      "message": "6d old (error threshold: 4d)"
     },
     {
       "name": "Freshness: grosses.json",
       "status": "pass",
-      "message": "3d old"
+      "message": "4d old"
     },
     {
       "name": "Freshness: audience-buzz.json",
@@ -29,17 +29,17 @@
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "4d old"
+      "message": "5d old"
     },
     {
       "name": "Freshness: critic-consensus.json",
       "status": "pass",
-      "message": "2d old"
+      "message": "3d old"
     },
     {
       "name": "Freshness: lottery-rush.json",
       "status": "pass",
-      "message": "6d old"
+      "message": "7d old"
     }
   ]
 }
