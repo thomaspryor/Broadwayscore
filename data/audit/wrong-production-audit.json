@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-16T21:16:06.754Z",
+  "timestamp": "2026-03-16T22:10:18.231Z",
   "stats": {
-    "totalReviews": 31520,
-    "alreadyFlagged": 9333,
+    "totalReviews": 31525,
+    "alreadyFlagged": 9335,
     "dateGuardCatches": 133,
     "directorMismatch": 1107,
     "tvFilmSignals": 3495,
-    "londonSignals": 1024,
+    "londonSignals": 1025,
     "offBroadwaySignals": 1088,
     "yearMismatch": 92,
-    "noPublishDate": 9517
+    "noPublishDate": 9519
   },
   "findings": [
     {
@@ -9482,7 +9482,7 @@
     {
       "showId": "burnout-paradise-off-broadway-2026",
       "file": "nysr--roma-torre.json",
-      "score": null,
+      "score": 78,
       "publishDate": "November 16, 2024",
       "url": "https://nystagereview.com/2026/03/08/burnout-paradise-madhouse-multitasking/",
       "findings": [
@@ -12164,6 +12164,7 @@
     {
       "showId": "cold-war-choir-practice-off-broadway-2026",
       "file": "theatermania--unknown.json",
+      "score": 84,
       "publishDate": "November 9, 2025",
       "url": "https://www.theatermania.com/news/review-cold-war-choir-practice-wants-us-to-remember-the-80s_1827269/",
       "findings": [
@@ -30875,7 +30876,7 @@
     {
       "showId": "little-shop-of-horrors-off-broadway-2019",
       "file": "nytg--gillian-russo.json",
-      "score": 85,
+      "score": 76,
       "publishDate": "2023-10-26",
       "url": "https://www.newyorktheatreguide.com/theatre-news/news/dont-feed-the-plants-but-do-pay-a-visit-to-little-shop-of-horrors",
       "findings": [
@@ -66874,6 +66875,19 @@
       ]
     },
     {
+      "showId": "arcadia-west-end-2026",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "2026-02-05",
+      "url": "https://www.londontheatre.co.uk/reviews/arcadia-review-old-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "assassins-2004",
       "file": "ap--michael-kuchwara.json",
       "publishDate": "2004-05-30",
@@ -67902,7 +67916,7 @@
     {
       "showId": "bughouse-off-broadway-2026",
       "file": "theatermania--linda-buchwald.json",
-      "score": null,
+      "score": 62,
       "publishDate": "January 15, 2026",
       "url": "https://www.theatermania.com/news/review-the-life-of-prolific-outsider-artist-henry-darger-gets-slender-treatment-in-bughouse_1827480/",
       "findings": [
@@ -77955,7 +77969,7 @@
     {
       "showId": "night-side-songs-off-broadway-2026",
       "file": "broadwaynews--chloe-rabinowitz.json",
-      "score": null,
+      "score": 65,
       "publishDate": "January 21, 2026",
       "url": "https://www.broadwayworld.com/article/Review-Roundup-NIGHT-SIDE-SONGS-Opens-Off-Broadway-20260302",
       "findings": [
@@ -88769,7 +88783,7 @@
     {
       "showId": "what-we-did-before-our-moth-days-off-broadway-2026",
       "file": "nytg--gillian-russo.json",
-      "score": null,
+      "score": 83,
       "publishDate": "2025-09-09",
       "url": "https://www.newyorktheatreguide.com/reviews/what-we-did-before-our-moth-days-off-broadway-review",
       "findings": [

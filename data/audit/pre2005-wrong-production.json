@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-16T21:11:24.204Z",
+    "generatedAt": "2026-03-16T22:05:33.523Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 132,
-    "highConfidence": 44,
-    "mediumConfidence": 88,
+    "totalFlagged": 124,
+    "highConfidence": 40,
+    "mediumConfidence": 84,
     "lowConfidence": 0,
-    "reassignable": 68
+    "reassignable": 61
   },
   "results": [
     {
@@ -1040,37 +1040,6 @@
       "textSnippet": "https://www.nytimes.com/2003/01/10/movies/theater-review-when-an-apple-loves-a-worm.htmlShare full articleAdvertisement\n\nTHE look of love beams like a laser from Brian Bedford's eyes in the handsome, "
     },
     {
-      "showId": "ma-raineys-black-bottom-2003",
-      "showTitle": "Ma Rainey's Black Bottom",
-      "showYear": 2003,
-      "file": "nytimes--ben-brantley.json",
-      "outlet": "The New York Times",
-      "criticName": "Ben Brantley",
-      "publishDate": "February 7, 2003",
-      "confidence": "medium",
-      "suggestedShowId": "ma-raineys-black-bottom-1984",
-      "signals": [
-        "revival text signals: revival, new revival",
-        "year 1984 in text matches revival ma-raineys-black-bottom-1984"
-      ],
-      "textSnippet": "  IT’S the music, of all things, that’s so conspicuously missing from the hollow new revival of ”Ma Rainey’s Black Bottom,” August Wilson’s landmark play from 1984 about a blues recording session in j"
-    },
-    {
-      "showId": "take-me-out-2003",
-      "showTitle": "Take Me Out",
-      "showYear": 2003,
-      "file": "nypost--johnny-oleksinski.json",
-      "outlet": "The New York Post",
-      "criticName": "Johnny Oleksinski",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": "take-me-out-2022",
-      "signals": [
-        "year 2022 in text matches revival take-me-out-2022"
-      ],
-      "textSnippet": " 'Take Me Out' isn't a sports psychologist's essay though. It's a taut and exciting play - and much more propulsive than your average spring ball game - that thankfully doesn't concern itself with the"
-    },
-    {
       "showId": "nine-2003",
       "showTitle": "Nine",
       "showYear": 2003,
@@ -1176,22 +1145,6 @@
         "revival text signals: revival, revived"
       ],
       "textSnippet": "Advertisement Continue reading the main story See the article in its original context from March 17, 2002 , Section 2 , Page 5 Buy Reprints View on timesmachine TimesMachine is an exclusive benefit fo"
-    },
-    {
-      "showId": "the-elephant-man-2002",
-      "showTitle": "The Elephant Man",
-      "showYear": 2002,
-      "file": "ew--jason-clark.json",
-      "outlet": "Entertainment Weekly",
-      "criticName": "Jason Clark",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "revival text signals: revival, this production",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "textSnippet": " Scott Ellis' lean revival of Elephant is light on frills, very much in line with the long-standing decision to have the actor playing Merrick take on no prosthetics or makeup to convey Merrick's cont"
     },
     {
       "showId": "once-on-this-island-2002",
@@ -1645,21 +1598,6 @@
       "textSnippet": "A second-tier Kander and Ebb score is better than a lot of musical craftsmen’s best, which makes The Visit a welcome curiosity, even if it’s sure to be a commercial challenge. Finally reaching Broadwa"
     },
     {
-      "showId": "all-my-sons-1987",
-      "showTitle": "All My Sons",
-      "showYear": 1987,
-      "file": "ew--jessica-derschowitz.json",
-      "outlet": "Entertainment Weekly",
-      "criticName": "Jessica Derschowitz",
-      "publishDate": "2018-09-20",
-      "confidence": "high",
-      "suggestedShowId": "all-my-sons-2019",
-      "signals": [
-        "publishDate 2018 matches revival all-my-sons-2019 (opened 2019)"
-      ],
-      "textSnippet": " It all comes together in a stellar, harrowing production that reinforces why Miller's works still endure so many decades later: The world is filled with hardships and horrors, but they can also be lu"
-    },
-    {
       "showId": "an-enemy-of-the-people-1971",
       "showTitle": "An Enemy of the People",
       "showYear": 1971,
@@ -1836,21 +1774,6 @@
       "textSnippet": "Judging by the ubiquitous ads, Denzel Washington is the star attraction of “A Raisin in the Sun,” which has just opened for a 14-week run at the Barrymore Theatre. Perhaps so, but it’s the performance"
     },
     {
-      "showId": "follies-2001",
-      "showTitle": "Follies",
-      "showYear": 2001,
-      "file": "bloomberg--jeremy-gerard.json",
-      "outlet": "Bloomberg News",
-      "criticName": "Jeremy Gerard",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": "follies-1971",
-      "signals": [
-        "year 1971 in text matches revival follies-1971"
-      ],
-      "textSnippet": " Broadway’s sterile Marquis Theatre has never looked so good as in the state of faux decrepitude that welcomes us to the latest, and finest, revival of Stephen Sondheim's Follies...Near the end [of 'L"
-    },
-    {
       "showId": "cyrano-de-bergerac-1984",
       "showTitle": "Cyrano de Bergerac",
       "showYear": 1984,
@@ -1962,36 +1885,6 @@
       "textSnippet": "https://www.nytimes.com/2022/02/03/theater/the-tap-dance-kid-review.htmlAdvertisement\n\nWhen 8:30 p.m. was a typical curtain time for Broadway musicals, the main character’s biggest number, crystallizi"
     },
     {
-      "showId": "glengarry-glen-ross-1984",
-      "showTitle": "Glengarry Glen Ross",
-      "showYear": 1984,
-      "file": "nypost--elisabeth-vincentelli.json",
-      "outlet": "NY Post",
-      "criticName": "Elisabeth Vincentelli",
-      "publishDate": "2024-12-17",
-      "confidence": "high",
-      "suggestedShowId": "glengarry-glen-ross-2025",
-      "signals": [
-        "publishDate 2024 matches revival glengarry-glen-ross-2025 (opened 2025)"
-      ],
-      "textSnippet": " So it's all about Pacino, and guess what? He's good. Not awesomely, life-changingly good. Just good.   "
-    },
-    {
-      "showId": "glengarry-glen-ross-1984",
-      "showTitle": "Glengarry Glen Ross",
-      "showYear": 1984,
-      "file": "nypost--johnny-oleksinski.json",
-      "outlet": "The New York Post",
-      "criticName": "Johnny Oleksinki",
-      "publishDate": "2024-12-17",
-      "confidence": "high",
-      "suggestedShowId": "glengarry-glen-ross-2025",
-      "signals": [
-        "publishDate 2024 matches revival glengarry-glen-ross-2025 (opened 2025)"
-      ],
-      "textSnippet": " So, to channel Mamet, why the f–k has it been plopped onto the same stage that was home to “West Side Story,” “Legally Blonde” and “SpongeBob Squarepants: The Musical”? It’s a huge mistake. Any tensi"
-    },
-    {
       "showId": "death-of-a-salesman-1984",
       "showTitle": "Death of a Salesman",
       "showYear": 1984,
@@ -2072,22 +1965,6 @@
         "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "NEW YORK — Could the timing be any better for a Broadway revival of Annie? The uplifting musical sells not only the archetypal rags-to-riches fantasy but promotes belief in the power of government to "
-    },
-    {
-      "showId": "jesus-christ-superstar-1971",
-      "showTitle": "Jesus Christ Superstar",
-      "showYear": 1971,
-      "file": "hollywood-reporter--david-rooney.json",
-      "outlet": "Hollywood Reporter",
-      "criticName": "David Rooney",
-      "publishDate": "2018-04-01",
-      "confidence": "high",
-      "suggestedShowId": "jesus-christ-superstar-2012",
-      "signals": [
-        "publishDate 2018 is 47 years after original opening 1971",
-        "revival cast/director match for jesus-christ-superstar-2012: Josh Young, Stratford"
-      ],
-      "textSnippet": " The hit of last summer’s Stratford Shakespeare Festival, where McAnuff is artistic director, the production’s key onstage asset is its Judas Iscariot, Josh Young. And given that this account of the f"
     }
   ]
 }
