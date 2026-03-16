@@ -439,9 +439,11 @@ async function main() {
       // Check previewsStartDate
       if (entry.firstPreview) {
         if (!show.previewsStartDate) {
+          // Check against both the external opening and existing opening
           const effectiveOpening = entry.opening || show.openingDate;
-          if (effectiveOpening && entry.firstPreview >= effectiveOpening) {
-            // Don't warn — this just means we don't have useful preview data
+          if ((effectiveOpening && entry.firstPreview >= effectiveOpening) ||
+              (show.openingDate && entry.firstPreview >= show.openingDate)) {
+            // Preview date isn't before opening — skip
           } else {
             showChanges.push({ field: 'previewsStartDate', old: null, new: entry.firstPreview });
           }
