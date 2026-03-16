@@ -938,6 +938,7 @@ const OUTLET_VERIFIED_SOURCES = new Set([
   'json-ld', 'meta-itemprop', 'guardian-api', 'wos-star-images', 'stage-star-svg',
   'telegraph-svg', 'dailymail-rating-img', 'fivestar-widget', 'star-class',
   'unicode-stars', 'numeric-stars', 'original-star-rating', 'timeout-star-widget',
+  'lbo-star-rating', 'explicit-rating',
 ]);
 
 module.exports = {
