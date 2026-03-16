@@ -2,14 +2,20 @@
 /**
  * Scrape Show Score audience data and update audience-buzz.json
  *
- * Uses ScrapingBee to fetch Show Score pages and extract audience scores.
+ * Uses a fallback chain to fetch Show Score pages and extract audience scores:
+ * 1. ScrapingBee (primary — render_js + premium_proxy for SPA content)
+ * 2. Playwright (fallback — native JS rendering, no API credits needed)
+ * 3. Bright Data Web Unlocker (last resort — may not render JS fully)
+ *
  * Designed to run in GitHub Actions.
  *
  * Usage:
  *   node scripts/scrape-show-score-audience.js [--show=hamilton-2015] [--limit=10] [--dry-run]
  *
  * Environment variables:
- *   SCRAPINGBEE_API_KEY - Required for fetching pages
+ *   SCRAPINGBEE_API_KEY - ScrapingBee API key (primary, optional)
+ *   BRIGHTDATA_TOKEN    - Bright Data API token (fallback, optional)
+ *   At least one scraping method must be available (or Playwright installed).
  */
 
 const fs = require('fs');
@@ -19,6 +25,26 @@ const { JSDOM } = require('jsdom');
 const { calculateCombinedScore } = require('./lib/audience-weighting');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
+
+// Lazy-load Playwright — only imported if needed as fallback
+let playwrightBrowser = null;
+async function getPlaywrightBrowser() {
+  if (playwrightBrowser) return playwrightBrowser;
+  try {
+    const { chromium } = require('playwright');
+    playwrightBrowser = await chromium.launch({ headless: true });
+    return playwrightBrowser;
+  } catch (e) {
+    console.error(`  Playwright unavailable: ${e.message}`);
+    return null;
+  }
+}
+async function cleanupPlaywright() {
+  if (playwrightBrowser) {
+    await playwrightBrowser.close();
+    playwrightBrowser = null;
+  }
+}
 
 // Parse command line args
 const args = process.argv.slice(2);
@@ -100,12 +126,13 @@ function sleep(ms) {
 }
 
 /**
- * Fetch URL through ScrapingBee (single attempt)
+ * Fetch URL through ScrapingBee (single attempt).
+ * Returns HTML string or throws on failure. Returns null if no API key.
  */
 function fetchViaScrapingBeeSingle(url) {
   return new Promise((resolve, reject) => {
     if (!SCRAPINGBEE_KEY) {
-      reject(new Error('SCRAPINGBEE_API_KEY must be set'));
+      resolve(null); // No key — skip gracefully
       return;
     }
 
@@ -118,28 +145,117 @@ function fetchViaScrapingBeeSingle(url) {
         if (res.statusCode === 200) {
           resolve(data);
         } else {
-          reject(new Error(`HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+          reject(new Error(`ScrapingBee HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
         }
       });
     }).on('error', reject)
-      .on('timeout', () => reject(new Error('Request timeout')));
+      .on('timeout', () => reject(new Error('ScrapingBee request timeout')));
   });
 }
 
 /**
- * Fetch URL through ScrapingBee with retry logic
+ * Fetch URL through Playwright (renders JS natively).
+ * Returns HTML string or null on failure.
  */
-async function fetchViaScrapingBee(url, retries = 2) {
-  for (let attempt = 1; attempt <= retries + 1; attempt++) {
+async function fetchViaPlaywright(url) {
+  const browser = await getPlaywrightBrowser();
+  if (!browser) return null;
+
+  try {
+    const page = await browser.newPage();
     try {
-      return await fetchViaScrapingBeeSingle(url);
-    } catch (error) {
-      if (attempt > retries) throw error;
-      const delay = 5000 * attempt;
-      if (verbose) console.log(`  Retry ${attempt}/${retries} in ${delay / 1000}s: ${error.message}`);
-      await sleep(delay);
+      await page.goto(url, { waitUntil: 'networkidle', timeout: 45000 });
+      // Show Score is an SPA — wait a bit for content to render
+      await page.waitForTimeout(3000);
+      const html = await page.content();
+      return html;
+    } finally {
+      await page.close();
+    }
+  } catch (error) {
+    console.error(`  Playwright failed: ${error.message}`);
+    return null;
+  }
+}
+
+/**
+ * Fetch URL through Bright Data Web Unlocker.
+ * Returns HTML string or null on failure.
+ * Note: Web Unlocker may not fully render JS-heavy SPAs like Show Score.
+ */
+function fetchViaBrightData(url) {
+  const token = process.env.BRIGHTDATA_TOKEN;
+  if (!token) return Promise.resolve(null);
+
+  const zone = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
+  const apiUrl = 'https://api.brightdata.com/request';
+  const body = JSON.stringify({ zone, url, format: 'raw' });
+
+  return new Promise((resolve, reject) => {
+    const req = https.request(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(body),
+      },
+      timeout: 60000,
+    }, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        if (res.statusCode === 200) {
+          resolve(data);
+        } else {
+          reject(new Error(`BrightData HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+        }
+      });
+    });
+    req.on('error', reject);
+    req.on('timeout', () => reject(new Error('BrightData request timeout')));
+    req.end(body);
+  }).catch(error => {
+    console.error(`  BrightData failed: ${error.message}`);
+    return null;
+  });
+}
+
+/**
+ * Fetch URL with fallback chain and retry logic.
+ * Chain: ScrapingBee (premium) → Playwright → Bright Data
+ * Returns HTML string or throws if all methods fail.
+ */
+async function fetchWithFallback(url, retries = 2) {
+  // Try ScrapingBee first (with retries) — best for Show Score (render_js + premium_proxy)
+  if (SCRAPINGBEE_KEY) {
+    for (let attempt = 1; attempt <= retries + 1; attempt++) {
+      try {
+        const html = await fetchViaScrapingBeeSingle(url);
+        if (html) return html;
+        break; // null = no key, skip retries
+      } catch (error) {
+        if (attempt > retries) {
+          if (verbose) console.log(`  ScrapingBee exhausted after ${retries + 1} attempts: ${error.message}`);
+          break; // Fall through to next provider
+        }
+        const delay = 5000 * attempt;
+        if (verbose) console.log(`  ScrapingBee retry ${attempt}/${retries} in ${delay / 1000}s: ${error.message}`);
+        await sleep(delay);
+      }
     }
   }
+
+  // Playwright fallback — renders JS natively, no API credits
+  if (verbose) console.log('  Falling back to Playwright...');
+  const pwHtml = await fetchViaPlaywright(url);
+  if (pwHtml) return pwHtml;
+
+  // Bright Data last resort — may not render SPA content fully
+  if (verbose) console.log('  Falling back to BrightData...');
+  const bdHtml = await fetchViaBrightData(url);
+  if (bdHtml) return bdHtml;
+
+  throw new Error('All scraping methods failed for ' + url);
 }
 
 /**
@@ -362,7 +478,7 @@ async function discoverShowScoreUrl(show) {
     }
     try {
       if (verbose) console.log(`  Trying: ${url}`);
-      const html = await fetchViaScrapingBee(url, 0); // No retries during discovery
+      const html = await fetchWithFallback(url, 0); // No retries during discovery
       if (isValidShowScorePage(html, url, show.title, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: isLondonMarket(show.category) })) {
         // Additional heading-based validation with LLM tiebreaker
         const pageValidation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
@@ -616,7 +732,7 @@ async function processShow(show) {
   console.log(`  URL: ${url}`);
 
   try {
-    const html = await fetchViaScrapingBee(url);
+    const html = await fetchWithFallback(url);
 
     // Validate page
     if (!html || html.includes('Page not found') || html.includes('404 -')) {
@@ -731,9 +847,16 @@ async function main() {
   console.log('Show Score Audience Data Scraper');
   console.log('================================\n');
 
-  if (!SCRAPINGBEE_KEY) {
-    console.error('Error: SCRAPINGBEE_API_KEY environment variable must be set');
+  // Check that at least one scraping method is available
+  const hasScraper = SCRAPINGBEE_KEY || process.env.BRIGHTDATA_TOKEN;
+  let hasPlaywright = false;
+  try { require.resolve('playwright'); hasPlaywright = true; } catch (_) {}
+  if (!hasScraper && !hasPlaywright) {
+    console.error('Error: No scraping method available. Set SCRAPINGBEE_API_KEY, BRIGHTDATA_TOKEN, or install playwright.');
     process.exit(1);
+  }
+  if (!SCRAPINGBEE_KEY) {
+    console.log('Note: SCRAPINGBEE_API_KEY not set — using fallback scrapers');
   }
 
   // Get shows to process — open shows only by default, --all includes closed
@@ -981,6 +1104,9 @@ async function main() {
     fs.writeFileSync(showsPath, JSON.stringify(showsData, null, 2) + '\n');
     console.log(`\nshows.json updated with ${metadataEnriched} metadata enrichments.`);
   }
+
+  // Clean up Playwright browser if it was started
+  await cleanupPlaywright();
 
   console.log(`\nDone! Processed ${processed} shows, ${successful} with Show Score data.`);
   if (metadataEnriched > 0) console.log(`  Metadata enriched: ${metadataEnriched} shows (runtime/synopsis)`);

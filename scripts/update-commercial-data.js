@@ -13,7 +13,7 @@
  * summarizing the changes.
  *
  * Environment variables:
- *   SCRAPINGBEE_API_KEY  - For web scraping (required)
+ *   SCRAPINGBEE_API_KEY  - For web scraping (optional, has fallbacks)
  *   ANTHROPIC_API_KEY    - For AI analysis (not required if --gather-only)
  *   GITHUB_TOKEN         - For creating issues (optional)
  *
@@ -226,8 +226,50 @@ function sleep(ms) {
 }
 
 /**
+ * Fetch a Reddit .json endpoint directly (no proxy needed).
+ * Reddit JSON API is publicly accessible via old.reddit.com.
+ *
+ * @param {string} url - Reddit URL (will be converted to old.reddit.com if needed)
+ * @returns {Promise<Object|null>} Parsed JSON or null on failure
+ */
+async function fetchRedditJsonDirect(url) {
+  // Convert to old.reddit.com for reliable JSON access
+  const oldRedditUrl = url.replace('www.reddit.com', 'old.reddit.com');
+
+  return new Promise((resolve) => {
+    const req = https.get(oldRedditUrl, {
+      headers: {
+        'User-Agent': 'BroadwayScorecard/1.0 (commercial-data-updater)',
+        'Accept': 'application/json'
+      },
+      timeout: 15000
+    }, (res) => {
+      // Follow redirects
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        fetchRedditJsonDirect(res.headers.location).then(resolve);
+        return;
+      }
+      if (res.statusCode !== 200) {
+        resolve(null);
+        return;
+      }
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        try {
+          resolve(JSON.parse(data));
+        } catch (e) {
+          resolve(null);
+        }
+      });
+    });
+    req.on('error', () => resolve(null));
+    req.on('timeout', () => { req.destroy(); resolve(null); });
+  });
+}
+
+/**
  * Fetch a URL through ScrapingBee proxy.
- * Modeled after scrape-reddit-sentiment.js lines 49-78.
  *
  * @param {string} url - URL to fetch
  * @param {Object} options
@@ -235,13 +277,13 @@ function sleep(ms) {
  * @param {boolean} [options.premiumProxy=true] - Whether to use premium proxy
  * @returns {Promise<string|Object>} Response body (parsed JSON if possible, otherwise string)
  */
-function fetchViaScrapingBee(url, options = {}) {
+function fetchViaScrapingBeeRaw(url, options = {}) {
   const renderJs = options.renderJs === true ? 'true' : 'false';
   const premiumProxy = options.premiumProxy !== false ? 'true' : 'false';
 
   return new Promise((resolve, reject) => {
     if (!SCRAPINGBEE_KEY) {
-      reject(new Error('SCRAPINGBEE_API_KEY must be set'));
+      reject(new Error('ScrapingBee unavailable (no API key)'));
       return;
     }
 
@@ -259,11 +301,74 @@ function fetchViaScrapingBee(url, options = {}) {
             resolve(data);
           }
         } else {
-          reject(new Error(`HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+          reject(new Error(`ScrapingBee HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
         }
       });
     }).on('error', reject);
   });
+}
+
+/**
+ * Fetch a URL with automatic fallback chain.
+ *
+ * For Reddit .json URLs: direct fetch -> ScrapingBee -> BrightData -> Playwright
+ * For other URLs: ScrapingBee -> BrightData/Playwright (via universal scraper)
+ *
+ * @param {string} url - URL to fetch
+ * @param {Object} options
+ * @param {boolean} [options.renderJs=false] - Whether to render JavaScript
+ * @param {boolean} [options.premiumProxy=true] - Whether to use premium proxy
+ * @returns {Promise<string|Object>} Response body (parsed JSON if possible, otherwise string)
+ */
+async function fetchViaScrapingBee(url, options = {}) {
+  const isRedditJson = url.includes('reddit.com') && url.includes('.json');
+
+  // For Reddit JSON endpoints, try direct fetch first (free, no credits needed)
+  if (isRedditJson) {
+    const direct = await fetchRedditJsonDirect(url);
+    if (direct) {
+      return direct;
+    }
+    console.log('  Direct Reddit JSON fetch failed, trying proxied fallbacks...');
+  }
+
+  // Try ScrapingBee if available
+  if (SCRAPINGBEE_KEY) {
+    try {
+      return await fetchViaScrapingBeeRaw(url, options);
+    } catch (e) {
+      console.log(`  ScrapingBee failed: ${e.message}`);
+    }
+  }
+
+  // Try universal scraper (BrightData -> Playwright fallback chain)
+  if (universalScraper) {
+    try {
+      const result = await universalScraper.fetchPage(url, { renderJs: options.renderJs });
+      if (result && result.content) {
+        // For Reddit JSON endpoints, try to parse as JSON
+        if (isRedditJson) {
+          try {
+            return JSON.parse(result.content);
+          } catch (e) {
+            // HTML response from Reddit -- not useful for JSON endpoints
+            console.log('  Universal scraper returned HTML for Reddit JSON endpoint, skipping');
+          }
+        } else {
+          // For non-JSON endpoints, try JSON parse, fall back to raw string
+          try {
+            return JSON.parse(result.content);
+          } catch (e) {
+            return result.content;
+          }
+        }
+      }
+    } catch (e) {
+      console.log(`  Universal scraper failed: ${e.message}`);
+    }
+  }
+
+  throw new Error(`All fetch methods failed for ${url}`);
 }
 
 /**
@@ -950,23 +1055,45 @@ async function scrapeArticle(url, fallbackSnippet) {
     }
   }
 
-  // Legacy method: Try ScrapingBee with JS rendering
-  try {
-    const result = await fetchViaScrapingBee(url, { renderJs: true, premiumProxy: true });
-    if (typeof result === 'string' && result.length > 200) {
-      // Strip HTML tags for plain text extraction
-      const text = result
-        .replace(/<script[\s\S]*?<\/script>/gi, '')
-        .replace(/<style[\s\S]*?<\/style>/gi, '')
-        .replace(/<[^>]+>/g, ' ')
-        .replace(/\s+/g, ' ')
-        .trim();
-      if (text.length > 200) {
-        return text.slice(0, 3000);
+  // Legacy method: Try ScrapingBee with JS rendering, then universal scraper fallback
+  const htmlToText = (html) => {
+    if (typeof html !== 'string') return '';
+    return html
+      .replace(/<script[\s\S]*?<\/script>/gi, '')
+      .replace(/<style[\s\S]*?<\/style>/gi, '')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  };
+
+  // Try ScrapingBee first
+  if (SCRAPINGBEE_KEY) {
+    try {
+      const result = await fetchViaScrapingBeeRaw(url, { renderJs: true, premiumProxy: true });
+      if (typeof result === 'string' && result.length > 200) {
+        const text = htmlToText(result);
+        if (text.length > 200) {
+          return text.slice(0, 3000);
+        }
       }
+    } catch (e) {
+      console.log(`  ScrapingBee article scrape failed: ${e.message}`);
     }
-  } catch (e) {
-    // Fall through to snippet
+  }
+
+  // Fallback: universal scraper (BrightData -> Playwright)
+  if (universalScraper) {
+    try {
+      const result = await universalScraper.fetchPage(url, { renderJs: true });
+      if (result && result.content && result.content.length > 200) {
+        const text = htmlToText(result.content);
+        if (text.length > 200) {
+          return text.slice(0, 3000);
+        }
+      }
+    } catch (e) {
+      console.log(`  Universal scraper article scrape failed: ${e.message}`);
+    }
   }
 
   return (fallbackSnippet || '').slice(0, 3000);
@@ -2151,8 +2278,14 @@ async function main() {
 
   // Validate environment
   if (!SCRAPINGBEE_KEY) {
-    console.error('ERROR: SCRAPINGBEE_API_KEY must be set');
-    process.exit(1);
+    const hasBrightData = !!process.env.BRIGHTDATA_TOKEN;
+    if (!hasBrightData) {
+      console.warn('WARNING: No SCRAPINGBEE_API_KEY or BRIGHTDATA_TOKEN set.');
+      console.warn('  Reddit data will use direct JSON API (may be rate-limited).');
+      console.warn('  Trade press scraping will use Playwright as last resort.');
+    } else {
+      console.warn('WARNING: No SCRAPINGBEE_API_KEY set. Using BrightData + Playwright fallbacks.');
+    }
   }
   if (!GATHER_ONLY && !ANTHROPIC_KEY) {
     console.error('ERROR: ANTHROPIC_API_KEY must be set (or use --gather-only)');

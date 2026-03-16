@@ -34,6 +34,7 @@ const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingRe
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -77,8 +78,14 @@ function sleep(ms) {
 // HTTP helpers
 // ---------------------------------------------------------------------------
 
-async function fetchHtmlSingle(url) {
-  if (!SCRAPINGBEE_KEY) throw new Error('SCRAPINGBEE_API_KEY required');
+/**
+ * Fetch HTML with ScrapingBee (fast, no JS render) → shared fetchPage() fallback.
+ * ScrapingBee is tried first for BWW because it's cheaper and BWW /reviews/ pages
+ * don't need JS rendering. If SB is unavailable or fails, fetchPage() provides
+ * BrightData → Playwright fallback chain.
+ */
+async function fetchHtmlViaSB(url) {
+  if (!SCRAPINGBEE_KEY) return null;
   const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
   return new Promise((resolve, reject) => {
     const req = https.get(apiUrl, (res) => {
@@ -87,32 +94,46 @@ async function fetchHtmlSingle(url) {
       res.on('end', () => {
         if (res.statusCode === 200) resolve(data);
         else if (res.statusCode === 404 || res.statusCode === 410) resolve(null);
-        else reject(new Error(`HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+        else reject(new Error(`SB HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
       });
     });
     req.on('error', reject);
-    req.setTimeout(60000, () => { req.destroy(); reject(new Error('Timeout')); });
+    req.setTimeout(60000, () => { req.destroy(); reject(new Error('SB Timeout')); });
   });
 }
 
 async function fetchHtml(url, maxRetries = 2) {
-  let lastError;
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    try {
-      return await fetchHtmlSingle(url);
-    } catch (e) {
-      lastError = e;
-      if (attempt < maxRetries) {
-        const delay = 3000 * (attempt + 1);
-        await sleep(delay);
+  // Attempt 1: ScrapingBee (cheap, no JS render)
+  if (SCRAPINGBEE_KEY) {
+    let lastError;
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
+        return await fetchHtmlViaSB(url);
+      } catch (e) {
+        lastError = e;
+        if (attempt < maxRetries) {
+          const delay = 3000 * (attempt + 1);
+          await sleep(delay);
+        }
       }
     }
+    console.log(`    [WARN] ScrapingBee exhausted for ${url.slice(0, 60)}: ${lastError.message.slice(0, 60)}`);
   }
-  throw lastError;
+
+  // Attempt 2: Shared fetchPage() fallback chain (BrightData → Playwright)
+  try {
+    const result = await fetchPage(url);
+    return result ? result.content : null;
+  } catch (e) {
+    throw new Error(`All fetch methods failed for ${url.slice(0, 60)}: ${e.message.slice(0, 80)}`);
+  }
 }
 
 async function googleSearch(query, numResults = 10) {
-  if (!SCRAPINGBEE_KEY) return [];
+  if (!SCRAPINGBEE_KEY) {
+    // Google search is SB-only; BWW internal search serves as fallback for roundup discovery
+    return [];
+  }
   const apiUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(query)}&nb_results=${numResults}`;
   return new Promise((resolve, reject) => {
     const req = https.get(apiUrl, (res) => {
@@ -141,7 +162,6 @@ async function googleSearch(query, numResults = 10) {
  * This catches roundups that Google doesn't surface.
  */
 async function bwwInternalSearch(showTitle) {
-  if (!SCRAPINGBEE_KEY) return [];
 
   const searchQuery = `${showTitle} review roundup`;
   const searchUrl = `https://www.broadwayworld.com/search/?q=${encodeURIComponent(searchQuery)}&searchtype=articles`;
@@ -1082,7 +1102,9 @@ async function main() {
   }
 }
 
-main().catch(err => {
-  console.error('Fatal error:', err);
-  process.exit(1);
-});
+main()
+  .catch(err => {
+    console.error('Fatal error:', err);
+    process.exit(1);
+  })
+  .finally(() => cleanupScraper());
