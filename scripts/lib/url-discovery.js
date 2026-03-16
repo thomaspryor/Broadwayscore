@@ -274,12 +274,12 @@ async function _serpViaBrightData(query, apiKey, log, dateRange) {
   const dateQuery = dateRange ? ` after:${fmtD(dateRange.dateMin)} before:${fmtD(dateRange.dateMax)}` : '';
   const fullQuery = query + dateQuery;
 
-  // Try SERP API first (structured JSON, more reliable)
-  const serpResult = await _serpViaBrightDataSerpApi(fullQuery, apiKey, log);
-  if (serpResult !== null) return serpResult;
+  // Try synchronous SERP API first (fastest, returns structured JSON directly)
+  const syncResult = await _serpViaBrightDataWebUnlocker(fullQuery, apiKey, log);
+  if (syncResult !== null) return syncResult;
 
-  // Fallback: Web Unlocker (HTML parsing)
-  return _serpViaBrightDataWebUnlocker(fullQuery, apiKey, log);
+  // Fallback: async SERP API (polling-based, slower but more reliable)
+  return _serpViaBrightDataSerpApi(fullQuery, apiKey, log);
 }
 
 const _BD_CUSTOMER = process.env.BRIGHTDATA_CUSTOMER || 'hl_a2c64a47';
@@ -315,7 +315,7 @@ async function _serpViaBrightDataSerpApi(query, apiKey, log) {
     for (let i = 0; i < 10; i++) {
       await new Promise(r => setTimeout(r, 2000));
       const pollRes = await fetch(
-        `https://api.brightdata.com/serp/get_result?response_id=${responseId}`,
+        `https://api.brightdata.com/serp/get_result?customer=${_BD_CUSTOMER}&zone=${_BD_SERP_ZONE}&response_id=${responseId}`,
         {
           headers: { 'Authorization': `Bearer ${apiKey}` },
           signal: AbortSignal.timeout(10000),
@@ -350,12 +350,12 @@ async function _serpViaBrightDataSerpApi(query, apiKey, log) {
 
 async function _serpViaBrightDataWebUnlocker(query, apiKey, log) {
   const axios = require('axios');
-  const zoneName = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
-  const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}&num=10&hl=en`;
+  // Use SERP zone — Web Unlocker (mcp_unlocker) can't access Google Search
+  const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}&num=10&hl=en&gl=us`;
 
   try {
     const response = await axios.post('https://api.brightdata.com/request', {
-      zone: zoneName,
+      zone: _BD_SERP_ZONE,
       url: googleUrl,
       format: 'raw',
     }, {
