@@ -162,7 +162,17 @@
     "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024/nydailynews--unknown.json",
     "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
     "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json",
-    "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json"
+    "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
+    "little-shop-of-horrors-off-broadway-2019/theatermania--zachary-stewart.json",
+    "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
+    "marcel-on-the-train-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "marcel-on-the-train-off-broadway-2026/theatermania--zachary-stewart.json",
+    "marcel-on-the-train-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
+    "marcel-on-the-train-off-broadway-2026/timeout--adam-feldman.json",
+    "masquerade-off-broadway-2025/ew--thom-geier.json",
+    "masquerade-off-broadway-2025/observer--david-cote.json",
+    "masquerade-off-broadway-2025/theatermania--meg-masseron.json",
+    "masquerade-off-broadway-2025/timeout--adam-feldman.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -288,7 +298,13 @@
       "heathers-the-musical-off-broadway-2025/new-york-sun--elysa-gardner.json",
       "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json",
       "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024/nydailynews--unknown.json",
-      "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json"
+      "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json",
+      "marcel-on-the-train-off-broadway-2026/new-york-sun--elysa-gardner.json",
+      "marcel-on-the-train-off-broadway-2026/theatermania--zachary-stewart.json",
+      "marcel-on-the-train-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
+      "marcel-on-the-train-off-broadway-2026/timeout--adam-feldman.json",
+      "masquerade-off-broadway-2025/ew--thom-geier.json",
+      "masquerade-off-broadway-2025/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -326,7 +342,9 @@
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
       "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
-      "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json"
+      "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
+      "data/review-texts/masquerade-off-broadway-2025/observer--david-cote.json",
+      "masquerade-off-broadway-2025/observer--david-cote.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -383,11 +401,14 @@
       "hamilton-2015/wsj--terry-teachout.json",
       "harry-potter-2021/wsj--terry-teachout.json",
       "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json",
-      "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json"
+      "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
+      "little-shop-of-horrors-off-broadway-2019/theatermania--zachary-stewart.json",
+      "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
+      "masquerade-off-broadway-2025/theatermania--meg-masseron.json"
     ]
   },
   "startTime": "2026-03-16T10:39:31.889Z",
-  "lastProcessed": "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
+  "lastProcessed": "masquerade-off-broadway-2025/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-03-16T11:10:32.644Z",
@@ -564,6 +585,17 @@
       "t": "2026-03-16T11:33:34.287Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-16T11:34:59.646Z",
+      "event": "bb-session",
+      "session": "e548e8f0",
+      "url": "https://observer.com/2025/09/review-masquerade-phantom-of-the-opera-experience-i"
+    },
+    {
+      "t": "2026-03-16T11:35:01.306Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
     }
   ]
 }
