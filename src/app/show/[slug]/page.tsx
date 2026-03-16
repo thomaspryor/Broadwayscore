@@ -969,14 +969,10 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         <div id="audience" className="scroll-mt-20" />
         {audienceBuzz && audienceBuzz.combinedScore != null && (() => {
           // Minimum 5 total reviews across all sources to display
-          const totalReviews = (audienceBuzz.sources.showScore?.reviewCount || 0)
-            + (audienceBuzz.sources.mezzanine?.reviewCount || 0)
-            + (audienceBuzz.sources.reddit?.reviewCount || 0)
-            + (audienceBuzz.sources.theatr?.reviewCount || 0)
-            + (audienceBuzz.sources.broadwayCom?.reviewCount || 0);
+          const totalReviews = Object.values(audienceBuzz.sources || {}).reduce((sum, s) => sum + (s?.reviewCount || 0), 0);
           return totalReviews >= 5;
         })() ? (() => {
-          const sourceCount = [audienceBuzz.sources.showScore, audienceBuzz.sources.mezzanine, audienceBuzz.sources.reddit, audienceBuzz.sources.theatr, audienceBuzz.sources.broadwayCom].filter(Boolean).length;
+          const sourceCount = Object.values(audienceBuzz.sources || {}).filter(Boolean).length;
           const showYear = show.openingDate ? parseInt(show.openingDate.substring(0, 4)) : null;
           const isHistorical = show.status === 'closed' && showYear !== null && showYear < 2015;
           return (
@@ -984,6 +980,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               buzz={audienceBuzz}
               showScoreUrl={audienceBuzz.sources.showScore ? getShowScoreUrl(show.id) : undefined}
               limitedSources={isHistorical && sourceCount <= 1}
+              market={show.category === 'west-end' ? 'west-end' : 'broadway'}
             />
           );
         })() : show.status === 'previews' || show.status === 'upcoming' ? (
