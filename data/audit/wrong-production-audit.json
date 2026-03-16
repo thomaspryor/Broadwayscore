@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-16T05:56:27.017Z",
+  "timestamp": "2026-03-16T06:14:34.805Z",
   "stats": {
     "totalReviews": 31491,
-    "alreadyFlagged": 9669,
+    "alreadyFlagged": 9670,
     "dateGuardCatches": 126,
-    "directorMismatch": 1111,
+    "directorMismatch": 1112,
     "tvFilmSignals": 3493,
-    "londonSignals": 1019,
+    "londonSignals": 1020,
     "offBroadwaySignals": 1089,
     "yearMismatch": 91,
-    "noPublishDate": 9373
+    "noPublishDate": 9372
   },
   "findings": [
     {
@@ -9820,6 +9820,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
+        }
+      ]
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "file": "times-uk--quentin-letts.json",
+      "score": 76,
+      "publishDate": "2021-12-19",
+      "url": "https://www.thetimes.co.uk/article/cabaret-is-amazing-but-eddie-redmayne-is-miscast-nxsnxvczb",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
