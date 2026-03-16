@@ -1239,7 +1239,17 @@ showDirs.forEach(showId => {
       if (isLondonMarket(showCategory)
           && !DUAL_MARKET_OUTLETS.has(canonicalOutlet) && !DUAL_MARKET_OUTLETS.has(rawOutlet)) {
         const outletRegion = outletRegionMap[canonicalOutlet] || outletRegionMap[rawOutlet];
-        if (outletRegion !== 'london') {
+        // URL-domain fallback: if outlet has no region in registry, check if the URL is a UK domain
+        // This prevents unknown UK outlets (blogs, small reviewers) from being flagged as US
+        let urlIsUK = false;
+        if (!outletRegion && data.url) {
+          try {
+            const hostname = new URL(data.url).hostname || '';
+            urlIsUK = hostname.endsWith('.co.uk') || hostname.endsWith('.org.uk')
+              || hostname.includes('london') || hostname.includes('theatre');
+          } catch (e) { /* ignore malformed URLs */ }
+        }
+        if (outletRegion !== 'london' && !urlIsUK) {
           // Mark file permanently so future rebuilds skip it faster (line 1507) and it's visible on disk
           if (!data.wrongProduction && !data.wrongProductionOverride && !data.wrongProductionManualClear) {
             data.wrongProduction = true;
