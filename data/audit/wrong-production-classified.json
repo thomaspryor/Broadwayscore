@@ -1,113 +1,16 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-16T10:39:19.866Z",
+    "generatedAt": "2026-03-16T11:09:00.728Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 89,
-    "classified": 6,
-    "wrongProduction": 6,
+    "total": 83,
+    "classified": 0,
+    "wrongProduction": 0,
     "correctProduction": 0,
     "uncertain": 0,
     "errors": 0,
-    "wrongHighConfidence": 6,
+    "wrongHighConfidence": 0,
     "wrongMediumConfidence": 0
   },
-  "results": [
-    {
-      "showId": "rent-1996",
-      "showTitle": "Rent",
-      "showYear": 1996,
-      "file": "ap--jennifer-farrar.json",
-      "outlet": "Associated Press",
-      "criticName": "Jennifer Farrar",
-      "publishDate": "August 17, 2011",
-      "originalSignals": [
-        "publishDate 2011 is 15 years after original opening 1996"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review explicitly mentions an \"off-Broadway revival,\" indicating it's not about the original 1996 Broadway production."
-    },
-    {
-      "showId": "rent-1996",
-      "showTitle": "Rent",
-      "showYear": 1996,
-      "file": "backstage--suzy-evans.json",
-      "outlet": "Backstage",
-      "criticName": "Suzy Evans",
-      "publishDate": "August 11, 2011",
-      "originalSignals": [
-        "publishDate 2011 is 15 years after original opening 1996"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review mentions the show starting Off-Broadway in a reinterpreted version, indicating it's not about the original 1996 Broadway production. It also mentions the original Broadway run shuttering in 2008."
-    },
-    {
-      "showId": "rent-1996",
-      "showTitle": "Rent",
-      "showYear": 1996,
-      "file": "broadway-space--kari-olmon.json",
-      "outlet": "Broadway Space",
-      "criticName": "Kari Olmon",
-      "publishDate": "August 11, 2011",
-      "originalSignals": [
-        "publishDate 2011 is 15 years after original opening 1996"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review mentions that Rent began previews at New World Stages in July, which is an Off-Broadway venue, and that the Broadway production closed three years prior. This indicates the review is about an Off-Broadway production, not the original Broadway production."
-    },
-    {
-      "showId": "cats-1982",
-      "showTitle": "Cats",
-      "showYear": 1982,
-      "file": "nytimes--charles-isherwood.json",
-      "outlet": "The New York Times",
-      "criticName": "Charles Isherwood",
-      "publishDate": "July 31st, 2016",
-      "originalSignals": [
-        "revival director match for cats-2016: Andy Blankenbuehler"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "cats-2016",
-      "reasoning": "The review explicitly refers to the production as a 'revival' and mentions Andy Blankenbuehler, who directed the 2016 revival."
-    },
-    {
-      "showId": "cats-1982",
-      "showTitle": "Cats",
-      "showYear": 1982,
-      "file": "ap--mark-kennedy.json",
-      "outlet": "Associated Press",
-      "criticName": "Mark Kennedy",
-      "publishDate": "July 31st, 2016",
-      "originalSignals": [
-        "revival director match for cats-2016: Andy Blankenbuehler"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "cats-2016",
-      "reasoning": "The review mentions Andy Blankenbuehler's choreography, which is associated with the 2016 revival. The review also discusses the show in the context of theatrical evolutions since 1982, suggesting it's comparing the original to a more recent production."
-    },
-    {
-      "showId": "cats-1982",
-      "showTitle": "Cats",
-      "showYear": 1982,
-      "file": "wsj--terry-teachout.json",
-      "outlet": "The Wall Street Journal",
-      "criticName": "Terry Teachout",
-      "publishDate": "August 4th, 2016",
-      "originalSignals": [
-        "revival director match for cats-2016: Andy Blankenbuehler"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "cats-2016",
-      "reasoning": "The review mentions Andy Blankenbuehler, who directed the 2016 revival, and discusses the show as a current production. The review was also published in 2016."
-    }
-  ]
+  "results": []
 }

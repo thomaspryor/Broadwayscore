@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-16T10:43:34.772Z",
+  "timestamp": "2026-03-16T11:13:37.126Z",
   "stats": {
     "totalReviews": 31493,
-    "alreadyFlagged": 9668,
+    "alreadyFlagged": 9669,
     "dateGuardCatches": 126,
-    "directorMismatch": 1111,
+    "directorMismatch": 1110,
     "tvFilmSignals": 3494,
-    "londonSignals": 1025,
+    "londonSignals": 1023,
     "offBroadwaySignals": 1090,
     "yearMismatch": 91,
     "noPublishDate": 9365
@@ -1035,7 +1035,7 @@
     {
       "showId": "a-delicate-balance-1996",
       "file": "timeout--david-cote.json",
-      "score": null,
+      "score": 83,
       "publishDate": "November 20th, 2014",
       "url": "http://www.timeout.com/newyork/theater/a-delicate-balance",
       "findings": [
@@ -7477,7 +7477,7 @@
     {
       "showId": "betrayal-2000",
       "file": "hollywood-reporter--david-rooney.json",
-      "score": null,
+      "score": 86,
       "publishDate": "September 5th, 2019",
       "url": "https://www.hollywoodreporter.com/review/tom-hiddleston-betrayal-theater-review-1234384",
       "findings": [
@@ -9872,25 +9872,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
-        }
-      ]
-    },
-    {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "file": "times-uk--quentin-letts.json",
-      "score": 76,
-      "publishDate": "2021-12-19",
-      "url": "https://www.thetimes.co.uk/article/cabaret-is-amazing-but-eddie-redmayne-is-miscast-nxsnxvczb",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -56370,7 +56351,7 @@
     {
       "showId": "the-music-man-2000",
       "file": "washpost--peter-marks.json",
-      "score": null,
+      "score": 42,
       "publishDate": "February 11th, 2022",
       "url": "https://www.washingtonpost.com/theater-dance/2022/02/11/music-man-jackman-broadway/",
       "findings": [
@@ -69911,20 +69892,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"barrow street\""
-        }
-      ]
-    },
-    {
-      "showId": "every-brilliant-thing-2026",
-      "file": "deadline--unknown.json",
-      "score": 86,
-      "publishDate": "2026-03-13",
-      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcliffe-1236750131/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
