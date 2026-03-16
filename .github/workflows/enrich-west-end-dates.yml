@@ -1,4 +1,4 @@
-name: Enrich Playbill London Dates
+name: Enrich West End Dates
 
 on:
   schedule:
@@ -26,7 +26,7 @@ permissions:
 jobs:
   enrich-dates:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -46,7 +46,7 @@ jobs:
       - name: Install dependencies
         run: npm ci || npm install
 
-      - name: Run Playbill London date enrichment
+      - name: Run West End date enrichment
         id: enrich
         run: |
           FLAGS=""
@@ -62,8 +62,8 @@ jobs:
             FLAGS="$FLAGS --show=${{ inputs.show }}"
           fi
 
-          echo "Running: node scripts/enrich-playbill-london-dates.js $FLAGS"
-          node scripts/enrich-playbill-london-dates.js $FLAGS
+          echo "Running: node scripts/enrich-west-end-dates.js $FLAGS"
+          node scripts/enrich-west-end-dates.js $FLAGS
 
       - name: Check for changes
         if: (inputs.mode || 'enrich') != 'verify'
@@ -85,7 +85,7 @@ jobs:
           fi
 
           git add data/shows.json
-          git commit -m "data: Enrich Playbill London dates${SHOW_MSG}"
+          git commit -m "data: Enrich West End dates${SHOW_MSG}"
 
           bash scripts/lib/push-with-retry.sh
 
@@ -94,13 +94,13 @@ jobs:
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-          message: 'data: Update from enrich-playbill-london-dates'
+          message: 'data: Update from enrich-west-end-dates'
 
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure
         with:
-          title: 'Playbill London Date Enrichment Failed'
+          title: 'West End Date Enrichment Failed'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}
