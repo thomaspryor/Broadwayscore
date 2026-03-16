@@ -12,3 +12,8 @@ export function isOffWestEndVenue(venue?: string): boolean {
     .replace(/ theatre$| theater$/, '');
   return !WEST_END_VENUES.has(v);
 }
+
+/** Returns true for both 'west-end' and 'off-west-end' — i.e., any London market. */
+export function isLondonMarket(category?: string): boolean {
+  return category === 'west-end' || category === 'off-west-end';
+}

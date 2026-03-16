@@ -1401,7 +1401,7 @@ showDirs.forEach(showId => {
       // Broadway reviews are embargoed until opening night; anything earlier is likely wrong-production
       // Reviews with allowEarlyDate: true bypass this (e.g., out-of-town tryouts, transfers)
       // WE shows are exempt: many are long-running transfers with reviews from the original run
-      if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate && showCategory !== 'west-end') {
+      if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate && !isLondonMarket(showCategory)) {
         const pubDate = new Date(data.publishDate);
         if (!isNaN(pubDate.getTime())) {
           const showDate = showDateMap[showId];
@@ -1506,7 +1506,7 @@ showDirs.forEach(showId => {
       // WE/OB exempt: they commonly transfer from fringe/regional, so URL years mismatch legitimately
       if (!data.publishDate && data.url && showDateMap[showId] && !data.wrongProduction
           && !data.wrongProductionManualClear
-          && showCategory !== 'west-end' && showCategory !== 'off-broadway') {
+          && !isLondonMarket(showCategory) && showCategory !== 'off-broadway') {
         const showYear = showDateMap[showId].getFullYear();
         // Extract years from URL bounded by path separators, hyphens, underscores, dots, or string end
         const yearMatches = data.url.match(/(?:[\/\-_.])((?:19|20)\d\d)(?:[\/\-_.]|$)/g);

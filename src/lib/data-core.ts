@@ -74,10 +74,10 @@ export function getBroadwayShows(): ComputedShow[] {
 }
 
 /**
- * Get all West End shows
+ * Get all London shows (West End + Off-West End)
  */
 export function getWestEndShows(): ComputedShow[] {
-  return getAllShows().filter(show => show.category === 'west-end');
+  return getAllShows().filter(show => show.category === 'west-end' || show.category === 'off-west-end');
 }
 
 /**
@@ -609,7 +609,7 @@ export function getRelatedShowsClosed(show: ComputedShow, limit = 6): ComputedSh
 export function getOtherProductions(show: ComputedShow): ComputedShow[] {
   const normalize = (t: string) => t.toLowerCase().replace(/[\u2018\u2019\u2032'']/g, "'").replace(/[^\w\s']/g, '').trim();
   const baseTitle = normalize(show.title);
-  const marketOrder: Record<string, number> = { broadway: 0, 'west-end': 1, 'off-broadway': 2 };
+  const marketOrder: Record<string, number> = { broadway: 0, 'west-end': 1, 'off-west-end': 2, 'off-broadway': 3 };
   return getAllShows()
     .filter(s => s.id !== show.id && normalize(s.title) === baseTitle && (s.category || 'broadway') !== (show.category || 'broadway'))
     .sort((a, b) => {

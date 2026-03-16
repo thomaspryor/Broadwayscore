@@ -353,7 +353,7 @@ function getBestScore(data, opts = {}) {
 
   // P0.5: originalScore (aggregator-provided)
   const isShowScoreSource = data.source === 'show-score' || data.source === 'show-score-playwright' || data.source === 'showscore-roundup';
-  const isWestEnd = data._showCategory === 'west-end';
+  const isWestEnd = data._showCategory === 'west-end' || data._showCategory === 'off-west-end';
   const isOutletVerified = OUTLET_VERIFIED_SOURCES.has(data.scoreSource);
   const downgradeShowScore = isShowScoreSource && isWestEnd && !isOutletVerified;
 

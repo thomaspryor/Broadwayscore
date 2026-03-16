@@ -28,4 +28,9 @@ function isWestEndVenue(venue) {
   return WEST_END_VENUES.has(normalizeVenueName(venue));
 }
 
-module.exports = { isOffWestEndVenue, isWestEndVenue, normalizeVenueName, WEST_END_VENUES };
+/** Returns true for both 'west-end' and 'off-west-end' — i.e., any London market. */
+function isLondonMarket(category) {
+  return category === 'west-end' || category === 'off-west-end';
+}
+
+module.exports = { isOffWestEndVenue, isWestEndVenue, isLondonMarket, normalizeVenueName, WEST_END_VENUES };
