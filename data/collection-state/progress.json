@@ -501,7 +501,10 @@
     "paranormal-activity-west-end-2025/timeout--unknown.json",
     "starlight-express-west-end-2024/timeout--andrzej-lukowski.json",
     "the-devil-wears-prada-west-end-2024/timeout--andrzej-lukowski.json",
-    "the-holy-rosenbergs-west-end-2026/guardian--david-jays.json"
+    "the-holy-rosenbergs-west-end-2026/guardian--david-jays.json",
+    "the-play-that-goes-wrong-west-end-2021/guardian--unknown.json",
+    "into-the-woods-west-end-2025/daily-mail--unknown.json",
+    "into-the-woods-west-end-2025/independent--unknown.json"
   ],
   "failed": [
     "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
@@ -2146,7 +2149,14 @@
     "arcadia-west-end-2026/nytimes--unknown.json",
     "six-the-musical-west-end-2021/nytimes--jesse-green.json",
     "im-sorry-prime-minister-west-end-2026/timeout--tom-wicker.json",
-    "im-sorry-prime-minister-west-end-2026/timeout-london--tom-wicker.json"
+    "im-sorry-prime-minister-west-end-2026/timeout-london--tom-wicker.json",
+    "back-to-the-future-west-end-2021/thestage--tim-bano.json",
+    "dracula-west-end-2025/british-theatre--unknown.json",
+    "hercules-west-end-2025/times-uk--unknown.json",
+    "it-walks-around-the-house-at-night-west-end-2026/thestage--unknown.json",
+    "moulin-rouge-the-musical-west-end-2021/broadwayworld--aaron-wallace.json",
+    "moulin-rouge-the-musical-west-end-2021/broadwayworld--alan-portner.json",
+    "moulin-rouge-the-musical-west-end-2021/broadwayworld--alyson-eng.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2479,7 +2489,8 @@
       "paranormal-activity-west-end-2025/timeout--unknown.json",
       "starlight-express-west-end-2024/timeout--andrzej-lukowski.json",
       "the-devil-wears-prada-west-end-2024/timeout--andrzej-lukowski.json",
-      "the-holy-rosenbergs-west-end-2026/guardian--david-jays.json"
+      "the-holy-rosenbergs-west-end-2026/guardian--david-jays.json",
+      "the-play-that-goes-wrong-west-end-2021/guardian--unknown.json"
     ],
     "amp": [
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -2629,7 +2640,12 @@
       "data/review-texts/arcadia-west-end-2026/nytimes--unknown.json",
       "data/review-texts/six-the-musical-west-end-2021/nytimes--jesse-green.json",
       "data/review-texts/im-sorry-prime-minister-west-end-2026/timeout--tom-wicker.json",
-      "data/review-texts/im-sorry-prime-minister-west-end-2026/timeout-london--tom-wicker.json"
+      "data/review-texts/im-sorry-prime-minister-west-end-2026/timeout-london--tom-wicker.json",
+      "data/review-texts/back-to-the-future-west-end-2021/thestage--tim-bano.json",
+      "data/review-texts/it-walks-around-the-house-at-night-west-end-2026/thestage--unknown.json",
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--aaron-wallace.json",
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--alan-portner.json",
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--alyson-eng.json"
     ],
     "archive": [
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
@@ -2769,11 +2785,13 @@
       "moulin-rouge-2019/njcom--christoher-kelly.json",
       "operation-mincemeat-2025/independent--isobel-lewis.json",
       "operation-mincemeat-west-end-2024/all-that-dazzles-uk--daz-gale.json",
-      "operation-mincemeat-west-end-2024/times-uk--clive-davis.json"
+      "operation-mincemeat-west-end-2024/times-uk--clive-davis.json",
+      "into-the-woods-west-end-2025/daily-mail--unknown.json",
+      "into-the-woods-west-end-2025/independent--unknown.json"
     ]
   },
   "startTime": "2026-03-15T09:45:15.761Z",
-  "lastProcessed": "the-holy-rosenbergs-west-end-2026/guardian--david-jays.json",
+  "lastProcessed": "moulin-rouge-the-musical-west-end-2021/broadwayworld--alyson-eng.json",
   "log": [
     {
       "t": "2026-03-15T09:48:36.450Z",
@@ -3294,6 +3312,28 @@
       "t": "2026-03-16T05:27:28.880Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-16T05:33:44.766Z",
+      "event": "bb-session",
+      "session": "49050831",
+      "url": "https://www.thestage.co.uk/long-reviews/back-to-the-future-the-musical-adelphi-t"
+    },
+    {
+      "t": "2026-03-16T05:33:46.000Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-16T05:35:39.075Z",
+      "event": "bb-session",
+      "session": "b8c043ff",
+      "url": "https://www.thestage.co.uk/reviews/it-walks-around-the-house-at-night-review-sou"
+    },
+    {
+      "t": "2026-03-16T05:35:40.422Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }

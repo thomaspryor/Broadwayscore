@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-16T05:32:11.874Z",
-  "processed": 502,
-  "failed": 1643,
+  "updatedAt": "2026-03-16T05:36:40.322Z",
+  "processed": 505,
+  "failed": 1650,
   "successRate": "23.4%",
   "tierBreakdown": {
-    "playwright": 329,
+    "playwright": 330,
     "amp": 24,
     "browserbase": 56,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 59,
-    "archive": 138
+    "archiveToday": 64,
+    "archive": 140
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-03-15T16:41:48.578Z",
-      "event": "bb-session",
-      "session": "b057431a",
-      "url": "https://www.amny.com/entertainment/broadway/review-buena-vista-social-clunk/"
-    },
-    {
-      "t": "2026-03-15T16:41:50.332Z",
-      "event": "bb-cookie-inject",
-      "domain": "amny.com"
-    },
-    {
-      "t": "2026-03-15T16:58:11.943Z",
-      "event": "bb-session",
-      "session": "68aade5d",
-      "url": "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing"
-    },
-    {
-      "t": "2026-03-15T16:58:13.563Z",
-      "event": "bb-cookie-inject",
-      "domain": "amny.com"
-    },
     {
       "t": "2026-03-16T04:42:37.449Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-16T05:27:28.880Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-16T05:33:44.766Z",
+      "event": "bb-session",
+      "session": "49050831",
+      "url": "https://www.thestage.co.uk/long-reviews/back-to-the-future-the-musical-adelphi-t"
+    },
+    {
+      "t": "2026-03-16T05:33:46.000Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-16T05:35:39.075Z",
+      "event": "bb-session",
+      "session": "b8c043ff",
+      "url": "https://www.thestage.co.uk/reviews/it-walks-around-the-house-at-night-review-sou"
+    },
+    {
+      "t": "2026-03-16T05:35:40.422Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
