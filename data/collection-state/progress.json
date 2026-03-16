@@ -16,7 +16,14 @@
     "the-holy-rosenbergs-west-end-2026/artsdesk--aleks-sierz.json",
     "the-holy-rosenbergs-west-end-2026/broadwayworld--franco-milazzo.json",
     "the-holy-rosenbergs-west-end-2026/theatre-weekly--greg-stewart.json",
-    "the-holy-rosenbergs-west-end-2026/whatsonstage--sarah-crompton.json"
+    "the-holy-rosenbergs-west-end-2026/whatsonstage--sarah-crompton.json",
+    "back-to-the-future-west-end-2021/variety--david-benedict.json",
+    "hamilton-west-end-2021/nytimes--unknown.json",
+    "hercules-west-end-2025/nytimes--matt-wolf.json",
+    "hercules-west-end-2025/variety--david-benedict.json",
+    "paddington-the-musical-west-end-2025/variety--david-benedict.json",
+    "the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
+    "the-lion-king-west-end-2021/variety--matt-wolf.json"
   ],
   "failed": [
     "arcadia-west-end-2026/nytimes--unknown.json",
@@ -61,7 +68,10 @@
     "paddington-the-musical-west-end-2025/independent--unknown.json",
     "paddington-the-musical-west-end-2025/thestage--unknown.json",
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
-    "the-hunger-games-on-stage-west-end-2025/thestage--unknown.json"
+    "the-hunger-games-on-stage-west-end-2025/thestage--unknown.json",
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "deep-azure-globe-west-end-2026/nytimes--unknown.json",
+    "dracula-west-end-2025/nytimes--houman-barekat.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -86,7 +96,17 @@
       "data/review-texts/paranormal-activity-west-end-2025/variety--unknown.json",
       "paranormal-activity-west-end-2025/variety--unknown.json",
       "data/review-texts/the-mousetrap-west-end-2021/variety--unknown.json",
-      "the-mousetrap-west-end-2021/variety--unknown.json"
+      "the-mousetrap-west-end-2021/variety--unknown.json",
+      "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
+      "hercules-west-end-2025/variety--david-benedict.json",
+      "data/review-texts/paddington-the-musical-west-end-2025/variety--david-benedict.json",
+      "paddington-the-musical-west-end-2025/variety--david-benedict.json",
+      "data/review-texts/the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
+      "the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
+      "data/review-texts/the-lion-king-west-end-2021/variety--matt-wolf.json",
+      "the-lion-king-west-end-2021/variety--matt-wolf.json"
     ],
     "browserbase": [],
     "directCookies": [],
@@ -132,16 +152,20 @@
       "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--tyler-hinton.json",
       "data/review-texts/paddington-the-musical-west-end-2025/independent--unknown.json",
       "data/review-texts/paddington-the-musical-west-end-2025/thestage--unknown.json",
-      "data/review-texts/the-hunger-games-on-stage-west-end-2025/thestage--unknown.json"
+      "data/review-texts/the-hunger-games-on-stage-west-end-2025/thestage--unknown.json",
+      "data/review-texts/deep-azure-globe-west-end-2026/nytimes--unknown.json",
+      "data/review-texts/dracula-west-end-2025/nytimes--houman-barekat.json"
     ],
     "archive": [
       "into-the-woods-west-end-2025/nytimes--unknown.json",
       "the-mousetrap-west-end-2021/nytimes--unknown.json",
-      "the-holy-rosenbergs-west-end-2026/broadwayworld--franco-milazzo.json"
+      "the-holy-rosenbergs-west-end-2026/broadwayworld--franco-milazzo.json",
+      "hamilton-west-end-2021/nytimes--unknown.json",
+      "hercules-west-end-2025/nytimes--matt-wolf.json"
     ]
   },
   "startTime": "2026-03-16T08:45:39.122Z",
-  "lastProcessed": "the-hunger-games-on-stage-west-end-2025/thestage--unknown.json",
+  "lastProcessed": "the-lion-king-west-end-2021/variety--matt-wolf.json",
   "log": [
     {
       "t": "2026-03-16T08:46:02.043Z",
@@ -208,6 +232,18 @@
       "event": "bb-login-fail",
       "domain": "thestage.co.uk",
       "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    40 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-03-16T09:14:28.536Z",
+      "event": "bb-session",
+      "session": "0edb0cb0",
+      "url": "https://www.nytimes.com/2026/03/05/theater/chadwick-boseman-deep-azure.html"
+    },
+    {
+      "t": "2026-03-16T09:15:03.830Z",
+      "event": "bb-session",
+      "session": "c204d00c",
+      "url": "https://www.nytimes.com/2026/02/18/theater/dracula-cynthia-erivo.html"
     }
   ]
 }

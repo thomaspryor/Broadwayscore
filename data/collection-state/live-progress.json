@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-16T09:13:56.576Z",
-  "processed": 17,
-  "failed": 43,
-  "successRate": "28.3%",
+  "updatedAt": "2026-03-16T09:16:00.567Z",
+  "processed": 24,
+  "failed": 46,
+  "successRate": "34.3%",
   "tierBreakdown": {
     "playwright": 10,
-    "amp": 9,
+    "amp": 19,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 40,
-    "archive": 3
+    "archiveToday": 42,
+    "archive": 5
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
       "t": "2026-03-16T08:46:02.043Z",
@@ -80,6 +80,18 @@
       "event": "bb-login-fail",
       "domain": "thestage.co.uk",
       "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    40 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-03-16T09:14:28.536Z",
+      "event": "bb-session",
+      "session": "0edb0cb0",
+      "url": "https://www.nytimes.com/2026/03/05/theater/chadwick-boseman-deep-azure.html"
+    },
+    {
+      "t": "2026-03-16T09:15:03.830Z",
+      "event": "bb-session",
+      "session": "c204d00c",
+      "url": "https://www.nytimes.com/2026/02/18/theater/dracula-cynthia-erivo.html"
     }
   ]
 }
