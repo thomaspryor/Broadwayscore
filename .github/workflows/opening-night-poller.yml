@@ -6,7 +6,7 @@ name: Opening Night Poller
 #   3. Direct site search (outlet search endpoints) — instant
 #   4. SERP backup (Google) — catches the rest
 #
-# Polls every 15 min from 2-7 AM UTC (9 PM-2 AM ET) on opening nights.
+# Polls every 15 min from 2-7 AM UTC (BW) + every 30 min 7 PM-midnight UTC (WE).
 # Creates review files for newly discovered reviews.
 # After discovery: triggers collect → rebuild → score pipeline chain.
 #
@@ -15,7 +15,7 @@ name: Opening Night Poller
 
 on:
   schedule:
-    # Every 15 min from 2-7 AM UTC (9 PM-2 AM ET)
+    # BW window: Every 15 min from 2-7 AM UTC (9 PM-2 AM ET)
     - cron: '0 2 * * *'
     - cron: '15 2 * * *'
     - cron: '30 2 * * *'
@@ -32,6 +32,16 @@ on:
     - cron: '30 5 * * *'
     - cron: '0 6 * * *'
     - cron: '0 7 * * *'
+    # WE window: Every 30 min from 7 PM-midnight UTC (7 PM-midnight GMT)
+    - cron: '0 19 * * *'
+    - cron: '30 19 * * *'
+    - cron: '0 20 * * *'
+    - cron: '30 20 * * *'
+    - cron: '0 21 * * *'
+    - cron: '30 21 * * *'
+    - cron: '0 22 * * *'
+    - cron: '30 22 * * *'
+    - cron: '0 23 * * *'
   workflow_dispatch:
     inputs:
       show_id:
@@ -56,7 +66,7 @@ permissions:
 
 concurrency:
   group: opening-night-poller
-  cancel-in-progress: true
+  cancel-in-progress: false  # Queue instead of cancel — prevents WE cron from killing BW pipeline
 
 jobs:
   poll:
