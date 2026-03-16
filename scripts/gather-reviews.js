@@ -824,13 +824,27 @@ async function scrapeShowScoreWithPlaywright(url, options = {}) {
         const paragraph = card.querySelector('p');
         const excerpt = paragraph?.textContent?.replace(/Read more.*$/, '').trim() || '';
 
+        // Look for star rating (CSS variable --rating on .review-tile-v2__stars)
+        let starRating = null;
+        let starMax = null;
+        const starsEl = card.querySelector('.review-tile-v2__stars');
+        if (starsEl) {
+          const style = starsEl.getAttribute('style') || '';
+          const ratingMatch = style.match(/--rating:\s*([\d.]+)/);
+          const gapsMatch = style.match(/--gaps:\s*([\d.]+)/);
+          if (ratingMatch) starRating = parseFloat(ratingMatch[1]);
+          if (gapsMatch) starMax = parseInt(gapsMatch[1]);
+        }
+
         if (href && !reviews.some(r => r.url === href)) {
           reviews.push({
             url: href,
             outlet: outlet,
             critic: critic,
             date: date,
-            excerpt: excerpt
+            excerpt: excerpt,
+            starRating: starRating,
+            starMax: starMax
           });
         }
       });
@@ -2397,6 +2411,14 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
           }
         }
         showScoreCount++;
+        // Convert star rating to originalRating format if available
+        let originalRating = null;
+        if (review.starRating != null) {
+          const scale = review.starMax || 5;
+          originalRating = review.starRating > 5
+            ? `${review.starRating}/100`
+            : `${review.starRating}/${scale}`;
+        }
         foundReviews.push({
           showId,
           outlet: outletDisplayName,
@@ -2405,6 +2427,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
           url: review.url,
           publishDate: normalizePublishDate(review.date) || null,
           showScoreExcerpt: review.excerpt || null,
+          originalRating,
           source: 'show-score-playwright'
         });
       }
