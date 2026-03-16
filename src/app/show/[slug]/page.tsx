@@ -953,7 +953,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           <div id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20">
             <h2 className="text-lg font-bold text-white mb-3">Critic Reviews</h2>
             <p className="text-gray-400 text-sm">
-              Reviews coming after opening night: <span className="text-white font-medium">{formatDate(show.openingDate)}</span>
+              Reviews coming after {isWestEnd ? 'press night' : 'opening night'}: <span className="text-white font-medium">{formatDate(show.openingDate)}</span>
             </p>
           </div>
         ) : (
