@@ -347,7 +347,8 @@
     "collected-stories-2010/variety--marilyn-stasio.json",
     "company-1993/nytg--allison-considine.json",
     "company-2006/variety--charles-isherwood.json",
-    "dance-of-death-2001/nytimes--ben-brantley.json"
+    "dance-of-death-2001/nytimes--ben-brantley.json",
+    "design-for-living-2001/nytimes--ben-brantley.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -6153,7 +6154,16 @@
     "cyrano-de-bergerac-west-end-2026/nytg--gillian-russo.json",
     "cyrano-de-bergerac-west-end-2026/variety--marilyn-stasio.json",
     "cyrano-de-bergerac-west-end-2026/vulture--helen-shaw.json",
-    "dance-of-the-vampires-2002/nytimes--ben-brantley.json"
+    "dance-of-the-vampires-2002/nytimes--ben-brantley.json",
+    "data-2026/vulture--jackson-mchenry.json",
+    "days-of-wine-and-roses-2024/hollywood-reporter--anita-gates.json",
+    "death-of-a-salesman-1975/nyt-theater--jonathan-mandell.json",
+    "death-of-a-salesman-1984/hollywood-reporter--david-rooney.json",
+    "death-of-a-salesman-1984/nyt-theater--jonathan-mandell.json",
+    "death-of-a-salesman-1999/newyorker--john-lahr.json",
+    "death-of-a-salesman-1999/nyt-theater--jonathan-mandell.json",
+    "democracy-2004/nytimes--ben-brantley.json",
+    "deuce-2007/nytimes--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -6531,7 +6541,9 @@
       "data/review-texts/cat-on-a-hot-tin-roof-2008/hollywood-reporter--david-rooney.json",
       "cat-on-a-hot-tin-roof-2008/hollywood-reporter--david-rooney.json",
       "data/review-texts/dance-of-death-2001/nytimes--ben-brantley.json",
-      "dance-of-death-2001/nytimes--ben-brantley.json"
+      "dance-of-death-2001/nytimes--ben-brantley.json",
+      "data/review-texts/design-for-living-2001/nytimes--ben-brantley.json",
+      "design-for-living-2001/nytimes--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -6573,7 +6585,9 @@
       "data/review-texts/spare-parts-off-broadway-2026/thestage--unknown.json",
       "data/review-texts/spare-parts-off-broadway-2026/usatoday--kerry-lengel.json",
       "data/review-texts/the-reservoir-off-broadway-2026/talkinbroadway--unknown.json",
-      "data/review-texts/a-life-in-the-theatre-2010/newyorker--john-lahr.json"
+      "data/review-texts/a-life-in-the-theatre-2010/newyorker--john-lahr.json",
+      "data/review-texts/days-of-wine-and-roses-2024/hollywood-reporter--anita-gates.json",
+      "data/review-texts/democracy-2004/nytimes--ben-brantley.json"
     ],
     "archive": [
       "into-the-woods-west-end-2025/nytimes--unknown.json",
@@ -6697,7 +6711,7 @@
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "dance-of-the-vampires-2002/nytimes--ben-brantley.json",
+  "lastProcessed": "deuce-2007/nytimes--charles-isherwood.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -7598,6 +7612,39 @@
     },
     {
       "t": "2026-03-17T02:05:46.333Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T02:06:03.575Z",
+      "event": "bb-session",
+      "session": "c00b8d48",
+      "url": "https://www.hollywoodreporter.com/wayne-kramer-obit-template-performance-getty-h"
+    },
+    {
+      "t": "2026-03-17T02:06:04.704Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T02:09:07.149Z",
+      "event": "bb-session",
+      "session": "c04906f6",
+      "url": "http://theater.nytimes.com/2004/11/19/theater/reviews/19demo.html?position=&amp;"
+    },
+    {
+      "t": "2026-03-17T02:09:08.333Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T02:10:20.063Z",
+      "event": "bb-session",
+      "session": "9586d25f",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;res=9804EEDE173DF93"
+    },
+    {
+      "t": "2026-03-17T02:10:21.176Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
