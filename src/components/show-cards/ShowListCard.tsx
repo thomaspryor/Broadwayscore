@@ -8,7 +8,7 @@ import { getScoreTier, getScoreColorClass, ScoreBadge, MustSeeCrown, StatusBadge
 import type { ScoreTier } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { getBroadwayDuration, getRunLength, formatOpeningDate, getDurationSuffix } from '@/lib/date-utils';
-import { getMarketLabel } from '@/lib/venue-classification';
+import { getMarketLabel } from '@/lib/market-utils';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import type { ShowCardShow, ScoreModeParam } from './types';
 
