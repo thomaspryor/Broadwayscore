@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-17T07:55:37.554Z",
+  "timestamp": "2026-03-17T16:05:17.470Z",
   "stats": {
-    "totalReviews": 31582,
-    "alreadyFlagged": 9419,
-    "dateGuardCatches": 149,
-    "directorMismatch": 1125,
-    "tvFilmSignals": 3497,
-    "londonSignals": 1036,
-    "offBroadwaySignals": 1071,
+    "totalReviews": 31588,
+    "alreadyFlagged": 9354,
+    "dateGuardCatches": 150,
+    "directorMismatch": 1133,
+    "tvFilmSignals": 3504,
+    "londonSignals": 1041,
+    "offBroadwaySignals": 1074,
     "yearMismatch": 93,
-    "noPublishDate": 9454
+    "noPublishDate": 9409
   },
   "findings": [
     {
@@ -329,6 +329,20 @@
       "score": 68,
       "publishDate": null,
       "url": "https://www.curtainup.com/bronxtalebway16.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "a-bronx-tale-2007",
+      "file": "hollywood-reporter--frank-scheck.json",
+      "score": null,
+      "publishDate": "December 1st, 2016",
+      "url": "http://www.hollywoodreporter.com/review/a-bronx-tale-951987",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -2161,6 +2175,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"paramount\""
+        }
+      ]
+    },
+    {
+      "showId": "a-thousand-clowns-2001",
+      "file": "nytimes--bruce-weber.json",
+      "score": null,
+      "publishDate": "July 12, 2001",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;res=9f05e6de163bf931a25754c0a9679c8b63",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -11241,7 +11269,7 @@
       "showId": "charlie-and-the-chocolate-factory-2017",
       "file": "dctheatrescene--richard-seff.json",
       "score": 58,
-      "publishDate": null,
+      "publishDate": "April 30th, 2017",
       "url": "https://dcmetrotheaterarts.com/2017/04/30/review-charlie-chocolate-factory-lunt-fontanne-theatre/",
       "findings": [
         {
@@ -15720,7 +15748,7 @@
       "showId": "falsettos-2016",
       "file": "dctheatrescene--richard-seff.json",
       "score": 90,
-      "publishDate": null,
+      "publishDate": "November 8th, 2016",
       "url": "https://dcmetrotheaterarts.com/2016/11/08/review-falsettos-walter-kerr-theatre-nyc/",
       "findings": [
         {
@@ -25750,7 +25778,7 @@
       "showId": "indecent-2017",
       "file": "dctheatrescene--richard-seff.json",
       "score": 68,
-      "publishDate": null,
+      "publishDate": "April 20th, 2017",
       "url": "https://dcmetrotheaterarts.com/2017/04/20/review-indecent-cort-theatre/",
       "findings": [
         {
@@ -34518,7 +34546,7 @@
       "showId": "misery-2015",
       "file": "dctheatrescene--richard-seff.json",
       "score": 77,
-      "publishDate": null,
+      "publishDate": "November 20th, 2015",
       "url": "https://dcmetrotheaterarts.com/2015/11/20/misery-at-the-broadhurst-theatre-in-new-york-city/",
       "findings": [
         {
@@ -37933,7 +37961,7 @@
       "showId": "noises-off-2016",
       "file": "dctheatrescene--richard-seff.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "January 17th, 2016",
       "url": "https://dcmetrotheaterarts.com/2016/01/17/review-noises-off-nyc-roundabout/",
       "findings": [
         {
@@ -43310,6 +43338,20 @@
     },
     {
       "showId": "ragtime-2009",
+      "file": "theatre-reviews-limited--joseph-verlezza.json",
+      "score": null,
+      "publishDate": "October 26th, 2025",
+      "url": "https://www.theatrereviews.com/broadway-review-ragtime-at-lincoln-center-theaters-vivian-beaumont-theater-currently-on/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lear debessonet\" from ragtime-2025"
+        }
+      ]
+    },
+    {
+      "showId": "ragtime-2009",
       "file": "variety--david-rooney.json",
       "score": 88,
       "publishDate": "November 15, 2009",
@@ -44014,6 +44056,34 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "rodgers-hammersteins-cinderella-2013",
+      "file": "out-in-jersey--allen-neuner.json",
+      "score": null,
+      "publishDate": "November 27th, 2019",
+      "url": "https://outinjersey.net/rodgers-hammersteins-cinderella-is-a-classic-fairy-tale-with-a-clever-modern-sensibility/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "rodgers-hammersteins-cinderella-2013",
+      "file": "talkinbroadway--bob-rendell.json",
+      "score": null,
+      "publishDate": "November 29th, 2019",
+      "url": "https://www.talkinbroadway.com/page/regional/nj/nj761.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -49531,6 +49601,20 @@
     },
     {
       "showId": "sweat-2017",
+      "file": "broadwayworld--charles-shubow.json",
+      "score": null,
+      "publishDate": "January 25th, 2016",
+      "url": "http://www.broadwayworld.com/washington-dc/article/BWW-Review-SWEAT-at-Arena-Stage-World-Premiere-Co-Production-with-Oregon-Shakespeare-Festival-is-Riveting-Theater-20160125",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "sweat-2017",
       "file": "financialtimes--max-mcguinness.json",
       "score": 52,
       "publishDate": "November 8th, 2016",
@@ -52170,7 +52254,7 @@
       "showId": "the-cher-show-2018",
       "file": "dctheatrescene--deb-miller.json",
       "score": 62,
-      "publishDate": null,
+      "publishDate": "December 3rd, 2018",
       "url": "https://dcmetrotheaterarts.com/2018/12/03/review-the-cher-show-at-the-neil-simon-theatre/",
       "findings": [
         {
@@ -52633,6 +52717,20 @@
       ]
     },
     {
+      "showId": "the-choir-of-man-west-end-2026",
+      "file": "everything-theatre-uk--rob-warren.json",
+      "score": null,
+      "publishDate": "October 14th, 2023",
+      "url": "https://everything-theatre.co.uk/2023/10/review-the-choir-of-man-arts-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"nic doodson\" from the-choir-of-man-off-west-end-2026"
+        }
+      ]
+    },
+    {
       "showId": "the-coast-of-utopia-2006",
       "file": "nytimes--ben-brantley.json",
       "score": 88,
@@ -52884,6 +52982,20 @@
     },
     {
       "showId": "the-color-purple-2005",
+      "file": "independent--emily-jupp.json",
+      "score": null,
+      "publishDate": "July 16th, 2013",
+      "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/theatre-review-the-color-purple-menier-chocolate-factory-8710354.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
+        }
+      ]
+    },
+    {
+      "showId": "the-color-purple-2005",
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 65,
       "publishDate": null,
@@ -52898,6 +53010,25 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-color-purple-2005",
+      "file": "nypost--elisabeth-vincentelli.json",
+      "score": null,
+      "publishDate": "December 10th, 2015",
+      "url": "http://nypost.com/2015/12/10/jennifer-hudsons-co-stars-steal-the-show-in-color-purple/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -54206,7 +54337,7 @@
       "showId": "the-gin-game-2015",
       "file": "dctheatrescene--richard-seff.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "October 17th, 2015",
       "url": "https://dcmetrotheaterarts.com/2015/10/17/the-gin-game-at-the-john-golden-theatre-in-new-york-city/",
       "findings": [
         {
@@ -58181,6 +58312,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-phantom-of-the-opera-west-end-1986",
+      "file": "thestage--aleks-sierz.json",
+      "score": null,
+      "publishDate": "June 1st, 2004",
+      "url": "https://www.thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-majestys-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from the-phantom-of-the-opera-1988"
         }
       ]
     },
@@ -63115,7 +63260,7 @@
       "showId": "war-paint-2017",
       "file": "dctheatrescene--richard-seff.json",
       "score": 42,
-      "publishDate": null,
+      "publishDate": "April 19th, 2017",
       "url": "https://dcmetrotheaterarts.com/2017/04/19/review-war-paint-nederlander-theatre/",
       "findings": [
         {
@@ -65257,6 +65402,20 @@
     },
     {
       "showId": "youre-a-good-man-charlie-brown-off-broadway-2026",
+      "file": "broadwayworld--michael-dale.json",
+      "score": null,
+      "publishDate": "June 1st, 2016",
+      "url": "http://www.broadwayworld.com/article/BWW-Review-York-Theatre-Casts-Broadway-Kids-In-YOURE-A-GOOD-MAN-CHARLIE-BROWN-20160601",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from youre-a-good-man-charlie-brown-1999"
+        }
+      ]
+    },
+    {
+      "showId": "youre-a-good-man-charlie-brown-off-broadway-2026",
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 37,
       "publishDate": null,
@@ -65275,6 +65434,48 @@
       "score": 65,
       "publishDate": null,
       "url": "http://www.talkinbroadway.com/page/ob/5_31_16.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from youre-a-good-man-charlie-brown-1999"
+        }
+      ]
+    },
+    {
+      "showId": "youre-a-good-man-charlie-brown-off-broadway-2026",
+      "file": "theater-scene--darryl-reilly.json",
+      "score": null,
+      "publishDate": "June 1st, 2016",
+      "url": "http://www.theaterscene.net/musicals/youre-good-man-charlie-brown/darryl-reilly/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from youre-a-good-man-charlie-brown-1999"
+        }
+      ]
+    },
+    {
+      "showId": "youre-a-good-man-charlie-brown-off-broadway-2026",
+      "file": "theatre-reviews-limited--joseph-verlezza.json",
+      "score": null,
+      "publishDate": "June 1st, 2016",
+      "url": "http://www.theatrereviews.com/review-youre-a-good-man-charlie-brown-at-the-york-theatre-company/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "youre-a-good-man-charlie-brown-off-broadway-2026",
+      "file": "theatres-leiter-side--samuel-l-leiter.json",
+      "score": null,
+      "publishDate": "May 31st, 2016",
+      "url": "http://slleiter.blogspot.com/2016/05/17-review-youre-good-man-charlie-brown.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -66041,6 +66242,20 @@
       "score": 78,
       "publishDate": "November 13, 2015",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/arthur-millers-a-view-bridge-839854/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-2015",
+      "file": "limelight-magazine-au--carol-metcalfe.json",
+      "score": null,
+      "publishDate": "April 23rd, 2015",
+      "url": "http://www.limelightmagazine.com.au/live-reviews/review-view-bridge-national-theatre-live",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -66934,7 +67149,7 @@
       "showId": "angels-in-america-2018",
       "file": "dctheatrescene--deb-miller.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "March 25th, 2018",
       "url": "https://dcmetrotheaterarts.com/2018/03/25/review-angels-in-america-at-the-neil-simon-theatre/",
       "findings": [
         {
@@ -67109,6 +67324,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "antigone-this-play-i-read-in-high-school-off-broadway-2026",
+      "file": "nysr--melissa-rose-bernardo.json",
+      "publishDate": "November 13, 2025",
+      "url": "https://nystagereview.com/2026/03/12/antigone-this-play-i-read-in-high-school-reclaiming-the-heroines-voice/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 105d before show (November 13, 2025 vs 2026-02-26)"
         }
       ]
     },
@@ -67360,6 +67588,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "bengal-tiger-at-the-baghdad-zoo-2011",
+      "file": "broadwayworld--franco-milazzo.json",
+      "score": null,
+      "publishDate": "December 10th, 2025",
+      "url": "https://www.broadwayworld.com/westend/article/Review-BENGAL-TIGER-AT-BAGHDAD-ZOO-Young-Vic-20251210",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -69480,7 +69722,7 @@
       "showId": "dear-evan-hansen-2016",
       "file": "dctheatrescene--richard-seff.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "December 10th, 2016",
       "url": "https://dcmetrotheaterarts.com/2016/12/10/review-dear-evan-hansen-music-box-nyc1/",
       "findings": [
         {
@@ -70311,6 +70553,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"barrow street\""
+        }
+      ]
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
+      "file": "deadline--unknown.json",
+      "score": 86,
+      "publishDate": "2026-03-13",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcliffe-1236750131/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -72670,6 +72926,20 @@
     },
     {
       "showId": "hand-to-god-2015",
+      "file": "new-jersey-newsroom--michael-sommers.json",
+      "score": null,
+      "publishDate": "March 11th, 2014",
+      "url": "http://www.newjerseynewsroom.com/movies/hand-to-god-off-broadway-review-a-diabolically-droll-comedy",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "hand-to-god-2015",
       "file": "njcom--ronnie-reich.json",
       "score": 88,
       "publishDate": null,
@@ -74366,6 +74636,20 @@
       "score": 92,
       "publishDate": null,
       "url": "http://www.theatermania.com/broadway/reviews/indecent_80762.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "indecent-2017",
+      "file": "theatre-is-easy--angel-lam.json",
+      "score": null,
+      "publishDate": "May 17th, 2016",
+      "url": "http://www.theasy.com/Reviews/2016/I/indecent.php",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -84148,6 +84432,20 @@
       ]
     },
     {
+      "showId": "the-choir-of-man-west-end-2026",
+      "file": "west-end-best-friend--natalie-pedro.json",
+      "score": null,
+      "publishDate": "July 19th, 2023",
+      "url": "https://www.westendbestfriend.co.uk/news/review-the-choir-of-man-arts-theatre-july-23",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-collaboration-2022",
       "file": "broadwaynews--brittani-samuel.json",
       "score": 58,
@@ -87056,6 +87354,20 @@
     },
     {
       "showId": "the-producers-west-end-2025",
+      "file": "timeout-london--unknown.json",
+      "score": 75,
+      "publishDate": "2025-09-14",
+      "url": "https://www.timeout.com/london/theatre/the-producers-3-review-2",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "the-producers-west-end-2025",
       "file": "times-uk--dominic-maxwell.json",
       "score": 68,
       "publishDate": "2025-09-16",
@@ -88631,6 +88943,20 @@
       "score": 78,
       "publishDate": null,
       "url": "https://newyork.timeout.com/arts-culture/theater/2194233/review-venus-in-fur",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"classic stage\""
+        }
+      ]
+    },
+    {
+      "showId": "venus-in-fur-2011",
+      "file": "variety--marilyn-stasio.json",
+      "score": null,
+      "publishDate": "November 8, 2011",
+      "url": "http://www.variety.com/review/VE1117946546",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
