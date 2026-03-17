@@ -8,10 +8,14 @@
     "into-the-woods-west-end-2025/theupcoming--unknown.json",
     "into-the-woods-west-end-2025/west-end-wilma--unknown.json",
     "into-the-woods-west-end-2025/guardian--arifa-akbar.json",
-    "into-the-woods-west-end-2025/timeout--unknown.json"
+    "into-the-woods-west-end-2025/timeout--unknown.json",
+    "into-the-woods-west-end-2025/standard--nick-curtis.json",
+    "into-the-woods-west-end-2025/whatsonstage--unknown.json"
   ],
   "failed": [
-    "into-the-woods-west-end-2025/independent--unknown.json"
+    "into-the-woods-west-end-2025/independent--unknown.json",
+    "into-the-woods-west-end-2025/daily-mail--unknown.json",
+    "into-the-woods-west-end-2025/thestage--sam-marlowe.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -23,7 +27,9 @@
       "into-the-woods-west-end-2025/theupcoming--unknown.json",
       "into-the-woods-west-end-2025/west-end-wilma--unknown.json",
       "into-the-woods-west-end-2025/guardian--arifa-akbar.json",
-      "into-the-woods-west-end-2025/timeout--unknown.json"
+      "into-the-woods-west-end-2025/timeout--unknown.json",
+      "into-the-woods-west-end-2025/standard--nick-curtis.json",
+      "into-the-woods-west-end-2025/whatsonstage--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -31,13 +37,27 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/into-the-woods-west-end-2025/independent--unknown.json"
+      "data/review-texts/into-the-woods-west-end-2025/independent--unknown.json",
+      "data/review-texts/into-the-woods-west-end-2025/daily-mail--unknown.json",
+      "data/review-texts/into-the-woods-west-end-2025/thestage--sam-marlowe.json"
     ],
     "archive": [
       "into-the-woods-west-end-2025/broadwayworld--unknown.json"
     ]
   },
   "startTime": "2026-03-17T03:29:36.090Z",
-  "lastProcessed": "into-the-woods-west-end-2025/timeout--unknown.json",
-  "log": []
+  "lastProcessed": "into-the-woods-west-end-2025/whatsonstage--unknown.json",
+  "log": [
+    {
+      "t": "2026-03-17T03:36:21.956Z",
+      "event": "bb-session",
+      "session": "003b2cce",
+      "url": "https://www.thestage.co.uk/reviews/into-the-woods-review-bridge-theatre-london-s"
+    },
+    {
+      "t": "2026-03-17T03:36:23.384Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }
