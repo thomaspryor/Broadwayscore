@@ -1,20 +1,20 @@
 {
-  "runDate": "2026-03-17T01:01:12.425Z",
+  "runDate": "2026-03-17T00:59:48.063Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "my-joy-is-heavy-off-broadway-2025",
+    "showFilter": "maltby-and-shires-about-time-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
+    "processed": 1,
     "failed": 1,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -23,11 +23,11 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 0
+    "archiveToday": 0,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 1,
+    "tier1Attempts": 0,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
@@ -35,10 +35,10 @@
     "tier1_5Success": 0,
     "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 1,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
     "totalFailed": 1,
@@ -46,13 +46,15 @@
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "maltby-and-shires-about-time-off-broadway-2026/theatermania--zachary-stewart.json"
+  ],
   "failed": [
-    "my-joy-is-heavy-off-broadway-2025/one-minute-critic--unknown.json"
+    "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -61,10 +63,10 @@
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/my-joy-is-heavy-off-broadway-2025/one-minute-critic--unknown.json"
-    ],
-    "archive": []
+    "archiveToday": [],
+    "archive": [
+      "maltby-and-shires-about-time-off-broadway-2026/theatermania--zachary-stewart.json"
+    ]
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
