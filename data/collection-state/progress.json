@@ -173,7 +173,16 @@
     "death-becomes-her-2024/newyorker--helen-shaw.json",
     "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
-    "hadestown-2019/hollywood-reporter--david-rooney.json"
+    "hadestown-2019/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/nyt-theater--jonathan-mandell.json",
+    "hamilton-west-end-2021/nytimes--unknown.json",
+    "hamilton-west-end-2021/variety--marilyn-stasio.json",
+    "hercules-west-end-2025/nytimes--matt-wolf.json",
+    "hercules-west-end-2025/variety--david-benedict.json",
+    "just-in-time-2025/nytimes--adam-feldman.json",
+    "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+    "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json"
   ],
   "failed": [
     "arcadia-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -6831,7 +6840,8 @@
     "the-play-that-goes-wrong-west-end-2021/west-end-wilma--unknown.json",
     "witness-for-the-prosecution-west-end-2022/everything-theatre--unknown.json",
     "witness-for-the-prosecution-west-end-2022/theupcoming--unknown.json",
-    "witness-for-the-prosecution-west-end-2022/west-end-wilma--unknown.json"
+    "witness-for-the-prosecution-west-end-2022/west-end-wilma--unknown.json",
+    "hadestown-2019/newyorker--hilton-als.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -6893,7 +6903,10 @@
       "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
       "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
       "data-off-broadway-2026/nytg--allison-considine.json",
-      "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json"
+      "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+      "hamilton-2015/nyt-theater--jonathan-mandell.json",
+      "just-in-time-2025/nytimes--adam-feldman.json",
+      "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json"
     ],
     "amp": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--unknown.json",
@@ -7007,13 +7020,21 @@
       "data/review-texts/the-phantom-of-the-opera-off-west-end-2021/variety--unknown.json",
       "the-phantom-of-the-opera-off-west-end-2021/variety--unknown.json",
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
-      "back-to-the-future-west-end-2021/variety--david-benedict.json"
+      "back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "data/review-texts/hamilton-west-end-2021/variety--marilyn-stasio.json",
+      "hamilton-west-end-2021/variety--marilyn-stasio.json",
+      "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
+      "hercules-west-end-2025/variety--david-benedict.json"
     ],
     "browserbase": [
       "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
       "chess-2025/hollywood-reporter--angie-han.json",
       "data/review-texts/hadestown-2019/hollywood-reporter--david-rooney.json",
-      "hadestown-2019/hollywood-reporter--david-rooney.json"
+      "hadestown-2019/hollywood-reporter--david-rooney.json",
+      "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json",
+      "hamilton-2015/hollywood-reporter--david-rooney.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -7150,11 +7171,13 @@
       "the-assembled-parties-2013/wsj--tery-teachout.json",
       "uncle-vanya-2024/deadline--greg-evans.json",
       "death-becomes-her-2024/newyorker--helen-shaw.json",
-      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json"
+      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
+      "hamilton-west-end-2021/nytimes--unknown.json",
+      "hercules-west-end-2025/nytimes--matt-wolf.json"
     ]
   },
   "startTime": "2026-03-17T16:01:32.909Z",
-  "lastProcessed": "hadestown-2019/hollywood-reporter--david-rooney.json",
+  "lastProcessed": "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json",
   "log": [
     {
       "t": "2026-03-17T19:49:25.050Z",
@@ -7186,6 +7209,28 @@
     },
     {
       "t": "2026-03-17T20:01:01.640Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T20:01:18.310Z",
+      "event": "bb-session",
+      "session": "ef15cf05",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-17T20:01:19.747Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T20:02:13.283Z",
+      "event": "bb-session",
+      "session": "fc0825ce",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-17T20:02:14.987Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }

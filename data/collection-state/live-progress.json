@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-17T20:01:15.646Z",
-  "processed": 174,
-  "failed": 6656,
-  "successRate": "2.5%",
+  "updatedAt": "2026-03-17T20:02:37.647Z",
+  "processed": 183,
+  "failed": 6657,
+  "successRate": "2.7%",
   "tierBreakdown": {
-    "playwright": 58,
-    "amp": 112,
-    "browserbase": 4,
+    "playwright": 61,
+    "amp": 116,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 16,
     "brightdata": 0,
     "archiveToday": 70,
-    "archive": 43
+    "archive": 45
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-03-17T19:49:25.050Z",
@@ -45,6 +45,28 @@
     },
     {
       "t": "2026-03-17T20:01:01.640Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T20:01:18.310Z",
+      "event": "bb-session",
+      "session": "ef15cf05",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-17T20:01:19.747Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T20:02:13.283Z",
+      "event": "bb-session",
+      "session": "fc0825ce",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-17T20:02:14.987Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
