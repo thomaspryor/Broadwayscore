@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-17T02:14:43.602Z",
-  "processed": 359,
-  "failed": 5873,
+  "updatedAt": "2026-03-17T02:15:05.094Z",
+  "processed": 360,
+  "failed": 5882,
   "successRate": "5.8%",
   "tierBreakdown": {
     "playwright": 150,
     "amp": 114,
-    "browserbase": 126,
+    "browserbase": 128,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 40,
     "archive": 119
   },
-  "browserbaseSessions": 39,
+  "browserbaseSessions": 40,
   "recentActivity": [
-    {
-      "t": "2026-03-17T02:04:21.347Z",
-      "event": "bb-session",
-      "session": "891b234b",
-      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9c0cefde1630f93aa15753c"
-    },
-    {
-      "t": "2026-03-17T02:04:22.815Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-17T02:04:49.244Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-17T02:14:21.526Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-17T02:14:50.446Z",
+      "event": "bb-session",
+      "session": "37a38834",
+      "url": "https://www.hollywoodreporter.com/tv/tv-news/fx-renews-russell-brands-brandx-394"
+    },
+    {
+      "t": "2026-03-17T02:14:51.874Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
