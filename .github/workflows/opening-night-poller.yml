@@ -32,6 +32,11 @@ on:
         required: false
         type: boolean
         default: false
+      market:
+        description: 'Filter to market (empty = all markets)'
+        required: false
+        type: string
+        default: ''
 
 permissions:
   contents: write
@@ -66,6 +71,7 @@ jobs:
         run: |
           LOOKBACK=${{ inputs.lookback_days || 2 }}
           INPUT_SHOW="${{ inputs.show_id }}"
+          MARKET="${{ inputs.market }}"
 
           if [ -n "$INPUT_SHOW" ]; then
             echo "Using manual show: $INPUT_SHOW"
@@ -78,13 +84,14 @@ jobs:
               const cutoff = new Date(now);
               cutoff.setDate(cutoff.getDate() - $LOOKBACK);
               cutoff.setHours(0,0,0,0);
+              const market = '$MARKET';
               const opened = shows.filter(s => {
                 if (!s.openingDate) return false;
-                // Accept 'open' OR 'upcoming' with today's opening date
-                // (status flip can be lost to concurrent pushes)
                 if (s.status !== 'open' && s.status !== 'upcoming') return false;
                 const cat = s.category || 'broadway';
                 if (cat !== 'broadway' && cat !== 'west-end' && cat !== 'off-west-end' && cat !== 'off-broadway') return false;
+                if (market === 'broadway' && cat !== 'broadway' && cat !== 'off-broadway') return false;
+                if (market === 'west-end' && cat !== 'west-end' && cat !== 'off-west-end') return false;
                 const d = new Date(s.openingDate);
                 d.setHours(0,0,0,0);
                 return d >= cutoff && d <= now;
@@ -228,6 +235,42 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh workflow run "Rebuild Reviews Data" -f reason="Opening night poller (inline)"
+
+      - name: Rebuild reviews.json locally (for readiness check)
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        run: node scripts/rebuild-all-reviews.js 2>&1 | tail -5
+        continue-on-error: true
+        timeout-minutes: 5
+
+      - name: Check readiness and trigger broadcast
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          SHOWS="${{ steps.find.outputs.shows }}"
+          IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS"
+          for SHOW_ID in "${SHOW_ARRAY[@]}"; do
+            RESULT=$(node -e "
+              try {
+                const { checkReadiness } = require('./scripts/opening-night-poller');
+                const shows = require('./data/shows.json').shows;
+                const s = shows.find(x => x.id === '$SHOW_ID');
+                const market = (s && s.category) || 'broadway';
+                const r = checkReadiness('$SHOW_ID', market);
+                console.log(JSON.stringify(r));
+              } catch(e) { console.log(JSON.stringify({ready:false,total:0,reasons:['error: '+e.message]})); }
+            ")
+            TOTAL=$(echo "$RESULT" | node -e "process.stdout.write(String(JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')).total))")
+            IS_READY=$(echo "$RESULT" | node -e "process.stdout.write(String(JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')).ready))")
+            REASONS=$(echo "$RESULT" | node -e "process.stdout.write((JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')).reasons||[]).join(', '))")
+
+            echo "$SHOW_ID: $TOTAL scored reviews, ready=$IS_READY ${REASONS:+(gaps: $REASONS)}"
+
+            if [ "$IS_READY" = "true" ]; then
+              echo "★ $SHOW_ID is BROADCAST READY — dispatching broadcast"
+              gh workflow run "Opening Night Broadcast" -f lookback_days=2 -f send_to_all=true || true
+            fi
+          done
 
       - name: Notify on failure
         if: failure()

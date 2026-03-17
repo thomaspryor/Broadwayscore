@@ -1,0 +1,223 @@
+name: Opening Night Orchestrator
+
+# Sustained polling for opening nights. Dispatches the single-shot poller
+# every N minutes for up to M iterations. Each poller run gets a fresh
+# checkout — no stale git state issues.
+#
+# Two crons timed to curtain call:
+#   - Broadway: 3 AM UTC = 11 PM ET
+#   - West End: 10 PM UTC ≈ 11 PM BST
+#
+# On nights with no opening, exits in <1 min (zero cost).
+
+on:
+  schedule:
+    - cron: '0 3 * * *'   # Broadway curtain call
+    - cron: '0 22 * * *'  # West End curtain call
+  workflow_dispatch:
+    inputs:
+      show_id:
+        description: 'Show ID to poll (leave empty for auto-discovery)'
+        required: false
+        type: string
+        default: ''
+      market:
+        description: 'Market filter (auto = detect from cron time)'
+        required: false
+        type: choice
+        options:
+          - auto
+          - broadway
+          - west-end
+        default: auto
+      max_iterations:
+        description: 'Max poll iterations (default 12 = ~4 hours at 20 min)'
+        required: false
+        type: number
+        default: 12
+      poll_interval_minutes:
+        description: 'Minutes between poll cycles (default 20)'
+        required: false
+        type: number
+        default: 20
+
+permissions:
+  contents: read
+  actions: write
+
+# Per-run concurrency so BW and WE orchestrators can run in parallel
+concurrency:
+  group: opening-night-orch-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  orchestrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360  # GitHub max — allows ~6 hours of polling
+    steps:
+      - name: Checkout (for shows.json only)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          sparse-checkout: |
+            data/shows.json
+          sparse-checkout-cone-mode: false
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Determine market
+        id: market
+        run: |
+          INPUT_MARKET="${{ inputs.market }}"
+          if [ "$INPUT_MARKET" != "" ] && [ "$INPUT_MARKET" != "auto" ]; then
+            echo "market=$INPUT_MARKET" >> $GITHUB_OUTPUT
+            echo "Using manual market: $INPUT_MARKET"
+          elif [ "${{ github.event_name }}" = "schedule" ]; then
+            HOUR=$(date -u +%H)
+            if [ "$HOUR" = "03" ]; then
+              echo "market=broadway" >> $GITHUB_OUTPUT
+              echo "3 AM UTC cron → broadway market"
+            elif [ "$HOUR" = "22" ]; then
+              echo "market=west-end" >> $GITHUB_OUTPUT
+              echo "10 PM UTC cron → west-end market"
+            else
+              echo "market=" >> $GITHUB_OUTPUT
+              echo "Unknown cron hour $HOUR — polling all markets"
+            fi
+          else
+            echo "market=" >> $GITHUB_OUTPUT
+            echo "Manual dispatch without market — polling all markets"
+          fi
+
+      - name: Find shows to poll
+        id: find
+        run: |
+          INPUT_SHOW="${{ inputs.show_id }}"
+          MARKET="${{ steps.market.outputs.market }}"
+
+          if [ -n "$INPUT_SHOW" ]; then
+            echo "Using manual show: $INPUT_SHOW"
+            echo "shows=$INPUT_SHOW" >> $GITHUB_OUTPUT
+            echo "has_shows=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          SHOWS=$(node -e "
+            const shows = require('./data/shows.json').shows;
+            const now = new Date();
+            const cutoff = new Date(now);
+            cutoff.setDate(cutoff.getDate() - 1);
+            cutoff.setHours(0,0,0,0);
+            const market = '$MARKET';
+            const opened = shows.filter(s => {
+              if (!s.openingDate) return false;
+              if (s.status !== 'open' && s.status !== 'upcoming') return false;
+              const cat = s.category || 'broadway';
+              // Market filter
+              if (market === 'broadway' && cat !== 'broadway' && cat !== 'off-broadway') return false;
+              if (market === 'west-end' && cat !== 'west-end' && cat !== 'off-west-end') return false;
+              const d = new Date(s.openingDate);
+              d.setHours(0,0,0,0);
+              return d >= cutoff && d <= now;
+            });
+            if (opened.length > 0) console.log(opened.map(s => s.id).join(','));
+          ")
+
+          if [ -z "$SHOWS" ]; then
+            echo "No recently opened shows for market=${MARKET:-all}"
+            echo "has_shows=false" >> $GITHUB_OUTPUT
+          else
+            echo "Shows to poll: $SHOWS (market=${MARKET:-all})"
+            echo "shows=$SHOWS" >> $GITHUB_OUTPUT
+            echo "has_shows=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Early exit if no shows
+        if: steps.find.outputs.has_shows != 'true'
+        run: echo "No shows opening tonight. Exiting."
+
+      - name: Polling loop
+        if: steps.find.outputs.has_shows == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          MAX_ITERATIONS=${{ inputs.max_iterations || 12 }}
+          POLL_INTERVAL=${{ inputs.poll_interval_minutes || 20 }}
+          SHOWS="${{ steps.find.outputs.shows }}"
+          MARKET="${{ steps.market.outputs.market }}"
+
+          echo "╔══════════════════════════════════════════════════╗"
+          echo "║  Opening Night Orchestrator"
+          echo "║  Shows: $SHOWS"
+          echo "║  Market: ${MARKET:-all}"
+          echo "║  Max iterations: $MAX_ITERATIONS"
+          echo "║  Interval: ${POLL_INTERVAL}min"
+          echo "╚══════════════════════════════════════════════════╝"
+
+          for ITERATION in $(seq 1 $MAX_ITERATIONS); do
+            echo ""
+            echo "══════════════════════════════════════════════════"
+            echo "  ITERATION $ITERATION / $MAX_ITERATIONS — $(date -u '+%Y-%m-%d %H:%M UTC')"
+            echo "══════════════════════════════════════════════════"
+
+            # Dispatch the poller with show_id and market
+            echo "Dispatching opening-night-poller..."
+            POLLER_ARGS=""
+            if [ -n "$MARKET" ]; then
+              POLLER_ARGS="-f market=$MARKET"
+            fi
+
+            # Use comma-separated shows for single-show dispatch, or let poller auto-discover
+            IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS"
+            if [ ${#SHOW_ARRAY[@]} -eq 1 ]; then
+              gh workflow run "Opening Night Poller" -f show_id="${SHOW_ARRAY[0]}" $POLLER_ARGS || {
+                echo "⚠️ Failed to dispatch poller, retrying in 30s..."
+                sleep 30
+                gh workflow run "Opening Night Poller" -f show_id="${SHOW_ARRAY[0]}" $POLLER_ARGS || true
+              }
+            else
+              # Multiple shows — let poller auto-discover
+              gh workflow run "Opening Night Poller" -f lookback_days=1 $POLLER_ARGS || {
+                echo "⚠️ Failed to dispatch poller, retrying in 30s..."
+                sleep 30
+                gh workflow run "Opening Night Poller" -f lookback_days=1 $POLLER_ARGS || true
+              }
+            fi
+
+            # Wait for the poller to start (it may queue behind a previous run)
+            echo "Waiting for poller to start..."
+            sleep 30
+
+            # Find the most recent poller run
+            RUN_ID=$(gh run list --workflow="Opening Night Poller" --limit=1 --json databaseId -q '.[0].databaseId' 2>/dev/null)
+            if [ -n "$RUN_ID" ]; then
+              echo "Waiting for poller run $RUN_ID to complete..."
+              gh run watch "$RUN_ID" --exit-status 2>/dev/null || echo "⚠️ Poller run $RUN_ID finished (may have failed)"
+            fi
+
+            # Check if we should stop (all shows broadcast-ready)
+            # We can't check review-texts from here, so just continue looping.
+            # The poller itself dispatches broadcast when ready.
+
+            # Sleep between iterations (skip on last iteration)
+            if [ "$ITERATION" -lt "$MAX_ITERATIONS" ]; then
+              echo "Sleeping ${POLL_INTERVAL} minutes until next iteration..."
+              sleep $((POLL_INTERVAL * 60))
+            fi
+          done
+
+          echo ""
+          echo "╔══════════════════════════════════════════════════╗"
+          echo "║  Orchestrator complete: $MAX_ITERATIONS iterations"
+          echo "╚══════════════════════════════════════════════════╝"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Opening Night Orchestrator Failed'
+          severity: 'low'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
