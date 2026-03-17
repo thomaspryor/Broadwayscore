@@ -36,7 +36,7 @@ export function useFormspreeCapture(options: FormspreeCaptureOptions): Formspree
   const pathname = usePathname();
 
   // Infer market from URL pathname, with optional override
-  const market: Market = options.market || (pathname?.startsWith('/west-end') ? 'west-end' : 'broadway');
+  const market: Market = options.market || (pathname?.startsWith('/west-end') || pathname?.startsWith('/off-west-end') ? 'west-end' : 'broadway');
 
   useEffect(() => {
     try {
