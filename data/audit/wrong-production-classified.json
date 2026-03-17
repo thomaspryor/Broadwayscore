@@ -1,16 +1,33 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-17T18:38:33.287Z",
+    "generatedAt": "2026-03-17T19:00:42.603Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 84,
-    "classified": 0,
-    "wrongProduction": 0,
+    "total": 85,
+    "classified": 1,
+    "wrongProduction": 1,
     "correctProduction": 0,
     "uncertain": 0,
     "errors": 0,
-    "wrongHighConfidence": 0,
+    "wrongHighConfidence": 1,
     "wrongMediumConfidence": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "children-of-a-lesser-god-1980",
+      "showTitle": "Children of a Lesser God",
+      "showYear": 1980,
+      "file": "hollywood-reporter--david-rooney.json",
+      "outlet": "The Hollywood Reporter",
+      "criticName": "David Rooney",
+      "publishDate": "April 11th, 2018",
+      "originalSignals": [
+        "year 2018 in text matches revival children-of-a-lesser-god-2018"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "children-of-a-lesser-god-2018",
+      "reasoning": "The review explicitly mentions the 2018 revival, the director Kenny Leon, and cast members Joshua Jackson and Lauren Ridloff, placing it firmly within the context of the 2018 production."
+    }
+  ]
 }
