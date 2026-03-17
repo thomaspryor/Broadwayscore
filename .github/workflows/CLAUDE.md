@@ -81,7 +81,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **IBDB enrichment:** New shows are enriched with preview/opening/closing dates from IBDB. If IBDB fails, Broadway.org's "Begins:" date is treated as `previewsStartDate` (not `openingDate`)
 - **Metadata enrichment (after discovery):** Enriches newly discovered shows with TodayTix runtimes/intermissions/age (`enrich-todaytix-runtimes.js`), Wikipedia synopses (`enrich-wikipedia-synopsis.js --limit=20`), and Wikipedia runtimes (`enrich-wikipedia-runtimes.js --limit=20`). All `continue-on-error: true`. Added Feb 23, 2026.
 - **Timeout:** 10 minutes (to accommodate IBDB lookups with rate limiting)
-- **Triggers for newly opened shows (previews → open):** `gather-reviews.yml`, `update-reddit-sentiment.yml`, `update-show-score.yml`, `update-mezzanine.yml`, `fetch-all-image-formats.yml`
+- **Triggers for newly opened shows (previews → open):** `gather-reviews.yml`, `update-reddit-sentiment.yml`, `update-show-score.yml`, `update-mezzanine.yml`, `fetch-all-image-formats.yml`, `opening-night-poller.yml`, `opening-night-broadcast.yml`
 - **Outputs:** `opened_count`, `opened_slugs` (shows transitioning previews→open), plus discovery outputs
 - **Note:** Discord notification for new shows removed Feb 20, 2026 (noise reduction)
 
@@ -95,7 +95,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Manual trigger:** `gh workflow run "Opening Night Reviews" -f lookback_days=7`
 
 ## `opening-night-broadcast.yml`
-- **Runs:** Daily at 5 AM UTC (midnight ET) and 8 AM UTC (3 AM ET), or manually
+- **Runs:** No cron. Dispatched by: (1) `update-show-status.yml` when a show opens, (2) `workflow_run` after `LLM Ensemble Score Reviews` completes (auto-retry), (3) manual `workflow_dispatch`
 - **Does:** Thin "check & send" workflow — reads existing scored data, generates consensus, sends broadcast email. Heavy lifting (gather, rebuild, score) handled by independent data pipeline.
 - **Pipeline:** Find recently opened BW+WE shows → check already broadcast → sync subscribers (Formspree) → generate consensus → send broadcast → commit → deploy → indexing
 - **Data dependency:** Relies on data pipeline chain: `update-show-status` → `gather-reviews` → `rebuild` → `llm-ensemble-score`. The 5 AM run catches shows scored overnight; 8 AM catches shows scored between 5-8 AM.

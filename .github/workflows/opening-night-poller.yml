@@ -13,34 +13,8 @@ name: Opening Night Poller
 # or manually via workflow_dispatch for targeted polling.
 
 on:
-  schedule:
-    # BW window: Every 15 min from 2-7 AM UTC (9 PM-2 AM ET)
-    - cron: '0 2 * * *'
-    - cron: '15 2 * * *'
-    - cron: '30 2 * * *'
-    - cron: '45 2 * * *'
-    - cron: '0 3 * * *'
-    - cron: '15 3 * * *'
-    - cron: '30 3 * * *'
-    - cron: '45 3 * * *'
-    - cron: '0 4 * * *'
-    - cron: '15 4 * * *'
-    - cron: '30 4 * * *'
-    - cron: '45 4 * * *'
-    - cron: '0 5 * * *'
-    - cron: '30 5 * * *'
-    - cron: '0 6 * * *'
-    - cron: '0 7 * * *'
-    # WE window: Every 30 min from 7 PM-midnight UTC (7 PM-midnight GMT)
-    - cron: '0 19 * * *'
-    - cron: '30 19 * * *'
-    - cron: '0 20 * * *'
-    - cron: '30 20 * * *'
-    - cron: '0 21 * * *'
-    - cron: '30 21 * * *'
-    - cron: '0 22 * * *'
-    - cron: '30 22 * * *'
-    - cron: '0 23 * * *'
+  # No cron — dispatched by update-show-status.yml only when a show actually opens.
+  # Manual dispatch available for targeted polling.
   workflow_dispatch:
     inputs:
       show_id:

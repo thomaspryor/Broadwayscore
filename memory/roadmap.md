@@ -1,4 +1,4 @@
-# Roadmap — Last updated 2026-03-16
+# Roadmap — Last updated 2026-03-17
 
 ## Active WIP Sessions (Do Not Start Competing Work in src/)
 
@@ -19,7 +19,7 @@
 **West End Launch (target: 2026-03-17):**
 5. ~~**WE opening-night pipeline**~~ → DONE (2026-03-14). Wired Show Score WE (59 curated URLs) + LBO roundups into gather-reviews.yml. E2E tested on Hadestown. Backfill of 62 shows in progress.
 6. ~~**Off-West End expansion**~~ → DONE (2026-03-16). 56 OWE shows, 56 scripts updated with `isLondonMarket()`, venue classification JSON, frontend badges, discovery pipeline.
-7. **SeatPlan audience scores** — Post-launch priority.
+7. ~~**SeatPlan audience scores**~~ → DONE (2026-03-17). Fixed slug generation for OWE shows (venue suffixes, colon subtitles). Extracted shared `buildLondonSlugVariants` to `show-matching.js`. SeatPlan OWE: 5→10 shows. LBO OWE: 13→17 shows. 24/56 OWE shows now have audience data.
 
 **WE Review Coverage (CRITICAL — fix before launch):**
 8. **Cross-show URL dedup bug** — Paddington reviews wrongly flagged "belongs in man-and-boy-west-end-2026." Telegraph, The Stage, WhatsOnStage, Times UK, Standard all excluded. Affects multiple shows. Root cause: URL dedup in rebuild-all-reviews.js matching wrong show.
@@ -41,6 +41,7 @@
 7. ~~**Pipeline health dashboard**~~ → Phase 1 DONE (health monitoring, 9 categories).
 8. ~~**Notification Phase 2: Daily Digest + Auto-Fix**~~ → DONE. Daily email via Resend with auto-dispatch of fix workflows, urgency badges, plain-English instructions. LOW items suppressed.
 9. **Phase 3: Smart Escalation** — Per-system cooldowns, cookie/secret expiry warnings at 7/3/1 days, digest subject urgency increases with persistence. Build after Phase 2 soak (~2 weeks).
+10. ~~**URL brittleness remediation**~~ → DONE (2026-03-16). Weekly health monitoring, SERP Telecharge discovery, centralized url-utils.js, TodayTix API verification, TM allowlist, OUTLET_DOMAINS derived from registry (1,242 entries vs 119 hardcoded).
 
 **Performance:**
 
@@ -82,11 +83,13 @@
 ## Recently Completed
 
 ### Week of 2026-03-16
+- **Opening night broadcast de-cron** — Removed 41 cron entries (16 broadcast + 25 poller) that ran every night even with no openings. Now dispatch-only: (1) auto from update-show-status.yml on previews→open transition, (2) auto-retry via workflow_run after scoring, (3) manual dispatch. Preview-to-owner default preserved, one-tap phone approval flow intact. Fixed Commit step push race (skip when no changes).
+- **URL brittleness remediation** — Weekly URL health check (artifact-based, no git push contention), centralized url-utils.js, SERP-based Telecharge discovery, TodayTix API cross-verification (4 ID recycling cases found), TM path allowlist, OUTLET_DOMAINS derived from outlet-registry.json (119→1,242 entries, 18 registry fixes). All open shows already had platform links — no backfill needed.
 - **WE opening-night pipeline** — Wired Show Score WE (59 curated URLs) + LBO roundups into gather-reviews.yml. Fixed LBO sitemap URL (non-www returned empty). Created curated lbo-roundup-urls.json (13 roundups). E2E tested 1+5+3 shows. Backfilled all 62 WE shows.
 - **P0 score recovery (220 reviews)** — 85 from OUTLET_VERIFIED_SOURCES fix, 92 EW letter grades via regex, 26 via Playwright recollection, 17 via Guardian API. WE P0 rate: 31%→67%.
 - **LLM extractor hallucination fix** — verifyInText accepted any `*` as star proof + matched other-show ratings. Fixed: require specific X/Y in last 500 chars. Hallucination rate 40%→<2%.
 - **Show Score star capture** — gather-reviews.js Playwright path now extracts --rating CSS var (~510 future P0.5 scores).
-- **SeatPlan identified** — UK-native audience review platform (1K-8K reviews/show). Added to roadmap. Prompt given to another session.
+- **SeatPlan audience scores for OWE** — Fixed slug generation (venue suffixes like "- Globe", colon subtitles). Extracted shared `buildLondonSlugVariants()` to `show-matching.js` (used by both SeatPlan + LBO scrapers). SeatPlan OWE: 5→10 shows (+1,187 reviews). LBO OWE: 13→17 shows (+311 reviews). Fixed TDZ bug in rebuild-all-reviews.js. /review passed: 0 P0, 1 cosmetic P1.
 - **Data health fix** — push-core-data bug (Mar 12) was comparing snapshot vs itself → zero changes detected → shows.json stuck 6 days. Fixed diff to compare data/ (post-script) vs checkout (baseline).
 - **ScrapingBee exhaustion resilience** — SB credits at 0 until Apr 2 renewal. Added BD/Playwright fallbacks to 4 hard-failing scripts (show-score, bww-reviews, ticket-links, commercial). Fixed opening-night-poller SERP (broken arg signature since inception).
 - **Scraper cost optimization** — 5 changes: (1) Playwright-first for public sites in scraper.js (IBDB, Broadway.com → free), (2) BD-first SERP in collect-review-texts.js with proper SERP API port, (3) SB credit pre-check at startup, (4) per-run cost logging, (5) split SB page/SERP credit counters. Smart SERP ordering: BD-first for batch (cheap), SB-first for opening nights (fast).
@@ -136,5 +139,6 @@
 - Off-West End classification + venue filter
 - iOS: Sentry, push notifications, offline queue, haptics, store review, deep linking (Build #29)
 - BTC: TBD badges + curated nominees QA
+
 
 
