@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-17T05:05:16.032Z",
-  "processed": 513,
-  "failed": 8509,
-  "successRate": "5.7%",
+  "updatedAt": "2026-03-17T05:08:42.054Z",
+  "processed": 521,
+  "failed": 8511,
+  "successRate": "5.8%",
   "tierBreakdown": {
-    "playwright": 243,
-    "amp": 156,
+    "playwright": 247,
+    "amp": 158,
     "browserbase": 130,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 103,
-    "archive": 159
+    "archiveToday": 104,
+    "archive": 162
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 9,
   "recentActivity": [
-    {
-      "t": "2026-03-17T02:14:20.351Z",
-      "event": "bb-session",
-      "session": "e386408e",
-      "url": "http://www.newyorker.com/arts/critics/theatre/2009/03/30/090330crth_theatre_lahr"
-    },
-    {
-      "t": "2026-03-17T02:14:21.526Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
     {
       "t": "2026-03-17T02:14:50.446Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-17T05:02:21.843Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T05:05:40.815Z",
+      "event": "bb-session",
+      "session": "46852e14",
+      "url": "https://www.nytimes.com/2026/03/10/arts/music/tristan-und-isolde-met-opera-revie"
+    },
+    {
+      "t": "2026-03-17T05:05:42.072Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

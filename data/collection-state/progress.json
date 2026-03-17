@@ -512,7 +512,15 @@
     "the-reservoir-off-broadway-2026/nytg--gillian-russo.json",
     "the-unknown-off-broadway-2026/nytg--joe-dziemianowicz.json",
     "trash-off-broadway-2026/nyt-theater--unknown.json",
-    "trash-off-broadway-2026/nytg--unknown.json"
+    "trash-off-broadway-2026/nytg--unknown.json",
+    "two-strangers-bway-2025/nyt-theater--unknown.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json",
+    "wicked-2003/nytimes--charles-isherwood.json",
+    "wicked-2003/variety--charles-isherwood.json",
+    "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
+    "aladdin-2014/ew--thom-geier.json",
+    "aladdin-2014/theatermania--charles-isherwood.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -9023,7 +9031,9 @@
     "pied-a-terre-off-broadway-2026/nytg--unknown.json",
     "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
     "six-2021/newyorker--naomi-fry.json",
-    "the-great-gatsby-2024/nytimes--maya-phillips.json"
+    "the-great-gatsby-2024/nytimes--maya-phillips.json",
+    "tristan-und-isolde-off-broadway-2026/nytimes--unknown.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -9270,7 +9280,11 @@
       "the-reservoir-off-broadway-2026/nytg--gillian-russo.json",
       "the-unknown-off-broadway-2026/nytg--joe-dziemianowicz.json",
       "trash-off-broadway-2026/nyt-theater--unknown.json",
-      "trash-off-broadway-2026/nytg--unknown.json"
+      "trash-off-broadway-2026/nytg--unknown.json",
+      "two-strangers-bway-2025/nyt-theater--unknown.json",
+      "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json",
+      "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
+      "aladdin-2014/theatermania--charles-isherwood.json"
     ],
     "amp": [
       "data/review-texts/peter-and-the-starcatcher-2012/variety--marilyn-stasio.json",
@@ -9428,7 +9442,9 @@
       "data/review-texts/the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
       "the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
       "data/review-texts/the-lion-king-west-end-2021/variety--matt-wolf.json",
-      "the-lion-king-west-end-2021/variety--matt-wolf.json"
+      "the-lion-king-west-end-2021/variety--matt-wolf.json",
+      "data/review-texts/wicked-2003/variety--charles-isherwood.json",
+      "wicked-2003/variety--charles-isherwood.json"
     ],
     "browserbase": [
       "data/review-texts/mj-2022/variety--aramide-tinubu.json",
@@ -9668,7 +9684,8 @@
       "data/review-texts/wicked-west-end-2021/west-end-wilma--unknown.json",
       "data/review-texts/oh-mary-2024/vulture--helen-shaw.json",
       "data/review-texts/romeo-and-juliet-west-end-2026/nytimes--unknown.json",
-      "data/review-texts/the-great-gatsby-2024/nytimes--maya-phillips.json"
+      "data/review-texts/the-great-gatsby-2024/nytimes--maya-phillips.json",
+      "data/review-texts/tristan-und-isolde-off-broadway-2026/nytimes--unknown.json"
     ],
     "archive": [
       "into-the-woods-west-end-2025/nytimes--unknown.json",
@@ -9829,11 +9846,14 @@
       "paddington-the-musical-west-end-2025/variety--david-benedict.json",
       "ragtime-2025/nytimes--unknown.json",
       "the-lion-king-1997/nytimes--ben-brantley.json",
-      "the-lion-king-1997/vulture--john-simon.json"
+      "the-lion-king-1997/vulture--john-simon.json",
+      "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json",
+      "wicked-2003/nytimes--charles-isherwood.json",
+      "aladdin-2014/ew--thom-geier.json"
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "trash-off-broadway-2026/nytg--unknown.json",
+  "lastProcessed": "aladdin-2014/theatermania--charles-isherwood.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -10910,6 +10930,17 @@
     },
     {
       "t": "2026-03-17T05:02:21.843Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T05:05:40.815Z",
+      "event": "bb-session",
+      "session": "46852e14",
+      "url": "https://www.nytimes.com/2026/03/10/arts/music/tristan-und-isolde-met-opera-revie"
+    },
+    {
+      "t": "2026-03-17T05:05:42.072Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
