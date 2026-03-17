@@ -457,8 +457,24 @@ const LT_OWE_URL = 'https://www.londontheatre.co.uk/whats-on/off-west-end';
 async function fetchShowsFromLondonTheatre() {
   console.log('Fetching Off-West End shows from LondonTheatre.co.uk...');
 
-  const result = await fetchPage(LT_OWE_URL, { renderJs: false });
-  const html = result.content;
+  // Plain HTTPS — site serves static HTML with JSON-LD, no scraping service needed
+  const html = await new Promise((resolve, reject) => {
+    const req = https.get(LT_OWE_URL, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml',
+        'Accept-Language': 'en-GB,en;q=0.9',
+      },
+      timeout: 20000,
+    }, (res) => {
+      if (res.statusCode !== 200) { reject(new Error(`HTTP ${res.statusCode}`)); res.resume(); return; }
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => resolve(data));
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Timeout')); });
+  });
 
   if (html.length < 3000) {
     console.log(`  LT: content suspiciously short (${html.length} bytes), skipping`);
