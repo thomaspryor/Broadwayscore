@@ -488,38 +488,43 @@ async function fetchShowsFromLondonTheatre() {
 
   for (const script of ldScripts) {
     try {
-      const data = JSON.parse(script.textContent);
-      if (typeof data['@type'] !== 'string' || data['@type'] !== 'TheaterEvent') continue;
-      if (data.subEvent) continue;
+      const parsed = JSON.parse(script.textContent);
+      // Handle both single objects and arrays of TheaterEvent (LT uses an array)
+      const items = Array.isArray(parsed) ? parsed : [parsed];
 
-      const title = (data.name || '').trim()
-        .replace(/&#8217;|&#8216;|[\u2018\u2019]/g, "'")
-        .replace(/&#8220;|&#8221;|[\u201C\u201D]/g, '"')
-        .replace(/&#8211;|[\u2013]/g, '\u2013').replace(/&#8212;|[\u2014]/g, '\u2014')
-        .replace(/&#038;/g, '&').replace(/&amp;/g, '&');
-      if (!title || title.length < 3 || seen.has(title.toLowerCase())) continue;
+      for (const data of items) {
+        if (typeof data['@type'] !== 'string' || data['@type'] !== 'TheaterEvent') continue;
+        if (data.subEvent) continue;
 
-      const titleLower = title.toLowerCase();
-      if (NON_THEATER_PATTERNS.some(p => titleLower.includes(p))) continue;
-      if (WE_EXTRA_PATTERNS.some(p => titleLower.includes(p))) continue;
-      if (WE_SOLO_PERFORMER_PATTERN.test(title) && !titleLower.includes('musical') && !titleLower.includes('play')) continue;
+        const title = (data.name || '').trim()
+          .replace(/&#8217;|&#8216;|[\u2018\u2019]/g, "'")
+          .replace(/&#8220;|&#8221;|[\u201C\u201D]/g, '"')
+          .replace(/&#8211;|[\u2013]/g, '\u2013').replace(/&#8212;|[\u2014]/g, '\u2014')
+          .replace(/&#038;/g, '&').replace(/&amp;/g, '&');
+        if (!title || title.length < 3 || seen.has(title.toLowerCase())) continue;
 
-      const venue = (typeof data.location === 'object' ? data.location.name : data.location) || 'TBA';
-      const endDate = data.endDate === 'null' || data.endDate === null ? null : data.endDate || null;
+        const titleLower = title.toLowerCase();
+        if (NON_THEATER_PATTERNS.some(p => titleLower.includes(p))) continue;
+        if (WE_EXTRA_PATTERNS.some(p => titleLower.includes(p))) continue;
+        if (WE_SOLO_PERFORMER_PATTERN.test(title) && !titleLower.includes('musical') && !titleLower.includes('play')) continue;
 
-      // Venue-based classification: most are OWE, but reclassify if at a WE venue
-      const category = isWestEndVenue(venue) ? 'west-end' : 'off-west-end';
+        const venue = (typeof data.location === 'object' ? data.location.name : data.location) || 'TBA';
+        const endDate = data.endDate === 'null' || data.endDate === null ? null : data.endDate || null;
 
-      seen.add(titleLower);
-      shows.push({
-        title,
-        venue,
-        slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
-        openingDate: data.startDate || null,
-        closingDate: endDate,
-        category,
-        description: (data.description || '').substring(0, 500),
-      });
+        // Venue-based classification: most are OWE, but reclassify if at a WE venue
+        const category = isWestEndVenue(venue) ? 'west-end' : 'off-west-end';
+
+        seen.add(titleLower);
+        shows.push({
+          title,
+          venue,
+          slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+          openingDate: data.startDate || null,
+          closingDate: endDate,
+          category,
+          description: (data.description || '').substring(0, 500),
+        });
+      }
     } catch (e) {
       // Skip malformed JSON-LD blocks
     }
