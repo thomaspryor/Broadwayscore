@@ -325,7 +325,11 @@
     "a-year-with-frog-and-toad-2003/nytimes--ben-brantley.json",
     "after-miss-julie-2009/variety--david-rooney.json",
     "after-the-fall-2004/nytimes--ben-brantley.json",
-    "all-about-me-2010/variety--marilyn-stasio.json"
+    "all-about-me-2010/variety--marilyn-stasio.json",
+    "all-out-2025/variety--aramide-tinubualison-herman.json",
+    "all-out-2025/vulture--roxana-hadadi.json",
+    "amour-2002/nytimes--ben-brantley.json",
+    "an-almost-holy-picture-2002/nytimes--ben-brantley.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -6033,7 +6037,13 @@
     "a-streetcar-named-desire-2012/vulture--sara-holdren.json",
     "a-time-to-kill-2013/newyorker--hilton-als.json",
     "a-view-from-the-bridge-2010/hollywood-reporter--frank-scheck.json",
-    "aint-no-mo-2022/newyorker--naomi-fry.json"
+    "aint-no-mo-2022/newyorker--naomi-fry.json",
+    "all-my-sons-2008/hollywood-reporter--frank-scheck.json",
+    "all-my-sons-2019/hollywood-reporter--david-rooney.json",
+    "allegiance-2015/vulture--jesse-green.json",
+    "amelie-a-new-musical-2017/hollywood-reporter--jordan-riefe.json",
+    "american-son-2018/newyorker--vinson-cunningham.json",
+    "an-ark-2026/nyt-theater--jonathan-mandell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -6267,7 +6277,9 @@
       "data/review-texts/after-miss-julie-2009/variety--david-rooney.json",
       "after-miss-julie-2009/variety--david-rooney.json",
       "data/review-texts/all-about-me-2010/variety--marilyn-stasio.json",
-      "all-about-me-2010/variety--marilyn-stasio.json"
+      "all-about-me-2010/variety--marilyn-stasio.json",
+      "data/review-texts/all-out-2025/variety--aramide-tinubualison-herman.json",
+      "all-out-2025/variety--aramide-tinubualison-herman.json"
     ],
     "browserbase": [
       "data/review-texts/mj-2022/variety--aramide-tinubu.json",
@@ -6373,7 +6385,11 @@
       "data/review-texts/a-year-with-frog-and-toad-2003/nytimes--ben-brantley.json",
       "a-year-with-frog-and-toad-2003/nytimes--ben-brantley.json",
       "data/review-texts/after-the-fall-2004/nytimes--ben-brantley.json",
-      "after-the-fall-2004/nytimes--ben-brantley.json"
+      "after-the-fall-2004/nytimes--ben-brantley.json",
+      "data/review-texts/amour-2002/nytimes--ben-brantley.json",
+      "amour-2002/nytimes--ben-brantley.json",
+      "data/review-texts/an-almost-holy-picture-2002/nytimes--ben-brantley.json",
+      "an-almost-holy-picture-2002/nytimes--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -6533,11 +6549,12 @@
       "spare-parts-off-broadway-2026/ap--mark-kennedy.json",
       "spare-parts-off-broadway-2026/dailybeast--nick-schager.json",
       "wicked-west-end-2021/huffpost--marshall-fine.json",
-      "wicked-west-end-2021/rollingstone--peter-travers.json"
+      "wicked-west-end-2021/rollingstone--peter-travers.json",
+      "all-out-2025/vulture--roxana-hadadi.json"
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "all-about-me-2010/variety--marilyn-stasio.json",
+  "lastProcessed": "an-ark-2026/nyt-theater--jonathan-mandell.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -7350,6 +7367,28 @@
     },
     {
       "t": "2026-03-17T02:00:58.579Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T02:01:37.580Z",
+      "event": "bb-session",
+      "session": "6f468008",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9c04e0d91e3df932a15753c"
+    },
+    {
+      "t": "2026-03-17T02:01:38.786Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T02:01:53.379Z",
+      "event": "bb-session",
+      "session": "68532cfd",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?id=1077011432202&amp;html_t"
+    },
+    {
+      "t": "2026-03-17T02:01:54.644Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
