@@ -55,6 +55,9 @@
 10. **App icon refinement** — Hard to read at small sizes.
 11. **BTC/TodayTix partnership (paused)** — Waiting on TodayTix for launch timing, co-branding, legal.
 
+**Opening Night Speed:**
+- **Add site search for UK T1/T2 outlets** — Only WhatsOnStage + TimeOut have site search configs. Missing: Telegraph, The Stage, The Times UK, iNews, Independent, FT. These have no RSS either (defunct/404). Currently rely on aggregators + SERP which are slower. Adding search endpoint configs to `scripts/lib/site-search-discovery.js` would speed up WE/OWE opening night discovery.
+
 **Data Quality:**
 12. ~~WE/OB review cleanup — duplicates~~ → DONE. 35→0 duplicates via comprehensive dedup.
 13. ~~WE/OB review cleanup — URL collisions~~ → DONE. All 87 collisions resolved (94 files flagged across 53 shows).
