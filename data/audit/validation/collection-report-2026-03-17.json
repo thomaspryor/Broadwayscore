@@ -1,34 +1,34 @@
 {
-  "runDate": "2026-03-17T01:00:07.668Z",
+  "runDate": "2026-03-17T01:02:12.476Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "calf-scramble-off-broadway-2026",
+    "showFilter": "touch-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 1,
+    "processed": 7,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 0
+    "archiveToday": 0,
+    "archive": 5
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 0,
+    "tier1Attempts": 2,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -37,11 +37,11 @@
     "tier2Success": 0,
     "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
     "tier4Attempts": 1,
-    "tier4Success": 0,
-    "totalFailed": 1,
+    "tier4Success": 1,
+    "totalFailed": 0,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -50,21 +50,36 @@
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
-  "failed": [
-    "calf-scramble-off-broadway-2026/talkinbroadway--unknown.json"
+  "processed": [
+    "touch-off-broadway-2026/blogcritics--jon-sobel.json",
+    "touch-off-broadway-2026/broadwayworld--marina-kennedy.json",
+    "touch-off-broadway-2026/epoch-times--judd-hollander.json",
+    "touch-off-broadway-2026/plays-to-see--austin-fimmano.json",
+    "touch-off-broadway-2026/talkinbroadway--howard-miller.json",
+    "touch-off-broadway-2026/theater-pizzazz--beatrice-williams-rude.json",
+    "touch-off-broadway-2026/theater-scene--victor-gluck.json"
   ],
+  "failed": [],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "touch-off-broadway-2026/blogcritics--jon-sobel.json",
+      "touch-off-broadway-2026/theater-scene--victor-gluck.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/calf-scramble-off-broadway-2026/talkinbroadway--unknown.json"
+      "data/review-texts/youre-a-good-man-charlie-brown-off-broadway-2026/cititour--brian-scott-lipton.json"
     ],
-    "archive": []
+    "archive": [
+      "touch-off-broadway-2026/broadwayworld--marina-kennedy.json",
+      "touch-off-broadway-2026/epoch-times--judd-hollander.json",
+      "touch-off-broadway-2026/plays-to-see--austin-fimmano.json",
+      "touch-off-broadway-2026/talkinbroadway--howard-miller.json",
+      "touch-off-broadway-2026/theater-pizzazz--beatrice-williams-rude.json"
+    ]
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
