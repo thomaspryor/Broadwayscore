@@ -2796,7 +2796,7 @@ async function resolveTimeoutListingUrl(review) {
 // domain alias matching, stripped-title retries, URL year checks).
 // ============================================================================
 
-const URL_DISCOVERY_MAX_PER_RUN = 250; // Cap SERP API calls to control costs
+const URL_DISCOVERY_MAX_PER_RUN = parseInt(process.env.URL_DISCOVERY_LIMIT, 10) || 1000; // Cap SERP API calls to control costs (env: URL_DISCOVERY_LIMIT)
 let _showsJsonCache = null; // Cached shows.json data (used by URL discovery + content validation)
 
 /**
@@ -4603,6 +4603,10 @@ function saveState() {
 /**
  * Push local commits to the public repo remote.
  * Separated from commitChanges so pushes can be less frequent than commits.
+ *
+ * Conflict resolution: collection-state/ files are per-run state that should
+ * always keep the current run's version. During rebase, "theirs" = our commits
+ * being replayed, so --theirs keeps our data. During merge, "ours" = our branch.
  */
 function _pushToRemote(processed) {
   const { execSync } = require('child_process');
@@ -4611,27 +4615,39 @@ function _pushToRemote(processed) {
   try {
     execSync('git fetch origin main', { stdio: 'pipe' });
 
-    // Try simple rebase first
+    // Try rebase with -X theirs (keeps our commits' content on conflict)
     try {
-      execSync('git rebase origin/main', { stdio: 'pipe' });
+      execSync('git rebase -X theirs origin/main', { stdio: 'pipe' });
       pushSucceeded = true;
     } catch (rebaseErr) {
-      console.log('    Rebase conflict detected, auto-resolving data files...');
-      try {
-        execSync('git checkout --ours data/', { stdio: 'pipe' });
-        execSync('git add data/', { stdio: 'pipe' });
+      console.log('    Rebase conflict detected, auto-resolving state files...');
+      // In rebase context: --theirs = our commits being replayed (what we want to keep)
+      // Resolve up to 4 rounds of conflicts (multiple commits may each conflict)
+      for (let round = 0; round < 4 && !pushSucceeded; round++) {
         try {
+          // Auto-resolve: keep ours for state files, theirs for everything else
+          const conflicted = execSync('git diff --name-only --diff-filter=U', { encoding: 'utf8', stdio: 'pipe' }).trim();
+          if (!conflicted) break;
+          for (const file of conflicted.split('\n').filter(Boolean)) {
+            if (file.startsWith('data/collection-state/') || file.startsWith('data/audit/')) {
+              execSync(`git checkout --theirs "${file}"`, { stdio: 'pipe' });
+            } else {
+              execSync(`git checkout --ours "${file}"`, { stdio: 'pipe' });
+            }
+            execSync(`git add "${file}"`, { stdio: 'pipe' });
+          }
           execSync('git rebase --continue', { stdio: 'pipe', env: { ...process.env, GIT_EDITOR: 'true' } });
           pushSucceeded = true;
         } catch (continueErr) {
-          try { execSync('git rebase --abort', { stdio: 'pipe' }); } catch (e) {}
+          // More conflicts in next commit — loop will retry
         }
-      } catch (resolveErr) {
+      }
+      if (!pushSucceeded) {
         try { execSync('git rebase --abort', { stdio: 'pipe' }); } catch (e) {}
       }
     }
 
-    // Fallback: merge with ours strategy for data
+    // Fallback: merge with ours strategy (in merge context, ours = our branch)
     if (!pushSucceeded) {
       console.log('    Trying merge approach...');
       try {
@@ -4639,6 +4655,7 @@ function _pushToRemote(processed) {
         pushSucceeded = true;
       } catch (mergeErr) {
         console.log('    Merge also failed');
+        try { execSync('git merge --abort', { stdio: 'pipe' }); } catch (e) {}
       }
     }
 
@@ -5934,6 +5951,7 @@ async function main() {
   console.log(`  Bright Data: ${CONFIG.brightDataKey ? '✓ configured' : '✗ not configured'}`);
   console.log(`  Browserbase: ${CONFIG.browserbaseEnabled ? `✓ enabled (limit: ${CONFIG.browserbaseMaxSessionsPerDay}/day)` : '✗ disabled'}`);
   console.log(`  Stealth Plugin: ${stealthLoaded ? '✓ loaded' : '⚠ using fallback'}`);
+  console.log(`  URL Discovery Limit: ${URL_DISCOVERY_MAX_PER_RUN}/run`);
 
   // Validate cookie secrets — fail loudly if any are corrupted
   console.log(`\nCookie Status:`);
