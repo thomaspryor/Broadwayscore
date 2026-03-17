@@ -84,7 +84,7 @@ jobs:
                 // (status flip can be lost to concurrent pushes)
                 if (s.status !== 'open' && s.status !== 'upcoming') return false;
                 const cat = s.category || 'broadway';
-                if (cat !== 'broadway' && cat !== 'west-end') return false;
+                if (cat !== 'broadway' && cat !== 'west-end' && cat !== 'off-west-end') return false;
                 const d = new Date(s.openingDate);
                 d.setHours(0,0,0,0);
                 return d >= cutoff && d <= now;
