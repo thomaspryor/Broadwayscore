@@ -2731,10 +2731,18 @@ function validateTonyData(shows) {
 function validateAggregatorArchives(shows) {
   info('Checking aggregator archives...');
 
-  const archiveDir = path.join(DATA_DIR, 'aggregator-archive');
+  // The full archive lives at data/review-texts/aggregator-archive/ (private repo checkout).
+  // data/aggregator-archive/ is a small working/staging directory — not the real archive.
+  const reviewTextsArchive = path.join(DATA_DIR, 'review-texts', 'aggregator-archive');
+  const archiveDir = fs.existsSync(reviewTextsArchive) ? reviewTextsArchive : path.join(DATA_DIR, 'aggregator-archive');
   if (!fs.existsSync(archiveDir)) {
     // Not an error — many workflows don't check out aggregator-archive (it's in the private repo)
     info('data/aggregator-archive/ not present (skipping archive validation)');
+    return;
+  }
+  if (archiveDir !== reviewTextsArchive) {
+    // Only the staging dir is present — skip count validation (it's always small)
+    info('Only data/aggregator-archive/ staging dir present (skipping count validation — full archive is in review-texts repo)');
     return;
   }
 

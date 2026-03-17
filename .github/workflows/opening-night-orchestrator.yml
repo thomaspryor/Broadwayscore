@@ -55,13 +55,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 360  # GitHub max — allows ~6 hours of polling
     steps:
-      - name: Checkout (for shows.json only)
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           ref: main
-          sparse-checkout: |
-            data/shows.json
-          sparse-checkout-cone-mode: false
 
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
@@ -173,29 +170,42 @@ jobs:
             # Use comma-separated shows for single-show dispatch, or let poller auto-discover
             IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS"
             if [ ${#SHOW_ARRAY[@]} -eq 1 ]; then
-              gh workflow run "Opening Night Poller" -f show_id="${SHOW_ARRAY[0]}" $POLLER_ARGS || {
+              gh workflow run opening-night-poller.yml -f show_id="${SHOW_ARRAY[0]}" $POLLER_ARGS || {
                 echo "⚠️ Failed to dispatch poller, retrying in 30s..."
                 sleep 30
-                gh workflow run "Opening Night Poller" -f show_id="${SHOW_ARRAY[0]}" $POLLER_ARGS || true
+                gh workflow run opening-night-poller.yml -f show_id="${SHOW_ARRAY[0]}" $POLLER_ARGS || true
               }
             else
               # Multiple shows — let poller auto-discover
-              gh workflow run "Opening Night Poller" -f lookback_days=1 $POLLER_ARGS || {
+              gh workflow run opening-night-poller.yml -f lookback_days=1 $POLLER_ARGS || {
                 echo "⚠️ Failed to dispatch poller, retrying in 30s..."
                 sleep 30
-                gh workflow run "Opening Night Poller" -f lookback_days=1 $POLLER_ARGS || true
+                gh workflow run opening-night-poller.yml -f lookback_days=1 $POLLER_ARGS || true
               }
             fi
 
-            # Wait for the poller to start (it may queue behind a previous run)
-            echo "Waiting for poller to start..."
-            sleep 30
+            # Wait for the dispatched poller run to appear and complete
+            # Record the newest poller run ID BEFORE dispatch registered
+            PRE_DISPATCH_ID=$(gh run list --workflow=opening-night-poller.yml --limit=1 --json databaseId -q '.[0].databaseId' 2>/dev/null || echo "")
+            echo "Pre-dispatch latest poller run: ${PRE_DISPATCH_ID:-none}"
+            echo "Waiting for new poller run to appear..."
 
-            # Find the most recent poller run
-            RUN_ID=$(gh run list --workflow="Opening Night Poller" --limit=1 --json databaseId -q '.[0].databaseId' 2>/dev/null)
+            RUN_ID=""
+            for WAIT in $(seq 1 24); do
+              sleep 5
+              LATEST_ID=$(gh run list --workflow=opening-night-poller.yml --limit=1 --json databaseId -q '.[0].databaseId' 2>/dev/null || echo "")
+              if [ -n "$LATEST_ID" ] && [ "$LATEST_ID" != "$PRE_DISPATCH_ID" ]; then
+                RUN_ID="$LATEST_ID"
+                echo "Found new poller run: $RUN_ID"
+                break
+              fi
+            done
+
             if [ -n "$RUN_ID" ]; then
               echo "Waiting for poller run $RUN_ID to complete..."
               gh run watch "$RUN_ID" --exit-status 2>/dev/null || echo "⚠️ Poller run $RUN_ID finished (may have failed)"
+            else
+              echo "⚠️ Could not find new poller run after 2 min. Continuing."
             fi
 
             # Check if we should stop (all shows broadcast-ready)
