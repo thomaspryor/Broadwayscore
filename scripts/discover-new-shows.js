@@ -383,8 +383,38 @@ const OLT_URL = 'https://officiallondontheatre.com/theatre-tickets/';
 async function fetchShowsFromOfficialLondonTheatre() {
   console.log('Fetching West End shows from Official London Theatre (SOLT)...');
 
-  const result = await fetchPage(OLT_URL, { renderJs: false });
-  const html = result.content;
+  // Plain HTTPS — site serves static HTML with JSON-LD, no scraping service needed
+  const html = await new Promise((resolve, reject) => {
+    const req = https.get(OLT_URL, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml',
+        'Accept-Language': 'en-GB,en;q=0.9',
+      },
+      timeout: 20000,
+    }, (res) => {
+      // Follow one redirect (301/302/307/308)
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        https.get(res.headers.location, {
+          headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'text/html' },
+          timeout: 20000,
+        }, (res2) => {
+          if (res2.statusCode !== 200) { reject(new Error(`HTTP ${res2.statusCode} after redirect`)); res2.resume(); return; }
+          let d = '';
+          res2.on('data', chunk => d += chunk);
+          res2.on('end', () => resolve(d));
+        }).on('error', reject);
+        res.resume();
+        return;
+      }
+      if (res.statusCode !== 200) { reject(new Error(`HTTP ${res.statusCode}`)); res.resume(); return; }
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => resolve(data));
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Timeout')); });
+  });
 
   if (html.length < 3000) {
     console.log(`  OLT: content suspiciously short (${html.length} bytes), skipping`);
@@ -557,6 +587,202 @@ async function fetchShowsFromLondonTheatre() {
 
   console.log(`  LT: ${ldScripts.length} JSON-LD blocks, ${shows.length} OWE shows parsed`);
   return shows;
+}
+
+// ── OWE Venue Page Discovery ──
+// Fetches What's On pages from major Off-West End venues not covered by
+// TodayTix, OLT, Theatremonkey, or LondonTheatre.co.uk.
+
+const OWE_VENUE_PAGES = [
+  { name: 'Almeida Theatre', url: 'https://almeida.co.uk/whats-on/', linkPattern: /\/whats-on\/[^/]+/ },
+  { name: 'Soho Theatre', url: 'https://sohotheatre.com/all-shows/', linkPattern: /\/events\/[^/]+/ },
+  // Arcola: shows rendered in-page without individual links — needs Playwright (v2)
+  // Theatre503: returns 403 — needs different approach (v2)
+  { name: 'Theatre Royal Stratford East', url: 'https://www.stratfordeast.com/whats-on', linkPattern: /\/whats-on\/all-shows\/[^/]+/ },
+  { name: 'New Diorama Theatre', url: 'https://www.newdiorama.com/whats-on', linkPattern: /\/whats-on\/[^/]+/ },
+  { name: "King's Head Theatre", url: 'https://www.kingsheadtheatre.com/whats-on', linkPattern: /\/whats-on\/[^/]+/ },
+  { name: 'Finborough Theatre', url: 'https://www.finboroughtheatre.co.uk/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true },
+  { name: 'Theatre503', url: 'https://theatre503.com/whats-on/', linkPattern: /\/whats-on\/[^/]+/ },
+];
+
+// Patterns to exclude from venue page scraping (workshops, masterclasses, tours, etc.)
+const VENUE_PAGE_EXCLUDE_PATTERNS = [
+  'masterclass', 'workshop', 'tour', 'walking tour', 'rapid write',
+  'work in progress', 'scratch night', 'open mic', 'poetry slam',
+  'fundraiser', 'gala', 'in conversation', 'q&a', 'meet the',
+];
+
+async function fetchShowsFromOweVenues() {
+  console.log('Fetching shows from Off-West End venue pages...');
+
+  const results = await Promise.allSettled(
+    OWE_VENUE_PAGES.map(venue => fetchSingleVenuePage(venue))
+  );
+
+  const allShows = [];
+  let successCount = 0;
+
+  for (let i = 0; i < results.length; i++) {
+    const venue = OWE_VENUE_PAGES[i];
+    const result = results[i];
+    if (result.status === 'fulfilled' && result.value.length > 0) {
+      successCount++;
+      allShows.push(...result.value);
+      console.log(`  ${venue.name}: ${result.value.length} shows`);
+    } else if (result.status === 'rejected') {
+      console.log(`  ${venue.name}: failed (${result.reason?.message})`);
+    } else {
+      console.log(`  ${venue.name}: 0 shows`);
+    }
+  }
+
+  console.log(`OWE venue pages: ${successCount}/${OWE_VENUE_PAGES.length} venues responded, ${allShows.length} total shows`);
+  return allShows;
+}
+
+async function fetchSingleVenuePage(venue) {
+  const html = await new Promise((resolve, reject) => {
+    const urlObj = new URL(venue.url);
+    const req = https.get(venue.url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml',
+        'Accept-Language': 'en-GB,en;q=0.9',
+      },
+      timeout: 15000,
+    }, (res) => {
+      // Follow one redirect
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        const redirectUrl = new URL(res.headers.location, venue.url).href;
+        res.resume();
+        https.get(redirectUrl, {
+          headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'text/html' },
+          timeout: 15000,
+        }, (res2) => {
+          if (res2.statusCode !== 200) { reject(new Error(`HTTP ${res2.statusCode} after redirect`)); res2.resume(); return; }
+          let data = '';
+          res2.on('data', chunk => data += chunk);
+          res2.on('end', () => resolve(data));
+        }).on('error', reject);
+        return;
+      }
+      if (res.statusCode !== 200) { reject(new Error(`HTTP ${res.statusCode}`)); res.resume(); return; }
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => resolve(data));
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Timeout')); });
+  });
+
+  if (html.length < 1000) return [];
+
+  const dom = new JSDOM(html);
+  const doc = dom.window.document;
+  const shows = [];
+  const seen = new Set();
+
+  // Strategy 1: JSON-LD TheaterEvent extraction (Arcola, future-proofing)
+  if (venue.hasJsonLd) {
+    const ldScripts = doc.querySelectorAll('script[type="application/ld+json"]');
+    for (const script of ldScripts) {
+      try {
+        const parsed = JSON.parse(script.textContent);
+        const items = Array.isArray(parsed) ? parsed : [parsed];
+        for (const item of items) {
+          if (item['@type'] !== 'TheaterEvent') continue;
+          const title = cleanVenueTitle(item.name || '');
+          if (!title || seen.has(title.toLowerCase())) continue;
+          if (shouldExcludeVenueShow(title)) continue;
+
+          seen.add(title.toLowerCase());
+          shows.push({
+            title,
+            venue: venue.name,
+            slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+            openingDate: item.startDate || null,
+            closingDate: item.endDate === 'null' ? null : item.endDate || null,
+            category: isWestEndVenue(venue.name) ? 'west-end' : 'off-west-end',
+            description: (item.description || '').substring(0, 500),
+          });
+        }
+      } catch {}
+    }
+  }
+
+  // Strategy 2: Link-based extraction (all venues, including JSON-LD as supplement)
+  const links = doc.querySelectorAll('a[href]');
+  for (const link of links) {
+    const href = link.getAttribute('href') || '';
+    if (!venue.linkPattern.test(href)) continue;
+    // Skip navigation/category pages and online/virtual content
+    if (/\/(past-shows|access|participation|account|login|logout|search|tag|category|page\/|online|virtual|digital)/i.test(href)) continue;
+
+    // For venues with noisy link text (cards with concatenated content), extract title from URL slug
+    let title;
+    if (venue.titleFromSlug) {
+      const slug = href.split('/').filter(Boolean).pop() || '';
+      title = slug.replace(/-/g, ' ').replace(/^\w/, c => c.toUpperCase()).replace(/ \w/g, c => c.toUpperCase());
+    } else {
+      title = cleanVenueTitle(link.textContent || '');
+    }
+    if (!title || title.length < 3 || title.length > 120) continue;
+    if (seen.has(title.toLowerCase())) continue;
+    if (shouldExcludeVenueShow(title)) continue;
+    // Skip generic link text and single-word category labels
+    if (/^(read more|book now|buy tickets|find out more|view|details|more info|back|next|previous|more|book|drama|comedy|musical|theatre|cabaret|main house|later|all shows|past shows|participation)/i.test(title)) continue;
+    if (/^stand.?up/i.test(title)) continue;
+
+    seen.add(title.toLowerCase());
+    shows.push({
+      title,
+      venue: venue.name,
+      slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+      openingDate: null,
+      closingDate: null,
+      category: isWestEndVenue(venue.name) ? 'west-end' : 'off-west-end',
+      description: '',
+    });
+  }
+
+  return shows;
+}
+
+function cleanVenueTitle(raw) {
+  let title = (raw || '').trim()
+    .replace(/&#8217;|&#8216;|[\u2018\u2019]/g, "'")
+    .replace(/&#8220;|&#8221;|[\u201C\u201D]/g, '"')
+    .replace(/&#8211;|[\u2013]/g, '\u2013').replace(/&#8212;|[\u2014]/g, '\u2014')
+    .replace(/&#038;|&amp;/g, '&').replace(/&apos;/g, "'")
+    .replace(/\s+/g, ' ');
+  // Strip leading venue-space labels (Soho Theatre uses "Soho " / "Walthamstow " prefixes)
+  title = title.replace(/^(Soho|Walthamstow|Dean Street|Upstairs|Downstairs)\s+/i, '');
+  // Strip trailing date patterns (e.g., "Show Name 3 - 24 March 2026")
+  title = title.replace(/\s+\d{1,2}\s*[-–]\s*\d{1,2}\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*\s+\d{4}\s*$/i, '');
+  // Strip trailing "21 Apr - 9 May 2026" format
+  title = title.replace(/\s+\d{1,2}\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*\s*[-–]\s*\d{1,2}\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*\s*\d{0,4}\s*$/i, '');
+  // Strip trailing venue/presenter info after "presents"
+  title = title.replace(/\s+(presents|at |Greenwich|Polka|West End|Broadway).*$/i, '');
+  // Strip "Written by..." / "Translated by..." / "by Author Name" suffixes (handles concatenated text like "Foalby Titas")
+  title = title.replace(/\s*(Written|Translated|Directed|Created|Adapted)\s+by\b.*$/i, '');
+  title = title.replace(/\bby\s+[A-Z][a-z]+\s+[A-Z][a-z].*$/, '');
+  // Strip "More Info" / "Book Now" / dates that got concatenated
+  title = title.replace(/\s*(More Info|Book Now|Book Tickets|Find Out More)\s*$/i, '');
+  title = title.replace(/\d{1,2}\s*[-–]\s*\d{1,2}\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec).*$/i, '');
+  // Strip trailing date like "Tue 17 Mar - Sat 21 Mar" or "Tue 31 Mar 21:00"
+  title = title.replace(/\s+(Mon|Tue|Wed|Thu|Fri|Sat|Sun)\s+\d{1,2}\s+\w+.*$/i, '');
+  // Strip trailing "Tue 17 –" or "Thu 19 –" fragments
+  title = title.replace(/\s+(Mon|Tue|Wed|Thu|Fri|Sat|Sun)\s+\d{1,2}\s*[-–]?\s*$/i, '');
+  return title.trim();
+}
+
+function shouldExcludeVenueShow(title) {
+  const lower = title.toLowerCase();
+  if (NON_THEATER_PATTERNS.some(p => lower.includes(p))) return true;
+  if (WE_EXTRA_PATTERNS.some(p => lower.includes(p))) return true;
+  if (VENUE_PAGE_EXCLUDE_PATTERNS.some(p => lower.includes(p))) return true;
+  if (WE_SOLO_PERFORMER_PATTERN.test(title) && !lower.includes('musical') && !lower.includes('play')) return true;
+  return false;
 }
 
 // ── Cross-source divergence logging ──
@@ -1071,18 +1297,20 @@ async function discoverShows() {
 
   // West End discovery via TodayTix London API + Official London Theatre (SOLT)
   if (includeWestEnd) {
-    // Fetch all four sources in parallel
-    const [todayTixResult, oltResult, tmResult, ltResult] = await Promise.allSettled([
+    // Fetch all five sources in parallel
+    const [todayTixResult, oltResult, tmResult, ltResult, venueResult] = await Promise.allSettled([
       fetchShowsFromTodayTixLondon(),
       fetchShowsFromOfficialLondonTheatre(),
       fetchShowsFromTheatremonkey(),
-      fetchShowsFromLondonTheatre()
+      fetchShowsFromLondonTheatre(),
+      fetchShowsFromOweVenues()
     ]);
 
     const todayTixWEShows = todayTixResult.status === 'fulfilled' ? todayTixResult.value : [];
     const oltShows = oltResult.status === 'fulfilled' ? oltResult.value : [];
     const tmShows = tmResult.status === 'fulfilled' ? tmResult.value : [];
     const ltShows = ltResult.status === 'fulfilled' ? ltResult.value : [];
+    const venueShows = venueResult.status === 'fulfilled' ? venueResult.value : [];
 
     if (todayTixResult.status === 'rejected') {
       console.log(`⚠️  TodayTix London API failed (${todayTixResult.reason?.message}), continuing with other sources`);
@@ -1111,6 +1339,12 @@ async function discoverShows() {
       console.log(`Found ${ltShows.length} OWE shows via LondonTheatre.co.uk`);
     }
 
+    if (venueResult.status === 'rejected') {
+      console.log(`⚠️  OWE venue pages failed (${venueResult.reason?.message}), continuing with other sources`);
+    } else if (venueShows.length > 0) {
+      console.log(`Found ${venueShows.length} shows via OWE venue pages`);
+    }
+
     if (todayTixWEShows.length === 0 && oltShows.length === 0 && tmShows.length === 0 && ltShows.length === 0) {
       console.log(`⚠️  CRITICAL: All four London sources returned 0 shows — check API/scraper health`);
     }
@@ -1119,8 +1353,8 @@ async function discoverShows() {
     logWESourceDivergence(todayTixWEShows, oltShows);
     logLTSourceDivergence(todayTixWEShows, oltShows, ltShows);
 
-    // TodayTix first (richer metadata), OLT second, TM third, LT last — dedup prefers earlier entries
-    discoveredShows.push(...todayTixWEShows, ...oltShows, ...tmShows, ...ltShows);
+    // TodayTix first (richer metadata), OLT second, TM third, LT fourth, venue pages last — dedup prefers earlier entries
+    discoveredShows.push(...todayTixWEShows, ...oltShows, ...tmShows, ...ltShows, ...venueShows);
     console.log('');
   }
 
