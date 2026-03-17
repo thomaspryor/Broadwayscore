@@ -34,7 +34,7 @@ const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extr
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb } = require('./lib/rebuild-helpers');
-const { isLondonMarket } = require('./lib/venue-classification');
+const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 
 // Load outlet registry for cross-market guard
 const outletRegistry = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf8'));
@@ -1140,11 +1140,12 @@ showDirs.forEach(showId => {
             data.wrongProduction = true;
             promoted = true;
           }
-          if (cv.wrongArticle === true && data.wrongShow !== true) {
+          const skipWsForLondon = isLondonMarket(showCat) && isUkOutletUrl(data.url);
+          if (cv.wrongArticle === true && data.wrongShow !== true && !skipWsForLondon) {
             data.wrongShow = true;
             promoted = true;
           }
-          if (cv.isFilmTv === true && data.wrongShow !== true) {
+          if (cv.isFilmTv === true && data.wrongShow !== true && !skipWsForLondon) {
             data.wrongShow = true;
             promoted = true;
           }
@@ -1183,19 +1184,12 @@ showDirs.forEach(showId => {
       // OVERRIDE: If this is a London show AND the review URL is from a UK/major outlet domain,
       // the wrongShow flag is almost certainly a false positive from LLM classification.
       // UK outlets reviewing London shows cannot be "wrong show" — they only cover London theatre.
-      if (data.wrongShow === true && isLondonMarket(showCat) && data.url) {
-        try {
-          const hostname = new URL(data.url).hostname || '';
-          const isUkOrMajorUrl = hostname.endsWith('.co.uk') || hostname.endsWith('.org.uk')
-            || /london|theatre|whatsonstage|thestage|theguardian|telegraph|thetimes|independent|standard|inews|variety|nytimes|timeout/.test(hostname);
-          if (isUkOrMajorUrl) {
-            delete data.wrongShow;
-            delete data.wrongShowNote;
-            data.wrongShowAutoCleared = `rebuild: UK/major outlet URL on London show (${hostname})`;
-            try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
-            stats.wrongShowAutoCleared = (stats.wrongShowAutoCleared || 0) + 1;
-          }
-        } catch {}
+      if (data.wrongShow === true && isLondonMarket(showCat) && isUkOutletUrl(data.url)) {
+        delete data.wrongShow;
+        delete data.wrongShowNote;
+        data.wrongShowAutoCleared = `rebuild: UK/major outlet URL on London show`;
+        try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+        stats.wrongShowAutoCleared = (stats.wrongShowAutoCleared || 0) + 1;
       }
       if (data.wrongShow === true) {
         stats.skippedWrongShow = (stats.skippedWrongShow || 0) + 1;
