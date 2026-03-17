@@ -157,6 +157,7 @@ async function loadDependencies() {
 // Configuration
 const CONFIG = {
   batchSize: parseInt(process.env.BATCH_SIZE || '10'),
+  pushEveryNBatches: parseInt(process.env.PUSH_EVERY_N_BATCHES || '5'), // Push every N batches (default: every 50 reviews)
   maxReviews: parseInt(process.env.MAX_REVIEWS || '1000'),
   priority: process.env.PRIORITY || 'all',
   showFilter: process.env.SHOW_FILTER || '',
@@ -4600,10 +4601,66 @@ function saveState() {
 }
 
 /**
- * Commit changes to git (for incremental saving during long runs)
- * This prevents losing work if the job times out
+ * Push local commits to the public repo remote.
+ * Separated from commitChanges so pushes can be less frequent than commits.
  */
-function commitChanges(processed) {
+function _pushToRemote(processed) {
+  const { execSync } = require('child_process');
+  let pushSucceeded = false;
+
+  try {
+    execSync('git fetch origin main', { stdio: 'pipe' });
+
+    // Try simple rebase first
+    try {
+      execSync('git rebase origin/main', { stdio: 'pipe' });
+      pushSucceeded = true;
+    } catch (rebaseErr) {
+      console.log('    Rebase conflict detected, auto-resolving data files...');
+      try {
+        execSync('git checkout --ours data/', { stdio: 'pipe' });
+        execSync('git add data/', { stdio: 'pipe' });
+        try {
+          execSync('git rebase --continue', { stdio: 'pipe', env: { ...process.env, GIT_EDITOR: 'true' } });
+          pushSucceeded = true;
+        } catch (continueErr) {
+          try { execSync('git rebase --abort', { stdio: 'pipe' }); } catch (e) {}
+        }
+      } catch (resolveErr) {
+        try { execSync('git rebase --abort', { stdio: 'pipe' }); } catch (e) {}
+      }
+    }
+
+    // Fallback: merge with ours strategy for data
+    if (!pushSucceeded) {
+      console.log('    Trying merge approach...');
+      try {
+        execSync('git merge origin/main -X ours --no-edit', { stdio: 'pipe' });
+        pushSucceeded = true;
+      } catch (mergeErr) {
+        console.log('    Merge also failed');
+      }
+    }
+
+    if (pushSucceeded) {
+      execSync('git push origin HEAD:main', { stdio: 'pipe' });
+      console.log(`  ✓ Pushed checkpoint to remote (${processed} reviews)`);
+    } else {
+      throw new Error('Could not sync with remote');
+    }
+  } catch (syncErr) {
+    console.log(`    ⚠ Checkpoint push failed (will be caught by final workflow commit): ${syncErr.message}`);
+  }
+}
+
+/**
+ * Commit changes to git (for incremental saving during long runs).
+ * Local commits happen every batch (cheap). Remote pushes happen every
+ * pushEveryNBatches to reduce git contention with other workflows.
+ */
+let _batchesSinceLastPush = 0;
+
+function commitChanges(processed, forcePush = false) {
   const { execSync } = require('child_process');
 
   try {
@@ -4650,71 +4707,21 @@ function commitChanges(processed) {
         stdio: 'pipe'
       });
 
-      // Sync with remote and push
-      // Strategy: fetch, rebase, auto-resolve conflicts in data files (keep ours)
-      let pushSucceeded = false;
-
-      try {
-        // First fetch to see what's on remote
-        execSync('git fetch origin main', { stdio: 'pipe' });
-
-        // Try simple rebase first
-        try {
-          execSync('git rebase origin/main', { stdio: 'pipe' });
-          pushSucceeded = true;
-        } catch (rebaseErr) {
-          // Rebase has conflicts - for data files, keep our version
-          console.log('    Rebase conflict detected, auto-resolving data files...');
-
-          try {
-            // Accept our version for all conflicted data files
-            execSync('git checkout --ours data/', { stdio: 'pipe' });
-            execSync('git add data/', { stdio: 'pipe' });
-
-            // Continue the rebase
-            try {
-              execSync('git rebase --continue', { stdio: 'pipe', env: { ...process.env, GIT_EDITOR: 'true' } });
-              pushSucceeded = true;
-            } catch (continueErr) {
-              // If continue fails, abort and try merge approach
-              try { execSync('git rebase --abort', { stdio: 'pipe' }); } catch (e) {}
-            }
-          } catch (resolveErr) {
-            // Couldn't resolve, abort rebase
-            try { execSync('git rebase --abort', { stdio: 'pipe' }); } catch (e) {}
-          }
-        }
-
-        // If rebase approach failed, try merge with ours strategy for data
-        if (!pushSucceeded) {
-          console.log('    Trying merge approach...');
-          try {
-            execSync('git merge origin/main -X ours --no-edit', { stdio: 'pipe' });
-            pushSucceeded = true;
-          } catch (mergeErr) {
-            console.log('    Merge also failed');
-          }
-        }
-
-        if (pushSucceeded) {
-          execSync('git push origin HEAD:main', { stdio: 'pipe' });
-        } else {
-          throw new Error('Could not sync with remote');
-        }
-      } catch (syncErr) {
-        // Don't force push — it can overwrite parallel runs' data.
-        // The final workflow commit step will catch any uncommitted data.
-        console.log(`    ⚠ Checkpoint push failed (will be caught by final workflow commit): ${syncErr.message}`);
-      }
-
-      console.log(`  ✓ Committed and pushed checkpoint (${processed} reviews)`);
+      console.log(`  ✓ Committed checkpoint locally (${processed} reviews)`);
     } else {
       console.log('  (No changes to commit)');
     }
 
-    // Also push review-texts to private repo at every checkpoint
-    // This prevents data loss if the run is cancelled before the final push step
-    pushReviewTextsCheckpoint(processed);
+    // Only push to remotes every N batches (or when forced, e.g. final commit)
+    // This reduces git contention — local commits are cheap, pushes cause conflicts
+    _batchesSinceLastPush++;
+    const shouldPush = forcePush || _batchesSinceLastPush >= CONFIG.pushEveryNBatches;
+
+    if (shouldPush) {
+      _batchesSinceLastPush = 0;
+      _pushToRemote(processed);
+      pushReviewTextsCheckpoint(processed);
+    }
 
   } catch (e) {
     console.error(`  ✗ Git commit/push FAILED: ${e.message}`);
@@ -6026,9 +6033,9 @@ async function main() {
       }
     }
 
-    // Final state save and commit
+    // Final state save and commit (force push to ensure all data lands)
     saveState();
-    commitChanges(state.processed.length);
+    commitChanges(state.processed.length, true);
 
   } finally {
     await closeBrowser();
