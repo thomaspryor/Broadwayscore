@@ -276,7 +276,12 @@
     "betty-buckley-random-notes-off-broadway-2026/variety--unknown.json",
     "bigfoot-off-broadway-2026/nyt-theater--unknown.json",
     "bigfoot-off-broadway-2026/nytimes--unknown.json",
-    "cold-war-choir-practice-off-broadway-2026/nytimes--unknown.json"
+    "cold-war-choir-practice-off-broadway-2026/nytimes--unknown.json",
+    "lost-in-del-valle-off-broadway-2026/nytimes--brian-seibert.json",
+    "maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--jordan-riefe.json",
+    "maltby-and-shires-about-time-off-broadway-2026/nytg--juan-michael-porter-ii.json",
+    "maltby-and-shires-about-time-off-broadway-2026/nytimes--vincent-canby.json",
+    "maltby-and-shires-about-time-off-broadway-2026/variety--chris-jones.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -2073,7 +2078,12 @@
     "la-llamada-off-broadway-2024/nyt-theater--stephi-wild.json",
     "les-miserables-west-end-2021/nyt-theater--erin-conley.json",
     "little-shop-of-horrors-off-broadway-2019/nyt-theater--erin-conley.json",
-    "lost-in-del-valle-off-broadway-2026/hollywood-reporter--daniel-fienberg.json"
+    "lost-in-del-valle-off-broadway-2026/hollywood-reporter--daniel-fienberg.json",
+    "lost-in-del-valle-off-broadway-2026/variety--scott-foundas.json",
+    "mamma-mia-west-end-2021/newyorker--richard-brody.json",
+    "mamma-mia-west-end-2021/nyt-theater--jesse-mckinley.json",
+    "mamma-mia-west-end-2021/nytimes--elisabeth-vincentelli.json",
+    "man-and-boy-west-end-2026/hollywood-reporter--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2211,7 +2221,8 @@
       "stranger-things-the-first-shadow-west-end-2023/ew--emlyn-travis.json",
       "stranger-things-the-first-shadow-west-end-2023/timeout--adam-feldman.json",
       "the-book-of-mormon-west-end-2024/timeout--david-cote.json",
-      "bigfoot-off-broadway-2026/nyt-theater--unknown.json"
+      "bigfoot-off-broadway-2026/nyt-theater--unknown.json",
+      "maltby-and-shires-about-time-off-broadway-2026/nytg--juan-michael-porter-ii.json"
     ],
     "amp": [
       "data/review-texts/peter-and-the-starcatcher-2012/variety--marilyn-stasio.json",
@@ -2269,7 +2280,9 @@
       "data/review-texts/oh-mary-west-end-2025/variety--christian-lewis.json",
       "oh-mary-west-end-2025/variety--christian-lewis.json",
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--unknown.json",
-      "betty-buckley-random-notes-off-broadway-2026/variety--unknown.json"
+      "betty-buckley-random-notes-off-broadway-2026/variety--unknown.json",
+      "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/variety--chris-jones.json",
+      "maltby-and-shires-about-time-off-broadway-2026/variety--chris-jones.json"
     ],
     "browserbase": [
       "data/review-texts/mj-2022/variety--aramide-tinubu.json",
@@ -2357,7 +2370,9 @@
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/nypost--johnny-oleksinski.json",
       "stranger-things-the-first-shadow-west-end-2023/nypost--johnny-oleksinski.json",
       "data/review-texts/an-ark-off-broadway-2026/hollywood-reporter--frank-scheck.json",
-      "an-ark-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+      "an-ark-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--jordan-riefe.json",
+      "maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--jordan-riefe.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -2488,11 +2503,13 @@
       "stranger-things-the-first-shadow-west-end-2023/theatermania--pete-hempstead.json",
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/newyorker--shauna-lyon.json",
       "bigfoot-off-broadway-2026/nytimes--unknown.json",
-      "cold-war-choir-practice-off-broadway-2026/nytimes--unknown.json"
+      "cold-war-choir-practice-off-broadway-2026/nytimes--unknown.json",
+      "lost-in-del-valle-off-broadway-2026/nytimes--brian-seibert.json",
+      "maltby-and-shires-about-time-off-broadway-2026/nytimes--vincent-canby.json"
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "lost-in-del-valle-off-broadway-2026/hollywood-reporter--daniel-fienberg.json",
+  "lastProcessed": "man-and-boy-west-end-2026/hollywood-reporter--david-rooney.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -3142,6 +3159,17 @@
       "t": "2026-03-17T00:42:17.370Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-17T00:43:47.288Z",
+      "event": "bb-session",
+      "session": "934ee59e",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/waterfall-theater-rev"
+    },
+    {
+      "t": "2026-03-17T00:43:48.672Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
