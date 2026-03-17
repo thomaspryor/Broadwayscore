@@ -342,7 +342,8 @@
     "brighton-beach-memoirs-2009/variety--david-rooney.json",
     "burn-the-floor-2009/variety--david-rooney.json",
     "burn-this-2019/vulture--jesse-green.json",
-    "by-jeeves-2001/nytimes--bruce-weber.json"
+    "by-jeeves-2001/nytimes--bruce-weber.json",
+    "cat-on-a-hot-tin-roof-2008/hollywood-reporter--david-rooney.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -6113,7 +6114,16 @@
     "carrie-1988/nytimes--ben-brantley.json",
     "cat-on-a-hot-tin-roof-1974/hollywood-reporter--david-rooney.json",
     "cat-on-a-hot-tin-roof-1974/nytimes--ben-brantley.json",
-    "cat-on-a-hot-tin-roof-1990/hollywood-reporter--david-rooney.json"
+    "cat-on-a-hot-tin-roof-1990/hollywood-reporter--david-rooney.json",
+    "cat-on-a-hot-tin-roof-1990/nytimes--ben-brantley.json",
+    "cat-on-a-hot-tin-roof-2003/hollywood-reporter--david-rooney.json",
+    "cat-on-a-hot-tin-roof-2003/nytimes--ben-brantley.json",
+    "cat-on-a-hot-tin-roof-2003/vulture--scott-brown.json",
+    "cat-on-a-hot-tin-roof-2008/variety--david-rooney.json",
+    "cat-on-a-hot-tin-roof-2008/variety--marilyn-stasio.json",
+    "cat-on-a-hot-tin-roof-2008/vulture--scott-brown.json",
+    "cats-1982/hollywood-reporter--jordan-riefe.json",
+    "cats-1982/nytg--kyle-turner.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -6482,7 +6492,9 @@
       "data/review-texts/bombay-dreams-2004/nytimes--ben-brantley.json",
       "bombay-dreams-2004/nytimes--ben-brantley.json",
       "data/review-texts/by-jeeves-2001/nytimes--bruce-weber.json",
-      "by-jeeves-2001/nytimes--bruce-weber.json"
+      "by-jeeves-2001/nytimes--bruce-weber.json",
+      "data/review-texts/cat-on-a-hot-tin-roof-2008/hollywood-reporter--david-rooney.json",
+      "cat-on-a-hot-tin-roof-2008/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -6648,7 +6660,7 @@
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "cat-on-a-hot-tin-roof-1990/hollywood-reporter--david-rooney.json",
+  "lastProcessed": "cats-1982/nytg--kyle-turner.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -7529,6 +7541,17 @@
       "t": "2026-03-17T02:04:22.815Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T02:04:49.244Z",
+      "event": "bb-session",
+      "session": "a9ef7525",
+      "url": "https://www.hollywoodreporter.com/review/a-streetcar-named-desire-theater-314871"
+    },
+    {
+      "t": "2026-03-17T02:04:50.323Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
