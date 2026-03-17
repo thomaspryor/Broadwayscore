@@ -9,26 +9,13 @@ name: Opening Night Broadcast
 # explicitly re-dispatched with send_to_all=true.
 
 on:
-  schedule:
-    # BW window: 1-8 AM UTC (8 PM-3 AM ET)
-    - cron: '0 1 * * *'    # 1 AM UTC = 8 PM ET — first check (curtain call)
-    - cron: '30 1 * * *'   # 1:30 AM UTC = 8:30 PM ET
-    - cron: '0 2 * * *'    # 2 AM UTC = 9 PM ET
-    - cron: '30 2 * * *'   # 2:30 AM UTC = 9:30 PM ET
-    - cron: '0 3 * * *'    # 3 AM UTC = 10 PM ET
-    - cron: '30 3 * * *'   # 3:30 AM UTC = 10:30 PM ET
-    - cron: '0 4 * * *'    # 4 AM UTC = 11 PM ET
-    - cron: '30 4 * * *'   # 4:30 AM UTC = 11:30 PM ET
-    - cron: '0 5 * * *'    # 5 AM UTC = midnight ET
-    - cron: '0 8 * * *'    # 8 AM UTC = 3 AM ET — final catch-up
-    # WE window: 10 PM-3 AM UTC (10 PM-3 AM GMT — reviews may publish next morning)
-    - cron: '0 22 * * *'   # 10 PM UTC/GMT
-    - cron: '30 22 * * *'
-    - cron: '0 23 * * *'
-    - cron: '30 23 * * *'
-    - cron: '0 0 * * *'    # midnight UTC/GMT
-    - cron: '30 0 * * *'
-    # Note: BW window (1-8 AM UTC) already covers morning UK review catch-up
+  # No cron — only fires when there's actually a show opening:
+  #   1. update-show-status.yml dispatches when a show transitions to open
+  #   2. Auto-retries after scoring completes (pipeline: gather → rebuild → score → broadcast)
+  #   3. Manual dispatch for testing or re-sends
+  workflow_run:
+    workflows: ["LLM Ensemble Score Reviews"]
+    types: [completed]
   workflow_dispatch:
     inputs:
       lookback_days:
@@ -339,6 +326,11 @@ jobs:
             echo "Staged opening-night-sent.json for commit"
           else
             echo "WARNING: opening-night-sent.json not found — sent tracking will be lost"
+          fi
+          # Skip push if nothing to commit (avoids push race failures)
+          if git diff --cached --quiet; then
+            echo "No changes to commit — skipping push"
+            exit 0
           fi
           bash scripts/lib/push-with-retry.sh
 
