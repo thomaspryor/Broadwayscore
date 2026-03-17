@@ -5,13 +5,17 @@
     "the-hunger-games-on-stage-west-end-2025/bww--cindy-marcolina.json",
     "the-hunger-games-on-stage-west-end-2025/financialtimes--unknown.json",
     "the-hunger-games-on-stage-west-end-2025/i-paper--unknown.json",
-    "the-hunger-games-on-stage-west-end-2025/london-box-office--stuart-king.json"
+    "the-hunger-games-on-stage-west-end-2025/london-box-office--stuart-king.json",
+    "the-hunger-games-on-stage-west-end-2025/standard--nick-curtis.json",
+    "the-hunger-games-on-stage-west-end-2025/theatre-weekly--greg-stewart.json"
   ],
   "failed": [
     "the-hunger-games-on-stage-west-end-2025/broadwayworld--cindy-marcolina.json",
     "the-hunger-games-on-stage-west-end-2025/thestage--unknown.json",
     "the-hunger-games-on-stage-west-end-2025/nytimes--alexis-soloski.json",
-    "the-hunger-games-on-stage-west-end-2025/independent--unknown.json"
+    "the-hunger-games-on-stage-west-end-2025/independent--unknown.json",
+    "the-hunger-games-on-stage-west-end-2025/thestage--holly-omahony.json",
+    "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -20,7 +24,9 @@
       "the-hunger-games-on-stage-west-end-2025/timeout-london--unknown.json",
       "the-hunger-games-on-stage-west-end-2025/financialtimes--unknown.json",
       "the-hunger-games-on-stage-west-end-2025/i-paper--unknown.json",
-      "the-hunger-games-on-stage-west-end-2025/london-box-office--stuart-king.json"
+      "the-hunger-games-on-stage-west-end-2025/london-box-office--stuart-king.json",
+      "the-hunger-games-on-stage-west-end-2025/standard--nick-curtis.json",
+      "the-hunger-games-on-stage-west-end-2025/theatre-weekly--greg-stewart.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -31,14 +37,15 @@
       "data/review-texts/the-hunger-games-on-stage-west-end-2025/broadwayworld--cindy-marcolina.json",
       "data/review-texts/the-hunger-games-on-stage-west-end-2025/thestage--unknown.json",
       "data/review-texts/the-hunger-games-on-stage-west-end-2025/nytimes--alexis-soloski.json",
-      "data/review-texts/the-hunger-games-on-stage-west-end-2025/independent--unknown.json"
+      "data/review-texts/the-hunger-games-on-stage-west-end-2025/independent--unknown.json",
+      "data/review-texts/the-hunger-games-on-stage-west-end-2025/thestage--holly-omahony.json"
     ],
     "archive": [
       "the-hunger-games-on-stage-west-end-2025/bww--cindy-marcolina.json"
     ]
   },
   "startTime": "2026-03-17T03:29:36.093Z",
-  "lastProcessed": "the-hunger-games-on-stage-west-end-2025/london-box-office--stuart-king.json",
+  "lastProcessed": "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json",
   "log": [
     {
       "t": "2026-03-17T03:31:02.637Z",
@@ -61,6 +68,17 @@
       "t": "2026-03-17T03:31:39.153Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T03:35:31.376Z",
+      "event": "bb-session",
+      "session": "be08a47e",
+      "url": "https://www.thestage.co.uk/reviews/the-hunger-games-on-stage-review-troubadour-c"
+    },
+    {
+      "t": "2026-03-17T03:35:32.738Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }

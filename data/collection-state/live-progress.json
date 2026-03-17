@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-17T03:33:55.721Z",
-  "processed": 6,
-  "failed": 4,
-  "successRate": "60.0%",
+  "updatedAt": "2026-03-17T03:35:54.074Z",
+  "processed": 8,
+  "failed": 6,
+  "successRate": "57.1%",
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 7,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 4,
+    "archiveToday": 5,
     "archive": 1
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-03-17T03:31:02.637Z",
@@ -36,6 +36,17 @@
       "t": "2026-03-17T03:31:39.153Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T03:35:31.376Z",
+      "event": "bb-session",
+      "session": "be08a47e",
+      "url": "https://www.thestage.co.uk/reviews/the-hunger-games-on-stage-review-troubadour-c"
+    },
+    {
+      "t": "2026-03-17T03:35:32.738Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
