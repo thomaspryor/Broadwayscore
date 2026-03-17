@@ -209,7 +209,7 @@ jobs:
 
             // Market-specific thresholds: OB/WE have fewer aggregator signals and fewer reviews total
             const category = show.category || '';
-            const recentThreshold = (category === 'off-broadway' || category === 'west-end') ? 3 : 10;
+            const recentThreshold = (category === 'off-broadway' || category === 'west-end' || category === 'off-west-end') ? 3 : 10;
 
             if (daysSinceOpening !== null && daysSinceOpening >= 0 && daysSinceOpening <= 21
                 && fileCount < recentThreshold && show.status === 'open') {

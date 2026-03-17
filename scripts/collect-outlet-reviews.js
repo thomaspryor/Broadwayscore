@@ -346,7 +346,7 @@ async function main() {
   } else {
     // --market mode: filter by category
     targetShows = shows.shows
-      .filter(s => opts.market === 'broadway' ? (!s.category || s.category === 'broadway') : s.category === opts.market)
+      .filter(s => opts.market === 'broadway' ? (!s.category || s.category === 'broadway') : (isLondonMarket(opts.market) ? isLondonMarket(s.category) : s.category === opts.market))
       .filter(s => s.status !== 'previews')
       .filter(s => !opts.showIds || opts.showIds.includes(s.id));
   }
