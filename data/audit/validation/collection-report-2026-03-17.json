@@ -1,47 +1,47 @@
 {
-  "runDate": "2026-03-17T01:01:23.664Z",
+  "runDate": "2026-03-17T01:02:23.162Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "bughouse-off-broadway-2026",
+    "showFilter": "youre-a-good-man-charlie-brown-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 8,
-    "failed": 1,
+    "processed": 1,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "88.9%"
+    "successRate": "33.3%"
   },
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 1,
-    "archive": 3
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 7,
-    "tier1Success": 5,
+    "tier1Attempts": 1,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 2,
+    "tier3Attempts": 1,
     "tier3Success": 0,
     "tier3_6Attempts": 1,
     "tier3_6Success": 1,
-    "tier4Attempts": 1,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 1,
+    "totalFailed": 2,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -51,38 +51,24 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "bughouse-off-broadway-2026/broadwaynews--aa-cristi.json",
-    "bughouse-off-broadway-2026/theatermania--linda-buchwald.json",
-    "bughouse-off-broadway-2026/theatermania--pete-hempstead.json",
-    "bughouse-off-broadway-2026/chicagotribune--emily-colucci-and.json",
-    "bughouse-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-    "bughouse-off-broadway-2026/rollingstone--rhoda-feng.json",
-    "bughouse-off-broadway-2026/theater-life--unknown.json",
-    "bughouse-off-broadway-2026/theater-scene--darryl-reilly.json"
+    "youre-a-good-man-charlie-brown-off-broadway-2026/talkinbroadway--matthew-murray.json"
   ],
   "failed": [
-    "bughouse-off-broadway-2026/talkinbroadway--unknown.json"
+    "youre-a-good-man-charlie-brown-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "youre-a-good-man-charlie-brown-off-broadway-2026/theater-pizzazz--sandi-durell.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "bughouse-off-broadway-2026/theatermania--linda-buchwald.json",
-      "bughouse-off-broadway-2026/chicagotribune--emily-colucci-and.json",
-      "bughouse-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-      "bughouse-off-broadway-2026/theater-life--unknown.json",
-      "bughouse-off-broadway-2026/theater-scene--darryl-reilly.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/bughouse-off-broadway-2026/talkinbroadway--unknown.json"
+      "data/review-texts/youre-a-good-man-charlie-brown-off-broadway-2026/cititour--brian-scott-lipton.json"
     ],
     "archive": [
-      "bughouse-off-broadway-2026/broadwaynews--aa-cristi.json",
-      "bughouse-off-broadway-2026/theatermania--pete-hempstead.json",
-      "bughouse-off-broadway-2026/rollingstone--rhoda-feng.json"
+      "youre-a-good-man-charlie-brown-off-broadway-2026/talkinbroadway--matthew-murray.json"
     ]
   },
   "failuresByOutlet": {},
