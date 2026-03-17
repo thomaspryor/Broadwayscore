@@ -330,7 +330,8 @@
     "all-out-2025/vulture--roxana-hadadi.json",
     "amour-2002/nytimes--ben-brantley.json",
     "an-almost-holy-picture-2002/nytimes--ben-brantley.json",
-    "anastasia-2017/variety--marilyn-stasio.json"
+    "anastasia-2017/variety--marilyn-stasio.json",
+    "anna-in-the-tropics-2003/nytimes--ben-brantley.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -6053,7 +6054,16 @@
     "anna-christie-1977/nyt-theater--jonathan-mandell.json",
     "anna-christie-1977/nytg--allison-considine.json",
     "anna-christie-1977/nytimes--laura-collins-hughes.json",
-    "anna-christie-1977/vulture--sara-holdren.json"
+    "anna-christie-1977/vulture--sara-holdren.json",
+    "annie-1977/nytimes--laura-collins-hughes.json",
+    "annie-1997/nytimes--laura-collins-hughes.json",
+    "annie-2012/nytimes--laura-collins-hughes.json",
+    "anonymous-off-broadway-2026/hollywood-reporter--jordan-riefe.json",
+    "anonymous-off-broadway-2026/variety--jessica-kiang.json",
+    "anything-goes-1987/nytimes--ben-brantley.json",
+    "anything-goes-1987/variety--steven-suskin.json",
+    "anything-goes-1987/vulture--scott-brown.json",
+    "anything-goes-2002/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -6401,7 +6411,9 @@
       "data/review-texts/amour-2002/nytimes--ben-brantley.json",
       "amour-2002/nytimes--ben-brantley.json",
       "data/review-texts/an-almost-holy-picture-2002/nytimes--ben-brantley.json",
-      "an-almost-holy-picture-2002/nytimes--ben-brantley.json"
+      "an-almost-holy-picture-2002/nytimes--ben-brantley.json",
+      "data/review-texts/anna-in-the-tropics-2003/nytimes--ben-brantley.json",
+      "anna-in-the-tropics-2003/nytimes--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -6566,7 +6578,7 @@
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "anna-christie-1977/vulture--sara-holdren.json",
+  "lastProcessed": "anything-goes-2002/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -7401,6 +7413,17 @@
     },
     {
       "t": "2026-03-17T02:01:54.644Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T02:02:22.974Z",
+      "event": "bb-session",
+      "session": "acb445e2",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9400e4d61038f934a25752c1"
+    },
+    {
+      "t": "2026-03-17T02:02:24.269Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-17T02:02:20.236Z",
-  "processed": 331,
-  "failed": 5721,
+  "updatedAt": "2026-03-17T02:02:42.256Z",
+  "processed": 332,
+  "failed": 5730,
   "successRate": "5.5%",
   "tierBreakdown": {
     "playwright": 148,
     "amp": 84,
-    "browserbase": 108,
+    "browserbase": 110,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 37,
     "archive": 117
   },
-  "browserbaseSessions": 26,
+  "browserbaseSessions": 27,
   "recentActivity": [
-    {
-      "t": "2026-03-17T01:08:38.866Z",
-      "event": "bb-session",
-      "session": "ccdd006a",
-      "url": "https://www.thestage.co.uk/review-round-ups/big-the-musical-at-dominion-theatre-"
-    },
-    {
-      "t": "2026-03-17T01:08:40.042Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
     {
       "t": "2026-03-17T01:19:33.423Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-17T02:01:54.644Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T02:02:22.974Z",
+      "event": "bb-session",
+      "session": "acb445e2",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9400e4d61038f934a25752c1"
+    },
+    {
+      "t": "2026-03-17T02:02:24.269Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
