@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-17T00:11:17.785Z",
+  "timestamp": "2026-03-17T00:41:33.472Z",
   "stats": {
-    "totalReviews": 31524,
-    "alreadyFlagged": 9535,
-    "dateGuardCatches": 133,
-    "directorMismatch": 1112,
-    "tvFilmSignals": 3486,
-    "londonSignals": 1025,
-    "offBroadwaySignals": 1069,
+    "totalReviews": 31515,
+    "alreadyFlagged": 9520,
+    "dateGuardCatches": 135,
+    "directorMismatch": 1122,
+    "tvFilmSignals": 3487,
+    "londonSignals": 1029,
+    "offBroadwaySignals": 1070,
     "yearMismatch": 93,
-    "noPublishDate": 9430
+    "noPublishDate": 9426
   },
   "findings": [
     {
@@ -9646,6 +9646,20 @@
     },
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "file": "guardian--arifa-akbar.json",
+      "score": 81,
+      "publishDate": "2021-12-13",
+      "url": "https://www.theguardian.com/stage/2021/dec/13/cabaret-review-eddie-redmayne-playhouse-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
+        }
+      ]
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
       "file": "i-paper--fiona-mountford.json",
       "score": 78,
       "publishDate": "2021-12-13",
@@ -9708,6 +9722,7 @@
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
       "file": "nytg--amelia-merrill.json",
+      "score": 61,
       "publishDate": null,
       "url": "https://www.newyorktheatreguide.com/reviews/cabaret-broadway-review-eddie-redmayne-gayle-rankin",
       "findings": [
@@ -9720,7 +9735,22 @@
     },
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 94,
+      "publishDate": "2021-12-13",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/cabaret-review-eddie-redmayne-dazzles-kill-for-a-ticket-theatrical/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
+        }
+      ]
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
       "file": "theatrely--kobi-kassal.json",
+      "score": 89,
       "publishDate": null,
       "url": "https://www.theatrely.com/post/a-new-cabaret-for-the-ages-on-broadway-review",
       "findings": [
@@ -10702,6 +10732,7 @@
     {
       "showId": "cats-2016",
       "file": "cititour--brian-scott-lipton.json",
+      "score": 87,
       "publishDate": null,
       "url": "https://cititour.com/NYC_News/Cats-The-Jellice-Ball-is-Practically-Purrfect/8448",
       "findings": [
@@ -10715,6 +10746,7 @@
     {
       "showId": "cats-2016",
       "file": "exeunt-magazine--lane-williamson.json",
+      "score": 86,
       "publishDate": null,
       "url": "https://exeuntnyc.com/reviews/review-cats-the-jellicle-ball-at-perelman-performing-arts-center/",
       "findings": [
@@ -10752,6 +10784,7 @@
     {
       "showId": "cats-2016",
       "file": "queerty--matthew-wexler.json",
+      "score": 76,
       "publishDate": null,
       "url": "https://www.queerty.com/cats-the-jellicle-ball-spins-dips-and-yes-catwalks-in-a-fierce-reimagining-of-the-80s-megahit-20240620",
       "findings": [
@@ -20837,6 +20870,7 @@
     {
       "showId": "grease-2007",
       "file": "av-club--elijah-gonzalez.json",
+      "score": 70,
       "publishDate": null,
       "url": "http://www.avclub.com/tvclub/better-or-worse-grease-live-revolutionizes-live-tv-231541",
       "findings": [
@@ -20858,19 +20892,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"paramount\""
-        }
-      ]
-    },
-    {
-      "showId": "grease-2007",
-      "file": "mashable--saba-hamedy.json",
-      "publishDate": null,
-      "url": "https://mashable.com/2016/02/01/grease-live-review",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -22350,9 +22371,8 @@
     },
     {
       "showId": "hamilton-west-end-2021",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 96,
-      "publishDate": "2017-12-21",
+      "file": "timeout--david-cote.json",
+      "publishDate": "2025-09-29",
       "url": "https://www.timeout.com/london/theatre/hamilton-tickets-and-review",
       "findings": [
         {
@@ -22378,10 +22398,10 @@
     },
     {
       "showId": "hamilton-west-end-2021",
-      "file": "timeout-london--unknown.json",
-      "score": 95,
-      "publishDate": "2025-09-29",
-      "url": "https://www.timeout.com/london/theatre/hamilton-tickets-and-review",
+      "file": "times-uk--ann-treneman.json",
+      "score": 92,
+      "publishDate": "2017-12-22",
+      "url": "https://www.thetimes.co.uk/edition/news/theatre-review-hamilton-at-victoria-palace-sw1-xdshn0nhs",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -22392,15 +22412,19 @@
     },
     {
       "showId": "hamilton-west-end-2021",
-      "file": "times-uk--ann-treneman.json",
-      "score": 92,
-      "publishDate": "2017-12-22",
-      "url": "https://www.thetimes.co.uk/edition/news/theatre-review-hamilton-at-victoria-palace-sw1-xdshn0nhs",
+      "file": "variety--marilyn-stasio.json",
+      "publishDate": "2017-12-21",
+      "url": "https://variety.com/2017/legit/reviews/hamilton-review-london-west-end-1202647480/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"thomas kail\" from hamilton-2015"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -23612,6 +23636,7 @@
     {
       "showId": "hercules-west-end-2025",
       "file": "afridiziak-theatre-news--unknown.json",
+      "score": 88,
       "publishDate": null,
       "url": "https://www.afridiziak.com/reviews/disneys-hercules-theatre-royal-drury-lane/",
       "findings": [
@@ -23667,6 +23692,7 @@
     {
       "showId": "hercules-west-end-2025",
       "file": "digital-spy--ian-sandwell.json",
+      "score": 66,
       "publishDate": null,
       "url": "https://www.digitalspy.com/movies/a65152308/hercules-review-buy-tickets/",
       "findings": [
@@ -23750,6 +23776,7 @@
     {
       "showId": "hercules-west-end-2025",
       "file": "radio-times--olivia-garrett.json",
+      "score": 93,
       "publishDate": null,
       "url": "https://www.radiotimes.com/going-out/tickets/hercules-musical-review/",
       "findings": [
@@ -32162,6 +32189,20 @@
       ]
     },
     {
+      "showId": "mamma-mia-west-end-2021",
+      "file": "variety--owen-gleiberman.json",
+      "score": 71,
+      "publishDate": "1999-04-26",
+      "url": "https://variety.com/1999/legit/reviews/mamma-mia-1200457147/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"phyllida lloyd\" from mamma-mia-2025"
+        }
+      ]
+    },
+    {
       "showId": "man-and-boy-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 62,
@@ -32967,6 +33008,19 @@
       "score": 78,
       "publishDate": null,
       "url": "https://www.ft.com/content/b34f9d9c-16b0-11e1-be1d-00144feabdc0",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
+        }
+      ]
+    },
+    {
+      "showId": "matilda-the-musical-west-end-2021",
+      "file": "guardian--emma-brockes.json",
+      "publishDate": "2011-11-27",
+      "url": "https://www.theguardian.com/books/2011/nov/27/matilda-the-musical-roald-dahl",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -34739,6 +34793,25 @@
     },
     {
       "showId": "mj-the-musical-west-end-2024",
+      "file": "guardian--arifa-akbar.json",
+      "score": 79,
+      "publishDate": "2024-03-27",
+      "url": "https://www.theguardian.com/stage/2024/mar/31/the-week-in-theatre-opening-night-ivo-van-hove-rufus-wainwright-sheridan-smith-gielgud-theatre-west-end-review-mj-the-musical-prince-edward-theatre-broadway-west-end-christopher-wheeldon-lynn-nottage",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher wheeldon\" from mj-2022"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "mj-the-musical-west-end-2024",
       "file": "i-paper--fiona-mountford.json",
       "score": 75,
       "publishDate": "2024-03-28",
@@ -34893,6 +34966,30 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"christopher wheeldon\" from mj-2022"
+        }
+      ]
+    },
+    {
+      "showId": "mj-the-musical-west-end-2024",
+      "file": "variety--naveen-kumar.json",
+      "score": 60,
+      "publishDate": "2022-02-02",
+      "url": "https://variety.com/2022/legit/reviews/mj-review-michael-jackson-broadway-musical-1235168798/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 763d before show (2022-02-02 vs 2024-03-06)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher wheeldon\" from mj-2022"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -35560,6 +35657,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-the-musical-west-end-2021",
+      "file": "theatrely--emily-wyrwa.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theatrely.com/post/theatrely-three-moulin-rouge-the-musical",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -36303,6 +36414,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "independent--culture-staff.json",
+      "score": 71,
+      "publishDate": null,
+      "url": "https://www.independent.co.uk/independentpremium/culture/review-my-neighbour-totoro-rsc-marvellous-sohoplace-b2206988.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -38268,6 +38393,7 @@
     {
       "showId": "oh-mary-west-end-2025",
       "file": "theatrely--nolan-boggess.json",
+      "score": 92,
       "publishDate": null,
       "url": "https://www.theatrely.com/post/cole-escolas-oh-mary-on-broadway-is-a-stupid-masterpiece-review",
       "findings": [
@@ -38751,6 +38877,7 @@
     {
       "showId": "once-2012",
       "file": "cititour--brian-scott-lipton.json",
+      "score": 78,
       "publishDate": null,
       "url": "https://cititour.com/NYC_Broadway/Once-Upon-A-Mattress/1246",
       "findings": [
@@ -47771,8 +47898,23 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "bbc-news--neil-armstrong.json",
+      "score": 79,
       "publishDate": null,
       "url": "https://www.bbc.com/culture/article/20231214-stranger-things-the-first-shadow-review-the-theatrical-spin-off-from-the-netflix-mega-hit-is-funny-and-thrilling",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "daily-mail--luke-jones.json",
+      "score": 93,
+      "publishDate": "December 14, 2023",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-12865895/stranger-things-shadow-review.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -47816,6 +47958,20 @@
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "independent--alice-saville.json",
+      "score": 80,
+      "publishDate": "2023-12-15",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/stranger-things-the-first-shadow-review-b2464017.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "london-theatre--marianka-swain.json",
       "score": 92,
       "publishDate": "2023-12-15",
@@ -47849,6 +48005,20 @@
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "standard--nick-curtis.json",
+      "score": 90,
+      "publishDate": "2023-12-15",
+      "url": "https://www.standard.co.uk/culture/theatre/stranger-things-the-first-shadow-review-west-end-netflix-phoenix-theatre-b1127020.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "telegraph--dominic-cavendish.json",
       "score": 86,
       "publishDate": "2023-12-14",
@@ -47864,6 +48034,7 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "theatrely--kobi-kassal.json",
+      "score": 92,
       "publishDate": null,
       "url": "https://www.theatrely.com/post/stranger-things-the-first-shadow-is-a-triumph-on-broadway-review",
       "findings": [
@@ -47876,6 +48047,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "thestage--dave-fargnoli.json",
+      "score": 81,
+      "publishDate": "2023-12-15",
+      "url": "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-phoenix-theatre-london-duffer-brothers-jack-thorne-stephen-daldry-sonia-friedman",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
         }
       ]
     },
@@ -54803,6 +54988,7 @@
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
       "file": "the-recs--erin-muldoon.json",
+      "score": 67,
       "publishDate": null,
       "url": "https://therecs.co.uk/the-hunger-games-on-stage/",
       "findings": [
@@ -55864,6 +56050,7 @@
     {
       "showId": "the-little-mermaid-2008",
       "file": "ap--lindsey-bahr.json",
+      "score": 43,
       "publishDate": null,
       "url": "https://apnews.com/article/little-mermaid-halle-movie-review-0c1f706c41049400684c4c7bbaa51594",
       "findings": [
@@ -56588,19 +56775,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "the-normal-heart-2011",
-      "file": "sacramento-bee--carla-meyer.json",
-      "publishDate": null,
-      "url": "https://www.sacbee.com/2014/05/19/6416472/tv-review-hbos-normal-heart-succeeds.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"onscreen\""
         }
       ]
     },
@@ -58227,6 +58401,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"mark bell\" from the-play-that-goes-wrong-2017"
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "file": "guardian--kate-kellaway.json",
+      "score": 65,
+      "publishDate": "2019-04-28",
+      "url": "https://www.theguardian.com/stage/2019/apr/28/all-my-sons-ghosts-the-play-that-goes-wrong-theatre-reviews",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -60273,6 +60466,7 @@
     {
       "showId": "the-wiz-2024",
       "file": "av-club--jacob-oller.json",
+      "score": 83,
       "publishDate": null,
       "url": "http://www.avclub.com/tvclub/nbc-finally-gets-it-right-wiz-live-229325",
       "findings": [
@@ -60286,6 +60480,7 @@
     {
       "showId": "the-wiz-2024",
       "file": "latimes--mary-mcnamara.json",
+      "score": 78,
       "publishDate": null,
       "url": "http://www.latimes.com/entertainment/tv/showtracker/la-et-st-review-the-wiz-live-20151203-story.html",
       "findings": [
@@ -60307,19 +60502,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
-      "showId": "the-wiz-2024",
-      "file": "tv-guide--megan-vick.json",
-      "publishDate": null,
-      "url": "http://www.tvguide.com/news/the-wiz-live-nbc-finally-nailed-live-musical/?rss=breakingnews",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -66145,6 +66327,19 @@
     },
     {
       "showId": "all-my-sons-west-end-2025",
+      "file": "timeout--helen-shaw.json",
+      "publishDate": "2025-11-22",
+      "url": "https://www.timeout.com/london/news/review-all-my-sons-starring-bran-cranston-at-wyndhams-theatre-112225",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "all-my-sons-west-end-2025",
       "file": "timeout-london--unknown.json",
       "publishDate": "2025-11-22",
       "url": "https://www.timeout.com/london/news/review-all-my-sons-starring-bran-cranston-at-wyndhams-theatre-112225",
@@ -71882,6 +72077,25 @@
     },
     {
       "showId": "hamilton-2015",
+      "file": "hollywood-reporter--frank-scheck.json",
+      "score": null,
+      "publishDate": "February 17, 2015",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton-theater-813145/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 146d before show (February 17, 2015 vs 2015-07-13)"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "hamilton-2015",
       "file": "nbcny--robert-kahn.json",
       "score": 92,
       "publishDate": "2015-08-06",
@@ -72070,6 +72284,7 @@
     {
       "showId": "hamilton-west-end-2021",
       "file": "metro--adam-bloodworth.json",
+      "score": 86,
       "publishDate": null,
       "url": "http://metro.co.uk/2017/12/21/hamilton-london-review-a-bravely-rule-breaking-new-musical-with-a-near-perfect-score-7172695/",
       "findings": [
@@ -78033,6 +78248,7 @@
     {
       "showId": "oh-mary-west-end-2025",
       "file": "nytg--austin-fimmano.json",
+      "score": 89,
       "publishDate": null,
       "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-broadway-review-cole-escola",
       "findings": [
