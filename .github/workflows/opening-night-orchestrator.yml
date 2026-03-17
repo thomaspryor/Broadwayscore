@@ -55,13 +55,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 360  # GitHub max — allows ~6 hours of polling
     steps:
-      - name: Checkout (for shows.json only)
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           ref: main
-          sparse-checkout: |
-            data/shows.json
-          sparse-checkout-cone-mode: false
 
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
@@ -187,15 +184,28 @@ jobs:
               }
             fi
 
-            # Wait for the poller to start (it may queue behind a previous run)
-            echo "Waiting for poller to start..."
-            sleep 30
+            # Wait for the dispatched poller run to appear and complete
+            DISPATCH_TIME=$(date -u +%s)
+            echo "Waiting for poller run to appear..."
+            RUN_ID=""
+            for WAIT in $(seq 1 12); do
+              sleep 10
+              # Find runs created after dispatch time
+              CANDIDATE=$(gh run list --workflow="Opening Night Poller" --limit=5 \
+                --json databaseId,createdAt,status \
+                -q "[.[] | select(.createdAt > \"$(date -u -d @$DISPATCH_TIME +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -r $DISPATCH_TIME +%Y-%m-%dT%H:%M:%SZ)\")] | .[0].databaseId" 2>/dev/null)
+              if [ -n "$CANDIDATE" ] && [ "$CANDIDATE" != "null" ]; then
+                RUN_ID="$CANDIDATE"
+                echo "Found poller run: $RUN_ID"
+                break
+              fi
+            done
 
-            # Find the most recent poller run
-            RUN_ID=$(gh run list --workflow="Opening Night Poller" --limit=1 --json databaseId -q '.[0].databaseId' 2>/dev/null)
             if [ -n "$RUN_ID" ]; then
               echo "Waiting for poller run $RUN_ID to complete..."
               gh run watch "$RUN_ID" --exit-status 2>/dev/null || echo "⚠️ Poller run $RUN_ID finished (may have failed)"
+            else
+              echo "⚠️ Could not find dispatched poller run after 2 min. Continuing."
             fi
 
             # Check if we should stop (all shows broadcast-ready)
