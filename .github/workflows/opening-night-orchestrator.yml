@@ -170,33 +170,33 @@ jobs:
             # Use comma-separated shows for single-show dispatch, or let poller auto-discover
             IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS"
             if [ ${#SHOW_ARRAY[@]} -eq 1 ]; then
-              gh workflow run "Opening Night Poller" -f show_id="${SHOW_ARRAY[0]}" $POLLER_ARGS || {
+              gh workflow run opening-night-poller.yml -f show_id="${SHOW_ARRAY[0]}" $POLLER_ARGS || {
                 echo "⚠️ Failed to dispatch poller, retrying in 30s..."
                 sleep 30
-                gh workflow run "Opening Night Poller" -f show_id="${SHOW_ARRAY[0]}" $POLLER_ARGS || true
+                gh workflow run opening-night-poller.yml -f show_id="${SHOW_ARRAY[0]}" $POLLER_ARGS || true
               }
             else
               # Multiple shows — let poller auto-discover
-              gh workflow run "Opening Night Poller" -f lookback_days=1 $POLLER_ARGS || {
+              gh workflow run opening-night-poller.yml -f lookback_days=1 $POLLER_ARGS || {
                 echo "⚠️ Failed to dispatch poller, retrying in 30s..."
                 sleep 30
-                gh workflow run "Opening Night Poller" -f lookback_days=1 $POLLER_ARGS || true
+                gh workflow run opening-night-poller.yml -f lookback_days=1 $POLLER_ARGS || true
               }
             fi
 
             # Wait for the dispatched poller run to appear and complete
-            DISPATCH_TIME=$(date -u +%s)
-            echo "Waiting for poller run to appear..."
+            # Record the newest poller run ID BEFORE dispatch registered
+            PRE_DISPATCH_ID=$(gh run list --workflow=opening-night-poller.yml --limit=1 --json databaseId -q '.[0].databaseId' 2>/dev/null || echo "")
+            echo "Pre-dispatch latest poller run: ${PRE_DISPATCH_ID:-none}"
+            echo "Waiting for new poller run to appear..."
+
             RUN_ID=""
-            for WAIT in $(seq 1 12); do
-              sleep 10
-              # Find runs created after dispatch time
-              CANDIDATE=$(gh run list --workflow="Opening Night Poller" --limit=5 \
-                --json databaseId,createdAt,status \
-                -q "[.[] | select(.createdAt > \"$(date -u -d @$DISPATCH_TIME +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -r $DISPATCH_TIME +%Y-%m-%dT%H:%M:%SZ)\")] | .[0].databaseId" 2>/dev/null)
-              if [ -n "$CANDIDATE" ] && [ "$CANDIDATE" != "null" ]; then
-                RUN_ID="$CANDIDATE"
-                echo "Found poller run: $RUN_ID"
+            for WAIT in $(seq 1 24); do
+              sleep 5
+              LATEST_ID=$(gh run list --workflow=opening-night-poller.yml --limit=1 --json databaseId -q '.[0].databaseId' 2>/dev/null || echo "")
+              if [ -n "$LATEST_ID" ] && [ "$LATEST_ID" != "$PRE_DISPATCH_ID" ]; then
+                RUN_ID="$LATEST_ID"
+                echo "Found new poller run: $RUN_ID"
                 break
               fi
             done
@@ -205,7 +205,7 @@ jobs:
               echo "Waiting for poller run $RUN_ID to complete..."
               gh run watch "$RUN_ID" --exit-status 2>/dev/null || echo "⚠️ Poller run $RUN_ID finished (may have failed)"
             else
-              echo "⚠️ Could not find dispatched poller run after 2 min. Continuing."
+              echo "⚠️ Could not find new poller run after 2 min. Continuing."
             fi
 
             # Check if we should stop (all shows broadcast-ready)

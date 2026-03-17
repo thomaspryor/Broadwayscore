@@ -234,7 +234,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh workflow run "Rebuild Reviews Data" -f reason="Opening night poller (inline)"
+          gh workflow run rebuild-reviews.yml -f reason="Opening night poller (inline)"
 
       - name: Rebuild reviews.json locally (for readiness check)
         if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
@@ -276,7 +276,7 @@ jobs:
                 } catch(e) { console.log('false'); }
               " 2>/dev/null || echo "false")
 
-              RECENT_DISPATCH=$(gh run list --workflow="Opening Night Broadcast" --limit=5 \
+              RECENT_DISPATCH=$(gh run list --workflow=opening-night-broadcast.yml --limit=5 \
                 --json createdAt -q "[.[] | select(.createdAt > \"$(date -u -d '2 hours ago' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-2H +%Y-%m-%dT%H:%M:%SZ)\")] | length" 2>/dev/null || echo "0")
 
               if [ "$ALREADY_SENT" = "true" ]; then
@@ -285,7 +285,7 @@ jobs:
                 echo "★ $SHOW_ID is BROADCAST READY but broadcast dispatched recently — skipping duplicate"
               else
                 echo "★ $SHOW_ID is BROADCAST READY — dispatching broadcast"
-                gh workflow run "Opening Night Broadcast" -f lookback_days=2 -f send_to_all=true || true
+                gh workflow run opening-night-broadcast.yml -f lookback_days=2 -f send_to_all=true || true
               fi
             fi
           done
