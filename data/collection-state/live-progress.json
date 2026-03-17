@@ -1,20 +1,64 @@
 {
-  "updatedAt": "2026-03-17T04:48:36.288Z",
-  "processed": 490,
-  "failed": 8962,
+  "updatedAt": "2026-03-17T04:48:51.298Z",
+  "processed": 491,
+  "failed": 8971,
   "successRate": "5.2%",
   "tierBreakdown": {
-    "playwright": 228,
+    "playwright": 229,
     "amp": 156,
     "browserbase": 128,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 96,
-    "archive": 153
+    "archiveToday": 95,
+    "archive": 150
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 40,
   "recentActivity": [
+    {
+      "t": "2026-03-17T02:04:49.244Z",
+      "event": "bb-session",
+      "session": "a9ef7525",
+      "url": "https://www.hollywoodreporter.com/review/a-streetcar-named-desire-theater-314871"
+    },
+    {
+      "t": "2026-03-17T02:04:50.323Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T02:05:45.088Z",
+      "event": "bb-session",
+      "session": "8b607d5d",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9f0ce0df143ff931a25753c"
+    },
+    {
+      "t": "2026-03-17T02:05:46.333Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T02:06:03.575Z",
+      "event": "bb-session",
+      "session": "c00b8d48",
+      "url": "https://www.hollywoodreporter.com/wayne-kramer-obit-template-performance-getty-h"
+    },
+    {
+      "t": "2026-03-17T02:06:04.704Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T02:09:07.149Z",
+      "event": "bb-session",
+      "session": "c04906f6",
+      "url": "http://theater.nytimes.com/2004/11/19/theater/reviews/19demo.html?position=&amp;"
+    },
+    {
+      "t": "2026-03-17T02:09:08.333Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
     {
       "t": "2026-03-17T02:10:20.063Z",
       "event": "bb-session",
@@ -80,50 +124,6 @@
       "t": "2026-03-17T02:14:51.874Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-17T04:26:55.269Z",
-      "event": "bb-session",
-      "session": "8c343e22",
-      "url": "https://www.thestage.co.uk/reviews/arcadia-review-old-vic-london-tom-stoppard"
-    },
-    {
-      "t": "2026-03-17T04:26:56.495Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-03-17T04:29:45.533Z",
-      "event": "bb-session",
-      "session": "5b869c5b",
-      "url": "https://www.thestage.co.uk/reviews/evening-all-afternoon-review-donmar-warehouse"
-    },
-    {
-      "t": "2026-03-17T04:29:46.838Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-03-17T04:31:13.475Z",
-      "event": "bb-session",
-      "session": "66602c01",
-      "url": "https://www.thestage.co.uk/review-round-ups/evening-all-afternoon-at-the-donmar-"
-    },
-    {
-      "t": "2026-03-17T04:31:14.684Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-03-17T04:42:28.343Z",
-      "event": "bb-session",
-      "session": "2cd7cd0a",
-      "url": "https://www.thestage.co.uk/news/production-news/russell-kane-lands-stage-debut-i"
-    },
-    {
-      "t": "2026-03-17T04:42:29.544Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
     }
   ]
 }
