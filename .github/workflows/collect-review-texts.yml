@@ -127,59 +127,95 @@ jobs:
         uses: ./.github/actions/checkout-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Check Sunday backlog (early exit if empty)
+        id: sched
+        run: |
+          if [ "${{ github.event_name }}" == "schedule" ]; then
+            DAY=$(date -u +%u)  # 7 = Sunday
+            if [ "$DAY" = "7" ]; then
+              # Check if any not_attempted reviews exist before expensive setup
+              NOT_ATTEMPTED=$(node -e "
+                const fs = require('fs');
+                const dir = 'data/review-texts';
+                let count = 0;
+                try {
+                  const shows = fs.readdirSync(dir);
+                  for (const show of shows.slice(0, 100)) {
+                    const showDir = dir + '/' + show;
+                    if (!fs.statSync(showDir).isDirectory()) continue;
+                    const files = fs.readdirSync(showDir);
+                    for (const f of files) {
+                      if (!f.endsWith('.json')) continue;
+                      try {
+                        const r = JSON.parse(fs.readFileSync(showDir + '/' + f, 'utf8'));
+                        if (r.incompleteReason === 'not_attempted') count++;
+                      } catch {}
+                      if (count > 0) break;
+                    }
+                    if (count > 0) break;
+                  }
+                } catch {}
+                console.log(count);
+              " 2>/dev/null || echo "1")
+              if [ "$NOT_ATTEMPTED" = "0" ]; then
+                echo "Sunday backlog sweep: no not_attempted reviews found — skipping"
+                echo "skip=true" >> $GITHUB_OUTPUT
+              else
+                echo "max_reviews=150" >> $GITHUB_OUTPUT
+                echo "reason_filter=not_attempted" >> $GITHUB_OUTPUT
+                echo "market_filter=" >> $GITHUB_OUTPUT
+                echo "skip=false" >> $GITHUB_OUTPUT
+                echo "Weekly backlog sweep: targeting not_attempted reviews"
+              fi
+            else
+              echo "max_reviews=150" >> $GITHUB_OUTPUT
+              echo "reason_filter=" >> $GITHUB_OUTPUT
+              echo "market_filter=" >> $GITHUB_OUTPUT
+              echo "skip=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "max_reviews=${{ inputs.max_reviews }}" >> $GITHUB_OUTPUT
+            echo "reason_filter=${{ inputs.reason_filter }}" >> $GITHUB_OUTPUT
+            echo "market_filter=" >> $GITHUB_OUTPUT
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Setup Node.js
+        if: steps.sched.outputs.skip != 'true'
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
 
       - name: Install dependencies
+        if: steps.sched.outputs.skip != 'true'
         run: npm install
 
       - name: Install Playwright browsers
+        if: steps.sched.outputs.skip != 'true'
         run: npx playwright install chromium
 
       - name: Create directories
+        if: steps.sched.outputs.skip != 'true'
         run: |
           mkdir -p data/archives/reviews
           mkdir -p data/audit/validation
           mkdir -p data/collection-state
 
       - name: Clear progress state for parallel runs
-        if: ${{ inputs.show_filter != '' }}
+        if: steps.sched.outputs.skip != 'true' && inputs.show_filter != ''
         run: |
           echo "Filtered run (show_filter set) - clearing progress state for independent parallel execution"
           rm -f data/collection-state/progress.json
 
       - name: Configure git for incremental commits
+        if: steps.sched.outputs.skip != 'true'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
 
-      - name: Compute scheduled-run defaults
-        id: sched
-        run: |
-          if [ "${{ github.event_name }}" == "schedule" ]; then
-            DAY=$(date -u +%u)  # 7 = Sunday
-            # Sunday = weekly backlog sweep targeting not_attempted reviews
-            # (no HOUR check — GHA cron can delay 30+ min past midnight)
-            if [ "$DAY" = "7" ]; then
-              echo "max_reviews=150" >> $GITHUB_OUTPUT
-              echo "reason_filter=not_attempted" >> $GITHUB_OUTPUT
-              echo "market_filter=" >> $GITHUB_OUTPUT
-              echo "Weekly backlog sweep: targeting not_attempted reviews"
-            else
-              echo "max_reviews=150" >> $GITHUB_OUTPUT
-              echo "reason_filter=" >> $GITHUB_OUTPUT
-              echo "market_filter=" >> $GITHUB_OUTPUT
-            fi
-          else
-            echo "max_reviews=${{ inputs.max_reviews }}" >> $GITHUB_OUTPUT
-            echo "reason_filter=${{ inputs.reason_filter }}" >> $GITHUB_OUTPUT
-            echo "market_filter=" >> $GITHUB_OUTPUT
-          fi
-
       - name: Run review collection
+        if: steps.sched.outputs.skip != 'true'
         id: collect
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
