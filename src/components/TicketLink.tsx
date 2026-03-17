@@ -1,6 +1,7 @@
 'use client';
 
 import { ReactNode, useMemo } from 'react';
+import { track } from '@vercel/analytics';
 
 declare global {
   interface Window {
@@ -75,6 +76,9 @@ export default function TicketLink({
 
   const handleClick = () => {
     if (typeof window === 'undefined' || typeof window.gtag !== 'function') return;
+
+    // PostHog / Vercel Analytics
+    track('ticket_click', { show_id: showId, platform, page_type: pageType, is_affiliate: isAffiliate });
 
     // Primary click event — enriched with full attribution context
     window.gtag('event', 'ticket_link_click', {

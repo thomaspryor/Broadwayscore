@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { track } from '@vercel/analytics';
 import { getSupabaseClient } from '@/lib/supabase';
 import type { UserReview } from '@/types/user';
 
@@ -99,6 +100,7 @@ export function useUserReviews(userId: string | null) {
 
         if (err) throw err;
         const updatedReview = updated as UserReview;
+        track('rating_submitted', { show_id: data.showId, rating: data.rating, has_review_text: !!data.reviewText, is_edit: true });
         setReviews(prev => prev.map(r => r.id === data.reviewId ? updatedReview : r));
         return updatedReview;
       } else {
@@ -117,6 +119,7 @@ export function useUserReviews(userId: string | null) {
 
         if (err) throw err;
         const insertedReview = inserted as UserReview;
+        track('rating_submitted', { show_id: data.showId, rating: data.rating, has_review_text: !!data.reviewText, is_edit: false });
         setReviews(prev => [insertedReview, ...prev]);
         return insertedReview;
       }

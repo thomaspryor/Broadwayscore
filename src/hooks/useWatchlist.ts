@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
+import { track } from '@vercel/analytics';
 import { getSupabaseClient } from '@/lib/supabase';
 import type { WatchlistEntry } from '@/types/user';
 
@@ -71,6 +72,8 @@ export function useWatchlist(userId: string | null) {
 
       if (err) throw err;
 
+      track('watchlist_add', { show_id: showId });
+
       // Optimistic update + broadcast to other instances
       setWatchlist(prev => {
         const next = [
@@ -100,6 +103,8 @@ export function useWatchlist(userId: string | null) {
         .eq('show_id', showId);
 
       if (err) throw err;
+
+      track('watchlist_remove', { show_id: showId });
 
       // Optimistic update + broadcast to other instances
       setWatchlist(prev => {
