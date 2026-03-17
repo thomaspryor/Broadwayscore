@@ -248,7 +248,8 @@
     "into-the-woods-west-end-2025/nytimes--alexis-soloski.json",
     "mamma-mia-west-end-2021/variety--owen-gleiberman.json",
     "oh-mary-west-end-2025/variety--christian-lewis.json",
-    "all-my-sons-west-end-2025/timeout--helen-shaw.json"
+    "all-my-sons-west-end-2025/timeout--helen-shaw.json",
+    "back-to-the-future-west-end-2021/deadline--greg-evans.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -1593,7 +1594,16 @@
     "all-my-sons-west-end-2025/nypost--unknown.json",
     "all-my-sons-west-end-2025/thewrap--robert-hofler.json",
     "antigone-this-play-i-read-in-high-school-off-broadway-2026/nydailynews--chris-jones.json",
-    "arcadia-west-end-2026/ew--melissa-rose-bernardo.json"
+    "arcadia-west-end-2026/ew--melissa-rose-bernardo.json",
+    "arcadia-west-end-2026/new-jersey-newsroom--michael-sommers.json",
+    "arcadia-west-end-2026/nypost--elisabeth-vincentelli.json",
+    "arcadia-west-end-2026/wsj--terry-teachout.json",
+    "back-to-the-future-west-end-2021/nypost--johnny-oleksinski.json",
+    "back-to-the-future-west-end-2021/observer--david-cote.json",
+    "back-to-the-future-west-end-2021/thewrap--robert-hofler.json",
+    "back-to-the-future-west-end-2021/timeout--adam-feldman.json",
+    "back-to-the-future-west-end-2021/wsj--charles-isherwood.json",
+    "bigfoot-off-broadway-2026/deadline--greg-evans.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1851,7 +1861,9 @@
       "data/review-texts/hamilton-west-end-2021/hollywood-reporter--demetrios-matheou.json",
       "hamilton-west-end-2021/hollywood-reporter--demetrios-matheou.json",
       "data/review-texts/hamilton-west-end-2021/hollywood-reporter--frank-scheck.json",
-      "hamilton-west-end-2021/hollywood-reporter--frank-scheck.json"
+      "hamilton-west-end-2021/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/back-to-the-future-west-end-2021/deadline--greg-evans.json",
+      "back-to-the-future-west-end-2021/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -1979,7 +1991,7 @@
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "arcadia-west-end-2026/ew--melissa-rose-bernardo.json",
+  "lastProcessed": "bigfoot-off-broadway-2026/deadline--greg-evans.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -2574,6 +2586,17 @@
       "t": "2026-03-17T00:19:59.838Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T00:25:06.023Z",
+      "event": "bb-session",
+      "session": "0c841398",
+      "url": "https://deadline.com/2021/09/back-to-future-musical-roger-bart-covid-west-end-12"
+    },
+    {
+      "t": "2026-03-17T00:25:07.200Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
