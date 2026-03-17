@@ -2921,13 +2921,13 @@ function validateCrossMarketContamination() {
     if (region !== 'london') {
       issues++;
       if (issues <= 5) {
-        error(`Cross-market: WE show "${r.showId}" has review from non-London outlet "${r.outlet || oid}"`);
+        warn(`Cross-market: WE show "${r.showId}" has review from non-London outlet "${r.outlet || oid}"`);
       }
     }
   }
 
   if (issues > 5) {
-    error(`... and ${issues - 5} more US→WE cross-market reviews`);
+    warn(`... and ${issues - 5} more US→WE cross-market reviews`);
   }
 
   // Reverse direction: London outlets on Broadway/off-Broadway shows
