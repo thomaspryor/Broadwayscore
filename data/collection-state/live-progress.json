@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-17T20:07:09.349Z",
-  "processed": 202,
-  "failed": 6658,
-  "successRate": "2.9%",
+  "updatedAt": "2026-03-17T20:10:05.810Z",
+  "processed": 211,
+  "failed": 6659,
+  "successRate": "3.1%",
   "tierBreakdown": {
-    "playwright": 67,
-    "amp": 126,
-    "browserbase": 12,
+    "playwright": 70,
+    "amp": 130,
+    "browserbase": 14,
     "directCookies": 0,
-    "scrapingbee": 16,
+    "scrapingbee": 17,
     "brightdata": 0,
     "archiveToday": 71,
-    "archive": 51
+    "archive": 53
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-03-17T19:49:25.050Z",
@@ -91,6 +91,17 @@
       "t": "2026-03-17T20:06:07.810Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T20:08:18.791Z",
+      "event": "bb-session",
+      "session": "969f6705",
+      "url": "https://www.nytimes.com/2024/05/24/theater/tom-holland-romeo-and-juliet.html"
+    },
+    {
+      "t": "2026-03-17T20:08:20.498Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
