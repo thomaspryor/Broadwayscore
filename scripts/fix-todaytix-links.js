@@ -18,6 +18,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { buildTodayTixUrl, normalizeShowName } = require('./lib/url-utils');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -70,18 +71,6 @@ function httpRequest(url, method = 'GET', options = {}) {
     req.on('timeout', () => { req.destroy(); reject(new Error('timeout')); });
     req.end();
   });
-}
-
-function normalizeShowName(name) {
-  return name.toLowerCase()
-    .replace(/['']/g, '')
-    .replace(/[^a-z0-9\s]/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-function buildTodayTixUrl(id, slug, city = 'nyc') {
-  return `https://www.todaytix.com/${city}/shows/${id}-${slug}`;
 }
 
 /**

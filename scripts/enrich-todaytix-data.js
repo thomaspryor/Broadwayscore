@@ -15,6 +15,7 @@ const path = require('path');
 const https = require('https');
 
 const { isLondonMarket } = require('./lib/venue-classification');
+const { buildTodayTixUrl } = require('./lib/url-utils');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
 
@@ -80,11 +81,10 @@ function getTodayTixCategory(ttShow) {
   return null;
 }
 
-function buildTodayTixUrl(ttShow, location) {
+function buildTodayTixUrlFromShow(ttShow, location) {
   const city = location === 1 ? 'nyc' : 'london';
-  const slug = ttShow.slug;
-  if (slug) {
-    return `https://www.todaytix.com/${city}/shows/${ttShow.id}-${slug}`;
+  if (ttShow.slug) {
+    return buildTodayTixUrl(ttShow.id, ttShow.slug, city);
   }
   return `https://www.todaytix.com/${city}/shows/${ttShow.id}`;
 }
@@ -151,14 +151,14 @@ async function main() {
     }
 
     if (!show.todaytixUrl) {
-      const url = buildTodayTixUrl(tt, location);
+      const url = buildTodayTixUrlFromShow(tt, location);
       if (!DRY_RUN) show.todaytixUrl = url;
       stats.todaytixUrlSet++;
       changes.push(`todaytixUrl`);
     }
 
     // Ensure ticketLinks includes a TodayTix entry
-    const ttUrl = show.todaytixUrl || buildTodayTixUrl(tt, location);
+    const ttUrl = show.todaytixUrl || buildTodayTixUrlFromShow(tt, location);
     const links = show.ticketLinks || [];
     const hasTTLink = links.some(l => l.platform === 'TodayTix');
     if (!hasTTLink) {
