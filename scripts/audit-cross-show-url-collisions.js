@@ -18,6 +18,8 @@ const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const REPORT_PATH = path.join(__dirname, '..', 'data', 'audit', 'url-collision-report.json');
 
+const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
+
 const args = process.argv.slice(2);
 const APPLY = args.includes('--apply');
 const VERBOSE = args.includes('--verbose');
@@ -52,6 +54,7 @@ for (const s of showsData.shows) {
     openingDate: s.openingDate ? new Date(s.openingDate) : null,
     previewsStartDate: s.previewsStartDate ? new Date(s.previewsStartDate) : null,
     title: s.title,
+    category: s.category,
   };
 }
 
@@ -286,6 +289,18 @@ if (APPLY) {
   let genericUrlsNulled = 0;
   let highConfFlagged = 0;
   let revivalScoreFlagged = 0;
+  let londonMarketSkipped = 0;
+
+  // Guard: skip wrongShow for London-market shows reviewed by UK outlets
+  function shouldSkipWrongShow(showId, data) {
+    const showInfo = showDateMap[showId];
+    if (showInfo && isLondonMarket(showInfo.category) && isUkOutletUrl(data.url)) {
+      londonMarketSkipped++;
+      log(`  SKIPPED (London market + UK outlet): ${showId}/${data.outletId || 'unknown'}`);
+      return true;
+    }
+    return false;
+  }
 
   // --- Tier 0: Generic/homepage URLs (5+ shows sharing same URL → null URL on all) ---
   console.log('\n=== TIER 0: GENERIC/HOMEPAGE URLs ===');
@@ -322,6 +337,7 @@ if (APPLY) {
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
         if (data.wrongShow || data.wrongProduction) continue;
+        if (shouldSkipWrongShow(candidate.showId, data)) continue;
 
         data.wrongShow = true;
         data.wrongShowReason = `Cross-show URL collision: review belongs to ${result.suggestedWinner} (${result.reason})`;
@@ -357,6 +373,7 @@ if (APPLY) {
     try {
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
       if (data.wrongShow || data.wrongProduction) continue;
+      if (shouldSkipWrongShow(loser.showId, data)) continue;
 
       data.wrongShow = true;
       data.wrongShowReason = `Cross-show URL collision (revival): review likely belongs to ${winner.showId} (has score, this file does not)`;
@@ -395,6 +412,7 @@ if (APPLY) {
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
         if (data.wrongShow || data.wrongProduction) continue;
+        if (shouldSkipWrongShow(candidate.showId, data)) continue;
         data.wrongShow = true;
         data.wrongShowReason = `Cross-show URL collision (revival): review has fullText in ${winner.showId}, not here`;
         atomicWriteJSON(filePath, data);
@@ -434,6 +452,7 @@ if (APPLY) {
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
         if (data.wrongShow || data.wrongProduction) continue;
+        if (shouldSkipWrongShow(candidate.showId, data)) continue;
         data.wrongShow = true;
         data.wrongShowReason = `Cross-show URL collision (revival, no signal): defaulting to most recent production ${winner.showId}`;
         atomicWriteJSON(filePath, data);
@@ -503,6 +522,7 @@ if (APPLY) {
     try {
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
       if (data.wrongShow || data.wrongProduction) continue;
+      if (shouldSkipWrongShow(loser.showId, data)) continue;
       data.wrongShow = true;
       data.wrongShowReason = `Cross-show URL collision (near-revival): URL belongs to different production`;
       atomicWriteJSON(filePath, data);
@@ -539,6 +559,7 @@ if (APPLY) {
         try {
           const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
           if (data.wrongShow || data.wrongProduction) continue;
+          if (shouldSkipWrongShow(candidate.showId, data)) continue;
           data.wrongShow = true;
           data.wrongShowReason = `Cross-show URL collision (multi-revival, no signal): defaulting to ${winner.showId}`;
           atomicWriteJSON(filePath, data);
@@ -554,6 +575,7 @@ if (APPLY) {
         try {
           const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
           if (data.wrongShow || data.wrongProduction) continue;
+          if (shouldSkipWrongShow(candidate.showId, data)) continue;
           data.wrongShow = true;
           data.wrongShowReason = `Cross-show URL collision (multi-revival): signal only in ${winner.showId}`;
           atomicWriteJSON(filePath, data);
@@ -607,6 +629,7 @@ if (APPLY) {
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
         if (data.wrongShow || data.wrongProduction) continue;
+        if (shouldSkipWrongShow(candidate.showId, data)) continue;
         data.wrongShow = true;
         data.wrongShowReason = `Cross-show URL collision (revival, both scored): review likely belongs to ${winner.showId} (most recent production)`;
         atomicWriteJSON(filePath, data);
@@ -640,6 +663,7 @@ if (APPLY) {
     try {
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
       if (data.wrongShow || data.wrongProduction) continue;
+      if (shouldSkipWrongShow(loser.showId, data)) continue;
       data.wrongShow = true;
       data.wrongShowReason = `Cross-show URL collision: review has score/text in ${winner.showId}, not here`;
       atomicWriteJSON(filePath, data);
@@ -675,6 +699,7 @@ if (APPLY) {
     try {
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
       if (data.wrongShow || data.wrongProduction) continue;
+      if (shouldSkipWrongShow(loser.showId, data)) continue;
       data.wrongShow = true;
       data.wrongShowReason = `Cross-show URL collision (both scored): review likely belongs to ${winner.showId} (more recent opening)`;
       atomicWriteJSON(filePath, data);
@@ -764,6 +789,7 @@ if (APPLY) {
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
         if (data.wrongShow || data.wrongProduction) continue;
+        if (shouldSkipWrongShow(candidate.showId, data)) continue;
         data.wrongShow = true;
         data.wrongShowReason = `Cross-show URL collision (multi-revival): no score/text here, signal in other productions`;
         atomicWriteJSON(filePath, data);
@@ -790,6 +816,7 @@ if (APPLY) {
       try {
         const data = JSON.parse(fs.readFileSync(entry.filePath, 'utf8'));
         if (data.wrongShow || data.wrongProduction || !data.url) continue;
+        if (shouldSkipWrongShow(entry.showId, data)) continue;
         data.wrongShow = true;
         data.wrongShowReason = 'URL is a critic/author profile page, not a review';
         data.url = null;
@@ -867,6 +894,7 @@ if (APPLY) {
   console.log(`Tier 13 - Multi-revival no-signal:     ${multiRevivalNoSignalFlagged}`);
   console.log(`Tier 14 - Profile URL rejection:       ${profileUrlFlagged}`);
   console.log(`Tier 15 - Catch-all revival:           ${catchAllFlagged}`);
+  console.log(`London market skipped:                ${londonMarketSkipped}`);
   console.log(`Total files modified:                  ${totalFixed + showIdMismatchFlagged}`);
 } else {
   console.log(`\nRun with --apply to auto-fix collisions.`);

@@ -69,7 +69,7 @@ import { detectMultiShow } from './multi-show-detector';
 import { trimMultiShowText } from './trim-multi-show';
 import { PROMPT_VERSION, SYSTEM_PROMPT_V5, buildPromptV5, BUCKET_RANGES } from './config';
 import { isScoreable } from './is-scoreable';
-const { isLondonMarket } = require('../lib/venue-classification');
+const { isLondonMarket, isUkOutletUrl } = require('../lib/venue-classification');
 
 // ========================================
 // SEMVER COMPARISON
@@ -1150,7 +1150,11 @@ async function main(): Promise<void> {
           const isOffBroadway = showInfo?.category === 'off-broadway';
           const isWestEnd = isLondonMarket(showInfo?.category);
           if (rejection === 'wrong_show') {
-            fileData.wrongShow = true;
+            if (isWestEnd && isUkOutletUrl(fileData.url)) {
+              console.log(` (WE exempt — skipping wrongShow flag for UK outlet on London show)`);
+            } else {
+              fileData.wrongShow = true;
+            }
           } else if (rejection === 'wrong_production' && !isOffBroadway && !isWestEnd) {
             fileData.wrongProduction = true;
           } else if (rejection === 'wrong_production' && (isOffBroadway || isWestEnd)) {
