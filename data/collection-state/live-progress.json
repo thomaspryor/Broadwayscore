@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-03-17T19:46:18.790Z",
-  "processed": 156,
-  "failed": 6644,
+  "updatedAt": "2026-03-17T19:53:47.250Z",
+  "processed": 159,
+  "failed": 6651,
   "successRate": "2.3%",
   "tierBreakdown": {
-    "playwright": 46,
+    "playwright": 48,
     "amp": 110,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 15,
+    "scrapingbee": 16,
     "brightdata": 0,
-    "archiveToday": 59,
+    "archiveToday": 65,
     "archive": 41
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-03-17T19:49:25.050Z",
+      "event": "bb-session",
+      "session": "63957ecc",
+      "url": "https://www.thestage.co.uk/long-reviews/the-phantom-of-the-opera-her-majestys-th"
+    },
+    {
+      "t": "2026-03-17T19:49:26.511Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }

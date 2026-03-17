@@ -155,7 +155,10 @@
     "indecent-2017/forward--jesse-green.json",
     "a-christmas-carol-2022/latimes--gary-goldstein.json",
     "a-dolls-house-part-2-2017/show-showdown--elizabeth-wollman.json",
-    "the-phantom-of-the-opera-off-west-end-2021/variety--unknown.json"
+    "the-phantom-of-the-opera-off-west-end-2021/variety--unknown.json",
+    "the-choir-of-man-off-west-end-2026/whatsonstage--unknown.json",
+    "the-phantom-of-the-opera-off-west-end-2021/standard--unknown.json",
+    "the-phantom-of-the-opera-off-west-end-2021/telegraph--unknown.json"
   ],
   "failed": [
     "arcadia-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -6801,7 +6804,14 @@
     "six-2021/west-end-wilma--unknown.json",
     "six-2021/whatsonstage--unknown.json",
     "the-book-of-mormon-west-end-2024/sunday-telegraph--unknown.json",
-    "the-book-of-mormon-west-end-2024/thestage--unknown.json"
+    "the-book-of-mormon-west-end-2024/thestage--unknown.json",
+    "the-choir-of-man-west-end-2026/tim-talks-theatre-uk--tim-talks-theatre-uk.json",
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "the-phantom-of-the-opera-off-west-end-2021/thestage--unknown.json",
+    "the-phantom-of-the-opera-west-end-1986/broadwayworld--unknown.json",
+    "the-phantom-of-the-opera-west-end-1986/west-end-wilma--unknown.json",
+    "the-phantom-of-the-opera-west-end-1986/whatsonstage--unknown.json",
+    "the-play-that-goes-wrong-west-end-2021/independent--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -6851,7 +6861,9 @@
       "punch-2025/timeout--unknown.json",
       "the-king-and-i-2015/observer--rex-reed.json",
       "indecent-2017/forward--jesse-green.json",
-      "a-dolls-house-part-2-2017/show-showdown--elizabeth-wollman.json"
+      "a-dolls-house-part-2-2017/show-showdown--elizabeth-wollman.json",
+      "the-choir-of-man-off-west-end-2026/whatsonstage--unknown.json",
+      "the-phantom-of-the-opera-off-west-end-2021/standard--unknown.json"
     ],
     "amp": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--unknown.json",
@@ -6982,7 +6994,8 @@
       "waiting-for-godot-2025/nytimes--unknown.json",
       "women-on-the-verge-of-a-nervous-breakdown-2010/newyorker--john-lahr.json",
       "stephen-sondheims-old-friends-2025/broadwaynews--brittani-samuel.json",
-      "a-christmas-carol-2022/latimes--gary-goldstein.json"
+      "a-christmas-carol-2022/latimes--gary-goldstein.json",
+      "the-phantom-of-the-opera-off-west-end-2021/telegraph--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -7044,7 +7057,13 @@
       "data/review-texts/six-2021/times-uk--unknown.json",
       "data/review-texts/six-2021/west-end-wilma--unknown.json",
       "data/review-texts/six-2021/whatsonstage--unknown.json",
-      "data/review-texts/the-book-of-mormon-west-end-2024/sunday-telegraph--unknown.json"
+      "data/review-texts/the-book-of-mormon-west-end-2024/sunday-telegraph--unknown.json",
+      "data/review-texts/the-choir-of-man-west-end-2026/tim-talks-theatre-uk--tim-talks-theatre-uk.json",
+      "data/review-texts/the-phantom-of-the-opera-off-west-end-2021/thestage--unknown.json",
+      "data/review-texts/the-phantom-of-the-opera-west-end-1986/broadwayworld--unknown.json",
+      "data/review-texts/the-phantom-of-the-opera-west-end-1986/west-end-wilma--unknown.json",
+      "data/review-texts/the-phantom-of-the-opera-west-end-1986/whatsonstage--unknown.json",
+      "data/review-texts/the-play-that-goes-wrong-west-end-2021/independent--unknown.json"
     ],
     "archive": [
       "hamilton-2015/nytimes--ben-brantley.json",
@@ -7091,6 +7110,18 @@
     ]
   },
   "startTime": "2026-03-17T16:01:32.909Z",
-  "lastProcessed": "the-book-of-mormon-west-end-2024/thestage--unknown.json",
-  "log": []
+  "lastProcessed": "the-play-that-goes-wrong-west-end-2021/independent--unknown.json",
+  "log": [
+    {
+      "t": "2026-03-17T19:49:25.050Z",
+      "event": "bb-session",
+      "session": "63957ecc",
+      "url": "https://www.thestage.co.uk/long-reviews/the-phantom-of-the-opera-her-majestys-th"
+    },
+    {
+      "t": "2026-03-17T19:49:26.511Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }
