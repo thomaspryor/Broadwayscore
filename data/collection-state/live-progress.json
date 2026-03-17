@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-17T05:32:21.232Z",
-  "processed": 542,
-  "failed": 8680,
+  "updatedAt": "2026-03-17T05:47:17.001Z",
+  "processed": 545,
+  "failed": 8687,
   "successRate": "5.9%",
   "tierBreakdown": {
-    "playwright": 263,
-    "amp": 158,
+    "playwright": 264,
+    "amp": 162,
     "browserbase": 130,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 106,
+    "archiveToday": 112,
     "archive": 167
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-03-17T02:14:50.446Z",
-      "event": "bb-session",
-      "session": "37a38834",
-      "url": "https://www.hollywoodreporter.com/tv/tv-news/fx-renews-russell-brands-brandx-394"
-    },
-    {
-      "t": "2026-03-17T02:14:51.874Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-17T04:26:55.269Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-17T05:05:42.072Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T05:42:56.603Z",
+      "event": "bb-session",
+      "session": "cd9850b8",
+      "url": "https://www.newyorker.com/magazine/2024/07/15/oh-mary-theatre-review"
+    },
+    {
+      "t": "2026-03-17T05:42:57.656Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
