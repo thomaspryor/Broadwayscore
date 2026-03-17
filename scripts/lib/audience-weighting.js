@@ -2,7 +2,7 @@
  * Shared audience weighting module
  *
  * Calculates combined audience buzz score from Show Score, Mezzanine, Theatr,
- * Broadway.com, SeatPlan, LBO, and Reddit sources.
+ * Broadway.com, SeatPlan, LBO, LTD (London Theatre Direct), and Reddit sources.
  * Pure proportional weighting by reviewCount volume with an 80% single-source ceiling.
  *
  * Reddit quality gates:
@@ -13,7 +13,7 @@
  * Used by: scrape-reddit-sentiment.js, recalculate-audience-buzz.js,
  *          scrape-mezzanine-audience.js, scrape-show-score-audience.js,
  *          scrape-broadway-com-audience.js, scrape-seatplan-audience.js,
- *          scrape-lbo-audience.js,
+ *          scrape-lbo-audience.js, scrape-ltd-audience.js,
  *          merge-reddit-shards.js, merge-show-score-shards.js
  */
 
@@ -77,6 +77,9 @@ function calculateCombinedScore(sources, showInfo) {
   if (sources.lbo?.score != null && sources.lbo.reviewCount > 0) {
     active.push({ name: 'lbo', score: sources.lbo.score, volume: sources.lbo.reviewCount });
   }
+  if (sources.ltd?.score != null && sources.ltd.reviewCount > 0) {
+    active.push({ name: 'ltd', score: sources.ltd.score, volume: sources.ltd.reviewCount });
+  }
   if (isRedditEligible(sources.reddit, showInfo)) {
     // Calibrate Reddit score to align with ShowScore/Mezzanine scale
     const calibrated = Math.min(sources.reddit.score + REDDIT_SCORE_CALIBRATION, REDDIT_CALIBRATION_CAP);
@@ -89,7 +92,7 @@ function calculateCombinedScore(sources, showInfo) {
 
   // Solo source — 100% weight, no ceiling needed
   if (active.length === 1) {
-    const weights = { showScore: 0, mezzanine: 0, reddit: 0, theatr: 0, broadwayCom: 0, seatplan: 0, lbo: 0 };
+    const weights = { showScore: 0, mezzanine: 0, reddit: 0, theatr: 0, broadwayCom: 0, seatplan: 0, lbo: 0, ltd: 0 };
     weights[active[0].name] = 100;
     return { score: Math.round(active[0].score), weights };
   }

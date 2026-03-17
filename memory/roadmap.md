@@ -1,12 +1,8 @@
 # Roadmap — Last updated 2026-03-17
 
-## Active WIP Sessions (Do Not Start Competing Work in src/)
-
-| Session | Branch | Status |
-|---------|--------|--------|
-| Diary/Watchlist polish | `worktree-ugc-fixes` | In progress |
-| iOS app improvements | Separate repo | In progress |
-| iOS Sentry/Push/Offline/Deeplinks | Build #29 | Code done, needs TestFlight testing |
+> **Active work is now tracked on the [GitHub Projects board](https://github.com/users/thomaspryor/projects/1).**
+> Open issues with `session` label = active Claude Code sessions.
+> This file is kept as a historical archive of completed work and backlog reference.
 
 ## HIGH PRIORITY
 
@@ -21,11 +17,11 @@
 6. ~~**Off-West End expansion**~~ → DONE (2026-03-16). 56 OWE shows, 56 scripts updated with `isLondonMarket()`, venue classification JSON, frontend badges, discovery pipeline.
 7. ~~**SeatPlan audience scores**~~ → DONE (2026-03-17). Fixed slug generation for OWE shows (venue suffixes, colon subtitles). Extracted shared `buildLondonSlugVariants` to `show-matching.js`. SeatPlan OWE: 5→10 shows. LBO OWE: 13→17 shows. 24/56 OWE shows now have audience data.
 
-**WE Review Coverage (CRITICAL — fix before launch):**
-8. **Cross-show URL dedup bug** — Paddington reviews wrongly flagged "belongs in man-and-boy-west-end-2026." Telegraph, The Stage, WhatsOnStage, Times UK, Standard all excluded. Affects multiple shows. Root cause: URL dedup in rebuild-all-reviews.js matching wrong show.
-9. **Outlet registry missing UK outlets** — Radio Times, South London, Observer (UK), Shiny Shiny flagged as "US outlet." Need to add these to outlet-registry.json with `region: 'london'`.
-10. **Cross-market guard too aggressive on dual-market outlets** — NY Post, NYT (Matt Wolf), BroadwayWorld reviewing WE shows from London flagged wrongProduction. Guard should check if URL/content references London, not just outlet region.
-11. **~140 Show Score reviews excluded across 28 WE shows** — combination of bugs 8-10. Must have ALL Show Score critic reviews PLUS more. Current gap: 1-5 reviews per show on 9 shows we're behind on.
+**WE Review Coverage:**
+8. ~~**Cross-show URL dedup bug**~~ → DONE (2026-03-16). Paddington/Man and Boy misplaced files removed, wrongProduction flags cleared. LBO scraper guard added.
+9. ~~**Outlet registry missing UK outlets**~~ → DONE (2026-03-16). 9 UK outlets added with `region: 'london'`. URL domain fallback in cross-market guard.
+10. ~~**Classifier market-awareness (ROOT CAUSE FIX)**~~ → DONE (2026-03-17). `isUkOutletUrl()` shared helper added to venue-classification.js. Guards added to all 4 wrongShow sources: classify-wrong-show.js, audit-cross-show-url-collisions.js (12 tiers), llm-scoring/index.ts, rebuild-all-reviews.js. Rebuild safety net simplified.
+11. ~~**OWE venue discovery gap**~~ → DONE (2026-03-17). 6 major OWE venues now scraped directly (Almeida, Soho Theatre, Stratford East, New Diorama, King's Head, Finborough). 30 shows discovered. Plus LondonTheatre.co.uk added by parallel session (40 OWE shows). Total: 5 London discovery sources.
 
 **P0 Score Recovery (2026-03-16, 220 reviews upgraded):**
 12. ~~**OUTLET_VERIFIED_SOURCES fix**~~ → DONE. 85 WE reviews promoted LLM→P0.
@@ -54,6 +50,9 @@
 9. **Off-West End scoring expansion** — Classification done (65 WE / 63 Off-WE). Needs more shows + scoring.
 10. **App icon refinement** — Hard to read at small sizes.
 11. **BTC/TodayTix partnership (paused)** — Waiting on TodayTix for launch timing, co-branding, legal.
+
+**Opening Night Speed:**
+- **Add site search for UK T1/T2 outlets** — Only WhatsOnStage + TimeOut have site search configs. Missing: Telegraph, The Stage, The Times UK, iNews, Independent, FT. These have no RSS either (defunct/404). Currently rely on aggregators + SERP which are slower. Adding search endpoint configs to `scripts/lib/site-search-discovery.js` would speed up WE/OWE opening night discovery.
 
 **Data Quality:**
 12. ~~WE/OB review cleanup — duplicates~~ → DONE. 35→0 duplicates via comprehensive dedup.
@@ -93,6 +92,8 @@
 - **LLM extractor hallucination fix** — verifyInText accepted any `*` as star proof + matched other-show ratings. Fixed: require specific X/Y in last 500 chars. Hallucination rate 40%→<2%.
 - **Show Score star capture** — gather-reviews.js Playwright path now extracts --rating CSS var (~510 future P0.5 scores).
 - **SeatPlan audience scores for OWE** — Fixed slug generation (venue suffixes like "- Globe", colon subtitles). Extracted shared `buildLondonSlugVariants()` to `show-matching.js` (used by both SeatPlan + LBO scrapers). SeatPlan OWE: 5→10 shows (+1,187 reviews). LBO OWE: 13→17 shows (+311 reviews). Fixed TDZ bug in rebuild-all-reviews.js. /review passed: 0 P0, 1 cosmetic P1.
+- **Audience scrape on show open** — SeatPlan + LBO now auto-dispatch when shows transition previews→open (same pattern as ShowScore/Mezzanine). Added `shows` (plural) input to both workflows. Previously waited up to 7 days; now immediate.
+- **Venue classification cleanup** — Removed Menier Chocolate Factory + Charing Cross Theatre from west-end-venues.json (180/200 seats, not SOLT members). Audited all borderline venues against SOLT membership.
 - **Data health fix** — push-core-data bug (Mar 12) was comparing snapshot vs itself → zero changes detected → shows.json stuck 6 days. Fixed diff to compare data/ (post-script) vs checkout (baseline).
 - **ScrapingBee exhaustion resilience** — SB credits at 0 until Apr 2 renewal. Added BD/Playwright fallbacks to 4 hard-failing scripts (show-score, bww-reviews, ticket-links, commercial). Fixed opening-night-poller SERP (broken arg signature since inception).
 - **Scraper cost optimization** — 5 changes: (1) Playwright-first for public sites in scraper.js (IBDB, Broadway.com → free), (2) BD-first SERP in collect-review-texts.js with proper SERP API port, (3) SB credit pre-check at startup, (4) per-run cost logging, (5) split SB page/SERP credit counters. Smart SERP ordering: BD-first for batch (cheap), SB-first for opening nights (fast).

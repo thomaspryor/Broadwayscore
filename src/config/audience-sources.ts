@@ -21,6 +21,7 @@ export const AUDIENCE_SOURCES: AudienceSourceConfig[] = [
   { key: 'mezzanine', name: 'Mezzanine', volumeLabel: 'reviews', iconColor: 'text-purple-400', markets: ['broadway', 'west-end', 'off-broadway', 'off-west-end'], showStarRating: true },
   { key: 'seatplan', name: 'SeatPlan', volumeLabel: 'reviews', iconColor: 'text-cyan-400', markets: ['west-end', 'off-west-end'], showStarRating: true },
   { key: 'lbo', name: 'London Box Office', volumeLabel: 'reviews', iconColor: 'text-emerald-400', markets: ['west-end', 'off-west-end'], showStarRating: true },
+  { key: 'ltd', name: 'London Theatre Direct', volumeLabel: 'reviews', iconColor: 'text-rose-400', markets: ['west-end', 'off-west-end'], showStarRating: true },
   { key: 'theatr', name: 'Theatr', volumeLabel: 'votes', iconColor: 'text-teal-400', markets: ['broadway', 'off-broadway'] },
   { key: 'broadwayCom', name: 'Broadway.com', volumeLabel: 'reviews', iconColor: 'text-blue-400', markets: ['broadway', 'off-broadway'], showStarRating: true },
   { key: 'reddit', name: 'Reddit', volumeLabel: 'mentions', iconColor: 'text-orange-400', markets: ['broadway', 'west-end', 'off-broadway', 'off-west-end'] },
@@ -42,6 +43,7 @@ export const SOURCE_DESCRIPTIONS: Record<string, string> = {
   reddit: 'Sentiment analysis from r/Broadway. Requires 50+ comments. Excluded for shows closed 3+ years.',
   seatplan: 'UK theater ticketing platform with 1K-8K verified audience reviews per show.',
   lbo: 'Verified purchase reviews from London Box Office ticket buyers via Feefo.',
+  ltd: 'Verified purchase reviews from London Theatre Direct, a major UK ticket reseller with 1K-14K reviews per show.',
 };
 
 export function getSourceNames(market: 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end'): string {

@@ -1,17 +1,13 @@
-name: Update SeatPlan Data
+name: Update London Theatre Direct Data
 
 on:
   schedule:
-    # Weekly on Sundays at 3 PM UTC (10 AM EST), after Theatr at 2 PM
-    - cron: '0 15 * * 0'
+    # Weekly on Sundays at 4 PM UTC (11 AM EST), after LBO at 3:30 PM
+    - cron: '0 16 * * 0'
   workflow_dispatch:
     inputs:
       show:
         description: 'Single show ID to update (e.g., hamilton-west-end-2021)'
-        required: false
-        type: string
-      shows:
-        description: 'Comma-separated show IDs (e.g., show1,show2). Overrides show.'
         required: false
         type: string
       dry_run:
@@ -28,7 +24,7 @@ permissions:
   contents: write
 
 jobs:
-  scrape-seatplan:
+  scrape-ltd:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -45,39 +41,27 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Run SeatPlan scraper
+      - name: Run LTD scraper
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
-          DRY_RUN_FLAG=""
-          if [ "${{ inputs.dry_run }}" = "true" ]; then
-            DRY_RUN_FLAG="--dry-run"
-          fi
-
-          if [ -n "${{ inputs.shows }}" ]; then
-            IFS=',' read -ra SHOW_IDS <<< "${{ inputs.shows }}"
-            for sid in "${SHOW_IDS[@]}"; do
-              echo "Running SeatPlan for: $sid"
-              node scripts/scrape-seatplan-audience.js --show="$sid" $DRY_RUN_FLAG
-            done
-            exit 0
-          fi
-
           ARGS=""
+
           if [ -n "${{ inputs.show }}" ]; then
             ARGS="$ARGS --show=${{ inputs.show }}"
           fi
-          ARGS="$ARGS $DRY_RUN_FLAG"
+
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
 
           # shellcheck disable=SC2086
-          node scripts/scrape-seatplan-audience.js $ARGS
+          node scripts/scrape-ltd-audience.js $ARGS
 
       - name: Save core data snapshot
         if: always() && inputs.dry_run != true
         run: |
-          # push-core-data compares data/ against /tmp/core-data-snapshot/ to detect changes.
-          # push-with-retry.sh runs git checkout which reverts data/, so snapshot first.
           mkdir -p /tmp/core-data-snapshot
           for f in audience-buzz.json; do
             if [ -f "data/$f" ]; then
@@ -90,7 +74,7 @@ jobs:
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-          message: 'data: Update from update-seatplan'
+          message: 'data: Update from update-ltd'
 
       - name: Dispatch deploy
         if: always() && inputs.dry_run != true
@@ -100,7 +84,7 @@ jobs:
         if: failure()
         uses: ./.github/actions/notify-failure
         with:
-          title: 'Update SeatPlan Data Failed'
+          title: 'Update London Theatre Direct Data Failed'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}
