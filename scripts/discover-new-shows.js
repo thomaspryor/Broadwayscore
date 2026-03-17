@@ -467,6 +467,20 @@ async function fetchShowsFromLondonTheatre() {
       },
       timeout: 20000,
     }, (res) => {
+      // Follow one redirect (301/302/307/308)
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        https.get(res.headers.location, {
+          headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'text/html' },
+          timeout: 20000,
+        }, (res2) => {
+          if (res2.statusCode !== 200) { reject(new Error(`HTTP ${res2.statusCode} after redirect`)); res2.resume(); return; }
+          let d = '';
+          res2.on('data', chunk => d += chunk);
+          res2.on('end', () => resolve(d));
+        }).on('error', reject);
+        res.resume();
+        return;
+      }
       if (res.statusCode !== 200) { reject(new Error(`HTTP ${res.statusCode}`)); res.resume(); return; }
       let data = '';
       res.on('data', chunk => data += chunk);
