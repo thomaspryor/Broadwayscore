@@ -1,82 +1,85 @@
 {
-  "runDate": "2026-03-17T03:35:56.710Z",
+  "runDate": "2026-03-17T03:36:53.131Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "the-hunger-games-on-stage-west-end-2025",
+    "showFilter": "into-the-woods-west-end-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 8,
-    "failed": 6,
+    "processed": 11,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "57.1%"
+    "successRate": "78.6%"
   },
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 10,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 5,
+    "archiveToday": 3,
     "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 12,
-    "tier1Success": 7,
+    "tier1Attempts": 13,
+    "tier1Success": 10,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 3,
     "tier1_5Success": 0,
-    "tier2Attempts": 5,
+    "tier2Attempts": 3,
     "tier2Success": 0,
-    "tier3Attempts": 5,
+    "tier3Attempts": 4,
     "tier3Success": 0,
-    "tier3_6Attempts": 5,
-    "tier3_6Success": 5,
-    "tier4Attempts": 3,
-    "tier4Success": 1,
-    "totalFailed": 6,
+    "tier3_6Attempts": 3,
+    "tier3_6Success": 3,
+    "tier4Attempts": 1,
+    "tier4Success": 0,
+    "totalFailed": 3,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 3,
-    "browserbaseMinutesUsed": 1.2,
-    "urlDiscoveryAttempts": 1,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.3,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-hunger-games-on-stage-west-end-2025/whatsonstage--unknown.json",
-    "the-hunger-games-on-stage-west-end-2025/timeout-london--unknown.json",
-    "the-hunger-games-on-stage-west-end-2025/bww--cindy-marcolina.json",
-    "the-hunger-games-on-stage-west-end-2025/financialtimes--unknown.json",
-    "the-hunger-games-on-stage-west-end-2025/i-paper--unknown.json",
-    "the-hunger-games-on-stage-west-end-2025/london-box-office--stuart-king.json",
-    "the-hunger-games-on-stage-west-end-2025/standard--nick-curtis.json",
-    "the-hunger-games-on-stage-west-end-2025/theatre-weekly--greg-stewart.json"
+    "into-the-woods-west-end-2025/musical-theatre-review--unknown.json",
+    "into-the-woods-west-end-2025/thereviewshub--unknown.json",
+    "into-the-woods-west-end-2025/artsdesk--unknown.json",
+    "into-the-woods-west-end-2025/broadwayworld--unknown.json",
+    "into-the-woods-west-end-2025/the-recs--unknown.json",
+    "into-the-woods-west-end-2025/theupcoming--unknown.json",
+    "into-the-woods-west-end-2025/west-end-wilma--unknown.json",
+    "into-the-woods-west-end-2025/guardian--arifa-akbar.json",
+    "into-the-woods-west-end-2025/timeout--unknown.json",
+    "into-the-woods-west-end-2025/standard--nick-curtis.json",
+    "into-the-woods-west-end-2025/whatsonstage--unknown.json"
   ],
   "failed": [
-    "the-hunger-games-on-stage-west-end-2025/broadwayworld--cindy-marcolina.json",
-    "the-hunger-games-on-stage-west-end-2025/thestage--unknown.json",
-    "the-hunger-games-on-stage-west-end-2025/nytimes--alexis-soloski.json",
-    "the-hunger-games-on-stage-west-end-2025/independent--unknown.json",
-    "the-hunger-games-on-stage-west-end-2025/thestage--holly-omahony.json",
-    "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json"
+    "into-the-woods-west-end-2025/independent--unknown.json",
+    "into-the-woods-west-end-2025/daily-mail--unknown.json",
+    "into-the-woods-west-end-2025/thestage--sam-marlowe.json"
   ],
   "tierDetails": {
     "playwright": [
-      "the-hunger-games-on-stage-west-end-2025/whatsonstage--unknown.json",
-      "the-hunger-games-on-stage-west-end-2025/timeout-london--unknown.json",
-      "the-hunger-games-on-stage-west-end-2025/financialtimes--unknown.json",
-      "the-hunger-games-on-stage-west-end-2025/i-paper--unknown.json",
-      "the-hunger-games-on-stage-west-end-2025/london-box-office--stuart-king.json",
-      "the-hunger-games-on-stage-west-end-2025/standard--nick-curtis.json",
-      "the-hunger-games-on-stage-west-end-2025/theatre-weekly--greg-stewart.json"
+      "into-the-woods-west-end-2025/musical-theatre-review--unknown.json",
+      "into-the-woods-west-end-2025/thereviewshub--unknown.json",
+      "into-the-woods-west-end-2025/artsdesk--unknown.json",
+      "into-the-woods-west-end-2025/the-recs--unknown.json",
+      "into-the-woods-west-end-2025/theupcoming--unknown.json",
+      "into-the-woods-west-end-2025/west-end-wilma--unknown.json",
+      "into-the-woods-west-end-2025/guardian--arifa-akbar.json",
+      "into-the-woods-west-end-2025/timeout--unknown.json",
+      "into-the-woods-west-end-2025/standard--nick-curtis.json",
+      "into-the-woods-west-end-2025/whatsonstage--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -84,14 +87,12 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/the-hunger-games-on-stage-west-end-2025/broadwayworld--cindy-marcolina.json",
-      "data/review-texts/the-hunger-games-on-stage-west-end-2025/thestage--unknown.json",
-      "data/review-texts/the-hunger-games-on-stage-west-end-2025/nytimes--alexis-soloski.json",
-      "data/review-texts/the-hunger-games-on-stage-west-end-2025/independent--unknown.json",
-      "data/review-texts/the-hunger-games-on-stage-west-end-2025/thestage--holly-omahony.json"
+      "data/review-texts/into-the-woods-west-end-2025/independent--unknown.json",
+      "data/review-texts/into-the-woods-west-end-2025/daily-mail--unknown.json",
+      "data/review-texts/into-the-woods-west-end-2025/thestage--sam-marlowe.json"
     ],
     "archive": [
-      "the-hunger-games-on-stage-west-end-2025/bww--cindy-marcolina.json"
+      "into-the-woods-west-end-2025/broadwayworld--unknown.json"
     ]
   },
   "urlDiscoveries": []
