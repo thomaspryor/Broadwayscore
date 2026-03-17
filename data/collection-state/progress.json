@@ -293,7 +293,12 @@
     "bloodlove-off-broadway-2026/theatermania--linda-buchwald.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/thewrap--robert-hofler.json",
     "lost-in-del-valle-off-broadway-2026/ew--ew-staff.json",
-    "maltby-and-shires-about-time-off-broadway-2026/theatermania--david-gordon.json"
+    "maltby-and-shires-about-time-off-broadway-2026/theatermania--david-gordon.json",
+    "spare-parts-off-broadway-2026/deadline--stephanie-bunbury.json",
+    "spare-parts-off-broadway-2026/newsday--glenn-gamboa.json",
+    "spare-parts-off-broadway-2026/observer--john-heilpern.json",
+    "spare-parts-off-broadway-2026/thewrap--robert-hofler.json",
+    "spread-off-broadway-2026/thewrap--unknown.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -2313,7 +2318,12 @@
     "seagull-true-story-off-broadway-2026/thewrap--robert-hofler.json",
     "shadowlands-west-end-2026/theatermania--unknown.json",
     "six-2021/observer--david-cote.json",
-    "six-2021/wsj--charles-isherwood.json"
+    "six-2021/wsj--charles-isherwood.json",
+    "six-the-musical-west-end-2021/guardian--lyn-gardner.json",
+    "spare-parts-off-broadway-2026/indiewire--sophia-savage.json",
+    "starlight-express-west-end-2024/broadwaynews--aliya-al-hassan.json",
+    "starlight-express-west-end-2024/nypost--unknown.json",
+    "starlight-express-west-end-2024/theatermania--linda-buchwald.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2459,7 +2469,8 @@
       "age-is-a-feeling-off-broadway-2024/guardian--mark-fisher.json",
       "bloodlove-off-broadway-2026/theatermania--linda-buchwald.json",
       "lost-in-del-valle-off-broadway-2026/ew--ew-staff.json",
-      "maltby-and-shires-about-time-off-broadway-2026/theatermania--david-gordon.json"
+      "maltby-and-shires-about-time-off-broadway-2026/theatermania--david-gordon.json",
+      "spread-off-broadway-2026/thewrap--unknown.json"
     ],
     "amp": [
       "data/review-texts/peter-and-the-starcatcher-2012/variety--marilyn-stasio.json",
@@ -2527,7 +2538,9 @@
       "data/review-texts/two-strangers-bway-2025/variety--unknown.json",
       "two-strangers-bway-2025/variety--unknown.json",
       "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/thewrap--robert-hofler.json",
-      "cabaret-at-the-kit-kat-club-west-end-2021/thewrap--robert-hofler.json"
+      "cabaret-at-the-kit-kat-club-west-end-2021/thewrap--robert-hofler.json",
+      "data/review-texts/spare-parts-off-broadway-2026/thewrap--robert-hofler.json",
+      "spare-parts-off-broadway-2026/thewrap--robert-hofler.json"
     ],
     "browserbase": [
       "data/review-texts/mj-2022/variety--aramide-tinubu.json",
@@ -2619,7 +2632,11 @@
       "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--jordan-riefe.json",
       "maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--jordan-riefe.json",
       "data/review-texts/what-we-did-before-our-moth-days-off-broadway-2026/hollywood-reporter--unknown.json",
-      "what-we-did-before-our-moth-days-off-broadway-2026/hollywood-reporter--unknown.json"
+      "what-we-did-before-our-moth-days-off-broadway-2026/hollywood-reporter--unknown.json",
+      "data/review-texts/spare-parts-off-broadway-2026/deadline--stephanie-bunbury.json",
+      "spare-parts-off-broadway-2026/deadline--stephanie-bunbury.json",
+      "data/review-texts/spare-parts-off-broadway-2026/observer--john-heilpern.json",
+      "spare-parts-off-broadway-2026/observer--john-heilpern.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -2649,7 +2666,8 @@
       "data/review-texts/the-wiz-1975/nytimes--maya-phillips.json",
       "data/review-texts/silver-manhattan-off-broadway-2026/nytimes--unknown.json",
       "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/guardian--arifa-akbar.json",
-      "data/review-texts/man-and-boy-west-end-2026/wsj--terry-teachout.json"
+      "data/review-texts/man-and-boy-west-end-2026/wsj--terry-teachout.json",
+      "data/review-texts/spare-parts-off-broadway-2026/indiewire--sophia-savage.json"
     ],
     "archive": [
       "into-the-woods-west-end-2025/nytimes--unknown.json",
@@ -2755,11 +2773,12 @@
       "bigfoot-off-broadway-2026/nytimes--unknown.json",
       "cold-war-choir-practice-off-broadway-2026/nytimes--unknown.json",
       "lost-in-del-valle-off-broadway-2026/nytimes--brian-seibert.json",
-      "maltby-and-shires-about-time-off-broadway-2026/nytimes--vincent-canby.json"
+      "maltby-and-shires-about-time-off-broadway-2026/nytimes--vincent-canby.json",
+      "spare-parts-off-broadway-2026/newsday--glenn-gamboa.json"
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "six-2021/wsj--charles-isherwood.json",
+  "lastProcessed": "starlight-express-west-end-2024/theatermania--linda-buchwald.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -3453,6 +3472,28 @@
       "t": "2026-03-17T00:48:12.393Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-17T00:54:01.342Z",
+      "event": "bb-session",
+      "session": "49de2d78",
+      "url": "https://deadline.com/2023/09/poor-things-review-yorgos-lanthimos-emma-stone-veni"
+    },
+    {
+      "t": "2026-03-17T00:54:02.698Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-17T00:57:25.697Z",
+      "event": "bb-session",
+      "session": "94aece40",
+      "url": "https://observer.com/2000/07/its-open-war-on-critics-or-at-least-it-ought-to-be/"
+    },
+    {
+      "t": "2026-03-17T00:57:27.018Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
     }
   ]
 }

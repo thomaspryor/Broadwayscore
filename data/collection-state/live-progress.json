@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-17T00:53:58.762Z",
-  "processed": 294,
-  "failed": 2018,
-  "successRate": "12.7%",
+  "updatedAt": "2026-03-17T00:58:08.447Z",
+  "processed": 299,
+  "failed": 2023,
+  "successRate": "12.9%",
   "tierBreakdown": {
-    "playwright": 142,
-    "amp": 66,
-    "browserbase": 90,
+    "playwright": 143,
+    "amp": 68,
+    "browserbase": 94,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 25,
-    "archive": 104
+    "archiveToday": 26,
+    "archive": 105
   },
-  "browserbaseSessions": 13,
+  "browserbaseSessions": 15,
   "recentActivity": [
-    {
-      "t": "2026-03-17T00:19:58.494Z",
-      "event": "bb-session",
-      "session": "dbf094e2",
-      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/hamilton-theater-1069614/"
-    },
-    {
-      "t": "2026-03-17T00:19:59.838Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-17T00:25:06.023Z",
-      "event": "bb-session",
-      "session": "0c841398",
-      "url": "https://deadline.com/2021/09/back-to-future-musical-roger-bart-covid-west-end-12"
-    },
-    {
-      "t": "2026-03-17T00:25:07.200Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
     {
       "t": "2026-03-17T00:31:49.873Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-17T00:48:12.393Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-17T00:54:01.342Z",
+      "event": "bb-session",
+      "session": "49de2d78",
+      "url": "https://deadline.com/2023/09/poor-things-review-yorgos-lanthimos-emma-stone-veni"
+    },
+    {
+      "t": "2026-03-17T00:54:02.698Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-17T00:57:25.697Z",
+      "event": "bb-session",
+      "session": "94aece40",
+      "url": "https://observer.com/2000/07/its-open-war-on-critics-or-at-least-it-ought-to-be/"
+    },
+    {
+      "t": "2026-03-17T00:57:27.018Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
     }
   ]
 }
