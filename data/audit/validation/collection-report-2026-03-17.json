@@ -1,73 +1,82 @@
 {
-  "runDate": "2026-03-17T03:32:23.694Z",
+  "runDate": "2026-03-17T03:35:56.710Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "the-tempest-globe-west-end-2026",
+    "showFilter": "the-hunger-games-on-stage-west-end-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 4,
+    "processed": 8,
+    "failed": 6,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "57.1%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 7,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 0
+    "archiveToday": 5,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 6,
-    "tier1Success": 4,
+    "tier1Attempts": 12,
+    "tier1Success": 7,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
+    "tier1_5Attempts": 3,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 5,
     "tier2Success": 0,
-    "tier3Attempts": 3,
+    "tier3Attempts": 5,
     "tier3Success": 0,
-    "tier3_6Attempts": 2,
-    "tier3_6Success": 2,
-    "tier4Attempts": 2,
-    "tier4Success": 0,
-    "totalFailed": 4,
+    "tier3_6Attempts": 5,
+    "tier3_6Success": 5,
+    "tier4Attempts": 3,
+    "tier4Success": 1,
+    "totalFailed": 6,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.3,
+    "browserbaseSessionsUsed": 3,
+    "browserbaseMinutesUsed": 1.2,
     "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-tempest-globe-west-end-2026/guardian--unknown.json",
-    "the-tempest-globe-west-end-2026/london-theatre--unknown.json",
-    "the-tempest-globe-west-end-2026/times-uk--unknown.json",
-    "the-tempest-globe-west-end-2026/whatsonstage--alun-hood.json"
+    "the-hunger-games-on-stage-west-end-2025/whatsonstage--unknown.json",
+    "the-hunger-games-on-stage-west-end-2025/timeout-london--unknown.json",
+    "the-hunger-games-on-stage-west-end-2025/bww--cindy-marcolina.json",
+    "the-hunger-games-on-stage-west-end-2025/financialtimes--unknown.json",
+    "the-hunger-games-on-stage-west-end-2025/i-paper--unknown.json",
+    "the-hunger-games-on-stage-west-end-2025/london-box-office--stuart-king.json",
+    "the-hunger-games-on-stage-west-end-2025/standard--nick-curtis.json",
+    "the-hunger-games-on-stage-west-end-2025/theatre-weekly--greg-stewart.json"
   ],
   "failed": [
-    "the-tempest-globe-west-end-2026/independent--unknown.json",
-    "the-tempest-globe-west-end-2026/telegraph--unknown.json",
-    "the-tempest-globe-west-end-2026/british-theatre--howard-loxton.json",
-    "the-tempest-globe-west-end-2026/thestage--unknown.json"
+    "the-hunger-games-on-stage-west-end-2025/broadwayworld--cindy-marcolina.json",
+    "the-hunger-games-on-stage-west-end-2025/thestage--unknown.json",
+    "the-hunger-games-on-stage-west-end-2025/nytimes--alexis-soloski.json",
+    "the-hunger-games-on-stage-west-end-2025/independent--unknown.json",
+    "the-hunger-games-on-stage-west-end-2025/thestage--holly-omahony.json",
+    "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
-      "the-tempest-globe-west-end-2026/guardian--unknown.json",
-      "the-tempest-globe-west-end-2026/london-theatre--unknown.json",
-      "the-tempest-globe-west-end-2026/times-uk--unknown.json",
-      "the-tempest-globe-west-end-2026/whatsonstage--alun-hood.json"
+      "the-hunger-games-on-stage-west-end-2025/whatsonstage--unknown.json",
+      "the-hunger-games-on-stage-west-end-2025/timeout-london--unknown.json",
+      "the-hunger-games-on-stage-west-end-2025/financialtimes--unknown.json",
+      "the-hunger-games-on-stage-west-end-2025/i-paper--unknown.json",
+      "the-hunger-games-on-stage-west-end-2025/london-box-office--stuart-king.json",
+      "the-hunger-games-on-stage-west-end-2025/standard--nick-curtis.json",
+      "the-hunger-games-on-stage-west-end-2025/theatre-weekly--greg-stewart.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -75,19 +84,15 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/the-tempest-globe-west-end-2026/independent--unknown.json",
-      "data/review-texts/the-tempest-globe-west-end-2026/thestage--unknown.json"
+      "data/review-texts/the-hunger-games-on-stage-west-end-2025/broadwayworld--cindy-marcolina.json",
+      "data/review-texts/the-hunger-games-on-stage-west-end-2025/thestage--unknown.json",
+      "data/review-texts/the-hunger-games-on-stage-west-end-2025/nytimes--alexis-soloski.json",
+      "data/review-texts/the-hunger-games-on-stage-west-end-2025/independent--unknown.json",
+      "data/review-texts/the-hunger-games-on-stage-west-end-2025/thestage--holly-omahony.json"
     ],
-    "archive": []
-  },
-  "failuresByOutlet": {
-    "The Telegraph": {
-      "count": 1,
-      "domain": "telegraph.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
+    "archive": [
+      "the-hunger-games-on-stage-west-end-2025/bww--cindy-marcolina.json"
+    ]
   },
   "urlDiscoveries": []
 }
