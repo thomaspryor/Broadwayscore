@@ -3,6 +3,9 @@
 // Single source of truth: data/west-end-venues.json
 import venueList from '../../data/west-end-venues.json';
 
+// Re-export market utilities for server-side consumers that already import from here
+export { isLondonMarket, isOffMarket, getMarketMinReviews, getMarketCountry, getMarketCurrency, getMarketLabel } from './market-utils';
+
 const WEST_END_VENUES = new Set(venueList as string[]);
 
 export function isOffWestEndVenue(venue?: string): boolean {
@@ -11,9 +14,4 @@ export function isOffWestEndVenue(venue?: string): boolean {
     .replace(/\s*\(.*\)$/, '')
     .replace(/ theatre$| theater$/, '');
   return !WEST_END_VENUES.has(v);
-}
-
-/** Returns true for both 'west-end' and 'off-west-end' — i.e., any London market. */
-export function isLondonMarket(category?: string): boolean {
-  return category === 'west-end' || category === 'off-west-end';
 }

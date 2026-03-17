@@ -5,16 +5,9 @@ import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import { getScoreColorClass, MustSeeCrown } from '@/components/show-cards';
+import { getMarketLabel } from '@/lib/market-utils';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import type { ShowCardShow } from './types';
-
-/** Get alt text suffix for a show's market */
-function getMarketLabel(category?: string): string {
-  if (category === 'west-end') return 'West End';
-  if (category === 'off-west-end') return 'Off-West End';
-  if (category === 'off-broadway') return 'Off-Broadway';
-  return 'Broadway';
-}
 
 export interface MiniShowCardProps {
   show: ShowCardShow;

@@ -22,6 +22,7 @@ import { GoldListBadge } from '@/components/gold-list/GoldListBadge';
 import { featureFlags } from '@/config/feature-flags';
 import type { ComputedShow } from '@/lib/data-types';
 import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, BASE_URL, toAbsoluteUrl } from '@/lib/seo';
+import { isLondonMarket, getMarketLabel } from '@/lib/venue-classification';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
@@ -76,7 +77,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const synopsisSnippet = show.synopsis
     ? show.synopsis.slice(0, 120).replace(/\s+\S*$/, '...')
     : '';
-  const isLondonMeta = show.category === 'west-end' || show.category === 'off-west-end';
+  const isLondonMeta = isLondonMarket(show.category);
   const isOffBroadwayMeta = show.category === 'off-broadway';
   const siteName = isLondonMeta ? 'West End Scorecard' : isOffBroadwayMeta ? 'Off-Broadway Scorecard' : 'Broadway Scorecard';
   const marketLabel = isLondonMeta ? 'in the West End' : isOffBroadwayMeta ? 'Off-Broadway' : 'on Broadway';
@@ -211,7 +212,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
   const lastUpdated = getShowLastUpdated(show.id);
   const showSchema = generateShowSchema(show, lastUpdated || undefined);
-  const isWestEnd = show.category === 'west-end' || show.category === 'off-west-end';
+  const isWestEnd = isLondonMarket(show.category);
   const isOffBroadway = show.category === 'off-broadway';
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },

@@ -1,6 +1,7 @@
 // SEO Utilities - Structured Data Schemas for Rich Search Results
 
 import { ComputedShow } from './engine';
+import { isLondonMarket, getMarketCountry, getMarketCurrency, getMarketMinReviews, getMarketLabel } from './venue-classification';
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -82,9 +83,9 @@ export function generateBreadcrumbSchema(items: { name: string; url: string }[])
 
 // TheaterEvent Schema with full details (enhanced)
 export function generateShowSchema(show: ComputedShow, lastUpdated?: string) {
-  const isLondon = show.category === 'west-end' || show.category === 'off-west-end';
-  const country = isLondon ? 'GB' : 'US';
-  const currency = isLondon ? 'GBP' : 'USD';
+  const isLondon = isLondonMarket(show.category);
+  const country = getMarketCountry(show.category);
+  const currency = getMarketCurrency(show.category);
   const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'TheaterEvent',
@@ -107,7 +108,7 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string) {
 
   // Add aggregate rating if we have scores and sufficient reviews
   // Uses 1-5 star scale for Google rich snippet compatibility
-  const minReviewsForSchema = (isLondon || show.category === 'off-broadway') ? 3 : 5;
+  const minReviewsForSchema = getMarketMinReviews(show.category);
   if (show.criticScore?.score && show.criticScore?.reviewCount >= minReviewsForSchema) {
     schema.aggregateRating = {
       '@type': 'AggregateRating',
@@ -232,7 +233,7 @@ export function generateItemListSchema(items: {
       // Organizer
       event.organizer = {
         '@type': 'Organization',
-        name: item.category === 'west-end' || item.category === 'off-west-end' ? 'West End Scorecard' : item.category === 'off-broadway' ? 'Off-Broadway Scorecard' : 'Broadway Scorecard',
+        name: isLondonMarket(item.category) ? 'West End Scorecard' : item.category === 'off-broadway' ? 'Off-Broadway Scorecard' : 'Broadway Scorecard',
         url: BASE_URL,
       };
 
@@ -250,7 +251,7 @@ export function generateItemListSchema(items: {
 
       // Ticket offers
       if (item.ticketLinks && item.ticketLinks.length > 0) {
-        const itemCurrency = item.category === 'west-end' || item.category === 'off-west-end' ? 'GBP' : 'USD';
+        const itemCurrency = getMarketCurrency(item.category);
         event.offers = item.ticketLinks.map(link => ({
           '@type': 'Offer',
           url: link.url,
@@ -278,14 +279,14 @@ export function generateItemListSchema(items: {
 export function generateShowFAQSchema(show: ComputedShow) {
   const score = show.criticScore?.score ? Math.round(show.criticScore.score) : null;
   const reviewCount = show.criticScore?.reviewCount || 0;
-  const isLondon = show.category === 'west-end' || show.category === 'off-west-end';
+  const isLondon = isLondonMarket(show.category);
   const isOffBroadway = show.category === 'off-broadway';
   const marketLabel = isLondon ? 'in London' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
 
   const faqs: { question: string; answer: string }[] = [];
 
   // Q: What is the score?
-  const minReviewsForFAQ = (isLondon || isOffBroadway) ? 3 : 5;
+  const minReviewsForFAQ = getMarketMinReviews(show.category);
   if (score && reviewCount >= minReviewsForFAQ) {
     faqs.push({
       question: `What is the CriticScore for ${show.title}?`,
@@ -375,7 +376,7 @@ export function generateBrowseFAQSchema(
   pageTitle: string,
   shows: { title: string; slug: string; venue?: string; criticScore?: { score: number; reviewCount: number } | null; status?: string; closingDate?: string | null; type?: string; category?: string }[],
 ) {
-  const isLondon = shows.length > 0 && (shows[0].category === 'west-end' || shows[0].category === 'off-west-end');
+  const isLondon = shows.length > 0 && isLondonMarket(shows[0].category);
   const isOffBroadway = shows.length > 0 && shows[0].category === 'off-broadway';
   const marketLabel = isLondon ? 'in London' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
   const outletNames = isLondon
@@ -386,7 +387,8 @@ export function generateBrowseFAQSchema(
   const faqs: { question: string; answer: string }[] = [];
 
   // Q: What are the best shows in this category?
-  const minReviewsForBrowse = (isLondon || isOffBroadway) ? 3 : 5;
+  const firstCategory = shows.length > 0 ? shows[0].category : undefined;
+  const minReviewsForBrowse = getMarketMinReviews(firstCategory);
   const topShows = shows
     .filter(s => s.criticScore?.score && s.criticScore.reviewCount >= minReviewsForBrowse)
     .slice(0, 5);

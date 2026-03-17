@@ -1,5 +1,6 @@
 import { ImageResponse } from '@vercel/og';
 import { NextRequest } from 'next/server';
+import { getMarketMinReviews } from '@/lib/market-utils';
 
 export const runtime = 'edge';
 
@@ -67,7 +68,7 @@ async function generateShowOG(
   category?: string
 ) {
   const scoreColor = getScoreColor(score, reviewCount);
-  const minReviews = (category === 'off-broadway' || category === 'west-end' || category === 'off-west-end') ? 3 : 5;
+  const minReviews = getMarketMinReviews(category);
   const displayScore = reviewCount >= minReviews && score !== null ? Math.round(score) : null;
   const scoreLabel = displayScore ? getScoreLabel(displayScore) : 'Awaiting Reviews';
 

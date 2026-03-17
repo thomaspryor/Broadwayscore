@@ -49,6 +49,12 @@ const CRITICAL_PATTERNS = [
     description:
       'Off-Broadway page must use same fuseResults !== null guard as homepage.',
   },
+  {
+    file: 'src/components/OffWestEndPageClient.tsx',
+    pattern: 'fuseResults !== null',
+    description:
+      'Off-West End page must use same fuseResults !== null guard as homepage.',
+  },
   // Market detection: use show.category field, not ID string matching.
   // compute-gold-lists.js previously used .id.includes('west-end') which broke
   // when ID naming conventions changed. category field is the canonical source.
@@ -131,6 +137,40 @@ const DIRECTORY_FORBIDDEN_PATTERNS = [
   },
 ];
 
+/**
+ * Co-occurrence patterns: if pattern A exists in a file, pattern B must also exist.
+ * Catches the class of bug where a new market/category is added but shared components
+ * only check for existing categories, silently falling through to defaults.
+ * Each entry: { dir, glob, patternA, patternB, description, exclude? }
+ */
+const CO_OCCURRENCE_PATTERNS = [
+  // Any src/ file that checks === 'west-end' must also handle 'off-west-end'.
+  // Without this, OWE shows silently fall through to Broadway defaults for
+  // duration suffix, market labels, currency, SEO schemas, score thresholds, etc.
+  // Fixed 14 instances of this bug on 2026-03-16.
+  {
+    dir: 'src',
+    glob: '**/*.{ts,tsx}',
+    patternA: "=== 'west-end'",
+    patternB: 'off-west-end',
+    description:
+      'Files that check for west-end category must also handle off-west-end. ' +
+      'Without this, OWE shows fall through to Broadway defaults (wrong currency, labels, thresholds).',
+    exclude: [
+      // These files legitimately filter to WE-only without needing OWE handling:
+      'src/config/browse-pages.ts',       // WE browse pages intentionally filter to category=west-end
+      'src/app/west-end/audience-buzz/page.tsx', // WE-only audience buzz page
+      'src/hooks/useFormspreeCapture.ts',  // Email list routing (WE list handles both)
+      'src/app/api/unsubscribe/route.ts',  // Unsubscribe routing
+      'src/app/unsubscribe/UnsubscribeClient.tsx', // Unsubscribe UI
+      'src/components/HeaderSubscribeButton.tsx', // Subscribe button market label
+      'src/components/FooterEmailCapture.tsx',    // Uses Market type ('broadway'|'west-end'), OWE routed via hook
+      'src/lib/market-utils.ts',                  // Source of truth — defines isLondonMarket() itself
+      'src/lib/venue-classification.ts',           // Re-exports from market-utils + venue-specific logic
+    ],
+  },
+];
+
 const FORBIDDEN_PATTERNS = [
   // Never use ID string matching for market detection in gold lists
   {
@@ -194,6 +234,53 @@ describe('Regression Guards — must NOT exist', () => {
         !found,
         `FORBIDDEN PATTERN DETECTED in ${file}!\n` +
           `Found: ${pattern}\n` +
+          `Reason: ${description}`
+      );
+    });
+  }
+});
+
+describe('Regression Guards — co-occurrence patterns', () => {
+  for (const { dir, glob, patternA, patternB, description, exclude = [] } of CO_OCCURRENCE_PATTERNS) {
+    test(`${dir}/${glob}: files with "${patternA}" must also contain "${patternB}"`, () => {
+      const dirPath = join(ROOT, dir);
+      const violations = [];
+
+      // Recursively find matching files
+      function walk(d) {
+        const entries = readdirSync(d, { withFileTypes: true });
+        for (const entry of entries) {
+          const fullPath = join(d, entry.name);
+          if (entry.isDirectory() && entry.name !== 'node_modules' && entry.name !== '.next') {
+            walk(fullPath);
+          } else if (entry.isFile()) {
+            // Simple glob matching for **/*.{ts,tsx}
+            const exts = glob.match(/\{([^}]+)\}/)?.[1]?.split(',') || [glob.replace('**/*.', '')];
+            if (!exts.some(ext => entry.name.endsWith('.' + ext))) continue;
+
+            const relPath = fullPath.replace(ROOT + '/', '');
+            if (exclude.some(ex => relPath === ex)) continue;
+
+            try {
+              const content = readFileSync(fullPath, 'utf8');
+              if (content.includes(patternA) && !content.includes(patternB)) {
+                violations.push(relPath);
+              }
+            } catch (err) {
+              // Skip unreadable files
+            }
+          }
+        }
+      }
+
+      walk(dirPath);
+
+      assert.strictEqual(
+        violations.length,
+        0,
+        `CO-OCCURRENCE VIOLATION:\n` +
+          `Files containing "${patternA}" but missing "${patternB}":\n` +
+          `  ${violations.join('\n  ')}\n` +
           `Reason: ${description}`
       );
     });

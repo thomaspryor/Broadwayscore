@@ -8,6 +8,7 @@ import { getScoreTier, getScoreColorClass, ScoreBadge, MustSeeCrown, StatusBadge
 import type { ScoreTier } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { getBroadwayDuration, getRunLength, formatOpeningDate, getDurationSuffix } from '@/lib/date-utils';
+import { getMarketLabel } from '@/lib/market-utils';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import type { ShowCardShow, ScoreModeParam } from './types';
 
@@ -43,13 +44,7 @@ function RankBadge({ rank }: { rank: number }) {
   );
 }
 
-/** Get alt text suffix for a show's market */
-function getMarketLabel(category?: string): string {
-  if (category === 'west-end') return 'West End';
-  if (category === 'off-west-end') return 'Off-West End';
-  if (category === 'off-broadway') return 'Off-Broadway';
-  return 'Broadway';
-}
+// getMarketLabel imported from @/lib/venue-classification
 
 const ShowListCard = memo(function ShowListCard({
   show,
