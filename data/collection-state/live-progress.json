@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-17T21:17:59.187Z",
-  "processed": 281,
+  "updatedAt": "2026-03-17T21:20:46.087Z",
+  "processed": 291,
   "failed": 6709,
-  "successRate": "4.0%",
+  "successRate": "4.2%",
   "tierBreakdown": {
-    "playwright": 113,
+    "playwright": 119,
     "amp": 138,
     "browserbase": 16,
     "directCookies": 0,
-    "scrapingbee": 18,
+    "scrapingbee": 20,
     "brightdata": 0,
     "archiveToday": 114,
-    "archive": 74
+    "archive": 76
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-03-17T19:49:25.050Z",
-      "event": "bb-session",
-      "session": "63957ecc",
-      "url": "https://www.thestage.co.uk/long-reviews/the-phantom-of-the-opera-her-majestys-th"
-    },
-    {
-      "t": "2026-03-17T19:49:26.511Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
     {
       "t": "2026-03-17T19:59:58.966Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-17T21:17:09.940Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-17T21:19:24.898Z",
+      "event": "bb-session",
+      "session": "8691bd7b",
+      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
+    },
+    {
+      "t": "2026-03-17T21:19:26.278Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
