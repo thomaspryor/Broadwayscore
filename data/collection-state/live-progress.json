@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-17T06:19:37.252Z",
-  "processed": 574,
-  "failed": 8718,
-  "successRate": "6.2%",
+  "updatedAt": "2026-03-17T06:23:40.779Z",
+  "processed": 583,
+  "failed": 8719,
+  "successRate": "6.3%",
   "tierBreakdown": {
-    "playwright": 283,
+    "playwright": 290,
     "amp": 167,
     "browserbase": 132,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 134,
-    "archive": 174
+    "archive": 176
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-03-17T05:02:19.862Z",
-      "event": "bb-session",
-      "session": "e3f3df98",
-      "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jor"
-    },
-    {
-      "t": "2026-03-17T05:02:21.843Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-17T05:05:40.815Z",
-      "event": "bb-session",
-      "session": "46852e14",
-      "url": "https://www.nytimes.com/2026/03/10/arts/music/tristan-und-isolde-met-opera-revie"
-    },
-    {
-      "t": "2026-03-17T05:05:42.072Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-17T05:42:56.603Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-17T06:18:17.531Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-17T06:19:53.160Z",
+      "event": "bb-session",
+      "session": "a01301e3",
+      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
+    },
+    {
+      "t": "2026-03-17T06:19:54.430Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-17T06:21:28.268Z",
+      "event": "bb-session",
+      "session": "cd8583e9",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-17T06:21:29.407Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
