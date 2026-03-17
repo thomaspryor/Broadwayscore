@@ -1,85 +1,96 @@
 {
-  "runDate": "2026-03-17T03:36:53.131Z",
+  "runDate": "2026-03-17T03:36:28.329Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "into-the-woods-west-end-2025",
+    "showFilter": "starlight-express-west-end-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 11,
-    "failed": 3,
+    "processed": 18,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "78.6%"
+    "successRate": "90.0%"
   },
   "tierBreakdown": {
-    "playwright": 10,
+    "playwright": 15,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 1
+    "archiveToday": 2,
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 13,
-    "tier1Success": 10,
+    "tier1Attempts": 18,
+    "tier1Success": 15,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 3,
     "tier1_5Success": 0,
     "tier2Attempts": 3,
     "tier2Success": 0,
-    "tier3Attempts": 4,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier3_6Attempts": 3,
-    "tier3_6Success": 3,
-    "tier4Attempts": 1,
-    "tier4Success": 0,
-    "totalFailed": 3,
+    "tier3_6Attempts": 2,
+    "tier3_6Success": 2,
+    "tier4Attempts": 4,
+    "tier4Success": 2,
+    "totalFailed": 2,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.3,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "into-the-woods-west-end-2025/musical-theatre-review--unknown.json",
-    "into-the-woods-west-end-2025/thereviewshub--unknown.json",
-    "into-the-woods-west-end-2025/artsdesk--unknown.json",
-    "into-the-woods-west-end-2025/broadwayworld--unknown.json",
-    "into-the-woods-west-end-2025/the-recs--unknown.json",
-    "into-the-woods-west-end-2025/theupcoming--unknown.json",
-    "into-the-woods-west-end-2025/west-end-wilma--unknown.json",
-    "into-the-woods-west-end-2025/guardian--arifa-akbar.json",
-    "into-the-woods-west-end-2025/timeout--unknown.json",
-    "into-the-woods-west-end-2025/standard--nick-curtis.json",
-    "into-the-woods-west-end-2025/whatsonstage--unknown.json"
+    "starlight-express-west-end-2024/musical-theatre-review--unknown.json",
+    "starlight-express-west-end-2024/timeout--andrzej-lukowski.json",
+    "starlight-express-west-end-2024/the-express--unknown.json",
+    "starlight-express-west-end-2024/theupcoming--unknown.json",
+    "starlight-express-west-end-2024/times-uk--unknown.json",
+    "starlight-express-west-end-2024/timeout-london--andrzej-lukowski.json",
+    "starlight-express-west-end-2024/artsdesk--matt-wolf.json",
+    "starlight-express-west-end-2024/broadwayworld--unknown.json",
+    "starlight-express-west-end-2024/i-paper--fiona-mountford.json",
+    "starlight-express-west-end-2024/london-box-office--camille-leadbeater.json",
+    "starlight-express-west-end-2024/london-box-office--stuart-king.json",
+    "starlight-express-west-end-2024/london-theatre--marianka-swain.json",
+    "starlight-express-west-end-2024/london-theatre-1--terry-eastham.json",
+    "starlight-express-west-end-2024/theatre-weekly--greg-stewart.json",
+    "starlight-express-west-end-2024/thestage--paul-vale.json",
+    "starlight-express-west-end-2024/times-uk--clive-davis.json",
+    "starlight-express-west-end-2024/west-end-best-friend--jenny-ell.json",
+    "starlight-express-west-end-2024/whatsonstage--sarah-crompton.json"
   ],
   "failed": [
-    "into-the-woods-west-end-2025/independent--unknown.json",
-    "into-the-woods-west-end-2025/daily-mail--unknown.json",
-    "into-the-woods-west-end-2025/thestage--sam-marlowe.json"
+    "starlight-express-west-end-2024/thereviewshub--unknown.json",
+    "starlight-express-west-end-2024/independent--tim-bano.json"
   ],
   "tierDetails": {
     "playwright": [
-      "into-the-woods-west-end-2025/musical-theatre-review--unknown.json",
-      "into-the-woods-west-end-2025/thereviewshub--unknown.json",
-      "into-the-woods-west-end-2025/artsdesk--unknown.json",
-      "into-the-woods-west-end-2025/the-recs--unknown.json",
-      "into-the-woods-west-end-2025/theupcoming--unknown.json",
-      "into-the-woods-west-end-2025/west-end-wilma--unknown.json",
-      "into-the-woods-west-end-2025/guardian--arifa-akbar.json",
-      "into-the-woods-west-end-2025/timeout--unknown.json",
-      "into-the-woods-west-end-2025/standard--nick-curtis.json",
-      "into-the-woods-west-end-2025/whatsonstage--unknown.json"
+      "starlight-express-west-end-2024/musical-theatre-review--unknown.json",
+      "starlight-express-west-end-2024/timeout--andrzej-lukowski.json",
+      "starlight-express-west-end-2024/the-express--unknown.json",
+      "starlight-express-west-end-2024/theupcoming--unknown.json",
+      "starlight-express-west-end-2024/times-uk--unknown.json",
+      "starlight-express-west-end-2024/timeout-london--andrzej-lukowski.json",
+      "starlight-express-west-end-2024/artsdesk--matt-wolf.json",
+      "starlight-express-west-end-2024/broadwayworld--unknown.json",
+      "starlight-express-west-end-2024/i-paper--fiona-mountford.json",
+      "starlight-express-west-end-2024/london-box-office--camille-leadbeater.json",
+      "starlight-express-west-end-2024/london-box-office--stuart-king.json",
+      "starlight-express-west-end-2024/london-theatre--marianka-swain.json",
+      "starlight-express-west-end-2024/theatre-weekly--greg-stewart.json",
+      "starlight-express-west-end-2024/times-uk--clive-davis.json",
+      "starlight-express-west-end-2024/whatsonstage--sarah-crompton.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -87,13 +98,21 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/into-the-woods-west-end-2025/independent--unknown.json",
-      "data/review-texts/into-the-woods-west-end-2025/daily-mail--unknown.json",
-      "data/review-texts/into-the-woods-west-end-2025/thestage--sam-marlowe.json"
+      "data/review-texts/starlight-express-west-end-2024/thereviewshub--unknown.json",
+      "data/review-texts/starlight-express-west-end-2024/independent--tim-bano.json"
     ],
     "archive": [
-      "into-the-woods-west-end-2025/broadwayworld--unknown.json"
+      "starlight-express-west-end-2024/london-theatre-1--terry-eastham.json",
+      "starlight-express-west-end-2024/thestage--paul-vale.json",
+      "starlight-express-west-end-2024/west-end-best-friend--jenny-ell.json"
     ]
   },
-  "urlDiscoveries": []
+  "failuresByOutlet": {},
+  "urlDiscoveries": [
+    {
+      "reviewId": "starlight-express-west-end-2024/thestage--paul-vale.json",
+      "oldUrl": "https://www.thestage.co.uk/reviews/starlight-express-review-troubadour-wembley-park-london-andrew-lloyd-webber-richard-stilgoe-luke-sheppard",
+      "newUrl": "https://www.thestage.co.uk/opinion/starlight-express-shaped-my-youth-how-will-the-new-version-compare-holly-williams-andrew-lloyd-webber-troubadour-wembley-park"
+    }
+  ]
 }
