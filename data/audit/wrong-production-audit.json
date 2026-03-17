@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-17T04:07:22.510Z",
+  "timestamp": "2026-03-17T05:34:51.930Z",
   "stats": {
     "totalReviews": 31584,
-    "alreadyFlagged": 9416,
+    "alreadyFlagged": 9418,
     "dateGuardCatches": 149,
     "directorMismatch": 1131,
-    "tvFilmSignals": 3495,
-    "londonSignals": 1031,
+    "tvFilmSignals": 3497,
+    "londonSignals": 1038,
     "offBroadwaySignals": 1071,
     "yearMismatch": 93,
-    "noPublishDate": 9479
+    "noPublishDate": 9459
   },
   "findings": [
     {
@@ -15502,7 +15502,7 @@
       "showId": "evening-all-afternoon-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 76,
-      "publishDate": null,
+      "publishDate": "2026-02-25",
       "url": "https://www.timeout.com/london/theatre/evening-all-afternoon-review",
       "findings": [
         {
@@ -23849,6 +23849,20 @@
       "score": 75,
       "publishDate": "January 12, 2026",
       "url": "https://www.telegraph.co.uk/art/reviews/hercules-disney-review-theatre-royal-drury-lane/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "hercules-west-end-2025",
+      "file": "the-paper--fiona-mountford.json",
+      "score": 43,
+      "publishDate": "2025-06-24",
+      "url": "https://inews.co.uk/culture/hercules-musical-awful-review-3767364",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -59094,6 +59108,20 @@
     },
     {
       "showId": "the-real-thing-2014",
+      "file": "huffpost--david-finkle.json",
+      "score": 42,
+      "publishDate": "2014-10-30",
+      "url": "http://www.huffingtonpost.com/david-finkle/first-nighter-stoppards-r_b_6079292.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "the-real-thing-2014",
       "file": "nytimes--ben-brantley.json",
       "score": 44,
       "publishDate": "April 24, 2014",
@@ -70285,6 +70313,75 @@
       ]
     },
     {
+      "showId": "evening-all-afternoon-west-end-2026",
+      "file": "broadwayworld--unknown.json",
+      "publishDate": "2026-02-25",
+      "url": "https://www.broadwayworld.com/westend/article/Review-EVENING-ALL-AFTERNOON-Donmar-Warehouse-20260225",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "evening-all-afternoon-west-end-2026",
+      "file": "london-theatre--holly-omahony.json",
+      "score": 80,
+      "publishDate": "2026-02-25",
+      "url": "https://www.londontheatre.co.uk/reviews/evening-all-afternoon-review-donmar-warehouse",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "evening-all-afternoon-west-end-2026",
+      "file": "standard--unknown.json",
+      "score": 66,
+      "publishDate": "2026-02-25",
+      "url": "https://www.standard.co.uk/culture/theatre/evening-all-afternoon-b1272389.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "evening-all-afternoon-west-end-2026",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 82,
+      "publishDate": "2026-02-24",
+      "url": "https://theatreweekly.com/review-evening-all-afternoon-at-donmar-warehouse/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "evening-all-afternoon-west-end-2026",
+      "file": "times-uk--unknown.json",
+      "score": null,
+      "publishDate": "2026-02-25",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/evening-all-afternoon-review-qftb62m62?gaa_at=eafs&gaa_n=AWEtsqeWxTxXfZ6C7Wb19hBoPmEfDhoN0xBdDBd5cbgKQySLE1mVsnb_05As&gaa_ts=69b8b0f0&gaa_sig=6Q4kZmQOf4xyLB1gN_WNsoiStn5KkQCCqdbgmJU0nEf3b2gpaLyxyGxIkJ21Wf3SFbi5PtDhVF8XHiaZz-xbFQ%3D%3D",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
       "showId": "every-brilliant-thing-2026",
       "file": "chicagotribune--chris-jones.json",
       "score": 77,
@@ -70295,6 +70392,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"barrow street\""
+        }
+      ]
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
+      "file": "deadline--unknown.json",
+      "score": 86,
+      "publishDate": "2026-03-13",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcliffe-1236750131/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -86965,6 +87076,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "the-present-2017",
+      "file": "huffpost--steven-suskin.json",
+      "score": 82,
+      "publishDate": "2017-01-09",
+      "url": "http://www.huffingtonpost.com/steven-suskin/aisle-view-cates-chekhov_b_14045282.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
