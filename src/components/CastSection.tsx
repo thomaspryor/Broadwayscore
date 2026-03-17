@@ -5,6 +5,7 @@ import Link from 'next/link';
 import type { CastMemberOBC } from '@/lib/data-types';
 import type { ShowTonyInfo } from '@/lib/data-tony-noms';
 import { TrophyIcon } from '@/components/icons';
+import { isLondonMarket } from '@/lib/market-utils';
 
 function abbreviateTonyCategory(categories: string[]): string {
   // Prefer acting categories in cast context (more relevant than "Book" or "Score")
@@ -125,7 +126,7 @@ export default function CastSection({ openingNightCast, currentCast, currentCast
         {hasOBC && (
           <>
             <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">
-              {category === 'broadway' || !category ? 'Original Broadway Cast' : category === 'west-end' || category === 'off-west-end' ? 'Original London Cast' : 'Original Cast'}
+              {category === 'broadway' || !category ? 'Original Broadway Cast' : isLondonMarket(category) ? 'Original London Cast' : 'Original Cast'}
             </h2>
             <CastList cast={openingNightCast} actorSlugs={actorSlugs} tonyMap={tonyMap} />
           </>
