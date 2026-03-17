@@ -21,7 +21,7 @@
 // Bump this when extractors are added or improved.
 // recollect-for-scores.js stamps this on _noScoreOnHtml so stale
 // "no score found" flags are retried after extractor changes.
-const EXTRACTOR_VERSION = 2;  // v2: added daily-mail, artsdesk, one-minute-critic; fixed \b regex
+const EXTRACTOR_VERSION = 3;  // v3: Telegraph text-based rating, raw HTML fallback for outlet extractors
 
 /**
  * Clean HTML of scripts, styles, and CSS to avoid false positives
@@ -369,9 +369,24 @@ function extractUKStarRating(html, text) {
     }
   }
 
-  // 2c. Telegraph: SVG stars with e-rating__star--active class
-  if (html.includes('e-rating__star') || html.includes('review-rating')) {
-    const ratingIdx = html.indexOf('review-rating');
+  // 2c. Telegraph: e-rating__text "N/5" within article-review__rating section
+  // Must anchor to article-review__rating to avoid sidebar/related article ratings
+  if (html.includes('e-rating') || html.includes('review-rating')) {
+    // Best: find main review section by article-review__rating class, then read its rating text
+    // Use data-test attribute which survives HTML cleaning better than class matching
+    const mainReviewMatch = html.match(/article-review__rating[^>]*>[\s\S]*?data-test="review-rating-text"[^>]*>\s*(\d\.?\d?)\s*\/\s*5/);
+    if (mainReviewMatch) {
+      const rating = parseFloat(mainReviewMatch[1]);
+      if (rating >= 1 && rating <= 5) {
+        return {
+          originalScore: `${rating}/5 stars`,
+          normalizedScore: starsToNumeric(rating, 5),
+          source: 'telegraph-svg-stars'
+        };
+      }
+    }
+    // Fallback: count active SVG stars in the review-rating section
+    const ratingIdx = html.indexOf('article-review__rating');
     if (ratingIdx > -1) {
       const block = html.substring(ratingIdx, ratingIdx + 5000);
       const active = (block.match(/e-rating__star--active/g) || []).length;
@@ -815,9 +830,11 @@ function extractScore(html, text, outletId) {
   // Clean HTML to avoid CSS/JS false positives
   const cleanedHtml = cleanHtmlForScoring(html);
 
-  // Try outlet-specific extractor first (use cleaned HTML)
+  // Try outlet-specific extractor first
+  // Some outlets (Telegraph) have rating elements that cleanHtmlForScoring corrupts,
+  // so try raw HTML first, then cleaned HTML as fallback
   if (OUTLET_EXTRACTORS[outletId]) {
-    const result = OUTLET_EXTRACTORS[outletId](cleanedHtml, text);
+    const result = OUTLET_EXTRACTORS[outletId](html, text) || OUTLET_EXTRACTORS[outletId](cleanedHtml, text);
     // Check for __skipGeneric marker (outlet explicitly doesn't have scores)
     if (result && result.__skipGeneric) {
       return null; // Don't use generic extractors for this outlet
