@@ -433,6 +433,42 @@ function titleToSlug(title) {
 }
 
 /**
+ * Build slug variants for London audience scrapers (SeatPlan, LBO).
+ * Strips venue suffixes, "the-", "-the-musical", subtitles, etc.
+ * @param {string} title - Show title
+ * @param {function} [slugFn] - Custom slug function (default: titleToSlug)
+ * @returns {string[]} Array of unique slug variants
+ */
+function buildLondonSlugVariants(title, slugFn) {
+  const toSlug = slugFn || titleToSlug;
+  // Strip venue suffixes like " - Globe", " - Southbank Centre"
+  const stripped = title.replace(/\s*[-\u2013\u2014]\s*(Globe|Southbank Centre)$/i, '');
+  const baseSlug = toSlug(title);
+  const strippedSlug = toSlug(stripped);
+  const variants = [baseSlug];
+  if (strippedSlug !== baseSlug) variants.push(strippedSlug);
+  // Drop leading "the-" on all variants
+  for (const slug of [...variants]) {
+    if (slug.startsWith('the-')) variants.push(slug.replace(/^the-/, ''));
+  }
+  // Drop trailing "-the-musical" on all variants
+  for (const slug of [...variants]) {
+    if (slug.endsWith('-the-musical')) variants.push(slug.replace(/-the-musical$/, ''));
+  }
+  // Drop trailing "-musical"
+  if (baseSlug.endsWith('-musical') && !baseSlug.endsWith('-the-musical')) {
+    variants.push(baseSlug.replace(/-(?:a-)?musical$/, ''));
+  }
+  // Drop subtitle after colon
+  const subtitleIdx = title.indexOf(':');
+  if (subtitleIdx > 0) variants.push(toSlug(title.slice(0, subtitleIdx)));
+  // Drop "-both-parts"
+  const bpIdx = baseSlug.indexOf('-both-parts');
+  if (bpIdx > 0) variants.push(baseSlug.slice(0, bpIdx));
+  return [...new Set(variants)];
+}
+
+/**
  * Pick the best production when multiple shows match the same title.
  * If a target year is provided, picks the production with closest opening year.
  * Otherwise, picks the most recent production.
@@ -772,6 +808,7 @@ module.exports = {
   cleanExternalTitle,
   normalizeTitle,
   titleToSlug,
+  buildLondonSlugVariants,
   titleWordsMatch,
   titleWordsMatchWithConfidence,
   TITLE_GENERIC_WORDS,
