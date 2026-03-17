@@ -1513,7 +1513,17 @@
     "war-paint-2017/talkinbroadway--matthew-murray.json",
     "what-the-constitution-means-to-me-2019/onstage-blog--jill-weinlein.json",
     "whos-afraid-of-virginia-woolf-2012/broadwayworld--harker-jones.json",
-    "wonderland-2011/bloomberg--phillip-boroff.json"
+    "wonderland-2011/bloomberg--phillip-boroff.json",
+    "spread-off-broadway-2026/nyt-theater--unknown.json",
+    "the-unknown-2026/nytimes--helen-shaw.json",
+    "the-disappear-2026/wsj--charles-isherwood.json",
+    "the-monsters-2026/theatre-reviews-limited--joseph-verlezza.json",
+    "the-tragedy-of-coriolanus-2026/wsj--charles-isherwood.json",
+    "the-unknown-2026/wsj--charles-isherwood.json",
+    "beetlejuice-west-end-2026/telegraph--robbie-collin.json",
+    "little-shop-of-horrors-2019/curtainup--dan-rubins.json",
+    "little-women-the-musical-2026/thestage--julia-rank.json",
+    "sting-west-end-2026/amny--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1782,7 +1792,10 @@
       "data/review-texts/little-shop-of-horrors-2019/curtainup--dan-rubins.json",
       "data/review-texts/little-women-the-musical-2026/thestage--julia-rank.json",
       "data/review-texts/the-play-that-goes-wrong-2019/broadway-blog--samuel-l-leiter.json",
-      "data/review-texts/the-wiz-1975/nytimes--maya-phillips.json"
+      "data/review-texts/the-wiz-1975/nytimes--maya-phillips.json",
+      "data/review-texts/spread-off-broadway-2026/nyt-theater--unknown.json",
+      "data/review-texts/the-unknown-2026/nytimes--helen-shaw.json",
+      "data/review-texts/little-women-the-musical-2026/thestage--julia-rank.json"
     ],
     "archive": [
       "into-the-woods-west-end-2025/nytimes--unknown.json",
@@ -1881,7 +1894,7 @@
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "wonderland-2011/bloomberg--phillip-boroff.json",
+  "lastProcessed": "sting-west-end-2026/amny--unknown.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -2432,6 +2445,61 @@
       "t": "2026-03-16T23:11:44.353Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-17T00:17:51.567Z",
+      "event": "bb-session",
+      "session": "bcb9cc4b",
+      "url": "https://www.nytimes.com/2026/02/12/theater/the-unknown-review-sean-hayes.html"
+    },
+    {
+      "t": "2026-03-17T00:17:52.767Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T00:18:57.555Z",
+      "event": "bb-session",
+      "session": "297080c5",
+      "url": "https://www.wsj.com/articles/the-disappear-review-a-frustrated-filmmaker-off-bro"
+    },
+    {
+      "t": "2026-03-17T00:18:58.955Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-17T00:19:49.282Z",
+      "event": "bb-session",
+      "session": "00f6eae5",
+      "url": "https://www.wsj.com/articles/the-tragedy-of-coriolanus-review-shouting-shakespea"
+    },
+    {
+      "t": "2026-03-17T00:19:50.376Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-17T00:21:29.033Z",
+      "event": "bb-session",
+      "session": "53c99966",
+      "url": "https://www.wsj.com/articles/the-unknown-review-sean-hayes-blocked-and-stalked-3"
+    },
+    {
+      "t": "2026-03-17T00:21:30.317Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-17T00:26:12.126Z",
+      "event": "bb-session",
+      "session": "c3b0ddc8",
+      "url": "https://www.thestage.co.uk/reviews/little-women-the-musical-park-theatre-london-"
+    },
+    {
+      "t": "2026-03-17T00:26:13.429Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
