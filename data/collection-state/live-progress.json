@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-17T02:04:05.178Z",
-  "processed": 340,
-  "failed": 5752,
+  "updatedAt": "2026-03-17T02:04:37.676Z",
+  "processed": 343,
+  "failed": 5759,
   "successRate": "5.6%",
   "tierBreakdown": {
     "playwright": 149,
-    "amp": 94,
-    "browserbase": 114,
+    "amp": 96,
+    "browserbase": 116,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 37,
-    "archive": 117
+    "archive": 118
   },
-  "browserbaseSessions": 29,
+  "browserbaseSessions": 30,
   "recentActivity": [
-    {
-      "t": "2026-03-17T01:58:06.734Z",
-      "event": "bb-session",
-      "session": "de0ba5fe",
-      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9b0ce3dc1638f937a35757c"
-    },
-    {
-      "t": "2026-03-17T01:58:07.980Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-17T01:59:02.635Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-17T02:03:44.577Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T02:04:21.347Z",
+      "event": "bb-session",
+      "session": "891b234b",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9c0cefde1630f93aa15753c"
+    },
+    {
+      "t": "2026-03-17T02:04:22.815Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

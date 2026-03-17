@@ -339,7 +339,10 @@
     "bloody-bloody-andrew-jackson-2010/variety--david-rooney.json",
     "bloody-bloody-andrew-jackson-2010/variety--steven-suskin.json",
     "bombay-dreams-2004/nytimes--ben-brantley.json",
-    "brighton-beach-memoirs-2009/variety--david-rooney.json"
+    "brighton-beach-memoirs-2009/variety--david-rooney.json",
+    "burn-the-floor-2009/variety--david-rooney.json",
+    "burn-this-2019/vulture--jesse-green.json",
+    "by-jeeves-2001/nytimes--bruce-weber.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -6093,7 +6096,14 @@
     "blithe-spirit-2009/variety--david-rooney.json",
     "born-yesterday-1989/hollywood-reporter--david-rooney.json",
     "born-yesterday-1989/nytimes--charles-isherwood.json",
-    "born-yesterday-1989/variety--marilyn-stasio.json"
+    "born-yesterday-1989/variety--marilyn-stasio.json",
+    "broadway-1987/nytimes--elisabeth-vincentelli.json",
+    "broadway-1987/vulture--jackson-mchenry.json",
+    "buena-vista-social-club-off-broadway-2023/nytg--joe-dziemianowicz.json",
+    "buena-vista-social-club-off-broadway-2023/vulture--jackson-mchenry.json",
+    "bug-2026/hollywood-reporter--caitlin-huston.json",
+    "bye-bye-birdie-2009/variety--david-rooney.json",
+    "cabaret-2014/variety--naveen-kumar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -6342,7 +6352,9 @@
       "data/review-texts/bloody-bloody-andrew-jackson-2010/variety--steven-suskin.json",
       "bloody-bloody-andrew-jackson-2010/variety--steven-suskin.json",
       "data/review-texts/brighton-beach-memoirs-2009/variety--david-rooney.json",
-      "brighton-beach-memoirs-2009/variety--david-rooney.json"
+      "brighton-beach-memoirs-2009/variety--david-rooney.json",
+      "data/review-texts/burn-the-floor-2009/variety--david-rooney.json",
+      "burn-the-floor-2009/variety--david-rooney.json"
     ],
     "browserbase": [
       "data/review-texts/mj-2022/variety--aramide-tinubu.json",
@@ -6458,7 +6470,9 @@
       "data/review-texts/assassins-2004/nytimes--ben-brantley.json",
       "assassins-2004/nytimes--ben-brantley.json",
       "data/review-texts/bombay-dreams-2004/nytimes--ben-brantley.json",
-      "bombay-dreams-2004/nytimes--ben-brantley.json"
+      "bombay-dreams-2004/nytimes--ben-brantley.json",
+      "data/review-texts/by-jeeves-2001/nytimes--bruce-weber.json",
+      "by-jeeves-2001/nytimes--bruce-weber.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -6619,11 +6633,12 @@
       "spare-parts-off-broadway-2026/dailybeast--nick-schager.json",
       "wicked-west-end-2021/huffpost--marshall-fine.json",
       "wicked-west-end-2021/rollingstone--peter-travers.json",
-      "all-out-2025/vulture--roxana-hadadi.json"
+      "all-out-2025/vulture--roxana-hadadi.json",
+      "burn-this-2019/vulture--jesse-green.json"
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "brighton-beach-memoirs-2009/variety--david-rooney.json",
+  "lastProcessed": "cabaret-2014/variety--naveen-kumar.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -7491,6 +7506,17 @@
     },
     {
       "t": "2026-03-17T02:03:44.577Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T02:04:21.347Z",
+      "event": "bb-session",
+      "session": "891b234b",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9c0cefde1630f93aa15753c"
+    },
+    {
+      "t": "2026-03-17T02:04:22.815Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
