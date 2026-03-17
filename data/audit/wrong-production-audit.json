@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-03-17T22:38:56.656Z",
+  "timestamp": "2026-03-17T23:48:40.033Z",
   "stats": {
     "totalReviews": 31610,
     "alreadyFlagged": 9391,
     "dateGuardCatches": 150,
     "directorMismatch": 1135,
-    "tvFilmSignals": 3506,
-    "londonSignals": 1043,
-    "offBroadwaySignals": 1072,
+    "tvFilmSignals": 3507,
+    "londonSignals": 1046,
+    "offBroadwaySignals": 1073,
     "yearMismatch": 92,
     "noPublishDate": 9410
   },
@@ -6649,6 +6649,7 @@
     {
       "showId": "back-to-the-future-west-end-2021",
       "file": "daily-mail--patrick-marmion.json",
+      "score": 92,
       "publishDate": "2021-09-13",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-9987385/PATRICK-MARMION-reviews-Future-stage-show.html",
       "findings": [
@@ -28312,6 +28313,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "king-charles-iii-2015",
+      "file": "stu-on-broadway--stu-brown.json",
+      "score": 86,
+      "publishDate": "December 9th, 2015",
+      "url": "http://stuonbroadway.blogspot.com/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -70107,6 +70127,20 @@
     },
     {
       "showId": "eclipsed-2016",
+      "file": "dc-metro-theater-arts--richard-seff.json",
+      "score": 73,
+      "publishDate": "March 14th, 2016",
+      "url": "http://dcmetrotheaterarts.com/2016/03/14/review-eclipsed/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "eclipsed-2016",
       "file": "dctheatrescene--jonathan-mandell.json",
       "score": 78,
       "publishDate": "2016-03-06",
@@ -77268,6 +77302,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "man-and-boy-west-end-2026",
+      "file": "timeout--unknown.json",
+      "score": null,
+      "publishDate": "2026-02-11",
+      "url": "https://www.westendtheatre.com/338660/news/reviews/man-and-boy-reviews-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -89631,6 +89679,20 @@
       "score": 77,
       "publishDate": null,
       "url": "https://www.londonboxoffice.co.uk/news/post/woman-in-mind-duke-of-yorks-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "woman-in-mind-west-end-2025",
+      "file": "metro--unknown.json",
+      "score": null,
+      "publishDate": "2026-01-07",
+      "url": "https://www.westendtheatre.com/330166/news/reviews/west-end-reviews-of-woman-in-mind-starring-sheridan-smith-romesh-ranganathan/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
