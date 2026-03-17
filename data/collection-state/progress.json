@@ -312,7 +312,8 @@
     "silver-manhattan-off-broadway-2026/nysr--unknown.json",
     "spare-parts-off-broadway-2026/ap--mark-kennedy.json",
     "spare-parts-off-broadway-2026/dailybeast--nick-schager.json",
-    "spare-parts-off-broadway-2026/huffpost--michael-giltz.json"
+    "spare-parts-off-broadway-2026/huffpost--michael-giltz.json",
+    "spare-parts-off-broadway-2026/nysr--roma-torre.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -2663,7 +2664,16 @@
     "six-the-musical-west-end-2021/london-box-office--isabella-james.json",
     "six-the-musical-west-end-2021/whatsonstage--daisy-bowie-sell.json",
     "spare-parts-off-broadway-2026/billboard--joe-leydon.json",
-    "spare-parts-off-broadway-2026/independent--alice-saville.json"
+    "spare-parts-off-broadway-2026/independent--alice-saville.json",
+    "spare-parts-off-broadway-2026/rollingstone--peter-travers.json",
+    "spare-parts-off-broadway-2026/thestage--unknown.json",
+    "spare-parts-off-broadway-2026/usatoday--kerry-lengel.json",
+    "stranger-things-2024/ap--mark-kennedy.json",
+    "stranger-things-2024/broadwayworld--alexander-cohen.json",
+    "stranger-things-2024/people--unknown.json",
+    "stranger-things-2024/slate--unknown.json",
+    "stranger-things-the-first-shadow-west-end-2023/i-paper--emily-baker.json",
+    "stranger-things-the-first-shadow-west-end-2023/slantmagazine--dan-rubins.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2814,7 +2824,8 @@
       "bloodlove-off-broadway-2026/one-minute-critic--unknown.json",
       "maltby-and-shires-about-time-off-broadway-2026/whatsonstage--alun-hood.json",
       "mother-russia-off-broadway-2026/the-interested-bystander--cary-wong.json",
-      "silver-manhattan-off-broadway-2026/nysr--unknown.json"
+      "silver-manhattan-off-broadway-2026/nysr--unknown.json",
+      "spare-parts-off-broadway-2026/nysr--roma-torre.json"
     ],
     "amp": [
       "data/review-texts/peter-and-the-starcatcher-2012/variety--marilyn-stasio.json",
@@ -3019,7 +3030,10 @@
       "data/review-texts/lost-in-del-valle-off-broadway-2026/rollingstone--jonathan-bernstein.json",
       "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/thestage--unknown.json",
       "data/review-texts/silver-manhattan-off-broadway-2026/huffpost--unknown.json",
-      "data/review-texts/spare-parts-off-broadway-2026/independent--alice-saville.json"
+      "data/review-texts/spare-parts-off-broadway-2026/independent--alice-saville.json",
+      "data/review-texts/spare-parts-off-broadway-2026/rollingstone--peter-travers.json",
+      "data/review-texts/spare-parts-off-broadway-2026/thestage--unknown.json",
+      "data/review-texts/spare-parts-off-broadway-2026/usatoday--kerry-lengel.json"
     ],
     "archive": [
       "into-the-woods-west-end-2025/nytimes--unknown.json",
@@ -3139,7 +3153,7 @@
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "spare-parts-off-broadway-2026/independent--alice-saville.json",
+  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/slantmagazine--dan-rubins.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -3875,6 +3889,17 @@
     },
     {
       "t": "2026-03-17T01:08:40.042Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-17T01:19:33.423Z",
+      "event": "bb-session",
+      "session": "62499027",
+      "url": "https://www.thestage.co.uk/reviews/edward-scissorhands"
+    },
+    {
+      "t": "2026-03-17T01:19:34.591Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
