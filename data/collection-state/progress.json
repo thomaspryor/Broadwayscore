@@ -685,7 +685,17 @@
     "paranormal-activity-west-end-2025/timeout--unknown.json",
     "paranormal-activity-west-end-2025/timeout-london--andrzej-lukowski.json",
     "paranormal-activity-west-end-2025/timeout-london--unknown.json",
-    "perfect-crime-off-broadway-1987/nydailynews--editorial-staff.json"
+    "perfect-crime-off-broadway-1987/nydailynews--editorial-staff.json",
+    "ragtime-2025/timeout--adam-feldman.json",
+    "ragtime-2025/wsj--charles-isherwood.json",
+    "shadowlands-west-end-2026/timeout--andrzej-lukowski.json",
+    "shadowlands-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "six-2021/timeout--adam-feldman.json",
+    "spread-off-broadway-2026/theatermania--unknown.json",
+    "starlight-express-west-end-2024/musical-theatre-review--unknown.json",
+    "starlight-express-west-end-2024/timeout--andrzej-lukowski.json",
+    "starlight-express-west-end-2024/timeout-london--andrzej-lukowski.json",
+    "stranger-things-2024/timeout--adam-feldman.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -24299,7 +24309,15 @@
       "paddington-the-musical-west-end-2025/observer--katherine-cowles.json",
       "paranormal-activity-west-end-2025/timeout--unknown.json",
       "paranormal-activity-west-end-2025/timeout-london--andrzej-lukowski.json",
-      "paranormal-activity-west-end-2025/timeout-london--unknown.json"
+      "paranormal-activity-west-end-2025/timeout-london--unknown.json",
+      "ragtime-2025/timeout--adam-feldman.json",
+      "shadowlands-west-end-2026/timeout--andrzej-lukowski.json",
+      "shadowlands-west-end-2026/timeout-london--andrzej-lukowski.json",
+      "six-2021/timeout--adam-feldman.json",
+      "starlight-express-west-end-2024/musical-theatre-review--unknown.json",
+      "starlight-express-west-end-2024/timeout--andrzej-lukowski.json",
+      "starlight-express-west-end-2024/timeout-london--andrzej-lukowski.json",
+      "stranger-things-2024/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/peter-and-the-starcatcher-2012/variety--marilyn-stasio.json",
@@ -25030,11 +25048,13 @@
       "moulin-rouge-2019/theatermania--jesse-green.json",
       "moulin-rouge-2019/theatermania--zachary-stewart.json",
       "oh-mary-2024/theatermania--jesse-green.json",
-      "perfect-crime-off-broadway-1987/nydailynews--editorial-staff.json"
+      "perfect-crime-off-broadway-1987/nydailynews--editorial-staff.json",
+      "ragtime-2025/wsj--charles-isherwood.json",
+      "spread-off-broadway-2026/theatermania--unknown.json"
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "perfect-crime-off-broadway-1987/nydailynews--editorial-staff.json",
+  "lastProcessed": "stranger-things-2024/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -26190,6 +26210,17 @@
       "t": "2026-03-17T11:11:45.464Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-17T11:17:19.618Z",
+      "event": "bb-session",
+      "session": "4c4fa1d2",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-03-17T11:17:20.891Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
