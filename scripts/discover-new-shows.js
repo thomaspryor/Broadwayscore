@@ -761,11 +761,14 @@ function cleanVenueTitle(raw) {
   title = title.replace(/\s+\d{1,2}\s*[-–]\s*\d{1,2}\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*\s+\d{4}\s*$/i, '');
   // Strip trailing "21 Apr - 9 May 2026" format
   title = title.replace(/\s+\d{1,2}\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*\s*[-–]\s*\d{1,2}\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*\s*\d{0,4}\s*$/i, '');
-  // Strip trailing venue/presenter info after "presents"
-  title = title.replace(/\s+(presents|at |Greenwich|Polka|West End|Broadway).*$/i, '');
-  // Strip "Written by..." / "Translated by..." / "by Author Name" suffixes (handles concatenated text like "Foalby Titas")
-  title = title.replace(/\s*(Written|Translated|Directed|Created|Adapted)\s+by\b.*$/i, '');
+  // Strip "By Author Name..." FIRST — most common noise in venue card text
+  // Capital "By" = attribution, not part of title (e.g., "BLINK By Phil Porter")
+  title = title.replace(/\s+By\s+[A-Z].*$/, '');
+  // Lowercase "by FirstName LastName..." (e.g., "Foalby Titas Halder" after concatenation)
   title = title.replace(/\bby\s+[A-Z][a-z]+\s+[A-Z][a-z].*$/, '');
+  title = title.replace(/\s*(Written|Translated|Directed|Created|Adapted)\s+by\b.*$/i, '');
+  // Strip trailing venue/presenter info
+  title = title.replace(/\s+(presents?|at |Greenwich|Polka|West End|Broadway|Productions?).*$/i, '');
   // Strip "More Info" / "Book Now" / dates that got concatenated
   title = title.replace(/\s*(More Info|Book Now|Book Tickets|Find Out More)\s*$/i, '');
   title = title.replace(/\d{1,2}\s*[-–]\s*\d{1,2}\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec).*$/i, '');
