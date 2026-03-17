@@ -1,20 +1,20 @@
 {
-  "runDate": "2026-03-17T03:37:21.723Z",
+  "runDate": "2026-03-17T03:38:17.661Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "witness-for-the-prosecution-west-end-2022",
+    "showFilter": "sweetmeats-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 8,
+    "processed": 4,
+    "failed": 5,
     "skipped": 0,
-    "successRate": "38.5%"
+    "successRate": "44.4%"
   },
   "tierBreakdown": {
     "playwright": 3,
@@ -23,25 +23,25 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 6,
-    "archive": 2
+    "archiveToday": 4,
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 11,
-    "tier1Success": 4,
+    "tier1Attempts": 8,
+    "tier1Success": 5,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 1,
     "tier1_5Success": 0,
-    "tier2Attempts": 6,
+    "tier2Attempts": 4,
     "tier2Success": 0,
     "tier3Attempts": 6,
     "tier3Success": 0,
-    "tier3_6Attempts": 6,
-    "tier3_6Success": 6,
+    "tier3_6Attempts": 4,
+    "tier3_6Success": 4,
     "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 8,
+    "totalFailed": 5,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 1,
@@ -51,27 +51,24 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "witness-for-the-prosecution-west-end-2022/broadwayworld--unknown.json",
-    "witness-for-the-prosecution-west-end-2022/times-uk--unknown.json",
-    "witness-for-the-prosecution-west-end-2022/artsdesk--heather-neill.json",
-    "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json",
-    "witness-for-the-prosecution-west-end-2022/whatsonstage--theo-bosanquet.json"
+    "sweetmeats-west-end-2026/artsdesk--aleks-sierz.json",
+    "sweetmeats-west-end-2026/london-theatre--aliya-al-hassan.json",
+    "sweetmeats-west-end-2026/standard--maya-chandran.json",
+    "sweetmeats-west-end-2026/whatsonstage--rachel-agyekum.json"
   ],
   "failed": [
-    "witness-for-the-prosecution-west-end-2022/timeout--unknown.json",
-    "witness-for-the-prosecution-west-end-2022/everything-theatre--unknown.json",
-    "witness-for-the-prosecution-west-end-2022/theatre-weekly--unknown.json",
-    "witness-for-the-prosecution-west-end-2022/theupcoming--unknown.json",
-    "witness-for-the-prosecution-west-end-2022/west-end-wilma--unknown.json",
-    "witness-for-the-prosecution-west-end-2022/lost-in-theatreland--amy-rye.json",
-    "witness-for-the-prosecution-west-end-2022/thestage--david-benedict.json",
-    "witness-for-the-prosecution-west-end-2022/times-uk--clive-davis.json"
+    "sweetmeats-west-end-2026/broadwayworld--unknown.json",
+    "sweetmeats-west-end-2026/theatre-weekly--unknown.json",
+    "sweetmeats-west-end-2026/guardian--anya-ryan.json",
+    "sweetmeats-west-end-2026/timeout-london--nina-culley.json",
+    "sweetmeats-west-end-2026/thestage--holly-omahony.json"
   ],
   "tierDetails": {
     "playwright": [
-      "witness-for-the-prosecution-west-end-2022/times-uk--unknown.json",
-      "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json",
-      "witness-for-the-prosecution-west-end-2022/whatsonstage--theo-bosanquet.json"
+      "sweetmeats-west-end-2026/artsdesk--aleks-sierz.json",
+      "sweetmeats-west-end-2026/london-theatre--aliya-al-hassan.json",
+      "sweetmeats-west-end-2026/standard--maya-chandran.json",
+      "sweetmeats-west-end-2026/whatsonstage--rachel-agyekum.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -79,24 +76,13 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/witness-for-the-prosecution-west-end-2022/timeout--unknown.json",
-      "data/review-texts/witness-for-the-prosecution-west-end-2022/everything-theatre--unknown.json",
-      "data/review-texts/witness-for-the-prosecution-west-end-2022/theupcoming--unknown.json",
-      "data/review-texts/witness-for-the-prosecution-west-end-2022/west-end-wilma--unknown.json",
-      "data/review-texts/witness-for-the-prosecution-west-end-2022/lost-in-theatreland--amy-rye.json",
-      "data/review-texts/witness-for-the-prosecution-west-end-2022/thestage--david-benedict.json"
+      "data/review-texts/sweetmeats-west-end-2026/theatre-weekly--unknown.json",
+      "data/review-texts/sweetmeats-west-end-2026/broadwayworld--unknown.json",
+      "data/review-texts/sweetmeats-west-end-2026/timeout-london--nina-culley.json",
+      "data/review-texts/sweetmeats-west-end-2026/thestage--holly-omahony.json"
     ],
-    "archive": [
-      "witness-for-the-prosecution-west-end-2022/broadwayworld--unknown.json",
-      "witness-for-the-prosecution-west-end-2022/artsdesk--heather-neill.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": [
-    {
-      "reviewId": "starlight-express-west-end-2024/thestage--paul-vale.json",
-      "oldUrl": "https://www.thestage.co.uk/reviews/starlight-express-review-troubadour-wembley-park-london-andrew-lloyd-webber-richard-stilgoe-luke-sheppard",
-      "newUrl": "https://www.thestage.co.uk/opinion/starlight-express-shaped-my-youth-how-will-the-new-version-compare-holly-williams-andrew-lloyd-webber-troubadour-wembley-park"
-    }
-  ]
+  "urlDiscoveries": []
 }
