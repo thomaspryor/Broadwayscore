@@ -157,26 +157,35 @@ function buildSeatplanUrls(title) {
     return [`https://seatplan.com/london/${SEATPLAN_OVERRIDES[title]}-tickets/`];
   }
 
+  // Strip venue/subtitle suffixes BEFORE slugifying (e.g., "Deep Azure - Globe" -> "Deep Azure")
+  const stripped = title.replace(/\s*[-\u2013\u2014]\s*(Globe|Southbank Centre)$/i, '');
   const baseSlug = titleToSlug(title);
+  const strippedSlug = titleToSlug(stripped);
   const variants = [baseSlug];
+  if (strippedSlug !== baseSlug) variants.push(strippedSlug);
 
-  // Drop leading "the-" (The Lion King → lion-king)
-  if (baseSlug.startsWith('the-')) {
-    variants.push(baseSlug.replace(/^the-/, ''));
-  }
-  // Drop trailing "-the-musical" (SIX the Musical → six)
-  if (baseSlug.endsWith('-the-musical')) {
-    variants.push(baseSlug.replace(/-the-musical$/, ''));
-    // Also try without "the-" AND "-the-musical"
-    if (baseSlug.startsWith('the-')) {
-      variants.push(baseSlug.replace(/^the-/, '').replace(/-the-musical$/, ''));
+  // Drop leading "the-" (The Lion King -> lion-king) - apply to all variants so far
+  for (const slug of [...variants]) {
+    if (slug.startsWith('the-')) {
+      variants.push(slug.replace(/^the-/, ''));
     }
   }
-  // Drop trailing "-musical" (Kinky Boots The Musical → kinky-boots-the → kinky-boots)
+  // Drop trailing "-the-musical" (SIX the Musical -> six) - apply to all variants
+  for (const slug of [...variants]) {
+    if (slug.endsWith('-the-musical')) {
+      variants.push(slug.replace(/-the-musical$/, ''));
+    }
+  }
+  // Drop trailing "-musical" (Kinky Boots The Musical -> kinky-boots-the -> kinky-boots)
   if (baseSlug.endsWith('-musical') && !baseSlug.endsWith('-the-musical')) {
     variants.push(baseSlug.replace(/-(?:a-)?musical$/, ''));
   }
-  // Drop subtitle after colon/dash (Harry Potter And The Cursed Child: Both Parts → harry-potter)
+  // Drop subtitle after colon (Dirty Dancing: The Classic Story -> dirty-dancing)
+  const subtitleIdx = title.indexOf(':');
+  if (subtitleIdx > 0) {
+    variants.push(titleToSlug(title.slice(0, subtitleIdx)));
+  }
+  // Drop "-both-parts" suffix
   const colonIdx = baseSlug.indexOf('-both-parts');
   if (colonIdx > 0) variants.push(baseSlug.slice(0, colonIdx));
 
