@@ -113,59 +113,131 @@ function httpGet(url, options = {}) {
 }
 
 /**
- * Search for a show's Ticketmaster URL via ScrapingBee SERP API.
- * Returns a URL matching ticketmaster.com/.../artist/\d+ or null.
+ * Generic SERP search — tries BrightData first (cheaper), falls back to ScrapingBee.
+ * Returns array of organic results or null.
+ */
+async function serpSearch(query) {
+  // Try BrightData SERP first ($0.0015/query, async)
+  const bdToken = process.env.BRIGHTDATA_TOKEN;
+  if (bdToken) {
+    try {
+      const customer = process.env.BRIGHTDATA_CUSTOMER || 'hl_a2c64a47';
+      const zone = process.env.BRIGHTDATA_SERP_ZONE || 'serp_api1';
+      const submitUrl = `https://api.brightdata.com/serp/req?customer=${customer}&zone=${zone}`;
+      const submitResult = await httpGet(submitUrl, {
+        method: 'POST',
+        body: JSON.stringify({ query: { q: query, gl: 'us' } }),
+        headers: { 'Authorization': `Bearer ${bdToken}`, 'Content-Type': 'application/json' },
+      });
+      if (submitResult.statusCode === 200) {
+        const { response_id } = JSON.parse(submitResult.body);
+        if (response_id) {
+          for (let i = 0; i < 10; i++) {
+            await new Promise(r => setTimeout(r, 2000));
+            const poll = await httpGet(
+              `https://api.brightdata.com/serp/get_result?response_id=${response_id}`,
+              { headers: { 'Authorization': `Bearer ${bdToken}` } }
+            );
+            if (poll.statusCode === 200) {
+              const data = JSON.parse(poll.body);
+              return data.organic || data.organic_results || [];
+            }
+            if (poll.statusCode !== 202) break;
+          }
+        }
+      }
+    } catch (e) {
+      console.log(`    BrightData SERP error: ${e.message}`);
+    }
+  }
+
+  // Fallback: ScrapingBee (25 credits/query)
+  const sbKey = process.env.SCRAPINGBEE_API_KEY;
+  if (sbKey) {
+    try {
+      const searchUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${sbKey}&search=${encodeURIComponent(query)}`;
+      const result = await httpGet(searchUrl);
+      if (result.statusCode === 200) {
+        const data = JSON.parse(result.body);
+        return data.organic_results || data.results || [];
+      }
+    } catch (e) {
+      console.log(`    ScrapingBee SERP error: ${e.message}`);
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Match SERP results against a target domain with title verification.
+ */
+function matchSerpResult(results, targetDomain, showTitle, pathFilter) {
+  for (const r of results) {
+    const url = r.url || r.link;
+    if (!url || !url.includes(targetDomain)) continue;
+    // Skip search/listing pages
+    if (url.includes('/search') || url.includes('/category') || url.includes('/discover')) continue;
+    // Optional path filter
+    if (pathFilter && !pathFilter(url)) continue;
+    // Verify title match
+    const serpTitle = normalizeShowName(r.title || '');
+    const showNorm = normalizeShowName(showTitle);
+    const primaryTitle = showTitle.includes(':') ? normalizeShowName(showTitle.split(':')[0]) : showNorm;
+    const matched = [showNorm, primaryTitle].some(candidate => {
+      const words = candidate.split(' ').filter(w => w.length > 2);
+      const matchCount = words.filter(w => serpTitle.includes(w)).length;
+      return words.length === 0 || matchCount >= Math.ceil(words.length * 0.5);
+    });
+    if (matched) {
+      return url.replace(/^http:/, 'https:');
+    }
+  }
+  return null;
+}
+
+/**
+ * Discover Telecharge URL via SERP, falling back to deterministic construction.
+ * Telecharge blocks all HTTP via Akamai, so SERP is the only verification method.
+ */
+async function discoverTelechargeUrl(showTitle) {
+  const results = await serpSearch(`site:telecharge.com "${showTitle}" broadway`);
+  if (results && results.length > 0) {
+    const url = matchSerpResult(results, 'telecharge.com', showTitle);
+    if (url) {
+      console.log(`  SERP found: ${url}`);
+      return url;
+    }
+  }
+  // Fallback: deterministic URL construction
+  const fallbackUrl = buildTelechargeUrl(showTitle);
+  console.log(`  SERP miss → deterministic fallback: ${fallbackUrl}`);
+  return fallbackUrl;
+}
+
+/**
+ * Search for a show's Ticketmaster URL via SERP.
+ * Uses allowlist of valid TM path patterns instead of strict regex.
  */
 async function discoverTicketmasterUrl(showTitle) {
-  const apiKey = process.env.SCRAPINGBEE_API_KEY;
-  if (!apiKey) {
-    console.log('  ⚠ SCRAPINGBEE_API_KEY not set — skipping Ticketmaster SERP');
+  const results = await serpSearch(`site:ticketmaster.com "${showTitle}" broadway tickets`);
+
+  if (!results || results.length === 0) {
+    console.log(`  ⚠ No SERP results for Ticketmaster`);
     return null;
   }
 
-  const query = `site:ticketmaster.com "${showTitle}" broadway tickets`;
-  const searchUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${apiKey}&search=${encodeURIComponent(query)}`;
+  // Allowlist of valid Ticketmaster path patterns
+  const validPaths = ['/event/', '/artist/', '/venue/', '/tickets/'];
+  const url = matchSerpResult(results, 'ticketmaster.com', showTitle, (u) => {
+    return validPaths.some(p => u.includes(p));
+  });
 
-  try {
-    const result = await httpGet(searchUrl);
-    if (result.statusCode !== 200) {
-      console.log(`  ⚠ SERP returned ${result.statusCode}`);
-      return null;
-    }
-    const data = JSON.parse(result.body);
-    const results = data.organic_results || data.results || [];
-
-    // Find a result matching the Ticketmaster artist URL pattern
-    const tmPattern = /ticketmaster\.com\/.*tickets\/artist\/\d+/;
-    for (const r of results) {
-      const url = r.url || r.link;
-      if (!url || !tmPattern.test(url)) continue;
-
-      // Verify the SERP title matches our show
-      // Try both full title and primary title (before colon/subtitle) — subtitles
-      // dilute word-match ratio for short primary names like "All Out"
-      const serpTitle = normalizeShowName(r.title || '');
-      const showNorm = normalizeShowName(showTitle);
-      const primaryTitle = showTitle.includes(':') ? normalizeShowName(showTitle.split(':')[0]) : showNorm;
-      const candidates = [showNorm, primaryTitle];
-      const matched = candidates.some(candidate => {
-        const words = candidate.split(' ').filter(w => w.length > 2);
-        const matchCount = words.filter(w => serpTitle.includes(w)).length;
-        return words.length === 0 || matchCount >= Math.ceil(words.length * 0.5);
-      });
-
-      if (matched) {
-        // Normalize to HTTPS www
-        const cleanUrl = url.replace(/^http:/, 'https:').replace('://ticketmaster.com', '://www.ticketmaster.com');
-        return cleanUrl;
-      }
-    }
-
-    return null;
-  } catch (e) {
-    console.log(`  ⚠ SERP error: ${e.message}`);
-    return null;
+  if (url) {
+    return url.replace('://ticketmaster.com', '://www.ticketmaster.com');
   }
+
+  return null;
 }
 
 // ============================================================================
@@ -213,8 +285,7 @@ async function main() {
     let url = null;
 
     if (platform === 'Telecharge') {
-      url = buildTelechargeUrl(show.title);
-      console.log(`  Constructed: ${url}`);
+      url = await discoverTelechargeUrl(show.title);
     } else if (platform === 'Ticketmaster') {
       console.log(`  Searching SERP for Ticketmaster URL...`);
       url = await discoverTicketmasterUrl(show.title);
