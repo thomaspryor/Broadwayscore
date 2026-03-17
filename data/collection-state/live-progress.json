@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-17T16:15:05.268Z",
-  "processed": 30,
+  "updatedAt": "2026-03-17T16:16:34.723Z",
+  "processed": 40,
   "failed": 10,
-  "successRate": "75.0%",
+  "successRate": "80.0%",
   "tierBreakdown": {
-    "playwright": 16,
-    "amp": 6,
-    "browserbase": 12,
+    "playwright": 19,
+    "amp": 14,
+    "browserbase": 14,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 6,
-    "archive": 5
+    "archive": 7
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
       "t": "2026-03-17T16:03:15.152Z",
@@ -100,6 +100,17 @@
     },
     {
       "t": "2026-03-17T16:14:33.347Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T16:15:34.775Z",
+      "event": "bb-session",
+      "session": "6348de8f",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-17T16:15:35.937Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
