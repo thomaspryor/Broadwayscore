@@ -332,7 +332,10 @@
     "an-almost-holy-picture-2002/nytimes--ben-brantley.json",
     "anastasia-2017/variety--marilyn-stasio.json",
     "anna-in-the-tropics-2003/nytimes--ben-brantley.json",
-    "art-2025/variety--frank-rizzo.json"
+    "art-2025/variety--frank-rizzo.json",
+    "assassins-2004/nytimes--ben-brantley.json",
+    "august-osage-county-2007/variety--david-rooney.json",
+    "beetlejuice-2025/nyt-theater--unknown.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -6073,7 +6076,14 @@
     "archduke-west-end-2026/nyt-theater--jonathan-mandell.json",
     "archduke-west-end-2026/nytg--amelia-merrill.json",
     "art-1998/vulture--sara-holdren.json",
-    "art-2025/nytimes--unknown.json"
+    "art-2025/nytimes--unknown.json",
+    "avenue-q-2003/nytimes--ben-brantley.json",
+    "beetlejuice-2022/vulture--sara-holdren.json",
+    "beetlejuice-2025/newyorker--conde-nast.json",
+    "beetlejuice-2025/vulture--sara-holdren.json",
+    "beetlejuice-west-end-2026/hollywood-reporter--david-rooney.json",
+    "beetlejuice-west-end-2026/variety--brent-lang.json",
+    "bernhardthamlet-2018/vulture--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -6225,7 +6235,8 @@
       "maltby-and-shires-about-time-off-broadway-2026/whatsonstage--alun-hood.json",
       "mother-russia-off-broadway-2026/the-interested-bystander--cary-wong.json",
       "silver-manhattan-off-broadway-2026/nysr--unknown.json",
-      "spare-parts-off-broadway-2026/nysr--roma-torre.json"
+      "spare-parts-off-broadway-2026/nysr--roma-torre.json",
+      "beetlejuice-2025/nyt-theater--unknown.json"
     ],
     "amp": [
       "data/review-texts/peter-and-the-starcatcher-2012/variety--marilyn-stasio.json",
@@ -6313,7 +6324,9 @@
       "data/review-texts/anastasia-2017/variety--marilyn-stasio.json",
       "anastasia-2017/variety--marilyn-stasio.json",
       "data/review-texts/art-2025/variety--frank-rizzo.json",
-      "art-2025/variety--frank-rizzo.json"
+      "art-2025/variety--frank-rizzo.json",
+      "data/review-texts/august-osage-county-2007/variety--david-rooney.json",
+      "august-osage-county-2007/variety--david-rooney.json"
     ],
     "browserbase": [
       "data/review-texts/mj-2022/variety--aramide-tinubu.json",
@@ -6425,7 +6438,9 @@
       "data/review-texts/an-almost-holy-picture-2002/nytimes--ben-brantley.json",
       "an-almost-holy-picture-2002/nytimes--ben-brantley.json",
       "data/review-texts/anna-in-the-tropics-2003/nytimes--ben-brantley.json",
-      "anna-in-the-tropics-2003/nytimes--ben-brantley.json"
+      "anna-in-the-tropics-2003/nytimes--ben-brantley.json",
+      "data/review-texts/assassins-2004/nytimes--ben-brantley.json",
+      "assassins-2004/nytimes--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -6590,7 +6605,7 @@
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "art-2025/variety--frank-rizzo.json",
+  "lastProcessed": "bernhardthamlet-2018/vulture--jesse-green.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -7436,6 +7451,17 @@
     },
     {
       "t": "2026-03-17T02:02:24.269Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T02:02:57.528Z",
+      "event": "bb-session",
+      "session": "6c0f5185",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9a05eed7173af930a15757c0"
+    },
+    {
+      "t": "2026-03-17T02:02:58.740Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
