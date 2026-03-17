@@ -282,7 +282,11 @@
     "maltby-and-shires-about-time-off-broadway-2026/nytg--juan-michael-porter-ii.json",
     "maltby-and-shires-about-time-off-broadway-2026/nytimes--vincent-canby.json",
     "maltby-and-shires-about-time-off-broadway-2026/variety--chris-jones.json",
-    "pied-a-terre-off-broadway-2026/variety--peter-debruge.json"
+    "pied-a-terre-off-broadway-2026/variety--peter-debruge.json",
+    "silver-manhattan-off-broadway-2026/nyt-theater--unknown.json",
+    "silver-manhattan-off-broadway-2026/nytg--unknown.json",
+    "spare-parts-off-broadway-2026/nytg--unknown.json",
+    "spare-parts-off-broadway-2026/variety--chris-willman.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -2113,7 +2117,13 @@
     "schmigadoon-2026/hollywood-reporter--daniel-fienberg.json",
     "schmigadoon-2026/nytimes--margaret-lyons.json",
     "schmigadoon-2026/vulture--rhoda-feng.json",
-    "seagull-true-story-off-broadway-2026/nyt-theater--jonathan-mandell.json"
+    "seagull-true-story-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "seagull-true-story-off-broadway-2026/vulture--jackson-mchenry.json",
+    "shadowlands-west-end-2026/nytimes--naveen-kumar.json",
+    "shadowlands-west-end-2026/variety--emanuel-levy.json",
+    "silver-manhattan-off-broadway-2026/nytimes--unknown.json",
+    "spare-parts-off-broadway-2026/hollywood-reporter--sheri-linden.json",
+    "spread-off-broadway-2026/hollywood-reporter--james-greenberg.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2252,7 +2262,10 @@
       "stranger-things-the-first-shadow-west-end-2023/timeout--adam-feldman.json",
       "the-book-of-mormon-west-end-2024/timeout--david-cote.json",
       "bigfoot-off-broadway-2026/nyt-theater--unknown.json",
-      "maltby-and-shires-about-time-off-broadway-2026/nytg--juan-michael-porter-ii.json"
+      "maltby-and-shires-about-time-off-broadway-2026/nytg--juan-michael-porter-ii.json",
+      "silver-manhattan-off-broadway-2026/nyt-theater--unknown.json",
+      "silver-manhattan-off-broadway-2026/nytg--unknown.json",
+      "spare-parts-off-broadway-2026/nytg--unknown.json"
     ],
     "amp": [
       "data/review-texts/peter-and-the-starcatcher-2012/variety--marilyn-stasio.json",
@@ -2314,7 +2327,9 @@
       "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/variety--chris-jones.json",
       "maltby-and-shires-about-time-off-broadway-2026/variety--chris-jones.json",
       "data/review-texts/pied-a-terre-off-broadway-2026/variety--peter-debruge.json",
-      "pied-a-terre-off-broadway-2026/variety--peter-debruge.json"
+      "pied-a-terre-off-broadway-2026/variety--peter-debruge.json",
+      "data/review-texts/spare-parts-off-broadway-2026/variety--chris-willman.json",
+      "spare-parts-off-broadway-2026/variety--chris-willman.json"
     ],
     "browserbase": [
       "data/review-texts/mj-2022/variety--aramide-tinubu.json",
@@ -2431,7 +2446,8 @@
       "data/review-texts/little-shop-of-horrors-2019/curtainup--dan-rubins.json",
       "data/review-texts/little-women-the-musical-2026/thestage--julia-rank.json",
       "data/review-texts/the-play-that-goes-wrong-2019/broadway-blog--samuel-l-leiter.json",
-      "data/review-texts/the-wiz-1975/nytimes--maya-phillips.json"
+      "data/review-texts/the-wiz-1975/nytimes--maya-phillips.json",
+      "data/review-texts/silver-manhattan-off-broadway-2026/nytimes--unknown.json"
     ],
     "archive": [
       "into-the-woods-west-end-2025/nytimes--unknown.json",
@@ -2541,7 +2557,7 @@
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "seagull-true-story-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+  "lastProcessed": "spread-off-broadway-2026/hollywood-reporter--james-greenberg.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -3202,6 +3218,17 @@
       "t": "2026-03-17T00:43:48.672Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T00:45:29.612Z",
+      "event": "bb-session",
+      "session": "f849164b",
+      "url": "https://www.nytimes.com/2026/02/22/theater/waterfall-review-patrice-johnson-chev"
+    },
+    {
+      "t": "2026-03-17T00:45:30.891Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
