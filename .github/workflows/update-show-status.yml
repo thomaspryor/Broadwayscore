@@ -433,6 +433,48 @@ jobs:
               console.log('Mezzanine workflow trigger failed:', e.message);
             }
 
+      - name: Trigger SeatPlan workflow for London shows
+        if: steps.filter.outputs.opened_shows != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Trigger SeatPlan scraping for newly opened London shows
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'update-seatplan.yml',
+                ref: 'main',
+                inputs: {
+                  shows: '${{ steps.filter.outputs.opened_shows }}'
+                }
+              });
+              console.log('Triggered SeatPlan workflow for opened shows: ${{ steps.filter.outputs.opened_shows }}');
+            } catch (e) {
+              console.log('SeatPlan workflow trigger failed:', e.message);
+            }
+
+      - name: Trigger LBO workflow for London shows
+        if: steps.filter.outputs.opened_shows != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Trigger LBO scraping for newly opened London shows
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'update-lbo.yml',
+                ref: 'main',
+                inputs: {
+                  shows: '${{ steps.filter.outputs.opened_shows }}'
+                }
+              });
+              console.log('Triggered LBO workflow for opened shows: ${{ steps.filter.outputs.opened_shows }}');
+            } catch (e) {
+              console.log('LBO workflow trigger failed:', e.message);
+            }
+
       - name: Trigger image fetching workflow
         if: steps.filter.outputs.opened_shows != ''
         uses: actions/github-script@v7

@@ -10,6 +10,10 @@ on:
         description: 'Single show ID to update (e.g., hamilton-west-end-2021)'
         required: false
         type: string
+      shows:
+        description: 'Comma-separated show IDs (e.g., show1,show2). Overrides show.'
+        required: false
+        type: string
       dry_run:
         description: 'Dry run (no writes)'
         required: false
@@ -46,15 +50,25 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
-          ARGS=""
+          DRY_RUN_FLAG=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            DRY_RUN_FLAG="--dry-run"
+          fi
 
+          if [ -n "${{ inputs.shows }}" ]; then
+            IFS=',' read -ra SHOW_IDS <<< "${{ inputs.shows }}"
+            for sid in "${SHOW_IDS[@]}"; do
+              echo "Running SeatPlan for: $sid"
+              node scripts/scrape-seatplan-audience.js --show="$sid" $DRY_RUN_FLAG
+            done
+            exit 0
+          fi
+
+          ARGS=""
           if [ -n "${{ inputs.show }}" ]; then
             ARGS="$ARGS --show=${{ inputs.show }}"
           fi
-
-          if [ "${{ inputs.dry_run }}" = "true" ]; then
-            ARGS="$ARGS --dry-run"
-          fi
+          ARGS="$ARGS $DRY_RUN_FLAG"
 
           # shellcheck disable=SC2086
           node scripts/scrape-seatplan-audience.js $ARGS
