@@ -577,6 +577,45 @@ jobs:
               console.log('Deep Research trigger failed:', e.message);
             }
 
+      - name: Trigger Opening Night Poller for opened shows
+        if: needs.update-shows.outputs.opened_count != '' && needs.update-shows.outputs.opened_count != '0'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Dispatch the opening night poller to discover reviews for newly opened shows
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'opening-night-poller.yml',
+                ref: 'main',
+                inputs: {}
+              });
+              console.log('Triggered Opening Night Poller for opened shows');
+            } catch (e) {
+              console.log('Opening Night Poller trigger failed:', e.message);
+            }
+
+      - name: Trigger Opening Night Broadcast (preview to owner)
+        if: needs.update-shows.outputs.opened_count != '' && needs.update-shows.outputs.opened_count != '0'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Dispatch the broadcast — defaults to preview-to-owner only.
+            // Owner must manually re-dispatch with send_to_all=true to send to subscribers.
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'opening-night-broadcast.yml',
+                ref: 'main',
+                inputs: {}
+              });
+              console.log('Triggered Opening Night Broadcast (preview mode) for opened shows');
+            } catch (e) {
+              console.log('Opening Night Broadcast trigger failed:', e.message);
+            }
+
       - name: Submit new show pages to Google Indexing API + IndexNow
         continue-on-error: true
         env:
