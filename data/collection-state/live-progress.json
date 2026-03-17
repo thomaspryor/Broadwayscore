@@ -1,18 +1,107 @@
 {
-  "updatedAt": "2026-03-17T19:31:34.720Z",
-  "processed": 190,
-  "failed": 7961,
-  "successRate": "2.3%",
+  "updatedAt": "2026-03-17T20:18:01.636Z",
+  "processed": 250,
+  "failed": 6660,
+  "successRate": "3.6%",
   "tierBreakdown": {
-    "playwright": 71,
-    "amp": 110,
-    "browserbase": 0,
+    "playwright": 92,
+    "amp": 138,
+    "browserbase": 14,
     "directCookies": 0,
-    "scrapingbee": 21,
+    "scrapingbee": 17,
     "brightdata": 0,
-    "archiveToday": 24,
-    "archive": 44
+    "archiveToday": 71,
+    "archive": 66
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 8,
+  "recentActivity": [
+    {
+      "t": "2026-03-17T19:49:25.050Z",
+      "event": "bb-session",
+      "session": "63957ecc",
+      "url": "https://www.thestage.co.uk/long-reviews/the-phantom-of-the-opera-her-majestys-th"
+    },
+    {
+      "t": "2026-03-17T19:49:26.511Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-17T19:59:58.966Z",
+      "event": "bb-session",
+      "session": "f7e8aded",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-17T20:00:00.538Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T20:01:00.217Z",
+      "event": "bb-session",
+      "session": "f649c71d",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-17T20:01:01.640Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T20:01:18.310Z",
+      "event": "bb-session",
+      "session": "ef15cf05",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-17T20:01:19.747Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T20:02:13.283Z",
+      "event": "bb-session",
+      "session": "fc0825ce",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-17T20:02:14.987Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T20:03:46.976Z",
+      "event": "bb-session",
+      "session": "55086397",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-03-17T20:03:48.485Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T20:06:06.215Z",
+      "event": "bb-session",
+      "session": "d41cb153",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
+    },
+    {
+      "t": "2026-03-17T20:06:07.810Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T20:08:18.791Z",
+      "event": "bb-session",
+      "session": "969f6705",
+      "url": "https://www.nytimes.com/2024/05/24/theater/tom-holland-romeo-and-juliet.html"
+    },
+    {
+      "t": "2026-03-17T20:08:20.498Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }

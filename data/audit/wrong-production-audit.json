@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-17T19:05:11.825Z",
+  "timestamp": "2026-03-17T20:35:09.591Z",
   "stats": {
-    "totalReviews": 31600,
-    "alreadyFlagged": 9386,
-    "dateGuardCatches": 149,
+    "totalReviews": 31610,
+    "alreadyFlagged": 9388,
+    "dateGuardCatches": 150,
     "directorMismatch": 1133,
-    "tvFilmSignals": 3502,
-    "londonSignals": 1039,
+    "tvFilmSignals": 3503,
+    "londonSignals": 1041,
     "offBroadwaySignals": 1072,
     "yearMismatch": 92,
-    "noPublishDate": 9421
+    "noPublishDate": 9412
   },
   "findings": [
     {
@@ -32365,6 +32365,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"apple tv\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "manic-street-creature-west-end-2026",
+      "file": "guardian--unknown.json",
+      "score": null,
+      "publishDate": "2026-03-17",
+      "url": "https://www.theguardian.com/stage/2026/mar/17/maimuna-memon-olivier-natasha-pierre-manic-street-creature",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
         },
         {
           "type": "LONDON_SIGNAL",
@@ -66809,7 +66828,7 @@
       "showId": "american-psycho-2016",
       "file": "guardian--alexis-soloski.json",
       "score": 63,
-      "publishDate": null,
+      "publishDate": "2026-02-02",
       "url": "http://www.theguardian.com/stage/2016/apr/21/american-psycho-review-patrick-bateman-sings-strips-and-slashes",
       "findings": [
         {
@@ -80530,7 +80549,7 @@
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -84339,6 +84358,17 @@
       ]
     },
     {
+      "showId": "the-choir-of-man-off-west-end-2026",
+      "file": "whatsonstage--unknown.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 163d before show (2025-10-02 vs 2026-03-14)"
+        }
+      ]
+    },
+    {
       "showId": "the-choir-of-man-west-end-2026",
       "file": "west-end-best-friend--natalie-pedro.json",
       "score": 90,
@@ -86836,6 +86866,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"classic stage\""
+        }
+      ]
+    },
+    {
+      "showId": "the-phantom-of-the-opera-off-west-end-2021",
+      "file": "standard--unknown.json",
+      "score": 81,
+      "publishDate": "2021-08-12",
+      "url": "https://www.standard.co.uk/culture/theatre/phantom-of-the-opera-west-end-review-her-majestys-theatre-london-b950370.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
