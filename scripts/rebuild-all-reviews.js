@@ -1159,7 +1159,7 @@ showDirs.forEach(showId => {
       // Skip wrong-production reviews (e.g., off-Broadway reviews filed under Broadway show)
       // OVERRIDE: If wrongProduction was set by cross-market guard ("US outlet reviewing London show")
       // but the URL is actually a UK domain, clear it — the guard was wrong.
-      if (data.wrongProduction === true && isLondonMarket(showCategory) && data.url
+      if (data.wrongProduction === true && isLondonMarket(showCat) && data.url
           && data.wrongProductionNote && data.wrongProductionNote.includes('Cross-market')) {
         try {
           const hostname = new URL(data.url).hostname || '';
@@ -1183,7 +1183,7 @@ showDirs.forEach(showId => {
       // OVERRIDE: If this is a London show AND the review URL is from a UK/major outlet domain,
       // the wrongShow flag is almost certainly a false positive from LLM classification.
       // UK outlets reviewing London shows cannot be "wrong show" — they only cover London theatre.
-      if (data.wrongShow === true && isLondonMarket(showCategory) && data.url) {
+      if (data.wrongShow === true && isLondonMarket(showCat) && data.url) {
         try {
           const hostname = new URL(data.url).hostname || '';
           const isUkOrMajorUrl = hostname.endsWith('.co.uk') || hostname.endsWith('.org.uk')
