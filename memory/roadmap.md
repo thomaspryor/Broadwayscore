@@ -37,6 +37,9 @@
 18. **USA Today star re-collection** — BLOCKED. Older articles no longer render star widgets after site redesigns. ~291 reviews permanently unavailable.
 19. **Remaining UK outlet gaps** — Telegraph SVG extractor (73), Culture Sauce React (58). Need outlet-specific extractor improvements. Post-launch.
 
+**Data Integrity:**
+- **Aggregator archive files critically low** — Only 26 total aggregator archive files found (expected 2500+). Archives may have been accidentally deleted. Investigate immediately — affects rebuild accuracy and data completeness.
+
 **Site Reliability:**
 7. ~~**Pipeline health dashboard**~~ → Phase 1 DONE (health monitoring, 9 categories).
 8. ~~**Notification Phase 2: Daily Digest + Auto-Fix**~~ → DONE. Daily email via Resend with auto-dispatch of fix workflows, urgency badges, plain-English instructions. LOW items suppressed.
