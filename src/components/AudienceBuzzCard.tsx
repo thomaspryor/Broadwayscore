@@ -158,7 +158,7 @@ function SourceCard({ name, icon, score, reviewCount, starRating, url, volumeLab
 
 const SOURCE_ICONS: Record<string, (props: { className?: string }) => React.ReactNode> = {
   showScore: ShowScoreIcon, mezzanine: MezzanineIcon, seatplan: ShowScoreIcon,
-  lbo: BroadwayComIcon, theatr: TheatrIcon, broadwayCom: BroadwayComIcon, reddit: RedditIcon,
+  lbo: BroadwayComIcon, ltd: BroadwayComIcon, theatr: TheatrIcon, broadwayCom: BroadwayComIcon, reddit: RedditIcon,
 };
 
 export default function AudienceBuzzCard({ buzz, showScoreUrl, limitedSources, market }: AudienceBuzzCardProps) {
