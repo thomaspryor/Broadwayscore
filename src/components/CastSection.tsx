@@ -125,7 +125,7 @@ export default function CastSection({ openingNightCast, currentCast, currentCast
         {hasOBC && (
           <>
             <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">
-              {category === 'broadway' || !category ? 'Original Broadway Cast' : category === 'west-end' ? 'Original West End Cast' : 'Original Cast'}
+              {category === 'broadway' || !category ? 'Original Broadway Cast' : category === 'west-end' || category === 'off-west-end' ? 'Original London Cast' : 'Original Cast'}
             </h2>
             <CastList cast={openingNightCast} actorSlugs={actorSlugs} tonyMap={tonyMap} />
           </>
