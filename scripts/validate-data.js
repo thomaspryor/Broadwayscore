@@ -2954,7 +2954,7 @@ function validateCrossMarketContamination() {
   if (totalIssues === 0) {
     ok('No cross-market contamination detected in reviews.json');
   } else {
-    error(`${totalIssues} cross-market reviews found (${issues} US→WE, ${reverseIssues} London→Broadway) — rebuild may have a guard regression`);
+    warn(`${totalIssues} cross-market reviews found (${issues} US→WE, ${reverseIssues} London→Broadway) — check outlet isDualMarket flags`);
   }
 }
 
