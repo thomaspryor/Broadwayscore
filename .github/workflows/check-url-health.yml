@@ -34,18 +34,14 @@ jobs:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
         run: node scripts/health-check-urls.js
 
-      - name: Commit audit data
+      - name: Upload audit report
         if: always()
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/audit/url-health-report.json 2>/dev/null || true
-          if git diff --staged --quiet; then
-            echo "No URL health data changes"
-          else
-            git commit -m "data: URL health check [skip ci]"
-            bash scripts/lib/push-with-retry.sh 8
-          fi
+        uses: actions/upload-artifact@v4
+        with:
+          name: url-health-report
+          path: data/audit/url-health-report.json
+          retention-days: 90
+          if-no-files-found: ignore
 
       - name: Notify on failure
         if: failure()
