@@ -6,12 +6,11 @@ name: Opening Night Poller
 #   3. Direct site search (outlet search endpoints) — instant
 #   4. SERP backup (Google) — catches the rest
 #
-# Polls every 15 min from 2-7 AM UTC (BW) + every 30 min 7 PM-midnight UTC (WE).
 # Creates review files for newly discovered reviews.
 # After discovery: triggers collect → rebuild → score pipeline chain.
 #
-# Separate from opening-night-broadcast.yml (thin check & send).
-# This does the heavy discovery lifting.
+# NO CRON — only dispatched by update-show-status.yml when a show transitions to open,
+# or manually via workflow_dispatch for targeted polling.
 
 on:
   schedule:

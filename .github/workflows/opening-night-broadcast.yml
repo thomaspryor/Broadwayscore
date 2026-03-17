@@ -3,12 +3,10 @@ name: Opening Night Broadcast
 # Thin "check & send" workflow — reads existing scored data, generates consensus, sends email.
 # Heavy lifting (gather, rebuild, score) is handled by the data pipeline:
 #   update-show-status → gather-reviews → rebuild → llm-ensemble-score
-#   opening-night-reviews (5 AM UTC) → SERP discovery → gather-reviews → rebuild → score
 #
-# Polling: Every 30 min from 1-8 AM UTC (BW) + 10 PM-midnight UTC (WE).
-# If shows aren't ready (need 12+ reviews, 3+ T1, 3+ T2), dispatches gather-reviews
-# and re-dispatches itself. Max 8 retries (4 hours). Stops once broadcast sends or
-# no pending shows remain.
+# NO CRON — only dispatched by update-show-status.yml when a show transitions to open,
+# or manually via workflow_dispatch. Always sends preview to owner only unless
+# explicitly re-dispatched with send_to_all=true.
 
 on:
   schedule:
