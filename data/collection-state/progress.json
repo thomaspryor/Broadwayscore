@@ -258,7 +258,12 @@
     "into-the-woods-west-end-2025/timeout--adam-feldman.json",
     "man-and-boy-west-end-2026/timeout--david-cote.json",
     "matilda-the-musical-west-end-2021/guardian--emma-brockes.json",
-    "moulin-rouge-the-musical-west-end-2021/broadwaynews--unknown.json"
+    "moulin-rouge-the-musical-west-end-2021/broadwaynews--unknown.json",
+    "oh-mary-west-end-2025/deadline--greg-evans.json",
+    "oh-mary-west-end-2025/guardian--adrian-horton.json",
+    "oh-mary-west-end-2025/nydailynews--chris-jones.json",
+    "oh-mary-west-end-2025/theatermania--zachary-stewart.json",
+    "oh-mary-west-end-2025/timeout--adam-feldman.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -1683,7 +1688,12 @@
     "matilda-the-musical-west-end-2021/wsj--paul-levy.json",
     "matilda-the-musical-west-end-2021/wsj--terry-teachout.json",
     "moulin-rouge-the-musical-west-end-2021/deadline--greg-evans.json",
-    "moulin-rouge-the-musical-west-end-2021/the-jewish-news--ronelle-grier.json"
+    "moulin-rouge-the-musical-west-end-2021/the-jewish-news--ronelle-grier.json",
+    "oh-mary-west-end-2025/broadwaynews--brittani-samuel.json",
+    "oh-mary-west-end-2025/new-york-sun--elysa-gardner.json",
+    "oh-mary-west-end-2025/nypost--johnny-oleksinski.json",
+    "oh-mary-west-end-2025/observer--david-cote.json",
+    "oh-mary-west-end-2025/thewrap--robert-hofler.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1812,7 +1822,10 @@
       "into-the-woods-west-end-2025/timeout--adam-feldman.json",
       "man-and-boy-west-end-2026/timeout--david-cote.json",
       "matilda-the-musical-west-end-2021/guardian--emma-brockes.json",
-      "moulin-rouge-the-musical-west-end-2021/broadwaynews--unknown.json"
+      "moulin-rouge-the-musical-west-end-2021/broadwaynews--unknown.json",
+      "oh-mary-west-end-2025/guardian--adrian-horton.json",
+      "oh-mary-west-end-2025/theatermania--zachary-stewart.json",
+      "oh-mary-west-end-2025/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/peter-and-the-starcatcher-2012/variety--marilyn-stasio.json",
@@ -1950,7 +1963,9 @@
       "data/review-texts/hamilton-west-end-2021/hollywood-reporter--frank-scheck.json",
       "hamilton-west-end-2021/hollywood-reporter--frank-scheck.json",
       "data/review-texts/back-to-the-future-west-end-2021/deadline--greg-evans.json",
-      "back-to-the-future-west-end-2021/deadline--greg-evans.json"
+      "back-to-the-future-west-end-2021/deadline--greg-evans.json",
+      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
+      "oh-mary-west-end-2025/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -2076,11 +2091,12 @@
       "hamilton-2015/nytimes--ben-brantley.json",
       "into-the-woods-west-end-2025/nytimes--alexis-soloski.json",
       "hadestown-west-end-2024/theatermania--zachary-stewart.json",
-      "hamilton-2015/theatermania--zachary-stewart.json"
+      "hamilton-2015/theatermania--zachary-stewart.json",
+      "oh-mary-west-end-2025/nydailynews--chris-jones.json"
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "moulin-rouge-the-musical-west-end-2021/the-jewish-news--ronelle-grier.json",
+  "lastProcessed": "oh-mary-west-end-2025/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -2684,6 +2700,17 @@
     },
     {
       "t": "2026-03-17T00:25:07.200Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-17T00:31:49.873Z",
+      "event": "bb-session",
+      "session": "b01b205e",
+      "url": "https://deadline.com/2026/03/maya-rudolph-broadway-oh-mary-1236751169/"
+    },
+    {
+      "t": "2026-03-17T00:31:51.002Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
     }

@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-17T00:31:43.564Z",
-  "processed": 259,
-  "failed": 1423,
-  "successRate": "15.4%",
+  "updatedAt": "2026-03-17T00:33:22.454Z",
+  "processed": 264,
+  "failed": 1428,
+  "successRate": "15.6%",
   "tierBreakdown": {
-    "playwright": 125,
+    "playwright": 128,
     "amp": 54,
-    "browserbase": 80,
+    "browserbase": 82,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 22,
-    "archive": 97
+    "archive": 98
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-03-16T23:04:22.008Z",
-      "event": "bb-session",
-      "session": "80744ed5",
-      "url": "http://www.nytimes.com/packages/pdf/theater/82169467.pdf?module=inline"
-    },
-    {
-      "t": "2026-03-16T23:04:23.652Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-16T23:04:35.046Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-17T00:25:07.200Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-17T00:31:49.873Z",
+      "event": "bb-session",
+      "session": "b01b205e",
+      "url": "https://deadline.com/2026/03/maya-rudolph-broadway-oh-mary-1236751169/"
+    },
+    {
+      "t": "2026-03-17T00:31:51.002Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
     }
