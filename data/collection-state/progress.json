@@ -270,7 +270,17 @@
     "data-off-broadway-2026/theatermania--zachary-stewart.json",
     "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
     "death-becomes-her-2024/nydailynews--chris-jones.json",
-    "death-becomes-her-2024/theatermania--jesse-green.json"
+    "death-becomes-her-2024/theatermania--jesse-green.json",
+    "death-becomes-her-2024/timeout--adam-feldman.json",
+    "deep-azure-globe-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
+    "drunk-romeo-and-juliet-off-broadway-2025/theatermania--unknown.json",
+    "evening-all-afternoon-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "every-brilliant-thing-2026/deadline--unknown.json",
+    "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
+    "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
+    "every-brilliant-thing-2026/thewrap--robert-hofler.json",
+    "every-brilliant-thing-2026/timeout--unknown.json"
   ],
   "failed": [
     "arcadia-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -7093,7 +7103,12 @@
       "cold-war-choir-practice-off-broadway-2026/theatermania--unknown.json",
       "cold-war-choir-practice-off-broadway-2026/timeout--adam-feldman.json",
       "death-becomes-her-2024/nydailynews--chris-jones.json",
-      "death-becomes-her-2024/theatermania--jesse-green.json"
+      "death-becomes-her-2024/theatermania--jesse-green.json",
+      "death-becomes-her-2024/timeout--adam-feldman.json",
+      "deep-azure-globe-west-end-2026/timeout-london--andrzej-lukowski.json",
+      "evening-all-afternoon-west-end-2026/timeout-london--andrzej-lukowski.json",
+      "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
+      "every-brilliant-thing-2026/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--unknown.json",
@@ -7249,7 +7264,9 @@
       "data/review-texts/oh-mary-2024/hollywood-reporter--david-rooney.json",
       "oh-mary-2024/hollywood-reporter--david-rooney.json",
       "data/review-texts/romeo-and-juliet-west-end-2026/nytimes--unknown.json",
-      "romeo-and-juliet-west-end-2026/nytimes--unknown.json"
+      "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
+      "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
+      "every-brilliant-thing-2026/deadline--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -7459,11 +7476,15 @@
       "mj-2022/vulture--helen-shaw.json",
       "cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json",
       "data-off-broadway-2026/theatermania--zachary-stewart.json",
-      "death-becomes-her-2024/chelsea-community-news--michael-musto.json"
+      "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
+      "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
+      "drunk-romeo-and-juliet-off-broadway-2025/theatermania--unknown.json",
+      "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
+      "every-brilliant-thing-2026/thewrap--robert-hofler.json"
     ]
   },
   "startTime": "2026-03-17T16:01:32.909Z",
-  "lastProcessed": "death-becomes-her-2024/theatermania--jesse-green.json",
+  "lastProcessed": "every-brilliant-thing-2026/timeout--unknown.json",
   "log": [
     {
       "t": "2026-03-17T19:49:25.050Z",
@@ -7563,6 +7584,17 @@
       "t": "2026-03-17T21:06:54.925Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-17T21:17:08.358Z",
+      "event": "bb-session",
+      "session": "f97c2629",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-17T21:17:09.940Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

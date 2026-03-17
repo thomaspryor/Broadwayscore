@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-17T21:16:19.055Z",
-  "processed": 271,
+  "updatedAt": "2026-03-17T21:17:59.187Z",
+  "processed": 281,
   "failed": 6709,
-  "successRate": "3.9%",
+  "successRate": "4.0%",
   "tierBreakdown": {
-    "playwright": 108,
+    "playwright": 113,
     "amp": 138,
-    "browserbase": 14,
+    "browserbase": 16,
     "directCookies": 0,
     "scrapingbee": 18,
     "brightdata": 0,
     "archiveToday": 114,
-    "archive": 70
+    "archive": 74
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-03-17T19:49:25.050Z",
@@ -113,6 +113,17 @@
       "t": "2026-03-17T21:06:54.925Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-17T21:17:08.358Z",
+      "event": "bb-session",
+      "session": "f97c2629",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-17T21:17:09.940Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
