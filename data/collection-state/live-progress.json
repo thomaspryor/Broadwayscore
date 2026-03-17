@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-17T06:17:29.161Z",
-  "processed": 565,
-  "failed": 8717,
-  "successRate": "6.1%",
+  "updatedAt": "2026-03-17T06:19:37.252Z",
+  "processed": 574,
+  "failed": 8718,
+  "successRate": "6.2%",
   "tierBreakdown": {
-    "playwright": 277,
+    "playwright": 283,
     "amp": 167,
-    "browserbase": 130,
+    "browserbase": 132,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 133,
-    "archive": 172
+    "archiveToday": 134,
+    "archive": 174
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-03-17T05:00:33.987Z",
-      "event": "bb-session",
-      "session": "b1e8d4de",
-      "url": "https://www.nytimes.com/2024/05/24/theater/tom-holland-romeo-and-juliet.html"
-    },
-    {
-      "t": "2026-03-17T05:00:35.234Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-17T05:02:19.862Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-17T06:12:33.396Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T06:18:16.294Z",
+      "event": "bb-session",
+      "session": "f7f4133b",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-17T06:18:17.531Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

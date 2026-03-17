@@ -564,7 +564,16 @@
     "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
     "death-becomes-her-2024/nydailynews--chris-jones.json",
     "death-becomes-her-2024/theatermania--jesse-green.json",
-    "death-becomes-her-2024/timeout--adam-feldman.json"
+    "death-becomes-her-2024/timeout--adam-feldman.json",
+    "deep-azure-globe-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
+    "every-brilliant-thing-2026/deadline--unknown.json",
+    "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
+    "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
+    "every-brilliant-thing-2026/thewrap--robert-hofler.json",
+    "every-brilliant-thing-2026/timeout--unknown.json",
+    "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json",
+    "hadestown-2019/ew--jessica-derschowitz.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -9283,7 +9292,8 @@
     "the-devil-wears-prada-west-end-2024/variety--naman-ramachandran.json",
     "tristan-und-isolde-off-broadway-2026/nytimes--unknown.json",
     "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
-    "arcadia-west-end-2026/guardian--arifa-akbar.json"
+    "arcadia-west-end-2026/guardian--arifa-akbar.json",
+    "deep-azure-globe-west-end-2026/guardian--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -9564,7 +9574,13 @@
       "cold-war-choir-practice-off-broadway-2026/timeout--adam-feldman.json",
       "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
       "death-becomes-her-2024/nydailynews--chris-jones.json",
-      "death-becomes-her-2024/timeout--adam-feldman.json"
+      "death-becomes-her-2024/timeout--adam-feldman.json",
+      "deep-azure-globe-west-end-2026/timeout-london--andrzej-lukowski.json",
+      "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
+      "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
+      "every-brilliant-thing-2026/timeout--unknown.json",
+      "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json",
+      "hadestown-2019/ew--jessica-derschowitz.json"
     ],
     "amp": [
       "data/review-texts/peter-and-the-starcatcher-2012/variety--marilyn-stasio.json",
@@ -9865,7 +9881,9 @@
       "data/review-texts/gore-vidals-the-best-man-2012/hollywood-reporter--david-rooney.json",
       "gore-vidals-the-best-man-2012/hollywood-reporter--david-rooney.json",
       "data/review-texts/oh-mary-2024/hollywood-reporter--david-rooney.json",
-      "oh-mary-2024/hollywood-reporter--david-rooney.json"
+      "oh-mary-2024/hollywood-reporter--david-rooney.json",
+      "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
+      "every-brilliant-thing-2026/deadline--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -10003,7 +10021,8 @@
       "data/review-texts/wicked-west-end-2021/west-end-wilma--unknown.json",
       "data/review-texts/silver-manhattan-off-broadway-2026/nytimes--unknown.json",
       "data/review-texts/tristan-und-isolde-off-broadway-2026/nytimes--unknown.json",
-      "data/review-texts/arcadia-west-end-2026/guardian--arifa-akbar.json"
+      "data/review-texts/arcadia-west-end-2026/guardian--arifa-akbar.json",
+      "data/review-texts/deep-azure-globe-west-end-2026/guardian--unknown.json"
     ],
     "archive": [
       "into-the-woods-west-end-2025/nytimes--unknown.json",
@@ -10177,11 +10196,13 @@
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
       "the-great-gatsby-2024/nytimes--maya-phillips.json",
       "data-off-broadway-2026/theatermania--zachary-stewart.json",
-      "death-becomes-her-2024/theatermania--jesse-green.json"
+      "death-becomes-her-2024/theatermania--jesse-green.json",
+      "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
+      "every-brilliant-thing-2026/thewrap--robert-hofler.json"
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "death-becomes-her-2024/timeout--adam-feldman.json",
+  "lastProcessed": "hadestown-2019/ew--jessica-derschowitz.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -11348,6 +11369,17 @@
       "t": "2026-03-17T06:12:33.396Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T06:18:16.294Z",
+      "event": "bb-session",
+      "session": "f7f4133b",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-17T06:18:17.531Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
