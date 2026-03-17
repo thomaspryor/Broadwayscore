@@ -335,7 +335,11 @@
     "art-2025/variety--frank-rizzo.json",
     "assassins-2004/nytimes--ben-brantley.json",
     "august-osage-county-2007/variety--david-rooney.json",
-    "beetlejuice-2025/nyt-theater--unknown.json"
+    "beetlejuice-2025/nyt-theater--unknown.json",
+    "bloody-bloody-andrew-jackson-2010/variety--david-rooney.json",
+    "bloody-bloody-andrew-jackson-2010/variety--steven-suskin.json",
+    "bombay-dreams-2004/nytimes--ben-brantley.json",
+    "brighton-beach-memoirs-2009/variety--david-rooney.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -6083,7 +6087,13 @@
     "beetlejuice-2025/vulture--sara-holdren.json",
     "beetlejuice-west-end-2026/hollywood-reporter--david-rooney.json",
     "beetlejuice-west-end-2026/variety--brent-lang.json",
-    "bernhardthamlet-2018/vulture--jesse-green.json"
+    "bernhardthamlet-2018/vulture--jesse-green.json",
+    "between-riverside-and-crazy-2022/hollywood-reporter--angie-han.json",
+    "blithe-spirit-2009/variety--david-benedict.json",
+    "blithe-spirit-2009/variety--david-rooney.json",
+    "born-yesterday-1989/hollywood-reporter--david-rooney.json",
+    "born-yesterday-1989/nytimes--charles-isherwood.json",
+    "born-yesterday-1989/variety--marilyn-stasio.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -6326,7 +6336,13 @@
       "data/review-texts/art-2025/variety--frank-rizzo.json",
       "art-2025/variety--frank-rizzo.json",
       "data/review-texts/august-osage-county-2007/variety--david-rooney.json",
-      "august-osage-county-2007/variety--david-rooney.json"
+      "august-osage-county-2007/variety--david-rooney.json",
+      "data/review-texts/bloody-bloody-andrew-jackson-2010/variety--david-rooney.json",
+      "bloody-bloody-andrew-jackson-2010/variety--david-rooney.json",
+      "data/review-texts/bloody-bloody-andrew-jackson-2010/variety--steven-suskin.json",
+      "bloody-bloody-andrew-jackson-2010/variety--steven-suskin.json",
+      "data/review-texts/brighton-beach-memoirs-2009/variety--david-rooney.json",
+      "brighton-beach-memoirs-2009/variety--david-rooney.json"
     ],
     "browserbase": [
       "data/review-texts/mj-2022/variety--aramide-tinubu.json",
@@ -6440,7 +6456,9 @@
       "data/review-texts/anna-in-the-tropics-2003/nytimes--ben-brantley.json",
       "anna-in-the-tropics-2003/nytimes--ben-brantley.json",
       "data/review-texts/assassins-2004/nytimes--ben-brantley.json",
-      "assassins-2004/nytimes--ben-brantley.json"
+      "assassins-2004/nytimes--ben-brantley.json",
+      "data/review-texts/bombay-dreams-2004/nytimes--ben-brantley.json",
+      "bombay-dreams-2004/nytimes--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -6605,7 +6623,7 @@
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "bernhardthamlet-2018/vulture--jesse-green.json",
+  "lastProcessed": "brighton-beach-memoirs-2009/variety--david-rooney.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -7462,6 +7480,17 @@
     },
     {
       "t": "2026-03-17T02:02:58.740Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T02:03:43.455Z",
+      "event": "bb-session",
+      "session": "671241b8",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9d06e0d6163df933a05757c0"
+    },
+    {
+      "t": "2026-03-17T02:03:44.577Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
