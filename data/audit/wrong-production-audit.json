@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-17T05:50:57.080Z",
+  "timestamp": "2026-03-17T06:58:15.635Z",
   "stats": {
     "totalReviews": 31582,
-    "alreadyFlagged": 9413,
+    "alreadyFlagged": 9417,
     "dateGuardCatches": 149,
     "directorMismatch": 1132,
     "tvFilmSignals": 3497,
-    "londonSignals": 1038,
+    "londonSignals": 1037,
     "offBroadwaySignals": 1071,
     "yearMismatch": 93,
-    "noPublishDate": 9459
+    "noPublishDate": 9455
   },
   "findings": [
     {
@@ -6749,6 +6749,7 @@
     {
       "showId": "back-to-the-future-west-end-2021",
       "file": "timeout--adam-feldman.json",
+      "score": 73,
       "publishDate": "2026-01-15",
       "url": "https://www.timeout.com/london/theatre/back-to-the-future-the-musical-review",
       "findings": [
@@ -6762,7 +6763,7 @@
     {
       "showId": "back-to-the-future-west-end-2021",
       "file": "timeout--unknown.json",
-      "score": null,
+      "score": 74,
       "publishDate": "2026-01-15",
       "url": "https://www.timeout.com/london/theatre/back-to-the-future-the-musical-review",
       "findings": [
@@ -35848,7 +35849,7 @@
     {
       "showId": "moulin-rouge-the-musical-west-end-2021",
       "file": "timeout--unknown.json",
-      "score": null,
+      "score": 66,
       "publishDate": "2025-11-04",
       "url": "https://www.timeout.com/london/theatre/moulin-rouge-the-musical-review",
       "findings": [
@@ -70328,6 +70329,7 @@
     {
       "showId": "evening-all-afternoon-west-end-2026",
       "file": "broadwayworld--unknown.json",
+      "score": 63,
       "publishDate": "2026-02-25",
       "url": "https://www.broadwayworld.com/westend/article/Review-EVENING-ALL-AFTERNOON-Donmar-Warehouse-20260225",
       "findings": [
@@ -70383,7 +70385,7 @@
     {
       "showId": "evening-all-afternoon-west-end-2026",
       "file": "times-uk--unknown.json",
-      "score": null,
+      "score": 83,
       "publishDate": "2026-02-25",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/evening-all-afternoon-review-qftb62m62?gaa_at=eafs&gaa_n=AWEtsqeWxTxXfZ6C7Wb19hBoPmEfDhoN0xBdDBd5cbgKQySLE1mVsnb_05As&gaa_ts=69b8b0f0&gaa_sig=6Q4kZmQOf4xyLB1gN_WNsoiStn5KkQCCqdbgmJU0nEf3b2gpaLyxyGxIkJ21Wf3SFbi5PtDhVF8XHiaZz-xbFQ%3D%3D",
       "findings": [
@@ -80448,20 +80450,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
-        }
-      ]
-    },
-    {
-      "showId": "romeo-and-juliet-west-end-2026",
-      "file": "nytimes--unknown.json",
-      "score": 75,
-      "publishDate": "March 1, 2026",
-      "url": "https://www.nytimes.com/2024/05/24/theater/tom-holland-romeo-and-juliet.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
