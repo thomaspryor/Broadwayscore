@@ -270,7 +270,9 @@
     "stranger-things-the-first-shadow-west-end-2023/nypost--johnny-oleksinski.json",
     "stranger-things-the-first-shadow-west-end-2023/theatermania--pete-hempstead.json",
     "stranger-things-the-first-shadow-west-end-2023/timeout--adam-feldman.json",
-    "the-book-of-mormon-west-end-2024/timeout--david-cote.json"
+    "the-book-of-mormon-west-end-2024/timeout--david-cote.json",
+    "an-ark-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/newyorker--shauna-lyon.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -2013,7 +2015,15 @@
     "youre-a-good-man-charlie-brown-off-broadway-2026/broadwayworld--michael-dale.json",
     "youre-a-good-man-charlie-brown-off-broadway-2026/dctheatrescene--richard-seff.json",
     "youre-a-good-man-charlie-brown-off-broadway-2026/front-row-center--holli-harms.json",
-    "youre-a-good-man-charlie-brown-off-broadway-2026/out-magazine--michael-musto.json"
+    "youre-a-good-man-charlie-brown-off-broadway-2026/out-magazine--michael-musto.json",
+    "youre-a-good-man-charlie-brown-off-broadway-2026/theatres-leiter-side--samuel-l-leiter.json",
+    "all-my-sons-west-end-2025/hollywood-reporter--demetrios-matheou.json",
+    "all-my-sons-west-end-2025/hollywood-reporter--frank-scheck.json",
+    "all-my-sons-west-end-2025/nyt-theater--logan-culwell.json",
+    "an-ark-off-broadway-2026/variety--marilyn-stasio.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/nytg--gillian-russo.json",
+    "back-to-the-future-west-end-2021/nytg--gillian-russo.json",
+    "back-to-the-future-west-end-2021/variety--frank-rizzo.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2292,7 +2302,9 @@
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
       "oh-mary-west-end-2025/deadline--greg-evans.json",
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/nypost--johnny-oleksinski.json",
-      "stranger-things-the-first-shadow-west-end-2023/nypost--johnny-oleksinski.json"
+      "stranger-things-the-first-shadow-west-end-2023/nypost--johnny-oleksinski.json",
+      "data/review-texts/an-ark-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "an-ark-off-broadway-2026/hollywood-reporter--frank-scheck.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -2420,11 +2432,12 @@
       "hadestown-west-end-2024/theatermania--zachary-stewart.json",
       "hamilton-2015/theatermania--zachary-stewart.json",
       "oh-mary-west-end-2025/nydailynews--chris-jones.json",
-      "stranger-things-the-first-shadow-west-end-2023/theatermania--pete-hempstead.json"
+      "stranger-things-the-first-shadow-west-end-2023/theatermania--pete-hempstead.json",
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/newyorker--shauna-lyon.json"
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "youre-a-good-man-charlie-brown-off-broadway-2026/out-magazine--michael-musto.json",
+  "lastProcessed": "back-to-the-future-west-end-2021/variety--frank-rizzo.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -3052,6 +3065,28 @@
       "t": "2026-03-17T00:35:01.868Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-17T00:40:54.988Z",
+      "event": "bb-session",
+      "session": "40bcb4ff",
+      "url": "http://www.hollywoodreporter.com/review/angels-america-theater-review-33427%20%2"
+    },
+    {
+      "t": "2026-03-17T00:40:56.320Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T00:42:16.057Z",
+      "event": "bb-session",
+      "session": "fb120e32",
+      "url": "https://www.newyorker.com/culture/goings-on/winter-culture-preview-2025"
+    },
+    {
+      "t": "2026-03-17T00:42:17.370Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
