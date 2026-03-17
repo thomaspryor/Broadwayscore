@@ -24,6 +24,7 @@ const path = require('path');
 const https = require('https');
 const { calculateCombinedScore } = require('./lib/audience-weighting');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { buildLondonSlugVariants } = require('./lib/show-matching');
 
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
@@ -122,51 +123,21 @@ function titleToSlug(title) {
 
 /**
  * Generate slug variants to try for LBO.
- * LBO drops "The" from some slugs and "The Musical" from some.
+ * Uses shared buildLondonSlugVariants + LBO-specific long-slug logic.
  */
 function buildLboUrlVariants(title) {
   if (LBO_OVERRIDES[title]) {
     return [`https://www.londonboxoffice.co.uk/${LBO_OVERRIDES[title]}-tickets`];
   }
-
-  const variants = [];
+  const variants = buildLondonSlugVariants(title, titleToSlug);
+  // LBO-specific: for very long slugs, try first 2-3 words
   const baseSlug = titleToSlug(title);
-  variants.push(baseSlug);
-
-  // Drop leading "the-" (The Lion King → lion-king)
-  if (baseSlug.startsWith('the-')) {
-    variants.push(baseSlug.replace(/^the-/, ''));
-  }
-
-  // Drop trailing "-the-musical" (SIX the Musical → six)
-  if (baseSlug.endsWith('-the-musical')) {
-    variants.push(baseSlug.replace(/-the-musical$/, ''));
-    if (baseSlug.startsWith('the-')) {
-      variants.push(baseSlug.replace(/^the-/, '').replace(/-the-musical$/, ''));
-    }
-  }
-
-  // Drop trailing "-musical" (Kinky Boots The Musical → kinky-boots)
-  if (baseSlug.endsWith('-musical') && !baseSlug.endsWith('-the-musical')) {
-    variants.push(baseSlug.replace(/-(?:a-)?musical$/, ''));
-  }
-
-  // Drop subtitle after "both-parts" or long subtitles
-  const colonIdx = baseSlug.indexOf('-both-parts');
-  if (colonIdx > 0) variants.push(baseSlug.slice(0, colonIdx));
-
-  // For very long slugs, try just the first significant words
-  // (e.g., "stranger-things-the-first-shadow" → "stranger-things")
   const parts = baseSlug.split('-');
   if (parts.length > 4) {
-    // Try first 2-3 words
     variants.push(parts.slice(0, 2).join('-'));
     variants.push(parts.slice(0, 3).join('-'));
   }
-
-  // Deduplicate
-  const unique = [...new Set(variants)];
-  return unique.map(s => `https://www.londonboxoffice.co.uk/${s}-tickets`);
+  return [...new Set(variants)].map(s => `https://www.londonboxoffice.co.uk/${s}-tickets`);
 }
 
 // --- Data extraction ---
