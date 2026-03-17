@@ -721,7 +721,13 @@
     "the-unknown-off-broadway-2026/timeout--adam-feldman.json",
     "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
     "wicked-2003/theatermania--barbara-siegelscott-siegel.json",
-    "wicked-2003/theatermania--david-gordon.json"
+    "wicked-2003/theatermania--david-gordon.json",
+    "wicked-2003/wsj--terry-teachout.json",
+    "you-got-older-off-broadway-2026/theatermania--zachary-stewart.json",
+    "you-got-older-off-broadway-2026/timeout--unknown.json",
+    "every-brilliant-thing-2026/theatrely--unknown.json",
+    "harry-potter-2021/cititour--brian-scott-lipton.json",
+    "heathers-the-musical-off-broadway-2025/theatrely--kobi-kassal.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -23987,7 +23993,11 @@
     "sweetmeats-west-end-2026/guardian--anya-ryan.json",
     "the-holy-rosenbergs-west-end-2026/guardian--david-jays.json",
     "the-lion-king-1997/timeout--adam-feldman.json",
-    "the-reservoir-off-broadway-2026/broadwaynews--nicole-rosky.json"
+    "the-reservoir-off-broadway-2026/broadwaynews--nicole-rosky.json",
+    "zack-off-broadway-2026/broadwaynews--gillian-blum.json",
+    "zack-off-broadway-2026/nydailynews--logan-culwell.json",
+    "buena-vista-social-club-2025/cititour--brian-scott-lipton.json",
+    "heathers-the-musical-off-broadway-2025/cititour--brian-scott-lipton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -24362,7 +24372,11 @@
       "the-reservoir-off-broadway-2026/theatermania--zachary-stewart.json",
       "the-reservoir-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
       "the-tempest-globe-west-end-2026/guardian--unknown.json",
-      "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json"
+      "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "you-got-older-off-broadway-2026/theatermania--zachary-stewart.json",
+      "you-got-older-off-broadway-2026/timeout--unknown.json",
+      "every-brilliant-thing-2026/theatrely--unknown.json",
+      "heathers-the-musical-off-broadway-2025/theatrely--kobi-kassal.json"
     ],
     "amp": [
       "data/review-texts/peter-and-the-starcatcher-2012/variety--marilyn-stasio.json",
@@ -24875,7 +24889,9 @@
       "data/review-texts/come-from-away-2017/usatoday--elysa-gardner.json",
       "data/review-texts/lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
       "data/review-texts/manic-street-creature-west-end-2026/musical-theatre-review--unknown.json",
-      "data/review-texts/the-holy-rosenbergs-west-end-2026/guardian--david-jays.json"
+      "data/review-texts/the-holy-rosenbergs-west-end-2026/guardian--david-jays.json",
+      "data/review-texts/buena-vista-social-club-2025/cititour--brian-scott-lipton.json",
+      "data/review-texts/heathers-the-musical-off-broadway-2025/cititour--brian-scott-lipton.json"
     ],
     "archive": [
       "into-the-woods-west-end-2025/nytimes--unknown.json",
@@ -25107,11 +25123,13 @@
       "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
       "the-unknown-off-broadway-2026/timeout--adam-feldman.json",
       "wicked-2003/theatermania--barbara-siegelscott-siegel.json",
-      "wicked-2003/theatermania--david-gordon.json"
+      "wicked-2003/theatermania--david-gordon.json",
+      "wicked-2003/wsj--terry-teachout.json",
+      "harry-potter-2021/cititour--brian-scott-lipton.json"
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "wicked-2003/theatermania--david-gordon.json",
+  "lastProcessed": "heathers-the-musical-off-broadway-2025/theatrely--kobi-kassal.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -26201,6 +26219,94 @@
       "t": "2026-03-17T05:05:42.072Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T10:57:49.254Z",
+      "event": "bb-session",
+      "session": "061b340f",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-17T10:57:50.408Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-17T10:59:14.863Z",
+      "event": "bb-session",
+      "session": "12820906",
+      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
+    },
+    {
+      "t": "2026-03-17T10:59:16.066Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-17T10:59:53.314Z",
+      "event": "bb-session",
+      "session": "216fc190",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-17T10:59:54.644Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-17T11:01:53.540Z",
+      "event": "bb-session",
+      "session": "c2255d1f",
+      "url": "https://deadline.com/2019/10/little-shop-of-horrors-review-jonathan-groff-tammy-"
+    },
+    {
+      "t": "2026-03-17T11:01:54.786Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-17T11:02:36.443Z",
+      "event": "bb-session",
+      "session": "6cc39608",
+      "url": "https://nypost.com/2019/10/17/little-shop-of-horrors-review-jonathan-groff-tammy"
+    },
+    {
+      "t": "2026-03-17T11:02:37.696Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-17T11:11:44.261Z",
+      "event": "bb-session",
+      "session": "d368dfd5",
+      "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-r"
+    },
+    {
+      "t": "2026-03-17T11:11:45.464Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-17T11:17:19.618Z",
+      "event": "bb-session",
+      "session": "4c4fa1d2",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-03-17T11:17:20.891Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-17T11:25:11.065Z",
+      "event": "bb-session",
+      "session": "90f1af3a",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-03-17T11:25:12.356Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
