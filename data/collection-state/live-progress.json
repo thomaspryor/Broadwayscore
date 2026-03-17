@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-16T23:23:05.237Z",
-  "processed": 239,
-  "failed": 1273,
+  "updatedAt": "2026-03-17T00:18:40.866Z",
+  "processed": 240,
+  "failed": 1282,
   "successRate": "15.8%",
   "tierBreakdown": {
     "playwright": 117,
     "amp": 47,
-    "browserbase": 70,
+    "browserbase": 72,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 22,
     "archive": 93
   },
-  "browserbaseSessions": 23,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-03-16T22:59:07.380Z",
-      "event": "bb-session",
-      "session": "15ed46c5",
-      "url": "https://www.hollywoodreporter.com/news/general-news/sister-act-theater-review-18"
-    },
-    {
-      "t": "2026-03-16T22:59:09.953Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-16T22:59:45.285Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-16T23:11:44.353Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-17T00:17:26.966Z",
+      "event": "bb-session",
+      "session": "297b5fd5",
+      "url": "https://www.nytimes.com/2026/02/05/theater/arcadia-tom-stoppard-old-vic-london.h"
+    },
+    {
+      "t": "2026-03-17T00:17:28.430Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
