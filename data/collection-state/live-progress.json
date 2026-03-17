@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-17T04:53:24.645Z",
-  "processed": 498,
-  "failed": 8504,
-  "successRate": "5.5%",
+  "updatedAt": "2026-03-17T05:03:37.593Z",
+  "processed": 503,
+  "failed": 8509,
+  "successRate": "5.6%",
   "tierBreakdown": {
-    "playwright": 233,
-    "amp": 152,
+    "playwright": 236,
+    "amp": 154,
     "browserbase": 130,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 100,
-    "archive": 155
+    "archiveToday": 103,
+    "archive": 157
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-03-17T02:13:00.984Z",
-      "event": "bb-session",
-      "session": "6f44c3b2",
-      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9d0ce1dd133af930a35757c"
-    },
-    {
-      "t": "2026-03-17T02:13:02.178Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-17T02:13:18.456Z",
-      "event": "bb-session",
-      "session": "da85ba71",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9c00e0d91f39f932a35756c0"
-    },
-    {
-      "t": "2026-03-17T02:13:19.624Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-17T02:14:20.351Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-03-17T04:52:56.537Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T05:00:33.987Z",
+      "event": "bb-session",
+      "session": "b1e8d4de",
+      "url": "https://www.nytimes.com/2024/05/24/theater/tom-holland-romeo-and-juliet.html"
+    },
+    {
+      "t": "2026-03-17T05:00:35.234Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T05:02:19.862Z",
+      "event": "bb-session",
+      "session": "e3f3df98",
+      "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jor"
+    },
+    {
+      "t": "2026-03-17T05:02:21.843Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

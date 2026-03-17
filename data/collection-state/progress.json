@@ -497,7 +497,12 @@
     "the-devil-wears-prada-west-end-2024/digital-spy--ian-sandwell.json",
     "touch-off-broadway-2026/artsfuse--unknown.json",
     "oh-mary-2024/hollywood-reporter--david-rooney.json",
-    "oh-mary-2024/nytimes--erik-piepenburg.json"
+    "oh-mary-2024/nytimes--erik-piepenburg.json",
+    "paddington-the-musical-west-end-2025/variety--david-benedict.json",
+    "ragtime-2025/nyt-theater--unknown.json",
+    "ragtime-2025/nytimes--unknown.json",
+    "sexual-misconduct-of-the-middle-classes-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "the-book-of-mormon-west-end-2024/variety--steven-suskin.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -9003,7 +9008,12 @@
     "the-tempest-globe-west-end-2026/independent--unknown.json",
     "the-tempest-globe-west-end-2026/telegraph--unknown.json",
     "wicked-west-end-2021/west-end-wilma--unknown.json",
-    "witness-for-the-prosecution-west-end-2022/theatre-weekly--unknown.json"
+    "witness-for-the-prosecution-west-end-2022/theatre-weekly--unknown.json",
+    "oh-mary-2024/vulture--helen-shaw.json",
+    "pied-a-terre-off-broadway-2026/nytg--unknown.json",
+    "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
+    "six-2021/newyorker--naomi-fry.json",
+    "the-great-gatsby-2024/nytimes--maya-phillips.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -9240,7 +9250,10 @@
       "romeo-and-juliet-west-end-2026/whatsonstage--unknown.json",
       "sexual-misconduct-of-the-middle-classes-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
       "sweetmeats-west-end-2026/theatre-weekly--unknown.json",
-      "touch-off-broadway-2026/artsfuse--unknown.json"
+      "touch-off-broadway-2026/artsfuse--unknown.json",
+      "ragtime-2025/nyt-theater--unknown.json",
+      "pied-a-terre-off-broadway-2026/nytg--unknown.json",
+      "sexual-misconduct-of-the-middle-classes-off-broadway-2026/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [
       "data/review-texts/peter-and-the-starcatcher-2012/variety--marilyn-stasio.json",
@@ -9395,10 +9408,8 @@
       "women-on-the-verge-of-a-nervous-breakdown-2010/variety--steven-suskin.json",
       "data/review-texts/uncle-vanya-2024/deadline--greg-evans.json",
       "uncle-vanya-2024/deadline--greg-evans.json",
-      "data/review-texts/kinky-boots-off-broadway-2026/huffpost--steven-suskin.json",
-      "kinky-boots-off-broadway-2026/huffpost--steven-suskin.json",
-      "data/review-texts/sunday-in-the-park-with-george-2017/huffpost--michael-glitz.json",
-      "sunday-in-the-park-with-george-2017/huffpost--michael-glitz.json"
+      "data/review-texts/the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
+      "the-book-of-mormon-west-end-2024/variety--steven-suskin.json"
     ],
     "browserbase": [
       "data/review-texts/mj-2022/variety--aramide-tinubu.json",
@@ -9635,7 +9646,10 @@
       "data/review-texts/the-mousetrap-west-end-2021/west-end-wilma--unknown.json",
       "data/review-texts/the-phantom-of-the-opera-west-end-1986/london-theatre--unknown.json",
       "data/review-texts/the-tempest-globe-west-end-2026/independent--unknown.json",
-      "data/review-texts/wicked-west-end-2021/west-end-wilma--unknown.json"
+      "data/review-texts/wicked-west-end-2021/west-end-wilma--unknown.json",
+      "data/review-texts/oh-mary-2024/vulture--helen-shaw.json",
+      "data/review-texts/romeo-and-juliet-west-end-2026/nytimes--unknown.json",
+      "data/review-texts/the-great-gatsby-2024/nytimes--maya-phillips.json"
     ],
     "archive": [
       "into-the-woods-west-end-2025/nytimes--unknown.json",
@@ -9792,11 +9806,13 @@
       "paddington-the-musical-west-end-2025/south-london--michael-holland.json",
       "sweetmeats-west-end-2026/broadwayworld--unknown.json",
       "the-devil-wears-prada-west-end-2024/digital-spy--ian-sandwell.json",
-      "oh-mary-2024/nytimes--erik-piepenburg.json"
+      "oh-mary-2024/nytimes--erik-piepenburg.json",
+      "paddington-the-musical-west-end-2025/variety--david-benedict.json",
+      "ragtime-2025/nytimes--unknown.json"
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "oh-mary-2024/nytimes--erik-piepenburg.json",
+  "lastProcessed": "the-great-gatsby-2024/nytimes--maya-phillips.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -10851,6 +10867,28 @@
     },
     {
       "t": "2026-03-17T04:52:56.537Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T05:00:33.987Z",
+      "event": "bb-session",
+      "session": "b1e8d4de",
+      "url": "https://www.nytimes.com/2024/05/24/theater/tom-holland-romeo-and-juliet.html"
+    },
+    {
+      "t": "2026-03-17T05:00:35.234Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T05:02:19.862Z",
+      "event": "bb-session",
+      "session": "e3f3df98",
+      "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jor"
+    },
+    {
+      "t": "2026-03-17T05:02:21.843Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
