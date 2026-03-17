@@ -71,14 +71,20 @@ function httpGet(url, options = {}) {
 
 /**
  * Match SERP results against a Ticketmaster URL for the given show.
+ * Uses allowlist of valid TM path patterns instead of strict regex.
  * Returns { status, newUrl?, reason? } or null if no results to evaluate.
  */
 function matchTicketmasterFromResults(results, showTitle, existingUrl) {
-  const tmPattern = /ticketmaster\.com\/.*tickets\/artist\/\d+/;
+  // Allowlist of valid Ticketmaster path patterns
+  const validPaths = ['/event/', '/artist/', '/venue/', '/tickets/'];
 
   for (const r of results) {
     const url = r.url || r.link;
-    if (!url || !tmPattern.test(url)) continue;
+    if (!url || !url.includes('ticketmaster.com')) continue;
+    // Must match at least one valid path pattern
+    if (!validPaths.some(p => url.includes(p))) continue;
+    // Reject search/listing/category pages
+    if (url.includes('/search') || url.includes('/discover') || url.includes('/category')) continue;
 
     const serpTitle = normalizeShowName(r.title || '');
     const showNorm = normalizeShowName(showTitle);
