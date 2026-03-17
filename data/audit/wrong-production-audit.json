@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-17T00:41:33.472Z",
+  "timestamp": "2026-03-17T00:48:48.768Z",
   "stats": {
-    "totalReviews": 31515,
-    "alreadyFlagged": 9520,
+    "totalReviews": 31516,
+    "alreadyFlagged": 9517,
     "dateGuardCatches": 135,
-    "directorMismatch": 1122,
+    "directorMismatch": 1123,
     "tvFilmSignals": 3487,
     "londonSignals": 1029,
     "offBroadwaySignals": 1070,
     "yearMismatch": 93,
-    "noPublishDate": 9426
+    "noPublishDate": 9429
   },
   "findings": [
     {
@@ -48056,6 +48056,20 @@
       "score": 81,
       "publishDate": "2023-12-15",
       "url": "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-phoenix-theatre-london-duffer-brothers-jack-thorne-stephen-daldry-sonia-friedman",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "timeout--adam-feldman.json",
+      "score": null,
+      "publishDate": "April 22nd, 2025",
+      "url": "https://www.timeout.com/london/theatre/stranger-things-the-first-shadow-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
