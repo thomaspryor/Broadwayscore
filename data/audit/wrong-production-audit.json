@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-17T01:10:44.334Z",
+  "timestamp": "2026-03-17T02:11:51.320Z",
   "stats": {
-    "totalReviews": 31541,
-    "alreadyFlagged": 9520,
-    "dateGuardCatches": 135,
-    "directorMismatch": 1123,
-    "tvFilmSignals": 3487,
+    "totalReviews": 31563,
+    "alreadyFlagged": 9403,
+    "dateGuardCatches": 149,
+    "directorMismatch": 1129,
+    "tvFilmSignals": 3492,
     "londonSignals": 1029,
     "offBroadwaySignals": 1070,
     "yearMismatch": 93,
-    "noPublishDate": 9452
+    "noPublishDate": 9495
   },
   "findings": [
     {
@@ -3907,6 +3907,17 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"simon mcburney\" from all-my-sons-2008"
+        }
+      ]
+    },
+    {
+      "showId": "all-my-sons-west-end-2025",
+      "file": "london-box-office--stuart-king.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1067d before show (2022-12-13 vs 2025-11-14)"
         }
       ]
     },
@@ -15470,6 +15481,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "evening-all-afternoon-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.timeout.com/london/theatre/evening-all-afternoon-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
         }
       ]
     },
@@ -31993,6 +32018,17 @@
       ]
     },
     {
+      "showId": "magic-mike-live-west-end-2021",
+      "file": "whatsonstage--alex-wood.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 396d before show (2020-11-27 vs 2021-12-28)"
+        }
+      ]
+    },
+    {
       "showId": "magicbird-2012",
       "file": "bloomberg--philip-boroff.json",
       "score": 35,
@@ -33184,6 +33220,20 @@
       ]
     },
     {
+      "showId": "matilda-the-musical-west-end-2021",
+      "file": "whatsonstage--michael-coveney.json",
+      "score": 73,
+      "publishDate": null,
+      "url": "http://www.whatsonstage.com/reviews/theatre/london/E8831322212171/Matilda.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
+        }
+      ]
+    },
+    {
       "showId": "mauritius-2007",
       "file": "nytimes--ben-brantley.json",
       "score": 65,
@@ -34217,6 +34267,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "midnight-a-new-original-musical-by-todrick-hall-west-end-2026",
+      "file": "nytimes--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.nytimes.com/1939/04/06/archives/the-screen-in-review-midnight-with-don-ameche-and-claudette-colbert.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"paramount\""
         }
       ]
     },
@@ -35632,6 +35696,20 @@
       "score": 82,
       "publishDate": "2022-01-20",
       "url": "https://www.londontheatre.co.uk/reviews/moulin-rouge-the-musical-review-piccadilly-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-the-musical-west-end-2021",
+      "file": "standard--nick-curtis.json",
+      "score": 65,
+      "publishDate": "2022-01-21",
+      "url": "https://www.standard.co.uk/culture/theatre/moulin-rouge-the-musical-musical-review-piccadilly-london-b977840.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -51717,6 +51795,20 @@
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
+      "file": "standard--allis-brennan.json",
+      "score": 95,
+      "publishDate": "2017-11-20",
+      "url": "https://www.standard.co.uk/go/london/theatre/the-book-of-mormon-musical-theatre-tickets-in-london-a3706421.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
       "file": "telegraph--charles-spencer.json",
       "score": 82,
       "publishDate": "2013-03-22",
@@ -55781,6 +55873,19 @@
     },
     {
       "showId": "the-lion-king-west-end-2021",
+      "file": "nytimes--ben-brantley.json",
+      "publishDate": null,
+      "url": "http://theater2.nytimes.com/mem/theater/treview.html?id=1077011420479&html_title=&tols_title=LION+KING%2C+THE+%28PLAY%29+++&byline=%20By+BEN+BRANTLEY+&pdate=19971114",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
       "file": "shy-strange-manic--kariss-ainsworth.json",
       "score": 80,
       "publishDate": "2022-06-30",
@@ -55838,6 +55943,20 @@
     },
     {
       "showId": "the-lion-king-west-end-2021",
+      "file": "theupcoming--connor-campbell.json",
+      "score": 62,
+      "publishDate": "November 26, 2019",
+      "url": "https://www.theupcoming.co.uk/2019/11/26/the-lion-the-witch-and-the-wardrobe-at-the-bridge-theatre-theatre-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
       "file": "timeout--ben-walters.json",
       "score": 78,
       "publishDate": "2011-11-04",
@@ -55861,6 +55980,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
+      "file": "variety--greg-evans.json",
+      "publishDate": "2020-07-30",
+      "url": "http://www.variety.com/review/VE1117339958?categoryid=33&cs=1",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -57955,6 +58092,24 @@
       ]
     },
     {
+      "showId": "the-phantom-of-the-opera-west-end-1986",
+      "file": "variety--richard-hummler.json",
+      "publishDate": "2020-07-30",
+      "url": "http://www.variety.com/review/VE1117433023?categoryid=33&cs=1",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 362d before show (2020-07-30 vs 2021-07-27)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from the-phantom-of-the-opera-1988"
+        }
+      ]
+    },
+    {
       "showId": "the-philanthropist-2009",
       "file": "chicagotribune--chris-jones-bway.json",
       "publishDate": "2009-04-26",
@@ -58615,6 +58770,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-producers-west-end-2025",
+      "file": "variety--bob-verini.json",
+      "score": 75,
+      "publishDate": "2026-02-11",
+      "url": "http://www.variety.com/review/VE1117947963?refCatId=33",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"susan stroman\" from the-producers-2001"
         }
       ]
     },
@@ -60270,6 +60439,17 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026",
+      "file": "i-paper--francesca-steele.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1008d before show (2023-04-27 vs 2026-01-29)"
         }
       ]
     },
@@ -67780,6 +67960,17 @@
     },
     {
       "showId": "broken-glass-west-end-2026",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 56d before show (2026-01-06 vs 2026-03-03)"
+        }
+      ]
+    },
+    {
+      "showId": "broken-glass-west-end-2026",
       "file": "broadwayworld--alexander-cohen.json",
       "score": 63,
       "publishDate": "2026-03-04",
@@ -67822,6 +68013,20 @@
     },
     {
       "showId": "broken-glass-west-end-2026",
+      "file": "independent--unknown.json",
+      "score": null,
+      "publishDate": "2026-01-07",
+      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/woman-in-mind-sheridan-smith-romesh-ranganathan-b2895867.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 55d before show (2026-01-07 vs 2026-03-03)"
+        }
+      ]
+    },
+    {
+      "showId": "broken-glass-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 44,
       "publishDate": "2026-03-04",
@@ -67859,6 +68064,31 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "broken-glass-west-end-2026",
+      "file": "theatre-weekly--unknown.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 77d before show (2025-12-16 vs 2026-03-03)"
+        }
+      ]
+    },
+    {
+      "showId": "broken-glass-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 88,
+      "publishDate": "2026-01-06",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/woman-in-mind-review-sheridan-smith-romesh-ranganathan-g6fmpjt7x",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 56d before show (2026-01-06 vs 2026-03-03)"
         }
       ]
     },
@@ -74343,6 +74573,17 @@
       ]
     },
     {
+      "showId": "it-walks-around-the-house-at-night-west-end-2026",
+      "file": "whatsonstage--unknown.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 43d before show (2026-01-20 vs 2026-03-04)"
+        }
+      ]
+    },
+    {
       "showId": "jackals-off-broadway-2026",
       "file": "guardian--michael-billington.json",
       "score": 66,
@@ -78817,10 +79058,36 @@
     },
     {
       "showId": "operation-mincemeat-west-end-2024",
+      "file": "london-box-office--stuart-king.json",
+      "score": 80,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 308d before show (2023-05-26 vs 2024-03-29)"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
       "file": "times-uk--clive-davis.json",
       "score": 85,
       "publishDate": "2023-05-10",
       "url": "https://www.thetimes.co.uk/article/operation-mincemeat-review-a-gloriously-inventive-wartime-romp-jwsrjdkvw",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 324d before show (2023-05-10 vs 2024-03-29)"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "whatsonstage--theo-bosanquet.json",
+      "score": 89,
+      "publishDate": "2023-05-10",
+      "url": "https://www.whatsonstage.com/news/operation-mincemeat-review-genuine-hilarity-with-enormous-heart-on-the-west-end-stage_58905/",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -80342,6 +80609,20 @@
       ]
     },
     {
+      "showId": "shadowlands-west-end-2026",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 73,
+      "publishDate": "2025-12-01",
+      "url": "https://www.whatsonstage.com/news/shadowlands-with-hugh-bonneville-and-maggie-siff-in-the-west-end-review_1712184/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 66d before show (2025-12-01 vs 2026-02-05)"
+        }
+      ]
+    },
+    {
       "showId": "she-loves-me-1994",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 90,
@@ -80562,6 +80843,20 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 365d before show (2018-01-16 vs 2019-01-16)"
+        }
+      ]
+    },
+    {
+      "showId": "six-the-musical-west-end-2021",
+      "file": "whatsonstage--daisy-bowie-sell.json",
+      "score": 88,
+      "publishDate": "2018-09-03",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/six-arts-theatre-review_47499.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 135d before show (2018-09-03 vs 2019-01-16)"
         }
       ]
     },
@@ -88832,6 +89127,20 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 361d before show (October 1, 2021 vs 2022-09-27)"
+        }
+      ]
+    },
+    {
+      "showId": "witness-for-the-prosecution-west-end-2022",
+      "file": "whatsonstage--theo-bosanquet.json",
+      "score": 61,
+      "publishDate": "2021-10-01",
+      "url": "https://www.whatsonstage.com/news/owen-warner-amongst-new-stars-in-witness-for-the-prosecution_1714623/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 361d before show (2021-10-01 vs 2022-09-27)"
         }
       ]
     },
