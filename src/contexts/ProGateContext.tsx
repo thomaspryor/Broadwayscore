@@ -131,8 +131,9 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
 
   const handleModalClose = useCallback(() => {
     if (modalBlocking) return; // Can't close blocking modals
+    track('gate_modal_dismissed', { trigger: modalTrigger });
     setModalOpen(false);
-  }, [modalBlocking]);
+  }, [modalBlocking, modalTrigger]);
 
   // Listen for mid-session subscriptions from inline forms (FooterEmailCapture, etc.)
   useEffect(() => {

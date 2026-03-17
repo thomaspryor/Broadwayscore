@@ -109,7 +109,7 @@ export default function EmailCaptureModal({
   // Track modal shown
   useEffect(() => {
     if (isOpen) {
-      track('gate_modal_shown', { trigger });
+      track('gate_modal_shown', { trigger, is_return_visitor: trigger === 'return_visitor' });
     }
   }, [isOpen, trigger]);
 
@@ -165,6 +165,7 @@ export default function EmailCaptureModal({
         has_company: !!userData.company,
         role: userData.role || 'none',
         trigger,
+        is_return_visitor: trigger === 'return_visitor',
       });
 
       onSubmit(userData);
