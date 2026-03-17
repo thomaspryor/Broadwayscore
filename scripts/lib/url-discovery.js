@@ -287,6 +287,8 @@ const _BD_SERP_ZONE = process.env.BRIGHTDATA_SERP_ZONE || 'serp_api1';
 
 async function _serpViaBrightDataSerpApi(query, apiKey, log) {
   try {
+    // Use Google UK for West End queries, Google US for Broadway/OB
+    const geo = query.includes('West End') ? 'gb' : 'us';
     const submitRes = await fetch(
       `https://api.brightdata.com/serp/req?customer=${_BD_CUSTOMER}&zone=${_BD_SERP_ZONE}`,
       {
@@ -295,7 +297,7 @@ async function _serpViaBrightDataSerpApi(query, apiKey, log) {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${apiKey}`,
         },
-        body: JSON.stringify({ query: { q: query, gl: 'us' } }),
+        body: JSON.stringify({ query: { q: query, gl: geo } }),
         signal: AbortSignal.timeout(15000),
       }
     );
@@ -351,7 +353,8 @@ async function _serpViaBrightDataSerpApi(query, apiKey, log) {
 async function _serpViaBrightDataWebUnlocker(query, apiKey, log) {
   const axios = require('axios');
   // Use SERP zone — Web Unlocker (mcp_unlocker) can't access Google Search
-  const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}&num=10&hl=en&gl=us`;
+  const geo = query.includes('West End') ? 'gb' : 'us';
+  const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}&num=10&hl=en&gl=${geo}`;
 
   try {
     const response = await axios.post('https://api.brightdata.com/request', {
@@ -512,11 +515,14 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     ? showInfo.title.split(' - ')[0].trim()
     : null;
 
+  // Sanitize title for SERP: replace & with "and" to avoid URL encoding issues
+  const serpTitle = showInfo.title.replace(/\s*&\s*/g, ' and ');
+
   let query;
   if (domain) {
-    query = `site:${domain} "${showInfo.title}" ${marketTerm}${yearClause}${criticClause}`;
+    query = `site:${domain} "${serpTitle}" ${marketTerm}${yearClause}${criticClause}`;
   } else {
-    query = `"${showInfo.title}" ${marketTerm}${yearClause} "${outletName}"${criticClause}`;
+    query = `"${serpTitle}" ${marketTerm}${yearClause} "${outletName}"${criticClause}`;
   }
 
   log(`  [URL Discovery] Searching: ${query}`);
@@ -560,7 +566,7 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     // Fallback 2: broader search without site: restriction, using outlet + critic name
     // This catches articles Google didn't index under the domain (URL changes, redirects)
     if (criticName && (domain || oldDomain)) {
-      const fallbackQuery = `"${showInfo.title}" "${outletName}" "${criticName}" ${marketTerm}${yearClause}`;
+      const fallbackQuery = `"${serpTitle}" "${outletName}" "${criticName}" ${marketTerm}${yearClause}`;
       log(`    Fallback search (no site:): ${fallbackQuery}`);
       ({ results, provider } = await _serpWithChain(fallbackQuery, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed));
       provider = provider ? provider + '-fallback' : null;
