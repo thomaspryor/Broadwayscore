@@ -338,8 +338,8 @@ async function main() {
       if (i < toProcess.length - 1) await sleep(RATE_LIMIT_MS);
     }
 
-    // Health gate: abort if reviews dropped significantly
-    if (previousTotalReviews > 0 && stats.totalReviews < previousTotalReviews * 0.5) {
+    // Health gate: abort if reviews dropped significantly (only for full runs)
+    if (!showLimit && !showFilter && previousTotalReviews > 0 && stats.totalReviews < previousTotalReviews * 0.5) {
       console.error(`\n❌ HEALTH GATE: Total reviews (${stats.totalReviews}) < 50% of previous (${previousTotalReviews}). Possible HTML structure change.`);
       process.exit(1);
     }

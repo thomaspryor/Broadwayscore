@@ -33,4 +33,20 @@ function isLondonMarket(category) {
   return category === 'west-end' || category === 'off-west-end';
 }
 
-module.exports = { isOffWestEndVenue, isWestEndVenue, isLondonMarket, normalizeVenueName, WEST_END_VENUES };
+/**
+ * Returns true if a URL belongs to a UK or major theatre outlet.
+ * Used to prevent wrongShow false positives on London-market shows
+ * reviewed by UK outlets.
+ */
+function isUkOutletUrl(url) {
+  if (!url) return false;
+  try {
+    const hostname = new URL(url).hostname || '';
+    return hostname.endsWith('.co.uk') || hostname.endsWith('.org.uk')
+      || /london|theatre|whatsonstage|thestage|theguardian|telegraph|thetimes|independent|standard|inews|variety|nytimes|timeout/.test(hostname);
+  } catch {
+    return false;
+  }
+}
+
+module.exports = { isOffWestEndVenue, isWestEndVenue, isLondonMarket, isUkOutletUrl, normalizeVenueName, WEST_END_VENUES };

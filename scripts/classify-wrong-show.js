@@ -73,10 +73,12 @@ const OUTPUT_PATH = path.join(DATA_DIR, 'audit', 'wrong-show-classified.json');
 
 // --- Imports from show-matching ---
 const { titleWordsMatch, TITLE_GENERIC_WORDS } = require('./lib/show-matching');
+const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 
 // --- Load shows ---
 const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
 const showTitleMap = new Map(showsData.shows.map(s => [s.id, s.title]));
+const showCategoryMap = new Map(showsData.shows.map(s => [s.id, s.category]));
 
 // --- Stats ---
 const stats = {
@@ -355,8 +357,18 @@ async function main() {
           stats.wrongShow++;
           if (VERBOSE) console.log(`  WRONG: ${key} [${parsed.confidence}] — ${parsed.reasoning}`);
 
-          // Apply: flag file with wrongShow + wrongShowReason
-          if (APPLY && parsed.confidence === 'high') {
+          // Skip wrongShow for London-market shows reviewed by UK outlets —
+          // these are almost always false positives from Broadway-centric classification.
+          const showCat = showCategoryMap.get(candidate.showId);
+          if (isLondonMarket(showCat) && isUkOutletUrl(data.url)) {
+            if (VERBOSE) console.log(`  SKIPPED (London market + UK outlet): ${key}`);
+            if (APPLY) {
+              data.wsClassified = 'london_market_exempt';
+              data.wsClassifiedDate = new Date().toISOString().slice(0, 10);
+              fs.writeFileSync(candidate.filePath, JSON.stringify(data, null, 2));
+            }
+          } else if (APPLY && parsed.confidence === 'high') {
+            // Apply: flag file with wrongShow + wrongShowReason
             data.wrongShow = true;
             data.wrongShowReason = `LLM: ${parsed.reasoning}`;
             data.wsClassified = 'wrong_show';
