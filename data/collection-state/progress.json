@@ -346,7 +346,8 @@
     "cat-on-a-hot-tin-roof-2008/hollywood-reporter--david-rooney.json",
     "collected-stories-2010/variety--marilyn-stasio.json",
     "company-1993/nytg--allison-considine.json",
-    "company-2006/variety--charles-isherwood.json"
+    "company-2006/variety--charles-isherwood.json",
+    "dance-of-death-2001/nytimes--ben-brantley.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -6143,7 +6144,16 @@
     "cymbeline-2007/variety--marilyn-stasio.json",
     "cyrano-de-bergerac-1984/nytimes--ben-brantley.json",
     "cyrano-de-bergerac-1984/variety--marilyn-stasio.json",
-    "cyrano-de-bergerac-1984/vulture--scott-brown.json"
+    "cyrano-de-bergerac-1984/vulture--scott-brown.json",
+    "cyrano-de-bergerac-2007/variety--frank-rizzo.json",
+    "cyrano-de-bergerac-2007/vulture--helen-shaw.json",
+    "cyrano-de-bergerac-2007/vulture--scott-brown.json",
+    "cyrano-de-bergerac-west-end-2026/hollywood-reporter--david-rooney.json",
+    "cyrano-de-bergerac-west-end-2026/hollywood-reporter--demetrios-matheou.json",
+    "cyrano-de-bergerac-west-end-2026/nytg--gillian-russo.json",
+    "cyrano-de-bergerac-west-end-2026/variety--marilyn-stasio.json",
+    "cyrano-de-bergerac-west-end-2026/vulture--helen-shaw.json",
+    "dance-of-the-vampires-2002/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -6519,7 +6529,9 @@
       "data/review-texts/by-jeeves-2001/nytimes--bruce-weber.json",
       "by-jeeves-2001/nytimes--bruce-weber.json",
       "data/review-texts/cat-on-a-hot-tin-roof-2008/hollywood-reporter--david-rooney.json",
-      "cat-on-a-hot-tin-roof-2008/hollywood-reporter--david-rooney.json"
+      "cat-on-a-hot-tin-roof-2008/hollywood-reporter--david-rooney.json",
+      "data/review-texts/dance-of-death-2001/nytimes--ben-brantley.json",
+      "dance-of-death-2001/nytimes--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -6685,7 +6697,7 @@
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "cyrano-de-bergerac-1984/vulture--scott-brown.json",
+  "lastProcessed": "dance-of-the-vampires-2002/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -7577,6 +7589,17 @@
       "t": "2026-03-17T02:04:50.323Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T02:05:45.088Z",
+      "event": "bb-session",
+      "session": "8b607d5d",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9f0ce0df143ff931a25753c"
+    },
+    {
+      "t": "2026-03-17T02:05:46.333Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
