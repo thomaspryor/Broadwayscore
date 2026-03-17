@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-17T21:27:50.365Z",
-  "processed": 321,
-  "failed": 6709,
-  "successRate": "4.6%",
+  "updatedAt": "2026-03-17T21:33:01.365Z",
+  "processed": 330,
+  "failed": 6710,
+  "successRate": "4.7%",
   "tierBreakdown": {
-    "playwright": 138,
+    "playwright": 142,
     "amp": 138,
-    "browserbase": 20,
+    "browserbase": 22,
     "directCookies": 0,
     "scrapingbee": 24,
     "brightdata": 0,
     "archiveToday": 114,
-    "archive": 81
+    "archive": 85
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-03-17T20:02:13.283Z",
-      "event": "bb-session",
-      "session": "fc0825ce",
-      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
-    },
-    {
-      "t": "2026-03-17T20:02:14.987Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-17T20:03:46.976Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-17T21:24:09.492Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-17T21:28:17.986Z",
+      "event": "bb-session",
+      "session": "1c6493b3",
+      "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-r"
+    },
+    {
+      "t": "2026-03-17T21:28:19.568Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
     }
