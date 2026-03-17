@@ -411,12 +411,15 @@ async function main() {
     }
 
     // Calculate date window for this show
-    const dateRange = calculateDateWindow(show);
+    // Skip date filter for WE shows — Google's after:/before: operators are unreliable
+    // for UK content and cause false negatives. The site: + title query is precise enough.
+    const isWEShow = isLondonMarket(show.category);
+    const dateRange = isWEShow ? null : calculateDateWindow(show);
     if (dateRange) {
       const fmtDate = d => d.toISOString().split('T')[0];
       console.log(`\n${show.title} (${show.id}) — ${missing.length} missing outlets [${fmtDate(dateRange.dateMin)} to ${fmtDate(dateRange.dateMax)}]`);
     } else {
-      console.log(`\n${show.title} (${show.id}) — ${missing.length} missing outlets [no date filter]`);
+      console.log(`\n${show.title} (${show.id}) — ${missing.length} missing outlets [no date filter${isWEShow ? ' — WE: date filter disabled' : ''}]`);
     }
 
     // --- Site-scoped T1/T2 outlet searches ---
