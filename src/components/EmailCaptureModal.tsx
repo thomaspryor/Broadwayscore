@@ -74,7 +74,9 @@ function getTriggerCopy(trigger: GateTrigger, isWE: boolean): { heading: string;
     },
     return_visitor: {
       heading: `Never miss a new ${market} show`,
-      subheading: 'We\u2019ll email you the CriticScore when new shows open, plus what\u2019s closing soon.',
+      subheading: isWE
+        ? 'We\u2019ll email you when new West End shows get their reviews, plus what\u2019s closing soon.'
+        : 'We\u2019ll email you the CriticScore when new shows open, plus what\u2019s closing soon.',
     },
   };
   return copies[trigger];
