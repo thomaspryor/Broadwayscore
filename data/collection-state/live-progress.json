@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-17T21:22:54.843Z",
-  "processed": 301,
+  "updatedAt": "2026-03-17T21:25:37.399Z",
+  "processed": 311,
   "failed": 6709,
-  "successRate": "4.3%",
+  "successRate": "4.4%",
   "tierBreakdown": {
-    "playwright": 126,
+    "playwright": 130,
     "amp": 138,
-    "browserbase": 16,
+    "browserbase": 20,
     "directCookies": 0,
-    "scrapingbee": 21,
+    "scrapingbee": 22,
     "brightdata": 0,
     "archiveToday": 114,
-    "archive": 78
+    "archive": 81
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-03-17T20:01:00.217Z",
-      "event": "bb-session",
-      "session": "f649c71d",
-      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
-    },
-    {
-      "t": "2026-03-17T20:01:01.640Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-17T20:01:18.310Z",
-      "event": "bb-session",
-      "session": "ef15cf05",
-      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
-    },
-    {
-      "t": "2026-03-17T20:01:19.747Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-17T20:02:13.283Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-17T21:20:48.667Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-17T21:23:17.328Z",
+      "event": "bb-session",
+      "session": "b2cecbf1",
+      "url": "https://deadline.com/2019/10/little-shop-of-horrors-review-jonathan-groff-tammy-"
+    },
+    {
+      "t": "2026-03-17T21:23:18.952Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-17T21:24:07.852Z",
+      "event": "bb-session",
+      "session": "00d2b121",
+      "url": "https://nypost.com/2019/10/17/little-shop-of-horrors-review-jonathan-groff-tammy"
+    },
+    {
+      "t": "2026-03-17T21:24:09.492Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
