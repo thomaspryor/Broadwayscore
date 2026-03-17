@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-03-17T05:24:43.841Z",
+  "updatedAt": "2026-03-17T05:25:14.298Z",
   "processed": 540,
-  "failed": 8602,
+  "failed": 8612,
   "successRate": "5.9%",
   "tierBreakdown": {
     "playwright": 262,
@@ -10,11 +10,44 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 108,
-    "archive": 171
+    "archiveToday": 106,
+    "archive": 166
   },
-  "browserbaseSessions": 12,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-03-17T02:14:50.446Z",
+      "event": "bb-session",
+      "session": "37a38834",
+      "url": "https://www.hollywoodreporter.com/tv/tv-news/fx-renews-russell-brands-brandx-394"
+    },
+    {
+      "t": "2026-03-17T02:14:51.874Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T04:26:55.269Z",
+      "event": "bb-session",
+      "session": "8c343e22",
+      "url": "https://www.thestage.co.uk/reviews/arcadia-review-old-vic-london-tom-stoppard"
+    },
+    {
+      "t": "2026-03-17T04:26:56.495Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-17T04:29:45.533Z",
+      "event": "bb-session",
+      "session": "5b869c5b",
+      "url": "https://www.thestage.co.uk/reviews/evening-all-afternoon-review-donmar-warehouse"
+    },
+    {
+      "t": "2026-03-17T04:29:46.838Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
     {
       "t": "2026-03-17T04:31:13.475Z",
       "event": "bb-session",
@@ -91,39 +124,6 @@
       "t": "2026-03-17T05:05:42.072Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-17T05:19:08.087Z",
-      "event": "bb-session",
-      "session": "2ab44795",
-      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
-    },
-    {
-      "t": "2026-03-17T05:19:09.328Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
-    {
-      "t": "2026-03-17T05:20:53.675Z",
-      "event": "bb-session",
-      "session": "7ddc144d",
-      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
-    },
-    {
-      "t": "2026-03-17T05:20:55.077Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-17T05:21:55.439Z",
-      "event": "bb-session",
-      "session": "1b08319d",
-      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
-    },
-    {
-      "t": "2026-03-17T05:21:56.963Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
     }
   ]
 }
