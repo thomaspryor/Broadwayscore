@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-17T18:43:44.375Z",
+  "timestamp": "2026-03-17T19:37:01.975Z",
   "stats": {
-    "totalReviews": 31588,
-    "alreadyFlagged": 9385,
+    "totalReviews": 31610,
+    "alreadyFlagged": 9386,
     "dateGuardCatches": 149,
     "directorMismatch": 1133,
-    "tvFilmSignals": 3502,
-    "londonSignals": 1039,
+    "tvFilmSignals": 3503,
+    "londonSignals": 1040,
     "offBroadwaySignals": 1072,
-    "yearMismatch": 93,
-    "noPublishDate": 9409
+    "yearMismatch": 92,
+    "noPublishDate": 9417
   },
   "findings": [
     {
@@ -1052,11 +1052,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"on screen\""
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2014 (2x) more than 1996 (1x). 2014 matches production: a-delicate-balance-2014"
         }
       ]
     },
@@ -32370,6 +32365,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"apple tv\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "manic-street-creature-west-end-2026",
+      "file": "guardian--unknown.json",
+      "score": null,
+      "publishDate": "2026-03-17",
+      "url": "https://www.theguardian.com/stage/2026/mar/17/maimuna-memon-olivier-natasha-pierre-manic-street-creature",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
         },
         {
           "type": "LONDON_SIGNAL",
@@ -66814,7 +66828,7 @@
       "showId": "american-psycho-2016",
       "file": "guardian--alexis-soloski.json",
       "score": 63,
-      "publishDate": null,
+      "publishDate": "2026-02-02",
       "url": "http://www.theguardian.com/stage/2016/apr/21/american-psycho-review-patrick-bateman-sings-strips-and-slashes",
       "findings": [
         {
