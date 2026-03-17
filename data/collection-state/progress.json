@@ -477,7 +477,13 @@
     "evening-all-afternoon-west-end-2026/timeout-london--andrzej-lukowski.json",
     "sexual-misconduct-of-the-middle-classes-off-broadway-2026/ew--thom-geier.json",
     "sexual-misconduct-of-the-middle-classes-off-broadway-2026/theatermania--zachary-stewart.json",
-    "sexual-misconduct-of-the-middle-classes-off-broadway-2026/this-week-in-new-york--mark-rifkin.json"
+    "sexual-misconduct-of-the-middle-classes-off-broadway-2026/this-week-in-new-york--mark-rifkin.json",
+    "bughouse-off-broadway-2026/playbill--unknown.json",
+    "evening-all-afternoon-west-end-2026/broadwayworld--unknown.json",
+    "evening-all-afternoon-west-end-2026/financialtimes--unknown.json",
+    "evening-all-afternoon-west-end-2026/london-theatre--holly-omahony.json",
+    "evening-all-afternoon-west-end-2026/standard--unknown.json",
+    "evening-all-afternoon-west-end-2026/theatre-weekly--greg-stewart.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -8963,7 +8969,11 @@
     "my-joy-is-heavy-off-broadway-2025/nyt-theater--unknown.json",
     "starlight-express-west-end-2024/thereviewshub--unknown.json",
     "oh-mary-west-end-2025/theatrely--emily-wyrwa.json",
-    "arcadia-west-end-2026/independent--alice-saville.json"
+    "arcadia-west-end-2026/independent--alice-saville.json",
+    "arcadia-west-end-2026/thestage--unknown.json",
+    "evening-all-afternoon-west-end-2026/telegraph--unknown.json",
+    "evening-all-afternoon-west-end-2026/thestage--sam-marlowe.json",
+    "evening-all-afternoon-west-end-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -9185,7 +9195,12 @@
       "evening-all-afternoon-west-end-2026/guardian--arifa-akbar.json",
       "evening-all-afternoon-west-end-2026/timeout-london--andrzej-lukowski.json",
       "sexual-misconduct-of-the-middle-classes-off-broadway-2026/ew--thom-geier.json",
-      "sexual-misconduct-of-the-middle-classes-off-broadway-2026/this-week-in-new-york--mark-rifkin.json"
+      "sexual-misconduct-of-the-middle-classes-off-broadway-2026/this-week-in-new-york--mark-rifkin.json",
+      "bughouse-off-broadway-2026/playbill--unknown.json",
+      "evening-all-afternoon-west-end-2026/financialtimes--unknown.json",
+      "evening-all-afternoon-west-end-2026/london-theatre--holly-omahony.json",
+      "evening-all-afternoon-west-end-2026/standard--unknown.json",
+      "evening-all-afternoon-west-end-2026/theatre-weekly--greg-stewart.json"
     ],
     "amp": [
       "data/review-texts/peter-and-the-starcatcher-2012/variety--marilyn-stasio.json",
@@ -9339,9 +9354,7 @@
       "data/review-texts/women-on-the-verge-of-a-nervous-breakdown-2010/variety--steven-suskin.json",
       "women-on-the-verge-of-a-nervous-breakdown-2010/variety--steven-suskin.json",
       "data/review-texts/uncle-vanya-2024/deadline--greg-evans.json",
-      "uncle-vanya-2024/deadline--greg-evans.json",
-      "data/review-texts/kinky-boots-off-broadway-2026/huffpost--steven-suskin.json",
-      "kinky-boots-off-broadway-2026/huffpost--steven-suskin.json"
+      "uncle-vanya-2024/deadline--greg-evans.json"
     ],
     "browserbase": [
       "data/review-texts/mj-2022/variety--aramide-tinubu.json",
@@ -9560,7 +9573,10 @@
       "data/review-texts/in-transit-2016/theater-in-the-now--michael-block.json",
       "data/review-texts/my-joy-is-heavy-off-broadway-2025/nyt-theater--unknown.json",
       "data/review-texts/starlight-express-west-end-2024/thereviewshub--unknown.json",
-      "data/review-texts/arcadia-west-end-2026/independent--alice-saville.json"
+      "data/review-texts/arcadia-west-end-2026/independent--alice-saville.json",
+      "data/review-texts/arcadia-west-end-2026/thestage--unknown.json",
+      "data/review-texts/evening-all-afternoon-west-end-2026/thestage--sam-marlowe.json",
+      "data/review-texts/evening-all-afternoon-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
       "into-the-woods-west-end-2025/nytimes--unknown.json",
@@ -9712,11 +9728,12 @@
       "all-out-2025/latimes--charles-mcnulty.json",
       "art-2025/latimes--rosy-alvarez.json",
       "cats-the-jellicle-ball-off-broadway-2024/huffpost--unknown.json",
-      "sexual-misconduct-of-the-middle-classes-off-broadway-2026/theatermania--zachary-stewart.json"
+      "sexual-misconduct-of-the-middle-classes-off-broadway-2026/theatermania--zachary-stewart.json",
+      "evening-all-afternoon-west-end-2026/broadwayworld--unknown.json"
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "arcadia-west-end-2026/independent--alice-saville.json",
+  "lastProcessed": "evening-all-afternoon-west-end-2026/thestage--unknown.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -10707,6 +10724,39 @@
       "t": "2026-03-17T02:14:51.874Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T04:26:55.269Z",
+      "event": "bb-session",
+      "session": "8c343e22",
+      "url": "https://www.thestage.co.uk/reviews/arcadia-review-old-vic-london-tom-stoppard"
+    },
+    {
+      "t": "2026-03-17T04:26:56.495Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-17T04:29:45.533Z",
+      "event": "bb-session",
+      "session": "5b869c5b",
+      "url": "https://www.thestage.co.uk/reviews/evening-all-afternoon-review-donmar-warehouse"
+    },
+    {
+      "t": "2026-03-17T04:29:46.838Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-17T04:31:13.475Z",
+      "event": "bb-session",
+      "session": "66602c01",
+      "url": "https://www.thestage.co.uk/review-round-ups/evening-all-afternoon-at-the-donmar-"
+    },
+    {
+      "t": "2026-03-17T04:31:14.684Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
