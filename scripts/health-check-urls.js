@@ -18,6 +18,7 @@ const path = require('path');
 const https = require('https');
 const http = require('http');
 const { sendAlert } = require('./lib/discord-notify');
+const { getDomain } = require('./lib/url-utils');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -26,9 +27,7 @@ const REPORT_PATH = path.join(DATA_DIR, 'audit', 'url-health-report.json');
 // Domains that block all HTTP (Akamai, JS-only, etc.) — exclude from alert thresholds
 const KNOWN_BLOCKED_DOMAINS = new Set([
   'telecharge.com',
-  'www.telecharge.com',
   'ticketmaster.com',
-  'www.ticketmaster.com',
 ]);
 
 // Review URL sample size
@@ -38,14 +37,6 @@ const REVIEW_SAMPLE_SIZE = 50;
 const CONCURRENCY = 5;
 
 // ── Helpers ──
-
-function getDomain(url) {
-  try {
-    return new URL(url).hostname.replace(/^www\./, '');
-  } catch {
-    return null;
-  }
-}
 
 function isKnownBlocked(url) {
   const domain = getDomain(url);

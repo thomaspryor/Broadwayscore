@@ -16,6 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { buildTelechargeUrl, normalizeShowName } = require('./lib/url-utils');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -84,28 +85,6 @@ const VENUE_PLATFORM = {
 };
 
 // ============================================================================
-// Telecharge URL construction
-// ============================================================================
-
-// Known title→slug exceptions where the standard construction doesn't match
-const TELECHARGE_EXCEPTIONS = {
-  'Chicago': 'Chicago-The-Musical',
-};
-
-function buildTelechargeUrl(showTitle) {
-  if (TELECHARGE_EXCEPTIONS[showTitle]) {
-    return 'https://www.telecharge.com/Broadway/' + TELECHARGE_EXCEPTIONS[showTitle];
-  }
-  const slug = showTitle
-    .replace(/&/g, 'And')
-    .replace(/[''!,.:;?"()]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
-  return 'https://www.telecharge.com/Broadway/' + slug;
-}
-
-// ============================================================================
 // Ticketmaster SERP discovery
 // ============================================================================
 
@@ -131,14 +110,6 @@ function httpGet(url, options = {}) {
     req.on('timeout', () => { req.destroy(); reject(new Error('timeout')); });
     req.end();
   });
-}
-
-function normalizeShowName(name) {
-  return name.toLowerCase()
-    .replace(/['']/g, '')
-    .replace(/[^a-z0-9\s]/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
 }
 
 /**
