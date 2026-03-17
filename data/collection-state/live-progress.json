@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-17T16:12:13.853Z",
-  "processed": 21,
-  "failed": 9,
-  "successRate": "70.0%",
+  "updatedAt": "2026-03-17T16:15:05.268Z",
+  "processed": 30,
+  "failed": 10,
+  "successRate": "75.0%",
   "tierBreakdown": {
-    "playwright": 14,
-    "amp": 4,
-    "browserbase": 6,
+    "playwright": 16,
+    "amp": 6,
+    "browserbase": 12,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 6,
-    "archive": 2
+    "archive": 5
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-03-17T16:03:15.152Z",
@@ -56,6 +56,50 @@
     },
     {
       "t": "2026-03-17T16:11:35.208Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T16:13:19.027Z",
+      "event": "bb-session",
+      "session": "54503585",
+      "url": "https://www.newyorker.com/magazine/2024/12/02/death-becomes-her-theatre-review-b"
+    },
+    {
+      "t": "2026-03-17T16:13:20.425Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-17T16:13:56.037Z",
+      "event": "bb-session",
+      "session": "ee9749ba",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-17T16:13:57.287Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T16:14:13.949Z",
+      "event": "bb-session",
+      "session": "efe483b0",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-17T16:14:15.237Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T16:14:31.896Z",
+      "event": "bb-session",
+      "session": "92a01531",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-17T16:14:33.347Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
