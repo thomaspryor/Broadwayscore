@@ -156,8 +156,9 @@ export function getScoreBgColor(score: number | null): string {
  * T3-only shows (no T1/T2 reviews) require extra reviews for qualification.
  */
 export function hasEnoughReviews(reviewCount: number, category?: string, tier1And2Count?: number): boolean {
+  const isLondon = category === 'west-end' || category === 'off-west-end';
   let min = category === 'off-broadway' ? MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY
-    : category === 'west-end' || category === 'off-west-end' ? MIN_REVIEWS_FOR_SCORE_WEST_END
+    : isLondon ? MIN_REVIEWS_FOR_SCORE_WEST_END
     : MIN_REVIEWS_FOR_SCORE;
   if (tier1And2Count !== undefined && tier1And2Count === 0) {
     min += T3_ONLY_EXTRA_REVIEWS;

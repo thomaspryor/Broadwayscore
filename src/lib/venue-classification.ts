@@ -17,3 +17,33 @@ export function isOffWestEndVenue(venue?: string): boolean {
 export function isLondonMarket(category?: string): boolean {
   return category === 'west-end' || category === 'off-west-end';
 }
+
+/** Returns true for off-broadway and off-west-end — smaller venue markets. */
+export function isOffMarket(category?: string): boolean {
+  return category === 'off-broadway' || category === 'off-west-end';
+}
+
+/** Minimum reviews threshold for a market: 3 for London/Off-Broadway, 5 for Broadway. */
+export function getMarketMinReviews(category?: string): number {
+  return isLondonMarket(category) || category === 'off-broadway' ? 3 : 5;
+}
+
+/** Country code for a market category. */
+export function getMarketCountry(category?: string): 'US' | 'GB' {
+  return isLondonMarket(category) ? 'GB' : 'US';
+}
+
+/** Currency for a market category. */
+export function getMarketCurrency(category?: string): 'USD' | 'GBP' {
+  return isLondonMarket(category) ? 'GBP' : 'USD';
+}
+
+/** Human-readable market label for a category. */
+export function getMarketLabel(category?: string): string {
+  switch (category) {
+    case 'west-end': return 'West End';
+    case 'off-west-end': return 'Off-West End';
+    case 'off-broadway': return 'Off-Broadway';
+    default: return 'Broadway';
+  }
+}
