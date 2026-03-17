@@ -1,69 +1,73 @@
 {
-  "runDate": "2026-03-17T01:02:12.476Z",
+  "runDate": "2026-03-17T03:32:23.694Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "touch-off-broadway-2026",
+    "showFilter": "the-tempest-globe-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
-    "failed": 0,
+    "processed": 4,
+    "failed": 4,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 4,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 5
+    "archiveToday": 2,
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Attempts": 6,
+    "tier1Success": 4,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 1,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 1,
+    "tier3Attempts": 3,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 1,
-    "tier4Success": 1,
-    "totalFailed": 0,
+    "tier3_6Attempts": 2,
+    "tier3_6Success": 2,
+    "tier4Attempts": 2,
+    "tier4Success": 0,
+    "totalFailed": 4,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.3,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "touch-off-broadway-2026/blogcritics--jon-sobel.json",
-    "touch-off-broadway-2026/broadwayworld--marina-kennedy.json",
-    "touch-off-broadway-2026/epoch-times--judd-hollander.json",
-    "touch-off-broadway-2026/plays-to-see--austin-fimmano.json",
-    "touch-off-broadway-2026/talkinbroadway--howard-miller.json",
-    "touch-off-broadway-2026/theater-pizzazz--beatrice-williams-rude.json",
-    "touch-off-broadway-2026/theater-scene--victor-gluck.json"
+    "the-tempest-globe-west-end-2026/guardian--unknown.json",
+    "the-tempest-globe-west-end-2026/london-theatre--unknown.json",
+    "the-tempest-globe-west-end-2026/times-uk--unknown.json",
+    "the-tempest-globe-west-end-2026/whatsonstage--alun-hood.json"
   ],
-  "failed": [],
+  "failed": [
+    "the-tempest-globe-west-end-2026/independent--unknown.json",
+    "the-tempest-globe-west-end-2026/telegraph--unknown.json",
+    "the-tempest-globe-west-end-2026/british-theatre--howard-loxton.json",
+    "the-tempest-globe-west-end-2026/thestage--unknown.json"
+  ],
   "tierDetails": {
     "playwright": [
-      "touch-off-broadway-2026/blogcritics--jon-sobel.json",
-      "touch-off-broadway-2026/theater-scene--victor-gluck.json"
+      "the-tempest-globe-west-end-2026/guardian--unknown.json",
+      "the-tempest-globe-west-end-2026/london-theatre--unknown.json",
+      "the-tempest-globe-west-end-2026/times-uk--unknown.json",
+      "the-tempest-globe-west-end-2026/whatsonstage--alun-hood.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -71,16 +75,19 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/youre-a-good-man-charlie-brown-off-broadway-2026/cititour--brian-scott-lipton.json"
+      "data/review-texts/the-tempest-globe-west-end-2026/independent--unknown.json",
+      "data/review-texts/the-tempest-globe-west-end-2026/thestage--unknown.json"
     ],
-    "archive": [
-      "touch-off-broadway-2026/broadwayworld--marina-kennedy.json",
-      "touch-off-broadway-2026/epoch-times--judd-hollander.json",
-      "touch-off-broadway-2026/plays-to-see--austin-fimmano.json",
-      "touch-off-broadway-2026/talkinbroadway--howard-miller.json",
-      "touch-off-broadway-2026/theater-pizzazz--beatrice-williams-rude.json"
-    ]
+    "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Telegraph": {
+      "count": 1,
+      "domain": "telegraph.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
