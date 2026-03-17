@@ -163,7 +163,17 @@
     "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
     "an-ark-off-broadway-2026/nytg--kyle-turner.json",
     "back-to-the-future-west-end-2021/variety--david-benedict.json",
-    "bigfoot-off-broadway-2026/nytg--caroline-cao.json"
+    "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+    "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+    "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+    "chess-2025/hollywood-reporter--angie-han.json",
+    "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nytg--allison-considine.json",
+    "death-becomes-her-2024/newyorker--helen-shaw.json",
+    "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
+    "hadestown-2019/hollywood-reporter--david-rooney.json"
   ],
   "failed": [
     "arcadia-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -6877,7 +6887,13 @@
       "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/whatsonstage--unknown.json",
       "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
       "an-ark-off-broadway-2026/nytg--kyle-turner.json",
-      "bigfoot-off-broadway-2026/nytg--caroline-cao.json"
+      "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+      "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+      "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+      "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "data-off-broadway-2026/nytg--allison-considine.json",
+      "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--unknown.json",
@@ -6993,7 +7009,12 @@
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
       "back-to-the-future-west-end-2021/variety--david-benedict.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
+      "chess-2025/hollywood-reporter--angie-han.json",
+      "data/review-texts/hadestown-2019/hollywood-reporter--david-rooney.json",
+      "hadestown-2019/hollywood-reporter--david-rooney.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/latimes--charles-mcnulty.json",
@@ -7127,11 +7148,13 @@
       "stick-fly-2011/wsj--terry-teachout.json",
       "that-championship-season-1972/wsj--terry-teachout.json",
       "the-assembled-parties-2013/wsj--tery-teachout.json",
-      "uncle-vanya-2024/deadline--greg-evans.json"
+      "uncle-vanya-2024/deadline--greg-evans.json",
+      "death-becomes-her-2024/newyorker--helen-shaw.json",
+      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json"
     ]
   },
   "startTime": "2026-03-17T16:01:32.909Z",
-  "lastProcessed": "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+  "lastProcessed": "hadestown-2019/hollywood-reporter--david-rooney.json",
   "log": [
     {
       "t": "2026-03-17T19:49:25.050Z",
@@ -7143,6 +7166,28 @@
       "t": "2026-03-17T19:49:26.511Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-17T19:59:58.966Z",
+      "event": "bb-session",
+      "session": "f7e8aded",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-17T20:00:00.538Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T20:01:00.217Z",
+      "event": "bb-session",
+      "session": "f649c71d",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-17T20:01:01.640Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-17T19:59:40.556Z",
-  "processed": 164,
+  "updatedAt": "2026-03-17T20:01:15.646Z",
+  "processed": 174,
   "failed": 6656,
-  "successRate": "2.4%",
+  "successRate": "2.5%",
   "tierBreakdown": {
-    "playwright": 52,
+    "playwright": 58,
     "amp": 112,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 16,
     "brightdata": 0,
     "archiveToday": 70,
-    "archive": 41
+    "archive": 43
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-03-17T19:49:25.050Z",
@@ -25,6 +25,28 @@
       "t": "2026-03-17T19:49:26.511Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-17T19:59:58.966Z",
+      "event": "bb-session",
+      "session": "f7e8aded",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-17T20:00:00.538Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T20:01:00.217Z",
+      "event": "bb-session",
+      "session": "f649c71d",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-17T20:01:01.640Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
