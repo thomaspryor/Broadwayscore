@@ -290,7 +290,17 @@
     "hamilton-2015/wsj--terry-teachout.json",
     "hamilton-west-end-2021/timeout--andrzej-lukowski.json",
     "hamilton-west-end-2021/timeout--david-cote.json",
-    "harry-potter-2021/broadwaynews--elizabeth-bradley.json"
+    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json",
+    "heathers-the-musical-off-broadway-2025/new-york-sun--elysa-gardner.json",
+    "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
+    "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json",
+    "hercules-west-end-2025/timeout--unknown.json",
+    "into-the-woods-west-end-2025/timeout--unknown.json",
+    "it-walks-around-the-house-at-night-west-end-2026/timeout--unknown.json",
+    "it-walks-around-the-house-at-night-west-end-2026/timeout-london--unknown.json",
+    "just-in-time-2025/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "arcadia-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -7124,7 +7134,14 @@
       "hadestown-west-end-2024/timeout--adam-feldman.json",
       "hamilton-2015/theatermania--adam-feldman.json",
       "hamilton-west-end-2021/timeout--andrzej-lukowski.json",
-      "hamilton-west-end-2021/timeout--david-cote.json"
+      "hamilton-west-end-2021/timeout--david-cote.json",
+      "heathers-the-musical-off-broadway-2025/new-york-sun--elysa-gardner.json",
+      "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
+      "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json",
+      "hercules-west-end-2025/timeout--unknown.json",
+      "into-the-woods-west-end-2025/timeout--unknown.json",
+      "it-walks-around-the-house-at-night-west-end-2026/timeout--unknown.json",
+      "it-walks-around-the-house-at-night-west-end-2026/timeout-london--unknown.json"
     ],
     "amp": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--unknown.json",
@@ -7305,7 +7322,8 @@
       "the-lion-king-1997/nytimes--ben-brantley.json",
       "chicago-1996/nydailynews--joe-dziemianowicz.json",
       "hadestown-2019/broadwaynews--charles-isherwood.json",
-      "harry-potter-2021/broadwaynews--elizabeth-bradley.json"
+      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+      "just-in-time-2025/broadwaynews--brittani-samuel.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -7500,11 +7518,13 @@
       "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
       "every-brilliant-thing-2026/thewrap--robert-hofler.json",
       "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json",
-      "hamilton-2015/wsj--terry-teachout.json"
+      "hamilton-2015/wsj--terry-teachout.json",
+      "harry-potter-2021/wsj--terry-teachout.json",
+      "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json"
     ]
   },
   "startTime": "2026-03-17T16:01:32.909Z",
-  "lastProcessed": "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+  "lastProcessed": "just-in-time-2025/broadwaynews--brittani-samuel.json",
   "log": [
     {
       "t": "2026-03-17T19:49:25.050Z",
@@ -7624,6 +7644,17 @@
     },
     {
       "t": "2026-03-17T21:19:26.278Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-17T21:20:47.019Z",
+      "event": "bb-session",
+      "session": "612c9be1",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-17T21:20:48.667Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

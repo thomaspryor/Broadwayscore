@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-17T21:20:46.087Z",
-  "processed": 291,
+  "updatedAt": "2026-03-17T21:22:54.843Z",
+  "processed": 301,
   "failed": 6709,
-  "successRate": "4.2%",
+  "successRate": "4.3%",
   "tierBreakdown": {
-    "playwright": 119,
+    "playwright": 126,
     "amp": 138,
     "browserbase": 16,
     "directCookies": 0,
-    "scrapingbee": 20,
+    "scrapingbee": 21,
     "brightdata": 0,
     "archiveToday": 114,
-    "archive": 76
+    "archive": 78
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-03-17T19:59:58.966Z",
-      "event": "bb-session",
-      "session": "f7e8aded",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
-    },
-    {
-      "t": "2026-03-17T20:00:00.538Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-17T20:01:00.217Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-17T21:19:26.278Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-17T21:20:47.019Z",
+      "event": "bb-session",
+      "session": "612c9be1",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-17T21:20:48.667Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
