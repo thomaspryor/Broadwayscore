@@ -1,16 +1,34 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-17T06:53:44.894Z",
+    "generatedAt": "2026-03-17T07:51:16.666Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 84,
-    "classified": 0,
-    "wrongProduction": 0,
+    "total": 85,
+    "classified": 1,
+    "wrongProduction": 1,
     "correctProduction": 0,
     "uncertain": 0,
     "errors": 0,
-    "wrongHighConfidence": 0,
+    "wrongHighConfidence": 1,
     "wrongMediumConfidence": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "sunset-boulevard-1994",
+      "showTitle": "Sunset Boulevard",
+      "showYear": 1994,
+      "file": "hollywood-reporter--david-rooney.json",
+      "outlet": "The Hollywood Reporter",
+      "criticName": "David Rooney",
+      "publishDate": "October 20th, 2024",
+      "originalSignals": [
+        "revival text signals: revival, this production",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "sunset-boulevard-2024",
+      "reasoning": "The review mentions the St. James Theatre, Nicole Scherzinger, and Jamie Lloyd, all associated with the 2024 production."
+    }
+  ]
 }
