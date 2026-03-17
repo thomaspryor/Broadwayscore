@@ -267,8 +267,26 @@ jobs:
             echo "$SHOW_ID: $TOTAL scored reviews, ready=$IS_READY ${REASONS:+(gaps: $REASONS)}"
 
             if [ "$IS_READY" = "true" ]; then
-              echo "★ $SHOW_ID is BROADCAST READY — dispatching broadcast"
-              gh workflow run "Opening Night Broadcast" -f lookback_days=2 -f send_to_all=true || true
+              # Guard: only dispatch if broadcast wasn't already sent or dispatched recently
+              ALREADY_SENT=$(node -e "
+                try {
+                  const sent = require('./data/opening-night-sent.json');
+                  const entry = sent.sent && sent.sent['$SHOW_ID'];
+                  console.log(entry && entry.completed ? 'true' : 'false');
+                } catch(e) { console.log('false'); }
+              " 2>/dev/null || echo "false")
+
+              RECENT_DISPATCH=$(gh run list --workflow="Opening Night Broadcast" --limit=5 \
+                --json createdAt -q "[.[] | select(.createdAt > \"$(date -u -d '2 hours ago' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-2H +%Y-%m-%dT%H:%M:%SZ)\")] | length" 2>/dev/null || echo "0")
+
+              if [ "$ALREADY_SENT" = "true" ]; then
+                echo "★ $SHOW_ID is BROADCAST READY but already sent — skipping dispatch"
+              elif [ "$RECENT_DISPATCH" -gt 0 ]; then
+                echo "★ $SHOW_ID is BROADCAST READY but broadcast dispatched recently — skipping duplicate"
+              else
+                echo "★ $SHOW_ID is BROADCAST READY — dispatching broadcast"
+                gh workflow run "Opening Night Broadcast" -f lookback_days=2 -f send_to_all=true || true
+              fi
             fi
           done
 
