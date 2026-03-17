@@ -58,11 +58,16 @@ const SKIP_SERP = process.argv.includes('--skip-serp');
 const SKIP_SITE_SEARCH = process.argv.includes('--skip-site-search');
 const VERBOSE = process.argv.includes('--verbose') || true; // Always verbose for CI logs
 
-// Readiness thresholds (match send-opening-night-broadcast.js)
-const MIN_REVIEWS = 12;
-const MIN_T1_REVIEWS = 3;
-const MIN_T2_REVIEWS = 3;
-const MIN_HIGH_CONFIDENCE = 8;
+// Readiness thresholds — market-aware (must match send-opening-night-broadcast.js)
+function getThresholds(market) {
+  const isWE = market === 'west-end' || market === 'off-west-end';
+  return {
+    MIN_REVIEWS: isWE ? 8 : 12,
+    MIN_T1_REVIEWS: 3,
+    MIN_T2_REVIEWS: isWE ? 2 : 3,
+    MIN_HIGH_CONFIDENCE: isWE ? 6 : 8,
+  };
+}
 
 /**
  * Get all known URLs for a show (from existing review-text files on disk)
@@ -125,7 +130,8 @@ function getMissingT1T2Outlets(showId, market) {
 /**
  * Check readiness for broadcast
  */
-function checkReadiness(showId) {
+function checkReadiness(showId, market = 'broadway') {
+  const { MIN_REVIEWS, MIN_T1_REVIEWS, MIN_T2_REVIEWS, MIN_HIGH_CONFIDENCE } = getThresholds(market);
   const reviews = JSON.parse(fs.readFileSync(REVIEWS_PATH, 'utf8'));
   const registry = JSON.parse(fs.readFileSync(OUTLET_REGISTRY_PATH, 'utf8'));
   const outlets = registry.outlets || registry;
@@ -436,7 +442,7 @@ async function pollCycle() {
 
   // Pre-poll state
   const knownUrls = getKnownUrls(SHOW_ID);
-  const preStatus = checkReadiness(SHOW_ID);
+  const preStatus = checkReadiness(SHOW_ID, market);
   console.log(`\nPre-poll: ${preStatus.total} scored reviews (T1:${preStatus.t1} T2:${preStatus.t2} hi-conf:${preStatus.highConfidence})`);
   if (preStatus.ready) {
     console.log('Show is ALREADY broadcast-ready!');
@@ -494,7 +500,7 @@ async function pollCycle() {
   );
 
   // ── Post-poll status ──
-  const postStatus = checkReadiness(SHOW_ID);
+  const postStatus = checkReadiness(SHOW_ID, market);
   const newReviews = postStatus.total - preStatus.total;
 
   console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
