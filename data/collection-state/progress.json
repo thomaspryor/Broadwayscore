@@ -354,7 +354,8 @@
     "elling-2010/variety--david-rooney.json",
     "equus-2008/variety--david-rooney.json",
     "eureka-day-2024/variety--aramide-tinubu.json",
-    "everyday-rapture-2010/variety--david-rooney.json"
+    "everyday-rapture-2010/variety--david-rooney.json",
+    "fela-2009/variety--sam-thielman.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -6193,7 +6194,16 @@
     "faith-healer-1979/vulture--helen-shaw.json",
     "faith-healer-2006/nyt-theater--jeremy-mccarter.json",
     "faith-healer-2006/vulture--helen-shaw.json",
-    "falsettos-1992/hollywood-reporter--david-rooney.json"
+    "falsettos-1992/hollywood-reporter--david-rooney.json",
+    "falsettos-2016/newyorker--hilton-als.json",
+    "fela-2012/hollywood-reporter--frank-scheck.json",
+    "fela-2012/variety--sam-thielman.json",
+    "fences-1987/hollywood-reporter--frank-scheck.json",
+    "fences-1987/nytimes--ben-brantley.json",
+    "fences-1987/variety--marilyn-stasio.json",
+    "fences-2010/hollywood-reporter--todd-mccarthy.json",
+    "fences-2010/vulture--scott-brown.json",
+    "fiddler-on-the-roof-1990/hollywood-reporter--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -6461,7 +6471,9 @@
       "data/review-texts/eureka-day-2024/variety--aramide-tinubu.json",
       "eureka-day-2024/variety--aramide-tinubu.json",
       "data/review-texts/everyday-rapture-2010/variety--david-rooney.json",
-      "everyday-rapture-2010/variety--david-rooney.json"
+      "everyday-rapture-2010/variety--david-rooney.json",
+      "data/review-texts/fela-2009/variety--sam-thielman.json",
+      "fela-2009/variety--sam-thielman.json"
     ],
     "browserbase": [
       "data/review-texts/mj-2022/variety--aramide-tinubu.json",
@@ -6629,7 +6641,8 @@
       "data/review-texts/the-reservoir-off-broadway-2026/talkinbroadway--unknown.json",
       "data/review-texts/a-life-in-the-theatre-2010/newyorker--john-lahr.json",
       "data/review-texts/days-of-wine-and-roses-2024/hollywood-reporter--anita-gates.json",
-      "data/review-texts/democracy-2004/nytimes--ben-brantley.json"
+      "data/review-texts/democracy-2004/nytimes--ben-brantley.json",
+      "data/review-texts/falsettos-2016/newyorker--hilton-als.json"
     ],
     "archive": [
       "into-the-woods-west-end-2025/nytimes--unknown.json",
@@ -6753,7 +6766,7 @@
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "falsettos-1992/hollywood-reporter--david-rooney.json",
+  "lastProcessed": "fiddler-on-the-roof-1990/hollywood-reporter--david-rooney.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -7689,6 +7702,17 @@
       "t": "2026-03-17T02:10:21.176Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T02:12:09.615Z",
+      "event": "bb-session",
+      "session": "f0ea13f8",
+      "url": "http://www.newyorker.com/magazine/2016/11/07/gay-reflections-onstage"
+    },
+    {
+      "t": "2026-03-17T02:12:10.860Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }

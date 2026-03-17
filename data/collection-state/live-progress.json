@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-17T02:11:23.754Z",
-  "processed": 355,
-  "failed": 5837,
+  "updatedAt": "2026-03-17T02:12:50.616Z",
+  "processed": 356,
+  "failed": 5846,
   "successRate": "5.7%",
   "tierBreakdown": {
     "playwright": 150,
-    "amp": 112,
+    "amp": 114,
     "browserbase": 122,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 39,
+    "archiveToday": 40,
     "archive": 118
   },
-  "browserbaseSessions": 35,
+  "browserbaseSessions": 36,
   "recentActivity": [
-    {
-      "t": "2026-03-17T02:01:53.379Z",
-      "event": "bb-session",
-      "session": "68532cfd",
-      "url": "https://theater.nytimes.com/mem/theater/treview.html?id=1077011432202&amp;html_t"
-    },
-    {
-      "t": "2026-03-17T02:01:54.644Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-17T02:02:22.974Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-17T02:10:21.176Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T02:12:09.615Z",
+      "event": "bb-session",
+      "session": "f0ea13f8",
+      "url": "http://www.newyorker.com/magazine/2016/11/07/gay-reflections-onstage"
+    },
+    {
+      "t": "2026-03-17T02:12:10.860Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
