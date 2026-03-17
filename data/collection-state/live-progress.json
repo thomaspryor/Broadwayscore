@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-03-17T03:35:20.404Z",
-  "processed": 4,
-  "failed": 6,
-  "successRate": "40.0%",
+  "updatedAt": "2026-03-17T03:37:18.329Z",
+  "processed": 5,
+  "failed": 8,
+  "successRate": "38.5%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 3,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 5,
+    "archiveToday": 6,
     "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-03-17T03:36:46.852Z",
+      "event": "bb-session",
+      "session": "838251bb",
+      "url": "https://www.thestage.co.uk/long-reviews/witness-for-the-prosecution-county-hall-"
+    },
+    {
+      "t": "2026-03-17T03:36:48.079Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }

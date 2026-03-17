@@ -3,7 +3,8 @@
     "witness-for-the-prosecution-west-end-2022/broadwayworld--unknown.json",
     "witness-for-the-prosecution-west-end-2022/times-uk--unknown.json",
     "witness-for-the-prosecution-west-end-2022/artsdesk--heather-neill.json",
-    "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json"
+    "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json",
+    "witness-for-the-prosecution-west-end-2022/whatsonstage--theo-bosanquet.json"
   ],
   "failed": [
     "witness-for-the-prosecution-west-end-2022/timeout--unknown.json",
@@ -11,13 +12,16 @@
     "witness-for-the-prosecution-west-end-2022/theatre-weekly--unknown.json",
     "witness-for-the-prosecution-west-end-2022/theupcoming--unknown.json",
     "witness-for-the-prosecution-west-end-2022/west-end-wilma--unknown.json",
-    "witness-for-the-prosecution-west-end-2022/lost-in-theatreland--amy-rye.json"
+    "witness-for-the-prosecution-west-end-2022/lost-in-theatreland--amy-rye.json",
+    "witness-for-the-prosecution-west-end-2022/thestage--david-benedict.json",
+    "witness-for-the-prosecution-west-end-2022/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "witness-for-the-prosecution-west-end-2022/times-uk--unknown.json",
-      "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json"
+      "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json",
+      "witness-for-the-prosecution-west-end-2022/whatsonstage--theo-bosanquet.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -29,7 +33,8 @@
       "data/review-texts/witness-for-the-prosecution-west-end-2022/everything-theatre--unknown.json",
       "data/review-texts/witness-for-the-prosecution-west-end-2022/theupcoming--unknown.json",
       "data/review-texts/witness-for-the-prosecution-west-end-2022/west-end-wilma--unknown.json",
-      "data/review-texts/witness-for-the-prosecution-west-end-2022/lost-in-theatreland--amy-rye.json"
+      "data/review-texts/witness-for-the-prosecution-west-end-2022/lost-in-theatreland--amy-rye.json",
+      "data/review-texts/witness-for-the-prosecution-west-end-2022/thestage--david-benedict.json"
     ],
     "archive": [
       "witness-for-the-prosecution-west-end-2022/broadwayworld--unknown.json",
@@ -37,6 +42,18 @@
     ]
   },
   "startTime": "2026-03-17T03:30:00.923Z",
-  "lastProcessed": "witness-for-the-prosecution-west-end-2022/lost-in-theatreland--amy-rye.json",
-  "log": []
+  "lastProcessed": "witness-for-the-prosecution-west-end-2022/whatsonstage--theo-bosanquet.json",
+  "log": [
+    {
+      "t": "2026-03-17T03:36:46.852Z",
+      "event": "bb-session",
+      "session": "838251bb",
+      "url": "https://www.thestage.co.uk/long-reviews/witness-for-the-prosecution-county-hall-"
+    },
+    {
+      "t": "2026-03-17T03:36:48.079Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }
