@@ -1157,12 +1157,46 @@ showDirs.forEach(showId => {
       }
 
       // Skip wrong-production reviews (e.g., off-Broadway reviews filed under Broadway show)
+      // OVERRIDE: If wrongProduction was set by cross-market guard ("US outlet reviewing London show")
+      // but the URL is actually a UK domain, clear it — the guard was wrong.
+      if (data.wrongProduction === true && isLondonMarket(showCategory) && data.url
+          && data.wrongProductionNote && data.wrongProductionNote.includes('Cross-market')) {
+        try {
+          const hostname = new URL(data.url).hostname || '';
+          const isUkUrl = hostname.endsWith('.co.uk') || hostname.endsWith('.org.uk')
+            || hostname.includes('london') || hostname.includes('theatre');
+          if (isUkUrl) {
+            delete data.wrongProduction;
+            delete data.wrongProductionNote;
+            data.wrongProductionAutoCleared = `rebuild: UK URL on London show (${hostname})`;
+            try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+            stats.wrongProductionAutoCleared = (stats.wrongProductionAutoCleared || 0) + 1;
+          }
+        } catch {}
+      }
       if (data.wrongProduction === true) {
         stats.skippedWrongProduction = (stats.skippedWrongProduction || 0) + 1;
         return;
       }
 
       // Skip wrong-show reviews (review content is for a different show)
+      // OVERRIDE: If this is a London show AND the review URL is from a UK/major outlet domain,
+      // the wrongShow flag is almost certainly a false positive from LLM classification.
+      // UK outlets reviewing London shows cannot be "wrong show" — they only cover London theatre.
+      if (data.wrongShow === true && isLondonMarket(showCategory) && data.url) {
+        try {
+          const hostname = new URL(data.url).hostname || '';
+          const isUkOrMajorUrl = hostname.endsWith('.co.uk') || hostname.endsWith('.org.uk')
+            || /london|theatre|whatsonstage|thestage|theguardian|telegraph|thetimes|independent|standard|inews|variety|nytimes|timeout/.test(hostname);
+          if (isUkOrMajorUrl) {
+            delete data.wrongShow;
+            delete data.wrongShowNote;
+            data.wrongShowAutoCleared = `rebuild: UK/major outlet URL on London show (${hostname})`;
+            try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+            stats.wrongShowAutoCleared = (stats.wrongShowAutoCleared || 0) + 1;
+          }
+        } catch {}
+      }
       if (data.wrongShow === true) {
         stats.skippedWrongShow = (stats.skippedWrongShow || 0) + 1;
         return;
