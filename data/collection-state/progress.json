@@ -544,7 +544,8 @@
     "moulin-rouge-the-musical-west-end-2021/timeout--unknown.json",
     "oh-mary-west-end-2025/variety--unknown.json",
     "the-mousetrap-west-end-2021/variety--unknown.json",
-    "romeo-and-juliet-west-end-2026/theatrely--kobi-kassal.json"
+    "romeo-and-juliet-west-end-2026/theatrely--kobi-kassal.json",
+    "evening-all-afternoon-west-end-2026/telegraph--unknown.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -9233,7 +9234,16 @@
     "starlight-express-west-end-2024/thereviewshub--unknown.json",
     "oh-mary-west-end-2025/theatrely--emily-wyrwa.json",
     "youre-a-good-man-charlie-brown-off-broadway-2026/cititour--brian-scott-lipton.json",
-    "arcadia-west-end-2026/independent--alice-saville.json"
+    "arcadia-west-end-2026/independent--alice-saville.json",
+    "arcadia-west-end-2026/thestage--unknown.json",
+    "calf-scramble-off-broadway-2026/talkinbroadway--unknown.json",
+    "evening-all-afternoon-west-end-2026/thestage--sam-marlowe.json",
+    "evening-all-afternoon-west-end-2026/thestage--unknown.json",
+    "hadestown-west-end-2024/everything-theatre--unknown.json",
+    "into-the-woods-west-end-2025/independent--unknown.json",
+    "mamma-mia-west-end-2021/londonist--unknown.json",
+    "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
+    "romeo-and-juliet-west-end-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -9501,7 +9511,8 @@
       "back-to-the-future-west-end-2021/timeout--adam-feldman.json",
       "back-to-the-future-west-end-2021/timeout--unknown.json",
       "moulin-rouge-the-musical-west-end-2021/timeout--unknown.json",
-      "romeo-and-juliet-west-end-2026/theatrely--kobi-kassal.json"
+      "romeo-and-juliet-west-end-2026/theatrely--kobi-kassal.json",
+      "evening-all-afternoon-west-end-2026/telegraph--unknown.json"
     ],
     "amp": [
       "data/review-texts/peter-and-the-starcatcher-2012/variety--marilyn-stasio.json",
@@ -9914,7 +9925,16 @@
       "data/review-texts/spread-off-broadway-2026/nyt-theater--unknown.json",
       "data/review-texts/starlight-express-west-end-2024/thereviewshub--unknown.json",
       "data/review-texts/youre-a-good-man-charlie-brown-off-broadway-2026/cititour--brian-scott-lipton.json",
-      "data/review-texts/arcadia-west-end-2026/independent--alice-saville.json"
+      "data/review-texts/arcadia-west-end-2026/independent--alice-saville.json",
+      "data/review-texts/arcadia-west-end-2026/thestage--unknown.json",
+      "data/review-texts/calf-scramble-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/evening-all-afternoon-west-end-2026/thestage--sam-marlowe.json",
+      "data/review-texts/evening-all-afternoon-west-end-2026/thestage--unknown.json",
+      "data/review-texts/hadestown-west-end-2024/everything-theatre--unknown.json",
+      "data/review-texts/into-the-woods-west-end-2025/independent--unknown.json",
+      "data/review-texts/mamma-mia-west-end-2021/londonist--unknown.json",
+      "data/review-texts/oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
+      "data/review-texts/romeo-and-juliet-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
       "into-the-woods-west-end-2025/nytimes--unknown.json",
@@ -10083,12 +10103,11 @@
       "bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
       "bughouse-off-broadway-2026/theatermania--pete-hempstead.json",
       "cats-the-jellicle-ball-2026/theatermania--zachary-stewart.json",
-      "hadestown-2019/broadwaynews--charles-isherwood.json",
-      "man-and-boy-west-end-2026/ew--keith-staskiewicz.json"
+      "hadestown-2019/broadwaynews--charles-isherwood.json"
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "arcadia-west-end-2026/independent--alice-saville.json",
+  "lastProcessed": "romeo-and-juliet-west-end-2026/thestage--unknown.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -11189,6 +11208,50 @@
       "t": "2026-03-17T05:42:57.656Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-17T05:48:25.188Z",
+      "event": "bb-session",
+      "session": "f53c627f",
+      "url": "https://www.thestage.co.uk/reviews/arcadia-review-old-vic-london-tom-stoppard"
+    },
+    {
+      "t": "2026-03-17T05:48:26.355Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-17T05:51:57.825Z",
+      "event": "bb-session",
+      "session": "228674e4",
+      "url": "https://www.thestage.co.uk/reviews/evening-all-afternoon-review-donmar-warehouse"
+    },
+    {
+      "t": "2026-03-17T05:51:58.927Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-17T05:53:43.571Z",
+      "event": "bb-session",
+      "session": "2c7b9018",
+      "url": "https://www.thestage.co.uk/review-round-ups/evening-all-afternoon-at-the-donmar-"
+    },
+    {
+      "t": "2026-03-17T05:53:44.874Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-17T05:59:04.127Z",
+      "event": "bb-session",
+      "session": "135b2419",
+      "url": "https://www.thestage.co.uk/news/production-news/russell-kane-lands-stage-debut-i"
+    },
+    {
+      "t": "2026-03-17T05:59:05.210Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
