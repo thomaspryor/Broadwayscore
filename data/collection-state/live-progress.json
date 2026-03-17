@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-17T04:48:25.763Z",
-  "processed": 494,
-  "failed": 8498,
+  "updatedAt": "2026-03-17T04:53:24.645Z",
+  "processed": 498,
+  "failed": 8504,
   "successRate": "5.5%",
   "tierBreakdown": {
-    "playwright": 232,
+    "playwright": 233,
     "amp": 152,
-    "browserbase": 128,
+    "browserbase": 130,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 96,
-    "archive": 153
+    "archiveToday": 100,
+    "archive": 155
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-03-17T02:10:20.063Z",
-      "event": "bb-session",
-      "session": "9586d25f",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;res=9804EEDE173DF93"
-    },
-    {
-      "t": "2026-03-17T02:10:21.176Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-17T02:12:09.615Z",
-      "event": "bb-session",
-      "session": "f0ea13f8",
-      "url": "http://www.newyorker.com/magazine/2016/11/07/gay-reflections-onstage"
-    },
-    {
-      "t": "2026-03-17T02:12:10.860Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
     {
       "t": "2026-03-17T02:13:00.984Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-17T04:42:29.544Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-17T04:52:17.692Z",
+      "event": "bb-session",
+      "session": "a8792dda",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
+    },
+    {
+      "t": "2026-03-17T04:52:18.934Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-17T04:52:55.369Z",
+      "event": "bb-session",
+      "session": "efa39274",
+      "url": "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html"
+    },
+    {
+      "t": "2026-03-17T04:52:56.537Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
