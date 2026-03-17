@@ -252,7 +252,8 @@
     "burnout-paradise-off-broadway-2026/theatermania--zachary-stewart.json",
     "arcadia-west-end-2026/telegraph--unknown.json",
     "dracula-west-end-2025/daily-mail--unknown.json",
-    "shadowlands-west-end-2026/i-paper--fiona-mountford.json"
+    "shadowlands-west-end-2026/i-paper--fiona-mountford.json",
+    "the-tempest-globe-west-end-2026/times-uk--unknown.json"
   ],
   "failed": [
     "arcadia-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -6951,7 +6952,16 @@
     "six-2021/thestage--unknown.json",
     "six-2021/theupcoming--unknown.json",
     "six-2021/times-uk--unknown.json",
-    "six-2021/west-end-wilma--unknown.json"
+    "six-2021/west-end-wilma--unknown.json",
+    "six-2021/whatsonstage--unknown.json",
+    "the-book-of-mormon-west-end-2024/sunday-telegraph--unknown.json",
+    "the-book-of-mormon-west-end-2024/thestage--unknown.json",
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "the-phantom-of-the-opera-off-west-end-2021/thestage--unknown.json",
+    "the-phantom-of-the-opera-west-end-1986/broadwayworld--unknown.json",
+    "the-phantom-of-the-opera-west-end-1986/west-end-wilma--unknown.json",
+    "the-phantom-of-the-opera-west-end-1986/whatsonstage--unknown.json",
+    "the-play-that-goes-wrong-west-end-2021/independent--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -7050,7 +7060,8 @@
       "bughouse-off-broadway-2026/theatermania--pete-hempstead.json",
       "arcadia-west-end-2026/telegraph--unknown.json",
       "dracula-west-end-2025/daily-mail--unknown.json",
-      "shadowlands-west-end-2026/i-paper--fiona-mountford.json"
+      "shadowlands-west-end-2026/i-paper--fiona-mountford.json",
+      "the-tempest-globe-west-end-2026/times-uk--unknown.json"
     ],
     "amp": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--unknown.json",
@@ -7336,7 +7347,14 @@
       "data/review-texts/six-2021/thestage--unknown.json",
       "data/review-texts/six-2021/theupcoming--unknown.json",
       "data/review-texts/six-2021/times-uk--unknown.json",
-      "data/review-texts/six-2021/west-end-wilma--unknown.json"
+      "data/review-texts/six-2021/west-end-wilma--unknown.json",
+      "data/review-texts/six-2021/whatsonstage--unknown.json",
+      "data/review-texts/the-book-of-mormon-west-end-2024/sunday-telegraph--unknown.json",
+      "data/review-texts/the-phantom-of-the-opera-off-west-end-2021/thestage--unknown.json",
+      "data/review-texts/the-phantom-of-the-opera-west-end-1986/broadwayworld--unknown.json",
+      "data/review-texts/the-phantom-of-the-opera-west-end-1986/west-end-wilma--unknown.json",
+      "data/review-texts/the-phantom-of-the-opera-west-end-1986/whatsonstage--unknown.json",
+      "data/review-texts/the-play-that-goes-wrong-west-end-2021/independent--unknown.json"
     ],
     "archive": [
       "hamilton-2015/nytimes--ben-brantley.json",
@@ -7408,7 +7426,7 @@
     ]
   },
   "startTime": "2026-03-17T16:01:32.909Z",
-  "lastProcessed": "six-2021/west-end-wilma--unknown.json",
+  "lastProcessed": "the-tempest-globe-west-end-2026/times-uk--unknown.json",
   "log": [
     {
       "t": "2026-03-17T19:49:25.050Z",
@@ -7497,6 +7515,17 @@
       "t": "2026-03-17T20:08:20.498Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T21:06:53.315Z",
+      "event": "bb-session",
+      "session": "8384f0cc",
+      "url": "https://www.thestage.co.uk/long-reviews/the-phantom-of-the-opera-her-majestys-th"
+    },
+    {
+      "t": "2026-03-17T21:06:54.925Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }

@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-17T21:02:38.844Z",
-  "processed": 253,
-  "failed": 6697,
+  "updatedAt": "2026-03-17T21:11:23.496Z",
+  "processed": 254,
+  "failed": 6706,
   "successRate": "3.6%",
   "tierBreakdown": {
-    "playwright": 95,
+    "playwright": 96,
     "amp": 138,
     "browserbase": 14,
     "directCookies": 0,
     "scrapingbee": 17,
     "brightdata": 0,
-    "archiveToday": 107,
+    "archiveToday": 114,
     "archive": 66
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-03-17T19:49:25.050Z",
@@ -102,6 +102,17 @@
       "t": "2026-03-17T20:08:20.498Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T21:06:53.315Z",
+      "event": "bb-session",
+      "session": "8384f0cc",
+      "url": "https://www.thestage.co.uk/long-reviews/the-phantom-of-the-opera-her-majestys-th"
+    },
+    {
+      "t": "2026-03-17T21:06:54.925Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
