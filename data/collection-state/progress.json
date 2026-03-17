@@ -542,14 +542,10 @@
     "back-to-the-future-west-end-2021/timeout--unknown.json",
     "hadestown-2019/broadwaynews--charles-isherwood.json",
     "moulin-rouge-the-musical-west-end-2021/timeout--unknown.json",
-    "romeo-and-juliet-west-end-2026/guardian--adrian-horton.json",
-    "man-and-boy-west-end-2026/ew--keith-staskiewicz.json",
-    "man-and-boy-west-end-2026/wsj--terry-teachout.json",
-    "all-my-sons-west-end-2025/london-box-office--nicky-allpress.json",
-    "all-my-sons-west-end-2025/london-box-office--phil-willmott.json",
-    "broken-glass-west-end-2026/daily-mail--christopher-stevens.json",
-    "broken-glass-west-end-2026/independent--samuel-mathewson.json",
-    "jesa-off-broadway-2026/playbill--unknown.json"
+    "oh-mary-west-end-2025/variety--unknown.json",
+    "the-mousetrap-west-end-2021/variety--unknown.json",
+    "romeo-and-juliet-west-end-2026/theatrely--kobi-kassal.json",
+    "evening-all-afternoon-west-end-2026/telegraph--unknown.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -10351,11 +10347,8 @@
       "back-to-the-future-west-end-2021/timeout--adam-feldman.json",
       "back-to-the-future-west-end-2021/timeout--unknown.json",
       "moulin-rouge-the-musical-west-end-2021/timeout--unknown.json",
-      "romeo-and-juliet-west-end-2026/guardian--adrian-horton.json",
-      "all-my-sons-west-end-2025/london-box-office--nicky-allpress.json",
-      "all-my-sons-west-end-2025/london-box-office--phil-willmott.json",
-      "broken-glass-west-end-2026/independent--samuel-mathewson.json",
-      "jesa-off-broadway-2026/playbill--unknown.json"
+      "romeo-and-juliet-west-end-2026/theatrely--kobi-kassal.json",
+      "evening-all-afternoon-west-end-2026/telegraph--unknown.json"
     ],
     "amp": [
       "data/review-texts/peter-and-the-starcatcher-2012/variety--marilyn-stasio.json",
@@ -10934,10 +10927,7 @@
       "bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
       "bughouse-off-broadway-2026/theatermania--pete-hempstead.json",
       "cats-the-jellicle-ball-2026/theatermania--zachary-stewart.json",
-      "hadestown-2019/broadwaynews--charles-isherwood.json",
-      "man-and-boy-west-end-2026/ew--keith-staskiewicz.json",
-      "man-and-boy-west-end-2026/wsj--terry-teachout.json",
-      "broken-glass-west-end-2026/daily-mail--christopher-stevens.json"
+      "hadestown-2019/broadwaynews--charles-isherwood.json"
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
@@ -12031,6 +12021,61 @@
       "t": "2026-03-17T05:05:42.072Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T05:42:56.603Z",
+      "event": "bb-session",
+      "session": "cd9850b8",
+      "url": "https://www.newyorker.com/magazine/2024/07/15/oh-mary-theatre-review"
+    },
+    {
+      "t": "2026-03-17T05:42:57.656Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-17T05:48:25.188Z",
+      "event": "bb-session",
+      "session": "f53c627f",
+      "url": "https://www.thestage.co.uk/reviews/arcadia-review-old-vic-london-tom-stoppard"
+    },
+    {
+      "t": "2026-03-17T05:48:26.355Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-17T05:51:57.825Z",
+      "event": "bb-session",
+      "session": "228674e4",
+      "url": "https://www.thestage.co.uk/reviews/evening-all-afternoon-review-donmar-warehouse"
+    },
+    {
+      "t": "2026-03-17T05:51:58.927Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-17T05:53:43.571Z",
+      "event": "bb-session",
+      "session": "2c7b9018",
+      "url": "https://www.thestage.co.uk/review-round-ups/evening-all-afternoon-at-the-donmar-"
+    },
+    {
+      "t": "2026-03-17T05:53:44.874Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-17T05:59:04.127Z",
+      "event": "bb-session",
+      "session": "135b2419",
+      "url": "https://www.thestage.co.uk/news/production-news/russell-kane-lands-stage-debut-i"
+    },
+    {
+      "t": "2026-03-17T05:59:05.210Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
