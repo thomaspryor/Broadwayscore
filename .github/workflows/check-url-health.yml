@@ -1,0 +1,56 @@
+name: Check URL Health
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # Monday 9 AM UTC (weekly)
+  workflow_dispatch: {}
+
+concurrency:
+  group: check-url-health
+  cancel-in-progress: true
+
+jobs:
+  check-urls:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run URL health check
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+        run: node scripts/health-check-urls.js
+
+      - name: Commit audit data
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/url-health-report.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No URL health data changes"
+          else
+            git commit -m "data: URL health check [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'URL Health Check Failed'
+          severity: 'critical'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
