@@ -20,7 +20,7 @@ const { batchLookupIBDBDates, checkIBDBForPriorProductions } = require('./lib/ib
 const { getTheaterAddress } = require('./lib/venue-addresses');
 const { splitCombinedCredits } = require('./lib/credit-splitting');
 const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendations } = require('./lib/broadway-com-runtimes');
-const { isLondonMarket, isOffWestEndVenue } = require('./lib/venue-classification');
+const { isLondonMarket, isOffWestEndVenue, isWestEndVenue } = require('./lib/venue-classification');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'new-shows-pending.json');
@@ -256,7 +256,7 @@ async function fetchShowsFromTodayTixLondon() {
   //   1. Top-level category is Plays or Musicals, OR
   //   2. Category is "Immersive Experiences" but has theater subcategories (Drama, Classic, Comedy)
   //      — catches Witness for the Prosecution which TodayTix miscategorizes as immersive
-  const WE_THEATER_CATEGORIES = new Set(['Plays', 'Musicals']);
+  const WE_THEATER_CATEGORIES = new Set(['Plays', 'Musicals', 'Cabaret']);
   const WE_THEATER_SUBCATEGORIES = new Set(['Drama', 'Classic', 'Comedy']);
   const westEndShows = allShows.filter(s => {
     const subcatNames = (s.subcategories || []).map(sc => sc.name);
@@ -450,7 +450,117 @@ async function fetchShowsFromOfficialLondonTheatre() {
   return shows;
 }
 
+// ── LondonTheatre.co.uk — OWE discovery source (catches fringe venues TodayTix misses) ──
+
+const LT_OWE_URL = 'https://www.londontheatre.co.uk/whats-on/off-west-end';
+
+async function fetchShowsFromLondonTheatre() {
+  console.log('Fetching Off-West End shows from LondonTheatre.co.uk...');
+
+  // Plain HTTPS — site serves static HTML with JSON-LD, no scraping service needed
+  const html = await new Promise((resolve, reject) => {
+    const req = https.get(LT_OWE_URL, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml',
+        'Accept-Language': 'en-GB,en;q=0.9',
+      },
+      timeout: 20000,
+    }, (res) => {
+      if (res.statusCode !== 200) { reject(new Error(`HTTP ${res.statusCode}`)); res.resume(); return; }
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => resolve(data));
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Timeout')); });
+  });
+
+  if (html.length < 3000) {
+    console.log(`  LT: content suspiciously short (${html.length} bytes), skipping`);
+    return [];
+  }
+
+  const dom = new JSDOM(html);
+  const ldScripts = dom.window.document.querySelectorAll('script[type="application/ld+json"]');
+  const shows = [];
+  const seen = new Set();
+
+  for (const script of ldScripts) {
+    try {
+      const parsed = JSON.parse(script.textContent);
+      // Handle both single objects and arrays of TheaterEvent (LT uses an array)
+      const items = Array.isArray(parsed) ? parsed : [parsed];
+
+      for (const data of items) {
+        if (typeof data['@type'] !== 'string' || data['@type'] !== 'TheaterEvent') continue;
+        if (data.subEvent) continue;
+
+        const title = (data.name || '').trim()
+          .replace(/&#8217;|&#8216;|[\u2018\u2019]/g, "'")
+          .replace(/&#8220;|&#8221;|[\u201C\u201D]/g, '"')
+          .replace(/&#8211;|[\u2013]/g, '\u2013').replace(/&#8212;|[\u2014]/g, '\u2014')
+          .replace(/&#038;/g, '&').replace(/&amp;/g, '&')
+          .replace(/&apos;/g, "'");
+        if (!title || title.length < 3 || seen.has(title.toLowerCase())) continue;
+
+        const titleLower = title.toLowerCase();
+        if (NON_THEATER_PATTERNS.some(p => titleLower.includes(p))) continue;
+        if (WE_EXTRA_PATTERNS.some(p => titleLower.includes(p))) continue;
+        if (WE_SOLO_PERFORMER_PATTERN.test(title) && !titleLower.includes('musical') && !titleLower.includes('play')) continue;
+
+        const rawVenue = (typeof data.location === 'object' ? data.location.name : data.location) || 'TBA';
+        const venue = rawVenue.replace(/&apos;/g, "'").replace(/&amp;/g, '&');
+        const endDate = data.endDate === 'null' || data.endDate === null ? null : data.endDate || null;
+
+        // Venue-based classification: most are OWE, but reclassify if at a WE venue
+        const category = isWestEndVenue(venue) ? 'west-end' : 'off-west-end';
+
+        seen.add(titleLower);
+        shows.push({
+          title,
+          venue,
+          slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+          openingDate: data.startDate || null,
+          closingDate: endDate,
+          category,
+          description: (data.description || '').substring(0, 500),
+        });
+      }
+    } catch (e) {
+      // Skip malformed JSON-LD blocks
+    }
+  }
+
+  if (shows.length > 150) {
+    console.log(`  ⚠️  LT returned ${shows.length} shows (expected ~75). Capping at 150.`);
+    shows.length = 150;
+  }
+  if (shows.length < 5 && shows.length > 0) {
+    console.log(`  ⚠️  LT returned only ${shows.length} shows (expected ~75). Possible partial fetch — discarding.`);
+    return [];
+  }
+
+  console.log(`  LT: ${ldScripts.length} JSON-LD blocks, ${shows.length} OWE shows parsed`);
+  return shows;
+}
+
 // ── Cross-source divergence logging ──
+
+function logLTSourceDivergence(todayTixShows, oltShows, ltShows) {
+  if (ltShows.length === 0) return;
+  const normalize = (t) => t.toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/^(the|a|an) /, '').trim();
+  const otherTitles = new Set([
+    ...todayTixShows.map(s => normalize(s.title)),
+    ...oltShows.map(s => normalize(s.title)),
+  ]);
+  const ltOnly = ltShows.filter(s => !otherTitles.has(normalize(s.title)));
+  console.log(`  LT OWE: ${ltShows.length} total, ${ltOnly.length} unique (not in TodayTix/OLT)`);
+  if (ltOnly.length > 0) {
+    const display = ltOnly.slice(0, 10).map(s => s.title);
+    console.log(`  LT-only shows: ${display.join(', ')}${ltOnly.length > 10 ? ` ...+${ltOnly.length - 10} more` : ''}`);
+  }
+}
 
 function logWESourceDivergence(todayTixShows, oltShows) {
   if (todayTixShows.length === 0 || oltShows.length === 0) return; // Can't compare
@@ -947,19 +1057,21 @@ async function discoverShows() {
 
   // West End discovery via TodayTix London API + Official London Theatre (SOLT)
   if (includeWestEnd) {
-    // Fetch all three sources in parallel
-    const [todayTixResult, oltResult, tmResult] = await Promise.allSettled([
+    // Fetch all four sources in parallel
+    const [todayTixResult, oltResult, tmResult, ltResult] = await Promise.allSettled([
       fetchShowsFromTodayTixLondon(),
       fetchShowsFromOfficialLondonTheatre(),
-      fetchShowsFromTheatremonkey()
+      fetchShowsFromTheatremonkey(),
+      fetchShowsFromLondonTheatre()
     ]);
 
     const todayTixWEShows = todayTixResult.status === 'fulfilled' ? todayTixResult.value : [];
     const oltShows = oltResult.status === 'fulfilled' ? oltResult.value : [];
     const tmShows = tmResult.status === 'fulfilled' ? tmResult.value : [];
+    const ltShows = ltResult.status === 'fulfilled' ? ltResult.value : [];
 
     if (todayTixResult.status === 'rejected') {
-      console.log(`⚠️  TodayTix London API failed (${todayTixResult.reason?.message}), continuing with OLT + TM`);
+      console.log(`⚠️  TodayTix London API failed (${todayTixResult.reason?.message}), continuing with other sources`);
     } else {
       console.log(`Found ${todayTixWEShows.length} West End shows via TodayTix London API`);
       if (todayTixWEShows.length > 0 && todayTixWEShows.length < 20) {
@@ -979,15 +1091,22 @@ async function discoverShows() {
       console.log(`Found ${tmShows.length} West End shows via Theatremonkey`);
     }
 
-    if (todayTixWEShows.length === 0 && oltShows.length === 0 && tmShows.length === 0) {
-      console.log(`⚠️  CRITICAL: All three West End sources returned 0 shows — check API/scraper health`);
+    if (ltResult.status === 'rejected') {
+      console.log(`⚠️  LondonTheatre.co.uk fetch failed (${ltResult.reason?.message}), continuing with other sources`);
+    } else {
+      console.log(`Found ${ltShows.length} OWE shows via LondonTheatre.co.uk`);
+    }
+
+    if (todayTixWEShows.length === 0 && oltShows.length === 0 && tmShows.length === 0 && ltShows.length === 0) {
+      console.log(`⚠️  CRITICAL: All four London sources returned 0 shows — check API/scraper health`);
     }
 
     // Cross-source divergence logging (diagnostic)
     logWESourceDivergence(todayTixWEShows, oltShows);
+    logLTSourceDivergence(todayTixWEShows, oltShows, ltShows);
 
-    // TodayTix first (richer metadata), OLT second, TM third — dedup pipeline handles overlap
-    discoveredShows.push(...todayTixWEShows, ...oltShows, ...tmShows);
+    // TodayTix first (richer metadata), OLT second, TM third, LT last — dedup prefers earlier entries
+    discoveredShows.push(...todayTixWEShows, ...oltShows, ...tmShows, ...ltShows);
     console.log('');
   }
 
