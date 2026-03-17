@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-17T21:47:06.423Z",
+  "timestamp": "2026-03-17T22:38:56.656Z",
   "stats": {
     "totalReviews": 31610,
-    "alreadyFlagged": 9389,
-    "dateGuardCatches": 151,
-    "directorMismatch": 1133,
-    "tvFilmSignals": 3504,
-    "londonSignals": 1044,
+    "alreadyFlagged": 9391,
+    "dateGuardCatches": 150,
+    "directorMismatch": 1135,
+    "tvFilmSignals": 3506,
+    "londonSignals": 1043,
     "offBroadwaySignals": 1072,
     "yearMismatch": 92,
     "noPublishDate": 9410
@@ -6648,6 +6648,24 @@
     },
     {
       "showId": "back-to-the-future-west-end-2021",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2021-09-13",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-9987385/PATRICK-MARMION-reviews-Future-stage-show.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
       "file": "guardian--arifa-akbar.json",
       "score": 65,
       "publishDate": "2021-09-13",
@@ -9788,6 +9806,20 @@
       "score": 61,
       "publishDate": null,
       "url": "https://www.newyorktheatreguide.com/reviews/cabaret-broadway-review-eddie-redmayne-gayle-rankin",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
+        }
+      ]
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "file": "standard--nick-curtis.json",
+      "score": 91,
+      "publishDate": "2021-12-13",
+      "url": "https://www.standard.co.uk/culture/theatre/cabaret-review-eddie-redmayne-jessie-buckley-the-kit-kat-club-b971184.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -14724,7 +14756,7 @@
     {
       "showId": "dracula-west-end-2025",
       "file": "daily-mail--unknown.json",
-      "score": null,
+      "score": 64,
       "publishDate": "2026-02-18",
       "url": "https://www.westendtheatre.com/340316/news/reviews/reviews-of-dracula-starring-cynthia-erivo/",
       "findings": [
@@ -58923,6 +58955,20 @@
     },
     {
       "showId": "the-producers-west-end-2025",
+      "file": "timeout-london--unknown.json",
+      "score": 75,
+      "publishDate": "2025-09-14",
+      "url": "https://www.timeout.com/london/theatre/the-producers-3-review-2",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
+        }
+      ]
+    },
+    {
+      "showId": "the-producers-west-end-2025",
       "file": "variety--bob-verini.json",
       "score": 75,
       "publishDate": "2026-02-11",
@@ -67433,7 +67479,7 @@
     {
       "showId": "arcadia-west-end-2026",
       "file": "telegraph--unknown.json",
-      "score": null,
+      "score": 82,
       "publishDate": "2026-02-05",
       "url": "https://www.westendtheatre.com/335902/news/reviews/arcadia-reviews-round-up-at-the-old-vic-theatre-in-london/",
       "findings": [
@@ -68282,20 +68328,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "broken-glass-west-end-2026",
-      "file": "independent--unknown.json",
-      "score": 67,
-      "publishDate": "2026-01-07",
-      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/woman-in-mind-sheridan-smith-romesh-ranganathan-b2895867.html",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 55d before show (2026-01-07 vs 2026-03-03)"
         }
       ]
     },
@@ -87361,20 +87393,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-producers-west-end-2025",
-      "file": "timeout-london--unknown.json",
-      "score": 75,
-      "publishDate": "2025-09-14",
-      "url": "https://www.timeout.com/london/theatre/the-producers-3-review-2",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
