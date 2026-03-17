@@ -1,23 +1,23 @@
 {
   "meta": {
-    "generatedAt": "2026-03-17T00:37:06.294Z",
+    "generatedAt": "2026-03-17T00:44:25.985Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 32211,
-      "inReviewsJson": 16936,
+      "totalFiles": 32204,
+      "inReviewsJson": 16934,
       "skippedExcluded": 16,
-      "withFullText": 49,
+      "withFullText": 22,
       "excerptOnly": 2215,
-      "llmClassified": 48,
+      "llmClassified": 21,
       "heuristicFlagged": 1,
       "nonReviewsFound": 0,
       "uncertainCases": 21,
-      "budgetUsed": 0.0049,
-      "llmCalls": 49,
+      "budgetUsed": 0.0022,
+      "llmCalls": 22,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14656
+      "skippedAlreadyClassified": 14681
     },
     "calibration": null
   },
@@ -30,7 +30,7 @@
       "outletId": "chicago-reader",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be metadata and navigation elements from a website, not a review of the show 'Amazing Grace'. The presence of tags like 'Closing (Theater and Galleries)' suggests it might be a news item about the show's closing.",
+      "reasoning": "This appears to be a listing or announcement related to the show, possibly a closing notice, rather than a review. There is no evaluative content present.",
       "currentScore": 86
     },
     {
@@ -40,7 +40,7 @@
       "outletId": "dailybeast",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article mentions the Tony Awards eligibility deadline, suggesting it's a news piece about the Broadway season rather than a review of 'Dead Outlaw.'",
+      "reasoning": "The article discusses the Tony Awards eligibility deadline and the rush of shows opening before the cutoff, which is a news item rather than a review of a specific show.",
       "currentScore": 72
     },
     {
@@ -50,7 +50,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and themes of \"Eclipsed\" and provides historical context, but it does not offer a critical evaluation or opinion on the quality of the production itself. The truncated portion contains unrelated news items.",
       "currentScore": 82
     },
     {
@@ -60,7 +60,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review of a specific production. It seems more like advertising or search terms.",
       "currentScore": 82
     },
     {
@@ -80,7 +80,7 @@
       "outletId": "huffpost",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be a collection of news headlines and trending topics, rather than a review of 'First Date' or any other show. The mention of 'summer musical' is not in the context of a review.",
+      "reasoning": "The article appears to be a collection of news headlines and trending topics, rather than a review of \"First Date.\"",
       "currentScore": 62
     },
     {
@@ -90,7 +90,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain any evaluative content about \"Funny Girl\".",
       "currentScore": 62
     },
     {
@@ -100,7 +100,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
       "currentScore": 81
     },
     {
@@ -110,7 +110,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, a collection of brief mentions of various cultural events. While 'Liberation' is mentioned, there's no evaluative content to classify it as a review.",
+      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there is no evaluative content or opinion offered, so it is not a review.",
       "currentScore": 88
     },
     {
@@ -160,7 +160,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of categories or tags related to musical theatre, not a review of a specific show like Pippin.",
+      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -170,7 +170,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's a feature piece.",
+      "reasoning": "The article describes the show and its context, but it does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and the history it represents.",
       "currentScore": 83
     },
     {
@@ -180,7 +180,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms, not an actual article. There is no evaluative content about 'The Assembled Parties' or any other show.",
+      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -190,7 +190,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
+      "reasoning": "The article provides production details and cast information, resembling a news item or listing rather than a review with critical evaluation.",
       "currentScore": 64
     },
     {
@@ -200,7 +200,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review of a specific production.",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's closest to news due to the mention of updates.",
       "currentScore": 78
     },
     {
@@ -210,7 +210,7 @@
       "outletId": "vulture",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the set design and the playwright's intentions, but does not offer an evaluation or recommendation of the show itself. It reads more like a feature piece about the play's themes and context.",
+      "reasoning": "The article describes the set design and the playwright's intentions, but does not offer an evaluation or recommendation of the show itself. It focuses on the context and themes rather than a critique.",
       "currentScore": 64
     },
     {
@@ -220,7 +220,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of links and search terms related to theater, rather than an actual article or review. It does not contain any evaluative content about \"Three Tall Women\".",
+      "reasoning": "The text appears to be a collection of links and categories related to theater, rather than a review of a specific show.",
       "currentScore": 89
     },
     {
@@ -230,7 +230,7 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" in advance of its opening, but does not offer a critical evaluation or opinion about the quality of the production. It includes background information and observations about the play's themes and autobiographical elements.",
+      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" in advance of its opening, but does not offer a critical evaluation or opinion about the quality of the production itself. It includes background information and setting the stage for the play, which is characteristic of a preview ",
       "currentScore": 78
     }
   ],
@@ -247,34 +247,6 @@
       "confidence": "heuristic-only"
     }
   ],
-  "reviewsConfirmed": [
-    "cabaret-at-the-kit-kat-club-west-end-2021/guardian--arifa-akbar.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/nytg--amelia-merrill.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--dominic-cavendish.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/theatrely--kobi-kassal.json",
-    "grease-2007/av-club--elijah-gonzalez.json",
-    "hamilton-west-end-2021/metro--adam-bloodworth.json",
-    "hercules-west-end-2025/digital-spy--ian-sandwell.json",
-    "jerome-off-broadway-2025/theatermania--david-gordon.json",
-    "maggots-west-end-2026/guardian--arifa-akbar.json",
-    "mamma-mia-west-end-2021/variety--owen-gleiberman.json",
-    "once-2012/cititour--brian-scott-lipton.json",
-    "once-2012/exeunt-magazine--lane-williamson.json",
-    "once-2012/slantmagazine--dan-rubins.json",
-    "starlight-express-west-end-2024/culture-whisper--teresa-guerreiro.json",
-    "stranger-things-the-first-shadow-west-end-2023/daily-mail--luke-jones.json",
-    "stranger-things-the-first-shadow-west-end-2023/independent--alice-saville.json",
-    "stranger-things-the-first-shadow-west-end-2023/standard--nick-curtis.json",
-    "stranger-things-the-first-shadow-west-end-2023/theatrely--kobi-kassal.json",
-    "stranger-things-the-first-shadow-west-end-2023/thestage--dave-fargnoli.json",
-    "the-devil-wears-prada-west-end-2024/digital-spy--ian-sandwell.json",
-    "the-hunger-games-on-stage-west-end-2025/the-recs--erin-muldoon.json",
-    "the-little-mermaid-2008/ap--lindsey-bahr.json",
-    "the-normal-heart-2011/edge-media-network--unknown.json",
-    "the-wiz-2024/ap--unknown.json",
-    "the-wiz-2024/av-club--jacob-oller.json",
-    "the-wiz-2024/latimes--mary-mcnamara.json",
-    "wicked-2003/times-uk--kevin-maher.json"
-  ],
+  "reviewsConfirmed": [],
   "perShowSummary": []
 }
