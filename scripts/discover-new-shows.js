@@ -500,7 +500,8 @@ async function fetchShowsFromLondonTheatre() {
           .replace(/&#8217;|&#8216;|[\u2018\u2019]/g, "'")
           .replace(/&#8220;|&#8221;|[\u201C\u201D]/g, '"')
           .replace(/&#8211;|[\u2013]/g, '\u2013').replace(/&#8212;|[\u2014]/g, '\u2014')
-          .replace(/&#038;/g, '&').replace(/&amp;/g, '&');
+          .replace(/&#038;/g, '&').replace(/&amp;/g, '&')
+          .replace(/&apos;/g, "'");
         if (!title || title.length < 3 || seen.has(title.toLowerCase())) continue;
 
         const titleLower = title.toLowerCase();
@@ -508,7 +509,8 @@ async function fetchShowsFromLondonTheatre() {
         if (WE_EXTRA_PATTERNS.some(p => titleLower.includes(p))) continue;
         if (WE_SOLO_PERFORMER_PATTERN.test(title) && !titleLower.includes('musical') && !titleLower.includes('play')) continue;
 
-        const venue = (typeof data.location === 'object' ? data.location.name : data.location) || 'TBA';
+        const rawVenue = (typeof data.location === 'object' ? data.location.name : data.location) || 'TBA';
+        const venue = rawVenue.replace(/&apos;/g, "'").replace(/&amp;/g, '&');
         const endDate = data.endDate === 'null' || data.endDate === null ? null : data.endDate || null;
 
         // Venue-based classification: most are OWE, but reclassify if at a WE venue
