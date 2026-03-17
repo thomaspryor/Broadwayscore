@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-03-17T18:31:44.591Z",
+  "runDate": "2026-03-17T18:48:23.536Z",
   "config": {
     "batchSize": 5,
     "maxReviews": 20,
@@ -11,43 +11,43 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 144,
-    "failed": 5106,
+    "processed": 136,
+    "failed": 5124,
     "skipped": 0,
-    "successRate": "2.7%"
+    "successRate": "2.6%"
   },
   "tierBreakdown": {
     "playwright": 36,
-    "amp": 140,
+    "amp": 100,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 11,
+    "scrapingbee": 14,
     "brightdata": 0,
-    "archiveToday": 12,
-    "archive": 28
+    "archiveToday": 16,
+    "archive": 37
   },
   "statistics": {
-    "tier1Attempts": 0,
+    "tier1Attempts": 7,
     "tier1Success": 0,
-    "ampAttempts": 20,
-    "ampSuccess": 20,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 20,
+    "tier2Attempts": 11,
+    "tier2Success": 4,
+    "tier3Attempts": 21,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
-    "totalFailed": 0,
-    "scrapingBeePageCredits": 0,
+    "tier3_6Attempts": 4,
+    "tier3_6Success": 4,
+    "tier4Attempts": 6,
+    "tier4Success": 1,
+    "totalFailed": 7,
+    "scrapingBeePageCredits": 100,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -175,26 +175,18 @@
     "the-story-of-my-life-2009/variety--david-rooney.json",
     "the-whos-tommy-2024/variety--maya-phillips.json",
     "thurgood-2008/variety--charles-isherwood.json",
-    "back-to-the-future-west-end-2021/variety--david-benedict.json",
-    "hamilton-west-end-2021/variety--marilyn-stasio.json",
-    "hercules-west-end-2025/variety--david-benedict.json",
-    "little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
-    "mamma-mia-west-end-2021/variety--matt-wolf.json",
-    "mamma-mia-west-end-2021/variety--owen-gleiberman.json",
-    "my-neighbour-totoro-west-end-2025/variety--unknown.json",
-    "paddington-the-musical-west-end-2025/variety--david-benedict.json",
-    "the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
-    "the-lion-king-1997/variety--matt-wolf.json",
-    "the-lion-king-west-end-2021/variety--matt-wolf.json",
-    "wicked-2003/variety--charles-isherwood.json",
-    "harry-potter-and-the-cursed-child-parts-one-and-two/variety--marilyn-stasio.json",
-    "harvey-2012/variety--marilyn-stasio.json",
-    "110-in-the-shade-2007/variety--david-rooney.json",
-    "a-behanding-in-spokane-2010/variety--marilyn-stasio.json",
-    "a-bronx-tale-2007/variety--marilyn-stasio.json",
-    "a-christmas-carol-2022/variety--maya-phillips.json",
-    "a-view-from-the-bridge-2010/variety--marilyn-stasio.json",
-    "a-view-from-the-bridge-2010/variety--matt-trueman.json"
+    "chess-2025/hollywood-reporter--angie-han.json",
+    "hadestown-2019/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+    "oh-mary-2024/hollywood-reporter--david-rooney.json",
+    "children-of-a-lesser-god-1980/hollywood-reporter--david-rooney.json",
+    "harry-potter-and-the-cursed-child-parts-one-and-two/hollywood-reporter--david-rooney.json",
+    "heathers-the-musical-2025/hollywood-reporter--david-rooney.json",
+    "1984-2017/hollywood-reporter--david-rooney.json",
+    "a-christmas-carol-2019/hollywood-reporter--david-rooney.json",
+    "a-delicate-balance-1996/hollywood-reporter--david-rooney.json",
+    "a-delicate-balance-2014/hollywood-reporter--david-rooney.json"
   ],
   "failed": [
     "arcadia-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -5302,7 +5294,25 @@
     "twelfth-night-1972/vulture--sara-holdren.json",
     "twelfth-night-1998/nyt-theater--jonathan-mandell.json",
     "twelfth-night-1998/nytg--joe-dziemianowicz.json",
-    "twelfth-night-1998/nytimes--laura-collins-hughes.json"
+    "twelfth-night-1998/nytimes--laura-collins-hughes.json",
+    "twelfth-night-1998/vulture--sara-holdren.json",
+    "twelfth-night-2013/hollywood-reporter--frank-scheck.json",
+    "twelfth-night-2013/nyt-theater--jonathan-mandell.json",
+    "twelfth-night-2013/nytg--joe-dziemianowicz.json",
+    "twelfth-night-2013/nytg--margret-echeverria.json",
+    "twelfth-night-2013/vulture--sara-holdren.json",
+    "uncle-vanya-2024/hollywood-reporter--demetrios-matheou.json",
+    "urban-cowboy-2003/nytimes--ben-brantley.json",
+    "urinetown-2001/nytimes--bruce-weber.json",
+    "urinetown-2001/nytimes--elisabeth-vincentelli.json",
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "noises-off-2001/hollywood-reporter--david-rooney.json",
+    "the-father-1981/hollywood-reporter--david-rooney.json",
+    "topdog-underdog-2022/corey-hawkins--unknown.json",
+    "topdog-underdog-2022/kenny-leon--unknown.json",
+    "9-to-5-2009/hollywood-reporter--david-rooney.json",
+    "a-behanding-in-spokane-2010/hollywood-reporter--frank-scheck.json",
+    "a-free-man-of-color-2010/hollywood-reporter--david-rooney.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -5443,47 +5453,7 @@
       "data/review-texts/the-whos-tommy-2024/variety--maya-phillips.json",
       "the-whos-tommy-2024/variety--maya-phillips.json",
       "data/review-texts/thurgood-2008/variety--charles-isherwood.json",
-      "thurgood-2008/variety--charles-isherwood.json",
-      "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
-      "back-to-the-future-west-end-2021/variety--david-benedict.json",
-      "data/review-texts/hamilton-west-end-2021/variety--marilyn-stasio.json",
-      "hamilton-west-end-2021/variety--marilyn-stasio.json",
-      "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
-      "hercules-west-end-2025/variety--david-benedict.json",
-      "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
-      "little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
-      "data/review-texts/mamma-mia-west-end-2021/variety--matt-wolf.json",
-      "mamma-mia-west-end-2021/variety--matt-wolf.json",
-      "data/review-texts/mamma-mia-west-end-2021/variety--owen-gleiberman.json",
-      "mamma-mia-west-end-2021/variety--owen-gleiberman.json",
-      "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
-      "my-neighbour-totoro-west-end-2025/variety--unknown.json",
-      "data/review-texts/paddington-the-musical-west-end-2025/variety--david-benedict.json",
-      "paddington-the-musical-west-end-2025/variety--david-benedict.json",
-      "data/review-texts/the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
-      "the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
-      "data/review-texts/the-lion-king-1997/variety--matt-wolf.json",
-      "the-lion-king-1997/variety--matt-wolf.json",
-      "data/review-texts/the-lion-king-west-end-2021/variety--matt-wolf.json",
-      "the-lion-king-west-end-2021/variety--matt-wolf.json",
-      "data/review-texts/wicked-2003/variety--charles-isherwood.json",
-      "wicked-2003/variety--charles-isherwood.json",
-      "data/review-texts/harry-potter-and-the-cursed-child-parts-one-and-two/variety--marilyn-stasio.json",
-      "harry-potter-and-the-cursed-child-parts-one-and-two/variety--marilyn-stasio.json",
-      "data/review-texts/harvey-2012/variety--marilyn-stasio.json",
-      "harvey-2012/variety--marilyn-stasio.json",
-      "data/review-texts/110-in-the-shade-2007/variety--david-rooney.json",
-      "110-in-the-shade-2007/variety--david-rooney.json",
-      "data/review-texts/a-behanding-in-spokane-2010/variety--marilyn-stasio.json",
-      "a-behanding-in-spokane-2010/variety--marilyn-stasio.json",
-      "data/review-texts/a-bronx-tale-2007/variety--marilyn-stasio.json",
-      "a-bronx-tale-2007/variety--marilyn-stasio.json",
-      "data/review-texts/a-christmas-carol-2022/variety--maya-phillips.json",
-      "a-christmas-carol-2022/variety--maya-phillips.json",
-      "data/review-texts/a-view-from-the-bridge-2010/variety--marilyn-stasio.json",
-      "a-view-from-the-bridge-2010/variety--marilyn-stasio.json",
-      "data/review-texts/a-view-from-the-bridge-2010/variety--matt-trueman.json",
-      "a-view-from-the-bridge-2010/variety--matt-trueman.json"
+      "thurgood-2008/variety--charles-isherwood.json"
     ],
     "browserbase": [],
     "directCookies": [],
@@ -5498,7 +5468,10 @@
       "jersey-boys-2005/newyorker--john-lahr.json",
       "liberation-2025/nytimes--unknown.json",
       "marjorie-prime-2025/nytimes--unknown.json",
-      "punch-2025/hollywood-reporter--unknown.json"
+      "punch-2025/hollywood-reporter--unknown.json",
+      "chess-2025/hollywood-reporter--angie-han.json",
+      "hadestown-2019/hollywood-reporter--david-rooney.json",
+      "heathers-the-musical-2025/hollywood-reporter--david-rooney.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -5513,7 +5486,11 @@
       "data/review-texts/maggots-west-end-2026/hollywood-reporter--david-rooney.json",
       "data/review-texts/marjorie-prime-2025/vulture--unknown.json",
       "data/review-texts/mcneal-2024/hollywood-reporter--angie-han.json",
-      "data/review-texts/queen-versailles-2025/hollywood-reporter--unknown.json"
+      "data/review-texts/queen-versailles-2025/hollywood-reporter--unknown.json",
+      "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "data/review-texts/noises-off-2001/hollywood-reporter--david-rooney.json",
+      "data/review-texts/the-father-1981/hollywood-reporter--david-rooney.json",
+      "data/review-texts/9-to-5-2009/hollywood-reporter--david-rooney.json"
     ],
     "archive": [
       "hamilton-2015/nytimes--ben-brantley.json",
@@ -5543,9 +5520,32 @@
       "a-life-in-the-theatre-2010/newyorker--john-lahr.json",
       "all-out-2025/vulture--roxana-hadadi.json",
       "burn-this-2019/vulture--jesse-green.json",
-      "cat-on-a-hot-tin-roof-2008/hollywood-reporter--david-rooney.json"
+      "cat-on-a-hot-tin-roof-2008/hollywood-reporter--david-rooney.json",
+      "hamilton-2015/hollywood-reporter--david-rooney.json",
+      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "oh-mary-2024/hollywood-reporter--david-rooney.json",
+      "children-of-a-lesser-god-1980/hollywood-reporter--david-rooney.json",
+      "harry-potter-and-the-cursed-child-parts-one-and-two/hollywood-reporter--david-rooney.json",
+      "1984-2017/hollywood-reporter--david-rooney.json",
+      "a-christmas-carol-2019/hollywood-reporter--david-rooney.json",
+      "a-delicate-balance-1996/hollywood-reporter--david-rooney.json",
+      "a-delicate-balance-2014/hollywood-reporter--david-rooney.json"
     ]
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "failuresByOutlet": {
+    "The Hollywood Reporter": {
+      "count": 1,
+      "domain": "hollywoodreporter.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "9-to-5-2009/hollywood-reporter--david-rooney.json",
+      "oldUrl": "https://www.hollywoodreporter.com/review/little-miss-sunshine-theater-review-656158?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+thr%2Fnews+(The+Hollywood+Reporter+-+Top+Stories)",
+      "newUrl": "https://www.hollywoodreporter.com/movies/movie-reviews/9-5-musical-theater-review-93104/"
+    }
+  ]
 }
