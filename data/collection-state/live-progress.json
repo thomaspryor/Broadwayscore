@@ -4,28 +4,17 @@
   "failed": 8544,
   "successRate": "5.9%",
   "tierBreakdown": {
-    "playwright": 260,
-    "amp": 158,
-    "browserbase": 130,
+    "playwright": 272,
+    "amp": 160,
+    "browserbase": 132,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 106,
-    "archive": 166
+    "archiveToday": 108,
+    "archive": 170
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-03-17T02:14:50.446Z",
-      "event": "bb-session",
-      "session": "37a38834",
-      "url": "https://www.hollywoodreporter.com/tv/tv-news/fx-renews-russell-brands-brandx-394"
-    },
-    {
-      "t": "2026-03-17T02:14:51.874Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-17T04:26:55.269Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-17T05:05:42.072Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T05:19:08.087Z",
+      "event": "bb-session",
+      "session": "2ab44795",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-17T05:19:09.328Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
