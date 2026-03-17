@@ -44,7 +44,7 @@ concurrency:
 jobs:
   poll:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 40
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -160,17 +160,74 @@ jobs:
           git commit -m "data: Opening night poller — new reviews discovered [skip ci]"
           bash ../../scripts/lib/push-with-retry.sh 5 main
 
-      - name: Trigger pipeline chain (collect → rebuild → score)
+      - name: Collect full text inline
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        env:
+          SHOW_FILTER: ${{ steps.find.outputs.shows }}
+          MAX_REVIEWS: '100'
+          BATCH_SIZE: '10'
+          ARCHIVE_FIRST: 'true'
+          RETRY_FAILED: 'true'
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_ENABLED: 'true'
+          BROWSERBASE_MAX_SESSIONS_PER_RUN: '10'
+          NYT_EMAIL: ${{ secrets.NYT_EMAIL }}
+          NYTIMES_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}
+          VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}
+          VULTURE_PASSWORD: ${{ secrets.VULTURE_PASSWORD }}
+          TELEGRAPH_COOKIES: ${{ secrets.TELEGRAPH_COOKIES }}
+          THETIMES_COOKIES: ${{ secrets.THETIMES_COOKIES }}
+          STANDARD_COOKIES: ${{ secrets.STANDARD_COOKIES }}
+          INDEPENDENT_COOKIES: ${{ secrets.INDEPENDENT_COOKIES }}
+        run: node scripts/collect-review-texts.js --aggressive
+        continue-on-error: true
+        timeout-minutes: 10
+
+      - name: Commit collected texts
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        run: |
+          cd data/review-texts
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "data: Opening night poller — collected review texts"
+          bash ../../scripts/lib/push-with-retry.sh 5 main
+        continue-on-error: true
+
+      - name: Score reviews inline
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          SHOWS="${{ steps.find.outputs.shows }}"
+          IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS"
+          for SHOW_ID in "${SHOW_ARRAY[@]}"; do
+            echo "Scoring: $SHOW_ID"
+            npx ts-node scripts/llm-scoring/index.ts --show="$SHOW_ID" --ensemble 2>&1 || true
+          done
+        continue-on-error: true
+        timeout-minutes: 10
+
+      - name: Commit scores
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        run: |
+          cd data/review-texts
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "data: Opening night poller — scored reviews"
+          bash ../../scripts/lib/push-with-retry.sh 5 main
+        continue-on-error: true
+
+      - name: Trigger rebuild + deploy
         if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          SHOWS="${{ steps.find.outputs.shows }}"
-          echo "Triggering collect for: $SHOWS"
-          gh workflow run "Collect Review Texts" \
-            -f show_filter="$SHOWS" \
-            -f max_reviews=100 \
-            -f batch_size=10
+          gh workflow run "Rebuild Reviews Data" -f reason="Opening night poller (inline)"
 
       - name: Notify on failure
         if: failure()
