@@ -1,21 +1,21 @@
 {
-  "timestamp": "2026-03-16T23:52:44.296Z",
+  "timestamp": "2026-03-17T00:11:17.785Z",
   "stats": {
     "totalReviews": 31524,
-    "alreadyFlagged": 9526,
+    "alreadyFlagged": 9535,
     "dateGuardCatches": 133,
-    "directorMismatch": 1105,
-    "tvFilmSignals": 3470,
-    "londonSignals": 1021,
-    "offBroadwaySignals": 1067,
-    "yearMismatch": 92,
-    "noPublishDate": 9431
+    "directorMismatch": 1112,
+    "tvFilmSignals": 3486,
+    "londonSignals": 1025,
+    "offBroadwaySignals": 1069,
+    "yearMismatch": 93,
+    "noPublishDate": 9430
   },
   "findings": [
     {
       "showId": "110-in-the-shade-2007",
       "file": "variety--david-rooney.json",
-      "score": 52,
+      "score": 78,
       "publishDate": "May 9, 2007",
       "url": "https://variety.com/2007/legit/reviews/110-in-the-shade-1200556534/",
       "findings": [
@@ -1043,20 +1043,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2014 (2x) more than 1996 (1x). 2014 matches production: a-delicate-balance-2014"
-        }
-      ]
-    },
-    {
-      "showId": "a-delicate-balance-1996",
-      "file": "timeout--david-cote.json",
-      "score": 83,
-      "publishDate": "November 20th, 2014",
-      "url": "http://www.timeout.com/newyork/theater/a-delicate-balance",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"pam mackinnon\" from a-delicate-balance-2014"
         }
       ]
     },
@@ -3921,6 +3907,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"simon mcburney\" from all-my-sons-2008"
+        }
+      ]
+    },
+    {
+      "showId": "all-my-sons-west-end-2025",
+      "file": "nytg--mark-shenton.json",
+      "publishDate": null,
+      "url": "https://www.newyorktheatreguide.com/reviews/review-of-all-my-sons-starring-annette-bening-tracy-letts-on-broadway",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jack o'brien\" from all-my-sons-2019"
         }
       ]
     },
@@ -7390,20 +7389,6 @@
       ]
     },
     {
-      "showId": "betrayal-2000",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 86,
-      "publishDate": "September 5th, 2019",
-      "url": "https://www.hollywoodreporter.com/review/tom-hiddleston-betrayal-theater-review-1234384",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from betrayal-2019"
-        }
-      ]
-    },
-    {
       "showId": "betrayal-2013",
       "file": "guardian--charles-isherwood.json",
       "score": 45,
@@ -9735,6 +9720,19 @@
     },
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "file": "theatrely--kobi-kassal.json",
+      "publishDate": null,
+      "url": "https://www.theatrely.com/post/a-new-cabaret-for-the-ages-on-broadway-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
+        }
+      ]
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
       "file": "timeout--andrzej-lukowski.json",
       "score": 78,
       "publishDate": "2025-10-18",
@@ -10703,6 +10701,42 @@
     },
     {
       "showId": "cats-2016",
+      "file": "cititour--brian-scott-lipton.json",
+      "publishDate": null,
+      "url": "https://cititour.com/NYC_News/Cats-The-Jellice-Ball-is-Practically-Purrfect/8448",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
+        }
+      ]
+    },
+    {
+      "showId": "cats-2016",
+      "file": "exeunt-magazine--lane-williamson.json",
+      "publishDate": null,
+      "url": "https://exeuntnyc.com/reviews/review-cats-the-jellicle-ball-at-perelman-performing-arts-center/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"perelman\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-2016",
       "file": "huffpost--unknown.json",
       "score": 86,
       "publishDate": null,
@@ -10712,6 +10746,29 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-2016",
+      "file": "queerty--matthew-wexler.json",
+      "publishDate": null,
+      "url": "https://www.queerty.com/cats-the-jellicle-ball-spins-dips-and-yes-catwalks-in-a-fierce-reimagining-of-the-80s-megahit-20240620",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2024 (4x) more than 2016 (0x). 2024 matches production: cats-the-jellicle-ball-off-broadway-2024"
         }
       ]
     },
@@ -14488,7 +14545,7 @@
     {
       "showId": "doctor-zhivago-2015",
       "file": "vulture--jeremy-gerard.json",
-      "score": 24,
+      "score": 20,
       "publishDate": "2015-04-22",
       "url": "https://www.vulture.com/2015/04/theater-review-doctor-zhivago.html",
       "findings": [
@@ -17975,7 +18032,7 @@
     {
       "showId": "frozen-2018",
       "file": "hollywood-reporter--david-rooney.json",
-      "score": 78,
+      "score": 64,
       "publishDate": "March 22, 2018",
       "url": "https://www.hollywoodreporter.com/news/general-news/frozen-broadway-theater-review-1096441/",
       "findings": [
@@ -20779,6 +20836,19 @@
     },
     {
       "showId": "grease-2007",
+      "file": "av-club--elijah-gonzalez.json",
+      "publishDate": null,
+      "url": "http://www.avclub.com/tvclub/better-or-worse-grease-live-revolutionizes-live-tv-231541",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"onscreen\""
+        }
+      ]
+    },
+    {
+      "showId": "grease-2007",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 63,
       "publishDate": "April 22, 2014",
@@ -20788,6 +20858,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"paramount\""
+        }
+      ]
+    },
+    {
+      "showId": "grease-2007",
+      "file": "mashable--saba-hamedy.json",
+      "publishDate": null,
+      "url": "https://mashable.com/2016/02/01/grease-live-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -23583,6 +23666,19 @@
     },
     {
       "showId": "hercules-west-end-2025",
+      "file": "digital-spy--ian-sandwell.json",
+      "publishDate": null,
+      "url": "https://www.digitalspy.com/movies/a65152308/hercules-review-buy-tickets/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "hercules-west-end-2025",
       "file": "guardian--arifa-akbar.json",
       "score": 63,
       "publishDate": "2025-06-24",
@@ -23643,6 +23739,19 @@
       "score": 54,
       "publishDate": "June 25, 2025",
       "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-lane.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "hercules-west-end-2025",
+      "file": "radio-times--olivia-garrett.json",
+      "publishDate": null,
+      "url": "https://www.radiotimes.com/going-out/tickets/hercules-musical-review/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -30668,7 +30777,7 @@
     {
       "showId": "little-shop-of-horrors-off-broadway-2019",
       "file": "variety--ad-amorosi.json",
-      "score": 80,
+      "score": 81,
       "publishDate": "2019-10-18",
       "url": "https://variety.com/2019/legit/reviews/little-shop-of-horrors-review-jonathan-groff-1203370043/",
       "findings": [
@@ -32041,7 +32150,7 @@
     {
       "showId": "mamma-mia-west-end-2021",
       "file": "variety--matt-wolf.json",
-      "score": 74,
+      "score": 56,
       "publishDate": "2015-09-03",
       "url": "https://variety.com/1999/legit/reviews/mamma-mia-1200457147/",
       "findings": [
@@ -32696,7 +32805,7 @@
     {
       "showId": "masquerade-off-broadway-2025",
       "file": "nytg--gillian-russo.json",
-      "score": 85,
+      "score": 87,
       "publishDate": "September 29th, 2025",
       "url": "https://www.newyorktheatreguide.com/reviews/masquerade-off-broadway-review-immersive-phantom-of-the-opera",
       "findings": [
@@ -32930,7 +33039,7 @@
     {
       "showId": "matilda-the-musical-west-end-2021",
       "file": "one-minute-critic--lizzie-loveridge.json",
-      "score": null,
+      "score": 88,
       "publishDate": null,
       "url": "https://theatrevibe.co.uk/2011/11/22/review-matilda-the-musical-cambridge-theatre-2011/",
       "findings": [
@@ -33509,7 +33618,7 @@
     {
       "showId": "mean-girls-2018",
       "file": "vulture--jesse-green.json",
-      "score": 61,
+      "score": 86,
       "publishDate": "April 9, 2018",
       "url": "https://www.vulture.com/2018/04/on-wednesdays-we-do-two-shows-mean-girls-awarely-onstage.html",
       "findings": [
@@ -33592,6 +33701,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "merrily-we-roll-along-2023",
+      "file": "collider--tania-hussain.json",
+      "score": 74,
+      "publishDate": null,
+      "url": "https://collider.com/merrily-we-roll-along-movie-review-daniel-radcliffe-jonathan-groff-sondheim/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -33732,7 +33855,7 @@
     {
       "showId": "merrily-we-roll-along-2023",
       "file": "nytimes--calum-marsh.json",
-      "score": 75,
+      "score": 86,
       "publishDate": "2023-10-10",
       "url": "https://www.nytimes.com/2023/10/10/theater/merrily-we-roll-along-review.html",
       "findings": [
@@ -38143,6 +38266,19 @@
       ]
     },
     {
+      "showId": "oh-mary-west-end-2025",
+      "file": "theatrely--nolan-boggess.json",
+      "publishDate": null,
+      "url": "https://www.theatrely.com/post/cole-escolas-oh-mary-on-broadway-is-a-stupid-masterpiece-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "ohio-state-murders-2022",
       "file": "nypost--johnny-oleksinski.json",
       "score": 77,
@@ -38609,6 +38745,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "once-2012",
+      "file": "cititour--brian-scott-lipton.json",
+      "publishDate": null,
+      "url": "https://cititour.com/NYC_Broadway/Once-Upon-A-Mattress/1246",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -45016,7 +45165,7 @@
     {
       "showId": "sister-act-2011",
       "file": "hollywood-reporter--david-rooney.json",
-      "score": 78,
+      "score": 75,
       "publishDate": "April 20, 2011",
       "url": "https://www.hollywoodreporter.com/news/general-news/sister-act-theater-review-180739/",
       "findings": [
@@ -46954,6 +47103,24 @@
       ]
     },
     {
+      "showId": "spread-off-broadway-2026",
+      "file": "whatsonstage--michael-coveney.json",
+      "publishDate": null,
+      "url": "https://www.whatsonstage.com/news/spread-a-bit-of-cheer-the-top-cheerleaders-in-musicals_51222/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "spring-awakening-2006",
       "file": "hollywood-reporter--unknown.json",
       "score": 57,
@@ -47603,6 +47770,19 @@
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "bbc-news--neil-armstrong.json",
+      "publishDate": null,
+      "url": "https://www.bbc.com/culture/article/20231214-stranger-things-the-first-shadow-review-the-theatrical-spin-off-from-the-netflix-mega-hit-is-funny-and-thrilling",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "everything-theatre-uk--xi-ye.json",
       "score": 83,
       "publishDate": "2023-12-16",
@@ -47678,6 +47858,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "theatrely--kobi-kassal.json",
+      "publishDate": null,
+      "url": "https://www.theatrely.com/post/stranger-things-the-first-shadow-is-a-triumph-on-broadway-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -54604,6 +54802,19 @@
     },
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
+      "file": "the-recs--erin-muldoon.json",
+      "publishDate": null,
+      "url": "https://therecs.co.uk/the-hunger-games-on-stage/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"big screen\""
+        }
+      ]
+    },
+    {
+      "showId": "the-hunger-games-on-stage-west-end-2025",
       "file": "thestage--holly-omahony.json",
       "score": 78,
       "publishDate": "2025-11-13",
@@ -55244,7 +55455,7 @@
     {
       "showId": "the-lion-king-1997",
       "file": "variety--matt-wolf.json",
-      "score": 83,
+      "score": 93,
       "publishDate": "November 17, 1997",
       "url": "https://variety.com/1997/legit/reviews/the-lion-king-1200453892/",
       "findings": [
@@ -55652,6 +55863,19 @@
     },
     {
       "showId": "the-little-mermaid-2008",
+      "file": "ap--lindsey-bahr.json",
+      "publishDate": null,
+      "url": "https://apnews.com/article/little-mermaid-halle-movie-review-0c1f706c41049400684c4c7bbaa51594",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-little-mermaid-2008",
       "file": "broadwayworld--kaitlin-milligan.json",
       "score": 78,
       "publishDate": null,
@@ -55986,20 +56210,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "the-music-man-2000",
-      "file": "washpost--peter-marks.json",
-      "score": 42,
-      "publishDate": "February 11th, 2022",
-      "url": "https://www.washingtonpost.com/theater-dance/2022/02/11/music-man-jackman-broadway/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jerry zaks\" from the-music-man-2022"
         }
       ]
     },
@@ -56378,6 +56588,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-normal-heart-2011",
+      "file": "sacramento-bee--carla-meyer.json",
+      "publishDate": null,
+      "url": "https://www.sacbee.com/2014/05/19/6416472/tv-review-hbos-normal-heart-succeeds.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"onscreen\""
         }
       ]
     },
@@ -57517,6 +57740,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"harold prince\" from the-phantom-of-the-opera-1988"
+        }
+      ]
+    },
+    {
+      "showId": "the-phantom-of-the-opera-west-end-1986",
+      "file": "nytg--diep-tran.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.newyorktheatreguide.com/theatre-news/news/everything-you-need-to-know-about-the-phantom-of-the-opera-on-broadway",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from the-phantom-of-the-opera-1988"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -59262,6 +59504,19 @@
       ]
     },
     {
+      "showId": "the-tempest-globe-west-end-2026",
+      "file": "standard--unknown.json",
+      "publishDate": null,
+      "url": "https://www.standard.co.uk/culture/theatre/the-tempest-review-shakespeare-globe-b1268906.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
       "showId": "the-terms-of-my-surrender-2017",
       "file": "broadwaynews--charles-isherwood.json",
       "score": 72,
@@ -60017,6 +60272,32 @@
     },
     {
       "showId": "the-wiz-2024",
+      "file": "av-club--jacob-oller.json",
+      "publishDate": null,
+      "url": "http://www.avclub.com/tvclub/nbc-finally-gets-it-right-wiz-live-229325",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-wiz-2024",
+      "file": "latimes--mary-mcnamara.json",
+      "publishDate": null,
+      "url": "http://www.latimes.com/entertainment/tv/showtracker/la-et-st-review-the-wiz-live-20151203-story.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "the-wiz-2024",
       "file": "queerty--matthew-wexler.json",
       "score": 72,
       "publishDate": null,
@@ -60026,6 +60307,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "the-wiz-2024",
+      "file": "tv-guide--megan-vick.json",
+      "publishDate": null,
+      "url": "http://www.tvguide.com/news/the-wiz-live-nbc-finally-nailed-live-musical/?rss=breakingnews",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -64571,8 +64865,22 @@
     },
     {
       "showId": "youre-a-good-man-charlie-brown-off-broadway-2026",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 37,
+      "publishDate": null,
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-K09246",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "youre-a-good-man-charlie-brown-off-broadway-2026",
       "file": "talkinbroadway--matthew-murray.json",
-      "score": 66,
+      "score": 65,
       "publishDate": null,
       "url": "http://www.talkinbroadway.com/page/ob/5_31_16.html",
       "findings": [
@@ -65418,7 +65726,7 @@
     {
       "showId": "a-view-from-the-bridge-2015",
       "file": "theatermania--jesse-green.json",
-      "score": 84,
+      "score": 79,
       "publishDate": "November 13, 2015",
       "url": "https://www.theatermania.com/news/a-view-from-the-bridge_74921/",
       "findings": [
@@ -66862,7 +67170,7 @@
     {
       "showId": "between-riverside-and-crazy-2022",
       "file": "theatermania--jesse-green.json",
-      "score": 78,
+      "score": 90,
       "publishDate": "December 19, 2022",
       "url": "https://www.theatermania.com/news/review-between-riverside-and-crazy-is-the-anti-tragedy-we-need-right-now_94698/",
       "findings": [
@@ -71760,6 +72068,19 @@
       ]
     },
     {
+      "showId": "hamilton-west-end-2021",
+      "file": "metro--adam-bloodworth.json",
+      "publishDate": null,
+      "url": "http://metro.co.uk/2017/12/21/hamilton-london-review-a-bravely-rule-breaking-new-musical-with-a-near-perfect-score-7172695/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "hand-to-god-2015",
       "file": "gothamist--john-del-signore.json",
       "score": 78,
@@ -72047,7 +72368,7 @@
     {
       "showId": "harry-potter-2021",
       "file": "broadwaynews--elizabeth-bradley.json",
-      "score": 86,
+      "score": 90,
       "publishDate": "April 22, 2018",
       "url": "https://www.broadwaynews.com/review-harry-potter-cursed-child-brings-magic-broadway/",
       "findings": [
@@ -77698,9 +78019,22 @@
     {
       "showId": "oh-mary-2024",
       "file": "vulture--helen-shaw.json",
-      "score": 92,
+      "score": 87,
       "publishDate": "July 9, 2024",
       "url": "https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-west-end-2025",
+      "file": "nytg--austin-fimmano.json",
+      "publishDate": null,
+      "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-broadway-review-cole-escola",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",

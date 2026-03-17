@@ -1,14 +1,23 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-16T23:41:46.189Z",
+    "generatedAt": "2026-03-17T00:00:13.784Z",
     "description": "LLM-classified wrong-show results from title-mention guard candidates",
-    "total": 0,
-    "classified": 0,
+    "total": 1,
+    "classified": 1,
     "wrongShow": 0,
-    "correct": 0,
+    "correct": 1,
     "uncertain": 0,
     "errors": 0,
     "applied": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "high-noon-west-end-2025",
+      "showTitle": "High Noon",
+      "file": "times-uk--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, setting, and cast of the 'High Noon' stage adaptation, clearly indicating it's about the correct show. It mentions Billy Crudup and Denise Gough, who are listed as stars of the production."
+    }
+  ]
 }
