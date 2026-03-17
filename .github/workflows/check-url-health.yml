@@ -1,7 +1,7 @@
 name: Check URL Health
 on:
   schedule:
-    - cron: '0 9 * * 1'  # Monday 9 AM UTC (weekly)
+    - cron: '30 11 * * 1'  # Monday 11:30 AM UTC (weekly, offset to avoid contention)
   workflow_dispatch: {}
 
 concurrency:
@@ -44,7 +44,7 @@ jobs:
             echo "No URL health data changes"
           else
             git commit -m "data: URL health check [skip ci]"
-            bash scripts/lib/push-with-retry.sh
+            bash scripts/lib/push-with-retry.sh 8
           fi
 
       - name: Notify on failure
