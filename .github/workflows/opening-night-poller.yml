@@ -148,8 +148,8 @@ jobs:
             echo "════════════════════════════════════════"
             node scripts/opening-night-poller.js --show="$SHOW_ID" $SKIP_SERP_FLAG 2>&1 || true
 
-            # Check if files were created
-            CREATED=$(git status --porcelain data/review-texts/ | wc -l | tr -d ' ')
+            # Check if files were created (review-texts is a separate git checkout)
+            CREATED=$(cd data/review-texts && git status --porcelain | wc -l | tr -d ' ')
             if [ "$CREATED" -gt 0 ]; then
               ANY_NEW=true
               echo "  → $CREATED new review files"
