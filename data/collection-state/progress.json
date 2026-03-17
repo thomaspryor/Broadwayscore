@@ -320,7 +320,12 @@
     "a-day-in-the-death-of-joe-egg-2003/nytimes--ben-brantley.json",
     "a-life-in-the-theatre-2010/variety--marilyn-stasio.json",
     "a-little-night-music-2009/variety--david-rooney.json",
-    "a-streetcar-named-desire-2005/variety--marilyn-stasio.json"
+    "a-streetcar-named-desire-2005/variety--marilyn-stasio.json",
+    "a-thousand-clowns-2001/nytimes--bruce-weber.json",
+    "a-year-with-frog-and-toad-2003/nytimes--ben-brantley.json",
+    "after-miss-julie-2009/variety--david-rooney.json",
+    "after-the-fall-2004/nytimes--ben-brantley.json",
+    "all-about-me-2010/variety--marilyn-stasio.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -6023,7 +6028,12 @@
     "a-streetcar-named-desire-1992/variety--marilyn-stasio.json",
     "a-streetcar-named-desire-1992/vulture--sara-holdren.json",
     "a-streetcar-named-desire-2005/variety--aramide-tinubu.json",
-    "a-streetcar-named-desire-2005/vulture--sara-holdren.json"
+    "a-streetcar-named-desire-2005/vulture--sara-holdren.json",
+    "a-streetcar-named-desire-2012/variety--aramide-tinubu.json",
+    "a-streetcar-named-desire-2012/vulture--sara-holdren.json",
+    "a-time-to-kill-2013/newyorker--hilton-als.json",
+    "a-view-from-the-bridge-2010/hollywood-reporter--frank-scheck.json",
+    "aint-no-mo-2022/newyorker--naomi-fry.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -6253,7 +6263,11 @@
       "data/review-texts/a-little-night-music-2009/variety--david-rooney.json",
       "a-little-night-music-2009/variety--david-rooney.json",
       "data/review-texts/a-streetcar-named-desire-2005/variety--marilyn-stasio.json",
-      "a-streetcar-named-desire-2005/variety--marilyn-stasio.json"
+      "a-streetcar-named-desire-2005/variety--marilyn-stasio.json",
+      "data/review-texts/after-miss-julie-2009/variety--david-rooney.json",
+      "after-miss-julie-2009/variety--david-rooney.json",
+      "data/review-texts/all-about-me-2010/variety--marilyn-stasio.json",
+      "all-about-me-2010/variety--marilyn-stasio.json"
     ],
     "browserbase": [
       "data/review-texts/mj-2022/variety--aramide-tinubu.json",
@@ -6353,7 +6367,13 @@
       "data/review-texts/a-class-act-2001/nytimes--bruce-weber.json",
       "a-class-act-2001/nytimes--bruce-weber.json",
       "data/review-texts/a-day-in-the-death-of-joe-egg-2003/nytimes--ben-brantley.json",
-      "a-day-in-the-death-of-joe-egg-2003/nytimes--ben-brantley.json"
+      "a-day-in-the-death-of-joe-egg-2003/nytimes--ben-brantley.json",
+      "data/review-texts/a-thousand-clowns-2001/nytimes--bruce-weber.json",
+      "a-thousand-clowns-2001/nytimes--bruce-weber.json",
+      "data/review-texts/a-year-with-frog-and-toad-2003/nytimes--ben-brantley.json",
+      "a-year-with-frog-and-toad-2003/nytimes--ben-brantley.json",
+      "data/review-texts/after-the-fall-2004/nytimes--ben-brantley.json",
+      "after-the-fall-2004/nytimes--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -6517,7 +6537,7 @@
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "a-streetcar-named-desire-2005/vulture--sara-holdren.json",
+  "lastProcessed": "all-about-me-2010/variety--marilyn-stasio.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -7299,6 +7319,39 @@
       "t": "2026-03-17T01:59:03.893Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-17T02:00:20.854Z",
+      "event": "bb-session",
+      "session": "0b8a07f8",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;res=9f05e6de163bf9"
+    },
+    {
+      "t": "2026-03-17T02:00:22.082Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T02:00:36.371Z",
+      "event": "bb-session",
+      "session": "e7841505",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;res=9C01E5DE133BF9"
+    },
+    {
+      "t": "2026-03-17T02:00:37.564Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T02:00:57.348Z",
+      "event": "bb-session",
+      "session": "54fd0930",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=950ce2d6103df933a05754c0"
+    },
+    {
+      "t": "2026-03-17T02:00:58.579Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
