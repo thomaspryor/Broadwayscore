@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-17T00:18:40.866Z",
-  "processed": 240,
-  "failed": 1282,
-  "successRate": "15.8%",
+  "updatedAt": "2026-03-17T00:19:23.351Z",
+  "processed": 241,
+  "failed": 1291,
+  "successRate": "15.7%",
   "tierBreakdown": {
     "playwright": 117,
     "amp": 47,
-    "browserbase": 72,
+    "browserbase": 74,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 22,
     "archive": 93
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-16T22:59:45.285Z",
-      "event": "bb-session",
-      "session": "d4fb881d",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/melissa-mccarthy-importance-suf"
-    },
-    {
-      "t": "2026-03-16T22:59:47.160Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-16T23:00:08.847Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-17T00:17:28.430Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T00:19:08.462Z",
+      "event": "bb-session",
+      "session": "0ff77035",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-17T00:19:09.787Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

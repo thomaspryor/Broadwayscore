@@ -239,7 +239,8 @@
     "bloody-bloody-andrew-jackson-2010/theatermania--andy-propst.json",
     "here-lies-love-2023/theatermania--adam-feldman.json",
     "water-for-elephants-2024/theatermania--david-gordon.json",
-    "arcadia-west-end-2026/nytimes--ben-brantley.json"
+    "arcadia-west-end-2026/nytimes--ben-brantley.json",
+    "hamilton-2015/hollywood-reporter--frank-scheck.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -1523,7 +1524,16 @@
     "back-to-the-future-west-end-2021/vulture--jackson-mchenry.json",
     "bigfoot-off-broadway-2026/variety--marilyn-stasio.json",
     "bloodlove-off-broadway-2026/nytimes--ben-brantley.json",
-    "bloodlove-off-broadway-2026/variety--steven-suskin.json"
+    "bloodlove-off-broadway-2026/variety--steven-suskin.json",
+    "bloodlove-off-broadway-2026/vulture--christopher-bonanos.json",
+    "book-of-mormon-2011/nyt-theater--jonathan-mandell.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/nyt-theater--jonathan-mandell.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/nytimes--jesse-green.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/variety--naveen-kumar.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/vulture--sara-holdren.json",
+    "hadestown-west-end-2024/hollywood-reporter--david-rooney.json",
+    "hadestown-west-end-2024/nytimes--jesse-green.json",
+    "hadestown-west-end-2024/vulture--sara-holdren.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1767,7 +1777,9 @@
       "data/review-texts/big-fish-2013/nypost--elisabeth-vincentelli.json",
       "big-fish-2013/nypost--elisabeth-vincentelli.json",
       "data/review-texts/arcadia-west-end-2026/nytimes--ben-brantley.json",
-      "arcadia-west-end-2026/nytimes--ben-brantley.json"
+      "arcadia-west-end-2026/nytimes--ben-brantley.json",
+      "data/review-texts/hamilton-2015/hollywood-reporter--frank-scheck.json",
+      "hamilton-2015/hollywood-reporter--frank-scheck.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -1893,7 +1905,7 @@
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "bloodlove-off-broadway-2026/variety--steven-suskin.json",
+  "lastProcessed": "hamilton-2015/hollywood-reporter--frank-scheck.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -2455,6 +2467,17 @@
       "t": "2026-03-17T00:17:28.430Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T00:19:08.462Z",
+      "event": "bb-session",
+      "session": "0ff77035",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-17T00:19:09.787Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
