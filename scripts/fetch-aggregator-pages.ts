@@ -482,8 +482,8 @@ async function main() {
       for (const showId of showIds) {
         const show = shows[showId];
 
-        // Skip West End shows — Show Score and DTLI only cover Broadway/OB
-        if (show && (show.market === 'west-end' || showId.includes('-west-end-'))) {
+        // Skip London shows — Show Score and DTLI only cover Broadway/OB
+        if (show && (show.market === 'west-end' || show.market === 'off-west-end' || showId.includes('-west-end-') || showId.includes('-off-west-end-'))) {
           skippedMarket++;
           continue;
         }
