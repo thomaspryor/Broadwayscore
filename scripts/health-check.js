@@ -723,31 +723,55 @@ function checkAPICredits() {
     return [{ name: 'Credits: ScrapingBee', status: 'warn', message: 'Skipped — no SCRAPINGBEE_API_KEY available' }];
   }
 
-  return [
-    runCheck('Credits: ScrapingBee', () => {
-      try {
-        const result = execSync(
-          `curl -s "https://app.scrapingbee.com/api/v1/usage?api_key=${apiKey}"`,
-          { encoding: 'utf8', timeout: 10000, stdio: ['pipe', 'pipe', 'pipe'] }
-        ).trim();
-        const usage = JSON.parse(result);
-        const remaining = usage.max_api_credit - usage.used_api_credit;
-        const pctUsed = Math.round((usage.used_api_credit / usage.max_api_credit) * 100);
-        const pctRemaining = 100 - pctUsed;
-        const remainingK = Math.round(remaining / 1000);
+  const results = [];
 
-        if (pctRemaining <= 5) {
-          return { name: 'Credits: ScrapingBee', status: 'error', message: `${remainingK}k credits left (${pctRemaining}% remaining)`, hint: 'Upgrade plan or reduce scraping. Check app.scrapingbee.com for renewal date.' };
+  results.push(runCheck('Credits: ScrapingBee', () => {
+    try {
+      const result = execSync(
+        `curl -s "https://app.scrapingbee.com/api/v1/usage?api_key=${apiKey}"`,
+        { encoding: 'utf8', timeout: 10000, stdio: ['pipe', 'pipe', 'pipe'] }
+      ).trim();
+      const usage = JSON.parse(result);
+      const remaining = usage.max_api_credit - usage.used_api_credit;
+      const pctUsed = Math.round((usage.used_api_credit / usage.max_api_credit) * 100);
+      const pctRemaining = 100 - pctUsed;
+      const remainingK = Math.round(remaining / 1000);
+
+      // Project exhaustion date from burn rate
+      let exhaustionMsg = '';
+      if (usage.renewal_subscription_date && usage.used_api_credit > 0) {
+        const renewalDate = new Date(usage.renewal_subscription_date);
+        const daysUntilRenewal = Math.max(0, (renewalDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+        // Estimate cycle length from renewal date (assume ~30 day cycles)
+        const cycleStartEstimate = new Date(renewalDate);
+        cycleStartEstimate.setDate(cycleStartEstimate.getDate() - 30);
+        const daysIntoCycle = Math.max(1, (Date.now() - cycleStartEstimate.getTime()) / (1000 * 60 * 60 * 24));
+        const dailyBurnRate = Math.round(usage.used_api_credit / daysIntoCycle);
+        const daysUntilExhaustion = remaining > 0 ? remaining / dailyBurnRate : 0;
+
+        exhaustionMsg = ` · ${Math.round(dailyBurnRate / 1000)}k/day burn · `;
+        if (remaining <= 0) {
+          exhaustionMsg += `EXHAUSTED · renews ${renewalDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+        } else if (daysUntilExhaustion < daysUntilRenewal) {
+          exhaustionMsg += `exhausts in ~${Math.round(daysUntilExhaustion)}d (renews ${renewalDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })})`;
+        } else {
+          exhaustionMsg += `lasts until renewal ${renewalDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
         }
-        if (pctRemaining <= 15) {
-          return { name: 'Credits: ScrapingBee', status: 'warn', message: `${remainingK}k credits left (${pctRemaining}% remaining)`, hint: 'Monitor usage — may run out before renewal.' };
-        }
-        return { name: 'Credits: ScrapingBee', status: 'pass', message: `${remainingK}k credits left (${pctRemaining}% remaining)` };
-      } catch (err) {
-        return { name: 'Credits: ScrapingBee', status: 'warn', message: `API check failed: ${err.message.substring(0, 80)}` };
       }
-    }),
-  ];
+
+      if (pctRemaining <= 5) {
+        return { name: 'Credits: ScrapingBee', status: 'error', message: `${remainingK}k credits left (${pctRemaining}%)${exhaustionMsg}`, hint: 'Upgrade plan or reduce scraping.' };
+      }
+      if (pctRemaining <= 15) {
+        return { name: 'Credits: ScrapingBee', status: 'warn', message: `${remainingK}k credits left (${pctRemaining}%)${exhaustionMsg}`, hint: 'Monitor usage — may run out before renewal.' };
+      }
+      return { name: 'Credits: ScrapingBee', status: 'pass', message: `${remainingK}k credits left (${pctRemaining}%)${exhaustionMsg}` };
+    } catch (err) {
+      return { name: 'Credits: ScrapingBee', status: 'warn', message: `API check failed: ${err.message.substring(0, 80)}` };
+    }
+  }));
+
+  return results;
 }
 
 // --- Category K: Workflow Runs (last 24h summary via GitHub API) ---
