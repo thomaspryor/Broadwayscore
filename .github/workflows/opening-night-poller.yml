@@ -162,6 +162,8 @@ jobs:
         if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
         run: |
           cd data/review-texts
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
           git add -A
           git diff --cached --quiet && exit 0
           git commit -m "data: Opening night poller — new reviews discovered [skip ci]"
@@ -197,6 +199,8 @@ jobs:
         if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
         run: |
           cd data/review-texts
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
           git add -A
           git diff --cached --quiet && exit 0
           git commit -m "data: Opening night poller — collected review texts"
@@ -223,6 +227,8 @@ jobs:
         if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
         run: |
           cd data/review-texts
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
           git add -A
           git diff --cached --quiet && exit 0
           git commit -m "data: Opening night poller — scored reviews"

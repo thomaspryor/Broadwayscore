@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-17T18:43:44.375Z",
+  "timestamp": "2026-03-17T19:05:11.825Z",
   "stats": {
-    "totalReviews": 31588,
-    "alreadyFlagged": 9385,
+    "totalReviews": 31600,
+    "alreadyFlagged": 9386,
     "dateGuardCatches": 149,
     "directorMismatch": 1133,
     "tvFilmSignals": 3502,
     "londonSignals": 1039,
     "offBroadwaySignals": 1072,
-    "yearMismatch": 93,
-    "noPublishDate": 9409
+    "yearMismatch": 92,
+    "noPublishDate": 9421
   },
   "findings": [
     {
@@ -1052,11 +1052,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"on screen\""
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2014 (2x) more than 1996 (1x). 2014 matches production: a-delicate-balance-2014"
         }
       ]
     },
