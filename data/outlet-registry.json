@@ -176,7 +176,8 @@
         "nysepost",
         "post",
         "the new york post",
-        "newyorkpost"
+        "newyorkpost",
+        "new-york-post"
       ],
       "domain": "nypost.com",
       "accessModel": "free"
@@ -232,7 +233,8 @@
         "timeout ny",
         "time out",
         "adam-feldman",
-        "timeout-ny"
+        "timeout-ny",
+        "time-out"
       ],
       "domain": "timeout.com",
       "accessModel": "free"
@@ -420,7 +422,8 @@
         "daily beast",
         "the-daily-beast",
         "thedaily-beast",
-        "daily-beast"
+        "daily-beast",
+        "thedailybeast"
       ],
       "domain": "thedailybeast.com",
       "accessModel": "metered"
@@ -822,9 +825,10 @@
         "frontrowcenter",
         "front-row-center-tulis-mccall"
       ],
-      "domain": "frontrowcenter.com",
+      "domain": "thefrontrowcenter.com",
       "domainAliases": [
-        "thefrontrowcenter.com"
+        "thefrontrowcenter.com",
+        "frontrowcenter.com"
       ],
       "accessModel": "free"
     },
@@ -883,7 +887,8 @@
         "huffingtonpost",
         "the-huffington-pos",
         "huffingtion-post",
-        "huffpo"
+        "huffpo",
+        "huffington-post"
       ],
       "domain": "huffpost.com",
       "accessModel": "free",
@@ -1001,8 +1006,11 @@
         "gotham-playgoer",
         "gotham playgoer"
       ],
-      "domain": "gothamplaygoer.com",
-      "accessModel": "free"
+      "domain": "gotham-playgoer.blogspot.com",
+      "accessModel": "free",
+      "domainAliases": [
+        "gothamplaygoer.com"
+      ]
     },
     "medium": {
       "displayName": "Medium",
@@ -1021,8 +1029,11 @@
         "stage left",
         "stageleft"
       ],
-      "domain": "stageleft.com",
-      "accessModel": "free"
+      "domain": "stageleft.nyc",
+      "accessModel": "free",
+      "domainAliases": [
+        "stageleft.com"
+      ]
     },
     "theatres-leiter-side": {
       "displayName": "Theatre's Leiter Side",
@@ -1033,8 +1044,11 @@
         "theatres leiter side",
         "leiter side"
       ],
-      "domain": "theatersleiterside.blogspot.com",
-      "accessModel": "free"
+      "domain": "slleiter.blogspot.com",
+      "accessModel": "free",
+      "domainAliases": [
+        "theatersleiterside.blogspot.com"
+      ]
     },
     "towleroad": {
       "displayName": "Towleroad",
@@ -1133,9 +1147,10 @@
         "the interested bystander",
         "interested bystander"
       ],
-      "domain": "theinterestedbystander.com",
+      "domain": "interestedbystander.com",
       "domainAliases": [
-        "interestedbystander.com"
+        "interestedbystander.com",
+        "theinterestedbystander.com"
       ],
       "accessModel": "free"
     },
@@ -1529,9 +1544,10 @@
         "broadway-blog",
         "broadway blog"
       ],
-      "domain": "broadwayblog.com",
+      "domain": "thebroadwayblog.com",
       "domainAliases": [
-        "thebroadwayblog.com"
+        "thebroadwayblog.com",
+        "broadwayblog.com"
       ],
       "accessModel": "free"
     },
@@ -4311,7 +4327,8 @@
       "tier": 3,
       "aliases": [
         "njarts",
-        "njartsnet"
+        "njartsnet",
+        "nj-arts"
       ],
       "domain": "njarts.net",
       "accessModel": "free"
@@ -7328,7 +7345,8 @@
         "the-i",
         "inews",
         "i-news",
-        "inews-co-uk"
+        "inews-co-uk",
+        "the-i-uk"
       ],
       "domain": "inews.co.uk",
       "region": "london",
@@ -7938,7 +7956,8 @@
         "stage"
       ],
       "accessModel": "paywalled",
-      "displayName": "The Stage"
+      "displayName": "The Stage",
+      "domain": "thestage.co.uk"
     },
     "everything-theatre": {
       "tier": 3,
@@ -7948,7 +7967,8 @@
         "everythingtheatre"
       ],
       "accessModel": "free",
-      "displayName": "Everything Theatre"
+      "displayName": "Everything Theatre",
+      "domain": "everythingtheatre.co.uk"
     },
     "buzzfeed": {
       "displayName": "BuzzFeed",
@@ -8580,6 +8600,11 @@
     "afridiziak-theatre-news": {
       "name": "Afridiziak Theatre News",
       "region": "london",
+      "tier": 3
+    },
+    "dc-metro-theater-arts": {
+      "displayName": "DC Metro Theater Arts",
+      "domain": "dcmetrotheaterarts.com",
       "tier": 3
     }
   },

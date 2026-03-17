@@ -17,129 +17,26 @@ const { domainMatchesExpected } = scraper;
 const { isUrlYearOutsideWindow } = require('./content-filters');
 const { isLondonMarket } = require('./venue-classification');
 
-// Outlet-to-domain mapping for URL discovery via Google SERP
-const OUTLET_DOMAINS = {
-  'nytimes': 'nytimes.com',
-  'nyt': 'nytimes.com',
-  'variety': 'variety.com',
-  'hollywood-reporter': 'hollywoodreporter.com',
-  'thr': 'hollywoodreporter.com',
-  'vulture': 'vulture.com',
-  'vult': 'vulture.com',
-  'timeout': 'timeout.com',
-  'time-out': 'timeout.com',
-  'deadline': 'deadline.com',
-  'wsj': 'wsj.com',
-  'ew': 'ew.com',
-  'entertainment-weekly': 'ew.com',
-  'nypost': 'nypost.com',
-  'new-york-post': 'nypost.com',
-  'guardian': 'theguardian.com',
-  'the-guardian': 'theguardian.com',
-  'chicagotribune': 'chicagotribune.com',
-  'chicago-tribune': 'chicagotribune.com',
-  'wapo': 'washingtonpost.com',
-  'washpost': 'washingtonpost.com',
-  'washington-post': 'washingtonpost.com',
-  'usatoday': 'usatoday.com',
-  'usa-today': 'usatoday.com',
-  'ap': 'apnews.com',
-  'associated-press': 'apnews.com',
-  'rollingstone': 'rollingstone.com',
-  'rolling-stone': 'rollingstone.com',
-  'daily-beast': 'thedailybeast.com',
-  'thedailybeast': 'thedailybeast.com',
-  'observer': 'observer.com',
-  'the-wrap': 'thewrap.com',
-  'thewrap': 'thewrap.com',
-  'nydailynews': 'nydailynews.com',
-  'new-york-daily-news': 'nydailynews.com',
-  'newsday': 'newsday.com',
-  'theatermania': 'theatermania.com',
-  'newyorktheatreguide': 'newyorktheatreguide.com',
-  'new-york-theatre-guide': 'newyorktheatreguide.com',
-  'nystagereview': 'nystagereview.com',
-  'ny-stage-review': 'nystagereview.com',
-  'new-york-stage-review': 'nystagereview.com',
-  'theatrely': 'theatrely.com',
-  'newyorktheater': 'newyorktheater.me',
-  'broadwayworld': 'broadwayworld.com',
-  'bww': 'broadwayworld.com',
-  'cititour': 'cititour.com',
-  'amny': 'amny.com',
-  'am-new-york': 'amny.com',
-  'newyorker': 'newyorker.com',
-  'the-new-yorker': 'newyorker.com',
-  'indiewire': 'indiewire.com',
-  'forward': 'forward.com',
-  'talkinbroadway': 'talkinbroadway.com',
-  'talkin-broadway': 'talkinbroadway.com',
-  'broadway-news': 'broadwaynews.com',
-  'stage-and-cinema': 'stageandcinema.com',
-  'culture-sauce': 'culturesauce.com',
-  'dc-metro-theater-arts': 'dcmetrotheaterarts.com',
-  'nj-arts': 'njarts.net',
-  'nyt-theater': 'newyorktheater.me',
-  'dailybeast': 'thedailybeast.com',
-  'front-row-center': 'thefrontrowcenter.com',
-  'theater-life': 'theaterlife.com',
-  'frontmezzjunkies': 'frontmezzjunkies.com',
-  'theatre-reviews-limited': 'theatrereviews.com',
-  'thestage': 'thestage.co.uk',
-  'the-stage-uk': 'thestage.co.uk',
-  'nytg': 'newyorktheatreguide.com',
-  'new-york-sun': 'nysun.com',
-  'theater-pizzazz': 'theaterpizzazz.com',
-  'stagebuddy': 'stagebuddy.com',
-  'culturesauce': 'culturesauce.com',
-  'theatres-leiter-side': 'slleiter.blogspot.com',
-  'dctheatrescene': 'dctheatrescene.com',
-  'theater-scene': 'theaterscene.net',
-  'stage-left': 'stageleft.nyc',
-  'gotham-playgoer': 'gotham-playgoer.blogspot.com',
-  'scribicide': 'scribicide.com',
-  'broadway-blog': 'thebroadwayblog.com',
-  'the-clyde-fitch-report': 'clydefitchreport.com',
-  'the-interested-bystander': 'interestedbystander.com',
-  'pages-on-stages': 'pagesonstages.com',
-  'nysr': 'nystagereview.com',
-  'slantmagazine': 'slantmagazine.com',
-  'financial-times-uk': 'ft.com',
-  'latimes': 'latimes.com',
-  'la-times': 'latimes.com',
-  'huffpost': 'huffpost.com',
-  'huffington-post': 'huffpost.com',
-  // UK outlets for West End SERP discovery
-  'telegraph': 'telegraph.co.uk',
-  'the-telegraph-uk': 'telegraph.co.uk',
-  'evening-standard': 'standard.co.uk',
-  'standard': 'standard.co.uk',
-  'the-times-uk': 'thetimes.co.uk',
-  'times-uk': 'thetimes.co.uk',
-  'dailymail': 'dailymail.co.uk',
-  'daily-mail': 'dailymail.co.uk',
-  'whatsonstage': 'whatsonstage.com',
-  'timeout-london': 'timeout.com',
-  'time-out-london': 'timeout.com',
-  'independent': 'independent.co.uk',
-  'the-independent-uk': 'independent.co.uk',
-  'london-theatre': 'londontheatre.co.uk',
-  'londontheatre': 'londontheatre.co.uk',
-  'inews': 'inews.co.uk',
-  'the-i-uk': 'inews.co.uk',
-  'stage-uk': 'thestage.co.uk',
-  'the-arts-desk': 'theartsdesk.com',
-  'artsdesk': 'theartsdesk.com',
-  'everythingtheatre': 'everythingtheatre.co.uk',
-  'everything-theatre': 'everythingtheatre.co.uk',
-  'thereviewshub': 'thereviewshub.com',
-  'metro-uk': 'metro.co.uk',
-  'mirror': 'mirror.co.uk',
-  'the-sun': 'thesun.co.uk',
-  'west-end-best-friend': 'westendbestfriend.co.uk',
-  'bloomberg': 'bloomberg.com',
-  'bloomberg-news': 'bloomberg.com',
-};
+// Derive outlet-to-domain mapping from outlet-registry.json (single source of truth)
+// Maps outlet IDs + aliases → domain for SERP URL discovery
+function buildOutletDomains() {
+  const registryPath = path.join(__dirname, '..', '..', 'data', 'outlet-registry.json');
+  const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+  const outlets = registry.outlets || registry;
+  const map = {};
+  for (const [id, o] of Object.entries(outlets)) {
+    if (!o.domain) continue;
+    map[id] = o.domain;
+    if (o.aliases) {
+      for (const alias of o.aliases) {
+        map[alias] = o.domain;
+      }
+    }
+  }
+  return map;
+}
+
+const OUTLET_DOMAINS = buildOutletDomains();
 
 // Known domain redirects (old domain → new domain)
 const DOMAIN_REDIRECTS = {
