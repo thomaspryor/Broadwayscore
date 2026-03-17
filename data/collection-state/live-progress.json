@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-17T02:12:59.083Z",
-  "processed": 356,
-  "failed": 5856,
-  "successRate": "5.7%",
+  "updatedAt": "2026-03-17T02:13:36.717Z",
+  "processed": 358,
+  "failed": 5864,
+  "successRate": "5.8%",
   "tierBreakdown": {
     "playwright": 150,
     "amp": 114,
-    "browserbase": 122,
+    "browserbase": 126,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 40,
     "archive": 118
   },
-  "browserbaseSessions": 36,
+  "browserbaseSessions": 38,
   "recentActivity": [
-    {
-      "t": "2026-03-17T02:02:22.974Z",
-      "event": "bb-session",
-      "session": "acb445e2",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9400e4d61038f934a25752c1"
-    },
-    {
-      "t": "2026-03-17T02:02:24.269Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-17T02:02:57.528Z",
-      "event": "bb-session",
-      "session": "6c0f5185",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9a05eed7173af930a15757c0"
-    },
-    {
-      "t": "2026-03-17T02:02:58.740Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-17T02:03:43.455Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-17T02:12:10.860Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-17T02:13:00.984Z",
+      "event": "bb-session",
+      "session": "6f44c3b2",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9d0ce1dd133af930a35757c"
+    },
+    {
+      "t": "2026-03-17T02:13:02.178Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T02:13:18.456Z",
+      "event": "bb-session",
+      "session": "da85ba71",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9c00e0d91f39f932a35756c0"
+    },
+    {
+      "t": "2026-03-17T02:13:19.624Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

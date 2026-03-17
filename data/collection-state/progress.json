@@ -355,7 +355,9 @@
     "equus-2008/variety--david-rooney.json",
     "eureka-day-2024/variety--aramide-tinubu.json",
     "everyday-rapture-2010/variety--david-rooney.json",
-    "fela-2009/variety--sam-thielman.json"
+    "fela-2009/variety--sam-thielman.json",
+    "fortunes-fool-2002/nytimes--ben-brantley.json",
+    "george-gershwin-alone-2001/nytimes--bruce-weber.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -6213,7 +6215,15 @@
     "follies-2001/hollywood-reporter--david-rooney.json",
     "follies-2001/nytimes--ben-brantley.json",
     "follies-2001/variety--steven-suskin.json",
-    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/hollywood-reporter--angie-han.json"
+    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/hollywood-reporter--angie-han.json",
+    "funny-girl-2002/hollywood-reporter--david-rooney.json",
+    "funny-girl-2002/vulture--jackson-mchenry.json",
+    "ghost-the-musical-2012/variety--marilyn-stasio.json",
+    "ghosts-1982/nytg--caroline-cao.json",
+    "ghosts-1982/variety--sara-holdren.json",
+    "gigi-1973/nytimes--charles-isherwood.json",
+    "gigi-1973/variety--marilyn-stasio.json",
+    "gigi-1973/vulture--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -6607,7 +6617,11 @@
       "data/review-texts/dance-of-death-2001/nytimes--ben-brantley.json",
       "dance-of-death-2001/nytimes--ben-brantley.json",
       "data/review-texts/design-for-living-2001/nytimes--ben-brantley.json",
-      "design-for-living-2001/nytimes--ben-brantley.json"
+      "design-for-living-2001/nytimes--ben-brantley.json",
+      "data/review-texts/fortunes-fool-2002/nytimes--ben-brantley.json",
+      "fortunes-fool-2002/nytimes--ben-brantley.json",
+      "data/review-texts/george-gershwin-alone-2001/nytimes--bruce-weber.json",
+      "george-gershwin-alone-2001/nytimes--bruce-weber.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -6776,7 +6790,7 @@
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/hollywood-reporter--angie-han.json",
+  "lastProcessed": "gigi-1973/vulture--jesse-green.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -7723,6 +7737,28 @@
       "t": "2026-03-17T02:12:10.860Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-17T02:13:00.984Z",
+      "event": "bb-session",
+      "session": "6f44c3b2",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9d0ce1dd133af930a35757c"
+    },
+    {
+      "t": "2026-03-17T02:13:02.178Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T02:13:18.456Z",
+      "event": "bb-session",
+      "session": "da85ba71",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9c00e0d91f39f932a35756c0"
+    },
+    {
+      "t": "2026-03-17T02:13:19.624Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
