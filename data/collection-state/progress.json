@@ -266,7 +266,10 @@
     "oh-mary-west-end-2025/timeout--adam-feldman.json",
     "operation-mincemeat-2025/timeout-london--holly-williams.json",
     "stranger-things-2024/timeout-london--andrzej-lukowski.json",
-    "stranger-things-the-first-shadow-west-end-2023/ew--emlyn-travis.json"
+    "stranger-things-the-first-shadow-west-end-2023/ew--emlyn-travis.json",
+    "stranger-things-the-first-shadow-west-end-2023/nypost--johnny-oleksinski.json",
+    "stranger-things-the-first-shadow-west-end-2023/theatermania--pete-hempstead.json",
+    "stranger-things-the-first-shadow-west-end-2023/timeout--adam-feldman.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -1713,7 +1716,14 @@
     "six-the-musical-west-end-2021/new-city-stage--amanda-finn.json",
     "six-the-musical-west-end-2021/third-coast-review--lisa-trifone.json",
     "spare-parts-off-broadway-2026/guardian--jesse-hassenger.json",
-    "starlight-express-west-end-2024/loureviews--louise-penn.json"
+    "starlight-express-west-end-2024/loureviews--louise-penn.json",
+    "stranger-things-the-first-shadow-west-end-2023/nydailynews--chris-jones.json",
+    "stranger-things-the-first-shadow-west-end-2023/thewrap--robert-hofler.json",
+    "stranger-things-the-first-shadow-west-end-2023/wsj--charles-isherwood.json",
+    "the-book-of-mormon-west-end-2024/broadwaynews--robert-diamond.json",
+    "the-book-of-mormon-west-end-2024/ew--lisa-schwarzbaum.json",
+    "the-book-of-mormon-west-end-2024/new-jersey-newsroom--michael-sommers.json",
+    "the-book-of-mormon-west-end-2024/newsday--linda-winer.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1848,7 +1858,8 @@
       "oh-mary-west-end-2025/timeout--adam-feldman.json",
       "operation-mincemeat-2025/timeout-london--holly-williams.json",
       "stranger-things-2024/timeout-london--andrzej-lukowski.json",
-      "stranger-things-the-first-shadow-west-end-2023/ew--emlyn-travis.json"
+      "stranger-things-the-first-shadow-west-end-2023/ew--emlyn-travis.json",
+      "stranger-things-the-first-shadow-west-end-2023/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/peter-and-the-starcatcher-2012/variety--marilyn-stasio.json",
@@ -1988,7 +1999,9 @@
       "data/review-texts/back-to-the-future-west-end-2021/deadline--greg-evans.json",
       "back-to-the-future-west-end-2021/deadline--greg-evans.json",
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
-      "oh-mary-west-end-2025/deadline--greg-evans.json"
+      "oh-mary-west-end-2025/deadline--greg-evans.json",
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/nypost--johnny-oleksinski.json",
+      "stranger-things-the-first-shadow-west-end-2023/nypost--johnny-oleksinski.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -2115,11 +2128,12 @@
       "into-the-woods-west-end-2025/nytimes--alexis-soloski.json",
       "hadestown-west-end-2024/theatermania--zachary-stewart.json",
       "hamilton-2015/theatermania--zachary-stewart.json",
-      "oh-mary-west-end-2025/nydailynews--chris-jones.json"
+      "oh-mary-west-end-2025/nydailynews--chris-jones.json",
+      "stranger-things-the-first-shadow-west-end-2023/theatermania--pete-hempstead.json"
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/ew--emlyn-travis.json",
+  "lastProcessed": "the-book-of-mormon-west-end-2024/newsday--linda-winer.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -2736,6 +2750,17 @@
       "t": "2026-03-17T00:31:51.002Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-17T00:35:00.714Z",
+      "event": "bb-session",
+      "session": "19b02ddc",
+      "url": "https://nypost.com/2023/12/14/entertainment/stranger-things-the-first-shadow-rev"
+    },
+    {
+      "t": "2026-03-17T00:35:01.868Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }

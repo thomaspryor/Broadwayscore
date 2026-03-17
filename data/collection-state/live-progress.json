@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-17T00:34:53.040Z",
-  "processed": 267,
-  "failed": 1445,
-  "successRate": "15.6%",
+  "updatedAt": "2026-03-17T00:35:50.466Z",
+  "processed": 270,
+  "failed": 1452,
+  "successRate": "15.7%",
   "tierBreakdown": {
-    "playwright": 131,
+    "playwright": 132,
     "amp": 54,
-    "browserbase": 82,
+    "browserbase": 84,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 22,
-    "archive": 98
+    "archive": 99
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-03-16T23:04:35.046Z",
-      "event": "bb-session",
-      "session": "9312c48d",
-      "url": "https://www.hollywoodreporter.com/news/general-news/three-tall-women-theater-109"
-    },
-    {
-      "t": "2026-03-16T23:04:36.723Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-16T23:06:24.077Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-17T00:31:51.002Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-17T00:35:00.714Z",
+      "event": "bb-session",
+      "session": "19b02ddc",
+      "url": "https://nypost.com/2023/12/14/entertainment/stranger-things-the-first-shadow-rev"
+    },
+    {
+      "t": "2026-03-17T00:35:01.868Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
