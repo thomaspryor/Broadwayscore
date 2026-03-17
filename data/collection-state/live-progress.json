@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-03-17T02:13:36.717Z",
-  "processed": 358,
-  "failed": 5864,
+  "updatedAt": "2026-03-17T02:14:43.602Z",
+  "processed": 359,
+  "failed": 5873,
   "successRate": "5.8%",
   "tierBreakdown": {
     "playwright": 150,
@@ -11,21 +11,10 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 40,
-    "archive": 118
+    "archive": 119
   },
-  "browserbaseSessions": 38,
+  "browserbaseSessions": 39,
   "recentActivity": [
-    {
-      "t": "2026-03-17T02:03:43.455Z",
-      "event": "bb-session",
-      "session": "671241b8",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9d06e0d6163df933a05757c0"
-    },
-    {
-      "t": "2026-03-17T02:03:44.577Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-17T02:04:21.347Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-17T02:13:19.624Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T02:14:20.351Z",
+      "event": "bb-session",
+      "session": "e386408e",
+      "url": "http://www.newyorker.com/arts/critics/theatre/2009/03/30/090330crth_theatre_lahr"
+    },
+    {
+      "t": "2026-03-17T02:14:21.526Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }

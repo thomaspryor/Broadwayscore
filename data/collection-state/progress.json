@@ -357,7 +357,8 @@
     "everyday-rapture-2010/variety--david-rooney.json",
     "fela-2009/variety--sam-thielman.json",
     "fortunes-fool-2002/nytimes--ben-brantley.json",
-    "george-gershwin-alone-2001/nytimes--bruce-weber.json"
+    "george-gershwin-alone-2001/nytimes--bruce-weber.json",
+    "god-of-carnage-2009/newyorker--john-lahr.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -6223,7 +6224,16 @@
     "ghosts-1982/variety--sara-holdren.json",
     "gigi-1973/nytimes--charles-isherwood.json",
     "gigi-1973/variety--marilyn-stasio.json",
-    "gigi-1973/vulture--jesse-green.json"
+    "gigi-1973/vulture--jesse-green.json",
+    "girl-from-the-north-country-2022/nytimes--jesse-green.json",
+    "girl-from-the-north-country-2022/variety--aramide-tinubu.json",
+    "girl-from-the-north-country-2022/variety--matt-trueman.json",
+    "glengarry-glen-ross-1984/nytimes--ben-brantley.json",
+    "glengarry-glen-ross-1984/variety--daniel-daddario.json",
+    "glengarry-glen-ross-1984/variety--marilyn-stasio.json",
+    "glengarry-glen-ross-2025/hollywood-reporter--david-rooney.json",
+    "glengarry-glen-ross-2025/nyt-theater--jonathan-mandell.json",
+    "god-of-carnage-2009/variety--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -6786,11 +6796,12 @@
       "wicked-west-end-2021/huffpost--marshall-fine.json",
       "wicked-west-end-2021/rollingstone--peter-travers.json",
       "all-out-2025/vulture--roxana-hadadi.json",
-      "burn-this-2019/vulture--jesse-green.json"
+      "burn-this-2019/vulture--jesse-green.json",
+      "god-of-carnage-2009/newyorker--john-lahr.json"
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "gigi-1973/vulture--jesse-green.json",
+  "lastProcessed": "god-of-carnage-2009/variety--david-rooney.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -7759,6 +7770,17 @@
       "t": "2026-03-17T02:13:19.624Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T02:14:20.351Z",
+      "event": "bb-session",
+      "session": "e386408e",
+      "url": "http://www.newyorker.com/arts/critics/theatre/2009/03/30/090330crth_theatre_lahr"
+    },
+    {
+      "t": "2026-03-17T02:14:21.526Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
