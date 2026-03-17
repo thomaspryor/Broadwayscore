@@ -286,7 +286,9 @@
     "silver-manhattan-off-broadway-2026/nyt-theater--unknown.json",
     "silver-manhattan-off-broadway-2026/nytg--unknown.json",
     "spare-parts-off-broadway-2026/nytg--unknown.json",
-    "spare-parts-off-broadway-2026/variety--chris-willman.json"
+    "spare-parts-off-broadway-2026/variety--chris-willman.json",
+    "two-strangers-bway-2025/variety--unknown.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/hollywood-reporter--unknown.json"
   ],
   "failed": [
     "aladdin-2014/ap--mark-kennedy.json",
@@ -2153,7 +2155,15 @@
     "the-producers-west-end-2025/variety--bob-verini.json",
     "the-rat-trap-west-end-2026/nytimes--elisabeth-vincentelli.json",
     "the-reservoir-off-broadway-2026/nytg--unknown.json",
-    "the-unknown-off-broadway-2026/nytimes--alexis-soloski.json"
+    "the-unknown-off-broadway-2026/nytimes--alexis-soloski.json",
+    "titanique-2026/nytg--gillian-russo.json",
+    "titanique-2026/nytimes--elisabeth-vincentelli.json",
+    "titanique-west-end-2024/nytg--gillian-russo.json",
+    "titus-andronicus-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+    "wicked-2003/newyorker--john-lahr.json",
+    "wicked-west-end-2021/nytimes--ben-brantley.json",
+    "wicked-west-end-2021/variety--charles-isherwood.json",
+    "witness-for-the-prosecution-west-end-2022/nyt-theater--stephi-wild.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2359,7 +2369,9 @@
       "data/review-texts/pied-a-terre-off-broadway-2026/variety--peter-debruge.json",
       "pied-a-terre-off-broadway-2026/variety--peter-debruge.json",
       "data/review-texts/spare-parts-off-broadway-2026/variety--chris-willman.json",
-      "spare-parts-off-broadway-2026/variety--chris-willman.json"
+      "spare-parts-off-broadway-2026/variety--chris-willman.json",
+      "data/review-texts/two-strangers-bway-2025/variety--unknown.json",
+      "two-strangers-bway-2025/variety--unknown.json"
     ],
     "browserbase": [
       "data/review-texts/mj-2022/variety--aramide-tinubu.json",
@@ -2449,7 +2461,9 @@
       "data/review-texts/an-ark-off-broadway-2026/hollywood-reporter--frank-scheck.json",
       "an-ark-off-broadway-2026/hollywood-reporter--frank-scheck.json",
       "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--jordan-riefe.json",
-      "maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--jordan-riefe.json"
+      "maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--jordan-riefe.json",
+      "data/review-texts/what-we-did-before-our-moth-days-off-broadway-2026/hollywood-reporter--unknown.json",
+      "what-we-did-before-our-moth-days-off-broadway-2026/hollywood-reporter--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -2587,7 +2601,7 @@
     ]
   },
   "startTime": "2026-03-16T15:47:20.709Z",
-  "lastProcessed": "the-unknown-off-broadway-2026/nytimes--alexis-soloski.json",
+  "lastProcessed": "witness-for-the-prosecution-west-end-2022/nyt-theater--stephi-wild.json",
   "log": [
     {
       "t": "2026-03-16T19:28:13.897Z",
@@ -3259,6 +3273,17 @@
       "t": "2026-03-17T00:45:30.891Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-17T00:47:27.506Z",
+      "event": "bb-session",
+      "session": "c02c1b1b",
+      "url": "https://www.hollywoodreporter.com/features/everyone-just-knows-hes-an-absolute-m"
+    },
+    {
+      "t": "2026-03-17T00:47:28.908Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
