@@ -144,7 +144,15 @@
     "titus-andronicus-off-broadway-2026/nytg--mark-shenton.json",
     "calf-scramble-off-broadway-2026/timeout--raven-snook.json",
     "my-joy-is-heavy-off-broadway-2025/timeout--unknown.json",
-    "shadowlands-west-end-2026/broadwayworld--aliya-al-hussan.json"
+    "shadowlands-west-end-2026/broadwayworld--aliya-al-hussan.json",
+    "titus-andronicus-off-broadway-2026/playbill--unknown.json",
+    "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
+    "an-ark-off-broadway-2026/nytg--kyle-turner.json",
+    "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+    "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+    "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+    "chess-2025/hollywood-reporter--angie-han.json",
+    "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json"
   ],
   "failed": [
     "arcadia-west-end-2026/broadwayworld--aliya-al-hassan.json",
@@ -161,7 +169,9 @@
     "broken-glass-west-end-2026/times-uk--observes-andrzej-lukowski.json",
     "my-joy-is-heavy-off-broadway-2025/talkinbroadway--unknown.json",
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
-    "the-lion-king-west-end-2021/thestage--unknown.json"
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "titus-andronicus-off-broadway-2026/broadwayworld--michael-dale.json",
+    "titus-andronicus-off-broadway-2026/nysr--jesse-oxfeld.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -274,7 +284,14 @@
       "my-joy-is-heavy-off-broadway-2025/nytg--unknown.json",
       "titus-andronicus-off-broadway-2026/nytg--mark-shenton.json",
       "calf-scramble-off-broadway-2026/timeout--raven-snook.json",
-      "my-joy-is-heavy-off-broadway-2025/timeout--unknown.json"
+      "my-joy-is-heavy-off-broadway-2025/timeout--unknown.json",
+      "titus-andronicus-off-broadway-2026/playbill--unknown.json",
+      "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
+      "an-ark-off-broadway-2026/nytg--kyle-turner.json",
+      "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+      "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+      "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+      "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [
       "data/review-texts/hamilton-west-end-2021/variety--marilyn-stasio.json",
@@ -294,7 +311,10 @@
       "data/review-texts/the-lion-king-west-end-2021/variety--matt-wolf.json",
       "the-lion-king-west-end-2021/variety--matt-wolf.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
+      "chess-2025/hollywood-reporter--angie-han.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "marie-and-rosetta-west-end-2026/guardian--unknown.json",
@@ -309,7 +329,9 @@
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/shadowlands-west-end-2026/broadwayworld--aliya-al-hussan.json",
-      "data/review-texts/my-joy-is-heavy-off-broadway-2025/talkinbroadway--unknown.json"
+      "data/review-texts/my-joy-is-heavy-off-broadway-2025/talkinbroadway--unknown.json",
+      "data/review-texts/titus-andronicus-off-broadway-2026/broadwayworld--michael-dale.json",
+      "data/review-texts/titus-andronicus-off-broadway-2026/nysr--jesse-oxfeld.json"
     ],
     "archive": [
       "arcadia-west-end-2026/broadwayworld--aliya-al-hassan.json",
@@ -336,7 +358,7 @@
     ]
   },
   "startTime": "2026-03-18T08:37:37.418Z",
-  "lastProcessed": "the-lion-king-west-end-2021/thestage--unknown.json",
+  "lastProcessed": "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
   "log": [
     {
       "t": "2026-03-18T09:06:23.652Z",
@@ -349,6 +371,17 @@
       "event": "bb-login-fail",
       "domain": "thestage.co.uk",
       "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    32 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
+    },
+    {
+      "t": "2026-03-18T09:31:32.081Z",
+      "event": "bb-session",
+      "session": "529445b8",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-18T09:31:33.507Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

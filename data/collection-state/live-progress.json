@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-18T09:30:26.521Z",
-  "processed": 145,
-  "failed": 15,
-  "successRate": "90.6%",
+  "updatedAt": "2026-03-18T09:31:55.531Z",
+  "processed": 153,
+  "failed": 17,
+  "successRate": "90.0%",
   "tierBreakdown": {
-    "playwright": 109,
+    "playwright": 116,
     "amp": 16,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 8,
     "brightdata": 0,
-    "archiveToday": 2,
+    "archiveToday": 4,
     "archive": 21
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-03-18T09:06:23.652Z",
@@ -26,6 +26,17 @@
       "event": "bb-login-fail",
       "domain": "thestage.co.uk",
       "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    32 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
+    },
+    {
+      "t": "2026-03-18T09:31:32.081Z",
+      "event": "bb-session",
+      "session": "529445b8",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-18T09:31:33.507Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
