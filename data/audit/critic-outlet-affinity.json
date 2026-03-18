@@ -3,11 +3,11 @@
     "description": "Critic-outlet affinity audit report",
     "lastUpdated": "2026-03-18",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 32377,
-    "skippedFiles": 9876,
-    "totalCritics": 1719,
+    "totalFilesScanned": 32442,
+    "skippedFiles": 9879,
+    "totalCritics": 1725,
     "registryCritics": 530,
-    "flaggedReviews": 43
+    "flaggedReviews": 42
   },
   "flaggedReviews": [
     {
@@ -269,10 +269,10 @@
       "outlet": "timeout-london",
       "showId": "the-encounter-2016",
       "file": "timeout--alice-saville.json",
-      "outletShare": 4,
+      "outletShare": 3,
       "primaryOutlet": "independent",
-      "primaryShare": 96,
-      "totalReviews": 27
+      "primaryShare": 97,
+      "totalReviews": 29
     },
     {
       "critic": "Andy Propst",
@@ -284,17 +284,6 @@
       "primaryOutlet": "theatermania",
       "primaryShare": 92,
       "totalReviews": 13
-    },
-    {
-      "critic": "Patrick Marmion",
-      "criticSlug": "patrick-marmion",
-      "outlet": "the-mail",
-      "showId": "im-sorry-prime-minister-west-end-2026",
-      "file": "the-mail--patrick-marmion.json",
-      "outletShare": 7,
-      "primaryOutlet": "daily-mail",
-      "primaryShare": 93,
-      "totalReviews": 15
     },
     {
       "critic": "Jonathan Warman",
@@ -368,10 +357,10 @@
       "outlet": "telegraph",
       "showId": "an-american-in-paris-2015",
       "file": "telegraph--sarah-crompton.json",
-      "outletShare": 5,
+      "outletShare": 4,
       "primaryOutlet": "whatsonstage",
-      "primaryShare": 95,
-      "totalReviews": 42
+      "primaryShare": 96,
+      "totalReviews": 46
     },
     {
       "critic": "Sarah Crompton",
@@ -379,10 +368,10 @@
       "outlet": "telegraph",
       "showId": "glengarry-glen-ross-2012",
       "file": "telegraph--sarah-crompton.json",
-      "outletShare": 5,
+      "outletShare": 4,
       "primaryOutlet": "whatsonstage",
-      "primaryShare": 95,
-      "totalReviews": 42
+      "primaryShare": 96,
+      "totalReviews": 46
     },
     {
       "critic": "Daniel D'Addario",
@@ -467,10 +456,10 @@
       "outlet": "metro",
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "metro--claire-allfree.json",
-      "outletShare": 9,
+      "outletShare": 8,
       "primaryOutlet": "telegraph",
-      "primaryShare": 91,
-      "totalReviews": 11
+      "primaryShare": 92,
+      "totalReviews": 12
     },
     {
       "critic": "Peter Filichia",
@@ -502,9 +491,9 @@
         "usatoday",
         "ny1",
         "nytg",
+        "times-uk",
         "timeout",
         "backstage",
-        "times-uk",
         "telegraph",
         "london-box-office",
         "playbill",
@@ -534,6 +523,7 @@
         "culturesauce",
         "theatrely",
         "new-york-sun",
+        "financialtimes",
         "dailybeast",
         "dctheatrescene",
         "billboard",
@@ -544,7 +534,6 @@
         "british-theatre",
         "minneapolis-star-tribune",
         "guardian",
-        "financialtimes",
         "here",
         "west-end-wilma",
         "nbcny",
@@ -604,6 +593,7 @@
         "newyorker",
         "artsfuse",
         "daily-mail",
+        "city-am",
         "arenastageorg",
         "lighting-and-sound-america",
         "playwrightshorizonsorg",
@@ -628,7 +618,7 @@
         "corey-hawkins",
         "kenny-leon"
       ],
-      "totalReviews": 633
+      "totalReviews": 636
     },
     {
       "critic": "Ryan Leeds",
@@ -1494,6 +1484,16 @@
       "totalReviews": 184
     },
     {
+      "critic": "Patrick Marmion",
+      "slug": "patrick-marmion",
+      "outlets": [
+        "daily-mail",
+        "mail",
+        "the-mail"
+      ],
+      "totalReviews": 18
+    },
+    {
       "critic": "David Fox",
       "slug": "david-fox",
       "outlets": [
@@ -1613,7 +1613,7 @@
         "telegraph",
         "the-paper"
       ],
-      "totalReviews": 20
+      "totalReviews": 24
     },
     {
       "critic": "Sam Marlowe",
@@ -1625,7 +1625,7 @@
         "timeout",
         "london-theatre"
       ],
-      "totalReviews": 24
+      "totalReviews": 27
     },
     {
       "critic": "Tim Bano",
@@ -1648,7 +1648,7 @@
         "timeout",
         "time"
       ],
-      "totalReviews": 71
+      "totalReviews": 75
     },
     {
       "critic": "Kevin Filipski",
@@ -1823,6 +1823,17 @@
       "totalReviews": 6
     },
     {
+      "critic": "Marianka Swain",
+      "slug": "marianka-swain",
+      "outlets": [
+        "london-theatre",
+        "telegraph",
+        "broadwayworld",
+        "artsdesk"
+      ],
+      "totalReviews": 32
+    },
+    {
       "critic": "Philip Boroff",
       "slug": "philip-boroff",
       "outlets": [
@@ -1839,17 +1850,6 @@
         "broadwayworld"
       ],
       "totalReviews": 9
-    },
-    {
-      "critic": "Marianka Swain",
-      "slug": "marianka-swain",
-      "outlets": [
-        "london-theatre",
-        "telegraph",
-        "broadwayworld",
-        "artsdesk"
-      ],
-      "totalReviews": 26
     },
     {
       "critic": "Emlyn Travis",
@@ -1950,6 +1950,16 @@
         "exeunt-magazine"
       ],
       "totalReviews": 12
+    },
+    {
+      "critic": "Holly O’Mahony",
+      "slug": "holly-o-mahony",
+      "outlets": [
+        "thestage",
+        "london-theatre",
+        "timeout"
+      ],
+      "totalReviews": 8
     },
     {
       "critic": "Carole Di Tosti",
@@ -2065,15 +2075,6 @@
         "zap-2-it"
       ],
       "totalReviews": 3
-    },
-    {
-      "critic": "Holly O'Mahony",
-      "slug": "holly-o-mahony",
-      "outlets": [
-        "thestage",
-        "london-theatre"
-      ],
-      "totalReviews": 7
     },
     {
       "critic": "David Jays",
