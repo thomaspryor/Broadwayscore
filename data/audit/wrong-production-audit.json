@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-18T11:43:25.563Z",
+  "timestamp": "2026-03-18T11:50:39.235Z",
   "stats": {
     "totalReviews": 31654,
     "alreadyFlagged": 9397,
     "dateGuardCatches": 152,
     "directorMismatch": 1134,
     "tvFilmSignals": 3507,
-    "londonSignals": 1051,
+    "londonSignals": 1053,
     "offBroadwaySignals": 1074,
     "yearMismatch": 92,
-    "noPublishDate": 9426
+    "noPublishDate": 9424
   },
   "findings": [
     {
@@ -76006,6 +76006,20 @@
       ]
     },
     {
+      "showId": "kinky-boots-the-musical-west-end-2026",
+      "file": "times-uk--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.facebook.com/TellyMix/posts/kinky-boots-the-musical-has-opened-at-the-london-coliseum-with-johannes-radebe-a/1457909596346233/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "kiss-me-kate-2019",
       "file": "guardian--jesse-green.json",
       "score": 82,
@@ -82814,6 +82828,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "summerfolk-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2026-03-18",
+      "url": "https://www.londonboxoffice.co.uk/news/post/summerfolk-nt-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
