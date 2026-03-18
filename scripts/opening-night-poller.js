@@ -423,6 +423,101 @@ async function runAggregators(show) {
     }
   }
 
+  // 1g. WestEndTheatre.com roundups (WE/OWE only — WP API, fast)
+  if (isWestEnd) {
+    try {
+      console.log('  Checking WestEndTheatre.com (WP API)...');
+      const { execSync } = require('child_process');
+      const searchTitle = show.title.replace(/['"]/g, '');
+      const apiUrl = `https://www.westendtheatre.com/wp-json/wp/v2/posts?categories=10&per_page=20&search=${encodeURIComponent(searchTitle)}`;
+      const apiResult = execSync(
+        `curl -s "${apiUrl}" -H "Accept: application/json"`,
+        { timeout: 15000, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }
+      );
+      const posts = JSON.parse(apiResult);
+      if (Array.isArray(posts) && posts.length > 0) {
+        // Find the best matching post
+        for (const post of posts.slice(0, 3)) {
+          const htmlContent = post.content?.rendered || '';
+          // Check for star characters indicating a review roundup
+          if (!htmlContent.includes('★')) continue;
+
+          // Count star blocks as a proxy for review count
+          const starBlocks = (htmlContent.match(/★{1,5}/g) || []);
+          if (starBlocks.length === 0) continue;
+
+          console.log(`  WestEndTheatre: found roundup with ${starBlocks.length} ratings`);
+
+          // Archive it
+          const wetArchiveDir = path.join(DATA_DIR, 'aggregator-archive', 'westendtheatre');
+          if (!fs.existsSync(wetArchiveDir)) fs.mkdirSync(wetArchiveDir, { recursive: true });
+          const archiveData = { ourShowId: show.id, wpPostId: post.id, content: htmlContent, fetchedAt: new Date().toISOString().slice(0, 10) };
+          fs.writeFileSync(path.join(wetArchiveDir, `${show.id}.json`), JSON.stringify(archiveData, null, 2) + '\n');
+
+          // Extract: each star block = one review (outlet in text before stars)
+          const text = htmlContent.replace(/<[^>]+>/g, '').replace(/&[^;]+;/g, ' ');
+          const starRegex = /(★{1,5})/g;
+          let sMatch;
+          while ((sMatch = starRegex.exec(text)) !== null) {
+            const stars = sMatch[1].length;
+            const before = text.substring(Math.max(0, sMatch.index - 200), sMatch.index).trim();
+            const outletLine = before.split('\n').filter(l => l.trim()).pop()?.trim() || '';
+            if (!outletLine || outletLine.length < 2 || outletLine.length > 50) continue;
+            if (outletLine.startsWith('"') || outletLine.startsWith('\u201c')) continue;
+
+            results.push({
+              showId: show.id,
+              outletId: normalizeOutlet(outletLine),
+              outlet: outletLine,
+              criticName: 'Unknown',
+              url: post.link || '',
+              excerpt: '',
+              score: Math.round((stars / 5) * 100),
+              scoreSource: 'westendtheatre-star-rating',
+              source: 'westendtheatre',
+            });
+          }
+          break; // Only use first matching post
+        }
+      } else {
+        console.log('  WestEndTheatre: no matching roundup');
+      }
+    } catch (err) {
+      console.log(`  WestEndTheatre error: ${err.message}`);
+    }
+  }
+
+  // 1h. The Stage roundup archives (WE/OWE only — check archive, can't fetch live without Playwright)
+  if (isWestEnd) {
+    try {
+      console.log('  Checking The Stage archive...');
+      const tsArchivePath = path.join(DATA_DIR, 'aggregator-archive', 'thestage-roundups', `${show.id}.html`);
+      if (fs.existsSync(tsArchivePath)) {
+        const { extractReviews: extractStageReviews } = require('./scrape-thestage-roundups');
+        const tsHtml = fs.readFileSync(tsArchivePath, 'utf8');
+        const tsReviews = extractStageReviews(tsHtml, show.id);
+        console.log(`  The Stage: ${tsReviews.length} reviews from archive`);
+        for (const r of tsReviews) {
+          results.push({
+            showId: show.id,
+            outletId: r.outletId || normalizeOutlet(r.outlet || ''),
+            outlet: r.outlet || 'Unknown',
+            criticName: r.critic || 'Unknown',
+            url: r.url || '',
+            excerpt: r.excerpt || '',
+            score: r.stars ? Math.round((r.stars / 5) * 100) : null,
+            scoreSource: r.stars ? 'thestage-roundup-star-rating' : undefined,
+            source: 'thestage-roundup',
+          });
+        }
+      } else {
+        console.log('  The Stage: no archive found');
+      }
+    } catch (err) {
+      console.log(`  The Stage error: ${err.message}`);
+    }
+  }
+
   console.log(`  [Layer 1 Total] ${results.length} reviews from aggregators`);
   return results;
 }

@@ -174,7 +174,7 @@ function extractShowTitle(wpTitle) {
 
 /**
  * Extract star ratings from HTML table in post content.
- * Returns array of { outlet, stars } objects.
+ * Returns array of { outlet, stars, critic, excerpt, reviewUrl } objects.
  */
 function extractStarRatings(htmlContent) {
   const ratings = [];
@@ -213,6 +213,91 @@ function extractStarRatings(htmlContent) {
   }
 
   return ratings;
+}
+
+/**
+ * Extract reviews from section-format posts (no table).
+ * Format: Outlet heading → ★★★★ → "excerpts" → Critic Name, Outlet → Read the review
+ * Returns array of { outlet, stars, critic, excerpt, reviewUrl } objects.
+ */
+function extractSectionReviews(htmlContent) {
+  const reviews = [];
+  const text = stripHtml(htmlContent);
+
+  // Find star blocks: sequences of ★ characters
+  const starRegex = /(★{1,5})/g;
+  let starMatch;
+  const starPositions = [];
+  while ((starMatch = starRegex.exec(text)) !== null) {
+    starPositions.push({ idx: starMatch.index, stars: starMatch[1].length });
+  }
+
+  if (starPositions.length === 0) return reviews;
+
+  for (let i = 0; i < starPositions.length; i++) {
+    const { idx, stars } = starPositions[i];
+    const endIdx = i + 1 < starPositions.length ? starPositions[i + 1].idx : text.length;
+
+    // Outlet: text line immediately before the stars
+    const beforeStars = text.substring(Math.max(0, idx - 300), idx).trim();
+    const beforeLines = beforeStars.split('\n').filter(l => l.trim());
+    const outletLine = beforeLines[beforeLines.length - 1]?.trim() || '';
+
+    if (!outletLine || outletLine.length < 2 || outletLine.length > 60) continue;
+    // Skip if outlet line looks like a sentence (contains quotes or many words)
+    if (outletLine.startsWith('"') || outletLine.startsWith('\u201c')) continue;
+
+    const outlet = outletLine;
+
+    // After stars until next star block: excerpts + critic attribution
+    const afterStars = text.substring(idx + stars, endIdx).trim();
+
+    // Extract critic name: "Firstname Lastname, Outlet" pattern
+    let critic = null;
+    const lines = afterStars.split('\n').map(l => l.trim()).filter(l => l);
+    for (const line of lines) {
+      if (line.startsWith('"') || line.startsWith('\u201c')) continue;
+      if (line.startsWith('More ') || line.startsWith('Read the')) continue;
+      const criticMatch = line.match(/^([A-Z][a-z]+(?:\s[A-Z][a-z'-]+)+)(?:,\s*.+)?$/);
+      if (criticMatch) {
+        critic = criticMatch[1].trim();
+        break;
+      }
+    }
+
+    // Extract excerpts in quotes
+    const excerpts = [];
+    const quoteRegex = /[""\u201c]([^""\u201d]+)[""\u201d]/g;
+    let qMatch;
+    while ((qMatch = quoteRegex.exec(afterStars)) !== null) {
+      const q = qMatch[1].trim();
+      if (q.length > 15) excerpts.push(q);
+    }
+    const excerpt = excerpts.join(' … ').substring(0, 800);
+
+    // Extract review URL from nearby <a> tags
+    // We'll extract from the HTML using regex since we have the raw HTML
+    let reviewUrl = null;
+    const linkRegex = /<a[^>]*href="([^"]+)"[^>]*>[^<]*Read the review/gi;
+    const allLinks = [];
+    let lMatch;
+    while ((lMatch = linkRegex.exec(htmlContent)) !== null) {
+      if (!lMatch[1].includes('westendtheatre.com')) {
+        allLinks.push(lMatch[1]);
+      }
+    }
+    if (allLinks[i]) reviewUrl = allLinks[i];
+
+    reviews.push({
+      outlet,
+      stars,
+      critic,
+      excerpt,
+      reviewUrl,
+    });
+  }
+
+  return reviews;
 }
 
 /**
@@ -351,11 +436,20 @@ async function main() {
       continue;
     }
 
-    // Extract star ratings from table
-    const ratings = extractStarRatings(htmlContent);
+    // Extract star ratings from table (preferred) or section format (fallback)
+    let ratings = extractStarRatings(htmlContent);
+    let usedSectionFormat = false;
+
     if (ratings.length === 0) {
-      stats.skippedNoTable++;
-      continue;
+      // Fallback: try section-format extraction (outlet heading + ★ + excerpts)
+      const sectionReviews = extractSectionReviews(htmlContent);
+      if (sectionReviews.length > 0) {
+        ratings = sectionReviews;
+        usedSectionFormat = true;
+      } else {
+        stats.skippedNoTable++;
+        continue;
+      }
     }
 
     stats.matchedShows++;
@@ -385,11 +479,11 @@ async function main() {
         showId: show.id,
         outletId,
         outlet: outletName,
-        criticName: null,
-        url: postUrl,
+        criticName: r.critic || null,
+        url: r.reviewUrl || postUrl,
         publishDate: postDate,
         westEndTheatreScore: `${r.stars}/5 stars`,
-        westEndTheatreExcerpt: null,
+        westEndTheatreExcerpt: r.excerpt || null,
         originalScore: `${r.stars}/5 stars`,
         fullText: null,
         isFullReview: false,
@@ -401,12 +495,12 @@ async function main() {
         const existing = findExistingReviewFile(
           path.join(reviewTextsDir, show.id),
           outletId,
-          null
+          r.critic || null
         );
-        console.log(`  ${existing ? '🔄' : '🆕'} ${outletId} — ${r.stars}/5`);
+        console.log(`  ${existing ? '🔄' : '🆕'} ${outletId}${r.critic ? ' (' + r.critic + ')' : ''} — ${r.stars}/5`);
       } else {
         saveReview(review);
-        console.log(`  ✅ ${outletId} — ${r.stars}/5`);
+        console.log(`  ✅ ${outletId}${r.critic ? ' (' + r.critic + ')' : ''} — ${r.stars}/5`);
       }
     }
   }

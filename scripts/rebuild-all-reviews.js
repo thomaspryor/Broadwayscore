@@ -1160,20 +1160,32 @@ showDirs.forEach(showId => {
       // Skip wrong-production reviews (e.g., off-Broadway reviews filed under Broadway show)
       // OVERRIDE: If wrongProduction was set by cross-market guard ("US outlet reviewing London show")
       // but the URL is actually a UK domain, clear it — the guard was wrong.
-      if (data.wrongProduction === true && isLondonMarket(showCat) && data.url
-          && data.wrongProductionNote && data.wrongProductionNote.includes('Cross-market')) {
-        try {
-          const hostname = new URL(data.url).hostname || '';
-          const isUkUrl = hostname.endsWith('.co.uk') || hostname.endsWith('.org.uk')
-            || hostname.includes('london') || hostname.includes('theatre');
-          if (isUkUrl) {
-            delete data.wrongProduction;
-            delete data.wrongProductionNote;
-            data.wrongProductionAutoCleared = `rebuild: UK URL on London show (${hostname})`;
-            try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
-            stats.wrongProductionAutoCleared = (stats.wrongProductionAutoCleared || 0) + 1;
-          }
-        } catch {}
+      // Also clears stale flags (no note, "US-only" script) on UK/dual-market outlets with London URLs.
+      if (data.wrongProduction === true && isLondonMarket(showCat) && data.url) {
+        const wpNote = data.wrongProductionNote || '';
+        // Only auto-clear cross-market, US-only, or stale no-note flags — NOT legitimate
+        // "Same URL exists", "Pre-opening guard", or "days before show opened" flags
+        const isStructuralFlag = wpNote.includes('Same URL exists') || wpNote.includes('Pre-opening guard')
+          || wpNote.includes('days before show opened') || wpNote.includes('URL contains year');
+        if (!isStructuralFlag) {
+          const outletIsDualOrUk = DUAL_MARKET_OUTLETS.has(canonicalOutlet)
+            || outletRegionMap[canonicalOutlet] === 'london' || outletRegionMap[rawOutlet] === 'london';
+          try {
+            const hostname = new URL(data.url).hostname || '';
+            const isUkUrl = hostname.endsWith('.co.uk') || hostname.endsWith('.org.uk')
+              || hostname.includes('london') || hostname.includes('theatre');
+            if (isUkUrl || outletIsDualOrUk) {
+              // UK/dual-market outlet + London URL → clear false positive
+              if (isUkUrl) {
+                delete data.wrongProduction;
+                delete data.wrongProductionNote;
+                data.wrongProductionAutoCleared = `rebuild: UK URL on London show (${hostname})`;
+                try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+                stats.wrongProductionAutoCleared = (stats.wrongProductionAutoCleared || 0) + 1;
+              }
+            }
+          } catch {}
+        }
       }
       if (data.wrongProduction === true) {
         stats.skippedWrongProduction = (stats.skippedWrongProduction || 0) + 1;
