@@ -34,7 +34,7 @@
 19. **Remaining UK outlet gaps** — Telegraph SVG extractor (73), Culture Sauce React (58). Need outlet-specific extractor improvements. Post-launch.
 
 **Data Integrity:**
-- **Aggregator archive files critically low** — Only 26 total aggregator archive files found (expected 2500+). Archives may have been accidentally deleted. Investigate immediately — affects rebuild accuracy and data completeness.
+- ~~**Aggregator archive files critically low**~~ → RESOLVED (2026-03-17). Validator was checking staging dir (37 files) instead of real archive (5,557 files). Fixed validator path.
 
 **Site Reliability:**
 7. ~~**Pipeline health dashboard**~~ → Phase 1 DONE (health monitoring, 9 categories).
@@ -47,7 +47,8 @@
 ## MEDIUM PRIORITY
 
 **Product:**
-9. **Off-West End scoring expansion** — Classification done (65 WE / 63 Off-WE). Needs more shows + scoring.
+9. **Off-West End scoring expansion** — Classification done. 56 OWE shows in DB, 11 open with scores. Needs more review collection via aggregators.
+9b. **Theatre.reviews scraper fix** — Scraper built (`scrape-theatre-reviews.js`) but HTML extraction broken: only extracting 1 review per page instead of 10+. Homepage has 25+ shows (not just 10 on category page). Needs: (1) fix `extractReviews()` to parse the actual DOM structure (use Playwright MCP to inspect), (2) discover URLs from homepage not just category page, (3) create weekly workflow, (4) add `theatreReviewsExcerpt` to rebuild-all-reviews.js excerpt priority. This is the "DTLI equivalent" for West End — highest-value WE aggregator.
 10. **App icon refinement** — Hard to read at small sizes.
 11. **BTC/TodayTix partnership (paused)** — Waiting on TodayTix for launch timing, co-branding, legal.
 
@@ -83,6 +84,13 @@
 **Code Quality:** ~~Regression protection for critical patterns~~ → DONE (grep-based guards in CI). ~~Linter/IDE revert root cause~~ → DONE (concurrent sessions, not auto-formatter).
 
 ## Recently Completed
+
+### Week of 2026-03-17
+- **OWE pipeline fix (8 bugs, 8 files)** — Off-West End shows were discovered but never collected reviews due to exact category matches excluding `off-west-end`. Fixed: collect-outlet-reviews.js, review-refresh.yml, update-show-status.yml, fetch-aggregator-pages.ts, collect-review-texts.yml, collect-outlet-reviews.yml, opening-night-poller.yml (OWE+OB). One-off collection: 70 review files → 67 in reviews.json → 20 scored. All 11 open OWE shows now live with scores (e.g., Starlight Express 74/100, 21 reviews).
+- **Opening night orchestrator** — New `opening-night-orchestrator.yml` dispatches the poller every 20 min for up to 4 hours. Two crons: Broadway 3 AM UTC (11 PM ET), West End 10 PM UTC (11 PM BST). Per-market concurrency. Eliminates dependency on `update-show-status.yml` (which failed today). Simulation tested end-to-end: discover → collect → score → rebuild → readiness check → broadcast guard.
+- **Poller enhancements** — Inline collect+score (saves ~45 min vs separate workflow chain). Market input for filtering. Broadcast dispatch with triple guard (sent check + recent dispatch check + threshold). Local rebuild for readiness check. Git status fix (review-texts is separate checkout). Git config fix for commit steps.
+- **WE aggregator expansion** — Added LBO roundups + theatre.reviews + Stagedoor to poller Layer 1. Skipped DTLI for London (US-only). Theatre.reviews scraper created but extraction needs tuning (only extracting 1 review per page instead of 10+). Stagedoor already working (236 reviews, 26 shows).
+- **Review collection improvements** — (1) BrightData SERP fix: swapped to `serp_api1` zone, sync-first ordering, fixed poll URL params. (2) Batch wrongShow recovery: 207 reviews recovered (188,598 words), scored, deployed. (3) SERP discovery cap raised 250→1000, configurable via workflow input. (4) Push-with-retry rewrite: auto-resolves collection-state conflicts, tested with concurrent runs (push succeeded on attempt 2). (5) Aggregator archive validator fixed (wrong directory).
 
 ### Week of 2026-03-16
 - **Opening night broadcast de-cron** — Removed 41 cron entries (16 broadcast + 25 poller) that ran every night even with no openings. Now dispatch-only: (1) auto from update-show-status.yml on previews→open transition, (2) auto-retry via workflow_run after scoring, (3) manual dispatch. Preview-to-owner default preserved, one-tap phone approval flow intact. Fixed Commit step push race (skip when no changes).
@@ -143,6 +151,7 @@
 - Off-West End classification + venue filter
 - iOS: Sentry, push notifications, offline queue, haptics, store review, deep linking (Build #29)
 - BTC: TBD badges + curated nominees QA
+
 
 
 
