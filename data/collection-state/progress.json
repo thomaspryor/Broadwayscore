@@ -158,7 +158,17 @@
     "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
     "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
     "every-brilliant-thing-2026/thewrap--robert-hofler.json",
-    "every-brilliant-thing-2026/timeout--unknown.json"
+    "every-brilliant-thing-2026/timeout--unknown.json",
+    "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json",
+    "hadestown-2019/broadwaynews--charles-isherwood.json",
+    "hadestown-2019/ew--jessica-derschowitz.json",
+    "hadestown-2019/timeout--adam-feldman.json",
+    "hamilton-2015/theatermania--adam-feldman.json",
+    "hamilton-2015/wsj--terry-teachout.json",
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json",
+    "heathers-the-musical-off-broadway-2025/new-york-sun--elysa-gardner.json",
+    "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -262,7 +272,10 @@
       "cold-war-choir-practice-off-broadway-2026/timeout--adam-feldman.json",
       "death-becomes-her-2024/nydailynews--chris-jones.json",
       "death-becomes-her-2024/timeout--adam-feldman.json",
-      "every-brilliant-thing-2026/timeout--unknown.json"
+      "every-brilliant-thing-2026/timeout--unknown.json",
+      "hadestown-2019/ew--jessica-derschowitz.json",
+      "hadestown-2019/timeout--adam-feldman.json",
+      "heathers-the-musical-off-broadway-2025/new-york-sun--elysa-gardner.json"
     ],
     "amp": [
       "data/review-texts/hamilton-west-end-2021/variety--marilyn-stasio.json",
@@ -348,7 +361,8 @@
       "death-becomes-her-2024/newyorker--helen-shaw.json",
       "chicago-1996/nydailynews--joe-dziemianowicz.json",
       "evening-all-afternoon-west-end-2026/guardian--arifa-akbar.json",
-      "every-brilliant-thing-2026/guardian--jesse-hassenger.json"
+      "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
+      "hadestown-2019/broadwaynews--charles-isherwood.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -399,11 +413,17 @@
       "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
       "drunk-romeo-and-juliet-off-broadway-2025/theatermania--unknown.json",
       "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
-      "every-brilliant-thing-2026/thewrap--robert-hofler.json"
+      "every-brilliant-thing-2026/thewrap--robert-hofler.json",
+      "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json",
+      "hamilton-2015/theatermania--adam-feldman.json",
+      "hamilton-2015/wsj--terry-teachout.json",
+      "harry-potter-2021/wsj--terry-teachout.json",
+      "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json",
+      "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json"
     ]
   },
   "startTime": "2026-03-18T09:53:53.062Z",
-  "lastProcessed": "every-brilliant-thing-2026/timeout--unknown.json",
+  "lastProcessed": "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
   "log": [
     {
       "t": "2026-03-18T10:56:24.454Z",
@@ -492,6 +512,28 @@
       "t": "2026-03-18T11:16:27.178Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-18T11:18:04.111Z",
+      "event": "bb-session",
+      "session": "c566de6e",
+      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
+    },
+    {
+      "t": "2026-03-18T11:18:05.459Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-18T11:18:36.253Z",
+      "event": "bb-session",
+      "session": "aa1ca004",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-18T11:18:37.509Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

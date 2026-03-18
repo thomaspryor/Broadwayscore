@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-18T11:17:23.619Z",
-  "processed": 159,
+  "updatedAt": "2026-03-18T11:19:24.374Z",
+  "processed": 169,
   "failed": 8,
-  "successRate": "95.2%",
+  "successRate": "95.5%",
   "tierBreakdown": {
-    "playwright": 90,
+    "playwright": 93,
     "amp": 32,
     "browserbase": 32,
     "directCookies": 0,
-    "scrapingbee": 15,
+    "scrapingbee": 16,
     "brightdata": 0,
     "archiveToday": 3,
-    "archive": 43
+    "archive": 49
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-03-18T10:56:24.454Z",
@@ -102,6 +102,28 @@
       "t": "2026-03-18T11:16:27.178Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-18T11:18:04.111Z",
+      "event": "bb-session",
+      "session": "c566de6e",
+      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
+    },
+    {
+      "t": "2026-03-18T11:18:05.459Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-18T11:18:36.253Z",
+      "event": "bb-session",
+      "session": "aa1ca004",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-18T11:18:37.509Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
