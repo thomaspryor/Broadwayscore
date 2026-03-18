@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-18T11:23:13.768Z",
-  "processed": 189,
-  "failed": 8,
-  "successRate": "95.9%",
+  "updatedAt": "2026-03-18T11:38:14.698Z",
+  "processed": 233,
+  "failed": 14,
+  "successRate": "94.3%",
   "tierBreakdown": {
-    "playwright": 101,
+    "playwright": 131,
     "amp": 32,
     "browserbase": 38,
     "directCookies": 0,
     "scrapingbee": 20,
     "brightdata": 0,
     "archiveToday": 3,
-    "archive": 54
+    "archive": 68
   },
-  "browserbaseSessions": 13,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-03-18T11:03:19.676Z",
-      "event": "bb-session",
-      "session": "6502462d",
-      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
-    },
-    {
-      "t": "2026-03-18T11:03:20.810Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-18T11:03:54.147Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-18T11:22:51.490Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-18T11:34:13.107Z",
+      "event": "bb-session",
+      "session": "daeb6ce2",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-03-18T11:34:14.784Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
