@@ -178,7 +178,17 @@
     "maltby-and-shires-about-time-off-broadway-2026/theatermania--zachary-stewart.json",
     "marcel-on-the-train-off-broadway-2026/new-york-sun--elysa-gardner.json",
     "marcel-on-the-train-off-broadway-2026/theatermania--zachary-stewart.json",
-    "marcel-on-the-train-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json"
+    "marcel-on-the-train-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
+    "marcel-on-the-train-off-broadway-2026/timeout--adam-feldman.json",
+    "marie-and-rosetta-west-end-2026/guardian--unknown.json",
+    "masquerade-off-broadway-2025/ew--thom-geier.json",
+    "masquerade-off-broadway-2025/theatermania--meg-masseron.json",
+    "masquerade-off-broadway-2025/timeout--adam-feldman.json",
+    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+    "maybe-happy-ending-2024/guardian--adrian-horton.json",
+    "maybe-happy-ending-2024/new-york-sun--broadway-scorecard.json",
+    "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+    "maybe-happy-ending-2024/theatermania--jesse-green.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -289,7 +299,11 @@
       "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json",
       "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024/nydailynews--unknown.json",
       "marcel-on-the-train-off-broadway-2026/new-york-sun--elysa-gardner.json",
-      "marcel-on-the-train-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json"
+      "marcel-on-the-train-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
+      "marcel-on-the-train-off-broadway-2026/timeout--adam-feldman.json",
+      "masquerade-off-broadway-2025/ew--thom-geier.json",
+      "masquerade-off-broadway-2025/timeout--adam-feldman.json",
+      "maybe-happy-ending-2024/new-york-sun--broadway-scorecard.json"
     ],
     "amp": [
       "data/review-texts/hamilton-west-end-2021/variety--marilyn-stasio.json",
@@ -361,7 +375,9 @@
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
       "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
-      "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json"
+      "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
+      "data/review-texts/maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+      "maybe-happy-ending-2024/nypost--johnny-oleksinski.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -381,7 +397,10 @@
       "evening-all-afternoon-west-end-2026/guardian--arifa-akbar.json",
       "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
       "hadestown-2019/broadwaynews--charles-isherwood.json",
-      "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json"
+      "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json",
+      "marie-and-rosetta-west-end-2026/guardian--unknown.json",
+      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+      "maybe-happy-ending-2024/guardian--adrian-horton.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -441,11 +460,13 @@
       "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
       "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
       "maltby-and-shires-about-time-off-broadway-2026/theatermania--zachary-stewart.json",
-      "marcel-on-the-train-off-broadway-2026/theatermania--zachary-stewart.json"
+      "marcel-on-the-train-off-broadway-2026/theatermania--zachary-stewart.json",
+      "masquerade-off-broadway-2025/theatermania--meg-masseron.json",
+      "maybe-happy-ending-2024/theatermania--jesse-green.json"
     ]
   },
   "startTime": "2026-03-18T09:53:53.062Z",
-  "lastProcessed": "marcel-on-the-train-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
+  "lastProcessed": "maybe-happy-ending-2024/theatermania--jesse-green.json",
   "log": [
     {
       "t": "2026-03-18T10:56:24.454Z",
@@ -576,6 +597,17 @@
     },
     {
       "t": "2026-03-18T11:20:32.461Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-18T11:22:50.111Z",
+      "event": "bb-session",
+      "session": "9552407b",
+      "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-r"
+    },
+    {
+      "t": "2026-03-18T11:22:51.490Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
     }
