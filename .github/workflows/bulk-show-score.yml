@@ -301,5 +301,5 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Bulk Show Score Failed'
-          severity: 'critical'
+          severity: 'warning'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

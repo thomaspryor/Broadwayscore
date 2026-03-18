@@ -48,5 +48,5 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'URL Health Check Failed'
-          severity: 'critical'
+          severity: 'warning'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

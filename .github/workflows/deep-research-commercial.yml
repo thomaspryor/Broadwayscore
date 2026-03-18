@@ -173,5 +173,5 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Deep Research Commercial Failed'
-          severity: 'critical'
+          severity: 'warning'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

@@ -146,7 +146,7 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'GitLab Token Rotation Failed'
-          severity: 'critical'
+          severity: 'low'
           email: 'true'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           resend_api_key: ${{ secrets.RESEND_API_KEY }}

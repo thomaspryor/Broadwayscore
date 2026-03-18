@@ -314,8 +314,6 @@ async function sweepTheatreReviews(show) {
 async function sweepStagedoor(show) {
   const archivePath = path.join(ARCHIVE_BASE, 'stagedoor', `${show.id}.json`);
   if (!fs.existsSync(archivePath)) return [];
-  // Archive exists — extract from it
-  if (fs.existsSync(archivePath)) {
 
   try {
     const data = JSON.parse(fs.readFileSync(archivePath, 'utf8'));
