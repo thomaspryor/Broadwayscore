@@ -1,6 +1,6 @@
 {
-  "lastRun": "2026-03-16T08:06:14.647Z",
-  "consecutiveErrorDays": 4,
+  "lastRun": "2026-03-18T07:49:54.575Z",
+  "consecutiveErrorDays": 5,
   "results": [
     {
       "name": "Freshness: reviews.json",
@@ -9,13 +9,13 @@
     },
     {
       "name": "Freshness: shows.json",
-      "status": "error",
-      "message": "6d old (error threshold: 4d)"
+      "status": "warn",
+      "message": "1d old (warn threshold: 1d)"
     },
     {
       "name": "Freshness: grosses.json",
       "status": "pass",
-      "message": "4d old"
+      "message": "16h old"
     },
     {
       "name": "Freshness: audience-buzz.json",
@@ -25,17 +25,22 @@
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "5d old"
+      "message": "7d old"
     },
     {
       "name": "Freshness: critic-consensus.json",
       "status": "pass",
-      "message": "3d old"
+      "message": "12h old"
     },
     {
       "name": "Freshness: lottery-rush.json",
       "status": "pass",
-      "message": "7d old"
+      "message": "9d old"
+    },
+    {
+      "name": "Push verify: shows.json",
+      "status": "pass",
+      "message": "Data synced (1d old, workflow 1d ago)"
     },
     {
       "name": "Sync: review-texts vs reviews.json",
@@ -50,7 +55,7 @@
     {
       "name": "Sync: baseline drift",
       "status": "pass",
-      "message": "2301 shows, 135 open, 17616 reviews (all at or above baseline)"
+      "message": "2337 shows, 148 open, 17829 reviews (all at or above baseline)"
     },
     {
       "name": "Pipeline: rebuild-reviews",
@@ -60,32 +65,32 @@
     {
       "name": "Pipeline: update-show-status",
       "status": "pass",
-      "message": "Last success 24h ago"
+      "message": "Last success 1d ago"
     },
     {
       "name": "Pipeline: collect-review-texts",
       "status": "pass",
-      "message": "Last success 3h ago"
+      "message": "Last success 9h ago"
     },
     {
       "name": "Pipeline: weekly-grosses",
       "status": "warn",
-      "message": "Last success 24d ago (threshold: 10d)"
+      "message": "Last success 26d ago (threshold: 10d)"
     },
     {
       "name": "Pipeline: weekly-integrity",
       "status": "pass",
-      "message": "Last success 1d ago"
+      "message": "Last success 3d ago"
     },
     {
       "name": "Pipeline: test",
       "status": "warn",
-      "message": "Last success 3d ago (threshold: 2d)"
+      "message": "Last success 5d ago (threshold: 2d)"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "99.2% scored (17616/17759)"
+      "message": "98.8% scored (17829/18038)"
     },
     {
       "name": "Cookies: expiration",
@@ -95,7 +100,7 @@
     {
       "name": "CWV: performance",
       "status": "pass",
-      "message": "All metrics within thresholds (23h ago)"
+      "message": "All metrics within thresholds (3d ago)"
     },
     {
       "name": "SEO: health",
@@ -104,8 +109,8 @@
     },
     {
       "name": "Cron: Update Show Status",
-      "status": "pass",
-      "message": "24h ago, success"
+      "status": "warn",
+      "message": "Last run failed (1h ago)"
     },
     {
       "name": "Cron: Rebuild Reviews",
@@ -119,8 +124,8 @@
     },
     {
       "name": "Cron: LLM Ensemble Score",
-      "status": "pass",
-      "message": "1h ago, success"
+      "status": "warn",
+      "message": "Last run failed (1h ago)"
     },
     {
       "name": "Cron: Test Suite",
@@ -130,17 +135,17 @@
     {
       "name": "Cron: Opening Night Broadcast",
       "status": "pass",
-      "message": "2h ago, success"
+      "message": "1h ago, skipped"
     },
     {
       "name": "Secrets: health",
-      "status": "pass",
-      "message": "Last check passed (7d ago)"
+      "status": "error",
+      "message": "Last check FAILED (2d ago)"
     },
     {
       "name": "Credits: ScrapingBee",
-      "status": "error",
-      "message": "0k credits left (0% remaining)"
+      "status": "pass",
+      "message": "219k credits left (16%) · 1131k/day burn · exhausts in ~0d (renews Apr 17)"
     }
   ],
   "lastCleanStreak": 0
