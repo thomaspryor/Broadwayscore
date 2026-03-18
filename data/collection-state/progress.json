@@ -250,7 +250,15 @@
     "the-reservoir-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
     "the-unknown-off-broadway-2026/theatermania--zachary-stewart.json",
     "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
-    "the-unknown-off-broadway-2026/timeout--adam-feldman.json"
+    "the-unknown-off-broadway-2026/timeout--adam-feldman.json",
+    "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "wicked-2003/theatermania--barbara-siegelscott-siegel.json",
+    "wicked-2003/theatermania--david-gordon.json",
+    "wicked-2003/wsj--terry-teachout.json",
+    "you-got-older-off-broadway-2026/theatermania--zachary-stewart.json",
+    "you-got-older-off-broadway-2026/timeout--unknown.json",
+    "youre-a-good-man-charlie-brown-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
+    "zack-off-broadway-2026/broadwaynews--gillian-blum.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -268,7 +276,9 @@
     "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
     "sweetmeats-west-end-2026/guardian--anya-ryan.json",
     "the-lion-king-1997/timeout--adam-feldman.json",
-    "the-reservoir-off-broadway-2026/broadwaynews--nicole-rosky.json"
+    "the-reservoir-off-broadway-2026/broadwaynews--nicole-rosky.json",
+    "two-strangers-bway-2025/guardian--unknown.json",
+    "zack-off-broadway-2026/nydailynews--logan-culwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -411,7 +421,10 @@
       "the-hunger-games-on-stage-west-end-2025/timeout-london--unknown.json",
       "the-monsters-off-broadway-2026/new-york-sun--elysa-gardner.json",
       "the-outsiders-2024/timeout--adam-feldman.json",
-      "the-reservoir-off-broadway-2026/theatre-reviews-limited--david-roberts.json"
+      "the-reservoir-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
+      "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "you-got-older-off-broadway-2026/timeout--unknown.json",
+      "youre-a-good-man-charlie-brown-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json"
     ],
     "amp": [
       "data/review-texts/hamilton-west-end-2021/variety--marilyn-stasio.json",
@@ -594,11 +607,16 @@
       "the-reservoir-off-broadway-2026/theatermania--zachary-stewart.json",
       "the-unknown-off-broadway-2026/theatermania--zachary-stewart.json",
       "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
-      "the-unknown-off-broadway-2026/timeout--adam-feldman.json"
+      "the-unknown-off-broadway-2026/timeout--adam-feldman.json",
+      "wicked-2003/theatermania--barbara-siegelscott-siegel.json",
+      "wicked-2003/theatermania--david-gordon.json",
+      "wicked-2003/wsj--terry-teachout.json",
+      "you-got-older-off-broadway-2026/theatermania--zachary-stewart.json",
+      "zack-off-broadway-2026/broadwaynews--gillian-blum.json"
     ]
   },
   "startTime": "2026-03-18T09:53:53.062Z",
-  "lastProcessed": "the-unknown-off-broadway-2026/timeout--adam-feldman.json",
+  "lastProcessed": "zack-off-broadway-2026/nydailynews--logan-culwell.json",
   "log": [
     {
       "t": "2026-03-18T10:56:24.454Z",
@@ -751,6 +769,17 @@
     },
     {
       "t": "2026-03-18T11:34:14.784Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-18T11:42:04.165Z",
+      "event": "bb-session",
+      "session": "9cda90b2",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-03-18T11:42:05.712Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
