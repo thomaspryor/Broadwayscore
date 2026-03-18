@@ -1,31 +1,129 @@
 {
-  "updatedAt": "2026-03-18T09:47:49.248Z",
-  "processed": 142,
-  "failed": 8,
-  "successRate": "94.7%",
+  "updatedAt": "2026-03-18T09:54:54.888Z",
+  "processed": 279,
+  "failed": 21,
+  "successRate": "93.0%",
   "tierBreakdown": {
-    "playwright": 106,
-    "amp": 18,
-    "browserbase": 0,
+    "playwright": 171,
+    "amp": 24,
+    "browserbase": 16,
     "directCookies": 0,
     "scrapingbee": 12,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 15
+    "archiveToday": 4,
+    "archive": 77
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
-      "t": "2026-03-18T09:38:16.274Z",
+      "t": "2026-03-18T09:31:32.081Z",
       "event": "bb-session",
-      "session": "97723fe6",
-      "url": "https://www.thestage.co.uk/news/back-to-the-future-the-musical-announces-west-en"
+      "session": "529445b8",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
     },
     {
-      "t": "2026-03-18T09:38:55.951Z",
-      "event": "bb-login-fail",
-      "domain": "thestage.co.uk",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    33 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
+      "t": "2026-03-18T09:31:33.507Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-18T09:32:58.103Z",
+      "event": "bb-session",
+      "session": "cbed68e4",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-18T09:32:59.500Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-18T09:33:16.214Z",
+      "event": "bb-session",
+      "session": "6024d2d2",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-18T09:33:17.585Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-18T09:33:51.488Z",
+      "event": "bb-session",
+      "session": "41e7e4a1",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-18T09:33:53.117Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-18T09:35:07.198Z",
+      "event": "bb-session",
+      "session": "215e43f0",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-03-18T09:35:08.614Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-18T09:35:56.600Z",
+      "event": "bb-session",
+      "session": "f7674876",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
+    },
+    {
+      "t": "2026-03-18T09:35:58.093Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-18T09:46:09.366Z",
+      "event": "bb-session",
+      "session": "f5f4750e",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-18T09:46:10.951Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-18T09:47:46.232Z",
+      "event": "bb-session",
+      "session": "708fefc0",
+      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
+    },
+    {
+      "t": "2026-03-18T09:47:47.695Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-18T09:48:08.429Z",
+      "event": "bb-session",
+      "session": "f70989ae",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-18T09:48:09.973Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-18T09:50:52.497Z",
+      "event": "bb-session",
+      "session": "5160b8f5",
+      "url": "https://deadline.com/2019/10/little-shop-of-horrors-review-jonathan-groff-tammy-"
+    },
+    {
+      "t": "2026-03-18T09:50:53.952Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
