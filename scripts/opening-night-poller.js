@@ -44,6 +44,7 @@ const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
+const { extractReviews: extractTheatreReviews } = require('./scrape-theatre-reviews');
 
 // Paths
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -308,6 +309,117 @@ async function runAggregators(show) {
       }
     } catch (err) {
       console.log(`  LBO error: ${err.message}`);
+    }
+  }
+
+  // 1e. theatre.reviews roundups (WE/OWE only — best structured WE aggregator)
+  if (isWestEnd) {
+    try {
+      console.log('  Checking theatre.reviews...');
+      // Try direct URL construction: reviews-roundup/{title-slug}-reviews
+      const titleSlug = show.title.toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '');
+      const trUrls = [
+        `https://theatre.reviews/reviews-roundup/${titleSlug}-reviews/`,
+      ];
+      // Also try with venue suffix if we have venue info
+      if (show.venue) {
+        const venueSlug = show.venue.toLowerCase()
+          .replace(/\s*theatre\s*/gi, '').replace(/\s*theater\s*/gi, '')
+          .replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
+        if (venueSlug) {
+          trUrls.unshift(`https://theatre.reviews/reviews-roundup/${titleSlug}-${venueSlug}-reviews/`);
+        }
+      }
+
+      let trHtml = null;
+      for (const trUrl of trUrls) {
+        try {
+          const fetched = await new Promise((resolve, reject) => {
+            const req = require('https').get(trUrl, {
+              headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)' },
+            }, res => {
+              if (res.statusCode === 301 || res.statusCode === 302) {
+                require('https').get(res.headers.location, {
+                  headers: { 'User-Agent': 'Mozilla/5.0' },
+                }, res2 => {
+                  if (res2.statusCode !== 200) { resolve(null); return; }
+                  let d = ''; res2.on('data', c => d += c); res2.on('end', () => resolve(d));
+                }).on('error', () => resolve(null));
+                return;
+              }
+              if (res.statusCode !== 200) { resolve(null); return; }
+              let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
+            });
+            req.on('error', () => resolve(null));
+          });
+          if (fetched && fetched.length > 1000) {
+            trHtml = fetched;
+            console.log(`    Found at: ${trUrl}`);
+            break;
+          }
+        } catch (e) {}
+      }
+
+      if (trHtml) {
+        // Also check archive
+        const archivePath = path.join(DATA_DIR, 'aggregator-archive', 'theatre-reviews', `${show.id}.html`);
+        if (!fs.existsSync(path.dirname(archivePath))) fs.mkdirSync(path.dirname(archivePath), { recursive: true });
+        fs.writeFileSync(archivePath, trHtml);
+
+        const trReviews = extractTheatreReviews(trHtml, show.id);
+        console.log(`  theatre.reviews: ${trReviews.length} reviews found`);
+        for (const r of trReviews) {
+          results.push({
+            showId: show.id,
+            outletId: r.outletId || 'unknown',
+            outlet: r.outlet || 'Unknown',
+            criticName: r.critic || 'Unknown',
+            url: r.url || '',
+            excerpt: r.excerpt || '',
+            score: r.stars ? Math.round((r.stars / (r.starsOutOf || 5)) * 100) : null,
+            scoreSource: r.stars ? 'theatre-reviews-star-rating' : undefined,
+            source: 'theatre-reviews',
+          });
+        }
+      } else {
+        console.log('  theatre.reviews: no roundup found');
+      }
+    } catch (err) {
+      console.log(`  theatre.reviews error: ${err.message}`);
+    }
+  }
+
+  // 1f. Stagedoor critic reviews (WE/OWE only — needs archive, can't fetch live due to Cloudflare)
+  if (isWestEnd) {
+    try {
+      console.log('  Checking Stagedoor archive...');
+      const sdArchivePath = path.join(DATA_DIR, 'aggregator-archive', 'stagedoor', `${show.id}.json`);
+      if (fs.existsSync(sdArchivePath)) {
+        const sdData = JSON.parse(fs.readFileSync(sdArchivePath, 'utf8'));
+        const sdReviews = sdData.criticReviews || [];
+        console.log(`  Stagedoor: ${sdReviews.length} reviews from archive`);
+        for (const r of sdReviews) {
+          results.push({
+            showId: show.id,
+            outletId: normalizeOutlet(r.outlet || ''),
+            outlet: r.outlet || 'Unknown',
+            criticName: 'Unknown', // Stagedoor doesn't provide critic names
+            url: '',
+            excerpt: r.excerpt || '',
+            score: r.stars ? Math.round((r.stars / 5) * 100) : null,
+            scoreSource: r.stars ? 'stagedoor-star-rating' : undefined,
+            source: 'stagedoor',
+          });
+        }
+      } else {
+        console.log('  Stagedoor: no archive found');
+      }
+    } catch (err) {
+      console.log(`  Stagedoor error: ${err.message}`);
     }
   }
 
