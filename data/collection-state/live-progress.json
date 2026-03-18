@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-18T11:04:24.112Z",
-  "processed": 81,
+  "updatedAt": "2026-03-18T11:05:55.215Z",
+  "processed": 91,
   "failed": 6,
-  "successRate": "93.1%",
+  "successRate": "93.8%",
   "tierBreakdown": {
-    "playwright": 55,
+    "playwright": 59,
     "amp": 28,
-    "browserbase": 26,
+    "browserbase": 28,
     "directCookies": 0,
     "scrapingbee": 12,
     "brightdata": 0,
     "archiveToday": 3,
-    "archive": 8
+    "archive": 13
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-03-18T10:56:24.454Z",
@@ -67,6 +67,17 @@
     },
     {
       "t": "2026-03-18T11:03:55.453Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-18T11:04:45.879Z",
+      "event": "bb-session",
+      "session": "13a3dd60",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-03-18T11:04:47.209Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
