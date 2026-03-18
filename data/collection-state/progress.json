@@ -37,12 +37,22 @@
     "the-tempest-globe-west-end-2026/guardian--arifa-akbar.json",
     "the-tempest-globe-west-end-2026/timeout--andrzej-lukowski.json",
     "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/guardian--kate-wyver.json",
-    "all-my-sons-west-end-2025/daily-mail--unknown.json"
+    "all-my-sons-west-end-2025/daily-mail--unknown.json",
+    "all-my-sons-west-end-2025/independent--annabel-nugent.json",
+    "all-my-sons-west-end-2025/times-uk--dominic-maxwell.json",
+    "arcadia-west-end-2026/financialtimes--sarah-hemming.json",
+    "arcadia-west-end-2026/i-paper--fiona-mountford.json",
+    "broken-glass-west-end-2026/financialtimes--tim-bano.json",
+    "broken-glass-west-end-2026/the-express--unknown.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/financialtimes--sarah-hemming.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/independent--annabel-nugent.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--nick-ferris.json"
   ],
   "failed": [
     "summerfolk-west-end-2026/thestage--unknown.json",
     "summerfolk-west-end-2026/times-uk--unknown.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/observer--susannah-clapp.json"
+    "cabaret-at-the-kit-kat-club-west-end-2021/observer--susannah-clapp.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/thestage--sam-marlowe.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -74,7 +84,13 @@
       "the-phantom-of-the-opera-off-west-end-2021/timeout--andrzej-lukowski.json",
       "the-producers-west-end-2025/timeout--andrzej-lukowski.json",
       "the-tempest-globe-west-end-2026/timeout--andrzej-lukowski.json",
-      "all-my-sons-west-end-2025/daily-mail--unknown.json"
+      "all-my-sons-west-end-2025/daily-mail--unknown.json",
+      "all-my-sons-west-end-2025/times-uk--dominic-maxwell.json",
+      "arcadia-west-end-2026/financialtimes--sarah-hemming.json",
+      "arcadia-west-end-2026/i-paper--fiona-mountford.json",
+      "broken-glass-west-end-2026/financialtimes--tim-bano.json",
+      "broken-glass-west-end-2026/the-express--unknown.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/financialtimes--sarah-hemming.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -88,19 +104,23 @@
       "the-mousetrap-west-end-2021/guardian--arifa-akbar.json",
       "the-play-that-goes-wrong-west-end-2021/guardian--chris-wiegand.json",
       "the-tempest-globe-west-end-2026/guardian--arifa-akbar.json",
-      "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/guardian--kate-wyver.json"
+      "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/guardian--kate-wyver.json",
+      "all-my-sons-west-end-2025/independent--annabel-nugent.json"
     ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/summerfolk-west-end-2026/thestage--unknown.json",
-      "data/review-texts/summerfolk-west-end-2026/times-uk--unknown.json"
+      "data/review-texts/summerfolk-west-end-2026/times-uk--unknown.json",
+      "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/thestage--sam-marlowe.json"
     ],
     "archive": [
-      "the-play-that-goes-wrong-west-end-2021/timeout--anya-ryan.json"
+      "the-play-that-goes-wrong-west-end-2021/timeout--anya-ryan.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/independent--annabel-nugent.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--nick-ferris.json"
     ]
   },
   "startTime": "2026-03-18T14:02:55.843Z",
-  "lastProcessed": "all-my-sons-west-end-2025/daily-mail--unknown.json",
+  "lastProcessed": "cabaret-at-the-kit-kat-club-west-end-2021/thestage--sam-marlowe.json",
   "log": [
     {
       "t": "2026-03-18T14:04:38.018Z",
@@ -110,6 +130,17 @@
     },
     {
       "t": "2026-03-18T14:04:39.463Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-18T19:10:38.348Z",
+      "event": "bb-session",
+      "session": "b549e712",
+      "url": "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-at-the-almeida-theatr"
+    },
+    {
+      "t": "2026-03-18T19:10:40.236Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
