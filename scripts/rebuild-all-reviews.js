@@ -1168,8 +1168,11 @@ showDirs.forEach(showId => {
         const isStructuralFlag = wpNote.includes('Same URL exists') || wpNote.includes('Pre-opening guard')
           || wpNote.includes('days before show opened') || wpNote.includes('URL contains year');
         if (!isStructuralFlag) {
-          const outletIsDualOrUk = DUAL_MARKET_OUTLETS.has(canonicalOutlet)
-            || outletRegionMap[canonicalOutlet] === 'london' || outletRegionMap[rawOutlet] === 'london';
+          // Compute outlet early for wrongProduction override check
+          const earlyRawOutlet = (data.outletId || data.outlet || '').toLowerCase();
+          const earlyCanonicalOutlet = normalizeOutletCanonical(earlyRawOutlet);
+          const outletIsDualOrUk = DUAL_MARKET_OUTLETS.has(earlyCanonicalOutlet)
+            || outletRegionMap[earlyCanonicalOutlet] === 'london' || outletRegionMap[earlyRawOutlet] === 'london';
           try {
             const hostname = new URL(data.url).hostname || '';
             const isUkUrl = hostname.endsWith('.co.uk') || hostname.endsWith('.org.uk')

@@ -134,10 +134,13 @@ describe('getBroadwayShows', () => {
 });
 
 describe('getWestEndShows', () => {
-  test('returns only west-end category shows', () => {
+  test('returns only London market shows (west-end + off-west-end)', () => {
     const shows = getWestEndShows();
     for (const show of shows) {
-      assert.strictEqual(show.category, 'west-end', `Show ${show.id} has wrong category`);
+      assert.ok(
+        show.category === 'west-end' || show.category === 'off-west-end',
+        `Show ${show.id} has wrong category: ${show.category} (expected west-end or off-west-end)`
+      );
     }
   });
 });
