@@ -1,14 +1,23 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-18T11:38:48.153Z",
+    "generatedAt": "2026-03-18T11:46:21.719Z",
     "description": "LLM-classified wrong-show results from title-mention guard candidates",
-    "total": 0,
-    "classified": 0,
+    "total": 1,
+    "classified": 1,
     "wrongShow": 0,
-    "correct": 0,
+    "correct": 1,
     "uncertain": 0,
     "errors": 0,
     "applied": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "kinky-boots-the-musical-west-end-2026",
+      "showTitle": "Kinky Boots The Musical",
+      "file": "times-uk--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions 'Kinky Boots The Musical' and discusses the cast (Johannes Radebe, Matt Cardle), the venue (London Coliseum), and the plot of the show. This confirms it is a review of the specified show."
+    }
+  ]
 }
