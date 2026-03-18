@@ -423,61 +423,83 @@ async function runAggregators(show) {
     }
   }
 
-  // 1g. WestEndTheatre.com roundups (WE/OWE only — WP API, fast)
+  // 1g. WestEndTheatre.com roundups (WE/OWE only — WP API + page fetch fallback)
   if (isWestEnd) {
     try {
       console.log('  Checking WestEndTheatre.com (WP API)...');
       const { execSync } = require('child_process');
+      const cheerioWet = require('cheerio');
       const searchTitle = show.title.replace(/['"]/g, '');
       const apiUrl = `https://www.westendtheatre.com/wp-json/wp/v2/posts?categories=10&per_page=20&search=${encodeURIComponent(searchTitle)}`;
       const apiResult = execSync(
-        `curl -s "${apiUrl}" -H "Accept: application/json"`,
+        `curl -s "${apiUrl}" -H "Accept: application/json" -H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"`,
         { timeout: 15000, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }
       );
       const posts = JSON.parse(apiResult);
       if (Array.isArray(posts) && posts.length > 0) {
-        // Find the best matching post
         for (const post of posts.slice(0, 3)) {
           const htmlContent = post.content?.rendered || '';
-          // Check for star characters indicating a review roundup
-          if (!htmlContent.includes('★')) continue;
+          let wetReviews = [];
 
-          // Count star blocks as a proxy for review count
-          const starBlocks = (htmlContent.match(/★{1,5}/g) || []);
-          if (starBlocks.length === 0) continue;
+          // Try table format first (API content)
+          if (htmlContent.includes('★') || htmlContent.includes('<table')) {
+            const text = htmlContent.replace(/<[^>]+>/g, '').replace(/&[^;]+;/g, ' ');
+            const starRegex = /(★{1,5})/g;
+            let sMatch;
+            while ((sMatch = starRegex.exec(text)) !== null) {
+              const stars = sMatch[1].length;
+              const before = text.substring(Math.max(0, sMatch.index - 200), sMatch.index).trim();
+              const outletLine = before.split('\n').filter(l => l.trim()).pop()?.trim() || '';
+              if (!outletLine || outletLine.length < 2 || outletLine.length > 50) continue;
+              if (outletLine.startsWith('"') || outletLine.startsWith('\u201c')) continue;
+              wetReviews.push({ outlet: outletLine, stars, critic: 'Unknown' });
+            }
+          }
 
-          console.log(`  WestEndTheatre: found roundup with ${starBlocks.length} ratings`);
+          // Fallback: fetch rendered page for section-format posts (CSS classes)
+          if (wetReviews.length === 0 && post.link) {
+            try {
+              const pageHtml = execSync(
+                `curl -s -L "${post.link}" -H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36" -H "Accept: text/html" --compressed`,
+                { timeout: 20000, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }
+              );
+              const $w = cheerioWet.load(pageHtml);
+              $w('.reviewnewpubhead').each((_, el) => {
+                const outlet = $w(el).text().trim();
+                const stars = ($w(el).next('.reviewnewstars').text().match(/★/g) || []).length;
+                const authorText = $w(el).nextAll('.reviewnewauthor').first().text().trim();
+                const cm = authorText.match(/^([A-Z][a-z]+(?:\s[A-Z][a-z'-]+)+)/);
+                if (outlet && stars > 0) {
+                  wetReviews.push({ outlet, stars, critic: cm ? cm[1] : 'Unknown' });
+                }
+              });
+            } catch (e) { /* page fetch failed — skip */ }
+          }
 
-          // Archive it
+          if (wetReviews.length === 0) continue;
+
+          console.log(`  WestEndTheatre: ${wetReviews.length} ratings found`);
+
+          // Archive
           const wetArchiveDir = path.join(DATA_DIR, 'aggregator-archive', 'westendtheatre');
           if (!fs.existsSync(wetArchiveDir)) fs.mkdirSync(wetArchiveDir, { recursive: true });
-          const archiveData = { ourShowId: show.id, wpPostId: post.id, content: htmlContent, fetchedAt: new Date().toISOString().slice(0, 10) };
-          fs.writeFileSync(path.join(wetArchiveDir, `${show.id}.json`), JSON.stringify(archiveData, null, 2) + '\n');
+          fs.writeFileSync(path.join(wetArchiveDir, `${show.id}.json`),
+            JSON.stringify({ ourShowId: show.id, wpPostId: post.id, fetchedAt: new Date().toISOString().slice(0, 10) }, null, 2) + '\n');
 
-          // Extract: each star block = one review (outlet in text before stars)
-          const text = htmlContent.replace(/<[^>]+>/g, '').replace(/&[^;]+;/g, ' ');
-          const starRegex = /(★{1,5})/g;
-          let sMatch;
-          while ((sMatch = starRegex.exec(text)) !== null) {
-            const stars = sMatch[1].length;
-            const before = text.substring(Math.max(0, sMatch.index - 200), sMatch.index).trim();
-            const outletLine = before.split('\n').filter(l => l.trim()).pop()?.trim() || '';
-            if (!outletLine || outletLine.length < 2 || outletLine.length > 50) continue;
-            if (outletLine.startsWith('"') || outletLine.startsWith('\u201c')) continue;
-
+          for (const r of wetReviews) {
             results.push({
               showId: show.id,
-              outletId: normalizeOutlet(outletLine),
-              outlet: outletLine,
-              criticName: 'Unknown',
+              outletId: normalizeOutlet(r.outlet),
+              outlet: r.outlet,
+              criticName: r.critic,
               url: post.link || '',
               excerpt: '',
-              score: Math.round((stars / 5) * 100),
+              score: Math.round((r.stars / 5) * 100),
               scoreSource: 'westendtheatre-star-rating',
               source: 'westendtheatre',
             });
           }
-          break; // Only use first matching post
+          break;
         }
       } else {
         console.log('  WestEndTheatre: no matching roundup');
