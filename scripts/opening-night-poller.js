@@ -43,6 +43,7 @@ const { searchOutletSites, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-
 const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { normalizeOutlet } = require('./lib/review-normalization');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { extractReviews: extractTheatreReviews } = require('./scrape-theatre-reviews');
 
