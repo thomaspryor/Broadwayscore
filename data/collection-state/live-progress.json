@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-18T11:15:47.139Z",
-  "processed": 149,
+  "updatedAt": "2026-03-18T11:17:23.619Z",
+  "processed": 159,
   "failed": 8,
-  "successRate": "94.9%",
+  "successRate": "95.2%",
   "tierBreakdown": {
-    "playwright": 88,
+    "playwright": 90,
     "amp": 32,
-    "browserbase": 30,
+    "browserbase": 32,
     "directCookies": 0,
-    "scrapingbee": 13,
+    "scrapingbee": 15,
     "brightdata": 0,
     "archiveToday": 3,
-    "archive": 38
+    "archive": 43
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-03-18T10:56:24.454Z",
@@ -91,6 +91,17 @@
       "t": "2026-03-18T11:06:09.670Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-18T11:16:25.847Z",
+      "event": "bb-session",
+      "session": "72ceecde",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-18T11:16:27.178Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

@@ -148,7 +148,17 @@
     "cold-war-choir-practice-off-broadway-2026/timeout--adam-feldman.json",
     "data-off-broadway-2026/theatermania--zachary-stewart.json",
     "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
-    "death-becomes-her-2024/nydailynews--chris-jones.json"
+    "death-becomes-her-2024/nydailynews--chris-jones.json",
+    "death-becomes-her-2024/theatermania--jesse-green.json",
+    "death-becomes-her-2024/timeout--adam-feldman.json",
+    "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
+    "drunk-romeo-and-juliet-off-broadway-2025/theatermania--unknown.json",
+    "evening-all-afternoon-west-end-2026/guardian--arifa-akbar.json",
+    "every-brilliant-thing-2026/deadline--unknown.json",
+    "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
+    "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
+    "every-brilliant-thing-2026/thewrap--robert-hofler.json",
+    "every-brilliant-thing-2026/timeout--unknown.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -250,7 +260,9 @@
       "chess-2025/timeout--adam-feldman.json",
       "chinese-republicans-off-broadway-2026/ew--thom-geier.json",
       "cold-war-choir-practice-off-broadway-2026/timeout--adam-feldman.json",
-      "death-becomes-her-2024/nydailynews--chris-jones.json"
+      "death-becomes-her-2024/nydailynews--chris-jones.json",
+      "death-becomes-her-2024/timeout--adam-feldman.json",
+      "every-brilliant-thing-2026/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/hamilton-west-end-2021/variety--marilyn-stasio.json",
@@ -316,7 +328,9 @@
       "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
       "mj-2022/hollywood-reporter--lovia-gyarkye.json",
       "data/review-texts/oh-mary-2024/hollywood-reporter--david-rooney.json",
-      "oh-mary-2024/hollywood-reporter--david-rooney.json"
+      "oh-mary-2024/hollywood-reporter--david-rooney.json",
+      "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
+      "every-brilliant-thing-2026/deadline--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -332,7 +346,9 @@
       "oliver-west-end-2024/guardian--arifa-akbar.json",
       "my-neighbour-totoro-west-end-2025/independent--annabel-nugent.json",
       "death-becomes-her-2024/newyorker--helen-shaw.json",
-      "chicago-1996/nydailynews--joe-dziemianowicz.json"
+      "chicago-1996/nydailynews--joe-dziemianowicz.json",
+      "evening-all-afternoon-west-end-2026/guardian--arifa-akbar.json",
+      "every-brilliant-thing-2026/guardian--jesse-hassenger.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -378,11 +394,16 @@
       "cold-war-choir-practice-off-broadway-2026/theatermania--unknown.json",
       "cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json",
       "data-off-broadway-2026/theatermania--zachary-stewart.json",
-      "death-becomes-her-2024/chelsea-community-news--michael-musto.json"
+      "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
+      "death-becomes-her-2024/theatermania--jesse-green.json",
+      "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
+      "drunk-romeo-and-juliet-off-broadway-2025/theatermania--unknown.json",
+      "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
+      "every-brilliant-thing-2026/thewrap--robert-hofler.json"
     ]
   },
   "startTime": "2026-03-18T09:53:53.062Z",
-  "lastProcessed": "death-becomes-her-2024/nydailynews--chris-jones.json",
+  "lastProcessed": "every-brilliant-thing-2026/timeout--unknown.json",
   "log": [
     {
       "t": "2026-03-18T10:56:24.454Z",
@@ -460,6 +481,17 @@
       "t": "2026-03-18T11:06:09.670Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-18T11:16:25.847Z",
+      "event": "bb-session",
+      "session": "72ceecde",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-18T11:16:27.178Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
