@@ -7,13 +7,16 @@
  * 10+ reviews per show, static HTML, no JS rendering needed.
  *
  * URL pattern: https://theatre.reviews/reviews-roundup/{title-slug}-{venue-slug}-reviews/
- * Discovery: category page at /category/reviews-roundup/ (10 per page)
- *   + SERP fallback: site:theatre.reviews "reviews roundup" "{show title}"
+ * Discovery: category archive at /category/reviews-roundup/ (10 per page, paginated)
  *
  * HTML structure (WordPress, verified Mar 2026):
- *   - Each review is a <p> with <strong>Outlet Name</strong> + star chars (⭑) + excerpt + <a> link
- *   - Star ratings are unicode ⭑ characters (count them)
- *   - Average rating in header as "X.X⭑"
+ *   - Star tier headers: <p><span style="color: #ff0000;">N stars ⭑⭑⭑</span></p>
+ *     or plain <p>N stars ⭑⭑⭑</p>
+ *   - Review paragraphs follow each tier header (no stars in them)
+ *   - Outlet in <a href="reviewURL">Outlet Name</a> or plain text
+ *   - Critic name embedded in prose: "Outlet's CriticName" or "CriticName for Outlet"
+ *   - Excerpts in single curly quotes: 'text...'
+ *   - Average rating at bottom: <strong>Critics' Average Rating X.X⭑</strong>
  *
  * Usage:
  *   node scripts/scrape-theatre-reviews.js [--shows=X,Y,Z] [--dry-run] [--force]
@@ -68,22 +71,44 @@ function fetchPage(url) {
 }
 
 /**
- * Discover roundup URLs from the category page
+ * Discover roundup URLs by paginating the category archive.
+ * /category/reviews-roundup/ shows 10 per page; we follow /page/N/ links.
  */
 async function discoverRoundupUrls() {
+  const seen = new Set();
   const urls = [];
-  const html = await fetchPage('https://theatre.reviews/category/reviews-roundup/');
-  if (!html) return urls;
+  const MAX_PAGES = 30; // safety cap — site has ~23 pages
 
-  const $ = cheerio.load(html);
-  $('a[href*="reviews-roundup"]').each((_, el) => {
-    const href = $(el).attr('href');
-    if (href && href.includes('/reviews-roundup/') && !urls.includes(href)) {
-      urls.push(href.startsWith('http') ? href : `https://theatre.reviews${href}`);
-    }
-  });
+  for (let page = 1; page <= MAX_PAGES; page++) {
+    const pageUrl = page === 1
+      ? 'https://theatre.reviews/category/reviews-roundup/'
+      : `https://theatre.reviews/category/reviews-roundup/page/${page}/`;
 
-  console.log(`Discovered ${urls.length} roundup URLs from category page`);
+    const html = await fetchPage(pageUrl);
+    if (!html) break; // 404 = no more pages
+
+    const $ = cheerio.load(html);
+    let found = 0;
+    $('a[href*="/reviews-roundup/"]').each((_, el) => {
+      const href = $(el).attr('href');
+      if (!href || !href.includes('/reviews-roundup/')) return;
+      // Skip the category page itself and pagination links
+      if (href.match(/\/category\//) || href.match(/\/page\//)) return;
+      const full = href.startsWith('http') ? href : `https://theatre.reviews${href}`;
+      if (!seen.has(full)) {
+        seen.add(full);
+        urls.push(full);
+        found++;
+      }
+    });
+
+    console.log(`  Page ${page}: ${found} new URLs (${urls.length} total)`);
+    if (found === 0) break; // no new URLs = last page
+
+    await new Promise(r => setTimeout(r, 1000)); // rate limit between pages
+  }
+
+  console.log(`Discovered ${urls.length} roundup URLs from category archive\n`);
   return urls;
 }
 
@@ -114,66 +139,142 @@ function extractTitleFromSlug(url) {
 }
 
 /**
- * Extract reviews from a theatre.reviews roundup page
- * Returns array of { outlet, critic, stars, starsOutOf, excerpt, url }
+ * Extract reviews from a theatre.reviews roundup page.
+ *
+ * HTML structure: star-tier headers (<p> with "N stars ⭑⭑⭑") act as section
+ * dividers. Review paragraphs follow each header and inherit that tier's rating.
+ * Reviews themselves contain NO star characters — only the headers do.
+ *
+ * Returns array of { outlet, critic, stars, starsOutOf, excerpt, url, source }
  */
 function extractReviews(html, showId) {
   const $ = cheerio.load(html);
   const reviews = [];
 
-  // Reviews are in <p> tags within the main content
-  // Pattern: <strong>Outlet Name</strong> ⭑⭑⭑⭑ "excerpt..." - Critic Name
-  // Sometimes with <a> link to full review
   const content = $('.entry-content, .post-content, article, .content').first();
   const paragraphs = content.length ? content.find('p') : $('p');
+
+  let currentStars = 0;
 
   paragraphs.each((_, el) => {
     const $p = $(el);
     const text = $p.text().trim();
+    if (!text) return;
 
-    // Must contain star characters
-    const starCount = (text.match(/⭑/g) || []).length;
-    if (starCount === 0) return;
-
-    // Extract outlet name (usually in <strong> or <b>)
-    const outletEl = $p.find('strong, b').first();
-    let outlet = outletEl.text().trim();
-    if (!outlet) return;
-
-    // Clean outlet name (remove stars if they leaked in)
-    outlet = outlet.replace(/[⭑★☆✩✪✫✬✭✮✯⭐]/g, '').trim();
-    if (!outlet) return;
-
-    // Extract excerpt (text in quotes)
-    const excerptMatch = text.match(/"([^"]+)"|"([^"]+)"|"([^"]+)"/);
-    const excerpt = excerptMatch ? (excerptMatch[1] || excerptMatch[2] || excerptMatch[3]) : '';
-
-    // Extract critic name (often after dash at end, or after excerpt)
-    let critic = '';
-    // Look for "– Critic Name" or "- Critic Name" pattern after the excerpt
-    const afterExcerpt = text.split(/[""]/).pop() || '';
-    const criticMatch = afterExcerpt.match(/[-–—]\s*([A-Z][a-z]+ [A-Z][a-z]+(?:\s[A-Z][a-z]+)?)/);
-    if (criticMatch) {
-      critic = criticMatch[1].trim();
+    // --- Detect star-tier header ---
+    // Patterns: "4 stars ⭑⭑⭑⭑" or "3 stars ⭑⭑⭑" (with or without <span>)
+    const tierMatch = text.match(/^(\d)\s*stars?\s*[⭑★]+$/i);
+    if (tierMatch) {
+      currentStars = parseInt(tierMatch[1], 10);
+      return;
     }
 
-    // Extract review URL
-    const linkEl = $p.find('a[href*="http"]').last();
-    const reviewUrl = linkEl.attr('href') || '';
+    // --- Detect "Critics' Average Rating" footer — stop processing ---
+    if (text.match(/critics[''\u2019]?\s*(average|avg)\s*rating/i)) return;
 
-    reviews.push({
-      outlet,
-      outletId: normalizeOutlet(outlet),
-      critic: critic || 'Unknown',
-      stars: starCount,
-      starsOutOf: 5,
-      excerpt,
-      url: reviewUrl,
-      source: 'theatre-reviews',
-    });
+    // Skip if we haven't seen a star header yet
+    if (currentStars === 0) return;
+
+    // Skip editorial boilerplate
+    if (text.match(/^\[Links to full reviews/i)) return;
+    if (text.match(/^If you[''\u2019]ve seen/i)) return;
+    if (text.match(/can be seen at/i) && text.length < 200) return;
+
+    // --- Try to extract a review from this paragraph ---
+    const review = parseReviewParagraph($, $p, text, currentStars);
+    if (review) {
+      reviews.push(review);
+    }
   });
 
   return reviews;
+}
+
+/**
+ * Parse a single review paragraph into structured data.
+ * Returns null if the paragraph doesn't look like a review.
+ */
+function parseReviewParagraph($, $p, text, stars) {
+  // Extract the first external link (usually the outlet link + review URL)
+  const links = [];
+  $p.find('a[href]').each((_, a) => {
+    const href = $(a).attr('href');
+    if (href && href.startsWith('http') && !href.includes('theatre.reviews')) {
+      links.push({ href, text: $(a).text().trim() });
+    }
+  });
+
+  let outlet = '';
+  let critic = '';
+  let reviewUrl = '';
+
+  if (links.length > 0) {
+    // First external link is typically the outlet
+    const outletLink = links[0];
+    reviewUrl = outletLink.href;
+
+    // Handle possessive in link text: "The Independent's" → "The Independent"
+    outlet = outletLink.text.replace(/['\u2018\u2019]s?\s*$/, '').trim();
+  }
+
+  // --- Extract critic name from prose patterns ---
+  // Pattern A: "Outlet's CriticName verb:" — e.g., "The Guardian's Arifa Akbar was blown away:"
+  // Pattern B: "CriticName for/at Outlet verb:" — e.g., "Dave Fargnoli for The Stage commented:"
+  // Pattern C: "Outlet's CriticName verb:" where outlet is plain text (no link)
+
+  // Try Pattern A: <Outlet>'s <Critic>
+  // Note: theatre.reviews uses U+2018 (left single quote) for possessives
+  const patternA = text.match(/^(?:<[^>]+>)?([A-Z][\w\s&.'-]+?)['\u2018\u2019]s\s+([A-Z][a-z]+(?:\s[A-Z][a-z]+(?:-[A-Z][a-z]+)?)+)/);
+  if (patternA) {
+    if (!outlet) outlet = patternA[1].trim();
+    critic = patternA[2].trim();
+  }
+
+  // Try Pattern B: <Critic> for/at <Outlet>
+  if (!critic) {
+    const patternB = text.match(/^([A-Z][a-z]+(?:\s[A-Z][a-z]+(?:-[A-Z][a-z]+)?)+)\s+(?:for|at|of)\s+(?:the\s+)?([A-Z][\w\s&.'-]+?)(?:\s+(?:called|commented|described|concluded|noted|reported|thought|found|said|summed|began|looked|was|wrote|observed))/i);
+    if (patternB) {
+      critic = patternB[1].trim();
+      if (!outlet) outlet = patternB[2].trim();
+    }
+  }
+
+  // Try Pattern C: "The Outlet's CriticName" where outlet has no link
+  if (!critic && !outlet) {
+    const patternC = text.match(/^(?:The\s+)?([A-Z][\w\s&.'-]+?)['\u2018\u2019]s\s+([A-Z][a-z]+(?:\s[A-Z][a-z]+(?:-[A-Z][a-z]+)?)+)/);
+    if (patternC) {
+      outlet = patternC[1].trim();
+      critic = patternC[2].trim();
+    }
+  }
+
+  // If we still don't have an outlet, this probably isn't a review paragraph
+  if (!outlet) return null;
+
+  // Ensure outlet doesn't end with possessive artifacts
+  outlet = outlet.replace(/['\u2018\u2019]s?\s*$/, '').trim();
+
+  // --- Extract excerpts (text in single curly quotes) ---
+  // Matches: \u2018...\u2019 (curly) and '...' (straight)
+  const excerpts = [];
+  const quoteRegex = /[\u2018']([^'\u2019]+)[\u2019']/g;
+  let m;
+  while ((m = quoteRegex.exec(text)) !== null) {
+    const q = m[1].trim();
+    if (q.length > 20) excerpts.push(q); // skip tiny fragments
+  }
+  const excerpt = excerpts.join(' … ');
+
+  return {
+    outlet,
+    outletId: normalizeOutlet(outlet),
+    critic: critic || 'Unknown',
+    stars,
+    starsOutOf: 5,
+    excerpt,
+    url: reviewUrl,
+    source: 'theatre-reviews',
+  };
 }
 
 /**
@@ -309,7 +410,10 @@ async function main() {
 // Export for use by opening-night-poller
 module.exports = { extractReviews, discoverRoundupUrls, extractTitleFromSlug };
 
-main().catch(err => {
-  console.error('Fatal error:', err);
-  process.exit(1);
-});
+// Only run main() when executed directly (not when required)
+if (require.main === module) {
+  main().catch(err => {
+    console.error('Fatal error:', err);
+    process.exit(1);
+  });
+}

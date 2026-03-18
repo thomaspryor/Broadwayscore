@@ -1,0 +1,108 @@
+name: Scrape Theatre.Reviews
+
+on:
+  schedule:
+    # Weekly on Mondays at 7 AM UTC (2 AM EST), after Stagedoor at 6 AM
+    - cron: '0 7 * * 1'
+  workflow_dispatch:
+    inputs:
+      shows:
+        description: 'Comma-separated show IDs (e.g., broken-glass-west-end-2026)'
+        required: false
+        type: string
+      dry_run:
+        description: 'Dry run (no writes)'
+        required: false
+        type: boolean
+        default: false
+      force:
+        description: 'Re-fetch shows with existing archives'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: theatre-reviews-scrape
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  scrape-theatre-reviews:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run theatre.reviews scraper
+        run: |
+          ARGS=""
+
+          if [ -n "${{ inputs.shows }}" ]; then
+            ARGS="$ARGS --shows=${{ inputs.shows }}"
+          fi
+
+          if [ "${{ inputs.force }}" = "true" ]; then
+            ARGS="$ARGS --force"
+          fi
+
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+
+          # shellcheck disable=SC2086
+          node scripts/scrape-theatre-reviews.js $ARGS
+
+      - name: Commit archives and review files
+        if: always() && inputs.dry_run != true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f data/aggregator-archive/theatre-reviews/
+          git diff --staged --quiet && echo "No archive changes" && exit 0
+          git commit -m "data: Update theatre.reviews archives"
+          bash scripts/lib/push-with-retry.sh 5 main
+
+      - name: Push review-texts to private repo
+        if: always() && inputs.dry_run != true
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from scrape-theatre-reviews'
+
+      - name: Trigger rebuild
+        if: always() && inputs.dry_run != true
+        run: |
+          gh workflow run rebuild-reviews.yml -f reason="Post theatre.reviews scrape" || echo "Rebuild dispatch failed"
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Scrape Theatre.Reviews Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
