@@ -284,7 +284,7 @@ async function sweepTheatreReviews(show) {
   }
 
   // Fallback to archive (may have been fetched by weekly scraper)
-  if (!FORCE && fs.existsSync(archivePath)) {
+  if (fs.existsSync(archivePath)) {
     const html = fs.readFileSync(archivePath, 'utf8');
     const reviews = extractTheatreReviews(html, show.id);
     if (reviews.length > 0) return reviews;
@@ -385,9 +385,18 @@ async function getStagePageViaBrowserBase(url) {
   }
 
   // Fetch the page
-  await _bbPage.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
-  await _bbPage.waitForTimeout(3000);
-  return await _bbPage.content();
+  try {
+    await _bbPage.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
+    await _bbPage.waitForTimeout(3000);
+    return await _bbPage.content();
+  } catch (err) {
+    // Session may have died — reset so next call creates a new one
+    console.log(`    [BB] Session error, resetting: ${err.message.substring(0, 80)}`);
+    _bbPage = null;
+    if (_bbBrowser) { try { await _bbBrowser.close(); } catch {} }
+    _bbBrowser = null;
+    return null;
+  }
 }
 
 async function sweepTheStage(show) {
