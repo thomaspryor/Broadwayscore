@@ -48,12 +48,18 @@ runs:
           const cutoff = new Date(Date.now() - cooldownMinutes * 60 * 1000);
 
           try {
-            // Look for recent successful notify runs via workflow annotations
-            // Use the Actions API to check recent runs of the SAME workflow
+            // context.workflow is the display name (e.g., "Test Suite"), but
+            // listWorkflowRuns needs the filename or numeric ID. Extract the
+            // filename from the workflow_ref which looks like:
+            //   owner/repo/.github/workflows/test.yml@refs/heads/main
+            const ref = process.env.GITHUB_WORKFLOW_REF || '';
+            const fileMatch = ref.match(/\.github\/workflows\/([^@]+)/);
+            const workflowFile = fileMatch ? fileMatch[1] : workflowName;
+
             const runs = await github.rest.actions.listWorkflowRuns({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              workflow_id: context.workflow,
+              workflow_id: workflowFile,
               status: 'failure',
               per_page: 5,
               created: `>=${cutoff.toISOString().split('T')[0]}`
