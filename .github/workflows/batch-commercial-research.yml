@@ -129,5 +129,5 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Batch Commercial Research Failed'
-          severity: 'critical'
+          severity: 'warning'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

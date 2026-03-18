@@ -95,5 +95,5 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Audit Creative Team Failed'
-          severity: 'critical'
+          severity: 'warning'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

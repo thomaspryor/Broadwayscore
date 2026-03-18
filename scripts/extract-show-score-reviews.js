@@ -106,6 +106,19 @@ function extractShowData(html, showId, sourceUrl) {
       review.author = authorEl.text().trim();
     }
 
+    // Get star rating from CSS variable --rating on .review-tile-v2__stars
+    // --rating is the star count (1-5 scale) or percentage (>5 = 0-100 scale)
+    // --gaps is a CSS rendering variable that matches --rating, NOT the max
+    const starsEl = tile.find('.review-tile-v2__stars');
+    if (starsEl.length) {
+      const style = starsEl.attr('style') || '';
+      const ratingMatch = style.match(/--rating:\s*([\d.]+)/);
+      if (ratingMatch) {
+        review.starRating = parseFloat(ratingMatch[1]);
+        review.starMax = review.starRating > 5 ? 100 : 5;
+      }
+    }
+
     // Get excerpt
     const excerptEl = tile.find('.review-tile-v2__review p');
     if (excerptEl.length) {

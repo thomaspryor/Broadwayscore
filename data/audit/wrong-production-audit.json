@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-18T20:24:55.995Z",
+  "timestamp": "2026-03-18T21:59:00.307Z",
   "stats": {
-    "totalReviews": 31960,
-    "alreadyFlagged": 9428,
-    "dateGuardCatches": 176,
+    "totalReviews": 31963,
+    "alreadyFlagged": 9448,
+    "dateGuardCatches": 181,
     "directorMismatch": 1136,
-    "tvFilmSignals": 3513,
-    "londonSignals": 1067,
+    "tvFilmSignals": 3514,
+    "londonSignals": 1068,
     "offBroadwaySignals": 1074,
     "yearMismatch": 92,
-    "noPublishDate": 9572
+    "noPublishDate": 9539
   },
   "findings": [
     {
@@ -3117,7 +3117,7 @@
       "file": "ew--thom-geier.json",
       "score": 76,
       "publishDate": "2014-03-20T20:56:08-04:00",
-      "url": "http://www.ew.com/ew/article/0,,20364394_20798645,00.html",
+      "url": "https://ew.com/article/2014/03/26/aladdin-jafar-broadway-jonathan-freeman/?srsltid=AfmBOoq8jkaascknHbIZwNryM8LBTT7VQ-OqaltSF8uQFlRhQudi5skE",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -3961,6 +3961,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "times-uk--dominic-maxwell.json",
+      "score": 80,
       "publishDate": "2025-11-21",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/all-my-sons-theatre-review-bryan-cranston-h2xqh238h",
       "findings": [
@@ -23908,6 +23909,7 @@
     {
       "showId": "hercules-west-end-2025",
       "file": "financialtimes--sarah-hemming.json",
+      "score": 67,
       "publishDate": "2025-06-25",
       "url": "https://www.ft.com/content/2c619ad5-32ac-45da-812c-290d4c6522e9",
       "findings": [
@@ -26795,6 +26797,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "i-paper--fiona-mountford.json",
+      "score": 79,
       "publishDate": "2025-12-12",
       "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283",
       "findings": [
@@ -28959,7 +28962,7 @@
     {
       "showId": "kinky-boots-the-musical-west-end-2026",
       "file": "all-that-dazzles-uk--daz-gale.json",
-      "score": null,
+      "score": 42,
       "publishDate": "2022-09-30",
       "url": "https://www.allthatdazzles.co.uk/post/review-kinky-boots-queen-s-theatre-hornchurch",
       "findings": [
@@ -36806,7 +36809,7 @@
     {
       "showId": "my-neighbour-totoro-west-end-2025",
       "file": "financialtimes--unknown.json",
-      "score": null,
+      "score": 86,
       "publishDate": "2022-10-19",
       "url": "https://www.westendtheatre.com/138268/news/reviews/my-neighbour-totoro-reviews/",
       "findings": [
@@ -55530,6 +55533,20 @@
     },
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
+      "file": "mail--patrick-marmion.json",
+      "score": 69,
+      "publishDate": "2025-11-12",
+      "url": "https://www.dailymail.co.uk/tv/article-15285901/PATRICK-MARMION-Hunger-Games-Troubadour-Canary-Wharf-Theatre-blockbusters.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"paramount\""
+        }
+      ]
+    },
+    {
+      "showId": "the-hunger-games-on-stage-west-end-2025",
       "file": "nytimes--alexis-soloski.json",
       "score": 63,
       "publishDate": "2025-11-12",
@@ -59158,6 +59175,7 @@
     {
       "showId": "the-producers-west-end-2025",
       "file": "timeout--andrzej-lukowski.json",
+      "score": 77,
       "publishDate": "2025-09-14",
       "url": "https://www.timeout.com/london/theatre/the-producers-3-review",
       "findings": [
@@ -62806,7 +62824,27 @@
     },
     {
       "showId": "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026",
+      "file": "attitude--dale-fox.json",
+      "score": 91,
+      "publishDate": "2023-12-15",
+      "url": "https://www.attitude.co.uk/culture/unfortunate-the-untold-story-of-ursula-the-sea-witch-review-2-5-hours-of-hilariously-camp-fun-455303/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 784d before show (2023-12-15 vs 2026-02-06)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026",
       "file": "guardian--kate-wyver.json",
+      "score": 76,
       "publishDate": "2024-01-12",
       "url": "https://www.theguardian.com/stage/2024/jan/12/unfortunate-the-untold-story-of-ursula-the-sea-witch-review-southwark-playhouse-elephant-london",
       "findings": [
@@ -64905,20 +64943,6 @@
       ]
     },
     {
-      "showId": "what-we-did-before-our-moth-days-off-broadway-2026",
-      "file": "vulture--sara-holdren.json",
-      "score": 86,
-      "publishDate": "2026-03-05",
-      "url": "https://www.vulture.com/article/theater-review-shaw-gregory-what-we-did-before-our-moth-days.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"onscreen\""
-        }
-      ]
-    },
-    {
       "showId": "whos-afraid-of-virginia-woolf-2012",
       "file": "ap--mark-kennedy.json",
       "score": 92,
@@ -66998,6 +67022,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "independent--annabel-nugent.json",
+      "score": 89,
       "publishDate": "2025-11-27",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/all-my-sons-review-bryan-cranston-paapa-essiedu-b2870394.html",
       "findings": [
@@ -67714,6 +67739,7 @@
     {
       "showId": "arcadia-west-end-2026",
       "file": "i-paper--fiona-mountford.json",
+      "score": 42,
       "publishDate": "2026-02-05",
       "url": "https://inews.co.uk/culture/arts/tom-stoppard-arcadia-left-me-cold-4199216",
       "findings": [
@@ -73605,7 +73631,7 @@
     {
       "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
       "file": "the-express--unknown.json",
-      "score": null,
+      "score": 90,
       "publishDate": "2016-07-25",
       "url": "https://www.westendtheatre.com/46740/news/reviews/reviews-round-up-harry-potter-and-the-cursed-child/",
       "findings": [
@@ -74704,6 +74730,7 @@
     {
       "showId": "im-sorry-prime-minister-west-end-2026",
       "file": "mail--patrick-marmion.json",
+      "score": 61,
       "publishDate": "2026-02-13",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-15555245/PATRICK-MARMION-review-Im-sorry-Prime-Minister-youre-power-wit.html",
       "findings": [
@@ -79631,6 +79658,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "i-paper--fiona-mountford.json",
+      "score": 63,
       "publishDate": "2025-01-15",
       "url": "https://inews.co.uk/culture/arts/oliver-review-immaculate-left-cold-3480332?srsltid=AfmBOooFYMS55-_sjSgOF1w5BRmrcWtQCQjXYzkBVdqyq__jNXXIJNa6",
       "findings": [
@@ -79672,6 +79700,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "the-sun--dominic-maxwell.json",
+      "score": 84,
       "publishDate": "2025-01-19",
       "url": "https://www.thetimes.com/article/462f55ef-cabe-4abf-bc74-bb2463a7a80f",
       "findings": [
@@ -81182,20 +81211,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
-        }
-      ]
-    },
-    {
-      "showId": "romeo-and-juliet-west-end-2026",
-      "file": "nytimes--unknown.json",
-      "score": 75,
-      "publishDate": "March 1, 2026",
-      "url": "https://www.nytimes.com/2024/05/24/theater/tom-holland-romeo-and-juliet.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
@@ -88059,11 +88074,43 @@
     },
     {
       "showId": "the-producers-west-end-2025",
+      "file": "i-paper--fiona-mountford.json",
+      "score": 75,
+      "publishDate": "2024-12-11",
+      "url": "https://inews.co.uk/culture/arts/the-producers-sexist-won-me-over-3425373",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 262d before show (2024-12-11 vs 2025-08-30)"
+        }
+      ]
+    },
+    {
+      "showId": "the-producers-west-end-2025",
       "file": "london-box-office--stuart-king.json",
       "score": 66,
       "publishDate": "2025-09-17",
       "url": "https://www.londonboxoffice.co.uk/news/post/the-producers-garrick-theatre-review",
       "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-producers-west-end-2025",
+      "file": "the-sun--dominic-maxwell.json",
+      "publishDate": "2024-12-15",
+      "url": "https://www.thetimes.com/article/51bc03b7-bdf2-4856-97be-6fb7aa5a7e9b",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 258d before show (2024-12-15 vs 2025-08-30)"
+        },
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
@@ -88598,6 +88645,28 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-tempest-globe-west-end-2026",
+      "file": "the-express--neil-norman.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 332d before show (2025-02-19 vs 2026-01-17)"
+        }
+      ]
+    },
+    {
+      "showId": "the-tempest-globe-west-end-2026",
+      "file": "whatsonstage--sarah-crompton.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 333d before show (2025-02-18 vs 2026-01-17)"
         }
       ]
     },
@@ -89191,6 +89260,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "titanique-west-end-2024",
+      "file": "daily-mail--patrick-marmion.json",
+      "score": 93,
+      "publishDate": "2025-01-10",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-14268825/PATRICK-MARMION-reviews-Titanique-Criterion-Theatre-London-Titanic-fun-Celines-doppelganger.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },

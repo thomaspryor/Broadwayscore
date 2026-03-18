@@ -232,5 +232,5 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Get Ai Feedback Failed'
-          severity: 'critical'
+          severity: 'low'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

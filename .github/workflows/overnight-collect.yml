@@ -158,5 +158,5 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Overnight Collect Failed'
-          severity: 'critical'
+          severity: 'warning'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

@@ -24,10 +24,15 @@ const { extractStarRatings, extractSectionReviews, extractShowTitle, fetchRender
 const { extractReviews: extractTheatreReviews } = require('./scrape-theatre-reviews');
 const { extractReviews: extractStageReviews } = require('./scrape-thestage-roundups');
 
+// SERP for per-show aggregator discovery
+const { discoverCorrectUrl } = require('./lib/url-discovery');
+
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const ARCHIVE_BASE = path.join(__dirname, '..', 'data', 'aggregator-archive');
 const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
 const COOKIE_JAR = '/tmp/sweep-we-cookies.txt';
+const SB_KEY = process.env.SCRAPINGBEE_API_KEY || '';
+const BD_KEY = process.env.BRIGHTDATA_TOKEN || '';
 
 // CLI args
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -42,6 +47,62 @@ const LIMIT = limitArg ? parseInt(limitArg.split('=')[1]) : null;
 const stats = { shows: 0, wet: { found: 0, reviews: 0 }, tr: { found: 0, reviews: 0 }, sd: { found: 0, reviews: 0 }, ts: { found: 0, reviews: 0 }, errors: 0 };
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+/**
+ * Site-scoped Google SERP search via ScrapingBee.
+ * Returns first matching URL or null.
+ */
+async function serpSearch(site, showTitle) {
+  if (!SB_KEY && !BD_KEY) return null;
+  const query = `site:${site} "${showTitle}" review`;
+
+  // Try ScrapingBee first (structured JSON)
+  if (SB_KEY) {
+    try {
+      const axios = require('axios');
+      const resp = await axios.get('https://app.scrapingbee.com/api/v1/store/google', {
+        params: { api_key: SB_KEY, search: query },
+        timeout: 15000,
+      });
+      const results = resp.data?.organic_results || resp.data?.results || [];
+      if (results.length > 0) return results[0].url || results[0].link;
+    } catch {}
+  }
+
+  // Fallback: BrightData SERP
+  if (BD_KEY) {
+    try {
+      const https = require('https');
+      const body = JSON.stringify({ query: { q: query, gl: 'uk' } });
+      const resp = await new Promise((resolve, reject) => {
+        const req = https.request(`https://api.brightdata.com/serp/req?customer=hl_a2c64a47&zone=serp_api1`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${BD_KEY}`, 'Content-Type': 'application/json' },
+        }, res => { let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(JSON.parse(d))); });
+        req.on('error', reject);
+        req.end(body);
+      });
+      // BD SERP is async — poll for result
+      if (resp.response_id) {
+        for (let i = 0; i < 10; i++) {
+          await sleep(2000);
+          const poll = await new Promise((resolve) => {
+            https.get(`https://api.brightdata.com/serp/get_result?response_id=${resp.response_id}`, {
+              headers: { Authorization: `Bearer ${BD_KEY}` },
+            }, res => { let d = ''; res.on('data', c => d += c); res.on('end', () => { try { resolve(JSON.parse(d)); } catch { resolve(null); } }); }).on('error', () => resolve(null));
+          });
+          if (poll?.organic) {
+            const first = poll.organic[0];
+            if (first?.link) return first.link;
+            break;
+          }
+        }
+      }
+    } catch {}
+  }
+
+  return null;
+}
 
 // ─── HTTP Helpers ────────────────────────────────────────────────────────────
 
@@ -229,10 +290,26 @@ async function sweepTheatreReviews(show) {
     if (reviews.length > 0) return reviews;
   }
 
+  // Last resort: SERP search for theatre.reviews roundup
+  const serpUrl = await serpSearch('theatre.reviews', show.title);
+  if (serpUrl && serpUrl.includes('reviews-roundup')) {
+    const html = await nodeFetch(serpUrl);
+    if (html && html.length > 1000 && !html.includes('Page not found')) {
+      const reviews = extractTheatreReviews(html, show.id);
+      if (reviews.length > 0) {
+        if (!DRY_RUN) {
+          if (!fs.existsSync(archDir)) fs.mkdirSync(archDir, { recursive: true });
+          fs.writeFileSync(archivePath, html);
+        }
+        return reviews;
+      }
+    }
+  }
+
   return [];
 }
 
-// ─── Stagedoor (archive only) ────────────────────────────────────────────────
+// ─── Stagedoor (archive only — Cloudflare blocks fetch, SERP can't help) ─────
 
 async function sweepStagedoor(show) {
   const archivePath = path.join(ARCHIVE_BASE, 'stagedoor', `${show.id}.json`);
@@ -327,6 +404,12 @@ async function sweepTheStage(show) {
     if (venueSlug) {
       urls.unshift(`https://www.thestage.co.uk/review-round-ups/${titleSlug}-at-the-${venueSlug}-review-round-up`);
     }
+  }
+
+  // SERP discovery: find the actual URL if URL construction missed
+  const serpUrl = await serpSearch('thestage.co.uk/review-round-ups', show.title);
+  if (serpUrl && serpUrl.includes('review-round-up') && !urls.includes(serpUrl)) {
+    urls.push(serpUrl);
   }
 
   // Try BrowserBase if available (The Stage is JS-rendered + paywalled)
