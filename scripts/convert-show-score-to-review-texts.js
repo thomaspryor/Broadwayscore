@@ -88,13 +88,27 @@ function main() {
       const existing = findExistingReviewFile(showDir, resolvedOutlet, review.author);
 
       if (existing) {
-        // Existing file found — enrich with showScoreExcerpt if missing
+        // Existing file found — enrich with showScoreExcerpt and star rating if missing
+        let changed = false;
         if (!existing.data.showScoreExcerpt && review.excerpt) {
           existing.data.showScoreExcerpt = review.excerpt;
           existing.data.showScoreUrl = data.showScoreUrl;
-          if (!existing.data.url && review.url) {
-            existing.data.url = review.url;
+          changed = true;
+        }
+        if (!existing.data.url && review.url) {
+          existing.data.url = review.url;
+          changed = true;
+        }
+        if (!existing.data.originalScore && review.starRating != null) {
+          if (review.starRating > 5) {
+            existing.data.originalScore = `${review.starRating}/100`;
+          } else {
+            existing.data.originalScore = `${review.starRating}/${review.starMax || 5}`;
           }
+          existing.data.scoreSource = 'explicit-rating';
+          changed = true;
+        }
+        if (changed) {
           fs.writeFileSync(existing.path, JSON.stringify(existing.data, null, 2));
           totalUpdated++;
         } else {
@@ -111,6 +125,18 @@ function main() {
       const filename = generateReviewFilename(resolvedOutlet, review.author || 'unknown');
       const filePath = path.join(showDir, filename);
 
+      // Convert star rating to originalScore string (e.g. "4/5" or "85/100")
+      let originalScore = null;
+      let scoreSource = null;
+      if (review.starRating != null) {
+        if (review.starRating > 5) {
+          originalScore = `${review.starRating}/100`;
+        } else {
+          originalScore = `${review.starRating}/${review.starMax || 5}`;
+        }
+        scoreSource = 'explicit-rating';
+      }
+
       const reviewData = {
         showId,
         outletId,
@@ -122,7 +148,8 @@ function main() {
         isFullReview: false,
         showScoreExcerpt: review.excerpt || null,
         showScoreUrl: data.showScoreUrl,
-        originalScore: null,
+        originalScore,
+        scoreSource,
         assignedScore: null,
         source: 'show-score',
         dtliThumb: null
