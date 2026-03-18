@@ -86,10 +86,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -f data/aggregator-archive/stagedoor/
-          git diff --staged --quiet && echo "No archive changes" && exit 0
-          git commit -m "data: Update Stagedoor critic archives"
-          bash scripts/lib/push-with-retry.sh 5 main
+          # Aggregator archives are pushed to private repo via push-review-texts (below).
+          # Do NOT commit them to the public repo — they contain copyrighted content.
+          echo "Aggregator archives will be pushed to private repo only"
 
       - name: Push review-texts to private repo
         if: always() && inputs.dry_run != true

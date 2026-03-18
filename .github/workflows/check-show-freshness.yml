@@ -112,7 +112,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/
+          git add data/ ':!data/aggregator-archive/' ':!data/review-texts/'
 
           # Build commit message from results
           FIXED_COUNT="${{ steps.autofix.outputs.fixed_count }}"
