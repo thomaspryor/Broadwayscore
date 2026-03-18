@@ -316,7 +316,7 @@ function writeReviewFiles(reviews, showId) {
 
     if (!DRY_RUN) {
       fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
-      if (existing) { updated++; } else { created++; }
+      if (existingMatch) { updated++; } else { created++; }
     }
   }
 
