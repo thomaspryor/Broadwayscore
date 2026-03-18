@@ -83,8 +83,6 @@
     "all-my-sons-west-end-2025/standard--nick-curtis.json",
     "all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json",
     "all-my-sons-west-end-2025/whatsonstage--unknown.json",
-    "arcadia-west-end-2026/artsdesk--unknown.json",
-    "arcadia-west-end-2026/broadwayworld--aliya-al-hassan.json",
     "arcadia-west-end-2026/london-box-office--stuart-king.json",
     "arcadia-west-end-2026/london-theatre--unknown.json",
     "arcadia-west-end-2026/standard--unknown.json",
@@ -98,7 +96,6 @@
     "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json",
     "back-to-the-future-west-end-2021/whatsonstage--sarah-crompton.json",
     "broken-glass-west-end-2026/artsdesk--unknown.json",
-    "broken-glass-west-end-2026/financialtimes--but-for-tim-bano.json",
     "broken-glass-west-end-2026/london-box-office--stuart-king.json",
     "broken-glass-west-end-2026/london-theatre--julia-rank.json",
     "broken-glass-west-end-2026/standard--asserts-dominic-cavendish.json",
@@ -232,7 +229,17 @@
     "cold-war-choir-practice-off-broadway-2026/timeout--adam-feldman.json",
     "data-off-broadway-2026/theatermania--zachary-stewart.json",
     "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
-    "death-becomes-her-2024/nydailynews--chris-jones.json"
+    "death-becomes-her-2024/nydailynews--chris-jones.json",
+    "death-becomes-her-2024/theatermania--jesse-green.json",
+    "death-becomes-her-2024/timeout--adam-feldman.json",
+    "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
+    "drunk-romeo-and-juliet-off-broadway-2025/theatermania--unknown.json",
+    "every-brilliant-thing-2026/deadline--unknown.json",
+    "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
+    "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
+    "every-brilliant-thing-2026/thewrap--robert-hofler.json",
+    "every-brilliant-thing-2026/timeout--unknown.json",
+    "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json"
   ],
   "failed": [
     "arcadia-west-end-2026/broadwayworld--aliya-al-hassan.json",
@@ -322,7 +329,6 @@
       "all-my-sons-west-end-2025/standard--nick-curtis.json",
       "all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json",
       "all-my-sons-west-end-2025/whatsonstage--unknown.json",
-      "arcadia-west-end-2026/artsdesk--unknown.json",
       "arcadia-west-end-2026/london-box-office--stuart-king.json",
       "arcadia-west-end-2026/london-theatre--unknown.json",
       "arcadia-west-end-2026/standard--unknown.json",
@@ -333,7 +339,6 @@
       "back-to-the-future-west-end-2021/british-theatre--unknown.json",
       "back-to-the-future-west-end-2021/whatsonstage--sarah-crompton.json",
       "broken-glass-west-end-2026/artsdesk--unknown.json",
-      "broken-glass-west-end-2026/financialtimes--but-for-tim-bano.json",
       "broken-glass-west-end-2026/london-box-office--stuart-king.json",
       "broken-glass-west-end-2026/london-theatre--julia-rank.json",
       "broken-glass-west-end-2026/standard--asserts-dominic-cavendish.json",
@@ -410,7 +415,10 @@
       "chess-2025/timeout--adam-feldman.json",
       "chinese-republicans-off-broadway-2026/ew--thom-geier.json",
       "cold-war-choir-practice-off-broadway-2026/timeout--adam-feldman.json",
-      "death-becomes-her-2024/nydailynews--chris-jones.json"
+      "death-becomes-her-2024/nydailynews--chris-jones.json",
+      "death-becomes-her-2024/timeout--adam-feldman.json",
+      "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
+      "every-brilliant-thing-2026/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/hamilton-west-end-2021/variety--marilyn-stasio.json",
@@ -450,11 +458,14 @@
       "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
       "mj-2022/hollywood-reporter--lovia-gyarkye.json",
       "data/review-texts/oh-mary-2024/hollywood-reporter--david-rooney.json",
-      "oh-mary-2024/hollywood-reporter--david-rooney.json"
+      "oh-mary-2024/hollywood-reporter--david-rooney.json",
+      "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
+      "every-brilliant-thing-2026/deadline--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "marie-and-rosetta-west-end-2026/guardian--unknown.json",
+      "im-sorry-prime-minister-west-end-2026/the-mail--patrick-marmion.json",
       "the-holy-rosenbergs-west-end-2026/guardian--david-jays.json",
       "moulin-rouge-the-musical-west-end-2021/theatrely--emily-wyrwa.json",
       "romeo-and-juliet-west-end-2026/theatrely--kobi-kassal.json",
@@ -466,7 +477,10 @@
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/back-to-the-future-west-end-2021/thestage--unknown.json"
+      "data/review-texts/shadowlands-west-end-2026/broadwayworld--aliya-al-hussan.json",
+      "data/review-texts/my-joy-is-heavy-off-broadway-2025/talkinbroadway--unknown.json",
+      "data/review-texts/titus-andronicus-off-broadway-2026/broadwayworld--michael-dale.json",
+      "data/review-texts/titus-andronicus-off-broadway-2026/nysr--jesse-oxfeld.json"
     ],
     "archive": [
       "arcadia-west-end-2026/broadwayworld--aliya-al-hassan.json",
@@ -521,23 +535,106 @@
       "cold-war-choir-practice-off-broadway-2026/theatermania--unknown.json",
       "cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json",
       "data-off-broadway-2026/theatermania--zachary-stewart.json",
-      "death-becomes-her-2024/chelsea-community-news--michael-musto.json"
+      "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
+      "death-becomes-her-2024/theatermania--jesse-green.json",
+      "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
+      "drunk-romeo-and-juliet-off-broadway-2025/theatermania--unknown.json",
+      "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
+      "every-brilliant-thing-2026/thewrap--robert-hofler.json",
+      "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json"
     ]
   },
   "startTime": "2026-03-18T08:37:37.418Z",
-  "lastProcessed": "death-becomes-her-2024/nydailynews--chris-jones.json",
+  "lastProcessed": "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json",
   "log": [
     {
-      "t": "2026-03-18T09:38:16.274Z",
+      "t": "2026-03-18T09:06:23.652Z",
       "event": "bb-session",
-      "session": "97723fe6",
+      "session": "382e974c",
       "url": "https://www.thestage.co.uk/news/back-to-the-future-the-musical-announces-west-en"
     },
     {
-      "t": "2026-03-18T09:38:55.951Z",
+      "t": "2026-03-18T09:07:03.199Z",
       "event": "bb-login-fail",
       "domain": "thestage.co.uk",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    33 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    32 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
+    },
+    {
+      "t": "2026-03-18T09:31:32.081Z",
+      "event": "bb-session",
+      "session": "529445b8",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-18T09:31:33.507Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-18T09:32:58.103Z",
+      "event": "bb-session",
+      "session": "cbed68e4",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-18T09:32:59.500Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-18T09:33:16.214Z",
+      "event": "bb-session",
+      "session": "6024d2d2",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-18T09:33:17.585Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-18T09:33:51.488Z",
+      "event": "bb-session",
+      "session": "41e7e4a1",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-18T09:33:53.117Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-18T09:35:07.198Z",
+      "event": "bb-session",
+      "session": "215e43f0",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-03-18T09:35:08.614Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-18T09:35:56.600Z",
+      "event": "bb-session",
+      "session": "f7674876",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
+    },
+    {
+      "t": "2026-03-18T09:35:58.093Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-18T09:46:09.366Z",
+      "event": "bb-session",
+      "session": "f5f4750e",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-18T09:46:10.951Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
