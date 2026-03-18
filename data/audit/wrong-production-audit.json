@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-18T16:16:13.946Z",
+  "timestamp": "2026-03-18T20:12:19.518Z",
   "stats": {
     "totalReviews": 31960,
-    "alreadyFlagged": 9425,
-    "dateGuardCatches": 153,
-    "directorMismatch": 1134,
-    "tvFilmSignals": 3506,
-    "londonSignals": 1055,
+    "alreadyFlagged": 9423,
+    "dateGuardCatches": 179,
+    "directorMismatch": 1136,
+    "tvFilmSignals": 3513,
+    "londonSignals": 1067,
     "offBroadwaySignals": 1074,
     "yearMismatch": 92,
-    "noPublishDate": 9679
+    "noPublishDate": 9572
   },
   "findings": [
     {
@@ -3955,6 +3955,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jack o'brien\" from all-my-sons-2019"
+        }
+      ]
+    },
+    {
+      "showId": "all-my-sons-west-end-2025",
+      "file": "times-uk--dominic-maxwell.json",
+      "publishDate": "2025-11-21",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/all-my-sons-theatre-review-bryan-cranston-h2xqh238h",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -9900,6 +9913,19 @@
       ]
     },
     {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "file": "times-uk--dominic-maxwell.json",
+      "publishDate": "2023-06-15",
+      "url": "https://www.thetimes.co.uk/article/romeo-and-juliet-review-star-crossed-lovers-shine-in-a-vague-setting-zxmcx7hgg",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
+        }
+      ]
+    },
+    {
       "showId": "call-me-izzy-2025",
       "file": "amny--matt-windman.json",
       "score": 74,
@@ -15584,6 +15610,39 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "evening-all-afternoon-west-end-2026",
+      "file": "i-paper--fiona-mountford.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 464d before show (2024-11-07 vs 2026-02-14)"
+        }
+      ]
+    },
+    {
+      "showId": "evening-all-afternoon-west-end-2026",
+      "file": "observer--susannah-clapp.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 461d before show (2024-11-10 vs 2026-02-14)"
+        }
+      ]
+    },
+    {
+      "showId": "evening-all-afternoon-west-end-2026",
+      "file": "the-sun--dominic-maxwell.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 461d before show (2024-11-10 vs 2026-02-14)"
         }
       ]
     },
@@ -22199,6 +22258,18 @@
     },
     {
       "showId": "hadestown-west-end-2024",
+      "file": "nytg--gillian-russo.json",
+      "score": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 746d before show (2022-01-25 vs 2024-02-10)"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-west-end-2024",
       "file": "whatsonstage--scott-mitchell.json",
       "score": 87,
       "publishDate": "April 18th, 2019",
@@ -23836,6 +23907,24 @@
     },
     {
       "showId": "hercules-west-end-2025",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2025-06-25",
+      "url": "https://www.ft.com/content/2c619ad5-32ac-45da-812c-290d4c6522e9",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "hercules-west-end-2025",
       "file": "guardian--arifa-akbar.json",
       "score": 63,
       "publishDate": "2025-06-24",
@@ -23952,6 +24041,19 @@
       "score": 43,
       "publishDate": "2025-06-24",
       "url": "https://inews.co.uk/culture/hercules-musical-awful-review-3767364",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "hercules-west-end-2025",
+      "file": "the-sun--dominic-maxwell.json",
+      "publishDate": "2025-06-28",
+      "url": "https://www.thetimes.com/article/8ea532e7-98a0-4100-b982-3e8323151aac",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -26692,6 +26794,29 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
+      "file": "i-paper--fiona-mountford.json",
+      "publishDate": "2025-12-12",
+      "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
       "file": "london-theatre--marianka-swain.json",
       "score": 92,
       "publishDate": "December 12th, 2025",
@@ -28828,6 +28953,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jerry mitchell\" from kinky-boots-2013"
+        }
+      ]
+    },
+    {
+      "showId": "kinky-boots-the-musical-west-end-2026",
+      "file": "all-that-dazzles-uk--daz-gale.json",
+      "score": null,
+      "publishDate": "2022-09-30",
+      "url": "https://www.allthatdazzles.co.uk/post/review-kinky-boots-queen-s-theatre-hornchurch",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1264d before show (2022-09-30 vs 2026-03-17)"
         }
       ]
     },
@@ -32113,6 +32252,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"movie theater\""
+        }
+      ]
+    },
+    {
+      "showId": "magic-mike-live-west-end-2021",
+      "file": "independent--hugh-montgomery.json",
+      "score": 76,
+      "publishDate": "2018-12-02",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/magic-mike-live-review-tickets-hippodrome-casino-london-channing-tatum-film-a8659961.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1122d before show (2018-12-02 vs 2021-12-28)"
         }
       ]
     },
@@ -36654,11 +36807,23 @@
       "showId": "my-neighbour-totoro-west-end-2025",
       "file": "financialtimes--unknown.json",
       "score": null,
+      "publishDate": "2022-10-19",
+      "url": "https://www.westendtheatre.com/138268/news/reviews/my-neighbour-totoro-reviews/",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 576d before show (2022-10-19 vs 2024-05-17)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -36730,6 +36895,25 @@
     },
     {
       "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "london-theatre--marianka-swain.json",
+      "score": 94,
+      "publishDate": "2022-10-20",
+      "url": "https://www.londontheatre.co.uk/reviews/my-neighbour-totoro-review-barbican-rsc-studio-ghibli",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 575d before show (2022-10-20 vs 2024-05-17)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
       "file": "london-theatre--unknown.json",
       "score": null,
       "publishDate": "2025-03-03",
@@ -36744,6 +36928,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 85,
+      "publishDate": "2022-10-18",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/neighbour-totoro-barbican-review-vital-power-surge-anglo-japanese/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 577d before show (2022-10-18 vs 2024-05-17)"
         }
       ]
     },
@@ -44209,6 +44407,31 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "file": "nytg--gillian-russo.json",
+      "score": 62,
+      "publishDate": "2024-10-25",
+      "url": "https://www.newyorktheatreguide.com/reviews/romeo-and-juliet-broadway-review-kit-connor-rachel-zegler",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 507d before show (2024-10-25 vs 2026-03-16)"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "file": "telegraph--nick-ferris.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1005d before show (2023-06-15 vs 2026-03-16)"
         }
       ]
     },
@@ -58959,6 +59182,24 @@
     },
     {
       "showId": "the-producers-west-end-2025",
+      "file": "timeout--andrzej-lukowski.json",
+      "publishDate": "2025-09-14",
+      "url": "https://www.timeout.com/london/theatre/the-producers-3-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-producers-west-end-2025",
       "file": "variety--bob-verini.json",
       "score": 75,
       "publishDate": "2026-02-11",
@@ -62590,6 +62831,24 @@
     },
     {
       "showId": "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026",
+      "file": "guardian--kate-wyver.json",
+      "publishDate": "2024-01-12",
+      "url": "https://www.theguardian.com/stage/2024/jan/12/unfortunate-the-untold-story-of-ursula-the-sea-witch-review-southwark-playhouse-elephant-london",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 756d before show (2024-01-12 vs 2026-02-06)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026",
       "file": "whatsonstage--ella-satin.json",
       "score": 43,
       "publishDate": "2022-06-24",
@@ -65076,6 +65335,18 @@
     },
     {
       "showId": "witness-for-the-prosecution-west-end-2022",
+      "file": "london-box-office--stuart-king.json",
+      "score": 61,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1230d before show (2019-05-16 vs 2022-09-27)"
+        }
+      ]
+    },
+    {
+      "showId": "witness-for-the-prosecution-west-end-2022",
       "file": "london-theatre--unknown.json",
       "publishDate": "2022-10-03",
       "url": "https://www.londontheatre.co.uk/theatre-news/interviews/harry-reid-witness-for-the-prosecution-for-the-rest-of-his-life",
@@ -66751,6 +67022,19 @@
     },
     {
       "showId": "all-my-sons-west-end-2025",
+      "file": "independent--annabel-nugent.json",
+      "publishDate": "2025-11-27",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/all-my-sons-review-bryan-cranston-paapa-essiedu-b2870394.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "all-my-sons-west-end-2025",
       "file": "london-theatre--olivia-rook.json",
       "score": 80,
       "publishDate": "2025-11-22",
@@ -67449,6 +67733,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "arcadia-west-end-2026",
+      "file": "i-paper--fiona-mountford.json",
+      "publishDate": "2026-02-05",
+      "url": "https://inews.co.uk/culture/arts/tom-stoppard-arcadia-left-me-cold-4199216",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -73331,6 +73628,20 @@
       ]
     },
     {
+      "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+      "file": "the-express--unknown.json",
+      "score": null,
+      "publishDate": "2016-07-25",
+      "url": "https://www.westendtheatre.com/46740/news/reviews/reviews-round-up-harry-potter-and-the-cursed-child/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "head-over-heels-2018",
       "file": "nytimes--ben-brantley.json",
       "score": 42,
@@ -74417,6 +74728,19 @@
     },
     {
       "showId": "im-sorry-prime-minister-west-end-2026",
+      "file": "mail--patrick-marmion.json",
+      "publishDate": "2026-02-13",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15555245/PATRICK-MARMION-review-Im-sorry-Prime-Minister-youre-power-wit.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "im-sorry-prime-minister-west-end-2026",
       "file": "the-mail--patrick-marmion.json",
       "score": 66,
       "publishDate": "2026-02-13",
@@ -74972,6 +75296,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "theatrely--joey-sims.json",
+      "score": 91,
+      "publishDate": "October 17, 2025",
+      "url": "https://www.theatrely.com/post/immersive-into-the-woods-comes-to-staten-island",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 46d before show (October 17, 2025 vs 2025-12-02)"
         }
       ]
     },
@@ -76005,6 +76343,50 @@
     },
     {
       "showId": "kinky-boots-the-musical-west-end-2026",
+      "file": "attitude--gary-grimes.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 235d before show (2025-07-25 vs 2026-03-17)"
+        }
+      ]
+    },
+    {
+      "showId": "kinky-boots-the-musical-west-end-2026",
+      "file": "independent--alice-saville.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 238d before show (2025-07-22 vs 2026-03-17)"
+        }
+      ]
+    },
+    {
+      "showId": "kinky-boots-the-musical-west-end-2026",
+      "file": "london-theatre--anya-ryan.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 237d before show (2025-07-23 vs 2026-03-17)"
+        }
+      ]
+    },
+    {
+      "showId": "kinky-boots-the-musical-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 71d before show (2026-01-05 vs 2026-03-17)"
+        }
+      ]
+    },
+    {
+      "showId": "kinky-boots-the-musical-west-end-2026",
       "file": "times-uk--unknown.json",
       "score": null,
       "publishDate": null,
@@ -76658,6 +77040,18 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-west-end-2021",
+      "file": "i-paper--jeff-robson.json",
+      "score": 95,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 347d before show (2019-02-03 vs 2020-01-16)"
         }
       ]
     },
@@ -79261,6 +79655,19 @@
     },
     {
       "showId": "oliver-west-end-2024",
+      "file": "i-paper--fiona-mountford.json",
+      "publishDate": "2025-01-15",
+      "url": "https://inews.co.uk/culture/arts/oliver-review-immaculate-left-cold-3480332?srsltid=AfmBOooFYMS55-_sjSgOF1w5BRmrcWtQCQjXYzkBVdqyq__jNXXIJNa6",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
       "file": "london-theatre--marianka-swain.json",
       "score": 92,
       "publishDate": "2025-01-13",
@@ -79284,6 +79691,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "file": "the-sun--dominic-maxwell.json",
+      "publishDate": "2025-01-19",
+      "url": "https://www.thetimes.com/article/462f55ef-cabe-4abf-bc74-bb2463a7a80f",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -79609,6 +80029,20 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 308d before show (2023-05-26 vs 2024-03-29)"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "thestage--tim-bano.json",
+      "score": 92,
+      "publishDate": "2023-05-10",
+      "url": "https://www.thestage.co.uk/reviews/operation-mincemeat-review-fortune-theatre-london-spitlip-david-cumming-felix-hagan-natasha-hodgson-zoe-roberts",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 324d before show (2023-05-10 vs 2024-03-29)"
         }
       ]
     },
@@ -80773,6 +81207,18 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "file": "london-theatre--theo-bosanquet.json",
+      "score": 83,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 129d before show (2025-11-07 vs 2026-03-16)"
         }
       ]
     },
@@ -84638,12 +85084,67 @@
     },
     {
       "showId": "the-choir-of-man-off-west-end-2026",
+      "file": "guardian--emma-john.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 220d before show (2025-08-06 vs 2026-03-14)"
+        }
+      ]
+    },
+    {
+      "showId": "the-choir-of-man-off-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 220d before show (2025-08-06 vs 2026-03-14)"
+        }
+      ]
+    },
+    {
+      "showId": "the-choir-of-man-off-west-end-2026",
+      "file": "the-express--david-snelling.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 219d before show (2025-08-07 vs 2026-03-14)"
+        }
+      ]
+    },
+    {
+      "showId": "the-choir-of-man-off-west-end-2026",
       "file": "whatsonstage--unknown.json",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 163d before show (2025-10-02 vs 2026-03-14)"
+        }
+      ]
+    },
+    {
+      "showId": "the-choir-of-man-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 220d before show (2025-08-06 vs 2026-03-14)"
+        }
+      ]
+    },
+    {
+      "showId": "the-choir-of-man-west-end-2026",
+      "file": "the-express--david-snelling.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 219d before show (2025-08-07 vs 2026-03-14)"
         }
       ]
     },
@@ -84658,6 +85159,17 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-choir-of-man-west-end-2026",
+      "file": "whatsonstage--anna-james.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 220d before show (2025-08-06 vs 2026-03-14)"
         }
       ]
     },
@@ -85116,6 +85628,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "file": "nypost--unknown.json",
+      "score": 49,
+      "publishDate": "2024-12-06",
+      "url": "https://playsinternational.org.uk/the-devil-wears-prada-dominion-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
