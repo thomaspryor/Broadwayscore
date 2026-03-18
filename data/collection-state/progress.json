@@ -80,7 +80,14 @@
     "les-miserables-west-end-2021/the-express--stefan-kyriazis.json",
     "les-miserables-west-end-2021/the-sun--dominic-maxwell.json",
     "les-miserables-west-end-2021/thestage--matthew-hemley.json",
-    "les-miserables-west-end-2021/times-uk--dominic-maxwell.json"
+    "les-miserables-west-end-2021/times-uk--dominic-maxwell.json",
+    "magic-mike-live-west-end-2021/daily-mail--patrick-marmion.json",
+    "magic-mike-live-west-end-2021/financialtimes--sarah-hemming.json",
+    "magic-mike-live-west-end-2021/i-paper--fiona-mountford.json",
+    "magic-mike-live-west-end-2021/independent--alice-saville.json",
+    "magic-mike-live-west-end-2021/standard--nick-curtis.json",
+    "magic-mike-live-west-end-2021/times-uk--clive-davis.json",
+    "magic-mike-live-west-end-2021/whatsonstage--sarah-crompton.json"
   ],
   "failed": [
     "summerfolk-west-end-2026/thestage--unknown.json",
@@ -92,7 +99,10 @@
     "into-the-woods-west-end-2025/independent--louis-chilton.json",
     "kinky-boots-the-musical-west-end-2026/thestage--paul-vale.json",
     "les-miserables-west-end-2021/thestage--paul-vale.json",
-    "les-miserables-west-end-2021/whatsonstage--theo-bosanquet.json"
+    "les-miserables-west-end-2021/whatsonstage--theo-bosanquet.json",
+    "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
+    "magic-mike-live-west-end-2021/the-express--neil-norman.json",
+    "magic-mike-live-west-end-2021/thestage--dave-fargnoli.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -151,7 +161,11 @@
       "les-miserables-west-end-2021/financialtimes--sarah-hemming.json",
       "les-miserables-west-end-2021/i-paper--fiona-mountford.json",
       "les-miserables-west-end-2021/the-express--neil-norman.json",
-      "les-miserables-west-end-2021/the-express--stefan-kyriazis.json"
+      "les-miserables-west-end-2021/the-express--stefan-kyriazis.json",
+      "magic-mike-live-west-end-2021/financialtimes--sarah-hemming.json",
+      "magic-mike-live-west-end-2021/i-paper--fiona-mountford.json",
+      "magic-mike-live-west-end-2021/standard--nick-curtis.json",
+      "magic-mike-live-west-end-2021/whatsonstage--sarah-crompton.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -159,7 +173,8 @@
       "hercules-west-end-2025/the-sun--dominic-maxwell.json",
       "into-the-woods-west-end-2025/times-uk--clive-davis.json",
       "les-miserables-west-end-2021/the-sun--dominic-maxwell.json",
-      "les-miserables-west-end-2021/times-uk--dominic-maxwell.json"
+      "les-miserables-west-end-2021/times-uk--dominic-maxwell.json",
+      "magic-mike-live-west-end-2021/times-uk--clive-davis.json"
     ],
     "scrapingbee": [
       "summerfolk-west-end-2026/independent--unknown.json",
@@ -172,7 +187,9 @@
       "the-tempest-globe-west-end-2026/guardian--arifa-akbar.json",
       "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/guardian--kate-wyver.json",
       "all-my-sons-west-end-2025/independent--annabel-nugent.json",
-      "im-sorry-prime-minister-west-end-2026/mail--patrick-marmion.json"
+      "im-sorry-prime-minister-west-end-2026/mail--patrick-marmion.json",
+      "magic-mike-live-west-end-2021/daily-mail--patrick-marmion.json",
+      "magic-mike-live-west-end-2021/independent--alice-saville.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -182,7 +199,8 @@
       "data/review-texts/hamilton-west-end-2021/thestage--paul-vale.json",
       "data/review-texts/into-the-woods-west-end-2025/independent--louis-chilton.json",
       "data/review-texts/kinky-boots-the-musical-west-end-2026/thestage--paul-vale.json",
-      "data/review-texts/les-miserables-west-end-2021/thestage--paul-vale.json"
+      "data/review-texts/les-miserables-west-end-2021/thestage--paul-vale.json",
+      "data/review-texts/magic-mike-live-west-end-2021/thestage--dave-fargnoli.json"
     ],
     "archive": [
       "the-play-that-goes-wrong-west-end-2021/timeout--anya-ryan.json",
@@ -199,7 +217,7 @@
     ]
   },
   "startTime": "2026-03-18T14:02:55.843Z",
-  "lastProcessed": "les-miserables-west-end-2021/whatsonstage--theo-bosanquet.json",
+  "lastProcessed": "magic-mike-live-west-end-2021/whatsonstage--sarah-crompton.json",
   "log": [
     {
       "t": "2026-03-18T14:04:38.018Z",
@@ -253,6 +271,17 @@
     },
     {
       "t": "2026-03-18T19:24:41.060Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-18T19:29:27.152Z",
+      "event": "bb-session",
+      "session": "ddcc8e1d",
+      "url": "https://www.thestage.co.uk/reviews/the-tempest-review-theatrer-royal-drury-lane-"
+    },
+    {
+      "t": "2026-03-18T19:29:28.862Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }

@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-18T19:25:26.763Z",
-  "processed": 81,
-  "failed": 10,
-  "successRate": "89.0%",
+  "updatedAt": "2026-03-18T19:30:14.499Z",
+  "processed": 88,
+  "failed": 13,
+  "successRate": "87.1%",
   "tierBreakdown": {
-    "playwright": 55,
+    "playwright": 59,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 4,
-    "scrapingbee": 11,
+    "directCookies": 5,
+    "scrapingbee": 13,
     "brightdata": 0,
-    "archiveToday": 7,
+    "archiveToday": 8,
     "archive": 11
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-03-18T14:04:38.018Z",
@@ -67,6 +67,17 @@
     },
     {
       "t": "2026-03-18T19:24:41.060Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-18T19:29:27.152Z",
+      "event": "bb-session",
+      "session": "ddcc8e1d",
+      "url": "https://www.thestage.co.uk/reviews/the-tempest-review-theatrer-royal-drury-lane-"
+    },
+    {
+      "t": "2026-03-18T19:29:28.862Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
