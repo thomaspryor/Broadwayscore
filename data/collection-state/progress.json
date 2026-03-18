@@ -239,7 +239,16 @@
     "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
     "every-brilliant-thing-2026/thewrap--robert-hofler.json",
     "every-brilliant-thing-2026/timeout--unknown.json",
-    "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json"
+    "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json",
+    "hadestown-2019/broadwaynews--charles-isherwood.json",
+    "hadestown-2019/ew--jessica-derschowitz.json",
+    "hadestown-2019/timeout--adam-feldman.json",
+    "hamilton-2015/theatermania--adam-feldman.json",
+    "hamilton-2015/wsj--terry-teachout.json",
+    "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json",
+    "heathers-the-musical-off-broadway-2025/new-york-sun--elysa-gardner.json",
+    "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
+    "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json"
   ],
   "failed": [
     "arcadia-west-end-2026/broadwayworld--aliya-al-hassan.json",
@@ -261,7 +270,8 @@
     "titus-andronicus-off-broadway-2026/nysr--jesse-oxfeld.json",
     "hadestown-2019/newyorker--hilton-als.json",
     "six-2021/newyorker--naomi-fry.json",
-    "aladdin-2014/new-jersey-newsroom--michael-sommers.json"
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "harry-potter-2021/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -418,7 +428,11 @@
       "death-becomes-her-2024/nydailynews--chris-jones.json",
       "death-becomes-her-2024/timeout--adam-feldman.json",
       "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
-      "every-brilliant-thing-2026/timeout--unknown.json"
+      "every-brilliant-thing-2026/timeout--unknown.json",
+      "hadestown-2019/ew--jessica-derschowitz.json",
+      "hadestown-2019/timeout--adam-feldman.json",
+      "heathers-the-musical-off-broadway-2025/new-york-sun--elysa-gardner.json",
+      "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json"
     ],
     "amp": [
       "data/review-texts/hamilton-west-end-2021/variety--marilyn-stasio.json",
@@ -473,7 +487,8 @@
       "broken-glass-west-end-2026/telegraph--dominic-cavendish.json",
       "evening-all-afternoon-west-end-2026/telegraph--unknown.json",
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
-      "chicago-1996/nydailynews--joe-dziemianowicz.json"
+      "chicago-1996/nydailynews--joe-dziemianowicz.json",
+      "hadestown-2019/broadwaynews--charles-isherwood.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -541,11 +556,15 @@
       "drunk-romeo-and-juliet-off-broadway-2025/theatermania--unknown.json",
       "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
       "every-brilliant-thing-2026/thewrap--robert-hofler.json",
-      "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json"
+      "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json",
+      "hamilton-2015/theatermania--adam-feldman.json",
+      "hamilton-2015/wsj--terry-teachout.json",
+      "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json",
+      "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json"
     ]
   },
   "startTime": "2026-03-18T08:37:37.418Z",
-  "lastProcessed": "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json",
+  "lastProcessed": "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json",
   "log": [
     {
       "t": "2026-03-18T09:06:23.652Z",
@@ -635,6 +654,28 @@
       "t": "2026-03-18T09:46:10.951Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-18T09:47:46.232Z",
+      "event": "bb-session",
+      "session": "708fefc0",
+      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
+    },
+    {
+      "t": "2026-03-18T09:47:47.695Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-18T09:48:08.429Z",
+      "event": "bb-session",
+      "session": "f70989ae",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-18T09:48:09.973Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
