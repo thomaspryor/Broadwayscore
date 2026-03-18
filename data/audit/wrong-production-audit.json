@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-18T13:34:42.406Z",
+  "timestamp": "2026-03-18T13:43:22.413Z",
   "stats": {
-    "totalReviews": 31657,
-    "alreadyFlagged": 9397,
-    "dateGuardCatches": 152,
+    "totalReviews": 31689,
+    "alreadyFlagged": 9412,
+    "dateGuardCatches": 153,
     "directorMismatch": 1134,
     "tvFilmSignals": 3506,
     "londonSignals": 1055,
     "offBroadwaySignals": 1074,
     "yearMismatch": 92,
-    "noPublishDate": 9425
+    "noPublishDate": 9421
   },
   "findings": [
     {
@@ -36647,6 +36647,18 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "financialtimes--unknown.json",
+      "score": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 576d before show (2022-10-19 vs 2024-05-17)"
         }
       ]
     },
