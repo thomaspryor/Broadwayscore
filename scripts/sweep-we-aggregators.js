@@ -247,18 +247,70 @@ async function sweepWET(show) {
   return [];
 }
 
-// ─── theatre.reviews (URL construction) ──────────────────────────────────────
+// ─── theatre.reviews (full index + per-show match) ───────────────────────────
+
+// Lazy-loaded full index of theatre.reviews roundup URLs
+let _trIndex = null; // Map<showId, url>
+
+/**
+ * Build a full index of theatre.reviews roundup URLs by paginating the
+ * category archive and matching each URL to our shows.
+ */
+async function _buildTRIndex(weShows) {
+  if (_trIndex) return _trIndex;
+  _trIndex = new Map();
+
+  console.log('\n  [TR] Building full theatre.reviews index...');
+  const { discoverRoundupUrls, extractTitleFromSlug } = require('./scrape-theatre-reviews');
+
+  // Paginate all category pages to get every roundup URL
+  const allUrls = await discoverRoundupUrls();
+  console.log(`  [TR] ${allUrls.length} roundup URLs discovered`);
+
+  // Match each URL to our shows — use title-contains as fallback
+  for (const url of allUrls) {
+    const titleFromSlug = extractTitleFromSlug(url);
+    if (!titleFromSlug) continue;
+
+    // Try standard matching first
+    let match = matchTitleToShow(titleFromSlug, weShows, { market: 'west-end' });
+
+    // Fallback: check if any show title appears in the slug
+    if (!match || !match.show) {
+      for (const show of weShows) {
+        const showLower = show.title.toLowerCase();
+        const slugLower = titleFromSlug.toLowerCase();
+        if (slugLower.includes(showLower) || showLower.includes(slugLower)) {
+          match = { show };
+          break;
+        }
+      }
+    }
+
+    if (match && match.show && !_trIndex.has(match.show.id)) {
+      _trIndex.set(match.show.id, url);
+    }
+  }
+
+  console.log(`  [TR] Matched ${_trIndex.size} shows to roundup URLs\n`);
+  return _trIndex;
+}
 
 async function sweepTheatreReviews(show) {
   const archDir = path.join(ARCHIVE_BASE, 'theatre-reviews');
   const archivePath = path.join(archDir, `${show.id}.html`);
 
-  // Try fetching live first (works from CI via Node https.get — may 403 locally)
+  // Check the full index for a known URL
+  const indexUrl = _trIndex ? _trIndex.get(show.id) : null;
+
+  // Build URL candidates: index URL + constructed URLs
+  const urls = [];
+  if (indexUrl) urls.push(indexUrl);
+
   const titleSlug = show.title.toLowerCase()
     .replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-')
     .replace(/^-|-$/g, '');
-
-  const urls = [`https://theatre.reviews/reviews-roundup/${titleSlug}-reviews/`];
+  urls.push(`https://theatre.reviews/reviews-roundup/${titleSlug}-reviews/`);
   if (show.venue) {
     const venueSlug = show.venue.toLowerCase()
       .replace(/\s*theatre\s*/gi, '').replace(/\s*theater\s*/gi, '')
@@ -268,7 +320,10 @@ async function sweepTheatreReviews(show) {
     }
   }
 
-  for (const url of urls) {
+  // Deduplicate
+  const uniqueUrls = [...new Set(urls)];
+
+  for (const url of uniqueUrls) {
     const html = await nodeFetch(url);
     if (!html || html.length < 1000) continue;
     if (html.includes('<title>Page not found') || html.includes('404')) continue;
@@ -283,25 +338,27 @@ async function sweepTheatreReviews(show) {
     }
   }
 
-  // Fallback to archive (may have been fetched by weekly scraper)
+  // Fallback to archive
   if (fs.existsSync(archivePath)) {
     const html = fs.readFileSync(archivePath, 'utf8');
     const reviews = extractTheatreReviews(html, show.id);
     if (reviews.length > 0) return reviews;
   }
 
-  // Last resort: SERP search for theatre.reviews roundup
-  const serpUrl = await serpSearch('theatre.reviews', show.title);
-  if (serpUrl && serpUrl.includes('reviews-roundup')) {
-    const html = await nodeFetch(serpUrl);
-    if (html && html.length > 1000 && !html.includes('Page not found')) {
-      const reviews = extractTheatreReviews(html, show.id);
-      if (reviews.length > 0) {
-        if (!DRY_RUN) {
-          if (!fs.existsSync(archDir)) fs.mkdirSync(archDir, { recursive: true });
-          fs.writeFileSync(archivePath, html);
+  // Last resort: SERP
+  if (SB_KEY || BD_KEY) {
+    const serpUrl = await serpSearch('theatre.reviews', show.title);
+    if (serpUrl && serpUrl.includes('reviews-roundup')) {
+      const html = await nodeFetch(serpUrl);
+      if (html && html.length > 1000 && !html.includes('Page not found')) {
+        const reviews = extractTheatreReviews(html, show.id);
+        if (reviews.length > 0) {
+          if (!DRY_RUN) {
+            if (!fs.existsSync(archDir)) fs.mkdirSync(archDir, { recursive: true });
+            fs.writeFileSync(archivePath, html);
+          }
+          return reviews;
         }
-        return reviews;
       }
     }
   }
@@ -474,6 +531,11 @@ async function main() {
   }
 
   console.log(`Processing ${weShows.length} open WE/OWE shows\n`);
+
+  // Pre-build full indexes for aggregators that have category/listing pages
+  if (AGGREGATORS.includes('tr')) {
+    await _buildTRIndex(weShows);
+  }
 
   for (let i = 0; i < weShows.length; i++) {
     const show = weShows[i];
