@@ -331,6 +331,18 @@ jobs:
           echo "opened_shows=$all_slugs" >> $GITHUB_OUTPUT
           echo "Combined shows for data pipelines: $all_slugs"
 
+          # Filter to London-market shows only (for WE-only scrapers: SeatPlan, LBO, LTD)
+          london_slugs=""
+          for slug in $(echo "$all_slugs" | tr ',' '\n'); do
+            [ -z "$slug" ] && continue
+            category=$(node -e "const shows = require('./data/shows.json'); const show = shows.shows.find(s => s.id === '$slug' || s.slug === '$slug'); console.log(show?.category || 'broadway');")
+            if [ "$category" = "west-end" ] || [ "$category" = "off-west-end" ]; then
+              [ -n "$london_slugs" ] && london_slugs="$london_slugs,$slug" || london_slugs="$slug"
+            fi
+          done
+          echo "london_shows=$london_slugs" >> $GITHUB_OUTPUT
+          echo "London shows for WE-only scrapers: $london_slugs"
+
           # Also output ALL new shows (including previews) for cast backfill
           # Cast data is available on IBDB as soon as previews begin
           # Skip OB/WE shows — IBDB is Broadway-only
@@ -434,7 +446,7 @@ jobs:
             }
 
       - name: Trigger SeatPlan workflow for London shows
-        if: steps.filter.outputs.opened_shows != ''
+        if: steps.filter.outputs.london_shows != ''
         uses: actions/github-script@v7
         with:
           script: |
@@ -446,16 +458,16 @@ jobs:
                 workflow_id: 'update-seatplan.yml',
                 ref: 'main',
                 inputs: {
-                  shows: '${{ steps.filter.outputs.opened_shows }}'
+                  shows: '${{ steps.filter.outputs.london_shows }}'
                 }
               });
-              console.log('Triggered SeatPlan workflow for opened shows: ${{ steps.filter.outputs.opened_shows }}');
+              console.log('Triggered SeatPlan workflow for London shows: ${{ steps.filter.outputs.london_shows }}');
             } catch (e) {
               console.log('SeatPlan workflow trigger failed:', e.message);
             }
 
       - name: Trigger LBO workflow for London shows
-        if: steps.filter.outputs.opened_shows != ''
+        if: steps.filter.outputs.london_shows != ''
         uses: actions/github-script@v7
         with:
           script: |
@@ -467,12 +479,33 @@ jobs:
                 workflow_id: 'update-lbo.yml',
                 ref: 'main',
                 inputs: {
-                  shows: '${{ steps.filter.outputs.opened_shows }}'
+                  shows: '${{ steps.filter.outputs.london_shows }}'
                 }
               });
-              console.log('Triggered LBO workflow for opened shows: ${{ steps.filter.outputs.opened_shows }}');
+              console.log('Triggered LBO workflow for London shows: ${{ steps.filter.outputs.london_shows }}');
             } catch (e) {
               console.log('LBO workflow trigger failed:', e.message);
+            }
+
+      - name: Trigger LTD workflow for London shows
+        if: steps.filter.outputs.london_shows != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Trigger London Theatre Direct scraping for newly opened London shows
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'update-ltd.yml',
+                ref: 'main',
+                inputs: {
+                  shows: '${{ steps.filter.outputs.london_shows }}'
+                }
+              });
+              console.log('Triggered LTD workflow for London shows: ${{ steps.filter.outputs.london_shows }}');
+            } catch (e) {
+              console.log('LTD workflow trigger failed:', e.message);
             }
 
       - name: Trigger image fetching workflow

@@ -304,8 +304,8 @@ async function main() {
   if (showFilter) {
     toProcess = weShows.filter(s => s.id === showFilter || s.slug === showFilter);
     if (toProcess.length === 0) {
-      console.error(`❌ Show not found: ${showFilter}`);
-      process.exit(1);
+      console.log(`⚠️  Show not found in WE catalog: ${showFilter} (may be Broadway — skipping)`);
+      process.exit(0);
     }
   }
 
@@ -315,6 +315,7 @@ async function main() {
   const feefoByProduct = dryRun ? {} : await fetchAllFeefoReviews();
 
   const stats = { processed: 0, found: 0, notFound: 0, errors: 0, skipped: 0 };
+  const missedShows = [];
   const anchorResults = {};
 
   for (let i = 0; i < toProcess.length; i++) {
@@ -360,6 +361,7 @@ async function main() {
     if (!html) {
       console.log(`  ⏭️  Not found on LBO (all variants 404)`);
       stats.notFound++;
+      missedShows.push({ id: show.id, title, reason: 'not-found' });
       if (i < toProcess.length - 1) await sleep(RATE_LIMIT_MS);
       continue;
     }
@@ -369,6 +371,7 @@ async function main() {
     if (!data) {
       console.log(`  ⚠️  No review data found in HTML`);
       stats.errors++;
+      missedShows.push({ id: show.id, title, reason: 'error' });
       if (i < toProcess.length - 1) await sleep(RATE_LIMIT_MS);
       continue;
     }
@@ -384,6 +387,7 @@ async function main() {
       if (!pageNorm.includes(ourNorm) && !ourNorm.includes(pageNorm)) {
         console.log(`  ⚠️  Title mismatch! Page: "${data.pageTitle}" vs Ours: "${title}" — SKIPPING`);
         stats.skipped++;
+        missedShows.push({ id: show.id, title, reason: 'title-mismatch' });
         if (i < toProcess.length - 1) await sleep(RATE_LIMIT_MS);
         continue;
       }
@@ -509,6 +513,22 @@ async function main() {
   if (stats.found === 0 && toProcess.length > 3) {
     console.error('\n❌ ZERO shows matched — possible URL pattern change. Aborting.');
     process.exit(1);
+  }
+
+  // Coverage report
+  const openMissed = missedShows.filter(m => {
+    const s = toProcess.find(s => s.id === m.id);
+    return s && (s.status === 'open' || s.status === 'previews');
+  });
+  if (openMissed.length > 0 && !showFilter) {
+    console.log('\n─── Coverage Gaps (open shows) ───');
+    for (const m of openMissed) {
+      console.log(`  ${m.reason.padEnd(15)} ${m.id}`);
+    }
+    console.log(`\nAdd to LBO_OVERRIDES if slug is known:`);
+    for (const m of openMissed.filter(s => s.reason === 'not-found')) {
+      console.log(`  '${m.title}': 'PLATFORM-SLUG-HERE',`);
+    }
   }
 }
 
