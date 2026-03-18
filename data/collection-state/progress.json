@@ -113,7 +113,15 @@
     "romeo-and-juliet-west-end-2026/london-theatre--marianka-swain.json",
     "romeo-and-juliet-west-end-2026/telegraph--nick-ferris.json",
     "romeo-and-juliet-west-end-2026/times-uk--unknown.json",
-    "six-the-musical-west-end-2021/daily-mail--unknown.json"
+    "six-the-musical-west-end-2021/daily-mail--unknown.json",
+    "starlight-express-west-end-2024/financialtimes--sarah-hemming.json",
+    "starlight-express-west-end-2024/independent--alice-saville.json",
+    "starlight-express-west-end-2024/standard--tim-bano.json",
+    "stranger-things-the-first-shadow-west-end-2023/city-am--unknown.json",
+    "stranger-things-the-first-shadow-west-end-2023/financialtimes--sarah-hemming.json",
+    "stranger-things-the-first-shadow-west-end-2023/i-paper--fiona-mountford.json",
+    "stranger-things-the-first-shadow-west-end-2023/independent--ella-duggan.json",
+    "stranger-things-the-first-shadow-west-end-2023/telegraph--marianka-swain.json"
   ],
   "failed": [
     "summerfolk-west-end-2026/thestage--unknown.json",
@@ -132,7 +140,9 @@
     "mamma-mia-west-end-2021/times-uk--clive-davis.json",
     "marie-and-rosetta-west-end-2026/thestage--holly-o.json",
     "matilda-the-musical-west-end-2021/thestage--sam-marlowe.json",
-    "my-neighbour-totoro-west-end-2025/the-sun--dominic-maxwell.json"
+    "my-neighbour-totoro-west-end-2025/the-sun--dominic-maxwell.json",
+    "starlight-express-west-end-2024/thestage--sam-marlowe.json",
+    "stranger-things-the-first-shadow-west-end-2023/thestage--tom-wicker.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -211,7 +221,12 @@
       "oliver-west-end-2024/whatsonstage--gareth-carr.json",
       "romeo-and-juliet-west-end-2026/i-paper--fiona-mountford.json",
       "romeo-and-juliet-west-end-2026/london-theatre--marianka-swain.json",
-      "six-the-musical-west-end-2021/daily-mail--unknown.json"
+      "six-the-musical-west-end-2021/daily-mail--unknown.json",
+      "starlight-express-west-end-2024/financialtimes--sarah-hemming.json",
+      "starlight-express-west-end-2024/standard--tim-bano.json",
+      "stranger-things-the-first-shadow-west-end-2023/city-am--unknown.json",
+      "stranger-things-the-first-shadow-west-end-2023/financialtimes--sarah-hemming.json",
+      "stranger-things-the-first-shadow-west-end-2023/i-paper--fiona-mountford.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -242,7 +257,9 @@
       "mamma-mia-west-end-2021/independent--louis-chilton.json",
       "matilda-the-musical-west-end-2021/daily-mail--patrick-marmion.json",
       "matilda-the-musical-west-end-2021/independent--alice-saville.json",
-      "my-neighbour-totoro-west-end-2025/independent--alice-saville.json"
+      "my-neighbour-totoro-west-end-2025/independent--alice-saville.json",
+      "starlight-express-west-end-2024/independent--alice-saville.json",
+      "stranger-things-the-first-shadow-west-end-2023/independent--ella-duggan.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -255,7 +272,9 @@
       "data/review-texts/les-miserables-west-end-2021/thestage--paul-vale.json",
       "data/review-texts/magic-mike-live-west-end-2021/thestage--dave-fargnoli.json",
       "data/review-texts/marie-and-rosetta-west-end-2026/thestage--holly-o.json",
-      "data/review-texts/matilda-the-musical-west-end-2021/thestage--sam-marlowe.json"
+      "data/review-texts/matilda-the-musical-west-end-2021/thestage--sam-marlowe.json",
+      "data/review-texts/starlight-express-west-end-2024/thestage--sam-marlowe.json",
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/thestage--tom-wicker.json"
     ],
     "archive": [
       "the-play-that-goes-wrong-west-end-2021/timeout--anya-ryan.json",
@@ -271,11 +290,12 @@
       "les-miserables-west-end-2021/thestage--matthew-hemley.json",
       "oliver-west-end-2024/thestage--matt-hemley.json",
       "romeo-and-juliet-west-end-2026/telegraph--nick-ferris.json",
-      "romeo-and-juliet-west-end-2026/times-uk--unknown.json"
+      "romeo-and-juliet-west-end-2026/times-uk--unknown.json",
+      "stranger-things-the-first-shadow-west-end-2023/telegraph--marianka-swain.json"
     ]
   },
   "startTime": "2026-03-18T14:02:55.843Z",
-  "lastProcessed": "six-the-musical-west-end-2021/daily-mail--unknown.json",
+  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/thestage--tom-wicker.json",
   "log": [
     {
       "t": "2026-03-18T14:04:38.018Z",
@@ -362,6 +382,28 @@
     },
     {
       "t": "2026-03-18T19:36:11.595Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-18T19:42:52.451Z",
+      "event": "bb-session",
+      "session": "fab039f7",
+      "url": "https://www.thestage.co.uk/reviews/paddington-the-musical-review-savoy-theatre-l"
+    },
+    {
+      "t": "2026-03-18T19:42:54.003Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-18T19:45:29.392Z",
+      "event": "bb-session",
+      "session": "140802c6",
+      "url": "https://www.thestage.co.uk/reviews/the-land-of-the-living-review-national-theatr"
+    },
+    {
+      "t": "2026-03-18T19:45:31.036Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }

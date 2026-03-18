@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-18T19:40:53.089Z",
-  "processed": 114,
-  "failed": 17,
-  "successRate": "87.0%",
+  "updatedAt": "2026-03-18T19:45:48.524Z",
+  "processed": 122,
+  "failed": 19,
+  "successRate": "86.5%",
   "tierBreakdown": {
-    "playwright": 75,
+    "playwright": 80,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 8,
-    "scrapingbee": 17,
+    "scrapingbee": 19,
     "brightdata": 0,
-    "archiveToday": 10,
-    "archive": 14
+    "archiveToday": 12,
+    "archive": 15
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
       "t": "2026-03-18T14:04:38.018Z",
@@ -100,6 +100,28 @@
     },
     {
       "t": "2026-03-18T19:36:11.595Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-18T19:42:52.451Z",
+      "event": "bb-session",
+      "session": "fab039f7",
+      "url": "https://www.thestage.co.uk/reviews/paddington-the-musical-review-savoy-theatre-l"
+    },
+    {
+      "t": "2026-03-18T19:42:54.003Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-18T19:45:29.392Z",
+      "event": "bb-session",
+      "session": "140802c6",
+      "url": "https://www.thestage.co.uk/reviews/the-land-of-the-living-review-national-theatr"
+    },
+    {
+      "t": "2026-03-18T19:45:31.036Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
