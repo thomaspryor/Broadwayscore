@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-18T09:24:29.087Z",
+  "timestamp": "2026-03-18T09:58:00.066Z",
   "stats": {
     "totalReviews": 31644,
-    "alreadyFlagged": 9398,
+    "alreadyFlagged": 9402,
     "dateGuardCatches": 152,
-    "directorMismatch": 1134,
-    "tvFilmSignals": 3505,
-    "londonSignals": 1050,
-    "offBroadwaySignals": 1073,
+    "directorMismatch": 1133,
+    "tvFilmSignals": 3506,
+    "londonSignals": 1049,
+    "offBroadwaySignals": 1074,
     "yearMismatch": 92,
-    "noPublishDate": 9431
+    "noPublishDate": 9424
   },
   "findings": [
     {
@@ -26734,20 +26734,6 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
-      "file": "timeout--unknown.json",
-      "score": 94,
-      "publishDate": "2026-01-15",
-      "url": "https://www.timeout.com/london/news/review-into-the-woods-bridge-theatre-121125",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2025",
       "file": "whatsonstage--sarah-crompton.json",
       "score": 93,
       "publishDate": "December 12th, 2025",
@@ -36511,6 +36497,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "my-joy-is-heavy-off-broadway-2025",
+      "file": "nytg--unknown.json",
+      "publishDate": "2026-03-17",
+      "url": "https://www.newyorktheatreguide.com/reviews/my-joy-is-heavy-off-broadway-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"onscreen\""
         }
       ]
     },
@@ -68293,6 +68292,7 @@
     {
       "showId": "broken-glass-west-end-2026",
       "file": "guardian--for-dave-fargnoli.json",
+      "score": 78,
       "publishDate": "2026-03-04",
       "url": "https://www.theguardian.com/stage/2026/mar/04/broken-glass-review-theatre-young-vic-london",
       "findings": [
@@ -70541,6 +70541,7 @@
     {
       "showId": "evening-all-afternoon-west-end-2026",
       "file": "guardian--arifa-akbar.json",
+      "score": 71,
       "publishDate": "2026-02-25",
       "url": "https://www.theguardian.com/stage/2026/feb/25/evening-all-afternoon-review-donmar-warehouse-london",
       "findings": [
@@ -70568,6 +70569,7 @@
     {
       "showId": "evening-all-afternoon-west-end-2026",
       "file": "plays-international--maryam-philpott.json",
+      "score": 65,
       "publishDate": "2026-02-25",
       "url": "https://playsinternational.org.uk/evening-all-afternoon-donmar-warehouse/",
       "findings": [
@@ -70575,20 +70577,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"donmar warehouse\""
-        }
-      ]
-    },
-    {
-      "showId": "evening-all-afternoon-west-end-2026",
-      "file": "standard--unknown.json",
-      "score": 66,
-      "publishDate": "2026-02-25",
-      "url": "https://www.standard.co.uk/culture/theatre/evening-all-afternoon-b1272389.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -74412,6 +74400,7 @@
     {
       "showId": "im-sorry-prime-minister-west-end-2026",
       "file": "the-mail--patrick-marmion.json",
+      "score": 66,
       "publishDate": "2026-02-13",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-15555245/PATRICK-MARMION-review-Im-sorry-Prime-Minister-youre-power-wit.html",
       "findings": [
@@ -77272,6 +77261,7 @@
     {
       "showId": "man-and-boy-west-end-2026",
       "file": "guardian--sign-has-arifa-akbar.json",
+      "score": 43,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2026/feb/11/man-and-boy-review-terence-rattigan-father-son-drama",
       "findings": [
@@ -77368,6 +77358,7 @@
     {
       "showId": "marie-and-rosetta-west-end-2026",
       "file": "guardian--unknown.json",
+      "score": 78,
       "publishDate": "2025-05-11",
       "url": "https://www.theguardian.com/stage/2025/may/11/marie-and-rosetta-review-beverley-knight-rose-theatre-london-sister-rosetta-tharpe",
       "findings": [
@@ -77381,6 +77372,7 @@
     {
       "showId": "marie-and-rosetta-west-end-2026",
       "file": "standard--nick-curtis.json",
+      "score": 76,
       "publishDate": "2025-05-10",
       "url": "https://www.standard.co.uk/culture/theatre/marie-rosetta-rose-theatre-kingston-review-beverley-knight-b1226992.html",
       "findings": [
@@ -78357,6 +78349,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "my-joy-is-heavy-off-broadway-2025",
+      "file": "vulture--unknown.json",
+      "publishDate": "2026-03-17",
+      "url": "https://www.vulture.com/article/review-bengsons-my-joy-is-heavy-nytw.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"nytw\""
         }
       ]
     },
@@ -86955,7 +86960,7 @@
     {
       "showId": "the-other-place-2013",
       "file": "guardian--arifa-akbar.json",
-      "score": null,
+      "score": 81,
       "publishDate": "October 9th, 2024",
       "url": "https://www.theguardian.com/stage/2024/oct/09/the-other-place-review-national-theatre-alexander-zeldin-antigone",
       "findings": [
