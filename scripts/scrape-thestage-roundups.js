@@ -437,12 +437,12 @@ function writeReviewFiles(reviews, showId) {
     const criticSlug = normalizeCritic(review.critic);
     const outletId = review.outletId || normalizeOutlet(review.outlet);
 
-    const existing = findExistingReviewFile(showDir, outletId, criticSlug);
-    const filePath = existing || path.join(showDir, `${outletId}--${criticSlug}.json`);
+    const existingMatch = findExistingReviewFile(showDir, outletId, criticSlug);
+    const filePath = existingMatch ? existingMatch.path : path.join(showDir, `${outletId}--${criticSlug}.json`);
 
     let data = {};
-    if (existing && fs.existsSync(existing)) {
-      try { data = JSON.parse(fs.readFileSync(existing, 'utf8')); } catch (e) {}
+    if (existingMatch && existingMatch.data) {
+      data = existingMatch.data;
     }
 
     data.showId = data.showId || showId;
