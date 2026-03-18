@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-18T04:52:42.586Z",
+  "timestamp": "2026-03-18T05:36:44.237Z",
   "stats": {
-    "totalReviews": 31614,
-    "alreadyFlagged": 9393,
+    "totalReviews": 31621,
+    "alreadyFlagged": 9394,
     "dateGuardCatches": 150,
-    "directorMismatch": 1135,
-    "tvFilmSignals": 3506,
+    "directorMismatch": 1134,
+    "tvFilmSignals": 3505,
     "londonSignals": 1045,
     "offBroadwaySignals": 1073,
     "yearMismatch": 92,
-    "noPublishDate": 9411
+    "noPublishDate": 9418
   },
   "findings": [
     {
@@ -22253,25 +22253,6 @@
     },
     {
       "showId": "hamilton-2015",
-      "file": "ap--mark-kennedy.json",
-      "score": 86,
-      "publishDate": "2015-08-06",
-      "url": "https://apnews.com/review-lin-manuel-mirandas-hamilton-is-a-rollicking-show-830d0df6b1444259aff3fda7359c1f44",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "hamilton-2015",
       "file": "nypost--jesse-green.json",
       "score": 89,
       "publishDate": "August 6, 2015",
@@ -26668,20 +26649,6 @@
       "score": 88,
       "publishDate": "2025-12-12",
       "url": "https://www.broadwayworld.com/westend/article/Review-INTO-THE-WOODS-Bridge-Theatre-20251212",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2025",
-      "file": "daily-mail--unknown.json",
-      "score": 85,
-      "publishDate": "2025-12-19",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15397945/PATRICK-MARMION-reviews-Woods-Bridge-Theatre-London-Subversive-enchanting-Sondheims-fairytale.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -72633,6 +72600,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "ap--mark-kennedy.json",
+      "score": 86,
+      "publishDate": "2015-08-06",
+      "url": "https://apnews.com/review-lin-manuel-mirandas-hamilton-is-a-rollicking-show-830d0df6b1444259aff3fda7359c1f44",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
