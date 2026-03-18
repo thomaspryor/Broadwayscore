@@ -189,16 +189,10 @@ async function sweepWET(show) {
 // ─── theatre.reviews (URL construction) ──────────────────────────────────────
 
 async function sweepTheatreReviews(show) {
-  // Check archive first (theatre.reviews WAF blocks both curl and Node https locally)
   const archDir = path.join(ARCHIVE_BASE, 'theatre-reviews');
   const archivePath = path.join(archDir, `${show.id}.html`);
-  if (fs.existsSync(archivePath)) {
-    const html = fs.readFileSync(archivePath, 'utf8');
-    const reviews = extractTheatreReviews(html, show.id);
-    if (reviews.length > 0) return reviews;
-  }
 
-  // Try fetching live (works from CI, may 403 locally)
+  // Try fetching live first (works from CI via Node https.get — may 403 locally)
   const titleSlug = show.title.toLowerCase()
     .replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-')
     .replace(/^-|-$/g, '');
@@ -227,6 +221,14 @@ async function sweepTheatreReviews(show) {
       return reviews;
     }
   }
+
+  // Fallback to archive (may have been fetched by weekly scraper)
+  if (!FORCE && fs.existsSync(archivePath)) {
+    const html = fs.readFileSync(archivePath, 'utf8');
+    const reviews = extractTheatreReviews(html, show.id);
+    if (reviews.length > 0) return reviews;
+  }
+
   return [];
 }
 
@@ -250,17 +252,112 @@ async function sweepStagedoor(show) {
 
 // ─── The Stage (cookies) ─────────────────────────────────────────────────────
 
+// Shared BrowserBase session for The Stage (lazy-initialized)
+let _bbPage = null;
+let _bbBrowser = null;
+
+async function getStagePageViaBrowserBase(url) {
+  const BB_API_KEY = process.env.BROWSERBASE_API_KEY;
+  const BB_PROJECT_ID = process.env.BROWSERBASE_PROJECT_ID;
+  if (!BB_API_KEY || !BB_PROJECT_ID) return null;
+
+  const https = require('https');
+  const { chromium } = require('playwright');
+
+  // Lazy-init: create session + login once, reuse for all shows
+  if (!_bbPage) {
+    console.log('    [BB] Creating BrowserBase session...');
+    const session = await new Promise((resolve, reject) => {
+      const req = https.request('https://www.browserbase.com/v1/sessions', {
+        method: 'POST',
+        headers: { 'x-bb-api-key': BB_API_KEY, 'Content-Type': 'application/json' },
+      }, (res) => { let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(JSON.parse(d))); });
+      req.on('error', reject);
+      req.end(JSON.stringify({ projectId: BB_PROJECT_ID, browserSettings: { solveCaptchas: true } }));
+    });
+
+    _bbBrowser = await chromium.connectOverCDP(`wss://connect.browserbase.com?apiKey=${BB_API_KEY}&sessionId=${session.id}`);
+    const ctx = _bbBrowser.contexts()[0] || await _bbBrowser.newContext();
+    _bbPage = ctx.pages()[0] || await ctx.newPage();
+
+    // Login to The Stage
+    const email = process.env.THESTAGE_EMAIL;
+    const password = process.env.THESTAGE_PASSWORD;
+    if (email && password) {
+      console.log('    [BB] Logging in to The Stage...');
+      await _bbPage.goto('https://www.thestage.co.uk/review-round-ups/review-round-ups', { waitUntil: 'networkidle', timeout: 30000 });
+      await _bbPage.waitForTimeout(8000);
+      await _bbPage.waitForSelector('input[name="email"]', { timeout: 10000 }).catch(() => {});
+      const emailInputs = await _bbPage.$$('input[name="email"]');
+      let emailInput = null;
+      for (const inp of emailInputs) { if (await inp.isVisible().catch(() => false)) { emailInput = inp; break; } }
+      if (emailInput) {
+        await emailInput.type(email, { delay: 30 });
+        const passInputs = await _bbPage.$$('input[type="password"]');
+        for (const inp of passInputs) {
+          if (await inp.isVisible().catch(() => false)) { await inp.type(password, { delay: 30 }); break; }
+        }
+        const btn = await _bbPage.$('button:has-text("Login"), input[type="submit"]');
+        if (btn && await btn.isVisible().catch(() => false)) await btn.click();
+        else await _bbPage.keyboard.press('Enter');
+        await _bbPage.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+        await _bbPage.waitForTimeout(3000);
+        console.log('    [BB] Login complete');
+      }
+    }
+  }
+
+  // Fetch the page
+  await _bbPage.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
+  await _bbPage.waitForTimeout(3000);
+  return await _bbPage.content();
+}
+
 async function sweepTheStage(show) {
-  // The Stage is JS-rendered — curl can't get review content even with cookies.
-  // Use existing archives from BrowserBase runs (scrape-thestage-roundups workflow).
   const archDir = path.join(ARCHIVE_BASE, 'thestage-roundups');
   const archivePath = path.join(archDir, `${show.id}.html`);
+
+  // Build URL candidates
+  const titleSlug = show.title.toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-').replace(/^-|-$/g, '');
+  const urls = [`https://www.thestage.co.uk/review-round-ups/${titleSlug}-review-round-up`];
+  if (show.venue) {
+    const venueSlug = show.venue.toLowerCase()
+      .replace(/\s*theatre\s*/gi, '').replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
+    if (venueSlug) {
+      urls.unshift(`https://www.thestage.co.uk/review-round-ups/${titleSlug}-at-the-${venueSlug}-review-round-up`);
+    }
+  }
+
+  // Try BrowserBase if available (The Stage is JS-rendered + paywalled)
+  if (process.env.BROWSERBASE_API_KEY) {
+    for (const url of urls) {
+      try {
+        const html = await getStagePageViaBrowserBase(url);
+        if (!html || html.length < 2000) continue;
+        if (html.includes('Page not found') || html.includes('404 -')) continue;
+
+        const reviews = extractStageReviews(html, show.id);
+        if (reviews.length > 0) {
+          if (!DRY_RUN) {
+            if (!fs.existsSync(archDir)) fs.mkdirSync(archDir, { recursive: true });
+            fs.writeFileSync(archivePath, html);
+          }
+          return reviews;
+        }
+      } catch (err) {
+        console.log(`    TS BrowserBase error: ${err.message}`);
+      }
+    }
+  }
+
+  // Fallback: use existing archive
   if (fs.existsSync(archivePath)) {
     const html = fs.readFileSync(archivePath, 'utf8');
     const reviews = extractStageReviews(html, show.id);
     if (reviews.length > 0) return reviews;
   }
-  // No archive — The Stage scraper (BrowserBase) needs to run first
+
   return [];
 }
 
@@ -356,6 +453,11 @@ async function main() {
   console.log(`  SD:  ${stats.sd.found} shows, ${stats.sd.reviews} reviews`);
   console.log(`  TS:  ${stats.ts.found} shows, ${stats.ts.reviews} reviews`);
   console.log(`  Errors: ${stats.errors}`);
+
+  // Cleanup BrowserBase session if used
+  if (_bbBrowser) {
+    try { await _bbBrowser.close(); } catch {}
+  }
 
   process.exit(0);
 }
