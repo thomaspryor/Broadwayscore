@@ -87,7 +87,15 @@
     "magic-mike-live-west-end-2021/independent--alice-saville.json",
     "magic-mike-live-west-end-2021/standard--nick-curtis.json",
     "magic-mike-live-west-end-2021/times-uk--clive-davis.json",
-    "magic-mike-live-west-end-2021/whatsonstage--sarah-crompton.json"
+    "magic-mike-live-west-end-2021/whatsonstage--sarah-crompton.json",
+    "mamma-mia-west-end-2021/financialtimes--sarah-hemming.json",
+    "mamma-mia-west-end-2021/i-paper--fiona-mountford.json",
+    "mamma-mia-west-end-2021/independent--louis-chilton.json",
+    "mamma-mia-west-end-2021/standard--nick-curtis.json",
+    "mamma-mia-west-end-2021/whatsonstage--sarah-crompton.json",
+    "matilda-the-musical-west-end-2021/daily-mail--patrick-marmion.json",
+    "matilda-the-musical-west-end-2021/i-paper--fiona-mountford.json",
+    "matilda-the-musical-west-end-2021/independent--alice-saville.json"
   ],
   "failed": [
     "summerfolk-west-end-2026/thestage--unknown.json",
@@ -102,7 +110,9 @@
     "les-miserables-west-end-2021/whatsonstage--theo-bosanquet.json",
     "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
     "magic-mike-live-west-end-2021/the-express--neil-norman.json",
-    "magic-mike-live-west-end-2021/thestage--dave-fargnoli.json"
+    "magic-mike-live-west-end-2021/thestage--dave-fargnoli.json",
+    "mamma-mia-west-end-2021/times-uk--clive-davis.json",
+    "marie-and-rosetta-west-end-2026/thestage--holly-o.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -165,7 +175,12 @@
       "magic-mike-live-west-end-2021/financialtimes--sarah-hemming.json",
       "magic-mike-live-west-end-2021/i-paper--fiona-mountford.json",
       "magic-mike-live-west-end-2021/standard--nick-curtis.json",
-      "magic-mike-live-west-end-2021/whatsonstage--sarah-crompton.json"
+      "magic-mike-live-west-end-2021/whatsonstage--sarah-crompton.json",
+      "mamma-mia-west-end-2021/financialtimes--sarah-hemming.json",
+      "mamma-mia-west-end-2021/i-paper--fiona-mountford.json",
+      "mamma-mia-west-end-2021/standard--nick-curtis.json",
+      "mamma-mia-west-end-2021/whatsonstage--sarah-crompton.json",
+      "matilda-the-musical-west-end-2021/i-paper--fiona-mountford.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -189,7 +204,10 @@
       "all-my-sons-west-end-2025/independent--annabel-nugent.json",
       "im-sorry-prime-minister-west-end-2026/mail--patrick-marmion.json",
       "magic-mike-live-west-end-2021/daily-mail--patrick-marmion.json",
-      "magic-mike-live-west-end-2021/independent--alice-saville.json"
+      "magic-mike-live-west-end-2021/independent--alice-saville.json",
+      "mamma-mia-west-end-2021/independent--louis-chilton.json",
+      "matilda-the-musical-west-end-2021/daily-mail--patrick-marmion.json",
+      "matilda-the-musical-west-end-2021/independent--alice-saville.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -200,7 +218,8 @@
       "data/review-texts/into-the-woods-west-end-2025/independent--louis-chilton.json",
       "data/review-texts/kinky-boots-the-musical-west-end-2026/thestage--paul-vale.json",
       "data/review-texts/les-miserables-west-end-2021/thestage--paul-vale.json",
-      "data/review-texts/magic-mike-live-west-end-2021/thestage--dave-fargnoli.json"
+      "data/review-texts/magic-mike-live-west-end-2021/thestage--dave-fargnoli.json",
+      "data/review-texts/marie-and-rosetta-west-end-2026/thestage--holly-o.json"
     ],
     "archive": [
       "the-play-that-goes-wrong-west-end-2021/timeout--anya-ryan.json",
@@ -217,7 +236,7 @@
     ]
   },
   "startTime": "2026-03-18T14:02:55.843Z",
-  "lastProcessed": "magic-mike-live-west-end-2021/whatsonstage--sarah-crompton.json",
+  "lastProcessed": "matilda-the-musical-west-end-2021/independent--alice-saville.json",
   "log": [
     {
       "t": "2026-03-18T14:04:38.018Z",
@@ -282,6 +301,17 @@
     },
     {
       "t": "2026-03-18T19:29:28.862Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-18T19:33:10.717Z",
+      "event": "bb-session",
+      "session": "8e95209e",
+      "url": "https://www.thestage.co.uk/reviews/marie-and-rosetta-review-rose-theatre-kingsto"
+    },
+    {
+      "t": "2026-03-18T19:33:12.443Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
