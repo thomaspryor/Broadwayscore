@@ -43,6 +43,7 @@ const { searchOutletSites, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-
 const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 
 // Paths
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -168,26 +169,30 @@ async function runAggregators(show) {
   const isOffBroadway = show.category === 'off-broadway';
   const isWestEnd = isLondonMarket(show.category);
 
-  // 1a. DTLI
-  try {
-    console.log('  Checking DTLI...');
-    const dtli = await searchDTLI(show);
-    if (dtli && dtli.html) {
-      const validation = await validatePageMatchesShow(dtli.html, show.title, {
-        openingYear: year,
-      });
-      if (validation.valid) {
-        const reviews = extractDTLIReviews(dtli.html, show.id, dtli.url);
-        console.log(`  DTLI: ${reviews.length} reviews found`);
-        results.push(...reviews);
+  // 1a. DTLI (Broadway/OB only — DTLI doesn't cover London)
+  if (!isWestEnd) {
+    try {
+      console.log('  Checking DTLI...');
+      const dtli = await searchDTLI(show);
+      if (dtli && dtli.html) {
+        const validation = await validatePageMatchesShow(dtli.html, show.title, {
+          openingYear: year,
+        });
+        if (validation.valid) {
+          const reviews = extractDTLIReviews(dtli.html, show.id, dtli.url);
+          console.log(`  DTLI: ${reviews.length} reviews found`);
+          results.push(...reviews);
+        } else {
+          console.log(`  DTLI: page mismatch — ${validation.reason}`);
+        }
       } else {
-        console.log(`  DTLI: page mismatch — ${validation.reason}`);
+        console.log('  DTLI: not found');
       }
-    } else {
-      console.log('  DTLI: not found');
+    } catch (err) {
+      console.log(`  DTLI error: ${err.message}`);
     }
-  } catch (err) {
-    console.log(`  DTLI error: ${err.message}`);
+  } else {
+    console.log('  DTLI: skipped (London market — DTLI is US-only)');
   }
 
   // 1b. Show Score
@@ -243,6 +248,66 @@ async function runAggregators(show) {
       }
     } catch (err) {
       console.log(`  BWW RR error: ${err.message}`);
+    }
+  }
+
+  // 1d. London Box Office roundups (WE/OWE only)
+  if (isWestEnd) {
+    try {
+      console.log('  Checking London Box Office roundup...');
+      // Check curated URL map first
+      const lboMapPath = path.join(DATA_DIR, 'lbo-roundup-urls.json');
+      let lboUrl = null;
+      try {
+        const lboMap = JSON.parse(fs.readFileSync(lboMapPath, 'utf8'));
+        lboUrl = (lboMap.shows || {})[show.id];
+      } catch (e) {}
+
+      // Also check archive
+      const lboArchivePath = path.join(DATA_DIR, 'aggregator-archive', 'lbo-roundups', `${show.id}.html`);
+
+      let lboHtml = null;
+      if (lboUrl) {
+        console.log(`    Curated URL: ${lboUrl}`);
+        try {
+          const https = require('https');
+          lboHtml = await new Promise((resolve, reject) => {
+            https.get(lboUrl, { headers: { 'User-Agent': 'Mozilla/5.0' } }, res => {
+              if (res.statusCode !== 200) { resolve(null); return; }
+              let data = '';
+              res.on('data', c => data += c);
+              res.on('end', () => resolve(data));
+            }).on('error', reject);
+          });
+        } catch (e) {
+          console.log(`    LBO fetch error: ${e.message}`);
+        }
+      } else if (fs.existsSync(lboArchivePath)) {
+        console.log('    Using archived LBO page');
+        lboHtml = fs.readFileSync(lboArchivePath, 'utf8');
+      }
+
+      if (lboHtml) {
+        const lboReviews = extractReviewsFromLBO(lboHtml, show.id);
+        console.log(`  LBO: ${lboReviews.length} reviews found`);
+        for (const r of lboReviews) {
+          results.push({
+            showId: show.id,
+            outletId: r.outletId || r.outlet?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'unknown',
+            outlet: r.outlet || 'Unknown',
+            criticName: r.critic || 'Unknown',
+            url: r.url || '',
+            excerpt: r.excerpt || '',
+            score: r.score,
+            scoreSource: r.score !== null ? 'lbo-star-rating' : undefined,
+            source: 'lbo-roundup',
+          });
+        }
+      } else {
+        console.log('  LBO: no roundup found');
+      }
+    } catch (err) {
+      console.log(`  LBO error: ${err.message}`);
     }
   }
 
