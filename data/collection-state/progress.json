@@ -72,7 +72,15 @@
     "kinky-boots-the-musical-west-end-2026/standard--nick-curtis.json",
     "kinky-boots-the-musical-west-end-2026/telegraph--claire-allfree.json",
     "kinky-boots-the-musical-west-end-2026/the-express--stefan-kyriazis.json",
-    "kinky-boots-the-musical-west-end-2026/whatsonstage--alex-wood.json"
+    "kinky-boots-the-musical-west-end-2026/whatsonstage--alex-wood.json",
+    "les-miserables-west-end-2021/financialtimes--sarah-hemming.json",
+    "les-miserables-west-end-2021/i-paper--fiona-mountford.json",
+    "les-miserables-west-end-2021/independent--louis-chilton.json",
+    "les-miserables-west-end-2021/the-express--neil-norman.json",
+    "les-miserables-west-end-2021/the-express--stefan-kyriazis.json",
+    "les-miserables-west-end-2021/the-sun--dominic-maxwell.json",
+    "les-miserables-west-end-2021/thestage--matthew-hemley.json",
+    "les-miserables-west-end-2021/times-uk--dominic-maxwell.json"
   ],
   "failed": [
     "summerfolk-west-end-2026/thestage--unknown.json",
@@ -82,7 +90,9 @@
     "evening-all-afternoon-west-end-2026/the-express--george-simpson.json",
     "hamilton-west-end-2021/thestage--paul-vale.json",
     "into-the-woods-west-end-2025/independent--louis-chilton.json",
-    "kinky-boots-the-musical-west-end-2026/thestage--paul-vale.json"
+    "kinky-boots-the-musical-west-end-2026/thestage--paul-vale.json",
+    "les-miserables-west-end-2021/thestage--paul-vale.json",
+    "les-miserables-west-end-2021/whatsonstage--theo-bosanquet.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -137,13 +147,19 @@
       "kinky-boots-the-musical-west-end-2026/radio-times--joanna-magill.json",
       "kinky-boots-the-musical-west-end-2026/standard--nick-curtis.json",
       "kinky-boots-the-musical-west-end-2026/the-express--stefan-kyriazis.json",
-      "kinky-boots-the-musical-west-end-2026/whatsonstage--alex-wood.json"
+      "kinky-boots-the-musical-west-end-2026/whatsonstage--alex-wood.json",
+      "les-miserables-west-end-2021/financialtimes--sarah-hemming.json",
+      "les-miserables-west-end-2021/i-paper--fiona-mountford.json",
+      "les-miserables-west-end-2021/the-express--neil-norman.json",
+      "les-miserables-west-end-2021/the-express--stefan-kyriazis.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [
       "hercules-west-end-2025/the-sun--dominic-maxwell.json",
-      "into-the-woods-west-end-2025/times-uk--clive-davis.json"
+      "into-the-woods-west-end-2025/times-uk--clive-davis.json",
+      "les-miserables-west-end-2021/the-sun--dominic-maxwell.json",
+      "les-miserables-west-end-2021/times-uk--dominic-maxwell.json"
     ],
     "scrapingbee": [
       "summerfolk-west-end-2026/independent--unknown.json",
@@ -165,7 +181,8 @@
       "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/thestage--sam-marlowe.json",
       "data/review-texts/hamilton-west-end-2021/thestage--paul-vale.json",
       "data/review-texts/into-the-woods-west-end-2025/independent--louis-chilton.json",
-      "data/review-texts/kinky-boots-the-musical-west-end-2026/thestage--paul-vale.json"
+      "data/review-texts/kinky-boots-the-musical-west-end-2026/thestage--paul-vale.json",
+      "data/review-texts/les-miserables-west-end-2021/thestage--paul-vale.json"
     ],
     "archive": [
       "the-play-that-goes-wrong-west-end-2021/timeout--anya-ryan.json",
@@ -176,11 +193,13 @@
       "dracula-west-end-2025/mail--patrick-marmion.json",
       "kinky-boots-the-musical-west-end-2026/daily-mail--patrick-marmion.json",
       "kinky-boots-the-musical-west-end-2026/independent--alice-saville.json",
-      "kinky-boots-the-musical-west-end-2026/telegraph--claire-allfree.json"
+      "kinky-boots-the-musical-west-end-2026/telegraph--claire-allfree.json",
+      "les-miserables-west-end-2021/independent--louis-chilton.json",
+      "les-miserables-west-end-2021/thestage--matthew-hemley.json"
     ]
   },
   "startTime": "2026-03-18T14:02:55.843Z",
-  "lastProcessed": "kinky-boots-the-musical-west-end-2026/whatsonstage--alex-wood.json",
+  "lastProcessed": "les-miserables-west-end-2021/whatsonstage--theo-bosanquet.json",
   "log": [
     {
       "t": "2026-03-18T14:04:38.018Z",
@@ -223,6 +242,17 @@
     },
     {
       "t": "2026-03-18T19:20:34.810Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-18T19:24:39.311Z",
+      "event": "bb-session",
+      "session": "876f2f58",
+      "url": "https://www.thestage.co.uk/reviews/reviews/the-producers-review-garrick-theatre-"
+    },
+    {
+      "t": "2026-03-18T19:24:41.060Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }

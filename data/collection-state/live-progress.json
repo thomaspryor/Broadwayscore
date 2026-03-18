@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-18T19:21:00.308Z",
-  "processed": 73,
-  "failed": 8,
-  "successRate": "90.1%",
+  "updatedAt": "2026-03-18T19:25:26.763Z",
+  "processed": 81,
+  "failed": 10,
+  "successRate": "89.0%",
   "tierBreakdown": {
-    "playwright": 51,
+    "playwright": 55,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 2,
+    "directCookies": 4,
     "scrapingbee": 11,
     "brightdata": 0,
-    "archiveToday": 6,
-    "archive": 9
+    "archiveToday": 7,
+    "archive": 11
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-03-18T14:04:38.018Z",
@@ -56,6 +56,17 @@
     },
     {
       "t": "2026-03-18T19:20:34.810Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-18T19:24:39.311Z",
+      "event": "bb-session",
+      "session": "876f2f58",
+      "url": "https://www.thestage.co.uk/reviews/reviews/the-producers-review-garrick-theatre-"
+    },
+    {
+      "t": "2026-03-18T19:24:41.060Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
