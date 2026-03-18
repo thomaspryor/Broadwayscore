@@ -59,7 +59,7 @@ jobs:
             IFS=',' read -ra SHOW_IDS <<< "${{ inputs.shows }}"
             for sid in "${SHOW_IDS[@]}"; do
               echo "Running LBO for: $sid"
-              node scripts/scrape-lbo-audience.js --show="$sid" $DRY_RUN_FLAG
+              node scripts/scrape-lbo-audience.js --show="$sid" $DRY_RUN_FLAG || true
             done
             exit 0
           fi
