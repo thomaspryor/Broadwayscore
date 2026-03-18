@@ -123,29 +123,50 @@ async function loginToTheStage(page) {
   }
 
   // Credential-based login (works via BrowserBase in CI)
-  // Navigate to a paywalled page — the inline login form appears
   console.log('  Logging in to The Stage...');
-  await page.goto('https://www.thestage.co.uk/review-round-ups/review-round-ups', {
-    waitUntil: 'networkidle', timeout: 30000,
-  });
-  await page.waitForTimeout(5000);
 
-  // Dismiss cookie consent if present
-  const cookieBtn = await page.$('button:has-text("Accept All Cookies"), button:has-text("Accept All"), button:has-text("Accept")');
-  if (cookieBtn) {
-    const v = await cookieBtn.isVisible().catch(() => false);
-    if (v) { await cookieBtn.click(); await page.waitForTimeout(1000); }
-  }
+  // Try a known paywalled roundup page first — inline login form appears on these
+  const loginPages = [
+    'https://www.thestage.co.uk/review-round-ups/broken-glass-at-the-young-vic-review-round-up',
+    'https://www.thestage.co.uk/review-round-ups/review-round-ups',
+  ];
 
-  // Find visible email input (there may be multiple — header + inline paywall)
-  const emailInputs = await page.$$('input[type="text"][name="email"], input[type="email"], input[name="email"]');
   let emailInput = null;
-  for (const inp of emailInputs) {
-    if (await inp.isVisible().catch(() => false)) { emailInput = inp; break; }
+
+  for (const loginUrl of loginPages) {
+    console.log(`  Trying login on: ${loginUrl.split('/').pop()}`);
+    await page.goto(loginUrl, { waitUntil: 'networkidle', timeout: 30000 });
+
+    // Wait longer for JS to render the login form
+    await page.waitForTimeout(8000);
+
+    // Scroll down to trigger any lazy-loaded content
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight / 2));
+    await page.waitForTimeout(2000);
+
+    // Dismiss cookie consent if present
+    const cookieBtn = await page.$('button:has-text("Accept All Cookies"), button:has-text("Accept All"), button:has-text("Accept")');
+    if (cookieBtn) {
+      const v = await cookieBtn.isVisible().catch(() => false);
+      if (v) { await cookieBtn.click(); await page.waitForTimeout(1000); }
+    }
+
+    // Try waiting for any email input to appear
+    await page.waitForSelector('input[name="email"], input[type="email"]', { timeout: 10000 }).catch(() => {});
+
+    // Find visible email input (there may be multiple — header + inline paywall)
+    const emailInputs = await page.$$('input[type="text"][name="email"], input[type="email"], input[name="email"]');
+    for (const inp of emailInputs) {
+      if (await inp.isVisible().catch(() => false)) { emailInput = inp; break; }
+    }
+
+    if (emailInput) break;
+    console.log('  No visible login form on this page');
   }
 
   if (!emailInput) {
-    console.log('  ⚠ No visible login form — page may not require auth or JS failed');
+    console.log('  ⚠ No visible login form found on any page — login JS may not have rendered');
+    console.log('  Continuing without auth — will only get non-paywalled content');
     return false;
   }
 
