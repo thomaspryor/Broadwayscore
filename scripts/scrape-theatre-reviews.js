@@ -291,12 +291,12 @@ function writeReviewFiles(reviews, showId) {
     const outletId = review.outletId || normalizeOutlet(review.outlet);
 
     // Check for existing file
-    const existing = findExistingReviewFile(showDir, outletId, criticSlug);
-    const filePath = existing || path.join(showDir, `${outletId}--${criticSlug}.json`);
+    const existingMatch = findExistingReviewFile(showDir, outletId, criticSlug);
+    const filePath = existingMatch ? existingMatch.path : path.join(showDir, `${outletId}--${criticSlug}.json`);
 
     let data = {};
-    if (existing && fs.existsSync(existing)) {
-      try { data = JSON.parse(fs.readFileSync(existing, 'utf8')); } catch (e) {}
+    if (existingMatch && existingMatch.data) {
+      data = existingMatch.data;
     }
 
     // Update with theatre.reviews data
