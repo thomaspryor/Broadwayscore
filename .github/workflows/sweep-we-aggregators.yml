@@ -60,20 +60,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Restore aggregator archives from git
-        run: |
-          # Archives are gitignored but force-added by individual scraper workflows.
-          # Restore them from the latest commit so the sweep can read them.
-          for dir in stagedoor theatre-reviews thestage-roundups westendtheatre; do
-            git show HEAD:data/aggregator-archive/$dir/ >/dev/null 2>&1 && \
-              git checkout HEAD -- data/aggregator-archive/$dir/ 2>/dev/null || \
-              echo "No $dir archives in HEAD"
-          done
-          echo "Restored archives:"
-          for dir in stagedoor theatre-reviews thestage-roundups westendtheatre; do
-            count=$(ls data/aggregator-archive/$dir/ 2>/dev/null | wc -l)
-            echo "  $dir: $count files"
-          done
+      - name: Checkout aggregator archives (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
       - name: Install Playwright Chromium
         run: npx playwright install chromium
