@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-18T04:31:17.653Z",
+  "timestamp": "2026-03-18T04:52:42.586Z",
   "stats": {
     "totalReviews": 31614,
-    "alreadyFlagged": 9392,
+    "alreadyFlagged": 9393,
     "dateGuardCatches": 150,
     "directorMismatch": 1135,
-    "tvFilmSignals": 3507,
-    "londonSignals": 1046,
+    "tvFilmSignals": 3506,
+    "londonSignals": 1045,
     "offBroadwaySignals": 1073,
     "yearMismatch": 92,
-    "noPublishDate": 9413
+    "noPublishDate": 9411
   },
   "findings": [
     {
@@ -14737,20 +14737,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2005 (2x) more than 2024 (0x). 2005 matches production: doubt-2005"
-        }
-      ]
-    },
-    {
-      "showId": "dracula-west-end-2025",
-      "file": "artsdesk--rachel-halliburton.json",
-      "score": 92,
-      "publishDate": "2026-02-18",
-      "url": "https://theartsdesk.com/theatre/dracula-noel-coward-theatre-review-virtuoso-performance-confirms-cynthia-erivos-star-power",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"on screen\""
         }
       ]
     },
@@ -70583,20 +70569,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"donmar warehouse\""
-        }
-      ]
-    },
-    {
-      "showId": "evening-all-afternoon-west-end-2026",
-      "file": "standard--unknown.json",
-      "score": 66,
-      "publishDate": "2026-02-25",
-      "url": "https://www.standard.co.uk/culture/theatre/evening-all-afternoon-b1272389.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
