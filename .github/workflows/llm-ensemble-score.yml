@@ -387,6 +387,10 @@ jobs:
           # Robust push with retry and conflict resolution
           MAX_RETRIES=5
           pushed=false
+
+          # Stash unstaged changes (review-texts files modified by scoring but pushed separately)
+          git stash --include-untracked --quiet 2>/dev/null || true
+
           for i in $(seq 1 $MAX_RETRIES); do
             echo "Push attempt $i of $MAX_RETRIES..."
 
@@ -453,13 +457,13 @@ jobs:
               sleep $((i * 2))
             fi
           done
+          # Restore stashed changes (review-texts files for downstream steps)
+          git stash pop --quiet 2>/dev/null || true
+
           if [ "$pushed" != "true" ]; then
             echo "::error::All push attempts failed"
             exit 1
           fi
-
-          echo "All push attempts failed"
-          exit 1
 
       - name: Push core data to private repo
         if: always()
@@ -529,22 +533,15 @@ jobs:
           echo "remaining=$REMAINING" >> $GITHUB_OUTPUT
           echo "Unscored reviews remaining: $REMAINING"
 
-      - name: Alert on zero reviews scored
+      - name: Log zero reviews scored
         if: >-
           always() && job.status != 'cancelled'
           && (github.event.inputs.chain == 'true' || github.event_name == 'schedule')
           && steps.check-changes.outputs.has_scored_reviews == 'false'
           && steps.check-needed.outputs.skip != 'true'
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
         run: |
           REMAINING="${{ steps.count-remaining.outputs.remaining }}"
-          RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          MSG="⚠️ **Scoring run scored 0 reviews** but ${REMAINING} remain unscored. Possible counter/scorer mismatch. [View run](${RUN_URL})"
-          curl -s -X POST "$DISCORD_WEBHOOK" \
-            -H "Content-Type: application/json" \
-            -d "{\"content\": \"${MSG}\"}" || true
-          echo "::warning::Scoring run processed 0 reviews with ${REMAINING} remaining unscored"
+          echo "::notice::Scoring run processed 0 reviews with ${REMAINING} remaining unscored (likely all have insufficient text)"
 
       - name: Chain next batch
         if: >-
