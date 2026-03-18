@@ -412,7 +412,9 @@ module.exports = { extractReviews, discoverRoundupUrls, extractTitleFromSlug };
 
 // Only run main() when executed directly (not when required)
 if (require.main === module) {
-  main().catch(err => {
+  main().then(() => {
+    process.exit(0);
+  }).catch(err => {
     console.error('Fatal error:', err);
     process.exit(1);
   });
