@@ -61,7 +61,17 @@
     "summerfolk-west-end-2026/london-theatre--unknown.json",
     "summerfolk-west-end-2026/standard--unknown.json",
     "summerfolk-west-end-2026/whatsonstage--unknown.json",
-    "youre-a-good-man-charlie-brown-off-broadway-2026/dc-metro-theater-arts--richard-seff.json"
+    "youre-a-good-man-charlie-brown-off-broadway-2026/dc-metro-theater-arts--richard-seff.json",
+    "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
+    "an-ark-off-broadway-2026/nytg--kyle-turner.json",
+    "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+    "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+    "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+    "chess-2025/hollywood-reporter--angie-han.json",
+    "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nytg--allison-considine.json",
+    "death-becomes-her-2024/newyorker--helen-shaw.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -115,7 +125,15 @@
       "my-joy-is-heavy-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
       "summerfolk-west-end-2026/london-theatre--unknown.json",
       "summerfolk-west-end-2026/standard--unknown.json",
-      "summerfolk-west-end-2026/whatsonstage--unknown.json"
+      "summerfolk-west-end-2026/whatsonstage--unknown.json",
+      "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
+      "an-ark-off-broadway-2026/nytg--kyle-turner.json",
+      "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+      "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+      "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+      "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "data-off-broadway-2026/nytg--allison-considine.json"
     ],
     "amp": [
       "data/review-texts/hamilton-west-end-2021/variety--marilyn-stasio.json",
@@ -163,7 +181,9 @@
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
       "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
       "data/review-texts/hadestown-west-end-2024/observer--david-cote.json",
-      "hadestown-west-end-2024/observer--david-cote.json"
+      "hadestown-west-end-2024/observer--david-cote.json",
+      "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
+      "chess-2025/hollywood-reporter--angie-han.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -177,7 +197,8 @@
       "oh-mary-west-end-2025/guardian--adrian-horton.json",
       "oh-mary-west-end-2025/guardian--arifa-akbar.json",
       "oliver-west-end-2024/guardian--arifa-akbar.json",
-      "my-neighbour-totoro-west-end-2025/independent--annabel-nugent.json"
+      "my-neighbour-totoro-west-end-2025/independent--annabel-nugent.json",
+      "death-becomes-her-2024/newyorker--helen-shaw.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -196,7 +217,7 @@
     ]
   },
   "startTime": "2026-03-18T09:53:53.062Z",
-  "lastProcessed": "youre-a-good-man-charlie-brown-off-broadway-2026/dc-metro-theater-arts--richard-seff.json",
+  "lastProcessed": "death-becomes-her-2024/newyorker--helen-shaw.json",
   "log": [
     {
       "t": "2026-03-18T10:56:24.454Z",
@@ -208,6 +229,17 @@
       "t": "2026-03-18T10:56:25.912Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-18T11:01:28.986Z",
+      "event": "bb-session",
+      "session": "f683d5f4",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-18T11:01:30.696Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
