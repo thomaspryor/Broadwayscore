@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-18T22:22:15.256Z",
+  "timestamp": "2026-03-18T22:53:36.882Z",
   "stats": {
     "totalReviews": 31964,
-    "alreadyFlagged": 9378,
+    "alreadyFlagged": 9379,
     "dateGuardCatches": 182,
     "directorMismatch": 1136,
     "tvFilmSignals": 3515,
-    "londonSignals": 1070,
+    "londonSignals": 1071,
     "offBroadwaySignals": 1074,
     "yearMismatch": 92,
     "noPublishDate": 9609
@@ -14200,6 +14200,11 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hbo max\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -62863,6 +62868,7 @@
     {
       "showId": "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026",
       "file": "times-uk--donald-hutera.json",
+      "score": 84,
       "publishDate": "2024-01-02",
       "url": "https://www.thetimes.co.uk/article/unfortunate-review-a-vampish-squid-commands-this-disney-parody-j6lggll6s",
       "findings": [
