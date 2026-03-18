@@ -306,11 +306,13 @@ async function refreshTodayTixDates(data, updates) {
       continue; // Don't close on first miss
     }
 
-    // Check if missing for 3+ days
+    // Check if missing for 3+ days (or 1+ day if closingDate is already past)
     const missingSince = new Date(show._staleMissingSince);
     const daysMissing = Math.floor((Date.now() - missingSince) / 86400000);
-    if (daysMissing < 3) {
-      console.log(`  🔍 ${show.title} (${cat}): missing ${daysMissing} days (need 3+)`);
+    const closingDatePast = show.closingDate && show.closingDate < today;
+    const requiredDays = closingDatePast ? 1 : 3;
+    if (daysMissing < requiredDays) {
+      console.log(`  🔍 ${show.title} (${cat}): missing ${daysMissing} days (need ${requiredDays}+${closingDatePast ? ' — closing date past' : ''})`);
       continue;
     }
 
@@ -573,16 +575,22 @@ async function updateShowStatuses() {
     // Skip shows just reopened by TodayTix — they were wrongly closed and TodayTix
     // confirms they're still running (even if the endDate is technically past)
     // Grace period gives check-closing-dates.js time to catch extensions
-    if (show.status === 'open' && show.closingDate && isDatePassedByDays(show.closingDate, CLOSING_GRACE_PERIOD_DAYS) && !reopenedIds.has(show.id)) {
+    // Exception: if TodayTix also confirms the show is gone, skip the grace period
+    const ttConfirmsClosed = show._staleMissingSince && !reopenedIds.has(show.id);
+    const graceDays = ttConfirmsClosed ? 1 : CLOSING_GRACE_PERIOD_DAYS;
+    if (show.status === 'open' && show.closingDate && isDatePassedByDays(show.closingDate, graceDays) && !reopenedIds.has(show.id)) {
       changes.status = { from: 'open', to: 'closed' };
-      changes.note = `Closing date ${show.closingDate} passed ${CLOSING_GRACE_PERIOD_DAYS}+ days ago`;
+      changes.note = ttConfirmsClosed
+        ? `Closing date ${show.closingDate} passed and missing from TodayTix`
+        : `Closing date ${show.closingDate} passed ${CLOSING_GRACE_PERIOD_DAYS}+ days ago`;
       if (!dryRun) {
         show.status = 'closed';
+        if (show._staleMissingSince) delete show._staleMissingSince;
       }
     }
 
     // Flag shows approaching closing (but don't change status)
-    if (show.status === 'open' && show.closingDate && isDatePassed(show.closingDate) && !isDatePassedByDays(show.closingDate, CLOSING_GRACE_PERIOD_DAYS)) {
+    if (show.status === 'open' && show.closingDate && isDatePassed(show.closingDate) && !isDatePassedByDays(show.closingDate, graceDays)) {
       console.log(`  ⚠️  ${show.title}: closing date ${show.closingDate} passed - in grace period (check for extension)`);
     }
 
