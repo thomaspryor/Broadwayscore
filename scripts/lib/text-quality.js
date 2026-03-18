@@ -335,9 +335,11 @@ function scoreSource(source) {
     score += 25;
   }
 
-  // Small bonus for length (but not the primary factor)
-  if (source.text?.length > 1000) score += 5;
-  if (source.text?.length > 2000) score += 5;
+  // Length bonus — truncated fullText with substantial content should beat short excerpts
+  // A 4000-char truncated review is far more useful than a 30-char curated excerpt
+  if (source.text?.length > 500) score += 10;
+  if (source.text?.length > 1000) score += 10;
+  if (source.text?.length > 2000) score += 10;
 
   return score;
 }
