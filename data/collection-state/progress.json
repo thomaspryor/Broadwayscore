@@ -63,7 +63,16 @@
     "into-the-woods-west-end-2025/financialtimes--sarah-hemming.json",
     "into-the-woods-west-end-2025/i-paper--fiona-mountford.json",
     "into-the-woods-west-end-2025/times-uk--clive-davis.json",
-    "kinky-boots-the-musical-west-end-2026/attitude--gary-grimes.json"
+    "kinky-boots-the-musical-west-end-2026/attitude--gary-grimes.json",
+    "kinky-boots-the-musical-west-end-2026/city-am--adam-bloodworth.json",
+    "kinky-boots-the-musical-west-end-2026/daily-mail--patrick-marmion.json",
+    "kinky-boots-the-musical-west-end-2026/independent--alice-saville.json",
+    "kinky-boots-the-musical-west-end-2026/london-theatre--anya-ryan.json",
+    "kinky-boots-the-musical-west-end-2026/radio-times--joanna-magill.json",
+    "kinky-boots-the-musical-west-end-2026/standard--nick-curtis.json",
+    "kinky-boots-the-musical-west-end-2026/telegraph--claire-allfree.json",
+    "kinky-boots-the-musical-west-end-2026/the-express--stefan-kyriazis.json",
+    "kinky-boots-the-musical-west-end-2026/whatsonstage--alex-wood.json"
   ],
   "failed": [
     "summerfolk-west-end-2026/thestage--unknown.json",
@@ -72,7 +81,8 @@
     "cabaret-at-the-kit-kat-club-west-end-2021/thestage--sam-marlowe.json",
     "evening-all-afternoon-west-end-2026/the-express--george-simpson.json",
     "hamilton-west-end-2021/thestage--paul-vale.json",
-    "into-the-woods-west-end-2025/independent--louis-chilton.json"
+    "into-the-woods-west-end-2025/independent--louis-chilton.json",
+    "kinky-boots-the-musical-west-end-2026/thestage--paul-vale.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -121,7 +131,13 @@
       "im-sorry-prime-minister-west-end-2026/artsdesk--helen-hawkins.json",
       "into-the-woods-west-end-2025/financialtimes--sarah-hemming.json",
       "into-the-woods-west-end-2025/i-paper--fiona-mountford.json",
-      "kinky-boots-the-musical-west-end-2026/attitude--gary-grimes.json"
+      "kinky-boots-the-musical-west-end-2026/attitude--gary-grimes.json",
+      "kinky-boots-the-musical-west-end-2026/city-am--adam-bloodworth.json",
+      "kinky-boots-the-musical-west-end-2026/london-theatre--anya-ryan.json",
+      "kinky-boots-the-musical-west-end-2026/radio-times--joanna-magill.json",
+      "kinky-boots-the-musical-west-end-2026/standard--nick-curtis.json",
+      "kinky-boots-the-musical-west-end-2026/the-express--stefan-kyriazis.json",
+      "kinky-boots-the-musical-west-end-2026/whatsonstage--alex-wood.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -148,7 +164,8 @@
       "data/review-texts/summerfolk-west-end-2026/times-uk--unknown.json",
       "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/thestage--sam-marlowe.json",
       "data/review-texts/hamilton-west-end-2021/thestage--paul-vale.json",
-      "data/review-texts/into-the-woods-west-end-2025/independent--louis-chilton.json"
+      "data/review-texts/into-the-woods-west-end-2025/independent--louis-chilton.json",
+      "data/review-texts/kinky-boots-the-musical-west-end-2026/thestage--paul-vale.json"
     ],
     "archive": [
       "the-play-that-goes-wrong-west-end-2021/timeout--anya-ryan.json",
@@ -156,11 +173,14 @@
       "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--nick-ferris.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--dominic-maxwell.json",
       "chicago-1996/daily-mail--patrick-marmion.json",
-      "dracula-west-end-2025/mail--patrick-marmion.json"
+      "dracula-west-end-2025/mail--patrick-marmion.json",
+      "kinky-boots-the-musical-west-end-2026/daily-mail--patrick-marmion.json",
+      "kinky-boots-the-musical-west-end-2026/independent--alice-saville.json",
+      "kinky-boots-the-musical-west-end-2026/telegraph--claire-allfree.json"
     ]
   },
   "startTime": "2026-03-18T14:02:55.843Z",
-  "lastProcessed": "kinky-boots-the-musical-west-end-2026/attitude--gary-grimes.json",
+  "lastProcessed": "kinky-boots-the-musical-west-end-2026/whatsonstage--alex-wood.json",
   "log": [
     {
       "t": "2026-03-18T14:04:38.018Z",
@@ -192,6 +212,17 @@
     },
     {
       "t": "2026-03-18T19:13:29.998Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-18T19:20:33.238Z",
+      "event": "bb-session",
+      "session": "a9a188b1",
+      "url": "https://www.thestage.co.uk/reviews/burlesque-review-savoy-theatre-london-christi"
+    },
+    {
+      "t": "2026-03-18T19:20:34.810Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }

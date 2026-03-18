@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-18T19:17:14.456Z",
-  "processed": 64,
-  "failed": 7,
+  "updatedAt": "2026-03-18T19:21:00.308Z",
+  "processed": 73,
+  "failed": 8,
   "successRate": "90.1%",
   "tierBreakdown": {
-    "playwright": 45,
+    "playwright": 51,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 2,
     "scrapingbee": 11,
     "brightdata": 0,
-    "archiveToday": 5,
-    "archive": 6
+    "archiveToday": 6,
+    "archive": 9
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-03-18T14:04:38.018Z",
@@ -45,6 +45,17 @@
     },
     {
       "t": "2026-03-18T19:13:29.998Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-18T19:20:33.238Z",
+      "event": "bb-session",
+      "session": "a9a188b1",
+      "url": "https://www.thestage.co.uk/reviews/burlesque-review-savoy-theatre-london-christi"
+    },
+    {
+      "t": "2026-03-18T19:20:34.810Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
