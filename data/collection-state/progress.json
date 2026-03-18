@@ -140,7 +140,8 @@
     "the-devil-wears-prada-west-end-2024/independent--louis-chilton.json",
     "the-devil-wears-prada-west-end-2024/standard--nick-curtis.json",
     "into-the-woods-west-end-2025/independent--louis-chilton.json",
-    "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json"
+    "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
+    "summerfolk-west-end-2026/telegraph--unknown.json"
   ],
   "failed": [
     "summerfolk-west-end-2026/thestage--unknown.json",
@@ -172,7 +173,16 @@
     "hamilton-west-end-2021/thestage--paul-vale.json",
     "kinky-boots-the-musical-west-end-2026/thestage--paul-vale.json",
     "les-miserables-west-end-2021/thestage--paul-vale.json",
-    "les-miserables-west-end-2021/whatsonstage--theo-bosanquet.json"
+    "les-miserables-west-end-2021/whatsonstage--theo-bosanquet.json",
+    "magic-mike-live-west-end-2021/the-express--neil-norman.json",
+    "magic-mike-live-west-end-2021/thestage--dave-fargnoli.json",
+    "mamma-mia-west-end-2021/times-uk--clive-davis.json",
+    "marie-and-rosetta-west-end-2026/thestage--holly-o.json",
+    "matilda-the-musical-west-end-2021/thestage--sam-marlowe.json",
+    "my-neighbour-totoro-west-end-2025/telegraph--dominic-cavendish.json",
+    "my-neighbour-totoro-west-end-2025/the-sun--dominic-maxwell.json",
+    "starlight-express-west-end-2024/thestage--sam-marlowe.json",
+    "stranger-things-the-first-shadow-west-end-2023/thestage--tom-wicker.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -306,7 +316,8 @@
       "the-choir-of-man-west-end-2026/city-am--adam-bloodworth.json",
       "the-devil-wears-prada-west-end-2024/independent--louis-chilton.json",
       "into-the-woods-west-end-2025/independent--louis-chilton.json",
-      "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json"
+      "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
+      "summerfolk-west-end-2026/telegraph--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -327,7 +338,12 @@
       "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/thestage--sam-marlowe.json",
       "data/review-texts/hamilton-west-end-2021/thestage--paul-vale.json",
       "data/review-texts/kinky-boots-the-musical-west-end-2026/thestage--paul-vale.json",
-      "data/review-texts/les-miserables-west-end-2021/thestage--paul-vale.json"
+      "data/review-texts/les-miserables-west-end-2021/thestage--paul-vale.json",
+      "data/review-texts/magic-mike-live-west-end-2021/thestage--dave-fargnoli.json",
+      "data/review-texts/marie-and-rosetta-west-end-2026/thestage--holly-o.json",
+      "data/review-texts/matilda-the-musical-west-end-2021/thestage--sam-marlowe.json",
+      "data/review-texts/starlight-express-west-end-2024/thestage--sam-marlowe.json",
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/thestage--tom-wicker.json"
     ],
     "archive": [
       "the-play-that-goes-wrong-west-end-2021/timeout--anya-ryan.json",
@@ -350,7 +366,7 @@
     ]
   },
   "startTime": "2026-03-18T14:02:55.843Z",
-  "lastProcessed": "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
+  "lastProcessed": "summerfolk-west-end-2026/telegraph--unknown.json",
   "log": [
     {
       "t": "2026-03-18T14:04:38.018Z",
@@ -525,6 +541,61 @@
     },
     {
       "t": "2026-03-18T20:33:52.596Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-18T20:36:20.950Z",
+      "event": "bb-session",
+      "session": "0fa81d46",
+      "url": "https://www.thestage.co.uk/reviews/the-tempest-review-theatrer-royal-drury-lane-"
+    },
+    {
+      "t": "2026-03-18T20:36:22.260Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-18T20:38:44.443Z",
+      "event": "bb-session",
+      "session": "64881c62",
+      "url": "https://www.thestage.co.uk/reviews/marie-and-rosetta-review-rose-theatre-kingsto"
+    },
+    {
+      "t": "2026-03-18T20:38:45.915Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-18T20:40:41.886Z",
+      "event": "bb-session",
+      "session": "ef69a0f3",
+      "url": "https://www.thestage.co.uk/reviews/paddington-the-musical-review-savoy-theatre-l"
+    },
+    {
+      "t": "2026-03-18T20:40:43.195Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-18T20:42:47.827Z",
+      "event": "bb-session",
+      "session": "96d69e43",
+      "url": "https://www.thestage.co.uk/reviews/paddington-the-musical-review-savoy-theatre-l"
+    },
+    {
+      "t": "2026-03-18T20:42:49.240Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-18T20:44:29.920Z",
+      "event": "bb-session",
+      "session": "2663fc65",
+      "url": "https://www.thestage.co.uk/reviews/the-land-of-the-living-review-national-theatr"
+    },
+    {
+      "t": "2026-03-18T20:44:31.307Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
