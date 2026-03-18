@@ -596,7 +596,11 @@ async function main() {
   }
 }
 
-main().catch(e => {
-  console.error('Fatal error:', e);
-  process.exit(1);
-});
+module.exports = { extractStarRatings, extractSectionReviews, extractShowTitle, stripHtml, fetchRenderedPage };
+
+if (require.main === module) {
+  main().catch(e => {
+    console.error('Fatal error:', e);
+    process.exit(1);
+  });
+}
