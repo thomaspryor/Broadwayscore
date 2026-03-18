@@ -10,7 +10,7 @@
  * 1. Playwright (BrowserBase in CI) to log in + fetch JS-rendered HTML
  * 2. Cheerio extraction from archived HTML
  *
- * Star ratings in link text: "Outlet, ***" or "Outlet, ****"
+ * Star ratings in link text: "Outlet, ★★★" or "Outlet, ****" (Unicode ★ or ASCII *)
  * Critic names inline in prose before parenthetical outlet reference
  *
  * URL pattern: /review-round-ups/{slug}-review-round-up
@@ -343,29 +343,54 @@ async function scrapeRoundups(page, urls, weShows) {
  * Extract reviews from a Stage roundup HTML.
  *
  * The Stage roundups are editorial prose. Critic references follow patterns:
- *   "Critic Name (link[Outlet, ***])"  — outlet as link with stars
- *   "Critic Name (Outlet, ***)"        — plain text
+ *   "Critic Name (link[Outlet, ★★★★])"  — outlet as link with stars
+ *   "Critic Name (Outlet, ***)"          — plain text with ASCII stars
  *
- * Stars are asterisks (*) in the link text or parenthetical.
+ * Stars may be Unicode ★ (U+2605) or ASCII asterisks (*).
+ * Link text sometimes includes leading `(` or trailing `)` from the parenthetical,
+ * or the critic name may be captured inside the link text:
+ *   "Critic Name (Outlet, ★★★★"  — opening paren before link, closing after
+ *   "(Independent, ★★)"          — both parens inside link text
+ *
+ * Half-star ratings appear as "★★★★1/2" — counted as stars + 0.5.
  */
 function extractReviews(html, showId) {
   const $ = cheerio.load(html);
   const reviews = [];
   const seen = new Set(); // dedup by outlet
 
-  // Find all links that contain star ratings (outlet references)
-  // Pattern in link text: "Outlet, ***" or "Outlet, ****"
+  // Star character class: ASCII * or Unicode ★ (U+2605)
+  // Regex to match link text containing "Outlet, <stars>" with optional surrounding parens/text
+  // Handles: "Outlet, ★★★★", "(Outlet, ★★)", "Critic Name (Outlet, ★★★★",
+  //          "The Stage, ***)", "Outlet, ★★★★1/2"
+  const STAR_PATTERN = /(?:^|\()\s*(?:(?:[A-Z][a-z]+(?:\s+[A-Z][a-z']+(?:-[A-Z][a-z]+)?)*)\s*\()?\s*(?:the\s+)?(.+?),\s*([★*]{1,5})(?:1\/2)?\s*\)?\s*\.?$/;
+
   $('a[href]').each((_, el) => {
     const $a = $(el);
     const linkText = $a.text().trim();
     const href = $a.attr('href') || '';
 
-    // Match "Outlet, ***" pattern (1-5 asterisks)
-    const starMatch = linkText.match(/^(.+?),\s*(\*{1,5})\)?$/);
+    // Quick pre-filter: must contain at least one star character
+    if (!linkText.includes('★') && !linkText.includes('*')) return;
+
+    // Match star rating pattern in link text
+    const starMatch = linkText.match(STAR_PATTERN);
     if (!starMatch) return;
 
-    const outlet = starMatch[1].trim();
-    const stars = starMatch[2].length;
+    let outlet = starMatch[1].trim();
+    const starChars = starMatch[2];
+    const stars = starChars.length;
+    // Detect half-star
+    const hasHalf = /[★*]{1,5}1\/2/.test(linkText);
+
+    // Clean up outlet name — remove leading "the ", "(", or other junk
+    outlet = outlet.replace(/^\(+/, '').replace(/^the\s+/i, '').trim();
+
+    // Fix known truncated outlet names from HTML rendering issues
+    if (/^hatsOnStage$/i.test(outlet)) outlet = 'WhatsOnStage';
+
+    // Skip bare star-only links with no outlet name
+    if (!outlet || outlet.length < 1) return;
 
     // Skip if not a review URL
     if (!href.startsWith('http') && !href.startsWith('/')) return;
@@ -376,33 +401,58 @@ function extractReviews(html, showId) {
     if (seen.has(outletId)) return;
     seen.add(outletId);
 
-    // Extract critic name from surrounding text
-    // Look at the parent paragraph text before this link
+    // Extract critic name from surrounding HTML context
+    // The pattern is: "Critic Name (" immediately before the <a> tag in the parent element
     const $parent = $a.closest('p');
+    const parentHtml = $parent.html() || '';
     const parentText = $parent.text() || '';
 
     let critic = 'Unknown';
 
-    // Find critic name before the parenthetical containing this outlet
-    // Pattern: "Critic Name (Outlet, ***)"
-    // The outlet reference is typically in parentheses
-    const outletEscaped = outlet.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const criticBeforeOutlet = parentText.match(
-      new RegExp(`([A-Z][a-z]+(?:\\s[A-Z][a-z]+(?:-[A-Z][a-z]+)?)*)\\s*\\((?:.*?${outletEscaped}|${outletEscaped})`, 'i')
-    );
-    if (criticBeforeOutlet) {
-      critic = criticBeforeOutlet[1].trim();
+    // Strategy 1: Look at the HTML before this link for "Name (" pattern
+    const linkHtml = $.html(el);
+    const linkIdx = parentHtml.indexOf(linkHtml);
+    if (linkIdx > 0) {
+      // Get text content before this link by parsing the preceding HTML fragment
+      const beforeHtml = parentHtml.substring(Math.max(0, linkIdx - 200), linkIdx);
+      const beforeText = cheerio.load(`<p>${beforeHtml}</p>`)('p').text();
+
+      // Match "Critic Name (" at the end of the preceding text
+      // Handles: "writes Alice Saville (", "for Tim Bano (", "Dominic Cavendish ("
+      // Use a non-capturing prefix to skip common prose words (for, and, but, etc.)
+      const criticMatch = beforeText.match(
+        /(?:^|[,;:]\s*|\.\s+|[""]\s*|[a-z]\s+)([A-Z][a-zé]+(?:['\u2019]?[A-Za-z]*)?(?:\s+(?:de\s+|van\s+|von\s+)?[A-Z][a-zé]+(?:-[A-Z][a-zé]+)?){1,3})\s*\(\s*$/
+      );
+      if (criticMatch) {
+        critic = criticMatch[1].trim();
+      }
+    }
+
+    // Clean up critic name — strip leading prose words captured by the regex
+    // e.g. "For Clive Davis", "And Arifa Akbar", "But Tim Bano", "Only Martin Robinson"
+    if (critic !== 'Unknown') {
+      critic = critic.replace(/^(?:For|And|But|Only|While|As|Yet)\s+/i, '').trim();
+    }
+
+    // Strategy 2: If critic name was embedded in the link text itself
+    // Pattern: "Critic Name (Outlet, ★★★★"
+    if (critic === 'Unknown') {
+      const embeddedCritic = linkText.match(
+        /^([A-Z][a-zé]+(?:\s+[A-Z][a-zé]+(?:-[A-Z][a-zé]+)?){1,2})\s*\(/
+      );
+      if (embeddedCritic) {
+        critic = embeddedCritic[1].trim();
+      }
     }
 
     // Extract excerpt: the sentence/clause containing this critic reference
     let excerpt = '';
-    // Find the sentence around the outlet mention
     const sentences = parentText.split(/(?<=[.!?])\s+/);
     for (const sent of sentences) {
       if (sent.includes(outlet) || (critic !== 'Unknown' && sent.includes(critic))) {
-        // Clean up the sentence — remove the parenthetical rating
+        // Clean up the sentence — remove parenthetical ratings (both Unicode and ASCII stars)
         excerpt = sent
-          .replace(/\([^)]*\*{1,5}\)/g, '')
+          .replace(/\([^)]*[★*]{1,5}(?:1\/2)?\s*\)/g, '')
           .replace(/\s+/g, ' ')
           .trim();
         break;
@@ -413,7 +463,7 @@ function extractReviews(html, showId) {
       outlet,
       outletId,
       critic,
-      stars,
+      stars: hasHalf ? stars + 0.5 : stars,
       starsOutOf: 5,
       excerpt: excerpt.substring(0, 500),
       url: reviewUrl,
