@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-18T19:10:58.758Z",
-  "processed": 47,
-  "failed": 4,
-  "successRate": "92.2%",
+  "updatedAt": "2026-03-18T19:13:55.567Z",
+  "processed": 55,
+  "failed": 6,
+  "successRate": "90.2%",
   "tierBreakdown": {
-    "playwright": 34,
+    "playwright": 39,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 10,
     "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 3
+    "archiveToday": 4,
+    "archive": 6
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-03-18T14:04:38.018Z",
@@ -34,6 +34,17 @@
     },
     {
       "t": "2026-03-18T19:10:40.236Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-18T19:13:28.369Z",
+      "event": "bb-session",
+      "session": "e108e65d",
+      "url": "https://www.thestage.co.uk/reviews/sleeping-beauty-review-london-palladium-cathe"
+    },
+    {
+      "t": "2026-03-18T19:13:29.998Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }

@@ -46,13 +46,23 @@
     "broken-glass-west-end-2026/the-express--unknown.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/financialtimes--sarah-hemming.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/independent--annabel-nugent.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--nick-ferris.json"
+    "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--nick-ferris.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--dominic-maxwell.json",
+    "chicago-1996/daily-mail--patrick-marmion.json",
+    "dracula-west-end-2025/mail--patrick-marmion.json",
+    "evening-all-afternoon-west-end-2026/i-paper--fiona-mountford.json",
+    "evening-all-afternoon-west-end-2026/standard--nick-curits.json",
+    "evening-all-afternoon-west-end-2026/the-sun--dominic-maxwell.json",
+    "hadestown-west-end-2024/independent--unknown.json",
+    "hamilton-west-end-2021/times-uk--clive-davis.json"
   ],
   "failed": [
     "summerfolk-west-end-2026/thestage--unknown.json",
     "summerfolk-west-end-2026/times-uk--unknown.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/observer--susannah-clapp.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/thestage--sam-marlowe.json"
+    "cabaret-at-the-kit-kat-club-west-end-2021/thestage--sam-marlowe.json",
+    "evening-all-afternoon-west-end-2026/the-express--george-simpson.json",
+    "hamilton-west-end-2021/thestage--paul-vale.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -90,7 +100,12 @@
       "arcadia-west-end-2026/i-paper--fiona-mountford.json",
       "broken-glass-west-end-2026/financialtimes--tim-bano.json",
       "broken-glass-west-end-2026/the-express--unknown.json",
-      "cabaret-at-the-kit-kat-club-west-end-2021/financialtimes--sarah-hemming.json"
+      "cabaret-at-the-kit-kat-club-west-end-2021/financialtimes--sarah-hemming.json",
+      "evening-all-afternoon-west-end-2026/i-paper--fiona-mountford.json",
+      "evening-all-afternoon-west-end-2026/standard--nick-curits.json",
+      "evening-all-afternoon-west-end-2026/the-sun--dominic-maxwell.json",
+      "hadestown-west-end-2024/independent--unknown.json",
+      "hamilton-west-end-2021/times-uk--clive-davis.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -111,16 +126,20 @@
     "archiveToday": [
       "data/review-texts/summerfolk-west-end-2026/thestage--unknown.json",
       "data/review-texts/summerfolk-west-end-2026/times-uk--unknown.json",
-      "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/thestage--sam-marlowe.json"
+      "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/thestage--sam-marlowe.json",
+      "data/review-texts/hamilton-west-end-2021/thestage--paul-vale.json"
     ],
     "archive": [
       "the-play-that-goes-wrong-west-end-2021/timeout--anya-ryan.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/independent--annabel-nugent.json",
-      "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--nick-ferris.json"
+      "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--nick-ferris.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--dominic-maxwell.json",
+      "chicago-1996/daily-mail--patrick-marmion.json",
+      "dracula-west-end-2025/mail--patrick-marmion.json"
     ]
   },
   "startTime": "2026-03-18T14:02:55.843Z",
-  "lastProcessed": "cabaret-at-the-kit-kat-club-west-end-2021/thestage--sam-marlowe.json",
+  "lastProcessed": "hamilton-west-end-2021/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-03-18T14:04:38.018Z",
@@ -141,6 +160,17 @@
     },
     {
       "t": "2026-03-18T19:10:40.236Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-18T19:13:28.369Z",
+      "event": "bb-session",
+      "session": "e108e65d",
+      "url": "https://www.thestage.co.uk/reviews/sleeping-beauty-review-london-palladium-cathe"
+    },
+    {
+      "t": "2026-03-18T19:13:29.998Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
