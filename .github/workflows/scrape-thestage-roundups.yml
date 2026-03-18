@@ -1,0 +1,126 @@
+name: Scrape The Stage Roundups
+
+on:
+  schedule:
+    # Weekly on Tuesdays at 7 AM UTC (2 AM EST)
+    - cron: '0 7 * * 2'
+  workflow_dispatch:
+    inputs:
+      shows:
+        description: 'Comma-separated show IDs'
+        required: false
+        type: string
+      dry_run:
+        description: 'Dry run (no writes)'
+        required: false
+        type: boolean
+        default: false
+      force:
+        description: 'Re-fetch shows with existing archives'
+        required: false
+        type: boolean
+        default: false
+      extract_only:
+        description: 'Extract from existing archives only (no Playwright)'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: thestage-roundups-scrape
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  scrape-thestage-roundups:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium
+        if: inputs.extract_only != true
+        run: npx playwright install chromium
+
+      - name: Run The Stage roundups scraper
+        env:
+          THESTAGE_EMAIL: ${{ secrets.THESTAGE_EMAIL }}
+          THESTAGE_PASSWORD: ${{ secrets.THESTAGE_PASSWORD }}
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+        run: |
+          ARGS=""
+
+          if [ -n "${{ inputs.shows }}" ]; then
+            ARGS="$ARGS --shows=${{ inputs.shows }}"
+          fi
+
+          if [ "${{ inputs.force }}" = "true" ]; then
+            ARGS="$ARGS --force"
+          fi
+
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+
+          if [ "${{ inputs.extract_only }}" = "true" ]; then
+            ARGS="$ARGS --extract-only"
+          fi
+
+          # shellcheck disable=SC2086
+          node scripts/scrape-thestage-roundups.js $ARGS
+
+      - name: Commit archives
+        if: always() && inputs.dry_run != true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f data/aggregator-archive/thestage-roundups/
+          git diff --staged --quiet && echo "No archive changes" && exit 0
+          git commit -m "data: Update The Stage roundup archives"
+          bash scripts/lib/push-with-retry.sh 5 main
+
+      - name: Push review-texts to private repo
+        if: always() && inputs.dry_run != true
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from scrape-thestage-roundups'
+
+      - name: Trigger rebuild
+        if: always() && inputs.dry_run != true
+        run: |
+          gh workflow run rebuild-reviews.yml -f reason="Post The Stage roundups scrape" || echo "Rebuild dispatch failed"
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Scrape The Stage Roundups Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
