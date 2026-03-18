@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-18T11:50:39.235Z",
+  "timestamp": "2026-03-18T12:14:55.095Z",
   "stats": {
-    "totalReviews": 31654,
-    "alreadyFlagged": 9397,
+    "totalReviews": 31655,
+    "alreadyFlagged": 9396,
     "dateGuardCatches": 152,
     "directorMismatch": 1134,
-    "tvFilmSignals": 3507,
+    "tvFilmSignals": 3506,
     "londonSignals": 1053,
     "offBroadwaySignals": 1074,
     "yearMismatch": 92,
-    "noPublishDate": 9424
+    "noPublishDate": 9426
   },
   "findings": [
     {
@@ -58947,20 +58947,6 @@
     },
     {
       "showId": "the-producers-west-end-2025",
-      "file": "timeout-london--unknown.json",
-      "score": 75,
-      "publishDate": "2025-09-14",
-      "url": "https://www.timeout.com/london/theatre/the-producers-3-review-2",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hbo max\""
-        }
-      ]
-    },
-    {
-      "showId": "the-producers-west-end-2025",
       "file": "variety--bob-verini.json",
       "score": 75,
       "publishDate": "2026-02-11",
@@ -82834,6 +82820,7 @@
     {
       "showId": "summerfolk-west-end-2026",
       "file": "london-box-office--stuart-king.json",
+      "score": 67,
       "publishDate": "2026-03-18",
       "url": "https://www.londonboxoffice.co.uk/news/post/summerfolk-nt-review",
       "findings": [
