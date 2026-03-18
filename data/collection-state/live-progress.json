@@ -1,32 +1,20 @@
 {
-  "updatedAt": "2026-03-18T09:50:33.650Z",
-  "processed": 249,
+  "updatedAt": "2026-03-18T09:52:08.177Z",
+  "processed": 259,
   "failed": 21,
-  "successRate": "92.2%",
+  "successRate": "92.5%",
   "tierBreakdown": {
-    "playwright": 157,
+    "playwright": 161,
     "amp": 24,
-    "browserbase": 14,
+    "browserbase": 16,
     "directCookies": 0,
-    "scrapingbee": 11,
+    "scrapingbee": 12,
     "brightdata": 0,
     "archiveToday": 4,
-    "archive": 63
+    "archive": 67
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-03-18T09:06:23.652Z",
-      "event": "bb-session",
-      "session": "382e974c",
-      "url": "https://www.thestage.co.uk/news/back-to-the-future-the-musical-announces-west-en"
-    },
-    {
-      "t": "2026-03-18T09:07:03.199Z",
-      "event": "bb-login-fail",
-      "domain": "thestage.co.uk",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    32 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
-    },
     {
       "t": "2026-03-18T09:31:32.081Z",
       "event": "bb-session",
@@ -125,6 +113,17 @@
       "t": "2026-03-18T09:48:09.973Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-18T09:50:52.497Z",
+      "event": "bb-session",
+      "session": "5160b8f5",
+      "url": "https://deadline.com/2019/10/little-shop-of-horrors-review-jonathan-groff-tammy-"
+    },
+    {
+      "t": "2026-03-18T09:50:53.952Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
