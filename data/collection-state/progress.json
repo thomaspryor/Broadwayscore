@@ -571,7 +571,16 @@
     "heathers-the-musical-off-broadway-2025/off-off-online--jessica-taghap.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
     "heathers-the-musical-off-broadway-2025/theater-pizzazz--ron-fassler.json",
-    "hercules-west-end-2025/artsdesk--unknown.json"
+    "hercules-west-end-2025/artsdesk--unknown.json",
+    "hercules-west-end-2025/daily-mail--patrick-marmion.json",
+    "hercules-west-end-2025/i-paper--unknown.json",
+    "hercules-west-end-2025/london-theatre--olivia-rook.json",
+    "hercules-west-end-2025/standard--nick-curtis.json",
+    "hercules-west-end-2025/the-express--stefan-kyriazis.json",
+    "hercules-west-end-2025/the-paper--fiona-mountford.json",
+    "hercules-west-end-2025/theatre-weekly--greg-stewart.json",
+    "hercules-west-end-2025/times-uk--clive-davis.json",
+    "hercules-west-end-2025/whatsonstage--sarah-crompton.json"
   ],
   "failed": [
     "arcadia-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -7314,7 +7323,8 @@
     "deep-azure-globe-west-end-2026/broadwayworld--unknown.json",
     "dracula-west-end-2025/times-uk--clive-davis.json",
     "hadestown-west-end-2024/times-uk--clive-davis.json",
-    "harry-potter-2021/broadway-and-me--janice-c-simpson.json"
+    "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
+    "hercules-west-end-2025/thestage--sam-marlowe.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -7630,7 +7640,14 @@
       "heathers-the-musical-off-broadway-2025/culturesauce--unknown.json",
       "heathers-the-musical-off-broadway-2025/nysr--david-finkle.json",
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-      "hercules-west-end-2025/artsdesk--unknown.json"
+      "hercules-west-end-2025/artsdesk--unknown.json",
+      "hercules-west-end-2025/i-paper--unknown.json",
+      "hercules-west-end-2025/london-theatre--olivia-rook.json",
+      "hercules-west-end-2025/standard--nick-curtis.json",
+      "hercules-west-end-2025/the-express--stefan-kyriazis.json",
+      "hercules-west-end-2025/theatre-weekly--greg-stewart.json",
+      "hercules-west-end-2025/times-uk--clive-davis.json",
+      "hercules-west-end-2025/whatsonstage--sarah-crompton.json"
     ],
     "amp": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--unknown.json",
@@ -7967,7 +7984,8 @@
       "data/review-texts/mother-russia-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
       "data/review-texts/back-to-the-future-west-end-2021/thestage--unknown.json",
       "data/review-texts/summerfolk-west-end-2026/times-uk--unknown.json",
-      "data/review-texts/deep-azure-globe-west-end-2026/broadwayworld--unknown.json"
+      "data/review-texts/deep-azure-globe-west-end-2026/broadwayworld--unknown.json",
+      "data/review-texts/hercules-west-end-2025/thestage--sam-marlowe.json"
     ],
     "archive": [
       "hamilton-2015/nytimes--ben-brantley.json",
@@ -8109,11 +8127,13 @@
       "heathers-the-musical-off-broadway-2025/frontmezzjunkies--ross.json",
       "heathers-the-musical-off-broadway-2025/northjerseycom--robert-feldberg.json",
       "heathers-the-musical-off-broadway-2025/off-off-online--jessica-taghap.json",
-      "heathers-the-musical-off-broadway-2025/theater-pizzazz--ron-fassler.json"
+      "heathers-the-musical-off-broadway-2025/theater-pizzazz--ron-fassler.json",
+      "hercules-west-end-2025/daily-mail--patrick-marmion.json",
+      "hercules-west-end-2025/the-paper--fiona-mountford.json"
     ]
   },
   "startTime": "2026-03-17T16:01:32.909Z",
-  "lastProcessed": "hercules-west-end-2025/artsdesk--unknown.json",
+  "lastProcessed": "hercules-west-end-2025/whatsonstage--sarah-crompton.json",
   "log": [
     {
       "t": "2026-03-17T19:49:25.050Z",
@@ -8279,6 +8299,17 @@
       "t": "2026-03-17T21:28:19.568Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-18T04:50:26.868Z",
+      "event": "bb-session",
+      "session": "155b2ced",
+      "url": "https://www.thestage.co.uk/review-round-ups/hercules-at-the-theatre-royal-drury-"
+    },
+    {
+      "t": "2026-03-18T04:50:28.440Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
