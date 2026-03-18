@@ -6,7 +6,17 @@
     "hamilton-west-end-2021/variety--marilyn-stasio.json",
     "hercules-west-end-2025/nytimes--matt-wolf.json",
     "hercules-west-end-2025/variety--david-benedict.json",
-    "mamma-mia-west-end-2021/variety--matt-wolf.json"
+    "mamma-mia-west-end-2021/variety--matt-wolf.json",
+    "mamma-mia-west-end-2021/variety--owen-gleiberman.json",
+    "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+    "paddington-the-musical-west-end-2025/variety--david-benedict.json",
+    "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
+    "the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
+    "the-lion-king-west-end-2021/variety--matt-wolf.json",
+    "all-my-sons-west-end-2025/guardian--arifa-akbar.json",
+    "all-my-sons-west-end-2025/timeout--helen-shaw.json",
+    "arcadia-west-end-2026/timeout--unknown.json",
+    "back-to-the-future-west-end-2021/timeout--adam-feldman.json"
   ],
   "failed": [
     "broken-glass-west-end-2026/times-uk--observes-andrzej-lukowski.json",
@@ -15,7 +25,12 @@
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "all-my-sons-west-end-2025/guardian--arifa-akbar.json",
+      "all-my-sons-west-end-2025/timeout--helen-shaw.json",
+      "arcadia-west-end-2026/timeout--unknown.json",
+      "back-to-the-future-west-end-2021/timeout--adam-feldman.json"
+    ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
       "back-to-the-future-west-end-2021/variety--david-benedict.json",
@@ -24,7 +39,17 @@
       "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
       "hercules-west-end-2025/variety--david-benedict.json",
       "data/review-texts/mamma-mia-west-end-2021/variety--matt-wolf.json",
-      "mamma-mia-west-end-2021/variety--matt-wolf.json"
+      "mamma-mia-west-end-2021/variety--matt-wolf.json",
+      "data/review-texts/mamma-mia-west-end-2021/variety--owen-gleiberman.json",
+      "mamma-mia-west-end-2021/variety--owen-gleiberman.json",
+      "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "data/review-texts/paddington-the-musical-west-end-2025/variety--david-benedict.json",
+      "paddington-the-musical-west-end-2025/variety--david-benedict.json",
+      "data/review-texts/the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
+      "the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
+      "data/review-texts/the-lion-king-west-end-2021/variety--matt-wolf.json",
+      "the-lion-king-west-end-2021/variety--matt-wolf.json"
     ],
     "browserbase": [],
     "directCookies": [],
@@ -34,10 +59,11 @@
     "archive": [
       "shadowlands-west-end-2026/broadwayworld--aliya-al-hussan.json",
       "hamilton-west-end-2021/nytimes--unknown.json",
-      "hercules-west-end-2025/nytimes--matt-wolf.json"
+      "hercules-west-end-2025/nytimes--matt-wolf.json",
+      "romeo-and-juliet-west-end-2026/nytimes--unknown.json"
     ]
   },
   "startTime": "2026-03-18T09:19:51.896Z",
-  "lastProcessed": "mamma-mia-west-end-2021/variety--matt-wolf.json",
+  "lastProcessed": "back-to-the-future-west-end-2021/timeout--adam-feldman.json",
   "log": []
 }
