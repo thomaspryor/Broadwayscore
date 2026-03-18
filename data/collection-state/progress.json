@@ -138,7 +138,9 @@
     "the-choir-of-man-west-end-2026/the-express--david-snelling.json",
     "the-choir-of-man-west-end-2026/whatsonstage--anna-james.json",
     "the-devil-wears-prada-west-end-2024/independent--louis-chilton.json",
-    "the-devil-wears-prada-west-end-2024/standard--nick-curtis.json"
+    "the-devil-wears-prada-west-end-2024/standard--nick-curtis.json",
+    "into-the-woods-west-end-2025/independent--louis-chilton.json",
+    "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json"
   ],
   "failed": [
     "summerfolk-west-end-2026/thestage--unknown.json",
@@ -162,7 +164,15 @@
     "stranger-things-the-first-shadow-west-end-2023/thestage--tom-wicker.json",
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
     "the-choir-of-man-off-west-end-2026/thestage--tom-wicker.json",
-    "the-choir-of-man-west-end-2026/thestage--tom-wicker.json"
+    "the-choir-of-man-west-end-2026/thestage--tom-wicker.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/observer--susannah-clapp.json",
+    "wicked-west-end-2021/nydailynews--stanford-friedman.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/thestage--sam-marlowe.json",
+    "evening-all-afternoon-west-end-2026/the-express--george-simpson.json",
+    "hamilton-west-end-2021/thestage--paul-vale.json",
+    "kinky-boots-the-musical-west-end-2026/thestage--paul-vale.json",
+    "les-miserables-west-end-2021/thestage--paul-vale.json",
+    "les-miserables-west-end-2021/whatsonstage--theo-bosanquet.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -294,7 +304,9 @@
       "stranger-things-the-first-shadow-west-end-2023/independent--ella-duggan.json",
       "the-choir-of-man-off-west-end-2026/city-am--adam-bloodworth.json",
       "the-choir-of-man-west-end-2026/city-am--adam-bloodworth.json",
-      "the-devil-wears-prada-west-end-2024/independent--louis-chilton.json"
+      "the-devil-wears-prada-west-end-2024/independent--louis-chilton.json",
+      "into-the-woods-west-end-2025/independent--louis-chilton.json",
+      "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -311,7 +323,11 @@
       "data/review-texts/starlight-express-west-end-2024/thestage--sam-marlowe.json",
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/thestage--tom-wicker.json",
       "data/review-texts/the-choir-of-man-off-west-end-2026/thestage--tom-wicker.json",
-      "data/review-texts/the-choir-of-man-west-end-2026/thestage--tom-wicker.json"
+      "data/review-texts/the-choir-of-man-west-end-2026/thestage--tom-wicker.json",
+      "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/thestage--sam-marlowe.json",
+      "data/review-texts/hamilton-west-end-2021/thestage--paul-vale.json",
+      "data/review-texts/kinky-boots-the-musical-west-end-2026/thestage--paul-vale.json",
+      "data/review-texts/les-miserables-west-end-2021/thestage--paul-vale.json"
     ],
     "archive": [
       "the-play-that-goes-wrong-west-end-2021/timeout--anya-ryan.json",
@@ -334,7 +350,7 @@
     ]
   },
   "startTime": "2026-03-18T14:02:55.843Z",
-  "lastProcessed": "the-devil-wears-prada-west-end-2024/standard--nick-curtis.json",
+  "lastProcessed": "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
   "log": [
     {
       "t": "2026-03-18T14:04:38.018Z",
@@ -465,6 +481,50 @@
     },
     {
       "t": "2026-03-18T19:51:06.569Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-18T20:27:27.158Z",
+      "event": "bb-session",
+      "session": "4ed2313d",
+      "url": "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-at-the-almeida-theatr"
+    },
+    {
+      "t": "2026-03-18T20:27:28.450Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-18T20:29:11.626Z",
+      "event": "bb-session",
+      "session": "f2911a38",
+      "url": "https://www.thestage.co.uk/reviews/sleeping-beauty-review-london-palladium-cathe"
+    },
+    {
+      "t": "2026-03-18T20:29:13.099Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-18T20:31:32.955Z",
+      "event": "bb-session",
+      "session": "2aafa4bd",
+      "url": "https://www.thestage.co.uk/reviews/burlesque-review-savoy-theatre-london-christi"
+    },
+    {
+      "t": "2026-03-18T20:31:34.162Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-18T20:33:51.369Z",
+      "event": "bb-session",
+      "session": "b7d32b10",
+      "url": "https://www.thestage.co.uk/reviews/reviews/the-producers-review-garrick-theatre-"
+    },
+    {
+      "t": "2026-03-18T20:33:52.596Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
