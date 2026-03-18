@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-18T09:58:00.066Z",
+  "timestamp": "2026-03-18T10:38:00.419Z",
   "stats": {
-    "totalReviews": 31644,
-    "alreadyFlagged": 9402,
+    "totalReviews": 31649,
+    "alreadyFlagged": 9371,
     "dateGuardCatches": 152,
-    "directorMismatch": 1133,
-    "tvFilmSignals": 3506,
-    "londonSignals": 1049,
-    "offBroadwaySignals": 1074,
+    "directorMismatch": 1134,
+    "tvFilmSignals": 3509,
+    "londonSignals": 1052,
+    "offBroadwaySignals": 1075,
     "yearMismatch": 92,
-    "noPublishDate": 9424
+    "noPublishDate": 9425
   },
   "findings": [
     {
@@ -36503,6 +36503,7 @@
     {
       "showId": "my-joy-is-heavy-off-broadway-2025",
       "file": "nytg--unknown.json",
+      "score": 75,
       "publishDate": "2026-03-17",
       "url": "https://www.newyorktheatreguide.com/reviews/my-joy-is-heavy-off-broadway-review",
       "findings": [
@@ -44112,6 +44113,34 @@
     },
     {
       "showId": "rodgers-hammersteins-cinderella-2013",
+      "file": "out-in-jersey--allen-neuner.json",
+      "score": null,
+      "publishDate": "November 27th, 2019",
+      "url": "https://outinjersey.net/rodgers-hammersteins-cinderella-is-a-classic-fairy-tale-with-a-clever-modern-sensibility/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "rodgers-hammersteins-cinderella-2013",
+      "file": "talkinbroadway--bob-rendell.json",
+      "score": null,
+      "publishDate": "November 29th, 2019",
+      "url": "https://www.talkinbroadway.com/page/regional/nj/nj761.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "rodgers-hammersteins-cinderella-2013",
       "file": "usatoday--elysa-gardner.json",
       "score": 82,
       "publishDate": null,
@@ -49614,6 +49643,20 @@
       "score": 81,
       "publishDate": "May 10th, 2017",
       "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "sweat-2017",
+      "file": "broadwayworld--charles-shubow.json",
+      "score": null,
+      "publishDate": "January 25th, 2016",
+      "url": "http://www.broadwayworld.com/washington-dc/article/BWW-Review-SWEAT-at-Arena-Stage-World-Premiere-Co-Production-with-Oregon-Shakespeare-Festival-is-Riveting-Theater-20160125",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -65453,6 +65496,20 @@
     },
     {
       "showId": "youre-a-good-man-charlie-brown-off-broadway-2026",
+      "file": "front-row-center--holli-harms.json",
+      "score": null,
+      "publishDate": "June 10th, 2016",
+      "url": "http://thefrontrowcenter.com/2016/06/youre-a-good-man-charlie-brown/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from youre-a-good-man-charlie-brown-1999"
+        }
+      ]
+    },
+    {
+      "showId": "youre-a-good-man-charlie-brown-off-broadway-2026",
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 37,
       "publishDate": null,
@@ -66279,6 +66336,20 @@
       "score": 78,
       "publishDate": "November 13, 2015",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/arthur-millers-a-view-bridge-839854/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-2015",
+      "file": "limelight-magazine-au--carol-metcalfe.json",
+      "score": null,
+      "publishDate": "April 23rd, 2015",
+      "url": "http://www.limelightmagazine.com.au/live-reviews/review-view-bridge-national-theatre-live",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -72987,6 +73058,20 @@
     },
     {
       "showId": "hand-to-god-2015",
+      "file": "new-jersey-newsroom--michael-sommers.json",
+      "score": null,
+      "publishDate": "March 11th, 2014",
+      "url": "http://www.newjerseynewsroom.com/movies/hand-to-god-off-broadway-review-a-diabolically-droll-comedy",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "hand-to-god-2015",
       "file": "njcom--ronnie-reich.json",
       "score": 88,
       "publishDate": null,
@@ -78355,6 +78440,7 @@
     {
       "showId": "my-joy-is-heavy-off-broadway-2025",
       "file": "vulture--unknown.json",
+      "score": 57,
       "publishDate": "2026-03-17",
       "url": "https://www.vulture.com/article/review-bengsons-my-joy-is-heavy-nytw.html",
       "findings": [
@@ -80740,6 +80826,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "file": "nytimes--unknown.json",
+      "score": 75,
+      "publishDate": "March 1, 2026",
+      "url": "https://www.nytimes.com/2024/05/24/theater/tom-holland-romeo-and-juliet.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
@@ -87275,6 +87375,20 @@
       "score": 85,
       "publishDate": "2023-11-15",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-play-that-goes-wrong-duchess-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "file": "timeout-london--unknown.json",
+      "score": 72,
+      "publishDate": "September 15th, 2014",
+      "url": "https://www.timeout.com/london/theatre/the-play-that-goes-wrong-1",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
