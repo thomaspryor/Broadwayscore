@@ -90,7 +90,16 @@
     "moulin-rouge-2019/nytimes--ben-brantley.json",
     "my-joy-is-heavy-off-broadway-2025/nytg--unknown.json",
     "my-joy-is-heavy-off-broadway-2025/vulture--unknown.json",
-    "night-side-songs-off-broadway-2026/nytg--kyle-turner.json"
+    "night-side-songs-off-broadway-2026/nytg--kyle-turner.json",
+    "night-side-songs-off-broadway-2026/vulture--jonathan-mandell.json",
+    "oh-mary-2024/hollywood-reporter--david-rooney.json",
+    "oh-mary-2024/nytimes--erik-piepenburg.json",
+    "oh-mary-2024/vulture--helen-shaw.json",
+    "pied-a-terre-off-broadway-2026/nytg--unknown.json",
+    "ragtime-2025/nyt-theater--unknown.json",
+    "ragtime-2025/nytimes--unknown.json",
+    "sexual-misconduct-of-the-middle-classes-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytg--joe-dziemianowicz.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
@@ -98,7 +107,8 @@
     "my-joy-is-heavy-off-broadway-2025/talkinbroadway--unknown.json",
     "titus-andronicus-off-broadway-2026/broadwayworld--michael-dale.json",
     "titus-andronicus-off-broadway-2026/nysr--jesse-oxfeld.json",
-    "hadestown-2019/newyorker--hilton-als.json"
+    "hadestown-2019/newyorker--hilton-als.json",
+    "six-2021/newyorker--naomi-fry.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -161,7 +171,12 @@
       "masquerade-off-broadway-2025/nytg--gillian-russo.json",
       "mother-russia-off-broadway-2026/nytg--amelia-merrill.json",
       "my-joy-is-heavy-off-broadway-2025/nytg--unknown.json",
-      "night-side-songs-off-broadway-2026/nytg--kyle-turner.json"
+      "night-side-songs-off-broadway-2026/nytg--kyle-turner.json",
+      "night-side-songs-off-broadway-2026/vulture--jonathan-mandell.json",
+      "pied-a-terre-off-broadway-2026/nytg--unknown.json",
+      "ragtime-2025/nyt-theater--unknown.json",
+      "sexual-misconduct-of-the-middle-classes-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytg--joe-dziemianowicz.json"
     ],
     "amp": [
       "data/review-texts/hamilton-west-end-2021/variety--marilyn-stasio.json",
@@ -221,7 +236,9 @@
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
       "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
       "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
-      "mj-2022/hollywood-reporter--lovia-gyarkye.json"
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "data/review-texts/oh-mary-2024/hollywood-reporter--david-rooney.json",
+      "oh-mary-2024/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -257,11 +274,14 @@
       "maybe-happy-ending-2024/vulture--sara-holdren.json",
       "mj-2022/vulture--helen-shaw.json",
       "moulin-rouge-2019/nytimes--ben-brantley.json",
-      "my-joy-is-heavy-off-broadway-2025/vulture--unknown.json"
+      "my-joy-is-heavy-off-broadway-2025/vulture--unknown.json",
+      "oh-mary-2024/nytimes--erik-piepenburg.json",
+      "oh-mary-2024/vulture--helen-shaw.json",
+      "ragtime-2025/nytimes--unknown.json"
     ]
   },
   "startTime": "2026-03-18T09:53:53.062Z",
-  "lastProcessed": "night-side-songs-off-broadway-2026/nytg--kyle-turner.json",
+  "lastProcessed": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytg--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-03-18T10:56:24.454Z",
@@ -326,6 +346,17 @@
     },
     {
       "t": "2026-03-18T11:04:47.209Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-18T11:06:08.244Z",
+      "event": "bb-session",
+      "session": "4729156f",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
+    },
+    {
+      "t": "2026-03-18T11:06:09.670Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
