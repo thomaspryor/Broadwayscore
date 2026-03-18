@@ -86,5 +86,5 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Scoring Experiment Failed'
-          severity: 'critical'
+          severity: 'low'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

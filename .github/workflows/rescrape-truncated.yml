@@ -447,5 +447,5 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Rescrape Truncated Failed'
-          severity: 'critical'
+          severity: 'warning'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

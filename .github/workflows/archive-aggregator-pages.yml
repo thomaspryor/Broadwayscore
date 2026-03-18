@@ -263,5 +263,5 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Archive Aggregator Pages Failed'
-          severity: 'critical'
+          severity: 'warning'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
