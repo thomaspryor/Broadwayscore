@@ -21,8 +21,8 @@ const US_ONLY_OUTLETS = new Set([
   'latimes', 'san-francisco-chronicle', 'usatoday', 'bostonglobe'
 ]);
 
-// NYT London correspondents whose WE reviews are legitimate
-const NYT_LONDON_CRITICS = new Set(['matt-wolf', 'houman-barekat']);
+// NYT London correspondents / international critics whose WE reviews are legitimate
+const NYT_LONDON_CRITICS = new Set(['matt-wolf', 'houman-barekat', 'alex-marshall', 'naveen-kumar']);
 
 // Specific files verified as legitimate WE reviews (override the outlet check)
 const LEGITIMATE_FILES = new Set([
@@ -57,17 +57,25 @@ for (const dir of dirs) {
     // NYT London critics are legitimate
     if (outletId === 'nytimes' && NYT_LONDON_CRITICS.has(criticId)) continue;
 
-    // NYT without London critic — check URL for London indicators
-    if (outletId === 'nytimes') {
-      try {
-        const data = JSON.parse(fs.readFileSync(path.join(dirPath, file), 'utf8'));
-        const url = (data.url || '').toLowerCase();
-        if (url.includes('london') || url.includes('west-end') || url.includes('drury') || url.includes('olivier') || url.includes('donmar')) {
-          skippedLegit++;
-          continue;
-        }
-      } catch (e) { /* proceed to flag */ }
-    }
+    // Check URL for London indicators — applies to ALL outlets including NYT
+    // A US outlet reviewing at a London venue/URL is a legitimate WE review
+    try {
+      const data = JSON.parse(fs.readFileSync(path.join(dirPath, file), 'utf8'));
+      const url = (data.url || '').toLowerCase();
+      const isLondonUrl = url.includes('london') || url.includes('west-end') || url.includes('westend')
+        || url.includes('.co.uk') || url.includes('.org.uk')
+        || url.includes('bridge-theatre') || url.includes('barbican') || url.includes('donmar')
+        || url.includes('old-vic') || url.includes('national-theatre') || url.includes('kiln')
+        || url.includes('menier') || url.includes('olivier') || url.includes('noel-coward')
+        || url.includes('apollo') || url.includes('garrick') || url.includes('lyceum')
+        || url.includes('gielgud') || url.includes('vaudeville') || url.includes('troubadour')
+        || url.includes('globe') || url.includes('wanamaker') || url.includes('lyric-hammersmith')
+        || url.includes('aldwych') || url.includes('fortune-theatre');
+      if (isLondonUrl) {
+        skippedLegit++;
+        continue;
+      }
+    } catch (e) { /* proceed to flag */ }
 
     // Verified legitimate files
     if (LEGITIMATE_FILES.has(relPath)) {
