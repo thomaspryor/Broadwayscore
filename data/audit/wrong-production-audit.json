@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-18T12:14:55.095Z",
+  "timestamp": "2026-03-18T12:49:09.968Z",
   "stats": {
     "totalReviews": 31655,
     "alreadyFlagged": 9396,
     "dateGuardCatches": 152,
     "directorMismatch": 1134,
     "tvFilmSignals": 3506,
-    "londonSignals": 1053,
+    "londonSignals": 1054,
     "offBroadwaySignals": 1074,
     "yearMismatch": 92,
-    "noPublishDate": 9426
+    "noPublishDate": 9425
   },
   "findings": [
     {
@@ -82814,6 +82814,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "summerfolk-west-end-2026",
+      "file": "independent--unknown.json",
+      "score": 66,
+      "publishDate": "2026-03-18",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/summerfolk-national-theatre-review-gorky-b2940849.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
