@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-18T12:49:09.968Z",
+  "timestamp": "2026-03-18T13:34:42.406Z",
   "stats": {
-    "totalReviews": 31655,
-    "alreadyFlagged": 9396,
+    "totalReviews": 31657,
+    "alreadyFlagged": 9397,
     "dateGuardCatches": 152,
     "directorMismatch": 1134,
     "tvFilmSignals": 3506,
-    "londonSignals": 1054,
+    "londonSignals": 1055,
     "offBroadwaySignals": 1074,
     "yearMismatch": 92,
     "noPublishDate": 9425
@@ -82814,6 +82814,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "summerfolk-west-end-2026",
+      "file": "financialtimes--unknown.json",
+      "publishDate": "2026-03-18",
+      "url": "https://www.ft.com/content/181bc1e8-ca51-4f51-9544-148a15c547f0",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

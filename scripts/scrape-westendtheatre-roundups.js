@@ -6,7 +6,7 @@
  * roundup posts. Each roundup has a wp-block-table with Publication/Rating
  * columns, using Unicode ★ characters (1-5 stars).
  *
- * API: GET /wp-json/wp/v2/posts?categories=10&per_page=100
+ * API: GET /wp-json/wp/v2/posts?categories=10&per_page=50
  * Tag: reviews-round-up (ID 8631) for targeted roundup fetching
  *
  * Output: Creates/updates review files in data/review-texts/{showId}/
@@ -39,7 +39,11 @@ const dryRun = args.includes('--dry-run');
 const force = args.includes('--force');
 
 const RATE_LIMIT_MS = 1500;
+const API_PAGE_DELAY_MS = 3000; // Delay between WP API page fetches (Sucuri WAF evasion)
 const WP_API_BASE = 'https://www.westendtheatre.com/wp-json/wp/v2';
+const COOKIE_JAR = '/tmp/westendtheatre-cookies.txt';
+const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
+const PER_PAGE = 50; // Lower than 100 to look less bot-like
 // Category 10 = reviews, Tag 8631 = reviews-round-up
 const REVIEWS_CATEGORY = 10;
 const ROUNDUP_TAG = 8631;
@@ -58,50 +62,24 @@ const stats = {
 // --- HTTP helpers ---
 
 /**
- * Fetch JSON from WordPress API using curl.
- * Sucuri WAF blocks Node.js https requests even with browser UA.
- * curl handles TLS/fingerprinting differently and passes through.
+ * Fetch JSON from WordPress API using curl with Sucuri WAF handling.
+ * Uses cookie jar to persist Sucuri challenge cookies, proper User-Agent,
+ * and falls back to Node https if curl fails.
  */
-function fetchJSON(url) {
-  const { execSync } = require('child_process');
-  try {
-    const result = execSync(
-      `curl -s -D /dev/stderr "${url}" -H "Accept: application/json"`,
-      { timeout: 30000, maxBuffer: 10 * 1024 * 1024, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }
-    );
-    // Parse headers from stderr for pagination
-    // curl -D sends headers to stderr, body to stdout
-    const parsed = JSON.parse(result);
-    // WP pagination: we'll estimate from array length (headers not easily captured with execSync)
-    return { data: parsed, totalPages: parsed.length >= 100 ? 99 : 1, totalPosts: parsed.length };
-  } catch (e) {
-    if (e.stdout) {
-      try {
-        const parsed = JSON.parse(e.stdout);
-        if (parsed.code === 'rest_post_invalid_page_number') {
-          return { data: [], totalPages: 0, totalPosts: 0 };
-        }
-      } catch { /* not JSON */ }
-    }
-    throw new Error(`curl failed: ${e.message?.slice(0, 200)}`);
-  }
-}
-
-/**
- * Fetch with headers to get WP total pages
- */
-function fetchJSONWithHeaders(url) {
+async function fetchJSON(url) {
   const { execFileSync } = require('child_process');
   try {
-    // Use -w to append headers info, -i to include headers
     const result = execFileSync('curl', [
       '-s', '-i', url,
       '-H', 'Accept: application/json',
+      '-H', `User-Agent: ${USER_AGENT}`,
+      '-b', COOKIE_JAR,
+      '-c', COOKIE_JAR,
+      '--compressed',
     ], { timeout: 30000, maxBuffer: 10 * 1024 * 1024, encoding: 'utf8' });
 
-    // Split headers from body
     const headerEnd = result.indexOf('\r\n\r\n');
-    if (headerEnd === -1) return fetchJSON(url); // fallback
+    if (headerEnd === -1) throw new Error('No header/body separator found');
 
     const headers = result.slice(0, headerEnd).toLowerCase();
     const body = result.slice(headerEnd + 4);
@@ -114,8 +92,63 @@ function fetchJSONWithHeaders(url) {
     const parsed = JSON.parse(body);
     return { data: parsed, totalPages, totalPosts };
   } catch (e) {
-    return fetchJSON(url); // fallback
+    if (e.stdout) {
+      try {
+        const bodyPart = e.stdout.includes('\r\n\r\n')
+          ? e.stdout.slice(e.stdout.indexOf('\r\n\r\n') + 4)
+          : e.stdout;
+        const parsed = JSON.parse(bodyPart);
+        if (parsed.code === 'rest_post_invalid_page_number') {
+          return { data: [], totalPages: 0, totalPosts: 0 };
+        }
+      } catch { /* not JSON */ }
+    }
+    // Fallback: try Node https
+    console.log(`  ⚠️  curl failed, trying Node https fallback...`);
+    return fetchJSONNodeHttps(url);
   }
+}
+
+/**
+ * Node https fallback for when curl fails entirely.
+ */
+function fetchJSONNodeHttps(url) {
+  return new Promise((resolve, reject) => {
+    const req = https.get(url, {
+      headers: {
+        'Accept': 'application/json',
+        'User-Agent': USER_AGENT,
+      },
+    }, (res) => {
+      let data = '';
+      res.on('data', chunk => { data += chunk; });
+      res.on('end', () => {
+        try {
+          const parsed = JSON.parse(data);
+          if (parsed.code === 'rest_post_invalid_page_number') {
+            resolve({ data: [], totalPages: 0, totalPosts: 0 });
+            return;
+          }
+          const totalPages = parseInt(res.headers['x-wp-totalpages'] || '1');
+          const totalPosts = parseInt(res.headers['x-wp-total'] || '0');
+          resolve({ data: parsed, totalPages, totalPosts });
+        } catch (parseErr) {
+          reject(new Error(`JSON parse failed: ${parseErr.message}`));
+        }
+      });
+    });
+    req.on('error', reject);
+    req.setTimeout(30000, () => { req.destroy(); reject(new Error('Timeout')); });
+  });
+}
+
+/**
+ * Fetch with headers to get WP total pages.
+ * Now just delegates to fetchJSON which handles headers, cookies, and UA.
+ * Kept as a separate function for call-site clarity.
+ */
+async function fetchJSONWithHeaders(url) {
+  return fetchJSON(url);
 }
 
 function sleep(ms) {
@@ -367,6 +400,9 @@ async function main() {
   console.log(`   Dry run: ${dryRun}`);
   console.log('');
 
+  // Clean cookie jar from previous runs so Sucuri gets a fresh start
+  try { fs.unlinkSync(COOKIE_JAR); } catch { /* doesn't exist yet */ }
+
   if (!dryRun) {
     fs.mkdirSync(archiveDir, { recursive: true });
   }
@@ -381,9 +417,9 @@ async function main() {
   while (page <= totalPages) {
     // Fetch reviews category without tag filter — the star table format is recent (Dec 2025+)
     // and not consistently tagged. We filter by table presence instead.
-    const url = `${WP_API_BASE}/posts?categories=${REVIEWS_CATEGORY}&per_page=100&page=${page}`;
+    const url = `${WP_API_BASE}/posts?categories=${REVIEWS_CATEGORY}&per_page=${PER_PAGE}&page=${page}`;
     try {
-      const result = page === 1 ? fetchJSONWithHeaders(url) : fetchJSON(url);
+      const result = await (page === 1 ? fetchJSONWithHeaders(url) : fetchJSON(url));
       if (page === 1) totalPages = result.totalPages;
       stats.apiPages++;
 
@@ -393,7 +429,7 @@ async function main() {
       console.log(`  Page ${page}/${totalPages}: ${result.data.length} posts (${allPosts.length} total)`);
 
       page++;
-      if (page <= totalPages) await sleep(RATE_LIMIT_MS);
+      if (page <= totalPages) await sleep(API_PAGE_DELAY_MS);
     } catch (e) {
       console.error(`  ❌ API error on page ${page}: ${e.message}`);
       stats.errors.push(`API page ${page}: ${e.message}`);
