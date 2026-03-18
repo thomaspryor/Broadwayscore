@@ -194,7 +194,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh workflow run "Update Deploy Watermark" || echo "::warning::Watermark dispatch failed (non-critical)"
+          gh workflow run update-deploy-watermark.yml || echo "::warning::Watermark dispatch failed (non-critical)"
 
       - name: Notify search engines of updated sitemap
         if: success()

@@ -288,7 +288,7 @@ jobs:
           JOBS=${{ github.event.inputs.parallel_jobs || 4 }}
 
           echo "Chaining next run: $STILL_MISSING shows remaining, $NEXT_CHAINS chain iterations left"
-          gh workflow run "Bulk Show Score" \
+          gh workflow run bulk-show-score.yml \
             -f parallel_jobs=$JOBS \
             -f chain=true \
             -f remaining_chains=$NEXT_CHAINS \

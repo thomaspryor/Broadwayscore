@@ -108,7 +108,7 @@ jobs:
 
           if [ "$RECOVERED" -gt "0" ]; then
             echo "Triggering rebuild for $RECOVERED recovered reviews..."
-            gh workflow run "Rebuild Reviews Data" \
+            gh workflow run rebuild-reviews.yml \
               -f reason="Post Wayback recovery ($RECOVERED reviews)"
           else
             echo "No recoveries, skipping rebuild."

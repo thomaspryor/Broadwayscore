@@ -148,7 +148,7 @@ jobs:
           fi
 
           echo "Triggering rebuild..."
-          gh workflow run "Rebuild Reviews Data" -f reason="Post pull-quote extraction"
+          gh workflow run rebuild-reviews.yml -f reason="Post pull-quote extraction"
         continue-on-error: true
 
       - name: Notify on failure
@@ -174,7 +174,7 @@ jobs:
           NEXT_REMAINING=$((REMAINING - 1))
           echo "Chaining next run (remaining: $NEXT_REMAINING)..."
 
-          gh workflow run "Extract Pull Quotes" \
+          gh workflow run extract-pull-quotes.yml \
             -f show="${{ inputs.show }}" \
             -f limit="${{ inputs.limit }}" \
             -f overwrite="${{ inputs.overwrite }}" \

@@ -422,7 +422,7 @@ jobs:
           if [ "$REMAINING" -gt 50 ] && [ "$CURRENT" -lt "$MAX" ]; then
             NEXT=$((CURRENT + 1))
             echo "Chaining round $NEXT..."
-            gh workflow run "Re-scrape Truncated Reviews" \
+            gh workflow run rescrape-truncated.yml \
               -f parallel_jobs=${{ inputs.parallel_jobs }} \
               -f max_per_job=${{ inputs.max_per_job }} \
               -f retry_failed=${{ inputs.retry_failed }} \

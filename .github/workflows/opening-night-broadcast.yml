@@ -276,12 +276,12 @@ jobs:
           PENDING="${{ steps.check.outputs.pending_shows }}"
 
           # Check if gather is already running
-          RUNNING=$(gh run list --workflow="Gather Review Data" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          RUNNING=$(gh run list --workflow=gather-reviews.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
           if [ "$RUNNING" -gt 0 ]; then
             echo "Gather already running — skipping dispatch"
           else
             echo "Dispatching gather-reviews for: $PENDING"
-            gh workflow run "Gather Review Data" -f shows="$PENDING" || echo "Gather dispatch failed"
+            gh workflow run gather-reviews.yml -f shows="$PENDING" || echo "Gather dispatch failed"
           fi
 
       - name: Send push notifications (mobile app)
@@ -349,7 +349,7 @@ jobs:
         run: |
           # Deploy dedup: skip if a deploy was ALREADY triggered after our rebuild started
           OUR_RUN_START=$(gh run view ${{ github.run_id }} --json createdAt -q '.createdAt' 2>/dev/null || echo "")
-          RECENT=$(gh run list --workflow="Deploy to Vercel" --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
+          RECENT=$(gh run list --workflow=vercel-deploy.yml --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
 
           if [ -n "$RECENT" ] && [ -n "$OUR_RUN_START" ]; then
             RECENT_TS=$(date -d "$RECENT" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$RECENT" +%s 2>/dev/null || echo "0")
@@ -364,7 +364,7 @@ jobs:
           fi
 
           echo "Triggering deploy..."
-          gh workflow run "Deploy to Vercel" || echo "Deploy dispatch failed — will deploy on next schedule"
+          gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — will deploy on next schedule"
 
       - name: Submit show pages to Google Indexing API
         if: steps.find.outputs.has_shows == 'true' && env.GOOGLE_INDEXING_KEY != ''

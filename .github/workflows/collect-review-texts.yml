@@ -351,13 +351,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           # Skip if a rebuild is already running or was triggered recently
-          RUNNING=$(gh run list --workflow="Rebuild Reviews Data" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          RUNNING=$(gh run list --workflow=rebuild-reviews.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
           if [ "$RUNNING" -gt 0 ]; then
             echo "Rebuild already running — skipping dispatch"
             exit 0
           fi
           echo "Dispatching rebuild..."
-          gh workflow run "Rebuild Reviews Data" -f reason="Auto-triggered by collect-review-texts" || echo "Rebuild dispatch failed (non-critical — workflow_run backup exists)"
+          gh workflow run rebuild-reviews.yml -f reason="Auto-triggered by collect-review-texts" || echo "Rebuild dispatch failed (non-critical — workflow_run backup exists)"
 
       - name: Notify on failure
         if: failure()
@@ -482,7 +482,7 @@ jobs:
           REASON_FILTER="${{ steps.sched.outputs.reason_filter || inputs.reason_filter }}"
           MARKET_FILTER="${{ steps.sched.outputs.market_filter || inputs.market_filter }}"
 
-          gh workflow run "Collect Review Texts" \
+          gh workflow run collect-review-texts.yml \
             -f max_reviews=${{ steps.sched.outputs.max_reviews || '150' }} \
             -f batch_size=${{ inputs.batch_size || '10' }} \
             -f show_filter="$SHOW_FILTER" \

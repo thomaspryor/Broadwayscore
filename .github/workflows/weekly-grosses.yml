@@ -135,7 +135,7 @@ jobs:
         run: |
           # Deploy dedup: skip if a deploy was ALREADY triggered after our rebuild started
           OUR_RUN_START=$(gh run view ${{ github.run_id }} --json createdAt -q '.createdAt' 2>/dev/null || echo "")
-          RECENT=$(gh run list --workflow="Deploy to Vercel" --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
+          RECENT=$(gh run list --workflow=vercel-deploy.yml --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
 
           if [ -n "$RECENT" ] && [ -n "$OUR_RUN_START" ]; then
             RECENT_TS=$(date -d "$RECENT" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$RECENT" +%s 2>/dev/null || echo "0")
@@ -150,7 +150,7 @@ jobs:
           fi
 
           echo "Triggering deploy..."
-          gh workflow run "Deploy to Vercel" || echo "Deploy dispatch failed — will deploy on next schedule"
+          gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — will deploy on next schedule"
 
       - name: Notify on failure
         if: failure()

@@ -310,7 +310,7 @@ jobs:
           if [ "$REMAINING" -gt 50 ] && [ "$CURRENT" -lt "$MAX" ]; then
             NEXT=$((CURRENT + 1))
             echo "Chaining round $NEXT..."
-            gh workflow run "Collect Soft-Paywall Reviews" \
+            gh workflow run collect-soft-paywall.yml \
               -f domain=${{ inputs.domain }} \
               -f max_reviews=${{ inputs.max_reviews }} \
               -f retry_failed=${{ inputs.retry_failed }} \
@@ -684,7 +684,7 @@ jobs:
           if [ "$REMAINING" -gt 50 ] && [ "$CURRENT" -lt "$MAX" ]; then
             NEXT=$((CURRENT + 1))
             echo "Chaining round $NEXT..."
-            gh workflow run "Collect Soft-Paywall Reviews" \
+            gh workflow run collect-soft-paywall.yml \
               -f domain=all \
               -f max_reviews=${{ inputs.max_reviews }} \
               -f retry_failed=${{ inputs.retry_failed }} \

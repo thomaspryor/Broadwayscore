@@ -316,7 +316,7 @@ jobs:
           JOBS=${{ github.event.inputs.parallel_jobs || 4 }}
 
           echo "Chaining next run: $STILL_MISSING shows remaining, $NEXT_CHAINS chain iterations left"
-          gh workflow run "Bulk Reddit Sentiment" \
+          gh workflow run bulk-reddit-sentiment.yml \
             -f parallel_jobs=$JOBS \
             -f chain=true \
             -f remaining_chains=$NEXT_CHAINS \

@@ -101,7 +101,7 @@ jobs:
       - name: Trigger rebuild
         if: always() && inputs.dry_run != true
         run: |
-          gh workflow run "Rebuild Reviews Data" -f reason="Post Stagedoor scrape" || echo "Rebuild dispatch failed"
+          gh workflow run rebuild-reviews.yml -f reason="Post Stagedoor scrape" || echo "Rebuild dispatch failed"
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
