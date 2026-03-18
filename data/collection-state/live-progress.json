@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-18T00:25:31.886Z",
-  "processed": 478,
-  "failed": 6735,
-  "successRate": "6.6%",
+  "updatedAt": "2026-03-18T05:09:31.572Z",
+  "processed": 615,
+  "failed": 6748,
+  "successRate": "8.4%",
   "tierBreakdown": {
-    "playwright": 247,
-    "amp": 138,
+    "playwright": 345,
+    "amp": 140,
     "browserbase": 22,
     "directCookies": 0,
-    "scrapingbee": 35,
+    "scrapingbee": 43,
     "brightdata": 0,
-    "archiveToday": 123,
-    "archive": 118
+    "archiveToday": 127,
+    "archive": 149
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-03-17T20:03:46.976Z",
-      "event": "bb-session",
-      "session": "55086397",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
-    },
-    {
-      "t": "2026-03-17T20:03:48.485Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-17T20:06:06.215Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-17T21:28:19.568Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-18T04:50:26.868Z",
+      "event": "bb-session",
+      "session": "155b2ced",
+      "url": "https://www.thestage.co.uk/review-round-ups/hercules-at-the-theatre-royal-drury-"
+    },
+    {
+      "t": "2026-03-18T04:50:28.440Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
