@@ -150,7 +150,7 @@ jobs:
       - name: Trigger reviews rebuild
         if: always()
         run: |
-          gh workflow run "Rebuild Reviews Data" -f reason="Post overnight collection batch" || true
+          gh workflow run rebuild-reviews.yml -f reason="Post overnight collection batch" || true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Notify on failure

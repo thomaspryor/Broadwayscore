@@ -117,7 +117,7 @@ jobs:
           DRY_RUN="${{ inputs.dry_run || 'false' }}"
           if [ "$RECOVERED" -gt "0" ] && [ "$DRY_RUN" != "true" ]; then
             echo "Triggering rebuild for ${RECOVERED} recovered reviews..."
-            gh workflow run "Rebuild Reviews Data" --repo ${{ github.repository }} || true
+            gh workflow run rebuild-reviews.yml --repo ${{ github.repository }} || true
           fi
 
       - name: Upload recovery report

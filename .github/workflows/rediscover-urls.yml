@@ -146,7 +146,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "Triggering collection run for newly URL'd reviews..."
-          gh workflow run "Collect Review Texts" \
+          gh workflow run collect-review-texts.yml \
             -f max_reviews=200 \
             -f batch_size=10 \
             -f chain=true \

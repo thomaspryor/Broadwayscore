@@ -398,15 +398,15 @@ jobs:
         run: |
           # Don't rebuild inline — trigger the centralized rebuild workflow which has
           # a concurrency group to prevent races with scoring shards and other collection runs.
-          RUNNING=$(gh run list --workflow="Rebuild Reviews Data" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          QUEUED=$(gh run list --workflow="Rebuild Reviews Data" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          WAITING=$(gh run list --workflow="Rebuild Reviews Data" --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          RUNNING=$(gh run list --workflow=rebuild-reviews.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED=$(gh run list --workflow=rebuild-reviews.yml --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          WAITING=$(gh run list --workflow=rebuild-reviews.yml --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
           ACTIVE=$((RUNNING + QUEUED + WAITING))
 
           if [ "$ACTIVE" -gt 0 ]; then
             echo "Rebuild already active ($RUNNING running, $QUEUED queued). Skipping trigger."
           else
-            gh workflow run "Rebuild Reviews Data" \
+            gh workflow run rebuild-reviews.yml \
               -f reason="Auto-triggered after bulk collection (round ${{ inputs.current_round }})"
             echo "Rebuild triggered."
           fi
@@ -416,15 +416,15 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          RUNNING=$(gh run list --workflow="Extract Pull Quotes" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          QUEUED=$(gh run list --workflow="Extract Pull Quotes" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          WAITING=$(gh run list --workflow="Extract Pull Quotes" --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          RUNNING=$(gh run list --workflow=extract-pull-quotes.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED=$(gh run list --workflow=extract-pull-quotes.yml --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          WAITING=$(gh run list --workflow=extract-pull-quotes.yml --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
           if [ "$((RUNNING + QUEUED + WAITING))" -gt 0 ]; then
             echo "Pull quote extraction already active ($RUNNING running, $QUEUED queued). Skipping."
             exit 0
           fi
           echo "Dispatching pull quote extraction for newly collected texts..."
-          gh workflow run "Extract Pull Quotes" -f chain=true -f remaining_batches=3
+          gh workflow run extract-pull-quotes.yml -f chain=true -f remaining_batches=3
           echo "Pull quote extraction dispatched."
         continue-on-error: true
 
@@ -507,7 +507,7 @@ jobs:
           echo "  Reviews remaining: $REMAINING"
           echo "  Rounds remaining: $((MAX_ROUNDS - NEXT_ROUND + 1))"
 
-          gh workflow run "Bulk Collect Review Texts" \
+          gh workflow run bulk-collect-review-texts.yml \
             -f parallel_jobs=${{ inputs.parallel_jobs }} \
             -f max_per_job=${{ inputs.max_per_job }} \
             -f batch_size=${{ inputs.batch_size }} \
@@ -588,9 +588,9 @@ jobs:
           fi
 
           # Check if LLM scoring is already running or queued
-          RUNNING=$(gh run list --workflow="LLM Ensemble Score Reviews" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          QUEUED=$(gh run list --workflow="LLM Ensemble Score Reviews" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          WAITING=$(gh run list --workflow="LLM Ensemble Score Reviews" --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          RUNNING=$(gh run list --workflow=llm-ensemble-score.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED=$(gh run list --workflow=llm-ensemble-score.yml --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          WAITING=$(gh run list --workflow=llm-ensemble-score.yml --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
           ACTIVE=$((RUNNING + QUEUED + WAITING))
           if [ "$ACTIVE" -gt 0 ]; then
             echo "LLM scoring already active ($RUNNING running, $QUEUED queued). Skipping."
@@ -604,7 +604,7 @@ jobs:
           fi
 
           echo "Triggering LLM scoring for $UNSCORED reviews (limit=$LIMIT)..."
-          gh workflow run "LLM Ensemble Score Reviews" \
+          gh workflow run llm-ensemble-score.yml \
             -f limit=$LIMIT \
             -f run_calibration=false
 

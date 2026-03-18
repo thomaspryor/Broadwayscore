@@ -181,7 +181,7 @@ jobs:
         run: |
           EXTRACTED="${{ steps.recollect.outputs.total_extracted }}"
           echo "Triggering rebuild — $EXTRACTED new scores extracted"
-          gh workflow run "Rebuild Reviews Data" -f reason="Post recollect-for-scores ($EXTRACTED new P0 scores)"
+          gh workflow run rebuild-reviews.yml -f reason="Post recollect-for-scores ($EXTRACTED new P0 scores)"
 
       - name: Notify on failure
         if: failure()

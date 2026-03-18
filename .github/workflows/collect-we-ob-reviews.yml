@@ -188,7 +188,7 @@ jobs:
           NEXT_CHAINS=$((CHAINS_LEFT - 1))
           echo "Dispatching chain ($NEXT_CHAINS chains remaining after this)..."
 
-          gh workflow run "Collect WE/OB Review Texts" \
+          gh workflow run collect-we-ob-reviews.yml \
             -f market="$MARKET" \
             -f max_reviews=150 \
             -f remaining_chains="$NEXT_CHAINS"
@@ -198,7 +198,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh workflow run "Rebuild Reviews Data" \
+          gh workflow run rebuild-reviews.yml \
             -f reason="Post ${{ steps.market.outputs.market }} collection"
 
       - name: Notify on failure

@@ -290,7 +290,7 @@ jobs:
           # Old logic checked "last deploy < 15 min ago" which caused missed deploys
           # when multiple rebuilds chained (scoring → rebuild → deploy skipped).
           OUR_RUN_START=$(gh run view ${{ github.run_id }} --json createdAt -q '.createdAt' 2>/dev/null || echo "")
-          RECENT=$(gh run list --workflow="Deploy to Vercel" --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
+          RECENT=$(gh run list --workflow=vercel-deploy.yml --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
 
           if [ -n "$RECENT" ] && [ -n "$OUR_RUN_START" ]; then
             RECENT_TS=$(date -d "$RECENT" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$RECENT" +%s 2>/dev/null || echo "0")
@@ -306,7 +306,7 @@ jobs:
           fi
 
           echo "Triggering deploy..."
-          gh workflow run "Deploy to Vercel" || echo "Deploy dispatch failed — will deploy on next schedule"
+          gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — will deploy on next schedule"
 
       - name: Auto-trigger LLM scoring if needed
         id: scoring-trigger
@@ -364,9 +364,9 @@ jobs:
           fi
 
           # Check if LLM scoring is already running or queued
-          RUNNING=$(gh run list --workflow="LLM Ensemble Score Reviews" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          QUEUED=$(gh run list --workflow="LLM Ensemble Score Reviews" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          WAITING=$(gh run list --workflow="LLM Ensemble Score Reviews" --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          RUNNING=$(gh run list --workflow=llm-ensemble-score.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED=$(gh run list --workflow=llm-ensemble-score.yml --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          WAITING=$(gh run list --workflow=llm-ensemble-score.yml --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
           ACTIVE=$((RUNNING + QUEUED + WAITING))
           if [ "$ACTIVE" -gt 0 ]; then
             echo "LLM scoring already active ($RUNNING running, $QUEUED queued). Skipping."
@@ -380,7 +380,7 @@ jobs:
           fi
 
           echo "Triggering LLM scoring for $UNSCORED reviews (limit=$LIMIT)..."
-          gh workflow run "LLM Ensemble Score Reviews" \
+          gh workflow run llm-ensemble-score.yml \
             -f limit=$LIMIT \
             -f run_calibration=false \
             -f chain=true \
@@ -401,7 +401,7 @@ jobs:
           fi
 
           # Dedup: skip if consensus ran within the last hour
-          RECENT=$(gh run list --workflow="Update Critics' Take" --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
+          RECENT=$(gh run list --workflow=update-critic-consensus.yml --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
           if [ -n "$RECENT" ]; then
             RECENT_TS=$(date -d "$RECENT" +%s 2>/dev/null || date -jf "%Y-%m-%dT%H:%M:%SZ" "$RECENT" +%s 2>/dev/null || echo "0")
             NOW_TS=$(date +%s)
@@ -413,15 +413,15 @@ jobs:
           fi
 
           # Check if consensus is already running or queued
-          RUNNING=$(gh run list --workflow="Update Critics' Take" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          QUEUED=$(gh run list --workflow="Update Critics' Take" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          RUNNING=$(gh run list --workflow=update-critic-consensus.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED=$(gh run list --workflow=update-critic-consensus.yml --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
           if [ "$((RUNNING + QUEUED))" -gt 0 ]; then
             echo "Consensus already active. Skipping."
             exit 0
           fi
 
           echo "Dispatching consensus update (reviews changed, no scoring needed)..."
-          gh workflow run "Update Critics' Take"
+          gh workflow run update-critic-consensus.yml
 
       - name: Notify on failure
         if: failure()

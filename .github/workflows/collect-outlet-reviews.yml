@@ -106,7 +106,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Trigger rebuild
         run: |
-          gh workflow run "Rebuild Reviews Data" -f reason="Post weekly outlet SERP collection"
+          gh workflow run rebuild-reviews.yml -f reason="Post weekly outlet SERP collection"
         env:
           GH_TOKEN: ${{ github.token }}
 
@@ -162,7 +162,7 @@ jobs:
       - name: Trigger rebuild
         if: success() && github.event.inputs.dry_run != 'true'
         run: |
-          gh workflow run "Rebuild Reviews Data" -f reason="Post outlet SERP collection (manual)"
+          gh workflow run rebuild-reviews.yml -f reason="Post outlet SERP collection (manual)"
         env:
           GH_TOKEN: ${{ github.token }}
 

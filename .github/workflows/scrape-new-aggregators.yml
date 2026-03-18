@@ -303,9 +303,9 @@ jobs:
             exit 0
           fi
 
-          RUNNING=$(gh run list --workflow="Collect Review Texts" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          QUEUED=$(gh run list --workflow="Collect Review Texts" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          WAITING=$(gh run list --workflow="Collect Review Texts" --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          RUNNING=$(gh run list --workflow=collect-review-texts.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED=$(gh run list --workflow=collect-review-texts.yml --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          WAITING=$(gh run list --workflow=collect-review-texts.yml --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
           ACTIVE=$((RUNNING + QUEUED + WAITING))
           if [ "$ACTIVE" -gt 0 ]; then
             echo "Text collection already active ($RUNNING running, $QUEUED queued). Skipping."
@@ -315,7 +315,7 @@ jobs:
           SHOWS="${{ inputs.shows }}"
           if [ -n "$SHOWS" ]; then
             echo "Triggering targeted text collection for shows: $SHOWS ($NEEDS_COLLECTION reviews)..."
-            gh workflow run "Collect Review Texts" \
+            gh workflow run collect-review-texts.yml \
               -f show_filter="$SHOWS" \
               -f max_reviews=300 \
               -f browserbase_enabled=true \
@@ -323,7 +323,7 @@ jobs:
               -f archive_first=true
           else
             echo "Triggering text collection for $NEEDS_COLLECTION reviews..."
-            gh workflow run "Collect Review Texts" \
+            gh workflow run collect-review-texts.yml \
               -f max_reviews=300 \
               -f browserbase_enabled=true \
               -f retry_failed=true \

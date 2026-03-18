@@ -57,7 +57,7 @@ jobs:
           BD_COST=$(echo "scale=2; $BD_TOTAL * 0.001" | bc)
 
           # --- SB credit status ---
-          HEALTH_RUN=$(gh run list --workflow="Weekly Secret Health Check" --limit=1 --json databaseId -q '.[0].databaseId' 2>/dev/null)
+          HEALTH_RUN=$(gh run list --workflow=check-secrets-health.yml --limit=1 --json databaseId -q '.[0].databaseId' 2>/dev/null)
           SB_STATUS="Unknown"
           SB_COLOR="#6b7280"
           if [ -n "$HEALTH_RUN" ]; then
@@ -76,7 +76,7 @@ jobs:
 
           # --- SB page/SERP split ---
           SB_PAGE="-"; SB_SERP="-"
-          LATEST_COLLECT=$(gh run list --workflow="Collect Review Texts" --limit=5 --status=completed --json databaseId -q '.[].databaseId' 2>/dev/null)
+          LATEST_COLLECT=$(gh run list --workflow=collect-review-texts.yml --limit=5 --status=completed --json databaseId -q '.[].databaseId' 2>/dev/null)
           for run_id in $LATEST_COLLECT; do
             SB_LINES=$(gh run view "$run_id" --log 2>/dev/null | grep -E "SB page credits:|SB SERP credits:" 2>/dev/null || true)
             if [ -n "$SB_LINES" ]; then

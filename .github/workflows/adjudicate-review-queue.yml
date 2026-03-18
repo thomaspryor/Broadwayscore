@@ -130,7 +130,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh workflow run "Rebuild Reviews Data" -f reason="Post-adjudication rebuild (${{ steps.changes.outputs.changed_count }} reviews)"
+          gh workflow run rebuild-reviews.yml -f reason="Post-adjudication rebuild (${{ steps.changes.outputs.changed_count }} reviews)"
 
       - name: Notify on failure
         if: failure()
