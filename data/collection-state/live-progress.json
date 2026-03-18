@@ -1,18 +1,31 @@
 {
-  "updatedAt": "2026-03-18T09:04:01.061Z",
-  "processed": 93,
-  "failed": 7,
-  "successRate": "93.0%",
+  "updatedAt": "2026-03-18T09:08:49.662Z",
+  "processed": 102,
+  "failed": 8,
+  "successRate": "92.7%",
   "tierBreakdown": {
-    "playwright": 71,
+    "playwright": 78,
     "amp": 16,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 5,
+    "scrapingbee": 7,
     "brightdata": 0,
     "archiveToday": 1,
     "archive": 10
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-03-18T09:06:23.652Z",
+      "event": "bb-session",
+      "session": "382e974c",
+      "url": "https://www.thestage.co.uk/news/back-to-the-future-the-musical-announces-west-en"
+    },
+    {
+      "t": "2026-03-18T09:07:03.199Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    32 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
+    }
+  ]
 }

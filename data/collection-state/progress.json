@@ -92,7 +92,16 @@
     "back-to-the-future-west-end-2021/artsdesk--gary-naylor.json",
     "back-to-the-future-west-end-2021/british-theatre--unknown.json",
     "back-to-the-future-west-end-2021/daily-mail--patrick-marmion.json",
-    "back-to-the-future-west-end-2021/independent--clarisse-loughrey.json"
+    "back-to-the-future-west-end-2021/independent--clarisse-loughrey.json",
+    "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json",
+    "back-to-the-future-west-end-2021/whatsonstage--sarah-crompton.json",
+    "broken-glass-west-end-2026/artsdesk--unknown.json",
+    "broken-glass-west-end-2026/london-box-office--stuart-king.json",
+    "broken-glass-west-end-2026/london-theatre--julia-rank.json",
+    "broken-glass-west-end-2026/standard--asserts-dominic-cavendish.json",
+    "broken-glass-west-end-2026/standard--nick-curtis.json",
+    "broken-glass-west-end-2026/telegraph--asserts-dominic-cavendish.json",
+    "broken-glass-west-end-2026/telegraph--dominic-cavendish.json"
   ],
   "failed": [
     "arcadia-west-end-2026/broadwayworld--aliya-al-hassan.json",
@@ -101,7 +110,8 @@
     "shadowlands-west-end-2026/broadwayworld--aliya-al-hussan.json",
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
     "the-lion-king-west-end-2021/thestage--unknown.json",
-    "sweetmeats-west-end-2026/guardian--anya-ryan.json"
+    "sweetmeats-west-end-2026/guardian--anya-ryan.json",
+    "back-to-the-future-west-end-2021/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -176,7 +186,14 @@
       "arcadia-west-end-2026/times-uk--unknown.json",
       "arcadia-west-end-2026/whatsonstage--unknown.json",
       "back-to-the-future-west-end-2021/artsdesk--gary-naylor.json",
-      "back-to-the-future-west-end-2021/british-theatre--unknown.json"
+      "back-to-the-future-west-end-2021/british-theatre--unknown.json",
+      "back-to-the-future-west-end-2021/whatsonstage--sarah-crompton.json",
+      "broken-glass-west-end-2026/artsdesk--unknown.json",
+      "broken-glass-west-end-2026/london-box-office--stuart-king.json",
+      "broken-glass-west-end-2026/london-theatre--julia-rank.json",
+      "broken-glass-west-end-2026/standard--asserts-dominic-cavendish.json",
+      "broken-glass-west-end-2026/standard--nick-curtis.json",
+      "broken-glass-west-end-2026/telegraph--asserts-dominic-cavendish.json"
     ],
     "amp": [
       "data/review-texts/hamilton-west-end-2021/variety--marilyn-stasio.json",
@@ -203,7 +220,9 @@
       "im-sorry-prime-minister-west-end-2026/the-mail--patrick-marmion.json",
       "the-holy-rosenbergs-west-end-2026/guardian--david-jays.json",
       "moulin-rouge-the-musical-west-end-2021/theatrely--emily-wyrwa.json",
-      "romeo-and-juliet-west-end-2026/theatrely--kobi-kassal.json"
+      "romeo-and-juliet-west-end-2026/theatrely--kobi-kassal.json",
+      "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json",
+      "broken-glass-west-end-2026/telegraph--dominic-cavendish.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -223,6 +242,19 @@
     ]
   },
   "startTime": "2026-03-18T08:37:37.418Z",
-  "lastProcessed": "back-to-the-future-west-end-2021/independent--clarisse-loughrey.json",
-  "log": []
+  "lastProcessed": "broken-glass-west-end-2026/telegraph--dominic-cavendish.json",
+  "log": [
+    {
+      "t": "2026-03-18T09:06:23.652Z",
+      "event": "bb-session",
+      "session": "382e974c",
+      "url": "https://www.thestage.co.uk/news/back-to-the-future-the-musical-announces-west-en"
+    },
+    {
+      "t": "2026-03-18T09:07:03.199Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    32 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
+    }
+  ]
 }
