@@ -1,15 +1,823 @@
 {
-  "timestamp": "2026-03-18T22:22:07.676Z",
-  "totalDrifted": 1,
+  "timestamp": "2026-03-19T05:46:29.155Z",
+  "totalDrifted": 102,
   "threshold": 20,
   "reviews": [
     {
-      "showId": "the-book-of-mormon-west-end-2024",
-      "outlet": "Time Out London",
-      "critic": "Andrzej Lukowski",
-      "oldScore": 80,
+      "showId": "the-mystery-of-edwin-drood-2012",
+      "outlet": "The Wall Street Journal",
+      "critic": "Terry Teachout",
+      "oldScore": 15,
+      "newScore": 90,
+      "delta": 75
+    },
+    {
+      "showId": "cabaret-2014",
+      "outlet": "The Wall Street Journal",
+      "critic": "Terry Teachout",
+      "oldScore": 15,
+      "newScore": 70,
+      "delta": 55
+    },
+    {
+      "showId": "cost-of-living-2022",
+      "outlet": "Talkin' Broadway",
+      "critic": "Howard Miller",
+      "oldScore": 45,
+      "newScore": 100,
+      "delta": 55
+    },
+    {
+      "showId": "red-2010",
+      "outlet": "The Wall Street Journal",
+      "critic": "Terry Teachout",
+      "oldScore": 78,
+      "newScore": 30,
+      "delta": 48
+    },
+    {
+      "showId": "cyrano-de-bergerac-2007",
+      "outlet": "The Wall Street Journal",
+      "critic": "Terry Teachout",
+      "oldScore": 15,
       "newScore": 60,
-      "delta": 20
+      "delta": 45
+    },
+    {
+      "showId": "fiddler-on-the-roof-2015",
+      "outlet": "Financial Times",
+      "critic": "Martin Bernheimer",
+      "oldScore": 45,
+      "newScore": 90,
+      "delta": 45
+    },
+    {
+      "showId": "six-2021",
+      "outlet": "Mashable",
+      "critic": "Erin Strecker",
+      "oldScore": 50,
+      "newScore": 90,
+      "delta": 40
+    },
+    {
+      "showId": "the-piano-lesson-2022",
+      "outlet": "Cititour",
+      "critic": "Brian Scott Lipton",
+      "oldScore": 50,
+      "newScore": 90,
+      "delta": 40
+    },
+    {
+      "showId": "charlie-and-the-chocolate-factory-2017",
+      "outlet": "The Hollywood Reporter",
+      "critic": "David Rooney",
+      "oldScore": 12,
+      "newScore": 50,
+      "delta": 38
+    },
+    {
+      "showId": "cabaret-2014",
+      "outlet": "Vulture",
+      "critic": "Jesse Green",
+      "oldScore": 45,
+      "newScore": 80,
+      "delta": 35
+    },
+    {
+      "showId": "war-horse-2011",
+      "outlet": "New Jersey Newsroom",
+      "critic": "Michael Sommers",
+      "oldScore": 45,
+      "newScore": 80,
+      "delta": 35
+    },
+    {
+      "showId": "west-side-story-2020",
+      "outlet": "Theater News Online",
+      "critic": "Jeremy Gerard",
+      "oldScore": 25,
+      "newScore": 60,
+      "delta": 35
+    },
+    {
+      "showId": "falsettos-2016",
+      "outlet": "TheWrap",
+      "critic": "Robert Hofler",
+      "oldScore": 38,
+      "newScore": 70,
+      "delta": 32
+    },
+    {
+      "showId": "war-horse-2011",
+      "outlet": "The Wall Street Journal",
+      "critic": "Terry Teachout",
+      "oldScore": 82,
+      "newScore": 50,
+      "delta": 32
+    },
+    {
+      "showId": "god-of-carnage-2009",
+      "outlet": "Nytheatre",
+      "critic": "Martin Denton",
+      "oldScore": 40,
+      "newScore": 70,
+      "delta": 30
+    },
+    {
+      "showId": "the-snow-geese-2013",
+      "outlet": "Variety",
+      "critic": "Marilyn Stasio",
+      "oldScore": 42,
+      "newScore": 70,
+      "delta": 28
+    },
+    {
+      "showId": "war-horse-2011",
+      "outlet": "Backstage",
+      "critic": "Erik Haagensen",
+      "oldScore": 72,
+      "newScore": 100,
+      "delta": 28
+    },
+    {
+      "showId": "the-producers-west-end-2025",
+      "outlet": "BroadwayWorld",
+      "critic": "Aliya Al-Hassan",
+      "oldScore": 87,
+      "newScore": 60,
+      "delta": 27
+    },
+    {
+      "showId": "romeo-juliet-2024",
+      "outlet": "The Wall Street Journal",
+      "critic": "Charles Isherwood",
+      "oldScore": 42,
+      "newScore": 68,
+      "delta": 26
+    },
+    {
+      "showId": "the-mystery-of-edwin-drood-2012",
+      "outlet": "Associated Press",
+      "critic": "Mark Kennedy",
+      "oldScore": 76,
+      "newScore": 50,
+      "delta": 26
+    },
+    {
+      "showId": "a-behanding-in-spokane-2010",
+      "outlet": "NY1",
+      "critic": "Roma Torre",
+      "oldScore": 25,
+      "newScore": 50,
+      "delta": 25
+    },
+    {
+      "showId": "all-my-sons-2019",
+      "outlet": "Los Angeles Times",
+      "critic": "Charles McNulty",
+      "oldScore": 45,
+      "newScore": 70,
+      "delta": 25
+    },
+    {
+      "showId": "dracula-west-end-2025",
+      "outlet": "BroadwayWorld",
+      "critic": "Cindy Marcolina",
+      "oldScore": 85,
+      "newScore": 60,
+      "delta": 25
+    },
+    {
+      "showId": "the-prom-2018",
+      "outlet": "The Daily Beast",
+      "critic": "Tim Teeman",
+      "oldScore": 45,
+      "newScore": 70,
+      "delta": 25
+    },
+    {
+      "showId": "women-on-the-verge-of-a-nervous-breakdown-2010",
+      "outlet": "The Wall Street Journal",
+      "critic": "Terry Teachout",
+      "oldScore": 45,
+      "newScore": 20,
+      "delta": 25
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "outlet": "BroadwayWorld",
+      "critic": "Michael Dale",
+      "oldScore": 76,
+      "newScore": 100,
+      "delta": 24
+    },
+    {
+      "showId": "a-behanding-in-spokane-2010",
+      "outlet": "Vulture",
+      "critic": "Scott Brown",
+      "oldScore": 62,
+      "newScore": 40,
+      "delta": 22
+    },
+    {
+      "showId": "cabaret-2014",
+      "outlet": "NY1",
+      "critic": "Roma Torre",
+      "oldScore": 68,
+      "newScore": 90,
+      "delta": 22
+    },
+    {
+      "showId": "cabaret-2014",
+      "outlet": "The New York Times",
+      "critic": "Ben Brantley",
+      "oldScore": 58,
+      "newScore": 80,
+      "delta": 22
+    },
+    {
+      "showId": "charlie-and-the-chocolate-factory-2017",
+      "outlet": "Newsday",
+      "critic": "Linda Winer",
+      "oldScore": 28,
+      "newScore": 50,
+      "delta": 22
+    },
+    {
+      "showId": "charlie-and-the-chocolate-factory-2017",
+      "outlet": "Variety",
+      "critic": "Marilyn Stasio",
+      "oldScore": 38,
+      "newScore": 60,
+      "delta": 22
+    },
+    {
+      "showId": "god-of-carnage-2009",
+      "outlet": "Newsday",
+      "critic": "Linda Winer",
+      "oldScore": 68,
+      "newScore": 90,
+      "delta": 22
+    },
+    {
+      "showId": "red-2010",
+      "outlet": "Backstage",
+      "critic": "Erik Haagensen",
+      "oldScore": 42,
+      "newScore": 20,
+      "delta": 22
+    },
+    {
+      "showId": "the-height-of-the-storm-2019",
+      "outlet": "Theater News Online",
+      "critic": "David Cote",
+      "oldScore": 38,
+      "newScore": 60,
+      "delta": 22
+    },
+    {
+      "showId": "the-prom-2018",
+      "outlet": "TheWrap",
+      "critic": "Robert Hofler",
+      "oldScore": 38,
+      "newScore": 60,
+      "delta": 22
+    },
+    {
+      "showId": "1776-2022",
+      "outlet": "The New York Sun",
+      "critic": "Elysa Gardner",
+      "oldScore": 82,
+      "newScore": 100,
+      "delta": 18
+    },
+    {
+      "showId": "red-2010",
+      "outlet": "BroadwayWorld",
+      "critic": "Michael Dale",
+      "oldScore": 68,
+      "newScore": 50,
+      "delta": 18
+    },
+    {
+      "showId": "the-glass-menagerie-2017",
+      "outlet": "NY1",
+      "critic": "Roma Torre",
+      "oldScore": 32,
+      "newScore": 50,
+      "delta": 18
+    },
+    {
+      "showId": "the-mystery-of-edwin-drood-2012",
+      "outlet": "Backstage",
+      "critic": "Erik Haagensen",
+      "oldScore": 42,
+      "newScore": 60,
+      "delta": 18
+    },
+    {
+      "showId": "women-on-the-verge-of-a-nervous-breakdown-2010",
+      "outlet": "Nytheatre",
+      "critic": "Saviana Stanescu",
+      "oldScore": 78,
+      "newScore": 60,
+      "delta": 18
+    },
+    {
+      "showId": "women-on-the-verge-of-a-nervous-breakdown-2010",
+      "outlet": "The Hollywood Reporter",
+      "critic": "David Rooney",
+      "oldScore": 38,
+      "newScore": 20,
+      "delta": 18
+    },
+    {
+      "showId": "a-behanding-in-spokane-2010",
+      "outlet": "Nytheatre",
+      "critic": "Martin Denton",
+      "oldScore": 43,
+      "newScore": 60,
+      "delta": 17
+    },
+    {
+      "showId": "orphans-2013",
+      "outlet": "BroadwayWorld",
+      "critic": "Clementine Scott",
+      "oldScore": 43,
+      "newScore": 60,
+      "delta": 17
+    },
+    {
+      "showId": "clybourne-park-2012",
+      "outlet": "The Guardian",
+      "critic": "Arifa Akbar",
+      "oldScore": 76,
+      "newScore": 60,
+      "delta": 16
+    },
+    {
+      "showId": "the-choir-of-man-west-end-2026",
+      "outlet": "Everything Theatre  (UK)",
+      "critic": "Rob Warren",
+      "oldScore": 76,
+      "newScore": 60,
+      "delta": 16
+    },
+    {
+      "showId": "the-dinosaurs-off-broadway-2026",
+      "outlet": "Exeunt Magazine",
+      "critic": "Lane Williamson",
+      "oldScore": 48,
+      "newScore": 64,
+      "delta": 16
+    },
+    {
+      "showId": "west-side-story-2020",
+      "outlet": "BroadwayWorld",
+      "critic": "Michael Dale",
+      "oldScore": 56,
+      "newScore": 40,
+      "delta": 16
+    },
+    {
+      "showId": "a-behanding-in-spokane-2010",
+      "outlet": "The New Yorker",
+      "critic": "Hinton Als",
+      "oldScore": 25,
+      "newScore": 10,
+      "delta": 15
+    },
+    {
+      "showId": "a-life-in-the-theatre-2010",
+      "outlet": "Bloomberg",
+      "critic": "John Simon",
+      "oldScore": 25,
+      "newScore": 40,
+      "delta": 15
+    },
+    {
+      "showId": "american-idiot-2010",
+      "outlet": "Vulture",
+      "critic": "Scott Brown",
+      "oldScore": 25,
+      "newScore": 10,
+      "delta": 15
+    },
+    {
+      "showId": "cabaret-2014",
+      "outlet": "HuffPost",
+      "critic": "David Finkle",
+      "oldScore": 45,
+      "newScore": 60,
+      "delta": 15
+    },
+    {
+      "showId": "charlie-and-the-chocolate-factory-2017",
+      "outlet": "Vulture",
+      "critic": "Jesse Green",
+      "oldScore": 25,
+      "newScore": 40,
+      "delta": 15
+    },
+    {
+      "showId": "god-of-carnage-2009",
+      "outlet": "The Wall Street Journal",
+      "critic": "Terry Teachout",
+      "oldScore": 65,
+      "newScore": 80,
+      "delta": 15
+    },
+    {
+      "showId": "hold-on-to-your-butts-off-broadway-2026",
+      "outlet": "The Guardian",
+      "critic": "Chris Wiegand",
+      "oldScore": 75,
+      "newScore": 60,
+      "delta": 15
+    },
+    {
+      "showId": "lend-me-a-tenor-2010",
+      "outlet": "BroadwayWorld",
+      "critic": "Michael Dale",
+      "oldScore": 45,
+      "newScore": 60,
+      "delta": 15
+    },
+    {
+      "showId": "the-ferryman-2018",
+      "outlet": "amNewYork",
+      "critic": "Matt Windman",
+      "oldScore": 85,
+      "newScore": 100,
+      "delta": 15
+    },
+    {
+      "showId": "war-horse-2011",
+      "outlet": "NY1",
+      "critic": "Roma Torre",
+      "oldScore": 85,
+      "newScore": 100,
+      "delta": 15
+    },
+    {
+      "showId": "war-horse-2011",
+      "outlet": "Scheckontheater",
+      "critic": "Frank Scheck",
+      "oldScore": 75,
+      "newScore": 90,
+      "delta": 15
+    },
+    {
+      "showId": "war-horse-2011",
+      "outlet": "Vulture",
+      "critic": "Scott Brown",
+      "oldScore": 65,
+      "newScore": 50,
+      "delta": 15
+    },
+    {
+      "showId": "west-side-story-2020",
+      "outlet": "NY1",
+      "critic": "Roma Torre",
+      "oldScore": 45,
+      "newScore": 60,
+      "delta": 15
+    },
+    {
+      "showId": "women-on-the-verge-of-a-nervous-breakdown-2010",
+      "outlet": "Backstage",
+      "critic": "Erik Haagensen",
+      "oldScore": 45,
+      "newScore": 60,
+      "delta": 15
+    },
+    {
+      "showId": "women-on-the-verge-of-a-nervous-breakdown-2010",
+      "outlet": "Chicago Tribune",
+      "critic": "Chris Jones",
+      "oldScore": 25,
+      "newScore": 10,
+      "delta": 15
+    },
+    {
+      "showId": "women-on-the-verge-of-a-nervous-breakdown-2010",
+      "outlet": "The New York Times",
+      "critic": "Ben Brantley",
+      "oldScore": 35,
+      "newScore": 20,
+      "delta": 15
+    },
+    {
+      "showId": "women-on-the-verge-of-a-nervous-breakdown-2010",
+      "outlet": "The Washington Post",
+      "critic": "Peter Marks",
+      "oldScore": 45,
+      "newScore": 30,
+      "delta": 15
+    },
+    {
+      "showId": "six-2021",
+      "outlet": "Chicago Tribune",
+      "critic": "Chris Jones",
+      "oldScore": 76,
+      "newScore": 90,
+      "delta": 14
+    },
+    {
+      "showId": "the-monsters-off-broadway-2026",
+      "outlet": "Theater Pizzazz",
+      "critic": "Ron Fassler",
+      "oldScore": 72,
+      "newScore": 86,
+      "delta": 14
+    },
+    {
+      "showId": "garry-starr-classic-penguins-garrick-west-end-2026",
+      "outlet": "BroadwayWorld",
+      "critic": "Franco Milazzo",
+      "oldScore": 67,
+      "newScore": 80,
+      "delta": 13
+    },
+    {
+      "showId": "a-behanding-in-spokane-2010",
+      "outlet": "Backstage",
+      "critic": "David Sheward",
+      "oldScore": 38,
+      "newScore": 50,
+      "delta": 12
+    },
+    {
+      "showId": "a-behanding-in-spokane-2010",
+      "outlet": "Bloomberg",
+      "critic": "John Simon",
+      "oldScore": 78,
+      "newScore": 90,
+      "delta": 12
+    },
+    {
+      "showId": "a-behanding-in-spokane-2010",
+      "outlet": "New Jersey Newsroom",
+      "critic": "Michael Sommers",
+      "oldScore": 78,
+      "newScore": 90,
+      "delta": 12
+    },
+    {
+      "showId": "a-life-in-the-theatre-2010",
+      "outlet": "New Jersey Newsroom",
+      "critic": "Michael Sommers",
+      "oldScore": 68,
+      "newScore": 80,
+      "delta": 12
+    },
+    {
+      "showId": "charlie-and-the-chocolate-factory-2017",
+      "outlet": "Broadway News",
+      "critic": "Elizabeth Bradley",
+      "oldScore": 38,
+      "newScore": 50,
+      "delta": 12
+    },
+    {
+      "showId": "come-fly-away-2010",
+      "outlet": "On Off Broadway",
+      "critic": "Matt Windman",
+      "oldScore": 42,
+      "newScore": 30,
+      "delta": 12
+    },
+    {
+      "showId": "falsettos-2016",
+      "outlet": "Chicago Tribune",
+      "critic": "Chris Jones",
+      "oldScore": 78,
+      "newScore": 90,
+      "delta": 12
+    },
+    {
+      "showId": "garry-starr-classic-penguins-garrick-west-end-2026",
+      "outlet": "West End Best Friend",
+      "critic": "Livvy Perrett",
+      "oldScore": 88,
+      "newScore": 100,
+      "delta": 12
+    },
+    {
+      "showId": "hillary-and-clinton-2019",
+      "outlet": "The Washington Post",
+      "critic": "Peter Marks",
+      "oldScore": 82,
+      "newScore": 70,
+      "delta": 12
+    },
+    {
+      "showId": "jekyll-and-hyde-2013",
+      "outlet": "New York Daily News",
+      "critic": "Joe Dziemianowicz",
+      "oldScore": 72,
+      "newScore": 60,
+      "delta": 12
+    },
+    {
+      "showId": "jekyll-and-hyde-2013",
+      "outlet": "Newsday",
+      "critic": "Linda Winer",
+      "oldScore": 62,
+      "newScore": 50,
+      "delta": 12
+    },
+    {
+      "showId": "jersey-boys-2005",
+      "outlet": "Village Voice",
+      "critic": "Michael Feingold",
+      "oldScore": 38,
+      "newScore": 50,
+      "delta": 12
+    },
+    {
+      "showId": "job-2024",
+      "outlet": "Theatrely",
+      "critic": "Nolan Boggess",
+      "oldScore": 82,
+      "newScore": 70,
+      "delta": 12
+    },
+    {
+      "showId": "la-cage-aux-folles-2010",
+      "outlet": "Entertainment Weekly",
+      "critic": "Thom Geier",
+      "oldScore": 55,
+      "newScore": 43,
+      "delta": 12
+    },
+    {
+      "showId": "network-2018",
+      "outlet": "NJ.com",
+      "critic": "Christopher Kelly",
+      "oldScore": 78,
+      "newScore": 90,
+      "delta": 12
+    },
+    {
+      "showId": "red-2010",
+      "outlet": "Bloomberg",
+      "critic": "John Simon",
+      "oldScore": 78,
+      "newScore": 90,
+      "delta": 12
+    },
+    {
+      "showId": "the-lifespan-of-a-fact-2018",
+      "outlet": "Newsday",
+      "critic": "Barbara Schuler",
+      "oldScore": 78,
+      "newScore": 90,
+      "delta": 12
+    },
+    {
+      "showId": "the-minutes-2022",
+      "outlet": "Chicago Tribune",
+      "critic": "Chris Jones",
+      "oldScore": 78,
+      "newScore": 90,
+      "delta": 12
+    },
+    {
+      "showId": "the-mystery-of-edwin-drood-2012",
+      "outlet": "Chicago Tribune",
+      "critic": "Chris Jones",
+      "oldScore": 78,
+      "newScore": 90,
+      "delta": 12
+    },
+    {
+      "showId": "the-piano-lesson-2022",
+      "outlet": "The Wall Street Journal",
+      "critic": "Charles Isherwood",
+      "oldScore": 82,
+      "newScore": 70,
+      "delta": 12
+    },
+    {
+      "showId": "the-prom-2018",
+      "outlet": "The Globe and Mail",
+      "critic": "Kelly Nestruck",
+      "oldScore": 68,
+      "newScore": 80,
+      "delta": 12
+    },
+    {
+      "showId": "the-rose-tattoo-2019",
+      "outlet": "The Daily Beast",
+      "critic": "Tim Teeman",
+      "oldScore": 82,
+      "newScore": 70,
+      "delta": 12
+    },
+    {
+      "showId": "the-snow-geese-2013",
+      "outlet": "New York Post",
+      "critic": "Elisabeth Vincentelli",
+      "oldScore": 68,
+      "newScore": 80,
+      "delta": 12
+    },
+    {
+      "showId": "the-snow-geese-2013",
+      "outlet": "Vulture",
+      "critic": "Jesse Green",
+      "oldScore": 38,
+      "newScore": 50,
+      "delta": 12
+    },
+    {
+      "showId": "west-side-story-2020",
+      "outlet": "Rolling Stone",
+      "critic": "Jerry Portwood",
+      "oldScore": 88,
+      "newScore": 100,
+      "delta": 12
+    },
+    {
+      "showId": "west-side-story-2020",
+      "outlet": "The Daily Beast",
+      "critic": "Tim Teeman",
+      "oldScore": 42,
+      "newScore": 30,
+      "delta": 12
+    },
+    {
+      "showId": "women-on-the-verge-of-a-nervous-breakdown-2010",
+      "outlet": "Los Angeles Times",
+      "critic": "Charles McNulty",
+      "oldScore": 62,
+      "newScore": 50,
+      "delta": 12
+    },
+    {
+      "showId": "women-on-the-verge-of-a-nervous-breakdown-2010",
+      "outlet": "New Jersey Newsroom",
+      "critic": "Michael Sommers",
+      "oldScore": 78,
+      "newScore": 90,
+      "delta": 12
+    },
+    {
+      "showId": "women-on-the-verge-of-a-nervous-breakdown-2010",
+      "outlet": "Time",
+      "critic": "Richard Zoglin",
+      "oldScore": 78,
+      "newScore": 90,
+      "delta": 12
+    },
+    {
+      "showId": "be-more-chill-2019",
+      "outlet": "amNewYork",
+      "critic": "Matt Windman",
+      "oldScore": 79,
+      "newScore": 90,
+      "delta": 11
+    },
+    {
+      "showId": "machinal-2014",
+      "outlet": "BroadwayWorld",
+      "critic": "Gary Naylor",
+      "oldScore": 49,
+      "newScore": 60,
+      "delta": 11
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "outlet": "All That Dazzles  (UK)",
+      "critic": "Daz Gale",
+      "oldScore": 89,
+      "newScore": 100,
+      "delta": 11
+    },
+    {
+      "showId": "orphans-2013",
+      "outlet": "The Guardian",
+      "critic": "Arifa Akbar",
+      "oldScore": 71,
+      "newScore": 60,
+      "delta": 11
+    },
+    {
+      "showId": "the-choir-of-man-west-end-2026",
+      "outlet": "All That Dazzles  (UK)",
+      "critic": "Daz Gale",
+      "oldScore": 89,
+      "newScore": 100,
+      "delta": 11
+    },
+    {
+      "showId": "wicked-west-end-2021",
+      "outlet": "Tim Talks Theatre",
+      "critic": "Tim Talks Theatre (UK)",
+      "oldScore": 89,
+      "newScore": 100,
+      "delta": 11
     }
   ]
 }
