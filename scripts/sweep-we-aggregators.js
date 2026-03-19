@@ -342,9 +342,9 @@ async function sweepWET(show) {
 let _trIndex = null; // Map<showId, url>
 
 /**
- * Build a full index of theatre.reviews roundup URLs by paginating the
- * category archive and matching each URL to our shows.
- * Uses ScrapingBee render for pages that CleanTalk blocks (pages 3+).
+ * Build a full index of theatre.reviews roundup URLs.
+ * Phase 1: Homepage (lists all current shows with direct links — no auth needed)
+ * Phase 2: Category archive pagination (for older shows, with SB render fallback)
  */
 async function _buildTRIndex(weShows) {
   if (_trIndex) return _trIndex;
@@ -354,24 +354,32 @@ async function _buildTRIndex(weShows) {
   const { extractTitleFromSlug } = require('./scrape-theatre-reviews');
   const cheerio = require('cheerio');
 
-  // Paginate all category pages — nodeFetch for pages 1-2, SB render for 3+
-  const MAX_PAGES = 30;
   const seen = new Set();
   const allUrls = [];
 
+  // Phase 1: Scrape homepage — lists all current roundup links reliably
+  const homepageHtml = await nodeFetch('https://theatre.reviews/');
+  if (homepageHtml) {
+    const $hp = cheerio.load(homepageHtml);
+    $hp('a[href*="/reviews-roundup/"]').each((_, el) => {
+      const href = $hp(el).attr('href');
+      if (!href || !href.includes('/reviews-roundup/')) return;
+      if (href.match(/\/category\//)) return;
+      const full = href.startsWith('http') ? href : `https://theatre.reviews${href}`;
+      if (!seen.has(full)) { seen.add(full); allUrls.push(full); }
+    });
+    console.log(`  [TR] Homepage: ${allUrls.length} roundup URLs`);
+  }
+
+  // Phase 2: Category archive pagination for older shows
+  const MAX_PAGES = 30;
   for (let page = 1; page <= MAX_PAGES; page++) {
     const pageUrl = page === 1
       ? 'https://theatre.reviews/category/reviews-roundup/'
       : `https://theatre.reviews/category/reviews-roundup/page/${page}/`;
-
     let html = await nodeFetch(pageUrl);
-
-    // ScrapingBee fallback for CleanTalk-blocked pages (typically page 3+)
-    if (!html && SB_KEY) {
-      html = await scrapingBeeRender(pageUrl);
-    }
-    if (!html) break; // no more pages
-
+    if (!html && SB_KEY) html = await scrapingBeeRender(pageUrl);
+    if (!html) break;
     const $ = cheerio.load(html);
     let found = 0;
     $('a[href*="/reviews-roundup/"]').each((_, el) => {
@@ -379,42 +387,56 @@ async function _buildTRIndex(weShows) {
       if (!href || !href.includes('/reviews-roundup/')) return;
       if (href.match(/\/category\//) || href.match(/\/page\//)) return;
       const full = href.startsWith('http') ? href : `https://theatre.reviews${href}`;
-      if (!seen.has(full)) {
-        seen.add(full);
-        allUrls.push(full);
-        found++;
-      }
+      if (!seen.has(full)) { seen.add(full); allUrls.push(full); found++; }
     });
-
-    console.log(`  [TR] Page ${page}: ${found} new URLs (${allUrls.length} total)`);
     if (found === 0) break;
+    console.log(`  [TR] Page ${page}: ${found} new (${allUrls.length} total)`);
     await sleep(1500);
   }
 
   console.log(`  [TR] ${allUrls.length} roundup URLs discovered`);
 
-  // Match each URL to our shows — use title-contains as fallback
+  // Match URLs to shows — try multiple slug cleaning strategies
   for (const url of allUrls) {
-    const titleFromSlug = extractTitleFromSlug(url);
-    if (!titleFromSlug) continue;
+    // Extract raw slug: "oliver-gielgud-reviews" from full URL
+    const slugMatch = url.match(/reviews-roundup\/(.+?)\/?\s*$/);
+    if (!slugMatch) continue;
+    const rawSlug = slugMatch[1].replace(/-reviews$/, '');
 
-    // Try standard matching first
-    let match = matchTitleToShow(titleFromSlug, weShows, { market: 'west-end' });
+    // Try multiple cleaned variants of the slug
+    const cleanedSlugs = [
+      rawSlug,
+      rawSlug.replace(/-with-.*$/, ''),           // strip "with-cynthia-erivo"
+      rawSlug.replace(/-at-.*$/, ''),              // strip "at-the-bridge"
+      // Strip venue suffixes (comprehensive list from actual slugs)
+      rawSlug.replace(/-(gielgud|playhouse|garrick|troubadour|bridge|donmar|hampstead|menier|old-vic|young-vic|adelphi|savoy|apollo|noel-coward|wyndham|marylebone|almeida|barbican|soho-place|bonneville|national|trafalgar|criterion|phoenix|fortune|lyceum|piccadilly|cambridge|dominion|southwark|dorfman)$/, ''),
+      // Strip "disneys-" prefix
+      rawSlug.replace(/^disneys-/, ''),
+    ];
 
-    // Fallback: check if any show title appears in the slug
-    if (!match || !match.show) {
+    let bestMatch = null;
+    for (const slug of [...new Set(cleanedSlugs)]) {
+      const titleFromSlug = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+      const match = matchTitleToShow(titleFromSlug, weShows, { market: 'west-end' });
+      if (match && match.show) { bestMatch = match; break; }
+    }
+
+    // Fallback: check if any show title words appear in raw slug
+    if (!bestMatch) {
       for (const show of weShows) {
-        const showLower = show.title.toLowerCase();
-        const slugLower = titleFromSlug.toLowerCase();
-        if (slugLower.includes(showLower) || showLower.includes(slugLower)) {
-          match = { show };
+        const showWords = show.title.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/)
+          .filter(w => w.length > 2);
+        const slugLower = rawSlug.toLowerCase();
+        const matchCount = showWords.filter(w => slugLower.includes(w)).length;
+        if (matchCount >= Math.min(2, showWords.length) && matchCount > 0) {
+          bestMatch = { show };
           break;
         }
       }
     }
 
-    if (match && match.show && !_trIndex.has(match.show.id)) {
-      _trIndex.set(match.show.id, url);
+    if (bestMatch && bestMatch.show && !_trIndex.has(bestMatch.show.id)) {
+      _trIndex.set(bestMatch.show.id, url);
     }
   }
 
