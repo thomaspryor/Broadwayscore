@@ -16,12 +16,22 @@
     "you-got-older-off-broadway-2026/nysr--frank-scheck.json",
     "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
     "an-ark-off-broadway-2026/nytg--kyle-turner.json",
-    "bigfoot-off-broadway-2026/nytg--caroline-cao.json"
+    "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+    "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+    "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+    "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nytg--allison-considine.json",
+    "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
+    "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+    "little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
     "burnout-paradise-off-broadway-2026/playbill--unknown.json",
-    "youre-a-good-man-charlie-brown-off-broadway-2026/dc-metro-theater-arts--richard-seff.json"
+    "youre-a-good-man-charlie-brown-off-broadway-2026/dc-metro-theater-arts--richard-seff.json",
+    "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -39,31 +49,51 @@
       "you-got-older-off-broadway-2026/nysr--frank-scheck.json",
       "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
       "an-ark-off-broadway-2026/nytg--kyle-turner.json",
-      "bigfoot-off-broadway-2026/nytg--caroline-cao.json"
+      "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+      "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+      "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+      "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "data-off-broadway-2026/nytg--allison-considine.json",
+      "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json"
     ],
-    "amp": [],
-    "browserbase": [],
+    "amp": [
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
+      "little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json"
+    ],
+    "browserbase": [
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "my-joy-is-heavy-off-broadway-2025/nytimes--brittani-samuel.json",
-      "the-play-that-goes-wrong-off-broadway-2019/newyorker--michael-schulman.json"
+      "the-play-that-goes-wrong-off-broadway-2019/newyorker--michael-schulman.json",
+      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json"
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/youre-a-good-man-charlie-brown-off-broadway-2026/dc-metro-theater-arts--richard-seff.json"
+      "data/review-texts/youre-a-good-man-charlie-brown-off-broadway-2026/dc-metro-theater-arts--richard-seff.json",
+      "data/review-texts/marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json"
     ],
     "archive": [
       "youre-a-good-man-charlie-brown-off-broadway-2026/theatermania--david-gordon.json"
     ]
   },
   "startTime": "2026-03-19T08:31:39.530Z",
-  "lastProcessed": "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+  "lastProcessed": "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
   "log": [
     {
       "t": "2026-03-19T08:32:46.005Z",
       "event": "bb-session",
       "session": "6dd540d0",
       "url": "https://www.wsj.com/articles/the-play-that-goes-wrong-review-hectic-whodunit-hum"
+    },
+    {
+      "t": "2026-03-19T08:38:06.835Z",
+      "event": "bb-session",
+      "session": "266d0d90",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
     }
   ]
 }

@@ -1,25 +1,31 @@
 {
-  "updatedAt": "2026-03-19T08:36:50.209Z",
-  "processed": 17,
-  "failed": 3,
-  "successRate": "85.0%",
+  "updatedAt": "2026-03-19T08:40:02.556Z",
+  "processed": 26,
+  "failed": 4,
+  "successRate": "86.7%",
   "tierBreakdown": {
-    "playwright": 14,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 20,
+    "amp": 2,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 1,
+    "archiveToday": 2,
     "archive": 1
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-03-19T08:32:46.005Z",
       "event": "bb-session",
       "session": "6dd540d0",
       "url": "https://www.wsj.com/articles/the-play-that-goes-wrong-review-hectic-whodunit-hum"
+    },
+    {
+      "t": "2026-03-19T08:38:06.835Z",
+      "event": "bb-session",
+      "session": "266d0d90",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
     }
   ]
 }
