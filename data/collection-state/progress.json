@@ -157,7 +157,15 @@
     "the-mousetrap-west-end-2021/guardian--arifa-akbar.json",
     "the-phantom-of-the-opera-west-end-1986/timeout-london--andrzej-lukowski.json",
     "wicked-west-end-2021/timeout--unknown.json",
-    "witness-for-the-prosecution-west-end-2022/timeout--unknown.json"
+    "witness-for-the-prosecution-west-end-2022/timeout--unknown.json",
+    "all-my-sons-west-end-2025/daily-mail--unknown.json",
+    "and-juliet-2022/city-beat--brian-scott-lipton.json",
+    "broken-glass-west-end-2026/the-express--unknown.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/financialtimes--sarah-hemming.json",
+    "hadestown-west-end-2024/independent--unknown.json",
+    "into-the-woods-west-end-2025/financialtimes--sarah-hemming.json",
+    "les-miserables-west-end-2021/financialtimes--sarah-hemming.json",
+    "magic-mike-live-west-end-2021/financialtimes--sarah-hemming.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
@@ -171,7 +179,9 @@
     "zack-off-broadway-2026/nydailynews--logan-culwell.json",
     "the-play-that-goes-wrong-off-broadway-2019/dctheatrescene--deb-miller.json",
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
-    "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json"
+    "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
+    "burnout-paradise-off-broadway-2026/playbill--unknown.json",
+    "consumed-west-end-2026/thestage--dave-fargnoli.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -276,7 +286,14 @@
       "stranger-things-the-first-shadow-west-end-2023/timeout--tim-bano.json",
       "summerfolk-west-end-2026/thereviewshub--unknown.json",
       "wicked-west-end-2021/timeout--unknown.json",
-      "witness-for-the-prosecution-west-end-2022/timeout--unknown.json"
+      "witness-for-the-prosecution-west-end-2022/timeout--unknown.json",
+      "all-my-sons-west-end-2025/daily-mail--unknown.json",
+      "broken-glass-west-end-2026/the-express--unknown.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/financialtimes--sarah-hemming.json",
+      "hadestown-west-end-2024/independent--unknown.json",
+      "into-the-woods-west-end-2025/financialtimes--sarah-hemming.json",
+      "les-miserables-west-end-2021/financialtimes--sarah-hemming.json",
+      "magic-mike-live-west-end-2021/financialtimes--sarah-hemming.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
@@ -337,7 +354,8 @@
       "data/review-texts/youre-a-good-man-charlie-brown-off-broadway-2026/nytimes--neil-genzlinger.json",
       "data/review-texts/11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
       "data/review-texts/dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
-      "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/dctheatrescene--deb-miller.json"
+      "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/dctheatrescene--deb-miller.json",
+      "data/review-texts/consumed-west-end-2026/thestage--dave-fargnoli.json"
     ],
     "archive": [
       "youre-a-good-man-charlie-brown-off-broadway-2026/theatermania--david-gordon.json",
@@ -359,11 +377,12 @@
       "bigfoot-off-broadway-2026/playbill--unknown.json",
       "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
       "showstopper-the-improvised-musical-west-end-2023/timeout-london--andrzej-lukowski.json",
-      "the-phantom-of-the-opera-west-end-1986/timeout-london--andrzej-lukowski.json"
+      "the-phantom-of-the-opera-west-end-1986/timeout-london--andrzej-lukowski.json",
+      "and-juliet-2022/city-beat--brian-scott-lipton.json"
     ]
   },
   "startTime": "2026-03-19T08:31:39.530Z",
-  "lastProcessed": "witness-for-the-prosecution-west-end-2022/timeout--unknown.json",
+  "lastProcessed": "magic-mike-live-west-end-2021/financialtimes--sarah-hemming.json",
   "log": [
     {
       "t": "2026-03-19T08:32:46.005Z",
@@ -416,6 +435,17 @@
       "t": "2026-03-19T09:31:15.898Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-19T09:35:02.161Z",
+      "event": "bb-session",
+      "session": "6690d0b3",
+      "url": "https://www.thestage.co.uk/reviews/the-crucible-review-london-shakespeares-globe"
+    },
+    {
+      "t": "2026-03-19T09:35:03.379Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
