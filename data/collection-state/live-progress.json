@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-19T11:34:26.801Z",
-  "processed": 59,
-  "failed": 9,
-  "successRate": "86.8%",
+  "updatedAt": "2026-03-19T11:42:59.084Z",
+  "processed": 67,
+  "failed": 11,
+  "successRate": "85.9%",
   "tierBreakdown": {
     "playwright": 34,
-    "amp": 14,
-    "browserbase": 10,
+    "amp": 20,
+    "browserbase": 14,
     "directCookies": 0,
-    "scrapingbee": 17,
+    "scrapingbee": 20,
     "brightdata": 0,
-    "archiveToday": 3,
+    "archiveToday": 4,
     "archive": 0
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-03-19T10:04:36.520Z",
@@ -73,6 +73,28 @@
     },
     {
       "t": "2026-03-19T11:32:33.920Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-19T11:35:21.364Z",
+      "event": "bb-session",
+      "session": "3b56b16e",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-03-19T11:35:22.999Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-19T11:39:13.628Z",
+      "event": "bb-session",
+      "session": "04f554fe",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
+    },
+    {
+      "t": "2026-03-19T11:39:14.937Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }

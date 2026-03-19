@@ -58,7 +58,15 @@
     "hercules-west-end-2025/nytimes--matt-wolf.json",
     "hercules-west-end-2025/variety--david-benedict.json",
     "just-in-time-2025/nytimes--adam-feldman.json",
-    "mamma-mia-west-end-2021/variety--matt-wolf.json"
+    "mamma-mia-west-end-2021/variety--matt-wolf.json",
+    "mamma-mia-west-end-2021/variety--owen-gleiberman.json",
+    "maybe-happy-ending-2024/vulture--sara-holdren.json",
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "moulin-rouge-2019/nytimes--ben-brantley.json",
+    "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+    "oh-mary-2024/hollywood-reporter--david-rooney.json",
+    "oh-mary-2024/nytimes--erik-piepenburg.json",
+    "paddington-the-musical-west-end-2025/variety--david-benedict.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
@@ -69,7 +77,9 @@
     "consumed-west-end-2026/thestage--dave-fargnoli.json",
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
     "the-lion-king-west-end-2021/thestage--unknown.json",
-    "hadestown-2019/newyorker--hilton-als.json"
+    "hadestown-2019/newyorker--hilton-als.json",
+    "mj-2022/vulture--helen-shaw.json",
+    "oh-mary-2024/vulture--helen-shaw.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -123,7 +133,13 @@
       "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
       "hercules-west-end-2025/variety--david-benedict.json",
       "data/review-texts/mamma-mia-west-end-2021/variety--matt-wolf.json",
-      "mamma-mia-west-end-2021/variety--matt-wolf.json"
+      "mamma-mia-west-end-2021/variety--matt-wolf.json",
+      "data/review-texts/mamma-mia-west-end-2021/variety--owen-gleiberman.json",
+      "mamma-mia-west-end-2021/variety--owen-gleiberman.json",
+      "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "data/review-texts/paddington-the-musical-west-end-2025/variety--david-benedict.json",
+      "paddington-the-musical-west-end-2025/variety--david-benedict.json"
     ],
     "browserbase": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
@@ -135,7 +151,11 @@
       "data/review-texts/hadestown-2019/hollywood-reporter--david-rooney.json",
       "hadestown-2019/hollywood-reporter--david-rooney.json",
       "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json",
-      "hamilton-2015/hollywood-reporter--david-rooney.json"
+      "hamilton-2015/hollywood-reporter--david-rooney.json",
+      "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "data/review-texts/oh-mary-2024/hollywood-reporter--david-rooney.json",
+      "oh-mary-2024/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -155,18 +175,22 @@
       "cold-war-choir-practice-off-broadway-2026/theatermania--unknown.json",
       "death-becomes-her-2024/newyorker--helen-shaw.json",
       "hamilton-west-end-2021/nytimes--unknown.json",
-      "hercules-west-end-2025/nytimes--matt-wolf.json"
+      "hercules-west-end-2025/nytimes--matt-wolf.json",
+      "maybe-happy-ending-2024/vulture--sara-holdren.json",
+      "moulin-rouge-2019/nytimes--ben-brantley.json",
+      "oh-mary-2024/nytimes--erik-piepenburg.json"
     ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
       "data/review-texts/my-joy-is-heavy-off-broadway-2025/vulture--unknown.json",
-      "data/review-texts/consumed-west-end-2026/thestage--dave-fargnoli.json"
+      "data/review-texts/consumed-west-end-2026/thestage--dave-fargnoli.json",
+      "data/review-texts/mj-2022/vulture--helen-shaw.json"
     ],
     "archive": []
   },
   "startTime": "2026-03-19T10:02:04.711Z",
-  "lastProcessed": "mamma-mia-west-end-2021/variety--matt-wolf.json",
+  "lastProcessed": "paddington-the-musical-west-end-2025/variety--david-benedict.json",
   "log": [
     {
       "t": "2026-03-19T10:04:36.520Z",
@@ -226,6 +250,28 @@
     },
     {
       "t": "2026-03-19T11:32:33.920Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-19T11:35:21.364Z",
+      "event": "bb-session",
+      "session": "3b56b16e",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-03-19T11:35:22.999Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-19T11:39:13.628Z",
+      "event": "bb-session",
+      "session": "04f554fe",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
+    },
+    {
+      "t": "2026-03-19T11:39:14.937Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
