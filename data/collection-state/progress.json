@@ -533,7 +533,16 @@
     "magic-mike-live-west-end-2021/standard--nick-curtis.json",
     "magic-mike-live-west-end-2021/whatsonstage--alex-wood.json",
     "magic-mike-live-west-end-2021/whatsonstage--sarah-crompton.json",
-    "mamma-mia-west-end-2021/london-box-office--daniel-perks.json"
+    "mamma-mia-west-end-2021/london-box-office--daniel-perks.json",
+    "mamma-mia-west-end-2021/london-theatre--alan-bird.json",
+    "mamma-mia-west-end-2021/standard--jessie-thompson.json",
+    "manic-street-creature-west-end-2026/london-theatre--anya-ryan.json",
+    "manic-street-creature-west-end-2026/standard--nick-curtis.json",
+    "manic-street-creature-west-end-2026/west-end-wilma--unknown.json",
+    "manic-street-creature-west-end-2026/whatsonstage--unknown.json",
+    "marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
+    "marie-and-rosetta-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+    "marie-and-rosetta-west-end-2026/broadwayworld--clementine-scott.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
@@ -609,7 +618,8 @@
     "into-the-woods-west-end-2025/i-paper--fiona-mountford.json",
     "it-walks-around-the-house-at-night-west-end-2026/broadwayworld--cindy-marcolina.json",
     "it-walks-around-the-house-at-night-west-end-2026/london-theatre--holly-omahony.json",
-    "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json"
+    "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "manic-street-creature-west-end-2026/broadwayworld--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -984,7 +994,14 @@
       "magic-mike-live-west-end-2021/standard--nick-curtis.json",
       "magic-mike-live-west-end-2021/whatsonstage--alex-wood.json",
       "magic-mike-live-west-end-2021/whatsonstage--sarah-crompton.json",
-      "mamma-mia-west-end-2021/london-box-office--daniel-perks.json"
+      "mamma-mia-west-end-2021/london-box-office--daniel-perks.json",
+      "mamma-mia-west-end-2021/london-theatre--alan-bird.json",
+      "mamma-mia-west-end-2021/standard--jessie-thompson.json",
+      "manic-street-creature-west-end-2026/london-theatre--anya-ryan.json",
+      "manic-street-creature-west-end-2026/standard--nick-curtis.json",
+      "manic-street-creature-west-end-2026/west-end-wilma--unknown.json",
+      "manic-street-creature-west-end-2026/whatsonstage--unknown.json",
+      "marie-and-rosetta-west-end-2026/all-that-dazzles-uk--daz-gale.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
@@ -1050,7 +1067,9 @@
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
       "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
       "data/review-texts/maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
-      "maybe-happy-ending-2024/nypost--johnny-oleksinski.json"
+      "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+      "data/review-texts/marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
+      "marcel-on-the-train-off-broadway-2026/amny--matt-windman.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1153,7 +1172,8 @@
       "data/review-texts/hercules-west-end-2025/thestage--sam-marlowe.json",
       "data/review-texts/im-sorry-prime-minister-west-end-2026/broadwayworld--gary-naylor.json",
       "data/review-texts/into-the-woods-west-end-2025/broadwayworld--unknown.json",
-      "data/review-texts/it-walks-around-the-house-at-night-west-end-2026/broadwayworld--cindy-marcolina.json"
+      "data/review-texts/it-walks-around-the-house-at-night-west-end-2026/broadwayworld--cindy-marcolina.json",
+      "data/review-texts/manic-street-creature-west-end-2026/broadwayworld--unknown.json"
     ],
     "archive": [
       "mother-russia-off-broadway-2026/theatermania--linda-buchwald.json",
@@ -1218,11 +1238,12 @@
       "just-in-time-2025/billboard--unknown.json",
       "just-in-time-2025/theater-scene--joel-benjamin.json",
       "les-miserables-west-end-2021/daily-mail--patrick-marmion.json",
-      "les-miserables-west-end-2021/thestage--matthew-hemley.json"
+      "les-miserables-west-end-2021/thestage--matthew-hemley.json",
+      "marie-and-rosetta-west-end-2026/broadwayworld--clementine-scott.json"
     ]
   },
   "startTime": "2026-03-19T10:02:04.711Z",
-  "lastProcessed": "mamma-mia-west-end-2021/london-box-office--daniel-perks.json",
+  "lastProcessed": "marie-and-rosetta-west-end-2026/broadwayworld--clementine-scott.json",
   "log": [
     {
       "t": "2026-03-19T10:04:36.520Z",
@@ -1449,6 +1470,17 @@
       "t": "2026-03-19T19:17:39.025Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-19T19:47:21.381Z",
+      "event": "bb-session",
+      "session": "0da01386",
+      "url": "https://www.amny.com/news/review-marcel-on-the-train-finds-bravery/"
+    },
+    {
+      "t": "2026-03-19T19:47:22.763Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
