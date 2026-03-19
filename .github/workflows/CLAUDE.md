@@ -37,7 +37,7 @@ This automatically excludes `data/aggregator-archive/` and `data/review-texts/`.
 
 ## Notification Severity
 
-Only 5 workflows should use `severity: 'critical'`: `vercel-deploy`, `opening-night-broadcast`, `opening-night-poller`, `send-follow-notifications`, `check-cron-health`. These get real-time Discord alerts (+ email) with a 2-hour cooldown per workflow.
+Only 6 workflows should use `severity: 'critical'`: `vercel-deploy`, `opening-night-broadcast`, `opening-night-poller`, `send-follow-notifications`, `check-cron-health`, `data-health-check` (carries the daily digest — if it fails, non-critical failures go unnoticed). These get real-time Discord alerts (+ email) with a 2-hour cooldown per workflow.
 
 All other workflows use `'warning'` or `'low'` — their failures are aggregated in the **daily failure digest** (`scripts/daily-failure-digest.js`), which runs as part of `data-health-check.yml` at 7 AM UTC. One Discord message per day listing all non-critical failures from the last 24h, grouped by workflow.
 
