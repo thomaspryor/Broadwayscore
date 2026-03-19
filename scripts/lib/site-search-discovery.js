@@ -130,6 +130,75 @@ const SITE_SEARCH_ENDPOINTS = {
     },
   },
 
+  'guardian': {
+    name: 'The Guardian',
+    domain: 'theguardian.com',
+    requiresJs: false,
+    // Guardian Open Platform API — free JSON, no auth needed beyond 'test' key
+    // Rate limit: 1 req/sec with 'test' key (fine for opening night use)
+    fetchAndParse: async (showTitle) => {
+      const q = encodeURIComponent(`${showTitle} review`);
+      const url = `https://content.guardianapis.com/search?q=${q}&tag=stage/stage&api-key=test&page-size=20&order-by=relevance`;
+      const data = await fetchSSR(url);
+      const parsed = JSON.parse(data);
+      return (parsed.response?.results || [])
+        .filter(r => r.webUrl)
+        .map(r => r.webUrl);
+    },
+  },
+  'independent': {
+    name: 'The Independent',
+    domain: 'independent.co.uk',
+    requiresJs: false,
+    market: 'west-end',
+    // No search endpoint — section page lists recent reviews (SSR HTML).
+    // independent.co.uk 302s to the-independent.com; fetchSSR follows redirects.
+    fetchAndParse: async (showTitle) => {
+      const html = await fetchSSR('https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews');
+      const pattern = /href="((?:https:\/\/www\.(?:the-)?independent\.com)?\/arts-entertainment\/theatre-dance\/reviews\/[^"]+\.html)"/gi;
+      const urls = [];
+      let m;
+      while ((m = pattern.exec(html)) !== null) {
+        let url = m[1];
+        // Normalize relative URLs to absolute
+        if (url.startsWith('/')) url = 'https://www.independent.co.uk' + url;
+        urls.push(url);
+      }
+      return [...new Set(urls)];
+    },
+  },
+  'daily-mail': {
+    name: 'Daily Mail',
+    domain: 'dailymail.co.uk',
+    requiresJs: false,
+    // No working search endpoint — Google News sitemap has ~1000 recent articles
+    // with <news:title> tags. Match show title against headlines.
+    fetchAndParse: async (showTitle) => {
+      const xml = await fetchSSR('https://www.dailymail.co.uk/google-news-sitemap1.xml');
+      const urls = [];
+      // Extract <url> blocks with <loc> and <news:title>
+      const blocks = xml.match(/<url>[\s\S]*?<\/url>/g) || [];
+      for (const block of blocks) {
+        const loc = block.match(/<loc>([^<]+)<\/loc>/)?.[1];
+        const title = block.match(/<news:title>([^<]+)<\/news:title>/)?.[1];
+        if (loc && title) {
+          // Match show title words against the headline
+          const titleLower = title.toLowerCase();
+          const showWords = showTitle.toLowerCase()
+            .replace(/[^a-z0-9\s]/g, '')
+            .split(/\s+/)
+            .filter(w => w.length > 2 && !['the', 'and', 'for'].includes(w));
+          const matchCount = showWords.filter(w => titleLower.includes(w)).length;
+          if (matchCount >= Math.ceil(showWords.length * 0.5) &&
+              (titleLower.includes('review') || titleLower.includes('theatre') || titleLower.includes('west end'))) {
+            urls.push(loc);
+          }
+        }
+      }
+      return urls;
+    },
+  },
+
   // --- West End outlets (JS-rendered) ---
   'thestage': {
     name: 'The Stage',
