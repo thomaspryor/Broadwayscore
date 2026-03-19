@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-19T00:03:46.257Z",
+  "timestamp": "2026-03-19T00:12:04.676Z",
   "stats": {
     "totalReviews": 31943,
-    "alreadyFlagged": 9422,
-    "dateGuardCatches": 184,
-    "directorMismatch": 1129,
-    "tvFilmSignals": 3516,
-    "londonSignals": 1094,
+    "alreadyFlagged": 9446,
+    "dateGuardCatches": 179,
+    "directorMismatch": 1127,
+    "tvFilmSignals": 3515,
+    "londonSignals": 1093,
     "offBroadwaySignals": 1070,
     "yearMismatch": 92,
-    "noPublishDate": 9565
+    "noPublishDate": 9563
   },
   "findings": [
     {
@@ -9835,20 +9835,6 @@
       "score": 89,
       "publishDate": null,
       "url": "https://www.theatrely.com/post/a-new-cabaret-for-the-ages-on-broadway-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
-        }
-      ]
-    },
-    {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "file": "timeout--andrzej-lukowski.json",
-      "score": 78,
-      "publishDate": "2025-10-18",
-      "url": "https://www.timeout.com/london/theatre/cabaret-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -22516,20 +22502,6 @@
     },
     {
       "showId": "hamilton-west-end-2021",
-      "file": "timeout--andrzej-lukowski.json",
-      "score": 95,
-      "publishDate": "2025-09-29",
-      "url": "https://www.timeout.com/london/theatre/hamilton-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas kail\" from hamilton-2015"
-        }
-      ]
-    },
-    {
-      "showId": "hamilton-west-end-2021",
       "file": "timeout--david-cote.json",
       "score": 95,
       "publishDate": "2025-09-29",
@@ -23039,20 +23011,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"paramount\""
-        }
-      ]
-    },
-    {
-      "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
-      "file": "timeout-london--unknown.json",
-      "score": 87,
-      "publishDate": "2015-06-26",
-      "url": "https://www.timeout.com/london/theatre/harry-potter-and-the-cursed-child-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 400d before show (2015-06-26 vs 2016-07-30)"
         }
       ]
     },
@@ -25607,20 +25565,6 @@
       "score": 60,
       "publishDate": "2026-02-13",
       "url": "https://www.standard.co.uk/culture/theatre/i-m-sorry-prime-minister-review-apollo-theatre-b1270903.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "im-sorry-prime-minister-west-end-2026",
-      "file": "timeout-london--unknown.json",
-      "score": 66,
-      "publishDate": "2026-02-13",
-      "url": "https://www.timeout.com/london/theatre/im-sorry-prime-minister-review",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -28953,20 +28897,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jerry mitchell\" from kinky-boots-2013"
-        }
-      ]
-    },
-    {
-      "showId": "kinky-boots-the-musical-west-end-2026",
-      "file": "all-that-dazzles-uk--daz-gale.json",
-      "score": 42,
-      "publishDate": "2022-09-30",
-      "url": "https://www.allthatdazzles.co.uk/post/review-kinky-boots-queen-s-theatre-hornchurch",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1264d before show (2022-09-30 vs 2026-03-17)"
         }
       ]
     },
@@ -76372,17 +76302,6 @@
     },
     {
       "showId": "kinky-boots-the-musical-west-end-2026",
-      "file": "attitude--gary-grimes.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 235d before show (2025-07-25 vs 2026-03-17)"
-        }
-      ]
-    },
-    {
-      "showId": "kinky-boots-the-musical-west-end-2026",
       "file": "city-am--adam-bloodworth.json",
       "publishDate": null,
       "url": "https://www.cityam.com/burlesque-musical-review-christina-aquilera-show-is-quality-trash/",
@@ -76404,28 +76323,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "kinky-boots-the-musical-west-end-2026",
-      "file": "independent--alice-saville.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 238d before show (2025-07-22 vs 2026-03-17)"
-        }
-      ]
-    },
-    {
-      "showId": "kinky-boots-the-musical-west-end-2026",
-      "file": "london-theatre--anya-ryan.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 237d before show (2025-07-23 vs 2026-03-17)"
         }
       ]
     },
@@ -86686,20 +86583,6 @@
       "score": 71,
       "publishDate": "2026-03-09",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-HOLY-ROSENBERGS-Menier-Chocolate-Factory-20260309",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-holy-rosenbergs-west-end-2026",
-      "file": "london-theatre--unknown.json",
-      "score": 88,
-      "publishDate": "2026-03-10",
-      "url": "https://www.londontheatre.co.uk/reviews/the-holy-rosenbergs-review-menier-chocolate-factory",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

@@ -1,131 +1,16 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-18T23:59:16.953Z",
+    "generatedAt": "2026-03-19T00:07:54.708Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 91,
-    "classified": 7,
-    "wrongProduction": 7,
+    "total": 84,
+    "classified": 0,
+    "wrongProduction": 0,
     "correctProduction": 0,
     "uncertain": 0,
     "errors": 0,
-    "wrongHighConfidence": 7,
+    "wrongHighConfidence": 0,
     "wrongMediumConfidence": 0
   },
-  "results": [
-    {
-      "showId": "aspects-of-love-1990",
-      "showTitle": "Aspects of Love",
-      "showYear": 1990,
-      "file": "guardian--unknown.json",
-      "outlet": "The Guardian",
-      "criticName": null,
-      "publishDate": "2010-07-19",
-      "originalSignals": [
-        "publishDate 2010 is 20 years after original opening 1990"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review discusses a Trevor Nunn production at the Menier Chocolate Factory, with cast members Katherine Kingsley and Michael Arden. This is a 2010 London production, not the 1990 Broadway production."
-    },
-    {
-      "showId": "the-women-2001",
-      "showTitle": "The Women",
-      "showYear": 2001,
-      "file": "telegraph--unknown.json",
-      "outlet": "The Telegraph",
-      "criticName": null,
-      "publishDate": "2010-04-28",
-      "originalSignals": [
-        "revival text signals: revival, this production"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "This review is for a production of \"Women Beware Women\" at the Olivier Theatre, directed by Marianne Elliott, with Harriet Walter. This is a UK production, not the 2001 Broadway production of \"The Women\"."
-    },
-    {
-      "showId": "the-rose-tattoo-1995",
-      "showTitle": "The Rose Tattoo",
-      "showYear": 1995,
-      "file": "chicagotribune--chris-jones.json",
-      "outlet": "Chicago Tribune",
-      "criticName": "Chris Jones",
-      "publishDate": "October 15th, 2019",
-      "originalSignals": [
-        "revival text signals: revival, new production",
-        "modern references: social media",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "the-rose-tattoo-2019",
-      "reasoning": "The review mentions Marisa Tomei, Trip Cullman, and the Roundabout Theatre Company's American Airlines Theatre, all associated with the 2019 Broadway production. It also mentions seeing the production in Williamstown in 2016, which is likely a reference to the pre-Broadway run of the 2019 production"
-    },
-    {
-      "showId": "ballroom-1978",
-      "showTitle": "Ballroom",
-      "showYear": 1978,
-      "file": "daily-mail--quentin-letts.json",
-      "outlet": "Daily Mail",
-      "criticName": "Quentin Letts",
-      "publishDate": "2018-04-26",
-      "originalSignals": [
-        "publishDate 2018 is 40 years after original opening 1978"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review is for \"Strictly Ballroom The Musical\" at the Piccadilly Theatre in London, not the Broadway production of \"Ballroom\" from 1978."
-    },
-    {
-      "showId": "passion-2004",
-      "showTitle": "Passion",
-      "showYear": 2004,
-      "file": "daily-mail--daily-telegraph.json",
-      "outlet": "Daily Mail",
-      "criticName": "Daily Telegraph",
-      "publishDate": "2010-09-24",
-      "originalSignals": [
-        "year 1994 in text matches revival passion-1994"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review is about a Donmar Warehouse production in London, directed by Jamie Lloyd and starring Elena Roger. It also mentions the 1994 production, indicating this is a different production than the 2004 Broadway revival."
-    },
-    {
-      "showId": "deathtrap-1978",
-      "showTitle": "Deathtrap",
-      "showYear": 1978,
-      "file": "guardian--the-telegraph.json",
-      "outlet": "The Guardian",
-      "criticName": "The Telegraph",
-      "publishDate": "2010-09-08",
-      "originalSignals": [
-        "publishDate 2010 is 32 years after original opening 1978"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review is about a West End production of Deathtrap at the Noel Coward Theatre in London, starring Simon Russell-Beale and Jonathan Groff. It mentions Matthew Warchus as the director and a potential Broadway transfer, but it is clearly not about the 1978 Broadway production."
-    },
-    {
-      "showId": "the-prisoner-of-second-avenue-1971",
-      "showTitle": "The Prisoner of Second Avenue",
-      "showYear": 1971,
-      "file": "guardian--the-times.json",
-      "outlet": "The Guardian",
-      "criticName": "The Times",
-      "publishDate": "2010-07-15",
-      "originalSignals": [
-        "publishDate 2010 is 39 years after original opening 1971"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review is about a London production at the Vaudeville Theatre, starring Jeff Goldblum and Mercedes Ruehl, directed by Terry Johnson. This is not the 1971 Broadway production."
-    }
-  ]
+  "results": []
 }
