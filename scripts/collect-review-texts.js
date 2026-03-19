@@ -4845,12 +4845,14 @@ function findReviewsToProcess() {
     return reviews;
   }
 
-  // Load show statuses so we can prioritize open/preview shows
+  // Load show statuses + opening dates so we can prioritize recent shows
   const openShowIds = new Set();
+  const showOpeningDates = new Map(); // showId → openingDate string
   try {
     const showsData = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
     (showsData.shows || showsData).forEach(s => {
       if (s.status === 'open' || s.status === 'previews') openShowIds.add(s.id);
+      if (s.openingDate) showOpeningDates.set(s.id, s.openingDate);
     });
     console.log(`  Prioritizing ${openShowIds.size} open/preview shows`);
   } catch (e) {
@@ -5046,6 +5048,7 @@ function findReviewsToProcess() {
           publishDate,
           showNotMentioned: data.showNotMentioned || false,
           isOpenShow: openShowIds.has(showId),
+          openingDate: showOpeningDates.get(showId) || '1900-01-01',
           incompleteReason: data.incompleteReason || null,
           fabricatedEntry: data.fabricatedEntry || false,
           fetchAttempts: fileAttempts,
@@ -5059,6 +5062,7 @@ function findReviewsToProcess() {
   }
 
   // Sort: open/preview shows first (unless CLOSED_SHOW_MODE),
+  // then newest shows first (by openingDate desc),
   // then never-attempted before previously-attempted,
   // then by outlet tier priority
   const closedShowMode = process.env.CLOSED_SHOW_MODE === 'true';
@@ -5066,6 +5070,9 @@ function findReviewsToProcess() {
     if (!closedShowMode) {
       if (a.isOpenShow !== b.isOpenShow) return a.isOpenShow ? -1 : 1;
     }
+    // Newest shows first (descending openingDate) — so a show that opened
+    // last night gets collected before a show that opened 3 years ago
+    if (a.openingDate !== b.openingDate) return b.openingDate.localeCompare(a.openingDate);
     // Never-attempted reviews before previously-attempted ones
     const aAttempted = a.fetchAttempts > 0 ? 1 : 0;
     const bAttempted = b.fetchAttempts > 0 ? 1 : 0;

@@ -7,7 +7,7 @@ concurrency:
 
 on:
   schedule:
-    # 3x daily: 2 AM, 10 AM, 6 PM UTC — shorter runs (150/batch) reduce push conflicts
+    # 3x daily: 2 AM, 10 AM, 6 PM UTC
     - cron: '0 2,10,18 * * *'
     # Weekly backlog sweep: Sunday midnight UTC — targets not_attempted reviews that the
     # daily runs never reach (daily prioritizes open shows, closed-show backlog gets starved)
@@ -165,14 +165,14 @@ jobs:
                 echo "Sunday backlog sweep: no not_attempted reviews found — skipping"
                 echo "skip=true" >> $GITHUB_OUTPUT
               else
-                echo "max_reviews=150" >> $GITHUB_OUTPUT
+                echo "max_reviews=300" >> $GITHUB_OUTPUT
                 echo "reason_filter=not_attempted" >> $GITHUB_OUTPUT
                 echo "market_filter=" >> $GITHUB_OUTPUT
                 echo "skip=false" >> $GITHUB_OUTPUT
                 echo "Weekly backlog sweep: targeting not_attempted reviews"
               fi
             else
-              echo "max_reviews=150" >> $GITHUB_OUTPUT
+              echo "max_reviews=300" >> $GITHUB_OUTPUT
               echo "reason_filter=" >> $GITHUB_OUTPUT
               echo "market_filter=" >> $GITHUB_OUTPUT
               echo "skip=false" >> $GITHUB_OUTPUT
@@ -359,6 +359,21 @@ jobs:
           echo "Dispatching rebuild..."
           gh workflow run rebuild-reviews.yml -f reason="Auto-triggered by collect-review-texts" || echo "Rebuild dispatch failed (non-critical — workflow_run backup exists)"
 
+      - name: Trigger scoring for newly collected reviews
+        if: steps.push.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Score reviews immediately after text collection instead of waiting
+          # for the daily 4:30 AM scheduled scoring run
+          RUNNING=$(gh run list --workflow=llm-ensemble-score.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          if [ "$RUNNING" -gt 0 ]; then
+            echo "Scoring already running — skipping dispatch"
+            exit 0
+          fi
+          echo "Dispatching scoring for newly collected reviews..."
+          gh workflow run llm-ensemble-score.yml || echo "Scoring dispatch failed (non-critical — daily schedule is backup)"
+
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure
@@ -483,7 +498,7 @@ jobs:
           MARKET_FILTER="${{ steps.sched.outputs.market_filter || inputs.market_filter }}"
 
           gh workflow run collect-review-texts.yml \
-            -f max_reviews=${{ steps.sched.outputs.max_reviews || '150' }} \
+            -f max_reviews=${{ steps.sched.outputs.max_reviews || '300' }} \
             -f batch_size=${{ inputs.batch_size || '10' }} \
             -f show_filter="$SHOW_FILTER" \
             -f aggressive="$AGGRESSIVE" \
