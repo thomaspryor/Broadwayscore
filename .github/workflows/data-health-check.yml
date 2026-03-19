@@ -36,6 +36,13 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: node scripts/health-check.js
 
+      - name: Send daily failure digest
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+        run: node scripts/daily-failure-digest.js
+
       - name: Commit health check + triage data
         if: always()
         run: |

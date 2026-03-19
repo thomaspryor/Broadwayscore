@@ -10,7 +10,7 @@ inputs:
     required: false
     default: ''
   severity:
-    description: 'Alert severity: "critical" sends Discord (+ email if set). Anything else is silently skipped.'
+    description: 'Alert severity: "critical" sends real-time Discord (+ email if set). Non-critical failures are aggregated in the daily failure digest (data-health-check.yml).'
     required: false
     default: 'low'
   email:
