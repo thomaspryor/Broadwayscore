@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-19T05:00:09.863Z",
-  "processed": 98,
-  "failed": 12,
-  "successRate": "89.1%",
+  "updatedAt": "2026-03-19T05:03:44.388Z",
+  "processed": 106,
+  "failed": 14,
+  "successRate": "88.3%",
   "tierBreakdown": {
-    "playwright": 70,
-    "amp": 4,
+    "playwright": 77,
+    "amp": 6,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 9,
     "brightdata": 0,
-    "archiveToday": 3,
+    "archiveToday": 4,
     "archive": 18
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-03-19T04:53:33.445Z",
@@ -45,6 +45,17 @@
     },
     {
       "t": "2026-03-19T04:58:57.695Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-19T05:01:50.222Z",
+      "event": "bb-session",
+      "session": "149fa18b",
+      "url": "https://www.thestage.co.uk/reviews/unfortunate-the-untold-story-of-ursula-the-se"
+    },
+    {
+      "t": "2026-03-19T05:01:51.630Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
