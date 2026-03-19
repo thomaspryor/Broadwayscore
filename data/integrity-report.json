@@ -1,112 +1,48 @@
 {
-  "timestamp": "2026-03-15T05:12:28.783Z",
+  "timestamp": "2026-03-19T00:16:40.049Z",
   "hasIssues": true,
   "current": {
-    "date": "2026-03-15",
-    "totalReviews": 31996,
-    "unknownOutlets": 10,
-    "duplicates": 3,
-    "syncDelta": 14392
+    "date": "2026-03-19",
+    "totalReviews": 32630,
+    "unknownOutlets": 2,
+    "duplicates": 0,
+    "syncDelta": 14871
   },
   "previous": {
-    "date": "2026-03-08",
-    "totalReviews": 31751,
-    "unknownOutlets": 49,
-    "duplicates": 0,
-    "syncDelta": 13697
+    "date": "2026-03-19",
+    "totalReviews": 32630,
+    "unknownOutlets": 2,
+    "duplicates": 10,
+    "syncDelta": 14871
   },
   "issues": [
     {
       "type": "unknown_outlets",
       "severity": "warning",
-      "message": "10 reviews have unknown outlets",
+      "message": "2 reviews have unknown outlets",
       "examples": [
         {
-          "file": "data/review-texts/driving-miss-daisy-2010/great-performances-online--unknown.json",
-          "outletId": "great-performances-online",
-          "outlet": "Great Performances Online"
+          "file": "data/review-texts/act-one-2014/its-a-brave-writer-who-would-contrive-this-show--moss-hart.json",
+          "outletId": "its-a-brave-writer-who-would-contrive-this-show",
+          "outlet": "its-a-brave-writer-who-would-contrive-this-show"
         },
         {
-          "file": "data/review-texts/falsettos-2016/entries-are-now-being-accepted-online--unknown.json",
-          "outletId": "entries-are-now-being-accepted-online",
-          "outlet": "Entries are now being accepted online"
-        },
-        {
-          "file": "data/review-texts/going-bacharach-the-songs-of-an-icon-off-broadway-2026/goingbacharachcom--unknown.json",
-          "outletId": "goingbacharachcom",
-          "outlet": "GoingBacharach.com"
-        },
-        {
-          "file": "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
-          "outletId": "here",
-          "outlet": "here"
-        },
-        {
-          "file": "data/review-texts/im-almost-there-off-broadway-2026/here--unknown.json",
-          "outletId": "here",
-          "outlet": "here"
-        },
-        {
-          "file": "data/review-texts/pride-west-end-2026/thewallisorg--unknown.json",
-          "outletId": "thewallisorg",
-          "outlet": "TheWallis.org"
-        },
-        {
-          "file": "data/review-texts/the-lion-king-1997/message-boards--unknown.json",
-          "outletId": "message-boards",
-          "outlet": "Message Boards"
-        },
-        {
-          "file": "data/review-texts/the-times-they-are-achangin-2006/wwwtheoldglobeorg--unknown.json",
-          "outletId": "wwwtheoldglobeorg",
-          "outlet": "www.theoldglobe.org."
-        },
-        {
-          "file": "data/review-texts/the-year-of-magical-thinking-2007/keencompanyorg--unknown.json",
-          "outletId": "keencompanyorg",
-          "outlet": "KeenCompany.org"
-        },
-        {
-          "file": "data/review-texts/wicked-2003/huron-daily--jake-coyle.json",
-          "outletId": "huron-daily",
-          "outlet": "Huron Daily"
-        }
-      ]
-    },
-    {
-      "type": "duplicates",
-      "severity": "warning",
-      "message": "3 duplicate reviews detected",
-      "examples": [
-        {
-          "file": "data/review-texts/all-my-sons-west-end-2025/timeout-london--andrzej-lukowski.json",
-          "key": "all-my-sons-west-end-2025|timeout-london|andrzej lukowski"
-        },
-        {
-          "file": "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/timeout-london--unknown.json",
-          "key": "cabaret-at-the-kit-kat-club-west-end-2021|timeout-london|andrzej lukowski"
-        },
-        {
-          "file": "data/review-texts/punch-2025/deadline--unknown.json",
-          "key": "punch-2025|deadline|greg evans"
+          "file": "data/review-texts/the-seagull-2008/arifa-akbar-found-the-show-hypnotic-in-a-rare--unknown.json",
+          "outletId": "arifa-akbar-found-the-show-hypnotic-in-a-rare",
+          "outlet": "arifa-akbar-found-the-show-hypnotic-in-a-rare"
         }
       ]
     },
     {
       "type": "sync_delta",
       "severity": "critical",
-      "message": "review-texts (31996) and reviews.json (17604) are out of sync by 14392 reviews"
-    },
-    {
-      "type": "duplicates_degradation",
-      "severity": "warning",
-      "message": "Duplicates increased from 0 to 3"
+      "message": "review-texts (32630) and reviews.json (17759) are out of sync by 14871 reviews"
     }
   ],
   "summary": {
-    "totalReviews": 31996,
-    "unknownOutlets": 10,
-    "duplicates": 3,
-    "syncDelta": 14392
+    "totalReviews": 32630,
+    "unknownOutlets": 2,
+    "duplicates": 0,
+    "syncDelta": 14871
   }
 }
