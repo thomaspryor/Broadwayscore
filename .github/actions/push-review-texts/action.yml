@@ -47,6 +47,7 @@ runs:
         node -e "
           const fs = require('fs');
           const { execSync } = require('child_process');
+          // KEEP IN SYNC with scripts/lib/review-write-guard.js PROTECTED_FIELDS
           const PROTECTED = [
             'assignedScore', 'llmScore', 'llmMetadata', 'fullText', 'contentTier',
             'contentTierReason', 'contentVerification', 'ensembleData', 'tierReason',
@@ -62,19 +63,18 @@ runs:
             try {
               const local = JSON.parse(fs.readFileSync(f, 'utf8'));
               const committed = JSON.parse(execSync('git show HEAD:' + f, { encoding: 'utf8', stdio: ['pipe','pipe','pipe'] }));
-              let fileRestored = false;
+              const restoredFields = [];
               for (const field of PROTECTED) {
                 if (committed[field] !== undefined && committed[field] !== null && (local[field] === undefined || local[field] === null)) {
                   local[field] = committed[field];
-                  fileRestored = true;
+                  restoredFields.push(field);
                   if (field === 'assignedScore') scoreSaves++;
                 }
               }
-              if (fileRestored) {
+              if (restoredFields.length > 0) {
                 fs.writeFileSync(f, JSON.stringify(local, null, 2) + '\n');
                 restored++;
-                const lost = PROTECTED.filter(fld => committed[fld] !== undefined && committed[fld] !== null && (local[fld] === undefined || local[fld] === null));
-                console.log('  Protected: ' + f);
+                console.log('  Protected: ' + f + ' (' + restoredFields.join(', ') + ')');
               }
             } catch (e) { /* new file or parse error — skip */ }
           }

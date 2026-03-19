@@ -22,7 +22,8 @@
 const fs = require('fs');
 const path = require('path');
 
-// Fields that represent collected/scored data and must not be silently erased
+// Fields that represent collected/scored data and must not be silently erased.
+// KEEP IN SYNC with .github/actions/push-review-texts/action.yml PROTECTED array.
 const PROTECTED_FIELDS = [
   'assignedScore',
   'llmScore',
