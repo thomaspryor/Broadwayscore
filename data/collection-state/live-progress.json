@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-19T12:25:01.466Z",
-  "processed": 149,
-  "failed": 19,
-  "successRate": "88.7%",
+  "updatedAt": "2026-03-19T12:27:02.871Z",
+  "processed": 158,
+  "failed": 20,
+  "successRate": "88.8%",
   "tierBreakdown": {
-    "playwright": 94,
+    "playwright": 101,
     "amp": 36,
-    "browserbase": 22,
+    "browserbase": 24,
     "directCookies": 0,
-    "scrapingbee": 30,
+    "scrapingbee": 31,
     "brightdata": 0,
     "archiveToday": 8,
     "archive": 0
   },
-  "browserbaseSessions": 15,
+  "browserbaseSessions": 16,
   "recentActivity": [
-    {
-      "t": "2026-03-19T11:35:21.364Z",
-      "event": "bb-session",
-      "session": "3b56b16e",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
-    },
-    {
-      "t": "2026-03-19T11:35:22.999Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-19T11:39:13.628Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-19T12:18:49.745Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-19T12:26:03.933Z",
+      "event": "bb-session",
+      "session": "c4531e00",
+      "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-r"
+    },
+    {
+      "t": "2026-03-19T12:26:05.502Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
     }

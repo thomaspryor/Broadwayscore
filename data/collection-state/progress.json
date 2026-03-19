@@ -148,7 +148,16 @@
     "marie-and-rosetta-west-end-2026/timeout--caroline-mc.json",
     "marie-and-rosetta-west-end-2026/timeout-london--caroline-mcginn.json",
     "masquerade-off-broadway-2025/ew--thom-geier.json",
-    "masquerade-off-broadway-2025/theatermania--meg-masseron.json"
+    "masquerade-off-broadway-2025/theatermania--meg-masseron.json",
+    "masquerade-off-broadway-2025/timeout--adam-feldman.json",
+    "matilda-the-musical-west-end-2021/guardian--emma-brockes.json",
+    "matilda-the-musical-west-end-2021/guardian--imogen-carter.json",
+    "maybe-happy-ending-2024/guardian--adrian-horton.json",
+    "maybe-happy-ending-2024/new-york-sun--broadway-scorecard.json",
+    "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+    "maybe-happy-ending-2024/theatermania--jesse-green.json",
+    "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
+    "maybe-happy-ending-2024/timeout--adam-feldman.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
@@ -169,7 +178,8 @@
     "consumed-west-end-2026/guardian--arifa-akbar.json",
     "hamilton-2015/wsj--terry-teachout.json",
     "harry-potter-2021/wsj--terry-teachout.json",
-    "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json"
+    "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
+    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -267,7 +277,14 @@
       "marie-and-rosetta-west-end-2026/timeout--caroline-mc.json",
       "marie-and-rosetta-west-end-2026/timeout-london--caroline-mcginn.json",
       "masquerade-off-broadway-2025/ew--thom-geier.json",
-      "masquerade-off-broadway-2025/theatermania--meg-masseron.json"
+      "masquerade-off-broadway-2025/theatermania--meg-masseron.json",
+      "masquerade-off-broadway-2025/timeout--adam-feldman.json",
+      "matilda-the-musical-west-end-2021/guardian--emma-brockes.json",
+      "matilda-the-musical-west-end-2021/guardian--imogen-carter.json",
+      "maybe-happy-ending-2024/new-york-sun--broadway-scorecard.json",
+      "maybe-happy-ending-2024/theatermania--jesse-green.json",
+      "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
+      "maybe-happy-ending-2024/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
@@ -329,7 +346,9 @@
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
       "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
-      "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json"
+      "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
+      "data/review-texts/maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+      "maybe-happy-ending-2024/nypost--johnny-oleksinski.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -362,7 +381,8 @@
       "evening-all-afternoon-west-end-2026/guardian--arifa-akbar.json",
       "hadestown-2019/broadwaynews--charles-isherwood.json",
       "it-walks-around-the-house-at-night-west-end-2026/guardian--unknown.json",
-      "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json"
+      "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json",
+      "maybe-happy-ending-2024/guardian--adrian-horton.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -378,7 +398,7 @@
     "archive": []
   },
   "startTime": "2026-03-19T10:02:04.711Z",
-  "lastProcessed": "masquerade-off-broadway-2025/theatermania--meg-masseron.json",
+  "lastProcessed": "maybe-happy-ending-2024/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-03-19T10:04:36.520Z",
@@ -548,6 +568,17 @@
     },
     {
       "t": "2026-03-19T12:18:49.745Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-19T12:26:03.933Z",
+      "event": "bb-session",
+      "session": "c4531e00",
+      "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-r"
+    },
+    {
+      "t": "2026-03-19T12:26:05.502Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
     }
