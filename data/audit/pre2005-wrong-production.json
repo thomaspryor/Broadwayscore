@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-18T23:38:30.294Z",
+    "generatedAt": "2026-03-18T23:59:13.998Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 123,
+    "totalFlagged": 130,
     "highConfidence": 39,
-    "mediumConfidence": 84,
+    "mediumConfidence": 91,
     "lowConfidence": 0,
-    "reassignable": 60
+    "reassignable": 61
   },
   "results": [
     {
@@ -1098,6 +1098,21 @@
       "textSnippet": "The Internet Theater Magazine of Reviews, Features,\n Annotated Listings\n\nNYC Weather \n \n \n \n A \n CurtainUp Review\n\nCharles Shaughnessy (center) as Caldwell B. Cladwell/\n (l-r) Lawrence E. Street, Jame"
     },
     {
+      "showId": "the-women-2001",
+      "showTitle": "The Women",
+      "showYear": 2001,
+      "file": "telegraph--unknown.json",
+      "outlet": "The Telegraph",
+      "criticName": null,
+      "publishDate": "2010-04-28",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, this production"
+      ],
+      "textSnippet": "At the end of Thomas Middleton’s 1621 tragedy Women Beware Women, there are more dead bodies on stage than in the final moments of Hamlet. It’s the gory, Grande Guignol climax to a rude, crude Jacobea"
+    },
+    {
       "showId": "oklahoma-2002",
       "showTitle": "Oklahoma!",
       "showYear": 2002,
@@ -1213,6 +1228,23 @@
       "textSnippet": "Still available at a local movie theater is the adventurous Louis Malle film adaptation of Andre Gregory's \"Vanya on 42d Street,\" featuring Wallace Shawn's remarkable performance in the title role. Co"
     },
     {
+      "showId": "the-rose-tattoo-1995",
+      "showTitle": "The Rose Tattoo",
+      "showYear": 1995,
+      "file": "chicagotribune--chris-jones.json",
+      "outlet": "Chicago Tribune",
+      "criticName": "Chris Jones",
+      "publishDate": "October 15th, 2019",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, new production",
+        "modern references: social media",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "The suffering Sicilian seamstress at the heart of Tennessee Williams’ 1951 drama “The Rose Tattoo” is no stranger to pain. Her husband gets shot by the Mississippi cops and her voluptuous mourning is "
+    },
+    {
       "showId": "camelot-1993",
       "showTitle": "Camelot",
       "showYear": 1993,
@@ -1321,6 +1353,21 @@
         "revival cast/director match for gypsy-2024: Audra McDonald, Camille A. Brown, Danny Burstein, director: George C. Wolfe"
       ],
       "textSnippet": "Sixty-five years after it first premiered on Broadway, “Gypsy” is still known as one of the greatest theater masterpieces of the 20th century. There have been stellar productions of the play from New "
+    },
+    {
+      "showId": "aspects-of-love-1990",
+      "showTitle": "Aspects of Love",
+      "showYear": 1990,
+      "file": "guardian--unknown.json",
+      "outlet": "The Guardian",
+      "criticName": null,
+      "publishDate": "2010-07-19",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2010 is 20 years after original opening 1990"
+      ],
+      "textSnippet": "Phew! The Menier Chocolate Factory is back on form after the slight blip that was Paradise Found. A collective sigh was heard across the Review pit as Trevor Nunn’s unfinished business with Aspects of"
     },
     {
       "showId": "the-gin-game-1997",
@@ -1436,6 +1483,21 @@
       "textSnippet": "Producers Scott Rudin, Barry Diller and David Geffen on Wednesday announced complete casting for the upcoming Broadway revival of West Side Story, a radical reimagining for the 21st century to be dire"
     },
     {
+      "showId": "ballroom-1978",
+      "showTitle": "Ballroom",
+      "showYear": 1978,
+      "file": "daily-mail--quentin-letts.json",
+      "outlet": "Daily Mail",
+      "criticName": "Quentin Letts",
+      "publishDate": "2018-04-26",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2018 is 40 years after original opening 1978"
+      ],
+      "textSnippet": "A review round-up for Strictly Ballroom The Musical at the Piccadilly Theatre, London.\n\nDrew McOnie’s dazzling production of Baz Luhrmann’s film-to-stage musical has opened at London’s Piccadilly Thea"
+    },
+    {
       "showId": "sweeney-todd-1979",
       "showTitle": "Sweeney Todd",
       "showYear": 1979,
@@ -1502,6 +1564,21 @@
         "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "Josh Groban and Annaleigh Ashford | Photo: Matthew Murphy & Evan Zimmerman At long last, a full-scale production of Sweeney Todd returns to Broadway, allowing Stephen Sondheim’s gorgeous music and lyr"
+    },
+    {
+      "showId": "deathtrap-1978",
+      "showTitle": "Deathtrap",
+      "showYear": 1978,
+      "file": "guardian--the-telegraph.json",
+      "outlet": "The Guardian",
+      "criticName": "The Telegraph",
+      "publishDate": "2010-09-08",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2010 is 32 years after original opening 1978"
+      ],
+      "textSnippet": "Deathtrap at the Noel Coward Theatre in London – Round-up of Reviews\n\nDeathtrap marks the first big show to arrive in town at the start of this autumn’s West End openings. And it’s a biggie, with much"
     },
     {
       "showId": "my-fair-lady-1976",
@@ -1593,6 +1670,21 @@
         "modern references: tiktok"
       ],
       "textSnippet": "Signed UpPlus Sign UpPlus Sign UpBy continuing, I agree to the Privacy Policy and Terms of Service.\n\n11:13Gen Alpha's WorldMillennials Melted Their Brains With Screens. Their Kids Want None of ItInves"
+    },
+    {
+      "showId": "passion-2004",
+      "showTitle": "Passion",
+      "showYear": 2004,
+      "file": "daily-mail--daily-telegraph.json",
+      "outlet": "Daily Mail",
+      "criticName": "Daily Telegraph",
+      "publishDate": "2010-09-24",
+      "confidence": "medium",
+      "suggestedShowId": "passion-1994",
+      "signals": [
+        "year 1994 in text matches revival passion-1994"
+      ],
+      "textSnippet": "Passion at the Donmar Warehouse – Reviews Round-up\n\nPassion is not the easy crowd-pleaser with which many thought the Donmar would choose to celebrate Stephen Sondheim’s 80th year. But it is certainly"
     },
     {
       "showId": "pacific-overtures-2004",
@@ -1947,6 +2039,21 @@
         "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "NEW YORK — Could the timing be any better for a Broadway revival of Annie? The uplifting musical sells not only the archetypal rags-to-riches fantasy but promotes belief in the power of government to "
+    },
+    {
+      "showId": "the-prisoner-of-second-avenue-1971",
+      "showTitle": "The Prisoner of Second Avenue",
+      "showYear": 1971,
+      "file": "guardian--the-times.json",
+      "outlet": "The Guardian",
+      "criticName": "The Times",
+      "publishDate": "2010-07-15",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2010 is 39 years after original opening 1971"
+      ],
+      "textSnippet": "The Old Vic’s first adventure north of the river under the stewardship of Kevin Spacey has not been a critical smash, but pleased the critics sufficiently to be a respectable launch pad for further pr"
     }
   ]
 }

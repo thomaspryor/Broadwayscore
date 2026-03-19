@@ -1,27 +1,78 @@
 {
   "meta": {
-    "generatedAt": "2026-03-18T23:38:29.877Z",
+    "generatedAt": "2026-03-18T23:59:13.587Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 32630,
-      "inReviewsJson": 17308,
-      "skippedExcluded": 48,
-      "withFullText": 24,
-      "excerptOnly": 2452,
-      "llmClassified": 23,
+      "inReviewsJson": 17278,
+      "skippedExcluded": 15,
+      "withFullText": 73,
+      "excerptOnly": 2401,
+      "llmClassified": 50,
       "heuristicFlagged": 2,
-      "nonReviewsFound": 0,
-      "uncertainCases": 21,
-      "budgetUsed": 0.0024,
-      "llmCalls": 24,
+      "nonReviewsFound": 5,
+      "uncertainCases": 15,
+      "budgetUsed": 0.005,
+      "llmCalls": 50,
       "rateLimitHits": 0,
-      "errors": 1,
-      "skippedAlreadyClassified": 14784
+      "errors": 0,
+      "skippedAlreadyClassified": 14789
     },
     "calibration": null
   },
-  "nonReviews": [],
+  "nonReviews": [
+    {
+      "file": "john-lithgow-stories-by-heart-2018/dc-metro-theater-arts--deb-miller.json",
+      "showId": "john-lithgow-stories-by-heart-2018",
+      "outlet": "DC Metro Theater Arts",
+      "outletId": "dc-metro-theater-arts",
+      "contentType": "preview",
+      "confidence": "high",
+      "reasoning": "The article describes the show's content and structure, including the stories Lithgow tells and the personal anecdotes he shares, but it does not offer an evaluation or opinion on the quality of the performance or production.",
+      "currentScore": 74
+    },
+    {
+      "file": "kinky-boots-the-musical-west-end-2026/whatsonstage--alex-wood.json",
+      "showId": "kinky-boots-the-musical-west-end-2026",
+      "outlet": "What's On Stage",
+      "outletId": "whatsonstage",
+      "contentType": "review",
+      "confidence": "high",
+      "reasoning": "The article is a review of \"Burlesque\", not \"Kinky Boots The Musical\". The text explicitly states it's a review and evaluates the quality of the production.",
+      "currentScore": 60
+    },
+    {
+      "file": "mamma-mia-west-end-2021/standard--nick-curtis.json",
+      "showId": "mamma-mia-west-end-2021",
+      "outlet": "The Standard",
+      "outletId": "standard",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This article consists of news headlines and summaries, and does not contain any review or evaluation of the musical \"Mamma Mia!\".",
+      "currentScore": 80
+    },
+    {
+      "file": "mamma-mia-west-end-2021/whatsonstage--sarah-crompton.json",
+      "showId": "mamma-mia-west-end-2021",
+      "outlet": "What's On Stage",
+      "outletId": "whatsonstage",
+      "contentType": "review",
+      "confidence": "high",
+      "reasoning": "This is a review of \"Into the Woods,\" not \"Mamma Mia!\" The text evaluates the production's quality, acting, and design.",
+      "currentScore": 100
+    },
+    {
+      "file": "starlight-express-west-end-2024/standard--tim-bano.json",
+      "showId": "starlight-express-west-end-2024",
+      "outlet": "The Standard",
+      "outletId": "standard",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "The article consists of news headlines and summaries, none of which are reviews of Starlight Express. The truncated text at the end is about Paddington: The Musical, not Starlight Express.",
+      "currentScore": 100
+    }
+  ],
   "uncertainCases": [
     {
       "file": "amazing-grace-2015/chicago-reader--jack-helbig.json",
@@ -30,7 +81,7 @@
       "outletId": "chicago-reader",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be a listing or announcement related to the show, possibly indicating a closing or recommendation, but it does not contain evaluative content. The presence of tags like 'Closing (Theater and Galleries)' and 'Recommended' suggests a news or listing item rather than a review its",
+      "reasoning": "The article appears to be a listing or announcement related to the show, possibly indicating a closing or recommendation, but it does not contain evaluative content. It's more likely a news item or listing than a review itself, but the lack of text makes it hard to be sure.",
       "currentScore": 86
     },
     {
@@ -60,7 +111,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
+      "reasoning": "The text is a list of theater-related items and links, suggesting a directory or advertisement rather than a review of a specific show.",
       "currentScore": 82
     },
     {
@@ -70,7 +121,7 @@
       "outletId": "bloomberg",
       "contentType": "news",
       "confidence": "medium",
-      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and its pre-Broadway run, with a brief mention of \"First Date\" only in photo captions. It does not offer a critical evaluation of \"First Date.\"",
+      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in photo captions, indicating it's not a review of the latter.",
       "currentScore": 60
     },
     {
@@ -80,7 +131,7 @@
       "outletId": "huffpost",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be a collection of news headlines and trending topics, not a review of \"First Date.\"",
+      "reasoning": "The article appears to be a collection of news headlines and trending topics, rather than a review of 'First Date' or any other Broadway show. The mention of 'summer musical' is not in the context of a review.",
       "currentScore": 62
     },
     {
@@ -90,7 +141,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain evaluative content about \"Funny Girl\".",
+      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific show.",
       "currentScore": 62
     },
     {
@@ -110,7 +161,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of various cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there is no evaluative content or opinion offered about the show itself.",
       "currentScore": 88
     },
     {
@@ -120,7 +171,7 @@
       "outletId": "frequentbusinesstraveler",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and setting of \"Once on This Island\" without offering a critical evaluation or opinion on the quality of the production. It focuses on the story and characters, indicating a preview rather than a review.",
+      "reasoning": "The article describes the plot and setting of \"Once on This Island\" but does not offer a critical evaluation or opinion about the quality of the production. It reads like a preview or descriptive piece before a review would be written.",
       "currentScore": 82
     },
     {
@@ -150,7 +201,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated, but the available text suggests it is a news article or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
+      "reasoning": "The article appears to be truncated and is promoting a WSJ subscription. There is no review content present.",
       "currentScore": 78
     },
     {
@@ -160,7 +211,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of categories and links related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific show.",
       "currentScore": 80
     },
     {
@@ -170,68 +221,8 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, suggesting a feature-style piece.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about the quality of the production. It focuses on the show's concept and historical significance.",
       "currentScore": 83
-    },
-    {
-      "file": "the-assembled-parties-2013/talkinbroadway--matthew-murray.json",
-      "showId": "the-assembled-parties-2013",
-      "outlet": "Talkin' Broadway",
-      "outletId": "talkinbroadway",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
-      "currentScore": 42
-    },
-    {
-      "file": "the-glass-menagerie-2017/front-row-center--donna-herman.json",
-      "showId": "the-glass-menagerie-2017",
-      "outlet": "The Front Row Center",
-      "outletId": "front-row-center",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
-      "currentScore": 64
-    },
-    {
-      "file": "the-price-2017/talkinbroadway--matthew-murray.json",
-      "showId": "the-price-2017",
-      "outlet": "Talkin' Broadway",
-      "outletId": "talkinbroadway",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific show.",
-      "currentScore": 78
-    },
-    {
-      "file": "thoughts-of-a-colored-man-2021/vulture--helen-shaw.json",
-      "showId": "thoughts-of-a-colored-man-2021",
-      "outlet": "Vulture",
-      "outletId": "vulture",
-      "contentType": "feature",
-      "confidence": "medium",
-      "reasoning": "The article describes the set design and the playwright's intentions, but does not offer an evaluation or recommendation of the show itself. It's more of a feature about the play's themes and design choices.",
-      "currentScore": 64
-    },
-    {
-      "file": "three-tall-women-2018/talkinbroadway--matthew-murray.json",
-      "showId": "three-tall-women-2018",
-      "outlet": "Talkin' Broadway",
-      "outletId": "talkinbroadway",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "The text appears to be a collection of links and keywords related to theater, rather than a review of a specific production.",
-      "currentScore": 89
-    },
-    {
-      "file": "yellow-face-2024/joysauce--janvi-sai.json",
-      "showId": "yellow-face-2024",
-      "outlet": "joysauce",
-      "outletId": "joysauce",
-      "contentType": "preview",
-      "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" in advance of its opening, but does not offer a critical evaluation or opinion on the quality of the production.",
-      "currentScore": 78
     }
   ],
   "heuristicFlags": [
@@ -259,8 +250,57 @@
     }
   ],
   "reviewsConfirmed": [
-    "romeo-and-juliet-west-end-2026/thereviewshub--scott-matthewman.json",
-    "romeo-and-juliet-west-end-2026/times-uk--unknown.json"
+    "all-about-me-2010/telegraph--unknown.json",
+    "all-about-me-2010/times-uk--daily-express.json",
+    "aspects-of-love-1990/guardian--unknown.json",
+    "ballroom-1978/daily-mail--quentin-letts.json",
+    "beetlejuice-2019/dc-metro-theater-arts--deb-miller.json",
+    "charlie-and-the-chocolate-factory-2017/guardian--lyn-gardner.json",
+    "dear-england-new-wimbledon-theatre-west-end-2026/independent--jessie-thomspon.json",
+    "dear-england-new-wimbledon-theatre-west-end-2026/standard--nick-curtis.json",
+    "dear-england-new-wimbledon-theatre-west-end-2026/thereviewshub--maryam-philpott.json",
+    "deathtrap-1978/guardian--the-telegraph.json",
+    "dirty-rotten-scoundrels-2005/reviewing-the-drama--unknown.json",
+    "high-noon-west-end-2025/broadwayworld--unknown.json",
+    "into-the-woods-west-end-2025/times-uk--clive-davis.json",
+    "kinky-boots-the-musical-west-end-2026/city-am--adam-bloodworth.json",
+    "kinky-boots-the-musical-west-end-2026/daily-mail--patrick-marmion.json",
+    "kinky-boots-the-musical-west-end-2026/radio-times--joanna-magill.json",
+    "kinky-boots-the-musical-west-end-2026/the-express--stefan-kyriazis.json",
+    "les-miserables-west-end-2021/i-paper--fiona-mountford.json",
+    "les-miserables-west-end-2021/independent--louis-chilton.json",
+    "les-miserables-west-end-2021/the-express--stefan-kyriazis.json",
+    "les-miserables-west-end-2021/the-sun--dominic-maxwell.json",
+    "les-miserables-west-end-2021/times-uk--dominic-maxwell.json",
+    "mamma-mia-west-end-2021/i-paper--fiona-mountford.json",
+    "mamma-mia-west-end-2021/independent--louis-chilton.json",
+    "man-and-boy-west-end-2026/london-theatre--the-production-is-hailed-by-andrzej-lukowski.json",
+    "man-and-boy-west-end-2026/times-uk--clive-davis.json",
+    "oliver-west-end-2024/times-uk--clive-davis.json",
+    "our-town-2024/guardian--unknown.json",
+    "paddington-the-musical-west-end-2025/mail--patrick-marmion.json",
+    "passion-2004/daily-mail--daily-telegraph.json"
   ],
-  "perShowSummary": []
+  "perShowSummary": [
+    {
+      "showId": "john-lithgow-stories-by-heart-2018",
+      "currentCount": 47,
+      "removed": 1
+    },
+    {
+      "showId": "kinky-boots-the-musical-west-end-2026",
+      "currentCount": 12,
+      "removed": 1
+    },
+    {
+      "showId": "mamma-mia-west-end-2021",
+      "currentCount": 15,
+      "removed": 2
+    },
+    {
+      "showId": "starlight-express-west-end-2024",
+      "currentCount": 25,
+      "removed": 1
+    }
+  ]
 }
