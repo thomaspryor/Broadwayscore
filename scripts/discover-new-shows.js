@@ -296,11 +296,14 @@ async function fetchShowsFromTodayTixLondon() {
     if (WE_SOLO_PERFORMER_PATTERN.test(title) && !titleLower.includes('musical') && !titleLower.includes('play')) continue;
 
     seen.add(title);
+    // TodayTix startDate is first preview for WE shows, NOT press night.
+    // Treat as previewsStartDate; openingDate set later by ShowScore or enrichment.
     showsList.push({
       title,
       venue: (typeof show.venue === 'string' ? show.venue : show.venue?.name) || 'TBA',
       slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
-      openingDate: show.startDate || null,
+      openingDate: null,
+      previewsStartDate: show.startDate || null,
       closingDate: show.endDate === 'null' ? null : show.endDate || null,
       category: isOffWestEndVenue(
         (typeof show.venue === 'string' ? show.venue : show.venue?.name) || 'TBA'
