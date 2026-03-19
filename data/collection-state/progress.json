@@ -111,7 +111,17 @@
     "deep-azure-globe-west-end-2026/timeout-london--andrzej-lukowski.json",
     "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
     "evening-all-afternoon-west-end-2026/guardian--arifa-akbar.json",
-    "evening-all-afternoon-west-end-2026/timeout--andrzej-lukowksi.json"
+    "evening-all-afternoon-west-end-2026/timeout--andrzej-lukowksi.json",
+    "every-brilliant-thing-2026/deadline--unknown.json",
+    "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
+    "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
+    "every-brilliant-thing-2026/thewrap--robert-hofler.json",
+    "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json",
+    "hadestown-2019/broadwaynews--charles-isherwood.json",
+    "hadestown-2019/ew--jessica-derschowitz.json",
+    "hadestown-2019/timeout--adam-feldman.json",
+    "hadestown-west-end-2024/musical-theatre-review--ron-cohen.json",
+    "hadestown-west-end-2024/timeout--adam-feldman.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
@@ -197,7 +207,14 @@
       "death-becomes-her-2024/timeout--adam-feldman.json",
       "deep-azure-globe-west-end-2026/timeout-london--andrzej-lukowski.json",
       "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
-      "evening-all-afternoon-west-end-2026/timeout--andrzej-lukowksi.json"
+      "evening-all-afternoon-west-end-2026/timeout--andrzej-lukowksi.json",
+      "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
+      "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
+      "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json",
+      "hadestown-2019/ew--jessica-derschowitz.json",
+      "hadestown-2019/timeout--adam-feldman.json",
+      "hadestown-west-end-2024/musical-theatre-review--ron-cohen.json",
+      "hadestown-west-end-2024/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
@@ -233,7 +250,9 @@
       "data/review-texts/and-juliet-2022/thewrap--robert-hofler.json",
       "and-juliet-2022/thewrap--robert-hofler.json",
       "data/review-texts/cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json",
-      "cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json"
+      "cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json",
+      "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
+      "every-brilliant-thing-2026/thewrap--robert-hofler.json"
     ],
     "browserbase": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
@@ -251,7 +270,9 @@
       "data/review-texts/oh-mary-2024/hollywood-reporter--david-rooney.json",
       "oh-mary-2024/hollywood-reporter--david-rooney.json",
       "data/review-texts/romeo-and-juliet-west-end-2026/nytimes--unknown.json",
-      "romeo-and-juliet-west-end-2026/nytimes--unknown.json"
+      "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
+      "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
+      "every-brilliant-thing-2026/deadline--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -281,7 +302,8 @@
       "wicked-2003/nytimes--charles-isherwood.json",
       "youre-a-good-man-charlie-brown-off-broadway-2026/nytimes--neil-genzlinger.json",
       "chicago-1996/nydailynews--joe-dziemianowicz.json",
-      "evening-all-afternoon-west-end-2026/guardian--arifa-akbar.json"
+      "evening-all-afternoon-west-end-2026/guardian--arifa-akbar.json",
+      "hadestown-2019/broadwaynews--charles-isherwood.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -296,7 +318,7 @@
     "archive": []
   },
   "startTime": "2026-03-19T10:02:04.711Z",
-  "lastProcessed": "evening-all-afternoon-west-end-2026/timeout--andrzej-lukowksi.json",
+  "lastProcessed": "hadestown-west-end-2024/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-03-19T10:04:36.520Z",
@@ -413,6 +435,17 @@
       "t": "2026-03-19T11:47:51.050Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-19T12:08:03.098Z",
+      "event": "bb-session",
+      "session": "61e93d61",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-19T12:08:04.529Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

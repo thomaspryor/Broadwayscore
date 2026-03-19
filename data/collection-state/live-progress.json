@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-19T12:08:02.112Z",
-  "processed": 112,
+  "updatedAt": "2026-03-19T12:11:55.281Z",
+  "processed": 122,
   "failed": 16,
-  "successRate": "87.5%",
+  "successRate": "88.4%",
   "tierBreakdown": {
-    "playwright": 64,
-    "amp": 34,
-    "browserbase": 16,
+    "playwright": 71,
+    "amp": 36,
+    "browserbase": 18,
     "directCookies": 0,
-    "scrapingbee": 27,
+    "scrapingbee": 28,
     "brightdata": 0,
     "archiveToday": 7,
     "archive": 0
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 11,
   "recentActivity": [
-    {
-      "t": "2026-03-19T11:28:49.686Z",
-      "event": "bb-session",
-      "session": "5610a4cf",
-      "url": "https://observer.com/2019/04/hadestown-tries-like-hell-to-spin-a-concept-album-o"
-    },
-    {
-      "t": "2026-03-19T11:28:51.002Z",
-      "event": "bb-cookie-inject",
-      "domain": "observer.com"
-    },
     {
       "t": "2026-03-19T11:30:35.094Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-19T11:47:51.050Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-19T12:08:03.098Z",
+      "event": "bb-session",
+      "session": "61e93d61",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-19T12:08:04.529Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
