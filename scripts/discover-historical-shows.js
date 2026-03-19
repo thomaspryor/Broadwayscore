@@ -109,6 +109,20 @@ function loadShows() {
 }
 
 function saveShows(data) {
+  // Dedup guard: parallel runs can create duplicate entries
+  const seen = new Set();
+  const before = data.shows.length;
+  for (let i = data.shows.length - 1; i >= 0; i--) {
+    if (seen.has(data.shows[i].id)) {
+      data.shows.splice(i, 1);
+    } else {
+      seen.add(data.shows[i].id);
+    }
+  }
+  const removed = before - data.shows.length;
+  if (removed > 0) {
+    console.log(`⚠️  Dedup guard: removed ${removed} duplicate show(s) before saving`);
+  }
   fs.writeFileSync(SHOWS_FILE, JSON.stringify(data, null, 2) + '\n');
 }
 
