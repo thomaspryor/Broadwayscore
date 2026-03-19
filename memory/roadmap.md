@@ -48,12 +48,16 @@
 
 **Product:**
 9. **Off-West End scoring expansion** — Classification done. 56 OWE shows in DB, 11 open with scores. Needs more review collection via aggregators.
-9b. **Theatre.reviews scraper fix** — Scraper built (`scrape-theatre-reviews.js`) but HTML extraction broken: only extracting 1 review per page instead of 10+. Homepage has 25+ shows (not just 10 on category page). Needs: (1) fix `extractReviews()` to parse the actual DOM structure (use Playwright MCP to inspect), (2) discover URLs from homepage not just category page, (3) create weekly workflow, (4) add `theatreReviewsExcerpt` to rebuild-all-reviews.js excerpt priority. This is the "DTLI equivalent" for West End — highest-value WE aggregator.
+9b. **Theatre.reviews scraper** — Partially fixed (2026-03-18). Extraction rewritten, paginated discovery added (225 URLs), weekly sweep workflow created. Latest sweep: 1 show, 8 reviews extracted. Still low yield — only matching a fraction of the 225 indexed pages to our shows. Needs: title matching tuning, verify HTML extraction on more page formats.
 10. **App icon refinement** — Hard to read at small sizes.
 11. **BTC/TodayTix partnership (paused)** — Waiting on TodayTix for launch timing, co-branding, legal.
 
 **Opening Night Speed:**
-- **Add site search for UK T1/T2 outlets** — Only WhatsOnStage + TimeOut have site search configs. Missing: Telegraph, The Stage, The Times UK, iNews, Independent, FT. These have no RSS either (defunct/404). Currently rely on aggregators + SERP which are slower. Adding search endpoint configs to `scripts/lib/site-search-discovery.js` would speed up WE/OWE opening night discovery.
+- ~~**Add site search for UK T1/T2 outlets**~~ → DONE (2026-03-18). Telegraph, The Stage, Times UK added by parallel session. 5/7 UK outlets now have configs.
+
+**Audience Data Gaps:**
+- ~~**SERP-based slug discovery for audience scrapers**~~ → DONE (2026-03-18). Auto-discovers slugs via BrightData SERP API after scraper coverage report. Title validation + blog URL filtering. Tested on LBO: 4/7 valid slugs found, added to LBO_OVERRIDES.
+- ~~**Verify LTD audience data renders on WE show pages**~~ → DONE (2026-03-18). Verified live: Hamilton WE shows 5 audience sources including LTD (3.5K reviews, 4.7/5).
 
 **Data Quality:**
 12. ~~WE/OB review cleanup — duplicates~~ → DONE. 35→0 duplicates via comprehensive dedup.
@@ -84,6 +88,18 @@
 **Code Quality:** ~~Regression protection for critical patterns~~ → DONE (grep-based guards in CI). ~~Linter/IDE revert root cause~~ → DONE (concurrent sessions, not auto-formatter).
 
 ## Recently Completed
+
+### WE Data Expansion (2026-03-18)
+- **London Theatre Direct (LTD) audience scraper** — 8th audience source. 35 WE shows with scores (Hamilton 93, Lion King 95, Wicked 90). JSON-LD extraction from londontheatredirect.com. Weekly CI + auto-trigger on show open.
+- **WestEndTheatre.com critic roundup scraper** — WordPress REST API, extracts star rating tables. 12 shows, 6-10 UK outlets each. Weekly CI workflow. Uses curl for Sucuri WAF bypass.
+- **Stagedoor full scrape** — 59 shows processed, 26 with critic reviews, 236 total reviews. 41 new + 195 merged with existing review files.
+- **Cross-market false positives fixed** — 77 legit WE reviews from UK outlets (Guardian, Telegraph, Times, Stage, etc.) were wrongly flagged `wrongProduction`. Fixed both `flag-we-cross-production.js` (London URL check on all outlets) and `rebuild-all-reviews.js` (extended auto-clear for stale no-note flags).
+- **3 duplicate WE shows removed** — Phantom OWE copy, Krapps slug variant, Unfortunate London variant. Validation: all checks pass.
+- **LTD wired into auto-trigger chain** — New `london_shows` output in update-show-status.yml filters WE-only shows for SeatPlan/LBO/LTD triggers. Prevents BW show IDs from killing for-loops.
+- **Coverage gap reports** — All 3 WE audience scrapers (SeatPlan, LBO, LTD) now log which open shows were missed with reasons and copy-paste override templates.
+- **SERP slug discovery** — Auto-discovers platform slugs via BrightData SERP when scraper misses a show. Title validation + blog URL filtering. 4 LBO overrides discovered and added.
+- **For-loop resilience** — `|| true` on all 3 WE scraper for-loops + `process.exit(0)` for non-WE show IDs. Prevents one show failure from killing the batch.
+- **Multi-source weights fix** — Missing `ltd: 0` in multi-source weights object (caught by code review).
 
 ### Week of 2026-03-17
 - **OWE pipeline fix (8 bugs, 8 files)** — Off-West End shows were discovered but never collected reviews due to exact category matches excluding `off-west-end`. Fixed: collect-outlet-reviews.js, review-refresh.yml, update-show-status.yml, fetch-aggregator-pages.ts, collect-review-texts.yml, collect-outlet-reviews.yml, opening-night-poller.yml (OWE+OB). One-off collection: 70 review files → 67 in reviews.json → 20 scored. All 11 open OWE shows now live with scores (e.g., Starlight Express 74/100, 21 reviews).
