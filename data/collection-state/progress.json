@@ -49,7 +49,16 @@
     "chess-2025/hollywood-reporter--angie-han.json",
     "death-becomes-her-2024/newyorker--helen-shaw.json",
     "every-brilliant-thing-2026/nytg--austin-fimmano.json",
-    "every-brilliant-thing-2026/nytimes--adam-feldman.json"
+    "every-brilliant-thing-2026/nytimes--adam-feldman.json",
+    "hadestown-2019/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/nyt-theater--jonathan-mandell.json",
+    "hamilton-west-end-2021/nytimes--unknown.json",
+    "hamilton-west-end-2021/variety--marilyn-stasio.json",
+    "hercules-west-end-2025/nytimes--matt-wolf.json",
+    "hercules-west-end-2025/variety--david-benedict.json",
+    "just-in-time-2025/nytimes--adam-feldman.json",
+    "mamma-mia-west-end-2021/variety--matt-wolf.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
@@ -59,7 +68,8 @@
     "night-side-songs-off-broadway-2026/nytg--kyle-turner.json",
     "consumed-west-end-2026/thestage--dave-fargnoli.json",
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
-    "the-lion-king-west-end-2021/thestage--unknown.json"
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "hadestown-2019/newyorker--hilton-als.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -95,7 +105,9 @@
       "bughouse-off-broadway-2026/broadwaynews--aa-cristi.json",
       "chinese-republicans-off-broadway-2026/ew--thom-geier.json",
       "every-brilliant-thing-2026/nytg--austin-fimmano.json",
-      "every-brilliant-thing-2026/nytimes--adam-feldman.json"
+      "every-brilliant-thing-2026/nytimes--adam-feldman.json",
+      "hamilton-2015/nyt-theater--jonathan-mandell.json",
+      "just-in-time-2025/nytimes--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
@@ -105,7 +117,13 @@
       "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
       "hadestown-west-end-2024/variety--marilyn-stasio.json",
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
-      "back-to-the-future-west-end-2021/variety--david-benedict.json"
+      "back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "data/review-texts/hamilton-west-end-2021/variety--marilyn-stasio.json",
+      "hamilton-west-end-2021/variety--marilyn-stasio.json",
+      "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
+      "hercules-west-end-2025/variety--david-benedict.json",
+      "data/review-texts/mamma-mia-west-end-2021/variety--matt-wolf.json",
+      "mamma-mia-west-end-2021/variety--matt-wolf.json"
     ],
     "browserbase": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
@@ -113,7 +131,11 @@
       "data/review-texts/hadestown-west-end-2024/observer--david-cote.json",
       "hadestown-west-end-2024/observer--david-cote.json",
       "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
-      "chess-2025/hollywood-reporter--angie-han.json"
+      "chess-2025/hollywood-reporter--angie-han.json",
+      "data/review-texts/hadestown-2019/hollywood-reporter--david-rooney.json",
+      "hadestown-2019/hollywood-reporter--david-rooney.json",
+      "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json",
+      "hamilton-2015/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -131,7 +153,9 @@
       "burnout-paradise-off-broadway-2026/theatermania--zachary-stewart.json",
       "calf-scramble-off-broadway-2026/timeout--raven-snook.json",
       "cold-war-choir-practice-off-broadway-2026/theatermania--unknown.json",
-      "death-becomes-her-2024/newyorker--helen-shaw.json"
+      "death-becomes-her-2024/newyorker--helen-shaw.json",
+      "hamilton-west-end-2021/nytimes--unknown.json",
+      "hercules-west-end-2025/nytimes--matt-wolf.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -142,7 +166,7 @@
     "archive": []
   },
   "startTime": "2026-03-19T10:02:04.711Z",
-  "lastProcessed": "every-brilliant-thing-2026/nytimes--adam-feldman.json",
+  "lastProcessed": "mamma-mia-west-end-2021/variety--matt-wolf.json",
   "log": [
     {
       "t": "2026-03-19T10:04:36.520Z",
@@ -180,6 +204,28 @@
     },
     {
       "t": "2026-03-19T11:31:15.968Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-19T11:32:13.618Z",
+      "event": "bb-session",
+      "session": "2c6e2d95",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-19T11:32:15.092Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-19T11:32:32.643Z",
+      "event": "bb-session",
+      "session": "c4905f4a",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-19T11:32:33.920Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
