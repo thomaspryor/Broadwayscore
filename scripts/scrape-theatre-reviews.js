@@ -172,6 +172,16 @@ function extractReviews(html, showId) {
     // --- Detect "Critics' Average Rating" footer — stop processing ---
     if (text.match(/critics[''\u2019]?\s*(average|avg)\s*rating/i)) return;
 
+    // --- Detect inline star format: "Outlet's Critic (N★)" or "(N★)" ---
+    const inlineStarMatch = text.match(/\((\d)[★⭑\*]\)/);
+    if (inlineStarMatch) {
+      const inlineReview = parseReviewParagraph($, $p, text, parseInt(inlineStarMatch[1], 10));
+      if (inlineReview) {
+        reviews.push(inlineReview);
+        return;
+      }
+    }
+
     // Skip if we haven't seen a star header yet
     if (currentStars === 0) return;
 
