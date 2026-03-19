@@ -284,6 +284,46 @@ jobs:
             gh workflow run gather-reviews.yml -f shows="$PENDING" || echo "Gather dispatch failed"
           fi
 
+      - name: Alert if broadcast overdue
+        if: steps.check.outputs.pending_shows != '' && steps.broadcast.outputs.broadcast_sent != 'true'
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          # Alert if any pending show opened 6+ hours ago and still can't broadcast
+          OVERDUE=$(node -e "
+            const shows = require('./data/shows.json').shows;
+            const ids = '${{ steps.check.outputs.pending_shows }}'.split(',');
+            const now = Date.now();
+            const SIX_HOURS = 6 * 60 * 60 * 1000;
+            const overdue = ids.filter(id => {
+              const s = shows.find(x => x.id === id);
+              if (!s || !s.openingDate) return false;
+              // Opening night is evening — approximate as 7 PM ET (midnight UTC)
+              const openEvening = new Date(s.openingDate + 'T00:00:00Z').getTime();
+              return (now - openEvening) > SIX_HOURS;
+            }).map(id => {
+              const s = shows.find(x => x.id === id);
+              return s ? s.title : id;
+            });
+            if (overdue.length) console.log(overdue.join(', '));
+          ")
+
+          if [ -n "$OVERDUE" ]; then
+            echo "::warning::Broadcast overdue for: $OVERDUE"
+            node -e "
+              const { sendAlert } = require('./scripts/lib/discord-notify.js');
+              sendAlert({
+                title: 'Opening Night Broadcast Overdue',
+                description: 'These shows opened 6+ hours ago but the broadcast has not sent. The data pipeline may be stuck (gather/rebuild/score).',
+                severity: 'error',
+                email: true,
+                fields: [{ name: 'Shows', value: '$OVERDUE' }],
+              });
+            "
+          fi
+
       - name: Send push notifications (mobile app)
         if: steps.check.outputs.pending_shows != '' && steps.find.outputs.broadway != ''
         continue-on-error: true
