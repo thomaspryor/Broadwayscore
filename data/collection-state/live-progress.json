@@ -1,18 +1,41 @@
 {
-  "updatedAt": "2026-03-19T04:45:10.387Z",
-  "processed": 90,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-03-19T04:56:35.936Z",
+  "processed": 93,
+  "failed": 7,
+  "successRate": "93.0%",
   "tierBreakdown": {
-    "playwright": 62,
+    "playwright": 65,
     "amp": 4,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 8,
+    "scrapingbee": 9,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 2,
     "archive": 18
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-03-19T04:53:33.445Z",
+      "event": "bb-session",
+      "session": "ce4d7b83",
+      "url": "https://www.thestage.co.uk/reviews/into-the-woods-review-bridge-theatre-london-s"
+    },
+    {
+      "t": "2026-03-19T04:53:34.939Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-19T04:56:07.838Z",
+      "event": "bb-session",
+      "session": "9df12725",
+      "url": "https://www.thestage.co.uk/reviews/dracula-a-comedy-of-terrors-review-menier-cho"
+    },
+    {
+      "t": "2026-03-19T04:56:09.423Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }
