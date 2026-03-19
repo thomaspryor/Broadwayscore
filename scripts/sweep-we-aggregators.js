@@ -694,7 +694,7 @@ async function getStagePageViaBrowserBase(url) {
         headers: { 'x-bb-api-key': BB_API_KEY, 'Content-Type': 'application/json' },
       }, (res) => { let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(JSON.parse(d))); });
       req.on('error', reject);
-      req.end(JSON.stringify({ projectId: BB_PROJECT_ID, browserSettings: { solveCaptchas: true } }));
+      req.end(JSON.stringify({ projectId: BB_PROJECT_ID, keepAlive: true, timeout: 1800, browserSettings: { solveCaptchas: true } }));
     });
 
     _bbBrowser = await chromium.connectOverCDP(`wss://connect.browserbase.com?apiKey=${BB_API_KEY}&sessionId=${session.id}`);

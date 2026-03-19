@@ -203,6 +203,8 @@ async function main() {
     console.log('   Using BrowserBase (Cloudflare bypass)...');
     const sessionBody = JSON.stringify({
       projectId: BB_PROJECT_ID,
+      keepAlive: true,
+      timeout: 900,
       browserSettings: { solveCaptchas: true },
     });
     const session = await new Promise((resolve, reject) => {
