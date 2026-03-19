@@ -188,7 +188,16 @@
     "oliver-west-end-2024/timeout--andrzej-lukowski.json",
     "operation-mincemeat-2025/guardian--kate-wyver.json",
     "operation-mincemeat-2025/theatre-reviews-limited--joseph-verlezza.json",
-    "operation-mincemeat-2025/timeout--adam-feldman.json"
+    "operation-mincemeat-2025/timeout--adam-feldman.json",
+    "operation-mincemeat-2025/timeout--holly-williams.json",
+    "paddington-the-musical-west-end-2025/musical-theatre-review--lisa-martlandbr.json",
+    "paddington-the-musical-west-end-2025/observer--katherine-cowles.json",
+    "paranormal-activity-west-end-2025/timeout-london--andrzej-lukowski.json",
+    "paranormal-activity-west-end-2025/timeout-london--unknown.json",
+    "pen-pals-off-broadway-2025/nbcnews--suzanne-ordas.json",
+    "pen-pals-off-broadway-2025/theatermania--dan-rubins.json",
+    "perfect-crime-off-broadway-1987/nydailynews--editorial-staff.json",
+    "ragtime-2025/timeout--adam-feldman.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
@@ -219,7 +228,8 @@
     "six-2021/newyorker--naomi-fry.json",
     "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
     "consumed-west-end-2026/guardian--arifa-akbar.json",
-    "harry-potter-2021/wsj--terry-teachout.json"
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "ragtime-2025/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -340,7 +350,16 @@
       "oliver-west-end-2024/timeout--andrzej-lukowski.json",
       "operation-mincemeat-2025/guardian--kate-wyver.json",
       "operation-mincemeat-2025/theatre-reviews-limited--joseph-verlezza.json",
-      "operation-mincemeat-2025/timeout--adam-feldman.json"
+      "operation-mincemeat-2025/timeout--adam-feldman.json",
+      "operation-mincemeat-2025/timeout--holly-williams.json",
+      "paddington-the-musical-west-end-2025/musical-theatre-review--lisa-martlandbr.json",
+      "paddington-the-musical-west-end-2025/observer--katherine-cowles.json",
+      "paranormal-activity-west-end-2025/timeout-london--andrzej-lukowski.json",
+      "paranormal-activity-west-end-2025/timeout-london--unknown.json",
+      "pen-pals-off-broadway-2025/nbcnews--suzanne-ordas.json",
+      "pen-pals-off-broadway-2025/theatermania--dan-rubins.json",
+      "perfect-crime-off-broadway-1987/nydailynews--editorial-staff.json",
+      "ragtime-2025/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
@@ -472,7 +491,7 @@
     ]
   },
   "startTime": "2026-03-19T10:02:04.711Z",
-  "lastProcessed": "operation-mincemeat-2025/timeout--adam-feldman.json",
+  "lastProcessed": "ragtime-2025/wsj--charles-isherwood.json",
   "log": [
     {
       "t": "2026-03-19T10:04:36.520Z",
@@ -664,6 +683,17 @@
     },
     {
       "t": "2026-03-19T12:59:06.002Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-19T13:04:30.335Z",
+      "event": "bb-session",
+      "session": "403167e1",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-03-19T13:04:31.669Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
