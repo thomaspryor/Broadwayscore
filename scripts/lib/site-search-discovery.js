@@ -26,6 +26,8 @@ const { isLondonMarket } = require('./venue-classification');
  * linkPattern extracts review URLs from the HTML response.
  * requiresJs: true means the search page needs JavaScript rendering.
  * market: limits which markets this endpoint is used for (omit for all markets).
+ * fetchAndParse: optional async function(showTitle, market) → string[] of URLs.
+ *   When present, bypasses the standard fetch+regex flow entirely.
  */
 const SITE_SEARCH_ENDPOINTS = {
   // --- SSR (plain HTTP works) ---
@@ -100,6 +102,50 @@ const SITE_SEARCH_ENDPOINTS = {
     requiresJs: false,
     market: 'west-end',
   },
+  'times-uk': {
+    name: 'The Times',
+    domain: 'thetimes.com',
+    requiresJs: false,
+    market: 'west-end',
+    // Algolia JSON API — direct POST, no JS/ScrapingBee needed
+    fetchAndParse: async (showTitle) => {
+      const body = JSON.stringify({
+        query: `${showTitle} review theatre`,
+        hitsPerPage: 10,
+        attributesToRetrieve: ['url', 'headline'],
+      });
+      const data = await fetchJSON('https://PZGYBTWG3J-dsn.algolia.net/1/indexes/prod_articles/query', {
+        method: 'POST',
+        headers: {
+          'x-algolia-api-key': '3835bd37d54757eda130c4055ca98c68',
+          'x-algolia-application-id': 'PZGYBTWG3J',
+          'Content-Type': 'application/json',
+        },
+        body,
+      });
+      const parsed = JSON.parse(data);
+      return (parsed.hits || [])
+        .filter(h => h.url && /^https:\/\/www\.thetimes\.com\//.test(h.url))
+        .map(h => h.url);
+    },
+  },
+
+  // --- West End outlets (JS-rendered) ---
+  'thestage': {
+    name: 'The Stage',
+    url: 'https://www.thestage.co.uk/?s={TITLE}+review',
+    domain: 'thestage.co.uk',
+    linkPattern: /href="(https:\/\/www\.thestage\.co\.uk\/reviews\/[^"]*)"/gi,
+    requiresJs: true,
+    market: 'west-end',
+  },
+  'telegraph': {
+    name: 'The Telegraph',
+    url: 'https://www.telegraph.co.uk/search/?q={TITLE}+review+theatre',
+    domain: 'telegraph.co.uk',
+    linkPattern: /href="(https:\/\/www\.telegraph\.co\.uk\/theatre\/[^"]*)"/gi,
+    requiresJs: true,
+  },
 };
 
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
@@ -139,6 +185,35 @@ function fetchSSR(url, timeoutMs = 15000) {
     });
     req.on('error', reject);
     req.setTimeout(timeoutMs, () => { req.destroy(); reject(new Error('Timeout')); });
+  });
+}
+
+/**
+ * HTTP fetch with custom method/headers/body (for JSON APIs like Algolia)
+ */
+function fetchJSON(url, options = {}, timeoutMs = 15000) {
+  return new Promise((resolve, reject) => {
+    const parsed = new URL(url);
+    const reqOptions = {
+      hostname: parsed.hostname,
+      port: parsed.port || 443,
+      path: parsed.pathname + parsed.search,
+      method: options.method || 'GET',
+      headers: options.headers || {},
+    };
+    const req = https.request(reqOptions, (res) => {
+      if (res.statusCode !== 200) {
+        return reject(new Error(`HTTP ${res.statusCode}`));
+      }
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => resolve(data));
+      res.on('error', reject);
+    });
+    req.on('error', reject);
+    req.setTimeout(timeoutMs, () => { req.destroy(); reject(new Error('Timeout')); });
+    if (options.body) req.write(options.body);
+    req.end();
   });
 }
 
@@ -209,35 +284,44 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
     return [];
   }
 
-  const marketKeyword = getMarketKeyword(market);
-  const searchUrl = config.url
-    .replace('{TITLE}', encodeURIComponent(showTitle))
-    .replace('{MARKET_KEYWORD}', marketKeyword);
-
   try {
-    let html;
-    if (config.requiresJs) {
-      html = await fetchWithScrapingBee(searchUrl);
-    } else {
-      html = await fetchSSR(searchUrl);
-    }
+    let results;
 
-    // Extract matching URLs
-    const results = [];
-    const seen = new Set();
-    let match;
-    // Reset regex lastIndex
-    config.linkPattern.lastIndex = 0;
-    while ((match = config.linkPattern.exec(html)) !== null) {
-      const url = match[1];
-      if (!seen.has(url) && urlLooksLikeReview(url, showTitle)) {
-        seen.add(url);
-        results.push({
-          url,
-          outletId,
-          outlet: config.name,
-          source: 'site-search',
-        });
+    // Custom fetch+parse path (e.g. Algolia JSON API)
+    if (config.fetchAndParse) {
+      const urls = await config.fetchAndParse(showTitle, market);
+      const seen = new Set();
+      results = [];
+      for (const url of urls) {
+        if (!seen.has(url) && urlLooksLikeReview(url, showTitle)) {
+          seen.add(url);
+          results.push({ url, outletId, outlet: config.name, source: 'site-search' });
+        }
+      }
+    } else {
+      // Standard fetch + regex path
+      const marketKeyword = getMarketKeyword(market);
+      const searchUrl = config.url
+        .replace('{TITLE}', encodeURIComponent(showTitle))
+        .replace('{MARKET_KEYWORD}', marketKeyword);
+
+      let html;
+      if (config.requiresJs) {
+        html = await fetchWithScrapingBee(searchUrl);
+      } else {
+        html = await fetchSSR(searchUrl);
+      }
+
+      results = [];
+      const seen = new Set();
+      let match;
+      config.linkPattern.lastIndex = 0;
+      while ((match = config.linkPattern.exec(html)) !== null) {
+        const url = match[1];
+        if (!seen.has(url) && urlLooksLikeReview(url, showTitle)) {
+          seen.add(url);
+          results.push({ url, outletId, outlet: config.name, source: 'site-search' });
+        }
       }
     }
 
