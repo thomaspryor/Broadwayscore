@@ -52,6 +52,29 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
  * Site-scoped Google SERP search via ScrapingBee.
  * Returns first matching URL or null.
  */
+/**
+ * Validate a SERP URL contains the show title (prevents wrong-show matches).
+ * e.g., Hamilton search returning "good-starring-david-tennant" is rejected.
+ */
+function validateSerpUrl(url, showTitle) {
+  if (!url) return false;
+  const slug = url.toLowerCase();
+  // Extract significant words from show title (skip articles, prepositions)
+  const skipWords = new Set(['the', 'a', 'an', 'at', 'in', 'of', 'and', 'or', 'on', 'to', 'is']);
+  const words = showTitle.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/)
+    .filter(w => w.length > 2 && !skipWords.has(w));
+  if (words.length === 0) return true; // fallback: accept if no significant words
+  // Require at least the first significant word to be in the URL
+  const firstWord = words[0];
+  if (!slug.includes(firstWord)) return false;
+  // For multi-word titles, require at least 2 words to match (prevents "six" matching unrelated)
+  if (words.length >= 2) {
+    const matchCount = words.filter(w => slug.includes(w)).length;
+    return matchCount >= Math.min(2, words.length);
+  }
+  return true;
+}
+
 async function serpSearch(site, showTitle) {
   if (!SB_KEY && !BD_KEY) return null;
   const query = `site:${site} "${showTitle}" review`;
@@ -65,7 +88,14 @@ async function serpSearch(site, showTitle) {
         timeout: 15000,
       });
       const results = resp.data?.organic_results || resp.data?.results || [];
-      if (results.length > 0) return results[0].url || results[0].link;
+      // Validate first result URL contains show title words
+      for (const r of results.slice(0, 3)) {
+        const url = r.url || r.link;
+        if (url && validateSerpUrl(url, showTitle)) return url;
+      }
+      if (results.length > 0) {
+        console.log(`    [SERP] Rejected: ${(results[0].url || results[0].link || '').substring(0, 80)} (doesn't match "${showTitle}")`);
+      }
     } catch {}
   }
 
@@ -92,8 +122,12 @@ async function serpSearch(site, showTitle) {
             }, res => { let d = ''; res.on('data', c => d += c); res.on('end', () => { try { resolve(JSON.parse(d)); } catch { resolve(null); } }); }).on('error', () => resolve(null));
           });
           if (poll?.organic) {
-            const first = poll.organic[0];
-            if (first?.link) return first.link;
+            for (const r of poll.organic.slice(0, 3)) {
+              if (r?.link && validateSerpUrl(r.link, showTitle)) return r.link;
+            }
+            if (poll.organic[0]?.link) {
+              console.log(`    [SERP] Rejected: ${poll.organic[0].link.substring(0, 80)} (doesn't match "${showTitle}")`);
+            }
             break;
           }
         }
