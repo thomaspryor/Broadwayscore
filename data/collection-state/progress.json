@@ -8,10 +8,20 @@
     "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
     "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
     "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
-    "data-off-broadway-2026/nyt-theater--jonathan-mandell.json"
+    "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nytg--allison-considine.json",
+    "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
+    "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+    "little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
+    "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+    "masquerade-off-broadway-2025/nytg--gillian-russo.json",
+    "mother-russia-off-broadway-2026/nytg--amelia-merrill.json",
+    "my-joy-is-heavy-off-broadway-2025/nytg--unknown.json"
   ],
   "failed": [
-    "burnout-paradise-off-broadway-2026/playbill--unknown.json"
+    "burnout-paradise-off-broadway-2026/playbill--unknown.json",
+    "my-joy-is-heavy-off-broadway-2025/nytimes--brittani-samuel.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -22,27 +32,54 @@
       "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
       "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
       "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
-      "data-off-broadway-2026/nyt-theater--jonathan-mandell.json"
+      "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "data-off-broadway-2026/nytg--allison-considine.json",
+      "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+      "masquerade-off-broadway-2025/nytg--gillian-russo.json",
+      "mother-russia-off-broadway-2026/nytg--amelia-merrill.json",
+      "my-joy-is-heavy-off-broadway-2025/nytg--unknown.json"
     ],
-    "amp": [],
-    "browserbase": [],
+    "amp": [
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
+      "little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json"
+    ],
+    "browserbase": [
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/my-joy-is-heavy-off-broadway-2025/nytimes--brittani-samuel.json"
+    ],
     "archive": [
       "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
-      "youre-a-good-man-charlie-brown-off-broadway-2026/dc-metro-theater-arts--richard-seff.json"
+      "youre-a-good-man-charlie-brown-off-broadway-2026/dc-metro-theater-arts--richard-seff.json",
+      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
+      "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-03-19T09:21:00.709Z",
-  "lastProcessed": "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+  "lastProcessed": "my-joy-is-heavy-off-broadway-2025/nytimes--brittani-samuel.json",
   "log": [
     {
       "t": "2026-03-19T09:21:02.921Z",
       "event": "bb-session",
       "session": "b7fd7468",
       "url": "https://www.wsj.com/articles/the-play-that-goes-wrong-review-hectic-whodunit-hum"
+    },
+    {
+      "t": "2026-03-19T09:22:53.268Z",
+      "event": "bb-session",
+      "session": "ff6668f4",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-19T09:24:31.337Z",
+      "event": "bb-session",
+      "session": "a8c60dd5",
+      "url": "https://www.nytimes.com/2026/03/18/theater/my-joy-is-heavy-review-bengsons.html"
     }
   ]
 }
