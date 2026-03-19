@@ -945,6 +945,14 @@ showDirs.forEach(showId => {
         }
       }
 
+      // Clear stale ensembleData: if llmMetadata.model is not an ensemble model,
+      // the ensembleData is from a prior scoring pass and no longer matches the current score.
+      // This prevents stale ensemble metadata from affecting scoring priority decisions.
+      if (data.ensembleData && data.llmMetadata?.model && !data.llmMetadata.model.startsWith('ensemble:')) {
+        delete data.ensembleData;
+        stats.staleEnsembleCleared = (stats.staleEnsembleCleared || 0) + 1;
+      }
+
       // Reclassify contentTier as safety net (in case collect-review-texts missed it)
       // Also write back to source file if tier changed (prevents stale classifications)
       {
@@ -2683,6 +2691,9 @@ if (stats.wrongProdWEOBAutoCleared > 0) {
 }
 if (stats.recoveredFromGarbage > 0) {
   console.log(`  Recovered from garbageFullText: ${stats.recoveredFromGarbage}`);
+}
+if (stats.staleEnsembleCleared > 0) {
+  console.log(`  Stale ensembleData cleared (non-ensemble model): ${stats.staleEnsembleCleared}`);
 }
 if (stats.skippedLowConfidenceOriginal > 0) {
   console.log(`  Skipped low-confidence originalScores: ${stats.skippedLowConfidenceOriginal}`);
