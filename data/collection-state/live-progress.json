@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-19T19:14:45.618Z",
-  "processed": 492,
-  "failed": 66,
-  "successRate": "88.2%",
+  "updatedAt": "2026-03-19T19:21:24.392Z",
+  "processed": 500,
+  "failed": 68,
+  "successRate": "88.0%",
   "tierBreakdown": {
-    "playwright": 339,
+    "playwright": 347,
     "amp": 38,
     "browserbase": 24,
     "directCookies": 0,
     "scrapingbee": 71,
     "brightdata": 0,
-    "archiveToday": 16,
+    "archiveToday": 17,
     "archive": 57
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-03-19T11:47:49.850Z",
-      "event": "bb-session",
-      "session": "75eac4b0",
-      "url": "https://www.nytimes.com/1997/11/14/movies/theater-review-cub-comes-of-age-a-twic"
-    },
-    {
-      "t": "2026-03-19T11:47:51.050Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-19T12:08:03.098Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-19T13:20:22.206Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-19T19:17:37.658Z",
+      "event": "bb-session",
+      "session": "3190d45e",
+      "url": "https://www.thestage.co.uk/review-round-ups/hercules-at-the-theatre-royal-drury-"
+    },
+    {
+      "t": "2026-03-19T19:17:39.025Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
