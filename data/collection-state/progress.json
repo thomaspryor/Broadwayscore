@@ -148,7 +148,16 @@
     "hadestown-west-end-2024/observer--david-cote.json",
     "just-in-time-2025/timeout--adam-feldman.json",
     "magic-mike-live-west-end-2021/guardian--arifa-akbar.json",
-    "my-neighbour-totoro-west-end-2025/timeout--tom-wicker.json"
+    "my-neighbour-totoro-west-end-2025/timeout--tom-wicker.json",
+    "showstopper-the-improvised-musical-west-end-2023/timeout-london--andrzej-lukowski.json",
+    "six-the-musical-west-end-2021/timeout--unknown.json",
+    "stranger-things-the-first-shadow-west-end-2023/timeout--tim-bano.json",
+    "summerfolk-west-end-2026/thereviewshub--unknown.json",
+    "the-choir-of-man-west-end-2026/guardian--emma-john.json",
+    "the-mousetrap-west-end-2021/guardian--arifa-akbar.json",
+    "the-phantom-of-the-opera-west-end-1986/timeout-london--andrzej-lukowski.json",
+    "wicked-west-end-2021/timeout--unknown.json",
+    "witness-for-the-prosecution-west-end-2022/timeout--unknown.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
@@ -161,7 +170,8 @@
     "the-reservoir-off-broadway-2026/broadwaynews--nicole-rosky.json",
     "zack-off-broadway-2026/nydailynews--logan-culwell.json",
     "the-play-that-goes-wrong-off-broadway-2019/dctheatrescene--deb-miller.json",
-    "bigfoot-off-broadway-2026/whatsonstage--unknown.json"
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -261,7 +271,12 @@
       "every-brilliant-thing-2026/nytimes--adam-feldman.json",
       "evening-all-afternoon-west-end-2026/guardian--emma-john.json",
       "evening-all-afternoon-west-end-2026/timeout--andrzej-lukowski.json",
-      "just-in-time-2025/timeout--adam-feldman.json"
+      "just-in-time-2025/timeout--adam-feldman.json",
+      "six-the-musical-west-end-2021/timeout--unknown.json",
+      "stranger-things-the-first-shadow-west-end-2023/timeout--tim-bano.json",
+      "summerfolk-west-end-2026/thereviewshub--unknown.json",
+      "wicked-west-end-2021/timeout--unknown.json",
+      "witness-for-the-prosecution-west-end-2022/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
@@ -311,7 +326,9 @@
       "heathers-the-musical-off-broadway-2025/theatrely--kobi-kassal.json",
       "sexual-misconduct-of-the-middle-classes-off-broadway-2026/cititour--brian-scott-lipton.json",
       "magic-mike-live-west-end-2021/guardian--arifa-akbar.json",
-      "my-neighbour-totoro-west-end-2025/timeout--tom-wicker.json"
+      "my-neighbour-totoro-west-end-2025/timeout--tom-wicker.json",
+      "the-choir-of-man-west-end-2026/guardian--emma-john.json",
+      "the-mousetrap-west-end-2021/guardian--arifa-akbar.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -340,11 +357,13 @@
       "you-got-older-off-broadway-2026/theatermania--zachary-stewart.json",
       "zack-off-broadway-2026/broadwaynews--gillian-blum.json",
       "bigfoot-off-broadway-2026/playbill--unknown.json",
-      "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json"
+      "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
+      "showstopper-the-improvised-musical-west-end-2023/timeout-london--andrzej-lukowski.json",
+      "the-phantom-of-the-opera-west-end-1986/timeout-london--andrzej-lukowski.json"
     ]
   },
   "startTime": "2026-03-19T08:31:39.530Z",
-  "lastProcessed": "my-neighbour-totoro-west-end-2025/timeout--tom-wicker.json",
+  "lastProcessed": "witness-for-the-prosecution-west-end-2022/timeout--unknown.json",
   "log": [
     {
       "t": "2026-03-19T08:32:46.005Z",
@@ -386,6 +405,17 @@
       "t": "2026-03-19T09:27:49.083Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-19T09:31:14.590Z",
+      "event": "bb-session",
+      "session": "acbf9d85",
+      "url": "https://www.wsj.com/articles/the-play-that-goes-wrong-review-hectic-whodunit-hum"
+    },
+    {
+      "t": "2026-03-19T09:31:15.898Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

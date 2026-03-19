@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-19T09:29:09.996Z",
-  "processed": 149,
-  "failed": 11,
-  "successRate": "93.1%",
+  "updatedAt": "2026-03-19T09:32:43.416Z",
+  "processed": 158,
+  "failed": 12,
+  "successRate": "92.9%",
   "tierBreakdown": {
-    "playwright": 96,
+    "playwright": 101,
     "amp": 8,
     "browserbase": 8,
     "directCookies": 0,
-    "scrapingbee": 27,
+    "scrapingbee": 29,
     "brightdata": 0,
     "archiveToday": 6,
-    "archive": 18
+    "archive": 20
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-03-19T08:32:46.005Z",
@@ -55,6 +55,17 @@
       "t": "2026-03-19T09:27:49.083Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-19T09:31:14.590Z",
+      "event": "bb-session",
+      "session": "acbf9d85",
+      "url": "https://www.wsj.com/articles/the-play-that-goes-wrong-review-hectic-whodunit-hum"
+    },
+    {
+      "t": "2026-03-19T09:31:15.898Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
