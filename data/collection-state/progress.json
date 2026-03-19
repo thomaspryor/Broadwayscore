@@ -199,7 +199,14 @@
     "hadestown-2019/hollywood-reporter--david-rooney.json",
     "hamilton-2015/hollywood-reporter--david-rooney.json",
     "hamilton-2015/nyt-theater--jonathan-mandell.json",
-    "hamilton-west-end-2021/variety--marilyn-stasio.json"
+    "hamilton-west-end-2021/variety--marilyn-stasio.json",
+    "hercules-west-end-2025/variety--david-benedict.json",
+    "just-in-time-2025/nytimes--adam-feldman.json",
+    "mamma-mia-west-end-2021/variety--matt-wolf.json",
+    "mamma-mia-west-end-2021/variety--owen-gleiberman.json",
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "moulin-rouge-2019/nytimes--ben-brantley.json",
+    "my-neighbour-totoro-west-end-2025/variety--unknown.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
@@ -221,7 +228,10 @@
     "youre-a-good-man-charlie-brown-off-broadway-2026/dc-metro-theater-arts--richard-seff.json",
     "hadestown-2019/newyorker--hilton-als.json",
     "hamilton-west-end-2021/nytimes--unknown.json",
-    "hercules-west-end-2025/nytimes--matt-wolf.json"
+    "hercules-west-end-2025/nytimes--matt-wolf.json",
+    "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+    "maybe-happy-ending-2024/vulture--sara-holdren.json",
+    "mj-2022/vulture--helen-shaw.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -357,7 +367,8 @@
       "wicked-west-end-2021/times-uk--unknown.json",
       "witness-for-the-prosecution-west-end-2022/metro--unknown.json",
       "witness-for-the-prosecution-west-end-2022/standard--unknown.json",
-      "hamilton-2015/nyt-theater--jonathan-mandell.json"
+      "hamilton-2015/nyt-theater--jonathan-mandell.json",
+      "just-in-time-2025/nytimes--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
@@ -371,7 +382,15 @@
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
       "back-to-the-future-west-end-2021/variety--david-benedict.json",
       "data/review-texts/hamilton-west-end-2021/variety--marilyn-stasio.json",
-      "hamilton-west-end-2021/variety--marilyn-stasio.json"
+      "hamilton-west-end-2021/variety--marilyn-stasio.json",
+      "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
+      "hercules-west-end-2025/variety--david-benedict.json",
+      "data/review-texts/mamma-mia-west-end-2021/variety--matt-wolf.json",
+      "mamma-mia-west-end-2021/variety--matt-wolf.json",
+      "data/review-texts/mamma-mia-west-end-2021/variety--owen-gleiberman.json",
+      "mamma-mia-west-end-2021/variety--owen-gleiberman.json",
+      "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json"
     ],
     "browserbase": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
@@ -387,7 +406,9 @@
       "data/review-texts/hadestown-2019/hollywood-reporter--david-rooney.json",
       "hadestown-2019/hollywood-reporter--david-rooney.json",
       "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json",
-      "hamilton-2015/hollywood-reporter--david-rooney.json"
+      "hamilton-2015/hollywood-reporter--david-rooney.json",
+      "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -424,7 +445,8 @@
       "matilda-the-musical-west-end-2021/independent--alice-saville.json",
       "starlight-express-west-end-2024/independent--alice-saville.json",
       "the-phantom-of-the-opera-west-end-1986/telegraph--dominic-cavendish.json",
-      "death-becomes-her-2024/newyorker--helen-shaw.json"
+      "death-becomes-her-2024/newyorker--helen-shaw.json",
+      "moulin-rouge-2019/nytimes--ben-brantley.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -437,7 +459,10 @@
       "data/review-texts/consumed-west-end-2026/thestage--dave-fargnoli.json",
       "data/review-texts/youre-a-good-man-charlie-brown-off-broadway-2026/dc-metro-theater-arts--richard-seff.json",
       "data/review-texts/hamilton-west-end-2021/nytimes--unknown.json",
-      "data/review-texts/hercules-west-end-2025/nytimes--matt-wolf.json"
+      "data/review-texts/hercules-west-end-2025/nytimes--matt-wolf.json",
+      "data/review-texts/marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+      "data/review-texts/maybe-happy-ending-2024/vulture--sara-holdren.json",
+      "data/review-texts/mj-2022/vulture--helen-shaw.json"
     ],
     "archive": [
       "youre-a-good-man-charlie-brown-off-broadway-2026/theatermania--david-gordon.json",
@@ -464,7 +489,7 @@
     ]
   },
   "startTime": "2026-03-19T08:31:39.530Z",
-  "lastProcessed": "hercules-west-end-2025/nytimes--matt-wolf.json",
+  "lastProcessed": "my-neighbour-totoro-west-end-2025/variety--unknown.json",
   "log": [
     {
       "t": "2026-03-19T08:32:46.005Z",
@@ -583,6 +608,17 @@
       "t": "2026-03-19T09:45:58.224Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-19T09:50:47.135Z",
+      "event": "bb-session",
+      "session": "60ea5516",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-03-19T09:50:48.555Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
