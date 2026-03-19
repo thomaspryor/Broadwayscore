@@ -206,7 +206,14 @@
     "mamma-mia-west-end-2021/variety--owen-gleiberman.json",
     "mj-2022/hollywood-reporter--lovia-gyarkye.json",
     "moulin-rouge-2019/nytimes--ben-brantley.json",
-    "my-neighbour-totoro-west-end-2025/variety--unknown.json"
+    "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+    "oh-mary-2024/hollywood-reporter--david-rooney.json",
+    "paddington-the-musical-west-end-2025/variety--david-benedict.json",
+    "ragtime-2025/nyt-theater--unknown.json",
+    "ragtime-2025/nytimes--unknown.json",
+    "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
+    "the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
+    "the-great-gatsby-2024/nytimes--maya-phillips.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
@@ -231,7 +238,10 @@
     "hercules-west-end-2025/nytimes--matt-wolf.json",
     "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
     "maybe-happy-ending-2024/vulture--sara-holdren.json",
-    "mj-2022/vulture--helen-shaw.json"
+    "mj-2022/vulture--helen-shaw.json",
+    "oh-mary-2024/nytimes--erik-piepenburg.json",
+    "oh-mary-2024/vulture--helen-shaw.json",
+    "six-2021/newyorker--naomi-fry.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -368,7 +378,8 @@
       "witness-for-the-prosecution-west-end-2022/metro--unknown.json",
       "witness-for-the-prosecution-west-end-2022/standard--unknown.json",
       "hamilton-2015/nyt-theater--jonathan-mandell.json",
-      "just-in-time-2025/nytimes--adam-feldman.json"
+      "just-in-time-2025/nytimes--adam-feldman.json",
+      "ragtime-2025/nyt-theater--unknown.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
@@ -390,7 +401,11 @@
       "data/review-texts/mamma-mia-west-end-2021/variety--owen-gleiberman.json",
       "mamma-mia-west-end-2021/variety--owen-gleiberman.json",
       "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
-      "my-neighbour-totoro-west-end-2025/variety--unknown.json"
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "data/review-texts/paddington-the-musical-west-end-2025/variety--david-benedict.json",
+      "paddington-the-musical-west-end-2025/variety--david-benedict.json",
+      "data/review-texts/the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
+      "the-book-of-mormon-west-end-2024/variety--steven-suskin.json"
     ],
     "browserbase": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
@@ -408,7 +423,9 @@
       "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json",
       "hamilton-2015/hollywood-reporter--david-rooney.json",
       "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
-      "mj-2022/hollywood-reporter--lovia-gyarkye.json"
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "data/review-texts/oh-mary-2024/hollywood-reporter--david-rooney.json",
+      "oh-mary-2024/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -446,7 +463,10 @@
       "starlight-express-west-end-2024/independent--alice-saville.json",
       "the-phantom-of-the-opera-west-end-1986/telegraph--dominic-cavendish.json",
       "death-becomes-her-2024/newyorker--helen-shaw.json",
-      "moulin-rouge-2019/nytimes--ben-brantley.json"
+      "moulin-rouge-2019/nytimes--ben-brantley.json",
+      "ragtime-2025/nytimes--unknown.json",
+      "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
+      "the-great-gatsby-2024/nytimes--maya-phillips.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -462,7 +482,9 @@
       "data/review-texts/hercules-west-end-2025/nytimes--matt-wolf.json",
       "data/review-texts/marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
       "data/review-texts/maybe-happy-ending-2024/vulture--sara-holdren.json",
-      "data/review-texts/mj-2022/vulture--helen-shaw.json"
+      "data/review-texts/mj-2022/vulture--helen-shaw.json",
+      "data/review-texts/oh-mary-2024/nytimes--erik-piepenburg.json",
+      "data/review-texts/oh-mary-2024/vulture--helen-shaw.json"
     ],
     "archive": [
       "youre-a-good-man-charlie-brown-off-broadway-2026/theatermania--david-gordon.json",
@@ -489,7 +511,7 @@
     ]
   },
   "startTime": "2026-03-19T08:31:39.530Z",
-  "lastProcessed": "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+  "lastProcessed": "the-great-gatsby-2024/nytimes--maya-phillips.json",
   "log": [
     {
       "t": "2026-03-19T08:32:46.005Z",
@@ -617,6 +639,17 @@
     },
     {
       "t": "2026-03-19T09:50:48.555Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-19T09:53:07.517Z",
+      "event": "bb-session",
+      "session": "6a710b8a",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
+    },
+    {
+      "t": "2026-03-19T09:53:08.931Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }

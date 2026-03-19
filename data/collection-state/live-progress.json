@@ -1,32 +1,20 @@
 {
-  "updatedAt": "2026-03-19T09:53:06.559Z",
-  "processed": 207,
-  "failed": 23,
-  "successRate": "90.0%",
+  "updatedAt": "2026-03-19T09:58:20.025Z",
+  "processed": 214,
+  "failed": 26,
+  "successRate": "89.2%",
   "tierBreakdown": {
-    "playwright": 133,
-    "amp": 20,
-    "browserbase": 16,
+    "playwright": 134,
+    "amp": 24,
+    "browserbase": 18,
     "directCookies": 0,
-    "scrapingbee": 35,
+    "scrapingbee": 38,
     "brightdata": 0,
-    "archiveToday": 13,
+    "archiveToday": 15,
     "archive": 21
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-03-19T08:53:29.243Z",
-      "event": "bb-session",
-      "session": "6636512a",
-      "url": "https://deadline.com/2019/10/little-shop-of-horrors-review-jonathan-groff-tammy-"
-    },
-    {
-      "t": "2026-03-19T08:54:18.037Z",
-      "event": "bb-session",
-      "session": "06dcb01a",
-      "url": "https://nypost.com/2019/10/17/little-shop-of-horrors-review-jonathan-groff-tammy"
-    },
     {
       "t": "2026-03-19T09:27:47.774Z",
       "event": "bb-session",
@@ -123,6 +111,17 @@
     },
     {
       "t": "2026-03-19T09:50:48.555Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-19T09:53:07.517Z",
+      "event": "bb-session",
+      "session": "6a710b8a",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
+    },
+    {
+      "t": "2026-03-19T09:53:08.931Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
