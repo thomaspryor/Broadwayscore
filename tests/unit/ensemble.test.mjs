@@ -225,7 +225,9 @@ describe('ensembleScore - 3 models', () => {
         makeModelScore('gemini', 'Pan', 25)
       );
 
-      assert.strictEqual(result.bucket, 'Positive');
+      // Weighted avg: (80*1.5 + 78*1.5 + 25*1.0) / 4.0 = 65.5 → 66
+      // Bucket derived from numeric score: scoreToBucket(66) = Mixed
+      assert.strictEqual(result.bucket, 'Mixed');
       assert.strictEqual(result.source, 'ensemble-majority');
       assert.strictEqual(result.outlier?.model, 'gemini');
       assert.strictEqual(result.outlier?.bucket, 'Pan');
@@ -240,7 +242,9 @@ describe('ensembleScore - 3 models', () => {
         makeModelScore('gemini', 'Mixed', 65)
       );
 
-      assert.strictEqual(result.bucket, 'Mixed');
+      // Weighted avg: (62*1.5 + 65*1.5 + 90*1.0) / 4.0 = 70.125 → 70
+      // Bucket derived from numeric score: scoreToBucket(70) = Positive
+      assert.strictEqual(result.bucket, 'Positive');
       assert.strictEqual(result.outlier?.model, 'openai');
       assert.strictEqual(result.outlier?.bucket, 'Rave');
       assert.strictEqual(result.needsReview, true); // 2 buckets apart
