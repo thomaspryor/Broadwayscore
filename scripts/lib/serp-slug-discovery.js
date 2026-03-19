@@ -65,10 +65,28 @@ async function discoverSlug(siteDomain, showTitle, pathPrefix) {
 
       const data = await pollRes.json();
       if (data.organic && data.organic.length > 0) {
-        // Extract slug from first result URL
+        // Extract slug from first result URL — validate title matches
+        const titleNorm = showTitle.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim();
+        const titleWords = titleNorm.split(/\s+/).filter(w => w.length > 2 && !['the', 'and', 'for'].includes(w));
+
         for (const result of data.organic) {
           const url = result.link || result.url || '';
           if (!url.includes(siteDomain)) continue;
+
+          // Title validation: SERP result title must contain at least half
+          // of the show's meaningful words to prevent wrong-show matches
+          // (e.g., "Black Is The Color" matching a Mary Poppins page)
+          const resultTitle = (result.title || '').toLowerCase();
+          const matchCount = titleWords.filter(w => resultTitle.includes(w)).length;
+          if (titleWords.length > 0 && matchCount < Math.max(1, Math.ceil(titleWords.length * 0.5))) {
+            continue; // Skip — result title doesn't match our show
+          }
+
+          // Skip news/blog/review URLs — we want ticket pages
+          const urlLower = url.toLowerCase();
+          if (urlLower.includes('/news/') || urlLower.includes('/blog/') || urlLower.includes('/post/')) {
+            continue;
+          }
 
           try {
             const parsed = new URL(url);

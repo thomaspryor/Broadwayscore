@@ -72,7 +72,10 @@ const ANCHOR_SHOWS = {
 
 // Manual slug overrides for shows whose LBO slug is non-obvious
 const LBO_OVERRIDES = {
-  // 'Show Title': 'lbo-slug-without-tickets-suffix'
+  "I'm Sorry, Prime Minister": 'sorry-prime-minister',
+  'Witness for the Prosecution': 'witness-for-the-prosecution-by-agatha-christie',
+  'Cabaret at the Kit Kat Club': 'cabaret',
+  'The Hunger Games On Stage': 'hunger-games',
 };
 
 const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
