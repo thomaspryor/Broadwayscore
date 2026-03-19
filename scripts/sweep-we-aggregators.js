@@ -219,7 +219,16 @@ function writeReview(review, showId) {
   const existingMatch = findExistingReviewFile(showDir, outletId, criticSlug);
   const filePath = existingMatch ? existingMatch.path : path.join(showDir, `${outletId}--${criticSlug}.json`);
 
-  let data = existingMatch && existingMatch.data ? existingMatch.data : {};
+  // Safety: if findExistingReviewFile returned null (e.g. wrongProduction skip),
+  // but the file physically exists, load it to avoid overwriting scored data
+  let data;
+  if (existingMatch && existingMatch.data) {
+    data = existingMatch.data;
+  } else if (fs.existsSync(filePath)) {
+    try { data = JSON.parse(fs.readFileSync(filePath, 'utf-8')); } catch { data = {}; }
+  } else {
+    data = {};
+  }
 
   data.showId = data.showId || showId;
   data.outlet = data.outlet || review.outlet;
