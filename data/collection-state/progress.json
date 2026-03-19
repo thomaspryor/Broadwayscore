@@ -55,13 +55,23 @@
     "heathers-the-musical-off-broadway-2025/new-york-sun--elysa-gardner.json",
     "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
     "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json",
-    "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024/nydailynews--unknown.json"
+    "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024/nydailynews--unknown.json",
+    "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
+    "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json",
+    "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
+    "maltby-and-shires-about-time-off-broadway-2026/theatermania--zachary-stewart.json",
+    "marcel-on-the-train-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "marcel-on-the-train-off-broadway-2026/theatermania--zachary-stewart.json",
+    "marcel-on-the-train-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
+    "marcel-on-the-train-off-broadway-2026/timeout--adam-feldman.json",
+    "masquerade-off-broadway-2025/ew--thom-geier.json"
   ],
   "failed": [
     "burnout-paradise-off-broadway-2026/playbill--unknown.json",
     "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
     "my-joy-is-heavy-off-broadway-2025/vulture--unknown.json",
-    "night-side-songs-off-broadway-2026/nytg--kyle-turner.json"
+    "night-side-songs-off-broadway-2026/nytg--kyle-turner.json",
+    "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -100,7 +110,11 @@
       "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json",
       "heathers-the-musical-off-broadway-2025/new-york-sun--elysa-gardner.json",
       "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json",
-      "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024/nydailynews--unknown.json"
+      "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024/nydailynews--unknown.json",
+      "marcel-on-the-train-off-broadway-2026/new-york-sun--elysa-gardner.json",
+      "marcel-on-the-train-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
+      "marcel-on-the-train-off-broadway-2026/timeout--adam-feldman.json",
+      "masquerade-off-broadway-2025/ew--thom-geier.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
@@ -112,7 +126,11 @@
     ],
     "browserbase": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
-      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json"
+      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
+      "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
+      "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -133,23 +151,39 @@
       "data-off-broadway-2026/theatermania--zachary-stewart.json",
       "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
       "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json",
-      "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json"
+      "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
+      "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json",
+      "maltby-and-shires-about-time-off-broadway-2026/theatermania--zachary-stewart.json",
+      "marcel-on-the-train-off-broadway-2026/theatermania--zachary-stewart.json"
     ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
-      "data/review-texts/my-joy-is-heavy-off-broadway-2025/vulture--unknown.json"
+      "data/review-texts/my-joy-is-heavy-off-broadway-2025/vulture--unknown.json",
+      "data/review-texts/lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json"
     ],
     "archive": []
   },
   "startTime": "2026-03-19T10:02:04.711Z",
-  "lastProcessed": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024/nydailynews--unknown.json",
+  "lastProcessed": "masquerade-off-broadway-2025/ew--thom-geier.json",
   "log": [
     {
       "t": "2026-03-19T10:04:36.520Z",
       "event": "bb-session",
       "session": "cfc7b254",
       "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-19T10:28:21.787Z",
+      "event": "bb-session",
+      "session": "c76e1a13",
+      "url": "https://deadline.com/2019/10/little-shop-of-horrors-review-jonathan-groff-tammy-"
+    },
+    {
+      "t": "2026-03-19T10:29:05.508Z",
+      "event": "bb-session",
+      "session": "a35f9418",
+      "url": "https://nypost.com/2019/10/17/little-shop-of-horrors-review-jonathan-groff-tammy"
     }
   ]
 }
