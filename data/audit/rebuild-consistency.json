@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-19T00:11:56.939Z",
+  "generatedAt": "2026-03-19T15:40:40.092Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -58,6 +58,14 @@
       "detail": "originalRating \"A\" (=90) vs score 63 (source: human-review)"
     },
     {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "good-night-and-good-luck-2025",
+      "outlet": "timeout",
+      "critic": "Adam Feldman",
+      "detail": "originalRating \"4/5\" (=80) vs score 42 (source: assignedScore)"
+    },
+    {
       "type": "designation-score-mismatch",
       "severity": "medium",
       "showId": "impressionism-2009",
@@ -72,14 +80,6 @@
       "outlet": "ew",
       "critic": "Melissa Rose Bernardo",
       "detail": "originalRating \"C-\" (=57) vs score 25 (source: human-review)"
-    },
-    {
-      "type": "designation-score-mismatch",
-      "severity": "medium",
-      "showId": "king-kong-2018",
-      "outlet": "nytimes",
-      "critic": "Ben Brantley",
-      "detail": "Critics_Pick but score=20 (source: llmScore)"
     },
     {
       "type": "rating-score-mismatch",
@@ -231,7 +231,7 @@
       "showId": "war-horse-2011",
       "outlet": "timeout",
       "critic": "David Cote",
-      "detail": "originalRating \"1/5\" (=20) vs score 88 (source: llmScore-thumb-boosted)"
+      "detail": "originalRating \"1/5\" (=20) vs score 88 (source: assignedScore)"
     },
     {
       "type": "rating-score-mismatch",
@@ -239,7 +239,7 @@
       "showId": "wicked-2003",
       "outlet": "timeout",
       "critic": "David Cote",
-      "detail": "originalRating \"1/5\" (=20) vs score 88 (source: llmScore-thumb-boosted)"
+      "detail": "originalRating \"1/5\" (=20) vs score 88 (source: assignedScore)"
     },
     {
       "type": "rating-score-mismatch",
@@ -384,8 +384,8 @@
     {
       "type": "score-clustering",
       "severity": "low",
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "detail": "11/22 reviews (50%) scored exactly 80"
+      "showId": "hamilton-west-end-2021",
+      "detail": "10/20 reviews (50%) scored exactly 100"
     },
     {
       "type": "score-clustering",
@@ -409,19 +409,31 @@
       "type": "score-clustering",
       "severity": "low",
       "showId": "matilda-the-musical-west-end-2021",
-      "detail": "15/26 reviews (58%) scored exactly 100"
+      "detail": "11/20 reviews (55%) scored exactly 100"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
+      "showId": "moulin-rouge-the-musical-west-end-2021",
+      "detail": "8/15 reviews (53%) scored exactly 80"
     },
     {
       "type": "score-clustering",
       "severity": "low",
       "showId": "oh-mary-west-end-2025",
-      "detail": "9/17 reviews (53%) scored exactly 80"
+      "detail": "9/18 reviews (50%) scored exactly 80"
     },
     {
       "type": "score-clustering",
       "severity": "low",
       "showId": "oliver-west-end-2024",
-      "detail": "12/21 reviews (57%) scored exactly 100"
+      "detail": "14/23 reviews (61%) scored exactly 100"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
+      "showId": "operation-mincemeat-west-end-2024",
+      "detail": "9/16 reviews (56%) scored exactly 100"
     },
     {
       "type": "score-clustering",
@@ -445,7 +457,7 @@
       "type": "score-clustering",
       "severity": "low",
       "showId": "the-play-that-goes-wrong-west-end-2021",
-      "detail": "8/15 reviews (53%) scored exactly 80"
+      "detail": "9/17 reviews (53%) scored exactly 80"
     },
     {
       "type": "score-clustering",

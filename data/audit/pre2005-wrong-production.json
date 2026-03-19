@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-19T00:07:54.585Z",
+    "generatedAt": "2026-03-19T15:35:54.474Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 123,
-    "highConfidence": 39,
-    "mediumConfidence": 84,
+    "totalFlagged": 135,
+    "highConfidence": 36,
+    "mediumConfidence": 99,
     "lowConfidence": 0,
-    "reassignable": 60
+    "reassignable": 63
   },
   "results": [
     {
@@ -711,6 +711,51 @@
       "showId": "rent-1996",
       "showTitle": "Rent",
       "showYear": 1996,
+      "file": "ap--jennifer-farrar.json",
+      "outlet": "Associated Press",
+      "criticName": "Jennifer Farrar",
+      "publishDate": "August 17, 2011",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2011 is 15 years after original opening 1996"
+      ],
+      "textSnippet": "  You wouldn't think a musical about struggling artists facing an imminent threat of death could possibly be uplifting. But the new off-Broadway revival of the popular rock musical \"Rent,\" loosely bas"
+    },
+    {
+      "showId": "rent-1996",
+      "showTitle": "Rent",
+      "showYear": 1996,
+      "file": "backstage--suzy-evans.json",
+      "outlet": "Backstage",
+      "criticName": "Suzy Evans",
+      "publishDate": "August 11, 2011",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2011 is 15 years after original opening 1996"
+      ],
+      "textSnippet": "  \"Dec. 24, 9 p.m., Eastern Standard Time\" is a phrase \"Rent\" fans know well. And they have no doubt been yearning to hear those opening words sung again on the New York stage ever since the show's or"
+    },
+    {
+      "showId": "rent-1996",
+      "showTitle": "Rent",
+      "showYear": 1996,
+      "file": "broadway-space--kari-olmon.json",
+      "outlet": "Broadway Space",
+      "criticName": "Kari Olmon",
+      "publishDate": "August 11, 2011",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2011 is 15 years after original opening 1996"
+      ],
+      "textSnippet": "  “How did we get here?” wonders Mark Cohen, the conflicted filmmaker at the heart of Jonathan Larson’s landmark rock opera. It’s a good question, and one many of us have been asking ourselves since R"
+    },
+    {
+      "showId": "rent-1996",
+      "showTitle": "Rent",
+      "showYear": 1996,
       "file": "nytimes--ben-brantley.json",
       "outlet": "The New York Times",
       "criticName": "Ben Brantley",
@@ -913,6 +958,24 @@
       "showId": "cats-1982",
       "showTitle": "Cats",
       "showYear": 1982,
+      "file": "hollywood-reporter--frank-scheck.json",
+      "outlet": "The Hollywood Reporter",
+      "criticName": "Frank Scheck",
+      "publishDate": "July 31st, 2016",
+      "confidence": "high",
+      "suggestedShowId": "cats-2016",
+      "signals": [
+        "revival cast/director match for cats-2016: Andy Huntington Jones, Leona Lewis, Tyler Hanes, Ricky Ubeda, director: Andy Blankenbuehler",
+        "revival text signals: revival, new revival",
+        "modern references: hamilton",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "British pop star Leona Lewis headlines the ensemble of this first Broadway revival of Andrew Lloyd Webber's record-breaking 1981 musical. The world can safely be divided into two camps: people who lov"
+    },
+    {
+      "showId": "cats-1982",
+      "showTitle": "Cats",
+      "showYear": 1982,
       "file": "nydailynews--joe-dziemianowicz.json",
       "outlet": "New York Daily News",
       "criticName": "Joe Dziemianowicz",
@@ -938,6 +1001,21 @@
         "modern references: hamilton"
       ],
       "textSnippet": "Don’t let the haters put kitty litter in your cream. “Cats” now. “Cats” forever. The revival this week of the musical that ran on Broadway for an entire generation (1982 to 2000) triggered the expecte"
+    },
+    {
+      "showId": "cats-1982",
+      "showTitle": "Cats",
+      "showYear": 1982,
+      "file": "nytimes--charles-isherwood.json",
+      "outlet": "The New York Times",
+      "criticName": "Charles Isherwood",
+      "publishDate": "July 31st, 2016",
+      "confidence": "medium",
+      "suggestedShowId": "cats-2016",
+      "signals": [
+        "revival director match for cats-2016: Andy Blankenbuehler"
+      ],
+      "textSnippet": "   “The overriding spirit of the revival appears to be the familiar motto: Don’t mess with success...The most significant nod to the intervening decades and changing tastes is the hiring of Andy Blank"
     },
     {
       "showId": "cats-1982",
@@ -973,6 +1051,21 @@
         "modern references: hamilton"
       ],
       "textSnippet": "NEW YORK — “Cats” is wrapped up almost entirely for me in recollections of my daughter, seven years old at the time, accompanying me to the show and being so riveted that afterwards she memorized the "
+    },
+    {
+      "showId": "cats-1982",
+      "showTitle": "Cats",
+      "showYear": 1982,
+      "file": "wsj--terry-teachout.json",
+      "outlet": "The Wall Street Journal",
+      "criticName": "Terry Teachout",
+      "publishDate": "August 4th, 2016",
+      "confidence": "medium",
+      "suggestedShowId": "cats-2016",
+      "signals": [
+        "revival director match for cats-2016: Andy Blankenbuehler"
+      ],
+      "textSnippet": "   “Most of the musical numbers are ballads that describe the appearance and personality of the characters but suggest no particular stage action...Andy Blankenbuehler has brisked up Gillian Lynne’s s"
     },
     {
       "showId": "the-boys-from-syracuse-2002",
@@ -1051,21 +1144,6 @@
         "year 1992 in text matches revival salome-1992"
       ],
       "textSnippet": "There's not one veil in sight, let alone seven. But for once, Salome's mythic dance is effective in exactly the right way: sexy as all get-out and thoroughly demoralizing.\n\nIt is hard not to identify "
-    },
-    {
-      "showId": "gypsy-2003",
-      "showTitle": "Gypsy",
-      "showYear": 2003,
-      "file": "variety--aramide-tinubu.json",
-      "outlet": "Variety",
-      "criticName": "Aramide Tinubu",
-      "publishDate": "December 19th, 2024",
-      "confidence": "high",
-      "suggestedShowId": "gypsy-2024",
-      "signals": [
-        "revival cast/director match for gypsy-2024: Audra McDonald, Camille A. Brown, Danny Burstein, director: George C. Wolfe"
-      ],
-      "textSnippet": "Sixty-five years after it first premiered on Broadway, “Gypsy\" is still known as one of the greatest theater masterpieces of the 20th century. There have been stellar productions of the play from New "
     },
     {
       "showId": "long-days-journey-into-night-2003",
@@ -1164,21 +1242,20 @@
       "textSnippet": "Upon walking into the new production of \"Once On This Island,\" which opened on Sunday at the Circle in the Square Theatre, you are greeted by trash, old tee-shirts hanging on the walls, a small pool o"
     },
     {
-      "showId": "once-on-this-island-2002",
-      "showTitle": "Once on This Island",
-      "showYear": 2002,
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "outlet": "New York Daily News",
-      "criticName": "Joe Dziemianowicz",
-      "publishDate": "December 3rd, 2017",
-      "confidence": "high",
-      "suggestedShowId": "once-on-this-island-2017",
+      "showId": "hello-dolly-1995",
+      "showTitle": "Hello, Dolly!",
+      "showYear": 1995,
+      "file": "nytimes--jesse-green.json",
+      "outlet": "The New York Times",
+      "criticName": "Jesse Green",
+      "publishDate": "February 22nd, 2018",
+      "confidence": "medium",
+      "suggestedShowId": null,
       "signals": [
-        "revival cast/director match for once-on-this-island-2017: Hailey Kilgore, Lea Salonga, Circle in the Square, director: Michael Arden",
-        "revival text signals: revival, this production",
+        "revival text signals: revival, restaged",
         "no publishDate + revival signals + revivals exist"
       ],
-      "textSnippet": "Broadway’s bewitching revival of Lynn Ahrens and Stephen Flaherty’s “Once on This Island” is filled with beauty.\n\nThe ravaged set, meanwhile, appears to have seen better days. Make no mistake: That’s "
+      "textSnippet": "A dimply new star has joined the cast of “Hello, Dolly!” and he’s delightful — oh wait.\n\nPerhaps you weren’t asking about Charlie Stemp, the replacement Barnaby Tucker in the hit musical revival that "
     },
     {
       "showId": "a-delicate-balance-1996",
@@ -1197,6 +1274,38 @@
       "textSnippet": "Equilibrium never felt so dangerous or desolate\n\nGolden Theatre, New York (runs through Feb. 22)\n\nGlenn Close, John Lithgow, Lindsay Duncan, Bob Balaban, Clare Higgins, Martha Plimpton\n\nThe plentiful "
     },
     {
+      "showId": "a-delicate-balance-1996",
+      "showTitle": "A Delicate Balance",
+      "showYear": 1996,
+      "file": "timeout--david-cote.json",
+      "outlet": "Time Out New York",
+      "criticName": "David Cote",
+      "publishDate": "November 20th, 2014",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, new revival",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "A Delicate Balance. John Golden Theatre (see Broadway). By Edward Albee. Directed by Pam MacKinnon. With Glenn Close, John Lithgow, Lindsay Duncan, Bob Balaban, Clare Higgins, Martha Plimpton. Running"
+    },
+    {
+      "showId": "sunset-boulevard-1994",
+      "showTitle": "Sunset Boulevard",
+      "showYear": 1994,
+      "file": "hollywood-reporter--david-rooney.json",
+      "outlet": "The Hollywood Reporter",
+      "criticName": "David Rooney",
+      "publishDate": "October 20th, 2024",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, this production",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "When Andrew Lloyd Webber's stage adaptation of the 1950 Billy Wilder film Sunset Boulevard premiered in London in 1993 and on Broadway the following year, it was arguably the last gasp of the '80s meg"
+    },
+    {
       "showId": "uncle-vanya-1995",
       "showTitle": "Uncle Vanya",
       "showYear": 1995,
@@ -1211,6 +1320,23 @@
         "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "Still available at a local movie theater is the adventurous Louis Malle film adaptation of Andre Gregory's \"Vanya on 42d Street,\" featuring Wallace Shawn's remarkable performance in the title role. Co"
+    },
+    {
+      "showId": "the-rose-tattoo-1995",
+      "showTitle": "The Rose Tattoo",
+      "showYear": 1995,
+      "file": "chicagotribune--chris-jones.json",
+      "outlet": "Chicago Tribune",
+      "criticName": "Chris Jones",
+      "publishDate": "October 15th, 2019",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, new production",
+        "modern references: social media",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "The suffering Sicilian seamstress at the heart of Tennessee Williams’ 1951 drama “The Rose Tattoo” is no stranger to pain. Her husband gets shot by the Mississippi cops and her voluptuous mourning is "
     },
     {
       "showId": "camelot-1993",
@@ -1291,6 +1417,22 @@
       "textSnippet": "The brand-new Hudson Theatre officially opened Thursday night with a star-studded new production of Steven Sondheim's \"Sunday in the Park With George.\" NY1's Roma Torre filed the following review. Ste"
     },
     {
+      "showId": "the-crucible-1991",
+      "showTitle": "The Crucible",
+      "showYear": 1991,
+      "file": "vulture--jesse-green.json",
+      "outlet": "Vulture",
+      "criticName": "Jesse Green",
+      "publishDate": "March 31st, 2016",
+      "confidence": "medium",
+      "suggestedShowId": "the-crucible-2016",
+      "signals": [
+        "year 2016 in text matches revival the-crucible-2016",
+        "modern references: twitter, netflix"
+      ],
+      "textSnippet": "Search\n \n\n \n \n \n\n \n\n \n \n\n \n\n \n \n \n\n \n\n \n\n \n \n\n \n \n\n \n \n \n \n \n \n \n \n \n \n \n\n \n\n \n \n \n \n\n \n \n \n \n \n \n \n \n \n \n Photo:\n \n Jan Versweyveld\n \n \n \n\n \n\n \n According to one survey of high-school lit teachers, T"
+    },
+    {
       "showId": "gypsy-1989",
       "showTitle": "Gypsy",
       "showYear": 1989,
@@ -1308,21 +1450,6 @@
       "textSnippet": "If someone asked me to name the best Broadway musical, I'd gladly equivocate on any side of a debate embracing ''Guys and Dolls,'' ''My Fair Lady,'' ''Carousel,'' ''Porgy and Bess'' and - well, you kn"
     },
     {
-      "showId": "gypsy-1989",
-      "showTitle": "Gypsy",
-      "showYear": 1989,
-      "file": "variety--aramide-tinubu.json",
-      "outlet": "Variety",
-      "criticName": "Aramide Tinubu",
-      "publishDate": "December 19th, 2024",
-      "confidence": "high",
-      "suggestedShowId": "gypsy-2024",
-      "signals": [
-        "revival cast/director match for gypsy-2024: Audra McDonald, Camille A. Brown, Danny Burstein, director: George C. Wolfe"
-      ],
-      "textSnippet": "Sixty-five years after it first premiered on Broadway, “Gypsy” is still known as one of the greatest theater masterpieces of the 20th century. There have been stellar productions of the play from New "
-    },
-    {
       "showId": "the-gin-game-1997",
       "showTitle": "The Gin Game",
       "showYear": 1997,
@@ -1338,6 +1465,21 @@
         "year 1977 in text matches revival the-gin-game-1977"
       ],
       "textSnippet": "Published: 2015-10-14 22:01:58 \n Updated: 2015-10-14 22:01:58\n\nBy MARK KENNEDY, AP Drama Writer\n\nNEW YORK — One thing you should probably not bet against at \"The Gin Game\" on Broadway is the little ol"
+    },
+    {
+      "showId": "burn-this-1987",
+      "showTitle": "Burn This",
+      "showYear": 1987,
+      "file": "timeout--adam-feldman.json",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "publishDate": "April 16th, 2019",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "modern references: masks"
+      ],
+      "textSnippet": "Adam Driver offers Pale fire in the Broadway revival of Lanford Wilson's drama.\n\nPale (Adam Driver) makes his entrance crashing and burning. It’s the middle of the night, and he’s never met Anna (Keri"
     },
     {
       "showId": "cabaret-1987",
@@ -1436,6 +1578,21 @@
       "textSnippet": "Producers Scott Rudin, Barry Diller and David Geffen on Wednesday announced complete casting for the upcoming Broadway revival of West Side Story, a radical reimagining for the 21st century to be dire"
     },
     {
+      "showId": "children-of-a-lesser-god-1980",
+      "showTitle": "Children of a Lesser God",
+      "showYear": 1980,
+      "file": "hollywood-reporter--david-rooney.json",
+      "outlet": "The Hollywood Reporter",
+      "criticName": "David Rooney",
+      "publishDate": "April 11th, 2018",
+      "confidence": "medium",
+      "suggestedShowId": "children-of-a-lesser-god-2018",
+      "signals": [
+        "year 2018 in text matches revival children-of-a-lesser-god-2018"
+      ],
+      "textSnippet": "5:00 PM PDT 4/11/2018\n\nby\n\nDavid Rooney\n\nIf there's a more indigestible lump of bouncy 1970s pop schmaltz than Paul McCartney's \"Silly Love Songs,\" right now it escapes me. It's one of a handful of in"
+    },
+    {
       "showId": "sweeney-todd-1979",
       "showTitle": "Sweeney Todd",
       "showYear": 1979,
@@ -1518,21 +1675,6 @@
         "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "https://www.nytimes.com/1976/03/26/archives/my-fair-lady-is-restored-to-broadway-in-fine-form.htmlShare full articleAdvertisement\n\nIt had to be better and—by and large and by George!—it is. The restor"
-    },
-    {
-      "showId": "gypsy-1974",
-      "showTitle": "Gypsy",
-      "showYear": 1974,
-      "file": "variety--aramide-tinubu.json",
-      "outlet": "Variety",
-      "criticName": "Aramide Tinubu",
-      "publishDate": "December 19th, 2024",
-      "confidence": "high",
-      "suggestedShowId": "gypsy-2024",
-      "signals": [
-        "revival cast/director match for gypsy-2024: Camille A. Brown, Danny Burstein"
-      ],
-      "textSnippet": "Based on the memoirs of striptease artist Gypsy Rose Lee, the play begins in the 1920s in Seattle. A clamor of kids rehearse for Uncle Jocko’s (Jacob Ming-Trent) kid-focused vaudeville act. Baby June "
     },
     {
       "showId": "a-streetcar-named-desire-1973",
@@ -1756,6 +1898,37 @@
       "textSnippet": "Judging by the ubiquitous ads, Denzel Washington is the star attraction of “A Raisin in the Sun,” which has just opened for a 14-week run at the Barrymore Theatre. Perhaps so, but it’s the performance"
     },
     {
+      "showId": "betrayal-2000",
+      "showTitle": "Betrayal",
+      "showYear": 2000,
+      "file": "hollywood-reporter--david-rooney.json",
+      "outlet": "The Hollywood Reporter",
+      "criticName": "David Rooney",
+      "publishDate": "September 5th, 2019",
+      "confidence": "medium",
+      "suggestedShowId": "betrayal-2019",
+      "signals": [
+        "year 2019 in text matches revival betrayal-2019",
+        "modern references: twitter, netflix"
+      ],
+      "textSnippet": "6:00 PM PDT 9/5/2019\n\nby\n\nDavid Rooney\n \n\nFACEBOOK\n\nTWITTER\n\nEMAIL ME\n\nReverse chronology has become a familiar narrative device in film, but when Harold Pinter employed it in 1978 in his blisteringly"
+    },
+    {
+      "showId": "the-music-man-2000",
+      "showTitle": "The Music Man",
+      "showYear": 2000,
+      "file": "washpost--peter-marks.json",
+      "outlet": "The Washington Post",
+      "criticName": "Peter Marks",
+      "publishDate": "February 11th, 2022",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "modern references: pandemic"
+      ],
+      "textSnippet": "NEW YORK — Professor Harold Hill is the ultimate phony — and Hugh Jackman, unfortunately, isn’t playing one. It’s a pivotal characteristic absent from the long awaited, and disappointingly miscalculat"
+    },
+    {
       "showId": "cyrano-de-bergerac-1984",
       "showTitle": "Cyrano de Bergerac",
       "showYear": 1984,
@@ -1947,6 +2120,23 @@
         "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "NEW YORK — Could the timing be any better for a Broadway revival of Annie? The uplifting musical sells not only the archetypal rags-to-riches fantasy but promotes belief in the power of government to "
+    },
+    {
+      "showId": "she-loves-me-1994",
+      "showTitle": "She Loves Me",
+      "showYear": 1993,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "March 17th, 2016",
+      "confidence": "medium",
+      "suggestedShowId": "she-loves-me-2016",
+      "signals": [
+        "revival text signals: revival, revived, new production",
+        "year 2016 in text matches revival she-loves-me-2016",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "Sometimes vanilla ice cream can taste like sweet deliverance. Such is the discovery made by one Amalia Balash in the 1963 musical “She Loves Me” — which has been rapturously revived in a new productio"
     }
   ]
 }
