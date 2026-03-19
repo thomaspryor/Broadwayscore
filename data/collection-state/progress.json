@@ -244,7 +244,16 @@
     "the-unknown-off-broadway-2026/theatermania--zachary-stewart.json",
     "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
     "the-unknown-off-broadway-2026/timeout--adam-feldman.json",
-    "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/timeout--andrzej-lukowski.json"
+    "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/timeout--andrzej-lukowski.json",
+    "titanique-west-end-2024/timeout--andrzej-lukowski.json",
+    "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/guardian--kate-wyver.json",
+    "wicked-2003/theatermania--barbara-siegelscott-siegel.json",
+    "wicked-2003/theatermania--david-gordon.json",
+    "wicked-2003/wsj--terry-teachout.json",
+    "you-got-older-off-broadway-2026/theatermania--zachary-stewart.json",
+    "you-got-older-off-broadway-2026/timeout--unknown.json",
+    "youre-a-good-man-charlie-brown-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
@@ -279,7 +288,8 @@
     "ragtime-2025/wsj--charles-isherwood.json",
     "sweetmeats-west-end-2026/guardian--anya-ryan.json",
     "the-lion-king-1997/timeout--adam-feldman.json",
-    "the-reservoir-off-broadway-2026/broadwaynews--nicole-rosky.json"
+    "the-reservoir-off-broadway-2026/broadwaynews--nicole-rosky.json",
+    "two-strangers-bway-2025/guardian--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -443,7 +453,12 @@
       "the-producers-west-end-2025/timeout--only-andrzej-lukowski.json",
       "the-reservoir-off-broadway-2026/theatermania--zachary-stewart.json",
       "the-reservoir-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
-      "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/timeout--andrzej-lukowski.json"
+      "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/timeout--andrzej-lukowski.json",
+      "titanique-west-end-2024/timeout--andrzej-lukowski.json",
+      "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "wicked-2003/theatermania--barbara-siegelscott-siegel.json",
+      "you-got-older-off-broadway-2026/timeout--unknown.json",
+      "youre-a-good-man-charlie-brown-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
@@ -557,7 +572,8 @@
       "the-holy-rosenbergs-west-end-2026/guardian--david-jays.json",
       "the-phantom-of-the-opera-off-west-end-2021/guardian--michael-billington.json",
       "the-phantom-of-the-opera-off-west-end-2021/timeout-london--andrzej-lukowski.json",
-      "the-unknown-off-broadway-2026/timeout--adam-feldman.json"
+      "the-unknown-off-broadway-2026/timeout--adam-feldman.json",
+      "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/guardian--kate-wyver.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -585,11 +601,14 @@
       "the-amazing-sex-life-of-rabbits-off-broadway-2026/theatermania--pete-hempstead.json",
       "the-lion-king-west-end-2021/timeout-london--ben-walters.json",
       "the-play-that-goes-wrong-west-end-2021/timeout-london--unknown.json",
-      "the-unknown-off-broadway-2026/theatermania--zachary-stewart.json"
+      "the-unknown-off-broadway-2026/theatermania--zachary-stewart.json",
+      "wicked-2003/theatermania--david-gordon.json",
+      "wicked-2003/wsj--terry-teachout.json",
+      "you-got-older-off-broadway-2026/theatermania--zachary-stewart.json"
     ]
   },
   "startTime": "2026-03-19T10:02:04.711Z",
-  "lastProcessed": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/timeout--andrzej-lukowski.json",
+  "lastProcessed": "youre-a-good-man-charlie-brown-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
   "log": [
     {
       "t": "2026-03-19T10:04:36.520Z",
@@ -792,6 +811,17 @@
     },
     {
       "t": "2026-03-19T13:04:31.669Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-19T13:20:19.364Z",
+      "event": "bb-session",
+      "session": "cf3fdee4",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-03-19T13:20:22.206Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
