@@ -459,7 +459,8 @@ async function fetchShowsFromOfficialLondonTheatre() {
         title,
         venue,
         slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
-        openingDate: data.startDate || null,
+        openingDate: null,
+        previewsStartDate: data.startDate || null,
         closingDate: endDate,
         category: 'west-end',
         description: (data.description || '').substring(0, 500),
@@ -568,7 +569,8 @@ async function fetchShowsFromLondonTheatre() {
           title,
           venue,
           slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
-          openingDate: data.startDate || null,
+          openingDate: null,
+          previewsStartDate: data.startDate || null,
           closingDate: endDate,
           category,
           description: (data.description || '').substring(0, 500),
@@ -699,11 +701,13 @@ async function fetchSingleVenuePage(venue) {
           if (shouldExcludeVenueShow(title)) continue;
 
           seen.add(title.toLowerCase());
+          // OLT startDate is first performance, not press night — same as TodayTix
           shows.push({
             title,
             venue: venue.name,
             slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
-            openingDate: item.startDate || null,
+            openingDate: null,
+            previewsStartDate: item.startDate || null,
             closingDate: item.endDate === 'null' ? null : item.endDate || null,
             category: isWestEndVenue(venue.name) ? 'west-end' : 'off-west-end',
             description: (item.description || '').substring(0, 500),
