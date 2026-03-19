@@ -11,7 +11,11 @@
  * Requires: GH_TOKEN, DISCORD_WEBHOOK_ALERTS
  */
 
+const fs = require('fs');
+const path = require('path');
 const { sendAlert } = require('./lib/discord-notify.js');
+
+const HISTORY_PATH = path.join(__dirname, '..', 'data', 'audit', 'digest-history.json');
 
 // These workflows send real-time critical alerts — skip them in the digest
 const CRITICAL_WORKFLOWS = new Set([
@@ -81,8 +85,22 @@ async function main() {
     return !CRITICAL_WORKFLOWS.has(file) && !IGNORED_WORKFLOWS.has(file);
   });
 
+  // Log every run to history for signal-to-noise evaluation
+  const historyEntry = {
+    timestamp: new Date().toISOString(),
+    totalFailures: allFailures.length,
+    criticalFiltered: allFailures.length - digestFailures.length,
+    digestFailures: digestFailures.length,
+    workflows: {},
+  };
+  for (const run of digestFailures) {
+    const name = run.name || extractWorkflowFile(run);
+    historyEntry.workflows[name] = (historyEntry.workflows[name] || 0) + 1;
+  }
+  saveHistory(historyEntry);
+
   if (digestFailures.length === 0) {
-    console.log('[Digest] No non-critical failures to report');
+    console.log('[Digest] No non-critical failures to report — logged quiet day');
     return;
   }
 
@@ -128,6 +146,19 @@ function getTimeAgo(date) {
   if (hours < 1) return '<1h ago';
   if (hours === 1) return '1h ago';
   return `${hours}h ago`;
+}
+
+function saveHistory(entry) {
+  let history = [];
+  try {
+    history = JSON.parse(fs.readFileSync(HISTORY_PATH, 'utf8'));
+  } catch {}
+  history.push(entry);
+  // Keep last 30 days
+  if (history.length > 30) history = history.slice(-30);
+  fs.mkdirSync(path.dirname(HISTORY_PATH), { recursive: true });
+  fs.writeFileSync(HISTORY_PATH, JSON.stringify(history, null, 2) + '\n');
+  console.log(`[Digest] Logged to digest-history.json (${history.length} entries)`);
 }
 
 main().catch(err => {
