@@ -602,28 +602,46 @@ async function _buildTSIndex(weShows) {
       // Extract slug from URL
       const slugMatch = url.match(/review-round-ups\/(.+?)(?:\?|$)/);
       if (!slugMatch) continue;
-      const slug = slugMatch[1].replace(/-review-round-up$/, '');
+      const rawSlug = slugMatch[1].replace(/-review-round-up$/, '');
 
-      // Try matchTitleToShow with the slug converted to title
-      const titleFromSlug = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-      let match = matchTitleToShow(titleFromSlug, weShows, { market: 'west-end' });
+      // Clean slug: strip performer/director/venue suffixes for better matching
+      const cleanedSlugs = [
+        rawSlug,
+        rawSlug.replace(/-starring-.*$/, ''),
+        rawSlug.replace(/-at-the-.*$/, ''),
+        rawSlug.replace(/-at-.*$/, ''),
+        rawSlug.replace(/-directed-by-.*$/, ''),
+        rawSlug.replace(/-by-.*$/, ''),
+        // Strip leading performer name: "cynthia-erivo-in-dracula" → "dracula"
+        rawSlug.replace(/^[a-z-]+-in-/, ''),
+        // Strip composer: "andrew-lloyd-webbers-starlight-express" → "starlight-express"
+        rawSlug.replace(/^[a-z-]+s-/, ''),
+      ];
+      const uniqueSlugs = [...new Set(cleanedSlugs)];
 
-      // Fallback: check if any show title words appear in slug
-      if (!match || !match.show) {
+      let bestMatch = null;
+      for (const slug of uniqueSlugs) {
+        const titleFromSlug = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        const match = matchTitleToShow(titleFromSlug, weShows, { market: 'west-end' });
+        if (match && match.show) { bestMatch = match; break; }
+      }
+
+      // Fallback: check if any show title words appear in raw slug
+      if (!bestMatch) {
         for (const show of weShows) {
           const showWords = show.title.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/)
             .filter(w => w.length > 2);
-          const slugLower = slug.toLowerCase();
+          const slugLower = rawSlug.toLowerCase();
           const matchCount = showWords.filter(w => slugLower.includes(w)).length;
           if (matchCount >= Math.min(2, showWords.length) && matchCount > 0) {
-            match = { show };
+            bestMatch = { show };
             break;
           }
         }
       }
 
-      if (match && match.show && !_tsIndex.has(match.show.id)) {
-        _tsIndex.set(match.show.id, url);
+      if (bestMatch && bestMatch.show && !_tsIndex.has(bestMatch.show.id)) {
+        _tsIndex.set(bestMatch.show.id, url);
       }
     }
 
@@ -761,38 +779,39 @@ async function sweepTheStage(show) {
   // Replace urls reference for the rest of the function
   const urlsToTry = uniqueUrls;
 
-  // Try BrowserBase if available (The Stage is JS-rendered + paywalled)
-  if (process.env.BROWSERBASE_API_KEY) {
-    for (const url of urlsToTry) {
-      // Retry once on session death
-      for (let attempt = 0; attempt < 2; attempt++) {
-        try {
-          const html = await getStagePageViaBrowserBase(url);
-          if (!html || html.length < 2000) break; // URL is bad, try next URL
-          if (html.includes('Page not found') || html.includes('404 -')) break;
+  // Try BrowserBase — ONLY for index-discovered URLs (saves BB sessions)
+  // TS is paywalled so SB render can't help; BB with login is the only live path.
+  // Constructed/SERP URLs waste BB page loads (they usually 404).
+  if (process.env.BROWSERBASE_API_KEY && indexUrl) {
+    // Only try the index URL via BB (known-good from listing page)
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const html = await getStagePageViaBrowserBase(indexUrl);
+        if (!html || html.length < 2000) break;
+        if (html.includes('Page not found') || html.includes('404 -')) break;
 
-          const reviews = extractStageReviews(html, show.id);
-          if (reviews.length > 0) {
-            if (!DRY_RUN) {
-              if (!fs.existsSync(archDir)) fs.mkdirSync(archDir, { recursive: true });
-              fs.writeFileSync(archivePath, html);
-            }
-            return reviews;
+        const reviews = extractStageReviews(html, show.id);
+        if (reviews.length > 0) {
+          if (!DRY_RUN) {
+            if (!fs.existsSync(archDir)) fs.mkdirSync(archDir, { recursive: true });
+            fs.writeFileSync(archivePath, html);
           }
-          break; // Page fetched but no reviews — try next URL
-        } catch (err) {
-          console.log(`    TS BrowserBase error (attempt ${attempt + 1}): ${err.message}`);
-          if (attempt === 0 && !_bbPage) {
-            console.log('    [BB] Retrying with new session...');
-            continue; // Session was reset in getStagePageViaBrowserBase, retry
-          }
-          break;
+          return reviews;
         }
+        break;
+      } catch (err) {
+        console.log(`    TS BrowserBase error (attempt ${attempt + 1}): ${err.message.substring(0, 60)}`);
+        if (attempt === 0 && !_bbPage) {
+          console.log('    [BB] Retrying with new session...');
+          continue;
+        }
+        break;
       }
     }
   }
 
-  // Fallback: ScrapingBee render (when BrowserBase unavailable or failed)
+  // Fallback: ScrapingBee render for ALL URL candidates
+  // Works for non-paywalled roundup pages (some TS roundups are free)
   if (SB_KEY) {
     for (const url of urlsToTry) {
       console.log(`    [TS] Trying ScrapingBee render: ${url.split('/review-round-ups/')[1] || url}`);
