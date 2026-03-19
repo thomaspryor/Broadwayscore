@@ -105,7 +105,17 @@
     "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
     "an-ark-off-broadway-2026/nytg--kyle-turner.json",
     "back-to-the-future-west-end-2021/variety--david-benedict.json",
-    "bigfoot-off-broadway-2026/nytg--caroline-cao.json"
+    "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+    "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+    "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+    "chess-2025/hollywood-reporter--angie-han.json",
+    "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nytg--allison-considine.json",
+    "death-becomes-her-2024/newyorker--helen-shaw.json",
+    "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
+    "hadestown-2019/hollywood-reporter--david-rooney.json"
   ],
   "failed": [
     "summerfolk-west-end-2026/broadwayworld--gary-naylor.json",
@@ -202,7 +212,13 @@
       "witness-for-the-prosecution-west-end-2022/standard--unknown.json",
       "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
       "an-ark-off-broadway-2026/nytg--kyle-turner.json",
-      "bigfoot-off-broadway-2026/nytg--caroline-cao.json"
+      "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+      "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+      "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+      "cold-war-choir-practice-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "data-off-broadway-2026/nytg--allison-considine.json",
+      "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [
       "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
@@ -212,7 +228,12 @@
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
       "back-to-the-future-west-end-2021/variety--david-benedict.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
+      "chess-2025/hollywood-reporter--angie-han.json",
+      "data/review-texts/hadestown-2019/hollywood-reporter--david-rooney.json",
+      "hadestown-2019/hollywood-reporter--david-rooney.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "my-neighbour-totoro-west-end-2025/observer--susannah-clapp.json",
@@ -250,11 +271,13 @@
       "oliver-west-end-2024/times-uk--clive-davis.json",
       "paranormal-activity-west-end-2025/broadwayworld--franco-milazzo.json",
       "romeo-and-juliet-west-end-2026/telegraph--nick-ferris.json",
-      "romeo-and-juliet-west-end-2026/times-uk--unknown.json"
+      "romeo-and-juliet-west-end-2026/times-uk--unknown.json",
+      "death-becomes-her-2024/newyorker--helen-shaw.json",
+      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json"
     ]
   },
   "startTime": "2026-03-19T04:25:54.494Z",
-  "lastProcessed": "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+  "lastProcessed": "hadestown-2019/hollywood-reporter--david-rooney.json",
   "log": [
     {
       "t": "2026-03-19T04:53:33.445Z",
@@ -299,6 +322,28 @@
       "t": "2026-03-19T05:01:51.630Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-19T05:04:00.683Z",
+      "event": "bb-session",
+      "session": "248e3aaa",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-19T05:04:02.166Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-19T05:05:02.560Z",
+      "event": "bb-session",
+      "session": "09567d69",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-19T05:05:04.038Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
