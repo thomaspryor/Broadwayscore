@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-19T04:56:35.936Z",
-  "processed": 93,
-  "failed": 7,
-  "successRate": "93.0%",
+  "updatedAt": "2026-03-19T05:00:09.863Z",
+  "processed": 98,
+  "failed": 12,
+  "successRate": "89.1%",
   "tierBreakdown": {
-    "playwright": 65,
+    "playwright": 70,
     "amp": 4,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 9,
     "brightdata": 0,
-    "archiveToday": 2,
+    "archiveToday": 3,
     "archive": 18
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-03-19T04:53:33.445Z",
@@ -34,6 +34,17 @@
     },
     {
       "t": "2026-03-19T04:56:09.423Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-19T04:58:56.073Z",
+      "event": "bb-session",
+      "session": "2b2240d6",
+      "url": "https://www.thestage.co.uk/reviews/into-the-woods-review-bridge-theatre-london-s"
+    },
+    {
+      "t": "2026-03-19T04:58:57.695Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
