@@ -335,16 +335,53 @@ let _trIndex = null; // Map<showId, url>
 /**
  * Build a full index of theatre.reviews roundup URLs by paginating the
  * category archive and matching each URL to our shows.
+ * Uses ScrapingBee render for pages that CleanTalk blocks (pages 3+).
  */
 async function _buildTRIndex(weShows) {
   if (_trIndex) return _trIndex;
   _trIndex = new Map();
 
   console.log('\n  [TR] Building full theatre.reviews index...');
-  const { discoverRoundupUrls, extractTitleFromSlug } = require('./scrape-theatre-reviews');
+  const { extractTitleFromSlug } = require('./scrape-theatre-reviews');
+  const cheerio = require('cheerio');
 
-  // Paginate all category pages to get every roundup URL
-  const allUrls = await discoverRoundupUrls();
+  // Paginate all category pages — nodeFetch for pages 1-2, SB render for 3+
+  const MAX_PAGES = 30;
+  const seen = new Set();
+  const allUrls = [];
+
+  for (let page = 1; page <= MAX_PAGES; page++) {
+    const pageUrl = page === 1
+      ? 'https://theatre.reviews/category/reviews-roundup/'
+      : `https://theatre.reviews/category/reviews-roundup/page/${page}/`;
+
+    let html = await nodeFetch(pageUrl);
+
+    // ScrapingBee fallback for CleanTalk-blocked pages (typically page 3+)
+    if (!html && SB_KEY) {
+      html = await scrapingBeeRender(pageUrl);
+    }
+    if (!html) break; // no more pages
+
+    const $ = cheerio.load(html);
+    let found = 0;
+    $('a[href*="/reviews-roundup/"]').each((_, el) => {
+      const href = $(el).attr('href');
+      if (!href || !href.includes('/reviews-roundup/')) return;
+      if (href.match(/\/category\//) || href.match(/\/page\//)) return;
+      const full = href.startsWith('http') ? href : `https://theatre.reviews${href}`;
+      if (!seen.has(full)) {
+        seen.add(full);
+        allUrls.push(full);
+        found++;
+      }
+    });
+
+    console.log(`  [TR] Page ${page}: ${found} new URLs (${allUrls.length} total)`);
+    if (found === 0) break;
+    await sleep(1500);
+  }
+
   console.log(`  [TR] ${allUrls.length} roundup URLs discovered`);
 
   // Match each URL to our shows — use title-contains as fallback
@@ -472,6 +509,132 @@ async function sweepTheatreReviews(show) {
   return [];
 }
 
+// ─── The Stage index (BrowserBase listing page discovery) ─────────────────────
+
+let _tsIndex = null; // Map<showId, url>
+
+/**
+ * Build an index of The Stage roundup URLs by scraping their listing page
+ * via BrowserBase. This discovers actual URLs (with performer names, venue
+ * details etc.) that URL construction can't predict.
+ */
+async function _buildTSIndex(weShows) {
+  if (_tsIndex) return _tsIndex;
+  _tsIndex = new Map();
+
+  // Need BrowserBase — The Stage listing is JS-rendered + paywalled
+  if (!process.env.BROWSERBASE_API_KEY) {
+    console.log('  [TS] No BrowserBase — skipping listing page discovery');
+    return _tsIndex;
+  }
+
+  console.log('\n  [TS] Building The Stage index via BrowserBase...');
+
+  try {
+    // Use the shared BB session (will create one if needed)
+    // Navigate to the listing page
+    const listingUrl = 'https://www.thestage.co.uk/review-round-ups/review-round-ups';
+    const html = await getStagePageViaBrowserBase(listingUrl);
+    if (!html || html.length < 5000) {
+      console.log('  [TS] Failed to load listing page');
+      return _tsIndex;
+    }
+
+    // Extract roundup links
+    const cheerio = require('cheerio');
+    const $ = cheerio.load(html);
+    const urls = [];
+    const seen = new Set();
+
+    $('a[href*="/review-round-ups/"]').each((_, el) => {
+      const href = $(el).attr('href');
+      if (!href) return;
+      const full = href.startsWith('http') ? href : `https://www.thestage.co.uk${href}`;
+      if (!full.includes('-review-round-up')) return;
+      if (full.includes('/review-round-ups/review-round-ups')) return;
+      if (!seen.has(full)) {
+        seen.add(full);
+        urls.push(full);
+      }
+    });
+
+    console.log(`  [TS] Found ${urls.length} roundup URLs on listing page`);
+
+    // Try "Load More" by fetching additional pages if the listing is paginated
+    // The Stage uses client-side pagination, so we need BB to click through
+    if (_bbPage && urls.length > 0) {
+      for (let loadMore = 0; loadMore < 15; loadMore++) {
+        try {
+          const btn = await _bbPage.$('button:has-text("Load More"), a:has-text("Load More"), button:has-text("Show More")');
+          if (!btn) break;
+          const visible = await btn.isVisible().catch(() => false);
+          if (!visible) break;
+
+          await btn.click();
+          await _bbPage.waitForTimeout(3000);
+
+          const newLinks = await _bbPage.$$eval('a[href*="/review-round-ups/"]', (anchors) => {
+            return anchors.map(a => a.href).filter(h =>
+              h.includes('-review-round-up') &&
+              !h.includes('/review-round-ups/review-round-ups')
+            );
+          });
+
+          let added = 0;
+          for (const href of newLinks) {
+            if (!seen.has(href)) {
+              seen.add(href);
+              urls.push(href);
+              added++;
+            }
+          }
+          console.log(`  [TS] Load more #${loadMore + 1}: ${added} new (${urls.length} total)`);
+          if (added === 0) break;
+        } catch (err) {
+          console.log(`  [TS] Load more error: ${err.message.substring(0, 60)}`);
+          break;
+        }
+      }
+    }
+
+    // Match URLs to our shows
+    for (const url of urls) {
+      // Extract slug from URL
+      const slugMatch = url.match(/review-round-ups\/(.+?)(?:\?|$)/);
+      if (!slugMatch) continue;
+      const slug = slugMatch[1].replace(/-review-round-up$/, '');
+
+      // Try matchTitleToShow with the slug converted to title
+      const titleFromSlug = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+      let match = matchTitleToShow(titleFromSlug, weShows, { market: 'west-end' });
+
+      // Fallback: check if any show title words appear in slug
+      if (!match || !match.show) {
+        for (const show of weShows) {
+          const showWords = show.title.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/)
+            .filter(w => w.length > 2);
+          const slugLower = slug.toLowerCase();
+          const matchCount = showWords.filter(w => slugLower.includes(w)).length;
+          if (matchCount >= Math.min(2, showWords.length) && matchCount > 0) {
+            match = { show };
+            break;
+          }
+        }
+      }
+
+      if (match && match.show && !_tsIndex.has(match.show.id)) {
+        _tsIndex.set(match.show.id, url);
+      }
+    }
+
+    console.log(`  [TS] Matched ${_tsIndex.size} shows to roundup URLs\n`);
+  } catch (err) {
+    console.log(`  [TS] Index build error: ${err.message.substring(0, 80)}`);
+  }
+
+  return _tsIndex;
+}
+
 // ─── Stagedoor (archive only — Cloudflare blocks fetch, SERP can't help) ─────
 
 async function sweepStagedoor(show) {
@@ -566,27 +729,41 @@ async function sweepTheStage(show) {
   const archDir = path.join(ARCHIVE_BASE, 'thestage-roundups');
   const archivePath = path.join(archDir, `${show.id}.html`);
 
-  // Build URL candidates
+  // Build URL candidates — index URL first (most reliable), then constructed, then SERP
+  const urls = [];
+
+  // Check the TS index for a discovered URL (from listing page)
+  const indexUrl = _tsIndex ? _tsIndex.get(show.id) : null;
+  if (indexUrl) urls.push(indexUrl);
+
+  // Constructed URL candidates
   const titleSlug = show.title.toLowerCase()
     .replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-').replace(/^-|-$/g, '');
-  const urls = [`https://www.thestage.co.uk/review-round-ups/${titleSlug}-review-round-up`];
+  urls.push(`https://www.thestage.co.uk/review-round-ups/${titleSlug}-review-round-up`);
   if (show.venue) {
     const venueSlug = show.venue.toLowerCase()
       .replace(/\s*theatre\s*/gi, '').replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
     if (venueSlug) {
-      urls.unshift(`https://www.thestage.co.uk/review-round-ups/${titleSlug}-at-the-${venueSlug}-review-round-up`);
+      urls.push(`https://www.thestage.co.uk/review-round-ups/${titleSlug}-at-the-${venueSlug}-review-round-up`);
     }
   }
 
-  // SERP discovery: find the actual URL if URL construction missed
-  const serpUrl = await serpSearch('thestage.co.uk/review-round-ups', show.title);
-  if (serpUrl && serpUrl.includes('review-round-up') && !urls.includes(serpUrl)) {
-    urls.push(serpUrl);
+  // SERP discovery: find the actual URL if index + construction missed
+  if (!indexUrl) {
+    const serpUrl = await serpSearch('thestage.co.uk/review-round-ups', show.title);
+    if (serpUrl && serpUrl.includes('review-round-up') && !urls.includes(serpUrl)) {
+      urls.push(serpUrl);
+    }
   }
+
+  // Deduplicate
+  const uniqueUrls = [...new Set(urls)];
+  // Replace urls reference for the rest of the function
+  const urlsToTry = uniqueUrls;
 
   // Try BrowserBase if available (The Stage is JS-rendered + paywalled)
   if (process.env.BROWSERBASE_API_KEY) {
-    for (const url of urls) {
+    for (const url of urlsToTry) {
       // Retry once on session death
       for (let attempt = 0; attempt < 2; attempt++) {
         try {
@@ -617,7 +794,7 @@ async function sweepTheStage(show) {
 
   // Fallback: ScrapingBee render (when BrowserBase unavailable or failed)
   if (SB_KEY) {
-    for (const url of urls) {
+    for (const url of urlsToTry) {
       console.log(`    [TS] Trying ScrapingBee render: ${url.split('/review-round-ups/')[1] || url}`);
       const html = await scrapingBeeRender(url);
       if (!html || html.length < 2000) continue;
@@ -669,6 +846,9 @@ async function main() {
   // Pre-build full indexes for aggregators that have category/listing pages
   if (AGGREGATORS.includes('tr')) {
     await _buildTRIndex(weShows);
+  }
+  if (AGGREGATORS.includes('ts')) {
+    await _buildTSIndex(weShows);
   }
 
   for (let i = 0; i < weShows.length; i++) {
