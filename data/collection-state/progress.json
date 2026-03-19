@@ -138,7 +138,17 @@
     "cold-war-choir-practice-off-broadway-2026/nysr--david-finkle.json",
     "cold-war-choir-practice-off-broadway-2026/nysr--frank-scheck.json",
     "cold-war-choir-practice-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "data-off-broadway-2026/nysr--david-finkle.json"
+    "data-off-broadway-2026/nysr--david-finkle.json",
+    "every-brilliant-thing-2026/nytg--austin-fimmano.json",
+    "every-brilliant-thing-2026/nytimes--adam-feldman.json",
+    "hadestown-west-end-2024/variety--marilyn-stasio.json",
+    "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
+    "evening-all-afternoon-west-end-2026/guardian--emma-john.json",
+    "evening-all-afternoon-west-end-2026/timeout--andrzej-lukowski.json",
+    "hadestown-west-end-2024/observer--david-cote.json",
+    "just-in-time-2025/timeout--adam-feldman.json",
+    "magic-mike-live-west-end-2021/guardian--arifa-akbar.json",
+    "my-neighbour-totoro-west-end-2025/timeout--tom-wicker.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
@@ -246,7 +256,12 @@
       "cold-war-choir-practice-off-broadway-2026/nysr--david-finkle.json",
       "cold-war-choir-practice-off-broadway-2026/nysr--frank-scheck.json",
       "cold-war-choir-practice-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "data-off-broadway-2026/nysr--david-finkle.json"
+      "data-off-broadway-2026/nysr--david-finkle.json",
+      "every-brilliant-thing-2026/nytg--austin-fimmano.json",
+      "every-brilliant-thing-2026/nytimes--adam-feldman.json",
+      "evening-all-afternoon-west-end-2026/guardian--emma-john.json",
+      "evening-all-afternoon-west-end-2026/timeout--andrzej-lukowski.json",
+      "just-in-time-2025/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
@@ -254,7 +269,9 @@
       "data/review-texts/cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json",
       "cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json",
       "data/review-texts/the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
-      "the-unknown-off-broadway-2026/thewrap--robert-hofler.json"
+      "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
+      "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
+      "hadestown-west-end-2024/variety--marilyn-stasio.json"
     ],
     "browserbase": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
@@ -262,7 +279,9 @@
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
       "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
-      "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json"
+      "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
+      "data/review-texts/hadestown-west-end-2024/observer--david-cote.json",
+      "hadestown-west-end-2024/observer--david-cote.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -290,7 +309,9 @@
       "the-unknown-off-broadway-2026/timeout--adam-feldman.json",
       "heathers-the-musical-off-broadway-2025/cititour--brian-scott-lipton.json",
       "heathers-the-musical-off-broadway-2025/theatrely--kobi-kassal.json",
-      "sexual-misconduct-of-the-middle-classes-off-broadway-2026/cititour--brian-scott-lipton.json"
+      "sexual-misconduct-of-the-middle-classes-off-broadway-2026/cititour--brian-scott-lipton.json",
+      "magic-mike-live-west-end-2021/guardian--arifa-akbar.json",
+      "my-neighbour-totoro-west-end-2025/timeout--tom-wicker.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -318,11 +339,12 @@
       "the-amazing-sex-life-of-rabbits-off-broadway-2026/theatermania--pete-hempstead.json",
       "you-got-older-off-broadway-2026/theatermania--zachary-stewart.json",
       "zack-off-broadway-2026/broadwaynews--gillian-blum.json",
-      "bigfoot-off-broadway-2026/playbill--unknown.json"
+      "bigfoot-off-broadway-2026/playbill--unknown.json",
+      "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json"
     ]
   },
   "startTime": "2026-03-19T08:31:39.530Z",
-  "lastProcessed": "data-off-broadway-2026/nysr--david-finkle.json",
+  "lastProcessed": "my-neighbour-totoro-west-end-2025/timeout--tom-wicker.json",
   "log": [
     {
       "t": "2026-03-19T08:32:46.005Z",
@@ -353,6 +375,17 @@
       "event": "bb-session",
       "session": "06dcb01a",
       "url": "https://nypost.com/2019/10/17/little-shop-of-horrors-review-jonathan-groff-tammy"
+    },
+    {
+      "t": "2026-03-19T09:27:47.774Z",
+      "event": "bb-session",
+      "session": "b4a49f80",
+      "url": "https://observer.com/2019/04/hadestown-tries-like-hell-to-spin-a-concept-album-o"
+    },
+    {
+      "t": "2026-03-19T09:27:49.083Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
     }
   ]
 }
