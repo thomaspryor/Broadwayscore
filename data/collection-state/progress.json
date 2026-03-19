@@ -180,7 +180,15 @@
     "my-joy-is-heavy-off-broadway-2025/vulture--unknown.json",
     "night-side-songs-off-broadway-2026/nytg--kyle-turner.json",
     "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
-    "the-lion-king-1997/nytimes--ben-brantley.json"
+    "the-lion-king-1997/nytimes--ben-brantley.json",
+    "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
+    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+    "mother-russia-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
+    "oliver-west-end-2024/guardian--arifa-akbar.json",
+    "oliver-west-end-2024/timeout--andrzej-lukowski.json",
+    "operation-mincemeat-2025/guardian--kate-wyver.json",
+    "operation-mincemeat-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "operation-mincemeat-2025/timeout--adam-feldman.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
@@ -209,7 +217,9 @@
     "hadestown-2019/newyorker--hilton-als.json",
     "mj-2022/vulture--helen-shaw.json",
     "six-2021/newyorker--naomi-fry.json",
-    "aladdin-2014/new-jersey-newsroom--michael-sommers.json"
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "consumed-west-end-2026/guardian--arifa-akbar.json",
+    "harry-potter-2021/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -325,7 +335,12 @@
       "oh-mary-2024/ew--thom-geier.json",
       "oh-mary-2024/timeout--adam-feldman.json",
       "oh-mary-west-end-2025/timeout--adam-feldman.json",
-      "night-side-songs-off-broadway-2026/nytg--kyle-turner.json"
+      "night-side-songs-off-broadway-2026/nytg--kyle-turner.json",
+      "oliver-west-end-2024/guardian--arifa-akbar.json",
+      "oliver-west-end-2024/timeout--andrzej-lukowski.json",
+      "operation-mincemeat-2025/guardian--kate-wyver.json",
+      "operation-mincemeat-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "operation-mincemeat-2025/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
@@ -429,7 +444,8 @@
       "oh-mary-west-end-2025/guardian--adrian-horton.json",
       "oh-mary-west-end-2025/guardian--arifa-akbar.json",
       "the-book-of-mormon-west-end-2024/nytimes--ben-brantley.json",
-      "the-lion-king-1997/nytimes--ben-brantley.json"
+      "the-lion-king-1997/nytimes--ben-brantley.json",
+      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -450,11 +466,13 @@
       "moulin-rouge-2019/theatermania--zachary-stewart.json",
       "night-side-songs-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
       "oh-mary-2024/theatermania--jesse-green.json",
-      "my-joy-is-heavy-off-broadway-2025/vulture--unknown.json"
+      "my-joy-is-heavy-off-broadway-2025/vulture--unknown.json",
+      "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
+      "mother-russia-off-broadway-2026/broadwaynews--chloe-rabinowitz.json"
     ]
   },
   "startTime": "2026-03-19T10:02:04.711Z",
-  "lastProcessed": "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+  "lastProcessed": "operation-mincemeat-2025/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-03-19T10:04:36.520Z",
@@ -637,6 +655,17 @@
       "t": "2026-03-19T12:26:05.502Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-19T12:59:04.584Z",
+      "event": "bb-session",
+      "session": "10f1b44c",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-03-19T12:59:06.002Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
