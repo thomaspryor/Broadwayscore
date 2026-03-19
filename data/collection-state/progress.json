@@ -42,14 +42,24 @@
     "burnout-paradise-off-broadway-2026/theatermania--zachary-stewart.json",
     "calf-scramble-off-broadway-2026/timeout--raven-snook.json",
     "chinese-republicans-off-broadway-2026/ew--thom-geier.json",
-    "cold-war-choir-practice-off-broadway-2026/theatermania--unknown.json"
+    "cold-war-choir-practice-off-broadway-2026/theatermania--unknown.json",
+    "hadestown-west-end-2024/variety--marilyn-stasio.json",
+    "hadestown-west-end-2024/observer--david-cote.json",
+    "back-to-the-future-west-end-2021/variety--david-benedict.json",
+    "chess-2025/hollywood-reporter--angie-han.json",
+    "death-becomes-her-2024/newyorker--helen-shaw.json",
+    "every-brilliant-thing-2026/nytg--austin-fimmano.json",
+    "every-brilliant-thing-2026/nytimes--adam-feldman.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
     "burnout-paradise-off-broadway-2026/playbill--unknown.json",
     "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
     "my-joy-is-heavy-off-broadway-2025/vulture--unknown.json",
-    "night-side-songs-off-broadway-2026/nytg--kyle-turner.json"
+    "night-side-songs-off-broadway-2026/nytg--kyle-turner.json",
+    "consumed-west-end-2026/thestage--dave-fargnoli.json",
+    "the-book-of-mormon-west-end-2024/thestage--unknown.json",
+    "the-lion-king-west-end-2021/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -83,17 +93,27 @@
       "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json",
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/timeout--adam-feldman.json",
       "bughouse-off-broadway-2026/broadwaynews--aa-cristi.json",
-      "chinese-republicans-off-broadway-2026/ew--thom-geier.json"
+      "chinese-republicans-off-broadway-2026/ew--thom-geier.json",
+      "every-brilliant-thing-2026/nytg--austin-fimmano.json",
+      "every-brilliant-thing-2026/nytimes--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
       "little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
       "data/review-texts/bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
-      "bigfoot-off-broadway-2026/thewrap--robert-hofler.json"
+      "bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
+      "data/review-texts/hadestown-west-end-2024/variety--marilyn-stasio.json",
+      "hadestown-west-end-2024/variety--marilyn-stasio.json",
+      "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "back-to-the-future-west-end-2021/variety--david-benedict.json"
     ],
     "browserbase": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
-      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json"
+      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "data/review-texts/hadestown-west-end-2024/observer--david-cote.json",
+      "hadestown-west-end-2024/observer--david-cote.json",
+      "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
+      "chess-2025/hollywood-reporter--angie-han.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -110,23 +130,58 @@
       "bughouse-off-broadway-2026/theatermania--pete-hempstead.json",
       "burnout-paradise-off-broadway-2026/theatermania--zachary-stewart.json",
       "calf-scramble-off-broadway-2026/timeout--raven-snook.json",
-      "cold-war-choir-practice-off-broadway-2026/theatermania--unknown.json"
+      "cold-war-choir-practice-off-broadway-2026/theatermania--unknown.json",
+      "death-becomes-her-2024/newyorker--helen-shaw.json"
     ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
-      "data/review-texts/my-joy-is-heavy-off-broadway-2025/vulture--unknown.json"
+      "data/review-texts/my-joy-is-heavy-off-broadway-2025/vulture--unknown.json",
+      "data/review-texts/consumed-west-end-2026/thestage--dave-fargnoli.json"
     ],
     "archive": []
   },
   "startTime": "2026-03-19T10:02:04.711Z",
-  "lastProcessed": "cold-war-choir-practice-off-broadway-2026/theatermania--unknown.json",
+  "lastProcessed": "every-brilliant-thing-2026/nytimes--adam-feldman.json",
   "log": [
     {
       "t": "2026-03-19T10:04:36.520Z",
       "event": "bb-session",
       "session": "cfc7b254",
       "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-19T11:28:49.686Z",
+      "event": "bb-session",
+      "session": "5610a4cf",
+      "url": "https://observer.com/2019/04/hadestown-tries-like-hell-to-spin-a-concept-album-o"
+    },
+    {
+      "t": "2026-03-19T11:28:51.002Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-19T11:30:35.094Z",
+      "event": "bb-session",
+      "session": "0e1d681f",
+      "url": "https://www.thestage.co.uk/reviews/the-crucible-review-london-shakespeares-globe"
+    },
+    {
+      "t": "2026-03-19T11:30:36.444Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-19T11:31:14.567Z",
+      "event": "bb-session",
+      "session": "2134c40b",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-19T11:31:15.968Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

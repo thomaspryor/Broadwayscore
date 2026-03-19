@@ -1,25 +1,58 @@
 {
-  "updatedAt": "2026-03-19T10:24:38.959Z",
-  "processed": 46,
-  "failed": 4,
-  "successRate": "92.0%",
+  "updatedAt": "2026-03-19T11:32:12.267Z",
+  "processed": 50,
+  "failed": 8,
+  "successRate": "86.2%",
   "tierBreakdown": {
-    "playwright": 30,
-    "amp": 4,
-    "browserbase": 2,
+    "playwright": 32,
+    "amp": 8,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingbee": 14,
+    "scrapingbee": 15,
     "brightdata": 0,
-    "archiveToday": 2,
+    "archiveToday": 3,
     "archive": 0
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-03-19T10:04:36.520Z",
       "event": "bb-session",
       "session": "cfc7b254",
       "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-19T11:28:49.686Z",
+      "event": "bb-session",
+      "session": "5610a4cf",
+      "url": "https://observer.com/2019/04/hadestown-tries-like-hell-to-spin-a-concept-album-o"
+    },
+    {
+      "t": "2026-03-19T11:28:51.002Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-03-19T11:30:35.094Z",
+      "event": "bb-session",
+      "session": "0e1d681f",
+      "url": "https://www.thestage.co.uk/reviews/the-crucible-review-london-shakespeares-globe"
+    },
+    {
+      "t": "2026-03-19T11:30:36.444Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-19T11:31:14.567Z",
+      "event": "bb-session",
+      "session": "2134c40b",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-19T11:31:15.968Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
