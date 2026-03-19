@@ -29,6 +29,7 @@ const https = require('https');
 const { calculateCombinedScore } = require('./lib/audience-weighting');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { buildLondonSlugVariants } = require('./lib/show-matching');
+const { batchDiscoverSlugs } = require('./lib/serp-slug-discovery');
 
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
@@ -426,9 +427,16 @@ async function main() {
     for (const m of openMissed) {
       console.log(`  ${m.reason.padEnd(15)} ${m.id}`);
     }
-    console.log(`\nAdd to LTD_OVERRIDES if slug is known:`);
-    for (const m of openMissed.filter(s => s.reason === 'not-found')) {
-      console.log(`  '${m.title}': 'PLATFORM-SLUG-HERE',`);
+    // SERP slug discovery for not-found shows
+    const notFound = openMissed.filter(s => s.reason === 'not-found');
+    if (notFound.length > 0) {
+      const discovered = await batchDiscoverSlugs('londontheatredirect.com', notFound);
+      if (discovered.size === 0) {
+        console.log(`\nAdd to LTD_OVERRIDES if slug is known:`);
+        for (const m of notFound) {
+          console.log(`  '${m.title}': 'PLATFORM-SLUG-HERE',`);
+        }
+      }
     }
   }
 }
