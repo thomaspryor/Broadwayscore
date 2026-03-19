@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-19T19:01:06.896Z",
+    "generatedAt": "2026-03-19T23:54:34.902Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 120,
-    "highConfidence": 36,
-    "mediumConfidence": 84,
+    "totalFlagged": 123,
+    "highConfidence": 38,
+    "mediumConfidence": 85,
     "lowConfidence": 0,
-    "reassignable": 57
+    "reassignable": 60
   },
   "results": [
     {
@@ -1277,6 +1277,21 @@
       "textSnippet": "The brand-new Hudson Theatre officially opened Thursday night with a star-studded new production of Steven Sondheim's \"Sunday in the Park With George.\" NY1's Roma Torre filed the following review. Ste"
     },
     {
+      "showId": "once-on-this-island-1990",
+      "showTitle": "Once on This Island",
+      "showYear": 1990,
+      "file": "nytimes--jesse-green.json",
+      "outlet": "The New York Times",
+      "criticName": "Jesse Green",
+      "publishDate": "December 3rd, 2017",
+      "confidence": "high",
+      "suggestedShowId": "once-on-this-island-2017",
+      "signals": [
+        "revival cast/director match for once-on-this-island-2017: Hailey Kilgore, Lea Salonga, Circle in the Square, director: Michael Arden"
+      ],
+      "textSnippet": "Share full article6Hailey Kilgore, far left, as Ti Moune in the musical “Once on This Island” at the Circle in the Square Theater.Credit...Sara Krulwich/The New York TimesNYT Critic’s PickBy Jesse Gre"
+    },
+    {
       "showId": "gypsy-1989",
       "showTitle": "Gypsy",
       "showYear": 1989,
@@ -1791,6 +1806,22 @@
       "textSnippet": "It hasn’t been long since our last outing with the beleaguered Wingfelds, of “The Glass Menagerie”—a surreal and ornate revival of the Tennessee Williams memory play appeared on Broadway less than fou"
     },
     {
+      "showId": "noises-off-1983",
+      "showTitle": "Noises Off",
+      "showYear": 1983,
+      "file": "hollywood-reporter--david-rooney.json",
+      "outlet": "The Hollywood Reporter",
+      "criticName": "David Rooney",
+      "publishDate": "January 14th, 2016",
+      "confidence": "medium",
+      "suggestedShowId": "noises-off-2016",
+      "signals": [
+        "year 2016 in text matches revival noises-off-2016",
+        "year 2015 in text matches revival noises-off-2016"
+      ],
+      "textSnippet": "In 2016, it's inarguably a little late to be celebrating the stereotype of the dumb blonde. But the stiff walk and posture that Megan Hilty has created for her clueless character, a stunningly untalen"
+    },
+    {
       "showId": "the-tap-dance-kid-1983",
       "showTitle": "The Tap Dance Kid",
       "showYear": 1983,
@@ -1903,6 +1934,21 @@
         "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "NEW YORK — Could the timing be any better for a Broadway revival of Annie? The uplifting musical sells not only the archetypal rags-to-riches fantasy but promotes belief in the power of government to "
+    },
+    {
+      "showId": "the-king-and-i-1977",
+      "showTitle": "The King and I",
+      "showYear": 1977,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "April 16th, 2015",
+      "confidence": "high",
+      "suggestedShowId": "the-king-and-i-2015",
+      "signals": [
+        "revival cast/director match for the-king-and-i-2015: Beaumont, director: Bartlett Sher"
+      ],
+      "textSnippet": "A big, scrupulously detailed 19th-century ship glides toward the audience in the opening moments of Bartlett Sher’s resplendent production of Rodgers and Hammerstein’s “The King and I,” which opened o"
     }
   ]
 }
