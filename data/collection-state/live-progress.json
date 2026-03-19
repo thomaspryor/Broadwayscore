@@ -1,26 +1,20 @@
 {
-  "updatedAt": "2026-03-19T11:42:59.084Z",
-  "processed": 67,
-  "failed": 11,
-  "successRate": "85.9%",
+  "updatedAt": "2026-03-19T11:50:52.564Z",
+  "processed": 74,
+  "failed": 14,
+  "successRate": "84.1%",
   "tierBreakdown": {
-    "playwright": 34,
-    "amp": 20,
-    "browserbase": 14,
+    "playwright": 35,
+    "amp": 26,
+    "browserbase": 16,
     "directCookies": 0,
-    "scrapingbee": 20,
+    "scrapingbee": 22,
     "brightdata": 0,
-    "archiveToday": 4,
+    "archiveToday": 7,
     "archive": 0
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-03-19T10:04:36.520Z",
-      "event": "bb-session",
-      "session": "cfc7b254",
-      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
-    },
     {
       "t": "2026-03-19T11:28:49.686Z",
       "event": "bb-session",
@@ -97,6 +91,39 @@
       "t": "2026-03-19T11:39:14.937Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-19T11:44:30.234Z",
+      "event": "bb-session",
+      "session": "1ab9efec",
+      "url": "https://www.nytimes.com/2024/05/24/theater/tom-holland-romeo-and-juliet.html"
+    },
+    {
+      "t": "2026-03-19T11:44:31.609Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-19T11:45:18.784Z",
+      "event": "bb-session",
+      "session": "7cdb0028",
+      "url": "http://www.nytimes.com/2014/08/21/theater/the-book-of-mormon-on-broadway-retains"
+    },
+    {
+      "t": "2026-03-19T11:45:19.956Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-19T11:47:49.850Z",
+      "event": "bb-session",
+      "session": "75eac4b0",
+      "url": "https://www.nytimes.com/1997/11/14/movies/theater-review-cub-comes-of-age-a-twic"
+    },
+    {
+      "t": "2026-03-19T11:47:51.050Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
