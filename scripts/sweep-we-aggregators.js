@@ -30,6 +30,25 @@ const { discoverCorrectUrl } = require('./lib/url-discovery');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const ARCHIVE_BASE = path.join(__dirname, '..', 'data', 'aggregator-archive');
+
+// Manually discovered URLs that automated matching can't find (verified via web search)
+const TR_KNOWN_URLS = {
+  'hadestown-west-end-2024': 'https://theatre.reviews/reviews-roundup/hadestown-lyric-reviews/',
+  'oliver-west-end-2024': 'https://theatre.reviews/reviews-roundup/oliver-gielgud-reviews/',
+  'cabaret-at-the-kit-kat-club-west-end-2021': 'https://theatre.reviews/reviews-roundup/cabaret-playhouse-reviews/',
+  'starlight-express-west-end-2024': 'https://theatre.reviews/reviews-roundup/starlight-express-troubadour-reviews/',
+  'the-devil-wears-prada-west-end-2024': 'https://theatre.reviews/reviews-roundup/devil-wears-prada-reviews/',
+  'hercules-west-end-2025': 'https://theatre.reviews/reviews-roundup/hercules-reviews/',
+};
+const TS_KNOWN_URLS = {
+  'moulin-rouge-the-musical-west-end-2021': 'https://www.thestage.co.uk/review-round-ups/moulin-rouge-the-musical-starring-liisi-lafontaine-and-jamie-bogyo--review-round-up',
+  'hadestown-west-end-2024': 'https://www.thestage.co.uk/review-round-ups/anais-mitchells-hadestown-at-the-national-theatre-london--review-round-up',
+  'oh-mary-west-end-2025': 'https://www.thestage.co.uk/review-round-ups/oh-mary-starring-mason-alexander-park-review-round-up',
+  'oliver-west-end-2024': 'https://www.thestage.co.uk/review-round-ups/oliver-starring-simon-lipkin--review-round-up',
+  'back-to-the-future-west-end-2021': 'https://www.thestage.co.uk/review-round-ups/back-to-the-future-the-musical-at-londons-adelphi-theatre--review-round-up',
+  'harry-potter-and-the-cursed-child-both-parts-west-end-2021': 'https://www.thestage.co.uk/review-round-ups/harry-potter-and-the-cursed-child-at-the-palace-theatre--review-round-up',
+  'cabaret-at-the-kit-kat-club-west-end-2021': 'https://www.thestage.co.uk/review-round-ups/cabaret-starring-eddie-redmayne-and-jessie-buckley--review-round-up',
+};
 const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
 const COOKIE_JAR = '/tmp/sweep-we-cookies.txt';
 const SB_KEY = process.env.SCRAPINGBEE_API_KEY || '';
@@ -441,6 +460,11 @@ async function _buildTRIndex(weShows) {
     }
   }
 
+  // Merge hardcoded known URLs (override if not already matched)
+  for (const [showId, url] of Object.entries(TR_KNOWN_URLS)) {
+    if (!_trIndex.has(showId)) _trIndex.set(showId, url);
+  }
+
   console.log(`  [TR] Matched ${_trIndex.size} shows to roundup URLs\n`);
   return _trIndex;
 }
@@ -680,6 +704,11 @@ async function _buildTSIndex(weShows) {
     console.log(`  [TS] Matched ${_tsIndex.size} shows to roundup URLs\n`);
   } catch (err) {
     console.log(`  [TS] Index build error: ${err.message.substring(0, 80)}`);
+  }
+
+  // Merge hardcoded known URLs (override if not already matched)
+  for (const [showId, url] of Object.entries(TS_KNOWN_URLS)) {
+    if (!_tsIndex.has(showId)) _tsIndex.set(showId, url);
   }
 
   return _tsIndex;
