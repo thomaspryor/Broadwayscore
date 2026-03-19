@@ -17,6 +17,7 @@ const { execFileSync } = require('child_process');
 const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./lib/review-normalization');
+const { safeWriteReview } = require('./lib/review-write-guard');
 const { isLondonMarket } = require('./lib/venue-classification');
 
 // Reuse extraction functions from existing scrapers
@@ -250,7 +251,7 @@ function writeReview(review, showId) {
   }
 
   if (!DRY_RUN) {
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+    safeWriteReview(filePath, data);
   }
   return !!existingMatch;
 }

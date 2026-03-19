@@ -41,32 +41,44 @@ runs:
           exit 0
         fi
 
-        # Protect fetched review text: for any staged review-text JSON where local has
-        # fullText=null but the committed (post-pull) version has fullText, restore it.
-        # This prevents rebuild metadata write-backs from wiping text fetched by another workflow.
+        # Protect scored/collected review data: for any staged review-text JSON where
+        # local is missing fields that the committed version has, restore them.
+        # This prevents any workflow from accidentally wiping scores, fullText, or metadata.
         node -e "
           const fs = require('fs');
           const { execSync } = require('child_process');
+          const PROTECTED = [
+            'assignedScore', 'llmScore', 'llmMetadata', 'fullText', 'contentTier',
+            'contentTierReason', 'contentVerification', 'ensembleData', 'tierReason',
+            'showTitle', 'textFetchedAt', 'textWordCount', 'textStatus', 'sourceMethod',
+            'isFullReview', 'wrongFullText', 'wrongShowReason', 'wrongProduction',
+            'wrongProductionNote', 'incompleteReason', 'incompleteDetail'
+          ];
           const staged = execSync('git diff --cached --name-only', { encoding: 'utf8' }).trim().split('\n').filter(Boolean);
           let restored = 0;
+          let scoreSaves = 0;
           for (const f of staged) {
             if (!f.endsWith('.json') || f.includes('failed-fetches')) continue;
             try {
               const local = JSON.parse(fs.readFileSync(f, 'utf8'));
-              const committed = JSON.parse(execSync('git show HEAD:' + f, { encoding: 'utf8' }));
-              if (committed.fullText && !local.fullText) {
-                local.fullText = committed.fullText;
-                local.textFetchedAt = committed.textFetchedAt || local.textFetchedAt;
-                local.textWordCount = committed.textWordCount || local.textWordCount;
-                local.contentTier = committed.contentTier || local.contentTier;
-                local.fetchMethod = committed.fetchMethod || local.fetchMethod;
+              const committed = JSON.parse(execSync('git show HEAD:' + f, { encoding: 'utf8', stdio: ['pipe','pipe','pipe'] }));
+              let fileRestored = false;
+              for (const field of PROTECTED) {
+                if (committed[field] !== undefined && committed[field] !== null && (local[field] === undefined || local[field] === null)) {
+                  local[field] = committed[field];
+                  fileRestored = true;
+                  if (field === 'assignedScore') scoreSaves++;
+                }
+              }
+              if (fileRestored) {
                 fs.writeFileSync(f, JSON.stringify(local, null, 2) + '\n');
                 restored++;
-                console.log('  Protected: ' + f + ' (restored ' + committed.fullText.length + ' chars of fullText)');
+                const lost = PROTECTED.filter(fld => committed[fld] !== undefined && committed[fld] !== null && (local[fld] === undefined || local[fld] === null));
+                console.log('  Protected: ' + f);
               }
             } catch (e) { /* new file or parse error — skip */ }
           }
-          if (restored > 0) console.log('Protected ' + restored + ' review(s) from fullText loss');
+          if (restored > 0) console.log('Protected ' + restored + ' review(s) from data loss (' + scoreSaves + ' scores saved)');
         " || true
 
         # Re-stage after protection pass
