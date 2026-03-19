@@ -28,11 +28,12 @@ Defaults: 5 retries, main branch. Handles cleanup, rebase -X theirs, random back
 
 **NEVER commit `data/aggregator-archive/` or `data/review-texts/` to the public repo.** These contain copyrighted content. They live in private repos and are synced via `push-review-texts` / `push-core-data` actions.
 
-When staging data changes in workflows, ALWAYS exclude private paths:
+When staging data changes in workflows, use the shared helper:
 ```bash
-git add data/ ':!data/aggregator-archive/' ':!data/review-texts/'
+bash scripts/lib/stage-data-changes.sh              # stages data/ with exclusions
+bash scripts/lib/stage-data-changes.sh data/ public/ # stages specific paths with exclusions
 ```
-**NEVER use `git add -f data/aggregator-archive/`** — this overrides `.gitignore` and leaks copyrighted files. A CI guard ("Guard — no copyrighted content in public repo" in `test.yml`) catches violations, but fix the workflow rather than repeatedly untracking files.
+This automatically excludes `data/aggregator-archive/` and `data/review-texts/`. **NEVER use `git add -f data/aggregator-archive/`** — this overrides `.gitignore` and leaks copyrighted files. A CI guard ("Guard — no copyrighted content in public repo" in `test.yml`) catches violations, but fix the workflow rather than repeatedly untracking files.
 
 ## Notification Severity
 

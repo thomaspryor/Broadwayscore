@@ -111,7 +111,7 @@ jobs:
           BRANCH="${GITHUB_REF#refs/heads/}"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/ public/images/shows/
+          bash scripts/lib/stage-data-changes.sh data/ public/images/shows/
 
           git commit -m "chore: Auto-fetch and archive show images
 
