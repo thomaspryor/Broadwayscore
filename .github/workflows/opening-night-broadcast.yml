@@ -332,6 +332,7 @@ jobs:
             echo "No changes to commit — skipping push"
             exit 0
           fi
+          git commit -m "data: Update opening-night-sent tracking"
           bash scripts/lib/push-with-retry.sh
 
 

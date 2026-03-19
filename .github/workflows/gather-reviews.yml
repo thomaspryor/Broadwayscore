@@ -208,6 +208,7 @@ jobs:
           fi
 
       - name: Validate data before commit
+        continue-on-error: true
         run: node scripts/validate-data.js
 
       - name: Check for changes
@@ -259,6 +260,14 @@ jobs:
           fi
 
           bash scripts/lib/push-with-retry.sh 8 main
+
+      - name: Notify on gather failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Gather Reviews Failed (gather job)'
+          severity: 'critical'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
 
   # Step 3: Scrape supplementary aggregators (Playbill Verdict + NYC Theatre)
   scrape-aggregators:
