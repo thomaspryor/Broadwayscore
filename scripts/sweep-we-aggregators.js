@@ -147,6 +147,32 @@ function curlJson(url) {
   try { return JSON.parse(raw); } catch { return null; }
 }
 
+/**
+ * Fetch rendered HTML via ScrapingBee (bypasses CleanTalk, Cloudflare, etc.)
+ * Costs 5 credits per request with render_js=true.
+ */
+async function scrapingBeeRender(url) {
+  if (!SB_KEY) return null;
+  const axios = require('axios');
+  try {
+    const resp = await axios.get('https://app.scrapingbee.com/api/v1', {
+      params: {
+        api_key: SB_KEY,
+        url,
+        render_js: 'true',
+        premium_proxy: 'true',
+        country_code: 'gb',
+      },
+      timeout: 30000,
+      responseType: 'text',
+    });
+    return resp.data || null;
+  } catch (err) {
+    console.log(`    [SB] Render failed for ${url}: ${(err.message || '').substring(0, 60)}`);
+    return null;
+  }
+}
+
 // ─── Review File Writer ──────────────────────────────────────────────────────
 
 function writeReview(review, showId) {
@@ -189,13 +215,33 @@ function writeReview(review, showId) {
 // ─── WestEndTheatre (WP API) ────────────────────────────────────────────────
 
 async function sweepWET(show) {
-  const searchTitle = show.title.replace(/['"]/g, '');
-  const apiUrl = `https://www.westendtheatre.com/wp-json/wp/v2/posts?categories=10&per_page=10&search=${encodeURIComponent(searchTitle)}`;
-  const posts = curlJson(apiUrl);
-  if (!posts || !Array.isArray(posts) || posts.length === 0) return [];
+  // Try multiple search queries: full title, then stripped title (no subtitles/qualifiers)
+  const searchTitles = [
+    show.title.replace(/['"]/g, ''),
+    // Strip "Both Parts", "The Musical", "On Stage" etc.
+    show.title.replace(/['"]/g, '')
+      .replace(/:\s*Both Parts$/i, '').replace(/\s+The Musical$/i, '')
+      .replace(/\s+On Stage$/i, '').replace(/\s+-\s+Globe$/i, '')
+      .replace(/\s+at the Kit Kat Club$/i, ''),
+  ];
+  // Deduplicate
+  const uniqueSearches = [...new Set(searchTitles.map(s => s.trim()).filter(Boolean))];
+
+  let allPosts = [];
+  for (const searchTitle of uniqueSearches) {
+    const apiUrl = `https://www.westendtheatre.com/wp-json/wp/v2/posts?categories=10&per_page=10&search=${encodeURIComponent(searchTitle)}`;
+    const posts = curlJson(apiUrl);
+    if (posts && Array.isArray(posts)) {
+      for (const p of posts) {
+        if (!allPosts.find(ep => ep.id === p.id)) allPosts.push(p);
+      }
+    }
+    if (uniqueSearches.length > 1) await sleep(500);
+  }
+  if (allPosts.length === 0) return [];
 
   // Find best matching post — try multiple title cleaning strategies
-  for (const post of posts.slice(0, 5)) {
+  for (const post of allPosts.slice(0, 5)) {
     const wpTitle = (post.title?.rendered || '').replace(/&#8217;/g, "'").replace(/&#8211;/g, '\u2013').replace(/&#8212;/g, '\u2014').replace(/&amp;/g, '&').replace(/&#039;/g, "'").replace(/<[^>]+>/g, '');
 
     // Try matching with cleaned title, raw title, and show title in WP title
@@ -307,24 +353,49 @@ async function sweepTheatreReviews(show) {
   const urls = [];
   if (indexUrl) urls.push(indexUrl);
 
+  // Clean title for slug: strip articles, punctuation, special chars
   const titleSlug = show.title.toLowerCase()
+    .replace(/['']/g, '').replace(/[&]/g, 'and')
     .replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-')
     .replace(/^-|-$/g, '');
+  // Also try without leading "the-"
+  const titleSlugNoThe = titleSlug.replace(/^the-/, '');
+
   urls.push(`https://theatre.reviews/reviews-roundup/${titleSlug}-reviews/`);
+  if (titleSlugNoThe !== titleSlug) {
+    urls.push(`https://theatre.reviews/reviews-roundup/${titleSlugNoThe}-reviews/`);
+  }
+
   if (show.venue) {
-    const venueSlug = show.venue.toLowerCase()
-      .replace(/\s*theatre\s*/gi, '').replace(/\s*theater\s*/gi, '')
-      .replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
-    if (venueSlug) {
-      urls.unshift(`https://theatre.reviews/reviews-roundup/${titleSlug}-${venueSlug}-reviews/`);
+    // Generate multiple venue slug variants
+    const venueClean = show.venue.toLowerCase()
+      .replace(/\s*(theatre|theater|playhouse|warehouse|studio|hall)\s*/gi, '')
+      .replace(/\s*'s\s*/g, 's ').replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
+    // Short venue: first word only (e.g., "donmar", "menier", "gielgud")
+    const venueShort = venueClean.split('-')[0];
+    const venueSlugs = [...new Set([venueClean, venueShort].filter(Boolean))];
+
+    for (const vs of venueSlugs) {
+      urls.unshift(`https://theatre.reviews/reviews-roundup/${titleSlug}-${vs}-reviews/`);
+      if (titleSlugNoThe !== titleSlug) {
+        urls.push(`https://theatre.reviews/reviews-roundup/${titleSlugNoThe}-${vs}-reviews/`);
+      }
     }
   }
 
   // Deduplicate
   const uniqueUrls = [...new Set(urls)];
 
+  // Try each URL: nodeFetch first (free), then ScrapingBee render (costs credits)
   for (const url of uniqueUrls) {
-    const html = await nodeFetch(url);
+    let html = await nodeFetch(url);
+
+    // ScrapingBee render fallback for CleanTalk-blocked pages
+    if (!html && SB_KEY) {
+      console.log(`    [TR] nodeFetch blocked, trying ScrapingBee for ${url.split('/reviews-roundup/')[1] || url}`);
+      html = await scrapingBeeRender(url);
+    }
+
     if (!html || html.length < 1000) continue;
     if (html.includes('<title>Page not found') || html.includes('404')) continue;
 
@@ -345,11 +416,12 @@ async function sweepTheatreReviews(show) {
     if (reviews.length > 0) return reviews;
   }
 
-  // Last resort: SERP
+  // Last resort: SERP discovery + ScrapingBee render
   if (SB_KEY || BD_KEY) {
     const serpUrl = await serpSearch('theatre.reviews', show.title);
     if (serpUrl && serpUrl.includes('reviews-roundup')) {
-      const html = await nodeFetch(serpUrl);
+      let html = await nodeFetch(serpUrl);
+      if (!html && SB_KEY) html = await scrapingBeeRender(serpUrl);
       if (html && html.length > 1000 && !html.includes('Page not found')) {
         const reviews = extractTheatreReviews(html, show.id);
         if (reviews.length > 0) {
@@ -481,21 +553,49 @@ async function sweepTheStage(show) {
   // Try BrowserBase if available (The Stage is JS-rendered + paywalled)
   if (process.env.BROWSERBASE_API_KEY) {
     for (const url of urls) {
-      try {
-        const html = await getStagePageViaBrowserBase(url);
-        if (!html || html.length < 2000) continue;
-        if (html.includes('Page not found') || html.includes('404 -')) continue;
+      // Retry once on session death
+      for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+          const html = await getStagePageViaBrowserBase(url);
+          if (!html || html.length < 2000) break; // URL is bad, try next URL
+          if (html.includes('Page not found') || html.includes('404 -')) break;
 
-        const reviews = extractStageReviews(html, show.id);
-        if (reviews.length > 0) {
-          if (!DRY_RUN) {
-            if (!fs.existsSync(archDir)) fs.mkdirSync(archDir, { recursive: true });
-            fs.writeFileSync(archivePath, html);
+          const reviews = extractStageReviews(html, show.id);
+          if (reviews.length > 0) {
+            if (!DRY_RUN) {
+              if (!fs.existsSync(archDir)) fs.mkdirSync(archDir, { recursive: true });
+              fs.writeFileSync(archivePath, html);
+            }
+            return reviews;
           }
-          return reviews;
+          break; // Page fetched but no reviews — try next URL
+        } catch (err) {
+          console.log(`    TS BrowserBase error (attempt ${attempt + 1}): ${err.message}`);
+          if (attempt === 0 && !_bbPage) {
+            console.log('    [BB] Retrying with new session...');
+            continue; // Session was reset in getStagePageViaBrowserBase, retry
+          }
+          break;
         }
-      } catch (err) {
-        console.log(`    TS BrowserBase error: ${err.message}`);
+      }
+    }
+  }
+
+  // Fallback: ScrapingBee render (when BrowserBase unavailable or failed)
+  if (SB_KEY) {
+    for (const url of urls) {
+      console.log(`    [TS] Trying ScrapingBee render: ${url.split('/review-round-ups/')[1] || url}`);
+      const html = await scrapingBeeRender(url);
+      if (!html || html.length < 2000) continue;
+      if (html.includes('Page not found') || html.includes('404 -')) continue;
+
+      const reviews = extractStageReviews(html, show.id);
+      if (reviews.length > 0) {
+        if (!DRY_RUN) {
+          if (!fs.existsSync(archDir)) fs.mkdirSync(archDir, { recursive: true });
+          fs.writeFileSync(archivePath, html);
+        }
+        return reviews;
       }
     }
   }
