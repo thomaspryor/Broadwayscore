@@ -11,7 +11,7 @@ All new workflows MUST include the `notify-failure` composite action (`.github/a
         uses: ./.github/actions/notify-failure
         with:
           title: 'Workflow Name Failed'
-          severity: 'critical'
+          severity: 'warning'  # Only use 'critical' for the 5 listed in §Notification Severity
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
 ```
 For critical workflows, add `email: 'true'` + `resend_api_key`/`owner_email` secrets. Currently 100/100 workflows have notifications.
@@ -23,6 +23,20 @@ All push-to-remote steps MUST use the shared script instead of inline retry loop
 bash scripts/lib/push-with-retry.sh [max_retries] [branch]
 ```
 Defaults: 5 retries, main branch. Handles cleanup, rebase -X theirs, random backoff, `::error::` + `exit 1` on failure.
+
+## Staging Data Files
+
+**NEVER commit `data/aggregator-archive/` or `data/review-texts/` to the public repo.** These contain copyrighted content. They live in private repos and are synced via `push-review-texts` / `push-core-data` actions.
+
+When staging data changes in workflows, ALWAYS exclude private paths:
+```bash
+git add data/ ':!data/aggregator-archive/' ':!data/review-texts/'
+```
+**NEVER use `git add -f data/aggregator-archive/`** — this overrides `.gitignore` and leaks copyrighted files. A CI guard ("Guard — no copyrighted content in public repo" in `test.yml`) catches violations, but fix the workflow rather than repeatedly untracking files.
+
+## Notification Severity
+
+Only 5 workflows should use `severity: 'critical'`: `vercel-deploy`, `opening-night-broadcast`, `opening-night-poller`, `send-follow-notifications`, `check-cron-health`. All others use `'warning'` or `'low'`. The notify-failure action has a 2-hour cooldown per workflow to prevent alert storms.
 
 ## Actionlint
 
