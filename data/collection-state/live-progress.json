@@ -1,26 +1,20 @@
 {
-  "updatedAt": "2026-03-19T09:41:59.505Z",
-  "processed": 193,
-  "failed": 17,
-  "successRate": "91.9%",
+  "updatedAt": "2026-03-19T09:47:14.315Z",
+  "processed": 200,
+  "failed": 20,
+  "successRate": "90.9%",
   "tierBreakdown": {
-    "playwright": 131,
-    "amp": 8,
-    "browserbase": 8,
+    "playwright": 132,
+    "amp": 12,
+    "browserbase": 14,
     "directCookies": 0,
-    "scrapingbee": 33,
+    "scrapingbee": 34,
     "brightdata": 0,
-    "archiveToday": 8,
+    "archiveToday": 10,
     "archive": 21
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-03-19T08:32:46.005Z",
-      "event": "bb-session",
-      "session": "6dd540d0",
-      "url": "https://www.wsj.com/articles/the-play-that-goes-wrong-review-hectic-whodunit-hum"
-    },
     {
       "t": "2026-03-19T08:38:06.835Z",
       "event": "bb-session",
@@ -77,6 +71,61 @@
       "t": "2026-03-19T09:35:03.379Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-19T09:42:05.357Z",
+      "event": "bb-session",
+      "session": "32663652",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-19T09:42:06.444Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-19T09:42:51.590Z",
+      "event": "bb-session",
+      "session": "eded09b3",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-19T09:42:52.919Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-19T09:43:07.123Z",
+      "event": "bb-session",
+      "session": "1e948d4f",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-03-19T09:43:08.630Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-19T09:44:04.879Z",
+      "event": "bb-session",
+      "session": "36834405",
+      "url": "https://www.nytimes.com/2017/12/28/theater/london-hamilton-pinocchio.html"
+    },
+    {
+      "t": "2026-03-19T09:44:06.339Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-19T09:45:56.976Z",
+      "event": "bb-session",
+      "session": "aa57fb07",
+      "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
+    },
+    {
+      "t": "2026-03-19T09:45:58.224Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
