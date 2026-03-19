@@ -5,6 +5,14 @@
  * Discovers new Broadway shows using TodayTix API (primary) with
  * Broadway.org scraping as fallback.
  *
+ * IMPORTANT — WE/London date handling:
+ * TodayTix and Official London Theatre (OLT) return `startDate` = first preview/performance,
+ * NOT the press night (opening night for critics). For all London discovery paths, set:
+ *   openingDate: null,
+ *   previewsStartDate: startDate
+ * The real openingDate is set later by ShowScore press night data or manual enrichment.
+ * Broadway shows use IBDB for dates, so this doesn't apply to BW paths.
+ *
  * Usage: node scripts/discover-new-shows.js [--dry-run] [--include-off-broadway] [--include-west-end]
  */
 

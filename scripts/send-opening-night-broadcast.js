@@ -318,13 +318,22 @@ async function main() {
 
   if (SEND_TO) {
     // Preview mode: send single transactional email (with custom unsubscribe link)
-    // Dedup: skip if we already previewed this show combination today (prevents spam from workflow_run triggers)
+    // Dedup: skip if we already previewed this show combination today with the same review count.
+    // Re-send if 3+ more reviews have been scored since last preview (meaningful new data).
     const today = new Date().toISOString().slice(0, 10);
     const previewKey = `preview:${broadcastKey}:${today}`;
-    if (sentData.shows[previewKey]?.sentAt) {
-      console.log(`\nPreview already sent today for this show combination — skipping`);
-      console.log(`  Previous preview: ${sentData.shows[previewKey].sentAt}`);
-      process.exit(0);
+    const currentReviewCount = showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0);
+    const previousPreview = sentData.shows[previewKey];
+    if (previousPreview?.sentAt) {
+      const previousReviewCount = previousPreview.reviewCount || 0;
+      const newReviews = currentReviewCount - previousReviewCount;
+      if (newReviews < 3) {
+        console.log(`\nPreview already sent today for this show combination — skipping`);
+        console.log(`  Previous preview: ${previousPreview.sentAt} (${previousReviewCount} reviews)`);
+        console.log(`  Current: ${currentReviewCount} reviews (+${newReviews}, need +3 to re-send)`);
+        process.exit(0);
+      }
+      console.log(`\nRe-sending preview — ${newReviews} new reviews since last preview (${previousReviewCount} → ${currentReviewCount})`);
     }
 
     console.log(`\nSending preview to ${SEND_TO}...`);
@@ -418,7 +427,8 @@ async function main() {
     const today2 = new Date().toISOString().slice(0, 10);
     const previewKey2 = `preview:${broadcastKey}:${today2}`;
     const alreadyPreviewed = !!sentData.shows[previewKey2];
-    sentData.shows[previewKey2] = { sentAt: new Date().toISOString(), previewTo: SEND_TO };
+    const previewReviewCount = showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0);
+    sentData.shows[previewKey2] = { sentAt: new Date().toISOString(), previewTo: SEND_TO, reviewCount: previewReviewCount };
     saveSentData(sentData);
 
     console.log(`\nPreview sent to ${SEND_TO}`);
