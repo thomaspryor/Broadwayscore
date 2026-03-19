@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-19T15:50:24.040Z",
+  "timestamp": "2026-03-19T19:05:42.664Z",
   "stats": {
-    "totalReviews": 32036,
-    "alreadyFlagged": 9618,
+    "totalReviews": 32058,
+    "alreadyFlagged": 9626,
     "dateGuardCatches": 182,
     "directorMismatch": 1110,
-    "tvFilmSignals": 3508,
+    "tvFilmSignals": 3506,
     "londonSignals": 1086,
     "offBroadwaySignals": 1070,
     "yearMismatch": 92,
-    "noPublishDate": 9506
+    "noPublishDate": 9526
   },
   "findings": [
     {
@@ -43959,34 +43959,6 @@
     },
     {
       "showId": "rodgers-hammersteins-cinderella-2013",
-      "file": "out-in-jersey--allen-neuner.json",
-      "score": null,
-      "publishDate": "November 27th, 2019",
-      "url": "https://outinjersey.net/rodgers-hammersteins-cinderella-is-a-classic-fairy-tale-with-a-clever-modern-sensibility/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "rodgers-hammersteins-cinderella-2013",
-      "file": "talkinbroadway--bob-rendell.json",
-      "score": null,
-      "publishDate": "November 29th, 2019",
-      "url": "https://www.talkinbroadway.com/page/regional/nj/nj761.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "rodgers-hammersteins-cinderella-2013",
       "file": "usatoday--elysa-gardner.json",
       "score": 82,
       "publishDate": null,
@@ -62609,7 +62581,7 @@
     {
       "showId": "waiting-for-godot-2009",
       "file": "nytg--joe-dziemianowicz.json",
-      "score": 92,
+      "score": 91,
       "publishDate": null,
       "url": "https://www.newyorktheatreguide.com/reviews/no-mans-land-waiting-for-godot",
       "findings": [
@@ -63780,7 +63752,7 @@
     {
       "showId": "west-side-story-2020",
       "file": "broadwayworld--michael-dale.json",
-      "score": 72,
+      "score": 64,
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/West-Side-Story",
       "findings": [
@@ -65441,7 +65413,7 @@
     {
       "showId": "youre-a-good-man-charlie-brown-off-broadway-2026",
       "file": "theatermania--david-gordon.json",
-      "score": null,
+      "score": 63,
       "publishDate": "May 31st, 2016",
       "url": "http://www.theatermania.com/off-broadway/reviews/youre-a-good-man-charlie-brown_77246.html",
       "findings": [
