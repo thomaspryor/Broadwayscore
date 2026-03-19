@@ -36,7 +36,9 @@ git add data/ ':!data/aggregator-archive/' ':!data/review-texts/'
 
 ## Notification Severity
 
-Only 5 workflows should use `severity: 'critical'`: `vercel-deploy`, `opening-night-broadcast`, `opening-night-poller`, `send-follow-notifications`, `check-cron-health`. All others use `'warning'` or `'low'`. The notify-failure action has a 2-hour cooldown per workflow to prevent alert storms.
+Only 5 workflows should use `severity: 'critical'`: `vercel-deploy`, `opening-night-broadcast`, `opening-night-poller`, `send-follow-notifications`, `check-cron-health`. These get real-time Discord alerts (+ email) with a 2-hour cooldown per workflow.
+
+All other workflows use `'warning'` or `'low'` — their failures are aggregated in the **daily failure digest** (`scripts/daily-failure-digest.js`), which runs as part of `data-health-check.yml` at 7 AM UTC. One Discord message per day listing all non-critical failures from the last 24h, grouped by workflow.
 
 ## Actionlint
 
