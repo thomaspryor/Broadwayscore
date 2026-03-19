@@ -275,15 +275,39 @@ function validateSlugs(shows) {
   info('Checking slug formats...');
   const slugRegex = /^[a-z0-9-]+$/;
   let invalid = 0;
+  let autoFixed = 0;
 
   for (const show of shows) {
     if (show.slug && !slugRegex.test(show.slug)) {
-      error(`Show "${show.title}" has invalid slug: "${show.slug}"`);
-      invalid++;
+      const fixed = show.slug.replace(/[^a-z0-9-]/g, '').replace(/-+/g, '-').replace(/^-|-$/g, '');
+      warn(`Show "${show.title}" had invalid slug "${show.slug}" — auto-fixed to "${fixed}"`);
+      show.slug = fixed;
+      // Also fix the id if it contains the same invalid characters
+      if (show.id && !slugRegex.test(show.id.replace(/-\d{4}$/, ''))) {
+        const fixedId = show.id.replace(/[^a-z0-9-]/g, '').replace(/-+/g, '-').replace(/^-|-$/g, '');
+        show.id = fixedId;
+      }
+      autoFixed++;
     }
   }
 
-  if (invalid === 0) {
+  if (autoFixed > 0) {
+    warn(`Auto-fixed ${autoFixed} invalid slug(s) — saving corrected shows.json`);
+    const showsFile = path.join(__dirname, '..', 'data', 'shows.json');
+    if (fs.existsSync(showsFile)) {
+      const allShows = JSON.parse(fs.readFileSync(showsFile, 'utf8'));
+      for (const show of shows) {
+        const match = allShows.find(s => s.title === show.title);
+        if (match && match.slug !== show.slug) {
+          match.slug = show.slug;
+          if (show.id) match.id = show.id;
+        }
+      }
+      fs.writeFileSync(showsFile, JSON.stringify(allShows, null, 2) + '\n');
+    }
+  }
+
+  if (autoFixed === 0) {
     ok('All slugs are URL-safe');
   }
 }

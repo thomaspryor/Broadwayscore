@@ -94,8 +94,8 @@ function slugify(title) {
   return title
     .toLowerCase()
     .normalize('NFKD').replace(/[\u0300-\u036f]/g, '') // Strip diacritics (é→e)
-    .replace(/[!?'"\u2018\u2019\u201C\u201D:\-–—,\.+\/\[\]()|*#@{}]/g, '') // Strip punctuation + curly quotes + special chars
     .replace(/[&]/g, 'and')
+    .replace(/[^a-z0-9\s-]/g, '') // Strip everything except alphanumeric, spaces, hyphens
     .replace(/\s+/g, '-')
     .replace(/^-+|-+$/g, '')
     .replace(/-+/g, '-');
