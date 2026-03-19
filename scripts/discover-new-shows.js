@@ -1179,6 +1179,23 @@ function loadShows() {
 function saveShows(data) {
   if (!data._meta) data._meta = {};
   data._meta.lastUpdated = new Date().toISOString();
+
+  // Dedup guard: parallel runs can both pass pre-insertion checks, creating duplicates.
+  // Keep last occurrence (later entries have richer data from enrichment).
+  const seen = new Set();
+  const before = data.shows.length;
+  for (let i = data.shows.length - 1; i >= 0; i--) {
+    if (seen.has(data.shows[i].id)) {
+      data.shows.splice(i, 1);
+    } else {
+      seen.add(data.shows[i].id);
+    }
+  }
+  const removed = before - data.shows.length;
+  if (removed > 0) {
+    console.log(`⚠️  Dedup guard: removed ${removed} duplicate show(s) before saving`);
+  }
+
   fs.writeFileSync(SHOWS_FILE, JSON.stringify(data, null, 2) + '\n');
 }
 
