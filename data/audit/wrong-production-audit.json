@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-20T23:34:50.733Z",
+  "timestamp": "2026-03-20T23:42:06.260Z",
   "stats": {
-    "totalReviews": 32095,
-    "alreadyFlagged": 10686,
+    "totalReviews": 32030,
+    "alreadyFlagged": 10679,
     "dateGuardCatches": 135,
     "directorMismatch": 946,
     "tvFilmSignals": 3390,
-    "londonSignals": 1024,
+    "londonSignals": 1023,
     "offBroadwaySignals": 1009,
     "yearMismatch": 71,
-    "noPublishDate": 6949
+    "noPublishDate": 6924
   },
   "findings": [
     {
@@ -76545,20 +76545,6 @@
       "score": 86,
       "publishDate": "April 2nd, 2015",
       "url": "http://www.huffingtonpost.com/steven-suskin/aisle-view-peering-throug_b_6997542.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "skylight-2015",
-      "file": "nbcny--robert-kahn.json",
-      "score": null,
-      "publishDate": "April 2, 2015",
-      "url": "http://www.nbcnewyork.com/entertainment/the-scene/skylight-mulligan-review-298149311.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
