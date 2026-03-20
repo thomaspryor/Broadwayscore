@@ -246,7 +246,15 @@
     "chinese-republicans-off-broadway-2026/nytg--austin-fimmano.json",
     "contact-2000/nytimes--unknown.json",
     "contact-2000/variety--unknown.json",
-    "cyrano-de-bergerac-west-end-2026/variety--unknown.json"
+    "cyrano-de-bergerac-west-end-2026/variety--unknown.json",
+    "data-2026/nytg--allison-considine.json",
+    "doubt-a-parable/nytg--gillian-russo.json",
+    "doubt-a-parable/nytimes--jesse-green.json",
+    "doubt-a-parable/vulture--sara-holdren.json",
+    "elf-2024/vulture--jackson-mchenry.json",
+    "harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json",
+    "hate-radio-off-broadway-2026/newyorker--unknown.json",
+    "heathers-the-musical-off-broadway-2025/nytg--unknown.json"
   ],
   "failed": [
     "my-joy-is-heavy-off-broadway-2025/nyt-theater--unknown.json",
@@ -281,7 +289,9 @@
     "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/guardian--kate-wyver.json",
     "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/times-uk--donald-hutera.json",
     "anastasia-2017/newyorker--michael-schulman.json",
-    "cabaret-1987/vulture--jesse-green.json"
+    "cabaret-1987/vulture--jesse-green.json",
+    "farinelli-and-the-king-2017/vulture--sara-holdren.json",
+    "hate-radio-off-broadway-2026/nytimes--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -473,7 +483,10 @@
       "allegiance-2015/nyt-theater--unknown.json",
       "an-ark-2026/nytg--kyle-turner.json",
       "cats-the-jellicle-ball-off-broadway-2024/nyt-theater--jonathan-mandell.json",
-      "chinese-republicans-off-broadway-2026/nytg--austin-fimmano.json"
+      "chinese-republicans-off-broadway-2026/nytg--austin-fimmano.json",
+      "data-2026/nytg--allison-considine.json",
+      "doubt-a-parable/nytg--gillian-russo.json",
+      "heathers-the-musical-off-broadway-2025/nytg--unknown.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -532,7 +545,9 @@
       "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/cititour--brian-scott-lipton.json",
       "data/review-texts/unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/guardian--kate-wyver.json",
       "data/review-texts/anastasia-2017/newyorker--michael-schulman.json",
-      "data/review-texts/cabaret-1987/vulture--jesse-green.json"
+      "data/review-texts/cabaret-1987/vulture--jesse-green.json",
+      "data/review-texts/farinelli-and-the-king-2017/vulture--sara-holdren.json",
+      "data/review-texts/hate-radio-off-broadway-2026/nytimes--unknown.json"
     ],
     "archive": [
       "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
@@ -571,11 +586,16 @@
       "animal-wisdom-off-broadway-2022/nytimes--unknown.json",
       "back-to-the-future-west-end-2021/vulture--unknown.json",
       "blackbird-2016/newyorker--hilton-als.json",
-      "contact-2000/nytimes--unknown.json"
+      "contact-2000/nytimes--unknown.json",
+      "doubt-a-parable/nytimes--jesse-green.json",
+      "doubt-a-parable/vulture--sara-holdren.json",
+      "elf-2024/vulture--jackson-mchenry.json",
+      "harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json",
+      "hate-radio-off-broadway-2026/newyorker--unknown.json"
     ]
   },
   "startTime": "2026-03-20T14:13:25.603Z",
-  "lastProcessed": "cyrano-de-bergerac-west-end-2026/variety--unknown.json",
+  "lastProcessed": "heathers-the-musical-off-broadway-2025/nytg--unknown.json",
   "log": [
     {
       "t": "2026-03-20T19:09:34.568Z",
@@ -697,6 +717,17 @@
       "t": "2026-03-20T20:27:22.935Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-20T20:32:57.286Z",
+      "event": "bb-session",
+      "session": "56f1756b",
+      "url": "https://www.nytimes.com/2026/02/14/theater/milo-rau-hate-radio-pelicot-trial.htm"
+    },
+    {
+      "t": "2026-03-20T20:32:58.819Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
