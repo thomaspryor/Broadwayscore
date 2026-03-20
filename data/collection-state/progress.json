@@ -99,7 +99,16 @@
     "encores-the-wild-party-off-broadway-2026/nytimes--helen-shaw.json",
     "encores-the-wild-party-off-broadway-2026/cititour--brian-scott-lipton.json",
     "encores-the-wild-party-off-broadway-2026/culturesauce--thom-geier.json",
-    "my-joy-is-heavy-off-broadway-2025/nytg--unknown.json"
+    "my-joy-is-heavy-off-broadway-2025/nytg--unknown.json",
+    "my-joy-is-heavy-off-broadway-2025/nytimes--brittani-samuel.json",
+    "sexual-misconduct-of-the-middle-classes-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "my-joy-is-heavy-off-broadway-2025/timeout--unknown.json",
+    "sexual-misconduct-of-the-middle-classes-off-broadway-2026/ew--thom-geier.json",
+    "sexual-misconduct-of-the-middle-classes-off-broadway-2026/theatermania--zachary-stewart.json",
+    "sexual-misconduct-of-the-middle-classes-off-broadway-2026/this-week-in-new-york--mark-rifkin.json",
+    "sexual-misconduct-of-the-middle-classes-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "my-joy-is-heavy-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
+    "sexual-misconduct-of-the-middle-classes-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -116,7 +125,8 @@
     "giant-2026/ap--jennifer-farrar.json",
     "gotta-dance-off-broadway-2026/playbill--unknown.json",
     "consumed-west-end-2026/guardian--arifa-akbar.json",
-    "my-joy-is-heavy-off-broadway-2025/playbill--unknown.json"
+    "my-joy-is-heavy-off-broadway-2025/playbill--unknown.json",
+    "my-joy-is-heavy-off-broadway-2025/vulture--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -200,7 +210,15 @@
       "heartbreak-hotel-off-broadway-2026/guardian--unknown.json",
       "heartbreak-hotel-off-broadway-2026/stageandcinema--unknown.json",
       "encores-the-wild-party-off-broadway-2026/culturesauce--thom-geier.json",
-      "my-joy-is-heavy-off-broadway-2025/nytg--unknown.json"
+      "my-joy-is-heavy-off-broadway-2025/nytg--unknown.json",
+      "my-joy-is-heavy-off-broadway-2025/nytimes--brittani-samuel.json",
+      "sexual-misconduct-of-the-middle-classes-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "my-joy-is-heavy-off-broadway-2025/timeout--unknown.json",
+      "sexual-misconduct-of-the-middle-classes-off-broadway-2026/ew--thom-geier.json",
+      "sexual-misconduct-of-the-middle-classes-off-broadway-2026/theatermania--zachary-stewart.json",
+      "sexual-misconduct-of-the-middle-classes-off-broadway-2026/this-week-in-new-york--mark-rifkin.json",
+      "my-joy-is-heavy-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
+      "sexual-misconduct-of-the-middle-classes-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
     ],
     "amp": [],
     "browserbase": [
@@ -220,7 +238,8 @@
       "evening-all-afternoon-west-end-2026/telegraph--unknown.json",
       "gotta-dance-off-broadway-2026/theatermania--unknown.json",
       "encores-the-wild-party-off-broadway-2026/nytimes--helen-shaw.json",
-      "encores-the-wild-party-off-broadway-2026/cititour--brian-scott-lipton.json"
+      "encores-the-wild-party-off-broadway-2026/cititour--brian-scott-lipton.json",
+      "sexual-misconduct-of-the-middle-classes-off-broadway-2026/cititour--brian-scott-lipton.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -243,13 +262,24 @@
     ]
   },
   "startTime": "2026-03-20T08:31:07.341Z",
-  "lastProcessed": "my-joy-is-heavy-off-broadway-2025/nytg--unknown.json",
+  "lastProcessed": "sexual-misconduct-of-the-middle-classes-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
   "log": [
     {
       "t": "2026-03-20T09:11:49.819Z",
       "event": "bb-session",
       "session": "10417d95",
       "url": "https://observer.com/2022/10/review-nadine-sierra-is-a-force-of-nature-as-violet"
+    },
+    {
+      "t": "2026-03-20T09:22:49.579Z",
+      "event": "bb-session",
+      "session": "212f1e7e",
+      "url": "https://www.nytimes.com/2026/03/18/theater/my-joy-is-heavy-review-bengsons.html"
+    },
+    {
+      "t": "2026-03-20T09:22:50.792Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

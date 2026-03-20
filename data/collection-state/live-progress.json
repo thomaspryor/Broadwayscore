@@ -1,25 +1,36 @@
 {
-  "updatedAt": "2026-03-20T09:22:21.479Z",
-  "processed": 100,
-  "failed": 15,
-  "successRate": "87.0%",
+  "updatedAt": "2026-03-20T09:28:27.157Z",
+  "processed": 109,
+  "failed": 16,
+  "successRate": "87.2%",
   "tierBreakdown": {
-    "playwright": 80,
+    "playwright": 88,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 12,
+    "scrapingbee": 13,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 15
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-03-20T09:11:49.819Z",
       "event": "bb-session",
       "session": "10417d95",
       "url": "https://observer.com/2022/10/review-nadine-sierra-is-a-force-of-nature-as-violet"
+    },
+    {
+      "t": "2026-03-20T09:22:49.579Z",
+      "event": "bb-session",
+      "session": "212f1e7e",
+      "url": "https://www.nytimes.com/2026/03/18/theater/my-joy-is-heavy-review-bengsons.html"
+    },
+    {
+      "t": "2026-03-20T09:22:50.792Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
