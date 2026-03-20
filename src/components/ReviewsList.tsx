@@ -149,10 +149,13 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
 
   return (
     <article className={`${isLast ? '' : 'border-b border-white/5 pb-3'} group`} data-testid="review-card" aria-label={`Review from ${review.outlet}`}>
-      {/* Header: Score + Logo + Outlet + Date — all vertically centered */}
-      <div className="flex items-center gap-2.5 mb-1.5">
+      {/* CRITICAL: align-items:center keeps score/logo/outlet vertically centered.
+         This has been broken 15+ times by refactors. The inline style is intentional —
+         DO NOT remove it or replace with only Tailwind classes. */}
+      <div className="review-card-header flex items-center gap-2.5 mb-1.5" style={{ alignItems: 'center' }}>
         <div
           className={`flex-shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center text-base sm:text-lg font-bold ${getScoreColorClass(review.reviewScore)}`}
+          style={{ alignSelf: 'center' }}
           role="meter"
           aria-valuenow={review.reviewScore}
           aria-valuemin={0}
@@ -162,7 +165,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
           <span aria-hidden="true">{review.reviewScore}</span>
         </div>
         <OutletLogo outlet={review.outlet} />
-        <div className="flex items-center justify-between gap-2 flex-1 min-w-0 self-center">
+        <div className="flex items-center justify-between gap-2 flex-1 min-w-0" style={{ alignSelf: 'center' }}>
           <div className="flex items-center gap-1.5 min-w-0">
             {featureFlags.criticPages && review.outletSlug ? (
               <Link href={`/critics/outlets/${review.outletSlug}`} className="font-bold text-white text-sm sm:text-base truncate hover:text-brand transition-colors">{review.outlet}</Link>
