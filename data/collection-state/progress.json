@@ -1043,7 +1043,15 @@
     "all-out-2025/playbill--logan-culwell-block.json",
     "woman-in-mind-west-end-2025/independent--alice-saville.json",
     "woman-in-mind-west-end-2025/london-theatre--olivia-rook.json",
-    "woman-in-mind-west-end-2025/telegraph--claire-allfree.json"
+    "woman-in-mind-west-end-2025/telegraph--claire-allfree.json",
+    "woman-in-mind-west-end-2025/times-uk--clive-davis.json",
+    "marjorie-prime-2025/newyorker--helen-shaw.json",
+    "marjorie-prime-2025/theatre-reviews-limited--david-roberts.json",
+    "marjorie-prime-2025/timeout--adam-feldman.json",
+    "marjorie-prime-2025/amny--unknown.json",
+    "marjorie-prime-2025/theater-scene--joseph-pisano.json",
+    "the-playboy-of-the-western-world-west-end-2025/i-paper--fiona-mountford.json",
+    "the-playboy-of-the-western-world-west-end-2025/guardian--arifa-akbar.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
@@ -1229,7 +1237,9 @@
     "high-noon-west-end-2025/thestage--sam-marlowe.json",
     "high-noon-west-end-2025/times-uk--clive-davis.json",
     "woman-in-mind-west-end-2025/broadwayworld--unknown.json",
-    "woman-in-mind-west-end-2025/thestage--unknown.json"
+    "woman-in-mind-west-end-2025/thestage--unknown.json",
+    "woman-in-mind-west-end-2025/thestage--sam-marlowe.json",
+    "the-playboy-of-the-western-world-west-end-2025/telegraph--claire-allfree.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1974,7 +1984,13 @@
       "all-out-2025/nytg--gillian-russo.json",
       "all-out-2025/ew--unknown.json",
       "all-out-2025/playbill--logan-culwell-block.json",
-      "woman-in-mind-west-end-2025/london-theatre--olivia-rook.json"
+      "woman-in-mind-west-end-2025/london-theatre--olivia-rook.json",
+      "woman-in-mind-west-end-2025/times-uk--clive-davis.json",
+      "marjorie-prime-2025/theatre-reviews-limited--david-roberts.json",
+      "marjorie-prime-2025/timeout--adam-feldman.json",
+      "marjorie-prime-2025/theater-scene--joseph-pisano.json",
+      "the-playboy-of-the-western-world-west-end-2025/i-paper--fiona-mountford.json",
+      "the-playboy-of-the-western-world-west-end-2025/guardian--arifa-akbar.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
@@ -2057,7 +2073,9 @@
       "data/review-texts/the-tragedy-of-coriolanus-off-broadway-2026/nytimes--helen-shaw.json",
       "the-tragedy-of-coriolanus-off-broadway-2026/nytimes--helen-shaw.json",
       "data/review-texts/all-out-2025/deadline--unknown.json",
-      "all-out-2025/deadline--unknown.json"
+      "all-out-2025/deadline--unknown.json",
+      "data/review-texts/marjorie-prime-2025/amny--unknown.json",
+      "marjorie-prime-2025/amny--unknown.json"
     ],
     "directCookies": [
       "oliver-west-end-2024/times-uk--dominic-maxwell.json",
@@ -2186,7 +2204,8 @@
       "high-noon-west-end-2025/independent--alice-saville.json",
       "high-noon-west-end-2025/telegraph--dominic-cavendish.json",
       "woman-in-mind-west-end-2025/independent--alice-saville.json",
-      "woman-in-mind-west-end-2025/telegraph--claire-allfree.json"
+      "woman-in-mind-west-end-2025/telegraph--claire-allfree.json",
+      "marjorie-prime-2025/newyorker--helen-shaw.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2375,7 +2394,7 @@
     ]
   },
   "startTime": "2026-03-19T10:02:04.711Z",
-  "lastProcessed": "woman-in-mind-west-end-2025/telegraph--claire-allfree.json",
+  "lastProcessed": "the-playboy-of-the-western-world-west-end-2025/guardian--arifa-akbar.json",
   "log": [
     {
       "t": "2026-03-19T10:04:36.520Z",
@@ -2811,6 +2830,28 @@
       "t": "2026-03-20T05:58:15.879Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-20T06:00:20.673Z",
+      "event": "bb-session",
+      "session": "497b8b85",
+      "url": "https://www.thestage.co.uk/reviews/woman-in-mind-review-duke-of-yorks-theatre-lo"
+    },
+    {
+      "t": "2026-03-20T06:00:22.098Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-20T06:01:24.892Z",
+      "event": "bb-session",
+      "session": "ae96a8cb",
+      "url": "https://www.amny.com/entertainment/broadway/review-marjorie-prime-broadway/"
+    },
+    {
+      "t": "2026-03-20T06:01:25.927Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
