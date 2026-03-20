@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-20T00:18:12.112Z",
-  "processed": 628,
-  "failed": 90,
+  "updatedAt": "2026-03-20T00:22:22.893Z",
+  "processed": 637,
+  "failed": 91,
   "successRate": "87.5%",
   "tierBreakdown": {
-    "playwright": 448,
+    "playwright": 456,
     "amp": 38,
     "browserbase": 26,
     "directCookies": 0,
     "scrapingbee": 80,
     "brightdata": 0,
-    "archiveToday": 23,
-    "archive": 76
+    "archiveToday": 24,
+    "archive": 77
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-03-19T12:12:25.820Z",
-      "event": "bb-session",
-      "session": "f548e356",
-      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
-    },
-    {
-      "t": "2026-03-19T12:12:27.443Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-19T12:14:27.321Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-19T19:47:22.763Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-20T00:21:25.003Z",
+      "event": "bb-session",
+      "session": "77619052",
+      "url": "https://www.thestage.co.uk/reviews/reviews/sweetmeats-review-bush-theatre-london"
+    },
+    {
+      "t": "2026-03-20T00:21:26.222Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
