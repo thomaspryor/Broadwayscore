@@ -118,6 +118,13 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from sweep-we-aggregators'
 
+      - name: Push aggregator archives to private repo
+        if: always() && inputs.dry_run != true
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Archive from sweep-we-aggregators'
+
       - name: Trigger rebuild
         if: always() && inputs.dry_run != true
         run: |
