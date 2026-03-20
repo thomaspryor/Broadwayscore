@@ -1,23 +1,23 @@
 {
   "meta": {
-    "generatedAt": "2026-03-20T23:29:14.895Z",
+    "generatedAt": "2026-03-20T23:37:44.825Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 32712,
-      "inReviewsJson": 16491,
-      "skippedExcluded": 474,
-      "withFullText": 19,
-      "excerptOnly": 2175,
-      "llmClassified": 18,
+      "totalFiles": 32782,
+      "inReviewsJson": 16168,
+      "skippedExcluded": 59,
+      "withFullText": 35,
+      "excerptOnly": 2249,
+      "llmClassified": 34,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
       "uncertainCases": 18,
-      "budgetUsed": 0.0019000000000000006,
-      "llmCalls": 19,
+      "budgetUsed": 0.003499999999999998,
+      "llmCalls": 35,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 13823
+      "skippedAlreadyClassified": 13825
     },
     "calibration": null
   },
@@ -50,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a list of theater-related items and links, suggesting a directory or advertisement rather than a review of a specific show.",
+      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show.",
       "currentScore": 82
     },
     {
@@ -60,7 +60,7 @@
       "outletId": "bloomberg",
       "contentType": "news",
       "confidence": "medium",
-      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in photo captions, indicating it is not a review of the latter.",
+      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in photo captions, indicating it is not a review of \"First Date.\"",
       "currentScore": 60
     },
     {
@@ -70,7 +70,7 @@
       "outletId": "huffpost",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be a collection of news headlines and trending topics, not a review of \"First Date\" or any other show. The mention of 'summer musical' is not tied to a specific show.",
+      "reasoning": "The article appears to be a collection of news headlines and trending topics, lacking any evaluative content about \"First Date\" or any other theatrical production. The mention of 'critics' is in the context of a news headline about Nicki Minaj.",
       "currentScore": 62
     },
     {
@@ -80,7 +80,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, including \"Broadway news updates\" and \"Music album reviews,\" but it does not contain any evaluative content about a specific production.",
+      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific production.",
       "currentScore": 62
     },
     {
@@ -90,7 +90,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself.",
       "currentScore": 81
     },
     {
@@ -100,7 +100,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of various cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there's no evaluative content to classify it as a review.",
       "currentScore": 88
     },
     {
@@ -110,7 +110,7 @@
       "outletId": "frequentbusinesstraveler",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and setting of \"Once on This Island\" without offering a critical evaluation or opinion on the quality of the production. It focuses on the story and characters, indicating a preview rather than a review.",
+      "reasoning": "The article describes the plot and setting of \"Once on This Island\" but does not offer a critical evaluation or opinion about the quality of the production. It reads like a preview or synopsis.",
       "currentScore": 82
     },
     {
@@ -130,7 +130,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
+      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.' It lacks any evaluative content about the show.",
       "currentScore": 74
     },
     {
@@ -150,7 +150,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but it does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but it does not offer a critical evaluation or opinion about the quality of the production. It includes an interview excerpt at the end.",
       "currentScore": 83
     },
     {
@@ -180,7 +180,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It is closest to news.",
+      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific show.",
       "currentScore": 78
     },
     {
@@ -190,7 +190,7 @@
       "outletId": "vulture",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the set design and the playwright's intentions, drawing comparisons to other works, but it does not offer an overall evaluation or recommendation of the show's quality.",
+      "reasoning": "The article describes the set design and the playwright's intentions, but does not offer an evaluation or recommendation of the show itself. It reads more like a feature or background piece.",
       "currentScore": 64
     },
     {
@@ -200,11 +200,28 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of links and categories related to theater, rather than a review of a specific production.",
+      "reasoning": "This appears to be a collection of links and categories related to theater, not a review of a specific production.",
       "currentScore": 89
     }
   ],
   "heuristicFlags": [],
-  "reviewsConfirmed": [],
+  "reviewsConfirmed": [
+    "allegiance-2015/nyt-theater--unknown.json",
+    "american-psycho-2016/guardian--jesse-green.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/exeunt-magazine--loren-noveck.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/nysr--michael-sommers.json",
+    "back-to-the-future-2023/amny--matt-windman.json",
+    "back-to-the-future-2023/frontmezzjunkies--unknown.json",
+    "betrayal-2013/timeout--david-cote.json",
+    "buena-vista-social-club-off-broadway-2023/talkinbroadway--howard-miller.json",
+    "cats-the-jellicle-ball-off-broadway-2024/nyt-theater--jonathan-mandell.json",
+    "chinese-republicans-off-broadway-2026/la-voce-di-new-york--elise-nussbaum.json",
+    "chinese-republicans-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
+    "my-joy-is-heavy-off-broadway-2025/theatre-reviews-limited--david-roberts.json",
+    "othello-2025/nyt-theater--unknown.json",
+    "uncle-vanya-2024/wsj--charles-isherwood.json",
+    "waiting-for-godot-2009/nytimes--laura-collins-hughes.json",
+    "you-got-older-off-broadway-2026/culturesauce--thom-geier.json"
+  ],
   "perShowSummary": []
 }
