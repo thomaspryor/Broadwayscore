@@ -237,7 +237,16 @@
     "an-ark-2026/nytg--kyle-turner.json",
     "animal-wisdom-2022/nytimes--ben-brantley.json",
     "animal-wisdom-off-broadway-2022/nytimes--unknown.json",
-    "art-2025/hollywood-reporter--unknown.json"
+    "art-2025/hollywood-reporter--unknown.json",
+    "back-to-the-future-west-end-2021/vulture--unknown.json",
+    "blackbird-2016/newyorker--hilton-als.json",
+    "by-jeeves-2001/nytimes--bruce-weber.json",
+    "cats-the-jellicle-ball-off-broadway-2024/hollywood-reporter--unknown.json",
+    "cats-the-jellicle-ball-off-broadway-2024/nyt-theater--jonathan-mandell.json",
+    "chinese-republicans-off-broadway-2026/nytg--austin-fimmano.json",
+    "contact-2000/nytimes--unknown.json",
+    "contact-2000/variety--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/variety--unknown.json"
   ],
   "failed": [
     "my-joy-is-heavy-off-broadway-2025/nyt-theater--unknown.json",
@@ -271,7 +280,8 @@
     "sweetmeats-west-end-2026/guardian--anya-ryan.json",
     "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/guardian--kate-wyver.json",
     "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/times-uk--donald-hutera.json",
-    "anastasia-2017/newyorker--michael-schulman.json"
+    "anastasia-2017/newyorker--michael-schulman.json",
+    "cabaret-1987/vulture--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -461,7 +471,9 @@
       "marcel-on-the-train-off-broadway-2026/new-york-sun--elysa-gardner.json",
       "marcel-on-the-train-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
       "allegiance-2015/nyt-theater--unknown.json",
-      "an-ark-2026/nytg--kyle-turner.json"
+      "an-ark-2026/nytg--kyle-turner.json",
+      "cats-the-jellicle-ball-off-broadway-2024/nyt-theater--jonathan-mandell.json",
+      "chinese-republicans-off-broadway-2026/nytg--austin-fimmano.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -469,7 +481,9 @@
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
       "tru-off-broadway-2026/thewrap--unknown.json",
       "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/thewrap--robert-hofler.json",
-      "antigone-this-play-i-read-in-high-school-off-broadway-2026/thewrap--robert-hofler.json"
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/thewrap--robert-hofler.json",
+      "data/review-texts/cyrano-de-bergerac-west-end-2026/variety--unknown.json",
+      "cyrano-de-bergerac-west-end-2026/variety--unknown.json"
     ],
     "browserbase": [
       "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
@@ -483,7 +497,13 @@
       "data/review-texts/allegiance-2015/hollywood-reporter--unknown.json",
       "allegiance-2015/hollywood-reporter--unknown.json",
       "data/review-texts/art-2025/hollywood-reporter--unknown.json",
-      "art-2025/hollywood-reporter--unknown.json"
+      "art-2025/hollywood-reporter--unknown.json",
+      "data/review-texts/by-jeeves-2001/nytimes--bruce-weber.json",
+      "by-jeeves-2001/nytimes--bruce-weber.json",
+      "data/review-texts/cats-the-jellicle-ball-off-broadway-2024/hollywood-reporter--unknown.json",
+      "cats-the-jellicle-ball-off-broadway-2024/hollywood-reporter--unknown.json",
+      "data/review-texts/contact-2000/variety--unknown.json",
+      "contact-2000/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -511,7 +531,8 @@
       "data/review-texts/marie-and-rosetta-west-end-2026/thestage--holly-omahony.json",
       "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/cititour--brian-scott-lipton.json",
       "data/review-texts/unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/guardian--kate-wyver.json",
-      "data/review-texts/anastasia-2017/newyorker--michael-schulman.json"
+      "data/review-texts/anastasia-2017/newyorker--michael-schulman.json",
+      "data/review-texts/cabaret-1987/vulture--jesse-green.json"
     ],
     "archive": [
       "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
@@ -547,11 +568,14 @@
       "a-delicate-balance-1996/nytimes--ben-brantley.json",
       "allegiance-2015/vulture--unknown.json",
       "animal-wisdom-2022/nytimes--ben-brantley.json",
-      "animal-wisdom-off-broadway-2022/nytimes--unknown.json"
+      "animal-wisdom-off-broadway-2022/nytimes--unknown.json",
+      "back-to-the-future-west-end-2021/vulture--unknown.json",
+      "blackbird-2016/newyorker--hilton-als.json",
+      "contact-2000/nytimes--unknown.json"
     ]
   },
   "startTime": "2026-03-20T14:13:25.603Z",
-  "lastProcessed": "art-2025/hollywood-reporter--unknown.json",
+  "lastProcessed": "cyrano-de-bergerac-west-end-2026/variety--unknown.json",
   "log": [
     {
       "t": "2026-03-20T19:09:34.568Z",
@@ -640,6 +664,39 @@
       "t": "2026-03-20T20:22:23.178Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-20T20:22:52.542Z",
+      "event": "bb-session",
+      "session": "d9c96968",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9c0cefde1630f93aa15753c1"
+    },
+    {
+      "t": "2026-03-20T20:22:53.984Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-20T20:26:11.065Z",
+      "event": "bb-session",
+      "session": "900cf866",
+      "url": "http://www.hollywoodreporter.com/review/cats-theater-review-915947"
+    },
+    {
+      "t": "2026-03-20T20:26:12.546Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-20T20:27:21.496Z",
+      "event": "bb-session",
+      "session": "21526fdb",
+      "url": "https://variety.com/2000/film/reviews/contact-broadway-stage-makes-for-a-dazzlin"
+    },
+    {
+      "t": "2026-03-20T20:27:22.935Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

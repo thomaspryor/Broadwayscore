@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-20T20:22:38.155Z",
-  "processed": 238,
-  "failed": 32,
-  "successRate": "88.1%",
+  "updatedAt": "2026-03-20T20:27:43.343Z",
+  "processed": 247,
+  "failed": 33,
+  "successRate": "88.2%",
   "tierBreakdown": {
-    "playwright": 186,
-    "amp": 6,
-    "browserbase": 12,
+    "playwright": 188,
+    "amp": 8,
+    "browserbase": 18,
     "directCookies": 0,
     "scrapingbee": 10,
     "brightdata": 0,
-    "archiveToday": 12,
-    "archive": 34
+    "archiveToday": 13,
+    "archive": 37
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-03-20T19:09:34.568Z",
-      "event": "bb-session",
-      "session": "916af533",
-      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
-    },
-    {
-      "t": "2026-03-20T19:09:35.968Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
     {
       "t": "2026-03-20T19:11:27.312Z",
       "event": "bb-session",
@@ -102,6 +91,39 @@
       "t": "2026-03-20T20:22:23.178Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-20T20:22:52.542Z",
+      "event": "bb-session",
+      "session": "d9c96968",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9c0cefde1630f93aa15753c1"
+    },
+    {
+      "t": "2026-03-20T20:22:53.984Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-20T20:26:11.065Z",
+      "event": "bb-session",
+      "session": "900cf866",
+      "url": "http://www.hollywoodreporter.com/review/cats-theater-review-915947"
+    },
+    {
+      "t": "2026-03-20T20:26:12.546Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-20T20:27:21.496Z",
+      "event": "bb-session",
+      "session": "21526fdb",
+      "url": "https://variety.com/2000/film/reviews/contact-broadway-stage-makes-for-a-dazzlin"
+    },
+    {
+      "t": "2026-03-20T20:27:22.935Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
