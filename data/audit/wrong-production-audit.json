@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-20T15:29:27.450Z",
+  "timestamp": "2026-03-20T17:29:45.116Z",
   "stats": {
-    "totalReviews": 32072,
-    "alreadyFlagged": 9709,
+    "totalReviews": 32090,
+    "alreadyFlagged": 9711,
     "dateGuardCatches": 186,
     "directorMismatch": 1119,
     "tvFilmSignals": 3510,
     "londonSignals": 1082,
-    "offBroadwaySignals": 1071,
+    "offBroadwaySignals": 1072,
     "yearMismatch": 91,
-    "noPublishDate": 9449
+    "noPublishDate": 9466
   },
   "findings": [
     {
@@ -30326,7 +30326,7 @@
       "file": "times-uk--clive-davis.json",
       "score": 25,
       "publishDate": "2020-01-17",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-producers-review-mel-brooks-menier-chocolate-factory-nnfsxpvg0",
+      "url": "/people/Clive-Davis/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -79362,6 +79362,20 @@
       "score": 89,
       "publishDate": null,
       "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-broadway-review-cole-escola",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-west-end-2025",
+      "file": "observer--unknown.json",
+      "score": 83,
+      "publishDate": null,
+      "url": "https://observer.com/2024/07/oh-mary-is-a-splendidly-nasty-farce-you-will-not-want-to-miss/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
