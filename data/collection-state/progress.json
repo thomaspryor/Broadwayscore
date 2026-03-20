@@ -915,7 +915,14 @@
     "much-ado-about-nothing-globe-west-end-2026/whatsonstage--sarah-crompton.json",
     "driftwood-west-end-2026/telegraph--unknown.json",
     "beetlejuice-west-end-2026/daily-mail--lillian-gissen.json",
-    "beetlejuice-west-end-2026/independent--benjamin-salmon.json"
+    "beetlejuice-west-end-2026/independent--benjamin-salmon.json",
+    "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+    "a-woman-among-women-off-broadway-2026/theatermania--zachary-stewart.json",
+    "a-woman-among-women-off-broadway-2026/exeunt-magazine--loren-noveck.json",
+    "1536-west-end-2026/london-theatre--julia-rank.json",
+    "1536-west-end-2026/whatsonstage--alex-wood.json",
+    "the-music-man-off-broadway-2026/theatrely--juan-a-ramirez.json",
+    "grace-pervades-west-end-2026/financialtimes--unknown.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
@@ -1079,7 +1086,10 @@
     "sting-west-end-2026/ew--unknown.json",
     "sting-west-end-2026/ap--unknown.json",
     "sting-west-end-2026/huffpost--unknown.json",
-    "beetlejuice-west-end-2026/telegraph--robbie-collin.json"
+    "beetlejuice-west-end-2026/telegraph--robbie-collin.json",
+    "beetlejuice-west-end-2026/thestage--unknown.json",
+    "the-maids-off-broadway-2026/ew--unknown.json",
+    "the-maids-off-broadway-2026/nydailynews--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1730,7 +1740,11 @@
       "much-ado-about-nothing-globe-west-end-2026/standard--unknown.json",
       "much-ado-about-nothing-globe-west-end-2026/times-uk--clive-davis.json",
       "much-ado-about-nothing-globe-west-end-2026/whatsonstage--sarah-crompton.json",
-      "driftwood-west-end-2026/telegraph--unknown.json"
+      "driftwood-west-end-2026/telegraph--unknown.json",
+      "a-woman-among-women-off-broadway-2026/exeunt-magazine--loren-noveck.json",
+      "1536-west-end-2026/london-theatre--julia-rank.json",
+      "1536-west-end-2026/whatsonstage--alex-wood.json",
+      "grace-pervades-west-end-2026/financialtimes--unknown.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
@@ -1919,7 +1933,9 @@
       "sting-west-end-2026/telegraph--unknown.json",
       "much-ado-about-nothing-globe-west-end-2026/independent--alice-saville.json",
       "much-ado-about-nothing-globe-west-end-2026/telegraph--unknown.json",
-      "beetlejuice-west-end-2026/daily-mail--lillian-gissen.json"
+      "beetlejuice-west-end-2026/daily-mail--lillian-gissen.json",
+      "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+      "the-music-man-off-broadway-2026/theatrely--juan-a-ramirez.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2087,11 +2103,12 @@
       "dog-man-the-musical-west-end-2026/nytimes--unknown.json",
       "pride-west-end-2026/seattle-times--misha-berson.json",
       "sting-west-end-2026/daily-mail--unknown.json",
-      "beetlejuice-west-end-2026/independent--benjamin-salmon.json"
+      "beetlejuice-west-end-2026/independent--benjamin-salmon.json",
+      "a-woman-among-women-off-broadway-2026/theatermania--zachary-stewart.json"
     ]
   },
   "startTime": "2026-03-19T10:02:04.711Z",
-  "lastProcessed": "beetlejuice-west-end-2026/independent--benjamin-salmon.json",
+  "lastProcessed": "grace-pervades-west-end-2026/financialtimes--unknown.json",
   "log": [
     {
       "t": "2026-03-19T10:04:36.520Z",
@@ -2417,6 +2434,17 @@
       "t": "2026-03-20T05:02:11.127Z",
       "event": "bb-cookie-inject",
       "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-20T05:07:15.544Z",
+      "event": "bb-session",
+      "session": "25a23360",
+      "url": "https://www.thestage.co.uk/news/beetlejuice-transfers-to-uk-for-the-first-time"
+    },
+    {
+      "t": "2026-03-20T05:07:16.910Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }

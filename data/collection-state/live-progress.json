@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-20T05:05:50.035Z",
-  "processed": 916,
-  "failed": 162,
-  "successRate": "85.0%",
+  "updatedAt": "2026-03-20T05:10:47.790Z",
+  "processed": 923,
+  "failed": 165,
+  "successRate": "84.8%",
   "tierBreakdown": {
-    "playwright": 647,
+    "playwright": 651,
     "amp": 39,
     "browserbase": 30,
     "directCookies": 3,
-    "scrapingbee": 109,
+    "scrapingbee": 111,
     "brightdata": 0,
     "archiveToday": 30,
-    "archive": 133
+    "archive": 134
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-03-19T19:17:37.658Z",
-      "event": "bb-session",
-      "session": "3190d45e",
-      "url": "https://www.thestage.co.uk/review-round-ups/hercules-at-the-theatre-royal-drury-"
-    },
-    {
-      "t": "2026-03-19T19:17:39.025Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
     {
       "t": "2026-03-19T19:47:21.381Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-20T05:02:11.127Z",
       "event": "bb-cookie-inject",
       "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-20T05:07:15.544Z",
+      "event": "bb-session",
+      "session": "25a23360",
+      "url": "https://www.thestage.co.uk/news/beetlejuice-transfers-to-uk-for-the-first-time"
+    },
+    {
+      "t": "2026-03-20T05:07:16.910Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
