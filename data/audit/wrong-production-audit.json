@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-20T06:15:13.842Z",
+  "timestamp": "2026-03-20T06:47:03.138Z",
   "stats": {
-    "totalReviews": 32063,
-    "alreadyFlagged": 9690,
+    "totalReviews": 32070,
+    "alreadyFlagged": 9694,
     "dateGuardCatches": 189,
     "directorMismatch": 1117,
     "tvFilmSignals": 3510,
-    "londonSignals": 1084,
+    "londonSignals": 1083,
     "offBroadwaySignals": 1072,
     "yearMismatch": 91,
-    "noPublishDate": 9455
+    "noPublishDate": 9458
   },
   "findings": [
     {
@@ -3927,19 +3927,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "all-out-2025",
-      "file": "deadline--unknown.json",
-      "publishDate": "2026-02-09",
-      "url": "https://deadline.com/2026/02/jake-shane-broadway-all-out-comedy-about-ambition-1236713032/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hulu\""
         }
       ]
     },
@@ -20124,7 +20111,7 @@
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"paramount\""
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -58669,6 +58656,25 @@
       ]
     },
     {
+      "showId": "the-playboy-of-the-western-world-west-end-2025",
+      "file": "i-paper--fiona-mountford.json",
+      "score": 78,
+      "publishDate": "2025-12-12",
+      "url": "https://inews.co.uk/culture/arts/playboy-of-western-world-treat-play-4099209?srsltid=AfmBOorjG0jVcfl593qhe1k-eWeG3ZxglbnHrysKCE94gKfI_QYhmQYF",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-present-2017",
       "file": "telegraph--diane-snyder.json",
       "score": 82,
@@ -87856,38 +87862,10 @@
     },
     {
       "showId": "the-playboy-of-the-western-world-west-end-2025",
-      "file": "standard--nick-curtis.json",
-      "score": 63,
-      "publishDate": "2025-12-12",
-      "url": "https://www.standard.co.uk/culture/theatre/the-playboy-of-the-western-world-national-theatre-review-nicola-coughlan-b1262173.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "the-playboy-of-the-western-world-west-end-2025",
       "file": "times-uk--clive-davis.json",
       "score": 63,
       "publishDate": null,
       "url": "https://www.thetimes.com/culture/theatre-dance/article/the-playboy-of-the-western-world-review-an-assured-turn-from-nicola-coughlan-xxvqkw6hr?gaa_at=eafs&gaa_n=AWEtsqdD7NRKY2DjPPLTBUiSrWL9J3zEDTesWo0Mk774P-xwcpq46lJxtUeD3CrxB2E%3D&gaa_ts=693c27ec&gaa_sig=4_S7ItVVSJytpyXYpF_nD9PVetsX3Ekj_kuYxEEROg0UCL5rDSsuVfpZ9u9EvrFOekVgShWnZDQL3QY8awuBBQ%3D%3D",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"lyttelton\""
-        }
-      ]
-    },
-    {
-      "showId": "the-playboy-of-the-western-world-west-end-2025",
-      "file": "whatsonstage--alun-hood.json",
-      "score": 69,
-      "publishDate": "2025-12-12",
-      "url": "https://www.whatsonstage.com/news/the-playboy-of-the-western-world-at-the-national-theatre-review_1706313/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
