@@ -1,4 +1,4 @@
-# Roadmap — Last updated 2026-03-17
+# Roadmap — Last updated 2026-03-20
 
 > **Active work is now tracked on the [GitHub Projects board](https://github.com/users/thomaspryor/projects/1).**
 > Open issues with `session` label = active Claude Code sessions.
@@ -33,8 +33,10 @@
 18. **USA Today star re-collection** — BLOCKED. Older articles no longer render star widgets after site redesigns. ~291 reviews permanently unavailable.
 19. **Remaining UK outlet gaps** — Telegraph SVG extractor (73), Culture Sauce React (58). Need outlet-specific extractor improvements. Post-launch.
 
-**Data Integrity:**
-- ~~**Aggregator archive files critically low**~~ → RESOLVED (2026-03-17). Validator was checking staging dir (37 files) instead of real archive (5,557 files). Fixed validator path.
+**Data Integrity (P0 — from Mar 20 sweep incident):**
+- **28 WE reviews need rescoring** — Full text exists but scores were lost in sweep-we-aggregators incident. 21 shows affected. Dispatch targeted scoring (`--show=ID`) for each: all-my-sons-west-end-2025, back-to-the-future-west-end-2021, broken-glass-west-end-2026, dear-england-new-wimbledon-theatre-west-end-2026, it-walks-around-the-house-at-night-west-end-2026, mamma-mia-west-end-2021, man-and-boy-west-end-2026, manic-street-creature-west-end-2026, midnight-a-new-original-musical-by-todrick-hall-west-end-2026, my-neighbour-totoro-west-end-2025, oliver-west-end-2024, paddington-the-musical-west-end-2025, shadowlands-west-end-2026, starlight-express-west-end-2024, the-devil-wears-prada-west-end-2024, the-phantom-of-the-opera-off-west-end-2021, the-phantom-of-the-opera-west-end-1986, the-producers-west-end-2025, the-tempest-globe-west-end-2026, witness-for-the-prosecution-west-end-2022, woman-in-mind-west-end-2025
+- **`--all` scoring skips scoreable files** — General scoring runs report "Valid files (text >= 50 chars): 0" even when files have thousands of chars. Targeted `--show` works. Root cause unknown — likely a stale checkout or caching issue in the scoring pipeline's file loading. Must fix or all new reviews require manual targeted dispatches.
+- ~~**Aggregator archive files critically low**~~ → RESOLVED (2026-03-17).
 
 **Site Reliability:**
 7. ~~**Pipeline health dashboard**~~ → Phase 1 DONE (health monitoring, 9 categories).
@@ -66,6 +68,7 @@
 15. ~~WE/OB early reviews + URL mismatches~~ → DONE. 31 wrongProduction, 32 wrongUrl, 6 domain aliases added. Validation: 0/0/0.
 16. ~~Unknown outlets~~ → Reduced 55→49. 7 junk flagged, 1 fixed, 1 added to registry. Remaining 49 are `outletId: "unknown"` (need outlet identification — separate effort).
 17. ~820 shows missing synopses (mostly obscure historical).
+18. **Broadway News wrongUrl cleanup** — ~28 reviews attributed to "Broadway News" with BWW roundup URLs. These are fabricated entries — broadwaynews.com has no individual review pages for these shows. Should be deleted or re-attributed to BWW. LOW priority.
 
 **Pipeline:**
 17. ~~Collection coverage dashboard~~ → DONE. Weekly report: fullText/excerpt/stub by outlet, tier, access model, market. Identifies top collection opportunities. History tracking for trends.
@@ -88,6 +91,12 @@
 **Code Quality:** ~~Regression protection for critical patterns~~ → DONE (grep-based guards in CI). ~~Linter/IDE revert root cause~~ → DONE (concurrent sessions, not auto-formatter).
 
 ## Recently Completed
+
+### wrongUrl Prevention + Recovery (2026-03-20)
+- **Root cause**: Pre-March-1 `OUTLET_DOMAINS` had mismatched keys (`'broadway-news'` vs `'broadwaynews'`), so SERP queries had no `site:` filter and no domain check on results. 175 reviews got bad URLs (BWW, Facebook, IMDB, etc.).
+- **3 prevention fixes**: (1) Wired `domainAliases` from outlet-registry into SERP matching (20 outlets like `1minutecritic.com` ↔ `oneminutecritic.com`). (2) Domain validation in `createReviewFile()` — rejects URL-domain mismatches at creation time from all sources. (3) Automated `wrongUrl` flagging in `rebuild-all-reviews.js` — catches unflagged mismatches on every rebuild.
+- **Recovery**: Targeted `retry-wrong-urls.js` script + workflow. Fixed 6 T1 reviews (Times UK ×3, Telegraph, Evening Standard, Deadline). 71 unfixed are mostly Broadway News OB shows with no real review page.
+- **Workflow fix**: `gather-reviews` job now runs even if `outlet-serp` times out (`needs.prepare.result == 'success'` instead of `needs.outlet-serp.result != 'cancelled'`).
 
 ### WE Data Expansion (2026-03-18)
 - **London Theatre Direct (LTD) audience scraper** — 8th audience source. 35 WE shows with scores (Hamilton 93, Lion King 95, Wicked 90). JSON-LD extraction from londontheatredirect.com. Weekly CI + auto-trigger on show open.
@@ -167,7 +176,3 @@
 - Off-West End classification + venue filter
 - iOS: Sentry, push notifications, offline queue, haptics, store review, deep linking (Build #29)
 - BTC: TBD badges + curated nominees QA
-
-
-
-
