@@ -2188,13 +2188,32 @@ async function main() {
   // Use concurrent processing for large batches, sequential for small
   const results = await processShowsConcurrently(shows, apiLookup, todayTixIds, badImagesOnly, concurrency, verifyCtx, saveShowsData, maxRuntimeMin);
 
-  // Post-fetch duplicate image detection: hash all thumbnails, null out duplicates
-  // Only null when different-titled shows share the same image (generic placeholder).
-  // Same-title shows (revivals/transfers) legitimately share promotional art.
+  // Post-fetch duplicate image detection: hash all thumbnails, null out duplicates.
+  // Same-title shows (revivals/transfers) keep both — they legitimately share art.
+  // Different-title duplicates: keep the newer/open show, null the older/closed one.
   if (!dryRunMode && results.success.length > 0) {
     const crypto = require('crypto');
-    const hashMap = new Map(); // hash → { id, title }
+    const hashMap = new Map(); // hash → show reference
     let dupeCount = 0;
+
+    // Priority: open > previews > upcoming > closed. Higher = keep.
+    const statusPriority = (s) => {
+      if (s.status === 'open' || s.status === 'previews') return 2;
+      if (s.status === 'upcoming') return 1;
+      return 0;
+    };
+
+    function nullShowImages(show) {
+      const showImgDir = path.join(__dirname, '..', 'public', 'images', 'shows', show.id);
+      for (const file of ['hero.webp', 'poster.webp', 'thumbnail.webp']) {
+        const fp = path.join(showImgDir, file);
+        if (fs.existsSync(fp)) fs.unlinkSync(fp);
+      }
+      show.images.thumbnail = null;
+      show.images.poster = null;
+      show.images.hero = null;
+    }
+
     for (const s of showsData.shows) {
       const thumb = s.images?.thumbnail;
       if (!thumb || !thumb.startsWith('/images/')) continue;
@@ -2203,30 +2222,34 @@ async function main() {
       const hash = crypto.createHash('md5').update(fs.readFileSync(fullPath)).digest('hex');
       if (hashMap.has(hash)) {
         const first = hashMap.get(hash);
-        // Same title = revival/transfer sharing art — totally expected, skip
+        // Same title = revival/transfer sharing art — keep both
         const baseTitle = (s.title || s.displayName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-        const firstTitle = (first.title || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+        const firstTitle = (first.title || first.displayName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
         if (baseTitle === firstTitle) {
           console.log(`   ℹ Same image for same-title shows: ${s.id} and ${first.id} — keeping both`);
           continue;
         }
-        console.log(`   ⚠ DUPLICATE IMAGE: ${s.id} has same image as ${first.id} — nulling ${s.id}`);
-        // Delete the duplicate files from disk so they don't get out of sync with shows.json
-        const showImgDir = path.join(__dirname, '..', 'public', 'images', 'shows', s.id);
-        for (const file of ['hero.webp', 'poster.webp', 'thumbnail.webp']) {
-          const fp = path.join(showImgDir, file);
-          if (fs.existsSync(fp)) fs.unlinkSync(fp);
+        // Different title: null the LOWER priority (older/closed) show, keep the newer/open one
+        const sPri = statusPriority(s);
+        const firstPri = statusPriority(first);
+        if (sPri > firstPri) {
+          // Current show is higher priority — null the first, keep current
+          console.log(`   ⚠ DUPLICATE IMAGE: ${first.id} (${first.status}) has same image as ${s.id} (${s.status}) — nulling ${first.id}`);
+          nullShowImages(first);
+          hashMap.set(hash, s); // replace with higher-priority show
+          dupeCount++;
+        } else {
+          // First show is higher priority — null current
+          console.log(`   ⚠ DUPLICATE IMAGE: ${s.id} (${s.status}) has same image as ${first.id} (${first.status}) — nulling ${s.id}`);
+          nullShowImages(s);
+          dupeCount++;
         }
-        s.images.thumbnail = null;
-        s.images.poster = null;
-        s.images.hero = null;
-        dupeCount++;
       } else {
-        hashMap.set(hash, { id: s.id, title: s.title || s.displayName || '' });
+        hashMap.set(hash, s);
       }
     }
     if (dupeCount > 0) {
-      console.log(`   🔍 Nulled ${dupeCount} duplicate images (different-title shows only)`);
+      console.log(`   🔍 Nulled ${dupeCount} duplicate images (older/closed shows only)`);
     }
   }
 
