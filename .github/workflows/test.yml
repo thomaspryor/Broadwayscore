@@ -62,6 +62,25 @@ jobs:
           actionlint -color -shellcheck="" \
             -ignore 'maximum number of inputs' \
             .github/workflows/*.yml
+      - name: Check checkout-core-data has matching push-core-data
+        run: |
+          # Workflows that checkout core data AND have write permissions
+          # must also push-core-data, or changes get lost on next deploy.
+          MISSING=""
+          for f in .github/workflows/*.yml; do
+            HAS_CHECKOUT=$(grep -c 'checkout-core-data' "$f" 2>/dev/null || echo 0)
+            HAS_WRITE=$(grep -c 'contents: write' "$f" 2>/dev/null || echo 0)
+            HAS_PUSH=$(grep -c 'push-core-data' "$f" 2>/dev/null || echo 0)
+            if [ "$HAS_CHECKOUT" -gt 0 ] && [ "$HAS_WRITE" -gt 0 ] && [ "$HAS_PUSH" -eq 0 ]; then
+              MISSING="$MISSING $(basename $f)"
+            fi
+          done
+          if [ -n "$MISSING" ]; then
+            echo "::error::Workflows using checkout-core-data with write permissions but missing push-core-data:$MISSING"
+            echo "Add push-core-data action to sync changes back to the private repo."
+            exit 1
+          fi
+          echo "All writable workflows with checkout-core-data have matching push-core-data"
 
   dependency-audit:
     name: Dependency Audit
