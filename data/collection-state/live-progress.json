@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-20T19:36:19.636Z",
-  "processed": 140,
-  "failed": 20,
-  "successRate": "87.5%",
+  "updatedAt": "2026-03-20T19:47:26.434Z",
+  "processed": 185,
+  "failed": 25,
+  "successRate": "88.1%",
   "tierBreakdown": {
-    "playwright": 110,
-    "amp": 4,
-    "browserbase": 4,
+    "playwright": 146,
+    "amp": 6,
+    "browserbase": 6,
     "directCookies": 0,
     "scrapingbee": 10,
     "brightdata": 0,
-    "archiveToday": 7,
-    "archive": 17
+    "archiveToday": 10,
+    "archive": 24
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-03-20T19:09:34.568Z",
@@ -36,6 +36,28 @@
       "t": "2026-03-20T19:11:28.568Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-20T19:41:57.682Z",
+      "event": "bb-session",
+      "session": "517a8ab2",
+      "url": "https://www.thestage.co.uk/reviews/marie-and-rosetta-review-rose-theatre-kingsto"
+    },
+    {
+      "t": "2026-03-20T19:41:59.249Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-20T19:45:10.533Z",
+      "event": "bb-session",
+      "session": "4e5fb2fe",
+      "url": "https://www.nytimes.com/2026/03/12/theater/antigone-review-shalhoub-keenan-bolge"
+    },
+    {
+      "t": "2026-03-20T19:45:11.906Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
