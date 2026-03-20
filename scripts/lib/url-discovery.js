@@ -13,17 +13,19 @@
 const fs = require('fs');
 const path = require('path');
 const scraper = require('./scraper');
-const { domainMatchesExpected } = scraper;
+const { domainMatchesExpected, setRegistryDomainAliases } = scraper;
 const { isUrlYearOutsideWindow } = require('./content-filters');
 const { isLondonMarket } = require('./venue-classification');
 
 // Derive outlet-to-domain mapping from outlet-registry.json (single source of truth)
-// Maps outlet IDs + aliases → domain for SERP URL discovery
+// Maps outlet IDs + aliases → primary domain for SERP URL discovery
+// Also builds domainAliases map for domain matching (e.g., 1minutecritic.com → oneminutecritic.com)
 function buildOutletDomains() {
   const registryPath = path.join(__dirname, '..', '..', 'data', 'outlet-registry.json');
   const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
   const outlets = registry.outlets || registry;
   const map = {};
+  const aliasMap = {}; // domain → Set of equivalent domains (from domainAliases)
   for (const [id, o] of Object.entries(outlets)) {
     if (!o.domain) continue;
     map[id] = o.domain;
@@ -32,11 +34,24 @@ function buildOutletDomains() {
         map[alias] = o.domain;
       }
     }
+    // Build domain alias groups from registry's domainAliases field
+    if (o.domainAliases && o.domainAliases.length > 0) {
+      const allDomains = [o.domain, ...o.domainAliases];
+      for (const d of allDomains) {
+        if (!aliasMap[d]) aliasMap[d] = new Set();
+        for (const other of allDomains) {
+          if (other !== d) aliasMap[d].add(other);
+        }
+      }
+    }
   }
-  return map;
+  return { map, aliasMap };
 }
 
-const OUTLET_DOMAINS = buildOutletDomains();
+const { map: OUTLET_DOMAINS, aliasMap: REGISTRY_DOMAIN_ALIASES } = buildOutletDomains();
+
+// Inject registry domain aliases into scraper.js for domainMatchesExpected()
+setRegistryDomainAliases(REGISTRY_DOMAIN_ALIASES);
 
 // Known domain redirects (old domain → new domain)
 const DOMAIN_REDIRECTS = {
@@ -590,6 +605,7 @@ function buildDateTbs(dateRange) {
 
 module.exports = {
   OUTLET_DOMAINS,
+  REGISTRY_DOMAIN_ALIASES,
   DOMAIN_REDIRECTS,
   discoverCorrectUrl,
   getShowInfo,

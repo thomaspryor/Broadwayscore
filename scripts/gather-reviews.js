@@ -56,7 +56,8 @@ const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
 const { LETTER_GRADES } = require('./lib/score-extractors');
-const { discoverCorrectUrl } = require('./lib/url-discovery');
+const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
+const { domainMatchesExpected } = require('./lib/scraper');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { isLondonMarket } = require('./lib/venue-classification');
@@ -1992,6 +1993,21 @@ function createReviewFile(showId, reviewData, options = {}) {
     return 'profileUrl';
   }
 
+  // URL-DOMAIN MISMATCH CHECK: reject URLs that don't match the outlet's registered domain
+  // This catches bad SERP results, aggregator URLs (BWW roundup for a broadwaynews review), etc.
+  if (reviewData.url && normalizedOutletId) {
+    const expectedDomain = OUTLET_DOMAINS[normalizedOutletId];
+    if (expectedDomain) {
+      try {
+        const urlDomain = new URL(reviewData.url).hostname.replace(/^www\./, '');
+        if (!domainMatchesExpected(expectedDomain.replace(/^www\./, ''), urlDomain)) {
+          console.log(`    ✗ Skipping ${filename}: URL domain ${urlDomain} doesn't match outlet ${normalizedOutletId} (expected ${expectedDomain})`);
+          return 'domainMismatch';
+        }
+      } catch (e) { /* invalid URL — let downstream handle */ }
+    }
+  }
+
   // CROSS-PRODUCTION URL CHECK: prevent same URL in sibling production directories
   // Exceptions: roundup articles and combined reviews legitimately cover multiple shows
   if (reviewData.url) {
@@ -2342,7 +2358,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
     lbo: { found: false, extracted: 0, skipped: false },
     serp: { calls: 0, hits: 0, skipped: false },
     wrongUrlRetry: { found: 0, retried: 0, fixed: 0, skipped: false },
-    rejections: { junkOutlet: 0, nonBroadway: 0, wrongProduction: 0, duplicate: 0, crossShow: 0 },
+    rejections: { junkOutlet: 0, nonBroadway: 0, wrongProduction: 0, duplicate: 0, crossShow: 0, domainMismatch: 0 },
   };
 
   // STEP 1: Check ALL THREE aggregators (DTLI, Show Score, BWW Review Roundups)
@@ -2910,9 +2926,9 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
     console.log(`  SERP: skipped`);
   }
   const rej = health.rejections;
-  const totalRej = rej.junkOutlet + rej.nonBroadway + rej.wrongProduction + rej.duplicate + rej.crossShow;
+  const totalRej = rej.junkOutlet + rej.nonBroadway + rej.wrongProduction + rej.duplicate + rej.crossShow + rej.domainMismatch;
   if (totalRej > 0) {
-    console.log(`  Rejections: ${totalRej} (${rej.junkOutlet} junk, ${rej.nonBroadway} non-Broadway, ${rej.wrongProduction} wrongProd, ${rej.duplicate} dupes, ${rej.crossShow} crossShow)`);
+    console.log(`  Rejections: ${totalRej} (${rej.junkOutlet} junk, ${rej.nonBroadway} non-Broadway, ${rej.wrongProduction} wrongProd, ${rej.duplicate} dupes, ${rej.crossShow} crossShow, ${rej.domainMismatch} domainMismatch)`);
   }
   console.log(`  Total found: ${foundReviews.length} → Created: ${created} files`);
 
@@ -3076,10 +3092,10 @@ async function main() {
         duplicate: s.duplicate + (rej.duplicate || 0),
         crossShow: s.crossShow + (rej.crossShow || 0),
       };
-    }, { junkOutlet: 0, nonBroadway: 0, wrongProduction: 0, duplicate: 0, crossShow: 0 });
-    const rejTotal = totalRej.junkOutlet + totalRej.nonBroadway + totalRej.wrongProduction + totalRej.duplicate + totalRej.crossShow;
+    }, { junkOutlet: 0, nonBroadway: 0, wrongProduction: 0, duplicate: 0, crossShow: 0, domainMismatch: 0 });
+    const rejTotal = totalRej.junkOutlet + totalRej.nonBroadway + totalRej.wrongProduction + totalRej.duplicate + totalRej.crossShow + totalRej.domainMismatch;
     if (rejTotal > 0) {
-      console.log(`\n  Rejections: ${rejTotal} total (${totalRej.junkOutlet} junk, ${totalRej.nonBroadway} non-Broadway, ${totalRej.wrongProduction} wrongProd, ${totalRej.duplicate} dupes, ${totalRej.crossShow} crossShow)`);
+      console.log(`\n  Rejections: ${rejTotal} total (${totalRej.junkOutlet} junk, ${totalRej.nonBroadway} non-Broadway, ${totalRej.wrongProduction} wrongProd, ${totalRej.duplicate} dupes, ${totalRej.crossShow} crossShow, ${totalRej.domainMismatch} domainMismatch)`);
     }
 
     console.log('═'.repeat(60));
