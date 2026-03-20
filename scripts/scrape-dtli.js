@@ -17,6 +17,7 @@ const path = require('path');
 const https = require('https');
 const { isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { validatePageMatchesShow } = require('./lib/page-validator');
+const { validateUrlDomain } = require('./lib/url-discovery');
 
 // Paths
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -366,6 +367,13 @@ function archiveDTLIPage(showId, url, html) {
  * Save review to review-texts directory
  */
 function saveReview(review) {
+  // Domain validation: reject URLs that don't match the outlet's registered domain
+  const domainCheck = validateUrlDomain(review.url, review.outletId);
+  if (!domainCheck.valid) {
+    console.log(`    [SKIP] ${review.outletId}: ${domainCheck.reason}`);
+    return { created: false, updated: false };
+  }
+
   const showDir = path.join(REVIEW_TEXTS_DIR, review.showId);
   if (!fs.existsSync(showDir)) {
     fs.mkdirSync(showDir, { recursive: true });

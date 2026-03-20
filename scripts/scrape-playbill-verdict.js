@@ -22,6 +22,7 @@ const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { validateUrlDomain } = require('./lib/url-discovery');
 const cheerio = require('cheerio');
 
 // Paths
@@ -365,6 +366,14 @@ function saveReviewFromPlaybill(showId, reviewInfo) {
   // Normalize outlet using the shared normalization system
   const outletId = normalizeOutlet(outletName) || normalizeOutlet(reviewInfo.outletDomain) || reviewInfo.outletDomain;
   if (!outletId) return 'skipped';
+
+  // Domain validation: reject URLs that don't match the outlet's registered domain
+  const domainCheck = validateUrlDomain(reviewInfo.url, outletId);
+  if (!domainCheck.valid) {
+    console.log(`    [SKIP] ${outletId}: ${domainCheck.reason}`);
+    stats.skippedDomainMismatch = (stats.skippedDomainMismatch || 0) + 1;
+    return 'skipped';
+  }
 
   // Normalize critic
   const criticSlug = criticName

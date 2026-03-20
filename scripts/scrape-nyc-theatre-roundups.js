@@ -26,6 +26,7 @@ const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./lib/review-normalization');
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { validateUrlDomain } = require('./lib/url-discovery');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -325,6 +326,14 @@ function saveNycTheatreExcerpt(showId, reviewInfo) {
   // Normalize outlet
   const outletId = normalizeOutlet(reviewInfo.outlet);
   if (!outletId) return 'skipped';
+
+  // Domain validation: reject URLs that don't match the outlet's registered domain
+  const domainCheck = validateUrlDomain(reviewInfo.url, outletId);
+  if (!domainCheck.valid) {
+    console.log(`    [SKIP] ${outletId}: ${domainCheck.reason}`);
+    stats.skippedDomainMismatch = (stats.skippedDomainMismatch || 0) + 1;
+    return 'skipped';
+  }
 
   // Use cross-scraper dedup: find existing review file regardless of filename format
   const existing = findExistingReviewFile(showDir, reviewInfo.outlet, null);

@@ -18,6 +18,7 @@ const https = require('https');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutletFull, slugify: canonicalSlugify, findExistingReviewFile, generateReviewFilename, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { excerptMentionsWrongShow } = require('./lib/excerpt-validation');
+const { validateUrlDomain } = require('./lib/url-discovery');
 
 // Paths
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -662,6 +663,13 @@ function archiveBWWPage(showId, url, html) {
  * Save review to review-texts directory
  */
 function saveReview(review) {
+  // Domain validation: reject URLs that don't match the outlet's registered domain
+  const domainCheck = validateUrlDomain(review.url, review.outletId);
+  if (!domainCheck.valid) {
+    console.log(`    [SKIP] ${review.outletId}: ${domainCheck.reason}`);
+    return 'skipped';
+  }
+
   const showDir = path.join(REVIEW_TEXTS_DIR, review.showId);
   if (!fs.existsSync(showDir)) {
     fs.mkdirSync(showDir, { recursive: true });

@@ -35,6 +35,7 @@ const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
+const { validateUrlDomain } = require('./lib/url-discovery');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -753,6 +754,14 @@ function saveReview(showId, reviewData, options = {}) {
   // Normalize
   const outletId = normalizeOutlet(outletName);
   if (!outletId) return 'skipped';
+
+  // Domain validation: reject URLs that don't match the outlet's registered domain
+  const domainCheck = validateUrlDomain(reviewData.url, outletId);
+  if (!domainCheck.valid) {
+    console.log(`    [SKIP] ${outletId}: ${domainCheck.reason}`);
+    stats.skippedDomainMismatch = (stats.skippedDomainMismatch || 0) + 1;
+    return 'skipped';
+  }
 
   const criticSlug = criticName ? normalizeCritic(criticName) : 'unknown';
 
