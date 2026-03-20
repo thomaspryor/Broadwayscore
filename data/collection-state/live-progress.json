@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-20T00:22:22.893Z",
-  "processed": 637,
-  "failed": 91,
-  "successRate": "87.5%",
+  "updatedAt": "2026-03-20T00:27:00.579Z",
+  "processed": 644,
+  "failed": 94,
+  "successRate": "87.3%",
   "tierBreakdown": {
-    "playwright": 456,
+    "playwright": 462,
     "amp": 38,
     "browserbase": 26,
     "directCookies": 0,
-    "scrapingbee": 80,
+    "scrapingbee": 81,
     "brightdata": 0,
-    "archiveToday": 24,
+    "archiveToday": 25,
     "archive": 77
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-19T12:14:27.321Z",
-      "event": "bb-session",
-      "session": "0c121a2d",
-      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
-    },
-    {
-      "t": "2026-03-19T12:14:28.617Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-19T12:18:12.591Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-20T00:21:26.222Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-20T00:26:28.457Z",
+      "event": "bb-session",
+      "session": "84da2029",
+      "url": "https://www.thestage.co.uk/reviews/shadowlands-review-aldwych-theatre-london-hug"
+    },
+    {
+      "t": "2026-03-20T00:26:29.663Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }

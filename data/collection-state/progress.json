@@ -636,7 +636,14 @@
     "sweetmeats-west-end-2026/theatre-weekly--unknown.json",
     "sweetmeats-west-end-2026/whatsonstage--rachel-agyekum.json",
     "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/attitude--dale-fox.json",
-    "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/times-uk--donald-hutera.json"
+    "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/times-uk--donald-hutera.json",
+    "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/whatsonstage--ella-satin.json",
+    "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/whatsonstage--unknown.json",
+    "shadowlands-west-end-2026/artsdesk--helen-hawkins.json",
+    "shadowlands-west-end-2026/broadwayworld--aliya-al-hussan.json",
+    "shadowlands-west-end-2026/financialtimes--sarah-hemming.json",
+    "shadowlands-west-end-2026/telegraph--dominic-cavendish.json",
+    "shadowlands-west-end-2026/whatsonstage--sarah-crompton.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
@@ -729,7 +736,10 @@
     "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
     "evening-all-afternoon-west-end-2026/the-sun--dominic-maxwell.json",
     "sweetmeats-west-end-2026/guardian--anya-ryan.json",
-    "sweetmeats-west-end-2026/thestage--holly-omahony.json"
+    "sweetmeats-west-end-2026/thestage--holly-omahony.json",
+    "the-reservoir-off-broadway-2026/broadwaynews--nicole-rosky.json",
+    "shadowlands-west-end-2026/thestage--holly-omahony.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1189,7 +1199,13 @@
       "sweetmeats-west-end-2026/standard--maya-chandran.json",
       "sweetmeats-west-end-2026/theatre-weekly--unknown.json",
       "sweetmeats-west-end-2026/whatsonstage--rachel-agyekum.json",
-      "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/attitude--dale-fox.json"
+      "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/attitude--dale-fox.json",
+      "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/whatsonstage--ella-satin.json",
+      "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/whatsonstage--unknown.json",
+      "shadowlands-west-end-2026/artsdesk--helen-hawkins.json",
+      "shadowlands-west-end-2026/broadwayworld--aliya-al-hussan.json",
+      "shadowlands-west-end-2026/financialtimes--sarah-hemming.json",
+      "shadowlands-west-end-2026/whatsonstage--sarah-crompton.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
@@ -1340,7 +1356,8 @@
       "magic-mike-live-west-end-2021/independent--hugh-montgomery.json",
       "summerfolk-west-end-2026/independent--unknown.json",
       "summerfolk-west-end-2026/telegraph--unknown.json",
-      "touch-off-broadway-2026/epoch-times--judd-hollander.json"
+      "touch-off-broadway-2026/epoch-times--judd-hollander.json",
+      "shadowlands-west-end-2026/telegraph--dominic-cavendish.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1367,7 +1384,8 @@
       "data/review-texts/manic-street-creature-west-end-2026/broadwayworld--unknown.json",
       "data/review-texts/the-choir-of-man-west-end-2026/times-uk--unknown.json",
       "data/review-texts/youre-a-good-man-charlie-brown-off-broadway-2026/talkinbroadway--matthew-murray.json",
-      "data/review-texts/sweetmeats-west-end-2026/thestage--holly-omahony.json"
+      "data/review-texts/sweetmeats-west-end-2026/thestage--holly-omahony.json",
+      "data/review-texts/shadowlands-west-end-2026/thestage--holly-omahony.json"
     ],
     "archive": [
       "mother-russia-off-broadway-2026/theatermania--linda-buchwald.json",
@@ -1450,7 +1468,7 @@
     ]
   },
   "startTime": "2026-03-19T10:02:04.711Z",
-  "lastProcessed": "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/times-uk--donald-hutera.json",
+  "lastProcessed": "shadowlands-west-end-2026/whatsonstage--sarah-crompton.json",
   "log": [
     {
       "t": "2026-03-19T10:04:36.520Z",
@@ -1697,6 +1715,17 @@
     },
     {
       "t": "2026-03-20T00:21:26.222Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-20T00:26:28.457Z",
+      "event": "bb-session",
+      "session": "84da2029",
+      "url": "https://www.thestage.co.uk/reviews/shadowlands-review-aldwych-theatre-london-hug"
+    },
+    {
+      "t": "2026-03-20T00:26:29.663Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
