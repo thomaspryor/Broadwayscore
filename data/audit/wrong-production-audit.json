@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-20T14:29:43.704Z",
+  "timestamp": "2026-03-20T14:37:52.391Z",
   "stats": {
     "totalReviews": 32072,
     "alreadyFlagged": 9709,
     "dateGuardCatches": 186,
     "directorMismatch": 1119,
-    "tvFilmSignals": 3509,
+    "tvFilmSignals": 3510,
     "londonSignals": 1082,
     "offBroadwaySignals": 1071,
     "yearMismatch": 91,
-    "noPublishDate": 9450
+    "noPublishDate": 9449
   },
   "findings": [
     {
@@ -36366,6 +36366,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"onscreen\""
+        }
+      ]
+    },
+    {
+      "showId": "my-joy-is-heavy-off-broadway-2025",
+      "file": "theatermania--unknown.json",
+      "publishDate": "2026-03-17",
+      "url": "https://www.theatermania.com/news/review-my-joy-is-heavy-asks-can-grief-and-happiness-coexist_1828198/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
