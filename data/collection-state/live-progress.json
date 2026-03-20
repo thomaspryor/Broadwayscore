@@ -1,17 +1,17 @@
 {
-  "updatedAt": "2026-03-20T19:54:12.550Z",
-  "processed": 229,
-  "failed": 31,
+  "updatedAt": "2026-03-20T20:22:38.155Z",
+  "processed": 238,
+  "failed": 32,
   "successRate": "88.1%",
   "tierBreakdown": {
-    "playwright": 184,
+    "playwright": 186,
     "amp": 6,
-    "browserbase": 6,
+    "browserbase": 12,
     "directCookies": 0,
     "scrapingbee": 10,
     "brightdata": 0,
-    "archiveToday": 11,
-    "archive": 30
+    "archiveToday": 12,
+    "archive": 34
   },
   "browserbaseSessions": 4,
   "recentActivity": [
@@ -58,6 +58,50 @@
       "t": "2026-03-20T19:45:11.906Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-20T20:19:02.150Z",
+      "event": "bb-session",
+      "session": "b746c701",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;res=9f05e6de163bf93"
+    },
+    {
+      "t": "2026-03-20T20:19:03.499Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-20T20:19:17.072Z",
+      "event": "bb-session",
+      "session": "83f4500e",
+      "url": "https://www.hollywoodreporter.com/news/general-news/george-takei-lea-salonga-all"
+    },
+    {
+      "t": "2026-03-20T20:19:18.484Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-20T20:20:54.487Z",
+      "event": "bb-session",
+      "session": "5336a946",
+      "url": "http://www.newyorker.com/culture/culture-desk/not-exactly-golden-tickets-charlie"
+    },
+    {
+      "t": "2026-03-20T20:20:55.859Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-20T20:22:21.626Z",
+      "event": "bb-session",
+      "session": "d0ab0c55",
+      "url": "https://www.hollywoodreporter.com/business/business-news/broadway-box-office-art"
+    },
+    {
+      "t": "2026-03-20T20:22:23.178Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
