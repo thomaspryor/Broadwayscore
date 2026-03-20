@@ -4036,6 +4036,42 @@ function extractPublishDateFromHtml(html) {
   return null;
 }
 
+// Extract publishDate from URL path patterns: /YYYY/MM/DD/ or YYYY-MM-DD
+// Fallback for when HTML has no date metadata. Conservative: validates calendar
+// correctness and rejects show-title years (e.g. "1776").
+function extractDateFromUrl(url) {
+  if (!url) return null;
+  const pathOnly = url.split('?')[0].split('#')[0];
+
+  // Pattern 1: /YYYY/MM/DD/ (WordPress-style, most reliable)
+  const slashMatch = pathOnly.match(/\/(\d{4})\/(\d{1,2})\/(\d{1,2})\//);
+  if (slashMatch) {
+    const result = validateUrlDate(slashMatch[1], slashMatch[2], slashMatch[3]);
+    if (result) return result;
+  }
+
+  // Pattern 2: YYYY-MM-DD in path (Bloomberg, LA Times, etc.)
+  const TITLE_YEARS = new Set(['1776', '1984', '1812', '1921', '1992', '1940', '2026']);
+  const dashMatch = pathOnly.match(/(\d{4})-(\d{2})-(\d{2})/);
+  if (dashMatch && !TITLE_YEARS.has(dashMatch[1])) {
+    const result = validateUrlDate(dashMatch[1], dashMatch[2], dashMatch[3]);
+    if (result) return result;
+  }
+
+  return null;
+}
+
+function validateUrlDate(yearStr, monthStr, dayStr) {
+  const year = parseInt(yearStr, 10);
+  const month = parseInt(monthStr, 10);
+  const day = parseInt(dayStr, 10);
+  if (year < 1970 || year > 2027 || month < 1 || month > 12 || day < 1 || day > 31) return null;
+  // Calendar validity — catches Feb 30, etc.
+  const d = new Date(year, month - 1, day);
+  if (d.getFullYear() !== year || d.getMonth() !== month - 1 || d.getDate() !== day) return null;
+  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+}
+
 // Normalize extracted date string to YYYY-MM-DD format
 // Extracts date components directly from string to avoid timezone shift issues
 // (e.g., "2024-03-15T23:30:00-05:00" → "2024-03-15", not "2024-03-16")
@@ -4135,6 +4171,16 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     if (extractedDate) {
       data.publishDate = extractedDate;
       console.log(`    → Extracted publishDate from HTML: ${extractedDate}`);
+    }
+  }
+
+  // Fallback: extract publishDate from URL path (e.g. /2025/11/16/ or 2025-11-16)
+  if (!data.publishDate && data.url) {
+    const extractedDate = extractDateFromUrl(data.url);
+    if (extractedDate) {
+      data.publishDate = extractedDate;
+      data.dateSource = 'url';
+      console.log(`    → Extracted publishDate from URL: ${extractedDate}`);
     }
   }
 
