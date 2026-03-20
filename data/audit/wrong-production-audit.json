@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-20T00:58:55.895Z",
+  "timestamp": "2026-03-20T01:28:54.810Z",
   "stats": {
     "totalReviews": 32059,
-    "alreadyFlagged": 9636,
+    "alreadyFlagged": 9637,
     "dateGuardCatches": 185,
     "directorMismatch": 1119,
-    "tvFilmSignals": 3507,
-    "londonSignals": 1087,
+    "tvFilmSignals": 3509,
+    "londonSignals": 1086,
     "offBroadwaySignals": 1071,
     "yearMismatch": 92,
-    "noPublishDate": 9505
+    "noPublishDate": 9504
   },
   "findings": [
     {
@@ -47677,6 +47677,20 @@
       ]
     },
     {
+      "showId": "starlight-express-west-end-2024",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 62,
+      "publishDate": "2024-06-30",
+      "url": "https://www.whatsonstage.com/news/starlight-express-review-not-first-class-but-a-technical-rollercoaster-ride_1610072/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from starlight-express-1987"
+        }
+      ]
+    },
+    {
       "showId": "steel-magnolias-2005",
       "file": "nytimes--ben-brantley.json",
       "score": 42,
@@ -48085,6 +48099,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -48165,20 +48184,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "standard--nick-curtis.json",
-      "score": 90,
-      "publishDate": "2023-12-15",
-      "url": "https://www.standard.co.uk/culture/theatre/stranger-things-the-first-shadow-review-west-end-netflix-phoenix-theatre-b1127020.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
         }
       ]
     },
@@ -65062,11 +65067,18 @@
       "showId": "witness-for-the-prosecution-west-end-2022",
       "file": "london-box-office--stuart-king.json",
       "score": 61,
+      "publishDate": "2019-05-16",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-agatha-christies-witness-for-the-prosecution",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1230d before show (2019-05-16 vs 2022-09-27)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -79608,6 +79620,20 @@
     },
     {
       "showId": "oliver-west-end-2024",
+      "file": "times-uk--neil-fisher.json",
+      "score": 72,
+      "publishDate": "2025-01-14",
+      "url": "https://www.thetimes.com/article/cce59bdb-fb8e-4a06-92e4-b61bfe9ceadc",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
       "score": 87,
       "publishDate": "2025-01-14",
@@ -82912,20 +82938,6 @@
       ]
     },
     {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "lost-in-theatreland--jill-johnson.json",
-      "score": 89,
-      "publishDate": "2023-12-18",
-      "url": "https://lostintheatreland.co.uk/stranger-things-the-first-shadow-review-phoenix-theatre/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
       "showId": "suffs-2024",
       "file": "chelsea-community-news--michael-musto.json",
       "score": 78,
@@ -85486,7 +85498,7 @@
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -87543,20 +87555,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"classic stage\""
-        }
-      ]
-    },
-    {
-      "showId": "the-phantom-of-the-opera-off-west-end-2021",
-      "file": "standard--unknown.json",
-      "score": 81,
-      "publishDate": "2021-08-12",
-      "url": "https://www.standard.co.uk/culture/theatre/phantom-of-the-opera-west-end-review-her-majestys-theatre-london-b950370.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
