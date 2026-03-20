@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-20T05:22:24.644Z",
+  "timestamp": "2026-03-20T05:43:05.585Z",
   "stats": {
     "totalReviews": 32063,
-    "alreadyFlagged": 9682,
+    "alreadyFlagged": 9689,
     "dateGuardCatches": 189,
     "directorMismatch": 1117,
-    "tvFilmSignals": 3509,
-    "londonSignals": 1086,
+    "tvFilmSignals": 3510,
+    "londonSignals": 1085,
     "offBroadwaySignals": 1072,
     "yearMismatch": 91,
-    "noPublishDate": 9459
+    "noPublishDate": 9456
   },
   "findings": [
     {
@@ -22961,7 +22961,7 @@
     {
       "showId": "hate-radio-off-broadway-2026",
       "file": "off-off-online--deirdre-donovan.json",
-      "score": null,
+      "score": 85,
       "publishDate": "February 15, 2026",
       "url": "https://www.offoffonline.com/offoffonline/2026/2/15/hate-radio",
       "findings": [
@@ -33772,6 +33772,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"paramount\""
+        }
+      ]
+    },
+    {
+      "showId": "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026",
+      "file": "off-off-online--adrienne-onofri.json",
+      "score": 44,
+      "publishDate": "February 26th, 2026",
+      "url": "https://www.offoffonline.com/offoffonline/2026/2/24/meat-suit-or-the-shitshow-of-motherhood",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -53541,19 +53555,6 @@
       ]
     },
     {
-      "showId": "the-dinosaurs-off-broadway-2026",
-      "file": "playwrightshorizonsorg--unknown.json",
-      "publishDate": null,
-      "url": "https://www.playwrightshorizons.org/shows/production-history/2020s/2526/dinosaurs",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"paramount\""
-        }
-      ]
-    },
-    {
       "showId": "the-disappear-off-broadway-2026",
       "file": "nytg--caroline-cao.json",
       "score": 64,
@@ -60620,6 +60621,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-waterfall-off-broadway-2026",
+      "file": "theater-scene--victor-gluck.json",
+      "score": 78,
+      "publishDate": "February 24th, 2026",
+      "url": "https://www.theaterscene.net/plays/offbway-plays/the-waterfall/victor-gluck/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -77035,20 +77050,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"cherry lane\""
-        }
-      ]
-    },
-    {
-      "showId": "little-women-the-musical-off-broadway-2026",
-      "file": "guardian--emma-john.json",
-      "score": 70,
-      "publishDate": "November 18th, 2021",
-      "url": "https://www.theguardian.com/stage/2021/nov/18/little-women-the-musical-review-park-theatre-london",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

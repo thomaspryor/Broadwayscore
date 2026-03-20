@@ -1,23 +1,23 @@
 {
   "meta": {
-    "generatedAt": "2026-03-20T05:17:57.624Z",
+    "generatedAt": "2026-03-20T05:38:49.979Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 32750,
-      "inReviewsJson": 16552,
+      "inReviewsJson": 16551,
       "skippedExcluded": 17,
-      "withFullText": 20,
-      "excerptOnly": 2316,
-      "llmClassified": 19,
+      "withFullText": 24,
+      "excerptOnly": 2312,
+      "llmClassified": 23,
       "heuristicFlagged": 2,
       "nonReviewsFound": 0,
       "uncertainCases": 19,
-      "budgetUsed": 0.0020000000000000005,
-      "llmCalls": 20,
+      "budgetUsed": 0.0024,
+      "llmCalls": 24,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14199
+      "skippedAlreadyClassified": 14198
     },
     "calibration": null
   },
@@ -30,7 +30,7 @@
       "outletId": "chicago-reader",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a listing or announcement related to the show, possibly a closing notice, rather than a review. There is no evaluative content present.",
+      "reasoning": "This appears to be a listing or announcement related to the show, possibly indicating a closing or recommendation, but it does not contain evaluative content. It's more akin to a news item or event listing than a review itself, given the lack of critical assessment.",
       "currentScore": 86
     },
     {
@@ -39,8 +39,8 @@
       "outlet": "The Daily Beast",
       "outletId": "dailybeast",
       "contentType": "news",
-      "confidence": "low",
-      "reasoning": "The article mentions the Tony Awards eligibility deadline, which is a news item, but the excerpt is too short to be certain.",
+      "confidence": "medium",
+      "reasoning": "The article discusses the Tony Awards eligibility deadline and the rush of shows opening before it, which is a news item rather than a review of a specific show.",
       "currentScore": 72
     },
     {
@@ -50,7 +50,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion on the quality of the production. It also includes unrelated theater news.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production itself. It also includes unrelated theater news.",
       "currentScore": 82
     },
     {
@@ -60,7 +60,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than an actual article. It does mention 'Broadway review subscriptions' and 'Music album reviews' but does not contain a review of 'Fences'.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than an actual article or review. It mentions 'music album reviews' but not a review of 'Fences' specifically.",
       "currentScore": 82
     },
     {
@@ -70,7 +70,7 @@
       "outletId": "bloomberg",
       "contentType": "news",
       "confidence": "medium",
-      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in photo captions, indicating it is not a review of the latter.",
+      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in photo captions. It does not offer a critical evaluation of \"First Date.\"",
       "currentScore": 60
     },
     {
@@ -80,7 +80,7 @@
       "outletId": "huffpost",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be a collection of news headlines and trending topics, rather than a review of 'First Date'. The truncated middle section is unidentifiable.",
+      "reasoning": "The article appears to be a collection of news headlines and trending topics, rather than a review of \"First Date.\"",
       "currentScore": 62
     },
     {
@@ -110,7 +110,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of various cultural events.",
       "currentScore": 88
     },
     {
@@ -120,7 +120,7 @@
       "outletId": "frequentbusinesstraveler",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and setting of \"Once on This Island\" without offering a critical evaluation or opinion on the quality of the production. It focuses on the story and characters, indicating a preview rather than a review.",
+      "reasoning": "The article describes the plot and setting of \"Once on This Island\" but does not offer an evaluation or opinion on the quality of the production. It reads like a pre-opening description of the show.",
       "currentScore": 82
     },
     {
@@ -140,7 +140,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
+      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.' It lacks any evaluative content about the show.",
       "currentScore": 74
     },
     {
@@ -160,7 +160,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's a feature article.",
       "currentScore": 83
     },
     {
@@ -170,7 +170,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and search terms, not an actual article. There is no evaluative content about 'The Assembled Parties'.",
       "currentScore": 42
     },
     {
@@ -180,7 +180,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
+      "reasoning": "The article consists of production credits and ticket information, which is more aligned with a news item or listing than a review or other content type. There is no evaluative content.",
       "currentScore": 64
     },
     {
@@ -190,7 +190,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific show.",
+      "reasoning": "This appears to be a list of links and search terms related to theater, not a review or any other specific content type. It's likely a navigation or advertising element.",
       "currentScore": 78
     },
     {
@@ -200,7 +200,7 @@
       "outletId": "vulture",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the set design and the playwright's intentions, but does not offer an evaluation or recommendation of the show's quality. It reads more like a feature piece about the show's themes and design choices.",
+      "reasoning": "The article describes the set design and the playwright's intentions, but it does not offer an evaluation or opinion on the quality of the production itself. It's more of a feature piece about the show's themes and design choices.",
       "currentScore": 64
     },
     {
@@ -210,7 +210,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of links and categories related to theater, rather than a review of a specific production.",
+      "reasoning": "The text appears to be a collection of links and categories related to theater, not a review of a specific production.",
       "currentScore": 89
     }
   ],
@@ -238,6 +238,11 @@
       "confidence": "heuristic-only"
     }
   ],
-  "reviewsConfirmed": [],
+  "reviewsConfirmed": [
+    "i-wish-my-life-were-like-a-musical-off-broadway-2026/off-off-online--walter-murphy.json",
+    "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/off-off-online--adrienne-onofri.json",
+    "the-dinosaurs-off-broadway-2026/theater-scene--victor-gluck.json",
+    "the-waterfall-off-broadway-2026/theater-scene--victor-gluck.json"
+  ],
   "perShowSummary": []
 }
