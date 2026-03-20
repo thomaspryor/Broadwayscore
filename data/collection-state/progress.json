@@ -157,7 +157,16 @@
     "bigfoot-off-broadway-2026/nysr--unknown.json",
     "bigfoot-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
     "bigfoot-off-broadway-2026/theater-scene--darryl-reilly.json",
-    "bigfoot-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
+    "bigfoot-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+    "marie-and-rosetta-west-end-2026/the-sun--clive-davis.json",
+    "marie-and-rosetta-west-end-2026/timeout--caroline-mc.json",
+    "marie-and-rosetta-west-end-2026/timeout-london--caroline-mcginn.json",
+    "marie-and-rosetta-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+    "marie-and-rosetta-west-end-2026/broadwayworld--clementine-scott.json",
+    "marie-and-rosetta-west-end-2026/everything-theatre-uk--jess-gonzalez.json",
+    "marie-and-rosetta-west-end-2026/financialtimes--unknown.json",
+    "marie-and-rosetta-west-end-2026/london-box-office--stuart-king.json",
+    "marie-and-rosetta-west-end-2026/london-theatre--theo-bosanquet.json"
   ],
   "failed": [
     "my-joy-is-heavy-off-broadway-2025/nyt-theater--unknown.json",
@@ -181,7 +190,8 @@
     "manic-street-creature-west-end-2026/london-theatre--anya-ryan.json",
     "mother-russia-off-broadway-2026/buy-tickets--unknown.json",
     "bigfoot-off-broadway-2026/playbill--unknown.json",
-    "bigfoot-off-broadway-2026/whatsonstage--unknown.json"
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "marie-and-rosetta-west-end-2026/thestage--holly-omahony.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -309,7 +319,15 @@
       "bigfoot-off-broadway-2026/nysr--unknown.json",
       "bigfoot-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
       "bigfoot-off-broadway-2026/theater-scene--darryl-reilly.json",
-      "bigfoot-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
+      "bigfoot-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+      "marie-and-rosetta-west-end-2026/the-sun--clive-davis.json",
+      "marie-and-rosetta-west-end-2026/timeout--caroline-mc.json",
+      "marie-and-rosetta-west-end-2026/timeout-london--caroline-mcginn.json",
+      "marie-and-rosetta-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+      "marie-and-rosetta-west-end-2026/everything-theatre-uk--jess-gonzalez.json",
+      "marie-and-rosetta-west-end-2026/financialtimes--unknown.json",
+      "marie-and-rosetta-west-end-2026/london-box-office--stuart-king.json",
+      "marie-and-rosetta-west-end-2026/london-theatre--theo-bosanquet.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -345,7 +363,8 @@
       "data/review-texts/youre-a-good-man-charlie-brown-off-broadway-2026/broadwayworld--michael-dale.json",
       "data/review-texts/zack-off-broadway-2026/broadwaynews--gillian-blum.json",
       "data/review-texts/manic-street-creature-west-end-2026/broadwayworld--unknown.json",
-      "data/review-texts/bigfoot-off-broadway-2026/playbill--unknown.json"
+      "data/review-texts/bigfoot-off-broadway-2026/playbill--unknown.json",
+      "data/review-texts/marie-and-rosetta-west-end-2026/thestage--holly-omahony.json"
     ],
     "archive": [
       "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
@@ -368,11 +387,12 @@
       "night-side-songs-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
       "spread-off-broadway-2026/theatermania--unknown.json",
       "the-amazing-sex-life-of-rabbits-off-broadway-2026/theatermania--pete-hempstead.json",
-      "bigfoot-off-broadway-2026/thewrap--robert-hofler.json"
+      "bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
+      "marie-and-rosetta-west-end-2026/broadwayworld--clementine-scott.json"
     ]
   },
   "startTime": "2026-03-20T14:13:25.603Z",
-  "lastProcessed": "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+  "lastProcessed": "marie-and-rosetta-west-end-2026/london-theatre--theo-bosanquet.json",
   "log": [
     {
       "t": "2026-03-20T19:09:34.568Z",
@@ -395,6 +415,17 @@
       "t": "2026-03-20T19:11:28.568Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-20T19:41:57.682Z",
+      "event": "bb-session",
+      "session": "517a8ab2",
+      "url": "https://www.thestage.co.uk/reviews/marie-and-rosetta-review-rose-theatre-kingsto"
+    },
+    {
+      "t": "2026-03-20T19:41:59.249Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
