@@ -922,7 +922,15 @@
     "1536-west-end-2026/london-theatre--julia-rank.json",
     "1536-west-end-2026/whatsonstage--alex-wood.json",
     "the-music-man-off-broadway-2026/theatrely--juan-a-ramirez.json",
-    "grace-pervades-west-end-2026/financialtimes--unknown.json"
+    "grace-pervades-west-end-2026/financialtimes--unknown.json",
+    "grace-pervades-west-end-2026/thestage--unknown.json",
+    "grace-pervades-west-end-2026/whatsonstage--unknown.json",
+    "grace-pervades-west-end-2026/london-theatre--marianka-swain.json",
+    "the-karate-kid-the-musical-west-end-2026/st-louis-mag--christine-jackson.json",
+    "the-karate-kid-the-musical-west-end-2026/wbkr--chadwick-benefield.json",
+    "avenue-q-west-end-2026/whatsonstage--alex-wood.json",
+    "midnight-in-the-toyshop-west-end-2026/whatsonstage--unknown.json",
+    "la-traviata-off-broadway-2026/observer--gabrielle-ferrari.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
@@ -1089,7 +1097,9 @@
     "beetlejuice-west-end-2026/telegraph--robbie-collin.json",
     "beetlejuice-west-end-2026/thestage--unknown.json",
     "the-maids-off-broadway-2026/ew--unknown.json",
-    "the-maids-off-broadway-2026/nydailynews--unknown.json"
+    "the-maids-off-broadway-2026/nydailynews--unknown.json",
+    "avenue-q-west-end-2026/london-theatre--unknown.json",
+    "john-proctor-is-the-villain-west-end-2026/cititour--brian-scott-lipton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1744,7 +1754,13 @@
       "a-woman-among-women-off-broadway-2026/exeunt-magazine--loren-noveck.json",
       "1536-west-end-2026/london-theatre--julia-rank.json",
       "1536-west-end-2026/whatsonstage--alex-wood.json",
-      "grace-pervades-west-end-2026/financialtimes--unknown.json"
+      "grace-pervades-west-end-2026/financialtimes--unknown.json",
+      "grace-pervades-west-end-2026/whatsonstage--unknown.json",
+      "grace-pervades-west-end-2026/london-theatre--marianka-swain.json",
+      "the-karate-kid-the-musical-west-end-2026/st-louis-mag--christine-jackson.json",
+      "the-karate-kid-the-musical-west-end-2026/wbkr--chadwick-benefield.json",
+      "avenue-q-west-end-2026/whatsonstage--alex-wood.json",
+      "midnight-in-the-toyshop-west-end-2026/whatsonstage--unknown.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
@@ -1817,7 +1833,9 @@
       "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
       "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
       "data/review-texts/sting-west-end-2026/newsday--unknown.json",
-      "sting-west-end-2026/newsday--unknown.json"
+      "sting-west-end-2026/newsday--unknown.json",
+      "data/review-texts/la-traviata-off-broadway-2026/observer--gabrielle-ferrari.json",
+      "la-traviata-off-broadway-2026/observer--gabrielle-ferrari.json"
     ],
     "directCookies": [
       "oliver-west-end-2024/times-uk--dominic-maxwell.json",
@@ -2104,11 +2122,12 @@
       "pride-west-end-2026/seattle-times--misha-berson.json",
       "sting-west-end-2026/daily-mail--unknown.json",
       "beetlejuice-west-end-2026/independent--benjamin-salmon.json",
-      "a-woman-among-women-off-broadway-2026/theatermania--zachary-stewart.json"
+      "a-woman-among-women-off-broadway-2026/theatermania--zachary-stewart.json",
+      "grace-pervades-west-end-2026/thestage--unknown.json"
     ]
   },
   "startTime": "2026-03-19T10:02:04.711Z",
-  "lastProcessed": "grace-pervades-west-end-2026/financialtimes--unknown.json",
+  "lastProcessed": "la-traviata-off-broadway-2026/observer--gabrielle-ferrari.json",
   "log": [
     {
       "t": "2026-03-19T10:04:36.520Z",
@@ -2445,6 +2464,17 @@
       "t": "2026-03-20T05:07:16.910Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-20T05:12:51.501Z",
+      "event": "bb-session",
+      "session": "1d6b969e",
+      "url": "https://observer.com/2022/10/review-nadine-sierra-is-a-force-of-nature-as-violet"
+    },
+    {
+      "t": "2026-03-20T05:12:52.683Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
     }
   ]
 }
