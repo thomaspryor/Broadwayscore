@@ -139,7 +139,7 @@ jobs:
   # Step 2: Gather reviews in parallel batches
   gather-reviews:
     needs: [prepare, outlet-serp]
-    if: always() && needs.outlet-serp.result != 'cancelled'
+    if: always() && needs.prepare.result == 'success'
     runs-on: ubuntu-latest
     strategy:
       matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
