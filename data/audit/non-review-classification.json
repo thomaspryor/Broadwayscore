@@ -1,38 +1,28 @@
 {
   "meta": {
-    "generatedAt": "2026-03-20T22:36:04.012Z",
+    "generatedAt": "2026-03-20T23:29:14.895Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 32648,
-      "inReviewsJson": 16494,
-      "skippedExcluded": 20,
-      "withFullText": 26,
-      "excerptOnly": 2282,
-      "llmClassified": 25,
+      "totalFiles": 32712,
+      "inReviewsJson": 16491,
+      "skippedExcluded": 474,
+      "withFullText": 19,
+      "excerptOnly": 2175,
+      "llmClassified": 18,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
-      "uncertainCases": 19,
-      "budgetUsed": 0.0025999999999999994,
-      "llmCalls": 26,
+      "uncertainCases": 18,
+      "budgetUsed": 0.0019000000000000006,
+      "llmCalls": 19,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14166
+      "skippedAlreadyClassified": 13823
     },
     "calibration": null
   },
   "nonReviews": [],
   "uncertainCases": [
-    {
-      "file": "amazing-grace-2015/chicago-reader--jack-helbig.json",
-      "showId": "amazing-grace-2015",
-      "outlet": "Chicago Reader",
-      "outletId": "chicago-reader",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "This appears to be a listing or announcement related to the show, possibly indicating a closing or recommendation, but it does not contain evaluative content. It's more akin to a news item or event listing than a review itself, given the lack of critical assessment.",
-      "currentScore": 86
-    },
     {
       "file": "dead-outlaw-2025/dailybeast--tim-teeman.json",
       "showId": "dead-outlaw-2025",
@@ -50,7 +40,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion on the quality of the production. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -70,7 +60,7 @@
       "outletId": "bloomberg",
       "contentType": "news",
       "confidence": "medium",
-      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in photo captions at the end. It does not offer a review or evaluation of \"First Date.\"",
+      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in photo captions, indicating it is not a review of the latter.",
       "currentScore": 60
     },
     {
@@ -80,7 +70,7 @@
       "outletId": "huffpost",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be a collection of news headlines and trending topics, rather than a review of 'First Date' or any other show. The presence of sections like 'What's Hot' and 'TRENDING IN Culture & Arts' further supports this classification.",
+      "reasoning": "The article appears to be a collection of news headlines and trending topics, not a review of \"First Date\" or any other show. The mention of 'summer musical' is not tied to a specific show.",
       "currentScore": 62
     },
     {
@@ -90,7 +80,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, including \"Broadway news updates\" and \"Music album reviews,\" but it does not contain any evaluative content about a specific production.",
       "currentScore": 62
     },
     {
@@ -100,7 +90,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical 'Groundhog Day' and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
       "currentScore": 81
     },
     {
@@ -110,7 +100,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there is no evaluative content or opinion offered about the show itself.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of various cultural events.",
       "currentScore": 88
     },
     {
@@ -120,7 +110,7 @@
       "outletId": "frequentbusinesstraveler",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and setting of \"Once on This Island\" but does not offer a critical evaluation or opinion about the quality of the production. It reads like a pre-opening description or overview.",
+      "reasoning": "The article describes the plot and setting of \"Once on This Island\" without offering a critical evaluation or opinion on the quality of the production. It focuses on the story and characters, indicating a preview rather than a review.",
       "currentScore": 82
     },
     {
@@ -140,7 +130,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.'",
+      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
       "currentScore": 74
     },
     {
@@ -150,7 +140,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of categories and links related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -160,7 +150,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, including the history of Hal Prince's work and the show's unique narratorial form. While it contains some evaluative language, it primarily functions as a feature article rather than a review. The truncated portion appears to be an interview.",
+      "reasoning": "The article describes the show and its context, but it does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
       "currentScore": 83
     },
     {
@@ -180,7 +170,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article provides production details and ticket information, resembling a news item or listing rather than a review with critical evaluation.",
+      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
       "currentScore": 64
     },
     {
@@ -190,7 +180,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's closest to news due to the mention of updates.",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It is closest to news.",
       "currentScore": 78
     },
     {
@@ -200,7 +190,7 @@
       "outletId": "vulture",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the set design and the playwright's intentions, but it does not offer an evaluation or opinion on the quality of the production itself. It's more of a feature piece about the show's themes and design choices.",
+      "reasoning": "The article describes the set design and the playwright's intentions, drawing comparisons to other works, but it does not offer an overall evaluation or recommendation of the show's quality.",
       "currentScore": 64
     },
     {
@@ -215,13 +205,6 @@
     }
   ],
   "heuristicFlags": [],
-  "reviewsConfirmed": [
-    "a-gentlemans-guide-to-love-and-murder-2013/amny--matt-windman.json",
-    "antigone-this-play-i-read-in-high-school-off-broadway-2026/one-minute-critic--billy-mcentee.json",
-    "burn-this-2019/dctheatrescene--richard-seff.json",
-    "frozen-2018/dctheatrescene--richard-seff.json",
-    "tootsie-2019/dctheatrescene--richard-seff.json",
-    "torch-song-2018/dctheatrescene--richard-seff.json"
-  ],
+  "reviewsConfirmed": [],
   "perShowSummary": []
 }
