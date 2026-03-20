@@ -91,7 +91,11 @@
     "evening-all-afternoon-west-end-2026/whatsonstage--unknown.json",
     "deep-azure-globe-west-end-2026/timeout-london--andrzej-lukowski.json",
     "deep-azure-globe-west-end-2026/artsdesk--unknown.json",
-    "deep-azure-globe-west-end-2026/broadwayworld--unknown.json"
+    "deep-azure-globe-west-end-2026/broadwayworld--unknown.json",
+    "heartbreak-hotel-off-broadway-2026/guardian--unknown.json",
+    "heartbreak-hotel-off-broadway-2026/stageandcinema--unknown.json",
+    "gotta-dance-off-broadway-2026/theatermania--unknown.json",
+    "la-traviata-off-broadway-2026/observer--gabrielle-ferrari.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -101,7 +105,8 @@
     "marie-and-rosetta-west-end-2026/broadwayworld--clementine-scott.json",
     "marie-and-rosetta-west-end-2026/everything-theatre-uk--jess-gonzalez.json",
     "evening-all-afternoon-west-end-2026/the-sun--dominic-maxwell.json",
-    "sweetmeats-west-end-2026/guardian--anya-ryan.json"
+    "sweetmeats-west-end-2026/guardian--anya-ryan.json",
+    "gotta-dance-off-broadway-2026/playbill--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -181,10 +186,15 @@
       "evening-all-afternoon-west-end-2026/whatsonstage--sarah-crompton.json",
       "evening-all-afternoon-west-end-2026/whatsonstage--unknown.json",
       "deep-azure-globe-west-end-2026/timeout-london--andrzej-lukowski.json",
-      "deep-azure-globe-west-end-2026/artsdesk--unknown.json"
+      "deep-azure-globe-west-end-2026/artsdesk--unknown.json",
+      "heartbreak-hotel-off-broadway-2026/guardian--unknown.json",
+      "heartbreak-hotel-off-broadway-2026/stageandcinema--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/la-traviata-off-broadway-2026/observer--gabrielle-ferrari.json",
+      "la-traviata-off-broadway-2026/observer--gabrielle-ferrari.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "summerfolk-west-end-2026/independent--unknown.json",
@@ -195,7 +205,8 @@
       "broken-glass-west-end-2026/telegraph--asserts-dominic-cavendish.json",
       "broken-glass-west-end-2026/telegraph--dominic-cavendish.json",
       "marie-and-rosetta-west-end-2026/guardian--ammar-kalia.json",
-      "evening-all-afternoon-west-end-2026/telegraph--unknown.json"
+      "evening-all-afternoon-west-end-2026/telegraph--unknown.json",
+      "gotta-dance-off-broadway-2026/theatermania--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -212,6 +223,13 @@
     ]
   },
   "startTime": "2026-03-20T08:31:07.341Z",
-  "lastProcessed": "deep-azure-globe-west-end-2026/broadwayworld--unknown.json",
-  "log": []
+  "lastProcessed": "la-traviata-off-broadway-2026/observer--gabrielle-ferrari.json",
+  "log": [
+    {
+      "t": "2026-03-20T09:11:49.819Z",
+      "event": "bb-session",
+      "session": "10417d95",
+      "url": "https://observer.com/2022/10/review-nadine-sierra-is-a-force-of-nature-as-violet"
+    }
+  ]
 }
