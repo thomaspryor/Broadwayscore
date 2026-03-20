@@ -254,7 +254,14 @@
     "elf-2024/vulture--jackson-mchenry.json",
     "harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json",
     "hate-radio-off-broadway-2026/newyorker--unknown.json",
-    "heathers-the-musical-off-broadway-2025/nytg--unknown.json"
+    "heathers-the-musical-off-broadway-2025/nytg--unknown.json",
+    "heathers-the-musical-off-broadway-2025/nytimes--unknown.json",
+    "hillary-and-clinton-2019/vulture--sara-holdren.json",
+    "indecent-2017/act-three-the-reviews--doug-marino.json",
+    "king-kong-2018/nytimes--ben-brantleyjesse-green.json",
+    "little-shop-of-horrors-off-broadway-2019/nytg--unknown.json",
+    "miss-saigon-1991/nytimes--unknown.json",
+    "night-side-songs-off-broadway-2026/nyt-theater--jonathan-mandell.json"
   ],
   "failed": [
     "my-joy-is-heavy-off-broadway-2025/nyt-theater--unknown.json",
@@ -291,7 +298,10 @@
     "anastasia-2017/newyorker--michael-schulman.json",
     "cabaret-1987/vulture--jesse-green.json",
     "farinelli-and-the-king-2017/vulture--sara-holdren.json",
-    "hate-radio-off-broadway-2026/nytimes--unknown.json"
+    "hate-radio-off-broadway-2026/nytimes--unknown.json",
+    "illinoise-2024/nyt-theater--jonathan-mandell.json",
+    "illinoise-2024/nytimes--unknown.json",
+    "mother-russia-off-broadway-2026/nytimes--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -486,7 +496,10 @@
       "chinese-republicans-off-broadway-2026/nytg--austin-fimmano.json",
       "data-2026/nytg--allison-considine.json",
       "doubt-a-parable/nytg--gillian-russo.json",
-      "heathers-the-musical-off-broadway-2025/nytg--unknown.json"
+      "heathers-the-musical-off-broadway-2025/nytg--unknown.json",
+      "indecent-2017/act-three-the-reviews--doug-marino.json",
+      "little-shop-of-horrors-off-broadway-2019/nytg--unknown.json",
+      "night-side-songs-off-broadway-2026/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -547,7 +560,10 @@
       "data/review-texts/anastasia-2017/newyorker--michael-schulman.json",
       "data/review-texts/cabaret-1987/vulture--jesse-green.json",
       "data/review-texts/farinelli-and-the-king-2017/vulture--sara-holdren.json",
-      "data/review-texts/hate-radio-off-broadway-2026/nytimes--unknown.json"
+      "data/review-texts/hate-radio-off-broadway-2026/nytimes--unknown.json",
+      "data/review-texts/illinoise-2024/nyt-theater--jonathan-mandell.json",
+      "data/review-texts/illinoise-2024/nytimes--unknown.json",
+      "data/review-texts/mother-russia-off-broadway-2026/nytimes--unknown.json"
     ],
     "archive": [
       "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
@@ -591,11 +607,15 @@
       "doubt-a-parable/vulture--sara-holdren.json",
       "elf-2024/vulture--jackson-mchenry.json",
       "harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json",
-      "hate-radio-off-broadway-2026/newyorker--unknown.json"
+      "hate-radio-off-broadway-2026/newyorker--unknown.json",
+      "heathers-the-musical-off-broadway-2025/nytimes--unknown.json",
+      "hillary-and-clinton-2019/vulture--sara-holdren.json",
+      "king-kong-2018/nytimes--ben-brantleyjesse-green.json",
+      "miss-saigon-1991/nytimes--unknown.json"
     ]
   },
   "startTime": "2026-03-20T14:13:25.603Z",
-  "lastProcessed": "heathers-the-musical-off-broadway-2025/nytg--unknown.json",
+  "lastProcessed": "night-side-songs-off-broadway-2026/nyt-theater--jonathan-mandell.json",
   "log": [
     {
       "t": "2026-03-20T19:09:34.568Z",
@@ -726,6 +746,28 @@
     },
     {
       "t": "2026-03-20T20:32:58.819Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-20T20:36:04.652Z",
+      "event": "bb-session",
+      "session": "2573efda",
+      "url": "https://www.nytimes.com/2024/03/07/theater/illinoise-review-sufjan-stevens-justi"
+    },
+    {
+      "t": "2026-03-20T20:36:05.886Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-20T20:38:04.974Z",
+      "event": "bb-session",
+      "session": "f9af3ea0",
+      "url": "https://www.nytimes.com/2026/02/25/theater/mother-russia-lauren-yee-profile.html"
+    },
+    {
+      "t": "2026-03-20T20:38:06.243Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
