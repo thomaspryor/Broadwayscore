@@ -1027,7 +1027,16 @@
     "the-disappear-off-broadway-2026/off-off-online--adrienne-onofri.json",
     "the-disappear-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "the-disappear-off-broadway-2026/theater-life--samuel-l-leiter.json",
-    "the-disappear-off-broadway-2026/theater-scene--victor-gluck.json"
+    "the-disappear-off-broadway-2026/theater-scene--victor-gluck.json",
+    "high-noon-west-end-2025/times-uk--unknown.json",
+    "high-noon-west-end-2025/guardian--arifa-akbar.json",
+    "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json",
+    "high-noon-west-end-2025/timeout-london--unknown.json",
+    "high-noon-west-end-2025/artsdesk--matt-wolf.json",
+    "high-noon-west-end-2025/independent--alice-saville.json",
+    "high-noon-west-end-2025/london-theatre--julia-rank.json",
+    "high-noon-west-end-2025/standard--nick-curtis.json",
+    "high-noon-west-end-2025/telegraph--dominic-cavendish.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
@@ -1209,7 +1218,8 @@
     "beautiful-little-fool-west-end-2026/everything-theatre--mike-carter.json",
     "ulysses-off-broadway-2026/talkinbroadway--howard-miller.json",
     "the-disappear-off-broadway-2026/talkinbroadway--james-wilson.json",
-    "bug-2026/wsj--charles-isherwood.json"
+    "bug-2026/wsj--charles-isherwood.json",
+    "high-noon-west-end-2025/thestage--sam-marlowe.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1945,7 +1955,12 @@
       "the-disappear-off-broadway-2026/off-off-online--adrienne-onofri.json",
       "the-disappear-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "the-disappear-off-broadway-2026/theater-life--samuel-l-leiter.json",
-      "the-disappear-off-broadway-2026/theater-scene--victor-gluck.json"
+      "the-disappear-off-broadway-2026/theater-scene--victor-gluck.json",
+      "high-noon-west-end-2025/guardian--arifa-akbar.json",
+      "high-noon-west-end-2025/timeout-london--unknown.json",
+      "high-noon-west-end-2025/artsdesk--matt-wolf.json",
+      "high-noon-west-end-2025/london-theatre--julia-rank.json",
+      "high-noon-west-end-2025/standard--nick-curtis.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
@@ -2151,7 +2166,9 @@
       "hans-litten-the-jew-who-crossexamined-hitler-off-broadway-2026/front-row-center--david-walters.json",
       "man-and-boy-west-end-2026/telegraph--dominic-cavendish.json",
       "maggots-west-end-2026/guardian--arifa-akbar.json",
-      "the-disappear-off-broadway-2026/nytimes--helen-shaw.json"
+      "the-disappear-off-broadway-2026/nytimes--helen-shaw.json",
+      "high-noon-west-end-2025/independent--alice-saville.json",
+      "high-noon-west-end-2025/telegraph--dominic-cavendish.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2334,11 +2351,13 @@
       "going-bacharach-the-songs-of-an-icon-off-broadway-2026/theatermania--zachary-stewart.json",
       "the-disappear-off-broadway-2026/theatermania--zachary-stewart.json",
       "the-disappear-off-broadway-2026/timeout--adam-feldman.json",
-      "bug-2026/njcom--unknown.json"
+      "bug-2026/njcom--unknown.json",
+      "high-noon-west-end-2025/times-uk--unknown.json",
+      "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json"
     ]
   },
   "startTime": "2026-03-19T10:02:04.711Z",
-  "lastProcessed": "the-disappear-off-broadway-2026/theater-scene--victor-gluck.json",
+  "lastProcessed": "high-noon-west-end-2025/thestage--sam-marlowe.json",
   "log": [
     {
       "t": "2026-03-19T10:04:36.520Z",
@@ -2741,6 +2760,17 @@
       "t": "2026-03-20T05:48:32.172Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-20T05:55:36.480Z",
+      "event": "bb-session",
+      "session": "e7b605e8",
+      "url": "https://www.thestage.co.uk/reviews/high-noon-review-harold-pinter-theatre-london"
+    },
+    {
+      "t": "2026-03-20T05:55:37.758Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
