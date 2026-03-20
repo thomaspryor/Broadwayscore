@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-20T00:47:37.681Z",
+  "timestamp": "2026-03-20T00:58:55.895Z",
   "stats": {
     "totalReviews": 32059,
-    "alreadyFlagged": 9635,
+    "alreadyFlagged": 9636,
     "dateGuardCatches": 185,
     "directorMismatch": 1119,
-    "tvFilmSignals": 3508,
-    "londonSignals": 1089,
+    "tvFilmSignals": 3507,
+    "londonSignals": 1087,
     "offBroadwaySignals": 1071,
     "yearMismatch": 92,
-    "noPublishDate": 9506
+    "noPublishDate": 9505
   },
   "findings": [
     {
@@ -36507,23 +36507,11 @@
       "showId": "my-neighbour-totoro-west-end-2025",
       "file": "financialtimes--unknown.json",
       "score": 86,
-      "publishDate": "2022-10-19",
-      "url": "https://www.westendtheatre.com/138268/news/reviews/my-neighbour-totoro-reviews/",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 576d before show (2022-10-19 vs 2024-05-17)"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -78777,20 +78765,6 @@
       "score": 89,
       "publishDate": "October 20th, 2022",
       "url": "https://www.allthatdazzles.co.uk/post/review-my-neighbour-totoro-barbican",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
-      "showId": "my-neighbour-totoro-west-end-2025",
-      "file": "broadwayworld--unknown.json",
-      "score": 93,
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/westend/article/Review-MY-NEIGHBOUR-TOTORO-Barbican-Theatre-20221019",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

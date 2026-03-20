@@ -1,27 +1,38 @@
 {
   "meta": {
-    "generatedAt": "2026-03-20T00:43:17.818Z",
+    "generatedAt": "2026-03-20T00:54:36.372Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 32746,
-      "inReviewsJson": 16554,
-      "skippedExcluded": 14,
-      "withFullText": 29,
-      "excerptOnly": 2321,
-      "llmClassified": 28,
+      "inReviewsJson": 16555,
+      "skippedExcluded": 18,
+      "withFullText": 25,
+      "excerptOnly": 2318,
+      "llmClassified": 24,
       "heuristicFlagged": 2,
-      "nonReviewsFound": 0,
+      "nonReviewsFound": 1,
       "uncertainCases": 19,
-      "budgetUsed": 0.002899999999999999,
-      "llmCalls": 29,
+      "budgetUsed": 0.0024999999999999996,
+      "llmCalls": 25,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14190
+      "skippedAlreadyClassified": 14194
     },
     "calibration": null
   },
-  "nonReviews": [],
+  "nonReviews": [
+    {
+      "file": "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
+      "showId": "what-we-did-before-our-moth-days-off-broadway-2026",
+      "outlet": "Playbill",
+      "outletId": "playbill",
+      "contentType": "preview",
+      "confidence": "high",
+      "reasoning": "The article describes the play's themes, setting, and cast, but does not offer an evaluation or opinion about its quality. It reads like a pre-opening description.",
+      "currentScore": 40
+    }
+  ],
   "uncertainCases": [
     {
       "file": "amazing-grace-2015/chicago-reader--jack-helbig.json",
@@ -39,8 +50,8 @@
       "outlet": "The Daily Beast",
       "outletId": "dailybeast",
       "contentType": "news",
-      "confidence": "low",
-      "reasoning": "The article mentions the Tony Awards eligibility deadline, which is a news item, but the excerpt is too short to be certain.",
+      "confidence": "medium",
+      "reasoning": "The article discusses the Tony Awards eligibility deadline and the rush of shows opening before the cutoff, which is a news item rather than a review of a specific show.",
       "currentScore": 72
     },
     {
@@ -50,7 +61,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also discusses other theater news.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -60,7 +71,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show like Fences.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems like a list of search terms or categories, possibly from a website.",
       "currentScore": 82
     },
     {
@@ -70,7 +81,7 @@
       "outletId": "bloomberg",
       "contentType": "news",
       "confidence": "medium",
-      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in photo captions, indicating it's not a review of the latter.",
+      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in photo captions at the end. The content about \"First Date\" is purely descriptive, not evaluative.",
       "currentScore": 60
     },
     {
@@ -80,7 +91,7 @@
       "outletId": "huffpost",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be a collection of news headlines and trending topics, rather than a review of 'First Date'. The presence of unrelated news items and promotional content further suggests it is not a review.",
+      "reasoning": "The article appears to be a collection of news headlines and trending topics, rather than a review of 'First Date' or any other show. The presence of ads and privacy policy information further suggests it is not a review.",
       "currentScore": 62
     },
     {
@@ -90,7 +101,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific show. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain any evaluative content about \"Funny Girl\".",
+      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific show.",
       "currentScore": 62
     },
     {
@@ -100,7 +111,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself. It reads like a preview or introductory piece rather than a review.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself.",
       "currentScore": 81
     },
     {
@@ -110,7 +121,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there's no evaluative content to classify it as a review.",
+      "reasoning": "This is a 'Goings On' newsletter, which lists various cultural events and short blurbs about them. It mentions 'Liberation' but does not contain a review of the show itself.",
       "currentScore": 88
     },
     {
@@ -160,7 +171,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but it does not offer a critical evaluation or recommendation. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt.",
       "currentScore": 83
     },
     {
@@ -180,7 +191,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
+      "reasoning": "The article consists of production credits and ticket information, which is more aligned with a news item or listing than a review. There is no evaluative content.",
       "currentScore": 64
     },
     {
@@ -190,7 +201,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's closest to news or listings.",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's closest to news/listings.",
       "currentScore": 78
     },
     {
@@ -200,7 +211,7 @@
       "outletId": "vulture",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the set design and the playwright's intentions, drawing comparisons to other works, but it does not offer an overall evaluation or recommendation of the show.",
+      "reasoning": "The article describes the set design and context of the play, and quotes the director, but does not offer an overall evaluation or recommendation. It seems to be a feature about the play's themes and design choices.",
       "currentScore": 64
     },
     {
@@ -210,7 +221,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater, not a review of a specific production.",
+      "reasoning": "The text appears to be a collection of links and categories related to theater, rather than a review of a specific show.",
       "currentScore": 89
     }
   ],
@@ -239,15 +250,16 @@
     }
   ],
   "reviewsConfirmed": [
-    "left-on-tenth-2024/ew--thom-geier.json",
-    "romeo-juliet-2024/ew--thom-geier.json",
-    "the-holy-rosenbergs-west-end-2026/standard--nick-curtis.json",
-    "thoughts-of-a-colored-man-2021/nytg--diep-tran.json",
-    "titanique-off-broadway-2022/lighting-and-sound-america--david-barbour.json",
-    "topdog-underdog-2022/lighting-and-sound-america--david-barbour.json",
-    "trouble-in-mind-2021/nytg--diep-tran.json",
-    "ulysses-off-broadway-2026/ew--thom-geier.json",
-    "youre-a-good-man-charlie-brown-off-broadway-2026/theatermania--david-gordon.json"
+    "a-gentlemans-guide-to-love-and-murder-2013/gotham-playgoer--robert-sholiton.json",
+    "illinoise-2024/ew--thom-geier.json",
+    "linda-vista-2019/vulture--bilge-ebiri.json",
+    "long-days-journey-into-night-2016/gotham-playgoer--robert-sholiton.json"
   ],
-  "perShowSummary": []
+  "perShowSummary": [
+    {
+      "showId": "what-we-did-before-our-moth-days-off-broadway-2026",
+      "currentCount": 12,
+      "removed": 1
+    }
+  ]
 }
