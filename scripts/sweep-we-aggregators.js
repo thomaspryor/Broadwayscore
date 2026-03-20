@@ -48,6 +48,9 @@ const TS_KNOWN_URLS = {
   'back-to-the-future-west-end-2021': 'https://www.thestage.co.uk/review-round-ups/back-to-the-future-the-musical-at-londons-adelphi-theatre--review-round-up',
   'harry-potter-and-the-cursed-child-both-parts-west-end-2021': 'https://www.thestage.co.uk/review-round-ups/harry-potter-and-the-cursed-child-at-the-palace-theatre--review-round-up',
   'cabaret-at-the-kit-kat-club-west-end-2021': 'https://www.thestage.co.uk/review-round-ups/cabaret-starring-eddie-redmayne-and-jessie-buckley--review-round-up',
+  'stranger-things-the-first-shadow-west-end-2023': 'https://www.thestage.co.uk/review-round-ups/stranger-things-the-first-shadow-at-the-phoenix-theatre--review-round-up',
+  'my-neighbour-totoro-west-end-2025': 'https://www.thestage.co.uk/review-round-ups/my-neighbour-totoro-at-the-barbican--review-round-up',
+  'paddington-the-musical-west-end-2025': 'https://www.thestage.co.uk/review-round-ups/paddington-the-musical-at-the-savoy-theatre-review-round-up',
 };
 const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
 const COOKIE_JAR = '/tmp/sweep-we-cookies.txt';
