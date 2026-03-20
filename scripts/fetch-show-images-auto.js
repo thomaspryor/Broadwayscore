@@ -2188,13 +2188,14 @@ async function main() {
   // Use concurrent processing for large batches, sequential for small
   const results = await processShowsConcurrently(shows, apiLookup, todayTixIds, badImagesOnly, concurrency, verifyCtx, saveShowsData, maxRuntimeMin);
 
-  // Post-fetch duplicate image detection: hash all thumbnails, null out duplicates
-  // Only null when different-titled shows share the same image (generic placeholder).
-  // Same-title shows (revivals/transfers) legitimately share promotional art.
+  // Post-fetch duplicate image audit: detect shows sharing the same image.
+  // NEVER null images — a wrong image is better than no image on the site.
+  // Log suspected duplicates to an audit file for human review.
   if (!dryRunMode && results.success.length > 0) {
     const crypto = require('crypto');
-    const hashMap = new Map(); // hash → { id, title }
-    let dupeCount = 0;
+    const hashMap = new Map(); // hash → { id, title, status }
+    const suspects = [];
+
     for (const s of showsData.shows) {
       const thumb = s.images?.thumbnail;
       if (!thumb || !thumb.startsWith('/images/')) continue;
@@ -2203,30 +2204,22 @@ async function main() {
       const hash = crypto.createHash('md5').update(fs.readFileSync(fullPath)).digest('hex');
       if (hashMap.has(hash)) {
         const first = hashMap.get(hash);
-        // Same title = revival/transfer sharing art — totally expected, skip
+        // Same title = revival/transfer — expected, skip
         const baseTitle = (s.title || s.displayName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
         const firstTitle = (first.title || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-        if (baseTitle === firstTitle) {
-          console.log(`   ℹ Same image for same-title shows: ${s.id} and ${first.id} — keeping both`);
-          continue;
-        }
-        console.log(`   ⚠ DUPLICATE IMAGE: ${s.id} has same image as ${first.id} — nulling ${s.id}`);
-        // Delete the duplicate files from disk so they don't get out of sync with shows.json
-        const showImgDir = path.join(__dirname, '..', 'public', 'images', 'shows', s.id);
-        for (const file of ['hero.webp', 'poster.webp', 'thumbnail.webp']) {
-          const fp = path.join(showImgDir, file);
-          if (fs.existsSync(fp)) fs.unlinkSync(fp);
-        }
-        s.images.thumbnail = null;
-        s.images.poster = null;
-        s.images.hero = null;
-        dupeCount++;
+        if (baseTitle === firstTitle) continue;
+        suspects.push({ show1: first.id, show1Status: first.status, show2: s.id, show2Status: s.status });
+        console.log(`   ⚠ SUSPECT DUPLICATE: ${s.id} shares image with ${first.id} — keeping both, logged for review`);
       } else {
-        hashMap.set(hash, { id: s.id, title: s.title || s.displayName || '' });
+        hashMap.set(hash, { id: s.id, title: s.title || s.displayName || '', status: s.status });
       }
     }
-    if (dupeCount > 0) {
-      console.log(`   🔍 Nulled ${dupeCount} duplicate images (different-title shows only)`);
+    if (suspects.length > 0) {
+      const auditPath = path.join(__dirname, '..', 'data', 'audit', 'suspect-duplicate-images.json');
+      const auditDir = path.dirname(auditPath);
+      if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
+      fs.writeFileSync(auditPath, JSON.stringify({ updatedAt: new Date().toISOString(), suspects }, null, 2));
+      console.log(`   🔍 ${suspects.length} suspect duplicate images logged to data/audit/suspect-duplicate-images.json`);
     }
   }
 
