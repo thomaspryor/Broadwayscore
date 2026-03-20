@@ -15,7 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
+const { isJunkOutlet } = require('./lib/review-normalization');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 

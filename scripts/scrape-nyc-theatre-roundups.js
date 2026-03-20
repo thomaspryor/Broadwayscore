@@ -23,7 +23,7 @@ const https = require('https');
 const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
 const { validatePageMatchesShow } = require('./lib/page-validator');
-const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./lib/review-normalization');
+
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');

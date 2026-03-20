@@ -16,7 +16,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { validatePageMatchesShow } = require('./lib/page-validator');
-const { normalizeOutletFull, slugify: canonicalSlugify, findExistingReviewFile, generateReviewFilename, maybeUpgradeUrl } = require('./lib/review-normalization');
+const { normalizeOutletFull, slugify: canonicalSlugify } = require('./lib/review-normalization');
 const { excerptMentionsWrongShow } = require('./lib/excerpt-validation');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 

@@ -24,8 +24,6 @@ const https = require('https');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const {
   normalizeOutlet,
-  normalizeCritic,
-  generateReviewFilename,
   findExistingReviewFile,
   getOutletDisplayName,
 } = require('./lib/review-normalization');

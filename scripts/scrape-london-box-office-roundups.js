@@ -26,7 +26,6 @@ const path = require('path');
 const https = require('https');
 const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
-const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./lib/review-normalization');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 

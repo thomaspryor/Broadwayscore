@@ -16,12 +16,10 @@ const path = require('path');
 const https = require('https');
 const {
   normalizeOutlet,
-  normalizeCritic,
   normalizePublishDate,
   generateReviewFilename,
   getOutletDisplayName,
 } = require('./lib/review-normalization');
-const { classifyContentTier } = require('./lib/content-quality');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 
 const dataDir = path.join(__dirname, '..', 'data');
