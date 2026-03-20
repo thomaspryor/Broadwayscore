@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-20T08:20:24.744Z",
+  "timestamp": "2026-03-20T09:23:47.625Z",
   "stats": {
-    "totalReviews": 32071,
-    "alreadyFlagged": 9699,
-    "dateGuardCatches": 188,
+    "totalReviews": 32072,
+    "alreadyFlagged": 9703,
+    "dateGuardCatches": 187,
     "directorMismatch": 1117,
-    "tvFilmSignals": 3510,
-    "londonSignals": 1083,
+    "tvFilmSignals": 3509,
+    "londonSignals": 1082,
     "offBroadwaySignals": 1072,
     "yearMismatch": 91,
-    "noPublishDate": 9456
+    "noPublishDate": 9455
   },
   "findings": [
     {
@@ -62539,18 +62539,11 @@
       "showId": "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026",
       "file": "attitude--dale-fox.json",
       "score": 91,
-      "publishDate": "2023-12-15",
-      "url": "https://www.attitude.co.uk/culture/unfortunate-the-untold-story-of-ursula-the-sea-witch-review-2-5-hours-of-hilariously-camp-fun-455303/",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 784d before show (2023-12-15 vs 2026-02-06)"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -81105,20 +81098,6 @@
       ]
     },
     {
-      "showId": "romeo-and-juliet-west-end-2026",
-      "file": "nytimes--unknown.json",
-      "score": 75,
-      "publishDate": "March 1, 2026",
-      "url": "https://www.nytimes.com/2024/05/24/theater/tom-holland-romeo-and-juliet.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "romeo-juliet-2024",
       "file": "latimes--charles-mcnulty.json",
       "score": 77,
@@ -84975,17 +84954,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "the-choir-of-man-off-west-end-2026",
-      "file": "guardian--emma-john.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 220d before show (2025-08-06 vs 2026-03-14)"
         }
       ]
     },
