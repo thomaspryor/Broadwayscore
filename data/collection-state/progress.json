@@ -1008,7 +1008,16 @@
     "ulysses-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "ulysses-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
     "the-disappear-off-broadway-2026/nytg--caroline-cao.json",
-    "the-disappear-off-broadway-2026/nytimes--helen-shaw.json"
+    "the-disappear-off-broadway-2026/nytimes--helen-shaw.json",
+    "the-disappear-off-broadway-2026/vulture--sara-holdren.json",
+    "bug-2026/cbsnews--shania-russell.json",
+    "bug-2026/theatre-reviews-limited--david-roberts.json",
+    "bug-2026/timeout--adam-feldman.json",
+    "going-bacharach-the-songs-of-an-icon-off-broadway-2026/theatermania--zachary-stewart.json",
+    "the-disappear-off-broadway-2026/theatermania--zachary-stewart.json",
+    "the-disappear-off-broadway-2026/this-week-in-new-york--mark-rifkin.json",
+    "the-disappear-off-broadway-2026/timeout--adam-feldman.json",
+    "bug-2026/njcom--unknown.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
@@ -1189,7 +1198,8 @@
     "beautiful-little-fool-west-end-2026/broadwayworld--aliya-al-hassan.json",
     "beautiful-little-fool-west-end-2026/everything-theatre--mike-carter.json",
     "ulysses-off-broadway-2026/talkinbroadway--howard-miller.json",
-    "the-disappear-off-broadway-2026/talkinbroadway--james-wilson.json"
+    "the-disappear-off-broadway-2026/talkinbroadway--james-wilson.json",
+    "bug-2026/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1911,7 +1921,11 @@
       "ulysses-off-broadway-2026/off-off-online--charles-wright.json",
       "ulysses-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "ulysses-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-      "the-disappear-off-broadway-2026/nytg--caroline-cao.json"
+      "the-disappear-off-broadway-2026/nytg--caroline-cao.json",
+      "bug-2026/cbsnews--shania-russell.json",
+      "bug-2026/theatre-reviews-limited--david-roberts.json",
+      "bug-2026/timeout--adam-feldman.json",
+      "the-disappear-off-broadway-2026/this-week-in-new-york--mark-rifkin.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
@@ -2295,11 +2309,16 @@
       "the-other-place-off-broadway-2026/telegraph--claire-allfree.json",
       "the-porch-on-windy-hill-off-broadway-2026/theatermania--zachary-stewart.json",
       "blackout-songs-off-broadway-2026/theatermania--pete-hempstead.json",
-      "ulysses-off-broadway-2026/theatermania--pete-hempstead.json"
+      "ulysses-off-broadway-2026/theatermania--pete-hempstead.json",
+      "the-disappear-off-broadway-2026/vulture--sara-holdren.json",
+      "going-bacharach-the-songs-of-an-icon-off-broadway-2026/theatermania--zachary-stewart.json",
+      "the-disappear-off-broadway-2026/theatermania--zachary-stewart.json",
+      "the-disappear-off-broadway-2026/timeout--adam-feldman.json",
+      "bug-2026/njcom--unknown.json"
     ]
   },
   "startTime": "2026-03-19T10:02:04.711Z",
-  "lastProcessed": "the-disappear-off-broadway-2026/nytimes--helen-shaw.json",
+  "lastProcessed": "bug-2026/njcom--unknown.json",
   "log": [
     {
       "t": "2026-03-19T10:04:36.520Z",
@@ -2691,6 +2710,17 @@
       "t": "2026-03-20T05:37:16.590Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-20T05:48:30.999Z",
+      "event": "bb-session",
+      "session": "a4414fc9",
+      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
+    },
+    {
+      "t": "2026-03-20T05:48:32.172Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
