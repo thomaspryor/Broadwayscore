@@ -33,6 +33,10 @@ const PATTERNS = [
   /\b(\d{1,2})(?:st|nd|rd|th)?\s+(January|February|March|April|May|June|July|August|September|October|November|December),?\s+(\d{4})\b/gi,
 ];
 
+// Words that precede show-run/closing dates, not publish dates.
+// "Through March 5" = show runs through that date. "Until April 2" = booking window.
+const RUN_DATE_WORDS = /\b(through|until|closing|effective|expires|ends|extended|running|booking|playing|performances?)\b/i;
+
 function extractSingleDate(text) {
   const header = text.substring(0, HEADER_CHARS);
   const allMatches = [];
@@ -41,11 +45,14 @@ function extractSingleDate(text) {
     pat.lastIndex = 0;
     let m;
     while ((m = pat.exec(header)) !== null) {
+      // Check the 50 chars before the match for run-date context words
+      const before = header.substring(Math.max(0, m.index - 50), m.index).toLowerCase();
+      if (RUN_DATE_WORDS.test(before)) continue; // skip — this is a show-run date
       allMatches.push(m[0]);
     }
   }
 
-  // Only proceed if exactly one date found — avoids index pages, roundups
+  // Only proceed if exactly one non-run-date match found
   if (allMatches.length !== 1) return null;
 
   const match = allMatches[0];
