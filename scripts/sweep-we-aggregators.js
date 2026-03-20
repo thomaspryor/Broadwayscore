@@ -489,6 +489,13 @@ async function sweepTheatreReviews(show) {
   const archDir = path.join(ARCHIVE_BASE, 'theatre-reviews');
   const archivePath = path.join(archDir, `${show.id}.html`);
 
+  // Use archive if exists (skip expensive network calls)
+  if (!FORCE && fs.existsSync(archivePath)) {
+    const html = fs.readFileSync(archivePath, 'utf8');
+    const reviews = extractTheatreReviews(html, show.id);
+    if (reviews.length > 0) return reviews;
+  }
+
   // Check the full index for a known URL
   const indexUrl = _trIndex ? _trIndex.get(show.id) : null;
 
@@ -823,6 +830,13 @@ async function getStagePageViaBrowserBase(url) {
 async function sweepTheStage(show) {
   const archDir = path.join(ARCHIVE_BASE, 'thestage-roundups');
   const archivePath = path.join(archDir, `${show.id}.html`);
+
+  // Use archive if exists (skip expensive BB/SB calls)
+  if (!FORCE && fs.existsSync(archivePath)) {
+    const html = fs.readFileSync(archivePath, 'utf8');
+    const reviews = extractStageReviews(html, show.id);
+    if (reviews.length > 0) return reviews;
+  }
 
   // Build URL candidates — index URL first (most reliable), then constructed, then SERP
   const urls = [];
