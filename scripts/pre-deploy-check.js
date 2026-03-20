@@ -83,6 +83,30 @@ try {
     ok(`Show count: ${showCount} (no watermark yet)`);
   }
 
+  // Orphan image auto-fix: shows with null image references but local files on disk.
+  // This catches data/file mismatches from the dedup logic or private repo staleness.
+  const IMAGES_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
+  let orphansFixed = 0;
+  for (const show of shows) {
+    if (!show || !show.id) continue;
+    const dir = path.join(IMAGES_DIR, show.id);
+    const hasHero = fs.existsSync(path.join(dir, 'hero.webp'));
+    const hasPoster = fs.existsSync(path.join(dir, 'poster.webp'));
+    const hasThumb = fs.existsSync(path.join(dir, 'thumbnail.webp'));
+    if (!hasHero && !hasPoster && !hasThumb) continue;
+
+    if (!show.images) show.images = {};
+    let fixed = false;
+    if (!show.images.hero && hasHero) { show.images.hero = `/images/shows/${show.id}/hero.webp`; fixed = true; }
+    if (!show.images.poster && hasPoster) { show.images.poster = `/images/shows/${show.id}/poster.webp`; fixed = true; }
+    if (!show.images.thumbnail && hasThumb) { show.images.thumbnail = `/images/shows/${show.id}/thumbnail.webp`; fixed = true; }
+    if (fixed) orphansFixed++;
+  }
+  if (orphansFixed > 0) {
+    fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2));
+    ok(`Auto-fixed ${orphansFixed} shows with orphan image files (null refs but files on disk)`);
+  }
+
 } catch (e) {
   fail(`Cannot read/parse shows.json: ${e.message}`);
 }
