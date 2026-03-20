@@ -150,12 +150,13 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
   return (
     <article className={`${isLast ? '' : 'border-b border-white/5 pb-3'} group`} data-testid="review-card" aria-label={`Review from ${review.outlet}`}>
       {/* CRITICAL: Outlet name vertical centering with score badge and logo.
-         Broken 15+ times. Root cause: any child with display:flex or display:block
-         stretches to the full 44px cross-axis height in a flex row, ignoring
-         align-items:center. Only plain inline elements (span, a) center correctly.
-         DO NOT wrap outlet name in a <div>. It MUST be a direct <span>/<Link> child.
-         DO NOT add a CSS class with align-self or !important rules — they make it worse.
-         Verified working via Playwright measurement: top=12, height=21, centered in 44px. */}
+         Broken 15+ times. Root cause: <a> tags (from Next.js Link) render as
+         display:block in flex and ALWAYS stretch to cross-axis height (44px),
+         ignoring align-items:center and align-self:center. Only <span> elements
+         correctly center. The outlet name MUST be a <span> as the flex child,
+         with the <Link> nested inside it (not the other way around).
+         Verified via Playwright: <span> = height:20, top:12 (centered in 44px).
+         DO NOT put flex/overflow styles on a <Link>/<a> — it will stretch. */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
         <div
           className={`flex-shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center text-base sm:text-lg font-bold ${getScoreColorClass(review.reviewScore)}`}
@@ -168,11 +169,11 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
           <span aria-hidden="true">{review.reviewScore}</span>
         </div>
         <OutletLogo outlet={review.outlet} />
-        {featureFlags.criticPages && review.outletSlug ? (
-          <Link href={`/critics/outlets/${review.outletSlug}`} style={{ flex: '1 1 auto', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} className="font-bold text-white text-sm sm:text-base hover:text-brand transition-colors">{review.outlet}</Link>
-        ) : (
-          <span style={{ flex: '1 1 auto', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} className="font-bold text-white text-sm sm:text-base">{review.outlet}</span>
-        )}
+        <span style={{ flex: '1 1 auto', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} className="font-bold text-white text-sm sm:text-base">
+          {featureFlags.criticPages && review.outletSlug ? (
+            <Link href={`/critics/outlets/${review.outletSlug}`} className="hover:text-brand transition-colors">{review.outlet}</Link>
+          ) : review.outlet}
+        </span>
         {review.tier === 1 && <TopCriticLabel />}
         {review.designation === 'Critics_Pick' && <CriticsPickBadge />}
         {review.designation && review.designation !== 'Critics_Pick' && (

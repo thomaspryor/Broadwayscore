@@ -41,6 +41,9 @@ jobs:
   fetch-images:
     runs-on: ubuntu-latest
     timeout-minutes: 180
+    concurrency:
+      group: fetch-images
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
         with:
@@ -121,6 +124,13 @@ jobs:
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 
           bash scripts/lib/push-with-retry.sh 5 HEAD:$BRANCH
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from fetch-show-images'
 
       - name: Notify on failure
         if: failure()
