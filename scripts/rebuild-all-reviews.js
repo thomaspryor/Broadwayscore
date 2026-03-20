@@ -840,6 +840,42 @@ const crossShowFingerprints = new Map();
   stats.preOpeningFlagged = preOpenFlagged;
 }
 
+// URL-domain mismatch guard: flag reviews where URL domain doesn't match outlet's registered domain.
+// Runs before main loop to catch bad URLs from any source (SERP, aggregators, recovery scripts).
+{
+  const { OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES } = require('./lib/url-discovery');
+  const { domainMatchesExpected } = require('./lib/scraper');
+  let domainMismatchFlagged = 0;
+  for (const sid of showDirs) {
+    const sDir = path.join(reviewTextsDir, sid);
+    for (const f of fs.readdirSync(sDir).filter(x => x.endsWith('.json') && x !== 'failed-fetches.json')) {
+      try {
+        const d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8'));
+        if (d.wrongUrl || d.wrongShow || d.wrongProduction || d.duplicateOf) continue;
+        if (!d.url || !d.outletId) continue;
+        const outletId = (d.outletId || '').toLowerCase();
+        const expectedDomain = OUTLET_DOMAINS[outletId];
+        if (!expectedDomain) continue;
+        let urlDomain;
+        try {
+          urlDomain = new URL(d.url).hostname.replace(/^www\./, '');
+        } catch { continue; }
+        if (domainMatchesExpected(expectedDomain.replace(/^www\./, ''), urlDomain)) continue;
+        // Domain mismatch — flag it
+        console.log(`  [WRONG-URL] ${sid}/${f}: ${urlDomain} doesn't match ${outletId} (expected ${expectedDomain})`);
+        d.wrongUrl = true;
+        d.wrongUrlReason = `URL domain ${urlDomain} doesn't match outlet ${outletId} (expected ${expectedDomain})`;
+        fs.writeFileSync(path.join(sDir, f), JSON.stringify(d, null, 2) + '\n');
+        domainMismatchFlagged++;
+      } catch { /* skip unreadable */ }
+    }
+  }
+  if (domainMismatchFlagged > 0) {
+    console.log(`URL-domain mismatch guard: flagged ${domainMismatchFlagged} reviews as wrongUrl\n`);
+  }
+  stats.domainMismatchFlagged = domainMismatchFlagged;
+}
+
 // --- Known syndication pairs (runtime dedup) ---
 // Same critic publishes at primary + secondary outlets simultaneously.
 // Secondary copies are skipped even without isSyndicatedDuplicate flag on file.
@@ -2653,6 +2689,9 @@ if (stats.skippedFullTextWrongAuthor > 0) {
 }
 if (stats.fullTextWrongAuthorKeptAsExcerpt > 0) {
   console.log(`  Kept as excerpt (fullTextWrongAuthor with excerpts): ${stats.fullTextWrongAuthorKeptAsExcerpt}`);
+}
+if (stats.domainMismatchFlagged > 0) {
+  console.log(`  Flagged (URL-domain mismatch): ${stats.domainMismatchFlagged}`);
 }
 console.log(`  Skipped (rejection reason): ${stats.skippedRejectionReason || 0}`);
 console.log(`  Skipped (roundup article): ${stats.skippedRoundup || 0}`);
