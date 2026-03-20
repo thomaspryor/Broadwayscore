@@ -24,6 +24,23 @@ bash scripts/lib/push-with-retry.sh [max_retries] [branch]
 ```
 Defaults: 5 retries, main branch. Handles cleanup, rebase -X theirs, random backoff, `::error::` + `exit 1` on failure.
 
+## Public Show JSON Safety
+
+**Only `rebuild-all-reviews.js` may write complete `public/data/shows/*.json` files.** Any other script that needs to update a single field (images, audience data, metadata) MUST do a surgical merge: read the existing public JSON, update only the field it owns, write back. **Never regenerate public show JSONs from core-data** — the core-data checkout may be stale, and regeneration wipes reviews added by concurrent sessions.
+
+```js
+// GOOD: surgical update of one field
+const show = JSON.parse(fs.readFileSync(publicPath));
+show.hi = newImagePath;
+fs.writeFileSync(publicPath, JSON.stringify(show));
+
+// BAD: full regeneration (wipes reviews if core-data is stale)
+const show = buildPublicShowJson(coreDataShow, coreDataReviews);
+fs.writeFileSync(publicPath, JSON.stringify(show));
+```
+
+**Lesson:** An image-path rebuild regenerated 837 public JSONs from a stale reviews.json, wiping all reviews for recently-scored shows (March 20, 2026).
+
 ## Staging Data Files
 
 **NEVER commit `data/aggregator-archive/` or `data/review-texts/` to the public repo.** These contain copyrighted content. They live in private repos and are synced via `push-review-texts` / `push-core-data` actions.
