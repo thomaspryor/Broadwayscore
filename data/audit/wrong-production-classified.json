@@ -1,129 +1,16 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-20T22:27:28.601Z",
+    "generatedAt": "2026-03-20T22:36:04.529Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 92,
-    "classified": 7,
-    "wrongProduction": 5,
-    "correctProduction": 2,
+    "total": 87,
+    "classified": 0,
+    "wrongProduction": 0,
+    "correctProduction": 0,
     "uncertain": 0,
     "errors": 0,
-    "wrongHighConfidence": 5,
+    "wrongHighConfidence": 0,
     "wrongMediumConfidence": 0
   },
-  "results": [
-    {
-      "showId": "hairspray-2002",
-      "showTitle": "Hairspray",
-      "showYear": 2002,
-      "file": "washpost--bethonie-butler.json",
-      "outlet": "Washington Post",
-      "criticName": "Bethonie Butler",
-      "publishDate": "2016-12-08",
-      "originalSignals": [
-        "publishDate 2016 is 14 years after original opening 2002"
-      ],
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review discusses the 2002 Broadway production of Hairspray, mentioning its Tony Awards win. Although published in 2016, it's referencing the history of the show, not a current production."
-    },
-    {
-      "showId": "rent-1996",
-      "showTitle": "Rent",
-      "showYear": 1996,
-      "file": "bloomberg--philip-boroff.json",
-      "outlet": "Bloomberg",
-      "criticName": "Phillip Boroff",
-      "publishDate": "2011-08-12",
-      "originalSignals": [
-        "publishDate 2011 is 15 years after original opening 1996"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review mentions a \"new 'Rent' revival\" and discusses ticket prices, indicating it's about a revival production and not the original 1996 production. Since there are no other Broadway productions listed, it must be a non-Broadway production."
-    },
-    {
-      "showId": "les-miserables-1987",
-      "showTitle": "Les Miserables",
-      "showYear": 1987,
-      "file": "nyt-theater--jonathan-mandell.json",
-      "outlet": "New York Theater",
-      "criticName": "Jonathan Mandell",
-      "publishDate": "2014-03-23",
-      "originalSignals": [
-        "publishDate 2014 is 27 years after original opening 1987"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review explicitly mentions that it is about the \"revival of 'Les Miserables'\" at the Imperial, and names cast members (Caissie Levy, Will Swenson, Andy Mientus) who were in the 2014 revival, not the original 1987 production."
-    },
-    {
-      "showId": "the-weir-1999",
-      "showTitle": "The Weir",
-      "showYear": 1999,
-      "file": "culturesauce--thom-geier.json",
-      "outlet": "Culture Sauce",
-      "criticName": "Thom Geier",
-      "publishDate": "2025-07-17",
-      "originalSignals": [
-        "publishDate 2025 is 26 years after original opening 1999"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review discusses a production at the Irish Repertory Theatre, not a Broadway production from 1999. It mentions cast and venue details specific to the Irish Rep production."
-    },
-    {
-      "showId": "wonderful-town-2003",
-      "showTitle": "Wonderful Town",
-      "showYear": 2003,
-      "file": "nytimes--jesse-green.json",
-      "outlet": "New York Times",
-      "criticName": "Jesse Green",
-      "publishDate": "2025-05-02",
-      "originalSignals": [
-        "publishDate 2025 is 22 years after original opening 2003"
-      ],
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review mentions Kathleen Marshall's 2000 Encores! production starring Donna Murphy, which transferred to Broadway in 2003, which is the production it is filed under. It also mentions the current production at City Center."
-    },
-    {
-      "showId": "the-wild-party-2000",
-      "showTitle": "The Wild Party",
-      "showYear": 2000,
-      "file": "nypost--elisabeth-vincentelli.json",
-      "outlet": "New York Post",
-      "criticName": "Elisabeth Vincentelli",
-      "publishDate": "2015-07-16",
-      "originalSignals": [
-        "publishDate 2015 is 15 years after original opening 2000"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review mentions Encores!, which is a concert series, not a Broadway production. It also mentions the cast including Sutton Foster, Steven Pasquale, Joaquina Kalukango, Brandon Victor Dixon, and Miriam Shor, which are not associated with the 2000 Broadway production."
-    },
-    {
-      "showId": "ghosts-1982",
-      "showTitle": "Ghosts",
-      "showYear": 1982,
-      "file": "nytimes--jesse-green.json",
-      "outlet": "The New York Times",
-      "criticName": "Jesse Green",
-      "publishDate": "2025-03-10",
-      "originalSignals": [
-        "publishDate 2025 is 43 years after original opening 1982"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review mentions Lily Rabe, Billy Crudup, Levon Hawke, Hamish Linklater, Ella Beatty, Jack O'Brien, and the Mitzi E. Newhouse Theater, none of which are associated with the 1982 Broadway production. The review also mentions that the production opened recently, and gives dates for the current run."
-    }
-  ]
+  "results": []
 }
