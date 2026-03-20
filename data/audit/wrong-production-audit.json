@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-20T04:49:14.798Z",
+  "timestamp": "2026-03-20T05:22:24.644Z",
   "stats": {
     "totalReviews": 32063,
-    "alreadyFlagged": 9639,
-    "dateGuardCatches": 186,
-    "directorMismatch": 1119,
+    "alreadyFlagged": 9682,
+    "dateGuardCatches": 189,
+    "directorMismatch": 1117,
     "tvFilmSignals": 3509,
     "londonSignals": 1086,
-    "offBroadwaySignals": 1069,
+    "offBroadwaySignals": 1072,
     "yearMismatch": 91,
-    "noPublishDate": 9505
+    "noPublishDate": 9459
   },
   "findings": [
     {
@@ -6411,24 +6411,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "avenue-q-west-end-2026",
-      "file": "whatsonstage--alex-wood.json",
-      "publishDate": "2026-01-28",
-      "url": "https://www.whatsonstage.com/news/exclusive-avenue-q-announces-west-end-cast-and-creative-team_1710193/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 51d before show (2026-01-28 vs 2026-03-20)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jason moore\" from avenue-q-2003"
         }
       ]
     },
@@ -55646,6 +55628,11 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
         }
       ]
     },
@@ -55660,6 +55647,11 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
         }
       ]
     },
@@ -55674,6 +55666,11 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
         }
       ]
     },
@@ -56064,11 +56061,6 @@
       "publishDate": "2014-10-17",
       "url": "https://www.telegraph.co.uk/culture/theatre/11161597/How-the-Lion-King-came-to-reign.html",
       "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
-        },
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
@@ -65599,6 +65591,17 @@
       ]
     },
     {
+      "showId": "1536-west-end-2026",
+      "file": "whatsonstage--alex-wood.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 68d before show (2026-02-23 vs 2026-05-02)"
+        }
+      ]
+    },
+    {
       "showId": "1984-2017",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 65,
@@ -67577,6 +67580,17 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "file": "whatsonstage--alex-wood.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 51d before show (2026-01-28 vs 2026-03-20)"
         }
       ]
     },
@@ -72271,6 +72285,31 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 59d before show (2026-01-20 vs 2026-03-20)"
+        }
+      ]
+    },
+    {
+      "showId": "grace-pervades-west-end-2026",
+      "file": "london-theatre--marianka-swain.json",
+      "score": 60,
+      "publishDate": "2026-01-26",
+      "url": "https://www.londontheatre.co.uk/theatre-news/news/learn-about-the-real-history-of-grace-pervades",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 88d before show (2026-01-26 vs 2026-04-24)"
+        }
+      ]
+    },
+    {
+      "showId": "grace-pervades-west-end-2026",
+      "file": "whatsonstage--unknown.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 39d before show (2026-03-16 vs 2026-04-24)"
         }
       ]
     },
@@ -78350,8 +78389,6 @@
     {
       "showId": "midnight-in-the-toyshop-west-end-2026",
       "file": "whatsonstage--unknown.json",
-      "publishDate": "2026-01-15",
-      "url": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/midnight-in-the-toyshop_1708923/",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -90246,33 +90283,33 @@
     },
     {
       "showId": "wicked-2003",
-      "file": "broadwayworld--linda-hodges.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
-      "file": "broadwayworld--lynn-beaver.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
       "file": "broadwayworld--marriage-matinee.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Wicked",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "broadwayworld--nicole-ackman.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Wicked",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "broadwayworld--tyler-hinton.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
       "findings": [
