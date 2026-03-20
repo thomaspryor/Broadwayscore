@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-20T22:36:04.408Z",
+    "generatedAt": "2026-03-20T23:29:15.268Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 127,
-    "highConfidence": 40,
-    "mediumConfidence": 87,
+    "totalFlagged": 84,
+    "highConfidence": 12,
+    "mediumConfidence": 72,
     "lowConfidence": 0,
-    "reassignable": 60
+    "reassignable": 32
   },
   "results": [
     {
@@ -180,6 +180,21 @@
       "showId": "wicked-2003",
       "showTitle": "Wicked",
       "showYear": 2003,
+      "file": "times-uk--kevin-maher.json",
+      "outlet": "The Times",
+      "criticName": "Kevin Maher",
+      "publishDate": "2025-11-18",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2025 is 22 years after original opening 2003"
+      ],
+      "textSnippet": "Ariana Grande as Glinda and Cynthia Erivo as ElphabaUNIVERSAL STUDIOSKevin MaherTuesday November 18 2025, 5.00pm, The TimesToday's QuizleQ:\n\nThey’ve only gone and done it. The makers of this musical s"
+    },
+    {
+      "showId": "wicked-2003",
+      "showTitle": "Wicked",
+      "showYear": 2003,
       "file": "village-voice--michael-feingold.json",
       "outlet": "Village Voice",
       "criticName": "Michael Feingold",
@@ -220,21 +235,6 @@
         "modern references: hamilton"
       ],
       "textSnippet": "When producers Neil Meron and Craig Zadan chose the effervescent 2002 show Hairspray as NBC’s fourth annual live-musical event, they may not have imagined that unapologetic bigotry would see such an e"
-    },
-    {
-      "showId": "hairspray-2002",
-      "showTitle": "Hairspray",
-      "showYear": 2002,
-      "file": "washpost--bethonie-butler.json",
-      "outlet": "Washington Post",
-      "criticName": "Bethonie Butler",
-      "publishDate": "2016-12-08",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "publishDate 2016 is 14 years after original opening 2002"
-      ],
-      "textSnippet": "NBC’s “Hairspray Live!” lacked the extra-strength hold of its predecessors, but didn’t fall completely flat thanks to outstanding performances by some of its more seasoned stars. “Hairspray” became a "
     },
     {
       "showId": "the-lion-king-1997",
@@ -751,55 +751,6 @@
       "textSnippet": "Any gripes about the producers of \"Chicago\" charging full-scale prices for a stripped-down show evaporate like vapors from bathtub gin the second Bebe Neuwirth & Co. open the show with a pulse-quicken"
     },
     {
-      "showId": "rent-1996",
-      "showTitle": "Rent",
-      "showYear": 1996,
-      "file": "amny--matt-windman.json",
-      "outlet": "amNewYork",
-      "criticName": "Matt Windman",
-      "publishDate": "August 11, 2011",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "publishDate 2011 is 15 years after original opening 1996",
-        "revival text signals: revival, this production, new revival",
-        "modern references: twitter"
-      ],
-      "textSnippet": "Sail the seven seas ... it's Columbus Day!\n\nThe lively East Village social scene depicted in Jonathan Larson's \"Rent,\" the first musical written for the MTV generation, is long gone. CBGB shut down fi"
-    },
-    {
-      "showId": "rent-1996",
-      "showTitle": "Rent",
-      "showYear": 1996,
-      "file": "nytimes--ben-brantley.json",
-      "outlet": "The New York Times",
-      "criticName": "Ben Brantley",
-      "publishDate": "August 11, 2011",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "publishDate 2011 is 15 years after original opening 1996",
-        "revival text signals: revival, new production"
-      ],
-      "textSnippet": "Rent, Jonathan Larson's 1996 musical, in the revival that opened on Thursday at New World Stages. Here, the cast delivers “Seasons of Love.”\n\nMaybe they should call it “Sublet.” The young ensemble mem"
-    },
-    {
-      "showId": "rent-1996",
-      "showTitle": "Rent",
-      "showYear": 1996,
-      "file": "timeout--david-cote.json",
-      "outlet": "Time Out New York",
-      "criticName": "David Cote",
-      "publishDate": "August 11, 2011",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "publishDate 2011 is 15 years after original opening 1996",
-        "revival text signals: revival, this production"
-      ],
-      "textSnippet": "The East Village rock opera finds an Off Broadway squat.\n\n825.th.rent\n \n \n \n \n \n\n \n LOST VERIZON Shingledecker, left, listens in on Chanler-Berat’s call.Photograph: Joan Marcus825.th.rent4.jpg17683411"
-    },
-    {
       "showId": "the-phantom-of-the-opera-1988",
       "showTitle": "The Phantom of the Opera",
       "showYear": 1988,
@@ -920,139 +871,6 @@
       "textSnippet": "Andre Lloyd Webber’s musical continues its reign as Broadway’s longest-running musical. The Phantom of the Opera celebrates 29 years on Broadway today. The show celebrated with two performances of the"
     },
     {
-      "showId": "les-miserables-1987",
-      "showTitle": "Les Miserables",
-      "showYear": 1987,
-      "file": "nytimes--charles-isherwood.json",
-      "outlet": "The New York Times",
-      "criticName": "Charles Isherwood",
-      "publishDate": "March 23rd, 2014",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "revival text signals: revival, new revival"
-      ],
-      "textSnippet": "While I was watching the new revival of “Les Misérables,” it occurred to me that this beloved stage adaptation of Victor Hugo’s novel may have helped pave the way for the pop singing contests that hav"
-    },
-    {
-      "showId": "cats-1982",
-      "showTitle": "Cats",
-      "showYear": 1982,
-      "file": "cititour--brian-scott-lipton.json",
-      "outlet": "Cititour",
-      "criticName": "Brian Scott Lipton",
-      "publishDate": "August 1st, 2016",
-      "confidence": "high",
-      "suggestedShowId": "cats-2016",
-      "signals": [
-        "revival cast/director match for cats-2016: Andy Huntington Jones, Leona Lewis, Tyler Hanes, Ricky Ubeda, director: Andy Blankenbuehler",
-        "revival text signals: new production, this production",
-        "modern references: twitter",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "textSnippet": "NYC Events, Restaurants, Music, & Nightlife\n\nTwitter\nX\nPinterest\nThreads\nSnapchat\nWhatsApp\nMessage\nEmail\n\nTickets from $59\n Buy Tickets\n\nCititour.com Review\n The fur is flying again on Broadway, but w"
-    },
-    {
-      "showId": "cats-1982",
-      "showTitle": "Cats",
-      "showYear": 1982,
-      "file": "frontmezzjunkies--steven-ross.json",
-      "outlet": "Front Mezz Junkies",
-      "criticName": "Steven Ross",
-      "publishDate": "July 31st, 2016",
-      "confidence": "high",
-      "suggestedShowId": "cats-2016",
-      "signals": [
-        "revival cast/director match for cats-2016: Leona Lewis, director: Andy Blankenbuehler",
-        "revival text signals: revival, revived",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "textSnippet": "I never did see Betty Buckley as Grizabella, the Glamour Cat (or Elaine Paige for that matter). Her 1983 Tony winning performance though has etched itself into our collective theatrical minds with all"
-    },
-    {
-      "showId": "cats-1982",
-      "showTitle": "Cats",
-      "showYear": 1982,
-      "file": "hollywood-reporter--frank-scheck.json",
-      "outlet": "The Hollywood Reporter",
-      "criticName": "Frank Scheck",
-      "publishDate": "July 31st, 2016",
-      "confidence": "high",
-      "suggestedShowId": "cats-2016",
-      "signals": [
-        "revival cast/director match for cats-2016: Andy Huntington Jones, Leona Lewis, Tyler Hanes, Ricky Ubeda, director: Andy Blankenbuehler",
-        "revival text signals: revival, new revival",
-        "modern references: hamilton",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "textSnippet": "British pop star Leona Lewis headlines the ensemble of this first Broadway revival of Andrew Lloyd Webber's record-breaking 1981 musical. The world can safely be divided into two camps: people who lov"
-    },
-    {
-      "showId": "cats-1982",
-      "showTitle": "Cats",
-      "showYear": 1982,
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "outlet": "New York Daily News",
-      "criticName": "Joe Dziemianowicz",
-      "publishDate": "July 31st, 2016",
-      "confidence": "high",
-      "suggestedShowId": "cats-2016",
-      "signals": [
-        "revival cast/director match for cats-2016: Leona Lewis, Tyler Hanes, Ricky Ubeda"
-      ],
-      "textSnippet": "(Originally published by the Daily News on October 8, 1982. This story was written by Douglas Watt.) The razzle-dazzle of “Cats,” a British cat cantata set in a junkyard that swept into the Winter Gar"
-    },
-    {
-      "showId": "cats-1982",
-      "showTitle": "Cats",
-      "showYear": 1982,
-      "file": "nypost--kyle-smith.json",
-      "outlet": "New York Post",
-      "criticName": "Kyle Smith",
-      "publishDate": "August 2nd, 2016",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "modern references: hamilton"
-      ],
-      "textSnippet": "Don’t let the haters put kitty litter in your cream. “Cats” now. “Cats” forever. The revival this week of the musical that ran on Broadway for an entire generation (1982 to 2000) triggered the expecte"
-    },
-    {
-      "showId": "cats-1982",
-      "showTitle": "Cats",
-      "showYear": 1982,
-      "file": "theatermania--zachary-stewart.json",
-      "outlet": "TheaterMania",
-      "criticName": "Zachary Stewart",
-      "publishDate": "July 31st, 2016",
-      "confidence": "high",
-      "suggestedShowId": "cats-2016",
-      "signals": [
-        "revival cast/director match for cats-2016: Leona Lewis, Tyler Hanes, Ricky Ubeda, director: Andy Blankenbuehler",
-        "revival text signals: revival, this production",
-        "year 2026 in text matches revival cats-west-end-2026",
-        "modern references: hamilton",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "textSnippet": "Do you like flashing lights? Are you turned off by plot?Do you crave synthesizers in this and in that?Do you love spandex-wearing dancers? (So hot!)If your answers are \"yes,\" you should go and see Cat"
-    },
-    {
-      "showId": "cats-1982",
-      "showTitle": "Cats",
-      "showYear": 1982,
-      "file": "washpost--peter-marks.json",
-      "outlet": "The Washington Post",
-      "criticName": "Peter Marks",
-      "publishDate": "July 31st, 2016",
-      "confidence": "high",
-      "suggestedShowId": "cats-2016",
-      "signals": [
-        "revival cast/director match for cats-2016: Andy Huntington Jones, Leona Lewis, Tyler Hanes, Ricky Ubeda, director: Andy Blankenbuehler",
-        "modern references: hamilton"
-      ],
-      "textSnippet": "NEW YORK — “Cats” is wrapped up almost entirely for me in recollections of my daughter, seven years old at the time, accompanying me to the show and being so riveted that afterwards she memorized the "
-    },
-    {
       "showId": "the-boys-from-syracuse-2002",
       "showTitle": "The Boys from Syracuse",
       "showYear": 2002,
@@ -1164,22 +982,6 @@
       "showId": "oklahoma-2002",
       "showTitle": "Oklahoma!",
       "showYear": 2002,
-      "file": "newsday--barbara-schuler.json",
-      "outlet": "Newsday",
-      "criticName": "Barbara Schuler",
-      "publishDate": "2019-04-05",
-      "confidence": "high",
-      "suggestedShowId": "oklahoma-2019",
-      "signals": [
-        "publishDate 2019 matches revival oklahoma-2019 (opened 2019)",
-        "modern references: hamilton"
-      ],
-      "textSnippet": "The barn dance setting is just one of many new twists in the Broadway revival Rodgers and Hammerstein's \"Oklahoma!\" Credit: Little Fang\n\nWHERE Circle in the Square, 1633 Broadway\n\nINFO From $69.50; 21"
-    },
-    {
-      "showId": "oklahoma-2002",
-      "showTitle": "Oklahoma!",
-      "showYear": 2002,
       "file": "nytimes--benedict-nightingale.json",
       "outlet": "The New York Times",
       "criticName": "Benedict Nightingale",
@@ -1190,24 +992,6 @@
         "revival text signals: revival, revived"
       ],
       "textSnippet": "Advertisement Continue reading the main story See the article in its original context from March 17, 2002 , Section 2 , Page 5 Buy Reprints View on timesmachine TimesMachine is an exclusive benefit fo"
-    },
-    {
-      "showId": "once-on-this-island-2002",
-      "showTitle": "Once on This Island",
-      "showYear": 2002,
-      "file": "hollywood-reporter--david-rooney.json",
-      "outlet": "The Hollywood Reporter",
-      "criticName": "David Rooney",
-      "publishDate": "December 3rd, 2017",
-      "confidence": "high",
-      "suggestedShowId": "once-on-this-island-2017",
-      "signals": [
-        "revival cast/director match for once-on-this-island-2017: Hailey Kilgore, Lea Salonga, Circle in the Square, director: Michael Arden",
-        "revival text signals: revival, this production",
-        "year 1990 in text matches revival once-on-this-island-1990",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "textSnippet": "Walking into Broadway‘s Circle in the Square and taking in the environmental staging of the lovingly crafted Once on This Island revival — with an upturned boat on the edge of a sandbagged pool of wat"
     },
     {
       "showId": "once-on-this-island-2002",
@@ -1227,101 +1011,6 @@
       "textSnippet": "Upon walking into the new production of \"Once On This Island,\" which opened on Sunday at the Circle in the Square Theatre, you are greeted by trash, old tee-shirts hanging on the walls, a small pool o"
     },
     {
-      "showId": "a-delicate-balance-1996",
-      "showTitle": "A Delicate Balance",
-      "showYear": 1996,
-      "file": "hollywood-reporter--david-rooney.json",
-      "outlet": "The Hollywood Reporter",
-      "criticName": "David Rooney",
-      "publishDate": "2014-11-20",
-      "confidence": "high",
-      "suggestedShowId": "a-delicate-balance-2014",
-      "signals": [
-        "publishDate 2014 matches revival a-delicate-balance-2014 (opened 2014)",
-        "year 2014 in text matches revival a-delicate-balance-2014"
-      ],
-      "textSnippet": "Equilibrium never felt so dangerous or desolate\n\nGolden Theatre, New York (runs through Feb. 22)\n\nGlenn Close, John Lithgow, Lindsay Duncan, Bob Balaban, Clare Higgins, Martha Plimpton\n\nThe plentiful "
-    },
-    {
-      "showId": "uncle-vanya-1995",
-      "showTitle": "Uncle Vanya",
-      "showYear": 1995,
-      "file": "nytimes--jesse-green.json",
-      "outlet": "The New York Times",
-      "criticName": "Jesse Green",
-      "publishDate": "April 24th, 2024",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "revival text signals: new production, this production",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "textSnippet": "Still available at a local movie theater is the adventurous Louis Malle film adaptation of Andre Gregory's \"Vanya on 42d Street,\" featuring Wallace Shawn's remarkable performance in the title role. Co"
-    },
-    {
-      "showId": "camelot-1993",
-      "showTitle": "Camelot",
-      "showYear": 1993,
-      "file": "nytimes--jesse-green.json",
-      "outlet": "The New York Times",
-      "criticName": "Jesse Green",
-      "publishDate": "April 13th, 2023",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "revival text signals: revival, revived",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "textSnippet": "https://www.nytimes.com/1993/06/22/theater/review-theater-camelot-returns-with-goulet-as-king.htmlShare full articleAdvertisement\n\nAs the first Broadway musical by Alan Jay Lerner and Frederick Loewe "
-    },
-    {
-      "showId": "my-fair-lady-1993",
-      "showTitle": "My Fair Lady",
-      "showYear": 1993,
-      "file": "nytimes--jesse-green.json",
-      "outlet": "The New York Times",
-      "criticName": "Jesse Green",
-      "publishDate": "January 27th, 2019",
-      "confidence": "high",
-      "suggestedShowId": "my-fair-lady-2018",
-      "signals": [
-        "revival cast/director match for my-fair-lady-2018: Lauren Ambrose, Harry Hadden-Paton, Norbert Leo Butz, Lincoln Center, director: Bartlett Sher",
-        "year 2019 in text matches revival my-fair-lady-2018"
-      ],
-      "textSnippet": "https://www.nytimes.com/2019/01/27/theater/my-fair-lady-review.htmlGive this article18Advertisement\n\nTheater’s calling card is that it’s live, but there’s plenty of counter-evidence. Big musicals are "
-    },
-    {
-      "showId": "my-fair-lady-1993",
-      "showTitle": "My Fair Lady",
-      "showYear": 1993,
-      "file": "wsj--terry-teachout.json",
-      "outlet": "The Wall Street Journal",
-      "criticName": "Terry Teachout",
-      "publishDate": "April 19th, 2018",
-      "confidence": "high",
-      "suggestedShowId": "my-fair-lady-2018",
-      "signals": [
-        "revival cast/director match for my-fair-lady-2018: Lauren Ambrose, Harry Hadden-Paton, Norbert Leo Butz, Lincoln Center, director: Bartlett Sher"
-      ],
-      "textSnippet": "ShareResizeHarry Hadden-Paton, Lauren Ambrose and Allan Corduner Joan MarcusNew York\n\nOf all the great Broadway musicals of the postwar era, “My Fair Lady” is the only one that takes a major work of l"
-    },
-    {
-      "showId": "carousel-1994",
-      "showTitle": "Carousel",
-      "showYear": 1994,
-      "file": "nytimes--ben-brantley.json",
-      "outlet": "The New York Times",
-      "criticName": "Ben Brantley",
-      "publishDate": "April 12th, 2018",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "revival text signals: revival, reimagined, this production",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "textSnippet": "https://www.nytimes.com/1994/03/25/theater/review-theater-a-carousel-for-the-90-s-full-of-grit-and-passion.htmlShare full articleAdvertisement\n\n\"CAROUSEL\" will be 50 next year, but as of this morning "
-    },
-    {
       "showId": "sunday-in-the-park-with-george-1994",
       "showTitle": "Sunday in the Park with George",
       "showYear": 1994,
@@ -1337,72 +1026,6 @@
       "textSnippet": "The brand-new Hudson Theatre officially opened Thursday night with a star-studded new production of Steven Sondheim's \"Sunday in the Park With George.\" NY1's Roma Torre filed the following review. Ste"
     },
     {
-      "showId": "once-on-this-island-1990",
-      "showTitle": "Once on This Island",
-      "showYear": 1990,
-      "file": "nytimes--jesse-green.json",
-      "outlet": "The New York Times",
-      "criticName": "Jesse Green",
-      "publishDate": "December 3rd, 2017",
-      "confidence": "high",
-      "suggestedShowId": "once-on-this-island-2017",
-      "signals": [
-        "revival cast/director match for once-on-this-island-2017: Hailey Kilgore, Lea Salonga, Circle in the Square, director: Michael Arden"
-      ],
-      "textSnippet": "Share full article6Hailey Kilgore, far left, as Ti Moune in the musical “Once on This Island” at the Circle in the Square Theater.Credit...Sara Krulwich/The New York TimesNYT Critic’s PickBy Jesse Gre"
-    },
-    {
-      "showId": "gypsy-1989",
-      "showTitle": "Gypsy",
-      "showYear": 1989,
-      "file": "nytimes--jesse-green.json",
-      "outlet": "The New York Times",
-      "criticName": "Jesse Green",
-      "publishDate": "December 20th, 2024",
-      "confidence": "high",
-      "suggestedShowId": "gypsy-2008",
-      "signals": [
-        "revival cast/director match for gypsy-2008: St. James, director: Arthur Laurents",
-        "revival text signals: revival, new revival",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "textSnippet": "If someone asked me to name the best Broadway musical, I'd gladly equivocate on any side of a debate embracing ''Guys and Dolls,'' ''My Fair Lady,'' ''Carousel,'' ''Porgy and Bess'' and - well, you kn"
-    },
-    {
-      "showId": "the-gin-game-1997",
-      "showTitle": "The Gin Game",
-      "showYear": 1997,
-      "file": "ap--mark-kennedy.json",
-      "outlet": "Associated Press",
-      "criticName": "Mark Kennedy",
-      "publishDate": "2015-10-14",
-      "confidence": "high",
-      "suggestedShowId": "the-gin-game-2015",
-      "signals": [
-        "publishDate 2015 matches revival the-gin-game-2015 (opened 2015)",
-        "year 2015 in text matches revival the-gin-game-2015",
-        "year 1977 in text matches revival the-gin-game-1977"
-      ],
-      "textSnippet": "Published: 2015-10-14 22:01:58 \n Updated: 2015-10-14 22:01:58\n\nBy MARK KENNEDY, AP Drama Writer\n\nNEW YORK — One thing you should probably not bet against at \"The Gin Game\" on Broadway is the little ol"
-    },
-    {
-      "showId": "cabaret-1987",
-      "showTitle": "Cabaret",
-      "showYear": 1987,
-      "file": "newsday--linda-winer.json",
-      "outlet": "Newsday",
-      "criticName": "Linda Winer",
-      "publishDate": "2014-04-24",
-      "confidence": "high",
-      "suggestedShowId": "cabaret-2014",
-      "signals": [
-        "publishDate 2014 matches revival cabaret-2014 (opened 2014)",
-        "year 2014 in text matches revival cabaret-2014",
-        "modern references: streaming, netflix"
-      ],
-      "textSnippet": "In Lawrence closed due to accident on The Nassau Expwy (Nassau County) SB after Seagirt Blvd and after Atlantic Beach Brg in Nassau\n\n39&deg;\n Hi 61&deg; Lo 46&deg;\n Mostly Cloudy\n\nHumidity: 55%\n Wind:"
-    },
-    {
       "showId": "into-the-woods-1987",
       "showTitle": "Into the Woods",
       "showYear": 1987,
@@ -1416,70 +1039,6 @@
         "revival cast/director match for into-the-woods-2022: Lear deBessonet, director: Lear deBessonet"
       ],
       "textSnippet": " This revival, with its pared down set design (Tony Award winner David Rockwell) and onstage orchestra looks and feels like a stage concert, the best you’ll ever see. Director Lear deBessonet moves th"
-    },
-    {
-      "showId": "the-mystery-of-edwin-drood-1985",
-      "showTitle": "The Mystery of Edwin Drood",
-      "showYear": 1985,
-      "file": "hollywood-reporter--david-rooney.json",
-      "outlet": "Hollywood Reporter",
-      "criticName": "David Rooney",
-      "publishDate": "2012-11-13",
-      "confidence": "high",
-      "suggestedShowId": "the-mystery-of-edwin-drood-2012",
-      "signals": [
-        "publishDate 2012 matches revival the-mystery-of-edwin-drood-2012 (opened 2012)"
-      ],
-      "textSnippet": "NEW YORK – One of the refrains sung by the Victorian music hall performers in The Mystery of Edwin Drood is, “No good can come from bad.” The case isn’t quite so black and white in this 1985 “musicale"
-    },
-    {
-      "showId": "parade-1998",
-      "showTitle": "Parade",
-      "showYear": 1998,
-      "file": "variety--frank-rizzo.json",
-      "outlet": "Variety",
-      "criticName": "Frank Rizzo",
-      "publishDate": "March 16th, 2023",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "revival text signals: revival, this production",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "textSnippet": "The facts are there in black and white, as the saying goes, and “Parade,” the musical that presents them, is painted in the same stark color scheme. A show whose singularly inapt title belies the dolo"
-    },
-    {
-      "showId": "a-life-1980",
-      "showTitle": "A Life",
-      "showYear": 1980,
-      "file": "front-row-center--holli-harms.json",
-      "outlet": "The Front Row Center",
-      "criticName": "Holli Harms",
-      "publishDate": "2016-10-25T10:17:44",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "publishDate 2016 is 36 years after original opening 1980"
-      ],
-      "textSnippet": "<img decoding=\"async\" class=\"wp-image-8279 size-thumbnail lazyload\" src=\"http://frontrowcenter.s3.amazonaws.com/wp-content/uploads/2016/10/12095243/A-LIFE-1-0010rS-150x150.jpg\" alt=\"A Life photo by Jo"
-    },
-    {
-      "showId": "west-side-story-1980",
-      "showTitle": "West Side Story",
-      "showYear": 1980,
-      "file": "hollywood-reporter--david-rooney.json",
-      "outlet": "Hollywood Reporter",
-      "criticName": "David Rooney",
-      "publishDate": "2019-07-10",
-      "confidence": "high",
-      "suggestedShowId": "west-side-story-2020",
-      "signals": [
-        "publishDate 2019 matches revival west-side-story-2020 (opened 2020)",
-        "revival text signals: revival, revived",
-        "year 2009 in text matches revival west-side-story-2009",
-        "year 2020 in text matches revival west-side-story-2020"
-      ],
-      "textSnippet": "Producers Scott Rudin, Barry Diller and David Geffen on Wednesday announced complete casting for the upcoming Broadway revival of West Side Story, a radical reimagining for the 21st century to be dire"
     },
     {
       "showId": "sweeney-todd-1979",
@@ -1550,83 +1109,6 @@
       "textSnippet": "Josh Groban and Annaleigh Ashford | Photo: Matthew Murphy & Evan Zimmerman At long last, a full-scale production of Sweeney Todd returns to Broadway, allowing Stephen Sondheim’s gorgeous music and lyr"
     },
     {
-      "showId": "my-fair-lady-1976",
-      "showTitle": "My Fair Lady",
-      "showYear": 1976,
-      "file": "nytimes--jesse-green.json",
-      "outlet": "The New York Times",
-      "criticName": "Jesse Green",
-      "publishDate": "January 27th, 2019",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "revival text signals: revival, new production, new staging",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "textSnippet": "https://www.nytimes.com/1976/03/26/archives/my-fair-lady-is-restored-to-broadway-in-fine-form.htmlShare full articleAdvertisement\n\nIt had to be better and—by and large and by George!—it is. The restor"
-    },
-    {
-      "showId": "a-streetcar-named-desire-1973",
-      "showTitle": "A Streetcar Named Desire",
-      "showYear": 1973,
-      "file": "backstage--erik-haagensen.json",
-      "outlet": "Backstage",
-      "criticName": "Erik Haagensen",
-      "publishDate": "2012-04-22",
-      "confidence": "high",
-      "suggestedShowId": "a-streetcar-named-desire-2012",
-      "signals": [
-        "publishDate 2012 matches revival a-streetcar-named-desire-2012 (opened 2012)"
-      ],
-      "textSnippet": "Photo Source: Ken Howard Sometimes there's yuks so quickly. The latest production of Tennessee Williams' masterwork \"A Streetcar Named Desire\" is an unfathomable misstep from the gifted Emily Mann, wh"
-    },
-    {
-      "showId": "gigi-1973",
-      "showTitle": "Gigi",
-      "showYear": 1973,
-      "file": "hollywood-reporter--david-rooney.json",
-      "outlet": "Hollywood Reporter",
-      "criticName": "David Rooney",
-      "publishDate": "2015-04-08",
-      "confidence": "high",
-      "suggestedShowId": "gigi-2015",
-      "signals": [
-        "publishDate 2015 matches revival gigi-2015 (opened 2015)"
-      ],
-      "textSnippet": "Given her famously ambivalent acquaintanceship with Coco Chanel, it seems possible that novelist Colette might be rolling her eyes, if not quite rolling over in her grave at Pere Lachaise Cemetery, up"
-    },
-    {
-      "showId": "the-visit-1973",
-      "showTitle": "The Visit",
-      "showYear": 1973,
-      "file": "hollywood-reporter--david-rooney.json",
-      "outlet": "The Hollywood Reporter",
-      "criticName": "David Rooney",
-      "publishDate": "April 23rd, 2015",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "modern references: masks"
-      ],
-      "textSnippet": "A second-tier Kander and Ebb score is better than a lot of musical craftsmen’s best, which makes The Visit a welcome curiosity, even if it’s sure to be a commercial challenge. Finally reaching Broadwa"
-    },
-    {
-      "showId": "an-enemy-of-the-people-1971",
-      "showTitle": "An Enemy of the People",
-      "showYear": 1971,
-      "file": "bloomberg--jeremy-gerard.json",
-      "outlet": "Bloomberg",
-      "criticName": "Jeremy Gerard",
-      "publishDate": "2012-09-27",
-      "confidence": "high",
-      "suggestedShowId": "an-enemy-of-the-people-2012",
-      "signals": [
-        "publishDate 2012 matches revival an-enemy-of-the-people-2012 (opened 2012)",
-        "modern references: tiktok"
-      ],
-      "textSnippet": "Signed UpPlus Sign UpPlus Sign UpBy continuing, I agree to the Privacy Policy and Terms of Service.\n\n11:13Gen Alpha's WorldMillennials Melted Their Brains With Screens. Their Kids Want None of ItInves"
-    },
-    {
       "showId": "pacific-overtures-2004",
       "showTitle": "Pacific Overtures",
       "showYear": 2004,
@@ -1655,24 +1137,6 @@
         "modern references: hamilton"
       ],
       "textSnippet": "alls turn into water in the second act of \"Gem of the Ocean,\" the grandly evangelical new play by August Wilson that opened last night at the Walter Kerr Theater. And though anyone watching this metam"
-    },
-    {
-      "showId": "la-cage-aux-folles-2004",
-      "showTitle": "La Cage aux Folles",
-      "showYear": 2004,
-      "file": "village-voice--michael-feingold.json",
-      "outlet": "Village Voice",
-      "criticName": "Michael Feingold",
-      "publishDate": "2010-04-20",
-      "confidence": "high",
-      "suggestedShowId": "la-cage-aux-folles-2010",
-      "signals": [
-        "publishDate 2010 matches revival la-cage-aux-folles-2010 (opened 2010)",
-        "revival cast/director match for la-cage-aux-folles-2010: Kelsey Grammer, Douglas Hodge, Longacre Theatre, director: Terry Johnson",
-        "revival text signals: revival, new production",
-        "year 1983 in text matches revival la-cage-aux-folles-1983"
-      ],
-      "textSnippet": "Jeff Starks Site-Specific \"Sweet Cheat\"\n\nForty Years of Challenges From Trisha Brown\n\nJaime Hernandezs Graphic Behavior\n\nBig Art Group Celebrates 10 Years of Weird\n\n\"Anyone Can Whistle\" Sings a Crazy "
     },
     {
       "showId": "big-river-2003",
@@ -1721,40 +1185,6 @@
       "textSnippet": "A promising stretch of silence begins the Roundabout Theater Company's revival of Harold Pinter's ''Caretaker,'' which stars Patrick Stewart and Kyle MacLachlan. Of course, there would be silence, wou"
     },
     {
-      "showId": "wonderful-town-2003",
-      "showTitle": "Wonderful Town",
-      "showYear": 2003,
-      "file": "nytimes--jesse-green.json",
-      "outlet": "New York Times",
-      "criticName": "Jesse Green",
-      "publishDate": "2025-05-02",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "publishDate 2025 is 22 years after original opening 2003"
-      ],
-      "textSnippet": "Betty Comden was from Brooklyn, Adolph Green from the Bronx, Leonard Bernstein from Boston. All were born in the 1910s. Yet the mind’s eye first spies them huddling around a Greenwich Village piano in"
-    },
-    {
-      "showId": "fiddler-on-the-roof-2004",
-      "showTitle": "Fiddler on the Roof",
-      "showYear": 2004,
-      "file": "hollywood-reporter--david-rooney.json",
-      "outlet": "The Hollywood Reporter",
-      "criticName": "David Rooney",
-      "publishDate": "December 20th, 2015",
-      "confidence": "high",
-      "suggestedShowId": "fiddler-on-the-roof-2015",
-      "signals": [
-        "revival cast/director match for fiddler-on-the-roof-2015: Danny Burstein, Jessica Hecht, Broadway Theatre, director: Bartlett Sher",
-        "revival text signals: revival, this production",
-        "year 2015 in text matches revival fiddler-on-the-roof-2015",
-        "year 2016 in text matches revival fiddler-on-the-roof-2015",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "textSnippet": "It’s a sad reality that at virtually any point in history, somewhere on the planet, persecuted peoples are being driven from their homelands as they seek fundamental dignity for themselves and better "
-    },
-    {
       "showId": "fiddler-on-the-roof-2004",
       "showTitle": "Fiddler on the Roof",
       "showYear": 2004,
@@ -1768,21 +1198,6 @@
         "revival text signals: revival, new production"
       ],
       "textSnippet": "THE most animated presence in the prim, pretty new production of ''Fiddler on the Roof,'' which opened last night at the Minskoff Theater, may well be its title character. No, not the fiddler. The roo"
-    },
-    {
-      "showId": "fiddler-on-the-roof-2004",
-      "showTitle": "Fiddler on the Roof",
-      "showYear": 2004,
-      "file": "washpost--peter-marks.json",
-      "outlet": "The Washington Post",
-      "criticName": "Peter Marks",
-      "publishDate": "December 20th, 2015",
-      "confidence": "high",
-      "suggestedShowId": "fiddler-on-the-roof-2015",
-      "signals": [
-        "revival cast/director match for fiddler-on-the-roof-2015: Danny Burstein, Broadway Theatre, director: Bartlett Sher"
-      ],
-      "textSnippet": "NEW YORK — That director Bartlett Sher should be considered a master of the Golden Age musical is reaffirmed with his latest handiwork, the deeply affecting revival of “Fiddler on the Roof” that had i"
     },
     {
       "showId": "a-raisin-in-the-sun-2004",
@@ -1801,23 +1216,6 @@
         "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "Judging by the ubiquitous ads, Denzel Washington is the star attraction of “A Raisin in the Sun,” which has just opened for a 14-week run at the Barrymore Theatre. Perhaps so, but it’s the performance"
-    },
-    {
-      "showId": "cyrano-de-bergerac-1984",
-      "showTitle": "Cyrano de Bergerac",
-      "showYear": 1984,
-      "file": "hollywood-reporter--david-rooney.json",
-      "outlet": "Hollywood Reporter",
-      "criticName": "David Rooney",
-      "publishDate": "2012-10-11",
-      "confidence": "high",
-      "suggestedShowId": "cyrano-de-bergerac-2012",
-      "signals": [
-        "publishDate 2012 matches revival cyrano-de-bergerac-2012 (opened 2012)",
-        "revival text signals: revival, this production",
-        "year 2012 in text matches revival cyrano-de-bergerac-2012"
-      ],
-      "textSnippet": "Tony-winner Douglas Hodge dons the prominent schnoz of Edmond Rostand's tragicomic hero in this Broadway revival, alongside \"Harry Potter\" alumna Clémence Poésy, and Patrick Page, fresh from his villa"
     },
     {
       "showId": "la-cage-aux-folles-1983",
@@ -1865,23 +1263,6 @@
       "textSnippet": "The Menier Chocolate Factory: The name even sounds some euphemistic cover for a rehab clinic. Which is more or less what it is. Great American musicals suffering from exhaustion go there for a therape"
     },
     {
-      "showId": "the-glass-menagerie-1983",
-      "showTitle": "The Glass Menagerie",
-      "showYear": 1983,
-      "file": "nbcny--robert-kahn.json",
-      "outlet": "NBC New York",
-      "criticName": "Robert Kahn",
-      "publishDate": "2017-03-07",
-      "confidence": "high",
-      "suggestedShowId": "the-glass-menagerie-2017",
-      "signals": [
-        "publishDate 2017 matches revival the-glass-menagerie-2017 (opened 2017)",
-        "year 2004 in text matches revival the-glass-menagerie-2005",
-        "modern references: twitter"
-      ],
-      "textSnippet": "It hasn’t been long since our last outing with the beleaguered Wingfelds, of “The Glass Menagerie”—a surreal and ornate revival of the Tennessee Williams memory play appeared on Broadway less than fou"
-    },
-    {
       "showId": "the-tap-dance-kid-1983",
       "showTitle": "The Tap Dance Kid",
       "showYear": 1983,
@@ -1896,42 +1277,6 @@
         "modern references: pandemic"
       ],
       "textSnippet": "Among the many events involved in the reopening of the theater industry following the industrywide shutdown, one of the most significant – at least for passionate devotees of musical theater – occurre"
-    },
-    {
-      "showId": "the-tap-dance-kid-1983",
-      "showTitle": "The Tap Dance Kid",
-      "showYear": 1983,
-      "file": "nytimes--jesse-green.json",
-      "outlet": "The New York Times",
-      "criticName": "Jesse Green",
-      "publishDate": "2022-02-03",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "publishDate 2022 is 39 years after original opening 1983",
-        "revival text signals: revival, this production",
-        "modern references: pandemic"
-      ],
-      "textSnippet": "https://www.nytimes.com/2022/02/03/theater/the-tap-dance-kid-review.htmlAdvertisement\n\nWhen 8:30 p.m. was a typical curtain time for Broadway musicals, the main character’s biggest number, crystallizi"
-    },
-    {
-      "showId": "death-of-a-salesman-1984",
-      "showTitle": "Death of a Salesman",
-      "showYear": 1984,
-      "file": "philadelphia-inquirer--howard-shapiro.json",
-      "outlet": "Philadelphia Inquirer",
-      "criticName": "Howard Shapiro",
-      "publishDate": "2012-03-15",
-      "confidence": "high",
-      "suggestedShowId": "death-of-a-salesman-2012",
-      "signals": [
-        "publishDate 2012 matches revival death-of-a-salesman-2012 (opened 2012)",
-        "revival text signals: revival, this production",
-        "year 1975 in text matches revival death-of-a-salesman-1975",
-        "year 1999 in text matches revival death-of-a-salesman-1999",
-        "modern references: twitter"
-      ],
-      "textSnippet": "Willy Loman, as a character, has achieved a status something like Hamlet's - if you can play the patriarch of what is now a great American classic, Arthur Miller's Death of a Salesman, then you're a n"
     },
     {
       "showId": "sunday-in-the-park-with-george-1984",
@@ -1949,38 +1294,6 @@
       "textSnippet": "**Bernadette Peters Shows Off Her Serious Side in the Broadway Hit \"Sunday in the Park with George\"**\n\nBy HOWARD KISSEL\n\nWhen Bernadette Peters last appeared on Broadway ten years ago, it was nearly a"
     },
     {
-      "showId": "sunday-in-the-park-with-george-1984",
-      "showTitle": "Sunday in the Park with George",
-      "showYear": 1984,
-      "file": "nytimes--ben-brantley.json",
-      "outlet": "The New York Times",
-      "criticName": "Ben Brantley",
-      "publishDate": "February 23rd, 2017",
-      "confidence": "high",
-      "suggestedShowId": "sunday-in-the-park-with-george-2017",
-      "signals": [
-        "revival cast/director match for sunday-in-the-park-with-george-2017: Jake Gyllenhaal, Annaleigh Ashford, director: Sarna Lapine",
-        "revival text signals: revival, this production",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "textSnippet": "He is a thorny soul, a man neither happy nor particularly kind, and not someone you’d be likely to befriend. But when the 19th-century French painter Georges Seurat, reincarnated in the solitary flesh"
-    },
-    {
-      "showId": "ghosts-1982",
-      "showTitle": "Ghosts",
-      "showYear": 1982,
-      "file": "wsj--charles-isherwood.json",
-      "outlet": "The Wall Street Journal",
-      "criticName": "Charles Isherwood",
-      "publishDate": "2025-03-11",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "publishDate 2025 is 43 years after original opening 1982"
-      ],
-      "textSnippet": "Lily Rabe and Billy Crudup Jeremy DanielNew York\n\nAs adherence to once-traditional social mores is being encouraged or applauded in some realms, the Lincoln Center Theater production of Henrik Ibsen’s"
-    },
-    {
       "showId": "annie-1977",
       "showTitle": "Annie",
       "showYear": 1977,
@@ -1995,22 +1308,6 @@
         "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "NEW YORK — Could the timing be any better for a Broadway revival of Annie? The uplifting musical sells not only the archetypal rags-to-riches fantasy but promotes belief in the power of government to "
-    },
-    {
-      "showId": "the-king-and-i-1977",
-      "showTitle": "The King and I",
-      "showYear": 1977,
-      "file": "nytimes--ben-brantley.json",
-      "outlet": "The New York Times",
-      "criticName": "Ben Brantley",
-      "publishDate": "April 16th, 2015",
-      "confidence": "high",
-      "suggestedShowId": "the-king-and-i-2015",
-      "signals": [
-        "revival cast/director match for the-king-and-i-2015: Ken Watanabe, Lincoln Center, Beaumont, director: Bartlett Sher",
-        "year 1996 in text matches revival the-king-and-i-1996"
-      ],
-      "textSnippet": "A big, scrupulously detailed 19th-century ship glides toward the audience in the opening moments of Bartlett Sher’s resplendent production of Rodgers and Hammerstein’s “The King and I,” which opened o"
     }
   ]
 }
