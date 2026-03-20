@@ -1763,7 +1763,14 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
     const newerProduction = allShowsData.shows.find(s => {
       if (s.id === show.id) return false;
       const sBase = s.title.toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '').trim();
-      if (sBase !== baseTitle) return false;
+      // Exact match OR the full base title (2+ words) appears separated by punctuation (- : , !)
+      // Catches "The Tempest - Globe", "Encores! The Wild Party", "Doubt: A Parable"
+      // but NOT short titles like "Big" → "Big Fish" (space-only, no punct) or single words
+      const escaped = baseTitle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const hasMultipleWords = baseTitle.includes(' ');
+      const isVariant = hasMultipleWords &&
+        new RegExp(`(^${escaped}\\s*[-:,]|[-:!]\\s*${escaped}$)`).test(sBase);
+      if (sBase !== baseTitle && !isVariant) return false;
       // Newer = has a later opening date
       const showYear = show.openingDate ? new Date(show.openingDate).getFullYear() : 0;
       const sYear = s.openingDate ? new Date(s.openingDate).getFullYear() : 0;
