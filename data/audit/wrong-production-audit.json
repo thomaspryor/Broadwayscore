@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-20T22:05:05.725Z",
+  "timestamp": "2026-03-20T22:13:59.632Z",
   "stats": {
     "totalReviews": 32176,
-    "alreadyFlagged": 9742,
-    "dateGuardCatches": 183,
+    "alreadyFlagged": 9749,
+    "dateGuardCatches": 184,
     "directorMismatch": 1124,
-    "tvFilmSignals": 3515,
+    "tvFilmSignals": 3516,
     "londonSignals": 1081,
     "offBroadwaySignals": 1072,
     "yearMismatch": 91,
-    "noPublishDate": 9534
+    "noPublishDate": 9525
   },
   "findings": [
     {
@@ -60886,6 +60886,20 @@
       ]
     },
     {
+      "showId": "the-winslow-boy-2013",
+      "file": "wsj--terry-teachout.json",
+      "score": 82,
+      "publishDate": "October 18, 2013",
+      "url": "https://online.wsj.com/news/articles/SB10001424052702304410204579141234114756574",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
       "showId": "the-wiz-2024",
       "file": "amny--matt-windman.json",
       "score": 25,
@@ -87339,6 +87353,18 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-maids-off-broadway-2026",
+      "file": "theatermania--unknown.json",
+      "score": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 76d before show (2026-03-02 vs 2026-05-17)"
         }
       ]
     },

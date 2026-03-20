@@ -1,34 +1,16 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-20T22:00:53.767Z",
+    "generatedAt": "2026-03-20T22:09:54.824Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 88,
-    "classified": 1,
-    "wrongProduction": 1,
+    "total": 87,
+    "classified": 0,
+    "wrongProduction": 0,
     "correctProduction": 0,
     "uncertain": 0,
     "errors": 0,
-    "wrongHighConfidence": 1,
+    "wrongHighConfidence": 0,
     "wrongMediumConfidence": 0
   },
-  "results": [
-    {
-      "showId": "a-delicate-balance-1996",
-      "showTitle": "A Delicate Balance",
-      "showYear": 1996,
-      "file": "nytimes--ben-brantley.json",
-      "outlet": "The New York Times",
-      "criticName": "Ben Brantley",
-      "publishDate": "November 20th, 2014",
-      "originalSignals": [
-        "revival text signals: revival, this production",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "a-delicate-balance-2014",
-      "reasoning": "The review mentions the 2014 revival's director (Pam MacKinnon) and cast (Glenn Close, John Lithgow, Lindsay Duncan, Bob Balaban, Clare Higgins) and states that the play \"opened on Thursday night in a revival at the Golden Theater.\""
-    }
-  ]
+  "results": []
 }
