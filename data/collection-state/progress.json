@@ -899,7 +899,14 @@
     "pride-west-end-2026/seattle-times--misha-berson.json",
     "pride-west-end-2026/standard--unknown.json",
     "pride-west-end-2026/telegraph--unknown.json",
-    "cyrano-de-bergerac-west-end-2026/theatrely--juan-a-ramirez.json"
+    "cyrano-de-bergerac-west-end-2026/theatrely--juan-a-ramirez.json",
+    "sinatra-the-musical-west-end-2026/whatsonstage--unknown.json",
+    "sting-west-end-2026/daily-mail--unknown.json",
+    "sting-west-end-2026/standard--unknown.json",
+    "sting-west-end-2026/telegraph--unknown.json",
+    "sting-west-end-2026/newsday--unknown.json",
+    "much-ado-about-nothing-globe-west-end-2026/timeout--andrzej-lukowski.json",
+    "much-ado-about-nothing-globe-west-end-2026/financialtimes--sarah-hemming.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
@@ -1059,7 +1066,10 @@
     "cyrano-de-bergerac-west-end-2026/metro--claire-allfree.json",
     "cyrano-de-bergerac-west-end-2026/daily-mail--robert-gore-langton.json",
     "cyrano-de-bergerac-west-end-2026/thestage--unknown.json",
-    "sinatra-the-musical-west-end-2026/telegraph--unknown.json"
+    "sinatra-the-musical-west-end-2026/telegraph--unknown.json",
+    "sting-west-end-2026/ew--unknown.json",
+    "sting-west-end-2026/ap--unknown.json",
+    "sting-west-end-2026/huffpost--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1701,7 +1711,11 @@
       "cyrano-de-bergerac-west-end-2026/i-paper--unknown.json",
       "cyrano-de-bergerac-west-end-2026/whatsonstage--unknown.json",
       "pride-west-end-2026/standard--unknown.json",
-      "pride-west-end-2026/telegraph--unknown.json"
+      "pride-west-end-2026/telegraph--unknown.json",
+      "sinatra-the-musical-west-end-2026/whatsonstage--unknown.json",
+      "sting-west-end-2026/standard--unknown.json",
+      "much-ado-about-nothing-globe-west-end-2026/timeout--andrzej-lukowski.json",
+      "much-ado-about-nothing-globe-west-end-2026/financialtimes--sarah-hemming.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
@@ -1772,7 +1786,9 @@
       "data/review-texts/marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
       "marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
       "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
-      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json"
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
+      "data/review-texts/sting-west-end-2026/newsday--unknown.json",
+      "sting-west-end-2026/newsday--unknown.json"
     ],
     "directCookies": [
       "oliver-west-end-2024/times-uk--dominic-maxwell.json",
@@ -1884,7 +1900,8 @@
       "as-you-like-it-globe-west-end-2026/times-uk--clive-davis.json",
       "loves-labours-lost-globe-west-end-2026/telegraph--unknown.json",
       "cyrano-de-bergerac-west-end-2026/telegraph--unknown.json",
-      "cyrano-de-bergerac-west-end-2026/theatrely--juan-a-ramirez.json"
+      "cyrano-de-bergerac-west-end-2026/theatrely--juan-a-ramirez.json",
+      "sting-west-end-2026/telegraph--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2050,11 +2067,12 @@
       "the-mousetrap-west-end-2021/thestage--john-thaxter.json",
       "as-you-like-it-globe-west-end-2026/telegraph--dominic-cavendish.json",
       "dog-man-the-musical-west-end-2026/nytimes--unknown.json",
-      "pride-west-end-2026/seattle-times--misha-berson.json"
+      "pride-west-end-2026/seattle-times--misha-berson.json",
+      "sting-west-end-2026/daily-mail--unknown.json"
     ]
   },
   "startTime": "2026-03-19T10:02:04.711Z",
-  "lastProcessed": "sinatra-the-musical-west-end-2026/telegraph--unknown.json",
+  "lastProcessed": "much-ado-about-nothing-globe-west-end-2026/financialtimes--sarah-hemming.json",
   "log": [
     {
       "t": "2026-03-19T10:04:36.520Z",
@@ -2369,6 +2387,17 @@
       "t": "2026-03-20T04:56:28.068Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-20T05:02:09.870Z",
+      "event": "bb-session",
+      "session": "48cb9a6a",
+      "url": "https://www.newsday.com/entertainment/theater/sting-s-the-last-ship-to-close-on-"
+    },
+    {
+      "t": "2026-03-20T05:02:11.127Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
     }
   ]
 }

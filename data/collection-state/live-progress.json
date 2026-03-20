@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-20T04:56:56.553Z",
-  "processed": 900,
-  "failed": 158,
-  "successRate": "85.1%",
+  "updatedAt": "2026-03-20T05:02:46.341Z",
+  "processed": 907,
+  "failed": 161,
+  "successRate": "84.9%",
   "tierBreakdown": {
-    "playwright": 638,
+    "playwright": 642,
     "amp": 39,
-    "browserbase": 28,
+    "browserbase": 30,
     "directCookies": 3,
-    "scrapingbee": 105,
+    "scrapingbee": 106,
     "brightdata": 0,
     "archiveToday": 30,
-    "archive": 131
+    "archive": 132
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-03-19T13:20:19.364Z",
-      "event": "bb-session",
-      "session": "cf3fdee4",
-      "url": "http://www.wsj.com/articles/SB106748686155075900"
-    },
-    {
-      "t": "2026-03-19T13:20:22.206Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-19T19:17:37.658Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-20T04:56:28.068Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-20T05:02:09.870Z",
+      "event": "bb-session",
+      "session": "48cb9a6a",
+      "url": "https://www.newsday.com/entertainment/theater/sting-s-the-last-ship-to-close-on-"
+    },
+    {
+      "t": "2026-03-20T05:02:11.127Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
     }
   ]
 }
