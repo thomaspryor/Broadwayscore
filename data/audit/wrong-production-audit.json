@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-20T06:47:03.138Z",
+  "timestamp": "2026-03-20T08:00:45.025Z",
   "stats": {
     "totalReviews": 32070,
-    "alreadyFlagged": 9694,
-    "dateGuardCatches": 189,
+    "alreadyFlagged": 9699,
+    "dateGuardCatches": 188,
     "directorMismatch": 1117,
     "tvFilmSignals": 3510,
     "londonSignals": 1083,
     "offBroadwaySignals": 1072,
     "yearMismatch": 91,
-    "noPublishDate": 9458
+    "noPublishDate": 9455
   },
   "findings": [
     {
@@ -72294,18 +72294,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
-        }
-      ]
-    },
-    {
-      "showId": "gotta-dance-off-broadway-2026",
-      "file": "guardian--unknown.json",
-      "score": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 59d before show (2026-01-20 vs 2026-03-20)"
         }
       ]
     },
