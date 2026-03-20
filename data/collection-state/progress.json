@@ -1051,7 +1051,16 @@
     "marjorie-prime-2025/amny--unknown.json",
     "marjorie-prime-2025/theater-scene--joseph-pisano.json",
     "the-playboy-of-the-western-world-west-end-2025/i-paper--fiona-mountford.json",
-    "the-playboy-of-the-western-world-west-end-2025/guardian--arifa-akbar.json"
+    "the-playboy-of-the-western-world-west-end-2025/guardian--arifa-akbar.json",
+    "the-playboy-of-the-western-world-west-end-2025/independent--alice-saville.json",
+    "the-playboy-of-the-western-world-west-end-2025/london-theatre--holly-omahony.json",
+    "the-playboy-of-the-western-world-west-end-2025/standard--nick-curtis.json",
+    "the-playboy-of-the-western-world-west-end-2025/whatsonstage--alun-hood.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/thereviewshub--unknown.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/artsdesk--aleks-sierz.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/artsdesk--for-aleks-sierz.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/city-am--chris-dorrell.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/everything-theatre--cerys-baker.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
@@ -1239,7 +1248,8 @@
     "woman-in-mind-west-end-2025/broadwayworld--unknown.json",
     "woman-in-mind-west-end-2025/thestage--unknown.json",
     "woman-in-mind-west-end-2025/thestage--sam-marlowe.json",
-    "the-playboy-of-the-western-world-west-end-2025/telegraph--claire-allfree.json"
+    "the-playboy-of-the-western-world-west-end-2025/telegraph--claire-allfree.json",
+    "the-playboy-of-the-western-world-west-end-2025/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1990,7 +2000,14 @@
       "marjorie-prime-2025/timeout--adam-feldman.json",
       "marjorie-prime-2025/theater-scene--joseph-pisano.json",
       "the-playboy-of-the-western-world-west-end-2025/i-paper--fiona-mountford.json",
-      "the-playboy-of-the-western-world-west-end-2025/guardian--arifa-akbar.json"
+      "the-playboy-of-the-western-world-west-end-2025/guardian--arifa-akbar.json",
+      "the-playboy-of-the-western-world-west-end-2025/london-theatre--holly-omahony.json",
+      "the-playboy-of-the-western-world-west-end-2025/standard--nick-curtis.json",
+      "the-playboy-of-the-western-world-west-end-2025/whatsonstage--alun-hood.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/thereviewshub--unknown.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/artsdesk--aleks-sierz.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/artsdesk--for-aleks-sierz.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/everything-theatre--cerys-baker.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
@@ -2205,7 +2222,9 @@
       "high-noon-west-end-2025/telegraph--dominic-cavendish.json",
       "woman-in-mind-west-end-2025/independent--alice-saville.json",
       "woman-in-mind-west-end-2025/telegraph--claire-allfree.json",
-      "marjorie-prime-2025/newyorker--helen-shaw.json"
+      "marjorie-prime-2025/newyorker--helen-shaw.json",
+      "the-playboy-of-the-western-world-west-end-2025/independent--alice-saville.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/city-am--chris-dorrell.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2394,7 +2413,7 @@
     ]
   },
   "startTime": "2026-03-19T10:02:04.711Z",
-  "lastProcessed": "the-playboy-of-the-western-world-west-end-2025/guardian--arifa-akbar.json",
+  "lastProcessed": "the-spy-who-came-in-from-the-cold-west-end-2025/everything-theatre--cerys-baker.json",
   "log": [
     {
       "t": "2026-03-19T10:04:36.520Z",
@@ -2852,6 +2871,17 @@
       "t": "2026-03-20T06:01:25.927Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-20T06:05:03.845Z",
+      "event": "bb-session",
+      "session": "900d807c",
+      "url": "https://www.thestage.co.uk/reviews/the-playboy-of-the-western-world-review-lytte"
+    },
+    {
+      "t": "2026-03-20T06:05:04.896Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
