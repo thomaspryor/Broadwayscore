@@ -879,7 +879,14 @@
     "the-mousetrap-west-end-2021/whatsonstage--sarah-crompton.json",
     "the-mousetrap-west-end-2021/whatsonstage--whatsonstage-reviewer.json",
     "blood-of-my-blood-west-end-2026/financialtimes--sarah-hemming.json",
-    "blood-of-my-blood-west-end-2026/london-theatre--marianka-swain.json"
+    "blood-of-my-blood-west-end-2026/london-theatre--marianka-swain.json",
+    "blood-of-my-blood-west-end-2026/standard--nick-curtis.json",
+    "blood-of-my-blood-west-end-2026/telegraph--dominic-cavendish.json",
+    "blood-of-my-blood-west-end-2026/times-uk--clive-davis.json",
+    "blood-of-my-blood-west-end-2026/whatsonstage--sarah-crompton.json",
+    "as-you-like-it-globe-west-end-2026/timeout--andrzej-lukowski.json",
+    "as-you-like-it-globe-west-end-2026/i-paper--fiona-mountford.json",
+    "as-you-like-it-globe-west-end-2026/london-theatre--marianka-swain.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
@@ -1029,7 +1036,10 @@
     "six-the-musical-west-end-2021/thestage--mark-shenton.json",
     "the-lion-king-1997/familyvacationcritic--unknown.json",
     "dirty-dancing-the-classic-story-on-stage-west-end-2026/et--desiree-murphy.json",
-    "blood-of-my-blood-west-end-2026/timeout--holly-omahony.json"
+    "blood-of-my-blood-west-end-2026/timeout--holly-omahony.json",
+    "blood-of-my-blood-west-end-2026/thestage--sam-marlowe.json",
+    "man-to-man-west-end-2026/thestage--unknown.json",
+    "man-to-man-west-end-2026/stagebuddy--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1659,7 +1669,13 @@
       "the-mousetrap-west-end-2021/whatsonstage--sarah-crompton.json",
       "the-mousetrap-west-end-2021/whatsonstage--whatsonstage-reviewer.json",
       "blood-of-my-blood-west-end-2026/financialtimes--sarah-hemming.json",
-      "blood-of-my-blood-west-end-2026/london-theatre--marianka-swain.json"
+      "blood-of-my-blood-west-end-2026/london-theatre--marianka-swain.json",
+      "blood-of-my-blood-west-end-2026/standard--nick-curtis.json",
+      "blood-of-my-blood-west-end-2026/times-uk--clive-davis.json",
+      "blood-of-my-blood-west-end-2026/whatsonstage--sarah-crompton.json",
+      "as-you-like-it-globe-west-end-2026/timeout--andrzej-lukowski.json",
+      "as-you-like-it-globe-west-end-2026/i-paper--fiona-mountford.json",
+      "as-you-like-it-globe-west-end-2026/london-theatre--marianka-swain.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
@@ -1834,7 +1850,10 @@
       "the-play-that-goes-wrong-off-broadway-2019/broadway-blog--samuel-l-leiter.json",
       "six-the-musical-west-end-2021/independent--ava-wong-davies.json",
       "showstopper-the-improvised-musical-west-end-2023/independent--gillian-orr.json",
-      "the-mousetrap-west-end-2021/telegraph--unknown.json"
+      "the-mousetrap-west-end-2021/telegraph--unknown.json",
+      "dirty-dancing-the-classic-story-on-stage-west-end-2026/et--desiree-murphy.json",
+      "blood-of-my-blood-west-end-2026/timeout--holly-omahony.json",
+      "blood-of-my-blood-west-end-2026/telegraph--dominic-cavendish.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2001,7 +2020,7 @@
     ]
   },
   "startTime": "2026-03-19T10:02:04.711Z",
-  "lastProcessed": "blood-of-my-blood-west-end-2026/london-theatre--marianka-swain.json",
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/london-theatre--marianka-swain.json",
   "log": [
     {
       "t": "2026-03-19T10:04:36.520Z",
@@ -2281,6 +2300,17 @@
     },
     {
       "t": "2026-03-20T04:21:21.586Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-20T04:46:57.158Z",
+      "event": "bb-session",
+      "session": "f90334d7",
+      "url": "https://www.thestage.co.uk/reviews/juniper-blood-review-donmar-warehouse-london-"
+    },
+    {
+      "t": "2026-03-20T04:46:58.289Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }

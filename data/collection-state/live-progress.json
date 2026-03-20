@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-20T04:44:50.528Z",
-  "processed": 880,
-  "failed": 148,
-  "successRate": "85.6%",
+  "updatedAt": "2026-03-20T04:49:11.780Z",
+  "processed": 887,
+  "failed": 151,
+  "successRate": "85.5%",
   "tierBreakdown": {
-    "playwright": 626,
+    "playwright": 632,
     "amp": 38,
     "browserbase": 28,
     "directCookies": 3,
-    "scrapingbee": 98,
+    "scrapingbee": 101,
     "brightdata": 0,
     "archiveToday": 30,
     "archive": 128
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-19T12:26:03.933Z",
-      "event": "bb-session",
-      "session": "c4531e00",
-      "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-r"
-    },
-    {
-      "t": "2026-03-19T12:26:05.502Z",
-      "event": "bb-cookie-inject",
-      "domain": "nypost.com"
-    },
     {
       "t": "2026-03-19T12:59:04.584Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-20T04:21:21.586Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-20T04:46:57.158Z",
+      "event": "bb-session",
+      "session": "f90334d7",
+      "url": "https://www.thestage.co.uk/reviews/juniper-blood-review-donmar-warehouse-london-"
+    },
+    {
+      "t": "2026-03-20T04:46:58.289Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
