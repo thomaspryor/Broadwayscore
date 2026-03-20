@@ -21,9 +21,9 @@ on:
         required: false
         default: ''
       run_calibration:
-        description: 'Run calibration after scoring'
+        description: 'Run calibration after scoring (weekly Sunday auto-run only)'
         required: false
-        default: 'true'
+        default: 'false'
         type: choice
         options:
           - 'true'
@@ -266,9 +266,14 @@ jobs:
             ARGS="$ARGS --limit=400"
           fi
 
-          # Calibration
+          # Calibration — weekly only (Sunday scheduled) or manual override
+          # Saves ~7 min/run by not loading 17K+ human reviews for accuracy stats
+          DOW=$(date -u +%u)  # 7 = Sunday
           if [ "${{ github.event.inputs.run_calibration }}" == "true" ]; then
             ARGS="$ARGS --calibrate"
+          elif [ "${{ github.event_name }}" == "schedule" ] && [ "$DOW" == "7" ]; then
+            ARGS="$ARGS --calibrate"
+            echo "Sunday scheduled run — including calibration"
           fi
 
           # Validation
