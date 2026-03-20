@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-20T22:17:37.029Z",
+    "generatedAt": "2026-03-20T22:36:04.408Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 125,
-    "highConfidence": 38,
+    "totalFlagged": 127,
+    "highConfidence": 40,
     "mediumConfidence": 87,
     "lowConfidence": 0,
-    "reassignable": 59
+    "reassignable": 60
   },
   "results": [
     {
@@ -222,6 +222,21 @@
       "textSnippet": "When producers Neil Meron and Craig Zadan chose the effervescent 2002 show Hairspray as NBC’s fourth annual live-musical event, they may not have imagined that unapologetic bigotry would see such an e"
     },
     {
+      "showId": "hairspray-2002",
+      "showTitle": "Hairspray",
+      "showYear": 2002,
+      "file": "washpost--bethonie-butler.json",
+      "outlet": "Washington Post",
+      "criticName": "Bethonie Butler",
+      "publishDate": "2016-12-08",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2016 is 14 years after original opening 2002"
+      ],
+      "textSnippet": "NBC’s “Hairspray Live!” lacked the extra-strength hold of its predecessors, but didn’t fall completely flat thanks to outstanding performances by some of its more seasoned stars. “Hairspray” became a "
+    },
+    {
       "showId": "the-lion-king-1997",
       "showTitle": "The Lion King",
       "showYear": 1997,
@@ -415,7 +430,7 @@
       "file": "nytimes--unknown.json",
       "outlet": "The New York Times",
       "criticName": "Unknown",
-      "publishDate": null,
+      "publishDate": "1997-11-23",
       "confidence": "medium",
       "suggestedShowId": null,
       "signals": [
@@ -851,7 +866,7 @@
       "file": "nytimes--frank-rich.json",
       "outlet": "New York Times",
       "criticName": "Frank Rich",
-      "publishDate": null,
+      "publishDate": "1988-01-27",
       "confidence": "medium",
       "suggestedShowId": null,
       "signals": [
@@ -1602,10 +1617,11 @@
       "file": "bloomberg--jeremy-gerard.json",
       "outlet": "Bloomberg",
       "criticName": "Jeremy Gerard",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": null,
+      "publishDate": "2012-09-27",
+      "confidence": "high",
+      "suggestedShowId": "an-enemy-of-the-people-2012",
       "signals": [
+        "publishDate 2012 matches revival an-enemy-of-the-people-2012 (opened 2012)",
         "modern references: tiktok"
       ],
       "textSnippet": "Signed UpPlus Sign UpPlus Sign UpBy continuing, I agree to the Privacy Policy and Terms of Service.\n\n11:13Gen Alpha's WorldMillennials Melted Their Brains With Screens. Their Kids Want None of ItInves"
@@ -1647,14 +1663,14 @@
       "file": "village-voice--michael-feingold.json",
       "outlet": "Village Voice",
       "criticName": "Michael Feingold",
-      "publishDate": null,
+      "publishDate": "2010-04-20",
       "confidence": "high",
       "suggestedShowId": "la-cage-aux-folles-2010",
       "signals": [
+        "publishDate 2010 matches revival la-cage-aux-folles-2010 (opened 2010)",
         "revival cast/director match for la-cage-aux-folles-2010: Kelsey Grammer, Douglas Hodge, Longacre Theatre, director: Terry Johnson",
         "revival text signals: revival, new production",
-        "year 1983 in text matches revival la-cage-aux-folles-1983",
-        "no publishDate + revival signals + revivals exist"
+        "year 1983 in text matches revival la-cage-aux-folles-1983"
       ],
       "textSnippet": "Jeff Starks Site-Specific \"Sweet Cheat\"\n\nForty Years of Challenges From Trisha Brown\n\nJaime Hernandezs Graphic Behavior\n\nBig Art Group Celebrates 10 Years of Weird\n\n\"Anyone Can Whistle\" Sings a Crazy "
     },
@@ -1703,6 +1719,21 @@
         "revival text signals: revival, this production"
       ],
       "textSnippet": "A promising stretch of silence begins the Roundabout Theater Company's revival of Harold Pinter's ''Caretaker,'' which stars Patrick Stewart and Kyle MacLachlan. Of course, there would be silence, wou"
+    },
+    {
+      "showId": "wonderful-town-2003",
+      "showTitle": "Wonderful Town",
+      "showYear": 2003,
+      "file": "nytimes--jesse-green.json",
+      "outlet": "New York Times",
+      "criticName": "Jesse Green",
+      "publishDate": "2025-05-02",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2025 is 22 years after original opening 2003"
+      ],
+      "textSnippet": "Betty Comden was from Brooklyn, Adolph Green from the Bronx, Leonard Bernstein from Boston. All were born in the 1910s. Yet the mind’s eye first spies them huddling around a Greenwich Village piano in"
     },
     {
       "showId": "fiddler-on-the-roof-2004",
@@ -1873,10 +1904,11 @@
       "file": "nytimes--jesse-green.json",
       "outlet": "The New York Times",
       "criticName": "Jesse Green",
-      "publishDate": null,
+      "publishDate": "2022-02-03",
       "confidence": "medium",
       "suggestedShowId": null,
       "signals": [
+        "publishDate 2022 is 39 years after original opening 1983",
         "revival text signals: revival, this production",
         "modern references: pandemic"
       ],
@@ -1889,15 +1921,15 @@
       "file": "philadelphia-inquirer--howard-shapiro.json",
       "outlet": "Philadelphia Inquirer",
       "criticName": "Howard Shapiro",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": "death-of-a-salesman-1975",
+      "publishDate": "2012-03-15",
+      "confidence": "high",
+      "suggestedShowId": "death-of-a-salesman-2012",
       "signals": [
+        "publishDate 2012 matches revival death-of-a-salesman-2012 (opened 2012)",
         "revival text signals: revival, this production",
         "year 1975 in text matches revival death-of-a-salesman-1975",
         "year 1999 in text matches revival death-of-a-salesman-1999",
-        "modern references: twitter",
-        "no publishDate + revival signals + revivals exist"
+        "modern references: twitter"
       ],
       "textSnippet": "Willy Loman, as a character, has achieved a status something like Hamlet's - if you can play the patriarch of what is now a great American classic, Arthur Miller's Death of a Salesman, then you're a n"
     },

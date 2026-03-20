@@ -16,13 +16,11 @@ const path = require('path');
 const https = require('https');
 const {
   normalizeOutlet,
-  normalizeCritic,
   normalizePublishDate,
   generateReviewFilename,
   getOutletDisplayName,
 } = require('./lib/review-normalization');
-const { classifyContentTier } = require('./lib/content-quality');
-const { validateUrlDomain } = require('./lib/url-discovery');
+const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 
 const dataDir = path.join(__dirname, '..', 'data');
 const archiveDir = path.join(dataDir, 'aggregator-archive');
@@ -63,91 +61,26 @@ function getUrlIndex(showId) {
 }
 
 function writeReviewFile(review) {
-  // Domain validation: reject URLs that don't match the outlet's registered domain
-  const domainCheck = validateUrlDomain(review.url, review.outletId);
-  if (!domainCheck.valid) {
-    console.log(`    [SKIP] ${review.outletId}: ${domainCheck.reason}`);
-    return { action: 'skipped', filename: null };
-  }
-
-  const showDir = path.join(reviewTextsDir, review.showId);
-  if (!fs.existsSync(showDir)) fs.mkdirSync(showDir, { recursive: true });
-
   const filename = generateReviewFilename(review.outletId, review.criticName);
-  let filepath = path.join(showDir, filename);
 
-  // Check if this review URL already exists under a different filename
-  if (review.url && !fs.existsSync(filepath)) {
-    const idx = getUrlIndex(review.showId);
-    const existingFile = idx[review.url];
-    if (existingFile) {
-      filepath = path.join(showDir, existingFile);
-    }
-  }
-
-  // Don't overwrite existing review files — only create new ones
-  if (fs.existsSync(filepath)) {
-    // Check if we should merge new data into existing file
-    try {
-      const existing = JSON.parse(fs.readFileSync(filepath, 'utf-8'));
-      let updated = false;
-
-      // Add DTLI excerpt if missing
-      if (review.dtliExcerpt && !existing.dtliExcerpt) {
-        existing.dtliExcerpt = review.dtliExcerpt;
-        updated = true;
-      }
-      // Add DTLI thumb if missing
-      if (review.dtliThumb && !existing.dtliThumb) {
-        existing.dtliThumb = review.dtliThumb;
-        updated = true;
-      }
-      // Add BWW excerpt if missing
-      if (review.bwwExcerpt && !existing.bwwExcerpt) {
-        existing.bwwExcerpt = review.bwwExcerpt;
-        updated = true;
-      }
-      // Add URL if missing
-      if (review.url && !existing.url) {
-        existing.url = review.url;
-        updated = true;
-      }
-
-      if (updated && !dryRun) {
-        fs.writeFileSync(filepath, JSON.stringify(existing, null, 2));
-      }
-      return { action: updated ? 'merged' : 'exists', filename };
-    } catch (e) {
-      return { action: 'exists', filename };
-    }
-  }
-
-  // Create new review file
-  const reviewData = {
-    showId: review.showId,
-    outletId: review.outletId,
+  const result = createOrMergeReviewFile(review.showId, {
     outlet: review.outlet,
-    criticName: review.criticName || 'Unknown',
-    url: review.url || null,
-    publishDate: review.publishDate || null,
-    fullText: null,
-    isFullReview: false,
-    dtliExcerpt: review.dtliExcerpt || null,
-    bwwExcerpt: review.bwwExcerpt || null,
-    showScoreExcerpt: review.showScoreExcerpt || null,
-    assignedScore: null,
+    outletId: review.outletId,
+    criticName: review.criticName,
+    url: review.url,
     source: review.source,
-    dtliThumb: review.dtliThumb || null,
-  };
+    fields: {
+      dtliExcerpt: review.dtliExcerpt || null,
+      dtliThumb: review.dtliThumb || null,
+      bwwExcerpt: review.bwwExcerpt || null,
+      showScoreExcerpt: review.showScoreExcerpt || null,
+      publishDate: review.publishDate || null,
+    },
+  }, { dryRun });
 
-  // Classify content tier
-  const tier = classifyContentTier(reviewData);
-  reviewData.contentTier = tier;
-
-  if (!dryRun) {
-    fs.writeFileSync(filepath, JSON.stringify(reviewData, null, 2));
-  }
-  return { action: 'created', filename };
+  // Map shared writer actions to legacy return values
+  const actionMap = { 'new': 'created', 'updated': 'merged', 'skipped': 'exists' };
+  return { action: actionMap[result.action] || result.action, filename };
 }
 
 /**

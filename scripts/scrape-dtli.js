@@ -15,9 +15,9 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
+const { isJunkOutlet } = require('./lib/review-normalization');
 const { validatePageMatchesShow } = require('./lib/page-validator');
-const { validateUrlDomain } = require('./lib/url-discovery');
+const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 
 // Paths
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -367,78 +367,28 @@ function archiveDTLIPage(showId, url, html) {
  * Save review to review-texts directory
  */
 function saveReview(review) {
-  // Domain validation: reject URLs that don't match the outlet's registered domain
-  const domainCheck = validateUrlDomain(review.url, review.outletId);
-  if (!domainCheck.valid) {
-    console.log(`    [SKIP] ${review.outletId}: ${domainCheck.reason}`);
-    return { created: false, updated: false };
-  }
-
-  const showDir = path.join(REVIEW_TEXTS_DIR, review.showId);
-  if (!fs.existsSync(showDir)) {
-    fs.mkdirSync(showDir, { recursive: true });
-  }
-
-  const criticSlug = slugify(review.criticName || 'unknown');
-  const outletSlug = review.outletId.toLowerCase();
-  const filename = `${outletSlug}--${criticSlug}.json`;
-  const filepath = path.join(showDir, filename);
-
-  // Check if file exists
-  if (fs.existsSync(filepath)) {
-    // Read existing and merge DTLI data
-    const existing = JSON.parse(fs.readFileSync(filepath, 'utf8'));
-
-    // Only update DTLI-specific fields if they're missing or null
-    let updated = false;
-    if (!existing.dtliThumb && review.dtliThumb) {
-      existing.dtliThumb = review.dtliThumb;
-      updated = true;
-    }
-    if (!existing.dtliExcerpt && review.dtliExcerpt) {
-      existing.dtliExcerpt = review.dtliExcerpt;
-      updated = true;
-    }
-    if (!existing.dtliUrl && review.dtliUrl) {
-      existing.dtliUrl = review.dtliUrl;
-      updated = true;
-    }
-    // Upgrade primary URL if existing content is bad and DTLI has the review URL
-    if (review.url && maybeUpgradeUrl(existing, review.url, 'dtli')) {
-      updated = true;
-    }
-
-    if (updated) {
-      fs.writeFileSync(filepath, JSON.stringify(existing, null, 2));
-      console.log(`      Updated ${filename} with DTLI data`);
-      return { created: false, updated: true };
-    } else {
-      console.log(`      Skipped ${filename} (already has DTLI data)`);
-      return { created: false, updated: false };
-    }
-  }
-
-  // Create new file
-  const reviewData = {
-    showId: review.showId,
-    outletId: review.outletId,
+  const result = createOrMergeReviewFile(review.showId, {
     outlet: review.outlet,
+    outletId: review.outletId, // Pre-slugified — preserve existing filenames
     criticName: review.criticName,
     url: review.url,
-    publishDate: review.publishDate,
-    fullText: null,
-    isFullReview: false,
-    dtliExcerpt: review.dtliExcerpt,
-    originalScore: null,
-    assignedScore: null,
     source: 'dtli',
-    dtliThumb: review.dtliThumb,
-    dtliUrl: review.dtliUrl,
-  };
+    fields: {
+      dtliExcerpt: review.dtliExcerpt,
+      dtliThumb: review.dtliThumb,
+      dtliUrl: review.dtliUrl,
+      publishDate: review.publishDate,
+    },
+  });
 
-  fs.writeFileSync(filepath, JSON.stringify(reviewData, null, 2));
-  console.log(`      Created ${filename}`);
-  return { created: true, updated: false };
+  const created = result.action === 'new';
+  const updated = result.action === 'updated';
+  if (created) console.log(`      Created ${path.basename(result.filepath)}`);
+  else if (updated) console.log(`      Updated ${path.basename(result.filepath)} with DTLI data`);
+  else if (result.reason?.startsWith('domain-mismatch')) console.log(`    [SKIP] ${review.outletId}: ${result.reason}`);
+  else console.log(`      Skipped ${review.outletId} (already has DTLI data)`);
+
+  return { created, updated };
 }
 
 /**

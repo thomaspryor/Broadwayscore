@@ -22,7 +22,7 @@ const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { validateUrlDomain } = require('./lib/url-discovery');
+const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const cheerio = require('cheerio');
 
 // Paths
@@ -347,109 +347,32 @@ function extractReviewLinksFromArticle(html, showId) {
 // ---------------------------------------------------------------------------
 
 function saveReviewFromPlaybill(showId, reviewInfo) {
-  const showDir = path.join(reviewTextsDir, showId);
-
-  // Resolve domain to human-readable outlet name first
+  // Pre-processing: resolve domain → outlet name, detect NYSR critics
   let outletName = DOMAIN_TO_OUTLET[reviewInfo.outletDomain] || reviewInfo.outlet || reviewInfo.outletDomain;
   let criticName = reviewInfo.critic || '';
   if (NYSR_CRITICS.some(c => outletName.toLowerCase().includes(c))) {
-    criticName = outletName; // The "outlet" is actually the critic name
+    criticName = outletName;
     outletName = 'New York Stage Review';
   }
 
-  // Skip junk outlets (ticket pages, ads, etc.)
-  if (isJunkOutlet(outletName)) return 'skipped';
-
-  // Skip junk outlets (ticket pages, ads, etc.)
-  if (isJunkOutlet(outletName)) return 'skipped';
-
-  // Normalize outlet using the shared normalization system
+  // Playbill has outlet aliases that need fallback normalization
   const outletId = normalizeOutlet(outletName) || normalizeOutlet(reviewInfo.outletDomain) || reviewInfo.outletDomain;
-  if (!outletId) return 'skipped';
 
-  // Domain validation: reject URLs that don't match the outlet's registered domain
-  const domainCheck = validateUrlDomain(reviewInfo.url, outletId);
-  if (!domainCheck.valid) {
-    console.log(`    [SKIP] ${outletId}: ${domainCheck.reason}`);
-    stats.skippedDomainMismatch = (stats.skippedDomainMismatch || 0) + 1;
-    return 'skipped';
-  }
-
-  // Normalize critic
-  const criticSlug = criticName
-    ? normalizeCritic(criticName)
-    : 'unknown';
-
-  // Check for existing file BEFORE creating — use cross-scraper dedup
-  const existing = findExistingReviewFile(showDir, outletName, criticName || null);
-  if (existing && existing.data) {
-    // File exists for this outlet (+critic) — add playbillVerdictUrl
-    let changed = false;
-    if (!existing.data.playbillVerdictUrl) {
-      existing.data.playbillVerdictUrl = reviewInfo.url;
-      changed = true;
-    }
-    // Upgrade primary URL if existing content is bad (shared helper)
-    if (maybeUpgradeUrl(existing.data, reviewInfo.url, 'playbill-verdict')) {
-      changed = true;
-      stats.urlCorrected = (stats.urlCorrected || 0) + 1;
-    }
-    if (!existing.data.url && reviewInfo.url) {
-      existing.data.url = reviewInfo.url;
-      changed = true;
-    }
-    if (changed) {
-      const sources = new Set(existing.data.sources || [existing.data.source || '']);
-      sources.add('playbill-verdict');
-      existing.data.sources = Array.from(sources).filter(Boolean);
-      fs.writeFileSync(existing.path, JSON.stringify(existing.data, null, 2) + '\n');
-      stats.updatedReviews++;
-      return 'updated';
-    }
-    stats.skippedExisting++;
-    return 'skipped';
-  }
-
-  // Also check exact filename match (belt and suspenders)
-  const filename = `${outletId}--${criticSlug}.json`;
-  const filepath = path.join(showDir, filename);
-  if (fs.existsSync(filepath)) {
-    const existingData = JSON.parse(fs.readFileSync(filepath, 'utf8'));
-    if (!existingData.playbillVerdictUrl) {
-      existingData.playbillVerdictUrl = reviewInfo.url;
-      if (!existingData.url && reviewInfo.url) {
-        existingData.url = reviewInfo.url;
-      }
-      const sources = new Set(existingData.sources || [existingData.source || '']);
-      sources.add('playbill-verdict');
-      existingData.sources = Array.from(sources).filter(Boolean);
-      fs.writeFileSync(filepath, JSON.stringify(existingData, null, 2) + '\n');
-      stats.updatedReviews++;
-      return 'updated';
-    }
-    stats.skippedExisting++;
-    return 'skipped';
-  }
-
-  // Create new minimal review file
-  if (!fs.existsSync(showDir)) {
-    fs.mkdirSync(showDir, { recursive: true });
-  }
-
-  const reviewData = {
-    showId,
-    outletId,
+  const result = createOrMergeReviewFile(showId, {
     outlet: outletName,
-    criticName: criticName || 'Unknown',
+    outletId,
+    criticName: criticName || undefined,
     url: reviewInfo.url,
-    playbillVerdictUrl: reviewInfo.url,
     source: 'playbill-verdict',
-    sources: ['playbill-verdict'],
-  };
+    fields: { playbillVerdictUrl: reviewInfo.url },
+  });
 
-  fs.writeFileSync(filepath, JSON.stringify(reviewData, null, 2) + '\n');
-  stats.newReviews++;
-  return 'new';
+  if (result.action === 'new') stats.newReviews++;
+  else if (result.action === 'updated') stats.updatedReviews++;
+  else if (result.reason?.startsWith('domain-mismatch')) stats.skippedDomainMismatch = (stats.skippedDomainMismatch || 0) + 1;
+  else stats.skippedExisting++;
+
+  return result.action === 'skipped' ? 'skipped' : result.action;
 }
 
 // ---------------------------------------------------------------------------

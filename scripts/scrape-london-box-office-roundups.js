@@ -26,9 +26,8 @@ const path = require('path');
 const https = require('https');
 const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
-const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./lib/review-normalization');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { validateUrlDomain } = require('./lib/url-discovery');
+const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -495,106 +494,41 @@ function stripTheatreFromSlug(slug) {
 // ---------------------------------------------------------------------------
 
 function saveLBOReview(showId, reviewInfo) {
-  const showDir = path.join(reviewTextsDir, showId);
-  const outletId = normalizeOutlet(reviewInfo.outlet);
-  if (!outletId) return 'skipped';
+  const sourceName = reviewInfo.isIndividual ? 'lbo-individual' : 'lbo-roundup';
 
-  // Domain validation: reject URLs that don't match the outlet's registered domain
-  const domainCheck = validateUrlDomain(reviewInfo.url, outletId);
-  if (!domainCheck.valid) {
-    console.log(`    [SKIP] ${outletId}: ${domainCheck.reason}`);
-    stats.skippedDomainMismatch = (stats.skippedDomainMismatch || 0) + 1;
-    return 'skipped';
+  // Build score fields (only if score present)
+  const scoreFields = {};
+  if (reviewInfo.score !== null && reviewInfo.score !== undefined) {
+    scoreFields.originalScore = reviewInfo.score;
+    scoreFields.scoreSource = 'lbo-star-rating';
+    scoreFields.scorePriority = 'P0';
   }
 
-  // Use cross-scraper dedup
-  const existing = findExistingReviewFile(showDir, reviewInfo.outlet, reviewInfo.critic !== 'Unknown' ? reviewInfo.critic : null);
-
-  if (existing && existing.data) {
-    if (existing.data.lboRoundupExcerpt) {
-      stats.skippedExisting++;
-      return 'skipped';
-    }
-
-    // Add LBO data to existing file
-    if (reviewInfo.excerpt) {
-      existing.data.lboRoundupExcerpt = reviewInfo.excerpt;
-    }
-    if (reviewInfo.score !== null && !existing.data.originalScore) {
-      existing.data.originalScore = reviewInfo.score;
-      existing.data.scoreSource = 'lbo-star-rating';
-      existing.data.scorePriority = 'P0';
-    }
-    if (reviewInfo.url && !existing.data.url) {
-      existing.data.url = reviewInfo.url;
-    }
-    if (reviewInfo.critic !== 'Unknown' && (!existing.data.criticName || existing.data.criticName === 'Unknown')) {
-      existing.data.criticName = reviewInfo.critic;
-    }
-
-    const sources = new Set(existing.data.sources || [existing.data.source || '']);
-    sources.add(reviewInfo.isIndividual ? 'lbo-individual' : 'lbo-roundup');
-    existing.data.sources = Array.from(sources).filter(Boolean);
-
-    if (!DRY_RUN) {
-      fs.writeFileSync(existing.path, JSON.stringify(existing.data, null, 2) + '\n');
-    }
-    stats.updatedReviews++;
-    return 'updated';
-  }
-
-  // Create new review file
-  if (!DRY_RUN) {
-    if (!fs.existsSync(showDir)) {
-      fs.mkdirSync(showDir, { recursive: true });
-    }
-  }
-
-  const criticId = normalizeCritic(reviewInfo.critic) || 'unknown';
-  const filename = `${outletId}--${criticId}.json`;
-  const filepath = path.join(showDir, filename);
-
-  if (fs.existsSync(filepath)) {
-    const data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
-    if (!data.lboRoundupExcerpt) {
-      if (reviewInfo.excerpt) data.lboRoundupExcerpt = reviewInfo.excerpt;
-      if (reviewInfo.score !== null && !data.originalScore) {
-        data.originalScore = reviewInfo.score;
-        data.scoreSource = 'lbo-star-rating';
-        data.scorePriority = 'P0';
-      }
-      if (!DRY_RUN) {
-        fs.writeFileSync(filepath, JSON.stringify(data, null, 2) + '\n');
-      }
-      stats.updatedReviews++;
-      return 'updated';
-    }
-    stats.skippedExisting++;
-    return 'skipped';
-  }
-
-  const reviewData = {
-    showId,
-    outletId,
+  const result = createOrMergeReviewFile(showId, {
     outlet: reviewInfo.outlet,
     criticName: reviewInfo.critic,
-    url: reviewInfo.url || '',
-    score: reviewInfo.score,
-    scoreSource: reviewInfo.score !== null ? 'lbo-star-rating' : undefined,
-    scorePriority: reviewInfo.score !== null ? 'P0' : undefined,
-    lboRoundupExcerpt: reviewInfo.excerpt || undefined,
-    source: reviewInfo.isIndividual ? 'lbo-individual' : 'lbo-roundup',
-    sources: [reviewInfo.isIndividual ? 'lbo-individual' : 'lbo-roundup'],
-  };
+    url: reviewInfo.url,
+    source: sourceName,
+    fields: {
+      lboRoundupExcerpt: reviewInfo.excerpt || undefined,
+      ...scoreFields,
+    },
+  }, {
+    dryRun: DRY_RUN,
+    onMerge(existing) {
+      // Upgrade critic name if incoming has one and existing is 'Unknown'
+      if (reviewInfo.critic !== 'Unknown' && (!existing.criticName || existing.criticName === 'Unknown')) {
+        existing.criticName = reviewInfo.critic;
+      }
+    },
+  });
 
-  // Clean undefined keys
-  Object.keys(reviewData).forEach(k => reviewData[k] === undefined && delete reviewData[k]);
+  if (result.action === 'new') stats.newReviews++;
+  else if (result.action === 'updated') stats.updatedReviews++;
+  else if (result.reason?.startsWith('domain-mismatch')) stats.skippedDomainMismatch = (stats.skippedDomainMismatch || 0) + 1;
+  else stats.skippedExisting++;
 
-  if (!DRY_RUN) {
-    fs.writeFileSync(filepath, JSON.stringify(reviewData, null, 2) + '\n');
-  }
-  stats.newReviews++;
-  return 'new';
+  return result.action === 'skipped' ? 'skipped' : result.action;
 }
 
 // ---------------------------------------------------------------------------
