@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-20T05:50:22.775Z",
+  "timestamp": "2026-03-20T05:57:26.895Z",
   "stats": {
     "totalReviews": 32063,
-    "alreadyFlagged": 9689,
+    "alreadyFlagged": 9690,
     "dateGuardCatches": 189,
     "directorMismatch": 1117,
     "tvFilmSignals": 3510,
-    "londonSignals": 1085,
+    "londonSignals": 1084,
     "offBroadwaySignals": 1072,
     "yearMismatch": 91,
-    "noPublishDate": 9456
+    "noPublishDate": 9455
   },
   "findings": [
     {
@@ -77428,20 +77428,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "maggots-west-end-2026",
-      "file": "whatsonstage--sarah-crompton.json",
-      "score": 79,
-      "publishDate": "March 1, 2026",
-      "url": "https://www.whatsonstage.com/news/maggots-at-the-park-theatre-review_1710935/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
