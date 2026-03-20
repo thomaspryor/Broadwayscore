@@ -75,6 +75,15 @@ async function discoverShows(page) {
       await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
       await sleep(1000); // Let JS render
 
+      // Scroll down to load more shows (category pages lazy-load on scroll)
+      for (let scroll = 0; scroll < 10; scroll++) {
+        const prevCount = await page.$$eval('a[href*="?p="]', els => els.length);
+        await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+        await sleep(1500);
+        const newCount = await page.$$eval('a[href*="?p="]', els => els.length);
+        if (newCount === prevCount) break; // No more to load
+      }
+
       const shows = await page.evaluate(() => {
         const links = document.querySelectorAll('a[href*="?p="]');
         const results = [];
@@ -118,13 +127,28 @@ async function discoverShows(page) {
 // Discovered via manual site navigation + Google search (Mar 2026).
 // Format: ourShowId → { category, id, slug }
 const SD_KNOWN_SHOWS = {
+  // Musicals
   'six-the-musical-west-end-2021': { category: 'musicals', id: 15640, slug: 'six' },
   'into-the-woods-west-end-2025': { category: 'musicals', id: 15368, slug: 'into-the-woods-15368' },
   'cabaret-at-the-kit-kat-club-west-end-2021': { category: 'musicals', id: 15642, slug: 'cabaret' },
-  'les-miserables-west-end-2021': { category: 'sondheim-theatre', id: 0, slug: 'les-miserables' },
   'titanique-west-end-2024': { category: 'musicals', id: 18295, slug: 'titanique-the-musical' },
-  'operation-mincemeat-west-end-2024': { category: 'musicals', id: 0, slug: 'operation-mincemeat' },
+  'operation-mincemeat-west-end-2024': { category: 'musicals', id: 13086, slug: 'operation-mincemeat' },
   'the-producers-west-end-2025': { category: 'musicals', id: 218, slug: 'the-producers' },
+  'the-devil-wears-prada-west-end-2024': { category: 'musicals', id: 17973, slug: 'the-devil-wears-prada' },
+  'kinky-boots-the-musical-west-end-2026': { category: 'musicals', id: 192, slug: 'kinky-boots' },
+  // Plays
+  'arcadia-west-end-2026': { category: 'plays', id: 18946, slug: 'arcadia' },
+  'all-my-sons-west-end-2025': { category: 'plays', id: 6839, slug: 'all-my-sons' },
+  'paranormal-activity-west-end-2025': { category: 'plays', id: 18945, slug: 'paranormal-activity' },
+  'dracula-west-end-2025': { category: 'plays', id: 18829, slug: 'dracula' },
+  'the-hunger-games-on-stage-west-end-2025': { category: 'plays', id: 18724, slug: 'the-hunger-games-on-stage' },
+  'harry-potter-and-the-cursed-child-both-parts-west-end-2021': { category: 'family-theatre', id: 791, slug: 'harry-potter-and-the-cursed-child' },
+  'broken-glass-west-end-2026': { category: 'plays', id: 19050, slug: 'broken-glass' },
+  'evening-all-afternoon-west-end-2026': { category: 'plays', id: 19048, slug: 'evening-all-afternoon' },
+  'the-holy-rosenbergs-west-end-2026': { category: 'plays', id: 19049, slug: 'the-holy-rosenbergs' },
+  'shadowlands-west-end-2026': { category: 'plays', id: 19001, slug: 'shadowlands' },
+  // Venue-specific
+  'les-miserables-west-end-2021': { category: 'sondheim-theatre', id: 15639, slug: 'les-miserables' },
 };
 
 /**

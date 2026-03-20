@@ -1,100 +1,51 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-20T21:34:57.229Z",
+    "generatedAt": "2026-03-20T21:53:31.309Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 90,
-    "classified": 5,
-    "wrongProduction": 3,
-    "correctProduction": 2,
+    "total": 89,
+    "classified": 2,
+    "wrongProduction": 2,
+    "correctProduction": 0,
     "uncertain": 0,
     "errors": 0,
-    "wrongHighConfidence": 3,
+    "wrongHighConfidence": 2,
     "wrongMediumConfidence": 0
   },
   "results": [
     {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "jasonraize--frank-scheck.json",
-      "outlet": "jasonraize",
-      "criticName": "Frank Scheck",
-      "publishDate": null,
+      "showId": "into-the-woods-2002",
+      "showTitle": "Into the Woods",
+      "showYear": 2002,
+      "file": "wsj--charles-isherwood.json",
+      "outlet": "The Wall Street Journal",
+      "criticName": "Charles Isherwood",
+      "publishDate": "July 15th, 2022",
       "originalSignals": [
-        "modern references: masks"
-      ],
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review discusses Julie Taymor's use of masks and costumes, which is a key element of the 1997 Broadway production. The review also describes the show as a 'brilliant theatrical adaptation' which suggests it is about the original Broadway production."
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "nytimes--unknown.json",
-      "outlet": "The New York Times",
-      "criticName": "Unknown",
-      "publishDate": null,
-      "originalSignals": [
-        "modern references: masks"
-      ],
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review discusses Julie Taymor's direction and design, the New Amsterdam Theater, and the show's premiere, all aligning with the 1997 Broadway production of The Lion King."
-    },
-    {
-      "showId": "a-delicate-balance-1996",
-      "showTitle": "A Delicate Balance",
-      "showYear": 1996,
-      "file": "nytimes--ben-brantley.json",
-      "outlet": "The New York Times",
-      "criticName": "Ben Brantley",
-      "publishDate": "November 20th, 2014",
-      "originalSignals": [
-        "revival text signals: revival, this production",
-        "no publishDate + revival signals + revivals exist"
+        "year 2022 in text matches revival into-the-woods-2022",
+        "year 1986 in text matches revival into-the-woods-1987",
+        "modern references: twitter"
       ],
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
-      "targetShowId": "a-delicate-balance-2014",
-      "reasoning": "The review mentions the 2014 revival's director (Pam MacKinnon) and cast (Glenn Close, John Lithgow, Lindsay Duncan, Bob Balaban, Clare Higgins) and states that the play \"opened on Thursday night in a revival at the Golden Theater.\""
+      "targetShowId": "into-the-woods-2022",
+      "reasoning": "The review is dated July 14, 2022, and mentions the 1986 musical, indicating it's about the 2022 revival. It also mentions cast members from the 2022 production."
     },
     {
-      "showId": "skylight-1996",
-      "showTitle": "Skylight",
-      "showYear": 1996,
-      "file": "nytimes--ben-brantley.json",
-      "outlet": "The New York Times",
-      "criticName": "Ben Brantley",
-      "publishDate": "April 2nd, 2015",
+      "showId": "falsettos-1992",
+      "showTitle": "Falsettos",
+      "showYear": 1992,
+      "file": "wsj--terry-teachout.json",
+      "outlet": "The Wall Street Journal",
+      "criticName": "Terry Teachout",
+      "publishDate": "October 27th, 2016",
       "originalSignals": [
-        "revival text signals: revival, this production",
-        "no publishDate + revival signals + revivals exist"
+        "year 2016 in text matches revival falsettos-2016"
       ],
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
-      "targetShowId": "skylight-2015",
-      "reasoning": "The review mentions Carey Mulligan and Bill Nighy, who starred in the 2015 revival, and Stephen Daldry, the director of the 2015 revival. It also mentions the Golden Theater, where the 2015 revival opened. The review also refers to the 1996 production as the 'original staging'."
-    },
-    {
-      "showId": "once-upon-a-mattress-1996",
-      "showTitle": "Once Upon a Mattress",
-      "showYear": 1996,
-      "file": "vulture--christopher-bonanos.json",
-      "outlet": "Vulture",
-      "criticName": "Christopher Bonanos",
-      "publishDate": "August 12th, 2024",
-      "originalSignals": [
-        "revival text signals: revival, this production",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "once-upon-a-mattress-2024",
-      "reasoning": "The review mentions Sutton Foster in the role of Winnifred, which is a key detail of the 2024 revival. It also mentions the show being staged because 'Sutton Foster exists and can pull off Winnifred'. The review also mentions changes to the script, such as the scrapbooking line, which is a detail of"
+      "targetShowId": "falsettos-2016",
+      "reasoning": "The review mentions the Lincoln Center Theater revival, Christian Borle, Stephanie J. Block, and Andrew Rannells, and the closing date of Jan 8, 2016, all of which point to the 2016 production."
     }
   ]
 }
