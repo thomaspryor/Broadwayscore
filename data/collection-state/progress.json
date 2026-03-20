@@ -992,7 +992,15 @@
     "the-porch-on-windy-hill-off-broadway-2026/theatermania--zachary-stewart.json",
     "the-porch-on-windy-hill-off-broadway-2026/talkinbroadway--unknown.json",
     "beautiful-little-fool-west-end-2026/guardian--emma-john.json",
-    "beautiful-little-fool-west-end-2026/timeout-london--tim-bano.json"
+    "beautiful-little-fool-west-end-2026/timeout-london--tim-bano.json",
+    "blackout-songs-off-broadway-2026/ew--thom-geier.json",
+    "blackout-songs-off-broadway-2026/theatermania--pete-hempstead.json",
+    "beautiful-little-fool-west-end-2026/artsdesk--gary-naylor.json",
+    "beautiful-little-fool-west-end-2026/standard--nick-curtis.json",
+    "beautiful-little-fool-west-end-2026/whatsonstage--alun-hood.json",
+    "blackout-songs-off-broadway-2026/front-row-center--stan-friedman.json",
+    "blackout-songs-off-broadway-2026/nysr--frank-scheck.json",
+    "blackout-songs-off-broadway-2026/off-off-online--charles-wright.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
@@ -1169,7 +1177,9 @@
     "the-other-place-off-broadway-2026/thestage--dave-fargnoli.json",
     "beautiful-little-fool-west-end-2026/broadwayworld--aliya-al-hussain.json",
     "beautiful-little-fool-west-end-2026/thestage--sam-marlowe.json",
-    "blackout-songs-off-broadway-2026/one-minute-critic--emily-chackerian.json"
+    "blackout-songs-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "beautiful-little-fool-west-end-2026/broadwayworld--aliya-al-hassan.json",
+    "beautiful-little-fool-west-end-2026/everything-theatre--mike-carter.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1877,7 +1887,15 @@
       "maggots-west-end-2026/whatsonstage--sarah-crompton.json",
       "the-porch-on-windy-hill-off-broadway-2026/talkinbroadway--unknown.json",
       "beautiful-little-fool-west-end-2026/guardian--emma-john.json",
-      "beautiful-little-fool-west-end-2026/timeout-london--tim-bano.json"
+      "beautiful-little-fool-west-end-2026/timeout-london--tim-bano.json",
+      "blackout-songs-off-broadway-2026/ew--thom-geier.json",
+      "beautiful-little-fool-west-end-2026/artsdesk--gary-naylor.json",
+      "beautiful-little-fool-west-end-2026/everything-theatre--mike-carter.json",
+      "beautiful-little-fool-west-end-2026/standard--nick-curtis.json",
+      "beautiful-little-fool-west-end-2026/whatsonstage--alun-hood.json",
+      "blackout-songs-off-broadway-2026/front-row-center--stan-friedman.json",
+      "blackout-songs-off-broadway-2026/nysr--frank-scheck.json",
+      "blackout-songs-off-broadway-2026/off-off-online--charles-wright.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
@@ -2258,11 +2276,12 @@
       "not-nobody-off-broadway-2026/theatermania--zachary-stewart.json",
       "the-dinosaurs-off-broadway-2026/theatermania--dan-rubins.json",
       "the-other-place-off-broadway-2026/telegraph--claire-allfree.json",
-      "the-porch-on-windy-hill-off-broadway-2026/theatermania--zachary-stewart.json"
+      "the-porch-on-windy-hill-off-broadway-2026/theatermania--zachary-stewart.json",
+      "blackout-songs-off-broadway-2026/theatermania--pete-hempstead.json"
     ]
   },
   "startTime": "2026-03-19T10:02:04.711Z",
-  "lastProcessed": "beautiful-little-fool-west-end-2026/timeout-london--tim-bano.json",
+  "lastProcessed": "blackout-songs-off-broadway-2026/off-off-online--charles-wright.json",
   "log": [
     {
       "t": "2026-03-19T10:04:36.520Z",
@@ -2641,6 +2660,17 @@
     },
     {
       "t": "2026-03-20T05:24:59.330Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-20T05:37:15.486Z",
+      "event": "bb-session",
+      "session": "68ea935b",
+      "url": "https://www.thestage.co.uk/reviews/beautiful-little-fool-review-southwark-playho"
+    },
+    {
+      "t": "2026-03-20T05:37:16.590Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
