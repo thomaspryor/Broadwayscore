@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-20T19:49:27.287Z",
+  "timestamp": "2026-03-20T21:39:24.349Z",
   "stats": {
-    "totalReviews": 32091,
-    "alreadyFlagged": 9711,
+    "totalReviews": 32217,
+    "alreadyFlagged": 9751,
     "dateGuardCatches": 186,
-    "directorMismatch": 1119,
-    "tvFilmSignals": 3510,
-    "londonSignals": 1084,
+    "directorMismatch": 1123,
+    "tvFilmSignals": 3514,
+    "londonSignals": 1083,
     "offBroadwaySignals": 1072,
     "yearMismatch": 91,
-    "noPublishDate": 9467
+    "noPublishDate": 9547
   },
   "findings": [
     {
@@ -2132,20 +2132,6 @@
       ]
     },
     {
-      "showId": "a-thousand-clowns-2001",
-      "file": "nytimes--bruce-weber.json",
-      "score": null,
-      "publishDate": "July 12, 2001",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;res=9f05e6de163bf931a25754c0a9679c8b63",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
       "showId": "a-time-to-kill-2013",
       "file": "bloomberg--jeremy-gerard.json",
       "score": 68,
@@ -4133,6 +4119,20 @@
     },
     {
       "showId": "allegiance-2015",
+      "file": "hollywood-reporter--unknown.json",
+      "score": null,
+      "publishDate": "2015-11-08",
+      "url": "https://www.hollywoodreporter.com/news/general-news/george-takei-lea-salonga-allegiance-838242/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "allegiance-2015",
       "file": "jadedragon--scott-gilson.json",
       "score": 90,
       "publishDate": "October 1st, 2012",
@@ -4149,7 +4149,7 @@
       "showId": "allegiance-2015",
       "file": "life-full-of-cheese--chuck-pennington-iii.json",
       "score": 85,
-      "publishDate": null,
+      "publishDate": "January 17, 2016",
       "url": "https://lifefullofcheese.com/2016/01/17/allegiance-longacre-theatre-nyc/",
       "findings": [
         {
@@ -4163,7 +4163,7 @@
       "showId": "allegiance-2015",
       "file": "mediander-blog--nick-mangione.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "November 20, 2015",
       "url": "https://blog.mediander.com/allegiance-goes-where-no-musical-has-gone-before/",
       "findings": [
         {
@@ -9032,6 +9032,20 @@
       ]
     },
     {
+      "showId": "bullets-over-broadway-2014",
+      "file": "wsj--terry-teachout.json",
+      "score": 42,
+      "publishDate": "April 4, 2014",
+      "url": "https://online.wsj.com/news/articles/SB10001424052702303603904579492074059755520?mg=reno64-wsj&url=http%3A%2F%2Fonline.wsj.com%2Farticle%2FSB10001424052702303603904579492074059755520.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
       "showId": "burlesque-west-end-2026",
       "file": "thestage--paul-vale.json",
       "score": 75,
@@ -11025,6 +11039,25 @@
     },
     {
       "showId": "cats-the-jellicle-ball-off-broadway-2024",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": null,
+      "publishDate": "2024-06-22",
+      "url": "https://newyorktheater.me/2024/06/22/cats-the-jellicle-ball-review-the-queering-of-andrew-lloyd-webber/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-off-broadway-2024",
       "file": "nytg--kyle-turner.json",
       "score": 92,
       "publishDate": "2024-06-21",
@@ -11086,6 +11119,24 @@
       "score": 83,
       "publishDate": "August 8th, 2024",
       "url": "https://www.theaterscene.net/musicals/offbway/cats-the-jellicle-ball/victor-gluck/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-off-broadway-2024",
+      "file": "thewrap--unknown.json",
+      "publishDate": "2024-06-21",
+      "url": "https://www.thewrap.com/cats-jellicle-ball-off-broadway-review-andrew-lloyd-webber/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -12640,6 +12691,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "contact-2000",
+      "file": "nytimes--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.nytimes.com/2000/06/05/theater/both-tonys-for-directing-go-michael-blakemore-kiss-me-kate-contact-aida.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -28383,6 +28448,20 @@
     },
     {
       "showId": "king-kong-2018",
+      "file": "nytimes--ben-brantleyjesse-green.json",
+      "score": 26,
+      "publishDate": "November 8th, 2018",
+      "url": "https://www.nytimes.com/2018/11/08/theater/king-kong-review.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "king-kong-2018",
       "file": "nytimes--jesse-green.json",
       "score": 16,
       "publishDate": null,
@@ -35039,7 +35118,7 @@
       "file": "times-uk--clive-davis.json",
       "score": 55,
       "publishDate": "2024-03-27",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/mj-the-musical-review-24-carat-karaoke-anchored-by-sleek-dance-moves-xvqpkfltq?gaa_at=eafs&gaa_n=AWEtsqe7HzB5Ce4NSHagoDmzIa5a3RTzEzQjIwzNgqxOvr9ebZyrlH3E8Mkd&gaa_ts=69bda4d9&gaa_sig=NRtuOoP3FL0-3Kz3ioonxn2su-CUIjMwcTV_RYTJminfI_4XZGFNqvIxs-CUZZxb-mbdy7BAwcRlX5Q83ILYSw%3D%3D",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mj-the-musical-review-24-carat-karaoke-anchored-by-sleek-dance-moves-xvqpkfltq?gaa_at=eafs&gaa_n=AWEtsqecj4sfDzFY29rAWDZxyWJ5U5_juFrt4gcVANYARjG5KVJVP9BTfA4K&gaa_ts=69bda2f1&gaa_sig=yhlVI0isLgHl0bTVELIkfh9e_cIO3k7CfJpbf6j94OTU_lwPAMdpqK6AqZX0Lk7mdmfcdL_6lIZNsyjavUujsA%3D%3D",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -36357,7 +36436,7 @@
     },
     {
       "showId": "my-joy-is-heavy-off-broadway-2025",
-      "file": "nytg--unknown.json",
+      "file": "nytg--amelia-merrill.json",
       "score": 75,
       "publishDate": "2026-03-17",
       "url": "https://www.newyorktheatreguide.com/reviews/my-joy-is-heavy-off-broadway-review",
@@ -36371,7 +36450,7 @@
     },
     {
       "showId": "my-joy-is-heavy-off-broadway-2025",
-      "file": "theatermania--unknown.json",
+      "file": "theatermania--zachary-stewart.json",
       "score": 77,
       "publishDate": "2026-03-17",
       "url": "https://www.theatermania.com/news/review-my-joy-is-heavy-asks-can-grief-and-happiness-coexist_1828198/",
@@ -45833,20 +45912,6 @@
       "score": 66,
       "publishDate": "April 2nd, 2015",
       "url": "http://www.nydailynews.com/entertainment/theater-arts/skylight-review-carey-mulligan-bill-nighy-broadway-article-1.2171016",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from skylight-2015"
-        }
-      ]
-    },
-    {
-      "showId": "skylight-1996",
-      "file": "nytimes--ben-brantley.json",
-      "score": 90,
-      "publishDate": "April 2nd, 2015",
-      "url": "http://www.nytimes.com/2015/04/03/theater/review-skylight-with-carey-mulligan-and-bill-nighy-opens-on-broadway.html?_r=0",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -55379,6 +55444,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"bartlett sher\" from the-king-and-i-2015"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher renshaw\" from the-king-and-i-1996"
         }
       ]
     },
@@ -55794,6 +55864,20 @@
       "score": 72,
       "publishDate": "November 14, 1997",
       "url": "https://www.nytimes.com/1997/11/14/movies/theater-review-cub-comes-of-age-a-twice-told-cosmic-tale.html#:~:text=Seen%20purely%20as%20a%20visual,Julie%20Taymor%20and%20Hans%20Zimmer.",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-1997",
+      "file": "nytimes--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.nytimes.com/1997/11/23/theater/sunday-view-the-lion-king-earns-its-roars-of-approval.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -61370,7 +61454,7 @@
     },
     {
       "showId": "titanique-west-end-2024",
-      "file": "timeout--andrzej-lukowski.json",
+      "file": "timeout-london--andrzej-lukowski.json",
       "score": 75,
       "publishDate": "2025-01-09",
       "url": "https://www.timeout.com/london/theatre/titanique-review",
@@ -62895,7 +62979,7 @@
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 45,
       "publishDate": null,
-      "url": null,
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-A5160S",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -66911,8 +66995,8 @@
     },
     {
       "showId": "all-my-sons-west-end-2025",
-      "file": "timeout--andrzej-lukowski.json",
-      "score": 93,
+      "file": "timeout--helen-shaw.json",
+      "score": 91,
       "publishDate": "2025-11-22",
       "url": "https://www.timeout.com/london/news/review-all-my-sons-starring-bran-cranston-at-wyndhams-theatre-112225",
       "findings": [
@@ -66925,8 +67009,8 @@
     },
     {
       "showId": "all-my-sons-west-end-2025",
-      "file": "timeout--helen-shaw.json",
-      "score": 91,
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 93,
       "publishDate": "2025-11-22",
       "url": "https://www.timeout.com/london/news/review-all-my-sons-starring-bran-cranston-at-wyndhams-theatre-112225",
       "findings": [
@@ -78721,7 +78805,7 @@
     },
     {
       "showId": "my-joy-is-heavy-off-broadway-2025",
-      "file": "vulture--unknown.json",
+      "file": "vulture--sara-holdren.json",
       "score": 57,
       "publishDate": "2026-03-17",
       "url": "https://www.vulture.com/article/review-bengsons-my-joy-is-heavy-nytw.html",
@@ -79669,7 +79753,7 @@
       "file": "times-uk--dominic-maxwell.json",
       "score": 82,
       "publishDate": "2025-01-16",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/im-reviewing-the-oliver-situation-its-a-hit-thanks-to-fagin-q5bmxmb52?gaa_at=eafs&gaa_n=AWEtsqeruvvXNHRgZteLzlutyBY6c8mqx2tAoHs6EPXCIGEtZUxZYlQ6uLz9&gaa_ts=69bda502&gaa_sig=ykYhYgtmJtoMpOmYaRZ4LPe0Gn_NeRWBNhnyob9RlLzmBirfz6VQQitMGvFGG7zUoKjMnA5UzMJfmBTpMRzhUA%3D%3D",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/im-reviewing-the-oliver-situation-its-a-hit-thanks-to-fagin-q5bmxmb52?gaa_at=eafs&gaa_n=AWEtsqfZi431Me5ad8K7FnclE7Y5Htw2nnyHq7k1sq4lHueiU5xY-St4AvbP&gaa_ts=69bda260&gaa_sig=aS3oZDd9txmVuak3gMxc1lllSlSYdgXZfSlMxPXA7bPP3dMOqwRm0O_0Da92cw1LD6ixjsi6TWlMg-OnQyOAfw%3D%3D",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -88074,20 +88158,6 @@
     },
     {
       "showId": "the-producers-west-end-2025",
-      "file": "timeout--andrzej-lukowski.json",
-      "score": 77,
-      "publishDate": "2025-09-14",
-      "url": "https://www.timeout.com/london/theatre/the-producers-3-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-producers-west-end-2025",
       "file": "timeout--only-andrzej-lukowski.json",
       "score": 72,
       "publishDate": "2025-09-14",
@@ -90198,6 +90268,8 @@
       "showId": "what-we-did-before-our-moth-days-off-broadway-2026",
       "file": "theatermania--unknown.json",
       "score": null,
+      "publishDate": "January 23, 2026",
+      "url": "https://www.theatermania.com/news/review-what-we-did-before-our-moth-days-wallace-shawn-on-death-and-sex_1826595/",
       "findings": [
         {
           "type": "DATE_GUARD",

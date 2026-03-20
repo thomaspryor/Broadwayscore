@@ -1,16 +1,100 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-20T19:44:34.595Z",
+    "generatedAt": "2026-03-20T21:34:57.229Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 85,
-    "classified": 0,
-    "wrongProduction": 0,
-    "correctProduction": 0,
+    "total": 90,
+    "classified": 5,
+    "wrongProduction": 3,
+    "correctProduction": 2,
     "uncertain": 0,
     "errors": 0,
-    "wrongHighConfidence": 0,
+    "wrongHighConfidence": 3,
     "wrongMediumConfidence": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "the-lion-king-1997",
+      "showTitle": "The Lion King",
+      "showYear": 1997,
+      "file": "jasonraize--frank-scheck.json",
+      "outlet": "jasonraize",
+      "criticName": "Frank Scheck",
+      "publishDate": null,
+      "originalSignals": [
+        "modern references: masks"
+      ],
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "The review discusses Julie Taymor's use of masks and costumes, which is a key element of the 1997 Broadway production. The review also describes the show as a 'brilliant theatrical adaptation' which suggests it is about the original Broadway production."
+    },
+    {
+      "showId": "the-lion-king-1997",
+      "showTitle": "The Lion King",
+      "showYear": 1997,
+      "file": "nytimes--unknown.json",
+      "outlet": "The New York Times",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "originalSignals": [
+        "modern references: masks"
+      ],
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "The review discusses Julie Taymor's direction and design, the New Amsterdam Theater, and the show's premiere, all aligning with the 1997 Broadway production of The Lion King."
+    },
+    {
+      "showId": "a-delicate-balance-1996",
+      "showTitle": "A Delicate Balance",
+      "showYear": 1996,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "November 20th, 2014",
+      "originalSignals": [
+        "revival text signals: revival, this production",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "a-delicate-balance-2014",
+      "reasoning": "The review mentions the 2014 revival's director (Pam MacKinnon) and cast (Glenn Close, John Lithgow, Lindsay Duncan, Bob Balaban, Clare Higgins) and states that the play \"opened on Thursday night in a revival at the Golden Theater.\""
+    },
+    {
+      "showId": "skylight-1996",
+      "showTitle": "Skylight",
+      "showYear": 1996,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "April 2nd, 2015",
+      "originalSignals": [
+        "revival text signals: revival, this production",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "skylight-2015",
+      "reasoning": "The review mentions Carey Mulligan and Bill Nighy, who starred in the 2015 revival, and Stephen Daldry, the director of the 2015 revival. It also mentions the Golden Theater, where the 2015 revival opened. The review also refers to the 1996 production as the 'original staging'."
+    },
+    {
+      "showId": "once-upon-a-mattress-1996",
+      "showTitle": "Once Upon a Mattress",
+      "showYear": 1996,
+      "file": "vulture--christopher-bonanos.json",
+      "outlet": "Vulture",
+      "criticName": "Christopher Bonanos",
+      "publishDate": "August 12th, 2024",
+      "originalSignals": [
+        "revival text signals: revival, this production",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "once-upon-a-mattress-2024",
+      "reasoning": "The review mentions Sutton Foster in the role of Winnifred, which is a key detail of the 2024 revival. It also mentions the show being staged because 'Sutton Foster exists and can pull off Winnifred'. The review also mentions changes to the script, such as the scrapbooking line, which is a detail of"
+    }
+  ]
 }

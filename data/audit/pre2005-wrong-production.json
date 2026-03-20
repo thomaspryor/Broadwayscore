@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-20T19:44:34.478Z",
+    "generatedAt": "2026-03-20T21:34:54.126Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 123,
+    "totalFlagged": 128,
     "highConfidence": 38,
-    "mediumConfidence": 85,
+    "mediumConfidence": 90,
     "lowConfidence": 0,
     "reassignable": 59
   },
@@ -333,6 +333,21 @@
       "showId": "the-lion-king-1997",
       "showTitle": "The Lion King",
       "showYear": 1997,
+      "file": "jasonraize--frank-scheck.json",
+      "outlet": "jasonraize",
+      "criticName": "Frank Scheck",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "modern references: masks"
+      ],
+      "textSnippet": "   \"The Lion King is a spectacular rendition of the animated film, a brilliant theatrical adaptation that stands on its own...Taymor has risen to the challenge, translating the physically complex tale"
+    },
+    {
+      "showId": "the-lion-king-1997",
+      "showTitle": "The Lion King",
+      "showYear": 1997,
       "file": "newsday--linda-winer.json",
       "outlet": "Newsday",
       "criticName": "Linda Winer",
@@ -392,6 +407,21 @@
         "modern references: masks"
       ],
       "textSnippet": "https://www.nytimes.com/1997/11/14/movies/theater-review-cub-comes-of-age-a-twice-told-cosmic-tale.htmlShare full articleAdvertisement\n\nSuddenly, you're 4 years old again, and you've been taken to the"
+    },
+    {
+      "showId": "the-lion-king-1997",
+      "showTitle": "The Lion King",
+      "showYear": 1997,
+      "file": "nytimes--unknown.json",
+      "outlet": "The New York Times",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "modern references: masks"
+      ],
+      "textSnippet": "AS AN AIR OF JUBILATION filled the meticulously restored New Amsterdam Theater following the final preview performance of ''The Lion King,'' I was somehow reminded of a comment attributed to Ethel Mer"
     },
     {
       "showId": "the-lion-king-1997",
@@ -1198,6 +1228,22 @@
       "textSnippet": "Equilibrium never felt so dangerous or desolate\n\nGolden Theatre, New York (runs through Feb. 22)\n\nGlenn Close, John Lithgow, Lindsay Duncan, Bob Balaban, Clare Higgins, Martha Plimpton\n\nThe plentiful "
     },
     {
+      "showId": "a-delicate-balance-1996",
+      "showTitle": "A Delicate Balance",
+      "showYear": 1996,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "November 20th, 2014",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, this production",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "Hope arrives in the form of dread toward the end of the first act of Edward Albee’s “A Delicate Balance,” which opened on Thursday night in a revival at the Golden Theater. Up to that point in this pr"
+    },
+    {
       "showId": "uncle-vanya-1995",
       "showTitle": "Uncle Vanya",
       "showYear": 1995,
@@ -1322,6 +1368,38 @@
         "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "If someone asked me to name the best Broadway musical, I'd gladly equivocate on any side of a debate embracing ''Guys and Dolls,'' ''My Fair Lady,'' ''Carousel,'' ''Porgy and Bess'' and - well, you kn"
+    },
+    {
+      "showId": "skylight-1996",
+      "showTitle": "Skylight",
+      "showYear": 1996,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "April 2nd, 2015",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, this production",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "They are hardly a well-matched pair, this couple that has been given such transfixing life in two of the most expert stage performances you’re likely to see for many seasons. As embodied by Carey Mull"
+    },
+    {
+      "showId": "once-upon-a-mattress-1996",
+      "showTitle": "Once Upon a Mattress",
+      "showYear": 1996,
+      "file": "vulture--christopher-bonanos.json",
+      "outlet": "Vulture",
+      "criticName": "Christopher Bonanos",
+      "publishDate": "August 12th, 2024",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, this production",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "Photo: Joan Marcus\n \n \n \n Once Upon a Mattress exists under the longest of long shadows. The lead role of Princess Winnifred was, in 1959, the breakthrough for Carol Burnett, and who on earth wants to"
     },
     {
       "showId": "the-gin-game-1997",
@@ -1945,7 +2023,8 @@
       "confidence": "high",
       "suggestedShowId": "the-king-and-i-2015",
       "signals": [
-        "revival cast/director match for the-king-and-i-2015: Beaumont, director: Bartlett Sher"
+        "revival cast/director match for the-king-and-i-2015: Ken Watanabe, Lincoln Center, Beaumont, director: Bartlett Sher",
+        "year 1996 in text matches revival the-king-and-i-1996"
       ],
       "textSnippet": "A big, scrupulously detailed 19th-century ship glides toward the audience in the opening moments of Bartlett Sher’s resplendent production of Rodgers and Hammerstein’s “The King and I,” which opened o"
     }
