@@ -51,17 +51,7 @@
     @apply absolute inset-0 bg-gradient-to-br from-brand/5 to-transparent pointer-events-none;
   }
 
-  /* Review card header: score + logo + outlet name must be vertically centered.
-     This has been broken by refactors 15+ times. The inline style in ReviewsList.tsx
-     is the primary guard; this class is a CSS safety net. DO NOT REMOVE. */
-  .review-card-header {
-    align-items: center !important;
-  }
-  .review-card-header > * {
-    align-self: center !important;
-  }
-
-  /* Score badges - more modern, rounded design */
+/* Score badges - more modern, rounded design */
   .score-badge {
     @apply inline-flex items-center justify-center rounded-badge font-bold shadow-sm;
     transition: transform 0.2s ease, box-shadow 0.2s ease;

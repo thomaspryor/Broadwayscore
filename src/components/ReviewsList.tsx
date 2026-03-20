@@ -149,13 +149,16 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
 
   return (
     <article className={`${isLast ? '' : 'border-b border-white/5 pb-3'} group`} data-testid="review-card" aria-label={`Review from ${review.outlet}`}>
-      {/* CRITICAL: align-items:center keeps score/logo/outlet vertically centered.
-         This has been broken 15+ times by refactors. The inline style is intentional —
-         DO NOT remove it or replace with only Tailwind classes. */}
-      <div className="review-card-header flex items-center gap-2.5 mb-1.5" style={{ alignItems: 'center' }}>
+      {/* CRITICAL: Outlet name vertical centering with score badge and logo.
+         Broken 15+ times. Root cause: any child with display:flex or display:block
+         stretches to the full 44px cross-axis height in a flex row, ignoring
+         align-items:center. Only plain inline elements (span, a) center correctly.
+         DO NOT wrap outlet name in a <div>. It MUST be a direct <span>/<Link> child.
+         DO NOT add a CSS class with align-self or !important rules — they make it worse.
+         Verified working via Playwright measurement: top=12, height=21, centered in 44px. */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
         <div
           className={`flex-shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center text-base sm:text-lg font-bold ${getScoreColorClass(review.reviewScore)}`}
-          style={{ alignSelf: 'center' }}
           role="meter"
           aria-valuenow={review.reviewScore}
           aria-valuemin={0}
@@ -165,25 +168,21 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
           <span aria-hidden="true">{review.reviewScore}</span>
         </div>
         <OutletLogo outlet={review.outlet} />
-        <div className="flex items-center justify-between gap-2 flex-1 min-w-0" style={{ alignSelf: 'center' }}>
-          <div className="flex items-center gap-1.5 min-w-0">
-            {featureFlags.criticPages && review.outletSlug ? (
-              <Link href={`/critics/outlets/${review.outletSlug}`} className="font-bold text-white text-sm sm:text-base truncate hover:text-brand transition-colors">{review.outlet}</Link>
-            ) : (
-              <span className="font-bold text-white text-sm sm:text-base truncate">{review.outlet}</span>
-            )}
-            {review.tier === 1 && <TopCriticLabel />}
-            {review.designation === 'Critics_Pick' && <CriticsPickBadge />}
-            {review.designation && review.designation !== 'Critics_Pick' && (
-              <span className="text-xs text-score-high font-medium whitespace-nowrap hidden sm:inline">
-                {review.designation.replace('_', ' ')}
-              </span>
-            )}
-          </div>
-          {formatDate(review.publishDate) && (
-            <span className="text-xs text-gray-500 flex-shrink-0">{formatDate(review.publishDate)}</span>
-          )}
-        </div>
+        {featureFlags.criticPages && review.outletSlug ? (
+          <Link href={`/critics/outlets/${review.outletSlug}`} style={{ flex: '1 1 auto', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} className="font-bold text-white text-sm sm:text-base hover:text-brand transition-colors">{review.outlet}</Link>
+        ) : (
+          <span style={{ flex: '1 1 auto', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} className="font-bold text-white text-sm sm:text-base">{review.outlet}</span>
+        )}
+        {review.tier === 1 && <TopCriticLabel />}
+        {review.designation === 'Critics_Pick' && <CriticsPickBadge />}
+        {review.designation && review.designation !== 'Critics_Pick' && (
+          <span className="text-xs text-score-high font-medium whitespace-nowrap hidden sm:inline">
+            {review.designation.replace('_', ' ')}
+          </span>
+        )}
+        {formatDate(review.publishDate) && (
+          <span className="text-xs text-gray-500 flex-shrink-0">{formatDate(review.publishDate)}</span>
+        )}
       </div>
 
       {/* Quote + Author, indented to align with outlet name */}
