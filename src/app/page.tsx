@@ -79,11 +79,11 @@ export default function HomePage() {
     s.criticScore && s.criticScore.reviewCount !== undefined && s.criticScore.reviewCount >= 3
   );
 
-  // Precompute "Best Recent Musicals" server-side for both preload links and SSR featured row
+  // Precompute "Best Recent Shows" server-side for both preload links and SSR featured row
   const twelveMonthsAgo = new Date();
   twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
-  const bestNewMusicalsShows = allShows
-    .filter(s => s.type === 'musical' && s.status === 'open' && new Date(s.openingDate) >= twelveMonthsAgo && s.criticScore?.score)
+  const bestRecentShows = allShows
+    .filter(s => (s.type === 'musical' || s.type === 'play') && s.status === 'open' && new Date(s.openingDate) >= twelveMonthsAgo && s.criticScore?.score)
     .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
     .slice(0, 10)
     .map(serializeShow);
@@ -154,7 +154,7 @@ export default function HomePage() {
     { title: 'Jukebox Musicals', shows: jukeboxMusicalsList, viewAllHref: '/browse/jukebox-musicals-on-broadway' },
   ];
 
-  const featuredPosterUrls = bestNewMusicalsShows
+  const featuredPosterUrls = bestRecentShows
     .slice(0, 4)
     .map(s => {
       const img = s.images?.poster || s.images?.thumbnail;
@@ -172,7 +172,7 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(generateHomepageFAQSchema(stats)) }}
       />
       {/* Server-rendered hero + featured row — LCP image appears in initial HTML, no JS needed */}
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-5 sm:py-12">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-5 sm:pt-12">
         <div className="mb-4 sm:mb-8">
           <h1 className="sr-only sm:not-sr-only sm:text-5xl lg:text-6xl font-extrabold text-white mb-4 sm:mb-5 tracking-tight">
             Broadway<span className="text-gradient">Scorecard</span><span className="text-xs text-gray-400 font-normal align-super ml-0.5">™</span>
@@ -184,7 +184,7 @@ export default function HomePage() {
             {stats.totalShows.toLocaleString()} shows. {stats.totalReviews.toLocaleString()} critic reviews. And counting.
           </p>
         </div>
-        <FeaturedRowServer shows={bestNewMusicalsShows} />
+        <FeaturedRowServer shows={bestRecentShows} />
       </div>
       <Suspense>
         <HomePageClient

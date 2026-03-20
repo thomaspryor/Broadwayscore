@@ -371,14 +371,14 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
   }, [searchQuery, getFuse]);
 
   // Featured rows are pre-computed server-side — no client-side filtering/sorting needed
-  // bestNewMusicals is still needed for the inline shelf when skipFirstMusicals is false
-  const bestNewMusicals = useMemo(() => {
+  // bestRecentShows is still needed for the inline shelf when skipFirstMusicals is false
+  const bestRecentShows = useMemo(() => {
     if (skipFirstMusicals) return []; // Server renders it via FeaturedRowServer
     const twelveMonthsAgo = new Date();
     twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
     const cutoff = twelveMonthsAgo.toISOString().slice(0, 10);
     return shows
-      .filter(show => show.type === 'musical' && show.status === 'open' && show.openingDate >= cutoff && show.criticScore?.score)
+      .filter(show => (show.type === 'musical' || show.type === 'play') && show.status === 'open' && show.openingDate >= cutoff && show.criticScore?.score)
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows, skipFirstMusicals]);
 
@@ -506,13 +506,13 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
         </div>
       )}
 
-      {/* Best Recent Musicals - Featured Shelf */}
-      {!skipFirstMusicals && bestNewMusicals.length > 0 && (
+      {/* Best Recent Shows - Featured Shelf */}
+      {!skipFirstMusicals && bestRecentShows.length > 0 && (
         <section className="mb-4 sm:mb-6">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-base font-bold text-white">Best Recent Musicals</h2>
+            <h2 className="text-base font-bold text-white">Best Recent Shows</h2>
             <Link
-              href="/browse/best-recent-musicals"
+              href="/browse/best-recent-shows"
               prefetch={false}
               className="flex items-center gap-1 text-xs text-gray-400 hover:text-brand transition-colors"
             >
@@ -520,7 +520,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
             </Link>
           </div>
           <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
-            {bestNewMusicals.map((show, index) => (
+            {bestRecentShows.map((show, index) => (
               <MiniShowCard key={show.id} show={show} priority={index < 4} />
             ))}
           </div>

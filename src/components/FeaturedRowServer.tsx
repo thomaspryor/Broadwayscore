@@ -1,6 +1,6 @@
 /**
  * Server-rendered featured row for LCP optimization.
- * Renders the "Best Recent Musicals" shelf as static HTML so the LCP image
+ * Renders the "Best Recent Shows" shelf as static HTML so the LCP image
  * appears in the initial document — no JS hydration needed to paint it.
  *
  * Uses plain <img> tags instead of ShowImage (which is 'use client').
@@ -80,9 +80,9 @@ export default function FeaturedRowServer({ shows }: { shows: HomepageShow[] }) 
   return (
     <section className="mb-4 sm:mb-6">
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-base font-bold text-white">Best Recent Musicals</h2>
+        <h2 className="text-base font-bold text-white">Best Recent Shows</h2>
         <Link
-          href="/browse/best-recent-musicals"
+          href="/browse/best-recent-shows"
           prefetch={false}
           className="flex items-center gap-1 text-xs text-gray-400 hover:text-brand transition-colors"
         >

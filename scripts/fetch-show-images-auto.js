@@ -2202,6 +2202,12 @@ async function main() {
       if (hashMap.has(hash)) {
         const firstId = hashMap.get(hash);
         console.log(`   ⚠ DUPLICATE IMAGE: ${s.id} has same image as ${firstId} — nulling ${s.id}`);
+        // Delete the duplicate files from disk so they don't get out of sync with shows.json
+        const showImgDir = path.join(__dirname, '..', 'public', 'images', 'shows', s.id);
+        for (const file of ['hero.webp', 'poster.webp', 'thumbnail.webp']) {
+          const fp = path.join(showImgDir, file);
+          if (fs.existsSync(fp)) fs.unlinkSync(fp);
+        }
         s.images.thumbnail = null;
         s.images.poster = null;
         s.images.hero = null;

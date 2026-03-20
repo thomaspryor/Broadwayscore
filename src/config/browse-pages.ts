@@ -435,6 +435,26 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     relatedPages: ['best-recent-musicals', 'jukebox-musicals-on-broadway', 'best-broadway-revivals'],
   },
 
+  'best-recent-shows': {
+    slug: 'best-recent-shows',
+    title: 'Best Recent Broadway Shows',
+    h1: 'Best Recent Broadway Shows',
+    metaTitle: `Best Recent Broadway Shows (${CURRENT_YEAR}) — Musicals & Plays Ranked by Critics`,
+    metaDescription: 'The highest-rated musicals and plays that opened on Broadway in the past year. See which new shows are must-sees right now.',
+    intro: 'These are the best new shows that have opened on Broadway in the past 12 months — musicals and plays alike. From world premieres to acclaimed transfers, these recent arrivals represent the cutting edge of Broadway. See what\'s exciting audiences and earning critical acclaim right now.',
+    filter: (show) => {
+      if (show.status !== 'open') return false;
+      if (show.type !== 'musical' && show.type !== 'play') return false;
+      if ((show.criticScore?.reviewCount ?? 0) < 3) return false;
+      const twelveMonthsAgo = new Date();
+      twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
+      const openDate = new Date(show.openingDate);
+      return openDate >= twelveMonthsAgo;
+    },
+    sort: 'score',
+    relatedPages: ['best-broadway-musicals', 'best-recent-plays', 'new-broadway-shows-2025', 'tony-winners-on-broadway'],
+  },
+
   'best-recent-musicals': {
     slug: 'best-recent-musicals',
     title: 'Best Recent Broadway Musicals',
@@ -452,7 +472,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
       return openDate >= twelveMonthsAgo;
     },
     sort: 'score',
-    relatedPages: ['best-broadway-musicals', 'new-broadway-shows-2025', 'tony-winners-on-broadway'],
+    relatedPages: ['best-recent-shows', 'best-broadway-musicals', 'new-broadway-shows-2025', 'tony-winners-on-broadway'],
   },
 
   'best-recent-plays': {
