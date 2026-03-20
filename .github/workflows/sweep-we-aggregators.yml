@@ -71,7 +71,7 @@ jobs:
       - name: Refresh Stagedoor archives (BrowserBase)
         if: contains(inputs.aggregator || 'wet,tr,sd,ts', 'sd')
         continue-on-error: true
-        timeout-minutes: 15
+        timeout-minutes: 30
         env:
           BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
