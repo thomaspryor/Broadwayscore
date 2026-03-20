@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-20T21:44:03.681Z",
+    "generatedAt": "2026-03-20T21:53:29.050Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 125,
+    "totalFlagged": 127,
     "highConfidence": 38,
-    "mediumConfidence": 87,
+    "mediumConfidence": 89,
     "lowConfidence": 0,
-    "reassignable": 59
+    "reassignable": 61
   },
   "results": [
     {
@@ -1177,6 +1177,23 @@
       "textSnippet": "Advertisement Continue reading the main story See the article in its original context from March 17, 2002 , Section 2 , Page 5 Buy Reprints View on timesmachine TimesMachine is an exclusive benefit fo"
     },
     {
+      "showId": "into-the-woods-2002",
+      "showTitle": "Into the Woods",
+      "showYear": 2002,
+      "file": "wsj--charles-isherwood.json",
+      "outlet": "The Wall Street Journal",
+      "criticName": "Charles Isherwood",
+      "publishDate": "July 15th, 2022",
+      "confidence": "medium",
+      "suggestedShowId": "into-the-woods-2022",
+      "signals": [
+        "year 2022 in text matches revival into-the-woods-2022",
+        "year 1986 in text matches revival into-the-woods-1987",
+        "modern references: twitter"
+      ],
+      "textSnippet": "FacebookTwitterLinkedInCopy Link\n\n \n\n \n \n \n \n \n \n\n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n Gavin Creel and Julia Lester\n \n \n Photo: \n \n Matthew Murphy and Evan Zimmerman\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n "
+    },
+    {
       "showId": "once-on-this-island-2002",
       "showTitle": "Once on This Island",
       "showYear": 2002,
@@ -1320,6 +1337,21 @@
         "revival cast/director match for sunday-in-the-park-with-george-2017: Jake Gyllenhaal, Annaleigh Ashford, Hudson Theatre, director: Sarna Lapine"
       ],
       "textSnippet": "The brand-new Hudson Theatre officially opened Thursday night with a star-studded new production of Steven Sondheim's \"Sunday in the Park With George.\" NY1's Roma Torre filed the following review. Ste"
+    },
+    {
+      "showId": "falsettos-1992",
+      "showTitle": "Falsettos",
+      "showYear": 1992,
+      "file": "wsj--terry-teachout.json",
+      "outlet": "The Wall Street Journal",
+      "criticName": "Terry Teachout",
+      "publishDate": "October 27th, 2016",
+      "confidence": "medium",
+      "suggestedShowId": "falsettos-2016",
+      "signals": [
+        "year 2016 in text matches revival falsettos-2016"
+      ],
+      "textSnippet": "BROWSER UPDATE To gain access to the full experience, please upgrade your browser:\n\nNote: If you are running Internet Explorer 10 and above, make sure it is not in compatibility mode\n\nThis copy is for"
     },
     {
       "showId": "once-on-this-island-1990",

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-20T21:48:17.073Z",
+  "timestamp": "2026-03-20T21:58:11.416Z",
   "stats": {
-    "totalReviews": 32216,
-    "alreadyFlagged": 9751,
-    "dateGuardCatches": 186,
-    "directorMismatch": 1123,
-    "tvFilmSignals": 3514,
-    "londonSignals": 1083,
-    "offBroadwaySignals": 1072,
+    "totalReviews": 32215,
+    "alreadyFlagged": 9757,
+    "dateGuardCatches": 187,
+    "directorMismatch": 1124,
+    "tvFilmSignals": 3516,
+    "londonSignals": 1082,
+    "offBroadwaySignals": 1073,
     "yearMismatch": 91,
-    "noPublishDate": 9546
+    "noPublishDate": 9539
   },
   "findings": [
     {
@@ -17057,6 +17057,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "first-date-2013",
+      "file": "wsj--terry-teachout.json",
+      "score": 78,
+      "publishDate": "August 9, 2013",
+      "url": "https://stream.wsj.com/story/latest-headlines/SS-2-63399/SS-2-297716/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -38610,6 +38624,25 @@
     },
     {
       "showId": "oh-mary-west-end-2025",
+      "file": "observer--unknown.json",
+      "score": 83,
+      "publishDate": "2024-07-11",
+      "url": "https://observer.com/2024/07/oh-mary-is-a-splendidly-nasty-farce-you-will-not-want-to-miss/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 510d before show (2024-07-11 vs 2025-12-03)"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-west-end-2025",
       "file": "standard--nick.json",
       "score": 85,
       "publishDate": "2025-12-20",
@@ -41585,6 +41618,20 @@
       ]
     },
     {
+      "showId": "pippin-2013",
+      "file": "wsj--terry-teachout.json",
+      "score": 78,
+      "publishDate": "April 26, 2013",
+      "url": "https://stream.wsj.com/story/latest-headlines/SS-2-63399/SS-2-221001/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from pippin-1972"
+        }
+      ]
+    },
+    {
       "showId": "pirates-the-penzance-musical-2025",
       "file": "thewrap--robert-hofler.json",
       "score": 62,
@@ -43102,6 +43149,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"motion picture\""
+        }
+      ]
+    },
+    {
+      "showId": "purpose-2025",
+      "file": "deadline--greg-evans.json",
+      "score": 73,
+      "publishDate": "March 17, 2025",
+      "url": "https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -72264,6 +72325,20 @@
     },
     {
       "showId": "girl-from-the-north-country-2022",
+      "file": "deadline--greg-evans.json",
+      "score": 77,
+      "publishDate": "March 5th, 2020",
+      "url": "https://deadline.com/2020/03/bob-dylan-broadway-review-girl-from-the-north-country-conor-mcpherson-mare-winningham-1202873992/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-2022",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 88,
       "publishDate": "March 5th, 2020",
@@ -79469,20 +79544,6 @@
       ]
     },
     {
-      "showId": "oh-mary-west-end-2025",
-      "file": "observer--unknown.json",
-      "score": 83,
-      "publishDate": null,
-      "url": "https://observer.com/2024/07/oh-mary-is-a-splendidly-nasty-farce-you-will-not-want-to-miss/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
-        }
-      ]
-    },
-    {
       "showId": "ohio-state-murders-2022",
       "file": "dtli--juan-michael-porter-ii.json",
       "score": 42,
@@ -80336,20 +80397,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "passing-strange-2008",
-      "file": "guardian--kate-wyver.json",
-      "score": 78,
-      "publishDate": "May 22nd, 2024",
-      "url": "https://www.theguardian.com/stage/article/2024/may/22/passing-strange-review-stew-giles-terera-young-vic-london",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
