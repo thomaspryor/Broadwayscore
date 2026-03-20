@@ -87,10 +87,23 @@ function domainMatchesExpected(expectedDomain, actualDomain) {
   if (actualDomain === expectedDomain) return true;
   // Subdomain match (e.g., amp.nytimes.com vs nytimes.com)
   if (actualDomain.includes(expectedDomain) || expectedDomain.includes(actualDomain)) return true;
-  // Known alias (e.g., vulture.com → nymag.com)
+  // Known alias from DOMAIN_ALIAS_GROUPS (e.g., vulture.com → nymag.com)
   const aliases = DOMAIN_ALIASES.get(expectedDomain);
   if (aliases && aliases.has(actualDomain)) return true;
+  // Registry domain aliases (e.g., oneminutecritic.com ↔ 1minutecritic.com)
+  if (_registryDomainAliases) {
+    const regAliases = _registryDomainAliases[expectedDomain];
+    if (regAliases && regAliases.has(actualDomain)) return true;
+    const regAliases2 = _registryDomainAliases[actualDomain];
+    if (regAliases2 && regAliases2.has(expectedDomain)) return true;
+  }
   return false;
+}
+
+// Registry domain aliases injected by url-discovery.js at load time
+let _registryDomainAliases = null;
+function setRegistryDomainAliases(aliases) {
+  _registryDomainAliases = aliases;
 }
 
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
@@ -384,6 +397,7 @@ module.exports = {
   fetchWithPlaywright,
   cleanup,
   domainMatchesExpected,
+  setRegistryDomainAliases,
   DOMAIN_ALIAS_GROUPS,
   checkScrapingBeeCredits,
   getScraperStats,
