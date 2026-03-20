@@ -2244,9 +2244,9 @@ function createReviewFile(showId, reviewData, options = {}) {
 
   // URL/DOMAIN VALIDATION: Reject reviews where URL domain doesn't match the attributed outlet.
   // This catches aggregator scraping errors where a URL from outlet-A gets attributed to outlet-B.
-  // Only check --unknown files (named critics are more likely to freelance across domains).
+  // Root cause fix: BWW roundup URLs were being attributed to "Broadway News" etc. — 24 phantom reviews.
   // Exemptions: wire services (AP content on abc-news.com), shared-domain outlets (timeout/timeout-london).
-  if (review.url && normalizedCriticName === 'unknown') {
+  if (review.url) {
     const WIRE_SERVICES = new Set(['ap', 'reuters', 'bloomberg', 'upi']);
     if (!WIRE_SERVICES.has(normalizedOutletId)) {
       try {

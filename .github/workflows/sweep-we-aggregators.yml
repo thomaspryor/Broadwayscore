@@ -69,7 +69,7 @@ jobs:
         run: npx playwright install chromium
 
       - name: Refresh Stagedoor archives (BrowserBase)
-        if: contains(inputs.aggregator || 'wet,tr,sd,ts', 'sd')
+        if: contains(inputs.aggregator || 'wet,tr,sd,ts', 'sd') && inputs.shows == ''
         continue-on-error: true
         timeout-minutes: 30
         env:

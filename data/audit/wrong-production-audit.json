@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-20T21:58:11.416Z",
+  "timestamp": "2026-03-20T22:21:37.610Z",
   "stats": {
-    "totalReviews": 32215,
-    "alreadyFlagged": 9757,
-    "dateGuardCatches": 187,
+    "totalReviews": 32177,
+    "alreadyFlagged": 9749,
+    "dateGuardCatches": 184,
     "directorMismatch": 1124,
     "tvFilmSignals": 3516,
-    "londonSignals": 1082,
-    "offBroadwaySignals": 1073,
+    "londonSignals": 1081,
+    "offBroadwaySignals": 1072,
     "yearMismatch": 91,
-    "noPublishDate": 9539
+    "noPublishDate": 9526
   },
   "findings": [
     {
@@ -2128,6 +2128,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"paramount\""
+        }
+      ]
+    },
+    {
+      "showId": "a-thousand-clowns-2001",
+      "file": "nytimes--bruce-weber.json",
+      "score": null,
+      "publishDate": "July 12, 2001",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;res=9f05e6de163bf931a25754c0a9679c8b63",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -41099,20 +41113,6 @@
       ]
     },
     {
-      "showId": "pen-pals-off-broadway-2025",
-      "file": "broadwaynews--chloe-rabinowitz.json",
-      "score": null,
-      "publishDate": "2025-11-20",
-      "url": "https://www.broadwayworld.com/off-broadway/article/PEN-PALS-Extends-for-a-Fourth-and-Final-Time-Off-Broadway-20251120",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
       "showId": "perfect-crime-off-broadway-1987",
       "file": "rollingstone--unknown.json",
       "score": 78,
@@ -53541,7 +53541,7 @@
       "file": "nytimes--ben-brantley.json",
       "score": 87,
       "publishDate": "March 31st, 2016",
-      "url": "http://www.nytimes.com/2016/04/01/theater/review-in-arthur-millers-crucible-first-they-came-for-the-witches.html?partner=rss&emc=rss&_r=0",
+      "url": "https://www.nytimes.com/2016/04/01/theater/review-in-arthur-millers-crucible-first-they-came-for-the-witches.html?partner=rss&emc=rss&_r=0",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -56159,7 +56159,7 @@
       "file": "nytimes--ben-brantley.json",
       "score": 76,
       "publishDate": null,
-      "url": "http://theater2.nytimes.com/mem/theater/treview.html?id=1077011420479&html_title=&tols_title=LION+KING%2C+THE+%28PLAY%29+++&byline=%20By+BEN+BRANTLEY+&pdate=19971114",
+      "url": "https://theater2.nytimes.com/mem/theater/treview.html?id=1077011420479&html_title=&tols_title=LION+KING%2C+THE+%28PLAY%29+++&byline=%20By+BEN+BRANTLEY+&pdate=19971114",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -56267,7 +56267,7 @@
       "file": "variety--greg-evans.json",
       "score": 92,
       "publishDate": "2020-07-30",
-      "url": "http://www.variety.com/review/VE1117339958?categoryid=33&cs=1",
+      "url": "https://www.variety.com/review/VE1117339958?categoryid=33&cs=1",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -57261,20 +57261,6 @@
       "score": 78,
       "publishDate": "October 28, 2005",
       "url": "https://www.nytimes.com/2005/10/28/theater/reviews/the-odd-couple-redux-still-at-odds-still-funny.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "the-office-a-musical-parody-off-broadway-2018",
-      "file": "broadwaynews--aa-cristi.json",
-      "score": null,
-      "publishDate": "2018-10-05",
-      "url": "https://www.broadwayworld.com/off-broadway/article/Photo-Flash-First-Look-at-THE-OFFICE-A-MUSICAL-PARODY-20181005",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -58409,7 +58395,7 @@
       "file": "variety--richard-hummler.json",
       "score": 86,
       "publishDate": "2020-07-30",
-      "url": "http://www.variety.com/review/VE1117433023?categoryid=33&cs=1",
+      "url": "https://www.variety.com/review/VE1117433023?categoryid=33&cs=1",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -60896,6 +60882,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-winslow-boy-2013",
+      "file": "wsj--terry-teachout.json",
+      "score": 82,
+      "publishDate": "October 18, 2013",
+      "url": "https://online.wsj.com/news/articles/SB10001424052702304410204579141234114756574",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -78765,20 +78765,6 @@
     },
     {
       "showId": "mother-russia-off-broadway-2026",
-      "file": "broadwaynews--chloe-rabinowitz.json",
-      "score": null,
-      "publishDate": "2025-12-22",
-      "url": "https://www.broadwayworld.com/off-broadway/article/MOTHER-RUSSIA-Extends-Through-March-22-at-Signature-Theatre-20260305",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 71d before show (2025-12-22 vs 2026-03-03)"
-        }
-      ]
-    },
-    {
-      "showId": "mother-russia-off-broadway-2026",
       "file": "playbill--unknown.json",
       "publishDate": "2026-02-24",
       "url": "https://playbill.com/article/reviews-are-out-for-lauren-yees-mother-russia",
@@ -79238,20 +79224,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 326d before show (2008-05-05T01:01:00 vs 2009-03-27)"
-        }
-      ]
-    },
-    {
-      "showId": "night-side-songs-off-broadway-2026",
-      "file": "broadwaynews--chloe-rabinowitz.json",
-      "score": 65,
-      "publishDate": "January 21, 2026",
-      "url": "https://www.broadwayworld.com/article/Review-Roundup-NIGHT-SIDE-SONGS-Opens-Off-Broadway-20260302",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 40d before show (January 21, 2026 vs 2026-03-02)"
         }
       ]
     },
@@ -81727,20 +81699,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"classic stage\""
-        }
-      ]
-    },
-    {
-      "showId": "silver-manhattan-off-broadway-2026",
-      "file": "broadwaynews--stephi-wild.json",
-      "score": null,
-      "publishDate": "2025-12-17",
-      "url": "https://www.broadwayworld.com/off-broadway/article/Jesse-Malins-SILVER-MANHATTAN-Comes-to-the-Bowery-Electric-in-2026-20251217",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 63d before show (2025-12-17 vs 2026-02-18)"
         }
       ]
     },
@@ -87399,6 +87357,18 @@
       ]
     },
     {
+      "showId": "the-maids-off-broadway-2026",
+      "file": "theatermania--unknown.json",
+      "score": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 76d before show (2026-03-02 vs 2026-05-17)"
+        }
+      ]
+    },
+    {
       "showId": "the-mountaintop-2011",
       "file": "backstage--david-sheward.json",
       "score": 45,
@@ -87633,25 +87603,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
-        }
-      ]
-    },
-    {
-      "showId": "the-other-place-off-broadway-2026",
-      "file": "broadwaynews--aa-cristi.json",
-      "score": 58,
-      "publishDate": "February 12, 2026",
-      "url": "https://www.broadwayworld.com/off-broadway/article/Review-Roundup-THE-OTHER-PLACE-at-The-Shed-20260211",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
         }
       ]
     },
@@ -89857,7 +89808,7 @@
       "file": "variety--marilyn-stasio.json",
       "score": 75,
       "publishDate": "November 8, 2011",
-      "url": "http://www.variety.com/review/VE1117946546",
+      "url": "https://www.variety.com/review/VE1117946546",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -90282,18 +90233,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
-        }
-      ]
-    },
-    {
-      "showId": "what-we-did-before-our-moth-days-off-broadway-2026",
-      "file": "broadwaynews--stephi-wild.json",
-      "score": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 177d before show (2025-09-09 vs 2026-03-05)"
         }
       ]
     },

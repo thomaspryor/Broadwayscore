@@ -28,6 +28,7 @@ const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
 const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./lib/review-normalization');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { validateUrlDomain } = require('./lib/url-discovery');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -497,6 +498,14 @@ function saveLBOReview(showId, reviewInfo) {
   const showDir = path.join(reviewTextsDir, showId);
   const outletId = normalizeOutlet(reviewInfo.outlet);
   if (!outletId) return 'skipped';
+
+  // Domain validation: reject URLs that don't match the outlet's registered domain
+  const domainCheck = validateUrlDomain(reviewInfo.url, outletId);
+  if (!domainCheck.valid) {
+    console.log(`    [SKIP] ${outletId}: ${domainCheck.reason}`);
+    stats.skippedDomainMismatch = (stats.skippedDomainMismatch || 0) + 1;
+    return 'skipped';
+  }
 
   // Use cross-scraper dedup
   const existing = findExistingReviewFile(showDir, reviewInfo.outlet, reviewInfo.critic !== 'Unknown' ? reviewInfo.critic : null);

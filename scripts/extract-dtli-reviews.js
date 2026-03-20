@@ -10,6 +10,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, slugify, normalizeCritic, normalizePublishDate, findExistingReviewFile, generateReviewFilename } = require('./lib/review-normalization');
+const { validateUrlDomain } = require('./lib/url-discovery');
 
 const dtliDir = path.join(__dirname, '../data/aggregator-archive/dtli');
 const outputDir = path.join(__dirname, '../data/review-texts');
@@ -212,6 +213,13 @@ function extractReviewsFromDTLI(content, showId) {
 }
 
 function saveReview(review, overwrite = false) {
+  // Validate URL domain matches attributed outlet before creating/updating
+  const domainCheck = validateUrlDomain(review.url, review.outletId);
+  if (!domainCheck.valid) {
+    console.log(`    [SKIP] ${review.outletId}: ${domainCheck.reason}`);
+    return null;
+  }
+
   const showDir = path.join(outputDir, review.showId);
   if (!fs.existsSync(showDir)) {
     fs.mkdirSync(showDir, { recursive: true });

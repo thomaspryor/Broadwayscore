@@ -22,6 +22,7 @@ const {
   getOutletDisplayName,
 } = require('./lib/review-normalization');
 const { classifyContentTier } = require('./lib/content-quality');
+const { validateUrlDomain } = require('./lib/url-discovery');
 
 const dataDir = path.join(__dirname, '..', 'data');
 const archiveDir = path.join(dataDir, 'aggregator-archive');
@@ -62,6 +63,13 @@ function getUrlIndex(showId) {
 }
 
 function writeReviewFile(review) {
+  // Domain validation: reject URLs that don't match the outlet's registered domain
+  const domainCheck = validateUrlDomain(review.url, review.outletId);
+  if (!domainCheck.valid) {
+    console.log(`    [SKIP] ${review.outletId}: ${domainCheck.reason}`);
+    return { action: 'skipped', filename: null };
+  }
+
   const showDir = path.join(reviewTextsDir, review.showId);
   if (!fs.existsSync(showDir)) fs.mkdirSync(showDir, { recursive: true });
 

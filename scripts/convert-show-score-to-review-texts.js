@@ -20,6 +20,7 @@ const {
   resolveOutletFromCritic,
   resolveOutletFromUrl,
 } = require('./lib/review-normalization');
+const { validateUrlDomain } = require('./lib/url-discovery');
 
 const showScorePath = path.join(__dirname, '../data/show-score.json');
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -83,6 +84,14 @@ function main() {
 
       const outletId = normalizeOutlet(resolvedOutlet);
       const criticId = normalizeCritic(review.author || 'unknown');
+
+      // Validate URL domain matches attributed outlet
+      const domainCheck = validateUrlDomain(review.url, outletId);
+      if (!domainCheck.valid) {
+        console.log(`  [SKIP] ${outletId}: ${domainCheck.reason}`);
+        totalSkipped++;
+        continue;
+      }
 
       // Check for existing file using fuzzy matching (handles alias differences)
       const existing = findExistingReviewFile(showDir, resolvedOutlet, review.author);

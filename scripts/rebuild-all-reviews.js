@@ -842,9 +842,15 @@ const crossShowFingerprints = new Map();
 
 // URL-domain mismatch guard: flag reviews where URL domain doesn't match outlet's registered domain.
 // Runs before main loop to catch bad URLs from any source (SERP, aggregators, recovery scripts).
+// Exemptions: newspaper archives (newspapers.com), AP wire syndication (appears on many domains),
+// blogspot migrations, and known old-domain aliases that aren't in the registry yet.
 {
   const { OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES } = require('./lib/url-discovery');
   const { domainMatchesExpected } = require('./lib/scraper');
+  // Domains that legitimately host content from many outlets (archives, wire services)
+  const EXEMPT_URL_DOMAINS = new Set(['newspapers.com']);
+  // Outlets whose content is syndicated across many domains (wire services)
+  const EXEMPT_OUTLET_IDS = new Set(['ap', 'reuters', 'upi']);
   let domainMismatchFlagged = 0;
   for (const sid of showDirs) {
     const sDir = path.join(reviewTextsDir, sid);
@@ -854,12 +860,16 @@ const crossShowFingerprints = new Map();
         if (d.wrongUrl || d.wrongShow || d.wrongProduction || d.duplicateOf) continue;
         if (!d.url || !d.outletId) continue;
         const outletId = (d.outletId || '').toLowerCase();
+        if (EXEMPT_OUTLET_IDS.has(outletId)) continue;
         const expectedDomain = OUTLET_DOMAINS[outletId];
         if (!expectedDomain) continue;
         let urlDomain;
         try {
           urlDomain = new URL(d.url).hostname.replace(/^www\./, '');
         } catch { continue; }
+        if (EXEMPT_URL_DOMAINS.has(urlDomain)) continue;
+        // Exempt blogspot subdomains matching the outlet slug (blog migration)
+        if (urlDomain.endsWith('.blogspot.com') && urlDomain.includes(outletId.replace(/-/g, ''))) continue;
         if (domainMatchesExpected(expectedDomain.replace(/^www\./, ''), urlDomain)) continue;
         // Domain mismatch — flag it
         console.log(`  [WRONG-URL] ${sid}/${f}: ${urlDomain} doesn't match ${outletId} (expected ${expectedDomain})`);

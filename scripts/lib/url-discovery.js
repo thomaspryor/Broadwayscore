@@ -603,6 +603,30 @@ function buildDateTbs(dateRange) {
   return `cdr:1,cd_min:${formatDateForGoogle(dateRange.dateMin)},cd_max:${formatDateForGoogle(dateRange.dateMax)}`;
 }
 
+/**
+ * Check if a URL's domain matches the expected domain for an outlet.
+ * Returns true if the URL is valid for the outlet (or if no domain is registered).
+ * Used by aggregator scrapers that create review files directly (bypassing gather-reviews.js).
+ *
+ * @param {string} url - The review URL
+ * @param {string} outletId - Normalized outlet ID
+ * @returns {{ valid: boolean, reason?: string }}
+ */
+function validateUrlDomain(url, outletId) {
+  if (!url || !outletId) return { valid: true };
+  const expectedDomain = OUTLET_DOMAINS[outletId];
+  if (!expectedDomain) return { valid: true }; // No registered domain — can't validate
+  try {
+    const urlDomain = new URL(url).hostname.replace(/^www\./, '');
+    if (!domainMatchesExpected(expectedDomain.replace(/^www\./, ''), urlDomain)) {
+      return { valid: false, reason: `URL domain ${urlDomain} doesn't match outlet ${outletId} (expected ${expectedDomain})` };
+    }
+    return { valid: true };
+  } catch {
+    return { valid: true }; // Invalid URL — let downstream handle
+  }
+}
+
 module.exports = {
   OUTLET_DOMAINS,
   REGISTRY_DOMAIN_ALIASES,
@@ -611,4 +635,5 @@ module.exports = {
   getShowInfo,
   calculateDateWindow,
   buildDateTbs,
+  validateUrlDomain,
 };
