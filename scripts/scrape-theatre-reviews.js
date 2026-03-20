@@ -31,7 +31,6 @@ const https = require('https');
 const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./lib/review-normalization');
-const { validateUrlDomain } = require('./lib/url-discovery');
 const { isLondonMarket } = require('./lib/venue-classification');
 
 const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'aggregator-archive', 'theatre-reviews');
@@ -300,13 +299,6 @@ function writeReviewFiles(reviews, showId) {
   for (const review of reviews) {
     const criticSlug = normalizeCritic(review.critic);
     const outletId = review.outletId || normalizeOutlet(review.outlet);
-
-    // Validate URL domain matches attributed outlet
-    const domainCheck = validateUrlDomain(review.url, outletId);
-    if (!domainCheck.valid) {
-      console.log(`  [SKIP] ${outletId}: ${domainCheck.reason}`);
-      continue;
-    }
 
     // Check for existing file
     const existingMatch = findExistingReviewFile(showDir, outletId, criticSlug);
