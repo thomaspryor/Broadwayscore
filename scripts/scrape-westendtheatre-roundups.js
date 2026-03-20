@@ -29,6 +29,7 @@ const {
   findExistingReviewFile,
   getOutletDisplayName,
 } = require('./lib/review-normalization');
+const { validateUrlDomain } = require('./lib/url-discovery');
 
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 const archiveDir = path.join(__dirname, '../data/aggregator-archive/westendtheatre');
@@ -354,6 +355,13 @@ function extractSectionReviews(htmlContent) {
  * Save a review file, merging with existing if present.
  */
 function saveReview(review) {
+  // Domain validation: reject URLs that don't match the outlet's registered domain
+  const domainCheck = validateUrlDomain(review.url, review.outletId);
+  if (!domainCheck.valid) {
+    console.log(`    [SKIP] ${review.outletId}: ${domainCheck.reason}`);
+    return 'skipped';
+  }
+
   const showDir = path.join(reviewTextsDir, review.showId);
   if (!fs.existsSync(showDir)) {
     fs.mkdirSync(showDir, { recursive: true });
