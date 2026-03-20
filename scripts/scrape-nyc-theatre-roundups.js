@@ -23,10 +23,10 @@ const https = require('https');
 const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
 const { validatePageMatchesShow } = require('./lib/page-validator');
-const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./lib/review-normalization');
+
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { validateUrlDomain } = require('./lib/url-discovery');
+const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -321,79 +321,19 @@ function extractReviewsFromRoundup(html, showId) {
 // ---------------------------------------------------------------------------
 
 function saveNycTheatreExcerpt(showId, reviewInfo) {
-  const showDir = path.join(reviewTextsDir, showId);
-
-  // Normalize outlet
-  const outletId = normalizeOutlet(reviewInfo.outlet);
-  if (!outletId) return 'skipped';
-
-  // Domain validation: reject URLs that don't match the outlet's registered domain
-  const domainCheck = validateUrlDomain(reviewInfo.url, outletId);
-  if (!domainCheck.valid) {
-    console.log(`    [SKIP] ${outletId}: ${domainCheck.reason}`);
-    stats.skippedDomainMismatch = (stats.skippedDomainMismatch || 0) + 1;
-    return 'skipped';
-  }
-
-  // Use cross-scraper dedup: find existing review file regardless of filename format
-  const existing = findExistingReviewFile(showDir, reviewInfo.outlet, null);
-
-  if (existing && existing.data) {
-    if (existing.data.nycTheatreExcerpt) {
-      stats.skippedExisting++;
-      return 'skipped';
-    }
-
-    // Add the excerpt to existing file
-    existing.data.nycTheatreExcerpt = reviewInfo.excerpt;
-    if (reviewInfo.url && !existing.data.url) {
-      existing.data.url = reviewInfo.url;
-    }
-
-    const sources = new Set(existing.data.sources || [existing.data.source || '']);
-    sources.add('nyc-theatre');
-    existing.data.sources = Array.from(sources).filter(Boolean);
-
-    fs.writeFileSync(existing.path, JSON.stringify(existing.data, null, 2) + '\n');
-    stats.updatedReviews++;
-    return 'updated';
-  }
-
-  // Create new review file with excerpt
-  if (!fs.existsSync(showDir)) {
-    fs.mkdirSync(showDir, { recursive: true });
-  }
-
-  const criticSlug = 'unknown';
-  const filename = `${outletId}--${criticSlug}.json`;
-  const filepath = path.join(showDir, filename);
-
-  if (fs.existsSync(filepath)) {
-    const data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
-    if (!data.nycTheatreExcerpt) {
-      data.nycTheatreExcerpt = reviewInfo.excerpt;
-      fs.writeFileSync(filepath, JSON.stringify(data, null, 2) + '\n');
-      stats.updatedReviews++;
-      return 'updated';
-    }
-    stats.skippedExisting++;
-    return 'skipped';
-  }
-
-  const reviewData = {
-    showId,
-    outletId,
+  const result = createOrMergeReviewFile(showId, {
     outlet: reviewInfo.outlet,
-    criticName: 'Unknown',
-    url: reviewInfo.url || '',
-    nycTheatreExcerpt: reviewInfo.excerpt,
+    url: reviewInfo.url,
     source: 'nyc-theatre',
-    sources: ['nyc-theatre'],
-  };
+    fields: { nycTheatreExcerpt: reviewInfo.excerpt },
+  });
 
-  fs.writeFileSync(filepath, JSON.stringify(reviewData, null, 2) + '\n');
-  stats.newReviews++;
-  return 'new';
+  if (result.action === 'new') stats.newReviews++;
+  else if (result.action === 'updated') stats.updatedReviews++;
+  else if (result.reason?.startsWith('domain-mismatch')) stats.skippedDomainMismatch = (stats.skippedDomainMismatch || 0) + 1;
+  else stats.skippedExisting++;
+
+  return result.action === 'skipped' ? 'skipped' : result.action;
 }
 
 // ---------------------------------------------------------------------------

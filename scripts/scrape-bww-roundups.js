@@ -16,9 +16,9 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { validatePageMatchesShow } = require('./lib/page-validator');
-const { normalizeOutletFull, slugify: canonicalSlugify, findExistingReviewFile, generateReviewFilename, maybeUpgradeUrl } = require('./lib/review-normalization');
+const { normalizeOutletFull, slugify: canonicalSlugify } = require('./lib/review-normalization');
 const { excerptMentionsWrongShow } = require('./lib/excerpt-validation');
-const { validateUrlDomain } = require('./lib/url-discovery');
+const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 
 // Paths
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -663,107 +663,51 @@ function archiveBWWPage(showId, url, html) {
  * Save review to review-texts directory
  */
 function saveReview(review) {
-  // Domain validation: reject URLs that don't match the outlet's registered domain
-  const domainCheck = validateUrlDomain(review.url, review.outletId);
-  if (!domainCheck.valid) {
-    console.log(`    [SKIP] ${review.outletId}: ${domainCheck.reason}`);
-    return 'skipped';
-  }
-
-  const showDir = path.join(REVIEW_TEXTS_DIR, review.showId);
-  if (!fs.existsSync(showDir)) {
-    fs.mkdirSync(showDir, { recursive: true });
-  }
-
-  // Use canonical filename for new files
-  const filename = generateReviewFilename(review.outletId, review.criticName);
-  let filepath = path.join(showDir, filename);
-
-  // Check for existing file under any outlet ID variant (canonical or legacy)
-  const existingFile = findExistingReviewFile(showDir, review.outletId, review.criticName);
-  if (existingFile && existingFile.data) {
-    // Merge BWW data into the existing file (preserve its path/filename)
-    filepath = existingFile.path;
-    const existingFilename = existingFile.filename;
-    const existing = existingFile.data;
-
-    let updated = false;
-
-    // Always update URL if we have one and existing doesn't, or upgrade if content is bad
-    if (!existing.url && review.url) {
-      existing.url = review.url;
-      updated = true;
-      console.log(`      Added URL to ${existingFilename}`);
-    } else if (maybeUpgradeUrl(existing, review.url, 'bww-roundup')) {
-      updated = true;
-      console.log(`      Upgraded URL on ${existingFilename} (bad content)`);
-    }
-
-    if (!existing.bwwExcerpt && review.bwwExcerpt) {
-      // Validate excerpt matches fullText if available (catches wrong-critic excerpts)
-      if (existing.fullText && existing.fullText.length >= 200) {
-        const excerptWords = (review.bwwExcerpt.toLowerCase().match(/\b[a-z]{5,}\b/g) || []);
-        const ftWords = new Set(existing.fullText.toLowerCase().match(/\b[a-z]{5,}\b/g) || []);
-        const matchCount = excerptWords.filter(w => ftWords.has(w)).length;
-        const matchRate = excerptWords.length > 0 ? matchCount / excerptWords.length : 0;
-        if (matchRate < 0.3 && excerptWords.length >= 5) {
-          console.log(`      ⚠️  BWW excerpt doesn't match fullText (${(matchRate * 100).toFixed(0)}% overlap) — skipping excerpt for ${existingFilename}`);
-          // Don't merge this excerpt — it's likely from a different critic
-        } else {
-          existing.bwwExcerpt = review.bwwExcerpt;
-          updated = true;
-        }
-      } else {
-        existing.bwwExcerpt = review.bwwExcerpt;
-        updated = true;
-      }
-    }
-    if (!existing.bwwRoundupUrl && review.bwwRoundupUrl) {
-      existing.bwwRoundupUrl = review.bwwRoundupUrl;
-      updated = true;
-    }
-
-    // Always use freshly extracted BWW thumb (authoritative source from HTML)
-    if (review.bwwThumb && existing.bwwThumb !== review.bwwThumb) {
-      const oldThumb = existing.bwwThumb;
-      existing.bwwThumb = review.bwwThumb;
-      updated = true;
-      if (oldThumb) {
-        console.log(`      Corrected bwwThumb: ${oldThumb} → ${review.bwwThumb} in ${existingFilename}`);
-      }
-    }
-
-    if (updated) {
-      fs.writeFileSync(filepath, JSON.stringify(existing, null, 2));
-      console.log(`      Updated ${existingFilename} with BWW data`);
-      return { created: false, updated: true, urlAdded: !!(review.url && !existing.url) };
-    } else {
-      return { created: false, updated: false, urlAdded: false };
-    }
-  }
-
-  // Create new file with canonical filename
-  const reviewData = {
-    showId: review.showId,
-    outletId: review.outletId,
+  const result = createOrMergeReviewFile(review.showId, {
     outlet: review.outlet,
+    outletId: review.outletId,
     criticName: review.criticName,
     url: review.url,
-    publishDate: review.publishDate || null,
-    fullText: null,
-    isFullReview: false,
-    bwwExcerpt: review.bwwExcerpt,
-    bwwRoundupUrl: review.bwwRoundupUrl,
-    bwwThumb: review.bwwThumb || null,
-    originalScore: null,
-    assignedScore: null,
     source: 'bww-roundup',
-    dtliThumb: null,
-  };
+    fields: {
+      bwwExcerpt: review.bwwExcerpt,
+      bwwRoundupUrl: review.bwwRoundupUrl,
+      bwwThumb: review.bwwThumb || null,
+      publishDate: review.publishDate || null,
+    },
+  }, {
+    onMerge(existing, input) {
+      const incoming = input.fields || {};
 
-  fs.writeFileSync(filepath, JSON.stringify(reviewData, null, 2));
-  console.log(`      Created ${filename}`);
-  return { created: true, updated: false, urlAdded: !!review.url };
+      // Excerpt word-overlap validation: skip excerpt if it doesn't match fullText
+      if (!existing.bwwExcerpt && incoming.bwwExcerpt) {
+        if (existing.fullText && existing.fullText.length >= 200) {
+          const excerptWords = (incoming.bwwExcerpt.toLowerCase().match(/\b[a-z]{5,}\b/g) || []);
+          const ftWords = new Set(existing.fullText.toLowerCase().match(/\b[a-z]{5,}\b/g) || []);
+          const matchCount = excerptWords.filter(w => ftWords.has(w)).length;
+          const matchRate = excerptWords.length > 0 ? matchCount / excerptWords.length : 0;
+          if (matchRate < 0.3 && excerptWords.length >= 5) {
+            console.log(`      ⚠️  BWW excerpt doesn't match fullText (${(matchRate * 100).toFixed(0)}% overlap) — skipping excerpt`);
+            delete existing.bwwExcerpt; // Undo default merge
+          }
+        }
+      }
+
+      // Always use freshly extracted BWW thumb (authoritative from HTML)
+      if (incoming.bwwThumb && existing.bwwThumb !== incoming.bwwThumb) {
+        if (existing.bwwThumb) {
+          console.log(`      Corrected bwwThumb: ${existing.bwwThumb} → ${incoming.bwwThumb}`);
+        }
+        existing.bwwThumb = incoming.bwwThumb;
+      }
+    },
+  });
+
+  return {
+    created: result.action === 'new',
+    updated: result.action === 'updated',
+    urlAdded: false, // URL tracking not needed for stats
+  };
 }
 
 /**

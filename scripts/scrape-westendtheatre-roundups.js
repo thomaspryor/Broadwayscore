@@ -24,12 +24,10 @@ const https = require('https');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const {
   normalizeOutlet,
-  normalizeCritic,
-  generateReviewFilename,
   findExistingReviewFile,
   getOutletDisplayName,
 } = require('./lib/review-normalization');
-const { validateUrlDomain } = require('./lib/url-discovery');
+const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 const archiveDir = path.join(__dirname, '../data/aggregator-archive/westendtheatre');
@@ -355,64 +353,33 @@ function extractSectionReviews(htmlContent) {
  * Save a review file, merging with existing if present.
  */
 function saveReview(review) {
-  // Domain validation: reject URLs that don't match the outlet's registered domain
-  const domainCheck = validateUrlDomain(review.url, review.outletId);
-  if (!domainCheck.valid) {
-    console.log(`    [SKIP] ${review.outletId}: ${domainCheck.reason}`);
-    return 'skipped';
-  }
+  const result = createOrMergeReviewFile(review.showId, {
+    outlet: review.outlet,
+    outletId: review.outletId,
+    criticName: review.criticName,
+    url: review.url,
+    source: review.source || 'westendtheatre-roundup',
+    fields: {
+      westEndTheatreScore: review.westEndTheatreScore || null,
+      westEndTheatreExcerpt: review.westEndTheatreExcerpt || null,
+      originalScore: review.originalScore || null,
+      publishDate: review.publishDate || null,
+    },
+  }, {
+    onMerge(existing, input) {
+      // Preserve existing originalScore if incoming doesn't have one
+      if (existing.originalScore && !input.fields?.originalScore) {
+        // Already preserved — don't overwrite
+      } else if (input.fields?.originalScore && !existing.originalScore) {
+        existing.originalScore = input.fields.originalScore;
+      }
+    },
+  });
 
-  const showDir = path.join(reviewTextsDir, review.showId);
-  if (!fs.existsSync(showDir)) {
-    fs.mkdirSync(showDir, { recursive: true });
-  }
+  if (result.action === 'new') stats.newReviews++;
+  else if (result.action === 'updated') stats.updatedReviews++;
 
-  const filename = generateReviewFilename(review.outletId, review.criticName);
-  let filepath = path.join(showDir, filename);
-
-  const existingFile = findExistingReviewFile(showDir, review.outletId, review.criticName);
-  if (existingFile && existingFile.data) {
-    filepath = existingFile.path;
-    const existing = existingFile.data;
-
-    // Don't overwrite if existing has a better score source
-    if (existing.originalScore && !review.originalScore) {
-      review.originalScore = existing.originalScore;
-    }
-
-    review = {
-      ...existing,
-      // Update WET-specific fields
-      westEndTheatreScore: review.westEndTheatreScore || existing.westEndTheatreScore || null,
-      westEndTheatreExcerpt: review.westEndTheatreExcerpt || existing.westEndTheatreExcerpt || null,
-      originalScore: existing.originalScore || review.originalScore,
-      // Preserve all existing data
-      fullText: existing.fullText || null,
-      isFullReview: existing.isFullReview || false,
-      dtliExcerpt: existing.dtliExcerpt || null,
-      dtliThumb: existing.dtliThumb || null,
-      showScoreExcerpt: existing.showScoreExcerpt || null,
-      bwwExcerpt: existing.bwwExcerpt || null,
-      bwwThumb: existing.bwwThumb || null,
-      stagedoorExcerpt: existing.stagedoorExcerpt || null,
-      nycTheatreExcerpt: existing.nycTheatreExcerpt || null,
-      lboRoundupExcerpt: existing.lboRoundupExcerpt || null,
-      url: existing.url || review.url,
-      publishDate: existing.publishDate || review.publishDate,
-      assignedScore: existing.assignedScore || null,
-      llmScore: existing.llmScore || null,
-      llmMetadata: existing.llmMetadata || null,
-      ensembleData: existing.ensembleData || null,
-      source: existing.source || review.source,
-    };
-
-    stats.updatedReviews++;
-  } else {
-    stats.newReviews++;
-  }
-
-  fs.writeFileSync(filepath, JSON.stringify(review, null, 2));
-  return filepath;
+  return result.filepath;
 }
 
 // --- Main ---

@@ -35,7 +35,7 @@ const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
-const { validateUrlDomain } = require('./lib/url-discovery');
+const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -741,148 +741,26 @@ function extractBwwRoundupData(html, showId) {
 function saveReview(showId, reviewData, options = {}) {
   if (options.dryRun || options.verify) return 'dry-run';
 
-  const showDir = path.join(reviewTextsDir, showId);
-  const outletName = reviewData.outlet;
-  const criticName = reviewData.critic || '';
+  const fields = { bwwExcerpt: reviewData.excerpt || null };
+  if (reviewData.bwwScore != null) fields.bwwScore = reviewData.bwwScore;
+  if (reviewData.bwwThumb) fields.bwwThumb = reviewData.bwwThumb;
+  if (reviewData.bwwRoundupUrl) fields.bwwRoundupUrl = reviewData.bwwRoundupUrl;
 
-  // Reject garbage outlet names before writing
-  if (isJunkOutlet(outletName)) {
-    stats.skippedGuards++;
-    return 'skipped';
-  }
-
-  // Normalize
-  const outletId = normalizeOutlet(outletName);
-  if (!outletId) return 'skipped';
-
-  // Domain validation: reject URLs that don't match the outlet's registered domain
-  const domainCheck = validateUrlDomain(reviewData.url, outletId);
-  if (!domainCheck.valid) {
-    console.log(`    [SKIP] ${outletId}: ${domainCheck.reason}`);
-    stats.skippedDomainMismatch = (stats.skippedDomainMismatch || 0) + 1;
-    return 'skipped';
-  }
-
-  const criticSlug = criticName ? normalizeCritic(criticName) : 'unknown';
-
-  // Check for existing file
-  const existing = findExistingReviewFile(showDir, outletName, criticName || null);
-  if (existing && existing.data) {
-    // Merge BWW data into existing file
-    let changed = false;
-
-    // Add bwwExcerpt
-    if (reviewData.excerpt && !existing.data.bwwExcerpt) {
-      existing.data.bwwExcerpt = reviewData.excerpt;
-      changed = true;
-    }
-
-    // Add bwwScore (from /reviews/ pages only)
-    if (reviewData.bwwScore != null && existing.data.bwwScore == null) {
-      existing.data.bwwScore = reviewData.bwwScore;
-      changed = true;
-    }
-
-    // Add bwwThumb (from new-format roundups only)
-    if (reviewData.bwwThumb && !existing.data.bwwThumb) {
-      existing.data.bwwThumb = reviewData.bwwThumb;
-      changed = true;
-    }
-
-    // Add bwwRoundupUrl
-    if (reviewData.bwwRoundupUrl && !existing.data.bwwRoundupUrl) {
-      existing.data.bwwRoundupUrl = reviewData.bwwRoundupUrl;
-      changed = true;
-    }
-
-    // Set url if file has no URL, or upgrade if existing content is bad
-    if (reviewData.url && !existing.data.url) {
-      existing.data.url = reviewData.url;
-      changed = true;
-    } else if (maybeUpgradeUrl(existing.data, reviewData.url, 'bww-reviews')) {
-      changed = true;
-    }
-
-    // Track sources
-    if (changed) {
-      const sources = new Set(existing.data.sources || [existing.data.source || '']);
-      sources.add(reviewData.source);
-      existing.data.sources = Array.from(sources).filter(Boolean);
-      fs.writeFileSync(existing.path, JSON.stringify(existing.data, null, 2) + '\n');
-      stats.updatedReviews++;
-      return 'updated';
-    }
-    stats.skippedExisting++;
-    return 'skipped';
-  }
-
-  // Also check exact filename
-  const filename = `${outletId}--${criticSlug}.json`;
-  const filepath = path.join(showDir, filename);
-  if (fs.existsSync(filepath)) {
-    const existingData = JSON.parse(fs.readFileSync(filepath, 'utf8'));
-    let changed = false;
-
-    if (reviewData.excerpt && !existingData.bwwExcerpt) {
-      existingData.bwwExcerpt = reviewData.excerpt;
-      changed = true;
-    }
-    if (reviewData.bwwScore != null && existingData.bwwScore == null) {
-      existingData.bwwScore = reviewData.bwwScore;
-      changed = true;
-    }
-    if (reviewData.bwwThumb && !existingData.bwwThumb) {
-      existingData.bwwThumb = reviewData.bwwThumb;
-      changed = true;
-    }
-    if (reviewData.bwwRoundupUrl && !existingData.bwwRoundupUrl) {
-      existingData.bwwRoundupUrl = reviewData.bwwRoundupUrl;
-      changed = true;
-    }
-    if (reviewData.url && !existingData.url) {
-      existingData.url = reviewData.url;
-      changed = true;
-    }
-
-    if (changed) {
-      const sources = new Set(existingData.sources || [existingData.source || '']);
-      sources.add(reviewData.source);
-      existingData.sources = Array.from(sources).filter(Boolean);
-      fs.writeFileSync(filepath, JSON.stringify(existingData, null, 2) + '\n');
-      stats.updatedReviews++;
-      return 'updated';
-    }
-    stats.skippedExisting++;
-    return 'skipped';
-  }
-
-  // Create new review file
-  if (!fs.existsSync(showDir)) {
-    fs.mkdirSync(showDir, { recursive: true });
-  }
-
-  const newReview = {
-    showId,
-    outletId,
-    outlet: outletName,
-    criticName: criticName || 'Unknown',
-    url: reviewData.url || null,
+  const result = createOrMergeReviewFile(showId, {
+    outlet: reviewData.outlet,
+    criticName: reviewData.critic,
+    url: reviewData.url,
     source: reviewData.source,
-    sources: [reviewData.source],
-    bwwExcerpt: reviewData.excerpt || null,
-  };
+    fields,
+  });
 
-  // Add source-specific fields
-  if (reviewData.bwwScore != null) newReview.bwwScore = reviewData.bwwScore;
-  if (reviewData.bwwThumb) newReview.bwwThumb = reviewData.bwwThumb;
-  if (reviewData.bwwRoundupUrl) newReview.bwwRoundupUrl = reviewData.bwwRoundupUrl;
+  if (result.action === 'new') stats.newReviews++;
+  else if (result.action === 'updated') stats.updatedReviews++;
+  else if (result.reason === 'junk-outlet') stats.skippedGuards++;
+  else if (result.reason?.startsWith('domain-mismatch')) stats.skippedDomainMismatch = (stats.skippedDomainMismatch || 0) + 1;
+  else stats.skippedExisting++;
 
-  // Classify content tier
-  newReview.contentTier = 'excerpt';
-
-  fs.writeFileSync(filepath, JSON.stringify(newReview, null, 2) + '\n');
-  stats.newReviews++;
-  return 'new';
+  return result.action === 'skipped' ? 'skipped' : result.action;
 }
 
 // ---------------------------------------------------------------------------
