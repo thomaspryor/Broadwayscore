@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-20T17:29:45.116Z",
+  "timestamp": "2026-03-20T19:49:27.287Z",
   "stats": {
-    "totalReviews": 32090,
+    "totalReviews": 32091,
     "alreadyFlagged": 9711,
     "dateGuardCatches": 186,
     "directorMismatch": 1119,
     "tvFilmSignals": 3510,
-    "londonSignals": 1082,
+    "londonSignals": 1084,
     "offBroadwaySignals": 1072,
     "yearMismatch": 91,
-    "noPublishDate": 9466
+    "noPublishDate": 9467
   },
   "findings": [
     {
@@ -15565,7 +15565,7 @@
       "file": "deadline--greg-evans.json",
       "score": null,
       "publishDate": "2026-03-03",
-      "url": "https://deadline.com/2026/03/broadway-box-office-daniel-radcliffe-every-brilliant-thing-1236742429/",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcliffe-1236750131/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -35039,7 +35039,7 @@
       "file": "times-uk--clive-davis.json",
       "score": 55,
       "publishDate": "2024-03-27",
-      "url": "https://www.theguardian.com/stage/2025/mar/09/mj-the-musical-review-propaganda-in-celebration-of-michael-jackson",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mj-the-musical-review-24-carat-karaoke-anchored-by-sleek-dance-moves-xvqpkfltq?gaa_at=eafs&gaa_n=AWEtsqe7HzB5Ce4NSHagoDmzIa5a3RTzEzQjIwzNgqxOvr9ebZyrlH3E8Mkd&gaa_ts=69bda4d9&gaa_sig=NRtuOoP3FL0-3Kz3ioonxn2su-CUIjMwcTV_RYTJminfI_4XZGFNqvIxs-CUZZxb-mbdy7BAwcRlX5Q83ILYSw%3D%3D",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -40505,7 +40505,7 @@
       "file": "telegraph--tim-robey.json",
       "score": 79,
       "publishDate": "2025-12-16",
-      "url": "https://lovelondonloveculture.com/2025/12/22/review-round-up-paranormal-activity-ambassadors-theatre/",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/paranormal-activity-on-stage/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -70904,6 +70904,20 @@
     },
     {
       "showId": "every-brilliant-thing-2026",
+      "file": "deadline--unknown.json",
+      "score": 86,
+      "publishDate": "2026-03-13",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcliffe-1236750131/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
       "file": "nydailynews--chris-jones.json",
       "score": 77,
       "publishDate": "2026-03-13",
@@ -79655,7 +79669,7 @@
       "file": "times-uk--dominic-maxwell.json",
       "score": 82,
       "publishDate": "2025-01-16",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/oliver-review-consider-yourself-at-home-in-this-warm-revival-tq5v8x8vx?gaa_at=eafs&gaa_n=AWEtsqe5kZb69BVTCemNuloYrlUit3pA0OnezvBtUMhQ1IQmqIbecwLG596B&gaa_ts=69a1fda4&gaa_sig=kDFJEFf4kfizhBEqH2qF8pvXEk-TBGQxuaEXbBKL3wKhaWuKSD7O0TgqMjIUTOedcPPP81_Ijo6fK1zoIoNFzA%3D%3D",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/im-reviewing-the-oliver-situation-its-a-hit-thanks-to-fagin-q5bmxmb52?gaa_at=eafs&gaa_n=AWEtsqeruvvXNHRgZteLzlutyBY6c8mqx2tAoHs6EPXCIGEtZUxZYlQ6uLz9&gaa_ts=69bda502&gaa_sig=ykYhYgtmJtoMpOmYaRZ4LPe0Gn_NeRWBNhnyob9RlLzmBirfz6VQQitMGvFGG7zUoKjMnA5UzMJfmBTpMRzhUA%3D%3D",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -81122,6 +81136,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "file": "nytimes--unknown.json",
+      "score": 75,
+      "publishDate": "March 1, 2026",
+      "url": "https://www.nytimes.com/2024/05/24/theater/tom-holland-romeo-and-juliet.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
