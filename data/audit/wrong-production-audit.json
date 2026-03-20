@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-19T23:59:02.327Z",
+  "timestamp": "2026-03-20T00:47:37.681Z",
   "stats": {
     "totalReviews": 32059,
-    "alreadyFlagged": 9634,
+    "alreadyFlagged": 9635,
     "dateGuardCatches": 185,
     "directorMismatch": 1119,
-    "tvFilmSignals": 3509,
+    "tvFilmSignals": 3508,
     "londonSignals": 1089,
     "offBroadwaySignals": 1071,
     "yearMismatch": 92,
-    "noPublishDate": 9507
+    "noPublishDate": 9506
   },
   "findings": [
     {
@@ -23890,6 +23890,7 @@
     {
       "showId": "hercules-west-end-2025",
       "file": "the-sun--dominic-maxwell.json",
+      "score": 42,
       "publishDate": "2025-06-28",
       "url": "https://www.thetimes.com/article/8ea532e7-98a0-4100-b982-3e8323151aac",
       "findings": [
@@ -29312,7 +29313,7 @@
     {
       "showId": "left-on-tenth-2024",
       "file": "ew--thom-geier.json",
-      "score": null,
+      "score": 42,
       "publishDate": "October 23rd, 2024",
       "url": "https://culturesauce.com/2024/10/23/left-on-tenth-broadway-review-julianna-margulies-delia-ephron/",
       "findings": [
@@ -30296,6 +30297,7 @@
     {
       "showId": "les-miserables-west-end-2021",
       "file": "thestage--matthew-hemley.json",
+      "score": 86,
       "publishDate": null,
       "url": "https://www.thestage.co.uk/reviews/les-miserables-review-at-sondheim-theatre-london--still-spectacular",
       "findings": [
@@ -44125,7 +44127,7 @@
     {
       "showId": "romeo-juliet-2024",
       "file": "ew--thom-geier.json",
-      "score": null,
+      "score": 43,
       "publishDate": "October 25th, 2024",
       "url": "https://culturesauce.com/2024/10/24/romeo-juliet-broadway-review-kit-connor-rachel-zegler/",
       "findings": [
@@ -49962,7 +49964,7 @@
     {
       "showId": "sweet-charity-2005",
       "file": "daily-mail--the-independent.json",
-      "score": null,
+      "score": 81,
       "publishDate": "2010-05-09",
       "url": "https://www.westendtheatre.com/2804/news/reviews/sweet-charity-reviews-round-up/",
       "findings": [
@@ -62574,18 +62576,11 @@
       "showId": "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026",
       "file": "times-uk--donald-hutera.json",
       "score": 80,
-      "publishDate": "2024-01-02",
-      "url": "https://www.thetimes.co.uk/article/unfortunate-review-a-vampish-squid-commands-this-disney-parody-j6lggll6s",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 766d before show (2024-01-02 vs 2026-02-06)"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -65050,6 +65045,7 @@
     {
       "showId": "witness-for-the-prosecution-west-end-2022",
       "file": "financialtimes--unknown.json",
+      "score": 75,
       "publishDate": "2017-10-24",
       "url": "https://www.ft.com/content/e10b1230-b8cf-11e7-8c12-5661783e5589",
       "findings": [
@@ -65102,6 +65098,7 @@
     {
       "showId": "witness-for-the-prosecution-west-end-2022",
       "file": "radio-times--unknown.json",
+      "score": 90,
       "publishDate": "2024-01-18",
       "url": "https://www.radiotimes.com/going-out/going-out-reviews/witness-for-the-prosecution-review/",
       "findings": [
@@ -69949,6 +69946,7 @@
     {
       "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
       "file": "whatsonstage--sarah-crompton.json",
+      "score": 93,
       "publishDate": null,
       "url": "https://www.whatsonstage.com/news/dear-england-at-the-national-theatre-review-the-beautiful-game-in-a-beautiful-play_1404772/",
       "findings": [
@@ -74411,7 +74409,7 @@
     {
       "showId": "illinoise-2024",
       "file": "ew--thom-geier.json",
-      "score": null,
+      "score": 86,
       "publishDate": "April 26th, 2024",
       "url": "https://culturesauce.com/2024/04/26/illinoise-sufjan-stevens-ethan-peck-broadway-review/",
       "findings": [
@@ -76622,7 +76620,7 @@
     {
       "showId": "legally-blonde-2007",
       "file": "daily-mail--evening-standard.json",
-      "score": null,
+      "score": 67,
       "publishDate": "2010-01-15",
       "url": "https://www.westendtheatre.com/1680/news/reviews/legally-blonde-savoy-theatre-reviews-round-up/",
       "findings": [
@@ -77681,6 +77679,7 @@
     {
       "showId": "marie-and-rosetta-west-end-2026",
       "file": "guardian--ammar-kalia.json",
+      "score": 72,
       "publishDate": "2025-05-11",
       "url": "https://www.theguardian.com/stage/2025/may/11/marie-and-rosetta-review-beverley-knight-rose-theatre-london-sister-rosetta-tharpe",
       "findings": [
