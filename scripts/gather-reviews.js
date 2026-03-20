@@ -2341,6 +2341,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
     bww: { found: false, extracted: 0, skipped: false },
     lbo: { found: false, extracted: 0, skipped: false },
     serp: { calls: 0, hits: 0, skipped: false },
+    wrongUrlRetry: { found: 0, retried: 0, fixed: 0, skipped: false },
     rejections: { junkOutlet: 0, nonBroadway: 0, wrongProduction: 0, duplicate: 0, crossShow: 0 },
   };
 
@@ -2525,6 +2526,91 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
       health.lbo.extracted = lboRawReviews.length;
     } else {
       console.log(`    No LBO archive found for ${showId}`);
+    }
+  }
+
+  // STEP 1b: Retry SERP for reviews flagged with wrongUrl
+  // These reviews got bad URLs during opening-night discovery and have no automated recovery path.
+  // Re-SERP them now with targeted per-outlet queries using the review's own metadata.
+  {
+    const scrapingBeeKey = process.env.SCRAPINGBEE_API_KEY || '';
+    const brightDataKey = process.env.BRIGHTDATA_TOKEN || '';
+    const showDir = path.join(REVIEW_TEXTS_DIR, showId);
+
+    if (aggregatorsOnly || (!scrapingBeeKey && !brightDataKey)) {
+      health.wrongUrlRetry.skipped = true;
+    } else if (fs.existsSync(showDir)) {
+      const reviewFiles = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+      const wrongUrlFiles = [];
+
+      for (const file of reviewFiles) {
+        try {
+          const data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
+          if (data.wrongUrl === true && !data.wrongShow && !data.wrongProduction && !data.duplicateOf) {
+            wrongUrlFiles.push({ file, data });
+          }
+        } catch {}
+      }
+
+      health.wrongUrlRetry.found = wrongUrlFiles.length;
+
+      if (wrongUrlFiles.length > 0) {
+        const WRONG_URL_BUDGET = 20;
+        console.log(`\n[1b/4] Retrying SERP for ${wrongUrlFiles.length} wrongUrl reviews (budget: ${WRONG_URL_BUDGET})...`);
+
+        for (const { file, data } of wrongUrlFiles) {
+          if (health.wrongUrlRetry.retried >= WRONG_URL_BUDGET) {
+            console.log(`  ⚠ wrongUrl retry budget exhausted (${WRONG_URL_BUDGET})`);
+            break;
+          }
+
+          const outletId = data.outletId || normalizeOutlet(data.outlet);
+          const outletName = data.outlet || outletId;
+          process.stdout.write(`  ${outletName} (${file})... `);
+
+          // Build review object for discoverCorrectUrl with critic name for better targeting
+          const reviewObj = {
+            showId,
+            outletId,
+            outlet: outletName,
+            criticName: (data.criticName && data.criticName !== 'Unknown') ? data.criticName : 'Unknown',
+            source: 'wrongUrl-retry',
+            url: data.url || '', // pass current (bad) URL so SERP skips it
+          };
+
+          health.wrongUrlRetry.retried++;
+          const result = await discoverCorrectUrl(reviewObj, scrapingBeeKey, {
+            brightDataKey,
+            log: (msg) => process.stdout.write(msg.replace(/^\s+/, '  ') + '\n'),
+          });
+
+          if (result && result !== '__SERP_UNAVAILABLE__' && result !== data.url) {
+            console.log(`✓ Found: ${result}`);
+            // Update the review file in-place
+            const filePath = path.join(showDir, file);
+            data.urlCorrectedFrom = data.url;
+            data.urlCorrectedReason = 'wrongUrl SERP retry via gather-reviews';
+            data.url = result;
+            data.urlDiscoveredAt = new Date().toISOString();
+            data.urlDiscoveryMethod = 'wrongUrl-serp-retry';
+            delete data.wrongUrl;
+            delete data.wrongUrlReason;
+            // Clear stale content from wrong URL so collect-review-texts refetches
+            if (data.wrongFullText) {
+              delete data.wrongFullText;
+            }
+            data.needsRefetch = true;
+            fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+            health.wrongUrlRetry.fixed++;
+          } else {
+            console.log('✗');
+          }
+
+          await sleep(DELAY_MS);
+        }
+
+        console.log(`  wrongUrl retries: ${health.wrongUrlRetry.fixed}/${health.wrongUrlRetry.retried} fixed`);
+      }
     }
   }
 
@@ -2815,6 +2901,9 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
   console.log(`SUMMARY for ${showId}`);
   console.log('='.repeat(60));
   console.log(`  Aggregators: DTLI=${health.dtli.extracted}, ShowScore=${health.showScore.extracted}, BWW=${health.bww.extracted}${health.bww.skipped ? ' (skipped)' : ''}, LBO=${health.lbo.extracted}${health.lbo.skipped ? ' (skipped)' : ''}`);
+  if (health.wrongUrlRetry.found > 0) {
+    console.log(`  wrongUrl retry: ${health.wrongUrlRetry.fixed}/${health.wrongUrlRetry.found} fixed`);
+  }
   if (!health.serp.skipped) {
     console.log(`  SERP: ${health.serp.hits}/${health.serp.calls} hits`);
   } else {
@@ -2961,6 +3050,13 @@ async function main() {
       if (zeroAgg > 0) {
         console.log(`    ⚠️  ${zeroAgg} open shows with ZERO aggregator hits`);
       }
+    }
+
+    // Total wrongUrl retry stats
+    const totalWrongUrlFound = healthResults.reduce((s, r) => s + r.health.wrongUrlRetry.found, 0);
+    const totalWrongUrlFixed = healthResults.reduce((s, r) => s + r.health.wrongUrlRetry.fixed, 0);
+    if (totalWrongUrlFound > 0) {
+      console.log(`\n  wrongUrl retries: ${totalWrongUrlFixed}/${totalWrongUrlFound} fixed`);
     }
 
     // Total SERP stats
