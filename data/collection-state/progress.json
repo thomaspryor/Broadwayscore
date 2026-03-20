@@ -1036,7 +1036,14 @@
     "high-noon-west-end-2025/independent--alice-saville.json",
     "high-noon-west-end-2025/london-theatre--julia-rank.json",
     "high-noon-west-end-2025/standard--nick-curtis.json",
-    "high-noon-west-end-2025/telegraph--dominic-cavendish.json"
+    "high-noon-west-end-2025/telegraph--dominic-cavendish.json",
+    "all-out-2025/nytg--gillian-russo.json",
+    "all-out-2025/deadline--unknown.json",
+    "all-out-2025/ew--unknown.json",
+    "all-out-2025/playbill--logan-culwell-block.json",
+    "woman-in-mind-west-end-2025/independent--alice-saville.json",
+    "woman-in-mind-west-end-2025/london-theatre--olivia-rook.json",
+    "woman-in-mind-west-end-2025/telegraph--claire-allfree.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
@@ -1219,7 +1226,10 @@
     "ulysses-off-broadway-2026/talkinbroadway--howard-miller.json",
     "the-disappear-off-broadway-2026/talkinbroadway--james-wilson.json",
     "bug-2026/wsj--charles-isherwood.json",
-    "high-noon-west-end-2025/thestage--sam-marlowe.json"
+    "high-noon-west-end-2025/thestage--sam-marlowe.json",
+    "high-noon-west-end-2025/times-uk--clive-davis.json",
+    "woman-in-mind-west-end-2025/broadwayworld--unknown.json",
+    "woman-in-mind-west-end-2025/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1960,7 +1970,11 @@
       "high-noon-west-end-2025/timeout-london--unknown.json",
       "high-noon-west-end-2025/artsdesk--matt-wolf.json",
       "high-noon-west-end-2025/london-theatre--julia-rank.json",
-      "high-noon-west-end-2025/standard--nick-curtis.json"
+      "high-noon-west-end-2025/standard--nick-curtis.json",
+      "all-out-2025/nytg--gillian-russo.json",
+      "all-out-2025/ew--unknown.json",
+      "all-out-2025/playbill--logan-culwell-block.json",
+      "woman-in-mind-west-end-2025/london-theatre--olivia-rook.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
@@ -2041,7 +2055,9 @@
       "data/review-texts/la-traviata-off-broadway-2026/observer--gabrielle-ferrari.json",
       "la-traviata-off-broadway-2026/observer--gabrielle-ferrari.json",
       "data/review-texts/the-tragedy-of-coriolanus-off-broadway-2026/nytimes--helen-shaw.json",
-      "the-tragedy-of-coriolanus-off-broadway-2026/nytimes--helen-shaw.json"
+      "the-tragedy-of-coriolanus-off-broadway-2026/nytimes--helen-shaw.json",
+      "data/review-texts/all-out-2025/deadline--unknown.json",
+      "all-out-2025/deadline--unknown.json"
     ],
     "directCookies": [
       "oliver-west-end-2024/times-uk--dominic-maxwell.json",
@@ -2168,7 +2184,9 @@
       "maggots-west-end-2026/guardian--arifa-akbar.json",
       "the-disappear-off-broadway-2026/nytimes--helen-shaw.json",
       "high-noon-west-end-2025/independent--alice-saville.json",
-      "high-noon-west-end-2025/telegraph--dominic-cavendish.json"
+      "high-noon-west-end-2025/telegraph--dominic-cavendish.json",
+      "woman-in-mind-west-end-2025/independent--alice-saville.json",
+      "woman-in-mind-west-end-2025/telegraph--claire-allfree.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2357,7 +2375,7 @@
     ]
   },
   "startTime": "2026-03-19T10:02:04.711Z",
-  "lastProcessed": "high-noon-west-end-2025/thestage--sam-marlowe.json",
+  "lastProcessed": "woman-in-mind-west-end-2025/telegraph--claire-allfree.json",
   "log": [
     {
       "t": "2026-03-19T10:04:36.520Z",
@@ -2769,6 +2787,28 @@
     },
     {
       "t": "2026-03-20T05:55:37.758Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-20T05:56:20.280Z",
+      "event": "bb-session",
+      "session": "a5567b01",
+      "url": "https://deadline.com/2026/02/jake-shane-broadway-all-out-comedy-about-ambition-1"
+    },
+    {
+      "t": "2026-03-20T05:56:21.644Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-20T05:58:14.668Z",
+      "event": "bb-session",
+      "session": "2f35632e",
+      "url": "https://www.thestage.co.uk/reviews/woman-in-mind-review-duke-of-yorks-theatre-lo"
+    },
+    {
+      "t": "2026-03-20T05:58:15.879Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
