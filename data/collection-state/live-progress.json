@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-20T04:18:53.792Z",
-  "processed": 816,
-  "failed": 142,
-  "successRate": "85.2%",
+  "updatedAt": "2026-03-20T04:23:17.958Z",
+  "processed": 823,
+  "failed": 145,
+  "successRate": "85.0%",
   "tierBreakdown": {
-    "playwright": 586,
+    "playwright": 592,
     "amp": 38,
     "browserbase": 28,
     "directCookies": 3,
-    "scrapingbee": 96,
+    "scrapingbee": 97,
     "brightdata": 0,
     "archiveToday": 30,
     "archive": 106
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-03-19T12:18:48.426Z",
-      "event": "bb-session",
-      "session": "2619b8a4",
-      "url": "https://nypost.com/2019/10/17/little-shop-of-horrors-review-jonathan-groff-tammy"
-    },
-    {
-      "t": "2026-03-19T12:18:49.745Z",
-      "event": "bb-cookie-inject",
-      "domain": "nypost.com"
-    },
     {
       "t": "2026-03-19T12:26:03.933Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-20T00:35:00.361Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-20T04:21:20.409Z",
+      "event": "bb-session",
+      "session": "03ed96c9",
+      "url": "https://www.thestage.co.uk/reviews/six-review-at-arts-theatre-london--raw-talent"
+    },
+    {
+      "t": "2026-03-20T04:21:21.586Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
