@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-20T09:47:50.079Z",
-  "processed": 119,
+  "updatedAt": "2026-03-20T09:50:07.863Z",
+  "processed": 129,
   "failed": 26,
-  "successRate": "82.1%",
+  "successRate": "83.2%",
   "tierBreakdown": {
-    "playwright": 97,
-    "amp": 0,
-    "browserbase": 2,
+    "playwright": 102,
+    "amp": 2,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingbee": 15,
+    "scrapingbee": 17,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 15
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-03-20T09:11:49.819Z",
@@ -37,6 +37,28 @@
       "event": "bb-session",
       "session": "e04a3290",
       "url": "https://www.facebook.com/kingsandtheatreroyalglasgow/posts/the-choir-of-man-is-f"
+    },
+    {
+      "t": "2026-03-20T09:47:51.079Z",
+      "event": "bb-session",
+      "session": "80a0fbc6",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-20T09:47:52.265Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-20T09:49:22.154Z",
+      "event": "bb-session",
+      "session": "ce59709a",
+      "url": "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing"
+    },
+    {
+      "t": "2026-03-20T09:49:23.156Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
