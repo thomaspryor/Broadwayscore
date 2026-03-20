@@ -95,10 +95,6 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   }
 
   // --- Create new file ---
-  if (!fs.existsSync(showDir)) {
-    fs.mkdirSync(showDir, { recursive: true });
-  }
-
   const outletDisplay = getOutletDisplayName(outletId) || input.outlet || outletId;
   const newReview = {
     showId,
@@ -118,6 +114,9 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   }
 
   if (!dryRun) {
+    if (!fs.existsSync(showDir)) {
+      fs.mkdirSync(showDir, { recursive: true });
+    }
     safeWriteReview(filepath, newReview, { merge: false });
   }
 
