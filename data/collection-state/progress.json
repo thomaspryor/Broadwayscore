@@ -806,7 +806,11 @@
     "back-to-the-future-west-end-2021/mail--patrick-marmion.json",
     "the-phantom-of-the-opera-off-west-end-2021/standard--unknown.json",
     "the-phantom-of-the-opera-west-end-1986/standard--katie-rosseinsky.json",
-    "moulin-rouge-2019/njcom--christoher-kelly.json"
+    "moulin-rouge-2019/njcom--christoher-kelly.json",
+    "la-traviata-off-broadway-2026/hollywood-reporter--unknown.json",
+    "gotta-dance-off-broadway-2026/guardian--unknown.json",
+    "gotta-dance-off-broadway-2026/theatermania--unknown.json",
+    "la-traviata-off-broadway-2026/observer--gabrielle-ferrari.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
@@ -949,7 +953,8 @@
     "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
     "six-2021/newyorker--naomi-fry.json",
     "six-2021/pages-on-stages--mason-pilevsky.json",
-    "back-to-the-future-west-end-2021/broadwayworld--alexander-cohen.json"
+    "back-to-the-future-west-end-2021/broadwayworld--alexander-cohen.json",
+    "gotta-dance-off-broadway-2026/playbill--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1534,7 +1539,8 @@
       "moulin-rouge-the-musical-west-end-2021/london-theatre--suzy-evans.json",
       "moulin-rouge-the-musical-west-end-2021/standard--nick-curtis.json",
       "the-phantom-of-the-opera-off-west-end-2021/standard--unknown.json",
-      "the-phantom-of-the-opera-west-end-1986/standard--katie-rosseinsky.json"
+      "the-phantom-of-the-opera-west-end-1986/standard--katie-rosseinsky.json",
+      "gotta-dance-off-broadway-2026/guardian--unknown.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
@@ -1604,7 +1610,11 @@
       "data/review-texts/marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
       "marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
       "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
-      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json"
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
+      "data/review-texts/la-traviata-off-broadway-2026/hollywood-reporter--unknown.json",
+      "la-traviata-off-broadway-2026/hollywood-reporter--unknown.json",
+      "data/review-texts/la-traviata-off-broadway-2026/observer--gabrielle-ferrari.json",
+      "la-traviata-off-broadway-2026/observer--gabrielle-ferrari.json"
     ],
     "directCookies": [
       "oliver-west-end-2024/times-uk--dominic-maxwell.json",
@@ -1844,11 +1854,12 @@
       "stranger-things-the-first-shadow-west-end-2023/daily-mail--luke-jones.json",
       "stranger-things-the-first-shadow-west-end-2023/independent--alice-saville.json",
       "stranger-things-the-first-shadow-west-end-2023/telegraph--marianka-swain.json",
-      "moulin-rouge-the-musical-west-end-2021/independent--ava-wong-davies.json"
+      "moulin-rouge-the-musical-west-end-2021/independent--ava-wong-davies.json",
+      "gotta-dance-off-broadway-2026/theatermania--unknown.json"
     ]
   },
   "startTime": "2026-03-19T10:02:04.711Z",
-  "lastProcessed": "moulin-rouge-2019/njcom--christoher-kelly.json",
+  "lastProcessed": "gotta-dance-off-broadway-2026/playbill--unknown.json",
   "log": [
     {
       "t": "2026-03-19T10:04:36.520Z",
@@ -2119,6 +2130,18 @@
       "t": "2026-03-20T00:35:00.361Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-20T04:38:48.743Z",
+      "event": "bb-session",
+      "session": "d042d1d1",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/becoming-traviata-film-re"
+    },
+    {
+      "t": "2026-03-20T04:39:11.974Z",
+      "event": "bb-session",
+      "session": "fc25bef2",
+      "url": "https://observer.com/2022/10/review-nadine-sierra-is-a-force-of-nature-as-violet"
     }
   ]
 }
