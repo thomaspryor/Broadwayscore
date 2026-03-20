@@ -296,7 +296,20 @@ async function sweepWET(show) {
   let allPosts = [];
   for (const searchTitle of uniqueSearches) {
     const apiUrl = `https://www.westendtheatre.com/wp-json/wp/v2/posts?categories=10&per_page=10&search=${encodeURIComponent(searchTitle)}`;
-    const posts = curlJson(apiUrl);
+    let posts = curlJson(apiUrl);
+
+    // ScrapingBee fallback if Sucuri WAF blocks curl (common in CI)
+    if (!posts && SB_KEY) {
+      try {
+        const axios = require('axios');
+        const resp = await axios.get('https://app.scrapingbee.com/api/v1', {
+          params: { api_key: SB_KEY, url: apiUrl, render_js: 'false' },
+          timeout: 20000, responseType: 'text',
+        });
+        try { posts = JSON.parse(resp.data); } catch {}
+      } catch {}
+    }
+
     if (posts && Array.isArray(posts)) {
       for (const p of posts) {
         if (!allPosts.find(ep => ep.id === p.id)) allPosts.push(p);

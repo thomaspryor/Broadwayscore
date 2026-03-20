@@ -114,71 +114,55 @@ async function discoverShows(page) {
   return Array.from(allShows.values());
 }
 
+// Known Stagedoor show IDs for shows that category listings don't surface.
+// Discovered via manual site navigation + Google search (Mar 2026).
+// Format: ourShowId → { category, id, slug }
+const SD_KNOWN_SHOWS = {
+  'six-the-musical-west-end-2021': { category: 'musicals', id: 15640, slug: 'six' },
+  'into-the-woods-west-end-2025': { category: 'musicals', id: 15368, slug: 'into-the-woods-15368' },
+  'cabaret-at-the-kit-kat-club-west-end-2021': { category: 'musicals', id: 15642, slug: 'cabaret' },
+  'les-miserables-west-end-2021': { category: 'sondheim-theatre', id: 0, slug: 'les-miserables' },
+  'titanique-west-end-2024': { category: 'musicals', id: 18295, slug: 'titanique-the-musical' },
+  'operation-mincemeat-west-end-2024': { category: 'musicals', id: 0, slug: 'operation-mincemeat' },
+  'the-producers-west-end-2025': { category: 'musicals', id: 218, slug: 'the-producers' },
+};
+
 /**
- * Phase A.5: Search Stagedoor for shows not found in category listings.
- * The category pages only show ~24 shows each — many shows are missing.
- * This searches by name to fill the gaps.
+ * Phase A.5: Fetch known Stagedoor shows not found in category listings.
+ * Uses hardcoded IDs for shows that don't appear in category pages.
  */
-async function searchForMissingShows(page, alreadyFound, ourShows) {
+async function fetchKnownMissingShows(page, alreadyFound, ourShows) {
   const foundIds = new Set(alreadyFound.map(s => s.ourShowId || ''));
-  // Filter to open WE/OWE shows not yet matched
-  const missing = ourShows.filter(s => !foundIds.has(s.id) && s.status === 'open' && isLondonMarket(s.category));
+  const toFetch = Object.entries(SD_KNOWN_SHOWS).filter(([showId]) => !foundIds.has(showId));
 
-  if (missing.length === 0) return [];
+  if (toFetch.length === 0) return [];
 
-  console.log(`\n  [SD] Searching for ${missing.length} unmatched shows...`);
+  console.log(`\n  [SD] Fetching ${toFetch.length} known shows not in category listings...`);
   const found = [];
 
-  for (const show of missing) {
-    try {
-      // Navigate to search or directly try the show page
-      // Stagedoor search: click the search icon and type
-      await page.goto(`https://stagedoor.com`, { waitUntil: 'domcontentloaded', timeout: 15000 });
-      await sleep(500);
+  for (const [ourShowId, sd] of toFetch) {
+    const ourShow = ourShows.find(s => s.id === ourShowId);
+    if (!ourShow) continue;
 
-      // Click search icon/input
-      const searchTrigger = page.locator('input[type="search"], input[placeholder*="Search"], button[aria-label*="Search"], a[href*="search"]').first();
-      if (await searchTrigger.isVisible({ timeout: 3000 }).catch(() => false)) {
-        await searchTrigger.click();
-        await sleep(500);
-      }
+    // Construct the critic-reviews URL
+    const url = sd.id > 0
+      ? `https://stagedoor.com/${sd.category}/${sd.id}-${sd.slug}/critic-reviews`
+      : `https://stagedoor.com/${sd.category}/${sd.slug}/critic-reviews`;
 
-      // Type the show title
-      const searchInput = page.locator('input[type="search"], input[type="text"][placeholder*="earch"]').first();
-      if (!await searchInput.isVisible({ timeout: 3000 }).catch(() => false)) continue;
+    console.log(`    Fetching: ${ourShow.title} → ${url}`);
+    found.push({
+      category: sd.category,
+      id: sd.id,
+      slug: sd.slug,
+      title: ourShow.title,
+      ourShowId,
+      ourTitle: ourShow.title,
+    });
 
-      await searchInput.fill(show.title.replace(/[!:]/g, ''));
-      await sleep(2000); // Wait for search results
-
-      // Find matching show link in results
-      const showLink = await page.evaluate((title) => {
-        const links = document.querySelectorAll('a[href*="?p="]');
-        const titleLower = title.toLowerCase().replace(/[^a-z0-9\s]/g, '');
-        for (const link of links) {
-          const href = link.getAttribute('href');
-          const match = href.match(/^\/([\w-]+)\/([\d]+)-([\w-]+)\?p=\d+$/);
-          if (match) {
-            const linkText = link.textContent.trim().toLowerCase().replace(/[^a-z0-9\s]/g, '');
-            if (linkText.includes(titleLower) || titleLower.includes(linkText)) {
-              return { category: match[1], id: parseInt(match[2]), slug: match[3], title: link.textContent.trim() };
-            }
-          }
-        }
-        return null;
-      }, show.title);
-
-      if (showLink) {
-        console.log(`    Found: ${show.title} → /${showLink.category}/${showLink.id}-${showLink.slug}`);
-        found.push({ ...showLink, ourShowId: show.id, ourTitle: show.title });
-      }
-    } catch (e) {
-      // Search failed for this show — continue to next
-    }
-
-    await sleep(1500);
+    await sleep(500);
   }
 
-  console.log(`  [SD] Search found ${found.length} additional shows\n`);
+  console.log(`  [SD] Added ${found.length} known shows\n`);
   return found;
 }
 
@@ -336,8 +320,8 @@ async function main() {
     console.log(`   Matched to our shows: ${matched.length}/${stagedoorShows.length}`);
     console.log('');
 
-    // Phase A.5: Search for shows not found in category listings
-    const searchResults = await searchForMissingShows(page, matched, ourShows);
+    // Phase A.5: Add known shows not found in category listings
+    const searchResults = await fetchKnownMissingShows(page, matched, ourShows);
     for (const sr of searchResults) {
       matched.push(sr);
     }
