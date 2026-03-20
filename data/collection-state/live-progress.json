@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-20T04:49:11.780Z",
-  "processed": 887,
-  "failed": 151,
-  "successRate": "85.5%",
+  "updatedAt": "2026-03-20T04:53:26.565Z",
+  "processed": 894,
+  "failed": 154,
+  "successRate": "85.3%",
   "tierBreakdown": {
-    "playwright": 632,
-    "amp": 38,
+    "playwright": 635,
+    "amp": 39,
     "browserbase": 28,
     "directCookies": 3,
-    "scrapingbee": 101,
+    "scrapingbee": 103,
     "brightdata": 0,
     "archiveToday": 30,
-    "archive": 128
+    "archive": 130
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-03-19T12:59:04.584Z",
-      "event": "bb-session",
-      "session": "10f1b44c",
-      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
-    },
-    {
-      "t": "2026-03-19T12:59:06.002Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-19T13:04:30.335Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-20T04:46:58.289Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-20T04:50:53.425Z",
+      "event": "bb-session",
+      "session": "8cfc3feb",
+      "url": "https://www.thestage.co.uk/reviews/as-you-like-it-review-sohoplace-by-william-sh"
+    },
+    {
+      "t": "2026-03-20T04:50:54.524Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }

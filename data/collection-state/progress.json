@@ -886,7 +886,14 @@
     "blood-of-my-blood-west-end-2026/whatsonstage--sarah-crompton.json",
     "as-you-like-it-globe-west-end-2026/timeout--andrzej-lukowski.json",
     "as-you-like-it-globe-west-end-2026/i-paper--fiona-mountford.json",
-    "as-you-like-it-globe-west-end-2026/london-theatre--marianka-swain.json"
+    "as-you-like-it-globe-west-end-2026/london-theatre--marianka-swain.json",
+    "as-you-like-it-globe-west-end-2026/standard--nick-curtis.json",
+    "as-you-like-it-globe-west-end-2026/telegraph--dominic-cavendish.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--clive-davis.json",
+    "as-you-like-it-globe-west-end-2026/whatsonstage--sarah-crompton.json",
+    "dog-man-the-musical-west-end-2026/nytimes--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/telegraph--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/i-paper--unknown.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/wsj--edward-rothstein.json",
@@ -1039,7 +1046,10 @@
     "blood-of-my-blood-west-end-2026/timeout--holly-omahony.json",
     "blood-of-my-blood-west-end-2026/thestage--sam-marlowe.json",
     "man-to-man-west-end-2026/thestage--unknown.json",
-    "man-to-man-west-end-2026/stagebuddy--unknown.json"
+    "man-to-man-west-end-2026/stagebuddy--unknown.json",
+    "as-you-like-it-globe-west-end-2026/thestage--sam-marlowe.json",
+    "to-kill-a-mockingbird-west-end-2026/guardian--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/variety--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1675,7 +1685,10 @@
       "blood-of-my-blood-west-end-2026/whatsonstage--sarah-crompton.json",
       "as-you-like-it-globe-west-end-2026/timeout--andrzej-lukowski.json",
       "as-you-like-it-globe-west-end-2026/i-paper--fiona-mountford.json",
-      "as-you-like-it-globe-west-end-2026/london-theatre--marianka-swain.json"
+      "as-you-like-it-globe-west-end-2026/london-theatre--marianka-swain.json",
+      "as-you-like-it-globe-west-end-2026/standard--nick-curtis.json",
+      "as-you-like-it-globe-west-end-2026/whatsonstage--sarah-crompton.json",
+      "cyrano-de-bergerac-west-end-2026/i-paper--unknown.json"
     ],
     "amp": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
@@ -1715,7 +1728,8 @@
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
       "every-brilliant-thing-2026/thewrap--robert-hofler.json",
       "data/review-texts/the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
-      "the-unknown-off-broadway-2026/thewrap--robert-hofler.json"
+      "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
+      "data/review-texts/cyrano-de-bergerac-west-end-2026/variety--unknown.json"
     ],
     "browserbase": [
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
@@ -1853,7 +1867,9 @@
       "the-mousetrap-west-end-2021/telegraph--unknown.json",
       "dirty-dancing-the-classic-story-on-stage-west-end-2026/et--desiree-murphy.json",
       "blood-of-my-blood-west-end-2026/timeout--holly-omahony.json",
-      "blood-of-my-blood-west-end-2026/telegraph--dominic-cavendish.json"
+      "blood-of-my-blood-west-end-2026/telegraph--dominic-cavendish.json",
+      "as-you-like-it-globe-west-end-2026/times-uk--clive-davis.json",
+      "loves-labours-lost-globe-west-end-2026/telegraph--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2016,11 +2032,13 @@
       "the-lion-king-1997/broadwayworld--tyler-hinton.json",
       "the-lion-king-1997/talkinbroadway--matthew-murray.json",
       "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
-      "the-mousetrap-west-end-2021/thestage--john-thaxter.json"
+      "the-mousetrap-west-end-2021/thestage--john-thaxter.json",
+      "as-you-like-it-globe-west-end-2026/telegraph--dominic-cavendish.json",
+      "dog-man-the-musical-west-end-2026/nytimes--unknown.json"
     ]
   },
   "startTime": "2026-03-19T10:02:04.711Z",
-  "lastProcessed": "as-you-like-it-globe-west-end-2026/london-theatre--marianka-swain.json",
+  "lastProcessed": "cyrano-de-bergerac-west-end-2026/i-paper--unknown.json",
   "log": [
     {
       "t": "2026-03-19T10:04:36.520Z",
@@ -2311,6 +2329,17 @@
     },
     {
       "t": "2026-03-20T04:46:58.289Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-20T04:50:53.425Z",
+      "event": "bb-session",
+      "session": "8cfc3feb",
+      "url": "https://www.thestage.co.uk/reviews/as-you-like-it-review-sohoplace-by-william-sh"
+    },
+    {
+      "t": "2026-03-20T04:50:54.524Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
