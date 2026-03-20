@@ -48,7 +48,15 @@
     "the-choir-of-man-west-end-2026/whatsonstage--anna-james.json",
     "touch-off-broadway-2026/blogcritics--jon-sobel.json",
     "touch-off-broadway-2026/plays-to-see--austin-fimmano.json",
-    "touch-off-broadway-2026/talkinbroadway--howard-miller.json"
+    "touch-off-broadway-2026/talkinbroadway--howard-miller.json",
+    "touch-off-broadway-2026/theater-pizzazz--beatrice-williams-rude.json",
+    "touch-off-broadway-2026/theater-scene--victor-gluck.json",
+    "youre-a-good-man-charlie-brown-off-broadway-2026/talkinbroadway--matthew-murray.json",
+    "youre-a-good-man-charlie-brown-off-broadway-2026/theatres-leiter-side--samuel-l-leiter.json",
+    "every-brilliant-thing-2026/nytg--austin-fimmano.json",
+    "every-brilliant-thing-2026/nytimes--adam-feldman.json",
+    "every-brilliant-thing-2026/deadline--unknown.json",
+    "every-brilliant-thing-2026/guardian--jesse-hassenger.json"
   ],
   "failed": [
     "my-joy-is-heavy-off-broadway-2025/nyt-theater--unknown.json",
@@ -61,7 +69,9 @@
     "giant-2026/ap--jennifer-farrar.json",
     "consumed-west-end-2026/guardian--arifa-akbar.json",
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
-    "touch-off-broadway-2026/broadwayworld--marina-kennedy.json"
+    "touch-off-broadway-2026/broadwayworld--marina-kennedy.json",
+    "youre-a-good-man-charlie-brown-off-broadway-2026/broadwayworld--michael-dale.json",
+    "youre-a-good-man-charlie-brown-off-broadway-2026/out-magazine--michael-musto.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -101,10 +111,18 @@
       "the-choir-of-man-west-end-2026/standard--nick-curtis.json",
       "the-choir-of-man-west-end-2026/the-express--david-snelling.json",
       "the-choir-of-man-west-end-2026/whatsonstage--anna-james.json",
-      "touch-off-broadway-2026/blogcritics--jon-sobel.json"
+      "touch-off-broadway-2026/blogcritics--jon-sobel.json",
+      "touch-off-broadway-2026/theater-scene--victor-gluck.json",
+      "youre-a-good-man-charlie-brown-off-broadway-2026/theatres-leiter-side--samuel-l-leiter.json",
+      "every-brilliant-thing-2026/nytg--austin-fimmano.json",
+      "every-brilliant-thing-2026/nytimes--adam-feldman.json",
+      "every-brilliant-thing-2026/guardian--jesse-hassenger.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
+      "every-brilliant-thing-2026/deadline--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "my-joy-is-heavy-off-broadway-2025/nytimes--brittani-samuel.json",
@@ -119,7 +137,9 @@
     "archiveToday": [
       "data/review-texts/my-joy-is-heavy-off-broadway-2025/nyt-theater--unknown.json",
       "data/review-texts/my-joy-is-heavy-off-broadway-2025/talkinbroadway--unknown.json",
-      "data/review-texts/my-joy-is-heavy-off-broadway-2025/vulture--unknown.json"
+      "data/review-texts/my-joy-is-heavy-off-broadway-2025/vulture--unknown.json",
+      "data/review-texts/touch-off-broadway-2026/broadwayworld--marina-kennedy.json",
+      "data/review-texts/youre-a-good-man-charlie-brown-off-broadway-2026/broadwayworld--michael-dale.json"
     ],
     "archive": [
       "lost-in-del-valle-off-broadway-2026/thewrap--chloe-rabinowitz.json",
@@ -127,10 +147,24 @@
       "sexual-misconduct-of-the-middle-classes-off-broadway-2026/cititour--brian-scott-lipton.json",
       "maltby-and-shires-about-time-off-broadway-2026/theatermania--zachary-stewart.json",
       "touch-off-broadway-2026/plays-to-see--austin-fimmano.json",
-      "touch-off-broadway-2026/talkinbroadway--howard-miller.json"
+      "touch-off-broadway-2026/talkinbroadway--howard-miller.json",
+      "touch-off-broadway-2026/theater-pizzazz--beatrice-williams-rude.json",
+      "youre-a-good-man-charlie-brown-off-broadway-2026/talkinbroadway--matthew-murray.json"
     ]
   },
   "startTime": "2026-03-20T14:13:25.603Z",
-  "lastProcessed": "touch-off-broadway-2026/talkinbroadway--howard-miller.json",
-  "log": []
+  "lastProcessed": "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
+  "log": [
+    {
+      "t": "2026-03-20T19:09:34.568Z",
+      "event": "bb-session",
+      "session": "916af533",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-20T19:09:35.968Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    }
+  ]
 }

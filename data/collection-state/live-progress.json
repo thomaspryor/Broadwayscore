@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-03-20T19:05:14.937Z",
-  "processed": 49,
-  "failed": 11,
-  "successRate": "81.7%",
+  "updatedAt": "2026-03-20T19:09:57.110Z",
+  "processed": 57,
+  "failed": 13,
+  "successRate": "81.4%",
   "tierBreakdown": {
-    "playwright": 36,
+    "playwright": 41,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 7,
     "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 6
+    "archiveToday": 5,
+    "archive": 8
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-03-20T19:09:34.568Z",
+      "event": "bb-session",
+      "session": "916af533",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-20T19:09:35.968Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    }
+  ]
 }
