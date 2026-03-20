@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-20T04:53:26.565Z",
-  "processed": 894,
-  "failed": 154,
-  "successRate": "85.3%",
+  "updatedAt": "2026-03-20T04:56:56.553Z",
+  "processed": 900,
+  "failed": 158,
+  "successRate": "85.1%",
   "tierBreakdown": {
-    "playwright": 635,
+    "playwright": 638,
     "amp": 39,
     "browserbase": 28,
     "directCookies": 3,
-    "scrapingbee": 103,
+    "scrapingbee": 105,
     "brightdata": 0,
     "archiveToday": 30,
-    "archive": 130
+    "archive": 131
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-03-19T13:04:30.335Z",
-      "event": "bb-session",
-      "session": "403167e1",
-      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
-    },
-    {
-      "t": "2026-03-19T13:04:31.669Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-19T13:20:19.364Z",
       "event": "bb-session",
@@ -93,10 +82,10 @@
       "domain": "amny.com"
     },
     {
-      "t": "2026-03-20T04:38:48.743Z",
+      "t": "2026-03-20T04:21:20.409Z",
       "event": "bb-session",
-      "session": "d042d1d1",
-      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/becoming-traviata-film-re"
+      "session": "03ed96c9",
+      "url": "https://www.thestage.co.uk/reviews/six-review-at-arts-theatre-london--raw-talent"
     },
     {
       "t": "2026-03-20T04:21:21.586Z",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-20T04:50:54.524Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-20T04:56:26.873Z",
+      "event": "bb-session",
+      "session": "a6eff2c0",
+      "url": "https://www.thestage.co.uk/reviews/cyrano-de-bergerac-review-swan-theatre-stratf"
+    },
+    {
+      "t": "2026-03-20T04:56:28.068Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
