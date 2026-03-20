@@ -1,51 +1,34 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-20T21:53:31.309Z",
+    "generatedAt": "2026-03-20T22:00:53.767Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 89,
-    "classified": 2,
-    "wrongProduction": 2,
+    "total": 88,
+    "classified": 1,
+    "wrongProduction": 1,
     "correctProduction": 0,
     "uncertain": 0,
     "errors": 0,
-    "wrongHighConfidence": 2,
+    "wrongHighConfidence": 1,
     "wrongMediumConfidence": 0
   },
   "results": [
     {
-      "showId": "into-the-woods-2002",
-      "showTitle": "Into the Woods",
-      "showYear": 2002,
-      "file": "wsj--charles-isherwood.json",
-      "outlet": "The Wall Street Journal",
-      "criticName": "Charles Isherwood",
-      "publishDate": "July 15th, 2022",
+      "showId": "a-delicate-balance-1996",
+      "showTitle": "A Delicate Balance",
+      "showYear": 1996,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "November 20th, 2014",
       "originalSignals": [
-        "year 2022 in text matches revival into-the-woods-2022",
-        "year 1986 in text matches revival into-the-woods-1987",
-        "modern references: twitter"
+        "revival text signals: revival, this production",
+        "no publishDate + revival signals + revivals exist"
       ],
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
-      "targetShowId": "into-the-woods-2022",
-      "reasoning": "The review is dated July 14, 2022, and mentions the 1986 musical, indicating it's about the 2022 revival. It also mentions cast members from the 2022 production."
-    },
-    {
-      "showId": "falsettos-1992",
-      "showTitle": "Falsettos",
-      "showYear": 1992,
-      "file": "wsj--terry-teachout.json",
-      "outlet": "The Wall Street Journal",
-      "criticName": "Terry Teachout",
-      "publishDate": "October 27th, 2016",
-      "originalSignals": [
-        "year 2016 in text matches revival falsettos-2016"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "falsettos-2016",
-      "reasoning": "The review mentions the Lincoln Center Theater revival, Christian Borle, Stephanie J. Block, and Andrew Rannells, and the closing date of Jan 8, 2016, all of which point to the 2016 production."
+      "targetShowId": "a-delicate-balance-2014",
+      "reasoning": "The review mentions the 2014 revival's director (Pam MacKinnon) and cast (Glenn Close, John Lithgow, Lindsay Duncan, Bob Balaban, Clare Higgins) and states that the play \"opened on Thursday night in a revival at the Golden Theater.\""
     }
   ]
 }

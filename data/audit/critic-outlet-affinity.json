@@ -3,10 +3,10 @@
     "description": "Critic-outlet affinity audit report",
     "lastUpdated": "2026-03-20",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 32902,
-    "skippedFiles": 10269,
-    "totalCritics": 1754,
-    "registryCritics": 540,
+    "totalFilesScanned": 32863,
+    "skippedFiles": 10253,
+    "totalCritics": 1751,
+    "registryCritics": 538,
     "flaggedReviews": 43
   },
   "flaggedReviews": [
@@ -514,7 +514,6 @@
         "nytimes",
         "hollywood-reporter",
         "washpost",
-        "broadwaynews",
         "broadwayworld",
         "telegraph",
         "thewrap",
@@ -536,6 +535,7 @@
         "everything-theatre",
         "standard",
         "timeout-london",
+        "broadwaynews",
         "theater-pizzazz",
         "northjerseycom",
         "london-theatre",
@@ -629,27 +629,7 @@
         "corey-hawkins",
         "kenny-leon"
       ],
-      "totalReviews": 691
-    },
-    {
-      "critic": "Logan Culwell-Block",
-      "slug": "logan-culwell-block",
-      "outlets": [
-        "broadwaynews",
-        "playbill",
-        "dailybeast"
-      ],
-      "totalReviews": 5
-    },
-    {
-      "critic": "A.A. Cristi",
-      "slug": "a-a-cristi",
-      "outlets": [
-        "broadwaynews",
-        "one-minute-critic",
-        "nytg"
-      ],
-      "totalReviews": 10
+      "totalReviews": 687
     },
     {
       "critic": "Ben Brantley",
@@ -849,7 +829,7 @@
         "nytimes",
         "village-voice"
       ],
-      "totalReviews": 154
+      "totalReviews": 155
     },
     {
       "critic": "Frank Scheck",
@@ -1734,7 +1714,7 @@
         "nytg",
         "off-off-online"
       ],
-      "totalReviews": 22
+      "totalReviews": 23
     },
     {
       "critic": "Jose Solis",
@@ -1943,17 +1923,6 @@
       "totalReviews": 5
     },
     {
-      "critic": "Chloe Rabinowitz",
-      "slug": "chloe-rabinowitz",
-      "outlets": [
-        "broadwaynews",
-        "nypost",
-        "thewrap",
-        "nyt-theater"
-      ],
-      "totalReviews": 9
-    },
-    {
       "critic": "Holly Williams",
       "slug": "holly-williams",
       "outlets": [
@@ -1983,6 +1952,16 @@
         "blogcritics"
       ],
       "totalReviews": 15
+    },
+    {
+      "critic": "Logan Culwell-Block",
+      "slug": "logan-culwell-block",
+      "outlets": [
+        "playbill",
+        "broadwaynews",
+        "dailybeast"
+      ],
+      "totalReviews": 4
     },
     {
       "critic": "Anya Ryan",
@@ -2177,6 +2156,16 @@
       "totalReviews": 3
     },
     {
+      "critic": "Chloe Rabinowitz",
+      "slug": "chloe-rabinowitz",
+      "outlets": [
+        "nypost",
+        "thewrap",
+        "nyt-theater"
+      ],
+      "totalReviews": 3
+    },
+    {
       "critic": "Oscar E Moore",
       "slug": "oscar-e-moore",
       "outlets": [
@@ -2191,15 +2180,6 @@
       "outlets": [
         "nytg",
         "whatsonstage"
-      ],
-      "totalReviews": 3
-    },
-    {
-      "critic": "Marina Kennedy",
-      "slug": "marina-kennedy",
-      "outlets": [
-        "broadwayworld",
-        "broadwaynews"
       ],
       "totalReviews": 3
     },
