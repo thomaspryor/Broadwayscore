@@ -115,6 +115,74 @@ async function discoverShows(page) {
 }
 
 /**
+ * Phase A.5: Search Stagedoor for shows not found in category listings.
+ * The category pages only show ~24 shows each — many shows are missing.
+ * This searches by name to fill the gaps.
+ */
+async function searchForMissingShows(page, alreadyFound, ourShows) {
+  const foundIds = new Set(alreadyFound.map(s => s.ourShowId || ''));
+  // Filter to open WE/OWE shows not yet matched
+  const missing = ourShows.filter(s => !foundIds.has(s.id) && s.status === 'open' && isLondonMarket(s.category));
+
+  if (missing.length === 0) return [];
+
+  console.log(`\n  [SD] Searching for ${missing.length} unmatched shows...`);
+  const found = [];
+
+  for (const show of missing) {
+    try {
+      // Navigate to search or directly try the show page
+      // Stagedoor search: click the search icon and type
+      await page.goto(`https://stagedoor.com`, { waitUntil: 'domcontentloaded', timeout: 15000 });
+      await sleep(500);
+
+      // Click search icon/input
+      const searchTrigger = page.locator('input[type="search"], input[placeholder*="Search"], button[aria-label*="Search"], a[href*="search"]').first();
+      if (await searchTrigger.isVisible({ timeout: 3000 }).catch(() => false)) {
+        await searchTrigger.click();
+        await sleep(500);
+      }
+
+      // Type the show title
+      const searchInput = page.locator('input[type="search"], input[type="text"][placeholder*="earch"]').first();
+      if (!await searchInput.isVisible({ timeout: 3000 }).catch(() => false)) continue;
+
+      await searchInput.fill(show.title.replace(/[!:]/g, ''));
+      await sleep(2000); // Wait for search results
+
+      // Find matching show link in results
+      const showLink = await page.evaluate((title) => {
+        const links = document.querySelectorAll('a[href*="?p="]');
+        const titleLower = title.toLowerCase().replace(/[^a-z0-9\s]/g, '');
+        for (const link of links) {
+          const href = link.getAttribute('href');
+          const match = href.match(/^\/([\w-]+)\/([\d]+)-([\w-]+)\?p=\d+$/);
+          if (match) {
+            const linkText = link.textContent.trim().toLowerCase().replace(/[^a-z0-9\s]/g, '');
+            if (linkText.includes(titleLower) || titleLower.includes(linkText)) {
+              return { category: match[1], id: parseInt(match[2]), slug: match[3], title: link.textContent.trim() };
+            }
+          }
+        }
+        return null;
+      }, show.title);
+
+      if (showLink) {
+        console.log(`    Found: ${show.title} → /${showLink.category}/${showLink.id}-${showLink.slug}`);
+        found.push({ ...showLink, ourShowId: show.id, ourTitle: show.title });
+      }
+    } catch (e) {
+      // Search failed for this show — continue to next
+    }
+
+    await sleep(1500);
+  }
+
+  console.log(`  [SD] Search found ${found.length} additional shows\n`);
+  return found;
+}
+
+/**
  * Phase B: Extract critic reviews from a show's critic-reviews page
  */
 async function extractCriticReviews(page, show) {
@@ -268,11 +336,17 @@ async function main() {
     console.log(`   Matched to our shows: ${matched.length}/${stagedoorShows.length}`);
     console.log('');
 
+    // Phase A.5: Search for shows not found in category listings
+    const searchResults = await searchForMissingShows(page, matched, ourShows);
+    for (const sr of searchResults) {
+      matched.push(sr);
+    }
+
     // Log matches for human review
     console.log('   Match results:');
     for (const m of matched) {
       const flag = m.title.toLowerCase() !== m.ourTitle.toLowerCase() ? ' ⚠️ ' : '  ✓ ';
-      console.log(`   ${flag} "${m.title}" → ${m.ourShowId} (${m.confidence})`);
+      console.log(`   ${flag} "${m.title}" → ${m.ourShowId} (${m.confidence || 'search'})`);
     }
     console.log('');
 
