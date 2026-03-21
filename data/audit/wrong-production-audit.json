@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-03-21T11:28:42.424Z",
+  "timestamp": "2026-03-21T11:37:39.073Z",
   "stats": {
     "totalReviews": 32048,
-    "alreadyFlagged": 10721,
+    "alreadyFlagged": 10722,
     "dateGuardCatches": 138,
     "directorMismatch": 947,
-    "tvFilmSignals": 3387,
+    "tvFilmSignals": 3386,
     "londonSignals": 1024,
     "offBroadwaySignals": 1010,
     "yearMismatch": 71,
@@ -38537,20 +38537,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "pen-pals-off-broadway-2025",
-      "file": "theatermania--unknown.json",
-      "score": null,
-      "publishDate": "2025-09-18",
-      "url": "https://www.theatermania.com/news/disney-legend-jodi-benson-returning-to-the-stage-in-pen-pals_1812821/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
