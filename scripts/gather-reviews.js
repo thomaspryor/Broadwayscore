@@ -178,11 +178,19 @@ function loadShowData(showId) {
  */
 function loadOutlets() {
   const config = JSON.parse(fs.readFileSync(OUTLETS_PATH, 'utf8'));
-  return [
+  const outlets = [
     ...config.tier1.map(o => ({ ...o, tier: 1 })),
     ...config.tier2.map(o => ({ ...o, tier: 2 })),
     ...config.tier3.map(o => ({ ...o, tier: 3 }))
   ];
+  // Guard: every outlet ID must resolve in OUTLET_DOMAINS for SERP to work
+  const { OUTLET_DOMAINS } = require('./lib/url-discovery');
+  const broken = outlets.filter(o => !OUTLET_DOMAINS[o.id.toLowerCase()]);
+  if (broken.length) {
+    console.warn(`⚠ ${broken.length} outlet(s) have IDs not in outlet-registry — SERP will fail:`);
+    broken.forEach(o => console.warn(`  ${o.id} (${o.name})`));
+  }
+  return outlets;
 }
 
 /**
