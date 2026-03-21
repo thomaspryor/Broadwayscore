@@ -80,7 +80,13 @@
     "sweetmeats-west-end-2026/whatsonstage--rachel-agyekum.json",
     "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/whatsonstage--alun-hood.json",
     "shadowlands-west-end-2026/timeout--unknown.json",
-    "shadowlands-west-end-2026/artsdesk--helen-hawkins.json"
+    "shadowlands-west-end-2026/artsdesk--helen-hawkins.json",
+    "shadowlands-west-end-2026/telegraph--dominic-cavendish.json",
+    "shadowlands-west-end-2026/whatsonstage--sarah-crompton.json",
+    "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/timeout--andrzej-lukowski.json",
+    "im-sorry-prime-minister-west-end-2026/all-that-dazzles-uk--harry-bower.json",
+    "im-sorry-prime-minister-west-end-2026/daily-mail--patrick-marmion.json",
+    "im-sorry-prime-minister-west-end-2026/telegraph--dominic-cavendish.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -91,7 +97,11 @@
     "sweetmeats-west-end-2026/guardian--anya-ryan.json",
     "deep-azure-globe-west-end-2026/broadwayworld--unknown.json",
     "deep-azure-globe-west-end-2026/everything-theatre--mary-pollard.json",
-    "sweetmeats-west-end-2026/broadwayworld--unknown.json"
+    "sweetmeats-west-end-2026/broadwayworld--unknown.json",
+    "shadowlands-west-end-2026/broadwayworld--aliya-al-hussan.json",
+    "shadowlands-west-end-2026/financialtimes--sarah-hemming.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "im-sorry-prime-minister-west-end-2026/mail--patrick-marmion.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -171,10 +181,18 @@
       "sweetmeats-west-end-2026/whatsonstage--rachel-agyekum.json",
       "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/whatsonstage--alun-hood.json",
       "shadowlands-west-end-2026/timeout--unknown.json",
-      "shadowlands-west-end-2026/artsdesk--helen-hawkins.json"
+      "shadowlands-west-end-2026/artsdesk--helen-hawkins.json",
+      "shadowlands-west-end-2026/telegraph--dominic-cavendish.json",
+      "shadowlands-west-end-2026/whatsonstage--sarah-crompton.json",
+      "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/timeout--andrzej-lukowski.json",
+      "im-sorry-prime-minister-west-end-2026/all-that-dazzles-uk--harry-bower.json",
+      "im-sorry-prime-minister-west-end-2026/telegraph--dominic-cavendish.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/shadowlands-west-end-2026/financialtimes--sarah-hemming.json",
+      "shadowlands-west-end-2026/financialtimes--sarah-hemming.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -192,10 +210,24 @@
       "it-walks-around-the-house-at-night-west-end-2026/broadwayworld--cindy-marcolina.json",
       "broken-glass-west-end-2026/independent--samuel-mathewson.json",
       "broken-glass-west-end-2026/independent--steve-fowler.json",
-      "marie-and-rosetta-west-end-2026/broadwayworld--clementine-scott.json"
+      "marie-and-rosetta-west-end-2026/broadwayworld--clementine-scott.json",
+      "shadowlands-west-end-2026/broadwayworld--aliya-al-hussan.json",
+      "im-sorry-prime-minister-west-end-2026/daily-mail--patrick-marmion.json"
     ]
   },
   "startTime": "2026-03-21T01:54:09.828Z",
-  "lastProcessed": "shadowlands-west-end-2026/artsdesk--helen-hawkins.json",
-  "log": []
+  "lastProcessed": "im-sorry-prime-minister-west-end-2026/telegraph--dominic-cavendish.json",
+  "log": [
+    {
+      "t": "2026-03-21T02:27:27.708Z",
+      "event": "bb-session",
+      "session": "115d0b2d",
+      "url": "https://www.ft.com/content/8d97790f-df25-4cbf-90c9-61e9d4b7ba95"
+    },
+    {
+      "t": "2026-03-21T02:27:28.803Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    }
+  ]
 }
