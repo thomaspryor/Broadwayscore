@@ -1,18 +1,31 @@
 {
-  "updatedAt": "2026-03-21T08:15:23.115Z",
-  "processed": 47,
-  "failed": 3,
-  "successRate": "94.0%",
+  "updatedAt": "2026-03-21T08:27:12.696Z",
+  "processed": 5,
+  "failed": 5,
+  "successRate": "50.0%",
   "tierBreakdown": {
-    "playwright": 44,
+    "playwright": 4,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 3
+    "archiveToday": 5,
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-03-21T08:24:05.156Z",
+      "event": "bb-session",
+      "session": "f1262cfc",
+      "url": "https://www.nytimes.com/2026/03/19/theater/the-wild-party-review-warren-rogers-p"
+    },
+    {
+      "t": "2026-03-21T08:26:15.277Z",
+      "event": "bb-session",
+      "session": "81c27f1b",
+      "url": "https://www.nytimes.com/2026/03/18/theater/my-joy-is-heavy-review-bengsons.html"
+    }
+  ]
 }
