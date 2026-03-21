@@ -137,7 +137,17 @@
     "summerfolk-west-end-2026/guardian--unknown.json",
     "summerfolk-west-end-2026/thereviewshub--unknown.json",
     "summerfolk-west-end-2026/timeout--andrzej-lukowski.json",
-    "summerfolk-west-end-2026/timeout-london--andrzej-lukowski.json"
+    "summerfolk-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "summerfolk-west-end-2026/artsdesk--heather-neill.json",
+    "summerfolk-west-end-2026/financialtimes--unknown.json",
+    "summerfolk-west-end-2026/independent--unknown.json",
+    "summerfolk-west-end-2026/london-box-office--stuart-king.json",
+    "summerfolk-west-end-2026/standard--unknown.json",
+    "summerfolk-west-end-2026/telegraph--unknown.json",
+    "summerfolk-west-end-2026/whatsonstage--sarah-crompton.json",
+    "every-brilliant-thing-2026/nytg--austin-fimmano.json",
+    "every-brilliant-thing-2026/nytimes--adam-feldman.json",
+    "every-brilliant-thing-2026/deadline--unknown.json"
   ],
   "failed": [
     "no-singing-in-the-navy-off-broadway-2026/talkinbroadway--unknown.json",
@@ -278,7 +288,15 @@
       "summerfolk-west-end-2026/guardian--unknown.json",
       "summerfolk-west-end-2026/thereviewshub--unknown.json",
       "summerfolk-west-end-2026/timeout--andrzej-lukowski.json",
-      "summerfolk-west-end-2026/timeout-london--andrzej-lukowski.json"
+      "summerfolk-west-end-2026/timeout-london--andrzej-lukowski.json",
+      "summerfolk-west-end-2026/artsdesk--heather-neill.json",
+      "summerfolk-west-end-2026/financialtimes--unknown.json",
+      "summerfolk-west-end-2026/independent--unknown.json",
+      "summerfolk-west-end-2026/london-box-office--stuart-king.json",
+      "summerfolk-west-end-2026/standard--unknown.json",
+      "summerfolk-west-end-2026/telegraph--unknown.json",
+      "summerfolk-west-end-2026/whatsonstage--sarah-crompton.json",
+      "every-brilliant-thing-2026/nytg--austin-fimmano.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -286,7 +304,10 @@
       "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/thewrap--robert-hofler.json",
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/thewrap--robert-hofler.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
+      "every-brilliant-thing-2026/deadline--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -329,11 +350,12 @@
       "marcel-on-the-train-off-broadway-2026/theatermania--zachary-stewart.json",
       "marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
       "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
-      "romeo-and-juliet-west-end-2026/nytimes--unknown.json"
+      "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
+      "every-brilliant-thing-2026/nytimes--adam-feldman.json"
     ]
   },
   "startTime": "2026-03-21T09:00:19.929Z",
-  "lastProcessed": "summerfolk-west-end-2026/timeout-london--andrzej-lukowski.json",
+  "lastProcessed": "every-brilliant-thing-2026/deadline--unknown.json",
   "log": [
     {
       "t": "2026-03-21T09:01:18.301Z",
@@ -352,6 +374,17 @@
       "event": "bb-session",
       "session": "9eea1f7e",
       "url": "https://www.nytimes.com/2026/03/12/theater/antigone-review-shalhoub-keenan-bolge"
+    },
+    {
+      "t": "2026-03-21T15:34:05.455Z",
+      "event": "bb-session",
+      "session": "9fc6ca22",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-21T15:34:06.668Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

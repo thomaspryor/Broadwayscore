@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-21T15:31:47.181Z",
-  "processed": 138,
+  "updatedAt": "2026-03-21T15:34:17.850Z",
+  "processed": 148,
   "failed": 22,
-  "successRate": "86.3%",
+  "successRate": "87.1%",
   "tierBreakdown": {
-    "playwright": 113,
+    "playwright": 121,
     "amp": 4,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 14,
-    "archive": 23
+    "archive": 24
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-03-21T09:01:18.301Z",
@@ -32,6 +32,17 @@
       "event": "bb-session",
       "session": "9eea1f7e",
       "url": "https://www.nytimes.com/2026/03/12/theater/antigone-review-shalhoub-keenan-bolge"
+    },
+    {
+      "t": "2026-03-21T15:34:05.455Z",
+      "event": "bb-session",
+      "session": "9fc6ca22",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-21T15:34:06.668Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
