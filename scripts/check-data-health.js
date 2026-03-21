@@ -192,6 +192,20 @@ const ageLabel = ageHours < 1 ? `${Math.round(ageHours * 60)}m ago`
   : `${Math.round(ageHours / 24)}d ago`;
 
 if (ageHours > STALE_ERROR_HOURS) {
+  if (doFix) {
+    console.log(`Data stale (${ageLabel}). Auto-pulling latest...`);
+    try {
+      execSync(`bash "${path.join(__dirname, 'setup-local-data.sh')}"`, { stdio: 'inherit', timeout: 60000 });
+      try {
+        execSync(`node "${__filename}"`, { stdio: 'inherit' });
+        process.exit(0);
+      } catch (e) {
+        process.exit(e.status || 1);
+      }
+    } catch (e) {
+      console.error('Auto-fix failed:', e.message);
+    }
+  }
   console.warn(`\u26a0\ufe0f  Data very stale (${ageLabel}) \u2014 Run: ./scripts/setup-local-data.sh`);
   console.log(`   ${statsLine}`);
   process.exit(2);
