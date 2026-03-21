@@ -887,14 +887,16 @@ async function sweepTheStage(show) {
   // TS is paywalled so SB render can't help; BB with login is the only live path.
   // Constructed/SERP URLs waste BB page loads (they usually 404).
   if (process.env.BROWSERBASE_API_KEY && indexUrl) {
+    console.log(`    [TS] Trying BrowserBase for ${indexUrl.split('/').pop()}`);
     // Only try the index URL via BB (known-good from listing page)
     for (let attempt = 0; attempt < 2; attempt++) {
       try {
         const html = await getStagePageViaBrowserBase(indexUrl);
-        if (!html || html.length < 2000) break;
-        if (html.includes('Page not found') || html.includes('404 -')) break;
+        if (!html || html.length < 2000) { console.log(`    [BB] Page too small (${html ? html.length : 0} bytes)`); break; }
+        if (html.includes('Page not found') || html.includes('404 -')) { console.log('    [BB] Page not found'); break; }
 
         const reviews = extractStageReviews(html, show.id);
+        console.log(`    [BB] Extracted ${reviews.length} reviews`);
         if (reviews.length > 0) {
           if (!DRY_RUN) {
             if (!fs.existsSync(archDir)) fs.mkdirSync(archDir, { recursive: true });
