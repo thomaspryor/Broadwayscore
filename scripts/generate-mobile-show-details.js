@@ -16,6 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { computeCriticScore } = require('./lib/compute-critic-score');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data/shows');
@@ -185,11 +186,20 @@ for (const show of visibleShows) {
     }
   }
 
+  // Compute composite score using shared module (matches engine.ts)
+  const scoreResult = computeCriticScore(showReviews, outletRegistry);
+
   // Build detail object
   const detail = {
     _v: DETAIL_SCHEMA_VERSION,
     id: show.id,
   };
+
+  // Composite score + review count
+  if (scoreResult) {
+    detail.cs = scoreResult.s;
+    detail.rc = scoreResult.rc;
+  }
 
   // Score breakdown
   if (showReviews.length > 0) {

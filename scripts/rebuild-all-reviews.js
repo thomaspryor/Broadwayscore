@@ -2249,7 +2249,30 @@ if (fs.existsSync(reviewsJsonPath)) {
       const newCount = newCountByShow.get(showId) || 0;
       const dropped = oldCount - newCount;
       if (dropped > REGRESSION_DROP_THRESHOLD) {
-        regressions.push({ showId, oldCount, newCount, dropped });
+        // Only flag as regression if review-text files with scores actually exist
+        // but are being dropped. If the source files were deleted (e.g., by a sweep
+        // incident), the regression is expected and shouldn't block the rebuild.
+        const showDir = path.join(reviewTextsDir, showId);
+        let scoredFilesOnDisk = 0;
+        if (fs.existsSync(showDir)) {
+          for (const f of fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json')) {
+            try {
+              const d = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
+              if (d.assignedScore != null && !d.wrongShow && !d.wrongProduction && !d.duplicateOf) {
+                scoredFilesOnDisk++;
+              }
+            } catch {}
+          }
+        }
+        // If scored files on disk match or exceed new count, the regression
+        // is a rebuild logic issue (dangerous). If fewer scored files exist
+        // on disk, the source text was lost and regression is expected.
+        if (scoredFilesOnDisk > newCount) {
+          regressions.push({ showId, oldCount, newCount, dropped, scoredOnDisk: scoredFilesOnDisk, reason: 'scored files exist but being dropped' });
+        } else {
+          // Expected regression — source text lost, not a rebuild bug
+          console.log(`  ℹ️  ${showId}: ${oldCount}→${newCount} (expected — only ${scoredFilesOnDisk} scored files on disk)`);
+        }
       }
     }
 

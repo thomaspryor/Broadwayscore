@@ -57,7 +57,8 @@ export async function GET(request: NextRequest) {
   } else if (type === 'home') {
     return generateHomeOG(posters);
   } else if (type === 'list') {
-    return generateListOG(title, count, creator);
+    const ranked = searchParams.get('ranked') === '1';
+    return generateListOG(title, count, creator, ranked);
   }
 
   // Default fallback
@@ -560,7 +561,7 @@ async function generateHomeOG(posters: string[]) {
   );
 }
 
-async function generateListOG(title: string, count: number, creator: string) {
+async function generateListOG(title: string, count: number, creator: string, ranked: boolean = true) {
   return new ImageResponse(
     (
       <div
@@ -640,7 +641,7 @@ async function generateListOG(title: string, count: number, creator: string) {
           }}
         >
           <span style={{ fontSize: '20px', color: '#d1d5db' }}>
-            {count} {count === 1 ? 'show' : 'shows'} ranked
+            {count} {count === 1 ? 'show' : 'shows'} {ranked ? 'ranked' : 'curated'}
           </span>
         </div>
 

@@ -64,7 +64,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description,
       url: `${BASE_URL}/list/${slug}`,
       type: 'article',
-      images: [`${BASE_URL}/api/og?type=list&title=${encodeURIComponent(list.name)}&count=${count}&creator=${encodeURIComponent(profile.display_name || '')}`],
+      images: [`${BASE_URL}/api/og?type=list&title=${encodeURIComponent(list.name)}&count=${count}&creator=${encodeURIComponent(profile.display_name || '')}&ranked=${list.is_ranked ? '1' : '0'}`],
     },
     twitter: {
       card: 'summary_large_image',
