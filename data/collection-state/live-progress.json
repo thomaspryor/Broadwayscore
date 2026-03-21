@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-21T05:54:06.808Z",
-  "processed": 357,
-  "failed": 63,
-  "successRate": "85.0%",
+  "updatedAt": "2026-03-21T05:57:33.637Z",
+  "processed": 365,
+  "failed": 65,
+  "successRate": "84.9%",
   "tierBreakdown": {
-    "playwright": 317,
+    "playwright": 323,
     "amp": 10,
     "browserbase": 8,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 30,
-    "archive": 30
+    "archiveToday": 31,
+    "archive": 32
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-03-21T04:20:45.444Z",
-      "event": "bb-session",
-      "session": "d7e349de",
-      "url": "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing"
-    },
-    {
-      "t": "2026-03-21T04:20:46.458Z",
-      "event": "bb-cookie-inject",
-      "domain": "amny.com"
-    },
-    {
-      "t": "2026-03-21T04:24:34.420Z",
-      "event": "bb-session",
-      "session": "1a962b00",
-      "url": "https://www.nytimes.com/2019/05/02/theater/entangled-review-the-amoralists.html"
-    },
-    {
-      "t": "2026-03-21T04:24:35.442Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-21T04:35:05.775Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-21T05:41:50.407Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-21T05:55:16.842Z",
+      "event": "bb-session",
+      "session": "a2d0da1c",
+      "url": "https://www.nytimes.com/2025/10/16/theater/ragtime-review-henry-debessonet.html"
+    },
+    {
+      "t": "2026-03-21T05:55:18.296Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-21T05:56:51.050Z",
+      "event": "bb-session",
+      "session": "16731d2c",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-03-21T05:56:52.346Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

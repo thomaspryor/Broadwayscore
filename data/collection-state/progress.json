@@ -356,7 +356,15 @@
     "paddington-the-musical-west-end-2025/london-box-office--stuart-king.json",
     "paddington-the-musical-west-end-2025/south-london--michael-holland.json",
     "paddington-the-musical-west-end-2025/standard--tim-bano.json",
-    "paddington-the-musical-west-end-2025/theatre-weekly--greg-stewart.json"
+    "paddington-the-musical-west-end-2025/theatre-weekly--greg-stewart.json",
+    "paddington-the-musical-west-end-2025/times-uk--unknown.json",
+    "paddington-the-musical-west-end-2025/whatsonstage--sarah-crompton.json",
+    "ragtime-2025/nyt-theater--unknown.json",
+    "ragtime-2025/timeout--adam-feldman.json",
+    "ragtime-2025/wsj--charles-isherwood.json",
+    "ragtime-2025/american-theater-web--weinert-kendt.json",
+    "ragtime-2025/nysr--unknown.json",
+    "ragtime-2025/theater-life--samuel-l-leiter.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -421,7 +429,9 @@
     "two-strangers-bway-2025/guardian--unknown.json",
     "paddington-the-musical-west-end-2025/london-theatre--chris-omaweng.json",
     "paddington-the-musical-west-end-2025/telegraph--unknown.json",
-    "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json"
+    "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
+    "ragtime-2025/nytimes--unknown.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -742,7 +752,13 @@
       "paddington-the-musical-west-end-2025/london-box-office--stuart-king.json",
       "paddington-the-musical-west-end-2025/south-london--michael-holland.json",
       "paddington-the-musical-west-end-2025/standard--tim-bano.json",
-      "paddington-the-musical-west-end-2025/theatre-weekly--greg-stewart.json"
+      "paddington-the-musical-west-end-2025/theatre-weekly--greg-stewart.json",
+      "paddington-the-musical-west-end-2025/times-uk--unknown.json",
+      "paddington-the-musical-west-end-2025/whatsonstage--sarah-crompton.json",
+      "ragtime-2025/nyt-theater--unknown.json",
+      "ragtime-2025/timeout--adam-feldman.json",
+      "ragtime-2025/nysr--unknown.json",
+      "ragtime-2025/theater-life--samuel-l-leiter.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -801,7 +817,8 @@
       "data/review-texts/zack-off-broadway-2026/talkinbroadway--james-wilson.json",
       "data/review-texts/broken-glass-west-end-2026/independent--steve-fowler.json",
       "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/nytimes--helen-shaw.json",
-      "data/review-texts/paddington-the-musical-west-end-2025/london-theatre--chris-omaweng.json"
+      "data/review-texts/paddington-the-musical-west-end-2025/london-theatre--chris-omaweng.json",
+      "data/review-texts/ragtime-2025/nytimes--unknown.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -833,11 +850,13 @@
       "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
       "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/theatermania--zachary-stewart.json",
       "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
-      "paddington-the-musical-west-end-2025/variety--david-benedict.json"
+      "paddington-the-musical-west-end-2025/variety--david-benedict.json",
+      "ragtime-2025/wsj--charles-isherwood.json",
+      "ragtime-2025/american-theater-web--weinert-kendt.json"
     ]
   },
   "startTime": "2026-03-21T03:54:55.801Z",
-  "lastProcessed": "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
+  "lastProcessed": "ragtime-2025/theater-life--samuel-l-leiter.json",
   "log": [
     {
       "t": "2026-03-21T04:08:42.048Z",
@@ -981,6 +1000,28 @@
       "t": "2026-03-21T05:41:50.407Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-21T05:55:16.842Z",
+      "event": "bb-session",
+      "session": "a2d0da1c",
+      "url": "https://www.nytimes.com/2025/10/16/theater/ragtime-review-henry-debessonet.html"
+    },
+    {
+      "t": "2026-03-21T05:55:18.296Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-21T05:56:51.050Z",
+      "event": "bb-session",
+      "session": "16731d2c",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-03-21T05:56:52.346Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
