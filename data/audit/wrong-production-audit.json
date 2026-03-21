@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-21T00:05:22.682Z",
+  "timestamp": "2026-03-21T00:15:57.340Z",
   "stats": {
-    "totalReviews": 32030,
-    "alreadyFlagged": 10679,
-    "dateGuardCatches": 135,
-    "directorMismatch": 946,
-    "tvFilmSignals": 3390,
-    "londonSignals": 1023,
-    "offBroadwaySignals": 1010,
-    "yearMismatch": 71,
-    "noPublishDate": 6922
+    "totalReviews": 32038,
+    "alreadyFlagged": 10706,
+    "dateGuardCatches": 136,
+    "directorMismatch": 944,
+    "tvFilmSignals": 3387,
+    "londonSignals": 1022,
+    "offBroadwaySignals": 1009,
+    "yearMismatch": 70,
+    "noPublishDate": 6891
   },
   "findings": [
     {
@@ -8345,20 +8345,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"big screen\""
-        }
-      ]
-    },
-    {
-      "showId": "burn-the-floor-2009",
-      "file": "ap--unknown.json",
-      "score": 46,
-      "publishDate": "April 22, 2014",
-      "url": "http://www.wtop.com/?nid=114&amp;sid=1731456",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -17922,7 +17908,7 @@
       "showId": "gettin-the-band-back-together-2018",
       "file": "the-three-tomatoes--valerie-samaldone.json",
       "score": 65,
-      "publishDate": null,
+      "publishDate": "2018-08-18",
       "url": "http://thethreetomatoes.com/gettin-the-band-back-together",
       "findings": [
         {
@@ -19408,7 +19394,7 @@
       "showId": "good-night-oscar-2023",
       "file": "theater-life--paulanne-simmons.json",
       "score": 62,
-      "publishDate": null,
+      "publishDate": "2023-05-01",
       "url": "https://theaterlife.com/goodnight-oscar/",
       "findings": [
         {
@@ -20741,7 +20727,7 @@
       "showId": "hamilton-west-end-2021",
       "file": "daily-mail--robert-gore-langton.json",
       "score": 84,
-      "publishDate": null,
+      "publishDate": "2017-12-23",
       "url": "https://www.dailymail.co.uk/home/event/article-5202903/Hamilton-review-Original-witty-great-tunes.html",
       "findings": [
         {
@@ -21782,7 +21768,7 @@
       "showId": "hedwig-and-the-angry-inch-2014",
       "file": "daily-mail--jennifer-pearson.json",
       "score": 81,
-      "publishDate": null,
+      "publishDate": "2015-07-23",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-3171727/Taye-Diggs-muscular-build-impresses-making-debut-transgender-rocker-Broadway-s-Hedwig-Angry-Inch.html",
       "findings": [
         {
@@ -29780,25 +29766,6 @@
       ]
     },
     {
-      "showId": "macbeth-2008",
-      "file": "chicagotribune--unknown.json",
-      "score": 63,
-      "publishDate": null,
-      "url": "http://www.chicagotribune.com/entertainment/theater/sc-ent-1121-macbeth-broadway-review-20131121,0,3454739.column",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jack o'brien\" from macbeth-2013"
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2013 (2x) more than 2008 (0x). 2013 matches production: macbeth-2013"
-        }
-      ]
-    },
-    {
       "showId": "macbeth-2013",
       "file": "nytimes--ben-brantley.json",
       "score": 60,
@@ -30631,20 +30598,6 @@
       "score": 38,
       "publishDate": null,
       "url": "http://www.ew.com/ew/article/0,,1564518,00.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "mary-poppins-2006",
-      "file": "nydailynews--unknown.json",
-      "score": 85,
-      "publishDate": "April 22, 2014",
-      "url": "http://www.nydailynews.com/archives/entertainment/2006/11/17/2006-11-17__it_s_eye-_poppin_.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -33536,7 +33489,7 @@
       "file": "telegraph--dominic-cavendish.json",
       "score": 80,
       "publishDate": "2022-01-20",
-      "url": "https://playbill.com/article/read-the-reviews-for-moulin-rouge-the-musical-in-london",
+      "url": null,
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -37998,7 +37951,7 @@
       "showId": "parade-2023",
       "file": "theater-life--paulanne-simmons.json",
       "score": 77,
-      "publishDate": null,
+      "publishDate": "2023-03-25",
       "url": "https://theaterlife.com/parade-1-2-2/",
       "findings": [
         {
@@ -42277,7 +42230,7 @@
       "showId": "shucked-2023",
       "file": "theater-life--paulanne-simmons.json",
       "score": 58,
-      "publishDate": null,
+      "publishDate": "2023-04-13",
       "url": "https://theaterlife.com/shucked/",
       "findings": [
         {
@@ -42680,7 +42633,7 @@
       "showId": "six-2021",
       "file": "theatres-leiter-side--samuel-l-leiter.json",
       "score": 74,
-      "publishDate": null,
+      "publishDate": "2021-10-07",
       "url": "https://theaterlife.com/six-the-musical/",
       "findings": [
         {
@@ -44082,7 +44035,7 @@
       "showId": "spamalot-2023",
       "file": "theater-life--paulanne-simmons.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "2023-11-19",
       "url": "https://theaterlife.com/monty-pythons-spamalot-2/",
       "findings": [
         {
@@ -46989,30 +46942,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"joe mantello\" from take-me-out-2003"
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "take-me-out-2022",
-      "file": "theater-scene--victor-gluck.json",
-      "score": 78,
-      "publishDate": null,
-      "url": "https://www.theaterscene.net/plays/broadway-plays/take-me-out/victor-gluck/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"joe mantello\" from take-me-out-2003"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         },
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -72698,7 +72627,7 @@
       "file": "thestage--london-theatre-direct-limited.json",
       "score": 79,
       "publishDate": "2025-07-01",
-      "url": "https://www.londontheatredirect.com/news/everything-you-need-to-know-about-marie-rosetta-story-cast-reviews-london-performances?srsltid=AfmBOop0ytsLYCOPoXOE680PZiFgLJ2f7KZbwoRrnQrUJ-L280f0ygrO",
+      "url": null,
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -73916,7 +73845,7 @@
       "showId": "next-fall-2010",
       "file": "nypost--elisabeth-vincentelli.json",
       "score": 68,
-      "publishDate": null,
+      "publishDate": "2010-03-12",
       "url": "http://www.nypost.com/p/entertainment/theater/fall_guys_worth_watching_dbStKNoIV3uUKC62cPYqeM",
       "findings": [
         {
@@ -74259,7 +74188,7 @@
       "showId": "ohio-state-murders-2022",
       "file": "theater-life--paulanne-simmons.json",
       "score": 35,
-      "publishDate": null,
+      "publishDate": "2022-12-19",
       "url": "https://theaterlife.com/ohio-state-murders-1-2/",
       "findings": [
         {
@@ -75033,7 +74962,7 @@
       "file": "standard--nick-curtis.json",
       "score": 80,
       "publishDate": "2025-11-20",
-      "url": "https://www.westendtheatre.com/325889/news/reviews/reviews-of-paddington-the-musical-at-the-west-ends-savoy-theatre-in-london/",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -75839,20 +75768,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
-        }
-      ]
-    },
-    {
-      "showId": "romeo-and-juliet-west-end-2026",
-      "file": "nytimes--unknown.json",
-      "score": 75,
-      "publishDate": "March 1, 2026",
-      "url": "https://www.nytimes.com/2024/05/24/theater/tom-holland-romeo-and-juliet.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
@@ -79487,6 +79402,17 @@
       ]
     },
     {
+      "showId": "the-choir-of-man-off-west-end-2026",
+      "file": "whatsonstage--anna-james.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 220d before show (2025-08-06 vs 2026-03-14)"
+        }
+      ]
+    },
+    {
       "showId": "the-choir-of-man-west-end-2026",
       "file": "standard--nick-curtis.json",
       "findings": [
@@ -82330,7 +82256,7 @@
       "file": "standard--paul-raven.json",
       "score": 100,
       "publishDate": "2025-09-15",
-      "url": "https://www.westendtheatre.com/267088/news/reviews/the-producers-reviews-at-the-menier-chocolate-factory-in-london/",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
