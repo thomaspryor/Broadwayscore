@@ -87,7 +87,15 @@
     "every-brilliant-thing-2026/the-la-times--unknown.json",
     "every-brilliant-thing-2026/theater-life--samuel-l-leiter.json",
     "every-brilliant-thing-2026/theater-scene--darryl-reilly.json",
-    "bughouse-off-broadway-2026/timeout--adam-feldman.json"
+    "bughouse-off-broadway-2026/timeout--adam-feldman.json",
+    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
+    "bughouse-off-broadway-2026/theatermania--pete-hempstead.json",
+    "bughouse-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "bughouse-off-broadway-2026/theater-life--unknown.json",
+    "bughouse-off-broadway-2026/theater-scene--darryl-reilly.json",
+    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/broadway-and-me--janice-c-simpson.json",
+    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json",
+    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theater-scene--darryl-reilly.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -101,7 +109,9 @@
     "calf-scramble-off-broadway-2026/talkinbroadway--howard-miller.json",
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
     "youre-a-good-man-charlie-brown-off-broadway-2026/cititour--brian-scott-lipton.json",
-    "youre-a-good-man-charlie-brown-off-broadway-2026/theater-pizzazz--sandi-durell.json"
+    "youre-a-good-man-charlie-brown-off-broadway-2026/theater-pizzazz--sandi-durell.json",
+    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/blogcritics--jon-sobel.json",
+    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theatre-is-easy--brooke-viegut.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -179,7 +189,12 @@
       "every-brilliant-thing-2026/the-la-times--unknown.json",
       "every-brilliant-thing-2026/theater-life--samuel-l-leiter.json",
       "every-brilliant-thing-2026/theater-scene--darryl-reilly.json",
-      "bughouse-off-broadway-2026/timeout--adam-feldman.json"
+      "bughouse-off-broadway-2026/timeout--adam-feldman.json",
+      "bughouse-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+      "bughouse-off-broadway-2026/theater-life--unknown.json",
+      "bughouse-off-broadway-2026/theater-scene--darryl-reilly.json",
+      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/broadway-and-me--janice-c-simpson.json",
+      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theater-scene--darryl-reilly.json"
     ],
     "amp": [],
     "browserbase": [
@@ -199,7 +214,8 @@
       "data/review-texts/my-joy-is-heavy-off-broadway-2025/talkinbroadway--marc-miller.json",
       "data/review-texts/my-joy-is-heavy-off-broadway-2025/nytimes--brittani-samuel.json",
       "data/review-texts/calf-scramble-off-broadway-2026/talkinbroadway--howard-miller.json",
-      "data/review-texts/youre-a-good-man-charlie-brown-off-broadway-2026/cititour--brian-scott-lipton.json"
+      "data/review-texts/youre-a-good-man-charlie-brown-off-broadway-2026/cititour--brian-scott-lipton.json",
+      "data/review-texts/entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/blogcritics--jon-sobel.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -213,11 +229,14 @@
       "touch-off-broadway-2026/talkinbroadway--howard-miller.json",
       "touch-off-broadway-2026/theater-pizzazz--beatrice-williams-rude.json",
       "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
-      "every-brilliant-thing-2026/thewrap--robert-hofler.json"
+      "every-brilliant-thing-2026/thewrap--robert-hofler.json",
+      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
+      "bughouse-off-broadway-2026/theatermania--pete-hempstead.json",
+      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json"
     ]
   },
   "startTime": "2026-03-21T03:54:55.801Z",
-  "lastProcessed": "bughouse-off-broadway-2026/timeout--adam-feldman.json",
+  "lastProcessed": "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theatre-is-easy--brooke-viegut.json",
   "log": [
     {
       "t": "2026-03-21T04:08:42.048Z",
@@ -262,6 +281,17 @@
       "t": "2026-03-21T04:20:46.458Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-21T04:24:34.420Z",
+      "event": "bb-session",
+      "session": "1a962b00",
+      "url": "https://www.nytimes.com/2019/05/02/theater/entangled-review-the-amoralists.html"
+    },
+    {
+      "t": "2026-03-21T04:24:35.442Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
