@@ -231,13 +231,28 @@ export class KimiScorer {
       ? parsed.confidence as 'high' | 'medium' | 'low'
       : 'medium';
 
+    // Validate publishDate if provided
+    let publishDate: string | null = null;
+    if (parsed.publishDate && typeof parsed.publishDate === 'string') {
+      const dm = parsed.publishDate.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if (dm) {
+        const [, ys, ms, ds] = dm;
+        const y = parseInt(ys), m = parseInt(ms), d = parseInt(ds);
+        const dt = new Date(y, m - 1, d);
+        if (y >= 1970 && y <= 2027 && dt.getFullYear() === y && dt.getMonth() === m - 1 && dt.getDate() === d) {
+          publishDate = parsed.publishDate;
+        }
+      }
+    }
+
     return {
       bucket,
       score: Math.round(score),
       confidence,
       verdict: String(parsed.verdict || ''),
       keyQuote: String(parsed.keyQuote || ''),
-      reasoning: String(parsed.reasoning || '')
+      reasoning: String(parsed.reasoning || ''),
+      publishDate,
     };
   }
 

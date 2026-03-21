@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-21T00:33:57.601Z",
+  "timestamp": "2026-03-21T03:55:00.719Z",
   "stats": {
-    "totalReviews": 32039,
-    "alreadyFlagged": 10700,
-    "dateGuardCatches": 137,
-    "directorMismatch": 947,
-    "tvFilmSignals": 3392,
-    "londonSignals": 1024,
+    "totalReviews": 32038,
+    "alreadyFlagged": 10707,
+    "dateGuardCatches": 138,
+    "directorMismatch": 946,
+    "tvFilmSignals": 3390,
+    "londonSignals": 1027,
     "offBroadwaySignals": 1010,
-    "yearMismatch": 70,
-    "noPublishDate": 6888
+    "yearMismatch": 71,
+    "noPublishDate": 6869
   },
   "findings": [
     {
@@ -10141,7 +10141,7 @@
     {
       "showId": "cats-the-jellicle-ball-off-broadway-2024",
       "file": "stageandcinema--alex-simmons.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2024-06-21",
       "url": "https://stageandcinema.com/2024/06/21/cats-the-jellicle-ball/",
       "findings": [
@@ -13635,25 +13635,6 @@
     },
     {
       "showId": "dracula-west-end-2025",
-      "file": "daily-mail--unknown.json",
-      "score": 64,
-      "publishDate": "2026-02-18",
-      "url": "https://www.westendtheatre.com/340316/news/reviews/reviews-of-dracula-starring-cynthia-erivo/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"on screen\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"noel coward theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "dracula-west-end-2025",
       "file": "financialtimes--sarah-hemming.json",
       "score": 78,
       "publishDate": "2026-02-17",
@@ -13677,20 +13658,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"big screen\""
-        }
-      ]
-    },
-    {
-      "showId": "dracula-west-end-2025",
-      "file": "metro--unknown.json",
-      "score": 78,
-      "publishDate": "2026-02-17",
-      "url": "https://metro.co.uk/2026/02/17/cynthia-erivos-dracula-hardest-thing-ever-seen-done-stage-26951617/amp/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 2\""
         }
       ]
     },
@@ -19659,7 +19626,7 @@
     {
       "showId": "grease-2007",
       "file": "the-journal-news--unknown.json",
-      "score": null,
+      "score": 80,
       "publishDate": "April 22, 2014",
       "url": "http://www.lohud.com/apps/pbcs.dll/article?AID=2007708200313",
       "findings": [
@@ -25071,6 +25038,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 4\""
         }
       ]
     },
@@ -30637,7 +30609,7 @@
     {
       "showId": "mary-poppins-2006",
       "file": "nydailynews--unknown.json",
-      "score": null,
+      "score": 87,
       "publishDate": "April 22, 2014",
       "url": "http://www.nydailynews.com/archives/entertainment/2006/11/17/2006-11-17__it_s_eye-_poppin_.html",
       "findings": [
@@ -31047,20 +31019,6 @@
       "score": 93,
       "publishDate": "2011-11-25",
       "url": "http://www.thisislondon.co.uk/theatre/review-24014294-matilda-the-musical-cambridge-theatre---review.do",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
-        }
-      ]
-    },
-    {
-      "showId": "matilda-the-musical-west-end-2021",
-      "file": "telegraph--charles-spencer.json",
-      "score": 91,
-      "publishDate": "2011-11-25",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/matilda-cambridge-theatre-review/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -42024,6 +41982,7 @@
     {
       "showId": "shadowlands-west-end-2026",
       "file": "timeout--unknown.json",
+      "score": 68,
       "publishDate": "2026-02-15",
       "url": "https://www.westendtheatre.com/339763/news/reviews/shadowlands-reviews-hugh-bonneville/",
       "findings": [
@@ -57668,6 +57627,25 @@
     },
     {
       "showId": "titanique-west-end-2024",
+      "file": "timeout--andrzej-lukowski.json",
+      "score": 75,
+      "publishDate": "2025-01-09",
+      "url": "https://www.timeout.com/london/theatre/titanique-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (8x) more than 2024 (0x). 2026 matches production: titanique-2026"
+        }
+      ]
+    },
+    {
+      "showId": "titanique-west-end-2024",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 75,
       "publishDate": "2025-01-09",
@@ -60939,20 +60917,6 @@
     },
     {
       "showId": "wicked-west-end-2021",
-      "file": "independent--alice-saville.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/dracula-cynthia-erivo-kip-williams-london-b2922095.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"big screen\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-west-end-2021",
       "file": "london-box-office--daniel-perks.json",
       "score": 88,
       "publishDate": "2014-09-18",
@@ -62699,6 +62663,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "all-my-sons-west-end-2025",
+      "file": "timeout--andrzej-lukowski.json",
+      "score": 94,
+      "publishDate": "2025-11-22",
+      "url": "https://www.timeout.com/london/news/review-all-my-sons-starring-bran-cranston-at-wyndhams-theatre-112225",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -72742,14 +72720,15 @@
     },
     {
       "showId": "marie-and-rosetta-west-end-2026",
-      "file": "the-sun--clive-davis.json",
-      "publishDate": null,
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/marie-and-rosetta-review-a-tribute-to-the-godmother-of-rocknroll-jkml0xmrh",
+      "file": "standard--unknown.json",
+      "score": 77,
+      "publishDate": "2025-05-10",
+      "url": "https://www.standard.co.uk/culture/theatre/marie-rosetta-rose-theatre-kingston-review-beverley-knight-b1226992.html",
       "findings": [
         {
-          "type": "LONDON_SIGNAL",
+          "type": "DATE_GUARD",
           "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
+          "detail": "Published 294d before show (2025-05-10 vs 2026-02-28)"
         }
       ]
     },
@@ -74577,7 +74556,7 @@
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"gielgud\""
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -77631,6 +77610,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "lost-in-theatreland--jill-johnson.json",
+      "score": 89,
+      "publishDate": "2023-12-18",
+      "url": "https://lostintheatreland.co.uk/stranger-things-the-first-shadow-review-phoenix-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -82187,6 +82180,20 @@
       ]
     },
     {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "file": "timeout-london--unknown.json",
+      "score": 72,
+      "publishDate": "September 15th, 2014",
+      "url": "https://www.timeout.com/london/theatre/the-play-that-goes-wrong-1",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-playboy-of-the-western-world-west-end-2025",
       "file": "guardian--arifa-akbar.json",
       "score": 73,
@@ -82402,6 +82409,20 @@
       "score": 94,
       "publishDate": "2025-09-15",
       "url": "https://theatreweekly.com/review-the-producers-at-garrick-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-producers-west-end-2025",
+      "file": "timeout--andrzej-lukowski.json",
+      "score": 77,
+      "publishDate": "2025-09-14",
+      "url": "https://www.timeout.com/london/theatre/the-producers-3-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -83520,7 +83541,7 @@
     {
       "showId": "topdog-underdog-2022",
       "file": "frontmezzjunkies--unknown.json",
-      "score": null,
+      "score": 80,
       "publishDate": "2022-11-06",
       "url": "https://frontmezzjunkies.com/2022/11/06/topdog-underdog-on-broadway/",
       "findings": [
