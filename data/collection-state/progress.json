@@ -46,12 +46,22 @@
     "marie-and-rosetta-west-end-2026/all-that-dazzles-uk--daz-gale.json",
     "marie-and-rosetta-west-end-2026/broadwayworld--clementine-scott.json",
     "marie-and-rosetta-west-end-2026/everything-theatre-uk--jess-gonzalez.json",
-    "marie-and-rosetta-west-end-2026/financialtimes--unknown.json"
+    "marie-and-rosetta-west-end-2026/financialtimes--unknown.json",
+    "encores-the-wild-party-off-broadway-2026/nytimes--helen-shaw.json",
+    "encores-the-wild-party-off-broadway-2026/culturesauce--thom-geier.json",
+    "my-joy-is-heavy-off-broadway-2025/nytg--amelia-merrill.json",
+    "my-joy-is-heavy-off-broadway-2025/vulture--sara-holdren.json",
+    "sexual-misconduct-of-the-middle-classes-off-broadway-2026/nyt-theater--jonathan-mandell.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
     "broken-glass-west-end-2026/guardian--for-dave-fargnoli.json",
-    "broken-glass-west-end-2026/independent--steve-fowler.json"
+    "broken-glass-west-end-2026/independent--steve-fowler.json",
+    "giant-2026/ap--jennifer-farrar.json",
+    "encores-the-wild-party-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "my-joy-is-heavy-off-broadway-2025/culturesauce--thom-geier.json",
+    "my-joy-is-heavy-off-broadway-2025/talkinbroadway--marc-miller.json",
+    "my-joy-is-heavy-off-broadway-2025/nytimes--brittani-samuel.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -98,7 +108,11 @@
       "marie-and-rosetta-west-end-2026/all-that-dazzles-uk--daz-gale.json",
       "marie-and-rosetta-west-end-2026/broadwayworld--clementine-scott.json",
       "marie-and-rosetta-west-end-2026/everything-theatre-uk--jess-gonzalez.json",
-      "marie-and-rosetta-west-end-2026/financialtimes--unknown.json"
+      "marie-and-rosetta-west-end-2026/financialtimes--unknown.json",
+      "encores-the-wild-party-off-broadway-2026/nytimes--helen-shaw.json",
+      "encores-the-wild-party-off-broadway-2026/culturesauce--thom-geier.json",
+      "my-joy-is-heavy-off-broadway-2025/nytg--amelia-merrill.json",
+      "sexual-misconduct-of-the-middle-classes-off-broadway-2026/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -107,16 +121,44 @@
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/broken-glass-west-end-2026/guardian--for-dave-fargnoli.json",
-      "data/review-texts/broken-glass-west-end-2026/independent--steve-fowler.json"
+      "data/review-texts/broken-glass-west-end-2026/independent--steve-fowler.json",
+      "data/review-texts/encores-the-wild-party-off-broadway-2026/cititour--brian-scott-lipton.json",
+      "data/review-texts/my-joy-is-heavy-off-broadway-2025/culturesauce--thom-geier.json",
+      "data/review-texts/my-joy-is-heavy-off-broadway-2025/talkinbroadway--marc-miller.json",
+      "data/review-texts/my-joy-is-heavy-off-broadway-2025/nytimes--brittani-samuel.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
       "manic-street-creature-west-end-2026/broadwayworld--unknown.json",
       "it-walks-around-the-house-at-night-west-end-2026/broadwayworld--cindy-marcolina.json",
-      "broken-glass-west-end-2026/independent--samuel-mathewson.json"
+      "broken-glass-west-end-2026/independent--samuel-mathewson.json",
+      "my-joy-is-heavy-off-broadway-2025/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-03-21T03:54:55.801Z",
-  "lastProcessed": "marie-and-rosetta-west-end-2026/financialtimes--unknown.json",
-  "log": []
+  "lastProcessed": "sexual-misconduct-of-the-middle-classes-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+  "log": [
+    {
+      "t": "2026-03-21T04:08:42.048Z",
+      "event": "bb-session",
+      "session": "dd7209f6",
+      "url": "https://www.nytimes.com/2026/03/19/theater/the-wild-party-review-warren-rogers-p"
+    },
+    {
+      "t": "2026-03-21T04:08:43.055Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-21T04:12:24.273Z",
+      "event": "bb-session",
+      "session": "3e01f669",
+      "url": "https://www.nytimes.com/2026/03/18/theater/my-joy-is-heavy-review-bengsons.html"
+    },
+    {
+      "t": "2026-03-21T04:12:25.347Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
