@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-03-21T05:21:10.929Z",
+  "updatedAt": "2026-03-21T05:34:21.859Z",
   "processed": 315,
-  "failed": 35,
-  "successRate": "90.0%",
+  "failed": 45,
+  "successRate": "87.5%",
   "tierBreakdown": {
     "playwright": 287,
     "amp": 10,
@@ -10,10 +10,10 @@
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 19,
+    "archiveToday": 25,
     "archive": 19
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-03-21T04:08:42.048Z",
@@ -113,6 +113,17 @@
       "t": "2026-03-21T04:59:11.074Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-21T05:30:51.387Z",
+      "event": "bb-session",
+      "session": "a5d16e88",
+      "url": "https://www.nytimes.com/2026/03/18/theater/my-joy-is-heavy-review-bengsons.html"
+    },
+    {
+      "t": "2026-03-21T05:30:52.649Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
