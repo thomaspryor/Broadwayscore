@@ -91,6 +91,10 @@ jobs:
         run: node scripts/classify-non-reviews.js --incremental --limit=50 --verbose
         continue-on-error: true
 
+      - name: Flag wrong-production reviews by date window
+        run: node scripts/flag-wrong-production-by-date.js --apply
+        continue-on-error: true
+
       - name: Audit pre-2005 wrong-production reviews
         run: node scripts/audit-pre2005-reviews.js
         continue-on-error: true
