@@ -16,6 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { computeCriticScore } = require('./lib/compute-critic-score');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data/shows');
@@ -185,21 +186,8 @@ for (const show of visibleShows) {
     }
   }
 
-  // Compute composite score (tier-weighted average, matching engine.ts)
-  const TIER_WEIGHTS = { 1: 1.0, 2: 0.75, 3: 0.35 };
-  let compositeScore = null;
-  if (reviewEntries.length > 0) {
-    let weightedSum = 0;
-    let totalWeight = 0;
-    for (const r of reviewEntries) {
-      const tw = TIER_WEIGHTS[r.t] || 0.35;
-      weightedSum += r.s * tw;
-      totalWeight += tw;
-    }
-    if (totalWeight > 0) {
-      compositeScore = Math.round(weightedSum / totalWeight);
-    }
-  }
+  // Compute composite score using shared module (matches engine.ts)
+  const scoreResult = computeCriticScore(showReviews, outletRegistry);
 
   // Build detail object
   const detail = {
@@ -207,14 +195,10 @@ for (const show of visibleShows) {
     id: show.id,
   };
 
-  // Composite score
-  if (compositeScore !== null) {
-    detail.cs = compositeScore;
-  }
-
-  // Review count (for ScoreBadge TBD threshold)
-  if (reviewEntries.length > 0) {
-    detail.rc = reviewEntries.length;
+  // Composite score + review count
+  if (scoreResult) {
+    detail.cs = scoreResult.s;
+    detail.rc = scoreResult.rc;
   }
 
   // Score breakdown

@@ -16,6 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { computeCriticScore } = require('./lib/compute-critic-score');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data');
@@ -23,22 +24,7 @@ const outputDir = path.join(__dirname, '../public/data');
 // Schema version — bump when output format changes
 const SCHEMA_VERSION = 1;
 
-// ===========================================
-// SCORING CONSTANTS (from src/config/scoring.ts)
-// Keep in sync! Validation step catches drift.
-// ===========================================
-const TIER_WEIGHTS = { 1: 1.0, 2: 0.75, 3: 0.35 };
-const DEFAULT_TIER = 3;
-
-const DESIGNATION_BUMPS = { 'Critics_Pick': 3, 'Critics_Choice': 2 };
-const DESIGNATION_FLOORS = { 'Critics_Pick': 70 };
-
-const TOP_CRITICS = new Set([
-  'Jesse Green', 'Ben Brantley', 'Charles Isherwood', 'David Rooney',
-  'Hilton Als', 'Helen Shaw', 'Peter Marks', 'Elisabeth Vincentelli',
-  'Adam Feldman', 'Linda Winer', 'Alexis Soloski', 'Sara Holdren',
-  'Johnny Oleksinski', 'Chris Jones',
-]);
+// Scoring constants and computeCriticScore imported from ./lib/compute-critic-score.js
 
 const SCORE_DISPLAY_YEAR_CUTOFF = 2005;
 const MIN_HIGH_CONF_REVIEWS_PRE_CUTOFF = 3;
@@ -121,73 +107,12 @@ for (const review of reviews) {
   reviewsByShow[review.showId].push(review);
 }
 
-// ===========================================
-// COMPUTE CRITIC SCORE (mirrors engine.ts computeCriticScore)
-// ===========================================
-function getOutletTier(outletId) {
-  if (!outletId) return DEFAULT_TIER;
-  const entry = outletRegistry[outletId.toLowerCase().trim()];
-  return entry?.tier || DEFAULT_TIER;
-}
-
-function computeCriticScore(showReviews) {
-  if (!showReviews || showReviews.length === 0) return null;
-
-  let weightedSum = 0;
-  let totalWeight = 0;
-  let tier1Count = 0;
-  let tier2Count = 0;
-  let tier3Count = 0;
-
-  for (const review of showReviews) {
-    // Determine tier (top critics get T1 regardless of outlet)
-    const isTopCritic = !!(review.criticName && TOP_CRITICS.has(review.criticName));
-    const tier = isTopCritic ? 1 : getOutletTier(review.outletId);
-    const tierWeight = TIER_WEIGHTS[tier] || TIER_WEIGHTS[DEFAULT_TIER];
-
-    // Determine score (same priority as engine.ts)
-    let score = review.assignedScore;
-    if (score == null && review.llmScore?.score != null) score = review.llmScore.score;
-    if (score == null) score = 50;
-
-    // Apply designation bumps/floors
-    if (review.designation) {
-      if (DESIGNATION_FLOORS[review.designation]) {
-        score = Math.max(score, DESIGNATION_FLOORS[review.designation]);
-      }
-      if (DESIGNATION_BUMPS[review.designation]) {
-        score = Math.min(100, score + DESIGNATION_BUMPS[review.designation]);
-      }
-    }
-
-    // Confidence weight based on content quality
-    const thumbReflectedInScore = !!(review.dtliThumb || review.bwwThumb) && !review.needsReview;
-    let confidenceWeight = 1.0;
-    if (review.contentTier === 'excerpt' || review.contentTier === 'stub') {
-      confidenceWeight = thumbReflectedInScore ? 0.75 : 0.5;
-    } else if (review.contentTier === 'truncated') {
-      confidenceWeight = 0.85;
-    }
-
-    weightedSum += score * tierWeight * confidenceWeight;
-    totalWeight += tierWeight * confidenceWeight;
-
-    if (tier === 1) tier1Count++;
-    else if (tier === 2) tier2Count++;
-    else tier3Count++;
-  }
-
-  if (totalWeight === 0) return null;
-
-  const weightedScore = Math.round((weightedSum / totalWeight) * 100) / 100;
-  const rounded = Math.round(weightedScore);
-
-  return {
-    s: rounded,
-    rc: showReviews.length,
-    l: getCriticLabel(rounded),
-    t1: tier1Count,
-  };
+// computeCriticScore imported from ./lib/compute-critic-score.js
+// Wrap to pass outletRegistry and add critic label
+function computeShowScore(showReviews) {
+  const result = computeCriticScore(showReviews, outletRegistry);
+  if (!result) return null;
+  return { ...result, l: getCriticLabel(result.s) };
 }
 
 // ===========================================
@@ -208,7 +133,7 @@ const mobileShows = visibleShows.map(show => {
   const showReviews = reviewsByShow[show.id] || [];
 
   // Compute critic score
-  let criticScore = computeCriticScore(showReviews);
+  let criticScore = computeShowScore(showReviews);
 
   // Pre-2005 gating (same as engine.ts)
   if (criticScore && show.openingDate && (!show.category || show.category === 'broadway')) {
