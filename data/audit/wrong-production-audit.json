@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-21T10:21:14.070Z",
+  "timestamp": "2026-03-21T15:33:13.955Z",
   "stats": {
     "totalReviews": 32048,
-    "alreadyFlagged": 10721,
+    "alreadyFlagged": 10722,
     "dateGuardCatches": 138,
     "directorMismatch": 947,
-    "tvFilmSignals": 3387,
-    "londonSignals": 1025,
+    "tvFilmSignals": 3386,
+    "londonSignals": 1024,
     "offBroadwaySignals": 1010,
     "yearMismatch": 71,
-    "noPublishDate": 6867
+    "noPublishDate": 6866
   },
   "findings": [
     {
@@ -11654,7 +11654,7 @@
     },
     {
       "showId": "contact-2000",
-      "file": "nytimes--unknown.json",
+      "file": "nytimes--robin-pogrebin.json",
       "score": null,
       "publishDate": "2000-06-05",
       "url": "https://www.nytimes.com/2000/06/05/theater/both-tonys-for-directing-go-michael-blakemore-kiss-me-kate-contact-aida.html",
@@ -38537,20 +38537,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "pen-pals-off-broadway-2025",
-      "file": "theatermania--unknown.json",
-      "score": null,
-      "publishDate": "2025-09-18",
-      "url": "https://www.theatermania.com/news/disney-legend-jodi-benson-returning-to-the-stage-in-pen-pals_1812821/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -66335,20 +66321,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"barrow street\""
-        }
-      ]
-    },
-    {
-      "showId": "every-brilliant-thing-2026",
-      "file": "deadline--unknown.json",
-      "score": 86,
-      "publishDate": "2026-03-13",
-      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcliffe-1236750131/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

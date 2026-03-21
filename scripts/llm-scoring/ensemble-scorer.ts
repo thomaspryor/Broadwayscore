@@ -12,6 +12,7 @@ import { KimiScorer } from './kimi-scorer';
 import { ReviewTextFile, ScoredReviewFile, SimplifiedLLMResult, ModelScore, EnsembleResult as EnsembleResultType } from './types';
 import { PROMPT_VERSION, buildPromptV5, SYSTEM_PROMPT_V5 } from './config';
 import { buildScoringInput, ReviewInputData } from './input-builder';
+const { EXCERPT_FIELDS } = require('../lib/excerpt-fields');
 import { ensembleScore, toModelScore } from './ensemble';
 
 // ========================================
@@ -281,6 +282,13 @@ export class EnsembleReviewScorer {
     error?: string;
   }> {
     // Build rich input context using input-builder
+    // Pass all excerpt fields dynamically from canonical EXCERPT_FIELDS list
+    // so new aggregator sources don't require manual mapping here
+    const excerptData: Record<string, string | null> = {};
+    for (const field of EXCERPT_FIELDS) {
+      excerptData[field] = (reviewFile as any)[field] ?? null;
+    }
+
     const reviewData: ReviewInputData = {
       showId: reviewFile.showId,
       showTitle: reviewFile.showTitle,
@@ -289,10 +297,7 @@ export class EnsembleReviewScorer {
       criticName: reviewFile.criticName,
       publishDate: reviewFile.publishDate,
       fullText: reviewFile.fullText,
-      bwwExcerpt: reviewFile.bwwExcerpt,
-      dtliExcerpt: reviewFile.dtliExcerpt,
-      showScoreExcerpt: reviewFile.showScoreExcerpt,
-      nycTheatreExcerpt: (reviewFile as any).nycTheatreExcerpt,
+      ...excerptData,
       bwwThumb: reviewFile.bwwThumb,
       bwwScore: (reviewFile as any).bwwScore ?? null,
       dtliThumb: (reviewFile as any).dtliThumb,
