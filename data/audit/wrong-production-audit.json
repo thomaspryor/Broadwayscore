@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-21T08:36:56.394Z",
+  "timestamp": "2026-03-21T08:45:58.626Z",
   "stats": {
     "totalReviews": 32043,
     "alreadyFlagged": 10720,
     "dateGuardCatches": 138,
     "directorMismatch": 947,
-    "tvFilmSignals": 3387,
+    "tvFilmSignals": 3388,
     "londonSignals": 1025,
     "offBroadwaySignals": 1010,
     "yearMismatch": 71,
-    "noPublishDate": 6864
+    "noPublishDate": 6863
   },
   "findings": [
     {
@@ -14132,6 +14132,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "encores-the-wild-party-off-broadway-2026",
+      "file": "playbill--unknown.json",
+      "publishDate": "2026-03-19",
+      "url": "https://playbill.com/article/did-the-reviews-go-wild-for-the-city-center-encores-the-wild-party",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
