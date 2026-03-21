@@ -575,7 +575,14 @@
     "back-to-the-future-west-end-2021/independent--clarisse-loughrey.json",
     "back-to-the-future-west-end-2021/mail--unknown.json",
     "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json",
-    "back-to-the-future-west-end-2021/whatsonstage--sarah-crompton.json"
+    "back-to-the-future-west-end-2021/whatsonstage--sarah-crompton.json",
+    "the-phantom-of-the-opera-west-end-1986/broadwayworld--unknown.json",
+    "the-phantom-of-the-opera-west-end-1986/standard--katie-rosseinsky.json",
+    "les-miserables-west-end-2021/artsdesk--aleks-sierz.json",
+    "les-miserables-west-end-2021/daily-mail--patrick-marmion.json",
+    "les-miserables-west-end-2021/standard--unknown.json",
+    "les-miserables-west-end-2021/the-express--neil-norman.json",
+    "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json"
   ],
   "failed": [
     "no-singing-in-the-navy-off-broadway-2026/talkinbroadway--unknown.json",
@@ -671,7 +678,10 @@
     "moulin-rouge-the-musical-west-end-2021/independent--ava-wong-davies.json",
     "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
     "six-2021/newyorker--naomi-fry.json",
-    "six-2021/pages-on-stages--mason-pilevsky.json"
+    "six-2021/pages-on-stages--mason-pilevsky.json",
+    "les-miserables-west-end-2021/thestage--unknown.json",
+    "les-miserables-west-end-2021/thestage--matthew-hemley.json",
+    "little-shop-of-horrors-off-broadway-2019/frontmezzjunkies--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1152,7 +1162,12 @@
       "back-to-the-future-west-end-2021/artsdesk--gary-naylor.json",
       "back-to-the-future-west-end-2021/british-theatre--unknown.json",
       "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json",
-      "back-to-the-future-west-end-2021/whatsonstage--sarah-crompton.json"
+      "back-to-the-future-west-end-2021/whatsonstage--sarah-crompton.json",
+      "the-phantom-of-the-opera-west-end-1986/standard--katie-rosseinsky.json",
+      "les-miserables-west-end-2021/artsdesk--aleks-sierz.json",
+      "les-miserables-west-end-2021/standard--unknown.json",
+      "les-miserables-west-end-2021/the-express--neil-norman.json",
+      "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -1234,7 +1249,10 @@
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/lost-in-theatreland--jill-johnson.json",
       "data/review-texts/witness-for-the-prosecution-west-end-2022/lost-in-theatreland--amy-rye.json",
       "data/review-texts/mj-2022/vulture--helen-shaw.json",
-      "data/review-texts/moulin-rouge-the-musical-west-end-2021/independent--ava-wong-davies.json"
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/independent--ava-wong-davies.json",
+      "data/review-texts/les-miserables-west-end-2021/thestage--unknown.json",
+      "data/review-texts/les-miserables-west-end-2021/thestage--matthew-hemley.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/frontmezzjunkies--unknown.json"
     ],
     "archive": [
       "my-joy-is-heavy-off-broadway-2025/vulture--sara-holdren.json",
@@ -1326,11 +1344,13 @@
       "back-to-the-future-west-end-2021/broadwayworld--alexander-cohen.json",
       "back-to-the-future-west-end-2021/daily-mail--patrick-marmion.json",
       "back-to-the-future-west-end-2021/independent--clarisse-loughrey.json",
-      "back-to-the-future-west-end-2021/mail--unknown.json"
+      "back-to-the-future-west-end-2021/mail--unknown.json",
+      "the-phantom-of-the-opera-west-end-1986/broadwayworld--unknown.json",
+      "les-miserables-west-end-2021/daily-mail--patrick-marmion.json"
     ]
   },
   "startTime": "2026-03-21T09:00:19.929Z",
-  "lastProcessed": "back-to-the-future-west-end-2021/whatsonstage--sarah-crompton.json",
+  "lastProcessed": "little-shop-of-horrors-off-broadway-2019/frontmezzjunkies--unknown.json",
   "log": [
     {
       "t": "2026-03-21T09:01:18.301Z",
@@ -1470,6 +1490,28 @@
       "t": "2026-03-21T21:39:48.023Z",
       "event": "bb-cookie-inject",
       "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-03-21T21:50:12.593Z",
+      "event": "bb-session",
+      "session": "831d7dc0",
+      "url": "https://www.thestage.co.uk/reviews/the-unbelievers-review-royal-court-theatre-lo"
+    },
+    {
+      "t": "2026-03-21T21:50:14.058Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-21T21:52:16.650Z",
+      "event": "bb-session",
+      "session": "12a04557",
+      "url": "https://www.thestage.co.uk/reviews/les-miserables-review-at-sondheim-theatre-lon"
+    },
+    {
+      "t": "2026-03-21T21:52:18.165Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
