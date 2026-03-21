@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-21T01:18:09.586Z",
+  "timestamp": "2026-03-21T01:25:11.357Z",
   "stats": {
     "totalReviews": 32039,
-    "alreadyFlagged": 10702,
+    "alreadyFlagged": 10703,
     "dateGuardCatches": 137,
     "directorMismatch": 947,
     "tvFilmSignals": 3390,
-    "londonSignals": 1026,
+    "londonSignals": 1027,
     "offBroadwaySignals": 1010,
     "yearMismatch": 71,
-    "noPublishDate": 6881
+    "noPublishDate": 6880
   },
   "findings": [
     {
@@ -77632,6 +77632,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "lost-in-theatreland--jill-johnson.json",
+      "score": 89,
+      "publishDate": "2023-12-18",
+      "url": "https://lostintheatreland.co.uk/stranger-things-the-first-shadow-review-phoenix-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
