@@ -387,6 +387,20 @@ export class EnsembleReviewScorer {
       }
     };
 
+    // Extract publishDate from LLM if review doesn't already have one.
+    // Take the first non-null date from any model (Claude > OpenAI > Gemini > Kimi).
+    if (!scoredFile.publishDate) {
+      const llmDate = ensembleResult.modelResults.claude?.publishDate
+        || ensembleResult.modelResults.openai?.publishDate
+        || ensembleResult.modelResults.gemini?.publishDate
+        || ensembleResult.modelResults.kimi?.publishDate
+        || null;
+      if (llmDate) {
+        scoredFile.publishDate = llmDate;
+        (scoredFile as any).dateSource = 'llm-scoring';
+      }
+    }
+
     return {
       success: true,
       scoredFile,

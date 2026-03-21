@@ -373,7 +373,8 @@ Respond with ONLY this JSON (no markdown code fences, no explanation outside the
   "confidence": "high",
   "verdict": "recommended with reservations",
   "keyQuote": "One COMPLETE SENTENCE (40-150 chars) where the critic directly evaluates the show — an opinion, not plot summary or context. Prefer mid-review verdicts over opening scene-setting.",
-  "reasoning": "1-2 sentences explaining your classification"
+  "reasoning": "1-2 sentences explaining your classification",
+  "publishDate": "YYYY-MM-DD or null — the date this review was published, extracted from bylines, datelines, or headers in the text. Return null if not found. Do NOT guess or use the show's opening date."
 }
 
 ## Verdict Examples
