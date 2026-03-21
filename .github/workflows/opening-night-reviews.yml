@@ -196,13 +196,10 @@ jobs:
         if: steps.find.outputs.has_shows == 'true'
         id: coverage
         continue-on-error: true
-        env:
-          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
         run: |
-          # Run coverage audit with alerts enabled
-          # Uses --days matching lookback, sends Discord alert if gaps found
+          # Run coverage audit (results in console + audit files only, no Discord alert)
           LOOKBACK=${{ inputs.lookback_days || 14 }}
-          node scripts/audit-opening-night-coverage.js --days=$LOOKBACK --alert || true
+          node scripts/audit-opening-night-coverage.js --days=$LOOKBACK || true
 
       - name: Notify on failure
         if: failure()

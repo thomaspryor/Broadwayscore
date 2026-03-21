@@ -29,7 +29,8 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
-const { sendAlert, sendReport, sendToWebhook } = require('./lib/discord-notify');
+// Discord daily reports removed — email digest is the single notification channel.
+// Critical workflow failures still alert via notify-failure composite action.
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const AUDIT_DIR = path.join(DATA_DIR, 'audit');
@@ -1274,114 +1275,6 @@ function saveHistory(history) {
   fs.writeFileSync(HISTORY_FILE, JSON.stringify(history, null, 2) + '\n');
 }
 
-// --- Discord Notifications ---
-
-async function sendDailyReport(results, history) {
-  const categories = { Freshness: [], Sync: [], Pipelines: [], Quality: [], Cookies: [], CWV: [], SEO: [], Cron: [], Secrets: [], Credits: [] };
-  for (const r of results) {
-    if (r.name.startsWith('Freshness:')) categories.Freshness.push(r);
-    else if (r.name.startsWith('Sync:')) categories.Sync.push(r);
-    else if (r.name.startsWith('Pipeline:')) categories.Pipelines.push(r);
-    else if (r.name.startsWith('Quality:')) categories.Quality.push(r);
-    else if (r.name.startsWith('Cookies:')) categories.Cookies.push(r);
-    else if (r.name.startsWith('CWV:')) categories.CWV.push(r);
-    else if (r.name.startsWith('SEO:')) categories.SEO.push(r);
-    else if (r.name.startsWith('Cron:')) categories.Cron.push(r);
-    else if (r.name.startsWith('Secrets:')) categories.Secrets.push(r);
-    else if (r.name.startsWith('Credits:')) categories.Credits.push(r);
-  }
-
-  const catSummary = (checks) => {
-    const passed = checks.filter(c => c.status === 'pass').length;
-    const total = checks.length;
-    const icon = passed === total ? ':white_check_mark:' : ':warning:';
-    return `${icon} ${passed}/${total}`;
-  };
-
-  const totalPassed = results.filter(r => r.status === 'pass').length;
-  const totalWarn = results.filter(r => r.status === 'warn').length;
-  const totalError = results.filter(r => r.status === 'error').length;
-  const total = results.length;
-
-  let title, severity;
-  if (totalError > 0) {
-    title = `Daily Health Check — ${totalError} Error${totalError > 1 ? 's' : ''}`;
-    severity = history.consecutiveErrorDays >= 2 ? 'error' : 'warning';
-  } else if (totalWarn > 0) {
-    title = `Daily Health Check — ${totalWarn} Warning${totalWarn > 1 ? 's' : ''}`;
-    severity = 'warning';
-  } else {
-    title = 'Daily Health Check — All Clear';
-    severity = 'success';
-  }
-
-  // Build description with failed check details
-  let description = `${totalPassed}/${total} checks passed`;
-  const failures = results.filter(r => r.status !== 'pass');
-  if (failures.length > 0) {
-    const top5 = failures.slice(0, 5);
-    description += '\n\n' + top5.map(f => {
-      const icon = f.status === 'error' ? ':x:' : ':warning:';
-      return `${icon} **${f.name}**: ${f.message}`;
-    }).join('\n');
-    if (failures.length > 5) {
-      description += `\n...and ${failures.length - 5} more`;
-    }
-  }
-
-  const fields = [
-    { name: 'Freshness', value: catSummary(categories.Freshness), inline: true },
-    { name: 'Sync', value: catSummary(categories.Sync), inline: true },
-    { name: 'Pipelines', value: catSummary(categories.Pipelines), inline: true },
-    { name: 'Quality', value: catSummary(categories.Quality), inline: true },
-    { name: 'Cookies', value: catSummary(categories.Cookies), inline: true },
-    { name: 'CWV', value: catSummary(categories.CWV), inline: true },
-    { name: 'SEO', value: catSummary(categories.SEO), inline: true },
-    { name: 'Cron', value: catSummary(categories.Cron), inline: true },
-    { name: 'Secrets', value: catSummary(categories.Secrets), inline: true },
-    { name: 'Credits', value: catSummary(categories.Credits), inline: true },
-  ];
-
-  const webhookUrl = process.env.DISCORD_WEBHOOK_REPORTS;
-  if (!webhookUrl) {
-    console.log('[Discord] DISCORD_WEBHOOK_REPORTS not set, skipping report');
-    return;
-  }
-
-  const COLORS = { success: 0x2ecc71, warning: 0xf39c12, error: 0xe74c3c };
-
-  await sendToWebhook(webhookUrl, {
-    username: 'Broadway Scorecard',
-    embeds: [{
-      title: `${severity === 'success' ? ':white_check_mark:' : severity === 'error' ? ':x:' : ':warning:'} ${title}`,
-      description,
-      color: COLORS[severity],
-      fields,
-      timestamp: new Date().toISOString(),
-      footer: { text: `Consecutive clean days: ${history.consecutiveErrorDays === 0 ? (history.lastCleanStreak || 0) : 0}` },
-    }],
-  }).catch(e => console.error('[Discord] Report failed:', e.message));
-}
-
-async function sendCriticalAlert(results, history) {
-  const errors = results.filter(r => r.status === 'error');
-  if (errors.length === 0 || history.consecutiveErrorDays < 2) return;
-
-  const fields = errors.map(e => ({
-    name: e.name,
-    value: `${e.message}${e.hint ? `\n→ ${e.hint}` : ''}`,
-    inline: false,
-  }));
-
-  await sendAlert({
-    title: `Data Health Check — Day ${history.consecutiveErrorDays} of Failures`,
-    description: `${errors.length} error-level check${errors.length > 1 ? 's' : ''} failing for ${history.consecutiveErrorDays} consecutive days.`,
-    severity: 'error',
-    email: true,
-    fields: fields.slice(0, 10),
-  }).catch(e => console.error('[Discord] Alert failed:', e.message));
-}
-
 // --- Main ---
 
 async function main() {
@@ -1476,17 +1369,16 @@ async function main() {
   // Send email digest (throws on failure → triggers notify-failure)
   await sendEmailDigest(allResults, history, workflowSummary, autoFixResults);
 
-  // Send Discord notifications
-  await sendDailyReport(allResults, history);
-  await sendCriticalAlert(allResults, history);
+  // Discord alerts removed — email digest is the single daily notification channel.
+  // Critical workflow failures still alert via notify-failure composite action.
 
   // Create auto-triage issue for persistent errors
   await createTriageIssue(allResults, history);
 
-  // Exit code: 1 only for persistent errors (2+ consecutive days)
+  // Exit code: always 0 for expected results (even persistent errors).
+  // Email digest handles all daily alerting. notify-failure only fires on actual crashes.
   if (hadErrors && history.consecutiveErrorDays >= 2) {
-    console.log(`\n\u274C Persistent errors (${history.consecutiveErrorDays} consecutive days). Exiting with code 1.`);
-    process.exit(1);
+    console.log(`\n\u274C Persistent errors (${history.consecutiveErrorDays} consecutive days). Reported via email digest.`);
   } else if (hadErrors) {
     console.log(`\n\u26A0\uFE0F First-day errors detected. Monitoring — will escalate if repeated tomorrow.`);
   } else {

@@ -29,19 +29,14 @@ jobs:
       - name: Run health check
         env:
           GH_TOKEN: ${{ github.token }}
-          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
-          DISCORD_WEBHOOK_REPORTS: ${{ secrets.DISCORD_WEBHOOK_REPORTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: node scripts/health-check.js
 
-      - name: Send daily failure digest
-        if: always()
-        env:
-          GH_TOKEN: ${{ github.token }}
-          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
-        run: node scripts/daily-failure-digest.js
+      # Daily failure digest removed — workflow failure summary is included
+      # in the email digest sent by health-check.js. Discord alerts are reserved
+      # for critical real-time workflow failures via notify-failure action.
 
       - name: Commit health check + triage data
         if: always()
@@ -62,8 +57,8 @@ jobs:
         if: failure()
         uses: ./.github/actions/notify-failure
         with:
-          title: 'Daily Data Health Check Failed'
-          description: 'Health check or failure digest may not have sent.'
+          title: 'Daily Data Health Check Crashed'
+          description: 'Health check script crashed — email digest may not have sent.'
           severity: 'critical'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
