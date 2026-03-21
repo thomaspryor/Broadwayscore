@@ -803,24 +803,44 @@ async function getStagePageViaBrowserBase(url) {
     const password = process.env.THESTAGE_PASSWORD;
     if (email && password) {
       console.log('    [BB] Logging in to The Stage...');
-      await _bbPage.goto('https://www.thestage.co.uk/review-round-ups/review-round-ups', { waitUntil: 'networkidle', timeout: 30000 });
-      await _bbPage.waitForTimeout(8000);
-      await _bbPage.waitForSelector('input[name="email"]', { timeout: 10000 }).catch(() => {});
-      const emailInputs = await _bbPage.$$('input[name="email"]');
+      // Navigate to login page directly
+      await _bbPage.goto('https://www.thestage.co.uk/accounts/sign-in', { waitUntil: 'networkidle', timeout: 30000 });
+      await _bbPage.waitForTimeout(3000);
+
+      // Dismiss cookie consent if present
+      try {
+        const cookieBtn = _bbPage.locator('button:has-text("Accept"), button:has-text("Got it"), button:has-text("I agree")').first();
+        if (await cookieBtn.isVisible({ timeout: 2000 }).catch(() => false)) {
+          await cookieBtn.click();
+          await _bbPage.waitForTimeout(1000);
+        }
+      } catch {}
+
+      // Find and fill login form
+      await _bbPage.waitForSelector('input[name="email"], input[type="email"]', { timeout: 10000 }).catch(() => {});
+      const emailInputs = await _bbPage.$$('input[name="email"], input[type="email"]');
       let emailInput = null;
       for (const inp of emailInputs) { if (await inp.isVisible().catch(() => false)) { emailInput = inp; break; } }
       if (emailInput) {
-        await emailInput.type(email, { delay: 30 });
+        await emailInput.fill(email);
+        await _bbPage.waitForTimeout(500);
         const passInputs = await _bbPage.$$('input[type="password"]');
         for (const inp of passInputs) {
-          if (await inp.isVisible().catch(() => false)) { await inp.type(password, { delay: 30 }); break; }
+          if (await inp.isVisible().catch(() => false)) { await inp.fill(password); break; }
         }
-        const btn = await _bbPage.$('button:has-text("Login"), input[type="submit"]');
+        await _bbPage.waitForTimeout(500);
+        const btn = await _bbPage.$('button:has-text("Sign in"), button:has-text("Login"), button:has-text("Log in"), input[type="submit"]');
         if (btn && await btn.isVisible().catch(() => false)) await btn.click();
         else await _bbPage.keyboard.press('Enter');
         await _bbPage.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
         await _bbPage.waitForTimeout(3000);
-        console.log('    [BB] Login complete');
+
+        // Verify login succeeded
+        const pageContent = await _bbPage.content();
+        const loggedIn = !pageContent.includes('Sign in') || pageContent.includes('Sign out') || pageContent.includes('My account');
+        console.log(`    [BB] Login ${loggedIn ? 'succeeded' : 'FAILED — still seeing sign-in page'}`);
+      } else {
+        console.log('    [BB] Login form not found — may already be logged in');
       }
     }
   }
@@ -887,7 +907,6 @@ async function sweepTheStage(show) {
   // TS is paywalled so SB render can't help; BB with login is the only live path.
   // Constructed/SERP URLs waste BB page loads (they usually 404).
   if (process.env.BROWSERBASE_API_KEY && indexUrl) {
-    console.log(`    [TS] Trying BrowserBase for ${indexUrl.split('/').pop()}`);
     // Only try the index URL via BB (known-good from listing page)
     for (let attempt = 0; attempt < 2; attempt++) {
       try {
@@ -896,13 +915,13 @@ async function sweepTheStage(show) {
         if (html.includes('Page not found') || html.includes('404 -')) { console.log('    [BB] Page not found'); break; }
 
         const reviews = extractStageReviews(html, show.id);
-        console.log(`    [BB] Extracted ${reviews.length} reviews (${html.length} bytes)`);
-        // Archive the HTML regardless — extraction bugs can be fixed later
-        if (!DRY_RUN) {
-          if (!fs.existsSync(archDir)) fs.mkdirSync(archDir, { recursive: true });
-          fs.writeFileSync(archivePath, html);
+        if (reviews.length > 0) {
+          if (!DRY_RUN) {
+            if (!fs.existsSync(archDir)) fs.mkdirSync(archDir, { recursive: true });
+            fs.writeFileSync(archivePath, html);
+          }
+          return reviews;
         }
-        if (reviews.length > 0) return reviews;
         break;
       } catch (err) {
         console.log(`    TS BrowserBase error (attempt ${attempt + 1}): ${err.message.substring(0, 60)}`);
