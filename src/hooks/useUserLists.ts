@@ -132,7 +132,7 @@ export function useUserLists(userId: string | null) {
 
   const updateList = useCallback(async (
     listId: string,
-    updates: { name?: string; description?: string | null; is_ranked?: boolean },
+    updates: { name?: string; description?: string | null; is_ranked?: boolean; is_public?: boolean },
   ): Promise<void> => {
     const client = getSupabaseClient();
     if (!client || !userId) return;
@@ -143,6 +143,7 @@ export function useUserLists(userId: string | null) {
       if (updates.name !== undefined) payload.name = updates.name.trim();
       if (updates.description !== undefined) payload.description = updates.description?.trim() || null;
       if (updates.is_ranked !== undefined) payload.is_ranked = updates.is_ranked;
+      if (updates.is_public !== undefined) payload.is_public = updates.is_public;
 
       const { error: err } = await client
         .from('lists')
@@ -292,6 +293,74 @@ export function useUserLists(userId: string | null) {
     }
   }, [userId]);
 
+  const shareList = useCallback(async (listId: string): Promise<string | null> => {
+    const client = getSupabaseClient();
+    if (!client || !userId) return null;
+
+    const list = lists.find(l => l.id === listId);
+    if (!list) return null;
+
+    // If already public with a slug, just return the URL
+    if (list.is_public && list.share_slug) {
+      const url = `${window.location.origin}/list/${list.share_slug}`;
+      return url;
+    }
+
+    setError(null);
+    try {
+      const slug = list.share_slug || crypto.randomUUID().slice(0, 8);
+      const { error: err } = await client
+        .from('lists')
+        .update({ is_public: true, share_slug: slug })
+        .eq('id', listId);
+
+      if (err) throw err;
+
+      // Optimistic update
+      setLists(prev => prev.map(l =>
+        l.id === listId ? { ...l, is_public: true, share_slug: slug, updated_at: new Date().toISOString() } : l
+      ));
+
+      return `${window.location.origin}/list/${slug}`;
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Failed to share list';
+      setError(msg);
+      return null;
+    }
+  }, [userId, lists]);
+
+  const togglePublic = useCallback(async (listId: string, isPublic: boolean): Promise<void> => {
+    const client = getSupabaseClient();
+    if (!client || !userId) return;
+
+    setError(null);
+    try {
+      const payload: Record<string, unknown> = { is_public: isPublic };
+      // Generate slug when making public for the first time
+      if (isPublic) {
+        const list = lists.find(l => l.id === listId);
+        if (list && !list.share_slug) {
+          payload.share_slug = crypto.randomUUID().slice(0, 8);
+        }
+      }
+
+      const { error: err } = await client
+        .from('lists')
+        .update(payload)
+        .eq('id', listId);
+
+      if (err) throw err;
+
+      // Optimistic update
+      setLists(prev => prev.map(l =>
+        l.id === listId ? { ...l, ...payload, updated_at: new Date().toISOString() } : l
+      ));
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Failed to update list visibility';
+      setError(msg);
+    }
+  }, [userId, lists]);
+
   return {
     lists,
     loading,
@@ -304,5 +373,7 @@ export function useUserLists(userId: string | null) {
     addToList,
     removeFromList,
     reorderList,
+    shareList,
+    togglePublic,
   };
 }
