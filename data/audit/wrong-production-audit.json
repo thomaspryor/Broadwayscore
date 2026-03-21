@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-21T00:15:57.340Z",
+  "timestamp": "2026-03-21T00:24:30.020Z",
   "stats": {
     "totalReviews": 32038,
     "alreadyFlagged": 10706,
-    "dateGuardCatches": 136,
+    "dateGuardCatches": 137,
     "directorMismatch": 944,
-    "tvFilmSignals": 3387,
+    "tvFilmSignals": 3388,
     "londonSignals": 1022,
     "offBroadwaySignals": 1009,
     "yearMismatch": 70,
-    "noPublishDate": 6891
+    "noPublishDate": 6889
   },
   "findings": [
     {
@@ -3399,11 +3399,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
@@ -41961,6 +41956,24 @@
       ]
     },
     {
+      "showId": "shadowlands-west-end-2026",
+      "file": "timeout--unknown.json",
+      "publishDate": "2026-02-15",
+      "url": "https://www.westendtheatre.com/339763/news/reviews/shadowlands-reviews-hugh-bonneville/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "she-loves-me-2016",
       "file": "andygram--andrew-c-mcgibbon.json",
       "score": 92,
@@ -58803,6 +58816,17 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 766d before show (2024-01-02 vs 2026-02-06)"
+        }
+      ]
+    },
+    {
+      "showId": "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026",
+      "file": "whatsonstage--alun-hood.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 758d before show (2024-01-10 vs 2026-02-06)"
         }
       ]
     },
