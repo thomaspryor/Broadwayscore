@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway show metadata - source of truth for all shows",
-    "lastUpdated": "2026-03-20",
+    "lastUpdated": "2026-03-21T08:18:23.235Z",
     "source": "Manual + Playbill/IBDB cross-reference",
     "totalShows": 2258
   },
@@ -203594,7 +203594,8 @@
       "todaytixUrl": "https://www.todaytix.com/nyc/shows/44896-the-reservoir",
       "todayTixCategory": "Plays",
       "ibdbRevivalChecked": true,
-      "isRevival": false
+      "isRevival": false,
+      "_staleMissingSince": "2026-03-21"
     },
     {
       "id": "night-side-songs-off-broadway-2026",
@@ -204300,7 +204301,8 @@
       "todaytixUrl": "https://www.todaytix.com/nyc/shows/43651-los-soles-truncos",
       "todayTixCategory": "Plays",
       "ibdbRevivalChecked": true,
-      "isRevival": false
+      "isRevival": false,
+      "_staleMissingSince": "2026-03-21"
     },
     {
       "id": "ulysses-off-broadway-2026",
@@ -204771,7 +204773,8 @@
       "isRevival": true,
       "ibdbUrl": null,
       "todayTixCategory": "Musicals",
-      "ibdbRevivalChecked": true
+      "ibdbRevivalChecked": true,
+      "_staleMissingSince": "2026-03-21"
     },
     {
       "id": "dirty-books-off-broadway-2025",
@@ -205171,8 +205174,7 @@
       "todaytixUrl": "https://www.todaytix.com/nyc/shows/45903-body-count",
       "todayTixCategory": "Plays",
       "ibdbRevivalChecked": true,
-      "isRevival": false,
-      "_staleMissingSince": "2026-03-20"
+      "isRevival": false
     },
     {
       "id": "bloodlove-off-broadway-2026",
@@ -205243,8 +205245,7 @@
       "ibdbUrl": null,
       "todayTixCategory": "Musicals",
       "ibdbRevivalChecked": true,
-      "isRevival": false,
-      "_staleMissingSince": "2026-03-20"
+      "isRevival": false
     },
     {
       "id": "silver-manhattan-off-broadway-2026",
@@ -208676,7 +208677,7 @@
       "slug": "cold-war-choir-practice-off-broadway",
       "venue": "MCC Theater – Newman Mills Theater",
       "openingDate": "2026-02-21",
-      "closingDate": "2026-03-29",
+      "closingDate": "2026-04-05",
       "status": "open",
       "type": "play",
       "runtime": "1h 30m",
@@ -215021,7 +215022,8 @@
       ],
       "todayTixCategory": "Musicals",
       "ibdbRevivalChecked": true,
-      "isRevival": false
+      "isRevival": false,
+      "_staleMissingSince": "2026-03-21"
     },
     {
       "id": "oh-mary-west-end-2025",
@@ -218166,7 +218168,8 @@
       "todayTixCategory": "Musicals",
       "ibdbRevivalChecked": true,
       "isRevival": true,
-      "previewsStartDate": "2025-08-30"
+      "previewsStartDate": "2025-08-30",
+      "_staleMissingSince": "2026-03-21"
     },
     {
       "id": "stranger-things-the-first-shadow-west-end-2023",
@@ -218344,7 +218347,8 @@
       ],
       "ibdbRevivalChecked": true,
       "isRevival": false,
-      "previewsStartDate": "2025-03-24"
+      "previewsStartDate": "2025-03-24",
+      "_staleMissingSince": "2026-03-21"
     },
     {
       "id": "the-spy-who-came-in-from-the-cold-west-end-2025",
@@ -220976,7 +220980,7 @@
       "venue": "Lyttelton Theatre",
       "openingDate": "2026-04-01",
       "closingDate": "2026-06-06",
-      "status": "upcoming",
+      "status": "previews",
       "type": "play",
       "runtime": "1h 35m",
       "intermissions": null,
@@ -228103,7 +228107,7 @@
       "venue": "Hackney Empire",
       "openingDate": "2026-03-21",
       "closingDate": "2026-03-25",
-      "status": "upcoming",
+      "status": "open",
       "type": "musical",
       "isRevival": true,
       "runtime": null,
@@ -228637,7 +228641,7 @@
       "venue": "Theatre Row, Theatre 5",
       "openingDate": "2026-03-21",
       "closingDate": "2026-04-11",
-      "status": "upcoming",
+      "status": "open",
       "type": "play",
       "isRevival": false,
       "runtime": null,
@@ -228825,7 +228829,8 @@
       "todayTixCategory": "Cabaret",
       "category": "off-west-end",
       "todaytixId": 43842,
-      "todaytixUrl": "https://www.todaytix.com/london/shows/43842-58th-street"
+      "todaytixUrl": "https://www.todaytix.com/london/shows/43842-58th-street",
+      "_staleMissingSince": "2026-03-21"
     },
     {
       "id": "godots-to-do-list-west-end-2026",
@@ -230016,7 +230021,7 @@
       "status": "previews",
       "type": "play",
       "isRevival": false,
-      "runtime": null,
+      "runtime": "2h 30m",
       "intermissions": null,
       "images": {
         "hero": "/images/shows/the-magicians-table-off-west-end-2026/hero.webp",
@@ -230076,7 +230081,7 @@
       "status": "previews",
       "type": "play",
       "isRevival": false,
-      "runtime": null,
+      "runtime": "1h 35m",
       "intermissions": null,
       "images": {
         "hero": "/images/shows/return-of-the-godz-west-end-2026/hero.webp",
@@ -230115,6 +230120,141 @@
       "title": "Brink",
       "slug": "brink-off-west-end",
       "venue": "Almeida Theatre",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "announced",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "off-west-end"
+    },
+    {
+      "id": "the-jungle-book-west-end-2026",
+      "title": "The Jungle Book",
+      "slug": "the-jungle-book-west-end",
+      "venue": "TBA",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "announced",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "west-end"
+    },
+    {
+      "id": "kanpur-1857-off-west-end-2026",
+      "title": "Kanpur: 1857",
+      "slug": "kanpur-1857-off-west-end",
+      "venue": "Theatre Royal Stratford East",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "announced",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "off-west-end"
+    },
+    {
+      "id": "say-shava-shava-celebrating-25-ye-off-west-end-2026",
+      "title": "Say Shava Shava: Celebrating 25 Ye...",
+      "slug": "say-shava-shava-celebrating-25-ye-off-west-end",
+      "venue": "Theatre Royal Stratford East",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "announced",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "off-west-end"
+    },
+    {
+      "id": "qawwali-live-with-hussain-brothe-off-west-end-2026",
+      "title": "Qawwali LIVE - with Hussain Brothe...",
+      "slug": "qawwali-live-with-hussain-brothe-off-west-end",
+      "venue": "Theatre Royal Stratford East",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "announced",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "off-west-end"
+    },
+    {
+      "id": "heeramandi-off-west-end-2026",
+      "title": "Heeramandi",
+      "slug": "heeramandi-off-west-end",
+      "venue": "Theatre Royal Stratford East",
       "openingDate": null,
       "closingDate": null,
       "status": "announced",
