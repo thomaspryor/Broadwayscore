@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-21T23:43:14.546Z",
+    "generatedAt": "2026-03-21T23:50:39.662Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 83,
+    "totalFlagged": 87,
     "highConfidence": 12,
-    "mediumConfidence": 71,
+    "mediumConfidence": 75,
     "lowConfidence": 0,
-    "reassignable": 32
+    "reassignable": 36
   },
   "results": [
     {
@@ -333,6 +333,22 @@
       "showId": "the-lion-king-1997",
       "showTitle": "The Lion King",
       "showYear": 1997,
+      "file": "jasonraize--nelson-pressley.json",
+      "outlet": "jasonraize",
+      "criticName": "Nelson Pressley",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "the-lion-king-west-end-2021",
+      "signals": [
+        "year 1998 in text matches revival the-lion-king-west-end-2021",
+        "modern references: masks"
+      ],
+      "textSnippet": "The Raize Resource: Washington Times Review of The Lion King\n\n\"...Mufasa's\n son, played\n with wide-eyed energy by Jason\n Raize...\"\n\n-- The\n Washington Times review\n of The\nLion\n King\n\nThe Washington\n "
+    },
+    {
+      "showId": "the-lion-king-1997",
+      "showTitle": "The Lion King",
+      "showYear": 1997,
       "file": "newsday--linda-winer.json",
       "outlet": "Newsday",
       "criticName": "Linda Winer",
@@ -353,11 +369,12 @@
       "criticName": "Frank Scheck",
       "publishDate": "November 21st, 1997",
       "confidence": "medium",
-      "suggestedShowId": null,
+      "suggestedShowId": "the-lion-king-west-end-2021",
       "signals": [
+        "year 1998 in text matches revival the-lion-king-west-end-2021",
         "modern references: masks"
       ],
-      "textSnippet": "   \"The Lion King is a spectacular rendition of the animated film, a brilliant theatrical adaptation that stands on its own...Taymor has risen to the challenge, translating the physically complex tale"
+      "textSnippet": "The Raize Resource: St. Petersburg Times Review of The Lion\n King\n\n\"12-year-old\n Scott\n Irby-Ranniar and Jason Raize are\n appealing as, respectively, the young\n and older versions of Simba.\"\n\n-- St.\n "
     },
     {
       "showId": "the-lion-king-1997",
@@ -437,6 +454,21 @@
         "publishDate 1998 matches revival the-lion-king-west-end-2021 (opened 1999)"
       ],
       "textSnippet": "   \"It is a wonderfully colorful spectacle with some of the most imaginative staging you are ever likely to see.\"\n\nRead more "
+    },
+    {
+      "showId": "the-lion-king-1997",
+      "showTitle": "The Lion King",
+      "showYear": 1997,
+      "file": "streetdirectory--unknown.json",
+      "outlet": "streetdirectory",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "modern references: masks"
+      ],
+      "textSnippet": "The Lion King In Broadway \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Entertainment Guide \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n eg: UK or Brides UK or Classical Art"
     },
     {
       "showId": "the-lion-king-1997",
@@ -1009,6 +1041,40 @@
         "revival cast/director match for sunday-in-the-park-with-george-2017: Jake Gyllenhaal, Annaleigh Ashford, Hudson Theatre, director: Sarna Lapine"
       ],
       "textSnippet": "The brand-new Hudson Theatre officially opened Thursday night with a star-studded new production of Steven Sondheim's \"Sunday in the Park With George.\" NY1's Roma Torre filed the following review. Ste"
+    },
+    {
+      "showId": "miss-saigon-1991",
+      "showTitle": "Miss Saigon",
+      "showYear": 1991,
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "outlet": "Lighting & Sound America",
+      "criticName": "David Barbour",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "miss-saigon-2017",
+      "signals": [
+        "revival text signals: revival, new production",
+        "year 2017 in text matches revival miss-saigon-2017",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "Eva Noblezada, Alistair Brammer. Photo: Michael Le Poer Trench.\n\nWhen Miss Saigon opened on Broadway in 1992, it seemed too soon for a big, bombastic, romantic musical about the American misadventure "
+    },
+    {
+      "showId": "miss-saigon-1991",
+      "showTitle": "Miss Saigon",
+      "showYear": 1991,
+      "file": "talkinbroadway--matthew-murray.json",
+      "outlet": "Talkin' Broadway",
+      "criticName": "Matthew Murray",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "miss-saigon-2017",
+      "signals": [
+        "revival text signals: revival, new production, new revival",
+        "year 2017 in text matches revival miss-saigon-2017",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "Broadway Reviews\n \n\n Miss Saigon\n\nTheatre Review by Matthew Murray\n - March 23, 2017 \n\nMiss Saigon Music by Claude-Michel Schönberg. Lyrics by Richard Maltby, Jr & Alain Boublil. Adapted from the orig"
     },
     {
       "showId": "into-the-woods-1987",

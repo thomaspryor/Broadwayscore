@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-21T23:47:12.823Z",
+  "timestamp": "2026-03-21T23:55:18.451Z",
   "stats": {
     "totalReviews": 32077,
-    "alreadyFlagged": 10731,
+    "alreadyFlagged": 10733,
     "dateGuardCatches": 138,
-    "directorMismatch": 947,
-    "tvFilmSignals": 3385,
-    "londonSignals": 1025,
+    "directorMismatch": 949,
+    "tvFilmSignals": 3391,
+    "londonSignals": 1029,
     "offBroadwaySignals": 1010,
     "yearMismatch": 71,
-    "noPublishDate": 6886
+    "noPublishDate": 6884
   },
   "findings": [
     {
@@ -9946,6 +9946,30 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-off-broadway-2024",
+      "file": "billboard--joe-lynch.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.billboard.com/music/music-news/cats-the-jellicle-ball-musical-play-1235729344/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -52211,10 +52235,38 @@
     },
     {
       "showId": "the-lion-king-1997",
+      "file": "jasonraize--nelson-pressley.json",
+      "score": 80,
+      "publishDate": null,
+      "url": "http://www.jasonraize.net/pr_tlk_wt112397.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-1997",
       "file": "newsday--linda-winer.json",
       "score": 92,
       "publishDate": null,
       "url": "https://www.newsday.com/entertainment/the-lion-king-on-broadway-behind-the-scenes-at-a-complex-show-h76813",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-1997",
+      "file": "nysr--frank-scheck.json",
+      "score": 86,
+      "publishDate": "November 21st, 1997",
+      "url": "http://www.jasonraize.net/pr_tlk_spt112197.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -52271,6 +52323,20 @@
       "score": 93,
       "publishDate": "1997-11-23",
       "url": "https://www.nytimes.com/1997/11/23/theater/sunday-view-the-lion-king-earns-its-roars-of-approval.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-1997",
+      "file": "streetdirectory--unknown.json",
+      "score": 82,
+      "publishDate": null,
+      "url": "http://www.streetdirectory.com/etoday/the-lion-king-in-broadway-plafuj.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -60826,6 +60892,19 @@
     },
     {
       "showId": "wicked-2003",
+      "file": "new-york-times--ben.json",
+      "publishDate": "October 31, 2003",
+      "url": "http://www.nytimes.com/2003/10/31/movies/theater-review-there-s-trouble-in-emerald-city.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
       "file": "nytimes--charles-isherwood.json",
       "score": 76,
       "publishDate": "August 21, 2014",
@@ -60841,6 +60920,20 @@
     {
       "showId": "wicked-2003",
       "file": "variety--charles-isherwood.json",
+      "score": 62,
+      "publishDate": "October 30, 2003",
+      "url": "http://variety.com/2003/legit/reviews/wicked-7-1200538236/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "variety--charles.json",
       "score": 62,
       "publishDate": "October 30, 2003",
       "url": "http://variety.com/2003/legit/reviews/wicked-7-1200538236/",
@@ -61740,6 +61833,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "a-dolls-house-2023",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 35,
+      "publishDate": null,
+      "url": "https://www.lightingandsoundamerica.com/news/story.asp?ID=5FYBTJ",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"bam\""
         }
       ]
     },
@@ -63378,6 +63485,20 @@
     },
     {
       "showId": "back-to-the-future-2023",
+      "file": "stageandcinema--kevin-vavasseur.json",
+      "score": null,
+      "publishDate": "2023-08-04",
+      "url": "https://stageandcinema.com/2023/08/04/bway-review-back-to-the-future-musical/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-2023",
       "file": "talkinbroadway--howard-miller.json",
       "score": 72,
       "publishDate": "2023-08-03",
@@ -64523,6 +64644,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"signature theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "file": "london-theatre--marianka-swain.json",
+      "score": 84,
+      "publishDate": null,
+      "url": "https://www.londontheatre.co.uk/reviews/next-to-normal-review-donmar-warehouse",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
@@ -76882,6 +77017,33 @@
     },
     {
       "showId": "stephen-sondheims-old-friends-2025",
+      "file": "frontmezzjunkies--unknown.json",
+      "score": 79,
+      "publishDate": "2025-04-13",
+      "url": "https://frontmezzjunkies.com/2025/04/13/stephen-sondheims-old-friends-on-broadway/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "stephen-sondheims-old-friends-2025",
+      "file": "in-act-two-of-merrily-we-roll-along--charley-kringas.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-STEPHEN-SONDHEIMS-OLD-FRIENDS-Opens-On-Broadway-20250408",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "stephen-sondheims-old-friends-2025",
       "file": "nysr--steven-suskin.json",
       "score": 57,
       "publishDate": "April 8, 2025",
@@ -83888,20 +84050,6 @@
       "score": 78,
       "publishDate": null,
       "url": "https://newyork.timeout.com/arts-culture/theater/2194233/review-venus-in-fur",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"classic stage\""
-        }
-      ]
-    },
-    {
-      "showId": "venus-in-fur-2011",
-      "file": "variety--marilyn-stasio.json",
-      "score": 75,
-      "publishDate": "November 8, 2011",
-      "url": "https://www.variety.com/review/VE1117946546",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
