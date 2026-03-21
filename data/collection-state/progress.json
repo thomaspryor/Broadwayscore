@@ -448,7 +448,17 @@
     "oliver-west-end-2024/times-uk--neil-fisher.json",
     "oliver-west-end-2024/whatsonstage--gareth-carr.json",
     "death-becomes-her-2024/newyorker--helen-shaw.json",
-    "death-becomes-her-2024/chelsea-community-news--michael-musto.json"
+    "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
+    "death-becomes-her-2024/nydailynews--chris-jones.json",
+    "death-becomes-her-2024/theatermania--jesse-green.json",
+    "death-becomes-her-2024/timeout--adam-feldman.json",
+    "death-becomes-her-2024/the-interested-bystander--cary-wong.json",
+    "death-becomes-her-2024/theater-scene--joel-benjamin.json",
+    "maybe-happy-ending-2024/vulture--sara-holdren.json",
+    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+    "maybe-happy-ending-2024/guardian--adrian-horton.json",
+    "maybe-happy-ending-2024/new-york-sun--broadway-scorecard.json",
+    "maybe-happy-ending-2024/nypost--johnny-oleksinski.json"
   ],
   "failed": [
     "no-singing-in-the-navy-off-broadway-2026/talkinbroadway--unknown.json",
@@ -902,7 +912,14 @@
       "oliver-west-end-2024/times-uk--dominic-maxwell.json",
       "oliver-west-end-2024/times-uk--neil-fisher.json",
       "oliver-west-end-2024/whatsonstage--gareth-carr.json",
-      "death-becomes-her-2024/chelsea-community-news--michael-musto.json"
+      "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
+      "death-becomes-her-2024/nydailynews--chris-jones.json",
+      "death-becomes-her-2024/theatermania--jesse-green.json",
+      "death-becomes-her-2024/timeout--adam-feldman.json",
+      "death-becomes-her-2024/the-interested-bystander--cary-wong.json",
+      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+      "maybe-happy-ending-2024/guardian--adrian-horton.json",
+      "maybe-happy-ending-2024/new-york-sun--broadway-scorecard.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -928,7 +945,9 @@
       "data/review-texts/ragtime-2025/nytimes--unknown.json",
       "ragtime-2025/nytimes--unknown.json",
       "data/review-texts/buena-vista-social-club-2025/amny--matt-windman.json",
-      "buena-vista-social-club-2025/amny--matt-windman.json"
+      "buena-vista-social-club-2025/amny--matt-windman.json",
+      "data/review-texts/maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+      "maybe-happy-ending-2024/nypost--johnny-oleksinski.json"
     ],
     "directCookies": [
       "hercules-west-end-2025/the-sun--dominic-maxwell.json",
@@ -1033,11 +1052,13 @@
       "heathers-the-musical-off-broadway-2025/cititour--brian-scott-lipton.json",
       "dracula-west-end-2025/broadwayworld--unknown.json",
       "dracula-west-end-2025/metro--unknown.json",
-      "death-becomes-her-2024/newyorker--helen-shaw.json"
+      "death-becomes-her-2024/newyorker--helen-shaw.json",
+      "death-becomes-her-2024/theater-scene--joel-benjamin.json",
+      "maybe-happy-ending-2024/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-03-21T09:00:19.929Z",
-  "lastProcessed": "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
+  "lastProcessed": "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
   "log": [
     {
       "t": "2026-03-21T09:01:18.301Z",
@@ -1122,6 +1143,17 @@
       "t": "2026-03-21T16:58:02.815Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-21T20:59:43.660Z",
+      "event": "bb-session",
+      "session": "258edae2",
+      "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-r"
+    },
+    {
+      "t": "2026-03-21T20:59:45.055Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }

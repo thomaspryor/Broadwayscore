@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-21T20:56:24.540Z",
-  "processed": 449,
+  "updatedAt": "2026-03-21T21:00:02.667Z",
+  "processed": 459,
   "failed": 71,
-  "successRate": "86.3%",
+  "successRate": "86.6%",
   "tierBreakdown": {
-    "playwright": 377,
+    "playwright": 384,
     "amp": 12,
-    "browserbase": 10,
+    "browserbase": 12,
     "directCookies": 2,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 30,
-    "archive": 65
+    "archive": 67
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-03-21T09:01:18.301Z",
@@ -98,6 +98,17 @@
       "t": "2026-03-21T16:58:02.815Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-21T20:59:43.660Z",
+      "event": "bb-session",
+      "session": "258edae2",
+      "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-r"
+    },
+    {
+      "t": "2026-03-21T20:59:45.055Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
