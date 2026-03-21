@@ -314,7 +314,10 @@
     "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
     "two-strangers-bway-2025/chicagotribune--unknown.json",
     "two-strangers-bway-2025/theater-life--samuel-l-leiter.json",
-    "two-strangers-bway-2025/theater-scene--joseph-pisano.json"
+    "two-strangers-bway-2025/theater-scene--joseph-pisano.json",
+    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/blogcritics--jon-sobel.json",
+    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theatre-is-easy--brooke-viegut.json",
+    "the-holy-rosenbergs-west-end-2026/guardian--david-jays.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -361,7 +364,14 @@
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
     "youre-a-good-man-charlie-brown-off-broadway-2026/cititour--brian-scott-lipton.json",
     "youre-a-good-man-charlie-brown-off-broadway-2026/dc-metro-theater-arts--richard-seff.json",
-    "youre-a-good-man-charlie-brown-off-broadway-2026/theater-pizzazz--sandi-durell.json"
+    "youre-a-good-man-charlie-brown-off-broadway-2026/theater-pizzazz--sandi-durell.json",
+    "spare-parts-off-broadway-2026/talkinbroadway--unknown.json",
+    "zack-off-broadway-2026/talkinbroadway--james-wilson.json",
+    "broken-glass-west-end-2026/independent--steve-fowler.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/nytimes--helen-shaw.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/wsj--charles-isherwood.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/one-minute-critic--billy-mcentee.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -652,7 +662,9 @@
       "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
       "two-strangers-bway-2025/chicagotribune--unknown.json",
       "two-strangers-bway-2025/theater-life--samuel-l-leiter.json",
-      "two-strangers-bway-2025/theater-scene--joseph-pisano.json"
+      "two-strangers-bway-2025/theater-scene--joseph-pisano.json",
+      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/blogcritics--jon-sobel.json",
+      "the-holy-rosenbergs-west-end-2026/guardian--david-jays.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -704,7 +716,11 @@
       "data/review-texts/my-joy-is-heavy-off-broadway-2025/talkinbroadway--marc-miller.json",
       "data/review-texts/my-joy-is-heavy-off-broadway-2025/nytimes--brittani-samuel.json",
       "data/review-texts/youre-a-good-man-charlie-brown-off-broadway-2026/cititour--brian-scott-lipton.json",
-      "data/review-texts/youre-a-good-man-charlie-brown-off-broadway-2026/dc-metro-theater-arts--richard-seff.json"
+      "data/review-texts/youre-a-good-man-charlie-brown-off-broadway-2026/dc-metro-theater-arts--richard-seff.json",
+      "data/review-texts/spare-parts-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/zack-off-broadway-2026/talkinbroadway--james-wilson.json",
+      "data/review-texts/broken-glass-west-end-2026/independent--steve-fowler.json",
+      "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/nytimes--helen-shaw.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -725,11 +741,12 @@
       "deep-azure-globe-west-end-2026/broadwayworld--unknown.json",
       "oh-mary-west-end-2025/broadwayworld--unknown.json",
       "paranormal-activity-west-end-2025/broadwayworld--franco-milazzo.json",
-      "paranormal-activity-west-end-2025/telegraph--unknown.json"
+      "paranormal-activity-west-end-2025/telegraph--unknown.json",
+      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theatre-is-easy--brooke-viegut.json"
     ]
   },
   "startTime": "2026-03-21T03:54:55.801Z",
-  "lastProcessed": "youre-a-good-man-charlie-brown-off-broadway-2026/theater-pizzazz--sandi-durell.json",
+  "lastProcessed": "antigone-this-play-i-read-in-high-school-off-broadway-2026/one-minute-critic--billy-mcentee.json",
   "log": [
     {
       "t": "2026-03-21T04:08:42.048Z",
@@ -840,6 +857,28 @@
       "t": "2026-03-21T05:30:52.649Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-21T05:38:29.952Z",
+      "event": "bb-session",
+      "session": "f1f43e47",
+      "url": "https://www.nytimes.com/2026/03/12/theater/antigone-review-shalhoub-keenan-bolge"
+    },
+    {
+      "t": "2026-03-21T05:38:31.216Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-21T05:39:37.529Z",
+      "event": "bb-session",
+      "session": "383ff355",
+      "url": "https://www.wsj.com/articles/antigone-this-play-i-read-in-high-school-review-inh"
+    },
+    {
+      "t": "2026-03-21T05:39:38.715Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
