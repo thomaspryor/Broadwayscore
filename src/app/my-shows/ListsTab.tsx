@@ -49,6 +49,7 @@ export default function ListsTab({ userId, showMap, isMockMode, createTrigger = 
     lists: realLists, loading: realLoading, getLists, getListItems,
     createList, updateList, deleteList,
     addToList, removeFromList, reorderList,
+    shareList, togglePublic,
   } = useUserLists(userId);
 
   const [mockData, setMockData] = useState<{ lists: UserList[]; items: Record<string, ListItem[]> } | null>(null);
@@ -119,9 +120,9 @@ export default function ListsTab({ userId, showMap, isMockMode, createTrigger = 
     }
   };
 
-  const handleUpdateList = async (listId: string, name: string, description: string | null, isRanked: boolean) => {
+  const handleUpdateList = async (listId: string, name: string, description: string | null, isRanked: boolean, isPublic?: boolean) => {
     try {
-      await updateList(listId, { name, description, is_ranked: isRanked });
+      await updateList(listId, { name, description, is_ranked: isRanked, ...(isPublic !== undefined && { is_public: isPublic }) });
       setShowModal(null);
       setEditingList(null);
     } catch {
@@ -177,6 +178,19 @@ export default function ListsTab({ userId, showMap, isMockMode, createTrigger = 
           onDelete={() => handleDeleteList(activeListId)}
           onAddShow={(showId) => handleAddToList(activeListId, showId)}
           onRemoveShow={(showId) => handleRemoveFromList(activeListId, showId)}
+          onShare={async () => {
+            const url = await shareList(activeListId);
+            if (url) {
+              try { await navigator.clipboard.writeText(url); } catch { /* fallback below */ }
+              showToast?.('Link copied!', 'success');
+            } else {
+              showToast?.('Failed to share list.', 'error');
+            }
+          }}
+          onMakePrivate={async () => {
+            await togglePublic(activeListId, false);
+            showToast?.('List is now private.', 'info');
+          }}
           onReorder={(itemIds, positions) => {
             // Save previous state for undo
             const previousItems = [...listItems];
@@ -197,7 +211,7 @@ export default function ListsTab({ userId, showMap, isMockMode, createTrigger = 
           <ListModal
             mode="edit"
             list={editingList}
-            onSave={(name, desc, ranked) => handleUpdateList(editingList.id, name, desc, ranked)}
+            onSave={(name, desc, ranked, isPublic) => handleUpdateList(editingList.id, name, desc, ranked, isPublic)}
             onClose={() => { setShowModal(null); setEditingList(null); }}
             onDelete={() => handleDeleteList(editingList.id)}
           />
@@ -310,7 +324,7 @@ function ListRow({ list, showMap, onClick }: { list: UserList; showMap: ShowMap;
 
 function ListDetailView({
   list, items, loading, showMap, onBack, onEdit, onDelete,
-  onAddShow, onRemoveShow, onReorder,
+  onAddShow, onRemoveShow, onReorder, onShare, onMakePrivate,
 }: {
   list: UserList;
   items: ListItem[];
@@ -322,6 +336,8 @@ function ListDetailView({
   onAddShow: (showId: string) => void;
   onRemoveShow: (showId: string) => void;
   onReorder: (itemIds: string[], positions: number[]) => void;
+  onShare: () => void;
+  onMakePrivate: () => void;
 }) {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [showOverflow, setShowOverflow] = useState(false);
@@ -391,9 +407,20 @@ function ListDetailView({
         </button>
       </div>
 
-      {/* List name + options menu */}
+      {/* List name + share + options menu */}
       <div className="flex items-center gap-1 mb-1">
         <h2 className="text-2xl font-extrabold text-white">{list.name}</h2>
+        {/* Share button */}
+        <button
+          type="button"
+          onClick={onShare}
+          className="p-2 text-gray-400 hover:text-brand transition-colors"
+          aria-label="Share list"
+        >
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+          </svg>
+        </button>
         <div className="relative" ref={overflowRef}>
           <button
             type="button"
@@ -419,6 +446,18 @@ function ListDetailView({
                 </svg>
                 Edit List
               </button>
+              {list.is_public && (
+                <button
+                  type="button"
+                  onClick={() => { setShowOverflow(false); onMakePrivate(); }}
+                  className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-white hover:bg-white/5 transition-colors"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                  Make Private
+                </button>
+              )}
               {!confirmDelete ? (
                 <button
                   type="button"
@@ -447,6 +486,7 @@ function ListDetailView({
       <p className="text-xs text-gray-500 mb-1">
         {items.length} {items.length === 1 ? 'Show' : 'Shows'}
         {list.is_ranked && <span className="ml-1.5 text-[10px] font-semibold text-amber-400/70 bg-amber-400/10 px-1.5 py-0.5 rounded">Ranked</span>}
+        {list.is_public && <span className="ml-1.5 text-[10px] font-semibold text-green-400/70 bg-green-400/10 px-1.5 py-0.5 rounded">Public</span>}
       </p>
       {list.description && (
         <p className="text-sm text-gray-400 mb-4">{list.description}</p>
@@ -741,13 +781,14 @@ function ListModal({
 }: {
   mode: 'create' | 'edit';
   list?: UserList;
-  onSave: (name: string, description: string | null, isRanked: boolean) => void;
+  onSave: (name: string, description: string | null, isRanked: boolean, isPublic?: boolean) => void;
   onClose: () => void;
   onDelete?: () => void;
 }) {
   const [name, setName] = useState(list?.name || '');
   const [description, setDescription] = useState(list?.description || '');
   const [isRanked, setIsRanked] = useState(list?.is_ranked || false);
+  const [isPublic, setIsPublic] = useState(list?.is_public || false);
   const [showDescription, setShowDescription] = useState(!!list?.description);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -758,7 +799,7 @@ function ListModal({
     if (!canSave) return;
     setSaving(true);
     try {
-      await onSave(name.trim(), description.trim() || null, isRanked);
+      await onSave(name.trim(), description.trim() || null, isRanked, mode === 'edit' ? isPublic : undefined);
     } finally {
       setSaving(false);
     }
@@ -842,6 +883,30 @@ function ListModal({
             </div>
             <p className="text-[11px] text-gray-500 -mt-1">Numbers your shows 1, 2, 3…</p>
           </div>
+
+          {/* Public toggle (edit mode only) */}
+          {mode === 'edit' && (
+            <div>
+              <div className="flex items-center justify-between py-2">
+                <span className="text-sm text-white">Public list</span>
+                <button
+                  type="button"
+                  onClick={() => setIsPublic(!isPublic)}
+                  className={`relative w-11 h-6 rounded-full transition-colors ${isPublic ? 'bg-green-500' : 'bg-white/20'}`}
+                  role="switch"
+                  aria-checked={isPublic}
+                >
+                  <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${isPublic ? 'translate-x-[22px]' : 'translate-x-0.5'}`} />
+                </button>
+              </div>
+              <p className="text-[11px] text-gray-500 -mt-1">Anyone with the link can view this list</p>
+              {isPublic && list?.share_slug && (
+                <p className="text-[11px] text-brand mt-1 truncate">
+                  {typeof window !== 'undefined' ? `${window.location.origin}/list/${list.share_slug}` : `/list/${list.share_slug}`}
+                </p>
+              )}
+            </div>
+          )}
 
           {/* Delete */}
           {mode === 'edit' && onDelete && (
