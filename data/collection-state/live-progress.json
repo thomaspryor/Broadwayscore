@@ -1,26 +1,20 @@
 {
-  "updatedAt": "2026-03-21T21:15:44.986Z",
-  "processed": 504,
+  "updatedAt": "2026-03-21T21:17:53.951Z",
+  "processed": 514,
   "failed": 76,
-  "successRate": "86.9%",
+  "successRate": "87.1%",
   "tierBreakdown": {
-    "playwright": 418,
+    "playwright": 426,
     "amp": 12,
-    "browserbase": 14,
+    "browserbase": 16,
     "directCookies": 2,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 30,
-    "archive": 79
+    "archive": 80
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-03-21T09:01:18.301Z",
-      "event": "bb-session",
-      "session": "a81ee153",
-      "url": "https://www.nytimes.com/2026/03/19/theater/the-wild-party-review-warren-rogers-p"
-    },
     {
       "t": "2026-03-21T09:16:31.758Z",
       "event": "bb-session",
@@ -120,6 +114,17 @@
       "t": "2026-03-21T21:11:19.024Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-21T21:16:07.602Z",
+      "event": "bb-session",
+      "session": "d9f67cf2",
+      "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jor"
+    },
+    {
+      "t": "2026-03-21T21:16:08.973Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
