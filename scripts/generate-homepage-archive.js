@@ -17,19 +17,13 @@
 
 const fs = require('fs');
 const path = require('path');
+const { computeCriticScore: _computeRaw } = require('./lib/compute-critic-score');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data');
 
-// ===========================================
-// SCORING CONSTANTS (from src/config/scoring.ts)
-// Keep in sync! Same as generate-mobile-data.js.
-// ===========================================
-const TIER_WEIGHTS = { 1: 1.0, 2: 0.75, 3: 0.35 };
+// Scoring constants still needed for pre-2005 gating and other local logic
 const DEFAULT_TIER = 3;
-
-const DESIGNATION_BUMPS = { 'Critics_Pick': 3, 'Critics_Choice': 2 };
-const DESIGNATION_FLOORS = { 'Critics_Pick': 70 };
 
 const TOP_CRITICS = new Set([
   'Jesse Green', 'Ben Brantley', 'Charles Isherwood', 'David Rooney',
@@ -112,66 +106,11 @@ for (const review of reviews) {
 }
 
 // ===========================================
-// COMPUTE CRITIC SCORE (mirrors engine.ts)
-// ===========================================
-function getOutletTier(outletId) {
-  if (!outletId) return DEFAULT_TIER;
-  const entry = outletRegistry[outletId.toLowerCase().trim()];
-  return entry?.tier || DEFAULT_TIER;
-}
-
+// Uses shared scoring module — single source of truth
 function computeCriticScore(showReviews) {
-  if (!showReviews || showReviews.length === 0) return null;
-
-  let weightedSum = 0;
-  let totalWeight = 0;
-  let tier1Count = 0;
-  let tier2Count = 0;
-
-  for (const review of showReviews) {
-    const isTopCritic = !!(review.criticName && TOP_CRITICS.has(review.criticName));
-    const tier = isTopCritic ? 1 : getOutletTier(review.outletId);
-    const tierWeight = TIER_WEIGHTS[tier] || TIER_WEIGHTS[DEFAULT_TIER];
-
-    let score = review.assignedScore;
-    if (score == null && review.llmScore?.score != null) score = review.llmScore.score;
-    if (score == null) score = 50;
-
-    if (review.designation) {
-      if (DESIGNATION_FLOORS[review.designation]) {
-        score = Math.max(score, DESIGNATION_FLOORS[review.designation]);
-      }
-      if (DESIGNATION_BUMPS[review.designation]) {
-        score = Math.min(100, score + DESIGNATION_BUMPS[review.designation]);
-      }
-    }
-
-    const thumbReflectedInScore = !!(review.dtliThumb || review.bwwThumb) && !review.needsReview;
-    let confidenceWeight = 1.0;
-    if (review.contentTier === 'excerpt' || review.contentTier === 'stub') {
-      confidenceWeight = thumbReflectedInScore ? 0.75 : 0.5;
-    } else if (review.contentTier === 'truncated') {
-      confidenceWeight = 0.85;
-    }
-
-    weightedSum += score * tierWeight * confidenceWeight;
-    totalWeight += tierWeight * confidenceWeight;
-
-    if (tier === 1) tier1Count++;
-    else if (tier === 2) tier2Count++;
-  }
-
-  if (totalWeight === 0) return null;
-
-  const weightedScore = Math.round((weightedSum / totalWeight) * 100) / 100;
-  const rounded = Math.round(weightedScore);
-
-  return {
-    score: rounded,
-    reviewCount: showReviews.length,
-    tier1Count,
-    tier2Count,
-  };
+  const result = _computeRaw(showReviews, outletRegistry);
+  if (!result) return null;
+  return { score: result.s, reviewCount: result.rc, tier1Count: result.t1 };
 }
 
 // ===========================================
