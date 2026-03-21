@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-21T06:06:23.367Z",
-  "processed": 404,
-  "failed": 66,
-  "successRate": "86.0%",
+  "updatedAt": "2026-03-21T06:09:25.680Z",
+  "processed": 412,
+  "failed": 68,
+  "successRate": "85.8%",
   "tierBreakdown": {
-    "playwright": 353,
+    "playwright": 359,
     "amp": 12,
     "browserbase": 8,
     "directCookies": 2,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 32,
-    "archive": 39
+    "archiveToday": 34,
+    "archive": 41
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-03-21T04:45:16.599Z",
-      "event": "bb-session",
-      "session": "da01eec4",
-      "url": "https://www.nytimes.com/2026/03/12/theater/antigone-review-shalhoub-keenan-bolge"
-    },
-    {
-      "t": "2026-03-21T04:45:17.635Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-21T04:46:19.407Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-21T06:02:00.820Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-21T06:09:06.779Z",
+      "event": "bb-session",
+      "session": "ddd8e736",
+      "url": "http://www.northjersey.com/arts-and-entertainment/theater/revisiting-the-dark-si"
+    },
+    {
+      "t": "2026-03-21T06:09:08.026Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
