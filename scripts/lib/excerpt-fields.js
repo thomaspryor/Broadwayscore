@@ -13,6 +13,11 @@ const EXCERPT_FIELDS = [
   'showScoreExcerpt',
   'nycTheatreExcerpt',
   'lboRoundupExcerpt',
+  'westEndTheatreExcerpt',
+  'theatreReviewsExcerpt',
+  'theStageExcerpt',
+  'stagedoorExcerpt',
+  'playbillVerdictExcerpt',
 ];
 
 /**
