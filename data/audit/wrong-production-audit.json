@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-21T15:42:59.847Z",
+  "timestamp": "2026-03-21T20:24:09.450Z",
   "stats": {
     "totalReviews": 32048,
-    "alreadyFlagged": 10722,
+    "alreadyFlagged": 10727,
     "dateGuardCatches": 138,
     "directorMismatch": 947,
-    "tvFilmSignals": 3386,
-    "londonSignals": 1024,
+    "tvFilmSignals": 3385,
+    "londonSignals": 1025,
     "offBroadwaySignals": 1010,
     "yearMismatch": 71,
-    "noPublishDate": 6866
+    "noPublishDate": 6861
   },
   "findings": [
     {
@@ -22265,20 +22265,6 @@
       "score": 93,
       "publishDate": "2025-06-25",
       "url": "https://www.radiotimes.com/going-out/tickets/hercules-musical-review/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "hercules-west-end-2025",
-      "file": "standard--nick-curtis.json",
-      "score": 66,
-      "publishDate": "2025-06-25",
-      "url": "https://www.standard.co.uk/culture/theatre/hercules-at-theatre-royal-drury-lane-b1234755.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -66326,6 +66312,20 @@
     },
     {
       "showId": "every-brilliant-thing-2026",
+      "file": "deadline--unknown.json",
+      "score": 86,
+      "publishDate": "2026-03-13",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcliffe-1236750131/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
       "file": "nydailynews--chris-jones.json",
       "score": 77,
       "publishDate": "2026-03-13",
@@ -72561,6 +72561,7 @@
     {
       "showId": "man-and-boy-west-end-2026",
       "file": "london-theatre--the-production-is-hailed-by-andrzej-lukowski.json",
+      "score": 79,
       "publishDate": null,
       "url": "https://www.londontheatre.co.uk/reviews/man-and-boy-review-national-theatre",
       "findings": [
@@ -72705,7 +72706,7 @@
     {
       "showId": "marie-and-rosetta-west-end-2026",
       "file": "times-uk--unknown.json",
-      "score": 80,
+      "score": 79,
       "findings": [
         {
           "type": "DATE_GUARD",

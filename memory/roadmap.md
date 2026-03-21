@@ -1,4 +1,4 @@
-# Roadmap — Last updated 2026-03-20
+# Roadmap — Last updated 2026-03-21
 
 > **Active work is now tracked on the [GitHub Projects board](https://github.com/users/thomaspryor/projects/1).**
 > Open issues with `session` label = active Claude Code sessions.
@@ -34,8 +34,9 @@
 19. **Remaining UK outlet gaps** — Telegraph SVG extractor (73), Culture Sauce React (58). Need outlet-specific extractor improvements. Post-launch.
 
 **Data Integrity (P0 — from Mar 20 sweep incident):**
-- **28 WE reviews need rescoring** — Full text exists but scores were lost in sweep-we-aggregators incident. 21 shows affected. Dispatch targeted scoring (`--show=ID`) for each: all-my-sons-west-end-2025, back-to-the-future-west-end-2021, broken-glass-west-end-2026, dear-england-new-wimbledon-theatre-west-end-2026, it-walks-around-the-house-at-night-west-end-2026, mamma-mia-west-end-2021, man-and-boy-west-end-2026, manic-street-creature-west-end-2026, midnight-a-new-original-musical-by-todrick-hall-west-end-2026, my-neighbour-totoro-west-end-2025, oliver-west-end-2024, paddington-the-musical-west-end-2025, shadowlands-west-end-2026, starlight-express-west-end-2024, the-devil-wears-prada-west-end-2024, the-phantom-of-the-opera-off-west-end-2021, the-phantom-of-the-opera-west-end-1986, the-producers-west-end-2025, the-tempest-globe-west-end-2026, witness-for-the-prosecution-west-end-2022, woman-in-mind-west-end-2025
-- **`--all` scoring skips scoreable files** — General scoring runs report "Valid files (text >= 50 chars): 0" even when files have thousands of chars. Targeted `--show` works. Root cause unknown — likely a stale checkout or caching issue in the scoring pipeline's file loading. Must fix or all new reviews require manual targeted dispatches.
+- ~~**28 WE reviews need rescoring**~~ → DONE (2026-03-20). All 21 WE shows rescored via targeted `--show=ID` dispatches. Zero unscored reviews remain.
+- ~~**`--all` scoring skips scoreable files**~~ → RESOLVED (2026-03-20). Verified: scheduled runs correctly find 29-51 valid files. Issue was transient.
+- ~~**217 SERP-discovery phantom reviews**~~ → DONE (2026-03-20). Root cause: gather-reviews SERP discovery misattributed outlets (BWW URLs → Broadway News, etc.). Fix: domain validation extended to all SERP-discovered reviews (was only unknown critics). 217 phantom files deleted, deployed.
 - ~~**Aggregator archive files critically low**~~ → RESOLVED (2026-03-17).
 
 **Site Reliability:**
@@ -68,7 +69,7 @@
 15. ~~WE/OB early reviews + URL mismatches~~ → DONE. 31 wrongProduction, 32 wrongUrl, 6 domain aliases added. Validation: 0/0/0.
 16. ~~Unknown outlets~~ → Reduced 55→49. 7 junk flagged, 1 fixed, 1 added to registry. Remaining 49 are `outletId: "unknown"` (need outlet identification — separate effort).
 17. ~820 shows missing synopses (mostly obscure historical).
-18. **Broadway News wrongUrl cleanup** — ~28 reviews attributed to "Broadway News" with BWW roundup URLs. These are fabricated entries — broadwaynews.com has no individual review pages for these shows. Should be deleted or re-attributed to BWW. LOW priority.
+18. ~~**Broadway News wrongUrl cleanup + domain validation**~~ → DONE (2026-03-20). Subsumed by P0 phantom review fix — all 29 Broadway News phantoms + 188 others deleted. Root cause fixed in gather-reviews.js.
 
 **Pipeline:**
 17. ~~Collection coverage dashboard~~ → DONE. Weekly report: fullText/excerpt/stub by outlet, tier, access model, market. Identifies top collection opportunities. History tracking for trends.
@@ -78,6 +79,7 @@
 **iOS App:** Widget, Spotlight search, iPad layout, Android, Share sheet, App Clips, Siri
 **Infrastructure:** Show images to CDN (173MB/deploy), prune low-value static pages, domain retry intelligence, ~~ScrapingBee SERP credit optimization~~ → DONE (3.3M→968K credits/month + BrightData fallback), ~~Scraper cost optimization~~ → DONE (Playwright-first for public sites, BD-first SERP, SB credit pre-check, per-run cost logging)
 **Scraper resilience:** Consolidate inline SERP in collect-review-texts.js to use shared url-discovery.js module (eliminates diverged 200-line fork)
+**Domain matching:** `domainMatchesExpected()` in `scraper.js` doesn't match subdomains of registry aliases (e.g., `articles.philly.com` doesn't match alias `philly.com`). Workaround: added explicit subdomain aliases. Real fix: extend the matching function. LOW priority.
 **Code Quality:**
 18. ~~**TypeScript strictness cleanup**~~ → DONE. Zero TS errors, zero `as any` casts. Added Window.gtag/Sentry declarations, SentryEvent interface, GoldListType narrowing.
 19. ~~**Unit test coverage**~~ → engine.ts DONE (37 tests) + data-core.ts DONE (81 tests). Both in CI. Remaining: rebuild pipeline.
@@ -86,11 +88,30 @@
 22. ~~**Dead code removal**~~ → DONE. Removed ~736 lines from 12 src/ files (32 dead exports/functions).
 23. ~~**CI workflow cleanup**~~ → Phase 2 DONE. Push-with-retry migration (15 workflows, -281 lines) + setup-node composite action (10 workflows migrated, 65+ remaining). Total: -369 lines boilerplate.
 **Data/Scoring:** LLM prompt contamination audit, cross-aggregator excerpt enrichment, Playwright critic resolution, 14 author-byline mismatches need manual review (audit report in data/audit/syndicated-duplicates.json)
-**Lists Enhancements:** Public/shareable lists, "Add to List" from Diary/Watchlist rows, smart list suggestions (auto-suggest based on diary), drag handle discoverability (animation/tooltip), list import from Diary (bulk add seen shows), list count in header stats bar, notes per list item
+24. **Integrate date-window validator into rebuild** — Currently standalone script. Should run automatically in `rebuild-all-reviews.js` after the existing pre-opening guard. The existing guard uses 90-day threshold and only covers preview/upcoming shows; the new validator is stricter (21d/7d) and covers all statuses.
+25. **Outlet-specific date extractors** — ~490 reviews have fullText but no date. Top offenders: Cititour (55), The Stage (49), Lighting & Sound America (41). Would need custom extraction for these outletsx27 HTML patterns.
+**Lists Enhancements:** ~~Public/shareable lists~~ → DONE (2026-03-21), "Add to List" from Diary/Watchlist rows, smart list suggestions (auto-suggest based on diary), drag handle discoverability (animation/tooltip), list import from Diary (bulk add seen shows), list count in header stats bar, notes per list item
 **SEO:** FAQ schema on show detail pages
 **Code Quality:** ~~Regression protection for critical patterns~~ → DONE (grep-based guards in CI). ~~Linter/IDE revert root cause~~ → DONE (concurrent sessions, not auto-formatter).
 
 ## Recently Completed
+
+### Shareable Lists (2026-03-21)
+- **Public/shareable lists**: One-tap Share button → auto-public + copy URL. Read-only page at `/list/[slug]` with posters, critic scores, venues, user notes, ticket links.
+- **OG social previews**: generateMetadata + custom OG image (type=list in /api/og). Links look good in iMessage/social.
+- **Privacy controls**: Make Private option in overflow menu + public/private toggle in edit modal + "Public" badge.
+- **DB changes needed**: `is_public` + `share_slug` columns + 3 anonymous RLS policies. Migration SQL in `memory/shareable-lists-migration.md`.
+- **Scope**: 9 files changed, +752 lines. Behind `userAccounts` feature flag (demo only). Won't work until Supabase migration runs.
+
+### publishDate Backfill + Wrong-Production Cleanup (2026-03-21)
+- **3,802 reviews dated**: URL patterns (3,087) + text-regex bylines (685) + LLM multi-date disambiguation (30). Collection pipeline now has 3 fallback layers: HTML metadata → URL path → text-regex.
+- **LLM scoring now extracts publishDate**: Added to V5 prompt + all 5 scorers (Claude, OpenAI, Gemini, Kimi). Zero extra cost — every future scored review gets a date if the LLM can find one.
+- **1,112 wrong-production reviews flagged**: Date-window validator [preview-21d, close+7d] catches reviews from earlier/later productions. Script: `flag-wrong-production-by-date.js`.
+- **Review card alignment fixed (15th time, for real)**: Root cause was `<a>` tags stretching in flex rows. Fix: `<span>` wrapper with inline styles.
+- **Corrupt shows.json in private data repo fixed**: Invalid JSON at position 1417569 was blocking all deploys.
+
+Scripts: `backfill-url-dates.js`, `backfill-text-dates.js`, `backfill-llm-dates.js`, `flag-wrong-production-by-date.js`
+All re-runnable. Run `flag-wrong-production-by-date.js` after adding more dates.
 
 ### wrongUrl Prevention + Recovery (2026-03-20)
 - **Root cause**: Pre-March-1 `OUTLET_DOMAINS` had mismatched keys (`'broadway-news'` vs `'broadwaynews'`), so SERP queries had no `site:` filter and no domain check on results. 175 reviews got bad URLs (BWW, Facebook, IMDB, etc.).
@@ -176,3 +197,4 @@
 - Off-West End classification + venue filter
 - iOS: Sentry, push notifications, offline queue, haptics, store review, deep linking (Build #29)
 - BTC: TBD badges + curated nominees QA
+
