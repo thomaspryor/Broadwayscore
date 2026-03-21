@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-03-19",
+    "lastUpdated": "2026-03-20",
     "version": "2.0.0"
   },
   "outlets": {
@@ -363,7 +363,10 @@
       ],
       "domain": "theguardian.com",
       "region": "london",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domainAliases": [
+        "guardian.co.uk"
+      ]
     },
     "thewrap": {
       "displayName": "TheWrap",
@@ -444,7 +447,10 @@
         "nytheatreguide"
       ],
       "domain": "newyorktheatreguide.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domainAliases": [
+        "nytheatreguide.com"
+      ]
     },
     "nyt-theater": {
       "displayName": "New York Theater",
@@ -627,7 +633,10 @@
         "pages on stages"
       ],
       "domain": "pagesonstages.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domainAliases": [
+        "pagesonstages.wordpress.com"
+      ]
     },
     "forward": {
       "displayName": "The Forward",
@@ -860,7 +869,10 @@
         "broadwayvoice"
       ],
       "domain": "broadwayvoice.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domainAliases": [
+        "bwayvoice.com"
+      ]
     },
     "financialtimes": {
       "displayName": "Financial Times",
@@ -894,7 +906,8 @@
       "domain": "huffpost.com",
       "accessModel": "free",
       "domainAliases": [
-        "huffingtonpost.com"
+        "huffingtonpost.com",
+        "huffingtonpost.co.uk"
       ]
     },
     "nbcny": {
@@ -998,7 +1011,10 @@
         "broadway and me"
       ],
       "domain": "broadwayandme.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domainAliases": [
+        "broadwayandme.blogspot.com"
+      ]
     },
     "gotham-playgoer": {
       "displayName": "Gotham Playgoer",
@@ -1224,7 +1240,10 @@
         "jks theatre scene"
       ],
       "domain": "jkstheatrescene.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domainAliases": [
+        "jkstheatrescene.blogspot.com"
+      ]
     },
     "new-jersey-newsroom": {
       "displayName": "New Jersey Newsroom",
@@ -1271,7 +1290,10 @@
         "stu on broadway"
       ],
       "domain": "stuonbroadway.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domainAliases": [
+        "stuonbroadway.blogspot.com"
+      ]
     },
     "uinterview": {
       "displayName": "UInterview",
@@ -1297,7 +1319,8 @@
       ],
       "domain": "inquirer.com",
       "domainAliases": [
-        "philly.com"
+        "philly.com",
+        "articles.philly.com"
       ],
       "region": "philadelphia",
       "accessModel": "paywalled"
@@ -1420,7 +1443,10 @@
         "showshowdown"
       ],
       "domain": "showshowdown.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domainAliases": [
+        "showshowdown.blogspot.com"
+      ]
     },
     "theater-reviews-from-my-seat": {
       "displayName": "Theater Reviews from My Seat",
@@ -1610,7 +1636,10 @@
         "limelight"
       ],
       "domain": "limelightmagazine.com.au",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domainAliases": [
+        "limelight-arts.com.au"
+      ]
     },
     "melindas-malarky": {
       "displayName": "Melinda's Malarky",
@@ -1704,7 +1733,10 @@
         "wolf entertainment guide"
       ],
       "domain": "wolfentertainmentguide.com",
-      "accessModel": "defunct"
+      "accessModel": "defunct",
+      "domainAliases": [
+        "newyorktheatreguide.com"
+      ]
     },
     "woman-around-town": {
       "displayName": "Woman Around Town",
@@ -2076,7 +2108,10 @@
         "into-christian-lewis"
       ],
       "domain": "into.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domainAliases": [
+        "intomore.com"
+      ]
     },
     "maryland-theatre-guide": {
       "displayName": "Maryland Theatre Guide",
@@ -3802,7 +3837,10 @@
         "nytheatre wire"
       ],
       "domain": "nytheatre-wire.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domainAliases": [
+        "nytheatre.com"
+      ]
     },
     "scheckontheater": {
       "displayName": "Scheckontheater",
@@ -4877,7 +4915,7 @@
         "america magazine",
         "america"
       ],
-      "domain": "americamagazine.org"
+      "domain": "americantheaterweb.com"
     },
     "desertlocalnews": {
       "displayName": "Desertlocalnews",
@@ -7973,7 +8011,10 @@
       ],
       "accessModel": "free",
       "displayName": "Everything Theatre",
-      "domain": "everythingtheatre.co.uk"
+      "domain": "everythingtheatre.co.uk",
+      "domainAliases": [
+        "everything-theatre.co.uk"
+      ]
     },
     "buzzfeed": {
       "displayName": "BuzzFeed",

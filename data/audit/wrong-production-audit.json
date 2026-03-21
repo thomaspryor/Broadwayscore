@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-20T23:42:06.260Z",
+  "timestamp": "2026-03-21T00:05:22.682Z",
   "stats": {
     "totalReviews": 32030,
     "alreadyFlagged": 10679,
@@ -7,9 +7,9 @@
     "directorMismatch": 946,
     "tvFilmSignals": 3390,
     "londonSignals": 1023,
-    "offBroadwaySignals": 1009,
+    "offBroadwaySignals": 1010,
     "yearMismatch": 71,
-    "noPublishDate": 6924
+    "noPublishDate": 6922
   },
   "findings": [
     {
@@ -5373,7 +5373,7 @@
     {
       "showId": "antigone-this-play-i-read-in-high-school-off-broadway-2026",
       "file": "stageandcinema--gregory-fletcher.json",
-      "score": null,
+      "score": 90,
       "publishDate": "2026-03-11",
       "url": "https://stageandcinema.com/2026/03/11/antigone-this-play-i-read-in-high-school-public/",
       "findings": [
@@ -8351,7 +8351,7 @@
     {
       "showId": "burn-the-floor-2009",
       "file": "ap--unknown.json",
-      "score": null,
+      "score": 46,
       "publishDate": "April 22, 2014",
       "url": "http://www.wtop.com/?nid=114&amp;sid=1731456",
       "findings": [
@@ -30642,7 +30642,7 @@
     {
       "showId": "mary-poppins-2006",
       "file": "nydailynews--unknown.json",
-      "score": null,
+      "score": 85,
       "publishDate": "April 22, 2014",
       "url": "http://www.nydailynews.com/archives/entertainment/2006/11/17/2006-11-17__it_s_eye-_poppin_.html",
       "findings": [
@@ -48027,7 +48027,7 @@
     {
       "showId": "the-amazing-sex-life-of-rabbits-off-broadway-2026",
       "file": "off-off-online--walter-murphy.json",
-      "score": null,
+      "score": 75,
       "publishDate": "2026-03-06",
       "url": "https://www.offoffonline.com/offoffonline/2026/3/6/the-amazing-sex-life-of-rabbits",
       "findings": [
@@ -66379,7 +66379,7 @@
     {
       "showId": "every-brilliant-thing-2026",
       "file": "theater-life--samuel-l-leiter.json",
-      "score": 82,
+      "score": 87,
       "publishDate": "2026-03-18",
       "url": "https://theaterlife.com/every-brilliant-thing-1-2/",
       "findings": [
@@ -82392,6 +82392,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"classic stage\""
+        }
+      ]
+    },
+    {
+      "showId": "the-reservoir-off-broadway-2026",
+      "file": "stageandcinema--unknown.json",
+      "score": 60,
+      "publishDate": "2026-03-09",
+      "url": "https://stageandcinema.com/2026/03/09/the-reservoir-atlantic-theater/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
