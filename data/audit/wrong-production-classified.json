@@ -1,33 +1,16 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-21T04:06:40.293Z",
+    "generatedAt": "2026-03-21T07:54:34.344Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 72,
-    "classified": 1,
+    "total": 71,
+    "classified": 0,
     "wrongProduction": 0,
-    "correctProduction": 1,
+    "correctProduction": 0,
     "uncertain": 0,
     "errors": 0,
     "wrongHighConfidence": 0,
     "wrongMediumConfidence": 0
   },
-  "results": [
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "nysr--frank-scheck.json",
-      "outlet": "New York Stage Review",
-      "criticName": "Frank Scheck",
-      "publishDate": "November 21st, 1997",
-      "originalSignals": [
-        "modern references: masks"
-      ],
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review discusses Julie Taymor's use of masks and costumes, which is a key element of the 1997 Broadway production. The publish date also aligns with the opening of the 1997 production."
-    }
-  ]
+  "results": []
 }
