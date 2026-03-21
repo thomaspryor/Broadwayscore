@@ -43,6 +43,7 @@ ${headerText}
   });
 
   const text = response.content[0].text.trim();
+  // Validate response is a date
   const match = text.match(/^(\d{4}-\d{2}-\d{2})$/);
   if (!match) return null;
 
@@ -56,7 +57,7 @@ ${headerText}
 
 async function run() {
   if (!process.env.ANTHROPIC_API_KEY) {
-    console.error('ANTHROPIC_API_KEY required. Run: export ANTHROPIC_API_KEY=$(grep ANTHROPIC_API_KEY .env | cut -d= -f2)');
+    console.error('ANTHROPIC_API_KEY required. Run: source .env');
     process.exit(1);
   }
 
@@ -80,8 +81,10 @@ async function run() {
       if (!data.fullText || data.fullText.length < 100) continue;
 
       if (VERIFY_MODE) {
+        // Cross-check existing text-regex dates
         if (data.dateSource !== 'text-regex') continue;
       } else {
+        // Extract new dates
         if (data.publishDate) continue;
       }
 
@@ -103,24 +106,13 @@ async function run() {
     const showTitle = show?.title || showDir;
     const header = data.fullText.substring(0, HEADER_CHARS);
 
-    // Show dates to check for hallucination
-    const showDates = new Set([show?.openingDate, show?.closingDate, show?.previewDate, show?.previewsStartDate].filter(Boolean));
-
     try {
-      let llmDate = await extractDateWithLLM(header, data.outlet, showTitle);
+      const llmDate = await extractDateWithLLM(header, data.outlet, showTitle);
       const prefix = `[${i + 1}/${batch.length}]`;
-
-      // Reject if LLM returned a show date — likely hallucinated
-      if (llmDate && showDates.has(llmDate)) {
-        console.log(`${prefix} ${data.outlet.padEnd(25)} ${showDir}: REJECTED ${llmDate} (matches show date — hallucination)`);
-        llmDate = null;
-        failed++;
-        continue;
-      }
 
       if (VERIFY_MODE) {
         if (!llmDate) {
-          console.log(`${prefix} ${data.outlet.padEnd(25)} ${showDir}: LLM=NONE, regex=${data.publishDate}`);
+          console.log(`${prefix} ${data.outlet.padEnd(25)} ${showDir}: LLM=NONE, regex=${data.publishDate} ← CAN'T VERIFY`);
           failed++;
         } else if (llmDate === data.publishDate) {
           console.log(`${prefix} ${data.outlet.padEnd(25)} ${showDir}: AGREE ${llmDate}`);
@@ -150,13 +142,14 @@ async function run() {
       failed++;
     }
 
-    if (i < batch.length - 1) await new Promise(r => setTimeout(r, 300));
+    // Rate limit: ~1 req/sec for Haiku
+    if (i < batch.length - 1) await new Promise(r => setTimeout(r, 500));
   }
 
   console.log(`\n--- Summary ---`);
   if (VERIFY_MODE) {
-    console.log(`Agreed:       ${agreed}`);
-    console.log(`Disagreed:    ${disagreed}`);
+    console.log(`Agreed:     ${agreed}`);
+    console.log(`Disagreed:  ${disagreed}`);
     console.log(`Can't verify: ${failed}`);
     if (disagreements.length > 0) {
       console.log(`\nDisagreements:`);
