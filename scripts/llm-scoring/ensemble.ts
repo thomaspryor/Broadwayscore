@@ -384,7 +384,8 @@ export function toModelScore(
     confidence: result.confidence,
     verdict: result.verdict,
     keyQuote: result.keyQuote,
-    reasoning: result.reasoning
+    reasoning: result.reasoning,
+    publishDate: result.publishDate || null,
   };
 }
 

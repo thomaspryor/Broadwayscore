@@ -106,6 +106,8 @@ export interface SimplifiedLLMResult {
   keyQuote: string;
   /** 1-2 sentence reasoning */
   reasoning: string;
+  /** Publish date extracted from review text (YYYY-MM-DD), or null if not found */
+  publishDate?: string | null;
 }
 
 /**
@@ -120,6 +122,8 @@ export interface ModelScore {
   keyQuote?: string;
   reasoning?: string;
   error?: string;
+  /** Publish date extracted from review text by this model */
+  publishDate?: string | null;
 }
 
 /**
