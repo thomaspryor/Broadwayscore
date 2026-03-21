@@ -52,6 +52,8 @@ export interface UserList {
   name: string;
   description: string | null;
   is_ranked: boolean;
+  is_public: boolean;
+  share_slug: string | null;
   created_at: string;
   updated_at: string;
   item_count?: number;

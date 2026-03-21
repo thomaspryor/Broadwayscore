@@ -47,12 +47,17 @@ export async function GET(request: NextRequest) {
   // For browse pages
   const posters = searchParams.get('posters')?.split(',').filter(Boolean) || [];
 
+  const count = searchParams.get('count') ? parseInt(searchParams.get('count')!) : 0;
+  const creator = searchParams.get('creator') || '';
+
   if (type === 'show') {
     return generateShowOG(title, score, reviewCount, theater, posterUrl, category);
   } else if (type === 'browse') {
     return generateBrowseOG(title, subtitle, posters);
   } else if (type === 'home') {
     return generateHomeOG(posters);
+  } else if (type === 'list') {
+    return generateListOG(title, count, creator);
   }
 
   // Default fallback
@@ -545,6 +550,121 @@ async function generateHomeOG(posters: string[]) {
               ))}
             </div>
           )}
+        </div>
+      </div>
+    ),
+    {
+      width: 1200,
+      height: 630,
+    }
+  );
+}
+
+async function generateListOG(title: string, count: number, creator: string) {
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          height: '100%',
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: '#0a0a0a',
+          position: 'relative',
+        }}
+      >
+        {/* Background gradient */}
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'radial-gradient(ellipse at top left, rgba(139, 92, 246, 0.15), transparent 50%), radial-gradient(ellipse at bottom right, rgba(236, 72, 153, 0.1), transparent 50%)',
+          }}
+        />
+
+        {/* List icon */}
+        <div
+          style={{
+            fontSize: '64px',
+            marginBottom: '24px',
+          }}
+        >
+          📋
+        </div>
+
+        {/* Title */}
+        <div
+          style={{
+            fontSize: title.length > 30 ? '52px' : '64px',
+            fontWeight: 800,
+            color: 'white',
+            lineHeight: 1.15,
+            letterSpacing: '-0.02em',
+            textAlign: 'center',
+            maxWidth: '900px',
+            padding: '0 48px',
+          }}
+        >
+          {title}
+        </div>
+
+        {/* Creator */}
+        {creator && (
+          <div
+            style={{
+              fontSize: '28px',
+              color: '#9ca3af',
+              marginTop: '16px',
+            }}
+          >
+            by {creator}
+          </div>
+        )}
+
+        {/* Show count */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            marginTop: '24px',
+            padding: '12px 24px',
+            borderRadius: '999px',
+            background: 'rgba(255, 255, 255, 0.05)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+          }}
+        >
+          <span style={{ fontSize: '20px', color: '#d1d5db' }}>
+            {count} {count === 1 ? 'show' : 'shows'} ranked
+          </span>
+        </div>
+
+        {/* Branding */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '40px',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <span style={{ fontSize: '28px', fontWeight: 800, color: 'white' }}>Broadway</span>
+          <span
+            style={{
+              fontSize: '28px',
+              fontWeight: 800,
+              background: 'linear-gradient(to right, #8b5cf6, #ec4899)',
+              backgroundClip: 'text',
+              color: 'transparent',
+            }}
+          >
+            Scorecard
+          </span>
         </div>
       </div>
     ),

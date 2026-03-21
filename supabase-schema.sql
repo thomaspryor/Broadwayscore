@@ -42,6 +42,8 @@ CREATE TABLE lists (
   name TEXT NOT NULL,
   description TEXT,
   is_ranked BOOLEAN NOT NULL DEFAULT false,
+  is_public BOOLEAN NOT NULL DEFAULT false,
+  share_slug TEXT UNIQUE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -64,6 +66,7 @@ CREATE INDEX idx_reviews_user_show ON reviews(user_id, show_id);
 CREATE INDEX idx_watchlist_user_id ON watchlist(user_id);
 CREATE INDEX idx_watchlist_user_show ON watchlist(user_id, show_id);
 CREATE INDEX idx_lists_user_id ON lists(user_id);
+CREATE INDEX idx_lists_share_slug ON lists(share_slug) WHERE share_slug IS NOT NULL;
 CREATE INDEX idx_list_items_list_id ON list_items(list_id);
 CREATE INDEX idx_list_items_list_show ON list_items(list_id, show_id);
 
@@ -138,6 +141,16 @@ CREATE POLICY "Users can delete own lists"
   ON lists FOR DELETE
   USING (auth.uid() = user_id);
 
+-- Public lists: anonymous users can view public lists
+CREATE POLICY "Anyone can view public lists"
+  ON lists FOR SELECT
+  USING (is_public = true);
+
+-- Public profiles: anonymous users can view profiles of public list owners
+CREATE POLICY "Anyone can view public list owner profiles"
+  ON profiles FOR SELECT
+  USING (EXISTS (SELECT 1 FROM lists WHERE lists.user_id = profiles.id AND lists.is_public = true));
+
 -- List items: users can CRUD items in their own lists
 CREATE POLICY "Users can view own list items"
   ON list_items FOR SELECT
@@ -154,6 +167,11 @@ CREATE POLICY "Users can update own list items"
 CREATE POLICY "Users can delete own list items"
   ON list_items FOR DELETE
   USING (EXISTS (SELECT 1 FROM lists WHERE lists.id = list_items.list_id AND lists.user_id = auth.uid()));
+
+-- Public list items: anonymous users can view items of public lists
+CREATE POLICY "Anyone can view public list items"
+  ON list_items FOR SELECT
+  USING (EXISTS (SELECT 1 FROM lists WHERE lists.id = list_items.list_id AND lists.is_public = true));
 
 -- Reorder list items atomically (SECURITY DEFINER — validates list ownership internally)
 CREATE OR REPLACE FUNCTION reorder_list_items(p_list_id UUID, p_item_ids UUID[], p_positions REAL[])
