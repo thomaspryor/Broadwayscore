@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-21T06:17:10.659Z",
-  "processed": 420,
+  "updatedAt": "2026-03-21T06:19:15.647Z",
+  "processed": 430,
   "failed": 70,
-  "successRate": "85.7%",
+  "successRate": "86.0%",
   "tierBreakdown": {
-    "playwright": 367,
+    "playwright": 375,
     "amp": 12,
-    "browserbase": 8,
+    "browserbase": 10,
     "directCookies": 2,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 34,
-    "archive": 43
+    "archive": 44
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 9,
   "recentActivity": [
-    {
-      "t": "2026-03-21T04:46:19.407Z",
-      "event": "bb-session",
-      "session": "1babf62e",
-      "url": "https://www.wsj.com/articles/antigone-this-play-i-read-in-high-school-review-inh"
-    },
-    {
-      "t": "2026-03-21T04:46:20.430Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-21T04:59:09.895Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-21T06:09:08.026Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-21T06:18:17.756Z",
+      "event": "bb-session",
+      "session": "c1e79f58",
+      "url": "https://www.amny.com/entertainment/broadway/review-buena-vista-social-clunk/"
+    },
+    {
+      "t": "2026-03-21T06:18:18.967Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
