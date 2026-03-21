@@ -76,7 +76,15 @@
     "pied-a-terre-off-broadway-2026/nytg--unknown.json",
     "bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
     "bigfoot-off-broadway-2026/culturesauce--thom-geier.json",
-    "bigfoot-off-broadway-2026/nysr--michael-sommers.json"
+    "bigfoot-off-broadway-2026/nysr--michael-sommers.json",
+    "bigfoot-off-broadway-2026/nysr--unknown.json",
+    "bigfoot-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "bigfoot-off-broadway-2026/playbill--unknown.json",
+    "bigfoot-off-broadway-2026/stageandcinema--alex-simmons.json",
+    "bigfoot-off-broadway-2026/theater-scene--darryl-reilly.json",
+    "bigfoot-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/thewrap--robert-hofler.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/exeunt-magazine--loren-noveck.json"
   ],
   "failed": [
     "no-singing-in-the-navy-off-broadway-2026/talkinbroadway--unknown.json",
@@ -91,7 +99,9 @@
     "jesa-off-broadway-2026/timeout--unknown.json",
     "jesa-off-broadway-2026/nysr--unknown.json",
     "trash-off-broadway-2026/nytimes--unknown.json",
-    "mexodus-off-broadway-2026/playbill--unknown.json"
+    "mexodus-off-broadway-2026/playbill--unknown.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/nytimes--helen-shaw.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -153,11 +163,20 @@
       "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
       "pied-a-terre-off-broadway-2026/nytg--unknown.json",
       "bigfoot-off-broadway-2026/culturesauce--thom-geier.json",
-      "bigfoot-off-broadway-2026/nysr--michael-sommers.json"
+      "bigfoot-off-broadway-2026/nysr--michael-sommers.json",
+      "bigfoot-off-broadway-2026/nysr--unknown.json",
+      "bigfoot-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+      "bigfoot-off-broadway-2026/playbill--unknown.json",
+      "bigfoot-off-broadway-2026/stageandcinema--alex-simmons.json",
+      "bigfoot-off-broadway-2026/theater-scene--darryl-reilly.json",
+      "bigfoot-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/exeunt-magazine--loren-noveck.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
-      "tru-off-broadway-2026/thewrap--unknown.json"
+      "tru-off-broadway-2026/thewrap--unknown.json",
+      "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/thewrap--robert-hofler.json",
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/thewrap--robert-hofler.json"
     ],
     "browserbase": [],
     "directCookies": [],
@@ -173,7 +192,8 @@
       "data/review-texts/jesa-off-broadway-2026/theatermania--unknown.json",
       "data/review-texts/jesa-off-broadway-2026/vulture--unknown.json",
       "data/review-texts/jesa-off-broadway-2026/timeout--unknown.json",
-      "data/review-texts/trash-off-broadway-2026/nytimes--unknown.json"
+      "data/review-texts/trash-off-broadway-2026/nytimes--unknown.json",
+      "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/nytimes--helen-shaw.json"
     ],
     "archive": [
       "my-joy-is-heavy-off-broadway-2025/vulture--sara-holdren.json",
@@ -197,7 +217,7 @@
     ]
   },
   "startTime": "2026-03-21T09:00:19.929Z",
-  "lastProcessed": "bigfoot-off-broadway-2026/nysr--michael-sommers.json",
+  "lastProcessed": "antigone-this-play-i-read-in-high-school-off-broadway-2026/exeunt-magazine--loren-noveck.json",
   "log": [
     {
       "t": "2026-03-21T09:01:18.301Z",
@@ -210,6 +230,12 @@
       "event": "bb-session",
       "session": "4698e29d",
       "url": "https://www.nytimes.com/2026/03/15/theater/trash-review-perelman.html"
+    },
+    {
+      "t": "2026-03-21T09:23:36.091Z",
+      "event": "bb-session",
+      "session": "9eea1f7e",
+      "url": "https://www.nytimes.com/2026/03/12/theater/antigone-review-shalhoub-keenan-bolge"
     }
   ]
 }
