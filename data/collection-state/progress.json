@@ -908,6 +908,7 @@
       "data/review-texts/buena-vista-social-club-2025/amny--matt-windman.json",
       "buena-vista-social-club-2025/amny--matt-windman.json"
     ],
+    "browserbase": [],
     "directCookies": [
       "paranormal-activity-west-end-2025/times-uk--rachel-halliburton.json",
       "hercules-west-end-2025/times-uk--clive-davis.json"
@@ -1001,21 +1002,22 @@
   "lastProcessed": "my-neighbour-totoro-west-end-2025/observer--unknown.json",
   "log": [
     {
-      "t": "2026-03-21T04:08:42.048Z",
+      "t": "2026-03-21T05:51:21.421Z",
       "event": "bb-session",
-      "session": "dd7209f6",
-      "url": "https://www.nytimes.com/2026/03/19/theater/the-wild-party-review-warren-rogers-p"
+      "session": "bbc61352",
+      "url": "https://www.thestage.co.uk/review-round-ups/oliver-starring-simon-lipkin--review"
     },
     {
-      "t": "2026-03-21T04:08:43.055Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "t": "2026-03-21T05:51:59.649Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    39 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
     },
     {
-      "t": "2026-03-21T04:12:24.273Z",
+      "t": "2026-03-21T05:53:56.919Z",
       "event": "bb-session",
-      "session": "3e01f669",
-      "url": "https://www.nytimes.com/2026/03/18/theater/my-joy-is-heavy-review-bengsons.html"
+      "session": "20ff74f9",
+      "url": "https://www.thestage.co.uk/review-round-ups/oliver-starring-simon-lipkin--review"
     },
     {
       "t": "2026-03-21T04:12:25.347Z",
