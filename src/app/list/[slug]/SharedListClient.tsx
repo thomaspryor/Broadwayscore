@@ -324,7 +324,7 @@ function SharedListItem({
       {/* Poster */}
       <div className="flex-shrink-0 w-12 sm:w-14 aspect-[2/3] rounded-lg overflow-hidden bg-white/[0.04]">
         {posterSrc ? (
-          <img src={posterSrc} alt="" className="w-full h-full object-cover" loading="lazy" />
+          <img src={posterSrc} alt={title} className="w-full h-full object-cover" loading="lazy" />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-gray-600 text-lg">🎭</div>
         )}

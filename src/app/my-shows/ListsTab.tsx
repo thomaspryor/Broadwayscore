@@ -181,8 +181,12 @@ export default function ListsTab({ userId, showMap, isMockMode, createTrigger = 
           onShare={async () => {
             const url = await shareList(activeListId);
             if (url) {
-              try { await navigator.clipboard.writeText(url); } catch { /* fallback below */ }
-              showToast?.('Link copied!', 'success');
+              try {
+                await navigator.clipboard.writeText(url);
+                showToast?.('Link copied!', 'success');
+              } catch {
+                showToast?.(url, 'info');
+              }
             } else {
               showToast?.('Failed to share list.', 'error');
             }
@@ -410,17 +414,19 @@ function ListDetailView({
       {/* List name + share + options menu */}
       <div className="flex items-center gap-1 mb-1">
         <h2 className="text-2xl font-extrabold text-white">{list.name}</h2>
-        {/* Share button */}
+        {/* Share button (hidden for empty lists) */}
+        {items.length > 0 && (
         <button
           type="button"
           onClick={onShare}
-          className="p-2 text-gray-400 hover:text-brand transition-colors"
+          className="p-2.5 text-gray-400 hover:text-brand transition-colors"
           aria-label="Share list"
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
           </svg>
         </button>
+        )}
         <div className="relative" ref={overflowRef}>
           <button
             type="button"
