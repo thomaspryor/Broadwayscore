@@ -804,7 +804,7 @@ async function getStagePageViaBrowserBase(url) {
     if (email && password) {
       console.log('    [BB] Logging in to The Stage...');
       // Navigate to login page directly
-      await _bbPage.goto('https://www.thestage.co.uk/accounts/sign-in', { waitUntil: 'networkidle', timeout: 30000 });
+      await _bbPage.goto('https://www.thestage.co.uk/login', { waitUntil: 'networkidle', timeout: 30000 });
       await _bbPage.waitForTimeout(3000);
 
       // Dismiss cookie consent if present
