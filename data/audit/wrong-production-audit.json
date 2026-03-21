@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-21T00:40:52.418Z",
+  "timestamp": "2026-03-21T00:49:26.458Z",
   "stats": {
     "totalReviews": 32039,
-    "alreadyFlagged": 10700,
+    "alreadyFlagged": 10701,
     "dateGuardCatches": 137,
     "directorMismatch": 947,
     "tvFilmSignals": 3392,
-    "londonSignals": 1024,
+    "londonSignals": 1026,
     "offBroadwaySignals": 1010,
     "yearMismatch": 70,
-    "noPublishDate": 6888
+    "noPublishDate": 6885
   },
   "findings": [
     {
@@ -10141,7 +10141,7 @@
     {
       "showId": "cats-the-jellicle-ball-off-broadway-2024",
       "file": "stageandcinema--alex-simmons.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2024-06-21",
       "url": "https://stageandcinema.com/2024/06/21/cats-the-jellicle-ball/",
       "findings": [
@@ -19659,7 +19659,7 @@
     {
       "showId": "grease-2007",
       "file": "the-journal-news--unknown.json",
-      "score": null,
+      "score": 80,
       "publishDate": "April 22, 2014",
       "url": "http://www.lohud.com/apps/pbcs.dll/article?AID=2007708200313",
       "findings": [
@@ -62705,6 +62705,19 @@
     },
     {
       "showId": "all-my-sons-west-end-2025",
+      "file": "timeout--andrzej-lukowski.json",
+      "publishDate": "2025-11-22",
+      "url": "https://www.timeout.com/london/news/review-all-my-sons-starring-bran-cranston-at-wyndhams-theatre-112225",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "all-my-sons-west-end-2025",
       "file": "timeout--helen-shaw.json",
       "score": 91,
       "publishDate": "2025-11-22",
@@ -74578,7 +74591,7 @@
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"gielgud\""
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -82413,6 +82426,20 @@
     },
     {
       "showId": "the-producers-west-end-2025",
+      "file": "timeout--andrzej-lukowski.json",
+      "score": 77,
+      "publishDate": "2025-09-14",
+      "url": "https://www.timeout.com/london/theatre/the-producers-3-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-producers-west-end-2025",
       "file": "timeout--only-andrzej-lukowski.json",
       "score": 72,
       "publishDate": "2025-09-14",
@@ -83521,7 +83548,7 @@
     {
       "showId": "topdog-underdog-2022",
       "file": "frontmezzjunkies--unknown.json",
-      "score": null,
+      "score": 80,
       "publishDate": "2022-11-06",
       "url": "https://frontmezzjunkies.com/2022/11/06/topdog-underdog-on-broadway/",
       "findings": [
