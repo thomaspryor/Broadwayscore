@@ -4072,6 +4072,44 @@ function validateUrlDate(yearStr, monthStr, dayStr) {
   return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 }
 
+// Extract publishDate from review text byline (first 500 chars).
+// Only fires when exactly ONE date is found. Rejects run/closing dates.
+const TEXT_DATE_PATTERNS = [
+  /\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2})(?:st|nd|rd|th)?,?\s+(\d{4})\b/gi,
+  /\b(\d{1,2})(?:st|nd|rd|th)?\s+(January|February|March|April|May|June|July|August|September|October|November|December),?\s+(\d{4})\b/gi,
+];
+const TEXT_DATE_RUN_WORDS = /\b(through|until|closing|effective|expires|ends|extended|running|booking|playing|performances?)\b/i;
+const TEXT_DATE_MONTHS = { january:1, february:2, march:3, april:4, may:5, june:6, july:7, august:8, september:9, october:10, november:11, december:12 };
+
+function extractDateFromText(fullText) {
+  const header = fullText.substring(0, 500);
+  const allMatches = [];
+  for (const pat of TEXT_DATE_PATTERNS) {
+    pat.lastIndex = 0;
+    let m;
+    while ((m = pat.exec(header)) !== null) {
+      const before = header.substring(Math.max(0, m.index - 50), m.index).toLowerCase();
+      if (TEXT_DATE_RUN_WORDS.test(before)) continue;
+      allMatches.push(m[0]);
+    }
+  }
+  if (allMatches.length !== 1) return null;
+
+  const match = allMatches[0];
+  const m1 = match.match(/^([A-Za-z]+)\s+(\d+)(?:st|nd|rd|th)?,?\s+(\d{4})$/);
+  const m2 = match.match(/^(\d+)(?:st|nd|rd|th)?\s+([A-Za-z]+),?\s+(\d{4})$/);
+  let monthStr, day, year;
+  if (m1) { monthStr = m1[1].toLowerCase(); day = parseInt(m1[2], 10); year = parseInt(m1[3], 10); }
+  else if (m2) { day = parseInt(m2[1], 10); monthStr = m2[2].toLowerCase(); year = parseInt(m2[3], 10); }
+  else return null;
+
+  const month = TEXT_DATE_MONTHS[monthStr];
+  if (!month || day < 1 || day > 31 || year < 1970 || year > 2027) return null;
+  const d = new Date(year, month - 1, day);
+  if (d.getFullYear() !== year || d.getMonth() !== month - 1 || d.getDate() !== day) return null;
+  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+}
+
 // Normalize extracted date string to YYYY-MM-DD format
 // Extracts date components directly from string to avoid timezone shift issues
 // (e.g., "2024-03-15T23:30:00-05:00" → "2024-03-15", not "2024-03-16")
@@ -4181,6 +4219,17 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       data.publishDate = extractedDate;
       data.dateSource = 'url';
       console.log(`    → Extracted publishDate from URL: ${extractedDate}`);
+    }
+  }
+
+  // Fallback 2: extract publishDate from first 500 chars of fullText (byline dates)
+  // Only when exactly one date found. Rejects run/closing dates via context words.
+  if (!data.publishDate && data.fullText && data.fullText.length > 100) {
+    const extractedDate = extractDateFromText(data.fullText);
+    if (extractedDate) {
+      data.publishDate = extractedDate;
+      data.dateSource = 'text-regex';
+      console.log(`    → Extracted publishDate from text: ${extractedDate}`);
     }
   }
 

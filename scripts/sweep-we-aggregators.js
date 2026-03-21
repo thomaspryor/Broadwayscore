@@ -539,16 +539,9 @@ async function sweepTheatreReviews(show) {
   // Deduplicate
   const uniqueUrls = [...new Set(urls)];
 
-  // Try each URL: nodeFetch first (free), then ScrapingBee render (costs credits)
+  // Try each URL via nodeFetch first (free), only use SB for the index URL (saves credits)
   for (const url of uniqueUrls) {
-    let html = await nodeFetch(url);
-
-    // ScrapingBee render fallback for CleanTalk-blocked pages
-    if (!html && SB_KEY) {
-      console.log(`    [TR] nodeFetch blocked, trying ScrapingBee for ${url.split('/reviews-roundup/')[1] || url}`);
-      html = await scrapingBeeRender(url);
-    }
-
+    const html = await nodeFetch(url);
     if (!html || html.length < 1000) continue;
     if (html.includes('<title>Page not found') || html.includes('404')) continue;
 
@@ -559,6 +552,23 @@ async function sweepTheatreReviews(show) {
         fs.writeFileSync(archivePath, html);
       }
       return reviews;
+    }
+  }
+
+  // SB render fallback — only for index URL (known-good, saves credits vs trying all variants)
+  if (SB_KEY && indexUrl) {
+    await sleep(2000); // Rate limit — CleanTalk blocks rapid requests
+    console.log(`    [TR] Trying ScrapingBee for ${indexUrl.split('/reviews-roundup/')[1] || indexUrl}`);
+    const html = await scrapingBeeRender(indexUrl);
+    if (html && html.length > 1000 && !html.includes('<title>Page not found') && !html.includes('404')) {
+      const reviews = extractTheatreReviews(html, show.id);
+      if (reviews.length > 0) {
+        if (!DRY_RUN) {
+          if (!fs.existsSync(archDir)) fs.mkdirSync(archDir, { recursive: true });
+          fs.writeFileSync(archivePath, html);
+        }
+        return reviews;
+      }
     }
   }
 
