@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-21T16:38:38.105Z",
-  "processed": 326,
-  "failed": 44,
-  "successRate": "88.1%",
+  "updatedAt": "2026-03-21T16:40:43.918Z",
+  "processed": 335,
+  "failed": 45,
+  "successRate": "88.2%",
   "tierBreakdown": {
-    "playwright": 285,
+    "playwright": 293,
     "amp": 8,
-    "browserbase": 6,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 24,
     "archive": 38
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-03-21T09:01:18.301Z",
@@ -65,6 +65,17 @@
       "t": "2026-03-21T16:21:55.169Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-21T16:40:27.108Z",
+      "event": "bb-session",
+      "session": "a1d7c172",
+      "url": "https://www.nytimes.com/2025/10/16/theater/ragtime-review-henry-debessonet.html"
+    },
+    {
+      "t": "2026-03-21T16:40:28.128Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
