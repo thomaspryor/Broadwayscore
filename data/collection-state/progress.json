@@ -542,7 +542,16 @@
     "mj-2022/theatermania--jesse-green.json",
     "mj-2022/exeunt-magazine--juliet-hindell.json",
     "mj-2022/theater-life--patrick-christiano.json",
-    "mj-2022/theater-scene--joel-benjamin.json"
+    "mj-2022/theater-scene--joel-benjamin.json",
+    "magic-mike-live-west-end-2021/independent--alice-saville.json",
+    "magic-mike-live-west-end-2021/london-theatre--mark-shenton.json",
+    "magic-mike-live-west-end-2021/standard--nick-curtis.json",
+    "magic-mike-live-west-end-2021/whatsonstage--sarah-crompton.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/guardian--arifa-akbar.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/artsdesk--david-nice.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/i-paper--fiona-mountford.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/independent--annabel-nugent.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/london-theatre--suzy-evans.json"
   ],
   "failed": [
     "no-singing-in-the-navy-off-broadway-2026/talkinbroadway--unknown.json",
@@ -631,7 +640,8 @@
     "witness-for-the-prosecution-west-end-2022/artsdesk--unknown.json",
     "witness-for-the-prosecution-west-end-2022/lost-in-theatreland--amy-rye.json",
     "mj-2022/vulture--helen-shaw.json",
-    "mj-2022/ap--mark-kennedy.json"
+    "mj-2022/ap--mark-kennedy.json",
+    "mj-2022/usatoday--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1086,7 +1096,14 @@
       "mj-2022/theatermania--jesse-green.json",
       "mj-2022/exeunt-magazine--juliet-hindell.json",
       "mj-2022/theater-life--patrick-christiano.json",
-      "mj-2022/theater-scene--joel-benjamin.json"
+      "mj-2022/theater-scene--joel-benjamin.json",
+      "magic-mike-live-west-end-2021/london-theatre--mark-shenton.json",
+      "magic-mike-live-west-end-2021/standard--nick-curtis.json",
+      "magic-mike-live-west-end-2021/whatsonstage--sarah-crompton.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/guardian--arifa-akbar.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/i-paper--fiona-mountford.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/independent--annabel-nugent.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/london-theatre--suzy-evans.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -1122,7 +1139,9 @@
       "data/review-texts/the-great-gatsby-2024/nytimes--maya-phillips.json",
       "the-great-gatsby-2024/nytimes--maya-phillips.json",
       "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
-      "mj-2022/hollywood-reporter--lovia-gyarkye.json"
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "data/review-texts/mj-2022/usatoday--david-rooney.json",
+      "mj-2022/usatoday--david-rooney.json"
     ],
     "directCookies": [
       "hercules-west-end-2025/the-sun--dominic-maxwell.json",
@@ -1250,11 +1269,13 @@
       "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
       "and-juliet-2022/theatermania--jesse-green.json",
       "and-juliet-2022/ap--unknown.json",
-      "and-juliet-2022/broadway-blog--joey-sims.json"
+      "and-juliet-2022/broadway-blog--joey-sims.json",
+      "magic-mike-live-west-end-2021/independent--alice-saville.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/artsdesk--david-nice.json"
     ]
   },
   "startTime": "2026-03-21T09:00:19.929Z",
-  "lastProcessed": "mj-2022/theater-scene--joel-benjamin.json",
+  "lastProcessed": "cabaret-at-the-kit-kat-club-west-end-2021/london-theatre--suzy-evans.json",
   "log": [
     {
       "t": "2026-03-21T09:01:18.301Z",
@@ -1383,6 +1404,17 @@
       "t": "2026-03-21T21:32:11.703Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-21T21:39:46.679Z",
+      "event": "bb-session",
+      "session": "1a752b7b",
+      "url": "https://broncoswire.usatoday.com/story/entertainment/arts/2022/02/02/mj-musical-"
+    },
+    {
+      "t": "2026-03-21T21:39:48.023Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }
