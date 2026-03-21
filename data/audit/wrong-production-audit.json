@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-21T01:32:33.727Z",
+  "timestamp": "2026-03-21T01:39:37.072Z",
   "stats": {
     "totalReviews": 32039,
-    "alreadyFlagged": 10703,
+    "alreadyFlagged": 10704,
     "dateGuardCatches": 137,
     "directorMismatch": 947,
     "tvFilmSignals": 3390,
-    "londonSignals": 1027,
+    "londonSignals": 1028,
     "offBroadwaySignals": 1010,
     "yearMismatch": 71,
-    "noPublishDate": 6880
+    "noPublishDate": 6876
   },
   "findings": [
     {
@@ -82193,6 +82193,20 @@
       "score": 85,
       "publishDate": "2023-11-15",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-play-that-goes-wrong-duchess-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "file": "timeout-london--unknown.json",
+      "score": 72,
+      "publishDate": "September 15th, 2014",
+      "url": "https://www.timeout.com/london/theatre/the-play-that-goes-wrong-1",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
