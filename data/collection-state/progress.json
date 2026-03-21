@@ -446,7 +446,16 @@
     "dracula-west-end-2025/whatsonstage--sarah-crompton.json",
     "oliver-west-end-2024/guardian--arifa-akbar.json",
     "oliver-west-end-2024/timeout--andrzej-lukowski.json",
-    "oliver-west-end-2024/timeout-london--andrzej-lukowski.json"
+    "oliver-west-end-2024/timeout-london--andrzej-lukowski.json",
+    "oliver-west-end-2024/artsdesk--helen-hawkins.json",
+    "oliver-west-end-2024/financialtimes--financial-times.json",
+    "oliver-west-end-2024/financialtimes--sarah-hemming.json",
+    "oliver-west-end-2024/i-paper--fiona-mountford.json",
+    "oliver-west-end-2024/london-theatre--marianka-swain.json",
+    "oliver-west-end-2024/standard--henry-hitchings.json",
+    "oliver-west-end-2024/the-express--neil-norman.json",
+    "oliver-west-end-2024/the-sun--dominic-maxwell.json",
+    "oliver-west-end-2024/theatre-weekly--greg-stewart.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -521,7 +530,8 @@
     "just-in-time-2025/theater-scene--joel-benjamin.json",
     "my-neighbour-totoro-west-end-2025/the-morning-star--unknown.json",
     "dracula-west-end-2025/broadwayworld--unknown.json",
-    "dracula-west-end-2025/times-uk--clive-davis.json"
+    "dracula-west-end-2025/times-uk--clive-davis.json",
+    "oliver-west-end-2024/thestage--matt-hemley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -914,7 +924,16 @@
       "dracula-west-end-2025/whatsonstage--sarah-crompton.json",
       "oliver-west-end-2024/guardian--arifa-akbar.json",
       "oliver-west-end-2024/timeout--andrzej-lukowski.json",
-      "oliver-west-end-2024/timeout-london--andrzej-lukowski.json"
+      "oliver-west-end-2024/timeout-london--andrzej-lukowski.json",
+      "oliver-west-end-2024/artsdesk--helen-hawkins.json",
+      "oliver-west-end-2024/financialtimes--financial-times.json",
+      "oliver-west-end-2024/financialtimes--sarah-hemming.json",
+      "oliver-west-end-2024/i-paper--fiona-mountford.json",
+      "oliver-west-end-2024/london-theatre--marianka-swain.json",
+      "oliver-west-end-2024/standard--henry-hitchings.json",
+      "oliver-west-end-2024/the-express--neil-norman.json",
+      "oliver-west-end-2024/the-sun--dominic-maxwell.json",
+      "oliver-west-end-2024/theatre-weekly--greg-stewart.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -985,7 +1004,8 @@
       "data/review-texts/hercules-west-end-2025/nytimes--matt-wolf.json",
       "data/review-texts/heathers-the-musical-off-broadway-2025/cititour--brian-scott-lipton.json",
       "data/review-texts/heathers-the-musical-off-broadway-2025/northjerseycom--robert-feldberg.json",
-      "data/review-texts/dracula-west-end-2025/broadwayworld--unknown.json"
+      "data/review-texts/dracula-west-end-2025/broadwayworld--unknown.json",
+      "data/review-texts/oliver-west-end-2024/thestage--matt-hemley.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -1037,7 +1057,7 @@
     ]
   },
   "startTime": "2026-03-21T03:54:55.801Z",
-  "lastProcessed": "oliver-west-end-2024/timeout-london--andrzej-lukowski.json",
+  "lastProcessed": "oliver-west-end-2024/thestage--matt-hemley.json",
   "log": [
     {
       "t": "2026-03-21T04:08:42.048Z",
@@ -1236,6 +1256,17 @@
       "t": "2026-03-21T06:18:18.967Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-21T06:27:47.743Z",
+      "event": "bb-session",
+      "session": "ac6a3dfa",
+      "url": "https://www.thestage.co.uk/review-round-ups/oliver-starring-simon-lipkin--review"
+    },
+    {
+      "t": "2026-03-21T06:27:49.014Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
