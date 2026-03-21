@@ -1,32 +1,20 @@
 {
-  "updatedAt": "2026-03-21T21:31:00.370Z",
-  "processed": 536,
-  "failed": 84,
-  "successRate": "86.5%",
+  "updatedAt": "2026-03-21T21:36:16.457Z",
+  "processed": 543,
+  "failed": 87,
+  "successRate": "86.2%",
   "tierBreakdown": {
-    "playwright": 445,
+    "playwright": 451,
     "amp": 14,
-    "browserbase": 16,
+    "browserbase": 18,
     "directCookies": 2,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 33,
+    "archiveToday": 35,
     "archive": 83
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-03-21T09:16:31.758Z",
-      "event": "bb-session",
-      "session": "4698e29d",
-      "url": "https://www.nytimes.com/2026/03/15/theater/trash-review-perelman.html"
-    },
-    {
-      "t": "2026-03-21T09:23:36.091Z",
-      "event": "bb-session",
-      "session": "9eea1f7e",
-      "url": "https://www.nytimes.com/2026/03/12/theater/antigone-review-shalhoub-keenan-bolge"
-    },
     {
       "t": "2026-03-21T15:34:05.455Z",
       "event": "bb-session",
@@ -125,6 +113,17 @@
       "t": "2026-03-21T21:16:08.973Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-21T21:32:10.325Z",
+      "event": "bb-session",
+      "session": "99e51fbb",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-03-21T21:32:11.703Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

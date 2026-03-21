@@ -535,7 +535,14 @@
     "and-juliet-2022/ap--unknown.json",
     "and-juliet-2022/broadway-blog--joey-sims.json",
     "and-juliet-2022/theater-life--samuel-l-leiter.json",
-    "and-juliet-2022/washpost--peter-marks.json"
+    "and-juliet-2022/washpost--peter-marks.json",
+    "witness-for-the-prosecution-west-end-2022/radio-times--unknown.json",
+    "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json",
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "mj-2022/theatermania--jesse-green.json",
+    "mj-2022/exeunt-magazine--juliet-hindell.json",
+    "mj-2022/theater-life--patrick-christiano.json",
+    "mj-2022/theater-scene--joel-benjamin.json"
   ],
   "failed": [
     "no-singing-in-the-navy-off-broadway-2026/talkinbroadway--unknown.json",
@@ -621,7 +628,10 @@
     "stranger-things-the-first-shadow-west-end-2023/i-paper--emily-baker.json",
     "stranger-things-the-first-shadow-west-end-2023/lost-in-theatreland--jill-johnson.json",
     "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
-    "witness-for-the-prosecution-west-end-2022/artsdesk--unknown.json"
+    "witness-for-the-prosecution-west-end-2022/artsdesk--unknown.json",
+    "witness-for-the-prosecution-west-end-2022/lost-in-theatreland--amy-rye.json",
+    "mj-2022/vulture--helen-shaw.json",
+    "mj-2022/ap--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1070,7 +1080,13 @@
       "stranger-things-the-first-shadow-west-end-2023/whatsonstage--sarah-crompton.json",
       "and-juliet-2022/theatermania--hayley-levitt.json",
       "and-juliet-2022/theater-life--samuel-l-leiter.json",
-      "and-juliet-2022/washpost--peter-marks.json"
+      "and-juliet-2022/washpost--peter-marks.json",
+      "witness-for-the-prosecution-west-end-2022/radio-times--unknown.json",
+      "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json",
+      "mj-2022/theatermania--jesse-green.json",
+      "mj-2022/exeunt-magazine--juliet-hindell.json",
+      "mj-2022/theater-life--patrick-christiano.json",
+      "mj-2022/theater-scene--joel-benjamin.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -1104,7 +1120,9 @@
       "data/review-texts/oh-mary-2024/hollywood-reporter--david-rooney.json",
       "oh-mary-2024/hollywood-reporter--david-rooney.json",
       "data/review-texts/the-great-gatsby-2024/nytimes--maya-phillips.json",
-      "the-great-gatsby-2024/nytimes--maya-phillips.json"
+      "the-great-gatsby-2024/nytimes--maya-phillips.json",
+      "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json"
     ],
     "directCookies": [
       "hercules-west-end-2025/the-sun--dominic-maxwell.json",
@@ -1145,7 +1163,9 @@
       "data/review-texts/just-in-time-2025/billboard--unknown.json",
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/daily-mail--luke-jones.json",
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/i-paper--emily-baker.json",
-      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/lost-in-theatreland--jill-johnson.json"
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/lost-in-theatreland--jill-johnson.json",
+      "data/review-texts/witness-for-the-prosecution-west-end-2022/lost-in-theatreland--amy-rye.json",
+      "data/review-texts/mj-2022/vulture--helen-shaw.json"
     ],
     "archive": [
       "my-joy-is-heavy-off-broadway-2025/vulture--sara-holdren.json",
@@ -1234,7 +1254,7 @@
     ]
   },
   "startTime": "2026-03-21T09:00:19.929Z",
-  "lastProcessed": "witness-for-the-prosecution-west-end-2022/artsdesk--unknown.json",
+  "lastProcessed": "mj-2022/theater-scene--joel-benjamin.json",
   "log": [
     {
       "t": "2026-03-21T09:01:18.301Z",
@@ -1352,6 +1372,17 @@
       "t": "2026-03-21T21:16:08.973Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-21T21:32:10.325Z",
+      "event": "bb-session",
+      "session": "99e51fbb",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-03-21T21:32:11.703Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
