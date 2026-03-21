@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-03-21T09:28:48.449Z",
+  "timestamp": "2026-03-21T09:43:06.911Z",
   "stats": {
     "totalReviews": 32048,
-    "alreadyFlagged": 10720,
+    "alreadyFlagged": 10721,
     "dateGuardCatches": 138,
     "directorMismatch": 947,
-    "tvFilmSignals": 3388,
+    "tvFilmSignals": 3387,
     "londonSignals": 1025,
     "offBroadwaySignals": 1010,
     "yearMismatch": 71,
@@ -7203,19 +7203,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"onscreen\""
-        }
-      ]
-    },
-    {
-      "showId": "bigfoot-off-broadway-2026",
-      "file": "playbill--unknown.json",
-      "publishDate": "2026-03-02",
-      "url": "https://playbill.com/article/find-out-if-reviews-believed-in-bigfoot-off-broadway",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
