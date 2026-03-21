@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-21T00:24:30.020Z",
+  "timestamp": "2026-03-21T00:33:57.601Z",
   "stats": {
-    "totalReviews": 32038,
-    "alreadyFlagged": 10706,
+    "totalReviews": 32039,
+    "alreadyFlagged": 10700,
     "dateGuardCatches": 137,
-    "directorMismatch": 944,
-    "tvFilmSignals": 3388,
-    "londonSignals": 1022,
-    "offBroadwaySignals": 1009,
+    "directorMismatch": 947,
+    "tvFilmSignals": 3392,
+    "londonSignals": 1024,
+    "offBroadwaySignals": 1010,
     "yearMismatch": 70,
-    "noPublishDate": 6889
+    "noPublishDate": 6888
   },
   "findings": [
     {
@@ -10140,6 +10140,25 @@
     },
     {
       "showId": "cats-the-jellicle-ball-off-broadway-2024",
+      "file": "stageandcinema--alex-simmons.json",
+      "score": null,
+      "publishDate": "2024-06-21",
+      "url": "https://stageandcinema.com/2024/06/21/cats-the-jellicle-ball/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-off-broadway-2024",
       "file": "theater-life--barry-gordin.json",
       "score": 86,
       "publishDate": "2024-07-21T15:46:16",
@@ -19634,6 +19653,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "grease-2007",
+      "file": "the-journal-news--unknown.json",
+      "score": null,
+      "publishDate": "April 22, 2014",
+      "url": "http://www.lohud.com/apps/pbcs.dll/article?AID=2007708200313",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -30603,6 +30636,25 @@
     },
     {
       "showId": "mary-poppins-2006",
+      "file": "nydailynews--unknown.json",
+      "score": null,
+      "publishDate": "April 22, 2014",
+      "url": "http://www.nydailynews.com/archives/entertainment/2006/11/17/2006-11-17__it_s_eye-_poppin_.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "mary-poppins-2006",
       "file": "nypost--clive-barnes.json",
       "score": 85,
       "publishDate": "November 16, 2006",
@@ -32387,6 +32439,20 @@
       "score": 80,
       "publishDate": null,
       "url": "http://www.amny.com/entertainment/miss-saigon-review-show-more-relevant-today-than-1991-broadway-premiere-1.13309464",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from miss-saigon-2017"
+        }
+      ]
+    },
+    {
+      "showId": "miss-saigon-1991",
+      "file": "huffpost--david-finkle.json",
+      "score": 68,
+      "publishDate": null,
+      "url": "http://www.huffingtonpost.com/entry/miss-saigon-is-back-and-weirdly-imposing-as-ever_us_58d45072e4b06c3d3d3e6c14",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -49301,6 +49367,20 @@
     },
     {
       "showId": "the-collaboration-2022",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 40,
+      "publishDate": "January 11th, 2023",
+      "url": "https://www.lightingandsoundamerica.com/news/story.asp?ID=-BJK3TX&fbclid=IwAR1Bh28qpbbWwW40veh7idXI3AYKuF_joJ7yVfDeWSzFRRD1_KApgbKCeEw",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "the-collaboration-2022",
       "file": "new-york-sun--elysa-gardner.json",
       "score": 76,
       "publishDate": null,
@@ -60854,6 +60934,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"joe mantello\" from wicked-2003"
+        }
+      ]
+    },
+    {
+      "showId": "wicked-west-end-2021",
+      "file": "independent--alice-saville.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/dracula-cynthia-erivo-kip-williams-london-b2922095.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"big screen\""
         }
       ]
     },
@@ -72648,6 +72742,19 @@
     },
     {
       "showId": "marie-and-rosetta-west-end-2026",
+      "file": "the-sun--clive-davis.json",
+      "publishDate": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/marie-and-rosetta-review-a-tribute-to-the-godmother-of-rocknroll-jkml0xmrh",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "marie-and-rosetta-west-end-2026",
       "file": "thestage--london-theatre-direct-limited.json",
       "score": 79,
       "publishDate": "2025-07-01",
@@ -83402,6 +83509,20 @@
       "score": 66,
       "publishDate": null,
       "url": "http://www.amny.com/entertainment/gary-a-sequel-to-titus-andronicus-review-1.30083394",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "topdog-underdog-2022",
+      "file": "frontmezzjunkies--unknown.json",
+      "score": null,
+      "publishDate": "2022-11-06",
+      "url": "https://frontmezzjunkies.com/2022/11/06/topdog-underdog-on-broadway/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
