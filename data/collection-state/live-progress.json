@@ -1,18 +1,43 @@
 {
-  "updatedAt": "2026-03-21T05:47:55.160Z",
-  "processed": 198,
-  "failed": 32,
-  "successRate": "86.1%",
+  "updatedAt": "2026-03-21T05:56:02.854Z",
+  "processed": 206,
+  "failed": 34,
+  "successRate": "85.8%",
   "tierBreakdown": {
-    "playwright": 179,
+    "playwright": 183,
     "amp": 6,
     "browserbase": 0,
-    "directCookies": 0,
+    "directCookies": 2,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 17,
-    "archive": 19
+    "archiveToday": 19,
+    "archive": 21
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-03-21T05:51:21.421Z",
+      "event": "bb-session",
+      "session": "bbc61352",
+      "url": "https://www.thestage.co.uk/review-round-ups/oliver-starring-simon-lipkin--review"
+    },
+    {
+      "t": "2026-03-21T05:51:59.649Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    39 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-03-21T05:53:56.919Z",
+      "event": "bb-session",
+      "session": "20ff74f9",
+      "url": "https://www.thestage.co.uk/review-round-ups/oliver-starring-simon-lipkin--review"
+    },
+    {
+      "t": "2026-03-21T05:54:35.073Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    40 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
+    }
+  ]
 }
