@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-21T06:00:08.452Z",
-  "processed": 385,
-  "failed": 65,
-  "successRate": "85.6%",
+  "updatedAt": "2026-03-21T06:03:28.178Z",
+  "processed": 394,
+  "failed": 66,
+  "successRate": "85.7%",
   "tierBreakdown": {
-    "playwright": 339,
-    "amp": 10,
+    "playwright": 345,
+    "amp": 12,
     "browserbase": 8,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 31,
-    "archive": 36
+    "archiveToday": 32,
+    "archive": 38
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-03-21T04:35:05.775Z",
-      "event": "bb-session",
-      "session": "957fa6f2",
-      "url": "https://www.nytimes.com/2026/02/25/theater/mother-russia-lauren-yee-profile.html"
-    },
-    {
-      "t": "2026-03-21T04:35:06.829Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-21T04:45:16.599Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-21T05:56:52.346Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-21T06:01:59.458Z",
+      "event": "bb-session",
+      "session": "77b7c913",
+      "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
+    },
+    {
+      "t": "2026-03-21T06:02:00.820Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
