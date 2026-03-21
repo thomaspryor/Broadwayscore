@@ -1,34 +1,16 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-21T00:29:29.489Z",
+    "generatedAt": "2026-03-21T00:36:44.160Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 72,
-    "classified": 1,
-    "wrongProduction": 1,
+    "total": 71,
+    "classified": 0,
+    "wrongProduction": 0,
     "correctProduction": 0,
     "uncertain": 0,
     "errors": 0,
-    "wrongHighConfidence": 1,
+    "wrongHighConfidence": 0,
     "wrongMediumConfidence": 0
   },
-  "results": [
-    {
-      "showId": "miss-saigon-1991",
-      "showTitle": "Miss Saigon",
-      "showYear": 1991,
-      "file": "huffpost--michael-glitz.json",
-      "outlet": "HuffPost",
-      "criticName": "Michael Glitz",
-      "publishDate": null,
-      "originalSignals": [
-        "revival text signals: revival, this production",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "miss-saigon-2017",
-      "reasoning": "The review explicitly mentions \"the Broadway revival of Miss Saigon\" and discusses it in the context of other revivals, including one in 2014. This indicates the review is about the 2017 revival, not the original 1991 production."
-    }
-  ]
+  "results": []
 }
