@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-21T02:55:23.771Z",
+  "timestamp": "2026-03-21T03:19:09.154Z",
   "stats": {
-    "totalReviews": 32039,
-    "alreadyFlagged": 10708,
+    "totalReviews": 32038,
+    "alreadyFlagged": 10707,
     "dateGuardCatches": 138,
     "directorMismatch": 946,
-    "tvFilmSignals": 3389,
+    "tvFilmSignals": 3390,
     "londonSignals": 1027,
     "offBroadwaySignals": 1010,
     "yearMismatch": 71,
-    "noPublishDate": 6870
+    "noPublishDate": 6869
   },
   "findings": [
     {
@@ -25038,6 +25038,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 4\""
         }
       ]
     },
