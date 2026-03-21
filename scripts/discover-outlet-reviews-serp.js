@@ -30,6 +30,7 @@ const path = require('path');
 const { matchTitleToShow, loadShows, cleanExternalTitle } = require('./lib/show-matching');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile } = require('./lib/review-normalization');
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
+const { validateUrlDomain } = require('./lib/url-discovery');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -267,6 +268,14 @@ async function discoverForOutlet(outletId, config, shows, opts) {
       const normCritic = normalizeCritic(criticName);
       const filename = generateReviewFilename(normOutlet, normCritic);
 
+      // Guard: domain validation — reject URLs that don't match outlet's registered domain
+      const domainCheck = validateUrlDomain(result.url, normOutlet);
+      if (!domainCheck.valid) {
+        stats.domainSkipped = (stats.domainSkipped || 0) + 1;
+        console.log(`    ⊘ Domain mismatch: ${domainCheck.reason}`);
+        continue;
+      }
+
       // Check if review already exists
       const existing = findExistingReviewFile(showDir, normOutlet, normCritic, result.url);
       if (existing) {
@@ -304,6 +313,7 @@ async function discoverForOutlet(outletId, config, shows, opts) {
   console.log(`    SERP searches: ${stats.searched}`);
   console.log(`    Results found: ${stats.results}`);
   console.log(`    Matched to shows: ${stats.matched}`);
+  if (stats.domainSkipped) console.log(`    Domain-mismatch skipped: ${stats.domainSkipped}`);
   if (stats.urlYearSkipped) console.log(`    URL-year skipped: ${stats.urlYearSkipped}`);
   console.log(`    New review stubs: ${stats.newFiles}`);
   console.log(`    Already existing: ${stats.existing}`);
