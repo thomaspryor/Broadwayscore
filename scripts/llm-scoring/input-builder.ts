@@ -30,6 +30,13 @@ export interface ReviewInputData {
   showScoreExcerpt?: string | null;
   nycTheatreExcerpt?: string | null;
   lboRoundupExcerpt?: string | null;
+  westEndTheatreExcerpt?: string | null;
+  theatreReviewsExcerpt?: string | null;
+  theStageExcerpt?: string | null;
+  stagedoorExcerpt?: string | null;
+  playbillVerdictExcerpt?: string | null;
+  // Allow dynamic excerpt fields from EXCERPT_FIELDS
+  [key: string]: any;
 
   // Aggregator thumbs
   bwwThumb?: string | null;
