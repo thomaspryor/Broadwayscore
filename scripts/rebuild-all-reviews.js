@@ -2249,7 +2249,25 @@ if (fs.existsSync(reviewsJsonPath)) {
       const newCount = newCountByShow.get(showId) || 0;
       const dropped = oldCount - newCount;
       if (dropped > REGRESSION_DROP_THRESHOLD) {
-        regressions.push({ showId, oldCount, newCount, dropped });
+        // Check if scored review-text files actually exist on disk.
+        // If fewer scored files exist than the rebuild produces, the source
+        // text was lost (e.g., sweep incident) — regression is expected.
+        // Only block when scored files exist but would be dropped (real bug).
+        const showDir = path.join(reviewTextsDir, showId);
+        let scoredOnDisk = 0;
+        if (fs.existsSync(showDir)) {
+          for (const f of fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json')) {
+            try {
+              const d = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
+              if (d.assignedScore != null && !d.wrongShow && !d.wrongProduction && !d.duplicateOf) scoredOnDisk++;
+            } catch {}
+          }
+        }
+        if (scoredOnDisk > newCount) {
+          regressions.push({ showId, oldCount, newCount, dropped, scoredOnDisk });
+        } else {
+          console.log(`  ℹ️  ${showId}: ${oldCount}→${newCount} (expected — ${scoredOnDisk} scored files on disk)`);
+        }
       }
     }
 
