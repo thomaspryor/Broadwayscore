@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-21T01:39:37.072Z",
+  "timestamp": "2026-03-21T01:47:10.829Z",
   "stats": {
     "totalReviews": 32039,
-    "alreadyFlagged": 10704,
+    "alreadyFlagged": 10706,
     "dateGuardCatches": 137,
-    "directorMismatch": 947,
-    "tvFilmSignals": 3390,
+    "directorMismatch": 946,
+    "tvFilmSignals": 3389,
     "londonSignals": 1028,
     "offBroadwaySignals": 1010,
     "yearMismatch": 71,
-    "noPublishDate": 6876
+    "noPublishDate": 6873
   },
   "findings": [
     {
@@ -31024,20 +31024,6 @@
     },
     {
       "showId": "matilda-the-musical-west-end-2021",
-      "file": "telegraph--charles-spencer.json",
-      "score": 91,
-      "publishDate": "2011-11-25",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/matilda-cambridge-theatre-review/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
-        }
-      ]
-    },
-    {
-      "showId": "matilda-the-musical-west-end-2021",
       "file": "telegraph--unknown.json",
       "score": 74,
       "publishDate": "2011-11-25",
@@ -60921,20 +60907,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"joe mantello\" from wicked-2003"
-        }
-      ]
-    },
-    {
-      "showId": "wicked-west-end-2021",
-      "file": "independent--alice-saville.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/dracula-cynthia-erivo-kip-williams-london-b2922095.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"big screen\""
         }
       ]
     },
