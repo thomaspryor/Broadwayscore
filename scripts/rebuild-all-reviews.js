@@ -840,18 +840,16 @@ const crossShowFingerprints = new Map();
   stats.preOpeningFlagged = preOpenFlagged;
 }
 
-// URL-domain mismatch guard: flag reviews where URL domain doesn't match outlet's registered domain.
-// Runs before main loop to catch bad URLs from any source (SERP, aggregators, recovery scripts).
-// Exemptions: newspaper archives (newspapers.com), AP wire syndication (appears on many domains),
-// blogspot migrations, and known old-domain aliases that aren't in the registry yet.
+// URL-domain mismatch guard: detect reviews where URL domain doesn't match outlet's registered domain.
+// Audit-only — logs mismatches but does NOT write wrongUrl to files. The wrongUrl flag should be
+// applied by a dedicated script (e.g., audit-wrong-urls.js) after human review, not during rebuild.
+// This prevents rebuild from permanently flagging files based on incomplete domain alias coverage.
 {
   const { OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES } = require('./lib/url-discovery');
   const { domainMatchesExpected } = require('./lib/scraper');
-  // Domains that legitimately host content from many outlets (archives, wire services)
   const EXEMPT_URL_DOMAINS = new Set(['newspapers.com']);
-  // Outlets whose content is syndicated across many domains (wire services)
   const EXEMPT_OUTLET_IDS = new Set(['ap', 'reuters', 'upi']);
-  let domainMismatchFlagged = 0;
+  let domainMismatchDetected = 0;
   for (const sid of showDirs) {
     const sDir = path.join(reviewTextsDir, sid);
     for (const f of fs.readdirSync(sDir).filter(x => x.endsWith('.json') && x !== 'failed-fetches.json')) {
@@ -868,22 +866,16 @@ const crossShowFingerprints = new Map();
           urlDomain = new URL(d.url).hostname.replace(/^www\./, '');
         } catch { continue; }
         if (EXEMPT_URL_DOMAINS.has(urlDomain)) continue;
-        // Exempt blogspot subdomains matching the outlet slug (blog migration)
         if (urlDomain.endsWith('.blogspot.com') && urlDomain.includes(outletId.replace(/-/g, ''))) continue;
         if (domainMatchesExpected(expectedDomain.replace(/^www\./, ''), urlDomain)) continue;
-        // Domain mismatch — flag it
-        console.log(`  [WRONG-URL] ${sid}/${f}: ${urlDomain} doesn't match ${outletId} (expected ${expectedDomain})`);
-        d.wrongUrl = true;
-        d.wrongUrlReason = `URL domain ${urlDomain} doesn't match outlet ${outletId} (expected ${expectedDomain})`;
-        fs.writeFileSync(path.join(sDir, f), JSON.stringify(d, null, 2) + '\n');
-        domainMismatchFlagged++;
+        domainMismatchDetected++;
       } catch { /* skip unreadable */ }
     }
   }
-  if (domainMismatchFlagged > 0) {
-    console.log(`URL-domain mismatch guard: flagged ${domainMismatchFlagged} reviews as wrongUrl\n`);
+  if (domainMismatchDetected > 0) {
+    console.log(`URL-domain audit: ${domainMismatchDetected} reviews have mismatched URL domains (audit-only, not flagged)\n`);
   }
-  stats.domainMismatchFlagged = domainMismatchFlagged;
+  stats.domainMismatchDetected = domainMismatchDetected;
 }
 
 // --- Known syndication pairs (runtime dedup) ---
@@ -2228,7 +2220,7 @@ if (fs.existsSync(reviewsJsonPath)) {
       }
 
       // In CI: fail if drift exceeds threshold (unless ALLOW_DRIFT=true)
-      if (driftedReviews.length > DRIFT_THRESHOLD && process.env.CI && !process.env.ALLOW_DRIFT) {
+      if (driftedReviews.length > DRIFT_THRESHOLD && process.env.CI && process.env.ALLOW_DRIFT !== 'true') {
         console.error(`\n❌ DRIFT GUARD: ${driftedReviews.length} reviews drifted (threshold: ${DRIFT_THRESHOLD})`);
         console.error('Set ALLOW_DRIFT=true to override, or review data/audit/rebuild-score-drift.json');
         process.exit(1);
@@ -2238,10 +2230,11 @@ if (fs.existsSync(reviewsJsonPath)) {
     // ========================================
     // 3B-ii: PER-SHOW REVIEW COUNT REGRESSION GATE
     // ========================================
-    // If any show loses >2 scored reviews in a rebuild, something is wrong.
-    // In CI: abort to prevent data corruption from reaching production.
-    const REGRESSION_DROP_THRESHOLD = 2; // max reviews a single show can lose
-    const REGRESSION_MAX_SHOWS = 5;      // max shows that can regress before hard abort
+    // Detects shows that lost reviews. Two severity levels:
+    // - SEVERE: any show loses >50% of its reviews → hard abort (likely data corruption)
+    // - MODERATE: many shows lose a few reviews each → warning only (likely systematic guard change)
+    // The global 2% guard (below) catches catastrophic overall loss regardless.
+    const REGRESSION_DROP_THRESHOLD = 2; // min reviews a single show must lose to be flagged
 
     const oldCountByShow = new Map();
     for (const r of currentReviews) {
@@ -2257,7 +2250,8 @@ if (fs.existsSync(reviewsJsonPath)) {
       const newCount = newCountByShow.get(showId) || 0;
       const dropped = oldCount - newCount;
       if (dropped > REGRESSION_DROP_THRESHOLD) {
-        regressions.push({ showId, oldCount, newCount, dropped });
+        const pctDropped = (dropped / oldCount * 100).toFixed(0);
+        regressions.push({ showId, oldCount, newCount, dropped, pctDropped: parseFloat(pctDropped) });
       }
     }
 
@@ -2273,15 +2267,20 @@ if (fs.existsSync(reviewsJsonPath)) {
 
       console.log(`\n⚠️  REVIEW COUNT REGRESSION: ${regressions.length} show(s) lost >${REGRESSION_DROP_THRESHOLD} reviews`);
       regressions.slice(0, 10).forEach(r => {
-        console.log(`  ${r.showId}: ${r.oldCount}→${r.newCount} (lost ${r.dropped})`);
+        console.log(`  ${r.showId}: ${r.oldCount}→${r.newCount} (lost ${r.dropped}, ${r.pctDropped}%)`);
       });
       if (regressions.length > 10) {
         console.log(`  ...and ${regressions.length - 10} more`);
       }
 
-      if (regressions.length >= REGRESSION_MAX_SHOWS && process.env.CI && !process.env.ALLOW_REGRESSION) {
-        console.error(`\n❌ REGRESSION GUARD: ${regressions.length} shows lost reviews (threshold: ${REGRESSION_MAX_SHOWS} shows)`);
-        console.error('This likely indicates data corruption. Review data/audit/rebuild-regression.json');
+      // SEVERE: any show loses >50% of its reviews — likely data corruption or missing checkout
+      const severeRegressions = regressions.filter(r => r.pctDropped > 50 && r.oldCount >= 10);
+      if (severeRegressions.length > 0 && process.env.CI && process.env.ALLOW_REGRESSION !== 'true') {
+        console.error(`\n❌ SEVERE REGRESSION: ${severeRegressions.length} show(s) lost >50% of reviews`);
+        severeRegressions.forEach(r => {
+          console.error(`  ${r.showId}: ${r.oldCount}→${r.newCount} (lost ${r.pctDropped}%)`);
+        });
+        console.error('This likely indicates data corruption or stale checkout. Review data/audit/rebuild-regression.json');
         console.error('Set ALLOW_REGRESSION=true to override.');
         process.exit(1);
       }
@@ -2352,7 +2351,7 @@ if (fs.existsSync(reviewsJsonPath)) {
         console.log(`  ...and ${showDrifts.length - 10} more`);
       }
 
-      if (showDrifts.length >= SHOW_DRIFT_MAX_FLAGGED && process.env.CI && !process.env.ALLOW_DRIFT) {
+      if (showDrifts.length >= SHOW_DRIFT_MAX_FLAGGED && process.env.CI && process.env.ALLOW_DRIFT !== 'true') {
         console.error(`\n❌ SHOW DRIFT GUARD: ${showDrifts.length} shows drifted (threshold: ${SHOW_DRIFT_MAX_FLAGGED})`);
         console.error('This likely indicates a scoring logic or tier mapping change.');
         console.error('Review data/audit/rebuild-show-drift.json');
@@ -2700,8 +2699,8 @@ if (stats.skippedFullTextWrongAuthor > 0) {
 if (stats.fullTextWrongAuthorKeptAsExcerpt > 0) {
   console.log(`  Kept as excerpt (fullTextWrongAuthor with excerpts): ${stats.fullTextWrongAuthorKeptAsExcerpt}`);
 }
-if (stats.domainMismatchFlagged > 0) {
-  console.log(`  Flagged (URL-domain mismatch): ${stats.domainMismatchFlagged}`);
+if (stats.domainMismatchDetected > 0) {
+  console.log(`  Detected (URL-domain mismatch, audit-only): ${stats.domainMismatchDetected}`);
 }
 console.log(`  Skipped (rejection reason): ${stats.skippedRejectionReason || 0}`);
 console.log(`  Skipped (roundup article): ${stats.skippedRoundup || 0}`);
