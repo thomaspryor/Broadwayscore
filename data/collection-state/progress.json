@@ -113,7 +113,16 @@
     "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
     "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json",
     "burnout-paradise-off-broadway-2026/theatermania--zachary-stewart.json",
-    "burnout-paradise-off-broadway-2026/culturesauce--thom-geier.json"
+    "burnout-paradise-off-broadway-2026/culturesauce--thom-geier.json",
+    "burnout-paradise-off-broadway-2026/stageandcinema--paola-bellu.json",
+    "burnout-paradise-off-broadway-2026/theater-pizzazz--samuel-l-leiter.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/culturesauce--thom-geier.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
+    "mother-russia-off-broadway-2026/theatres-leiter-side--samuel-l-leiter.json",
+    "mother-russia-off-broadway-2026/nytg--amelia-merrill.json",
+    "bloodlove-off-broadway-2026/theatermania--rachel-graham.json",
+    "mother-russia-off-broadway-2026/theatermania--zachary-stewart.json",
+    "body-count-off-broadway-2026/theater-scene--tony-marinelli.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -131,7 +140,8 @@
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/blogcritics--jon-sobel.json",
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theatre-is-easy--brooke-viegut.json",
     "spare-parts-off-broadway-2026/talkinbroadway--unknown.json",
-    "zack-off-broadway-2026/talkinbroadway--james-wilson.json"
+    "zack-off-broadway-2026/talkinbroadway--james-wilson.json",
+    "mother-russia-off-broadway-2026/nytimes--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -231,7 +241,16 @@
       "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
       "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json",
       "burnout-paradise-off-broadway-2026/theatermania--zachary-stewart.json",
-      "burnout-paradise-off-broadway-2026/culturesauce--thom-geier.json"
+      "burnout-paradise-off-broadway-2026/culturesauce--thom-geier.json",
+      "burnout-paradise-off-broadway-2026/stageandcinema--paola-bellu.json",
+      "burnout-paradise-off-broadway-2026/theater-pizzazz--samuel-l-leiter.json",
+      "what-we-did-before-our-moth-days-off-broadway-2026/culturesauce--thom-geier.json",
+      "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
+      "mother-russia-off-broadway-2026/theatres-leiter-side--samuel-l-leiter.json",
+      "mother-russia-off-broadway-2026/nytg--amelia-merrill.json",
+      "bloodlove-off-broadway-2026/theatermania--rachel-graham.json",
+      "mother-russia-off-broadway-2026/theatermania--zachary-stewart.json",
+      "body-count-off-broadway-2026/theater-scene--tony-marinelli.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -257,7 +276,8 @@
       "data/review-texts/youre-a-good-man-charlie-brown-off-broadway-2026/cititour--brian-scott-lipton.json",
       "data/review-texts/entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/blogcritics--jon-sobel.json",
       "data/review-texts/spare-parts-off-broadway-2026/talkinbroadway--unknown.json",
-      "data/review-texts/zack-off-broadway-2026/talkinbroadway--james-wilson.json"
+      "data/review-texts/zack-off-broadway-2026/talkinbroadway--james-wilson.json",
+      "data/review-texts/mother-russia-off-broadway-2026/nytimes--unknown.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -278,7 +298,7 @@
     ]
   },
   "startTime": "2026-03-21T03:54:55.801Z",
-  "lastProcessed": "burnout-paradise-off-broadway-2026/culturesauce--thom-geier.json",
+  "lastProcessed": "body-count-off-broadway-2026/theater-scene--tony-marinelli.json",
   "log": [
     {
       "t": "2026-03-21T04:08:42.048Z",
@@ -332,6 +352,17 @@
     },
     {
       "t": "2026-03-21T04:24:35.442Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-21T04:35:05.775Z",
+      "event": "bb-session",
+      "session": "957fa6f2",
+      "url": "https://www.nytimes.com/2026/02/25/theater/mother-russia-lauren-yee-profile.html"
+    },
+    {
+      "t": "2026-03-21T04:35:06.829Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
