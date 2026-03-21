@@ -143,11 +143,6 @@ export default function SharedListClient({ slug }: { slug: string }) {
           const res = await fetch(`/data/shows/${id}.json`);
           if (!res.ok) throw new Error('not found');
           const data = await res.json();
-          const reviews: { s?: number }[] = data.rv || [];
-          const scored = reviews.filter(r => r.s != null && r.s > 0);
-          const avgScore = scored.length > 0
-            ? Math.round(scored.reduce((sum, r) => sum + (r.s || 0), 0) / scored.length)
-            : null;
 
           showMap.set(id, {
             id,
@@ -156,8 +151,8 @@ export default function SharedListClient({ slug }: { slug: string }) {
             venue: base?.venue || '',
             posterUrl: base?.posterUrl || (data.hi ? data.hi : null),
             status: base?.status || 'closed',
-            score: avgScore,
-            reviewCount: scored.length,
+            score: data.cs ?? null,
+            reviewCount: data.rc ?? 0,
             category: base?.category || 'broadway',
           });
         } catch {
