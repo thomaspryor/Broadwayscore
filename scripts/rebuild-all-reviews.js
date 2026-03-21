@@ -2230,11 +2230,10 @@ if (fs.existsSync(reviewsJsonPath)) {
     // ========================================
     // 3B-ii: PER-SHOW REVIEW COUNT REGRESSION GATE
     // ========================================
-    // Detects shows that lost reviews. Two severity levels:
-    // - SEVERE: any show loses >50% of its reviews → hard abort (likely data corruption)
-    // - MODERATE: many shows lose a few reviews each → warning only (likely systematic guard change)
-    // The global 2% guard (below) catches catastrophic overall loss regardless.
-    const REGRESSION_DROP_THRESHOLD = 2; // min reviews a single show must lose to be flagged
+    // If any show loses >2 scored reviews in a rebuild, something is wrong.
+    // In CI: abort to prevent data corruption from reaching production.
+    const REGRESSION_DROP_THRESHOLD = 2; // max reviews a single show can lose
+    const REGRESSION_MAX_SHOWS = 5;      // max shows that can regress before hard abort
 
     const oldCountByShow = new Map();
     for (const r of currentReviews) {
@@ -2250,8 +2249,7 @@ if (fs.existsSync(reviewsJsonPath)) {
       const newCount = newCountByShow.get(showId) || 0;
       const dropped = oldCount - newCount;
       if (dropped > REGRESSION_DROP_THRESHOLD) {
-        const pctDropped = (dropped / oldCount * 100).toFixed(0);
-        regressions.push({ showId, oldCount, newCount, dropped, pctDropped: parseFloat(pctDropped) });
+        regressions.push({ showId, oldCount, newCount, dropped });
       }
     }
 
@@ -2267,20 +2265,15 @@ if (fs.existsSync(reviewsJsonPath)) {
 
       console.log(`\n⚠️  REVIEW COUNT REGRESSION: ${regressions.length} show(s) lost >${REGRESSION_DROP_THRESHOLD} reviews`);
       regressions.slice(0, 10).forEach(r => {
-        console.log(`  ${r.showId}: ${r.oldCount}→${r.newCount} (lost ${r.dropped}, ${r.pctDropped}%)`);
+        console.log(`  ${r.showId}: ${r.oldCount}→${r.newCount} (lost ${r.dropped})`);
       });
       if (regressions.length > 10) {
         console.log(`  ...and ${regressions.length - 10} more`);
       }
 
-      // SEVERE: any show loses >50% of its reviews — likely data corruption or missing checkout
-      const severeRegressions = regressions.filter(r => r.pctDropped > 50 && r.oldCount >= 10);
-      if (severeRegressions.length > 0 && process.env.CI && process.env.ALLOW_REGRESSION !== 'true') {
-        console.error(`\n❌ SEVERE REGRESSION: ${severeRegressions.length} show(s) lost >50% of reviews`);
-        severeRegressions.forEach(r => {
-          console.error(`  ${r.showId}: ${r.oldCount}→${r.newCount} (lost ${r.pctDropped}%)`);
-        });
-        console.error('This likely indicates data corruption or stale checkout. Review data/audit/rebuild-regression.json');
+      if (regressions.length >= REGRESSION_MAX_SHOWS && process.env.CI && process.env.ALLOW_REGRESSION !== 'true') {
+        console.error(`\n❌ REGRESSION GUARD: ${regressions.length} shows lost reviews (threshold: ${REGRESSION_MAX_SHOWS} shows)`);
+        console.error('This likely indicates data corruption. Review data/audit/rebuild-regression.json');
         console.error('Set ALLOW_REGRESSION=true to override.');
         process.exit(1);
       }
