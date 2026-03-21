@@ -38,7 +38,15 @@
     "zack-off-broadway-2026/the-interested-bystander--cary-wong.json",
     "zack-off-broadway-2026/theater-life--samuel-l-leiter.json",
     "zack-off-broadway-2026/theater-scene--marc-miller.json",
-    "zack-off-broadway-2026/theater-scene--victor-gluck.json"
+    "zack-off-broadway-2026/theater-scene--victor-gluck.json",
+    "trash-off-broadway-2026/nyt-theater--unknown.json",
+    "trash-off-broadway-2026/nytg--unknown.json",
+    "tru-off-broadway-2026/nytg--unknown.json",
+    "tru-off-broadway-2026/thewrap--unknown.json",
+    "tru-off-broadway-2026/nysr--unknown.json",
+    "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+    "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json"
   ],
   "failed": [
     "no-singing-in-the-navy-off-broadway-2026/talkinbroadway--unknown.json",
@@ -51,7 +59,9 @@
     "jesa-off-broadway-2026/vulture--unknown.json",
     "jesa-off-broadway-2026/theatermania--unknown.json",
     "jesa-off-broadway-2026/timeout--unknown.json",
-    "jesa-off-broadway-2026/nysr--unknown.json"
+    "jesa-off-broadway-2026/nysr--unknown.json",
+    "trash-off-broadway-2026/nytimes--unknown.json",
+    "mexodus-off-broadway-2026/playbill--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -83,9 +93,19 @@
       "zack-off-broadway-2026/the-interested-bystander--cary-wong.json",
       "zack-off-broadway-2026/theater-life--samuel-l-leiter.json",
       "zack-off-broadway-2026/theater-scene--marc-miller.json",
-      "zack-off-broadway-2026/theater-scene--victor-gluck.json"
+      "zack-off-broadway-2026/theater-scene--victor-gluck.json",
+      "trash-off-broadway-2026/nyt-theater--unknown.json",
+      "trash-off-broadway-2026/nytg--unknown.json",
+      "tru-off-broadway-2026/nytg--unknown.json",
+      "tru-off-broadway-2026/nysr--unknown.json",
+      "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+      "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+      "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
+      "tru-off-broadway-2026/thewrap--unknown.json"
+    ],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
@@ -99,7 +119,8 @@
       "data/review-texts/bughouse-off-broadway-2026/timeout--adam-feldman.json",
       "data/review-texts/jesa-off-broadway-2026/theatermania--unknown.json",
       "data/review-texts/jesa-off-broadway-2026/vulture--unknown.json",
-      "data/review-texts/jesa-off-broadway-2026/timeout--unknown.json"
+      "data/review-texts/jesa-off-broadway-2026/timeout--unknown.json",
+      "data/review-texts/trash-off-broadway-2026/nytimes--unknown.json"
     ],
     "archive": [
       "my-joy-is-heavy-off-broadway-2025/vulture--sara-holdren.json",
@@ -116,13 +137,19 @@
     ]
   },
   "startTime": "2026-03-21T09:00:19.929Z",
-  "lastProcessed": "zack-off-broadway-2026/theater-scene--victor-gluck.json",
+  "lastProcessed": "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json",
   "log": [
     {
       "t": "2026-03-21T09:01:18.301Z",
       "event": "bb-session",
       "session": "a81ee153",
       "url": "https://www.nytimes.com/2026/03/19/theater/the-wild-party-review-warren-rogers-p"
+    },
+    {
+      "t": "2026-03-21T09:16:31.758Z",
+      "event": "bb-session",
+      "session": "4698e29d",
+      "url": "https://www.nytimes.com/2026/03/15/theater/trash-review-perelman.html"
     }
   ]
 }
