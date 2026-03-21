@@ -429,7 +429,16 @@
     "buena-vista-social-club-2025/amny--matt-windman.json",
     "buena-vista-social-club-2025/latimes--nicholas-ducassi.json",
     "buena-vista-social-club-2025/washpost--naveen-kumar.json",
-    "my-neighbour-totoro-west-end-2025/observer--unknown.json"
+    "my-neighbour-totoro-west-end-2025/observer--unknown.json",
+    "my-neighbour-totoro-west-end-2025/artsdesk--unknown.json",
+    "my-neighbour-totoro-west-end-2025/standard--unknown.json",
+    "my-neighbour-totoro-west-end-2025/times-uk--unknown.json",
+    "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+    "my-neighbour-totoro-west-end-2025/guardian--arifa-akbar.json",
+    "my-neighbour-totoro-west-end-2025/timeout--andrzej-lukowski.json",
+    "my-neighbour-totoro-west-end-2025/independent--alice-saville.json",
+    "my-neighbour-totoro-west-end-2025/london-theatre--marianka-swain.json",
+    "my-neighbour-totoro-west-end-2025/whatsonstage--unknown.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -501,7 +510,8 @@
     "heathers-the-musical-off-broadway-2025/cititour--brian-scott-lipton.json",
     "heathers-the-musical-off-broadway-2025/northjerseycom--robert-feldberg.json",
     "just-in-time-2025/billboard--unknown.json",
-    "just-in-time-2025/theater-scene--joel-benjamin.json"
+    "just-in-time-2025/theater-scene--joel-benjamin.json",
+    "my-neighbour-totoro-west-end-2025/the-morning-star--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -880,7 +890,14 @@
       "buena-vista-social-club-2025/timeout--adam-feldman.json",
       "buena-vista-social-club-2025/latimes--nicholas-ducassi.json",
       "buena-vista-social-club-2025/washpost--naveen-kumar.json",
-      "my-neighbour-totoro-west-end-2025/observer--unknown.json"
+      "my-neighbour-totoro-west-end-2025/observer--unknown.json",
+      "my-neighbour-totoro-west-end-2025/artsdesk--unknown.json",
+      "my-neighbour-totoro-west-end-2025/standard--unknown.json",
+      "my-neighbour-totoro-west-end-2025/guardian--arifa-akbar.json",
+      "my-neighbour-totoro-west-end-2025/timeout--andrzej-lukowski.json",
+      "my-neighbour-totoro-west-end-2025/independent--alice-saville.json",
+      "my-neighbour-totoro-west-end-2025/london-theatre--marianka-swain.json",
+      "my-neighbour-totoro-west-end-2025/whatsonstage--unknown.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -894,7 +911,9 @@
       "data/review-texts/the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
       "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
       "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
-      "hercules-west-end-2025/variety--david-benedict.json"
+      "hercules-west-end-2025/variety--david-benedict.json",
+      "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json"
     ],
     "browserbase": [
       "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
@@ -908,7 +927,6 @@
       "data/review-texts/buena-vista-social-club-2025/amny--matt-windman.json",
       "buena-vista-social-club-2025/amny--matt-windman.json"
     ],
-    "browserbase": [],
     "directCookies": [
       "paranormal-activity-west-end-2025/times-uk--rachel-halliburton.json",
       "hercules-west-end-2025/times-uk--clive-davis.json"
@@ -995,29 +1013,29 @@
       "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
       "heathers-the-musical-off-broadway-2025/theater-pizzazz--ron-fassler.json",
       "just-in-time-2025/billboard--unknown.json",
-      "buena-vista-social-club-2025/cititour--brian-scott-lipton.json"
+      "buena-vista-social-club-2025/cititour--brian-scott-lipton.json",
+      "my-neighbour-totoro-west-end-2025/times-uk--unknown.json"
     ]
   },
   "startTime": "2026-03-21T03:54:55.801Z",
-  "lastProcessed": "my-neighbour-totoro-west-end-2025/observer--unknown.json",
+  "lastProcessed": "my-neighbour-totoro-west-end-2025/whatsonstage--unknown.json",
   "log": [
     {
-      "t": "2026-03-21T05:51:21.421Z",
+      "t": "2026-03-21T04:08:42.048Z",
       "event": "bb-session",
-      "session": "bbc61352",
-      "url": "https://www.thestage.co.uk/review-round-ups/oliver-starring-simon-lipkin--review"
+      "session": "dd7209f6",
+      "url": "https://www.nytimes.com/2026/03/19/theater/the-wild-party-review-warren-rogers-p"
     },
     {
-      "t": "2026-03-21T05:51:59.649Z",
-      "event": "bb-login-fail",
-      "domain": "thestage.co.uk",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    39 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
+      "t": "2026-03-21T04:08:43.055Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-03-21T05:53:56.919Z",
+      "t": "2026-03-21T04:12:24.273Z",
       "event": "bb-session",
-      "session": "20ff74f9",
-      "url": "https://www.thestage.co.uk/review-round-ups/oliver-starring-simon-lipkin--review"
+      "session": "3e01f669",
+      "url": "https://www.nytimes.com/2026/03/18/theater/my-joy-is-heavy-review-bengsons.html"
     },
     {
       "t": "2026-03-21T04:12:25.347Z",
