@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-21T00:57:00.935Z",
+  "timestamp": "2026-03-21T01:04:00.792Z",
   "stats": {
     "totalReviews": 32039,
     "alreadyFlagged": 10701,
     "dateGuardCatches": 137,
     "directorMismatch": 947,
-    "tvFilmSignals": 3392,
+    "tvFilmSignals": 3390,
     "londonSignals": 1026,
     "offBroadwaySignals": 1010,
-    "yearMismatch": 70,
-    "noPublishDate": 6885
+    "yearMismatch": 71,
+    "noPublishDate": 6882
   },
   "findings": [
     {
@@ -13635,25 +13635,6 @@
     },
     {
       "showId": "dracula-west-end-2025",
-      "file": "daily-mail--unknown.json",
-      "score": 64,
-      "publishDate": "2026-02-18",
-      "url": "https://www.westendtheatre.com/340316/news/reviews/reviews-of-dracula-starring-cynthia-erivo/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"on screen\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"noel coward theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "dracula-west-end-2025",
       "file": "financialtimes--sarah-hemming.json",
       "score": 78,
       "publishDate": "2026-02-17",
@@ -13677,20 +13658,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"big screen\""
-        }
-      ]
-    },
-    {
-      "showId": "dracula-west-end-2025",
-      "file": "metro--unknown.json",
-      "score": 78,
-      "publishDate": "2026-02-17",
-      "url": "https://metro.co.uk/2026/02/17/cynthia-erivos-dracula-hardest-thing-ever-seen-done-stage-26951617/amp/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 2\""
         }
       ]
     },
@@ -57664,6 +57631,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"tye blue\" from titanique-2026"
+        }
+      ]
+    },
+    {
+      "showId": "titanique-west-end-2024",
+      "file": "timeout--andrzej-lukowski.json",
+      "score": 75,
+      "publishDate": "2025-01-09",
+      "url": "https://www.timeout.com/london/theatre/titanique-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (8x) more than 2024 (0x). 2026 matches production: titanique-2026"
         }
       ]
     },
