@@ -288,7 +288,21 @@ jobs:
         env:
           ALLOW_DRIFT: 'true'
           NODE_OPTIONS: '--max-old-space-size=7168'
-        run: node scripts/rebuild-all-reviews.js
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          if node scripts/rebuild-all-reviews.js; then
+            echo "Rebuild succeeded on first attempt"
+            exit 0
+          fi
+
+          echo ""
+          echo "⚠️  Rebuild failed — re-cloning review-texts and retrying..."
+          echo ""
+
+          rm -rf data/review-texts
+          git clone --depth 1 "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" data/review-texts
+
+          node scripts/rebuild-all-reviews.js
 
 
       - name: Push review-texts to private repo
