@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-21T02:02:37.169Z",
+  "timestamp": "2026-03-21T02:11:34.603Z",
   "stats": {
     "totalReviews": 32039,
-    "alreadyFlagged": 10707,
-    "dateGuardCatches": 137,
+    "alreadyFlagged": 10708,
+    "dateGuardCatches": 138,
     "directorMismatch": 946,
     "tvFilmSignals": 3389,
-    "londonSignals": 1028,
+    "londonSignals": 1027,
     "offBroadwaySignals": 1010,
     "yearMismatch": 71,
-    "noPublishDate": 6872
+    "noPublishDate": 6870
   },
   "findings": [
     {
@@ -72715,14 +72715,14 @@
     },
     {
       "showId": "marie-and-rosetta-west-end-2026",
-      "file": "the-sun--clive-davis.json",
-      "publishDate": null,
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/marie-and-rosetta-review-a-tribute-to-the-godmother-of-rocknroll-jkml0xmrh",
+      "file": "standard--unknown.json",
+      "publishDate": "2025-05-10",
+      "url": "https://www.standard.co.uk/culture/theatre/marie-rosetta-rose-theatre-kingston-review-beverley-knight-b1226992.html",
       "findings": [
         {
-          "type": "LONDON_SIGNAL",
+          "type": "DATE_GUARD",
           "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
+          "detail": "Published 294d before show (2025-05-10 vs 2026-02-28)"
         }
       ]
     },
