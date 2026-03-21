@@ -803,24 +803,44 @@ async function getStagePageViaBrowserBase(url) {
     const password = process.env.THESTAGE_PASSWORD;
     if (email && password) {
       console.log('    [BB] Logging in to The Stage...');
-      await _bbPage.goto('https://www.thestage.co.uk/review-round-ups/review-round-ups', { waitUntil: 'networkidle', timeout: 30000 });
-      await _bbPage.waitForTimeout(8000);
-      await _bbPage.waitForSelector('input[name="email"]', { timeout: 10000 }).catch(() => {});
-      const emailInputs = await _bbPage.$$('input[name="email"]');
+      // Navigate to login page directly
+      await _bbPage.goto('https://www.thestage.co.uk/accounts/sign-in', { waitUntil: 'networkidle', timeout: 30000 });
+      await _bbPage.waitForTimeout(3000);
+
+      // Dismiss cookie consent if present
+      try {
+        const cookieBtn = _bbPage.locator('button:has-text("Accept"), button:has-text("Got it"), button:has-text("I agree")').first();
+        if (await cookieBtn.isVisible({ timeout: 2000 }).catch(() => false)) {
+          await cookieBtn.click();
+          await _bbPage.waitForTimeout(1000);
+        }
+      } catch {}
+
+      // Find and fill login form
+      await _bbPage.waitForSelector('input[name="email"], input[type="email"]', { timeout: 10000 }).catch(() => {});
+      const emailInputs = await _bbPage.$$('input[name="email"], input[type="email"]');
       let emailInput = null;
       for (const inp of emailInputs) { if (await inp.isVisible().catch(() => false)) { emailInput = inp; break; } }
       if (emailInput) {
-        await emailInput.type(email, { delay: 30 });
+        await emailInput.fill(email);
+        await _bbPage.waitForTimeout(500);
         const passInputs = await _bbPage.$$('input[type="password"]');
         for (const inp of passInputs) {
-          if (await inp.isVisible().catch(() => false)) { await inp.type(password, { delay: 30 }); break; }
+          if (await inp.isVisible().catch(() => false)) { await inp.fill(password); break; }
         }
-        const btn = await _bbPage.$('button:has-text("Login"), input[type="submit"]');
+        await _bbPage.waitForTimeout(500);
+        const btn = await _bbPage.$('button:has-text("Sign in"), button:has-text("Login"), button:has-text("Log in"), input[type="submit"]');
         if (btn && await btn.isVisible().catch(() => false)) await btn.click();
         else await _bbPage.keyboard.press('Enter');
         await _bbPage.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
         await _bbPage.waitForTimeout(3000);
-        console.log('    [BB] Login complete');
+
+        // Verify login succeeded
+        const pageContent = await _bbPage.content();
+        const loggedIn = !pageContent.includes('Sign in') || pageContent.includes('Sign out') || pageContent.includes('My account');
+        console.log(`    [BB] Login ${loggedIn ? 'succeeded' : 'FAILED — still seeing sign-in page'}`);
+      } else {
+        console.log('    [BB] Login form not found — may already be logged in');
       }
     }
   }
