@@ -334,7 +334,16 @@
     "paddington-the-musical-west-end-2025/times-uk--unknown.json",
     "paddington-the-musical-west-end-2025/whatsonstage--sarah-crompton.json",
     "ragtime-2025/nyt-theater--unknown.json",
-    "ragtime-2025/nytimes--unknown.json"
+    "ragtime-2025/nytimes--unknown.json",
+    "ragtime-2025/timeout--adam-feldman.json",
+    "ragtime-2025/wsj--charles-isherwood.json",
+    "ragtime-2025/american-theater-web--weinert-kendt.json",
+    "ragtime-2025/nysr--unknown.json",
+    "ragtime-2025/theater-life--samuel-l-leiter.json",
+    "the-producers-west-end-2025/timeout--andrzej-lukowski.json",
+    "the-producers-west-end-2025/timeout--only-andrzej-lukowski.json",
+    "the-producers-west-end-2025/all-that-dazzles-uk--daz-gale.json",
+    "the-producers-west-end-2025/artsdesk--gary-naylor.json"
   ],
   "failed": [
     "no-singing-in-the-navy-off-broadway-2026/talkinbroadway--unknown.json",
@@ -381,7 +390,8 @@
     "all-my-sons-west-end-2025/broadwayworld--unknown.json",
     "all-my-sons-west-end-2025/everything-theatre-uk--dave-b.json",
     "all-my-sons-west-end-2025/mail--patrick-marmion.json",
-    "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json"
+    "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -678,7 +688,13 @@
       "paddington-the-musical-west-end-2025/theatre-weekly--greg-stewart.json",
       "paddington-the-musical-west-end-2025/times-uk--unknown.json",
       "paddington-the-musical-west-end-2025/whatsonstage--sarah-crompton.json",
-      "ragtime-2025/nyt-theater--unknown.json"
+      "ragtime-2025/nyt-theater--unknown.json",
+      "ragtime-2025/timeout--adam-feldman.json",
+      "ragtime-2025/nysr--unknown.json",
+      "ragtime-2025/theater-life--samuel-l-leiter.json",
+      "the-producers-west-end-2025/timeout--andrzej-lukowski.json",
+      "the-producers-west-end-2025/timeout--only-andrzej-lukowski.json",
+      "the-producers-west-end-2025/artsdesk--gary-naylor.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -767,11 +783,14 @@
       "into-the-woods-west-end-2025/broadwayworld--unknown.json",
       "all-my-sons-west-end-2025/everything-theatre-uk--dave-b.json",
       "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/theatermania--zachary-stewart.json",
-      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json"
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
+      "ragtime-2025/wsj--charles-isherwood.json",
+      "ragtime-2025/american-theater-web--weinert-kendt.json",
+      "the-producers-west-end-2025/all-that-dazzles-uk--daz-gale.json"
     ]
   },
   "startTime": "2026-03-21T09:00:19.929Z",
-  "lastProcessed": "ragtime-2025/nytimes--unknown.json",
+  "lastProcessed": "the-producers-west-end-2025/artsdesk--gary-naylor.json",
   "log": [
     {
       "t": "2026-03-21T09:01:18.301Z",
@@ -834,6 +853,17 @@
       "t": "2026-03-21T16:40:28.128Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-21T16:40:59.126Z",
+      "event": "bb-session",
+      "session": "d0d7817e",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-03-21T16:41:00.303Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
