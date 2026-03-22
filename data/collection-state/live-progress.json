@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-22T18:46:15.369Z",
-  "processed": 426,
-  "failed": 727,
-  "successRate": "36.9%",
+  "updatedAt": "2026-03-22T18:51:05.932Z",
+  "processed": 432,
+  "failed": 731,
+  "successRate": "37.1%",
   "tierBreakdown": {
-    "playwright": 370,
+    "playwright": 375,
     "amp": 12,
-    "browserbase": 18,
+    "browserbase": 20,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 38,
+    "archiveToday": 42,
     "archive": 43
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-03-22T16:16:39.542Z",
-      "event": "bb-session",
-      "session": "cdd6aea2",
-      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
-    },
-    {
-      "t": "2026-03-22T16:16:40.943Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-22T16:21:12.259Z",
-      "event": "bb-session",
-      "session": "460f91c2",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
-    },
-    {
-      "t": "2026-03-22T16:21:13.582Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-22T16:23:55.406Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-22T18:45:00.200Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-22T18:49:02.285Z",
+      "event": "bb-session",
+      "session": "4a067e96",
+      "url": "https://www.thestage.co.uk/reviews/othello-review-theatre-royal-haymarket-london"
+    },
+    {
+      "t": "2026-03-22T18:49:03.481Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-22T18:50:21.177Z",
+      "event": "bb-session",
+      "session": "487f3a78",
+      "url": "https://www.nytimes.com/2024/12/22/theater/all-in-review.html"
+    },
+    {
+      "t": "2026-03-22T18:50:22.244Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

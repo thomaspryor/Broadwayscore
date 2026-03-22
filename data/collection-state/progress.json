@@ -425,7 +425,13 @@
     "stephen-sondheims-old-friends-2025/theatres-leiter-side--samuel-l-leiter.json",
     "good-night-and-good-luck-2025/independent--alice-saville.json",
     "good-night-and-good-luck-2025/times-uk--ben-dowell.json",
-    "good-night-and-good-luck-2025/whatsonstage--alun-hood.json"
+    "good-night-and-good-luck-2025/whatsonstage--alun-hood.json",
+    "othello-2025/times-uk--clive-davis.json",
+    "othello-2025/whatsonstage--sarah-crompton.json",
+    "all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json",
+    "elf-2024/nyt-theater--jonathan-mandell.json",
+    "romeo-juliet-2024/theatres-leiter-side--samuel-l-leiter.json",
+    "stereophonic-2024/independent--alice-saville.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -1154,7 +1160,11 @@
     "wicked-west-end-2021/independent--clarisse-loughrey.json",
     "good-night-and-good-luck-2025/guardian--mark-lawson.json",
     "good-night-and-good-luck-2025/thestage--dave-fargnoli.json",
-    "othello-2025/guardian--arifa-akbar.json"
+    "othello-2025/guardian--arifa-akbar.json",
+    "othello-2025/daily-mail--patrick-marmion.json",
+    "othello-2025/independent--alice-saville.json",
+    "othello-2025/thestage--dave-fargnoli.json",
+    "stereophonic-2024/guardian--emma-john.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1528,7 +1538,12 @@
       "stephen-sondheims-old-friends-2025/theatres-leiter-side--samuel-l-leiter.json",
       "good-night-and-good-luck-2025/independent--alice-saville.json",
       "good-night-and-good-luck-2025/times-uk--ben-dowell.json",
-      "good-night-and-good-luck-2025/whatsonstage--alun-hood.json"
+      "good-night-and-good-luck-2025/whatsonstage--alun-hood.json",
+      "othello-2025/times-uk--clive-davis.json",
+      "othello-2025/whatsonstage--sarah-crompton.json",
+      "elf-2024/nyt-theater--jonathan-mandell.json",
+      "romeo-juliet-2024/theatres-leiter-side--samuel-l-leiter.json",
+      "stereophonic-2024/independent--alice-saville.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -1562,7 +1577,9 @@
       "data/review-texts/paddington-the-musical-west-end-2025/variety--david-benedict.json",
       "paddington-the-musical-west-end-2025/variety--david-benedict.json",
       "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
-      "hercules-west-end-2025/variety--david-benedict.json"
+      "hercules-west-end-2025/variety--david-benedict.json",
+      "data/review-texts/all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json",
+      "all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -1605,7 +1622,11 @@
       "data/review-texts/wicked-west-end-2021/independent--clarisse-loughrey.json",
       "data/review-texts/good-night-and-good-luck-2025/guardian--mark-lawson.json",
       "data/review-texts/good-night-and-good-luck-2025/thestage--dave-fargnoli.json",
-      "data/review-texts/othello-2025/guardian--arifa-akbar.json"
+      "data/review-texts/othello-2025/guardian--arifa-akbar.json",
+      "data/review-texts/othello-2025/daily-mail--patrick-marmion.json",
+      "data/review-texts/othello-2025/independent--alice-saville.json",
+      "data/review-texts/othello-2025/thestage--dave-fargnoli.json",
+      "data/review-texts/stereophonic-2024/guardian--emma-john.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -1654,7 +1675,7 @@
     ]
   },
   "startTime": "2026-03-22T09:04:26.170Z",
-  "lastProcessed": "othello-2025/guardian--arifa-akbar.json",
+  "lastProcessed": "stereophonic-2024/independent--alice-saville.json",
   "log": [
     {
       "t": "2026-03-22T09:19:17.595Z",
@@ -1865,6 +1886,28 @@
       "t": "2026-03-22T18:45:00.200Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-22T18:49:02.285Z",
+      "event": "bb-session",
+      "session": "4a067e96",
+      "url": "https://www.thestage.co.uk/reviews/othello-review-theatre-royal-haymarket-london"
+    },
+    {
+      "t": "2026-03-22T18:49:03.481Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-22T18:50:21.177Z",
+      "event": "bb-session",
+      "session": "487f3a78",
+      "url": "https://www.nytimes.com/2024/12/22/theater/all-in-review.html"
+    },
+    {
+      "t": "2026-03-22T18:50:22.244Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
