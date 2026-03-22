@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-22T03:32:22.961Z",
+  "timestamp": "2026-03-22T03:42:26.540Z",
   "stats": {
-    "totalReviews": 32078,
+    "totalReviews": 32082,
     "alreadyFlagged": 10749,
     "dateGuardCatches": 138,
     "directorMismatch": 950,
     "tvFilmSignals": 3391,
     "londonSignals": 1029,
-    "offBroadwaySignals": 1009,
+    "offBroadwaySignals": 1008,
     "yearMismatch": 71,
-    "noPublishDate": 6869
+    "noPublishDate": 6873
   },
   "findings": [
     {
@@ -83945,20 +83945,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "ulysses-off-broadway-2026",
-      "file": "theatre-reviews-limited--david-roberts.json",
-      "score": 64,
-      "publishDate": "2026-02-16",
-      "url": "https://www.theatrereviews.com/off-broadway-review-ulysses-at-the-public-theaters-martinson-hall-through-sunday-march-1-2026/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"nytw\""
         }
       ]
     },
