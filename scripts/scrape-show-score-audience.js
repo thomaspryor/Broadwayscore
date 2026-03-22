@@ -28,14 +28,23 @@ const { isLondonMarket } = require('./lib/venue-classification');
 
 // Lazy-load Playwright — only imported if needed as fallback
 let playwrightBrowser = null;
+let playwrightUnavailable = false; // Cache permanent failures (missing binaries)
 async function getPlaywrightBrowser() {
+  if (playwrightUnavailable) return null;
   if (playwrightBrowser) return playwrightBrowser;
   try {
     const { chromium } = require('playwright');
     playwrightBrowser = await chromium.launch({ headless: true });
     return playwrightBrowser;
   } catch (e) {
-    console.error(`  Playwright unavailable: ${e.message}`);
+    const msg = e.message || '';
+    // Missing binaries = permanent failure, don't retry every call
+    if (msg.includes("Executable doesn't exist") || msg.includes('MODULE_NOT_FOUND')) {
+      console.error(`  Playwright permanently unavailable: ${msg.split('\n')[0]}`);
+      playwrightUnavailable = true;
+    } else {
+      console.error(`  Playwright unavailable: ${msg}`);
+    }
     return null;
   }
 }
@@ -793,7 +802,13 @@ async function processShow(show) {
     if (metadata.synopsis) console.log(`  Synopsis: ${metadata.synopsis.slice(0, 80)}...`);
 
     if (!data.score && !metadata.runtime && !metadata.synopsis) {
-      console.log(`  SKIP: No audience score or metadata found`);
+      // Distinguish between "page exists but has no data" (Show-Score broken) vs truly empty
+      const hasPageStructure = html.includes('show-page') || html.includes('aggregateRating') || html.includes('show-score.com');
+      if (hasPageStructure) {
+        console.log(`  SKIP: Page loaded but no data extracted (Show-Score may not be displaying reviews)`);
+      } else {
+        console.log(`  SKIP: No audience score or metadata found`);
+      }
       return null;
     }
 

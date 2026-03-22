@@ -30,7 +30,7 @@ on:
         default: 10
 
 concurrency:
-  group: audience-buzz
+  group: show-score
   cancel-in-progress: false
 
 jobs:
@@ -122,6 +122,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Install Playwright Chromium
+        run: npx playwright install chromium
 
       - name: Configure git
         run: |
