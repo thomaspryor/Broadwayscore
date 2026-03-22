@@ -5,6 +5,7 @@ import { getLotteryRush, getLotteryRushLastUpdated } from '@/lib/data-lottery';
 import type { ShowLotteryRush } from '@/lib/data-types';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
+import { getMarketLabel } from '@/lib/venue-classification';
 import { ComputedShow } from '@/lib/engine';
 import { ScoreBadge } from '@/components/show-cards';
 import { StandingRoomTable } from '@/components/SortableLotteryRushTables';
@@ -87,7 +88,7 @@ function SROShowCard({ show, sroData, index }: SROShowCardProps) {
         {show.images?.thumbnail ? (
           <img
             src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
-            alt={`${show.title} Broadway ${show.type}`}
+            alt={`${show.title} ${getMarketLabel(show.category)} ${show.type}`}
             loading={index < 6 ? "eager" : "lazy"}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
