@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import type Fuse from 'fuse.js';
 import { useClickOutside } from '@/hooks/useClickOutside';
+import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 
 interface Show {
   id: string;
@@ -34,6 +35,8 @@ export default function HeaderSearch() {
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const marketId = useCurrentMarket();
+  const searchLabel = marketId === 'west-end' || marketId === 'off-west-end' ? 'Search West End shows' : marketId === 'off-broadway' ? 'Search Off-Broadway shows' : 'Search Broadway shows';
 
   // Fetch search data + Fuse.js on first interaction (both lazy-loaded)
   const ensureData = useCallback(async () => {
@@ -169,7 +172,7 @@ export default function HeaderSearch() {
                        text-white placeholder-gray-400
                        focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand/50
                        transition-all duration-200"
-            aria-label="Search Broadway shows"
+            aria-label={searchLabel}
             role="combobox"
             aria-expanded={isOpen && filteredShows.length > 0}
             aria-haspopup="listbox"
@@ -305,7 +308,7 @@ export default function HeaderSearch() {
                   value={query}
                   onChange={(e) => { setQuery(e.target.value); setSelectedIndex(-1); }}
                   onKeyDown={handleKeyDown}
-                  placeholder="Search Broadway shows..."
+                  placeholder={`${searchLabel}...`}
                   className="w-full px-4 py-2 pl-10 text-base bg-white/5 border border-white/10 rounded-lg
                              text-white placeholder-gray-400
                              focus:outline-none focus:ring-2 focus:ring-brand/50"
@@ -380,7 +383,7 @@ export default function HeaderSearch() {
                 </div>
               ) : (
                 <div className="p-8 text-center">
-                  <p className="text-gray-400">Type to search for Broadway shows</p>
+                  <p className="text-gray-400">Type to search for shows</p>
                 </div>
               )}
             </div>
