@@ -21,12 +21,13 @@ export function getMarketFromPath(pathname: string): MarketId {
   if (pathname.startsWith('/off-broadway')) return 'off-broadway';
 
   // Show detail pages: /show/{slug} where slug contains market suffix
+  // Slugs may end with market (hamilton-west-end) or have year (hamilton-west-end-2021)
   if (pathname.startsWith('/show/')) {
     const slug = pathname.slice(6); // remove '/show/'
     // Check off-west-end before west-end (longer match first)
-    if (slug.includes('-off-west-end-')) return 'off-west-end';
-    if (slug.includes('-west-end-')) return 'west-end';
-    if (slug.includes('-off-broadway-')) return 'off-broadway';
+    if (slug.includes('-off-west-end')) return 'off-west-end';
+    if (slug.includes('-west-end')) return 'west-end';
+    if (slug.includes('-off-broadway')) return 'off-broadway';
   }
 
   return 'nyc';
