@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-22T08:24:15.160Z",
+  "timestamp": "2026-03-22T08:31:14.320Z",
   "stats": {
     "totalReviews": 32221,
-    "alreadyFlagged": 10780,
+    "alreadyFlagged": 10783,
     "dateGuardCatches": 141,
-    "directorMismatch": 950,
-    "tvFilmSignals": 3399,
+    "directorMismatch": 951,
+    "tvFilmSignals": 3400,
     "londonSignals": 1030,
     "offBroadwaySignals": 1010,
     "yearMismatch": 71,
-    "noPublishDate": 6903
+    "noPublishDate": 6895
   },
   "findings": [
     {
@@ -2693,6 +2693,20 @@
       "score": 63,
       "publishDate": "March 25, 2014",
       "url": "http://www.classicalite.com/articles/6910/20140325/review-disneys-aladdin-broadway-musical-is-better-than-frozen-will-be.htm",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "aladdin-2014",
+      "file": "culturesauce--thom-geier.json",
+      "score": null,
+      "publishDate": "2014-03-22",
+      "url": "https://culturesauce.com/2014/03/21/broadway-review-aladdin/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -32866,6 +32880,20 @@
       "score": 55,
       "publishDate": "2024-03-27",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/mj-the-musical-review-24-carat-karaoke-anchored-by-sleek-dance-moves-xvqpkfltq?gaa_at=eafs&gaa_n=AWEtsqecj4sfDzFY29rAWDZxyWJ5U5_juFrt4gcVANYARjG5KVJVP9BTfA4K&gaa_ts=69bda2f1&gaa_sig=yhlVI0isLgHl0bTVELIkfh9e_cIO3k7CfJpbf6j94OTU_lwPAMdpqK6AqZX0Lk7mdmfcdL_6lIZNsyjavUujsA%3D%3D",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher wheeldon\" from mj-2022"
+        }
+      ]
+    },
+    {
+      "showId": "mj-the-musical-west-end-2024",
+      "file": "times-uk--unknown.json",
+      "score": null,
+      "publishDate": "2024-03-27",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mj-the-musical-review-24-carat-karaoke-anchored-by-sleek-dance-moves-xvqpkfltq?gaa_at=eafs&gaa_n=AWEtsqewvfWK_o4T48c4HFdxpFOoez_Rt0x32K_AkiwAjOc8fu1n_EFbqBz2&gaa_ts=69bda30e&gaa_sig=nlxrn838bUQeb-ILTZN0xfyfMU9DsxtKutA-MFHwFYtd8lckS8geuY6hMZobFBI6H-K2mIRx7apB6-aTdCZwjg%3D%3D",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
