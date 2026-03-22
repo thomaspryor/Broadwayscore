@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-22T23:40:06.771Z",
+  "timestamp": "2026-03-22T23:47:13.483Z",
   "stats": {
     "totalReviews": 32397,
     "alreadyFlagged": 10963,
     "dateGuardCatches": 141,
     "directorMismatch": 948,
-    "tvFilmSignals": 3400,
-    "londonSignals": 1028,
+    "tvFilmSignals": 3401,
+    "londonSignals": 1030,
     "offBroadwaySignals": 1013,
     "yearMismatch": 71,
     "noPublishDate": 6884
@@ -75088,6 +75088,19 @@
     },
     {
       "showId": "operation-mincemeat-west-end-2024",
+      "file": "financialtimes--unknown.json",
+      "publishDate": null,
+      "url": "https://www.westendtheatre.com/335071/news/reviews/american-psycho-reviews-2026/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
       "file": "guardian--emma-john.json",
       "score": 79,
       "publishDate": "2023-05-10",
@@ -77642,6 +77655,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-2024",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 38,
+      "publishDate": null,
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=IQL7U1",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"streaming series\""
         }
       ]
     },
@@ -82480,6 +82507,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "file": "whatsonstage--alun-hood.json",
+      "score": 78,
+      "publishDate": null,
+      "url": "https://www.whatsonstage.com/news/christmas-carol-goes-wrong-review-an-eber-knees-up-in-the-west-end_1706553/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
