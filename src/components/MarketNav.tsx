@@ -2,8 +2,8 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { useClickOutside } from '@/hooks/useClickOutside';
+import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 
 interface MarketStats {
   nyc: { openShows: number; theaters: number };
@@ -11,13 +11,13 @@ interface MarketStats {
 }
 
 export default function MarketNav({ stats }: { stats: MarketStats }) {
-  const pathname = usePathname();
+  const marketId = useCurrentMarket();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const isWestEnd = pathname.startsWith('/west-end');
-  const isOffWestEnd = pathname.startsWith('/off-west-end');
-  const isOffBroadway = pathname.startsWith('/off-broadway');
+  const isWestEnd = marketId === 'west-end';
+  const isOffWestEnd = marketId === 'off-west-end';
+  const isOffBroadway = marketId === 'off-broadway';
   const currentMarket = isWestEnd || isOffWestEnd ? 'west-end' : 'nyc';
 
   const closeDropdown = useCallback(() => setIsOpen(false), []);
@@ -26,7 +26,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   // Close on route change
   useEffect(() => {
     setIsOpen(false);
-  }, [pathname]);
+  }, [marketId]);
 
   return (
     <div className="flex items-center gap-3 sm:gap-3" ref={dropdownRef}>
