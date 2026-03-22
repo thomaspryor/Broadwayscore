@@ -128,9 +128,29 @@ try {
     if (fixed) orphansFixed++;
   }
   if (orphansFixed > 0 || jpgUpgraded > 0) {
-    fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2));
     if (orphansFixed > 0) ok(`Auto-fixed ${orphansFixed} shows with orphan/outdated image refs`);
     if (jpgUpgraded > 0) ok(`Upgraded ${jpgUpgraded} image paths from .jpg → .webp`);
+  }
+
+  // Venue-vs-category auto-fix: WE venues miscategorised as off-west-end (and vice versa).
+  // CI rebuilds can revert manual category fixes, so this self-heals on every deploy.
+  const { isWestEndVenue, isOffWestEndVenue, isLondonMarket } = require('./lib/venue-classification');
+  let categoryFixed = 0;
+  for (const show of shows) {
+    if (!show.venue || show.venue === 'TBA' || !isLondonMarket(show.category)) continue;
+    if (show.category === 'off-west-end' && isWestEndVenue(show.venue)) {
+      show.category = 'west-end';
+      categoryFixed++;
+    } else if (show.category === 'west-end' && isOffWestEndVenue(show.venue)) {
+      show.category = 'off-west-end';
+      categoryFixed++;
+    }
+  }
+  if (categoryFixed > 0) ok(`Auto-fixed ${categoryFixed} venue/category mismatches`);
+
+  // Write shows.json if any fixes were applied
+  if (orphansFixed > 0 || jpgUpgraded > 0 || categoryFixed > 0) {
+    fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2));
   }
 
 } catch (e) {
