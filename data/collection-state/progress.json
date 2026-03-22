@@ -289,7 +289,16 @@
     "the-reservoir-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
     "marcel-on-the-train-off-broadway-2026/forward--pj-grisar.json",
     "chinese-republicans-off-broadway-2026/off-off-online--adrienne-onofri.json",
-    "chinese-republicans-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+    "chinese-republicans-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "chinese-republicans-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "chinese-republicans-off-broadway-2026/the-interested-bystander--cary-wong.json",
+    "chinese-republicans-off-broadway-2026/theater-scene--victor-gluck.json",
+    "marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
+    "marcel-on-the-train-off-broadway-2026/stageandcinema--unknown.json",
+    "marcel-on-the-train-off-broadway-2026/theater-scene--tony-marinelli.json",
+    "the-reservoir-off-broadway-2026/culturesauce--thom-geier.json",
+    "the-reservoir-off-broadway-2026/frontmezzjunkies--unknown.json",
+    "the-reservoir-off-broadway-2026/off-off-online--charles-wright.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -994,7 +1003,8 @@
     "bigfoot-off-broadway-2026/buy-tickets--unknown.json",
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
     "the-holy-rosenbergs-west-end-2026/guardian--david-jays.json",
-    "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json"
+    "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1250,7 +1260,15 @@
       "the-reservoir-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
       "marcel-on-the-train-off-broadway-2026/forward--pj-grisar.json",
       "chinese-republicans-off-broadway-2026/off-off-online--adrienne-onofri.json",
-      "chinese-republicans-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+      "chinese-republicans-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "chinese-republicans-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+      "chinese-republicans-off-broadway-2026/the-interested-bystander--cary-wong.json",
+      "chinese-republicans-off-broadway-2026/theater-scene--victor-gluck.json",
+      "marcel-on-the-train-off-broadway-2026/stageandcinema--unknown.json",
+      "marcel-on-the-train-off-broadway-2026/theater-scene--tony-marinelli.json",
+      "the-reservoir-off-broadway-2026/culturesauce--thom-geier.json",
+      "the-reservoir-off-broadway-2026/frontmezzjunkies--unknown.json",
+      "the-reservoir-off-broadway-2026/off-off-online--charles-wright.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -1270,7 +1288,9 @@
       "data/review-texts/every-brilliant-thing-2026/amny--matt-windman.json",
       "every-brilliant-thing-2026/amny--matt-windman.json",
       "data/review-texts/tru-off-broadway-2026/nytimes--unknown.json",
-      "tru-off-broadway-2026/nytimes--unknown.json"
+      "tru-off-broadway-2026/nytimes--unknown.json",
+      "data/review-texts/marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
+      "marcel-on-the-train-off-broadway-2026/amny--matt-windman.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -1339,7 +1359,7 @@
     ]
   },
   "startTime": "2026-03-22T09:04:26.170Z",
-  "lastProcessed": "chinese-republicans-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+  "lastProcessed": "the-reservoir-off-broadway-2026/off-off-online--charles-wright.json",
   "log": [
     {
       "t": "2026-03-22T09:19:17.595Z",
@@ -1396,6 +1416,17 @@
       "t": "2026-03-22T15:55:35.417Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-22T16:08:58.131Z",
+      "event": "bb-session",
+      "session": "993f2cc3",
+      "url": "https://www.amny.com/news/review-marcel-on-the-train-finds-bravery/"
+    },
+    {
+      "t": "2026-03-22T16:08:59.600Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }

@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-22T16:08:17.598Z",
-  "processed": 290,
-  "failed": 703,
-  "successRate": "29.2%",
+  "updatedAt": "2026-03-22T16:10:00.634Z",
+  "processed": 299,
+  "failed": 704,
+  "successRate": "29.8%",
   "tierBreakdown": {
-    "playwright": 252,
+    "playwright": 260,
     "amp": 10,
-    "browserbase": 6,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 27,
     "archive": 31
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-03-22T09:19:17.595Z",
@@ -70,6 +70,17 @@
       "t": "2026-03-22T15:55:35.417Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-22T16:08:58.131Z",
+      "event": "bb-session",
+      "session": "993f2cc3",
+      "url": "https://www.amny.com/news/review-marcel-on-the-train-finds-bravery/"
+    },
+    {
+      "t": "2026-03-22T16:08:59.600Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
