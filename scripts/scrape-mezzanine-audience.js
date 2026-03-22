@@ -253,6 +253,16 @@ function matchProductions(productions, shows) {
 
   const today = new Date().toISOString().split('T')[0];
 
+  // Build index of sibling shows (same normalized title, different IDs).
+  // When a Mezzanine production matches a title that has siblings, we assign
+  // it to the show with the closest opening year — not merge all of them.
+  const siblingsByNormTitle = new Map();
+  for (const s of shows) {
+    const norm = normalize(s.title);
+    if (!siblingsByNormTitle.has(norm)) siblingsByNormTitle.set(norm, []);
+    siblingsByNormTitle.get(norm).push(s);
+  }
+
   for (const show of shows) {
     // Skip shows whose previews haven't started yet — no real audience data possible
     const previewDate = show.previewsStartDate || show.openingDate;
@@ -266,6 +276,8 @@ function matchProductions(productions, shows) {
     const normTitle = normalize(title);
     const overrideName = MEZZANINE_OVERRIDES[show.id];
     const normOverride = overrideName ? normalize(overrideName) : null;
+    const siblings = siblingsByNormTitle.get(normTitle) || [];
+    const hasSiblings = siblings.length > 1;
 
     // Collect ALL matching productions (not just best)
     const allMatches = [];
@@ -306,6 +318,23 @@ function matchProductions(productions, shows) {
         const yearVerified = openYear && mYear && Math.abs(mYear - openYear) <= 1;
         // Require year verification for non-high confidence
         if (!yearVerified && confidence !== 'high') continue;
+
+        // When multiple of our shows share the same title (transfers, revivals),
+        // assign each Mezzanine production to the show with the closest year.
+        // This prevents merging OB + Broadway productions together.
+        if (hasSiblings && mYear && openYear) {
+          const myGap = Math.abs(mYear - openYear);
+          const closerSibling = siblings.find(s => {
+            if (s.id === show.id) return false;
+            const sYear = parseInt((s.openingDate || '').substring(0, 4));
+            return sYear && Math.abs(mYear - sYear) < myGap;
+          });
+          if (closerSibling) {
+            if (verbose) console.log(`  SKIP prod ${p.objectId || mName} (year ${mYear}) for ${show.id} — closer to ${closerSibling.id}`);
+            continue;
+          }
+        }
+
         allMatches.push({ production: p, confidence, yearVerified, prodId: p.objectId || `${mName}-${mYear}` });
       }
     }
