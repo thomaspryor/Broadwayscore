@@ -215,8 +215,8 @@
           "title": "Maybe Happy Ending",
           "slug": "maybe-happy-ending",
           "rank": 1,
-          "value": 85.3,
-          "displayValue": "85.3",
+          "value": 86,
+          "displayValue": "86.0",
           "season": "2024-2025",
           "venue": "Belasco Theatre",
           "type": "musical",
@@ -247,8 +247,8 @@
           "title": "Oh, Mary!",
           "slug": "oh-mary",
           "rank": 3,
-          "value": 82.7,
-          "displayValue": "82.7",
+          "value": 82.8,
+          "displayValue": "82.8",
           "season": "2024-2025",
           "venue": "Lyceum Theatre",
           "type": "play",
@@ -327,8 +327,8 @@
           "title": "Buena Vista Social Club",
           "slug": "buena-vista-social-club",
           "rank": 8,
-          "value": 80.5,
-          "displayValue": "80.5",
+          "value": 80.4,
+          "displayValue": "80.4",
           "season": "2024-2025",
           "venue": "Gerald Schoenfeld Theatre",
           "type": "musical",
@@ -359,8 +359,8 @@
           "title": "Death Becomes Her",
           "slug": "death-becomes-her",
           "rank": 10,
-          "value": 77.9,
-          "displayValue": "77.9",
+          "value": 78.3,
+          "displayValue": "78.3",
           "season": "2024-2025",
           "venue": "Lunt-Fontanne Theatre",
           "type": "musical",
@@ -393,8 +393,8 @@
           "title": "Merrily We Roll Along",
           "slug": "merrily-we-roll-along",
           "rank": 2,
-          "value": 84.3,
-          "displayValue": "84.3",
+          "value": 84.2,
+          "displayValue": "84.2",
           "season": "2023-2024",
           "venue": "Hudson Theatre",
           "type": "musical",
@@ -793,10 +793,26 @@
           "isRevival": false
         },
         {
+          "showId": "six-2021",
+          "title": "SIX",
+          "slug": "six",
+          "rank": 7,
+          "value": 80.8,
+          "displayValue": "80.8",
+          "season": "2021-2022",
+          "venue": "Lena Horne Theatre",
+          "type": "musical",
+          "thumbnail": "/images/shows/six-2021/thumbnail.webp",
+          "openingDate": "2021-10-03",
+          "closingDate": null,
+          "status": "open",
+          "isRevival": false
+        },
+        {
           "showId": "how-i-learned-to-drive-2022",
           "title": "How I Learned to Drive",
           "slug": "how-i-learned-to-drive-2022",
-          "rank": 7,
+          "rank": 8,
           "value": 80.6,
           "displayValue": "80.6",
           "season": "2021-2022",
@@ -812,7 +828,7 @@
           "showId": "company-2021",
           "title": "Company",
           "slug": "company-2021",
-          "rank": 8,
+          "rank": 9,
           "value": 80.4,
           "displayValue": "80.4",
           "season": "2021-2022",
@@ -828,7 +844,7 @@
           "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
           "title": "for colored girls who have considered suicide / when the rainbow is enuf",
           "slug": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
-          "rank": 9,
+          "rank": 10,
           "value": 80.3,
           "displayValue": "80.3",
           "season": "2021-2022",
@@ -839,22 +855,6 @@
           "closingDate": "2022-06-05",
           "status": "closed",
           "isRevival": true
-        },
-        {
-          "showId": "six-2021",
-          "title": "SIX",
-          "slug": "six",
-          "rank": 10,
-          "value": 80.1,
-          "displayValue": "80.1",
-          "season": "2021-2022",
-          "venue": "Lena Horne Theatre",
-          "type": "musical",
-          "thumbnail": "/images/shows/six-2021/thumbnail.webp",
-          "openingDate": "2021-10-03",
-          "closingDate": null,
-          "status": "open",
-          "isRevival": false
         }
       ],
       "2019-2020": [
@@ -1808,7 +1808,7 @@
           "season": "2013-2014",
           "venue": "Booth Theatre",
           "type": "play",
-          "thumbnail": null,
+          "thumbnail": "/images/shows/the-glass-menagerie-2013/thumbnail.webp",
           "openingDate": "2013-09-26",
           "closingDate": "2014-02-23",
           "status": "closed",
@@ -2116,7 +2116,7 @@
           "season": "2011-2012",
           "venue": "Ethel Barrymore Theatre",
           "type": "play",
-          "thumbnail": null,
+          "thumbnail": "/images/shows/death-of-a-salesman-2012/thumbnail.webp",
           "openingDate": "2012-03-15",
           "closingDate": "2012-06-02",
           "status": "closed",
@@ -2682,7 +2682,7 @@
           "season": "2008-2009",
           "venue": "Harold and Miriam Steinberg Center for Theatre",
           "type": "play",
-          "thumbnail": null,
+          "thumbnail": "/images/shows/waiting-for-godot-2009/thumbnail.webp",
           "openingDate": "2009-04-30",
           "closingDate": "2009-07-12",
           "status": "closed",
@@ -2880,7 +2880,7 @@
           "season": "2005-2006",
           "venue": "Broadway Theatre",
           "type": "musical",
-          "thumbnail": null,
+          "thumbnail": "/images/shows/the-color-purple-2005/thumbnail.webp",
           "openingDate": "2005-12-01",
           "closingDate": "2008-02-24",
           "status": "closed",
@@ -2911,8 +2911,8 @@
           "title": "The Lion King",
           "slug": "the-lion-king",
           "rank": 1,
-          "value": 82.9,
-          "displayValue": "82.9",
+          "value": 83,
+          "displayValue": "83.0",
           "season": "1997-1998",
           "venue": "Minskoff Theatre",
           "type": "musical",
@@ -3155,10 +3155,26 @@
           "isRevival": false
         },
         {
+          "showId": "maybe-happy-ending-2024",
+          "title": "Maybe Happy Ending",
+          "slug": "maybe-happy-ending",
+          "rank": 12,
+          "value": 86,
+          "displayValue": "86.0",
+          "season": "2024-2025",
+          "venue": "Belasco Theatre",
+          "type": "musical",
+          "thumbnail": "/images/shows/maybe-happy-ending-2024/thumbnail.webp",
+          "openingDate": "2024-11-12",
+          "closingDate": null,
+          "status": "open",
+          "isRevival": false
+        },
+        {
           "showId": "dana-h-2021",
           "title": "Dana H.",
           "slug": "dana-h-2021",
-          "rank": 12,
+          "rank": 13,
           "value": 85.8,
           "displayValue": "85.8",
           "season": "2021-2022",
@@ -3174,7 +3190,7 @@
           "showId": "richard-iii-2013",
           "title": "Richard III",
           "slug": "richard-iii-2013",
-          "rank": 13,
+          "rank": 14,
           "value": 85.8,
           "displayValue": "85.8",
           "season": "2013-2014",
@@ -3190,7 +3206,7 @@
           "showId": "into-the-woods-2022",
           "title": "Into the Woods",
           "slug": "into-the-woods-2022",
-          "rank": 14,
+          "rank": 15,
           "value": 85.6,
           "displayValue": "85.6",
           "season": "2022-2023",
@@ -3206,7 +3222,7 @@
           "showId": "the-bands-visit-2017",
           "title": "The Band's Visit",
           "slug": "the-bands-visit-2017",
-          "rank": 15,
+          "rank": 16,
           "value": 85.5,
           "displayValue": "85.5",
           "season": "2017-2018",
@@ -3222,7 +3238,7 @@
           "showId": "she-loves-me-2016",
           "title": "She Loves Me",
           "slug": "she-loves-me-2016",
-          "rank": 16,
+          "rank": 17,
           "value": 85.5,
           "displayValue": "85.5",
           "season": "2015-2016",
@@ -3233,22 +3249,6 @@
           "closingDate": "2016-07-10",
           "status": "closed",
           "isRevival": true
-        },
-        {
-          "showId": "maybe-happy-ending-2024",
-          "title": "Maybe Happy Ending",
-          "slug": "maybe-happy-ending",
-          "rank": 17,
-          "value": 85.3,
-          "displayValue": "85.3",
-          "season": "2024-2025",
-          "venue": "Belasco Theatre",
-          "type": "musical",
-          "thumbnail": "/images/shows/maybe-happy-ending-2024/thumbnail.webp",
-          "openingDate": "2024-11-12",
-          "closingDate": null,
-          "status": "open",
-          "isRevival": false
         },
         {
           "showId": "chicago-1996",
@@ -3315,26 +3315,10 @@
           "isRevival": true
         },
         {
-          "showId": "merrily-we-roll-along-2023",
-          "title": "Merrily We Roll Along",
-          "slug": "merrily-we-roll-along",
-          "rank": 22,
-          "value": 84.3,
-          "displayValue": "84.3",
-          "season": "2023-2024",
-          "venue": "Hudson Theatre",
-          "type": "musical",
-          "thumbnail": "/images/shows/merrily-we-roll-along-2023/thumbnail.webp",
-          "openingDate": "2023-10-10",
-          "closingDate": "2024-07-07",
-          "status": "closed",
-          "isRevival": true
-        },
-        {
           "showId": "dear-evan-hansen-2016",
           "title": "Dear Evan Hansen",
           "slug": "dear-evan-hansen-2016",
-          "rank": 23,
+          "rank": 22,
           "value": 84.3,
           "displayValue": "84.3",
           "season": "2016-2017",
@@ -3350,7 +3334,7 @@
           "showId": "the-king-and-i-2015",
           "title": "The King and I",
           "slug": "the-king-and-i-2015",
-          "rank": 24,
+          "rank": 23,
           "value": 84.3,
           "displayValue": "84.3",
           "season": "2014-2015",
@@ -3359,6 +3343,22 @@
           "thumbnail": "/images/shows/the-king-and-i-2015/thumbnail.webp",
           "openingDate": "2015-04-16",
           "closingDate": "2016-06-26",
+          "status": "closed",
+          "isRevival": true
+        },
+        {
+          "showId": "merrily-we-roll-along-2023",
+          "title": "Merrily We Roll Along",
+          "slug": "merrily-we-roll-along",
+          "rank": 24,
+          "value": 84.2,
+          "displayValue": "84.2",
+          "season": "2023-2024",
+          "venue": "Hudson Theatre",
+          "type": "musical",
+          "thumbnail": "/images/shows/merrily-we-roll-along-2023/thumbnail.webp",
+          "openingDate": "2023-10-10",
+          "closingDate": "2024-07-07",
           "status": "closed",
           "isRevival": true
         },
@@ -3387,8 +3387,8 @@
           "title": "Paddington The Musical",
           "slug": "paddington-the-musical-west-end",
           "rank": 1,
-          "value": 91.6,
-          "displayValue": "91.6",
+          "value": 91.9,
+          "displayValue": "91.9",
           "season": "2025-2026",
           "venue": "Savoy Theatre",
           "type": "musical",
@@ -3403,8 +3403,8 @@
           "title": "All My Sons",
           "slug": "all-my-sons-west-end",
           "rank": 2,
-          "value": 91.3,
-          "displayValue": "91.3",
+          "value": 91.2,
+          "displayValue": "91.2",
           "season": "2025-2026",
           "venue": "Wyndham's Theatre",
           "type": "play",
@@ -3431,26 +3431,10 @@
           "isRevival": true
         },
         {
-          "showId": "the-choir-of-man-west-end-2026",
-          "title": "The Choir of Man",
-          "slug": "the-choir-of-man-west-end",
-          "rank": 4,
-          "value": 82.5,
-          "displayValue": "82.5",
-          "season": "2025-2026",
-          "venue": "Arts Theatre",
-          "type": "musical",
-          "thumbnail": "/images/shows/the-choir-of-man-west-end-2026/thumbnail.webp",
-          "openingDate": "2026-03-14",
-          "closingDate": "2026-03-21",
-          "status": "closed",
-          "isRevival": false
-        },
-        {
           "showId": "the-producers-west-end-2025",
           "title": "The Producers",
           "slug": "the-producers-west-end",
-          "rank": 5,
+          "rank": 4,
           "value": 81.5,
           "displayValue": "81.5",
           "season": "2025-2026",
@@ -3463,26 +3447,10 @@
           "isRevival": true
         },
         {
-          "showId": "the-tempest-globe-west-end-2026",
-          "title": "The Tempest - Globe",
-          "slug": "the-tempest-globe-west-end",
-          "rank": 6,
-          "value": 80,
-          "displayValue": "80.0",
-          "season": "2025-2026",
-          "venue": "Shakespeare's Globe",
-          "type": "play",
-          "thumbnail": "/images/shows/the-tempest-globe-west-end-2026/thumbnail.webp",
-          "openingDate": "2026-01-17",
-          "closingDate": "2026-04-12",
-          "status": "open",
-          "isRevival": false
-        },
-        {
           "showId": "arcadia-west-end-2026",
           "title": "Arcadia",
           "slug": "arcadia-west-end",
-          "rank": 7,
+          "rank": 5,
           "value": 78.2,
           "displayValue": "78.2",
           "season": "2025-2026",
@@ -3491,16 +3459,48 @@
           "thumbnail": "/images/shows/arcadia-west-end-2026/thumbnail.webp",
           "openingDate": "2026-01-24",
           "closingDate": "2026-03-21",
-          "status": "closed",
+          "status": "open",
           "isRevival": true
+        },
+        {
+          "showId": "the-choir-of-man-west-end-2026",
+          "title": "The Choir of Man",
+          "slug": "the-choir-of-man-west-end",
+          "rank": 6,
+          "value": 77.7,
+          "displayValue": "77.7",
+          "season": "2025-2026",
+          "venue": "Arts Theatre",
+          "type": "musical",
+          "thumbnail": "/images/shows/the-choir-of-man-west-end-2026/thumbnail.webp",
+          "openingDate": "2026-03-14",
+          "closingDate": "2026-03-21",
+          "status": "open",
+          "isRevival": false
+        },
+        {
+          "showId": "evening-all-afternoon-west-end-2026",
+          "title": "Evening All Afternoon",
+          "slug": "evening-all-afternoon-west-end",
+          "rank": 7,
+          "value": 75.4,
+          "displayValue": "75.4",
+          "season": "2025-2026",
+          "venue": "Donmar Warehouse",
+          "type": "play",
+          "thumbnail": "/images/shows/evening-all-afternoon-west-end-2026/thumbnail.webp",
+          "openingDate": "2026-02-14",
+          "closingDate": "2026-04-11",
+          "status": "open",
+          "isRevival": false
         },
         {
           "showId": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026",
           "title": "The Unlikely Pilgrimage of Harold Fry",
           "slug": "the-unlikely-pilgrimage-of-harold-fry-west-end",
           "rank": 8,
-          "value": 77.8,
-          "displayValue": "77.8",
+          "value": 74.8,
+          "displayValue": "74.8",
           "season": "2025-2026",
           "venue": "Theatre Royal Haymarket",
           "type": "musical",
@@ -3511,34 +3511,34 @@
           "isRevival": false
         },
         {
-          "showId": "the-holy-rosenbergs-west-end-2026",
-          "title": "The Holy Rosenbergs",
-          "slug": "the-holy-rosenbergs-west-end",
+          "showId": "manic-street-creature-west-end-2026",
+          "title": "Manic Street Creature",
+          "slug": "manic-street-creature-west-end",
           "rank": 9,
-          "value": 75.9,
-          "displayValue": "75.9",
+          "value": 74.2,
+          "displayValue": "74.2",
           "season": "2025-2026",
-          "venue": "Menier Chocolate Factory",
-          "type": "play",
-          "thumbnail": "/images/shows/the-holy-rosenbergs-west-end-2026/thumbnail.webp",
-          "openingDate": "2026-02-27",
-          "closingDate": "2026-05-02",
+          "venue": "Kiln Theatre",
+          "type": "musical",
+          "thumbnail": "/images/shows/manic-street-creature-west-end-2026/thumbnail.webp",
+          "openingDate": "2026-03-05",
+          "closingDate": "2026-03-28",
           "status": "open",
           "isRevival": false
         },
         {
-          "showId": "evening-all-afternoon-west-end-2026",
-          "title": "Evening All Afternoon",
-          "slug": "evening-all-afternoon-west-end",
+          "showId": "paranormal-activity-west-end-2025",
+          "title": "Paranormal Activity",
+          "slug": "paranormal-activity-west-end",
           "rank": 10,
-          "value": 75.2,
-          "displayValue": "75.2",
+          "value": 73.5,
+          "displayValue": "73.5",
           "season": "2025-2026",
-          "venue": "Donmar Warehouse",
+          "venue": "Ambassadors Theatre",
           "type": "play",
-          "thumbnail": "/images/shows/evening-all-afternoon-west-end-2026/thumbnail.webp",
-          "openingDate": "2026-02-14",
-          "closingDate": "2026-04-11",
+          "thumbnail": "/images/shows/paranormal-activity-west-end-2025/thumbnail.webp",
+          "openingDate": "2025-12-05",
+          "closingDate": null,
           "status": "open",
           "isRevival": false
         }
@@ -3565,8 +3565,8 @@
           "title": "My Neighbour Totoro",
           "slug": "my-neighbour-totoro-west-end",
           "rank": 2,
-          "value": 82.7,
-          "displayValue": "82.7",
+          "value": 82.1,
+          "displayValue": "82.1",
           "season": "2024-2025",
           "venue": "Gillian Lynne Theatre",
           "type": "play",
@@ -3615,8 +3615,8 @@
           "title": "Stranger Things: The First Shadow",
           "slug": "stranger-things-the-first-shadow-west-end",
           "rank": 2,
-          "value": 82.6,
-          "displayValue": "82.6",
+          "value": 79.4,
+          "displayValue": "79.4",
           "season": "2023-2024",
           "venue": "Phoenix Theatre",
           "type": "play",
@@ -3631,8 +3631,8 @@
           "title": "Starlight Express",
           "slug": "starlight-express-west-end-2024",
           "rank": 3,
-          "value": 76.6,
-          "displayValue": "76.6",
+          "value": 75.1,
+          "displayValue": "75.1",
           "season": "2023-2024",
           "venue": "Troubadour Wembley Park Theatre",
           "type": "musical",
@@ -3641,6 +3641,22 @@
           "closingDate": "2026-05-03",
           "status": "open",
           "isRevival": true
+        },
+        {
+          "showId": "hadestown-west-end-2024",
+          "title": "Hadestown",
+          "slug": "hadestown-west-end",
+          "rank": 4,
+          "value": 73.7,
+          "displayValue": "73.7",
+          "season": "2023-2024",
+          "venue": "Lyric Theatre",
+          "type": "musical",
+          "thumbnail": "/images/shows/hadestown-west-end-2024/thumbnail.webp",
+          "openingDate": "2024-02-22",
+          "closingDate": null,
+          "status": "open",
+          "isRevival": false
         }
       ],
       "2022-2023": [
@@ -3667,8 +3683,8 @@
           "title": "Cabaret at the Kit Kat Club",
           "slug": "cabaret-at-the-kit-kat-club-west-end-2021",
           "rank": 1,
-          "value": 84,
-          "displayValue": "84.0",
+          "value": 87.1,
+          "displayValue": "87.1",
           "season": "2021-2022",
           "venue": "Playhouse Theatre",
           "type": "musical",
@@ -3679,12 +3695,28 @@
           "isRevival": false
         },
         {
+          "showId": "the-phantom-of-the-opera-off-west-end-2021",
+          "title": "The Phantom of the Opera",
+          "slug": "the-phantom-of-the-opera-off-west-end",
+          "rank": 2,
+          "value": 81.1,
+          "displayValue": "81.1",
+          "season": "2021-2022",
+          "venue": "His Majesty’s Theatre",
+          "type": "musical",
+          "thumbnail": "/images/shows/the-phantom-of-the-opera-off-west-end-2021/thumbnail.webp",
+          "openingDate": "2021-07-27",
+          "closingDate": null,
+          "status": "open",
+          "isRevival": true
+        },
+        {
           "showId": "the-phantom-of-the-opera-west-end-1986",
           "title": "The Phantom of the Opera",
           "slug": "the-phantom-of-the-opera-west-end",
-          "rank": 2,
-          "value": 76.8,
-          "displayValue": "76.8",
+          "rank": 3,
+          "value": 79.6,
+          "displayValue": "79.6",
           "season": "2021-2022",
           "venue": "His Majesty's Theatre",
           "type": "musical",
@@ -3698,30 +3730,14 @@
           "showId": "back-to-the-future-west-end-2021",
           "title": "Back to the Future",
           "slug": "back-to-the-future-west-end",
-          "rank": 3,
-          "value": 76.2,
-          "displayValue": "76.2",
+          "rank": 4,
+          "value": 75.4,
+          "displayValue": "75.4",
           "season": "2021-2022",
           "venue": "Adelphi Theatre",
           "type": "musical",
           "thumbnail": "/images/shows/back-to-the-future-west-end-2021/thumbnail.webp",
           "openingDate": "2021-09-13",
-          "closingDate": null,
-          "status": "open",
-          "isRevival": false
-        },
-        {
-          "showId": "moulin-rouge-the-musical-west-end-2021",
-          "title": "Moulin Rouge! The Musical",
-          "slug": "moulin-rouge-the-musical-west-end",
-          "rank": 4,
-          "value": 74.7,
-          "displayValue": "74.7",
-          "season": "2021-2022",
-          "venue": "Piccadilly Theatre",
-          "type": "musical",
-          "thumbnail": "/images/shows/moulin-rouge-the-musical-west-end-2021/thumbnail.webp",
-          "openingDate": "2021-11-12",
           "closingDate": null,
           "status": "open",
           "isRevival": false
@@ -3733,8 +3749,8 @@
           "title": "Les Misérables",
           "slug": "les-miserables-west-end",
           "rank": 1,
-          "value": 86.3,
-          "displayValue": "86.3",
+          "value": 87.3,
+          "displayValue": "87.3",
           "season": "2019-2020",
           "venue": "Sondheim Theatre",
           "type": "musical",
@@ -3787,8 +3803,8 @@
           "title": "Harry Potter And The Cursed Child: Both Parts",
           "slug": "harry-potter-and-the-cursed-child-both-parts-west-end",
           "rank": 1,
-          "value": 88.2,
-          "displayValue": "88.2",
+          "value": 88,
+          "displayValue": "88.0",
           "season": "2016-2017",
           "venue": "Palace Theatre",
           "type": "play",
@@ -3823,8 +3839,8 @@
           "title": "The Book of Mormon",
           "slug": "the-book-of-mormon-west-end",
           "rank": 1,
-          "value": 74.8,
-          "displayValue": "74.8",
+          "value": 73.9,
+          "displayValue": "73.9",
           "season": "2012-2013",
           "venue": "Prince of Wales Theatre",
           "type": "musical",
@@ -3841,8 +3857,8 @@
           "title": "Matilda The Musical",
           "slug": "matilda-the-musical-west-end",
           "rank": 1,
-          "value": 91.2,
-          "displayValue": "91.2",
+          "value": 91.7,
+          "displayValue": "91.7",
           "season": "2011-2012",
           "venue": "Cambridge Theatre",
           "type": "musical",
@@ -3859,8 +3875,8 @@
           "title": "The Lion King",
           "slug": "the-lion-king-west-end",
           "rank": 1,
-          "value": 81.8,
-          "displayValue": "81.8",
+          "value": 81.9,
+          "displayValue": "81.9",
           "season": "1999-2000",
           "venue": "Lyceum Theatre",
           "type": "musical",
@@ -3877,8 +3893,8 @@
           "title": "Mamma Mia!",
           "slug": "mamma-mia-west-end",
           "rank": 1,
-          "value": 84.6,
-          "displayValue": "84.6",
+          "value": 84.2,
+          "displayValue": "84.2",
           "season": "1998-1999",
           "venue": "Novello Theatre",
           "type": "musical",
@@ -3891,10 +3907,26 @@
       ],
       "all-time": [
         {
+          "showId": "paddington-the-musical-west-end-2025",
+          "title": "Paddington The Musical",
+          "slug": "paddington-the-musical-west-end",
+          "rank": 1,
+          "value": 91.9,
+          "displayValue": "91.9",
+          "season": "2025-2026",
+          "venue": "Savoy Theatre",
+          "type": "musical",
+          "thumbnail": "/images/shows/paddington-the-musical-west-end-2025/thumbnail.webp",
+          "openingDate": "2025-11-01",
+          "closingDate": null,
+          "status": "open",
+          "isRevival": false
+        },
+        {
           "showId": "hamilton-west-end-2021",
           "title": "Hamilton",
           "slug": "hamilton-west-end",
-          "rank": 1,
+          "rank": 2,
           "value": 91.8,
           "displayValue": "91.8",
           "season": "2017-2018",
@@ -3907,44 +3939,12 @@
           "isRevival": false
         },
         {
-          "showId": "paddington-the-musical-west-end-2025",
-          "title": "Paddington The Musical",
-          "slug": "paddington-the-musical-west-end",
-          "rank": 2,
-          "value": 91.6,
-          "displayValue": "91.6",
-          "season": "2025-2026",
-          "venue": "Savoy Theatre",
-          "type": "musical",
-          "thumbnail": "/images/shows/paddington-the-musical-west-end-2025/thumbnail.webp",
-          "openingDate": "2025-11-01",
-          "closingDate": null,
-          "status": "open",
-          "isRevival": false
-        },
-        {
-          "showId": "all-my-sons-west-end-2025",
-          "title": "All My Sons",
-          "slug": "all-my-sons-west-end",
-          "rank": 3,
-          "value": 91.3,
-          "displayValue": "91.3",
-          "season": "2025-2026",
-          "venue": "Wyndham's Theatre",
-          "type": "play",
-          "thumbnail": "/images/shows/all-my-sons-west-end-2025/thumbnail.webp",
-          "openingDate": "2025-11-14",
-          "closingDate": null,
-          "status": "open",
-          "isRevival": true
-        },
-        {
           "showId": "matilda-the-musical-west-end-2021",
           "title": "Matilda The Musical",
           "slug": "matilda-the-musical-west-end",
-          "rank": 4,
-          "value": 91.2,
-          "displayValue": "91.2",
+          "rank": 3,
+          "value": 91.7,
+          "displayValue": "91.7",
           "season": "2011-2012",
           "venue": "Cambridge Theatre",
           "type": "musical",
@@ -3953,6 +3953,22 @@
           "closingDate": null,
           "status": "open",
           "isRevival": false
+        },
+        {
+          "showId": "all-my-sons-west-end-2025",
+          "title": "All My Sons",
+          "slug": "all-my-sons-west-end",
+          "rank": 4,
+          "value": 91.2,
+          "displayValue": "91.2",
+          "season": "2025-2026",
+          "venue": "Wyndham's Theatre",
+          "type": "play",
+          "thumbnail": "/images/shows/all-my-sons-west-end-2025/thumbnail.webp",
+          "openingDate": "2025-11-14",
+          "closingDate": null,
+          "status": "open",
+          "isRevival": true
         },
         {
           "showId": "operation-mincemeat-west-end-2024",
@@ -3975,8 +3991,8 @@
           "title": "Harry Potter And The Cursed Child: Both Parts",
           "slug": "harry-potter-and-the-cursed-child-both-parts-west-end",
           "rank": 6,
-          "value": 88.2,
-          "displayValue": "88.2",
+          "value": 88,
+          "displayValue": "88.0",
           "season": "2016-2017",
           "venue": "Palace Theatre",
           "type": "play",
@@ -4007,8 +4023,8 @@
           "title": "Les Misérables",
           "slug": "les-miserables-west-end",
           "rank": 8,
-          "value": 86.3,
-          "displayValue": "86.3",
+          "value": 87.3,
+          "displayValue": "87.3",
           "season": "2019-2020",
           "venue": "Sondheim Theatre",
           "type": "musical",
@@ -4019,33 +4035,33 @@
           "isRevival": true
         },
         {
-          "showId": "mamma-mia-west-end-2021",
-          "title": "Mamma Mia!",
-          "slug": "mamma-mia-west-end",
-          "rank": 9,
-          "value": 84.6,
-          "displayValue": "84.6",
-          "season": "1998-1999",
-          "venue": "Novello Theatre",
-          "type": "musical",
-          "thumbnail": "/images/shows/mamma-mia-west-end-2021/thumbnail.webp",
-          "openingDate": "1999-04-06",
-          "closingDate": null,
-          "status": "open",
-          "isRevival": false
-        },
-        {
           "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
           "title": "Cabaret at the Kit Kat Club",
           "slug": "cabaret-at-the-kit-kat-club-west-end-2021",
-          "rank": 10,
-          "value": 84,
-          "displayValue": "84.0",
+          "rank": 9,
+          "value": 87.1,
+          "displayValue": "87.1",
           "season": "2021-2022",
           "venue": "Playhouse Theatre",
           "type": "musical",
           "thumbnail": "/images/shows/cabaret-at-the-kit-kat-club-west-end-2021/thumbnail.jpg",
           "openingDate": "2021-12-16",
+          "closingDate": null,
+          "status": "open",
+          "isRevival": false
+        },
+        {
+          "showId": "mamma-mia-west-end-2021",
+          "title": "Mamma Mia!",
+          "slug": "mamma-mia-west-end",
+          "rank": 10,
+          "value": 84.2,
+          "displayValue": "84.2",
+          "season": "1998-1999",
+          "venue": "Novello Theatre",
+          "type": "musical",
+          "thumbnail": "/images/shows/mamma-mia-west-end-2021/thumbnail.webp",
+          "openingDate": "1999-04-06",
           "closingDate": null,
           "status": "open",
           "isRevival": false
@@ -4083,58 +4099,10 @@
           "isRevival": true
         },
         {
-          "showId": "my-neighbour-totoro-west-end-2025",
-          "title": "My Neighbour Totoro",
-          "slug": "my-neighbour-totoro-west-end",
-          "rank": 13,
-          "value": 82.7,
-          "displayValue": "82.7",
-          "season": "2024-2025",
-          "venue": "Gillian Lynne Theatre",
-          "type": "play",
-          "thumbnail": "/images/shows/my-neighbour-totoro-west-end-2025/thumbnail.webp",
-          "openingDate": "2025-03-08",
-          "closingDate": null,
-          "status": "open",
-          "isRevival": false
-        },
-        {
-          "showId": "stranger-things-the-first-shadow-west-end-2023",
-          "title": "Stranger Things: The First Shadow",
-          "slug": "stranger-things-the-first-shadow-west-end",
-          "rank": 14,
-          "value": 82.6,
-          "displayValue": "82.6",
-          "season": "2023-2024",
-          "venue": "Phoenix Theatre",
-          "type": "play",
-          "thumbnail": "/images/shows/stranger-things-the-first-shadow-west-end-2023/thumbnail.webp",
-          "openingDate": "2023-12-14",
-          "closingDate": "2026-06-28",
-          "status": "open",
-          "isRevival": false
-        },
-        {
-          "showId": "the-choir-of-man-west-end-2026",
-          "title": "The Choir of Man",
-          "slug": "the-choir-of-man-west-end",
-          "rank": 15,
-          "value": 82.5,
-          "displayValue": "82.5",
-          "season": "2025-2026",
-          "venue": "Arts Theatre",
-          "type": "musical",
-          "thumbnail": "/images/shows/the-choir-of-man-west-end-2026/thumbnail.webp",
-          "openingDate": "2026-03-14",
-          "closingDate": "2026-03-21",
-          "status": "closed",
-          "isRevival": false
-        },
-        {
           "showId": "six-the-musical-west-end-2021",
           "title": "SIX the Musical",
           "slug": "six-the-musical-west-end",
-          "rank": 16,
+          "rank": 13,
           "value": 82.5,
           "displayValue": "82.5",
           "season": "2018-2019",
@@ -4147,12 +4115,28 @@
           "isRevival": false
         },
         {
+          "showId": "my-neighbour-totoro-west-end-2025",
+          "title": "My Neighbour Totoro",
+          "slug": "my-neighbour-totoro-west-end",
+          "rank": 14,
+          "value": 82.1,
+          "displayValue": "82.1",
+          "season": "2024-2025",
+          "venue": "Gillian Lynne Theatre",
+          "type": "play",
+          "thumbnail": "/images/shows/my-neighbour-totoro-west-end-2025/thumbnail.webp",
+          "openingDate": "2025-03-08",
+          "closingDate": null,
+          "status": "open",
+          "isRevival": false
+        },
+        {
           "showId": "the-lion-king-west-end-2021",
           "title": "The Lion King",
           "slug": "the-lion-king-west-end",
-          "rank": 17,
-          "value": 81.8,
-          "displayValue": "81.8",
+          "rank": 15,
+          "value": 81.9,
+          "displayValue": "81.9",
           "season": "1999-2000",
           "venue": "Lyceum Theatre",
           "type": "musical",
@@ -4166,7 +4150,7 @@
           "showId": "the-producers-west-end-2025",
           "title": "The Producers",
           "slug": "the-producers-west-end",
-          "rank": 18,
+          "rank": 16,
           "value": 81.5,
           "displayValue": "81.5",
           "season": "2025-2026",
@@ -4179,10 +4163,26 @@
           "isRevival": true
         },
         {
+          "showId": "the-phantom-of-the-opera-off-west-end-2021",
+          "title": "The Phantom of the Opera",
+          "slug": "the-phantom-of-the-opera-off-west-end",
+          "rank": 17,
+          "value": 81.1,
+          "displayValue": "81.1",
+          "season": "2021-2022",
+          "venue": "His Majesty’s Theatre",
+          "type": "musical",
+          "thumbnail": "/images/shows/the-phantom-of-the-opera-off-west-end-2021/thumbnail.webp",
+          "openingDate": "2021-07-27",
+          "closingDate": null,
+          "status": "open",
+          "isRevival": true
+        },
+        {
           "showId": "witness-for-the-prosecution-west-end-2022",
           "title": "Witness for the Prosecution",
           "slug": "witness-for-the-prosecution-west-end-2022",
-          "rank": 19,
+          "rank": 18,
           "value": 81,
           "displayValue": "81.0",
           "season": "2022-2023",
@@ -4195,18 +4195,34 @@
           "isRevival": true
         },
         {
-          "showId": "the-tempest-globe-west-end-2026",
-          "title": "The Tempest - Globe",
-          "slug": "the-tempest-globe-west-end",
+          "showId": "the-phantom-of-the-opera-west-end-1986",
+          "title": "The Phantom of the Opera",
+          "slug": "the-phantom-of-the-opera-west-end",
+          "rank": 19,
+          "value": 79.6,
+          "displayValue": "79.6",
+          "season": "2021-2022",
+          "venue": "His Majesty's Theatre",
+          "type": "musical",
+          "thumbnail": "/images/shows/the-phantom-of-the-opera-west-end-1986/thumbnail.webp",
+          "openingDate": "2021-07-27",
+          "closingDate": null,
+          "status": "open",
+          "isRevival": false
+        },
+        {
+          "showId": "stranger-things-the-first-shadow-west-end-2023",
+          "title": "Stranger Things: The First Shadow",
+          "slug": "stranger-things-the-first-shadow-west-end",
           "rank": 20,
-          "value": 80,
-          "displayValue": "80.0",
-          "season": "2025-2026",
-          "venue": "Shakespeare's Globe",
+          "value": 79.4,
+          "displayValue": "79.4",
+          "season": "2023-2024",
+          "venue": "Phoenix Theatre",
           "type": "play",
-          "thumbnail": "/images/shows/the-tempest-globe-west-end-2026/thumbnail.webp",
-          "openingDate": "2026-01-17",
-          "closingDate": "2026-04-12",
+          "thumbnail": "/images/shows/stranger-things-the-first-shadow-west-end-2023/thumbnail.webp",
+          "openingDate": "2023-12-14",
+          "closingDate": "2026-06-28",
           "status": "open",
           "isRevival": false
         },
@@ -4223,69 +4239,69 @@
           "thumbnail": "/images/shows/arcadia-west-end-2026/thumbnail.webp",
           "openingDate": "2026-01-24",
           "closingDate": "2026-03-21",
-          "status": "closed",
+          "status": "open",
           "isRevival": true
         },
         {
-          "showId": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026",
-          "title": "The Unlikely Pilgrimage of Harold Fry",
-          "slug": "the-unlikely-pilgrimage-of-harold-fry-west-end",
+          "showId": "the-choir-of-man-west-end-2026",
+          "title": "The Choir of Man",
+          "slug": "the-choir-of-man-west-end",
           "rank": 22,
-          "value": 77.8,
-          "displayValue": "77.8",
+          "value": 77.7,
+          "displayValue": "77.7",
           "season": "2025-2026",
-          "venue": "Theatre Royal Haymarket",
+          "venue": "Arts Theatre",
           "type": "musical",
-          "thumbnail": "/images/shows/the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thumbnail.webp",
-          "openingDate": "2026-01-29",
-          "closingDate": "2026-04-18",
+          "thumbnail": "/images/shows/the-choir-of-man-west-end-2026/thumbnail.webp",
+          "openingDate": "2026-03-14",
+          "closingDate": "2026-03-21",
           "status": "open",
           "isRevival": false
         },
         {
-          "showId": "the-phantom-of-the-opera-west-end-1986",
-          "title": "The Phantom of the Opera",
-          "slug": "the-phantom-of-the-opera-west-end",
+          "showId": "evening-all-afternoon-west-end-2026",
+          "title": "Evening All Afternoon",
+          "slug": "evening-all-afternoon-west-end",
           "rank": 23,
-          "value": 76.8,
-          "displayValue": "76.8",
-          "season": "2021-2022",
-          "venue": "His Majesty's Theatre",
-          "type": "musical",
-          "thumbnail": "/images/shows/the-phantom-of-the-opera-west-end-1986/thumbnail.webp",
-          "openingDate": "2021-07-27",
-          "closingDate": null,
+          "value": 75.4,
+          "displayValue": "75.4",
+          "season": "2025-2026",
+          "venue": "Donmar Warehouse",
+          "type": "play",
+          "thumbnail": "/images/shows/evening-all-afternoon-west-end-2026/thumbnail.webp",
+          "openingDate": "2026-02-14",
+          "closingDate": "2026-04-11",
           "status": "open",
           "isRevival": false
-        },
-        {
-          "showId": "starlight-express-west-end-2024",
-          "title": "Starlight Express",
-          "slug": "starlight-express-west-end-2024",
-          "rank": 24,
-          "value": 76.6,
-          "displayValue": "76.6",
-          "season": "2023-2024",
-          "venue": "Troubadour Wembley Park Theatre",
-          "type": "musical",
-          "thumbnail": "/images/shows/starlight-express-west-end-2024/thumbnail.jpg",
-          "openingDate": "2024-06-08",
-          "closingDate": "2026-05-03",
-          "status": "open",
-          "isRevival": true
         },
         {
           "showId": "back-to-the-future-west-end-2021",
           "title": "Back to the Future",
           "slug": "back-to-the-future-west-end",
-          "rank": 25,
-          "value": 76.2,
-          "displayValue": "76.2",
+          "rank": 24,
+          "value": 75.4,
+          "displayValue": "75.4",
           "season": "2021-2022",
           "venue": "Adelphi Theatre",
           "type": "musical",
           "thumbnail": "/images/shows/back-to-the-future-west-end-2021/thumbnail.webp",
           "openingDate": "2021-09-13",
+          "closingDate": null,
+          "status": "open",
+          "isRevival": false
+        },
+        {
+          "showId": "titanique-west-end-2024",
+          "title": "Titanique",
+          "slug": "titanique-west-end-2024",
+          "rank": 25,
+          "value": 75.2,
+          "displayValue": "75.2",
+          "season": "2024-2025",
+          "venue": "Criterion Theatre",
+          "type": "musical",
+          "thumbnail": "/images/shows/titanique-west-end-2024/thumbnail.webp",
+          "openingDate": "2024-11-01",
           "closingDate": null,
           "status": "open",
           "isRevival": false
@@ -4311,26 +4327,10 @@
           "isRevival": true
         },
         {
-          "showId": "cats-the-jellicle-ball-2026",
-          "title": "CATS: The Jellicle Ball",
-          "slug": "cats-the-jellicle-ball",
-          "rank": 2,
-          "value": 93,
-          "displayValue": "93",
-          "season": "2025-2026",
-          "venue": "Broadhurst Theatre",
-          "type": "musical",
-          "thumbnail": "/images/shows/cats-the-jellicle-ball-2026/thumbnail.webp",
-          "openingDate": "2026-04-07",
-          "closingDate": null,
-          "status": "previews",
-          "isRevival": true
-        },
-        {
           "showId": "two-strangers-bway-2025",
           "title": "Two Strangers (Carry a Cake Across New York)",
           "slug": "two-strangers",
-          "rank": 3,
+          "rank": 2,
           "value": 88,
           "displayValue": "88",
           "season": "2025-2026",
@@ -4346,7 +4346,7 @@
           "showId": "liberation-2025",
           "title": "Liberation",
           "slug": "liberation",
-          "rank": 4,
+          "rank": 3,
           "value": 86,
           "displayValue": "86",
           "season": "2025-2026",
@@ -4359,26 +4359,10 @@
           "isRevival": false
         },
         {
-          "showId": "death-of-a-salesman-2026",
-          "title": "Death of a Salesman",
-          "slug": "death-of-a-salesman",
-          "rank": 5,
-          "value": 86,
-          "displayValue": "86",
-          "season": "2025-2026",
-          "venue": "Winter Garden Theatre",
-          "type": "play",
-          "thumbnail": "/images/shows/death-of-a-salesman-2026/thumbnail.webp",
-          "openingDate": "2026-04-09",
-          "closingDate": "2026-06-14",
-          "status": "previews",
-          "isRevival": true
-        },
-        {
           "showId": "oedipus-2025",
           "title": "Oedipus",
           "slug": "oedipus",
-          "rank": 6,
+          "rank": 4,
           "value": 85,
           "displayValue": "85",
           "season": "2025-2026",
@@ -4394,7 +4378,7 @@
           "showId": "beetlejuice-2025",
           "title": "Beetlejuice",
           "slug": "beetlejuice-2025",
-          "rank": 7,
+          "rank": 5,
           "value": 85,
           "displayValue": "85",
           "season": "2025-2026",
@@ -4410,9 +4394,9 @@
           "showId": "every-brilliant-thing-2026",
           "title": "Every Brilliant Thing",
           "slug": "every-brilliant-thing",
-          "rank": 8,
-          "value": 85,
-          "displayValue": "85",
+          "rank": 6,
+          "value": 84,
+          "displayValue": "84",
           "season": "2025-2026",
           "venue": "Hudson Theatre",
           "type": "play",
@@ -4423,10 +4407,26 @@
           "isRevival": true
         },
         {
+          "showId": "death-of-a-salesman-2026",
+          "title": "Death of a Salesman",
+          "slug": "death-of-a-salesman",
+          "rank": 7,
+          "value": 83,
+          "displayValue": "83",
+          "season": "2025-2026",
+          "venue": "Winter Garden Theatre",
+          "type": "play",
+          "thumbnail": "/images/shows/death-of-a-salesman-2026/thumbnail.webp",
+          "openingDate": "2026-04-09",
+          "closingDate": "2026-06-14",
+          "status": "previews",
+          "isRevival": true
+        },
+        {
           "showId": "little-bear-ridge-road-2025",
           "title": "Little Bear Ridge Road",
           "slug": "little-bear-ridge-road",
-          "rank": 9,
+          "rank": 8,
           "value": 82,
           "displayValue": "82",
           "season": "2025-2026",
@@ -4439,20 +4439,36 @@
           "isRevival": false
         },
         {
-          "showId": "giant-2026",
-          "title": "Giant",
-          "slug": "giant",
-          "rank": 10,
-          "value": 82,
-          "displayValue": "82",
+          "showId": "mamma-mia-2025",
+          "title": "Mamma Mia!",
+          "slug": "mamma-mia",
+          "rank": 9,
+          "value": 81,
+          "displayValue": "81",
           "season": "2025-2026",
-          "venue": "Music Box Theatre",
-          "type": "play",
-          "thumbnail": "/images/shows/giant-2026/thumbnail.webp",
-          "openingDate": "2026-03-23",
-          "closingDate": "2026-06-28",
-          "status": "previews",
-          "isRevival": false
+          "venue": "Winter Garden Theatre",
+          "type": "musical",
+          "thumbnail": "/images/shows/mamma-mia-2025/thumbnail.webp",
+          "openingDate": "2025-08-14",
+          "closingDate": "2026-02-01",
+          "status": "closed",
+          "isRevival": true
+        },
+        {
+          "showId": "chess-2025",
+          "title": "Chess",
+          "slug": "chess",
+          "rank": 10,
+          "value": 80,
+          "displayValue": "80",
+          "season": "2025-2026",
+          "venue": "Imperial Theatre",
+          "type": "musical",
+          "thumbnail": "/images/shows/chess-2025/thumbnail.webp",
+          "openingDate": "2025-11-16",
+          "closingDate": "2026-06-14",
+          "status": "open",
+          "isRevival": true
         }
       ],
       "2024-2025": [
@@ -4683,10 +4699,26 @@
           "isRevival": true
         },
         {
+          "showId": "suffs-2024",
+          "title": "Suffs",
+          "slug": "suffs",
+          "rank": 5,
+          "value": 87,
+          "displayValue": "87",
+          "season": "2023-2024",
+          "venue": "Music Box Theatre",
+          "type": "musical",
+          "thumbnail": "/images/shows/suffs-2024/thumbnail.webp",
+          "openingDate": "2024-04-18",
+          "closingDate": "2025-01-05",
+          "status": "closed",
+          "isRevival": false
+        },
+        {
           "showId": "jajas-african-hair-braiding-2023",
           "title": "Jaja's African Hair Braiding",
           "slug": "jajas-african-hair-braiding",
-          "rank": 5,
+          "rank": 6,
           "value": 87,
           "displayValue": "87",
           "season": "2023-2024",
@@ -4702,7 +4734,7 @@
           "showId": "hells-kitchen-2024",
           "title": "Hell's Kitchen",
           "slug": "hells-kitchen",
-          "rank": 6,
+          "rank": 7,
           "value": 85,
           "displayValue": "85",
           "season": "2023-2024",
@@ -4711,22 +4743,6 @@
           "thumbnail": "/images/shows/hells-kitchen-2024/thumbnail.webp",
           "openingDate": "2024-04-20",
           "closingDate": "2026-02-22",
-          "status": "closed",
-          "isRevival": false
-        },
-        {
-          "showId": "suffs-2024",
-          "title": "Suffs",
-          "slug": "suffs",
-          "rank": 7,
-          "value": 85,
-          "displayValue": "85",
-          "season": "2023-2024",
-          "venue": "Music Box Theatre",
-          "type": "musical",
-          "thumbnail": "/images/shows/suffs-2024/thumbnail.webp",
-          "openingDate": "2024-04-18",
-          "closingDate": "2025-01-05",
           "status": "closed",
           "isRevival": false
         },
@@ -5064,7 +5080,7 @@
           "season": "2021-2022",
           "venue": "Marquis Theatre",
           "type": "musical",
-          "thumbnail": null,
+          "thumbnail": "/images/shows/beetlejuice-2022/thumbnail.webp",
           "openingDate": "2022-04-08",
           "closingDate": "2023-01-08",
           "status": "closed",
@@ -5372,7 +5388,7 @@
           "season": "2018-2019",
           "venue": "Winter Garden Theatre",
           "type": "musical",
-          "thumbnail": null,
+          "thumbnail": "/images/shows/beetlejuice-2019/thumbnail.webp",
           "openingDate": "2019-04-25",
           "closingDate": "2020-03-10",
           "status": "closed",
@@ -5477,26 +5493,10 @@
           "isRevival": false
         },
         {
-          "showId": "the-boys-in-the-band-2018",
-          "title": "The Boys in the Band",
-          "slug": "the-boys-in-the-band-2018",
-          "rank": 5,
-          "value": 86,
-          "displayValue": "86",
-          "season": "2017-2018",
-          "venue": "Booth Theatre",
-          "type": "play",
-          "thumbnail": "/images/shows/the-boys-in-the-band-2018/thumbnail.webp",
-          "openingDate": "2018-05-31",
-          "closingDate": "2018-08-11",
-          "status": "closed",
-          "isRevival": true
-        },
-        {
           "showId": "my-fair-lady-2018",
           "title": "My Fair Lady",
           "slug": "my-fair-lady-2018",
-          "rank": 6,
+          "rank": 5,
           "value": 86,
           "displayValue": "86",
           "season": "2017-2018",
@@ -5505,6 +5505,22 @@
           "thumbnail": "/images/shows/my-fair-lady-2018/thumbnail.webp",
           "openingDate": "2018-04-19",
           "closingDate": "2019-07-07",
+          "status": "closed",
+          "isRevival": true
+        },
+        {
+          "showId": "the-boys-in-the-band-2018",
+          "title": "The Boys in the Band",
+          "slug": "the-boys-in-the-band-2018",
+          "rank": 6,
+          "value": 84,
+          "displayValue": "84",
+          "season": "2017-2018",
+          "venue": "Booth Theatre",
+          "type": "play",
+          "thumbnail": "/images/shows/the-boys-in-the-band-2018/thumbnail.webp",
+          "openingDate": "2018-05-31",
+          "closingDate": "2018-08-11",
           "status": "closed",
           "isRevival": true
         },
@@ -5525,26 +5541,10 @@
           "isRevival": false
         },
         {
-          "showId": "latin-history-for-morons-2017",
-          "title": "Latin History for Morons",
-          "slug": "latin-history-for-morons-2017",
-          "rank": 8,
-          "value": 80,
-          "displayValue": "80",
-          "season": "2017-2018",
-          "venue": "Harold and Miriam Steinberg Center for Theatre",
-          "type": "play",
-          "thumbnail": "/images/shows/latin-history-for-morons-2017/thumbnail.webp",
-          "openingDate": "2017-11-15",
-          "closingDate": "2018-02-25",
-          "status": "closed",
-          "isRevival": false
-        },
-        {
           "showId": "lobby-hero-2018",
           "title": "Lobby Hero",
           "slug": "lobby-hero-2018",
-          "rank": 9,
+          "rank": 8,
           "value": 80,
           "displayValue": "80",
           "season": "2017-2018",
@@ -5560,7 +5560,7 @@
           "showId": "farinelli-and-the-king-2017",
           "title": "Farinelli and the King",
           "slug": "farinelli-and-the-king-2017",
-          "rank": 10,
+          "rank": 9,
           "value": 80,
           "displayValue": "80",
           "season": "2017-2018",
@@ -5571,6 +5571,22 @@
           "closingDate": "2018-03-25",
           "status": "closed",
           "isRevival": false
+        },
+        {
+          "showId": "mean-girls-2018",
+          "title": "Mean Girls",
+          "slug": "mean-girls-2018",
+          "rank": 10,
+          "value": 80,
+          "displayValue": "80",
+          "season": "2017-2018",
+          "venue": "August Wilson Theatre",
+          "type": "musical",
+          "thumbnail": "/images/shows/mean-girls-2018/thumbnail.webp",
+          "openingDate": "2018-04-08",
+          "closingDate": "2020-03-11",
+          "status": "closed",
+          "isRevival": false
         }
       ],
       "2016-2017": [
@@ -5579,8 +5595,8 @@
           "title": "Come From Away",
           "slug": "come-from-away-2017",
           "rank": 1,
-          "value": 91,
-          "displayValue": "91",
+          "value": 92,
+          "displayValue": "92",
           "season": "2016-2017",
           "venue": "Gerald Schoenfeld Theatre",
           "type": "musical",
@@ -5963,26 +5979,10 @@
           "isRevival": false
         },
         {
-          "showId": "a-delicate-balance-2014",
-          "title": "A Delicate Balance",
-          "slug": "a-delicate-balance-2014",
-          "rank": 5,
-          "value": 88,
-          "displayValue": "88",
-          "season": "2014-2015",
-          "venue": "John Golden Theatre",
-          "type": "play",
-          "thumbnail": "/images/shows/a-delicate-balance-2014/thumbnail.webp",
-          "openingDate": "2014-11-20",
-          "closingDate": "2015-02-22",
-          "status": "closed",
-          "isRevival": true
-        },
-        {
           "showId": "the-elephant-man-2014",
           "title": "The Elephant Man",
           "slug": "the-elephant-man-2014",
-          "rank": 6,
+          "rank": 5,
           "value": 88,
           "displayValue": "88",
           "season": "2014-2015",
@@ -5991,6 +5991,22 @@
           "thumbnail": "/images/shows/the-elephant-man-2014/thumbnail.jpg",
           "openingDate": "2014-12-07",
           "closingDate": "2015-02-21",
+          "status": "closed",
+          "isRevival": true
+        },
+        {
+          "showId": "a-delicate-balance-2014",
+          "title": "A Delicate Balance",
+          "slug": "a-delicate-balance-2014",
+          "rank": 6,
+          "value": 87,
+          "displayValue": "87",
+          "season": "2014-2015",
+          "venue": "John Golden Theatre",
+          "type": "play",
+          "thumbnail": "/images/shows/a-delicate-balance-2014/thumbnail.webp",
+          "openingDate": "2014-11-20",
+          "closingDate": "2015-02-22",
           "status": "closed",
           "isRevival": true
         },
@@ -6027,26 +6043,10 @@
           "isRevival": false
         },
         {
-          "showId": "constellations-2015",
-          "title": "Constellations",
-          "slug": "constellations-2015",
-          "rank": 9,
-          "value": 84,
-          "displayValue": "84",
-          "season": "2014-2015",
-          "venue": "Samuel J. Friedman Theatre",
-          "type": "play",
-          "thumbnail": "/images/shows/constellations-2015/thumbnail.jpg",
-          "openingDate": "2015-01-13",
-          "closingDate": "2015-03-15",
-          "status": "closed",
-          "isRevival": false
-        },
-        {
           "showId": "hand-to-god-2015",
           "title": "Hand to God",
           "slug": "hand-to-god-2015",
-          "rank": 10,
+          "rank": 9,
           "value": 84,
           "displayValue": "84",
           "season": "2014-2015",
@@ -6055,6 +6055,22 @@
           "thumbnail": "/images/shows/hand-to-god-2015/thumbnail.jpg",
           "openingDate": "2015-04-07",
           "closingDate": "2016-01-03",
+          "status": "closed",
+          "isRevival": false
+        },
+        {
+          "showId": "constellations-2015",
+          "title": "Constellations",
+          "slug": "constellations-2015",
+          "rank": 10,
+          "value": 83,
+          "displayValue": "83",
+          "season": "2014-2015",
+          "venue": "Samuel J. Friedman Theatre",
+          "type": "play",
+          "thumbnail": "/images/shows/constellations-2015/thumbnail.jpg",
+          "openingDate": "2015-01-13",
+          "closingDate": "2015-03-15",
           "status": "closed",
           "isRevival": false
         }
@@ -6141,26 +6157,10 @@
           "isRevival": false
         },
         {
-          "showId": "the-bridges-of-madison-county-2014",
-          "title": "The Bridges of Madison County",
-          "slug": "the-bridges-of-madison-county-2014",
-          "rank": 6,
-          "value": 87,
-          "displayValue": "87",
-          "season": "2013-2014",
-          "venue": "Gerald Schoenfeld Theatre",
-          "type": "musical",
-          "thumbnail": "/images/shows/the-bridges-of-madison-county-2014/thumbnail.jpg",
-          "openingDate": "2014-02-20",
-          "closingDate": "2014-05-18",
-          "status": "closed",
-          "isRevival": false
-        },
-        {
           "showId": "lady-day-at-emersons-bar-and-grill-2014",
           "title": "Lady Day at Emerson's Bar & Grill",
           "slug": "lady-day-at-emersons-bar-and-grill-2014",
-          "rank": 7,
+          "rank": 6,
           "value": 87,
           "displayValue": "87",
           "season": "2013-2014",
@@ -6176,7 +6176,7 @@
           "showId": "twelfth-night-2013",
           "title": "Twelfth Night",
           "slug": "twelfth-night-2013",
-          "rank": 8,
+          "rank": 7,
           "value": 86,
           "displayValue": "86",
           "season": "2013-2014",
@@ -6187,6 +6187,22 @@
           "closingDate": "2014-02-16",
           "status": "closed",
           "isRevival": true
+        },
+        {
+          "showId": "the-bridges-of-madison-county-2014",
+          "title": "The Bridges of Madison County",
+          "slug": "the-bridges-of-madison-county-2014",
+          "rank": 8,
+          "value": 86,
+          "displayValue": "86",
+          "season": "2013-2014",
+          "venue": "Gerald Schoenfeld Theatre",
+          "type": "musical",
+          "thumbnail": "/images/shows/the-bridges-of-madison-county-2014/thumbnail.jpg",
+          "openingDate": "2014-02-20",
+          "closingDate": "2014-05-18",
+          "status": "closed",
+          "isRevival": false
         },
         {
           "showId": "a-raisin-in-the-sun-2014",
@@ -6335,26 +6351,10 @@
           "isRevival": true
         },
         {
-          "showId": "matilda-the-musical-2013",
-          "title": "Matilda The Musical",
-          "slug": "matilda-the-musical-2013",
-          "rank": 8,
-          "value": 82,
-          "displayValue": "82",
-          "season": "2012-2013",
-          "venue": "Shubert Theatre",
-          "type": "musical",
-          "thumbnail": "/images/shows/matilda-the-musical-2013/thumbnail.webp",
-          "openingDate": "2013-04-11",
-          "closingDate": "2017-01-01",
-          "status": "closed",
-          "isRevival": false
-        },
-        {
           "showId": "annie-2012",
           "title": "Annie",
           "slug": "annie-2012",
-          "rank": 9,
+          "rank": 8,
           "value": 81,
           "displayValue": "81",
           "season": "2012-2013",
@@ -6365,6 +6365,22 @@
           "closingDate": "2014-01-05",
           "status": "closed",
           "isRevival": true
+        },
+        {
+          "showId": "matilda-the-musical-2013",
+          "title": "Matilda The Musical",
+          "slug": "matilda-the-musical-2013",
+          "rank": 9,
+          "value": 81,
+          "displayValue": "81",
+          "season": "2012-2013",
+          "venue": "Shubert Theatre",
+          "type": "musical",
+          "thumbnail": "/images/shows/matilda-the-musical-2013/thumbnail.webp",
+          "openingDate": "2013-04-11",
+          "closingDate": "2017-01-01",
+          "status": "closed",
+          "isRevival": false
         },
         {
           "showId": "picnic-2013",
@@ -6718,7 +6734,7 @@
           "season": "2009-2010",
           "venue": "Neil Simon Theatre",
           "type": "musical",
-          "thumbnail": null,
+          "thumbnail": "/images/shows/ragtime-2009/thumbnail.webp",
           "openingDate": "2009-11-15",
           "closingDate": "2010-01-10",
           "status": "closed",
@@ -7058,7 +7074,7 @@
           "season": "2007-2008",
           "venue": "Harold and Miriam Steinberg Center for Theatre",
           "type": "musical",
-          "thumbnail": null,
+          "thumbnail": "/images/shows/sunday-in-the-park-with-george-2008/thumbnail.webp",
           "openingDate": "2008-02-21",
           "closingDate": "2008-06-29",
           "status": "closed",
@@ -7101,8 +7117,8 @@
           "title": "Pygmalion",
           "slug": "pygmalion-2007",
           "rank": 6,
-          "value": 86,
-          "displayValue": "86",
+          "value": 85,
+          "displayValue": "85",
           "season": "2007-2008",
           "venue": "Todd Haimes Theatre",
           "type": "play",
@@ -7138,7 +7154,7 @@
           "season": "2007-2008",
           "venue": "Richard Rodgers Theatre",
           "type": "play",
-          "thumbnail": null,
+          "thumbnail": "/images/shows/cyrano-de-bergerac-2007/thumbnail.webp",
           "openingDate": "2007-11-01",
           "closingDate": "2008-01-06",
           "status": "closed",
@@ -7236,7 +7252,7 @@
           "season": "2006-2007",
           "venue": "Broadhurst Theatre",
           "type": "musical",
-          "thumbnail": null,
+          "thumbnail": "/images/shows/les-miserables-2006/thumbnail.webp",
           "openingDate": "2006-11-09",
           "closingDate": "2008-01-06",
           "status": "closed",
@@ -7350,7 +7366,7 @@
           "season": "2005-2006",
           "venue": "Broadway Theatre",
           "type": "musical",
-          "thumbnail": null,
+          "thumbnail": "/images/shows/the-color-purple-2005/thumbnail.webp",
           "openingDate": "2005-12-01",
           "closingDate": "2008-02-24",
           "status": "closed",
@@ -7989,26 +8005,10 @@
       ],
       "2001-2002": [
         {
-          "showId": "urinetown-2001",
-          "title": "Urinetown",
-          "slug": "urinetown-2001",
-          "rank": 1,
-          "value": 100,
-          "displayValue": "100",
-          "season": "2001-2002",
-          "venue": "Stephen Sondheim Theatre",
-          "type": "musical",
-          "thumbnail": "/images/shows/urinetown-2001/thumbnail.jpg",
-          "openingDate": "2001-09-20",
-          "closingDate": "2004-01-18",
-          "status": "closed",
-          "isRevival": false
-        },
-        {
           "showId": "the-elephant-man-2002",
           "title": "The Elephant Man",
           "slug": "the-elephant-man-2002",
-          "rank": 2,
+          "rank": 1,
           "value": 90,
           "displayValue": "90",
           "season": "2001-2002",
@@ -8024,7 +8024,7 @@
           "showId": "once-on-this-island-2002",
           "title": "Once on This Island",
           "slug": "once-on-this-island-2002",
-          "rank": 3,
+          "rank": 2,
           "value": 90,
           "displayValue": "90",
           "season": "2001-2002",
@@ -8040,7 +8040,7 @@
           "showId": "dreamgirls-2001",
           "title": "Dreamgirls",
           "slug": "dreamgirls-2001",
-          "rank": 4,
+          "rank": 3,
           "value": 89,
           "displayValue": "89",
           "season": "2001-2002",
@@ -8049,6 +8049,22 @@
           "thumbnail": "/images/shows/dreamgirls-2001/thumbnail.webp",
           "openingDate": "2001-09-24",
           "closingDate": "2001-09-24",
+          "status": "closed",
+          "isRevival": false
+        },
+        {
+          "showId": "urinetown-2001",
+          "title": "Urinetown",
+          "slug": "urinetown-2001",
+          "rank": 4,
+          "value": 89,
+          "displayValue": "89",
+          "season": "2001-2002",
+          "venue": "Stephen Sondheim Theatre",
+          "type": "musical",
+          "thumbnail": "/images/shows/urinetown-2001/thumbnail.jpg",
+          "openingDate": "2001-09-20",
+          "closingDate": "2004-01-18",
           "status": "closed",
           "isRevival": false
         },
@@ -8167,26 +8183,10 @@
           "isRevival": false
         },
         {
-          "showId": "proof-2000",
-          "title": "Proof",
-          "slug": "proof-2000",
-          "rank": 2,
-          "value": 91,
-          "displayValue": "91",
-          "season": "2000-2001",
-          "venue": "Walter Kerr Theatre",
-          "type": "play",
-          "thumbnail": null,
-          "openingDate": "2000-10-24",
-          "closingDate": "2003-01-05",
-          "status": "closed",
-          "isRevival": false
-        },
-        {
           "showId": "stones-in-his-pockets-2001",
           "title": "Stones in His Pockets",
           "slug": "stones-in-his-pockets-2001",
-          "rank": 3,
+          "rank": 2,
           "value": 90,
           "displayValue": "90",
           "season": "2000-2001",
@@ -8195,6 +8195,22 @@
           "thumbnail": "/images/shows/stones-in-his-pockets-2001/thumbnail.jpg",
           "openingDate": "2001-04-01",
           "closingDate": "2001-09-23",
+          "status": "closed",
+          "isRevival": false
+        },
+        {
+          "showId": "proof-2000",
+          "title": "Proof",
+          "slug": "proof-2000",
+          "rank": 3,
+          "value": 89,
+          "displayValue": "89",
+          "season": "2000-2001",
+          "venue": "Walter Kerr Theatre",
+          "type": "play",
+          "thumbnail": null,
+          "openingDate": "2000-10-24",
+          "closingDate": "2003-01-05",
           "status": "closed",
           "isRevival": false
         },
@@ -8329,10 +8345,26 @@
           "isRevival": true
         },
         {
+          "showId": "the-wild-party-2000",
+          "title": "The Wild Party",
+          "slug": "the-wild-party-2000",
+          "rank": 2,
+          "value": 88,
+          "displayValue": "88",
+          "season": "1999-2000",
+          "venue": "August Wilson Theatre",
+          "type": "musical",
+          "thumbnail": "/images/shows/the-wild-party-2000/thumbnail.webp",
+          "openingDate": "2000-04-13",
+          "closingDate": "2000-06-11",
+          "status": "closed",
+          "isRevival": false
+        },
+        {
           "showId": "amadeus-1999",
           "title": "Amadeus",
           "slug": "amadeus-1999",
-          "rank": 2,
+          "rank": 3,
           "value": 85,
           "displayValue": "85",
           "season": "1999-2000",
@@ -8348,7 +8380,7 @@
           "showId": "aida-2000",
           "title": "Aida",
           "slug": "aida-2000",
-          "rank": 3,
+          "rank": 4,
           "value": 85,
           "displayValue": "85",
           "season": "1999-2000",
@@ -8364,7 +8396,7 @@
           "showId": "copenhagen-2000",
           "title": "Copenhagen",
           "slug": "copenhagen-2000",
-          "rank": 4,
+          "rank": 5,
           "value": 80,
           "displayValue": "80",
           "season": "1999-2000",
@@ -8380,7 +8412,7 @@
           "showId": "the-music-man-2000",
           "title": "The Music Man",
           "slug": "the-music-man-2000",
-          "rank": 5,
+          "rank": 6,
           "value": 80,
           "displayValue": "80",
           "season": "1999-2000",
@@ -8396,7 +8428,7 @@
           "showId": "jesus-christ-superstar-2000",
           "title": "Jesus Christ Superstar",
           "slug": "jesus-christ-superstar-2000",
-          "rank": 6,
+          "rank": 7,
           "value": 79,
           "displayValue": "79",
           "season": "1999-2000",
@@ -8407,22 +8439,6 @@
           "closingDate": "2000-09-03",
           "status": "closed",
           "isRevival": true
-        },
-        {
-          "showId": "the-wild-party-2000",
-          "title": "The Wild Party",
-          "slug": "the-wild-party-2000",
-          "rank": 7,
-          "value": 78,
-          "displayValue": "78",
-          "season": "1999-2000",
-          "venue": "August Wilson Theatre",
-          "type": "musical",
-          "thumbnail": "/images/shows/the-wild-party-2000/thumbnail.webp",
-          "openingDate": "2000-04-13",
-          "closingDate": "2000-06-11",
-          "status": "closed",
-          "isRevival": false
         }
       ],
       "1998-1999": [
@@ -8933,8 +8949,8 @@
           "title": "A Funny Thing Happened on the Way to the Forum",
           "slug": "a-funny-thing-happened-on-the-way-to-the-forum-1996",
           "rank": 8,
-          "value": 79,
-          "displayValue": "79",
+          "value": 78,
+          "displayValue": "78",
           "season": "1995-1996",
           "venue": "St. James Theatre",
           "type": "musical",
@@ -9020,7 +9036,7 @@
           "season": "1994-1995",
           "venue": "Gershwin Theatre",
           "type": "musical",
-          "thumbnail": "/images/shows/show-boat-1994/thumbnail.webp",
+          "thumbnail": "/images/shows/show-boat-1994/thumbnail.jpg",
           "openingDate": "1994-10-02",
           "closingDate": "1997-01-05",
           "status": "closed",
@@ -9150,7 +9166,7 @@
           "season": "1993-1994",
           "venue": "Palace Theatre",
           "type": "musical",
-          "thumbnail": "/images/shows/beauty-and-the-beast-1994/thumbnail.webp",
+          "thumbnail": "/images/shows/beauty-and-the-beast-1994/thumbnail.jpg",
           "openingDate": "1994-04-18",
           "closingDate": "2007-07-29",
           "status": "closed",
@@ -9221,10 +9237,26 @@
           "isRevival": false
         },
         {
+          "showId": "joseph-and-the-amazing-technicolor-dreamcoat-1993",
+          "title": "Joseph and the Amazing Technicolor Dreamcoat",
+          "slug": "joseph-and-the-amazing-technicolor-dreamcoat-1993",
+          "rank": 9,
+          "value": 78,
+          "displayValue": "78",
+          "season": "1993-1994",
+          "venue": "Minskoff Theatre",
+          "type": "musical",
+          "thumbnail": "/images/shows/joseph-and-the-amazing-technicolor-dreamcoat-1993/thumbnail.jpg",
+          "openingDate": "1993-11-10",
+          "closingDate": "1994-05-29",
+          "status": "closed",
+          "isRevival": true
+        },
+        {
           "showId": "laughter-on-the-23rd-floor-1993",
           "title": "Laughter on the 23rd Floor",
           "slug": "laughter-on-the-23rd-floor-1993",
-          "rank": 9,
+          "rank": 10,
           "value": 78,
           "displayValue": "78",
           "season": "1993-1994",
@@ -9331,22 +9363,6 @@
           "thumbnail": "/images/shows/blood-brothers-1993/thumbnail.jpg",
           "openingDate": "1993-04-25",
           "closingDate": "1995-04-30",
-          "status": "closed",
-          "isRevival": false
-        },
-        {
-          "showId": "the-goodbye-girl-1993",
-          "title": "The Goodbye Girl",
-          "slug": "the-goodbye-girl-1993",
-          "rank": 7,
-          "value": 78,
-          "displayValue": "78",
-          "season": "1992-1993",
-          "venue": "Marquis Theatre",
-          "type": "musical",
-          "thumbnail": "/images/shows/the-goodbye-girl-1993/thumbnail.jpg",
-          "openingDate": "1993-03-04",
-          "closingDate": "1993-08-15",
           "status": "closed",
           "isRevival": false
         }
@@ -9923,26 +9939,10 @@
           "isRevival": true
         },
         {
-          "showId": "the-musical-comedy-murders-of-1940-1987",
-          "title": "The Musical Comedy Murders of 1940",
-          "slug": "the-musical-comedy-murders-of-1940-1987",
-          "rank": 2,
-          "value": 97,
-          "displayValue": "97",
-          "season": "1986-1987",
-          "venue": "Longacre Theatre",
-          "type": "play",
-          "thumbnail": "/images/shows/the-musical-comedy-murders-of-1940-1987/thumbnail.jpg",
-          "openingDate": "1987-04-06",
-          "closingDate": "1987-08-01",
-          "status": "closed",
-          "isRevival": false
-        },
-        {
           "showId": "me-and-my-girl-1986",
           "title": "Me and My Girl",
           "slug": "me-and-my-girl-1986",
-          "rank": 3,
+          "rank": 2,
           "value": 96,
           "displayValue": "96",
           "season": "1986-1987",
@@ -9951,6 +9951,22 @@
           "thumbnail": "/images/shows/me-and-my-girl-1986/thumbnail.jpg",
           "openingDate": "1986-08-10",
           "closingDate": "1989-12-31",
+          "status": "closed",
+          "isRevival": false
+        },
+        {
+          "showId": "the-musical-comedy-murders-of-1940-1987",
+          "title": "The Musical Comedy Murders of 1940",
+          "slug": "the-musical-comedy-murders-of-1940-1987",
+          "rank": 3,
+          "value": 95,
+          "displayValue": "95",
+          "season": "1986-1987",
+          "venue": "Longacre Theatre",
+          "type": "play",
+          "thumbnail": "/images/shows/the-musical-comedy-murders-of-1940-1987/thumbnail.jpg",
+          "openingDate": "1987-04-06",
+          "closingDate": "1987-08-01",
           "status": "closed",
           "isRevival": false
         },
@@ -9987,26 +10003,10 @@
           "isRevival": false
         },
         {
-          "showId": "broadway-1987",
-          "title": "Broadway",
-          "slug": "broadway-1987",
-          "rank": 6,
-          "value": 83,
-          "displayValue": "83",
-          "season": "1986-1987",
-          "venue": "Bernard B. Jacobs Theatre",
-          "type": "play",
-          "thumbnail": null,
-          "openingDate": "1987-06-25",
-          "closingDate": "1987-06-27",
-          "status": "closed",
-          "isRevival": true
-        },
-        {
           "showId": "sweet-sue-1987",
           "title": "Sweet Sue",
           "slug": "sweet-sue-1987",
-          "rank": 7,
+          "rank": 6,
           "value": 80,
           "displayValue": "80",
           "season": "1986-1987",
@@ -10022,7 +10022,7 @@
           "showId": "the-nerd-1987",
           "title": "The Nerd",
           "slug": "the-nerd-1987",
-          "rank": 8,
+          "rank": 7,
           "value": 80,
           "displayValue": "80",
           "season": "1986-1987",
@@ -10038,7 +10038,7 @@
           "showId": "romeo-and-juliet-1986",
           "title": "Romeo and Juliet",
           "slug": "romeo-and-juliet-1986",
-          "rank": 9,
+          "rank": 8,
           "value": 79,
           "displayValue": "79",
           "season": "1986-1987",
@@ -11097,26 +11097,10 @@
           "isRevival": true
         },
         {
-          "showId": "knock-knock-1976",
-          "title": "Knock Knock",
-          "slug": "knock-knock-1976",
-          "rank": 3,
-          "value": 100,
-          "displayValue": "100",
-          "season": "1975-1976",
-          "venue": "Samuel J. Friedman Theatre",
-          "type": "play",
-          "thumbnail": "/images/shows/knock-knock-1976/thumbnail.jpg",
-          "openingDate": "1976-02-24",
-          "closingDate": "1976-07-03",
-          "status": "closed",
-          "isRevival": false
-        },
-        {
           "showId": "hello-dolly-1975",
           "title": "Hello, Dolly!",
           "slug": "hello-dolly-1975",
-          "rank": 4,
+          "rank": 3,
           "value": 88,
           "displayValue": "88",
           "season": "1975-1976",
@@ -11132,7 +11116,7 @@
           "showId": "a-chorus-line-1975",
           "title": "A Chorus Line",
           "slug": "a-chorus-line-1975",
-          "rank": 5,
+          "rank": 4,
           "value": 86,
           "displayValue": "86",
           "season": "1975-1976",
@@ -11148,7 +11132,7 @@
           "showId": "whos-afraid-of-virginia-woolf-1976",
           "title": "Who's Afraid of Virginia Woolf?",
           "slug": "whos-afraid-of-virginia-woolf-1976",
-          "rank": 6,
+          "rank": 5,
           "value": 83,
           "displayValue": "83",
           "season": "1975-1976",
@@ -11164,7 +11148,7 @@
           "showId": "my-fair-lady-1976",
           "title": "My Fair Lady",
           "slug": "my-fair-lady-1976",
-          "rank": 7,
+          "rank": 6,
           "value": 81,
           "displayValue": "81",
           "season": "1975-1976",
@@ -11180,7 +11164,7 @@
           "showId": "godspell-1976",
           "title": "Godspell",
           "slug": "godspell-1976",
-          "rank": 8,
+          "rank": 7,
           "value": 79,
           "displayValue": "79",
           "season": "1975-1976",
@@ -11459,10 +11443,26 @@
       ],
       "1970-1971": [
         {
+          "showId": "antigone-1971",
+          "title": "Antigone",
+          "slug": "antigone-1971",
+          "rank": 1,
+          "value": 100,
+          "displayValue": "100",
+          "season": "1970-1971",
+          "venue": "Vivian Beaumont Theater",
+          "type": "play",
+          "thumbnail": "/images/shows/antigone-1971/thumbnail.jpg",
+          "openingDate": "1971-05-13",
+          "closingDate": "1971-06-20",
+          "status": "closed",
+          "isRevival": true
+        },
+        {
           "showId": "hay-fever-1970",
           "title": "Hay Fever",
           "slug": "hay-fever-1970",
-          "rank": 1,
+          "rank": 2,
           "value": 89,
           "displayValue": "89",
           "season": "1970-1971",
@@ -11473,22 +11473,6 @@
           "closingDate": "1970-11-28",
           "status": "closed",
           "isRevival": true
-        },
-        {
-          "showId": "soon-1971",
-          "title": "Soon",
-          "slug": "soon-1971",
-          "rank": 2,
-          "value": 83,
-          "displayValue": "83",
-          "season": "1970-1971",
-          "venue": "Walter Kerr Theatre",
-          "type": "musical",
-          "thumbnail": null,
-          "openingDate": "1971-01-12",
-          "closingDate": "1971-01-13",
-          "status": "closed",
-          "isRevival": false
         },
         {
           "showId": "an-enemy-of-the-people-1971",
@@ -11537,6 +11521,22 @@
           "closingDate": "1971-03-13",
           "status": "closed",
           "isRevival": true
+        },
+        {
+          "showId": "soon-1971",
+          "title": "Soon",
+          "slug": "soon-1971",
+          "rank": 6,
+          "value": 79,
+          "displayValue": "79",
+          "season": "1970-1971",
+          "venue": "Walter Kerr Theatre",
+          "type": "musical",
+          "thumbnail": null,
+          "openingDate": "1971-01-12",
+          "closingDate": "1971-01-13",
+          "status": "closed",
+          "isRevival": false
         }
       ],
       "all-time": [
@@ -11589,26 +11589,10 @@
           "isRevival": false
         },
         {
-          "showId": "urinetown-2001",
-          "title": "Urinetown",
-          "slug": "urinetown-2001",
-          "rank": 4,
-          "value": 100,
-          "displayValue": "100",
-          "season": "2001-2002",
-          "venue": "Stephen Sondheim Theatre",
-          "type": "musical",
-          "thumbnail": "/images/shows/urinetown-2001/thumbnail.jpg",
-          "openingDate": "2001-09-20",
-          "closingDate": "2004-01-18",
-          "status": "closed",
-          "isRevival": false
-        },
-        {
           "showId": "an-evening-with-jerry-herman-1998",
           "title": "An Evening with Jerry Herman",
           "slug": "an-evening-with-jerry-herman-1998",
-          "rank": 5,
+          "rank": 4,
           "value": 100,
           "displayValue": "100",
           "season": "1998-1999",
@@ -11624,7 +11608,7 @@
           "showId": "the-sunshine-boys-1997",
           "title": "The Sunshine Boys",
           "slug": "the-sunshine-boys-1997",
-          "rank": 6,
+          "rank": 5,
           "value": 100,
           "displayValue": "100",
           "season": "1997-1998",
@@ -11640,7 +11624,7 @@
           "showId": "julia-sweeneys-god-said-ha-1996",
           "title": "Julia Sweeney's God Said \"Ha!\"",
           "slug": "julia-sweeneys-god-said-ha-1996",
-          "rank": 7,
+          "rank": 6,
           "value": 100,
           "displayValue": "100",
           "season": "1996-1997",
@@ -11656,7 +11640,7 @@
           "showId": "barrymore-1997",
           "title": "Barrymore",
           "slug": "barrymore-1997",
-          "rank": 8,
+          "rank": 7,
           "value": 100,
           "displayValue": "100",
           "season": "1996-1997",
@@ -11672,7 +11656,7 @@
           "showId": "chronicle-of-a-death-foretold-1995",
           "title": "Chronicle of a Death Foretold",
           "slug": "chronicle-of-a-death-foretold-1995",
-          "rank": 9,
+          "rank": 8,
           "value": 100,
           "displayValue": "100",
           "season": "1994-1995",
@@ -11688,7 +11672,7 @@
           "showId": "love-valour-compassion-1995",
           "title": "Love! Valour! Compassion!",
           "slug": "love-valour-compassion-1995",
-          "rank": 10,
+          "rank": 9,
           "value": 100,
           "displayValue": "100",
           "season": "1994-1995",
@@ -11704,7 +11688,7 @@
           "showId": "my-favorite-year-1992",
           "title": "My Favorite Year",
           "slug": "my-favorite-year-1992",
-          "rank": 11,
+          "rank": 10,
           "value": 100,
           "displayValue": "100",
           "season": "1992-1993",
@@ -11720,7 +11704,7 @@
           "showId": "three-men-on-a-horse-1993",
           "title": "Three Men on a Horse",
           "slug": "three-men-on-a-horse-1993",
-          "rank": 12,
+          "rank": 11,
           "value": 100,
           "displayValue": "100",
           "season": "1992-1993",
@@ -11736,7 +11720,7 @@
           "showId": "the-most-happy-fella-1992",
           "title": "The Most Happy Fella",
           "slug": "the-most-happy-fella-1992",
-          "rank": 13,
+          "rank": 12,
           "value": 100,
           "displayValue": "100",
           "season": "1991-1992",
@@ -11752,7 +11736,7 @@
           "showId": "lettice-and-lovage-1990",
           "title": "Lettice and Lovage",
           "slug": "lettice-and-lovage-1990",
-          "rank": 14,
+          "rank": 13,
           "value": 100,
           "displayValue": "100",
           "season": "1989-1990",
@@ -11768,7 +11752,7 @@
           "showId": "the-mikado-1987",
           "title": "The Mikado",
           "slug": "the-mikado-1987",
-          "rank": 15,
+          "rank": 14,
           "value": 100,
           "displayValue": "100",
           "season": "1986-1987",
@@ -11784,7 +11768,7 @@
           "showId": "ian-mckellen-acting-shakespeare-1984",
           "title": "Ian McKellen: Acting Shakespeare",
           "slug": "ian-mckellen-acting-shakespeare-1984",
-          "rank": 16,
+          "rank": 15,
           "value": 100,
           "displayValue": "100",
           "season": "1983-1984",
@@ -11800,7 +11784,7 @@
           "showId": "torch-song-trilogy-1982",
           "title": "Torch Song Trilogy",
           "slug": "torch-song-trilogy-1982",
-          "rank": 17,
+          "rank": 16,
           "value": 100,
           "displayValue": "100",
           "season": "1981-1982",
@@ -11816,7 +11800,7 @@
           "showId": "john-gabriel-borkman-1980",
           "title": "John Gabriel Borkman",
           "slug": "john-gabriel-borkman-1980",
-          "rank": 18,
+          "rank": 17,
           "value": 100,
           "displayValue": "100",
           "season": "1980-1981",
@@ -11832,7 +11816,7 @@
           "showId": "the-most-happy-fella-1979",
           "title": "The Most Happy Fella",
           "slug": "the-most-happy-fella-1979",
-          "rank": 19,
+          "rank": 18,
           "value": 100,
           "displayValue": "100",
           "season": "1979-1980",
@@ -11848,7 +11832,7 @@
           "showId": "bubbling-brown-sugar-1976",
           "title": "Bubbling Brown Sugar",
           "slug": "bubbling-brown-sugar-1976",
-          "rank": 20,
+          "rank": 19,
           "value": 100,
           "displayValue": "100",
           "season": "1975-1976",
@@ -11864,7 +11848,7 @@
           "showId": "the-mikado-1976",
           "title": "The Mikado",
           "slug": "the-mikado-1976",
-          "rank": 21,
+          "rank": 20,
           "value": 100,
           "displayValue": "100",
           "season": "1975-1976",
@@ -11877,26 +11861,10 @@
           "isRevival": true
         },
         {
-          "showId": "knock-knock-1976",
-          "title": "Knock Knock",
-          "slug": "knock-knock-1976",
-          "rank": 22,
-          "value": 100,
-          "displayValue": "100",
-          "season": "1975-1976",
-          "venue": "Samuel J. Friedman Theatre",
-          "type": "play",
-          "thumbnail": "/images/shows/knock-knock-1976/thumbnail.jpg",
-          "openingDate": "1976-02-24",
-          "closingDate": "1976-07-03",
-          "status": "closed",
-          "isRevival": false
-        },
-        {
           "showId": "butley-1972",
           "title": "Butley",
           "slug": "butley-1972",
-          "rank": 23,
+          "rank": 21,
           "value": 100,
           "displayValue": "100",
           "season": "1972-1973",
@@ -11912,7 +11880,7 @@
           "showId": "the-sunshine-boys-1972",
           "title": "The Sunshine Boys",
           "slug": "the-sunshine-boys-1972",
-          "rank": 24,
+          "rank": 22,
           "value": 100,
           "displayValue": "100",
           "season": "1972-1973",
@@ -11925,19 +11893,51 @@
           "isRevival": false
         },
         {
-          "showId": "the-musical-comedy-murders-of-1940-1987",
-          "title": "The Musical Comedy Murders of 1940",
-          "slug": "the-musical-comedy-murders-of-1940-1987",
-          "rank": 25,
-          "value": 97,
-          "displayValue": "97",
-          "season": "1986-1987",
-          "venue": "Longacre Theatre",
+          "showId": "antigone-1971",
+          "title": "Antigone",
+          "slug": "antigone-1971",
+          "rank": 23,
+          "value": 100,
+          "displayValue": "100",
+          "season": "1970-1971",
+          "venue": "Vivian Beaumont Theater",
           "type": "play",
-          "thumbnail": "/images/shows/the-musical-comedy-murders-of-1940-1987/thumbnail.jpg",
-          "openingDate": "1987-04-06",
-          "closingDate": "1987-08-01",
+          "thumbnail": "/images/shows/antigone-1971/thumbnail.jpg",
+          "openingDate": "1971-05-13",
+          "closingDate": "1971-06-20",
           "status": "closed",
+          "isRevival": true
+        },
+        {
+          "showId": "john-proctor-is-the-villain-2025",
+          "title": "John Proctor is the Villain",
+          "slug": "john-proctor-is-the-villain-2025",
+          "rank": 24,
+          "value": 96,
+          "displayValue": "96",
+          "season": "2024-2025",
+          "venue": "Booth Theatre",
+          "type": "play",
+          "thumbnail": "/images/shows/john-proctor-is-the-villain-2025/thumbnail.webp",
+          "openingDate": "2025-04-14",
+          "closingDate": "2025-09-07",
+          "status": "closed",
+          "isRevival": false
+        },
+        {
+          "showId": "hamilton-2015",
+          "title": "Hamilton",
+          "slug": "hamilton",
+          "rank": 25,
+          "value": 96,
+          "displayValue": "96",
+          "season": "2015-2016",
+          "venue": "Richard Rodgers Theatre",
+          "type": "musical",
+          "thumbnail": "/images/shows/hamilton-2015/thumbnail.webp",
+          "openingDate": "2015-08-06",
+          "closingDate": null,
+          "status": "open",
           "isRevival": false
         }
       ]
@@ -12666,7 +12666,7 @@
           "season": "2021-2022",
           "venue": "Marquis Theatre",
           "type": "musical",
-          "thumbnail": null,
+          "thumbnail": "/images/shows/beetlejuice-2022/thumbnail.webp",
           "openingDate": "2022-04-08",
           "closingDate": "2023-01-08",
           "status": "closed",
@@ -16814,7 +16814,7 @@
           "season": "1994-1995",
           "venue": "Gershwin Theatre",
           "type": "musical",
-          "thumbnail": "/images/shows/show-boat-1994/thumbnail.webp",
+          "thumbnail": "/images/shows/show-boat-1994/thumbnail.jpg",
           "openingDate": "1994-10-02",
           "closingDate": "1997-01-05",
           "status": "closed",
@@ -16846,7 +16846,7 @@
           "season": "1994-1995",
           "venue": "August Wilson Theatre",
           "type": "musical",
-          "thumbnail": "/images/shows/smokey-joes-cafe-1995/thumbnail.webp",
+          "thumbnail": "/images/shows/smokey-joes-cafe-1995/thumbnail.jpg",
           "openingDate": "1995-03-02",
           "closingDate": "2000-01-16",
           "status": "closed",
@@ -16976,7 +16976,7 @@
           "season": "1993-1994",
           "venue": "Palace Theatre",
           "type": "musical",
-          "thumbnail": "/images/shows/beauty-and-the-beast-1994/thumbnail.webp",
+          "thumbnail": "/images/shows/beauty-and-the-beast-1994/thumbnail.jpg",
           "openingDate": "1994-04-18",
           "closingDate": "2007-07-29",
           "status": "closed",
@@ -16992,7 +16992,7 @@
           "season": "1993-1994",
           "venue": "Minskoff Theatre",
           "type": "musical",
-          "thumbnail": "/images/shows/joseph-and-the-amazing-technicolor-dreamcoat-1993/thumbnail.webp",
+          "thumbnail": "/images/shows/joseph-and-the-amazing-technicolor-dreamcoat-1993/thumbnail.jpg",
           "openingDate": "1993-11-10",
           "closingDate": "1994-05-29",
           "status": "closed",
@@ -19757,7 +19757,7 @@
       {
         "listType": "audience-gold",
         "season": "2025-2026",
-        "rank": 4
+        "rank": 3
       }
     ],
     "ragtime-2025": [
@@ -19796,7 +19796,7 @@
       {
         "listType": "audience-gold",
         "season": "2025-2026",
-        "rank": 8
+        "rank": 6
       }
     ],
     "little-bear-ridge-road-2025": [
@@ -19808,7 +19808,7 @@
       {
         "listType": "audience-gold",
         "season": "2025-2026",
-        "rank": 9
+        "rank": 8
       }
     ],
     "marjorie-prime-2025": [
@@ -19837,7 +19837,7 @@
       {
         "listType": "audience-gold",
         "season": "2025-2026",
-        "rank": 6
+        "rank": 4
       },
       {
         "listType": "box-office-gold",
@@ -19881,7 +19881,7 @@
       {
         "listType": "audience-gold",
         "season": "2025-2026",
-        "rank": 3
+        "rank": 2
       },
       {
         "listType": "box-office-gold",
@@ -19905,7 +19905,7 @@
       {
         "listType": "critical-gold",
         "season": "all-time",
-        "rank": 17
+        "rank": 12
       },
       {
         "listType": "audience-gold",
@@ -19998,6 +19998,11 @@
         "listType": "audience-gold",
         "season": "2024-2025",
         "rank": 1
+      },
+      {
+        "listType": "audience-gold",
+        "season": "all-time",
+        "rank": 24
       }
     ],
     "buena-vista-social-club-2025": [
@@ -20077,7 +20082,7 @@
       {
         "listType": "critical-gold",
         "season": "all-time",
-        "rank": 22
+        "rank": 24
       },
       {
         "listType": "audience-gold",
@@ -20152,7 +20157,7 @@
       {
         "listType": "audience-gold",
         "season": "2023-2024",
-        "rank": 7
+        "rank": 5
       }
     ],
     "here-lies-love-2023": [
@@ -20171,7 +20176,7 @@
       {
         "listType": "audience-gold",
         "season": "2023-2024",
-        "rank": 5
+        "rank": 6
       }
     ],
     "days-of-wine-and-roses-2024": [
@@ -20202,7 +20207,7 @@
       {
         "listType": "critical-gold",
         "season": "all-time",
-        "rank": 14
+        "rank": 15
       },
       {
         "listType": "audience-gold",
@@ -20327,7 +20332,7 @@
       {
         "listType": "critical-gold",
         "season": "all-time",
-        "rank": 12
+        "rank": 13
       },
       {
         "listType": "audience-gold",
@@ -20373,18 +20378,35 @@
         "rank": 6
       }
     ],
-    "how-i-learned-to-drive-2022": [
+    "six-2021": [
       {
         "listType": "critical-gold",
         "season": "2021-2022",
         "rank": 7
+      },
+      {
+        "listType": "audience-gold",
+        "season": "2021-2022",
+        "rank": 5
+      },
+      {
+        "listType": "box-office-gold",
+        "season": "2021-2022",
+        "rank": 7
+      }
+    ],
+    "how-i-learned-to-drive-2022": [
+      {
+        "listType": "critical-gold",
+        "season": "2021-2022",
+        "rank": 8
       }
     ],
     "company-2021": [
       {
         "listType": "critical-gold",
         "season": "2021-2022",
-        "rank": 8
+        "rank": 9
       },
       {
         "listType": "audience-gold",
@@ -20396,24 +20418,7 @@
       {
         "listType": "critical-gold",
         "season": "2021-2022",
-        "rank": 9
-      }
-    ],
-    "six-2021": [
-      {
-        "listType": "critical-gold",
-        "season": "2021-2022",
         "rank": 10
-      },
-      {
-        "listType": "audience-gold",
-        "season": "2021-2022",
-        "rank": 5
-      },
-      {
-        "listType": "box-office-gold",
-        "season": "2021-2022",
-        "rank": 7
       }
     ],
     "a-soldiers-play-2020": [
@@ -20661,7 +20666,7 @@
       {
         "listType": "critical-gold",
         "season": "all-time",
-        "rank": 15
+        "rank": 16
       },
       {
         "listType": "audience-gold",
@@ -20712,7 +20717,7 @@
       {
         "listType": "audience-gold",
         "season": "2017-2018",
-        "rank": 6
+        "rank": 5
       },
       {
         "listType": "box-office-gold",
@@ -20741,7 +20746,7 @@
       {
         "listType": "audience-gold",
         "season": "2017-2018",
-        "rank": 5
+        "rank": 6
       },
       {
         "listType": "box-office-gold",
@@ -20758,7 +20763,7 @@
       {
         "listType": "audience-gold",
         "season": "2017-2018",
-        "rank": 9
+        "rank": 8
       }
     ],
     "spongebob-squarepants-2017": [
@@ -20782,7 +20787,7 @@
       {
         "listType": "critical-gold",
         "season": "all-time",
-        "rank": 23
+        "rank": 22
       },
       {
         "listType": "audience-gold",
@@ -20925,6 +20930,11 @@
         "rank": 1
       },
       {
+        "listType": "audience-gold",
+        "season": "all-time",
+        "rank": 25
+      },
+      {
         "listType": "box-office-gold",
         "season": "2015-2016",
         "rank": 1
@@ -20944,7 +20954,7 @@
       {
         "listType": "critical-gold",
         "season": "all-time",
-        "rank": 16
+        "rank": 17
       },
       {
         "listType": "audience-gold",
@@ -21079,7 +21089,7 @@
       {
         "listType": "critical-gold",
         "season": "all-time",
-        "rank": 24
+        "rank": 23
       },
       {
         "listType": "audience-gold",
@@ -21118,7 +21128,7 @@
       {
         "listType": "audience-gold",
         "season": "2014-2015",
-        "rank": 9
+        "rank": 10
       }
     ],
     "on-the-town-2014": [
@@ -21137,7 +21147,7 @@
       {
         "listType": "audience-gold",
         "season": "2014-2015",
-        "rank": 10
+        "rank": 9
       }
     ],
     "an-american-in-paris-2015": [
@@ -21202,7 +21212,7 @@
       {
         "listType": "audience-gold",
         "season": "2013-2014",
-        "rank": 8
+        "rank": 7
       }
     ],
     "richard-iii-2013": [
@@ -21214,7 +21224,7 @@
       {
         "listType": "critical-gold",
         "season": "all-time",
-        "rank": 13
+        "rank": 14
       }
     ],
     "the-glass-menagerie-2013": [
@@ -21286,7 +21296,7 @@
       {
         "listType": "audience-gold",
         "season": "2013-2014",
-        "rank": 7
+        "rank": 6
       }
     ],
     "the-cripple-of-inishmaan-2014": [
@@ -21329,7 +21339,7 @@
       {
         "listType": "audience-gold",
         "season": "2012-2013",
-        "rank": 8
+        "rank": 9
       },
       {
         "listType": "box-office-gold",
@@ -22020,11 +22030,6 @@
       {
         "listType": "audience-gold",
         "season": "2001-2002",
-        "rank": 1
-      },
-      {
-        "listType": "audience-gold",
-        "season": "all-time",
         "rank": 4
       },
       {
@@ -22120,7 +22125,7 @@
       {
         "listType": "critical-gold-west-end",
         "season": "all-time",
-        "rank": 2
+        "rank": 1
       }
     ],
     "all-my-sons-west-end-2025": [
@@ -22132,7 +22137,7 @@
       {
         "listType": "critical-gold-west-end",
         "season": "all-time",
-        "rank": 3
+        "rank": 4
       }
     ],
     "into-the-woods-west-end-2025": [
@@ -22147,7 +22152,7 @@
         "rank": 12
       }
     ],
-    "the-choir-of-man-west-end-2026": [
+    "the-producers-west-end-2025": [
       {
         "listType": "critical-gold-west-end",
         "season": "2025-2026",
@@ -22156,10 +22161,10 @@
       {
         "listType": "critical-gold-west-end",
         "season": "all-time",
-        "rank": 15
+        "rank": 16
       }
     ],
-    "the-producers-west-end-2025": [
+    "arcadia-west-end-2026": [
       {
         "listType": "critical-gold-west-end",
         "season": "2025-2026",
@@ -22168,10 +22173,10 @@
       {
         "listType": "critical-gold-west-end",
         "season": "all-time",
-        "rank": 18
+        "rank": 21
       }
     ],
-    "the-tempest-globe-west-end-2026": [
+    "the-choir-of-man-west-end-2026": [
       {
         "listType": "critical-gold-west-end",
         "season": "2025-2026",
@@ -22180,10 +22185,10 @@
       {
         "listType": "critical-gold-west-end",
         "season": "all-time",
-        "rank": 20
+        "rank": 22
       }
     ],
-    "arcadia-west-end-2026": [
+    "evening-all-afternoon-west-end-2026": [
       {
         "listType": "critical-gold-west-end",
         "season": "2025-2026",
@@ -22192,7 +22197,7 @@
       {
         "listType": "critical-gold-west-end",
         "season": "all-time",
-        "rank": 21
+        "rank": 23
       }
     ],
     "the-unlikely-pilgrimage-of-harold-fry-west-end-2026": [
@@ -22200,21 +22205,16 @@
         "listType": "critical-gold-west-end",
         "season": "2025-2026",
         "rank": 8
-      },
-      {
-        "listType": "critical-gold-west-end",
-        "season": "all-time",
-        "rank": 22
       }
     ],
-    "the-holy-rosenbergs-west-end-2026": [
+    "manic-street-creature-west-end-2026": [
       {
         "listType": "critical-gold-west-end",
         "season": "2025-2026",
         "rank": 9
       }
     ],
-    "evening-all-afternoon-west-end-2026": [
+    "paranormal-activity-west-end-2025": [
       {
         "listType": "critical-gold-west-end",
         "season": "2025-2026",
@@ -22242,7 +22242,7 @@
       {
         "listType": "critical-gold-west-end",
         "season": "all-time",
-        "rank": 13
+        "rank": 14
       }
     ],
     "titanique-west-end-2024": [
@@ -22250,6 +22250,11 @@
         "listType": "critical-gold-west-end",
         "season": "2024-2025",
         "rank": 3
+      },
+      {
+        "listType": "critical-gold-west-end",
+        "season": "all-time",
+        "rank": 25
       }
     ],
     "operation-mincemeat-west-end-2024": [
@@ -22273,7 +22278,7 @@
       {
         "listType": "critical-gold-west-end",
         "season": "all-time",
-        "rank": 14
+        "rank": 20
       }
     ],
     "starlight-express-west-end-2024": [
@@ -22281,11 +22286,13 @@
         "listType": "critical-gold-west-end",
         "season": "2023-2024",
         "rank": 3
-      },
+      }
+    ],
+    "hadestown-west-end-2024": [
       {
         "listType": "critical-gold-west-end",
-        "season": "all-time",
-        "rank": 24
+        "season": "2023-2024",
+        "rank": 4
       }
     ],
     "witness-for-the-prosecution-west-end-2022": [
@@ -22297,7 +22304,7 @@
       {
         "listType": "critical-gold-west-end",
         "season": "all-time",
-        "rank": 19
+        "rank": 18
       }
     ],
     "cabaret-at-the-kit-kat-club-west-end-2021": [
@@ -22309,10 +22316,10 @@
       {
         "listType": "critical-gold-west-end",
         "season": "all-time",
-        "rank": 10
+        "rank": 9
       }
     ],
-    "the-phantom-of-the-opera-west-end-1986": [
+    "the-phantom-of-the-opera-off-west-end-2021": [
       {
         "listType": "critical-gold-west-end",
         "season": "2021-2022",
@@ -22321,10 +22328,10 @@
       {
         "listType": "critical-gold-west-end",
         "season": "all-time",
-        "rank": 23
+        "rank": 17
       }
     ],
-    "back-to-the-future-west-end-2021": [
+    "the-phantom-of-the-opera-west-end-1986": [
       {
         "listType": "critical-gold-west-end",
         "season": "2021-2022",
@@ -22333,14 +22340,19 @@
       {
         "listType": "critical-gold-west-end",
         "season": "all-time",
-        "rank": 25
+        "rank": 19
       }
     ],
-    "moulin-rouge-the-musical-west-end-2021": [
+    "back-to-the-future-west-end-2021": [
       {
         "listType": "critical-gold-west-end",
         "season": "2021-2022",
         "rank": 4
+      },
+      {
+        "listType": "critical-gold-west-end",
+        "season": "all-time",
+        "rank": 24
       }
     ],
     "les-miserables-west-end-2021": [
@@ -22364,7 +22376,7 @@
       {
         "listType": "critical-gold-west-end",
         "season": "all-time",
-        "rank": 16
+        "rank": 13
       }
     ],
     "hamilton-west-end-2021": [
@@ -22376,7 +22388,7 @@
       {
         "listType": "critical-gold-west-end",
         "season": "all-time",
-        "rank": 1
+        "rank": 2
       }
     ],
     "harry-potter-and-the-cursed-child-both-parts-west-end-2021": [
@@ -22419,7 +22431,7 @@
       {
         "listType": "critical-gold-west-end",
         "season": "all-time",
-        "rank": 4
+        "rank": 3
       }
     ],
     "the-lion-king-west-end-2021": [
@@ -22431,7 +22443,7 @@
       {
         "listType": "critical-gold-west-end",
         "season": "all-time",
-        "rank": 17
+        "rank": 15
       }
     ],
     "mamma-mia-west-end-2021": [
@@ -22443,17 +22455,10 @@
       {
         "listType": "critical-gold-west-end",
         "season": "all-time",
-        "rank": 9
+        "rank": 10
       }
     ],
-    "cats-the-jellicle-ball-2026": [
-      {
-        "listType": "audience-gold",
-        "season": "2025-2026",
-        "rank": 2
-      }
-    ],
-    "death-of-a-salesman-2026": [
+    "beetlejuice-2025": [
       {
         "listType": "audience-gold",
         "season": "2025-2026",
@@ -22462,10 +22467,10 @@
       {
         "listType": "box-office-gold",
         "season": "2025-2026",
-        "rank": 9
+        "rank": 2
       }
     ],
-    "beetlejuice-2025": [
+    "death-of-a-salesman-2026": [
       {
         "listType": "audience-gold",
         "season": "2025-2026",
@@ -22474,13 +22479,50 @@
       {
         "listType": "box-office-gold",
         "season": "2025-2026",
-        "rank": 2
+        "rank": 9
       }
     ],
-    "giant-2026": [
+    "mamma-mia-2025": [
       {
         "listType": "audience-gold",
         "season": "2025-2026",
+        "rank": 9
+      },
+      {
+        "listType": "box-office-gold",
+        "season": "2025-2026",
+        "rank": 6
+      },
+      {
+        "listType": "hot-ticket-gold",
+        "season": "2025-2026",
+        "rank": 2
+      },
+      {
+        "listType": "hot-ticket-gold",
+        "season": "all-time",
+        "rank": 3
+      }
+    ],
+    "chess-2025": [
+      {
+        "listType": "audience-gold",
+        "season": "2025-2026",
+        "rank": 10
+      },
+      {
+        "listType": "box-office-gold",
+        "season": "2025-2026",
+        "rank": 1
+      },
+      {
+        "listType": "hot-ticket-gold",
+        "season": "2025-2026",
+        "rank": 4
+      },
+      {
+        "listType": "hot-ticket-gold",
+        "season": "all-time",
         "rank": 10
       }
     ],
@@ -22585,7 +22627,7 @@
       {
         "listType": "audience-gold",
         "season": "2023-2024",
-        "rank": 6
+        "rank": 7
       },
       {
         "listType": "box-office-gold",
@@ -22834,18 +22876,23 @@
         "rank": 10
       }
     ],
-    "latin-history-for-morons-2017": [
-      {
-        "listType": "audience-gold",
-        "season": "2017-2018",
-        "rank": 8
-      }
-    ],
     "farinelli-and-the-king-2017": [
       {
         "listType": "audience-gold",
         "season": "2017-2018",
+        "rank": 9
+      }
+    ],
+    "mean-girls-2018": [
+      {
+        "listType": "audience-gold",
+        "season": "2017-2018",
         "rank": 10
+      },
+      {
+        "listType": "box-office-gold",
+        "season": "2017-2018",
+        "rank": 3
       }
     ],
     "sunset-boulevard-2017": [
@@ -22902,23 +22949,23 @@
         "rank": 6
       }
     ],
-    "a-delicate-balance-2014": [
-      {
-        "listType": "audience-gold",
-        "season": "2014-2015",
-        "rank": 5
-      }
-    ],
     "the-elephant-man-2014": [
       {
         "listType": "audience-gold",
         "season": "2014-2015",
-        "rank": 6
+        "rank": 5
       },
       {
         "listType": "box-office-gold",
         "season": "2014-2015",
         "rank": 10
+      }
+    ],
+    "a-delicate-balance-2014": [
+      {
+        "listType": "audience-gold",
+        "season": "2014-2015",
+        "rank": 6
       }
     ],
     "wolf-hall-parts-one-and-two-2015": [
@@ -22970,7 +23017,7 @@
       {
         "listType": "audience-gold",
         "season": "2013-2014",
-        "rank": 6
+        "rank": 8
       }
     ],
     "kinky-boots-2013": [
@@ -23003,7 +23050,7 @@
       {
         "listType": "audience-gold",
         "season": "2012-2013",
-        "rank": 9
+        "rank": 8
       },
       {
         "listType": "box-office-gold",
@@ -23656,21 +23703,21 @@
       {
         "listType": "audience-gold",
         "season": "2001-2002",
-        "rank": 2
+        "rank": 1
       }
     ],
     "once-on-this-island-2002": [
       {
         "listType": "audience-gold",
         "season": "2001-2002",
-        "rank": 3
+        "rank": 2
       }
     ],
     "dreamgirls-2001": [
       {
         "listType": "audience-gold",
         "season": "2001-2002",
-        "rank": 4
+        "rank": 3
       }
     ],
     "into-the-woods-2002": [
@@ -23732,14 +23779,14 @@
         "rank": 1
       }
     ],
-    "proof-2000": [
+    "stones-in-his-pockets-2001": [
       {
         "listType": "audience-gold",
         "season": "2000-2001",
         "rank": 2
       }
     ],
-    "stones-in-his-pockets-2001": [
+    "proof-2000": [
       {
         "listType": "audience-gold",
         "season": "2000-2001",
@@ -23817,18 +23864,30 @@
         "rank": 1
       }
     ],
-    "amadeus-1999": [
+    "the-wild-party-2000": [
       {
         "listType": "audience-gold",
         "season": "1999-2000",
         "rank": 2
+      },
+      {
+        "listType": "box-office-gold",
+        "season": "1999-2000",
+        "rank": 8
+      }
+    ],
+    "amadeus-1999": [
+      {
+        "listType": "audience-gold",
+        "season": "1999-2000",
+        "rank": 3
       }
     ],
     "aida-2000": [
       {
         "listType": "audience-gold",
         "season": "1999-2000",
-        "rank": 3
+        "rank": 4
       },
       {
         "listType": "box-office-gold",
@@ -23840,29 +23899,17 @@
       {
         "listType": "audience-gold",
         "season": "1999-2000",
-        "rank": 4
+        "rank": 5
       }
     ],
     "the-music-man-2000": [
       {
         "listType": "audience-gold",
         "season": "1999-2000",
-        "rank": 5
+        "rank": 6
       }
     ],
     "jesus-christ-superstar-2000": [
-      {
-        "listType": "audience-gold",
-        "season": "1999-2000",
-        "rank": 6
-      },
-      {
-        "listType": "box-office-gold",
-        "season": "1999-2000",
-        "rank": 3
-      }
-    ],
-    "the-wild-party-2000": [
       {
         "listType": "audience-gold",
         "season": "1999-2000",
@@ -23871,7 +23918,7 @@
       {
         "listType": "box-office-gold",
         "season": "1999-2000",
-        "rank": 8
+        "rank": 3
       }
     ],
     "an-evening-with-jerry-herman-1998": [
@@ -23883,7 +23930,7 @@
       {
         "listType": "audience-gold",
         "season": "all-time",
-        "rank": 5
+        "rank": 4
       }
     ],
     "parade-1998": [
@@ -23954,7 +24001,7 @@
       {
         "listType": "audience-gold",
         "season": "all-time",
-        "rank": 6
+        "rank": 5
       }
     ],
     "ragtime-1998": [
@@ -24018,7 +24065,7 @@
       {
         "listType": "audience-gold",
         "season": "all-time",
-        "rank": 7
+        "rank": 6
       }
     ],
     "barrymore-1997": [
@@ -24030,7 +24077,7 @@
       {
         "listType": "audience-gold",
         "season": "all-time",
-        "rank": 8
+        "rank": 7
       },
       {
         "listType": "box-office-gold",
@@ -24166,7 +24213,7 @@
       {
         "listType": "audience-gold",
         "season": "all-time",
-        "rank": 9
+        "rank": 8
       },
       {
         "listType": "box-office-gold",
@@ -24183,7 +24230,7 @@
       {
         "listType": "audience-gold",
         "season": "all-time",
-        "rank": 10
+        "rank": 9
       },
       {
         "listType": "box-office-gold",
@@ -24326,11 +24373,23 @@
         "rank": 8
       }
     ],
-    "laughter-on-the-23rd-floor-1993": [
+    "joseph-and-the-amazing-technicolor-dreamcoat-1993": [
       {
         "listType": "audience-gold",
         "season": "1993-1994",
         "rank": 9
+      },
+      {
+        "listType": "box-office-gold",
+        "season": "1993-1994",
+        "rank": 2
+      }
+    ],
+    "laughter-on-the-23rd-floor-1993": [
+      {
+        "listType": "audience-gold",
+        "season": "1993-1994",
+        "rank": 10
       },
       {
         "listType": "box-office-gold",
@@ -24347,7 +24406,7 @@
       {
         "listType": "audience-gold",
         "season": "all-time",
-        "rank": 11
+        "rank": 10
       },
       {
         "listType": "box-office-gold",
@@ -24364,7 +24423,7 @@
       {
         "listType": "audience-gold",
         "season": "all-time",
-        "rank": 12
+        "rank": 11
       },
       {
         "listType": "box-office-gold",
@@ -24415,18 +24474,6 @@
         "rank": 5
       }
     ],
-    "the-goodbye-girl-1993": [
-      {
-        "listType": "audience-gold",
-        "season": "1992-1993",
-        "rank": 7
-      },
-      {
-        "listType": "box-office-gold",
-        "season": "1992-1993",
-        "rank": 1
-      }
-    ],
     "the-most-happy-fella-1992": [
       {
         "listType": "audience-gold",
@@ -24436,7 +24483,7 @@
       {
         "listType": "audience-gold",
         "season": "all-time",
-        "rank": 13
+        "rank": 12
       },
       {
         "listType": "box-office-gold",
@@ -24583,7 +24630,7 @@
       {
         "listType": "audience-gold",
         "season": "all-time",
-        "rank": 14
+        "rank": 13
       },
       {
         "listType": "box-office-gold",
@@ -24747,31 +24794,26 @@
       {
         "listType": "audience-gold",
         "season": "all-time",
-        "rank": 15
-      }
-    ],
-    "the-musical-comedy-murders-of-1940-1987": [
-      {
-        "listType": "audience-gold",
-        "season": "1986-1987",
-        "rank": 2
-      },
-      {
-        "listType": "audience-gold",
-        "season": "all-time",
-        "rank": 25
+        "rank": 14
       }
     ],
     "me-and-my-girl-1986": [
       {
         "listType": "audience-gold",
         "season": "1986-1987",
-        "rank": 3
+        "rank": 2
       },
       {
         "listType": "box-office-gold",
         "season": "1986-1987",
         "rank": 1
+      }
+    ],
+    "the-musical-comedy-murders-of-1940-1987": [
+      {
+        "listType": "audience-gold",
+        "season": "1986-1987",
+        "rank": 3
       }
     ],
     "dreamgirls-1987": [
@@ -24788,18 +24830,11 @@
         "rank": 5
       }
     ],
-    "broadway-1987": [
-      {
-        "listType": "audience-gold",
-        "season": "1986-1987",
-        "rank": 6
-      }
-    ],
     "sweet-sue-1987": [
       {
         "listType": "audience-gold",
         "season": "1986-1987",
-        "rank": 7
+        "rank": 6
       },
       {
         "listType": "box-office-gold",
@@ -24811,7 +24846,7 @@
       {
         "listType": "audience-gold",
         "season": "1986-1987",
-        "rank": 8
+        "rank": 7
       },
       {
         "listType": "box-office-gold",
@@ -24823,7 +24858,7 @@
       {
         "listType": "audience-gold",
         "season": "1986-1987",
-        "rank": 9
+        "rank": 8
       }
     ],
     "jerrys-girls-1985": [
@@ -24963,7 +24998,7 @@
       {
         "listType": "audience-gold",
         "season": "all-time",
-        "rank": 16
+        "rank": 15
       }
     ],
     "brothers-1983": [
@@ -25109,7 +25144,7 @@
       {
         "listType": "audience-gold",
         "season": "all-time",
-        "rank": 17
+        "rank": 16
       },
       {
         "listType": "box-office-gold",
@@ -25168,7 +25203,7 @@
       {
         "listType": "audience-gold",
         "season": "all-time",
-        "rank": 18
+        "rank": 17
       }
     ],
     "brigadoon-1980": [
@@ -25208,7 +25243,7 @@
       {
         "listType": "audience-gold",
         "season": "all-time",
-        "rank": 19
+        "rank": 18
       }
     ],
     "oklahoma-1979": [
@@ -25339,7 +25374,7 @@
       {
         "listType": "audience-gold",
         "season": "all-time",
-        "rank": 20
+        "rank": 19
       }
     ],
     "the-mikado-1976": [
@@ -25351,54 +25386,42 @@
       {
         "listType": "audience-gold",
         "season": "all-time",
-        "rank": 21
-      }
-    ],
-    "knock-knock-1976": [
-      {
-        "listType": "audience-gold",
-        "season": "1975-1976",
-        "rank": 3
-      },
-      {
-        "listType": "audience-gold",
-        "season": "all-time",
-        "rank": 22
+        "rank": 20
       }
     ],
     "hello-dolly-1975": [
       {
         "listType": "audience-gold",
         "season": "1975-1976",
-        "rank": 4
+        "rank": 3
       }
     ],
     "a-chorus-line-1975": [
       {
         "listType": "audience-gold",
         "season": "1975-1976",
-        "rank": 5
+        "rank": 4
       }
     ],
     "whos-afraid-of-virginia-woolf-1976": [
       {
         "listType": "audience-gold",
         "season": "1975-1976",
-        "rank": 6
+        "rank": 5
       }
     ],
     "my-fair-lady-1976": [
       {
         "listType": "audience-gold",
         "season": "1975-1976",
-        "rank": 7
+        "rank": 6
       }
     ],
     "godspell-1976": [
       {
         "listType": "audience-gold",
         "season": "1975-1976",
-        "rank": 8
+        "rank": 7
       }
     ],
     "london-assurance-1974": [
@@ -25464,7 +25487,7 @@
       {
         "listType": "audience-gold",
         "season": "all-time",
-        "rank": 23
+        "rank": 21
       }
     ],
     "the-sunshine-boys-1972": [
@@ -25476,7 +25499,7 @@
       {
         "listType": "audience-gold",
         "season": "all-time",
-        "rank": 24
+        "rank": 22
       }
     ],
     "irene-1973": [
@@ -25528,14 +25551,19 @@
         "rank": 3
       }
     ],
-    "hay-fever-1970": [
+    "antigone-1971": [
       {
         "listType": "audience-gold",
         "season": "1970-1971",
         "rank": 1
+      },
+      {
+        "listType": "audience-gold",
+        "season": "all-time",
+        "rank": 23
       }
     ],
-    "soon-1971": [
+    "hay-fever-1970": [
       {
         "listType": "audience-gold",
         "season": "1970-1971",
@@ -25563,21 +25591,11 @@
         "rank": 5
       }
     ],
-    "chess-2025": [
+    "soon-1971": [
       {
-        "listType": "box-office-gold",
-        "season": "2025-2026",
-        "rank": 1
-      },
-      {
-        "listType": "hot-ticket-gold",
-        "season": "2025-2026",
-        "rank": 4
-      },
-      {
-        "listType": "hot-ticket-gold",
-        "season": "all-time",
-        "rank": 10
+        "listType": "audience-gold",
+        "season": "1970-1971",
+        "rank": 6
       }
     ],
     "waiting-for-godot-2025": [
@@ -25602,23 +25620,6 @@
         "listType": "hot-ticket-gold",
         "season": "all-time",
         "rank": 16
-      }
-    ],
-    "mamma-mia-2025": [
-      {
-        "listType": "box-office-gold",
-        "season": "2025-2026",
-        "rank": 6
-      },
-      {
-        "listType": "hot-ticket-gold",
-        "season": "2025-2026",
-        "rank": 2
-      },
-      {
-        "listType": "hot-ticket-gold",
-        "season": "all-time",
-        "rank": 3
       }
     ],
     "all-out-2025": [
@@ -25875,13 +25876,6 @@
         "listType": "box-office-gold",
         "season": "all-time",
         "rank": 17
-      }
-    ],
-    "mean-girls-2018": [
-      {
-        "listType": "box-office-gold",
-        "season": "2017-2018",
-        "rank": 3
       }
     ],
     "meteor-shower-2017": [
@@ -26869,13 +26863,6 @@
         "rank": 10
       }
     ],
-    "joseph-and-the-amazing-technicolor-dreamcoat-1993": [
-      {
-        "listType": "box-office-gold",
-        "season": "1993-1994",
-        "rank": 2
-      }
-    ],
     "the-red-shoes-1993": [
       {
         "listType": "box-office-gold",
@@ -26902,6 +26889,13 @@
         "listType": "box-office-gold",
         "season": "1993-1994",
         "rank": 10
+      }
+    ],
+    "the-goodbye-girl-1993": [
+      {
+        "listType": "box-office-gold",
+        "season": "1992-1993",
+        "rank": 1
       }
     ],
     "the-song-of-jacob-zulu-1993": [
