@@ -767,9 +767,17 @@ function titleWordsMatch(showTitle, candidateText) {
       'globe', 'old', 'vic', 'young', 'duke', 'york', 'haymarket',
       'east', 'north', 'south', 'street', 'square', 'road', 'house',
     ]);
+    // Use FULL title words (including subtitle) — showSlugWords may only have pre-colon part
+    const stripPunc = w => w.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '');
+    const fullTitleWords = showTitle.toLowerCase().split(/[\s,:()&]+/)
+      .map(stripPunc)
+      .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w));
+    const showWordsClean = new Set(fullTitleWords);
     const candidateWords = candidateLower.split(/[\s,\-_/]+/)
-      .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w) && !CONTEXT_WORDS.has(w));
-    const extraWords = candidateWords.filter(w => !showSlugWords.includes(w));
+      .map(stripPunc)
+      .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w) && !CONTEXT_WORDS.has(w)
+        && !/^(?:19|20)\d\d$/.test(w));  // Exclude year tokens (2024, 2025, etc.)
+    const extraWords = candidateWords.filter(w => !showWordsClean.has(w));
     if (extraWords.length >= 1) return false;
   }
 
