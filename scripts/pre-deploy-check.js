@@ -83,44 +83,6 @@ try {
     ok(`Show count: ${showCount} (no watermark yet)`);
   }
 
-  // Auto-dedup: remove exact-title duplicates within the same market+venue.
-  // Only dedup London-market shows with 0 reviews (safe — no data loss).
-  // Broadway shows have legitimate same-title revivals at the same theater.
-  const titleKey = (s) => `${s.title}||${s.venue}||${s.category}`;
-  const statusPriority = { open: 3, previews: 2, upcoming: 1, closed: 0 };
-  const reviewsData = JSON.parse(fs.readFileSync(REVIEWS_PATH, 'utf8'));
-  const reviewsByShow = {};
-  for (const r of (reviewsData.reviews || reviewsData || [])) {
-    reviewsByShow[r.showId] = (reviewsByShow[r.showId] || 0) + 1;
-  }
-  const seen = new Map();
-  const toRemove = new Set();
-  for (const show of shows) {
-    if (show.category !== 'west-end' && show.category !== 'off-west-end') continue;
-    const key = titleKey(show);
-    if (seen.has(key)) {
-      const prev = seen.get(key);
-      const prevReviews = reviewsByShow[prev.id] || 0;
-      const currReviews = reviewsByShow[show.id] || 0;
-      // Only dedup if one entry has 0 reviews
-      if (prevReviews === 0 || currReviews === 0) {
-        if (currReviews > prevReviews || (currReviews === prevReviews && (statusPriority[show.status] || 0) > (statusPriority[prev.status] || 0))) {
-          toRemove.add(prev.id);
-          seen.set(key, show);
-        } else {
-          toRemove.add(show.id);
-        }
-      }
-    } else {
-      seen.set(key, show);
-    }
-  }
-  if (toRemove.size > 0) {
-    showsData.shows = shows.filter(s => !toRemove.has(s.id));
-    shows = showsData.shows;
-    ok(`Auto-removed ${toRemove.size} duplicate London show(s): ${[...toRemove].join(', ')}`);
-  }
-
   // Orphan image auto-fix: shows with null image references but local files on disk.
   // This catches data/file mismatches from the dedup logic or private repo staleness.
   // Also upgrades .jpg → .webp when a .webp file exists on disk (legacy backfill cleanup).
@@ -186,8 +148,45 @@ try {
   }
   if (categoryFixed > 0) ok(`Auto-fixed ${categoryFixed} venue/category mismatches`);
 
+  // Auto-dedup: remove exact-title duplicates within the same London market.
+  // Runs AFTER venue-category fix so both entries have corrected categories.
+  // Only dedup shows with 0 reviews (safe — no data loss).
+  const titleKey = (s) => `${s.title}||${s.category}`;
+  const statusPriority = { open: 3, previews: 2, upcoming: 1, closed: 0 };
+  const reviewsData = JSON.parse(fs.readFileSync(REVIEWS_PATH, 'utf8'));
+  const reviewsByShow = {};
+  for (const r of (reviewsData.reviews || reviewsData || [])) {
+    reviewsByShow[r.showId] = (reviewsByShow[r.showId] || 0) + 1;
+  }
+  const seen = new Map();
+  const toRemove = new Set();
+  for (const show of shows) {
+    if (show.category !== 'west-end' && show.category !== 'off-west-end') continue;
+    const key = titleKey(show);
+    if (seen.has(key)) {
+      const prev = seen.get(key);
+      const prevReviews = reviewsByShow[prev.id] || 0;
+      const currReviews = reviewsByShow[show.id] || 0;
+      if (prevReviews === 0 || currReviews === 0) {
+        if (currReviews > prevReviews || (currReviews === prevReviews && (statusPriority[show.status] || 0) > (statusPriority[prev.status] || 0))) {
+          toRemove.add(prev.id);
+          seen.set(key, show);
+        } else {
+          toRemove.add(show.id);
+        }
+      }
+    } else {
+      seen.set(key, show);
+    }
+  }
+  if (toRemove.size > 0) {
+    showsData.shows = shows.filter(s => !toRemove.has(s.id));
+    shows = showsData.shows;
+    ok(`Auto-removed ${toRemove.size} duplicate London show(s): ${[...toRemove].join(', ')}`);
+  }
+
   // Write shows.json if any fixes were applied
-  if (orphansFixed > 0 || jpgUpgraded > 0 || categoryFixed > 0) {
+  if (orphansFixed > 0 || jpgUpgraded > 0 || categoryFixed > 0 || toRemove.size > 0) {
     fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2));
   }
 
