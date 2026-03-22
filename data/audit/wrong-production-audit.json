@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-22T08:31:14.320Z",
+  "timestamp": "2026-03-22T08:41:50.452Z",
   "stats": {
     "totalReviews": 32221,
-    "alreadyFlagged": 10783,
+    "alreadyFlagged": 10787,
     "dateGuardCatches": 141,
     "directorMismatch": 951,
-    "tvFilmSignals": 3400,
-    "londonSignals": 1030,
-    "offBroadwaySignals": 1010,
+    "tvFilmSignals": 3402,
+    "londonSignals": 1031,
+    "offBroadwaySignals": 1011,
     "yearMismatch": 71,
-    "noPublishDate": 6895
+    "noPublishDate": 6893
   },
   "findings": [
     {
@@ -32891,7 +32891,7 @@
     {
       "showId": "mj-the-musical-west-end-2024",
       "file": "times-uk--unknown.json",
-      "score": null,
+      "score": 65,
       "publishDate": "2024-03-27",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/mj-the-musical-review-24-carat-karaoke-anchored-by-sleek-dance-moves-xvqpkfltq?gaa_at=eafs&gaa_n=AWEtsqewvfWK_o4T48c4HFdxpFOoez_Rt0x32K_AkiwAjOc8fu1n_EFbqBz2&gaa_ts=69bda30e&gaa_sig=nlxrn838bUQeb-ILTZN0xfyfMU9DsxtKutA-MFHwFYtd8lckS8geuY6hMZobFBI6H-K2mIRx7apB6-aTdCZwjg%3D%3D",
       "findings": [
@@ -58155,6 +58155,33 @@
     },
     {
       "showId": "topdog-underdog-2022",
+      "file": "corey-hawkins--unknown.json",
+      "publishDate": null,
+      "url": "https://ew.com/person/corey-hawkins/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
+        }
+      ]
+    },
+    {
+      "showId": "topdog-underdog-2022",
+      "file": "culturesauce--unknown.json",
+      "score": null,
+      "publishDate": "2022-10-20",
+      "url": "https://culturesauce.com/2022/10/20/topdog-underdog-yahya-abdul-mateen-ii-and-corey-hawkins-create-sparks-in-broadway-revival/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"onscreen\""
+        }
+      ]
+    },
+    {
+      "showId": "topdog-underdog-2022",
       "file": "new-york-sun--elysa-gardner.json",
       "score": 88,
       "publishDate": null,
@@ -76161,6 +76188,20 @@
       ]
     },
     {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "file": "nytimes--unknown.json",
+      "score": 75,
+      "publishDate": "March 1, 2026",
+      "url": "https://www.nytimes.com/2024/05/24/theater/tom-holland-romeo-and-juliet.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
       "showId": "romeo-juliet-2024",
       "file": "latimes--charles-mcnulty.json",
       "score": 77,
@@ -79296,6 +79337,20 @@
       "score": 88,
       "publishDate": null,
       "url": "https://dandwyeroffscript.tumblr.com/post/167879055146/the-bands-visit",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "the-bands-visit-2017",
+      "file": "susangrangercom--susan-granger.json",
+      "score": 80,
+      "publishDate": "2017-11-29",
+      "url": "https://www.susangranger.com/?p=10339",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
