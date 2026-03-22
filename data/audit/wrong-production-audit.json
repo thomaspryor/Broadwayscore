@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-22T12:08:07.629Z",
+  "timestamp": "2026-03-22T12:15:18.460Z",
   "stats": {
     "totalReviews": 32229,
-    "alreadyFlagged": 10797,
+    "alreadyFlagged": 10800,
     "dateGuardCatches": 141,
-    "directorMismatch": 950,
+    "directorMismatch": 948,
     "tvFilmSignals": 3401,
     "londonSignals": 1029,
     "offBroadwaySignals": 1011,
     "yearMismatch": 71,
-    "noPublishDate": 6892
+    "noPublishDate": 6889
   },
   "findings": [
     {
@@ -5861,6 +5861,20 @@
     },
     {
       "showId": "back-to-the-future-2023",
+      "file": "indiewire--erin-strecker.json",
+      "score": 66,
+      "publishDate": "2023-08-04",
+      "url": "https://www.indiewire.com/criticism/culture/back-to-the-future-musical-review-broadway-1234891185/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-2023",
       "file": "nysr--elysa-gardner.json",
       "score": 42,
       "publishDate": "August 3, 2023",
@@ -9914,30 +9928,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "cats-the-jellicle-ball-off-broadway-2024",
-      "file": "billboard--joe-lynch.json",
-      "score": 84,
-      "publishDate": "2024-07-12",
-      "url": "https://www.billboard.com/music/music-news/cats-the-jellicle-ball-musical-play-1235729344/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
