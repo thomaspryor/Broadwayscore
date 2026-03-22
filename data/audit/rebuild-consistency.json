@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-22T05:15:27.268Z",
+  "generatedAt": "2026-03-22T05:22:36.064Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -152,14 +152,6 @@
       "outlet": "theater-life",
       "critic": "Samuel L. Leiter",
       "detail": "originalRating \"5/5 stars\" (=100) vs score 78 (source: human-review)"
-    },
-    {
-      "type": "rating-score-mismatch",
-      "severity": "high",
-      "showId": "the-devil-wears-prada-west-end-2024",
-      "outlet": "timeout-london",
-      "critic": "Andrzej Lukowski",
-      "detail": "originalRating \"5/5\" (=100) vs score 78 (source: human-review)"
     },
     {
       "type": "designation-score-mismatch",
@@ -392,6 +384,12 @@
     {
       "type": "score-clustering",
       "severity": "low",
+      "showId": "hamilton-west-end-2021",
+      "detail": "10/20 reviews (50%) scored exactly 100"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
       "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
       "detail": "9/14 reviews (64%) scored exactly 100"
     },
@@ -441,7 +439,7 @@
       "type": "score-clustering",
       "severity": "low",
       "showId": "paddington-the-musical-west-end-2025",
-      "detail": "13/21 reviews (62%) scored exactly 100"
+      "detail": "13/22 reviews (59%) scored exactly 100"
     },
     {
       "type": "score-clustering",
@@ -465,7 +463,7 @@
       "type": "score-clustering",
       "severity": "low",
       "showId": "the-play-that-goes-wrong-west-end-2021",
-      "detail": "8/16 reviews (50%) scored exactly 80"
+      "detail": "9/18 reviews (50%) scored exactly 80"
     },
     {
       "type": "score-clustering",
@@ -477,7 +475,7 @@
       "type": "score-clustering",
       "severity": "low",
       "showId": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026",
-      "detail": "8/14 reviews (57%) scored exactly 80"
+      "detail": "9/15 reviews (60%) scored exactly 80"
     }
   ]
 }
