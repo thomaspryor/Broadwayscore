@@ -1,18 +1,31 @@
 {
-  "updatedAt": "2026-03-22T08:31:54.327Z",
-  "processed": 49,
-  "failed": 1,
-  "successRate": "98.0%",
+  "updatedAt": "2026-03-22T08:58:26.340Z",
+  "processed": 137,
+  "failed": 13,
+  "successRate": "91.3%",
   "tierBreakdown": {
-    "playwright": 45,
+    "playwright": 119,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 4
+    "archiveToday": 3,
+    "archive": 20
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-03-22T08:41:49.721Z",
+      "event": "bb-session",
+      "session": "29bf8a87",
+      "url": "https://www.thestage.co.uk/long-reviews/the-hills-of-california-review-at-harold"
+    },
+    {
+      "t": "2026-03-22T08:42:29.396Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    31 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
+    }
+  ]
 }
