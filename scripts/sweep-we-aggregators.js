@@ -556,11 +556,31 @@ async function sweepTheatreReviews(show) {
   }
 
   // BrowserBase fallback — bypasses CleanTalk JS challenge (SB gets 401)
+  // Uses a one-shot BB session (no login — TR is a different site from The Stage)
   if (process.env.BROWSERBASE_API_KEY && indexUrl) {
     await sleep(2000);
     console.log(`    [TR] Trying BrowserBase for ${indexUrl.split('/reviews-roundup/')[1] || indexUrl}`);
     try {
-      const html = await getStagePageViaBrowserBase(indexUrl);
+      const https = require('https');
+      const { chromium } = require('playwright');
+      const BB_API_KEY = process.env.BROWSERBASE_API_KEY;
+      const BB_PROJECT_ID = process.env.BROWSERBASE_PROJECT_ID;
+      const session = await new Promise((resolve, reject) => {
+        const req = https.request('https://www.browserbase.com/v1/sessions', {
+          method: 'POST',
+          headers: { 'x-bb-api-key': BB_API_KEY, 'Content-Type': 'application/json' },
+        }, res => { let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(JSON.parse(d))); });
+        req.on('error', reject);
+        req.end(JSON.stringify({ projectId: BB_PROJECT_ID, browserSettings: { solveCaptchas: true } }));
+      });
+      const browser = await chromium.connectOverCDP(`wss://connect.browserbase.com?apiKey=${BB_API_KEY}&sessionId=${session.id}`);
+      const ctx = browser.contexts()[0] || await browser.newContext();
+      const page = ctx.pages()[0] || await ctx.newPage();
+      await page.goto(indexUrl, { waitUntil: 'networkidle', timeout: 30000 });
+      await page.waitForTimeout(2000);
+      const html = await page.content();
+      await browser.close();
+
       if (html && html.length > 1000 && !html.includes('<title>Page not found') && !html.includes('404')) {
         const reviews = extractTheatreReviews(html, show.id);
         if (reviews.length > 0) {
