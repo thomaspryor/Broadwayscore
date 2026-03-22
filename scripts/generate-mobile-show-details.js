@@ -243,9 +243,13 @@ for (const show of visibleShows) {
   // This prevents fetch-show-images-auto.js re-runs from wiping local hero paths.
   let heroPath = show.images?.hero;
   if (!heroPath && show.id) {
-    const diskHero = path.join(__dirname, '..', 'public', 'images', 'shows', show.id, 'hero.webp');
-    if (fs.existsSync(diskHero)) {
-      heroPath = `/images/shows/${show.id}/hero.webp`;
+    const showDir = path.join(__dirname, '..', 'public', 'images', 'shows', show.id);
+    for (const ext of ['webp', 'jpg', 'png']) {
+      const diskHero = path.join(showDir, `hero.${ext}`);
+      if (fs.existsSync(diskHero)) {
+        heroPath = `/images/shows/${show.id}/hero.${ext}`;
+        break;
+      }
     }
   }
   if (heroPath) {

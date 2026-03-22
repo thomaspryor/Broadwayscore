@@ -92,18 +92,25 @@ try {
   for (const show of shows) {
     if (!show || !show.id) continue;
     const dir = path.join(IMAGES_DIR, show.id);
-    const hasHero = fs.existsSync(path.join(dir, 'hero.webp'));
-    const hasPoster = fs.existsSync(path.join(dir, 'poster.webp'));
-    const hasThumb = fs.existsSync(path.join(dir, 'thumbnail.webp'));
-    if (!hasHero && !hasPoster && !hasThumb) continue;
+    // Check for image files in any format (webp preferred, then jpg, png)
+    const findImage = (name) => {
+      for (const ext of ['webp', 'jpg', 'png']) {
+        if (fs.existsSync(path.join(dir, `${name}.${ext}`))) return `${name}.${ext}`;
+      }
+      return null;
+    };
+    const heroFile = findImage('hero');
+    const posterFile = findImage('poster');
+    const thumbFile = findImage('thumbnail');
+    if (!heroFile && !posterFile && !thumbFile) continue;
 
     if (!show.images) show.images = {};
     let fixed = false;
 
-    // Fix null refs → .webp on disk
-    if (!show.images.hero && hasHero) { show.images.hero = `/images/shows/${show.id}/hero.webp`; fixed = true; }
-    if (!show.images.poster && hasPoster) { show.images.poster = `/images/shows/${show.id}/poster.webp`; fixed = true; }
-    if (!show.images.thumbnail && hasThumb) { show.images.thumbnail = `/images/shows/${show.id}/thumbnail.webp`; fixed = true; }
+    // Fix null refs → file on disk
+    if (!show.images.hero && heroFile) { show.images.hero = `/images/shows/${show.id}/${heroFile}`; fixed = true; }
+    if (!show.images.poster && posterFile) { show.images.poster = `/images/shows/${show.id}/${posterFile}`; fixed = true; }
+    if (!show.images.thumbnail && thumbFile) { show.images.thumbnail = `/images/shows/${show.id}/${thumbFile}`; fixed = true; }
 
     // Upgrade .jpg → .webp when .webp exists on disk
     for (const key of ['hero', 'poster', 'thumbnail']) {
