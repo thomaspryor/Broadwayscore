@@ -1,23 +1,23 @@
 {
   "meta": {
-    "generatedAt": "2026-03-22T05:18:32.875Z",
+    "generatedAt": "2026-03-22T05:26:15.529Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 32840,
-      "inReviewsJson": 16113,
-      "skippedExcluded": 62,
-      "withFullText": 23,
-      "excerptOnly": 2159,
-      "llmClassified": 22,
+      "totalFiles": 32931,
+      "inReviewsJson": 16131,
+      "skippedExcluded": 68,
+      "withFullText": 29,
+      "excerptOnly": 2167,
+      "llmClassified": 28,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
       "uncertainCases": 18,
-      "budgetUsed": 0.0023,
-      "llmCalls": 23,
+      "budgetUsed": 0.002899999999999999,
+      "llmCalls": 29,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 13869
+      "skippedAlreadyClassified": 13867
     },
     "calibration": null
   },
@@ -60,7 +60,7 @@
       "outletId": "bloomberg",
       "contentType": "news",
       "confidence": "medium",
-      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in photo captions, indicating it's not a review of the latter.",
+      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in a photo caption. It does not offer a review or evaluation of \"First Date.\"",
       "currentScore": 60
     },
     {
@@ -70,7 +70,7 @@
       "outletId": "huffpost",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be a collection of news headlines and trending topics, rather than a review of \"First Date.\"",
+      "reasoning": "The article appears to be a collection of news headlines and trending topics, rather than a review of 'First Date'. The presence of unrelated news items and website disclaimers further supports this classification.",
       "currentScore": 62
     },
     {
@@ -90,7 +90,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
       "currentScore": 81
     },
     {
@@ -100,7 +100,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there is no evaluative content or opinion offered about the show itself.",
+      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there's no evaluative content to classify it as a review.",
       "currentScore": 88
     },
     {
@@ -140,7 +140,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of categories and links related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -150,7 +150,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but it does not offer a critical evaluation or opinion about the quality of the production. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
       "currentScore": 83
     },
     {
@@ -170,7 +170,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
+      "reasoning": "The article provides production details and cast information, resembling a news item or listing rather than a review with critical evaluation.",
       "currentScore": 64
     },
     {
@@ -190,7 +190,7 @@
       "outletId": "vulture",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the set design and the playwright's intentions, drawing comparisons to other works, but it does not offer an overall evaluation or recommendation of the show.",
+      "reasoning": "The article describes the set design and the playwright's intentions, but it does not offer an evaluation or opinion on the quality of the production itself. It's more of a feature about the show's themes and design choices.",
       "currentScore": 64
     },
     {
@@ -200,16 +200,22 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of links and categories related to theater, rather than a review of a specific production.",
+      "reasoning": "The text appears to be a collection of links and categories related to theater, not a review of a specific production.",
       "currentScore": 89
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "garry-starr-classic-penguins-garrick-west-end-2026/everything-theatre--jess-gonzalez.json",
+    "all-my-sons-west-end-2025/timeout-london--andrzej-lukowski.json",
     "hadestown-west-end-2024/timeout-london--andrzej-lukowski.json",
-    "paranormal-activity-west-end-2025/timeout-london--andrzej-lukowski.json",
-    "summerfolk-west-end-2026/timeout-london--andrzej-lukowski.json"
+    "manic-street-creature-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "my-neighbour-totoro-west-end-2025/timeout-london--andrzej-lukowski.json",
+    "oliver-west-end-2024/timeout-london--andrzej-lukowski.json",
+    "paddington-the-musical-west-end-2025/telegraph--dominic-cavendish.json",
+    "the-choir-of-man-west-end-2026/everything-theatre--rob-warren.json",
+    "titanique-west-end-2024/timeout-london--andrzej-lukowski.json",
+    "trash-off-broadway-2026/nytg--allison-considine.json",
+    "trash-off-broadway-2026/theatermania--zachary-stewart.json"
   ],
   "perShowSummary": []
 }

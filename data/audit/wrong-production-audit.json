@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-22T05:22:43.700Z",
+  "timestamp": "2026-03-22T05:31:48.242Z",
   "stats": {
-    "totalReviews": 32124,
-    "alreadyFlagged": 10744,
+    "totalReviews": 32216,
+    "alreadyFlagged": 10751,
     "dateGuardCatches": 138,
-    "directorMismatch": 948,
+    "directorMismatch": 947,
     "tvFilmSignals": 3391,
-    "londonSignals": 1029,
+    "londonSignals": 1027,
     "offBroadwaySignals": 1006,
     "yearMismatch": 71,
-    "noPublishDate": 6921
+    "noPublishDate": 7007
   },
   "findings": [
     {
@@ -8903,20 +8903,6 @@
     },
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 81,
-      "publishDate": "2021-12-13",
-      "url": "https://www.timeout.com/london/theatre/cabaret-3",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
-        }
-      ]
-    },
-    {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
       "file": "times-uk--quentin-letts.json",
       "score": 76,
       "publishDate": "2021-12-19",
@@ -10568,7 +10554,7 @@
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 66,
       "publishDate": null,
-      "url": null,
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-KLTGLP",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -33247,7 +33233,7 @@
       "showId": "moulin-rouge-2019",
       "file": "theatres-leiter-side--samuel-l-leiter.json",
       "score": 79,
-      "publishDate": null,
+      "publishDate": "August 15, 2019",
       "url": "http://slleiter.blogspot.com/2019/08/54-2019-2020-review-moulin-rouge.html",
       "findings": [
         {
@@ -37146,7 +37132,7 @@
     },
     {
       "showId": "operation-mincemeat-west-end-2024",
-      "file": "everything-theatre-uk--lily-middleton.json",
+      "file": "everything-theatre--lily-middleton.json",
       "score": 92,
       "publishDate": "2023-05-10",
       "url": "https://everything-theatre.co.uk/2023/05/review-operation-mincemeat-fortune-theatre/",
@@ -45019,7 +45005,7 @@
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "everything-theatre-uk--xi-ye.json",
+      "file": "everything-theatre--xi-ye.json",
       "score": 83,
       "publishDate": "2023-12-16",
       "url": "https://everything-theatre.co.uk/2023/12/review-stranger-things-the-first-shadow-phoenix-theatre/",
@@ -49257,7 +49243,7 @@
     },
     {
       "showId": "the-choir-of-man-west-end-2026",
-      "file": "everything-theatre-uk--rob-warren.json",
+      "file": "everything-theatre--rob-warren.json",
       "score": 76,
       "publishDate": "October 14th, 2023",
       "url": "https://everything-theatre.co.uk/2023/10/review-the-choir-of-man-arts-theatre/",
@@ -62606,7 +62592,7 @@
     },
     {
       "showId": "all-my-sons-west-end-2025",
-      "file": "everything-theatre-uk--dave-b.json",
+      "file": "everything-theatre--dave-b.json",
       "score": 92,
       "publishDate": "2025-11-23",
       "url": "https://everything-theatre.co.uk/2025/11/review-all-my-sons-wyndhams-theatre/",
@@ -62747,7 +62733,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 93,
+      "score": 94,
       "publishDate": "2025-11-22",
       "url": "https://www.timeout.com/london/news/review-all-my-sons-starring-bran-cranston-at-wyndhams-theatre-112225",
       "findings": [
@@ -82037,20 +82023,6 @@
       ]
     },
     {
-      "showId": "the-phantom-of-the-opera-west-end-1986",
-      "file": "whatsonstage--sarah-crompton.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.whatsonstage.com/news/into-the-woods-at-the-bridge-theatre-review-magical-moments-in-the-woods_1706187/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
       "showId": "the-philanthropist-2009",
       "file": "nytimes--charles-isherwood.json",
       "score": 25,
@@ -84577,20 +84549,6 @@
       "file": "whatsonstage--sarah-crompton.json",
       "score": 63,
       "publishDate": "January 7th, 2026",
-      "url": "https://www.whatsonstage.com/news/woman-in-mind-west-end-review-sheridan-smith-gives-a-strong-turn-in-an-outdated-tragicomedy_1707895/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "woman-in-mind-west-end-2025",
-      "file": "whatsonstage--unknown.json",
-      "score": 66,
-      "publishDate": null,
       "url": "https://www.whatsonstage.com/news/woman-in-mind-west-end-review-sheridan-smith-gives-a-strong-turn-in-an-outdated-tragicomedy_1707895/",
       "findings": [
         {
