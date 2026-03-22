@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-22T07:20:14.883Z",
+  "timestamp": "2026-03-22T07:26:49.997Z",
   "stats": {
     "totalReviews": 32221,
-    "alreadyFlagged": 10757,
-    "dateGuardCatches": 139,
+    "alreadyFlagged": 10769,
+    "dateGuardCatches": 140,
     "directorMismatch": 948,
-    "tvFilmSignals": 3394,
-    "londonSignals": 1029,
-    "offBroadwaySignals": 1008,
+    "tvFilmSignals": 3396,
+    "londonSignals": 1030,
+    "offBroadwaySignals": 1009,
     "yearMismatch": 71,
-    "noPublishDate": 6980
+    "noPublishDate": 6938
   },
   "findings": [
     {
@@ -12654,6 +12654,20 @@
     },
     {
       "showId": "death-becomes-her-2024",
+      "file": "stageandcinema--unknown.json",
+      "score": null,
+      "publishDate": "2024-11-26",
+      "url": "https://stageandcinema.com/2024/11/25/death-becomes-her-lunt-fontanne/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "death-becomes-her-2024",
       "file": "the-interested-bystander--cary-wong.json",
       "score": 88,
       "publishDate": null,
@@ -23754,6 +23768,7 @@
     {
       "showId": "im-sorry-prime-minister-west-end-2026",
       "file": "london-box-office--stuart-king.json",
+      "score": 61,
       "publishDate": "2026-02-13",
       "url": "https://www.londonboxoffice.co.uk/news/post/im-sorry-prime-minister-west-end-review",
       "findings": [
@@ -34236,6 +34251,18 @@
       "score": 66,
       "publishDate": "2022-10-14",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-my-neighbour-totoro",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 581d before show (2022-10-14 vs 2024-05-17)"
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "london-box-office--unknown.json",
+      "score": 74,
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -64357,6 +64384,20 @@
     },
     {
       "showId": "buena-vista-social-club-2025",
+      "file": "frontmezzjunkies--unknown.json",
+      "score": null,
+      "publishDate": "2025-03-31",
+      "url": "https://frontmezzjunkies.com/2025/03/31/buena-vista-social-club-broadway/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "buena-vista-social-club-2025",
       "file": "nytimes--elisabeth-vincentelli.json",
       "score": 78,
       "publishDate": "March 19, 2025",
@@ -69090,7 +69131,7 @@
       "showId": "heathers-the-musical-off-broadway-2025",
       "file": "amny--matt-windman.json",
       "score": 86,
-      "publishDate": null,
+      "publishDate": "2025-07-13",
       "url": "https://www.amny.com/entertainment/broadway/review-heathers-the-musical-off-broadway-revival/",
       "findings": [
         {
@@ -74917,6 +74958,20 @@
     },
     {
       "showId": "operation-mincemeat-2025",
+      "file": "frontmezzjunkies--unknown.json",
+      "score": null,
+      "publishDate": "2025-03-24",
+      "url": "https://frontmezzjunkies.com/2025/03/24/operation-mincemeat-lands-on-broadway/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-2025",
       "file": "nytg--caroline-cao.json",
       "score": 72,
       "publishDate": "March 20, 2025",
@@ -77480,6 +77535,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-2024",
+      "file": "frontmezzjunkies--unknown.json",
+      "score": 56,
+      "publishDate": "2025-05-04",
+      "url": "https://frontmezzjunkies.com/2025/05/04/broadway-stranger-things-the-first-shadow/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
