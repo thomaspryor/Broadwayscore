@@ -1911,7 +1911,8 @@ async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImages
   return results;
 }
 
-// Apply fetched images to a show object, protecting existing local thumbnails
+// Apply fetched images to a show object, preserving existing local images
+// when the new fetch doesn't provide a replacement.
 function applyImages(show, images) {
   const existingThumb = show.images?.thumbnail;
   const hasLocalThumb = existingThumb && existingThumb.startsWith('/images/');
@@ -1920,6 +1921,16 @@ function applyImages(show, images) {
   if (hasLocalThumb && !newThumbIsNative) {
     console.log(`   ⚠ Keeping existing local thumbnail for ${show.id} (new source is poster crop)`);
     images.thumbnail = existingThumb;
+  }
+
+  // Preserve existing local images when the new fetch returns null.
+  // This prevents re-runs from wiping previously-downloaded hero/poster files.
+  for (const format of ['hero', 'poster', 'thumbnail']) {
+    const existing = show.images?.[format];
+    if (!images[format] && existing && existing.startsWith('/images/')) {
+      console.log(`   ⚠ Keeping existing local ${format} for ${show.id} (new source is null)`);
+      images[format] = existing;
+    }
   }
 
   // Strip internal underscore-prefixed fields before writing to shows.json
