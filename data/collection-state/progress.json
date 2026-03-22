@@ -241,7 +241,15 @@
     "reasons-to-be-pretty-2009/usatoday--elysa-gardner.json",
     "shrek-the-musical-2008/usatoday--elysa-gardner.json",
     "all-my-sons-2008/usatoday--elysa-gardner.json",
-    "equus-2008/chicagotribune--chris-jones.json"
+    "equus-2008/chicagotribune--chris-jones.json",
+    "macbeth-2008/usatoday--elysa-gardner.json",
+    "come-back-little-sheba-2008/usatoday--elysa-gardner.json",
+    "the-little-mermaid-2008/nypost--clive-barnes.json",
+    "is-he-dead-2007/nypost--clive-barnes.json",
+    "grease-2007/cnn--unknown.json",
+    "inherit-the-wind-2007/nypost--clive-barnes.json",
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "dear-england-new-wimbledon-theatre-west-end-2026/thestage--alistair-smith.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -388,7 +396,9 @@
       "data/review-texts/cats-the-jellicle-ball-off-broadway-2024/billboard--joe-lynch.json",
       "data/review-texts/back-to-the-future-2023/indiewire--erin-strecker.json",
       "data/review-texts/the-bands-visit-2017/talkinbroadway--michael-portantiere.json",
-      "data/review-texts/a-dolls-house-part-2-2017/dc-metro-theater-arts--richard-seff.json"
+      "data/review-texts/a-dolls-house-part-2-2017/dc-metro-theater-arts--richard-seff.json",
+      "data/review-texts/grease-2007/cnn--unknown.json",
+      "data/review-texts/dear-england-new-wimbledon-theatre-west-end-2026/thestage--alistair-smith.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -412,7 +422,7 @@
     ]
   },
   "startTime": "2026-03-22T09:04:26.170Z",
-  "lastProcessed": "equus-2008/chicagotribune--chris-jones.json",
+  "lastProcessed": "dear-england-new-wimbledon-theatre-west-end-2026/thestage--alistair-smith.json",
   "log": [
     {
       "t": "2026-03-22T09:19:17.595Z",
@@ -425,6 +435,17 @@
       "event": "bb-login-fail",
       "domain": "thestage.co.uk",
       "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    27 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
+    },
+    {
+      "t": "2026-03-22T11:52:54.460Z",
+      "event": "bb-session",
+      "session": "28aaa2f4",
+      "url": "https://www.thestage.co.uk/long-reviews/dear-england-review-olivier-theatre-nati"
+    },
+    {
+      "t": "2026-03-22T11:52:55.515Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
