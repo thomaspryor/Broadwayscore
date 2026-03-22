@@ -39,6 +39,13 @@ const TR_KNOWN_URLS = {
   'starlight-express-west-end-2024': 'https://theatre.reviews/reviews-roundup/starlight-express-troubadour-reviews/',
   'the-devil-wears-prada-west-end-2024': 'https://theatre.reviews/reviews-roundup/devil-wears-prada-reviews/',
   'hercules-west-end-2025': 'https://theatre.reviews/reviews-roundup/hercules-reviews/',
+  'oh-mary-west-end-2025': 'https://theatre.reviews/reviews-roundup/oh-mary-trafalgar-reviews/',
+  'the-producers-west-end-2025': 'https://theatre.reviews/reviews-roundup/the-producers-garrick-reviews/',
+  'titanique-west-end-2024': 'https://theatre.reviews/reviews-roundup/titanique-reviews/',
+  'paddington-the-musical-west-end-2025': 'https://theatre.reviews/reviews-roundup/paddington-the-musical-reviews/',
+  'the-hunger-games-on-stage-west-end-2025': 'https://theatre.reviews/reviews-roundup/hunger-games-reviews/',
+  'my-neighbour-totoro-west-end-2025': 'https://theatre.reviews/reviews-roundup/my-neighbour-totoro-reviews/',
+  'all-my-sons-west-end-2025': 'https://theatre.reviews/reviews-roundup/all-my-sons-wyndham-reviews/',
 };
 const TS_KNOWN_URLS = {
   'moulin-rouge-the-musical-west-end-2021': 'https://www.thestage.co.uk/review-round-ups/moulin-rouge-the-musical-starring-liisi-lafontaine-and-jamie-bogyo--review-round-up',
