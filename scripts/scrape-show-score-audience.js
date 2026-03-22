@@ -1041,6 +1041,10 @@ async function main() {
   let successful = 0;
   let metadataEnriched = 0;
   const scoreDrops = [];
+  // Track scraped results by title to detect cross-contamination:
+  // when different URLs for same-title shows return identical data,
+  // only the most recent production keeps it.
+  const scrapedByTitle = new Map(); // normalized title → { showId, score, reviewCount }
 
   for (const show of showsWithUrls) {
     try {
@@ -1051,6 +1055,34 @@ async function main() {
         // Check for score drops
         if (previousScores[show.id] != null && data.score == null) {
           scoreDrops.push(show.id);
+        }
+
+        // Cross-contamination guard: if a same-title sibling scraped identical
+        // data from a different URL, this is likely the same Show-Score production.
+        // Keep only the most recent/relevant show's data.
+        if (data.score) {
+          const titleBase = show.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s*\(.*?\)\s*$/, '').trim();
+          const key = `${titleBase}|${data.score}|${data.reviewCount}`;
+          const existing = scrapedByTitle.get(key);
+          if (existing && existing.showId !== show.id) {
+            // Compare: prefer open/previews, then most recent opening
+            const isBetter = (show.status === 'open' || show.status === 'previews') &&
+              existing.status !== 'open' && existing.status !== 'previews' ||
+              (show.openingDate || '') > (existing.openingDate || '');
+            if (isBetter) {
+              console.log(`  Superseding ${existing.showId} — this show is more recent`);
+              // Clear the older show's data from audience-buzz
+              if (audienceBuzz.shows[existing.showId]?.sources?.showScore) {
+                audienceBuzz.shows[existing.showId].sources.showScore = null;
+              }
+              scrapedByTitle.set(key, { showId: show.id, score: data.score, reviewCount: data.reviewCount, status: show.status, openingDate: show.openingDate });
+            } else {
+              console.log(`  SKIP audience data: identical to ${existing.showId} (same Show-Score production)`);
+              data.score = null; // prevent writing to audience-buzz
+            }
+          } else {
+            scrapedByTitle.set(key, { showId: show.id, score: data.score, reviewCount: data.reviewCount, status: show.status, openingDate: show.openingDate });
+          }
         }
 
         if (!dryRun) {
