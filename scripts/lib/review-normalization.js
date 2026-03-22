@@ -558,6 +558,19 @@ function mergeReviews(existing, incoming) {
   merged.sources = Array.from(sources);
   merged.source = merged.sources[0]; // Keep primary source
 
+  // Clear wrongProduction if incoming data has a valid URL and the flag
+  // was auto-set (no manual note). This allows venue transfers to self-heal
+  // when new aggregator data arrives with a correct URL for the current production.
+  if (merged.wrongProduction && incoming.url && incoming.url.startsWith('http')
+      && !merged.wrongProductionManualClear
+      && (!merged.wrongProductionNote || merged.wrongProductionNote.startsWith('Same URL')
+          || merged.wrongProductionNote.startsWith('Dateless show'))) {
+    delete merged.wrongProduction;
+    delete merged.wrongProductionNote;
+    merged.wrongProductionAutoCleared = true;
+    merged.wrongProductionAutoClearedAt = new Date().toISOString().slice(0, 10);
+  }
+
   return merged;
 }
 
