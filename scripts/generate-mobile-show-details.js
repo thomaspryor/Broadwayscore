@@ -239,8 +239,17 @@ for (const show of visibleShows) {
   }
 
   // Hero image (not in mobile-shows.json)
-  if (show.images?.hero) {
-    detail.hi = show.images.hero;
+  // Reconcile: if shows.json says hero is null but hero.webp exists on disk, use it.
+  // This prevents fetch-show-images-auto.js re-runs from wiping local hero paths.
+  let heroPath = show.images?.hero;
+  if (!heroPath && show.id) {
+    const diskHero = path.join(__dirname, '..', 'public', 'images', 'shows', show.id, 'hero.webp');
+    if (fs.existsSync(diskHero)) {
+      heroPath = `/images/shows/${show.id}/hero.webp`;
+    }
+  }
+  if (heroPath) {
+    detail.hi = heroPath;
   }
 
   // Theater address
