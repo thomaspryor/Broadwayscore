@@ -208,18 +208,23 @@ function matchBroadwayComToShows(bcShows, ourShows) {
 
     const bcNorm = normalize(bc.title);
 
+    // Broadway.com only lists Broadway shows — treat all as Broadway category
+    const isBroadway = true;
+
     // Exact normalized title match
     const candidates = ourByNorm.get(bcNorm);
     if (candidates && candidates.length > 0) {
-      // Prefer most recent Broadway production that has started or is in previews
+      // Filter to productions that have started (date-only, no status shortcut)
       const started = candidates.filter(s => {
-        if (s.status === 'open' || s.status === 'previews') return true;
         const start = s.previewsStartDate || s.openingDate;
         return !start || start <= today;
       });
-      // Prefer Broadway category
-      const broadway = started.filter(s => !s.category || s.category === 'broadway');
-      const eligible = broadway.length > 0 ? broadway : started.filter(s => !isLondonMarket(s.category));
+      // Prefer same-category matches, fall back to any non-London
+      const sameCategory = started.filter(s => {
+        if (isBroadway) return !s.category || s.category === 'broadway';
+        return s.category === 'off-broadway';
+      });
+      const eligible = sameCategory.length > 0 ? sameCategory : started.filter(s => !isLondonMarket(s.category));
       const best = eligible.sort((a, b) => (b.openingDate || '').localeCompare(a.openingDate || ''))[0];
       if (best) {
         matches.push({ bc, show: best, confidence: 'exact' });
@@ -237,20 +242,20 @@ function matchBroadwayComToShows(bcShows, ourShows) {
       if (shorter.length >= 8 && longer.startsWith(shorter + ' ')) {
         const ratio = shorter.length / longer.length;
         if (ratio >= 0.3) {
-          if (show.status === 'open' || show.status === 'previews') {
+          const start = show.previewsStartDate || show.openingDate;
+          if (!start || start <= today) {
             prefixCandidates.push(show);
-          } else {
-            const start = show.previewsStartDate || show.openingDate;
-            if (!start || start <= today) {
-              prefixCandidates.push(show);
-            }
           }
         }
       }
     }
     if (prefixCandidates.length > 0) {
-      const broadway = prefixCandidates.filter(s => !s.category || s.category === 'broadway');
-      const eligible = broadway.length > 0 ? broadway : prefixCandidates.filter(s => !isLondonMarket(s.category));
+      // Apply same category/recency filtering as exact matches
+      const sameCategory = prefixCandidates.filter(s => {
+        if (isBroadway) return !s.category || s.category === 'broadway';
+        return s.category === 'off-broadway';
+      });
+      const eligible = sameCategory.length > 0 ? sameCategory : prefixCandidates.filter(s => !isLondonMarket(s.category));
       const best = eligible.sort((a, b) => (b.openingDate || '').localeCompare(a.openingDate || ''))[0];
       if (best) {
         matches.push({ bc, show: best, confidence: 'prefix' });
