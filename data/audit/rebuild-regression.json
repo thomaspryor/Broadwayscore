@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-22T17:04:01.940Z",
+  "timestamp": "2026-03-22T21:47:03.103Z",
   "regressions": [
     {
       "showId": "rent-1996",
@@ -79,6 +79,14 @@
       "newCount": 4,
       "dropped": 3,
       "scoredOnDisk": 9,
+      "reason": "scored files exist but being dropped"
+    },
+    {
+      "showId": "the-phantom-of-the-opera-west-end-1986",
+      "oldCount": 13,
+      "newCount": 10,
+      "dropped": 3,
+      "scoredOnDisk": 12,
       "reason": "scored files exist but being dropped"
     }
   ]
