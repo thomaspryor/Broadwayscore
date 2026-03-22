@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-03-22T08:08:24.394Z",
+  "generatedAt": "2026-03-22T08:15:24.054Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 90,
+    "avgScoreDiff": 1
   },
   "syndicationPairs": [
     {
@@ -96,7 +96,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Thom Geier",
+      "showId": "hadestown-2019",
+      "primaryOutlet": "thewrap",
+      "secondaryOutlet": "culturesauce",
+      "primaryFile": "thewrap--thom-geier.json",
+      "secondaryFile": "culturesauce--unknown.json",
+      "similarity": 90,
+      "primaryScore": 77,
+      "secondaryScore": 76,
+      "scoreDiff": 1
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "frozen-2018",
