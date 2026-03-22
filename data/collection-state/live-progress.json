@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-22T16:42:04.313Z",
-  "processed": 402,
-  "failed": 721,
-  "successRate": "35.8%",
+  "updatedAt": "2026-03-22T16:45:41.549Z",
+  "processed": 410,
+  "failed": 723,
+  "successRate": "36.2%",
   "tierBreakdown": {
-    "playwright": 349,
+    "playwright": 356,
     "amp": 12,
-    "browserbase": 16,
+    "browserbase": 18,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 32,
+    "archiveToday": 34,
     "archive": 41
   },
-  "browserbaseSessions": 14,
+  "browserbaseSessions": 16,
   "recentActivity": [
-    {
-      "t": "2026-03-22T16:10:28.577Z",
-      "event": "bb-session",
-      "session": "017ef89c",
-      "url": "https://www.wsj.com/articles/the-unknown-review-sean-hayes-blocked-and-stalked-3"
-    },
-    {
-      "t": "2026-03-22T16:10:30.047Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-22T16:12:56.027Z",
-      "event": "bb-session",
-      "session": "68ced869",
-      "url": "https://www.amny.com/entertainment/theater-review-the-unknown-sean-hayes/"
-    },
-    {
-      "t": "2026-03-22T16:12:57.503Z",
-      "event": "bb-cookie-inject",
-      "domain": "amny.com"
-    },
     {
       "t": "2026-03-22T16:15:36.123Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-22T16:36:46.022Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-22T16:43:05.320Z",
+      "event": "bb-session",
+      "session": "9df3ed99",
+      "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
+    },
+    {
+      "t": "2026-03-22T16:43:06.611Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-22T16:44:08.754Z",
+      "event": "bb-session",
+      "session": "720f40a2",
+      "url": "https://variety.com/2025/legit/reviews/hercules-review-musical-west-end-12364392"
+    },
+    {
+      "t": "2026-03-22T16:44:10.192Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

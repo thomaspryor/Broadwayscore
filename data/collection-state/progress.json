@@ -401,7 +401,15 @@
     "masquerade-off-broadway-2025/nysr--frank-scheck.json",
     "masquerade-off-broadway-2025/one-minute-critic--one-minute-critic.json",
     "masquerade-off-broadway-2025/slantmagazine--dan-rubins.json",
-    "masquerade-off-broadway-2025/washpost--naveen-kumar.json"
+    "masquerade-off-broadway-2025/washpost--naveen-kumar.json",
+    "amaze-magic-off-broadway-2025/woman-around-town--alix-cohen.json",
+    "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json",
+    "amaze-magic-off-broadway-2025/hollywood-soapbox--john-soltes.json",
+    "amaze-magic-off-broadway-2025/nysr--frank-scheck.json",
+    "amaze-magic-off-broadway-2025/theater-life--alix-cohen.json",
+    "amaze-magic-off-broadway-2025/theater-scene--victor-gluck.json",
+    "hercules-west-end-2025/variety--david-benedict.json",
+    "hercules-west-end-2025/artsdesk--unknown.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -1124,7 +1132,9 @@
     "paddington-the-musical-west-end-2025/south-london--michael-holland.json",
     "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
     "ragtime-2025/nytimes--unknown.json",
-    "ragtime-2025/bloomberg--chris-rovzar.json"
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "hercules-west-end-2025/nytimes--matt-wolf.json",
+    "hercules-west-end-2025/daily-mail--patrick-marmion.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1477,7 +1487,14 @@
       "masquerade-off-broadway-2025/nysr--frank-scheck.json",
       "masquerade-off-broadway-2025/one-minute-critic--one-minute-critic.json",
       "masquerade-off-broadway-2025/slantmagazine--dan-rubins.json",
-      "masquerade-off-broadway-2025/washpost--naveen-kumar.json"
+      "masquerade-off-broadway-2025/washpost--naveen-kumar.json",
+      "amaze-magic-off-broadway-2025/woman-around-town--alix-cohen.json",
+      "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json",
+      "amaze-magic-off-broadway-2025/hollywood-soapbox--john-soltes.json",
+      "amaze-magic-off-broadway-2025/nysr--frank-scheck.json",
+      "amaze-magic-off-broadway-2025/theater-life--alix-cohen.json",
+      "amaze-magic-off-broadway-2025/theater-scene--victor-gluck.json",
+      "hercules-west-end-2025/artsdesk--unknown.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -1509,7 +1526,9 @@
       "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
       "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
       "data/review-texts/paddington-the-musical-west-end-2025/variety--david-benedict.json",
-      "paddington-the-musical-west-end-2025/variety--david-benedict.json"
+      "paddington-the-musical-west-end-2025/variety--david-benedict.json",
+      "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
+      "hercules-west-end-2025/variety--david-benedict.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -1546,7 +1565,9 @@
       "data/review-texts/oh-mary-west-end-2025/guardian--arifa-akbar.json",
       "data/review-texts/chess-2025/billboard--rebecca-milzoff.json",
       "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/talkinbroadway--unknown.json",
-      "data/review-texts/ragtime-2025/nytimes--unknown.json"
+      "data/review-texts/ragtime-2025/nytimes--unknown.json",
+      "data/review-texts/hercules-west-end-2025/nytimes--matt-wolf.json",
+      "data/review-texts/hercules-west-end-2025/daily-mail--patrick-marmion.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -1593,7 +1614,7 @@
     ]
   },
   "startTime": "2026-03-22T09:04:26.170Z",
-  "lastProcessed": "masquerade-off-broadway-2025/washpost--naveen-kumar.json",
+  "lastProcessed": "hercules-west-end-2025/daily-mail--patrick-marmion.json",
   "log": [
     {
       "t": "2026-03-22T09:19:17.595Z",
@@ -1771,6 +1792,28 @@
       "t": "2026-03-22T16:36:46.022Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-22T16:43:05.320Z",
+      "event": "bb-session",
+      "session": "9df3ed99",
+      "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
+    },
+    {
+      "t": "2026-03-22T16:43:06.611Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-22T16:44:08.754Z",
+      "event": "bb-session",
+      "session": "720f40a2",
+      "url": "https://variety.com/2025/legit/reviews/hercules-review-musical-west-end-12364392"
+    },
+    {
+      "t": "2026-03-22T16:44:10.192Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
