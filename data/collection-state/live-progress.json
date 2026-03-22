@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-22T19:05:02.041Z",
-  "processed": 455,
-  "failed": 738,
-  "successRate": "38.1%",
+  "updatedAt": "2026-03-22T19:09:42.870Z",
+  "processed": 461,
+  "failed": 742,
+  "successRate": "38.3%",
   "tierBreakdown": {
-    "playwright": 391,
+    "playwright": 396,
     "amp": 12,
     "browserbase": 24,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 49,
-    "archive": 48
+    "archiveToday": 53,
+    "archive": 49
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-03-22T16:36:44.729Z",
-      "event": "bb-session",
-      "session": "5350998b",
-      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
-    },
-    {
-      "t": "2026-03-22T16:36:46.022Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-22T16:43:05.320Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-22T19:01:37.897Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-22T19:08:17.193Z",
+      "event": "bb-session",
+      "session": "805e1dc0",
+      "url": "https://www.thestage.co.uk/reviews/the-weir-review-harold-pinter-theatre-london-"
+    },
+    {
+      "t": "2026-03-22T19:08:18.227Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }

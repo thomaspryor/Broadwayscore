@@ -454,7 +454,13 @@
     "evita-2012/independent--alice-saville.json",
     "evita-2012/thestage--sam-marlowe.json",
     "evita-2012/times-uk--clive-davis.json",
-    "evita-2012/whatsonstage--sarah-crompton.json"
+    "evita-2012/whatsonstage--sarah-crompton.json",
+    "a-steady-rain-2009/latimes--unknown.json",
+    "grease-2007/whatsonstage--anna-james.json",
+    "a-moon-for-the-misbegotten-2007/guardian--arifa-akbar.json",
+    "the-weir-1999/guardian--chris-wiegand.json",
+    "the-weir-1999/independent--alice-saville.json",
+    "the-weir-1999/whatsonstage--sarah-crompton.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -1194,7 +1200,11 @@
     "just-for-us-2023/thestage--sam-marlowe.json",
     "peter-pan-goes-wrong-2023/guardian--arifa-akbar.json",
     "the-bands-visit-2017/dc-metro-theater-arts--richard-seff.json",
-    "long-days-journey-into-night-2016/dc-metro-theater-arts--richard-seff.json"
+    "long-days-journey-into-night-2016/dc-metro-theater-arts--richard-seff.json",
+    "grease-2007/guardian--emma-john.json",
+    "the-weir-1999/daily-mail--patrick-marmion.json",
+    "the-weir-1999/thestage--sam-marlowe.json",
+    "the-weir-1999/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1589,7 +1599,12 @@
       "skylight-2015/nbcny--robert-kahn.json",
       "evita-2012/guardian--arifa-akbar.json",
       "evita-2012/independent--alice-saville.json",
-      "evita-2012/whatsonstage--sarah-crompton.json"
+      "evita-2012/whatsonstage--sarah-crompton.json",
+      "grease-2007/whatsonstage--anna-james.json",
+      "a-moon-for-the-misbegotten-2007/guardian--arifa-akbar.json",
+      "the-weir-1999/guardian--chris-wiegand.json",
+      "the-weir-1999/independent--alice-saville.json",
+      "the-weir-1999/whatsonstage--sarah-crompton.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -1683,7 +1698,11 @@
       "data/review-texts/just-for-us-2023/thestage--sam-marlowe.json",
       "data/review-texts/peter-pan-goes-wrong-2023/guardian--arifa-akbar.json",
       "data/review-texts/the-bands-visit-2017/dc-metro-theater-arts--richard-seff.json",
-      "data/review-texts/long-days-journey-into-night-2016/dc-metro-theater-arts--richard-seff.json"
+      "data/review-texts/long-days-journey-into-night-2016/dc-metro-theater-arts--richard-seff.json",
+      "data/review-texts/grease-2007/guardian--emma-john.json",
+      "data/review-texts/the-weir-1999/daily-mail--patrick-marmion.json",
+      "data/review-texts/the-weir-1999/thestage--sam-marlowe.json",
+      "data/review-texts/the-weir-1999/times-uk--clive-davis.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -1733,11 +1752,12 @@
       "peter-pan-goes-wrong-2023/times-uk--clive-davis.json",
       "evita-2012/daily-mail--patrick-marmion.json",
       "evita-2012/thestage--sam-marlowe.json",
-      "evita-2012/times-uk--clive-davis.json"
+      "evita-2012/times-uk--clive-davis.json",
+      "a-steady-rain-2009/latimes--unknown.json"
     ]
   },
   "startTime": "2026-03-22T09:04:26.170Z",
-  "lastProcessed": "evita-2012/whatsonstage--sarah-crompton.json",
+  "lastProcessed": "the-weir-1999/whatsonstage--sarah-crompton.json",
   "log": [
     {
       "t": "2026-03-22T09:19:17.595Z",
@@ -2014,6 +2034,17 @@
       "t": "2026-03-22T19:01:37.897Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-22T19:08:17.193Z",
+      "event": "bb-session",
+      "session": "805e1dc0",
+      "url": "https://www.thestage.co.uk/reviews/the-weir-review-harold-pinter-theatre-london-"
+    },
+    {
+      "t": "2026-03-22T19:08:18.227Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
