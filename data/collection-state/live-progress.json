@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-22T18:41:54.999Z",
-  "processed": 419,
-  "failed": 724,
-  "successRate": "36.7%",
+  "updatedAt": "2026-03-22T18:46:15.369Z",
+  "processed": 426,
+  "failed": 727,
+  "successRate": "36.9%",
   "tierBreakdown": {
-    "playwright": 364,
+    "playwright": 370,
     "amp": 12,
     "browserbase": 18,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 35,
-    "archive": 42
+    "archiveToday": 38,
+    "archive": 43
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-03-22T16:15:36.123Z",
-      "event": "bb-session",
-      "session": "77134090",
-      "url": "https://www.nytimes.com/2026/01/12/theater/ark-ian-mckellen-shed.html"
-    },
-    {
-      "t": "2026-03-22T16:15:37.530Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-22T16:16:39.542Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-22T16:44:10.192Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-22T18:44:59.163Z",
+      "event": "bb-session",
+      "session": "f82e5e20",
+      "url": "https://www.thestage.co.uk/reviews/good-night-oscar-review-barbican-centre-londo"
+    },
+    {
+      "t": "2026-03-22T18:45:00.200Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }

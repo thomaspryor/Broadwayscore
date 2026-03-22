@@ -418,7 +418,14 @@
     "wicked-west-end-2021/daily-mail--brian-viner.json",
     "wicked-west-end-2021/standard--india-block.json",
     "wicked-west-end-2021/times-uk--kevin-maher.json",
-    "hate-radio-off-broadway-2026/theater-pizzazz--jk-clarke.json"
+    "hate-radio-off-broadway-2026/theater-pizzazz--jk-clarke.json",
+    "burlesque-west-end-2026/attitude--gary-grimes.json",
+    "burlesque-west-end-2026/the-express--stefan-kyriazis.json",
+    "dead-outlaw-2025/ew--thom-geier.json",
+    "stephen-sondheims-old-friends-2025/theatres-leiter-side--samuel-l-leiter.json",
+    "good-night-and-good-luck-2025/independent--alice-saville.json",
+    "good-night-and-good-luck-2025/times-uk--ben-dowell.json",
+    "good-night-and-good-luck-2025/whatsonstage--alun-hood.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -1144,7 +1151,10 @@
     "ragtime-2025/bloomberg--chris-rovzar.json",
     "hercules-west-end-2025/nytimes--matt-wolf.json",
     "hercules-west-end-2025/daily-mail--patrick-marmion.json",
-    "wicked-west-end-2021/independent--clarisse-loughrey.json"
+    "wicked-west-end-2021/independent--clarisse-loughrey.json",
+    "good-night-and-good-luck-2025/guardian--mark-lawson.json",
+    "good-night-and-good-luck-2025/thestage--dave-fargnoli.json",
+    "othello-2025/guardian--arifa-akbar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1512,7 +1522,13 @@
       "wicked-west-end-2021/guardian--peter-bradshaw.json",
       "wicked-west-end-2021/standard--india-block.json",
       "wicked-west-end-2021/times-uk--kevin-maher.json",
-      "hate-radio-off-broadway-2026/theater-pizzazz--jk-clarke.json"
+      "hate-radio-off-broadway-2026/theater-pizzazz--jk-clarke.json",
+      "burlesque-west-end-2026/attitude--gary-grimes.json",
+      "dead-outlaw-2025/ew--thom-geier.json",
+      "stephen-sondheims-old-friends-2025/theatres-leiter-side--samuel-l-leiter.json",
+      "good-night-and-good-luck-2025/independent--alice-saville.json",
+      "good-night-and-good-luck-2025/times-uk--ben-dowell.json",
+      "good-night-and-good-luck-2025/whatsonstage--alun-hood.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -1586,7 +1602,10 @@
       "data/review-texts/ragtime-2025/nytimes--unknown.json",
       "data/review-texts/hercules-west-end-2025/nytimes--matt-wolf.json",
       "data/review-texts/hercules-west-end-2025/daily-mail--patrick-marmion.json",
-      "data/review-texts/wicked-west-end-2021/independent--clarisse-loughrey.json"
+      "data/review-texts/wicked-west-end-2021/independent--clarisse-loughrey.json",
+      "data/review-texts/good-night-and-good-luck-2025/guardian--mark-lawson.json",
+      "data/review-texts/good-night-and-good-luck-2025/thestage--dave-fargnoli.json",
+      "data/review-texts/othello-2025/guardian--arifa-akbar.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -1630,11 +1649,12 @@
       "the-producers-west-end-2025/artsdesk--gary-naylor.json",
       "the-producers-west-end-2025/broadwayworld--aliya-al-hassan.json",
       "the-producers-west-end-2025/the-express--neil-norman.json",
-      "wicked-west-end-2021/daily-mail--brian-viner.json"
+      "wicked-west-end-2021/daily-mail--brian-viner.json",
+      "burlesque-west-end-2026/the-express--stefan-kyriazis.json"
     ]
   },
   "startTime": "2026-03-22T09:04:26.170Z",
-  "lastProcessed": "hate-radio-off-broadway-2026/theater-pizzazz--jk-clarke.json",
+  "lastProcessed": "othello-2025/guardian--arifa-akbar.json",
   "log": [
     {
       "t": "2026-03-22T09:19:17.595Z",
@@ -1834,6 +1854,17 @@
       "t": "2026-03-22T16:44:10.192Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-22T18:44:59.163Z",
+      "event": "bb-session",
+      "session": "f82e5e20",
+      "url": "https://www.thestage.co.uk/reviews/good-night-oscar-review-barbican-centre-londo"
+    },
+    {
+      "t": "2026-03-22T18:45:00.200Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
