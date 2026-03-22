@@ -86,7 +86,8 @@ try {
   // Auto-dedup: remove exact-title duplicates within the same market+venue.
   // Only dedup London-market shows with 0 reviews (safe — no data loss).
   // Broadway shows have legitimate same-title revivals at the same theater.
-  const titleKey = (s) => `${s.title}||${s.venue}||${s.category}`;
+  // Match on title+category only (not venue — venue strings vary: "Royal Court" vs "Royal Court Theatre")
+  const titleKey = (s) => `${s.title}||${s.category}`;
   const statusPriority = { open: 3, previews: 2, upcoming: 1, closed: 0 };
   const reviewsData = JSON.parse(fs.readFileSync(REVIEWS_PATH, 'utf8'));
   const reviewsByShow = {};
