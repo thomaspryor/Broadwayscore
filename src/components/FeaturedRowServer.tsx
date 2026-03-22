@@ -7,6 +7,7 @@
  */
 import Link from 'next/link';
 import { getOptimizedImageUrl, getCdnSrcSet } from '@/lib/images';
+import { getMarketLabel } from '@/lib/venue-classification';
 import { MustSeeCrown, getScoreColorClass } from '@/components/show-cards/ScoreBadge';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import type { HomepageShow } from '@/components/HomePageClient';
@@ -37,7 +38,7 @@ function ServerMiniShowCard({ show, priority }: { show: HomepageShow; priority: 
               src={imgSrc}
               srcSet={srcSet || undefined}
               sizes={srcSet ? '(min-width: 640px) 128px, 112px' : undefined}
-              alt={`${show.title} Broadway ${show.type}`}
+              alt={`${show.title} ${getMarketLabel(show.category)} ${show.type}`}
               loading={priority ? 'eager' : 'lazy'}
               fetchPriority={priority ? 'high' : undefined}
               decoding="async"

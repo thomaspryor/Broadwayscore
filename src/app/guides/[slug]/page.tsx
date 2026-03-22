@@ -22,6 +22,7 @@ import {
   toAbsoluteUrl,
 } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
+import { getMarketLabel } from '@/lib/venue-classification';
 import { getBrowsePageConfig } from '@/config/browse-pages';
 import { getLotteryRush } from '@/lib/data-lottery';
 import { ScoreBadge, StatusBadge, FormatPill, AudienceChip } from '@/components/show-cards';
@@ -256,7 +257,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                           show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'thumbnail') : null,
                           show.images?.hero,
                         ]}
-                        alt={`${show.title} Broadway ${show.type}`}
+                        alt={`${show.title} ${getMarketLabel(show.category)} ${show.type}`}
                         className="w-full h-full object-cover"
                         loading="lazy"
                         fallback={

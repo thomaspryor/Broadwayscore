@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import Link from 'next/link';
 import { ScoreBadge, getScoreTier, StatusBadge } from '@/components/show-cards';
 import { getOptimizedImageUrl } from '@/lib/images';
+import { getMarketLabel } from '@/lib/venue-classification';
 import { RankBadge } from '@/components/gold-list/GoldListCards';
 import type { SerializedTonyShow } from '@/lib/data-tony-predictions';
 
@@ -157,7 +158,7 @@ export default function TonyPredictionsTable({ title, description, shows, upcomi
                 {show.thumbnailPath ? (
                   <img
                     src={getOptimizedImageUrl(show.thumbnailPath, 'thumbnail')}
-                    alt={`${show.title} Broadway show`}
+                    alt={`${show.title} ${getMarketLabel()} show`}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     width={96}
                     height={96}
