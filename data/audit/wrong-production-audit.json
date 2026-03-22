@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-22T09:13:00.165Z",
+  "timestamp": "2026-03-22T09:30:52.738Z",
   "stats": {
     "totalReviews": 32222,
     "alreadyFlagged": 10792,
@@ -9,7 +9,7 @@
     "londonSignals": 1029,
     "offBroadwaySignals": 1011,
     "yearMismatch": 71,
-    "noPublishDate": 6890
+    "noPublishDate": 6889
   },
   "findings": [
     {
@@ -76142,20 +76142,6 @@
       ]
     },
     {
-      "showId": "romeo-and-juliet-west-end-2026",
-      "file": "nytimes--unknown.json",
-      "score": 75,
-      "publishDate": "March 1, 2026",
-      "url": "https://www.nytimes.com/2024/05/24/theater/tom-holland-romeo-and-juliet.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
-        }
-      ]
-    },
-    {
       "showId": "romeo-juliet-2024",
       "file": "latimes--charles-mcnulty.json",
       "score": 77,
@@ -81203,6 +81189,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-holy-rosenbergs-west-end-2026",
+      "file": "artsdesk--aleks-sierz.json",
+      "score": 78,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/holy-rosenbergs-menier-chocolate-factory-review-still-timely-and-thought-provoking",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
