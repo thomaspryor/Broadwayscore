@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-22T08:41:50.452Z",
+  "timestamp": "2026-03-22T08:58:48.553Z",
   "stats": {
-    "totalReviews": 32221,
-    "alreadyFlagged": 10787,
+    "totalReviews": 32222,
+    "alreadyFlagged": 10791,
     "dateGuardCatches": 141,
-    "directorMismatch": 951,
-    "tvFilmSignals": 3402,
-    "londonSignals": 1031,
+    "directorMismatch": 950,
+    "tvFilmSignals": 3401,
+    "londonSignals": 1030,
     "offBroadwaySignals": 1011,
     "yearMismatch": 71,
-    "noPublishDate": 6893
+    "noPublishDate": 6891
   },
   "findings": [
     {
@@ -1853,20 +1853,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"paramount\""
-        }
-      ]
-    },
-    {
-      "showId": "a-thousand-clowns-2001",
-      "file": "nytimes--bruce-weber.json",
-      "score": null,
-      "publishDate": "July 12, 2001",
-      "url": "https://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;res=9f05e6de163bf931a25754c0a9679c8b63",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -32402,20 +32388,6 @@
       ]
     },
     {
-      "showId": "miss-saigon-1991",
-      "file": "huffpost--david-finkle.json",
-      "score": 68,
-      "publishDate": null,
-      "url": "http://www.huffingtonpost.com/entry/miss-saigon-is-back-and-weirdly-imposing-as-ever_us_58d45072e4b06c3d3d3e6c14",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"laurence connor\" from miss-saigon-2017"
-        }
-      ]
-    },
-    {
       "showId": "miss-saigon-2017",
       "file": "dctheatrescene--jonathan-mandell.json",
       "score": 62,
@@ -58169,7 +58141,7 @@
     {
       "showId": "topdog-underdog-2022",
       "file": "culturesauce--unknown.json",
-      "score": null,
+      "score": 80,
       "publishDate": "2022-10-20",
       "url": "https://culturesauce.com/2022/10/20/topdog-underdog-yahya-abdul-mateen-ii-and-corey-hawkins-create-sparks-in-broadway-revival/",
       "findings": [
@@ -65818,20 +65790,6 @@
       "score": 85,
       "publishDate": null,
       "url": "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-review-james-graham-gareth-southgate-harry-kane-b1089139.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
-      "file": "whatsonstage--sarah-crompton.json",
-      "score": 93,
-      "publishDate": null,
-      "url": "https://www.whatsonstage.com/news/dear-england-at-the-national-theatre-review-the-beautiful-game-in-a-beautiful-play_1404772/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
