@@ -189,19 +189,41 @@ for (const show of visibleShows) {
   // Compute composite score using shared module (matches engine.ts)
   const scoreResult = computeCriticScore(showReviews, outletRegistry);
 
+  // Minimum review thresholds per market (matches src/config/score-buckets.ts)
+  const MIN_REVIEWS = 5;
+  const MIN_REVIEWS_OFF_BROADWAY = 3;
+  const MIN_REVIEWS_WEST_END = 3;
+  const T3_ONLY_EXTRA = 2;
+  const isLondon = show.category === 'west-end' || show.category === 'off-west-end';
+  let minReviews = show.category === 'off-broadway' ? MIN_REVIEWS_OFF_BROADWAY
+    : isLondon ? MIN_REVIEWS_WEST_END
+    : MIN_REVIEWS;
+  // T3-only shows need extra reviews
+  if (scoreResult && scoreResult.t1 === 0) {
+    // Check if there are any T2 reviews
+    const t2Count = reviewEntries.filter(r => r.t === 2).length;
+    if (t2Count === 0) minReviews += T3_ONLY_EXTRA;
+  }
+  const hasEnough = scoreResult && scoreResult.rc >= minReviews;
+
   // Build detail object
   const detail = {
     _v: DETAIL_SCHEMA_VERSION,
     id: show.id,
   };
 
-  // Composite score + review count
-  if (scoreResult) {
+  // Category (for market-aware display)
+  if (show.category) {
+    detail.cat = show.category;
+  }
+
+  // Composite score + review count (only if meets minimum threshold)
+  if (scoreResult && hasEnough) {
     detail.cs = scoreResult.s;
     detail.rc = scoreResult.rc;
   }
 
-  // Score breakdown
+  // Score breakdown (always include if reviews exist — shows review sentiment even pre-score)
   if (showReviews.length > 0) {
     detail.bd = breakdown;
   }
