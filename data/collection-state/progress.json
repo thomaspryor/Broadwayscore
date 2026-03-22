@@ -337,7 +337,17 @@
     "two-strangers-bway-2025/jitney--unknown.json",
     "two-strangers-bway-2025/playbill--unknown.json",
     "two-strangers-bway-2025/theater-life--samuel-l-leiter.json",
-    "two-strangers-bway-2025/theater-scene--joseph-pisano.json"
+    "two-strangers-bway-2025/theater-scene--joseph-pisano.json",
+    "chess-2025/hollywood-reporter--angie-han.json",
+    "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "chess-2025/timeout--adam-feldman.json",
+    "chess-2025/culturesauce--thom-geier.json",
+    "chess-2025/frontmezzjunkies--unknown.json",
+    "chess-2025/one-minute-critic--matthew-wexler.json",
+    "chess-2025/people--unknown.json",
+    "chess-2025/playbill--logan-culwell-block.json",
+    "chess-2025/stageandcinema--carol-rocamora.json",
+    "chess-2025/theater-scene--samuel-l-leiter.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -1353,7 +1363,16 @@
       "two-strangers-bway-2025/jitney--unknown.json",
       "two-strangers-bway-2025/playbill--unknown.json",
       "two-strangers-bway-2025/theater-life--samuel-l-leiter.json",
-      "two-strangers-bway-2025/theater-scene--joseph-pisano.json"
+      "two-strangers-bway-2025/theater-scene--joseph-pisano.json",
+      "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "chess-2025/timeout--adam-feldman.json",
+      "chess-2025/culturesauce--thom-geier.json",
+      "chess-2025/frontmezzjunkies--unknown.json",
+      "chess-2025/one-minute-critic--matthew-wexler.json",
+      "chess-2025/people--unknown.json",
+      "chess-2025/playbill--logan-culwell-block.json",
+      "chess-2025/stageandcinema--carol-rocamora.json",
+      "chess-2025/theater-scene--samuel-l-leiter.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -1379,7 +1398,9 @@
       "data/review-texts/marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
       "marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
       "data/review-texts/the-unknown-off-broadway-2026/amny--unknown.json",
-      "the-unknown-off-broadway-2026/amny--unknown.json"
+      "the-unknown-off-broadway-2026/amny--unknown.json",
+      "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
+      "chess-2025/hollywood-reporter--angie-han.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -1453,7 +1474,7 @@
     ]
   },
   "startTime": "2026-03-22T09:04:26.170Z",
-  "lastProcessed": "chess-2025/billboard--rebecca-milzoff.json",
+  "lastProcessed": "chess-2025/theater-scene--samuel-l-leiter.json",
   "log": [
     {
       "t": "2026-03-22T09:19:17.595Z",
@@ -1565,6 +1586,17 @@
       "t": "2026-03-22T16:16:40.943Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-22T16:21:12.259Z",
+      "event": "bb-session",
+      "session": "460f91c2",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-22T16:21:13.582Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

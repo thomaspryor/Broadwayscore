@@ -1,32 +1,20 @@
 {
-  "updatedAt": "2026-03-22T16:21:11.273Z",
-  "processed": 338,
+  "updatedAt": "2026-03-22T16:22:50.100Z",
+  "processed": 348,
   "failed": 715,
-  "successRate": "32.1%",
+  "successRate": "32.7%",
   "tierBreakdown": {
-    "playwright": 295,
+    "playwright": 304,
     "amp": 12,
-    "browserbase": 10,
+    "browserbase": 12,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 30,
     "archive": 33
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 9,
   "recentActivity": [
-    {
-      "t": "2026-03-22T09:19:17.595Z",
-      "event": "bb-session",
-      "session": "072e69a4",
-      "url": "https://www.thestage.co.uk/long-reviews/the-hills-of-california-review-at-harold"
-    },
-    {
-      "t": "2026-03-22T09:19:57.683Z",
-      "event": "bb-login-fail",
-      "domain": "thestage.co.uk",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    27 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
-    },
     {
       "t": "2026-03-22T11:52:54.460Z",
       "event": "bb-session",
@@ -125,6 +113,17 @@
       "t": "2026-03-22T16:16:40.943Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-22T16:21:12.259Z",
+      "event": "bb-session",
+      "session": "460f91c2",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-22T16:21:13.582Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
