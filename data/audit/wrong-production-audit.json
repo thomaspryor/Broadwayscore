@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-22T06:58:51.428Z",
+  "timestamp": "2026-03-22T07:05:55.895Z",
   "stats": {
     "totalReviews": 32221,
-    "alreadyFlagged": 10752,
-    "dateGuardCatches": 138,
-    "directorMismatch": 947,
-    "tvFilmSignals": 3391,
-    "londonSignals": 1028,
-    "offBroadwaySignals": 1006,
+    "alreadyFlagged": 10757,
+    "dateGuardCatches": 139,
+    "directorMismatch": 948,
+    "tvFilmSignals": 3394,
+    "londonSignals": 1029,
+    "offBroadwaySignals": 1008,
     "yearMismatch": 71,
-    "noPublishDate": 7011
+    "noPublishDate": 6980
   },
   "findings": [
     {
@@ -10565,6 +10565,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "chess-2025",
+      "file": "stageandcinema--carol-rocamora.json",
+      "score": null,
+      "publishDate": "2025-12-06",
+      "url": "https://stageandcinema.com/2025/12/05/broadway-review-chess-imperial-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from chess-1988"
         }
       ]
     },
@@ -23734,6 +23748,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "im-sorry-prime-minister-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2026-02-13",
+      "url": "https://www.londonboxoffice.co.uk/news/post/im-sorry-prime-minister-west-end-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -41935,6 +41962,20 @@
     },
     {
       "showId": "shadowlands-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 77,
+      "publishDate": "2026-02-14",
+      "url": "https://www.londonboxoffice.co.uk/news/post/shadowlands-aldwych-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "shadowlands-west-end-2026",
       "file": "timeout--unknown.json",
       "score": 68,
       "publishDate": "2026-02-15",
@@ -56799,6 +56840,17 @@
     },
     {
       "showId": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026",
+      "file": "i-paper--fiona-mountford.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 721d before show (2024-02-08 vs 2026-01-29)"
+        }
+      ]
+    },
+    {
+      "showId": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026",
       "file": "i-paper--francesca-steele.json",
       "findings": [
         {
@@ -58355,6 +58407,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jay presson allen\" from tru-1989"
+        }
+      ]
+    },
+    {
+      "showId": "tru-off-broadway-2026",
+      "file": "nytimes--unknown.json",
+      "score": null,
+      "publishDate": "2026-03-20",
+      "url": "https://www.nytimes.com/2026/03/20/theater/plays-tru-ferguson-the-fever-shawn.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -62945,6 +63011,20 @@
       ]
     },
     {
+      "showId": "an-ark-off-broadway-2026",
+      "file": "guardian--adrian-horton.json",
+      "score": null,
+      "publishDate": "2026-01-21",
+      "url": "https://www.theguardian.com/stage/2026/jan/21/an-ark-the-shed-play-ian-mckellen",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
       "showId": "an-enemy-of-the-people-2012",
       "file": "backstage--suzy-evans.json",
       "score": 81,
@@ -63347,6 +63427,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "arcadia-west-end-2026",
+      "file": "independent--alice-saville.json",
+      "score": 84,
+      "publishDate": "2026-02-05",
+      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/arcadia-old-vic-review-tom-stoppard-b2914437.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -81685,6 +81779,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-monsters-off-broadway-2026",
+      "file": "theatrely--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theatrely.com/post/the-monsters-the-dinosaurs-are-off-broadway-review",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
