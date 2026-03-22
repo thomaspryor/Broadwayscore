@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-22T16:10:00.634Z",
-  "processed": 299,
-  "failed": 704,
-  "successRate": "29.8%",
+  "updatedAt": "2026-03-22T16:13:09.536Z",
+  "processed": 308,
+  "failed": 705,
+  "successRate": "30.4%",
   "tierBreakdown": {
-    "playwright": 260,
-    "amp": 10,
-    "browserbase": 8,
+    "playwright": 267,
+    "amp": 12,
+    "browserbase": 10,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 27,
     "archive": 31
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-03-22T09:19:17.595Z",
@@ -79,6 +79,28 @@
     },
     {
       "t": "2026-03-22T16:08:59.600Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-22T16:10:28.577Z",
+      "event": "bb-session",
+      "session": "017ef89c",
+      "url": "https://www.wsj.com/articles/the-unknown-review-sean-hayes-blocked-and-stalked-3"
+    },
+    {
+      "t": "2026-03-22T16:10:30.047Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-22T16:12:56.027Z",
+      "event": "bb-session",
+      "session": "68ced869",
+      "url": "https://www.amny.com/entertainment/theater-review-the-unknown-sean-hayes/"
+    },
+    {
+      "t": "2026-03-22T16:12:57.503Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     }

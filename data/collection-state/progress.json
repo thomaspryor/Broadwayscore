@@ -298,7 +298,16 @@
     "marcel-on-the-train-off-broadway-2026/theater-scene--tony-marinelli.json",
     "the-reservoir-off-broadway-2026/culturesauce--thom-geier.json",
     "the-reservoir-off-broadway-2026/frontmezzjunkies--unknown.json",
-    "the-reservoir-off-broadway-2026/off-off-online--charles-wright.json"
+    "the-reservoir-off-broadway-2026/off-off-online--charles-wright.json",
+    "the-reservoir-off-broadway-2026/stageandcinema--unknown.json",
+    "the-reservoir-off-broadway-2026/theater-scene--victor-gluck.json",
+    "the-unknown-off-broadway-2026/nytg--joe-dziemianowicz.json",
+    "the-unknown-off-broadway-2026/theatermania--zachary-stewart.json",
+    "the-unknown-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
+    "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
+    "the-unknown-off-broadway-2026/timeout--adam-feldman.json",
+    "the-unknown-off-broadway-2026/theatrely--unknown.json",
+    "the-unknown-off-broadway-2026/amny--unknown.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -1004,7 +1013,8 @@
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
     "the-holy-rosenbergs-west-end-2026/guardian--david-jays.json",
     "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
-    "shadowlands-west-end-2026/times-uk--clive-davis.json"
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "the-unknown-off-broadway-2026/wsj--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1268,7 +1278,14 @@
       "marcel-on-the-train-off-broadway-2026/theater-scene--tony-marinelli.json",
       "the-reservoir-off-broadway-2026/culturesauce--thom-geier.json",
       "the-reservoir-off-broadway-2026/frontmezzjunkies--unknown.json",
-      "the-reservoir-off-broadway-2026/off-off-online--charles-wright.json"
+      "the-reservoir-off-broadway-2026/off-off-online--charles-wright.json",
+      "the-reservoir-off-broadway-2026/stageandcinema--unknown.json",
+      "the-reservoir-off-broadway-2026/theater-scene--victor-gluck.json",
+      "the-unknown-off-broadway-2026/nytg--joe-dziemianowicz.json",
+      "the-unknown-off-broadway-2026/theatermania--zachary-stewart.json",
+      "the-unknown-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
+      "the-unknown-off-broadway-2026/timeout--adam-feldman.json",
+      "the-unknown-off-broadway-2026/theatrely--unknown.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -1280,7 +1297,9 @@
       "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/thewrap--robert-hofler.json",
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/thewrap--robert-hofler.json",
       "data/review-texts/cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json",
-      "cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json"
+      "cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json",
+      "data/review-texts/the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
+      "the-unknown-off-broadway-2026/thewrap--robert-hofler.json"
     ],
     "browserbase": [
       "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
@@ -1290,7 +1309,9 @@
       "data/review-texts/tru-off-broadway-2026/nytimes--unknown.json",
       "tru-off-broadway-2026/nytimes--unknown.json",
       "data/review-texts/marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
-      "marcel-on-the-train-off-broadway-2026/amny--matt-windman.json"
+      "marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
+      "data/review-texts/the-unknown-off-broadway-2026/amny--unknown.json",
+      "the-unknown-off-broadway-2026/amny--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -1359,7 +1380,7 @@
     ]
   },
   "startTime": "2026-03-22T09:04:26.170Z",
-  "lastProcessed": "the-reservoir-off-broadway-2026/off-off-online--charles-wright.json",
+  "lastProcessed": "the-unknown-off-broadway-2026/amny--unknown.json",
   "log": [
     {
       "t": "2026-03-22T09:19:17.595Z",
@@ -1425,6 +1446,28 @@
     },
     {
       "t": "2026-03-22T16:08:59.600Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-22T16:10:28.577Z",
+      "event": "bb-session",
+      "session": "017ef89c",
+      "url": "https://www.wsj.com/articles/the-unknown-review-sean-hayes-blocked-and-stalked-3"
+    },
+    {
+      "t": "2026-03-22T16:10:30.047Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-22T16:12:56.027Z",
+      "event": "bb-session",
+      "session": "68ced869",
+      "url": "https://www.amny.com/entertainment/theater-review-the-unknown-sean-hayes/"
+    },
+    {
+      "t": "2026-03-22T16:12:57.503Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     }
