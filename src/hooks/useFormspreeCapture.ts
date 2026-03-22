@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
 import { track } from '@vercel/analytics';
+import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 
 const SUBSCRIBED_KEY_PREFIX = 'bsc_email_subscribed_';
 const LEGACY_SUBSCRIBED_KEY = 'bsc_email_subscribed'; // Pre-market-split key (treated as Broadway)
@@ -33,10 +33,10 @@ export function useFormspreeCapture(options: FormspreeCaptureOptions): Formspree
   const [status, setStatus] = useState<FormspreeStatus>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const pathname = usePathname();
+  const marketId = useCurrentMarket();
 
-  // Infer market from URL pathname, with optional override
-  const market: Market = options.market || (pathname?.startsWith('/west-end') || pathname?.startsWith('/off-west-end') ? 'west-end' : 'broadway');
+  // Infer market from URL pathname (including show slugs), with optional override
+  const market: Market = options.market || (marketId === 'west-end' || marketId === 'off-west-end' ? 'west-end' : 'broadway');
 
   useEffect(() => {
     try {

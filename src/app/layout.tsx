@@ -6,6 +6,8 @@ import ScrollToTop from '@/components/ScrollToTop';
 import HeaderSearch from '@/components/HeaderSearch';
 import HeaderSubscribeButton from '@/components/HeaderSubscribeButton';
 import FooterEmailCapture from '@/components/FooterEmailCapture';
+import FooterMarketContent from '@/components/FooterMarketContent';
+import FooterBranding from '@/components/FooterBranding';
 import { generateOrganizationSchema, generateWebSiteSchema, BASE_URL } from '@/lib/seo';
 import { getDataStats, getMarketStats } from '@/lib/data-core';
 import MarketNav from '@/components/MarketNav';
@@ -179,84 +181,20 @@ export default function RootLayout({
               </div>
             )}
 
-            {/* Browse Categories */}
-            <div className={`grid grid-cols-2 ${featureFlags.discountTickets ? 'md:grid-cols-4' : 'md:grid-cols-3'} gap-8 mb-8 pb-8 border-b border-white/5`}>
-              <div>
-                <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">By Category</h4>
-                <ul className="space-y-2 text-sm text-gray-400">
-                  <li><Link href="/browse/best-broadway-musicals" className="hover:text-white transition-colors">Best Musicals</Link></li>
-                  <li><Link href="/browse/best-broadway-dramas" className="hover:text-white transition-colors">Best Dramas</Link></li>
-                  <li><Link href="/browse/best-broadway-comedies" className="hover:text-white transition-colors">Comedies</Link></li>
-                  <li><Link href="/browse/best-broadway-revivals" className="hover:text-white transition-colors">Revivals</Link></li>
-                  <li><Link href="/browse/tony-winners-on-broadway" className="hover:text-white transition-colors">Tony Winning Shows</Link></li>
-                  <li><Link href="/browse/jukebox-musicals-on-broadway" className="hover:text-white transition-colors">Jukebox Musicals</Link></li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">By Audience</h4>
-                <ul className="space-y-2 text-sm text-gray-400">
-                  <li><Link href="/browse/broadway-shows-for-kids" className="hover:text-white transition-colors">Shows for Kids</Link></li>
-                  <li><Link href="/browse/broadway-shows-for-date-night" className="hover:text-white transition-colors">Date Night</Link></li>
-                  <li><Link href="/browse/broadway-shows-for-tourists" className="hover:text-white transition-colors">For Tourists</Link></li>
-                  <li><Link href="/browse/first-time-broadway" className="hover:text-white transition-colors">First-Timers</Link></li>
-                  {!featureFlags.discountTickets && (
-                    <li><Link href="/browse/broadway-shows-closing-soon" className="hover:text-white transition-colors">Closing Soon</Link></li>
-                  )}
-                </ul>
-              </div>
-              {featureFlags.discountTickets && (
-              <div>
-                <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">Deals & Tickets</h4>
-                <ul className="space-y-2 text-sm text-gray-400">
-                  <li><Link href="/discount-tickets" className="hover:text-white transition-colors">All Discount Tickets</Link></li>
-                  <li><Link href="/best-value" className="hover:text-white transition-colors">Best Value Tickets</Link></li>
-                  <li><Link href="/lotteries" className="hover:text-white transition-colors">Lottery Tickets</Link></li>
-                  <li><Link href="/rush" className="hover:text-white transition-colors">Rush Tickets</Link></li>
-                  <li><Link href="/standing-room" className="hover:text-white transition-colors">Standing Room</Link></li>
-                  <li><Link href="/browse/broadway-shows-closing-soon" className="hover:text-white transition-colors">Closing Soon</Link></li>
-                </ul>
-              </div>
-              )}
-              <div>
-                <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">More</h4>
-                <ul className="space-y-2 text-sm text-gray-400">
-                  {(featureFlags.tonyPredictions || featureFlags.tonyPeople) && <li><Link href="/tony-awards" className="hover:text-white transition-colors">Tony Awards</Link></li>}
-                  {featureFlags.goldLists && <li><Link href="/lists" className="hover:text-white transition-colors">Gold Lists</Link></li>}
-                  {featureFlags.boxOffice && <li><Link href="/box-office" className="hover:text-white transition-colors">Box Office Scorecard</Link></li>}
-                  {featureFlags.commercial && <li><Link href="/biz-buzz" className="hover:text-white transition-colors">Commercial Scorecard</Link></li>}
-                  <li><Link href="/audience-buzz" className="hover:text-white transition-colors">AudienceGrade</Link></li>
-                  <li><Link href="/broadway-theaters-map" className="hover:text-white transition-colors">Theater Map</Link></li>
-                  <li><Link href="/reviews" className="hover:text-white transition-colors">Reviews</Link></li>
-                  <li><Link href="/guides" className="hover:text-white transition-colors">Guides</Link></li>
-                  {featureFlags.criticPages && <li><Link href="/critics" className="hover:text-white transition-colors">Critics</Link></li>}
-                  {featureFlags.creativePages && <li><Link href="/directors" className="hover:text-white transition-colors">Directors</Link></li>}
-                  {featureFlags.creativePages && <li><Link href="/playwrights" className="hover:text-white transition-colors">Playwrights</Link></li>}
-                  {featureFlags.creativePages && <li><Link href="/composers" className="hover:text-white transition-colors">Composers</Link></li>}
-                  {featureFlags.creativePages && <li><Link href="/lyricists" className="hover:text-white transition-colors">Lyricists</Link></li>}
-                  {featureFlags.castPages && <li><Link href="/cast" className="hover:text-white transition-colors">Cast</Link></li>}
-                  <li><Link href="/methodology" className="hover:text-white transition-colors">How It Works</Link></li>
-                </ul>
-              </div>
-            </div>
-
-            {/* Community Links */}
-            <div className="mb-8 pb-8 border-b border-white/5 text-center">
-              <p className="text-sm font-semibold text-white mb-3">Help improve Broadway Scorecard™</p>
-              <div className="flex items-center justify-center gap-3">
-                <Link
-                  href="/submit-review"
-                  className="px-5 py-2.5 text-sm font-semibold text-white border border-white/15 rounded-lg hover:bg-white/5 transition-colors"
-                >
-                  Submit a Review
-                </Link>
-                <Link
-                  href="/feedback"
-                  className="px-5 py-2.5 text-sm font-semibold text-white border border-white/15 rounded-lg hover:bg-white/5 transition-colors"
-                >
-                  Give Feedback
-                </Link>
-              </div>
-            </div>
+            <FooterMarketContent
+              totalReviews={totalReviews}
+              featureFlags={{
+                discountTickets: featureFlags.discountTickets,
+                tonyPredictions: featureFlags.tonyPredictions,
+                tonyPeople: featureFlags.tonyPeople,
+                goldLists: featureFlags.goldLists,
+                boxOffice: featureFlags.boxOffice,
+                commercial: featureFlags.commercial,
+                criticPages: featureFlags.criticPages,
+                creativePages: featureFlags.creativePages,
+                castPages: featureFlags.castPages,
+              }}
+            />
 
             {/* Email Capture */}
             <div className="max-w-md mx-auto mb-8 pb-8 border-b border-white/5">
@@ -264,34 +202,7 @@ export default function RootLayout({
             </div>
 
             {/* Bottom */}
-            <div className="flex flex-col items-center gap-3 text-center">
-              <div className="flex items-center">
-                <span className="text-lg font-bold text-white">Broadway</span>
-                <span className="text-lg font-bold text-gradient">Scorecard</span>
-                <span className="text-[8px] text-gray-500 font-normal align-super">™</span>
-              </div>
-              <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-sm text-gray-400">
-                <Link href="/about" className="hover:text-white transition-colors">About</Link>
-                <span className="text-gray-500 hidden sm:inline">|</span>
-                <Link href="/methodology" className="hover:text-white transition-colors">Methodology</Link>
-                <span className="text-gray-500 hidden sm:inline">|</span>
-                <a href="https://buymeacoffee.com/broadwayscorecard" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Buy Me a Coffee</a>
-                <span className="text-gray-500 hidden sm:inline">|</span>
-                <HeaderSubscribeButton />
-                <span className="text-gray-500 hidden sm:inline">|</span>
-                <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
-                <span className="text-gray-500 hidden sm:inline">|</span>
-                <span>Every show. Every review. One score.</span>
-              </div>
-              <p className="text-xs text-gray-500 mt-1">
-                Aggregating <span className="text-gray-400 font-medium">{totalReviews.toLocaleString()}</span> critic reviews and counting...
-              </p>
-            </div>
-            <div className="mt-4 pt-4 border-t border-white/5 text-center text-xs text-gray-500 space-y-1">
-              <p>All ratings and reviews belong to their respective sources.</p>
-              <p>&copy; 2026 Broadway Scorecard™ LLC. All rights reserved.</p>
-              <p>By using this site, you agree to our <Link href="/terms" className="text-gray-400 hover:text-white transition-colors underline underline-offset-2">Terms of Service</Link>.</p>
-            </div>
+            <FooterBranding totalReviews={totalReviews} />
           </div>
         </footer>
         <ScrollToTop />
