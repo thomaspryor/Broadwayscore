@@ -1222,7 +1222,7 @@ showDirs.forEach(showId => {
           try {
             const hostname = new URL(data.url).hostname || '';
             const isUkUrl = hostname.endsWith('.co.uk') || hostname.endsWith('.org.uk')
-              || hostname.includes('london') || hostname.includes('theatre');
+              || hostname.includes('london') || (hostname.includes('theatre') && !hostname.includes('newyork'));
             if (isUkUrl || outletIsDualOrUk) {
               // UK/dual-market outlet + London URL → clear false positive
               if (isUkUrl) {
@@ -1344,7 +1344,7 @@ showDirs.forEach(showId => {
           try {
             const hostname = new URL(data.url).hostname || '';
             urlIsUK = hostname.endsWith('.co.uk') || hostname.endsWith('.org.uk')
-              || hostname.includes('london') || hostname.includes('theatre');
+              || hostname.includes('london') || (hostname.includes('theatre') && !hostname.includes('newyork'));
           } catch (e) { /* ignore malformed URLs */ }
         }
         if (outletRegion !== 'london' && !urlIsUK) {
