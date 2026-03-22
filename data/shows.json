@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway show metadata - source of truth for all shows",
-    "lastUpdated": "2026-03-22",
+    "lastUpdated": "2026-03-22T08:21:18.149Z",
     "source": "Manual + Playbill/IBDB cross-reference",
     "totalShows": 2258
   },
@@ -203594,8 +203594,7 @@
       "todaytixUrl": "https://www.todaytix.com/nyc/shows/44896-the-reservoir",
       "todayTixCategory": "Plays",
       "ibdbRevivalChecked": true,
-      "isRevival": false,
-      "_staleMissingSince": "2026-03-21"
+      "isRevival": false
     },
     {
       "id": "night-side-songs-off-broadway-2026",
@@ -204301,8 +204300,7 @@
       "todaytixUrl": "https://www.todaytix.com/nyc/shows/43651-los-soles-truncos",
       "todayTixCategory": "Plays",
       "ibdbRevivalChecked": true,
-      "isRevival": false,
-      "_staleMissingSince": "2026-03-21"
+      "isRevival": false
     },
     {
       "id": "ulysses-off-broadway-2026",
@@ -204773,8 +204771,7 @@
       "isRevival": true,
       "ibdbUrl": null,
       "todayTixCategory": "Musicals",
-      "ibdbRevivalChecked": true,
-      "_staleMissingSince": "2026-03-21"
+      "ibdbRevivalChecked": true
     },
     {
       "id": "dirty-books-off-broadway-2025",
@@ -205355,7 +205352,8 @@
       "ibdbUrl": null,
       "todayTixCategory": "Events",
       "ibdbRevivalChecked": true,
-      "isRevival": false
+      "isRevival": false,
+      "_staleMissingSince": "2026-03-22"
     },
     {
       "id": "music-city-off-broadway-2026",
@@ -207916,8 +207914,8 @@
       "slug": "the-office-a-musical-parody-off-broadway",
       "venue": "The Theater Center",
       "openingDate": "2018-09-20",
-      "closingDate": "2026-03-21",
-      "status": "closed",
+      "closingDate": "2026-04-11",
+      "status": "open",
       "type": "musical",
       "runtime": "2h",
       "intermissions": null,
@@ -209265,7 +209263,7 @@
       "venue": "The Public Theater – LuEsther Hall",
       "openingDate": "2026-03-22",
       "closingDate": "2026-04-26",
-      "status": "previews",
+      "status": "open",
       "type": "play",
       "runtime": "2h 30m",
       "intermissions": null,
@@ -211209,7 +211207,8 @@
       "todaytixUrl": "https://www.todaytix.com/nyc/shows/43923-the-monsters",
       "todayTixCategory": "Plays",
       "ibdbRevivalChecked": true,
-      "isRevival": false
+      "isRevival": false,
+      "_staleMissingSince": "2026-03-22"
     },
     {
       "id": "the-dinosaurs-off-broadway-2026",
@@ -215022,8 +215021,7 @@
       ],
       "todayTixCategory": "Musicals",
       "ibdbRevivalChecked": true,
-      "isRevival": false,
-      "_staleMissingSince": "2026-03-21"
+      "isRevival": false
     },
     {
       "id": "oh-mary-west-end-2025",
@@ -218176,8 +218174,7 @@
       "todayTixCategory": "Musicals",
       "ibdbRevivalChecked": true,
       "isRevival": true,
-      "previewsStartDate": "2025-08-30",
-      "_staleMissingSince": "2026-03-21"
+      "previewsStartDate": "2025-08-30"
     },
     {
       "id": "stranger-things-the-first-shadow-west-end-2023",
@@ -218355,8 +218352,7 @@
       ],
       "ibdbRevivalChecked": true,
       "isRevival": false,
-      "previewsStartDate": "2025-03-24",
-      "_staleMissingSince": "2026-03-21"
+      "previewsStartDate": "2025-03-24"
     },
     {
       "id": "the-spy-who-came-in-from-the-cold-west-end-2025",
@@ -222961,7 +222957,8 @@
       "ticketLinks": [],
       "synopsis": "Life is a cabaret, old chum! Don't miss this revival of a Kander and Ebb classic, and be immersed into the Kit Kat Club with the incredible transformation of the Playhouse Theatre. Leave all your troubles at the door and see this seven-time Olivier Award-winning production of *Cabaret* in London's West End.",
       "ibdbRevivalChecked": true,
-      "isRevival": false
+      "isRevival": false,
+      "_staleMissingSince": "2026-03-22"
     },
     {
       "id": "dracula-west-end-2025",
@@ -228719,8 +228716,7 @@
       "todayTixCategory": "Cabaret",
       "category": "off-west-end",
       "todaytixId": 43842,
-      "todaytixUrl": "https://www.todaytix.com/london/shows/43842-58th-street",
-      "_staleMissingSince": "2026-03-21"
+      "todaytixUrl": "https://www.todaytix.com/london/shows/43842-58th-street"
     },
     {
       "id": "godots-to-do-list-west-end-2026",
@@ -228747,7 +228743,13 @@
         "revival"
       ],
       "theaterAddress": null,
-      "ticketLinks": [],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/london/shows/45702-godots-to-do-list",
+          "priceFrom": null
+        }
+      ],
       "cast": [],
       "creativeTeam": [
         {
@@ -228761,7 +228763,8 @@
       ],
       "todayTixCategory": "Plays",
       "category": "west-end",
-      "todaytixId": 45702
+      "todaytixId": 45702,
+      "todaytixUrl": "https://www.todaytix.com/london/shows/45702-godots-to-do-list"
     },
     {
       "id": "whos-afraid-of-virginia-woolf-west-end-2026",
@@ -228904,7 +228907,8 @@
       "ibdbRevivalChecked": true,
       "category": "off-west-end",
       "todaytixId": 25118,
-      "todaytixUrl": "https://www.todaytix.com/london/shows/25118-abba-voyage"
+      "todaytixUrl": "https://www.todaytix.com/london/shows/25118-abba-voyage",
+      "_staleMissingSince": "2026-03-22"
     },
     {
       "id": "tango-after-dark-west-end-2026",
@@ -230149,6 +230153,228 @@
       "title": "Heeramandi",
       "slug": "heeramandi-off-west-end",
       "venue": "Theatre Royal Stratford East",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "announced",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "off-west-end"
+    },
+    {
+      "id": "krapps-last-tapegodots-to-do-list-west-end-2026",
+      "title": "Krapp’s Last Tape/Godot’s To-Do List",
+      "slug": "krapps-last-tapegodots-to-do-list-west-end",
+      "venue": "Royal Court",
+      "openingDate": null,
+      "closingDate": "2026-05-30",
+      "status": "previews",
+      "type": "play",
+      "isRevival": true,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "On his 69th birthday, a man sits alone and listens to the echoes of his younger self.",
+      "ageRecommendation": null,
+      "previewsStartDate": "2026-05-08",
+      "tags": [
+        "upcoming",
+        "revival"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "todayTixCategory": "Plays",
+      "category": "west-end"
+    },
+    {
+      "id": "miss-saigon-west-end-2026",
+      "title": "Miss Saigon",
+      "slug": "miss-saigon-west-end",
+      "venue": "TBA",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "announced",
+      "type": "musical",
+      "isRevival": true,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming",
+        "revival"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "category": "west-end"
+    },
+    {
+      "id": "hito-no-chikara-the-power-of-human-strength-west-end-2026",
+      "title": "Hito no Chikara - The Power of Human Strength",
+      "slug": "hito-no-chikara-the-power-of-human-strength-west-end",
+      "venue": "Peacock Theatre",
+      "openingDate": null,
+      "closingDate": "2026-05-30",
+      "status": "previews",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "After electrifying London audiences in 2019 and again in 2024 with Wings of the Phoenix, YAMATO now unveil their brand-new production: Hito no Chikara – The Power of Human Strength.",
+      "ageRecommendation": null,
+      "previewsStartDate": "2026-05-12",
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/london/shows/45828-hito-no-chikara-the-power-of-human-strength",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "west-end",
+      "todaytixId": 45828,
+      "todaytixUrl": "https://www.todaytix.com/london/shows/45828-hito-no-chikara-the-power-of-human-strength"
+    },
+    {
+      "id": "hot-singles-in-your-area-play-dandd-off-west-end-2026",
+      "title": "Hot Singles In Your Area Play D&D",
+      "slug": "hot-singles-in-your-area-play-dandd-off-west-end",
+      "venue": "Soho Theatre",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "announced",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "off-west-end"
+    },
+    {
+      "id": "nt-connections-double-bill-cloud-busting-and-ride-or-die-off-west-end-2026",
+      "title": "NT Connections Double Bill: Cloud Busting & Ride or Die",
+      "slug": "nt-connections-double-bill-cloud-busting-and-ride-or-die-off-west-end",
+      "venue": "Soho Theatre",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "announced",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "off-west-end"
+    },
+    {
+      "id": "daisy-doris-may-big-night-out-off-west-end-2026",
+      "title": "Daisy Doris May: Big Night Out",
+      "slug": "daisy-doris-may-big-night-out-off-west-end",
+      "venue": "Soho Theatre",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "announced",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "off-west-end"
+    },
+    {
+      "id": "this-is-not-about-me-off-west-end-2026",
+      "title": "THIS IS NOT ABOUT ME.",
+      "slug": "this-is-not-about-me-off-west-end",
+      "venue": "Soho Theatre",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "announced",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "off-west-end"
+    },
+    {
+      "id": "derriere-on-a-g-string-off-west-end-2026",
+      "title": "Derrière on a G String",
+      "slug": "derriere-on-a-g-string-off-west-end",
+      "venue": "King's Head Theatre",
       "openingDate": null,
       "closingDate": null,
       "status": "announced",
