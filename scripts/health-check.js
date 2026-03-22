@@ -742,21 +742,27 @@ function checkAPICredits() {
       let exhaustionMsg = '';
       if (usage.renewal_subscription_date && usage.used_api_credit > 0) {
         const renewalDate = new Date(usage.renewal_subscription_date);
+        const renewalStr = renewalDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
         const daysUntilRenewal = Math.max(0, (renewalDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
         // Estimate cycle length from renewal date (assume ~30 day cycles)
         const cycleStartEstimate = new Date(renewalDate);
         cycleStartEstimate.setDate(cycleStartEstimate.getDate() - 30);
         const daysIntoCycle = Math.max(1, (Date.now() - cycleStartEstimate.getTime()) / (1000 * 60 * 60 * 24));
-        const dailyBurnRate = Math.round(usage.used_api_credit / daysIntoCycle);
-        const daysUntilExhaustion = remaining > 0 ? remaining / dailyBurnRate : 0;
 
-        exhaustionMsg = ` · ${Math.round(dailyBurnRate / 1000)}k/day burn · `;
         if (remaining <= 0) {
-          exhaustionMsg += `EXHAUSTED · renews ${renewalDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
-        } else if (daysUntilExhaustion < daysUntilRenewal) {
-          exhaustionMsg += `exhausts in ~${Math.round(daysUntilExhaustion)}d (renews ${renewalDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })})`;
+          exhaustionMsg = ` · EXHAUSTED · renews ${renewalStr}`;
+        } else if (daysIntoCycle < 5) {
+          // Too early in cycle for a reliable daily rate — denominator is too small
+          exhaustionMsg = ` · renews ${renewalStr} (burn rate unavailable — <5 days into cycle)`;
         } else {
-          exhaustionMsg += `lasts until renewal ${renewalDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+          const dailyBurnRate = Math.round(usage.used_api_credit / daysIntoCycle);
+          const daysUntilExhaustion = remaining / dailyBurnRate;
+          exhaustionMsg = ` · ${Math.round(dailyBurnRate / 1000)}k/day burn · `;
+          if (daysUntilExhaustion < daysUntilRenewal) {
+            exhaustionMsg += `exhausts in ~${Math.round(daysUntilExhaustion)}d (renews ${renewalStr})`;
+          } else {
+            exhaustionMsg += `lasts until renewal ${renewalStr}`;
+          }
         }
       }
 
