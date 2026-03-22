@@ -347,7 +347,15 @@
     "chess-2025/people--unknown.json",
     "chess-2025/playbill--logan-culwell-block.json",
     "chess-2025/stageandcinema--carol-rocamora.json",
-    "chess-2025/theater-scene--samuel-l-leiter.json"
+    "chess-2025/theater-scene--samuel-l-leiter.json",
+    "all-my-sons-west-end-2025/timeout-london--andrzej-lukowski.json",
+    "all-my-sons-west-end-2025/broadwayworld--unknown.json",
+    "all-my-sons-west-end-2025/everything-theatre--dave-b.json",
+    "all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json",
+    "all-my-sons-west-end-2025/whatsonstage--unknown.json",
+    "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytg--joe-dziemianowicz.json",
+    "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -1064,7 +1072,9 @@
     "oh-mary-west-end-2025/standard--nick-curtis.json",
     "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json",
     "two-strangers-bway-2025/guardian--unknown.json",
-    "chess-2025/billboard--rebecca-milzoff.json"
+    "chess-2025/billboard--rebecca-milzoff.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/wsj--unknown.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1372,7 +1382,13 @@
       "chess-2025/people--unknown.json",
       "chess-2025/playbill--logan-culwell-block.json",
       "chess-2025/stageandcinema--carol-rocamora.json",
-      "chess-2025/theater-scene--samuel-l-leiter.json"
+      "chess-2025/theater-scene--samuel-l-leiter.json",
+      "all-my-sons-west-end-2025/everything-theatre--dave-b.json",
+      "all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json",
+      "all-my-sons-west-end-2025/whatsonstage--unknown.json",
+      "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytg--joe-dziemianowicz.json",
+      "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -1435,7 +1451,8 @@
       "data/review-texts/the-holy-rosenbergs-west-end-2026/guardian--david-jays.json",
       "data/review-texts/an-ark-off-broadway-2026/nytimes--unknown.json",
       "data/review-texts/oh-mary-west-end-2025/guardian--arifa-akbar.json",
-      "data/review-texts/chess-2025/billboard--rebecca-milzoff.json"
+      "data/review-texts/chess-2025/billboard--rebecca-milzoff.json",
+      "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/talkinbroadway--unknown.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -1470,11 +1487,13 @@
       "mother-russia-off-broadway-2026/theater-pizzazz--ron-fassler.json",
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/vulture--sara-holdren.json",
       "an-ark-off-broadway-2026/newyorker--emily-nussbaum.json",
-      "two-strangers-bway-2025/chicagotribune--unknown.json"
+      "two-strangers-bway-2025/chicagotribune--unknown.json",
+      "all-my-sons-west-end-2025/timeout-london--andrzej-lukowski.json",
+      "all-my-sons-west-end-2025/broadwayworld--unknown.json"
     ]
   },
   "startTime": "2026-03-22T09:04:26.170Z",
-  "lastProcessed": "chess-2025/theater-scene--samuel-l-leiter.json",
+  "lastProcessed": "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
   "log": [
     {
       "t": "2026-03-22T09:19:17.595Z",
@@ -1597,6 +1616,17 @@
       "t": "2026-03-22T16:21:13.582Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-22T16:23:55.406Z",
+      "event": "bb-session",
+      "session": "da92ac6f",
+      "url": "https://www.wsj.com/articles/the-25th-annual-putnam-county-spelling-bee-review-a"
+    },
+    {
+      "t": "2026-03-22T16:23:56.647Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
