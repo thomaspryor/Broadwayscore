@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-22T05:01:34.404Z",
+  "timestamp": "2026-03-22T05:08:39.400Z",
   "stats": {
-    "totalReviews": 32105,
-    "alreadyFlagged": 10750,
+    "totalReviews": 32096,
+    "alreadyFlagged": 10745,
     "dateGuardCatches": 138,
-    "directorMismatch": 950,
+    "directorMismatch": 948,
     "tvFilmSignals": 3391,
     "londonSignals": 1029,
-    "offBroadwaySignals": 1008,
+    "offBroadwaySignals": 1006,
     "yearMismatch": 71,
-    "noPublishDate": 6895
+    "noPublishDate": 6891
   },
   "findings": [
     {
@@ -9857,30 +9857,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "cats-2016",
-      "file": "exeunt-magazine--lane-williamson.json",
-      "score": 86,
-      "publishDate": null,
-      "url": "https://exeuntnyc.com/reviews/review-cats-the-jellicle-ball-at-perelman-performing-arts-center/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"perelman\""
         }
       ]
     },
@@ -31541,7 +31517,7 @@
       "showId": "mean-girls-2018",
       "file": "vulture--sara-holdren.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "April 9, 2018",
       "url": "https://www.vulture.com/2018/04/on-wednesdays-we-do-two-shows-mean-girls-awarely-onstage.html",
       "findings": [
         {
@@ -69180,20 +69156,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "hells-kitchen-2024",
-      "file": "chelsea-community-news--michael-musto.json",
-      "score": 79,
-      "publishDate": "2024-04-20T22:17:06-04:00",
-      "url": "https://chelseacommunitynews.com/2024/04/20/review-hells-kitchen-is-a-coming-of-age-musical-thats-in-all-the-right-alicia-keys/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
