@@ -187,6 +187,60 @@ function normalize(s) {
 }
 
 /**
+ * Deduplicate matches: when the same Mezzanine production is claimed by
+ * multiple of our shows (e.g., OB 2024 and Broadway 2026 transfers), assign
+ * it to the best match and remove it from the others.
+ *
+ * Priority: year-verified > currently running/previews > most recent opening.
+ */
+function deduplicateMatches(matches) {
+  // Build a map: Mezzanine prodId → list of match indices that claim it
+  const prodClaimants = new Map();
+  for (let i = 0; i < matches.length; i++) {
+    for (const pid of matches[i].prodIds) {
+      if (!prodClaimants.has(pid)) prodClaimants.set(pid, []);
+      prodClaimants.get(pid).push(i);
+    }
+  }
+
+  // Find conflicts: a Mezzanine production claimed by >1 of our shows
+  const indicesToRemove = new Set();
+  for (const [pid, claimants] of prodClaimants) {
+    if (claimants.length <= 1) continue;
+
+    // Score each claimant to pick the best
+    const scored = claimants.map(idx => {
+      const m = matches[idx];
+      let priority = 0;
+      if (m.yearVerified) priority += 100;
+      if (m.showStatus === 'running' || m.showStatus === 'previews') priority += 50;
+      // Tiebreak: most recent opening year
+      priority += (m.showOpenYear || 0) / 100;
+      return { idx, priority, showId: m.showId };
+    }).sort((a, b) => b.priority - a.priority);
+
+    const winner = scored[0];
+    const losers = scored.slice(1);
+
+    console.log(`  ⚠ Mezzanine dedup: production "${pid}" claimed by ${scored.map(s => s.showId).join(', ')} → assigned to ${winner.showId}`);
+
+    for (const loser of losers) {
+      // If the loser match only had this one prodId, remove it entirely
+      const loserMatch = matches[loser.idx];
+      loserMatch.prodIds = loserMatch.prodIds.filter(p => p !== pid);
+      if (loserMatch.prodIds.length === 0) {
+        indicesToRemove.add(loser.idx);
+      }
+    }
+  }
+
+  if (indicesToRemove.size > 0) {
+    return matches.filter((_, i) => !indicesToRemove.has(i));
+  }
+  return matches;
+}
+
+/**
  * Match Mezzanine productions to our shows.json entries
  *
  * Strategy: For each of our shows, find ALL matching Mezzanine productions.
@@ -252,7 +306,7 @@ function matchProductions(productions, shows) {
         const yearVerified = openYear && mYear && Math.abs(mYear - openYear) <= 1;
         // Require year verification for non-high confidence
         if (!yearVerified && confidence !== 'high') continue;
-        allMatches.push({ production: p, confidence, yearVerified });
+        allMatches.push({ production: p, confidence, yearVerified, prodId: p.objectId || `${mName}-${mYear}` });
       }
     }
 
@@ -274,6 +328,8 @@ function matchProductions(productions, shows) {
       matches.push({
         showId: show.id,
         title: show.title,
+        showStatus: show.status,
+        showOpenYear: openYear,
         mezzName: names,
         theater: allMatches[0].production.theater?.name || 'Unknown',
         score: Math.round((weightedAvg / 5) * 100),
@@ -281,7 +337,8 @@ function matchProductions(productions, shows) {
         ratingsCount: totalRatings,
         yearVerified: anyYearVerified,
         confidence: bestConf,
-        mergedFrom: allMatches.length
+        mergedFrom: allMatches.length,
+        prodIds: allMatches.map(m => m.prodId),
       });
     } else {
       const m = allMatches[0];
@@ -289,18 +346,21 @@ function matchProductions(productions, shows) {
       matches.push({
         showId: show.id,
         title: show.title,
+        showStatus: show.status,
+        showOpenYear: openYear,
         mezzName: p.show?.name || p.showName,
         theater: p.theater?.name || p.theaterName || 'Unknown',
         score: Math.round((p.averageRating / 5) * 100),
         starRating: Math.round(p.averageRating * 10) / 10,
         ratingsCount: p.ratingsCount,
         yearVerified: m.yearVerified,
-        confidence: m.confidence
+        confidence: m.confidence,
+        prodIds: [m.prodId],
       });
     }
   }
 
-  return matches;
+  return deduplicateMatches(matches);
 }
 
 // calculateCombinedScore imported from ./lib/audience-weighting.js
