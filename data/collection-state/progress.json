@@ -76,12 +76,22 @@
     "shadowlands-west-end-2026/artsdesk--helen-hawkins.json",
     "shadowlands-west-end-2026/broadwayworld--aliya-al-hussan.json",
     "shadowlands-west-end-2026/financialtimes--sarah-hemming.json",
-    "shadowlands-west-end-2026/london-box-office--stuart-king.json"
+    "shadowlands-west-end-2026/london-box-office--stuart-king.json",
+    "shadowlands-west-end-2026/telegraph--dominic-cavendish.json",
+    "shadowlands-west-end-2026/whatsonstage--sarah-crompton.json",
+    "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/timeout--andrzej-lukowski.json",
+    "im-sorry-prime-minister-west-end-2026/all-that-dazzles-uk--harry-bower.json",
+    "im-sorry-prime-minister-west-end-2026/daily-mail--patrick-marmion.json",
+    "im-sorry-prime-minister-west-end-2026/london-box-office--stuart-king.json",
+    "im-sorry-prime-minister-west-end-2026/mail--patrick-marmion.json",
+    "im-sorry-prime-minister-west-end-2026/telegraph--dominic-cavendish.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
     "manic-street-creature-west-end-2026/guardian--unknown.json",
-    "the-holy-rosenbergs-west-end-2026/guardian--david-jays.json"
+    "the-holy-rosenbergs-west-end-2026/guardian--david-jays.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--sam-marlowe.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -155,7 +165,13 @@
       "shadowlands-west-end-2026/timeout--unknown.json",
       "shadowlands-west-end-2026/artsdesk--helen-hawkins.json",
       "shadowlands-west-end-2026/financialtimes--sarah-hemming.json",
-      "shadowlands-west-end-2026/london-box-office--stuart-king.json"
+      "shadowlands-west-end-2026/london-box-office--stuart-king.json",
+      "shadowlands-west-end-2026/telegraph--dominic-cavendish.json",
+      "shadowlands-west-end-2026/whatsonstage--sarah-crompton.json",
+      "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/timeout--andrzej-lukowski.json",
+      "im-sorry-prime-minister-west-end-2026/all-that-dazzles-uk--harry-bower.json",
+      "im-sorry-prime-minister-west-end-2026/london-box-office--stuart-king.json",
+      "im-sorry-prime-minister-west-end-2026/telegraph--dominic-cavendish.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -164,7 +180,8 @@
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/manic-street-creature-west-end-2026/guardian--unknown.json",
-      "data/review-texts/the-holy-rosenbergs-west-end-2026/guardian--david-jays.json"
+      "data/review-texts/the-holy-rosenbergs-west-end-2026/guardian--david-jays.json",
+      "data/review-texts/the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--sam-marlowe.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -173,10 +190,25 @@
       "marie-and-rosetta-west-end-2026/broadwayworld--clementine-scott.json",
       "deep-azure-globe-west-end-2026/artsdesk--unknown.json",
       "deep-azure-globe-west-end-2026/broadwayworld--unknown.json",
-      "shadowlands-west-end-2026/broadwayworld--aliya-al-hussan.json"
+      "shadowlands-west-end-2026/broadwayworld--aliya-al-hussan.json",
+      "im-sorry-prime-minister-west-end-2026/daily-mail--patrick-marmion.json",
+      "im-sorry-prime-minister-west-end-2026/mail--patrick-marmion.json"
     ]
   },
   "startTime": "2026-03-22T09:04:26.170Z",
-  "lastProcessed": "shadowlands-west-end-2026/london-box-office--stuart-king.json",
-  "log": []
+  "lastProcessed": "im-sorry-prime-minister-west-end-2026/telegraph--dominic-cavendish.json",
+  "log": [
+    {
+      "t": "2026-03-22T09:19:17.595Z",
+      "event": "bb-session",
+      "session": "072e69a4",
+      "url": "https://www.thestage.co.uk/long-reviews/the-hills-of-california-review-at-harold"
+    },
+    {
+      "t": "2026-03-22T09:19:57.683Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    27 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
+    }
+  ]
 }
