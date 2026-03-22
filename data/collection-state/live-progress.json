@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-22T16:36:27.836Z",
-  "processed": 373,
-  "failed": 720,
-  "successRate": "34.1%",
+  "updatedAt": "2026-03-22T16:38:55.168Z",
+  "processed": 382,
+  "failed": 721,
+  "successRate": "34.6%",
   "tierBreakdown": {
-    "playwright": 325,
+    "playwright": 332,
     "amp": 12,
     "browserbase": 16,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 32,
-    "archive": 36
+    "archive": 38
   },
-  "browserbaseSessions": 13,
+  "browserbaseSessions": 14,
   "recentActivity": [
-    {
-      "t": "2026-03-22T16:08:58.131Z",
-      "event": "bb-session",
-      "session": "993f2cc3",
-      "url": "https://www.amny.com/news/review-marcel-on-the-train-finds-bravery/"
-    },
-    {
-      "t": "2026-03-22T16:08:59.600Z",
-      "event": "bb-cookie-inject",
-      "domain": "amny.com"
-    },
     {
       "t": "2026-03-22T16:10:28.577Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-22T16:35:26.393Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-22T16:36:44.729Z",
+      "event": "bb-session",
+      "session": "5350998b",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-03-22T16:36:46.022Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

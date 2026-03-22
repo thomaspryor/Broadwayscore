@@ -372,7 +372,16 @@
     "paddington-the-musical-west-end-2025/theatre-weekly--greg-stewart.json",
     "paddington-the-musical-west-end-2025/times-uk--unknown.json",
     "paddington-the-musical-west-end-2025/whatsonstage--sarah-crompton.json",
-    "ragtime-2025/nyt-theater--unknown.json"
+    "ragtime-2025/nyt-theater--unknown.json",
+    "ragtime-2025/timeout--adam-feldman.json",
+    "ragtime-2025/wsj--charles-isherwood.json",
+    "ragtime-2025/american-theater-web--weinert-kendt.json",
+    "ragtime-2025/artsfuse--unknown.json",
+    "ragtime-2025/frontmezzjunkies--unknown.json",
+    "ragtime-2025/nysr--unknown.json",
+    "ragtime-2025/stageandcinema--unknown.json",
+    "ragtime-2025/theater-life--samuel-l-leiter.json",
+    "the-producers-west-end-2025/timeout--andrzej-lukowski.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -1094,7 +1103,8 @@
     "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/talkinbroadway--unknown.json",
     "paddington-the-musical-west-end-2025/south-london--michael-holland.json",
     "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
-    "ragtime-2025/nytimes--unknown.json"
+    "ragtime-2025/nytimes--unknown.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1423,7 +1433,14 @@
       "paddington-the-musical-west-end-2025/theatre-weekly--greg-stewart.json",
       "paddington-the-musical-west-end-2025/times-uk--unknown.json",
       "paddington-the-musical-west-end-2025/whatsonstage--sarah-crompton.json",
-      "ragtime-2025/nyt-theater--unknown.json"
+      "ragtime-2025/nyt-theater--unknown.json",
+      "ragtime-2025/timeout--adam-feldman.json",
+      "ragtime-2025/artsfuse--unknown.json",
+      "ragtime-2025/frontmezzjunkies--unknown.json",
+      "ragtime-2025/nysr--unknown.json",
+      "ragtime-2025/stageandcinema--unknown.json",
+      "ragtime-2025/theater-life--samuel-l-leiter.json",
+      "the-producers-west-end-2025/timeout--andrzej-lukowski.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -1530,11 +1547,13 @@
       "two-strangers-bway-2025/chicagotribune--unknown.json",
       "all-my-sons-west-end-2025/timeout-london--andrzej-lukowski.json",
       "all-my-sons-west-end-2025/broadwayworld--unknown.json",
-      "paddington-the-musical-west-end-2025/south-london--michael-holland.json"
+      "paddington-the-musical-west-end-2025/south-london--michael-holland.json",
+      "ragtime-2025/wsj--charles-isherwood.json",
+      "ragtime-2025/american-theater-web--weinert-kendt.json"
     ]
   },
   "startTime": "2026-03-22T09:04:26.170Z",
-  "lastProcessed": "ragtime-2025/nytimes--unknown.json",
+  "lastProcessed": "the-producers-west-end-2025/timeout--andrzej-lukowski.json",
   "log": [
     {
       "t": "2026-03-22T09:19:17.595Z",
@@ -1701,6 +1720,17 @@
       "t": "2026-03-22T16:35:26.393Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-22T16:36:44.729Z",
+      "event": "bb-session",
+      "session": "5350998b",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-03-22T16:36:46.022Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
