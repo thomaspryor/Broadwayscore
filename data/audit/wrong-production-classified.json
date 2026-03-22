@@ -1,86 +1,16 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-21T23:50:42.112Z",
+    "generatedAt": "2026-03-21T23:58:28.570Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 75,
-    "classified": 4,
-    "wrongProduction": 2,
-    "correctProduction": 2,
+    "total": 73,
+    "classified": 0,
+    "wrongProduction": 0,
+    "correctProduction": 0,
     "uncertain": 0,
     "errors": 0,
-    "wrongHighConfidence": 2,
+    "wrongHighConfidence": 0,
     "wrongMediumConfidence": 0
   },
-  "results": [
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "jasonraize--nelson-pressley.json",
-      "outlet": "jasonraize",
-      "criticName": "Nelson Pressley",
-      "publishDate": null,
-      "originalSignals": [
-        "year 1998 in text matches revival the-lion-king-west-end-2021",
-        "modern references: masks"
-      ],
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review discusses the Broadway opening of 'The Lion King' and mentions Julie Taymor, the director of the 1997 production. It also mentions the New Amsterdam Theatre, which is associated with the 1997 production."
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "streetdirectory--unknown.json",
-      "outlet": "streetdirectory",
-      "criticName": "Unknown",
-      "publishDate": null,
-      "originalSignals": [
-        "modern references: masks"
-      ],
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review mentions the Broadway production, the Minskoff Theater, and the opening in Minneapolis in 1997 before moving to Broadway. It also mentions popular songs from the Disney film and characters from the show."
-    },
-    {
-      "showId": "miss-saigon-1991",
-      "showTitle": "Miss Saigon",
-      "showYear": 1991,
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "outlet": "Lighting & Sound America",
-      "criticName": "David Barbour",
-      "publishDate": null,
-      "originalSignals": [
-        "revival text signals: revival, new production",
-        "year 2017 in text matches revival miss-saigon-2017",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "miss-saigon-2017",
-      "reasoning": "The review explicitly refers to the 2017 revival and its director, Laurence Connor. It also mentions the original 1992 Broadway production, but the focus is clearly on the 2017 mounting."
-    },
-    {
-      "showId": "miss-saigon-1991",
-      "showTitle": "Miss Saigon",
-      "showYear": 1991,
-      "file": "talkinbroadway--matthew-murray.json",
-      "outlet": "Talkin' Broadway",
-      "criticName": "Matthew Murray",
-      "publishDate": null,
-      "originalSignals": [
-        "revival text signals: revival, new production, new revival",
-        "year 2017 in text matches revival miss-saigon-2017",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "miss-saigon-2017",
-      "reasoning": "The review mentions the 2017 revival cast (Jon Jon Briones, Eva Noblezada, Alistair Brammer, and Katie Rose Clarke) and director (Laurence Connor), and the publish date is March 23, 2017."
-    }
-  ]
+  "results": []
 }
