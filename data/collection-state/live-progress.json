@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-22T15:51:35.960Z",
-  "processed": 205,
-  "failed": 698,
-  "successRate": "22.7%",
+  "updatedAt": "2026-03-22T15:56:31.958Z",
+  "processed": 214,
+  "failed": 699,
+  "successRate": "23.4%",
   "tierBreakdown": {
-    "playwright": 174,
-    "amp": 2,
-    "browserbase": 4,
+    "playwright": 181,
+    "amp": 4,
+    "browserbase": 6,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 24,
+    "archiveToday": 25,
     "archive": 29
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-03-22T09:19:17.595Z",
@@ -59,6 +59,17 @@
       "t": "2026-03-22T15:41:42.821Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-22T15:55:33.919Z",
+      "event": "bb-session",
+      "session": "cddc1e46",
+      "url": "https://www.nytimes.com/2026/03/20/theater/plays-tru-ferguson-the-fever-shawn.ht"
+    },
+    {
+      "t": "2026-03-22T15:55:35.417Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

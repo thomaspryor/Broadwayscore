@@ -204,7 +204,16 @@
     "zack-off-broadway-2026/theater-scene--marc-miller.json",
     "zack-off-broadway-2026/theater-scene--victor-gluck.json",
     "trash-off-broadway-2026/nyt-theater--unknown.json",
-    "trash-off-broadway-2026/nytg--allison-considine.json"
+    "trash-off-broadway-2026/nytg--allison-considine.json",
+    "trash-off-broadway-2026/theatermania--zachary-stewart.json",
+    "tru-off-broadway-2026/nytg--unknown.json",
+    "tru-off-broadway-2026/nytimes--unknown.json",
+    "tru-off-broadway-2026/thewrap--unknown.json",
+    "tru-off-broadway-2026/nysr--unknown.json",
+    "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+    "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json",
+    "burnout-paradise-off-broadway-2026/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -904,7 +913,8 @@
     "every-brilliant-thing-2026/nytimes--adam-feldman.json",
     "bughouse-off-broadway-2026/vulture--sara-holdren.json",
     "bughouse-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json"
+    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json",
+    "tru-off-broadway-2026/vulture--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1082,17 +1092,28 @@
       "zack-off-broadway-2026/theater-scene--marc-miller.json",
       "zack-off-broadway-2026/theater-scene--victor-gluck.json",
       "trash-off-broadway-2026/nyt-theater--unknown.json",
-      "trash-off-broadway-2026/nytg--allison-considine.json"
+      "trash-off-broadway-2026/nytg--allison-considine.json",
+      "trash-off-broadway-2026/theatermania--zachary-stewart.json",
+      "tru-off-broadway-2026/nytg--unknown.json",
+      "tru-off-broadway-2026/nysr--unknown.json",
+      "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+      "burnout-paradise-off-broadway-2026/nytg--gillian-russo.json",
+      "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json",
+      "burnout-paradise-off-broadway-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
-      "every-brilliant-thing-2026/thewrap--robert-hofler.json"
+      "every-brilliant-thing-2026/thewrap--robert-hofler.json",
+      "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
+      "tru-off-broadway-2026/thewrap--unknown.json"
     ],
     "browserbase": [
       "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
       "every-brilliant-thing-2026/deadline--unknown.json",
       "data/review-texts/every-brilliant-thing-2026/amny--matt-windman.json",
-      "every-brilliant-thing-2026/amny--matt-windman.json"
+      "every-brilliant-thing-2026/amny--matt-windman.json",
+      "data/review-texts/tru-off-broadway-2026/nytimes--unknown.json",
+      "tru-off-broadway-2026/nytimes--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -1121,7 +1142,8 @@
       "data/review-texts/touch-off-broadway-2026/talkinbroadway--unknown.json",
       "data/review-texts/touch-off-broadway-2026/talkinbroadway--howard-miller.json",
       "data/review-texts/every-brilliant-thing-2026/nytimes--adam-feldman.json",
-      "data/review-texts/bughouse-off-broadway-2026/vulture--sara-holdren.json"
+      "data/review-texts/bughouse-off-broadway-2026/vulture--sara-holdren.json",
+      "data/review-texts/tru-off-broadway-2026/vulture--unknown.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -1156,7 +1178,7 @@
     ]
   },
   "startTime": "2026-03-22T09:04:26.170Z",
-  "lastProcessed": "trash-off-broadway-2026/nytg--allison-considine.json",
+  "lastProcessed": "burnout-paradise-off-broadway-2026/theatermania--zachary-stewart.json",
   "log": [
     {
       "t": "2026-03-22T09:19:17.595Z",
@@ -1202,6 +1224,17 @@
       "t": "2026-03-22T15:41:42.821Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-22T15:55:33.919Z",
+      "event": "bb-session",
+      "session": "cddc1e46",
+      "url": "https://www.nytimes.com/2026/03/20/theater/plays-tru-ferguson-the-fever-shawn.ht"
+    },
+    {
+      "t": "2026-03-22T15:55:35.417Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
