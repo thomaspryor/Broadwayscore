@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-22T02:25:48.058Z",
+  "timestamp": "2026-03-22T02:35:28.831Z",
   "stats": {
     "totalReviews": 32077,
-    "alreadyFlagged": 10740,
+    "alreadyFlagged": 10745,
     "dateGuardCatches": 138,
-    "directorMismatch": 950,
+    "directorMismatch": 949,
     "tvFilmSignals": 3391,
     "londonSignals": 1029,
     "offBroadwaySignals": 1010,
     "yearMismatch": 71,
-    "noPublishDate": 6875
+    "noPublishDate": 6870
   },
   "findings": [
     {
@@ -8907,19 +8907,6 @@
       "score": 81,
       "publishDate": "2021-12-13",
       "url": "https://www.timeout.com/london/theatre/cabaret-3",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
-        }
-      ]
-    },
-    {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "file": "times-uk--dominic-maxwell.json",
-      "publishDate": "2023-06-15",
-      "url": "https://www.thetimes.co.uk/article/romeo-and-juliet-review-star-crossed-lovers-shine-in-a-vague-setting-zxmcx7hgg",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
