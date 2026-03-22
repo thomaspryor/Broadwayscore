@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-22T07:55:05.661Z",
+  "timestamp": "2026-03-22T08:02:50.415Z",
   "stats": {
     "totalReviews": 32221,
-    "alreadyFlagged": 10769,
-    "dateGuardCatches": 140,
-    "directorMismatch": 948,
-    "tvFilmSignals": 3396,
+    "alreadyFlagged": 10780,
+    "dateGuardCatches": 141,
+    "directorMismatch": 950,
+    "tvFilmSignals": 3399,
     "londonSignals": 1030,
-    "offBroadwaySignals": 1009,
+    "offBroadwaySignals": 1010,
     "yearMismatch": 71,
-    "noPublishDate": 6938
+    "noPublishDate": 6903
   },
   "findings": [
     {
@@ -4963,6 +4963,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"streaming service\""
+        }
+      ]
+    },
+    {
+      "showId": "and-juliet-2022",
+      "file": "frontmezzjunkies--unknown.json",
+      "score": null,
+      "publishDate": "2022-12-23",
+      "url": "https://frontmezzjunkies.com/2022/12/23/juliet-the-new-broadway-musical/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"paramount\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -20893,6 +20912,20 @@
     },
     {
       "showId": "hamilton-west-end-2021",
+      "file": "timeout--andrzej-lukowski.json",
+      "score": 92,
+      "publishDate": "2025-09-29",
+      "url": "https://www.timeout.com/london/theatre/hamilton-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"thomas kail\" from hamilton-2015"
+        }
+      ]
+    },
+    {
+      "showId": "hamilton-west-end-2021",
       "file": "timeout--david-cote.json",
       "score": 95,
       "publishDate": "2025-09-29",
@@ -32622,6 +32655,20 @@
       ]
     },
     {
+      "showId": "mj-2022",
+      "file": "washpost--unknown.json",
+      "score": null,
+      "publishDate": "2022-06-06",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/06/06/myles-frost-michael-jackson-mj/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"paramount\""
+        }
+      ]
+    },
+    {
       "showId": "mj-the-musical-west-end-2024",
       "file": "artsdesk--helen-hawkins.json",
       "score": 73,
@@ -37195,6 +37242,24 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 324d before show (2023-05-10 vs 2024-03-29)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "london-box-office--unknown.json",
+      "publishDate": "2023-05-26",
+      "url": "https://www.londonboxoffice.co.uk/news/post/operation-mincemeat-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 308d before show (2023-05-26 vs 2024-03-29)"
         },
         {
           "type": "DIRECTOR_MISMATCH",
@@ -51091,6 +51156,20 @@
     },
     {
       "showId": "the-great-gatsby-2024",
+      "file": "frontmezzjunkies--unknown.json",
+      "score": null,
+      "publishDate": "2024-04-29",
+      "url": "https://frontmezzjunkies.com/2024/04/29/broadway-great-gatsby/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-2024",
       "file": "guardian--gloria-oladipo.json",
       "score": 42,
       "publishDate": "2024-04-25",
@@ -64747,20 +64826,6 @@
       ]
     },
     {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "file": "london-theatre--marianka-swain.json",
-      "score": 84,
-      "publishDate": null,
-      "url": "https://www.londontheatre.co.uk/reviews/next-to-normal-review-donmar-warehouse",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
-        }
-      ]
-    },
-    {
       "showId": "caroline-or-change-2004",
       "file": "newsday--linda-winer.json",
       "publishDate": "2004-05-03",
@@ -68563,6 +68628,20 @@
       "score": 92,
       "publishDate": "2015-08-06",
       "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton-theater-813145/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "nbcnews--unknown.json",
+      "score": null,
+      "publishDate": "2015-08-06",
+      "url": "https://www.nbcnews.com/news/latino/lin-manuel-mirandas-hamilton-opens-broadway-n404596",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
