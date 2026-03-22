@@ -21,7 +21,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Import deduplication module for duplicate detection
-const { isLondonMarket } = require('./lib/venue-classification');
+const { isLondonMarket, isWestEndVenue, isOffWestEndVenue } = require('./lib/venue-classification');
 let checkForDuplicate;
 try {
   const dedup = require('./lib/deduplication');
@@ -349,6 +349,67 @@ function validateImageUrls(shows) {
 
   if (invalid === 0 && placeholders === 0) {
     ok('All image URLs are valid (no placeholders)');
+  }
+}
+
+// ===========================================
+// VENUE vs CATEGORY CROSS-CHECK
+// ===========================================
+
+function validateVenueCategory(shows) {
+  info('Cross-checking venue against category...');
+  let mismatches = 0;
+
+  for (const show of shows) {
+    if (!show.venue || show.venue === 'TBA' || !isLondonMarket(show.category)) continue;
+
+    if (show.category === 'off-west-end' && isWestEndVenue(show.venue)) {
+      warn(`"${show.title}" (${show.id}) is at West End venue "${show.venue}" but categorised as off-west-end`);
+      mismatches++;
+    } else if (show.category === 'west-end' && isOffWestEndVenue(show.venue)) {
+      warn(`"${show.title}" (${show.id}) is at off-West End venue "${show.venue}" but categorised as west-end`);
+      mismatches++;
+    }
+  }
+
+  if (mismatches === 0) {
+    ok('All London show venues match their category');
+  }
+}
+
+// ===========================================
+// IMAGE FILE EXISTENCE CHECK
+// ===========================================
+
+function validateImageFiles(shows) {
+  info('Checking local image files exist on disk...');
+  const IMAGES_DIR = path.join(__dirname, '..', 'public');
+  let missing = 0;
+  let upgradeable = 0;
+
+  for (const show of shows) {
+    if (!show.images) continue;
+    for (const [key, url] of Object.entries(show.images)) {
+      if (!url || typeof url !== 'string' || !url.startsWith('/images/')) continue;
+      const filePath = path.join(IMAGES_DIR, url);
+      if (!fs.existsSync(filePath)) {
+        // Check if a .webp version exists when .jpg is referenced
+        if (url.endsWith('.jpg')) {
+          const webpPath = path.join(IMAGES_DIR, url.replace(/\.jpg$/, '.webp'));
+          if (fs.existsSync(webpPath)) {
+            warn(`"${show.title}" (${show.id}) ${key} points to missing .jpg but .webp exists — should upgrade`);
+            upgradeable++;
+            continue;
+          }
+        }
+        warn(`"${show.title}" (${show.id}) ${key} references missing file: ${url}`);
+        missing++;
+      }
+    }
+  }
+
+  if (missing === 0 && upgradeable === 0) {
+    ok('All local image paths resolve to files on disk');
   }
 }
 
@@ -3104,6 +3165,8 @@ function runValidation() {
   validateDates(shows);
   validateSlugs(shows);
   validateImageUrls(shows);
+  validateImageFiles(shows);
+  validateVenueCategory(shows);
   console.log('');
   validateSynopsisQuality(shows);
   validateCreativeTeamQuality(shows);

@@ -14,6 +14,7 @@ const WEST_END_VENUES = new Set(venueList);
 function normalizeVenueName(venue) {
   if (!venue) return '';
   return venue.trim().toLowerCase()
+    .replace(/[\u2018\u2019\u2032]/g, "'") // Normalize curly/prime apostrophes to straight
     .replace(/\s*\(.*\)$/, '')       // Strip parenthetical (e.g., "(National Theatre)")
     .replace(/ theatre$| theater$/, ''); // Strip trailing "Theatre"/"Theater"
 }

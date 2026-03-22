@@ -85,8 +85,10 @@ try {
 
   // Orphan image auto-fix: shows with null image references but local files on disk.
   // This catches data/file mismatches from the dedup logic or private repo staleness.
+  // Also upgrades .jpg → .webp when a .webp file exists on disk (legacy backfill cleanup).
   const IMAGES_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
   let orphansFixed = 0;
+  let jpgUpgraded = 0;
   for (const show of shows) {
     if (!show || !show.id) continue;
     const dir = path.join(IMAGES_DIR, show.id);
@@ -97,14 +99,31 @@ try {
 
     if (!show.images) show.images = {};
     let fixed = false;
+
+    // Fix null refs → .webp on disk
     if (!show.images.hero && hasHero) { show.images.hero = `/images/shows/${show.id}/hero.webp`; fixed = true; }
     if (!show.images.poster && hasPoster) { show.images.poster = `/images/shows/${show.id}/poster.webp`; fixed = true; }
     if (!show.images.thumbnail && hasThumb) { show.images.thumbnail = `/images/shows/${show.id}/thumbnail.webp`; fixed = true; }
+
+    // Upgrade .jpg → .webp when .webp exists on disk
+    for (const key of ['hero', 'poster', 'thumbnail']) {
+      const val = show.images[key];
+      if (val && typeof val === 'string' && val.endsWith('.jpg') && val.startsWith('/images/')) {
+        const webpExists = fs.existsSync(path.join(dir, `${key}.webp`));
+        if (webpExists) {
+          show.images[key] = val.replace(/\.jpg$/, '.webp');
+          jpgUpgraded++;
+          fixed = true;
+        }
+      }
+    }
+
     if (fixed) orphansFixed++;
   }
-  if (orphansFixed > 0) {
+  if (orphansFixed > 0 || jpgUpgraded > 0) {
     fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2));
-    ok(`Auto-fixed ${orphansFixed} shows with orphan image files (null refs but files on disk)`);
+    if (orphansFixed > 0) ok(`Auto-fixed ${orphansFixed} shows with orphan/outdated image refs`);
+    if (jpgUpgraded > 0) ok(`Upgraded ${jpgUpgraded} image paths from .jpg → .webp`);
   }
 
 } catch (e) {
