@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-22T01:47:52.862Z",
+  "timestamp": "2026-03-22T02:18:14.954Z",
   "stats": {
     "totalReviews": 32077,
-    "alreadyFlagged": 10733,
+    "alreadyFlagged": 10740,
     "dateGuardCatches": 138,
-    "directorMismatch": 949,
+    "directorMismatch": 950,
     "tvFilmSignals": 3391,
     "londonSignals": 1029,
     "offBroadwaySignals": 1010,
     "yearMismatch": 71,
-    "noPublishDate": 6882
+    "noPublishDate": 6875
   },
   "findings": [
     {
@@ -37311,6 +37311,25 @@
       "score": 82,
       "publishDate": "2023-05-10",
       "url": "https://www.timeout.com/london/theatre/operation-mincemeat-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 324d before show (2023-05-10 vs 2024-03-29)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "times-uk--clive-davis.json",
+      "score": 85,
+      "publishDate": "2023-05-10",
+      "url": "https://www.thetimes.co.uk/article/operation-mincemeat-review-a-gloriously-inventive-wartime-romp-jwsrjdkvw",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -74937,20 +74956,6 @@
       "score": 92,
       "publishDate": "2023-05-10",
       "url": "https://www.thestage.co.uk/reviews/operation-mincemeat-review-fortune-theatre-london-spitlip-david-cumming-felix-hagan-natasha-hodgson-zoe-roberts",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 324d before show (2023-05-10 vs 2024-03-29)"
-        }
-      ]
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
-      "file": "times-uk--clive-davis.json",
-      "score": 85,
-      "publishDate": "2023-05-10",
-      "url": "https://www.thetimes.co.uk/article/operation-mincemeat-review-a-gloriously-inventive-wartime-romp-jwsrjdkvw",
       "findings": [
         {
           "type": "DATE_GUARD",
