@@ -460,7 +460,12 @@
     "a-moon-for-the-misbegotten-2007/guardian--arifa-akbar.json",
     "the-weir-1999/guardian--chris-wiegand.json",
     "the-weir-1999/independent--alice-saville.json",
-    "the-weir-1999/whatsonstage--sarah-crompton.json"
+    "the-weir-1999/whatsonstage--sarah-crompton.json",
+    "the-bacchae-1980/guardian--arifa-akbar.json",
+    "the-bacchae-1980/independent--alice-saville.json",
+    "the-bacchae-1980/times-uk--clive-davis.json",
+    "the-lady-from-the-sea-1976/independent--alice-saville.json",
+    "the-lady-from-the-sea-1976/whatsonstage--sarah-crompton.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -1204,7 +1209,12 @@
     "grease-2007/guardian--emma-john.json",
     "the-weir-1999/daily-mail--patrick-marmion.json",
     "the-weir-1999/thestage--sam-marlowe.json",
-    "the-weir-1999/times-uk--clive-davis.json"
+    "the-weir-1999/times-uk--clive-davis.json",
+    "brigadoon-1980/thestage--holly-o.json",
+    "brigadoon-1980/times-uk--clive-davis.json",
+    "the-bacchae-1980/thestage--holly-o.json",
+    "the-lady-from-the-sea-1976/guardian--arifa-akbar.json",
+    "the-lady-from-the-sea-1976/times-uk--dominic-maxwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1604,7 +1614,11 @@
       "a-moon-for-the-misbegotten-2007/guardian--arifa-akbar.json",
       "the-weir-1999/guardian--chris-wiegand.json",
       "the-weir-1999/independent--alice-saville.json",
-      "the-weir-1999/whatsonstage--sarah-crompton.json"
+      "the-weir-1999/whatsonstage--sarah-crompton.json",
+      "the-bacchae-1980/guardian--arifa-akbar.json",
+      "the-bacchae-1980/independent--alice-saville.json",
+      "the-lady-from-the-sea-1976/independent--alice-saville.json",
+      "the-lady-from-the-sea-1976/whatsonstage--sarah-crompton.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -1702,7 +1716,12 @@
       "data/review-texts/grease-2007/guardian--emma-john.json",
       "data/review-texts/the-weir-1999/daily-mail--patrick-marmion.json",
       "data/review-texts/the-weir-1999/thestage--sam-marlowe.json",
-      "data/review-texts/the-weir-1999/times-uk--clive-davis.json"
+      "data/review-texts/the-weir-1999/times-uk--clive-davis.json",
+      "data/review-texts/brigadoon-1980/thestage--holly-o.json",
+      "data/review-texts/brigadoon-1980/times-uk--clive-davis.json",
+      "data/review-texts/the-bacchae-1980/thestage--holly-o.json",
+      "data/review-texts/the-lady-from-the-sea-1976/guardian--arifa-akbar.json",
+      "data/review-texts/the-lady-from-the-sea-1976/times-uk--dominic-maxwell.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -1753,11 +1772,12 @@
       "evita-2012/daily-mail--patrick-marmion.json",
       "evita-2012/thestage--sam-marlowe.json",
       "evita-2012/times-uk--clive-davis.json",
-      "a-steady-rain-2009/latimes--unknown.json"
+      "a-steady-rain-2009/latimes--unknown.json",
+      "the-bacchae-1980/times-uk--clive-davis.json"
     ]
   },
   "startTime": "2026-03-22T09:04:26.170Z",
-  "lastProcessed": "the-weir-1999/whatsonstage--sarah-crompton.json",
+  "lastProcessed": "the-lady-from-the-sea-1976/whatsonstage--sarah-crompton.json",
   "log": [
     {
       "t": "2026-03-22T09:19:17.595Z",
@@ -2043,6 +2063,28 @@
     },
     {
       "t": "2026-03-22T19:08:18.227Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-22T19:10:50.706Z",
+      "event": "bb-session",
+      "session": "80287b9e",
+      "url": "https://www.thestage.co.uk/reviews/brigadoon-review-brigadoon-review-at-regents-"
+    },
+    {
+      "t": "2026-03-22T19:10:51.803Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-22T19:13:04.436Z",
+      "event": "bb-session",
+      "session": "f305f459",
+      "url": "https://www.thestage.co.uk/reviews/bacchae-review-olivier-theatre-national-theat"
+    },
+    {
+      "t": "2026-03-22T19:13:05.560Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }

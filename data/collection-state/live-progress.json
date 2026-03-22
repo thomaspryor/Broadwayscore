@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-22T19:09:42.870Z",
-  "processed": 461,
-  "failed": 742,
-  "successRate": "38.3%",
+  "updatedAt": "2026-03-22T19:14:50.666Z",
+  "processed": 466,
+  "failed": 747,
+  "successRate": "38.4%",
   "tierBreakdown": {
-    "playwright": 396,
+    "playwright": 400,
     "amp": 12,
     "browserbase": 24,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 53,
-    "archive": 49
+    "archiveToday": 58,
+    "archive": 50
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-03-22T16:43:05.320Z",
-      "event": "bb-session",
-      "session": "9df3ed99",
-      "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
-    },
-    {
-      "t": "2026-03-22T16:43:06.611Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-22T16:44:08.754Z",
-      "event": "bb-session",
-      "session": "720f40a2",
-      "url": "https://variety.com/2025/legit/reviews/hercules-review-musical-west-end-12364392"
-    },
-    {
-      "t": "2026-03-22T16:44:10.192Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-03-22T18:44:59.163Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-03-22T19:08:18.227Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-22T19:10:50.706Z",
+      "event": "bb-session",
+      "session": "80287b9e",
+      "url": "https://www.thestage.co.uk/reviews/brigadoon-review-brigadoon-review-at-regents-"
+    },
+    {
+      "t": "2026-03-22T19:10:51.803Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-22T19:13:04.436Z",
+      "event": "bb-session",
+      "session": "f305f459",
+      "url": "https://www.thestage.co.uk/reviews/bacchae-review-olivier-theatre-national-theat"
+    },
+    {
+      "t": "2026-03-22T19:13:05.560Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
