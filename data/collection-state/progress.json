@@ -317,7 +317,12 @@
     "the-monsters-off-broadway-2026/new-york-sun--elysa-gardner.json",
     "the-monsters-off-broadway-2026/theatermania--pete-hempstead.json",
     "the-monsters-off-broadway-2026/timeout--unknown.json",
-    "the-monsters-off-broadway-2026/theatrely--unknown.json"
+    "the-monsters-off-broadway-2026/theatrely--unknown.json",
+    "the-monsters-off-broadway-2026/theater-pizzazz--ron-fassler.json",
+    "the-monsters-off-broadway-2026/theater-scene--victor-gluck.json",
+    "an-ark-off-broadway-2026/newyorker--emily-nussbaum.json",
+    "an-ark-off-broadway-2026/nytg--kyle-turner.json",
+    "data-off-broadway-2026/nyt-theater--jonathan-mandell.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -1024,7 +1029,12 @@
     "the-holy-rosenbergs-west-end-2026/guardian--david-jays.json",
     "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
     "shadowlands-west-end-2026/times-uk--clive-davis.json",
-    "the-unknown-off-broadway-2026/wsj--unknown.json"
+    "the-unknown-off-broadway-2026/wsj--unknown.json",
+    "the-tempest-globe-west-end-2026/british-theatre--howard-loxton.json",
+    "the-tempest-globe-west-end-2026/telegraph--dominic-cavendish.json",
+    "an-ark-off-broadway-2026/nytimes--unknown.json",
+    "an-ark-off-broadway-2026/wsj--unknown.json",
+    "an-ark-off-broadway-2026/playbill--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1305,7 +1315,11 @@
       "the-monsters-off-broadway-2026/new-york-sun--elysa-gardner.json",
       "the-monsters-off-broadway-2026/theatermania--pete-hempstead.json",
       "the-monsters-off-broadway-2026/timeout--unknown.json",
-      "the-monsters-off-broadway-2026/theatrely--unknown.json"
+      "the-monsters-off-broadway-2026/theatrely--unknown.json",
+      "the-monsters-off-broadway-2026/theater-pizzazz--ron-fassler.json",
+      "the-monsters-off-broadway-2026/theater-scene--victor-gluck.json",
+      "an-ark-off-broadway-2026/nytg--kyle-turner.json",
+      "data-off-broadway-2026/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -1363,7 +1377,8 @@
       "data/review-texts/bughouse-off-broadway-2026/vulture--sara-holdren.json",
       "data/review-texts/tru-off-broadway-2026/vulture--unknown.json",
       "data/review-texts/bigfoot-off-broadway-2026/buy-tickets--unknown.json",
-      "data/review-texts/the-holy-rosenbergs-west-end-2026/guardian--david-jays.json"
+      "data/review-texts/the-holy-rosenbergs-west-end-2026/guardian--david-jays.json",
+      "data/review-texts/an-ark-off-broadway-2026/nytimes--unknown.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -1396,11 +1411,12 @@
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theatre-is-easy--brooke-viegut.json",
       "mother-russia-off-broadway-2026/theater-pizzazz--ron-fassler.json",
-      "antigone-this-play-i-read-in-high-school-off-broadway-2026/vulture--sara-holdren.json"
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/vulture--sara-holdren.json",
+      "an-ark-off-broadway-2026/newyorker--emily-nussbaum.json"
     ]
   },
   "startTime": "2026-03-22T09:04:26.170Z",
-  "lastProcessed": "the-monsters-off-broadway-2026/theatrely--unknown.json",
+  "lastProcessed": "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
   "log": [
     {
       "t": "2026-03-22T09:19:17.595Z",
@@ -1490,6 +1506,28 @@
       "t": "2026-03-22T16:12:57.503Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-22T16:15:36.123Z",
+      "event": "bb-session",
+      "session": "77134090",
+      "url": "https://www.nytimes.com/2026/01/12/theater/ark-ian-mckellen-shed.html"
+    },
+    {
+      "t": "2026-03-22T16:15:37.530Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-22T16:16:39.542Z",
+      "event": "bb-session",
+      "session": "cdd6aea2",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-22T16:16:40.943Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
