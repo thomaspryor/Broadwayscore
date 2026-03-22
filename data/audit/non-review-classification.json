@@ -1,20 +1,20 @@
 {
   "meta": {
-    "generatedAt": "2026-03-21T23:58:26.021Z",
+    "generatedAt": "2026-03-22T00:05:48.357Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 32764,
-      "inReviewsJson": 16128,
+      "inReviewsJson": 16129,
       "skippedExcluded": 58,
-      "withFullText": 19,
+      "withFullText": 20,
       "excerptOnly": 2171,
-      "llmClassified": 18,
+      "llmClassified": 19,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
       "uncertainCases": 18,
-      "budgetUsed": 0.0019000000000000006,
-      "llmCalls": 19,
+      "budgetUsed": 0.0020000000000000005,
+      "llmCalls": 20,
       "rateLimitHits": 0,
       "errors": 1,
       "skippedAlreadyClassified": 13880
@@ -29,8 +29,8 @@
       "outlet": "The Daily Beast",
       "outletId": "dailybeast",
       "contentType": "news",
-      "confidence": "medium",
-      "reasoning": "The article discusses the Tony Awards eligibility deadline and the rush of shows opening before the cutoff, which is a news item rather than a review of a specific show.",
+      "confidence": "low",
+      "reasoning": "The article mentions the Tony Awards eligibility deadline, suggesting it's a news piece about the Broadway season rather than a review of \"Dead Outlaw.\"",
       "currentScore": 72
     },
     {
@@ -40,7 +40,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and themes of \"Eclipsed\" and provides historical context, but it does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated theater news.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -70,7 +70,7 @@
       "outletId": "huffpost",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be a collection of news headlines and trending topics, not a review of \"First Date.\"",
+      "reasoning": "The article appears to be a collection of news headlines and trending topics, rather than a review of 'First Date'. The presence of sections like 'What's Hot' and trending articles indicates a news aggregation format.",
       "currentScore": 62
     },
     {
@@ -80,7 +80,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain any evaluative content about \"Funny Girl\".",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain evaluative content about \"Funny Girl\".",
       "currentScore": 62
     },
     {
@@ -100,7 +100,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of various cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter, which lists various cultural events and articles. While 'Liberation' is mentioned, there is no evaluative content about the show itself within this excerpt.",
       "currentScore": 88
     },
     {
@@ -110,7 +110,7 @@
       "outletId": "frequentbusinesstraveler",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and setting of \"Once on This Island\" without offering a critical evaluation or opinion on the quality of the production. It reads like a preview or summary of the show's story.",
+      "reasoning": "The article describes the plot and setting of \"Once on This Island\" without offering a critical evaluation or opinion on the quality of the production. It focuses on the story and characters, indicating a preview rather than a review.",
       "currentScore": 82
     },
     {
@@ -140,7 +140,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of categories and links related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -150,7 +150,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also transitions into an interview with an actor from Falsettos.",
+      "reasoning": "The article describes the show and its context within Broadway history, but it does not offer a critical evaluation or opinion about the quality of the production itself. It also includes an interview with an actor.",
       "currentScore": 83
     },
     {
@@ -160,7 +160,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -180,7 +180,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific content type. It's likely a dynamically generated page or search result.",
       "currentScore": 78
     },
     {
@@ -190,7 +190,7 @@
       "outletId": "vulture",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the set design and the playwright's intentions, but does not offer an evaluation or recommendation of the show itself. It focuses on the context and meaning behind the production's choices.",
+      "reasoning": "The article describes the set design and the playwright's intentions, but does not offer an evaluation or recommendation of the show itself. It reads more like a feature piece about the play's themes and context.",
       "currentScore": 64
     },
     {
@@ -205,6 +205,8 @@
     }
   ],
   "heuristicFlags": [],
-  "reviewsConfirmed": [],
+  "reviewsConfirmed": [
+    "cats-the-jellicle-ball-off-broadway-2024/billboard--joe-lynch.json"
+  ],
   "perShowSummary": []
 }
