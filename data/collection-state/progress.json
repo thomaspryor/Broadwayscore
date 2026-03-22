@@ -436,7 +436,16 @@
     "purlie-victorious-2023/theatres-leiter-side--samuel-l-leiter.json",
     "just-for-us-2023/independent--alice-saville.json",
     "just-for-us-2023/times-uk--dominic-maxwell.json",
-    "just-for-us-2023/whatsonstage--sarah-crompton.json"
+    "just-for-us-2023/whatsonstage--sarah-crompton.json",
+    "peter-pan-goes-wrong-2023/times-uk--clive-davis.json",
+    "peter-pan-goes-wrong-2023/whatsonstage--lucinda-everett.json",
+    "a-dolls-house-2023/theatres-leiter-side--samuel-l-leiter.json",
+    "the-collaboration-2022/theatres-leiter-side--samuel-l-leiter.json",
+    "aint-no-mo-2022/nyt-theater--jonathan-mandell.json",
+    "aint-no-mo-2022/theatres-leiter-side--samuel-l-leiter.json",
+    "topdog-underdog-2022/stagebuddy--elyse-trevers.json",
+    "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/vulture--helen-shaw.json",
+    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/theatres-leiter-side--samuel-l-leiter.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -1174,7 +1183,8 @@
     "stereophonic-2024/times-uk--clive-davis.json",
     "just-for-us-2023/guardian--arifa-akbar.json",
     "just-for-us-2023/thestage--sam-marlowe.json",
-    "peter-pan-goes-wrong-2023/guardian--arifa-akbar.json"
+    "peter-pan-goes-wrong-2023/guardian--arifa-akbar.json",
+    "the-bands-visit-2017/dc-metro-theater-arts--richard-seff.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1557,7 +1567,14 @@
       "stereophonic-2024/whatsonstage--sarah-crompton.json",
       "purlie-victorious-2023/theatres-leiter-side--samuel-l-leiter.json",
       "just-for-us-2023/independent--alice-saville.json",
-      "just-for-us-2023/whatsonstage--sarah-crompton.json"
+      "just-for-us-2023/whatsonstage--sarah-crompton.json",
+      "peter-pan-goes-wrong-2023/whatsonstage--lucinda-everett.json",
+      "a-dolls-house-2023/theatres-leiter-side--samuel-l-leiter.json",
+      "the-collaboration-2022/theatres-leiter-side--samuel-l-leiter.json",
+      "aint-no-mo-2022/nyt-theater--jonathan-mandell.json",
+      "aint-no-mo-2022/theatres-leiter-side--samuel-l-leiter.json",
+      "topdog-underdog-2022/stagebuddy--elyse-trevers.json",
+      "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/theatres-leiter-side--samuel-l-leiter.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -1593,7 +1610,9 @@
       "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
       "hercules-west-end-2025/variety--david-benedict.json",
       "data/review-texts/all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json",
-      "all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json"
+      "all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json",
+      "data/review-texts/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/vulture--helen-shaw.json",
+      "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/vulture--helen-shaw.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -1645,7 +1664,8 @@
       "data/review-texts/stereophonic-2024/times-uk--clive-davis.json",
       "data/review-texts/just-for-us-2023/guardian--arifa-akbar.json",
       "data/review-texts/just-for-us-2023/thestage--sam-marlowe.json",
-      "data/review-texts/peter-pan-goes-wrong-2023/guardian--arifa-akbar.json"
+      "data/review-texts/peter-pan-goes-wrong-2023/guardian--arifa-akbar.json",
+      "data/review-texts/the-bands-visit-2017/dc-metro-theater-arts--richard-seff.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -1691,11 +1711,12 @@
       "the-producers-west-end-2025/the-express--neil-norman.json",
       "wicked-west-end-2021/daily-mail--brian-viner.json",
       "burlesque-west-end-2026/the-express--stefan-kyriazis.json",
-      "just-for-us-2023/times-uk--dominic-maxwell.json"
+      "just-for-us-2023/times-uk--dominic-maxwell.json",
+      "peter-pan-goes-wrong-2023/times-uk--clive-davis.json"
     ]
   },
   "startTime": "2026-03-22T09:04:26.170Z",
-  "lastProcessed": "peter-pan-goes-wrong-2023/guardian--arifa-akbar.json",
+  "lastProcessed": "the-bands-visit-2017/dc-metro-theater-arts--richard-seff.json",
   "log": [
     {
       "t": "2026-03-22T09:19:17.595Z",
@@ -1950,6 +1971,17 @@
       "t": "2026-03-22T18:55:50.657Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-22T18:58:44.678Z",
+      "event": "bb-session",
+      "session": "f7f2d0ad",
+      "url": "https://variety.com/2022/legit/reviews/potus-review-play-broadway-1235253436/"
+    },
+    {
+      "t": "2026-03-22T18:58:45.805Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
