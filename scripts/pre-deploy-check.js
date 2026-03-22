@@ -46,7 +46,7 @@ try {
 let showCount = 0;
 try {
   const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
-  const shows = showsData.shows || showsData;
+  let shows = showsData.shows || showsData;
   if (!Array.isArray(shows)) throw new Error('shows.json is not an array');
   showCount = shows.length;
 
@@ -81,6 +81,44 @@ try {
     }
   } else {
     ok(`Show count: ${showCount} (no watermark yet)`);
+  }
+
+  // Auto-dedup: remove exact-title duplicates within the same market+venue.
+  // Only dedup London-market shows with 0 reviews (safe — no data loss).
+  // Broadway shows have legitimate same-title revivals at the same theater.
+  const titleKey = (s) => `${s.title}||${s.venue}||${s.category}`;
+  const statusPriority = { open: 3, previews: 2, upcoming: 1, closed: 0 };
+  const reviewsData = JSON.parse(fs.readFileSync(REVIEWS_PATH, 'utf8'));
+  const reviewsByShow = {};
+  for (const r of (reviewsData.reviews || reviewsData || [])) {
+    reviewsByShow[r.showId] = (reviewsByShow[r.showId] || 0) + 1;
+  }
+  const seen = new Map();
+  const toRemove = new Set();
+  for (const show of shows) {
+    if (show.category !== 'west-end' && show.category !== 'off-west-end') continue;
+    const key = titleKey(show);
+    if (seen.has(key)) {
+      const prev = seen.get(key);
+      const prevReviews = reviewsByShow[prev.id] || 0;
+      const currReviews = reviewsByShow[show.id] || 0;
+      // Only dedup if one entry has 0 reviews
+      if (prevReviews === 0 || currReviews === 0) {
+        if (currReviews > prevReviews || (currReviews === prevReviews && (statusPriority[show.status] || 0) > (statusPriority[prev.status] || 0))) {
+          toRemove.add(prev.id);
+          seen.set(key, show);
+        } else {
+          toRemove.add(show.id);
+        }
+      }
+    } else {
+      seen.set(key, show);
+    }
+  }
+  if (toRemove.size > 0) {
+    showsData.shows = shows.filter(s => !toRemove.has(s.id));
+    shows = showsData.shows;
+    ok(`Auto-removed ${toRemove.size} duplicate London show(s): ${[...toRemove].join(', ')}`);
   }
 
   // Orphan image auto-fix: shows with null image references but local files on disk.
