@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-22T19:00:06.348Z",
-  "processed": 446,
-  "failed": 737,
-  "successRate": "37.7%",
+  "updatedAt": "2026-03-22T19:05:02.041Z",
+  "processed": 455,
+  "failed": 738,
+  "successRate": "38.1%",
   "tierBreakdown": {
-    "playwright": 386,
+    "playwright": 391,
     "amp": 12,
-    "browserbase": 22,
+    "browserbase": 24,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 48,
-    "archive": 45
+    "archiveToday": 49,
+    "archive": 48
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-03-22T16:35:24.917Z",
-      "event": "bb-session",
-      "session": "7cc6fc4d",
-      "url": "https://www.nytimes.com/2025/10/16/theater/ragtime-review-henry-debessonet.html"
-    },
-    {
-      "t": "2026-03-22T16:35:26.393Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-22T16:36:44.729Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-22T18:58:45.805Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-22T19:01:36.729Z",
+      "event": "bb-session",
+      "session": "8a2866b8",
+      "url": "http://www.hollywoodreporter.com/review/harvey-fiersteins-casa-valentina-theater"
+    },
+    {
+      "t": "2026-03-22T19:01:37.897Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
