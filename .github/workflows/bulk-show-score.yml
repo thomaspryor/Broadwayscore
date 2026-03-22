@@ -141,6 +141,8 @@ jobs:
       - name: Run Show Score scraper (shard ${{ matrix.shard }})
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
           ARGS="--shows=missing --all --shard=${{ matrix.shard }} --total-shards=${{ needs.prepare.outputs.total_shards }}"
           LIMIT=${{ github.event.inputs.limit_per_shard || 0 }}
