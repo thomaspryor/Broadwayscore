@@ -4,6 +4,7 @@ import { useMemo, useCallback, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
+import { getMarketLabel } from '@/lib/venue-classification';
 import { getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/audience-grade-utils';
 import ShowImage from '@/components/ShowImage';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
@@ -283,7 +284,7 @@ function NVPPageInner({ shows, offBroadway }: { shows: NVPShow[]; offBroadway: N
                       show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'thumbnail') : null,
                       show.images?.hero ? getOptimizedImageUrl(show.images.hero, 'thumbnail') : null,
                     ]}
-                    alt={`${show.title} Broadway ${show.type}`}
+                    alt={`${show.title} ${getMarketLabel()} ${show.type}`}
                     priority={index < 4}
                     loading={index < 4 ? "eager" : "lazy"}
                     width={112}
