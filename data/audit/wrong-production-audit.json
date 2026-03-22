@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-22T08:58:48.553Z",
+  "timestamp": "2026-03-22T09:06:09.915Z",
   "stats": {
     "totalReviews": 32222,
-    "alreadyFlagged": 10791,
+    "alreadyFlagged": 10792,
     "dateGuardCatches": 141,
     "directorMismatch": 950,
-    "tvFilmSignals": 3401,
-    "londonSignals": 1030,
+    "tvFilmSignals": 3400,
+    "londonSignals": 1029,
     "offBroadwaySignals": 1011,
     "yearMismatch": 71,
-    "noPublishDate": 6891
+    "noPublishDate": 6890
   },
   "findings": [
     {
@@ -24954,11 +24954,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -37253,6 +37248,7 @@
     {
       "showId": "operation-mincemeat-west-end-2024",
       "file": "london-box-office--unknown.json",
+      "score": 78,
       "publishDate": "2023-05-26",
       "url": "https://www.londonboxoffice.co.uk/news/post/operation-mincemeat-review",
       "findings": [
@@ -81207,20 +81203,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-holy-rosenbergs-west-end-2026",
-      "file": "artsdesk--aleks-sierz.json",
-      "score": 78,
-      "publishDate": null,
-      "url": "https://theartsdesk.com/theatre/holy-rosenbergs-menier-chocolate-factory-review-still-timely-and-thought-provoking",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
