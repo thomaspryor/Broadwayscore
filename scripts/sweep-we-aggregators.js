@@ -555,9 +555,30 @@ async function sweepTheatreReviews(show) {
     }
   }
 
-  // SB render fallback — only for index URL (known-good, saves credits vs trying all variants)
+  // BrowserBase fallback — bypasses CleanTalk JS challenge (SB gets 401)
+  if (process.env.BROWSERBASE_API_KEY && indexUrl) {
+    await sleep(2000);
+    console.log(`    [TR] Trying BrowserBase for ${indexUrl.split('/reviews-roundup/')[1] || indexUrl}`);
+    try {
+      const html = await getStagePageViaBrowserBase(indexUrl);
+      if (html && html.length > 1000 && !html.includes('<title>Page not found') && !html.includes('404')) {
+        const reviews = extractTheatreReviews(html, show.id);
+        if (reviews.length > 0) {
+          if (!DRY_RUN) {
+            if (!fs.existsSync(archDir)) fs.mkdirSync(archDir, { recursive: true });
+            fs.writeFileSync(archivePath, html);
+          }
+          return reviews;
+        }
+      }
+    } catch (err) {
+      console.log(`    [TR] BB error: ${err.message.substring(0, 60)}`);
+    }
+  }
+
+  // SB render fallback — only for index URL
   if (SB_KEY && indexUrl) {
-    await sleep(2000); // Rate limit — CleanTalk blocks rapid requests
+    await sleep(2000);
     console.log(`    [TR] Trying ScrapingBee for ${indexUrl.split('/reviews-roundup/')[1] || indexUrl}`);
     const html = await scrapingBeeRender(indexUrl);
     if (html && html.length > 1000 && !html.includes('<title>Page not found') && !html.includes('404')) {
