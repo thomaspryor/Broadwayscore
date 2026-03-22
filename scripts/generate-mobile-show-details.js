@@ -192,7 +192,7 @@ for (const show of visibleShows) {
   // Minimum review thresholds per market (matches src/config/score-buckets.ts)
   const MIN_REVIEWS = 5;
   const MIN_REVIEWS_OFF_BROADWAY = 3;
-  const MIN_REVIEWS_WEST_END = 3;
+  const MIN_REVIEWS_WEST_END = 5;
   const T3_ONLY_EXTRA = 2;
   const isLondon = show.category === 'west-end' || show.category === 'off-west-end';
   let minReviews = show.category === 'off-broadway' ? MIN_REVIEWS_OFF_BROADWAY

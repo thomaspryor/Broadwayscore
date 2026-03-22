@@ -95,8 +95,8 @@ export const MIN_REVIEWS_FOR_SCORE = 5;
 /** Minimum reviews for off-Broadway (fewer reviews available in the ecosystem) */
 export const MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY = 3;
 
-/** Minimum reviews for West End (fewer UK outlets than Broadway) */
-export const MIN_REVIEWS_FOR_SCORE_WEST_END = 3;
+/** Minimum reviews for West End (matches Broadway — UK outlet ecosystem is large enough) */
+export const MIN_REVIEWS_FOR_SCORE_WEST_END = 5;
 
 /** Extra reviews required when all reviews are T3 (no T1/T2 coverage) */
 export const T3_ONLY_EXTRA_REVIEWS = 2;
