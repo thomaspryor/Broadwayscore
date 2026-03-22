@@ -167,7 +167,17 @@
     "touch-off-broadway-2026/plays-to-see--austin-fimmano.json",
     "touch-off-broadway-2026/theater-pizzazz--beatrice-williams-rude.json",
     "touch-off-broadway-2026/theater-scene--victor-gluck.json",
-    "every-brilliant-thing-2026/nytg--austin-fimmano.json"
+    "every-brilliant-thing-2026/nytg--austin-fimmano.json",
+    "every-brilliant-thing-2026/deadline--unknown.json",
+    "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
+    "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
+    "every-brilliant-thing-2026/thewrap--robert-hofler.json",
+    "every-brilliant-thing-2026/theatrely--unknown.json",
+    "every-brilliant-thing-2026/amny--matt-windman.json",
+    "every-brilliant-thing-2026/chicagotribune--chris-jones.json",
+    "every-brilliant-thing-2026/culturesauce--thom-geier.json",
+    "every-brilliant-thing-2026/exeunt-magazine--lane-williamson.json",
+    "every-brilliant-thing-2026/nysr--frank-scheck.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -1012,10 +1022,24 @@
       "touch-off-broadway-2026/blogcritics--jon-sobel.json",
       "touch-off-broadway-2026/theater-pizzazz--beatrice-williams-rude.json",
       "touch-off-broadway-2026/theater-scene--victor-gluck.json",
-      "every-brilliant-thing-2026/nytg--austin-fimmano.json"
+      "every-brilliant-thing-2026/nytg--austin-fimmano.json",
+      "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
+      "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
+      "every-brilliant-thing-2026/theatrely--unknown.json",
+      "every-brilliant-thing-2026/culturesauce--thom-geier.json",
+      "every-brilliant-thing-2026/exeunt-magazine--lane-williamson.json",
+      "every-brilliant-thing-2026/nysr--frank-scheck.json"
     ],
-    "amp": [],
-    "browserbase": [],
+    "amp": [
+      "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
+      "every-brilliant-thing-2026/thewrap--robert-hofler.json"
+    ],
+    "browserbase": [
+      "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
+      "every-brilliant-thing-2026/deadline--unknown.json",
+      "data/review-texts/every-brilliant-thing-2026/amny--matt-windman.json",
+      "every-brilliant-thing-2026/amny--matt-windman.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -1069,11 +1093,12 @@
       "a-dolls-house-part-2-2017/dc-metro-theater-arts--richard-seff.json",
       "my-joy-is-heavy-off-broadway-2025/vulture--sara-holdren.json",
       "touch-off-broadway-2026/broadwayworld--marina-kennedy.json",
-      "touch-off-broadway-2026/plays-to-see--austin-fimmano.json"
+      "touch-off-broadway-2026/plays-to-see--austin-fimmano.json",
+      "every-brilliant-thing-2026/chicagotribune--chris-jones.json"
     ]
   },
   "startTime": "2026-03-22T09:04:26.170Z",
-  "lastProcessed": "every-brilliant-thing-2026/nytimes--adam-feldman.json",
+  "lastProcessed": "every-brilliant-thing-2026/nysr--frank-scheck.json",
   "log": [
     {
       "t": "2026-03-22T09:19:17.595Z",
@@ -1097,6 +1122,28 @@
       "t": "2026-03-22T11:52:55.515Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-22T15:40:51.341Z",
+      "event": "bb-session",
+      "session": "1999c81a",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-22T15:40:52.869Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-22T15:41:41.551Z",
+      "event": "bb-session",
+      "session": "b34fecf1",
+      "url": "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing"
+    },
+    {
+      "t": "2026-03-22T15:41:42.821Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
