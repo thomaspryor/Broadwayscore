@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-22T02:35:28.831Z",
+  "timestamp": "2026-03-22T02:44:57.547Z",
   "stats": {
     "totalReviews": 32077,
-    "alreadyFlagged": 10745,
+    "alreadyFlagged": 10747,
     "dateGuardCatches": 138,
-    "directorMismatch": 949,
+    "directorMismatch": 950,
     "tvFilmSignals": 3391,
     "londonSignals": 1029,
-    "offBroadwaySignals": 1010,
+    "offBroadwaySignals": 1011,
     "yearMismatch": 71,
-    "noPublishDate": 6870
+    "noPublishDate": 6869
   },
   "findings": [
     {
@@ -48637,6 +48637,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
         }
       ]
     },
@@ -84470,6 +84475,19 @@
     },
     {
       "showId": "wicked-2003",
+      "file": "broadwayworld--christina-mancuso.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Wicked",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
       "file": "broadwayworld--courtney-symes.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
@@ -84483,7 +84501,7 @@
     },
     {
       "showId": "wicked-2003",
-      "file": "broadwayworld--david-copney.json",
+      "file": "broadwayworld--emily-short.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
       "findings": [
@@ -84509,7 +84527,7 @@
     },
     {
       "showId": "wicked-2003",
-      "file": "broadwayworld--marriage-matinee.json",
+      "file": "broadwayworld--katrina-fageol.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
       "findings": [
