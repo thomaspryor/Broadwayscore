@@ -1,50 +1,19 @@
 {
-  "generatedAt": "2026-03-22T06:43:20.930Z",
+  "generatedAt": "2026-03-22T21:39:18.662Z",
   "summary": {
-    "totalShows": 2393,
-    "openShows": 157,
-    "closedShows": 2003
+    "totalShows": 2401,
+    "openShows": 153,
+    "closedShows": 2008
   },
   "grosses": {
     "lastUpdated": "2026-03-18T16:00:26.485Z",
     "weekEnding": "3/15/2026",
     "showCount": 1173,
     "status": "ok",
-    "daysStale": 3
+    "daysStale": 4
   },
   "statusChanges": {
-    "autoClosed": [
-      {
-        "id": "the-office-a-musical-parody-off-broadway-2018",
-        "title": "The Office! A Musical Parody",
-        "closingDate": "2026-03-21"
-      },
-      {
-        "id": "romeo-and-juliet-suite-off-broadway-2026",
-        "title": "Romeo & Juliet Suite",
-        "closingDate": "2026-03-21"
-      },
-      {
-        "id": "sweetmeats-west-end-2026",
-        "title": "Sweetmeats",
-        "closingDate": "2026-03-21"
-      },
-      {
-        "id": "the-choir-of-man-west-end-2026",
-        "title": "The Choir of Man",
-        "closingDate": "2026-03-21"
-      },
-      {
-        "id": "arcadia-west-end-2026",
-        "title": "Arcadia",
-        "closingDate": "2026-03-21"
-      },
-      {
-        "id": "the-choir-of-man-off-west-end-2026",
-        "title": "The Choir of Man",
-        "closingDate": "2026-03-21"
-      }
-    ]
+    "autoClosed": []
   },
   "closingSoon": [
     {
@@ -204,6 +173,12 @@
       "daysLeft": 14
     },
     {
+      "id": "the-office-a-musical-parody-off-broadway-2018",
+      "title": "The Office! A Musical Parody",
+      "closingDate": "2026-04-11",
+      "daysLeft": 20
+    },
+    {
       "id": "marie-and-rosetta-west-end-2026",
       "title": "Marie & Rosetta",
       "closingDate": "2026-04-11",
@@ -318,6 +293,12 @@
       "daysLeft": 34
     },
     {
+      "id": "seagull-true-story-off-broadway-2026",
+      "title": "Seagull: True Story",
+      "closingDate": "2026-04-26",
+      "daysLeft": 35
+    },
+    {
       "id": "bigfoot-off-broadway-2026",
       "title": "BIGFOOT!",
       "closingDate": "2026-04-26",
@@ -418,7 +399,6 @@
       "no-singing-in-the-navy-off-broadway-2026",
       "perfect-crime-off-broadway-1987",
       "11-to-midnight-off-broadway-2026",
-      "romeo-and-juliet-suite-off-broadway-2026",
       "an-ark-off-broadway-2026",
       "youre-a-good-man-charlie-brown-off-broadway-2026",
       "heartbreak-hotel-off-broadway-2026",
@@ -435,7 +415,6 @@
       "wicked-west-end-2021",
       "the-producers-west-end-2025",
       "black-is-the-color-of-my-voice-west-end-2026",
-      "the-choir-of-man-west-end-2026",
       "the-play-that-goes-wrong-off-broadway-2019",
       "sexual-misconduct-of-the-middle-classes-off-broadway-2026"
     ],
@@ -780,6 +759,16 @@
             "type": "missing_runtime",
             "severity": "low"
           },
+          {
+            "type": "missing_age_rec",
+            "severity": "low"
+          }
+        ]
+      },
+      {
+        "id": "seagull-true-story-off-broadway-2026",
+        "title": "Seagull: True Story",
+        "issues": [
           {
             "type": "missing_age_rec",
             "severity": "low"
@@ -1381,24 +1370,6 @@
             "severity": "medium"
           },
           {
-            "type": "missing_creative",
-            "severity": "medium"
-          },
-          {
-            "type": "missing_age_rec",
-            "severity": "low"
-          }
-        ]
-      },
-      {
-        "id": "sweetmeats-west-end-2026",
-        "title": "Sweetmeats",
-        "issues": [
-          {
-            "type": "missing_runtime",
-            "severity": "low"
-          },
-          {
             "type": "missing_age_rec",
             "severity": "low"
           }
@@ -1480,16 +1451,6 @@
             "type": "missing_cast",
             "severity": "medium"
           },
-          {
-            "type": "missing_age_rec",
-            "severity": "low"
-          }
-        ]
-      },
-      {
-        "id": "arcadia-west-end-2026",
-        "title": "Arcadia",
-        "issues": [
           {
             "type": "missing_age_rec",
             "severity": "low"
@@ -1729,24 +1690,6 @@
         ]
       },
       {
-        "id": "the-choir-of-man-off-west-end-2026",
-        "title": "The Choir of Man",
-        "issues": [
-          {
-            "type": "missing_cast",
-            "severity": "medium"
-          },
-          {
-            "type": "missing_runtime",
-            "severity": "low"
-          },
-          {
-            "type": "missing_age_rec",
-            "severity": "low"
-          }
-        ]
-      },
-      {
         "id": "the-phantom-of-the-opera-off-west-end-2021",
         "title": "The Phantom of the Opera",
         "issues": [
@@ -1817,15 +1760,7 @@
         "title": "Transcendency Rising: Short Plays About Defying Limitations",
         "issues": [
           {
-            "type": "missing_synopsis",
-            "severity": "high"
-          },
-          {
             "type": "missing_cast",
-            "severity": "medium"
-          },
-          {
-            "type": "missing_creative",
             "severity": "medium"
           },
           {
@@ -1860,6 +1795,7 @@
         "Masquerade",
         "Cold War Choir Practice",
         "What We Did Before Our Moth Days",
+        "Seagull: True Story",
         "ZACK",
         "Calf Scramble",
         "How My Grandparents Fell in Love, A Musical",
@@ -1901,7 +1837,6 @@
         "Witness for the Prosecution",
         "Manic Street Creature",
         "Consumed",
-        "Sweetmeats",
         "Jaja's African Hair Braiding",
         "Deep Azure - Globe",
         "The Tempest - Globe",
@@ -1909,7 +1844,6 @@
         "I'm Every Woman, The Chaka Khan Musical",
         "Summerfolk",
         "It Walks Around The House At Night",
-        "Arcadia",
         "Cabaret at the Kit Kat Club",
         "Dracula",
         "Garry Starr: Classic Penguins",
@@ -1923,7 +1857,6 @@
         "Broken Glass",
         "Evening All Afternoon",
         "Unfortunate: The Untold Story of Ursula The Sea Witch",
-        "The Choir of Man",
         "The Phantom of the Opera",
         "I'm Every Woman, The Chaka Khan Musical",
         "Gotta Dance!"
@@ -1948,7 +1881,6 @@
         "The Monsters",
         "BIGFOOT!",
         "My Joy Is Heavy",
-        "Sweetmeats",
         "The Tempest - Globe",
         "The Holy Rosenbergs",
         "Cabaret at the Kit Kat Club",
@@ -1956,7 +1888,6 @@
         "Operation Mincemeat",
         "AMAZE Magic",
         "Unfortunate: The Untold Story of Ursula The Sea Witch",
-        "The Choir of Man",
         "The Phantom of the Opera",
         "I'm Every Woman, The Chaka Khan Musical",
         "Transcendency Rising: Short Plays About Defying Limitations"
@@ -1982,7 +1913,6 @@
         "Tristan und Isolde",
         "Evening All Afternoon",
         "Unfortunate: The Untold Story of Ursula The Sea Witch",
-        "The Choir of Man",
         "The Phantom of the Opera",
         "I'm Every Woman, The Chaka Khan Musical",
         "Gotta Dance!",
@@ -2035,10 +1965,8 @@
       "missing_creative": [
         "I’m Sorry, Prime Minister",
         "The Unlikely Pilgrimage of Harold Fry",
-        "Consumed",
         "Evening All Afternoon",
-        "I'm Every Woman, The Chaka Khan Musical",
-        "Transcendency Rising: Short Plays About Defying Limitations"
+        "I'm Every Woman, The Chaka Khan Musical"
       ],
       "missing_tickets": [
         "Cabaret at the Kit Kat Club",
@@ -2048,9 +1976,6 @@
         "Unfortunate: The Untold Story of Ursula The Sea Witch",
         "The Phantom of the Opera",
         "I'm Every Woman, The Chaka Khan Musical"
-      ],
-      "missing_synopsis": [
-        "Transcendency Rising: Short Plays About Defying Limitations"
       ]
     }
   }
