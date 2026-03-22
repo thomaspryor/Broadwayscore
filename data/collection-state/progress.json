@@ -355,7 +355,17 @@
     "all-my-sons-west-end-2025/whatsonstage--unknown.json",
     "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
     "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytg--joe-dziemianowicz.json",
-    "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json"
+    "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/newsweek--lauren-giella.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/theatermania--zachary-stewart.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/exeunt-magazine--lane-williamson.json",
+    "paddington-the-musical-west-end-2025/variety--david-benedict.json",
+    "paddington-the-musical-west-end-2025/musical-theatre-review--lisa-martlandbr.json",
+    "paddington-the-musical-west-end-2025/observer--katherine-cowles.json",
+    "paddington-the-musical-west-end-2025/timeout--andrzej-lukowski.json",
+    "paddington-the-musical-west-end-2025/financialtimes--sarah-hemming.json",
+    "paddington-the-musical-west-end-2025/london-box-office--stuart-king.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -1388,7 +1398,15 @@
       "all-my-sons-west-end-2025/whatsonstage--unknown.json",
       "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
       "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytg--joe-dziemianowicz.json",
-      "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json"
+      "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/newsweek--lauren-giella.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/theatermania--zachary-stewart.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/exeunt-magazine--lane-williamson.json",
+      "paddington-the-musical-west-end-2025/musical-theatre-review--lisa-martlandbr.json",
+      "paddington-the-musical-west-end-2025/observer--katherine-cowles.json",
+      "paddington-the-musical-west-end-2025/timeout--andrzej-lukowski.json",
+      "paddington-the-musical-west-end-2025/financialtimes--sarah-hemming.json",
+      "paddington-the-musical-west-end-2025/london-box-office--stuart-king.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -1416,7 +1434,11 @@
       "data/review-texts/the-unknown-off-broadway-2026/amny--unknown.json",
       "the-unknown-off-broadway-2026/amny--unknown.json",
       "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
-      "chess-2025/hollywood-reporter--angie-han.json"
+      "chess-2025/hollywood-reporter--angie-han.json",
+      "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
+      "data/review-texts/paddington-the-musical-west-end-2025/variety--david-benedict.json",
+      "paddington-the-musical-west-end-2025/variety--david-benedict.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -1493,7 +1515,7 @@
     ]
   },
   "startTime": "2026-03-22T09:04:26.170Z",
-  "lastProcessed": "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
+  "lastProcessed": "paddington-the-musical-west-end-2025/london-box-office--stuart-king.json",
   "log": [
     {
       "t": "2026-03-22T09:19:17.595Z",
@@ -1627,6 +1649,28 @@
       "t": "2026-03-22T16:23:56.647Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-22T16:26:39.766Z",
+      "event": "bb-session",
+      "session": "0a6b5853",
+      "url": "https://www.amny.com/entertainment/theater/spelling-bee-returns-nails-every-word"
+    },
+    {
+      "t": "2026-03-22T16:26:41.071Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-22T16:27:03.826Z",
+      "event": "bb-session",
+      "session": "69c10130",
+      "url": "https://variety.com/2025/legit/reviews/paddington-review-musical-1236595841/"
+    },
+    {
+      "t": "2026-03-22T16:27:05.264Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
