@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-03-22T11:46:01.987Z",
+  "updatedAt": "2026-03-22T11:53:14.519Z",
   "processed": 139,
-  "failed": 61,
-  "successRate": "69.5%",
+  "failed": 109,
+  "successRate": "56.0%",
   "tierBreakdown": {
     "playwright": 121,
     "amp": 0,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 13,
+    "archiveToday": 17,
     "archive": 18
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-03-22T09:19:17.595Z",
@@ -26,6 +26,17 @@
       "event": "bb-login-fail",
       "domain": "thestage.co.uk",
       "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    27 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
+    },
+    {
+      "t": "2026-03-22T11:52:54.460Z",
+      "event": "bb-session",
+      "session": "28aaa2f4",
+      "url": "https://www.thestage.co.uk/long-reviews/dear-england-review-olivier-theatre-nati"
+    },
+    {
+      "t": "2026-03-22T11:52:55.515Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
