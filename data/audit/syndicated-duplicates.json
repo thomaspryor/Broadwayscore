@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-03-22T07:25:32.176Z",
+  "generatedAt": "2026-03-22T07:32:30.988Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 73,
+    "avgScoreDiff": 65
   },
   "syndicationPairs": [
     {
@@ -17,7 +17,7 @@
       "secondaryOutlets": [
         "nydailynews"
       ],
-      "count": 0
+      "count": 1
     },
     {
       "critic": "kathleen campion",
@@ -96,7 +96,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Chris Jones",
+      "showId": "operation-mincemeat-2025",
+      "primaryOutlet": "chicagotribune",
+      "secondaryOutlet": "nydailynews",
+      "primaryFile": "chicagotribune--unknown.json",
+      "secondaryFile": "nydailynews--chris-jones.json",
+      "similarity": 73,
+      "primaryScore": 20,
+      "secondaryScore": 85,
+      "scoreDiff": 65
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "frozen-2018",
