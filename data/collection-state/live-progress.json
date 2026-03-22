@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-22T18:51:05.932Z",
-  "processed": 432,
-  "failed": 731,
-  "successRate": "37.1%",
+  "updatedAt": "2026-03-22T18:57:28.828Z",
+  "processed": 437,
+  "failed": 736,
+  "successRate": "37.3%",
   "tierBreakdown": {
-    "playwright": 375,
+    "playwright": 379,
     "amp": 12,
     "browserbase": 20,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 42,
-    "archive": 43
+    "archiveToday": 47,
+    "archive": 44
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-03-22T16:23:55.406Z",
-      "event": "bb-session",
-      "session": "da92ac6f",
-      "url": "https://www.wsj.com/articles/the-25th-annual-putnam-county-spelling-bee-review-a"
-    },
-    {
-      "t": "2026-03-22T16:23:56.647Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-22T16:26:39.766Z",
-      "event": "bb-session",
-      "session": "0a6b5853",
-      "url": "https://www.amny.com/entertainment/theater/spelling-bee-returns-nails-every-word"
-    },
-    {
-      "t": "2026-03-22T16:26:41.071Z",
-      "event": "bb-cookie-inject",
-      "domain": "amny.com"
-    },
     {
       "t": "2026-03-22T16:27:03.826Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-22T18:50:22.244Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-22T18:52:16.542Z",
+      "event": "bb-session",
+      "session": "8fdf7524",
+      "url": "https://www.thestage.co.uk/long-reviews/stereophonic-review-duke-of-yorks-theatr"
+    },
+    {
+      "t": "2026-03-22T18:52:17.586Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-22T18:55:49.668Z",
+      "event": "bb-session",
+      "session": "5d1b854b",
+      "url": "https://www.thestage.co.uk/reviews/just-for-one-day-review-old-vic-london-luke-s"
+    },
+    {
+      "t": "2026-03-22T18:55:50.657Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
