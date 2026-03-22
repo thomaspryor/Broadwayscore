@@ -291,6 +291,31 @@ function writeReview(review, showId) {
 // ─── WestEndTheatre (WP API) ────────────────────────────────────────────────
 
 async function sweepWET(show) {
+  // Archive-skip: WET archives the rendered page HTML when section format is used
+  const wetArchDir = path.join(ARCHIVE_BASE, 'westendtheatre');
+  const wetArchivePath = path.join(wetArchDir, `${show.id}.html`);
+  if (!FORCE && fs.existsSync(wetArchivePath)) {
+    try {
+      const html = fs.readFileSync(wetArchivePath, 'utf8');
+      const reviews = extractSectionReviews(html).map(r => ({
+        outlet: r.outlet, outletId: normalizeOutlet(r.outlet),
+        critic: r.critic || 'Unknown', stars: r.stars, starsOutOf: 5,
+        excerpt: r.excerpt || '', url: r.reviewUrl || '',
+        source: 'westendtheatre', scoreSource: 'westendtheatre-star-rating',
+      }));
+      if (reviews.length > 0) return reviews;
+    } catch {}
+  }
+
+  // Also check for cached API response
+  const wetApiCache = path.join(wetArchDir, `${show.id}.json`);
+  if (!FORCE && fs.existsSync(wetApiCache)) {
+    try {
+      const cached = JSON.parse(fs.readFileSync(wetApiCache, 'utf8'));
+      if (cached.reviews && cached.reviews.length > 0) return cached.reviews;
+    } catch {}
+  }
+
   // Try multiple search queries: full title, then stripped title (no subtitles/qualifiers)
   const searchTitles = [
     show.title.replace(/['"]/g, ''),
@@ -377,7 +402,14 @@ async function sweepWET(show) {
       }
     }
 
-    if (reviews.length > 0) return reviews;
+    if (reviews.length > 0) {
+      // Cache extracted reviews so future runs skip the API call
+      if (!DRY_RUN) {
+        if (!fs.existsSync(wetArchDir)) fs.mkdirSync(wetArchDir, { recursive: true });
+        fs.writeFileSync(wetApiCache, JSON.stringify({ reviews, fetchedAt: new Date().toISOString().slice(0, 10) }, null, 2) + '\n');
+      }
+      return reviews;
+    }
   }
   return [];
 }
