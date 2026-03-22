@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-22T02:59:13.509Z",
+  "timestamp": "2026-03-22T03:08:01.332Z",
   "stats": {
     "totalReviews": 32077,
-    "alreadyFlagged": 10747,
+    "alreadyFlagged": 10748,
     "dateGuardCatches": 138,
     "directorMismatch": 950,
     "tvFilmSignals": 3391,
     "londonSignals": 1029,
-    "offBroadwaySignals": 1011,
+    "offBroadwaySignals": 1009,
     "yearMismatch": 71,
-    "noPublishDate": 6869
+    "noPublishDate": 6868
   },
   "findings": [
     {
@@ -52147,11 +52147,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
         }
       ]
     },
@@ -52166,11 +52161,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
         }
       ]
     },
