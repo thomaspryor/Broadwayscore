@@ -2555,6 +2555,109 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
     }
   }
 
+  // 1e. WE Aggregators (West End only, archive-based — WET, TR, SD, TS)
+  // These are populated by the weekly sweep-we-aggregators workflow.
+  // For opening nights, archives may not exist yet (roundups take days to publish).
+  // But for follow-up gather runs and rebuilds, they provide the best WE review data.
+  if (isWestEnd) {
+    console.log('\n  === WE Aggregators (archive) ===');
+    const archBase = path.join(__dirname, '../data/aggregator-archive');
+
+    // WestEndTheatre.com (WET) — cached API responses
+    const wetCache = path.join(archBase, 'westendtheatre', `${showId}.json`);
+    if (fs.existsSync(wetCache)) {
+      try {
+        const cached = JSON.parse(fs.readFileSync(wetCache, 'utf8'));
+        const wetReviews = cached.reviews || [];
+        if (wetReviews.length > 0) {
+          console.log(`    ✓ WET: ${wetReviews.length} reviews from cache`);
+          for (const r of wetReviews) {
+            foundReviews.push({
+              outlet: r.outlet, outletId: r.outletId || normalizeOutlet(r.outlet),
+              criticName: r.critic || 'Unknown', url: r.url || '',
+              excerpt: r.excerpt || '',
+              score: r.stars ? Math.round((r.stars / (r.starsOutOf || 5)) * 100) : null,
+              scoreSource: r.stars ? r.scoreSource || 'westendtheatre-star-rating' : undefined,
+              source: 'westendtheatre', publishDate: null,
+            });
+          }
+        }
+      } catch {}
+    }
+
+    // theatre.reviews (TR) — cached HTML
+    const { extractReviews: extractTR } = require('./scrape-theatre-reviews');
+    const trArchive = path.join(archBase, 'theatre-reviews', `${showId}.html`);
+    if (fs.existsSync(trArchive)) {
+      try {
+        const html = fs.readFileSync(trArchive, 'utf8');
+        const trReviews = extractTR(html, showId);
+        if (trReviews.length > 0) {
+          console.log(`    ✓ TR:  ${trReviews.length} reviews from archive`);
+          for (const r of trReviews) {
+            foundReviews.push({
+              outlet: r.outlet, outletId: normalizeOutlet(r.outlet),
+              criticName: r.critic || 'Unknown', url: r.url || '',
+              excerpt: r.excerpt || '',
+              score: r.stars ? Math.round((r.stars / (r.starsOutOf || 5)) * 100) : null,
+              scoreSource: r.stars ? 'theatre-reviews-star-rating' : undefined,
+              source: 'theatre-reviews', publishDate: null,
+            });
+          }
+        }
+      } catch {}
+    }
+
+    // Stagedoor (SD) — cached JSON
+    const sdArchive = path.join(archBase, 'stagedoor', `${showId}.json`);
+    if (fs.existsSync(sdArchive)) {
+      try {
+        const data = JSON.parse(fs.readFileSync(sdArchive, 'utf8'));
+        const sdReviews = data.criticReviews || [];
+        if (sdReviews.length > 0) {
+          console.log(`    ✓ SD:  ${sdReviews.length} reviews from archive`);
+          for (const r of sdReviews) {
+            foundReviews.push({
+              outlet: r.outlet, outletId: normalizeOutlet(r.outlet || ''),
+              criticName: 'Unknown', url: '',
+              excerpt: r.excerpt || '',
+              score: r.stars ? Math.round((r.stars / 5) * 100) : null,
+              scoreSource: r.stars ? 'stagedoor-star-rating' : undefined,
+              source: 'stagedoor', publishDate: null,
+            });
+          }
+        }
+      } catch {}
+    }
+
+    // The Stage (TS) — cached HTML
+    const { extractReviews: extractTS } = require('./scrape-thestage-roundups');
+    const tsArchive = path.join(archBase, 'thestage-roundups', `${showId}.html`);
+    if (fs.existsSync(tsArchive)) {
+      try {
+        const html = fs.readFileSync(tsArchive, 'utf8');
+        const tsReviews = extractTS(html, showId);
+        if (tsReviews.length > 0) {
+          console.log(`    ✓ TS:  ${tsReviews.length} reviews from archive`);
+          for (const r of tsReviews) {
+            foundReviews.push({
+              outlet: r.outlet, outletId: normalizeOutlet(r.outlet),
+              criticName: r.critic || 'Unknown', url: r.url || '',
+              excerpt: r.excerpt || '',
+              score: r.stars ? Math.round((r.stars / (r.starsOutOf || 5)) * 100) : null,
+              scoreSource: r.stars ? 'thestage-roundup-star-rating' : undefined,
+              source: 'thestage-roundup', publishDate: null,
+            });
+          }
+        }
+      } catch {}
+    }
+
+    const weTotal = foundReviews.length - (health.lbo.extracted || 0);
+    if (weTotal > 0) console.log(`    WE aggregators total: ${weTotal} reviews`);
+    else console.log('    No WE aggregator archives found (normal for new shows)');
+  }
+
   // STEP 1b: Retry SERP for reviews flagged with wrongUrl
   // These reviews got bad URLs during opening-night discovery and have no automated recovery path.
   // Re-SERP them now with targeted per-outlet queries using the review's own metadata.
