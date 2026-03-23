@@ -580,7 +580,15 @@
     "arcadia-west-end-2026/whatsonstage--unknown.json",
     "beautiful-little-fool-west-end-2026/artsdesk--gary-naylor.json",
     "beautiful-little-fool-west-end-2026/everything-theatre--mike-carter.json",
-    "beautiful-little-fool-west-end-2026/standard--nick-curtis.json"
+    "beautiful-little-fool-west-end-2026/standard--nick-curtis.json",
+    "beautiful-little-fool-west-end-2026/whatsonstage--alun-hood.json",
+    "high-noon-west-end-2025/timeout-london--unknown.json",
+    "high-noon-west-end-2025/artsdesk--matt-wolf.json",
+    "high-noon-west-end-2025/independent--alice-saville.json",
+    "high-noon-west-end-2025/london-theatre--julia-rank.json",
+    "high-noon-west-end-2025/standard--nick-curtis.json",
+    "high-noon-west-end-2025/telegraph--dominic-cavendish.json",
+    "woman-in-mind-west-end-2025/all-that-dazzles-uk--unknown.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -701,7 +709,9 @@
     "sweetmeats-west-end-2026/guardian--anya-ryan.json",
     "sweetmeats-west-end-2026/broadwayworld--unknown.json",
     "sweetmeats-west-end-2026/london-theatre--aliya-al-hassan.json",
-    "maggots-west-end-2026/guardian--arifa-akbar.json"
+    "maggots-west-end-2026/guardian--arifa-akbar.json",
+    "high-noon-west-end-2025/guardian--arifa-akbar.json",
+    "high-noon-west-end-2025/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1194,7 +1204,14 @@
       "arcadia-west-end-2026/times-uk--clive-davis.json",
       "arcadia-west-end-2026/whatsonstage--unknown.json",
       "beautiful-little-fool-west-end-2026/everything-theatre--mike-carter.json",
-      "beautiful-little-fool-west-end-2026/standard--nick-curtis.json"
+      "beautiful-little-fool-west-end-2026/standard--nick-curtis.json",
+      "beautiful-little-fool-west-end-2026/whatsonstage--alun-hood.json",
+      "high-noon-west-end-2025/timeout-london--unknown.json",
+      "high-noon-west-end-2025/independent--alice-saville.json",
+      "high-noon-west-end-2025/london-theatre--julia-rank.json",
+      "high-noon-west-end-2025/standard--nick-curtis.json",
+      "high-noon-west-end-2025/telegraph--dominic-cavendish.json",
+      "woman-in-mind-west-end-2025/all-that-dazzles-uk--unknown.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -1295,7 +1312,8 @@
       "data/review-texts/the-car-man-west-end-2026/thestage--unknown.json",
       "data/review-texts/the-enormous-crocodile-west-end-2026/everything-theatre--unknown.json",
       "data/review-texts/sweetmeats-west-end-2026/broadwayworld--unknown.json",
-      "data/review-texts/maggots-west-end-2026/guardian--arifa-akbar.json"
+      "data/review-texts/maggots-west-end-2026/guardian--arifa-akbar.json",
+      "data/review-texts/high-noon-west-end-2025/guardian--arifa-akbar.json"
     ],
     "archive": [
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
@@ -1381,11 +1399,12 @@
       "matilda-the-musical-west-end-2021/london-box-office--danai-g-miliaraki.json",
       "the-lion-king-west-end-2021/variety--matt-wolf.json",
       "grace-pervades-west-end-2026/thestage--unknown.json",
-      "beautiful-little-fool-west-end-2026/artsdesk--gary-naylor.json"
+      "beautiful-little-fool-west-end-2026/artsdesk--gary-naylor.json",
+      "high-noon-west-end-2025/artsdesk--matt-wolf.json"
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "beautiful-little-fool-west-end-2026/standard--nick-curtis.json",
+  "lastProcessed": "woman-in-mind-west-end-2025/all-that-dazzles-uk--unknown.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -1503,28 +1522,6 @@
       "t": "2026-03-23T13:22:44.833Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
-    },
-    {
-      "t": "2026-03-23T17:17:27.568Z",
-      "event": "bb-session",
-      "session": "43d552f7",
-      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
-    },
-    {
-      "t": "2026-03-23T17:17:28.969Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-23T17:19:16.333Z",
-      "event": "bb-session",
-      "session": "3e15ad2c",
-      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
-    },
-    {
-      "t": "2026-03-23T17:19:17.786Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
     }
   ]
 }
