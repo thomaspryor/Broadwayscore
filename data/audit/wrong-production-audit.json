@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-23T00:48:38.141Z",
+  "timestamp": "2026-03-23T01:06:58.470Z",
   "stats": {
     "totalReviews": 32399,
     "alreadyFlagged": 10977,
     "dateGuardCatches": 140,
     "directorMismatch": 945,
     "tvFilmSignals": 3400,
-    "londonSignals": 1031,
+    "londonSignals": 1032,
     "offBroadwaySignals": 1012,
     "yearMismatch": 71,
     "noPublishDate": 6876
@@ -76078,6 +76078,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "file": "nytimes--unknown.json",
+      "score": 75,
+      "publishDate": "March 1, 2026",
+      "url": "https://www.nytimes.com/2024/05/24/theater/tom-holland-romeo-and-juliet.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
