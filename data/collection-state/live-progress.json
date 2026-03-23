@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-23T01:20:53.778Z",
-  "processed": 153,
-  "failed": 20,
-  "successRate": "88.4%",
+  "updatedAt": "2026-03-23T01:36:24.609Z",
+  "processed": 198,
+  "failed": 25,
+  "successRate": "88.8%",
   "tierBreakdown": {
-    "playwright": 140,
+    "playwright": 179,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 11,
-    "archive": 14
+    "archiveToday": 13,
+    "archive": 17
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -58,6 +58,50 @@
       "t": "2026-03-23T00:35:12.060Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-23T01:21:07.355Z",
+      "event": "bb-session",
+      "session": "35fea2f9",
+      "url": "https://variety.com/2025/legit/reviews/paddington-review-musical-1236595841/"
+    },
+    {
+      "t": "2026-03-23T01:21:08.429Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-23T01:29:57.444Z",
+      "event": "bb-session",
+      "session": "f7dcf1b5",
+      "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
+    },
+    {
+      "t": "2026-03-23T01:29:58.448Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-23T01:31:15.253Z",
+      "event": "bb-session",
+      "session": "1c21db07",
+      "url": "https://variety.com/2025/legit/reviews/hercules-review-musical-west-end-12364392"
+    },
+    {
+      "t": "2026-03-23T01:31:16.343Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-23T01:34:48.470Z",
+      "event": "bb-session",
+      "session": "36056891",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
+    },
+    {
+      "t": "2026-03-23T01:34:49.783Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
