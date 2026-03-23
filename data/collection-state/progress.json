@@ -351,7 +351,17 @@
     "the-lion-king-west-end-2021/london-box-office--miriam-gibson.json",
     "the-lion-king-west-end-2021/london-theatre--dom-ohanlon.json",
     "the-lion-king-west-end-2021/shy-strange-manic--kariss-ainsworth.json",
-    "the-lion-king-west-end-2021/standard--nicholas-de-jongh.json"
+    "the-lion-king-west-end-2021/standard--nicholas-de-jongh.json",
+    "the-lion-king-west-end-2021/telegraph--david-gritten.json",
+    "the-lion-king-west-end-2021/telegraph--unknown.json",
+    "the-lion-king-west-end-2021/whatsonstage--alex-wood.json",
+    "the-lion-king-west-end-2021/whatsonstage--daisy-bowie.json",
+    "the-lion-king-west-end-2021/whatsonstage--frey-kwa-hawking.json",
+    "mamma-mia-west-end-2021/variety--matt-wolf.json",
+    "mamma-mia-west-end-2021/variety--owen-gleiberman.json",
+    "mamma-mia-west-end-2021/london-box-office--daniel-perks.json",
+    "mamma-mia-west-end-2021/london-theatre--alan-bird.json",
+    "mamma-mia-west-end-2021/standard--jessie-thompson.json"
   ],
   "failed": [
     "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
@@ -729,7 +739,14 @@
       "the-lion-king-west-end-2021/london-box-office--miriam-gibson.json",
       "the-lion-king-west-end-2021/london-theatre--dom-ohanlon.json",
       "the-lion-king-west-end-2021/shy-strange-manic--kariss-ainsworth.json",
-      "the-lion-king-west-end-2021/standard--nicholas-de-jongh.json"
+      "the-lion-king-west-end-2021/standard--nicholas-de-jongh.json",
+      "the-lion-king-west-end-2021/telegraph--david-gritten.json",
+      "the-lion-king-west-end-2021/whatsonstage--alex-wood.json",
+      "the-lion-king-west-end-2021/whatsonstage--daisy-bowie.json",
+      "the-lion-king-west-end-2021/whatsonstage--frey-kwa-hawking.json",
+      "mamma-mia-west-end-2021/london-box-office--daniel-perks.json",
+      "mamma-mia-west-end-2021/london-theatre--alan-bird.json",
+      "mamma-mia-west-end-2021/standard--jessie-thompson.json"
     ],
     "amp": [],
     "browserbase": [
@@ -746,7 +763,11 @@
       "data/review-texts/hamilton-west-end-2021/variety--marilyn-stasio.json",
       "hamilton-west-end-2021/variety--marilyn-stasio.json",
       "data/review-texts/the-lion-king-west-end-2021/variety--matt-wolf.json",
-      "the-lion-king-west-end-2021/variety--matt-wolf.json"
+      "the-lion-king-west-end-2021/variety--matt-wolf.json",
+      "data/review-texts/mamma-mia-west-end-2021/variety--matt-wolf.json",
+      "mamma-mia-west-end-2021/variety--matt-wolf.json",
+      "data/review-texts/mamma-mia-west-end-2021/variety--owen-gleiberman.json",
+      "mamma-mia-west-end-2021/variety--owen-gleiberman.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -840,11 +861,12 @@
       "matilda-the-musical-west-end-2021/artsdesk--carole-woddis.json",
       "matilda-the-musical-west-end-2021/telegraph--unknown.json",
       "wicked-west-end-2021/telegraph--robbie-collin.json",
-      "the-lion-king-west-end-2021/timeout-london--ben-walters.json"
+      "the-lion-king-west-end-2021/timeout-london--ben-walters.json",
+      "the-lion-king-west-end-2021/telegraph--unknown.json"
     ]
   },
   "startTime": "2026-03-23T00:14:57.443Z",
-  "lastProcessed": "the-lion-king-west-end-2021/standard--nicholas-de-jongh.json",
+  "lastProcessed": "mamma-mia-west-end-2021/standard--jessie-thompson.json",
   "log": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -1041,6 +1063,28 @@
     },
     {
       "t": "2026-03-23T02:51:52.382Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-23T02:54:04.078Z",
+      "event": "bb-session",
+      "session": "a4669f4a",
+      "url": "https://variety.com/1999/legit/reviews/mamma-mia-1200457147/"
+    },
+    {
+      "t": "2026-03-23T02:54:05.163Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-23T02:54:18.376Z",
+      "event": "bb-session",
+      "session": "9bda9fa1",
+      "url": "https://variety.com/1999/legit/reviews/mamma-mia-1200457147/"
+    },
+    {
+      "t": "2026-03-23T02:54:19.421Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
