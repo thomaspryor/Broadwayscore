@@ -304,7 +304,16 @@
     "masquerade-off-broadway-2025/nysr--frank-scheck.json",
     "masquerade-off-broadway-2025/one-minute-critic--one-minute-critic.json",
     "masquerade-off-broadway-2025/slantmagazine--dan-rubins.json",
-    "masquerade-off-broadway-2025/washpost--naveen-kumar.json"
+    "masquerade-off-broadway-2025/washpost--naveen-kumar.json",
+    "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json",
+    "amaze-magic-off-broadway-2025/hollywood-soapbox--john-soltes.json",
+    "amaze-magic-off-broadway-2025/nysr--frank-scheck.json",
+    "amaze-magic-off-broadway-2025/theater-life--alix-cohen.json",
+    "amaze-magic-off-broadway-2025/theater-scene--victor-gluck.json",
+    "hercules-west-end-2025/nytimes--matt-wolf.json",
+    "hercules-west-end-2025/variety--david-benedict.json",
+    "hercules-west-end-2025/artsdesk--unknown.json",
+    "hercules-west-end-2025/financialtimes--sarah-hemming.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -345,7 +354,8 @@
     "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
     "ragtime-2025/wsj--charles-isherwood.json",
     "ragtime-2025/bloomberg--chris-rovzar.json",
-    "the-producers-west-end-2025/broadwayworld--aliya-al-hassan.json"
+    "the-producers-west-end-2025/broadwayworld--aliya-al-hassan.json",
+    "hercules-west-end-2025/daily-mail--patrick-marmion.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -628,7 +638,13 @@
       "masquerade-off-broadway-2025/nysr--frank-scheck.json",
       "masquerade-off-broadway-2025/one-minute-critic--one-minute-critic.json",
       "masquerade-off-broadway-2025/slantmagazine--dan-rubins.json",
-      "masquerade-off-broadway-2025/washpost--naveen-kumar.json"
+      "masquerade-off-broadway-2025/washpost--naveen-kumar.json",
+      "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json",
+      "amaze-magic-off-broadway-2025/hollywood-soapbox--john-soltes.json",
+      "amaze-magic-off-broadway-2025/nysr--frank-scheck.json",
+      "amaze-magic-off-broadway-2025/theater-life--alix-cohen.json",
+      "amaze-magic-off-broadway-2025/theater-scene--victor-gluck.json",
+      "hercules-west-end-2025/financialtimes--sarah-hemming.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -650,7 +666,9 @@
       "data/review-texts/every-brilliant-thing-2026/amny--matt-windman.json",
       "every-brilliant-thing-2026/amny--matt-windman.json",
       "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
-      "chess-2025/hollywood-reporter--angie-han.json"
+      "chess-2025/hollywood-reporter--angie-han.json",
+      "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
+      "hercules-west-end-2025/variety--david-benedict.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -675,7 +693,8 @@
       "data/review-texts/deep-azure-globe-west-end-2026/broadwayworld--unknown.json",
       "data/review-texts/im-sorry-prime-minister-west-end-2026/daily-mail--patrick-marmion.json",
       "data/review-texts/paranormal-activity-west-end-2025/broadwayworld--franco-milazzo.json",
-      "data/review-texts/the-producers-west-end-2025/broadwayworld--aliya-al-hassan.json"
+      "data/review-texts/the-producers-west-end-2025/broadwayworld--aliya-al-hassan.json",
+      "data/review-texts/hercules-west-end-2025/daily-mail--patrick-marmion.json"
     ],
     "archive": [
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
@@ -695,11 +714,13 @@
       "all-my-sons-west-end-2025/timeout--andrzej-lukowski.json",
       "all-my-sons-west-end-2025/timeout-london--andrzej-lukowski.json",
       "all-my-sons-west-end-2025/artsdesk--matt-wolf.json",
-      "all-my-sons-west-end-2025/broadwayworld--unknown.json"
+      "all-my-sons-west-end-2025/broadwayworld--unknown.json",
+      "hercules-west-end-2025/nytimes--matt-wolf.json",
+      "hercules-west-end-2025/artsdesk--unknown.json"
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "masquerade-off-broadway-2025/washpost--naveen-kumar.json",
+  "lastProcessed": "hercules-west-end-2025/financialtimes--sarah-hemming.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -750,6 +771,17 @@
       "t": "2026-03-23T12:58:09.981Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-23T13:08:15.353Z",
+      "event": "bb-session",
+      "session": "7d77fe99",
+      "url": "https://variety.com/2025/legit/reviews/hercules-review-musical-west-end-12364392"
+    },
+    {
+      "t": "2026-03-23T13:08:16.690Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

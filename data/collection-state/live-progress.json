@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-23T13:07:16.471Z",
-  "processed": 313,
-  "failed": 47,
-  "successRate": "86.9%",
+  "updatedAt": "2026-03-23T13:10:01.536Z",
+  "processed": 322,
+  "failed": 48,
+  "successRate": "87.0%",
   "tierBreakdown": {
-    "playwright": 276,
+    "playwright": 282,
     "amp": 12,
-    "browserbase": 10,
+    "browserbase": 12,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 29,
-    "archive": 27
+    "archiveToday": 30,
+    "archive": 29
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-03-23T10:38:28.556Z",
@@ -58,6 +58,17 @@
       "t": "2026-03-23T12:58:09.981Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-23T13:08:15.353Z",
+      "event": "bb-session",
+      "session": "7d77fe99",
+      "url": "https://variety.com/2025/legit/reviews/hercules-review-musical-west-end-12364392"
+    },
+    {
+      "t": "2026-03-23T13:08:16.690Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
