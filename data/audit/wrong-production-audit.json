@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-23T13:15:40.363Z",
+  "timestamp": "2026-03-23T13:27:49.021Z",
   "stats": {
     "totalReviews": 32374,
     "alreadyFlagged": 11021,
     "dateGuardCatches": 139,
     "directorMismatch": 941,
-    "tvFilmSignals": 3400,
-    "londonSignals": 1017,
+    "tvFilmSignals": 3401,
+    "londonSignals": 1019,
     "offBroadwaySignals": 1007,
     "yearMismatch": 71,
-    "noPublishDate": 6813
+    "noPublishDate": 6812
   },
   "findings": [
     {
@@ -22130,7 +22130,7 @@
       "showId": "hercules-west-end-2025",
       "file": "artsdesk--unknown.json",
       "score": 66,
-      "publishDate": null,
+      "publishDate": "2025-06-28",
       "url": "http://theartsdesk.com/theatre/hercules-theatre-royal-drury-lane-review-new-disney-stage-musical-no-lion-king",
       "findings": [
         {
@@ -55150,6 +55150,25 @@
     },
     {
       "showId": "the-producers-west-end-2025",
+      "file": "the-express--neil-norman.json",
+      "score": 89,
+      "publishDate": "2025-09-16",
+      "url": "https://www.express.co.uk/entertainment/theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-producers-west-end-2025",
       "file": "thestage--matthew-hemley.json",
       "score": 78,
       "publishDate": "2025-09-17",
@@ -84480,6 +84499,20 @@
       "score": 78,
       "publishDate": "2026-01-07",
       "url": "https://www.westendtheatre.com/330166/news/reviews/west-end-reviews-of-woman-in-mind-starring-sheridan-smith-romesh-ranganathan/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "woman-in-mind-west-end-2025",
+      "file": "telegraph--claire-allfree.json",
+      "score": 77,
+      "publishDate": "January 7th, 2026",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/woman-in-mind-duke-of-yorks-theatre-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
