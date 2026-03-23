@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-23T07:29:36.274Z",
+  "timestamp": "2026-03-23T07:47:20.057Z",
   "stats": {
-    "totalReviews": 32398,
-    "alreadyFlagged": 10994,
-    "dateGuardCatches": 141,
+    "totalReviews": 32356,
+    "alreadyFlagged": 10985,
+    "dateGuardCatches": 139,
     "directorMismatch": 945,
     "tvFilmSignals": 3402,
     "londonSignals": 1030,
     "offBroadwaySignals": 1012,
     "yearMismatch": 71,
-    "noPublishDate": 6849
+    "noPublishDate": 6818
   },
   "findings": [
     {
@@ -34271,18 +34271,6 @@
     },
     {
       "showId": "my-neighbour-totoro-west-end-2025",
-      "file": "london-box-office--unknown.json",
-      "score": 74,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 581d before show (2022-10-14 vs 2024-05-17)"
-        }
-      ]
-    },
-    {
-      "showId": "my-neighbour-totoro-west-end-2025",
       "file": "london-theatre--marianka-swain.json",
       "score": 94,
       "publishDate": "2022-10-20",
@@ -34316,20 +34304,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
-      "showId": "my-neighbour-totoro-west-end-2025",
-      "file": "standard--unknown.json",
-      "score": 65,
-      "publishDate": "2023-03-30",
-      "url": "https://www.standard.co.uk/culture/theatre/my-neighbour-totoro-barbican-studio-ghibli-theatre-review-b1033681.html",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 414d before show (2023-03-30 vs 2024-05-17)"
         }
       ]
     },
