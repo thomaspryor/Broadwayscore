@@ -131,6 +131,23 @@ async function fetchContent(url, { renderJs = true, premiumProxy = false } = {})
     }
   }
 
+  // Last resort: direct fetch (no proxy — works for sites that don't block)
+  try {
+    if (verbose) console.log(`  [Direct] Trying direct fetch for ${url}...`);
+    const result = await httpsRequest(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+      },
+    });
+    if (result && result.length > 500) {
+      if (verbose) console.log(`  [Direct] Success (${result.length} chars HTML)`);
+      return { content: result, format: 'html' };
+    }
+  } catch (err) {
+    console.error(`  [Direct] Failed: ${err.message}`);
+  }
+
   return null;
 }
 
