@@ -291,7 +291,7 @@ jobs:
                 echo "★ $SHOW_ID is BROADCAST READY but broadcast dispatched recently — skipping duplicate"
               else
                 echo "★ $SHOW_ID is BROADCAST READY — dispatching broadcast"
-                gh workflow run opening-night-broadcast.yml -f lookback_days=2 -f send_to_all=true || true
+                gh workflow run opening-night-broadcast.yml -f lookback_days=2 || true
               fi
             fi
           done
