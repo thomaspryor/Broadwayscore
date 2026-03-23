@@ -522,7 +522,13 @@
     "an-ark-off-broadway-2026/theatermania--david-gordon.json",
     "paranormal-activity-west-end-2025/broadwayworld--franco-milazzo.json",
     "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/theatermania--zachary-stewart.json",
-    "ragtime-2025/wsj--charles-isherwood.json"
+    "ragtime-2025/wsj--charles-isherwood.json",
+    "the-producers-west-end-2025/broadwayworld--aliya-al-hassan.json",
+    "masquerade-off-broadway-2025/theatermania--meg-masseron.json",
+    "heathers-the-musical-off-broadway-2025/cititour--brian-scott-lipton.json",
+    "operation-mincemeat-2025/usatoday--unknown.json",
+    "buena-vista-social-club-2025/cititour--brian-scott-lipton.json",
+    "buena-vista-social-club-2025/billboard--sigal-ratner-arias.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -641,7 +647,11 @@
     "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json",
     "two-strangers-bway-2025/guardian--unknown.json",
     "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
-    "ragtime-2025/bloomberg--chris-rovzar.json"
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "my-neighbour-totoro-west-end-2025/the-morning-star--unknown.json",
+    "my-neighbour-totoro-west-end-2025/times-uk--unknown.json",
+    "dracula-west-end-2025/times-uk--clive-davis.json",
+    "death-becomes-her-2024/wsj--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1078,7 +1088,8 @@
       "the-unknown-off-broadway-2026/theatermania--zachary-stewart.json",
       "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
       "an-ark-off-broadway-2026/theatermania--david-gordon.json",
-      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/theatermania--zachary-stewart.json"
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/theatermania--zachary-stewart.json",
+      "masquerade-off-broadway-2025/theatermania--meg-masseron.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -1254,11 +1265,16 @@
       "deep-azure-globe-west-end-2026/broadwayworld--unknown.json",
       "an-ark-off-broadway-2026/newyorker--emily-nussbaum.json",
       "paranormal-activity-west-end-2025/broadwayworld--franco-milazzo.json",
-      "ragtime-2025/wsj--charles-isherwood.json"
+      "ragtime-2025/wsj--charles-isherwood.json",
+      "the-producers-west-end-2025/broadwayworld--aliya-al-hassan.json",
+      "heathers-the-musical-off-broadway-2025/cititour--brian-scott-lipton.json",
+      "operation-mincemeat-2025/usatoday--unknown.json",
+      "buena-vista-social-club-2025/cititour--brian-scott-lipton.json",
+      "buena-vista-social-club-2025/billboard--sigal-ratner-arias.json"
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "ragtime-2025/bloomberg--chris-rovzar.json",
+  "lastProcessed": "death-becomes-her-2024/wsj--unknown.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -1385,6 +1401,17 @@
     },
     {
       "t": "2026-03-23T17:17:28.969Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-23T17:19:16.333Z",
+      "event": "bb-session",
+      "session": "3e15ad2c",
+      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
+    },
+    {
+      "t": "2026-03-23T17:19:17.786Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-23T17:18:14.206Z",
-  "processed": 523,
-  "failed": 117,
-  "successRate": "81.7%",
+  "updatedAt": "2026-03-23T17:20:06.375Z",
+  "processed": 529,
+  "failed": 121,
+  "successRate": "81.4%",
   "tierBreakdown": {
-    "playwright": 433,
+    "playwright": 434,
     "amp": 12,
     "browserbase": 18,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 52,
-    "archive": 81
+    "archive": 86
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-23T12:12:31.276Z",
-      "event": "bb-session",
-      "session": "b5c04280",
-      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
-    },
-    {
-      "t": "2026-03-23T12:12:32.508Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
     {
       "t": "2026-03-23T12:13:24.749Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-23T17:17:28.969Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-23T17:19:16.333Z",
+      "event": "bb-session",
+      "session": "3e15ad2c",
+      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
+    },
+    {
+      "t": "2026-03-23T17:19:17.786Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
