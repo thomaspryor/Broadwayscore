@@ -17,14 +17,24 @@
     "oliver-west-end-2024/theatre-weekly--greg-stewart.json",
     "oliver-west-end-2024/times-uk--dominic-maxwell.json",
     "oliver-west-end-2024/times-uk--neil-fisher.json",
-    "oliver-west-end-2024/whatsonstage--gareth-carr.json"
+    "oliver-west-end-2024/whatsonstage--gareth-carr.json",
+    "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
+    "romeo-and-juliet-west-end-2026/guardian--adrian-horton.json",
+    "romeo-and-juliet-west-end-2026/guardian--unknown.json",
+    "romeo-and-juliet-west-end-2026/whatsonstage--unknown.json",
+    "im-every-woman-the-chaka-khan-musical-off-west-end-2026/london-theatre--unknown.json",
+    "summerfolk-west-end-2026/guardian--unknown.json",
+    "summerfolk-west-end-2026/thereviewshub--unknown.json",
+    "summerfolk-west-end-2026/timeout--andrzej-lukowski.json",
+    "summerfolk-west-end-2026/timeout-london--andrzej-lukowski.json"
   ],
   "failed": [
     "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
     "oliver-west-end-2024/the-sun--unknown.json",
     "oliver-west-end-2024/thestage--dave-fargnoli.json",
     "oliver-west-end-2024/thestage--matt-hemley.json",
-    "oliver-west-end-2024/thestage--sam-marlowe.json"
+    "oliver-west-end-2024/thestage--sam-marlowe.json",
+    "inter-alia-west-end-2026/thestage--sam-marlowe.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -46,10 +56,21 @@
       "oliver-west-end-2024/theatre-weekly--greg-stewart.json",
       "oliver-west-end-2024/times-uk--dominic-maxwell.json",
       "oliver-west-end-2024/times-uk--neil-fisher.json",
-      "oliver-west-end-2024/whatsonstage--gareth-carr.json"
+      "oliver-west-end-2024/whatsonstage--gareth-carr.json",
+      "romeo-and-juliet-west-end-2026/guardian--adrian-horton.json",
+      "romeo-and-juliet-west-end-2026/guardian--unknown.json",
+      "romeo-and-juliet-west-end-2026/whatsonstage--unknown.json",
+      "im-every-woman-the-chaka-khan-musical-off-west-end-2026/london-theatre--unknown.json",
+      "summerfolk-west-end-2026/guardian--unknown.json",
+      "summerfolk-west-end-2026/thereviewshub--unknown.json",
+      "summerfolk-west-end-2026/timeout--andrzej-lukowski.json",
+      "summerfolk-west-end-2026/timeout-london--andrzej-lukowski.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/romeo-and-juliet-west-end-2026/nytimes--unknown.json",
+      "romeo-and-juliet-west-end-2026/nytimes--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -63,7 +84,7 @@
     "archive": []
   },
   "startTime": "2026-03-23T00:14:57.443Z",
-  "lastProcessed": "oliver-west-end-2024/whatsonstage--gareth-carr.json",
+  "lastProcessed": "summerfolk-west-end-2026/timeout-london--andrzej-lukowski.json",
   "log": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -97,6 +118,17 @@
       "t": "2026-03-23T00:24:33.977Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-23T00:35:11.038Z",
+      "event": "bb-session",
+      "session": "2cc6faa3",
+      "url": "https://www.nytimes.com/2024/05/24/theater/tom-holland-romeo-and-juliet.html"
+    },
+    {
+      "t": "2026-03-23T00:35:12.060Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
