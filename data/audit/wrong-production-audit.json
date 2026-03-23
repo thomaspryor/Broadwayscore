@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-23T13:07:49.165Z",
+  "timestamp": "2026-03-23T13:15:40.363Z",
   "stats": {
     "totalReviews": 32374,
-    "alreadyFlagged": 11020,
+    "alreadyFlagged": 11021,
     "dateGuardCatches": 139,
     "directorMismatch": 941,
-    "tvFilmSignals": 3399,
+    "tvFilmSignals": 3400,
     "londonSignals": 1017,
     "offBroadwaySignals": 1007,
     "yearMismatch": 71,
-    "noPublishDate": 6814
+    "noPublishDate": 6813
   },
   "findings": [
     {
@@ -30099,6 +30099,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"phyllida lloyd\" from mamma-mia-2025"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
