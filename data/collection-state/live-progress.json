@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-23T12:11:18.554Z",
-  "processed": 140,
+  "updatedAt": "2026-03-23T12:13:45.146Z",
+  "processed": 150,
   "failed": 30,
-  "successRate": "82.4%",
+  "successRate": "83.3%",
   "tierBreakdown": {
-    "playwright": 123,
-    "amp": 10,
-    "browserbase": 4,
+    "playwright": 128,
+    "amp": 12,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 23,
-    "archive": 10
+    "archive": 12
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -32,6 +32,28 @@
       "event": "bb-session",
       "session": "687c4572",
       "url": "https://www.amny.com/entertainment/theater/spelling-bee-returns-nails-every-word"
+    },
+    {
+      "t": "2026-03-23T12:12:31.276Z",
+      "event": "bb-session",
+      "session": "b5c04280",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-23T12:12:32.508Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-23T12:13:24.749Z",
+      "event": "bb-session",
+      "session": "38a622dd",
+      "url": "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing"
+    },
+    {
+      "t": "2026-03-23T12:13:25.803Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }

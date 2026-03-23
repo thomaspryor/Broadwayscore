@@ -139,7 +139,17 @@
     "summerfolk-west-end-2026/independent--alice-saville.json",
     "summerfolk-west-end-2026/london-box-office--stuart-king.json",
     "summerfolk-west-end-2026/standard--nick-curtis.json",
-    "summerfolk-west-end-2026/telegraph--dominic-cavendish.json"
+    "summerfolk-west-end-2026/telegraph--dominic-cavendish.json",
+    "summerfolk-west-end-2026/whatsonstage--sarah-crompton.json",
+    "every-brilliant-thing-2026/nytg--austin-fimmano.json",
+    "every-brilliant-thing-2026/nytimes--adam-feldman.json",
+    "every-brilliant-thing-2026/deadline--unknown.json",
+    "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
+    "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
+    "every-brilliant-thing-2026/thewrap--robert-hofler.json",
+    "every-brilliant-thing-2026/theatrely--unknown.json",
+    "every-brilliant-thing-2026/amny--matt-windman.json",
+    "every-brilliant-thing-2026/chicagotribune--chris-jones.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -309,7 +319,12 @@
       "summerfolk-west-end-2026/independent--alice-saville.json",
       "summerfolk-west-end-2026/london-box-office--stuart-king.json",
       "summerfolk-west-end-2026/standard--nick-curtis.json",
-      "summerfolk-west-end-2026/telegraph--dominic-cavendish.json"
+      "summerfolk-west-end-2026/telegraph--dominic-cavendish.json",
+      "summerfolk-west-end-2026/whatsonstage--sarah-crompton.json",
+      "every-brilliant-thing-2026/nytg--austin-fimmano.json",
+      "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
+      "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
+      "every-brilliant-thing-2026/theatrely--unknown.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -322,8 +337,6 @@
       "cold-war-choir-practice-off-broadway-2026/thewrap--robert-hofler.json",
       "data/review-texts/the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
       "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
-      "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
-      "every-brilliant-thing-2026/deadline--unknown.json",
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
       "every-brilliant-thing-2026/thewrap--robert-hofler.json"
     ],
@@ -331,7 +344,11 @@
       "data/review-texts/music-city-off-broadway-2026/deadline--unknown.json",
       "music-city-off-broadway-2026/deadline--unknown.json",
       "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
-      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json"
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
+      "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
+      "every-brilliant-thing-2026/deadline--unknown.json",
+      "data/review-texts/every-brilliant-thing-2026/amny--matt-windman.json",
+      "every-brilliant-thing-2026/amny--matt-windman.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -371,11 +388,13 @@
       "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
       "giant-2026/newyorker--john-lahr.json",
-      "giant-2026/newyorker--unknown.json"
+      "giant-2026/newyorker--unknown.json",
+      "every-brilliant-thing-2026/nytimes--adam-feldman.json",
+      "every-brilliant-thing-2026/chicagotribune--chris-jones.json"
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "summerfolk-west-end-2026/telegraph--dominic-cavendish.json",
+  "lastProcessed": "every-brilliant-thing-2026/chicagotribune--chris-jones.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -394,6 +413,28 @@
       "event": "bb-session",
       "session": "687c4572",
       "url": "https://www.amny.com/entertainment/theater/spelling-bee-returns-nails-every-word"
+    },
+    {
+      "t": "2026-03-23T12:12:31.276Z",
+      "event": "bb-session",
+      "session": "b5c04280",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-23T12:12:32.508Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-23T12:13:24.749Z",
+      "event": "bb-session",
+      "session": "38a622dd",
+      "url": "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing"
+    },
+    {
+      "t": "2026-03-23T12:13:25.803Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
