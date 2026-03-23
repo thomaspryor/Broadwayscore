@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 2160px;
+    height: 2160px;
+    background: #0f0f14;
+    font-family: 'Inter', ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    color: #e5e7eb;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page { padding: 96px 100px 80px; height: 100%; display: flex; flex-direction: column; }
+  .header { text-align: center; margin-bottom: 64px; }
+  .header h1 { font-size: 112px; font-weight: 900; line-height: 1.05; color: #ffffff; letter-spacing: -0.02em; margin-bottom: 24px; }
+  .header .sub { font-size: 32px; font-weight: 400; color: #9ca3af; }
+  .header .sub .brand { color: #d4a574; font-weight: 700; }
+
+  .rows { display: flex; flex-direction: column; gap: 32px; align-items: center; margin-bottom: 64px; }
+
+  .show-row {
+    background: #1a1a24; border-radius: 32px; padding: 28px 32px;
+    display: flex; align-items: center; gap: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.05); max-width: 1600px; width: 100%;
+  }
+
+  .rank-num { font-size: 128px; font-weight: 800; color: rgba(255,255,255,0.08); line-height: 1; width: 120px; text-align: center; flex-shrink: 0; }
+  .poster { width: 140px; height: 200px; border-radius: 12px; object-fit: cover; flex-shrink: 0; background: #2a2a38; }
+  .show-info { min-width: 0; }
+  .show-title { font-size: 52px; font-weight: 700; color: #ffffff; line-height: 1.2; margin-bottom: 12px; }
+  .show-meta { font-size: 24px; font-weight: 400; color: #6b7280; }
+  .spacer { flex: 1; }
+
+  .dual-scores { display: flex; align-items: flex-start; gap: 24px; flex-shrink: 0; }
+  .score-col { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+  .score-label { font-size: 18px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; color: #6b7280; }
+
+  .score-badge {
+    width: 112px; height: 112px; border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 52px; font-weight: 700; line-height: 1; position: relative;
+  }
+
+  .score-badge.gold { background: linear-gradient(135deg, #DAA520 0%, #FFD700 30%, #FFF0A0 50%, #FFD700 70%, #DAA520 100%); color: #1a1a1a; border: 4px solid #C8960E; box-shadow: 0 0 24px rgba(218,165,32,0.55), 0 0 12px rgba(255,215,0,0.4), 0 4px 12px rgba(0,0,0,0.3), inset 0 2px 0 rgba(255,255,255,0.3); }
+  .score-badge.recommended { background: #22c55e; color: #fff; box-shadow: 0 2px 8px rgba(34,197,94,0.3); }
+  .score-badge.worth-seeing { background: #14b8a6; color: #fff; box-shadow: 0 2px 8px rgba(20,184,166,0.3); }
+  .score-badge.skippable { background: #d97706; color: #1a1a1a; box-shadow: 0 2px 8px rgba(217,119,6,0.3); }
+  .score-badge.stay-away { background: #ef4444; color: #fff; box-shadow: 0 2px 8px rgba(239,68,68,0.3); }
+
+  .audience-badge {
+    width: 112px; height: 112px; border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 46px; font-weight: 700; line-height: 1;
+  }
+
+  .crown-wrap { margin-bottom: -4px; position: relative; z-index: 1; }
+
+  .footer { text-align: center; margin-top: auto; }
+  .footer-logo { font-size: 48px; font-weight: 900; margin-bottom: 16px; letter-spacing: -0.5px; }
+  .footer-logo .white { color: #ffffff; }
+  .footer-logo .gold { background: linear-gradient(135deg, #d4a574 0%, #b8956a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .footer-logo .tm { font-size: 16px; font-weight: 400; vertical-align: super; margin-left: 4px; color: #9ca3af; -webkit-text-fill-color: #9ca3af; }
+  .footer-meta { font-size: 24px; font-weight: 400; color: #6b7280; }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <h1>Where Critics and<br>Audiences Disagree Most</h1>
+      <div class="sub">Currently Running Shows | broadwayscorecard.com</div>
+    </div>
+    <div class="rows" id="rows"></div>
+    <div class="footer">
+      <div class="footer-logo"><span class="white">Broadway</span><span class="gold">Scorecard</span><span class="tm">™</span></div>
+      <div class="footer-meta">Updated March 2026 · 700+ shows · 18,000+ scored reviews · broadwayscorecard.com</div>
+    </div>
+  </div>
+
+  <script>
+    const CONFIG = {
+      shows: [
+        { rank: 1, name: 'Stranger Things: The First Shadow', criticScore: 65, audGrade: 'A+', posterId: 'stranger-things-2024', direction: 'Audience higher' },
+        { rank: 2, name: 'Wicked',                            criticScore: 69, audGrade: 'A+', posterId: 'wicked-2003', direction: 'Audience higher' },
+        { rank: 3, name: 'The Great Gatsby',                   criticScore: 59, audGrade: 'B+', posterId: 'the-great-gatsby-2024', direction: 'Audience higher' },
+        { rank: 4, name: 'The Outsiders',                      criticScore: 72, audGrade: 'A+', posterId: 'the-outsiders-2024', direction: 'Audience higher' },
+        { rank: 5, name: 'MJ The Musical',                     criticScore: 69, audGrade: 'A-', posterId: 'mj-2022', direction: 'Audience higher' },
+      ],
+    };
+
+    function getTier(score) {
+      if (score >= 83) return 'gold';
+      if (score >= 75) return 'recommended';
+      if (score >= 65) return 'worth-seeing';
+      if (score >= 55) return 'skippable';
+      return 'stay-away';
+    }
+
+    function getAudColor(grade) {
+      if (grade.startsWith('A')) return { bg: '#22c55e', color: '#fff' };
+      if (grade === 'B+' || grade === 'B') return { bg: '#14b8a6', color: '#fff' };
+      if (grade === 'B-') return { bg: '#14b8a6', color: '#fff' };
+      if (grade.startsWith('C')) return { bg: '#d97706', color: '#1a1a1a' };
+      if (grade === 'D') return { bg: '#ef4444', color: '#fff' };
+      return { bg: '#ef4444', color: '#fff' };
+    }
+
+    const container = document.getElementById('rows');
+    CONFIG.shows.forEach(s => {
+      const tier = getTier(s.criticScore);
+      const ext = s.posterExt || 'webp';
+      const posterUrl = `https://broadwayscorecard.com/images/shows/${s.posterId}/poster.${ext}`;
+      const crownHTML = tier === 'gold'
+        ? `<div class="crown-wrap"><svg width="26" height="12" viewBox="0 0 24 14"><path d="M2,13 L5,5 L9,8 L12,1 L15,8 L19,5 L22,13 Z" fill="#FFD700" opacity="0.85"/></svg></div>`
+        : '';
+      const ac = getAudColor(s.audGrade);
+
+      container.innerHTML += `
+        <div class="show-row">
+          <div class="rank-num">${s.rank}</div>
+          <img class="poster" src="${posterUrl}" alt="${s.name}">
+          <div class="show-info">
+            <div class="show-title">${s.name}</div>
+            <div class="show-meta">${s.direction}</div>
+          </div>
+          <div class="spacer"></div>
+          <div class="dual-scores">
+            <div class="score-col">
+              <div class="score-label">Critics</div>
+              ${crownHTML}
+              <div class="score-badge ${tier}">${s.criticScore}</div>
+            </div>
+            <div class="score-col">
+              <div class="score-label">Audience</div>
+              <div class="audience-badge" style="background:${ac.bg};color:${ac.color};box-shadow:0 2px 8px ${ac.bg}44;">${s.audGrade}</div>
+            </div>
+          </div>
+        </div>`;
+    });
+  </script>
+</body>
+</html>
