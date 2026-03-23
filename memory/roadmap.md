@@ -1,4 +1,4 @@
-# Roadmap — Last updated 2026-03-21
+# Roadmap — Last updated 2026-03-23
 
 > **Active work is now tracked on the [GitHub Projects board](https://github.com/users/thomaspryor/projects/1).**
 > Open issues with `session` label = active Claude Code sessions.
@@ -51,7 +51,7 @@
 
 **Product:**
 9. **Off-West End scoring expansion** — Classification done. 56 OWE shows in DB, 11 open with scores. Needs more review collection via aggregators.
-9b. **Theatre.reviews scraper** — Partially fixed (2026-03-18). Extraction rewritten, paginated discovery added (225 URLs), weekly sweep workflow created. Latest sweep: 1 show, 8 reviews extracted. Still low yield — only matching a fraction of the 225 indexed pages to our shows. Needs: title matching tuning, verify HTML extraction on more page formats.
+9b. ~~**Theatre.reviews scraper**~~ → DONE (2026-03-22). Part of WE aggregator sweep. 24 shows, 224 reviews. Homepage scraping + comprehensive venue slug matching + inline star extraction. Archive-first.
 10. **App icon refinement** — Hard to read at small sizes.
 11. **BTC/TodayTix partnership (paused)** — Waiting on TodayTix for launch timing, co-branding, legal.
 
@@ -77,7 +77,8 @@
 ## LOW PRIORITY / BACKLOG
 
 **iOS App:** Widget, Spotlight search, iPad layout, Android, Share sheet, App Clips, Siri
-**Infrastructure:** Show images to CDN (173MB/deploy), prune low-value static pages, domain retry intelligence, ~~ScrapingBee SERP credit optimization~~ → DONE (3.3M→968K credits/month + BrightData fallback), ~~Scraper cost optimization~~ → DONE (Playwright-first for public sites, BD-first SERP, SB credit pre-check, per-run cost logging), Cache Playwright browser install in CI (39 workflows each download ~167MB; `actions/cache` on `~/.cache/ms-playwright/` keyed by PW version), Consider Playwright-primary for Show-Score scoring (free, no SB credits; reserve SB for discovery where premium proxy matters)
+**Image gaps:** Dear England WE (score 83, 7 reviews) has no image — auto-fetch missed it, may need manual sourcing or TodayTix mapping fix.
+**Infrastructure:** Show images to CDN (173MB/deploy), prune low-value static pages, domain retry intelligence, ~~ScrapingBee SERP credit optimization~~ → DONE (3.3M→968K credits/month + BrightData fallback), ~~Scraper cost optimization~~ → DONE (Playwright-first for public sites, BD-first SERP, SB credit pre-check, per-run cost logging)
 **Scraper resilience:** Consolidate inline SERP in collect-review-texts.js to use shared url-discovery.js module (eliminates diverged 200-line fork)
 **Domain matching:** `domainMatchesExpected()` in `scraper.js` doesn't match subdomains of registry aliases (e.g., `articles.philly.com` doesn't match alias `philly.com`). Workaround: added explicit subdomain aliases. Real fix: extend the matching function. LOW priority.
 **Code Quality:**
@@ -90,11 +91,20 @@
 **Data/Scoring:** LLM prompt contamination audit, cross-aggregator excerpt enrichment, Playwright critic resolution, 14 author-byline mismatches need manual review (audit report in data/audit/syndicated-duplicates.json)
 24. **Integrate date-window validator into rebuild** — Currently standalone script. Should run automatically in `rebuild-all-reviews.js` after the existing pre-opening guard. The existing guard uses 90-day threshold and only covers preview/upcoming shows; the new validator is stricter (21d/7d) and covers all statuses.
 25. **Outlet-specific date extractors** — ~490 reviews have fullText but no date. Top offenders: Cititour (55), The Stage (49), Lighting & Sound America (41). Would need custom extraction for these outletsx27 HTML patterns.
-**Lists Enhancements:** ~~Public/shareable lists~~ → DONE (2026-03-21), "Add to List" from Diary/Watchlist rows, smart list suggestions (auto-suggest based on diary), drag handle discoverability (animation/tooltip), list import from Diary (bulk add seen shows), list count in header stats bar, notes per list item
+**Lists Enhancements:** ~~Public/shareable lists~~ → DONE (2026-03-21), **notes editing UI** (note field exists in DB + renders on shared page, but no UI to add/edit — highest value next step), "Add to List" from Diary/Watchlist rows, smart list suggestions (auto-suggest based on diary), drag handle discoverability (animation/tooltip), list import from Diary (bulk add seen shows), list count in header stats bar
+**Viral/Social:** Share-a-score image cards (zero-auth "Share this score" button → branded image with poster + score + URL, works on iMessage/social — higher viral potential than lists, OG infra already exists)
 **SEO:** FAQ schema on show detail pages
 **Code Quality:** ~~Regression protection for critical patterns~~ → DONE (grep-based guards in CI). ~~Linter/IDE revert root cause~~ → DONE (concurrent sessions, not auto-formatter).
 
 ## Recently Completed
+
+### Hero Image Orphan Fix + Rebuild Guard Auto-Allow (2026-03-22)
+- **Root cause: 352 orphan images across all markets** — `applyImages()` in `fetch-show-images-auto.js` replaced the entire `show.images` object on re-runs, wiping previously-downloaded hero/poster paths when a source returned null. Broadway worst hit (337), not just WE (5).
+- **3 fixes**: (1) `applyImages()` now preserves all existing local image paths when new fetch returns null. (2) `generate-mobile-show-details.js` checks for hero files on disk (.webp/.jpg/.png) as fallback. (3) `pre-deploy-check.js` extended to handle all image formats.
+- **315 shows fixed** in shows.json + 81 jpg→webp upgrades. Public JSONs regenerated. All verified live.
+- **Rebuild regression/drift guards unblocked** — Guards couldn't distinguish intentional data cleanup (899 wrongProduction-flagged reviews across 311 shows) from corruption. Fix: regression guard now counts flagged vs unflagged scored files on disk. If the drop is explained by audit flags + inline guard tolerance (≤2), it auto-allows. Drift guard skips shows where drops were explained. Tested: rent-1996 (flagged→EXPLAINED), hamilton-2015 (no flags→REGRESSION). CI rebuild 23415960940 passed without overrides.
+- **Duplicate show fix** — Removed malformed Krapp's Last Tape WE entry that was blocking all deploys.
+- **Watermark chain restored** — rebuild→deploy→watermark now flows automatically since guards no longer block.
 
 ### Shareable Lists (2026-03-21)
 - **Public/shareable lists**: One-tap Share button → auto-public + copy URL. Read-only page at `/list/[slug]` with posters, critic scores, venues, user notes, ticket links.
@@ -190,6 +200,17 @@ All re-runnable. Run `flag-wrong-production-by-date.js` after adding more dates.
 - **Component consolidation** — Completed (ShowListCard, MiniShowCard, Modal, useClickOutside, useShowSearch, ShowSearchDropdown, SortIcon, icons, formatCurrency, useSortableTable, formatDate). CollapsibleSection evaluated and rejected (insufficient duplication to justify abstraction).
 - **Cookie refresh** — Already covered by health check alerts + email. Manual step can't be automated.
 
+### Week of 2026-03-19 — WE Aggregator Sweep
+- **WE aggregator sweep fully operational** — 4 aggregators (WET 48, TR 24, SD 34, TS 28), archive-first caching, ~1,200 total reviews. Weekly Tuesday 8AM UTC.
+- **Archive-first for all aggregators** — WET/TR/SD/TS all cache results. Numbers stable across runs, no WAF variance.
+- **BB keepAlive** — BrowserBase sessions survive full runs (1 session, 0 errors vs 9/8 before).
+- **TS login fix** — `/login` not `/accounts/sign-in`. Unlocked 9 paywalled shows.
+- **SD scroll pagination** — Category pages scrolled to load 110 shows (was 70). Plus 19 hardcoded Stagedoor IDs.
+- **TR homepage scraping** — 31 roundup URLs from homepage + comprehensive venue slug matching + inline star extraction.
+- **gather-reviews WE integration** — Archive reads + live-fetch (WET API, TR homepage, TS SERP+BB) for opening nights. Date-gated.
+- **Aggregator archive persistence** — push-aggregator-archive step added to sweep + gather-reviews workflows.
+- **Git credential isolation** — direnv + repo-local credential helper (thomaspryor vs tompryordojo).
+
 ### Week of 2026-03-07
 - Roadmap overhaul — file-based roadmap, mirrored to issue #50 body, session discipline rules
 - Auto-maintain workflow hardening — continue-on-error, if:always() for commit path, name-length guard
@@ -197,4 +218,6 @@ All re-runnable. Run `flag-wrong-production-by-date.js` after adding more dates.
 - Off-West End classification + venue filter
 - iOS: Sentry, push notifications, offline queue, haptics, store review, deep linking (Build #29)
 - BTC: TBD badges + curated nominees QA
+
+
 

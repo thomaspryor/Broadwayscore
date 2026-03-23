@@ -36,9 +36,9 @@ Use shared components from `src/components/show-cards/` — never create custom 
 - **ANY change to files that render visible HTML needs before/after screenshots** — not just "UI" changes. Perf refactors, code moves, SSR migrations all change rendering.
 
 ### 6. Roadmap Discipline
-Roadmap is a **Notion database** named "BWSC Roadmap" (ID: `ca664c77-3eb7-48ff-ad2d-c785eb40c973`). Use the Notion MCP tools to read/update it.
-- **Finishing session:** Add completed items as rows with Status=Done. Add new discoveries as Not started.
-- **New discoveries:** Add to Notion roadmap. Don't context-switch.
+See `memory/reference_notion_roadmap.md` for roadmap location and schema.
+- **Finishing session:** Add completed items to roadmap with Status=Done. Add new discoveries as Not started.
+- **New discoveries:** Add to roadmap. Don't context-switch.
 
 ### 7. Infrastructure Change Planning (MANDATORY)
 For 3+ workflow/CI changes: plan → review → test 3 representative cases → verify all steps.
