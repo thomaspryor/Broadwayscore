@@ -1,39 +1,57 @@
 {
-  "updatedAt": "2026-03-23T13:17:20.315Z",
-  "processed": 509,
-  "failed": 100,
-  "successRate": "83.6%",
+  "updatedAt": "2026-03-23T13:18:58.509Z",
+  "processed": 359,
+  "failed": 51,
+  "successRate": "87.6%",
   "tierBreakdown": {
-    "playwright": 446,
-    "amp": 8,
-    "browserbase": 16,
-    "directCookies": 0,
+    "playwright": 314,
+    "amp": 12,
+    "browserbase": 14,
+    "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 56,
-    "archive": 55
+    "archiveToday": 32,
+    "archive": 32
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
-      "t": "2026-03-23T10:38:28.556Z",
+      "t": "2026-03-23T10:08:03.866Z",
       "event": "bb-session",
-      "session": "fbf3335a",
-      "url": "https://www.nytimes.com/2024/05/24/theater/tom-holland-romeo-and-juliet.html"
+      "session": "f75c3d02",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
     },
     {
-      "t": "2026-03-23T10:38:29.629Z",
+      "t": "2026-03-23T10:38:04.120Z",
+      "event": "bb-session",
+      "session": "1827776e",
+      "url": "https://www.newyorker.com/magazine/2026/02/09/an-ark-theatre-review-data"
+    },
+    {
+      "t": "2026-03-23T10:40:50.042Z",
+      "event": "bb-session",
+      "session": "687c4572",
+      "url": "https://www.amny.com/entertainment/theater/spelling-bee-returns-nails-every-word"
+    },
+    {
+      "t": "2026-03-23T12:12:31.276Z",
+      "event": "bb-session",
+      "session": "b5c04280",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-23T12:12:32.508Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "deadline.com"
     },
     {
-      "t": "2026-03-23T11:30:18.624Z",
+      "t": "2026-03-23T12:13:24.749Z",
       "event": "bb-session",
-      "session": "707ba685",
-      "url": "https://variety.com/2025/legit/reviews/paddington-review-musical-1236595841/"
+      "session": "38a622dd",
+      "url": "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing"
     },
     {
-      "t": "2026-03-23T11:30:19.538Z",
+      "t": "2026-03-23T12:13:25.803Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     },
@@ -80,6 +98,17 @@
       "t": "2026-03-23T13:13:35.378Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-23T13:18:47.244Z",
+      "event": "bb-session",
+      "session": "6ab0d259",
+      "url": "https://www.hollywoodreporter.com/video/buena-vista-social-club-choreographers-j"
+    },
+    {
+      "t": "2026-03-23T13:18:48.306Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
