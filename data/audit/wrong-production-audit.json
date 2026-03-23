@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-23T11:17:49.722Z",
+  "timestamp": "2026-03-23T11:26:02.117Z",
   "stats": {
     "totalReviews": 32374,
-    "alreadyFlagged": 11006,
+    "alreadyFlagged": 11008,
     "dateGuardCatches": 139,
     "directorMismatch": 944,
     "tvFilmSignals": 3402,
-    "londonSignals": 1029,
+    "londonSignals": 1027,
     "offBroadwaySignals": 1007,
     "yearMismatch": 71,
-    "noPublishDate": 6816
+    "noPublishDate": 6815
   },
   "findings": [
     {
@@ -64301,10 +64301,10 @@
     },
     {
       "showId": "broken-glass-west-end-2026",
-      "file": "london-box-office--stuart-king.json",
-      "score": 44,
+      "file": "london-theatre--julia-rank.json",
+      "score": 69,
       "publishDate": "2026-03-04",
-      "url": "https://www.londonboxoffice.co.uk/news/post/review-broken-glass-young-vic",
+      "url": "https://www.londontheatre.co.uk/reviews/broken-glass-review-young-vic",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -65891,20 +65891,6 @@
       "score": 76,
       "publishDate": "2026-03-05",
       "url": "https://www.nytimes.com/2026/03/05/theater/chadwick-boseman-deep-azure.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "deep-azure-globe-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 45,
-      "publishDate": "2026-02-18",
-      "url": "https://www.timeout.com/london/theatre/deep-azure-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -81122,20 +81108,6 @@
       "score": 71,
       "publishDate": "2026-03-09",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-HOLY-ROSENBERGS-Menier-Chocolate-Factory-20260309",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-holy-rosenbergs-west-end-2026",
-      "file": "theatre-weekly--greg-stewart.json",
-      "score": 79,
-      "publishDate": "2026-03-09",
-      "url": "https://theatreweekly.com/review-the-holy-rosenbergs-at-the-menier-chocolate-factory/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
