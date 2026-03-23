@@ -389,7 +389,16 @@
     "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--dominic-cavendish.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/theatre-bee-uk--theatre-bee-uk.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--dominic-maxwell.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json"
+    "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/whatsonstage--sarah-crompton.json",
+    "moulin-rouge-the-musical-west-end-2021/theatrely--emily-wyrwa.json",
+    "moulin-rouge-the-musical-west-end-2021/artsdesk--marianka-swain.json",
+    "moulin-rouge-the-musical-west-end-2021/london-box-office--stuart-king.json",
+    "moulin-rouge-the-musical-west-end-2021/london-theatre--suzy-evans.json",
+    "moulin-rouge-the-musical-west-end-2021/standard--nick-curtis.json",
+    "back-to-the-future-west-end-2021/variety--david-benedict.json",
+    "back-to-the-future-west-end-2021/timeout--adam-feldman.json",
+    "back-to-the-future-west-end-2021/timeout--unknown.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -453,7 +462,8 @@
     "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/londonist--unknown.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/artsdesk--david-nice.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json"
+    "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
+    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -802,7 +812,14 @@
       "cabaret-at-the-kit-kat-club-west-end-2021/standard--nick-curtis.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/theatre-bee-uk--theatre-bee-uk.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--dominic-maxwell.json",
-      "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json"
+      "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/whatsonstage--sarah-crompton.json",
+      "moulin-rouge-the-musical-west-end-2021/theatrely--emily-wyrwa.json",
+      "moulin-rouge-the-musical-west-end-2021/london-box-office--stuart-king.json",
+      "moulin-rouge-the-musical-west-end-2021/london-theatre--suzy-evans.json",
+      "moulin-rouge-the-musical-west-end-2021/standard--nick-curtis.json",
+      "back-to-the-future-west-end-2021/timeout--adam-feldman.json",
+      "back-to-the-future-west-end-2021/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -824,7 +841,9 @@
       "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
       "hercules-west-end-2025/variety--david-benedict.json",
       "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
-      "my-neighbour-totoro-west-end-2025/variety--unknown.json"
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "back-to-the-future-west-end-2021/variety--david-benedict.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -897,11 +916,12 @@
       "stranger-things-the-first-shadow-west-end-2023/telegraph--dominic-cavendish.json",
       "stranger-things-the-first-shadow-west-end-2023/telegraph--marianka-swain.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/mail--patrick-marmion.json",
-      "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--dominic-cavendish.json"
+      "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--dominic-cavendish.json",
+      "moulin-rouge-the-musical-west-end-2021/artsdesk--marianka-swain.json"
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json",
+  "lastProcessed": "back-to-the-future-west-end-2021/timeout--unknown.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -961,6 +981,17 @@
     },
     {
       "t": "2026-03-23T11:40:21.303Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-23T12:20:35.212Z",
+      "event": "bb-session",
+      "session": "598cc41e",
+      "url": "https://variety.com/2021/legit/reviews/back-to-the-future-musical-review-west-en"
+    },
+    {
+      "t": "2026-03-23T12:20:36.271Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }

@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-23T12:19:39.555Z",
-  "processed": 348,
-  "failed": 62,
-  "successRate": "84.9%",
+  "updatedAt": "2026-03-23T12:21:15.188Z",
+  "processed": 357,
+  "failed": 63,
+  "successRate": "85.0%",
   "tierBreakdown": {
-    "playwright": 308,
+    "playwright": 315,
     "amp": 8,
-    "browserbase": 10,
+    "browserbase": 12,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 31,
-    "archive": 35
+    "archive": 36
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -73,6 +73,17 @@
     },
     {
       "t": "2026-03-23T11:40:21.303Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-23T12:20:35.212Z",
+      "event": "bb-session",
+      "session": "598cc41e",
+      "url": "https://variety.com/2021/legit/reviews/back-to-the-future-musical-review-west-en"
+    },
+    {
+      "t": "2026-03-23T12:20:36.271Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
