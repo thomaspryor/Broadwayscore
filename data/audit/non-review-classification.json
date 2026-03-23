@@ -1,23 +1,23 @@
 {
   "meta": {
-    "generatedAt": "2026-03-23T00:14:01.133Z",
+    "generatedAt": "2026-03-23T00:21:24.270Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 33090,
       "inReviewsJson": 16147,
       "skippedExcluded": 61,
-      "withFullText": 20,
+      "withFullText": 19,
       "excerptOnly": 2156,
-      "llmClassified": 19,
+      "llmClassified": 18,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
       "uncertainCases": 18,
-      "budgetUsed": 0.0020000000000000005,
-      "llmCalls": 20,
+      "budgetUsed": 0.0019000000000000006,
+      "llmCalls": 19,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 13910
+      "skippedAlreadyClassified": 13911
     },
     "calibration": null
   },
@@ -30,7 +30,7 @@
       "outletId": "dailybeast",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article mentions the Tony Awards eligibility deadline, which is a news item. It's a brief snippet, so confidence is low.",
+      "reasoning": "The article mentions the Tony Awards eligibility deadline, suggesting it's a news piece about the Broadway season rather than a review of \"Dead Outlaw.\"",
       "currentScore": 72
     },
     {
@@ -40,7 +40,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer an evaluation or opinion on the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -50,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than an actual article. It does mention 'Broadway review subscriptions' and 'Music album reviews' but does not contain a review of 'Fences'.",
       "currentScore": 82
     },
     {
@@ -70,7 +70,7 @@
       "outletId": "huffpost",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be a collection of news headlines and trending topics, rather than a review of 'First Date'. The truncated middle section makes it difficult to be certain.",
+      "reasoning": "The article appears to be a collection of news headlines and trending topics, rather than a review of 'First Date'. The presence of sections like 'What's Hot' and trending articles indicates a news aggregator format.",
       "currentScore": 62
     },
     {
@@ -80,7 +80,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, including \"Broadway news updates\" and \"Music album reviews,\" but it does not contain any evaluative content about a specific production.",
+      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific show.",
       "currentScore": 62
     },
     {
@@ -100,7 +100,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of various cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of various cultural events.",
       "currentScore": 88
     },
     {
@@ -120,7 +120,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, rather than an article about a specific show. There is no evaluative content.",
       "currentScore": 89
     },
     {
@@ -130,7 +130,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors'. It lacks any evaluative content about the show.",
+      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
       "currentScore": 74
     },
     {
@@ -150,7 +150,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview segment.",
+      "reasoning": "The article describes the show and its context, but it does not offer an evaluation or opinion on the quality of the production. It focuses on the show's concept and historical significance.",
       "currentScore": 83
     },
     {
@@ -160,7 +160,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms, not an actual article. There is no evaluative content about 'The Assembled Parties' or any other show.",
+      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -180,7 +180,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of theater-related links and search terms, not an article about a specific show.",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific content type. It's likely a list of news or related items.",
       "currentScore": 78
     },
     {
@@ -190,7 +190,7 @@
       "outletId": "vulture",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the set design and the playwright's intentions, but it does not offer an evaluation or opinion on the quality of the production itself. It reads more like a feature or background piece.",
+      "reasoning": "The article describes the set design and the playwright's intentions, drawing comparisons to other works, but it does not offer an overall evaluation or recommendation of the show.",
       "currentScore": 64
     },
     {
@@ -205,8 +205,6 @@
     }
   ],
   "heuristicFlags": [],
-  "reviewsConfirmed": [
-    "oliver-west-end-2024/timeout-london--andrzej-lukowski.json"
-  ],
+  "reviewsConfirmed": [],
   "perShowSummary": []
 }
