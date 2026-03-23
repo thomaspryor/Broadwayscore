@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-23T01:06:58.470Z",
+  "timestamp": "2026-03-23T01:17:46.111Z",
   "stats": {
     "totalReviews": 32399,
     "alreadyFlagged": 10977,
-    "dateGuardCatches": 140,
+    "dateGuardCatches": 141,
     "directorMismatch": 945,
     "tvFilmSignals": 3400,
     "londonSignals": 1032,
     "offBroadwaySignals": 1012,
     "yearMismatch": 71,
-    "noPublishDate": 6876
+    "noPublishDate": 6875
   },
   "findings": [
     {
@@ -14437,6 +14437,18 @@
     {
       "showId": "evening-all-afternoon-west-end-2026",
       "file": "i-paper--fiona-mountford.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 464d before show (2024-11-07 vs 2026-02-14)"
+        }
+      ]
+    },
+    {
+      "showId": "evening-all-afternoon-west-end-2026",
+      "file": "telegraph--tim-robey.json",
+      "score": 94,
       "findings": [
         {
           "type": "DATE_GUARD",
