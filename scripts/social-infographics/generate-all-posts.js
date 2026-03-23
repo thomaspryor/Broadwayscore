@@ -592,8 +592,8 @@ async function main() {
     'post11-most-expensive': post11HTML,
     'post04-critics-loved': post4HTML,
     'post12-hamilton': (h) => scorecardHTML(h, {
-      title: 'Hamilton', headline: 'The Numbers Behind<br>Hamilton', score: 89, exact: 89.48, reviews: 43, audGrade: 'A+', audScore: 96,
-      t1: { avg: 88.7, count: 11 }, t2: { avg: 88.8, count: 12 }, t3: { avg: 91.5, count: 20 },
+      title: 'Hamilton', headline: 'The Numbers Behind<br>Hamilton', score: 90, exact: 89.88, reviews: 42, audGrade: 'A+', audScore: 96,
+      t1: { avg: 89.4, count: 12 }, t2: { avg: 89.1, count: 11 }, t3: { avg: 91.7, count: 19 },
       opened: 'August 6, 2015', venue: 'Richard Rodgers Theatre', status: 'Open', posterId: 'hamilton-2015'
     }),
     'post13-wicked': (h) => scorecardHTML(h, {
