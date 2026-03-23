@@ -83,22 +83,22 @@ jobs:
           else
             SHOWS=$(node -e "
               const shows = require('./data/shows.json').shows;
-              const now = new Date();
-              const cutoff = new Date(now);
+              const today = new Date();
+              today.setHours(0,0,0,0);
+              const cutoff = new Date(today);
               cutoff.setDate(cutoff.getDate() - $LOOKBACK);
-              cutoff.setHours(0,0,0,0);
 
               const opened = shows.filter(s => {
                 if (!s.openingDate) return false;
-                // Accept 'open' OR 'upcoming' with today's opening date
-                // (status flip can be lost to concurrent pushes)
                 if (s.status !== 'open' && s.status !== 'upcoming') return false;
                 // Only broadcast for Broadway and West End — skip OB/OWE
                 const cat = s.category || 'broadway';
                 if (cat !== 'broadway' && cat !== 'west-end') return false;
                 const d = new Date(s.openingDate);
                 d.setHours(0,0,0,0);
-                return d >= cutoff && d <= now;
+                // Strict less-than: shows open in the evening, so opening date
+                // must be BEFORE today (reviews exist the morning after, not same day)
+                return d >= cutoff && d < today;
               });
 
               if (opened.length > 0) {
@@ -284,29 +284,53 @@ jobs:
             gh workflow run gather-reviews.yml -f shows="$PENDING" || echo "Gather dispatch failed"
           fi
 
-      - name: Alert if broadcast overdue
+      - name: Alert if broadcast overdue (max once per show per day)
         if: steps.check.outputs.pending_shows != '' && steps.broadcast.outputs.broadcast_sent != 'true'
         env:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: |
-          # Alert if any pending show opened 6+ hours ago and still can't broadcast
+          # Alert if any pending show opened 6+ hours ago and still can't broadcast.
+          # Dedup: only alert once per show per day via opening-night-sent.json.
           OVERDUE=$(node -e "
+            const fs = require('fs');
             const shows = require('./data/shows.json').shows;
             const ids = '${{ steps.check.outputs.pending_shows }}'.split(',');
             const now = Date.now();
+            const today = new Date().toISOString().slice(0, 10);
             const SIX_HOURS = 6 * 60 * 60 * 1000;
+
+            // Dedup: read sent tracking to skip shows already alerted today
+            let sent = {};
+            try { sent = JSON.parse(fs.readFileSync('data/opening-night-sent.json', 'utf8')).shows || {}; } catch {}
+
             const overdue = ids.filter(id => {
               const s = shows.find(x => x.id === id);
               if (!s || !s.openingDate) return false;
-              // Opening night is evening — approximate as 7 PM ET (midnight UTC)
               const openEvening = new Date(s.openingDate + 'T00:00:00Z').getTime();
-              return (now - openEvening) > SIX_HOURS;
+              if ((now - openEvening) <= SIX_HOURS) return false;
+              // Skip if overdue alert already sent today for this show
+              const alertKey = 'overdue-alert:' + id;
+              if (sent[alertKey] && sent[alertKey].sentAt && sent[alertKey].sentAt.startsWith(today)) return false;
+              return true;
             }).map(id => {
               const s = shows.find(x => x.id === id);
               return s ? s.title : id;
             });
+
+            // Mark alerted shows so we don't spam
+            if (overdue.length > 0) {
+              const sentData = { shows: sent };
+              try { Object.assign(sentData, JSON.parse(fs.readFileSync('data/opening-night-sent.json', 'utf8'))); } catch {}
+              if (!sentData.shows) sentData.shows = {};
+              for (const id of ids) {
+                const alertKey = 'overdue-alert:' + id;
+                sentData.shows[alertKey] = { sentAt: new Date().toISOString() };
+              }
+              fs.writeFileSync('data/opening-night-sent.json', JSON.stringify(sentData, null, 2));
+            }
+
             if (overdue.length) console.log(overdue.join(', '));
           ")
 
