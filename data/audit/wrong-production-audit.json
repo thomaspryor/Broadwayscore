@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-23T00:33:07.373Z",
+  "timestamp": "2026-03-23T00:40:49.338Z",
   "stats": {
     "totalReviews": 32399,
-    "alreadyFlagged": 10976,
+    "alreadyFlagged": 10977,
     "dateGuardCatches": 140,
     "directorMismatch": 945,
-    "tvFilmSignals": 3401,
+    "tvFilmSignals": 3400,
     "londonSignals": 1031,
     "offBroadwaySignals": 1012,
     "yearMismatch": 71,
-    "noPublishDate": 6877
+    "noPublishDate": 6876
   },
   "findings": [
     {
@@ -15714,20 +15714,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "first-date-2013",
-      "file": "huffpost--steven-suskin.json",
-      "score": 62,
-      "publishDate": null,
-      "url": "https://huffpost.com/steven-suskin/aisle-view-that-embarrass_b_3726469.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -74680,7 +74666,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "i-paper--unknown.json",
-      "score": null,
+      "score": 64,
       "publishDate": "2025-01-15",
       "url": "https://inews.co.uk/culture/arts/oliver-review-immaculate-left-cold-3480332",
       "findings": [
