@@ -747,7 +747,33 @@ function titleWordsMatch(showTitle, candidateText) {
   // Use word-boundary matching for ALL words to prevent "man" matching inside "dutchman"
   const matchCount = showSlugWords.filter(w => matchesAsWholeWord(w, candidateLower)).length;
   const threshold = Math.max(2, Math.ceil(showSlugWords.length * 0.5));
-  return matchCount >= threshold;
+  if (matchCount < threshold) return false;
+
+  // Short-title guard: titles with <=3 meaningful words are vulnerable to containment
+  // matches (e.g., "Happy Ending" matching "Maybe Happy Ending"). If all show words match
+  // but the candidate has extra DISTINCTIVE words (not venue/review context), reject —
+  // the candidate is likely a different, longer-titled show.
+  if (showSlugWords.length <= 3 && matchCount === showSlugWords.length) {
+    // Context words that commonly appear in URLs/titles alongside show names
+    // but don't indicate a different show (venues, review terms, markets)
+    const CONTEXT_WORDS = new Set([
+      'review', 'reviews', 'theatre', 'theater', 'london', 'broadway',
+      'west', 'end', 'musical', 'play', 'show', 'stage', 'tickets',
+      'cast', 'opening', 'night', 'preview', 'stars', 'rating', 'score',
+      'garrick', 'palace', 'lyceum', 'apollo', 'gielgud', 'savoy',
+      'roundup', 'round', 'critics', 'critic', 'rated', 'best', 'worst',
+      'waterloo', 'soho', 'covent', 'garden', 'piccadilly', 'drury', 'lane',
+      'bridge', 'donmar', 'warehouse', 'national', 'arts', 'fortune',
+      'globe', 'old', 'vic', 'young', 'duke', 'york', 'haymarket',
+      'east', 'north', 'south', 'street', 'square', 'road', 'house',
+    ]);
+    const candidateWords = candidateLower.split(/[\s,\-_/]+/)
+      .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w) && !CONTEXT_WORDS.has(w));
+    const extraWords = candidateWords.filter(w => !showSlugWords.includes(w));
+    if (extraWords.length >= 1) return false;
+  }
+
+  return true;
 }
 
 /**

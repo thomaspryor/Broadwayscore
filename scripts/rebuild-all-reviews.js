@@ -1222,7 +1222,7 @@ showDirs.forEach(showId => {
           try {
             const hostname = new URL(data.url).hostname || '';
             const isUkUrl = hostname.endsWith('.co.uk') || hostname.endsWith('.org.uk')
-              || hostname.includes('london') || hostname.includes('theatre');
+              || hostname.includes('london') || (hostname.includes('theatre') && !hostname.includes('newyork'));
             if (isUkUrl || outletIsDualOrUk) {
               // UK/dual-market outlet + London URL → clear false positive
               if (isUkUrl) {
@@ -1303,6 +1303,19 @@ showDirs.forEach(showId => {
               }
             }
           }
+          // Dateless shows (openingDate null) lose to any dated show with the same URL.
+          // Without a date, we can't verify the review belongs to this show.
+          if (!myYear && reviewYear) {
+            for (const other of allCopies) {
+              if (other.showId === showId || !other.showYear) continue;
+              console.log(`  [CROSS-SHOW URL] ${showId}/${file}: dateless show loses to ${other.showId} (${other.showYear}) for URL year ${reviewYear}`);
+              stats.skippedCrossShowUrl = (stats.skippedCrossShowUrl || 0) + 1;
+              data.wrongProduction = true;
+              data.wrongProductionNote = `Dateless show — same URL exists in dated show ${other.showId} (${other.showYear})`;
+              fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
+              return;
+            }
+          }
         }
       }
 
@@ -1344,7 +1357,7 @@ showDirs.forEach(showId => {
           try {
             const hostname = new URL(data.url).hostname || '';
             urlIsUK = hostname.endsWith('.co.uk') || hostname.endsWith('.org.uk')
-              || hostname.includes('london') || hostname.includes('theatre');
+              || hostname.includes('london') || (hostname.includes('theatre') && !hostname.includes('newyork'));
           } catch (e) { /* ignore malformed URLs */ }
         }
         if (outletRegion !== 'london' && !urlIsUK) {
