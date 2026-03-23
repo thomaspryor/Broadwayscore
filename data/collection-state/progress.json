@@ -361,7 +361,14 @@
     "mamma-mia-west-end-2021/variety--owen-gleiberman.json",
     "mamma-mia-west-end-2021/london-box-office--daniel-perks.json",
     "mamma-mia-west-end-2021/london-theatre--alan-bird.json",
-    "mamma-mia-west-end-2021/standard--jessie-thompson.json"
+    "mamma-mia-west-end-2021/standard--jessie-thompson.json",
+    "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
+    "the-mousetrap-west-end-2021/standard--nick-curtis.json",
+    "the-mousetrap-west-end-2021/telegraph--unknown.json",
+    "the-mousetrap-west-end-2021/whatsonstage--sarah-crompton.json",
+    "the-mousetrap-west-end-2021/whatsonstage--whatsonstage-reviewer.json",
+    "a-christmas-carol-west-end-2026/london-box-office--stuart-king.json",
+    "cyrano-de-bergerac-west-end-2026/theatrely--juan-a-ramirez.json"
   ],
   "failed": [
     "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
@@ -434,7 +441,10 @@
     "wicked-west-end-2021/thestage--paul-vale.json",
     "the-lion-king-west-end-2021/guardian--arifa-akbar.json",
     "the-lion-king-west-end-2021/guardian--unknown.json",
-    "the-lion-king-west-end-2021/thestage--unknown.json"
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "the-mousetrap-west-end-2021/thestage--john-thaxter.json",
+    "ivanov-west-end-2026/playbill--unknown.json",
+    "man-to-man-west-end-2026/stagebuddy--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -746,7 +756,14 @@
       "the-lion-king-west-end-2021/whatsonstage--frey-kwa-hawking.json",
       "mamma-mia-west-end-2021/london-box-office--daniel-perks.json",
       "mamma-mia-west-end-2021/london-theatre--alan-bird.json",
-      "mamma-mia-west-end-2021/standard--jessie-thompson.json"
+      "mamma-mia-west-end-2021/standard--jessie-thompson.json",
+      "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
+      "the-mousetrap-west-end-2021/standard--nick-curtis.json",
+      "the-mousetrap-west-end-2021/telegraph--unknown.json",
+      "the-mousetrap-west-end-2021/whatsonstage--sarah-crompton.json",
+      "the-mousetrap-west-end-2021/whatsonstage--whatsonstage-reviewer.json",
+      "a-christmas-carol-west-end-2026/london-box-office--stuart-king.json",
+      "cyrano-de-bergerac-west-end-2026/theatrely--juan-a-ramirez.json"
     ],
     "amp": [],
     "browserbase": [
@@ -807,7 +824,9 @@
       "data/review-texts/wicked-west-end-2021/independent--clarisse-loughrey.json",
       "data/review-texts/wicked-west-end-2021/thestage--paul-vale.json",
       "data/review-texts/the-lion-king-west-end-2021/guardian--arifa-akbar.json",
-      "data/review-texts/the-lion-king-west-end-2021/guardian--unknown.json"
+      "data/review-texts/the-lion-king-west-end-2021/guardian--unknown.json",
+      "data/review-texts/the-mousetrap-west-end-2021/thestage--john-thaxter.json",
+      "data/review-texts/ivanov-west-end-2026/playbill--unknown.json"
     ],
     "archive": [
       "broken-glass-west-end-2026/artsdesk--unknown.json",
@@ -866,7 +885,7 @@
     ]
   },
   "startTime": "2026-03-23T00:14:57.443Z",
-  "lastProcessed": "mamma-mia-west-end-2021/standard--jessie-thompson.json",
+  "lastProcessed": "cyrano-de-bergerac-west-end-2026/theatrely--juan-a-ramirez.json",
   "log": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -1087,6 +1106,17 @@
       "t": "2026-03-23T02:54:19.421Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-23T02:55:58.797Z",
+      "event": "bb-session",
+      "session": "1b4eb7e3",
+      "url": "https://www.thestage.co.uk/reviews/2004/the-mousetrap-review-at-st-martins-theat"
+    },
+    {
+      "t": "2026-03-23T02:55:59.903Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
