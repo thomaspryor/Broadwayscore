@@ -2653,9 +2653,249 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
       } catch {}
     }
 
+    const weArchiveTotal = foundReviews.length - (health.lbo.extracted || 0);
+
+    // 1f. WE Aggregators LIVE FETCH (if archives didn't have data)
+    // For opening nights: roundups may publish same night or next day.
+    // Date-gated: only accept posts published after the show's opening date.
+    if (weArchiveTotal === 0) {
+      console.log('    No WE archives — trying live fetch...');
+      const scrapingBeeKey = process.env.SCRAPINGBEE_API_KEY || '';
+      const openingDate = show.openingDate ? new Date(show.openingDate) : null;
+      // Date floor: 7 days before opening (roundups sometimes publish early)
+      const dateFloor = openingDate ? new Date(openingDate.getTime() - 7 * 86400000).toISOString() : null;
+      const { extractStarRatings, extractSectionReviews, extractShowTitle, fetchRenderedPage } = require('./scrape-westendtheatre-roundups');
+
+      // WET live fetch: WP API search with date filter
+      try {
+        const searchTitle = show.title.replace(/['"]/g, '');
+        let apiUrl = `https://www.westendtheatre.com/wp-json/wp/v2/posts?categories=10&per_page=5&search=${encodeURIComponent(searchTitle)}`;
+        if (dateFloor) apiUrl += `&after=${dateFloor}`;
+
+        let posts = null;
+        // Try curl first, SB fallback
+        try {
+          const { execFileSync } = require('child_process');
+          const raw = execFileSync('curl', ['-s', '-L', apiUrl, '-H', 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36', '-H', 'Accept: application/json', '--compressed'], { timeout: 15000, encoding: 'utf8' });
+          posts = JSON.parse(raw);
+        } catch {}
+        if (!posts && scrapingBeeKey) {
+          try {
+            const axios = require('axios');
+            const resp = await axios.get('https://app.scrapingbee.com/api/v1', {
+              params: { api_key: scrapingBeeKey, url: apiUrl, render_js: 'false' },
+              timeout: 20000, responseType: 'text',
+            });
+            try { posts = JSON.parse(resp.data); } catch {}
+          } catch {}
+        }
+
+        if (posts && Array.isArray(posts)) {
+          for (const post of posts.slice(0, 3)) {
+            const wpTitle = (post.title?.rendered || '').replace(/&#8217;/g, "'").replace(/&#8211;/g, '\u2013').replace(/&amp;/g, '&').replace(/<[^>]+>/g, '');
+            if (!wpTitle.toLowerCase().includes(searchTitle.toLowerCase().substring(0, 8))) continue;
+
+            const htmlContent = post.content?.rendered || '';
+            let reviews = extractStarRatings(htmlContent).map(r => ({
+              outlet: r.outlet, outletId: normalizeOutlet(r.outlet),
+              criticName: r.critic || 'Unknown', url: post.link || '',
+              excerpt: r.excerpt || '', stars: r.stars, starsOutOf: 5,
+            }));
+            if (reviews.length === 0 && post.link) {
+              const pageHtml = fetchRenderedPage(post.link);
+              if (pageHtml) {
+                reviews = extractSectionReviews(pageHtml).map(r => ({
+                  outlet: r.outlet, outletId: normalizeOutlet(r.outlet),
+                  criticName: r.critic || 'Unknown', url: r.reviewUrl || post.link || '',
+                  excerpt: r.excerpt || '', stars: r.stars, starsOutOf: 5,
+                }));
+              }
+            }
+            if (reviews.length > 0) {
+              console.log(`    ✓ WET live: ${reviews.length} reviews`);
+              for (const r of reviews) {
+                foundReviews.push({
+                  outlet: r.outlet, outletId: r.outletId,
+                  criticName: r.criticName, url: r.url,
+                  excerpt: r.excerpt,
+                  score: r.stars ? Math.round((r.stars / (r.starsOutOf || 5)) * 100) : null,
+                  scoreSource: r.stars ? 'westendtheatre-star-rating' : undefined,
+                  source: 'westendtheatre', publishDate: post.date || null,
+                });
+              }
+              // Cache for future runs
+              const wetArchDir = path.join(archBase, 'westendtheatre');
+              if (!fs.existsSync(wetArchDir)) fs.mkdirSync(wetArchDir, { recursive: true });
+              fs.writeFileSync(path.join(wetArchDir, `${showId}.json`),
+                JSON.stringify({ reviews: reviews.map(r => ({ ...r, source: 'westendtheatre', scoreSource: 'westendtheatre-star-rating' })), fetchedAt: new Date().toISOString().slice(0, 10) }, null, 2) + '\n');
+              break;
+            }
+          }
+        }
+      } catch (err) {
+        console.log(`    WET live fetch error: ${(err.message || '').substring(0, 60)}`);
+      }
+
+      // TR live fetch: also WordPress — same WP API pattern
+      try {
+        const searchTitle = show.title.replace(/['"]/g, '');
+        let apiUrl = `https://theatre.reviews/wp-json/wp/v2/posts?per_page=5&search=${encodeURIComponent(searchTitle)}`;
+        if (dateFloor) apiUrl += `&after=${dateFloor}`;
+
+        // theatre.reviews blocks API with CleanTalk — try nodeFetch on homepage link instead
+        const trHttp = require('https');
+        const homepageHtml = await new Promise(r => {
+          trHttp.get('https://theatre.reviews/', {
+            headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36', Accept: 'text/html' },
+          }, res => { if (res.statusCode !== 200) { r(null); return; } let d = ''; res.on('data', c => d += c); res.on('end', () => r(d)); }).on('error', () => r(null));
+        });
+
+        if (homepageHtml) {
+          const cheerio = require('cheerio');
+          const $ = cheerio.load(homepageHtml);
+          const titleLower = searchTitle.toLowerCase();
+          let roundupUrl = null;
+          $('a[href*="/reviews-roundup/"]').each((_, el) => {
+            const href = $(el).attr('href');
+            const text = $(el).text().toLowerCase();
+            if (text.includes(titleLower.substring(0, 8)) && href.includes('/reviews-roundup/')) {
+              roundupUrl = href.startsWith('http') ? href : `https://theatre.reviews${href}`;
+              return false;
+            }
+          });
+
+          if (roundupUrl) {
+            const { extractReviews: extractTR } = require('./scrape-theatre-reviews');
+            const trPageHtml = await new Promise(r => {
+              trHttp.get(roundupUrl, {
+                headers: { 'User-Agent': 'Mozilla/5.0', Accept: 'text/html' },
+              }, res => { if (res.statusCode !== 200) { r(null); return; } let d = ''; res.on('data', c => d += c); res.on('end', () => r(d)); }).on('error', () => r(null));
+            });
+
+            if (trPageHtml) {
+              const trReviews = extractTR(trPageHtml, showId);
+              if (trReviews.length > 0) {
+                console.log(`    ✓ TR live: ${trReviews.length} reviews`);
+                for (const r of trReviews) {
+                  foundReviews.push({
+                    outlet: r.outlet, outletId: normalizeOutlet(r.outlet),
+                    criticName: r.critic || 'Unknown', url: r.url || '',
+                    excerpt: r.excerpt || '',
+                    score: r.stars ? Math.round((r.stars / (r.starsOutOf || 5)) * 100) : null,
+                    scoreSource: r.stars ? 'theatre-reviews-star-rating' : undefined,
+                    source: 'theatre-reviews', publishDate: null,
+                  });
+                }
+                // Cache
+                const trArchDir = path.join(archBase, 'theatre-reviews');
+                if (!fs.existsSync(trArchDir)) fs.mkdirSync(trArchDir, { recursive: true });
+                fs.writeFileSync(path.join(trArchDir, `${showId}.html`), trPageHtml);
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.log(`    TR live fetch error: ${(err.message || '').substring(0, 60)}`);
+      }
+
+      // TS live fetch: SERP to discover URL + BB with login
+      const bbApiKey = process.env.BROWSERBASE_API_KEY;
+      const bbProjectId = process.env.BROWSERBASE_PROJECT_ID;
+      const tsEmail = process.env.THESTAGE_EMAIL;
+      const tsPassword = process.env.THESTAGE_PASSWORD;
+      if (bbApiKey && bbProjectId && tsEmail && tsPassword && scrapingBeeKey) {
+        try {
+          // SERP to find the roundup URL
+          const axios = require('axios');
+          const serpResp = await axios.get('https://app.scrapingbee.com/api/v1/store/google', {
+            params: { api_key: scrapingBeeKey, search: `site:thestage.co.uk/review-round-ups "${show.title}" review round-up` },
+            timeout: 15000,
+          }).catch(() => null);
+
+          let tsUrl = null;
+          if (serpResp?.data) {
+            const results = serpResp.data.organic_results || serpResp.data.results || [];
+            for (const r of results.slice(0, 3)) {
+              const url = r.url || r.link;
+              if (url && url.includes('review-round-up') && url.toLowerCase().includes(show.title.toLowerCase().substring(0, 6))) {
+                tsUrl = url;
+                break;
+              }
+            }
+          }
+
+          if (tsUrl) {
+            // BB session with login to fetch paywalled page
+            const { chromium } = require('playwright');
+            const tsSession = await new Promise((resolve, reject) => {
+              const req = require('https').request('https://www.browserbase.com/v1/sessions', {
+                method: 'POST',
+                headers: { 'x-bb-api-key': bbApiKey, 'Content-Type': 'application/json' },
+              }, res => { let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(JSON.parse(d))); });
+              req.on('error', reject);
+              req.end(JSON.stringify({ projectId: bbProjectId, keepAlive: true, timeout: 300, browserSettings: { solveCaptchas: true } }));
+            });
+
+            const tsBrowser = await chromium.connectOverCDP(`wss://connect.browserbase.com?apiKey=${bbApiKey}&sessionId=${tsSession.id}`);
+            const tsCtx = tsBrowser.contexts()[0] || await tsBrowser.newContext();
+            const tsPage = tsCtx.pages()[0] || await tsCtx.newPage();
+
+            // Login
+            await tsPage.goto('https://www.thestage.co.uk/login', { waitUntil: 'networkidle', timeout: 30000 });
+            await tsPage.waitForTimeout(3000);
+            try { const cb = tsPage.locator('button:has-text("Accept")').first(); if (await cb.isVisible({ timeout: 2000 }).catch(() => false)) await cb.click(); } catch {}
+            await tsPage.waitForSelector('input[name="email"], input[type="email"]', { timeout: 10000 }).catch(() => {});
+            const tsEmailInput = await tsPage.$('input[name="email"], input[type="email"]');
+            if (tsEmailInput) {
+              await tsEmailInput.fill(tsEmail);
+              const tsPassInput = await tsPage.$('input[type="password"]');
+              if (tsPassInput) await tsPassInput.fill(tsPassword);
+              const tsBtn = await tsPage.$('button:has-text("Sign in"), button:has-text("Login")');
+              if (tsBtn) await tsBtn.click();
+              else await tsPage.keyboard.press('Enter');
+              await tsPage.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+              await tsPage.waitForTimeout(3000);
+            }
+
+            // Fetch the roundup page
+            await tsPage.goto(tsUrl, { waitUntil: 'networkidle', timeout: 30000 });
+            await tsPage.waitForTimeout(2000);
+            const tsHtml = await tsPage.content();
+            await tsBrowser.close();
+
+            if (tsHtml && tsHtml.length > 5000) {
+              const { extractReviews: extractTS } = require('./scrape-thestage-roundups');
+              const tsReviews = extractTS(tsHtml, showId);
+              if (tsReviews.length > 0) {
+                console.log(`    ✓ TS live: ${tsReviews.length} reviews`);
+                for (const r of tsReviews) {
+                  foundReviews.push({
+                    outlet: r.outlet, outletId: normalizeOutlet(r.outlet),
+                    criticName: r.critic || 'Unknown', url: r.url || '',
+                    excerpt: r.excerpt || '',
+                    score: r.stars ? Math.round((r.stars / (r.starsOutOf || 5)) * 100) : null,
+                    scoreSource: r.stars ? 'thestage-roundup-star-rating' : undefined,
+                    source: 'thestage-roundup', publishDate: null,
+                  });
+                }
+                // Cache
+                const tsArchDir = path.join(archBase, 'thestage-roundups');
+                if (!fs.existsSync(tsArchDir)) fs.mkdirSync(tsArchDir, { recursive: true });
+                fs.writeFileSync(path.join(tsArchDir, `${showId}.html`), tsHtml);
+              }
+            }
+          }
+        } catch (err) {
+          console.log(`    TS live fetch error: ${(err.message || '').substring(0, 60)}`);
+        }
+      }
+
+      // SD: archive-only (Cloudflare + need Stagedoor ID — not feasible for live fetch)
+    }
+
     const weTotal = foundReviews.length - (health.lbo.extracted || 0);
     if (weTotal > 0) console.log(`    WE aggregators total: ${weTotal} reviews`);
-    else console.log('    No WE aggregator archives found (normal for new shows)');
+    else console.log('    No WE aggregator data found');
   }
 
   // STEP 1b: Retry SERP for reviews flagged with wrongUrl
