@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-23T13:18:58.509Z",
-  "processed": 359,
-  "failed": 51,
-  "successRate": "87.6%",
+  "updatedAt": "2026-03-23T13:22:42.480Z",
+  "processed": 367,
+  "failed": 53,
+  "successRate": "87.4%",
   "tierBreakdown": {
-    "playwright": 314,
+    "playwright": 321,
     "amp": 12,
-    "browserbase": 14,
+    "browserbase": 16,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 32,
+    "archiveToday": 34,
     "archive": 32
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -109,6 +109,17 @@
       "t": "2026-03-23T13:18:48.306Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-23T13:20:19.237Z",
+      "event": "bb-session",
+      "session": "8e0d7e50",
+      "url": "https://www.amny.com/entertainment/broadway/review-buena-vista-social-clunk/"
+    },
+    {
+      "t": "2026-03-23T13:20:20.358Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }

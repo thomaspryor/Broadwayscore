@@ -358,7 +358,15 @@
     "operation-mincemeat-2025/timeout--adam-feldman.json",
     "operation-mincemeat-2025/chicagotribune--unknown.json",
     "operation-mincemeat-2025/frontmezzjunkies--unknown.json",
-    "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json"
+    "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json",
+    "buena-vista-social-club-2025/timeout--adam-feldman.json",
+    "buena-vista-social-club-2025/amny--matt-windman.json",
+    "buena-vista-social-club-2025/artsfuse--christopher-caggiano.json",
+    "buena-vista-social-club-2025/chicagotribune--chris-jones.json",
+    "buena-vista-social-club-2025/frontmezzjunkies--unknown.json",
+    "buena-vista-social-club-2025/latimes--nicholas-ducassi.json",
+    "buena-vista-social-club-2025/stageandcinema--tony-frankel.json",
+    "buena-vista-social-club-2025/washpost--naveen-kumar.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -411,7 +419,9 @@
     "hercules-west-end-2025/daily-mail--patrick-marmion.json",
     "heathers-the-musical-off-broadway-2025/cititour--brian-scott-lipton.json",
     "operation-mincemeat-2025/guardian--unknown.json",
-    "operation-mincemeat-2025/usatoday--unknown.json"
+    "operation-mincemeat-2025/usatoday--unknown.json",
+    "buena-vista-social-club-2025/cititour--brian-scott-lipton.json",
+    "buena-vista-social-club-2025/billboard--sigal-ratner-arias.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -729,7 +739,14 @@
       "operation-mincemeat-2025/theatre-reviews-limited--joseph-verlezza.json",
       "operation-mincemeat-2025/timeout--adam-feldman.json",
       "operation-mincemeat-2025/chicagotribune--unknown.json",
-      "operation-mincemeat-2025/frontmezzjunkies--unknown.json"
+      "operation-mincemeat-2025/frontmezzjunkies--unknown.json",
+      "buena-vista-social-club-2025/timeout--adam-feldman.json",
+      "buena-vista-social-club-2025/artsfuse--christopher-caggiano.json",
+      "buena-vista-social-club-2025/chicagotribune--chris-jones.json",
+      "buena-vista-social-club-2025/frontmezzjunkies--unknown.json",
+      "buena-vista-social-club-2025/latimes--nicholas-ducassi.json",
+      "buena-vista-social-club-2025/stageandcinema--tony-frankel.json",
+      "buena-vista-social-club-2025/washpost--naveen-kumar.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -759,7 +776,9 @@
       "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
       "hercules-west-end-2025/variety--david-benedict.json",
       "data/review-texts/heathers-the-musical-off-broadway-2025/amny--matt-windman.json",
-      "heathers-the-musical-off-broadway-2025/amny--matt-windman.json"
+      "heathers-the-musical-off-broadway-2025/amny--matt-windman.json",
+      "data/review-texts/buena-vista-social-club-2025/amny--matt-windman.json",
+      "buena-vista-social-club-2025/amny--matt-windman.json"
     ],
     "directCookies": [
       "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json"
@@ -798,7 +817,9 @@
       "data/review-texts/the-producers-west-end-2025/broadwayworld--aliya-al-hassan.json",
       "data/review-texts/hercules-west-end-2025/daily-mail--patrick-marmion.json",
       "data/review-texts/heathers-the-musical-off-broadway-2025/cititour--brian-scott-lipton.json",
-      "data/review-texts/operation-mincemeat-2025/usatoday--unknown.json"
+      "data/review-texts/operation-mincemeat-2025/usatoday--unknown.json",
+      "data/review-texts/buena-vista-social-club-2025/cititour--brian-scott-lipton.json",
+      "data/review-texts/buena-vista-social-club-2025/billboard--sigal-ratner-arias.json"
     ],
     "archive": [
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
@@ -871,7 +892,7 @@
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json",
+  "lastProcessed": "buena-vista-social-club-2025/washpost--naveen-kumar.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -967,6 +988,17 @@
       "t": "2026-03-23T13:18:48.306Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-23T13:20:19.237Z",
+      "event": "bb-session",
+      "session": "8e0d7e50",
+      "url": "https://www.amny.com/entertainment/broadway/review-buena-vista-social-clunk/"
+    },
+    {
+      "t": "2026-03-23T13:20:20.358Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
