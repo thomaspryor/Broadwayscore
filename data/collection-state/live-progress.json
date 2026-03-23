@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-23T01:36:24.609Z",
-  "processed": 198,
-  "failed": 25,
-  "successRate": "88.8%",
+  "updatedAt": "2026-03-23T01:42:24.228Z",
+  "processed": 204,
+  "failed": 29,
+  "successRate": "87.6%",
   "tierBreakdown": {
-    "playwright": 179,
+    "playwright": 184,
     "amp": 0,
     "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 13,
-    "archive": 17
+    "archiveToday": 15,
+    "archive": 19
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -102,6 +102,17 @@
       "t": "2026-03-23T01:34:49.783Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-23T01:41:51.913Z",
+      "event": "bb-session",
+      "session": "211056ad",
+      "url": "https://www.thestage.co.uk/reviews/the-other-place-review-lyttelton-theatre-nati"
+    },
+    {
+      "t": "2026-03-23T01:41:53.090Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
