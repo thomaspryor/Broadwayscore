@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-03-22",
+    "lastUpdated": "2026-03-23",
     "version": "2.0.0"
   },
   "outlets": {
@@ -8729,6 +8729,14 @@
       "tier": 3,
       "aliases": [
         "usatoday30"
+      ],
+      "domain": null
+    },
+    "journaltimes": {
+      "displayName": "Journaltimes",
+      "tier": 3,
+      "aliases": [
+        "journaltimes"
       ],
       "domain": null
     }
