@@ -100,7 +100,7 @@ async function fetchContent(url, { renderJs = true, premiumProxy = false } = {})
           'Authorization': `Bearer ${BRIGHTDATA_TOKEN}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ zone: 'scraping_browser', url, format: 'raw' }),
+        body: JSON.stringify({ zone: 'mcp_browser', url, format: 'raw' }),
       });
       if (result && result.length > 500) {
         if (verbose) console.log(`  [Bright Data] Success (${result.length} chars HTML)`);
