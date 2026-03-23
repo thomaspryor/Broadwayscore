@@ -1,32 +1,20 @@
 {
-  "updatedAt": "2026-03-23T17:16:46.335Z",
-  "processed": 518,
-  "failed": 112,
-  "successRate": "82.2%",
+  "updatedAt": "2026-03-23T17:18:14.206Z",
+  "processed": 523,
+  "failed": 117,
+  "successRate": "81.7%",
   "tierBreakdown": {
-    "playwright": 431,
+    "playwright": 433,
     "amp": 12,
     "browserbase": 18,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 52,
-    "archive": 78
+    "archive": 81
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-03-23T10:38:04.120Z",
-      "event": "bb-session",
-      "session": "1827776e",
-      "url": "https://www.newyorker.com/magazine/2026/02/09/an-ark-theatre-review-data"
-    },
-    {
-      "t": "2026-03-23T10:40:50.042Z",
-      "event": "bb-session",
-      "session": "687c4572",
-      "url": "https://www.amny.com/entertainment/theater/spelling-bee-returns-nails-every-word"
-    },
     {
       "t": "2026-03-23T12:12:31.276Z",
       "event": "bb-session",
@@ -125,6 +113,17 @@
       "t": "2026-03-23T13:22:44.833Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-23T17:17:27.568Z",
+      "event": "bb-session",
+      "session": "43d552f7",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-03-23T17:17:28.969Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

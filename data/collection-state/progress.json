@@ -517,7 +517,12 @@
     "deep-azure-globe-west-end-2026/broadwayworld--unknown.json",
     "deep-azure-globe-west-end-2026/everything-theatre--mary-pollard.json",
     "the-unknown-off-broadway-2026/theatermania--zachary-stewart.json",
-    "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json"
+    "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
+    "an-ark-off-broadway-2026/newyorker--emily-nussbaum.json",
+    "an-ark-off-broadway-2026/theatermania--david-gordon.json",
+    "paranormal-activity-west-end-2025/broadwayworld--franco-milazzo.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/theatermania--zachary-stewart.json",
+    "ragtime-2025/wsj--charles-isherwood.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -631,7 +636,12 @@
     "marie-and-rosetta-west-end-2026/west-end-best-friend--nick-wayne.json",
     "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
     "shadowlands-west-end-2026/times-uk--clive-davis.json",
-    "the-tempest-globe-west-end-2026/british-theatre--howard-loxton.json"
+    "the-tempest-globe-west-end-2026/british-theatre--howard-loxton.json",
+    "oh-mary-west-end-2025/standard--nick-curtis.json",
+    "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json",
+    "two-strangers-bway-2025/guardian--unknown.json",
+    "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1066,7 +1076,9 @@
       "you-got-older-off-broadway-2026/theatermania--zachary-stewart.json",
       "deep-azure-globe-west-end-2026/everything-theatre--mary-pollard.json",
       "the-unknown-off-broadway-2026/theatermania--zachary-stewart.json",
-      "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json"
+      "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
+      "an-ark-off-broadway-2026/theatermania--david-gordon.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/theatermania--zachary-stewart.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -1239,11 +1251,14 @@
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theatre-is-easy--brooke-viegut.json",
       "manic-street-creature-west-end-2026/broadwayworld--unknown.json",
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/vulture--sara-holdren.json",
-      "deep-azure-globe-west-end-2026/broadwayworld--unknown.json"
+      "deep-azure-globe-west-end-2026/broadwayworld--unknown.json",
+      "an-ark-off-broadway-2026/newyorker--emily-nussbaum.json",
+      "paranormal-activity-west-end-2025/broadwayworld--franco-milazzo.json",
+      "ragtime-2025/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "the-tempest-globe-west-end-2026/british-theatre--howard-loxton.json",
+  "lastProcessed": "ragtime-2025/bloomberg--chris-rovzar.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -1361,6 +1376,17 @@
       "t": "2026-03-23T13:22:44.833Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-23T17:17:27.568Z",
+      "event": "bb-session",
+      "session": "43d552f7",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-03-23T17:17:28.969Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
