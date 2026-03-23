@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-23T09:44:00.806Z",
+  "timestamp": "2026-03-23T09:54:28.372Z",
   "stats": {
-    "totalReviews": 32372,
-    "alreadyFlagged": 10999,
+    "totalReviews": 32374,
+    "alreadyFlagged": 11001,
     "dateGuardCatches": 139,
     "directorMismatch": 944,
     "tvFilmSignals": 3401,
-    "londonSignals": 1031,
+    "londonSignals": 1030,
     "offBroadwaySignals": 1008,
     "yearMismatch": 71,
-    "noPublishDate": 6821
+    "noPublishDate": 6822
   },
   "findings": [
     {
@@ -67704,20 +67704,6 @@
       "score": 82,
       "publishDate": "2026-03-09",
       "url": "https://www.newyorker.com/magazine/2026/03/16/mark-rosenblatt-profile-theatre",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "giant-2026",
-      "file": "playbill--unknown.json",
-      "score": null,
-      "publishDate": "2026-03-23",
-      "url": "https://playbill.com/article/giant-begins-previews-on-broadway-march-11",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
