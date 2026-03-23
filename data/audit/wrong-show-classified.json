@@ -1,14 +1,815 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-22T23:57:47.671Z",
+    "generatedAt": "2026-03-23T00:14:23.449Z",
     "description": "LLM-classified wrong-show results from title-mention guard candidates",
-    "total": 0,
-    "classified": 0,
+    "total": 1291,
+    "classified": 100,
     "wrongShow": 0,
-    "correct": 0,
+    "correct": 100,
     "uncertain": 0,
     "errors": 0,
     "applied": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "700-sundays-2013",
+      "showTitle": "700 Sundays",
+      "file": "amny--matt-windman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"700 Sundays\" and discusses the plot, themes, and Billy Crystal's performance in the show."
+    },
+    {
+      "showId": "a-bronx-tale-2007",
+      "showTitle": "A Bronx Tale",
+      "file": "amny--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Bronx Tale\" and discusses the plot, cast, creative team (Chazz Palminteri, Robert De Niro, Alan Menken), and themes of the show."
+    },
+    {
+      "showId": "700-sundays-2013",
+      "showTitle": "700 Sundays",
+      "file": "ap--mark-kennedy.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Billy Crystal's moving one-man show '700 Sundays'\" and discusses the plot, themes, and creative team (Des McAnuff) of the show."
+    },
+    {
+      "showId": "a-bronx-tale-the-musical-2016",
+      "showTitle": "A Bronx Tale The Musical",
+      "file": "chicagotribune--chris-jones.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Bronx Tale\" and discusses the plot, cast (Chazz Palminteri, Bobby Conte Thornton, Richard H. Blake, Nick Cordero), creative team (Robert De Niro, Jerry Zaks, Alan Menken, Glenn Slater, Sergio Trujillo), and setting of the show."
+    },
+    {
+      "showId": "a-bronx-tale-the-musical-2016",
+      "showTitle": "A Bronx Tale The Musical",
+      "file": "huffpost--steven-suskin.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Bronx Tale\" and discusses the cast, creative team (Alan Menken, Glenn Slater, Jerry Zaks, Robert De Niro), and the plot's origins in Chazz Palminteri's play and the film adaptation. It also mentions the Longacre Theatre, where the musical played."
+    },
+    {
+      "showId": "a-christmas-story-the-musical-2012",
+      "showTitle": "A Christmas Story The Musical",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Christmas Story\" and discusses the plot, characters (Ralphie, Mother, Old Man, Randy), and specific scenes from the show, confirming it's about the correct production."
+    },
+    {
+      "showId": "a-bronx-tale-the-musical-2016",
+      "showTitle": "A Bronx Tale The Musical",
+      "file": "newsday--linda-winer.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Bronx Tale: The New Musical\" and discusses the plot, cast (Nick Fordero, Hudson Loverro, Bobby Conte Thornton), and creative team (Chazz Palminteri, Robert De Niro, Jerry Zaks)."
+    },
+    {
+      "showId": "a-christmas-carol-2019",
+      "showTitle": "A Christmas Carol",
+      "file": "nytg--tulis-mccall.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, characters (Scrooge), creative team (Jack Thorne, Matthew Warchus), and venue (Lyceum Theatre) of the 2019 production of A Christmas Carol."
+    },
+    {
+      "showId": "a-christmas-story-the-musical-2012",
+      "showTitle": "A Christmas Story The Musical",
+      "file": "variety--steven-suskin.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Christmas Story\" and discusses the plot, characters (Ralphie, Old Man, Mother, Miss Shields), and creative team (Benj Pasek and Justin Paul)."
+    },
+    {
+      "showId": "a-christmas-carol-2022",
+      "showTitle": "A Christmas Carol",
+      "file": "theatrely--joey-sims.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, characters (Scrooge, Marley, Tiny Tim, Fezziwig), and actors (Jefferson Mays) of 'A Christmas Carol'. It also mentions the director (Michael Arden) and the venue (Nederlander Theatre)."
+    },
+    {
+      "showId": "a-delicate-balance-2014",
+      "showTitle": "A Delicate Balance",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Delicate Balance\" and discusses the plot, characters (Agnes, Tobias, Claire, Julia, Harry, Edna), and playwright Edward Albee, confirming it's about the correct show."
+    },
+    {
+      "showId": "a-delicate-balance-2014",
+      "showTitle": "A Delicate Balance",
+      "file": "thewrap--robert-hofler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the play's title, cast members (Glenn Close, John Lithgow, Martha Plimpton, Lindsay Duncan, Clare Higgins, Bob Balaban), the director (Pam Mackinnon), and the venue (Golden Theatre). It is clearly about the specified show."
+    },
+    {
+      "showId": "a-delicate-balance-2014",
+      "showTitle": "A Delicate Balance",
+      "file": "chicagotribune--chris-jones.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Delicate Balance\" and discusses the plot, characters, and a specific revival of the show, including the director and cast members."
+    },
+    {
+      "showId": "a-delicate-balance-2014",
+      "showTitle": "A Delicate Balance",
+      "file": "deadline--jeremy-gerard.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions John Lithgow, the plot, and characters (Julia, Harry, Edna, Tobias) from \"A Delicate Balance\"."
+    },
+    {
+      "showId": "a-delicate-balance-2014",
+      "showTitle": "A Delicate Balance",
+      "file": "ap--mark-kennedy.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Delicate Balance\" and discusses the plot, cast (John Lithgow, Glenn Close, Lindsay Duncan, Martha Plimpton, Bob Balaban, Clare Higgins), director (Pam MacKinnon), and venue (Golden Theatre) of the 2014 Broadway revival."
+    },
+    {
+      "showId": "a-dolls-house-2023",
+      "showTitle": "A Doll's House",
+      "file": "amny--matt-windman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Doll's House\" and discusses the plot, themes, and a specific revival of the play, including the director and lead actress."
+    },
+    {
+      "showId": "a-delicate-balance-2014",
+      "showTitle": "A Delicate Balance",
+      "file": "vulture--jesse-green.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the play \"A Delicate Balance\" and discusses the plot, characters (Agnes, Tobias, Claire, Julia, Edna, Harry), and the Broadway revival starring Glenn Close and John Lithgow. It also mentions the director Pam MacKinnon."
+    },
+    {
+      "showId": "a-dolls-house-2023",
+      "showTitle": "A Doll's House",
+      "file": "cititour--brian-scott-lipton.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the play's title, the venue (Hudson Theatre), the lead actress (Jessica Chastain) playing Nora Helmer, and other cast members, confirming it's about the 2023 revival of \"A Doll's House\"."
+    },
+    {
+      "showId": "a-dolls-house-2023",
+      "showTitle": "A Doll's House",
+      "file": "chicagotribune--chris-jones.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Doll's House\" and discusses the cast (Jessica Chastain, Arian Moayed, Okieriete Onaodowan, Michael Patrick Thornton, Tasha Lawrence, Jesmille Darbouze), the director (Jamie Lloyd), the adapter (Amy Herzog), and the venue (Hudson Theatre). It also references plot poi"
+    },
+    {
+      "showId": "a-dolls-house-2023",
+      "showTitle": "A Doll's House",
+      "file": "dailybeast--tim-teeman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Doll's House\" on Broadway, Jessica Chastain, Amy Herzog, Jamie Lloyd, and the plot of the play. It also mentions the characters Nora and Torvald."
+    },
+    {
+      "showId": "a-dolls-house-2023",
+      "showTitle": "A Doll's House",
+      "file": "guardian--gloria-oladipo.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Doll's House\" and discusses the plot, cast (Jessica Chastain as Nora), director (Jamie Lloyd), and themes of the show. It also references the minimalist set design."
+    },
+    {
+      "showId": "a-dolls-house-2023",
+      "showTitle": "A Doll's House",
+      "file": "theatermania--zachary-stewart.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, cast (Jessica Chastain, Arian Moayed, Okieriete Onaodowan, Jesmille Darbouze), director (Jamie Lloyd), and themes of the 2023 Broadway production of \"A Doll's House.\""
+    },
+    {
+      "showId": "a-dolls-house-2023",
+      "showTitle": "A Doll's House",
+      "file": "ew--leah-greenblatt.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Doll's House\", Henrik Ibsen, the Hudson Theater, Jessica Chastain, and director Jamie Lloyd, all associated with the 2023 Broadway production."
+    },
+    {
+      "showId": "a-dolls-house-2023",
+      "showTitle": "A Doll's House",
+      "file": "hollywood-reporter--david-rooney.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Doll's House\" and discusses the cast (Jessica Chastain), director (Jamie Lloyd), and the adaptation by Amy Herzog. It also describes the minimalist staging and other elements of the production, confirming it's a review of the correct show."
+    },
+    {
+      "showId": "a-dolls-house-2023",
+      "showTitle": "A Doll's House",
+      "file": "theatrely--juan-a-ramirez.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the play 'A Doll's House', the playwright Henrik Ibsen, the adapter Amy Herzog, the director Jamie Lloyd, the actress Jessica Chastain as Nora, and the Hudson Theatre, all of which are associated with the 2023 Broadway production of 'A Doll's House'."
+    },
+    {
+      "showId": "a-dolls-house-2023",
+      "showTitle": "A Doll's House",
+      "file": "timeout--adam-feldman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Doll's House\" and discusses the plot, the actress Jessica Chastain playing Nora, and the director Jamie Lloyd's staging."
+    },
+    {
+      "showId": "a-dolls-house-2023",
+      "showTitle": "A Doll's House",
+      "file": "thewrap--benjamin-lindsay.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Doll's House\", Henrik Ibsen, Amy Herzog, Jessica Chastain as Nora, the Hudson Theatre, and the plot of the play. It is clearly a review of the correct show."
+    },
+    {
+      "showId": "a-dolls-house-2023",
+      "showTitle": "A Doll's House",
+      "file": "thewrap--robert-hofler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Doll's House\" and discusses the plot, characters (Nora, Torvald), the playwright (Henrik Ibsen, Amy Herzog), the director (Jamie Lloyd), the venue (Hudson Theatre), and the star (Jessica Chastain)."
+    },
+    {
+      "showId": "a-dolls-house-2023",
+      "showTitle": "A Doll's House",
+      "file": "variety--trish-deitch.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses Jamie Lloyd's version of Henrik Ibsen's drama \"A Doll's House\", mentioning Jessica Chastain as Nora and Arian Moayed as Torvald. It describes the minimalist set design and the plot of the play."
+    },
+    {
+      "showId": "a-dolls-house-part-2-2017",
+      "showTitle": "A Doll's House, Part 2",
+      "file": "broadwayworld--michael-dale.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the play's title, playwright (Lucas Hnath), characters (Nora, Torvald), and themes, confirming it's about \"A Doll's House, Part 2.\""
+    },
+    {
+      "showId": "a-dolls-house-part-2-2017",
+      "showTitle": "A Doll's House, Part 2",
+      "file": "hollywood-reporter--david-rooney.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Doll's House, Part 2\" and discusses the plot, characters (Nora, Torvald), and playwright (Lucas Hnath), confirming it's about the correct show."
+    },
+    {
+      "showId": "a-dolls-house-part-2-2017",
+      "showTitle": "A Doll's House, Part 2",
+      "file": "huffpost--steven-suskin.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Doll's House, Part 2\" and discusses the plot, characters (Nora, Torvald), and playwright Lucas Hnath. It also compares the current cast to the original cast."
+    },
+    {
+      "showId": "a-dolls-house-part-2-2017",
+      "showTitle": "A Doll's House, Part 2",
+      "file": "huffpost--michael-glitz.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Doll's House, Part 2\" and discusses the plot, characters (Nora, Torvald), and playwright Lucas Hnath. It also compares the current cast to the original cast."
+    },
+    {
+      "showId": "a-dolls-house-part-2-2017",
+      "showTitle": "A Doll's House, Part 2",
+      "file": "deadline--jeremy-gerard.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Doll's House, Part 2\" and discusses the plot, characters (Nora Helmer), and the venue (Golden Theatre), confirming it's about the correct show."
+    },
+    {
+      "showId": "a-dolls-house-part-2-2017",
+      "showTitle": "A Doll's House, Part 2",
+      "file": "chicagotribune--chris-jones.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses \"A Doll's House, Part 2\" by Lucas Hnath, starring Laurie Metcalf, and references the original \"A Doll's House\" by Henrik Ibsen. It mentions the plot and characters, clearly indicating it's a review of the correct show."
+    },
+    {
+      "showId": "a-dolls-house-part-2-2017",
+      "showTitle": "A Doll's House, Part 2",
+      "file": "lilith-magazine--aileen-jacobson.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Doll's House, Part 2\" and discusses the plot, characters (Nora Helmer, Torvald, Anne Marie), and themes of the play. It also mentions the playwright Lucas Hnath."
+    },
+    {
+      "showId": "a-dolls-house-part-2-2017",
+      "showTitle": "A Doll's House, Part 2",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, characters (Nora, Torvald, Anne Marie, Emmy), and playwright (Lucas Hnath) of 'A Doll's House, Part 2'."
+    },
+    {
+      "showId": "a-free-man-of-color-2010",
+      "showTitle": "A Free Man of Color",
+      "file": "northjerseycom--robert-feldberg.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Free Man of Color\" and discusses the plot, cast (Jeffrey Wright), playwright (John Guare), director (George C. Wolfe), and venue (Vivian Beaumont Theater)."
+    },
+    {
+      "showId": "a-dolls-house-part-2-2017",
+      "showTitle": "A Doll's House, Part 2",
+      "file": "thewrap--robert-hofler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Doll's House, Part 2\" and discusses the plot, characters (Nora, Torvald, Anne Marie), and playwright (Lucas Hnath). It also references the original \"A Doll's House\" and the Golden Theatre, where the show opened."
+    },
+    {
+      "showId": "a-dolls-house-part-2-2017",
+      "showTitle": "A Doll's House, Part 2",
+      "file": "variety--marilyn-stasio.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the play's title (A Doll's House, Part 2), characters (Nora, Torvald, Anne Marie), and cast members (Laurie Metcalf, Chris Cooper, Jayne Houdyshell), confirming it is about the correct show."
+    },
+    {
+      "showId": "a-night-with-janis-joplin-2013",
+      "showTitle": "A Night with Janis Joplin",
+      "file": "ny1--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Night With Janis Joplin\" and discusses the plot, cast (Mary Bridget Davies), and themes of the show."
+    },
+    {
+      "showId": "a-night-with-janis-joplin-2013",
+      "showTitle": "A Night with Janis Joplin",
+      "file": "timeout--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Night with Janis Joplin\" and discusses the plot, cast (Mary Bridget Davies), and music of the show."
+    },
+    {
+      "showId": "a-night-with-janis-joplin-2013",
+      "showTitle": "A Night with Janis Joplin",
+      "file": "vulture--scott-brown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the show 'A Night With Janis Joplin' and mentions the performer Mary Bridget Davies, the plot, and the music featured in the show."
+    },
+    {
+      "showId": "a-night-with-janis-joplin-2013",
+      "showTitle": "A Night with Janis Joplin",
+      "file": "huffpost--david-finkle.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions \"A Night With Janis Joplin\" and discusses the performer, Mary Bridget Davies, and signature songs associated with Janis Joplin, indicating it's about the correct show."
+    },
+    {
+      "showId": "a-raisin-in-the-sun-2014",
+      "showTitle": "A Raisin in the Sun",
+      "file": "ew--lisa-schwarzbaum.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions Denzel Washington, LaTanya Richardson Jackson, Sophie Okonedo, Anika Noni Rose, Kenny Leon, and the plot of the play, all of which are associated with the 2014 Broadway revival of \"A Raisin in the Sun.\""
+    },
+    {
+      "showId": "a-raisin-in-the-sun-2014",
+      "showTitle": "A Raisin in the Sun",
+      "file": "wsj--terry-teachout.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Raisin in the Sun\" and discusses the cast, director, and plot of the play. It also mentions the venue (Broadway) and specific actors in the 2014 revival."
+    },
+    {
+      "showId": "a-strange-loop-2022",
+      "showTitle": "A Strange Loop",
+      "file": "amny--matt-windman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Strange Loop\" and discusses the plot, cast (Jaquel Spivey), and creative team (Michael R. Jackson)."
+    },
+    {
+      "showId": "a-raisin-in-the-sun-2014",
+      "showTitle": "A Raisin in the Sun",
+      "file": "thewrap--robert-hofler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Raisin in the Sun\" and discusses the plot, characters (Walter, Mama), and actors (Denzel Washington, LaTanya Richardson Jackson) in the context of the play."
+    },
+    {
+      "showId": "a-raisin-in-the-sun-2014",
+      "showTitle": "A Raisin in the Sun",
+      "file": "newsday--linda-winer.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Raisin in the Sun\", Denzel Washington, LaTanya Richardson Jackson, the Ethel Barrymore Theatre, Walter Lee Younger, and director Kenny Leon, all associated with the 2014 production of the show."
+    },
+    {
+      "showId": "a-raisin-in-the-sun-2014",
+      "showTitle": "A Raisin in the Sun",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, cast members (Denzel Washington, Sophie Okonedo, LaTanya Richardson Jackson, Anika Noni Rose), the playwright (Lorraine Hansberry), the director (Kenny Leon), and plot elements (inheritance, moving to a white suburb)."
+    },
+    {
+      "showId": "a-strange-loop-2022",
+      "showTitle": "A Strange Loop",
+      "file": "ew--david-quinn.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Strange Loop\" and discusses the plot, themes, and creative team (Michael E. Jackson)."
+    },
+    {
+      "showId": "a-strange-loop-2022",
+      "showTitle": "A Strange Loop",
+      "file": "cititour--brian-scott-lipton.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, the playwright Michael R. Jackson, the Lyceum Theater, the director Stephen Brackett, and the protagonist Usher, all of which are associated with \"A Strange Loop.\""
+    },
+    {
+      "showId": "a-streetcar-named-desire-2012",
+      "showTitle": "A Streetcar Named Desire",
+      "file": "chicagotribune--chris-jones.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the 2012 Broadway production of \"A Streetcar Named Desire\", mentioning the director, cast members, and themes of the play."
+    },
+    {
+      "showId": "a-streetcar-named-desire-2012",
+      "showTitle": "A Streetcar Named Desire",
+      "file": "newsday--linda-winer.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the 2012 Broadway production of \"A Streetcar Named Desire\" directed by Emily Mann, starring Nicole Ari Parker and Blair Underwood."
+    },
+    {
+      "showId": "a-strange-loop-2022",
+      "showTitle": "A Strange Loop",
+      "file": "slantmagazine--dan-rubins.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Strange Loop\" and discusses the plot, characters (Usher), and the show's reception. It also mentions the playwright Michael R. Jackson and the venue Playwrights Horizons."
+    },
+    {
+      "showId": "a-time-to-kill-2013",
+      "showTitle": "A Time to Kill",
+      "file": "amny--matt-windman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Time to Kill\" and discusses the plot, characters, playwright, director, and venue, all aligning with the show's details."
+    },
+    {
+      "showId": "a-streetcar-named-desire-2012",
+      "showTitle": "A Streetcar Named Desire",
+      "file": "northjerseycom--robert-feldberg.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Streetcar Named Desire\" at the Broadhurst Theatre, along with cast members and plot details that match the show."
+    },
+    {
+      "showId": "a-streetcar-named-desire-2012",
+      "showTitle": "A Streetcar Named Desire",
+      "file": "variety--marilyn-stasio.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the play's title, cast members (Nicole Ari Parker, Blair Underwood, Daphne Rubin-Vega), director (Emily Mann), and characters (Blanche, Stanley, Stella), confirming it's about the specified production of 'A Streetcar Named Desire'."
+    },
+    {
+      "showId": "a-streetcar-named-desire-2012",
+      "showTitle": "A Streetcar Named Desire",
+      "file": "village-voice--michael-musto.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the Broadway revival of \"A Streetcar Named Desire\" and discusses the cast (Blair Underwood, Nicole Ari Parker), the playwright (Tennessee Williams), and the director (Emily Mann). It analyzes the performances and the production's interpretation of the play's themes."
+    },
+    {
+      "showId": "a-streetcar-named-desire-2012",
+      "showTitle": "A Streetcar Named Desire",
+      "file": "philadelphia-inquirer--howard-shapiro.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Streetcar Named Desire\" and discusses the plot, characters (Blanche, Stella, Stanley), the venue (Broadhurst Theatre), the director (Emily Mann), and the set design, all of which align with the show in question."
+    },
+    {
+      "showId": "a-time-to-kill-2013",
+      "showTitle": "A Time to Kill",
+      "file": "variety--marilyn-stasio.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Time to Kill\" and discusses the plot, author John Grisham, and the stage adaptation, confirming it's about the correct show."
+    },
+    {
+      "showId": "a-time-to-kill-2013",
+      "showTitle": "A Time to Kill",
+      "file": "thewrap--robert-hofler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Time to Kill\" and discusses the plot, cast, and adaptation of the novel for the Broadway stage."
+    },
+    {
+      "showId": "a-time-to-kill-2013",
+      "showTitle": "A Time to Kill",
+      "file": "timeout--david-cote.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, playwright Rupert Holmes, the source material (John Grisham's novel), the director Ethan McSweeny, and cast members Sebastian Arcelus and John Douglas Thompson. It also discusses the plot of the show."
+    },
+    {
+      "showId": "a-time-to-kill-2013",
+      "showTitle": "A Time to Kill",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the title, cast members (Ashley Williams, Sebastian Arcelus, Tom Skerritt), the author John Grisham, and the plot of the show 'A Time to Kill'."
+    },
+    {
+      "showId": "a-time-to-kill-2013",
+      "showTitle": "A Time to Kill",
+      "file": "hollywood-reporter--david-rooney.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Time to Kill\" and discusses the plot, characters (Jake Brigance), and themes of the show. It also mentions the author John Grisham and the setting in the Deep South."
+    },
+    {
+      "showId": "a-time-to-kill-2013",
+      "showTitle": "A Time to Kill",
+      "file": "vulture--scott-brown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the title \"A Time to Kill\" and discusses the plot, characters (Carl Lee Hailey, Jake Brigance), and setting of the show, indicating it is a review of the correct production."
+    },
+    {
+      "showId": "a-view-from-the-bridge-2010",
+      "showTitle": "A View From the Bridge",
+      "file": "vulture--stephanie-zacharek.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the play's title, author (Arthur Miller), characters (Eddie, Beatrice, Catherine, Marco, Rodolpho), actors (Liev Schreiber, Jessica Hecht, Scarlett Johansson, Corey Stoll, Morgan Spector), and director (Gregory Mosher), all of which align with the show 'A View From the Bridge'."
+    },
+    {
+      "showId": "a-view-from-the-bridge-2010",
+      "showTitle": "A View From the Bridge",
+      "file": "backstage--david-sheward.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the play \"A View From the Bridge\" by Arthur Miller, mentioning the character Eddie Carbone and the plot elements of the play. It also mentions cast members like Liev Schreiber and Scarlett Johansson."
+    },
+    {
+      "showId": "a-view-from-the-bridge-2015",
+      "showTitle": "A View From the Bridge",
+      "file": "deadline--jeremy-gerard.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A View From The Bridge\" and discusses the plot, characters (Eddie, Catherine, Marco, Rodolpho), and setting of the play."
+    },
+    {
+      "showId": "a-view-from-the-bridge-2010",
+      "showTitle": "A View From the Bridge",
+      "file": "variety--david-rooney.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the play's author (Arthur Miller), the main character Eddie Carbone, and the actor playing him (Liev Schreiber), all of which are associated with the 2010 Broadway production of \"A View From the Bridge\"."
+    },
+    {
+      "showId": "a-view-from-the-bridge-2015",
+      "showTitle": "A View From the Bridge",
+      "file": "timeout--time-out.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A View From the Bridge\" and discusses the plot, characters (Eddie, Beatrice, Catherine, Rodolpho), director (Ivo van Hove), and themes of the show."
+    },
+    {
+      "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
+      "showTitle": "A Wonderful World: The Louis Armstrong Musical",
+      "file": "dailybeast--tim-teeman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Wonderful World: The Louis Armstrong Musical\" and discusses Louis Armstrong's life and music, which are central to the show."
+    },
+    {
+      "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
+      "showTitle": "A Wonderful World: The Louis Armstrong Musical",
+      "file": "cititour--brian-scott-lipton.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"A Wonderful World: The Louis Armstrong Story\" and discusses the plot, cast (James Monroe Iglehart), and songs featured in the show."
+    },
+    {
+      "showId": "a-view-from-the-bridge-2015",
+      "showTitle": "A View From the Bridge",
+      "file": "thewrap--robert-hofler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, characters (Eddie, Catherine, Rodolpho, Beatrice, Marco), director (Ivo van Hove), and venue (Lyceum Theatre) of the 2015 Broadway production of \"A View From the Bridge.\""
+    },
+    {
+      "showId": "a-view-from-the-bridge-2015",
+      "showTitle": "A View From the Bridge",
+      "file": "guardian--alexis-soloski.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, cast (Mark Strong, Nicola Walker, Phoebe Fox, Michael Zegen, Russell Tovey), director (Ivo van Hove), and setting of the 2015 production of \"A View From the Bridge\" at the Lyceum Theatre."
+    },
+    {
+      "showId": "after-midnight-2013",
+      "showTitle": "After Midnight",
+      "file": "amny--matt-windman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"After Midnight\" and discusses the cast, plot, creative team, and venue of the show."
+    },
+    {
+      "showId": "after-midnight-2013",
+      "showTitle": "After Midnight",
+      "file": "vulture--jesse-green.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the Cotton Club, Duke Ellington, and the Harlem Renaissance, all of which are associated with the show \"After Midnight.\""
+    },
+    {
+      "showId": "aint-no-mo-2022",
+      "showTitle": "Ain't No Mo'",
+      "file": "cititour--brian-scott-lipton.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the play \"Ain’t No Mo’\" and discusses its plot, themes, and playwright Jordan E. Cooper. It also mentions the Belasco Theatre, where the show was playing."
+    },
+    {
+      "showId": "after-midnight-2013",
+      "showTitle": "After Midnight",
+      "file": "nydailynews--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the show's title, director, choreographer, music director, cast members, and the show's setting in Harlem's jazzy 1930s, all of which align with the show 'After Midnight'."
+    },
+    {
+      "showId": "after-midnight-2013",
+      "showTitle": "After Midnight",
+      "file": "newsday--linda-winer.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the show title, cast members (Fantasia Barrino, Dulé Hill), and creative team (Wynton Marsalis, Warren Carlyle), confirming it's about 'After Midnight'."
+    },
+    {
+      "showId": "aint-too-proud-2019",
+      "showTitle": "Ain't Too Proud",
+      "file": "amny--matt-windman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Ain't Too Proud: The Life and Times of The Temptations\" and discusses the plot, cast, and creative team of the show."
+    },
+    {
+      "showId": "aint-too-proud-2019",
+      "showTitle": "Ain't Too Proud",
+      "file": "newsday--barbara-shuler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Ain't Too Proud -- The Life and Times of The Temptations\" and discusses the plot, cast, and themes of the show."
+    },
+    {
+      "showId": "aint-too-proud-2019",
+      "showTitle": "Ain't Too Proud",
+      "file": "broadwayworld--michael-dale.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, playwright, and plot details, confirming it's about 'Ain't Too Proud'."
+    },
+    {
+      "showId": "aint-too-proud-2019",
+      "showTitle": "Ain't Too Proud",
+      "file": "dailybeast--tim-teeman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Ain't Too Proud: The Life and Times of The Temptations\" and discusses the plot, cast, creative team (Dominique Morisseau, Des McAnuff, Sergio Trujillo), and themes of the show."
+    },
+    {
+      "showId": "aint-too-proud-2019",
+      "showTitle": "Ain't Too Proud",
+      "file": "guardian--alexis-soloski.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the show's title, cast members (Ephraim Sykes, Jeremy Pope, Jawan M Jackson, James Harkness, Derrick Baskin), the venue (Imperial Theatre), and the subject matter (The Temptations)."
+    },
+    {
+      "showId": "aint-too-proud-2019",
+      "showTitle": "Ain't Too Proud",
+      "file": "vulture--sara-holdren.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Ain't Too Proud\" and discusses the plot, cast, creative team (Des McAnuff, Dominique Morisseau), and songs from the show."
+    },
+    {
+      "showId": "airline-highway-2015",
+      "showTitle": "Airline Highway",
+      "file": "amny--matt-windman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Airline Highway\" and discusses the plot, characters, and venue of the show, confirming it is about the correct production."
+    },
+    {
+      "showId": "aint-too-proud-2019",
+      "showTitle": "Ain't Too Proud",
+      "file": "sfgate--lily-janiak.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Ain’t Too Proud: The Life and Times of the Temptations\" and discusses the cast, songs, and production details of the show."
+    },
+    {
+      "showId": "aint-too-proud-2019",
+      "showTitle": "Ain't Too Proud",
+      "file": "thewrap--robert-hofler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Ain't Too Proud: The Life and Times of the Temptations\" and discusses the plot, characters, and creative team (Dominique Morisseau) of the show."
+    },
+    {
+      "showId": "airline-highway-2015",
+      "showTitle": "Airline Highway",
+      "file": "deadline--jeremy-gerard.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions 'Airline Highway' as one of the two final entries in the 2014-2015 Tony Awards sweepstakes, linking it to 'The Visit'. This indicates the review is discussing the show, even if it focuses more on 'The Visit'."
+    },
+    {
+      "showId": "almost-famous-2022",
+      "showTitle": "Almost Famous",
+      "file": "cititour--brian-scott-lipton.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Almost Famous: The Musical\" and discusses the plot, characters (William Miller, Lester Bangs), and creative team (Cameron Crowe, Jeremy Herrin) of the show."
+    },
+    {
+      "showId": "almost-famous-2022",
+      "showTitle": "Almost Famous",
+      "file": "thewrap--robert-hofler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show \"Almost Famous\" and discusses the plot, characters, and venue (Bernard B. Jacobs Theatre)."
+    },
+    {
+      "showId": "almost-famous-2022",
+      "showTitle": "Almost Famous",
+      "file": "theatrely--kobi-kassal.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the show title, cast members (Casey Likes, Solea Pfeiffer), and plot elements from the musical 'Almost Famous'. It clearly discusses the production."
+    },
+    {
+      "showId": "airline-highway-2015",
+      "showTitle": "Airline Highway",
+      "file": "newsday--linda-winer.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the play's title, playwright (Lisa D'Amour), director (Joe Mantello), cast members (Judith Roberts, Julie White, K. Todd Freeman, Caroline Neff), and plot details about the Hummingbird Motel and Miss Ruby's funeral. These details align with the show 'Airline Highway'."
+    },
+    {
+      "showId": "airline-highway-2015",
+      "showTitle": "Airline Highway",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the title \"Airline Highway\" and discusses the plot, characters (Miss Ruby, Tanya, Krista, Sissy Na Na, Francis, Bait Boy, Zoe), cast (Julie White, Judith Roberts, Caroline Neff, K. Todd Freeman, Ken Marks, Joe Tippett, Carolyn Braver), director (Joe Mantello), playwright (Lisa D'"
+    },
+    {
+      "showId": "amaze-magic-off-broadway-2025",
+      "showTitle": "AMAZE Magic",
+      "file": "nytg--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions 'AMAZE Magic', Jamie Allan, and New World Stages, all of which are associated with the show 'AMAZE Magic'."
+    },
+    {
+      "showId": "american-buffalo-2022",
+      "showTitle": "American Buffalo",
+      "file": "theatrely--juan-a-ramirez.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the actors Sam Rockwell, Darren Criss, and Laurence Fishburne, who starred in the 2022 Broadway revival of American Buffalo. It also discusses the plot and characters of the play."
+    },
+    {
+      "showId": "american-buffalo-2022",
+      "showTitle": "American Buffalo",
+      "file": "cititour--brian-scott-lipton.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the play \"American Buffalo\" by David Mamet and discusses the plot, characters (Teach), and the 2022 Broadway production at Circle in the Square. It also mentions the director Neil Pepe and the set design by Scott Pask, all associated with the show."
+    },
+    {
+      "showId": "amazing-grace-2015",
+      "showTitle": "Amazing Grace",
+      "file": "deadline--jeremy-gerard.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, characters (John Newton, Mary Catlett, Captain Newton, Thomas), and setting of the musical 'Amazing Grace,' indicating it is about the correct show."
+    },
+    {
+      "showId": "amazing-grace-2015",
+      "showTitle": "Amazing Grace",
+      "file": "thewrap--robert-hofler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show \"Amazing Grace\" and discusses its plot, themes, and creative team (Christopher Smith, Gabriel Barre). It also mentions the historical figure John Newton, who is the subject of the musical."
+    }
+  ]
 }
