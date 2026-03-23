@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-23T02:43:33.385Z",
-  "processed": 322,
-  "failed": 61,
-  "successRate": "84.1%",
+  "updatedAt": "2026-03-23T02:46:23.080Z",
+  "processed": 328,
+  "failed": 65,
+  "successRate": "83.5%",
   "tierBreakdown": {
-    "playwright": 276,
+    "playwright": 282,
     "amp": 0,
     "browserbase": 12,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 27,
+    "archiveToday": 30,
     "archive": 48
   },
-  "browserbaseSessions": 12,
+  "browserbaseSessions": 13,
   "recentActivity": [
-    {
-      "t": "2026-03-23T01:29:57.444Z",
-      "event": "bb-session",
-      "session": "f7dcf1b5",
-      "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
-    },
-    {
-      "t": "2026-03-23T01:29:58.448Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-23T01:31:15.253Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-23T02:38:23.882Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-23T02:44:06.338Z",
+      "event": "bb-session",
+      "session": "43163a1a",
+      "url": "https://www.thestage.co.uk/reviews/2014/the-play-that-goes-wrong/"
+    },
+    {
+      "t": "2026-03-23T02:44:07.427Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }

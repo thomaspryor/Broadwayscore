@@ -321,7 +321,13 @@
     "the-play-that-goes-wrong-west-end-2021/financialtimes--sarah-hemming.json",
     "the-play-that-goes-wrong-west-end-2021/london-theatre--the-anonymous-reviewer.json",
     "the-play-that-goes-wrong-west-end-2021/standard--fiona-mountford.json",
-    "the-play-that-goes-wrong-west-end-2021/telegraph--tim-walker.json"
+    "the-play-that-goes-wrong-west-end-2021/telegraph--tim-walker.json",
+    "the-play-that-goes-wrong-west-end-2021/times-uk--dominic-maxwell.json",
+    "the-play-that-goes-wrong-west-end-2021/whatsonstage--michael-coveney.json",
+    "the-book-of-mormon-west-end-2024/timeout--andrzej-lukowski.json",
+    "the-book-of-mormon-west-end-2024/independent--alice-saville.json",
+    "the-book-of-mormon-west-end-2024/london-box-office--oliver-mitford.json",
+    "the-book-of-mormon-west-end-2024/standard--nick-curtis.json"
   ],
   "failed": [
     "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
@@ -384,7 +390,11 @@
     "hamilton-west-end-2021/times-uk--clive-davis.json",
     "showstopper-the-improvised-musical-west-end-2023/independent--gillian-orr.json",
     "the-play-that-goes-wrong-west-end-2021/telegraph--claire-allfree.json",
-    "the-play-that-goes-wrong-west-end-2021/timeout-london--unknown.json"
+    "the-play-that-goes-wrong-west-end-2021/timeout-london--unknown.json",
+    "the-play-that-goes-wrong-west-end-2021/thestage--unknown.json",
+    "the-book-of-mormon-west-end-2024/thestage--unknown.json",
+    "the-book-of-mormon-west-end-2024/guardian--arifa-akbar.json",
+    "the-book-of-mormon-west-end-2024/independent--paul-taylor.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -664,7 +674,13 @@
       "the-play-that-goes-wrong-west-end-2021/financialtimes--sarah-hemming.json",
       "the-play-that-goes-wrong-west-end-2021/london-theatre--the-anonymous-reviewer.json",
       "the-play-that-goes-wrong-west-end-2021/standard--fiona-mountford.json",
-      "the-play-that-goes-wrong-west-end-2021/telegraph--tim-walker.json"
+      "the-play-that-goes-wrong-west-end-2021/telegraph--tim-walker.json",
+      "the-play-that-goes-wrong-west-end-2021/times-uk--dominic-maxwell.json",
+      "the-play-that-goes-wrong-west-end-2021/whatsonstage--michael-coveney.json",
+      "the-book-of-mormon-west-end-2024/timeout--andrzej-lukowski.json",
+      "the-book-of-mormon-west-end-2024/independent--alice-saville.json",
+      "the-book-of-mormon-west-end-2024/london-box-office--oliver-mitford.json",
+      "the-book-of-mormon-west-end-2024/standard--nick-curtis.json"
     ],
     "amp": [],
     "browserbase": [
@@ -711,7 +727,10 @@
       "data/review-texts/the-phantom-of-the-opera-west-end-1986/thestage--dave-fargnoli.json",
       "data/review-texts/hamilton-west-end-2021/nytimes--unknown.json",
       "data/review-texts/showstopper-the-improvised-musical-west-end-2023/independent--gillian-orr.json",
-      "data/review-texts/the-play-that-goes-wrong-west-end-2021/timeout-london--unknown.json"
+      "data/review-texts/the-play-that-goes-wrong-west-end-2021/timeout-london--unknown.json",
+      "data/review-texts/the-play-that-goes-wrong-west-end-2021/thestage--unknown.json",
+      "data/review-texts/the-book-of-mormon-west-end-2024/guardian--arifa-akbar.json",
+      "data/review-texts/the-book-of-mormon-west-end-2024/independent--paul-taylor.json"
     ],
     "archive": [
       "broken-glass-west-end-2026/artsdesk--unknown.json",
@@ -765,7 +784,7 @@
     ]
   },
   "startTime": "2026-03-23T00:14:57.443Z",
-  "lastProcessed": "the-play-that-goes-wrong-west-end-2021/telegraph--tim-walker.json",
+  "lastProcessed": "the-book-of-mormon-west-end-2024/standard--nick-curtis.json",
   "log": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -931,6 +950,17 @@
       "t": "2026-03-23T02:38:23.882Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-23T02:44:06.338Z",
+      "event": "bb-session",
+      "session": "43163a1a",
+      "url": "https://www.thestage.co.uk/reviews/2014/the-play-that-goes-wrong/"
+    },
+    {
+      "t": "2026-03-23T02:44:07.427Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
