@@ -1269,6 +1269,25 @@ showDirs.forEach(showId => {
         return;
       }
 
+      // Skip scraper garbage (scraper identified content as non-review material)
+      if (data.incompleteReason === 'scraper_garbage') {
+        stats.skippedScraperGarbage = (stats.skippedScraperGarbage || 0) + 1;
+        return;
+      }
+
+      // Auto-fix relative URLs that look like BWW paths (missing domain prefix)
+      if (data.url && !data.url.startsWith('http://') && !data.url.startsWith('https://')) {
+        if (data.url.match(/^\/([-a-z]+)\/article\//)) {
+          data.url = `https://www.broadwayworld.com${data.url}`;
+          try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+          stats.fixedRelativeUrl = (stats.fixedRelativeUrl || 0) + 1;
+        } else {
+          // Non-BWW relative path (e.g. /people/Ben-Brantley/) — scraping artifact
+          stats.skippedInvalidUrl = (stats.skippedInvalidUrl || 0) + 1;
+          return;
+        }
+      }
+
       // Cross-show URL dedup: if this URL also exists in another show's directory,
       // flag the copy that's farther from its show's opening year as wrongProduction.
       // Catches aggregator contamination (e.g., ShowScore listing 2013 Broadway reviews
