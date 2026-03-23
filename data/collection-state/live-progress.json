@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-23T02:35:26.640Z",
-  "processed": 299,
-  "failed": 54,
-  "successRate": "84.7%",
+  "updatedAt": "2026-03-23T02:39:10.485Z",
+  "processed": 306,
+  "failed": 57,
+  "successRate": "84.3%",
   "tierBreakdown": {
-    "playwright": 258,
+    "playwright": 262,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 12,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 24,
-    "archive": 44
+    "archiveToday": 25,
+    "archive": 46
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 12,
   "recentActivity": [
-    {
-      "t": "2026-03-23T00:35:11.038Z",
-      "event": "bb-session",
-      "session": "2cc6faa3",
-      "url": "https://www.nytimes.com/2024/05/24/theater/tom-holland-romeo-and-juliet.html"
-    },
-    {
-      "t": "2026-03-23T00:35:12.060Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-23T01:21:07.355Z",
-      "event": "bb-session",
-      "session": "35fea2f9",
-      "url": "https://variety.com/2025/legit/reviews/paddington-review-musical-1236595841/"
-    },
-    {
-      "t": "2026-03-23T01:21:08.429Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-03-23T01:29:57.444Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-23T02:31:59.320Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-23T02:37:19.873Z",
+      "event": "bb-session",
+      "session": "0ae250c0",
+      "url": "https://www.nytimes.com/2017/12/28/theater/london-hamilton-pinocchio.html"
+    },
+    {
+      "t": "2026-03-23T02:37:20.936Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-23T02:38:22.872Z",
+      "event": "bb-session",
+      "session": "3d3b93a5",
+      "url": "https://variety.com/2017/legit/reviews/hamilton-review-london-west-end-120264748"
+    },
+    {
+      "t": "2026-03-23T02:38:23.882Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
