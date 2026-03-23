@@ -77,7 +77,7 @@
 ## LOW PRIORITY / BACKLOG
 
 **iOS App:** Widget, Spotlight search, iPad layout, Android, Share sheet, App Clips, Siri
-**Infrastructure:** Show images to CDN (173MB/deploy), prune low-value static pages, domain retry intelligence, ~~ScrapingBee SERP credit optimization~~ → DONE (3.3M→968K credits/month + BrightData fallback), ~~Scraper cost optimization~~ → DONE (Playwright-first for public sites, BD-first SERP, SB credit pre-check, per-run cost logging)
+**Infrastructure:** Show images to CDN (173MB/deploy), prune low-value static pages, domain retry intelligence, ~~ScrapingBee SERP credit optimization~~ → DONE (3.3M→968K credits/month + BrightData fallback), ~~Scraper cost optimization~~ → DONE (Playwright-first for public sites, BD-first SERP, SB credit pre-check, per-run cost logging), Cache Playwright browser install in CI (39 workflows each download ~167MB; `actions/cache` on `~/.cache/ms-playwright/` keyed by PW version), Consider Playwright-primary for Show-Score scoring (free, no SB credits; reserve SB for discovery where premium proxy matters)
 **Scraper resilience:** Consolidate inline SERP in collect-review-texts.js to use shared url-discovery.js module (eliminates diverged 200-line fork)
 **Domain matching:** `domainMatchesExpected()` in `scraper.js` doesn't match subdomains of registry aliases (e.g., `articles.philly.com` doesn't match alias `philly.com`). Workaround: added explicit subdomain aliases. Real fix: extend the matching function. LOW priority.
 **Code Quality:**
