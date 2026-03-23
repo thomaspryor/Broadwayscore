@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-23T09:01:11.595Z",
+  "timestamp": "2026-03-23T09:10:15.283Z",
   "stats": {
-    "totalReviews": 32356,
-    "alreadyFlagged": 10992,
+    "totalReviews": 32361,
+    "alreadyFlagged": 10995,
     "dateGuardCatches": 139,
-    "directorMismatch": 945,
+    "directorMismatch": 944,
     "tvFilmSignals": 3403,
     "londonSignals": 1029,
     "offBroadwaySignals": 1008,
     "yearMismatch": 71,
-    "noPublishDate": 6810
+    "noPublishDate": 6815
   },
   "findings": [
     {
@@ -58469,20 +58469,6 @@
       "score": 34,
       "publishDate": "2026-03-20",
       "url": "https://www.thewrap.com/creative-content/theater/tru-off-broadway-review-jesse-tyler-ferguson-truman-capote/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jay presson allen\" from tru-1989"
-        }
-      ]
-    },
-    {
-      "showId": "tru-off-broadway-2026",
-      "file": "vulture--unknown.json",
-      "score": 77,
-      "publishDate": "2026-03-20",
-      "url": "https://www.vulture.com/article/theater-review-bughouse-darger-tru-capote.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
