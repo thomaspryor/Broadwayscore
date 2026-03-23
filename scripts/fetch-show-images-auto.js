@@ -166,7 +166,7 @@ function fetchViaBrightData(url) {
 
     const apiUrl = `https://api.brightdata.com/request`;
     const postData = JSON.stringify({
-      zone: 'scraping_browser',
+      zone: 'mcp_browser',
       url: url,
       format: 'raw',
     });
