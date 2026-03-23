@@ -7,7 +7,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { calculateCombinedScore } = require('./lib/audience-weighting');
+const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 
 const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
 const audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
@@ -28,12 +28,7 @@ for (const [showId, show] of Object.entries(audienceBuzz.shows)) {
   if (score !== null) {
     show.combinedScore = score;
 
-    // Designations match the grade labels in data-audience.ts getAudienceGrade()
-    if (score >= 88) show.designation = 'Loving';       // A+, A
-    else if (score >= 78) show.designation = 'Liking';  // A-, B+
-    else if (score >= 68) show.designation = 'Shrugging'; // B, B-
-    else if (score >= 53) show.designation = 'Disliking'; // C+, C, C-
-    else show.designation = 'Loathing';                 // D, F
+    show.designation = getDesignation(score);
 
     if (oldScore !== score) {
       const weightStr = Object.entries(weights).filter(([, v]) => v > 0).map(([k, v]) => `${k} ${v}%`).join(', ');

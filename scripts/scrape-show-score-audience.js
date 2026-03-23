@@ -22,7 +22,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { JSDOM } = require('jsdom');
-const { calculateCombinedScore } = require('./lib/audience-weighting');
+const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
 
@@ -864,10 +864,7 @@ function updateAudienceBuzz(showId, showTitle, showScoreData) {
   if (score !== null) {
     audienceBuzz.shows[showId].combinedScore = score;
 
-    if (score >= 88) audienceBuzz.shows[showId].designation = 'Loving';
-    else if (score >= 78) audienceBuzz.shows[showId].designation = 'Liking';
-    else if (score >= 68) audienceBuzz.shows[showId].designation = 'Shrugging';
-    else audienceBuzz.shows[showId].designation = 'Loathing';
+    audienceBuzz.shows[showId].designation = getDesignation(score);
 
     // Log the weights used
     if (verbose) {

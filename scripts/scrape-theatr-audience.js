@@ -20,7 +20,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { calculateCombinedScore } = require('./lib/audience-weighting');
+const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { isLondonMarket } = require('./lib/venue-classification');
 
 // Parse command line args
@@ -304,11 +304,7 @@ function updateAudienceBuzz(showId, title, score, reviewCount, stats) {
   if (combined !== null) {
     show.combinedScore = combined;
 
-    if (combined >= 88) show.designation = 'Loving';
-    else if (combined >= 78) show.designation = 'Liking';
-    else if (combined >= 68) show.designation = 'Shrugging';
-    else if (combined >= 53) show.designation = 'Disliking';
-    else show.designation = 'Loathing';
+    show.designation = getDesignation(combined);
 
     if (verbose) {
       console.log(`  Weights: SS ${weights.showScore}%, Mezz ${weights.mezzanine}%, Reddit ${weights.reddit}%, Theatr ${weights.theatr}%`);
