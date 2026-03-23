@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-23T04:45:52.651Z",
-  "processed": 492,
-  "failed": 107,
-  "successRate": "82.1%",
+  "updatedAt": "2026-03-23T04:59:12.538Z",
+  "processed": 538,
+  "failed": 111,
+  "successRate": "82.9%",
   "tierBreakdown": {
-    "playwright": 429,
-    "amp": 2,
+    "playwright": 471,
+    "amp": 4,
     "browserbase": 22,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 61,
-    "archive": 61
+    "archiveToday": 63,
+    "archive": 64
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-03-23T02:44:06.338Z",
-      "event": "bb-session",
-      "session": "43163a1a",
-      "url": "https://www.thestage.co.uk/reviews/2014/the-play-that-goes-wrong/"
-    },
-    {
-      "t": "2026-03-23T02:44:07.427Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
     {
       "t": "2026-03-23T02:50:29.847Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-23T04:44:06.743Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-23T04:54:47.026Z",
+      "event": "bb-session",
+      "session": "9487ca28",
+      "url": "https://www.nytimes.com/2026/03/20/theater/plays-tru-ferguson-the-fever-shawn.ht"
+    },
+    {
+      "t": "2026-03-23T04:54:48.311Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
