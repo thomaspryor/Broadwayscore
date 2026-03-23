@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-23T04:50:13.196Z",
+  "timestamp": "2026-03-23T04:57:22.626Z",
   "stats": {
     "totalReviews": 32398,
     "alreadyFlagged": 10990,
     "dateGuardCatches": 141,
     "directorMismatch": 943,
-    "tvFilmSignals": 3400,
-    "londonSignals": 1030,
+    "tvFilmSignals": 3399,
+    "londonSignals": 1031,
     "offBroadwaySignals": 1012,
     "yearMismatch": 71,
     "noPublishDate": 6859
@@ -14106,19 +14106,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "encores-the-wild-party-off-broadway-2026",
-      "file": "playbill--unknown.json",
-      "publishDate": "2026-03-19",
-      "url": "https://playbill.com/article/did-the-reviews-go-wild-for-the-city-center-encores-the-wild-party",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -78043,6 +78030,20 @@
       "score": 81,
       "publishDate": null,
       "url": "https://www.theartsdesk.com/theatre/summerfolk-national-theatre-review-gorkys-self-deluding-intelligentsia-under-sharp-comic-scrutiny?amp",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "summerfolk-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "score": 75,
+      "publishDate": null,
+      "url": "https://www.theartsdesk.com/theatre/summerfolk-national-theatre-review-gorkys-self-deluding-intelligentsia-under-sharp-comic-scrutiny",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
