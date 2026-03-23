@@ -80,10 +80,10 @@ jobs:
           else
             SHOWS=$(node -e "
               const shows = require('./data/shows.json').shows;
-              const now = new Date();
-              const cutoff = new Date(now);
+              const today = new Date();
+              today.setHours(0,0,0,0);
+              const cutoff = new Date(today);
               cutoff.setDate(cutoff.getDate() - $LOOKBACK);
-              cutoff.setHours(0,0,0,0);
               const market = '$MARKET';
               const opened = shows.filter(s => {
                 if (!s.openingDate) return false;
@@ -94,7 +94,8 @@ jobs:
                 if (market === 'west-end' && cat !== 'west-end' && cat !== 'off-west-end') return false;
                 const d = new Date(s.openingDate);
                 d.setHours(0,0,0,0);
-                return d >= cutoff && d <= now;
+                // Strict less-than: opening date must be BEFORE today (show opens in the evening)
+                return d >= cutoff && d < today;
               });
               if (opened.length > 0) console.log(opened.map(s => s.id).join(','));
             ")
