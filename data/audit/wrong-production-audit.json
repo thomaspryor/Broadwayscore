@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-23T07:22:11.357Z",
+  "timestamp": "2026-03-23T07:29:36.274Z",
   "stats": {
     "totalReviews": 32398,
     "alreadyFlagged": 10994,
     "dateGuardCatches": 141,
-    "directorMismatch": 944,
-    "tvFilmSignals": 3401,
+    "directorMismatch": 945,
+    "tvFilmSignals": 3402,
     "londonSignals": 1030,
     "offBroadwaySignals": 1012,
     "yearMismatch": 71,
-    "noPublishDate": 6851
+    "noPublishDate": 6849
   },
   "findings": [
     {
@@ -8908,6 +8908,25 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "file": "mail--patrick-marmion.json",
+      "score": 75,
+      "publishDate": "2021-12-13",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-10302945/At-Eddies-Cabaret-sets-wunderbar-PATRICK-MARMION-reviews-Cabaret.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"big screen\""
         }
       ]
     },
