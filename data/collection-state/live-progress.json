@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-23T05:10:28.760Z",
-  "processed": 605,
-  "failed": 114,
-  "successRate": "84.1%",
+  "updatedAt": "2026-03-23T05:12:55.270Z",
+  "processed": 614,
+  "failed": 115,
+  "successRate": "84.2%",
   "tierBreakdown": {
-    "playwright": 532,
+    "playwright": 540,
     "amp": 10,
     "browserbase": 24,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 64,
-    "archive": 66
+    "archive": 67
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-03-23T02:51:51.333Z",
-      "event": "bb-session",
-      "session": "efb93151",
-      "url": "https://variety.com/1999/legit/reviews/the-lion-king-lyceum-theater-1200459301/"
-    },
-    {
-      "t": "2026-03-23T02:51:52.382Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-03-23T02:54:04.078Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-23T05:09:36.075Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-23T05:11:01.719Z",
+      "event": "bb-session",
+      "session": "8ba2f4b0",
+      "url": "https://www.wsj.com/articles/the-unknown-review-sean-hayes-blocked-and-stalked-3"
+    },
+    {
+      "t": "2026-03-23T05:11:02.990Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
