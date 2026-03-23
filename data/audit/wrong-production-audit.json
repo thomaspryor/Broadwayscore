@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-23T09:10:15.283Z",
+  "timestamp": "2026-03-23T09:18:51.573Z",
   "stats": {
-    "totalReviews": 32361,
-    "alreadyFlagged": 10995,
+    "totalReviews": 32372,
+    "alreadyFlagged": 10998,
     "dateGuardCatches": 139,
     "directorMismatch": 944,
-    "tvFilmSignals": 3403,
+    "tvFilmSignals": 3401,
     "londonSignals": 1029,
     "offBroadwaySignals": 1008,
     "yearMismatch": 71,
-    "noPublishDate": 6815
+    "noPublishDate": 6825
   },
   "findings": [
     {
@@ -5828,20 +5828,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "back-to-the-future-2023",
-      "file": "guardian--adrian-horton.json",
-      "score": 58,
-      "publishDate": "August 4, 2023",
-      "url": "https://www.theguardian.com/stage/2025/oct/03/back-to-the-future-musical-review-faithful-adaptation-for-diehard-fans",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"on screen\""
         }
       ]
     },
@@ -38755,20 +38741,6 @@
       "score": 25,
       "publishDate": "2023-02-09T21:54:48",
       "url": "https://nystagereview.com/2023/02/09/pictures-from-home-family-drama-not-fully-developed/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "pied-a-terre-off-broadway-2026",
-      "file": "nytg--unknown.json",
-      "score": null,
-      "publishDate": "February 8, 2026",
-      "url": "https://www.newyorktheatreguide.com/show/46093-pied-a-terre",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
