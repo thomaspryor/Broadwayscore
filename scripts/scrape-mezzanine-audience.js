@@ -563,8 +563,10 @@ async function main() {
     // Save
     audienceBuzz._meta = audienceBuzz._meta || {};
     audienceBuzz._meta.lastUpdated = new Date().toISOString().split('T')[0];
-    audienceBuzz._meta.sources = ['Show Score', 'Mezzanine', 'Reddit'];
-    audienceBuzz._meta.notes = 'Proportional weighting by reviewCount volume (max 80% single source)';
+    if (!audienceBuzz._meta.sources) audienceBuzz._meta.sources = [];
+    if (!audienceBuzz._meta.sources.includes('Mezzanine')) {
+      audienceBuzz._meta.sources.push('Mezzanine');
+    }
 
     fs.writeFileSync(audienceBuzzPath, JSON.stringify(audienceBuzz, null, 2));
 
