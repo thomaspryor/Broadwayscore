@@ -729,7 +729,10 @@
     "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json",
     "deep-azure-globe-west-end-2026/broadwayworld--unknown.json",
-    "deep-azure-globe-west-end-2026/everything-theatre--mary-pollard.json"
+    "deep-azure-globe-west-end-2026/everything-theatre--mary-pollard.json",
+    "an-ark-off-broadway-2026/newyorker--emily-nussbaum.json",
+    "all-my-sons-west-end-2025/broadwayworld--unknown.json",
+    "all-my-sons-west-end-2025/everything-theatre--dave-b.json"
   ],
   "failed": [
     "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
@@ -870,7 +873,14 @@
     "the-unknown-off-broadway-2026/wsj--unknown.json",
     "im-sorry-prime-minister-west-end-2026/daily-mail--patrick-marmion.json",
     "the-tempest-globe-west-end-2026/british-theatre--howard-loxton.json",
-    "the-tempest-globe-west-end-2026/telegraph--dominic-cavendish.json"
+    "the-tempest-globe-west-end-2026/telegraph--dominic-cavendish.json",
+    "an-ark-off-broadway-2026/wsj--unknown.json",
+    "garry-starr-classic-penguins-garrick-west-end-2026/everything-theatre--jess-gonzalez.json",
+    "oh-mary-west-end-2025/standard--nick-curtis.json",
+    "paranormal-activity-west-end-2025/broadwayworld--franco-milazzo.json",
+    "the-hunger-games-on-stage-west-end-2025/mail--patrick-marmion.json",
+    "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json",
+    "two-strangers-bway-2025/guardian--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1507,7 +1517,8 @@
       "buena-vista-social-club-2025/timeout--adam-feldman.json",
       "my-joy-is-heavy-off-broadway-2025/timeout--unknown.json",
       "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
-      "deep-azure-globe-west-end-2026/everything-theatre--mary-pollard.json"
+      "deep-azure-globe-west-end-2026/everything-theatre--mary-pollard.json",
+      "all-my-sons-west-end-2025/everything-theatre--dave-b.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -1634,7 +1645,10 @@
       "data/review-texts/stranger-things-2024/thestage--unknown.json",
       "data/review-texts/operation-mincemeat-2025/guardian--unknown.json",
       "data/review-texts/tru-off-broadway-2026/nytimes--unknown.json",
-      "data/review-texts/manic-street-creature-west-end-2026/broadwayworld--unknown.json"
+      "data/review-texts/manic-street-creature-west-end-2026/broadwayworld--unknown.json",
+      "data/review-texts/im-sorry-prime-minister-west-end-2026/daily-mail--patrick-marmion.json",
+      "data/review-texts/the-hunger-games-on-stage-west-end-2025/mail--patrick-marmion.json",
+      "data/review-texts/paranormal-activity-west-end-2025/broadwayworld--franco-milazzo.json"
     ],
     "archive": [
       "broken-glass-west-end-2026/artsdesk--unknown.json",
@@ -1720,11 +1734,13 @@
       "touch-off-broadway-2026/plays-to-see--austin-fimmano.json",
       "every-brilliant-thing-2026/nytimes--adam-feldman.json",
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json",
-      "deep-azure-globe-west-end-2026/broadwayworld--unknown.json"
+      "deep-azure-globe-west-end-2026/broadwayworld--unknown.json",
+      "an-ark-off-broadway-2026/newyorker--emily-nussbaum.json",
+      "all-my-sons-west-end-2025/broadwayworld--unknown.json"
     ]
   },
   "startTime": "2026-03-23T00:14:57.443Z",
-  "lastProcessed": "the-tempest-globe-west-end-2026/telegraph--dominic-cavendish.json",
+  "lastProcessed": "all-my-sons-west-end-2025/everything-theatre--dave-b.json",
   "log": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -2185,6 +2201,17 @@
     },
     {
       "t": "2026-03-23T05:54:34.914Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-23T05:59:06.178Z",
+      "event": "bb-session",
+      "session": "34e963a2",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-23T05:59:07.589Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
