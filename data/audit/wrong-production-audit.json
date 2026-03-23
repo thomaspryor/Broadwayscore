@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-23T11:34:17.878Z",
+  "timestamp": "2026-03-23T11:43:22.893Z",
   "stats": {
     "totalReviews": 32374,
-    "alreadyFlagged": 11008,
+    "alreadyFlagged": 11011,
     "dateGuardCatches": 139,
-    "directorMismatch": 944,
-    "tvFilmSignals": 3402,
-    "londonSignals": 1027,
+    "directorMismatch": 942,
+    "tvFilmSignals": 3401,
+    "londonSignals": 1026,
     "offBroadwaySignals": 1007,
     "yearMismatch": 71,
     "noPublishDate": 6815
@@ -3399,20 +3399,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "all-my-sons-west-end-2025",
-      "file": "times-uk--dominic-maxwell.json",
-      "score": 80,
-      "publishDate": "2025-11-21",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/all-my-sons-theatre-review-bryan-cranston-h2xqh238h",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -24960,20 +24946,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2025",
-      "file": "broadwayworld--unknown.json",
-      "score": 88,
-      "publishDate": "2025-12-12",
-      "url": "https://www.broadwayworld.com/westend/article/Review-INTO-THE-WOODS-Bridge-Theatre-20251212",
-      "findings": [
+        },
         {
-          "type": "DIRECTOR_MISMATCH",
+          "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -24988,30 +24965,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2025",
-      "file": "i-paper--fiona-mountford.json",
-      "score": 79,
-      "publishDate": "2025-12-12",
-      "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
