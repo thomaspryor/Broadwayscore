@@ -368,7 +368,12 @@
     "the-mousetrap-west-end-2021/whatsonstage--sarah-crompton.json",
     "the-mousetrap-west-end-2021/whatsonstage--whatsonstage-reviewer.json",
     "a-christmas-carol-west-end-2026/london-box-office--stuart-king.json",
-    "cyrano-de-bergerac-west-end-2026/theatrely--juan-a-ramirez.json"
+    "cyrano-de-bergerac-west-end-2026/theatrely--juan-a-ramirez.json",
+    "a-midsummer-nights-dream-west-end-2026/london-box-office--kit-benjamin.json",
+    "a-midsummer-nights-dream-west-end-2026/london-box-office--stuart-king.json",
+    "beetlejuice-west-end-2026/independent--graeme-massie.json",
+    "sweetmeats-west-end-2026/artsdesk--aleks-sierz.json",
+    "sweetmeats-west-end-2026/standard--maya-chandran.json"
   ],
   "failed": [
     "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
@@ -444,7 +449,12 @@
     "the-lion-king-west-end-2021/thestage--unknown.json",
     "the-mousetrap-west-end-2021/thestage--john-thaxter.json",
     "ivanov-west-end-2026/playbill--unknown.json",
-    "man-to-man-west-end-2026/stagebuddy--unknown.json"
+    "man-to-man-west-end-2026/stagebuddy--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/daily-mail--robert-gore-langton.json",
+    "grace-pervades-west-end-2026/thestage--unknown.json",
+    "sweetmeats-west-end-2026/guardian--anya-ryan.json",
+    "sweetmeats-west-end-2026/broadwayworld--unknown.json",
+    "sweetmeats-west-end-2026/london-theatre--aliya-al-hassan.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -763,7 +773,12 @@
       "the-mousetrap-west-end-2021/whatsonstage--sarah-crompton.json",
       "the-mousetrap-west-end-2021/whatsonstage--whatsonstage-reviewer.json",
       "a-christmas-carol-west-end-2026/london-box-office--stuart-king.json",
-      "cyrano-de-bergerac-west-end-2026/theatrely--juan-a-ramirez.json"
+      "cyrano-de-bergerac-west-end-2026/theatrely--juan-a-ramirez.json",
+      "a-midsummer-nights-dream-west-end-2026/london-box-office--kit-benjamin.json",
+      "a-midsummer-nights-dream-west-end-2026/london-box-office--stuart-king.json",
+      "sweetmeats-west-end-2026/artsdesk--aleks-sierz.json",
+      "sweetmeats-west-end-2026/london-theatre--aliya-al-hassan.json",
+      "sweetmeats-west-end-2026/standard--maya-chandran.json"
     ],
     "amp": [],
     "browserbase": [
@@ -826,7 +841,8 @@
       "data/review-texts/the-lion-king-west-end-2021/guardian--arifa-akbar.json",
       "data/review-texts/the-lion-king-west-end-2021/guardian--unknown.json",
       "data/review-texts/the-mousetrap-west-end-2021/thestage--john-thaxter.json",
-      "data/review-texts/ivanov-west-end-2026/playbill--unknown.json"
+      "data/review-texts/ivanov-west-end-2026/playbill--unknown.json",
+      "data/review-texts/grace-pervades-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
       "broken-glass-west-end-2026/artsdesk--unknown.json",
@@ -881,11 +897,12 @@
       "matilda-the-musical-west-end-2021/telegraph--unknown.json",
       "wicked-west-end-2021/telegraph--robbie-collin.json",
       "the-lion-king-west-end-2021/timeout-london--ben-walters.json",
-      "the-lion-king-west-end-2021/telegraph--unknown.json"
+      "the-lion-king-west-end-2021/telegraph--unknown.json",
+      "beetlejuice-west-end-2026/independent--graeme-massie.json"
     ]
   },
   "startTime": "2026-03-23T00:14:57.443Z",
-  "lastProcessed": "cyrano-de-bergerac-west-end-2026/theatrely--juan-a-ramirez.json",
+  "lastProcessed": "sweetmeats-west-end-2026/standard--maya-chandran.json",
   "log": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -1115,6 +1132,17 @@
     },
     {
       "t": "2026-03-23T02:55:59.903Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-23T03:01:41.079Z",
+      "event": "bb-session",
+      "session": "b7d05a42",
+      "url": "https://www.thestage.co.uk/reviews/grace-pervades-review-theatre-royal-bath"
+    },
+    {
+      "t": "2026-03-23T03:01:42.150Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
