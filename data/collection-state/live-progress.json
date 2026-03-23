@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-23T05:26:44.807Z",
-  "processed": 656,
-  "failed": 123,
-  "successRate": "84.2%",
+  "updatedAt": "2026-03-23T05:28:40.045Z",
+  "processed": 665,
+  "failed": 124,
+  "successRate": "84.3%",
   "tierBreakdown": {
-    "playwright": 579,
+    "playwright": 585,
     "amp": 10,
-    "browserbase": 28,
+    "browserbase": 30,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 68,
-    "archive": 68
+    "archive": 70
   },
-  "browserbaseSessions": 11,
+  "browserbaseSessions": 13,
   "recentActivity": [
-    {
-      "t": "2026-03-23T04:44:05.521Z",
-      "event": "bb-session",
-      "session": "45e146ee",
-      "url": "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing"
-    },
-    {
-      "t": "2026-03-23T04:44:06.743Z",
-      "event": "bb-cookie-inject",
-      "domain": "amny.com"
-    },
-    {
-      "t": "2026-03-23T04:54:47.026Z",
-      "event": "bb-session",
-      "session": "9487ca28",
-      "url": "https://www.nytimes.com/2026/03/20/theater/plays-tru-ferguson-the-fever-shawn.ht"
-    },
-    {
-      "t": "2026-03-23T04:54:48.311Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-23T05:09:34.752Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-03-23T05:23:44.675Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-23T05:26:53.668Z",
+      "event": "bb-session",
+      "session": "9a9e4af5",
+      "url": "https://www.amny.com/entertainment/theater/spelling-bee-returns-nails-every-word"
+    },
+    {
+      "t": "2026-03-23T05:26:54.800Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-23T05:27:45.370Z",
+      "event": "bb-session",
+      "session": "d061481b",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-03-23T05:27:46.647Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

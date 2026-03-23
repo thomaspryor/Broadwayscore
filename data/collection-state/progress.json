@@ -655,7 +655,16 @@
     "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
     "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytg--joe-dziemianowicz.json",
     "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
-    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/newsweek--lauren-giella.json"
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/newsweek--lauren-giella.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/theatermania--zachary-stewart.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/exeunt-magazine--lane-williamson.json",
+    "ragtime-2025/nyt-theater--unknown.json",
+    "ragtime-2025/nytimes--unknown.json",
+    "ragtime-2025/timeout--adam-feldman.json",
+    "ragtime-2025/wsj--charles-isherwood.json",
+    "ragtime-2025/artsfuse--unknown.json",
+    "ragtime-2025/frontmezzjunkies--unknown.json"
   ],
   "failed": [
     "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
@@ -780,7 +789,8 @@
     "two-strangers-bway-2025/guardian--unknown.json",
     "chess-2025/billboard--rebecca-milzoff.json",
     "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/wsj--unknown.json",
-    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/talkinbroadway--unknown.json"
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/talkinbroadway--unknown.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1363,7 +1373,13 @@
       "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
       "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytg--joe-dziemianowicz.json",
       "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
-      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/newsweek--lauren-giella.json"
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/newsweek--lauren-giella.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/theatermania--zachary-stewart.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/exeunt-magazine--lane-williamson.json",
+      "ragtime-2025/nyt-theater--unknown.json",
+      "ragtime-2025/timeout--adam-feldman.json",
+      "ragtime-2025/artsfuse--unknown.json",
+      "ragtime-2025/frontmezzjunkies--unknown.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -1405,7 +1421,9 @@
       "data/review-texts/the-unknown-off-broadway-2026/amny--unknown.json",
       "the-unknown-off-broadway-2026/amny--unknown.json",
       "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
-      "chess-2025/hollywood-reporter--angie-han.json"
+      "chess-2025/hollywood-reporter--angie-han.json",
+      "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -1548,11 +1566,13 @@
       "bigfoot-off-broadway-2026/playbill--unknown.json",
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/vulture--sara-holdren.json",
       "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
-      "two-strangers-bway-2025/chicagotribune--unknown.json"
+      "two-strangers-bway-2025/chicagotribune--unknown.json",
+      "ragtime-2025/nytimes--unknown.json",
+      "ragtime-2025/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-03-23T00:14:57.443Z",
-  "lastProcessed": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/newsweek--lauren-giella.json",
+  "lastProcessed": "ragtime-2025/frontmezzjunkies--unknown.json",
   "log": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -1925,6 +1945,28 @@
     },
     {
       "t": "2026-03-23T05:23:44.675Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-23T05:26:53.668Z",
+      "event": "bb-session",
+      "session": "9a9e4af5",
+      "url": "https://www.amny.com/entertainment/theater/spelling-bee-returns-nails-every-word"
+    },
+    {
+      "t": "2026-03-23T05:26:54.800Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-23T05:27:45.370Z",
+      "event": "bb-session",
+      "session": "d061481b",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-03-23T05:27:46.647Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
