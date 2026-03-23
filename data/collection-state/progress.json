@@ -6,12 +6,22 @@
     "oliver-west-end-2024/whatsonstage--michael-coveney.json",
     "oliver-west-end-2024/guardian--arifa-akbar.json",
     "oliver-west-end-2024/timeout-london--andrzej-lukowski.json",
-    "oliver-west-end-2024/artsdesk--helen-hawkins.json"
+    "oliver-west-end-2024/artsdesk--helen-hawkins.json",
+    "oliver-west-end-2024/financialtimes--financial-times.json",
+    "oliver-west-end-2024/financialtimes--sarah-hemming.json",
+    "oliver-west-end-2024/i-paper--fiona-mountford.json",
+    "oliver-west-end-2024/london-theatre--marianka-swain.json",
+    "oliver-west-end-2024/standard--henry-hitchings.json",
+    "oliver-west-end-2024/the-express--neil-norman.json",
+    "oliver-west-end-2024/the-sun--dominic-maxwell.json",
+    "oliver-west-end-2024/theatre-weekly--greg-stewart.json"
   ],
   "failed": [
     "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
     "oliver-west-end-2024/the-sun--unknown.json",
-    "oliver-west-end-2024/thestage--dave-fargnoli.json"
+    "oliver-west-end-2024/thestage--dave-fargnoli.json",
+    "oliver-west-end-2024/thestage--matt-hemley.json",
+    "oliver-west-end-2024/thestage--sam-marlowe.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -22,7 +32,15 @@
       "oliver-west-end-2024/whatsonstage--michael-coveney.json",
       "oliver-west-end-2024/guardian--arifa-akbar.json",
       "oliver-west-end-2024/timeout-london--andrzej-lukowski.json",
-      "oliver-west-end-2024/artsdesk--helen-hawkins.json"
+      "oliver-west-end-2024/artsdesk--helen-hawkins.json",
+      "oliver-west-end-2024/financialtimes--financial-times.json",
+      "oliver-west-end-2024/financialtimes--sarah-hemming.json",
+      "oliver-west-end-2024/i-paper--fiona-mountford.json",
+      "oliver-west-end-2024/london-theatre--marianka-swain.json",
+      "oliver-west-end-2024/standard--henry-hitchings.json",
+      "oliver-west-end-2024/the-express--neil-norman.json",
+      "oliver-west-end-2024/the-sun--dominic-maxwell.json",
+      "oliver-west-end-2024/theatre-weekly--greg-stewart.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -32,12 +50,14 @@
     "archiveToday": [
       "data/review-texts/oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
       "data/review-texts/oliver-west-end-2024/the-sun--unknown.json",
-      "data/review-texts/oliver-west-end-2024/thestage--dave-fargnoli.json"
+      "data/review-texts/oliver-west-end-2024/thestage--dave-fargnoli.json",
+      "data/review-texts/oliver-west-end-2024/thestage--matt-hemley.json",
+      "data/review-texts/oliver-west-end-2024/thestage--sam-marlowe.json"
     ],
     "archive": []
   },
   "startTime": "2026-03-23T00:14:57.443Z",
-  "lastProcessed": "oliver-west-end-2024/artsdesk--helen-hawkins.json",
+  "lastProcessed": "oliver-west-end-2024/thestage--sam-marlowe.json",
   "log": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -47,6 +67,28 @@
     },
     {
       "t": "2026-03-23T00:18:29.368Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-23T00:22:49.577Z",
+      "event": "bb-session",
+      "session": "026da098",
+      "url": "https://www.thestage.co.uk/review-round-ups/oliver-starring-simon-lipkin--review"
+    },
+    {
+      "t": "2026-03-23T00:22:50.773Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-23T00:24:32.693Z",
+      "event": "bb-session",
+      "session": "c214cb52",
+      "url": "https://www.thestage.co.uk/review-round-ups/oliver-starring-simon-lipkin--review"
+    },
+    {
+      "t": "2026-03-23T00:24:33.977Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
