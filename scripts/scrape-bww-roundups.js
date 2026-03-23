@@ -354,8 +354,9 @@ function extractBWWReviews(html, showId, bwwUrl) {
     // Skip if no meaningful content
     if (!cleanOutlet || cleanExcerpt.length < 30) continue;
 
-    // Skip BWW internal links
+    // Skip BWW internal links and relative paths (e.g. /people/Ben-Brantley/)
     if (cleanUrl.includes('broadwayworld.com')) continue;
+    if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) continue;
 
     const outletInfo = mapOutlet(cleanOutlet);
     if (!outletInfo) continue;
