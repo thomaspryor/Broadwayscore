@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-23T11:43:22.893Z",
+  "timestamp": "2026-03-23T11:50:48.451Z",
   "stats": {
     "totalReviews": 32374,
-    "alreadyFlagged": 11011,
+    "alreadyFlagged": 11013,
     "dateGuardCatches": 139,
     "directorMismatch": 942,
-    "tvFilmSignals": 3401,
-    "londonSignals": 1026,
+    "tvFilmSignals": 3400,
+    "londonSignals": 1022,
     "offBroadwaySignals": 1007,
     "yearMismatch": 71,
     "noPublishDate": 6815
@@ -55155,25 +55155,6 @@
     },
     {
       "showId": "the-producers-west-end-2025",
-      "file": "the-express--neil-norman.json",
-      "score": 89,
-      "publishDate": "2025-09-16",
-      "url": "https://www.express.co.uk/entertainment/theatre",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-producers-west-end-2025",
       "file": "thestage--matthew-hemley.json",
       "score": 78,
       "publishDate": "2025-09-17",
@@ -62764,20 +62745,6 @@
       "showId": "all-my-sons-west-end-2025",
       "file": "timeout--andrzej-lukowski.json",
       "score": 94,
-      "publishDate": "2025-11-22",
-      "url": "https://www.timeout.com/london/news/review-all-my-sons-starring-bran-cranston-at-wyndhams-theatre-112225",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "all-my-sons-west-end-2025",
-      "file": "timeout--helen-shaw.json",
-      "score": 91,
       "publishDate": "2025-11-22",
       "url": "https://www.timeout.com/london/news/review-all-my-sons-starring-bran-cranston-at-wyndhams-theatre-112225",
       "findings": [
@@ -82534,34 +82501,6 @@
       "score": 94,
       "publishDate": "2025-09-15",
       "url": "https://theatreweekly.com/review-the-producers-at-garrick-theatre/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-producers-west-end-2025",
-      "file": "timeout--andrzej-lukowski.json",
-      "score": 77,
-      "publishDate": "2025-09-14",
-      "url": "https://www.timeout.com/london/theatre/the-producers-3-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-producers-west-end-2025",
-      "file": "timeout--only-andrzej-lukowski.json",
-      "score": 72,
-      "publishDate": "2025-09-14",
-      "url": "https://www.timeout.com/london/theatre/the-producers-3-review-2",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
