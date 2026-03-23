@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-23T03:16:29.413Z",
+  "timestamp": "2026-03-23T03:24:06.841Z",
   "stats": {
     "totalReviews": 32398,
-    "alreadyFlagged": 10984,
+    "alreadyFlagged": 10988,
     "dateGuardCatches": 141,
-    "directorMismatch": 944,
+    "directorMismatch": 945,
     "tvFilmSignals": 3400,
     "londonSignals": 1032,
     "offBroadwaySignals": 1012,
     "yearMismatch": 71,
-    "noPublishDate": 6866
+    "noPublishDate": 6862
   },
   "findings": [
     {
@@ -52646,6 +52646,11 @@
       "publishDate": "2014-10-17",
       "url": "https://www.telegraph.co.uk/culture/theatre/11161597/How-the-Lion-King-came-to-reign.html",
       "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
+        },
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
