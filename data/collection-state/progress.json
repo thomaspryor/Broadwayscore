@@ -409,7 +409,12 @@
     "high-noon-west-end-2025/artsdesk--matt-wolf.json",
     "high-noon-west-end-2025/independent--alice-saville.json",
     "high-noon-west-end-2025/london-theatre--julia-rank.json",
-    "high-noon-west-end-2025/standard--nick-curtis.json"
+    "high-noon-west-end-2025/standard--nick-curtis.json",
+    "high-noon-west-end-2025/telegraph--dominic-cavendish.json",
+    "woman-in-mind-west-end-2025/telegraph--claire-allfree.json",
+    "woman-in-mind-west-end-2025/all-that-dazzles-uk--unknown.json",
+    "woman-in-mind-west-end-2025/independent--alice-saville.json",
+    "woman-in-mind-west-end-2025/london-theatre--olivia-rook.json"
   ],
   "failed": [
     "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
@@ -494,7 +499,12 @@
     "man-and-boy-west-end-2026/guardian--sign-has-arifa-akbar.json",
     "beautiful-little-fool-west-end-2026/guardian--emma-john.json",
     "beautiful-little-fool-west-end-2026/broadwayworld--aliya-al-hassan.json",
-    "beautiful-little-fool-west-end-2026/everything-theatre--mike-carter.json"
+    "beautiful-little-fool-west-end-2026/everything-theatre--mike-carter.json",
+    "high-noon-west-end-2025/thestage--sam-marlowe.json",
+    "high-noon-west-end-2025/times-uk--clive-davis.json",
+    "woman-in-mind-west-end-2025/broadwayworld--unknown.json",
+    "woman-in-mind-west-end-2025/thestage--unknown.json",
+    "woman-in-mind-west-end-2025/thestage--sam-marlowe.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -854,7 +864,11 @@
       "high-noon-west-end-2025/timeout-london--unknown.json",
       "high-noon-west-end-2025/independent--alice-saville.json",
       "high-noon-west-end-2025/london-theatre--julia-rank.json",
-      "high-noon-west-end-2025/standard--nick-curtis.json"
+      "high-noon-west-end-2025/standard--nick-curtis.json",
+      "high-noon-west-end-2025/telegraph--dominic-cavendish.json",
+      "woman-in-mind-west-end-2025/all-that-dazzles-uk--unknown.json",
+      "woman-in-mind-west-end-2025/independent--alice-saville.json",
+      "woman-in-mind-west-end-2025/london-theatre--olivia-rook.json"
     ],
     "amp": [],
     "browserbase": [
@@ -921,7 +935,11 @@
       "data/review-texts/grace-pervades-west-end-2026/thestage--unknown.json",
       "data/review-texts/sweetmeats-west-end-2026/broadwayworld--unknown.json",
       "data/review-texts/beautiful-little-fool-west-end-2026/guardian--emma-john.json",
-      "data/review-texts/beautiful-little-fool-west-end-2026/broadwayworld--aliya-al-hassan.json"
+      "data/review-texts/beautiful-little-fool-west-end-2026/broadwayworld--aliya-al-hassan.json",
+      "data/review-texts/high-noon-west-end-2025/thestage--sam-marlowe.json",
+      "data/review-texts/woman-in-mind-west-end-2025/broadwayworld--unknown.json",
+      "data/review-texts/woman-in-mind-west-end-2025/thestage--unknown.json",
+      "data/review-texts/woman-in-mind-west-end-2025/thestage--sam-marlowe.json"
     ],
     "archive": [
       "broken-glass-west-end-2026/artsdesk--unknown.json",
@@ -978,11 +996,12 @@
       "the-lion-king-west-end-2021/timeout-london--ben-walters.json",
       "the-lion-king-west-end-2021/telegraph--unknown.json",
       "beetlejuice-west-end-2026/independent--graeme-massie.json",
-      "high-noon-west-end-2025/artsdesk--matt-wolf.json"
+      "high-noon-west-end-2025/artsdesk--matt-wolf.json",
+      "woman-in-mind-west-end-2025/telegraph--claire-allfree.json"
     ]
   },
   "startTime": "2026-03-23T00:14:57.443Z",
-  "lastProcessed": "high-noon-west-end-2025/standard--nick-curtis.json",
+  "lastProcessed": "woman-in-mind-west-end-2025/thestage--sam-marlowe.json",
   "log": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -1223,6 +1242,17 @@
     },
     {
       "t": "2026-03-23T03:01:42.150Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-23T03:22:13.174Z",
+      "event": "bb-session",
+      "session": "21872263",
+      "url": "https://www.thestage.co.uk/reviews/high-noon-review-harold-pinter-theatre-london"
+    },
+    {
+      "t": "2026-03-23T03:22:14.324Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
