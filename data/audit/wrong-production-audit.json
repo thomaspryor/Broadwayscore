@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-03-23T02:05:41.917Z",
+  "timestamp": "2026-03-23T02:13:22.449Z",
   "stats": {
-    "totalReviews": 32399,
-    "alreadyFlagged": 10980,
+    "totalReviews": 32398,
+    "alreadyFlagged": 10979,
     "dateGuardCatches": 141,
-    "directorMismatch": 945,
+    "directorMismatch": 944,
     "tvFilmSignals": 3400,
     "londonSignals": 1032,
     "offBroadwaySignals": 1012,
@@ -44711,20 +44711,6 @@
       ]
     },
     {
-      "showId": "starlight-express-west-end-2024",
-      "file": "whatsonstage--sarah-crompton.json",
-      "score": 62,
-      "publishDate": "2024-06-30",
-      "url": "https://www.whatsonstage.com/news/starlight-express-review-not-first-class-but-a-technical-rollercoaster-ride_1610072/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trevor nunn\" from starlight-express-1987"
-        }
-      ]
-    },
-    {
       "showId": "steel-magnolias-2005",
       "file": "nytimes--ben-brantley.json",
       "score": 42,
@@ -80319,7 +80305,7 @@
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
