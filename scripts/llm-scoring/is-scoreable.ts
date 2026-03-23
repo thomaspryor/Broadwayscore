@@ -12,6 +12,7 @@ const { hasExcerpt: hasAnyExcerpt } = require('../lib/excerpt-fields');
 
 export function isScoreable(data: Record<string, any>): boolean {
   if (data.duplicateOf || data.wrongShow || data.wrongProduction || data.wrongAttribution || data.contentTier === 'invalid') return false;
+  if (data.incompleteReason === 'scraper_garbage') return false;
   // fullTextWrongAuthor: fullText is from wrong author but excerpts may be valid.
   // Scoreable only if there's excerpt content to score from (not fullText).
   if (data.fullTextWrongAuthor) {

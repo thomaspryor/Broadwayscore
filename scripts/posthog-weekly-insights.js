@@ -95,19 +95,47 @@ function mdTable(headers, rows) {
   return lines.join('\n') + '\n';
 }
 
+async function authCheck() {
+  const res = await fetch(`${API_BASE}/api/projects/${PROJECT_ID}/`, {
+    headers: { 'Authorization': `Bearer ${API_KEY}` },
+  });
+  if (!res.ok) {
+    const body = await res.text();
+    console.error(`PostHog auth check failed (${res.status}): ${body}`);
+    console.error('The POSTHOG_PERSONAL_API_KEY GitHub secret is likely expired or invalid.');
+    process.exit(1);
+  }
+  console.log('PostHog auth OK');
+}
+
 async function main() {
   if (!API_KEY) { console.error('POSTHOG_PERSONAL_API_KEY not set'); process.exit(1); }
 
+  await authCheck();
+
   console.log('Querying PostHog...');
 
+  const errors = [];
+  function tracked(name, fn) {
+    return fn().catch(e => { errors.push(`${name}: ${e.message}`); return []; });
+  }
+
   const [traffic, topPages, topEvents, rageClicks, searchTerms, ticketClicks] = await Promise.all([
-    getTrafficSummary().catch(e => { console.warn('Traffic query failed:', e.message); return []; }),
-    getTopPages().catch(e => { console.warn('Top pages failed:', e.message); return []; }),
-    getTopEvents().catch(e => { console.warn('Events failed:', e.message); return []; }),
-    getRageClicks().catch(e => { console.warn('Rage clicks failed:', e.message); return []; }),
-    getSearchTerms().catch(e => { console.warn('Search terms failed:', e.message); return []; }),
-    getTicketClicks().catch(e => { console.warn('Ticket clicks failed:', e.message); return []; }),
+    tracked('Traffic', getTrafficSummary),
+    tracked('Top pages', getTopPages),
+    tracked('Events', getTopEvents),
+    tracked('Rage clicks', getRageClicks),
+    tracked('Search terms', getSearchTerms),
+    tracked('Ticket clicks', getTicketClicks),
   ]);
+
+  if (errors.length > 0) {
+    console.error(`${errors.length} queries failed:\n  ${errors.join('\n  ')}`);
+  }
+  if (errors.length === 6) {
+    console.error('ALL queries failed — aborting instead of creating empty report.');
+    process.exit(1);
+  }
 
   const now = new Date();
   const weekAgo = new Date(now - 7 * 86400000);

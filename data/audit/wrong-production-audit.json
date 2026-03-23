@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-23T18:50:55.652Z",
+  "timestamp": "2026-03-23T20:13:04.216Z",
   "stats": {
     "totalReviews": 32375,
     "alreadyFlagged": 11024,
     "dateGuardCatches": 139,
-    "directorMismatch": 940,
-    "tvFilmSignals": 3402,
+    "directorMismatch": 939,
+    "tvFilmSignals": 3404,
     "londonSignals": 1016,
     "offBroadwaySignals": 1007,
     "yearMismatch": 71,
-    "noPublishDate": 6807
+    "noPublishDate": 6806
   },
   "findings": [
     {
@@ -30123,6 +30123,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"phyllida lloyd\" from mamma-mia-2025"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -52105,11 +52110,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
         }
       ]
     },
@@ -52400,6 +52400,20 @@
     },
     {
       "showId": "the-lion-king-1997",
+      "file": "variety--matt-wolf.json",
+      "score": 93,
+      "publishDate": "November 17, 1997",
+      "url": "https://variety.com/1997/legit/reviews/the-lion-king-new-amsterdam-theater-1117339958/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-1997",
       "file": "washington-times--nelson-pressley.json",
       "score": 82,
       "publishDate": "1997-11-23",
@@ -52561,11 +52575,6 @@
       "publishDate": "2014-10-17",
       "url": "https://www.telegraph.co.uk/culture/theatre/11161597/How-the-Lion-King-came-to-reign.html",
       "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
-        },
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
@@ -84350,7 +84359,7 @@
     },
     {
       "showId": "wicked-2003",
-      "file": "broadwayworld--david-copney.json",
+      "file": "broadwayworld--armando-urdiales.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
       "findings": [
@@ -84363,7 +84372,7 @@
     },
     {
       "showId": "wicked-2003",
-      "file": "broadwayworld--emily-short.json",
+      "file": "broadwayworld--courtney-symes.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
       "findings": [
@@ -84376,7 +84385,7 @@
     },
     {
       "showId": "wicked-2003",
-      "file": "broadwayworld--jared-fessler.json",
+      "file": "broadwayworld--linda-hodges.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
       "findings": [
@@ -84389,7 +84398,20 @@
     },
     {
       "showId": "wicked-2003",
-      "file": "broadwayworld--marriage-matinee.json",
+      "file": "broadwayworld--lynn-beaver.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Wicked",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "broadwayworld--tyler-hinton.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
       "findings": [
