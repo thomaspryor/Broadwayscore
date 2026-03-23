@@ -528,7 +528,17 @@
     "heathers-the-musical-off-broadway-2025/cititour--brian-scott-lipton.json",
     "operation-mincemeat-2025/usatoday--unknown.json",
     "buena-vista-social-club-2025/cititour--brian-scott-lipton.json",
-    "buena-vista-social-club-2025/billboard--sigal-ratner-arias.json"
+    "buena-vista-social-club-2025/billboard--sigal-ratner-arias.json",
+    "death-becomes-her-2024/usatoday--unknown.json",
+    "death-becomes-her-2024/newyorker--helen-shaw.json",
+    "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
+    "death-becomes-her-2024/ew--unknown.json",
+    "death-becomes-her-2024/nydailynews--chris-jones.json",
+    "death-becomes-her-2024/nypost--unknown.json",
+    "death-becomes-her-2024/theatermania--jesse-green.json",
+    "death-becomes-her-2024/timeout--adam-feldman.json",
+    "death-becomes-her-2024/cititour--unknown.json",
+    "death-becomes-her-2024/amny--unknown.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -1089,7 +1099,11 @@
       "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
       "an-ark-off-broadway-2026/theatermania--david-gordon.json",
       "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/theatermania--zachary-stewart.json",
-      "masquerade-off-broadway-2025/theatermania--meg-masseron.json"
+      "masquerade-off-broadway-2025/theatermania--meg-masseron.json",
+      "death-becomes-her-2024/ew--unknown.json",
+      "death-becomes-her-2024/nydailynews--chris-jones.json",
+      "death-becomes-her-2024/theatermania--jesse-green.json",
+      "death-becomes-her-2024/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -1123,7 +1137,11 @@
       "data/review-texts/buena-vista-social-club-2025/amny--matt-windman.json",
       "buena-vista-social-club-2025/amny--matt-windman.json",
       "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
-      "my-neighbour-totoro-west-end-2025/variety--unknown.json"
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "data/review-texts/death-becomes-her-2024/nypost--unknown.json",
+      "death-becomes-her-2024/nypost--unknown.json",
+      "data/review-texts/death-becomes-her-2024/amny--unknown.json",
+      "death-becomes-her-2024/amny--unknown.json"
     ],
     "directCookies": [
       "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json"
@@ -1270,11 +1288,15 @@
       "heathers-the-musical-off-broadway-2025/cititour--brian-scott-lipton.json",
       "operation-mincemeat-2025/usatoday--unknown.json",
       "buena-vista-social-club-2025/cititour--brian-scott-lipton.json",
-      "buena-vista-social-club-2025/billboard--sigal-ratner-arias.json"
+      "buena-vista-social-club-2025/billboard--sigal-ratner-arias.json",
+      "death-becomes-her-2024/usatoday--unknown.json",
+      "death-becomes-her-2024/newyorker--helen-shaw.json",
+      "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
+      "death-becomes-her-2024/cititour--unknown.json"
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "death-becomes-her-2024/wsj--unknown.json",
+  "lastProcessed": "death-becomes-her-2024/amny--unknown.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -1414,6 +1436,28 @@
       "t": "2026-03-23T17:19:17.786Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-23T17:21:45.378Z",
+      "event": "bb-session",
+      "session": "469aeb1a",
+      "url": "https://nypost.com/2024/11/21/entertainment/death-becomes-her-review-claws-are-o"
+    },
+    {
+      "t": "2026-03-23T17:21:46.737Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-23T17:22:56.824Z",
+      "event": "bb-session",
+      "session": "8cacd786",
+      "url": "https://www.amny.com/entertainment/theater/reviews-death-becomes-her-king-lear-m"
+    },
+    {
+      "t": "2026-03-23T17:22:58.167Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
