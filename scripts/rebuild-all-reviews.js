@@ -2258,35 +2258,49 @@ if (fs.existsSync(reviewsJsonPath)) {
     }
 
     const regressions = [];
+    const explainedByFlagging = new Set(); // Shows where drop is explained by audit flags
     for (const [showId, oldCount] of oldCountByShow) {
       const newCount = newCountByShow.get(showId) || 0;
       const dropped = oldCount - newCount;
       if (dropped > REGRESSION_DROP_THRESHOLD) {
-        // Only flag as regression if review-text files with scores actually exist
-        // but are being dropped. If the source files were deleted (e.g., by a sweep
-        // incident), the regression is expected and shouldn't block the rebuild.
+        // Count scored files on disk, separating unflagged from flagged.
+        // Flagged files were excluded by audit steps (wrongProduction, wrongShow, etc.)
+        // and their removal is intentional data cleanup, not corruption.
         const showDir = path.join(reviewTextsDir, showId);
-        let scoredFilesOnDisk = 0;
+        let scoredUnflagged = 0;
+        let scoredFlagged = 0;
         if (fs.existsSync(showDir)) {
           for (const f of fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json')) {
             try {
               const d = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
-              if (d.assignedScore != null && !d.wrongShow && !d.wrongProduction && !d.duplicateOf) {
-                scoredFilesOnDisk++;
+              if (d.assignedScore == null) continue;
+              if (d.wrongShow || d.wrongProduction || d.duplicateOf || d.isRoundupArticle) {
+                scoredFlagged++;
+              } else {
+                scoredUnflagged++;
               }
             } catch {}
           }
         }
-        // If scored files on disk match or exceed new count, the regression
-        // is a rebuild logic issue (dangerous). If fewer scored files exist
-        // on disk, the source text was lost and regression is expected.
-        if (scoredFilesOnDisk > newCount) {
-          regressions.push({ showId, oldCount, newCount, dropped, scoredOnDisk: scoredFilesOnDisk, reason: 'scored files exist but being dropped' });
+        // The disk-vs-build mismatch tells us if the rebuild is unexpectedly dropping reviews.
+        // A small mismatch (<=REGRESSION_DROP_THRESHOLD) is expected from inline guards
+        // (cross-market, URL-year, etc.) that can't be predicted from file flags alone.
+        const diskMismatch = scoredUnflagged - newCount;
+        if (diskMismatch <= REGRESSION_DROP_THRESHOLD) {
+          // Drop is explained by audit flags + inline guard tolerance
+          explainedByFlagging.add(showId);
+          console.log(`  ℹ️  ${showId}: ${oldCount}→${newCount} (explained: ${scoredFlagged} flagged, ${diskMismatch} inline guards)`);
+        } else if (scoredUnflagged + scoredFlagged <= newCount) {
+          // Source files were deleted — fewer scored files exist than build output
+          console.log(`  ℹ️  ${showId}: ${oldCount}→${newCount} (expected — only ${scoredUnflagged} unflagged scored files on disk)`);
         } else {
-          // Expected regression — source text lost, not a rebuild bug
-          console.log(`  ℹ️  ${showId}: ${oldCount}→${newCount} (expected — only ${scoredFilesOnDisk} scored files on disk)`);
+          // Unexplained regression — rebuild is dropping unflagged scored files
+          regressions.push({ showId, oldCount, newCount, dropped, scoredOnDisk: scoredUnflagged, flaggedScored: scoredFlagged, reason: 'scored files exist but being dropped' });
         }
       }
+    }
+    if (explainedByFlagging.size > 0) {
+      console.log(`\n✅ ${explainedByFlagging.size} show(s) lost reviews due to audit flagging (intentional cleanup)`);
     }
 
     if (regressions.length > 0) {
@@ -2345,6 +2359,10 @@ if (fs.existsSync(reviewsJsonPath)) {
       // Only flag shows where review count stayed the same or decreased
       // (new reviews naturally shift averages — that's expected)
       if (newScores.length > oldScores.length) continue;
+
+      // Skip shows where the review drop was explained by audit flagging —
+      // removing flagged reviews naturally shifts the average, and that's intentional.
+      if (explainedByFlagging.has(showId)) continue;
 
       const oldMean = oldScores.reduce((a, b) => a + b, 0) / oldScores.length;
       const newMean = newScores.reduce((a, b) => a + b, 0) / newScores.length;
