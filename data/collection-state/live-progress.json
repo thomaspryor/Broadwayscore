@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-23T12:26:16.122Z",
-  "processed": 365,
-  "failed": 65,
-  "successRate": "84.9%",
+  "updatedAt": "2026-03-23T12:32:42.704Z",
+  "processed": 370,
+  "failed": 70,
+  "successRate": "84.1%",
   "tierBreakdown": {
-    "playwright": 320,
+    "playwright": 325,
     "amp": 8,
     "browserbase": 12,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 33,
+    "archiveToday": 36,
     "archive": 39
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -86,6 +86,17 @@
       "t": "2026-03-23T12:20:36.271Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-23T12:31:19.270Z",
+      "event": "bb-session",
+      "session": "0a9f5653",
+      "url": "https://www.thestage.co.uk/reviews/les-miserables-review-at-sondheim-theatre-lon"
+    },
+    {
+      "t": "2026-03-23T12:31:20.532Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
