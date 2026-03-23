@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-23T17:23:10.158Z",
-  "processed": 539,
-  "failed": 121,
-  "successRate": "81.7%",
+  "updatedAt": "2026-03-23T17:26:42.481Z",
+  "processed": 548,
+  "failed": 122,
+  "successRate": "81.8%",
   "tierBreakdown": {
-    "playwright": 438,
+    "playwright": 444,
     "amp": 12,
     "browserbase": 22,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 52,
-    "archive": 90
+    "archive": 93
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-03-23T12:58:08.862Z",
-      "event": "bb-session",
-      "session": "02df61f1",
-      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
-    },
-    {
-      "t": "2026-03-23T12:58:09.981Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-23T13:08:15.353Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-23T17:22:58.167Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-23T17:24:30.085Z",
+      "event": "bb-session",
+      "session": "06944289",
+      "url": "https://www.wsj.com/articles/maybe-happy-ending-review-a-robotic-romance-of-real"
+    },
+    {
+      "t": "2026-03-23T17:24:31.572Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

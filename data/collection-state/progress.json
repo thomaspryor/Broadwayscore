@@ -538,7 +538,16 @@
     "death-becomes-her-2024/theatermania--jesse-green.json",
     "death-becomes-her-2024/timeout--adam-feldman.json",
     "death-becomes-her-2024/cititour--unknown.json",
-    "death-becomes-her-2024/amny--unknown.json"
+    "death-becomes-her-2024/amny--unknown.json",
+    "death-becomes-her-2024/chicagotribune--unknown.json",
+    "death-becomes-her-2024/frontmezzjunkies--unknown.json",
+    "death-becomes-her-2024/stageandcinema--unknown.json",
+    "death-becomes-her-2024/the-interested-bystander--cary-wong.json",
+    "death-becomes-her-2024/theater-scene--joel-benjamin.json",
+    "maybe-happy-ending-2024/billboard--unknown.json",
+    "maybe-happy-ending-2024/vulture--sara-holdren.json",
+    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+    "maybe-happy-ending-2024/guardian--adrian-horton.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -661,7 +670,8 @@
     "my-neighbour-totoro-west-end-2025/the-morning-star--unknown.json",
     "my-neighbour-totoro-west-end-2025/times-uk--unknown.json",
     "dracula-west-end-2025/times-uk--clive-davis.json",
-    "death-becomes-her-2024/wsj--unknown.json"
+    "death-becomes-her-2024/wsj--unknown.json",
+    "maybe-happy-ending-2024/wsj--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1103,7 +1113,13 @@
       "death-becomes-her-2024/ew--unknown.json",
       "death-becomes-her-2024/nydailynews--chris-jones.json",
       "death-becomes-her-2024/theatermania--jesse-green.json",
-      "death-becomes-her-2024/timeout--adam-feldman.json"
+      "death-becomes-her-2024/timeout--adam-feldman.json",
+      "death-becomes-her-2024/frontmezzjunkies--unknown.json",
+      "death-becomes-her-2024/stageandcinema--unknown.json",
+      "death-becomes-her-2024/the-interested-bystander--cary-wong.json",
+      "death-becomes-her-2024/theater-scene--joel-benjamin.json",
+      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+      "maybe-happy-ending-2024/guardian--adrian-horton.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -1292,11 +1308,14 @@
       "death-becomes-her-2024/usatoday--unknown.json",
       "death-becomes-her-2024/newyorker--helen-shaw.json",
       "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
-      "death-becomes-her-2024/cititour--unknown.json"
+      "death-becomes-her-2024/cititour--unknown.json",
+      "death-becomes-her-2024/chicagotribune--unknown.json",
+      "maybe-happy-ending-2024/billboard--unknown.json",
+      "maybe-happy-ending-2024/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "death-becomes-her-2024/amny--unknown.json",
+  "lastProcessed": "maybe-happy-ending-2024/guardian--adrian-horton.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -1458,6 +1477,17 @@
       "t": "2026-03-23T17:22:58.167Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-23T17:24:30.085Z",
+      "event": "bb-session",
+      "session": "06944289",
+      "url": "https://www.wsj.com/articles/maybe-happy-ending-review-a-robotic-romance-of-real"
+    },
+    {
+      "t": "2026-03-23T17:24:31.572Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
