@@ -336,7 +336,15 @@
     "matilda-the-musical-west-end-2021/artsdesk--carole-woddis.json",
     "matilda-the-musical-west-end-2021/london-box-office--danai-g-miliaraki.json",
     "matilda-the-musical-west-end-2021/london-theatre--peter-brown.json",
-    "matilda-the-musical-west-end-2021/telegraph--charles-spencer.json"
+    "matilda-the-musical-west-end-2021/telegraph--charles-spencer.json",
+    "matilda-the-musical-west-end-2021/telegraph--unknown.json",
+    "matilda-the-musical-west-end-2021/whatsonstage--andy-plaice.json",
+    "matilda-the-musical-west-end-2021/whatsonstage--michael-coveney.json",
+    "wicked-west-end-2021/telegraph--robbie-collin.json",
+    "wicked-west-end-2021/financialtimes--unknown.json",
+    "wicked-west-end-2021/standard--india-block.json",
+    "wicked-west-end-2021/standard--jessie-thompson.json",
+    "wicked-west-end-2021/whatsonstage--editorial-staff.json"
   ],
   "failed": [
     "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
@@ -404,7 +412,9 @@
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
     "the-book-of-mormon-west-end-2024/guardian--arifa-akbar.json",
     "the-book-of-mormon-west-end-2024/independent--paul-taylor.json",
-    "matilda-the-musical-west-end-2021/standard--henry-hitchings.json"
+    "matilda-the-musical-west-end-2021/standard--henry-hitchings.json",
+    "wicked-west-end-2021/independent--clarisse-loughrey.json",
+    "wicked-west-end-2021/thestage--paul-vale.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -698,7 +708,13 @@
       "matilda-the-musical-west-end-2021/guardian--imogen-carter.json",
       "matilda-the-musical-west-end-2021/london-box-office--danai-g-miliaraki.json",
       "matilda-the-musical-west-end-2021/london-theatre--peter-brown.json",
-      "matilda-the-musical-west-end-2021/telegraph--charles-spencer.json"
+      "matilda-the-musical-west-end-2021/telegraph--charles-spencer.json",
+      "matilda-the-musical-west-end-2021/whatsonstage--andy-plaice.json",
+      "matilda-the-musical-west-end-2021/whatsonstage--michael-coveney.json",
+      "wicked-west-end-2021/financialtimes--unknown.json",
+      "wicked-west-end-2021/standard--india-block.json",
+      "wicked-west-end-2021/standard--jessie-thompson.json",
+      "wicked-west-end-2021/whatsonstage--editorial-staff.json"
     ],
     "amp": [],
     "browserbase": [
@@ -749,7 +765,9 @@
       "data/review-texts/the-play-that-goes-wrong-west-end-2021/thestage--unknown.json",
       "data/review-texts/the-book-of-mormon-west-end-2024/guardian--arifa-akbar.json",
       "data/review-texts/the-book-of-mormon-west-end-2024/independent--paul-taylor.json",
-      "data/review-texts/matilda-the-musical-west-end-2021/standard--henry-hitchings.json"
+      "data/review-texts/matilda-the-musical-west-end-2021/standard--henry-hitchings.json",
+      "data/review-texts/wicked-west-end-2021/independent--clarisse-loughrey.json",
+      "data/review-texts/wicked-west-end-2021/thestage--paul-vale.json"
     ],
     "archive": [
       "broken-glass-west-end-2026/artsdesk--unknown.json",
@@ -800,11 +818,13 @@
       "hamilton-west-end-2021/daily-mail--quentin-letts.json",
       "harry-potter-and-the-cursed-child-both-parts-west-end-2021/independent--jack-shepherd.json",
       "showstopper-the-improvised-musical-west-end-2023/telegraph--dominic-cavendish.json",
-      "matilda-the-musical-west-end-2021/artsdesk--carole-woddis.json"
+      "matilda-the-musical-west-end-2021/artsdesk--carole-woddis.json",
+      "matilda-the-musical-west-end-2021/telegraph--unknown.json",
+      "wicked-west-end-2021/telegraph--robbie-collin.json"
     ]
   },
   "startTime": "2026-03-23T00:14:57.443Z",
-  "lastProcessed": "matilda-the-musical-west-end-2021/telegraph--charles-spencer.json",
+  "lastProcessed": "wicked-west-end-2021/whatsonstage--editorial-staff.json",
   "log": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -979,6 +999,17 @@
     },
     {
       "t": "2026-03-23T02:44:07.427Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-23T02:50:29.847Z",
+      "event": "bb-session",
+      "session": "e1cf9ed6",
+      "url": "https://www.thestage.co.uk/reviews/2006/wicked-review-at-apollo-victoria-london/"
+    },
+    {
+      "t": "2026-03-23T02:50:30.929Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
