@@ -711,7 +711,17 @@
     "stranger-things-2024/stageandcinema--unknown.json",
     "stranger-things-2024/theater-scene--joseph-pisano.json",
     "stranger-things-2024/whatsonstage--unknown.json",
-    "the-infinite-wrench-off-broadway-2025/nytg--unknown.json"
+    "the-infinite-wrench-off-broadway-2025/nytg--unknown.json",
+    "operation-mincemeat-2025/usatoday--unknown.json",
+    "operation-mincemeat-2025/broadwaynews--unknown.json",
+    "operation-mincemeat-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "operation-mincemeat-2025/timeout--adam-feldman.json",
+    "operation-mincemeat-2025/artsfuse--unknown.json",
+    "operation-mincemeat-2025/chicagotribune--unknown.json",
+    "operation-mincemeat-2025/frontmezzjunkies--unknown.json",
+    "buena-vista-social-club-2025/billboard--sigal-ratner-arias.json",
+    "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json",
+    "buena-vista-social-club-2025/timeout--adam-feldman.json"
   ],
   "failed": [
     "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
@@ -1467,7 +1477,14 @@
       "stranger-things-2024/stageandcinema--unknown.json",
       "stranger-things-2024/theater-scene--joseph-pisano.json",
       "stranger-things-2024/whatsonstage--unknown.json",
-      "the-infinite-wrench-off-broadway-2025/nytg--unknown.json"
+      "the-infinite-wrench-off-broadway-2025/nytg--unknown.json",
+      "operation-mincemeat-2025/broadwaynews--unknown.json",
+      "operation-mincemeat-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "operation-mincemeat-2025/timeout--adam-feldman.json",
+      "operation-mincemeat-2025/artsfuse--unknown.json",
+      "operation-mincemeat-2025/chicagotribune--unknown.json",
+      "operation-mincemeat-2025/frontmezzjunkies--unknown.json",
+      "buena-vista-social-club-2025/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -1517,7 +1534,9 @@
       "data/review-texts/stranger-things-2024/hollywood-reporter--unknown.json",
       "stranger-things-2024/hollywood-reporter--unknown.json"
     ],
-    "directCookies": [],
+    "directCookies": [
+      "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
@@ -1669,11 +1688,13 @@
       "heathers-the-musical-off-broadway-2025/theater-pizzazz--ron-fassler.json",
       "just-in-time-2025/billboard--unknown.json",
       "just-in-time-2025/talkinbroadway--unknown.json",
-      "stranger-things-2024/usatoday--unknown.json"
+      "stranger-things-2024/usatoday--unknown.json",
+      "operation-mincemeat-2025/usatoday--unknown.json",
+      "buena-vista-social-club-2025/billboard--sigal-ratner-arias.json"
     ]
   },
   "startTime": "2026-03-23T00:14:57.443Z",
-  "lastProcessed": "operation-mincemeat-2025/guardian--unknown.json",
+  "lastProcessed": "buena-vista-social-club-2025/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -2101,6 +2122,17 @@
     },
     {
       "t": "2026-03-23T05:36:35.798Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-23T05:40:43.572Z",
+      "event": "bb-session",
+      "session": "d760544c",
+      "url": "https://www.hollywoodreporter.com/video/buena-vista-social-club-choreographers-j"
+    },
+    {
+      "t": "2026-03-23T05:40:44.871Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }

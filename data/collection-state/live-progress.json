@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-23T05:38:29.098Z",
-  "processed": 712,
+  "updatedAt": "2026-03-23T05:41:06.546Z",
+  "processed": 722,
   "failed": 127,
-  "successRate": "84.9%",
+  "successRate": "85.0%",
   "tierBreakdown": {
-    "playwright": 623,
+    "playwright": 630,
     "amp": 10,
     "browserbase": 34,
-    "directCookies": 0,
+    "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 70,
-    "archive": 77
+    "archive": 79
   },
-  "browserbaseSessions": 16,
+  "browserbaseSessions": 17,
   "recentActivity": [
-    {
-      "t": "2026-03-23T05:15:06.529Z",
-      "event": "bb-session",
-      "session": "f330871c",
-      "url": "https://www.nytimes.com/2026/01/12/theater/ark-ian-mckellen-shed.html"
-    },
-    {
-      "t": "2026-03-23T05:15:07.833Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-23T05:16:25.051Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-23T05:36:35.798Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-23T05:40:43.572Z",
+      "event": "bb-session",
+      "session": "d760544c",
+      "url": "https://www.hollywoodreporter.com/video/buena-vista-social-club-choreographers-j"
+    },
+    {
+      "t": "2026-03-23T05:40:44.871Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
