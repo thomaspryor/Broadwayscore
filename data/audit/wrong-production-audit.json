@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-23T02:52:27.998Z",
+  "timestamp": "2026-03-23T03:00:35.452Z",
   "stats": {
     "totalReviews": 32398,
-    "alreadyFlagged": 10981,
+    "alreadyFlagged": 10984,
     "dateGuardCatches": 141,
-    "directorMismatch": 943,
+    "directorMismatch": 944,
     "tvFilmSignals": 3400,
     "londonSignals": 1032,
     "offBroadwaySignals": 1012,
     "yearMismatch": 71,
-    "noPublishDate": 6868
+    "noPublishDate": 6866
   },
   "findings": [
     {
@@ -30949,6 +30949,20 @@
       "score": 93,
       "publishDate": "2011-11-25",
       "url": "http://www.thisislondon.co.uk/theatre/review-24014294-matilda-the-musical-cambridge-theatre---review.do",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
+        }
+      ]
+    },
+    {
+      "showId": "matilda-the-musical-west-end-2021",
+      "file": "telegraph--charles-spencer.json",
+      "score": 91,
+      "publishDate": "2011-11-25",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/matilda-cambridge-theatre-review/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
