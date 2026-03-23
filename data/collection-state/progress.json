@@ -273,7 +273,16 @@
     "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--dominic-maxwell.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/whatsonstage--sarah-crompton.json",
-    "moulin-rouge-the-musical-west-end-2021/mail--patrick-marmion.json"
+    "moulin-rouge-the-musical-west-end-2021/mail--patrick-marmion.json",
+    "moulin-rouge-the-musical-west-end-2021/theatrely--emily-wyrwa.json",
+    "moulin-rouge-the-musical-west-end-2021/artsdesk--marianka-swain.json",
+    "moulin-rouge-the-musical-west-end-2021/london-box-office--stuart-king.json",
+    "moulin-rouge-the-musical-west-end-2021/london-theatre--suzy-evans.json",
+    "moulin-rouge-the-musical-west-end-2021/standard--nick-curtis.json",
+    "back-to-the-future-west-end-2021/variety--david-benedict.json",
+    "back-to-the-future-west-end-2021/timeout--adam-feldman.json",
+    "back-to-the-future-west-end-2021/timeout--unknown.json",
+    "back-to-the-future-west-end-2021/artsdesk--gary-naylor.json"
   ],
   "failed": [
     "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
@@ -324,7 +333,8 @@
     "cabaret-at-the-kit-kat-club-west-end-2021/thestage--dave-fargnoli.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/artsdesk--david-nice.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
-    "moulin-rouge-the-musical-west-end-2021/thestage--sam-marlowe.json"
+    "moulin-rouge-the-musical-west-end-2021/thestage--sam-marlowe.json",
+    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -569,7 +579,15 @@
       "cabaret-at-the-kit-kat-club-west-end-2021/standard--nick-curtis.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--dominic-maxwell.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json",
-      "cabaret-at-the-kit-kat-club-west-end-2021/whatsonstage--sarah-crompton.json"
+      "cabaret-at-the-kit-kat-club-west-end-2021/whatsonstage--sarah-crompton.json",
+      "moulin-rouge-the-musical-west-end-2021/theatrely--emily-wyrwa.json",
+      "moulin-rouge-the-musical-west-end-2021/artsdesk--marianka-swain.json",
+      "moulin-rouge-the-musical-west-end-2021/london-box-office--stuart-king.json",
+      "moulin-rouge-the-musical-west-end-2021/london-theatre--suzy-evans.json",
+      "moulin-rouge-the-musical-west-end-2021/standard--nick-curtis.json",
+      "back-to-the-future-west-end-2021/timeout--adam-feldman.json",
+      "back-to-the-future-west-end-2021/timeout--unknown.json",
+      "back-to-the-future-west-end-2021/artsdesk--gary-naylor.json"
     ],
     "amp": [],
     "browserbase": [
@@ -580,7 +598,9 @@
       "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
       "hercules-west-end-2025/variety--david-benedict.json",
       "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
-      "my-neighbour-totoro-west-end-2025/variety--unknown.json"
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "back-to-the-future-west-end-2021/variety--david-benedict.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -648,7 +668,7 @@
     ]
   },
   "startTime": "2026-03-23T00:14:57.443Z",
-  "lastProcessed": "moulin-rouge-the-musical-west-end-2021/thestage--sam-marlowe.json",
+  "lastProcessed": "back-to-the-future-west-end-2021/artsdesk--gary-naylor.json",
   "log": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -770,6 +790,17 @@
       "t": "2026-03-23T02:21:13.977Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-23T02:22:37.882Z",
+      "event": "bb-session",
+      "session": "c984186e",
+      "url": "https://variety.com/2021/legit/reviews/back-to-the-future-musical-review-west-en"
+    },
+    {
+      "t": "2026-03-23T02:22:38.903Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
