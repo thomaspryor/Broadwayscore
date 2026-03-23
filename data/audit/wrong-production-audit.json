@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-23T01:41:58.950Z",
+  "timestamp": "2026-03-23T01:50:00.688Z",
   "stats": {
     "totalReviews": 32399,
-    "alreadyFlagged": 10977,
+    "alreadyFlagged": 10979,
     "dateGuardCatches": 141,
     "directorMismatch": 945,
-    "tvFilmSignals": 3399,
+    "tvFilmSignals": 3400,
     "londonSignals": 1032,
     "offBroadwaySignals": 1012,
     "yearMismatch": 71,
-    "noPublishDate": 6876
+    "noPublishDate": 6874
   },
   "findings": [
     {
@@ -22252,6 +22252,20 @@
       "score": 93,
       "publishDate": "2025-06-25",
       "url": "https://www.radiotimes.com/going-out/tickets/hercules-musical-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "hercules-west-end-2025",
+      "file": "standard--nick-curtis.json",
+      "score": 66,
+      "publishDate": "2025-06-25",
+      "url": "https://www.standard.co.uk/culture/theatre/hercules-at-theatre-royal-drury-lane-b1234755.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -53775,25 +53789,6 @@
     },
     {
       "showId": "the-other-place-off-broadway-2026",
-      "file": "theater-pizzazz--ron-fassler.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "https://theaterpizzazz.com/the-secrets-of-the-other-place/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-other-place-off-broadway-2026",
       "file": "vulture--scott-brown.json",
       "score": 87,
       "publishDate": "2026-02-11",
@@ -55240,6 +55235,25 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-producers-west-end-2025",
+      "file": "the-express--neil-norman.json",
+      "score": 89,
+      "publishDate": "2025-09-16",
+      "url": "https://www.express.co.uk/entertainment/theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
