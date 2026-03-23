@@ -282,7 +282,13 @@
     "back-to-the-future-west-end-2021/variety--david-benedict.json",
     "back-to-the-future-west-end-2021/timeout--adam-feldman.json",
     "back-to-the-future-west-end-2021/timeout--unknown.json",
-    "back-to-the-future-west-end-2021/artsdesk--gary-naylor.json"
+    "back-to-the-future-west-end-2021/artsdesk--gary-naylor.json",
+    "back-to-the-future-west-end-2021/british-theatre--unknown.json",
+    "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json",
+    "back-to-the-future-west-end-2021/whatsonstage--sarah-crompton.json",
+    "the-phantom-of-the-opera-west-end-1986/financialtimes--tim-bano.json",
+    "the-phantom-of-the-opera-west-end-1986/telegraph--claire-allfree.json",
+    "the-phantom-of-the-opera-west-end-1986/whatsonstage--unknown.json"
   ],
   "failed": [
     "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
@@ -334,7 +340,11 @@
     "cabaret-at-the-kit-kat-club-west-end-2021/artsdesk--david-nice.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
     "moulin-rouge-the-musical-west-end-2021/thestage--sam-marlowe.json",
-    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json"
+    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
+    "back-to-the-future-west-end-2021/daily-mail--patrick-marmion.json",
+    "back-to-the-future-west-end-2021/independent--clarisse-loughrey.json",
+    "back-to-the-future-west-end-2021/mail--unknown.json",
+    "the-phantom-of-the-opera-west-end-1986/thestage--dave-fargnoli.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -587,7 +597,11 @@
       "moulin-rouge-the-musical-west-end-2021/standard--nick-curtis.json",
       "back-to-the-future-west-end-2021/timeout--adam-feldman.json",
       "back-to-the-future-west-end-2021/timeout--unknown.json",
-      "back-to-the-future-west-end-2021/artsdesk--gary-naylor.json"
+      "back-to-the-future-west-end-2021/artsdesk--gary-naylor.json",
+      "back-to-the-future-west-end-2021/british-theatre--unknown.json",
+      "back-to-the-future-west-end-2021/whatsonstage--sarah-crompton.json",
+      "the-phantom-of-the-opera-west-end-1986/financialtimes--tim-bano.json",
+      "the-phantom-of-the-opera-west-end-1986/whatsonstage--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -626,7 +640,10 @@
       "data/review-texts/witness-for-the-prosecution-west-end-2022/lost-in-theatreland--amy-rye.json",
       "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/mail--patrick-marmion.json",
       "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/thestage--dave-fargnoli.json",
-      "data/review-texts/moulin-rouge-the-musical-west-end-2021/thestage--sam-marlowe.json"
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/thestage--sam-marlowe.json",
+      "data/review-texts/back-to-the-future-west-end-2021/independent--clarisse-loughrey.json",
+      "data/review-texts/back-to-the-future-west-end-2021/daily-mail--patrick-marmion.json",
+      "data/review-texts/the-phantom-of-the-opera-west-end-1986/thestage--dave-fargnoli.json"
     ],
     "archive": [
       "broken-glass-west-end-2026/artsdesk--unknown.json",
@@ -664,11 +681,14 @@
       "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--kirsten-grant.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--dominic-cavendish.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/theatre-bee-uk--theatre-bee-uk.json",
-      "moulin-rouge-the-musical-west-end-2021/mail--patrick-marmion.json"
+      "moulin-rouge-the-musical-west-end-2021/mail--patrick-marmion.json",
+      "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json",
+      "back-to-the-future-west-end-2021/mail--unknown.json",
+      "the-phantom-of-the-opera-west-end-1986/telegraph--claire-allfree.json"
     ]
   },
   "startTime": "2026-03-23T00:14:57.443Z",
-  "lastProcessed": "back-to-the-future-west-end-2021/artsdesk--gary-naylor.json",
+  "lastProcessed": "the-phantom-of-the-opera-west-end-1986/whatsonstage--unknown.json",
   "log": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -801,6 +821,17 @@
       "t": "2026-03-23T02:22:38.903Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-23T02:31:58.270Z",
+      "event": "bb-session",
+      "session": "4b217b29",
+      "url": "https://www.thestage.co.uk/reviews/when-we-are-married-review-donmar-warehouse-l"
+    },
+    {
+      "t": "2026-03-23T02:31:59.320Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
