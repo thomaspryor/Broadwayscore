@@ -1093,6 +1093,9 @@ function isProfileUrl(url) {
  */
 function maybeUpgradeUrl(existingData, newUrl, source) {
   if (!newUrl || existingData.url === newUrl) return false;
+  // Reject invalid replacement URLs (relative paths, profile pages)
+  if (!newUrl.startsWith('http://') && !newUrl.startsWith('https://')) return false;
+  if (isProfileUrl(newUrl)) return false;
   // Only upgrade if current content is bad
   const badContent = !existingData.fullText
     || (existingData.contentTier && existingData.contentTier !== 'complete')
