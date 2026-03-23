@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-23T02:10:52.158Z",
-  "processed": 259,
-  "failed": 44,
-  "successRate": "85.5%",
+  "updatedAt": "2026-03-23T02:18:31.807Z",
+  "processed": 266,
+  "failed": 47,
+  "successRate": "85.0%",
   "tierBreakdown": {
-    "playwright": 230,
+    "playwright": 236,
     "amp": 0,
     "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 18,
-    "archive": 32
+    "archiveToday": 20,
+    "archive": 33
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -111,6 +111,17 @@
     },
     {
       "t": "2026-03-23T01:41:53.090Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-23T02:17:55.391Z",
+      "event": "bb-session",
+      "session": "5f838c69",
+      "url": "https://www.thestage.co.uk/reviews/next-to-normal-review-donmar-warehouse-london"
+    },
+    {
+      "t": "2026-03-23T02:17:56.399Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
