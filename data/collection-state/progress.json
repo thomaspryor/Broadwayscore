@@ -107,7 +107,14 @@
     "the-unknown-off-broadway-2026/theatrely--unknown.json",
     "the-unknown-off-broadway-2026/nysr--frank-scheck.json",
     "the-unknown-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json"
+    "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
+    "an-ark-off-broadway-2026/nytg--kyle-turner.json",
+    "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nytg--allison-considine.json",
+    "an-ark-off-broadway-2026/guardian--adrian-horton.json",
+    "an-ark-off-broadway-2026/nysr--roma-torre.json",
+    "an-ark-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "data-off-broadway-2026/nysr--david-finkle.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -131,7 +138,10 @@
     "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
     "you-got-older-off-broadway-2026/theatermania--zachary-stewart.json",
     "the-unknown-off-broadway-2026/theatermania--zachary-stewart.json",
-    "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json"
+    "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
+    "an-ark-off-broadway-2026/newyorker--emily-nussbaum.json",
+    "an-ark-off-broadway-2026/theatermania--david-gordon.json",
+    "data-off-broadway-2026/theatermania--zachary-stewart.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -231,7 +241,14 @@
       "the-unknown-off-broadway-2026/theatrely--unknown.json",
       "the-unknown-off-broadway-2026/nysr--frank-scheck.json",
       "the-unknown-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json"
+      "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
+      "an-ark-off-broadway-2026/nytg--kyle-turner.json",
+      "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "data-off-broadway-2026/nytg--allison-considine.json",
+      "an-ark-off-broadway-2026/guardian--adrian-horton.json",
+      "an-ark-off-broadway-2026/nysr--roma-torre.json",
+      "an-ark-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "data-off-broadway-2026/nysr--david-finkle.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -268,7 +285,10 @@
       "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/vulture--sara-holdren.json",
       "data/review-texts/you-got-older-off-broadway-2026/theatermania--zachary-stewart.json",
       "data/review-texts/the-unknown-off-broadway-2026/theatermania--zachary-stewart.json",
-      "data/review-texts/11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json"
+      "data/review-texts/11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
+      "data/review-texts/an-ark-off-broadway-2026/newyorker--emily-nussbaum.json",
+      "data/review-texts/an-ark-off-broadway-2026/theatermania--david-gordon.json",
+      "data/review-texts/data-off-broadway-2026/theatermania--zachary-stewart.json"
     ],
     "archive": [
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
@@ -280,13 +300,19 @@
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
+  "lastProcessed": "data-off-broadway-2026/nysr--david-finkle.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
       "event": "bb-session",
       "session": "f75c3d02",
       "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-03-23T10:38:04.120Z",
+      "event": "bb-session",
+      "session": "1827776e",
+      "url": "https://www.newyorker.com/magazine/2026/02/09/an-ark-theatre-review-data"
     }
   ]
 }
