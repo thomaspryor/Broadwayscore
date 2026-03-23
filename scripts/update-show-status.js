@@ -68,7 +68,9 @@ function isDateReached(dateStr) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   date.setHours(0, 0, 0, 0);
-  return date <= today;
+  // Strict less-than: flip happens the day AFTER the date, not the morning-of.
+  // Shows open in the evening — flipping on the same calendar day is premature.
+  return date < today;
 }
 
 // ── TodayTix API for West End date refresh ──
