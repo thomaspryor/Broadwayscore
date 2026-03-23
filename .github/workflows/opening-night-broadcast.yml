@@ -275,10 +275,14 @@ jobs:
           echo "Shows not ready for broadcast — triggering gather-reviews to collect more"
           PENDING="${{ steps.check.outputs.pending_shows }}"
 
-          # Check if gather is already running
+          # Check if gather is already running OR was dispatched recently (prevents loop)
           RUNNING=$(gh run list --workflow=gather-reviews.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          RECENT_GATHER=$(gh run list --workflow=gather-reviews.yml --limit=5 \
+            --json createdAt -q "[.[] | select(.createdAt > \"$(date -u -d '2 hours ago' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-2H +%Y-%m-%dT%H:%M:%SZ)\")] | length" 2>/dev/null || echo "0")
           if [ "$RUNNING" -gt 0 ]; then
             echo "Gather already running — skipping dispatch"
+          elif [ "$RECENT_GATHER" -gt 0 ]; then
+            echo "Gather dispatched in last 2 hours — skipping to prevent loop"
           else
             echo "Dispatching gather-reviews for: $PENDING"
             gh workflow run gather-reviews.yml -f shows="$PENDING" || echo "Gather dispatch failed"
@@ -336,6 +340,21 @@ jobs:
 
           if [ -n "$OVERDUE" ]; then
             echo "::warning::Broadcast overdue for: $OVERDUE"
+            # Record alert timestamp to enforce cooldown on next runs
+            node -e "
+              const fs = require('fs');
+              const sentPath = 'data/opening-night-sent.json';
+              let data = {};
+              try { data = JSON.parse(fs.readFileSync(sentPath, 'utf8')); } catch {}
+              if (!data.shows) data.shows = {};
+              const ids = '${{ steps.check.outputs.pending_shows }}'.split(',');
+              for (const id of ids) {
+                if (!data.shows[id]) data.shows[id] = {};
+                data.shows[id].lastOverdueAlertAt = new Date().toISOString();
+              }
+              fs.writeFileSync(sentPath, JSON.stringify(data, null, 2));
+            "
+            git add -f data/opening-night-sent.json 2>/dev/null || true
             node -e "
               const { sendAlert } = require('./scripts/lib/discord-notify.js');
               sendAlert({
