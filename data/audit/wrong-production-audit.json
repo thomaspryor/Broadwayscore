@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-23T18:40:41.555Z",
+  "timestamp": "2026-03-23T18:50:55.652Z",
   "stats": {
     "totalReviews": 32375,
     "alreadyFlagged": 11024,
     "dateGuardCatches": 139,
-    "directorMismatch": 941,
+    "directorMismatch": 940,
     "tvFilmSignals": 3402,
-    "londonSignals": 1018,
+    "londonSignals": 1016,
     "offBroadwaySignals": 1007,
     "yearMismatch": 71,
     "noPublishDate": 6807
@@ -30918,11 +30918,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -30951,20 +30946,6 @@
       "score": 93,
       "publishDate": "2011-11-25",
       "url": "http://www.thisislondon.co.uk/theatre/review-24014294-matilda-the-musical-cambridge-theatre---review.do",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
-        }
-      ]
-    },
-    {
-      "showId": "matilda-the-musical-west-end-2021",
-      "file": "telegraph--charles-spencer.json",
-      "score": 91,
-      "publishDate": "2011-11-25",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/matilda-cambridge-theatre-review/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -82207,20 +82188,6 @@
       "score": 85,
       "publishDate": "2023-11-15",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-play-that-goes-wrong-duchess-theatre-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-play-that-goes-wrong-west-end-2021",
-      "file": "timeout-london--unknown.json",
-      "score": 72,
-      "publishDate": "September 15th, 2014",
-      "url": "https://www.timeout.com/london/theatre/the-play-that-goes-wrong-1",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
