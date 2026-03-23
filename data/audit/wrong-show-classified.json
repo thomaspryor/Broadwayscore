@@ -1,14 +1,23 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-23T07:51:05.125Z",
+    "generatedAt": "2026-03-23T08:08:18.035Z",
     "description": "LLM-classified wrong-show results from title-mention guard candidates",
-    "total": 0,
-    "classified": 0,
+    "total": 1,
+    "classified": 1,
     "wrongShow": 0,
-    "correct": 0,
+    "correct": 1,
     "uncertain": 0,
     "errors": 0,
     "applied": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "moulin-rouge-2019",
+      "showTitle": "Moulin Rouge! The Musical",
+      "file": "newyorker--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, characters (Christian, Satine, Harold Zidler, Duke of Monroth), and setting (Moulin Rouge in Paris) of the musical, along with mentioning the director and set designer. It clearly refers to 'Moulin Rouge! The Musical'."
+    }
+  ]
 }
