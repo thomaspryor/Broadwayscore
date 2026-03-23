@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway show metadata - source of truth for all shows",
-    "lastUpdated": "2026-03-23",
+    "lastUpdated": "2026-03-23T08:41:52.093Z",
     "source": "Manual + Playbill/IBDB cross-reference",
     "totalShows": 2258
   },
@@ -1639,7 +1639,7 @@
       "venue": "Music Box Theatre",
       "openingDate": "2026-03-23",
       "closingDate": "2026-06-28",
-      "status": "previews",
+      "status": "open",
       "type": "play",
       "runtime": null,
       "intermissions": null,
@@ -205171,7 +205171,8 @@
       "todaytixUrl": "https://www.todaytix.com/nyc/shows/45903-body-count",
       "todayTixCategory": "Plays",
       "ibdbRevivalChecked": true,
-      "isRevival": false
+      "isRevival": false,
+      "_staleMissingSince": "2026-03-23"
     },
     {
       "id": "bloodlove-off-broadway-2026",
@@ -205242,7 +205243,8 @@
       "ibdbUrl": null,
       "todayTixCategory": "Musicals",
       "ibdbRevivalChecked": true,
-      "isRevival": false
+      "isRevival": false,
+      "_staleMissingSince": "2026-03-23"
     },
     {
       "id": "silver-manhattan-off-broadway-2026",
@@ -205352,8 +205354,7 @@
       "ibdbUrl": null,
       "todayTixCategory": "Events",
       "ibdbRevivalChecked": true,
-      "isRevival": false,
-      "_staleMissingSince": "2026-03-22"
+      "isRevival": false
     },
     {
       "id": "music-city-off-broadway-2026",
@@ -205362,7 +205363,7 @@
       "venue": "Music City",
       "openingDate": "2026-03-23",
       "closingDate": "2026-09-30",
-      "status": "previews",
+      "status": "open",
       "type": "musical",
       "runtime": "1h 10m",
       "intermissions": null,
@@ -209413,7 +209414,8 @@
       "ibdbUrl": null,
       "todayTixCategory": "Plays",
       "ibdbRevivalChecked": true,
-      "isRevival": false
+      "isRevival": false,
+      "_staleMissingSince": "2026-03-23"
     },
     {
       "id": "scorched-earth-off-broadway-2026",
@@ -212362,7 +212364,8 @@
       "ibdbUrl": null,
       "todayTixCategory": "Plays",
       "ibdbRevivalChecked": true,
-      "isRevival": false
+      "isRevival": false,
+      "_staleMissingSince": "2026-03-23"
     },
     {
       "id": "the-tragedy-of-coriolanus-off-broadway-2026",
@@ -222975,8 +222978,7 @@
       "ticketLinks": [],
       "synopsis": "Life is a cabaret, old chum! Don't miss this revival of a Kander and Ebb classic, and be immersed into the Kit Kat Club with the incredible transformation of the Playhouse Theatre. Leave all your troubles at the door and see this seven-time Olivier Award-winning production of *Cabaret* in London's West End.",
       "ibdbRevivalChecked": true,
-      "isRevival": false,
-      "_staleMissingSince": "2026-03-22"
+      "isRevival": false
     },
     {
       "id": "dracula-west-end-2025",
@@ -228917,8 +228919,7 @@
       "ibdbRevivalChecked": true,
       "category": "off-west-end",
       "todaytixId": 25118,
-      "todaytixUrl": "https://www.todaytix.com/london/shows/25118-abba-voyage",
-      "_staleMissingSince": "2026-03-22"
+      "todaytixUrl": "https://www.todaytix.com/london/shows/25118-abba-voyage"
     },
     {
       "id": "tango-after-dark-west-end-2026",
@@ -230225,7 +230226,7 @@
       "status": "previews",
       "type": "play",
       "isRevival": false,
-      "runtime": null,
+      "runtime": "1h 35m",
       "intermissions": null,
       "images": {
         "hero": "/images/shows/hito-no-chikara-the-power-of-human-strength-west-end-2026/hero.webp",
@@ -230370,6 +230371,60 @@
       "id": "derriere-on-a-g-string-off-west-end-2026",
       "title": "Derrière on a G String",
       "slug": "derriere-on-a-g-string-off-west-end",
+      "venue": "King's Head Theatre",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "announced",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "off-west-end"
+    },
+    {
+      "id": "ismael-loutfi-heavenly-baba-off-west-end-2026",
+      "title": "Ismael Loutfi: Heavenly Baba",
+      "slug": "ismael-loutfi-heavenly-baba-off-west-end",
+      "venue": "Soho Theatre",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "announced",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "off-west-end"
+    },
+    {
+      "id": "churchills-urinal-a-new-comedy-by-and-starring-rosie-holt-with-additional-material-off-west-end-2026",
+      "title": "Churchill's Urinal A new comedy by and starring Rosie Holt, with additional material",
+      "slug": "churchills-urinal-a-new-comedy-by-and-starring-rosie-holt-with-additional-material-off-west-end",
       "venue": "King's Head Theatre",
       "openingDate": null,
       "closingDate": null,
