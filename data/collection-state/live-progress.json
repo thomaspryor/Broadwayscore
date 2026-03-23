@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-23T12:32:42.704Z",
-  "processed": 370,
-  "failed": 70,
-  "successRate": "84.1%",
+  "updatedAt": "2026-03-23T12:35:25.291Z",
+  "processed": 379,
+  "failed": 71,
+  "successRate": "84.2%",
   "tierBreakdown": {
-    "playwright": 325,
+    "playwright": 331,
     "amp": 8,
-    "browserbase": 12,
+    "browserbase": 14,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 36,
-    "archive": 39
+    "archive": 41
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -97,6 +97,17 @@
       "t": "2026-03-23T12:31:20.532Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-23T12:34:20.653Z",
+      "event": "bb-session",
+      "session": "0248c180",
+      "url": "https://variety.com/2017/legit/reviews/hamilton-review-london-west-end-120264748"
+    },
+    {
+      "t": "2026-03-23T12:34:21.750Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

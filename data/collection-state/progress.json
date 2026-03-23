@@ -411,7 +411,16 @@
     "les-miserables-west-end-2021/the-express--neil-norman.json",
     "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json",
     "six-the-musical-west-end-2021/london-theatre--marianka-swain.json",
-    "six-the-musical-west-end-2021/london-theatre--sam-marlowe.json"
+    "six-the-musical-west-end-2021/london-theatre--sam-marlowe.json",
+    "six-the-musical-west-end-2021/theatre-weekly--greg-stewart.json",
+    "six-the-musical-west-end-2021/thestage--mark-shenton.json",
+    "six-the-musical-west-end-2021/whatsonstage--daisy-bowie-sell.json",
+    "hamilton-west-end-2021/variety--marilyn-stasio.json",
+    "hamilton-west-end-2021/timeout--andrzej-lukowski.json",
+    "hamilton-west-end-2021/timeout--david-cote.json",
+    "hamilton-west-end-2021/daily-mail--quentin-letts.json",
+    "hamilton-west-end-2021/financialtimes--sarah-hemming.json",
+    "hamilton-west-end-2021/whatsonstage--sarah-crompton.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -483,7 +492,8 @@
     "les-miserables-west-end-2021/thestage--matthew-hemley.json",
     "six-the-musical-west-end-2021/independent--ava-wong-davies.json",
     "six-the-musical-west-end-2021/standard--fiona-mountford.json",
-    "six-the-musical-west-end-2021/theatre-bee-uk--theatre-bee-uk.json"
+    "six-the-musical-west-end-2021/theatre-bee-uk--theatre-bee-uk.json",
+    "hamilton-west-end-2021/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -849,7 +859,13 @@
       "les-miserables-west-end-2021/the-express--neil-norman.json",
       "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json",
       "six-the-musical-west-end-2021/london-theatre--marianka-swain.json",
-      "six-the-musical-west-end-2021/london-theatre--sam-marlowe.json"
+      "six-the-musical-west-end-2021/london-theatre--sam-marlowe.json",
+      "six-the-musical-west-end-2021/theatre-weekly--greg-stewart.json",
+      "six-the-musical-west-end-2021/whatsonstage--daisy-bowie-sell.json",
+      "hamilton-west-end-2021/timeout--andrzej-lukowski.json",
+      "hamilton-west-end-2021/timeout--david-cote.json",
+      "hamilton-west-end-2021/financialtimes--sarah-hemming.json",
+      "hamilton-west-end-2021/whatsonstage--sarah-crompton.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -873,7 +889,9 @@
       "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
       "my-neighbour-totoro-west-end-2025/variety--unknown.json",
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
-      "back-to-the-future-west-end-2021/variety--david-benedict.json"
+      "back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "data/review-texts/hamilton-west-end-2021/variety--marilyn-stasio.json",
+      "hamilton-west-end-2021/variety--marilyn-stasio.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -955,11 +973,13 @@
       "moulin-rouge-the-musical-west-end-2021/artsdesk--marianka-swain.json",
       "back-to-the-future-west-end-2021/mail--unknown.json",
       "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json",
-      "the-phantom-of-the-opera-west-end-1986/broadwayworld--unknown.json"
+      "the-phantom-of-the-opera-west-end-1986/broadwayworld--unknown.json",
+      "six-the-musical-west-end-2021/thestage--mark-shenton.json",
+      "hamilton-west-end-2021/daily-mail--quentin-letts.json"
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "six-the-musical-west-end-2021/theatre-bee-uk--theatre-bee-uk.json",
+  "lastProcessed": "hamilton-west-end-2021/whatsonstage--sarah-crompton.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -1043,6 +1063,17 @@
       "t": "2026-03-23T12:31:20.532Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-23T12:34:20.653Z",
+      "event": "bb-session",
+      "session": "0248c180",
+      "url": "https://variety.com/2017/legit/reviews/hamilton-review-london-west-end-120264748"
+    },
+    {
+      "t": "2026-03-23T12:34:21.750Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
