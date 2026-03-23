@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-23T11:33:38.117Z",
-  "processed": 234,
-  "failed": 36,
-  "successRate": "86.7%",
+  "updatedAt": "2026-03-23T11:37:29.939Z",
+  "processed": 243,
+  "failed": 37,
+  "successRate": "86.8%",
   "tierBreakdown": {
-    "playwright": 211,
+    "playwright": 217,
     "amp": 8,
-    "browserbase": 6,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 20,
-    "archive": 18
+    "archiveToday": 21,
+    "archive": 20
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -40,6 +40,28 @@
     },
     {
       "t": "2026-03-23T11:30:19.538Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-23T11:35:24.505Z",
+      "event": "bb-session",
+      "session": "89489cf5",
+      "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
+    },
+    {
+      "t": "2026-03-23T11:35:25.589Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-23T11:36:42.472Z",
+      "event": "bb-session",
+      "session": "f889152a",
+      "url": "https://variety.com/2025/legit/reviews/hercules-review-musical-west-end-12364392"
+    },
+    {
+      "t": "2026-03-23T11:36:43.555Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }

@@ -235,7 +235,16 @@
     "the-producers-west-end-2025/timeout--only-andrzej-lukowski.json",
     "the-producers-west-end-2025/all-that-dazzles-uk--daz-gale.json",
     "the-producers-west-end-2025/artsdesk--gary-naylor.json",
-    "the-producers-west-end-2025/broadwayworld--aliya-al-hassan.json"
+    "the-producers-west-end-2025/broadwayworld--aliya-al-hassan.json",
+    "the-producers-west-end-2025/london-theatre--anya-ryan.json",
+    "the-producers-west-end-2025/standard--nick-curtis.json",
+    "the-producers-west-end-2025/the-express--neil-norman.json",
+    "the-producers-west-end-2025/the-express--stefan-kyriazis.json",
+    "the-producers-west-end-2025/times-uk--dominic-maxwell.json",
+    "hercules-west-end-2025/variety--david-benedict.json",
+    "hercules-west-end-2025/artsdesk--unknown.json",
+    "hercules-west-end-2025/daily-mail--patrick-marmion.json",
+    "hercules-west-end-2025/financialtimes--sarah-hemming.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -268,7 +277,8 @@
     "the-hunger-games-on-stage-west-end-2025/mail--patrick-marmion.json",
     "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json",
     "all-my-sons-west-end-2025/timeout--andrzej-lukowski.json",
-    "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json"
+    "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
+    "hercules-west-end-2025/nytimes--matt-wolf.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -486,7 +496,13 @@
       "paddington-the-musical-west-end-2025/whatsonstage--sarah-crompton.json",
       "the-producers-west-end-2025/timeout--andrzej-lukowski.json",
       "the-producers-west-end-2025/timeout--only-andrzej-lukowski.json",
-      "the-producers-west-end-2025/all-that-dazzles-uk--daz-gale.json"
+      "the-producers-west-end-2025/all-that-dazzles-uk--daz-gale.json",
+      "the-producers-west-end-2025/london-theatre--anya-ryan.json",
+      "the-producers-west-end-2025/standard--nick-curtis.json",
+      "the-producers-west-end-2025/the-express--stefan-kyriazis.json",
+      "the-producers-west-end-2025/times-uk--dominic-maxwell.json",
+      "hercules-west-end-2025/artsdesk--unknown.json",
+      "hercules-west-end-2025/financialtimes--sarah-hemming.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -504,7 +520,9 @@
       "data/review-texts/romeo-and-juliet-west-end-2026/nytimes--unknown.json",
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
       "data/review-texts/paddington-the-musical-west-end-2025/variety--david-benedict.json",
-      "paddington-the-musical-west-end-2025/variety--david-benedict.json"
+      "paddington-the-musical-west-end-2025/variety--david-benedict.json",
+      "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
+      "hercules-west-end-2025/variety--david-benedict.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -538,7 +556,8 @@
       "data/review-texts/touch-off-broadway-2026/plays-to-see--austin-fimmano.json",
       "data/review-texts/the-holy-rosenbergs-west-end-2026/guardian--david-jays.json",
       "data/review-texts/the-hunger-games-on-stage-west-end-2025/mail--patrick-marmion.json",
-      "data/review-texts/chess-2025/hollywood-reporter--angie-han.json"
+      "data/review-texts/all-my-sons-west-end-2025/timeout--andrzej-lukowski.json",
+      "data/review-texts/hercules-west-end-2025/nytimes--matt-wolf.json"
     ],
     "archive": [
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
@@ -558,11 +577,13 @@
       "all-my-sons-west-end-2025/broadwayworld--unknown.json",
       "paddington-the-musical-west-end-2025/telegraph--dominic-cavendish.json",
       "the-producers-west-end-2025/artsdesk--gary-naylor.json",
-      "the-producers-west-end-2025/broadwayworld--aliya-al-hassan.json"
+      "the-producers-west-end-2025/broadwayworld--aliya-al-hassan.json",
+      "the-producers-west-end-2025/the-express--neil-norman.json",
+      "hercules-west-end-2025/daily-mail--patrick-marmion.json"
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "the-producers-west-end-2025/broadwayworld--aliya-al-hassan.json",
+  "lastProcessed": "hercules-west-end-2025/financialtimes--sarah-hemming.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -589,6 +610,28 @@
     },
     {
       "t": "2026-03-23T11:30:19.538Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-23T11:35:24.505Z",
+      "event": "bb-session",
+      "session": "89489cf5",
+      "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
+    },
+    {
+      "t": "2026-03-23T11:35:25.589Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-23T11:36:42.472Z",
+      "event": "bb-session",
+      "session": "f889152a",
+      "url": "https://variety.com/2025/legit/reviews/hercules-review-musical-west-end-12364392"
+    },
+    {
+      "t": "2026-03-23T11:36:43.555Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
