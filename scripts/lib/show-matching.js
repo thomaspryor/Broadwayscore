@@ -714,9 +714,12 @@ function matchesAsWholeWord(word, text) {
 
 function titleWordsMatch(showTitle, candidateText) {
   // First try the pre-colon part (e.g., "All Out" from "All Out: Comedy About Ambition")
+  // Normalize: strip accents (NFD decompose + remove combining marks) and punctuation
+  const normalizeWord = w => w.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '');
   const showTitleLower = showTitle.toLowerCase()
     .replace(/^the\s+/, '').replace(/\s*[:(].*$/, '').trim();
   let showSlugWords = showTitleLower.split(/[\s,]+/)
+    .map(normalizeWord)
     .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w));
 
   // If pre-colon part has no meaningful words, use the FULL title including subtitle
@@ -724,6 +727,7 @@ function titleWordsMatch(showTitle, candidateText) {
   if (showSlugWords.length === 0) {
     const fullTitleLower = showTitle.toLowerCase().replace(/^the\s+/, '').trim();
     showSlugWords = fullTitleLower.split(/[\s,:()]+/)
+      .map(normalizeWord)
       .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w));
   }
 
@@ -734,7 +738,7 @@ function titleWordsMatch(showTitle, candidateText) {
 
   if (showSlugWords.length === 0) {
     // Fallback: raw first word with word-boundary check (not substring)
-    const rawTitle = showTitleLower.split(/[\s,]+/)[0];
+    const rawTitle = normalizeWord(showTitleLower.split(/[\s,]+/)[0] || '');
     return rawTitle && rawTitle.length >= 3 && matchesAsWholeWord(rawTitle, candidateLower);
   }
 
@@ -768,13 +772,12 @@ function titleWordsMatch(showTitle, candidateText) {
       'east', 'north', 'south', 'street', 'square', 'road', 'house',
     ]);
     // Use FULL title words (including subtitle) — showSlugWords may only have pre-colon part
-    const stripPunc = w => w.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '');
     const fullTitleWords = showTitle.toLowerCase().split(/[\s,:()&]+/)
-      .map(stripPunc)
+      .map(normalizeWord)
       .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w));
     const showWordsClean = new Set(fullTitleWords);
     const candidateWords = candidateLower.split(/[\s,\-_/]+/)
-      .map(stripPunc)
+      .map(normalizeWord)
       .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w) && !CONTEXT_WORDS.has(w)
         && !/^(?:19|20)\d\d$/.test(w));  // Exclude year tokens (2024, 2025, etc.)
     const extraWords = candidateWords.filter(w => !showWordsClean.has(w));
