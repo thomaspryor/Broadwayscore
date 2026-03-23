@@ -152,7 +152,17 @@
     "all-my-sons-west-end-2025/london-theatre--olivia-rook.json",
     "all-my-sons-west-end-2025/standard--nick-curtis.json",
     "all-my-sons-west-end-2025/times-uk--dominic-maxwell.json",
-    "all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json"
+    "all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json",
+    "all-my-sons-west-end-2025/whatsonstage--unknown.json",
+    "paddington-the-musical-west-end-2025/variety--david-benedict.json",
+    "paddington-the-musical-west-end-2025/musical-theatre-review--lisa-martlandbr.json",
+    "paddington-the-musical-west-end-2025/observer--katherine-cowles.json",
+    "paddington-the-musical-west-end-2025/timeout--andrzej-lukowski.json",
+    "paddington-the-musical-west-end-2025/financialtimes--sarah-hemming.json",
+    "paddington-the-musical-west-end-2025/london-box-office--stuart-king.json",
+    "paddington-the-musical-west-end-2025/london-theatre--chris-omaweng.json",
+    "paddington-the-musical-west-end-2025/south-london--michael-holland.json",
+    "paddington-the-musical-west-end-2025/standard--tim-bano.json"
   ],
   "failed": [
     "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
@@ -318,12 +328,23 @@
       "all-my-sons-west-end-2025/london-theatre--olivia-rook.json",
       "all-my-sons-west-end-2025/standard--nick-curtis.json",
       "all-my-sons-west-end-2025/times-uk--dominic-maxwell.json",
-      "all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json"
+      "all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json",
+      "all-my-sons-west-end-2025/whatsonstage--unknown.json",
+      "paddington-the-musical-west-end-2025/musical-theatre-review--lisa-martlandbr.json",
+      "paddington-the-musical-west-end-2025/observer--katherine-cowles.json",
+      "paddington-the-musical-west-end-2025/timeout--andrzej-lukowski.json",
+      "paddington-the-musical-west-end-2025/financialtimes--sarah-hemming.json",
+      "paddington-the-musical-west-end-2025/london-box-office--stuart-king.json",
+      "paddington-the-musical-west-end-2025/london-theatre--chris-omaweng.json",
+      "paddington-the-musical-west-end-2025/south-london--michael-holland.json",
+      "paddington-the-musical-west-end-2025/standard--tim-bano.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/romeo-and-juliet-west-end-2026/nytimes--unknown.json",
-      "romeo-and-juliet-west-end-2026/nytimes--unknown.json"
+      "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
+      "data/review-texts/paddington-the-musical-west-end-2025/variety--david-benedict.json",
+      "paddington-the-musical-west-end-2025/variety--david-benedict.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -359,7 +380,7 @@
     ]
   },
   "startTime": "2026-03-23T00:14:57.443Z",
-  "lastProcessed": "all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json",
+  "lastProcessed": "paddington-the-musical-west-end-2025/standard--tim-bano.json",
   "log": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -404,6 +425,17 @@
       "t": "2026-03-23T00:35:12.060Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-23T01:21:07.355Z",
+      "event": "bb-session",
+      "session": "35fea2f9",
+      "url": "https://variety.com/2025/legit/reviews/paddington-review-musical-1236595841/"
+    },
+    {
+      "t": "2026-03-23T01:21:08.429Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

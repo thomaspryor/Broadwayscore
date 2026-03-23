@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-23T01:20:53.778Z",
-  "processed": 153,
+  "updatedAt": "2026-03-23T01:22:47.643Z",
+  "processed": 163,
   "failed": 20,
-  "successRate": "88.4%",
+  "successRate": "89.1%",
   "tierBreakdown": {
-    "playwright": 140,
+    "playwright": 149,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 11,
     "archive": 14
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -58,6 +58,17 @@
       "t": "2026-03-23T00:35:12.060Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-23T01:21:07.355Z",
+      "event": "bb-session",
+      "session": "35fea2f9",
+      "url": "https://variety.com/2025/legit/reviews/paddington-review-musical-1236595841/"
+    },
+    {
+      "t": "2026-03-23T01:21:08.429Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
