@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-23T11:05:49.010Z",
+  "timestamp": "2026-03-23T11:17:49.722Z",
   "stats": {
     "totalReviews": 32374,
-    "alreadyFlagged": 11002,
+    "alreadyFlagged": 11006,
     "dateGuardCatches": 139,
     "directorMismatch": 944,
     "tvFilmSignals": 3402,
     "londonSignals": 1029,
-    "offBroadwaySignals": 1008,
+    "offBroadwaySignals": 1007,
     "yearMismatch": 71,
-    "noPublishDate": 6820
+    "noPublishDate": 6816
   },
   "findings": [
     {
@@ -66544,20 +66544,6 @@
     },
     {
       "showId": "every-brilliant-thing-2026",
-      "file": "nysr--frank-scheck.json",
-      "score": 89,
-      "publishDate": "2026-03-13",
-      "url": "https://nystagereview.com/2026/03/12/every-brilliant-thing-daniel-radcliffe-performs-magic-of-an-emotional-kind/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"barrow street\""
-        }
-      ]
-    },
-    {
-      "showId": "every-brilliant-thing-2026",
       "file": "theater-life--samuel-l-leiter.json",
       "score": 87,
       "publishDate": "2026-03-18",
@@ -67701,6 +67687,20 @@
     {
       "showId": "giant-2026",
       "file": "newyorker--john-lahr.json",
+      "score": 82,
+      "publishDate": "2026-03-09",
+      "url": "https://www.newyorker.com/magazine/2026/03/16/mark-rosenblatt-profile-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "giant-2026",
+      "file": "newyorker--unknown.json",
       "score": 82,
       "publishDate": "2026-03-09",
       "url": "https://www.newyorker.com/magazine/2026/03/16/mark-rosenblatt-profile-theatre",
@@ -78002,20 +78002,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "summerfolk-west-end-2026",
-      "file": "artsdesk--heather-neill.json",
-      "score": 81,
-      "publishDate": null,
-      "url": "https://www.theartsdesk.com/theatre/summerfolk-national-theatre-review-gorkys-self-deluding-intelligentsia-under-sharp-comic-scrutiny?amp",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
