@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-03-23T11:57:45.278Z",
+  "generatedAt": "2026-03-23T12:10:42.049Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 87,
     "avgScoreDiff": 0
   },
   "syndicationPairs": [
@@ -96,7 +96,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Dominic Maxwell",
+      "showId": "oliver-west-end-2024",
+      "primaryOutlet": "times-uk",
+      "secondaryOutlet": "the-sun",
+      "primaryFile": "times-uk--dominic-maxwell.json",
+      "secondaryFile": "the-sun--dominic-maxwell.json",
+      "similarity": 87,
+      "primaryScore": 80,
+      "secondaryScore": 80,
+      "scoreDiff": 0
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "frozen-2018",

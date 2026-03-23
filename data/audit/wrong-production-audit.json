@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-23T11:59:04.535Z",
+  "timestamp": "2026-03-23T12:11:59.722Z",
   "stats": {
     "totalReviews": 32374,
-    "alreadyFlagged": 11013,
+    "alreadyFlagged": 11015,
     "dateGuardCatches": 139,
     "directorMismatch": 942,
     "tvFilmSignals": 3400,
-    "londonSignals": 1022,
+    "londonSignals": 1020,
     "offBroadwaySignals": 1007,
     "yearMismatch": 71,
     "noPublishDate": 6815
@@ -57622,11 +57622,6 @@
       "url": "https://www.timeout.com/london/theatre/titanique-review",
       "findings": [
         {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        },
-        {
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (8x) more than 2024 (0x). 2026 matches production: titanique-2026"
@@ -57640,11 +57635,6 @@
       "publishDate": "2025-01-09",
       "url": "https://www.timeout.com/london/theatre/titanique-review",
       "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        },
         {
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
@@ -74549,7 +74539,7 @@
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
+          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
@@ -80146,7 +80136,7 @@
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
