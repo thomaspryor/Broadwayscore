@@ -30,7 +30,7 @@ on:
         default: 10
 
 concurrency:
-  group: audience-buzz
+  group: reddit-sentiment
   cancel-in-progress: false
 
 jobs:

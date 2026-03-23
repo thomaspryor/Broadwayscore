@@ -29,7 +29,7 @@ on:
     types: [show-opened]
 
 concurrency:
-  group: audience-buzz
+  group: mezzanine
   cancel-in-progress: false
 
 permissions:

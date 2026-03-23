@@ -25,7 +25,7 @@ on:
         default: 50
 
 concurrency:
-  group: audience-buzz
+  group: reddit-sentiment
   cancel-in-progress: false
 
 jobs:
