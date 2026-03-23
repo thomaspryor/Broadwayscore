@@ -623,7 +623,13 @@
     "the-monsters-off-broadway-2026/new-york-sun--elysa-gardner.json",
     "the-monsters-off-broadway-2026/theatermania--pete-hempstead.json",
     "the-monsters-off-broadway-2026/timeout--unknown.json",
-    "the-monsters-off-broadway-2026/theatrely--unknown.json"
+    "the-monsters-off-broadway-2026/theatrely--unknown.json",
+    "the-monsters-off-broadway-2026/theater-pizzazz--ron-fassler.json",
+    "the-monsters-off-broadway-2026/theater-scene--victor-gluck.json",
+    "an-ark-off-broadway-2026/nytg--kyle-turner.json",
+    "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "data-off-broadway-2026/nytg--allison-considine.json",
+    "an-ark-off-broadway-2026/guardian--adrian-horton.json"
   ],
   "failed": [
     "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
@@ -740,7 +746,11 @@
     "bigfoot-off-broadway-2026/buy-tickets--unknown.json",
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
     "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
-    "the-unknown-off-broadway-2026/wsj--unknown.json"
+    "the-unknown-off-broadway-2026/wsj--unknown.json",
+    "an-ark-off-broadway-2026/nytimes--unknown.json",
+    "an-ark-off-broadway-2026/wsj--unknown.json",
+    "an-ark-off-broadway-2026/playbill--unknown.json",
+    "an-ark-off-broadway-2026/newyorker--emily-nussbaum.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1293,7 +1303,13 @@
       "the-monsters-off-broadway-2026/new-york-sun--elysa-gardner.json",
       "the-monsters-off-broadway-2026/theatermania--pete-hempstead.json",
       "the-monsters-off-broadway-2026/timeout--unknown.json",
-      "the-monsters-off-broadway-2026/theatrely--unknown.json"
+      "the-monsters-off-broadway-2026/theatrely--unknown.json",
+      "the-monsters-off-broadway-2026/theater-pizzazz--ron-fassler.json",
+      "the-monsters-off-broadway-2026/theater-scene--victor-gluck.json",
+      "an-ark-off-broadway-2026/nytg--kyle-turner.json",
+      "data-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "data-off-broadway-2026/nytg--allison-considine.json",
+      "an-ark-off-broadway-2026/guardian--adrian-horton.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -1402,7 +1418,9 @@
       "data/review-texts/every-brilliant-thing-2026/guardian--jesse-hassenger.json",
       "data/review-texts/bughouse-off-broadway-2026/vulture--sara-holdren.json",
       "data/review-texts/tru-off-broadway-2026/nytimes--unknown.json",
-      "data/review-texts/bigfoot-off-broadway-2026/buy-tickets--unknown.json"
+      "data/review-texts/bigfoot-off-broadway-2026/buy-tickets--unknown.json",
+      "data/review-texts/an-ark-off-broadway-2026/nytimes--unknown.json",
+      "data/review-texts/an-ark-off-broadway-2026/newyorker--emily-nussbaum.json"
     ],
     "archive": [
       "broken-glass-west-end-2026/artsdesk--unknown.json",
@@ -1475,7 +1493,7 @@
     ]
   },
   "startTime": "2026-03-23T00:14:57.443Z",
-  "lastProcessed": "the-monsters-off-broadway-2026/theatrely--unknown.json",
+  "lastProcessed": "an-ark-off-broadway-2026/guardian--adrian-horton.json",
   "log": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -1795,6 +1813,39 @@
       "t": "2026-03-23T05:12:57.836Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-23T05:15:06.529Z",
+      "event": "bb-session",
+      "session": "f330871c",
+      "url": "https://www.nytimes.com/2026/01/12/theater/ark-ian-mckellen-shed.html"
+    },
+    {
+      "t": "2026-03-23T05:15:07.833Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-23T05:16:25.051Z",
+      "event": "bb-session",
+      "session": "f5dce98d",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-23T05:16:26.265Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-23T05:19:24.224Z",
+      "event": "bb-session",
+      "session": "a750c54c",
+      "url": "https://www.newyorker.com/magazine/2026/02/09/an-ark-theatre-review-data"
+    },
+    {
+      "t": "2026-03-23T05:19:25.431Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
