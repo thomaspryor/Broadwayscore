@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-23T03:39:22.971Z",
-  "processed": 451,
-  "failed": 98,
+  "updatedAt": "2026-03-23T04:45:52.651Z",
+  "processed": 492,
+  "failed": 107,
   "successRate": "82.1%",
   "tierBreakdown": {
-    "playwright": 394,
-    "amp": 0,
-    "browserbase": 18,
+    "playwright": 429,
+    "amp": 2,
+    "browserbase": 22,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 54,
-    "archive": 58
+    "archiveToday": 61,
+    "archive": 61
   },
-  "browserbaseSessions": 20,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-23T02:37:19.873Z",
-      "event": "bb-session",
-      "session": "0ae250c0",
-      "url": "https://www.nytimes.com/2017/12/28/theater/london-hamilton-pinocchio.html"
-    },
-    {
-      "t": "2026-03-23T02:37:20.936Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-23T02:38:22.872Z",
-      "event": "bb-session",
-      "session": "3d3b93a5",
-      "url": "https://variety.com/2017/legit/reviews/hamilton-review-london-west-end-120264748"
-    },
-    {
-      "t": "2026-03-23T02:38:23.882Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-03-23T02:44:06.338Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-23T03:22:14.324Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-23T04:42:44.666Z",
+      "event": "bb-session",
+      "session": "2995d52e",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-23T04:42:46.071Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-23T04:44:05.521Z",
+      "event": "bb-session",
+      "session": "45e146ee",
+      "url": "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing"
+    },
+    {
+      "t": "2026-03-23T04:44:06.743Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
