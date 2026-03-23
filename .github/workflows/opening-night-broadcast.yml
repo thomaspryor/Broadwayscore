@@ -83,22 +83,22 @@ jobs:
           else
             SHOWS=$(node -e "
               const shows = require('./data/shows.json').shows;
-              const today = new Date();
-              today.setHours(0,0,0,0);
-              const cutoff = new Date(today);
+              const now = new Date();
+              const cutoff = new Date(now);
               cutoff.setDate(cutoff.getDate() - $LOOKBACK);
+              cutoff.setHours(0,0,0,0);
 
               const opened = shows.filter(s => {
                 if (!s.openingDate) return false;
+                // Accept 'open' OR 'upcoming' with today's opening date
+                // (status flip can be lost to concurrent pushes)
                 if (s.status !== 'open' && s.status !== 'upcoming') return false;
                 // Only broadcast for Broadway and West End — skip OB/OWE
                 const cat = s.category || 'broadway';
                 if (cat !== 'broadway' && cat !== 'west-end') return false;
                 const d = new Date(s.openingDate);
                 d.setHours(0,0,0,0);
-                // Strict less-than: shows open in the evening, so opening date
-                // must be BEFORE today (reviews exist the morning after, not same day)
-                return d >= cutoff && d < today;
+                return d >= cutoff && d <= now;
               });
 
               if (opened.length > 0) {
@@ -272,20 +272,54 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          echo "Shows not ready for broadcast — triggering gather-reviews to collect more"
           PENDING="${{ steps.check.outputs.pending_shows }}"
 
-          # Check if gather is already running OR was dispatched recently (prevents loop)
-          RUNNING=$(gh run list --workflow=gather-reviews.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          RECENT_GATHER=$(gh run list --workflow=gather-reviews.yml --limit=5 \
-            --json createdAt -q "[.[] | select(.createdAt > \"$(date -u -d '2 hours ago' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-2H +%Y-%m-%dT%H:%M:%SZ)\")] | length" 2>/dev/null || echo "0")
+          # Guard 1: Only dispatch gather after embargo lifts (~1 AM UTC / 8 PM ET).
+          # Before that, reviews don't exist yet — dispatching just creates a feedback loop
+          # (broadcast → gather → rebuild → score → broadcast).
+          HOUR_UTC=$(date -u +%H)
+          if [ "$HOUR_UTC" -lt 1 ] || [ "$HOUR_UTC" -ge 8 ]; then
+            # Between 8 AM and 1 AM UTC (3 AM-8 PM ET) — too early for opening-night reviews
+            # Skip the check between 1-8 AM UTC when reviews are expected
+            # Also skip shows opening today (no reviews can exist yet)
+            SAME_DAY_ONLY=$(node -e "
+              const shows = require('./data/shows.json').shows;
+              const today = new Date().toISOString().slice(0,10);
+              const ids = '$PENDING'.split(',');
+              const allToday = ids.every(id => {
+                const s = shows.find(x => x.id === id);
+                return s && s.openingDate === today;
+              });
+              console.log(allToday ? 'true' : 'false');
+            ")
+            if [ "$SAME_DAY_ONLY" = "true" ]; then
+              echo "All pending shows opened today — reviews won't exist until this evening. Skipping gather."
+              exit 0
+            fi
+          fi
+
+          # Guard 2: Don't dispatch if gather already running or dispatched recently
+          RUNNING=$(gh run list --workflow=gather-reviews.yml --status=in_progress --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
           if [ "$RUNNING" -gt 0 ]; then
-            echo "Gather already running — skipping dispatch"
-          elif [ "$RECENT_GATHER" -gt 0 ]; then
-            echo "Gather dispatched in last 2 hours — skipping to prevent loop"
+            echo "Gather already running/queued — skipping dispatch"
           else
-            echo "Dispatching gather-reviews for: $PENDING"
-            gh workflow run gather-reviews.yml -f shows="$PENDING" || echo "Gather dispatch failed"
+            # Guard 3: Don't dispatch if gather ran in the last 2 hours (prevents loop)
+            RECENT=$(gh run list --workflow=gather-reviews.yml --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
+            SKIP_GATHER=false
+            if [ -n "$RECENT" ]; then
+              RECENT_TS=$(date -d "$RECENT" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$RECENT" +%s 2>/dev/null || echo "0")
+              NOW_TS=$(date +%s)
+              AGE=$(( NOW_TS - RECENT_TS ))
+              if [ "$AGE" -lt 7200 ]; then
+                echo "Gather ran ${AGE}s ago (<2h) — skipping to prevent loop"
+                SKIP_GATHER=true
+              fi
+            fi
+
+            if [ "$SKIP_GATHER" = "false" ]; then
+              echo "Shows not ready for broadcast — triggering gather-reviews for: $PENDING"
+              gh workflow run gather-reviews.yml -f shows="$PENDING" || echo "Gather dispatch failed"
+            fi
           fi
 
       - name: Alert if broadcast overdue (max once per show per day)
@@ -295,7 +329,8 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: |
-          # Alert if any pending show opened 6+ hours ago and still can't broadcast.
+          # Alert if a show's opening-night reviews should exist by now but broadcast hasn't sent.
+          # Reference: 4 AM UTC day after opening (~11 PM ET + 5h for gather/score pipeline).
           # Dedup: only alert once per show per day via opening-night-sent.json.
           OVERDUE=$(node -e "
             const fs = require('fs');
@@ -303,7 +338,6 @@ jobs:
             const ids = '${{ steps.check.outputs.pending_shows }}'.split(',');
             const now = Date.now();
             const today = new Date().toISOString().slice(0, 10);
-            const SIX_HOURS = 6 * 60 * 60 * 1000;
 
             // Dedup: read sent tracking to skip shows already alerted today
             let sent = {};
@@ -312,8 +346,11 @@ jobs:
             const overdue = ids.filter(id => {
               const s = shows.find(x => x.id === id);
               if (!s || !s.openingDate) return false;
-              const openEvening = new Date(s.openingDate + 'T00:00:00Z').getTime();
-              if ((now - openEvening) <= SIX_HOURS) return false;
+              // Reviews should be gathered/scored by 4 AM UTC the day after opening
+              // (curtain ~8 PM ET, reviews ~10-11 PM ET, gather/score pipeline ~2-3h)
+              const overdueAfter = new Date(s.openingDate + 'T04:00:00Z');
+              overdueAfter.setDate(overdueAfter.getDate() + 1); // day AFTER opening
+              if (now <= overdueAfter.getTime()) return false;
               // Skip if overdue alert already sent today for this show
               const alertKey = 'overdue-alert:' + id;
               if (sent[alertKey] && sent[alertKey].sentAt && sent[alertKey].sentAt.startsWith(today)) return false;
