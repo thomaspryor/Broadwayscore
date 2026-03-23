@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-23T08:12:30.989Z",
+  "timestamp": "2026-03-23T08:19:45.040Z",
   "stats": {
     "totalReviews": 32356,
-    "alreadyFlagged": 10985,
+    "alreadyFlagged": 10986,
     "dateGuardCatches": 139,
     "directorMismatch": 945,
-    "tvFilmSignals": 3402,
+    "tvFilmSignals": 3404,
     "londonSignals": 1030,
-    "offBroadwaySignals": 1012,
+    "offBroadwaySignals": 1011,
     "yearMismatch": 71,
-    "noPublishDate": 6818
+    "noPublishDate": 6816
   },
   "findings": [
     {
@@ -2690,7 +2690,7 @@
     {
       "showId": "aladdin-2014",
       "file": "culturesauce--thom-geier.json",
-      "score": null,
+      "score": 75,
       "publishDate": "2014-03-22",
       "url": "https://culturesauce.com/2014/03/21/broadway-review-aladdin/",
       "findings": [
@@ -20680,6 +20680,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "ap--mark-kennedy.json",
+      "score": 86,
+      "publishDate": "2015-08-06",
+      "url": "https://apnews.com/review-lin-manuel-mirandas-hamilton-is-a-rollicking-show-830d0df6b1444259aff3fda7359c1f44",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -60987,6 +61006,20 @@
     },
     {
       "showId": "wicked-2003",
+      "file": "nytimes--unknown.json",
+      "score": null,
+      "publishDate": "2003-10-26",
+      "url": "https://www.nytimes.com/2003/10/26/theater/theater-the-wicked-young-witches.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
       "file": "variety--charles-isherwood.json",
       "score": 62,
       "publishDate": "October 30, 2003",
@@ -68430,20 +68463,6 @@
     },
     {
       "showId": "hamilton-2015",
-      "file": "ap--mark-kennedy.json",
-      "score": 86,
-      "publishDate": "2015-08-06",
-      "url": "https://apnews.com/review-lin-manuel-mirandas-hamilton-is-a-rollicking-show-830d0df6b1444259aff3fda7359c1f44",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "hamilton-2015",
       "file": "bobs-theater-blog--robert-sholiton.json",
       "score": 82,
       "publishDate": "October 13, 2016",
@@ -68532,20 +68551,6 @@
       "score": 92,
       "publishDate": "2015-08-06",
       "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton-theater-813145/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "hamilton-2015",
-      "file": "nbcnews--unknown.json",
-      "score": null,
-      "publishDate": "2015-08-06",
-      "url": "https://www.nbcnews.com/news/latino/lin-manuel-mirandas-hamilton-opens-broadway-n404596",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",

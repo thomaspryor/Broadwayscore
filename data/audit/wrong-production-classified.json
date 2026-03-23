@@ -1,16 +1,33 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-23T08:08:15.791Z",
+    "generatedAt": "2026-03-23T08:15:41.602Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 72,
-    "classified": 0,
+    "total": 73,
+    "classified": 1,
     "wrongProduction": 0,
-    "correctProduction": 0,
+    "correctProduction": 1,
     "uncertain": 0,
     "errors": 0,
     "wrongHighConfidence": 0,
     "wrongMediumConfidence": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "wicked-2003",
+      "showTitle": "Wicked",
+      "showYear": 2003,
+      "file": "nytimes--unknown.json",
+      "outlet": "The New York Times",
+      "criticName": "BRUCE WEBER",
+      "publishDate": "2003-10-26",
+      "originalSignals": [
+        "modern references: hamilton"
+      ],
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "The review mentions the Gershwin Theater, Kristin Chenoweth, and the opening date of the show, all of which align with the 2003 Broadway production of Wicked."
+    }
+  ]
 }
