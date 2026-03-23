@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-23T05:42:25.921Z",
+  "timestamp": "2026-03-23T05:49:48.171Z",
   "stats": {
     "totalReviews": 32398,
-    "alreadyFlagged": 10989,
+    "alreadyFlagged": 10990,
     "dateGuardCatches": 141,
     "directorMismatch": 944,
-    "tvFilmSignals": 3399,
+    "tvFilmSignals": 3401,
     "londonSignals": 1031,
     "offBroadwaySignals": 1012,
     "yearMismatch": 71,
-    "noPublishDate": 6858
+    "noPublishDate": 6855
   },
   "findings": [
     {
@@ -7970,6 +7970,34 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "buena-vista-social-club-2025",
+      "file": "billboard--sigal-ratner-arias.json",
+      "score": null,
+      "publishDate": "2025-03-24",
+      "url": "https://www.billboard.com/music/latin/buena-vista-social-club-broadway-omara-actresses-1235929491/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "buena-vista-social-club-2025",
+      "file": "hollywood-reporter--caitlin-huston.json",
+      "score": null,
+      "publishDate": "2025-02-25",
+      "url": "https://www.hollywoodreporter.com/video/buena-vista-social-club-choreographers-justin-peck-patricia-delgado-thrilling-season-broadway-tony-awards-2025/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
