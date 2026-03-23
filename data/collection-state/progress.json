@@ -508,7 +508,16 @@
     "spare-parts-off-broadway-2026/theater-scene--tony-marinelli.json",
     "zack-off-broadway-2026/nysr--unknown.json",
     "zack-off-broadway-2026/stageandcinema--unknown.json",
-    "zack-off-broadway-2026/the-interested-bystander--cary-wong.json"
+    "zack-off-broadway-2026/the-interested-bystander--cary-wong.json",
+    "zack-off-broadway-2026/theater-life--samuel-l-leiter.json",
+    "zack-off-broadway-2026/theater-scene--marc-miller.json",
+    "zack-off-broadway-2026/theater-scene--victor-gluck.json",
+    "trash-off-broadway-2026/nyt-theater--unknown.json",
+    "trash-off-broadway-2026/nytg--allison-considine.json",
+    "trash-off-broadway-2026/theatermania--zachary-stewart.json",
+    "tru-off-broadway-2026/vulture--unknown.json",
+    "tru-off-broadway-2026/nytg--unknown.json",
+    "tru-off-broadway-2026/thewrap--unknown.json"
   ],
   "failed": [
     "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
@@ -620,7 +629,8 @@
     "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
     "bughouse-off-broadway-2026/vulture--sara-holdren.json",
     "bughouse-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json"
+    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json",
+    "tru-off-broadway-2026/nytimes--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1068,11 +1078,20 @@
       "spare-parts-off-broadway-2026/theater-scene--tony-marinelli.json",
       "zack-off-broadway-2026/nysr--unknown.json",
       "zack-off-broadway-2026/stageandcinema--unknown.json",
-      "zack-off-broadway-2026/the-interested-bystander--cary-wong.json"
+      "zack-off-broadway-2026/the-interested-bystander--cary-wong.json",
+      "zack-off-broadway-2026/theater-life--samuel-l-leiter.json",
+      "zack-off-broadway-2026/theater-scene--marc-miller.json",
+      "zack-off-broadway-2026/theater-scene--victor-gluck.json",
+      "trash-off-broadway-2026/nyt-theater--unknown.json",
+      "trash-off-broadway-2026/nytg--allison-considine.json",
+      "trash-off-broadway-2026/theatermania--zachary-stewart.json",
+      "tru-off-broadway-2026/nytg--unknown.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
-      "every-brilliant-thing-2026/thewrap--robert-hofler.json"
+      "every-brilliant-thing-2026/thewrap--robert-hofler.json",
+      "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
+      "tru-off-broadway-2026/thewrap--unknown.json"
     ],
     "browserbase": [
       "data/review-texts/romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -1163,7 +1182,8 @@
       "data/review-texts/touch-off-broadway-2026/broadwayworld--marina-kennedy.json",
       "data/review-texts/every-brilliant-thing-2026/nytimes--adam-feldman.json",
       "data/review-texts/every-brilliant-thing-2026/guardian--jesse-hassenger.json",
-      "data/review-texts/bughouse-off-broadway-2026/vulture--sara-holdren.json"
+      "data/review-texts/bughouse-off-broadway-2026/vulture--sara-holdren.json",
+      "data/review-texts/tru-off-broadway-2026/nytimes--unknown.json"
     ],
     "archive": [
       "broken-glass-west-end-2026/artsdesk--unknown.json",
@@ -1228,11 +1248,12 @@
       "touch-off-broadway-2026/talkinbroadway--howard-miller.json",
       "every-brilliant-thing-2026/chicagotribune--chris-jones.json",
       "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
-      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theatre-is-easy--brooke-viegut.json"
+      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/theatre-is-easy--brooke-viegut.json",
+      "tru-off-broadway-2026/vulture--unknown.json"
     ]
   },
   "startTime": "2026-03-23T00:14:57.443Z",
-  "lastProcessed": "zack-off-broadway-2026/the-interested-bystander--cary-wong.json",
+  "lastProcessed": "tru-off-broadway-2026/thewrap--unknown.json",
   "log": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -1508,6 +1529,17 @@
       "t": "2026-03-23T04:44:06.743Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-23T04:54:47.026Z",
+      "event": "bb-session",
+      "session": "9487ca28",
+      "url": "https://www.nytimes.com/2026/03/20/theater/plays-tru-ferguson-the-fever-shawn.ht"
+    },
+    {
+      "t": "2026-03-23T04:54:48.311Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
