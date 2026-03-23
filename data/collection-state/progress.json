@@ -114,7 +114,15 @@
     "an-ark-off-broadway-2026/guardian--adrian-horton.json",
     "an-ark-off-broadway-2026/nysr--roma-torre.json",
     "an-ark-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "data-off-broadway-2026/nysr--david-finkle.json"
+    "data-off-broadway-2026/nysr--david-finkle.json",
+    "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytg--joe-dziemianowicz.json",
+    "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/newsweek--lauren-giella.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/exeunt-magazine--lane-williamson.json",
+    "pen-pals-off-broadway-2025/theater-life--barry-gordin.json",
+    "masquerade-off-broadway-2025/ew--thom-geier.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -141,7 +149,9 @@
     "11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
     "an-ark-off-broadway-2026/newyorker--emily-nussbaum.json",
     "an-ark-off-broadway-2026/theatermania--david-gordon.json",
-    "data-off-broadway-2026/theatermania--zachary-stewart.json"
+    "data-off-broadway-2026/theatermania--zachary-stewart.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/theatermania--zachary-stewart.json",
+    "masquerade-off-broadway-2025/theatermania--meg-masseron.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -248,7 +258,13 @@
       "an-ark-off-broadway-2026/guardian--adrian-horton.json",
       "an-ark-off-broadway-2026/nysr--roma-torre.json",
       "an-ark-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "data-off-broadway-2026/nysr--david-finkle.json"
+      "data-off-broadway-2026/nysr--david-finkle.json",
+      "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytg--joe-dziemianowicz.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/newsweek--lauren-giella.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/exeunt-magazine--lane-williamson.json",
+      "pen-pals-off-broadway-2025/theater-life--barry-gordin.json",
+      "masquerade-off-broadway-2025/ew--thom-geier.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -264,7 +280,9 @@
     ],
     "browserbase": [
       "data/review-texts/music-city-off-broadway-2026/deadline--unknown.json",
-      "music-city-off-broadway-2026/deadline--unknown.json"
+      "music-city-off-broadway-2026/deadline--unknown.json",
+      "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -288,7 +306,9 @@
       "data/review-texts/11-to-midnight-off-broadway-2026/theatermania--hayley-levitt.json",
       "data/review-texts/an-ark-off-broadway-2026/newyorker--emily-nussbaum.json",
       "data/review-texts/an-ark-off-broadway-2026/theatermania--david-gordon.json",
-      "data/review-texts/data-off-broadway-2026/theatermania--zachary-stewart.json"
+      "data/review-texts/data-off-broadway-2026/theatermania--zachary-stewart.json",
+      "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/theatermania--zachary-stewart.json",
+      "data/review-texts/masquerade-off-broadway-2025/theatermania--meg-masseron.json"
     ],
     "archive": [
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
@@ -296,11 +316,12 @@
       "sexual-misconduct-of-the-middle-classes-off-broadway-2026/theatermania--zachary-stewart.json",
       "maltby-and-shires-about-time-off-broadway-2026/theatermania--zachary-stewart.json",
       "touch-off-broadway-2026/talkinbroadway--howard-miller.json",
-      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json"
+      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/nytimes--jose-solis.json",
+      "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json"
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "data-off-broadway-2026/nysr--david-finkle.json",
+  "lastProcessed": "masquerade-off-broadway-2025/theatermania--meg-masseron.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -313,6 +334,12 @@
       "event": "bb-session",
       "session": "1827776e",
       "url": "https://www.newyorker.com/magazine/2026/02/09/an-ark-theatre-review-data"
+    },
+    {
+      "t": "2026-03-23T10:40:50.042Z",
+      "event": "bb-session",
+      "session": "687c4572",
+      "url": "https://www.amny.com/entertainment/theater/spelling-bee-returns-nails-every-word"
     }
   ]
 }
