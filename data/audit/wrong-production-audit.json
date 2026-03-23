@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-23T00:25:47.660Z",
+  "timestamp": "2026-03-23T00:33:07.373Z",
   "stats": {
     "totalReviews": 32399,
     "alreadyFlagged": 10976,
     "dateGuardCatches": 140,
     "directorMismatch": 945,
     "tvFilmSignals": 3401,
-    "londonSignals": 1029,
+    "londonSignals": 1031,
     "offBroadwaySignals": 1012,
     "yearMismatch": 71,
-    "noPublishDate": 6880
+    "noPublishDate": 6877
   },
   "findings": [
     {
@@ -74679,6 +74679,20 @@
     },
     {
       "showId": "oliver-west-end-2024",
+      "file": "i-paper--unknown.json",
+      "score": null,
+      "publishDate": "2025-01-15",
+      "url": "https://inews.co.uk/culture/arts/oliver-review-immaculate-left-cold-3480332",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
       "file": "london-theatre--marianka-swain.json",
       "score": 92,
       "publishDate": "2025-01-13",
@@ -74744,6 +74758,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "file": "times-uk--unknown.json",
+      "score": 85,
+      "publishDate": "2025-01-14",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/oliver-review-consider-yourself-at-home-in-this-warm-revival-tq5v8x8vx",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },

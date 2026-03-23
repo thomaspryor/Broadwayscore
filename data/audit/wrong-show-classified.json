@@ -1,815 +1,815 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-23T00:21:47.064Z",
+    "generatedAt": "2026-03-23T00:28:54.136Z",
     "description": "LLM-classified wrong-show results from title-mention guard candidates",
-    "total": 1191,
+    "total": 1091,
     "classified": 100,
-    "wrongShow": 1,
-    "correct": 99,
+    "wrongShow": 0,
+    "correct": 100,
     "uncertain": 0,
     "errors": 0,
-    "applied": 1
+    "applied": 0
   },
   "results": [
     {
-      "showId": "american-psycho-2016",
-      "showTitle": "American Psycho",
-      "file": "nbcny--robert-kahn.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"American Psycho\" and discusses the plot, cast (Benjamin Walker), creative team (Duncan Sheik, Rupert Goold, Roberto Aguirre-Sacasa), and themes of the show."
-    },
-    {
-      "showId": "american-psycho-2016",
-      "showTitle": "American Psycho",
-      "file": "latimes--charles-mcnulty.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"American Psycho\" and discusses the plot, characters (Patrick Bateman), and creative team (Roberto Aguirre-Sacasa, Duncan Sheik, Rupert Goold)."
-    },
-    {
-      "showId": "american-idiot-2010",
-      "showTitle": "American Idiot",
-      "file": "ew--leah-greenblatt.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the band Green Day, the album American Idiot, and the plot and cast of the show."
-    },
-    {
-      "showId": "american-idiot-2010",
-      "showTitle": "American Idiot",
-      "file": "village-voice--rob-harvilla.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, the source material (Green Day's album), the director Michael Mayer, and the venue (St. James Theatre), all of which align with the show 'American Idiot'."
-    },
-    {
-      "showId": "american-psycho-2016",
-      "showTitle": "American Psycho",
-      "file": "chicagotribune--chris-jones.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"American Psycho\" and discusses the plot, characters (Patrick Bateman), and creative team (Rupert Goold), confirming it's about the correct show."
-    },
-    {
-      "showId": "american-psycho-2016",
-      "showTitle": "American Psycho",
-      "file": "news-tribune--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"American Psycho\" and discusses the plot, cast (Benjamin Walker), and creative team (Roberto Aguirre-Sacasa, Duncan Sheik, Rupert Goold) of the show."
-    },
-    {
-      "showId": "american-son-2018",
-      "showTitle": "American Son",
-      "file": "amny--matt-windman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, cast members (Kerry Washington, Steven Pasquale, Jeremy Jordan, Eugene Lee), the director (Kenny Leon), and the plot of the play, confirming it is about 'American Son'."
-    },
-    {
-      "showId": "american-psycho-2016",
-      "showTitle": "American Psycho",
-      "file": "washington-times--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show's plot, venue (Gerald Schoenfeld Theatre), lead actor (Benjamin Walker as Patrick Bateman), and creative team (Roberto Aguirre-Sacasa, Duncan Sheik, Rupert Goold), confirming it's about 'American Psycho'."
-    },
-    {
-      "showId": "american-psycho-2016",
-      "showTitle": "American Psycho",
-      "file": "wsj--terry-teachout.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the cast (Benjamin Walker), creative team (Duncan Sheik, Es Devlin), and plot elements that align with the musical 'American Psycho'."
-    },
-    {
-      "showId": "american-psycho-2016",
-      "showTitle": "American Psycho",
-      "file": "newsday--linda-winer.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show's title, cast (Benjamin Walker), director (Rupert Goold), and plot elements, confirming it's about 'American Psycho'."
-    },
-    {
-      "showId": "american-son-2018",
-      "showTitle": "American Son",
-      "file": "theater-news-online--david-cote.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review discusses the plot, cast (Kerry Washington, Steven Pasquale, Jeremy Jordan), and themes of 'American Son' at the Booth Theatre."
-    },
-    {
-      "showId": "american-son-2018",
-      "showTitle": "American Son",
-      "file": "chicagotribune--chris-jones.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review discusses the plot, cast (Kerry Washington, Steven Pasquale), and themes of 'American Son,' indicating it is about the correct show."
-    },
-    {
-      "showId": "american-son-2018",
-      "showTitle": "American Son",
+      "showId": "chicken-and-biscuits-2021",
+      "showTitle": "Chicken & Biscuits",
       "file": "deadline--greg-evans.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review discusses the plot, cast (Kerry Washington), playwright (Christopher Demos-Brown), director (Kenny Leon), and venue (Booth Theatre) of \"American Son.\""
+      "reasoning": "The review explicitly mentions the play 'Chicken & Biscuits' and discusses the plot, characters, and themes of the show."
     },
     {
-      "showId": "american-son-2018",
-      "showTitle": "American Son",
-      "file": "newsday--barbara-schuler.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the actors Kerry Washington and Steven Pasquale, the Booth Theatre, and the plot of a biracial couple dealing with their son's disappearance, all of which align with the show \"American Son\"."
-    },
-    {
-      "showId": "american-son-2018",
-      "showTitle": "American Son",
-      "file": "dailybeast--tim-teeman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the play's title, characters (Kendra, Jamal, Officer Larkin), and themes, indicating it is about 'American Son'."
-    },
-    {
-      "showId": "american-son-2018",
-      "showTitle": "American Son",
-      "file": "vulture--sara-holdren.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions Kerry Washington and Steven Pasquale, who starred in American Son. It also discusses the play's themes and overall quality."
-    },
-    {
-      "showId": "american-son-2018",
-      "showTitle": "American Son",
-      "file": "timeout--helen-shaw.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review discusses the plot, characters (Kendra, Larkin, Scott, Jamal), and setting (Miami police station) of 'American Son'. It also mentions the playwright Christopher Demos-Brown."
-    },
-    {
-      "showId": "an-act-of-god-2016",
-      "showTitle": "An Act of God",
+      "showId": "chicken-and-biscuits-2021",
+      "showTitle": "Chicken & Biscuits",
       "file": "amny--matt-windman.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review explicitly mentions \"An Act of God\" and discusses the plot, cast (Sean Hayes, David Josefsberg, James Gleason), and creative team (David Javerbaum, Joe Mantello)."
+      "reasoning": "The review explicitly mentions \"Chicken & Biscuits\" and discusses the plot, cast, and themes of the show. It also mentions the playwright and the show's journey to Broadway."
     },
     {
-      "showId": "american-son-2018",
-      "showTitle": "American Son",
-      "file": "thewrap--thom-geier.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title 'American Son' and discusses the plot, characters (Kendra, Officer Larkin, Jamal, Scott), and themes of the show, confirming it is about the correct production."
-    },
-    {
-      "showId": "american-son-2018",
-      "showTitle": "American Son",
-      "file": "towleroad--naveen-kumar.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the play's title, cast members (Kerry Washington, Eugene Lee, Jeremy Jordan), the playwright (Christopher Demos-Brown), the director (Kenny Leon), and the venue (Booth Theatre). It also discusses the plot and themes of the play."
-    },
-    {
-      "showId": "an-act-of-god-2016",
-      "showTitle": "An Act of God",
-      "file": "deadline--jeremy-gerard.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review discusses the plot, cast (Jim Parsons, Tim Kazurinsky, Christopher Fitzgerald), creative team (David Javerbaum, Joe Mantello, Scott Pask), and venue (Studio 54) of \"An Act of God.\""
-    },
-    {
-      "showId": "an-act-of-god-2016",
-      "showTitle": "An Act of God",
-      "file": "broadwayworld--michael-dale.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the play \"An Act of God\" and discusses the plot, cast (including Wesley Taylor), and themes of the show. It also references the author David Javerbaum and the book it's based on."
-    },
-    {
-      "showId": "an-act-of-god-2016",
-      "showTitle": "An Act of God",
-      "file": "huffpost--alexandra-villarreal.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"An Act of God\" and discusses the plot, cast (Jim Parsons), and themes of the show. It also mentions the venue, Studio 54."
-    },
-    {
-      "showId": "an-act-of-god-2016",
-      "showTitle": "An Act of God",
-      "file": "guardian--alexis-soloski.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show's title, venue (Studio 54), cast (Jim Parsons, Christopher Fitzgerald), director (Joe Mantello), and plot elements, confirming it's about \"An Act of God.\""
-    },
-    {
-      "showId": "an-act-of-god-2016",
-      "showTitle": "An Act of God",
-      "file": "ap--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title, cast (Jim Parsons, Christopher Fitzgerald, Tim Kazurinsky), writer (David Javerbaum), director (Joe Mantello), and venue (Studio 54 theater) of \"An Act of God.\""
-    },
-    {
-      "showId": "an-act-of-god-2016",
-      "showTitle": "An Act of God",
-      "file": "northjerseycom--robert-feldberg.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show title, the actor Jim Parsons, and the playwright David Javerbaum, all associated with \"An Act of God.\""
-    },
-    {
-      "showId": "an-act-of-god-2016",
-      "showTitle": "An Act of God",
-      "file": "northjerseycom--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title, cast (Jim Parsons, Christopher Fitzgerald, Tim Kazurinsky), writer (David Javerbaum), director (Joe Mantello), and venue (Studio 54) of 'An Act of God'."
-    },
-    {
-      "showId": "an-act-of-god-2016",
-      "showTitle": "An Act of God",
-      "file": "newsday--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"An Act of God\" and discusses the plot, cast (Jim Parsons, Tim Kazurinsky, Christopher Fitzgerald), and creative team (David Javerbaum, Scott Pask) of the show."
-    },
-    {
-      "showId": "an-act-of-god-2016",
-      "showTitle": "An Act of God",
-      "file": "njcom--ronni-reich.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show's title, venue (Studio 54), star (Jim Parsons), writer (David Javerbaum), director (Joe Mantello), and supporting cast (Tim Kazurinsky, Christopher Fitzgerald). It also discusses the plot and themes of the show."
-    },
-    {
-      "showId": "an-act-of-god-2016",
-      "showTitle": "An Act of God",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the play's title, the actor Jim Parsons, the director Joe Mantello, the venue Studio 54, and the plot of God giving new commandments. All of these details match the show 'An Act of God'."
-    },
-    {
-      "showId": "an-american-in-paris-2015",
-      "showTitle": "An American in Paris",
-      "file": "huffpost--david-finkle.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions 'An American in Paris' and discusses Christopher Wheeldon's choreography, which is a key element of the show."
-    },
-    {
-      "showId": "an-american-in-paris-2015",
-      "showTitle": "An American in Paris",
-      "file": "chicagotribune--chris-jones.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, choreographer Christopher Wheeldon, the leads Robert Fairchild and Leanne Cope, and the Gershwin music, all of which are associated with 'An American in Paris'."
-    },
-    {
-      "showId": "an-american-in-paris-2015",
-      "showTitle": "An American in Paris",
-      "file": "thewrap--robert-hofler.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review discusses the plot, characters (Jerry Mulligan, Lise, Henri Baurel, Milo Davenport), and creative team (Craig Lucas, Christopher Wheeldon) of 'An American in Paris' at the Palace Theatre, indicating it's about the correct show."
-    },
-    {
-      "showId": "an-enemy-of-the-people-2012",
-      "showTitle": "An Enemy of the People",
-      "file": "ew--adam-markovitz.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"An Enemy of the People\" and discusses the plot, characters (Thomas, Peter), venue (Samuel J. Friedman Theatre), and themes of the play. It also mentions the director (Doug Hughes) and adapter (Rebecca Lenkiewicz)."
-    },
-    {
-      "showId": "an-american-in-paris-2015",
-      "showTitle": "An American in Paris",
-      "file": "newsday--linda-winer.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title, cast members (Robert Fairchild, Leanne Cope), choreographer (Christopher Wheeldon), and plot elements of 'An American in Paris,' confirming it's about the correct show."
-    },
-    {
-      "showId": "an-enemy-of-the-people-2024",
-      "showTitle": "An Enemy of the People",
-      "file": "dailybeast--tim-teeman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, the playwright Amy Herzog, the director Sam Gold, the actor Jeremy Strong, and the venue Circle in the Square, all of which match the show details."
-    },
-    {
-      "showId": "angels-in-america-2018",
-      "showTitle": "Angels in America",
-      "file": "amny--matt-windman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions 'Angels in America', the cast (Nathan Lane, Andrew Garfield), the plot, and the venue (Neil Simon Theatre). It's clearly a review of the stated show."
-    },
-    {
-      "showId": "an-enemy-of-the-people-2024",
-      "showTitle": "An Enemy of the People",
-      "file": "telegraph--diane-snyder.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions Jeremy Strong starring as Thomas Stockmann in a production of An Enemy of the People at New York's Circle in the Square Theatre, which matches the show details."
-    },
-    {
-      "showId": "an-enemy-of-the-people-2012",
-      "showTitle": "An Enemy of the People",
-      "file": "newsday--linda-winer.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show's title, cast members (Boyd Gaines, Richard Thomas, Michael Siberry, Kathleen McNenny), director (Doug Hughes), and venue (Manhattan Theatre Club's Samuel J. Friedman Theatre). It also discusses the plot and themes of the play."
-    },
-    {
-      "showId": "angels-in-america-2018",
-      "showTitle": "Angels in America",
-      "file": "newsday--barbara-schuler.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Angels in America\" and discusses the plot, characters (Prior Walter, Louis, Joe, Harper, Roy Cohn), actors (Andrew Garfield, James McArdle, Lee Pace, Denise Gough, Nathan Lane), director (Marianne Elliott), and themes of the show."
-    },
-    {
-      "showId": "angels-in-america-2018",
-      "showTitle": "Angels in America",
-      "file": "newsweek--joe-westerfield.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Angels in America\" and discusses the cast, plot, and venue of the show."
-    },
-    {
-      "showId": "angels-in-america-2018",
-      "showTitle": "Angels in America",
-      "file": "njcom--christopher-kelly.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, cast (Andrew Garfield as Prior Walter), plot elements (AIDS crisis in 1980s NYC), and themes, confirming it's about the correct production."
-    },
-    {
-      "showId": "angels-in-america-2018",
-      "showTitle": "Angels in America",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Angels in America\", cast members (Nathan Lane, Andrew Garfield), and plot details, confirming it is about the specified show."
-    },
-    {
-      "showId": "angels-in-america-2018",
-      "showTitle": "Angels in America",
-      "file": "thewrap--robert-hofler.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Angels in America\" and discusses the plot, characters, and production details of the show, including the director, venue, and design elements."
-    },
-    {
-      "showId": "angels-in-america-2018",
-      "showTitle": "Angels in America",
-      "file": "towleroad--naveen-kumar.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Angels in America\", the cast (Andrew Garfield as Prior Walter, James McArdle as Louis), the director (Marianne Elliott), and the venue (Neil Simon Theatre). It also discusses the plot and themes of the show."
-    },
-    {
-      "showId": "back-to-the-future-2023",
-      "showTitle": "Back to the Future: The Musical",
-      "file": "and-daryl-tofa-back-to-the-future--gabi-stapula.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show's title, cast (Roger Bart, Casey Likes, Hugh Coles), venue (Winter Garden Theatre), and plot, confirming it's about 'Back to the Future: The Musical'."
-    },
-    {
-      "showId": "back-to-the-future-2023",
-      "showTitle": "Back to the Future: The Musical",
-      "file": "queerty--matthew-wexler.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Back to the Future\" and discusses the plot, characters (Marty McFly, Doc Brown), and creative team of the musical adaptation."
-    },
-    {
-      "showId": "anna-christie-1977",
-      "showTitle": "Anna Christie",
-      "file": "nysr--new-york-notebook-sandy-macdonald.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review discusses the plot, characters (Anna, Chris Christopherson, Marthy Owen), and playwright (Eugene O'Neill) of the play 'Anna Christie'."
-    },
-    {
-      "showId": "back-to-the-future-2023",
-      "showTitle": "Back to the Future: The Musical",
-      "file": "cititour--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show's title, plot, characters (Marty McFly, Doc Brown), actors (Casey Likes, Roger Bart), and creative team (Alan Silvestri, Glen Ballard, John Rando), confirming it's about 'Back to the Future: The Musical'."
-    },
-    {
-      "showId": "angels-in-america-2018",
-      "showTitle": "Angels in America",
-      "file": "wsj--sarah-holdren.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Angels in America\", the cast (Nathan Lane), the creative team (Marianne Elliott, Tony Kushner), and the venue (Neil Simon Theatre)."
-    },
-    {
-      "showId": "bad-cinderella-2023",
-      "showTitle": "Bad Cinderella",
-      "file": "guardian--lauren-mechling.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show title, cast member Linedy Genao, Andrew Lloyd Webber, and the plot of the show, confirming it is about 'Bad Cinderella'."
-    },
-    {
-      "showId": "bad-cinderella-2023",
-      "showTitle": "Bad Cinderella",
-      "file": "new-york-sun--elysa-gardner.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Bad Cinderella\" and discusses the plot, cast (Linedy Genao), and creative team (Andrew Lloyd Webber, David Zippel, Emerald Fennell, Alexis Scheer)."
-    },
-    {
-      "showId": "back-to-the-future-2023",
-      "showTitle": "Back to the Future: The Musical",
-      "file": "slash-film--caroline-cao.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Back to the Future: The Musical\" and discusses the plot, characters (Marty McFly, Doc), and creative team (Bob Gale) of the show."
-    },
-    {
-      "showId": "bad-cinderella-2023",
-      "showTitle": "Bad Cinderella",
-      "file": "queerty--christian-lewis.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, composer Andrew Lloyd Webber, and the plot/characters of the show. It is clearly a review of 'Bad Cinderella'."
-    },
-    {
-      "showId": "back-to-the-future-2023",
-      "showTitle": "Back to the Future: The Musical",
-      "file": "theater-pizzazz--sandi-durell.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Back to the Future\" and discusses the plot, cast (Marty McFly, Doc Brown), and creative team (Bob Gale, Alan Silvestri, Glen Ballard), confirming it's about the stated show."
-    },
-    {
-      "showId": "be-more-chill-2019",
-      "showTitle": "Be More Chill",
-      "file": "towleroad--naveen-kumar.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show's title, plot, cast members (Will Roland, Stephanie Hsu), and creative team (Joe Iconis, Joe Tracz), confirming it's about 'Be More Chill'."
-    },
-    {
-      "showId": "be-more-chill-2019",
-      "showTitle": "Be More Chill",
-      "file": "amny--matt-windman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Be More Chill\" multiple times and discusses the plot, cast, creative team, and venue, all aligning with the show's details."
-    },
-    {
-      "showId": "be-more-chill-2019",
-      "showTitle": "Be More Chill",
-      "file": "timeout--adam-feldman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show's title, creative team (Joe Iconis and Joe Tracz), cast members (Will Roland, Jason Tam, Stephanie Hsu), and plot elements (Squip, Jeremy, Christine)."
-    },
-    {
-      "showId": "be-more-chill-2019",
-      "showTitle": "Be More Chill",
-      "file": "dailybeast--tim-teeman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show's title, cast members (Will Roland, George Salazar, Jason Tam), and plot elements (Jeremy Heere, the Squip), confirming it's about \"Be More Chill.\""
-    },
-    {
-      "showId": "be-more-chill-2019",
-      "showTitle": "Be More Chill",
-      "file": "newsday--barbara-schuler.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the Lyceum Theatre, cast members Will Roland, Stephanie Hsu, and George Salazar, and plot elements that align with \"Be More Chill.\""
-    },
-    {
-      "showId": "beautiful-the-carole-king-musical-2014",
-      "showTitle": "Beautiful The Carole King Musical",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, cast members (Jessie Mueller, Jarrod Spector, Anika Larsen, Jake Epstein), and songs from the show."
-    },
-    {
-      "showId": "be-more-chill-2019",
-      "showTitle": "Be More Chill",
-      "file": "vulture--sara-holdren.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show's title, cast member Will Roland, and creative team members Joe Iconis, Joe Tracz, and Stephen Brackett, confirming it is about 'Be More Chill'."
-    },
-    {
-      "showId": "beautiful-the-carole-king-musical-2014",
-      "showTitle": "Beautiful The Carole King Musical",
-      "file": "northjerseycom--robert-feldberg.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Beautiful,\" Carole King, the Stephen Sondheim Theatre, Douglas McGrath, and Jessie Mueller, all associated with the show."
-    },
-    {
-      "showId": "beautiful-the-carole-king-musical-2014",
-      "showTitle": "Beautiful The Carole King Musical",
-      "file": "broadwayworld--michael-dale.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show's title ('Beautiful'), the venue (Stephen Sondheim Theatre), the main character Carole King, and cast members like Jessie Mueller, Anika Larsen, and Jarrod Spector. It also discusses the plot and themes of the musical."
-    },
-    {
-      "showId": "beautiful-the-carole-king-musical-2014",
-      "showTitle": "Beautiful The Carole King Musical",
-      "file": "ap--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Beautiful: The Carole King Musical\" and discusses the plot, cast (Jessie Mueller), and themes of the show."
-    },
-    {
-      "showId": "beautiful-the-carole-king-musical-2014",
-      "showTitle": "Beautiful The Carole King Musical",
-      "file": "vulture--jesse-green.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Beautiful: The Carole King Musical\" and discusses the performance of Jessie Mueller as Carole King, confirming it's about the correct show."
-    },
-    {
-      "showId": "bells-are-ringing-2001",
-      "showTitle": "Bells Are Ringing",
-      "file": "nypost--elisabeth-vincentelli.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Bells Are Ringing\" and discusses the 2001 revival, as well as the cast, plot, and creative team of the show."
-    },
-    {
-      "showId": "beautiful-the-carole-king-musical-2014",
-      "showTitle": "Beautiful The Carole King Musical",
-      "file": "thewrap--robert-hofler.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Beautiful\" and discusses the plot, characters (Carole King, Gerry Goffin, Barry Mann, Cynthia Weil), and themes of the show."
-    },
-    {
-      "showId": "beautiful-the-carole-king-musical-2014",
-      "showTitle": "Beautiful The Carole King Musical",
-      "file": "timeout--david-cote.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, cast (Jessie Mueller), creative team (Douglas McGrath, Marc Bruni), and plot elements related to Carole King's life and career."
-    },
-    {
-      "showId": "beautiful-the-carole-king-musical-2014",
-      "showTitle": "Beautiful The Carole King Musical",
-      "file": "the-globe-and-mail--kelly-nestruck.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Beautiful, which opened Sunday at the Stephen Sondheim theatre on Broadway\" and refers to it as \"The Carole King Musical\". It also discusses the cast, including Jessie Mueller as Carole King, and the plot elements of the show."
-    },
-    {
-      "showId": "big-fish-2013",
-      "showTitle": "Big Fish",
-      "file": "chicagotribune--chris-jones.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show's title, cast member Norbert Leo Butz, composer Andrew Lippa, and the plot's focus on storytelling and family in the Deep South, all aligning with the musical 'Big Fish'."
-    },
-    {
-      "showId": "big-fish-2013",
-      "showTitle": "Big Fish",
-      "file": "ap--mark-kennedy.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions 'Big Fish' and discusses the plot, cast (Norbert Leo Butz), and themes of the show."
-    },
-    {
-      "showId": "between-riverside-and-crazy-2022",
-      "showTitle": "Between Riverside and Crazy",
-      "file": "theatrely--kobi-kassal.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the play's title, playwright, cast members (Stephen McKinley Henderson, Victor Almanzar, Common, Elizabeth Canavan, Liza Colón-Zayas, Rosal Colón, Michael Rispoli), and plot details, confirming it's about \"Between Riverside and Crazy.\""
-    },
-    {
-      "showId": "between-riverside-and-crazy-2022",
-      "showTitle": "Between Riverside and Crazy",
-      "file": "new-york-sun--elysa-gardner.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title \"Between Riverside and Crazy\", the playwright Stephen Adly Guirgis, the character Pops Washington, and the actor Stephen McKinley Henderson, all of which are associated with the show."
-    },
-    {
-      "showId": "betty-buckley-random-notes-off-broadway-2026",
-      "showTitle": "Betty Buckley: Random Notes",
-      "file": "ew--unknown.json",
-      "verdict": "WRONG_SHOW",
-      "confidence": "high",
-      "reasoning": "The review is for 'The Old Friends' by Horton Foote, not 'Betty Buckley: Random Notes'. It mentions cast members, plot details, and the venue, all of which are specific to 'The Old Friends'."
-    },
-    {
-      "showId": "billy-elliot-the-musical-2008",
-      "showTitle": "Billy Elliot: The Musical",
-      "file": "leicester-times--louise-steel.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions Billy Elliot, the plot, and the setting of the miner's strike, confirming it's about the correct show."
-    },
-    {
-      "showId": "big-fish-2013",
-      "showTitle": "Big Fish",
-      "file": "thewrap--robert-hofler.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show's director, cast members (Norbert Leo Butz, Bobby Steggert, Kate Baldwin), and plot elements, confirming it's about 'Big Fish'."
-    },
-    {
-      "showId": "big-fish-2013",
-      "showTitle": "Big Fish",
-      "file": "nydailynews--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show's plot, cast members (Norbert Leo Butz, Bobby Steggert, Kate Baldwin), creative team (Andrew Lippa, John August, Susan Stroman), and themes, all of which align with the show \"Big Fish.\""
-    },
-    {
-      "showId": "billy-elliot-the-musical-2008",
-      "showTitle": "Billy Elliot: The Musical",
-      "file": "telegraph--holly-williams.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions Elton John and Lee Hall's musical about a boy who wants to dance, set during the 1984 miners' strike, which is the plot of Billy Elliot. It also mentions the song \"Solidarity\" which is in the musical."
-    },
-    {
-      "showId": "billy-elliot-the-musical-2008",
-      "showTitle": "Billy Elliot: The Musical",
-      "file": "whatsonstage--phil-lowe.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Billy Elliot musical revival\", Lee Hall, Elton John, and the plot of the show, confirming it's about the correct production."
-    },
-    {
-      "showId": "bonnie-and-clyde-2011",
-      "showTitle": "Bonnie and Clyde",
-      "file": "amny--matt-windman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show \"Bonnie & Clyde\" and discusses the plot, cast (Laura Osnes, Jeremy Jordan), and creative team. It also mentions the venue (Schoenfeld Theatre)."
-    },
-    {
-      "showId": "bob-fosses-dancin-2023",
-      "showTitle": "Bob Fosse's Dancin'",
+      "showId": "chicken-and-biscuits-2021",
+      "showTitle": "Chicken & Biscuits",
       "file": "cititour--brian-scott-lipton.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Bob Fosse's Dancin'\" and discusses the show's history, choreography, and cast members, including Wayne Cilento, Manuel Herrera, Jacob Guzman, Yeman Brown, Peter John Chursin, Ron Todorowoski, and Kolton Krouse."
+      "reasoning": "The review mentions the show's title, playwright (Douglas Lyons), venue (Circle in the Square), and several characters and actors from the production, indicating it is a review of 'Chicken & Biscuits'."
     },
     {
-      "showId": "bob-fosses-dancin-2023",
-      "showTitle": "Bob Fosse's Dancin'",
-      "file": "theater-pizzazz--carole-di-tosti.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Bob Fosse's Dancin'\" and discusses the revival, director Wayne Cilento, the Music Box Theatre, and the original choreography, all related to the show."
-    },
-    {
-      "showId": "birthday-candles-2022",
-      "showTitle": "Birthday Candles",
-      "file": "cititour--brian-scott-lipton.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the play title \"Birthday Candles\", the playwright Noah Haidle, the venue Roundabout Theatre Company's American Airlines Theatre, the director Vivienne Benesch, and the lead actress Debra Messing playing Ernestine. It also describes the plot and set design."
-    },
-    {
-      "showId": "bloody-bloody-andrew-jackson-2010",
-      "showTitle": "Bloody Bloody Andrew Jackson",
-      "file": "vulture--christopher-bonanos.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the cast (Benjamin Walker), the venue (Jacobs Theater), and describes the set design and tone of 'Bloody Bloody Andrew Jackson'. It's clearly a review of the stated show."
-    },
-    {
-      "showId": "bonnie-and-clyde-2011",
-      "showTitle": "Bonnie and Clyde",
-      "file": "ew--thom-geier.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show title, composer Frank Wildhorn, and cast members Jeremy Jordan and Laura Osnes, all associated with the 2011 Broadway production of Bonnie & Clyde."
-    },
-    {
-      "showId": "bonnie-and-clyde-2011",
-      "showTitle": "Bonnie and Clyde",
+      "showId": "catch-me-if-you-can-2011",
+      "showTitle": "Catch Me If You Can",
       "file": "northjerseycom--robert-feldberg.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review mentions the show's title, venue, cast, and creative team, confirming it is about 'Bonnie and Clyde'."
-    },
-    {
-      "showId": "bonnie-and-clyde-2011",
-      "showTitle": "Bonnie and Clyde",
-      "file": "timeout--adam-feldman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Bonnie & Clyde\" and discusses the plot, cast (Laura Osnes, Jeremy Jordan), and creative team (Frank Wildhorn) of the show."
-    },
-    {
-      "showId": "born-yesterday-2011",
-      "showTitle": "Born Yesterday",
-      "file": "northjerseycom--robert-feldberg.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show's title, plot, characters (Harry Brock, Billie Dawn, Paul Verrall), and the Cort Theatre, all of which align with the show 'Born Yesterday'."
-    },
-    {
-      "showId": "born-yesterday-2011",
-      "showTitle": "Born Yesterday",
-      "file": "philadelphia-inquirer--howard-shapiro.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Garson Kanin's 1946 comedy Born Yesterday\" and discusses the plot, characters, and actors in the 2011 Broadway revival."
-    },
-    {
-      "showId": "bright-star-2016",
-      "showTitle": "Bright Star",
-      "file": "ap--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show's creators (Steve Martin and Edie Brickell), the venue (Cort Theatre), and plot details, all of which align with the show \"Bright Star\"."
-    },
-    {
-      "showId": "breakfast-at-tiffanys-2013",
-      "showTitle": "Breakfast at Tiffany's",
-      "file": "ew--thom-geier.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Breakfast at Tiffany's\" and discusses the cast, plot, and adaptation of the novella. It also mentions Emilia Clarke, who starred in the 2013 Broadway production."
-    },
-    {
-      "showId": "breakfast-at-tiffanys-2013",
-      "showTitle": "Breakfast at Tiffany's",
-      "file": "village-voice--michael-musto.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review discusses Richard Greenberg's adaptation of Truman Capote's novella, mentions the characters Holly Golightly and Fred, and refers to Emilia Clarke's performance, all of which align with the 'Breakfast at Tiffany's' show in 2013."
-    },
-    {
-      "showId": "bright-star-2016",
-      "showTitle": "Bright Star",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show title \"Bright Star\" and discusses the plot, cast (Carmen Cusack, A.J. Shively, Paul Alexander Nolan), and creative team (Steve Martin, Edie Brickell, Walter Bobbie, Josh Rhodes) of the show."
-    },
-    {
-      "showId": "bright-star-2016",
-      "showTitle": "Bright Star",
-      "file": "nbcny--robert-kahn.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title \"Bright Star\" and discusses the plot, cast members (Carmen Cusack, A.J. Shively, Paul Alexander Nolan), and creative team (Steve Martin, Edie Brickell)."
-    },
-    {
-      "showId": "bronx-bombers-2014",
-      "showTitle": "Bronx Bombers",
-      "file": "thewrap--robert-hofler.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Bronx Bombers\" and discusses the plot, characters (Reggie Jackson, Yogi Berra, Derek Jeter, Babe Ruth, Lou Gehrig), and the venue (Circle in the Square)."
-    },
-    {
-      "showId": "burnout-paradise-off-broadway-2026",
-      "showTitle": "Burnout Paradise",
-      "file": "theatrely--joey-sims.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review text mentions the show title, the creative team (Pony Cam), the venue (Astor Place Theatre), and describes the plot of the show involving treadmills and completing tasks."
-    },
-    {
-      "showId": "call-me-izzy-2025",
-      "showTitle": "Call Me Izzy",
-      "file": "theatrely--kobi-kassal.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title \"Call Me Izzy\", the playwright Jamie Wax, the actress Jean Smart, the director Sarna Lapine, and the venue Studio 54. It also describes the plot of the show."
-    },
-    {
-      "showId": "bronx-bombers-2014",
-      "showTitle": "Bronx Bombers",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show title, cast members (Peter Scolari as Yogi Berra, Francois Battiste as Reggie Jackson, Christopher Jackson as Derek Jeter), and the venue (Circle in the Square). It also discusses the plot and themes of the show."
+      "reasoning": "The review explicitly mentions the show \"Catch Me If You Can\", the Neil Simon Theatre, and key cast members like Aaron Tveit and Norbert Leo Butz. It also references the plot and creative team (Terrence McNally, Marc Shaiman, Scott Wittman, Jack O'Brien)."
     },
     {
       "showId": "caroline-or-change-2021",
       "showTitle": "Caroline, or Change",
+      "file": "theatrely--juan-a-ramirez.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, writer Tony Kushner, composer Jeanine Tesori, the plot, the setting in 1963 Louisiana, and cast members like Sharon D. Clarke and Caissie Levy. It's clearly about 'Caroline, or Change'."
+    },
+    {
+      "showId": "china-doll-2015",
+      "showTitle": "China Doll",
+      "file": "ap--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the play's title, Al Pacino, the character Mickey Ross, the Gerald Schoenfeld Theatre, and the plot, all of which align with the show 'China Doll'."
+    },
+    {
+      "showId": "chicken-and-biscuits-2021",
+      "showTitle": "Chicken & Biscuits",
+      "file": "thewrap--robert-hofler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the play title \"Chicken & Biscuits\" and discusses the plot, cast (Cleo King, Ebony Marshall-Oliver, Michael Urie, Devere Rogers, Aigner Mizzelle), and venue (Circle in the Square)."
+    },
+    {
+      "showId": "china-doll-2015",
+      "showTitle": "China Doll",
+      "file": "chicagotribune--chris-jones.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the show title, playwright David Mamet, and star Al Pacino. It also describes the plot and characters, confirming it's about 'China Doll'."
+    },
+    {
+      "showId": "chicken-and-biscuits-2021",
+      "showTitle": "Chicken & Biscuits",
+      "file": "theatrely--juan-a-ramirez.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the play's title, cast members (Cleo King, Norm Lewis, Alana Raquel Bowers, Devere Rogers, Michael Urie, Ebony Marshall-Oliver, Aigner Mizzelle), and plot details, confirming it is about \"Chicken & Biscuits.\""
+    },
+    {
+      "showId": "children-of-a-lesser-god-2018",
+      "showTitle": "Children of a Lesser God",
+      "file": "albany-times-union--steve-barnes.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, cast members (Lauren Ridloff, Joshua Jackson, John McGinty), the director (Kenny Leon), and the plot of the play. It also mentions the Berkshire Theatre Group, where the production was staged before its planned Broadway transfer."
+    },
+    {
+      "showId": "china-doll-2015",
+      "showTitle": "China Doll",
+      "file": "njcom--christopher-kelly.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title \"China Doll\", the playwright David Mamet, and the actor Al Pacino, all associated with the show."
+    },
+    {
+      "showId": "china-doll-2015",
+      "showTitle": "China Doll",
+      "file": "hollywood-reporter--david-rooney.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions Al Pacino, David Mamet, and the plot of the show China Doll, indicating it is about the correct production."
+    },
+    {
+      "showId": "china-doll-2015",
+      "showTitle": "China Doll",
+      "file": "financialtimes--ellen-brait.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses Al Pacino's performance in China Doll, along with the plot and other cast members. It also quotes from other reviews of the show."
+    },
+    {
+      "showId": "chinese-republicans-off-broadway-2026",
+      "showTitle": "Chinese Republicans",
       "file": "cititour--brian-scott-lipton.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review mentions the show's title, plot, characters (Caroline, Noah, Rose), setting (1963 Louisiana), and creative team (Tony Kushner and Jeanine Tesori). It is clearly a review of \"Caroline, or Change\"."
+      "reasoning": "The review explicitly mentions the play \"Chinese Republicans\" and discusses the plot, characters, and themes of the show, including the setting, cast members, and the play's exploration of identity and competition among Chinese-American women in a corporate environment."
+    },
+    {
+      "showId": "china-doll-2015",
+      "showTitle": "China Doll",
+      "file": "thewrap--robert-hofler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the play's title, the star Al Pacino as Mickey Ross, and the plot involving a private jet and a governor. These details align with the show 'China Doll'."
+    },
+    {
+      "showId": "choir-boy-2019",
+      "showTitle": "Choir Boy",
+      "file": "amny--matt-windman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title 'Choir Boy', the playwright Tarell Alvin McCraney, the venue Samuel J. Friedman Theatre, and the plot/characters of the show."
+    },
+    {
+      "showId": "chinese-republicans-off-broadway-2026",
+      "showTitle": "Chinese Republicans",
+      "file": "talkinbroadway--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the title, playwright Alex Lin, and the Roundabout Theatre Company's Laura Pels, all of which match the show details."
+    },
+    {
+      "showId": "choir-boy-2019",
+      "showTitle": "Choir Boy",
+      "file": "deadline--chris-evans.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions 'Choir Boy' and discusses the plot, cast (Jeremy Pope), and themes of the show. It also mentions the playwright Tarell Alvin McCraney."
+    },
+    {
+      "showId": "choir-boy-2019",
+      "showTitle": "Choir Boy",
+      "file": "newsday--barbara-schuler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the show's title, cast members (Jeremy Pope, Chuck Cooper), the playwright (Tarell Alvin McCraney), the venue (Manhattan Theatre Club), and the plot about a young man struggling with his sexual identity in a prep school choir."
+    },
+    {
+      "showId": "chinese-republicans-off-broadway-2026",
+      "showTitle": "Chinese Republicans",
+      "file": "theater-pizzazz--ron-fassler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the title of the play, the venue (Laura Pels Theatre), the playwright (Alex Lin), the director (Chay Yew), and several of the characters and plot points. This is clearly a review of the stated show."
+    },
+    {
+      "showId": "choir-boy-2019",
+      "showTitle": "Choir Boy",
+      "file": "towleroad--naveen-kumar.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, characters (Pharus, Bobby), setting (Charles R. Drew Prep School), and themes of \"Choir Boy.\""
+    },
+    {
+      "showId": "cirque-du-soleil-paramour-2016",
+      "showTitle": "Cirque du Soleil Paramour",
+      "file": "deadline--jeremy-gerard.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions 'Paramour' and discusses the plot, cast, and Cirque du Soleil's style, indicating it's about the specified show."
+    },
+    {
+      "showId": "cirque-du-soleil-paramour-2016",
+      "showTitle": "Cirque du Soleil Paramour",
+      "file": "hollywood-reporter--frank-scheck.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the show's title, plot, cast members, and the fact that it's a Cirque du Soleil production, indicating it's about the correct show."
+    },
+    {
+      "showId": "cirque-du-soleil-paramour-2016",
+      "showTitle": "Cirque du Soleil Paramour",
+      "file": "ap--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Paramour\" and discusses the plot, cast, and Cirque du Soleil elements of the show, confirming it's a review of the correct production."
+    },
+    {
+      "showId": "choir-boy-2019",
+      "showTitle": "Choir Boy",
+      "file": "philadelphia-inquirer--toby-zinman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, cast (Jeremy Pope), playwright (Tarell Alvin McCraney), and themes of 'Choir Boy,' indicating it is about the correct show. It mentions the setting in an African American boys' school and the importance of the choir, which are central to the play."
+    },
+    {
+      "showId": "cirque-du-soleil-paramour-2016",
+      "showTitle": "Cirque du Soleil Paramour",
+      "file": "thewrap--robert-hofler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the show's title, plot, cast members (Jeremy Kushnier, Ruby Lewis, Ryan Vona), and venue (Lyric Theatre), confirming it is about Cirque du Soleil Paramour."
+    },
+    {
+      "showId": "cirque-du-soleil-paramour-2016",
+      "showTitle": "Cirque du Soleil Paramour",
+      "file": "wsj--robert-greskovic.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Paramour,\" the Lyric Theatre, and describes the show as a Cirque du Soleil production, indicating it is about the correct show."
+    },
+    {
+      "showId": "colin-quinn-long-story-short-2010",
+      "showTitle": "Colin Quinn: Long Story Short",
+      "file": "nydailynews--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions Quinn's previous Broadway show, \"Long Story Short,\" while discussing his current Off-Broadway show, \"The New York Story.\" This indicates the review is relevant to the specified show, even though it primarily focuses on a different production."
+    },
+    {
+      "showId": "cost-of-living-2022",
+      "showTitle": "Cost of Living",
+      "file": "new-york-sun--elysa-gardner.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the playwright Martyna Majok and the play 'Cost of Living', along with plot details about characters with disabilities and their caretakers, aligning with the show's description."
+    },
+    {
+      "showId": "cost-of-living-2022",
+      "showTitle": "Cost of Living",
+      "file": "hollywood-reporter--frank-scheck.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the play's title, playwright (Martyna Majok), venue (Manhattan Theater Club), and cast members (Victor Williams, Jolly Abraham, Gregg Mozgala, Katy Sullivan), confirming it's about 'Cost of Living'."
+    },
+    {
+      "showId": "cult-of-love-2024",
+      "showTitle": "Cult of Love",
+      "file": "cititour--brian-scott-lipton.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the title \"Cult of Love\" and discusses the plot, cast, and creative team (Leslye Headland, Trip Cullman) of the show."
+    },
+    {
+      "showId": "cult-of-love-2024",
+      "showTitle": "Cult of Love",
+      "file": "new-york-sun--elysa-gardner.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the playwright Leslye Headland and the play 'Cult of Love', discussing the plot and characters of the show. It also mentions the director Trip Cullman."
+    },
+    {
+      "showId": "cult-of-love-2024",
+      "showTitle": "Cult of Love",
+      "file": "thewrap--robert-hofler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the play's title, playwright (Leslye Headland), venue (Second Stage's Helen Hayes Theater), and characters/actors (Mare Winningham, David Rasche, Shailene Woodley, etc.), confirming it's about 'Cult of Love'."
+    },
+    {
+      "showId": "cult-of-love-2024",
+      "showTitle": "Cult of Love",
+      "file": "dailybeast--tim-teeman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the title 'Cult of Love', the playwright Leslye Headland, the venue (2nd Stage, Hayes Theater), the director Trip Cullman, and several cast members (Rebecca Henderson, Zachary Quinto, Shailene Woodley, David Rasche, Mare Winningham, Molly Bernard, Roberta Colindrez). It also desc"
+    },
+    {
+      "showId": "cult-of-love-2024",
+      "showTitle": "Cult of Love",
+      "file": "exeunt-magazine--loren-noveck.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the play's title, cast members (Christopher Sears, Barbie Ferreira, Roberta Colindrez, Mare Winningham, David Rasche, Rebecca Henderson, Shailene Woodley, and Zachary Quinto), and plot details about a dysfunctional family, all of which align with the show 'Cult of Love'."
+    },
+    {
+      "showId": "cyrano-de-bergerac-2012",
+      "showTitle": "Cyrano de Bergerac",
+      "file": "vulture--scott-brown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Cyrano de Bergerac\" and discusses the plot, themes, and past actors who have played the role."
+    },
+    {
+      "showId": "cyrano-de-bergerac-2012",
+      "showTitle": "Cyrano de Bergerac",
+      "file": "nypost--elisabeth-vincentelli.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Cyrano de Bergerac\", the plot, the characters Cyrano, Roxane, and Christian, and the actor Douglas Hodge who played Cyrano in the 2012 production."
+    },
+    {
+      "showId": "cyrano-de-bergerac-west-end-2026",
+      "showTitle": "Cyrano de Bergerac",
+      "file": "standard--nick-curtis.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions 'Cyrano de Bergerac' and discusses the plot, director (Jamie Lloyd), and cast (James McAvoy), confirming it's about the correct show."
+    },
+    {
+      "showId": "cyrano-de-bergerac-west-end-2026",
+      "showTitle": "Cyrano de Bergerac",
+      "file": "artsdesk--aleks-sierz.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Cyrano de Bergerac\", the cast (James McAvoy), the playwright (Edmond Rostand), and the plot of the play. It also mentions the director Jamie Lloyd and the venue Playhouse Theatre."
+    },
+    {
+      "showId": "cyrano-de-bergerac-west-end-2026",
+      "showTitle": "Cyrano de Bergerac",
+      "file": "theatrely--juan-a-ramirez.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions James McAvoy as Cyrano, Roxane, Christian, and the plot of Cyrano de Bergerac, confirming it's about the correct show. It also mentions the director Jamie Lloyd."
+    },
+    {
+      "showId": "days-of-wine-and-roses-2024",
+      "showTitle": "Days of Wine and Roses",
+      "file": "new-york-sun--elysa-gardner.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Days of Wine and Roses\" and discusses the cast (Kelli O'Hara, Brian d'Arcy James), director (Michael Greif), and creative team (Adam Guettel, Craig Lucas). It also references the plot and the characters they play."
+    },
+    {
+      "showId": "days-of-wine-and-roses-2024",
+      "showTitle": "Days of Wine and Roses",
+      "file": "theater-pizzazz--carole-di-tosti.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Days of Wine and Roses (the Musical)\", the director Michael Greif, the venue Studio 54, and the lead actors Kelli O'Hara and Brian d'Arcy James. It also discusses the plot and themes of the show."
+    },
+    {
+      "showId": "days-of-wine-and-roses-2024",
+      "showTitle": "Days of Wine and Roses",
+      "file": "hollywood-soapbox--john-soltes.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, the actors Kelli O'Hara and Brian d'Arcy James, the venue Studio 54, and the plot about a couple struggling with alcoholism."
+    },
+    {
+      "showId": "days-of-wine-and-roses-2024",
+      "showTitle": "Days of Wine and Roses",
+      "file": "guardian--lauren-mechling.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show's title, the original movie, the plot about a couple dealing with addiction, the director Michael Greif, and the lead actors Kelli O'Hara and Brian d'Arcy James. It clearly discusses the 'Days of Wine and Roses' production."
+    },
+    {
+      "showId": "days-of-wine-and-roses-2024",
+      "showTitle": "Days of Wine and Roses",
+      "file": "cititour--brian-scott-lipton.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the show's title, the venue (Studio 54), the lead actors (Kelli O'Hara and Brian D'Arcy James), the composer (Adam Guettel), and the plot about a couple battling alcoholism, all of which align with the show 'Days of Wine and Roses'."
+    },
+    {
+      "showId": "dear-evan-hansen-2016",
+      "showTitle": "Dear Evan Hansen",
+      "file": "newsday--linda-winer.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the show's title, cast members (Ben Platt, Mike Faist), the venue (Music Box Theatre), and plot details, confirming it's about Dear Evan Hansen."
+    },
+    {
+      "showId": "dead-outlaw-2025",
+      "showTitle": "Dead Outlaw",
+      "file": "one-minute-critic--matthew-wexler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title \"Dead Outlaw\" and discusses the plot, themes, and cast (Andrew Durand) of the show."
+    },
+    {
+      "showId": "dead-outlaw-2025",
+      "showTitle": "Dead Outlaw",
+      "file": "cititour--brian-scott-lipton.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the show's title, director David Cromer, composer David Yazbek, book writer Itamar Moses, and actor Andrew Durand, all associated with 'Dead Outlaw.' It also discusses the plot and themes of the show."
+    },
+    {
+      "showId": "dear-evan-hansen-2016",
+      "showTitle": "Dear Evan Hansen",
+      "file": "njcom--christopher-kelly.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the show's title, plot, cast members (Ben Platt, Laura Dreyfuss, Rachel Bay Jones, Mike Faist, Michael Park, Jennifer Laura Thompson), and themes, indicating it is about 'Dear Evan Hansen'."
+    },
+    {
+      "showId": "dear-evan-hansen-2016",
+      "showTitle": "Dear Evan Hansen",
+      "file": "huffpost--steven-suskin.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the title character Evan Hansen, the Music Box Theatre, and cast members like Ben Platt, Rachel Bay Jones, Jennifer Laura Thompson, Mike Faist, Laura Dreyfuss, Michael Park, Kristolyn Lloyd, and Will Roland. It also discusses the plot and themes of the show."
+    },
+    {
+      "showId": "death-of-a-salesman-2012",
+      "showTitle": "Death of a Salesman",
+      "file": "newsday--linda-winer.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, cast members (Philip Seymour Hoffman, Andrew Garfield, Linda Emond), the director (Mike Nichols), and discusses the plot and themes of the play."
+    },
+    {
+      "showId": "death-of-a-salesman-2012",
+      "showTitle": "Death of a Salesman",
+      "file": "chicagotribune--chris-jones.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, the playwright Arthur Miller, the lead actors Wendell Pierce and Sharon D. Clarke, and the director Miranda Cromwell. It also discusses the plot and themes of the play."
+    },
+    {
+      "showId": "death-of-a-salesman-2012",
+      "showTitle": "Death of a Salesman",
+      "file": "philadelphia-inquirer--howard-shapiro.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Death of a Salesman\" and discusses the character Willy Loman, the play's history, and the current production starring Philip Seymour Hoffman and directed by Mike Nichols."
+    },
+    {
+      "showId": "death-becomes-her-2024",
+      "showTitle": "Death Becomes Her",
+      "file": "variety--steven-oxman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show 'Death Becomes Her' as a musical adaptation of the 1992 film, and discusses the cast, plot, and creative team."
+    },
+    {
+      "showId": "dear-evan-hansen-2016",
+      "showTitle": "Dear Evan Hansen",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the show's title, the lead actor Ben Platt, the venue Music Box Theatre, and the creative team (Steven Levenson, Benj Pasek, Justin Paul, Michael Greif), confirming it is about Dear Evan Hansen."
+    },
+    {
+      "showId": "doctor-zhivago-2015",
+      "showTitle": "Doctor Zhivago",
+      "file": "amny--matt-windman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Doctor Zhivago\" and discusses the plot, cast, and creative team of the show."
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
+      "showTitle": "Death of a Salesman",
+      "file": "queerty--matthew-wexler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the 2022 Broadway revival of Death of a Salesman, mentioning the director, cast, and themes of the production."
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
+      "showTitle": "Death of a Salesman",
+      "file": "cititour--scott-lipman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Death of a Salesman\" and discusses the cast, plot, and themes of the show, including the actors Wendell Pierce and Sharon D. Clarke."
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
+      "showTitle": "Death of a Salesman",
+      "file": "theatrely--kobi-kassal.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Death of a Salesman\" and its cast (Wendell Pierce, Sharon D. Clarke, and André De Shields), confirming it's about the correct show."
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
+      "showTitle": "Death of a Salesman",
+      "file": "newsweek--joe-westerfield.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Death of a Salesman\" and discusses the cast, plot, and themes of the show, including the all-Black Loman family and specific actors like Wendell Pierce and Khris Davis."
+    },
+    {
+      "showId": "doctor-zhivago-2015",
+      "showTitle": "Doctor Zhivago",
+      "file": "chicagotribune--chris-jones.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Doctor Zhivago\" and discusses the plot, characters, and creative team of the Broadway show."
+    },
+    {
+      "showId": "doctor-zhivago-2015",
+      "showTitle": "Doctor Zhivago",
+      "file": "deadline--jeremy-gerard.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the show's themes, plot elements (barricade-mounting protesters), and creative team (McAnuff), indicating it is about Doctor Zhivago."
+    },
+    {
+      "showId": "doctor-zhivago-2015",
+      "showTitle": "Doctor Zhivago",
+      "file": "guardian--alexis-soloski.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the title \"Doctor Zhivago\" multiple times, along with characters (Yurii, Lara), the source material (Boris Pasternak novel), and the director (Des McAnuff)."
+    },
+    {
+      "showId": "doctor-zhivago-2015",
+      "showTitle": "Doctor Zhivago",
+      "file": "thewrap--robert-hofler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the musical \"Doctor Zhivago\" and discusses the plot, cast (Tam Mutu, Paul Alexander Nolan), and creative team (Michael Weller, Lucy Simon). It also references the novel and film adaptations."
+    },
+    {
+      "showId": "doctor-zhivago-2015",
+      "showTitle": "Doctor Zhivago",
+      "file": "ap--mark-kennedy.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show \"Doctor Zhivago\" and discusses the plot, cast (Tam Mutu, Kelli Barrett), director (Des McAnuff), and creative team (Lucy Simon, Michael Weller)."
+    },
+    {
+      "showId": "dont-dress-for-dinner-2012",
+      "showTitle": "Don't Dress for Dinner",
+      "file": "amny--matt-windman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Don't Dress for Dinner\" and discusses the plot, cast (Jennifer Tilly, Ben Daniels, Spencer Kayden, Adam James, Patricia Kalember), and venue (American Airlines Theatre)."
+    },
+    {
+      "showId": "dont-dress-for-dinner-2012",
+      "showTitle": "Don't Dress for Dinner",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the play's plot, characters (Bernard, Jacqueline, Suzette), and playwright (Marc Camoletti), all of which align with the show 'Don't Dress for Dinner'."
+    },
+    {
+      "showId": "doctor-zhivago-2015",
+      "showTitle": "Doctor Zhivago",
+      "file": "variety--marilyn-stasio.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the plot, characters (Zhivago, Lara), and creative team (Michael Weller, Michael Korie & Amy Powers, Lucy Simon) of the show 'Doctor Zhivago'."
+    },
+    {
+      "showId": "dont-dress-for-dinner-2012",
+      "showTitle": "Don't Dress for Dinner",
+      "file": "northjerseycom--robert-feldberg.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the title, playwright, director, cast, and venue of the show 'Don't Dress for Dinner,' indicating it is a review of the correct production."
+    },
+    {
+      "showId": "dont-dress-for-dinner-2012",
+      "showTitle": "Don't Dress for Dinner",
+      "file": "newsday--linda-winer.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the title, cast members (Jennifer Tilly, Ben Daniels, Spencer Kayden), the director (John Tillinger), and the venue (Roundabout Theatre Company's American Airlines Theatre) of the show 'Don't Dress for Dinner'."
+    },
+    {
+      "showId": "drunk-shakespeare-off-broadway-2022",
+      "showTitle": "Drunk Shakespeare",
+      "file": "nytg--joe-dziemianowicz.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Drunk Shakespeare\" and discusses the concept of the show, including the actors drinking alcohol on stage and the interactive nature of the performance."
+    },
+    {
+      "showId": "escape-to-margaritaville-2018",
+      "showTitle": "Escape to Margaritaville",
+      "file": "san-diego-reader--jeff-smith.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the show's title, Jimmy Buffett, the plot, and the main character Tully, confirming it's about 'Escape to Margaritaville'."
+    },
+    {
+      "showId": "encores-the-wild-party-off-broadway-2026",
+      "showTitle": "Encores! The Wild Party",
+      "file": "cititour--brian-scott-lipton.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Wild Party,\" Michael John LaChiusa, George C. Wolfe, City Center Encores!, and discusses the plot, cast (Queenie, Burrs), and themes of the show. It's clearly a review of the correct production."
+    },
+    {
+      "showId": "escape-to-margaritaville-2018",
+      "showTitle": "Escape to Margaritaville",
+      "file": "san-diego-union-tribune--james-hebert.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, the venue (La Jolla Playhouse), the director (Christopher Ashley), and the plot/themes of the show. It also mentions the music of Jimmy Buffett, which is central to the show."
+    },
+    {
+      "showId": "eureka-day-2024",
+      "showTitle": "Eureka Day",
+      "file": "guardian--arifa-akbar.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the show title, cast members (Helen Hunt, Susan Kelechi Watson, Mark McKinney, Ben Schnetzer, Kirsten Foster), and discusses the plot and themes of the play, including vaccination debates and the dynamics within the school committee."
+    },
+    {
+      "showId": "eureka-day-2024",
+      "showTitle": "Eureka Day",
+      "file": "telegraph--dominic-cavendish.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the show title 'Eureka Day', the playwright Jonathan Spector, the venue 'Old Vic', and the actress Helen Hunt, all associated with the show."
+    },
+    {
+      "showId": "everyday-rapture-2010",
+      "showTitle": "Everyday Rapture",
+      "file": "ew--thom-geier.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the show's title, star Sherie Rene Scott, and plot details about a half-Mennonite woman seeking balance, all of which align with the show 'Everyday Rapture'."
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
+      "showTitle": "Every Brilliant Thing",
+      "file": "cititour--brian-scott-lipton.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, themes, and cast (Daniel Radcliffe) of \"Every Brilliant Thing,\" confirming it's about the correct show. It also mentions the authors and directors of the play."
+    },
+    {
+      "showId": "eureka-day-2024",
+      "showTitle": "Eureka Day",
+      "file": "variety--david-benedict.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, themes, and characters of \"Eureka Day,\" including the setting in a California school and the focus on parental attitudes towards vaccination. It also mentions the playwright Jonathan Spector and cast members, confirming it's about the correct show."
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
+      "showTitle": "Every Brilliant Thing",
+      "file": "vulture--sara-holdren.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the title \"Every Brilliant Thing\" and discusses the plot, writer Duncan Macmillan, and the show's interactive nature with the audience. It also mentions Daniel Radcliffe's involvement in the production."
+    },
+    {
+      "showId": "exit-the-king-2009",
+      "showTitle": "Exit the King",
+      "file": "ew--thom-geier.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, cast (Geoffrey Rush, Susan Sarandon, Lauren Ambrose, Andrea Martin), and themes of 'Exit the King,' indicating it is about the correct show."
+    },
+    {
+      "showId": "farinelli-and-the-king-2017",
+      "showTitle": "Farinelli and the King",
+      "file": "dailybeast--tim-teeman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, cast members (Mark Rylance, Melody Grove, Iestyn Davies), and plot elements, confirming it's about 'Farinelli and the King'."
+    },
+    {
+      "showId": "faith-healer-2006",
+      "showTitle": "Faith Healer",
+      "file": "variety--karen-fricker.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the play title \"Faith Healer\", the playwright Brian Friel, the director Jonathan Kent, and the actors Ralph Fiennes and Cherry Jones, all associated with the 2006 production of \"Faith Healer\"."
+    },
+    {
+      "showId": "faith-healer-2006",
+      "showTitle": "Faith Healer",
+      "file": "theatermania--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title \"Faith Healer\" and discusses the plot, cast (Ralph Fiennes, Cherry Jones, Ian McDiarmid), and director (Jonathan Kent) of the 2006 Broadway production."
+    },
+    {
+      "showId": "farinelli-and-the-king-2017",
+      "showTitle": "Farinelli and the King",
+      "file": "amny--matt-windman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the title, cast members (Mark Rylance, Melody Grove, Sam Crane, Iestyn Davies), and plot details of \"Farinelli and the King.\""
+    },
+    {
+      "showId": "farinelli-and-the-king-2017",
+      "showTitle": "Farinelli and the King",
+      "file": "vulture--justin-davidson.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, the Belasco theater, and the plot involving King Philippe V and Farinelli. It also names cast members Mark Rylance and Iestyn Davies."
+    },
+    {
+      "showId": "fat-ham-2023",
+      "showTitle": "Fat Ham",
+      "file": "cititour--brian-scott-lipton.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Fat Ham\" and discusses the plot, characters (Juicy, Tedra, Rev), and themes of the show. It also mentions the playwright James Ijames and director Saheem Ali."
+    },
+    {
+      "showId": "farinelli-and-the-king-2017",
+      "showTitle": "Farinelli and the King",
+      "file": "thewrap--robert-hofler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Farinelli and the King\" and discusses the plot, cast (Iestyn Davies, Sam Crane, Mark Rylance, Melody Grove), and themes of the show."
+    },
+    {
+      "showId": "fat-ham-2023",
+      "showTitle": "Fat Ham",
+      "file": "guardian--gloria-oladipo.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Fat Ham\" and discusses the plot, characters (Juicy, Pap, Tedra, Rev, Tio, Rabby, Opal, Larry), and themes of the show. It also mentions the playwright James Ijames and director Saheem Ali."
+    },
+    {
+      "showId": "farinelli-and-the-king-2017",
+      "showTitle": "Farinelli and the King",
+      "file": "newsday--barbara-schuler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the show's title, cast members (Mark Rylance, Sam Crane, Iestyn Davies, Melody Grove), the playwright (Claire van Kampen), the director (John Dove), and the Belasco Theatre, all of which align with the show 'Farinelli and the King'."
+    },
+    {
+      "showId": "fat-ham-2023",
+      "showTitle": "Fat Ham",
+      "file": "slantmagazine--dan-rubins.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, playwright, characters, and plot details, confirming it's about 'Fat Ham'."
+    },
+    {
+      "showId": "fat-ham-2023",
+      "showTitle": "Fat Ham",
+      "file": "timeout--raven-snook.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, characters (Juicy, Tedra, Rev, etc.), and themes of 'Fat Ham,' including its connection to Hamlet and its setting at a Southern backyard barbecue."
+    },
+    {
+      "showId": "fat-ham-2023",
+      "showTitle": "Fat Ham",
+      "file": "new-york-sun--elysa-gardner.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Fat Ham\" and discusses the plot, characters (Juicy, Pap, Tedra, Rev), playwright (James Ijames), and director (Saheem Ali), all of which are associated with the show."
+    },
+    {
+      "showId": "fat-ham-2023",
+      "showTitle": "Fat Ham",
+      "file": "thewrap--robert-hofler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Fat Ham\" and discusses the plot, characters (Juicy, Rev, Pap, Tedra), and creative team (James Ijames, Saheem Ali), confirming it's about the correct show."
+    },
+    {
+      "showId": "fat-ham-2023",
+      "showTitle": "Fat Ham",
+      "file": "theatermania--matt-windman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Fat Ham\" and describes the plot, setting, and themes of the show, confirming it is about the correct production."
+    },
+    {
+      "showId": "fiddler-on-the-roof-2015",
+      "showTitle": "Fiddler on the Roof",
+      "file": "huffpost--steven-suskin.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Fiddler on the Roof\" and discusses the cast (Danny Burstein as Tevye, Jessica Hecht as Golde), the plot, and the history of the show."
+    },
+    {
+      "showId": "fiddler-on-the-roof-2015",
+      "showTitle": "Fiddler on the Roof",
+      "file": "ap--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Fiddler on the Roof\" and discusses the plot, characters (Tevye, Tzeitel), director (Bartlett Sher), and venue (Broadway Theatre), confirming it's about the stated show."
+    },
+    {
+      "showId": "fiddler-on-the-roof-2015",
+      "showTitle": "Fiddler on the Roof",
+      "file": "amny--matt-windman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Fiddler on the Roof\" and discusses the plot, characters (Tevye, Golde, Tzeitel, Hodel, Chava), and creative team (director Bartlett Sher, choreographer Hofesh Shechter)."
+    },
+    {
+      "showId": "fiddler-on-the-roof-2015",
+      "showTitle": "Fiddler on the Roof",
+      "file": "njcom--christopher-kelly.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Fiddler on the Roof\" and discusses the director, cast (Danny Burstein as Tevye), and themes of the show. It also references the choreography and music."
+    },
+    {
+      "showId": "fiddler-on-the-roof-2015",
+      "showTitle": "Fiddler on the Roof",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Fiddler on the Roof\" and discusses the plot, characters (Tevye, Golde, Tzeitel, Motel), actors (Danny Burstein, Jessica Hecht, Alexandra Silber, Adam Kantor), director (Bartlett Sher), and songs from the show."
     }
   ]
 }
