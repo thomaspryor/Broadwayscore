@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-23T12:42:55.125Z",
-  "processed": 404,
-  "failed": 76,
-  "successRate": "84.2%",
+  "updatedAt": "2026-03-23T12:45:32.378Z",
+  "processed": 411,
+  "failed": 79,
+  "successRate": "83.9%",
   "tierBreakdown": {
-    "playwright": 351,
+    "playwright": 358,
     "amp": 8,
     "browserbase": 14,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 40,
+    "archiveToday": 41,
     "archive": 46
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -108,6 +108,17 @@
       "t": "2026-03-23T12:34:21.750Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-23T12:45:04.526Z",
+      "event": "bb-session",
+      "session": "a76d4b29",
+      "url": "https://www.thestage.co.uk/reviews/2006/wicked-review-at-apollo-victoria-london/"
+    },
+    {
+      "t": "2026-03-23T12:45:05.621Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
