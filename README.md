@@ -39,6 +39,14 @@ Full methodology: [broadwayscorecard.com/methodology](https://broadwayscorecard.
 - **139 automated workflows** handling data collection, scoring, validation, and deployment
 - **Automated data pipelines** collecting reviews, grosses, and ticket availability daily
 
+## Related Repos
+
+| Repo | GitHub | Local dir | Purpose |
+|------|--------|-----------|---------|
+| Web | `thomaspryor/Broadwayscore` | `~/Broadwayscore/` | Next.js site, scoring engine, data pipelines |
+| iOS app | `thomaspryor/BroadwayScorecard-app` | `~/BroadwayScorecard-app/` | Expo/React Native mobile app |
+| Data | `thomaspryor/broadway-scorecard-data` | `~/broadway-scorecard-data/` | Review texts, core data (private) |
+
 ## Data Architecture
 
 The application code and scoring engine live in this repository. Review texts and core data are stored separately to respect copyright and keep the public repo clean.
