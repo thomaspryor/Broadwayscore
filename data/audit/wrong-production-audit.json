@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-03-23T12:51:42.577Z",
+  "timestamp": "2026-03-23T12:59:43.076Z",
   "stats": {
     "totalReviews": 32374,
     "alreadyFlagged": 11020,
     "dateGuardCatches": 139,
-    "directorMismatch": 942,
-    "tvFilmSignals": 3400,
+    "directorMismatch": 941,
+    "tvFilmSignals": 3399,
     "londonSignals": 1017,
     "offBroadwaySignals": 1007,
     "yearMismatch": 71,
@@ -24946,11 +24946,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -52576,11 +52571,6 @@
       "url": "https://www.telegraph.co.uk/culture/theatre/11161597/How-the-Lion-King-came-to-reign.html",
       "findings": [
         {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
-        },
-        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
@@ -75107,20 +75097,6 @@
     },
     {
       "showId": "paranormal-activity-west-end-2025",
-      "file": "artsdesk--gary-naylor.json",
-      "score": 48,
-      "publishDate": "2025-12-23",
-      "url": "https://theartsdesk.com/theatre/paranormal-activity-ambassadors-theatre-review-franchise-frightener-flops-stage",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "paranormal-activity-west-end-2025",
       "file": "times-uk--rachel-halliburton.json",
       "score": 76,
       "publishDate": "2025-12-16",
@@ -82225,6 +82201,20 @@
       "score": 85,
       "publishDate": "2023-11-15",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-play-that-goes-wrong-duchess-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "file": "timeout-london--unknown.json",
+      "score": 72,
+      "publishDate": "September 15th, 2014",
+      "url": "https://www.timeout.com/london/theatre/the-play-that-goes-wrong-1",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
