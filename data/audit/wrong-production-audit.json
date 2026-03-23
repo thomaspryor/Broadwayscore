@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-23T17:10:32.103Z",
+  "timestamp": "2026-03-23T17:19:47.306Z",
   "stats": {
     "totalReviews": 32375,
     "alreadyFlagged": 11021,
     "dateGuardCatches": 139,
     "directorMismatch": 941,
     "tvFilmSignals": 3402,
-    "londonSignals": 1017,
+    "londonSignals": 1018,
     "offBroadwaySignals": 1007,
     "yearMismatch": 71,
     "noPublishDate": 6813
@@ -30918,6 +30918,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -48600,11 +48605,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
         }
       ]
     },
@@ -52580,6 +52580,11 @@
       "publishDate": "2014-10-17",
       "url": "https://www.telegraph.co.uk/culture/theatre/11161597/How-the-Lion-King-came-to-reign.html",
       "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
+        },
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
