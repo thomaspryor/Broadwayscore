@@ -473,7 +473,15 @@
     "maltby-and-shires-about-time-off-broadway-2026/theatermania--zachary-stewart.json",
     "maltby-and-shires-about-time-off-broadway-2026/off-off-online--marc-miller.json",
     "touch-off-broadway-2026/nyt-theater--unknown.json",
-    "touch-off-broadway-2026/blogcritics--jon-sobel.json"
+    "touch-off-broadway-2026/blogcritics--jon-sobel.json",
+    "touch-off-broadway-2026/talkinbroadway--howard-miller.json",
+    "touch-off-broadway-2026/theater-pizzazz--beatrice-williams-rude.json",
+    "touch-off-broadway-2026/theater-scene--victor-gluck.json",
+    "every-brilliant-thing-2026/nytg--austin-fimmano.json",
+    "every-brilliant-thing-2026/deadline--unknown.json",
+    "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
+    "every-brilliant-thing-2026/thewrap--robert-hofler.json",
+    "every-brilliant-thing-2026/theatrely--unknown.json"
   ],
   "failed": [
     "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
@@ -580,7 +588,9 @@
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
     "touch-off-broadway-2026/talkinbroadway--unknown.json",
     "touch-off-broadway-2026/broadwayworld--marina-kennedy.json",
-    "touch-off-broadway-2026/plays-to-see--austin-fimmano.json"
+    "touch-off-broadway-2026/plays-to-see--austin-fimmano.json",
+    "every-brilliant-thing-2026/nytimes--adam-feldman.json",
+    "every-brilliant-thing-2026/guardian--jesse-hassenger.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1000,9 +1010,17 @@
       "maltby-and-shires-about-time-off-broadway-2026/theatermania--zachary-stewart.json",
       "maltby-and-shires-about-time-off-broadway-2026/off-off-online--marc-miller.json",
       "touch-off-broadway-2026/nyt-theater--unknown.json",
-      "touch-off-broadway-2026/blogcritics--jon-sobel.json"
+      "touch-off-broadway-2026/blogcritics--jon-sobel.json",
+      "touch-off-broadway-2026/theater-pizzazz--beatrice-williams-rude.json",
+      "touch-off-broadway-2026/theater-scene--victor-gluck.json",
+      "every-brilliant-thing-2026/nytg--austin-fimmano.json",
+      "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
+      "every-brilliant-thing-2026/theatrely--unknown.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
+      "every-brilliant-thing-2026/thewrap--robert-hofler.json"
+    ],
     "browserbase": [
       "data/review-texts/romeo-and-juliet-west-end-2026/nytimes--unknown.json",
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -1021,7 +1039,9 @@
       "data/review-texts/mamma-mia-west-end-2021/variety--matt-wolf.json",
       "mamma-mia-west-end-2021/variety--matt-wolf.json",
       "data/review-texts/mamma-mia-west-end-2021/variety--owen-gleiberman.json",
-      "mamma-mia-west-end-2021/variety--owen-gleiberman.json"
+      "mamma-mia-west-end-2021/variety--owen-gleiberman.json",
+      "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
+      "every-brilliant-thing-2026/deadline--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -1084,7 +1104,10 @@
       "data/review-texts/my-joy-is-heavy-off-broadway-2025/timeout--unknown.json",
       "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/theater-pizzazz--samuel-l-leiter.json",
       "data/review-texts/touch-off-broadway-2026/talkinbroadway--unknown.json",
-      "data/review-texts/touch-off-broadway-2026/plays-to-see--austin-fimmano.json"
+      "data/review-texts/touch-off-broadway-2026/plays-to-see--austin-fimmano.json",
+      "data/review-texts/touch-off-broadway-2026/broadwayworld--marina-kennedy.json",
+      "data/review-texts/every-brilliant-thing-2026/nytimes--adam-feldman.json",
+      "data/review-texts/every-brilliant-thing-2026/guardian--jesse-hassenger.json"
     ],
     "archive": [
       "broken-glass-west-end-2026/artsdesk--unknown.json",
@@ -1145,11 +1168,12 @@
       "woman-in-mind-west-end-2025/telegraph--claire-allfree.json",
       "the-spy-who-came-in-from-the-cold-west-end-2025/artsdesk--for-aleks-sierz.json",
       "dear-england-new-wimbledon-theatre-west-end-2026/times-uk--clive-davis.json",
-      "my-joy-is-heavy-off-broadway-2025/vulture--sara-holdren.json"
+      "my-joy-is-heavy-off-broadway-2025/vulture--sara-holdren.json",
+      "touch-off-broadway-2026/talkinbroadway--howard-miller.json"
     ]
   },
   "startTime": "2026-03-23T00:14:57.443Z",
-  "lastProcessed": "touch-off-broadway-2026/plays-to-see--austin-fimmano.json",
+  "lastProcessed": "every-brilliant-thing-2026/theatrely--unknown.json",
   "log": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -1403,6 +1427,17 @@
       "t": "2026-03-23T03:22:14.324Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-23T04:42:44.666Z",
+      "event": "bb-session",
+      "session": "2995d52e",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-23T04:42:46.071Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

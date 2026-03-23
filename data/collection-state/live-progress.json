@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-23T04:40:58.842Z",
-  "processed": 474,
-  "failed": 105,
-  "successRate": "81.9%",
+  "updatedAt": "2026-03-23T04:44:04.523Z",
+  "processed": 482,
+  "failed": 107,
+  "successRate": "81.8%",
   "tierBreakdown": {
-    "playwright": 416,
-    "amp": 0,
-    "browserbase": 18,
+    "playwright": 421,
+    "amp": 2,
+    "browserbase": 20,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 58,
-    "archive": 59
+    "archiveToday": 61,
+    "archive": 60
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-03-23T02:37:19.873Z",
-      "event": "bb-session",
-      "session": "0ae250c0",
-      "url": "https://www.nytimes.com/2017/12/28/theater/london-hamilton-pinocchio.html"
-    },
-    {
-      "t": "2026-03-23T02:37:20.936Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-23T02:38:22.872Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-23T03:22:14.324Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-23T04:42:44.666Z",
+      "event": "bb-session",
+      "session": "2995d52e",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcli"
+    },
+    {
+      "t": "2026-03-23T04:42:46.071Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
