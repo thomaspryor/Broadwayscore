@@ -638,7 +638,16 @@
     "two-strangers-bway-2025/nyt-theater--unknown.json",
     "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
     "two-strangers-bway-2025/chicagotribune--unknown.json",
-    "two-strangers-bway-2025/jitney--unknown.json"
+    "two-strangers-bway-2025/jitney--unknown.json",
+    "two-strangers-bway-2025/playbill--unknown.json",
+    "two-strangers-bway-2025/theater-life--samuel-l-leiter.json",
+    "two-strangers-bway-2025/theater-scene--joseph-pisano.json",
+    "chess-2025/hollywood-reporter--angie-han.json",
+    "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "chess-2025/timeout--adam-feldman.json",
+    "chess-2025/culturesauce--thom-geier.json",
+    "chess-2025/frontmezzjunkies--unknown.json",
+    "chess-2025/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
@@ -760,7 +769,8 @@
     "an-ark-off-broadway-2026/wsj--unknown.json",
     "an-ark-off-broadway-2026/playbill--unknown.json",
     "an-ark-off-broadway-2026/newyorker--emily-nussbaum.json",
-    "two-strangers-bway-2025/guardian--unknown.json"
+    "two-strangers-bway-2025/guardian--unknown.json",
+    "chess-2025/billboard--rebecca-milzoff.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1327,7 +1337,15 @@
       "data-off-broadway-2026/nysr--david-finkle.json",
       "two-strangers-bway-2025/nyt-theater--unknown.json",
       "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
-      "two-strangers-bway-2025/jitney--unknown.json"
+      "two-strangers-bway-2025/jitney--unknown.json",
+      "two-strangers-bway-2025/playbill--unknown.json",
+      "two-strangers-bway-2025/theater-life--samuel-l-leiter.json",
+      "two-strangers-bway-2025/theater-scene--joseph-pisano.json",
+      "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "chess-2025/timeout--adam-feldman.json",
+      "chess-2025/culturesauce--thom-geier.json",
+      "chess-2025/frontmezzjunkies--unknown.json",
+      "chess-2025/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -1367,7 +1385,9 @@
       "data/review-texts/marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
       "marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
       "data/review-texts/the-unknown-off-broadway-2026/amny--unknown.json",
-      "the-unknown-off-broadway-2026/amny--unknown.json"
+      "the-unknown-off-broadway-2026/amny--unknown.json",
+      "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
+      "chess-2025/hollywood-reporter--angie-han.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -1438,7 +1458,8 @@
       "data/review-texts/tru-off-broadway-2026/nytimes--unknown.json",
       "data/review-texts/bigfoot-off-broadway-2026/buy-tickets--unknown.json",
       "data/review-texts/an-ark-off-broadway-2026/nytimes--unknown.json",
-      "data/review-texts/an-ark-off-broadway-2026/newyorker--emily-nussbaum.json"
+      "data/review-texts/an-ark-off-broadway-2026/newyorker--emily-nussbaum.json",
+      "data/review-texts/chess-2025/billboard--rebecca-milzoff.json"
     ],
     "archive": [
       "broken-glass-west-end-2026/artsdesk--unknown.json",
@@ -1512,7 +1533,7 @@
     ]
   },
   "startTime": "2026-03-23T00:14:57.443Z",
-  "lastProcessed": "two-strangers-bway-2025/jitney--unknown.json",
+  "lastProcessed": "chess-2025/one-minute-critic--matthew-wexler.json",
   "log": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -1865,6 +1886,17 @@
       "t": "2026-03-23T05:19:25.431Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-23T05:22:03.960Z",
+      "event": "bb-session",
+      "session": "7fae8f75",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-23T05:22:05.374Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
