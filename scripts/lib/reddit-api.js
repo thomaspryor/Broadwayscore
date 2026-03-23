@@ -112,7 +112,7 @@ async function fetchViaScrapingBee(url) {
 /**
  * Fetch via Bright Data (primary proxy fallback)
  * Sends params in POST body (API validates body, not query params).
- * Tries web_unlocker (simple proxy) then scraping_browser (browser-based).
+ * Tries mcp_unlocker (simple proxy) then mcp_browser (browser-based).
  */
 async function fetchViaBrightData(url) {
   const token = process.env.BRIGHTDATA_TOKEN;
@@ -120,8 +120,8 @@ async function fetchViaBrightData(url) {
 
   stats.brightData++;
 
-  // Try zones in order: web_unlocker (simple proxy) → scraping_browser (browser)
-  const zones = ['web_unlocker', 'scraping_browser'];
+  // Try zones in order: mcp_unlocker (simple proxy) → mcp_browser (browser)
+  const zones = ['mcp_unlocker', 'mcp_browser'];
 
   for (const zone of zones) {
     try {
