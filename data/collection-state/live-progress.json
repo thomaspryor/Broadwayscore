@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-23T00:25:16.734Z",
-  "processed": 18,
-  "failed": 5,
-  "successRate": "78.3%",
+  "updatedAt": "2026-03-23T00:46:22.753Z",
+  "processed": 66,
+  "failed": 7,
+  "successRate": "90.4%",
   "tierBreakdown": {
-    "playwright": 18,
+    "playwright": 63,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 5,
-    "archive": 0
+    "archiveToday": 6,
+    "archive": 2
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -47,6 +47,17 @@
       "t": "2026-03-23T00:24:33.977Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-23T00:35:11.038Z",
+      "event": "bb-session",
+      "session": "2cc6faa3",
+      "url": "https://www.nytimes.com/2024/05/24/theater/tom-holland-romeo-and-juliet.html"
+    },
+    {
+      "t": "2026-03-23T00:35:12.060Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

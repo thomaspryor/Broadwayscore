@@ -191,6 +191,10 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          THESTAGE_EMAIL: ${{ secrets.THESTAGE_EMAIL }}
+          THESTAGE_PASSWORD: ${{ secrets.THESTAGE_PASSWORD }}
         run: |
           SHOWS="${{ matrix.shows }}"
 
