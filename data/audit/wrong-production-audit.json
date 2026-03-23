@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-23T16:52:59.420Z",
+  "timestamp": "2026-03-23T17:02:35.299Z",
   "stats": {
     "totalReviews": 32375,
     "alreadyFlagged": 11021,
     "dateGuardCatches": 139,
     "directorMismatch": 941,
-    "tvFilmSignals": 3401,
-    "londonSignals": 1018,
+    "tvFilmSignals": 3402,
+    "londonSignals": 1017,
     "offBroadwaySignals": 1007,
     "yearMismatch": 71,
     "noPublishDate": 6813
@@ -20955,6 +20955,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"thomas kail\" from hamilton-2015"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         },
         {
           "type": "LONDON_SIGNAL",
@@ -73590,20 +73595,6 @@
       "score": 72,
       "publishDate": null,
       "url": "https://www.nbcnewyork.com/entertainment/the-scene/Review-Motown-BerryGordy-2016-387676831.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "moulin-rouge-the-musical-west-end-2021",
-      "file": "london-box-office--stuart-king.json",
-      "score": 72,
-      "publishDate": "2024-09-18",
-      "url": "https://www.londonboxoffice.co.uk/news/post/moulin-rouge-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
