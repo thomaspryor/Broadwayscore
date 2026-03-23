@@ -410,7 +410,16 @@
     "matilda-the-musical-west-end-2021/whatsonstage--andy-plaice.json",
     "matilda-the-musical-west-end-2021/whatsonstage--michael-coveney.json",
     "wicked-west-end-2021/standard--jessie-thompson.json",
-    "wicked-west-end-2021/whatsonstage--editorial-staff.json"
+    "wicked-west-end-2021/whatsonstage--editorial-staff.json",
+    "the-lion-king-west-end-2021/variety--matt-wolf.json",
+    "the-lion-king-west-end-2021/timeout-london--ben-walters.json",
+    "the-lion-king-west-end-2021/london-box-office--miriam-gibson.json",
+    "the-lion-king-west-end-2021/london-theatre--dom-ohanlon.json",
+    "the-lion-king-west-end-2021/shy-strange-manic--kariss-ainsworth.json",
+    "the-lion-king-west-end-2021/standard--nicholas-de-jongh.json",
+    "the-lion-king-west-end-2021/telegraph--david-gritten.json",
+    "the-lion-king-west-end-2021/whatsonstage--alex-wood.json",
+    "the-lion-king-west-end-2021/whatsonstage--daisy-bowie.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -491,7 +500,8 @@
     "the-book-of-mormon-west-end-2024/independent--paul-taylor.json",
     "matilda-the-musical-west-end-2021/telegraph--unknown.json",
     "wicked-west-end-2021/thestage--paul-vale.json",
-    "the-lion-king-west-end-2021/thestage--unknown.json"
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "the-lion-king-west-end-2021/telegraph--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -853,7 +863,12 @@
       "matilda-the-musical-west-end-2021/whatsonstage--andy-plaice.json",
       "matilda-the-musical-west-end-2021/whatsonstage--michael-coveney.json",
       "wicked-west-end-2021/standard--jessie-thompson.json",
-      "wicked-west-end-2021/whatsonstage--editorial-staff.json"
+      "wicked-west-end-2021/whatsonstage--editorial-staff.json",
+      "the-lion-king-west-end-2021/london-box-office--miriam-gibson.json",
+      "the-lion-king-west-end-2021/london-theatre--dom-ohanlon.json",
+      "the-lion-king-west-end-2021/standard--nicholas-de-jongh.json",
+      "the-lion-king-west-end-2021/whatsonstage--alex-wood.json",
+      "the-lion-king-west-end-2021/whatsonstage--daisy-bowie.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -879,7 +894,9 @@
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
       "back-to-the-future-west-end-2021/variety--david-benedict.json",
       "data/review-texts/hamilton-west-end-2021/variety--marilyn-stasio.json",
-      "hamilton-west-end-2021/variety--marilyn-stasio.json"
+      "hamilton-west-end-2021/variety--marilyn-stasio.json",
+      "data/review-texts/the-lion-king-west-end-2021/variety--matt-wolf.json",
+      "the-lion-king-west-end-2021/variety--matt-wolf.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -973,11 +990,14 @@
       "showstopper-the-improvised-musical-west-end-2023/telegraph--dominic-cavendish.json",
       "the-play-that-goes-wrong-west-end-2021/timeout-london--unknown.json",
       "the-play-that-goes-wrong-west-end-2021/thestage--unknown.json",
-      "the-play-that-goes-wrong-west-end-2021/times-uk--dominic-maxwell.json"
+      "the-play-that-goes-wrong-west-end-2021/times-uk--dominic-maxwell.json",
+      "the-lion-king-west-end-2021/timeout-london--ben-walters.json",
+      "the-lion-king-west-end-2021/shy-strange-manic--kariss-ainsworth.json",
+      "the-lion-king-west-end-2021/telegraph--david-gritten.json"
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "the-lion-king-west-end-2021/thestage--unknown.json",
+  "lastProcessed": "the-lion-king-west-end-2021/whatsonstage--daisy-bowie.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -1083,6 +1103,17 @@
       "t": "2026-03-23T12:45:05.621Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-23T12:45:33.201Z",
+      "event": "bb-session",
+      "session": "af356a67",
+      "url": "https://variety.com/1999/legit/reviews/the-lion-king-lyceum-theater-1200459301/"
+    },
+    {
+      "t": "2026-03-23T12:45:34.147Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
