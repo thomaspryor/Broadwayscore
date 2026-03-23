@@ -684,7 +684,17 @@
     "amaze-magic-off-broadway-2025/theater-scene--victor-gluck.json",
     "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json",
     "heathers-the-musical-off-broadway-2025/new-york-sun--elysa-gardner.json",
-    "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json"
+    "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
+    "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json",
+    "heathers-the-musical-off-broadway-2025/cititour--brian-scott-lipton.json",
+    "heathers-the-musical-off-broadway-2025/theatrely--kobi-kassal.json",
+    "heathers-the-musical-off-broadway-2025/amny--matt-windman.json",
+    "heathers-the-musical-off-broadway-2025/culturesauce--unknown.json",
+    "heathers-the-musical-off-broadway-2025/digital-journal--mark-papadatos.json",
+    "heathers-the-musical-off-broadway-2025/frontmezzjunkies--ross.json",
+    "heathers-the-musical-off-broadway-2025/northjerseycom--robert-feldberg.json",
+    "heathers-the-musical-off-broadway-2025/nysr--david-finkle.json",
+    "heathers-the-musical-off-broadway-2025/off-off-online--jessica-taghap.json"
   ],
   "failed": [
     "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
@@ -1418,7 +1428,14 @@
       "amaze-magic-off-broadway-2025/theater-scene--victor-gluck.json",
       "heathers-the-musical-off-broadway-2025/la-voce-di-new-york--jk-clarke.json",
       "heathers-the-musical-off-broadway-2025/new-york-sun--elysa-gardner.json",
-      "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json"
+      "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
+      "heathers-the-musical-off-broadway-2025/timeout--raven-snook.json",
+      "heathers-the-musical-off-broadway-2025/theatrely--kobi-kassal.json",
+      "heathers-the-musical-off-broadway-2025/culturesauce--unknown.json",
+      "heathers-the-musical-off-broadway-2025/digital-journal--mark-papadatos.json",
+      "heathers-the-musical-off-broadway-2025/frontmezzjunkies--ross.json",
+      "heathers-the-musical-off-broadway-2025/nysr--david-finkle.json",
+      "heathers-the-musical-off-broadway-2025/off-off-online--jessica-taghap.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -1462,7 +1479,9 @@
       "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
       "chess-2025/hollywood-reporter--angie-han.json",
       "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
-      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json"
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
+      "data/review-texts/heathers-the-musical-off-broadway-2025/amny--matt-windman.json",
+      "heathers-the-musical-off-broadway-2025/amny--matt-windman.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -1608,11 +1627,13 @@
       "two-strangers-bway-2025/chicagotribune--unknown.json",
       "ragtime-2025/nytimes--unknown.json",
       "ragtime-2025/wsj--charles-isherwood.json",
-      "masquerade-off-broadway-2025/chicagotribune--unknown.json"
+      "masquerade-off-broadway-2025/chicagotribune--unknown.json",
+      "heathers-the-musical-off-broadway-2025/cititour--brian-scott-lipton.json",
+      "heathers-the-musical-off-broadway-2025/northjerseycom--robert-feldberg.json"
     ]
   },
   "startTime": "2026-03-23T00:14:57.443Z",
-  "lastProcessed": "heathers-the-musical-off-broadway-2025/theatermania--zachary-stewart.json",
+  "lastProcessed": "heathers-the-musical-off-broadway-2025/off-off-online--jessica-taghap.json",
   "log": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -2009,6 +2030,17 @@
       "t": "2026-03-23T05:27:46.647Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-23T05:32:21.034Z",
+      "event": "bb-session",
+      "session": "7ef01cb5",
+      "url": "https://www.amny.com/entertainment/broadway/review-heathers-the-musical-off-broa"
+    },
+    {
+      "t": "2026-03-23T05:32:22.356Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
