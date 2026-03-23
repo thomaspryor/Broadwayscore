@@ -1,815 +1,631 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-23T01:53:49.530Z",
+    "generatedAt": "2026-03-23T02:01:25.262Z",
     "description": "LLM-classified wrong-show results from title-mention guard candidates",
-    "total": 177,
-    "classified": 100,
-    "wrongShow": 0,
-    "correct": 100,
+    "total": 77,
+    "classified": 77,
+    "wrongShow": 1,
+    "correct": 76,
     "uncertain": 0,
     "errors": 0,
-    "applied": 0
+    "applied": 1
   },
   "results": [
     {
-      "showId": "the-testament-of-mary-2013",
-      "showTitle": "The Testament of Mary",
-      "file": "nypost--elisabeth-vincentelli.json",
+      "showId": "torch-song-2018",
+      "showTitle": "Torch Song",
+      "file": "towleroad--matt-windman.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review explicitly mentions \"The Testament of Mary\" on Broadway and discusses the plot, cast (Fiona Shaw), and themes of the show."
+      "reasoning": "The review explicitly mentions \"Torch Song\", Harvey Fierstein, Michael Urie, and the Helen Hayes Theatre, all associated with the show."
     },
     {
-      "showId": "the-trip-to-bountiful-2013",
-      "showTitle": "The Trip to Bountiful",
-      "file": "backstage--erik-haagensen.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title, cast (Cicely Tyson), director (Michael Wilson), and plot details of \"The Trip to Bountiful.\""
-    },
-    {
-      "showId": "the-testament-of-mary-2013",
-      "showTitle": "The Testament of Mary",
-      "file": "newsday--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"The Testament of Mary\" and discusses the plot, cast (Fiona Shaw), and playwright (Colm Tóibín)."
-    },
-    {
-      "showId": "the-testament-of-mary-2013",
-      "showTitle": "The Testament of Mary",
-      "file": "nydailynews--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review discusses the plot, themes, and star (Fiona Shaw) of \"The Testament of Mary,\" and mentions the playwright Colm Toibin."
-    },
-    {
-      "showId": "the-testament-of-mary-2013",
-      "showTitle": "The Testament of Mary",
-      "file": "northjerseycom--robert-feldberg.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"The Testament of Mary\" and discusses the plot, the actress Fiona Shaw, and the themes of the play."
-    },
-    {
-      "showId": "the-trip-to-bountiful-2013",
-      "showTitle": "The Trip to Bountiful",
-      "file": "latimes--charles-mcnulty.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions 'The Trip to Bountiful' and discusses the plot, cast (Cuba Gooding Jr., Vanessa Williams), and the character Carrie Watts."
-    },
-    {
-      "showId": "the-trip-to-bountiful-2013",
-      "showTitle": "The Trip to Bountiful",
-      "file": "timeout--david-cote.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions Cicely Tyson, the play's title, and Horton Foote, all associated with \"The Trip to Bountiful.\""
-    },
-    {
-      "showId": "the-trip-to-bountiful-2013",
-      "showTitle": "The Trip to Bountiful",
-      "file": "newsday--linda-winer.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title, cast members (Cicely Tyson, Cuba Gooding Jr., Vanessa Williams), and director (Michael Wilson) of 'The Trip to Bountiful'."
-    },
-    {
-      "showId": "the-trip-to-bountiful-2013",
-      "showTitle": "The Trip to Bountiful",
-      "file": "nypost--elisabeth-vincentelli.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title \"The Trip to Bountiful\" and discusses the plot, cast (Cicely Tyson, Cuba Gooding Jr., Vanessa Williams), and themes of the show."
-    },
-    {
-      "showId": "the-trip-to-bountiful-2013",
-      "showTitle": "The Trip to Bountiful",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"The Trip to Bountiful\" and discusses the plot, cast (Cicely Tyson, Cuba Gooding Jr., Vanessa Williams), and themes of the show."
-    },
-    {
-      "showId": "the-trip-to-bountiful-2013",
-      "showTitle": "The Trip to Bountiful",
-      "file": "vulture--jesse-green.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"The Trip to Bountiful\" and discusses the plot, characters (Carrie Watts, Ludie, Jessie Mae), and themes of the play."
-    },
-    {
-      "showId": "the-velocity-of-autumn-2014",
-      "showTitle": "The Velocity of Autumn",
-      "file": "hollywood-reporter--thr-staff.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review discusses the plot, characters (Alexandra and Chris), and setting (Brooklyn brownstone) of \"The Velocity of Autumn.\""
-    },
-    {
-      "showId": "the-velocity-of-autumn-2014",
-      "showTitle": "The Velocity of Autumn",
-      "file": "nbcny--dave-quinn.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review discusses the plot, cast (Estelle Parsons), and themes of \"The Velocity of Autumn,\" indicating it is about the correct show. It mentions the character Alexandra and the premise of the play."
-    },
-    {
-      "showId": "the-velocity-of-autumn-2014",
-      "showTitle": "The Velocity of Autumn",
-      "file": "newsday--linda-winer.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show title, cast members Estelle Parsons and Stephen Spinella, and the playwright Eric Coble. It also describes the plot and setting of the play."
-    },
-    {
-      "showId": "the-velocity-of-autumn-2014",
-      "showTitle": "The Velocity of Autumn",
-      "file": "nydailynews--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title \"The Velocity of Autumn\" and discusses the plot, cast members Estelle Parsons and Stephen Spinella, and the director Molly Smith, all of which are associated with the show."
-    },
-    {
-      "showId": "the-waverly-gallery-2018",
-      "showTitle": "The Waverly Gallery",
-      "file": "amny--matt-windman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"The Waverly Gallery\" and discusses the cast, director, and plot details of the show."
-    },
-    {
-      "showId": "the-waverly-gallery-2018",
-      "showTitle": "The Waverly Gallery",
-      "file": "chicagotribune--matt-windman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions Elaine May, Michael Cera, Joan Allen, Lucas Hedges, David Cromer, Kenneth Lonergan, Lila Neugebauer, and the Golden Theatre, all associated with 'The Waverly Gallery' production."
-    },
-    {
-      "showId": "the-waverly-gallery-2018",
-      "showTitle": "The Waverly Gallery",
-      "file": "deadline--matt-windman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the playwright Kenneth Lonergan, cast members Elaine May, Lucas Hedges, Michael Cera, Joan Allen, and David Cromer, and the Golden Theatre, all associated with \"The Waverly Gallery.\" It also discusses the plot and themes of the play."
-    },
-    {
-      "showId": "the-waverly-gallery-2018",
-      "showTitle": "The Waverly Gallery",
-      "file": "dailybeast--matt-windman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"The Waverly Gallery\" and discusses the plot, characters (Gladys Green, Daniel), and cast (Elaine May, Lucas Hedges), confirming it's about the correct show."
-    },
-    {
-      "showId": "the-velocity-of-autumn-2014",
-      "showTitle": "The Velocity of Autumn",
-      "file": "vulture--jesse-green.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title \"The Velocity of Autumn\" and discusses the plot, characters (Alexandra, Chris), and themes of the play. It also mentions the playwright Eric Coble and the actress Estelle Parsons, who starred in the Broadway production."
-    },
-    {
-      "showId": "the-waverly-gallery-2018",
-      "showTitle": "The Waverly Gallery",
-      "file": "variety--matt-windman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"The Waverly Gallery\" and discusses the plot, characters (Gladys Green, Don Bowman), and playwright (Kenneth Lonergan)."
-    },
-    {
-      "showId": "the-waverly-gallery-2018",
-      "showTitle": "The Waverly Gallery",
-      "file": "thewrap--matt-windman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the play \"The Waverly Gallery\" and discusses the plot, characters (Gladys, Daniel, Ellen), and the venue (Golden Theatre)."
-    },
-    {
-      "showId": "the-waverly-gallery-2018",
-      "showTitle": "The Waverly Gallery",
-      "file": "timeout--matt-windman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review discusses the plot, characters (Gladys, Daniel, Ellen, Howard, Don), and actors (Elaine May, Lucas Hedges, Joan Allen, David Cromer, Michael Cera) of \"The Waverly Gallery.\""
-    },
-    {
-      "showId": "the-waverly-gallery-2018",
-      "showTitle": "The Waverly Gallery",
-      "file": "guardian--matt-windman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"The Waverly Gallery\" and discusses the plot, cast (Elaine May, Lucas Hedges), director (Lila Neugebauer), and playwright (Kenneth Lonergan)."
-    },
-    {
-      "showId": "the-waverly-gallery-2018",
-      "showTitle": "The Waverly Gallery",
+      "showId": "torch-song-2018",
+      "showTitle": "Torch Song",
       "file": "hollywood-reporter--matt-windman.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review mentions the play's title, playwright (Kenneth Lonergan), cast members (Elaine May, Lucas Hedges, Joan Allen), and plot details, confirming it's about \"The Waverly Gallery.\""
+      "reasoning": "The review explicitly mentions the show title, author, venue, and themes, confirming it is about the correct show."
     },
     {
-      "showId": "the-whos-tommy-2024",
-      "showTitle": "The Who's Tommy",
-      "file": "exeunt-magazine--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"The Who's Tommy\" and discusses the plot, themes, and creative team of the show."
-    },
-    {
-      "showId": "the-whos-tommy-2024",
-      "showTitle": "The Who's Tommy",
-      "file": "broadwayworld--jennifer-perry.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions 'The Who's Tommy' and discusses the plot, music by Townshend, and the director Des McAnuff, all associated with the show."
-    },
-    {
-      "showId": "the-whos-tommy-2024",
-      "showTitle": "The Who's Tommy",
+      "showId": "trouble-in-mind-2021",
+      "showTitle": "Trouble in Mind",
       "file": "cititour--brian-scott-lipton.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review explicitly mentions \"The Who's Tommy\" and discusses the plot, cast (Ali Louis Bourzgui), director (Des McAnuff), and creative team, confirming it's about the stated show."
+      "reasoning": "The review explicitly mentions the show title, playwright, venue, and lead actress, confirming it's about 'Trouble in Mind'. It also discusses the plot and themes of the play."
     },
     {
-      "showId": "the-whos-tommy-2024",
-      "showTitle": "The Who's Tommy",
-      "file": "new-york-sun--elysa-gardner.json",
+      "showId": "trouble-in-mind-2021",
+      "showTitle": "Trouble in Mind",
+      "file": "amny--matt-windman.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review explicitly mentions \"The Who's Tommy\", Pete Townshend, Des McAnuff, and the plot of the show, indicating it is about the correct production."
+      "reasoning": "The review explicitly mentions \"Trouble in Mind\" and discusses the plot, cast (LaChanze, Chuck Cooper, Michael Zegen), and themes of the play. It also mentions the historical context and the playwright Alice Childress."
     },
     {
-      "showId": "the-waverly-gallery-2018",
-      "showTitle": "The Waverly Gallery",
-      "file": "vulture--matt-windman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title of the play, the playwright Kenneth Lonergan, the cast members Elaine May, Lucas Hedges, Michael Cera, and Joan Allen, and the director Lila Neugebauer. It also discusses the plot and themes of the play."
-    },
-    {
-      "showId": "the-winslow-boy-2013",
-      "showTitle": "The Winslow Boy",
-      "file": "amny--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"The Winslow Boy\" and discusses the plot, themes, and venue (American Airlines Theatre) of the show."
-    },
-    {
-      "showId": "the-winslow-boy-2013",
-      "showTitle": "The Winslow Boy",
-      "file": "ny1--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review discusses the Roundabout Theater Company's production of \"The Winslow Boy\", mentioning the playwright Terence Rattigan, the plot, and cast members like Roger Rees, Mary Elizabeth Mastrantonio, and Alessandro Nivola."
-    },
-    {
-      "showId": "the-winslow-boy-2013",
-      "showTitle": "The Winslow Boy",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"The Winslow Boy\" and discusses the plot, characters, and actors in the Roundabout revival, confirming it's about the correct show."
-    },
-    {
-      "showId": "the-winslow-boy-2013",
-      "showTitle": "The Winslow Boy",
-      "file": "huffpost--david-finkle.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"The Winslow Boy\" and discusses the production, director, and setting of the play. It also mentions the American Airlines Theatre, where the Roundabout Theatre Company often performs."
-    },
-    {
-      "showId": "the-winslow-boy-2013",
-      "showTitle": "The Winslow Boy",
-      "file": "timeout--adam-feldman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, playwright (Terence Rattigan), director (Lindsay Posner), cast members (Roger Rees, Charlotte Parry, Michael Cumpsty, Alessandro Nivola), and plot details, confirming it's about the correct production."
-    },
-    {
-      "showId": "therese-raquin-2015",
-      "showTitle": "Thérèse Raquin",
-      "file": "guardian--alexis-soloski.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title \"Thérèse Raquin\", the actors Keira Knightley and Judith Light, the director Evan Cabnet, and the venue Studio 54. It also discusses the plot and themes of the show."
-    },
-    {
-      "showId": "the-year-of-magical-thinking-2007",
-      "showTitle": "The Year of Magical Thinking",
-      "file": "new-york-sun--elysa-gardner.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"The Year of Magical Thinking\" and discusses the plot, themes, and original Broadway production starring Vanessa Redgrave. It also references Joan Didion, John Gregory Dunne, and Quintana Roo Dunne Michael, all central to the show."
-    },
-    {
-      "showId": "the-winslow-boy-2013",
-      "showTitle": "The Winslow Boy",
-      "file": "variety--marilyn-stasio.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"The Winslow Boy\" and discusses the plot, cast (Roger Rees), and playwright (Terence Rattigan), confirming it's about the correct show."
-    },
-    {
-      "showId": "the-winslow-boy-2013",
-      "showTitle": "The Winslow Boy",
-      "file": "vulture--jesse-green.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions characters (Ronnie Winslow, Sir Robert Morton), the plot (a boy expelled from naval college), and the venue (Roundabout's revival), all of which align with the show 'The Winslow Boy'."
-    },
-    {
-      "showId": "therese-raquin-2015",
-      "showTitle": "Thérèse Raquin",
-      "file": "chicagotribune--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, the author Emile Zola, the director Evan Cabnet, and cast members Keira Knightley, Gabriel Ebert, and Judith Light. It also discusses the plot of the show."
-    },
-    {
-      "showId": "therese-raquin-2015",
-      "showTitle": "Thérèse Raquin",
-      "file": "newsday--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, director (Evan Cabnet), venue (Studio 54), and lead actress (Keira Knightley) in the context of the play's plot and themes. It also mentions other cast members and the playwright."
-    },
-    {
-      "showId": "therese-raquin-2015",
-      "showTitle": "Thérèse Raquin",
-      "file": "huffpost--alexandra-villarreal.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, the lead actress Keira Knightley, the venue Studio 54, and discusses the plot and themes of the play."
-    },
-    {
-      "showId": "therese-raquin-2015",
-      "showTitle": "Thérèse Raquin",
-      "file": "nbcny--robert-kahn.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title character, cast members (Keira Knightley, Judith Light, Gabriel Ebert, Matt Ryan), the venue (Studio 54), and plot elements of \"Thérèse Raquin.\""
-    },
-    {
-      "showId": "therese-raquin-2015",
-      "showTitle": "Thérèse Raquin",
-      "file": "njcom--christopher-kelly.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, cast members (Keira Knightley, Matt Ryan, Judith Light, Gabriel Ebert), the author Emile Zola, and the venue Studio 54. It also discusses the plot and themes of the show."
-    },
-    {
-      "showId": "therese-raquin-2015",
-      "showTitle": "Thérèse Raquin",
+      "showId": "torch-song-trilogy-1982",
+      "showTitle": "Torch Song Trilogy",
       "file": "hollywood-reporter--david-rooney.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Therese Raquin\" and discusses the cast (Keira Knightley), director (Evan Cabnet), and the play's adaptation from Emile Zola's novel. It also mentions the set design and themes of the play."
+      "reasoning": "The review explicitly mentions \"Harvey Fierstein's Torch Song\", the original title \"Torch Song Trilogy\", and the protagonist Arnold Beckoff, confirming it's about the correct show."
     },
     {
-      "showId": "therese-raquin-2015",
-      "showTitle": "Thérèse Raquin",
-      "file": "thewrap--robert-hofler.json",
+      "showId": "true-west-2019",
+      "showTitle": "True West",
+      "file": "thestage--nicole-serratore.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Therese Raquin\" and discusses the plot, characters, and Keira Knightley's performance in the show."
+      "reasoning": "The review discusses the 2019 Broadway production of True West, mentioning cast members Ethan Hawke and Paul Dano, the director James Macdonald, and the plot of the play."
     },
     {
-      "showId": "therese-raquin-2015",
-      "showTitle": "Thérèse Raquin",
-      "file": "telegraph--matt-wolf.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions Keira Knightley, the Emile Zola novel, and the Broadway debut, all associated with the show \"Thérèse Raquin\" (2015)."
-    },
-    {
-      "showId": "therese-raquin-2015",
-      "showTitle": "Thérèse Raquin",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show's title, cast members (Keira Knightley, Gabriel Ebert, Judith Light, Matt Ryan), the plot, and the director (Evan Cabnet)."
-    },
-    {
-      "showId": "this-is-our-youth-2014",
-      "showTitle": "This Is Our Youth",
-      "file": "chicagotribune--chris-jones.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title \"This Is Our Youth\" and discusses the cast (Michael Cera, Kieran Culkin, Tavi Gevinson), director (Anna D. Shapiro), and themes of the play."
-    },
-    {
-      "showId": "this-is-our-youth-2014",
-      "showTitle": "This Is Our Youth",
-      "file": "deadline--jeremy-gerard.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review discusses the plot, cast (Michael Cera, Kieran Culkin, Tavi Gavinson), playwright (Kenneth Lonergan), and director (Anna D. Shapiro) of \"This Is Our Youth\". It also mentions the Steppenwolf Theatre production."
-    },
-    {
-      "showId": "this-is-our-youth-2014",
-      "showTitle": "This Is Our Youth",
-      "file": "nbcny--robert-kahn.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the title \"This Is Our Youth\" and discusses the plot, cast (Kieran Culkin, Michael Cera, Tavi Gevinson), director (Anna D. Shapiro), and venue (The Cort Theatre)."
-    },
-    {
-      "showId": "this-is-our-youth-2014",
-      "showTitle": "This Is Our Youth",
-      "file": "newsday--linda-winer.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the play's title, the number of characters, the playwright Kenneth Lonergan, and the setting of the play, all of which match the show 'This Is Our Youth'."
-    },
-    {
-      "showId": "thoughts-of-a-colored-man-2021",
-      "showTitle": "Thoughts of a Colored Man",
-      "file": "amny--matt-windman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the title \"Thoughts of a Colored Man\" and discusses the plot, characters, and themes of the play. It also mentions the Golden Theatre, where the play was performed."
-    },
-    {
-      "showId": "thoughts-of-a-colored-man-2021",
-      "showTitle": "Thoughts of a Colored Man",
-      "file": "hollywood-reporter--lovia-gyarkye.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the title \"Thoughts of a Colored Man\" and discusses the plot, themes, and creative team of the show."
-    },
-    {
-      "showId": "this-is-our-youth-2014",
-      "showTitle": "This Is Our Youth",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the play \"This Is Our Youth\" and discusses the plot, characters (Warren, Dennis, Jessica), actors (Michael Cera, Kieran Culkin, Tavi Gevinson), and the playwright Kenneth Lonergan."
-    },
-    {
-      "showId": "thoughts-of-a-colored-man-2021",
-      "showTitle": "Thoughts of a Colored Man",
-      "file": "theatrely--juan-a-ramirez.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the play's title, playwright, and themes, indicating it is about the correct show."
-    },
-    {
-      "showId": "three-tall-women-2018",
-      "showTitle": "Three Tall Women",
-      "file": "chicagotribune--chris-jones.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Three Tall Women\" and discusses the plot, cast (Glenda Jackson, Laurie Metcalf, Alison Pill), and director (Joe Mantello) of the show."
-    },
-    {
-      "showId": "thoughts-of-a-colored-man-2021",
-      "showTitle": "Thoughts of a Colored Man",
-      "file": "vulture--helen-shaw.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title \"Thoughts of a Colored Man\", the playwright Keenan Scott II, the director Steve H. Broadnax III, and the Golden Theatre, all associated with the show."
-    },
-    {
-      "showId": "three-tall-women-2018",
-      "showTitle": "Three Tall Women",
-      "file": "amny--matt-windman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, cast members (Glenda Jackson, Laurie Metcalf, Alison Pill), the playwright (Edward Albee), the director (Joe Mantello), and the venue (Golden Theatre). It also describes the plot and themes of the play."
-    },
-    {
-      "showId": "thoughts-of-a-colored-man-2021",
-      "showTitle": "Thoughts of a Colored Man",
-      "file": "thewrap--robert-hofler.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the play's title, playwright, venue (Golden Theatre), and plot elements (Brooklyn barbershop, gentrification, characters). These details confirm it's a review of \"Thoughts of a Colored Man.\""
-    },
-    {
-      "showId": "three-tall-women-2018",
-      "showTitle": "Three Tall Women",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, cast members (Glenda Jackson, Laurie Metcalf, Alison Pill), the playwright (Edward Albee), and the venue (Golden Theatre). It also discusses the plot and themes of the play."
-    },
-    {
-      "showId": "three-tall-women-2018",
-      "showTitle": "Three Tall Women",
-      "file": "thewrap--robert-hofler.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the play \"Three Tall Women\", the venue (Golden Theatre), and cast members (Glenda Jackson, Laurie Metcalf, Alison Pill). It also discusses the plot and themes of the play."
-    },
-    {
-      "showId": "three-tall-women-2018",
-      "showTitle": "Three Tall Women",
-      "file": "latimes--charles-mcnulty.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Three Tall Women\" and discusses the plot, cast (Glenda Jackson, Laurie Metcalf, Alison Pill), and director (Joe Mantello) of the show."
-    },
-    {
-      "showId": "three-tall-women-2018",
-      "showTitle": "Three Tall Women",
-      "file": "newsday--barbara-schuler.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, cast members (Glenda Jackson, Laurie Metcalf, Alison Pill), the playwright (Edward Albee), and the venue (Golden Theatre). It also discusses the plot and characters (A, B, and C)."
-    },
-    {
-      "showId": "three-tall-women-2018",
-      "showTitle": "Three Tall Women",
-      "file": "dailybeast--tim-teeman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, playwright Edward Albee, the Golden Theatre, and cast members Glenda Jackson, Laurie Metcalf, and Alison Pill. It also discusses the plot and themes of the play."
-    },
-    {
-      "showId": "three-tall-women-2018",
-      "showTitle": "Three Tall Women",
-      "file": "timeout--adam-feldman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title \"Three Tall Women\" and discusses the plot, cast (Glenda Jackson, Laurie Metcalf, Alison Pill), and themes of the play."
-    },
-    {
-      "showId": "time-and-the-conways-2017",
-      "showTitle": "Time and the Conways",
-      "file": "deadline--jeremy-gerard.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review discusses the plot, characters (Mrs. Conway, Kay, Hazel, Carol, Madge, Alan, Robin), and setting of \"Time and the Conways.\""
-    },
-    {
-      "showId": "time-and-the-conways-2017",
-      "showTitle": "Time and the Conways",
-      "file": "dailybeast--tim-teeman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions 'Time and the Conways' and discusses the plot, cast (Elizabeth McGovern, Charlotte Parry), and themes of the show."
-    },
-    {
-      "showId": "three-tall-women-2018",
-      "showTitle": "Three Tall Women",
-      "file": "towleroad--naveen-kumar.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Edward Albee's 1994 Pulitzer winner Three Tall Women\" and discusses the cast, director, and plot of the show."
-    },
-    {
-      "showId": "three-tall-women-2018",
-      "showTitle": "Three Tall Women",
-      "file": "vulture--christopher-bonanos.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the cast (Glenda Jackson, Laurie Metcalf, and Alison Pill) and the play's structure (two acts, characters named A, B, and C), confirming it's about 'Three Tall Women'."
-    },
-    {
-      "showId": "time-and-the-conways-2017",
-      "showTitle": "Time and the Conways",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title, cast members (Elizabeth McGovern, Anna Baryshnikov), the playwright (J.B. Priestley), and plot details of \"Time and the Conways.\""
-    },
-    {
-      "showId": "to-kill-a-mockingbird-2018",
-      "showTitle": "To Kill a Mockingbird",
+      "showId": "true-west-2019",
+      "showTitle": "True West",
       "file": "guardian--alexis-soloski.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, the playwright Aaron Sorkin, the actor Jeff Daniels, and the plot of the show, confirming it is about the correct production."
+      "reasoning": "The review discusses the plot, cast (Ethan Hawke, Paul Dano, Marylouise Burke, Gary Wilmes), director (James Macdonald), and themes of the play True West."
     },
     {
-      "showId": "time-and-the-conways-2017",
-      "showTitle": "Time and the Conways",
-      "file": "nysr--huffington-post-steven-suskin.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title of the play, the playwright J.B. Priestley, and the plot and characters of the show. It also mentions the Roundabout, where the show was playing."
-    },
-    {
-      "showId": "to-kill-a-mockingbird-2018",
-      "showTitle": "To Kill a Mockingbird",
-      "file": "dailybeast--tim-teeman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Aaron Sorkin’s adaptation of To Kill a Mockingbird\" and discusses the plot, characters (Atticus Finch, Tom Robinson), and themes of the show."
-    },
-    {
-      "showId": "titus-andronicus-off-broadway-2026",
-      "showTitle": "Titus Andronicus",
+      "showId": "true-west-2019",
+      "showTitle": "True West",
       "file": "amny--matt-windman.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Gary: A Sequel to Titus Andronicus\" and its connection to Shakespeare's \"Titus Andronicus,\" discussing the plot, cast (Nathan Lane, Kristine Nielsen), and venue (Booth Theatre)."
+      "reasoning": "The review explicitly mentions the show title \"True West\" and discusses the cast (Ethan Hawke, Paul Dano, Marylouise Burke, Gary Wilmes), director (James Macdonald), and plot details, confirming it's about the specified show."
     },
     {
-      "showId": "to-kill-a-mockingbird-2018",
-      "showTitle": "To Kill a Mockingbird",
-      "file": "nydailynews--chris-jones.json",
+      "showId": "true-west-2019",
+      "showTitle": "True West",
+      "file": "hollywood-reporter--frank-scheck.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review explicitly mentions \"To Kill a Mockingbird\", Aaron Sorkin, Jeff Daniels, and the Shubert Theatre, all associated with the show."
+      "reasoning": "The review discusses the plot, characters (Lee, Austin, Saul), and actors (Ethan Hawke, Paul Dano, Gary Wilmes) of the 2019 Broadway revival of True West."
     },
     {
-      "showId": "to-kill-a-mockingbird-2018",
-      "showTitle": "To Kill a Mockingbird",
-      "file": "jeremy-gerard--david-cote.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions 'To Kill a Mockingbird', the Shubert Theatre (where the 2018 production played), Atticus Finch, Tom Robinson, and Harper Lee, all key elements of the show."
-    },
-    {
-      "showId": "to-kill-a-mockingbird-2018",
-      "showTitle": "To Kill a Mockingbird",
-      "file": "latimes--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Harper Lee's To Kill A Mockingbird\" and discusses the plot, characters (Scout, Atticus Finch, Tom Robinson, Boo Radley), and actors (Jeff Daniels, Celia Keenan-Bolger) of the show."
-    },
-    {
-      "showId": "to-kill-a-mockingbird-2018",
-      "showTitle": "To Kill a Mockingbird",
-      "file": "newsday--elisabeth-vincentelli.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, cast (Jeff Daniels as Atticus Finch), plot elements, and creative team (Bartlett Sher, Aaron Sorkin), confirming it's about the stated show."
-    },
-    {
-      "showId": "to-kill-a-mockingbird-2018",
-      "showTitle": "To Kill a Mockingbird",
-      "file": "inquirer--toby-zinman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, the venue (Shubert Theatre), the adaptor (Aaron Sorkin), the leading man (Jeff Daniels as Atticus Finch), and other cast members, confirming it is about the specified production."
-    },
-    {
-      "showId": "to-kill-a-mockingbird-2018",
-      "showTitle": "To Kill a Mockingbird",
-      "file": "thewrap--thom-geier.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, author, venue, and cast members, confirming it is about the correct production."
-    },
-    {
-      "showId": "topdog-underdog-2022",
-      "showTitle": "Topdog / Underdog",
-      "file": "cititour--brian-scott-lipton.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the play \"Topdog/Underdog\", the playwright Suzan-Lori Parks, the director Kenny Leon, the venue John Golden Theatre, and the characters Lincoln and Booth, all of which align with the show details."
-    },
-    {
-      "showId": "to-kill-a-mockingbird-2018",
-      "showTitle": "To Kill a Mockingbird",
-      "file": "wsj--terry-teachout.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"To Kill a Mockingbird\" and Aaron Sorkin's adaptation of it, indicating it's about the correct show. It also discusses the estate of Harper Lee."
-    },
-    {
-      "showId": "topdog-underdog-2022",
-      "showTitle": "Topdog / Underdog",
-      "file": "amny--matt-windman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Topdog/Underdog\" and discusses the plot, cast (Yahya Abdul-Mateen II and Corey Hawkins), and themes of the show. It also mentions the playwright Suzan-Lori Parks."
-    },
-    {
-      "showId": "to-kill-a-mockingbird-2018",
-      "showTitle": "To Kill a Mockingbird",
-      "file": "timeout--adam-feldman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions Aaron Sorkin's adaptation of Harper Lee's novel 'To Kill a Mockingbird' and discusses the plot, characters (Atticus Finch, Tom Robinson, Scout, Mayella), and themes of the play."
-    },
-    {
-      "showId": "topdog-underdog-2022",
-      "showTitle": "Topdog / Underdog",
-      "file": "ew--fabian-braithwaite.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the play's title, characters (Booth and Lincoln), playwright (Suzan-Lori Parks), and previous productions, confirming it's about \"Topdog / Underdog\"."
-    },
-    {
-      "showId": "topdog-underdog-2022",
-      "showTitle": "Topdog / Underdog",
-      "file": "ew--lester-fabian-brathwaite.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the play's title, playwright, characters (Booth and Lincoln), and themes, indicating it is about \"Topdog / Underdog.\""
-    },
-    {
-      "showId": "topdog-underdog-2022",
-      "showTitle": "Topdog / Underdog",
-      "file": "dailybeast--tim-teeman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title \"Topdog/Underdog\", the playwright Suzan-Lori Parks, the Golden Theatre, the director Kenny Leon, and the actors Yahya Abdul-Mateen and Corey Hawkins, all of which are associated with the specified show."
-    },
-    {
-      "showId": "topdog-underdog-2022",
-      "showTitle": "Topdog / Underdog",
-      "file": "corey-hawkins--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The text mentions Corey Hawkins and the title 'Topdog/Underdog' in the context of a review, indicating it's about the stated show. It also mentions Yahya Abdul-Mateen II, who was also in the show."
-    },
-    {
-      "showId": "topdog-underdog-2022",
-      "showTitle": "Topdog / Underdog",
+      "showId": "true-west-2019",
+      "showTitle": "True West",
       "file": "deadline--greg-evans.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review mentions the play's title, author (Suzan-Lori Parks), director (Kenny Leon), actors (Corey Hawkins and Yahya Abdul-Mateen II), and plot details about Lincoln and Booth, confirming it's about the 2022 production of \"Topdog/Underdog.\""
+      "reasoning": "The review mentions the play's title, playwright (Sam Shepard), actors (Ethan Hawke and Paul Dano), director (James Macdonald), and venue (American Airlines Theatre), all of which match the show 'True West (2019)'. It also discusses the plot and themes of the play."
     },
     {
-      "showId": "topdog-underdog-2022",
-      "showTitle": "Topdog / Underdog",
-      "file": "new-york-sun--elysa-gardner.json",
+      "showId": "true-west-2019",
+      "showTitle": "True West",
+      "file": "vulture--sara-holdren.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Topdog/Underdog\" and discusses the plot, characters (Lincoln and Booth), and previous and current productions."
+      "reasoning": "The review mentions the actors Ethan Hawke and Paul Dano, and discusses the plot and themes of Sam Shepard's True West, indicating it is a review of the specified show."
     },
     {
-      "showId": "topdog-underdog-2022",
-      "showTitle": "Topdog / Underdog",
-      "file": "guardian--gloria-oladipo.json",
+      "showId": "true-west-2019",
+      "showTitle": "True West",
+      "file": "wsj--terry-teachout.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review mentions the title, cast (Corey Hawkins and Yahya Abdul-Mateen II), playwright (Suzan-Lori Parks), and plot details of the show."
+      "reasoning": "The review explicitly mentions the play \"True West\" and discusses its plot and background, including the playwright Sam Shepard and the play's setting in Hollywood."
     },
     {
-      "showId": "topdog-underdog-2022",
-      "showTitle": "Topdog / Underdog",
-      "file": "theatermania--david-gordon.json",
+      "showId": "twelfth-night-2013",
+      "showTitle": "Twelfth Night",
+      "file": "ew--thom-geier.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review mentions the play's title, playwright (Suzan-Lori Parks), director (Kenny Leon), actors (Corey Hawkins and Yahya Abdul-Mateen II), and plot details, all of which match the show 'Topdog / Underdog'."
+      "reasoning": "The review explicitly mentions 'Twelfth Night' and discusses the cast, venue (Belasco Theatre), and director (Tim Carroll) of the 2013 production starring Mark Rylance."
     },
     {
-      "showId": "topdog-underdog-2022",
-      "showTitle": "Topdog / Underdog",
-      "file": "hollywood-reporter--lovia-gyarkye.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Topdog/Underdog\" and discusses the plot, cast (Corey Hawkins, Yahya Abdul-Mateen II), director (Kenny Leon), and themes of the play. It is clearly a review of the stated show."
-    },
-    {
-      "showId": "topdog-underdog-2022",
-      "showTitle": "Topdog / Underdog",
-      "file": "thewrap--thom-geier.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the play \"Topdog/Underdog\", the playwright Suzan-Lori Parks, the characters Lincoln and Booth, and the actors Corey Hawkins and Yahya Abdul-Mateen II, all of which are associated with the show."
-    },
-    {
-      "showId": "torch-song-2018",
-      "showTitle": "Torch Song",
-      "file": "dailybeast--matt-windman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the play's title (Torch Song), the character Arnold, and the setting of the International Stud bar, all of which are elements of the show."
-    },
-    {
-      "showId": "torch-song-2018",
-      "showTitle": "Torch Song",
+      "showId": "twelfth-night-2013",
+      "showTitle": "Twelfth Night",
       "file": "amny--matt-windman.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, cast members (Michael Urie, Mercedes Ruehl), the director (Moisés Kaufman), and the venue (Hayes Theater). It also discusses the plot and themes of the show."
+      "reasoning": "The review explicitly mentions the show title, cast member Nikki M. James, the venue (Delacorte Theatre in Central Park), and the Public Works production. It also discusses the plot and music of the show."
     },
     {
-      "showId": "torch-song-2018",
-      "showTitle": "Torch Song",
-      "file": "chicagotribune--matt-windman.json",
+      "showId": "true-west-2019",
+      "showTitle": "True West",
+      "file": "thewrap--robert-hofler.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review discusses the plot, characters (Arnold Beckoff), and themes of \"Torch Song\", even mentioning Harvey Fierstein, the writer of the play."
+      "reasoning": "The review explicitly mentions the show title \"True West\", the actors Ethan Hawke and Paul Dano, the director James Macdonald, and the venue American Airlines Theatre, all of which match the show details."
     },
     {
-      "showId": "topdog-underdog-2022",
-      "showTitle": "Topdog / Underdog",
-      "file": "variety--naveen-kumar.json",
+      "showId": "twelfth-night-2013",
+      "showTitle": "Twelfth Night",
+      "file": "newsday--barbara-schuler.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Topdog/Underdog\", the cast (Corey Hawkins and Yahya Abdul-Mateen II), the playwright (Suzan-Lori Parks), the director (Kenny Leon), and the venue (Golden Theatre). It also discusses the plot and themes of the play."
+      "reasoning": "The review explicitly mentions \"Twelfth Night\" and discusses Mark Rylance's performance as Olivia, confirming it's about the correct show."
     },
     {
-      "showId": "torch-song-2018",
-      "showTitle": "Torch Song",
-      "file": "deadline--matt-windman.json",
+      "showId": "twelfth-night-2013",
+      "showTitle": "Twelfth Night",
+      "file": "newsday--linda-winer.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Torch Song\" and discusses the cast, director, and plot of the show, including references to Arnold Beckoff, Michael Urie, and Mercedes Ruehl."
+      "reasoning": "The review explicitly mentions \"Twelfth Night\" and discusses Mark Rylance's performance as Olivia, confirming it's about the correct show."
+    },
+    {
+      "showId": "twelfth-night-2013",
+      "showTitle": "Twelfth Night",
+      "file": "northjerseycom--robert-feldberg.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions Mark Rylance playing Olivia in Twelfth Night, and discusses the Globe Theatre production, confirming it's about the correct show."
+    },
+    {
+      "showId": "twelfth-night-2013",
+      "showTitle": "Twelfth Night",
+      "file": "variety--nicole-serratore.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions Mark Rylance playing Olivia in \"Twelfth Night\" and discusses the all-male company from Shakespeare's Globe, which aligns with the 2013 production of \"Twelfth Night\" starring Rylance."
+    },
+    {
+      "showId": "twelfth-night-2013",
+      "showTitle": "Twelfth Night",
+      "file": "huffpost--david-finkle.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions both Richard III and Twelfth Night, and discusses Mark Rylance's performance as Olivia in Twelfth Night. It also mentions the Globe Theatre and Jenny Tiramani, who was the costume and set designer for the production."
+    },
+    {
+      "showId": "uncle-vanya-2024",
+      "showTitle": "Uncle Vanya",
+      "file": "exeunt-magazine--cameron-kelsall.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Uncle Vanya\" at Lincoln Center Theater and discusses the adaptation by Heidi Schreck, the Vivian Beaumont Theater, and the set design, all of which align with the show in question."
+    },
+    {
+      "showId": "uncle-vanya-2024",
+      "showTitle": "Uncle Vanya",
+      "file": "dailybeast--tim-teeman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the Lincoln Center Theater production of Uncle Vanya, mentioning Steve Carell's debut, the director Lila Neugebauer, and the adapter Heidi Schreck. It also references Chekhov and other relevant details."
+    },
+    {
+      "showId": "uncle-vanya-2024",
+      "showTitle": "Uncle Vanya",
+      "file": "broadwayworld--gary-naylor.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions Steve Carell, the Vivian Beaumont stage at Lincoln Center, the director Lila Neugebauer, the set design by Mimi Lien, and the costumes by Kaye Voyce, all of which are associated with the 2024 production of Uncle Vanya."
+    },
+    {
+      "showId": "uncle-vanya-2024",
+      "showTitle": "Uncle Vanya",
+      "file": "digital-journal--markos-papadatos.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, cast members (Steve Carell, Alison Pill, Alfred Molina, William Jackson Harper, Anika Noni Rose, Jayne Houdyshell, Mia Katigbak), the director (Lila Neugebauer), the playwright (Heidi Schreck), the venue (Vivian Beaumont Theater at Lincoln Center), and "
+    },
+    {
+      "showId": "uncle-vanya-2024",
+      "showTitle": "Uncle Vanya",
+      "file": "cititour--brian-scott-lipton.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Uncle Vanya\" and discusses the plot, characters (Vanya, Elena, Astrov, Sonia, Alexander), and cast (Steve Carell, Alfred Molina, Anika Noni Rose, William Jackson Harper, Alison Pill) of the 2024 Lincoln Center production."
+    },
+    {
+      "showId": "venus-in-fur-2011",
+      "showTitle": "Venus in Fur",
+      "file": "ew--thomas-geier.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, cast (Nina Arianda, Hugh Dancy), and themes of 'Venus in Fur,' confirming it's about the correct show."
+    },
+    {
+      "showId": "uncle-vanya-2024",
+      "showTitle": "Uncle Vanya",
+      "file": "new-york-sun--elysa-gardner.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Uncle Vanya\" and discusses the cast (Steve Carell), the venue (Lincoln Center Theater), and the adapter (Heidi Schreck)."
+    },
+    {
+      "showId": "uncle-vanya-2024",
+      "showTitle": "Uncle Vanya",
+      "file": "guardian--adrian-horton.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Uncle Vanya\" and discusses the cast, director, and themes of the play, including Steve Carell as Uncle Vanya, Alfred Molina as Professor Alexander, Anika Noni Rose as Elena, and William Jackson Harper as Dr. Astrov."
+    },
+    {
+      "showId": "venus-in-fur-2011",
+      "showTitle": "Venus in Fur",
+      "file": "hollywood-reporter--david-rooney.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the play's title, cast members (Nina Arianda, Hugh Dancy), the playwright (David Ives), and the plot/setting of the play. It is clearly a review of 'Venus in Fur'."
+    },
+    {
+      "showId": "uncle-vanya-2024",
+      "showTitle": "Uncle Vanya",
+      "file": "thestage--nicole-serratore.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, characters (Uncle Vanya), director (Trevor Nunn), and themes of Chekhov's Uncle Vanya, indicating it is about the correct show. It also mentions the actor playing Uncle Vanya, James Lance."
+    },
+    {
+      "showId": "venus-in-fur-2011",
+      "showTitle": "Venus in Fur",
+      "file": "newsday--linda-winer.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, cast members (Hugh Dancy, Nina Arianda), the playwright (David Ives), and the plot of the play."
+    },
+    {
+      "showId": "venus-in-fur-2011",
+      "showTitle": "Venus in Fur",
+      "file": "village-voice--michael-musto.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions Nina Arianda, Hugh Dancy, and the plot of Venus in Fur, confirming it's about the correct show."
+    },
+    {
+      "showId": "venus-in-fur-2011",
+      "showTitle": "Venus in Fur",
+      "file": "nypost--elisabeth-vincentelli.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the actors Nina Arianda and Hugh Dancy, the playwright David Ives, and the plot of the play, all of which match the show 'Venus in Fur'."
+    },
+    {
+      "showId": "venus-in-fur-2011",
+      "showTitle": "Venus in Fur",
+      "file": "timeout--david-cote.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, cast members Nina Arianda and Hugh Dancy, the playwright David Ives, and the director Walter Bobbie. It also discusses the plot and themes of the play."
+    },
+    {
+      "showId": "venus-in-fur-2011",
+      "showTitle": "Venus in Fur",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, cast members (Nina Arianda, Hugh Dancy), the playwright (David Ives), and the source material (Leopold von Sacher-Masoch's novella)."
+    },
+    {
+      "showId": "waiting-for-godot-2013",
+      "showTitle": "Waiting for Godot",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses \"Waiting for Godot\" and mentions cast members (Ian McKellen and Patrick Stewart) and the director (Sean Mathias)."
+    },
+    {
+      "showId": "waiting-for-godot-2009",
+      "showTitle": "Waiting for Godot",
+      "file": "nytg--joe-dziemianowicz.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions 'Waiting For Godot' and discusses the cast, director, and themes of the play, indicating it is about the correct show. It also mentions previous productions of Godot for comparison."
+    },
+    {
+      "showId": "waiting-for-godot-2013",
+      "showTitle": "Waiting for Godot",
+      "file": "variety--frank-rizzo.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions 'Waiting for Godot' and discusses the cast (Ian McKellen and Patrick Stewart) and director (Sean Mathias) of the 2013 Broadway production."
+    },
+    {
+      "showId": "waiting-for-godot-2013",
+      "showTitle": "Waiting for Godot",
+      "file": "ew--thom-geier.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Waiting for Godot\" and discusses the cast, plot, and themes of the play, including the characters Estragon and Vladimir, and the actors Ian McKellen and Patrick Stewart."
+    },
+    {
+      "showId": "waiting-for-godot-2009",
+      "showTitle": "Waiting for Godot",
+      "file": "variety--frank-rizzo.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Waiting for Godot\" and discusses the cast (Ian McKellen and Patrick Stewart), director (Sean Mathias), and set design, confirming it's about the correct show."
+    },
+    {
+      "showId": "waiting-for-godot-2025",
+      "showTitle": "Waiting for Godot",
+      "file": "cititour--brian-scott-lipton.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the play \"Waiting for Godot\" and discusses the cast, plot, and production details, including the actors Keanu Reeves and Alex Winter."
+    },
+    {
+      "showId": "war-paint-2017",
+      "showTitle": "War Paint",
+      "file": "newsday--linda-winer.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the show's title, cast (Patti LuPone, Christine Ebersole), creative team (Michael Greif, Doug Wright), venue (Nederlander Theatre), and plot (rivalry between Helena Rubinstein and Elizabeth Arden)."
+    },
+    {
+      "showId": "waiting-for-godot-2025",
+      "showTitle": "Waiting for Godot",
+      "file": "digital-journal--markos-papadatos.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, cast members (Keanu Reeves, Alex Winter, Michael Patrick Thornton), the director (Jamie Lloyd), and the venue (Hudson Theatre). It also discusses the plot and themes of the play."
+    },
+    {
+      "showId": "waiting-for-godot-2025",
+      "showTitle": "Waiting for Godot",
+      "file": "slantmagazine--dan-rubins.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions 'Waiting for Godot' and discusses the director, Jamie Lloyd, and the actors, Keanu Reeves and Alex Winter, in the context of the play."
+    },
+    {
+      "showId": "war-paint-2017",
+      "showTitle": "War Paint",
+      "file": "deadline--jeremy-gerard.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions Helena Rubinstein and Elizabeth Arden, the two main characters of \"War Paint\", and discusses their rivalry and business ventures. It also mentions cast members like John Dossett and Douglas Sills."
+    },
+    {
+      "showId": "war-paint-2017",
+      "showTitle": "War Paint",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"War Paint\" and discusses the plot, cast (Patti LuPone, Christine Ebersole), and creative team, confirming it's about the correct show."
+    },
+    {
+      "showId": "water-for-elephants-2024",
+      "showTitle": "Water for Elephants",
+      "file": "cititour--brian-scott-lipton.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the show's director, venue (Imperial Theatre), plot, and cast members (Grant Gustin, Isabella McCalla, Paul Alexander Nolan, Gregg Edelman), confirming it is about \"Water for Elephants\"."
+    },
+    {
+      "showId": "water-for-elephants-2024",
+      "showTitle": "Water for Elephants",
+      "file": "digital-journal--markos-papadatos.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the show's title, cast members (Grant Gustin, Isabelle McCalla), the venue (Imperial Theatre), and plot details, confirming it's about \"Water for Elephants.\""
+    },
+    {
+      "showId": "war-paint-2017",
+      "showTitle": "War Paint",
+      "file": "njcom--christopher-kelly.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, cast members Patti LuPone and Christine Ebersole, and the plot about Helena Rubenstein and Elizabeth Arden."
+    },
+    {
+      "showId": "war-paint-2017",
+      "showTitle": "War Paint",
+      "file": "thewrap--robert-hofler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title \"War Paint\" and discusses the plot, cast (Patti LuPone, Christine Ebersole, John Dossett, Douglas Sills, Erik Liberman), and creative team (Doug Wright, Scott Frankel, Michael Korie, Michael Greif)."
+    },
+    {
+      "showId": "west-side-story-2020",
+      "showTitle": "West Side Story",
+      "file": "cititour--brian-scott-lipton.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"West Side Story\" and discusses the director, cast members (Isaac Powell, Shereen Pimentel, Yesenia Ayala), and songs from the show. It also references the plot and themes of the musical."
+    },
+    {
+      "showId": "west-side-story-2020",
+      "showTitle": "West Side Story",
+      "file": "amny--matt-windman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, director Ivo van Hove, and discusses changes made to the production, confirming it's about the 2020 revival of West Side Story."
+    },
+    {
+      "showId": "west-side-story-2020",
+      "showTitle": "West Side Story",
+      "file": "broadway-journal--philip-boroff.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions 'West Side Story' and discusses the cast, director (Ivo van Hove), venue (Broadway Theatre), and themes of the show. It also references specific actors and the choreography."
+    },
+    {
+      "showId": "water-for-elephants-2024",
+      "showTitle": "Water for Elephants",
+      "file": "the-mary-sue--rachel-leishman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the show's title, Jacob Jankowski, Marlena, August, Grant Gustin, Isabelle McCalla, Paul Alexander Nolan, PigPen Theatre Co., Rick Elice, and the circus setting, all of which are associated with 'Water for Elephants'."
+    },
+    {
+      "showId": "west-side-story-2020",
+      "showTitle": "West Side Story",
+      "file": "4columns--david-cote.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"West Side Story\" and discusses the plot, creative team (Arthur Laurents, Leonard Bernstein, Stephen Sondheim, Jerome Robbins, Ivo van Hove, Anne Teresa De Keersmaeker), and themes of the show. It also mentions the Broadway Theatre where the show was playing."
+    },
+    {
+      "showId": "west-side-story-2020",
+      "showTitle": "West Side Story",
+      "file": "newsday--rafer-guzman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show \"West Side Story\" and discusses the cast, director, venue, and plot elements, confirming it is about the specified production."
+    },
+    {
+      "showId": "west-side-story-2020",
+      "showTitle": "West Side Story",
+      "file": "njcom--christopher-kelly.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"West Side Story\" and discusses the director, venue, and changes made to the production, indicating it's about the 2020 revival."
+    },
+    {
+      "showId": "west-side-story-2020",
+      "showTitle": "West Side Story",
+      "file": "nytg--joe-dziemianowicz.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"West Side Story\" and discusses the plot, characters (Tony and Maria), creative team (Jerome Robbins, Leonard Bernstein, Stephen Sondheim, Arthur Laurents), and specific details of the 2020 revival directed by Ivo van Hove."
+    },
+    {
+      "showId": "west-side-story-2020",
+      "showTitle": "West Side Story",
+      "file": "dailybeast--tim-teeman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the 2020 Broadway revival of West Side Story, mentioning the director Ivo van Hove, the venue (Broadway Theatre), and the original production's creative team (Bernstein, Sondheim, Robbins, Laurents). It also references the plot and themes of the show."
+    },
+    {
+      "showId": "west-side-story-2020",
+      "showTitle": "West Side Story",
+      "file": "rollingstone--jerry-portwood.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions 'West Side Story' and discusses the 2020 Broadway revival, including the director, choreographer, and design elements."
+    },
+    {
+      "showId": "west-side-story-2020",
+      "showTitle": "West Side Story",
+      "file": "times-uk--jesse-oxfeld.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the 2020 Broadway revival of West Side Story, mentioning the plot, themes, and creative team."
+    },
+    {
+      "showId": "west-side-story-2020",
+      "showTitle": "West Side Story",
+      "file": "towleroad--naveen-kumar.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, director, and discusses plot elements and creative choices specific to the 2020 Broadway revival of West Side Story."
+    },
+    {
+      "showId": "west-side-story-2020",
+      "showTitle": "West Side Story",
+      "file": "thestage--nicole-serratore.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses Ivo van Hove's production of West Side Story, mentioning cast members (Shereen Pimentel, Isaac Powell, Yesenia Ayala), plot points, and design elements."
+    },
+    {
+      "showId": "west-side-story-2020",
+      "showTitle": "West Side Story",
+      "file": "vulture--helen-shaw.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions 'West Side Story' and discusses the cast (Maria, Tony), director (Ivo van Hove), and specific elements of the production."
+    },
+    {
+      "showId": "west-side-story-2020",
+      "showTitle": "West Side Story",
+      "file": "thewrap--robert-hofler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the 2020 Broadway revival of West Side Story, mentioning the director Ivo van Hove, the actors Isaac Powell and Shereen Pimentel, and specific details about the production's staging and interpretation of the story."
+    },
+    {
+      "showId": "witness-for-the-prosecution-west-end-2022",
+      "showTitle": "Witness for the Prosecution",
+      "file": "guardian--michael-billington.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Agatha Christie's Witness for the Prosecution\" and discusses the plot, setting, and cast of the play, indicating it is about the correct show."
+    },
+    {
+      "showId": "wolf-hall-parts-one-and-two-2015",
+      "showTitle": "Wolf Hall Parts One & Two",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Wolf Hall Parts One and Two\" and discusses the plot, characters (Henry VIII, Thomas Cromwell, Anne Boleyn, Catherine of Aragon, Jane Seymour), and creative team (Jeremy Herrin, Royal Shakespeare Company) of the show."
+    },
+    {
+      "showId": "wolf-hall-parts-one-and-two-2015",
+      "showTitle": "Wolf Hall Parts One & Two",
+      "file": "nbcny--robert-kahn.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Wolf Hall\" and discusses the plot, characters (Thomas Cromwell, Henry VIII, Anne Boleyn), and the Royal Shakespeare Company, all of which are associated with the show."
+    },
+    {
+      "showId": "wolf-hall-parts-one-and-two-2015",
+      "showTitle": "Wolf Hall Parts One & Two",
+      "file": "huffpost--michael-glitz.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions \"Wolf Hall Parts I and II\", the cast (Nathaniel Parker, Ben Miles), and the plot of the show, indicating it is about the correct production."
+    },
+    {
+      "showId": "wolf-hall-parts-one-and-two-2015",
+      "showTitle": "Wolf Hall Parts One & Two",
+      "file": "hollywood-reporter--david-rooney.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Wolf Hall\" and discusses the plot, cast, and creative team of the show, including Hilary Mantel, Mike Poulton, Jeremy Herrin, and Christopher Oram."
+    },
+    {
+      "showId": "yellow-face-2024",
+      "showTitle": "Yellow Face",
+      "file": "dailybeast--tim-teeman.json",
+      "verdict": "WRONG_SHOW",
+      "confidence": "high",
+      "reasoning": "The review is explicitly about 'Good Bones' at the Public Theater, not 'Yellow Face'."
+    },
+    {
+      "showId": "wolf-hall-parts-one-and-two-2015",
+      "showTitle": "Wolf Hall Parts One & Two",
+      "file": "vulture--jesse-green.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Wolf Hall\" and discusses the plot, characters (Thomas Cromwell, Henry VIII, Anne Boleyn), and the Royal Shakespeare Company's production, confirming it's about the specified show."
+    },
+    {
+      "showId": "wolf-hall-parts-one-and-two-2015",
+      "showTitle": "Wolf Hall Parts One & Two",
+      "file": "thewrap--robert-hofler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Wolf Hall: Parts One & Two\" and discusses the plot, characters (Thomas Cromwell, Henry VIII, Anne Boleyn), and creative team (Hilary Mantel, Mike Poulton) of the show."
+    },
+    {
+      "showId": "wolf-hall-parts-one-and-two-2015",
+      "showTitle": "Wolf Hall Parts One & Two",
+      "file": "timeout--david-cote.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Wolf Hall: Parts One & Two\" and discusses the plot, characters (Thomas Cromwell, King Henry VIII), and actors (Ben Miles, Nathaniel Parker), confirming it's about the correct show."
+    },
+    {
+      "showId": "yellow-face-2024",
+      "showTitle": "Yellow Face",
+      "file": "exeunt-magazine--nicole-serratore.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the play \"Yellow Face\" and discusses the plot, characters (DHH, Marcus G. Dahlman), and themes of the show. It also mentions the playwright David Henry Hwang and the director Leigh Silverman."
+    },
+    {
+      "showId": "you-got-older-off-broadway-2026",
+      "showTitle": "You Got Older",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the play's title, playwright Clare Barron, director Anne Kauffman, and characters Mae and Dad, all of which align with the show 'You Got Older'."
+    },
+    {
+      "showId": "yellow-face-2024",
+      "showTitle": "Yellow Face",
+      "file": "theatrely--joey-sims.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the play 'Yellow Face', the playwright David Henry Hwang, and the Roundabout Theatre Company's revival, confirming it is about the correct show. It also discusses the plot and themes of the play."
     }
   ]
 }
