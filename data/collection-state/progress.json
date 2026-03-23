@@ -703,7 +703,15 @@
     "just-in-time-2025/playbill--unknown.json",
     "just-in-time-2025/stageandcinema--unknown.json",
     "just-in-time-2025/talkinbroadway--unknown.json",
-    "just-in-time-2025/theater-scene--joel-benjamin.json"
+    "just-in-time-2025/theater-scene--joel-benjamin.json",
+    "stranger-things-2024/usatoday--unknown.json",
+    "stranger-things-2024/hollywood-reporter--unknown.json",
+    "stranger-things-2024/timeout--adam-feldman.json",
+    "stranger-things-2024/frontmezzjunkies--unknown.json",
+    "stranger-things-2024/stageandcinema--unknown.json",
+    "stranger-things-2024/theater-scene--joseph-pisano.json",
+    "stranger-things-2024/whatsonstage--unknown.json",
+    "the-infinite-wrench-off-broadway-2025/nytg--unknown.json"
   ],
   "failed": [
     "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
@@ -830,7 +838,9 @@
     "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/wsj--unknown.json",
     "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/talkinbroadway--unknown.json",
     "ragtime-2025/bloomberg--chris-rovzar.json",
-    "jerome-off-broadway-2025/one-minute-critic--unknown.json"
+    "jerome-off-broadway-2025/one-minute-critic--unknown.json",
+    "stranger-things-2024/thestage--unknown.json",
+    "operation-mincemeat-2025/guardian--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1451,7 +1461,13 @@
       "just-in-time-2025/frontmezzjunkies--unknown.json",
       "just-in-time-2025/playbill--unknown.json",
       "just-in-time-2025/stageandcinema--unknown.json",
-      "just-in-time-2025/theater-scene--joel-benjamin.json"
+      "just-in-time-2025/theater-scene--joel-benjamin.json",
+      "stranger-things-2024/timeout--adam-feldman.json",
+      "stranger-things-2024/frontmezzjunkies--unknown.json",
+      "stranger-things-2024/stageandcinema--unknown.json",
+      "stranger-things-2024/theater-scene--joseph-pisano.json",
+      "stranger-things-2024/whatsonstage--unknown.json",
+      "the-infinite-wrench-off-broadway-2025/nytg--unknown.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -1497,7 +1513,9 @@
       "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
       "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
       "data/review-texts/heathers-the-musical-off-broadway-2025/amny--matt-windman.json",
-      "heathers-the-musical-off-broadway-2025/amny--matt-windman.json"
+      "heathers-the-musical-off-broadway-2025/amny--matt-windman.json",
+      "data/review-texts/stranger-things-2024/hollywood-reporter--unknown.json",
+      "stranger-things-2024/hollywood-reporter--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -1570,7 +1588,9 @@
       "data/review-texts/an-ark-off-broadway-2026/nytimes--unknown.json",
       "data/review-texts/an-ark-off-broadway-2026/newyorker--emily-nussbaum.json",
       "data/review-texts/chess-2025/billboard--rebecca-milzoff.json",
-      "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/talkinbroadway--unknown.json"
+      "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/talkinbroadway--unknown.json",
+      "data/review-texts/stranger-things-2024/thestage--unknown.json",
+      "data/review-texts/operation-mincemeat-2025/guardian--unknown.json"
     ],
     "archive": [
       "broken-glass-west-end-2026/artsdesk--unknown.json",
@@ -1648,11 +1668,12 @@
       "heathers-the-musical-off-broadway-2025/northjerseycom--robert-feldberg.json",
       "heathers-the-musical-off-broadway-2025/theater-pizzazz--ron-fassler.json",
       "just-in-time-2025/billboard--unknown.json",
-      "just-in-time-2025/talkinbroadway--unknown.json"
+      "just-in-time-2025/talkinbroadway--unknown.json",
+      "stranger-things-2024/usatoday--unknown.json"
     ]
   },
   "startTime": "2026-03-23T00:14:57.443Z",
-  "lastProcessed": "just-in-time-2025/theater-scene--joel-benjamin.json",
+  "lastProcessed": "operation-mincemeat-2025/guardian--unknown.json",
   "log": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -2060,6 +2081,28 @@
       "t": "2026-03-23T05:32:22.356Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-23T05:36:01.263Z",
+      "event": "bb-session",
+      "session": "33d507a6",
+      "url": "https://www.thestage.co.uk/news/stranger-things-design-team-getting-the-show-up-"
+    },
+    {
+      "t": "2026-03-23T05:36:02.517Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-23T05:36:34.484Z",
+      "event": "bb-session",
+      "session": "67e5dcea",
+      "url": "https://www.hollywoodreporter.com/tv/tv-news/netflix-stranger-things-the-first-s"
+    },
+    {
+      "t": "2026-03-23T05:36:35.798Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
