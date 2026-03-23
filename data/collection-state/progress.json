@@ -721,7 +721,13 @@
     "operation-mincemeat-2025/frontmezzjunkies--unknown.json",
     "buena-vista-social-club-2025/billboard--sigal-ratner-arias.json",
     "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json",
-    "buena-vista-social-club-2025/timeout--adam-feldman.json"
+    "buena-vista-social-club-2025/timeout--adam-feldman.json",
+    "my-joy-is-heavy-off-broadway-2025/timeout--unknown.json",
+    "touch-off-broadway-2026/broadwayworld--marina-kennedy.json",
+    "touch-off-broadway-2026/plays-to-see--austin-fimmano.json",
+    "every-brilliant-thing-2026/nytimes--adam-feldman.json",
+    "every-brilliant-thing-2026/guardian--jesse-hassenger.json",
+    "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json"
   ],
   "failed": [
     "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
@@ -850,7 +856,11 @@
     "ragtime-2025/bloomberg--chris-rovzar.json",
     "jerome-off-broadway-2025/one-minute-critic--unknown.json",
     "stranger-things-2024/thestage--unknown.json",
-    "operation-mincemeat-2025/guardian--unknown.json"
+    "operation-mincemeat-2025/guardian--unknown.json",
+    "inter-alia-west-end-2026/thestage--sam-marlowe.json",
+    "giant-2026/ap--jennifer-farrar.json",
+    "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "tru-off-broadway-2026/nytimes--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1484,7 +1494,9 @@
       "operation-mincemeat-2025/artsfuse--unknown.json",
       "operation-mincemeat-2025/chicagotribune--unknown.json",
       "operation-mincemeat-2025/frontmezzjunkies--unknown.json",
-      "buena-vista-social-club-2025/timeout--adam-feldman.json"
+      "buena-vista-social-club-2025/timeout--adam-feldman.json",
+      "my-joy-is-heavy-off-broadway-2025/timeout--unknown.json",
+      "every-brilliant-thing-2026/guardian--jesse-hassenger.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -1609,7 +1621,8 @@
       "data/review-texts/chess-2025/billboard--rebecca-milzoff.json",
       "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/talkinbroadway--unknown.json",
       "data/review-texts/stranger-things-2024/thestage--unknown.json",
-      "data/review-texts/operation-mincemeat-2025/guardian--unknown.json"
+      "data/review-texts/operation-mincemeat-2025/guardian--unknown.json",
+      "data/review-texts/tru-off-broadway-2026/nytimes--unknown.json"
     ],
     "archive": [
       "broken-glass-west-end-2026/artsdesk--unknown.json",
@@ -1690,11 +1703,15 @@
       "just-in-time-2025/talkinbroadway--unknown.json",
       "stranger-things-2024/usatoday--unknown.json",
       "operation-mincemeat-2025/usatoday--unknown.json",
-      "buena-vista-social-club-2025/billboard--sigal-ratner-arias.json"
+      "buena-vista-social-club-2025/billboard--sigal-ratner-arias.json",
+      "touch-off-broadway-2026/broadwayworld--marina-kennedy.json",
+      "touch-off-broadway-2026/plays-to-see--austin-fimmano.json",
+      "every-brilliant-thing-2026/nytimes--adam-feldman.json",
+      "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026/stagebizcom--jacquelyn-claire.json"
     ]
   },
   "startTime": "2026-03-23T00:14:57.443Z",
-  "lastProcessed": "buena-vista-social-club-2025/timeout--adam-feldman.json",
+  "lastProcessed": "tru-off-broadway-2026/nytimes--unknown.json",
   "log": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -2135,6 +2152,17 @@
       "t": "2026-03-23T05:40:44.871Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-23T05:49:40.195Z",
+      "event": "bb-session",
+      "session": "933b46b3",
+      "url": "https://www.nytimes.com/2026/03/20/theater/plays-tru-ferguson-the-fever-shawn.ht"
+    },
+    {
+      "t": "2026-03-23T05:49:41.656Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

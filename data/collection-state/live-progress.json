@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-23T05:41:25.888Z",
-  "processed": 722,
-  "failed": 127,
-  "successRate": "85.0%",
+  "updatedAt": "2026-03-23T05:50:57.790Z",
+  "processed": 728,
+  "failed": 131,
+  "successRate": "84.7%",
   "tierBreakdown": {
-    "playwright": 630,
+    "playwright": 632,
     "amp": 10,
     "browserbase": 34,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 70,
-    "archive": 79
+    "archiveToday": 71,
+    "archive": 83
   },
-  "browserbaseSessions": 17,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-03-23T05:16:25.051Z",
-      "event": "bb-session",
-      "session": "f5dce98d",
-      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
-    },
-    {
-      "t": "2026-03-23T05:16:26.265Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-23T05:19:24.224Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-23T05:40:44.871Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-23T05:49:40.195Z",
+      "event": "bb-session",
+      "session": "933b46b3",
+      "url": "https://www.nytimes.com/2026/03/20/theater/plays-tru-ferguson-the-fever-shawn.ht"
+    },
+    {
+      "t": "2026-03-23T05:49:41.656Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
