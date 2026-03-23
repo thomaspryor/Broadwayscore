@@ -34,7 +34,7 @@ const fs = require('fs');
 const path = require('path');
 const { searchAllPosts, collectCommentsFromPosts, getStats } = require('./lib/reddit-api');
 const { classifyAllComments } = require('./lib/buzz-classifier');
-const { calculateCombinedScore } = require('./lib/audience-weighting');
+const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { isLondonMarket } = require('./lib/venue-classification');
 
 // Parse command line args
@@ -476,11 +476,7 @@ function updateAudienceBuzz(showId, redditData) {
   if (score !== null) {
     audienceBuzz.shows[showId].combinedScore = score;
 
-    // Set designation based on score
-    if (score >= 88) audienceBuzz.shows[showId].designation = 'Loving';
-    else if (score >= 78) audienceBuzz.shows[showId].designation = 'Liking';
-    else if (score >= 68) audienceBuzz.shows[showId].designation = 'Shrugging';
-    else audienceBuzz.shows[showId].designation = 'Loathing';
+    audienceBuzz.shows[showId].designation = getDesignation(score);
 
     if (verbose) {
       console.log(`  Weights: SS ${weights.showScore}%, Mezz ${weights.mezzanine}%, Reddit ${weights.reddit}%, Theatr ${weights.theatr}%`);

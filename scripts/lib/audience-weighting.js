@@ -126,4 +126,18 @@ function calculateCombinedScore(sources, showInfo) {
   return { score: Math.round(combinedScore), weights };
 }
 
-module.exports = { calculateCombinedScore, isRedditEligible, MIN_REDDIT_ITEMS, REDDIT_RECENCY_YEARS, REDDIT_SCORE_CALIBRATION, REDDIT_CALIBRATION_CAP };
+/**
+ * Derive audience designation from combined score.
+ * Thresholds match data-audience.ts getAudienceGrade().
+ * Single source of truth — all scrapers should call this instead of inlining.
+ */
+function getDesignation(score) {
+  if (score == null) return null;
+  if (score >= 88) return 'Loving';
+  if (score >= 78) return 'Liking';
+  if (score >= 68) return 'Shrugging';
+  if (score >= 53) return 'Disliking';
+  return 'Loathing';
+}
+
+module.exports = { calculateCombinedScore, getDesignation, isRedditEligible, MIN_REDDIT_ITEMS, REDDIT_RECENCY_YEARS, REDDIT_SCORE_CALIBRATION, REDDIT_CALIBRATION_CAP };

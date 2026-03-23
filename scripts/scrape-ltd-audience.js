@@ -26,7 +26,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { calculateCombinedScore } = require('./lib/audience-weighting');
+const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { buildLondonSlugVariants } = require('./lib/show-matching');
 const { batchDiscoverSlugs } = require('./lib/serp-slug-discovery');
@@ -361,11 +361,7 @@ async function main() {
       if (combined.score != null) {
         showEntry.combinedScore = combined.score;
         showEntry.weights = combined.weights;
-        if (combined.score >= 88) showEntry.designation = 'Loving';
-        else if (combined.score >= 78) showEntry.designation = 'Liking';
-        else if (combined.score >= 68) showEntry.designation = 'Shrugging';
-        else if (combined.score >= 53) showEntry.designation = 'Disliking';
-        else showEntry.designation = 'Loathing';
+        showEntry.designation = getDesignation(combined.score);
       }
 
       showEntry.title = show.title;

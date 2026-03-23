@@ -12,7 +12,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { calculateCombinedScore } = require('./lib/audience-weighting');
+const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
@@ -122,10 +122,7 @@ function main() {
 
     if (score !== null) {
       audienceBuzz.shows[showId].combinedScore = score;
-      if (score >= 88) audienceBuzz.shows[showId].designation = 'Loving';
-      else if (score >= 78) audienceBuzz.shows[showId].designation = 'Liking';
-      else if (score >= 68) audienceBuzz.shows[showId].designation = 'Shrugging';
-      else audienceBuzz.shows[showId].designation = 'Loathing';
+      audienceBuzz.shows[showId].designation = getDesignation(score);
     }
 
     merged++;
