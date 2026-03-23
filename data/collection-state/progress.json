@@ -647,7 +647,15 @@
     "chess-2025/timeout--adam-feldman.json",
     "chess-2025/culturesauce--thom-geier.json",
     "chess-2025/frontmezzjunkies--unknown.json",
-    "chess-2025/one-minute-critic--matthew-wexler.json"
+    "chess-2025/one-minute-critic--matthew-wexler.json",
+    "chess-2025/people--unknown.json",
+    "chess-2025/playbill--logan-culwell-block.json",
+    "chess-2025/stageandcinema--carol-rocamora.json",
+    "chess-2025/theater-scene--samuel-l-leiter.json",
+    "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytg--joe-dziemianowicz.json",
+    "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/newsweek--lauren-giella.json"
   ],
   "failed": [
     "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
@@ -770,7 +778,9 @@
     "an-ark-off-broadway-2026/playbill--unknown.json",
     "an-ark-off-broadway-2026/newyorker--emily-nussbaum.json",
     "two-strangers-bway-2025/guardian--unknown.json",
-    "chess-2025/billboard--rebecca-milzoff.json"
+    "chess-2025/billboard--rebecca-milzoff.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/wsj--unknown.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1345,7 +1355,15 @@
       "chess-2025/timeout--adam-feldman.json",
       "chess-2025/culturesauce--thom-geier.json",
       "chess-2025/frontmezzjunkies--unknown.json",
-      "chess-2025/one-minute-critic--matthew-wexler.json"
+      "chess-2025/one-minute-critic--matthew-wexler.json",
+      "chess-2025/people--unknown.json",
+      "chess-2025/playbill--logan-culwell-block.json",
+      "chess-2025/stageandcinema--carol-rocamora.json",
+      "chess-2025/theater-scene--samuel-l-leiter.json",
+      "dirty-books-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytg--joe-dziemianowicz.json",
+      "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/newsweek--lauren-giella.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -1459,7 +1477,8 @@
       "data/review-texts/bigfoot-off-broadway-2026/buy-tickets--unknown.json",
       "data/review-texts/an-ark-off-broadway-2026/nytimes--unknown.json",
       "data/review-texts/an-ark-off-broadway-2026/newyorker--emily-nussbaum.json",
-      "data/review-texts/chess-2025/billboard--rebecca-milzoff.json"
+      "data/review-texts/chess-2025/billboard--rebecca-milzoff.json",
+      "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/talkinbroadway--unknown.json"
     ],
     "archive": [
       "broken-glass-west-end-2026/artsdesk--unknown.json",
@@ -1533,7 +1552,7 @@
     ]
   },
   "startTime": "2026-03-23T00:14:57.443Z",
-  "lastProcessed": "chess-2025/one-minute-critic--matthew-wexler.json",
+  "lastProcessed": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/newsweek--lauren-giella.json",
   "log": [
     {
       "t": "2026-03-23T00:18:28.220Z",
@@ -1897,6 +1916,17 @@
       "t": "2026-03-23T05:22:05.374Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-23T05:23:43.462Z",
+      "event": "bb-session",
+      "session": "979f4095",
+      "url": "https://www.wsj.com/articles/the-25th-annual-putnam-county-spelling-bee-review-a"
+    },
+    {
+      "t": "2026-03-23T05:23:44.675Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
