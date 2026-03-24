@@ -192,9 +192,10 @@ async function syncResendContacts(subscribers, segmentId, segmentName, resendApi
   for (const email of subscribers) {
     const existing = existingContacts.get(email);
     if (existing && !existing.unsubscribed) continue; // Already active, skip
-    // If they unsubscribed in Resend (via broadcast footer link), respect that choice.
-    // Don't re-activate — their Formspree record will be cleaned up by the removal loop below.
-    if (existing && existing.unsubscribed) continue;
+    // If unsubscribed in Resend but present in Formspree: re-activate.
+    // The resend-webhook endpoint keeps Formspree in sync with Resend unsubscribes,
+    // so being in Formspree here means the subscriber actively re-subscribed after
+    // their previous unsubscribe. Safe to re-add them.
 
     try {
       await postJSON('https://api.resend.com/contacts', {
