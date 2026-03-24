@@ -25,16 +25,6 @@ on:
         required: false
         default: 'Manual sync'
         type: string
-      allow_drift:
-        description: 'Allow large score drift (e.g. after prompt version rescore)'
-        required: false
-        default: false
-        type: boolean
-      allow_regression:
-        description: 'Allow review count regression (e.g. after flagging fabricated entries)'
-        required: false
-        default: false
-        type: boolean
 
 permissions:
   contents: write
@@ -139,21 +129,10 @@ jobs:
 
       - name: Rebuild reviews.json
         env:
-          ALLOW_DRIFT: ${{ github.event.inputs.allow_drift }}
-          ALLOW_REGRESSION: ${{ github.event.inputs.allow_regression }}
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
-          FORCE_FLAG=""
-          if [ "$ALLOW_REGRESSION" = "true" ]; then
-            FORCE_FLAG="--force-write"
-            # Review drops always cause score drift (math, not corruption).
-            # Chain the drift override automatically so ALLOW_REGRESSION alone is sufficient.
-            # Without this, the Show Drift Guard (3B-iii) fires as a second blocker.
-            export ALLOW_DRIFT=true
-          fi
-
           # First attempt
-          if node scripts/rebuild-all-reviews.js $FORCE_FLAG; then
+          if node scripts/rebuild-all-reviews.js; then
             echo "Rebuild succeeded on first attempt"
             exit 0
           fi
@@ -167,7 +146,7 @@ jobs:
           git clone --depth 1 "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" data/review-texts
 
           # Retry rebuild
-          node scripts/rebuild-all-reviews.js $FORCE_FLAG
+          node scripts/rebuild-all-reviews.js
 
       - name: Snapshot rebuilt core data for private repo push
         if: always()
@@ -183,6 +162,15 @@ jobs:
             fi
           done
           echo "Updated core-data snapshot with rebuilt files"
+
+      - name: Analyze review drops and send alert email
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/analyze-rebuild-drops.js
+        continue-on-error: true
 
       - name: Audit wrong-production reviews
         run: node scripts/audit-wrong-production.js
