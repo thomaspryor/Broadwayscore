@@ -4,16 +4,18 @@ name: Opening Night Orchestrator
 # every N minutes for up to M iterations. Each poller run gets a fresh
 # checkout — no stale git state issues.
 #
-# Two crons timed to catch early reviews:
-#   - Broadway: 1 AM UTC = 9 PM ET
-#   - West End: 20 UTC ≈ 9 PM BST
+# Three crons:
+#   - Broadway evening: 1 AM UTC = 9 PM ET (catches early reviews)
+#   - Broadway morning: 10 AM UTC = 5 AM ET (catches overnight stragglers)
+#   - West End evening: 20 UTC ≈ 9 PM BST
 #
 # On nights with no opening, exits in <1 min (zero cost).
 
 on:
   schedule:
-    - cron: '0 1 * * *'   # Broadway — 9 PM ET
-    - cron: '0 20 * * *'  # West End — 9 PM BST
+    - cron: '0 1 * * *'    # Broadway — 9 PM ET
+    - cron: '0 10 * * *'   # Broadway — 5 AM ET (morning sweep)
+    - cron: '0 20 * * *'   # West End — 9 PM BST
   workflow_dispatch:
     inputs:
       show_id:
@@ -74,9 +76,9 @@ jobs:
             echo "Using manual market: $INPUT_MARKET"
           elif [ "${{ github.event_name }}" = "schedule" ]; then
             HOUR=$(date -u +%H)
-            if [ "$HOUR" = "01" ]; then
+            if [ "$HOUR" = "01" ] || [ "$HOUR" = "10" ]; then
               echo "market=broadway" >> $GITHUB_OUTPUT
-              echo "1 AM UTC cron → broadway market"
+              echo "${HOUR} UTC cron → broadway market"
             elif [ "$HOUR" = "20" ]; then
               echo "market=west-end" >> $GITHUB_OUTPUT
               echo "8 PM UTC cron → west-end market"
