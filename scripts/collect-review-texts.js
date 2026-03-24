@@ -4506,18 +4506,31 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
 
     const isHighConfidence = contentVerification.confidence === 'high' || contentVerification.confidence === 'medium';
 
+    // Bug #12 guard: never null fullText on a review that already has an assignedScore.
+    // Text re-collection can fetch wrong content (paywalled, wrong page, wrong production) but
+    // the LLM seeing garbage text is NOT a reason to destroy a review that was already scored.
+    // Instead: flag for human review so the bad text can be investigated without losing the score.
+    const alreadyScored = !!(data.assignedScore && data.assignedScore >= 1 && data.assignedScore <= 100);
+
     // Auto-invalidate on HIGH confidence wrong article type (preview, interview, news, etc.)
     // Medium confidence → log warning only (21% LLM error rate on article classification)
     if (contentVerification.wrongArticle) {
       const artConf = contentVerification.articleTypeConfidence || 'medium';
       const artType = contentVerification.articleType || 'unknown';
       if (artConf === 'high' && data.fullText) {
-        data.wrongFullText = data.fullText;
-        data.fullText = null;
-        data.contentTier = 'invalid';
-        data.incompleteReason = 'non_review';
-        data.wrongShowReason = `Collector LLM: not a review (${artType}, confidence: ${artConf}) — ${(contentVerification.reasoning || '').substring(0, 200)}`;
-        console.log(`    ✗ LLM: Not a review — ${artType} (${artConf} confidence) — fullText nulled, contentTier=invalid`);
+        if (alreadyScored) {
+          // Don't destroy an already-scored review — flag for human review instead
+          data.needsReview = true;
+          data.needsReviewReason = `Collector LLM: not a review (${artType}, ${artConf} conf) but already scored — needs human verification`;
+          console.log(`    ⚠ LLM: Not a review (${artType}, ${artConf} conf) — but already scored, flagging for review instead of nulling`);
+        } else {
+          data.wrongFullText = data.fullText;
+          data.fullText = null;
+          data.contentTier = 'invalid';
+          data.incompleteReason = 'non_review';
+          data.wrongShowReason = `Collector LLM: not a review (${artType}, confidence: ${artConf}) — ${(contentVerification.reasoning || '').substring(0, 200)}`;
+          console.log(`    ✗ LLM: Not a review — ${artType} (${artConf} confidence) — fullText nulled, contentTier=invalid`);
+        }
       } else if (artConf === 'medium') {
         console.log(`    ⚠ LLM: Possibly not a review — ${artType} (medium confidence) — no action taken`);
       }
@@ -4530,25 +4543,39 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     if (data.wrongProductionOverride || data.wrongProductionManualClear) {
       console.log(`    ⚠ wrongProductionOverride/ManualClear set — skipping wrongProduction check`);
     } else if (contentVerification.wrongProduction && isHighConfidence && data.fullText && showCat !== 'off-broadway') {
-      const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
-      data.wrongFullText = data.fullText;
-      data.fullText = null;
-      data.wrongProduction = true;
-      data.contentTier = hasExcerpts ? 'excerpt' : 'needs-rescrape';
-      console.log(`    ✗ LLM: Wrong production (${contentVerification.confidence}) — fullText nulled`);
+      if (alreadyScored) {
+        // Don't destroy an already-scored review — flag for human review instead
+        data.needsReview = true;
+        data.needsReviewReason = `Collector LLM: wrong production (${contentVerification.confidence} conf) but already scored — needs human verification`;
+        console.log(`    ⚠ LLM: Wrong production (${contentVerification.confidence}) — but already scored, flagging for review instead of nulling`);
+      } else {
+        const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
+        data.wrongFullText = data.fullText;
+        data.fullText = null;
+        data.wrongProduction = true;
+        data.contentTier = hasExcerpts ? 'excerpt' : 'needs-rescrape';
+        console.log(`    ✗ LLM: Wrong production (${contentVerification.confidence}) — fullText nulled`);
+      }
     } else if (contentVerification.wrongProduction && isHighConfidence && showCat === 'off-broadway') {
       console.log(`    ⚠ LLM: Wrong production detected but OB exempt — keeping fullText`);
     }
 
     // Auto-null fullText on high/medium confidence film/TV content
     if (contentVerification.isFilmTv && isHighConfidence && data.fullText) {
-      const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
-      data.wrongFullText = data.fullText;
-      data.fullText = null;
-      data.wrongShow = true;
-      data.wrongShowReason = `Collector LLM: film/TV content (${contentVerification.confidence}) — ${(contentVerification.reasoning || '').substring(0, 200)}`;
-      data.contentTier = hasExcerpts ? 'excerpt' : 'needs-rescrape';
-      console.log(`    ✗ LLM: Film/TV content (${contentVerification.confidence}) — fullText nulled`);
+      if (alreadyScored) {
+        // Don't destroy an already-scored review — flag for human review instead
+        data.needsReview = true;
+        data.needsReviewReason = `Collector LLM: film/TV content (${contentVerification.confidence} conf) but already scored — needs human verification`;
+        console.log(`    ⚠ LLM: Film/TV content (${contentVerification.confidence}) — but already scored, flagging for review instead of nulling`);
+      } else {
+        const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
+        data.wrongFullText = data.fullText;
+        data.fullText = null;
+        data.wrongShow = true;
+        data.wrongShowReason = `Collector LLM: film/TV content (${contentVerification.confidence}) — ${(contentVerification.reasoning || '').substring(0, 200)}`;
+        data.contentTier = hasExcerpts ? 'excerpt' : 'needs-rescrape';
+        console.log(`    ✗ LLM: Film/TV content (${contentVerification.confidence}) — fullText nulled`);
+      }
     }
 
     // Flag low-confidence rejections for manual review instead of auto-acting
