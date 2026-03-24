@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-24T19:29:43.250Z",
+  "timestamp": "2026-03-24T19:39:41.139Z",
   "stats": {
     "totalReviews": 32470,
     "alreadyFlagged": 11060,
     "dateGuardCatches": 139,
     "directorMismatch": 947,
-    "tvFilmSignals": 3405,
-    "londonSignals": 1026,
+    "tvFilmSignals": 3406,
+    "londonSignals": 1027,
     "offBroadwaySignals": 1011,
     "yearMismatch": 71,
     "noPublishDate": 6815
@@ -55311,6 +55311,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"on screen\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-producers-west-end-2025",
+      "file": "the-express--neil-norman.json",
+      "score": 89,
+      "publishDate": "2025-09-16",
+      "url": "https://www.express.co.uk/entertainment/theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         },
         {
           "type": "LONDON_SIGNAL",
