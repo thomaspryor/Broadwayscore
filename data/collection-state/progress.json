@@ -440,7 +440,15 @@
     "death-becomes-her-2024/theatermania--jesse-green.json",
     "death-becomes-her-2024/timeout--adam-feldman.json",
     "death-becomes-her-2024/cititour--unknown.json",
-    "death-becomes-her-2024/amny--unknown.json"
+    "death-becomes-her-2024/amny--unknown.json",
+    "death-becomes-her-2024/chicagotribune--unknown.json",
+    "death-becomes-her-2024/frontmezzjunkies--unknown.json",
+    "death-becomes-her-2024/stageandcinema--unknown.json",
+    "death-becomes-her-2024/the-interested-bystander--cary-wong.json",
+    "death-becomes-her-2024/theater-scene--joel-benjamin.json",
+    "death-becomes-her-2024/usatoday--unknown.json",
+    "maybe-happy-ending-2024/vulture--sara-holdren.json",
+    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -501,7 +509,9 @@
     "dracula-west-end-2025/times-uk--clive-davis.json",
     "oliver-west-end-2024/guardian--arifa-akbar.json",
     "oliver-west-end-2024/telegraph--claire-allfree.json",
-    "oliver-west-end-2024/the-sun--dominic-maxwell.json"
+    "oliver-west-end-2024/the-sun--dominic-maxwell.json",
+    "maybe-happy-ending-2024/wsj--unknown.json",
+    "maybe-happy-ending-2024/guardian--adrian-horton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -861,7 +871,12 @@
       "death-becomes-her-2024/ew--unknown.json",
       "death-becomes-her-2024/nydailynews--chris-jones.json",
       "death-becomes-her-2024/theatermania--jesse-green.json",
-      "death-becomes-her-2024/timeout--adam-feldman.json"
+      "death-becomes-her-2024/timeout--adam-feldman.json",
+      "death-becomes-her-2024/frontmezzjunkies--unknown.json",
+      "death-becomes-her-2024/stageandcinema--unknown.json",
+      "death-becomes-her-2024/the-interested-bystander--cary-wong.json",
+      "death-becomes-her-2024/theater-scene--joel-benjamin.json",
+      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -922,7 +937,8 @@
       "data/review-texts/buena-vista-social-club-2025/cititour--brian-scott-lipton.json",
       "data/review-texts/buena-vista-social-club-2025/billboard--sigal-ratner-arias.json",
       "data/review-texts/my-neighbour-totoro-west-end-2025/broadwayworld--unknown.json",
-      "data/review-texts/oliver-west-end-2024/guardian--arifa-akbar.json"
+      "data/review-texts/oliver-west-end-2024/guardian--arifa-akbar.json",
+      "data/review-texts/maybe-happy-ending-2024/guardian--adrian-horton.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -996,11 +1012,14 @@
       "oliver-west-end-2024/artsdesk--helen-hawkins.json",
       "oliver-west-end-2024/the-express--neil-norman.json",
       "death-becomes-her-2024/newyorker--helen-shaw.json",
-      "death-becomes-her-2024/cititour--unknown.json"
+      "death-becomes-her-2024/cititour--unknown.json",
+      "death-becomes-her-2024/chicagotribune--unknown.json",
+      "death-becomes-her-2024/usatoday--unknown.json",
+      "maybe-happy-ending-2024/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-03-24T10:12:58.341Z",
-  "lastProcessed": "death-becomes-her-2024/amny--unknown.json",
+  "lastProcessed": "maybe-happy-ending-2024/guardian--adrian-horton.json",
   "log": [
     {
       "t": "2026-03-24T12:15:43.038Z",
@@ -1155,6 +1174,17 @@
       "t": "2026-03-24T13:24:05.880Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-24T13:25:30.071Z",
+      "event": "bb-session",
+      "session": "7aa54a97",
+      "url": "https://www.wsj.com/articles/maybe-happy-ending-review-a-robotic-romance-of-real"
+    },
+    {
+      "t": "2026-03-24T13:25:31.251Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
