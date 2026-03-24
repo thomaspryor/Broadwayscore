@@ -157,14 +157,26 @@ function parseParkingFromHtml(html) {
   });
 }
 
+// newyorkcitytheatre.com is JS-rendered — BD returns bare skeleton with 0 articles.
+// preferPlaywright skips BD/SB and goes straight to Playwright.
+const FETCH_OPTIONS = { preferPlaywright: true };
+
 async function extractDining(url) {
-  const { content } = await fetchPage(url);
-  return parseDiningFromHtml(content);
+  const { content } = await fetchPage(url, FETCH_OPTIONS);
+  const results = parseDiningFromHtml(content);
+  if (results.length === 0) {
+    throw new Error(`Zero dining results — page may not have rendered (${url})`);
+  }
+  return results;
 }
 
 async function extractParking(url) {
-  const { content } = await fetchPage(url);
-  return parseParkingFromHtml(content);
+  const { content } = await fetchPage(url, FETCH_OPTIONS);
+  const results = parseParkingFromHtml(content);
+  if (results.length === 0) {
+    throw new Error(`Zero parking results — page may not have rendered (${url})`);
+  }
+  return results;
 }
 
 // ============================================
