@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-24T13:11:45.493Z",
+  "timestamp": "2026-03-24T13:33:15.144Z",
   "stats": {
     "totalReviews": 32478,
-    "alreadyFlagged": 11054,
+    "alreadyFlagged": 11059,
     "dateGuardCatches": 139,
     "directorMismatch": 942,
-    "tvFilmSignals": 3400,
-    "londonSignals": 1017,
+    "tvFilmSignals": 3401,
+    "londonSignals": 1019,
     "offBroadwaySignals": 1011,
     "yearMismatch": 71,
-    "noPublishDate": 6822
+    "noPublishDate": 6818
   },
   "findings": [
     {
@@ -7947,20 +7947,6 @@
     },
     {
       "showId": "buena-vista-social-club-2025",
-      "file": "hollywood-reporter--caitlin-huston.json",
-      "score": null,
-      "publishDate": "2025-02-25",
-      "url": "https://www.hollywoodreporter.com/video/buena-vista-social-club-choreographers-justin-peck-patricia-delgado-thrilling-season-broadway-tony-awards-2025/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "buena-vista-social-club-2025",
       "file": "latimes--nicholas-ducassi.json",
       "score": 68,
       "publishDate": "2025-03-23",
@@ -13573,15 +13559,15 @@
     },
     {
       "showId": "dracula-west-end-2025",
-      "file": "financialtimes--sarah-hemming.json",
-      "score": 78,
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "score": 65,
       "publishDate": "2026-02-17",
-      "url": "https://www.ft.com/content/10674190-104b-4346-a8b6-1c944675287e",
+      "url": "https://www.broadwayworld.com/article/Review-DRACULA-Starring-Cynthia-Erivo-Nol-Coward-Theatre-20260217",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"onscreen\""
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -13685,6 +13671,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"big screen\""
+        }
+      ]
+    },
+    {
+      "showId": "dracula-west-end-2025",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 42,
+      "publishDate": "2026-02-17",
+      "url": "https://www.whatsonstage.com/news/dracula-in-the-west-end-review-cynthia-erivo-gives-the-show-some-much-needed-bite_1712503/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
         }
       ]
     },
@@ -34301,6 +34301,20 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 577d before show (2022-10-18 vs 2024-05-17)"
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "whatsonstage--unknown.json",
+      "score": 80,
+      "publishDate": "2025-03-21",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/my-neighbour-totoro-review-colossal-spirits-awe-in_57635.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
         }
       ]
     },
@@ -73725,6 +73739,20 @@
     },
     {
       "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "independent--alice-saville.json",
+      "score": 72,
+      "publishDate": "2025-10-29",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/wendy-and-peter-pan-barbican-review-b2853808.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
       "file": "standard--nick-curtis.json",
       "score": 66,
       "publishDate": "October 20th, 2022",
@@ -74539,6 +74567,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "file": "whatsonstage--gareth-carr.json",
+      "score": 88,
+      "publishDate": "2024-07-25",
+      "url": "https://www.whatsonstage.com/news/oliver-at-chichester-festival-theatre-review-revival-glorious-revival_1616946/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
