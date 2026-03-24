@@ -261,7 +261,16 @@
     "the-hunger-games-on-stage-west-end-2025/financialtimes--unknown.json",
     "the-hunger-games-on-stage-west-end-2025/i-paper--fiona-mountford.json",
     "the-hunger-games-on-stage-west-end-2025/london-theatre--marianka-swain.json",
-    "the-hunger-games-on-stage-west-end-2025/theatre-weekly--greg-stewart.json"
+    "the-hunger-games-on-stage-west-end-2025/theatre-weekly--greg-stewart.json",
+    "the-hunger-games-on-stage-west-end-2025/whatsonstage--unknown.json",
+    "two-strangers-bway-2025/nyt-theater--unknown.json",
+    "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "two-strangers-bway-2025/chicagotribune--unknown.json",
+    "two-strangers-bway-2025/jitney--unknown.json",
+    "two-strangers-bway-2025/playbill--unknown.json",
+    "two-strangers-bway-2025/theater-life--samuel-l-leiter.json",
+    "two-strangers-bway-2025/theater-scene--joseph-pisano.json",
+    "chess-2025/hollywood-reporter--angie-han.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -291,7 +300,8 @@
     "garry-starr-classic-penguins-garrick-west-end-2026/everything-theatre--jess-gonzalez.json",
     "oh-mary-west-end-2025/standard--nick-curtis.json",
     "paranormal-activity-west-end-2025/broadwayworld--franco-milazzo.json",
-    "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json"
+    "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json",
+    "two-strangers-bway-2025/guardian--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -527,7 +537,14 @@
       "the-hunger-games-on-stage-west-end-2025/financialtimes--unknown.json",
       "the-hunger-games-on-stage-west-end-2025/i-paper--fiona-mountford.json",
       "the-hunger-games-on-stage-west-end-2025/london-theatre--marianka-swain.json",
-      "the-hunger-games-on-stage-west-end-2025/theatre-weekly--greg-stewart.json"
+      "the-hunger-games-on-stage-west-end-2025/theatre-weekly--greg-stewart.json",
+      "the-hunger-games-on-stage-west-end-2025/whatsonstage--unknown.json",
+      "two-strangers-bway-2025/nyt-theater--unknown.json",
+      "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "two-strangers-bway-2025/jitney--unknown.json",
+      "two-strangers-bway-2025/playbill--unknown.json",
+      "two-strangers-bway-2025/theater-life--samuel-l-leiter.json",
+      "two-strangers-bway-2025/theater-scene--joseph-pisano.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -541,7 +558,10 @@
       "data/review-texts/the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
       "the-unknown-off-broadway-2026/thewrap--robert-hofler.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
+      "chess-2025/hollywood-reporter--angie-han.json"
+    ],
     "directCookies": [
       "giant-2026/nypost--unknown.json"
     ],
@@ -587,11 +607,12 @@
       "oh-mary-west-end-2025/artsdesk--demetrios-matheou.json",
       "oh-mary-west-end-2025/broadwayworld--unknown.json",
       "paranormal-activity-west-end-2025/artsdesk--gary-naylor.json",
-      "into-the-woods-west-end-2025/broadwayworld--aliya-al-hassan.json"
+      "into-the-woods-west-end-2025/broadwayworld--aliya-al-hassan.json",
+      "two-strangers-bway-2025/chicagotribune--unknown.json"
     ]
   },
   "startTime": "2026-03-24T10:12:58.341Z",
-  "lastProcessed": "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json",
+  "lastProcessed": "chess-2025/hollywood-reporter--angie-han.json",
   "log": [
     {
       "t": "2026-03-24T12:15:43.038Z",
@@ -603,6 +624,17 @@
       "t": "2026-03-24T12:15:44.292Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-24T12:26:30.335Z",
+      "event": "bb-session",
+      "session": "3aa93c89",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-03-24T12:26:32.591Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
