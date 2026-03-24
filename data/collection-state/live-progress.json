@@ -1,114 +1,20 @@
 {
-  "updatedAt": "2026-03-24T04:43:53.533Z",
-  "processed": 1064,
-  "failed": 317,
-  "successRate": "77.0%",
+  "updatedAt": "2026-03-24T05:00:47.020Z",
+  "processed": 1107,
+  "failed": 324,
+  "successRate": "77.4%",
   "tierBreakdown": {
-    "playwright": 816,
+    "playwright": 847,
     "amp": 26,
-    "browserbase": 46,
+    "browserbase": 56,
     "directCookies": 2,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 121,
-    "archive": 227
+    "archiveToday": 125,
+    "archive": 234
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 15,
   "recentActivity": [
-    {
-      "t": "2026-03-23T17:36:45.391Z",
-      "event": "bb-session",
-      "session": "1742fd78",
-      "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jor"
-    },
-    {
-      "t": "2026-03-23T17:36:46.656Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-23T17:39:18.607Z",
-      "event": "bb-session",
-      "session": "bfc1f42a",
-      "url": "https://www.hollywoodreporter.com/business/business-news/broadway-box-office-the"
-    },
-    {
-      "t": "2026-03-23T17:39:20.065Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-24T03:19:42.730Z",
-      "event": "bb-session",
-      "session": "be55addb",
-      "url": "https://variety.com/2026/legit/reviews/giant-broadway-review-john-lithgow-roald-"
-    },
-    {
-      "t": "2026-03-24T04:24:15.036Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-03-24T04:25:25.866Z",
-      "event": "bb-session",
-      "session": "9adfaf7e",
-      "url": "https://deadline.com/2026/03/john-lithgow-giant-broadway-review-1236761578/"
-    },
-    {
-      "t": "2026-03-24T04:29:25.732Z",
-      "event": "bb-session",
-      "session": "5664f4ac",
-      "url": "https://www.amny.com/entertainment/giant-performance-divisive-play/"
-    },
-    {
-      "t": "2026-03-24T04:29:27.051Z",
-      "event": "bb-cookie-inject",
-      "domain": "amny.com"
-    },
-    {
-      "t": "2026-03-24T04:30:54.784Z",
-      "event": "bb-session",
-      "session": "54672200",
-      "url": "https://nypost.com/2026/03/23/entertainment/giant-review-john-lithgow-is-superb-"
-    },
-    {
-      "t": "2026-03-24T04:30:56.127Z",
-      "event": "bb-cookie-inject",
-      "domain": "nypost.com"
-    },
-    {
-      "t": "2026-03-24T04:39:34.783Z",
-      "event": "bb-session",
-      "session": "dd84029c",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/john-proctor-is-the-villain-rev"
-    },
-    {
-      "t": "2026-03-24T04:39:36.057Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-24T04:40:17.660Z",
-      "event": "bb-session",
-      "session": "f0c41971",
-      "url": "https://www.wsj.com/articles/john-proctor-is-the-villain-review-reconceiving-the"
-    },
-    {
-      "t": "2026-03-24T04:40:18.972Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-24T04:41:58.237Z",
-      "event": "bb-session",
-      "session": "0e22ee82",
-      "url": "https://www.amny.com/entertainment/broadway/smash-from-bombshell-to-bomb/"
-    },
-    {
-      "t": "2026-03-24T04:41:59.627Z",
-      "event": "bb-cookie-inject",
-      "domain": "amny.com"
-    },
     {
       "t": "2026-03-24T04:43:00.783Z",
       "event": "bb-session",
@@ -130,6 +36,94 @@
       "t": "2026-03-24T04:43:25.776Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-24T04:44:54.679Z",
+      "event": "bb-session",
+      "session": "460954d4",
+      "url": "http://www.amny.com/entertainment/the-last-five-years-movie-review-anna-kendrick"
+    },
+    {
+      "t": "2026-03-24T04:44:56.011Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-24T04:48:35.922Z",
+      "event": "bb-session",
+      "session": "7c932889",
+      "url": "https://nypost.com/2025/04/06/entertainment/the-last-five-years-review-nick-jona"
+    },
+    {
+      "t": "2026-03-24T04:48:37.156Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-24T04:52:00.488Z",
+      "event": "bb-session",
+      "session": "cc24535f",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/good-night-and-good-luck-theate"
+    },
+    {
+      "t": "2026-03-24T04:52:01.845Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-24T04:54:47.904Z",
+      "event": "bb-session",
+      "session": "3a2eeb84",
+      "url": "https://www.wsj.com/articles/good-night-and-good-luck-review-george-clooneys-bro"
+    },
+    {
+      "t": "2026-03-24T04:54:49.240Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-24T04:57:21.167Z",
+      "event": "bb-session",
+      "session": "2da28207",
+      "url": "https://variety.com/2025/legit/reviews/glengarry-glen-ross-review-kieran-culkin-"
+    },
+    {
+      "t": "2026-03-24T04:57:22.505Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-24T04:57:37.996Z",
+      "event": "bb-session",
+      "session": "f543dd8e",
+      "url": "https://nypost.com/2025/03/31/entertainment/glengarry-glen-ross-review-kieran-cu"
+    },
+    {
+      "t": "2026-03-24T04:57:39.280Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-24T04:58:24.512Z",
+      "event": "bb-session",
+      "session": "f689ecb9",
+      "url": "https://www.wsj.com/articles/glengarry-glen-ross-review-kieran-culkin-back-on-br"
+    },
+    {
+      "t": "2026-03-24T04:58:25.819Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-24T04:59:49.363Z",
+      "event": "bb-session",
+      "session": "fb489df9",
+      "url": "https://www.amny.com/news/review-glengarry-glen-ross-revival-2025/"
+    },
+    {
+      "t": "2026-03-24T04:59:50.633Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
