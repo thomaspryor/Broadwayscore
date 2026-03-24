@@ -182,7 +182,7 @@ export default function EmailCaptureModal({
     } finally {
       setIsSubmitting(false);
     }
-  }, [email, name, company, role, trigger, onSubmit]);
+  }, [email, name, company, role, trigger, formId, marketKey, onSubmit]);
 
   return (
     <Modal
