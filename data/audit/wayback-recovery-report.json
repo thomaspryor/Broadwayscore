@@ -1,26 +1,28 @@
 {
-  "totalCandidates": 26,
-  "cdxFound": 10,
-  "cdxNotFound": 5,
-  "recovered": 9,
+  "totalCandidates": 23,
+  "cdxFound": 8,
+  "cdxNotFound": 8,
+  "recovered": 6,
   "recoveredByTier": {
     "1": 1,
     "2": 0,
-    "3": 8
+    "3": 5
   },
   "recoveredByDomain": {
     "timeout.com": 1,
-    "lightingandsoundamerica.com": 5,
-    "westendtheatre.com": 1,
-    "standard.co.uk": 1,
-    "whatsonstage.com": 1
+    "lightingandsoundamerica.com": 1,
+    "independent.co.uk": 1,
+    "londontheatre.co.uk": 1,
+    "standard.co.uk": 2
   },
   "tooShort": 0,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 11,
-  "notInArchive": 5,
-  "domainSkipped": 0,
-  "circuitBrokenDomains": []
+  "errors": 6,
+  "notInArchive": 8,
+  "domainSkipped": 1,
+  "circuitBrokenDomains": [
+    "lightingandsoundamerica.com"
+  ]
 }
