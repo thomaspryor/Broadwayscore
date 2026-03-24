@@ -1,0 +1,98 @@
+{
+  "runDate": "2026-03-24T03:52:27.725Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 100,
+    "priority": "all",
+    "showFilter": "giant-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 9,
+    "failed": 3,
+    "skipped": 0,
+    "successRate": "75.0%"
+  },
+  "tierBreakdown": {
+    "playwright": 7,
+    "amp": 0,
+    "browserbase": 4,
+    "directCookies": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 3,
+    "archive": 0
+  },
+  "statistics": {
+    "tier1Attempts": 10,
+    "tier1Success": 7,
+    "ampAttempts": 1,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 2,
+    "tier1_5Success": 2,
+    "tier2Attempts": 3,
+    "tier2Success": 0,
+    "tier3Attempts": 4,
+    "tier3Success": 0,
+    "tier3_6Attempts": 3,
+    "tier3_6Success": 3,
+    "tier4Attempts": 4,
+    "tier4Success": 0,
+    "totalFailed": 3,
+    "scrapingBeePageCredits": 0,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.5,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "giant-2026/variety--unknown.json",
+    "giant-2026/new-york-sun--unknown.json",
+    "giant-2026/nydailynews--unknown.json",
+    "giant-2026/nypost--unknown.json",
+    "giant-2026/theatermania--unknown.json",
+    "giant-2026/forward--unknown.json",
+    "giant-2026/theatrely--unknown.json",
+    "giant-2026/culturesauce--unknown.json",
+    "giant-2026/nysr--unknown.json"
+  ],
+  "failed": [
+    "giant-2026/vulture--unknown.json",
+    "giant-2026/timeout--unknown.json",
+    "giant-2026/talkinbroadway--unknown.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "giant-2026/new-york-sun--unknown.json",
+      "giant-2026/nydailynews--unknown.json",
+      "giant-2026/theatermania--unknown.json",
+      "giant-2026/forward--unknown.json",
+      "giant-2026/theatrely--unknown.json",
+      "giant-2026/culturesauce--unknown.json",
+      "giant-2026/nysr--unknown.json"
+    ],
+    "amp": [],
+    "browserbase": [
+      "data/review-texts/giant-2026/variety--unknown.json",
+      "giant-2026/variety--unknown.json",
+      "data/review-texts/giant-2026/nypost--unknown.json",
+      "giant-2026/nypost--unknown.json"
+    ],
+    "directCookies": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [
+      "data/review-texts/giant-2026/vulture--unknown.json",
+      "data/review-texts/giant-2026/timeout--unknown.json",
+      "data/review-texts/giant-2026/talkinbroadway--unknown.json"
+    ],
+    "archive": []
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
+}
