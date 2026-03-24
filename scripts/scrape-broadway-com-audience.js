@@ -122,10 +122,12 @@ async function discoverShows() {
   if (isBotChallenge(html)) {
     console.log('  Bot challenge on listing page, trying ScrapingBee...');
     const sbResult = await fetchViaScrapingBee('https://www.broadway.com/shows/');
-    if (sbResult && sbResult.status === 200) {
+    if (sbResult && sbResult.status === 200 && !isBotChallenge(sbResult.data)) {
       html = sbResult.data;
     } else {
-      throw new Error('Broadway.com /shows/ blocked by bot challenge and ScrapingBee fallback failed');
+      const reason = !sbResult ? 'no API key' : `HTTP ${sbResult.status}, ${sbResult.data?.length || 0} bytes`;
+      console.error(`  ScrapingBee fallback failed for listing page (${reason})`);
+      throw new Error(`Broadway.com /shows/ blocked by bot challenge and ScrapingBee fallback failed (${reason})`);
     }
   }
 
@@ -424,12 +426,14 @@ async function main() {
       if (!rating && isBotChallenge(html)) {
         if (verbose) console.log(`  Bot challenge detected for ${show.id}, trying ScrapingBee...`);
         const sbResult = await fetchViaScrapingBee(bc.url);
-        if (sbResult && sbResult.status === 200) {
+        if (sbResult && sbResult.status === 200 && !isBotChallenge(sbResult.data)) {
           rating = extractJsonLdRating(sbResult.data);
           scrapingBeeUsed++;
           if (!rating && verbose) {
-            console.log(`  SKIP ${show.id}: no JSON-LD aggregateRating (even via ScrapingBee)`);
+            console.log(`  SKIP ${show.id}: no JSON-LD aggregateRating (even via ScrapingBee, ${sbResult.data.length} bytes)`);
           }
+        } else if (verbose && sbResult) {
+          console.log(`  ScrapingBee failed for ${show.id}: HTTP ${sbResult.status}, ${sbResult.data?.length || 0} bytes`);
         }
       }
 
