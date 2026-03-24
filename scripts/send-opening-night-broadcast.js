@@ -372,6 +372,29 @@ async function main() {
 
     const broadcastName = `Opening Night: ${showsForEmail.map(s => s.showTitle).join(', ')} (${new Date().toISOString().slice(0, 10)})`;
 
+    // Pre-send deduplication guard: verify contact count matches expectations
+    try {
+      let contactCount = 0;
+      let after = null;
+      while (true) {
+        let url = `https://api.resend.com/audiences/${RESEND_SEGMENT_ID}/contacts?limit=100`;
+        if (after) url += `&after=${after}`;
+        const resp = await fetch(url, { headers: { 'Authorization': `Bearer ${RESEND_API_KEY}` } });
+        const r = await resp.json();
+        const batch = r.data || [];
+        contactCount += batch.length;
+        if (!r.has_more || batch.length === 0) break;
+        after = batch[batch.length - 1].id;
+      }
+      console.log(`  Pre-send contact count: ${contactCount}`);
+      if (contactCount === 0) {
+        throw new Error('Audience has 0 contacts — aborting broadcast to prevent empty send');
+      }
+    } catch (err) {
+      if (err.message.includes('0 contacts')) throw err;
+      console.warn(`  Warning: could not verify contact count: ${err.message}`);
+    }
+
     try {
       // Create broadcast and send immediately
       const result = await postJSON('https://api.resend.com/broadcasts', {

@@ -198,19 +198,25 @@ async function syncResendContacts(subscribers, segmentId, segmentName, resendApi
     // their previous unsubscribe. Safe to re-add them.
 
     try {
-      await postJSON('https://api.resend.com/contacts', {
-        email,
-        unsubscribed: false,
-        segments: [{ id: segmentId }],
-      }, { 'Authorization': `Bearer ${resendApiKey}` });
-
-      if (existing) { resubscribed++; } else { created++; }
-    } catch (err) {
-      // 409 = already exists, that's fine
-      if (!err.message.includes('409')) {
-        errors++;
-        if (errors <= 3) console.error(`  Error upserting ${email.replace(/(.{2}).*(@.*)/, '$1***$2')}: ${err.message}`);
+      if (existing) {
+        // Re-activate in place — PATCH the existing contact to avoid creating a duplicate record.
+        // POST /contacts creates a NEW contact ID even for existing emails, causing duplicate sends.
+        await patchJSON(`https://api.resend.com/contacts/${existing.id}`, {
+          unsubscribed: false,
+        }, { 'Authorization': `Bearer ${resendApiKey}` });
+        resubscribed++;
+      } else {
+        // New subscriber — create fresh contact
+        await postJSON('https://api.resend.com/contacts', {
+          email,
+          unsubscribed: false,
+          audience_id: segmentId,
+        }, { 'Authorization': `Bearer ${resendApiKey}` });
+        created++;
       }
+    } catch (err) {
+      errors++;
+      if (errors <= 3) console.error(`  Error upserting ${email.replace(/(.{2}).*(@.*)/, '$1***$2')}: ${err.message}`);
     }
     await delay(1000);
   }

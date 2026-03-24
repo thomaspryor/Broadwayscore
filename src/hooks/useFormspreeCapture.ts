@@ -3,9 +3,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { track } from '@vercel/analytics';
 import { useCurrentMarket } from '@/hooks/useCurrentMarket';
-
-const SUBSCRIBED_KEY_PREFIX = 'bsc_email_subscribed_';
-const LEGACY_SUBSCRIBED_KEY = 'bsc_email_subscribed'; // Pre-market-split key (treated as Broadway)
+import { isFormspreeSubscribed, SUBSCRIBED_KEY_PREFIX } from '@/hooks/useFormspreeSubscribed';
 const FORMSPREE_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || '';
 const FORMSPREE_FOLLOW_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_FOLLOW_FORM_ID || '';
 const FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID || '';
@@ -39,14 +37,7 @@ export function useFormspreeCapture(options: FormspreeCaptureOptions): Formspree
   const market: Market = options.market || (marketId === 'west-end' || marketId === 'off-west-end' ? 'west-end' : 'broadway');
 
   useEffect(() => {
-    try {
-      const marketKey = SUBSCRIBED_KEY_PREFIX + market;
-      const subscribed = localStorage.getItem(marketKey) === 'true'
-        || (market === 'broadway' && localStorage.getItem(LEGACY_SUBSCRIBED_KEY) === 'true');
-      setIsSubscribed(subscribed);
-    } catch {
-      // localStorage not available
-    }
+    setIsSubscribed(isFormspreeSubscribed(market));
   }, [market]);
 
   const submit = useCallback(async (email: string, extra?: { firstName?: string }): Promise<boolean> => {

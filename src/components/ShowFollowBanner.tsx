@@ -2,10 +2,10 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useFormspreeCapture } from '@/hooks/useFormspreeCapture';
+import { isFormspreeSubscribed } from '@/hooks/useFormspreeSubscribed';
 import { emailCaptureConfig } from '@/config/email-capture';
 
 const DISMISSED_PREFIX = 'bsc_show_follow_dismissed_';
-const SUBSCRIBED_KEY = 'bsc_email_subscribed';
 const FOLLOW_PREFIX = 'bsc_show_follow_subscribed_';
 
 interface ShowFollowBannerProps {
@@ -40,8 +40,7 @@ export default function ShowFollowBanner({ showId, showTitle }: ShowFollowBanner
         return;
       }
       const wasDismissed = localStorage.getItem(`${DISMISSED_PREFIX}${showId}`);
-      const alreadySubscribed = localStorage.getItem(SUBSCRIBED_KEY) === 'true';
-      if (!wasDismissed && !alreadySubscribed) {
+      if (!wasDismissed && !isFormspreeSubscribed()) {
         setDismissed(false);
       }
     } catch { /* noop */ }
