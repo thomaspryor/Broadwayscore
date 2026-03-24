@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-03-24T12:13:16.409Z",
-  "processed": 218,
-  "failed": 22,
-  "successRate": "90.8%",
+  "updatedAt": "2026-03-24T12:16:01.309Z",
+  "processed": 226,
+  "failed": 24,
+  "successRate": "90.4%",
   "tierBreakdown": {
-    "playwright": 192,
+    "playwright": 200,
     "amp": 10,
     "browserbase": 0,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 7,
+    "archiveToday": 8,
     "archive": 25
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-03-24T12:15:43.038Z",
+      "event": "bb-session",
+      "session": "a2d98314",
+      "url": "https://www.newyorker.com/magazine/2026/02/09/an-ark-theatre-review-data"
+    },
+    {
+      "t": "2026-03-24T12:15:44.292Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    }
+  ]
 }
