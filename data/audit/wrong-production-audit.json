@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-24T10:49:15.744Z",
+  "timestamp": "2026-03-24T11:52:56.479Z",
   "stats": {
-    "totalReviews": 32476,
-    "alreadyFlagged": 11057,
+    "totalReviews": 32478,
+    "alreadyFlagged": 11053,
     "dateGuardCatches": 139,
-    "directorMismatch": 940,
-    "tvFilmSignals": 3396,
-    "londonSignals": 1017,
+    "directorMismatch": 942,
+    "tvFilmSignals": 3399,
+    "londonSignals": 1018,
     "offBroadwaySignals": 1011,
     "yearMismatch": 71,
     "noPublishDate": 6823
@@ -24919,6 +24919,20 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "score": 88,
+      "publishDate": "2025-12-12",
+      "url": "https://www.broadwayworld.com/westend/article/Review-INTO-THE-WOODS-Bridge-Theatre-20251212",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
       "file": "guardian--arifa-akbar.json",
       "score": 86,
       "publishDate": "2025-12-12",
@@ -25008,6 +25022,25 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "whatsonstage--unknown.json",
+      "score": 91,
+      "publishDate": "2025-12-12",
+      "url": "https://www.whatsonstage.com/news/were-the-critics-all-bark-and-no-bite-with-into-the-woods_1706386/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -38012,6 +38045,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"big screen\""
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-west-end-2025",
+      "file": "whatsonstage--rachel-agyekum.json",
+      "score": 85,
+      "publishDate": "2025-12-16",
+      "url": "https://www.whatsonstage.com/news/paranormal-activity-west-end-review-a-hauntingly-good-stage-adaptation_1706645/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"paramount\""
         }
       ]
     },
@@ -51643,6 +51690,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"onscreen\""
+        }
+      ]
+    },
+    {
+      "showId": "the-hunger-games-on-stage-west-end-2025",
+      "file": "whatsonstage--unknown.json",
+      "score": 77,
+      "publishDate": "2025-11-13",
+      "url": "https://www.whatsonstage.com/news/the-hunger-games-on-stage-review-flickers-of-brilliance-that-dont-catch-fire_1702082/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
         }
       ]
     },
@@ -66329,20 +66390,6 @@
     },
     {
       "showId": "every-brilliant-thing-2026",
-      "file": "deadline--unknown.json",
-      "score": 86,
-      "publishDate": "2026-03-13",
-      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcliffe-1236750131/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "every-brilliant-thing-2026",
       "file": "nydailynews--chris-jones.json",
       "score": 77,
       "publishDate": "2026-03-13",
@@ -67513,10 +67560,38 @@
     },
     {
       "showId": "giant-2026",
+      "file": "amny--matt-windman.json",
+      "score": 76,
+      "publishDate": "March 23, 2026",
+      "url": "https://www.amny.com/entertainment/giant-performance-divisive-play/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "giant-2026",
       "file": "new-york-sun--unknown.json",
       "score": 91,
       "publishDate": "2026-03-24",
       "url": "https://www.nysun.com/article/a-new-play-about-roald-dahl-and-antisemitism-marks-a-giant-step-for-this-broadway-season",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "giant-2026",
+      "file": "vulture--sara-holdren.json",
+      "score": 77,
+      "publishDate": "March 23, 2026",
+      "url": "https://www.vulture.com/article/theater-review-giant-roald-dahl-john-lithgow-broadway.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
