@@ -69,6 +69,12 @@ Before EVERY commit touching `src/`, `scripts/`, or config:
 ### 13. Prompt Changes Require A/B Check (MANDATORY)
 Never rescore >100 reviews without the built-in A/B comparison. Aborts if bucket shift >5% or mean drift >5pts.
 
+### 14. Opening Night Readiness Check (MANDATORY)
+When asked "is everything ready for opening night?", check the AUTOMATION CHAIN, not just the data:
+1. `gh run list --limit 50 --json name,createdAt --jq '.[] | select(.name == "Opening Night Orchestrator") | .createdAt'` — confirm the 3 AM UTC Broadway cron has actually fired before for this market (not just the 10 PM UTC West End cron)
+2. Verify `opening-night-orchestrator.yml` is in `check-cron-health.yml`'s CRITICAL_CRONS list
+3. `gh workflow run opening-night-orchestrator.yml -f show_id=SHOW_ID -f market=broadway` to manually trigger if the cron is late (GitHub crons can lag 15-30 min or miss entirely on new workflows)
+
 ---
 
 ## Project Reference
