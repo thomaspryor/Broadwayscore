@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-24T12:46:16.854Z",
+  "timestamp": "2026-03-24T12:56:49.499Z",
   "stats": {
     "totalReviews": 32478,
     "alreadyFlagged": 11054,
     "dateGuardCatches": 139,
     "directorMismatch": 942,
     "tvFilmSignals": 3400,
-    "londonSignals": 1018,
+    "londonSignals": 1017,
     "offBroadwaySignals": 1011,
     "yearMismatch": 71,
     "noPublishDate": 6822
@@ -22357,6 +22357,20 @@
       "score": 49,
       "publishDate": "2025-06-24",
       "url": "https://variety.com/2025/legit/reviews/hercules-review-musical-west-end-1236439211/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "hercules-west-end-2025",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 65,
+      "publishDate": "2025-06-24",
+      "url": "https://www.whatsonstage.com/news/disneys-hercules-in-the-west-end-review-bursting-with-energy-but-lacking-in-heart_1684149/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -55142,25 +55156,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-producers-west-end-2025",
-      "file": "the-express--neil-norman.json",
-      "score": 89,
-      "publishDate": "2025-09-16",
-      "url": "https://www.express.co.uk/entertainment/theatre",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
