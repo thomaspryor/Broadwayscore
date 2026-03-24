@@ -1,16 +1,11 @@
 {
   "processed": [
     "giant-2026/nyt-theater--jonathan-mandell.json",
-    "giant-2026/timeout--unknown.json",
-    "giant-2026/chicagotribune--chris-jones.json",
-    "giant-2026/nysr--david-finkle.json",
-    "giant-2026/nysr--frank-scheck.json",
     "giant-2026/new-york-sun--unknown.json",
     "giant-2026/nydailynews--unknown.json",
     "giant-2026/nypost--unknown.json",
     "giant-2026/theatermania--unknown.json",
-    "giant-2026/forward--unknown.json",
-    "giant-2026/amny--unknown.json"
+    "giant-2026/timeout--unknown.json"
   ],
   "failed": [
     "giant-2026/nytimes--helen-shaw.json",
@@ -22,67 +17,51 @@
   "tierBreakdown": {
     "playwright": [
       "giant-2026/nyt-theater--jonathan-mandell.json",
-      "giant-2026/timeout--unknown.json",
-      "giant-2026/chicagotribune--chris-jones.json",
-      "giant-2026/nysr--david-finkle.json",
-      "giant-2026/nysr--frank-scheck.json",
       "giant-2026/new-york-sun--unknown.json",
       "giant-2026/nydailynews--unknown.json",
       "giant-2026/theatermania--unknown.json",
-      "giant-2026/forward--unknown.json"
+      "giant-2026/timeout--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/giant-2026/nypost--unknown.json",
-      "giant-2026/nypost--unknown.json",
-      "data/review-texts/giant-2026/amny--unknown.json",
-      "giant-2026/amny--unknown.json"
+      "giant-2026/nypost--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/giant-2026/nytimes--helen-shaw.json",
+      "data/review-texts/giant-2026/vulture--unknown.json",
       "data/review-texts/giant-2026/cititour--brian-scott-lipton.json",
       "data/review-texts/giant-2026/talkinbroadway--unknown.json"
     ],
     "archive": []
   },
-  "startTime": "2026-03-24T05:04:56.976Z",
-  "lastProcessed": "giant-2026/amny--unknown.json",
+  "startTime": "2026-03-24T05:28:10.204Z",
+  "lastProcessed": "giant-2026/timeout--unknown.json",
   "log": [
     {
-      "t": "2026-03-24T05:05:28.952Z",
+      "t": "2026-03-24T05:28:21.009Z",
       "event": "bb-session",
-      "session": "3b71efdc",
+      "session": "f5b3da35",
       "url": "https://www.nytimes.com/2026/03/23/theater/giant-review-broadway-lithgow-dahl.ht"
     },
     {
-      "t": "2026-03-24T05:05:29.982Z",
+      "t": "2026-03-24T05:28:22.136Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-03-24T05:14:00.130Z",
+      "t": "2026-03-24T05:38:21.889Z",
       "event": "bb-session",
-      "session": "729f7c70",
+      "session": "eb767ea1",
       "url": "https://nypost.com/2026/03/23/entertainment/giant-review-john-lithgow-is-superb-"
     },
     {
-      "t": "2026-03-24T05:14:01.136Z",
+      "t": "2026-03-24T05:38:22.987Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
-    },
-    {
-      "t": "2026-03-24T05:14:33.511Z",
-      "event": "bb-session",
-      "session": "302086e5",
-      "url": "https://www.amny.com/entertainment/giant-performance-divisive-play/"
-    },
-    {
-      "t": "2026-03-24T05:14:34.493Z",
-      "event": "bb-cookie-inject",
-      "domain": "amny.com"
     }
   ]
 }
