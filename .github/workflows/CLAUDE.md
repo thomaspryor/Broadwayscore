@@ -108,6 +108,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
   - When reviews.json appears stale
 - **Script:** `scripts/rebuild-all-reviews.js`
 - **Auto-scoring:** After rebuild, auto-triggers `llm-ensemble-score.yml` if 5+ reviews need scoring (threshold lowered from 100 on Feb 25, 2026)
+- **Drop analysis:** After rebuild, runs `scripts/analyze-rebuild-drops.js` (`continue-on-error: true`). Fires if total dropped >30 OR any single show >10. Calls Claude Sonnet to classify drops as flag-explained (routine dedup/quality work) vs unexplained. Sends email with ROUTINE/NEEDS_REVIEW/SUSPICIOUS verdict. 48h cooldown. Guards in `rebuild-all-reviews.js` are **non-blocking** — they write audit files to `data/audit/rebuild-regression.json` and `data/audit/rebuild-show-drift.json` but never call `process.exit(1)`.
 
 ## `update-show-status.yml`
 - **Runs:** Daily at 8 AM UTC (3 AM EST)
