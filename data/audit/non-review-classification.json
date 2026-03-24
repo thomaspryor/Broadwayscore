@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generatedAt": "2026-03-24T19:44:59.447Z",
+    "generatedAt": "2026-03-24T20:03:47.555Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
@@ -8,7 +8,7 @@
       "inReviewsJson": 15400,
       "skippedExcluded": 71,
       "withFullText": 17,
-      "excerptOnly": 1478,
+      "excerptOnly": 1479,
       "llmClassified": 16,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
@@ -17,7 +17,7 @@
       "llmCalls": 17,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 13834
+      "skippedAlreadyClassified": 13833
     },
     "calibration": null
   },
@@ -30,7 +30,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes information about other shows and theater news.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -40,7 +40,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, possibly from a website's navigation or search results, and does not contain any evaluative content about a specific production like \"Fences\".",
       "currentScore": 82
     },
     {
@@ -50,7 +50,7 @@
       "outletId": "bloomberg",
       "contentType": "news",
       "confidence": "medium",
-      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in photo captions at the end, making it a news item with images rather than a review of \"First Date.\"",
+      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in photo captions. It does not offer a review or evaluation of \"First Date.\"",
       "currentScore": 60
     },
     {
@@ -60,7 +60,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a collection of theater-related keywords and links, not a review or any other specific article type. It seems to be a list of search terms or categories, possibly from a theater website.",
+      "reasoning": "The text is a collection of theater-related keywords and links, suggesting a news or directory-type page rather than a review of 'Funny Girl'.",
       "currentScore": 62
     },
     {
@@ -70,7 +70,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself. It sets the stage for the show without providing a review.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
       "currentScore": 81
     },
     {
@@ -80,7 +80,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there's no evaluative content to classify it as a review.",
+      "reasoning": "This is a 'Goings On' newsletter, which lists various cultural events and articles. While 'Liberation' is mentioned, there's no evaluative content about it in this excerpt.",
       "currentScore": 88
     },
     {
@@ -90,7 +90,7 @@
       "outletId": "frequentbusinesstraveler",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and setting of \"Once on This Island\" without offering a critical evaluation or opinion. It focuses on introducing the story and characters, indicating a preview rather than a review.",
+      "reasoning": "The article describes the plot and setting of \"Once on This Island\" without offering a critical evaluation or opinion on the quality of the production. It focuses on the story and characters, indicating a preview rather than a review.",
       "currentScore": 82
     },
     {
@@ -100,7 +100,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
       "currentScore": 89
     },
     {
@@ -110,7 +110,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
+      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.' It lacks any evaluative content about the show.",
       "currentScore": 74
     },
     {
@@ -130,7 +130,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "While the beginning of the article describes the show, the bulk of the text is an interview with an actor from another show, Falsettos. Therefore, it is not a review of Prince of Broadway.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's a feature rather than a review.",
       "currentScore": 83
     },
     {
@@ -150,7 +150,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article provides production details and cast information, resembling a news item or listing rather than a review that offers critical evaluation.",
+      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
       "currentScore": 64
     },
     {
@@ -170,7 +170,7 @@
       "outletId": "vulture",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the set design and the playwright's intentions, drawing comparisons to other works, but it does not offer an overall evaluation or recommendation of the show itself. It's more of a feature exploring the themes and context.",
+      "reasoning": "The article describes the set design and the playwright's intentions, but it does not offer an evaluation or opinion on the quality of the production itself. It's more of a feature about the show's themes and design choices.",
       "currentScore": 64
     },
     {
