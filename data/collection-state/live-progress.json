@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-24T12:34:26.606Z",
-  "processed": 310,
-  "failed": 30,
-  "successRate": "91.2%",
+  "updatedAt": "2026-03-24T12:36:31.041Z",
+  "processed": 319,
+  "failed": 31,
+  "successRate": "91.1%",
   "tierBreakdown": {
-    "playwright": 272,
+    "playwright": 280,
     "amp": 10,
     "browserbase": 4,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 9,
-    "archive": 35
+    "archive": 36
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-03-24T12:15:43.038Z",
@@ -47,6 +47,17 @@
       "t": "2026-03-24T12:32:02.919Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-24T12:34:42.348Z",
+      "event": "bb-session",
+      "session": "e9f0bd83",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-03-24T12:34:43.627Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
