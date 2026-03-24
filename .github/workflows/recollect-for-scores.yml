@@ -97,6 +97,7 @@ jobs:
       - name: Recollect review HTML for score extraction
         id: recollect
         env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           TELEGRAPH_COOKIES: ${{ secrets.TELEGRAPH_COOKIES }}
           THESTAGE_COOKIES: ${{ secrets.THESTAGE_COOKIES }}
