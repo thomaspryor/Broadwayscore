@@ -15,13 +15,11 @@ import dynamic from 'next/dynamic';
 import { track } from '@vercel/analytics';
 import { type GateTrigger, type CapturedUserData } from '@/components/EmailCaptureModal';
 import { emailCaptureConfig } from '@/config/email-capture';
+import { isFormspreeSubscribed } from '@/hooks/useFormspreeSubscribed';
 
 const EmailCaptureModal = dynamic(() => import('@/components/EmailCaptureModal'), { ssr: false });
 
 const STORAGE_KEY = 'bsc_user_data';
-const SUBSCRIBED_KEY = 'bsc_email_subscribed'; // Legacy pre-market-split key (Broadway)
-const SUBSCRIBED_BROADWAY_KEY = 'bsc_email_subscribed_broadway';
-const SUBSCRIBED_WESTEND_KEY = 'bsc_email_subscribed_west-end';
 const PAGE_VIEW_KEY = 'bsc_page_views';
 const LAST_VISIT_KEY = 'bsc_last_visit';
 const RECAPTURED_KEY = 'bsc_email_recaptured'; // Pre-fix modal submissions (Jan 29 – Mar 12, 2026) stored email locally only
@@ -71,11 +69,7 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
     setIsClient(true);
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      // Check all subscriber keys: legacy (pre-split), broadway, west-end
-      const formspreeSubscribed =
-        localStorage.getItem(SUBSCRIBED_KEY) === 'true' ||
-        localStorage.getItem(SUBSCRIBED_BROADWAY_KEY) === 'true' ||
-        localStorage.getItem(SUBSCRIBED_WESTEND_KEY) === 'true';
+      const formspreeSubscribed = isFormspreeSubscribed();
 
       if (saved) {
         const parsed = JSON.parse(saved) as CapturedUserData;

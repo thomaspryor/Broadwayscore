@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import type { BeatTheCriticsData, BeatTheCriticsCategoryData, ActorNominee } from './page';
 import type { SerializedTonyShow } from '@/lib/data-tony-predictions';
 import { ScoreBadge } from '@/components/show-cards';
+import { SUBSCRIBED_KEY_PREFIX } from '@/hooks/useFormspreeSubscribed';
 
 // ─── Types ───
 
@@ -291,7 +292,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
         const existing = JSON.parse(localStorage.getItem('bsc_user_data') || '{}');
         existing.email = email;
         localStorage.setItem('bsc_user_data', JSON.stringify(existing));
-        localStorage.setItem('bsc_email_subscribed_broadway', 'true');
+        localStorage.setItem(`${SUBSCRIBED_KEY_PREFIX}broadway`, 'true');
       } catch { /* localStorage unavailable */ }
       setEmailSubmitted(true);
     } catch {

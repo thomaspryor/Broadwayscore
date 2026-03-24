@@ -172,7 +172,8 @@ async function initScraper() {
 
     // For free outlets, use scraper.js for BD → SB → Playwright fallback chain
     if (!cookieData) {
-      return await fetchPageScraper(url);
+      const { content } = await fetchPageScraper(url);
+      return content;
     }
 
     // Playwright fallback for paywalled sites with full cookie set
