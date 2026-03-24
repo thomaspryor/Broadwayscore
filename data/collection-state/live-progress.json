@@ -1,35 +1,46 @@
 {
-  "updatedAt": "2026-03-24T04:25:54.998Z",
-  "processed": 7,
-  "failed": 3,
-  "successRate": "70.0%",
+  "updatedAt": "2026-03-24T04:43:53.533Z",
+  "processed": 1064,
+  "failed": 317,
+  "successRate": "77.0%",
   "tierBreakdown": {
-    "playwright": 4,
-    "amp": 0,
-    "browserbase": 6,
-    "directCookies": 0,
+    "playwright": 816,
+    "amp": 26,
+    "browserbase": 46,
+    "directCookies": 2,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 0
+    "archiveToday": 121,
+    "archive": 227
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
-      "t": "2026-03-24T04:22:24.497Z",
+      "t": "2026-03-23T17:36:45.391Z",
       "event": "bb-session",
-      "session": "3e363599",
-      "url": "https://www.amny.com/entertainment/giant-performance-divisive-play/"
+      "session": "1742fd78",
+      "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jor"
     },
     {
-      "t": "2026-03-24T04:22:25.549Z",
+      "t": "2026-03-23T17:36:46.656Z",
       "event": "bb-cookie-inject",
-      "domain": "amny.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-03-24T04:24:13.918Z",
+      "t": "2026-03-23T17:39:18.607Z",
       "event": "bb-session",
-      "session": "eec70957",
+      "session": "bfc1f42a",
+      "url": "https://www.hollywoodreporter.com/business/business-news/broadway-box-office-the"
+    },
+    {
+      "t": "2026-03-23T17:39:20.065Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-24T03:19:42.730Z",
+      "event": "bb-session",
+      "session": "be55addb",
       "url": "https://variety.com/2026/legit/reviews/giant-broadway-review-john-lithgow-roald-"
     },
     {
@@ -40,11 +51,83 @@
     {
       "t": "2026-03-24T04:25:25.866Z",
       "event": "bb-session",
-      "session": "e326b5f2",
+      "session": "9adfaf7e",
+      "url": "https://deadline.com/2026/03/john-lithgow-giant-broadway-review-1236761578/"
+    },
+    {
+      "t": "2026-03-24T04:29:25.732Z",
+      "event": "bb-session",
+      "session": "5664f4ac",
+      "url": "https://www.amny.com/entertainment/giant-performance-divisive-play/"
+    },
+    {
+      "t": "2026-03-24T04:29:27.051Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-24T04:30:54.784Z",
+      "event": "bb-session",
+      "session": "54672200",
       "url": "https://nypost.com/2026/03/23/entertainment/giant-review-john-lithgow-is-superb-"
     },
     {
-      "t": "2026-03-24T04:25:26.894Z",
+      "t": "2026-03-24T04:30:56.127Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-24T04:39:34.783Z",
+      "event": "bb-session",
+      "session": "dd84029c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/john-proctor-is-the-villain-rev"
+    },
+    {
+      "t": "2026-03-24T04:39:36.057Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-24T04:40:17.660Z",
+      "event": "bb-session",
+      "session": "f0c41971",
+      "url": "https://www.wsj.com/articles/john-proctor-is-the-villain-review-reconceiving-the"
+    },
+    {
+      "t": "2026-03-24T04:40:18.972Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-24T04:41:58.237Z",
+      "event": "bb-session",
+      "session": "0e22ee82",
+      "url": "https://www.amny.com/entertainment/broadway/smash-from-bombshell-to-bomb/"
+    },
+    {
+      "t": "2026-03-24T04:41:59.627Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-24T04:43:00.783Z",
+      "event": "bb-session",
+      "session": "f9782e04",
+      "url": "https://variety.com/2025/legit/reviews/old-friends-review-broadway-stephen-sondh"
+    },
+    {
+      "t": "2026-03-24T04:43:02.166Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-24T04:43:24.403Z",
+      "event": "bb-session",
+      "session": "e0957695",
+      "url": "https://nypost.com/2025/04/08/entertainment/old-friends-review-bernadette-peters"
+    },
+    {
+      "t": "2026-03-24T04:43:25.776Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
     }
