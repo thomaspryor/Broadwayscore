@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-24T18:11:26.192Z",
+  "timestamp": "2026-03-24T18:20:45.300Z",
   "stats": {
     "totalReviews": 32470,
     "alreadyFlagged": 11060,
     "dateGuardCatches": 139,
     "directorMismatch": 947,
-    "tvFilmSignals": 3402,
-    "londonSignals": 1024,
+    "tvFilmSignals": 3403,
+    "londonSignals": 1025,
     "offBroadwaySignals": 1011,
     "yearMismatch": 71,
     "noPublishDate": 6815
@@ -45498,6 +45498,25 @@
       ]
     },
     {
+      "showId": "summerfolk-west-end-2026",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 76,
+      "publishDate": "2026-03-18",
+      "url": "https://www.whatsonstage.com/news/summerfolk-at-the-national-theatre-review_1715495/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"olivier theatre\""
+        }
+      ]
+    },
+    {
       "showId": "sunday-in-the-park-with-george-1984",
       "file": "nydailynews--howard-kissel.json",
       "score": 76,
@@ -66508,6 +66527,20 @@
     },
     {
       "showId": "every-brilliant-thing-2026",
+      "file": "deadline--unknown.json",
+      "score": 86,
+      "publishDate": "2026-03-13",
+      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcliffe-1236750131/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
       "file": "nydailynews--chris-jones.json",
       "score": 77,
       "publishDate": "2026-03-13",
@@ -78100,20 +78133,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "summerfolk-west-end-2026",
-      "file": "whatsonstage--sarah-crompton.json",
-      "score": 76,
-      "publishDate": "2026-03-18",
-      "url": "https://www.whatsonstage.com/news/summerfolk-at-the-national-theatre-review_1715495/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"olivier theatre\""
         }
       ]
     },
