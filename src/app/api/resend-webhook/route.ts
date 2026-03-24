@@ -20,7 +20,8 @@ import { createHmac } from 'crypto';
  */
 
 const WEBHOOK_SECRET = process.env.RESEND_WEBHOOK_SECRET || '';
-const FORMSPREE_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || '';
+const FORMSPREE_BROADWAY_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || '';
+const FORMSPREE_WESTEND_ID = process.env.NEXT_PUBLIC_FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID || '';
 
 function verifySignature(rawBody: string, headers: Headers): boolean {
   if (!WEBHOOK_SECRET) return false;
@@ -95,18 +96,27 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ received: true });
   }
 
-  if (!FORMSPREE_FORM_ID) {
-    console.error('Resend webhook: FORMSPREE_FORM_ID not configured');
+  // Submit unsubscribe to both Broadway and WE forms — we don't know which market
+  // the subscriber came from, so we signal both. sync-followers.js ignores unknown emails.
+  const formIds = [FORMSPREE_BROADWAY_ID, FORMSPREE_WESTEND_ID].filter(Boolean);
+  if (formIds.length === 0) {
+    console.error('Resend webhook: no Formspree form IDs configured');
     return NextResponse.json({ received: true });
   }
 
+  const body = JSON.stringify({ email: email.toLowerCase().trim(), action: 'unsubscribe' });
+  const masked = email.replace(/(.{2}).*(@.*)/, '$1***$2');
   try {
-    await fetch(`https://formspree.io/f/${FORMSPREE_FORM_ID}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email.toLowerCase().trim(), action: 'unsubscribe' }),
-    });
-    console.log(`Resend webhook: unsubscribed ${email.replace(/(.{2}).*(@.*)/, '$1***$2')} via ${type}`);
+    await Promise.all(
+      formIds.map(id =>
+        fetch(`https://formspree.io/f/${id}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body,
+        })
+      )
+    );
+    console.log(`Resend webhook: unsubscribed ${masked} via ${type} (${formIds.length} forms)`);
   } catch (err) {
     // Return 200 anyway — Resend retries on non-2xx, and we don't want a retry loop
     console.error(`Resend webhook: Formspree submission failed for ${type}:`, err);

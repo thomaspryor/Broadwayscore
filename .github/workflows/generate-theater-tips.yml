@@ -54,6 +54,7 @@ jobs:
       - name: Scrape theater dining & parking data
         if: ${{ inputs.skip_scrape != true }}
         env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: |
           ARGS=""
