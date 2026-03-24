@@ -62,8 +62,9 @@ Before EVERY commit touching `src/`, `scripts/`, or config:
 1. `npx tsc --noEmit` — zero errors in changed files
 2. `npx next lint` — no new warnings
 3. Auth-aware build with feature flags
-4. For scripts: test with real data
-5. For UI: visual verification per §5
+4. **For scripts that fetch URLs or parse data:** run with `--limit 1` (or equivalent smallest flag), confirm the output contains non-zero results and a sample looks semantically correct. `node --check` is syntax only — it does NOT count as testing.
+5. **For script migrations (refactoring existing logic):** compare output against the old behavior. Check that the same input produces equivalent output. Empty results after a migration = broken, not "no data."
+6. For UI: visual verification per §5
 **If any check fails, fix before committing.** Never push broken code.
 
 ### 13. Prompt Changes Require A/B Check (MANDATORY)
