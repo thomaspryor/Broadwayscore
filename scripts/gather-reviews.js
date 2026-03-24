@@ -1658,6 +1658,29 @@ function extractBWWRoundupReviews(html, showId, bwwUrl) {
       console.log(`    Paired ${thumbCount} BWW thumbs (${thumbMatches.filter(t=>t==='Up').length} Up, ${thumbMatches.filter(t=>t==='Meh').length} Meh, ${thumbMatches.filter(t=>t==='Down').length} Down)`);
     }
 
+    // Extract source URLs from HTML anchor tags
+    // Pattern: <p>Critic, <a href="SOURCE_URL">Outlet:</a> excerpt</p>
+    const urlByOutlet = {};
+    const anchorRe = /<a\s[^>]*href="(https?:\/\/[^"]+)"[^>]*>([^<]+)<\/a>/gi;
+    let aMatch;
+    while ((aMatch = anchorRe.exec(html)) !== null) {
+      const href = aMatch[1];
+      const text = aMatch[2].replace(/:$/, '').trim();
+      if (href.includes('broadwayworld.com') || text.length < 3 || text.length > 60) continue;
+      const oid = normalizeOutlet(text);
+      if (oid && !urlByOutlet[oid]) urlByOutlet[oid] = href;
+    }
+    let urlsPopulated = 0;
+    for (const review of reviews) {
+      if (!review.url && review.outletId && urlByOutlet[review.outletId]) {
+        review.url = urlByOutlet[review.outletId];
+        urlsPopulated++;
+      }
+    }
+    if (urlsPopulated > 0) {
+      console.log(`    Populated ${urlsPopulated} source URLs from BWW roundup HTML`);
+    }
+
     console.log(`    Extracted ${reviews.length} reviews from BWW roundup (BlogPosting)`);
     return reviews;
   }
@@ -1724,6 +1747,28 @@ function extractBWWRoundupReviews(html, showId, bwwUrl) {
   }
 
   if (reviews.length > 0) {
+    // Extract source URLs from HTML anchor tags
+    // Pattern: <p>Critic, <a href="SOURCE_URL">Outlet:</a> excerpt</p>
+    const urlByOutlet2 = {};
+    const anchorRe2 = /<a\s[^>]*href="(https?:\/\/[^"]+)"[^>]*>([^<]+)<\/a>/gi;
+    let aMatch2;
+    while ((aMatch2 = anchorRe2.exec(html)) !== null) {
+      const href = aMatch2[1];
+      const text = aMatch2[2].replace(/:$/, '').trim();
+      if (href.includes('broadwayworld.com') || text.length < 3 || text.length > 60) continue;
+      const oid = normalizeOutlet(text);
+      if (oid && !urlByOutlet2[oid]) urlByOutlet2[oid] = href;
+    }
+    let urlsPopulated2 = 0;
+    for (const review of reviews) {
+      if (!review.url && review.outletId && urlByOutlet2[review.outletId]) {
+        review.url = urlByOutlet2[review.outletId];
+        urlsPopulated2++;
+      }
+    }
+    if (urlsPopulated2 > 0) {
+      console.log(`    Populated ${urlsPopulated2} source URLs from BWW roundup HTML`);
+    }
     console.log(`    Extracted ${reviews.length} reviews from BWW roundup (articleBody)`);
   } else if (html && html.length > 5000) {
     console.log(`    ⚠️  BWW roundup page loaded but 0 reviews extracted from both JSON-LD and articleBody`);
