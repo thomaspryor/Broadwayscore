@@ -1053,7 +1053,17 @@
     "john-proctor-is-the-villain-2025/theatermania--rachel-graham.json",
     "john-proctor-is-the-villain-2025/timeout--raven-snook.json",
     "john-proctor-is-the-villain-2025/wsj--unknown.json",
-    "smash-2025/broadwaynews--brittani-samuel.json"
+    "smash-2025/broadwaynews--brittani-samuel.json",
+    "smash-2025/theatermania--meg-masseron.json",
+    "smash-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "smash-2025/timeout--adam-feldman.json",
+    "smash-2025/amny--unknown.json",
+    "smash-2025/theater-life--samuel-l-leiter.json",
+    "stephen-sondheims-old-friends-2025/in-act-two-of-merrily-we-roll-along--charley-kringas.json",
+    "stephen-sondheims-old-friends-2025/variety--frank-rizzo.json",
+    "stephen-sondheims-old-friends-2025/vulture--jackson-mchenry.json",
+    "stephen-sondheims-old-friends-2025/nypost--johnny-oleksinski.json",
+    "stephen-sondheims-old-friends-2025/theatermania--sandy-macdonald.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -2186,7 +2196,13 @@
       "floyd-collins-2025/theater-scene--victor-gluck.json",
       "john-proctor-is-the-villain-2025/theatermania--rachel-graham.json",
       "john-proctor-is-the-villain-2025/timeout--raven-snook.json",
-      "smash-2025/broadwaynews--brittani-samuel.json"
+      "smash-2025/broadwaynews--brittani-samuel.json",
+      "smash-2025/theatermania--meg-masseron.json",
+      "smash-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "smash-2025/timeout--adam-feldman.json",
+      "smash-2025/theater-life--samuel-l-leiter.json",
+      "stephen-sondheims-old-friends-2025/in-act-two-of-merrily-we-roll-along--charley-kringas.json",
+      "stephen-sondheims-old-friends-2025/theatermania--sandy-macdonald.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -2256,7 +2272,13 @@
       "data/review-texts/giant-2026/nypost--unknown.json",
       "giant-2026/nypost--unknown.json",
       "data/review-texts/john-proctor-is-the-villain-2025/hollywood-reporter--lovia-gyarkye.json",
-      "john-proctor-is-the-villain-2025/hollywood-reporter--lovia-gyarkye.json"
+      "john-proctor-is-the-villain-2025/hollywood-reporter--lovia-gyarkye.json",
+      "data/review-texts/smash-2025/amny--unknown.json",
+      "smash-2025/amny--unknown.json",
+      "data/review-texts/stephen-sondheims-old-friends-2025/variety--frank-rizzo.json",
+      "stephen-sondheims-old-friends-2025/variety--frank-rizzo.json",
+      "data/review-texts/stephen-sondheims-old-friends-2025/nypost--johnny-oleksinski.json",
+      "stephen-sondheims-old-friends-2025/nypost--johnny-oleksinski.json"
     ],
     "directCookies": [
       "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json",
@@ -2613,11 +2635,12 @@
       "pirates-the-penzance-musical-2025/dailybeast--tim-teeman.json",
       "floyd-collins-2025/newyorker--helen-shaw.json",
       "john-proctor-is-the-villain-2025/vulture--sara-holdren.json",
-      "john-proctor-is-the-villain-2025/wsj--unknown.json"
+      "john-proctor-is-the-villain-2025/wsj--unknown.json",
+      "stephen-sondheims-old-friends-2025/vulture--jackson-mchenry.json"
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "smash-2025/broadwaynews--brittani-samuel.json",
+  "lastProcessed": "stephen-sondheims-old-friends-2025/theatermania--sandy-macdonald.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -2901,6 +2924,39 @@
       "t": "2026-03-24T04:40:18.972Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-24T04:41:58.237Z",
+      "event": "bb-session",
+      "session": "0e22ee82",
+      "url": "https://www.amny.com/entertainment/broadway/smash-from-bombshell-to-bomb/"
+    },
+    {
+      "t": "2026-03-24T04:41:59.627Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-24T04:43:00.783Z",
+      "event": "bb-session",
+      "session": "f9782e04",
+      "url": "https://variety.com/2025/legit/reviews/old-friends-review-broadway-stephen-sondh"
+    },
+    {
+      "t": "2026-03-24T04:43:02.166Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-24T04:43:24.403Z",
+      "event": "bb-session",
+      "session": "e0957695",
+      "url": "https://nypost.com/2025/04/08/entertainment/old-friends-review-bernadette-peters"
+    },
+    {
+      "t": "2026-03-24T04:43:25.776Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
