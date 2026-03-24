@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-03-24T12:36:07.930Z",
+  "timestamp": "2026-03-24T12:46:16.854Z",
   "stats": {
     "totalReviews": 32478,
     "alreadyFlagged": 11054,
     "dateGuardCatches": 139,
     "directorMismatch": 942,
-    "tvFilmSignals": 3399,
+    "tvFilmSignals": 3400,
     "londonSignals": 1018,
     "offBroadwaySignals": 1011,
     "yearMismatch": 71,
@@ -24914,6 +24914,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
