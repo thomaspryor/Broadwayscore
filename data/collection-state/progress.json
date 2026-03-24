@@ -1015,7 +1015,10 @@
     "dead-outlaw-2025/variety--frank-rizzo.json",
     "dead-outlaw-2025/ew--thom-geier.json",
     "dead-outlaw-2025/nydailynews--chris-jones.json",
-    "dead-outlaw-2025/theatermania--zachary-stewart.json"
+    "dead-outlaw-2025/theatermania--zachary-stewart.json",
+    "giant-2026/variety--unknown.json",
+    "giant-2026/deadline--unknown.json",
+    "giant-2026/thewrap--unknown.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -1328,7 +1331,8 @@
     "mamma-mia-2025/guardian--adrian-horton.json",
     "burlesque-west-end-2026/guardian--arifa-akbar.json",
     "call-me-izzy-2025/newyorker--helen-shaw.json",
-    "call-me-izzy-2025/vulture--jackson-mchenry.json"
+    "call-me-izzy-2025/vulture--jackson-mchenry.json",
+    "giant-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2148,7 +2152,9 @@
       "data/review-texts/little-bear-ridge-road-2025/thewrap--robert-hofler.json",
       "little-bear-ridge-road-2025/thewrap--robert-hofler.json",
       "data/review-texts/punch-2025/thewrap--robert-hofler.json",
-      "punch-2025/thewrap--robert-hofler.json"
+      "punch-2025/thewrap--robert-hofler.json",
+      "data/review-texts/giant-2026/thewrap--unknown.json",
+      "giant-2026/thewrap--unknown.json"
     ],
     "browserbase": [
       "data/review-texts/music-city-off-broadway-2026/deadline--unknown.json",
@@ -2180,7 +2186,11 @@
       "data/review-texts/oh-mary-2024/nytimes--erik-piepenburg.json",
       "oh-mary-2024/nytimes--erik-piepenburg.json",
       "data/review-texts/the-outsiders-2024/hollywood-reporter--unknown.json",
-      "the-outsiders-2024/hollywood-reporter--unknown.json"
+      "the-outsiders-2024/hollywood-reporter--unknown.json",
+      "data/review-texts/giant-2026/variety--unknown.json",
+      "giant-2026/variety--unknown.json",
+      "data/review-texts/giant-2026/deadline--unknown.json",
+      "giant-2026/deadline--unknown.json"
     ],
     "directCookies": [
       "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json",
@@ -2304,7 +2314,8 @@
       "data/review-texts/mamma-mia-2025/nytimes--elizabeth-vincentelli.json",
       "data/review-texts/mamma-mia-2025/guardian--adrian-horton.json",
       "data/review-texts/burlesque-west-end-2026/guardian--arifa-akbar.json",
-      "data/review-texts/call-me-izzy-2025/newyorker--helen-shaw.json"
+      "data/review-texts/call-me-izzy-2025/newyorker--helen-shaw.json",
+      "data/review-texts/giant-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
@@ -2524,7 +2535,7 @@
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "dead-outlaw-2025/theatermania--zachary-stewart.json",
+  "lastProcessed": "giant-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -2752,6 +2763,18 @@
       "t": "2026-03-23T17:39:20.065Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-24T03:19:42.730Z",
+      "event": "bb-session",
+      "session": "be55addb",
+      "url": "https://variety.com/2026/legit/reviews/giant-broadway-review-john-lithgow-roald-"
+    },
+    {
+      "t": "2026-03-24T03:19:56.702Z",
+      "event": "bb-session",
+      "session": "9adfaf7e",
+      "url": "https://deadline.com/2026/03/john-lithgow-giant-broadway-review-1236761578/"
     }
   ]
 }
