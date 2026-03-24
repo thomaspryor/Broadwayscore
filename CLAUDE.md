@@ -116,7 +116,7 @@ See `memory/email-broadcast-rules.md` for full incident history and rules.
 - **NEVER call `POST /broadcasts/{id}/send` directly** — all sends via `send-opening-night-broadcast.js` only
 - **NEVER broadcast to test or validate anything** — use `--send-to=your@email.com` (transactional, never broadcast)
 - **NEVER send to any Resend audience with >5 real contacts for any test purpose**
-- Resend has internal duplicate records invisible to the API — a previous session sent 500 emails to 162 unique subscribers (3x). Do not send until Resend support confirms duplicates are cleared.
+- The Giant broadcast sent correctly to ~161 unique subscribers (158 delivered, 98.14%). The "3x duplicate" claim from the previous session was wrong.
 
 ---
 
