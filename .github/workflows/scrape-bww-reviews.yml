@@ -28,6 +28,10 @@ on:
         required: false
         type: boolean
         default: false
+      roundup_url:
+        description: 'Direct BWW roundup URL — skips SERP discovery, fetches via plain HTTPS'
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -76,6 +80,30 @@ jobs:
       - name: Install Playwright
         run: npx playwright install chromium
 
+      - name: Pre-fetch roundup URL (plain HTTPS, no SB needed)
+        if: inputs.roundup_url != ''
+        run: |
+          SHOW="${{ inputs.shows }}"
+          URL="${{ inputs.roundup_url }}"
+          ARCHIVE_DIR="data/aggregator-archive/bww-roundups"
+          mkdir -p "$ARCHIVE_DIR"
+          echo "Fetching: $URL"
+          node -e "
+            const https = require('https');
+            const fs = require('fs');
+            let html = '';
+            https.get('$URL', {
+              headers: {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'}
+            }, (res) => {
+              res.on('data', c => html += c);
+              res.on('end', () => {
+                if (html.length < 5000) { console.error('Suspiciously short response:', html.length, 'bytes'); process.exit(1); }
+                fs.writeFileSync('$ARCHIVE_DIR/$SHOW.html', html);
+                console.log('Saved', html.length, 'bytes to $ARCHIVE_DIR/$SHOW.html');
+              });
+            }).on('error', e => { console.error('Fetch failed:', e.message); process.exit(1); });
+          "
+
       - name: Scrape BWW reviews
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
@@ -87,7 +115,8 @@ jobs:
           if [ -n "${{ inputs.limit }}" ]; then
             FLAGS="$FLAGS --limit=${{ inputs.limit }}"
           fi
-          if [ "${{ inputs.force }}" = "true" ]; then
+          # Skip --force when roundup_url was pre-fetched so the cache is used
+          if [ "${{ inputs.force }}" = "true" ] && [ -z "${{ inputs.roundup_url }}" ]; then
             FLAGS="$FLAGS --force"
           fi
           echo "Running: node scripts/scrape-bww-reviews.js $FLAGS"
