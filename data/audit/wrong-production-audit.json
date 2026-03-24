@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-24T04:58:18.928Z",
+  "timestamp": "2026-03-24T05:15:43.493Z",
   "stats": {
     "totalReviews": 32394,
-    "alreadyFlagged": 11037,
+    "alreadyFlagged": 11041,
     "dateGuardCatches": 139,
     "directorMismatch": 939,
-    "tvFilmSignals": 3401,
+    "tvFilmSignals": 3399,
     "londonSignals": 1018,
-    "offBroadwaySignals": 1007,
+    "offBroadwaySignals": 1009,
     "yearMismatch": 71,
-    "noPublishDate": 6800
+    "noPublishDate": 6790
   },
   "findings": [
     {
@@ -18779,7 +18779,7 @@
       "showId": "good-night-and-good-luck-2025",
       "file": "exeunt-magazine--nicole-serratore.json",
       "score": 68,
-      "publishDate": null,
+      "publishDate": "2025-04-04",
       "url": "https://exeuntnyc.com/reviews/review-good-night-and-good-luck-at-winter-garden-theatre/",
       "findings": [
         {
@@ -19003,7 +19003,7 @@
       "showId": "good-night-and-good-luck-2025",
       "file": "theatre-reviews-limited--joseph-verlezza.json",
       "score": 45,
-      "publishDate": null,
+      "publishDate": "2025-04-04",
       "url": "https://www.theatrereviews.com/broadway-review-good-night-and-good-luck-at-the-winter-garden-theatre-through-saturday-may-31-2025/",
       "findings": [
         {
@@ -19052,20 +19052,11 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "good-night-and-good-luck-2025",
-      "file": "times-uk--susie-goldsbrough.json",
-      "score": 63,
-      "publishDate": null,
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/good-night-and-good-luck-review-george-clooney-s30vtk3kb",
-      "findings": [
+        },
         {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"barrow street\""
         }
       ]
     },
@@ -19101,7 +19092,7 @@
       "showId": "good-night-and-good-luck-2025",
       "file": "village-voice--michael-musto.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2025-04-04",
       "url": "https://www.villagevoice.com/review-good-night-and-good-luck-revels-in-courageous-resistance-to-demagogues-70-years-ago/",
       "findings": [
         {
@@ -51864,28 +51855,20 @@
     },
     {
       "showId": "the-last-five-years-2025",
-      "file": "nydailynews--elizabeth-weitzman.json",
-      "publishDate": null,
-      "url": "https://www.nydailynews.com/entertainment/years-movie-review-article-1.2111322",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"onscreen\""
-        }
-      ]
-    },
-    {
-      "showId": "the-last-five-years-2025",
       "file": "theatre-reviews-limited--joseph-verlezza.json",
       "score": 65,
-      "publishDate": null,
+      "publishDate": "2025-04-14",
       "url": "https://www.theatrereviews.com/broadway-review-the-last-five-years-at-the-hudson-theatre-through-sunday-june-22-2025/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"barrow street\""
         }
       ]
     },
