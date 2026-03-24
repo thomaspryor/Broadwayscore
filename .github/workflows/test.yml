@@ -90,7 +90,6 @@ jobs:
           # (A) Health checks / credential validators — SB key checked for validity, not scraping
           # (B) Scripts require JS rendering — BD (raw HTML) can't replace SB here; correct
           #     fallback is SB → Playwright (already implemented in the scripts themselves)
-          # (C) Scripts call SB directly and lack scraper.js — TODO: migrate to scraper.js
           EXEMPT="
             check-secrets-health.yml
             opening-night-orchestrator.yml
@@ -101,8 +100,6 @@ jobs:
             scrape-alltime-grosses.yml
             weekly-grosses.yml
             reddit-engagement-digest.yml
-            generate-theater-tips.yml
-            recollect-for-scores.yml
             scrape-dtli-show-score.yml
           "
           VIOLATIONS=""
