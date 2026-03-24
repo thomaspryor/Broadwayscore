@@ -1080,7 +1080,15 @@
     "the-last-five-years-2025/timeout--adam-feldman.json",
     "the-last-five-years-2025/latimes--betsy-sharkey.json",
     "the-last-five-years-2025/nysr--bob-verini.json",
-    "boop-2025/theatre-reviews-limited--joseph-verlezza.json"
+    "boop-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "boop-2025/timeout--adam-feldman.json",
+    "boop-2025/theater-scene--joseph-pisano.json",
+    "good-night-and-good-luck-2025/hollywood-reporter--david-rooney.json",
+    "good-night-and-good-luck-2025/nydailynews--chris-jones.json",
+    "good-night-and-good-luck-2025/theatermania--david-gordon.json",
+    "good-night-and-good-luck-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "good-night-and-good-luck-2025/timeout--adam-feldman.json",
+    "good-night-and-good-luck-2025/exeunt-magazine--nicole-serratore.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -1402,7 +1410,9 @@
     "john-proctor-is-the-villain-2025/theatre-reviews-limited--david-roberts.json",
     "the-last-five-years-2025/ap--unknown.json",
     "the-last-five-years-2025/hypable--unknown.json",
-    "boop-2025/broadwaynews--brittani-samuel.json"
+    "boop-2025/broadwaynews--brittani-samuel.json",
+    "good-night-and-good-luck-2025/broadwaynews--brittani-samuel.json",
+    "good-night-and-good-luck-2025/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2234,7 +2244,13 @@
       "the-last-five-years-2025/theatre-reviews-limited--joseph-verlezza.json",
       "the-last-five-years-2025/timeout--adam-feldman.json",
       "the-last-five-years-2025/nysr--bob-verini.json",
-      "boop-2025/theatre-reviews-limited--joseph-verlezza.json"
+      "boop-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "boop-2025/timeout--adam-feldman.json",
+      "boop-2025/theater-scene--joseph-pisano.json",
+      "good-night-and-good-luck-2025/theatermania--david-gordon.json",
+      "good-night-and-good-luck-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "good-night-and-good-luck-2025/timeout--adam-feldman.json",
+      "good-night-and-good-luck-2025/exeunt-magazine--nicole-serratore.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -2312,7 +2328,9 @@
       "data/review-texts/stephen-sondheims-old-friends-2025/nypost--johnny-oleksinski.json",
       "stephen-sondheims-old-friends-2025/nypost--johnny-oleksinski.json",
       "data/review-texts/the-last-five-years-2025/nypost--lou-lumenick.json",
-      "the-last-five-years-2025/nypost--lou-lumenick.json"
+      "the-last-five-years-2025/nypost--lou-lumenick.json",
+      "data/review-texts/good-night-and-good-luck-2025/hollywood-reporter--david-rooney.json",
+      "good-night-and-good-luck-2025/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [
       "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json",
@@ -2444,7 +2462,8 @@
       "data/review-texts/floyd-collins-2025/broadwaynews--brittani-samuel.json",
       "data/review-texts/the-last-five-years-2025/ap--unknown.json",
       "data/review-texts/the-last-five-years-2025/hypable--unknown.json",
-      "data/review-texts/boop-2025/broadwaynews--brittani-samuel.json"
+      "data/review-texts/boop-2025/broadwaynews--brittani-samuel.json",
+      "data/review-texts/good-night-and-good-luck-2025/broadwaynews--brittani-samuel.json"
     ],
     "archive": [
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
@@ -2677,11 +2696,12 @@
       "the-last-five-years-2025/amny--unknown.json",
       "the-last-five-years-2025/nydailynews--chris-jones.json",
       "the-last-five-years-2025/nydailynews--elizabeth-weitzman.json",
-      "the-last-five-years-2025/latimes--betsy-sharkey.json"
+      "the-last-five-years-2025/latimes--betsy-sharkey.json",
+      "good-night-and-good-luck-2025/nydailynews--chris-jones.json"
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "boop-2025/theatre-reviews-limited--joseph-verlezza.json",
+  "lastProcessed": "good-night-and-good-luck-2025/exeunt-magazine--nicole-serratore.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -3020,6 +3040,28 @@
       "t": "2026-03-24T04:48:37.156Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-24T04:52:00.488Z",
+      "event": "bb-session",
+      "session": "cc24535f",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/good-night-and-good-luck-theate"
+    },
+    {
+      "t": "2026-03-24T04:52:01.845Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-24T04:54:47.904Z",
+      "event": "bb-session",
+      "session": "3a2eeb84",
+      "url": "https://www.wsj.com/articles/good-night-and-good-luck-review-george-clooneys-bro"
+    },
+    {
+      "t": "2026-03-24T04:54:49.240Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
