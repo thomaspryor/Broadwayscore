@@ -419,7 +419,15 @@
     "death-becomes-her-2024/ew--unknown.json",
     "death-becomes-her-2024/nydailynews--chris-jones.json",
     "death-becomes-her-2024/nypost--unknown.json",
-    "death-becomes-her-2024/theatermania--jesse-green.json"
+    "death-becomes-her-2024/theatermania--jesse-green.json",
+    "death-becomes-her-2024/timeout--adam-feldman.json",
+    "death-becomes-her-2024/amny--unknown.json",
+    "death-becomes-her-2024/chicagotribune--unknown.json",
+    "death-becomes-her-2024/frontmezzjunkies--unknown.json",
+    "death-becomes-her-2024/stageandcinema--unknown.json",
+    "death-becomes-her-2024/the-interested-bystander--cary-wong.json",
+    "death-becomes-her-2024/theater-scene--joel-benjamin.json",
+    "death-becomes-her-2024/usatoday--unknown.json"
   ],
   "failed": [
     "giant-2026/cititour--brian-scott-lipton.json",
@@ -456,7 +464,9 @@
     "oliver-west-end-2024/the-sun--dominic-maxwell.json",
     "oliver-west-end-2024/times-uk--dominic-maxwell.json",
     "oliver-west-end-2024/times-uk--neil-fisher.json",
-    "oliver-west-end-2024/times-uk--unknown.json"
+    "oliver-west-end-2024/times-uk--unknown.json",
+    "death-becomes-her-2024/cititour--unknown.json",
+    "maybe-happy-ending-2024/vulture--sara-holdren.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -811,7 +821,12 @@
       "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
       "death-becomes-her-2024/ew--unknown.json",
       "death-becomes-her-2024/nydailynews--chris-jones.json",
-      "death-becomes-her-2024/theatermania--jesse-green.json"
+      "death-becomes-her-2024/theatermania--jesse-green.json",
+      "death-becomes-her-2024/timeout--adam-feldman.json",
+      "death-becomes-her-2024/frontmezzjunkies--unknown.json",
+      "death-becomes-her-2024/stageandcinema--unknown.json",
+      "death-becomes-her-2024/the-interested-bystander--cary-wong.json",
+      "death-becomes-her-2024/theater-scene--joel-benjamin.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
@@ -841,7 +856,9 @@
       "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
       "my-neighbour-totoro-west-end-2025/variety--unknown.json",
       "data/review-texts/death-becomes-her-2024/nypost--unknown.json",
-      "death-becomes-her-2024/nypost--unknown.json"
+      "death-becomes-her-2024/nypost--unknown.json",
+      "data/review-texts/death-becomes-her-2024/amny--unknown.json",
+      "death-becomes-her-2024/amny--unknown.json"
     ],
     "directCookies": [
       "giant-2026/nypost--unknown.json"
@@ -864,7 +881,8 @@
       "data/review-texts/just-in-time-2025/talkinbroadway--unknown.json",
       "data/review-texts/oliver-west-end-2024/times-uk--dominic-maxwell.json",
       "data/review-texts/oliver-west-end-2024/times-uk--neil-fisher.json",
-      "data/review-texts/oliver-west-end-2024/times-uk--unknown.json"
+      "data/review-texts/oliver-west-end-2024/times-uk--unknown.json",
+      "data/review-texts/death-becomes-her-2024/cititour--unknown.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -922,11 +940,13 @@
       "my-neighbour-totoro-west-end-2025/broadwayworld--unknown.json",
       "dracula-west-end-2025/broadwayworld--aliya-al-hassan.json",
       "dracula-west-end-2025/metro--unknown.json",
-      "death-becomes-her-2024/newyorker--helen-shaw.json"
+      "death-becomes-her-2024/newyorker--helen-shaw.json",
+      "death-becomes-her-2024/chicagotribune--unknown.json",
+      "death-becomes-her-2024/usatoday--unknown.json"
     ]
   },
   "startTime": "2026-03-24T17:31:44.264Z",
-  "lastProcessed": "death-becomes-her-2024/theatermania--jesse-green.json",
+  "lastProcessed": "maybe-happy-ending-2024/vulture--sara-holdren.json",
   "log": [
     {
       "t": "2026-03-24T17:34:00.298Z",
@@ -1026,6 +1046,17 @@
       "t": "2026-03-24T19:38:16.471Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-24T19:39:59.598Z",
+      "event": "bb-session",
+      "session": "8b216750",
+      "url": "https://www.amny.com/entertainment/theater/reviews-death-becomes-her-king-lear-m"
+    },
+    {
+      "t": "2026-03-24T19:40:00.722Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
