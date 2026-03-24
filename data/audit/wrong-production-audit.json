@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-24T05:15:43.493Z",
+  "timestamp": "2026-03-24T05:25:51.237Z",
   "stats": {
-    "totalReviews": 32394,
-    "alreadyFlagged": 11041,
+    "totalReviews": 32395,
+    "alreadyFlagged": 11042,
     "dateGuardCatches": 139,
-    "directorMismatch": 939,
+    "directorMismatch": 940,
     "tvFilmSignals": 3399,
     "londonSignals": 1018,
     "offBroadwaySignals": 1009,
     "yearMismatch": 71,
-    "noPublishDate": 6790
+    "noPublishDate": 6782
   },
   "findings": [
     {
@@ -18506,6 +18506,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-2025",
+      "file": "theater-scene--joseph-pisano.json",
+      "publishDate": "2025-04-09",
+      "url": "https://www.theaterscene.net/plays/broadway-plays/glengarry-glen-ross/joseph-pisano/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -40101,20 +40114,6 @@
     },
     {
       "showId": "purpose-2025",
-      "file": "deadline--greg-evans.json",
-      "score": 73,
-      "publishDate": "March 17, 2025",
-      "url": "https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "purpose-2025",
       "file": "timeout--adam-feldman.json",
       "score": 95,
       "publishDate": "March 17, 2025",
@@ -54840,7 +54839,7 @@
       "showId": "the-picture-of-dorian-gray-2025",
       "file": "village-voice--michael-musto.json",
       "score": 79,
-      "publishDate": null,
+      "publishDate": "2025-03-28",
       "url": "https://www.villagevoice.com/review-the-picture-of-dorian-gray-is-not-a-pretty-picture-just-great-theater/",
       "findings": [
         {
@@ -57669,6 +57668,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "observer--david-cote.json",
+      "publishDate": null,
+      "url": "https://theaternewsonline.com/NYTheaterReviews/MISPLACEDQUIPS.cfm",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from to-kill-a-mockingbird-2018"
         }
       ]
     },
