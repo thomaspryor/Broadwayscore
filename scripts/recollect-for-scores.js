@@ -21,6 +21,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { extractScore, OUTLET_EXTRACTORS, EXTRACTOR_VERSION } = require('./lib/score-extractors');
+const { fetchPage: fetchPageScraper, cleanup: cleanupScraper } = require('./lib/scraper');
 
 const REVIEW_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -169,19 +170,13 @@ async function initScraper() {
       }
     }
 
-    // For free outlets, try ScrapingBee without cookies (many sites block headless Playwright)
-    if (!cookieData && SCRAPINGBEE_KEY) {
-      try {
-        console.log(`  ScrapingBee: fetching without cookies`);
-        const html = await fetchWithScrapingBee(url, null);
-        if (html && html.length > 500) return html;
-        console.log(`  ScrapingBee returned ${html.length} chars, trying Playwright...`);
-      } catch (e) {
-        console.log(`  ScrapingBee failed: ${e.message}, trying Playwright...`);
-      }
+    // For free outlets, use scraper.js for BD → SB → Playwright fallback chain
+    if (!cookieData) {
+      const { content } = await fetchPageScraper(url);
+      return content;
     }
 
-    // Playwright fallback with full cookie set
+    // Playwright fallback for paywalled sites with full cookie set
     if (cookieData) {
       const playwrightCookies = cookieData.cookies.map(c => ({
         name: c.name,
@@ -322,6 +317,7 @@ async function main() {
   }
 
   await browser.close();
+  await cleanupScraper().catch(() => {});
 
   console.log('\n=== SUMMARY ===');
   console.log(`Extracted: ${extracted} | No score: ${failed} | Errors: ${errors}`);

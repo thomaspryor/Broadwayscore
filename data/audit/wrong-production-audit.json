@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-03-24T14:23:41.688Z",
+  "timestamp": "2026-03-24T17:44:18.217Z",
   "stats": {
-    "totalReviews": 32478,
+    "totalReviews": 32470,
     "alreadyFlagged": 11060,
     "dateGuardCatches": 139,
-    "directorMismatch": 946,
+    "directorMismatch": 947,
     "tvFilmSignals": 3402,
-    "londonSignals": 1023,
+    "londonSignals": 1024,
     "offBroadwaySignals": 1011,
-    "yearMismatch": 72,
+    "yearMismatch": 71,
     "noPublishDate": 6815
   },
   "findings": [
@@ -8852,25 +8852,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "file": "mail--patrick-marmion.json",
-      "score": 75,
-      "publishDate": "2021-12-13",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-10302945/At-Eddies-Cabaret-sets-wunderbar-PATRICK-MARMION-reviews-Cabaret.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"big screen\""
         }
       ]
     },
@@ -28445,6 +28426,25 @@
     },
     {
       "showId": "les-miserables-west-end-2021",
+      "file": "the-express--neil-norman.json",
+      "score": 88,
+      "publishDate": null,
+      "url": "https://www.express.co.uk/entertainment/theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-west-end-2021",
       "file": "thestage--matthew-hemley.json",
       "score": 86,
       "publishDate": null,
@@ -28507,6 +28507,25 @@
       "score": 25,
       "publishDate": "2020-01-17",
       "url": "/people/Clive-Davis/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-west-end-2021",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 72,
+      "publishDate": "2020-01-17",
+      "url": "https://www.whatsonstage.com/news/did-critics-give-les-miserables-stars-in-their-multitudes_50726/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -57748,20 +57767,6 @@
       ]
     },
     {
-      "showId": "titanique-west-end-2024",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 75,
-      "publishDate": "2025-01-09",
-      "url": "https://www.timeout.com/london/theatre/titanique-review",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2026 (5x) more than 2024 (0x). 2026 matches production: titanique-2026"
-        }
-      ]
-    },
-    {
       "showId": "title-of-show-2008",
       "file": "nytimes--charles-isherwood.json",
       "score": 78,
@@ -62852,20 +62857,6 @@
     },
     {
       "showId": "all-my-sons-west-end-2025",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 94,
-      "publishDate": "2025-11-22",
-      "url": "https://www.timeout.com/london/news/review-all-my-sons-starring-bran-cranston-at-wyndhams-theatre-112225",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "all-my-sons-west-end-2025",
       "file": "timeout-london--unknown.json",
       "publishDate": "2025-11-22",
       "url": "https://www.timeout.com/london/news/review-all-my-sons-starring-bran-cranston-at-wyndhams-theatre-112225",
@@ -63648,6 +63639,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 72,
+      "publishDate": "2021-09-13",
+      "url": "https://www.whatsonstage.com/news/back-to-the-future-the-musical-review-the-iconic-movie-makes-its-way-to-the-west-end-stage_54896/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -67702,7 +67707,7 @@
     {
       "showId": "giant-2026",
       "file": "vulture--sara-holdren.json",
-      "score": 77,
+      "score": 81,
       "publishDate": "March 23, 2026",
       "url": "https://www.vulture.com/article/theater-review-giant-roald-dahl-john-lithgow-broadway.html",
       "findings": [

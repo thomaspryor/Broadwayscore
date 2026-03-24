@@ -13,15 +13,12 @@
  * Usage:
  *   node scripts/scrape-theater-tips.js [--limit N] [--theater "Booth"]
  *
- * For CI, set SCRAPINGBEE_API_KEY for proxy-based fetching.
- * Locally, uses Playwright directly.
+ * Uses scraper.js fetchPage() for BD → SB → Playwright fallback chain.
  */
 
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
-
-const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
+const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 
 // ============================================
 // Theater name → NYC Theatre Guide slug mapping
@@ -82,136 +79,15 @@ function sleep(ms) {
 }
 
 // ============================================
-// Playwright-based extraction
+// HTML parsers (work with raw HTML from any source)
 // ============================================
 // The site uses a consistent structure:
 //   article > h1 (name), p (cuisine), div (price $$), p ("X mi away at ADDRESS")
 // This is the same for both dining and parking pages.
 
-let browser = null;
-
-async function initBrowser() {
-  if (browser) return;
-  const { chromium } = require('playwright');
-  browser = await chromium.launch({ headless: true });
-}
-
-async function closeBrowser() {
-  if (browser) {
-    await browser.close();
-    browser = null;
-  }
-}
-
-/**
- * Dining extraction: articles with h1 name, p cuisine, p distance+address
- */
-const EXTRACT_DINING_FN = `(() => {
-  const articles = document.querySelectorAll('article');
-  const results = [];
-  for (const art of articles) {
-    const h1 = art.querySelector('h1');
-    if (!h1) continue;
-    const name = h1.textContent.trim();
-    if (!name || name.length < 2) continue;
-
-    const entry = { name };
-    const paras = art.querySelectorAll('p');
-
-    for (const p of paras) {
-      const text = p.textContent.trim();
-      const distMatch = text.match(/([\\d.]+)\\s*mi\\s*away\\s*at\\s*(.*)/);
-      if (distMatch) {
-        entry.distance = distMatch[1] + ' mi';
-        entry.address = distMatch[2].trim();
-      } else if (!text.includes('More Info') && !text.includes('Reserve') && text.length > 1 && text.length < 40) {
-        if (!entry.cuisine) entry.cuisine = text;
-      }
-    }
-
-    const priceMatch = art.textContent.match(/(\\$\\$\\$?\\$?)/);
-    if (priceMatch) entry.priceRange = priceMatch[1];
-
-    results.push(entry);
-  }
-  return results;
-})()`;
-
-/**
- * Parking extraction: li items with h3 name, p distance+address
- * (Different HTML structure from dining — no article tags)
- */
-const EXTRACT_PARKING_FN = `(() => {
-  const items = document.querySelectorAll('li');
-  const results = [];
-  for (const item of items) {
-    const h3 = item.querySelector('h3');
-    if (!h3) continue;
-    const name = h3.textContent.trim();
-    if (!name || name.length < 3) continue;
-
-    const entry = { name };
-    const paras = item.querySelectorAll('p');
-    for (const p of paras) {
-      const text = p.textContent.trim();
-      const distMatch = text.match(/([\\d.]+)\\s*mi\\s*away\\s*at\\s*(.*)/);
-      if (distMatch) {
-        entry.distance = distMatch[1] + ' mi';
-        entry.address = distMatch[2].trim();
-      }
-    }
-    results.push(entry);
-  }
-  // Deduplicate by name
-  const seen = new Set();
-  return results.filter(r => {
-    if (seen.has(r.name)) return false;
-    seen.add(r.name);
-    return true;
-  });
-})()`;
-
-async function extractFromPage(url, extractFn) {
-  await initBrowser();
-  const page = await browser.newPage();
-
-  try {
-    await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
-    await page.waitForTimeout(1500); // Let dynamic content settle
-
-    const results = await page.evaluate(extractFn);
-    await page.close();
-    return results;
-  } catch (err) {
-    await page.close().catch(() => {});
-    throw err;
-  }
-}
-
-// ============================================
-// ScrapingBee fallback (CI without Playwright)
-// ============================================
-
 function stripTags(html) {
   return html.replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ')
     .replace(/&#39;/g, "'").replace(/&quot;/g, '"').trim();
-}
-
-async function fetchHtmlWithScrapingBee(url) {
-  if (!SCRAPINGBEE_KEY) return null;
-
-  const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=true&wait=3000`;
-
-  return new Promise((resolve, reject) => {
-    https.get(apiUrl, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        if (res.statusCode === 200) resolve(data);
-        else reject(new Error(`ScrapingBee HTTP ${res.statusCode}`));
-      });
-    }).on('error', reject);
-  });
 }
 
 function parseDiningFromHtml(html) {
@@ -281,22 +157,26 @@ function parseParkingFromHtml(html) {
   });
 }
 
+// newyorkcitytheatre.com is JS-rendered — BD returns bare skeleton with 0 articles.
+// preferPlaywright skips BD/SB and goes straight to Playwright.
+const FETCH_OPTIONS = { preferPlaywright: true };
+
 async function extractDining(url) {
-  if (SCRAPINGBEE_KEY) {
-    const html = await fetchHtmlWithScrapingBee(url);
-    return parseDiningFromHtml(html);
-  } else {
-    return await extractFromPage(url, EXTRACT_DINING_FN);
+  const { content } = await fetchPage(url, FETCH_OPTIONS);
+  const results = parseDiningFromHtml(content);
+  if (results.length === 0) {
+    throw new Error(`Zero dining results — page may not have rendered (${url})`);
   }
+  return results;
 }
 
 async function extractParking(url) {
-  if (SCRAPINGBEE_KEY) {
-    const html = await fetchHtmlWithScrapingBee(url);
-    return parseParkingFromHtml(html);
-  } else {
-    return await extractFromPage(url, EXTRACT_PARKING_FN);
+  const { content } = await fetchPage(url, FETCH_OPTIONS);
+  const results = parseParkingFromHtml(content);
+  if (results.length === 0) {
+    throw new Error(`Zero parking results — page may not have rendered (${url})`);
   }
+  return results;
 }
 
 // ============================================
@@ -337,7 +217,7 @@ async function main() {
   if (limit > 0) entries = entries.slice(0, limit);
 
   console.log(`\nScraping ${entries.length} theater(s)...`);
-  console.log(`Method: ${SCRAPINGBEE_KEY ? 'ScrapingBee' : 'Playwright (local)'}\n`);
+  console.log(`Method: BD → SB → Playwright (via scraper.js)\n`);
 
   let scraped = 0, skipped = 0, errors = 0;
 
@@ -387,7 +267,7 @@ async function main() {
   }
 
   saveOutput(theaters);
-  await closeBrowser();
+  await cleanupScraper();
 
   console.log(`\n${'='.repeat(50)}`);
   console.log(`Done! Scraped: ${scraped}, Skipped: ${skipped}, Errors: ${errors}`);
@@ -400,7 +280,7 @@ async function main() {
     if (!data.parking || data.parking.length === 0) emptyParking++;
   }
   if (emptyDining > 0 || emptyParking > 0) {
-    console.log(`⚠️  Empty: ${emptyDining} no dining, ${emptyParking} no parking`);
+    console.log(`Warning: ${emptyDining} no dining, ${emptyParking} no parking`);
   }
 }
 
@@ -417,8 +297,8 @@ function saveOutput(theaters) {
   fs.writeFileSync(OUTPUT_FILE, JSON.stringify(output, null, 2));
 }
 
-main().catch(err => {
-  closeBrowser().catch(() => {});
+main().catch(async err => {
+  await cleanupScraper().catch(() => {});
   console.error('Fatal error:', err);
   process.exit(1);
 });

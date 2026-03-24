@@ -2,9 +2,9 @@
   "runDate": "2026-03-24T14:34:03.793Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 300,
+    "maxReviews": 5,
     "priority": "all",
-    "showFilter": "",
+    "showFilter": "giant-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -662,12 +662,6 @@
     "hadestown-2019/washpost--peter-marks.json"
   ],
   "failed": [
-    "inter-alia-west-end-2026/thestage--sam-marlowe.json",
-    "summerfolk-west-end-2026/thereviewshub--unknown.json",
-    "broken-glass-west-end-2026/london-theatre--julia-rank.json",
-    "marie-and-rosetta-west-end-2026/west-end-best-friend--nick-wayne.json",
-    "inter-alia-west-end-2026/thestage--sam-marlowe.json",
-    "giant-2026/variety--daniel-daddario.json",
     "giant-2026/cititour--brian-scott-lipton.json",
     "giant-2026/nytimes--helen-shaw.json",
     "giant-2026/nypost--unknown.json",
@@ -1256,6 +1250,7 @@
       "data/review-texts/mj-2022/thewrap--steve-pond.json",
       "mj-2022/thewrap--steve-pond.json"
     ],
+    "amp": [],
     "browserbase": [
       "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
       "chess-2025/hollywood-reporter--angie-han.json",
@@ -1286,11 +1281,10 @@
       "giant-2026/nypost--unknown.json",
       "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json"
     ],
+    "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/summerfolk-west-end-2026/thereviewshub--unknown.json",
-      "data/review-texts/giant-2026/variety--daniel-daddario.json",
       "data/review-texts/giant-2026/cititour--brian-scott-lipton.json",
       "data/review-texts/giant-2026/nytimes--helen-shaw.json",
       "data/review-texts/my-joy-is-heavy-off-broadway-2025/timeout--unknown.json",
@@ -1466,5 +1460,6 @@
       "isKnownBlocked": true
     }
   },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }

@@ -62,8 +62,9 @@ Before EVERY commit touching `src/`, `scripts/`, or config:
 1. `npx tsc --noEmit` — zero errors in changed files
 2. `npx next lint` — no new warnings
 3. Auth-aware build with feature flags
-4. For scripts: test with real data
-5. For UI: visual verification per §5
+4. **For scripts that fetch URLs or parse data:** run with `--limit 1` (or equivalent smallest flag), confirm the output contains non-zero results and a sample looks semantically correct. `node --check` is syntax only — it does NOT count as testing.
+5. **For script migrations (refactoring existing logic):** compare output against the old behavior. Check that the same input produces equivalent output. Empty results after a migration = broken, not "no data."
+6. For UI: visual verification per §5
 **If any check fails, fix before committing.** Never push broken code.
 
 ### 13. Prompt Changes Require A/B Check (MANDATORY)
@@ -109,6 +110,13 @@ Fallback chain: Bright Data → ScrapingBee → Playwright (`scripts/lib/scraper
 6 aggregators: Show Score, DTLI, BWW Roundups, BWW Reviews Pages, Playbill Verdict, NYC Theatre Roundups.
 
 For full details on any subsystem: `memory/CLAUDE-reference.md`
+
+### 15. Email Broadcast Safety (MANDATORY — NO EXCEPTIONS)
+See `memory/email-broadcast-rules.md` for full incident history and rules.
+- **NEVER call `POST /broadcasts/{id}/send` directly** — all sends via `send-opening-night-broadcast.js` only
+- **NEVER broadcast to test or validate anything** — use `--send-to=your@email.com` (transactional, never broadcast)
+- **NEVER send to any Resend audience with >5 real contacts for any test purpose**
+- Resend has internal duplicate records invisible to the API — a previous session sent 500 emails to 162 unique subscribers (3x). Do not send until Resend support confirms duplicates are cleared.
 
 ---
 

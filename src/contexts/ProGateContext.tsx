@@ -15,15 +15,14 @@ import dynamic from 'next/dynamic';
 import { track } from '@vercel/analytics';
 import { type GateTrigger, type CapturedUserData } from '@/components/EmailCaptureModal';
 import { emailCaptureConfig } from '@/config/email-capture';
+import { isFormspreeSubscribed } from '@/hooks/useFormspreeSubscribed';
 
 const EmailCaptureModal = dynamic(() => import('@/components/EmailCaptureModal'), { ssr: false });
 
 const STORAGE_KEY = 'bsc_user_data';
-const SUBSCRIBED_KEY = 'bsc_email_subscribed'; // Legacy pre-market-split key (Broadway)
-const SUBSCRIBED_BROADWAY_KEY = 'bsc_email_subscribed_broadway';
-const SUBSCRIBED_WESTEND_KEY = 'bsc_email_subscribed_west-end';
 const PAGE_VIEW_KEY = 'bsc_page_views';
 const LAST_VISIT_KEY = 'bsc_last_visit';
+const RECAPTURED_KEY = 'bsc_email_recaptured'; // Pre-fix modal submissions (Jan 29 – Mar 12, 2026) stored email locally only
 
 interface ProGateContextValue {
   /** Whether the user has submitted their email */
@@ -62,22 +61,28 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
   const [passiveModalFired, setPassiveModalFired] = useState(false);
   const [isReturnVisitor, setIsReturnVisitor] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  // Recapture: true when pre-fix modal user needs to be re-shown the modal to capture via Formspree
+  const [needsRecapture, setNeedsRecapture] = useState(false);
 
   // Load saved user data on mount
   useEffect(() => {
     setIsClient(true);
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      // Check all subscriber keys: legacy (pre-split), broadway, west-end
-      const formspreeSubscribed =
-        localStorage.getItem(SUBSCRIBED_KEY) === 'true' ||
-        localStorage.getItem(SUBSCRIBED_BROADWAY_KEY) === 'true' ||
-        localStorage.getItem(SUBSCRIBED_WESTEND_KEY) === 'true';
+      const formspreeSubscribed = isFormspreeSubscribed();
 
       if (saved) {
         const parsed = JSON.parse(saved) as CapturedUserData;
         setUserData(parsed);
         setHasEmail(true);
+
+        // Recapture: user submitted via the broken pre-fix modal (Jan 29 – Mar 12, 2026).
+        // Their email was only saved to localStorage, not sent to Formspree.
+        // Re-show the modal non-blockingly once so we can capture it properly.
+        if (!formspreeSubscribed && localStorage.getItem(RECAPTURED_KEY) !== 'true') {
+          localStorage.setItem(RECAPTURED_KEY, 'true'); // Only attempt once
+          setNeedsRecapture(true);
+        }
       } else if (formspreeSubscribed) {
         // User subscribed via Formspree (header, footer, homepage banner, show follow)
         // Treat as having email so we don't nag them again
@@ -114,6 +119,18 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
     track('gate_modal_dismissed', { trigger: modalTrigger });
     setModalOpen(false);
   }, [modalBlocking, modalTrigger]);
+
+  // Recapture: fire non-blocking modal after 4s for pre-fix users who need re-submission to Formspree
+  useEffect(() => {
+    if (!needsRecapture || !isClient) return;
+    const timer = setTimeout(() => {
+      setModalTrigger('recapture');
+      setModalBlocking(false);
+      setModalOpen(true);
+      setNeedsRecapture(false);
+    }, 4000);
+    return () => clearTimeout(timer);
+  }, [needsRecapture, isClient]);
 
   // Listen for mid-session subscriptions from inline forms (FooterEmailCapture, etc.)
   useEffect(() => {

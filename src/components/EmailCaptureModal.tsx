@@ -9,6 +9,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import { track } from '@vercel/analytics';
 import { Modal, ModalCloseButton } from '@/components/show-cards';
+import { SUBSCRIBED_KEY_PREFIX } from '@/hooks/useFormspreeSubscribed';
 
 const FORMSPREE_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || '';
 const FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID || '';
@@ -19,7 +20,8 @@ export type GateTrigger =
   | 'page_view_limit'
   | 'exit_intent'
   | 'scroll_depth'
-  | 'return_visitor';
+  | 'return_visitor'
+  | 'recapture'; // Re-engagement of pre-fix modal submissions (Jan 29 – Mar 12, 2026)
 
 interface EmailCaptureModalProps {
   isOpen: boolean;
@@ -77,6 +79,10 @@ function getTriggerCopy(trigger: GateTrigger, isWE: boolean): { heading: string;
       subheading: isWE
         ? 'We\u2019ll email you when new West End shows get their reviews, plus what\u2019s closing soon.'
         : 'We\u2019ll email you the CriticScore when new shows open, plus what\u2019s closing soon.',
+    },
+    recapture: {
+      heading: 'Confirm your email',
+      subheading: 'We updated how we send opening night scores. Enter your email once more to stay on the list.',
     },
   };
   return copies[trigger];
@@ -157,7 +163,7 @@ export default function EmailCaptureModal({
         }
         // Mark as subscribed so inline forms (header/footer) don't nag again
         try {
-          localStorage.setItem(`bsc_email_subscribed_${marketKey}`, 'true');
+          localStorage.setItem(SUBSCRIBED_KEY_PREFIX + marketKey, 'true');
           window.dispatchEvent(new Event('bsc_subscribed'));
         } catch { /* noop */ }
       }
