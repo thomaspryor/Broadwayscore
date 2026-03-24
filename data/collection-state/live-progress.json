@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-24T09:40:01.742Z",
-  "processed": 7,
+  "updatedAt": "2026-03-24T09:42:43.242Z",
+  "processed": 14,
   "failed": 3,
-  "successRate": "70.0%",
+  "successRate": "82.4%",
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 9,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 3,
     "archive": 1
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-03-24T09:35:32.886Z",
@@ -47,6 +47,28 @@
       "t": "2026-03-24T09:36:59.020Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-24T09:41:12.445Z",
+      "event": "bb-session",
+      "session": "3156e591",
+      "url": "https://nypost.com/2026/03/23/entertainment/giant-review-john-lithgow-is-superb-"
+    },
+    {
+      "t": "2026-03-24T09:41:13.570Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-24T09:41:36.518Z",
+      "event": "bb-session",
+      "session": "fe5ba1a7",
+      "url": "https://www.amny.com/entertainment/giant-performance-divisive-play/"
+    },
+    {
+      "t": "2026-03-24T09:41:37.805Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
