@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-24T06:25:26.318Z",
+  "timestamp": "2026-03-24T06:34:28.798Z",
   "stats": {
     "totalReviews": 32395,
-    "alreadyFlagged": 11049,
+    "alreadyFlagged": 11050,
     "dateGuardCatches": 139,
     "directorMismatch": 940,
     "tvFilmSignals": 3395,
-    "londonSignals": 1016,
+    "londonSignals": 1015,
     "offBroadwaySignals": 1011,
     "yearMismatch": 71,
-    "noPublishDate": 6767
+    "noPublishDate": 6757
   },
   "findings": [
     {
@@ -46109,6 +46109,19 @@
     },
     {
       "showId": "sunset-boulevard-2024",
+      "file": "hollywood-soapbox--john-soltes.json",
+      "publishDate": "2024-10-21",
+      "url": "https://www.hollywoodsoapbox.com/review-sunset-boulevard-is-an-unprecedented-marvel/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"big screen\""
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-2024",
       "file": "nydailynews--chris-jones.json",
       "score": 90,
       "publishDate": "2024-10-21",
@@ -61267,23 +61280,9 @@
     },
     {
       "showId": "yellow-face-2024",
-      "file": "aaartsalliance--katie-gee-salisbury.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "https://www.aaartsalliance.org/magazine/stories/yellow-face-satirizes-the-limitations-of-representation",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "yellow-face-2024",
       "file": "exeunt-magazine--nicole-serratore.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2024-10-02",
       "url": "https://exeuntnyc.com/reviews/review-yellow-face-at-todd-haimes-theatre/",
       "findings": [
         {
@@ -77937,7 +77936,7 @@
       "showId": "sunset-boulevard-2024",
       "file": "slantmagazine--unknown.json",
       "score": 59,
-      "publishDate": null,
+      "publishDate": "2024-10-21",
       "url": "https://www.slantmagazine.com/theater/sunset-boulevard-review-nicole-scherzinger-broadway/",
       "findings": [
         {
@@ -84442,23 +84441,9 @@
     },
     {
       "showId": "yellow-face-2024",
-      "file": "guardian--adrian-horton.json",
-      "score": 88,
-      "publishDate": "October 2, 2024",
-      "url": "https://www.theguardian.com/stage/2014/may/12/david-henry-hwang-miss-saigon-yellow-face-racial-casting",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "yellow-face-2024",
       "file": "joysauce--janvi-sai.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2024-10-02",
       "url": "https://joysauce.com/yellow-face-is-unabashedly-back-for-its-broadway-debut/",
       "findings": [
         {
