@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-24T13:06:10.524Z",
-  "processed": 391,
-  "failed": 49,
-  "successRate": "88.9%",
+  "updatedAt": "2026-03-24T13:11:49.565Z",
+  "processed": 398,
+  "failed": 52,
+  "successRate": "88.4%",
   "tierBreakdown": {
-    "playwright": 318,
+    "playwright": 323,
     "amp": 10,
-    "browserbase": 14,
-    "directCookies": 1,
+    "browserbase": 16,
+    "directCookies": 2,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 12,
+    "archiveToday": 15,
     "archive": 65
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-03-24T12:15:43.038Z",
-      "event": "bb-session",
-      "session": "a2d98314",
-      "url": "https://www.newyorker.com/magazine/2026/02/09/an-ark-theatre-review-data"
-    },
-    {
-      "t": "2026-03-24T12:15:44.292Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
     {
       "t": "2026-03-24T12:26:30.335Z",
       "event": "bb-session",
@@ -113,6 +102,28 @@
       "t": "2026-03-24T12:55:48.209Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-24T13:07:41.598Z",
+      "event": "bb-session",
+      "session": "11049568",
+      "url": "https://www.hollywoodreporter.com/video/buena-vista-social-club-choreographers-j"
+    },
+    {
+      "t": "2026-03-24T13:07:44.035Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-24T13:09:21.237Z",
+      "event": "bb-session",
+      "session": "8aae5fb5",
+      "url": "https://www.amny.com/entertainment/broadway/review-buena-vista-social-clunk/"
+    },
+    {
+      "t": "2026-03-24T13:09:22.805Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
