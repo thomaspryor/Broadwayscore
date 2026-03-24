@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-24T05:52:49.205Z",
+  "timestamp": "2026-03-24T06:01:39.597Z",
   "stats": {
     "totalReviews": 32395,
     "alreadyFlagged": 11044,
     "dateGuardCatches": 139,
-    "directorMismatch": 939,
+    "directorMismatch": 940,
     "tvFilmSignals": 3399,
     "londonSignals": 1018,
     "offBroadwaySignals": 1009,
     "yearMismatch": 71,
-    "noPublishDate": 6781
+    "noPublishDate": 6776
   },
   "findings": [
     {
@@ -20340,6 +20340,20 @@
     },
     {
       "showId": "gypsy-2024",
+      "file": "nytimes--jesse-green.json",
+      "score": 92,
+      "publishDate": "December 20, 2024",
+      "url": "https://www.nytimes.com/2024/12/20/theater/gypsy-review-audra-mcdonald.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-2024",
       "file": "pages-on-stages--mason-pilevsky.json",
       "score": 82,
       "publishDate": "2025-01-01",
@@ -20422,7 +20436,7 @@
       "showId": "gypsy-2024",
       "file": "theatre-reviews-limited--joseph-verlezza.json",
       "score": 65,
-      "publishDate": null,
+      "publishDate": "2024-12-27",
       "url": "https://www.theatrereviews.com/broadway-review-gypsy-at-the-majestic-theatre-currently-on/",
       "findings": [
         {
