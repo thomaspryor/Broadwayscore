@@ -427,7 +427,16 @@
     "death-becomes-her-2024/stageandcinema--unknown.json",
     "death-becomes-her-2024/the-interested-bystander--cary-wong.json",
     "death-becomes-her-2024/theater-scene--joel-benjamin.json",
-    "death-becomes-her-2024/usatoday--unknown.json"
+    "death-becomes-her-2024/usatoday--unknown.json",
+    "maybe-happy-ending-2024/guardian--adrian-horton.json",
+    "maybe-happy-ending-2024/new-york-sun--broadway-scorecard.json",
+    "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+    "maybe-happy-ending-2024/theatermania--jesse-green.json",
+    "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
+    "maybe-happy-ending-2024/timeout--adam-feldman.json",
+    "maybe-happy-ending-2024/chicagotribune--unknown.json",
+    "maybe-happy-ending-2024/frontmezzjunkies--unknown.json",
+    "maybe-happy-ending-2024/talkinbroadway--matthew-murray.json"
   ],
   "failed": [
     "giant-2026/cititour--brian-scott-lipton.json",
@@ -466,7 +475,8 @@
     "oliver-west-end-2024/times-uk--neil-fisher.json",
     "oliver-west-end-2024/times-uk--unknown.json",
     "death-becomes-her-2024/cititour--unknown.json",
-    "maybe-happy-ending-2024/vulture--sara-holdren.json"
+    "maybe-happy-ending-2024/vulture--sara-holdren.json",
+    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -826,7 +836,13 @@
       "death-becomes-her-2024/frontmezzjunkies--unknown.json",
       "death-becomes-her-2024/stageandcinema--unknown.json",
       "death-becomes-her-2024/the-interested-bystander--cary-wong.json",
-      "death-becomes-her-2024/theater-scene--joel-benjamin.json"
+      "death-becomes-her-2024/theater-scene--joel-benjamin.json",
+      "maybe-happy-ending-2024/guardian--adrian-horton.json",
+      "maybe-happy-ending-2024/new-york-sun--broadway-scorecard.json",
+      "maybe-happy-ending-2024/theatermania--jesse-green.json",
+      "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
+      "maybe-happy-ending-2024/timeout--adam-feldman.json",
+      "maybe-happy-ending-2024/frontmezzjunkies--unknown.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
@@ -858,7 +874,9 @@
       "data/review-texts/death-becomes-her-2024/nypost--unknown.json",
       "death-becomes-her-2024/nypost--unknown.json",
       "data/review-texts/death-becomes-her-2024/amny--unknown.json",
-      "death-becomes-her-2024/amny--unknown.json"
+      "death-becomes-her-2024/amny--unknown.json",
+      "data/review-texts/maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+      "maybe-happy-ending-2024/nypost--johnny-oleksinski.json"
     ],
     "directCookies": [
       "giant-2026/nypost--unknown.json"
@@ -882,7 +900,8 @@
       "data/review-texts/oliver-west-end-2024/times-uk--dominic-maxwell.json",
       "data/review-texts/oliver-west-end-2024/times-uk--neil-fisher.json",
       "data/review-texts/oliver-west-end-2024/times-uk--unknown.json",
-      "data/review-texts/death-becomes-her-2024/cititour--unknown.json"
+      "data/review-texts/death-becomes-her-2024/cititour--unknown.json",
+      "data/review-texts/maybe-happy-ending-2024/vulture--sara-holdren.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -942,11 +961,14 @@
       "dracula-west-end-2025/metro--unknown.json",
       "death-becomes-her-2024/newyorker--helen-shaw.json",
       "death-becomes-her-2024/chicagotribune--unknown.json",
-      "death-becomes-her-2024/usatoday--unknown.json"
+      "death-becomes-her-2024/usatoday--unknown.json",
+      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+      "maybe-happy-ending-2024/chicagotribune--unknown.json",
+      "maybe-happy-ending-2024/talkinbroadway--matthew-murray.json"
     ]
   },
   "startTime": "2026-03-24T17:31:44.264Z",
-  "lastProcessed": "maybe-happy-ending-2024/vulture--sara-holdren.json",
+  "lastProcessed": "maybe-happy-ending-2024/talkinbroadway--matthew-murray.json",
   "log": [
     {
       "t": "2026-03-24T17:34:00.298Z",
@@ -1057,6 +1079,17 @@
       "t": "2026-03-24T19:40:00.722Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-24T19:47:49.570Z",
+      "event": "bb-session",
+      "session": "aee9e1d2",
+      "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-r"
+    },
+    {
+      "t": "2026-03-24T19:47:50.705Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
