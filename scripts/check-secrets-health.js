@@ -135,7 +135,8 @@ async function checkScrapingBee() {
       const pctUsed = max > 0 ? Math.round((used / max) * 100) : 0;
 
       if (remaining <= 0) return { name: 'ScrapingBee', status: 'fail', message: `Credits exhausted (${used}/${max} used)` };
-      if (pctUsed >= 90) return { name: 'ScrapingBee', status: 'warn', message: `${pctUsed}% credits used (${remaining} remaining)` };
+      if (pctUsed >= 75) return { name: 'ScrapingBee', status: 'warn', message: `${pctUsed}% credits used (${remaining} remaining) — opening nights at risk` };
+      if (pctUsed >= 50) return { name: 'ScrapingBee', status: 'warn', message: `${pctUsed}% credits used (${remaining} remaining) — monitor before opening nights` };
       return { name: 'ScrapingBee', status: 'pass', message: `${remaining} credits remaining (${pctUsed}% used)` };
     } catch {
       return { name: 'ScrapingBee', status: 'pass', message: 'Key valid (could not parse usage)' };
