@@ -1,52 +1,129 @@
 {
-  "updatedAt": "2026-03-24T05:40:17.102Z",
-  "processed": 10,
-  "failed": 4,
-  "successRate": "71.4%",
+  "updatedAt": "2026-03-24T05:48:56.351Z",
+  "processed": 1185,
+  "failed": 346,
+  "successRate": "77.4%",
   "tierBreakdown": {
-    "playwright": 8,
-    "amp": 0,
-    "browserbase": 4,
-    "directCookies": 0,
+    "playwright": 903,
+    "amp": 28,
+    "browserbase": 74,
+    "directCookies": 2,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 4,
-    "archive": 0
+    "archiveToday": 140,
+    "archive": 246
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 30,
   "recentActivity": [
     {
-      "t": "2026-03-24T05:28:21.009Z",
+      "t": "2026-03-24T05:15:11.507Z",
       "event": "bb-session",
-      "session": "f5b3da35",
-      "url": "https://www.nytimes.com/2026/03/23/theater/giant-review-broadway-lithgow-dahl.ht"
+      "session": "bcf29728",
+      "url": "https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/"
     },
     {
-      "t": "2026-03-24T05:28:22.136Z",
+      "t": "2026-03-24T05:15:12.825Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-24T05:17:42.502Z",
+      "event": "bb-session",
+      "session": "5a4e9b1e",
+      "url": "https://www.wsj.com/articles/all-in-review-love-laughs-and-absurdity-on-broadway"
+    },
+    {
+      "t": "2026-03-24T05:17:43.829Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-24T05:19:23.762Z",
+      "event": "bb-session",
+      "session": "d8c60ea2",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/gypsy-theater-review-audra-mcdo"
+    },
+    {
+      "t": "2026-03-24T05:19:25.036Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-24T05:20:28.662Z",
+      "event": "bb-session",
+      "session": "e9ad97d0",
+      "url": "https://deadline.com/2024/12/gypsy-broadway-review-audra-mcdonald-1236206662/"
+    },
+    {
+      "t": "2026-03-24T05:20:30.275Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-24T05:21:49.063Z",
+      "event": "bb-session",
+      "session": "99f9b187",
+      "url": "https://www.wsj.com/articles/gypsy-review-audra-mcdonalds-turn-on-broadway-ff528"
+    },
+    {
+      "t": "2026-03-24T05:21:50.331Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-24T05:26:07.329Z",
+      "event": "bb-session",
+      "session": "996849e0",
+      "url": "https://www.thestage.co.uk/reviews/eureka-day-review-at-the-old-vic-london-starr"
+    },
+    {
+      "t": "2026-03-24T05:26:08.642Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-24T05:26:38.225Z",
+      "event": "bb-session",
+      "session": "79af4dec",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/12/12/cult-of-love-broadway-re"
+    },
+    {
+      "t": "2026-03-24T05:26:39.564Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-24T05:26:51.907Z",
+      "event": "bb-session",
+      "session": "9cd787e2",
+      "url": "https://www.hollywoodreporter.com/mcdbeek-mg003/"
+    },
+    {
+      "t": "2026-03-24T05:26:53.201Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-24T05:30:09.212Z",
+      "event": "bb-session",
+      "session": "15b8b0c8",
+      "url": "https://www.nytimes.com/2024/12/12/theater/cult-of-love-broadway-review.html"
+    },
+    {
+      "t": "2026-03-24T05:30:10.568Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-03-24T05:38:21.889Z",
+      "t": "2026-03-24T05:37:19.127Z",
       "event": "bb-session",
-      "session": "eb767ea1",
-      "url": "https://nypost.com/2026/03/23/entertainment/giant-review-john-lithgow-is-superb-"
+      "session": "82c9006e",
+      "url": "https://variety.com/2024/legit/reviews/swept-away-review-broadway-musical-the-av"
     },
     {
-      "t": "2026-03-24T05:38:22.987Z",
+      "t": "2026-03-24T05:37:20.373Z",
       "event": "bb-cookie-inject",
-      "domain": "nypost.com"
-    },
-    {
-      "t": "2026-03-24T05:39:15.328Z",
-      "event": "bb-session",
-      "session": "3f6a57a9",
-      "url": "https://www.amny.com/entertainment/giant-performance-divisive-play/"
-    },
-    {
-      "t": "2026-03-24T05:39:16.422Z",
-      "event": "bb-cookie-inject",
-      "domain": "amny.com"
+      "domain": "variety.com"
     }
   ]
 }
