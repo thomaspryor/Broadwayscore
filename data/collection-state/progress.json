@@ -338,7 +338,17 @@
     "amaze-magic-off-broadway-2025/nysr--frank-scheck.json",
     "amaze-magic-off-broadway-2025/theater-life--alix-cohen.json",
     "amaze-magic-off-broadway-2025/theater-scene--victor-gluck.json",
-    "hercules-west-end-2025/nytimes--matt-wolf.json"
+    "hercules-west-end-2025/nytimes--matt-wolf.json",
+    "hercules-west-end-2025/variety--david-benedict.json",
+    "hercules-west-end-2025/artsdesk--unknown.json",
+    "hercules-west-end-2025/daily-mail--patrick-marmion.json",
+    "hercules-west-end-2025/financialtimes--sarah-hemming.json",
+    "hercules-west-end-2025/i-paper--unknown.json",
+    "hercules-west-end-2025/london-theatre--olivia-rook.json",
+    "hercules-west-end-2025/standard--nick-curtis.json",
+    "hercules-west-end-2025/the-express--stefan-kyriazis.json",
+    "hercules-west-end-2025/the-sun--dominic-maxwell.json",
+    "hercules-west-end-2025/theatre-weekly--greg-stewart.json"
   ],
   "failed": [
     "giant-2026/cititour--brian-scott-lipton.json",
@@ -664,7 +674,14 @@
       "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json",
       "amaze-magic-off-broadway-2025/nysr--frank-scheck.json",
       "amaze-magic-off-broadway-2025/theater-life--alix-cohen.json",
-      "amaze-magic-off-broadway-2025/theater-scene--victor-gluck.json"
+      "amaze-magic-off-broadway-2025/theater-scene--victor-gluck.json",
+      "hercules-west-end-2025/artsdesk--unknown.json",
+      "hercules-west-end-2025/financialtimes--sarah-hemming.json",
+      "hercules-west-end-2025/i-paper--unknown.json",
+      "hercules-west-end-2025/london-theatre--olivia-rook.json",
+      "hercules-west-end-2025/standard--nick-curtis.json",
+      "hercules-west-end-2025/the-sun--dominic-maxwell.json",
+      "hercules-west-end-2025/theatre-weekly--greg-stewart.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
@@ -684,7 +701,9 @@
       "data/review-texts/giant-2026/variety--daniel-daddario.json",
       "giant-2026/variety--daniel-daddario.json",
       "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
-      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json"
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
+      "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
+      "hercules-west-end-2025/variety--david-benedict.json"
     ],
     "directCookies": [
       "giant-2026/nypost--unknown.json"
@@ -741,11 +760,13 @@
       "the-producers-west-end-2025/the-express--stefan-kyriazis.json",
       "masquerade-off-broadway-2025/chicagotribune--unknown.json",
       "amaze-magic-off-broadway-2025/hollywood-soapbox--john-soltes.json",
-      "hercules-west-end-2025/nytimes--matt-wolf.json"
+      "hercules-west-end-2025/nytimes--matt-wolf.json",
+      "hercules-west-end-2025/daily-mail--patrick-marmion.json",
+      "hercules-west-end-2025/the-express--stefan-kyriazis.json"
     ]
   },
   "startTime": "2026-03-24T17:31:44.264Z",
-  "lastProcessed": "hercules-west-end-2025/nytimes--matt-wolf.json",
+  "lastProcessed": "hercules-west-end-2025/theatre-weekly--greg-stewart.json",
   "log": [
     {
       "t": "2026-03-24T17:34:00.298Z",
@@ -790,6 +811,17 @@
       "t": "2026-03-24T19:13:57.985Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-24T19:18:33.440Z",
+      "event": "bb-session",
+      "session": "c244d052",
+      "url": "https://variety.com/2025/legit/reviews/hercules-review-musical-west-end-12364392"
+    },
+    {
+      "t": "2026-03-24T19:18:34.586Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
