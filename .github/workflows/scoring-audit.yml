@@ -36,8 +36,6 @@ jobs:
 
       - name: Rebuild reviews.json
         run: node scripts/rebuild-all-reviews.js
-        env:
-          ALLOW_DRIFT: 'true'
 
       - name: Generate scoring audit
         id: audit
