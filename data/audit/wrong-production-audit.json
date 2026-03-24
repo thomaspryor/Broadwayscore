@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-24T13:40:39.696Z",
+  "timestamp": "2026-03-24T13:50:01.229Z",
   "stats": {
     "totalReviews": 32478,
     "alreadyFlagged": 11059,
     "dateGuardCatches": 139,
-    "directorMismatch": 942,
+    "directorMismatch": 943,
     "tvFilmSignals": 3401,
     "londonSignals": 1019,
     "offBroadwaySignals": 1011,
     "yearMismatch": 71,
-    "noPublishDate": 6818
+    "noPublishDate": 6817
   },
   "findings": [
     {
@@ -44683,6 +44683,20 @@
       ]
     },
     {
+      "showId": "starlight-express-west-end-2024",
+      "file": "whatsonstage--unknown.json",
+      "score": 40,
+      "publishDate": "2024-06-30",
+      "url": "https://www.whatsonstage.com/news/starlight-express-review-not-first-class-but-a-technical-rollercoaster-ride_1610072/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from starlight-express-1987"
+        }
+      ]
+    },
+    {
       "showId": "steel-magnolias-2005",
       "file": "nytimes--ben-brantley.json",
       "score": 42,
@@ -57644,7 +57658,7 @@
         {
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions year 2026 (6x) more than 2024 (0x). 2026 matches production: titanique-2026"
+          "detail": "Mentions year 2026 (5x) more than 2024 (0x). 2026 matches production: titanique-2026"
         }
       ]
     },
@@ -57658,7 +57672,7 @@
         {
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions year 2026 (6x) more than 2024 (0x). 2026 matches production: titanique-2026"
+          "detail": "Mentions year 2026 (5x) more than 2024 (0x). 2026 matches production: titanique-2026"
         }
       ]
     },
