@@ -372,9 +372,25 @@ async function main() {
 
     const broadcastName = `Opening Night: ${showsForEmail.map(s => s.showTitle).join(', ')} (${new Date().toISOString().slice(0, 10)})`;
 
-    // Pre-send deduplication guard: verify contact count matches expectations
+    // ============================================================
+    // BROADCAST SAFETY GATES — never remove or weaken these
+    // Root cause: March 2026 incident sent 500 emails to 162 unique subscribers (3x)
+    // and "[TRACKING TEST - ignore]" to full subscriber list due to wrong API params
+    // ============================================================
+
+    // GATE 1: Reject test-labeled subjects going to a real audience
+    const FORBIDDEN_SUBJECT_WORDS = ['test', 'ignore', 'debug', 'tracking', '[preview]'];
+    const subjectLower = subject.toLowerCase();
+    if (FORBIDDEN_SUBJECT_WORDS.some(w => subjectLower.includes(w))) {
+      throw new Error(
+        `SAFETY ABORT: Subject line contains test-language: "${subject}"\n` +
+        `NEVER send test-labeled emails via broadcast. Use --send-to=EMAIL for preview sends.`
+      );
+    }
+
+    // GATE 2: Verify contact count via API + enforce BROADCAST_MAX_RECIPIENTS cap
+    let contactCount = 0;
     try {
-      let contactCount = 0;
       let after = null;
       while (true) {
         let url = `https://api.resend.com/audiences/${RESEND_SEGMENT_ID}/contacts?limit=100`;
@@ -386,14 +402,30 @@ async function main() {
         if (!r.has_more || batch.length === 0) break;
         after = batch[batch.length - 1].id;
       }
-      console.log(`  Pre-send contact count: ${contactCount}`);
+      console.log(`  Pre-send API contact count: ${contactCount}`);
       if (contactCount === 0) {
-        throw new Error('Audience has 0 contacts — aborting broadcast to prevent empty send');
+        throw new Error('SAFETY ABORT: Audience has 0 contacts — aborting to prevent empty send');
       }
     } catch (err) {
-      if (err.message.includes('0 contacts')) throw err;
+      if (err.message.startsWith('SAFETY ABORT')) throw err;
       console.warn(`  Warning: could not verify contact count: ${err.message}`);
     }
+
+    // GATE 3: BROADCAST_MAX_RECIPIENTS hard cap (set in workflow when send_to_all=true)
+    const maxRecipients = parseInt(process.env.BROADCAST_MAX_RECIPIENTS || '0', 10);
+    if (maxRecipients > 0 && contactCount > maxRecipients) {
+      throw new Error(
+        `SAFETY ABORT: API contact count (${contactCount}) exceeds BROADCAST_MAX_RECIPIENTS cap (${maxRecipients}).\n` +
+        `If correct, update the expected_recipients input in the workflow dispatch.`
+      );
+    }
+
+    // WARNING: Resend has internal duplicate records invisible to the contacts API.
+    // The March 2026 incident showed 3x sends (500 emails to 162 unique contacts).
+    // Do not send until Resend support has confirmed duplicates are cleared.
+    console.log(`\n  ⚠️  BROADCAST: about to send to ${contactCount} API-visible contacts in segment ${RESEND_SEGMENT_ID}`);
+    console.log(`  ⚠️  NOTE: Resend may have internal duplicate records not visible via API.`);
+    console.log(`  ⚠️  Verify Resend duplicate issue is resolved before trusting send counts.\n`);
 
     try {
       // Create broadcast and send immediately

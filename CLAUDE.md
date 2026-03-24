@@ -111,6 +111,13 @@ Fallback chain: Bright Data → ScrapingBee → Playwright (`scripts/lib/scraper
 
 For full details on any subsystem: `memory/CLAUDE-reference.md`
 
+### 15. Email Broadcast Safety (MANDATORY — NO EXCEPTIONS)
+See `memory/email-broadcast-rules.md` for full incident history and rules.
+- **NEVER call `POST /broadcasts/{id}/send` directly** — all sends via `send-opening-night-broadcast.js` only
+- **NEVER broadcast to test or validate anything** — use `--send-to=your@email.com` (transactional, never broadcast)
+- **NEVER send to any Resend audience with >5 real contacts for any test purpose**
+- Resend has internal duplicate records invisible to the API — a previous session sent 500 emails to 162 unique subscribers (3x). Do not send until Resend support confirms duplicates are cleared.
+
 ---
 
 ## File Hygiene
