@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-24T11:05:43.551Z",
+  "timestamp": "2026-03-24T11:15:36.508Z",
   "stats": {
     "totalReviews": 32478,
-    "alreadyFlagged": 11058,
+    "alreadyFlagged": 11055,
     "dateGuardCatches": 139,
     "directorMismatch": 942,
     "tvFilmSignals": 3399,
-    "londonSignals": 1017,
+    "londonSignals": 1018,
     "offBroadwaySignals": 1011,
     "yearMismatch": 71,
     "noPublishDate": 6823
@@ -66390,20 +66390,6 @@
     },
     {
       "showId": "every-brilliant-thing-2026",
-      "file": "deadline--unknown.json",
-      "score": 86,
-      "publishDate": "2026-03-13",
-      "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcliffe-1236750131/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "every-brilliant-thing-2026",
       "file": "nydailynews--chris-jones.json",
       "score": 77,
       "publishDate": "2026-03-13",
@@ -67574,10 +67560,38 @@
     },
     {
       "showId": "giant-2026",
+      "file": "amny--matt-windman.json",
+      "score": 76,
+      "publishDate": "March 23, 2026",
+      "url": "https://www.amny.com/entertainment/giant-performance-divisive-play/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "giant-2026",
       "file": "new-york-sun--unknown.json",
       "score": 91,
       "publishDate": "2026-03-24",
       "url": "https://www.nysun.com/article/a-new-play-about-roald-dahl-and-antisemitism-marks-a-giant-step-for-this-broadway-season",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "giant-2026",
+      "file": "vulture--sara-holdren.json",
+      "score": 77,
+      "publishDate": "March 23, 2026",
+      "url": "https://www.vulture.com/article/theater-review-giant-roald-dahl-john-lithgow-broadway.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
