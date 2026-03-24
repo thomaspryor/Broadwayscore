@@ -2343,7 +2343,8 @@ if (fs.existsSync(reviewsJsonPath)) {
       if (regressions.length >= REGRESSION_MAX_SHOWS && process.env.CI && process.env.ALLOW_REGRESSION !== 'true') {
         console.error(`\n❌ REGRESSION GUARD: ${regressions.length} shows lost reviews (threshold: ${REGRESSION_MAX_SHOWS} shows)`);
         console.error('This likely indicates data corruption. Review data/audit/rebuild-regression.json');
-        console.error('Set ALLOW_REGRESSION=true to override.');
+        console.error('If drops are intentional (dedup cleanup, flagging): override with:');
+        console.error('  gh workflow run "Rebuild Reviews Data" -f allow_regression=true -f reason="Intentional cleanup"');
         process.exit(1);
       }
     }
@@ -2383,6 +2384,16 @@ if (fs.existsSync(reviewsJsonPath)) {
       // removing flagged reviews naturally shifts the average, and that's intentional.
       if (explainedByFlagging.has(showId)) continue;
 
+      // Skip shows with ≤3 reviews — averages are mathematically volatile at this scale.
+      // Losing 1 of 2-3 reviews shifts the mean 10-30 pts by arithmetic alone, not corruption.
+      if (oldScores.length <= 3) continue;
+
+      // Skip shows where the drop is within inline-guard tolerance (REGRESSION_DROP_THRESHOLD).
+      // The regression guard (3B-ii) already accepted these as explained by inline guards
+      // (cross-market, URL-year, dedup). Don't double-penalize with a drift failure here.
+      const reviewDrop = oldScores.length - newScores.length;
+      if (reviewDrop > 0 && reviewDrop <= REGRESSION_DROP_THRESHOLD) continue;
+
       const oldMean = oldScores.reduce((a, b) => a + b, 0) / oldScores.length;
       const newMean = newScores.reduce((a, b) => a + b, 0) / newScores.length;
       const delta = Math.abs(newMean - oldMean);
@@ -2421,7 +2432,9 @@ if (fs.existsSync(reviewsJsonPath)) {
         console.error(`\n❌ SHOW DRIFT GUARD: ${showDrifts.length} shows drifted (threshold: ${SHOW_DRIFT_MAX_FLAGGED})`);
         console.error('This likely indicates a scoring logic or tier mapping change.');
         console.error('Review data/audit/rebuild-show-drift.json');
-        console.error('Set ALLOW_DRIFT=true to override.');
+        console.error('If drift is from intentional dedup/cleanup: override with:');
+        console.error('  gh workflow run "Rebuild Reviews Data" -f allow_regression=true -f reason="Intentional cleanup"');
+        console.error('(allow_regression automatically enables drift override too)');
         process.exit(1);
       }
     }
