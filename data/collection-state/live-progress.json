@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-24T12:44:21.470Z",
-  "processed": 369,
-  "failed": 31,
-  "successRate": "92.3%",
+  "updatedAt": "2026-03-24T13:11:49.565Z",
+  "processed": 398,
+  "failed": 52,
+  "successRate": "88.4%",
   "tierBreakdown": {
-    "playwright": 310,
+    "playwright": 323,
     "amp": 10,
-    "browserbase": 8,
-    "directCookies": 1,
+    "browserbase": 16,
+    "directCookies": 2,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 9,
-    "archive": 54
+    "archiveToday": 15,
+    "archive": 65
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-03-24T12:15:43.038Z",
-      "event": "bb-session",
-      "session": "a2d98314",
-      "url": "https://www.newyorker.com/magazine/2026/02/09/an-ark-theatre-review-data"
-    },
-    {
-      "t": "2026-03-24T12:15:44.292Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
     {
       "t": "2026-03-24T12:26:30.335Z",
       "event": "bb-session",
@@ -78,6 +67,61 @@
     },
     {
       "t": "2026-03-24T12:42:50.503Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-24T12:55:17.590Z",
+      "event": "bb-session",
+      "session": "7d8e6556",
+      "url": "https://www.nytimes.com/2026/03/23/theater/giant-review-broadway-lithgow-dahl.ht"
+    },
+    {
+      "t": "2026-03-24T12:55:18.662Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-24T12:55:32.244Z",
+      "event": "bb-session",
+      "session": "d095d82d",
+      "url": "https://variety.com/2026/legit/reviews/giant-broadway-review-john-lithgow-roald-"
+    },
+    {
+      "t": "2026-03-24T12:55:33.443Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-24T12:55:46.900Z",
+      "event": "bb-session",
+      "session": "c4965c65",
+      "url": "https://nypost.com/2026/03/23/entertainment/giant-review-john-lithgow-is-superb-"
+    },
+    {
+      "t": "2026-03-24T12:55:48.209Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-24T13:07:41.598Z",
+      "event": "bb-session",
+      "session": "11049568",
+      "url": "https://www.hollywoodreporter.com/video/buena-vista-social-club-choreographers-j"
+    },
+    {
+      "t": "2026-03-24T13:07:44.035Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-24T13:09:21.237Z",
+      "event": "bb-session",
+      "session": "8aae5fb5",
+      "url": "https://www.amny.com/entertainment/broadway/review-buena-vista-social-clunk/"
+    },
+    {
+      "t": "2026-03-24T13:09:22.805Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     }
