@@ -1170,7 +1170,14 @@
     "eureka-day-2024/theatermania--zachary-stewart.json",
     "eureka-day-2024/thewrap--robert-hofler.json",
     "cult-of-love-2024/broadwaynews--brittani-samuel.json",
-    "cult-of-love-2024/theatermania--pete-hempstead.json"
+    "cult-of-love-2024/theatermania--pete-hempstead.json",
+    "cult-of-love-2024/theatre-reviews-limited--david-roberts.json",
+    "cult-of-love-2024/timeout--adam-feldman.json",
+    "cult-of-love-2024/exeunt-magazine--loren-noveck.json",
+    "cult-of-love-2024/washpost--naveen-kumar.json",
+    "this-is-my-favorite-song-off-broadway-2024/nytg--kyle-turner.json",
+    "swept-away-2024/nyt-theater--jonathan-mandell.json",
+    "swept-away-2024/variety--trish-deitch.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -1512,7 +1519,10 @@
     "eureka-day-2024/times-uk--clive-davis.json",
     "cult-of-love-2024/washpost--peter-marks.json",
     "cult-of-love-2024/hollywood-reporter--david-rooney.json",
-    "cult-of-love-2024/nytimes--jesse-green.json"
+    "cult-of-love-2024/nytimes--jesse-green.json",
+    "cult-of-love-2024/talkinbroadway--matthew-murray.json",
+    "swept-away-2024/talkinbroadway--matthew-murray.json",
+    "swept-away-2024/vulture--helen-shaw.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2408,7 +2418,13 @@
       "eureka-day-2024/broadwaynews--gloria-oladipo.json",
       "eureka-day-2024/theatermania--zachary-stewart.json",
       "cult-of-love-2024/broadwaynews--brittani-samuel.json",
-      "cult-of-love-2024/theatermania--pete-hempstead.json"
+      "cult-of-love-2024/theatermania--pete-hempstead.json",
+      "cult-of-love-2024/theatre-reviews-limited--david-roberts.json",
+      "cult-of-love-2024/timeout--adam-feldman.json",
+      "cult-of-love-2024/exeunt-magazine--loren-noveck.json",
+      "cult-of-love-2024/washpost--naveen-kumar.json",
+      "this-is-my-favorite-song-off-broadway-2024/nytg--kyle-turner.json",
+      "swept-away-2024/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -2512,7 +2528,9 @@
       "data/review-texts/gypsy-2024/hollywood-reporter--david-rooney.json",
       "gypsy-2024/hollywood-reporter--david-rooney.json",
       "data/review-texts/gypsy-2024/deadline--pete-hammond.json",
-      "gypsy-2024/deadline--pete-hammond.json"
+      "gypsy-2024/deadline--pete-hammond.json",
+      "data/review-texts/swept-away-2024/variety--trish-deitch.json",
+      "swept-away-2024/variety--trish-deitch.json"
     ],
     "directCookies": [
       "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json",
@@ -2655,7 +2673,9 @@
       "data/review-texts/eureka-day-2024/thestage--sam-marlowe.json",
       "data/review-texts/cult-of-love-2024/washpost--peter-marks.json",
       "data/review-texts/cult-of-love-2024/hollywood-reporter--david-rooney.json",
-      "data/review-texts/cult-of-love-2024/nytimes--jesse-green.json"
+      "data/review-texts/cult-of-love-2024/nytimes--jesse-green.json",
+      "data/review-texts/cult-of-love-2024/talkinbroadway--matthew-murray.json",
+      "data/review-texts/swept-away-2024/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
@@ -2905,7 +2925,7 @@
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "cult-of-love-2024/theatermania--pete-hempstead.json",
+  "lastProcessed": "swept-away-2024/vulture--helen-shaw.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -3464,6 +3484,17 @@
       "t": "2026-03-24T05:30:10.568Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-24T05:37:19.127Z",
+      "event": "bb-session",
+      "session": "82c9006e",
+      "url": "https://variety.com/2024/legit/reviews/swept-away-review-broadway-musical-the-av"
+    },
+    {
+      "t": "2026-03-24T05:37:20.373Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
