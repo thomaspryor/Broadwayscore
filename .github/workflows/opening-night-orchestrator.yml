@@ -4,16 +4,16 @@ name: Opening Night Orchestrator
 # every N minutes for up to M iterations. Each poller run gets a fresh
 # checkout — no stale git state issues.
 #
-# Two crons timed to curtain call:
-#   - Broadway: 3 AM UTC = 11 PM ET
-#   - West End: 10 PM UTC ≈ 11 PM BST
+# Two crons timed to catch early reviews:
+#   - Broadway: 1 AM UTC = 9 PM ET
+#   - West End: 20 UTC ≈ 9 PM BST
 #
 # On nights with no opening, exits in <1 min (zero cost).
 
 on:
   schedule:
-    - cron: '0 3 * * *'   # Broadway curtain call
-    - cron: '0 22 * * *'  # West End curtain call
+    - cron: '0 1 * * *'   # Broadway — 9 PM ET
+    - cron: '0 20 * * *'  # West End — 9 PM BST
   workflow_dispatch:
     inputs:
       show_id:
@@ -31,15 +31,15 @@ on:
           - west-end
         default: auto
       max_iterations:
-        description: 'Max poll iterations (default 12 = ~4 hours at 20 min)'
+        description: 'Max poll iterations (default 8 = ~6 hours at 45 min)'
         required: false
         type: number
-        default: 12
+        default: 8
       poll_interval_minutes:
-        description: 'Minutes between poll cycles (default 20)'
+        description: 'Minutes between poll cycles (default 45)'
         required: false
         type: number
-        default: 20
+        default: 45
 
 permissions:
   contents: read
@@ -74,12 +74,12 @@ jobs:
             echo "Using manual market: $INPUT_MARKET"
           elif [ "${{ github.event_name }}" = "schedule" ]; then
             HOUR=$(date -u +%H)
-            if [ "$HOUR" = "03" ]; then
+            if [ "$HOUR" = "01" ]; then
               echo "market=broadway" >> $GITHUB_OUTPUT
-              echo "3 AM UTC cron → broadway market"
-            elif [ "$HOUR" = "22" ]; then
+              echo "1 AM UTC cron → broadway market"
+            elif [ "$HOUR" = "20" ]; then
               echo "market=west-end" >> $GITHUB_OUTPUT
-              echo "10 PM UTC cron → west-end market"
+              echo "8 PM UTC cron → west-end market"
             else
               echo "market=" >> $GITHUB_OUTPUT
               echo "Unknown cron hour $HOUR — polling all markets"
