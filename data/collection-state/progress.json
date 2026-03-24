@@ -1116,7 +1116,14 @@
     "the-picture-of-dorian-gray-2025/timeout--adam-feldman.json",
     "the-picture-of-dorian-gray-2025/showbiz411--roger-friedman.json",
     "the-picture-of-dorian-gray-2025/theater-life--samuel-l-leiter.json",
-    "the-picture-of-dorian-gray-2025/theater-scene--victor-gluck.json"
+    "the-picture-of-dorian-gray-2025/theater-scene--victor-gluck.json",
+    "the-picture-of-dorian-gray-2025/usatoday--patrick-ryan.json",
+    "the-picture-of-dorian-gray-2025/village-voice--michael-musto.json",
+    "othello-2025/nyt-theater--unknown.json",
+    "othello-2025/nytg--austin-fimmano.json",
+    "othello-2025/variety--daniel-daddario.json",
+    "othello-2025/vulture--david-fox.json",
+    "othello-2025/nydailynews--chris-jones.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -1442,7 +1449,10 @@
     "good-night-and-good-luck-2025/broadwaynews--brittani-samuel.json",
     "good-night-and-good-luck-2025/wsj--charles-isherwood.json",
     "glengarry-glen-ross-2025/usatoday--patrick-ryan.json",
-    "glengarry-glen-ross-2025/wsj--charles-isherwood.json"
+    "glengarry-glen-ross-2025/wsj--charles-isherwood.json",
+    "othello-2025/broadwaynews--unknown.json",
+    "othello-2025/talkinbroadway--unknown.json",
+    "othello-2025/vulture--sara-holdren.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2301,7 +2311,11 @@
       "the-picture-of-dorian-gray-2025/timeout--adam-feldman.json",
       "the-picture-of-dorian-gray-2025/showbiz411--roger-friedman.json",
       "the-picture-of-dorian-gray-2025/theater-life--samuel-l-leiter.json",
-      "the-picture-of-dorian-gray-2025/theater-scene--victor-gluck.json"
+      "the-picture-of-dorian-gray-2025/theater-scene--victor-gluck.json",
+      "the-picture-of-dorian-gray-2025/village-voice--michael-musto.json",
+      "othello-2025/nyt-theater--unknown.json",
+      "othello-2025/nytg--austin-fimmano.json",
+      "othello-2025/nydailynews--chris-jones.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -2389,7 +2403,9 @@
       "data/review-texts/glengarry-glen-ross-2025/amny--matt-windman.json",
       "glengarry-glen-ross-2025/amny--matt-windman.json",
       "data/review-texts/the-picture-of-dorian-gray-2025/nytimes--jesse-green.json",
-      "the-picture-of-dorian-gray-2025/nytimes--jesse-green.json"
+      "the-picture-of-dorian-gray-2025/nytimes--jesse-green.json",
+      "data/review-texts/othello-2025/variety--daniel-daddario.json",
+      "othello-2025/variety--daniel-daddario.json"
     ],
     "directCookies": [
       "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json",
@@ -2522,7 +2538,10 @@
       "data/review-texts/the-last-five-years-2025/ap--unknown.json",
       "data/review-texts/the-last-five-years-2025/hypable--unknown.json",
       "data/review-texts/boop-2025/broadwaynews--brittani-samuel.json",
-      "data/review-texts/good-night-and-good-luck-2025/broadwaynews--brittani-samuel.json"
+      "data/review-texts/good-night-and-good-luck-2025/broadwaynews--brittani-samuel.json",
+      "data/review-texts/othello-2025/broadwaynews--unknown.json",
+      "data/review-texts/othello-2025/talkinbroadway--unknown.json",
+      "data/review-texts/othello-2025/vulture--sara-holdren.json"
     ],
     "archive": [
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
@@ -2759,11 +2778,13 @@
       "good-night-and-good-luck-2025/nydailynews--chris-jones.json",
       "good-night-and-good-luck-2025/independent--alice-saville.json",
       "glengarry-glen-ross-2025/newyorker--helen-shaw.json",
-      "the-picture-of-dorian-gray-2025/vulture--sara-holdren.json"
+      "the-picture-of-dorian-gray-2025/vulture--sara-holdren.json",
+      "the-picture-of-dorian-gray-2025/usatoday--patrick-ryan.json",
+      "othello-2025/vulture--david-fox.json"
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "the-picture-of-dorian-gray-2025/theater-scene--victor-gluck.json",
+  "lastProcessed": "othello-2025/nydailynews--chris-jones.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -3179,6 +3200,17 @@
       "t": "2026-03-24T05:01:18.888Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-24T05:05:59.610Z",
+      "event": "bb-session",
+      "session": "9e97a2ff",
+      "url": "https://variety.com/2025/legit/reviews/othello-review-denzel-washington-jake-gyl"
+    },
+    {
+      "t": "2026-03-24T05:06:00.907Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
