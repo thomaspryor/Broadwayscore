@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-24T04:48:05.022Z",
-  "processed": 1072,
-  "failed": 319,
-  "successRate": "77.1%",
+  "updatedAt": "2026-03-24T04:51:41.642Z",
+  "processed": 1081,
+  "failed": 320,
+  "successRate": "77.2%",
   "tierBreakdown": {
-    "playwright": 823,
+    "playwright": 828,
     "amp": 26,
-    "browserbase": 46,
+    "browserbase": 48,
     "directCookies": 2,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 123,
-    "archive": 228
+    "archiveToday": 124,
+    "archive": 231
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 9,
   "recentActivity": [
-    {
-      "t": "2026-03-23T17:39:18.607Z",
-      "event": "bb-session",
-      "session": "bfc1f42a",
-      "url": "https://www.hollywoodreporter.com/business/business-news/broadway-box-office-the"
-    },
-    {
-      "t": "2026-03-23T17:39:20.065Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-24T03:19:42.730Z",
       "event": "bb-session",
@@ -125,6 +114,17 @@
       "t": "2026-03-24T04:44:56.011Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-24T04:48:35.922Z",
+      "event": "bb-session",
+      "session": "7c932889",
+      "url": "https://nypost.com/2025/04/06/entertainment/the-last-five-years-review-nick-jona"
+    },
+    {
+      "t": "2026-03-24T04:48:37.156Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }

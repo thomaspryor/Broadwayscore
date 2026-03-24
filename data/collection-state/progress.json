@@ -1071,7 +1071,16 @@
     "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
     "stephen-sondheims-old-friends-2025/theater-life--samuel-l-leiter.json",
     "the-last-five-years-2025/amny--unknown.json",
-    "the-last-five-years-2025/broadwaynews--brittani-samuel.json"
+    "the-last-five-years-2025/broadwaynews--brittani-samuel.json",
+    "the-last-five-years-2025/nydailynews--chris-jones.json",
+    "the-last-five-years-2025/nydailynews--elizabeth-weitzman.json",
+    "the-last-five-years-2025/nypost--lou-lumenick.json",
+    "the-last-five-years-2025/theatermania--zachary-stewart.json",
+    "the-last-five-years-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "the-last-five-years-2025/timeout--adam-feldman.json",
+    "the-last-five-years-2025/latimes--betsy-sharkey.json",
+    "the-last-five-years-2025/nysr--bob-verini.json",
+    "boop-2025/theatre-reviews-limited--joseph-verlezza.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -1392,7 +1401,8 @@
     "floyd-collins-2025/broadwaynews--brittani-samuel.json",
     "john-proctor-is-the-villain-2025/theatre-reviews-limited--david-roberts.json",
     "the-last-five-years-2025/ap--unknown.json",
-    "the-last-five-years-2025/hypable--unknown.json"
+    "the-last-five-years-2025/hypable--unknown.json",
+    "boop-2025/broadwaynews--brittani-samuel.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2219,7 +2229,12 @@
       "stephen-sondheims-old-friends-2025/frontmezzjunkies--unknown.json",
       "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
       "stephen-sondheims-old-friends-2025/theater-life--samuel-l-leiter.json",
-      "the-last-five-years-2025/broadwaynews--brittani-samuel.json"
+      "the-last-five-years-2025/broadwaynews--brittani-samuel.json",
+      "the-last-five-years-2025/theatermania--zachary-stewart.json",
+      "the-last-five-years-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "the-last-five-years-2025/timeout--adam-feldman.json",
+      "the-last-five-years-2025/nysr--bob-verini.json",
+      "boop-2025/theatre-reviews-limited--joseph-verlezza.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -2295,7 +2310,9 @@
       "data/review-texts/stephen-sondheims-old-friends-2025/variety--frank-rizzo.json",
       "stephen-sondheims-old-friends-2025/variety--frank-rizzo.json",
       "data/review-texts/stephen-sondheims-old-friends-2025/nypost--johnny-oleksinski.json",
-      "stephen-sondheims-old-friends-2025/nypost--johnny-oleksinski.json"
+      "stephen-sondheims-old-friends-2025/nypost--johnny-oleksinski.json",
+      "data/review-texts/the-last-five-years-2025/nypost--lou-lumenick.json",
+      "the-last-five-years-2025/nypost--lou-lumenick.json"
     ],
     "directCookies": [
       "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json",
@@ -2426,7 +2443,8 @@
       "data/review-texts/real-women-have-curves-2025/broadwaynews--brittani-samuel.json",
       "data/review-texts/floyd-collins-2025/broadwaynews--brittani-samuel.json",
       "data/review-texts/the-last-five-years-2025/ap--unknown.json",
-      "data/review-texts/the-last-five-years-2025/hypable--unknown.json"
+      "data/review-texts/the-last-five-years-2025/hypable--unknown.json",
+      "data/review-texts/boop-2025/broadwaynews--brittani-samuel.json"
     ],
     "archive": [
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
@@ -2656,11 +2674,14 @@
       "john-proctor-is-the-villain-2025/vulture--sara-holdren.json",
       "john-proctor-is-the-villain-2025/wsj--unknown.json",
       "stephen-sondheims-old-friends-2025/vulture--jackson-mchenry.json",
-      "the-last-five-years-2025/amny--unknown.json"
+      "the-last-five-years-2025/amny--unknown.json",
+      "the-last-five-years-2025/nydailynews--chris-jones.json",
+      "the-last-five-years-2025/nydailynews--elizabeth-weitzman.json",
+      "the-last-five-years-2025/latimes--betsy-sharkey.json"
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "the-last-five-years-2025/broadwaynews--brittani-samuel.json",
+  "lastProcessed": "boop-2025/theatre-reviews-limited--joseph-verlezza.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -2988,6 +3009,17 @@
       "t": "2026-03-24T04:44:56.011Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-24T04:48:35.922Z",
+      "event": "bb-session",
+      "session": "7c932889",
+      "url": "https://nypost.com/2025/04/06/entertainment/the-last-five-years-review-nick-jona"
+    },
+    {
+      "t": "2026-03-24T04:48:37.156Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
