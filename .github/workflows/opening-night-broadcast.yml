@@ -146,13 +146,18 @@ jobs:
 
             const shows = '$SHOWS'.split(',');
             const today = new Date().toISOString().slice(0, 10);
+            // When send_to_all=true (approval dispatch), skip the preview-today dedup check.
+            // The preview is expected to have already been sent today — that's the whole point.
+            const sendToAll = '${{ inputs.send_to_all }}' === 'true';
             const pending = shows.filter(id => {
-              // Skip if full broadcast completed
+              // Always skip if full broadcast already completed
               if (sent[id] && sent[id].completed) return false;
-              // Skip if preview already sent today (prevent repeated previews on each scoring run)
-              const previewKeys = Object.keys(sent).filter(k => k.startsWith('preview:') && k.includes(id));
-              const previewedToday = previewKeys.some(k => sent[k]?.sentAt?.startsWith(today));
-              if (previewedToday) return false;
+              // Skip if preview already sent today — but NOT in approval/send_to_all mode
+              if (!sendToAll) {
+                const previewKeys = Object.keys(sent).filter(k => k.startsWith('preview:') && k.includes(id));
+                const previewedToday = previewKeys.some(k => sent[k]?.sentAt?.startsWith(today));
+                if (previewedToday) return false;
+              }
               return true;
             });
 
