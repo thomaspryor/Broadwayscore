@@ -1,15 +1,15 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-10T05:45:51.907Z",
-    "totalScanned": 27058,
-    "flagged": 19,
+    "generatedAt": "2026-03-24T06:01:44.787Z",
+    "totalScanned": 27470,
+    "flagged": 22,
     "byType": {
       "garbage_scrape": 3,
       "awards_coverage": 5,
-      "preview_article": 3,
+      "preview_article": 4,
       "obituary": 1,
-      "news_article": 5,
-      "press_release": 1,
+      "news_article": 6,
+      "press_release": 2,
       "interview": 1
     }
   },
@@ -31,7 +31,7 @@
       "type": "awards_coverage",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Tony winners | LLM: NOT_REVIEW. The text poses questions about the creative choices and the suitability of the project f",
+      "evidence": "Tony winners | LLM: NOT_REVIEW. The text poses questions and expresses opinions about the creative choices behind the mu",
       "outlet": "The Faster Times",
       "critic": "Jonathan Mandell",
       "score": 62
@@ -53,7 +53,7 @@
       "type": "awards_coverage",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Tony nominations | LLM: NOT_REVIEW. This text is an interview with the playwright and an actor from the play, not an evaluat",
+      "evidence": "Tony nominations | LLM: NOT_REVIEW. This text is an interview with the playwright and an actor from the play, not a critical",
       "outlet": "TheaterMania",
       "critic": "Andy Propst",
       "score": 82
@@ -64,7 +64,7 @@
       "type": "garbage_scrape",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "BROWSER UPDATE | LLM: NOT_REVIEW. While the text mentions \"Eclipsed\" and its author, it primarily focuses on Danai Gurira'",
+      "evidence": "BROWSER UPDATE | LLM: NOT_REVIEW. The text provides a brief description of the play and the playwright but doesn't offer a",
       "outlet": "The Wall Street Journal",
       "critic": "Terry Teachout",
       "score": 93
@@ -90,6 +90,17 @@
       "outlet": "The Wrap",
       "critic": "Robert Hofler",
       "score": 76
+    },
+    {
+      "showId": "indecent-2017",
+      "file": "theatermania--dan-bacalzo.json",
+      "type": "news_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "closing notice | LLM: NOT_REVIEW. This text focuses on the extension of the show's run due to audience response and connec",
+      "outlet": "TheaterMania",
+      "critic": "Dan Bacalzo",
+      "score": 82
     },
     {
       "showId": "la-bete-2010",
@@ -130,7 +141,7 @@
       "type": "news_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "closing notice | LLM: NOT_REVIEW. While the text offers some evaluative comments (\"tighter,\" \"more endearing\"), it primari",
+      "evidence": "closing notice | LLM: NOT_REVIEW. The text primarily discusses the show's closing, its history, and changes made to the pr",
       "outlet": "WNBC",
       "critic": "Robert Kahn",
       "score": 77
@@ -141,7 +152,7 @@
       "type": "news_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "final performance | LLM: NOT_REVIEW. While it mentions \"New York, New York,\" the text primarily discusses \"Chicago\" and Kande",
+      "evidence": "final performance | LLM: NOT_REVIEW. While it mentions \"New York, New York,\" it primarily discusses \"Chicago\" and the works o",
       "outlet": "amNY",
       "critic": "Matt Windman",
       "score": 60
@@ -152,10 +163,32 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Sneak Peek | LLM: NOT_REVIEW. The text consists of celebrity news headlines and gossip, not a critical evaluation of a",
+      "evidence": "Sneak Peek | LLM: NOT_REVIEW. The text consists of headlines and brief descriptions of celebrity news and gossip, lack",
       "outlet": "Perez Hilton",
       "critic": "Perez Hilton",
-      "score": 85
+      "score": 88
+    },
+    {
+      "showId": "one-man-two-guvnors-2012",
+      "file": "times-uk--libby-purves.json",
+      "type": "press_release",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "announces that | LLM: NOT_REVIEW. The text describes expectations and a general tone, but doesn't evaluate specific perfor",
+      "outlet": "The Times",
+      "critic": "Libby Purves",
+      "score": 75
+    },
+    {
+      "showId": "patriots-2024",
+      "file": "deadline--pete-hammond.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "previews begin | LLM: NOT_REVIEW. This text is a news announcement about the play's transfer to Broadway, including dates,",
+      "outlet": "Deadline",
+      "critic": "Pete Hammond",
+      "score": 82
     },
     {
       "showId": "pippin-2013",
@@ -163,7 +196,7 @@
       "type": "awards_coverage",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Award winners | LLM: NOT_REVIEW: This text is a list of Outer Critics Circle Award winners and presenters, not an evaluat",
+      "evidence": "Award winners | LLM: NOT_REVIEW: This text is a list of Outer Critics Circle Award winners and presenters, not a review o",
       "outlet": "TheaterMania",
       "critic": "Charles Isherwood",
       "score": 84
@@ -174,7 +207,7 @@
       "type": "news_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "close on | LLM: NOT_REVIEW. The text focuses on the play's context and the playwright's comments, rather than evalua",
+      "evidence": "close on | LLM: NOT_REVIEW. The text focuses on the play's context and the playwright's comments about its relevance",
       "outlet": "The Hollywood Reporter",
       "critic": "Angie Han",
       "score": 77
@@ -185,7 +218,7 @@
       "type": "news_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "close on | LLM: NOT_REVIEW. The text focuses on the play's context and the playwright's comments, rather than evalua",
+      "evidence": "close on | LLM: NOT_REVIEW. The text focuses on the play's context and the playwright's comments, rather than provid",
       "outlet": "The Hollywood Reporter",
       "critic": "Anita Gates",
       "score": 76
@@ -196,7 +229,7 @@
       "type": "press_release",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "announce the | LLM: NOT_REVIEW. The text focuses more on the play's relevance and timing in relation to current events a",
+      "evidence": "announce the | LLM: NOT_REVIEW. The text focuses more on the play's relevance and timing in relation to the political cl",
       "outlet": "edge-new-york",
       "critic": "Steve Weinstein",
       "score": 63
@@ -218,7 +251,7 @@
       "type": "interview",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "in an interview | LLM: NOT_REVIEW. The text discusses public perception of Martin Luther King Jr. and doesn't evaluate a th",
+      "evidence": "in an interview | LLM: NOT_REVIEW. The text discusses public perception of Martin Luther King Jr. and doesn't evaluate a sp",
       "outlet": "Wall Street Journal",
       "critic": "Terry Teachout",
       "score": 47
