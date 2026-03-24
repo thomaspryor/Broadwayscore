@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-24T12:36:31.041Z",
-  "processed": 319,
+  "updatedAt": "2026-03-24T12:44:21.470Z",
+  "processed": 369,
   "failed": 31,
-  "successRate": "91.1%",
+  "successRate": "92.3%",
   "tierBreakdown": {
-    "playwright": 280,
+    "playwright": 310,
     "amp": 10,
-    "browserbase": 4,
+    "browserbase": 8,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 9,
-    "archive": 36
+    "archive": 54
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-03-24T12:15:43.038Z",
@@ -58,6 +58,28 @@
       "t": "2026-03-24T12:34:43.627Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-24T12:39:39.060Z",
+      "event": "bb-session",
+      "session": "c3d2a05d",
+      "url": "https://variety.com/2025/legit/reviews/hercules-review-musical-west-end-12364392"
+    },
+    {
+      "t": "2026-03-24T12:39:40.217Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-24T12:42:49.377Z",
+      "event": "bb-session",
+      "session": "fcaafcf5",
+      "url": "https://www.amny.com/entertainment/broadway/review-heathers-the-musical-off-broa"
+    },
+    {
+      "t": "2026-03-24T12:42:50.503Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
