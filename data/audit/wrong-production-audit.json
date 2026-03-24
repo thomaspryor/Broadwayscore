@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-24T13:50:01.229Z",
+  "timestamp": "2026-03-24T13:59:34.113Z",
   "stats": {
     "totalReviews": 32478,
     "alreadyFlagged": 11059,
     "dateGuardCatches": 139,
-    "directorMismatch": 943,
+    "directorMismatch": 945,
     "tvFilmSignals": 3401,
-    "londonSignals": 1019,
+    "londonSignals": 1021,
     "offBroadwaySignals": 1011,
-    "yearMismatch": 71,
-    "noPublishDate": 6817
+    "yearMismatch": 72,
+    "noPublishDate": 6816
   },
   "findings": [
     {
@@ -37314,6 +37314,25 @@
       ]
     },
     {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "whatsonstage--theo-bosanquet.json",
+      "score": 89,
+      "publishDate": "2023-05-10",
+      "url": "https://www.whatsonstage.com/news/operation-mincemeat-review-genuine-hilarity-with-enormous-heart-on-the-west-end-stage_58905/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 324d before show (2023-05-10 vs 2024-03-29)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
       "showId": "orphans-2013",
       "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 74,
@@ -45138,6 +45157,25 @@
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "independent--ella-duggan.json",
+      "score": 74,
+      "publishDate": "2025-09-19",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/land-of-the-living-juliet-stevenson-b2829840.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "london-theatre--marianka-swain.json",
       "score": 92,
       "publishDate": "2023-12-15",
@@ -45166,6 +45204,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "standard--nick-curtis.json",
+      "score": 90,
+      "publishDate": "2023-12-15",
+      "url": "https://www.standard.co.uk/culture/theatre/stranger-things-the-first-shadow-review-west-end-netflix-phoenix-theatre-b1127020.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2025 (2x) more than 2023 (0x). 2025 matches production: stranger-things-2024"
         }
       ]
     },
@@ -68278,6 +68330,20 @@
     },
     {
       "showId": "hadestown-west-end-2024",
+      "file": "musical-theatre-review--unknown.json",
+      "score": 81,
+      "publishDate": null,
+      "url": "http://musicaltheatrereview.com/hadestown-walter-kerr-theatre-new-york/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-west-end-2024",
       "file": "standard--nick-curtis.json",
       "score": 42,
       "publishDate": "2024-02-22",
@@ -74928,20 +74994,6 @@
       "score": 85,
       "publishDate": "2023-05-10",
       "url": "https://www.thetimes.co.uk/article/operation-mincemeat-review-a-gloriously-inventive-wartime-romp-jwsrjdkvw",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 324d before show (2023-05-10 vs 2024-03-29)"
-        }
-      ]
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
-      "file": "whatsonstage--theo-bosanquet.json",
-      "score": 89,
-      "publishDate": "2023-05-10",
-      "url": "https://www.whatsonstage.com/news/operation-mincemeat-review-genuine-hilarity-with-enormous-heart-on-the-west-end-stage_58905/",
       "findings": [
         {
           "type": "DATE_GUARD",
