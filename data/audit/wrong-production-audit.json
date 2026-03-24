@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-24T10:07:12.057Z",
+  "timestamp": "2026-03-24T10:15:09.631Z",
   "stats": {
-    "totalReviews": 32474,
+    "totalReviews": 32476,
     "alreadyFlagged": 11057,
     "dateGuardCatches": 139,
     "directorMismatch": 940,
-    "tvFilmSignals": 3395,
-    "londonSignals": 1015,
+    "tvFilmSignals": 3396,
+    "londonSignals": 1013,
     "offBroadwaySignals": 1011,
     "yearMismatch": 71,
-    "noPublishDate": 6824
+    "noPublishDate": 6823
   },
   "findings": [
     {
@@ -24914,6 +24914,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -74998,20 +75003,6 @@
     },
     {
       "showId": "paranormal-activity-west-end-2025",
-      "file": "artsdesk--gary-naylor.json",
-      "score": 48,
-      "publishDate": "2025-12-23",
-      "url": "https://theartsdesk.com/theatre/paranormal-activity-ambassadors-theatre-review-franchise-frightener-flops-stage",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "paranormal-activity-west-end-2025",
       "file": "times-uk--rachel-halliburton.json",
       "score": 76,
       "publishDate": "2025-12-16",
@@ -80845,20 +80836,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-holy-rosenbergs-west-end-2026",
-      "file": "artsdesk--aleks-sierz.json",
-      "score": 78,
-      "publishDate": "2026-03-10",
-      "url": "https://theartsdesk.com/theatre/holy-rosenbergs-menier-chocolate-factory-review-still-timely-and-thought-provoking",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
