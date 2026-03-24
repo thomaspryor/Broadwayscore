@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-03-24T17:16:03.962Z",
+  "runDate": "2026-03-24T17:35:55.540Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 50,
+    "maxReviews": 5,
     "priority": "all",
     "showFilter": "giant-2026",
     "aggressive": false,
@@ -11,88 +11,70 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 11,
-    "failed": 2,
+    "processed": 2,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "84.6%"
+    "successRate": "40.0%"
   },
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 1,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 2,
+    "archiveToday": 3,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 10,
-    "tier1Success": 8,
+    "tier1Attempts": 4,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 3,
-    "tier1_5Success": 3,
-    "tier2Attempts": 4,
+    "tier1_5Attempts": 2,
+    "tier1_5Success": 1,
+    "tier2Attempts": 3,
     "tier2Success": 0,
-    "tier3Attempts": 5,
+    "tier3Attempts": 4,
     "tier3Success": 0,
-    "tier3_6Attempts": 2,
-    "tier3_6Success": 2,
+    "tier3_6Attempts": 3,
+    "tier3_6Success": 3,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 2,
+    "totalFailed": 3,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 3,
-    "browserbaseMinutesUsed": 0.7,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.8,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "giant-2026/theatermania--zachary-stewart.json",
-    "giant-2026/nytimes--helen-shaw.json",
     "giant-2026/variety--daniel-daddario.json",
-    "giant-2026/nydailynews--unknown.json",
-    "giant-2026/nypost--unknown.json",
-    "giant-2026/timeout--adam-feldman.json",
-    "giant-2026/timeout--unknown.json",
-    "giant-2026/forward--unknown.json",
-    "giant-2026/chicagotribune--chris-jones.json",
-    "giant-2026/nysr--david-finkle.json",
-    "giant-2026/nysr--frank-scheck.json"
+    "giant-2026/nydailynews--unknown.json"
   ],
   "failed": [
     "giant-2026/cititour--brian-scott-lipton.json",
-    "giant-2026/talkinbroadway--unknown.json"
+    "giant-2026/talkinbroadway--unknown.json",
+    "giant-2026/nytimes--helen-shaw.json"
   ],
   "tierDetails": {
     "playwright": [
-      "giant-2026/theatermania--zachary-stewart.json",
-      "giant-2026/nydailynews--unknown.json",
-      "giant-2026/timeout--adam-feldman.json",
-      "giant-2026/timeout--unknown.json",
-      "giant-2026/forward--unknown.json",
-      "giant-2026/chicagotribune--chris-jones.json",
-      "giant-2026/nysr--david-finkle.json",
-      "giant-2026/nysr--frank-scheck.json"
+      "giant-2026/nydailynews--unknown.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/giant-2026/nytimes--helen-shaw.json",
-      "giant-2026/nytimes--helen-shaw.json",
       "data/review-texts/giant-2026/variety--daniel-daddario.json",
-      "giant-2026/variety--daniel-daddario.json",
-      "data/review-texts/giant-2026/nypost--unknown.json",
-      "giant-2026/nypost--unknown.json"
+      "giant-2026/variety--daniel-daddario.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/giant-2026/cititour--brian-scott-lipton.json",
-      "data/review-texts/giant-2026/talkinbroadway--unknown.json"
+      "data/review-texts/giant-2026/talkinbroadway--unknown.json",
+      "data/review-texts/giant-2026/nytimes--helen-shaw.json"
     ],
     "archive": []
   },
