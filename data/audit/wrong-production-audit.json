@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-24T13:59:34.113Z",
+  "timestamp": "2026-03-24T17:04:58.365Z",
   "stats": {
     "totalReviews": 32478,
-    "alreadyFlagged": 11059,
+    "alreadyFlagged": 11060,
     "dateGuardCatches": 139,
-    "directorMismatch": 945,
-    "tvFilmSignals": 3401,
-    "londonSignals": 1021,
+    "directorMismatch": 948,
+    "tvFilmSignals": 3403,
+    "londonSignals": 1025,
     "offBroadwaySignals": 1011,
     "yearMismatch": 72,
-    "noPublishDate": 6816
+    "noPublishDate": 6815
   },
   "findings": [
     {
@@ -8918,6 +8918,20 @@
     },
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 63,
+      "publishDate": "2023-06-15",
+      "url": "https://www.thetimes.com/article/romeo-and-juliet-review-star-crossed-lovers-shine-in-a-vague-setting-zxmcx7hgg",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
+        }
+      ]
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
       "file": "times-uk--quentin-letts.json",
       "score": 76,
       "publishDate": "2021-12-19",
@@ -8932,6 +8946,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 85,
+      "publishDate": "2021-12-12",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/cabaret-eddie-redmayne-buckley-west-end_55529.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
         }
       ]
     },
@@ -28417,6 +28445,25 @@
     },
     {
       "showId": "les-miserables-west-end-2021",
+      "file": "the-express--neil-norman.json",
+      "score": 88,
+      "publishDate": null,
+      "url": "https://www.express.co.uk/entertainment/theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-west-end-2021",
       "file": "thestage--matthew-hemley.json",
       "score": 86,
       "publishDate": null,
@@ -28479,6 +28526,25 @@
       "score": 25,
       "publishDate": "2020-01-17",
       "url": "/people/Clive-Davis/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-west-end-2021",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 72,
+      "publishDate": "2020-01-17",
+      "url": "https://www.whatsonstage.com/news/did-critics-give-les-miserables-stars-in-their-multitudes_50726/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -33425,9 +33491,14 @@
       "url": "https://www.standard.co.uk/culture/theatre/moulin-rouge-the-musical-musical-review-piccadilly-london-b977840.html",
       "findings": [
         {
-          "type": "DIRECTOR_MISMATCH",
+          "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
-          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
+          "detail": "Contains TV/film keyword: \"on screen\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -63619,6 +63690,20 @@
       ]
     },
     {
+      "showId": "back-to-the-future-west-end-2021",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 72,
+      "publishDate": "2021-09-13",
+      "url": "https://www.whatsonstage.com/news/back-to-the-future-the-musical-review-the-iconic-movie-makes-its-way-to-the-west-end-stage_54896/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "bad-cinderella-2023",
       "file": "deadline--greg-evans.json",
       "score": 58,
@@ -73683,6 +73768,20 @@
       "score": 72,
       "publishDate": null,
       "url": "https://www.nbcnewyork.com/entertainment/the-scene/Review-Motown-BerryGordy-2016-387676831.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-the-musical-west-end-2021",
+      "file": "london-box-office--stuart-king.json",
+      "score": 72,
+      "publishDate": "2024-09-18",
+      "url": "https://www.londonboxoffice.co.uk/news/post/moulin-rouge-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
