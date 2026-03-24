@@ -1123,7 +1123,16 @@
     "othello-2025/nytg--austin-fimmano.json",
     "othello-2025/variety--daniel-daddario.json",
     "othello-2025/vulture--david-fox.json",
-    "othello-2025/nydailynews--chris-jones.json"
+    "othello-2025/nydailynews--chris-jones.json",
+    "othello-2025/theatermania--david-gordon.json",
+    "othello-2025/timeout--adam-feldman.json",
+    "othello-2025/theatrely--juan-a-ramirez.json",
+    "othello-2025/chicagotribune--unknown.json",
+    "othello-2025/times-uk--susie-goldsbrough.json",
+    "othello-2025/whatsonstage--sarah-crompton.json",
+    "purpose-2025/hollywood-reporter--lovia-gayarkye.json",
+    "purpose-2025/hollywood-reporter--lovia-gyarkye.json",
+    "purpose-2025/deadline--greg-evans.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -1452,7 +1461,8 @@
     "glengarry-glen-ross-2025/wsj--charles-isherwood.json",
     "othello-2025/broadwaynews--unknown.json",
     "othello-2025/talkinbroadway--unknown.json",
-    "othello-2025/vulture--sara-holdren.json"
+    "othello-2025/vulture--sara-holdren.json",
+    "purpose-2025/broadwaynews--brittani-samuel.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2315,7 +2325,12 @@
       "the-picture-of-dorian-gray-2025/village-voice--michael-musto.json",
       "othello-2025/nyt-theater--unknown.json",
       "othello-2025/nytg--austin-fimmano.json",
-      "othello-2025/nydailynews--chris-jones.json"
+      "othello-2025/nydailynews--chris-jones.json",
+      "othello-2025/theatermania--david-gordon.json",
+      "othello-2025/timeout--adam-feldman.json",
+      "othello-2025/theatrely--juan-a-ramirez.json",
+      "othello-2025/times-uk--susie-goldsbrough.json",
+      "othello-2025/whatsonstage--sarah-crompton.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -2405,7 +2420,13 @@
       "data/review-texts/the-picture-of-dorian-gray-2025/nytimes--jesse-green.json",
       "the-picture-of-dorian-gray-2025/nytimes--jesse-green.json",
       "data/review-texts/othello-2025/variety--daniel-daddario.json",
-      "othello-2025/variety--daniel-daddario.json"
+      "othello-2025/variety--daniel-daddario.json",
+      "data/review-texts/purpose-2025/hollywood-reporter--lovia-gayarkye.json",
+      "purpose-2025/hollywood-reporter--lovia-gayarkye.json",
+      "data/review-texts/purpose-2025/hollywood-reporter--lovia-gyarkye.json",
+      "purpose-2025/hollywood-reporter--lovia-gyarkye.json",
+      "data/review-texts/purpose-2025/deadline--greg-evans.json",
+      "purpose-2025/deadline--greg-evans.json"
     ],
     "directCookies": [
       "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json",
@@ -2541,7 +2562,8 @@
       "data/review-texts/good-night-and-good-luck-2025/broadwaynews--brittani-samuel.json",
       "data/review-texts/othello-2025/broadwaynews--unknown.json",
       "data/review-texts/othello-2025/talkinbroadway--unknown.json",
-      "data/review-texts/othello-2025/vulture--sara-holdren.json"
+      "data/review-texts/othello-2025/vulture--sara-holdren.json",
+      "data/review-texts/purpose-2025/broadwaynews--brittani-samuel.json"
     ],
     "archive": [
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
@@ -2780,11 +2802,12 @@
       "glengarry-glen-ross-2025/newyorker--helen-shaw.json",
       "the-picture-of-dorian-gray-2025/vulture--sara-holdren.json",
       "the-picture-of-dorian-gray-2025/usatoday--patrick-ryan.json",
-      "othello-2025/vulture--david-fox.json"
+      "othello-2025/vulture--david-fox.json",
+      "othello-2025/chicagotribune--unknown.json"
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "othello-2025/nydailynews--chris-jones.json",
+  "lastProcessed": "purpose-2025/deadline--greg-evans.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -3211,6 +3234,39 @@
       "t": "2026-03-24T05:06:00.907Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-24T05:11:14.218Z",
+      "event": "bb-session",
+      "session": "25d93a84",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/purpose-review-phylicia-rashad-"
+    },
+    {
+      "t": "2026-03-24T05:11:15.704Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-24T05:11:30.573Z",
+      "event": "bb-session",
+      "session": "3a4b15d6",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/purpose-review-phylicia-rashad-"
+    },
+    {
+      "t": "2026-03-24T05:11:31.846Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-24T05:13:38.169Z",
+      "event": "bb-session",
+      "session": "cd733967",
+      "url": "https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/"
+    },
+    {
+      "t": "2026-03-24T05:13:39.492Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
