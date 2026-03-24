@@ -21,6 +21,7 @@ jobs:
           # Format: "workflow_filename|max_hours|friendly_name"
           CRITICAL_CRONS=(
             "opening-night-broadcast.yml|36|Opening Night Broadcast"
+            "opening-night-orchestrator.yml|25|Opening Night Orchestrator"
             "update-show-status.yml|36|Update Show Status"
             "rebuild-reviews.yml|36|Rebuild Reviews"
             "collect-review-texts.yml|36|Collect Review Texts"
