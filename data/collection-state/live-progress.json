@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-24T05:13:57.733Z",
-  "processed": 1133,
-  "failed": 328,
-  "successRate": "77.5%",
+  "updatedAt": "2026-03-24T05:15:39.908Z",
+  "processed": 1141,
+  "failed": 330,
+  "successRate": "77.6%",
   "tierBreakdown": {
-    "playwright": 864,
+    "playwright": 871,
     "amp": 26,
-    "browserbase": 66,
+    "browserbase": 68,
     "directCookies": 2,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 129,
     "archive": 238
   },
-  "browserbaseSessions": 20,
+  "browserbaseSessions": 21,
   "recentActivity": [
-    {
-      "t": "2026-03-24T04:54:47.904Z",
-      "event": "bb-session",
-      "session": "3a2eeb84",
-      "url": "https://www.wsj.com/articles/good-night-and-good-luck-review-george-clooneys-bro"
-    },
-    {
-      "t": "2026-03-24T04:54:49.240Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-24T04:57:21.167Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-24T05:13:39.492Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-24T05:15:11.507Z",
+      "event": "bb-session",
+      "session": "bcf29728",
+      "url": "https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/"
+    },
+    {
+      "t": "2026-03-24T05:15:12.825Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
     }

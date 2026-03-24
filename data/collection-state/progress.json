@@ -1132,7 +1132,15 @@
     "othello-2025/whatsonstage--sarah-crompton.json",
     "purpose-2025/hollywood-reporter--lovia-gayarkye.json",
     "purpose-2025/hollywood-reporter--lovia-gyarkye.json",
-    "purpose-2025/deadline--greg-evans.json"
+    "purpose-2025/deadline--greg-evans.json",
+    "purpose-2025/theatermania--zachary-stewart.json",
+    "purpose-2025/theatre-reviews-limited--david-roberts.json",
+    "purpose-2025/timeout--adam-feldman.json",
+    "purpose-2025/financialtimes--rhoda-feng.json",
+    "purpose-2025/theater-life--samuel-l-leiter.json",
+    "redwood-2025/broadwaynews--brittani-samuel.json",
+    "redwood-2025/deadline--greg-evans.json",
+    "redwood-2025/timeout--adam-feldman.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -1462,7 +1470,9 @@
     "othello-2025/broadwaynews--unknown.json",
     "othello-2025/talkinbroadway--unknown.json",
     "othello-2025/vulture--sara-holdren.json",
-    "purpose-2025/broadwaynews--brittani-samuel.json"
+    "purpose-2025/broadwaynews--brittani-samuel.json",
+    "redwood-2025/gmanetwork--stuart-santiago.json",
+    "redwood-2025/juiceph--wanggo-gallaga.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2330,7 +2340,14 @@
       "othello-2025/timeout--adam-feldman.json",
       "othello-2025/theatrely--juan-a-ramirez.json",
       "othello-2025/times-uk--susie-goldsbrough.json",
-      "othello-2025/whatsonstage--sarah-crompton.json"
+      "othello-2025/whatsonstage--sarah-crompton.json",
+      "purpose-2025/theatermania--zachary-stewart.json",
+      "purpose-2025/theatre-reviews-limited--david-roberts.json",
+      "purpose-2025/timeout--adam-feldman.json",
+      "purpose-2025/financialtimes--rhoda-feng.json",
+      "purpose-2025/theater-life--samuel-l-leiter.json",
+      "redwood-2025/broadwaynews--brittani-samuel.json",
+      "redwood-2025/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -2426,7 +2443,9 @@
       "data/review-texts/purpose-2025/hollywood-reporter--lovia-gyarkye.json",
       "purpose-2025/hollywood-reporter--lovia-gyarkye.json",
       "data/review-texts/purpose-2025/deadline--greg-evans.json",
-      "purpose-2025/deadline--greg-evans.json"
+      "purpose-2025/deadline--greg-evans.json",
+      "data/review-texts/redwood-2025/deadline--greg-evans.json",
+      "redwood-2025/deadline--greg-evans.json"
     ],
     "directCookies": [
       "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json",
@@ -2807,7 +2826,7 @@
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "purpose-2025/deadline--greg-evans.json",
+  "lastProcessed": "redwood-2025/juiceph--wanggo-gallaga.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -3265,6 +3284,17 @@
     },
     {
       "t": "2026-03-24T05:13:39.492Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-24T05:15:11.507Z",
+      "event": "bb-session",
+      "session": "bcf29728",
+      "url": "https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/"
+    },
+    {
+      "t": "2026-03-24T05:15:12.825Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
     }
