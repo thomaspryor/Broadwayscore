@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-24T14:40:56.714Z",
+  "timestamp": "2026-03-24T14:50:36.208Z",
   "stats": {
     "totalReviews": 32478,
     "alreadyFlagged": 11060,
     "dateGuardCatches": 139,
-    "directorMismatch": 946,
-    "tvFilmSignals": 3402,
-    "londonSignals": 1023,
+    "directorMismatch": 948,
+    "tvFilmSignals": 3403,
+    "londonSignals": 1025,
     "offBroadwaySignals": 1011,
     "yearMismatch": 72,
     "noPublishDate": 6815
@@ -28445,6 +28445,25 @@
     },
     {
       "showId": "les-miserables-west-end-2021",
+      "file": "the-express--neil-norman.json",
+      "score": 88,
+      "publishDate": null,
+      "url": "https://www.express.co.uk/entertainment/theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-west-end-2021",
       "file": "thestage--matthew-hemley.json",
       "score": 86,
       "publishDate": null,
@@ -28507,6 +28526,25 @@
       "score": 25,
       "publishDate": "2020-01-17",
       "url": "/people/Clive-Davis/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-west-end-2021",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 72,
+      "publishDate": "2020-01-17",
+      "url": "https://www.whatsonstage.com/news/did-critics-give-les-miserables-stars-in-their-multitudes_50726/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -63648,6 +63686,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 72,
+      "publishDate": "2021-09-13",
+      "url": "https://www.whatsonstage.com/news/back-to-the-future-the-musical-review-the-iconic-movie-makes-its-way-to-the-west-end-stage_54896/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
