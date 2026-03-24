@@ -191,7 +191,10 @@ async function syncResendContacts(subscribers, segmentId, segmentName, resendApi
   // Upsert active subscribers (rate limit: 2 req/sec → 600ms between calls)
   for (const email of subscribers) {
     const existing = existingContacts.get(email);
-    if (existing && !existing.unsubscribed) continue; // Already active
+    if (existing && !existing.unsubscribed) continue; // Already active, skip
+    // If they unsubscribed in Resend (via broadcast footer link), respect that choice.
+    // Don't re-activate — their Formspree record will be cleaned up by the removal loop below.
+    if (existing && existing.unsubscribed) continue;
 
     try {
       await postJSON('https://api.resend.com/contacts', {
