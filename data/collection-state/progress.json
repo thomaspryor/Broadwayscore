@@ -1166,7 +1166,11 @@
     "gypsy-2024/washpost--naveen-kumar.json",
     "eureka-day-2024/nytimes--unknown.json",
     "eureka-day-2024/vulture--jesse-green.json",
-    "eureka-day-2024/broadwaynews--gloria-oladipo.json"
+    "eureka-day-2024/broadwaynews--gloria-oladipo.json",
+    "eureka-day-2024/theatermania--zachary-stewart.json",
+    "eureka-day-2024/thewrap--robert-hofler.json",
+    "cult-of-love-2024/broadwaynews--brittani-samuel.json",
+    "cult-of-love-2024/theatermania--pete-hempstead.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -1502,7 +1506,13 @@
     "all-in-comedy-about-love-2024/wsj--charles-isherwood.json",
     "gypsy-2024/hartford-courant--unknown.json",
     "gypsy-2024/theatermania--jesse-green.json",
-    "gypsy-2024/wsj--charles-isherwood.json"
+    "gypsy-2024/wsj--charles-isherwood.json",
+    "eureka-day-2024/timeout--adam-feldman.json",
+    "eureka-day-2024/thestage--sam-marlowe.json",
+    "eureka-day-2024/times-uk--clive-davis.json",
+    "cult-of-love-2024/washpost--peter-marks.json",
+    "cult-of-love-2024/hollywood-reporter--david-rooney.json",
+    "cult-of-love-2024/nytimes--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2395,7 +2405,10 @@
       "gypsy-2024/timeout--adam-feldman.json",
       "gypsy-2024/theater-scene--victor-gluck.json",
       "gypsy-2024/washpost--naveen-kumar.json",
-      "eureka-day-2024/broadwaynews--gloria-oladipo.json"
+      "eureka-day-2024/broadwaynews--gloria-oladipo.json",
+      "eureka-day-2024/theatermania--zachary-stewart.json",
+      "cult-of-love-2024/broadwaynews--brittani-samuel.json",
+      "cult-of-love-2024/theatermania--pete-hempstead.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -2423,7 +2436,9 @@
       "data/review-texts/punch-2025/thewrap--robert-hofler.json",
       "punch-2025/thewrap--robert-hofler.json",
       "data/review-texts/giant-2026/thewrap--unknown.json",
-      "giant-2026/thewrap--unknown.json"
+      "giant-2026/thewrap--unknown.json",
+      "data/review-texts/eureka-day-2024/thewrap--robert-hofler.json",
+      "eureka-day-2024/thewrap--robert-hofler.json"
     ],
     "browserbase": [
       "data/review-texts/music-city-off-broadway-2026/deadline--unknown.json",
@@ -2635,7 +2650,12 @@
       "data/review-texts/othello-2025/talkinbroadway--unknown.json",
       "data/review-texts/othello-2025/vulture--sara-holdren.json",
       "data/review-texts/purpose-2025/broadwaynews--brittani-samuel.json",
-      "data/review-texts/gypsy-2024/theatermania--jesse-green.json"
+      "data/review-texts/gypsy-2024/theatermania--jesse-green.json",
+      "data/review-texts/eureka-day-2024/timeout--adam-feldman.json",
+      "data/review-texts/eureka-day-2024/thestage--sam-marlowe.json",
+      "data/review-texts/cult-of-love-2024/washpost--peter-marks.json",
+      "data/review-texts/cult-of-love-2024/hollywood-reporter--david-rooney.json",
+      "data/review-texts/cult-of-love-2024/nytimes--jesse-green.json"
     ],
     "archive": [
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
@@ -2885,7 +2905,7 @@
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "eureka-day-2024/broadwaynews--gloria-oladipo.json",
+  "lastProcessed": "cult-of-love-2024/theatermania--pete-hempstead.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -3400,6 +3420,50 @@
       "t": "2026-03-24T05:21:50.331Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-24T05:26:07.329Z",
+      "event": "bb-session",
+      "session": "996849e0",
+      "url": "https://www.thestage.co.uk/reviews/eureka-day-review-at-the-old-vic-london-starr"
+    },
+    {
+      "t": "2026-03-24T05:26:08.642Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-24T05:26:38.225Z",
+      "event": "bb-session",
+      "session": "79af4dec",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/12/12/cult-of-love-broadway-re"
+    },
+    {
+      "t": "2026-03-24T05:26:39.564Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-24T05:26:51.907Z",
+      "event": "bb-session",
+      "session": "9cd787e2",
+      "url": "https://www.hollywoodreporter.com/mcdbeek-mg003/"
+    },
+    {
+      "t": "2026-03-24T05:26:53.201Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-24T05:30:09.212Z",
+      "event": "bb-session",
+      "session": "15b8b0c8",
+      "url": "https://www.nytimes.com/2024/12/12/theater/cult-of-love-broadway-review.html"
+    },
+    {
+      "t": "2026-03-24T05:30:10.568Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
