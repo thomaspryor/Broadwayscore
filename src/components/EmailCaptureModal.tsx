@@ -9,6 +9,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import { track } from '@vercel/analytics';
 import { Modal, ModalCloseButton } from '@/components/show-cards';
+import { SUBSCRIBED_KEY_PREFIX } from '@/hooks/useFormspreeSubscribed';
 
 const FORMSPREE_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || '';
 const FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID || '';
@@ -162,7 +163,7 @@ export default function EmailCaptureModal({
         }
         // Mark as subscribed so inline forms (header/footer) don't nag again
         try {
-          localStorage.setItem(`bsc_email_subscribed_${marketKey}`, 'true');
+          localStorage.setItem(SUBSCRIBED_KEY_PREFIX + marketKey, 'true');
           window.dispatchEvent(new Event('bsc_subscribed'));
         } catch { /* noop */ }
       }
