@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-10T05:48:37.420Z",
+    "generatedAt": "2026-03-24T06:04:44.671Z",
     "threshold": 40,
-    "showsScanned": 1286,
-    "reviewsScanned": 26706,
-    "duplicatesFound": 76,
+    "showsScanned": 1312,
+    "reviewsScanned": 27016,
+    "duplicatesFound": 78,
     "byMethod": {
       "similarity+llm": [
         {
@@ -38,21 +38,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "chaplin-2012",
-          "method": "similarity+llm",
-          "similarity": 64,
-          "primaryFile": "newsday--linda-winer.json",
-          "primaryOutlet": "Newsday",
-          "primaryCritic": "Linda Winer",
-          "secondaryFile": "amny--matt-windman.json",
-          "secondaryOutlet": "amNY",
-          "secondaryCritic": "Matt Windman",
-          "primaryScore": 71,
-          "secondaryScore": 40,
-          "scoreDiff": 31,
-          "textSource": "fullText"
-        },
-        {
           "showId": "cyrano-de-bergerac-2012",
           "method": "similarity+llm",
           "similarity": 68,
@@ -77,9 +62,9 @@
           "secondaryFile": "front-row-center--stanford-friedman.json",
           "secondaryOutlet": "Front Row Center",
           "secondaryCritic": "Stanford Friedman",
-          "primaryScore": 74,
+          "primaryScore": 77,
           "secondaryScore": 53,
-          "scoreDiff": 21,
+          "scoreDiff": 24,
           "textSource": "fullText"
         },
         {
@@ -98,21 +83,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "high-noon-west-end-2025",
-          "method": "similarity+llm",
-          "similarity": 55,
-          "primaryFile": "nytimes--elisabeth-vincentelli.json",
-          "primaryOutlet": "New York Times",
-          "primaryCritic": "Elisabeth Vincentelli",
-          "secondaryFile": "nbcnews--jonathan-clarke.json",
-          "secondaryOutlet": "NBC News",
-          "secondaryCritic": "Jonathan Clarke",
-          "primaryScore": 74,
-          "secondaryScore": 77,
-          "scoreDiff": 3,
-          "textSource": "excerpts"
-        },
-        {
           "showId": "lobby-hero-2018",
           "method": "similarity+llm",
           "similarity": 57,
@@ -128,21 +98,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "oh-mary-west-end-2025",
-          "method": "similarity+llm",
-          "similarity": 68,
-          "primaryFile": "daily-mail--patrick-marmion.json",
-          "primaryOutlet": "dailymail",
-          "primaryCritic": "Patrick Marmion",
-          "secondaryFile": "digital-journal--markos-papadatos.json",
-          "secondaryOutlet": "Digital Journal",
-          "secondaryCritic": "Markos Papadatos",
-          "primaryScore": 14,
-          "secondaryScore": 15,
-          "scoreDiff": 1,
-          "textSource": "fullText"
-        },
-        {
           "showId": "oklahoma-2019",
           "method": "similarity+llm",
           "similarity": 69,
@@ -153,23 +108,23 @@
           "secondaryOutlet": "Charles Isherwood",
           "secondaryCritic": "Broadway News",
           "primaryScore": 64,
-          "secondaryScore": 79,
-          "scoreDiff": 15,
+          "secondaryScore": 64,
+          "scoreDiff": 0,
           "textSource": "fullText"
         },
         {
           "showId": "paddington-the-musical-west-end-2025",
           "method": "similarity+llm",
           "similarity": 40,
-          "primaryFile": "broadwaynews--stephi-wild.json",
-          "primaryOutlet": "Broadway News",
-          "primaryCritic": "Stephi Wild",
-          "secondaryFile": "broadwayworld--christiana-rose.json",
-          "secondaryOutlet": "BroadwayWorld",
-          "secondaryCritic": "Christiana Rose",
-          "primaryScore": 50,
-          "secondaryScore": 81,
-          "scoreDiff": 31,
+          "primaryFile": "broadwayworld--christiana-rose.json",
+          "primaryOutlet": "BroadwayWorld",
+          "primaryCritic": "Christiana Rose",
+          "secondaryFile": "here--unknown.json",
+          "secondaryOutlet": "here",
+          "secondaryCritic": "Unknown",
+          "primaryScore": 81,
+          "secondaryScore": null,
+          "scoreDiff": 81,
           "textSource": "excerpts"
         },
         {
@@ -400,21 +355,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "evita-2012",
-          "method": "similarity",
-          "similarity": 89,
-          "primaryFile": "elena-roger--joyce-wadler.json",
-          "primaryOutlet": "Elena Roger",
-          "primaryCritic": "Joyce Wadler",
-          "secondaryFile": "ricky-martin--unknown.json",
-          "secondaryOutlet": "Ricky Martin",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 43,
-          "secondaryScore": 45,
-          "scoreDiff": 2,
-          "textSource": "excerpts"
-        },
-        {
           "showId": "farinelli-and-the-king-2017",
           "method": "similarity",
           "similarity": 73,
@@ -505,21 +445,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "gypsy-2024",
-          "method": "similarity",
-          "similarity": 93,
-          "primaryFile": "variety--aramide-tinubu.json",
-          "primaryOutlet": "Variety",
-          "primaryCritic": "Aramide Tinubu",
-          "secondaryFile": "nytimes--jesse-green.json",
-          "secondaryOutlet": "The New York Times",
-          "secondaryCritic": "Jesse Green",
-          "primaryScore": 92,
-          "secondaryScore": 92,
-          "scoreDiff": 0,
-          "textSource": "fullText"
-        },
-        {
           "showId": "hadestown-2019",
           "method": "similarity",
           "similarity": 92,
@@ -532,6 +457,21 @@
           "primaryScore": 84,
           "secondaryScore": 85,
           "scoreDiff": 1,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "harry-potter-2021",
+          "method": "similarity",
+          "similarity": 79,
+          "primaryFile": "nyt-theater--unknown.json",
+          "primaryOutlet": "New York Theater",
+          "primaryCritic": "Unknown",
+          "secondaryFile": "dctheatrescene--jonathan-mandell.json",
+          "secondaryOutlet": "DC Theatre Scene",
+          "secondaryCritic": "Jonathan Mandell",
+          "primaryScore": 76,
+          "secondaryScore": 82,
+          "scoreDiff": 6,
           "textSource": "fullText"
         },
         {
@@ -577,21 +517,6 @@
           "primaryScore": 76,
           "secondaryScore": 77,
           "scoreDiff": 1,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "hughie-2016",
-          "method": "similarity",
-          "similarity": 96,
-          "primaryFile": "amny--matt-windman.json",
-          "primaryOutlet": "amNY",
-          "primaryCritic": "Matt Windman",
-          "secondaryFile": "northjerseycom--robert-feldberg.json",
-          "secondaryOutlet": "Bergen Record",
-          "secondaryCritic": "Robert Feldberg",
-          "primaryScore": 46,
-          "secondaryScore": 46,
-          "scoreDiff": 0,
           "textSource": "fullText"
         },
         {
@@ -760,6 +685,21 @@
           "textSource": "fullText"
         },
         {
+          "showId": "oh-mary-west-end-2025",
+          "method": "similarity",
+          "similarity": 97,
+          "primaryFile": "daily-mail--patrick-marmion.json",
+          "primaryOutlet": "dailymail",
+          "primaryCritic": "Patrick Marmion",
+          "secondaryFile": "digital-journal--markos-papadatos.json",
+          "secondaryOutlet": "Digital Journal",
+          "secondaryCritic": "Markos Papadatos",
+          "primaryScore": 14,
+          "secondaryScore": 15,
+          "scoreDiff": 1,
+          "textSource": "fullText"
+        },
+        {
           "showId": "on-the-twentieth-century-2015",
           "method": "similarity",
           "similarity": 78,
@@ -847,6 +787,21 @@
           "primaryScore": 76,
           "secondaryScore": 76,
           "scoreDiff": 0,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "rocky-2014",
+          "method": "similarity",
+          "similarity": 91,
+          "primaryFile": "huffpost--rex-reed.json",
+          "primaryOutlet": "Huffington Post",
+          "primaryCritic": "Rex Reed",
+          "secondaryFile": "rex-reed--unknown.json",
+          "secondaryOutlet": "Rex Reed",
+          "secondaryCritic": "Unknown",
+          "primaryScore": 86,
+          "secondaryScore": 85,
+          "scoreDiff": 1,
           "textSource": "fullText"
         },
         {
@@ -952,6 +907,51 @@
           "primaryScore": 63,
           "secondaryScore": 42,
           "scoreDiff": 21,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "stranger-things-the-first-shadow-west-end-2023",
+          "method": "similarity",
+          "similarity": 98,
+          "primaryFile": "broadwayworld--alexander-cohen.json",
+          "primaryOutlet": "BroadwayWorld",
+          "primaryCritic": "Alexander Cohen",
+          "secondaryFile": "city-am--unknown.json",
+          "secondaryOutlet": "CityAM",
+          "secondaryCritic": "Adam Bloodworth",
+          "primaryScore": 81,
+          "secondaryScore": null,
+          "scoreDiff": 81,
+          "textSource": "excerpts"
+        },
+        {
+          "showId": "stranger-things-the-first-shadow-west-end-2023",
+          "method": "similarity",
+          "similarity": 98,
+          "primaryFile": "latimes--unknown.json",
+          "primaryOutlet": "Los Angeles Times (Charles McNulty)*",
+          "primaryCritic": "Unknown",
+          "secondaryFile": "broadwayworld--alexander-cohen.json",
+          "secondaryOutlet": "BroadwayWorld",
+          "secondaryCritic": "Alexander Cohen",
+          "primaryScore": null,
+          "secondaryScore": 81,
+          "scoreDiff": 81,
+          "textSource": "excerpts"
+        },
+        {
+          "showId": "stranger-things-the-first-shadow-west-end-2023",
+          "method": "similarity",
+          "similarity": 77,
+          "primaryFile": "whatsonstage--alex-wood.json",
+          "primaryOutlet": "WhatsOnStage",
+          "primaryCritic": "Alex Wood",
+          "secondaryFile": "theatermania--pete-hempstead.json",
+          "secondaryOutlet": "TheaterMania",
+          "secondaryCritic": "Pete Hempstead",
+          "primaryScore": 92,
+          "secondaryScore": null,
+          "scoreDiff": 92,
           "textSource": "fullText"
         },
         {
@@ -1085,7 +1085,7 @@
           "primaryCritic": "",
           "secondaryFile": "time--unknown.json",
           "secondaryOutlet": "Time",
-          "secondaryCritic": "Unknown",
+          "secondaryCritic": "",
           "primaryScore": 90,
           "secondaryScore": 92,
           "scoreDiff": 2,
@@ -1122,6 +1122,21 @@
           "textSource": "excerpts"
         },
         {
+          "showId": "girl-from-the-north-country-2022",
+          "method": "fingerprint",
+          "similarity": 100,
+          "primaryFile": "chicagotribune--chris-jones.json",
+          "primaryOutlet": "Chicago Tribune",
+          "primaryCritic": "Chris Jones",
+          "secondaryFile": "nydailynews--chris-jones.json",
+          "secondaryOutlet": "New York Daily News",
+          "secondaryCritic": "Chris Jones",
+          "primaryScore": 86,
+          "secondaryScore": 87,
+          "scoreDiff": 1,
+          "textSource": "fullText"
+        },
+        {
           "showId": "macbeth-2008",
           "method": "fingerprint",
           "similarity": 100,
@@ -1149,6 +1164,21 @@
           "primaryScore": 66,
           "secondaryScore": 78,
           "scoreDiff": 12,
+          "textSource": "excerpts"
+        },
+        {
+          "showId": "stranger-things-the-first-shadow-west-end-2023",
+          "method": "fingerprint",
+          "similarity": 100,
+          "primaryFile": "latimes--unknown.json",
+          "primaryOutlet": "Los Angeles Times (Charles McNulty)*",
+          "primaryCritic": "Unknown",
+          "secondaryFile": "city-am--unknown.json",
+          "secondaryOutlet": "CityAM",
+          "secondaryCritic": "Adam Bloodworth",
+          "primaryScore": null,
+          "secondaryScore": null,
+          "scoreDiff": 0,
           "textSource": "excerpts"
         }
       ]
@@ -1254,7 +1284,7 @@
       "primaryCritic": "",
       "secondaryFile": "time--unknown.json",
       "secondaryOutlet": "Time",
-      "secondaryCritic": "Unknown",
+      "secondaryCritic": "",
       "primaryScore": 90,
       "secondaryScore": 92,
       "scoreDiff": 2,
@@ -1273,21 +1303,6 @@
       "primaryScore": 76,
       "secondaryScore": 74,
       "scoreDiff": 2,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "chaplin-2012",
-      "method": "similarity+llm",
-      "similarity": 64,
-      "primaryFile": "newsday--linda-winer.json",
-      "primaryOutlet": "Newsday",
-      "primaryCritic": "Linda Winer",
-      "secondaryFile": "amny--matt-windman.json",
-      "secondaryOutlet": "amNY",
-      "secondaryCritic": "Matt Windman",
-      "primaryScore": 71,
-      "secondaryScore": 40,
-      "scoreDiff": 31,
       "textSource": "fullText"
     },
     {
@@ -1360,25 +1375,10 @@
       "secondaryFile": "front-row-center--stanford-friedman.json",
       "secondaryOutlet": "Front Row Center",
       "secondaryCritic": "Stanford Friedman",
-      "primaryScore": 74,
+      "primaryScore": 77,
       "secondaryScore": 53,
-      "scoreDiff": 21,
+      "scoreDiff": 24,
       "textSource": "fullText"
-    },
-    {
-      "showId": "evita-2012",
-      "method": "similarity",
-      "similarity": 89,
-      "primaryFile": "elena-roger--joyce-wadler.json",
-      "primaryOutlet": "Elena Roger",
-      "primaryCritic": "Joyce Wadler",
-      "secondaryFile": "ricky-martin--unknown.json",
-      "secondaryOutlet": "Ricky Martin",
-      "secondaryCritic": "Unknown",
-      "primaryScore": 43,
-      "secondaryScore": 45,
-      "scoreDiff": 2,
-      "textSource": "excerpts"
     },
     {
       "showId": "farinelli-and-the-king-2017",
@@ -1471,6 +1471,21 @@
       "textSource": "fullText"
     },
     {
+      "showId": "girl-from-the-north-country-2022",
+      "method": "fingerprint",
+      "similarity": 100,
+      "primaryFile": "chicagotribune--chris-jones.json",
+      "primaryOutlet": "Chicago Tribune",
+      "primaryCritic": "Chris Jones",
+      "secondaryFile": "nydailynews--chris-jones.json",
+      "secondaryOutlet": "New York Daily News",
+      "secondaryCritic": "Chris Jones",
+      "primaryScore": 86,
+      "secondaryScore": 87,
+      "scoreDiff": 1,
+      "textSource": "fullText"
+    },
+    {
       "showId": "good-night-oscar-2023",
       "method": "similarity",
       "similarity": 81,
@@ -1516,21 +1531,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "gypsy-2024",
-      "method": "similarity",
-      "similarity": 93,
-      "primaryFile": "variety--aramide-tinubu.json",
-      "primaryOutlet": "Variety",
-      "primaryCritic": "Aramide Tinubu",
-      "secondaryFile": "nytimes--jesse-green.json",
-      "secondaryOutlet": "The New York Times",
-      "secondaryCritic": "Jesse Green",
-      "primaryScore": 92,
-      "secondaryScore": 92,
-      "scoreDiff": 0,
-      "textSource": "fullText"
-    },
-    {
       "showId": "hadestown-2019",
       "method": "similarity",
       "similarity": 92,
@@ -1543,6 +1543,21 @@
       "primaryScore": 84,
       "secondaryScore": 85,
       "scoreDiff": 1,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "harry-potter-2021",
+      "method": "similarity",
+      "similarity": 79,
+      "primaryFile": "nyt-theater--unknown.json",
+      "primaryOutlet": "New York Theater",
+      "primaryCritic": "Unknown",
+      "secondaryFile": "dctheatrescene--jonathan-mandell.json",
+      "secondaryOutlet": "DC Theatre Scene",
+      "secondaryCritic": "Jonathan Mandell",
+      "primaryScore": 76,
+      "secondaryScore": 82,
+      "scoreDiff": 6,
       "textSource": "fullText"
     },
     {
@@ -1559,21 +1574,6 @@
       "secondaryScore": 83,
       "scoreDiff": 7,
       "textSource": "fullText"
-    },
-    {
-      "showId": "high-noon-west-end-2025",
-      "method": "similarity+llm",
-      "similarity": 55,
-      "primaryFile": "nytimes--elisabeth-vincentelli.json",
-      "primaryOutlet": "New York Times",
-      "primaryCritic": "Elisabeth Vincentelli",
-      "secondaryFile": "nbcnews--jonathan-clarke.json",
-      "secondaryOutlet": "NBC News",
-      "secondaryCritic": "Jonathan Clarke",
-      "primaryScore": 74,
-      "secondaryScore": 77,
-      "scoreDiff": 3,
-      "textSource": "excerpts"
     },
     {
       "showId": "holler-if-ya-hear-me-2014",
@@ -1603,21 +1603,6 @@
       "primaryScore": 76,
       "secondaryScore": 77,
       "scoreDiff": 1,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "hughie-2016",
-      "method": "similarity",
-      "similarity": 96,
-      "primaryFile": "amny--matt-windman.json",
-      "primaryOutlet": "amNY",
-      "primaryCritic": "Matt Windman",
-      "secondaryFile": "northjerseycom--robert-feldberg.json",
-      "secondaryOutlet": "Bergen Record",
-      "secondaryCritic": "Robert Feldberg",
-      "primaryScore": 46,
-      "secondaryScore": 46,
-      "scoreDiff": 0,
       "textSource": "fullText"
     },
     {
@@ -1832,8 +1817,8 @@
     },
     {
       "showId": "oh-mary-west-end-2025",
-      "method": "similarity+llm",
-      "similarity": 68,
+      "method": "similarity",
+      "similarity": 97,
       "primaryFile": "daily-mail--patrick-marmion.json",
       "primaryOutlet": "dailymail",
       "primaryCritic": "Patrick Marmion",
@@ -1856,8 +1841,8 @@
       "secondaryOutlet": "Charles Isherwood",
       "secondaryCritic": "Broadway News",
       "primaryScore": 64,
-      "secondaryScore": 79,
-      "scoreDiff": 15,
+      "secondaryScore": 64,
+      "scoreDiff": 0,
       "textSource": "fullText"
     },
     {
@@ -1894,15 +1879,15 @@
       "showId": "paddington-the-musical-west-end-2025",
       "method": "similarity+llm",
       "similarity": 40,
-      "primaryFile": "broadwaynews--stephi-wild.json",
-      "primaryOutlet": "Broadway News",
-      "primaryCritic": "Stephi Wild",
-      "secondaryFile": "broadwayworld--christiana-rose.json",
-      "secondaryOutlet": "BroadwayWorld",
-      "secondaryCritic": "Christiana Rose",
-      "primaryScore": 50,
-      "secondaryScore": 81,
-      "scoreDiff": 31,
+      "primaryFile": "broadwayworld--christiana-rose.json",
+      "primaryOutlet": "BroadwayWorld",
+      "primaryCritic": "Christiana Rose",
+      "secondaryFile": "here--unknown.json",
+      "secondaryOutlet": "here",
+      "secondaryCritic": "Unknown",
+      "primaryScore": 81,
+      "secondaryScore": null,
+      "scoreDiff": 81,
       "textSource": "excerpts"
     },
     {
@@ -1978,6 +1963,21 @@
       "primaryScore": 76,
       "secondaryScore": 76,
       "scoreDiff": 0,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "rocky-2014",
+      "method": "similarity",
+      "similarity": 91,
+      "primaryFile": "huffpost--rex-reed.json",
+      "primaryOutlet": "Huffington Post",
+      "primaryCritic": "Rex Reed",
+      "secondaryFile": "rex-reed--unknown.json",
+      "secondaryOutlet": "Rex Reed",
+      "secondaryCritic": "Unknown",
+      "primaryScore": 86,
+      "secondaryScore": 85,
+      "scoreDiff": 1,
       "textSource": "fullText"
     },
     {
@@ -2083,6 +2083,66 @@
       "primaryScore": 63,
       "secondaryScore": 42,
       "scoreDiff": 21,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "method": "fingerprint",
+      "similarity": 100,
+      "primaryFile": "latimes--unknown.json",
+      "primaryOutlet": "Los Angeles Times (Charles McNulty)*",
+      "primaryCritic": "Unknown",
+      "secondaryFile": "city-am--unknown.json",
+      "secondaryOutlet": "CityAM",
+      "secondaryCritic": "Adam Bloodworth",
+      "primaryScore": null,
+      "secondaryScore": null,
+      "scoreDiff": 0,
+      "textSource": "excerpts"
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "method": "similarity",
+      "similarity": 98,
+      "primaryFile": "broadwayworld--alexander-cohen.json",
+      "primaryOutlet": "BroadwayWorld",
+      "primaryCritic": "Alexander Cohen",
+      "secondaryFile": "city-am--unknown.json",
+      "secondaryOutlet": "CityAM",
+      "secondaryCritic": "Adam Bloodworth",
+      "primaryScore": 81,
+      "secondaryScore": null,
+      "scoreDiff": 81,
+      "textSource": "excerpts"
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "method": "similarity",
+      "similarity": 98,
+      "primaryFile": "latimes--unknown.json",
+      "primaryOutlet": "Los Angeles Times (Charles McNulty)*",
+      "primaryCritic": "Unknown",
+      "secondaryFile": "broadwayworld--alexander-cohen.json",
+      "secondaryOutlet": "BroadwayWorld",
+      "secondaryCritic": "Alexander Cohen",
+      "primaryScore": null,
+      "secondaryScore": 81,
+      "scoreDiff": 81,
+      "textSource": "excerpts"
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "method": "similarity",
+      "similarity": 77,
+      "primaryFile": "whatsonstage--alex-wood.json",
+      "primaryOutlet": "WhatsOnStage",
+      "primaryCritic": "Alex Wood",
+      "secondaryFile": "theatermania--pete-hempstead.json",
+      "secondaryOutlet": "TheaterMania",
+      "secondaryCritic": "Pete Hempstead",
+      "primaryScore": 92,
+      "secondaryScore": null,
+      "scoreDiff": 92,
       "textSource": "fullText"
     },
     {
