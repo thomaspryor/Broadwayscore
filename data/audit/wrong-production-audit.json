@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-03-24T18:49:12.217Z",
+  "timestamp": "2026-03-24T19:09:01.028Z",
   "stats": {
     "totalReviews": 32470,
     "alreadyFlagged": 11060,
     "dateGuardCatches": 139,
     "directorMismatch": 947,
-    "tvFilmSignals": 3404,
+    "tvFilmSignals": 3405,
     "londonSignals": 1025,
     "offBroadwaySignals": 1011,
     "yearMismatch": 71,
@@ -56392,6 +56392,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "the-tempest-globe-west-end-2026",
+      "file": "whatsonstage--alun-hood.json",
+      "score": 75,
+      "publishDate": "2026-01-30",
+      "url": "https://www.whatsonstage.com/news/the-tempest-at-the-sam-wanamaker-playhouse-at-shakespeares-globe-review_1710446/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
