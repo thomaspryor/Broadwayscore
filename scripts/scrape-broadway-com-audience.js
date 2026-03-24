@@ -112,10 +112,21 @@ async function fetchViaScrapingBee(url) {
  */
 async function discoverShows() {
   console.log('Fetching Broadway.com /shows/ listing...');
-  const { status, data: html } = await httpsGet('https://www.broadway.com/shows/');
+  let { status, data: html } = await httpsGet('https://www.broadway.com/shows/');
 
   if (status !== 200) {
     throw new Error(`Broadway.com /shows/ returned ${status}`);
+  }
+
+  // If listing page is bot-challenged, retry via ScrapingBee
+  if (isBotChallenge(html)) {
+    console.log('  Bot challenge on listing page, trying ScrapingBee...');
+    const sbResult = await fetchViaScrapingBee('https://www.broadway.com/shows/');
+    if (sbResult && sbResult.status === 200) {
+      html = sbResult.data;
+    } else {
+      throw new Error('Broadway.com /shows/ blocked by bot challenge and ScrapingBee fallback failed');
+    }
   }
 
   const shows = [];
