@@ -1,52 +1,41 @@
 {
-  "updatedAt": "2026-03-24T17:15:56.892Z",
-  "processed": 11,
-  "failed": 2,
-  "successRate": "84.6%",
+  "updatedAt": "2026-03-24T17:35:50.810Z",
+  "processed": 2,
+  "failed": 3,
+  "successRate": "40.0%",
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 1,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 2,
+    "archiveToday": 3,
     "archive": 0
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-03-24T17:13:28.776Z",
+      "t": "2026-03-24T17:34:00.298Z",
       "event": "bb-session",
-      "session": "37c2b731",
+      "session": "78ffda18",
       "url": "https://www.nytimes.com/2026/03/23/theater/giant-review-broadway-lithgow-dahl.ht"
     },
     {
-      "t": "2026-03-24T17:13:30.023Z",
+      "t": "2026-03-24T17:34:01.669Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-03-24T17:13:46.692Z",
+      "t": "2026-03-24T17:35:03.536Z",
       "event": "bb-session",
-      "session": "0c75c8ba",
+      "session": "af03a652",
       "url": "https://variety.com/2026/legit/reviews/giant-broadway-review-john-lithgow-roald-"
     },
     {
-      "t": "2026-03-24T17:13:48.049Z",
+      "t": "2026-03-24T17:35:04.848Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
-    },
-    {
-      "t": "2026-03-24T17:14:37.233Z",
-      "event": "bb-session",
-      "session": "239aef3c",
-      "url": "https://nypost.com/2026/03/23/entertainment/giant-review-john-lithgow-is-superb-"
-    },
-    {
-      "t": "2026-03-24T17:14:38.664Z",
-      "event": "bb-cookie-inject",
-      "domain": "nypost.com"
     }
   ]
 }
