@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-24T12:42:48.300Z",
-  "processed": 359,
+  "updatedAt": "2026-03-24T12:44:16.647Z",
+  "processed": 369,
   "failed": 31,
-  "successRate": "92.1%",
+  "successRate": "92.3%",
   "tierBreakdown": {
-    "playwright": 305,
+    "playwright": 310,
     "amp": 10,
-    "browserbase": 6,
+    "browserbase": 8,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 9,
-    "archive": 50
+    "archive": 54
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-03-24T12:15:43.038Z",
@@ -69,6 +69,17 @@
       "t": "2026-03-24T12:39:40.217Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-24T12:42:49.377Z",
+      "event": "bb-session",
+      "session": "fcaafcf5",
+      "url": "https://www.amny.com/entertainment/broadway/review-heathers-the-musical-off-broa"
+    },
+    {
+      "t": "2026-03-24T12:42:50.503Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
