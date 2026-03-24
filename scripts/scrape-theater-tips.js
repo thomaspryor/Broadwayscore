@@ -158,13 +158,13 @@ function parseParkingFromHtml(html) {
 }
 
 async function extractDining(url) {
-  const html = await fetchPage(url);
-  return parseDiningFromHtml(html);
+  const { content } = await fetchPage(url);
+  return parseDiningFromHtml(content);
 }
 
 async function extractParking(url) {
-  const html = await fetchPage(url);
-  return parseParkingFromHtml(html);
+  const { content } = await fetchPage(url);
+  return parseParkingFromHtml(content);
 }
 
 // ============================================
