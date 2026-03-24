@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway show metadata - source of truth for all shows",
-    "lastUpdated": "2026-03-23T08:41:52.093Z",
+    "lastUpdated": "2026-03-24",
     "source": "Manual + Playbill/IBDB cross-reference",
     "totalShows": 2258
   },
@@ -204909,7 +204909,7 @@
       "venue": "Theatre at St. Clement's",
       "openingDate": "2026-03-24",
       "closingDate": "2026-05-10",
-      "status": "previews",
+      "status": "open",
       "type": "play",
       "runtime": "2h 30m",
       "intermissions": null,
@@ -205178,8 +205178,7 @@
       "todaytixUrl": "https://www.todaytix.com/nyc/shows/45903-body-count",
       "todayTixCategory": "Plays",
       "ibdbRevivalChecked": true,
-      "isRevival": false,
-      "_staleMissingSince": "2026-03-23"
+      "isRevival": false
     },
     {
       "id": "bloodlove-off-broadway-2026",
@@ -205250,8 +205249,7 @@
       "ibdbUrl": null,
       "todayTixCategory": "Musicals",
       "ibdbRevivalChecked": true,
-      "isRevival": false,
-      "_staleMissingSince": "2026-03-23"
+      "isRevival": false
     },
     {
       "id": "silver-manhattan-off-broadway-2026",
@@ -205259,7 +205257,7 @@
       "slug": "silver-manhattan-off-broadway",
       "venue": "Bowery Ballroom",
       "openingDate": "2026-02-18",
-      "closingDate": "2026-03-29",
+      "closingDate": "2026-04-19",
       "status": "open",
       "type": "play",
       "runtime": null,
@@ -211063,7 +211061,8 @@
       "todaytixUrl": "https://www.todaytix.com/nyc/shows/44226-la-ternura",
       "todayTixCategory": "Plays",
       "ibdbRevivalChecked": true,
-      "isRevival": false
+      "isRevival": false,
+      "_staleMissingSince": "2026-03-24"
     },
     {
       "id": "the-monsters-off-broadway-2026",
@@ -212371,8 +212370,7 @@
       "ibdbUrl": null,
       "todayTixCategory": "Plays",
       "ibdbRevivalChecked": true,
-      "isRevival": false,
-      "_staleMissingSince": "2026-03-23"
+      "isRevival": false
     },
     {
       "id": "the-tragedy-of-coriolanus-off-broadway-2026",
@@ -222525,7 +222523,7 @@
       "venue": "Charing Cross Theatre",
       "openingDate": "2026-03-24",
       "closingDate": "2026-05-09",
-      "status": "previews",
+      "status": "open",
       "type": "musical",
       "runtime": "1h 35m",
       "intermissions": null,
@@ -230204,7 +230202,7 @@
         "thumbnail": "/images/shows/miss-saigon-west-end-2026/thumbnail.webp",
         "poster": "/images/shows/miss-saigon-west-end-2026/poster.webp"
       },
-      "synopsis": "",
+      "synopsis": "In April 1975 at \"Dreamland\", a Saigon bar and brothel, shortly before the end of the Vietnam War, it is Kim's first day as a bargirl. The seventeen-year-old peasant girl is hauled in by the Engineer, a French-Vietnamese hustler who owns the joint. Backstage, the girls ready themselves for the night's show, jeering at Kim's inexperience (\"Overture / Backstage Dreamland\").",
       "ageRecommendation": null,
       "previewsStartDate": null,
       "tags": [
@@ -230456,6 +230454,224 @@
       "creativeTeam": [],
       "ibdbRevivalChecked": true,
       "category": "off-west-end"
+    },
+    {
+      "id": "senior-dance-production-off-broadway-2026",
+      "title": "Senior Dance Production",
+      "slug": "senior-dance-production-off-broadway",
+      "venue": "Peter Jay Sharp Theater",
+      "openingDate": "2026-05-15",
+      "closingDate": "2026-05-16",
+      "status": "upcoming",
+      "type": "special",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "hero": "/images/shows/senior-dance-production-off-broadway-2026/hero.webp",
+        "thumbnail": "/images/shows/senior-dance-production-off-broadway-2026/thumbnail.webp",
+        "poster": "/images/shows/senior-dance-production-off-broadway-2026/poster.webp"
+      },
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows/46518-senior-dance-production",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": [],
+      "todayTixCategory": "Dance",
+      "category": "off-broadway",
+      "todaytixId": 46518,
+      "todaytixUrl": "https://www.todaytix.com/nyc/shows/46518-senior-dance-production"
+    },
+    {
+      "id": "juilliard-opera-presents-verdis-falstaff-off-broadway-2026",
+      "title": "Juilliard Opera Presents Verdi’s \"Falstaff\"",
+      "slug": "juilliard-opera-presents-verdis-falstaff-off-broadway",
+      "venue": "Peter Jay Sharp Theater",
+      "openingDate": "2026-04-22",
+      "closingDate": "2026-04-27",
+      "status": "upcoming",
+      "type": "special",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "hero": "/images/shows/juilliard-opera-presents-verdis-falstaff-off-broadway-2026/hero.webp",
+        "thumbnail": "/images/shows/juilliard-opera-presents-verdis-falstaff-off-broadway-2026/thumbnail.webp",
+        "poster": "/images/shows/juilliard-opera-presents-verdis-falstaff-off-broadway-2026/poster.webp"
+      },
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows/46541-juilliard-opera-presents-verdis-falstaff",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": [],
+      "todayTixCategory": "Opera",
+      "category": "off-broadway",
+      "todaytixId": 46541,
+      "todaytixUrl": "https://www.todaytix.com/nyc/shows/46541-juilliard-opera-presents-verdis-falstaff"
+    },
+    {
+      "id": "dracula-west-end-2026",
+      "title": "Dracula",
+      "slug": "dracula-west-end",
+      "venue": "Noël Coward Theatre",
+      "openingDate": null,
+      "closingDate": "2026-05-30",
+      "status": "announced",
+      "type": "play",
+      "isRevival": true,
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "hero": "/images/shows/dracula-west-end-2026/hero.webp",
+        "thumbnail": "/images/shows/dracula-west-end-2026/thumbnail.webp",
+        "poster": "/images/shows/dracula-west-end-2026/poster.webp"
+      },
+      "synopsis": "Deep in the desolate wilderness stands a crumbling castle; a mysterious presence lurking within. For centuries, Count Dracula has waited in hiding. Now, this phantom is coming out of the shadows. As the Count sets his sights on a fresh target, a new kind of terror begins - seductive, unstoppable and dangerously addictive.",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming",
+        "revival"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "todayTixCategory": "Plays",
+      "category": "west-end"
+    },
+    {
+      "id": "into-the-woods-west-end-2026",
+      "title": "Into The Woods",
+      "slug": "into-the-woods-west-end",
+      "venue": "TBA",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "announced",
+      "type": "musical",
+      "isRevival": true,
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "hero": "/images/shows/into-the-woods-west-end-2026/hero.webp",
+        "thumbnail": "/images/shows/into-the-woods-west-end-2026/thumbnail.webp",
+        "poster": "/images/shows/into-the-woods-west-end-2026/poster.webp"
+      },
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming",
+        "revival"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "category": "west-end"
+    },
+    {
+      "id": "toussaint-douglass-accessible-pigeon-material-off-west-end-2026",
+      "title": "Toussaint Douglass: Accessible Pigeon Material",
+      "slug": "toussaint-douglass-accessible-pigeon-material-off-west-end",
+      "venue": "Soho Theatre",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "announced",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "off-west-end"
+    },
+    {
+      "id": "lambslaughter-off-west-end-2026",
+      "title": "Lambslaughter",
+      "slug": "lambslaughter-off-west-end",
+      "venue": "King's Head Theatre",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "announced",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "off-west-end"
+    },
+    {
+      "id": "bent-through-glass-off-broadway-2026",
+      "title": "Bent Through Glass",
+      "slug": "bent-through-glass-off-broadway",
+      "venue": "TBA",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "announced",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "off-broadway"
     }
   ]
 }
