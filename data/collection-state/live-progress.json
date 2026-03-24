@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-24T19:59:09.406Z",
-  "processed": 473,
-  "failed": 42,
+  "updatedAt": "2026-03-24T20:02:42.901Z",
+  "processed": 482,
+  "failed": 43,
   "successRate": "91.8%",
   "tierBreakdown": {
-    "playwright": 391,
+    "playwright": 400,
     "amp": 12,
     "browserbase": 22,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 19,
+    "archiveToday": 20,
     "archive": 66
   },
-  "browserbaseSessions": 11,
+  "browserbaseSessions": 12,
   "recentActivity": [
-    {
-      "t": "2026-03-24T19:13:56.769Z",
-      "event": "bb-session",
-      "session": "a811f591",
-      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
-    },
-    {
-      "t": "2026-03-24T19:13:57.985Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-24T19:18:33.440Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-24T19:53:06.121Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-24T19:59:35.088Z",
+      "event": "bb-session",
+      "session": "b729383c",
+      "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jor"
+    },
+    {
+      "t": "2026-03-24T19:59:36.284Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
