@@ -1106,7 +1106,17 @@
     "glengarry-glen-ross-2025/amny--matt-windman.json",
     "glengarry-glen-ross-2025/ap--mark-kennedy.json",
     "glengarry-glen-ross-2025/slantmagazine--dan-rubins.json",
-    "glengarry-glen-ross-2025/theater-life--samuel-l-leiter.json"
+    "glengarry-glen-ross-2025/theater-life--samuel-l-leiter.json",
+    "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json",
+    "the-picture-of-dorian-gray-2025/nytimes--jesse-green.json",
+    "the-picture-of-dorian-gray-2025/vulture--sara-holdren.json",
+    "the-picture-of-dorian-gray-2025/new-york-sun--a-r-hoffman.json",
+    "the-picture-of-dorian-gray-2025/theatermania--zachary-stewart.json",
+    "the-picture-of-dorian-gray-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "the-picture-of-dorian-gray-2025/timeout--adam-feldman.json",
+    "the-picture-of-dorian-gray-2025/showbiz411--roger-friedman.json",
+    "the-picture-of-dorian-gray-2025/theater-life--samuel-l-leiter.json",
+    "the-picture-of-dorian-gray-2025/theater-scene--victor-gluck.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -2283,7 +2293,15 @@
       "glengarry-glen-ross-2025/timeout--adam-feldman.json",
       "glengarry-glen-ross-2025/ap--mark-kennedy.json",
       "glengarry-glen-ross-2025/slantmagazine--dan-rubins.json",
-      "glengarry-glen-ross-2025/theater-life--samuel-l-leiter.json"
+      "glengarry-glen-ross-2025/theater-life--samuel-l-leiter.json",
+      "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json",
+      "the-picture-of-dorian-gray-2025/new-york-sun--a-r-hoffman.json",
+      "the-picture-of-dorian-gray-2025/theatermania--zachary-stewart.json",
+      "the-picture-of-dorian-gray-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "the-picture-of-dorian-gray-2025/timeout--adam-feldman.json",
+      "the-picture-of-dorian-gray-2025/showbiz411--roger-friedman.json",
+      "the-picture-of-dorian-gray-2025/theater-life--samuel-l-leiter.json",
+      "the-picture-of-dorian-gray-2025/theater-scene--victor-gluck.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -2369,7 +2387,9 @@
       "data/review-texts/glengarry-glen-ross-2025/nypost--johnny-oleksinski.json",
       "glengarry-glen-ross-2025/nypost--johnny-oleksinski.json",
       "data/review-texts/glengarry-glen-ross-2025/amny--matt-windman.json",
-      "glengarry-glen-ross-2025/amny--matt-windman.json"
+      "glengarry-glen-ross-2025/amny--matt-windman.json",
+      "data/review-texts/the-picture-of-dorian-gray-2025/nytimes--jesse-green.json",
+      "the-picture-of-dorian-gray-2025/nytimes--jesse-green.json"
     ],
     "directCookies": [
       "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json",
@@ -2738,11 +2758,12 @@
       "the-last-five-years-2025/latimes--betsy-sharkey.json",
       "good-night-and-good-luck-2025/nydailynews--chris-jones.json",
       "good-night-and-good-luck-2025/independent--alice-saville.json",
-      "glengarry-glen-ross-2025/newyorker--helen-shaw.json"
+      "glengarry-glen-ross-2025/newyorker--helen-shaw.json",
+      "the-picture-of-dorian-gray-2025/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "glengarry-glen-ross-2025/theater-life--samuel-l-leiter.json",
+  "lastProcessed": "the-picture-of-dorian-gray-2025/theater-scene--victor-gluck.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -3147,6 +3168,17 @@
       "t": "2026-03-24T04:59:50.633Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-24T05:01:17.418Z",
+      "event": "bb-session",
+      "session": "b990ebd4",
+      "url": "https://www.nytimes.com/2025/03/27/theater/picture-of-dorian-gray-review-snook.h"
+    },
+    {
+      "t": "2026-03-24T05:01:18.888Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
