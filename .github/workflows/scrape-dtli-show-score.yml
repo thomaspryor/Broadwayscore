@@ -286,7 +286,6 @@ jobs:
       - name: Rebuild reviews.json
         if: always() && (steps.extract-dtli.outcome == 'success' || steps.extract-ss.outcome == 'success')
         env:
-          ALLOW_DRIFT: 'true'
           NODE_OPTIONS: '--max-old-space-size=7168'
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
