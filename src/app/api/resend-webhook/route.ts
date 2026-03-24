@@ -106,20 +106,21 @@ export async function POST(request: NextRequest) {
 
   const body = JSON.stringify({ email: email.toLowerCase().trim(), action: 'unsubscribe' });
   const masked = email.replace(/(.{2}).*(@.*)/, '$1***$2');
-  try {
-    await Promise.all(
-      formIds.map(id =>
-        fetch(`https://formspree.io/f/${id}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body,
-        })
-      )
-    );
+  const results = await Promise.allSettled(
+    formIds.map(id =>
+      fetch(`https://formspree.io/f/${id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body,
+      })
+    )
+  );
+  const failures = results.filter(r => r.status === 'rejected');
+  if (failures.length === 0) {
     console.log(`Resend webhook: unsubscribed ${masked} via ${type} (${formIds.length} forms)`);
-  } catch (err) {
+  } else {
     // Return 200 anyway — Resend retries on non-2xx, and we don't want a retry loop
-    console.error(`Resend webhook: Formspree submission failed for ${type}:`, err);
+    console.error(`Resend webhook: ${failures.length}/${formIds.length} Formspree submissions failed for ${type}`);
   }
 
   return NextResponse.json({ received: true });
