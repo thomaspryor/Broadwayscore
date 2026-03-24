@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-24T09:16:01.977Z",
+  "timestamp": "2026-03-24T09:33:18.998Z",
   "stats": {
-    "totalReviews": 32416,
-    "alreadyFlagged": 11051,
+    "totalReviews": 32468,
+    "alreadyFlagged": 11050,
     "dateGuardCatches": 139,
     "directorMismatch": 940,
     "tvFilmSignals": 3395,
-    "londonSignals": 1014,
+    "londonSignals": 1015,
     "offBroadwaySignals": 1011,
     "yearMismatch": 71,
-    "noPublishDate": 6777
+    "noPublishDate": 6828
   },
   "findings": [
     {
@@ -75007,6 +75007,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-west-end-2025",
+      "file": "artsdesk--gary-naylor.json",
+      "score": 48,
+      "publishDate": "2025-12-23",
+      "url": "https://theartsdesk.com/theatre/paranormal-activity-ambassadors-theatre-review-franchise-frightener-flops-stage",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
