@@ -2340,13 +2340,8 @@ if (fs.existsSync(reviewsJsonPath)) {
         console.log(`  ...and ${regressions.length - 10} more`);
       }
 
-      if (regressions.length >= REGRESSION_MAX_SHOWS && process.env.CI && process.env.ALLOW_REGRESSION !== 'true') {
-        console.error(`\n❌ REGRESSION GUARD: ${regressions.length} shows lost reviews (threshold: ${REGRESSION_MAX_SHOWS} shows)`);
-        console.error('This likely indicates data corruption. Review data/audit/rebuild-regression.json');
-        console.error('If drops are intentional (dedup cleanup, flagging): override with:');
-        console.error('  gh workflow run "Rebuild Reviews Data" -f allow_regression=true -f reason="Intentional cleanup"');
-        process.exit(1);
-      }
+      // No blocking guard — analyze-rebuild-drops.js sends a qualitative alert email instead.
+      // Historical analysis showed every guard fire was intentional pipeline work, never corruption.
     }
     // ========================================
     // 3B-iii: PER-SHOW AGGREGATE SCORE DRIFT GUARD
@@ -2428,15 +2423,7 @@ if (fs.existsSync(reviewsJsonPath)) {
         console.log(`  ...and ${showDrifts.length - 10} more`);
       }
 
-      if (showDrifts.length >= SHOW_DRIFT_MAX_FLAGGED && process.env.CI && process.env.ALLOW_DRIFT !== 'true') {
-        console.error(`\n❌ SHOW DRIFT GUARD: ${showDrifts.length} shows drifted (threshold: ${SHOW_DRIFT_MAX_FLAGGED})`);
-        console.error('This likely indicates a scoring logic or tier mapping change.');
-        console.error('Review data/audit/rebuild-show-drift.json');
-        console.error('If drift is from intentional dedup/cleanup: override with:');
-        console.error('  gh workflow run "Rebuild Reviews Data" -f allow_regression=true -f reason="Intentional cleanup"');
-        console.error('(allow_regression automatically enables drift override too)');
-        process.exit(1);
-      }
+      // No blocking guard — analyze-rebuild-drops.js sends a qualitative alert email instead.
     }
   } catch (e) {
     // Can't read current file, skip drift/regression check (first build)

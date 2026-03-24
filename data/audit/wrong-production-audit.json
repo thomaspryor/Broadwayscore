@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-24T04:03:57.128Z",
+  "timestamp": "2026-03-24T04:40:51.188Z",
   "stats": {
-    "totalReviews": 32387,
-    "alreadyFlagged": 11033,
+    "totalReviews": 32389,
+    "alreadyFlagged": 11034,
     "dateGuardCatches": 139,
     "directorMismatch": 939,
     "tvFilmSignals": 3401,
-    "londonSignals": 1017,
+    "londonSignals": 1018,
     "offBroadwaySignals": 1007,
     "yearMismatch": 71,
-    "noPublishDate": 6800
+    "noPublishDate": 6801
   },
   "findings": [
     {
@@ -67555,7 +67555,22 @@
     },
     {
       "showId": "giant-2026",
+      "file": "amny--unknown.json",
+      "score": 77,
+      "publishDate": "2026-03-23",
+      "url": "https://www.amny.com/entertainment/giant-performance-divisive-play/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "giant-2026",
       "file": "new-york-sun--unknown.json",
+      "score": 91,
       "publishDate": "2026-03-24",
       "url": "https://www.nysun.com/article/a-new-play-about-roald-dahl-and-antisemitism-marks-a-giant-step-for-this-broadway-season",
       "findings": [
