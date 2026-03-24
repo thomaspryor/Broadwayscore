@@ -1140,7 +1140,16 @@
     "purpose-2025/theater-life--samuel-l-leiter.json",
     "redwood-2025/broadwaynews--brittani-samuel.json",
     "redwood-2025/deadline--greg-evans.json",
-    "redwood-2025/timeout--adam-feldman.json"
+    "redwood-2025/timeout--adam-feldman.json",
+    "redwood-2025/theater-scene--joseph-pisano.json",
+    "english-2025/newyorker--helen-shaw.json",
+    "english-2025/broadwaynews--brittani-samuel.json",
+    "english-2025/theatermania--zachary-stewart.json",
+    "english-2025/timeout--adam-feldman.json",
+    "all-in-comedy-about-love-2024/broadwaynews--brittani-samuel.json",
+    "all-in-comedy-about-love-2024/new-york-sun--elysa-gardner.json",
+    "all-in-comedy-about-love-2024/theatermania--pete-hempstead.json",
+    "all-in-comedy-about-love-2024/timeout--adam-feldman.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -1472,7 +1481,8 @@
     "othello-2025/vulture--sara-holdren.json",
     "purpose-2025/broadwaynews--brittani-samuel.json",
     "redwood-2025/gmanetwork--stuart-santiago.json",
-    "redwood-2025/juiceph--wanggo-gallaga.json"
+    "redwood-2025/juiceph--wanggo-gallaga.json",
+    "all-in-comedy-about-love-2024/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2347,7 +2357,15 @@
       "purpose-2025/financialtimes--rhoda-feng.json",
       "purpose-2025/theater-life--samuel-l-leiter.json",
       "redwood-2025/broadwaynews--brittani-samuel.json",
-      "redwood-2025/timeout--adam-feldman.json"
+      "redwood-2025/timeout--adam-feldman.json",
+      "redwood-2025/theater-scene--joseph-pisano.json",
+      "english-2025/broadwaynews--brittani-samuel.json",
+      "english-2025/theatermania--zachary-stewart.json",
+      "english-2025/timeout--adam-feldman.json",
+      "all-in-comedy-about-love-2024/broadwaynews--brittani-samuel.json",
+      "all-in-comedy-about-love-2024/new-york-sun--elysa-gardner.json",
+      "all-in-comedy-about-love-2024/theatermania--pete-hempstead.json",
+      "all-in-comedy-about-love-2024/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -2822,11 +2840,12 @@
       "the-picture-of-dorian-gray-2025/vulture--sara-holdren.json",
       "the-picture-of-dorian-gray-2025/usatoday--patrick-ryan.json",
       "othello-2025/vulture--david-fox.json",
-      "othello-2025/chicagotribune--unknown.json"
+      "othello-2025/chicagotribune--unknown.json",
+      "english-2025/newyorker--helen-shaw.json"
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "redwood-2025/juiceph--wanggo-gallaga.json",
+  "lastProcessed": "all-in-comedy-about-love-2024/wsj--charles-isherwood.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -3297,6 +3316,17 @@
       "t": "2026-03-24T05:15:12.825Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-24T05:17:42.502Z",
+      "event": "bb-session",
+      "session": "5a4e9b1e",
+      "url": "https://www.wsj.com/articles/all-in-review-love-laughs-and-absurdity-on-broadway"
+    },
+    {
+      "t": "2026-03-24T05:17:43.829Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
