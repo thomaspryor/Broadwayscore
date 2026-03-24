@@ -38,6 +38,11 @@ on:
         required: false
         type: string
         default: ''
+      expected_recipients:
+        description: 'REQUIRED when send_to_all=true: expected subscriber count. Broadcast aborts if API count exceeds this. Prevents accidental large sends.'
+        required: false
+        type: number
+        default: 0
 
 permissions:
   contents: write
@@ -216,6 +221,10 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          # Safety gate: abort if API contact count exceeds this value.
+          # Always set when send_to_all=true to force explicit recipient confirmation.
+          # 0 = no cap (preview-only runs don't need this guard).
+          BROADCAST_MAX_RECIPIENTS: ${{ inputs.expected_recipients || 0 }}
         run: |
           # Send modes:
           # - workflow_run (scoring completed) → send to all (night-of delivery)
@@ -223,6 +232,13 @@ jobs:
           # - cron / workflow_dispatch without send_to_all → preview to owner only
           LOOKBACK=${{ inputs.lookback_days || 2 }}
           SEND_TO_FLAG=""
+
+          # SAFETY: When sending to all, require expected_recipients to be set
+          if [ "${{ inputs.send_to_all }}" = "true" ] && [ "${{ inputs.expected_recipients || 0 }}" = "0" ]; then
+            echo "::error::SAFETY ABORT: send_to_all=true requires expected_recipients to be set."
+            echo "::error::Set expected_recipients to your approximate subscriber count to confirm you know how many people will receive this."
+            exit 1
+          fi
 
           # Detect which cron run this is for approval email dedup
           CURRENT_HOUR=$(date -u +%H)
