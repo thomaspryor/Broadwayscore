@@ -5,7 +5,12 @@
     "giant-2026/chicagotribune--chris-jones.json",
     "giant-2026/nysr--david-finkle.json",
     "giant-2026/nysr--frank-scheck.json",
-    "giant-2026/new-york-sun--unknown.json"
+    "giant-2026/new-york-sun--unknown.json",
+    "giant-2026/nydailynews--unknown.json",
+    "giant-2026/nypost--unknown.json",
+    "giant-2026/theatermania--unknown.json",
+    "giant-2026/forward--unknown.json",
+    "giant-2026/amny--unknown.json"
   ],
   "failed": [
     "giant-2026/nytimes--helen-shaw.json",
@@ -21,10 +26,18 @@
       "giant-2026/chicagotribune--chris-jones.json",
       "giant-2026/nysr--david-finkle.json",
       "giant-2026/nysr--frank-scheck.json",
-      "giant-2026/new-york-sun--unknown.json"
+      "giant-2026/new-york-sun--unknown.json",
+      "giant-2026/nydailynews--unknown.json",
+      "giant-2026/theatermania--unknown.json",
+      "giant-2026/forward--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/giant-2026/nypost--unknown.json",
+      "giant-2026/nypost--unknown.json",
+      "data/review-texts/giant-2026/amny--unknown.json",
+      "giant-2026/amny--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -36,7 +49,7 @@
     "archive": []
   },
   "startTime": "2026-03-24T05:04:56.976Z",
-  "lastProcessed": "giant-2026/new-york-sun--unknown.json",
+  "lastProcessed": "giant-2026/amny--unknown.json",
   "log": [
     {
       "t": "2026-03-24T05:05:28.952Z",
@@ -48,6 +61,28 @@
       "t": "2026-03-24T05:05:29.982Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-24T05:14:00.130Z",
+      "event": "bb-session",
+      "session": "729f7c70",
+      "url": "https://nypost.com/2026/03/23/entertainment/giant-review-john-lithgow-is-superb-"
+    },
+    {
+      "t": "2026-03-24T05:14:01.136Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-24T05:14:33.511Z",
+      "event": "bb-session",
+      "session": "302086e5",
+      "url": "https://www.amny.com/entertainment/giant-performance-divisive-play/"
+    },
+    {
+      "t": "2026-03-24T05:14:34.493Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
