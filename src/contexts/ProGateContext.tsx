@@ -19,7 +19,9 @@ import { emailCaptureConfig } from '@/config/email-capture';
 const EmailCaptureModal = dynamic(() => import('@/components/EmailCaptureModal'), { ssr: false });
 
 const STORAGE_KEY = 'bsc_user_data';
-const SUBSCRIBED_KEY = 'bsc_email_subscribed';
+const SUBSCRIBED_KEY = 'bsc_email_subscribed'; // Legacy pre-market-split key (Broadway)
+const SUBSCRIBED_BROADWAY_KEY = 'bsc_email_subscribed_broadway';
+const SUBSCRIBED_WESTEND_KEY = 'bsc_email_subscribed_west-end';
 const PAGE_VIEW_KEY = 'bsc_page_views';
 const LAST_VISIT_KEY = 'bsc_last_visit';
 
@@ -66,13 +68,17 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
     setIsClient(true);
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      const loopsSubscribed = localStorage.getItem(SUBSCRIBED_KEY) === 'true';
+      // Check all subscriber keys: legacy (pre-split), broadway, west-end
+      const formspreeSubscribed =
+        localStorage.getItem(SUBSCRIBED_KEY) === 'true' ||
+        localStorage.getItem(SUBSCRIBED_BROADWAY_KEY) === 'true' ||
+        localStorage.getItem(SUBSCRIBED_WESTEND_KEY) === 'true';
 
       if (saved) {
         const parsed = JSON.parse(saved) as CapturedUserData;
         setUserData(parsed);
         setHasEmail(true);
-      } else if (loopsSubscribed) {
+      } else if (formspreeSubscribed) {
         // User subscribed via Formspree (header, footer, homepage banner, show follow)
         // Treat as having email so we don't nag them again
         setHasEmail(true);
@@ -83,7 +89,7 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
       const now = Date.now();
       if (lastVisit) {
         const daysSinceVisit = (now - parseInt(lastVisit, 10)) / (1000 * 60 * 60 * 24);
-        if (daysSinceVisit > 1 && !saved && !loopsSubscribed) {
+        if (daysSinceVisit > 1 && !saved && !formspreeSubscribed) {
           setIsReturnVisitor(true);
         }
       }
