@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-24T19:39:41.139Z",
+  "timestamp": "2026-03-24T19:58:41.069Z",
   "stats": {
     "totalReviews": 32470,
-    "alreadyFlagged": 11060,
+    "alreadyFlagged": 11061,
     "dateGuardCatches": 139,
     "directorMismatch": 947,
     "tvFilmSignals": 3406,
-    "londonSignals": 1027,
+    "londonSignals": 1029,
     "offBroadwaySignals": 1011,
     "yearMismatch": 71,
     "noPublishDate": 6815
@@ -7928,20 +7928,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "buena-vista-social-club-2025",
-      "file": "billboard--sigal-ratner-arias.json",
-      "score": null,
-      "publishDate": "2025-03-24",
-      "url": "https://www.billboard.com/music/latin/buena-vista-social-club-broadway-omara-actresses-1235929491/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -36472,6 +36458,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "file": "the-express--neil-norman.json",
+      "score": 91,
+      "publishDate": null,
+      "url": "https://www.express.co.uk/entertainment/theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -73949,6 +73954,19 @@
       "score": 89,
       "publishDate": "October 20th, 2022",
       "url": "https://www.allthatdazzles.co.uk/post/review-my-neighbour-totoro-barbican",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "broadwayworld--unknown.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/westend/article/Review-MY-NEIGHBOUR-TOTORO-Barbican-Theatre-20221019",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
