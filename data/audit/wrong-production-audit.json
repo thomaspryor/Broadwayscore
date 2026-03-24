@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-24T06:16:13.682Z",
+  "timestamp": "2026-03-24T06:25:26.318Z",
   "stats": {
     "totalReviews": 32395,
-    "alreadyFlagged": 11044,
+    "alreadyFlagged": 11049,
     "dateGuardCatches": 139,
     "directorMismatch": 940,
-    "tvFilmSignals": 3399,
-    "londonSignals": 1018,
-    "offBroadwaySignals": 1009,
+    "tvFilmSignals": 3395,
+    "londonSignals": 1016,
+    "offBroadwaySignals": 1011,
     "yearMismatch": 71,
-    "noPublishDate": 6776
+    "noPublishDate": 6767
   },
   "findings": [
     {
@@ -2167,20 +2167,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
-      "file": "nysr--roma-torre.json",
-      "score": 80,
-      "publishDate": "November 11, 2024",
-      "url": "https://nystagereview.com/2024/11/11/a-wonderful-world-youre-lookin-swell-satchmo/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -41339,7 +41325,7 @@
       "showId": "romeo-juliet-2024",
       "file": "theatermania--pete-hempstead.json",
       "score": 50,
-      "publishDate": null,
+      "publishDate": "2024-10-25",
       "url": "https://www.theatermania.com/news/review-kit-connor-flexes-and-rachel-zegler-belts-in-a-lit-romeo-and-juliet_1753873/",
       "findings": [
         {
@@ -46950,20 +46936,6 @@
     },
     {
       "showId": "tammy-faye-2024",
-      "file": "ap--mark-kennedy.json",
-      "score": 74,
-      "publishDate": "2024-10-15",
-      "url": "https://apnews.com/article/elton-john-tammy-faye-bakker-messner-broadway-21646ba21cc1a6a90f816384267f70c4",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "tammy-faye-2024",
       "file": "broadwaynews--brittani-samuel.json",
       "score": 42,
       "publishDate": "November 15, 2024",
@@ -46980,7 +46952,7 @@
       "showId": "tammy-faye-2024",
       "file": "broadwayworld--cindy-marcolina.json",
       "score": 38,
-      "publishDate": null,
+      "publishDate": "2024-11-14",
       "url": "https://www.broadwayworld.com/article/Review-Roundup-TAMMY-FAYE-Opens-On-Broadway-20241114",
       "findings": [
         {
@@ -47039,25 +47011,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "tammy-faye-2024",
-      "file": "independent--jessie-thompson.json",
-      "score": 72,
-      "publishDate": null,
-      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/tammy-faye-show-review-almeida-b2211640.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"on screen\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -47353,7 +47306,7 @@
       "showId": "tammy-faye-2024",
       "file": "timeout--andrzej-lukowski.json",
       "score": 61,
-      "publishDate": null,
+      "publishDate": "2024-11-14",
       "url": "https://www.timeout.com/newyork/theater/tammy-faye-broadway-musical-review-elton-john-tammy-faye-bakker",
       "findings": [
         {
@@ -47437,7 +47390,7 @@
       "showId": "tammy-faye-2024",
       "file": "village-voice--michael-musto.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2024-11-15",
       "url": "https://www.villagevoice.com/review-the-eyes-of-tammy-faye-sparkle-and-cry-through-her-rise-and-fall/",
       "findings": [
         {
@@ -47453,20 +47406,6 @@
       "score": 44,
       "publishDate": "November 14, 2024",
       "url": "https://www.vulture.com/article/theater-review-broadway-musical-tammy-faye.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "tammy-faye-2024",
-      "file": "whatsonstage--sarah-crompton.json",
-      "score": 78,
-      "publishDate": null,
-      "url": "https://www.whatsonstage.com/london-theatre/news/tammy-faye-review-elton-john-jake-shears-and-james_57692.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -75859,6 +75798,20 @@
     },
     {
       "showId": "romeo-juliet-2024",
+      "file": "thewrap--robert-hofler.json",
+      "score": 76,
+      "publishDate": "2024-10-25",
+      "url": "https://www.thewrap.com/romeo-and-juliet-broadway-review-rachel-zegler-kit-connor/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-juliet-2024",
       "file": "vulture--helen-shaw.json",
       "score": 19,
       "publishDate": "October 25, 2024",
@@ -78654,10 +78607,10 @@
     },
     {
       "showId": "tammy-faye-2024",
-      "file": "hollywood-reporter--angie-han.json",
-      "score": 58,
-      "publishDate": "November 15, 2024",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tammy-faye-musical-to-close-on-broadway-in-december-1236066359/",
+      "file": "new-york-sun--elysa-gardner.json",
+      "score": 50,
+      "publishDate": "November 14, 2024",
+      "url": "https://www.nysun.com/article/with-a-big-assist-from-elton-john-tammy-faye-captures-the-televangelism-era-in-all-its-messy-glory",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -78668,15 +78621,15 @@
     },
     {
       "showId": "tammy-faye-2024",
-      "file": "new-york-sun--elysa-gardner.json",
-      "score": 50,
-      "publishDate": "November 14, 2024",
-      "url": "https://www.nysun.com/article/with-a-big-assist-from-elton-john-tammy-faye-captures-the-televangelism-era-in-all-its-messy-glory",
+      "file": "theatre-reviews-limited--david-roberts.json",
+      "score": 40,
+      "publishDate": "2024-11-19",
+      "url": "https://www.theatrereviews.com/broadway-review-tammy-faye-at-the-palace-theatre-currently-on/",
       "findings": [
         {
-          "type": "LONDON_SIGNAL",
+          "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
+          "detail": "Review mentions off-Broadway venue: \"barrow street\""
         }
       ]
     },
