@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-03-24T04:26:10.592Z",
+  "runDate": "2026-03-24T05:14:52.922Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 1000,
+    "maxReviews": 300,
     "priority": "all",
     "showFilter": "giant-2026",
     "aggressive": false,
@@ -11,15 +11,15 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
-    "failed": 3,
+    "processed": 11,
+    "failed": 4,
     "skipped": 0,
-    "successRate": "70.0%"
+    "successRate": "73.3%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 9,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
@@ -27,45 +27,55 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 7,
-    "tier1Success": 4,
+    "tier1Attempts": 13,
+    "tier1Success": 9,
     "ampAttempts": 1,
     "ampSuccess": 0,
     "tier1_5Attempts": 3,
-    "tier1_5Success": 3,
-    "tier2Attempts": 3,
+    "tier1_5Success": 2,
+    "tier2Attempts": 5,
     "tier2Success": 0,
-    "tier3Attempts": 4,
+    "tier3Attempts": 6,
     "tier3Success": 0,
-    "tier3_6Attempts": 3,
+    "tier3_6Attempts": 4,
     "tier3_6Success": 3,
-    "tier4Attempts": 4,
+    "tier4Attempts": 5,
     "tier4Success": 0,
-    "totalFailed": 3,
+    "totalFailed": 4,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 3,
-    "browserbaseMinutesUsed": 0.6,
-    "urlDiscoveryAttempts": 1,
+    "browserbaseMinutesUsed": 1,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "giant-2026/amny--unknown.json",
-    "giant-2026/variety--unknown.json",
+    "giant-2026/nyt-theater--jonathan-mandell.json",
+    "giant-2026/timeout--unknown.json",
+    "giant-2026/chicagotribune--chris-jones.json",
+    "giant-2026/nysr--david-finkle.json",
+    "giant-2026/nysr--frank-scheck.json",
     "giant-2026/new-york-sun--unknown.json",
     "giant-2026/nydailynews--unknown.json",
     "giant-2026/nypost--unknown.json",
     "giant-2026/theatermania--unknown.json",
-    "giant-2026/forward--unknown.json"
+    "giant-2026/forward--unknown.json",
+    "giant-2026/amny--unknown.json"
   ],
   "failed": [
+    "giant-2026/nytimes--helen-shaw.json",
     "giant-2026/vulture--unknown.json",
-    "giant-2026/timeout--unknown.json",
+    "giant-2026/cititour--brian-scott-lipton.json",
     "giant-2026/talkinbroadway--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
+      "giant-2026/nyt-theater--jonathan-mandell.json",
+      "giant-2026/timeout--unknown.json",
+      "giant-2026/chicagotribune--chris-jones.json",
+      "giant-2026/nysr--david-finkle.json",
+      "giant-2026/nysr--frank-scheck.json",
       "giant-2026/new-york-sun--unknown.json",
       "giant-2026/nydailynews--unknown.json",
       "giant-2026/theatermania--unknown.json",
@@ -73,23 +83,29 @@
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/giant-2026/amny--unknown.json",
-      "giant-2026/amny--unknown.json",
-      "data/review-texts/giant-2026/variety--unknown.json",
-      "giant-2026/variety--unknown.json",
       "data/review-texts/giant-2026/nypost--unknown.json",
-      "giant-2026/nypost--unknown.json"
+      "giant-2026/nypost--unknown.json",
+      "data/review-texts/giant-2026/amny--unknown.json",
+      "giant-2026/amny--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/giant-2026/vulture--unknown.json",
-      "data/review-texts/giant-2026/timeout--unknown.json",
+      "data/review-texts/giant-2026/nytimes--helen-shaw.json",
+      "data/review-texts/giant-2026/cititour--brian-scott-lipton.json",
       "data/review-texts/giant-2026/talkinbroadway--unknown.json"
     ],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Vulture": {
+      "count": 1,
+      "domain": "vulture.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
