@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-24T19:39:41.139Z",
+  "timestamp": "2026-03-24T20:07:59.535Z",
   "stats": {
     "totalReviews": 32470,
-    "alreadyFlagged": 11060,
+    "alreadyFlagged": 11062,
     "dateGuardCatches": 139,
     "directorMismatch": 947,
-    "tvFilmSignals": 3406,
-    "londonSignals": 1027,
+    "tvFilmSignals": 3407,
+    "londonSignals": 1029,
     "offBroadwaySignals": 1011,
     "yearMismatch": 71,
-    "noPublishDate": 6815
+    "noPublishDate": 6813
   },
   "findings": [
     {
@@ -7928,20 +7928,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "buena-vista-social-club-2025",
-      "file": "billboard--sigal-ratner-arias.json",
-      "score": null,
-      "publishDate": "2025-03-24",
-      "url": "https://www.billboard.com/music/latin/buena-vista-social-club-broadway-omara-actresses-1235929491/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -36476,6 +36462,25 @@
       ]
     },
     {
+      "showId": "oliver-west-end-2024",
+      "file": "the-express--neil-norman.json",
+      "score": 91,
+      "publishDate": null,
+      "url": "https://www.express.co.uk/entertainment/theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "on-a-clear-day-you-can-see-forever-2011",
       "file": "variety--steven-suskin.json",
       "score": null,
@@ -57815,6 +57820,25 @@
     },
     {
       "showId": "titanique-west-end-2024",
+      "file": "the-express--neil-norman.json",
+      "score": 79,
+      "publishDate": null,
+      "url": "https://www.express.co.uk/entertainment/theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "titanique-west-end-2024",
       "file": "timeout--andrzej-lukowski.json",
       "score": 75,
       "publishDate": "2025-01-09",
@@ -57823,7 +57847,7 @@
         {
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions year 2026 (5x) more than 2024 (0x). 2026 matches production: titanique-2026"
+          "detail": "Mentions year 2026 (4x) more than 2024 (0x). 2026 matches production: titanique-2026"
         }
       ]
     },
