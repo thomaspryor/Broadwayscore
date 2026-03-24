@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-03-24T10:32:39.616Z",
+  "timestamp": "2026-03-24T10:41:16.674Z",
   "stats": {
     "totalReviews": 32476,
     "alreadyFlagged": 11057,
     "dateGuardCatches": 139,
     "directorMismatch": 940,
-    "tvFilmSignals": 3395,
+    "tvFilmSignals": 3396,
     "londonSignals": 1017,
     "offBroadwaySignals": 1011,
     "yearMismatch": 71,
@@ -41908,6 +41908,25 @@
       ]
     },
     {
+      "showId": "shadowlands-west-end-2026",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 73,
+      "publishDate": "2025-12-01",
+      "url": "https://www.whatsonstage.com/news/shadowlands-with-hugh-bonneville-and-maggie-siff-in-the-west-end-review_1712184/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 66d before show (2025-12-01 vs 2026-02-05)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
       "showId": "she-loves-me-2016",
       "file": "andygram--andrew-c-mcgibbon.json",
       "score": 92,
@@ -76169,20 +76188,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "shadowlands-west-end-2026",
-      "file": "whatsonstage--sarah-crompton.json",
-      "score": 73,
-      "publishDate": "2025-12-01",
-      "url": "https://www.whatsonstage.com/news/shadowlands-with-hugh-bonneville-and-maggie-siff-in-the-west-end-review_1712184/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 66d before show (2025-12-01 vs 2026-02-05)"
         }
       ]
     },
