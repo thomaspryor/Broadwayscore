@@ -420,7 +420,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Runs:** Weekly on Sundays at 1 PM UTC (after existing scrapers), or manually
 - **Does:** Scrapes BWW `/reviews/` pages (1-10 scores, review URLs, excerpts) and BWW Review Roundup articles (thumb up/meh/down, review URLs, excerpts), then rebuilds `reviews.json`
 - **Options:** `type` (all/reviews/roundup), `shows` (comma-separated show IDs), `limit` (default 200), `force` (override cache)
-- **Requires:** SCRAPINGBEE_API_KEY
+- **Requires:** BRIGHTDATA_TOKEN (primary), SCRAPINGBEE_API_KEY (fallback)
 - **Script:** `scripts/scrape-bww-reviews.js`
 - **Three BWW formats handled:** (1) `/reviews/` pages with 1-10 scores, (2) new-format roundups (~2023+) with thumb images, (3) old-format roundups (pre-2023) with plain text
 - **Checkpointing:** Every 25 shows in CI with git push retry
