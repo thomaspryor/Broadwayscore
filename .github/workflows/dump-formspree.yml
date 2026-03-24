@@ -31,7 +31,7 @@ jobs:
           (async () => {
             let all = [], offset = 0;
             while (true) {
-              const r = await fetch('https://api.formspree.io/api/0/forms/' + process.env.FORMSPREE_SUBSCRIBER_FORM_ID + '/submissions?limit=100&offset=' + offset);
+              const r = await fetch('https://formspree.io/api/0/forms/' + process.env.FORMSPREE_SUBSCRIBER_FORM_ID + '/submissions?limit=100&offset=' + offset);
               const subs = r.submissions || r || [];
               if (!subs.length) break;
               all = all.concat(subs);
