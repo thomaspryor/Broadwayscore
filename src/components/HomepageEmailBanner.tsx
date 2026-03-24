@@ -2,18 +2,11 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useFormspreeCapture } from '@/hooks/useFormspreeCapture';
+import { isFormspreeSubscribed } from '@/hooks/useFormspreeSubscribed';
 import { emailCaptureConfig } from '@/config/email-capture';
 
 const VISIT_COUNT_KEY = 'bsc_visit_count';
 const BANNER_DISMISSED_KEY = 'bsc_homepage_banner_dismissed';
-// Check all market subscriber keys to avoid re-showing banner to existing subscribers
-function isAnyMarketSubscribed(): boolean {
-  return (
-    localStorage.getItem('bsc_email_subscribed') === 'true' ||
-    localStorage.getItem('bsc_email_subscribed_broadway') === 'true' ||
-    localStorage.getItem('bsc_email_subscribed_west-end') === 'true'
-  );
-}
 const { visitThreshold, scrollTriggerPx, cooldownDays } = emailCaptureConfig.homepageBanner;
 
 export default function HomepageEmailBanner() {
@@ -28,7 +21,7 @@ export default function HomepageEmailBanner() {
   // Track visit count and check eligibility
   useEffect(() => {
     try {
-      if (isAnyMarketSubscribed()) return;
+      if (isFormspreeSubscribed()) return;
 
       // Increment visit count
       const count = parseInt(localStorage.getItem(VISIT_COUNT_KEY) || '0', 10) + 1;

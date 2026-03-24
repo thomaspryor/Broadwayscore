@@ -2,18 +2,11 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useFormspreeCapture } from '@/hooks/useFormspreeCapture';
+import { isFormspreeSubscribed } from '@/hooks/useFormspreeSubscribed';
 import { emailCaptureConfig } from '@/config/email-capture';
 
 const DISMISSED_PREFIX = 'bsc_show_follow_dismissed_';
 const FOLLOW_PREFIX = 'bsc_show_follow_subscribed_';
-// Check all market subscriber keys to avoid re-showing banner to existing subscribers
-function isAnyMarketSubscribed(): boolean {
-  return (
-    localStorage.getItem('bsc_email_subscribed') === 'true' ||
-    localStorage.getItem('bsc_email_subscribed_broadway') === 'true' ||
-    localStorage.getItem('bsc_email_subscribed_west-end') === 'true'
-  );
-}
 
 interface ShowFollowBannerProps {
   showId: string;
@@ -47,7 +40,7 @@ export default function ShowFollowBanner({ showId, showTitle }: ShowFollowBanner
         return;
       }
       const wasDismissed = localStorage.getItem(`${DISMISSED_PREFIX}${showId}`);
-      if (!wasDismissed && !isAnyMarketSubscribed()) {
+      if (!wasDismissed && !isFormspreeSubscribed()) {
         setDismissed(false);
       }
     } catch { /* noop */ }
