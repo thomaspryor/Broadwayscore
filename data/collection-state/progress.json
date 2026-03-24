@@ -397,7 +397,16 @@
     "buena-vista-social-club-2025/timeout--adam-feldman.json",
     "buena-vista-social-club-2025/amny--matt-windman.json",
     "buena-vista-social-club-2025/artsfuse--christopher-caggiano.json",
-    "buena-vista-social-club-2025/chicagotribune--chris-jones.json"
+    "buena-vista-social-club-2025/chicagotribune--chris-jones.json",
+    "buena-vista-social-club-2025/frontmezzjunkies--unknown.json",
+    "buena-vista-social-club-2025/latimes--nicholas-ducassi.json",
+    "buena-vista-social-club-2025/stageandcinema--tony-frankel.json",
+    "buena-vista-social-club-2025/washpost--naveen-kumar.json",
+    "my-neighbour-totoro-west-end-2025/standard--unknown.json",
+    "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+    "my-neighbour-totoro-west-end-2025/guardian--arifa-akbar.json",
+    "my-neighbour-totoro-west-end-2025/timeout--andrzej-lukowski.json",
+    "my-neighbour-totoro-west-end-2025/timeout-london--andrzej-lukowski.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -451,7 +460,8 @@
     "ragtime-2025/bloomberg--chris-rovzar.json",
     "operation-mincemeat-2025/usatoday--unknown.json",
     "buena-vista-social-club-2025/cititour--brian-scott-lipton.json",
-    "buena-vista-social-club-2025/billboard--sigal-ratner-arias.json"
+    "buena-vista-social-club-2025/billboard--sigal-ratner-arias.json",
+    "my-neighbour-totoro-west-end-2025/broadwayworld--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -778,7 +788,15 @@
       "operation-mincemeat-2025/frontmezzjunkies--unknown.json",
       "buena-vista-social-club-2025/timeout--adam-feldman.json",
       "buena-vista-social-club-2025/artsfuse--christopher-caggiano.json",
-      "buena-vista-social-club-2025/chicagotribune--chris-jones.json"
+      "buena-vista-social-club-2025/chicagotribune--chris-jones.json",
+      "buena-vista-social-club-2025/frontmezzjunkies--unknown.json",
+      "buena-vista-social-club-2025/latimes--nicholas-ducassi.json",
+      "buena-vista-social-club-2025/stageandcinema--tony-frankel.json",
+      "buena-vista-social-club-2025/washpost--naveen-kumar.json",
+      "my-neighbour-totoro-west-end-2025/standard--unknown.json",
+      "my-neighbour-totoro-west-end-2025/guardian--arifa-akbar.json",
+      "my-neighbour-totoro-west-end-2025/timeout--andrzej-lukowski.json",
+      "my-neighbour-totoro-west-end-2025/timeout-london--andrzej-lukowski.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -808,7 +826,9 @@
       "data/review-texts/giant-2026/nypost--unknown.json",
       "giant-2026/nypost--unknown.json",
       "data/review-texts/buena-vista-social-club-2025/amny--matt-windman.json",
-      "buena-vista-social-club-2025/amny--matt-windman.json"
+      "buena-vista-social-club-2025/amny--matt-windman.json",
+      "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json"
     ],
     "directCookies": [
       "giant-2026/nypost--unknown.json",
@@ -831,7 +851,8 @@
       "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/vulture--sara-holdren.json",
       "data/review-texts/operation-mincemeat-2025/usatoday--unknown.json",
       "data/review-texts/buena-vista-social-club-2025/cititour--brian-scott-lipton.json",
-      "data/review-texts/buena-vista-social-club-2025/billboard--sigal-ratner-arias.json"
+      "data/review-texts/buena-vista-social-club-2025/billboard--sigal-ratner-arias.json",
+      "data/review-texts/my-neighbour-totoro-west-end-2025/broadwayworld--unknown.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -902,7 +923,7 @@
     ]
   },
   "startTime": "2026-03-24T10:12:58.341Z",
-  "lastProcessed": "buena-vista-social-club-2025/chicagotribune--chris-jones.json",
+  "lastProcessed": "my-neighbour-totoro-west-end-2025/timeout-london--andrzej-lukowski.json",
   "log": [
     {
       "t": "2026-03-24T12:15:43.038Z",
@@ -1024,6 +1045,17 @@
       "t": "2026-03-24T13:09:22.805Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-24T13:17:05.776Z",
+      "event": "bb-session",
+      "session": "43593c61",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
+    },
+    {
+      "t": "2026-03-24T13:17:06.893Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
