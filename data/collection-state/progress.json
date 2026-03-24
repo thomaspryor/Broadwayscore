@@ -300,7 +300,16 @@
     "paddington-the-musical-west-end-2025/observer--katherine-cowles.json",
     "paddington-the-musical-west-end-2025/timeout--andrzej-lukowski.json",
     "paddington-the-musical-west-end-2025/financialtimes--sarah-hemming.json",
-    "paddington-the-musical-west-end-2025/london-box-office--stuart-king.json"
+    "paddington-the-musical-west-end-2025/london-box-office--stuart-king.json",
+    "paddington-the-musical-west-end-2025/london-theatre--chris-omaweng.json",
+    "paddington-the-musical-west-end-2025/south-london--michael-holland.json",
+    "paddington-the-musical-west-end-2025/standard--tim-bano.json",
+    "paddington-the-musical-west-end-2025/telegraph--dominic-cavendish.json",
+    "paddington-the-musical-west-end-2025/times-uk--unknown.json",
+    "paddington-the-musical-west-end-2025/whatsonstage--sarah-crompton.json",
+    "ragtime-2025/nyt-theater--unknown.json",
+    "ragtime-2025/timeout--adam-feldman.json",
+    "ragtime-2025/wsj--charles-isherwood.json"
   ],
   "failed": [
     "giant-2026/cititour--brian-scott-lipton.json",
@@ -326,7 +335,8 @@
     "into-the-woods-west-end-2025/broadwayworld--aliya-al-hassan.json",
     "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json",
     "two-strangers-bway-2025/guardian--unknown.json",
-    "all-my-sons-west-end-2025/broadwayworld--unknown.json"
+    "all-my-sons-west-end-2025/broadwayworld--unknown.json",
+    "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -596,7 +606,14 @@
       "paddington-the-musical-west-end-2025/observer--katherine-cowles.json",
       "paddington-the-musical-west-end-2025/timeout--andrzej-lukowski.json",
       "paddington-the-musical-west-end-2025/financialtimes--sarah-hemming.json",
-      "paddington-the-musical-west-end-2025/london-box-office--stuart-king.json"
+      "paddington-the-musical-west-end-2025/london-box-office--stuart-king.json",
+      "paddington-the-musical-west-end-2025/london-theatre--chris-omaweng.json",
+      "paddington-the-musical-west-end-2025/south-london--michael-holland.json",
+      "paddington-the-musical-west-end-2025/standard--tim-bano.json",
+      "paddington-the-musical-west-end-2025/times-uk--unknown.json",
+      "paddington-the-musical-west-end-2025/whatsonstage--sarah-crompton.json",
+      "ragtime-2025/nyt-theater--unknown.json",
+      "ragtime-2025/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
@@ -663,11 +680,13 @@
       "into-the-woods-west-end-2025/artsdesk--unknown.json",
       "two-strangers-bway-2025/chicagotribune--unknown.json",
       "chess-2025/hollywood-reporter--angie-han.json",
-      "all-my-sons-west-end-2025/timeout--andrzej-lukowski.json"
+      "all-my-sons-west-end-2025/timeout--andrzej-lukowski.json",
+      "paddington-the-musical-west-end-2025/telegraph--dominic-cavendish.json",
+      "ragtime-2025/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-03-24T17:31:44.264Z",
-  "lastProcessed": "paddington-the-musical-west-end-2025/london-box-office--stuart-king.json",
+  "lastProcessed": "ragtime-2025/wsj--charles-isherwood.json",
   "log": [
     {
       "t": "2026-03-24T17:34:00.298Z",
@@ -701,6 +720,17 @@
       "t": "2026-03-24T19:11:05.675Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-24T19:13:56.769Z",
+      "event": "bb-session",
+      "session": "a811f591",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-03-24T19:13:57.985Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
