@@ -1018,7 +1018,15 @@
     "dead-outlaw-2025/theatermania--zachary-stewart.json",
     "giant-2026/variety--unknown.json",
     "giant-2026/deadline--unknown.json",
-    "giant-2026/thewrap--unknown.json"
+    "giant-2026/thewrap--unknown.json",
+    "giant-2026/amny--unknown.json",
+    "giant-2026/new-york-sun--unknown.json",
+    "giant-2026/nydailynews--unknown.json",
+    "giant-2026/nypost--unknown.json",
+    "giant-2026/theatermania--unknown.json",
+    "giant-2026/forward--unknown.json",
+    "dead-outlaw-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "dead-outlaw-2025/timeout--adam-feldman.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -1332,7 +1340,9 @@
     "burlesque-west-end-2026/guardian--arifa-akbar.json",
     "call-me-izzy-2025/newyorker--helen-shaw.json",
     "call-me-izzy-2025/vulture--jackson-mchenry.json",
-    "giant-2026/talkinbroadway--unknown.json"
+    "giant-2026/talkinbroadway--unknown.json",
+    "giant-2026/vulture--unknown.json",
+    "giant-2026/timeout--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2126,7 +2136,13 @@
       "call-me-izzy-2025/theater-scene--joseph-pisano.json",
       "dead-outlaw-2025/ew--thom-geier.json",
       "dead-outlaw-2025/nydailynews--chris-jones.json",
-      "dead-outlaw-2025/theatermania--zachary-stewart.json"
+      "dead-outlaw-2025/theatermania--zachary-stewart.json",
+      "giant-2026/new-york-sun--unknown.json",
+      "giant-2026/nydailynews--unknown.json",
+      "giant-2026/theatermania--unknown.json",
+      "giant-2026/forward--unknown.json",
+      "dead-outlaw-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "dead-outlaw-2025/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -2190,7 +2206,11 @@
       "data/review-texts/giant-2026/variety--unknown.json",
       "giant-2026/variety--unknown.json",
       "data/review-texts/giant-2026/deadline--unknown.json",
-      "giant-2026/deadline--unknown.json"
+      "giant-2026/deadline--unknown.json",
+      "data/review-texts/giant-2026/amny--unknown.json",
+      "giant-2026/amny--unknown.json",
+      "data/review-texts/giant-2026/nypost--unknown.json",
+      "giant-2026/nypost--unknown.json"
     ],
     "directCookies": [
       "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json",
@@ -2315,7 +2335,9 @@
       "data/review-texts/mamma-mia-2025/guardian--adrian-horton.json",
       "data/review-texts/burlesque-west-end-2026/guardian--arifa-akbar.json",
       "data/review-texts/call-me-izzy-2025/newyorker--helen-shaw.json",
-      "data/review-texts/giant-2026/talkinbroadway--unknown.json"
+      "data/review-texts/giant-2026/talkinbroadway--unknown.json",
+      "data/review-texts/giant-2026/vulture--unknown.json",
+      "data/review-texts/giant-2026/timeout--unknown.json"
     ],
     "archive": [
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
@@ -2535,7 +2557,7 @@
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "giant-2026/talkinbroadway--unknown.json",
+  "lastProcessed": "dead-outlaw-2025/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -2775,6 +2797,28 @@
       "event": "bb-session",
       "session": "9adfaf7e",
       "url": "https://deadline.com/2026/03/john-lithgow-giant-broadway-review-1236761578/"
+    },
+    {
+      "t": "2026-03-24T04:29:25.732Z",
+      "event": "bb-session",
+      "session": "5664f4ac",
+      "url": "https://www.amny.com/entertainment/giant-performance-divisive-play/"
+    },
+    {
+      "t": "2026-03-24T04:29:27.051Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-24T04:30:54.784Z",
+      "event": "bb-session",
+      "session": "54672200",
+      "url": "https://nypost.com/2026/03/23/entertainment/giant-review-john-lithgow-is-superb-"
+    },
+    {
+      "t": "2026-03-24T04:30:56.127Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
