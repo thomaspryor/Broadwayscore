@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-24T05:35:16.888Z",
+  "timestamp": "2026-03-24T05:43:31.943Z",
   "stats": {
     "totalReviews": 32395,
-    "alreadyFlagged": 11042,
+    "alreadyFlagged": 11043,
     "dateGuardCatches": 139,
-    "directorMismatch": 940,
+    "directorMismatch": 939,
     "tvFilmSignals": 3399,
     "londonSignals": 1018,
     "offBroadwaySignals": 1009,
     "yearMismatch": 71,
-    "noPublishDate": 6782
+    "noPublishDate": 6781
   },
   "findings": [
     {
@@ -57668,19 +57668,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "observer--david-cote.json",
-      "publishDate": null,
-      "url": "https://theaternewsonline.com/NYTheaterReviews/MISPLACEDQUIPS.cfm",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bartlett sher\" from to-kill-a-mockingbird-2018"
         }
       ]
     },
