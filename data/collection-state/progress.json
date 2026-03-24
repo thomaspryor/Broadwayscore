@@ -1044,7 +1044,16 @@
     "floyd-collins-2025/newyorker--helen-shaw.json",
     "floyd-collins-2025/new-york-sun--elysa-gardner.json",
     "floyd-collins-2025/new-york-sun--elyse-sommer.json",
-    "floyd-collins-2025/theatermania--david-gordon.json"
+    "floyd-collins-2025/theatermania--david-gordon.json",
+    "floyd-collins-2025/timeout--adam-feldman.json",
+    "floyd-collins-2025/exeunt-magazine--lane-williamson.json",
+    "floyd-collins-2025/theater-scene--victor-gluck.json",
+    "john-proctor-is-the-villain-2025/hollywood-reporter--lovia-gyarkye.json",
+    "john-proctor-is-the-villain-2025/vulture--sara-holdren.json",
+    "john-proctor-is-the-villain-2025/theatermania--rachel-graham.json",
+    "john-proctor-is-the-villain-2025/timeout--raven-snook.json",
+    "john-proctor-is-the-villain-2025/wsj--unknown.json",
+    "smash-2025/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -1362,7 +1371,8 @@
     "giant-2026/vulture--unknown.json",
     "giant-2026/timeout--unknown.json",
     "real-women-have-curves-2025/broadwaynews--brittani-samuel.json",
-    "floyd-collins-2025/broadwaynews--brittani-samuel.json"
+    "floyd-collins-2025/broadwaynews--brittani-samuel.json",
+    "john-proctor-is-the-villain-2025/theatre-reviews-limited--david-roberts.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2170,7 +2180,13 @@
       "pirates-the-penzance-musical-2025/timeout--adam-feldman.json",
       "floyd-collins-2025/new-york-sun--elysa-gardner.json",
       "floyd-collins-2025/new-york-sun--elyse-sommer.json",
-      "floyd-collins-2025/theatermania--david-gordon.json"
+      "floyd-collins-2025/theatermania--david-gordon.json",
+      "floyd-collins-2025/timeout--adam-feldman.json",
+      "floyd-collins-2025/exeunt-magazine--lane-williamson.json",
+      "floyd-collins-2025/theater-scene--victor-gluck.json",
+      "john-proctor-is-the-villain-2025/theatermania--rachel-graham.json",
+      "john-proctor-is-the-villain-2025/timeout--raven-snook.json",
+      "smash-2025/broadwaynews--brittani-samuel.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -2238,7 +2254,9 @@
       "data/review-texts/giant-2026/amny--unknown.json",
       "giant-2026/amny--unknown.json",
       "data/review-texts/giant-2026/nypost--unknown.json",
-      "giant-2026/nypost--unknown.json"
+      "giant-2026/nypost--unknown.json",
+      "data/review-texts/john-proctor-is-the-villain-2025/hollywood-reporter--lovia-gyarkye.json",
+      "john-proctor-is-the-villain-2025/hollywood-reporter--lovia-gyarkye.json"
     ],
     "directCookies": [
       "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json",
@@ -2593,11 +2611,13 @@
       "pirates-the-penzance-musical-2025/vulture--sara-holdren.json",
       "pirates-the-penzance-musical-2025/nydailynews--chris-jones.json",
       "pirates-the-penzance-musical-2025/dailybeast--tim-teeman.json",
-      "floyd-collins-2025/newyorker--helen-shaw.json"
+      "floyd-collins-2025/newyorker--helen-shaw.json",
+      "john-proctor-is-the-villain-2025/vulture--sara-holdren.json",
+      "john-proctor-is-the-villain-2025/wsj--unknown.json"
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "floyd-collins-2025/theatermania--david-gordon.json",
+  "lastProcessed": "smash-2025/broadwaynews--brittani-samuel.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -2859,6 +2879,28 @@
       "t": "2026-03-24T04:30:56.127Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-24T04:39:34.783Z",
+      "event": "bb-session",
+      "session": "dd84029c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/john-proctor-is-the-villain-rev"
+    },
+    {
+      "t": "2026-03-24T04:39:36.057Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-24T04:40:17.660Z",
+      "event": "bb-session",
+      "session": "f0c41971",
+      "url": "https://www.wsj.com/articles/john-proctor-is-the-villain-review-reconceiving-the"
+    },
+    {
+      "t": "2026-03-24T04:40:18.972Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
