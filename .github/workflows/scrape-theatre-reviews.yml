@@ -56,6 +56,8 @@ jobs:
         run: npm ci
 
       - name: Run theatre.reviews scraper
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
         run: |
           ARGS=""
 

@@ -106,6 +106,7 @@ jobs:
 
       - name: Scrape BWW reviews
         env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: |
           FLAGS="--type=${{ inputs.type || 'all' }}"
