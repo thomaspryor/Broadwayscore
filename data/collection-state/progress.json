@@ -1097,7 +1097,16 @@
     "good-night-and-good-luck-2025/village-voice--michael-musto.json",
     "good-night-and-good-luck-2025/whatsonstage--alun-hood.json",
     "glengarry-glen-ross-2025/newyorker--helen-shaw.json",
-    "glengarry-glen-ross-2025/nyt-theater--unknown.json"
+    "glengarry-glen-ross-2025/nyt-theater--unknown.json",
+    "glengarry-glen-ross-2025/variety--daniel-daddario.json",
+    "glengarry-glen-ross-2025/nypost--johnny-oleksinski.json",
+    "glengarry-glen-ross-2025/theatermania--kenji-fujishima.json",
+    "glengarry-glen-ross-2025/theatre-reviews-limited--david-roberts.json",
+    "glengarry-glen-ross-2025/timeout--adam-feldman.json",
+    "glengarry-glen-ross-2025/amny--matt-windman.json",
+    "glengarry-glen-ross-2025/ap--mark-kennedy.json",
+    "glengarry-glen-ross-2025/slantmagazine--dan-rubins.json",
+    "glengarry-glen-ross-2025/theater-life--samuel-l-leiter.json"
   ],
   "failed": [
     "music-city-off-broadway-2026/playbill--unknown.json",
@@ -1422,7 +1431,8 @@
     "boop-2025/broadwaynews--brittani-samuel.json",
     "good-night-and-good-luck-2025/broadwaynews--brittani-samuel.json",
     "good-night-and-good-luck-2025/wsj--charles-isherwood.json",
-    "glengarry-glen-ross-2025/usatoday--patrick-ryan.json"
+    "glengarry-glen-ross-2025/usatoday--patrick-ryan.json",
+    "glengarry-glen-ross-2025/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2267,7 +2277,13 @@
       "good-night-and-good-luck-2025/times-uk--susie-goldsbrough.json",
       "good-night-and-good-luck-2025/village-voice--michael-musto.json",
       "good-night-and-good-luck-2025/whatsonstage--alun-hood.json",
-      "glengarry-glen-ross-2025/nyt-theater--unknown.json"
+      "glengarry-glen-ross-2025/nyt-theater--unknown.json",
+      "glengarry-glen-ross-2025/theatermania--kenji-fujishima.json",
+      "glengarry-glen-ross-2025/theatre-reviews-limited--david-roberts.json",
+      "glengarry-glen-ross-2025/timeout--adam-feldman.json",
+      "glengarry-glen-ross-2025/ap--mark-kennedy.json",
+      "glengarry-glen-ross-2025/slantmagazine--dan-rubins.json",
+      "glengarry-glen-ross-2025/theater-life--samuel-l-leiter.json"
     ],
     "amp": [
       "data/review-texts/tru-off-broadway-2026/thewrap--unknown.json",
@@ -2347,7 +2363,13 @@
       "data/review-texts/the-last-five-years-2025/nypost--lou-lumenick.json",
       "the-last-five-years-2025/nypost--lou-lumenick.json",
       "data/review-texts/good-night-and-good-luck-2025/hollywood-reporter--david-rooney.json",
-      "good-night-and-good-luck-2025/hollywood-reporter--david-rooney.json"
+      "good-night-and-good-luck-2025/hollywood-reporter--david-rooney.json",
+      "data/review-texts/glengarry-glen-ross-2025/variety--daniel-daddario.json",
+      "glengarry-glen-ross-2025/variety--daniel-daddario.json",
+      "data/review-texts/glengarry-glen-ross-2025/nypost--johnny-oleksinski.json",
+      "glengarry-glen-ross-2025/nypost--johnny-oleksinski.json",
+      "data/review-texts/glengarry-glen-ross-2025/amny--matt-windman.json",
+      "glengarry-glen-ross-2025/amny--matt-windman.json"
     ],
     "directCookies": [
       "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json",
@@ -2720,7 +2742,7 @@
     ]
   },
   "startTime": "2026-03-23T10:08:01.761Z",
-  "lastProcessed": "glengarry-glen-ross-2025/nyt-theater--unknown.json",
+  "lastProcessed": "glengarry-glen-ross-2025/theater-life--samuel-l-leiter.json",
   "log": [
     {
       "t": "2026-03-23T10:08:03.866Z",
@@ -3081,6 +3103,50 @@
       "t": "2026-03-24T04:54:49.240Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-24T04:57:21.167Z",
+      "event": "bb-session",
+      "session": "2da28207",
+      "url": "https://variety.com/2025/legit/reviews/glengarry-glen-ross-review-kieran-culkin-"
+    },
+    {
+      "t": "2026-03-24T04:57:22.505Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-24T04:57:37.996Z",
+      "event": "bb-session",
+      "session": "f543dd8e",
+      "url": "https://nypost.com/2025/03/31/entertainment/glengarry-glen-ross-review-kieran-cu"
+    },
+    {
+      "t": "2026-03-24T04:57:39.280Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-24T04:58:24.512Z",
+      "event": "bb-session",
+      "session": "f689ecb9",
+      "url": "https://www.wsj.com/articles/glengarry-glen-ross-review-kieran-culkin-back-on-br"
+    },
+    {
+      "t": "2026-03-24T04:58:25.819Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-24T04:59:49.363Z",
+      "event": "bb-session",
+      "session": "fb489df9",
+      "url": "https://www.amny.com/news/review-glengarry-glen-ross-revival-2025/"
+    },
+    {
+      "t": "2026-03-24T04:59:50.633Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
