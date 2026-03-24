@@ -5,7 +5,11 @@
     "giant-2026/nydailynews--unknown.json",
     "giant-2026/nypost--unknown.json",
     "giant-2026/theatermania--unknown.json",
-    "giant-2026/timeout--unknown.json"
+    "giant-2026/timeout--unknown.json",
+    "giant-2026/forward--unknown.json",
+    "giant-2026/amny--unknown.json",
+    "giant-2026/chicagotribune--chris-jones.json",
+    "giant-2026/nysr--frank-scheck.json"
   ],
   "failed": [
     "giant-2026/nytimes--helen-shaw.json",
@@ -20,12 +24,17 @@
       "giant-2026/new-york-sun--unknown.json",
       "giant-2026/nydailynews--unknown.json",
       "giant-2026/theatermania--unknown.json",
-      "giant-2026/timeout--unknown.json"
+      "giant-2026/timeout--unknown.json",
+      "giant-2026/forward--unknown.json",
+      "giant-2026/chicagotribune--chris-jones.json",
+      "giant-2026/nysr--frank-scheck.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/giant-2026/nypost--unknown.json",
-      "giant-2026/nypost--unknown.json"
+      "giant-2026/nypost--unknown.json",
+      "data/review-texts/giant-2026/amny--unknown.json",
+      "giant-2026/amny--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -39,7 +48,7 @@
     "archive": []
   },
   "startTime": "2026-03-24T05:28:10.204Z",
-  "lastProcessed": "giant-2026/timeout--unknown.json",
+  "lastProcessed": "giant-2026/nysr--frank-scheck.json",
   "log": [
     {
       "t": "2026-03-24T05:28:21.009Z",
@@ -62,6 +71,17 @@
       "t": "2026-03-24T05:38:22.987Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-24T05:39:15.328Z",
+      "event": "bb-session",
+      "session": "3f6a57a9",
+      "url": "https://www.amny.com/entertainment/giant-performance-divisive-play/"
+    },
+    {
+      "t": "2026-03-24T05:39:16.422Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
