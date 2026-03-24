@@ -30,6 +30,7 @@ const verbose = args.includes('--verbose');
 
 const REQUEST_DELAY_MS = 2000; // 2s between requests — be polite
 const USER_AGENT = 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0)';
+const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 
 const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
 const showsPath = path.join(__dirname, '../data/shows.json');
@@ -62,6 +63,45 @@ async function httpsGet(url) {
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
+ * Detect bot challenge pages (Cloudflare, etc.) that return valid 200 but no real content.
+ */
+function isBotChallenge(html) {
+  return html.length < 10000 && (
+    html.includes('Client Challenge') ||
+    html.includes('Just a moment') ||
+    html.includes('cf-browser-verification') ||
+    html.includes('_fs-ch-')
+  );
+}
+
+/**
+ * Fetch URL via ScrapingBee with JS rendering (bypasses bot challenges).
+ * Returns { status, data } or null if no API key.
+ */
+async function fetchViaScrapingBee(url) {
+  if (!SCRAPINGBEE_KEY) return null;
+
+  const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=true&premium_proxy=true&wait=3000`;
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 60000);
+  try {
+    const res = await fetch(apiUrl, { signal: controller.signal });
+    const data = await res.text();
+    return { status: res.status, data };
+  } catch (e) {
+    if (e.name === 'AbortError') {
+      console.error(`  ScrapingBee timeout: ${url}`);
+    } else {
+      console.error(`  ScrapingBee error: ${e.message}`);
+    }
+    return null;
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
 // ---- Discovery: Parse /shows/ listing page ----
@@ -348,14 +388,15 @@ async function main() {
   let skipped = 0;
   let errors = 0;
 
+  let scrapingBeeUsed = 0;
+
   for (let i = 0; i < toProcess.length; i++) {
     const { bc, show, confidence } = toProcess[i];
 
     try {
-      const { status, data: html } = await httpsGet(bc.url);
+      let { status, data: html } = await httpsGet(bc.url);
 
       if (status >= 400) {
-        // Hard error: 4xx/5xx means site is blocking or broken — don't treat as "no data"
         console.error(`  HTTP_ERROR ${show.id}: ${status}`);
         errors++;
         continue;
@@ -366,7 +407,21 @@ async function main() {
         continue;
       }
 
-      const rating = extractJsonLdRating(html);
+      let rating = extractJsonLdRating(html);
+
+      // If no rating found and page looks like a bot challenge, retry via ScrapingBee
+      if (!rating && isBotChallenge(html)) {
+        if (verbose) console.log(`  Bot challenge detected for ${show.id}, trying ScrapingBee...`);
+        const sbResult = await fetchViaScrapingBee(bc.url);
+        if (sbResult && sbResult.status === 200) {
+          rating = extractJsonLdRating(sbResult.data);
+          scrapingBeeUsed++;
+          if (!rating && verbose) {
+            console.log(`  SKIP ${show.id}: no JSON-LD aggregateRating (even via ScrapingBee)`);
+          }
+        }
+      }
+
       if (!rating) {
         if (verbose) console.log(`  SKIP ${show.id}: no JSON-LD aggregateRating found`);
         skipped++;
@@ -394,6 +449,10 @@ async function main() {
     if (i < toProcess.length - 1) {
       await sleep(REQUEST_DELAY_MS);
     }
+  }
+
+  if (scrapingBeeUsed > 0) {
+    console.log(`\nScrapingBee used for ${scrapingBeeUsed} bot-challenged pages`);
   }
 
   console.log(`\nResults: ${updated} updated, ${skipped} skipped, ${errors} errors`);

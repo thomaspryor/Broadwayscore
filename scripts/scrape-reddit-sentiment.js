@@ -533,8 +533,8 @@ async function main() {
     process.exit(1);
   }
 
-  // All active shows (open + closed, excludes previews)
-  const allActiveShows = showsData.shows.filter(s => s.status === 'open' || s.status === 'closed');
+  // All active shows (open + previews + closed)
+  const allActiveShows = showsData.shows.filter(s => s.status === 'open' || s.status === 'previews' || s.status === 'closed');
   let shows;
 
   // Explicit show selection
@@ -553,17 +553,17 @@ async function main() {
     }
     console.log(`Processing specific shows: ${shows.map(s => s.title).join(', ')}`);
   } else if (showsArg === 'missing') {
-    const base = includeAll ? allActiveShows : showsData.shows.filter(s => s.status === 'open');
+    const base = includeAll ? allActiveShows : showsData.shows.filter(s => s.status === 'open' || s.status === 'previews');
     shows = base.filter(s => {
       const b = (audienceBuzz.shows || {})[s.id];
       return !(b && b.sources && b.sources.reddit);
     });
-    console.log(`Found ${shows.length} shows missing Reddit sentiment data${includeAll ? ' (all statuses)' : ' (open only)'}`);
+    console.log(`Found ${shows.length} shows missing Reddit sentiment data${includeAll ? ' (all statuses)' : ' (open + previews only)'}`);
   } else {
-    // Default: open shows only. Use --all to include closed shows.
-    shows = includeAll ? allActiveShows : showsData.shows.filter(s => s.status === 'open');
+    // Default: open + preview shows. Use --all to include closed shows.
+    shows = includeAll ? allActiveShows : showsData.shows.filter(s => s.status === 'open' || s.status === 'previews');
     if (!includeAll) {
-      console.log(`Processing open shows only (${shows.length}). Use --all for all shows.`);
+      console.log(`Processing open + preview shows (${shows.length}). Use --all for all shows.`);
     }
   }
 
