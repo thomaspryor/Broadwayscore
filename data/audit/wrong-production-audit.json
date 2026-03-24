@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-24T19:09:01.028Z",
+  "timestamp": "2026-03-24T19:29:43.250Z",
   "stats": {
     "totalReviews": 32470,
     "alreadyFlagged": 11060,
     "dateGuardCatches": 139,
     "directorMismatch": 947,
     "tvFilmSignals": 3405,
-    "londonSignals": 1025,
+    "londonSignals": 1026,
     "offBroadwaySignals": 1011,
     "yearMismatch": 71,
     "noPublishDate": 6815
@@ -24937,11 +24937,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -58990,6 +58985,19 @@
     },
     {
       "showId": "two-strangers-bway-2025",
+      "file": "playbill--unknown.json",
+      "publishDate": "2025-11-20",
+      "url": "https://playbill.com/article/two-strangers-carry-a-cake-across-new-york-begins-on-broadway-november-1",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "two-strangers-bway-2025",
       "file": "theatre-reviews-limited--joseph-verlezza.json",
       "score": 75,
       "publishDate": "2025-12-02",
@@ -75308,6 +75316,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-west-end-2025",
+      "file": "artsdesk--gary-naylor.json",
+      "score": 48,
+      "publishDate": "2025-12-23",
+      "url": "https://theartsdesk.com/theatre/paranormal-activity-ambassadors-theatre-review-franchise-frightener-flops-stage",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
