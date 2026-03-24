@@ -436,6 +436,7 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Reviews Rebuild Failed'
+          description: 'Check run logs. If a guard blocked it, health-check will send an actionable email in 2 days. To unblock manually: gh workflow run "Rebuild Reviews Data" -f allow_regression=true -f reason="Manual recovery"'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
 
       - name: Summary
