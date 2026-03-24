@@ -157,7 +157,22 @@ function brightDataRequest(token, zone, url) {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
+        // Check for permanent zone errors in headers (zone disabled, trial exhausted, wrong type)
+        const brdErrCode = res.headers['x-brd-err-code'];
+        if (brdErrCode === 'client_10002' || brdErrCode === 'client_10090') {
+          const brdErrMsg = res.headers['x-brd-err-msg'] || res.headers['x-brd-error'] || brdErrCode;
+          const err = new Error(`Bright Data zone permanently unavailable: ${brdErrMsg}`);
+          err.permanent = true;
+          reject(err);
+          return;
+        }
+
         if (res.statusCode === 200) {
+          if (!data) {
+            // Empty body — zone error not caught by status code
+            reject(new Error('response not JSON: (empty body)'));
+            return;
+          }
           try {
             resolve(JSON.parse(data));
           } catch (e) {
@@ -185,43 +200,37 @@ function brightDataRequest(token, zone, url) {
 
 /**
  * Fetch URL directly from Reddit
+ * Uses native fetch() (Node 18+) which has a different TLS fingerprint than
+ * https.get() — Reddit blocks https.get() but allows fetch().
  */
-function fetchRedditDirect(url) {
-  return new Promise((resolve, reject) => {
-    const options = {
-      headers: {
-        'User-Agent': USER_AGENT,
-        'Accept': 'application/json'
-      }
-    };
-
-    https.get(url, options, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        if (res.statusCode === 200) {
-          try {
-            const parsed = JSON.parse(data);
-            stats.redditDirect++;
-            resolve(parsed);
-          } catch (e) {
-            // Got HTML instead of JSON - Reddit is blocking
-            if (data.includes('<html') || data.includes('<!DOCTYPE')) {
-              reject({ code: 'HTML_RESPONSE', message: 'Reddit returned HTML instead of JSON' });
-            } else {
-              reject(new Error(`JSON parse failed: ${data.slice(0, 100)}`));
-            }
-          }
-        } else if (res.statusCode === 429) {
-          reject({ code: 'RATE_LIMITED', statusCode: 429 });
-        } else if (res.statusCode === 403) {
-          reject({ code: 'FORBIDDEN', statusCode: 403 });
-        } else {
-          reject(new Error(`HTTP ${res.statusCode}: ${data.slice(0, 100)}`));
-        }
-      });
-    }).on('error', reject);
+async function fetchRedditDirect(url) {
+  const res = await fetch(url, {
+    headers: {
+      'User-Agent': USER_AGENT,
+      'Accept': 'application/json'
+    }
   });
+
+  if (res.status === 200) {
+    const text = await res.text();
+    try {
+      const parsed = JSON.parse(text);
+      stats.redditDirect++;
+      return parsed;
+    } catch (e) {
+      if (text.includes('<html') || text.includes('<!DOCTYPE')) {
+        throw { code: 'HTML_RESPONSE', message: 'Reddit returned HTML instead of JSON' };
+      }
+      throw new Error(`JSON parse failed: ${text.slice(0, 100)}`);
+    }
+  } else if (res.status === 429) {
+    throw { code: 'RATE_LIMITED', statusCode: 429 };
+  } else if (res.status === 403) {
+    throw { code: 'FORBIDDEN', statusCode: 403 };
+  } else {
+    const text = await res.text().catch(() => '');
+    throw new Error(`HTTP ${res.status}: ${text.slice(0, 100)}`);
+  }
 }
 
 /**
