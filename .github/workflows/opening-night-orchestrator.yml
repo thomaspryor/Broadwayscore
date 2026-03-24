@@ -167,6 +167,34 @@ jobs:
             echo "Could not read SB credit balance — SERP enabled by default"
           fi
 
+      - name: Refresh audience data (opening night)
+        if: steps.find.outputs.has_shows == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Dispatch audience scrapers at the START of the orchestrator so data is
+          # ready before the broadcast window (~11:30 PM ET). Runs once per session,
+          # not per polling iteration. All dispatches are fire-and-forget.
+          SHOWS="${{ steps.find.outputs.shows }}"
+          echo "Dispatching audience scrapers for: $SHOWS"
+
+          IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS"
+          for SHOW_ID in "${SHOW_ARRAY[@]}"; do
+            echo "  → Dispatching Broadway.com scraper for $SHOW_ID"
+            gh workflow run update-broadway-com.yml -f show="$SHOW_ID" 2>/dev/null || true
+          done
+
+          echo "  → Dispatching Reddit sentiment for: $SHOWS"
+          gh workflow run update-reddit-sentiment.yml -f shows="$SHOWS" 2>/dev/null || true
+
+          echo "  → Dispatching Show Score for: $SHOWS"
+          gh workflow run update-show-score.yml -f shows="$SHOWS" 2>/dev/null || true
+
+          echo "  → Dispatching Mezzanine for: $SHOWS"
+          gh workflow run update-mezzanine.yml -f shows="$SHOWS" 2>/dev/null || true
+
+          echo "Audience scrapers dispatched — they will run concurrently with review polling."
+
       - name: Polling loop
         if: steps.find.outputs.has_shows == 'true'
         env:

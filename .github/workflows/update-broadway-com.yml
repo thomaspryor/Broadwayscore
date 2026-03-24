@@ -10,8 +10,12 @@ on:
         description: 'Single show ID to update (e.g., hamilton-2015)'
         required: false
         type: string
+      shows:
+        description: 'Comma-separated show IDs (e.g., hamilton-2015,wicked-2024)'
+        required: false
+        type: string
       limit:
-        description: 'Max number of shows to process'
+        description: 'Max number of shows to process (when no show filter)'
         required: false
         type: number
         default: 0
@@ -48,21 +52,29 @@ jobs:
 
       - name: Run Broadway.com scraper
         run: |
-          ARGS="--verbose"
-
-          if [ -n "${{ inputs.show }}" ]; then
-            ARGS="$ARGS --show=${{ inputs.show }}"
-          fi
-
-          if [ "${{ inputs.limit }}" != "0" ] && [ -n "${{ inputs.limit }}" ]; then
-            ARGS="$ARGS --limit=${{ inputs.limit }}"
-          fi
-
+          BASE_ARGS="--verbose"
           if [ "${{ inputs.dry_run }}" = "true" ]; then
-            ARGS="$ARGS --dry-run"
+            BASE_ARGS="$BASE_ARGS --dry-run"
           fi
 
-          node scripts/scrape-broadway-com-audience.js $ARGS
+          SHOWS_INPUT="${{ inputs.shows }}"
+          SHOW_INPUT="${{ inputs.show }}"
+
+          if [ -n "$SHOWS_INPUT" ]; then
+            # Multiple shows: run once per show
+            IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS_INPUT"
+            for SHOW_ID in "${SHOW_ARRAY[@]}"; do
+              node scripts/scrape-broadway-com-audience.js $BASE_ARGS --show="$SHOW_ID"
+            done
+          elif [ -n "$SHOW_INPUT" ]; then
+            node scripts/scrape-broadway-com-audience.js $BASE_ARGS --show="$SHOW_INPUT"
+          else
+            LIMIT_ARG=""
+            if [ "${{ inputs.limit }}" != "0" ] && [ -n "${{ inputs.limit }}" ]; then
+              LIMIT_ARG="--limit=${{ inputs.limit }}"
+            fi
+            node scripts/scrape-broadway-com-audience.js $BASE_ARGS $LIMIT_ARG
+          fi
 
       - name: Push core data to private repo
         if: always() && inputs.dry_run != true

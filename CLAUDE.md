@@ -105,6 +105,7 @@ Config: `src/config/commercial.ts`. Components: `src/components/biz/`. Never mar
 
 ### Web Scraping
 Fallback chain: Bright Data → ScrapingBee → Playwright (`scripts/lib/scraper.js`).
+**Rule:** All new scraping scripts MUST use `fetchPage()` from `scripts/lib/scraper.js` — never call BD/SB APIs directly. Workflows that scrape must pass both `BRIGHTDATA_TOKEN` AND `SCRAPINGBEE_API_KEY`. CI enforces this in `test.yml` (`lint-workflows` job). If a new workflow is legitimately exempt (health check, credential validator), add it to the exempt list in test.yml with a comment.
 6 aggregators: Show Score, DTLI, BWW Roundups, BWW Reviews Pages, Playbill Verdict, NYC Theatre Roundups.
 
 For full details on any subsystem: `memory/CLAUDE-reference.md`
