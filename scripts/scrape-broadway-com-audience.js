@@ -17,7 +17,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { isLondonMarket } = require('./lib/venue-classification');
 
@@ -39,37 +38,26 @@ let audienceBuzz, showsData, showMapById;
 
 // ---- HTTP helpers ----
 
-function httpsGet(url) {
-  return new Promise((resolve, reject) => {
-    const parsed = new URL(url);
-    const reqOptions = {
-      hostname: parsed.hostname,
-      path: parsed.pathname + parsed.search,
-      method: 'GET',
+async function httpsGet(url) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 15000);
+  try {
+    const res = await fetch(url, {
       headers: {
         'accept': 'text/html,application/xhtml+xml',
         'user-agent': USER_AGENT,
       },
-    };
-
-    const req = https.request(reqOptions, (res) => {
-      // Follow redirects
-      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        const redirectUrl = res.headers.location.startsWith('http')
-          ? res.headers.location
-          : `https://${parsed.hostname}${res.headers.location}`;
-        return httpsGet(redirectUrl).then(resolve).catch(reject);
-      }
-
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => resolve({ status: res.statusCode, data }));
+      redirect: 'follow',
+      signal: controller.signal,
     });
-
-    req.on('error', reject);
-    req.setTimeout(15000, () => { req.destroy(); reject(new Error(`Timeout: ${url}`)); });
-    req.end();
-  });
+    const data = await res.text();
+    return { status: res.status, data };
+  } catch (e) {
+    if (e.name === 'AbortError') throw new Error(`Timeout: ${url}`);
+    throw e;
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
 function sleep(ms) {
