@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-24T04:40:51.188Z",
+  "timestamp": "2026-03-24T04:58:18.928Z",
   "stats": {
-    "totalReviews": 32389,
-    "alreadyFlagged": 11034,
+    "totalReviews": 32394,
+    "alreadyFlagged": 11037,
     "dateGuardCatches": 139,
     "directorMismatch": 939,
     "tvFilmSignals": 3401,
     "londonSignals": 1018,
     "offBroadwaySignals": 1007,
     "yearMismatch": 71,
-    "noPublishDate": 6801
+    "noPublishDate": 6800
   },
   "findings": [
     {
@@ -12353,20 +12353,6 @@
     },
     {
       "showId": "dead-outlaw-2025",
-      "file": "latimes--charles-mcnulty.json",
-      "score": 72,
-      "publishDate": "2025-04-27",
-      "url": "https://www.latimes.com/entertainment-arts/story/2025-04-27/review-dead-outlaw-musical-famous-corpse-discovered-long-beach-broadway",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "dead-outlaw-2025",
       "file": "nysr--steven-suskin.json",
       "score": 92,
       "publishDate": "2025-04-27T21:34:36",
@@ -12411,7 +12397,7 @@
       "showId": "dead-outlaw-2025",
       "file": "theatre-reviews-limited--joseph-verlezza.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2025-05-01",
       "url": "https://www.theatrereviews.com/broadway-review-dead-outlaw-at-the-longacre-theatre-currently-on/",
       "findings": [
         {
@@ -42914,7 +42900,7 @@
       "showId": "smash-2025",
       "file": "amny--unknown.json",
       "score": 34,
-      "publishDate": null,
+      "publishDate": "2025-04-11",
       "url": "https://www.amny.com/entertainment/broadway/smash-from-bombshell-to-bomb/",
       "findings": [
         {
@@ -44618,6 +44604,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "stephen-sondheims-old-friends-2025",
+      "file": "in-act-two-of-merrily-we-roll-along--charley-kringas.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-STEPHEN-SONDHEIMS-OLD-FRIENDS-Opens-On-Broadway-20250408",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -66885,7 +66889,7 @@
       "showId": "floyd-collins-2025",
       "file": "exeunt-magazine--lane-williamson.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2025-04-22",
       "url": "https://exeuntnyc.com/reviews/review-floyd-collins-at-the-vivian-beaumont-theater/",
       "findings": [
         {
@@ -67556,7 +67560,7 @@
     {
       "showId": "giant-2026",
       "file": "amny--unknown.json",
-      "score": 77,
+      "score": 76,
       "publishDate": "2026-03-23",
       "url": "https://www.amny.com/entertainment/giant-performance-divisive-play/",
       "findings": [
@@ -76910,19 +76914,6 @@
       "score": 79,
       "publishDate": "2025-04-13",
       "url": "https://frontmezzjunkies.com/2025/04/13/stephen-sondheims-old-friends-on-broadway/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "stephen-sondheims-old-friends-2025",
-      "file": "in-act-two-of-merrily-we-roll-along--charley-kringas.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/article/Review-Roundup-STEPHEN-SONDHEIMS-OLD-FRIENDS-Opens-On-Broadway-20250408",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
