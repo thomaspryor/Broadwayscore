@@ -411,7 +411,15 @@
     "oliver-west-end-2024/london-theatre--marianka-swain.json",
     "oliver-west-end-2024/telegraph--claire-allfree.json",
     "oliver-west-end-2024/the-express--neil-norman.json",
-    "oliver-west-end-2024/theatre-weekly--greg-stewart.json"
+    "oliver-west-end-2024/theatre-weekly--greg-stewart.json",
+    "oliver-west-end-2024/whatsonstage--gareth-carr.json",
+    "oliver-west-end-2024/whatsonstage--michael-coveney.json",
+    "death-becomes-her-2024/newyorker--helen-shaw.json",
+    "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
+    "death-becomes-her-2024/ew--unknown.json",
+    "death-becomes-her-2024/nydailynews--chris-jones.json",
+    "death-becomes-her-2024/nypost--unknown.json",
+    "death-becomes-her-2024/theatermania--jesse-green.json"
   ],
   "failed": [
     "giant-2026/cititour--brian-scott-lipton.json",
@@ -446,7 +454,9 @@
     "my-neighbour-totoro-west-end-2025/times-uk--unknown.json",
     "dracula-west-end-2025/times-uk--clive-davis.json",
     "oliver-west-end-2024/the-sun--dominic-maxwell.json",
-    "oliver-west-end-2024/times-uk--dominic-maxwell.json"
+    "oliver-west-end-2024/times-uk--dominic-maxwell.json",
+    "oliver-west-end-2024/times-uk--neil-fisher.json",
+    "oliver-west-end-2024/times-uk--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -795,7 +805,13 @@
       "oliver-west-end-2024/london-theatre--marianka-swain.json",
       "oliver-west-end-2024/telegraph--claire-allfree.json",
       "oliver-west-end-2024/the-express--neil-norman.json",
-      "oliver-west-end-2024/theatre-weekly--greg-stewart.json"
+      "oliver-west-end-2024/theatre-weekly--greg-stewart.json",
+      "oliver-west-end-2024/whatsonstage--gareth-carr.json",
+      "oliver-west-end-2024/whatsonstage--michael-coveney.json",
+      "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
+      "death-becomes-her-2024/ew--unknown.json",
+      "death-becomes-her-2024/nydailynews--chris-jones.json",
+      "death-becomes-her-2024/theatermania--jesse-green.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
@@ -823,7 +839,9 @@
       "data/review-texts/buena-vista-social-club-2025/amny--matt-windman.json",
       "buena-vista-social-club-2025/amny--matt-windman.json",
       "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
-      "my-neighbour-totoro-west-end-2025/variety--unknown.json"
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "data/review-texts/death-becomes-her-2024/nypost--unknown.json",
+      "death-becomes-her-2024/nypost--unknown.json"
     ],
     "directCookies": [
       "giant-2026/nypost--unknown.json"
@@ -844,7 +862,9 @@
       "data/review-texts/all-my-sons-west-end-2025/broadwayworld--unknown.json",
       "data/review-texts/just-in-time-2025/billboard--unknown.json",
       "data/review-texts/just-in-time-2025/talkinbroadway--unknown.json",
-      "data/review-texts/oliver-west-end-2024/times-uk--dominic-maxwell.json"
+      "data/review-texts/oliver-west-end-2024/times-uk--dominic-maxwell.json",
+      "data/review-texts/oliver-west-end-2024/times-uk--neil-fisher.json",
+      "data/review-texts/oliver-west-end-2024/times-uk--unknown.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -901,11 +921,12 @@
       "buena-vista-social-club-2025/stageandcinema--tony-frankel.json",
       "my-neighbour-totoro-west-end-2025/broadwayworld--unknown.json",
       "dracula-west-end-2025/broadwayworld--aliya-al-hassan.json",
-      "dracula-west-end-2025/metro--unknown.json"
+      "dracula-west-end-2025/metro--unknown.json",
+      "death-becomes-her-2024/newyorker--helen-shaw.json"
     ]
   },
   "startTime": "2026-03-24T17:31:44.264Z",
-  "lastProcessed": "oliver-west-end-2024/times-uk--dominic-maxwell.json",
+  "lastProcessed": "death-becomes-her-2024/theatermania--jesse-green.json",
   "log": [
     {
       "t": "2026-03-24T17:34:00.298Z",
@@ -994,6 +1015,17 @@
       "t": "2026-03-24T19:31:35.267Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-24T19:38:15.351Z",
+      "event": "bb-session",
+      "session": "4f0c9842",
+      "url": "https://nypost.com/2024/11/21/entertainment/death-becomes-her-review-claws-are-o"
+    },
+    {
+      "t": "2026-03-24T19:38:16.471Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
