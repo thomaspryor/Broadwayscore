@@ -82,6 +82,7 @@ export function useFormspreeCapture(options: FormspreeCaptureOptions): Formspree
       const body: Record<string, string> = {
         email: email.toLowerCase().trim(),
         source: options.source,
+        market,
       };
       if (extra?.firstName) body.firstName = extra.firstName;
       if (!isSubscriber && options.showId) {

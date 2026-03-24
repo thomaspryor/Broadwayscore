@@ -142,6 +142,7 @@ export default function EmailCaptureModal({
         const body: Record<string, string> = {
           email: userData.email,
           source: `modal-${trigger}`,
+          market: marketKey,
         };
         if (userData.name) body.firstName = userData.name;
         const res = await fetch(`https://formspree.io/f/${formId}`, {
