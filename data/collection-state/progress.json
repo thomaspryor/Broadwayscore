@@ -290,7 +290,17 @@
     "all-my-sons-west-end-2025/i-paper--fiona-mountford.json",
     "all-my-sons-west-end-2025/independent--annabel-nugent.json",
     "all-my-sons-west-end-2025/london-theatre--olivia-rook.json",
-    "all-my-sons-west-end-2025/standard--nick-curtis.json"
+    "all-my-sons-west-end-2025/standard--nick-curtis.json",
+    "all-my-sons-west-end-2025/whatsonstage--unknown.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytg--joe-dziemianowicz.json",
+    "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/newsweek--lauren-giella.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/theatermania--zachary-stewart.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/exeunt-magazine--lane-williamson.json",
+    "paddington-the-musical-west-end-2025/musical-theatre-review--lisa-martlandbr.json",
+    "paddington-the-musical-west-end-2025/observer--katherine-cowles.json",
+    "paddington-the-musical-west-end-2025/timeout--andrzej-lukowski.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -580,7 +590,16 @@
       "all-my-sons-west-end-2025/i-paper--fiona-mountford.json",
       "all-my-sons-west-end-2025/independent--annabel-nugent.json",
       "all-my-sons-west-end-2025/london-theatre--olivia-rook.json",
-      "all-my-sons-west-end-2025/standard--nick-curtis.json"
+      "all-my-sons-west-end-2025/standard--nick-curtis.json",
+      "all-my-sons-west-end-2025/whatsonstage--unknown.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytg--joe-dziemianowicz.json",
+      "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/newsweek--lauren-giella.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/theatermania--zachary-stewart.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/exeunt-magazine--lane-williamson.json",
+      "paddington-the-musical-west-end-2025/musical-theatre-review--lisa-martlandbr.json",
+      "paddington-the-musical-west-end-2025/observer--katherine-cowles.json",
+      "paddington-the-musical-west-end-2025/timeout--andrzej-lukowski.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/thewrap--robert-hofler.json",
@@ -596,7 +615,9 @@
     ],
     "browserbase": [
       "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
-      "chess-2025/hollywood-reporter--angie-han.json"
+      "chess-2025/hollywood-reporter--angie-han.json",
+      "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json"
     ],
     "directCookies": [
       "giant-2026/nypost--unknown.json"
@@ -652,7 +673,7 @@
     ]
   },
   "startTime": "2026-03-24T10:12:58.341Z",
-  "lastProcessed": "all-my-sons-west-end-2025/standard--nick-curtis.json",
+  "lastProcessed": "paddington-the-musical-west-end-2025/timeout--andrzej-lukowski.json",
   "log": [
     {
       "t": "2026-03-24T12:15:43.038Z",
@@ -675,6 +696,17 @@
       "t": "2026-03-24T12:26:32.591Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-24T12:32:01.703Z",
+      "event": "bb-session",
+      "session": "dfd273d1",
+      "url": "https://www.amny.com/entertainment/theater/spelling-bee-returns-nails-every-word"
+    },
+    {
+      "t": "2026-03-24T12:32:02.919Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
