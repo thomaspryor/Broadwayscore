@@ -163,6 +163,24 @@ jobs:
         run: node scripts/audit-commercial-data.js
         continue-on-error: true
 
+      - name: Deletion guard for commercial.json
+        if: always()
+        run: |
+          if git diff -- data/commercial.json | grep -c '^-[^-]' > /tmp/deletions.txt 2>/dev/null; then
+            DELETIONS=$(cat /tmp/deletions.txt)
+            echo "Lines removed from commercial.json: $DELETIONS"
+            # Check if show count dropped
+            node -e "
+              const comm = require('./data/commercial.json');
+              const count = Object.keys(comm.shows || {}).length;
+              console.log('Current show count: ' + count);
+              if (count < 120) {
+                console.error('::error::Commercial show count dropped below 120 (' + count + '). Aborting.');
+                process.exit(1);
+              }
+            "
+          fi
+
       - name: Commit applied data + audit
         if: always()
         run: |
