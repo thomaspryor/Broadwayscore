@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-25T06:01:05.014Z",
-  "processed": 1102,
-  "failed": 283,
-  "successRate": "79.6%",
+  "updatedAt": "2026-03-25T06:03:07.227Z",
+  "processed": 1108,
+  "failed": 287,
+  "successRate": "79.4%",
   "tierBreakdown": {
-    "playwright": 807,
+    "playwright": 808,
     "amp": 18,
-    "browserbase": 59,
+    "browserbase": 61,
     "directCookies": 1,
     "scrapingbee": 31,
-    "brightdata": 59,
+    "brightdata": 63,
     "archiveToday": 105,
     "archive": 178
   },
-  "browserbaseSessions": 29,
+  "browserbaseSessions": 30,
   "recentActivity": [
-    {
-      "t": "2026-03-25T05:10:03.982Z",
-      "event": "bb-session",
-      "session": "0f624065",
-      "url": "https://www.washingtonpost.com/theater-dance/2023/07/21/here-lies-love-broadway-"
-    },
-    {
-      "t": "2026-03-25T05:10:05.272Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
     {
       "t": "2026-03-25T05:10:14.761Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-25T06:00:13.334Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-25T06:02:07.011Z",
+      "event": "bb-session",
+      "session": "41102abb",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/thoughts-of-a-colored-man-broad"
+    },
+    {
+      "t": "2026-03-25T06:02:08.297Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
