@@ -1011,7 +1011,14 @@
     "othello-2025/talkinbroadway--unknown.json",
     "purpose-2025/deadline--greg-evans.json",
     "redwood-2025/deadline--greg-evans.json",
-    "gypsy-2024/theatermania--jesse-green.json"
+    "gypsy-2024/theatermania--jesse-green.json",
+    "swept-away-2024/theatermania--jesse-green.json",
+    "tammy-faye-2024/theatermania--jesse-green.json",
+    "tammy-faye-2024/whatsonstage--sarah-crompton.json",
+    "a-wonderful-world-the-louis-armstrong-musical-2024/theatermania--david-gordon.json",
+    "romeo-juliet-2024/theatermania--jesse-green.json",
+    "left-on-tenth-2024/nytimes--laura-collins-hughes.json",
+    "left-on-tenth-2024/theatermania--jesse-green.json"
   ],
   "failed": [
     "giant-2026/cititour--brian-scott-lipton.json",
@@ -1226,7 +1233,10 @@
     "redwood-2025/juiceph--wanggo-gallaga.json",
     "gypsy-2024/hartford-courant--unknown.json",
     "eureka-day-2024/times-uk--clive-davis.json",
-    "cult-of-love-2024/talkinbroadway--matthew-murray.json"
+    "cult-of-love-2024/talkinbroadway--matthew-murray.json",
+    "tammy-faye-2024/times-uk--jesse-green.json",
+    "romeo-juliet-2024/thestage--nicole-serratore.json",
+    "left-on-tenth-2024/washpost--peter-marks.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2004,7 +2014,8 @@
       "call-me-izzy-2025/theatrely--kobi-kassal.json",
       "stephen-sondheims-old-friends-2025/in-act-two-of-merrily-we-roll-along--charley-kringas.json",
       "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
-      "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json"
+      "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json",
+      "tammy-faye-2024/whatsonstage--sarah-crompton.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
@@ -2123,7 +2134,12 @@
       "call-me-izzy-2025/amny--matt-windman.json",
       "the-last-five-years-2025/nydailynews--chris-jones.json",
       "othello-2025/talkinbroadway--unknown.json",
-      "gypsy-2024/theatermania--jesse-green.json"
+      "gypsy-2024/theatermania--jesse-green.json",
+      "swept-away-2024/theatermania--jesse-green.json",
+      "tammy-faye-2024/theatermania--jesse-green.json",
+      "a-wonderful-world-the-louis-armstrong-musical-2024/theatermania--david-gordon.json",
+      "romeo-juliet-2024/theatermania--jesse-green.json",
+      "left-on-tenth-2024/theatermania--jesse-green.json"
     ],
     "archiveToday": [
       "data/review-texts/giant-2026/cititour--brian-scott-lipton.json",
@@ -2187,7 +2203,8 @@
       "data/review-texts/the-mousetrap-west-end-2021/thestage--john-thaxter.json",
       "data/review-texts/the-last-five-years-2025/ap--unknown.json",
       "data/review-texts/the-last-five-years-2025/hypable--unknown.json",
-      "data/review-texts/cult-of-love-2024/talkinbroadway--matthew-murray.json"
+      "data/review-texts/cult-of-love-2024/talkinbroadway--matthew-murray.json",
+      "data/review-texts/left-on-tenth-2024/washpost--peter-marks.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -2360,11 +2377,12 @@
       "mamma-mia-2025/nytimes--elizabeth-vincentelli.json",
       "call-me-izzy-2025/newyorker--helen-shaw.json",
       "dead-outlaw-2025/ap--mark-kennedy.json",
-      "real-women-have-curves-2025/ap--fernanda-figueroa.json"
+      "real-women-have-curves-2025/ap--fernanda-figueroa.json",
+      "left-on-tenth-2024/nytimes--laura-collins-hughes.json"
     ]
   },
   "startTime": "2026-03-24T17:31:44.264Z",
-  "lastProcessed": "cult-of-love-2024/talkinbroadway--matthew-murray.json",
+  "lastProcessed": "left-on-tenth-2024/theatermania--jesse-green.json",
   "log": [
     {
       "t": "2026-03-24T17:34:00.298Z",
@@ -2684,6 +2702,17 @@
       "t": "2026-03-25T04:32:20.505Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-25T04:39:25.016Z",
+      "event": "bb-session",
+      "session": "df6a7094",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/11/14/left-on-tenth-review-jul"
+    },
+    {
+      "t": "2026-03-25T04:39:26.223Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }

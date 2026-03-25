@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-25T04:35:30.049Z",
-  "processed": 1012,
-  "failed": 213,
-  "successRate": "82.6%",
+  "updatedAt": "2026-03-25T04:40:13.159Z",
+  "processed": 1019,
+  "failed": 216,
+  "successRate": "82.5%",
   "tierBreakdown": {
-    "playwright": 774,
+    "playwright": 775,
     "amp": 18,
     "browserbase": 46,
     "directCookies": 1,
     "scrapingbee": 25,
-    "brightdata": 19,
-    "archiveToday": 62,
-    "archive": 171
+    "brightdata": 24,
+    "archiveToday": 63,
+    "archive": 172
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-03-25T00:51:41.524Z",
-      "event": "bb-session",
-      "session": "7d74b98a",
-      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
-    },
-    {
-      "t": "2026-03-25T00:51:42.885Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-25T00:51:58.552Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-25T04:32:20.505Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-25T04:39:25.016Z",
+      "event": "bb-session",
+      "session": "df6a7094",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/11/14/left-on-tenth-review-jul"
+    },
+    {
+      "t": "2026-03-25T04:39:26.223Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
