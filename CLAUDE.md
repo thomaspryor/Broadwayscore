@@ -75,6 +75,12 @@ When asked "is everything ready for opening night?", check the AUTOMATION CHAIN,
 1. `gh run list --limit 50 --json name,createdAt --jq '.[] | select(.name == "Opening Night Orchestrator") | .createdAt'` — confirm the 3 AM UTC Broadway cron has actually fired before for this market (not just the 10 PM UTC West End cron)
 2. Verify `opening-night-orchestrator.yml` is in `check-cron-health.yml`'s CRITICAL_CRONS list
 3. `gh workflow run opening-night-orchestrator.yml -f show_id=SHOW_ID -f market=broadway` to manually trigger if the cron is late (GitHub crons can lag 15-30 min or miss entirely on new workflows)
+4. **ScrapingBee credits:** `gh workflow run check-secrets-health.yml` and check output — needs >25% remaining. Check-secrets-health warns at 50% (monitor) and 75% (opening nights at risk).
+5. **Wrong-production pre-scores:** `ls data/llm-scores/{show-id}/` — verify every pre-existing score file is from the correct production (not a prior West End/OB/regional run). If any are wrong, add `wrongProduction: true` to those source files.
+6. **DTLI slug verification:** `node -e "const m=require('./data/dtli-slug-map.json'); console.log('DTLI slug:', m.shows['{show-id}'])"` — verify slug maps to the current-season DTLI page, not an old production (e.g., `giant-2` not `giant`). For revival shows (year in ID), expect a numbered suffix.
+7. **Bright Data zone:** Verify BrightData zone is active and not over trial limit at brightdata.com — check zone status in the dashboard. The `mcp_unlocker` zone hits 5K trial limit silently.
+8. **BWW RR URL:** Find the BWW Review Roundup URL for the show BEFORE opening night. Pattern: `https://www.broadwayworld.com/article/Review-Roundup-{TITLE-SLUG}-Opens-on-Broadway-{YYYYMMDD}`. If Google hasn't indexed it yet (same-day openings), the SERP fallback may return the wrong production. Have the URL ready to pass as `--bww-roundup-url` to the opening-night-poller.
+9. **Talkin' Broadway URL:** TB direct URL pattern is `https://www.talkinbroadway.com/page/world/{titleslug}{year}.html` (e.g., `giant2026.html`). SERP returns forum posts (All That Chat) instead of the review. TB is T2 outlet — don't miss it.
 
 ---
 
