@@ -547,7 +547,9 @@
     "six-2021/theatermania--unknown.json",
     "six-2021/timeout--adam-feldman.json",
     "six-2021/chicagotribune--unknown.json",
-    "six-2021/frontmezzjunkies--unknown.json"
+    "six-2021/frontmezzjunkies--unknown.json",
+    "giant-2026/nytimes--helen-shaw.json",
+    "giant-2026/nypost--unknown.json"
   ],
   "failed": [
     "giant-2026/cititour--brian-scott-lipton.json",
@@ -606,7 +608,15 @@
     "moulin-rouge-the-musical-west-end-2021/daily-mail--patrick-marmion.json",
     "moulin-rouge-the-musical-west-end-2021/theatrely--emily-wyrwa.json",
     "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
-    "six-2021/newyorker--naomi-fry.json"
+    "six-2021/newyorker--naomi-fry.json",
+    "inter-alia-west-end-2026/thestage--sam-marlowe.json",
+    "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "touch-off-broadway-2026/broadwayworld--marina-kennedy.json",
+    "every-brilliant-thing-2026/nytimes--adam-feldman.json",
+    "broken-glass-west-end-2026/london-theatre--julia-rank.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "marie-and-rosetta-west-end-2026/west-end-best-friend--nick-wayne.json",
+    "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1064,7 +1074,8 @@
       "six-2021/guardian--unknown.json",
       "six-2021/theatermania--unknown.json",
       "six-2021/timeout--adam-feldman.json",
-      "six-2021/frontmezzjunkies--unknown.json"
+      "six-2021/frontmezzjunkies--unknown.json",
+      "giant-2026/nytimes--helen-shaw.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
@@ -1108,7 +1119,9 @@
       "data/review-texts/oh-mary-2024/nytimes--erik-piepenburg.json",
       "oh-mary-2024/nytimes--erik-piepenburg.json",
       "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
-      "mj-2022/hollywood-reporter--lovia-gyarkye.json"
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "data/review-texts/giant-2026/nypost--unknown.json",
+      "giant-2026/nypost--unknown.json"
     ],
     "directCookies": [
       "giant-2026/nypost--unknown.json"
@@ -1138,7 +1151,8 @@
       "data/review-texts/the-great-gatsby-2024/nytimes--maya-phillips.json",
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/lost-in-theatreland--jill-johnson.json",
       "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/guardian--arifa-akbar.json",
-      "data/review-texts/moulin-rouge-the-musical-west-end-2021/daily-mail--patrick-marmion.json"
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/daily-mail--patrick-marmion.json",
+      "data/review-texts/touch-off-broadway-2026/broadwayworld--marina-kennedy.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -1221,7 +1235,7 @@
     ]
   },
   "startTime": "2026-03-24T17:31:44.264Z",
-  "lastProcessed": "six-2021/frontmezzjunkies--unknown.json",
+  "lastProcessed": "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
   "log": [
     {
       "t": "2026-03-24T17:34:00.298Z",
@@ -1387,6 +1401,28 @@
       "t": "2026-03-24T20:13:33.676Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-25T00:07:11.529Z",
+      "event": "bb-session",
+      "session": "1a44a26e",
+      "url": "https://www.nytimes.com/2026/03/23/theater/giant-review-broadway-lithgow-dahl.ht"
+    },
+    {
+      "t": "2026-03-25T00:07:12.873Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-25T00:07:48.462Z",
+      "event": "bb-session",
+      "session": "9bd965aa",
+      "url": "https://nypost.com/2026/03/23/entertainment/giant-review-john-lithgow-is-superb-"
+    },
+    {
+      "t": "2026-03-25T00:07:49.778Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
