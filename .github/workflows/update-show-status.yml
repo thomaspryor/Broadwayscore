@@ -331,6 +331,18 @@ jobs:
           echo "opened_shows=$all_slugs" >> $GITHUB_OUTPUT
           echo "Combined shows for data pipelines: $all_slugs"
 
+          # Also output newly discovered preview shows (for Reddit — discussions start at previews)
+          preview_slugs=""
+          for slug in $(echo "$new_slugs" | tr ',' '\n' | sort -u); do
+            [ -z "$slug" ] && continue
+            status=$(node -e "const shows = require('./data/shows.json'); const show = shows.shows.find(s => s.id === '$slug' || s.slug === '$slug'); console.log(show?.status || 'unknown');")
+            if [ "$status" = "previews" ]; then
+              [ -n "$preview_slugs" ] && preview_slugs="$preview_slugs,$slug" || preview_slugs="$slug"
+            fi
+          done
+          echo "preview_shows=$preview_slugs" >> $GITHUB_OUTPUT
+          echo "New preview shows (for Reddit): $preview_slugs"
+
           # Filter to London-market shows only (for WE-only scrapers: SeatPlan, LBO, LTD)
           london_slugs=""
           for slug in $(echo "$all_slugs" | tr ',' '\n'); do
@@ -401,6 +413,27 @@ jobs:
               console.log('Triggered Reddit sentiment workflow for opened shows: ${{ steps.filter.outputs.opened_shows }}');
             } catch (e) {
               console.log('Reddit sentiment workflow trigger failed:', e.message);
+            }
+
+      - name: Trigger Reddit sentiment for new preview shows
+        if: steps.filter.outputs.preview_shows != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Reddit discussions start as soon as previews begin — don't wait for opening night
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'update-reddit-sentiment.yml',
+                ref: 'main',
+                inputs: {
+                  shows: '${{ steps.filter.outputs.preview_shows }}'
+                }
+              });
+              console.log('Triggered Reddit sentiment for preview shows: ${{ steps.filter.outputs.preview_shows }}');
+            } catch (e) {
+              console.log('Reddit sentiment trigger for previews failed:', e.message);
             }
 
       - name: Trigger Broadway.com audience workflow

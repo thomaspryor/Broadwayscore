@@ -120,8 +120,8 @@ async function fetchViaBrightData(url) {
 
   stats.brightData++;
 
-  // Try zones in order: mcp_unlocker (simple proxy) → mcp_browser (browser)
-  const zones = ['mcp_unlocker', 'mcp_browser'];
+  // Try zone from env (default: mcp_unlocker)
+  const zones = [process.env.BRIGHTDATA_ZONE || 'mcp_unlocker'];
 
   for (const zone of zones) {
     try {
