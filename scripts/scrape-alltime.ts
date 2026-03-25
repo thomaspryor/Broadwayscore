@@ -327,6 +327,12 @@ async function scrapeAllTime(): Promise<void> {
 
           if (match && match.confidence === 'high') {
             const slug = match.show.slug || match.show.id;
+
+            // BWW only covers Broadway — skip West End / Off-Broadway matches
+            if (slug.includes('west-end') || slug.includes('off-broadway') || slug.includes('off-west-end')) {
+              pageSkipped++;
+              continue;
+            }
             const stats: AllTimeStats = {
               gross: parseCurrency(row.gross),
               performances: parseNumber(row.performances),
