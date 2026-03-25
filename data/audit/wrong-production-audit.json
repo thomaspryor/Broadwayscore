@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-25T01:12:48.965Z",
+  "timestamp": "2026-03-25T01:21:59.883Z",
   "stats": {
     "totalReviews": 32470,
-    "alreadyFlagged": 11062,
+    "alreadyFlagged": 11064,
     "dateGuardCatches": 139,
-    "directorMismatch": 947,
-    "tvFilmSignals": 3411,
-    "londonSignals": 1030,
+    "directorMismatch": 948,
+    "tvFilmSignals": 3414,
+    "londonSignals": 1031,
     "offBroadwaySignals": 1011,
     "yearMismatch": 71,
-    "noPublishDate": 6813
+    "noPublishDate": 6812
   },
   "findings": [
     {
@@ -20934,11 +20934,6 @@
           "detail": "Mentions director \"thomas kail\" from hamilton-2015"
         },
         {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        },
-        {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
@@ -20961,6 +20956,25 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hamilton-west-end-2021",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 89,
+      "publishDate": "2017-12-21",
+      "url": "https://www.whatsonstage.com/news/broadway-hit-hamilton-hip-hopping-to-london-in-2017_38504/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"thomas kail\" from hamilton-2015"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -21395,6 +21409,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"paramount\""
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 94,
+      "publishDate": "2016-07-26",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/harry-potter-cursed-child-palace-west-end_41360.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -42968,6 +42996,25 @@
       ]
     },
     {
+      "showId": "six-the-musical-west-end-2021",
+      "file": "whatsonstage--daisy-bowie-sell.json",
+      "score": 88,
+      "publishDate": "2018-09-03",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/six-arts-theatre-review_47499.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 135d before show (2018-09-03 vs 2019-01-16)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
       "showId": "skeleton-crew-2022",
       "file": "variety--ayanna-prescod.json",
       "score": 82,
@@ -55209,6 +55256,25 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "file": "standard--fiona-mountford.json",
+      "score": 72,
+      "publishDate": "2014-09-15",
+      "url": "https://www.standard.co.uk/go/london/theatre/the-play-that-goes-wrong-duchess-theatre-theatre-review-a3678186.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -76769,20 +76835,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 365d before show (2018-01-16 vs 2019-01-16)"
-        }
-      ]
-    },
-    {
-      "showId": "six-the-musical-west-end-2021",
-      "file": "whatsonstage--daisy-bowie-sell.json",
-      "score": 88,
-      "publishDate": "2018-09-03",
-      "url": "https://www.whatsonstage.com/london-theatre/reviews/six-arts-theatre-review_47499.html",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 135d before show (2018-09-03 vs 2019-01-16)"
         }
       ]
     },
