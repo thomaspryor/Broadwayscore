@@ -584,7 +584,16 @@
     "moulin-rouge-2019/newyorker--unknown.json",
     "moulin-rouge-2019/nytimes--ben-brantley.json",
     "moulin-rouge-2019/vulture--unknown.json",
-    "moulin-rouge-2019/theatermania--jesse-green.json"
+    "moulin-rouge-2019/theatermania--jesse-green.json",
+    "moulin-rouge-2019/theatermania--zachary-stewart.json",
+    "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
+    "moulin-rouge-2019/timeout--adam-feldman.json",
+    "moulin-rouge-2019/billboard--unknown.json",
+    "moulin-rouge-2019/rollingstone--unknown.json",
+    "moulin-rouge-2019/washpost--peter-marks.json",
+    "hadestown-2019/hollywood-reporter--david-rooney.json",
+    "hadestown-2019/broadwaynews--charles-isherwood.json",
+    "hadestown-2019/ew--jessica-derschowitz.json"
   ],
   "failed": [
     "giant-2026/cititour--brian-scott-lipton.json",
@@ -686,7 +695,8 @@
     "six-2021/pages-on-stages--mason-pilevsky.json",
     "les-miserables-west-end-2021/daily-mail--patrick-marmion.json",
     "les-miserables-west-end-2021/the-express--neil-norman.json",
-    "moulin-rouge-2019/wsj--unknown.json"
+    "moulin-rouge-2019/wsj--unknown.json",
+    "hadestown-2019/newyorker--hilton-als.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1165,7 +1175,13 @@
       "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json",
       "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json",
       "little-shop-of-horrors-off-broadway-2019/nysr--melissa-rose-bernardo.json",
-      "moulin-rouge-2019/theatermania--jesse-green.json"
+      "moulin-rouge-2019/theatermania--jesse-green.json",
+      "moulin-rouge-2019/theatermania--zachary-stewart.json",
+      "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
+      "moulin-rouge-2019/timeout--adam-feldman.json",
+      "moulin-rouge-2019/washpost--peter-marks.json",
+      "hadestown-2019/broadwaynews--charles-isherwood.json",
+      "hadestown-2019/ew--jessica-derschowitz.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
@@ -1221,7 +1237,9 @@
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
       "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
-      "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json"
+      "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
+      "data/review-texts/hadestown-2019/hollywood-reporter--david-rooney.json",
+      "hadestown-2019/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [
       "giant-2026/nypost--unknown.json"
@@ -1351,11 +1369,13 @@
       "les-miserables-west-end-2021/thestage--matthew-hemley.json",
       "moulin-rouge-2019/newyorker--unknown.json",
       "moulin-rouge-2019/nytimes--ben-brantley.json",
-      "moulin-rouge-2019/vulture--unknown.json"
+      "moulin-rouge-2019/vulture--unknown.json",
+      "moulin-rouge-2019/billboard--unknown.json",
+      "moulin-rouge-2019/rollingstone--unknown.json"
     ]
   },
   "startTime": "2026-03-24T17:31:44.264Z",
-  "lastProcessed": "moulin-rouge-2019/theatermania--jesse-green.json",
+  "lastProcessed": "hadestown-2019/ew--jessica-derschowitz.json",
   "log": [
     {
       "t": "2026-03-24T17:34:00.298Z",
@@ -1620,6 +1640,17 @@
       "t": "2026-03-25T00:53:31.391Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-25T00:55:24.998Z",
+      "event": "bb-session",
+      "session": "487164a0",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-25T00:55:26.271Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
