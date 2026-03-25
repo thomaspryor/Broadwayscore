@@ -50,7 +50,12 @@
     "wicked-2003/broadwayworld--linda-hodges.json",
     "wicked-2003/broadwayworld--lynn-beaver.json",
     "wicked-2003/broadwayworld--marriage-matinee.json",
-    "wicked-2003/broadwayworld--tyler-hinton.json"
+    "wicked-2003/broadwayworld--tyler-hinton.json",
+    "grace-pervades-west-end-2026/thestage--unknown.json",
+    "sweetmeats-west-end-2026/standard--maya-chandran.json",
+    "the-other-place-off-broadway-2026/wsj--unknown.json",
+    "bug-2026/playbill--logan-culwell-block.json",
+    "all-out-2025/nytg--gillian-russo.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -94,7 +99,12 @@
     "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
     "book-of-mormon-2011/ap--mark-kennedy.json",
-    "the-lion-king-west-end-2021/thestage--unknown.json"
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "the-lion-king-1997/timeout--adam-feldman.json",
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "man-to-man-west-end-2026/stagebuddy--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/daily-mail--robert-gore-langton.json",
+    "high-noon-west-end-2025/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -128,7 +138,10 @@
       "wicked-2003/broadwayworld--linda-hodges.json",
       "wicked-2003/broadwayworld--lynn-beaver.json",
       "wicked-2003/broadwayworld--marriage-matinee.json",
-      "wicked-2003/broadwayworld--tyler-hinton.json"
+      "wicked-2003/broadwayworld--tyler-hinton.json",
+      "sweetmeats-west-end-2026/standard--maya-chandran.json",
+      "bug-2026/playbill--logan-culwell-block.json",
+      "all-out-2025/nytg--gillian-russo.json"
     ],
     "amp": [],
     "browserbase": [
@@ -144,7 +157,8 @@
       "imitation-of-life-off-broadway-2026/theatermania--david-gordon.json",
       "the-emporium-off-broadway-2025/theatermania--linda-buchwald.json",
       "giant-2026/wsj--unknown.json",
-      "giant-2026/talkinbroadway--unknown.json"
+      "giant-2026/talkinbroadway--unknown.json",
+      "the-other-place-off-broadway-2026/wsj--unknown.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -161,11 +175,12 @@
       "wicked-2003/broadwayworld--courtney-symes.json",
       "wicked-2003/broadwayworld--david-copney.json",
       "wicked-2003/broadwayworld--katrina-fageol.json",
-      "wicked-2003/broadwayworld--lauren-gienow.json"
+      "wicked-2003/broadwayworld--lauren-gienow.json",
+      "grace-pervades-west-end-2026/thestage--unknown.json"
     ]
   },
   "startTime": "2026-03-25T09:08:12.319Z",
-  "lastProcessed": "the-lion-king-west-end-2021/thestage--unknown.json",
+  "lastProcessed": "all-out-2025/nytg--gillian-russo.json",
   "log": [
     {
       "t": "2026-03-25T09:10:15.724Z",
@@ -206,6 +221,17 @@
       "t": "2026-03-25T09:28:38.189Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-25T09:39:27.908Z",
+      "event": "bb-session",
+      "session": "22ce39f4",
+      "url": "https://www.wsj.com/articles/the-other-place-review-greek-roots-naturalistic-sur"
+    },
+    {
+      "t": "2026-03-25T09:39:29.253Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
