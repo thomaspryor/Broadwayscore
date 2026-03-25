@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-03-25T02:11:27.552Z",
+  "timestamp": "2026-03-25T02:28:21.919Z",
   "stats": {
     "totalReviews": 32470,
     "alreadyFlagged": 11066,
     "dateGuardCatches": 139,
     "directorMismatch": 951,
-    "tvFilmSignals": 3423,
+    "tvFilmSignals": 3425,
     "londonSignals": 1033,
     "offBroadwaySignals": 1008,
     "yearMismatch": 71,
@@ -46999,6 +46999,34 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweetmeats-west-end-2026",
+      "file": "artsdesk--aleks-sierz.json",
+      "score": 78,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/sweetmeats-bush-theatre-review-heartwarming-and-gently-beautiful",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "sweetmeats-west-end-2026",
+      "file": "whatsonstage--rachel-agyekum.json",
+      "score": 72,
+      "publishDate": "2026-02-16",
+      "url": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/sweetmeats_1699551/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
