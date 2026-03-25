@@ -216,7 +216,7 @@ export default function BestValuePage() {
 
   // Get shows with any discount option, sorted by cheapest price
   const showsWithDiscounts = allShows
-    .filter(show => show.status === 'open')
+    .filter(show => show.status === 'open' || show.status === 'previews')
     .map(show => {
       const discountData = getLotteryRush(show.id);
       if (!discountData) return null;

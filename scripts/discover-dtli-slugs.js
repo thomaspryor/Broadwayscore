@@ -370,6 +370,11 @@ async function main() {
     existingReverse.set(showId, dtliSlug);
   }
 
+  // Collect ALL candidate slugs per show before picking the best one.
+  // This prevents "first wins" bias where the bare slug (e.g. "giant") locks out
+  // the correct revival slug (e.g. "giant-2") for shows that are revivals.
+  const candidatesByShow = {}; // showId → [{ dtliSlug, ...match }]
+
   for (const dtliSlug of uniqueSlugs) {
     // Skip if already mapped (unless --force)
     const alreadyMapped = Object.values(slugMap.shows).includes(dtliSlug);
@@ -380,17 +385,50 @@ async function main() {
 
     const match = matchDtliSlug(dtliSlug, indices);
     if (match) {
-      // Don't overwrite high-confidence existing mappings with low-confidence new ones
-      if (existingReverse.has(match.showId) && !FORCE) {
-        skippedExisting++;
-        continue;
-      }
-      allMatches[match.showId] = { dtliSlug, ...match };
-      newMatches++;
+      if (!candidatesByShow[match.showId]) candidatesByShow[match.showId] = [];
+      candidatesByShow[match.showId].push({ dtliSlug, ...match });
     } else {
       unmatched++;
       unmatchedSlugs.push(dtliSlug);
     }
+  }
+
+  // Pick the best slug for each show from its candidates.
+  // For revival shows (ID has year suffix like -2026), prefer the DTLI slug with a
+  // numeric suffix (e.g. "giant-2" over "giant") — the suffix indicates production order.
+  // This prevents old-production bare slugs from blocking the correct revival slug.
+  for (const [showId, candidates] of Object.entries(candidatesByShow)) {
+    // Don't overwrite high-confidence existing mappings with low-confidence new ones
+    if (existingReverse.has(showId) && !FORCE) {
+      skippedExisting++;
+      continue;
+    }
+
+    let best = candidates[0];
+    if (candidates.length > 1) {
+      const showYearMatch = showId.match(/-(\d{4})$/);
+      const showYear = showYearMatch ? parseInt(showYearMatch[1]) : null;
+
+      if (showYear) {
+        // Revival show: prefer DTLI slug with numeric suffix; among those, pick the
+        // highest number (most recent production). If no numeric suffix exists, keep bare.
+        const withSuffix = candidates.filter(c => /-\d+$/.test(c.dtliSlug));
+        if (withSuffix.length > 0) {
+          // Pick highest numeric suffix
+          best = withSuffix.sort((a, b) => {
+            const nA = parseInt((a.dtliSlug.match(/-(\d+)$/) || [0, 0])[1]);
+            const nB = parseInt((b.dtliSlug.match(/-(\d+)$/) || [0, 0])[1]);
+            return nB - nA;
+          })[0];
+          if (best.dtliSlug !== candidates[0].dtliSlug) {
+            console.log(`  ⚡ Revival preference: ${showId} → ${best.dtliSlug} (over ${candidates.map(c => c.dtliSlug).filter(s => s !== best.dtliSlug).join(', ')})`);
+          }
+        }
+      }
+    }
+
+    allMatches[showId] = best;
+    newMatches++;
   }
 
   console.log(`\nResults:`);

@@ -190,7 +190,7 @@ export default function RushPage() {
 
   // Get shows with rush data, sorted by rush price (cheapest first)
   const showsWithRush = allShows
-    .filter(show => show.status === 'open' || show.status === 'preview')
+    .filter(show => show.status === 'open' || show.status === 'previews')
     .map(show => ({
       show,
       rushData: getLotteryRush(show.id),
