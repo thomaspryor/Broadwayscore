@@ -91,14 +91,15 @@ async function discoverShows() {
     throw new Error(`Broadway.com /shows/ returned ${status}`);
   }
 
-  // If listing page is bot-challenged, retry via shared scraper (ScrapingBee → Bright Data → Playwright)
+  // If listing page is bot-challenged, retry via shared scraper (Playwright → Bright Data → ScrapingBee)
   if (isBotChallenge(html)) {
     console.log('  Bot challenge on listing page, trying scraper fallback chain...');
-    const scraperHtml = await fetchPage('https://www.broadway.com/shows/', { renderJs: true });
-    if (scraperHtml && scraperHtml.length > 10000 && !isBotChallenge(scraperHtml)) {
+    const result = await fetchPage('https://www.broadway.com/shows/', { renderJs: true });
+    const scraperHtml = result?.content || '';
+    if (scraperHtml.length > 10000 && !isBotChallenge(scraperHtml)) {
       html = scraperHtml;
     } else {
-      console.error(`  Scraper fallback failed for listing page (${scraperHtml?.length || 0} bytes)`);
+      console.error(`  Scraper fallback failed for listing page (${scraperHtml.length} bytes)`);
       throw new Error('Broadway.com /shows/ blocked by bot challenge and scraper fallback failed');
     }
   }
@@ -397,15 +398,20 @@ async function main() {
       // If no rating found and page looks like a bot challenge, retry via shared scraper
       if (!rating && isBotChallenge(html)) {
         if (verbose) console.log(`  Bot challenge detected for ${show.id}, trying scraper fallback...`);
-        const scraperHtml = await fetchPage(bc.url, { renderJs: true });
-        if (scraperHtml && !isBotChallenge(scraperHtml)) {
-          rating = extractJsonLdRating(scraperHtml);
-          scrapingBeeUsed++;
-          if (!rating && verbose) {
-            console.log(`  SKIP ${show.id}: no JSON-LD aggregateRating (even via scraper, ${scraperHtml.length} bytes)`);
+        try {
+          const result = await fetchPage(bc.url, { renderJs: true });
+          const scraperHtml = result?.content || '';
+          if (scraperHtml && !isBotChallenge(scraperHtml)) {
+            rating = extractJsonLdRating(scraperHtml);
+            scrapingBeeUsed++;
+            if (!rating && verbose) {
+              console.log(`  SKIP ${show.id}: no JSON-LD aggregateRating (even via scraper, ${scraperHtml.length} bytes)`);
+            }
+          } else if (verbose) {
+            console.log(`  Scraper fallback failed for ${show.id} (${scraperHtml.length} bytes)`);
           }
-        } else if (verbose) {
-          console.log(`  Scraper fallback failed for ${show.id} (${scraperHtml?.length || 0} bytes)`);
+        } catch (e) {
+          if (verbose) console.log(`  Scraper fallback error for ${show.id}: ${e.message}`);
         }
       }
 
