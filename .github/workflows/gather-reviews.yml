@@ -127,7 +127,7 @@ jobs:
           node scripts/collect-outlet-reviews.js \
             --shows "${{ inputs.shows }}" \
             --max-tier "$MAX_TIER" \
-            --max-searches 200
+            --max-searches 30
 
       - name: Push review texts
         if: always()
