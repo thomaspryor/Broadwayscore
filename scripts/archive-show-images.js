@@ -15,9 +15,26 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
+
+// MD5 hashes of known "Coming Soon" placeholder images.
+// Reject these after download to prevent overwriting real art with placeholders.
+const PLACEHOLDER_FILE_HASHES = new Set([
+  'b4d7d1bdb443e0a94e69ac8a5abd6f40', // poster.webp placeholder (19,118 bytes)
+  'ac3ea27f64c633474ad93fd826f614e7', // thumbnail.webp placeholder (11,664 bytes)
+  '4aed489bb69c5c49be3315e3f85b342f', // hero.webp placeholder (28,998 bytes)
+]);
+
+function isPlaceholderFile(filePath) {
+  try {
+    const buf = fs.readFileSync(filePath);
+    const hash = crypto.createHash('md5').update(buf).digest('hex');
+    return PLACEHOLDER_FILE_HASHES.has(hash);
+  } catch { return false; }
+}
 const SOURCES_PATH = path.join(__dirname, '..', 'data', 'image-sources.json');
 
 const FORMATS = ['poster', 'thumbnail', 'hero'];
@@ -229,6 +246,15 @@ async function main() {
 
       try {
         const size = await downloadImage(dlUrl, filepath);
+
+        // Reject known placeholder images — don't let them overwrite real art
+        if (isPlaceholderFile(filepath)) {
+          console.warn(`  ⚠ ${show.title} ${format}: Downloaded image is a "Coming Soon" placeholder — rejecting`);
+          fs.unlinkSync(filepath);
+          totalFailed++;
+          continue;
+        }
+
         show.images[format] = `/images/shows/${show.id}/${format}.${ext}`;
         showDownloaded++;
         totalDownloaded++;

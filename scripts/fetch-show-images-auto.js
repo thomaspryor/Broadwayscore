@@ -1391,6 +1391,11 @@ async function fetchFromGoogleImages(show) {
 
   // Save thumbnail (prefer square, fall back to poster)
   const finalThumbnailBuffer = await compressImage(thumbnailBuffer || posterBuffer, 'thumbnail');
+  const thumbHash = crypto.createHash('md5').update(finalThumbnailBuffer).digest('hex');
+  if (PLACEHOLDER_FILE_HASHES.has(thumbHash)) {
+    console.log(`   ✗ Downloaded thumbnail is a "Coming Soon" placeholder — rejecting`);
+    return null;
+  }
   const thumbnailPath = path.join(showDir, 'thumbnail.jpg');
   fs.writeFileSync(thumbnailPath, finalThumbnailBuffer);
   console.log(`   ✓ Saved thumbnail${thumbnailBuffer ? ' (native square)' : ' (from poster)'}`);
@@ -1399,9 +1404,14 @@ async function fetchFromGoogleImages(show) {
   let posterPath = null;
   if (posterBuffer && posterBuffer !== (thumbnailBuffer || posterBuffer)) {
     const compressedPoster = await compressImage(posterBuffer, 'poster');
-    posterPath = path.join(showDir, 'poster.jpg');
-    fs.writeFileSync(posterPath, compressedPoster);
-    console.log(`   ✓ Saved poster`);
+    const posterHash = crypto.createHash('md5').update(compressedPoster).digest('hex');
+    if (PLACEHOLDER_FILE_HASHES.has(posterHash)) {
+      console.log(`   ✗ Downloaded poster is a "Coming Soon" placeholder — rejecting`);
+    } else {
+      posterPath = path.join(showDir, 'poster.jpg');
+      fs.writeFileSync(posterPath, compressedPoster);
+      console.log(`   ✓ Saved poster`);
+    }
   }
 
   // Build remaining candidates for retry (combine both searches)
