@@ -146,6 +146,32 @@ async function checkScrapingBee() {
   return { name: 'ScrapingBee', status: 'warn', message: `Unexpected status ${res.status}` };
 }
 
+async function checkBrightData() {
+  const token = process.env.BRIGHTDATA_TOKEN;
+  if (!token) return { name: 'Bright Data', status: 'skip', message: 'Token not set' };
+
+  const res = await httpsGet('https://api.brightdata.com/zone?zone=mcp_unlocker', {
+    'Authorization': `Bearer ${token}`,
+  });
+
+  if (res.status === 401 || res.status === 403) {
+    return { name: 'Bright Data', status: 'fail', message: 'Token invalid or unauthorized' };
+  }
+  if (res.status !== 200) {
+    return { name: 'Bright Data', status: 'warn', message: `Unexpected status ${res.status}` };
+  }
+
+  try {
+    const data = JSON.parse(res.body);
+    if (data.disable) {
+      return { name: 'Bright Data', status: 'fail', message: `mcp_unlocker zone disabled: "${data.disable}" — fix via UI before opening night` };
+    }
+    return { name: 'Bright Data', status: 'pass', message: 'mcp_unlocker zone active' };
+  } catch {
+    return { name: 'Bright Data', status: 'warn', message: 'Zone response unparseable' };
+  }
+}
+
 async function checkPrivateRepoPAT() {
   const token = process.env.REVIEW_TEXTS_TOKEN;
   if (!token) return { name: 'Private Repo PAT', status: 'skip', message: 'Token not set' };
@@ -278,6 +304,7 @@ async function main() {
     checkGemini,
     checkOpenRouter,
     checkScrapingBee,
+    checkBrightData,
     checkPrivateRepoPAT,
     checkVercel,
     checkSentry,
