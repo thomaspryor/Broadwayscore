@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-25T05:35:41.447Z",
-  "processed": 1077,
-  "failed": 258,
-  "successRate": "80.7%",
+  "updatedAt": "2026-03-25T05:44:08.029Z",
+  "processed": 1080,
+  "failed": 265,
+  "successRate": "80.3%",
   "tierBreakdown": {
     "playwright": 799,
     "amp": 18,
     "browserbase": 54,
     "directCookies": 1,
-    "scrapingbee": 28,
-    "brightdata": 48,
-    "archiveToday": 95,
+    "scrapingbee": 29,
+    "brightdata": 51,
+    "archiveToday": 98,
     "archive": 176
   },
-  "browserbaseSessions": 22,
+  "browserbaseSessions": 23,
   "recentActivity": [
-    {
-      "t": "2026-03-25T04:52:14.458Z",
-      "event": "bb-session",
-      "session": "eab0ab65",
-      "url": "https://deadline.com/2017/09/mary-jane-review-the-leftovers-carrie-coon-triumphs"
-    },
-    {
-      "t": "2026-03-25T04:52:15.689Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
     {
       "t": "2026-03-25T04:54:32.844Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-25T05:34:10.672Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-25T05:37:04.719Z",
+      "event": "bb-session",
+      "session": "95ed3f45",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/12/09/ohio-state-murders-revie"
+    },
+    {
+      "t": "2026-03-25T05:37:05.933Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
