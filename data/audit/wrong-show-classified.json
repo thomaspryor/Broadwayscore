@@ -1,31 +1,14 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-25T21:21:25.891Z",
+    "generatedAt": "2026-03-25T21:38:47.334Z",
     "description": "LLM-classified wrong-show results from title-mention guard candidates",
-    "total": 2,
-    "classified": 2,
+    "total": 0,
+    "classified": 0,
     "wrongShow": 0,
-    "correct": 2,
+    "correct": 0,
     "uncertain": 0,
     "errors": 0,
     "applied": 0
   },
-  "results": [
-    {
-      "showId": "romeo-and-juliet-2013",
-      "showTitle": "Romeo and Juliet",
-      "file": "huffpost--steven-suskin.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review discusses the 2013 Broadway production of Romeo and Juliet, mentioning the Richard Rodgers Theatre, Orlando Bloom as Romeo, and the director David Leveaux."
-    },
-    {
-      "showId": "the-trip-to-bountiful-2013",
-      "showTitle": "The Trip to Bountiful",
-      "file": "ny1--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"The Trip To Bountiful\" and discusses the plot, cast (Cicely Tyson, Condola Rashad, Tom Wopat, Vanessa Williams), and director (Michael Wilson)."
-    }
-  ]
+  "results": []
 }

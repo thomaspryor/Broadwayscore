@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-25T21:35:07.707Z",
+  "timestamp": "2026-03-25T21:43:31.042Z",
   "stats": {
     "totalReviews": 32489,
-    "alreadyFlagged": 11135,
+    "alreadyFlagged": 11137,
     "dateGuardCatches": 141,
     "directorMismatch": 956,
-    "tvFilmSignals": 3451,
+    "tvFilmSignals": 3452,
     "londonSignals": 1044,
     "offBroadwaySignals": 1009,
     "yearMismatch": 71,
-    "noPublishDate": 6731
+    "noPublishDate": 6730
   },
   "findings": [
     {
@@ -48482,6 +48482,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "the-anarchist-2012",
+      "file": "vulture--jesse-green.json",
+      "score": 42,
+      "publishDate": "December 3, 2012",
+      "url": "https://www.vulture.com/2012/12/theater-review-the-anarchist.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
