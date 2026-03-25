@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-03-25T10:17:02.085Z",
+  "timestamp": "2026-03-25T10:34:25.197Z",
   "stats": {
     "totalReviews": 32481,
-    "alreadyFlagged": 11112,
+    "alreadyFlagged": 11110,
     "dateGuardCatches": 139,
     "directorMismatch": 953,
-    "tvFilmSignals": 3432,
+    "tvFilmSignals": 3434,
     "londonSignals": 1037,
-    "offBroadwaySignals": 1009,
+    "offBroadwaySignals": 1010,
     "yearMismatch": 71,
     "noPublishDate": 6764
   },
@@ -56381,6 +56381,20 @@
     },
     {
       "showId": "the-roommate-2024",
+      "file": "variety--charles-isherwood.json",
+      "score": 76,
+      "publishDate": "September 13, 2024",
+      "url": "https://variety.com/2024/legit/reviews/the-roommate-review-broadway-mia-farrow-patti-lupone-1236129890/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-roommate-2024",
       "file": "village-voice--michael-musto.json",
       "score": 72,
       "publishDate": null,
@@ -57588,6 +57602,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-whos-tommy-2024",
+      "file": "variety--charles-isherwood.json",
+      "score": 84,
+      "publishDate": "March 29, 2024",
+      "url": "https://variety.com/2024/legit/reviews/the-whos-tommy-broadway-review-1235953576/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -70203,6 +70231,19 @@
       "score": 82,
       "publishDate": null,
       "url": "https://theaterpizzazz.com/here-lies-love-2/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "here-lies-love-2023",
+      "file": "theatermania--adam-feldman.json",
+      "publishDate": "July 20, 2023",
+      "url": "https://www.theatermania.com/news/review-david-byrne-and-fatboy-slims-here-lies-love-is-the-party-to-end-all-parties_1708759/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
