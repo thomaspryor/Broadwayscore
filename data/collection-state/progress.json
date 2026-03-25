@@ -531,7 +531,17 @@
     "a-delicate-balance-2014/wsj--terry-teachout.json",
     "a-delicate-balance-2014/talkinbroadway--matthew-murray.json",
     "a-mirrored-monet-west-end-2026/variety--unknown.json",
-    "a-mirrored-monet-west-end-2026/thestage--unknown.json"
+    "a-mirrored-monet-west-end-2026/thestage--unknown.json",
+    "inter-alia-west-end-2026/thestage--sam-marlowe.json",
+    "a-mirrored-monet-west-end-2026/variety--brent-lang.json",
+    "a-mirrored-monet-west-end-2026/thestage--unknown.json",
+    "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "oh-mary-west-end-2025/standard--nick-curtis.json",
+    "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json",
+    "two-strangers-bway-2025/guardian--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -640,7 +650,8 @@
       "spring-awakening-2015/hollywood-reporter--david-rooney.json",
       "data/review-texts/teeth-n-smiles-west-end-2026/variety--unknown.json",
       "teeth-n-smiles-west-end-2026/variety--unknown.json",
-      "data/review-texts/a-mirrored-monet-west-end-2026/variety--unknown.json"
+      "data/review-texts/a-mirrored-monet-west-end-2026/variety--unknown.json",
+      "data/review-texts/a-mirrored-monet-west-end-2026/variety--brent-lang.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -830,12 +841,13 @@
       "data/review-texts/constellations-2015/northjerseycom--robert-feldberg.json",
       "data/review-texts/the-elephant-man-2014/ap--unknown.json",
       "data/review-texts/a-delicate-balance-2014/talkinbroadway--matthew-murray.json",
+      "data/review-texts/a-mirrored-monet-west-end-2026/thestage--unknown.json",
       "data/review-texts/a-mirrored-monet-west-end-2026/thestage--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-03-25T09:08:12.319Z",
-  "lastProcessed": "a-mirrored-monet-west-end-2026/whatsonstage--unknown.json",
+  "lastProcessed": "two-strangers-bway-2025/guardian--unknown.json",
   "log": [
     {
       "t": "2026-03-25T09:10:15.724Z",
@@ -1153,6 +1165,28 @@
       "event": "bb-session",
       "session": "de98f1a4",
       "url": "https://variety.com/2026/legit/news/jojo-broadway-chess-lea-michele-joanna-leves"
+    },
+    {
+      "t": "2026-03-25T22:04:02.693Z",
+      "event": "bb-session",
+      "session": "b3d9625d",
+      "url": "https://variety.com/2026/legit/news/jojo-broadway-chess-lea-michele-joanna-leves"
+    },
+    {
+      "t": "2026-03-25T22:04:03.911Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-25T22:05:35.092Z",
+      "event": "bb-session",
+      "session": "455446b9",
+      "url": "https://www.thestage.co.uk/reviews/a-mirrored-monet-review-charing-cross-theatre"
+    },
+    {
+      "t": "2026-03-25T22:05:36.246Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
