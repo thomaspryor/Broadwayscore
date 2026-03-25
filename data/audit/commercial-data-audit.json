@@ -1,70 +1,92 @@
 {
   "_meta": {
     "description": "Commercial data audit report",
-    "generatedAt": "2026-03-25T14:29:41.521Z",
+    "generatedAt": "2026-03-25T17:02:08.669Z",
     "scriptVersion": "1.0.0"
   },
   "summary": {
-    "totalEntries": 131,
+    "totalEntries": 134,
     "totalShowsInShowsJson": 2408,
     "matchStats": {
-      "matchedBySlug": 131,
-      "matchedById": 0,
-      "orphaned": 0
+      "matchedBySlug": 130,
+      "matchedById": 1,
+      "orphaned": 3
     },
     "designationDistribution": {
       "Miracle": 9,
       "Windfall": 19,
       "Trickle": 3,
-      "Fizzle": 22,
+      "Fizzle": 21,
       "Flop": 34,
       "Easy Winner": 15,
-      "TBD": 16,
+      "TBD": 20,
       "Nonprofit": 11,
       "Tour Stop": 2
     },
     "recoupmentStats": {
-      "recouped": 45,
-      "notRecouped": 75,
+      "recouped": 46,
+      "notRecouped": 77,
       "nullOrMissing": 11
     },
     "dataCompleteness": {
-      "hasCapitalization": 100,
-      "hasWeeklyRunningCost": 81,
+      "hasCapitalization": 101,
+      "hasWeeklyRunningCost": 82,
       "hasCostMethodology": 105,
       "hasSources": 69,
       "hasDeepResearch": 92
     },
     "openShowCoverage": {
       "totalOpenPreviewsShows": 207,
-      "withCommercialData": 34,
-      "withoutCommercialData": 173,
+      "withCommercialData": 33,
+      "withoutCommercialData": 174,
       "coveragePct": 16
     },
     "issuesSummary": {
-      "total": 238,
+      "total": 262,
       "bySeverity": {
-        "high": 1,
-        "medium": 0,
-        "low": 237
+        "high": 3,
+        "medium": 3,
+        "low": 256
       },
       "byType": {
-        "designation-logic": 1,
-        "source-quality": 46,
+        "orphan-entry": 3,
+        "id-mismatch": 1,
+        "source-quality": 47,
         "financial-sanity": 1,
         "methodology": 8,
+        "closed-show-tbd": 1,
         "nonprofit-classification": 8,
         "recoupment-pct": 1,
-        "coverage-gap": 173
+        "coverage-gap": 174,
+        "deprecated-field": 17,
+        "recoupment-citation": 1
       }
     }
   },
   "issues": [
     {
-      "type": "designation-logic",
+      "type": "orphan-entry",
       "severity": "high",
-      "showId": "just-in-time",
-      "detail": "recouped=false but designation is \"Windfall\". Windfall implies the show recouped its investment."
+      "showId": "moulin-rouge-west-end",
+      "detail": "Commercial key \"moulin-rouge-west-end\" not found in shows.json (neither as slug nor ID). Title in commercial: \"TBD\"."
+    },
+    {
+      "type": "id-mismatch",
+      "severity": "medium",
+      "showId": "death-of-a-salesman-2026",
+      "detail": "Commercial key \"death-of-a-salesman-2026\" matches show ID but not slug. Show slug is \"death-of-a-salesman\". Consider renaming the key to match the slug."
+    },
+    {
+      "type": "orphan-entry",
+      "severity": "high",
+      "showId": "the-little-dog-laughed-2026",
+      "detail": "Commercial key \"the-little-dog-laughed-2026\" not found in shows.json (neither as slug nor ID). Title in commercial: \"TBD\"."
+    },
+    {
+      "type": "orphan-entry",
+      "severity": "high",
+      "showId": "cats-the-jellicle-ball-broadway",
+      "detail": "Commercial key \"cats-the-jellicle-ball-broadway\" not found in shows.json (neither as slug nor ID). Title in commercial: \"TBD\"."
     },
     {
       "type": "source-quality",
@@ -343,6 +365,12 @@
       "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
     },
     {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "cats-the-jellicle-ball-broadway",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
       "type": "financial-sanity",
       "severity": "low",
       "showId": "call-me-izzy",
@@ -395,6 +423,12 @@
       "severity": "low",
       "showId": "once-upon-a-mattress-2024",
       "detail": "Has deepResearch verification but costMethodology is still \"reddit-standard\". Consider upgrading to \"deep-research\"."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "all-out",
+      "detail": "Show is closed (closed 17 days ago on 2026-03-08) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "nonprofit-classification",
@@ -485,6 +519,12 @@
       "severity": "low",
       "showId": "titanique",
       "detail": "Open/previews show \"Titanique\" at St. James Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "death-of-a-salesman",
+      "detail": "Open/previews show \"Death of a Salesman\" at Winter Garden Theatre has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1487,6 +1527,114 @@
       "severity": "low",
       "showId": "hito-no-chikara-the-power-of-human-strength-west-end",
       "detail": "Open/previews show \"Hito no Chikara - The Power of Human Strength\" at Peacock Theatre has no commercial data entry."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "hamilton",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 10). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "wicked",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 113). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "chicago",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 19). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "book-of-mormon",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 36). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "hadestown",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 30). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "mj",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 68). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "moulin-rouge",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 173). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "and-juliet",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 83). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "stereophonic",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 45). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "oh-mary",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 19). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "the-outsiders",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 89). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "aladdin",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 38). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "mamma-mia-2001",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 28). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "art-2025",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 13). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "othello-2025",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 9). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "glengarry-glen-ross-2025",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 9). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "waiting-for-godot-2025",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 8). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "recoupment-citation",
+      "severity": "medium",
+      "showId": "just-in-time",
+      "detail": "recouped=true but no trade press citation found (no recoupedSource, no trade/sec sources, and deepResearch does not verify \"recouped\")."
     }
   ]
 }

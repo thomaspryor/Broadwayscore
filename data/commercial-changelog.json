@@ -1,5 +1,80 @@
 [
   {
+    "date": "2026-03-25",
+    "timestamp": "2026-03-25T17:02:08.105Z",
+    "changesApplied": 2,
+    "changesFlagged": 2,
+    "changesSkipped": 0,
+    "deepResearchConflicts": 2,
+    "newEntries": 1,
+    "shadowDisagreements": 36,
+    "applied": [
+      {
+        "slug": "just-in-time",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": true,
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis indicates 'recoupment imminent' with 80-100% estimated recoupment and $1.8M+ weekly grosses against $600K costs"
+      },
+      {
+        "slug": "just-in-time",
+        "field": "recoupedDate",
+        "oldValue": null,
+        "newValue": "2026-03",
+        "confidence": "medium",
+        "source": "Section C: Based on 80-100% recoupment estimate and current exceptional grosses of $1.8M+ weekly"
+      }
+    ],
+    "flagged": [
+      {
+        "slug": "just-in-time",
+        "field": "designation",
+        "newValue": "Windfall",
+        "flagReason": "Designation upgrade between non-TBD categories requires manual review"
+      },
+      {
+        "slug": "two-strangers",
+        "field": "estimatedRecoupmentPct",
+        "newValue": [
+          10,
+          20
+        ],
+        "flagReason": "Sources disagree"
+      }
+    ],
+    "blocked": [
+      {
+        "slug": "operation-mincemeat",
+        "field": "estimatedRecoupmentPct",
+        "verifiedValue": [
+          0,
+          20
+        ],
+        "proposedValue": [
+          25,
+          35
+        ],
+        "severity": "high",
+        "discrepancy": "verified 0-20%, proposed 25-35% (20pt difference)"
+      },
+      {
+        "slug": "chess",
+        "field": "estimatedRecoupmentPct",
+        "verifiedValue": [
+          10,
+          20
+        ],
+        "proposedValue": [
+          30,
+          50
+        ],
+        "severity": "high",
+        "discrepancy": "verified 10-20%, proposed 30-50% (25pt difference)"
+      }
+    ]
+  },
+  {
     "date": "2026-03-18",
     "timestamp": "2026-03-18T16:56:50.322Z",
     "changesApplied": 2,
