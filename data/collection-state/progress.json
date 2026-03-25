@@ -1022,7 +1022,13 @@
     "yellow-face-2024/guardian--adrian-horton.json",
     "yellow-face-2024/theatermania--charles-isherwood.json",
     "the-hills-of-california-2024/whatsonstage--sarah-crompton.json",
-    "cats-the-jellicle-ball-off-broadway-2024/timeout--adam-feldman.json"
+    "cats-the-jellicle-ball-off-broadway-2024/timeout--adam-feldman.json",
+    "cats-the-jellicle-ball-off-broadway-2024/billboard--joe-lynch.json",
+    "home-2024/variety--lexi-carson.json",
+    "illinoise-2024/nytimes--unknown.json",
+    "illinoise-2024/timeout--adam-feldman.json",
+    "uncle-vanya-2024/deadline--greg-evans.json",
+    "illinoise-2024/theatermania--jesse-green.json"
   ],
   "failed": [
     "giant-2026/cititour--brian-scott-lipton.json",
@@ -1246,7 +1252,11 @@
     "mcneal-2024/talkinbroadway--matthew-murray.json",
     "the-hills-of-california-2024/times-uk--clive-davis.json",
     "the-roommate-2024/wsj--charles-isherwood.json",
-    "cats-the-jellicle-ball-off-broadway-2024/wsj--unknown.json"
+    "cats-the-jellicle-ball-off-broadway-2024/wsj--unknown.json",
+    "mother-play-2024/washpost--peter-marks.json",
+    "illinoise-2024/washpost--peter-marks.json",
+    "illinoise-2024/usatoday--david-rooney.json",
+    "mary-jane-2024/washpost--peter-marks.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2096,7 +2106,11 @@
       "data/review-texts/purpose-2025/deadline--greg-evans.json",
       "purpose-2025/deadline--greg-evans.json",
       "data/review-texts/redwood-2025/deadline--greg-evans.json",
-      "redwood-2025/deadline--greg-evans.json"
+      "redwood-2025/deadline--greg-evans.json",
+      "data/review-texts/home-2024/variety--lexi-carson.json",
+      "home-2024/variety--lexi-carson.json",
+      "data/review-texts/uncle-vanya-2024/deadline--greg-evans.json",
+      "uncle-vanya-2024/deadline--greg-evans.json"
     ],
     "directCookies": [
       "giant-2026/nypost--unknown.json"
@@ -2153,7 +2167,9 @@
       "a-wonderful-world-the-louis-armstrong-musical-2024/theatermania--david-gordon.json",
       "romeo-juliet-2024/theatermania--jesse-green.json",
       "left-on-tenth-2024/theatermania--jesse-green.json",
-      "yellow-face-2024/theatermania--charles-isherwood.json"
+      "yellow-face-2024/theatermania--charles-isherwood.json",
+      "cats-the-jellicle-ball-off-broadway-2024/billboard--joe-lynch.json",
+      "illinoise-2024/theatermania--jesse-green.json"
     ],
     "archiveToday": [
       "data/review-texts/giant-2026/cititour--brian-scott-lipton.json",
@@ -2220,7 +2236,10 @@
       "data/review-texts/cult-of-love-2024/talkinbroadway--matthew-murray.json",
       "data/review-texts/left-on-tenth-2024/washpost--peter-marks.json",
       "data/review-texts/our-town-2024/usatoday--charles-isherwood.json",
-      "data/review-texts/mcneal-2024/talkinbroadway--matthew-murray.json"
+      "data/review-texts/mcneal-2024/talkinbroadway--matthew-murray.json",
+      "data/review-texts/mother-play-2024/washpost--peter-marks.json",
+      "data/review-texts/illinoise-2024/washpost--peter-marks.json",
+      "data/review-texts/mary-jane-2024/washpost--peter-marks.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -2394,11 +2413,13 @@
       "call-me-izzy-2025/newyorker--helen-shaw.json",
       "dead-outlaw-2025/ap--mark-kennedy.json",
       "real-women-have-curves-2025/ap--fernanda-figueroa.json",
-      "left-on-tenth-2024/nytimes--laura-collins-hughes.json"
+      "left-on-tenth-2024/nytimes--laura-collins-hughes.json",
+      "illinoise-2024/nytimes--unknown.json",
+      "illinoise-2024/timeout--adam-feldman.json"
     ]
   },
   "startTime": "2026-03-24T17:31:44.264Z",
-  "lastProcessed": "cats-the-jellicle-ball-off-broadway-2024/timeout--adam-feldman.json",
+  "lastProcessed": "mary-jane-2024/washpost--peter-marks.json",
   "log": [
     {
       "t": "2026-03-24T17:34:00.298Z",
@@ -2751,6 +2772,61 @@
       "t": "2026-03-25T04:45:06.972Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-25T04:47:26.830Z",
+      "event": "bb-session",
+      "session": "e43ab0e9",
+      "url": "https://variety.com/2024/scene/news/broadway-home-opening-1236025088/"
+    },
+    {
+      "t": "2026-03-25T04:47:28.013Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-25T04:48:36.498Z",
+      "event": "bb-session",
+      "session": "417bbbce",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/04/16/mother-play-review-broad"
+    },
+    {
+      "t": "2026-03-25T04:48:37.664Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-25T04:49:37.088Z",
+      "event": "bb-session",
+      "session": "8413b27c",
+      "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/"
+    },
+    {
+      "t": "2026-03-25T04:49:38.513Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-25T04:50:20.930Z",
+      "event": "bb-session",
+      "session": "98da68d2",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/04/26/illinoise-broadway-revie"
+    },
+    {
+      "t": "2026-03-25T04:50:22.162Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-25T04:51:55.393Z",
+      "event": "bb-session",
+      "session": "5543805e",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/05/02/mary-jane-broadway-revie"
+    },
+    {
+      "t": "2026-03-25T04:51:56.744Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
