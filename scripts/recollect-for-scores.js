@@ -109,9 +109,72 @@ if (fs.existsSync(envPath)) {
 }
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 
-let fetchUrl;
 let _browser;
 let _context;
+
+async function ensureBrowser() {
+  if (_browser) return;
+  const { chromium } = require('playwright');
+  _browser = await chromium.launch({ headless: true });
+  _context = await _browser.newContext({
+    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+  });
+}
+
+async function fetchUrl(url) {
+  const cookieData = loadCookiesForUrl(url);
+
+  // For paywalled sites, try ScrapingBee with filtered auth cookies
+  if (cookieData && SCRAPINGBEE_KEY) {
+    const { cookies, domain } = cookieData;
+    const pattern = ESSENTIAL_COOKIE_PATTERNS[domain];
+    const filtered = pattern ? cookies.filter(c => pattern.test(c.name)) : cookies;
+    const cookieHeader = filtered.map(c => `${c.name}=${c.value}`).join('; ');
+    if (cookieHeader.length > 0) {
+      try {
+        console.log(`  ScrapingBee: forwarding ${filtered.length}/${cookies.length} cookies (${cookieHeader.length} chars)`);
+        const html = await fetchWithScrapingBee(url, cookieHeader);
+        if (html && html.length > 500) return html;
+        console.log(`  ScrapingBee returned ${html.length} chars, trying Playwright...`);
+      } catch (e) {
+        console.log(`  ScrapingBee failed: ${e.message}, trying Playwright...`);
+      }
+    }
+  }
+
+  // For free outlets, use scraper.js for BD → SB → Playwright fallback chain
+  if (!cookieData) {
+    const { content } = await fetchPageScraper(url);
+    return content;
+  }
+
+  // Playwright fallback for paywalled sites with full cookie set
+  await ensureBrowser();
+  if (cookieData) {
+    const playwrightCookies = cookieData.cookies.map(c => ({
+      name: c.name,
+      value: c.value,
+      domain: c.domain,
+      path: c.path || '/',
+      ...(c.expires ? { expires: c.expires } : {}),
+      httpOnly: c.httpOnly || false,
+      secure: c.secure || false,
+      sameSite: c.sameSite === 'None' ? 'None' : 'Lax',
+    })).filter(c => c.name && c.value && c.domain);
+    try {
+      await _context.addCookies(playwrightCookies);
+    } catch (e) { /* skip */ }
+  }
+
+  const page = await _context.newPage();
+  try {
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.waitForTimeout(2000);
+    return await page.content();
+  } finally {
+    await page.close();
+  }
+}
 
 function fetchWithScrapingBee(url, cookieHeader) {
   return new Promise((resolve, reject) => {
@@ -140,70 +203,6 @@ function fetchWithScrapingBee(url, cookieHeader) {
       });
     }).on('error', reject);
   });
-}
-
-async function initScraper() {
-  const { chromium } = require('playwright');
-  _browser = await chromium.launch({ headless: true });
-  _context = await _browser.newContext({
-    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-  });
-
-  fetchUrl = async (url) => {
-    const cookieData = loadCookiesForUrl(url);
-
-    // For paywalled sites, try ScrapingBee with filtered auth cookies
-    if (cookieData && SCRAPINGBEE_KEY) {
-      const { cookies, domain } = cookieData;
-      const pattern = ESSENTIAL_COOKIE_PATTERNS[domain];
-      const filtered = pattern ? cookies.filter(c => pattern.test(c.name)) : cookies;
-      const cookieHeader = filtered.map(c => `${c.name}=${c.value}`).join('; ');
-      if (cookieHeader.length > 0) {
-        try {
-          console.log(`  ScrapingBee: forwarding ${filtered.length}/${cookies.length} cookies (${cookieHeader.length} chars)`);
-          const html = await fetchWithScrapingBee(url, cookieHeader);
-          if (html && html.length > 500) return html;
-          console.log(`  ScrapingBee returned ${html.length} chars, trying Playwright...`);
-        } catch (e) {
-          console.log(`  ScrapingBee failed: ${e.message}, trying Playwright...`);
-        }
-      }
-    }
-
-    // For free outlets, use scraper.js for BD → SB → Playwright fallback chain
-    if (!cookieData) {
-      const { content } = await fetchPageScraper(url);
-      return content;
-    }
-
-    // Playwright fallback for paywalled sites with full cookie set
-    if (cookieData) {
-      const playwrightCookies = cookieData.cookies.map(c => ({
-        name: c.name,
-        value: c.value,
-        domain: c.domain,
-        path: c.path || '/',
-        ...(c.expires ? { expires: c.expires } : {}),
-        httpOnly: c.httpOnly || false,
-        secure: c.secure || false,
-        sameSite: c.sameSite === 'None' ? 'None' : 'Lax',
-      })).filter(c => c.name && c.value && c.domain);
-      try {
-        await _context.addCookies(playwrightCookies);
-      } catch (e) { /* skip */ }
-    }
-
-    const page = await _context.newPage();
-    try {
-      await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-      await page.waitForTimeout(2000);
-      return await page.content();
-    } finally {
-      await page.close();
-    }
-  };
-
-  return { browser: _browser, context: _context };
 }
 
 async function main() {
@@ -256,9 +255,6 @@ async function main() {
     console.log('\nUse without --dry-run to fetch and extract.');
     return;
   }
-
-  // Init browser
-  const { browser } = await initScraper();
 
   let extracted = 0;
   let failed = 0;
@@ -316,7 +312,7 @@ async function main() {
     }
   }
 
-  await browser.close();
+  if (_browser) await _browser.close().catch(() => {});
   await cleanupScraper().catch(() => {});
 
   console.log('\n=== SUMMARY ===');

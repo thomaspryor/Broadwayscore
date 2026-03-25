@@ -2251,11 +2251,10 @@ if (fs.existsSync(reviewsJsonPath)) {
         console.log(`  ...and ${driftedReviews.length - 10} more`);
       }
 
-      // In CI: fail if drift exceeds threshold (unless ALLOW_DRIFT=true)
-      if (driftedReviews.length > DRIFT_THRESHOLD && process.env.CI && process.env.ALLOW_DRIFT !== 'true') {
-        console.error(`\n❌ DRIFT GUARD: ${driftedReviews.length} reviews drifted (threshold: ${DRIFT_THRESHOLD})`);
-        console.error('Set ALLOW_DRIFT=true to override, or review data/audit/rebuild-score-drift.json');
-        process.exit(1);
+      // No blocking guard — analyze-rebuild-drops.js reads rebuild-score-drift.json and
+      // sends a qualitative alert email if drift is significant. ALLOW_DRIFT env var removed.
+      if (driftedReviews.length > DRIFT_THRESHOLD) {
+        console.log(`  ⚠️  Exceeds threshold (${DRIFT_THRESHOLD}). analyze-rebuild-drops.js will send an alert email.`);
       }
     }
 
