@@ -7,7 +7,7 @@ import CriticDetailClient from './CriticDetailClient';
 export const revalidate = 43200;
 
 export function generateStaticParams() {
-  return []; // On-demand via ISR — saves ~1,100 pages of build time
+  return getAllCriticSlugs().map(slug => ({ slug }));
 }
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
