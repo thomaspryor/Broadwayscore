@@ -414,6 +414,62 @@ function validateImageFiles(shows) {
 }
 
 // ===========================================
+// PLACEHOLDER IMAGE FILE HASH SCAN
+// ===========================================
+
+function validatePlaceholderImageHashes(shows) {
+  info("Scanning local image files for placeholder hashes...");
+  // Keep in sync with PLACEHOLDER_FILE_HASHES in scripts/fetch-show-images-auto.js
+  const PLACEHOLDER_FILE_HASHES = new Set([
+    "b4d7d1bdb443e0a94e69ac8a5abd6f40", // poster.webp (19,118 bytes) — variant 1 (round-rect glow)
+    "ac3ea27f64c633474ad93fd826f614e7", // thumbnail.webp (11,664 bytes) — variant 1
+    "4aed489bb69c5c49be3315e3f85b342f", // hero.webp (28,998 bytes) — variant 1 (round-rect glow)
+    "52968e9f240e2db8d7523ac053d019fb", // hero.webp (28,808 bytes) — variant 2 (oval glow)
+    "da0408f33ffaff9c63baf108b53b1128", // hero.webp (25,372 bytes) — variant 3 (1440x580 landscape)
+    "9d1b34a4045d176b1856ab38a852d47b", // thumbnail.webp (32,372 bytes) — variant 2 (square format)
+  ]);
+
+  const IMAGES_DIR = path.join(__dirname, "..", "public", "images", "shows");
+  const openStatuses = new Set(["open", "previews"]);
+  const showStatusMap = new Map(shows.map(s => [s.id, s.status]));
+
+  let knownPlaceholders = 0;
+
+  if (!fs.existsSync(IMAGES_DIR)) {
+    ok("No local images directory (skip)");
+    return;
+  }
+
+  for (const showDir of fs.readdirSync(IMAGES_DIR)) {
+    const dirPath = path.join(IMAGES_DIR, showDir);
+    if (!fs.statSync(dirPath).isDirectory()) continue;
+    const status = showStatusMap.get(showDir);
+    if (!status) continue; // orphan dir — not in shows.json, skip
+
+    for (const file of fs.readdirSync(dirPath)) {
+      if (!/\.(webp|jpg|png)$/.test(file)) continue;
+      const filePath = path.join(dirPath, file);
+      let buf;
+      try { buf = fs.readFileSync(filePath); } catch { continue; }
+      const hash = require("crypto").createHash("md5").update(buf).digest("hex");
+
+      if (PLACEHOLDER_FILE_HASHES.has(hash)) {
+        if (openStatuses.has(status)) {
+          error(`"${showDir}" (${status}) has placeholder image ${file} — needs re-fetch`);
+        } else {
+          warn(`"${showDir}" (${status}) has placeholder ${file} — expected for upcoming shows`);
+        }
+        knownPlaceholders++;
+      }
+    }
+  }
+
+  if (knownPlaceholders === 0) {
+    ok("No placeholder images found in open/preview shows");
+  }
+}
+
+// ===========================================
 // SHOW TYPE VALIDATION
 // ===========================================
 
@@ -3166,6 +3222,7 @@ function runValidation() {
   validateSlugs(shows);
   validateImageUrls(shows);
   validateImageFiles(shows);
+  validatePlaceholderImageHashes(shows);
   validateVenueCategory(shows);
   console.log('');
   validateSynopsisQuality(shows);
