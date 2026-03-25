@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-25T10:34:25.197Z",
+  "timestamp": "2026-03-25T10:52:10.836Z",
   "stats": {
     "totalReviews": 32481,
-    "alreadyFlagged": 11110,
+    "alreadyFlagged": 11112,
     "dateGuardCatches": 139,
-    "directorMismatch": 953,
-    "tvFilmSignals": 3434,
+    "directorMismatch": 954,
+    "tvFilmSignals": 3437,
     "londonSignals": 1037,
-    "offBroadwaySignals": 1010,
+    "offBroadwaySignals": 1009,
     "yearMismatch": 71,
-    "noPublishDate": 6764
+    "noPublishDate": 6762
   },
   "findings": [
     {
@@ -6247,19 +6247,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "bad-cinderella-2023",
-      "file": "telegraph--anita-singh.json",
-      "publishDate": "2023-05-11",
-      "url": "https://www.telegraph.co.uk/world-news/2023/05/11/lloyd-webbers-broadway-run-ends-after-bad-cinderella-closes/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -23020,6 +23007,20 @@
       ]
     },
     {
+      "showId": "how-i-learned-to-drive-2022",
+      "file": "variety--peter-marks.json",
+      "score": 81,
+      "publishDate": "April 20, 2022",
+      "url": "https://variety.com/2022/legit/reviews/how-i-learned-to-drive-review-broadway-1235224478/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "how-to-dance-in-ohio-2023",
       "file": "nysr--sandy-macdonald.json",
       "score": 78,
@@ -32303,6 +32304,20 @@
       "score": 82,
       "publishDate": "2022-11-13",
       "url": "https://nystagereview.com/2022/11/13/the-old-man-the-pool-mike-birbiglia-dives-into-middle-age/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "mike-birbiglia-the-old-man-and-the-pool-2022",
+      "file": "variety--jesse-green.json",
+      "score": 82,
+      "publishDate": "November 14, 2022",
+      "url": "https://variety.com/2022/legit/reviews/mike-birbiglia-the-old-man-and-the-pool-review-1235424070/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -49754,6 +49769,20 @@
     },
     {
       "showId": "the-collaboration-2022",
+      "file": "variety--frank-rizzo.json",
+      "score": 80,
+      "publishDate": "December 20, 2022",
+      "url": "https://variety.com/2022/legit/reviews/the-collaboration-review-paul-bettany-jeremy-pope-1235445156/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-collaboration-2022",
       "file": "variety--marilyn-stasio.json",
       "score": 66,
       "publishDate": "December 21, 2022",
@@ -59919,6 +59948,20 @@
     },
     {
       "showId": "walking-with-ghosts-2022",
+      "file": "cititour--brian-scott-lipton.json",
+      "score": 45,
+      "publishDate": null,
+      "url": "https://cititour.com/NYC_Broadway/Walking-With-Ghosts/1103",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "walking-with-ghosts-2022",
       "file": "front-row-center--tulis-mccall.json",
       "score": 25,
       "publishDate": null,
@@ -61214,9 +61257,14 @@
       "showId": "west-side-story-2020",
       "file": "times-uk--jesse-oxfeld.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2020-02-21",
       "url": "https://www.thetimes.co.uk/edition/times2/west-side-story-review-tense-and-angry-a-story-retold-for-our-time-2dbb9qrff",
       "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from west-side-story-2009"
+        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -70242,6 +70290,7 @@
     {
       "showId": "here-lies-love-2023",
       "file": "theatermania--adam-feldman.json",
+      "score": 80,
       "publishDate": "July 20, 2023",
       "url": "https://www.theatermania.com/news/review-david-byrne-and-fatboy-slims-here-lies-love-is-the-party-to-end-all-parties_1708759/",
       "findings": [
@@ -73048,20 +73097,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "macbeth-2022",
-      "file": "thewrap--robert-hofler.json",
-      "score": 58,
-      "publishDate": "April 29, 2022",
-      "url": "https://www.thewrap.com/macbeth-theater-review-ethan-hawke-anne-marie-duff-movie-friendly",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
         }
       ]
     },
