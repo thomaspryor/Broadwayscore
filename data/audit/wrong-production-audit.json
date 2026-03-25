@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-25T04:52:16.828Z",
+  "timestamp": "2026-03-25T05:01:36.608Z",
   "stats": {
     "totalReviews": 32473,
-    "alreadyFlagged": 11068,
+    "alreadyFlagged": 11073,
     "dateGuardCatches": 139,
     "directorMismatch": 951,
     "tvFilmSignals": 3436,
     "londonSignals": 1036,
-    "offBroadwaySignals": 1008,
+    "offBroadwaySignals": 1009,
     "yearMismatch": 71,
-    "noPublishDate": 6807
+    "noPublishDate": 6802
   },
   "findings": [
     {
@@ -70508,6 +70508,20 @@
           "severity": "MEDIUM",
           "detail": "Published 48d before show (March 7, 2024 vs 2024-04-24)"
         },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
+        }
+      ]
+    },
+    {
+      "showId": "illinoise-2024",
+      "file": "nytimes--unknown.json",
+      "score": 87,
+      "publishDate": "April 26, 2024",
+      "url": "https://www.nytimes.com/2024/03/07/theater/illinoise-review-sufjan-stevens-justin-pick.html",
+      "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
