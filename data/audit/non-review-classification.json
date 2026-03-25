@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generatedAt": "2026-03-25T03:01:25.396Z",
+    "generatedAt": "2026-03-25T03:11:40.841Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
@@ -8,20 +8,31 @@
       "inReviewsJson": 15395,
       "skippedExcluded": 71,
       "withFullText": 18,
-      "excerptOnly": 1467,
+      "excerptOnly": 1466,
       "llmClassified": 17,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 0,
+      "nonReviewsFound": 1,
       "uncertainCases": 16,
       "budgetUsed": 0.0018000000000000006,
       "llmCalls": 18,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 13839
+      "skippedAlreadyClassified": 13840
     },
     "calibration": null
   },
-  "nonReviews": [],
+  "nonReviews": [
+    {
+      "file": "high-noon-west-end-2025/standard--nick-curtis.json",
+      "showId": "high-noon-west-end-2025",
+      "outlet": "The London Evening Standard",
+      "outletId": "standard",
+      "contentType": "feature",
+      "confidence": "high",
+      "reasoning": "This article is a travel feature, providing travel inspiration and destination recommendations. It does not contain any review or evaluation of the Broadway show \"High Noon\".",
+      "currentScore": 60
+    }
+  ],
   "uncertainCases": [
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -40,7 +51,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a list of theater-related items and links, suggesting a directory or advertisement rather than a review of a specific show.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
       "currentScore": 82
     },
     {
@@ -50,7 +61,7 @@
       "outletId": "bloomberg",
       "contentType": "news",
       "confidence": "medium",
-      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and its pre-Broadway run, with a brief mention of \"First Date\" only in photo captions. It does not offer a critical evaluation of \"First Date.\"",
+      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in photo captions at the end, making it a news item with images rather than a review of \"First Date.\"",
       "currentScore": 60
     },
     {
@@ -60,7 +71,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain evaluative content about \"Funny Girl\".",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific show. It mentions \"Broadway news updates\" and \"Music album reviews\" which suggests a news or directory type of content.",
       "currentScore": 62
     },
     {
@@ -70,7 +81,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself.",
+      "reasoning": "The article describes the plot and background of the musical 'Groundhog Day' and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
       "currentScore": 81
     },
     {
@@ -80,7 +91,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of various cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of cultural events.",
       "currentScore": 88
     },
     {
@@ -90,7 +101,7 @@
       "outletId": "frequentbusinesstraveler",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and setting of \"Once on This Island\" without offering a critical evaluation or opinion on the quality of the production. It focuses on the story and characters, indicating a preview rather than a review.",
+      "reasoning": "The article describes the plot and setting of \"Once on This Island\" but does not offer a critical evaluation or opinion about the quality of the production. It reads like a pre-opening description of the show.",
       "currentScore": 82
     },
     {
@@ -100,7 +111,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
       "currentScore": 89
     },
     {
@@ -110,7 +121,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
+      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors'. It lacks any evaluative content about the show.",
       "currentScore": 74
     },
     {
@@ -120,7 +131,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of categories or tags related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -130,7 +141,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but it does not offer a critical evaluation or opinion about the quality of the production. It focuses on the show's concept and historical significance.",
       "currentScore": 83
     },
     {
@@ -140,7 +151,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -160,7 +171,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific production.",
+      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific show.",
       "currentScore": 78
     },
     {
@@ -170,7 +181,7 @@
       "outletId": "vulture",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the set design and the playwright's intentions, but does not offer an evaluation or recommendation of the show itself. It's more of a feature about the play's themes and context.",
+      "reasoning": "The article describes the set design and the playwright's intentions, but does not offer an evaluation or recommendation of the show's quality. It reads more like a feature or background piece.",
       "currentScore": 64
     },
     {
@@ -180,13 +191,17 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of links and categories related to theater, rather than a review of a specific production.",
+      "reasoning": "This appears to be a collection of links and categories related to theater, not a review of a specific production.",
       "currentScore": 89
     }
   ],
   "heuristicFlags": [],
-  "reviewsConfirmed": [
-    "giant-2026/cititour--brian-scott-lipton.json"
-  ],
-  "perShowSummary": []
+  "reviewsConfirmed": [],
+  "perShowSummary": [
+    {
+      "showId": "high-noon-west-end-2025",
+      "currentCount": 14,
+      "removed": 1
+    }
+  ]
 }
