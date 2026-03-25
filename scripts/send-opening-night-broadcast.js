@@ -173,15 +173,15 @@ async function main() {
     console.log(`  - ${s.title} (${s.id}) opened ${s.openingDate}`);
   }
 
-  // Filter out already-completed broadcasts (skip in preview mode)
-  // Check BOTH individual show IDs and broadcastKey to prevent double sends
-  // when show combinations change between runs (e.g., new show added mid-night)
-  const pendingShows = SEND_TO ? recentlyOpened : recentlyOpened.filter(s => {
+  // Filter out already-completed broadcasts — applies in BOTH broadcast and preview mode.
+  // In preview mode, there's no reason to keep re-previewing a show whose full broadcast
+  // has already been sent (completed:true). This prevents repeated preview spam when a
+  // newly-opened show with 0 reviews keeps the workflow running alongside a completed show.
+  const pendingShows = recentlyOpened.filter(s => {
     const showId = s.id || s.slug;
-    // Check individual show tracking first (most reliable)
     const individualSent = sentData.shows[showId];
     if (individualSent && individualSent.completed) {
-      console.log(`  Skipping ${s.title} — already broadcast (individual tracking)`);
+      console.log(`  Skipping ${s.title} — already broadcast (completed)`);
       return false;
     }
     return true;

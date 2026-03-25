@@ -154,9 +154,28 @@ jobs:
             // When send_to_all=true (approval dispatch), skip the preview-today dedup check.
             // The preview is expected to have already been sent today — that's the whole point.
             const sendToAll = '${{ inputs.send_to_all }}' === 'true';
+
+            // Load reviews once for readiness pre-check
+            let allReviews = [];
+            try {
+              const rv = JSON.parse(fs.readFileSync('data/reviews.json', 'utf8'));
+              allReviews = Array.isArray(rv) ? rv : (rv.reviews || []);
+            } catch {}
+
             const pending = shows.filter(id => {
               // Always skip if full broadcast already completed
               if (sent[id] && sent[id].completed) return false;
+              // Skip shows with 0 scored reviews — the broadcast script will exit early anyway,
+              // and without this guard the failed attempt triggers gather → rebuild → score →
+              // broadcast again (infinite feedback loop). Re-evaluated each scoring run.
+              // Exception: approval dispatch always proceeds regardless of review count.
+              if (!sendToAll) {
+                const scoredCount = allReviews.filter(r => r.showId === id && r.assignedScore != null).length;
+                if (scoredCount === 0) {
+                  process.stderr.write('Skipping ' + id + ' — 0 scored reviews, not ready\n');
+                  return false;
+                }
+              }
               // Skip if preview already sent today — but NOT in approval/send_to_all mode
               if (!sendToAll) {
                 const previewKeys = Object.keys(sent).filter(k => k.startsWith('preview:') && k.includes(id));
