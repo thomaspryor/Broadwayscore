@@ -624,7 +624,7 @@ jobs:
                 inputs: {
                   market: 'west-end',
                   max_tier: '2',
-                  max_searches: '200'
+                  max_searches: '30'
                 }
               });
               console.log('Triggered WE outlet-based SERP collection');
