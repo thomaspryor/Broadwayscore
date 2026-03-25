@@ -1,0 +1,238 @@
+name: Commercial Weekly Orchestrator
+
+on:
+  schedule:
+    - cron: '0 18 * * 0'  # Sunday 6 PM UTC / 1 PM ET
+  workflow_dispatch:
+    inputs:
+      skip_batch:
+        description: 'Skip batch research step'
+        required: false
+        type: boolean
+        default: false
+      skip_deep_research:
+        description: 'Skip deep research step'
+        required: false
+        type: boolean
+        default: false
+      dry_run:
+        description: 'Dry run (no changes committed)'
+        required: false
+        type: boolean
+        default: false
+      max_shows:
+        description: 'Max shows for deep research'
+        required: false
+        type: number
+        default: 5
+      budget:
+        description: 'Budget for deep research ($)'
+        required: false
+        type: number
+        default: 5
+
+concurrency:
+  group: commercial-weekly
+  cancel-in-progress: false
+
+jobs:
+  batch-research:
+    if: inputs.skip_batch != true
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Install Playwright
+        run: npx playwright install chromium
+
+      - name: Run batch commercial research
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: |
+          ARGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          node scripts/batch-commercial-research.js $ARGS
+        continue-on-error: true
+
+      - name: Commit batch research results
+        if: always() && inputs.dry_run != true
+        run: |
+          git add data/commercial-pending-review.json data/commercial-batch-progress.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No batch research results to commit"
+          else
+            git commit -m "data: Batch commercial research results (pending review)
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+  deep-research:
+    needs: batch-research
+    if: always() && inputs.skip_deep_research != true
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Run deep research
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          ARGS="--all-tbd --queue"
+          ARGS="$ARGS --max-shows=${{ inputs.max_shows || '5' }}"
+          ARGS="$ARGS --budget=${{ inputs.budget || '5' }}"
+          ARGS="$ARGS --model=o4-mini"
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          echo "Running: node scripts/deep-research-commercial.js $ARGS"
+          node scripts/deep-research-commercial.js $ARGS
+
+      - name: Commit deep research results
+        if: always() && inputs.dry_run != true
+        run: |
+          git add data/commercial-pending-review.json data/deep-research-cost-log.json data/deep-research-progress.json data/commercial-research-spend.json data/commercial-research-queue.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No deep research results to commit"
+          else
+            git commit -m "data: Deep research commercial results (pending review)
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+  auto-apply:
+    needs: deep-research
+    if: always() && inputs.dry_run != true
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Auto-apply high-confidence results
+        run: |
+          if [ -f data/commercial-pending-review.json ]; then
+            node scripts/apply-commercial-pending.js --all --min-confidence=high
+          else
+            echo "No pending file — nothing to apply"
+          fi
+        continue-on-error: true
+
+      - name: Run commercial audit
+        run: node scripts/audit-commercial-data.js
+        continue-on-error: true
+
+      - name: Deletion guard for commercial.json
+        if: always()
+        run: |
+          if git diff -- data/commercial.json | grep -c '^-[^-]' > /tmp/deletions.txt 2>/dev/null; then
+            DELETIONS=$(cat /tmp/deletions.txt)
+            echo "Lines removed from commercial.json: $DELETIONS"
+            # Check if show count dropped
+            node -e "
+              const comm = require('./data/commercial.json');
+              const count = Object.keys(comm.shows || {}).length;
+              console.log('Current show count: ' + count);
+              if (count < 120) {
+                console.error('::error::Commercial show count dropped below 120 (' + count + '). Aborting.');
+                process.exit(1);
+              }
+            "
+          fi
+
+      - name: Commit applied data + audit
+        if: always()
+        run: |
+          git add data/commercial-pending-review.json data/audit/commercial-data-audit.json 2>/dev/null || true
+          bash scripts/lib/stage-data-changes.sh
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "data: Auto-apply commercial research + audit
+
+          Weekly orchestrator: applied high-confidence results, updated audit.
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Commercial weekly orchestrator update'
+
+      - name: Dispatch deploy
+        if: always()
+        uses: ./.github/actions/dispatch-deploy
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Commercial Weekly Orchestrator" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f data/audit/commercial-data-audit.json ]; then
+            node -e "
+              const a = require('./data/audit/commercial-data-audit.json');
+              const s = a.summary;
+              console.log('- **Total entries:** ' + s.totalEntries);
+              console.log('- **Open show coverage:** ' + s.openShowCoverage.withCommercialData + '/' + s.openShowCoverage.totalOpenPreviewsShows + ' (' + s.openShowCoverage.coveragePct + '%)');
+              console.log('- **Issues:** ' + s.issuesSummary.total + ' (high: ' + (s.issuesSummary.bySeverity.high || 0) + ')');
+            " >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "Could not parse audit" >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ -f data/commercial-research-spend.json ]; then
+            node -e "
+              const s = require('./data/commercial-research-spend.json');
+              console.log('- **Weekly spend:** \$' + (s.totalSpend || 0).toFixed(2) + ' (' + (s.queries || 0) + ' queries)');
+            " >> $GITHUB_STEP_SUMMARY 2>/dev/null || true
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Commercial Weekly Orchestrator Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

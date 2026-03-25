@@ -13,6 +13,7 @@
  *   --show=SLUG        Apply a single show by slug/ID
  *   --dry-run          Preview without writing
  *   --exclude=SLUG,... Skip specific shows
+ *   --min-confidence=LEVEL  Only apply entries with this confidence or higher (high, medium, all)
  */
 
 const fs = require('fs');
@@ -37,6 +38,20 @@ const DRY_RUN = flags['dry-run'] === true;
 const APPLY_ALL = flags['all'] === true;
 const SINGLE_SHOW = flags['show'] || null;
 const EXCLUDES = flags['exclude'] ? flags['exclude'].split(',') : [];
+const MIN_CONFIDENCE = flags['min-confidence'] || 'all';
+
+const CONFIDENCE_ORDER = { high: 3, medium: 2, low: 1 };
+
+function meetsConfidenceThreshold(entry) {
+  if (MIN_CONFIDENCE === 'all') return true;
+  const entryLevel = CONFIDENCE_ORDER[entry.confidence] || 0;
+  const threshold = CONFIDENCE_ORDER[MIN_CONFIDENCE] || 0;
+  return entryLevel >= threshold;
+}
+
+function hasRecoupedClaim(entry) {
+  return entry.recouped === true || entry._recoupedClaim === true;
+}
 
 function main() {
   if (!fs.existsSync(PENDING_PATH)) {
@@ -84,6 +99,20 @@ function main() {
   for (const showId of showIds) {
     const entry = pending.shows[showId];
     if (!entry) continue;
+
+    // Confidence filter
+    if (!meetsConfidenceThreshold(entry)) {
+      console.log(`  ⏭️  "${showId}" — confidence ${entry.confidence || 'unknown'} below threshold ${MIN_CONFIDENCE}`);
+      skipped++;
+      continue;
+    }
+
+    // Safety: never auto-apply recouped:true without human review
+    if (hasRecoupedClaim(entry) && !SINGLE_SHOW) {
+      console.log(`  🛡️  "${showId}" — has recouped claim, requires manual review (use --show=${showId})`);
+      skipped++;
+      continue;
+    }
 
     if (commercial.shows[showId]) {
       console.log(`  ⏭️  "${showId}" already in commercial.json — skipping`);

@@ -413,8 +413,9 @@ async function researchShow(show, grossesData) {
       return null;
     }
 
-    // Normalize capitalization — Claude sometimes returns in millions (e.g., 13.5 for $13.5M)
-    if (analysis.capitalization != null && analysis.capitalization > 0 && analysis.capitalization < 1000) {
+    // Normalize capitalization — AI sometimes returns in millions (e.g., 13.5 for $13.5M)
+    if (analysis.capitalization != null && analysis.capitalization > 0 && analysis.capitalization < 5000) {
+      console.log(`    ℹ️  Normalizing capitalization: ${analysis.capitalization} -> ${analysis.capitalization * 1e6} (assumed millions)`);
       analysis.capitalization = analysis.capitalization * 1e6;
     }
     if (analysis.weeklyRunningCost != null && analysis.weeklyRunningCost > 0 && analysis.weeklyRunningCost < 10000) {
