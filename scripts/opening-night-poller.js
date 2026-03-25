@@ -16,6 +16,8 @@
  *   node scripts/opening-night-poller.js --show=show-id-2026 --dry-run
  *   node scripts/opening-night-poller.js --show=show-id-2026 --skip-serp
  *   node scripts/opening-night-poller.js --show=show-id-2026 --skip-site-search
+ *   node scripts/opening-night-poller.js --show=show-id-2026 --bww-roundup-url=https://www.broadwayworld.com/article/Review-Roundup-...
+ *   node scripts/opening-night-poller.js --show=show-id-2026 --tb-review-url=https://www.talkinbroadway.com/page/world/giant2026.html
  *
  * Environment Variables:
  *   SCRAPINGBEE_API_KEY - For SERP + JS-rendered site search
@@ -60,6 +62,9 @@ const DRY_RUN = process.argv.includes('--dry-run');
 const SKIP_SERP = process.argv.includes('--skip-serp');
 const SKIP_SITE_SEARCH = process.argv.includes('--skip-site-search');
 const VERBOSE = process.argv.includes('--verbose') || true; // Always verbose for CI logs
+// Escape hatches: bypass SERP discovery when discovery fails (wrong Google result, unindexed page)
+const BWW_ROUNDUP_URL = (process.argv.find(a => a.startsWith('--bww-roundup-url=')) || '').replace('--bww-roundup-url=', '') || '';
+const TB_REVIEW_URL = (process.argv.find(a => a.startsWith('--tb-review-url=')) || '').replace('--tb-review-url=', '') || '';
 
 // Readiness thresholds — market-aware (must match send-opening-night-broadcast.js)
 function getThresholds(market) {
@@ -240,7 +245,10 @@ async function runAggregators(show) {
   if (!isOffBroadway) {
     try {
       console.log('  Checking BWW Review Roundup...');
-      const bww = await searchBWWRoundup(show, year);
+      // Pass runtime override when SERP discovery fails (unindexed page, wrong Google result).
+      // On opening night: use --bww-roundup-url=<url> to bypass discovery entirely.
+      const bwwOptions = BWW_ROUNDUP_URL ? { overrideUrl: BWW_ROUNDUP_URL } : {};
+      const bww = await searchBWWRoundup(show, year, bwwOptions);
       if (bww && bww.html) {
         const reviews = extractBWWRoundupReviews(bww.html, show.id, bww.url);
         console.log(`  BWW RR: ${reviews.length} reviews found`);
@@ -250,6 +258,77 @@ async function runAggregators(show) {
       }
     } catch (err) {
       console.log(`  BWW RR error: ${err.message}`);
+    }
+  }
+
+  // 1c2. Talkin' Broadway direct URL (Broadway only, not off-Broadway)
+  // SERP returns forum posts (All That Chat) for TB instead of the actual review.
+  // TB URL pattern: https://www.talkinbroadway.com/page/world/{titleslug}{year}.html
+  // Use --tb-review-url=<url> to override if constructed URL fails.
+  if (!isOffBroadway && !isWestEnd) {
+    try {
+      const tbSlug = show.title.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const tbYear = year;
+      const tbConstructedUrl = `https://www.talkinbroadway.com/page/world/${tbSlug}${tbYear}.html`;
+      const tbUrl = TB_REVIEW_URL || tbConstructedUrl;
+
+      // Check if we already have a TB review file for this show
+      const showReviewDir = path.join(REVIEW_TEXTS_DIR, show.id);
+      let hasTbReview = false;
+      if (fs.existsSync(showReviewDir)) {
+        const files = fs.readdirSync(showReviewDir);
+        hasTbReview = files.some(f => f.startsWith('talkinbroadway--'));
+      }
+
+      if (hasTbReview) {
+        console.log('  Talkin\' Broadway: already have review file, skipping');
+      } else {
+        console.log(`  Checking Talkin' Broadway: ${tbUrl}`);
+        // Try plain HTTPS first — TB serves HTML on direct article URLs
+        const tbResult = await new Promise((resolve) => {
+          const req = require('https').get(tbUrl, {
+            timeout: 10000,
+            headers: { 'User-Agent': 'Mozilla/5.0 (compatible; Broadway Scorecard/1.0)' }
+          }, res => {
+            if (res.statusCode === 200 || res.statusCode === 301) {
+              resolve({ ok: true, status: res.statusCode });
+            } else {
+              resolve({ ok: false, status: res.statusCode });
+            }
+            res.resume();
+          });
+          req.on('error', () => resolve({ ok: false, status: 0 }));
+          req.on('timeout', () => { req.destroy(); resolve({ ok: false, status: 0 }); });
+        });
+
+        if (tbResult.ok) {
+          console.log(`  Talkin' Broadway: URL confirmed (${tbResult.status}) — creating stub`);
+          results.push({
+            showId: show.id,
+            outletId: 'talkinbroadway',
+            outlet: "Talkin' Broadway",
+            criticName: 'Unknown',
+            url: tbUrl,
+            source: 'direct-url-construction',
+          });
+        } else if (TB_REVIEW_URL) {
+          // User provided override URL — create stub even if check failed (may be behind Cloudflare)
+          console.log(`  Talkin' Broadway: status ${tbResult.status} on override URL — creating stub anyway`);
+          results.push({
+            showId: show.id,
+            outletId: 'talkinbroadway',
+            outlet: "Talkin' Broadway",
+            criticName: 'Unknown',
+            url: TB_REVIEW_URL,
+            source: 'direct-url-override',
+          });
+        } else {
+          console.log(`  Talkin' Broadway: ${tbResult.status} on ${tbUrl} — will need manual URL or SERP`);
+          console.log(`    Suggested URL to try: ${tbConstructedUrl}`);
+        }
+      }
+    } catch (err) {
+      console.log(`  Talkin' Broadway error: ${err.message}`);
     }
   }
 

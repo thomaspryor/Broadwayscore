@@ -1337,9 +1337,22 @@ function extractDTLIReviews(html, showId, dtliUrl) {
  * Search BroadwayWorld for Review Roundup article
  * Priority: 1) URL override, 2) Valid archive, 3) Live fetch
  */
-async function searchBWWRoundup(show, year) {
+async function searchBWWRoundup(show, year, options = {}) {
   console.log('  Searching BroadwayWorld Review Roundups...');
   const showId = show.id;
+
+  // Priority 0: Runtime URL override (passed directly at call time — bypasses SERP entirely)
+  // Use when SERP returns wrong results (unindexed same-day pages, wrong-production results).
+  // On opening night: pass --bww-roundup-url to opening-night-poller.js
+  if (options.overrideUrl) {
+    console.log(`    Using runtime URL override: ${options.overrideUrl}`);
+    const result = await searchAggregator('BWW', options.overrideUrl);
+    if (result.found && result.html) {
+      console.log(`    ✓ Found at: ${options.overrideUrl} (runtime override)`);
+      return { url: options.overrideUrl, html: result.html };
+    }
+    console.log(`    ✗ Runtime override URL failed — falling through to other methods`);
+  }
 
   // Priority 1: Check for manual URL override
   const urlOverridesPath = path.join(__dirname, '..', 'data', 'bww-roundup-urls.json');
