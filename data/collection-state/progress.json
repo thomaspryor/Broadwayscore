@@ -1042,7 +1042,14 @@
     "mj-the-musical-west-end-2024/standard--nick-curtis.json",
     "mj-the-musical-west-end-2024/whatsonstage--sarah-crompton.json",
     "harmony-2023/talkinbroadway--matthew-murray.json",
-    "harmony-2023/theater-pizzazz--carol-rocamora.json"
+    "harmony-2023/theater-pizzazz--carol-rocamora.json",
+    "i-need-that-2023/wsj--charles-isherwood.json",
+    "gutenberg-2023/theatermania--jesse-green.json",
+    "merrily-we-roll-along-2023/newyorker--unknown.json",
+    "merrily-we-roll-along-2023/we-are-movie-geeks--jim-batts.json",
+    "purlie-victorious-2023/theatermania--david-gordon.json",
+    "back-to-the-future-2023/and-daryl-tofa-back-to-the-future--gabi-stapula.json",
+    "the-cottage-2023/theatermania--peter-hempstead.json"
   ],
   "failed": [
     "giant-2026/cititour--brian-scott-lipton.json",
@@ -1276,7 +1283,10 @@
     "stereophonic-2024/washpost--peter-marks.json",
     "suffs-2024/thestage--lane-williamson.json",
     "suffs-2024/usatoday--charles-isherwood.json",
-    "an-enemy-of-the-people-2024/wsj--charles-isherwood.json"
+    "an-enemy-of-the-people-2024/wsj--charles-isherwood.json",
+    "the-shark-is-broken-2023/talkinbroadway--matthew-murray.json",
+    "here-lies-love-2023/northjerseycom--robert-feldberg.json",
+    "here-lies-love-2023/washpost--peter-marks.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2064,7 +2074,9 @@
       "water-for-elephants-2024/theatermania--david-gordon.json",
       "doubt-2024/ap--mark-kennedy.json",
       "mj-the-musical-west-end-2024/standard--nick-curtis.json",
-      "mj-the-musical-west-end-2024/whatsonstage--sarah-crompton.json"
+      "mj-the-musical-west-end-2024/whatsonstage--sarah-crompton.json",
+      "merrily-we-roll-along-2023/we-are-movie-geeks--jim-batts.json",
+      "the-cottage-2023/theatermania--peter-hempstead.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
@@ -2168,7 +2180,8 @@
       "burlesque-west-end-2026/telegraph--claire-allfree.json",
       "burlesque-west-end-2026/times-uk--clive-davis.json",
       "call-me-izzy-2025/nytimes--jesse-green.json",
-      "othello-2025/broadwaynews--unknown.json"
+      "othello-2025/broadwaynews--unknown.json",
+      "merrily-we-roll-along-2023/newyorker--unknown.json"
     ],
     "brightdata": [
       "the-other-place-off-broadway-2026/wsj--unknown.json",
@@ -2203,7 +2216,10 @@
       "the-wiz-2024/theatermania--jesse-green.json",
       "lempicka-2024/theatermania--david-gordon.json",
       "an-enemy-of-the-people-2024/theatermania--adam-feldman.json",
-      "harmony-2023/talkinbroadway--matthew-murray.json"
+      "harmony-2023/talkinbroadway--matthew-murray.json",
+      "i-need-that-2023/wsj--charles-isherwood.json",
+      "gutenberg-2023/theatermania--jesse-green.json",
+      "purlie-victorious-2023/theatermania--david-gordon.json"
     ],
     "archiveToday": [
       "data/review-texts/giant-2026/cititour--brian-scott-lipton.json",
@@ -2278,7 +2294,10 @@
       "data/review-texts/stereophonic-2024/thestage--lane-williamson.json",
       "data/review-texts/stereophonic-2024/washpost--peter-marks.json",
       "data/review-texts/suffs-2024/thestage--lane-williamson.json",
-      "data/review-texts/suffs-2024/usatoday--charles-isherwood.json"
+      "data/review-texts/suffs-2024/usatoday--charles-isherwood.json",
+      "data/review-texts/the-shark-is-broken-2023/talkinbroadway--matthew-murray.json",
+      "data/review-texts/here-lies-love-2023/northjerseycom--robert-feldberg.json",
+      "data/review-texts/here-lies-love-2023/washpost--peter-marks.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -2455,11 +2474,12 @@
       "left-on-tenth-2024/nytimes--laura-collins-hughes.json",
       "illinoise-2024/nytimes--unknown.json",
       "illinoise-2024/timeout--adam-feldman.json",
-      "harmony-2023/theater-pizzazz--carol-rocamora.json"
+      "harmony-2023/theater-pizzazz--carol-rocamora.json",
+      "back-to-the-future-2023/and-daryl-tofa-back-to-the-future--gabi-stapula.json"
     ]
   },
   "startTime": "2026-03-24T17:31:44.264Z",
-  "lastProcessed": "harmony-2023/theater-pizzazz--carol-rocamora.json",
+  "lastProcessed": "here-lies-love-2023/washpost--peter-marks.json",
   "log": [
     {
       "t": "2026-03-24T17:34:00.298Z",
@@ -2922,6 +2942,39 @@
       "t": "2026-03-25T05:00:15.023Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-25T05:04:02.837Z",
+      "event": "bb-session",
+      "session": "516c0a55",
+      "url": "https://www.wsj.com/articles/i-need-that-review-danny-devito-theresa-rebeck-lucy"
+    },
+    {
+      "t": "2026-03-25T05:04:04.005Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-25T05:09:31.694Z",
+      "event": "bb-session",
+      "session": "8c182db8",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/a-life-set-to-a-disco"
+    },
+    {
+      "t": "2026-03-25T05:09:32.997Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-25T05:10:03.982Z",
+      "event": "bb-session",
+      "session": "0f624065",
+      "url": "https://www.washingtonpost.com/theater-dance/2023/07/21/here-lies-love-broadway-"
+    },
+    {
+      "t": "2026-03-25T05:10:05.272Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
