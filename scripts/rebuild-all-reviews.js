@@ -1245,7 +1245,9 @@ showDirs.forEach(showId => {
       // OVERRIDE: If this is a London show AND the review URL is from a UK/major outlet domain,
       // the wrongShow flag is almost certainly a false positive from LLM classification.
       // UK outlets reviewing London shows cannot be "wrong show" — they only cover London theatre.
-      if (data.wrongShow === true && isLondonMarket(showCat) && isUkOutletUrl(data.url)) {
+      // BUT: Do NOT auto-clear if content verification flagged wrongArticle (e.g., news/preview, not a review).
+      const isWrongArticle = data.contentVerification && data.contentVerification.wrongArticle === true;
+      if (data.wrongShow === true && isLondonMarket(showCat) && isUkOutletUrl(data.url) && !isWrongArticle) {
         delete data.wrongShow;
         delete data.wrongShowNote;
         data.wrongShowAutoCleared = `rebuild: UK/major outlet URL on London show`;
