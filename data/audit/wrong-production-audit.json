@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-25T09:36:31.757Z",
+  "timestamp": "2026-03-25T09:51:27.086Z",
   "stats": {
     "totalReviews": 32476,
-    "alreadyFlagged": 11107,
+    "alreadyFlagged": 11109,
     "dateGuardCatches": 139,
     "directorMismatch": 953,
-    "tvFilmSignals": 3433,
+    "tvFilmSignals": 3432,
     "londonSignals": 1037,
     "offBroadwaySignals": 1007,
     "yearMismatch": 71,
-    "noPublishDate": 6766
+    "noPublishDate": 6764
   },
   "findings": [
     {
@@ -59438,19 +59438,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"movie theater\""
-        }
-      ]
-    },
-    {
-      "showId": "two-strangers-bway-2025",
-      "file": "playbill--unknown.json",
-      "publishDate": "2025-11-20",
-      "url": "https://playbill.com/article/two-strangers-carry-a-cake-across-new-york-begins-on-broadway-november-1",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
