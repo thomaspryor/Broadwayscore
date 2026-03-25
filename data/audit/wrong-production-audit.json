@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-25T02:45:56.001Z",
+  "timestamp": "2026-03-25T02:55:30.558Z",
   "stats": {
     "totalReviews": 32470,
     "alreadyFlagged": 11066,
     "dateGuardCatches": 139,
     "directorMismatch": 951,
-    "tvFilmSignals": 3425,
-    "londonSignals": 1033,
+    "tvFilmSignals": 3426,
+    "londonSignals": 1034,
     "offBroadwaySignals": 1008,
     "yearMismatch": 71,
-    "noPublishDate": 6810
+    "noPublishDate": 6809
   },
   "findings": [
     {
@@ -20634,25 +20634,6 @@
     },
     {
       "showId": "hamilton-2015",
-      "file": "ap--mark-kennedy.json",
-      "score": 86,
-      "publishDate": "2015-08-06",
-      "url": "https://apnews.com/review-lin-manuel-mirandas-hamilton-is-a-rollicking-show-830d0df6b1444259aff3fda7359c1f44",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "hamilton-2015",
       "file": "nypost--jesse-green.json",
       "score": 89,
       "publishDate": "August 6, 2015",
@@ -30242,6 +30223,25 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "man-and-boy-west-end-2026",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 81,
+      "publishDate": "2026-02-10",
+      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_1711733/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
@@ -52911,6 +52911,20 @@
     },
     {
       "showId": "the-lion-king-west-end-2021",
+      "file": "telegraph--unknown.json",
+      "score": 72,
+      "publishDate": "2009-10-19",
+      "url": "https://www.telegraph.co.uk/culture/theatre/6371871/The-Lion-King-marks-10th-anniversary-Culture-Minute.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
       "file": "theupcoming--connor-campbell.json",
       "score": 62,
       "publishDate": "November 26, 2019",
@@ -68809,6 +68823,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "ap--mark-kennedy.json",
+      "score": 86,
+      "publishDate": "2015-08-06",
+      "url": "https://apnews.com/review-lin-manuel-mirandas-hamilton-is-a-rollicking-show-830d0df6b1444259aff3fda7359c1f44",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
