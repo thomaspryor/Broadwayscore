@@ -206,7 +206,10 @@ jobs:
             gh workflow run update-mezzanine.yml -f shows="$SHOWS" 2>/dev/null || true
           fi
 
-          # These work for both markets
+          # These work for both markets (Reddit uses r/TheWestEnd for WE, r/Broadway for BW)
+          echo "  → Dispatching Reddit sentiment for: $SHOWS"
+          gh workflow run update-reddit-sentiment.yml -f shows="$SHOWS" 2>/dev/null || true
+
           echo "  → Dispatching Show Score for: $SHOWS"
           gh workflow run update-show-score.yml -f shows="$SHOWS" 2>/dev/null || true
 
