@@ -1,0 +1,69 @@
+{
+  "processed": [
+    "giant-2026/cititour--brian-scott-lipton.json",
+    "giant-2026/nytimes--helen-shaw.json",
+    "giant-2026/variety--daniel-daddario.json",
+    "giant-2026/nydailynews--unknown.json",
+    "giant-2026/nypost--unknown.json",
+    "giant-2026/theatermania--zachary-stewart.json",
+    "giant-2026/timeout--adam-feldman.json",
+    "giant-2026/timeout--unknown.json",
+    "giant-2026/forward--unknown.json"
+  ],
+  "failed": [
+    "giant-2026/talkinbroadway--unknown.json"
+  ],
+  "skipped": [],
+  "tierBreakdown": {
+    "playwright": [
+      "giant-2026/theatermania--zachary-stewart.json",
+      "giant-2026/timeout--adam-feldman.json",
+      "giant-2026/timeout--unknown.json",
+      "giant-2026/forward--unknown.json"
+    ],
+    "amp": [],
+    "browserbase": [
+      "data/review-texts/giant-2026/variety--daniel-daddario.json",
+      "giant-2026/variety--daniel-daddario.json",
+      "data/review-texts/giant-2026/nypost--unknown.json",
+      "giant-2026/nypost--unknown.json"
+    ],
+    "directCookies": [],
+    "scrapingbee": [
+      "giant-2026/cititour--brian-scott-lipton.json",
+      "giant-2026/nytimes--helen-shaw.json",
+      "giant-2026/nydailynews--unknown.json"
+    ],
+    "brightdata": [],
+    "archiveToday": [
+      "data/review-texts/giant-2026/talkinbroadway--unknown.json"
+    ],
+    "archive": []
+  },
+  "startTime": "2026-03-25T02:38:10.541Z",
+  "lastProcessed": "giant-2026/forward--unknown.json",
+  "log": [
+    {
+      "t": "2026-03-25T02:40:09.844Z",
+      "event": "bb-session",
+      "session": "56657ba4",
+      "url": "https://variety.com/2026/legit/reviews/giant-broadway-review-john-lithgow-roald-"
+    },
+    {
+      "t": "2026-03-25T02:40:11.160Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-25T02:40:55.917Z",
+      "event": "bb-session",
+      "session": "bc2e40ca",
+      "url": "https://nypost.com/2026/03/23/entertainment/giant-review-john-lithgow-is-superb-"
+    },
+    {
+      "t": "2026-03-25T02:40:57.383Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    }
+  ]
+}
