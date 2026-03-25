@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-25T03:15:46.987Z",
+  "timestamp": "2026-03-25T03:29:34.664Z",
   "stats": {
     "totalReviews": 32470,
-    "alreadyFlagged": 11065,
+    "alreadyFlagged": 11067,
     "dateGuardCatches": 139,
     "directorMismatch": 951,
-    "tvFilmSignals": 3434,
+    "tvFilmSignals": 3436,
     "londonSignals": 1036,
     "offBroadwaySignals": 1008,
     "yearMismatch": 71,
-    "noPublishDate": 6809
+    "noPublishDate": 6806
   },
   "findings": [
     {
@@ -8383,6 +8383,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"big screen\""
+        }
+      ]
+    },
+    {
+      "showId": "burlesque-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 73,
+      "publishDate": "2025-07-22",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-review-explosive-energy-and-powerhouse-vocals-ctrrm7cbk",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -28717,6 +28731,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "little-bear-ridge-road-2025",
+      "file": "dailybeast--logan-culwell-block.json",
+      "score": 71,
+      "publishDate": "2025-10-30",
+      "url": "https://playbill.com/article/reviews-are-in-for-little-bear-ridge-road-on-broadway",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
