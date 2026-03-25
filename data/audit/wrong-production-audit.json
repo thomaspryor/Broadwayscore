@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-25T13:19:40.837Z",
+  "timestamp": "2026-03-25T13:29:45.124Z",
   "stats": {
     "totalReviews": 32481,
-    "alreadyFlagged": 11118,
-    "dateGuardCatches": 139,
+    "alreadyFlagged": 11121,
+    "dateGuardCatches": 140,
     "directorMismatch": 954,
-    "tvFilmSignals": 3439,
-    "londonSignals": 1038,
+    "tvFilmSignals": 3441,
+    "londonSignals": 1037,
     "offBroadwaySignals": 1009,
     "yearMismatch": 71,
-    "noPublishDate": 6753
+    "noPublishDate": 6750
   },
   "findings": [
     {
@@ -24019,6 +24019,33 @@
     },
     {
       "showId": "in-transit-2016",
+      "file": "dctheatrescene--lorraine-treanor.json",
+      "publishDate": "2016-12-11",
+      "url": "https://dctheatrescene.com/2016/12/11/transit-review-broadways-first-voice-orchestra/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 3\""
+        }
+      ]
+    },
+    {
+      "showId": "in-transit-2016",
+      "file": "ew--breanne-l-heldman.json",
+      "score": 66,
+      "publishDate": "December 11th, 2016",
+      "url": "http://www.ew.com/article/2016/12/11/in-transit-stage-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "in-transit-2016",
       "file": "front-row-center--stanford-friedman.json",
       "score": 58,
       "publishDate": "2016-12-16T08:38:52",
@@ -45779,20 +45806,6 @@
     },
     {
       "showId": "sunday-in-the-park-with-george-2017",
-      "file": "amny--matt-windman.json",
-      "score": 82,
-      "publishDate": "February 23, 2017",
-      "url": "https://www.amny.com/entertainment/sunday-in-the-park-with-george-review-jake-gyllenhaal-soars-in-lead-role-1.12509352",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from sunday-in-the-park-with-george-1994"
-        }
-      ]
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2017",
       "file": "chicagotribune--chris-jones.json",
       "score": 68,
       "publishDate": null,
@@ -51335,7 +51348,7 @@
     {
       "showId": "the-glass-menagerie-2017",
       "file": "guardian--alexis-soloski.json",
-      "publishDate": null,
+      "publishDate": "2017-02-12",
       "url": "https://www.theguardian.com/stage/2017/feb/12/the-glass-menagerie-duke-of-york-theatre-review-john-tiffany-kate-o-flynn",
       "findings": [
         {
@@ -51379,6 +51392,20 @@
       "score": 92,
       "publishDate": null,
       "url": "https://www.nydailynews.com/entertainment/music-arts/glass-menagerie-theater-review-article-1.1467392",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john tiffany\" from the-glass-menagerie-2013"
+        }
+      ]
+    },
+    {
+      "showId": "the-glass-menagerie-2017",
+      "file": "timeout--david-cote.json",
+      "score": 88,
+      "publishDate": "March 9, 2017",
+      "url": "http://www.timeout.com/newyork/theater/the-glass-menagerie-1",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -72746,6 +72773,20 @@
     },
     {
       "showId": "les-liaisons-dangereuses-2016",
+      "file": "guardian--michael-billington.json",
+      "score": null,
+      "publishDate": "2015-12-18",
+      "url": "https://www.theguardian.com/stage/2015/dec/18/les-liasons-dangereuses-review-dominic-west-janet-mcteer-donmar-warehouse",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 295d before show (2015-12-18 vs 2016-10-08)"
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-2016",
       "file": "huffpost--victoria-sadler.json",
       "score": 88,
       "publishDate": null,
@@ -74608,20 +74649,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"ars nova\""
-        }
-      ]
-    },
-    {
-      "showId": "natasha-pierre-and-the-great-comet-of-1812-2016",
-      "file": "guardian--jesse-green.json",
-      "score": null,
-      "publishDate": "November 15, 2016",
-      "url": "https://www.theguardian.com/stage/2024/dec/17/natasha-pierre-and-the-great-comet-of-1812-review-donmar-warehouse-london",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
