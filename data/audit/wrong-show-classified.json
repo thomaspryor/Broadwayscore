@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-25T21:09:51.559Z",
+    "generatedAt": "2026-03-25T21:21:25.891Z",
     "description": "LLM-classified wrong-show results from title-mention guard candidates",
     "total": 2,
     "classified": 2,
@@ -12,20 +12,20 @@
   },
   "results": [
     {
-      "showId": "the-bridges-of-madison-county-2014",
-      "showTitle": "The Bridges of Madison County",
-      "file": "huffpost--huff-wires.json",
+      "showId": "romeo-and-juliet-2013",
+      "showTitle": "Romeo and Juliet",
+      "file": "huffpost--steven-suskin.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review explicitly mentions the title \"The Bridges of Madison County\" and discusses the plot, cast (Kelli O'Hara, Steven Pasquale, Hunter Foster), creative team (Jason Robert Brown, Marsha Norman, Bartlett Sher), and venue (Gerald Schoenfeld Theatre) of the show."
+      "reasoning": "The review discusses the 2013 Broadway production of Romeo and Juliet, mentioning the Richard Rodgers Theatre, Orlando Bloom as Romeo, and the director David Leveaux."
     },
     {
-      "showId": "the-bridges-of-madison-county-2014",
-      "showTitle": "The Bridges of Madison County",
-      "file": "ap--mark-kennedy.json",
+      "showId": "the-trip-to-bountiful-2013",
+      "showTitle": "The Trip to Bountiful",
+      "file": "ny1--unknown.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review mentions the show title, cast members Kelli O'Hara and Steven Pasquale, the composer Jason Robert Brown, the venue Gerald Schoenfeld Theatre, and the plot of the show, confirming it is about \"The Bridges of Madison County\"."
+      "reasoning": "The review explicitly mentions \"The Trip To Bountiful\" and discusses the plot, cast (Cicely Tyson, Condola Rashad, Tom Wopat, Vanessa Williams), and director (Michael Wilson)."
     }
   ]
 }
