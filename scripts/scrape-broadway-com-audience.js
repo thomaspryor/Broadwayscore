@@ -19,6 +19,7 @@ const fs = require('fs');
 const path = require('path');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { fetchPage } = require('./lib/scraper');
 
 // Parse command line args
 const args = process.argv.slice(2);
@@ -64,6 +65,18 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+/**
+ * Detect bot challenge pages (Cloudflare, etc.) that return valid 200 but no real content.
+ */
+function isBotChallenge(html) {
+  return html.length < 10000 && (
+    html.includes('Client Challenge') ||
+    html.includes('Just a moment') ||
+    html.includes('cf-browser-verification') ||
+    html.includes('_fs-ch-')
+  );
+}
+
 // ---- Discovery: Parse /shows/ listing page ----
 
 /**
@@ -72,10 +85,22 @@ function sleep(ms) {
  */
 async function discoverShows() {
   console.log('Fetching Broadway.com /shows/ listing...');
-  const { status, data: html } = await httpsGet('https://www.broadway.com/shows/');
+  let { status, data: html } = await httpsGet('https://www.broadway.com/shows/');
 
   if (status !== 200) {
     throw new Error(`Broadway.com /shows/ returned ${status}`);
+  }
+
+  // If listing page is bot-challenged, retry via shared scraper (ScrapingBee → Bright Data → Playwright)
+  if (isBotChallenge(html)) {
+    console.log('  Bot challenge on listing page, trying scraper fallback chain...');
+    const scraperHtml = await fetchPage('https://www.broadway.com/shows/', { renderJs: true });
+    if (scraperHtml && scraperHtml.length > 10000 && !isBotChallenge(scraperHtml)) {
+      html = scraperHtml;
+    } else {
+      console.error(`  Scraper fallback failed for listing page (${scraperHtml?.length || 0} bytes)`);
+      throw new Error('Broadway.com /shows/ blocked by bot challenge and scraper fallback failed');
+    }
   }
 
   const shows = [];
@@ -348,14 +373,15 @@ async function main() {
   let skipped = 0;
   let errors = 0;
 
+  let scrapingBeeUsed = 0;
+
   for (let i = 0; i < toProcess.length; i++) {
     const { bc, show, confidence } = toProcess[i];
 
     try {
-      const { status, data: html } = await httpsGet(bc.url);
+      let { status, data: html } = await httpsGet(bc.url);
 
       if (status >= 400) {
-        // Hard error: 4xx/5xx means site is blocking or broken — don't treat as "no data"
         console.error(`  HTTP_ERROR ${show.id}: ${status}`);
         errors++;
         continue;
@@ -366,7 +392,23 @@ async function main() {
         continue;
       }
 
-      const rating = extractJsonLdRating(html);
+      let rating = extractJsonLdRating(html);
+
+      // If no rating found and page looks like a bot challenge, retry via shared scraper
+      if (!rating && isBotChallenge(html)) {
+        if (verbose) console.log(`  Bot challenge detected for ${show.id}, trying scraper fallback...`);
+        const scraperHtml = await fetchPage(bc.url, { renderJs: true });
+        if (scraperHtml && !isBotChallenge(scraperHtml)) {
+          rating = extractJsonLdRating(scraperHtml);
+          scrapingBeeUsed++;
+          if (!rating && verbose) {
+            console.log(`  SKIP ${show.id}: no JSON-LD aggregateRating (even via scraper, ${scraperHtml.length} bytes)`);
+          }
+        } else if (verbose) {
+          console.log(`  Scraper fallback failed for ${show.id} (${scraperHtml?.length || 0} bytes)`);
+        }
+      }
+
       if (!rating) {
         if (verbose) console.log(`  SKIP ${show.id}: no JSON-LD aggregateRating found`);
         skipped++;
@@ -394,6 +436,10 @@ async function main() {
     if (i < toProcess.length - 1) {
       await sleep(REQUEST_DELAY_MS);
     }
+  }
+
+  if (scrapingBeeUsed > 0) {
+    console.log(`\nScrapingBee used for ${scrapingBeeUsed} bot-challenged pages`);
   }
 
   console.log(`\nResults: ${updated} updated, ${skipped} skipped, ${errors} errors`);

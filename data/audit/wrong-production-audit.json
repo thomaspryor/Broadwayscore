@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-24T20:07:59.535Z",
+  "timestamp": "2026-03-24T23:56:41.277Z",
   "stats": {
     "totalReviews": 32470,
     "alreadyFlagged": 11062,
     "dateGuardCatches": 139,
     "directorMismatch": 947,
-    "tvFilmSignals": 3407,
-    "londonSignals": 1029,
+    "tvFilmSignals": 3409,
+    "londonSignals": 1030,
     "offBroadwaySignals": 1011,
     "yearMismatch": 71,
     "noPublishDate": 6813
@@ -57373,6 +57373,34 @@
       ]
     },
     {
+      "showId": "this-is-not-about-me-off-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 83,
+      "publishDate": null,
+      "url": "https://www.standard.co.uk/culture/theatre/once-on-this-island-at-regent-s-park-open-air-theatre-review-little-mermaid-b1081969.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "this-is-not-about-me-off-west-end-2026",
+      "file": "timeout--andrzej-lukowski.json",
+      "score": 60,
+      "publishDate": null,
+      "url": "https://www.timeout.com/london/theatre/once-on-this-island-1-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
       "showId": "this-is-our-youth-2014",
       "file": "nytimes--ben-brantley.json",
       "score": 86,
@@ -82488,6 +82516,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "file": "independent--unknown.json",
+      "publishDate": null,
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-playboy-of-the-western-world-nicola-coughlan-b2883264.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
