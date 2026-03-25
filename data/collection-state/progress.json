@@ -55,7 +55,14 @@
     "sweetmeats-west-end-2026/standard--maya-chandran.json",
     "the-other-place-off-broadway-2026/wsj--unknown.json",
     "bug-2026/playbill--logan-culwell-block.json",
-    "all-out-2025/nytg--gillian-russo.json"
+    "all-out-2025/nytg--gillian-russo.json",
+    "all-out-2025/ew--unknown.json",
+    "waiting-for-godot-2025/nypost--entertainment-critic.json",
+    "mamma-mia-2025/nytimes--elizabeth-vincentelli.json",
+    "stephen-sondheims-old-friends-2025/in-act-two-of-merrily-we-roll-along--charley-kringas.json",
+    "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
+    "the-last-five-years-2025/nypost--lou-lumenick.json",
+    "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -104,7 +111,10 @@
     "the-lion-king-1997/familyvacationcritic--unknown.json",
     "man-to-man-west-end-2026/stagebuddy--unknown.json",
     "cyrano-de-bergerac-west-end-2026/daily-mail--robert-gore-langton.json",
-    "high-noon-west-end-2025/times-uk--clive-davis.json"
+    "high-noon-west-end-2025/times-uk--clive-davis.json",
+    "art-2025/hollywood-reporter--unknown.json",
+    "art-2025/broadwaynews--unknown.json",
+    "call-me-izzy-2025/vulture--jackson-mchenry.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -141,14 +151,23 @@
       "wicked-2003/broadwayworld--tyler-hinton.json",
       "sweetmeats-west-end-2026/standard--maya-chandran.json",
       "bug-2026/playbill--logan-culwell-block.json",
-      "all-out-2025/nytg--gillian-russo.json"
+      "all-out-2025/nytg--gillian-russo.json",
+      "all-out-2025/ew--unknown.json",
+      "stephen-sondheims-old-friends-2025/in-act-two-of-merrily-we-roll-along--charley-kringas.json",
+      "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
+      "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
       "imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
       "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
-      "my-neighbour-totoro-west-end-2025/variety--unknown.json"
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "data/review-texts/waiting-for-godot-2025/nypost--entertainment-critic.json",
+      "waiting-for-godot-2025/nypost--entertainment-critic.json",
+      "data/review-texts/art-2025/hollywood-reporter--unknown.json",
+      "data/review-texts/the-last-five-years-2025/nypost--lou-lumenick.json",
+      "the-last-five-years-2025/nypost--lou-lumenick.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -176,11 +195,12 @@
       "wicked-2003/broadwayworld--david-copney.json",
       "wicked-2003/broadwayworld--katrina-fageol.json",
       "wicked-2003/broadwayworld--lauren-gienow.json",
-      "grace-pervades-west-end-2026/thestage--unknown.json"
+      "grace-pervades-west-end-2026/thestage--unknown.json",
+      "mamma-mia-2025/nytimes--elizabeth-vincentelli.json"
     ]
   },
   "startTime": "2026-03-25T09:08:12.319Z",
-  "lastProcessed": "all-out-2025/nytg--gillian-russo.json",
+  "lastProcessed": "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json",
   "log": [
     {
       "t": "2026-03-25T09:10:15.724Z",
@@ -232,6 +252,39 @@
       "t": "2026-03-25T09:39:29.253Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-25T09:40:34.745Z",
+      "event": "bb-session",
+      "session": "2de33a5f",
+      "url": "https://nypost.com/author/johnny-oleksinski/page/5/"
+    },
+    {
+      "t": "2026-03-25T09:40:35.976Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-25T09:40:52.236Z",
+      "event": "bb-session",
+      "session": "6543fe2b",
+      "url": "https://www.hollywoodreporter.com/business/business-news/broadway-box-office-art"
+    },
+    {
+      "t": "2026-03-25T09:40:53.406Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-25T09:43:22.673Z",
+      "event": "bb-session",
+      "session": "386ba318",
+      "url": "https://nypost.com/2025/04/06/entertainment/the-last-five-years-review-nick-jona"
+    },
+    {
+      "t": "2026-03-25T09:43:23.937Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
