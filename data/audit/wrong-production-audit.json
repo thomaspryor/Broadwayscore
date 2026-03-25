@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-25T07:33:32.263Z",
+  "timestamp": "2026-03-25T07:50:20.878Z",
   "stats": {
-    "totalReviews": 32474,
-    "alreadyFlagged": 11102,
+    "totalReviews": 32475,
+    "alreadyFlagged": 11105,
     "dateGuardCatches": 139,
     "directorMismatch": 952,
-    "tvFilmSignals": 3435,
+    "tvFilmSignals": 3433,
     "londonSignals": 1035,
     "offBroadwaySignals": 1008,
     "yearMismatch": 71,
-    "noPublishDate": 6770
+    "noPublishDate": 6771
   },
   "findings": [
     {
@@ -3679,20 +3679,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "almost-famous-2022",
-      "file": "ew--dalton-ross.json",
-      "score": 65,
-      "publishDate": "November 3, 2022",
-      "url": "https://ew.com/theater/theater-reviews/almost-famous-review-broadway-musical/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"on screen\""
         }
       ]
     },
@@ -42393,20 +42379,6 @@
       "score": 62,
       "publishDate": "December 15, 2008",
       "url": "https://variety.com/2010/legit/reviews/shrek-the-musical-1117943277/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "shucked-2023",
-      "file": "ew--christian-holub.json",
-      "score": 72,
-      "publishDate": "April 4, 2023",
-      "url": "https://ew.com/theater/theater-reviews/shucked-broadway-review-cute-corny-musical/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
