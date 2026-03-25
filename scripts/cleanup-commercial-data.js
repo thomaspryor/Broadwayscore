@@ -141,6 +141,7 @@ console.log(`\nTotal changes: ${totalChanges}`);
 
 if (!DRY_RUN && totalChanges > 0) {
   // Update meta
+  if (!commercial._meta) commercial._meta = {};
   commercial._meta.lastUpdated = new Date().toISOString().split('T')[0];
   fs.writeFileSync(commercialPath, JSON.stringify(commercial, null, 2) + '\n');
   console.log(`\nWrote ${commercialPath}`);

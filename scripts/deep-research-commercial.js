@@ -218,16 +218,31 @@ Respond with a JSON object (no markdown fences):
   // Count web searches performed
   const searchCount = (result.output || []).filter(i => i.type === 'web_search_call').length;
 
-  // Parse JSON from output
+  // Parse JSON from output — try direct parse first, then extract from markdown
   let analysis = null;
   try {
-    // Try to extract JSON from the output (may be wrapped in markdown fences)
-    const jsonMatch = outputText.match(/\{[\s\S]*\}/);
-    if (jsonMatch) {
-      analysis = JSON.parse(jsonMatch[0]);
-    }
+    const trimmed = outputText.trim();
+    // Strip markdown fences if present
+    const stripped = trimmed.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+    analysis = JSON.parse(stripped);
   } catch (e) {
-    console.warn(`    ⚠️  Failed to parse JSON output: ${e.message}`);
+    // Fallback: find balanced JSON object using brace counting
+    try {
+      const start = outputText.indexOf('{');
+      if (start >= 0) {
+        let depth = 0;
+        let end = -1;
+        for (let i = start; i < outputText.length; i++) {
+          if (outputText[i] === '{') depth++;
+          else if (outputText[i] === '}') { depth--; if (depth === 0) { end = i; break; } }
+        }
+        if (end > start) {
+          analysis = JSON.parse(outputText.slice(start, end + 1));
+        }
+      }
+    } catch (e2) {
+      console.warn(`    ⚠️  Failed to parse JSON output: ${e2.message}`);
+    }
   }
 
   return { analysis, usage, cost, searchCount, status: result.status };
@@ -295,8 +310,13 @@ async function main() {
   // Load data fresh
   const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
   const allShows = showsData.shows || [];
-  const grossesRaw = JSON.parse(fs.readFileSync(GROSSES_PATH, 'utf8'));
-  const grossesShows = grossesRaw.shows || {};
+  let grossesShows = {};
+  try {
+    const grossesRaw = JSON.parse(fs.readFileSync(GROSSES_PATH, 'utf8'));
+    grossesShows = grossesRaw.shows || {};
+  } catch (e) {
+    console.warn('⚠️  Could not load grosses.json — plausibility cross-checks will be skipped');
+  }
 
   // Build show lookup
   const showBySlug = {};
@@ -520,9 +540,11 @@ async function main() {
     }
   }
 
-  // Write cost log
+  // Append to cost log (preserve history from previous runs)
   if (!DRY_RUN && costLog.length > 0) {
-    fs.writeFileSync(COST_LOG_PATH, JSON.stringify(costLog, null, 2) + '\n');
+    let existingLog = [];
+    try { existingLog = JSON.parse(fs.readFileSync(COST_LOG_PATH, 'utf8')); } catch (e) { /* first run */ }
+    fs.writeFileSync(COST_LOG_PATH, JSON.stringify([...existingLog, ...costLog], null, 2) + '\n');
   }
 
   // Clean up progress file after successful complete run
