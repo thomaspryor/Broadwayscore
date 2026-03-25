@@ -7,7 +7,7 @@ import OutletDetailClient from './OutletDetailClient';
 export const revalidate = 43200;
 
 export function generateStaticParams() {
-  return []; // On-demand via ISR — saves ~480 pages of build time
+  return getAllOutletSlugs().map(slug => ({ slug }));
 }
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
