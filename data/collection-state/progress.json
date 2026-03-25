@@ -11,7 +11,12 @@
     "imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
     "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json",
     "imitation-of-life-off-broadway-2026/theatermania--david-gordon.json",
-    "the-emporium-off-broadway-2025/theatermania--linda-buchwald.json"
+    "the-emporium-off-broadway-2025/theatermania--linda-buchwald.json",
+    "teeth-n-smiles-west-end-2026/timeout--unknown.json",
+    "giant-2026/wsj--unknown.json",
+    "giant-2026/talkinbroadway--unknown.json",
+    "broken-glass-west-end-2026/independent--samuel-mathewson.json",
+    "evening-all-afternoon-west-end-2026/whatsonstage--unknown.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -24,7 +29,12 @@
     "titanique-off-broadway-2022/newyorker--dan-stahl.json",
     "jackals-off-broadway-2026/hollywood-reporter--thr-staff.json",
     "indian-princesses-off-broadway-2025/theatermania--linda-buchwald.json",
-    "jackals-off-broadway-2026/times-uk--anne-treneman.json"
+    "jackals-off-broadway-2026/times-uk--anne-treneman.json",
+    "inter-alia-west-end-2026/thestage--sam-marlowe.json",
+    "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -34,7 +44,9 @@
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
       "pied-a-terre-off-broadway-2026/nytg--unknown.json",
       "chinese-republicans-off-broadway-2026/the-interested-bystander--cary-wong.json",
-      "eva-luna-off-broadway-2022/nytg--caridad-svich.json"
+      "eva-luna-off-broadway-2022/nytg--caridad-svich.json",
+      "broken-glass-west-end-2026/independent--samuel-mathewson.json",
+      "evening-all-afternoon-west-end-2026/whatsonstage--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -46,16 +58,19 @@
     "brightdata": [
       "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json",
       "imitation-of-life-off-broadway-2026/theatermania--david-gordon.json",
-      "the-emporium-off-broadway-2025/theatermania--linda-buchwald.json"
+      "the-emporium-off-broadway-2025/theatermania--linda-buchwald.json",
+      "giant-2026/wsj--unknown.json",
+      "giant-2026/talkinbroadway--unknown.json"
     ],
     "archiveToday": [],
     "archive": [
       "bigfoot-off-broadway-2026/playbill--unknown.json",
-      "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json"
+      "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json",
+      "teeth-n-smiles-west-end-2026/timeout--unknown.json"
     ]
   },
   "startTime": "2026-03-25T09:08:12.319Z",
-  "lastProcessed": "jackals-off-broadway-2026/times-uk--anne-treneman.json",
+  "lastProcessed": "shadowlands-west-end-2026/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-03-25T09:10:15.724Z",
@@ -74,6 +89,17 @@
       "event": "bb-session",
       "session": "83502609",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/john-legend-lynn-nottage-liesl-"
+    },
+    {
+      "t": "2026-03-25T09:26:06.366Z",
+      "event": "bb-session",
+      "session": "a45e47e9",
+      "url": "https://www.wsj.com/articles/giant-review-john-lithgows-brilliantly-bad-tempered"
+    },
+    {
+      "t": "2026-03-25T09:26:07.569Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
