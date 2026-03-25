@@ -500,11 +500,12 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 
 ## `check-secrets-health.yml`
 - **Runs:** Weekly on Mondays at 12 PM UTC (7 AM EST), or manually
-- **Does:** Tests 9 critical service API keys/tokens for validity + balance/quota where available
+- **Does:** Tests 10 critical service API keys/tokens for validity + balance/quota where available
 - **Services tested:**
   - Anthropic, OpenAI, Gemini: key validity via `GET /models` (free, no token cost)
   - OpenRouter: key validity + `limit_remaining` balance (warns <$5, fails <$1)
-  - ScrapingBee: key validity + credit usage (warns >90%, fails >95%)
+  - ScrapingBee: key validity + credit usage (warns >50% monitor, >75% opening nights at risk)
+  - Bright Data: `mcp_unlocker` zone status — verifies `disable` field absent (catches trial limit + soft-delete before opening night)
   - Private Repo PAT (`REVIEW_TEXTS_TOKEN`): repo access
   - Vercel: token validity via `GET /v2/user`
   - Sentry: token validity via project API
@@ -512,7 +513,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **All checks run in parallel** via `Promise.all()` for speed
 - **On failure:** Sends Discord alert + email to owner (`email: true`)
 - **Script:** `scripts/check-secrets-health.js`
-- **Requires:** ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY, OPENROUTER_API_KEY, SCRAPINGBEE_API_KEY, REVIEW_TEXTS_TOKEN, VERCEL_TOKEN, SENTRY_AUTH_TOKEN, RESEND_API_KEY, DISCORD_WEBHOOK_ALERTS, OWNER_EMAIL
+- **Requires:** ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY, OPENROUTER_API_KEY, SCRAPINGBEE_API_KEY, BRIGHTDATA_TOKEN, REVIEW_TEXTS_TOKEN, VERCEL_TOKEN, SENTRY_AUTH_TOKEN, RESEND_API_KEY, DISCORD_WEBHOOK_ALERTS, OWNER_EMAIL
 - **Manual trigger:** `gh workflow run "Check Secrets Health"`
 
 ## `check-seo-health.yml`
