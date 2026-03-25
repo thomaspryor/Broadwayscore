@@ -1,27 +1,38 @@
 {
   "meta": {
-    "generatedAt": "2026-03-25T23:05:57.415Z",
+    "generatedAt": "2026-03-25T23:14:31.591Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 33181,
-      "inReviewsJson": 15315,
+      "inReviewsJson": 15316,
       "skippedExcluded": 74,
-      "withFullText": 18,
+      "withFullText": 19,
       "excerptOnly": 1356,
-      "llmClassified": 17,
+      "llmClassified": 18,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 0,
+      "nonReviewsFound": 1,
       "uncertainCases": 17,
-      "budgetUsed": 0.0018000000000000006,
-      "llmCalls": 18,
+      "budgetUsed": 0.0019000000000000006,
+      "llmCalls": 19,
       "rateLimitHits": 0,
       "errors": 1,
       "skippedAlreadyClassified": 13867
     },
     "calibration": null
   },
-  "nonReviews": [],
+  "nonReviews": [
+    {
+      "file": "miss-saigon-2017/off-script-with-dan-dwyer--dan-dwyer.json",
+      "showId": "miss-saigon-2017",
+      "outlet": "Off Script with Dan Dwyer",
+      "outletId": "off-script-with-dan-dwyer",
+      "contentType": "feature",
+      "confidence": "high",
+      "reasoning": "This is a fan-created text post featuring fictional dialogue between characters from the Harry Potter universe, unrelated to theater or 'Miss Saigon'.",
+      "currentScore": 59
+    }
+  ],
   "uncertainCases": [
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -30,7 +41,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated theater news.",
       "currentScore": 82
     },
     {
@@ -40,7 +51,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than an actual article. It does mention 'Broadway review subscriptions' and 'Music album reviews' but does not contain any review content itself.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems like a list of search terms or categories, possibly from a website.",
       "currentScore": 82
     },
     {
@@ -50,7 +61,7 @@
       "outletId": "bloomberg",
       "contentType": "news",
       "confidence": "medium",
-      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in photo captions. It does not offer a critical evaluation of \"First Date.\"",
+      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and its pre-Broadway run, with a brief mention of \"First Date\" only in photo captions. It does not offer a critical evaluation of \"First Date.\"",
       "currentScore": 60
     },
     {
@@ -60,7 +71,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific show.",
+      "reasoning": "The text is a collection of theater-related keywords and links, suggesting it's a directory or news aggregation page rather than a review of \"Funny Girl.\"",
       "currentScore": 62
     },
     {
@@ -70,7 +81,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself.",
       "currentScore": 81
     },
     {
@@ -80,7 +91,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and advertisements related to theater, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and advertisements related to theater, not a review of a specific show.",
       "currentScore": 78
     },
     {
@@ -90,7 +101,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, which lists various cultural events and short blurbs about them. It mentions 'Liberation' but does not contain a review of the show itself.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of cultural events.",
       "currentScore": 88
     },
     {
@@ -100,7 +111,7 @@
       "outletId": "frequentbusinesstraveler",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and setting of \"Once on This Island\" without offering a critical evaluation or opinion on the quality of the production. It focuses on the story and characters, indicating a preview rather than a review.",
+      "reasoning": "The article describes the plot and setting of \"Once on This Island\" but does not offer a critical evaluation or opinion about the quality of the production. It reads like a pre-opening description or overview.",
       "currentScore": 82
     },
     {
@@ -120,7 +131,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors'. It lacks any evaluative content about the show.",
+      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
       "currentScore": 74
     },
     {
@@ -150,7 +161,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -180,7 +191,7 @@
       "outletId": "vulture",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the set design and the playwright's intentions, but does not offer an evaluation or recommendation of the show itself. It reads more like a feature or background piece.",
+      "reasoning": "The article describes the set design and the playwright's intentions, but it does not offer an evaluation or opinion on the quality of the production itself. It's more of a feature about the show's themes and design choices.",
       "currentScore": 64
     },
     {
@@ -190,11 +201,17 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater, not a review of a specific production.",
+      "reasoning": "The text appears to be a collection of links and categories related to theater, rather than a review of a specific production.",
       "currentScore": 89
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [],
-  "perShowSummary": []
+  "perShowSummary": [
+    {
+      "showId": "miss-saigon-2017",
+      "currentCount": 41,
+      "removed": 1
+    }
+  ]
 }
