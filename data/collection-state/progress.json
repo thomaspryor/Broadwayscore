@@ -1006,7 +1006,12 @@
     "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
     "the-last-five-years-2025/nydailynews--chris-jones.json",
     "the-last-five-years-2025/nypost--lou-lumenick.json",
-    "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json"
+    "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json",
+    "othello-2025/broadwaynews--unknown.json",
+    "othello-2025/talkinbroadway--unknown.json",
+    "purpose-2025/deadline--greg-evans.json",
+    "redwood-2025/deadline--greg-evans.json",
+    "gypsy-2024/theatermania--jesse-green.json"
   ],
   "failed": [
     "giant-2026/cititour--brian-scott-lipton.json",
@@ -1216,7 +1221,12 @@
     "art-2025/wsj--unknown.json",
     "call-me-izzy-2025/vulture--jackson-mchenry.json",
     "the-last-five-years-2025/ap--unknown.json",
-    "the-last-five-years-2025/hypable--unknown.json"
+    "the-last-five-years-2025/hypable--unknown.json",
+    "redwood-2025/gmanetwork--stuart-santiago.json",
+    "redwood-2025/juiceph--wanggo-gallaga.json",
+    "gypsy-2024/hartford-courant--unknown.json",
+    "eureka-day-2024/times-uk--clive-davis.json",
+    "cult-of-love-2024/talkinbroadway--matthew-murray.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2058,7 +2068,11 @@
       "data/review-texts/the-adding-machine-off-broadway-2026/deadline--unknown.json",
       "the-adding-machine-off-broadway-2026/deadline--unknown.json",
       "data/review-texts/the-last-five-years-2025/nypost--lou-lumenick.json",
-      "the-last-five-years-2025/nypost--lou-lumenick.json"
+      "the-last-five-years-2025/nypost--lou-lumenick.json",
+      "data/review-texts/purpose-2025/deadline--greg-evans.json",
+      "purpose-2025/deadline--greg-evans.json",
+      "data/review-texts/redwood-2025/deadline--greg-evans.json",
+      "redwood-2025/deadline--greg-evans.json"
     ],
     "directCookies": [
       "giant-2026/nypost--unknown.json"
@@ -2087,7 +2101,8 @@
       "art-2025/times-uk--susie-goldsbrough.json",
       "burlesque-west-end-2026/telegraph--claire-allfree.json",
       "burlesque-west-end-2026/times-uk--clive-davis.json",
-      "call-me-izzy-2025/nytimes--jesse-green.json"
+      "call-me-izzy-2025/nytimes--jesse-green.json",
+      "othello-2025/broadwaynews--unknown.json"
     ],
     "brightdata": [
       "the-other-place-off-broadway-2026/wsj--unknown.json",
@@ -2106,7 +2121,9 @@
       "call-me-izzy-2025/nydailynews--chris-jones.json",
       "call-me-izzy-2025/nypost--johnny-oleksinski.json",
       "call-me-izzy-2025/amny--matt-windman.json",
-      "the-last-five-years-2025/nydailynews--chris-jones.json"
+      "the-last-five-years-2025/nydailynews--chris-jones.json",
+      "othello-2025/talkinbroadway--unknown.json",
+      "gypsy-2024/theatermania--jesse-green.json"
     ],
     "archiveToday": [
       "data/review-texts/giant-2026/cititour--brian-scott-lipton.json",
@@ -2169,7 +2186,8 @@
       "data/review-texts/chicago-1996/ap--michael-kuchwara.json",
       "data/review-texts/the-mousetrap-west-end-2021/thestage--john-thaxter.json",
       "data/review-texts/the-last-five-years-2025/ap--unknown.json",
-      "data/review-texts/the-last-five-years-2025/hypable--unknown.json"
+      "data/review-texts/the-last-five-years-2025/hypable--unknown.json",
+      "data/review-texts/cult-of-love-2024/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -2346,7 +2364,7 @@
     ]
   },
   "startTime": "2026-03-24T17:31:44.264Z",
-  "lastProcessed": "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json",
+  "lastProcessed": "cult-of-love-2024/talkinbroadway--matthew-murray.json",
   "log": [
     {
       "t": "2026-03-24T17:34:00.298Z",
@@ -2644,6 +2662,28 @@
       "t": "2026-03-25T04:30:08.384Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-25T04:32:05.406Z",
+      "event": "bb-session",
+      "session": "220d6ccf",
+      "url": "https://deadline.com/2025/09/broadway-box-office-purpose-mamma-mia-art-123650390"
+    },
+    {
+      "t": "2026-03-25T04:32:06.630Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-25T04:32:19.283Z",
+      "event": "bb-session",
+      "session": "4b34231c",
+      "url": "https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/"
+    },
+    {
+      "t": "2026-03-25T04:32:20.505Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
