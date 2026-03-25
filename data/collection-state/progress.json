@@ -163,7 +163,10 @@
     "on-your-feet-2015/wsj--terry-teachout.json",
     "king-charles-iii-2015/theatermania--adam-feldman.json",
     "king-charles-iii-2015/amny--matt-windman.json",
-    "king-charles-iii-2015/boston-herald--marilyn-stasio.json"
+    "king-charles-iii-2015/boston-herald--marilyn-stasio.json",
+    "the-gin-game-2015/timeout--adam-feldman.json",
+    "the-gin-game-2015/amny--matt-windman.json",
+    "fool-for-love-2015/theatermania--adam-feldman.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -444,7 +447,14 @@
     "on-your-feet-2015/bobs-theater-blog--robert-sholiton.json",
     "king-charles-iii-2015/express-uk--neil-norman.json",
     "king-charles-iii-2015/london-theatre--mark-shenton.json",
-    "king-charles-iii-2015/zeal-nyc--mark-mclaren.json"
+    "king-charles-iii-2015/zeal-nyc--mark-mclaren.json",
+    "king-charles-iii-2015/talkinbroadway--matthew-murray.json",
+    "therese-raquin-2015/timeout--adam-feldman.json",
+    "sylvia-2015/film-festival-traveler--kevin-filipski.json",
+    "sylvia-2015/slash-film--kevin-filipski.json",
+    "sylvia-2015/zeal-nyc--jil-picariello.json",
+    "the-gin-game-2015/northjerseycom--robert-feldberg.json",
+    "fool-for-love-2015/zeal-nyc--jil-picariello.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -516,7 +526,8 @@
       "misery-2015/timeout--david-cote.json",
       "allegiance-2015/wnyc--unknown.json",
       "king-charles-iii-2015/theatermania--adam-feldman.json",
-      "king-charles-iii-2015/boston-herald--marilyn-stasio.json"
+      "king-charles-iii-2015/boston-herald--marilyn-stasio.json",
+      "fool-for-love-2015/theatermania--adam-feldman.json"
     ],
     "amp": [],
     "browserbase": [
@@ -530,7 +541,9 @@
       "data/review-texts/the-last-five-years-2025/nypost--lou-lumenick.json",
       "the-last-five-years-2025/nypost--lou-lumenick.json",
       "data/review-texts/king-charles-iii-2015/amny--matt-windman.json",
-      "king-charles-iii-2015/amny--matt-windman.json"
+      "king-charles-iii-2015/amny--matt-windman.json",
+      "data/review-texts/the-gin-game-2015/amny--matt-windman.json",
+      "the-gin-game-2015/amny--matt-windman.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -593,7 +606,8 @@
       "american-psycho-2016/talkinbroadway--matthew-murray.json",
       "bright-star-2016/talkinbroadway--matthew-murray.json",
       "fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json",
-      "on-your-feet-2015/wsj--terry-teachout.json"
+      "on-your-feet-2015/wsj--terry-teachout.json",
+      "the-gin-game-2015/timeout--adam-feldman.json"
     ],
     "archiveToday": [
       "data/review-texts/cult-of-love-2024/talkinbroadway--matthew-murray.json",
@@ -682,7 +696,11 @@
       "data/review-texts/allegiance-2015/talkinbroadway--matthew-murray.json",
       "data/review-texts/on-your-feet-2015/peconic-public-broadcasting--david-richardson.json",
       "data/review-texts/on-your-feet-2015/thisbroadsway--sandra-mcfarland.json",
-      "data/review-texts/king-charles-iii-2015/london-theatre--mark-shenton.json"
+      "data/review-texts/king-charles-iii-2015/london-theatre--mark-shenton.json",
+      "data/review-texts/king-charles-iii-2015/talkinbroadway--matthew-murray.json",
+      "data/review-texts/sylvia-2015/film-festival-traveler--kevin-filipski.json",
+      "data/review-texts/sylvia-2015/slash-film--kevin-filipski.json",
+      "data/review-texts/the-gin-game-2015/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
       "bigfoot-off-broadway-2026/playbill--unknown.json",
@@ -721,7 +739,7 @@
     ]
   },
   "startTime": "2026-03-25T09:08:12.319Z",
-  "lastProcessed": "king-charles-iii-2015/boston-herald--marilyn-stasio.json",
+  "lastProcessed": "fool-for-love-2015/theatermania--adam-feldman.json",
   "log": [
     {
       "t": "2026-03-25T09:10:15.724Z",
@@ -826,6 +844,28 @@
     },
     {
       "t": "2026-03-25T19:14:49.829Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-25T19:21:18.606Z",
+      "event": "bb-session",
+      "session": "5c35165c",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/pair-of-broadway-vete"
+    },
+    {
+      "t": "2026-03-25T19:21:19.717Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-25T19:22:21.288Z",
+      "event": "bb-session",
+      "session": "a05c4315",
+      "url": "http://www.amny.com/entertainment/james-earl-jones-cicely-tyson-giving-winning-p"
+    },
+    {
+      "t": "2026-03-25T19:22:22.360Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     }

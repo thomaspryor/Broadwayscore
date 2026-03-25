@@ -1,38 +1,20 @@
 {
-  "updatedAt": "2026-03-25T19:15:32.618Z",
-  "processed": 164,
-  "failed": 279,
-  "successRate": "37.0%",
+  "updatedAt": "2026-03-25T19:23:13.131Z",
+  "processed": 167,
+  "failed": 286,
+  "successRate": "36.9%",
   "tierBreakdown": {
-    "playwright": 68,
+    "playwright": 69,
     "amp": 0,
-    "browserbase": 11,
+    "browserbase": 13,
     "directCookies": 0,
     "scrapingbee": 6,
-    "brightdata": 52,
-    "archiveToday": 87,
+    "brightdata": 53,
+    "archiveToday": 91,
     "archive": 33
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-03-25T09:10:15.724Z",
-      "event": "bb-session",
-      "session": "57cacc08",
-      "url": "https://www.wsj.com/articles/the-other-place-review-greek-roots-naturalistic-sur"
-    },
-    {
-      "t": "2026-03-25T09:10:41.467Z",
-      "event": "bb-session",
-      "session": "d41116b9",
-      "url": "https://www.wsj.com/articles/cats-the-jellicle-ball-review-wondrous-and-whisker-"
-    },
-    {
-      "t": "2026-03-25T09:12:00.189Z",
-      "event": "bb-session",
-      "session": "83502609",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/john-legend-lynn-nottage-liesl-"
-    },
     {
       "t": "2026-03-25T09:26:06.366Z",
       "event": "bb-session",
@@ -118,6 +100,28 @@
     },
     {
       "t": "2026-03-25T19:14:49.829Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-25T19:21:18.606Z",
+      "event": "bb-session",
+      "session": "5c35165c",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/pair-of-broadway-vete"
+    },
+    {
+      "t": "2026-03-25T19:21:19.717Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-25T19:22:21.288Z",
+      "event": "bb-session",
+      "session": "a05c4315",
+      "url": "http://www.amny.com/entertainment/james-earl-jones-cicely-tyson-giving-winning-p"
+    },
+    {
+      "t": "2026-03-25T19:22:22.360Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     }
