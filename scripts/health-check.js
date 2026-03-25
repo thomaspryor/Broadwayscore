@@ -615,7 +615,7 @@ function checkSEO() {
         return { name: 'SEO: health', status: 'warn', message: 'No SEO data (check-seo-health may not have run)' };
       }
       const data = readJSON(seoFile);
-      const age = data.timestamp ? hoursAgo(data.timestamp) : Infinity;
+      const age = (data.timestamp || data.lastChecked) ? hoursAgo(data.timestamp || data.lastChecked) : Infinity;
       if (age > 336) { // 14 days
         return { name: 'SEO: health', status: 'warn', message: `Last SEO check ${formatAge(age)} ago (>14d)`, hint: 'Trigger check-seo-health workflow manually' };
       }
