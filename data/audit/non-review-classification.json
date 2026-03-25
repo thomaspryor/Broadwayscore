@@ -1,68 +1,27 @@
 {
   "meta": {
-    "generatedAt": "2026-03-25T05:56:02.071Z",
+    "generatedAt": "2026-03-25T06:03:22.246Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 33165,
-      "inReviewsJson": 15386,
+      "inReviewsJson": 15380,
       "skippedExcluded": 71,
-      "withFullText": 23,
-      "excerptOnly": 1449,
-      "llmClassified": 22,
+      "withFullText": 19,
+      "excerptOnly": 1448,
+      "llmClassified": 18,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 4,
+      "nonReviewsFound": 0,
       "uncertainCases": 17,
-      "budgetUsed": 0.0023,
-      "llmCalls": 23,
+      "budgetUsed": 0.0019000000000000006,
+      "llmCalls": 19,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 13843
+      "skippedAlreadyClassified": 13842
     },
     "calibration": null
   },
-  "nonReviews": [
-    {
-      "file": "bad-cinderella-2023/bloomberg--chris-rovzar.json",
-      "showId": "bad-cinderella-2023",
-      "outlet": "Bloomberg News",
-      "outletId": "bloomberg",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This is a brief news item describing a scene from the show, not an evaluation of its quality.",
-      "currentScore": 20
-    },
-    {
-      "file": "bob-fosses-dancin-2023/theatermania--charles-isherwood.json",
-      "showId": "bob-fosses-dancin-2023",
-      "outlet": "TheaterMania",
-      "outletId": "theatermania",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This appears to be a broken page or search result, with a video about Megan Thee Stallion in Moulin Rouge! at the bottom. It does not contain any review content for Bob Fosse's Dancin'.",
-      "currentScore": 76
-    },
-    {
-      "file": "parade-2023/theatermania--jesse-green.json",
-      "showId": "parade-2023",
-      "outlet": "TheaterMania",
-      "outletId": "theatermania",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This appears to be a broken page or search result from a theater website, with a video about casting news for Moulin Rouge. It does not contain any review content for Parade.",
-      "currentScore": 86
-    },
-    {
-      "file": "shucked-2023/theatermania--david-gordon.json",
-      "showId": "shucked-2023",
-      "outlet": "TheaterMania",
-      "outletId": "theatermania",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This appears to be a broken page on a theater news website, with a video about casting news. There is no review content.",
-      "currentScore": 78
-    }
-  ],
+  "nonReviews": [],
   "uncertainCases": [
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -71,7 +30,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and themes of \"Eclipsed\" and provides historical context, but it does not offer a critical evaluation or opinion about the quality of the production itself. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and themes of \"Eclipsed\" and provides historical context, but it does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated theater news.",
       "currentScore": 82
     },
     {
@@ -101,7 +60,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a collection of theater-related keywords and phrases, including \"Broadway news updates\" and \"Music album reviews,\" suggesting it's a directory or listing rather than a review of a specific show like \"Funny Girl.\"",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain evaluative content about \"Funny Girl\".",
       "currentScore": 62
     },
     {
@@ -111,7 +70,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical 'Groundhog Day' and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself. It sets the stage for the show without providing a review.",
       "currentScore": 81
     },
     {
@@ -131,7 +90,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there is no evaluative content or opinion offered about the show itself.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of various cultural events.",
       "currentScore": 88
     },
     {
@@ -141,7 +100,7 @@
       "outletId": "frequentbusinesstraveler",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and setting of \"Once on This Island\" but does not offer an evaluation or opinion on the quality of the production. It reads like a preview or summary of the show's story.",
+      "reasoning": "The article describes the plot and setting of \"Once on This Island\" but does not offer a critical evaluation or opinion about the quality of the production. It reads like a preview or descriptive piece.",
       "currentScore": 82
     },
     {
@@ -151,7 +110,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
+      "reasoning": "The text appears to be a collection of links and categories related to theater and music, rather than a review of a specific show.",
       "currentScore": 89
     },
     {
@@ -181,7 +140,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but it does not offer an evaluation or opinion on the quality of the production. It also includes an interview excerpt, further suggesting it's a feature piece.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
       "currentScore": 83
     },
     {
@@ -191,7 +150,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -201,7 +160,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more aligned with a news item or listing than a review. There is no evaluative content present.",
+      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
       "currentScore": 64
     },
     {
@@ -211,7 +170,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific type of article.",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's closest to news due to the mention of updates.",
       "currentScore": 78
     },
     {
@@ -221,7 +180,7 @@
       "outletId": "vulture",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the set design and the playwright's intentions, but does not offer an evaluation or recommendation of the show itself. It reads more like a feature piece about the play's themes and context.",
+      "reasoning": "The article describes the set design and the playwright's intentions, but it does not offer an evaluation or opinion on the quality of the production itself. It's more of a feature about the show's themes and design choices.",
       "currentScore": 64
     },
     {
@@ -231,34 +190,13 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of links and categories related to theater, rather than a review of a specific production.",
+      "reasoning": "The text appears to be a collection of links and keywords related to theater, rather than a review or any other specific type of article. It's likely a navigation or advertisement section.",
       "currentScore": 89
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "life-of-pi-2023/theatermania--jesse-green.json"
+    "take-me-out-2022/washpost--peter-marks.json"
   ],
-  "perShowSummary": [
-    {
-      "showId": "bad-cinderella-2023",
-      "currentCount": 30,
-      "removed": 1
-    },
-    {
-      "showId": "bob-fosses-dancin-2023",
-      "currentCount": 22,
-      "removed": 1
-    },
-    {
-      "showId": "parade-2023",
-      "currentCount": 34,
-      "removed": 1
-    },
-    {
-      "showId": "shucked-2023",
-      "currentCount": 44,
-      "removed": 1
-    }
-  ]
+  "perShowSummary": []
 }
