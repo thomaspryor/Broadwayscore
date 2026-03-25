@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-25T06:33:29.446Z",
+  "timestamp": "2026-03-25T06:58:39.324Z",
   "stats": {
-    "totalReviews": 32473,
-    "alreadyFlagged": 11095,
+    "totalReviews": 32475,
+    "alreadyFlagged": 11101,
     "dateGuardCatches": 139,
     "directorMismatch": 952,
-    "tvFilmSignals": 3437,
-    "londonSignals": 1036,
-    "offBroadwaySignals": 1007,
+    "tvFilmSignals": 3435,
+    "londonSignals": 1035,
+    "offBroadwaySignals": 1008,
     "yearMismatch": 71,
-    "noPublishDate": 6781
+    "noPublishDate": 6773
   },
   "findings": [
     {
@@ -34949,24 +34949,6 @@
     },
     {
       "showId": "network-2018",
-      "file": "guardian--michael-billington.json",
-      "publishDate": null,
-      "url": "http://www.theguardian.com/stage/2017/nov/13/network-review-bryan-cranston-lyttelton-national-theatre-lee-hall",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "network-2018",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 82,
       "publishDate": "December 7, 2018",
@@ -58463,20 +58445,6 @@
     },
     {
       "showId": "tootsie-2019",
-      "file": "latimes--charles-mcnulty.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-tootsie-broadway-review-20190423-story.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "tootsie-2019",
       "file": "njcom--christopher-kelly.json",
       "score": 88,
       "publishDate": null,
@@ -76896,6 +76864,20 @@
       "score": 81,
       "publishDate": null,
       "url": "https://www.newyorktheatreguide.com/reviews/review-of-sea-walla-life-starring-jake-gyllenhaal-tom-sturridge-on-broadway",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "sea-wall-a-life-2019",
+      "file": "theatermania--adam-feldman.json",
+      "score": 79,
+      "publishDate": "August 9, 2019",
+      "url": "https://www.theatermania.com/news/tom-sturridge-and-jake-gyllenhaal-preview-broadways-sea-wall-a-life_88958/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
