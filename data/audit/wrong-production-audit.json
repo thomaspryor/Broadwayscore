@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-03-25T22:09:43.749Z",
+  "timestamp": "2026-03-25T22:18:30.670Z",
   "stats": {
     "totalReviews": 32489,
-    "alreadyFlagged": 11137,
+    "alreadyFlagged": 11139,
     "dateGuardCatches": 141,
     "directorMismatch": 956,
-    "tvFilmSignals": 3452,
+    "tvFilmSignals": 3451,
     "londonSignals": 1044,
     "offBroadwaySignals": 1009,
     "yearMismatch": 71,
@@ -1811,20 +1811,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"emily mann\" from a-streetcar-named-desire-2012"
-        }
-      ]
-    },
-    {
-      "showId": "a-streetcar-named-desire-2012",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": null,
-      "publishDate": "April 23, 2012",
-      "url": "https://www.hollywoodreporter.com/news/general-news/streetcar-named-desire-theater-review-314741/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
