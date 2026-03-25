@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-25T11:22:35.713Z",
+  "timestamp": "2026-03-25T11:30:17.158Z",
   "stats": {
     "totalReviews": 32481,
-    "alreadyFlagged": 11112,
+    "alreadyFlagged": 11115,
     "dateGuardCatches": 139,
     "directorMismatch": 954,
-    "tvFilmSignals": 3437,
-    "londonSignals": 1037,
+    "tvFilmSignals": 3439,
+    "londonSignals": 1038,
     "offBroadwaySignals": 1009,
     "yearMismatch": 71,
-    "noPublishDate": 6762
+    "noPublishDate": 6758
   },
   "findings": [
     {
@@ -36917,6 +36917,20 @@
     },
     {
       "showId": "once-on-this-island-2017",
+      "file": "journal-inquirer--tim-leininger.json",
+      "score": 87,
+      "publishDate": null,
+      "url": "https://www.journalinquirer.com/public/stage-review-once-on-this-island-is-brilliant-for-its/article_7dc23e2a-e1cd-11e7-a19d-8f24e05ef464.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "once-on-this-island-2017",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": 80,
       "publishDate": "2017-12-10",
@@ -49581,6 +49595,25 @@
     },
     {
       "showId": "the-children-2017",
+      "file": "newsday--barbara-schuler.json",
+      "score": 72,
+      "publishDate": "2017-12-12",
+      "url": "http://www.newsday.com/entertainment/theater/the-children-review-1.15429247",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-children-2017",
       "file": "theater-life--isa-goldberg.json",
       "score": 68,
       "publishDate": null,
@@ -54608,6 +54641,20 @@
     },
     {
       "showId": "the-parisian-woman-2017",
+      "file": "newsday--barbara-schuler.json",
+      "score": 38,
+      "publishDate": "2017-11-30",
+      "url": "https://www.newsday.com/entertainment/theater/the-parisian-woman-review-1.15257855",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-parisian-woman-2017",
       "file": "nysr--huffpost-steven-suskin.json",
       "score": 25,
       "publishDate": null,
@@ -56960,20 +57007,6 @@
       "showId": "the-terms-of-my-surrender-2017",
       "file": "latimes--chales-mcnulty.json",
       "score": 41,
-      "publishDate": "August 10, 2017",
-      "url": "https://www.latimes.com/entertainment/arts/la-et-cm-michael-moore-terms-surrender-review-20170810-story.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "the-terms-of-my-surrender-2017",
-      "file": "latimes--charles-mcnulty.json",
-      "score": null,
       "publishDate": "August 10, 2017",
       "url": "https://www.latimes.com/entertainment/arts/la-et-cm-michael-moore-terms-surrender-review-20170810-story.html",
       "findings": [
