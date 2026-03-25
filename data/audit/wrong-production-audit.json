@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-03-25T23:00:25.963Z",
+  "timestamp": "2026-03-25T23:10:07.932Z",
   "stats": {
     "totalReviews": 32489,
     "alreadyFlagged": 11139,
     "dateGuardCatches": 141,
-    "directorMismatch": 956,
-    "tvFilmSignals": 3451,
+    "directorMismatch": 957,
+    "tvFilmSignals": 3452,
     "londonSignals": 1044,
     "offBroadwaySignals": 1009,
     "yearMismatch": 71,
@@ -39804,6 +39804,20 @@
       ]
     },
     {
+      "showId": "present-laughter-2017",
+      "file": "wsj--terry-teachout.json",
+      "score": 92,
+      "publishDate": "2017-04-06",
+      "url": "http://www.wsj.com/articles/present-laughter-review-a-comedic-triumph-for-coward-and-kline-1491438601",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"george c. scott\" from present-laughter-1982"
+        }
+      ]
+    },
+    {
       "showId": "pretty-woman-the-musical-2018",
       "file": "attractions--jackie-roseboom.json",
       "publishDate": null,
@@ -51097,6 +51111,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-front-page-2016",
+      "file": "dc-metro-theater-arts--richard-seff.json",
+      "score": 80,
+      "publishDate": "October 28th, 2016",
+      "url": "https://dcmetrotheaterarts.com/2016/10/28/review-front-page-broadhurst-theatre-nyc/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
