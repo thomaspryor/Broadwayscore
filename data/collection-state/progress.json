@@ -1069,7 +1069,14 @@
     "fat-ham-2023/ap--john-carucci.json",
     "shucked-2023/theatermania--david-gordon.json",
     "shucked-2023/dailybeast--tim-teeman.json",
-    "life-of-pi-2023/newyorker--unknown.json"
+    "life-of-pi-2023/newyorker--unknown.json",
+    "life-of-pi-2023/theatermania--jesse-green.json",
+    "bad-cinderella-2023/bloomberg--chris-rovzar.json",
+    "bad-cinderella-2023/telegraph--anita-singh.json",
+    "bob-fosses-dancin-2023/theatermania--charles-isherwood.json",
+    "bob-fosses-dancin-2023/wsj--charles-isherwood.json",
+    "parade-2023/theatermania--jesse-green.json",
+    "between-riverside-and-crazy-2022/ew--maureen-lee-lenker.json"
   ],
   "failed": [
     "giant-2026/cititour--brian-scott-lipton.json",
@@ -1326,7 +1333,10 @@
     "life-of-pi-2023/broadwayworld--roy-berko.json",
     "life-of-pi-2023/broadwayworld--taylor-clemons.json",
     "life-of-pi-2023/broadwayworld--timoth-david-copney.json",
-    "life-of-pi-2023/broadwayworld--tyler-hinton.json"
+    "life-of-pi-2023/broadwayworld--tyler-hinton.json",
+    "sweeney-todd-2023/billboard--greg-evans.json",
+    "sweeney-todd-2023/talkinbroadway--matthew-murray.json",
+    "parade-2023/telegraph--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2126,7 +2136,10 @@
       "prima-facie-2023/ap--mark-kennedy.json",
       "peter-pan-goes-wrong-2023/whatsonstage--lucinda-everett.json",
       "camelot-2023/ap--mark-kennedy.json",
-      "fat-ham-2023/ap--john-carucci.json"
+      "fat-ham-2023/ap--john-carucci.json",
+      "life-of-pi-2023/theatermania--jesse-green.json",
+      "bad-cinderella-2023/telegraph--anita-singh.json",
+      "between-riverside-and-crazy-2022/ew--maureen-lee-lenker.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
@@ -2234,7 +2247,8 @@
       "call-me-izzy-2025/nytimes--jesse-green.json",
       "othello-2025/broadwaynews--unknown.json",
       "merrily-we-roll-along-2023/newyorker--unknown.json",
-      "fat-ham-2023/nytimes--jesse-green.json"
+      "fat-ham-2023/nytimes--jesse-green.json",
+      "bad-cinderella-2023/bloomberg--chris-rovzar.json"
     ],
     "brightdata": [
       "the-other-place-off-broadway-2026/wsj--unknown.json",
@@ -2281,7 +2295,10 @@
       "the-thanksgiving-play-2023/theatermania--adam-feldman.json",
       "shucked-2023/theatermania--david-gordon.json",
       "shucked-2023/dailybeast--tim-teeman.json",
-      "life-of-pi-2023/newyorker--unknown.json"
+      "life-of-pi-2023/newyorker--unknown.json",
+      "bob-fosses-dancin-2023/theatermania--charles-isherwood.json",
+      "bob-fosses-dancin-2023/wsj--charles-isherwood.json",
+      "parade-2023/theatermania--jesse-green.json"
     ],
     "archiveToday": [
       "data/review-texts/giant-2026/cititour--brian-scott-lipton.json",
@@ -2376,7 +2393,9 @@
       "data/review-texts/life-of-pi-2023/broadwayworld--roy-berko.json",
       "data/review-texts/life-of-pi-2023/broadwayworld--taylor-clemons.json",
       "data/review-texts/life-of-pi-2023/broadwayworld--timoth-david-copney.json",
-      "data/review-texts/life-of-pi-2023/broadwayworld--tyler-hinton.json"
+      "data/review-texts/life-of-pi-2023/broadwayworld--tyler-hinton.json",
+      "data/review-texts/sweeney-todd-2023/billboard--greg-evans.json",
+      "data/review-texts/sweeney-todd-2023/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -2558,7 +2577,7 @@
     ]
   },
   "startTime": "2026-03-24T17:31:44.264Z",
-  "lastProcessed": "life-of-pi-2023/newyorker--unknown.json",
+  "lastProcessed": "between-riverside-and-crazy-2022/ew--maureen-lee-lenker.json",
   "log": [
     {
       "t": "2026-03-24T17:34:00.298Z",
@@ -3065,6 +3084,17 @@
       "t": "2026-03-25T05:10:15.960Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-25T05:34:09.545Z",
+      "event": "bb-session",
+      "session": "3003a758",
+      "url": "https://www.wsj.com/articles/bob-fosses-dancin-review-a-faded-razzle-dazzle-revu"
+    },
+    {
+      "t": "2026-03-25T05:34:10.672Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
