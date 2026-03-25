@@ -26,6 +26,8 @@ const fs = require('fs');
 const path = require('path');
 const { compressImage } = require('./lib/compress-image');
 
+const crypto = require('crypto');
+
 const SHOWS_JSON_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const TODAYTIX_IDS_PATH = path.join(__dirname, '..', 'data', 'todaytix-ids.json');
 const PLAYBILL_URLS_PATH = path.join(__dirname, '..', 'data', 'playbill-urls.json');
@@ -33,6 +35,22 @@ const IBDB_IMAGE_CACHE_PATH = path.join(__dirname, '..', 'data', 'ibdb-image-cac
 const IMAGES_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
 const DRY_RUN_DIR = path.join(__dirname, '..', 'data', 'audit', 'image-dry-run');
 const AUDIT_DIR = path.join(__dirname, '..', 'data', 'audit');
+
+// MD5 hashes of known "Coming Soon" placeholder images on disk.
+// These are the TodayTix placeholder graphics that were saved before URL-based filtering was added.
+const PLACEHOLDER_FILE_HASHES = new Set([
+  'b4d7d1bdb443e0a94e69ac8a5abd6f40', // poster.webp (19,118 bytes)
+  'ac3ea27f64c633474ad93fd826f614e7', // thumbnail.webp (11,664 bytes)
+  '4aed489bb69c5c49be3315e3f85b342f', // hero.webp (28,998 bytes)
+]);
+
+function isPlaceholderFile(filePath) {
+  try {
+    const buf = fs.readFileSync(filePath);
+    const hash = crypto.createHash('md5').update(buf).digest('hex');
+    return PLACEHOLDER_FILE_HASHES.has(hash);
+  } catch { return false; }
+}
 const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY;
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 
@@ -2147,10 +2165,12 @@ async function main() {
       const poster = s.images.poster;
       const thumb = s.images.thumbnail;
       if (poster && poster.startsWith('/images/')) {
-        if (!fs.existsSync(path.join(__dirname, '..', 'public', poster))) return true;
+        const posterPath = path.join(__dirname, '..', 'public', poster);
+        if (!fs.existsSync(posterPath) || isPlaceholderFile(posterPath)) return true;
       }
       if (thumb && thumb.startsWith('/images/')) {
-        if (!fs.existsSync(path.join(__dirname, '..', 'public', thumb))) return true;
+        const thumbPath = path.join(__dirname, '..', 'public', thumb);
+        if (!fs.existsSync(thumbPath) || isPlaceholderFile(thumbPath)) return true;
       }
       return false;
     });
