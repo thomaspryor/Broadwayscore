@@ -1053,6 +1053,13 @@ function mergeIntoExisting(existing, scraped, source) {
         for (const [key, value] of Object.entries(newData[field])) {
           if (value !== null && value !== undefined && value !== '') {
             if (current[field][key] !== value) {
+              // Don't replace a specific URL with a generic one
+              if (key === 'url' && current[field][key] && !current[field][key].match(/^https?:\/\/[^/]+\/?$/)) {
+                // Current URL has a path (specific) — only replace if new URL also has a path
+                if (typeof value === 'string' && value.match(/^https?:\/\/[^/]+\/?$/)) {
+                  continue; // Skip: new URL is generic, current is specific
+                }
+              }
               if (key === 'price') {
                 changes.push({
                   showId, type: 'updated', field, key,
@@ -1130,6 +1137,13 @@ const GENERIC_URLS = [
   'my.socialtoaster.com/st/rush_select/',
   'my.socialtoaster.com/st/lottery_select/',
 ];
+
+/** URLs that are platform homepages (not show-specific) — used for merge preference */
+function isGenericPlatformUrl(url) {
+  if (!url) return false;
+  // A URL with no path (just domain) is generic
+  return /^https?:\/\/[^/]+\/?$/.test(url.trim());
+}
 
 function isGenericUrl(url) {
   if (!url) return false;
