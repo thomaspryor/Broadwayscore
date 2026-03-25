@@ -182,7 +182,37 @@ jobs:
           fi
           bash scripts/lib/push-with-retry.sh
 
-  # Create issue for new shows that need review data
+      - name: Queue new Broadway shows for commercial research
+        if: steps.discover.outputs.new_shows_count != '' && steps.discover.outputs.new_shows_count != '0'
+        run: |
+          NEW_SLUGS="${{ steps.discover.outputs.new_slugs }}"
+          if [ -z "$NEW_SLUGS" ]; then
+            echo "No new slugs to queue"
+            exit 0
+          fi
+          # Filter to Broadway-only (skip OB/WE shows)
+          QUEUE_FILE="data/commercial-research-queue.json"
+          node -e "
+            const fs = require('fs');
+            const slugs = '$NEW_SLUGS'.split(',').filter(Boolean);
+            const shows = require('./data/shows.json').shows || [];
+            const bwaySlugs = slugs.filter(slug => {
+              const show = shows.find(s => s.slug === slug || s.id === slug);
+              return show && (show.market || 'broadway') === 'broadway';
+            });
+            if (bwaySlugs.length === 0) { console.log('No Broadway shows to queue'); process.exit(0); }
+            let queue = { shows: [], updatedAt: '' };
+            try { queue = JSON.parse(fs.readFileSync('$QUEUE_FILE', 'utf8')); } catch(e) {}
+            queue.shows = [...new Set([...(queue.shows || []), ...bwaySlugs])];
+            queue.updatedAt = new Date().toISOString();
+            fs.writeFileSync('$QUEUE_FILE', JSON.stringify(queue, null, 2) + '\n');
+            console.log('Queued ' + bwaySlugs.length + ' Broadway shows for commercial research: ' + bwaySlugs.join(', '));
+          "
+          git add "$QUEUE_FILE" 2>/dev/null || true
+          if ! git diff --staged --quiet; then
+            git commit -m "data: Queue new Broadway shows for commercial research"
+            bash scripts/lib/push-with-retry.sh
+          fi
 
       - name: Push aggregator-archive to private repo
         if: always()
