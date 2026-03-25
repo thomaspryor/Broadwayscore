@@ -199,7 +199,8 @@
     "teeth-n-smiles-west-end-2026/times-uk--unknown.json",
     "a-mirrored-monet-west-end-2026/whatsonstage--unknown.json",
     "the-terms-of-my-surrender-2017/thestage--mark-sheton.json",
-    "present-laughter-2017/wsj--terry-teachout.json"
+    "present-laughter-2017/wsj--terry-teachout.json",
+    "miss-saigon-2017/off-script-with-dan-dwyer--dan-dwyer.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -641,7 +642,16 @@
     "present-laughter-2017/talkinbroadway--matthew-murray.json",
     "amelie-a-new-musical-2017/theatermania--adam-feldman.json",
     "the-play-that-goes-wrong-2017/washpost--peter-marks.json",
-    "sweat-2017/broadway-blog--matthew-wexler.json"
+    "sweat-2017/broadway-blog--matthew-wexler.json",
+    "miss-saigon-2017/amny--matt-windman.json",
+    "the-price-2017/theater-news-online--brian-scott-lipton.json",
+    "the-price-2017/thestage--chris-jones.json",
+    "come-from-away-2017/newyorker--hilton-als.json",
+    "come-from-away-2017/off-script-with-dan-dwyer--dan-dwyer.json",
+    "come-from-away-2017/st-louis-post-dispatch--bruce-r-miller.json",
+    "come-from-away-2017/talkinbroadway--matthew-murray.json",
+    "the-glass-menagerie-2017/ap--unknown.json",
+    "the-glass-menagerie-2017/chicagotribune--chris-jones.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -729,7 +739,8 @@
       "the-elephant-man-2014/financialtimes--financial-times.json",
       "teeth-n-smiles-west-end-2026/independent--unknown.json",
       "teeth-n-smiles-west-end-2026/times-uk--unknown.json",
-      "a-mirrored-monet-west-end-2026/whatsonstage--unknown.json"
+      "a-mirrored-monet-west-end-2026/whatsonstage--unknown.json",
+      "miss-saigon-2017/off-script-with-dan-dwyer--dan-dwyer.json"
     ],
     "amp": [],
     "browserbase": [
@@ -963,14 +974,17 @@
       "data/review-texts/war-paint-2017/talkinbroadway--matthew-murray.json",
       "data/review-texts/present-laughter-2017/talkinbroadway--matthew-murray.json",
       "data/review-texts/the-play-that-goes-wrong-2017/washpost--peter-marks.json",
-      "data/review-texts/sweat-2017/broadway-blog--matthew-wexler.json"
+      "data/review-texts/sweat-2017/broadway-blog--matthew-wexler.json",
+      "data/review-texts/miss-saigon-2017/amny--matt-windman.json",
+      "data/review-texts/the-price-2017/thestage--chris-jones.json",
+      "data/review-texts/come-from-away-2017/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "the-terms-of-my-surrender-2017/thestage--mark-sheton.json"
     ]
   },
   "startTime": "2026-03-25T09:08:12.319Z",
-  "lastProcessed": "sweat-2017/broadway-blog--matthew-wexler.json",
+  "lastProcessed": "the-glass-menagerie-2017/chicagotribune--chris-jones.json",
   "log": [
     {
       "t": "2026-03-25T09:10:15.724Z",
@@ -1376,6 +1390,28 @@
       "t": "2026-03-25T22:39:36.165Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-25T22:40:08.866Z",
+      "event": "bb-session",
+      "session": "1696d223",
+      "url": "http://www.amny.com/entertainment/miss-saigon-review-film-more-relevant-today-th"
+    },
+    {
+      "t": "2026-03-25T22:40:10.125Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-25T22:42:01.697Z",
+      "event": "bb-session",
+      "session": "281ef7c2",
+      "url": "https://www.thestage.co.uk/reviews/2017/price-review-american-airlines-theatre-n"
+    },
+    {
+      "t": "2026-03-25T22:42:02.954Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
