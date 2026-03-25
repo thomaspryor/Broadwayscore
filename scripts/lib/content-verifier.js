@@ -289,12 +289,12 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
   const venueContext = venue ? `\n- ${mc.venueLabel}: ${venue}` : '';
   const excerptContext = excerpt ? `\n- Known excerpt: "${excerpt.substring(0, 300)}"` : '';
 
-  // Temporal proximity: if review published within 14 days of opening, very likely correct production
+  // Temporal proximity: if review published within 30 days of opening, very likely correct production
   let temporalHint = '';
   if (openingDate && publishDate) {
     const daysDiff = Math.abs((new Date(publishDate) - new Date(openingDate)) / 86400000);
-    if (daysDiff <= 14) {
-      temporalHint = `\n\n**IMPORTANT**: This review was published ${daysDiff <= 1 ? 'on opening night' : `within ${Math.round(daysDiff)} days of the ${mc.label} opening`}. Reviews published near opening night are almost always reviewing the current ${mc.label} production, NOT a prior production. Be very cautious about flagging wrongProduction for opening-week reviews. Do NOT hallucinate prior productions that may not exist.`;
+    if (daysDiff <= 30) {
+      temporalHint = `\n\n**IMPORTANT**: This review was published ${daysDiff <= 1 ? 'on opening night' : `within ${Math.round(daysDiff)} days of the ${mc.label} opening`}. Reviews published near opening night are almost always reviewing the current ${mc.label} production. Be very cautious about flagging wrongProduction or isFilmTv for opening-week reviews. Do NOT confuse the show with same-name films, musicals, or prior productions — use the publish date as strong evidence this is the current ${mc.label} production. Do NOT hallucinate prior productions that may not exist.`;
     }
   }
 
@@ -368,27 +368,42 @@ Set isValid=true only if the content is a review of the ${mc.label} production a
       let wpConfidence = parsed.confidence || 'medium';
       let wpReasoning = parsed.reasoning || '';
 
-      // Safety check: if LLM says wrongProduction but review published within 14 days
-      // of opening, downgrade confidence — LLMs hallucinate prior productions frequently
+      // Safety check: if LLM says wrongProduction but review published within 30 days
+      // of opening, downgrade confidence — LLMs hallucinate prior productions frequently,
+      // especially for shows with same-name films, musicals, or prior Broadway runs.
       if (wpFlag && openingDate && publishDate) {
         const daysDiff = Math.abs((new Date(publishDate) - new Date(openingDate)) / 86400000);
-        if (daysDiff <= 14) {
+        if (daysDiff <= 30) {
           console.log(`    ⚠ LLM wrongProduction overridden: review published ${Math.round(daysDiff)}d from opening — downgrading to low confidence`);
           wpConfidence = 'low';
           wpReasoning = `[OVERRIDE: review within ${Math.round(daysDiff)}d of opening, likely correct production] ${wpReasoning}`;
         }
       }
 
+      // Safety check: if LLM says isFilmTv but review published within 30 days of opening,
+      // downgrade confidence. LLMs confuse same-name films/musicals (e.g. "Giant" 1956 film)
+      // with current Broadway productions, especially for shows with film adaptations.
+      let filmTvFlag = parsed.isFilmTv || false;
+      let filmTvConfidence = parsed.confidence || 'medium';
+      if (filmTvFlag && openingDate && publishDate) {
+        const daysDiff = Math.abs((new Date(publishDate) - new Date(openingDate)) / 86400000);
+        if (daysDiff <= 30) {
+          console.log(`    ⚠ LLM isFilmTv overridden: review published ${Math.round(daysDiff)}d from opening — downgrading to low confidence`);
+          filmTvConfidence = 'low';
+          filmTvFlag = false; // Clear the flag entirely — opening-week reviews are live theater
+        }
+      }
+
       return {
         isValid: parsed.isValid ?? true,
-        confidence: wpFlag ? wpConfidence : (parsed.confidence || 'medium'),
+        confidence: wpFlag ? wpConfidence : filmTvFlag ? filmTvConfidence : (parsed.confidence || 'medium'),
         issues: parsed.issues || [],
         truncated: parsed.truncated || false,
         wrongArticle: parsed.wrongArticle || false,
         articleType: parsed.articleType || 'review',
         articleTypeConfidence: parsed.articleTypeConfidence || 'medium',
         wrongProduction: wpFlag,
-        isFilmTv: parsed.isFilmTv || false,
+        isFilmTv: filmTvFlag,
         reasoning: wpFlag ? wpReasoning : (parsed.reasoning || ''),
         verifiedBy: `llm:${result.provider}`,
         contentHash: contentHash(scrapedText)
