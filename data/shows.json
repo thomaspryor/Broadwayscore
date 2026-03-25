@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway show metadata - source of truth for all shows",
-    "lastUpdated": "2026-03-24",
+    "lastUpdated": "2026-03-25T08:36:14.779Z",
     "source": "Manual + Playbill/IBDB cross-reference",
     "totalShows": 2258
   },
@@ -4615,7 +4615,7 @@
       "closingDate": "2025-06-08",
       "status": "closed",
       "type": "play",
-      "runtime": null,
+      "runtime": "1h 33m",
       "intermissions": null,
       "images": {
         "hero": "/images/shows/good-night-and-good-luck-2025/hero.webp",
@@ -208775,7 +208775,7 @@
       "slug": "11-to-midnight-off-broadway",
       "venue": "Orpheum Theatre",
       "openingDate": "2026-01-28",
-      "closingDate": "2026-04-19",
+      "closingDate": "2026-05-31",
       "status": "open",
       "type": "musical",
       "runtime": "2h 45m",
@@ -211061,8 +211061,7 @@
       "todaytixUrl": "https://www.todaytix.com/nyc/shows/44226-la-ternura",
       "todayTixCategory": "Plays",
       "ibdbRevivalChecked": true,
-      "isRevival": false,
-      "_staleMissingSince": "2026-03-24"
+      "isRevival": false
     },
     {
       "id": "the-monsters-off-broadway-2026",
@@ -216501,7 +216500,7 @@
       "venue": "Duke of York's Theatre",
       "openingDate": "2026-03-25",
       "closingDate": "2026-06-06",
-      "status": "previews",
+      "status": "open",
       "type": "play",
       "category": "west-end",
       "tags": [
@@ -227066,7 +227065,7 @@
       "venue": "Park Avenue Armory",
       "openingDate": "2026-03-25",
       "closingDate": "2026-03-26",
-      "status": "upcoming",
+      "status": "open",
       "type": "play",
       "isRevival": false,
       "runtime": "2h 45m",
@@ -230511,7 +230510,7 @@
         "thumbnail": "/images/shows/into-the-woods-west-end-2026/thumbnail.webp",
         "poster": "/images/shows/into-the-woods-west-end-2026/poster.webp"
       },
-      "synopsis": "",
+      "synopsis": "The Narrator introduces the main characters in the story. Cinderella wishes to attend a festival held by the king, much to the dismay of her Stepmother and Stepsisters. Jack wishes his cow, Milky White, would give milk, and his Mother wishes that Jack would sell Milky White. A Baker and his Wife wish to have a child, and Little Red Riding Hood wishes for bread to bring to her ill Grandmother.",
       "ageRecommendation": null,
       "previewsStartDate": null,
       "tags": [
@@ -230604,6 +230603,33 @@
       "creativeTeam": [],
       "ibdbRevivalChecked": true,
       "category": "off-broadway"
+    },
+    {
+      "id": "pat-rascal-space-gravy-off-west-end-2026",
+      "title": "Pat Rascal: Space Gravy",
+      "slug": "pat-rascal-space-gravy-off-west-end",
+      "venue": "Soho Theatre",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "announced",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "off-west-end"
     }
   ]
 }
