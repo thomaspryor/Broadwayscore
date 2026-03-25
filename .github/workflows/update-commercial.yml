@@ -66,6 +66,11 @@ jobs:
         # Continue even if there are Deep Research conflicts (they're logged, not failures)
         continue-on-error: true
 
+      - name: Run commercial audit
+        if: always()
+        run: node scripts/audit-commercial-data.js
+        continue-on-error: true
+
       - name: Validate data
         if: always()
         run: npm run test:data
@@ -80,7 +85,7 @@ jobs:
       - name: Commit and push changes
         if: always() && steps.build.outcome != 'failure'
         run: |
-          git add data/commercial-changelog.json
+          git add data/commercial-changelog.json data/audit/commercial-data-audit.json 2>/dev/null || true
 
           if git diff --staged --quiet; then
             echo "No changes to commit"
