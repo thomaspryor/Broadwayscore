@@ -1028,7 +1028,12 @@
     "illinoise-2024/nytimes--unknown.json",
     "illinoise-2024/timeout--adam-feldman.json",
     "uncle-vanya-2024/deadline--greg-evans.json",
-    "illinoise-2024/theatermania--jesse-green.json"
+    "illinoise-2024/theatermania--jesse-green.json",
+    "mary-jane-2024/deadline--pete-hammond.json",
+    "patriots-2024/theatermania--frank-scheck.json",
+    "stereophonic-2024/theatermania--jackson-mchenry.json",
+    "stereophonic-2024/whatsonstage--sarah-crompton.json",
+    "the-wiz-2024/theatermania--jesse-green.json"
   ],
   "failed": [
     "giant-2026/cititour--brian-scott-lipton.json",
@@ -1256,7 +1261,12 @@
     "mother-play-2024/washpost--peter-marks.json",
     "illinoise-2024/washpost--peter-marks.json",
     "illinoise-2024/usatoday--david-rooney.json",
-    "mary-jane-2024/washpost--peter-marks.json"
+    "mary-jane-2024/washpost--peter-marks.json",
+    "hells-kitchen-2024/usatoday--david-rooney.json",
+    "stereophonic-2024/thestage--lane-williamson.json",
+    "stereophonic-2024/washpost--peter-marks.json",
+    "suffs-2024/thestage--lane-williamson.json",
+    "suffs-2024/usatoday--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2038,7 +2048,8 @@
       "tammy-faye-2024/whatsonstage--sarah-crompton.json",
       "yellow-face-2024/guardian--adrian-horton.json",
       "the-hills-of-california-2024/whatsonstage--sarah-crompton.json",
-      "cats-the-jellicle-ball-off-broadway-2024/timeout--adam-feldman.json"
+      "cats-the-jellicle-ball-off-broadway-2024/timeout--adam-feldman.json",
+      "stereophonic-2024/whatsonstage--sarah-crompton.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
@@ -2110,7 +2121,9 @@
       "data/review-texts/home-2024/variety--lexi-carson.json",
       "home-2024/variety--lexi-carson.json",
       "data/review-texts/uncle-vanya-2024/deadline--greg-evans.json",
-      "uncle-vanya-2024/deadline--greg-evans.json"
+      "uncle-vanya-2024/deadline--greg-evans.json",
+      "data/review-texts/mary-jane-2024/deadline--pete-hammond.json",
+      "mary-jane-2024/deadline--pete-hammond.json"
     ],
     "directCookies": [
       "giant-2026/nypost--unknown.json"
@@ -2169,7 +2182,10 @@
       "left-on-tenth-2024/theatermania--jesse-green.json",
       "yellow-face-2024/theatermania--charles-isherwood.json",
       "cats-the-jellicle-ball-off-broadway-2024/billboard--joe-lynch.json",
-      "illinoise-2024/theatermania--jesse-green.json"
+      "illinoise-2024/theatermania--jesse-green.json",
+      "patriots-2024/theatermania--frank-scheck.json",
+      "stereophonic-2024/theatermania--jackson-mchenry.json",
+      "the-wiz-2024/theatermania--jesse-green.json"
     ],
     "archiveToday": [
       "data/review-texts/giant-2026/cititour--brian-scott-lipton.json",
@@ -2239,7 +2255,12 @@
       "data/review-texts/mcneal-2024/talkinbroadway--matthew-murray.json",
       "data/review-texts/mother-play-2024/washpost--peter-marks.json",
       "data/review-texts/illinoise-2024/washpost--peter-marks.json",
-      "data/review-texts/mary-jane-2024/washpost--peter-marks.json"
+      "data/review-texts/mary-jane-2024/washpost--peter-marks.json",
+      "data/review-texts/hells-kitchen-2024/usatoday--david-rooney.json",
+      "data/review-texts/stereophonic-2024/thestage--lane-williamson.json",
+      "data/review-texts/stereophonic-2024/washpost--peter-marks.json",
+      "data/review-texts/suffs-2024/thestage--lane-williamson.json",
+      "data/review-texts/suffs-2024/usatoday--charles-isherwood.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -2419,7 +2440,7 @@
     ]
   },
   "startTime": "2026-03-24T17:31:44.264Z",
-  "lastProcessed": "mary-jane-2024/washpost--peter-marks.json",
+  "lastProcessed": "the-wiz-2024/theatermania--jesse-green.json",
   "log": [
     {
       "t": "2026-03-24T17:34:00.298Z",
@@ -2827,6 +2848,50 @@
       "t": "2026-03-25T04:51:56.744Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-25T04:52:14.458Z",
+      "event": "bb-session",
+      "session": "eab0ab65",
+      "url": "https://deadline.com/2017/09/mary-jane-review-the-leftovers-carrie-coon-triumphs"
+    },
+    {
+      "t": "2026-03-25T04:52:15.689Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-25T04:54:32.844Z",
+      "event": "bb-session",
+      "session": "b4098059",
+      "url": "https://www.thestage.co.uk/reviews/stereophonic-review-at-john-golden-theatre-ne"
+    },
+    {
+      "t": "2026-03-25T04:54:33.988Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-25T04:55:22.178Z",
+      "event": "bb-session",
+      "session": "f6394063",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/04/19/stereophonic-broadway-re"
+    },
+    {
+      "t": "2026-03-25T04:55:23.357Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-25T04:57:37.492Z",
+      "event": "bb-session",
+      "session": "ad157883",
+      "url": "https://www.thestage.co.uk/reviews/suffs-review-at-music-box-theatre-new-york-by"
+    },
+    {
+      "t": "2026-03-25T04:57:38.657Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
