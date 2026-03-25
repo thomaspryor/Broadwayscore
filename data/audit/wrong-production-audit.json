@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-25T19:34:36.857Z",
+  "timestamp": "2026-03-25T21:03:09.290Z",
   "stats": {
     "totalReviews": 32482,
-    "alreadyFlagged": 11125,
+    "alreadyFlagged": 11133,
     "dateGuardCatches": 140,
     "directorMismatch": 955,
     "tvFilmSignals": 3441,
-    "londonSignals": 1038,
-    "offBroadwaySignals": 1009,
+    "londonSignals": 1039,
+    "offBroadwaySignals": 1008,
     "yearMismatch": 71,
-    "noPublishDate": 6746
+    "noPublishDate": 6742
   },
   "findings": [
     {
@@ -66101,6 +66101,20 @@
     },
     {
       "showId": "constellations-2015",
+      "file": "financialtimes--brendan-lemon.json",
+      "score": 82,
+      "publishDate": "2015-01-13",
+      "url": "http://www.ft.com/intl/cms/s/6d6bbe7a-9a4a-11e4-8426-00144feabdc0,Authorised=false.html?_i_location=http%3A%2F%2Fwww.ft.com%2Fcms%2Fs%2F0%2F6d6bbe7a-9a4a-11e4-8426-00144feabdc0.html%3Fsiteedition%3Dintl&siteedition=intl&_i_referer=http%3A%2F%2Fwww.broadwayworld.com%2Farticle%2FReview-Roundup-CONSTELLATIONS-Opens-on-Broadway-Updating-LIVE-20150113",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "constellations-2015",
       "file": "ny1--roma-torre.json",
       "score": 82,
       "publishDate": "2015-01-14",
@@ -69448,20 +69462,6 @@
       ]
     },
     {
-      "showId": "hand-to-god-2015",
-      "file": "nytimes--charles-isherwood.json",
-      "score": null,
-      "publishDate": "April 7, 2015",
-      "url": "http://www.nytimes.com/2015/04/08/theater/review-hand-to-god-features-a-foul-talking-puppet.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
-        }
-      ]
-    },
-    {
       "showId": "hangmen-2022",
       "file": "broadwaynews--diep-tran.json",
       "score": 42,
@@ -71779,6 +71779,7 @@
     {
       "showId": "king-charles-iii-2015",
       "file": "boston-herald--marilyn-stasio.json",
+      "score": 86,
       "publishDate": "2015-11-02",
       "url": "https://www.bostonherald.com/2015/11/02/broadway-review-king-charles-iii/",
       "findings": [
