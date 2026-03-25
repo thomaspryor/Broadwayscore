@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-25T00:24:12.805Z",
-  "processed": 555,
-  "failed": 80,
-  "successRate": "87.4%",
+  "updatedAt": "2026-03-25T00:32:43.990Z",
+  "processed": 558,
+  "failed": 87,
+  "successRate": "86.5%",
   "tierBreakdown": {
-    "playwright": 458,
+    "playwright": 459,
     "amp": 16,
     "browserbase": 26,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 27,
-    "archive": 80
+    "archive": 82
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-03-24T19:31:34.121Z",
-      "event": "bb-session",
-      "session": "4cefb1d4",
-      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
-    },
-    {
-      "t": "2026-03-24T19:31:35.267Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-03-24T19:38:15.351Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-25T00:07:49.778Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-25T00:29:56.161Z",
+      "event": "bb-session",
+      "session": "a6960881",
+      "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jor"
+    },
+    {
+      "t": "2026-03-25T00:29:57.430Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
