@@ -232,6 +232,29 @@ jobs:
             echo "  ITERATION $ITERATION / $MAX_ITERATIONS — $(date -u '+%Y-%m-%d %H:%M UTC')"
             echo "══════════════════════════════════════════════════"
 
+            # Early exit: stop if all shows have already been broadcast
+            SENT_JSON=$(gh api repos/${{ github.repository }}/contents/data/opening-night-sent.json --jq '.content' 2>/dev/null | base64 -d 2>/dev/null || echo '{}')
+            ALL_DONE=true
+            IFS=',' read -ra CHECK_SHOWS <<< "$SHOWS"
+            for SID in "${CHECK_SHOWS[@]}"; do
+              COMPLETED=$(echo "$SENT_JSON" | node -e "
+                try {
+                  const d = JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'));
+                  const e = d.shows && d.shows['$SID'];
+                  console.log(e && e.completed ? 'true' : 'false');
+                } catch { console.log('false'); }
+              " 2>/dev/null || echo "false")
+              if [ "$COMPLETED" != "true" ]; then
+                ALL_DONE=false
+                break
+              fi
+            done
+
+            if [ "$ALL_DONE" = "true" ]; then
+              echo "★ All shows already broadcast — stopping orchestrator early"
+              break
+            fi
+
             # Dispatch the poller with show_id and market
             echo "Dispatching opening-night-poller..."
             POLLER_ARGS="$SKIP_SERP_FLAG"
@@ -279,10 +302,6 @@ jobs:
             else
               echo "⚠️ Could not find new poller run after 2 min. Continuing."
             fi
-
-            # Check if we should stop (all shows broadcast-ready)
-            # We can't check review-texts from here, so just continue looping.
-            # The poller itself dispatches broadcast when ready.
 
             # Sleep between iterations (skip on last iteration)
             if [ "$ITERATION" -lt "$MAX_ITERATIONS" ]; then
