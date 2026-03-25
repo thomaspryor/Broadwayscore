@@ -1091,7 +1091,17 @@
     "cost-of-living-2022/theatermania--jesse-green.json",
     "eva-luna-off-broadway-2022/nytg--caridad-svich.json",
     "the-skin-of-our-teeth-2022/vulture--helen-shaw.json",
-    "the-minutes-2022/talkinbroadway--howard-miller.json"
+    "the-minutes-2022/talkinbroadway--howard-miller.json",
+    "plaza-suite-2022/talkinbroadway--matthew-murray.json",
+    "the-music-man-2022/washpost--mark-kennedy.json",
+    "company-2021/theatermania--jesse-green.json",
+    "mrs-doubtfire-2021/wsj--unknown.json",
+    "slave-play-2021/broadwayworld--murray-alexander-cohen.json",
+    "slave-play-2021/hollywood-reporter--frank-sheck.json",
+    "slave-play-2021/theatermania--pete-hempstead.json",
+    "slave-play-2021/thewrap--thom-geier.json",
+    "slave-play-2021/timeout--adam-feldman.json",
+    "trouble-in-mind-2021/broadwaynews--charles-isherwood.json"
   ],
   "failed": [
     "giant-2026/cititour--brian-scott-lipton.json",
@@ -2184,7 +2194,10 @@
       "almost-famous-2022/theater-pizzazz--unknown.json",
       "topdog-underdog-2022/corey-hawkins--unknown.json",
       "death-of-a-salesman-2022/guardian--adrian-horton.json",
-      "eva-luna-off-broadway-2022/nytg--caridad-svich.json"
+      "eva-luna-off-broadway-2022/nytg--caridad-svich.json",
+      "the-music-man-2022/washpost--mark-kennedy.json",
+      "company-2021/theatermania--jesse-green.json",
+      "slave-play-2021/theatermania--pete-hempstead.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
@@ -2263,7 +2276,9 @@
       "here-lies-love-2023/hollywood-reporter--david-rooney.json",
       "data/review-texts/topdog-underdog-2022/kenny-leon--unknown.json",
       "data/review-texts/death-of-a-salesman-2022/variety--jesse-green.json",
-      "death-of-a-salesman-2022/variety--jesse-green.json"
+      "death-of-a-salesman-2022/variety--jesse-green.json",
+      "data/review-texts/slave-play-2021/hollywood-reporter--frank-sheck.json",
+      "slave-play-2021/hollywood-reporter--frank-sheck.json"
     ],
     "directCookies": [
       "giant-2026/nypost--unknown.json"
@@ -2298,7 +2313,8 @@
       "fat-ham-2023/nytimes--jesse-green.json",
       "bad-cinderella-2023/bloomberg--chris-rovzar.json",
       "some-like-it-hot-2022/newyorker--unknown.json",
-      "topdog-underdog-2022/broadwaynews--unknown.json"
+      "topdog-underdog-2022/broadwaynews--unknown.json",
+      "trouble-in-mind-2021/broadwaynews--charles-isherwood.json"
     ],
     "brightdata": [
       "the-other-place-off-broadway-2026/wsj--unknown.json",
@@ -2356,7 +2372,10 @@
       "cost-of-living-2022/theatermania--adam-feldman.json",
       "cost-of-living-2022/theatermania--jesse-green.json",
       "the-skin-of-our-teeth-2022/vulture--helen-shaw.json",
-      "the-minutes-2022/talkinbroadway--howard-miller.json"
+      "the-minutes-2022/talkinbroadway--howard-miller.json",
+      "plaza-suite-2022/talkinbroadway--matthew-murray.json",
+      "mrs-doubtfire-2021/wsj--unknown.json",
+      "slave-play-2021/broadwayworld--murray-alexander-cohen.json"
     ],
     "archiveToday": [
       "data/review-texts/giant-2026/cititour--brian-scott-lipton.json",
@@ -2641,11 +2660,13 @@
       "illinoise-2024/nytimes--unknown.json",
       "illinoise-2024/timeout--adam-feldman.json",
       "harmony-2023/theater-pizzazz--carol-rocamora.json",
-      "back-to-the-future-2023/and-daryl-tofa-back-to-the-future--gabi-stapula.json"
+      "back-to-the-future-2023/and-daryl-tofa-back-to-the-future--gabi-stapula.json",
+      "slave-play-2021/thewrap--thom-geier.json",
+      "slave-play-2021/timeout--adam-feldman.json"
     ]
   },
   "startTime": "2026-03-24T17:31:44.264Z",
-  "lastProcessed": "paradise-square-2022/talkinbroadway--matthew-murray.json",
+  "lastProcessed": "trouble-in-mind-2021/broadwaynews--charles-isherwood.json",
   "log": [
     {
       "t": "2026-03-24T17:34:00.298Z",
@@ -3218,6 +3239,28 @@
       "t": "2026-03-25T05:52:25.512Z",
       "event": "bb-cookie-inject",
       "domain": "thewrap.com"
+    },
+    {
+      "t": "2026-03-25T05:59:43.441Z",
+      "event": "bb-session",
+      "session": "2503886a",
+      "url": "https://www.wsj.com/articles/mrs-doubtfire-jerry-zacks-robin-williams-rob-mcclur"
+    },
+    {
+      "t": "2026-03-25T05:59:44.611Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-25T06:00:12.191Z",
+      "event": "bb-session",
+      "session": "6f1aedff",
+      "url": "https://www.hollywoodreporter.com/review/slave-play-theater-1167768"
+    },
+    {
+      "t": "2026-03-25T06:00:13.334Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
