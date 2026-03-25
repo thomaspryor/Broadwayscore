@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-25T03:23:26.301Z",
-  "processed": 999,
-  "failed": 206,
+  "updatedAt": "2026-03-25T04:30:36.024Z",
+  "processed": 1007,
+  "failed": 208,
   "successRate": "82.9%",
   "tierBreakdown": {
-    "playwright": 771,
+    "playwright": 774,
     "amp": 18,
-    "browserbase": 38,
+    "browserbase": 42,
     "directCookies": 1,
     "scrapingbee": 24,
-    "brightdata": 16,
-    "archiveToday": 59,
-    "archive": 169
+    "brightdata": 17,
+    "archiveToday": 61,
+    "archive": 171
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-25T00:07:11.529Z",
-      "event": "bb-session",
-      "session": "1a44a26e",
-      "url": "https://www.nytimes.com/2026/03/23/theater/giant-review-broadway-lithgow-dahl.ht"
-    },
-    {
-      "t": "2026-03-25T00:07:12.873Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-25T00:07:48.462Z",
-      "event": "bb-session",
-      "session": "9bd965aa",
-      "url": "https://nypost.com/2026/03/23/entertainment/giant-review-john-lithgow-is-superb-"
-    },
-    {
-      "t": "2026-03-25T00:07:49.778Z",
-      "event": "bb-cookie-inject",
-      "domain": "nypost.com"
-    },
     {
       "t": "2026-03-25T00:29:56.161Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-25T00:55:26.271Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-25T04:24:25.139Z",
+      "event": "bb-session",
+      "session": "44f8c803",
+      "url": "https://deadline.com/2025/09/the-smashing-machine-dwayne-johnson-benny-safdie-ve"
+    },
+    {
+      "t": "2026-03-25T04:24:26.344Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-25T04:30:07.194Z",
+      "event": "bb-session",
+      "session": "1fcfd76b",
+      "url": "https://nypost.com/2025/04/06/entertainment/the-last-five-years-review-nick-jona"
+    },
+    {
+      "t": "2026-03-25T04:30:08.384Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
