@@ -1089,7 +1089,9 @@
     "death-of-a-salesman-2022/guardian--adrian-horton.json",
     "cost-of-living-2022/theatermania--adam-feldman.json",
     "cost-of-living-2022/theatermania--jesse-green.json",
-    "eva-luna-off-broadway-2022/nytg--caridad-svich.json"
+    "eva-luna-off-broadway-2022/nytg--caridad-svich.json",
+    "the-skin-of-our-teeth-2022/vulture--helen-shaw.json",
+    "the-minutes-2022/talkinbroadway--howard-miller.json"
   ],
   "failed": [
     "giant-2026/cititour--brian-scott-lipton.json",
@@ -1366,7 +1368,15 @@
     "cost-of-living-2022/newyorker--vinson-cunningham.json",
     "into-the-woods-2022/newyorker--alexandra-schwartz.json",
     "the-kite-runner-2022/thewrap--robert-hofler.json",
-    "titanique-off-broadway-2022/newyorker--dan-stahl.json"
+    "titanique-off-broadway-2022/newyorker--dan-stahl.json",
+    "girl-from-the-north-country-2022/times-uk--ann-treneman.json",
+    "macbeth-2022/thewrap--robert-hofler.json",
+    "mr-saturday-night-2022/front-row-center--victoria-dammer.json",
+    "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/new-york-sun--elysa-gardner.json",
+    "the-skin-of-our-teeth-2022/dtli--ran-xia.json",
+    "funny-girl-2022/latimes--unknown.json",
+    "the-minutes-2022/talkinbroadway--matthew-murray.json",
+    "paradise-square-2022/talkinbroadway--matthew-murray.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2344,7 +2354,9 @@
       "kpop-2022/daily-mail--unknown.json",
       "take-me-out-2022/theatermania--jesse-green.json",
       "cost-of-living-2022/theatermania--adam-feldman.json",
-      "cost-of-living-2022/theatermania--jesse-green.json"
+      "cost-of-living-2022/theatermania--jesse-green.json",
+      "the-skin-of-our-teeth-2022/vulture--helen-shaw.json",
+      "the-minutes-2022/talkinbroadway--howard-miller.json"
     ],
     "archiveToday": [
       "data/review-texts/giant-2026/cititour--brian-scott-lipton.json",
@@ -2448,7 +2460,10 @@
       "data/review-texts/take-me-out-2022/talkinbroadway--matthew-murray.json",
       "data/review-texts/topdog-underdog-2022/usatoday--charles-isherwood.json",
       "data/review-texts/death-of-a-salesman-2022/talkinbroadway--matthew-murray.json",
-      "data/review-texts/cost-of-living-2022/washpost--peter-marks.json"
+      "data/review-texts/cost-of-living-2022/washpost--peter-marks.json",
+      "data/review-texts/funny-girl-2022/latimes--unknown.json",
+      "data/review-texts/the-minutes-2022/talkinbroadway--matthew-murray.json",
+      "data/review-texts/paradise-square-2022/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -2630,7 +2645,7 @@
     ]
   },
   "startTime": "2026-03-24T17:31:44.264Z",
-  "lastProcessed": "eva-luna-off-broadway-2022/nytg--caridad-svich.json",
+  "lastProcessed": "paradise-square-2022/talkinbroadway--matthew-murray.json",
   "log": [
     {
       "t": "2026-03-24T17:34:00.298Z",
@@ -3192,6 +3207,17 @@
       "t": "2026-03-25T05:49:52.376Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-25T05:52:24.278Z",
+      "event": "bb-session",
+      "session": "6db02438",
+      "url": "https://www.thewrap.com/macbeth-theater-review-ethan-hawke-anne-marie-duff-movie"
+    },
+    {
+      "t": "2026-03-25T05:52:25.512Z",
+      "event": "bb-cookie-inject",
+      "domain": "thewrap.com"
     }
   ]
 }

@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-25T05:51:35.901Z",
-  "processed": 1090,
-  "failed": 275,
-  "successRate": "79.9%",
+  "updatedAt": "2026-03-25T05:58:44.467Z",
+  "processed": 1092,
+  "failed": 283,
+  "successRate": "79.4%",
   "tierBreakdown": {
     "playwright": 804,
     "amp": 18,
     "browserbase": 57,
     "directCookies": 1,
     "scrapingbee": 30,
-    "brightdata": 54,
-    "archiveToday": 102,
+    "brightdata": 56,
+    "archiveToday": 105,
     "archive": 176
   },
-  "browserbaseSessions": 26,
+  "browserbaseSessions": 27,
   "recentActivity": [
-    {
-      "t": "2026-03-25T05:00:13.788Z",
-      "event": "bb-session",
-      "session": "4dafaed3",
-      "url": "https://www.wsj.com/articles/an-enemy-of-the-people-review-jeremy-strong-broadwa"
-    },
-    {
-      "t": "2026-03-25T05:00:15.023Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-25T05:04:02.837Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-25T05:49:52.376Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-25T05:52:24.278Z",
+      "event": "bb-session",
+      "session": "6db02438",
+      "url": "https://www.thewrap.com/macbeth-theater-review-ethan-hawke-anne-marie-duff-movie"
+    },
+    {
+      "t": "2026-03-25T05:52:25.512Z",
+      "event": "bb-cookie-inject",
+      "domain": "thewrap.com"
     }
   ]
 }
