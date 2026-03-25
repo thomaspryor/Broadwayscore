@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-25T06:58:39.324Z",
+  "timestamp": "2026-03-25T09:04:22.478Z",
   "stats": {
-    "totalReviews": 32475,
-    "alreadyFlagged": 11101,
+    "totalReviews": 32476,
+    "alreadyFlagged": 11106,
     "dateGuardCatches": 139,
-    "directorMismatch": 952,
-    "tvFilmSignals": 3435,
-    "londonSignals": 1035,
-    "offBroadwaySignals": 1008,
+    "directorMismatch": 953,
+    "tvFilmSignals": 3433,
+    "londonSignals": 1037,
+    "offBroadwaySignals": 1007,
     "yearMismatch": 71,
-    "noPublishDate": 6773
+    "noPublishDate": 6766
   },
   "findings": [
     {
@@ -3679,20 +3679,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "almost-famous-2022",
-      "file": "ew--dalton-ross.json",
-      "score": 65,
-      "publishDate": "November 3, 2022",
-      "url": "https://ew.com/theater/theater-reviews/almost-famous-review-broadway-musical/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"on screen\""
         }
       ]
     },
@@ -42403,20 +42389,6 @@
     },
     {
       "showId": "shucked-2023",
-      "file": "ew--christian-holub.json",
-      "score": 72,
-      "publishDate": "April 4, 2023",
-      "url": "https://ew.com/theater/theater-reviews/shucked-broadway-review-cute-corny-musical/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "shucked-2023",
       "file": "guardian--adrian-horton.json",
       "score": 68,
       "publishDate": null,
@@ -52849,6 +52821,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
+      "file": "guardian--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/1999/oct/21/theatre.artsfeatures",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -80871,20 +80862,6 @@
       ]
     },
     {
-      "showId": "the-emporium-off-broadway-2025",
-      "file": "theatermania--linda-buchwald.json",
-      "score": null,
-      "publishDate": "February 11, 2026",
-      "url": "https://www.theatermania.com/news/classic-stage-company-announces-casting-for-thornton-wilders-the-emporium_1823908/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"csc\""
-        }
-      ]
-    },
-    {
       "showId": "the-encounter-2016",
       "file": "a-younger-theatre--camilla-gurtler.json",
       "score": 94,
@@ -82333,6 +82310,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/article/2024/jul/19/the-hot-wing-king-review-dorfman-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
