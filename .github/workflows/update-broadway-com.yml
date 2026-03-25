@@ -4,6 +4,8 @@ on:
   schedule:
     # Weekly on Sundays at 4 PM UTC (11 AM EST), after DTLI/ShowScore at 3 PM
     - cron: '0 16 * * 0'
+    # Monthly on 1st at 5 PM UTC — full run including closed shows via sitemap
+    - cron: '0 17 1 * *'
   workflow_dispatch:
     inputs:
       show:
@@ -19,6 +21,11 @@ on:
         required: false
         type: number
         default: 0
+      include_closed:
+        description: 'Include closed shows via sitemap discovery'
+        required: false
+        type: boolean
+        default: false
       dry_run:
         description: 'Dry run (no writes)'
         required: false
@@ -64,6 +71,11 @@ jobs:
           BASE_ARGS="--verbose"
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             BASE_ARGS="$BASE_ARGS --dry-run"
+          fi
+          # Include closed shows on monthly cron (1st of month) or when explicitly requested
+          DAY=$(date -u +%d)
+          if [ "${{ inputs.include_closed }}" = "true" ] || ([ "${{ github.event_name }}" = "schedule" ] && [ "$DAY" = "01" ]); then
+            BASE_ARGS="$BASE_ARGS --include-closed"
           fi
 
           SHOWS_INPUT="${{ inputs.shows }}"

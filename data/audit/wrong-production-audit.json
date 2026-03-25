@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-03-25T00:46:14.699Z",
+  "timestamp": "2026-03-25T01:06:01.564Z",
   "stats": {
     "totalReviews": 32470,
     "alreadyFlagged": 11062,
     "dateGuardCatches": 139,
     "directorMismatch": 947,
-    "tvFilmSignals": 3409,
+    "tvFilmSignals": 3411,
     "londonSignals": 1030,
     "offBroadwaySignals": 1011,
     "yearMismatch": 71,
@@ -6134,6 +6134,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 72,
+      "publishDate": "2021-09-13",
+      "url": "https://www.whatsonstage.com/news/back-to-the-future-the-musical-review-the-iconic-movie-makes-its-way-to-the-west-end-stage_54896/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -28420,7 +28439,7 @@
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -28517,6 +28536,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -63765,20 +63789,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"adelphi theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "back-to-the-future-west-end-2021",
-      "file": "whatsonstage--sarah-crompton.json",
-      "score": 72,
-      "publishDate": "2021-09-13",
-      "url": "https://www.whatsonstage.com/news/back-to-the-future-the-musical-review-the-iconic-movie-makes-its-way-to-the-west-end-stage_54896/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
