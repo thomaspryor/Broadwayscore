@@ -21,7 +21,9 @@
     "chess-2025/playbill--logan-culwell-block.json",
     "all-my-sons-west-end-2025/whatsonstage--unknown.json",
     "just-in-time-2025/billboard--unknown.json",
-    "operation-mincemeat-2025/usatoday--unknown.json"
+    "operation-mincemeat-2025/usatoday--unknown.json",
+    "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+    "starlight-express-west-end-2024/the-express--unknown.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -44,7 +46,15 @@
     "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json",
     "two-strangers-bway-2025/guardian--unknown.json",
     "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
-    "ragtime-2025/bloomberg--chris-rovzar.json"
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "my-neighbour-totoro-west-end-2025/the-morning-star--unknown.json",
+    "my-neighbour-totoro-west-end-2025/times-uk--unknown.json",
+    "dracula-west-end-2025/times-uk--clive-davis.json",
+    "oliver-west-end-2024/telegraph--claire-allfree.json",
+    "oliver-west-end-2024/the-sun--dominic-maxwell.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -64,7 +74,9 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
-      "imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json"
+      "imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -81,11 +93,12 @@
       "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json",
       "teeth-n-smiles-west-end-2026/timeout--unknown.json",
       "just-in-time-2025/billboard--unknown.json",
-      "operation-mincemeat-2025/usatoday--unknown.json"
+      "operation-mincemeat-2025/usatoday--unknown.json",
+      "starlight-express-west-end-2024/the-express--unknown.json"
     ]
   },
   "startTime": "2026-03-25T09:08:12.319Z",
-  "lastProcessed": "operation-mincemeat-2025/usatoday--unknown.json",
+  "lastProcessed": "hadestown-west-end-2024/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-03-25T09:10:15.724Z",
@@ -115,6 +128,17 @@
       "t": "2026-03-25T09:26:07.569Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-25T09:28:36.816Z",
+      "event": "bb-session",
+      "session": "a0e9bbe6",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
+    },
+    {
+      "t": "2026-03-25T09:28:38.189Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
