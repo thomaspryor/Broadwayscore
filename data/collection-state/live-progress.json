@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-25T00:41:05.318Z",
-  "processed": 561,
-  "failed": 94,
-  "successRate": "85.6%",
+  "updatedAt": "2026-03-25T00:43:29.395Z",
+  "processed": 568,
+  "failed": 97,
+  "successRate": "85.4%",
   "tierBreakdown": {
-    "playwright": 462,
+    "playwright": 466,
     "amp": 16,
-    "browserbase": 26,
+    "browserbase": 28,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 30,
-    "archive": 82
+    "archive": 85
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-03-24T19:38:15.351Z",
-      "event": "bb-session",
-      "session": "4f0c9842",
-      "url": "https://nypost.com/2024/11/21/entertainment/death-becomes-her-review-claws-are-o"
-    },
-    {
-      "t": "2026-03-24T19:38:16.471Z",
-      "event": "bb-cookie-inject",
-      "domain": "nypost.com"
-    },
     {
       "t": "2026-03-24T19:39:59.598Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-25T00:29:57.430Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-25T00:41:23.987Z",
+      "event": "bb-session",
+      "session": "f141a241",
+      "url": "https://variety.com/2021/legit/reviews/back-to-the-future-musical-review-west-en"
+    },
+    {
+      "t": "2026-03-25T00:41:25.272Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

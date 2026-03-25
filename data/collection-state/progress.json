@@ -560,7 +560,14 @@
     "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
     "stranger-things-the-first-shadow-west-end-2023/telegraph--marianka-swain.json",
     "and-juliet-2022/ap--unknown.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/guardian--arifa-akbar.json"
+    "cabaret-at-the-kit-kat-club-west-end-2021/guardian--arifa-akbar.json",
+    "back-to-the-future-west-end-2021/variety--david-benedict.json",
+    "back-to-the-future-west-end-2021/timeout--unknown.json",
+    "back-to-the-future-west-end-2021/artsdesk--gary-naylor.json",
+    "back-to-the-future-west-end-2021/british-theatre--unknown.json",
+    "back-to-the-future-west-end-2021/daily-mail--patrick-marmion.json",
+    "back-to-the-future-west-end-2021/independent--clarisse-loughrey.json",
+    "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json"
   ],
   "failed": [
     "giant-2026/cititour--brian-scott-lipton.json",
@@ -656,7 +663,10 @@
     "mj-2022/ap--mark-kennedy.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
     "moulin-rouge-the-musical-west-end-2021/daily-mail--patrick-marmion.json",
-    "moulin-rouge-the-musical-west-end-2021/theatrely--emily-wyrwa.json"
+    "moulin-rouge-the-musical-west-end-2021/theatrely--emily-wyrwa.json",
+    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
+    "six-2021/newyorker--naomi-fry.json",
+    "six-2021/pages-on-stages--mason-pilevsky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1122,7 +1132,11 @@
       "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
       "stranger-things-the-first-shadow-west-end-2023/telegraph--marianka-swain.json",
       "and-juliet-2022/ap--unknown.json",
-      "cabaret-at-the-kit-kat-club-west-end-2021/guardian--arifa-akbar.json"
+      "cabaret-at-the-kit-kat-club-west-end-2021/guardian--arifa-akbar.json",
+      "back-to-the-future-west-end-2021/timeout--unknown.json",
+      "back-to-the-future-west-end-2021/artsdesk--gary-naylor.json",
+      "back-to-the-future-west-end-2021/british-theatre--unknown.json",
+      "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
@@ -1168,7 +1182,9 @@
       "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
       "mj-2022/hollywood-reporter--lovia-gyarkye.json",
       "data/review-texts/giant-2026/nypost--unknown.json",
-      "giant-2026/nypost--unknown.json"
+      "giant-2026/nypost--unknown.json",
+      "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "back-to-the-future-west-end-2021/variety--david-benedict.json"
     ],
     "directCookies": [
       "giant-2026/nypost--unknown.json"
@@ -1289,11 +1305,14 @@
       "an-ark-off-broadway-2026/newyorker--emily-nussbaum.json",
       "just-in-time-2025/billboard--unknown.json",
       "death-becomes-her-2024/cititour--unknown.json",
-      "maybe-happy-ending-2024/vulture--sara-holdren.json"
+      "maybe-happy-ending-2024/vulture--sara-holdren.json",
+      "moulin-rouge-the-musical-west-end-2021/theatrely--emily-wyrwa.json",
+      "back-to-the-future-west-end-2021/daily-mail--patrick-marmion.json",
+      "back-to-the-future-west-end-2021/independent--clarisse-loughrey.json"
     ]
   },
   "startTime": "2026-03-24T17:31:44.264Z",
-  "lastProcessed": "moulin-rouge-the-musical-west-end-2021/theatrely--emily-wyrwa.json",
+  "lastProcessed": "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json",
   "log": [
     {
       "t": "2026-03-24T17:34:00.298Z",
@@ -1492,6 +1511,17 @@
       "t": "2026-03-25T00:29:57.430Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-25T00:41:23.987Z",
+      "event": "bb-session",
+      "session": "f141a241",
+      "url": "https://variety.com/2021/legit/reviews/back-to-the-future-musical-review-west-en"
+    },
+    {
+      "t": "2026-03-25T00:41:25.272Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
