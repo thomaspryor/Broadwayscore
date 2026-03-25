@@ -626,14 +626,19 @@ async function runAggregators(show) {
 
 /**
  * Run Layer 2: RSS Feeds
+ * @param {string} showTitle
+ * @param {Set} knownUrls
+ * @param {string} [openingDate] - Show's opening date (YYYY-MM-DD). Enables date-window
+ *   filtering on narrow theater feeds instead of title matching.
  */
-async function runRSSFeeds(showTitle, knownUrls) {
+async function runRSSFeeds(showTitle, knownUrls, openingDate = null) {
   console.log('\n[Layer 2] RSS Feeds...');
   try {
     const results = await checkRSSFeeds(showTitle, {
       maxHoursAgo: 72,
       knownUrls,
       verbose: true,
+      openingDate,
     });
     console.log(`  [Layer 2 Total] ${results.length} reviews from RSS`);
     return results;
@@ -645,8 +650,13 @@ async function runRSSFeeds(showTitle, knownUrls) {
 
 /**
  * Run Layer 3: Direct Site Search
+ * @param {string} showTitle
+ * @param {string[]} missingOutletIds
+ * @param {Set} knownUrls
+ * @param {string} [market]
+ * @param {string} [openingDate] - Show's opening date. Passed to date-aware endpoints (e.g. TheaterMania).
  */
-async function runSiteSearch(showTitle, missingOutletIds, knownUrls, market = 'broadway') {
+async function runSiteSearch(showTitle, missingOutletIds, knownUrls, market = 'broadway', openingDate = null) {
   console.log('\n[Layer 3] Site Search...');
 
   // Only search outlets that have site-search configs AND are missing
@@ -664,6 +674,7 @@ async function runSiteSearch(showTitle, missingOutletIds, knownUrls, market = 'b
       verbose: true,
       skipJs: !process.env.SCRAPINGBEE_API_KEY, // Skip JS-rendered if no API key
       market,
+      openingDate,
     });
     console.log(`  [Layer 3 Total] ${results.length} reviews from site search`);
     return results;
@@ -826,7 +837,7 @@ async function pollCycle() {
   const aggResults = await runAggregators(show);
 
   // ── Layer 2: RSS ──
-  const rssResults = await runRSSFeeds(show.title, knownUrls);
+  const rssResults = await runRSSFeeds(show.title, knownUrls, show.openingDate || null);
 
   // ── Layer 3: Site Search ──
   let siteSearchResults = [];
@@ -839,7 +850,7 @@ async function pollCycle() {
     const missingIds = getMissingT1T2Outlets(SHOW_ID, market)
       .map(o => o.id)
       .filter(id => !foundOutletIds.has(id.toLowerCase()));
-    siteSearchResults = await runSiteSearch(show.title, missingIds, knownUrls, market);
+    siteSearchResults = await runSiteSearch(show.title, missingIds, knownUrls, market, show.openingDate || null);
   } else {
     console.log('\n[Layer 3] Site Search... SKIPPED (--skip-site-search)');
   }

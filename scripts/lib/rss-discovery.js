@@ -12,13 +12,16 @@
 const https = require('https');
 const http = require('http');
 
-// Theater-specific feeds (all items are relevant — no keyword filtering needed)
+// Theater-specific feeds (narrow enough that date-window filtering is safe)
+// NOTE: Guardian Stage is NOT here — it covers all performing arts globally (WE, opera, dance, regional).
+// Guardian is handled by the Guardian Open Platform API in site-search-discovery.js (tag=stage/stage).
 const THEATER_FEEDS = [
   { url: 'https://variety.com/v/legit/feed/', outletId: 'variety', name: 'Variety Legit' },
   // Playbill RSS is defunct (404 as of March 2026) — kept for future reference
   // { url: 'https://playbill.com/feed', outletId: 'playbill', name: 'Playbill' },
   { url: 'https://rss.nytimes.com/services/xml/rss/nyt/Theater.xml', outletId: 'nytimes', name: 'NYT Theater' },
-  { url: 'https://www.theguardian.com/stage/rss', outletId: 'guardian', name: 'Guardian Stage' },
+  // Guardian Stage removed: covers all performing arts globally, too broad for date-window filtering.
+  // Use Guardian Open Platform API in site-search-discovery.js instead.
 ];
 
 // West End theater feeds (verified March 2026)
@@ -155,6 +158,19 @@ function isRecent(pubDate, maxHoursAgo = 48) {
 }
 
 /**
+ * Check if an item was published within ±windowDays of the show's opening date.
+ * Uses absolute value to cover both preview-period reviews and post-opening reviews.
+ * Returns true if no openingDate or invalid pubDate (fail-open).
+ */
+function isWithinOpeningWindow(pubDate, openingDate, windowDays = 2) {
+  if (!openingDate || !pubDate || isNaN(pubDate.getTime())) return true;
+  const opening = new Date(openingDate);
+  if (isNaN(opening.getTime())) return true;
+  const diffDays = Math.abs((pubDate.getTime() - opening.getTime()) / (1000 * 60 * 60 * 24));
+  return diffDays <= windowDays;
+}
+
+/**
  * Check all RSS feeds for reviews of a show.
  *
  * @param {string} showTitle - The show title to search for
@@ -162,10 +178,13 @@ function isRecent(pubDate, maxHoursAgo = 48) {
  * @param {number} options.maxHoursAgo - How far back to look (default 48h)
  * @param {Set} options.knownUrls - URLs already discovered (skip these)
  * @param {boolean} options.verbose - Log progress
+ * @param {string} options.openingDate - Show's opening date (YYYY-MM-DD). When provided,
+ *   narrow THEATER_FEEDS use a ±2-day date window instead of title matching.
+ *   Entertainment feeds always use title matching regardless of this option.
  * @returns {Promise<Array<{url: string, outletId: string, source: string}>>}
  */
 async function checkRSSFeeds(showTitle, options = {}) {
-  const { maxHoursAgo = 48, knownUrls = new Set(), verbose = false } = options;
+  const { maxHoursAgo = 48, knownUrls = new Set(), verbose = false, openingDate = null } = options;
   const results = [];
 
   for (const feed of ALL_FEEDS) {
@@ -173,6 +192,7 @@ async function checkRSSFeeds(showTitle, options = {}) {
       const xml = await fetchUrl(feed.url);
       const items = parseFeedItems(xml);
 
+      let feedResults = 0;
       for (const item of items) {
         // Skip old items
         if (!isRecent(item.pubDate, maxHoursAgo)) continue;
@@ -180,13 +200,21 @@ async function checkRSSFeeds(showTitle, options = {}) {
         // Skip already-known URLs
         if (knownUrls.has(item.link)) continue;
 
-        // Entertainment feeds need title matching; theater feeds include all recent items
-        if (feed.needsFilter && !titleMatchesShow(item.title, showTitle)) continue;
+        if (feed.needsFilter) {
+          // Entertainment feeds (THR, Deadline): always title-match — they cover everything
+          if (!titleMatchesShow(item.title, showTitle)) continue;
+        } else {
+          // Narrow theater feeds (NYT Theater, Variety Legit): these are topic-scoped.
+          // When openingDate is available, use a ±2-day date window — no title matching needed.
+          // Fall back to title matching if no openingDate (backwards compat for non-poller callers).
+          if (openingDate) {
+            if (!isWithinOpeningWindow(item.pubDate, openingDate, 2)) continue;
+          } else {
+            if (!titleMatchesShow(item.title, showTitle)) continue;
+          }
+        }
 
-        // For theater feeds, still check title match (they cover many shows)
-        if (!feed.needsFilter && !titleMatchesShow(item.title, showTitle)) continue;
-
-        // Check for review-like keywords in title
+        // Check for review-like keywords in title (applied to all feeds)
         const titleLower = item.title.toLowerCase();
         const isReviewLike = titleLower.includes('review') ||
           titleLower.includes('critic') ||
@@ -201,10 +229,16 @@ async function checkRSSFeeds(showTitle, options = {}) {
             publishDate: item.pubDate ? item.pubDate.toISOString().slice(0, 10) : null,
             source: 'rss-discovery',
           });
+          feedResults++;
           if (verbose) {
             console.log(`    RSS [${feed.name}]: ${item.title}`);
           }
         }
+      }
+
+      // Sanity check: if a single feed returns many items, it may indicate date window is too broad
+      if (feedResults > 20 && verbose) {
+        console.warn(`    RSS [${feed.name}]: WARNING — ${feedResults} items returned (possible over-broad match)`);
       }
     } catch (err) {
       if (verbose) {
@@ -217,4 +251,4 @@ async function checkRSSFeeds(showTitle, options = {}) {
   return results;
 }
 
-module.exports = { checkRSSFeeds, ALL_FEEDS, titleMatchesShow, parseRSSItems, parseAtomItems, parseFeedItems };
+module.exports = { checkRSSFeeds, ALL_FEEDS, titleMatchesShow, isWithinOpeningWindow, parseRSSItems, parseAtomItems, parseFeedItems };
