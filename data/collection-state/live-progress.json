@@ -1,18 +1,130 @@
 {
-  "updatedAt": "2026-03-25T20:48:11.108Z",
-  "processed": 1,
-  "failed": 4,
-  "successRate": "20.0%",
+  "updatedAt": "2026-03-25T21:02:32.772Z",
+  "processed": 198,
+  "failed": 332,
+  "successRate": "37.4%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 84,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 18,
     "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 1,
-    "archiveToday": 2,
-    "archive": 0
+    "scrapingbee": 6,
+    "brightdata": 62,
+    "archiveToday": 122,
+    "archive": 38
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-03-25T19:41:20.883Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-25T19:44:47.395Z",
+      "event": "bb-session",
+      "session": "745077c8",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/finding-neverland-rev"
+    },
+    {
+      "t": "2026-03-25T19:44:48.768Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-25T19:51:40.556Z",
+      "event": "bb-session",
+      "session": "e0a9c143",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/wolf-hall-parts-one--"
+    },
+    {
+      "t": "2026-03-25T19:51:41.595Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-25T19:52:49.115Z",
+      "event": "bb-session",
+      "session": "37fdaa86",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/revival-of-gigi-missi"
+    },
+    {
+      "t": "2026-03-25T19:52:50.097Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-25T19:56:41.576Z",
+      "event": "bb-session",
+      "session": "fae9b360",
+      "url": "https://www.thedailybeast.com/hand-to-god-broadway-review-sock-puppet-from-hell/"
+    },
+    {
+      "t": "2026-03-25T19:57:21.176Z",
+      "event": "bb-session",
+      "session": "f9193331",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/hand-to-god-review-a-"
+    },
+    {
+      "t": "2026-03-25T19:57:22.219Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-25T19:58:25.105Z",
+      "event": "bb-session",
+      "session": "e638e008",
+      "url": "http://www.newsday.com/entertainment/theater/hand-to-god-review-a-devilish-sock-"
+    },
+    {
+      "t": "2026-03-25T19:58:26.121Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-25T20:03:56.178Z",
+      "event": "bb-session",
+      "session": "cfa820a3",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/uneven-retelling-of-a"
+    },
+    {
+      "t": "2026-03-25T20:03:57.279Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-25T20:09:19.718Z",
+      "event": "bb-session",
+      "session": "ea320603",
+      "url": "http://www.newsday.com/entertainment/theater/honeymoon-in-vegas-review-fun-broad"
+    },
+    {
+      "t": "2026-03-25T20:09:20.737Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-25T20:10:30.943Z",
+      "event": "bb-session",
+      "session": "8775c410",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/theater-review-jake-g"
+    },
+    {
+      "t": "2026-03-25T20:10:32.006Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-25T21:00:06.146Z",
+      "event": "bb-session",
+      "session": "ba548488",
+      "url": "https://variety.com/gallery/celebrity-photos-red-carpet-march-2026/"
+    },
+    {
+      "t": "2026-03-25T21:01:00.321Z",
+      "event": "bb-session",
+      "session": "de98f1a4",
+      "url": "https://variety.com/2026/legit/news/jojo-broadway-chess-lea-michele-joanna-leves"
+    }
+  ]
 }
