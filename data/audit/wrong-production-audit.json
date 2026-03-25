@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-25T01:29:03.163Z",
+  "timestamp": "2026-03-25T01:38:20.191Z",
   "stats": {
     "totalReviews": 32470,
     "alreadyFlagged": 11064,
     "dateGuardCatches": 139,
-    "directorMismatch": 948,
-    "tvFilmSignals": 3414,
-    "londonSignals": 1031,
+    "directorMismatch": 950,
+    "tvFilmSignals": 3418,
+    "londonSignals": 1032,
     "offBroadwaySignals": 1011,
     "yearMismatch": 71,
     "noPublishDate": 6812
@@ -31117,15 +31117,34 @@
     },
     {
       "showId": "matilda-the-musical-west-end-2021",
+      "file": "whatsonstage--andy-plaice.json",
+      "score": 87,
+      "publishDate": "March 16th, 2018",
+      "url": "https://www.whatsonstage.com/west-end-theatre/news/11-2011/matilda-the-musical_6129.html/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "matilda-the-musical-west-end-2021",
       "file": "whatsonstage--michael-coveney.json",
       "score": 73,
       "publishDate": null,
       "url": "http://www.whatsonstage.com/reviews/theatre/london/E8831322212171/Matilda.html",
       "findings": [
         {
-          "type": "DIRECTOR_MISMATCH",
+          "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -48836,6 +48855,25 @@
       ]
     },
     {
+      "showId": "the-book-of-mormon-west-end-2024",
+      "file": "whatsonstage--theo-bosanquet.json",
+      "score": 82,
+      "publishDate": "2013-03-21",
+      "url": "https://musicaltheatrereview.com/the-book-of-mormon-big-winner-whatsonstage-awards/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-boys-from-syracuse-2002",
       "file": "nytimes--ben-brantley.json",
       "score": 42,
@@ -55279,6 +55317,20 @@
       ]
     },
     {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "file": "whatsonstage--michael-coveney.json",
+      "score": 75,
+      "publishDate": "2014-09-15",
+      "url": "https://www.whatsonstage.com/news/the-play-that-goes-wrong-extends-in-the-west-end_47577/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
       "showId": "the-playboy-of-the-western-world-west-end-2025",
       "file": "i-paper--fiona-mountford.json",
       "score": 78,
@@ -61388,6 +61440,25 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "wicked-west-end-2021",
+      "file": "whatsonstage--editorial-staff.json",
+      "score": 76,
+      "publishDate": "2006-09-27",
+      "url": "https://www.whatsonstage.com/news/wicked_21984/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from wicked-2003"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -84789,7 +84860,7 @@
     },
     {
       "showId": "wicked-2003",
-      "file": "broadwayworld--courtney-symes.json",
+      "file": "broadwayworld--david-copney.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
       "findings": [
@@ -84802,7 +84873,7 @@
     },
     {
       "showId": "wicked-2003",
-      "file": "broadwayworld--linda-hodges.json",
+      "file": "broadwayworld--emily-short.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
       "findings": [
