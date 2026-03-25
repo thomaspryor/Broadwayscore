@@ -4346,12 +4346,20 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     const showId = data.showId || review.showId || '';
     const showCheck = validateShowMentioned(cleanedText, showTitle, showId);
     if (!showCheck.valid && showCheck.confidence === 'high') {
-      data.showNotMentioned = true;
-      // Null out wrong fullText so it can't be scored — keep URL for URL discovery on next run
-      data.wrongFullText = data.fullText;
-      data.fullText = null;
-      data.contentTier = (data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt) ? 'excerpt' : 'needs-rescrape';
-      console.log(`    ⚠ Heuristic fallback — show not mentioned in text — fullText nulled: ${showCheck.reason}`);
+      const alreadyScored = !!(data.assignedScore && data.assignedScore >= 1 && data.assignedScore <= 100);
+      if (alreadyScored) {
+        // Don't destroy an already-scored review — flag for human review instead
+        data.needsReview = true;
+        data.needsReviewReason = `Heuristic: show not mentioned in text (${showCheck.reason}) but already scored — needs human verification`;
+        console.log(`    ⚠ Heuristic: show not mentioned — but already scored, flagging for review instead of nulling`);
+      } else {
+        data.showNotMentioned = true;
+        // Null out wrong fullText so it can't be scored — keep URL for URL discovery on next run
+        data.wrongFullText = data.fullText;
+        data.fullText = null;
+        data.contentTier = (data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt) ? 'excerpt' : 'needs-rescrape';
+        console.log(`    ⚠ Heuristic fallback — show not mentioned in text — fullText nulled: ${showCheck.reason}`);
+      }
     } else {
       delete data.showNotMentioned;
     }
@@ -4473,13 +4481,21 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     if (showMeta) {
       const contentMatch = verifyFullTextContent(cleanedText, showMeta);
       if (contentMatch.verdict === 'confident_mismatch' && contentMatch.negativeSignalCount >= 2) {
-        const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
-        data.wrongFullText = data.fullText;
-        data.fullText = null;
-        data.contentMismatchNote = contentMatch.negativeSignals.join('; ');
-        data.contentMismatchScore = contentMatch.score;
-        data.contentTier = hasExcerpts ? 'excerpt' : 'needs-rescrape';
-        console.log(`    ⚠ Heuristic fallback — content mismatch (score ${contentMatch.score}): ${contentMatch.negativeSignals.join(', ')}`);
+        const alreadyScored = !!(data.assignedScore && data.assignedScore >= 1 && data.assignedScore <= 100);
+        if (alreadyScored) {
+          // Don't destroy an already-scored review — flag for human review instead
+          data.needsReview = true;
+          data.needsReviewReason = `Heuristic: content mismatch (score ${contentMatch.score}: ${contentMatch.negativeSignals.join(', ')}) but already scored — needs human verification`;
+          console.log(`    ⚠ Heuristic: content mismatch — but already scored, flagging for review instead of nulling`);
+        } else {
+          const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
+          data.wrongFullText = data.fullText;
+          data.fullText = null;
+          data.contentMismatchNote = contentMatch.negativeSignals.join('; ');
+          data.contentMismatchScore = contentMatch.score;
+          data.contentTier = hasExcerpts ? 'excerpt' : 'needs-rescrape';
+          console.log(`    ⚠ Heuristic fallback — content mismatch (score ${contentMatch.score}): ${contentMatch.negativeSignals.join(', ')}`);
+        }
       } else if (contentMatch.verdict === 'confident_mismatch' || contentMatch.verdict === 'probable_mismatch') {
         console.log(`    ⚠ Heuristic fallback — content match warning (${contentMatch.verdict}, score ${contentMatch.score}): ${contentMatch.negativeSignals.join(', ')}`);
       }
@@ -5078,6 +5094,13 @@ function findReviewsToProcess() {
           const needsUrlDiscovery = data.showNotMentioned === true && !data._showNotMentionedDiscoveryAttempted;
           // Always re-try truncated/needs-rescrape reviews - they have text but it's incomplete or garbage
           if (!isTruncated && !needsUrlDiscovery && (data.isFullReview === true || data.textQuality === 'full' || textLen > 1500) && !failedFetches.has(reviewId)) {
+            continue;
+          }
+          // Guard: never re-fetch a review that has an assigned score + reasonable text, even if it
+          // appears in failedFetches. Re-collection can destroy live scored reviews by fetching garbage
+          // and triggering LLM rejection flags that null fullText and delete assignedScore.
+          // Override: explicit reviewFilter (specific file targeting) bypasses this guard.
+          if (data.assignedScore >= 1 && data.assignedScore <= 100 && textLen >= 100 && CONFIG.reviewFilter.size === 0) {
             continue;
           }
         }
