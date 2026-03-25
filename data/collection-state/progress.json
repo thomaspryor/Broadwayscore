@@ -1,10 +1,11 @@
 {
   "processed": [
-    "giant-2026/cititour--brian-scott-lipton.json",
-    "giant-2026/nytimes--helen-shaw.json",
     "giant-2026/variety--daniel-daddario.json",
     "giant-2026/nydailynews--unknown.json",
-    "giant-2026/nypost--unknown.json",
+    "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
+    "romeo-and-juliet-west-end-2026/guardian--adrian-horton.json",
+    "romeo-and-juliet-west-end-2026/guardian--unknown.json",
+    "romeo-and-juliet-west-end-2026/whatsonstage--unknown.json",
     "giant-2026/theatermania--zachary-stewart.json",
     "giant-2026/timeout--adam-feldman.json",
     "giant-2026/timeout--unknown.json",
@@ -803,7 +804,17 @@
     "man-and-boy-west-end-2026/whatsonstage--sarah-crompton.json",
     "the-other-place-off-broadway-2026/one-minute-critic--lindsay-b-davis.json",
     "anonymous-off-broadway-2026/off-off-online--walter-murphy.json",
-    "the-rat-trap-west-end-2026/guardian--david-jays.json"
+    "the-rat-trap-west-end-2026/guardian--david-jays.json",
+    "the-rat-trap-west-end-2026/london-theatre--julia-rank.json",
+    "the-rat-trap-west-end-2026/standard--nick-curtis.json",
+    "the-rat-trap-west-end-2026/times-uk--unknown.json",
+    "the-rat-trap-west-end-2026/whatsonstage--maygan-forbes.json",
+    "maggots-west-end-2026/guardian--arifa-akbar.json",
+    "maggots-west-end-2026/london-theatre--anya-ryan.json",
+    "maggots-west-end-2026/whatsonstage--sarah-crompton.json",
+    "the-porch-on-windy-hill-off-broadway-2026/theatermania--zachary-stewart.json",
+    "arcadia-west-end-2026/timeout--unknown.json",
+    "arcadia-west-end-2026/artsdesk--unknown.json"
   ],
   "failed": [
     "giant-2026/cititour--brian-scott-lipton.json",
@@ -1010,6 +1021,10 @@
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
+      "giant-2026/nydailynews--unknown.json",
+      "romeo-and-juliet-west-end-2026/guardian--adrian-horton.json",
+      "romeo-and-juliet-west-end-2026/guardian--unknown.json",
+      "romeo-and-juliet-west-end-2026/whatsonstage--unknown.json",
       "giant-2026/theatermania--zachary-stewart.json",
       "giant-2026/timeout--adam-feldman.json",
       "giant-2026/timeout--unknown.json",
@@ -1644,7 +1659,16 @@
       "man-and-boy-west-end-2026/whatsonstage--sarah-crompton.json",
       "the-other-place-off-broadway-2026/one-minute-critic--lindsay-b-davis.json",
       "anonymous-off-broadway-2026/off-off-online--walter-murphy.json",
-      "the-rat-trap-west-end-2026/guardian--david-jays.json"
+      "the-rat-trap-west-end-2026/guardian--david-jays.json",
+      "the-rat-trap-west-end-2026/london-theatre--julia-rank.json",
+      "the-rat-trap-west-end-2026/standard--nick-curtis.json",
+      "the-rat-trap-west-end-2026/times-uk--unknown.json",
+      "the-rat-trap-west-end-2026/whatsonstage--maygan-forbes.json",
+      "maggots-west-end-2026/guardian--arifa-akbar.json",
+      "maggots-west-end-2026/london-theatre--anya-ryan.json",
+      "maggots-west-end-2026/whatsonstage--sarah-crompton.json",
+      "the-porch-on-windy-hill-off-broadway-2026/theatermania--zachary-stewart.json",
+      "arcadia-west-end-2026/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
@@ -1666,11 +1690,47 @@
       "data/review-texts/the-lion-king-1997/vulture--john-simon.json",
       "the-lion-king-1997/vulture--john-simon.json"
     ],
-    "amp": [],
     "browserbase": [
       "data/review-texts/giant-2026/variety--daniel-daddario.json",
       "giant-2026/variety--daniel-daddario.json",
+      "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/amny--matt-windman.json",
+      "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
+      "hercules-west-end-2025/variety--david-benedict.json",
+      "data/review-texts/heathers-the-musical-off-broadway-2025/amny--matt-windman.json",
+      "heathers-the-musical-off-broadway-2025/amny--matt-windman.json",
+      "data/review-texts/buena-vista-social-club-2025/amny--matt-windman.json",
+      "buena-vista-social-club-2025/amny--matt-windman.json",
+      "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "data/review-texts/death-becomes-her-2024/nypost--unknown.json",
+      "death-becomes-her-2024/nypost--unknown.json",
+      "data/review-texts/death-becomes-her-2024/amny--unknown.json",
+      "death-becomes-her-2024/amny--unknown.json",
+      "data/review-texts/maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+      "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+      "data/review-texts/oh-mary-2024/hollywood-reporter--david-rooney.json",
+      "oh-mary-2024/hollywood-reporter--david-rooney.json",
+      "data/review-texts/oh-mary-2024/nytimes--erik-piepenburg.json",
+      "oh-mary-2024/nytimes--erik-piepenburg.json",
+      "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json",
       "data/review-texts/giant-2026/nypost--unknown.json",
+      "giant-2026/nypost--unknown.json",
+      "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
+      "little-shop-of-horrors-off-broadway-2019/variety--ad-amorosi.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
+      "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
+      "little-shop-of-horrors-off-broadway-2019/nypost--johnny-oleksinski.json",
+      "data/review-texts/hadestown-2019/hollywood-reporter--david-rooney.json",
+      "hadestown-2019/hollywood-reporter--david-rooney.json"
+    ],
+    "directCookies": [
       "giant-2026/nypost--unknown.json"
     ],
     "scrapingbee": [
@@ -1885,33 +1945,287 @@
       "the-lion-king-1997/variety--matt-wolf.json",
       "the-lion-king-1997/talkinbroadway--matthew-murray.json",
       "sweetmeats-west-end-2026/broadwayworld--unknown.json",
-      "man-and-boy-west-end-2026/artsdesk--demetrios-matheou.json"
+      "man-and-boy-west-end-2026/artsdesk--demetrios-matheou.json",
+      "arcadia-west-end-2026/artsdesk--unknown.json"
     ]
   },
   "startTime": "2026-03-24T17:31:44.264Z",
-  "lastProcessed": "the-rat-trap-west-end-2026/guardian--david-jays.json",
+  "lastProcessed": "arcadia-west-end-2026/artsdesk--unknown.json",
   "log": [
     {
-      "t": "2026-03-25T02:40:09.844Z",
+      "t": "2026-03-24T17:34:00.298Z",
       "event": "bb-session",
-      "session": "56657ba4",
+      "session": "78ffda18",
+      "url": "https://www.nytimes.com/2026/03/23/theater/giant-review-broadway-lithgow-dahl.ht"
+    },
+    {
+      "t": "2026-03-24T17:34:01.669Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-24T17:35:03.536Z",
+      "event": "bb-session",
+      "session": "af03a652",
       "url": "https://variety.com/2026/legit/reviews/giant-broadway-review-john-lithgow-roald-"
     },
     {
-      "t": "2026-03-25T02:40:11.160Z",
+      "t": "2026-03-24T17:35:04.848Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     },
     {
-      "t": "2026-03-25T02:40:55.917Z",
+      "t": "2026-03-24T19:11:04.501Z",
       "event": "bb-session",
-      "session": "bc2e40ca",
+      "session": "aaac5d0c",
+      "url": "https://www.amny.com/entertainment/theater/spelling-bee-returns-nails-every-word"
+    },
+    {
+      "t": "2026-03-24T19:11:05.675Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-24T19:13:56.769Z",
+      "event": "bb-session",
+      "session": "a811f591",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-03-24T19:13:57.985Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-24T19:18:33.440Z",
+      "event": "bb-session",
+      "session": "c244d052",
+      "url": "https://variety.com/2025/legit/reviews/hercules-review-musical-west-end-12364392"
+    },
+    {
+      "t": "2026-03-24T19:18:34.586Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-24T19:21:30.273Z",
+      "event": "bb-session",
+      "session": "c2606989",
+      "url": "https://www.amny.com/entertainment/broadway/review-heathers-the-musical-off-broa"
+    },
+    {
+      "t": "2026-03-24T19:21:31.451Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-24T19:30:21.855Z",
+      "event": "bb-session",
+      "session": "7ee37261",
+      "url": "https://www.amny.com/entertainment/broadway/review-buena-vista-social-clunk/"
+    },
+    {
+      "t": "2026-03-24T19:30:23.019Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-24T19:31:34.121Z",
+      "event": "bb-session",
+      "session": "4cefb1d4",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
+    },
+    {
+      "t": "2026-03-24T19:31:35.267Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-24T19:38:15.351Z",
+      "event": "bb-session",
+      "session": "4f0c9842",
+      "url": "https://nypost.com/2024/11/21/entertainment/death-becomes-her-review-claws-are-o"
+    },
+    {
+      "t": "2026-03-24T19:38:16.471Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-24T19:39:59.598Z",
+      "event": "bb-session",
+      "session": "8b216750",
+      "url": "https://www.amny.com/entertainment/theater/reviews-death-becomes-her-king-lear-m"
+    },
+    {
+      "t": "2026-03-24T19:40:00.722Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-24T19:47:49.570Z",
+      "event": "bb-session",
+      "session": "aee9e1d2",
+      "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-r"
+    },
+    {
+      "t": "2026-03-24T19:47:50.705Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-24T19:52:26.475Z",
+      "event": "bb-session",
+      "session": "635bc873",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
+    },
+    {
+      "t": "2026-03-24T19:52:27.570Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-24T19:53:04.791Z",
+      "event": "bb-session",
+      "session": "307f0b60",
+      "url": "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html"
+    },
+    {
+      "t": "2026-03-24T19:53:06.121Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-24T19:59:35.088Z",
+      "event": "bb-session",
+      "session": "b729383c",
+      "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jor"
+    },
+    {
+      "t": "2026-03-24T19:59:36.284Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-24T20:13:32.623Z",
+      "event": "bb-session",
+      "session": "f410b573",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-03-24T20:13:33.676Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-25T00:07:11.529Z",
+      "event": "bb-session",
+      "session": "1a44a26e",
+      "url": "https://www.nytimes.com/2026/03/23/theater/giant-review-broadway-lithgow-dahl.ht"
+    },
+    {
+      "t": "2026-03-25T00:07:12.873Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-25T00:07:48.462Z",
+      "event": "bb-session",
+      "session": "9bd965aa",
       "url": "https://nypost.com/2026/03/23/entertainment/giant-review-john-lithgow-is-superb-"
     },
     {
-      "t": "2026-03-25T02:40:57.383Z",
+      "t": "2026-03-25T00:07:49.778Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-25T00:29:56.161Z",
+      "event": "bb-session",
+      "session": "a6960881",
+      "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jor"
+    },
+    {
+      "t": "2026-03-25T00:29:57.430Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-25T00:41:23.987Z",
+      "event": "bb-session",
+      "session": "f141a241",
+      "url": "https://variety.com/2021/legit/reviews/back-to-the-future-musical-review-west-en"
+    },
+    {
+      "t": "2026-03-25T00:41:25.272Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-25T00:51:41.524Z",
+      "event": "bb-session",
+      "session": "7d74b98a",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-25T00:51:42.885Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-25T00:51:58.552Z",
+      "event": "bb-session",
+      "session": "b9147910",
+      "url": "https://variety.com/2019/legit/reviews/little-shop-of-horrors-review-jonathan-gr"
+    },
+    {
+      "t": "2026-03-25T00:52:00.280Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-25T00:52:15.420Z",
+      "event": "bb-session",
+      "session": "6de13cc4",
+      "url": "https://deadline.com/2019/10/little-shop-of-horrors-review-jonathan-groff-tammy-"
+    },
+    {
+      "t": "2026-03-25T00:52:17.094Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-25T00:53:07.565Z",
+      "event": "bb-session",
+      "session": "791e2cf3",
+      "url": "https://nypost.com/2019/10/17/little-shop-of-horrors-review-jonathan-groff-tammy"
+    },
+    {
+      "t": "2026-03-25T00:53:08.925Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-25T00:53:30.009Z",
+      "event": "bb-session",
+      "session": "5be27bde",
+      "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11"
+    },
+    {
+      "t": "2026-03-25T00:53:31.391Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-25T00:55:24.998Z",
+      "event": "bb-session",
+      "session": "487164a0",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-120"
+    },
+    {
+      "t": "2026-03-25T00:55:26.271Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
