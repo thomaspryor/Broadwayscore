@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-25T14:02:32.420Z",
+  "timestamp": "2026-03-25T14:12:40.200Z",
   "stats": {
     "totalReviews": 32481,
-    "alreadyFlagged": 11121,
+    "alreadyFlagged": 11124,
     "dateGuardCatches": 140,
-    "directorMismatch": 954,
+    "directorMismatch": 955,
     "tvFilmSignals": 3441,
-    "londonSignals": 1037,
+    "londonSignals": 1038,
     "offBroadwaySignals": 1009,
     "yearMismatch": 71,
-    "noPublishDate": 6750
+    "noPublishDate": 6746
   },
   "findings": [
     {
@@ -23199,6 +23199,19 @@
       "score": 82,
       "publishDate": null,
       "url": "https://exeuntmagazine.com/reviews/review-hughie-at-booth-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"al pacino\" from hughie-1996"
+        }
+      ]
+    },
+    {
+      "showId": "hughie-2016",
+      "file": "huffpost--michael-glitz.json",
+      "publishDate": "2016-02-26",
+      "url": "http://www.huffingtonpost.com/steven-suskin/aisle-view-a-long-nights_b_9322680.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -63680,6 +63693,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "american-psycho-2016",
+      "file": "wsj--terry-teachout.json",
+      "score": 45,
+      "publishDate": "2016-04-22",
+      "url": "http://www.wsj.com/articles/american-psycho-the-musical-review-serial-killer-chic-1461285000",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
