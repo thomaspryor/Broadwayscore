@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-25T05:18:12.257Z",
+  "timestamp": "2026-03-25T05:42:30.371Z",
   "stats": {
     "totalReviews": 32473,
-    "alreadyFlagged": 11073,
+    "alreadyFlagged": 11081,
     "dateGuardCatches": 139,
-    "directorMismatch": 951,
+    "directorMismatch": 952,
     "tvFilmSignals": 3436,
-    "londonSignals": 1036,
-    "offBroadwaySignals": 1009,
+    "londonSignals": 1035,
+    "offBroadwaySignals": 1010,
     "yearMismatch": 71,
-    "noPublishDate": 6802
+    "noPublishDate": 6794
   },
   "findings": [
     {
@@ -5745,19 +5745,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"big screen\""
-        }
-      ]
-    },
-    {
-      "showId": "back-to-the-future-2023",
-      "file": "and-daryl-tofa-back-to-the-future--gabi-stapula.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/article/Meet-the-Cast-of-BACK-TO-THE-FUTURE-Beginning-Previews-on-Broadway-Tonight-20230630",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -13602,19 +13589,6 @@
     },
     {
       "showId": "doubt-2024",
-      "file": "ap--mark-kennedy.json",
-      "publishDate": "2024-02-29",
-      "url": "https://apnews.com/article/liev-schreiber-doubt-broadway-c822ec519f55a70db7c1d98cfb9b966b",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "doubt-2024",
       "file": "nytimes--jesse-green.json",
       "score": 50,
       "publishDate": "March 7, 2024",
@@ -19718,6 +19692,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "grey-house-2023",
+      "file": "slash-film--caroline-cao.json",
+      "publishDate": "2023-06-07",
+      "url": "https://www.slashfilm.com/1307195/the-grey-house-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -33019,6 +33006,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"christopher wheeldon\" from mj-2022"
+        }
+      ]
+    },
+    {
+      "showId": "mj-the-musical-west-end-2024",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 82,
+      "publishDate": "2024-03-28",
+      "url": "https://www.whatsonstage.com/news/mj-the-musical-west-end-review-an-exhilarating-and-dazzling-show-that-swerves-the-controversies_1588020/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher wheeldon\" from mj-2022"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -73671,6 +73677,20 @@
     },
     {
       "showId": "mary-jane-2024",
+      "file": "deadline--pete-hammond.json",
+      "score": 89,
+      "publishDate": "May 1, 2024",
+      "url": "https://deadline.com/2017/09/mary-jane-review-the-leftovers-carrie-coon-triumphs-1202176627/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "mary-jane-2024",
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 82,
       "publishDate": "May 1, 2024",
@@ -73946,19 +73966,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 255d before show (2023-01-06T14:12:22 vs 2023-09-19)"
-        }
-      ]
-    },
-    {
-      "showId": "merrily-we-roll-along-2023",
-      "file": "newyorker--unknown.json",
-      "publishDate": "2023-09-18",
-      "url": "https://www.newyorker.com/magazine/2023/09/25/merrily-we-roll-along-again#:~:text=Unafraid%20of%20Success&amp;text=%E2%80%9CWho%20wants%20to%20live%20in,wonder.%20Happily%2C%20Maria%20Friedman%20does.",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
