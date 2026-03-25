@@ -1,15 +1,15 @@
 {
   "system": "push verify",
-  "status": "pass",
-  "lastChecked": "2026-03-24T07:52:27.206Z",
+  "status": "error",
+  "lastChecked": "2026-03-25T07:50:51.205Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Push verify: shows.json",
-      "status": "pass",
-      "message": "Data synced (23h old, workflow 23h ago)"
+      "status": "error",
+      "message": "Data 1d old but Update Show Status succeeded 1h ago — push may have failed"
     }
   ]
 }
