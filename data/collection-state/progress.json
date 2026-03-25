@@ -5,13 +5,23 @@
     "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
     "pied-a-terre-off-broadway-2026/nytg--unknown.json",
     "bigfoot-off-broadway-2026/playbill--unknown.json",
-    "chinese-republicans-off-broadway-2026/the-interested-bystander--cary-wong.json"
+    "chinese-republicans-off-broadway-2026/the-interested-bystander--cary-wong.json",
+    "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json",
+    "the-other-place-off-broadway-2026/wsj--unknown.json",
+    "eva-luna-off-broadway-2022/nytg--caridad-svich.json",
+    "imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
+    "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
     "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
-    "the-play-that-goes-wrong-off-broadway-2019/broadway-blog--samuel-l-leiter.json"
+    "the-play-that-goes-wrong-off-broadway-2019/broadway-blog--samuel-l-leiter.json",
+    "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
+    "cats-the-jellicle-ball-off-broadway-2024/wsj--unknown.json",
+    "titanique-off-broadway-2022/newyorker--dan-stahl.json",
+    "ulster-american-irish-repertory-theatre-off-broadway-2026/broadwayworld--unknown.json",
+    "jackals-off-broadway-2026/hollywood-reporter--thr-staff.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -21,17 +31,47 @@
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
       "pied-a-terre-off-broadway-2026/nytg--unknown.json",
       "bigfoot-off-broadway-2026/playbill--unknown.json",
-      "chinese-republicans-off-broadway-2026/the-interested-bystander--cary-wong.json"
+      "chinese-republicans-off-broadway-2026/the-interested-bystander--cary-wong.json",
+      "eva-luna-off-broadway-2022/nytg--caridad-svich.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
+      "imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
-    "brightdata": [],
-    "archiveToday": [],
-    "archive": []
+    "brightdata": [
+      "the-other-place-off-broadway-2026/wsj--unknown.json"
+    ],
+    "archiveToday": [
+      "data/review-texts/ulster-american-irish-repertory-theatre-off-broadway-2026/broadwayworld--unknown.json"
+    ],
+    "archive": [
+      "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json",
+      "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json"
+    ]
   },
   "startTime": "2026-03-25T08:56:24.076Z",
-  "lastProcessed": "the-play-that-goes-wrong-off-broadway-2019/broadway-blog--samuel-l-leiter.json",
-  "log": []
+  "lastProcessed": "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json",
+  "log": [
+    {
+      "t": "2026-03-25T08:58:18.319Z",
+      "event": "bb-session",
+      "session": "c99bf662",
+      "url": "https://www.wsj.com/articles/the-other-place-review-greek-roots-naturalistic-sur"
+    },
+    {
+      "t": "2026-03-25T08:58:44.610Z",
+      "event": "bb-session",
+      "session": "620d3671",
+      "url": "https://www.wsj.com/articles/cats-the-jellicle-ball-review-wondrous-and-whisker-"
+    },
+    {
+      "t": "2026-03-25T09:00:34.396Z",
+      "event": "bb-session",
+      "session": "fb94f8ab",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/john-legend-lynn-nottage-liesl-"
+    }
+  ]
 }
