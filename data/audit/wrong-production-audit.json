@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-03-25T02:55:30.558Z",
+  "timestamp": "2026-03-25T03:05:39.900Z",
   "stats": {
     "totalReviews": 32470,
     "alreadyFlagged": 11066,
     "dateGuardCatches": 139,
     "directorMismatch": 951,
-    "tvFilmSignals": 3426,
+    "tvFilmSignals": 3430,
     "londonSignals": 1034,
     "offBroadwaySignals": 1008,
     "yearMismatch": 71,
@@ -5568,6 +5568,20 @@
       ]
     },
     {
+      "showId": "arcadia-west-end-2026",
+      "file": "whatsonstage--unknown.json",
+      "score": 80,
+      "publishDate": "2026-02-05",
+      "url": "https://www.whatsonstage.com/news/tom-stoppards-arcadia-at-the-old-vic-review_1711215/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
       "showId": "art-2025",
       "file": "chicagotribune--chris-jones.json",
       "score": 78,
@@ -6522,6 +6536,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"paramount\""
+        }
+      ]
+    },
+    {
+      "showId": "beautiful-little-fool-west-end-2026",
+      "file": "whatsonstage--alun-hood.json",
+      "score": 66,
+      "publishDate": "2026-01-23",
+      "url": "https://www.whatsonstage.com/news/beautiful-little-fool-musical-at-southwark-playhouse-borough-review_1709496/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -29938,6 +29966,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"movie theater\""
+        }
+      ]
+    },
+    {
+      "showId": "maggots-west-end-2026",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 79,
+      "publishDate": "March 1, 2026",
+      "url": "https://www.whatsonstage.com/news/maggots-at-the-park-theatre-review_1710935/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -55804,6 +55846,20 @@
       ]
     },
     {
+      "showId": "the-rat-trap-west-end-2026",
+      "file": "whatsonstage--maygan-forbes.json",
+      "score": 42,
+      "publishDate": "2026-02-03",
+      "url": "https://www.whatsonstage.com/news/the-rat-trap-at-the-park-theatre-review_1710929/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
       "showId": "the-real-thing-2014",
       "file": "deadline--jeremy-gerard.json",
       "score": 25,
@@ -61408,7 +61464,7 @@
     {
       "showId": "wicked-2003",
       "file": "nytimes--unknown.json",
-      "score": null,
+      "score": 71,
       "publishDate": "2003-10-26",
       "url": "https://www.nytimes.com/2003/10/26/theater/theater-the-wicked-young-witches.html",
       "findings": [
