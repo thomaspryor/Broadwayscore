@@ -1079,7 +1079,13 @@
     "between-riverside-and-crazy-2022/ew--maureen-lee-lenker.json",
     "some-like-it-hot-2022/newyorker--unknown.json",
     "some-like-it-hot-2022/latimes--unknown.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/theatermania--adam-feldman.json"
+    "a-beautiful-noise-the-neil-diamond-musical-2022/theatermania--adam-feldman.json",
+    "take-me-out-2022/washpost--peter-marks.json",
+    "take-me-out-2022/theatermania--jesse-green.json",
+    "almost-famous-2022/theater-pizzazz--unknown.json",
+    "topdog-underdog-2022/broadwaynews--unknown.json",
+    "topdog-underdog-2022/corey-hawkins--unknown.json",
+    "death-of-a-salesman-2022/variety--jesse-green.json"
   ],
   "failed": [
     "giant-2026/cititour--brian-scott-lipton.json",
@@ -1346,7 +1352,11 @@
     "ohio-state-murders-2022/washpost--peter-marks.json",
     "kpop-2022/daily-mail--unknown.json",
     "take-me-out-2022/talkinbroadway--matthew-murray.json",
-    "take-me-out-2022/usatoday--charles-isherwood.json"
+    "take-me-out-2022/usatoday--charles-isherwood.json",
+    "walking-with-ghosts-2022/cititour--brian-scott-lipton.json",
+    "walking-with-ghosts-2022/dtli--ran-xia.json",
+    "topdog-underdog-2022/kenny-leon--unknown.json",
+    "topdog-underdog-2022/usatoday--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2149,7 +2159,10 @@
       "fat-ham-2023/ap--john-carucci.json",
       "life-of-pi-2023/theatermania--jesse-green.json",
       "bad-cinderella-2023/telegraph--anita-singh.json",
-      "between-riverside-and-crazy-2022/ew--maureen-lee-lenker.json"
+      "between-riverside-and-crazy-2022/ew--maureen-lee-lenker.json",
+      "take-me-out-2022/washpost--peter-marks.json",
+      "almost-famous-2022/theater-pizzazz--unknown.json",
+      "topdog-underdog-2022/corey-hawkins--unknown.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
@@ -2225,7 +2238,10 @@
       "data/review-texts/mary-jane-2024/deadline--pete-hammond.json",
       "mary-jane-2024/deadline--pete-hammond.json",
       "data/review-texts/here-lies-love-2023/hollywood-reporter--david-rooney.json",
-      "here-lies-love-2023/hollywood-reporter--david-rooney.json"
+      "here-lies-love-2023/hollywood-reporter--david-rooney.json",
+      "data/review-texts/topdog-underdog-2022/kenny-leon--unknown.json",
+      "data/review-texts/death-of-a-salesman-2022/variety--jesse-green.json",
+      "death-of-a-salesman-2022/variety--jesse-green.json"
     ],
     "directCookies": [
       "giant-2026/nypost--unknown.json"
@@ -2259,7 +2275,8 @@
       "merrily-we-roll-along-2023/newyorker--unknown.json",
       "fat-ham-2023/nytimes--jesse-green.json",
       "bad-cinderella-2023/bloomberg--chris-rovzar.json",
-      "some-like-it-hot-2022/newyorker--unknown.json"
+      "some-like-it-hot-2022/newyorker--unknown.json",
+      "topdog-underdog-2022/broadwaynews--unknown.json"
     ],
     "brightdata": [
       "the-other-place-off-broadway-2026/wsj--unknown.json",
@@ -2312,7 +2329,8 @@
       "parade-2023/theatermania--jesse-green.json",
       "some-like-it-hot-2022/latimes--unknown.json",
       "a-beautiful-noise-the-neil-diamond-musical-2022/theatermania--adam-feldman.json",
-      "kpop-2022/daily-mail--unknown.json"
+      "kpop-2022/daily-mail--unknown.json",
+      "take-me-out-2022/theatermania--jesse-green.json"
     ],
     "archiveToday": [
       "data/review-texts/giant-2026/cititour--brian-scott-lipton.json",
@@ -2412,7 +2430,9 @@
       "data/review-texts/sweeney-todd-2023/talkinbroadway--matthew-murray.json",
       "data/review-texts/ohio-state-murders-2022/usatoday--charles-isherwood.json",
       "data/review-texts/ohio-state-murders-2022/washpost--peter-marks.json",
-      "data/review-texts/take-me-out-2022/usatoday--charles-isherwood.json"
+      "data/review-texts/take-me-out-2022/usatoday--charles-isherwood.json",
+      "data/review-texts/take-me-out-2022/talkinbroadway--matthew-murray.json",
+      "data/review-texts/topdog-underdog-2022/usatoday--charles-isherwood.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -2594,7 +2614,7 @@
     ]
   },
   "startTime": "2026-03-24T17:31:44.264Z",
-  "lastProcessed": "take-me-out-2022/usatoday--charles-isherwood.json",
+  "lastProcessed": "death-of-a-salesman-2022/variety--jesse-green.json",
   "log": [
     {
       "t": "2026-03-24T17:34:00.298Z",
@@ -3123,6 +3143,28 @@
       "t": "2026-03-25T05:37:05.933Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-25T05:45:58.510Z",
+      "event": "bb-session",
+      "session": "a3414b81",
+      "url": "https://www.hollywoodreporter.com/t/kenny-leon/"
+    },
+    {
+      "t": "2026-03-25T05:45:59.655Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-25T05:46:47.999Z",
+      "event": "bb-session",
+      "session": "f59b7b52",
+      "url": "https://variety.com/2022/legit/reviews/death-of-a-salesman-review-broadway-wende"
+    },
+    {
+      "t": "2026-03-25T05:46:49.710Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
