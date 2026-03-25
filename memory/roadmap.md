@@ -1,4 +1,4 @@
-# Roadmap — Last updated 2026-03-23
+# Roadmap — Last updated 2026-03-25 (ISR pre-render + SEO health fix)
 
 > **Active work is now tracked on the [GitHub Projects board](https://github.com/users/thomaspryor/projects/1).**
 > Open issues with `session` label = active Claude Code sessions.
@@ -27,7 +27,7 @@
 12. ~~**OUTLET_VERIFIED_SOURCES fix**~~ → DONE. 85 WE reviews promoted LLM→P0.
 13. ~~**EW letter grade regex recovery**~~ → DONE. 92 reviews, pure regex, no LLM.
 14. ~~**Playwright recollection (Stage, WOS, Time Out, etc.)**~~ → DONE. 26 reviews.
-15. ~~**Guardian API recovery**~~ → DONE. 17 reviews via Content API.
+15. ~~**Guardian API recovery**~~ → DONE. 17 reviews via Guardian Content API.
 16. ~~**LLM extractor hallucination fix**~~ → DONE. verifyInText tightened (40%→<2% false positive).
 17. ~~**Playwright star capture in gather-reviews.js**~~ → DONE. Code change deployed, takes effect on next gather run (~510 future P0.5 scores).
 18. **USA Today star re-collection** — BLOCKED. Older articles no longer render star widgets after site redesigns. ~291 reviews permanently unavailable.
@@ -46,6 +46,11 @@
 10. ~~**URL brittleness remediation**~~ → DONE (2026-03-16). Weekly health monitoring, SERP Telecharge discovery, centralized url-utils.js, TodayTix API verification, TM allowlist, OUTLET_DOMAINS derived from registry (1,242 entries vs 119 hardcoded).
 
 **Performance:**
+11. **Deploy deduplication** — 48 deploys/day invalidates all ISR cache before it can serve a second request. Add skip-if-deployed-within-30-min logic to `vercel-deploy.yml`. Biggest efficiency win for ISR.
+12. ~~**Restore critic/outlet static pre-rendering**~~ → DONE (2026-03-25). ~1,580 pages back to build-time generation. `x-vercel-cache: PRERENDER` confirmed.
+13. ~~**Fix SEO health check false alarm**~~ → DONE (2026-03-25). `health-check.js` read `data.timestamp` but `seo-health.json` uses `lastChecked`.
+14. **Pre-render creative pages after measuring impact** — If critic/outlet pre-rendering shows improved crawl stats in Search Console after 2 weeks (check Apr 8), restore creative pages too (+2,200 pages, +2-3 min build).
+15. **SEO triage→email gap** — Triage system shows `escalationState: "monitoring"` but `lastAlertTimestamp: null` for SEO warnings. The monitoring state may not be surfacing in digest emails properly.
 
 ## MEDIUM PRIORITY
 
@@ -57,10 +62,14 @@
 
 **Opening Night Speed:**
 - ~~**Add site search for UK T1/T2 outlets**~~ → DONE (2026-03-18). Telegraph, The Stage, Times UK added by parallel session. 5/7 UK outlets now have configs.
+- ~~**Audience data ready by 11:30 PM ET on opening night**~~ → DONE (2026-03-24). Orchestrator now dispatches all 4 audience scrapers at session start (9 PM ET). Broadway.com added to `update-show-status.yml` previews→open chain (was missing). `update-broadway-com.yml` now accepts `shows` plural input.
 
 **Audience Data Gaps:**
 - ~~**SERP-based slug discovery for audience scrapers**~~ → DONE (2026-03-18). Auto-discovers slugs via BrightData SERP API after scraper coverage report. Title validation + blog URL filtering. Tested on LBO: 4/7 valid slugs found, added to LBO_OVERRIDES.
 - ~~**Verify LTD audience data renders on WE show pages**~~ → DONE (2026-03-18). Verified live: Hamilton WE shows 5 audience sources including LTD (3.5K reviews, 4.7/5).
+- ~~**Bright Data `mcp_unlocker` trial exhausted**~~ → DONE (2026-03-25). Zone recovered + re-enabled via UI. New admin token (`d52fd1e8`) deployed to all 4 repos. Billing active at $1.5/CPM.
+- ~~**ScrapingBee credits depleted**~~ → DONE (2026-03-25). Replenished to ~1M credits. Renews 2026-04-25.
+- **`mcp_browser` zone wrong type** — `client_10090`: Browser API requires WebSocket/CDP, not HTTP proxy. Code now detects and skips it permanently. Either reconfigure zone as Unblocker type, or leave unused (only `mcp_unlocker` is needed).
 
 **Data Quality:**
 12. ~~WE/OB review cleanup — duplicates~~ → DONE. 35→0 duplicates via comprehensive dedup.
@@ -78,8 +87,8 @@
 
 **iOS App:** Widget, Spotlight search, iPad layout, Android, Share sheet, App Clips, Siri
 **Image gaps:** Dear England WE (score 83, 7 reviews) has no image — auto-fetch missed it, may need manual sourcing or TodayTix mapping fix.
-**Infrastructure:** Show images to CDN (173MB/deploy), prune low-value static pages, domain retry intelligence, ~~ScrapingBee SERP credit optimization~~ → DONE (3.3M→968K credits/month + BrightData fallback), ~~Scraper cost optimization~~ → DONE (Playwright-first for public sites, BD-first SERP, SB credit pre-check, per-run cost logging)
-**Scraper resilience:** Consolidate inline SERP in collect-review-texts.js to use shared url-discovery.js module (eliminates diverged 200-line fork)
+**Infrastructure:** Show images to CDN (173MB/deploy), prune low-value static pages, domain retry intelligence, ~~ScrapingBee SERP credit optimization~~ → DONE (3.3M→968K credits/month + BrightData fallback), ~~Scraper cost optimization~~ → DONE (Playwright-first for public sites, BD-first SERP, SB credit pre-check, per-run cost logging). gather-reviews outlet-SERP cut 200→30 searches for routine runs (2026-03-25), 200 preserved for opening nights (max_tier=3)
+**Scraper resilience:** Consolidate inline SERP in collect-review-texts.js to use shared url-discovery.js module (eliminates diverged 200-line fork). Migrate `recollect-for-scores.js`, `scrape-theater-tips.js` to use `scraper.js` fetchPage() instead of calling SB API directly (currently in CI exempt list — no BD fallback)
 **Domain matching:** `domainMatchesExpected()` in `scraper.js` doesn't match subdomains of registry aliases (e.g., `articles.philly.com` doesn't match alias `philly.com`). Workaround: added explicit subdomain aliases. Real fix: extend the matching function. LOW priority.
 **Code Quality:**
 18. ~~**TypeScript strictness cleanup**~~ → DONE. Zero TS errors, zero `as any` casts. Added Window.gtag/Sentry declarations, SentryEvent interface, GoldListType narrowing.
@@ -90,13 +99,38 @@
 23. ~~**CI workflow cleanup**~~ → Phase 2 DONE. Push-with-retry migration (15 workflows, -281 lines) + setup-node composite action (10 workflows migrated, 65+ remaining). Total: -369 lines boilerplate.
 **Data/Scoring:** LLM prompt contamination audit, cross-aggregator excerpt enrichment, Playwright critic resolution, 14 author-byline mismatches need manual review (audit report in data/audit/syndicated-duplicates.json)
 24. **Integrate date-window validator into rebuild** — Currently standalone script. Should run automatically in `rebuild-all-reviews.js` after the existing pre-opening guard. The existing guard uses 90-day threshold and only covers preview/upcoming shows; the new validator is stricter (21d/7d) and covers all statuses.
-25. **Outlet-specific date extractors** — ~490 reviews have fullText but no date. Top offenders: Cititour (55), The Stage (49), Lighting & Sound America (41). Would need custom extraction for these outletsx27 HTML patterns.
+25. **Outlet-specific date extractors** — ~490 reviews have fullText but no date. Top offenders: Cititour (55), The Stage (49), Lighting & Sound America (41). Would need custom extraction for these outlets' HTML patterns.
 **Lists Enhancements:** ~~Public/shareable lists~~ → DONE (2026-03-21), **notes editing UI** (note field exists in DB + renders on shared page, but no UI to add/edit — highest value next step), "Add to List" from Diary/Watchlist rows, smart list suggestions (auto-suggest based on diary), drag handle discoverability (animation/tooltip), list import from Diary (bulk add seen shows), list count in header stats bar
 **Viral/Social:** Share-a-score image cards (zero-auth "Share this score" button → branded image with poster + score + URL, works on iMessage/social — higher viral potential than lists, OG infra already exists)
 **SEO:** FAQ schema on show detail pages
 **Code Quality:** ~~Regression protection for critical patterns~~ → DONE (grep-based guards in CI). ~~Linter/IDE revert root cause~~ → DONE (concurrent sessions, not auto-formatter).
+- **Fix ProGateContext recapture unit test** — `email-capture-integrity.test.mjs:102` failing since 2026-03-24. Test expects ProGateContext to include recapture logic for users who submitted via broken modal pre-fix. The fix commit (`2adfba69a1`) apparently missed this. LOW priority (no user-facing impact).
+- **9 duplicate review-text files** — `validate-review-texts.js` reports: timeout-london/timeout outlet aliasing (5 WE shows), unknown→named critic aliasing (cabaret-kit-kat, great-gatsby, giant). Failing CI. Fix: delete the `timeout-london` and `unknown` duplicates in the private review-texts repo. MEDIUM priority.
 
 ## Recently Completed
+
+### Infrastructure Recovery + SERP Cost Optimization (2026-03-25)
+- **Bright Data admin token rotation** — Old token had User role (read-only for zone management). New token `d52fd1e8` has Admin role. Updated in all 4 GitHub repos + local `.env`.
+- **mcp_unlocker zone restored** — Zone was in "Trial limit reached" then "deleted" soft-delete state. Recovered via UI Recover button + enabled via Configuration toggle. Billing active.
+- **ScrapingBee replenished** — Credits were fully exhausted (1,350,023/1,350,000). Replenished. Renews 2026-04-25.
+- **SERP cost fix** — `gather-reviews.yml` outlet-SERP job was running `--max-searches 200` on every run (10+ times on opening night = ~$2/day). Cut to 30 for routine runs (max_tier=2), preserved 200 for opening nights (max_tier=3). Estimated savings: ~85% of daily SERP spend.
+- **Text collection safety fix** — `collect-review-texts.js` was overwriting fullText on already-scored reviews, causing contentTier=invalid and exclusion from reviews.json. Fixed: skip re-fetching reviews that already have assignedScore.
+
+
+### Rebuild Guard → Claude-Powered Drop Analysis (2026-03-24)
+- **Root cause: Guards were blocking legitimate cleanup** — Every historical guard fire (−756, −731, −335, −117, −109 reviews) was intentional pipeline work (dedup, quality flagging, domain validation), never corruption. Guards caused a 10-day stall by blocking the rebuild in a retry loop.
+- **Fix: Removed `process.exit(1)` from both guards** in `rebuild-all-reviews.js`. Guards now write audit files and log warnings, but never block the rebuild.
+- **New: `analyze-rebuild-drops.js`** — Runs after each rebuild. If total drops >30 or any single show >10, calls Claude Sonnet for qualitative analysis: classifies drops as flag-explained (routine) vs unexplained, checks era distribution and recent pipeline activity, produces ROUTINE/NEEDS_REVIEW/SUSPICIOUS verdict with plain-English explanation. Sends email with verdict in subject line.
+- **Removed dead code** — `sendGuardStallAlert` (125 lines), invalid `allow_regression=true` references in workflows, `ALLOW_DRIFT: 'true'` from 3 workflows (`scrape-dtli-show-score`, `scoring-audit`, `scrape-bww-reviews`).
+- **Pre-existing Test Suite failure noted** — `ProGateContext has recapture logic` unit test failing since 2026-03-24 (pre-dates this session, introduced by ProGateContext modal fix). Needs fix in a separate session.
+
+
+### Opening Night Audience Data Fixes (2026-03-24)
+- **Root cause: TLS fingerprinting** — `https.get()` (OpenSSL TLS) gets blocked by Reddit and Broadway.com CDN in CI; `fetch()` (undici TLS) passes. Fixed both scrapers. Broadway.com verified live: Giant 4.8/5 → 96 score fetched correctly.
+- **Root cause: combinedScore drift on concurrent pushes** — `push-core-data` reconciliation merged sources from remote but didn't recalculate `combinedScore`. Reddit's +8 calibration was silently dropped. Fix: inline `calculateCombinedScore()` in the action after source merging. Verified against 1,686 shows: zero drift.
+- **Root cause: Broadway.com missing from opening night chain** — Reddit/ShowScore/Mezzanine all auto-dispatched on previews→open; Broadway.com was not. Added to `update-show-status.yml`. Added `shows` plural input to `update-broadway-com.yml` to match the other audience workflow interfaces.
+- **Opening night SLA** — Orchestrator (starts 9 PM ET) now dispatches all 4 audience scrapers at session start, so data is ready before the 11:30 PM ET broadcast window.
+- **Giant fixed manually** — combinedScore=80 (B+, "Liking"), all 4 sources: Mezzanine 78 (93 reviews), Reddit 68 raw/76 calibrated (88 posts), Theatr 89 (39 votes), Broadway.com 96 (15 reviews).
 
 ### Hero Image Orphan Fix + Rebuild Guard Auto-Allow (2026-03-22)
 - **Root cause: 352 orphan images across all markets** — `applyImages()` in `fetch-show-images-auto.js` replaced the entire `show.images` object on re-runs, wiping previously-downloaded hero/poster paths when a source returned null. Broadway worst hit (337), not just WE (5).
