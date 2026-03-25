@@ -1,26 +1,20 @@
 {
-  "updatedAt": "2026-03-25T07:01:21.766Z",
-  "processed": 1139,
-  "failed": 366,
-  "successRate": "75.7%",
+  "updatedAt": "2026-03-25T07:32:44.426Z",
+  "processed": 1143,
+  "failed": 368,
+  "successRate": "75.6%",
   "tierBreakdown": {
-    "playwright": 816,
+    "playwright": 817,
     "amp": 18,
     "browserbase": 61,
     "directCookies": 1,
-    "scrapingbee": 36,
-    "brightdata": 73,
+    "scrapingbee": 37,
+    "brightdata": 75,
     "archiveToday": 148,
     "archive": 186
   },
-  "browserbaseSessions": 30,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-03-25T05:10:14.761Z",
-      "event": "bb-session",
-      "session": "61d6486d",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/here-lies-love-broadway-review-"
-    },
     {
       "t": "2026-03-25T05:10:15.960Z",
       "event": "bb-cookie-inject",
@@ -124,6 +118,12 @@
       "t": "2026-03-25T06:02:08.297Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-25T07:31:28.206Z",
+      "event": "bb-session",
+      "session": "e07cb051",
+      "url": "https://www.wsj.com/articles/giant-review-john-lithgows-brilliantly-bad-tempered"
     }
   ]
 }
