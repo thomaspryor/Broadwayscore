@@ -19,6 +19,7 @@ const fs = require('fs');
 const path = require('path');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { fetchPage } = require('./lib/scraper');
 
 // Parse command line args
 const args = process.argv.slice(2);
@@ -30,7 +31,6 @@ const verbose = args.includes('--verbose');
 
 const REQUEST_DELAY_MS = 2000; // 2s between requests — be polite
 const USER_AGENT = 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0)';
-const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 
 const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
 const showsPath = path.join(__dirname, '../data/shows.json');
@@ -77,33 +77,6 @@ function isBotChallenge(html) {
   );
 }
 
-/**
- * Fetch URL via ScrapingBee with JS rendering (bypasses bot challenges).
- * Returns { status, data } or null if no API key.
- */
-async function fetchViaScrapingBee(url) {
-  if (!SCRAPINGBEE_KEY) return null;
-
-  const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=true&premium_proxy=true&wait=3000`;
-
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 60000);
-  try {
-    const res = await fetch(apiUrl, { signal: controller.signal });
-    const data = await res.text();
-    return { status: res.status, data };
-  } catch (e) {
-    if (e.name === 'AbortError') {
-      console.error(`  ScrapingBee timeout: ${url}`);
-    } else {
-      console.error(`  ScrapingBee error: ${e.message}`);
-    }
-    return null;
-  } finally {
-    clearTimeout(timeout);
-  }
-}
-
 // ---- Discovery: Parse /shows/ listing page ----
 
 /**
@@ -118,16 +91,15 @@ async function discoverShows() {
     throw new Error(`Broadway.com /shows/ returned ${status}`);
   }
 
-  // If listing page is bot-challenged, retry via ScrapingBee
+  // If listing page is bot-challenged, retry via shared scraper (ScrapingBee → Bright Data → Playwright)
   if (isBotChallenge(html)) {
-    console.log('  Bot challenge on listing page, trying ScrapingBee...');
-    const sbResult = await fetchViaScrapingBee('https://www.broadway.com/shows/');
-    if (sbResult && sbResult.status === 200 && !isBotChallenge(sbResult.data)) {
-      html = sbResult.data;
+    console.log('  Bot challenge on listing page, trying scraper fallback chain...');
+    const scraperHtml = await fetchPage('https://www.broadway.com/shows/', { renderJs: true });
+    if (scraperHtml && scraperHtml.length > 10000 && !isBotChallenge(scraperHtml)) {
+      html = scraperHtml;
     } else {
-      const reason = !sbResult ? 'no API key' : `HTTP ${sbResult.status}, ${sbResult.data?.length || 0} bytes`;
-      console.error(`  ScrapingBee fallback failed for listing page (${reason})`);
-      throw new Error(`Broadway.com /shows/ blocked by bot challenge and ScrapingBee fallback failed (${reason})`);
+      console.error(`  Scraper fallback failed for listing page (${scraperHtml?.length || 0} bytes)`);
+      throw new Error('Broadway.com /shows/ blocked by bot challenge and scraper fallback failed');
     }
   }
 
@@ -422,18 +394,18 @@ async function main() {
 
       let rating = extractJsonLdRating(html);
 
-      // If no rating found and page looks like a bot challenge, retry via ScrapingBee
+      // If no rating found and page looks like a bot challenge, retry via shared scraper
       if (!rating && isBotChallenge(html)) {
-        if (verbose) console.log(`  Bot challenge detected for ${show.id}, trying ScrapingBee...`);
-        const sbResult = await fetchViaScrapingBee(bc.url);
-        if (sbResult && sbResult.status === 200 && !isBotChallenge(sbResult.data)) {
-          rating = extractJsonLdRating(sbResult.data);
+        if (verbose) console.log(`  Bot challenge detected for ${show.id}, trying scraper fallback...`);
+        const scraperHtml = await fetchPage(bc.url, { renderJs: true });
+        if (scraperHtml && !isBotChallenge(scraperHtml)) {
+          rating = extractJsonLdRating(scraperHtml);
           scrapingBeeUsed++;
           if (!rating && verbose) {
-            console.log(`  SKIP ${show.id}: no JSON-LD aggregateRating (even via ScrapingBee, ${sbResult.data.length} bytes)`);
+            console.log(`  SKIP ${show.id}: no JSON-LD aggregateRating (even via scraper, ${scraperHtml.length} bytes)`);
           }
-        } else if (verbose && sbResult) {
-          console.log(`  ScrapingBee failed for ${show.id}: HTTP ${sbResult.status}, ${sbResult.data?.length || 0} bytes`);
+        } else if (verbose) {
+          console.log(`  Scraper fallback failed for ${show.id} (${scraperHtml?.length || 0} bytes)`);
         }
       }
 
