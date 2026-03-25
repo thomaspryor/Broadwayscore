@@ -567,7 +567,15 @@
     "back-to-the-future-west-end-2021/british-theatre--unknown.json",
     "back-to-the-future-west-end-2021/daily-mail--patrick-marmion.json",
     "back-to-the-future-west-end-2021/independent--clarisse-loughrey.json",
-    "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json"
+    "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json",
+    "back-to-the-future-west-end-2021/whatsonstage--sarah-crompton.json",
+    "the-phantom-of-the-opera-west-end-1986/broadwayworld--unknown.json",
+    "the-phantom-of-the-opera-west-end-1986/standard--katie-rosseinsky.json",
+    "the-phantom-of-the-opera-west-end-1986/whatsonstage--unknown.json",
+    "les-miserables-west-end-2021/artsdesk--aleks-sierz.json",
+    "les-miserables-west-end-2021/thestage--matthew-hemley.json",
+    "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json",
+    "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json"
   ],
   "failed": [
     "giant-2026/cititour--brian-scott-lipton.json",
@@ -666,7 +674,9 @@
     "moulin-rouge-the-musical-west-end-2021/theatrely--emily-wyrwa.json",
     "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
     "six-2021/newyorker--naomi-fry.json",
-    "six-2021/pages-on-stages--mason-pilevsky.json"
+    "six-2021/pages-on-stages--mason-pilevsky.json",
+    "les-miserables-west-end-2021/daily-mail--patrick-marmion.json",
+    "les-miserables-west-end-2021/the-express--neil-norman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1136,7 +1146,13 @@
       "back-to-the-future-west-end-2021/timeout--unknown.json",
       "back-to-the-future-west-end-2021/artsdesk--gary-naylor.json",
       "back-to-the-future-west-end-2021/british-theatre--unknown.json",
-      "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json"
+      "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json",
+      "back-to-the-future-west-end-2021/whatsonstage--sarah-crompton.json",
+      "the-phantom-of-the-opera-west-end-1986/standard--katie-rosseinsky.json",
+      "the-phantom-of-the-opera-west-end-1986/whatsonstage--unknown.json",
+      "les-miserables-west-end-2021/artsdesk--aleks-sierz.json",
+      "les-miserables-west-end-2021/the-express--neil-norman.json",
+      "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
@@ -1184,7 +1200,9 @@
       "data/review-texts/giant-2026/nypost--unknown.json",
       "giant-2026/nypost--unknown.json",
       "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
-      "back-to-the-future-west-end-2021/variety--david-benedict.json"
+      "back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [
       "giant-2026/nypost--unknown.json"
@@ -1308,11 +1326,14 @@
       "maybe-happy-ending-2024/vulture--sara-holdren.json",
       "moulin-rouge-the-musical-west-end-2021/theatrely--emily-wyrwa.json",
       "back-to-the-future-west-end-2021/daily-mail--patrick-marmion.json",
-      "back-to-the-future-west-end-2021/independent--clarisse-loughrey.json"
+      "back-to-the-future-west-end-2021/independent--clarisse-loughrey.json",
+      "the-phantom-of-the-opera-west-end-1986/broadwayworld--unknown.json",
+      "les-miserables-west-end-2021/daily-mail--patrick-marmion.json",
+      "les-miserables-west-end-2021/thestage--matthew-hemley.json"
     ]
   },
   "startTime": "2026-03-24T17:31:44.264Z",
-  "lastProcessed": "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json",
+  "lastProcessed": "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
   "log": [
     {
       "t": "2026-03-24T17:34:00.298Z",
@@ -1522,6 +1543,17 @@
       "t": "2026-03-25T00:41:25.272Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-25T00:51:41.524Z",
+      "event": "bb-session",
+      "session": "7d74b98a",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-03-25T00:51:42.885Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
