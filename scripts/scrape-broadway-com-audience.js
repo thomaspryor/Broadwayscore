@@ -28,6 +28,7 @@ const limitArg = args.find(a => a.startsWith('--limit='));
 const showLimit = limitArg ? parseInt(limitArg.split('=')[1]) : null;
 const dryRun = args.includes('--dry-run');
 const verbose = args.includes('--verbose');
+const includeClosed = args.includes('--include-closed');
 
 const REQUEST_DELAY_MS = 2000; // 2s between requests — be polite
 const USER_AGENT = 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0)';
@@ -138,6 +139,54 @@ async function discoverShows() {
 
   console.log(`  Discovered ${shows.length} shows on Broadway.com`);
   return shows;
+}
+
+/**
+ * Fetch Broadway.com sitemap to discover ALL show slugs (including closed shows).
+ * The /shows/ listing only has currently-running shows. The sitemap has everything.
+ * Returns array of slugs found.
+ */
+async function discoverFromSitemap() {
+  console.log('\nFetching Broadway.com sitemap for closed shows...');
+
+  let xml;
+  // Try direct fetch first
+  const { data: rawXml } = await httpsGet('https://www.broadway.com/sitemap.xml');
+  if (!isBotChallenge(rawXml) && rawXml.includes('<url>')) {
+    xml = rawXml;
+  } else {
+    // Bot-challenged — use scraper fallback
+    console.log('  Sitemap bot-challenged, trying scraper fallback...');
+    try {
+      const result = await fetchPage('https://www.broadway.com/sitemap.xml', { renderJs: true });
+      xml = result?.content || '';
+    } catch (e) {
+      console.log(`  Sitemap fetch failed: ${e.message}`);
+      return [];
+    }
+  }
+
+  if (!xml || !xml.includes('/shows/')) {
+    console.log('  No show URLs found in sitemap');
+    return [];
+  }
+
+  // Extract /shows/{slug}/ URLs from sitemap XML
+  const slugs = [];
+  const urlPattern = /broadway\.com\/shows\/([a-z0-9-]+)\//gi;
+  let match;
+  const seen = new Set();
+
+  while ((match = urlPattern.exec(xml)) !== null) {
+    const slug = match[1];
+    if (seen.has(slug)) continue;
+    if (['shows', 'broadway-guide', 'discount-broadway-tickets', 'tickets', 'find-by-date'].includes(slug)) continue;
+    seen.add(slug);
+    slugs.push(slug);
+  }
+
+  console.log(`  Found ${slugs.length} show slugs in sitemap`);
+  return slugs;
 }
 
 // ---- Extraction: Parse JSON-LD from show page ----
@@ -350,18 +399,85 @@ async function main() {
   showMapById = {};
   for (const s of showsData.shows) showMapById[s.id] = s;
 
-  // 1. Discover shows on Broadway.com
+  // 1. Discover shows on Broadway.com (listing page = currently running)
   const bcShows = await discoverShows();
 
   // 2. Match to our shows
   console.log('\nMatching to shows.json...');
   const matches = matchBroadwayComToShows(bcShows, showsData.shows);
-  console.log(`Matched ${matches.length} shows\n`);
+  console.log(`Matched ${matches.length} shows from listing page`);
+
+  // 3. Discover closed shows from sitemap (slugs only, no titles)
+  const matchedIds = new Set(matches.map(m => m.show.id));
+  const sitemapSlugs = includeClosed ? await discoverFromSitemap() : [];
+
+  // Match sitemap slugs to our shows that weren't already matched
+  // Broadway.com slugs are typically the show title lowercased with hyphens
+  if (sitemapSlugs.length > 0) {
+    const sitemapNormMap = new Map(); // normalized slug → original slug
+    for (const slug of sitemapSlugs) {
+      sitemapNormMap.set(slug.toLowerCase(), slug);
+    }
+
+    let sitemapMatched = 0;
+    for (const show of showsData.shows) {
+      if (matchedIds.has(show.id)) continue; // Already matched via listing
+      if (isLondonMarket(show.category)) continue; // Broadway.com is US only
+
+      // Generate candidate slugs from show title
+      const titleSlug = show.title.toLowerCase()
+        .replace(/['']/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '');
+
+      // Also try without common suffixes
+      const candidates = [titleSlug];
+      // Try shorter versions (e.g., "a-wonderful-world" from "a-wonderful-world-the-louis-armstrong-musical")
+      const parts = titleSlug.split('-');
+      if (parts.length > 3) {
+        candidates.push(parts.slice(0, 3).join('-'));
+        candidates.push(parts.slice(0, 4).join('-'));
+      }
+
+      for (const candidate of candidates) {
+        if (sitemapNormMap.has(candidate)) {
+          const slug = sitemapNormMap.get(candidate);
+          matches.push({
+            bc: { title: show.title, slug, url: `https://www.broadway.com/shows/${slug}/` },
+            show,
+            confidence: 'sitemap',
+          });
+          matchedIds.add(show.id);
+          sitemapMatched++;
+          break;
+        }
+      }
+    }
+    console.log(`Matched ${sitemapMatched} additional shows from sitemap`);
+  }
+
+  console.log(`Total: ${matches.length} shows to process\n`);
 
   // Apply filters
   let toProcess = matches;
   if (showFilter) {
     toProcess = matches.filter(m => m.show.id === showFilter);
+    // If show not found in matches, try constructing URL from title directly
+    if (toProcess.length === 0) {
+      const show = showsData.shows.find(s => s.id === showFilter || s.slug === showFilter);
+      if (show) {
+        const titleSlug = show.title.toLowerCase()
+          .replace(/['']/g, '')
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-|-$/g, '');
+        toProcess = [{
+          bc: { title: show.title, slug: titleSlug, url: `https://www.broadway.com/shows/${titleSlug}/` },
+          show,
+          confidence: 'constructed',
+        }];
+        console.log(`Show ${showFilter} not in listing/sitemap, trying constructed URL: /shows/${titleSlug}/`);
+      }
+    }
     console.log(`Filtered to show: ${showFilter} (${toProcess.length} matches)`);
   }
   if (showLimit) {
