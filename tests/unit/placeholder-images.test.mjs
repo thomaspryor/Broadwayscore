@@ -11,9 +11,12 @@ const SHOWS_DIR = path.join(__dirname, '../../public/images/shows');
 // Known "Coming Soon" placeholder file hashes (MD5)
 // Keep in sync with PLACEHOLDER_FILE_HASHES in fetch-show-images-auto.js
 const PLACEHOLDER_FILE_HASHES = new Set([
-  'b4d7d1bdb443e0a94e69ac8a5abd6f40', // poster.webp (19,118 bytes)
-  'ac3ea27f64c633474ad93fd826f614e7', // thumbnail.webp (11,664 bytes)
-  '4aed489bb69c5c49be3315e3f85b342f', // hero.webp (28,998 bytes)
+  'b4d7d1bdb443e0a94e69ac8a5abd6f40', // poster.webp (19,118 bytes) — variant 1
+  'ac3ea27f64c633474ad93fd826f614e7', // thumbnail.webp (11,664 bytes) — variant 1
+  '4aed489bb69c5c49be3315e3f85b342f', // hero.webp (28,998 bytes) — variant 1 (round-rect glow)
+  '52968e9f240e2db8d7523ac053d019fb', // hero.webp (28,808 bytes) — variant 2 (oval glow)
+  'da0408f33ffaff9c63baf108b53b1128', // hero.webp (25,372 bytes) — variant 3 (1440x580 landscape)
+  '9d1b34a4045d176b1856ab38a852d47b', // thumbnail.webp (32,372 bytes) — variant 2 (square format)
 ]);
 
 describe('placeholder image detection', () => {
