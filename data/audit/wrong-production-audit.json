@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-25T21:03:09.290Z",
+  "timestamp": "2026-03-25T21:14:14.648Z",
   "stats": {
-    "totalReviews": 32482,
-    "alreadyFlagged": 11133,
-    "dateGuardCatches": 140,
+    "totalReviews": 32489,
+    "alreadyFlagged": 11134,
+    "dateGuardCatches": 141,
     "directorMismatch": 955,
-    "tvFilmSignals": 3441,
-    "londonSignals": 1039,
+    "tvFilmSignals": 3449,
+    "londonSignals": 1043,
     "offBroadwaySignals": 1008,
     "yearMismatch": 71,
-    "noPublishDate": 6742
+    "noPublishDate": 6736
   },
   "findings": [
     {
@@ -2204,6 +2204,19 @@
       "score": 30,
       "publishDate": "April 18, 2014",
       "url": "https://www.hollywoodreporter.com/news/general-news/act-one-theater-review-697276/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "act-one-2014",
+      "file": "its-a-brave-writer-who-would-contrive-this-show--moss-hart.json",
+      "publishDate": "2014-04-18",
+      "url": "https://variety.com/2014/legit/reviews/broadway-review-act-one-starring-tony-shalhoub-1201159101/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -36071,6 +36084,20 @@
       ]
     },
     {
+      "showId": "of-mice-and-men-2014",
+      "file": "theatermania--jesse-green.json",
+      "score": 61,
+      "publishDate": "April 17, 2014",
+      "url": "https://www.theatermania.com/news/preview-james-franco-and-chris-odowd-in-the-live-broadcast-of-of-mice-and-men_70529/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"movie theater\""
+        }
+      ]
+    },
+    {
       "showId": "oh-hello-on-broadway-2016",
       "file": "guardian--alexis-soloski.json",
       "score": 81,
@@ -37985,6 +38012,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "outside-mullingar-2014",
+      "file": "newsday--linda-winer.json",
+      "score": 61,
+      "publishDate": "2014-01-23",
+      "url": "http://www.newsday.com/entertainment/theater/outside-mullingar-review-debra-messing-bryan-f-o-byrne-transcend-1.6856865",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -47998,6 +48039,39 @@
       ]
     },
     {
+      "showId": "teeth-n-smiles-west-end-2026",
+      "file": "times-uk--unknown.json",
+      "score": null,
+      "publishDate": "2026-03-19",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/phil-daniels-teeth-n-smiles-damon-albarn-p9qcrkhtv",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "teeth-n-smiles-west-end-2026",
+      "file": "variety--unknown.json",
+      "score": null,
+      "publishDate": "2026-03-25",
+      "url": "https://variety.com/gallery/celebrity-photos-red-carpet-march-2026/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"paramount\""
+        }
+      ]
+    },
+    {
       "showId": "that-championship-season-2011",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 38,
@@ -50297,6 +50371,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "the-country-house-2014",
+      "file": "newsday--linda-winer.json",
+      "score": 28,
+      "publishDate": null,
+      "url": "http://www.newsday.com/entertainment/theater/the-country-house-review-banter-in-the-berkshires-1.9455486",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -56050,6 +56138,20 @@
     },
     {
       "showId": "the-real-thing-2014",
+      "file": "amny--matt-windman.json",
+      "score": 38,
+      "publishDate": "2014-10-30",
+      "url": "http://www.amny.com/entertainment/real-thing-revival-a-real-disappointment-1.9565853",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "the-real-thing-2014",
       "file": "deadline--jeremy-gerard.json",
       "score": 25,
       "publishDate": null,
@@ -57929,6 +58031,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "this-is-our-youth-2014",
+      "file": "newsday--linda-winer.json",
+      "score": 78,
+      "publishDate": "2014-09-11",
+      "url": "http://www.newsday.com/entertainment/theater/this-is-our-youth-review-michael-cera-in-deep-slacker-comedy-1.9280363",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -62703,6 +62819,20 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 182d before show (March 14, 2008 vs 2008-09-12)"
+        }
+      ]
+    },
+    {
+      "showId": "a-mirrored-monet-west-end-2026",
+      "file": "whatsonstage--unknown.json",
+      "score": null,
+      "publishDate": "2026-03-25",
+      "url": "https://www.whatsonstage.com/news/a-mirrored-monet-musical-at-charing-cross-theatre-review_1716250/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -79598,6 +79728,39 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"barrow street\""
+        }
+      ]
+    },
+    {
+      "showId": "teeth-n-smiles-west-end-2026",
+      "file": "guardian--unknown.json",
+      "score": 63,
+      "publishDate": "2026-03-23",
+      "url": "https://www.theguardian.com/stage/2026/mar/23/self-esteem-david-hare-rock-romp-teeth-n-smiles-hippie",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "teeth-n-smiles-west-end-2026",
+      "file": "independent--unknown.json",
+      "score": 66,
+      "publishDate": "2025-09-03",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/born-with-teeth-ncuti-gatwa-wyndhams-review-b2819206.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 191d before show (2025-09-03 vs 2026-03-13)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
