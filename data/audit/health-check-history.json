@@ -1,6 +1,6 @@
 {
-  "lastRun": "2026-03-24T07:52:27.205Z",
-  "consecutiveErrorDays": 11,
+  "lastRun": "2026-03-25T07:50:51.204Z",
+  "consecutiveErrorDays": 12,
   "results": [
     {
       "name": "Freshness: reviews.json",
@@ -9,23 +9,23 @@
     },
     {
       "name": "Freshness: shows.json",
-      "status": "pass",
-      "message": "23h old"
+      "status": "warn",
+      "message": "1d old (warn threshold: 1d)"
     },
     {
       "name": "Freshness: grosses.json",
       "status": "pass",
-      "message": "6d old"
+      "message": "16h old"
     },
     {
       "name": "Freshness: audience-buzz.json",
       "status": "pass",
-      "message": "1d old"
+      "message": "8h old"
     },
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "6d old"
+      "message": "7d old"
     },
     {
       "name": "Freshness: critic-consensus.json",
@@ -35,12 +35,12 @@
     {
       "name": "Freshness: lottery-rush.json",
       "status": "pass",
-      "message": "15h old"
+      "message": "2d old"
     },
     {
       "name": "Push verify: shows.json",
-      "status": "pass",
-      "message": "Data synced (23h old, workflow 23h ago)"
+      "status": "error",
+      "message": "Data 1d old but Update Show Status succeeded 1h ago — push may have failed"
     },
     {
       "name": "Sync: review-texts vs reviews.json",
@@ -54,8 +54,8 @@
     },
     {
       "name": "Sync: baseline drift",
-      "status": "pass",
-      "message": "2400 shows, 151 open, 16105 reviews (all at or above baseline)"
+      "status": "warn",
+      "message": "Reviews dropped: 16096 vs baseline 16105"
     },
     {
       "name": "Pipeline: rebuild-reviews",
@@ -65,32 +65,32 @@
     {
       "name": "Pipeline: update-show-status",
       "status": "pass",
-      "message": "Last success 23h ago"
+      "message": "Last success 1h ago"
     },
     {
       "name": "Pipeline: collect-review-texts",
       "status": "pass",
-      "message": "Last success 2h ago"
+      "message": "Last success 4h ago"
     },
     {
       "name": "Pipeline: weekly-grosses",
       "status": "warn",
-      "message": "Last success 32d ago (threshold: 10d)"
+      "message": "Last success 33d ago (threshold: 10d)"
     },
     {
       "name": "Pipeline: weekly-integrity",
-      "status": "pass",
-      "message": "Last success 9d ago"
+      "status": "warn",
+      "message": "Last success 10d ago (threshold: 10d)"
     },
     {
       "name": "Pipeline: test",
       "status": "warn",
-      "message": "Last success 5d ago (threshold: 2d)"
+      "message": "Last success 6d ago (threshold: 2d)"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "95.2% scored (16105/16924)"
+      "message": "95.2% scored (16096/16909)"
     },
     {
       "name": "Cookies: expiration",
@@ -100,7 +100,7 @@
     {
       "name": "CWV: performance",
       "status": "pass",
-      "message": "All metrics within thresholds (2d ago)"
+      "message": "All metrics within thresholds (3d ago)"
     },
     {
       "name": "SEO: health",
@@ -110,7 +110,7 @@
     {
       "name": "Cron: Update Show Status",
       "status": "pass",
-      "message": "23h ago, success"
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: Rebuild Reviews",
@@ -120,12 +120,12 @@
     {
       "name": "Cron: Collect Review Texts",
       "status": "pass",
-      "message": "2h ago, success"
+      "message": "3h ago, "
     },
     {
       "name": "Cron: LLM Ensemble Score",
       "status": "pass",
-      "message": "0h ago, "
+      "message": "0h ago, success"
     },
     {
       "name": "Cron: Test Suite",
@@ -140,12 +140,12 @@
     {
       "name": "Secrets: health",
       "status": "error",
-      "message": "Last check FAILED (19h ago)"
+      "message": "Last check FAILED (2d ago)"
     },
     {
       "name": "Credits: ScrapingBee",
-      "status": "error",
-      "message": "0k credits left (0%) · EXHAUSTED · renews Apr 17"
+      "status": "pass",
+      "message": "973k credits left (41%) · renews Apr 25 (burn rate unavailable — <5 days into cycle)"
     }
   ],
   "lastCleanStreak": 0
