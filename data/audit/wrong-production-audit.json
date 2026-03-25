@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-25T03:05:39.900Z",
+  "timestamp": "2026-03-25T03:15:46.987Z",
   "stats": {
     "totalReviews": 32470,
-    "alreadyFlagged": 11066,
+    "alreadyFlagged": 11065,
     "dateGuardCatches": 139,
     "directorMismatch": 951,
-    "tvFilmSignals": 3430,
-    "londonSignals": 1034,
+    "tvFilmSignals": 3434,
+    "londonSignals": 1036,
     "offBroadwaySignals": 1008,
     "yearMismatch": 71,
     "noPublishDate": 6809
@@ -8183,6 +8183,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "bug-2026",
+      "file": "playbill--logan-culwell-block.json",
+      "publishDate": "2026-01-08",
+      "url": "https://playbill.com/article/did-reviews-fall-for-tracy-letts-bug-on-broadway",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -18714,7 +18727,7 @@
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -55509,6 +55522,44 @@
       ]
     },
     {
+      "showId": "the-playboy-of-the-western-world-west-end-2025",
+      "file": "standard--nick-curtis.json",
+      "score": 63,
+      "publishDate": "2025-12-12",
+      "url": "https://www.standard.co.uk/culture/theatre/the-playboy-of-the-western-world-national-theatre-review-nicola-coughlan-b1262173.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-playboy-of-the-western-world-west-end-2025",
+      "file": "whatsonstage--alun-hood.json",
+      "score": 69,
+      "publishDate": "2025-12-12",
+      "url": "https://www.whatsonstage.com/news/the-playboy-of-the-western-world-at-the-national-theatre-review_1706313/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
       "showId": "the-present-2017",
       "file": "telegraph--diane-snyder.json",
       "score": 82,
@@ -56685,6 +56736,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "the-spy-who-came-in-from-the-cold-west-end-2025",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 78,
+      "publishDate": "2025-11-27",
+      "url": "https://www.whatsonstage.com/news/the-spy-who-came-in-from-the-cold-west-end-review_1704481/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
