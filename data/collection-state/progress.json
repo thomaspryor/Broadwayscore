@@ -166,7 +166,11 @@
     "king-charles-iii-2015/boston-herald--marilyn-stasio.json",
     "the-gin-game-2015/timeout--adam-feldman.json",
     "the-gin-game-2015/amny--matt-windman.json",
-    "fool-for-love-2015/theatermania--adam-feldman.json"
+    "fool-for-love-2015/theatermania--adam-feldman.json",
+    "fool-for-love-2015/wsj--terry-teachout.json",
+    "old-times-2015/timeout--david-cote.json",
+    "spring-awakening-2015/hollywood-reporter--david-rooney.json",
+    "spring-awakening-2015/njcom--christopher-kelly.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -454,7 +458,13 @@
     "sylvia-2015/slash-film--kevin-filipski.json",
     "sylvia-2015/zeal-nyc--jil-picariello.json",
     "the-gin-game-2015/northjerseycom--robert-feldberg.json",
-    "fool-for-love-2015/zeal-nyc--jil-picariello.json"
+    "fool-for-love-2015/zeal-nyc--jil-picariello.json",
+    "old-times-2015/ap--mark-kennedy.json",
+    "old-times-2015/dailybeast--tim-teeman.json",
+    "old-times-2015/wsj--terry-teachout.json",
+    "amazing-grace-2015/talkinbroadway--matthew-murray.json",
+    "the-visit-2015/washpost--peter-marks.json",
+    "something-rotten-2015/northjerseycom--robert-feldberg.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -527,7 +537,8 @@
       "allegiance-2015/wnyc--unknown.json",
       "king-charles-iii-2015/theatermania--adam-feldman.json",
       "king-charles-iii-2015/boston-herald--marilyn-stasio.json",
-      "fool-for-love-2015/theatermania--adam-feldman.json"
+      "fool-for-love-2015/theatermania--adam-feldman.json",
+      "old-times-2015/timeout--david-cote.json"
     ],
     "amp": [],
     "browserbase": [
@@ -543,7 +554,9 @@
       "data/review-texts/king-charles-iii-2015/amny--matt-windman.json",
       "king-charles-iii-2015/amny--matt-windman.json",
       "data/review-texts/the-gin-game-2015/amny--matt-windman.json",
-      "the-gin-game-2015/amny--matt-windman.json"
+      "the-gin-game-2015/amny--matt-windman.json",
+      "data/review-texts/spring-awakening-2015/hollywood-reporter--david-rooney.json",
+      "spring-awakening-2015/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -700,7 +713,11 @@
       "data/review-texts/king-charles-iii-2015/talkinbroadway--matthew-murray.json",
       "data/review-texts/sylvia-2015/film-festival-traveler--kevin-filipski.json",
       "data/review-texts/sylvia-2015/slash-film--kevin-filipski.json",
-      "data/review-texts/the-gin-game-2015/northjerseycom--robert-feldberg.json"
+      "data/review-texts/the-gin-game-2015/northjerseycom--robert-feldberg.json",
+      "data/review-texts/old-times-2015/dailybeast--tim-teeman.json",
+      "data/review-texts/amazing-grace-2015/talkinbroadway--matthew-murray.json",
+      "data/review-texts/the-visit-2015/washpost--peter-marks.json",
+      "data/review-texts/something-rotten-2015/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
       "bigfoot-off-broadway-2026/playbill--unknown.json",
@@ -735,11 +752,13 @@
       "fully-committed-2016/timeout--adam-feldman.json",
       "fully-committed-2016/wsj--terry-teachout.json",
       "bright-star-2016/thestage--jonathan-mandell.json",
-      "hughie-2016/thestage--mark-shenton.json"
+      "hughie-2016/thestage--mark-shenton.json",
+      "fool-for-love-2015/wsj--terry-teachout.json",
+      "spring-awakening-2015/njcom--christopher-kelly.json"
     ]
   },
   "startTime": "2026-03-25T09:08:12.319Z",
-  "lastProcessed": "fool-for-love-2015/theatermania--adam-feldman.json",
+  "lastProcessed": "something-rotten-2015/northjerseycom--robert-feldberg.json",
   "log": [
     {
       "t": "2026-03-25T09:10:15.724Z",
@@ -868,6 +887,67 @@
       "t": "2026-03-25T19:22:22.360Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-25T19:23:14.007Z",
+      "event": "bb-session",
+      "session": "43ef3a10",
+      "url": "http://www.wsj.com/articles/fool-for-love-review-time-bombs-in-a-cheap-motel-144"
+    },
+    {
+      "t": "2026-03-25T19:23:15.038Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-25T19:24:38.579Z",
+      "event": "bb-session",
+      "session": "94c7ec02",
+      "url": "https://www.thedailybeast.com/old-times-on-broadway-clive-owen-kelly-reilly-and-"
+    },
+    {
+      "t": "2026-03-25T19:24:59.847Z",
+      "event": "bb-session",
+      "session": "a7b5d2bf",
+      "url": "http://www.wsj.com/article_email/old-times-review-made-in-england-assembled-on-b"
+    },
+    {
+      "t": "2026-03-25T19:25:00.844Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-25T19:26:10.732Z",
+      "event": "bb-session",
+      "session": "bcc24a62",
+      "url": "https://www.hollywoodreporter.com/news/general-news/deaf-wests-spring-awakening-"
+    },
+    {
+      "t": "2026-03-25T19:26:11.845Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-25T19:28:51.142Z",
+      "event": "bb-session",
+      "session": "cbf00e06",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/the-visit-on-broadway"
+    },
+    {
+      "t": "2026-03-25T19:28:52.403Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-25T19:29:34.779Z",
+      "event": "bb-session",
+      "session": "828f9a04",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/shakespeare-and-the-f"
+    },
+    {
+      "t": "2026-03-25T19:29:35.788Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
