@@ -27,6 +27,8 @@ jobs:
             "collect-review-texts.yml|36|Collect Review Texts"
             "llm-ensemble-score.yml|48|LLM Ensemble Score"
             "test.yml|48|Test Suite"
+            "update-commercial.yml|192|Update Commercial Data"
+            "commercial-weekly.yml|192|Commercial Weekly Orchestrator"
           )
 
           FAILURES=""

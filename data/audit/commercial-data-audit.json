@@ -1,102 +1,70 @@
 {
   "_meta": {
     "description": "Commercial data audit report",
-    "generatedAt": "2026-02-15T15:32:42.287Z",
+    "generatedAt": "2026-03-25T14:29:41.521Z",
     "scriptVersion": "1.0.0"
   },
   "summary": {
-    "totalEntries": 120,
-    "totalShowsInShowsJson": 727,
+    "totalEntries": 131,
+    "totalShowsInShowsJson": 2408,
     "matchStats": {
-      "matchedBySlug": 114,
-      "matchedById": 5,
-      "orphaned": 1
+      "matchedBySlug": 131,
+      "matchedById": 0,
+      "orphaned": 0
     },
     "designationDistribution": {
       "Miracle": 9,
-      "Windfall": 18,
+      "Windfall": 19,
       "Trickle": 3,
-      "Fizzle": 19,
-      "Flop": 33,
+      "Fizzle": 22,
+      "Flop": 34,
       "Easy Winner": 15,
-      "TBD": 13,
-      "Nonprofit": 8,
+      "TBD": 16,
+      "Nonprofit": 11,
       "Tour Stop": 2
     },
     "recoupmentStats": {
       "recouped": 45,
-      "notRecouped": 65,
-      "nullOrMissing": 10
+      "notRecouped": 75,
+      "nullOrMissing": 11
     },
     "dataCompleteness": {
-      "hasCapitalization": 98,
-      "hasWeeklyRunningCost": 80,
-      "hasCostMethodology": 103,
-      "hasSources": 67,
+      "hasCapitalization": 100,
+      "hasWeeklyRunningCost": 81,
+      "hasCostMethodology": 105,
+      "hasSources": 69,
       "hasDeepResearch": 92
     },
     "openShowCoverage": {
-      "totalOpenPreviewsShows": 44,
-      "withCommercialData": 30,
-      "withoutCommercialData": 14,
-      "coveragePct": 68
+      "totalOpenPreviewsShows": 207,
+      "withCommercialData": 34,
+      "withoutCommercialData": 173,
+      "coveragePct": 16
     },
     "issuesSummary": {
-      "total": 100,
+      "total": 238,
       "bySeverity": {
         "high": 1,
-        "medium": 6,
-        "low": 93
+        "medium": 0,
+        "low": 237
       },
       "byType": {
-        "orphan-entry": 1,
-        "id-mismatch": 5,
+        "designation-logic": 1,
         "source-quality": 46,
+        "financial-sanity": 1,
         "methodology": 8,
-        "closed-show-tbd": 1,
-        "nonprofit-classification": 7,
+        "nonprofit-classification": 8,
         "recoupment-pct": 1,
-        "coverage-gap": 14,
-        "deprecated-field": 17
+        "coverage-gap": 173
       }
     }
   },
   "issues": [
     {
-      "type": "orphan-entry",
+      "type": "designation-logic",
       "severity": "high",
-      "showId": "mamma-mia-2001",
-      "detail": "Commercial key \"mamma-mia-2001\" not found in shows.json (neither as slug nor ID). Title in commercial: \"Miracle\"."
-    },
-    {
-      "type": "id-mismatch",
-      "severity": "medium",
-      "showId": "here-lies-love-2023",
-      "detail": "Commercial key \"here-lies-love-2023\" matches show ID but not slug. Show slug is \"here-lies-love\". Consider renaming the key to match the slug."
-    },
-    {
-      "type": "id-mismatch",
-      "severity": "medium",
-      "showId": "lempicka-2024",
-      "detail": "Commercial key \"lempicka-2024\" matches show ID but not slug. Show slug is \"lempicka\". Consider renaming the key to match the slug."
-    },
-    {
-      "type": "id-mismatch",
-      "severity": "medium",
-      "showId": "once-upon-a-one-more-time-2023",
-      "detail": "Commercial key \"once-upon-a-one-more-time-2023\" matches show ID but not slug. Show slug is \"once-upon-a-one-more-time\". Consider renaming the key to match the slug."
-    },
-    {
-      "type": "id-mismatch",
-      "severity": "medium",
-      "showId": "merrily-we-roll-along-2023",
-      "detail": "Commercial key \"merrily-we-roll-along-2023\" matches show ID but not slug. Show slug is \"merrily-we-roll-along\". Consider renaming the key to match the slug."
-    },
-    {
-      "type": "id-mismatch",
-      "severity": "medium",
-      "showId": "just-for-us-2023",
-      "detail": "Commercial key \"just-for-us-2023\" matches show ID but not slug. Show slug is \"just-for-us\". Consider renaming the key to match the slug."
+      "showId": "just-in-time",
+      "detail": "recouped=false but designation is \"Windfall\". Windfall implies the show recouped its investment."
     },
     {
       "type": "source-quality",
@@ -375,6 +343,12 @@
       "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
     },
     {
+      "type": "financial-sanity",
+      "severity": "low",
+      "showId": "call-me-izzy",
+      "detail": "weeklyRunningCostRange is not an object."
+    },
+    {
       "type": "methodology",
       "severity": "low",
       "showId": "hells-kitchen",
@@ -423,12 +397,6 @@
       "detail": "Has deepResearch verification but costMethodology is still \"reddit-standard\". Consider upgrading to \"deep-research\"."
     },
     {
-      "type": "closed-show-tbd",
-      "severity": "medium",
-      "showId": "the-wiz",
-      "detail": "Show is closed (closed 546 days ago on 2024-08-18) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
-    },
-    {
       "type": "nonprofit-classification",
       "severity": "low",
       "showId": "oedipus",
@@ -467,6 +435,12 @@
     {
       "type": "nonprofit-classification",
       "severity": "low",
+      "showId": "call-me-izzy",
+      "detail": "Show is at \"Studio 54\" (Roundabout Theatre venue) but designation is \"Fizzle\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
       "showId": "liberation",
       "detail": "Designated \"Nonprofit\" but venue \"James Earl Jones Theatre\" is not a recognized nonprofit venue. Verify this is correct."
     },
@@ -479,68 +453,8 @@
     {
       "type": "coverage-gap",
       "severity": "low",
-      "showId": "every-brilliant-thing",
-      "detail": "Open/previews show \"Every Brilliant Thing\" at Hudson Theatre has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
-      "showId": "death-of-a-salesman",
-      "detail": "Open/previews show \"Death of a Salesman\" at Winter Garden Theatre has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
-      "showId": "beaches",
-      "detail": "Open/previews show \"Beaches, A New Musical\" at Majestic Theatre has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
-      "showId": "the-balusters",
-      "detail": "Open/previews show \"The Balusters\" at Samuel J. Friedman Theatre has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
-      "showId": "becky-shaw",
-      "detail": "Open/previews show \"Becky Shaw\" at Helen Hayes Theater has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
-      "showId": "dog-day-afternoon",
-      "detail": "Open/previews show \"Dog Day Afternoon\" at August Wilson Theatre has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
-      "showId": "fallen-angels",
-      "detail": "Open/previews show \"Fallen Angels\" at Todd Haimes Theatre has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
-      "showId": "the-fear-of-13",
-      "detail": "Open/previews show \"The Fear of 13\" at James Earl Jones Theatre has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
-      "showId": "giant",
-      "detail": "Open/previews show \"Giant\" at Music Box Theatre has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
       "showId": "joe-turners-come-and-gone",
       "detail": "Open/previews show \"Joe Turner's Come and Gone\" at Ethel Barrymore Theatre has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
-      "showId": "the-lost-boys",
-      "detail": "Open/previews show \"The Lost Boys\" at Palace Theatre has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -551,8 +465,20 @@
     {
       "type": "coverage-gap",
       "severity": "low",
+      "showId": "beaches",
+      "detail": "Open/previews show \"Beaches, A New Musical\" at Majestic Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
       "showId": "schmigadoon",
       "detail": "Open/previews show \"Schmigadoon!\" at Nederlander Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-fear-of-13",
+      "detail": "Open/previews show \"The Fear of 13\" at James Earl Jones Theatre has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -561,106 +487,1006 @@
       "detail": "Open/previews show \"Titanique\" at St. James Theatre has no commercial data entry."
     },
     {
-      "type": "deprecated-field",
+      "type": "coverage-gap",
       "severity": "low",
-      "showId": "hamilton",
-      "detail": "Has deprecated \"recoupedWeeks\" field (value: 10). This is now calculated dynamically from openingDate + recoupedDate."
+      "showId": "becky-shaw",
+      "detail": "Open/previews show \"Becky Shaw\" at Helen Hayes Theater has no commercial data entry."
     },
     {
-      "type": "deprecated-field",
+      "type": "coverage-gap",
       "severity": "low",
-      "showId": "wicked",
-      "detail": "Has deprecated \"recoupedWeeks\" field (value: 113). This is now calculated dynamically from openingDate + recoupedDate."
+      "showId": "the-receptionist-off-broadway",
+      "detail": "Open/previews show \"The Receptionist\" at The Irene Diamond Stage at the Pershing Square Signature Center has no commercial data entry."
     },
     {
-      "type": "deprecated-field",
+      "type": "coverage-gap",
       "severity": "low",
-      "showId": "chicago",
-      "detail": "Has deprecated \"recoupedWeeks\" field (value: 19). This is now calculated dynamically from openingDate + recoupedDate."
+      "showId": "encores-la-cage-aux-folles-off-broadway",
+      "detail": "Open/previews show \"Encores! La Cage Aux Folles\" at New York City Center has no commercial data entry."
     },
     {
-      "type": "deprecated-field",
+      "type": "coverage-gap",
       "severity": "low",
-      "showId": "book-of-mormon",
-      "detail": "Has deprecated \"recoupedWeeks\" field (value: 36). This is now calculated dynamically from openingDate + recoupedDate."
+      "showId": "mexodus-off-broadway",
+      "detail": "Open/previews show \"Mexodus\" at Daryl Roth Theatre has no commercial data entry."
     },
     {
-      "type": "deprecated-field",
+      "type": "coverage-gap",
       "severity": "low",
-      "showId": "hadestown",
-      "detail": "Has deprecated \"recoupedWeeks\" field (value: 30). This is now calculated dynamically from openingDate + recoupedDate."
+      "showId": "singfeld-a-musical-about-nothing-off-broadway",
+      "detail": "Open/previews show \"Singfeld! A Musical About Nothing\" at Jerry Orbach Theatre has no commercial data entry."
     },
     {
-      "type": "deprecated-field",
+      "type": "coverage-gap",
       "severity": "low",
-      "showId": "mj",
-      "detail": "Has deprecated \"recoupedWeeks\" field (value: 68). This is now calculated dynamically from openingDate + recoupedDate."
+      "showId": "ice-queen-off-broadway",
+      "detail": "Open/previews show \"Ice Queen\" at 92NY Buttenwieser Hall has no commercial data entry."
     },
     {
-      "type": "deprecated-field",
+      "type": "coverage-gap",
       "severity": "low",
-      "showId": "moulin-rouge",
-      "detail": "Has deprecated \"recoupedWeeks\" field (value: 173). This is now calculated dynamically from openingDate + recoupedDate."
+      "showId": "titus-andronicus-off-broadway",
+      "detail": "Open/previews show \"Titus Andronicus\" at Pershing Square Signature Center has no commercial data entry."
     },
     {
-      "type": "deprecated-field",
+      "type": "coverage-gap",
       "severity": "low",
-      "showId": "and-juliet",
-      "detail": "Has deprecated \"recoupedWeeks\" field (value: 83). This is now calculated dynamically from openingDate + recoupedDate."
+      "showId": "the-unknown-off-broadway",
+      "detail": "Open/previews show \"The Unknown\" at Studio Seaview has no commercial data entry."
     },
     {
-      "type": "deprecated-field",
+      "type": "coverage-gap",
       "severity": "low",
-      "showId": "stereophonic",
-      "detail": "Has deprecated \"recoupedWeeks\" field (value: 45). This is now calculated dynamically from openingDate + recoupedDate."
+      "showId": "kenrex-off-broadway",
+      "detail": "Open/previews show \"KENREX\" at Lucille Lortel Theatre has no commercial data entry."
     },
     {
-      "type": "deprecated-field",
+      "type": "coverage-gap",
       "severity": "low",
-      "showId": "oh-mary",
-      "detail": "Has deprecated \"recoupedWeeks\" field (value: 19). This is now calculated dynamically from openingDate + recoupedDate."
+      "showId": "pied-a-terre-off-broadway",
+      "detail": "Open/previews show \"Pied à Terre\" at The Theater Center has no commercial data entry."
     },
     {
-      "type": "deprecated-field",
+      "type": "coverage-gap",
       "severity": "low",
-      "showId": "the-outsiders",
-      "detail": "Has deprecated \"recoupedWeeks\" field (value: 89). This is now calculated dynamically from openingDate + recoupedDate."
+      "showId": "spread-off-broadway",
+      "detail": "Open/previews show \"Spread\" at INTAR Theatre has no commercial data entry."
     },
     {
-      "type": "deprecated-field",
+      "type": "coverage-gap",
       "severity": "low",
-      "showId": "aladdin",
-      "detail": "Has deprecated \"recoupedWeeks\" field (value: 38). This is now calculated dynamically from openingDate + recoupedDate."
+      "showId": "betty-buckley-random-notes-off-broadway",
+      "detail": "Open/previews show \"Betty Buckley: Random Notes\" at Joe's Pub has no commercial data entry."
     },
     {
-      "type": "deprecated-field",
+      "type": "coverage-gap",
       "severity": "low",
-      "showId": "mamma-mia-2001",
-      "detail": "Has deprecated \"recoupedWeeks\" field (value: 28). This is now calculated dynamically from openingDate + recoupedDate."
+      "showId": "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway",
+      "detail": "Open/previews show \"Entangled: 12 Scenes in a Circle K off the I-40 in New Mexico\" at HERE Arts Center has no commercial data entry."
     },
     {
-      "type": "deprecated-field",
+      "type": "coverage-gap",
       "severity": "low",
-      "showId": "art-2025",
-      "detail": "Has deprecated \"recoupedWeeks\" field (value: 13). This is now calculated dynamically from openingDate + recoupedDate."
+      "showId": "friends-the-musical-parody-off-broadway",
+      "detail": "Open/previews show \"Friends The Musical Parody\" at The Theater Center has no commercial data entry."
     },
     {
-      "type": "deprecated-field",
+      "type": "coverage-gap",
       "severity": "low",
-      "showId": "othello-2025",
-      "detail": "Has deprecated \"recoupedWeeks\" field (value: 9). This is now calculated dynamically from openingDate + recoupedDate."
+      "showId": "little-shop-of-horrors-off-broadway",
+      "detail": "Open/previews show \"Little Shop of Horrors\" at Westside Theatre has no commercial data entry."
     },
     {
-      "type": "deprecated-field",
+      "type": "coverage-gap",
       "severity": "low",
-      "showId": "glengarry-glen-ross-2025",
-      "detail": "Has deprecated \"recoupedWeeks\" field (value: 9). This is now calculated dynamically from openingDate + recoupedDate."
+      "showId": "the-infinite-wrench-off-broadway",
+      "detail": "Open/previews show \"The Infinite Wrench\" at The Second City Blackbox has no commercial data entry."
     },
     {
-      "type": "deprecated-field",
+      "type": "coverage-gap",
       "severity": "low",
-      "showId": "waiting-for-godot-2025",
-      "detail": "Has deprecated \"recoupedWeeks\" field (value: 8). This is now calculated dynamically from openingDate + recoupedDate."
+      "showId": "night-side-songs-off-broadway",
+      "detail": "Open/previews show \"Night Side Songs\" at Claire Tow Theater has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "heathers-the-musical-off-broadway",
+      "detail": "Open/previews show \"Heathers The Musical\" at New World Stages has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "im-almost-there-off-broadway",
+      "detail": "Open/previews show \"I'm Almost There\" at BAM Fisher (Fishman Space) has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "mother-russia-off-broadway",
+      "detail": "Open/previews show \"Mother Russia\" at The Pershing Square Signature Center has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "los-soles-truncos-off-broadway",
+      "detail": "Open/previews show \"LOS SOLES TRUNCOS\" at Repertorio Español / Spanish Theatre Repertory has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "public-charge-off-broadway",
+      "detail": "Open/previews show \"Public Charge\" at The Public Theater has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "encores-the-wild-party-off-broadway",
+      "detail": "Open/previews show \"Encores! The Wild Party\" at New York City Center has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "dirty-books-off-broadway",
+      "detail": "Open/previews show \"Dirty Books\" at Bated Breath Theater has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-adding-machine-off-broadway",
+      "detail": "Open/previews show \"The Adding Machine\" at Theatre at St. Clement's has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "body-count-off-broadway",
+      "detail": "Open/previews show \"BODY COUNT\" at SoHo Playhouse has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "bloodlove-off-broadway",
+      "detail": "Open/previews show \"Blood/Love\" at Theater 555 has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "silver-manhattan-off-broadway",
+      "detail": "Open/previews show \"Silver Manhattan\" at Bowery Ballroom has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "music-city-off-broadway",
+      "detail": "Open/previews show \"Music City\" at Music City has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "trash-off-broadway",
+      "detail": "Open/previews show \"Trash\" at Perelman Performing Arts Center (PAC NYC) has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "antigone-this-play-i-read-in-high-school-off-broadway",
+      "detail": "Open/previews show \"Antigone (This Play I Read in High School)\" at The Public Theater has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "chinese-republicans-off-broadway",
+      "detail": "Open/previews show \"Chinese Republicans\" at The Laura Pels Theatre at the Harold and Miriam Steinberg Center for Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-amazing-sex-life-of-rabbits-off-broadway",
+      "detail": "Open/previews show \"The Amazing Sex Life of Rabbits\" at SoHo Playhouse has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "spare-parts-off-broadway",
+      "detail": "Open/previews show \"Spare Parts\" at Theatre Row - Theatre Three has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "la-llamada-off-broadway",
+      "detail": "Open/previews show \"La Llamada\" at Repertorio Español / Spanish Theatre Repertory has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "pen-pals-off-broadway",
+      "detail": "Open/previews show \"Pen Pals\" at DR2 Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "no-singing-in-the-navy-off-broadway",
+      "detail": "Open/previews show \"No Singing in the Navy\" at Playwrights Horizons has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "jesa-off-broadway",
+      "detail": "Open/previews show \"Jesa\" at The Public Theater has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-25th-annual-putnam-county-spelling-bee-off-broadway",
+      "detail": "Open/previews show \"The 25th Annual Putnam County Spelling Bee\" at New World Stages has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "drunk-romeo-and-juliet-off-broadway",
+      "detail": "Open/previews show \"Drunk Romeo & Juliet\" at The Ruby Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-office-a-musical-parody-off-broadway",
+      "detail": "Open/previews show \"The Office! A Musical Parody\" at The Theater Center has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "perfect-crime-off-broadway",
+      "detail": "Open/previews show \"Perfect Crime\" at The Theater Center has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "masquerade-off-broadway",
+      "detail": "Open/previews show \"Masquerade\" at Masquerade NYC has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "innocence-off-broadway",
+      "detail": "Open/previews show \"Innocence\" at Metropolitan Opera House has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "girl-interrupted-off-broadway",
+      "detail": "Open/previews show \"Girl, Interrupted\" at The Public Theater has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "cold-war-choir-practice-off-broadway",
+      "detail": "Open/previews show \"Cold War Choir Practice\" at MCC Theater – Newman Mills Theater has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "11-to-midnight-off-broadway",
+      "detail": "Open/previews show \"11 to Midnight\" at Orpheum Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "what-we-did-before-our-moth-days-off-broadway",
+      "detail": "Open/previews show \"What We Did Before Our Moth Days\" at Greenwich House Theater  has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "hamlet-off-broadway",
+      "detail": "Open/previews show \"Hamlet\" at BAM Harvey Theater has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "seagull-true-story-off-broadway",
+      "detail": "Open/previews show \"Seagull: True Story\" at The Public Theater – LuEsther Hall has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "scorched-earth-off-broadway",
+      "detail": "Open/previews show \"Scorched Earth\" at St. Ann's Warehouse  has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "milo-rau-and-edouard-louis-the-interrogation-off-broadway",
+      "detail": "Open/previews show \"Milo Rau & Édouard Louis: The Interrogation\" at NYU Skirball has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "zack-off-broadway",
+      "detail": "Open/previews show \"ZACK\" at Theatre Row – Theater Four has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "calf-scramble-off-broadway",
+      "detail": "Open/previews show \"Calf Scramble\" at 59E59 Theaters Theater A has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "lost-in-del-valle-off-broadway",
+      "detail": "Open/previews show \"Lost in Del Valle\" at SoHo Playhouse has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-listening-off-broadway",
+      "detail": "Open/previews show \"THE LISTENING\" at East Village Basement has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "how-my-grandparents-fell-in-love-a-musical-off-broadway",
+      "detail": "Open/previews show \"How My Grandparents Fell in Love, A Musical\" at 59E59 Theaters Theater B has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "maltby-and-shires-about-time-off-broadway",
+      "detail": "Open/previews show \"Maltby & Shire's ABOUT TIME\" at The Marjorie S. Deane Little Theater has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway",
+      "detail": "Open/previews show \"La Breve y Maravillosa Vida de Oscar Wao\" at Repertorio Español / Spanish Theatre Repertory has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-little-mermaid-the-musical-off-broadway",
+      "detail": "Open/previews show \"The Little Mermaid the Musical\" at The Players Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "la-ternura-off-broadway",
+      "detail": "Open/previews show \"LA TERNURA\" at Repertorio Español / Spanish Theatre Repertory has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "bigfoot-off-broadway",
+      "detail": "Open/previews show \"BIGFOOT!\" at New York City Center – Stage I has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "messy-millie-off-broadway",
+      "detail": "Open/previews show \"Messy Millie\" at 92NY Buttenwieser Hall has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "an-ark-off-broadway",
+      "detail": "Open/previews show \"An Ark\" at The Griffin Theater at The Shed has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "youre-a-good-man-charlie-brown-off-broadway",
+      "detail": "Open/previews show \"You're A Good Man, Charlie Brown\" at 92NY Buttenwieser Hall has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "data-off-broadway",
+      "detail": "Open/previews show \"Data\" at Lucille Lortel Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "touch-off-broadway",
+      "detail": "Open/previews show \"Touch\" at East Village Basement has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "heartbreak-hotel-off-broadway",
+      "detail": "Open/previews show \"Heartbreak Hotel\" at DR2 Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "drunk-shakespeare-off-broadway",
+      "detail": "Open/previews show \"Drunk Shakespeare\" at The Ruby Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "rheology-off-broadway",
+      "detail": "Open/previews show \"Rheology\" at Playwrights Horizons has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "jerome-off-broadway",
+      "detail": "Open/previews show \"Jerome\" at Playwrights Horizons has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "el-ultimo-sueno-de-frida-y-diego-off-broadway",
+      "detail": "Open/previews show \"El Último Sueño de Frida y Diego\" at Metropolitan Opera House has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-saviors-off-broadway",
+      "detail": "Open/previews show \"The Saviors\" at Atlantic Stage 2 has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "you-got-older-off-broadway",
+      "detail": "Open/previews show \"You Got Older\" at Cherry Lane Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "burnout-paradise-off-broadway",
+      "detail": "Open/previews show \"Burnout Paradise\" at Astor Place Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "birthright-off-broadway",
+      "detail": "Open/previews show \"Birthright\" at The Newman Mills Theatre at the Robert W. Wilson MCC Theatre Space has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "my-joy-is-heavy-off-broadway",
+      "detail": "Open/previews show \"My Joy Is Heavy\" at New York Theatre Workshop has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "age-is-a-feeling-off-broadway",
+      "detail": "Open/previews show \"Age Is a Feeling\" at Vineyard Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-whoopi-monologues-off-broadway",
+      "detail": "Open/previews show \"The Whoopi Monologues\" at Lincoln Center Theater - Mitzi E. Newhouse Theater has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "bughouse-off-broadway",
+      "detail": "Open/previews show \"Bughouse\" at Vineyard Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "tru-off-broadway",
+      "detail": "Open/previews show \"TRU\" at House of the Redeemer has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "giulia-the-poison-queen-of-palermo-off-broadway",
+      "detail": "Open/previews show \"Giulia: The Poison Queen of Palermo\" at Perelman Performing Arts Center (PAC NYC) has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "hamilton-west-end",
+      "detail": "Open/previews show \"Hamilton\" at Victoria Palace Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-play-that-goes-wrong-west-end",
+      "detail": "Open/previews show \"The Play That Goes Wrong\" at Duchess Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "magic-mike-live-west-end",
+      "detail": "Open/previews show \"Magic Mike Live\" at London Hippodrome (Over 18s Only) has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-devil-wears-prada-west-end",
+      "detail": "Open/previews show \"The Devil Wears Prada\" at Dominion Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "my-neighbour-totoro-west-end",
+      "detail": "Open/previews show \"My Neighbour Totoro\" at Gillian Lynne Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "kinky-boots-the-musical-west-end",
+      "detail": "Open/previews show \"Kinky Boots The Musical\" at London Coliseum has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "paddington-the-musical-west-end",
+      "detail": "Open/previews show \"Paddington The Musical\" at Savoy Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "marie-and-rosetta-west-end",
+      "detail": "Open/previews show \"Marie & Rosetta\" at Soho Place has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "avenue-q-west-end",
+      "detail": "Open/previews show \"Avenue Q\" at Shaftesbury Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-book-of-mormon-west-end",
+      "detail": "Open/previews show \"The Book of Mormon\" at Prince of Wales Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-lion-king-west-end",
+      "detail": "Open/previews show \"The Lion King\" at Lyceum Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "mamma-mia-west-end",
+      "detail": "Open/previews show \"Mamma Mia!\" at Novello Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "back-to-the-future-west-end",
+      "detail": "Open/previews show \"Back to the Future\" at Adelphi Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "oliver-west-end",
+      "detail": "Open/previews show \"Oliver!\" at Gielgud Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "teeth-n-smiles-west-end",
+      "detail": "Open/previews show \"Teeth 'n' Smiles\" at Duke of York's Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "im-sorry-prime-minister-west-end",
+      "detail": "Open/previews show \"I’m Sorry, Prime Minister\" at Apollo Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "les-miserables-west-end",
+      "detail": "Open/previews show \"Les Misérables\" at Sondheim Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "moulin-rouge-the-musical-west-end",
+      "detail": "Open/previews show \"Moulin Rouge! The Musical\" at Piccadilly Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "matilda-the-musical-west-end",
+      "detail": "Open/previews show \"Matilda The Musical\" at Cambridge Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "romeo-and-juliet-west-end",
+      "detail": "Open/previews show \"Romeo and Juliet\" at Harold Pinter Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-mousetrap-west-end",
+      "detail": "Open/previews show \"The Mousetrap\" at St. Martin's Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "showstopper-the-improvised-musical-west-end",
+      "detail": "Open/previews show \"Showstopper! The Improvised Musical\" at Cambridge Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "paranormal-activity-west-end",
+      "detail": "Open/previews show \"Paranormal Activity\" at Ambassadors Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "shadowlands-west-end",
+      "detail": "Open/previews show \"Shadowlands\" at Aldwych Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "all-my-sons-west-end",
+      "detail": "Open/previews show \"All My Sons\" at Wyndham's Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "austentatious-an-improvised-jane-austen-novel-west-end",
+      "detail": "Open/previews show \"Austentatious: An Improvised Jane Austen Novel\" at Vaudeville Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "harry-potter-and-the-cursed-child-both-parts-west-end",
+      "detail": "Open/previews show \"Harry Potter And The Cursed Child: Both Parts\" at Palace Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "six-the-musical-west-end",
+      "detail": "Open/previews show \"SIX the Musical\" at Vaudeville Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "wicked-west-end",
+      "detail": "Open/previews show \"Wicked\" at Apollo Victoria Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-producers-west-end",
+      "detail": "Open/previews show \"The Producers\" at Garrick Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "stranger-things-the-first-shadow-west-end",
+      "detail": "Open/previews show \"Stranger Things: The First Shadow\" at Phoenix Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "murder-she-didnt-write-west-end",
+      "detail": "Open/previews show \"Murder, She Didn't Write\" at Duchess Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-unlikely-pilgrimage-of-harold-fry-west-end",
+      "detail": "Open/previews show \"The Unlikely Pilgrimage of Harold Fry\" at Theatre Royal Haymarket has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "black-is-the-color-of-my-voice-west-end",
+      "detail": "Open/previews show \"Black Is The Color Of My Voice\" at Duchess Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-phantom-of-the-opera-west-end",
+      "detail": "Open/previews show \"The Phantom of the Opera\" at His Majesty's Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "starlight-express-west-end-2024",
+      "detail": "Open/previews show \"Starlight Express\" at Troubadour Wembley Park Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "into-the-woods-west-end-2025",
+      "detail": "Open/previews show \"Into the Woods\" at St James Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "witness-for-the-prosecution-west-end-2022",
+      "detail": "Open/previews show \"Witness for the Prosecution\" at London County Hall has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "manic-street-creature-west-end",
+      "detail": "Open/previews show \"Manic Street Creature\" at Kiln Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "consumed-west-end",
+      "detail": "Open/previews show \"Consumed\" at Park Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "jajas-african-hair-braiding-west-end",
+      "detail": "Open/previews show \"Jaja's African Hair Braiding\" at Lyric Hammersmith has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "deep-azure-globe-west-end",
+      "detail": "Open/previews show \"Deep Azure - Globe\" at Shakespeare's Globe has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "les-liaisons-dangereuses-west-end",
+      "detail": "Open/previews show \"Les Liaisons Dangereuses\" at Lyttelton Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-tempest-globe-west-end",
+      "detail": "Open/previews show \"The Tempest - Globe\" at Shakespeare's Globe has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-holy-rosenbergs-west-end",
+      "detail": "Open/previews show \"The Holy Rosenbergs\" at Menier Chocolate Factory has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "im-every-woman-the-chaka-khan-musical-west-end",
+      "detail": "Open/previews show \"I'm Every Woman, The Chaka Khan Musical\" at Peacock Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "summerfolk-west-end",
+      "detail": "Open/previews show \"Summerfolk\" at Olivier Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "a-mirrored-monet-west-end",
+      "detail": "Open/previews show \"A Mirrored Monet\" at Charing Cross Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "it-walks-around-the-house-at-night-west-end",
+      "detail": "Open/previews show \"It Walks Around The House At Night\" at Southwark Playhouse Borough has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "john-proctor-is-the-villain-west-end",
+      "detail": "Open/previews show \"John Proctor Is the Villain\" at Royal Court has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "detail": "Open/previews show \"Cabaret at the Kit Kat Club\" at Playhouse Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "dracula-west-end-2025",
+      "detail": "Open/previews show \"Dracula\" at Donmar Warehouse has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "garry-starr-classic-penguins-garrick-west-end-2026",
+      "detail": "Open/previews show \"Garry Starr: Classic Penguins\" at Garrick Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "hercules-west-end-2025",
+      "detail": "Open/previews show \"Hercules\" at Theatre Royal Drury Lane has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "operation-mincemeat-west-end-2024",
+      "detail": "Open/previews show \"Operation Mincemeat\" at Fortune Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "titanique-west-end-2024",
+      "detail": "Open/previews show \"Titanique\" at Criterion Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-play-that-goes-wrong-off-broadway",
+      "detail": "Open/previews show \"The Play That Goes Wrong\" at New World Stages has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "chamber-magic-off-broadway",
+      "detail": "Open/previews show \"Chamber Magic\" at Lotte New York Palace Hotel has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "la-traviata-off-broadway",
+      "detail": "Open/previews show \"La Traviata\" at Metropolitan Opera House has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "amaze-magic-off-broadway",
+      "detail": "Open/previews show \"AMAZE Magic\" at New World Stages has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "tristan-und-isolde-off-broadway",
+      "detail": "Open/previews show \"Tristan und Isolde\" at Metropolitan Opera House has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "sexual-misconduct-of-the-middle-classes-off-broadway",
+      "detail": "Open/previews show \"Sexual Misconduct of the Middle Classes\" at Audible’s Minetta Lane Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-hunger-games-on-stage-west-end-2025",
+      "detail": "Open/previews show \"The Hunger Games On Stage\" at Troubadour Canary Wharf Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "broken-glass-west-end-2026",
+      "detail": "Open/previews show \"Broken Glass\" at Young Vic has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "inter-alia-west-end-2026",
+      "detail": "Open/previews show \"Inter Alia\" at Wyndham's Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "jamire-williams-off-broadway",
+      "detail": "Open/previews show \"Jamire Williams\" at Park Avenue Armory has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "evening-all-afternoon-west-end",
+      "detail": "Open/previews show \"Evening All Afternoon\" at Donmar Warehouse has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end",
+      "detail": "Open/previews show \"Unfortunate: The Untold Story of Ursula The Sea Witch\" at The Other Palace - Main Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-phantom-of-the-opera-off-west-end",
+      "detail": "Open/previews show \"The Phantom of the Opera\" at His Majesty’s Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "school-girls-or-the-african-mean-girls-play",
+      "detail": "Open/previews show \"School Girls; Or, The African Mean Girls Play\" at Samuel J. Friedman Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "gotta-dance-off-broadway",
+      "detail": "Open/previews show \"Gotta Dance!\" at Stage 42  has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "transcendency-rising-short-plays-about-defying-limitations-off-broadway",
+      "detail": "Open/previews show \"Transcendency Rising: Short Plays About Defying Limitations\" at Theatre Row, Theatre 5 has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "horrible-histories-barmy-britain-the-best-bits-west-end",
+      "detail": "Open/previews show \"Horrible Histories: Barmy Britain - The Best Bits\" at Apollo Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "whodunnit-unrehearsed-4-off-west-end",
+      "detail": "Open/previews show \"Whodunnit [Unrehearsed] 4\" at Park Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "sabrage-off-west-end",
+      "detail": "Open/previews show \"Sabrage\" at Lafayette  has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "58th-street-off-west-end",
+      "detail": "Open/previews show \"58th Street\" at Belle Livingstone's 58th Street Country Club has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "godots-to-do-list-west-end",
+      "detail": "Open/previews show \"Godot’s To-Do List\" at Royal Court has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "whos-afraid-of-virginia-woolf-west-end",
+      "detail": "Open/previews show \"Who’s Afraid of Virginia Woolf?\" at Soho Place has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "abba-voyage-off-west-end",
+      "detail": "Open/previews show \"ABBA Voyage\" at ABBA Arena has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "tango-after-dark-west-end",
+      "detail": "Open/previews show \"Tango After Dark\" at Peacock Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-car-man-west-end",
+      "detail": "Open/previews show \"The Car Man\" at Sadler's Wells has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "stories-the-tap-dance-sensation-west-end",
+      "detail": "Open/previews show \"STORIES – The Tap Dance Sensation\" at Peacock Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-magicians-table-off-west-end",
+      "detail": "Open/previews show \"The Magicians Table\" at Ugly Duck has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "return-of-the-godz-west-end",
+      "detail": "Open/previews show \"Return of The GODZ\" at Peacock Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "hito-no-chikara-the-power-of-human-strength-west-end",
+      "detail": "Open/previews show \"Hito no Chikara - The Power of Human Strength\" at Peacock Theatre has no commercial data entry."
     }
   ]
 }

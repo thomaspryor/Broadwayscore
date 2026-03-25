@@ -146,6 +146,56 @@ const SITE_SEARCH_ENDPOINTS = {
         .map(r => r.webUrl);
     },
   },
+
+  'variety': {
+    name: 'Variety',
+    domain: 'variety.com',
+    requiresJs: false,
+    // Variety's legit/reviews section page — SSR, lists recent Broadway/theater reviews.
+    // No search endpoint; section page is fast and doesn't require title matching.
+    // URL slug typically contains show title words (e.g. /giant-broadway-review-...).
+    fetchAndParse: async (showTitle) => {
+      const html = await fetchSSR('https://variety.com/v/legit/reviews/');
+      const pattern = /href="(https:\/\/variety\.com\/\d{4}\/legit\/reviews\/[^"]+)"/gi;
+      const urls = [];
+      let m;
+      while ((m = pattern.exec(html)) !== null) {
+        urls.push(m[1]);
+      }
+      const unique = [...new Set(urls)];
+      // Zero-links guard: if no URLs found, the page structure may have changed
+      if (unique.length === 0) {
+        console.warn('    Site search [Variety]: WARNING — section page returned 0 links (possible JS-render change)');
+      }
+      return unique;
+    },
+  },
+
+  'theatermania': {
+    name: 'TheaterMania',
+    domain: 'theatermania.com',
+    requiresJs: false,
+    // TheaterMania WordPress REST API — category 157 = Reviews (all theater reviews).
+    // Uses date window (openingDate ±3 days) instead of title matching.
+    // Passes openingDate as third param (see searchOutletSite).
+    fetchAndParse: async (showTitle, market, openingDate) => {
+      // Build date window: openingDate ±3 days
+      let afterParam = '';
+      let beforeParam = '';
+      if (openingDate) {
+        const opening = new Date(openingDate);
+        const after = new Date(opening); after.setDate(after.getDate() - 3);
+        const before = new Date(opening); before.setDate(before.getDate() + 3);
+        afterParam = `&after=${after.toISOString()}`;
+        beforeParam = `&before=${before.toISOString()}`;
+      }
+      const url = `https://www.theatermania.com/wp-json/wp/v2/news?categories=157&per_page=20&_fields=link,date${afterParam}${beforeParam}`;
+      const data = await fetchSSR(url);
+      const posts = JSON.parse(data);
+      if (!Array.isArray(posts)) return [];
+      return posts.map(p => p.link).filter(Boolean);
+    },
+  },
   'independent': {
     name: 'The Independent',
     domain: 'independent.co.uk',
@@ -336,10 +386,12 @@ function urlLooksLikeReview(url, showTitle) {
  * @param {Object} options
  * @param {boolean} options.verbose - Log progress
  * @param {boolean} options.skipJs - Skip JS-rendered endpoints (save ScrapingBee credits)
+ * @param {string} options.openingDate - Show's opening date (YYYY-MM-DD). Passed to
+ *   fetchAndParse implementations that support date-window filtering (e.g. TheaterMania).
  * @returns {Promise<Array<{url, outletId, outlet, source}>>}
  */
 async function searchOutletSite(outletId, showTitle, options = {}) {
-  const { verbose = false, skipJs = false, market = 'broadway' } = options;
+  const { verbose = false, skipJs = false, market = 'broadway', openingDate = null } = options;
   const config = SITE_SEARCH_ENDPOINTS[outletId];
   if (!config) return [];
 
@@ -356,9 +408,9 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
   try {
     let results;
 
-    // Custom fetch+parse path (e.g. Algolia JSON API)
+    // Custom fetch+parse path (e.g. Algolia JSON API, WP REST API, section page)
     if (config.fetchAndParse) {
-      const urls = await config.fetchAndParse(showTitle, market);
+      const urls = await config.fetchAndParse(showTitle, market, openingDate);
       const seen = new Set();
       results = [];
       for (const url of urls) {
@@ -418,13 +470,13 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
  * @returns {Promise<Array<{url, outletId, outlet, source}>>}
  */
 async function searchOutletSites(showTitle, outletIds, options = {}) {
-  const { knownUrls = new Set(), verbose = false, skipJs = false, market = 'broadway' } = options;
+  const { knownUrls = new Set(), verbose = false, skipJs = false, market = 'broadway', openingDate = null } = options;
   const results = [];
 
   for (const outletId of outletIds) {
     if (!SITE_SEARCH_ENDPOINTS[outletId]) continue;
 
-    const found = await searchOutletSite(outletId, showTitle, { verbose, skipJs, market });
+    const found = await searchOutletSite(outletId, showTitle, { verbose, skipJs, market, openingDate });
     for (const result of found) {
       if (!knownUrls.has(result.url)) {
         results.push(result);

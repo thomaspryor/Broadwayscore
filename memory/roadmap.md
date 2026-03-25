@@ -1,4 +1,4 @@
-# Roadmap — Last updated 2026-03-25 (ISR pre-render + SEO health fix)
+# Roadmap — Last updated 2026-03-25 (BD zone monitoring + SERP cost fixes)
 
 > **Active work is now tracked on the [GitHub Projects board](https://github.com/users/thomaspryor/projects/1).**
 > Open issues with `session` label = active Claude Code sessions.
@@ -113,8 +113,11 @@
 - **Bright Data admin token rotation** — Old token had User role (read-only for zone management). New token `d52fd1e8` has Admin role. Updated in all 4 GitHub repos + local `.env`.
 - **mcp_unlocker zone restored** — Zone was in "Trial limit reached" then "deleted" soft-delete state. Recovered via UI Recover button + enabled via Configuration toggle. Billing active.
 - **ScrapingBee replenished** — Credits were fully exhausted (1,350,023/1,350,000). Replenished. Renews 2026-04-25.
-- **SERP cost fix** — `gather-reviews.yml` outlet-SERP job was running `--max-searches 200` on every run (10+ times on opening night = ~$2/day). Cut to 30 for routine runs (max_tier=2), preserved 200 for opening nights (max_tier=3). Estimated savings: ~85% of daily SERP spend.
+- **SERP cost fix (gather-reviews)** — `gather-reviews.yml` outlet-SERP job was running `--max-searches 200` on every run (10+ times on opening night = ~$2/day). Cut to 30 for routine runs (max_tier=2), preserved 200 for opening nights (max_tier=3). Estimated savings: ~85% of daily SERP spend.
+- **SERP cost fix (update-show-status WE)** — `update-show-status.yml` was dispatching `collect-outlet-reviews.yml` with 200 searches for WE previews→open transitions at max_tier=2 (not opening night). Cut to 30. Same pattern as gather-reviews fix.
+- **BD zone health monitoring** — `check-secrets-health.js` now checks `mcp_unlocker` zone status (verifies `disable` field absent). `BRIGHTDATA_TOKEN` added to workflow env. Would have caught Giant's opening night failure automatically. Verified live in CI: `✅ Bright Data: mcp_unlocker zone active`.
 - **Text collection safety fix** — `collect-review-texts.js` was overwriting fullText on already-scored reviews, causing contentTier=invalid and exclusion from reviews.json. Fixed: skip re-fetching reviews that already have assignedScore.
+- **CLAUDE.md §14 updated** — BD zone readiness step now points to `check-secrets-health.yml` (which covers it) + curl command for manual verification.
 
 
 ### Rebuild Guard → Claude-Powered Drop Analysis (2026-03-24)

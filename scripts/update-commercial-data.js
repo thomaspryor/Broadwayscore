@@ -232,40 +232,37 @@ function sleep(ms) {
  * @param {string} url - Reddit URL (will be converted to old.reddit.com if needed)
  * @returns {Promise<Object|null>} Parsed JSON or null on failure
  */
-async function fetchRedditJsonDirect(url) {
+async function fetchRedditJsonDirect(url, retries = 2) {
   // Convert to old.reddit.com for reliable JSON access
   const oldRedditUrl = url.replace('www.reddit.com', 'old.reddit.com');
 
-  return new Promise((resolve) => {
-    const req = https.get(oldRedditUrl, {
-      headers: {
-        'User-Agent': 'BroadwayScorecard/1.0 (commercial-data-updater)',
-        'Accept': 'application/json'
-      },
-      timeout: 15000
-    }, (res) => {
-      // Follow redirects
-      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        fetchRedditJsonDirect(res.headers.location).then(resolve);
-        return;
-      }
-      if (res.statusCode !== 200) {
-        resolve(null);
-        return;
-      }
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        try {
-          resolve(JSON.parse(data));
-        } catch (e) {
-          resolve(null);
-        }
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const resp = await fetch(oldRedditUrl, {
+        headers: {
+          'User-Agent': 'BroadwayScorecard/1.0 (commercial-data-updater)',
+          'Accept': 'application/json'
+        },
+        redirect: 'follow',
+        signal: AbortSignal.timeout(15000)
       });
-    });
-    req.on('error', () => resolve(null));
-    req.on('timeout', () => { req.destroy(); resolve(null); });
-  });
+      if (!resp.ok) {
+        if (attempt < retries) {
+          await new Promise(r => setTimeout(r, 2000 * (attempt + 1)));
+          continue;
+        }
+        return null;
+      }
+      return await resp.json();
+    } catch (e) {
+      if (attempt < retries) {
+        await new Promise(r => setTimeout(r, 2000 * (attempt + 1)));
+        continue;
+      }
+      return null;
+    }
+  }
+  return null;
 }
 
 /**
