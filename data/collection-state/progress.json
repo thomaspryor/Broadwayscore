@@ -184,7 +184,8 @@
     "the-king-and-i-2015/timeout--david-cote.json",
     "the-king-and-i-2015/talkinbroadway--matthew-murray.json",
     "finding-neverland-2015/theatermania--jesse-green.json",
-    "an-american-in-paris-2015/playbill--ariane-bevelier.json"
+    "an-american-in-paris-2015/playbill--ariane-bevelier.json",
+    "hand-to-god-2015/nytimes--charles-isherwood.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -494,7 +495,16 @@
     "it-shoulda-been-you-2015/ap--jennifer-farrar.json",
     "an-american-in-paris-2015/broadwayworld--roy-berko.json",
     "an-american-in-paris-2015/off-script-with-dan-dwyer--dan-dwyer.json",
-    "an-american-in-paris-2015/talkinbroadway--matthew-murray.json"
+    "an-american-in-paris-2015/talkinbroadway--matthew-murray.json",
+    "wolf-hall-parts-one-and-two-2015/guardian--alexis-soloski.json",
+    "wolf-hall-parts-one-and-two-2015/washpost--peter-marks.json",
+    "wolf-hall-parts-one-and-two-2015/ap--mark-kennedy.json",
+    "gigi-2015/broadwayworld--charles-shubow.json",
+    "gigi-2015/northjerseycom--robert-feldberg.json",
+    "gigi-2015/talkinbroadway--matthew-murray.json",
+    "hand-to-god-2015/broadwayworld--roy-berko.json",
+    "hand-to-god-2015/dailybeast--tim-teeman.json",
+    "hand-to-god-2015/washpost--peter-marks.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -663,7 +673,8 @@
       "doctor-zhivago-2015/timeout--david-cote.json",
       "living-on-love-2015/talkinbroadway--fred-sokol.json",
       "fun-home-2015/talkinbroadway--matthew-murray.json",
-      "the-king-and-i-2015/talkinbroadway--matthew-murray.json"
+      "the-king-and-i-2015/talkinbroadway--matthew-murray.json",
+      "hand-to-god-2015/nytimes--charles-isherwood.json"
     ],
     "archiveToday": [
       "data/review-texts/cult-of-love-2024/talkinbroadway--matthew-murray.json",
@@ -772,7 +783,14 @@
       "data/review-texts/finding-neverland-2015/washpost--peter-marks.json",
       "data/review-texts/it-shoulda-been-you-2015/ap--jennifer-farrar.json",
       "data/review-texts/an-american-in-paris-2015/broadwayworld--roy-berko.json",
-      "data/review-texts/an-american-in-paris-2015/talkinbroadway--matthew-murray.json"
+      "data/review-texts/an-american-in-paris-2015/talkinbroadway--matthew-murray.json",
+      "data/review-texts/wolf-hall-parts-one-and-two-2015/washpost--peter-marks.json",
+      "data/review-texts/gigi-2015/broadwayworld--charles-shubow.json",
+      "data/review-texts/gigi-2015/northjerseycom--robert-feldberg.json",
+      "data/review-texts/gigi-2015/talkinbroadway--matthew-murray.json",
+      "data/review-texts/hand-to-god-2015/broadwayworld--roy-berko.json",
+      "data/review-texts/hand-to-god-2015/dailybeast--tim-teeman.json",
+      "data/review-texts/hand-to-god-2015/washpost--peter-marks.json"
     ],
     "archive": [
       "bigfoot-off-broadway-2026/playbill--unknown.json",
@@ -814,7 +832,7 @@
     ]
   },
   "startTime": "2026-03-25T09:08:12.319Z",
-  "lastProcessed": "an-american-in-paris-2015/talkinbroadway--matthew-murray.json",
+  "lastProcessed": "hand-to-god-2015/nytimes--charles-isherwood.json",
   "log": [
     {
       "t": "2026-03-25T09:10:15.724Z",
@@ -1035,6 +1053,45 @@
     },
     {
       "t": "2026-03-25T19:44:48.768Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-25T19:51:40.556Z",
+      "event": "bb-session",
+      "session": "e0a9c143",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/wolf-hall-parts-one--"
+    },
+    {
+      "t": "2026-03-25T19:51:41.595Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-25T19:52:49.115Z",
+      "event": "bb-session",
+      "session": "37fdaa86",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/revival-of-gigi-missi"
+    },
+    {
+      "t": "2026-03-25T19:52:50.097Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-25T19:56:41.576Z",
+      "event": "bb-session",
+      "session": "fae9b360",
+      "url": "https://www.thedailybeast.com/hand-to-god-broadway-review-sock-puppet-from-hell/"
+    },
+    {
+      "t": "2026-03-25T19:57:21.176Z",
+      "event": "bb-session",
+      "session": "f9193331",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/hand-to-god-review-a-"
+    },
+    {
+      "t": "2026-03-25T19:57:22.219Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
     }
