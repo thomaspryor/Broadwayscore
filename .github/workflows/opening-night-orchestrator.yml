@@ -75,16 +75,21 @@ jobs:
             echo "market=$INPUT_MARKET" >> $GITHUB_OUTPUT
             echo "Using manual market: $INPUT_MARKET"
           elif [ "${{ github.event_name }}" = "schedule" ]; then
+            # Use hour ranges to handle GitHub cron lag (routinely 15-60+ min late)
             HOUR=$(date -u +%H)
-            if [ "$HOUR" = "01" ] || [ "$HOUR" = "10" ]; then
+            HOUR_INT=$((10#$HOUR))
+            if [ "$HOUR_INT" -ge 0 ] && [ "$HOUR_INT" -le 4 ]; then
               echo "market=broadway" >> $GITHUB_OUTPUT
-              echo "${HOUR} UTC cron → broadway market"
-            elif [ "$HOUR" = "20" ]; then
+              echo "${HOUR} UTC (1 AM cron window) → broadway market"
+            elif [ "$HOUR_INT" -ge 9 ] && [ "$HOUR_INT" -le 13 ]; then
+              echo "market=broadway" >> $GITHUB_OUTPUT
+              echo "${HOUR} UTC (10 AM cron window) → broadway market"
+            elif [ "$HOUR_INT" -ge 19 ] && [ "$HOUR_INT" -le 22 ]; then
               echo "market=west-end" >> $GITHUB_OUTPUT
-              echo "8 PM UTC cron → west-end market"
+              echo "${HOUR} UTC (8 PM cron window) → west-end market"
             else
-              echo "market=" >> $GITHUB_OUTPUT
-              echo "Unknown cron hour $HOUR — polling all markets"
+              echo "market=broadway" >> $GITHUB_OUTPUT
+              echo "Unknown cron hour $HOUR — defaulting to broadway"
             fi
           else
             echo "market=" >> $GITHUB_OUTPUT
