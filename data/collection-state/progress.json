@@ -1085,7 +1085,11 @@
     "almost-famous-2022/theater-pizzazz--unknown.json",
     "topdog-underdog-2022/broadwaynews--unknown.json",
     "topdog-underdog-2022/corey-hawkins--unknown.json",
-    "death-of-a-salesman-2022/variety--jesse-green.json"
+    "death-of-a-salesman-2022/variety--jesse-green.json",
+    "death-of-a-salesman-2022/guardian--adrian-horton.json",
+    "cost-of-living-2022/theatermania--adam-feldman.json",
+    "cost-of-living-2022/theatermania--jesse-green.json",
+    "eva-luna-off-broadway-2022/nytg--caridad-svich.json"
   ],
   "failed": [
     "giant-2026/cititour--brian-scott-lipton.json",
@@ -1356,7 +1360,13 @@
     "walking-with-ghosts-2022/cititour--brian-scott-lipton.json",
     "walking-with-ghosts-2022/dtli--ran-xia.json",
     "topdog-underdog-2022/kenny-leon--unknown.json",
-    "topdog-underdog-2022/usatoday--charles-isherwood.json"
+    "topdog-underdog-2022/usatoday--charles-isherwood.json",
+    "death-of-a-salesman-2022/talkinbroadway--matthew-murray.json",
+    "cost-of-living-2022/washpost--peter-marks.json",
+    "cost-of-living-2022/newyorker--vinson-cunningham.json",
+    "into-the-woods-2022/newyorker--alexandra-schwartz.json",
+    "the-kite-runner-2022/thewrap--robert-hofler.json",
+    "titanique-off-broadway-2022/newyorker--dan-stahl.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2162,7 +2172,9 @@
       "between-riverside-and-crazy-2022/ew--maureen-lee-lenker.json",
       "take-me-out-2022/washpost--peter-marks.json",
       "almost-famous-2022/theater-pizzazz--unknown.json",
-      "topdog-underdog-2022/corey-hawkins--unknown.json"
+      "topdog-underdog-2022/corey-hawkins--unknown.json",
+      "death-of-a-salesman-2022/guardian--adrian-horton.json",
+      "eva-luna-off-broadway-2022/nytg--caridad-svich.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
@@ -2330,7 +2342,9 @@
       "some-like-it-hot-2022/latimes--unknown.json",
       "a-beautiful-noise-the-neil-diamond-musical-2022/theatermania--adam-feldman.json",
       "kpop-2022/daily-mail--unknown.json",
-      "take-me-out-2022/theatermania--jesse-green.json"
+      "take-me-out-2022/theatermania--jesse-green.json",
+      "cost-of-living-2022/theatermania--adam-feldman.json",
+      "cost-of-living-2022/theatermania--jesse-green.json"
     ],
     "archiveToday": [
       "data/review-texts/giant-2026/cititour--brian-scott-lipton.json",
@@ -2432,7 +2446,9 @@
       "data/review-texts/ohio-state-murders-2022/washpost--peter-marks.json",
       "data/review-texts/take-me-out-2022/usatoday--charles-isherwood.json",
       "data/review-texts/take-me-out-2022/talkinbroadway--matthew-murray.json",
-      "data/review-texts/topdog-underdog-2022/usatoday--charles-isherwood.json"
+      "data/review-texts/topdog-underdog-2022/usatoday--charles-isherwood.json",
+      "data/review-texts/death-of-a-salesman-2022/talkinbroadway--matthew-murray.json",
+      "data/review-texts/cost-of-living-2022/washpost--peter-marks.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/nytimes--unknown.json",
@@ -2614,7 +2630,7 @@
     ]
   },
   "startTime": "2026-03-24T17:31:44.264Z",
-  "lastProcessed": "death-of-a-salesman-2022/variety--jesse-green.json",
+  "lastProcessed": "eva-luna-off-broadway-2022/nytg--caridad-svich.json",
   "log": [
     {
       "t": "2026-03-24T17:34:00.298Z",
@@ -3165,6 +3181,17 @@
       "t": "2026-03-25T05:46:49.710Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-25T05:49:50.967Z",
+      "event": "bb-session",
+      "session": "18506c6b",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/10/21/cost-of-living-broadway-"
+    },
+    {
+      "t": "2026-03-25T05:49:52.376Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
