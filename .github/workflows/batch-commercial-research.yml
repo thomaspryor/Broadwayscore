@@ -1,12 +1,23 @@
 name: Batch Commercial Research
 
 on:
+  workflow_call:
+    inputs:
+      shows:
+        required: false
+        type: string
+        default: ''
+      dry_run:
+        required: false
+        type: boolean
+        default: false
   workflow_dispatch:
     inputs:
       shows:
-        description: 'Comma-separated show slugs, or "top-historical-30"'
-        required: true
+        description: 'Comma-separated show slugs, "top-historical-30", or empty for auto-discover'
+        required: false
         type: string
+        default: ''
       dry_run:
         description: 'Dry run (no files written)'
         required: false
@@ -58,9 +69,11 @@ jobs:
         run: |
           ARGS=""
 
-          # Parse shows input
+          # Parse shows input (empty = auto-discover uncovered shows)
           INPUT_SHOWS="${{ github.event.inputs.shows }}"
-          if [ "$INPUT_SHOWS" = "top-historical-30" ]; then
+          if [ -z "$INPUT_SHOWS" ]; then
+            echo "No shows specified — script will auto-discover uncovered shows"
+          elif [ "$INPUT_SHOWS" = "top-historical-30" ]; then
             ARGS="$ARGS --top-historical=30"
           else
             ARGS="$ARGS --shows=$INPUT_SHOWS"
