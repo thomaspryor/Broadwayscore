@@ -621,7 +621,17 @@
     "a-dolls-house-part-2-2017/out-magazine--michael-musto.json",
     "bandstand-2017/li-herald--elyse-trevers.json",
     "six-degrees-of-separation-2017/broadway-blog--samuel-l-leiter.json",
-    "six-degrees-of-separation-2017/outbuzz--steven-ross.json"
+    "six-degrees-of-separation-2017/outbuzz--steven-ross.json",
+    "hello-dolly-2017/amny--matt-windman.json",
+    "hello-dolly-2017/off-script-with-dan-dwyer--dan-dwyer.json",
+    "the-little-foxes-2017/off-script-with-dan-dwyer--dan-dwyer.json",
+    "the-little-foxes-2017/our-theater-blog--tamara-beck.json",
+    "the-little-foxes-2017/pop-dust--thomas-burns-scully.json",
+    "indecent-2017/ap--jennifer-farrar.json",
+    "indecent-2017/ap--unknown.json",
+    "indecent-2017/northjerseycom--robert-feldberg.json",
+    "indecent-2017/the-culture-trip--bill-stevenson.json",
+    "indecent-2017/washpost--peter-marks.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -928,14 +938,22 @@
       "data/review-texts/marvins-room-2017/indy-east-end--isa-goldberg.json",
       "data/review-texts/1984-2017/talkinbroadway--matthew-murray.json",
       "data/review-texts/six-degrees-of-separation-2017/broadway-blog--samuel-l-leiter.json",
-      "data/review-texts/six-degrees-of-separation-2017/outbuzz--steven-ross.json"
+      "data/review-texts/six-degrees-of-separation-2017/outbuzz--steven-ross.json",
+      "data/review-texts/hello-dolly-2017/amny--matt-windman.json",
+      "data/review-texts/hello-dolly-2017/off-script-with-dan-dwyer--dan-dwyer.json",
+      "data/review-texts/the-little-foxes-2017/off-script-with-dan-dwyer--dan-dwyer.json",
+      "data/review-texts/the-little-foxes-2017/pop-dust--thomas-burns-scully.json",
+      "data/review-texts/indecent-2017/ap--jennifer-farrar.json",
+      "data/review-texts/indecent-2017/ap--unknown.json",
+      "data/review-texts/indecent-2017/northjerseycom--robert-feldberg.json",
+      "data/review-texts/indecent-2017/washpost--peter-marks.json"
     ],
     "archive": [
       "the-terms-of-my-surrender-2017/thestage--mark-sheton.json"
     ]
   },
   "startTime": "2026-03-25T09:08:12.319Z",
-  "lastProcessed": "six-degrees-of-separation-2017/outbuzz--steven-ross.json",
+  "lastProcessed": "indecent-2017/washpost--peter-marks.json",
   "log": [
     {
       "t": "2026-03-25T09:10:15.724Z",
@@ -1286,6 +1304,39 @@
       "t": "2026-03-25T22:08:50.449Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-25T22:23:48.063Z",
+      "event": "bb-session",
+      "session": "ddfbbf89",
+      "url": "https://www.amny.com/entertainment/bette-midler-outshined-by-standby-donna-murph"
+    },
+    {
+      "t": "2026-03-25T22:23:49.359Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-25T22:30:58.657Z",
+      "event": "bb-session",
+      "session": "aab47b77",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/gripping-drama-on-ban"
+    },
+    {
+      "t": "2026-03-25T22:30:59.917Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-25T22:32:19.050Z",
+      "event": "bb-session",
+      "session": "05fc73a1",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-indecent-is-a-"
+    },
+    {
+      "t": "2026-03-25T22:32:20.687Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
