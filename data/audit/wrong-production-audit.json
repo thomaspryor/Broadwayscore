@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-25T08:45:37.377Z",
+  "timestamp": "2026-03-25T08:57:14.642Z",
   "stats": {
     "totalReviews": 32476,
-    "alreadyFlagged": 11105,
+    "alreadyFlagged": 11106,
     "dateGuardCatches": 139,
-    "directorMismatch": 952,
+    "directorMismatch": 953,
     "tvFilmSignals": 3433,
-    "londonSignals": 1035,
-    "offBroadwaySignals": 1008,
+    "londonSignals": 1037,
+    "offBroadwaySignals": 1007,
     "yearMismatch": 71,
-    "noPublishDate": 6770
+    "noPublishDate": 6766
   },
   "findings": [
     {
@@ -52826,6 +52826,25 @@
     },
     {
       "showId": "the-lion-king-west-end-2021",
+      "file": "guardian--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/1999/oct/21/theatre.artsfeatures",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
       "file": "london-box-office--miriam-gibson.json",
       "score": 66,
       "publishDate": "2022-07-01",
@@ -80843,20 +80862,6 @@
       ]
     },
     {
-      "showId": "the-emporium-off-broadway-2025",
-      "file": "theatermania--linda-buchwald.json",
-      "score": null,
-      "publishDate": "February 11, 2026",
-      "url": "https://www.theatermania.com/news/classic-stage-company-announces-casting-for-thornton-wilders-the-emporium_1823908/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"csc\""
-        }
-      ]
-    },
-    {
       "showId": "the-encounter-2016",
       "file": "a-younger-theatre--camilla-gurtler.json",
       "score": 94,
@@ -82305,6 +82310,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/article/2024/jul/19/the-hot-wing-king-review-dorfman-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
