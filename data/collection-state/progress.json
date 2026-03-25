@@ -1033,7 +1033,16 @@
     "patriots-2024/theatermania--frank-scheck.json",
     "stereophonic-2024/theatermania--jackson-mchenry.json",
     "stereophonic-2024/whatsonstage--sarah-crompton.json",
-    "the-wiz-2024/theatermania--jesse-green.json"
+    "the-wiz-2024/theatermania--jesse-green.json",
+    "the-wiz-2024/time--daniel-dandamp039addario.json",
+    "lempicka-2024/theatermania--david-gordon.json",
+    "water-for-elephants-2024/theatermania--david-gordon.json",
+    "an-enemy-of-the-people-2024/theatermania--adam-feldman.json",
+    "doubt-2024/ap--mark-kennedy.json",
+    "mj-the-musical-west-end-2024/standard--nick-curtis.json",
+    "mj-the-musical-west-end-2024/whatsonstage--sarah-crompton.json",
+    "harmony-2023/talkinbroadway--matthew-murray.json",
+    "harmony-2023/theater-pizzazz--carol-rocamora.json"
   ],
   "failed": [
     "giant-2026/cititour--brian-scott-lipton.json",
@@ -1266,7 +1275,8 @@
     "stereophonic-2024/thestage--lane-williamson.json",
     "stereophonic-2024/washpost--peter-marks.json",
     "suffs-2024/thestage--lane-williamson.json",
-    "suffs-2024/usatoday--charles-isherwood.json"
+    "suffs-2024/usatoday--charles-isherwood.json",
+    "an-enemy-of-the-people-2024/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2049,7 +2059,12 @@
       "yellow-face-2024/guardian--adrian-horton.json",
       "the-hills-of-california-2024/whatsonstage--sarah-crompton.json",
       "cats-the-jellicle-ball-off-broadway-2024/timeout--adam-feldman.json",
-      "stereophonic-2024/whatsonstage--sarah-crompton.json"
+      "stereophonic-2024/whatsonstage--sarah-crompton.json",
+      "the-wiz-2024/time--daniel-dandamp039addario.json",
+      "water-for-elephants-2024/theatermania--david-gordon.json",
+      "doubt-2024/ap--mark-kennedy.json",
+      "mj-the-musical-west-end-2024/standard--nick-curtis.json",
+      "mj-the-musical-west-end-2024/whatsonstage--sarah-crompton.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
@@ -2185,7 +2200,10 @@
       "illinoise-2024/theatermania--jesse-green.json",
       "patriots-2024/theatermania--frank-scheck.json",
       "stereophonic-2024/theatermania--jackson-mchenry.json",
-      "the-wiz-2024/theatermania--jesse-green.json"
+      "the-wiz-2024/theatermania--jesse-green.json",
+      "lempicka-2024/theatermania--david-gordon.json",
+      "an-enemy-of-the-people-2024/theatermania--adam-feldman.json",
+      "harmony-2023/talkinbroadway--matthew-murray.json"
     ],
     "archiveToday": [
       "data/review-texts/giant-2026/cititour--brian-scott-lipton.json",
@@ -2436,11 +2454,12 @@
       "real-women-have-curves-2025/ap--fernanda-figueroa.json",
       "left-on-tenth-2024/nytimes--laura-collins-hughes.json",
       "illinoise-2024/nytimes--unknown.json",
-      "illinoise-2024/timeout--adam-feldman.json"
+      "illinoise-2024/timeout--adam-feldman.json",
+      "harmony-2023/theater-pizzazz--carol-rocamora.json"
     ]
   },
   "startTime": "2026-03-24T17:31:44.264Z",
-  "lastProcessed": "the-wiz-2024/theatermania--jesse-green.json",
+  "lastProcessed": "harmony-2023/theater-pizzazz--carol-rocamora.json",
   "log": [
     {
       "t": "2026-03-24T17:34:00.298Z",
@@ -2892,6 +2911,17 @@
       "t": "2026-03-25T04:57:38.657Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-25T05:00:13.788Z",
+      "event": "bb-session",
+      "session": "4dafaed3",
+      "url": "https://www.wsj.com/articles/an-enemy-of-the-people-review-jeremy-strong-broadwa"
+    },
+    {
+      "t": "2026-03-25T05:00:15.023Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
