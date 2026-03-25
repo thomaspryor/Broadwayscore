@@ -1049,7 +1049,15 @@
     "merrily-we-roll-along-2023/we-are-movie-geeks--jim-batts.json",
     "purlie-victorious-2023/theatermania--david-gordon.json",
     "back-to-the-future-2023/and-daryl-tofa-back-to-the-future--gabi-stapula.json",
-    "the-cottage-2023/theatermania--peter-hempstead.json"
+    "the-cottage-2023/theatermania--peter-hempstead.json",
+    "here-lies-love-2023/hollywood-reporter--david-rooney.json",
+    "here-lies-love-2023/theatermania--adam-feldman.json",
+    "just-for-us-2023/timeout--adam-feldman.json",
+    "just-for-us-2023/independent--alice-saville.json",
+    "just-for-us-2023/times-uk--dominic-maxwell.json",
+    "just-for-us-2023/whatsonstage--sarah-crompton.json",
+    "once-upon-a-one-more-time-2023/theatermania--adam-feldman.json",
+    "once-upon-a-one-more-time-2023/theatermania--david-gordon.json"
   ],
   "failed": [
     "giant-2026/cititour--brian-scott-lipton.json",
@@ -1286,7 +1294,9 @@
     "an-enemy-of-the-people-2024/wsj--charles-isherwood.json",
     "the-shark-is-broken-2023/talkinbroadway--matthew-murray.json",
     "here-lies-love-2023/northjerseycom--robert-feldberg.json",
-    "here-lies-love-2023/washpost--peter-marks.json"
+    "here-lies-love-2023/washpost--peter-marks.json",
+    "once-upon-a-one-more-time-2023/ap--mark-kennedy.json",
+    "once-upon-a-one-more-time-2023/talkinbroadway--matthew-murray.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2076,7 +2086,11 @@
       "mj-the-musical-west-end-2024/standard--nick-curtis.json",
       "mj-the-musical-west-end-2024/whatsonstage--sarah-crompton.json",
       "merrily-we-roll-along-2023/we-are-movie-geeks--jim-batts.json",
-      "the-cottage-2023/theatermania--peter-hempstead.json"
+      "the-cottage-2023/theatermania--peter-hempstead.json",
+      "here-lies-love-2023/theatermania--adam-feldman.json",
+      "just-for-us-2023/independent--alice-saville.json",
+      "just-for-us-2023/times-uk--dominic-maxwell.json",
+      "just-for-us-2023/whatsonstage--sarah-crompton.json"
     ],
     "amp": [
       "data/review-texts/every-brilliant-thing-2026/deadline--unknown.json",
@@ -2150,7 +2164,9 @@
       "data/review-texts/uncle-vanya-2024/deadline--greg-evans.json",
       "uncle-vanya-2024/deadline--greg-evans.json",
       "data/review-texts/mary-jane-2024/deadline--pete-hammond.json",
-      "mary-jane-2024/deadline--pete-hammond.json"
+      "mary-jane-2024/deadline--pete-hammond.json",
+      "data/review-texts/here-lies-love-2023/hollywood-reporter--david-rooney.json",
+      "here-lies-love-2023/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [
       "giant-2026/nypost--unknown.json"
@@ -2219,7 +2235,10 @@
       "harmony-2023/talkinbroadway--matthew-murray.json",
       "i-need-that-2023/wsj--charles-isherwood.json",
       "gutenberg-2023/theatermania--jesse-green.json",
-      "purlie-victorious-2023/theatermania--david-gordon.json"
+      "purlie-victorious-2023/theatermania--david-gordon.json",
+      "just-for-us-2023/timeout--adam-feldman.json",
+      "once-upon-a-one-more-time-2023/theatermania--adam-feldman.json",
+      "once-upon-a-one-more-time-2023/theatermania--david-gordon.json"
     ],
     "archiveToday": [
       "data/review-texts/giant-2026/cititour--brian-scott-lipton.json",
@@ -2479,7 +2498,7 @@
     ]
   },
   "startTime": "2026-03-24T17:31:44.264Z",
-  "lastProcessed": "here-lies-love-2023/washpost--peter-marks.json",
+  "lastProcessed": "once-upon-a-one-more-time-2023/talkinbroadway--matthew-murray.json",
   "log": [
     {
       "t": "2026-03-24T17:34:00.298Z",
@@ -2975,6 +2994,17 @@
       "t": "2026-03-25T05:10:05.272Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-25T05:10:14.761Z",
+      "event": "bb-session",
+      "session": "61d6486d",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/here-lies-love-broadway-review-"
+    },
+    {
+      "t": "2026-03-25T05:10:15.960Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
