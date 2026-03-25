@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-25T06:08:01.903Z",
+  "timestamp": "2026-03-25T06:33:29.446Z",
   "stats": {
     "totalReviews": 32473,
-    "alreadyFlagged": 11087,
+    "alreadyFlagged": 11095,
     "dateGuardCatches": 139,
     "directorMismatch": 952,
     "tvFilmSignals": 3437,
     "londonSignals": 1036,
-    "offBroadwaySignals": 1009,
+    "offBroadwaySignals": 1007,
     "yearMismatch": 71,
-    "noPublishDate": 6791
+    "noPublishDate": 6781
   },
   "findings": [
     {
@@ -34356,8 +34356,8 @@
     {
       "showId": "my-name-is-lucy-barton-2020",
       "file": "theatermania--hayley-levitt.json",
-      "score": null,
-      "publishDate": null,
+      "score": 67,
+      "publishDate": "2020-01-15",
       "url": "https://www.theatermania.com/broadway/news/laura-linney-my-name-is-lucy-barton_90440.html",
       "findings": [
         {
@@ -61291,7 +61291,7 @@
     {
       "showId": "west-side-story-2020",
       "file": "vulture--helen-shaw.json",
-      "publishDate": null,
+      "publishDate": "2020-02-20",
       "url": "https://www.vulture.com/2020/02/theater-review-a-new-west-side-story-onscreen-all-the-way.html",
       "findings": [
         {
@@ -77492,38 +77492,10 @@
     },
     {
       "showId": "slave-play-2021",
-      "file": "theatermania--pete-hempstead.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.theatermania.com/broadway/news/review-slave-play-by-jeremy-o-harris_89912.html/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
-        }
-      ]
-    },
-    {
-      "showId": "slave-play-2021",
       "file": "theatre-is-easy--dan-dinero.json",
       "score": 42,
       "publishDate": null,
       "url": "https://www.theasy.com/Reviews/2019/S/slaveplay.php",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
-        }
-      ]
-    },
-    {
-      "showId": "slave-play-2021",
-      "file": "timeout--adam-feldman.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "https://www.timeout.com/newyork/theater/slave-play-broadway-review-jeremy-o-harris",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
