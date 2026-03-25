@@ -184,8 +184,8 @@ jobs:
           MARKET="${{ steps.market.outputs.market }}"
           echo "Dispatching audience scrapers for: $SHOWS (market: ${MARKET:-all})"
 
-          if [ "$MARKET" = "west-end" ]; then
-            # West End audience scrapers
+          if [ "$MARKET" = "west-end" ] || [ -z "$MARKET" ]; then
+            # West End audience scrapers (also dispatched when market is empty = all markets)
             echo "  → Dispatching SeatPlan for: $SHOWS"
             gh workflow run update-seatplan.yml -f shows="$SHOWS" 2>/dev/null || true
 
@@ -194,8 +194,10 @@ jobs:
 
             echo "  → Dispatching Guardian API for: $SHOWS"
             gh workflow run fetch-guardian-reviews.yml -f shows="$SHOWS" 2>/dev/null || true
-          else
-            # Broadway audience scrapers
+          fi
+
+          if [ "$MARKET" != "west-end" ]; then
+            # Broadway audience scrapers (also dispatched when market is empty = all markets)
             IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS"
             for SHOW_ID in "${SHOW_ARRAY[@]}"; do
               echo "  → Dispatching Broadway.com scraper for $SHOW_ID"
