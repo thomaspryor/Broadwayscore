@@ -93,28 +93,29 @@ async function researchShowWithO4Mini(show) {
   const isRevival = type?.includes('revival') || false;
   const isNonprofit = /roundabout|lincoln center|manhattan theatre club|second stage|lct/i.test(show.venue || '');
 
-  const prompt = `Research the Broadway ${isPlay ? 'play' : 'musical'} "${show.title}" which opened ${show.openingDate || 'unknown'} at ${show.venue || 'unknown venue'} and closed ${show.closingDate || 'unknown'}.${isRevival ? ' This was a revival.' : ''}${isNonprofit ? ' This was produced by a nonprofit theater company.' : ''}
+  const prompt = `Research the Broadway ${isPlay ? 'play' : 'musical'} "${show.title}" which opened ${show.openingDate || 'unknown'} at ${show.venue || 'unknown venue'} and closed ${show.closingDate || 'unknown'}.${isRevival ? ' This was a REVIVAL — only report data about THIS production, not any prior production.' : ''}${isNonprofit ? ' This was produced by a nonprofit theater company.' : ''}
 
-Find:
-1. Initial capitalization / production budget (look for SEC Form D filings, trade press like Deadline/Variety/Playbill/BroadwayWorld articles mentioning budget, investment, or capitalization)
+## Where to search (priority order)
+
+1. **Reddit & forums:** Search r/Broadway for "${show.title}" capitalization OR recouped OR budget. Reddit users post detailed weekly grosses analyses and season post-mortem threads with financial breakdowns. Also search BroadwayWorld forums for investor discussions with capitalization figures.
+2. **SEC EDGAR:** Broadway LLCs file Form D when raising capital. Search for the show title or producing entity.
+3. **Trade press:** Search Variety, Deadline, Broadway News, The Broadway Journal, Playbill, TheaterMania, BroadwayWorld for "${show.title}" broadway ${openingYear} capitalization OR budget OR investment OR recouped.
+4. **NYC tax credits:** investmentbroadway.com lists tax credit recipients, implying known capitalization.
+
+## What to find
+1. Initial capitalization / production budget
 2. Weekly running costs / weekly nut
 3. Whether it recouped its investment, and when
 4. Overall commercial outcome
 
-Search for: "${show.title}" broadway ${openingYear} capitalization budget recouped investment
+## Nonprofit check
+If venue is Samuel J. Friedman (MTC), Helen Hayes (Second Stage), Todd Haimes (Roundabout), or Vivian Beaumont (LCT) — verify if this was a nonprofit production.
 
-Rules:
+## Rules
 - Only report data explicitly stated in sources. Never guess or estimate.
 - ${isNonprofit ? 'This is a NONPROFIT production — use "Nonprofit" designation unless there is clear evidence of commercial structure.' : ''}
+- Capitalization in dollars (e.g., 15000000 not 15). Weekly costs in dollars (e.g., 650000 not 650).
 - For designation, use EXACTLY one of: Miracle, Windfall, Easy Winner, Trickle, TBD, Fizzle, Flop, Nonprofit
-- Miracle = mega-hit (10+ year run, extraordinary returns)
-- Windfall = solid hit, strong returns
-- Easy Winner = limited run that recouped quickly
-- Trickle = barely broke even
-- Fizzle = closed without recouping, recovered ~30%+ of investment
-- Flop = closed without recouping, recovered <30%
-- Nonprofit = produced by nonprofit company (Roundabout, LCT, MTC, etc.)
-- TBD = truly insufficient data
 
 Respond with ONLY valid JSON (no markdown, no explanation):
 {
