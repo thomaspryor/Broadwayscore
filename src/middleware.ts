@@ -9,10 +9,10 @@ export function middleware(request: NextRequest) {
   // Only handle /show/<slug> where slug doesn't contain a slash
   if (!pathname.startsWith('/show/')) return;
 
-  const slug = pathname.slice('/show/'.length);
-  if (!slug || slug.includes('/')) return;
+  const rawSlug = pathname.slice('/show/'.length).replace(/\/$/, '');
+  if (!rawSlug || rawSlug.includes('/')) return;
 
-  const entry = redirectMap[slug];
+  const entry = redirectMap[rawSlug.toLowerCase()];
   if (!entry) return; // Unknown slug — fall through to 404
 
   // "~" prefix = temporary (302, multi-production); otherwise permanent (301)
