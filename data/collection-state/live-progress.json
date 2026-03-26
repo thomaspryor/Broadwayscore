@@ -1,129 +1,49 @@
 {
-  "updatedAt": "2026-03-26T08:48:12.118Z",
-  "processed": 318,
-  "failed": 1213,
-  "successRate": "20.8%",
+  "updatedAt": "2026-03-26T08:55:23.302Z",
+  "processed": 30,
+  "failed": 20,
+  "successRate": "60.0%",
   "tierBreakdown": {
-    "playwright": 118,
+    "playwright": 25,
     "amp": 0,
-    "browserbase": 36,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingbee": 9,
-    "brightdata": 111,
-    "archiveToday": 398,
-    "archive": 21
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 1,
+    "archive": 3
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-03-26T06:43:49.844Z",
+      "t": "2026-03-26T08:47:36.689Z",
       "event": "bb-session",
-      "session": "e7a0017f",
-      "url": "https://www.northjersey.com/arts_entertainment/91887804_It_s_all_about_Sondheim_"
+      "session": "d5b35e64",
+      "url": "https://variety.com/gallery/celebrity-photos-red-carpet-march-2026/"
     },
     {
-      "t": "2026-03-26T06:43:50.848Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-03-26T06:44:08.603Z",
+      "t": "2026-03-26T08:48:02.904Z",
       "event": "bb-session",
-      "session": "b799f4e3",
-      "url": "https://variety.com/2010/legit/reviews/sondheim-on-sondheim-1117942391/"
-    },
-    {
-      "t": "2026-03-26T06:44:09.555Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-03-26T06:46:26.567Z",
-      "event": "bb-session",
-      "session": "65441bff",
-      "url": "https://www.wsj.com/articles/SB10001424052702303960604575157744105208812?gaa_at="
-    },
-    {
-      "t": "2026-03-26T06:46:27.661Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-26T07:01:57.981Z",
-      "event": "bb-session",
-      "session": "bc3cc933",
-      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/cleveland-show-tv-review-"
-    },
-    {
-      "t": "2026-03-26T07:01:59.093Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-26T07:06:10.936Z",
-      "event": "bb-session",
-      "session": "78172365",
-      "url": "https://www.hollywoodreporter.com/news/superior-donuts-theater-review-93738/"
-    },
-    {
-      "t": "2026-03-26T07:06:12.025Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-26T07:07:14.901Z",
-      "event": "bb-session",
-      "session": "8378b98f",
-      "url": "https://www.northjersey.com/entertainment/stage/WAITING0430.html"
-    },
-    {
-      "t": "2026-03-26T07:07:15.958Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-03-26T07:07:33.555Z",
-      "event": "bb-session",
-      "session": "cd887140",
-      "url": "https://www.hollywoodreporter.com/review/little-miss-sunshine-theater-review-656"
-    },
-    {
-      "t": "2026-03-26T07:07:34.569Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-26T07:07:48.419Z",
-      "event": "bb-session",
-      "session": "2deccbc9",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/waiting-for-godot-broadway-revi"
-    },
-    {
-      "t": "2026-03-26T07:07:49.358Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-26T08:38:27.841Z",
-      "event": "bb-session",
-      "session": "b02bdb4e",
+      "session": "409a8b37",
       "url": "https://variety.com/2026/legit/news/jojo-broadway-chess-lea-michele-joanna-leves"
     },
     {
-      "t": "2026-03-26T08:38:29.216Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-03-26T08:39:59.858Z",
+      "t": "2026-03-26T08:49:57.380Z",
       "event": "bb-session",
-      "session": "18d43ffd",
+      "session": "c404e3aa",
       "url": "https://www.thestage.co.uk/reviews/a-mirrored-monet-review-charing-cross-theatre"
     },
     {
-      "t": "2026-03-26T08:40:01.223Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "t": "2026-03-26T08:50:36.277Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    34 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-03-26T08:51:44.488Z",
+      "event": "bb-session",
+      "session": "473d63ff",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
     }
   ]
 }
