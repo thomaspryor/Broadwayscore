@@ -35,11 +35,12 @@ function isBroadway(s) {
 
 // Guide definitions (mirrors src/config/guide-pages.ts)
 const GUIDE_DEFS = [
-  { slug: 'best-broadway-shows', title: 'Best Broadway Shows', filter: (s) => isBroadway(s) && s.status === 'open' && (s.criticScore?.score ?? 0) > 0, yearPages: [2020, 2021, 2022, 2023, 2024, 2025, 2026] },
-  { slug: 'best-broadway-musicals', title: 'Best Broadway Musicals', filter: (s) => isBroadway(s) && s.status === 'open' && s.type === 'musical', yearPages: [2020, 2021, 2022, 2023, 2024, 2025, 2026] },
-  { slug: 'best-broadway-plays', title: 'Best Broadway Plays', filter: (s) => isBroadway(s) && s.status === 'open' && s.type === 'play', yearPages: [2020, 2021, 2022, 2023, 2024, 2025, 2026] },
+  { slug: 'best-broadway-shows', title: 'Best Broadway Shows', filter: (s) => isBroadway(s) && s.status === 'open' && (s.criticScore?.score ?? 0) > 0 && (s.criticScore?.reviewCount ?? 0) >= 5, yearPages: [2020, 2021, 2022, 2023, 2024, 2025, 2026] },
+  { slug: 'best-broadway-musicals', title: 'Best Broadway Musicals', filter: (s) => isBroadway(s) && s.status === 'open' && s.type === 'musical' && (s.criticScore?.score ?? 0) > 0 && (s.criticScore?.reviewCount ?? 0) >= 5, yearPages: [2020, 2021, 2022, 2023, 2024, 2025, 2026] },
+  { slug: 'best-broadway-plays', title: 'Best Broadway Plays', filter: (s) => isBroadway(s) && s.status === 'open' && s.type === 'play' && (s.criticScore?.score ?? 0) > 0 && (s.criticScore?.reviewCount ?? 0) >= 5, yearPages: [2020, 2021, 2022, 2023, 2024, 2025, 2026] },
   { slug: 'best-broadway-shows-for-kids', title: 'Best Broadway Shows for Kids', filter: (s) => {
     if (!isBroadway(s) || s.status !== 'open') return false;
+    if ((s.criticScore?.score ?? 0) <= 0 || (s.criticScore?.reviewCount ?? 0) < 3) return false;
     const tags = (s.tags || []).map(t => t.toLowerCase());
     const ageRec = (s.ageRecommendation || '').toLowerCase();
     return tags.includes('family') || tags.includes('accessible') || ageRec.includes('ages 6') || ageRec.includes('ages 8') || ageRec.includes('all ages');
@@ -165,13 +166,12 @@ async function generateEditorial(guideDef, shows, monthYear, year) {
 
   const yearContext = year ? ` (specifically shows that opened in ${year})` : '';
 
-  const prompt = `You are writing the editorial introduction for a Broadway guide page titled "${guideDef.title}" for ${monthYear}${yearContext}. This guide features ${shows.length} shows.
+  const prompt = `You are writing the editorial introduction for a Broadway guide page titled "${guideDef.title}" for ${monthYear}${yearContext}.
 
-TOP SHOWS:
+TOP SHOWS (ranked by critic score):
 ${showSummaries}
 
 CONTEXT:
-- ${shows.length} shows featured
 - Average critic score: ${avgScore}/100
 - Current: ${monthYear}
 
@@ -181,8 +181,9 @@ Write a 150-300 word editorial introduction that:
 - Is objective and informative (not promotional)
 - Uses present tense
 - Ends with a forward-looking or actionable sentence
+- NEVER mention a specific number of shows (e.g., "these 10 shows" or "the 21 productions"). The show count changes frequently and will become stale. Use phrases like "the top-rated shows" or "the highest-rated musicals" instead.
 
-Write only the editorial text. Maximum 300 words.`;
+Write only the editorial text. No markdown headings. Maximum 300 words.`;
 
   return callClaudeWithRetry(prompt);
 }

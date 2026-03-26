@@ -15,6 +15,7 @@ set -e
 node scripts/validate-shows-prebuild.js
 node scripts/generate-show-lookup.js
 node scripts/generate-diary-data.js
+node scripts/build-slug-redirects.js
 
 if [ "$SKIP_HEAVY_PREBUILD" = "true" ]; then
   echo "Skipping heavy prebuild (code-only change — committed data files are current)"

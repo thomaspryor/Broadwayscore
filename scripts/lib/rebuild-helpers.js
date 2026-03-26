@@ -474,23 +474,12 @@ function getBestScore(data, opts = {}) {
     }
   }
 
-  // P4b: Existing assignedScore
+  // P4b: Existing assignedScore — score validation already happened, trust it.
+  // Previously gated behind scoreSource/thumb checks, but assignedScore in 1-100
+  // means the review was validated (manually or by pipeline). contentTier=invalid
+  // should prevent re-scoring (via isScoreable) but not exclude from reviews.json.
   if (data.assignedScore && data.assignedScore >= 1 && data.assignedScore <= 100) {
-    const validSources = ['llmScore', 'originalScore', 'bucket', 'thumb',
-                          'llmScore-thumb-validated', 'llmScore-thumb-boosted',
-                          'extracted-grade', 'extracted-rating', 'extracted-unicode-stars',
-                          'extracted-thumbs', 'extracted-strong-positive', 'extracted-strong-negative',
-                          'sentiment-rave', 'sentiment-strong-positive', 'sentiment-positive', 'sentiment-mixed-positive',
-                          'sentiment-mixed', 'sentiment-mixed-negative', 'sentiment-negative',
-                          'sentiment-strong-negative', 'sentiment-pan', 'manual', 'manual-excerpt'];
-
-    if (data.scoreSource && validSources.some(s => data.scoreSource.includes(s))) {
-      return { score: data.assignedScore, source: 'assignedScore' };
-    }
-
-    if (data.dtliThumb || data.bwwThumb || data.originalScore || data.bucket) {
-      return { score: data.assignedScore, source: 'assignedScore' };
-    }
+    return { score: data.assignedScore, source: 'assignedScore' };
   }
 
   // P5: Bucket mapping

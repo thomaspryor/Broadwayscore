@@ -102,7 +102,9 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
 
   // Editorial intro (LLM or fallback) — skip editorial if show count drifted significantly
   const editorial = getGuideEditorial(params.slug, shows.length);
-  const intro = editorial?.intro || interpolateTemplate(config.introFallback, vars);
+  const rawIntro = editorial?.intro || interpolateTemplate(config.introFallback, vars);
+  // Strip markdown heading (e.g., "# Best Broadway Musicals: March 2026\n\n") from LLM-generated editorials
+  const intro = rawIntro.replace(/^#[^\n]*\n+/, '');
 
   // H1
   const h1 = interpolateTemplate(config.h1Template, vars);
@@ -196,7 +198,11 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
 
           {/* Editorial Intro — hidden on empty pages to avoid stale show references */}
           {shows.length > 0 && (
-            <p className="text-gray-300 leading-relaxed text-base sm:text-lg">{intro}</p>
+            <div className="text-gray-300 leading-relaxed text-base sm:text-lg space-y-3">
+              {intro.split('\n\n').filter(Boolean).map((para, i) => (
+                <p key={i}>{para.replace(/\*\*(.*?)\*\*/g, '$1')}</p>
+              ))}
+            </div>
           )}
 
           {/* Meta line */}
@@ -270,12 +276,14 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
 
                     {/* Info */}
                     <div className="flex-1 min-w-0">
-                      <Link
-                        href={`/show/${show.slug}`}
-                        className="font-bold text-white text-base sm:text-lg hover:text-brand transition-colors"
-                      >
-                        {show.title}
-                      </Link>
+                      <h2 className="text-base sm:text-lg font-bold">
+                        <Link
+                          href={`/show/${show.slug}`}
+                          className="text-white hover:text-brand transition-colors"
+                        >
+                          {show.title}
+                        </Link>
+                      </h2>
                       {/* Pills */}
                       <div className="flex items-center gap-1.5 mt-1 flex-wrap">
                         <StatusBadge status={show.status} />
@@ -412,7 +420,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
           {/* Related Guides */}
           {relatedGuides.length > 0 && (
             <div>
-              <h3 className="text-base sm:text-lg font-bold text-white mb-3">Related Guides</h3>
+              <h2 className="text-base sm:text-lg font-bold text-white mb-3">Related Guides</h2>
               <div className="flex flex-wrap gap-2">
                 {relatedGuides.map(guide => (
                   <Link
@@ -430,7 +438,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
           {/* Related Browse Pages */}
           {relatedBrowse.length > 0 && (
             <div>
-              <h3 className="text-base sm:text-lg font-bold text-white mb-3">Browse by Category</h3>
+              <h2 className="text-base sm:text-lg font-bold text-white mb-3">Browse by Category</h2>
               <div className="flex flex-wrap gap-2">
                 {relatedBrowse.map(page => (
                   <Link

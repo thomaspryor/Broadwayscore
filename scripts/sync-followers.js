@@ -22,10 +22,6 @@ const SUBSCRIBERS_PATH = path.join(__dirname, '..', 'data', 'subscribers.json');
 const SUBSCRIBERS_WESTEND_PATH = path.join(__dirname, '..', 'data', 'subscribers-westend.json');
 const DRY_RUN = process.argv.includes('--dry-run');
 
-// Resend segment IDs — mirror subscribers into Resend for Broadcasts API
-const RESEND_SEGMENT_BROADWAY = '472ec5ef-d7cc-4c48-8007-c0a6a302e7a4';
-const RESEND_SEGMENT_WESTEND = '0b17260b-6a72-4a5a-a700-7b7526f18d87';
-
 function loadFollowers() {
   try {
     return JSON.parse(fs.readFileSync(FOLLOWERS_PATH, 'utf8'));
@@ -147,97 +143,105 @@ function postJSON(url, body, headers) { return httpJSON('POST', url, body, heade
 function patchJSON(url, body, headers) { return httpJSON('PATCH', url, body, headers); }
 
 /**
- * Sync a subscriber list into a Resend segment.
- * Upserts all active subscribers and marks removed ones as unsubscribed.
+ * Sync a subscriber list into Buttondown.
+ * Upserts all active subscribers. Marks removed ones as unsubscribed.
+ * Tags are used to distinguish Broadway vs West End subscribers in the single newsletter.
  */
-async function syncResendContacts(subscribers, segmentId, segmentName, resendApiKey) {
-  if (!resendApiKey) {
-    console.log(`  Skipping Resend sync for ${segmentName} (no RESEND_API_KEY)`);
+async function syncButtondownContacts(subscribers, tags, listName, buttondownApiKey) {
+  if (!buttondownApiKey) {
+    console.log(`  Skipping Buttondown sync for ${listName} (no BUTTONDOWN_API_KEY)`);
     return;
   }
 
-  console.log(`\n  Syncing ${subscribers.length} subscribers to Resend segment "${segmentName}"...`);
+  console.log(`\n  Syncing ${subscribers.length} subscribers to Buttondown (${listName})...`);
 
-  // Fetch existing contacts in this segment
-  const existingContacts = new Map(); // email → { id, unsubscribed }
-  let hasMore = true;
-  let after = null;
-
-  while (hasMore) {
-    let url = `https://api.resend.com/segments/${segmentId}/contacts?limit=100`;
-    if (after) url += `&after=${after}`;
-
+  // Fetch all existing Buttondown subscribers (paginated, 1-indexed)
+  const existingContacts = new Map(); // email → { id, type }
+  let page = 1;
+  while (true) {
     try {
-      const result = await fetchJSON(url, { 'Authorization': `Bearer ${resendApiKey}` });
-      const contacts = result.data || [];
-      for (const c of contacts) {
-        existingContacts.set(c.email, { id: c.id, unsubscribed: c.unsubscribed });
+      const result = await fetchJSON(`https://api.buttondown.com/v1/subscribers?page=${page}`, {
+        'Authorization': `Token ${buttondownApiKey}`,
+      });
+      const batch = result.results || [];
+      for (const c of batch) {
+        existingContacts.set(c.email_address.toLowerCase(), { id: c.id, type: c.type, tags: c.tags || [] });
       }
-      hasMore = result.has_more && contacts.length > 0;
-      if (hasMore) after = contacts[contacts.length - 1].id;
+      if (!result.next || batch.length === 0) break;
+      page++;
     } catch (err) {
-      console.error(`  Error fetching Resend contacts: ${err.message}`);
+      console.error(`  Error fetching Buttondown subscribers: ${err.message}`);
       return;
     }
   }
 
-  console.log(`  Found ${existingContacts.size} existing contacts in Resend`);
+  console.log(`  Found ${existingContacts.size} existing contacts in Buttondown`);
 
-  const subscriberSet = new Set(subscribers);
-  let created = 0, resubscribed = 0, unsubscribed = 0, errors = 0;
-
+  const subscriberSet = new Set(subscribers.map(e => e.toLowerCase()));
+  let created = 0, activated = 0, unsubscribed = 0, errors = 0;
   const delay = (ms) => new Promise(r => setTimeout(r, ms));
 
-  // Upsert active subscribers (rate limit: 2 req/sec → 600ms between calls)
+  // Upsert active subscribers
   for (const email of subscribers) {
-    const existing = existingContacts.get(email);
-    if (existing && !existing.unsubscribed) continue; // Already active, skip
-    // If unsubscribed in Resend but present in Formspree: re-activate.
-    // The resend-webhook endpoint keeps Formspree in sync with Resend unsubscribes,
-    // so being in Formspree here means the subscriber actively re-subscribed after
-    // their previous unsubscribe. Safe to re-add them.
+    const emailLower = email.toLowerCase();
+    const existing = existingContacts.get(emailLower);
+
+    if (existing && existing.type === 'regular') continue; // Already active, skip
 
     try {
-      if (existing) {
-        // Re-activate in place — PATCH the existing contact to avoid creating a duplicate record.
-        // POST /contacts creates a NEW contact ID even for existing emails, causing duplicate sends.
-        await patchJSON(`https://api.resend.com/contacts/${existing.id}`, {
-          unsubscribed: false,
-        }, { 'Authorization': `Bearer ${resendApiKey}` });
-        resubscribed++;
-      } else {
-        // New subscriber — create fresh contact
-        await postJSON('https://api.resend.com/contacts', {
-          email,
-          unsubscribed: false,
-          audience_id: segmentId,
-        }, { 'Authorization': `Bearer ${resendApiKey}` });
+      if (existing && existing.type === 'unsubscribed') {
+        // Re-activate unsubscribed contact
+        await patchJSON(`https://api.buttondown.com/v1/subscribers/${existing.id}`, {
+          type: 'regular',
+          tags,
+        }, { 'Authorization': `Token ${buttondownApiKey}` });
+        activated++;
+      } else if (existing && existing.type === 'unactivated') {
+        // Firewall-flagged — patch to regular (no confirmation email sent)
+        await patchJSON(`https://api.buttondown.com/v1/subscribers/${existing.id}`, {
+          type: 'regular',
+          tags,
+        }, { 'Authorization': `Token ${buttondownApiKey}` });
+        activated++;
+      } else if (!existing) {
+        // New subscriber — create with double_opt_in: false (boolean, not string)
+        const result = await postJSON('https://api.buttondown.com/v1/subscribers', {
+          email_address: emailLower,
+          double_opt_in: false,
+          tags,
+        }, { 'Authorization': `Token ${buttondownApiKey}` });
+        // If firewall flagged it as "unactivated", patch to regular immediately
+        if (result.type === 'unactivated') {
+          await patchJSON(`https://api.buttondown.com/v1/subscribers/${result.id}`, {
+            type: 'regular',
+          }, { 'Authorization': `Token ${buttondownApiKey}` });
+        }
         created++;
       }
     } catch (err) {
       errors++;
       if (errors <= 3) console.error(`  Error upserting ${email.replace(/(.{2}).*(@.*)/, '$1***$2')}: ${err.message}`);
     }
-    await delay(1000);
+    await delay(300); // Buttondown rate limit
   }
 
-  // Mark removed subscribers as unsubscribed in Resend
+  // Mark removed subscribers as unsubscribed in Buttondown
   for (const [email, contact] of existingContacts) {
-    if (!subscriberSet.has(email) && !contact.unsubscribed) {
+    if (!subscriberSet.has(email) && contact.type === 'regular') {
       try {
-        await patchJSON(`https://api.resend.com/contacts/${contact.id}`, {
-          unsubscribed: true,
-        }, { 'Authorization': `Bearer ${resendApiKey}` });
+        await patchJSON(`https://api.buttondown.com/v1/subscribers/${contact.id}`, {
+          type: 'unsubscribed',
+        }, { 'Authorization': `Token ${buttondownApiKey}` });
         unsubscribed++;
       } catch (err) {
         errors++;
         if (errors <= 3) console.error(`  Error unsubscribing ${email.replace(/(.{2}).*(@.*)/, '$1***$2')}: ${err.message}`);
       }
-      await delay(1000);
+      await delay(300);
     }
   }
 
-  console.log(`  Resend sync: ${created} created, ${resubscribed} resubscribed, ${unsubscribed} unsubscribed${errors > 0 ? `, ${errors} errors` : ''}`);
+  console.log(`  Buttondown sync (${listName}): ${created} created, ${activated} activated, ${unsubscribed} unsubscribed${errors > 0 ? `, ${errors} errors` : ''}`);
 }
 
 async function main() {
@@ -385,8 +389,8 @@ async function main() {
     fs.writeFileSync(SUBSCRIBERS_PATH, JSON.stringify(subscribersData, null, 2));
     console.log(`Saved ${subscribersList.length} subscribers to ${SUBSCRIBERS_PATH}`);
 
-    // Mirror to Resend segment for Broadcasts API
-    await syncResendContacts(subscribersList, RESEND_SEGMENT_BROADWAY, 'Broadway', process.env.RESEND_API_KEY);
+    // Mirror to Buttondown for Broadcasts (no tag needed — Broadway is the default audience)
+    await syncButtondownContacts(subscribersList, [], 'Broadway', process.env.BUTTONDOWN_API_KEY);
   } else {
     console.log(`(Dry run — would save ${generalSubscribers.size} subscribers)`);
   }
@@ -459,8 +463,8 @@ async function main() {
       fs.writeFileSync(SUBSCRIBERS_WESTEND_PATH, JSON.stringify(weData, null, 2));
       console.log(`Saved ${weList.length} WE subscribers to ${SUBSCRIBERS_WESTEND_PATH}`);
 
-      // Mirror to Resend segment for Broadcasts API
-      await syncResendContacts(weList, RESEND_SEGMENT_WESTEND, 'West End', process.env.RESEND_API_KEY);
+      // Mirror to Buttondown with "west-end" tag for audience filtering
+      await syncButtondownContacts(weList, ['west-end'], 'West End', process.env.BUTTONDOWN_API_KEY);
     } else {
       console.log(`(Dry run — would save ${weSubscribers.size} WE subscribers)`);
     }

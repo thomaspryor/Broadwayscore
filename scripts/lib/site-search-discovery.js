@@ -16,6 +16,7 @@ const https = require('https');
 const http = require('http');
 const { URL } = require('url');
 const { isLondonMarket } = require('./venue-classification');
+const { urlLooksLikeReview } = require('./review-guards');
 
 /**
  * Search endpoint configuration.
@@ -151,9 +152,10 @@ const SITE_SEARCH_ENDPOINTS = {
     name: 'Variety',
     domain: 'variety.com',
     requiresJs: false,
-    // Variety's legit/reviews section page — SSR, lists recent Broadway/theater reviews.
-    // No search endpoint; section page is fast and doesn't require title matching.
-    // URL slug typically contains show title words (e.g. /giant-broadway-review-...).
+    // skipUrlFilter: all extracted URLs are already scoped to /legit/reviews/ (theater reviews only).
+    // urlLooksLikeReview() would reintroduce title-matching and silently drop reviews for shows
+    // whose title words don't appear in the URL slug. Content verifier handles any wrong-show URLs.
+    skipUrlFilter: true,
     fetchAndParse: async (showTitle) => {
       const html = await fetchSSR('https://variety.com/v/legit/reviews/');
       const pattern = /href="(https:\/\/variety\.com\/\d{4}\/legit\/reviews\/[^"]+)"/gi;
@@ -176,8 +178,9 @@ const SITE_SEARCH_ENDPOINTS = {
     domain: 'theatermania.com',
     requiresJs: false,
     // TheaterMania WordPress REST API — category 157 = Reviews (all theater reviews).
-    // Uses date window (openingDate ±3 days) instead of title matching.
-    // Passes openingDate as third param (see searchOutletSite).
+    // Uses date window (openingDate ±3 days) — intentionally wider than RSS (±2 days) because
+    // the API returns few results and TM sometimes publishes previews reviews several days before opening.
+    // Still uses urlLooksLikeReview() (no skipUrlFilter) to narrow the 6-day window to the right show.
     fetchAndParse: async (showTitle, market, openingDate) => {
       // Build date window: openingDate ±3 days
       let afterParam = '';
@@ -357,26 +360,7 @@ function fetchWithScrapingBee(url, timeoutMs = 30000) {
   });
 }
 
-/**
- * Check if a URL looks like a review for the given show title.
- * Filters out tag pages, author pages, ticket links, etc.
- */
-function urlLooksLikeReview(url, showTitle) {
-  const lower = url.toLowerCase();
-  // Reject non-article URLs
-  if (lower.includes('/tag/') || lower.includes('/author/') || lower.includes('/category/')) return false;
-  if (lower.includes('/search') || lower.includes('/page/')) return false;
-  if (lower.includes('ticket') && !lower.includes('review')) return false;
-
-  // Check if URL contains words from show title
-  const titleWords = showTitle.toLowerCase()
-    .replace(/[^a-z0-9\s]/g, '')
-    .split(/\s+/)
-    .filter(w => w.length > 2 && !['the', 'and', 'for'].includes(w));
-
-  const matchCount = titleWords.filter(w => lower.includes(w)).length;
-  return matchCount >= Math.ceil(titleWords.length * 0.5);
-}
+// urlLooksLikeReview imported from ./review-guards (pure function, tested in test-opening-night-fixes.js)
 
 /**
  * Search a single outlet's website for a review.
@@ -414,10 +398,12 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
       const seen = new Set();
       results = [];
       for (const url of urls) {
-        if (!seen.has(url) && urlLooksLikeReview(url, showTitle)) {
-          seen.add(url);
-          results.push({ url, outletId, outlet: config.name, source: 'site-search' });
-        }
+        if (seen.has(url)) continue;
+        // skipUrlFilter: config already scoped results to reviews (e.g. Variety /legit/reviews/).
+        // Applying urlLooksLikeReview() would reintroduce title-matching and drop valid URLs.
+        if (!config.skipUrlFilter && !urlLooksLikeReview(url, showTitle)) continue;
+        seen.add(url);
+        results.push({ url, outletId, outlet: config.name, source: 'site-search' });
       }
     } else {
       // Standard fetch + regex path

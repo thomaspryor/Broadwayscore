@@ -1,28 +1,22 @@
 {
-  "totalCandidates": 23,
-  "cdxFound": 8,
-  "cdxNotFound": 8,
-  "recovered": 6,
+  "totalCandidates": 7,
+  "cdxFound": 3,
+  "cdxNotFound": 2,
+  "recovered": 1,
   "recoveredByTier": {
-    "1": 1,
+    "1": 0,
     "2": 0,
-    "3": 5
+    "3": 1
   },
   "recoveredByDomain": {
-    "timeout.com": 1,
-    "lightingandsoundamerica.com": 1,
-    "independent.co.uk": 1,
-    "londontheatre.co.uk": 1,
-    "standard.co.uk": 2
+    "whatsonstage.com": 1
   },
-  "tooShort": 0,
+  "tooShort": 5,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 6,
-  "notInArchive": 8,
-  "domainSkipped": 1,
-  "circuitBrokenDomains": [
-    "lightingandsoundamerica.com"
-  ]
+  "errors": 2,
+  "notInArchive": 2,
+  "domainSkipped": 0,
+  "circuitBrokenDomains": []
 }

@@ -94,6 +94,7 @@ const { resolveOutletFromUrl, getOutletDisplayName } = require('./lib/review-nor
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { shouldSkipScoredReview } = require('./lib/review-guards');
 
 // Domain-specific tier ordering — prioritizes tiers by historical success rate per domain.
 // Generated from 30K+ review collection results. Tiers not listed for a domain stay in default order.
@@ -5100,7 +5101,7 @@ function findReviewsToProcess() {
           // appears in failedFetches. Re-collection can destroy live scored reviews by fetching garbage
           // and triggering LLM rejection flags that null fullText and delete assignedScore.
           // Override: explicit reviewFilter (specific file targeting) bypasses this guard.
-          if (data.assignedScore >= 1 && data.assignedScore <= 100 && textLen >= 100 && CONFIG.reviewFilter.size === 0) {
+          if (shouldSkipScoredReview(data, CONFIG.reviewFilter.size)) {
             continue;
           }
         }

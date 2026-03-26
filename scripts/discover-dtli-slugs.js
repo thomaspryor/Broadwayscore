@@ -16,6 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { pickBestDtliSlug } = require('./lib/review-guards');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const SLUG_MAP_PATH = path.join(__dirname, '..', 'data', 'dtli-slug-map.json');
@@ -404,27 +405,12 @@ async function main() {
       continue;
     }
 
-    let best = candidates[0];
-    if (candidates.length > 1) {
-      const showYearMatch = showId.match(/-(\d{4})$/);
-      const showYear = showYearMatch ? parseInt(showYearMatch[1]) : null;
-
-      if (showYear) {
-        // Revival show: prefer DTLI slug with numeric suffix; among those, pick the
-        // highest number (most recent production). If no numeric suffix exists, keep bare.
-        const withSuffix = candidates.filter(c => /-\d+$/.test(c.dtliSlug));
-        if (withSuffix.length > 0) {
-          // Pick highest numeric suffix
-          best = withSuffix.sort((a, b) => {
-            const nA = parseInt((a.dtliSlug.match(/-(\d+)$/) || [0, 0])[1]);
-            const nB = parseInt((b.dtliSlug.match(/-(\d+)$/) || [0, 0])[1]);
-            return nB - nA;
-          })[0];
-          if (best.dtliSlug !== candidates[0].dtliSlug) {
-            console.log(`  ⚡ Revival preference: ${showId} → ${best.dtliSlug} (over ${candidates.map(c => c.dtliSlug).filter(s => s !== best.dtliSlug).join(', ')})`);
-          }
-        }
-      }
+    // Revival preference: for shows with a year suffix (e.g. giant-2026), pick the DTLI slug
+    // with the highest numeric suffix (e.g. giant-2 over giant). Logic lives in review-guards.js.
+    const bestSlug = pickBestDtliSlug(showId, candidates.map(c => c.dtliSlug));
+    let best = candidates.find(c => c.dtliSlug === bestSlug) || candidates[0];
+    if (best.dtliSlug !== candidates[0].dtliSlug) {
+      console.log(`  ⚡ Revival preference: ${showId} → ${best.dtliSlug} (over ${candidates.map(c => c.dtliSlug).filter(s => s !== best.dtliSlug).join(', ')})`);
     }
 
     allMatches[showId] = best;

@@ -67,7 +67,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     metaTitleTemplate: 'Best Broadway Musicals {monthYear} | Top-Rated Shows',
     metaDescriptionTemplate: 'The {count} highest-rated Broadway musicals playing now in {monthYear}. See which musicals critics love most, with scores and ticket info.',
     introFallback: 'Broadway musicals represent the pinnacle of theatrical entertainment. These {count} productions are the highest-rated musicals currently playing, ranked by aggregated critic reviews from major outlets.',
-    filter: (show) => show.status === 'open' && show.type === 'musical',
+    filter: (show) => show.status === 'open' && show.type === 'musical' && (show.criticScore?.score ?? 0) > 0 && (show.criticScore?.reviewCount ?? 0) >= 5,
     sort: 'score',
     relatedGuides: ['best-broadway-shows', 'best-broadway-plays', 'cheap-broadway-tickets'],
     relatedBrowse: ['jukebox-musicals-on-broadway', 'best-broadway-revivals'],
@@ -81,7 +81,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     metaTitleTemplate: 'Best Broadway Plays {monthYear} | Top Dramatic Theater',
     metaDescriptionTemplate: 'The {count} best Broadway plays to see in {monthYear}. Top-rated dramas and comedies ranked by professional critic reviews.',
     introFallback: 'Broadway plays offer powerful dramatic experiences. These {count} productions are the highest-rated plays currently running, from gripping dramas to sharp comedies.',
-    filter: (show) => show.status === 'open' && show.type === 'play',
+    filter: (show) => show.status === 'open' && show.type === 'play' && (show.criticScore?.score ?? 0) > 0 && (show.criticScore?.reviewCount ?? 0) >= 5,
     sort: 'score',
     relatedGuides: ['best-broadway-shows', 'best-broadway-musicals', 'broadway-shows-closing-soon'],
     relatedBrowse: ['best-broadway-dramas', 'best-broadway-comedies'],
@@ -97,6 +97,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     introFallback: 'Looking for the perfect Broadway show for your family? These {count} productions are age-appropriate, engaging, and perfect for introducing children to live theater.',
     filter: (show) => {
       if (show.status !== 'open') return false;
+      if ((show.criticScore?.score ?? 0) <= 0 || (show.criticScore?.reviewCount ?? 0) < 3) return false;
       const tags = show.tags?.map(t => t.toLowerCase()) || [];
       const ageRec = show.ageRecommendation?.toLowerCase() || '';
       return tags.includes('family') ||
