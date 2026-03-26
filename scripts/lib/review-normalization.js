@@ -511,9 +511,35 @@ function mergeReviews(existing, incoming) {
     }
   }
 
-  // Prefer valid URLs
-  if (incoming.url && (!existing.url || existing.url.includes('undefined'))) {
+  // Prefer valid URLs — and when URL changes, clear stale content flags.
+  // This handles preview-article stubs being replaced by real review URLs.
+  const urlChanged = incoming.url && existing.url
+    && normalizeUrl(incoming.url) !== normalizeUrl(existing.url);
+  if (incoming.url && (!existing.url || existing.url.includes('undefined') || urlChanged)) {
     merged.url = incoming.url;
+    if (urlChanged) {
+      // URL fundamentally changed — old content flags are stale
+      if (incoming.publishDate) merged.publishDate = incoming.publishDate;
+      delete merged.wrongProduction;
+      delete merged.wrongProductionNote;
+      delete merged.wrongArticle;
+      delete merged.wrongShow;
+      delete merged.wrongShowNote;
+      delete merged.wrongShowAutoCleared;
+      // Reset content state so text collection re-fetches from the new URL
+      if (merged.contentTier === 'invalid' || merged.contentTier === 'stub') {
+        delete merged.contentTier;
+        delete merged.contentTierReason;
+      }
+      if (merged.contentVerification) {
+        delete merged.contentVerification;
+      }
+      delete merged.rejectedBy;
+      delete merged.rejectionReason;
+      delete merged.rejectionReasoning;
+      merged.urlUpdatedFrom = existing.url;
+      merged.urlUpdatedAt = new Date().toISOString();
+    }
   }
 
   // Keep all excerpts (decode entities on incoming)
@@ -561,10 +587,14 @@ function mergeReviews(existing, incoming) {
   // Clear wrongProduction if incoming data has a valid URL and the flag
   // was auto-set (no manual note). This allows venue transfers to self-heal
   // when new aggregator data arrives with a correct URL for the current production.
+  const isAutoSetWrongProd = !merged.wrongProductionNote
+    || merged.wrongProductionNote.startsWith('Same URL')
+    || merged.wrongProductionNote.startsWith('Dateless show')
+    || merged.wrongProductionNote.startsWith('Date guard')
+    || merged.wrongProductionNote.startsWith('Pre-opening guard');
   if (merged.wrongProduction && incoming.url && incoming.url.startsWith('http')
       && !merged.wrongProductionManualClear
-      && (!merged.wrongProductionNote || merged.wrongProductionNote.startsWith('Same URL')
-          || merged.wrongProductionNote.startsWith('Dateless show'))) {
+      && isAutoSetWrongProd) {
     delete merged.wrongProduction;
     delete merged.wrongProductionNote;
     merged.wrongProductionAutoCleared = true;
