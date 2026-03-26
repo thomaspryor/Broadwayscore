@@ -432,6 +432,21 @@ async function extractAndWriteScheduleData(html) {
     return;
   }
 
+  // Filter out closed/announced shows (BWayRush sometimes returns stale entries)
+  const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const ACTIVE_STATUSES = new Set(['open', 'previews', 'upcoming']);
+  let removedSchedules = 0;
+  for (const showId of Object.keys(scheduleShows)) {
+    const show = showsData.shows.find(s => s.id === showId);
+    if (show && !ACTIVE_STATUSES.has(show.status)) {
+      delete scheduleShows[showId];
+      removedSchedules++;
+    }
+  }
+  if (removedSchedules > 0) {
+    console.log(`[Schedule] Removed ${removedSchedules} non-active shows from schedules`);
+  }
+
   // Write schedule data (overwrite entirely — always trust source of truth)
   const output = {
     lastUpdated: new Date().toISOString(),
@@ -1162,6 +1177,11 @@ function normalizeUrl(url) {
   if (!/^https?:\/\//i.test(url)) {
     url = 'https://' + url;
   }
+  // Normalize domain to lowercase (paths may be case-sensitive)
+  try {
+    const parsed = new URL(url);
+    url = parsed.protocol + '//' + parsed.host.toLowerCase() + parsed.pathname + parsed.search + parsed.hash;
+  } catch { /* keep as-is if unparseable */ }
   return url;
 }
 
@@ -1251,6 +1271,13 @@ function sanitizeData(existing) {
         }
       }
 
+      // Clean up null/empty sub-fields
+      for (const k of Object.keys(show[field])) {
+        if (show[field][k] === null || show[field][k] === '') {
+          delete show[field][k];
+        }
+      }
+
       // Auto-populate URL from known platform when missing
       if (show[field].platform && !show[field].url) {
         const PLATFORM_URLS = {
@@ -1281,6 +1308,22 @@ function sanitizeData(existing) {
           delete show.rush;
           fixes.push(`${showId}: Removed duplicate rush (same as digitalRush, ${show.digitalRush.platform} $${show.digitalRush.price})`);
         }
+      }
+    }
+
+    // --- Deduplicate lottery/digitalRush with same platform+price ---
+    if (show.lottery && show.digitalRush) {
+      const samePlatform = show.lottery.platform && show.digitalRush.platform &&
+        show.lottery.platform.toLowerCase() === show.digitalRush.platform.toLowerCase();
+      const sameUrl = show.lottery.url && show.digitalRush.url &&
+        show.lottery.url.toLowerCase() === show.digitalRush.url.toLowerCase();
+      if ((samePlatform || sameUrl) && show.lottery.price === show.digitalRush.price) {
+        // Keep lottery (primary), merge any extra fields from digitalRush
+        for (const k of ['time', 'instructions']) {
+          if (show.digitalRush[k] && !show.lottery[k]) show.lottery[k] = show.digitalRush[k];
+        }
+        delete show.digitalRush;
+        fixes.push(`${showId}: Removed duplicate digitalRush (same as lottery, $${show.lottery.price})`);
       }
     }
 
