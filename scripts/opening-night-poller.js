@@ -48,6 +48,7 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const { normalizeOutlet } = require('./lib/review-normalization');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { extractReviews: extractTheatreReviews } = require('./scrape-theatre-reviews');
+const { matchTitleToShow } = require('./lib/show-matching');
 
 // Paths
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -785,13 +786,12 @@ async function runAggregators(show) {
             });
             await page.waitForTimeout(3000);
 
-            const titleLower = show.title.toLowerCase().replace(/['']/g, "'");
-
             // Extract all roundup links and find one matching our show title
+            // Uses matchTitleToShow (same fuzzy matching as weekly scraper) for robustness
             const allLinks = await page.$$eval('a[href*="/review-round-ups/"]', (anchors) => {
               return anchors.map(a => ({
                 href: a.href,
-                text: a.textContent.trim().toLowerCase(),
+                text: a.textContent.trim(),
               })).filter(l =>
                 l.href.includes('-review-round-up') &&
                 !l.href.endsWith('/review-round-ups') &&
@@ -799,16 +799,26 @@ async function runAggregators(show) {
               );
             });
 
-            // Match by checking if the show title appears in the link text or URL slug
-            const titleWords = titleLower.split(/\s+/).filter(w => w.length > 2);
             let roundupUrl = null;
             for (const link of allLinks) {
-              const linkText = link.text.replace(/['']/g, "'");
-              // Check if most title words appear in the link text
-              const matchCount = titleWords.filter(w => linkText.includes(w)).length;
-              if (matchCount >= Math.ceil(titleWords.length * 0.7)) {
+              // Try matching link text against our show
+              const textMatch = matchTitleToShow(link.text, [show], { market: 'west-end' });
+              if (textMatch && textMatch.show) {
                 roundupUrl = link.href;
                 break;
+              }
+              // Also try extracting title from URL slug (strips venue info like the weekly scraper)
+              const slug = link.href.match(/review-round-ups\/(.+?)(?:-review-round-up)?\/?$/)?.[1] || '';
+              const slugTitle = slug
+                .replace(/-review-round-up$/, '')
+                .replace(/-at-the-.*$/, '').replace(/-at-.*$/, '')
+                .split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+              if (slugTitle) {
+                const slugMatch = matchTitleToShow(slugTitle, [show], { market: 'west-end' });
+                if (slugMatch && slugMatch.show) {
+                  roundupUrl = link.href;
+                  break;
+                }
               }
             }
 
