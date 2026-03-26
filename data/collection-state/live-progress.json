@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-03-26T20:23:45.741Z",
-  "processed": 231,
-  "failed": 1183,
+  "updatedAt": "2026-03-26T20:30:31.173Z",
+  "processed": 232,
+  "failed": 1192,
   "successRate": "16.3%",
   "tierBreakdown": {
     "playwright": 103,
@@ -10,33 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 18,
     "brightdata": 66,
-    "archiveToday": 95,
-    "archive": 35
+    "archiveToday": 100,
+    "archive": 36
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-26T14:15:12.298Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-03-26T14:15:34.157Z",
-      "event": "bb-session",
-      "session": "2551d16c",
-      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/9-5-musical-theater-revie"
-    },
-    {
-      "t": "2026-03-26T14:15:35.462Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-26T14:15:49.529Z",
-      "event": "bb-session",
-      "session": "327d89e8",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/waiting-for-godot-broadway-revi"
-    },
     {
       "t": "2026-03-26T14:15:50.881Z",
       "event": "bb-cookie-inject",
@@ -124,6 +102,28 @@
       "t": "2026-03-26T19:42:54.802Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-26T20:25:37.896Z",
+      "event": "bb-session",
+      "session": "459b5859",
+      "url": "https://www.thestage.co.uk/reviews/hold-on-to-your-butts-review-arcola-theatre-d"
+    },
+    {
+      "t": "2026-03-26T20:25:38.931Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-26T20:27:53.062Z",
+      "event": "bb-session",
+      "session": "ae7c6f68",
+      "url": "https://www.thestage.co.uk/reviews/the-other-place-review-lyttelton-theatre-nati"
+    },
+    {
+      "t": "2026-03-26T20:27:54.269Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
