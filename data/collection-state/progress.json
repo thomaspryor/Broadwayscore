@@ -262,7 +262,9 @@
     "the-importance-of-being-earnest-2011/theatermania--charles-isherwood.json",
     "colin-quinn-long-story-short-2010/variety--marilyn-stasio.json",
     "rain-2010/unscripted-takes--brett-burger.json",
-    "promises-promises-2010/variety--david-rooney.json"
+    "promises-promises-2010/variety--david-rooney.json",
+    "sondheim-on-sondheim-2010/variety--charles-isherwood.json",
+    "sondheim-on-sondheim-2010/village-voice--michael-feingold.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -1252,7 +1254,15 @@
     "enron-2010/backstage--erik-haagensen.json",
     "fences-2010/backstage--erik-haagensen.json",
     "promises-promises-2010/new-jersey-newsroom--michael-sommers.json",
-    "sondheim-on-sondheim-2010/northjerseycom--robert-feldberg.json"
+    "sondheim-on-sondheim-2010/northjerseycom--robert-feldberg.json",
+    "la-cage-aux-folles-2010/new-jersey-newsroom--michael-sommers.json",
+    "la-cage-aux-folles-2010/backstage--david-sheward.json",
+    "la-cage-aux-folles-2010/times-uk--clive-davis.json",
+    "million-dollar-quartet-2010/ny1--roma-torre.json",
+    "million-dollar-quartet-2010/backstage--david-sheward.json",
+    "the-addams-family-2010/backstage--erik-haagensen.json",
+    "lend-me-a-tenor-2010/new-jersey-newsroom--michael-sommers.json",
+    "lend-me-a-tenor-2010/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1380,7 +1390,9 @@
       "data/review-texts/colin-quinn-long-story-short-2010/variety--marilyn-stasio.json",
       "colin-quinn-long-story-short-2010/variety--marilyn-stasio.json",
       "data/review-texts/promises-promises-2010/variety--david-rooney.json",
-      "promises-promises-2010/variety--david-rooney.json"
+      "promises-promises-2010/variety--david-rooney.json",
+      "data/review-texts/sondheim-on-sondheim-2010/variety--charles-isherwood.json",
+      "sondheim-on-sondheim-2010/variety--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1834,11 +1846,12 @@
       "the-nance-2013/timeout--adam-feldman.json",
       "matilda-the-musical-2013/telegraph--unknown.json",
       "hands-on-a-hardbody-2013/vulture--york-magazine.json",
-      "newsies-the-musical-2012/matinee-radio--jamie-griffiths.json"
+      "newsies-the-musical-2012/matinee-radio--jamie-griffiths.json",
+      "sondheim-on-sondheim-2010/village-voice--michael-feingold.json"
     ]
   },
   "startTime": "2026-03-25T09:08:12.319Z",
-  "lastProcessed": "sondheim-on-sondheim-2010/northjerseycom--robert-feldberg.json",
+  "lastProcessed": "lend-me-a-tenor-2010/backstage--david-sheward.json",
   "log": [
     {
       "t": "2026-03-25T09:10:15.724Z",
@@ -2494,6 +2507,17 @@
       "t": "2026-03-26T06:43:50.848Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-26T06:44:08.603Z",
+      "event": "bb-session",
+      "session": "b799f4e3",
+      "url": "https://variety.com/2010/legit/reviews/sondheim-on-sondheim-1117942391/"
+    },
+    {
+      "t": "2026-03-26T06:44:09.555Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

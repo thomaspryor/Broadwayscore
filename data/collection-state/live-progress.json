@@ -1,32 +1,20 @@
 {
-  "updatedAt": "2026-03-26T06:44:07.691Z",
-  "processed": 263,
-  "failed": 988,
+  "updatedAt": "2026-03-26T06:46:20.884Z",
+  "processed": 265,
+  "failed": 996,
   "successRate": "21.0%",
   "tierBreakdown": {
     "playwright": 96,
     "amp": 0,
-    "browserbase": 25,
+    "browserbase": 27,
     "directCookies": 0,
     "scrapingbee": 2,
     "brightdata": 98,
     "archiveToday": 332,
-    "archive": 13
+    "archive": 14
   },
-  "browserbaseSessions": 23,
+  "browserbaseSessions": 24,
   "recentActivity": [
-    {
-      "t": "2026-03-26T06:15:06.816Z",
-      "event": "bb-session",
-      "session": "301c08ea",
-      "url": "https://scheckonthearts.com/blog2.php/2011/03/23/review-john-leguizamo-s-ligghet"
-    },
-    {
-      "t": "2026-03-26T06:16:34.877Z",
-      "event": "bb-session",
-      "session": "e90369c6",
-      "url": "https://www.northjersey.com/arts_entertainment/118346804_Theater_review__Priscil"
-    },
     {
       "t": "2026-03-26T06:16:35.877Z",
       "event": "bb-cookie-inject",
@@ -125,6 +113,17 @@
       "t": "2026-03-26T06:43:50.848Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-26T06:44:08.603Z",
+      "event": "bb-session",
+      "session": "b799f4e3",
+      "url": "https://variety.com/2010/legit/reviews/sondheim-on-sondheim-1117942391/"
+    },
+    {
+      "t": "2026-03-26T06:44:09.555Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
