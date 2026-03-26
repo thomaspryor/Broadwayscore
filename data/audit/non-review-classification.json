@@ -1,27 +1,38 @@
 {
   "meta": {
-    "generatedAt": "2026-03-26T08:21:36.472Z",
+    "generatedAt": "2026-03-26T08:31:53.393Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 33196,
-      "inReviewsJson": 15955,
+      "totalFiles": 33197,
+      "inReviewsJson": 15964,
       "skippedExcluded": 75,
-      "withFullText": 21,
-      "excerptOnly": 1343,
-      "llmClassified": 20,
+      "withFullText": 23,
+      "excerptOnly": 1350,
+      "llmClassified": 22,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 0,
+      "nonReviewsFound": 1,
       "uncertainCases": 20,
-      "budgetUsed": 0.0021000000000000003,
-      "llmCalls": 21,
+      "budgetUsed": 0.0023,
+      "llmCalls": 23,
       "rateLimitHits": 0,
       "errors": 1,
       "skippedAlreadyClassified": 14516
     },
     "calibration": null
   },
-  "nonReviews": [],
+  "nonReviews": [
+    {
+      "file": "les-miserables-1987/latimes--steve-zeitchik.json",
+      "showId": "les-miserables-1987",
+      "outlet": "LA Times",
+      "outletId": "latimes",
+      "contentType": "preview",
+      "confidence": "high",
+      "reasoning": "This article describes the premiere screening of the 'Les Miserables' film adaptation and the audience reception, but it does not offer a critical evaluation or opinion on the quality of the production itself. It mentions that reviews will come later.",
+      "currentScore": 71
+    }
+  ],
   "uncertainCases": [
     {
       "file": "an-american-in-paris-2015/talkinbroadway--matthew-murray.json",
@@ -40,7 +51,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and themes of \"Eclipsed\" and provides historical context, but it does not offer a critical evaluation or opinion about the quality of the production. The truncated portion contains unrelated theater news.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -50,7 +61,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show like Fences.",
+      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show like \"Fences.\"",
       "currentScore": 82
     },
     {
@@ -60,7 +71,7 @@
       "outletId": "bloomberg",
       "contentType": "news",
       "confidence": "medium",
-      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and its pre-Broadway run, with a brief mention of \"First Date\" only in photo captions. It does not offer a critical evaluation of \"First Date.\"",
+      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in photo captions, indicating it's not a review of the latter.",
       "currentScore": 57
     },
     {
@@ -70,7 +81,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, including \"Broadway news updates\" and \"Music album reviews,\" but it does not contain any evaluative content about a specific show.",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and other general theater topics.",
       "currentScore": 62
     },
     {
@@ -80,7 +91,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical 'Groundhog Day' and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
       "currentScore": 81
     },
     {
@@ -90,7 +101,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and advertisements related to theater, not a review of a specific show.",
+      "reasoning": "This appears to be a list of links and advertisements related to theater, not a review of a specific show.",
       "currentScore": 78
     },
     {
@@ -100,7 +111,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of various cultural events.",
+      "reasoning": "The article is a 'Goings On' newsletter, which is a roundup of various cultural events and recommendations. While 'Liberation' is mentioned in the title, there is no evaluative content about the show itself in the provided text.",
       "currentScore": 88
     },
     {
@@ -140,7 +151,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated, but the available text suggests it is a news article or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
+      "reasoning": "The article appears to be truncated, but the available text seems to be a news snippet or advertisement for a WSJ subscription, rather than a review of 'Parade'.",
       "currentScore": 78
     },
     {
@@ -150,7 +161,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of categories and links related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -160,7 +171,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's a feature piece.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the history and impact of Hal Prince's work.",
       "currentScore": 83
     },
     {
@@ -170,7 +181,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -190,7 +201,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's closest to news due to the mention of updates.",
+      "reasoning": "This appears to be a list of theater-related links and search terms, not a review of a specific production.",
       "currentScore": 78
     },
     {
@@ -200,7 +211,7 @@
       "outletId": "vulture",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the set design and the playwright's intentions, but does not offer an evaluation or recommendation of the show itself. It reads more like a feature piece about the play's themes and context.",
+      "reasoning": "The article describes the set design and the playwright's intentions, but it does not offer an evaluation or opinion on the quality of the production itself. It reads more like a feature piece exploring the themes and design elements of the play.",
       "currentScore": 64
     },
     {
@@ -210,7 +221,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of links and categories related to theater, rather than a review of a specific production.",
+      "reasoning": "The provided text is a list of links and search terms, not an article. It does not contain any evaluative content about 'Three Tall Women' or any other show.",
       "currentScore": 89
     },
     {
@@ -220,11 +231,19 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" and mentions its autobiographical elements, but it does not offer a critical evaluation or opinion on the quality of the production itself. It reads more like a preview or feature piece introducing the play.",
+      "reasoning": "This article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It mentions the play's autobiographical nature and the themes it explores, but it doesn't provide a review or recommendation.",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
-  "reviewsConfirmed": [],
-  "perShowSummary": []
+  "reviewsConfirmed": [
+    "jersey-boys-2005/variety--charles-isherwood.json"
+  ],
+  "perShowSummary": [
+    {
+      "showId": "les-miserables-1987",
+      "currentCount": 1,
+      "removed": 1
+    }
+  ]
 }
