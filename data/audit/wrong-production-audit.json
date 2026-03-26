@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-26T13:36:18.551Z",
+  "timestamp": "2026-03-26T13:59:39.146Z",
   "stats": {
     "totalReviews": 32510,
     "alreadyFlagged": 11177,
-    "dateGuardCatches": 143,
+    "dateGuardCatches": 144,
     "directorMismatch": 960,
     "tvFilmSignals": 3451,
     "londonSignals": 1043,
     "offBroadwaySignals": 1007,
     "yearMismatch": 71,
-    "noPublishDate": 6706
+    "noPublishDate": 6705
   },
   "findings": [
     {
@@ -79891,6 +79891,17 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "teeth-n-smiles-west-end-2026",
+      "file": "standard--unknown.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 37d before show (2026-02-04 vs 2026-03-13)"
         }
       ]
     },
