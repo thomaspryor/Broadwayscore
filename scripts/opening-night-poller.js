@@ -689,15 +689,6 @@ async function runAggregators(show) {
           const { chromium } = require('playwright');
           const https = require('https');
 
-          // Construct roundup URL from show title
-          const titleSlug = show.title
-            .toLowerCase()
-            .replace(/['']/g, '')
-            .replace(/[^a-z0-9]+/g, '-')
-            .replace(/^-|-$/g, '');
-          const roundupUrl = `https://www.thestage.co.uk/review-round-ups/${titleSlug}-review-round-up`;
-          console.log(`  The Stage: trying ${roundupUrl}`);
-
           // Create BrowserBase session
           const bbApiKey = process.env.BROWSERBASE_API_KEY;
           const bbProjectId = process.env.BROWSERBASE_PROJECT_ID;
@@ -712,11 +703,18 @@ async function runAggregators(show) {
             }, (res) => {
               let d = '';
               res.on('data', c => d += c);
-              res.on('end', () => resolve(JSON.parse(d)));
+              res.on('end', () => {
+                try { resolve(JSON.parse(d)); }
+                catch (e) { reject(new Error(`BrowserBase API returned non-JSON: ${d.slice(0, 200)}`)); }
+              });
             });
             req.on('error', reject);
             req.end(sessionBody);
           });
+
+          if (!session || !session.id) {
+            throw new Error(`BrowserBase session creation failed: ${JSON.stringify(session).slice(0, 200)}`);
+          }
 
           const connectUrl = `wss://connect.browserbase.com?apiKey=${bbApiKey}&sessionId=${session.id}`;
           const browser = await chromium.connectOverCDP(connectUrl);
@@ -724,73 +722,121 @@ async function runAggregators(show) {
             const context = browser.contexts()[0] || await browser.newContext();
             const page = context.pages()[0] || await context.newPage();
 
-            // Login to The Stage
             const stageEmail = process.env.THESTAGE_EMAIL;
             const stagePassword = process.env.THESTAGE_PASSWORD;
 
-            // Navigate to the roundup URL first (login form appears inline on paywalled pages)
-            await page.goto(roundupUrl, { waitUntil: 'networkidle', timeout: 30000 });
+            // Step 1: Login via the roundups listing page (same approach as scrape-thestage-roundups.js)
+            console.log('  The Stage: logging in...');
+            await page.goto('https://www.thestage.co.uk/review-round-ups/review-round-ups', {
+              waitUntil: 'networkidle', timeout: 30000,
+            });
             await page.waitForTimeout(5000);
 
-            // Check if page exists (not 404)
-            const pageTitle = await page.title();
-            if (pageTitle.toLowerCase().includes('page not found') || pageTitle.toLowerCase().includes('404')) {
-              console.log('  The Stage: roundup page not found (404)');
-            } else {
-              // Dismiss cookie consent if present
-              const cookieBtn = await page.$('button:has-text("Accept All Cookies"), button:has-text("Accept All"), button:has-text("Accept")');
-              if (cookieBtn) {
-                const v = await cookieBtn.isVisible().catch(() => false);
-                if (v) { await cookieBtn.click(); await page.waitForTimeout(1000); }
-              }
+            // Dismiss cookie consent if present
+            const cookieBtn = await page.$('button:has-text("Accept All Cookies"), button:has-text("Accept All"), button:has-text("Accept")');
+            if (cookieBtn) {
+              const v = await cookieBtn.isVisible().catch(() => false);
+              if (v) { await cookieBtn.click(); await page.waitForTimeout(1000); }
+            }
 
-              // Check if paywalled — look for login form
-              await page.waitForSelector('input[name="email"], input[type="email"]', { timeout: 5000 }).catch(() => {});
-              const emailInputs = await page.$$('input[type="text"][name="email"], input[type="email"], input[name="email"]');
-              let emailInput = null;
-              for (const inp of emailInputs) {
-                if (await inp.isVisible().catch(() => false)) { emailInput = inp; break; }
-              }
+            // Find and fill login form
+            await page.waitForSelector('input[name="email"], input[type="email"]', { timeout: 10000 }).catch(() => {});
+            const emailInputs = await page.$$('input[type="text"][name="email"], input[type="email"], input[name="email"]');
+            let emailInput = null;
+            for (const inp of emailInputs) {
+              if (await inp.isVisible().catch(() => false)) { emailInput = inp; break; }
+            }
 
-              if (emailInput) {
-                // Fill login form
-                await emailInput.click();
-                await emailInput.type(stageEmail, { delay: 30 });
+            if (emailInput) {
+              await emailInput.click();
+              await emailInput.type(stageEmail, { delay: 30 });
+              await page.waitForTimeout(500);
+
+              const passInputs = await page.$$('input[type="password"]');
+              let passInput = null;
+              for (const inp of passInputs) {
+                if (await inp.isVisible().catch(() => false)) { passInput = inp; break; }
+              }
+              if (passInput) {
+                await passInput.click();
+                await passInput.type(stagePassword, { delay: 30 });
                 await page.waitForTimeout(500);
 
-                const passInputs = await page.$$('input[type="password"]');
-                let passInput = null;
-                for (const inp of passInputs) {
-                  if (await inp.isVisible().catch(() => false)) { passInput = inp; break; }
+                const submitBtns = await page.$$('button:has-text("Login"), input[type="submit"]');
+                let submitBtn = null;
+                for (const btn of submitBtns) {
+                  if (await btn.isVisible().catch(() => false)) { submitBtn = btn; break; }
                 }
-                if (passInput) {
-                  await passInput.click();
-                  await passInput.type(stagePassword, { delay: 30 });
-                  await page.waitForTimeout(500);
+                if (submitBtn) await submitBtn.click();
+                else await page.keyboard.press('Enter');
 
-                  const submitBtns = await page.$$('button:has-text("Login"), input[type="submit"]');
-                  let submitBtn = null;
-                  for (const btn of submitBtns) {
-                    if (await btn.isVisible().catch(() => false)) { submitBtn = btn; break; }
-                  }
-                  if (submitBtn) await submitBtn.click();
-                  else await page.keyboard.press('Enter');
-
-                  await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
-                  await page.waitForTimeout(5000);
-                }
+                await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+                await page.waitForTimeout(5000);
+                console.log('  The Stage: login submitted');
               }
+            } else {
+              console.log('  The Stage: no login form found, continuing (may already be logged in)');
+            }
 
-              // Get page content
+            // Step 2: Navigate to listing and discover the roundup URL for this show
+            // Stage URLs are unpredictable (include venue, creative team) — must discover, not construct
+            await page.goto('https://www.thestage.co.uk/review-round-ups/review-round-ups', {
+              waitUntil: 'networkidle', timeout: 30000,
+            });
+            await page.waitForTimeout(3000);
+
+            const titleLower = show.title.toLowerCase().replace(/['']/g, "'");
+
+            // Extract all roundup links and find one matching our show title
+            const allLinks = await page.$$eval('a[href*="/review-round-ups/"]', (anchors) => {
+              return anchors.map(a => ({
+                href: a.href,
+                text: a.textContent.trim().toLowerCase(),
+              })).filter(l =>
+                l.href.includes('-review-round-up') &&
+                !l.href.endsWith('/review-round-ups') &&
+                !l.href.includes('/review-round-ups/review-round-ups')
+              );
+            });
+
+            // Match by checking if the show title appears in the link text or URL slug
+            const titleWords = titleLower.split(/\s+/).filter(w => w.length > 2);
+            let roundupUrl = null;
+            for (const link of allLinks) {
+              const linkText = link.text.replace(/['']/g, "'");
+              // Check if most title words appear in the link text
+              const matchCount = titleWords.filter(w => linkText.includes(w)).length;
+              if (matchCount >= Math.ceil(titleWords.length * 0.7)) {
+                roundupUrl = link.href;
+                break;
+              }
+            }
+
+            if (!roundupUrl) {
+              console.log(`  The Stage: no matching roundup found on listing page (${allLinks.length} links checked)`);
+            } else {
+              console.log(`  The Stage: found roundup → ${roundupUrl}`);
+
+              // Step 3: Fetch the roundup page
+              await page.goto(roundupUrl, { waitUntil: 'networkidle', timeout: 30000 });
+              await page.waitForTimeout(3000);
+
               tsHtml = await page.content();
 
-              // Archive the fetched HTML for future use
-              if (tsHtml && tsHtml.length > 1000) {
+              // Guard: don't archive paywalled/truncated content
+              // Real roundups have star ratings (★ or *) in the content
+              const hasStars = tsHtml && (tsHtml.includes('★') || /\*{2,5}/.test(tsHtml));
+              const hasPaywall = tsHtml && (tsHtml.includes('create a free account') || tsHtml.includes('Subscribe to continue'));
+
+              if (tsHtml && hasStars && !hasPaywall && tsHtml.length > 2000) {
                 if (!fs.existsSync(tsArchiveDir)) fs.mkdirSync(tsArchiveDir, { recursive: true });
                 fs.writeFileSync(tsArchivePath, tsHtml);
                 console.log('  The Stage: live fetch successful, archived');
+              } else if (hasPaywall) {
+                console.log('  The Stage: page is paywalled (login may have failed), skipping archive');
+                tsHtml = null;
               } else {
-                console.log('  The Stage: live fetch returned insufficient content');
+                console.log(`  The Stage: content looks incomplete (stars=${!!hasStars}, len=${tsHtml?.length || 0}), skipping archive`);
                 tsHtml = null;
               }
             }
