@@ -192,7 +192,13 @@
     "kinky-boots-2026/northjerseycom--robert-feldberg.json",
     "kinky-boots-2026/talkinbroadway--matthew-murray.json",
     "kinky-boots-2026/washpost--peter-marks.json",
-    "little-women-the-musical-2026/artsdesk--rachel-halliburton.json"
+    "little-women-the-musical-2026/artsdesk--rachel-halliburton.json",
+    "pen-pals-2025/off-off-online--marc-miller.json",
+    "pen-pals-2025/the-interested-bystander--cary-wong.json",
+    "the-other-place-2026/artsdesk--demetrios-matheou.json",
+    "the-other-place-2026/london-theatre--holly-omahony.json",
+    "the-play-that-goes-wrong-2019/broadway-blog--samuel-l-leiter.json",
+    "the-play-that-goes-wrong-2019/city-cabaret--elizabeth-ahlfors.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -1094,7 +1100,11 @@
     "a-little-night-music-1973/backstage--erik-haagensen.json",
     "hold-on-to-your-butts-2026/thestage--oliver-jones.json",
     "kinky-boots-2026/ap--mark-kennedy.json",
-    "midnight-in-the-garden-of-good-and-evil-2024/broadwayworld--rachel-weinberg.json"
+    "midnight-in-the-garden-of-good-and-evil-2024/broadwayworld--rachel-weinberg.json",
+    "perfect-crime-1987/woman-around-town--quan-lam.json",
+    "the-other-place-2026/thestage--dave-fargnoli.json",
+    "the-play-that-goes-wrong-2019/curtainup--simon-saltzman.json",
+    "the-play-that-goes-wrong-2019/dc-metro-theater-arts--richard-seff.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1176,7 +1186,11 @@
       "heathers-the-musical-2025/nbcny--robert-kahn.json",
       "kinky-boots-2026/financialtimes--brendan-lemon.json",
       "kinky-boots-2026/washpost--peter-marks.json",
-      "little-women-the-musical-2026/artsdesk--rachel-halliburton.json"
+      "little-women-the-musical-2026/artsdesk--rachel-halliburton.json",
+      "pen-pals-2025/off-off-online--marc-miller.json",
+      "pen-pals-2025/the-interested-bystander--cary-wong.json",
+      "the-other-place-2026/artsdesk--demetrios-matheou.json",
+      "the-other-place-2026/london-theatre--holly-omahony.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1214,7 +1228,8 @@
       "the-little-mermaid-2008/independent--clarisse-loughrey.json",
       "cymbeline-2007/nytimes--ben-brantley.json",
       "kinky-boots-2026/ap--mark-kennedy.json",
-      "kinky-boots-2026/chicagotribune--chris-jones.json"
+      "kinky-boots-2026/chicagotribune--chris-jones.json",
+      "the-play-that-goes-wrong-2019/broadway-blog--samuel-l-leiter.json"
     ],
     "brightdata": [
       "public-charge-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1372,7 +1387,10 @@
       "data/review-texts/torch-song-trilogy-1982/broadwayworld--michael-dale.json",
       "data/review-texts/the-merchant-of-venice-1973/backstage--david-sheward.json",
       "data/review-texts/hold-on-to-your-butts-2026/thestage--oliver-jones.json",
-      "data/review-texts/midnight-in-the-garden-of-good-and-evil-2024/broadwayworld--rachel-weinberg.json"
+      "data/review-texts/midnight-in-the-garden-of-good-and-evil-2024/broadwayworld--rachel-weinberg.json",
+      "data/review-texts/the-other-place-2026/thestage--dave-fargnoli.json",
+      "data/review-texts/the-play-that-goes-wrong-2019/curtainup--simon-saltzman.json",
+      "data/review-texts/the-play-that-goes-wrong-2019/dc-metro-theater-arts--richard-seff.json"
     ],
     "archive": [
       "wicked-2003/broadwayworld--jared-fessler.json",
@@ -1401,11 +1419,12 @@
       "friends-the-musical-parody-2022/zeal-nyc--megan-wrappe.json",
       "heathers-the-musical-2025/ap--peter-santilli.json",
       "kinky-boots-2026/northjerseycom--robert-feldberg.json",
-      "kinky-boots-2026/talkinbroadway--matthew-murray.json"
+      "kinky-boots-2026/talkinbroadway--matthew-murray.json",
+      "the-play-that-goes-wrong-2019/city-cabaret--elizabeth-ahlfors.json"
     ]
   },
   "startTime": "2026-03-26T09:40:49.858Z",
-  "lastProcessed": "midnight-in-the-garden-of-good-and-evil-2024/broadwayworld--rachel-weinberg.json",
+  "lastProcessed": "the-play-that-goes-wrong-2019/dc-metro-theater-arts--richard-seff.json",
   "log": [
     {
       "t": "2026-03-26T09:43:13.034Z",
@@ -1744,6 +1763,17 @@
     },
     {
       "t": "2026-03-26T19:24:19.380Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-26T19:31:48.159Z",
+      "event": "bb-session",
+      "session": "37eab307",
+      "url": "https://www.thestage.co.uk/reviews/the-other-place-review-lyttelton-theatre-nati"
+    },
+    {
+      "t": "2026-03-26T19:31:49.499Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
