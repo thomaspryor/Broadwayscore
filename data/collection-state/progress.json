@@ -270,7 +270,11 @@
     "a-little-night-music-2009/hollywood-reporter--david-rooney.json",
     "irving-berlins-white-christmas-2009/theatermania--david-finkle.json",
     "oleanna-2009/nytimes--dave-itzkoff.json",
-    "oleanna-2009/theatermania--unknown.json"
+    "oleanna-2009/theatermania--unknown.json",
+    "superior-donuts-2009/hollywood-reporter--david-rooney.json",
+    "9-to-5-2009/hollywood-reporter--david-rooney.json",
+    "waiting-for-godot-2009/hollywood-reporter--david-rooney.json",
+    "9-to-5-2009/newsday--steve-parks.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -1292,7 +1296,13 @@
     "race-2009/theatermania--charles-isherwood.json",
     "ragtime-2009/broadwayworld--jay-irwin.json",
     "memphis-2009/variety--charles-isherwood.json",
-    "oleanna-2009/times-uk--dominic-maxwell.json"
+    "oleanna-2009/times-uk--dominic-maxwell.json",
+    "burn-the-floor-2009/ew--jennifer-armstrong.json",
+    "burn-the-floor-2009/backstage--jo-sagolla.json",
+    "waiting-for-godot-2009/ap--michael-kuchwara.json",
+    "waiting-for-godot-2009/northjerseycom--robert-feldberg.json",
+    "9-to-5-2009/nydailynews--unknown.json",
+    "waiting-for-godot-2009/newsday--linda-winer.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1425,13 +1435,20 @@
       "data/review-texts/sondheim-on-sondheim-2010/variety--charles-isherwood.json",
       "sondheim-on-sondheim-2010/variety--charles-isherwood.json",
       "data/review-texts/a-little-night-music-2009/hollywood-reporter--david-rooney.json",
-      "a-little-night-music-2009/hollywood-reporter--david-rooney.json"
+      "a-little-night-music-2009/hollywood-reporter--david-rooney.json",
+      "data/review-texts/superior-donuts-2009/hollywood-reporter--david-rooney.json",
+      "superior-donuts-2009/hollywood-reporter--david-rooney.json",
+      "data/review-texts/9-to-5-2009/hollywood-reporter--david-rooney.json",
+      "9-to-5-2009/hollywood-reporter--david-rooney.json",
+      "data/review-texts/waiting-for-godot-2009/hollywood-reporter--david-rooney.json",
+      "waiting-for-godot-2009/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "evita-2012/daily-mail--patrick-marmion.json",
       "rain-2010/unscripted-takes--brett-burger.json",
-      "oleanna-2009/nytimes--dave-itzkoff.json"
+      "oleanna-2009/nytimes--dave-itzkoff.json",
+      "9-to-5-2009/newsday--steve-parks.json"
     ],
     "brightdata": [
       "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json",
@@ -1875,7 +1892,8 @@
       "data/review-texts/time-stands-still-2010/backstage--david-sheward.json",
       "data/review-texts/a-view-from-the-bridge-2010/talkinbroadway--matthew-murray.json",
       "data/review-texts/a-little-night-music-2009/talkinbroadway--matthew-murray.json",
-      "data/review-texts/ragtime-2009/broadwayworld--jay-irwin.json"
+      "data/review-texts/ragtime-2009/broadwayworld--jay-irwin.json",
+      "data/review-texts/waiting-for-godot-2009/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
       "the-terms-of-my-surrender-2017/thestage--mark-sheton.json",
@@ -1895,7 +1913,7 @@
     ]
   },
   "startTime": "2026-03-25T09:08:12.319Z",
-  "lastProcessed": "oleanna-2009/times-uk--dominic-maxwell.json",
+  "lastProcessed": "waiting-for-godot-2009/newsday--linda-winer.json",
   "log": [
     {
       "t": "2026-03-25T09:10:15.724Z",
@@ -2582,6 +2600,50 @@
     },
     {
       "t": "2026-03-26T07:01:59.093Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-26T07:06:10.936Z",
+      "event": "bb-session",
+      "session": "78172365",
+      "url": "https://www.hollywoodreporter.com/news/superior-donuts-theater-review-93738/"
+    },
+    {
+      "t": "2026-03-26T07:06:12.025Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-26T07:07:14.901Z",
+      "event": "bb-session",
+      "session": "8378b98f",
+      "url": "https://www.northjersey.com/entertainment/stage/WAITING0430.html"
+    },
+    {
+      "t": "2026-03-26T07:07:15.958Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-26T07:07:33.555Z",
+      "event": "bb-session",
+      "session": "cd887140",
+      "url": "https://www.hollywoodreporter.com/review/little-miss-sunshine-theater-review-656"
+    },
+    {
+      "t": "2026-03-26T07:07:34.569Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-26T07:07:48.419Z",
+      "event": "bb-session",
+      "session": "2deccbc9",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/waiting-for-godot-broadway-revi"
+    },
+    {
+      "t": "2026-03-26T07:07:49.358Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
