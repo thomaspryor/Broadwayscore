@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-03-26T16:03:53.141Z",
+  "timestamp": "2026-03-26T16:14:27.564Z",
   "stats": {
     "totalReviews": 32513,
     "alreadyFlagged": 11181,
     "dateGuardCatches": 144,
     "directorMismatch": 960,
-    "tvFilmSignals": 3451,
+    "tvFilmSignals": 3452,
     "londonSignals": 1043,
     "offBroadwaySignals": 1007,
     "yearMismatch": 71,
@@ -49860,6 +49860,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "the-coast-of-utopia-2006",
+      "file": "variety--charles-isherwood.json",
+      "score": 83,
+      "publishDate": "March 26, 2007",
+      "url": "https://variety.com/2007/legit/reviews/the-coast-of-utopia-part-3-salvage-1200558847/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"paramount\""
         }
       ]
     },
