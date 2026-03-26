@@ -682,6 +682,28 @@ jobs:
               console.log('LTD workflow trigger failed:', e.message);
             }
 
+      - name: Trigger WE aggregator sweep for London shows
+        if: steps.filter.outputs.london_shows != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Pre-populate WET/TR/SD/TS archives before opening night poller runs
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'sweep-we-aggregators.yml',
+                ref: 'main',
+                inputs: {
+                  shows: '${{ steps.filter.outputs.london_shows }}',
+                  force: 'true'
+                }
+              });
+              console.log('Triggered WE aggregator sweep for London shows: ${{ steps.filter.outputs.london_shows }}');
+            } catch (e) {
+              console.log('WE aggregator sweep trigger failed:', e.message);
+            }
+
       - name: Trigger image fetching workflow
         if: steps.filter.outputs.opened_shows != ''
         uses: actions/github-script@v7
