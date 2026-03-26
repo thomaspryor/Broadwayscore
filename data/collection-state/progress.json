@@ -159,7 +159,11 @@
     "the-price-2017/thestage--chris-jones.json",
     "oleanna-2009/nytimes--dave-itzkoff.json",
     "oleanna-2009/theatermania--unknown.json",
-    "9-to-5-2009/hollywood-reporter--david-rooney.json"
+    "9-to-5-2009/hollywood-reporter--david-rooney.json",
+    "waiting-for-godot-2009/hollywood-reporter--david-rooney.json",
+    "9-to-5-2009/newsday--steve-parks.json",
+    "9-to-5-2009/nydailynews--unknown.json",
+    "accent-on-youth-2009/talkinbroadway--matthew-murray.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -714,7 +718,13 @@
     "burn-the-floor-2009/ew--jennifer-armstrong.json",
     "burn-the-floor-2009/backstage--jo-sagolla.json",
     "waiting-for-godot-2009/ap--michael-kuchwara.json",
-    "waiting-for-godot-2009/northjerseycom--robert-feldberg.json"
+    "waiting-for-godot-2009/northjerseycom--robert-feldberg.json",
+    "waiting-for-godot-2009/newsday--linda-winer.json",
+    "9-to-5-2009/lansing-city-pulse--allan-i-ross.json",
+    "waiting-for-godot-2009/backstage--david-sheward.json",
+    "the-philanthropist-2009/backstage--david-sheward.json",
+    "mary-stuart-2009/ap--michael-kuchwara.json",
+    "mary-stuart-2009/northjerseycom--robert-feldberg.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -802,7 +812,11 @@
       "data/review-texts/sondheim-on-sondheim-2010/variety--charles-isherwood.json",
       "sondheim-on-sondheim-2010/variety--charles-isherwood.json",
       "data/review-texts/9-to-5-2009/hollywood-reporter--david-rooney.json",
-      "9-to-5-2009/hollywood-reporter--david-rooney.json"
+      "9-to-5-2009/hollywood-reporter--david-rooney.json",
+      "data/review-texts/waiting-for-godot-2009/hollywood-reporter--david-rooney.json",
+      "waiting-for-godot-2009/hollywood-reporter--david-rooney.json",
+      "data/review-texts/9-to-5-2009/newsday--steve-parks.json",
+      "9-to-5-2009/newsday--steve-parks.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -874,7 +888,8 @@
       "the-normal-heart-2011/timeout--david-cote.json",
       "how-to-succeed-in-business-without-really-trying-2011/timeout--david-cote.json",
       "the-importance-of-being-earnest-2011/theatermania--charles-isherwood.json",
-      "giant-2026/talkinbroadway--unknown.json"
+      "giant-2026/talkinbroadway--unknown.json",
+      "accent-on-youth-2009/talkinbroadway--matthew-murray.json"
     ],
     "archiveToday": [
       "data/review-texts/john-proctor-is-the-villain-west-end-2026/thestage--unknown.json",
@@ -911,7 +926,8 @@
       "data/review-texts/a-view-from-the-bridge-2010/talkinbroadway--matthew-murray.json",
       "data/review-texts/a-little-night-music-2009/talkinbroadway--matthew-murray.json",
       "data/review-texts/ragtime-2009/broadwayworld--jay-irwin.json",
-      "data/review-texts/waiting-for-godot-2009/northjerseycom--robert-feldberg.json"
+      "data/review-texts/waiting-for-godot-2009/northjerseycom--robert-feldberg.json",
+      "data/review-texts/mary-stuart-2009/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
       "wicked-2003/broadwayworld--jared-fessler.json",
@@ -932,11 +948,12 @@
       "hands-on-a-hardbody-2013/vulture--york-magazine.json",
       "master-class-2011/village-voice--michael-musto.json",
       "grace-pervades-west-end-2026/thestage--unknown.json",
-      "the-price-2017/thestage--chris-jones.json"
+      "the-price-2017/thestage--chris-jones.json",
+      "9-to-5-2009/nydailynews--unknown.json"
     ]
   },
   "startTime": "2026-03-26T09:40:49.858Z",
-  "lastProcessed": "9-to-5-2009/hollywood-reporter--david-rooney.json",
+  "lastProcessed": "mary-stuart-2009/northjerseycom--robert-feldberg.json",
   "log": [
     {
       "t": "2026-03-26T09:43:13.034Z",
@@ -1205,6 +1222,39 @@
       "t": "2026-03-26T14:15:35.462Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-26T14:15:49.529Z",
+      "event": "bb-session",
+      "session": "327d89e8",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/waiting-for-godot-broadway-revi"
+    },
+    {
+      "t": "2026-03-26T14:15:50.881Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-26T14:16:53.374Z",
+      "event": "bb-session",
+      "session": "4fb22a75",
+      "url": "https://www.newsday.com/news/9-to-5-the-musical-review-with-sally-struthers-f809"
+    },
+    {
+      "t": "2026-03-26T14:16:54.758Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-26T14:19:19.716Z",
+      "event": "bb-session",
+      "session": "806e44e5",
+      "url": "https://www.northjersey.com/entertainment/stage/43262762.html"
+    },
+    {
+      "t": "2026-03-26T14:19:20.981Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
