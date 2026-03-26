@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-26T15:59:03.540Z",
-  "processed": 176,
-  "failed": 877,
-  "successRate": "16.7%",
+  "updatedAt": "2026-03-26T19:12:36.679Z",
+  "processed": 180,
+  "failed": 883,
+  "successRate": "16.9%",
   "tierBreakdown": {
-    "playwright": 69,
+    "playwright": 71,
     "amp": 0,
     "browserbase": 18,
     "directCookies": 0,
     "scrapingbee": 12,
     "brightdata": 66,
-    "archiveToday": 73,
-    "archive": 20
+    "archiveToday": 78,
+    "archive": 22
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-03-26T13:03:08.884Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-03-26T13:05:27.006Z",
-      "event": "bb-session",
-      "session": "aeb8b47f",
-      "url": "https://www.wsj.com/articles/SB10001424052702303960604575157744105208812?gaa_at="
-    },
     {
       "t": "2026-03-26T13:05:28.114Z",
       "event": "bb-cookie-inject",
@@ -125,6 +114,17 @@
       "t": "2026-03-26T14:22:02.552Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-26T19:10:58.078Z",
+      "event": "bb-session",
+      "session": "bf5690aa",
+      "url": "https://www.northjersey.com/arts_entertainment/127572463__Rent__revival_off-Broa"
+    },
+    {
+      "t": "2026-03-26T19:10:59.630Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
