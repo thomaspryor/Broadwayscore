@@ -68,7 +68,7 @@ const MODEL_MAP = {
   'o4-mini': 'o4-mini',
   'o3': 'o3',
 };
-const MODEL_INPUT = flags['model'] || 'o4-mini-deep';
+const MODEL_INPUT = flags['model'] || 'o4-mini';
 const MODEL = MODEL_MAP[MODEL_INPUT] || MODEL_INPUT;
 const IS_DEEP_RESEARCH = MODEL.includes('deep-research');
 
@@ -288,7 +288,7 @@ Respond with a JSON object (no markdown fences):
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(body),
-    signal: AbortSignal.timeout(60000), // 60s for initial request
+    signal: AbortSignal.timeout(isDeep ? 60000 : 300000), // 60s for deep research initial, 5min for standard
   });
 
   if (!resp.ok) {
@@ -445,11 +445,12 @@ async function main() {
     console.warn('Could not load grosses.json — plausibility cross-checks will be skipped');
   }
 
-  // Build show lookup
+  // Build show lookup (by both slug and id)
   const showBySlug = {};
   for (const s of allShows) {
-    if (s && typeof s === 'object' && s.slug) {
-      showBySlug[s.slug] = s;
+    if (s && typeof s === 'object') {
+      if (s.slug) showBySlug[s.slug] = s;
+      if (s.id && s.id !== s.slug) showBySlug[s.id] = s;
     }
   }
 
