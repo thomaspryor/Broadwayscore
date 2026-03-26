@@ -3,7 +3,15 @@
  * Tests for opening night fixes #12, #13, #14
  * Run: node scripts/test-opening-night-fixes.js
  * No API calls — pure logic verification.
+ *
+ * RULE: Never copy logic into this file — always require() the real function.
+ * Pure decision functions live in scripts/lib/review-guards.js.
+ * If production code changes, update review-guards.js; the tests will break and
+ * force you to verify the new behavior. That's the point.
+ * See: scripts/lib/review-guards.js
  */
+
+const { shouldSkipScoredReview, pickBestDtliSlug, applyTemporalOverrides } = require('./lib/review-guards');
 
 let passed = 0;
 let failed = 0;
@@ -21,71 +29,67 @@ function assert(condition, label, detail = '') {
 // ============================================================
 // FIX #12 — Selection guard in collect-review-texts.js
 // Guard: skip re-fetch if assignedScore>=1 AND textLen>=100 AND reviewFilter empty
+// Real function: shouldSkipScoredReview() from scripts/lib/review-guards.js
 // ============================================================
 console.log('\n=== FIX #12: assignedScore guard (selection-time skip) ===\n');
 
-function shouldSkipGuard12(data, reviewFilterSize = 0) {
-  const textLen = data.fullText ? data.fullText.length : 0;
-  return (data.assignedScore >= 1 && data.assignedScore <= 100 && textLen >= 100 && reviewFilterSize === 0);
-}
-
 // Normal: scored + long text → skip (guard fires)
 assert(
-  shouldSkipGuard12({ assignedScore: 75, fullText: 'a'.repeat(500) }) === true,
+  shouldSkipScoredReview({ assignedScore: 75, fullText: 'a'.repeat(500) }) === true,
   'Scored review with 500-char text is skipped (guard fires)'
 );
 
 // Short text: scored but textLen < 100 → do NOT skip (needs re-fetch)
 assert(
-  shouldSkipGuard12({ assignedScore: 75, fullText: 'short' }) === false,
+  shouldSkipScoredReview({ assignedScore: 75, fullText: 'short' }) === false,
   'Scored review with 5-char text is NOT skipped (needs re-fetch)'
 );
 
 // score=0: not scored → do NOT skip
 assert(
-  shouldSkipGuard12({ assignedScore: 0, fullText: 'a'.repeat(500) }) === false,
+  shouldSkipScoredReview({ assignedScore: 0, fullText: 'a'.repeat(500) }) === false,
   'Score=0 review is NOT skipped (0 < 1 fails guard)'
 );
 
 // No score field: not scored → do NOT skip
 assert(
-  shouldSkipGuard12({ fullText: 'a'.repeat(500) }) === false,
+  shouldSkipScoredReview({ fullText: 'a'.repeat(500) }) === false,
   'Review with no assignedScore is NOT skipped'
 );
 
 // Text is null (was nulled due to wrongFullText): textLen=0 → do NOT skip
 assert(
-  shouldSkipGuard12({ assignedScore: 75, fullText: null }) === false,
+  shouldSkipScoredReview({ assignedScore: 75, fullText: null }) === false,
   'Scored review with null fullText is NOT skipped (will be re-fetched)'
 );
 
 // score=100: boundary — still a valid score → skip
 assert(
-  shouldSkipGuard12({ assignedScore: 100, fullText: 'a'.repeat(100) }) === true,
+  shouldSkipScoredReview({ assignedScore: 100, fullText: 'a'.repeat(100) }) === true,
   'Score=100 review with exactly 100-char text is skipped (boundary)'
 );
 
 // textLen=100: boundary → skip
 assert(
-  shouldSkipGuard12({ assignedScore: 50, fullText: 'a'.repeat(100) }) === true,
+  shouldSkipScoredReview({ assignedScore: 50, fullText: 'a'.repeat(100) }) === true,
   'Score=50 review with exactly 100-char text is skipped (boundary)'
 );
 
 // textLen=99: just below boundary → do NOT skip
 assert(
-  shouldSkipGuard12({ assignedScore: 50, fullText: 'a'.repeat(99) }) === false,
+  shouldSkipScoredReview({ assignedScore: 50, fullText: 'a'.repeat(99) }) === false,
   'Score=50 review with 99-char text is NOT skipped (99 < 100)'
 );
 
 // reviewFilter override: when reviewFilter.size > 0, guard does NOT fire
 assert(
-  shouldSkipGuard12({ assignedScore: 75, fullText: 'a'.repeat(500) }, 1) === false,
+  shouldSkipScoredReview({ assignedScore: 75, fullText: 'a'.repeat(500) }, 1) === false,
   'Explicit reviewFilter bypasses guard (reviewFilter.size=1)'
 );
 
 // score=101: above max (101 > 100) → do NOT skip (guard: <= 100)
 assert(
-  shouldSkipGuard12({ assignedScore: 101, fullText: 'a'.repeat(500) }) === false,
+  shouldSkipScoredReview({ assignedScore: 101, fullText: 'a'.repeat(500) }) === false,
   'Score=101 is NOT skipped (above max 100)'
 );
 
@@ -123,97 +127,83 @@ assert(
 // FIX #14 — temporal override in content-verifier.js
 // wrongProduction: confidence downgraded to 'low' within 30 days
 // isFilmTv: flag cleared entirely within 30 days
+// Real function: applyTemporalOverrides() from scripts/lib/review-guards.js
 // ============================================================
 console.log('\n=== FIX #14: temporal overrides for wrongProduction and isFilmTv ===\n');
 
-function simulateTemporalOverride({ wpFlag, filmTvFlag, openingDate, publishDate }) {
-  let wpConfidence = 'high'; // LLM started with high confidence
-  let filmTvResult = filmTvFlag;
-
-  if (wpFlag && openingDate && publishDate) {
-    const daysDiff = Math.abs((new Date(publishDate) - new Date(openingDate)) / 86400000);
-    if (daysDiff <= 30) {
-      wpConfidence = 'low';
-    }
-  }
-
-  if (filmTvResult && openingDate && publishDate) {
-    const daysDiff = Math.abs((new Date(publishDate) - new Date(openingDate)) / 86400000);
-    if (daysDiff <= 30) {
-      filmTvResult = false;
-    }
-  }
-
-  const isHighConfidence = wpConfidence === 'high' || wpConfidence === 'medium';
-
-  return { wpConfidence, filmTvResult, isHighConfidence, willNullFullText: wpFlag && isHighConfidence };
-}
-
 const openingDate = '2026-03-23'; // Giant opening night
+
+// Helper: wraps applyTemporalOverrides and adds willNullFullText for assertion convenience
+// (willNullFullText = downstream consequence; not part of the guard itself)
+function callTemporalOverride({ wpFlag, filmTvFlag, publishDate }) {
+  const r = applyTemporalOverrides(wpFlag, filmTvFlag, 'high', openingDate, publishDate);
+  const willNullFullText = wpFlag && (r.wpConfidence === 'high' || r.wpConfidence === 'medium');
+  return { ...r, willNullFullText };
+}
 
 // Day 0 (opening night): should override
 {
-  const r = simulateTemporalOverride({ wpFlag: true, filmTvFlag: false, openingDate, publishDate: '2026-03-23' });
+  const r = callTemporalOverride({ wpFlag: true, filmTvFlag: false, publishDate: '2026-03-23' });
   assert(r.wpConfidence === 'low', 'wrongProduction on opening night (day 0): confidence downgraded to low');
   assert(!r.willNullFullText, 'wrongProduction on opening night: will NOT null fullText');
 }
 
 // Day 15 (within 30d): should override
 {
-  const r = simulateTemporalOverride({ wpFlag: true, filmTvFlag: false, openingDate, publishDate: '2026-04-07' });
+  const r = callTemporalOverride({ wpFlag: true, filmTvFlag: false, publishDate: '2026-04-07' });
   assert(r.wpConfidence === 'low', 'wrongProduction at day 15: confidence downgraded to low');
   assert(!r.willNullFullText, 'wrongProduction at day 15: will NOT null fullText');
 }
 
 // Day 30 (boundary): should STILL override (daysDiff <= 30 is inclusive)
 {
-  const r = simulateTemporalOverride({ wpFlag: true, filmTvFlag: false, openingDate, publishDate: '2026-04-22' });
+  const r = callTemporalOverride({ wpFlag: true, filmTvFlag: false, publishDate: '2026-04-22' });
   assert(r.wpConfidence === 'low', 'wrongProduction at day 30 (boundary): confidence downgraded to low');
   assert(!r.willNullFullText, 'wrongProduction at day 30: will NOT null fullText');
 }
 
 // Day 31 (outside window): should NOT override
 {
-  const r = simulateTemporalOverride({ wpFlag: true, filmTvFlag: false, openingDate, publishDate: '2026-04-23' });
+  const r = callTemporalOverride({ wpFlag: true, filmTvFlag: false, publishDate: '2026-04-23' });
   assert(r.wpConfidence === 'high', 'wrongProduction at day 31: confidence stays high (no override)');
   assert(r.willNullFullText, 'wrongProduction at day 31: WILL null fullText (expected behavior)');
 }
 
 // isFilmTv: cleared entirely within 30 days
 {
-  const r = simulateTemporalOverride({ wpFlag: false, filmTvFlag: true, openingDate, publishDate: '2026-03-25' });
-  assert(r.filmTvResult === false, 'isFilmTv at day 2: cleared entirely');
+  const r = callTemporalOverride({ wpFlag: false, filmTvFlag: true, publishDate: '2026-03-25' });
+  assert(r.filmTvFlag === false, 'isFilmTv at day 2: cleared entirely');
 }
 
 // isFilmTv: NOT cleared after 31 days
 {
-  const r = simulateTemporalOverride({ wpFlag: false, filmTvFlag: true, openingDate, publishDate: '2026-04-24' });
-  assert(r.filmTvResult === true, 'isFilmTv at day 32: NOT cleared (outside 30d window)');
+  const r = callTemporalOverride({ wpFlag: false, filmTvFlag: true, publishDate: '2026-04-24' });
+  assert(r.filmTvFlag === true, 'isFilmTv at day 32: NOT cleared (outside 30d window)');
 }
 
 // Review published BEFORE opening (abs value handles pre-opening reviews)
 {
-  const r = simulateTemporalOverride({ wpFlag: true, filmTvFlag: false, openingDate, publishDate: '2026-03-10' });
+  const r = callTemporalOverride({ wpFlag: true, filmTvFlag: false, publishDate: '2026-03-10' });
   // 13 days before opening: abs(daysDiff) = 13, within window
   assert(r.wpConfidence === 'low', 'wrongProduction 13 days BEFORE opening: still overridden (abs covers previews)');
 }
 
-// No openingDate: no override (can't compute diff)
+// No openingDate: no override (can't compute diff) — call real function directly
 {
-  const r = simulateTemporalOverride({ wpFlag: true, filmTvFlag: false, openingDate: null, publishDate: '2026-03-23' });
+  const r = applyTemporalOverrides(true, false, 'high', null, '2026-03-23');
   assert(r.wpConfidence === 'high', 'wrongProduction with no openingDate: no override (high stays)');
 }
 
 // No publishDate: no override
 {
-  const r = simulateTemporalOverride({ wpFlag: true, filmTvFlag: false, openingDate, publishDate: null });
+  const r = applyTemporalOverrides(true, false, 'high', openingDate, null);
   assert(r.wpConfidence === 'high', 'wrongProduction with no publishDate: no override (high stays)');
 }
 
 // Both flags false: no damage
 {
-  const r = simulateTemporalOverride({ wpFlag: false, filmTvFlag: false, openingDate, publishDate: '2026-03-23' });
-  assert(r.filmTvResult === false && !r.willNullFullText, 'Neither flag set: no overrides needed, no damage');
+  const r = applyTemporalOverrides(false, false, 'high', openingDate, '2026-03-23');
+  assert(r.filmTvFlag === false && !r.wpConfidence !== 'low', 'Neither flag set: no overrides needed, no damage');
 }
 
 // ============================================================
@@ -253,67 +243,49 @@ assert(
 
 // ============================================================
 // FIX #13 — Revival preference logic
+// Real function: pickBestDtliSlug() from scripts/lib/review-guards.js
 // ============================================================
 console.log('\n=== FIX #13: Revival slug preference ===\n');
 
-function pickBestSlug(showId, candidates) {
-  let best = candidates[0];
-  if (candidates.length > 1) {
-    const showYearMatch = showId.match(/-(\d{4})$/);
-    const showYear = showYearMatch ? parseInt(showYearMatch[1]) : null;
-    if (showYear) {
-      const withSuffix = candidates.filter(c => /-\d+$/.test(c));
-      if (withSuffix.length > 0) {
-        best = withSuffix.sort((a, b) => {
-          const nA = parseInt((a.match(/-(\d+)$/) || [0, 0])[1]);
-          const nB = parseInt((b.match(/-(\d+)$/) || [0, 0])[1]);
-          return nB - nA;
-        })[0];
-      }
-    }
-  }
-  return best;
-}
-
 // Giant: bare vs numbered → should pick numbered
 assert(
-  pickBestSlug('giant-2026', ['giant', 'giant-2']) === 'giant-2',
+  pickBestDtliSlug('giant-2026', ['giant', 'giant-2']) === 'giant-2',
   'giant-2026 with [giant, giant-2] picks giant-2 (revival preference)'
 );
 
 // Multiple suffixes: picks highest number
 assert(
-  pickBestSlug('company-2022', ['company', 'company-2', 'company-3']) === 'company-3',
+  pickBestDtliSlug('company-2022', ['company', 'company-2', 'company-3']) === 'company-3',
   'company-2022 with 3 candidates picks highest suffix (company-3)'
 );
 
 // No year in showId: no revival preference, first wins
 assert(
-  pickBestSlug('hamilton', ['hamilton', 'hamilton-2']) === 'hamilton',
+  pickBestDtliSlug('hamilton', ['hamilton', 'hamilton-2']) === 'hamilton',
   'show without year suffix: first candidate wins (no revival preference)'
 );
 
 // Only bare slug available: revival show falls back to bare
 assert(
-  pickBestSlug('giant-2026', ['giant']) === 'giant',
+  pickBestDtliSlug('giant-2026', ['giant']) === 'giant',
   'revival show with only bare slug: uses bare slug (no numbered candidates)'
 );
 
 // Single candidate: trivially returns it
 assert(
-  pickBestSlug('wicked-2024', ['wicked-2']) === 'wicked-2',
+  pickBestDtliSlug('wicked-2024', ['wicked-2']) === 'wicked-2',
   'single candidate: always returns it regardless'
 );
 
 // Year suffix show with only numbered (no bare): picks highest
 assert(
-  pickBestSlug('annie-2024', ['annie-2', 'annie-3']) === 'annie-3',
+  pickBestDtliSlug('annie-2024', ['annie-2', 'annie-3']) === 'annie-3',
   'revival show with multiple numbered slugs (no bare): picks highest'
 );
 
 // Non-revival show with ambiguous slugs: picks first (existing behavior preserved)
 assert(
-  pickBestSlug('cabaret', ['cabaret', 'cabaret-at-the-kit-kat-club']) === 'cabaret',
+  pickBestDtliSlug('cabaret', ['cabaret', 'cabaret-at-the-kit-kat-club']) === 'cabaret',
   'non-revival show with ambiguous slugs: first wins'
 );
 
