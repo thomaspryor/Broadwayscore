@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-26T09:11:42.559Z",
+  "timestamp": "2026-03-26T09:22:29.562Z",
   "stats": {
-    "totalReviews": 32505,
-    "alreadyFlagged": 11176,
-    "dateGuardCatches": 143,
+    "totalReviews": 32508,
+    "alreadyFlagged": 11171,
+    "dateGuardCatches": 140,
     "directorMismatch": 959,
-    "tvFilmSignals": 3451,
-    "londonSignals": 1042,
+    "tvFilmSignals": 3452,
+    "londonSignals": 1043,
     "offBroadwaySignals": 1008,
     "yearMismatch": 71,
-    "noPublishDate": 6709
+    "noPublishDate": 6720
   },
   "findings": [
     {
@@ -26249,42 +26249,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "john-proctor-is-the-villain-west-end-2026",
-      "file": "london-theatre--marianka-swain.json",
-      "score": 82,
-      "publishDate": "2024-11-07",
-      "url": "https://www.londontheatre.co.uk/reviews/the-curious-case-of-benjamin-button-review-ambassadors-theatre",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 498d before show (2024-11-07 vs 2026-03-20)"
-        }
-      ]
-    },
-    {
-      "showId": "john-proctor-is-the-villain-west-end-2026",
-      "file": "standard--nick-curtis.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 498d before show (2024-11-07 vs 2026-03-20)"
-        }
-      ]
-    },
-    {
-      "showId": "john-proctor-is-the-villain-west-end-2026",
-      "file": "telegraph--tim-robey.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 498d before show (2024-11-07 vs 2026-03-20)"
         }
       ]
     },
@@ -58128,6 +58092,20 @@
       ]
     },
     {
+      "showId": "this-is-not-about-me-off-west-end-2026",
+      "file": "whatsonstage--alun-hood.json",
+      "score": 82,
+      "publishDate": "2023-05-18",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/once-island-open-air-review_58962.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
       "showId": "this-is-our-youth-2014",
       "file": "newsday--linda-winer.json",
       "score": 78,
@@ -66598,6 +66576,20 @@
       "score": 85,
       "publishDate": null,
       "url": "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-review-james-graham-gareth-southgate-harry-kane-b1089139.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 93,
+      "publishDate": "2023-06-20",
+      "url": "https://www.whatsonstage.com/news/dear-england-at-the-national-theatre-review-the-beautiful-game-in-a-beautiful-play_1404772/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
