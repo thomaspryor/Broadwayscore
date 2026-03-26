@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-26T10:20:29.513Z",
+  "timestamp": "2026-03-26T10:48:26.972Z",
   "stats": {
     "totalReviews": 32508,
-    "alreadyFlagged": 11176,
+    "alreadyFlagged": 11177,
     "dateGuardCatches": 143,
     "directorMismatch": 959,
-    "tvFilmSignals": 3452,
+    "tvFilmSignals": 3453,
     "londonSignals": 1043,
-    "offBroadwaySignals": 1008,
+    "offBroadwaySignals": 1006,
     "yearMismatch": 71,
-    "noPublishDate": 6707
+    "noPublishDate": 6705
   },
   "findings": [
     {
@@ -40502,6 +40502,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "public-charge-off-broadway-2026",
+      "file": "one-minute-critic--unknown.json",
+      "score": 79,
+      "publishDate": "2026-03-26",
+      "url": "https://1minutecritic.com/public-charge-review-public-theater/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -85531,32 +85545,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 41d before show (January 23, 2026 vs 2026-03-05)"
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
-      "file": "broadwayworld--armando-urdiales.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
-      "file": "broadwayworld--courtney-symes.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
         }
       ]
     },
