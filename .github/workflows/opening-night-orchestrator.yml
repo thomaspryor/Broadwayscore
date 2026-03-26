@@ -14,8 +14,9 @@ name: Opening Night Orchestrator
 on:
   schedule:
     - cron: '0 1 * * *'    # Broadway — 9 PM ET
+    - cron: '0 7 * * *'    # West End — 8 AM BST (morning sweep — catches broadsheet reviews)
     - cron: '0 10 * * *'   # Broadway — 5 AM ET (morning sweep)
-    - cron: '0 20 * * *'   # West End — 9 PM BST
+    - cron: '0 20 * * *'   # West End — 9 PM BST (press night evening)
   workflow_dispatch:
     inputs:
       show_id:
@@ -81,6 +82,9 @@ jobs:
             if [ "$HOUR_INT" -ge 0 ] && [ "$HOUR_INT" -le 4 ]; then
               echo "market=broadway" >> $GITHUB_OUTPUT
               echo "${HOUR} UTC (1 AM cron window) → broadway market"
+            elif [ "$HOUR_INT" -ge 6 ] && [ "$HOUR_INT" -le 8 ]; then
+              echo "market=west-end" >> $GITHUB_OUTPUT
+              echo "${HOUR} UTC (7 AM cron window) → west-end market (morning sweep)"
             elif [ "$HOUR_INT" -ge 9 ] && [ "$HOUR_INT" -le 13 ]; then
               echo "market=broadway" >> $GITHUB_OUTPUT
               echo "${HOUR} UTC (10 AM cron window) → broadway market"
