@@ -1,48 +1,27 @@
 {
   "meta": {
-    "generatedAt": "2026-03-26T07:26:18.348Z",
+    "generatedAt": "2026-03-26T07:36:28.020Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 33187,
-      "inReviewsJson": 15969,
+      "inReviewsJson": 15962,
       "skippedExcluded": 75,
-      "withFullText": 26,
-      "excerptOnly": 1354,
-      "llmClassified": 25,
+      "withFullText": 21,
+      "excerptOnly": 1351,
+      "llmClassified": 20,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 2,
+      "nonReviewsFound": 0,
       "uncertainCases": 20,
-      "budgetUsed": 0.0025999999999999994,
-      "llmCalls": 26,
+      "budgetUsed": 0.0021000000000000003,
+      "llmCalls": 21,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14514
+      "skippedAlreadyClassified": 14515
     },
     "calibration": null
   },
-  "nonReviews": [
-    {
-      "file": "a-little-night-music-2009/hollywood-reporter--david-rooney.json",
-      "showId": "a-little-night-music-2009",
-      "outlet": "The Hollywood Reporter",
-      "outletId": "hollywood-reporter",
-      "contentType": "preview",
-      "confidence": "high",
-      "reasoning": "This article describes the premise, characters, and production details of \"The Cleveland Show\" before its premiere, without offering a critical evaluation or opinion on its quality. It's a preview, not a review.",
-      "currentScore": 75
-    },
-    {
-      "file": "irving-berlins-white-christmas-2009/theatermania--david-finkle.json",
-      "showId": "irving-berlins-white-christmas-2009",
-      "outlet": "TheaterMania",
-      "outletId": "theatermania",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This appears to be a broken page or search result, with a video about Megan Thee Stallion in Moulin Rouge! It is not a review of Irving Berlin's White Christmas.",
-      "currentScore": 61
-    }
-  ],
+  "nonReviews": [],
   "uncertainCases": [
     {
       "file": "an-american-in-paris-2015/talkinbroadway--matthew-murray.json",
@@ -61,7 +40,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion on the quality of the production. It also includes unrelated theater news.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -79,9 +58,9 @@
       "showId": "first-date-2013",
       "outlet": "Bloomberg",
       "outletId": "bloomberg",
-      "contentType": "news",
+      "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in a photo caption. It does not offer a review or evaluation of \"First Date.\"",
+      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and its pre-Broadway run, with a brief mention of \"First Date\" only in photo captions at the end. It does not offer a critical evaluation of \"First Date.\"",
       "currentScore": 57
     },
     {
@@ -101,7 +80,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself. It reads like a preview or introductory piece.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself. It reads more like a preview or introduction to the show.",
       "currentScore": 81
     },
     {
@@ -111,7 +90,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific show.",
+      "reasoning": "This appears to be a list of links and advertisements related to theater, not a review of a specific show.",
       "currentScore": 78
     },
     {
@@ -151,7 +130,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.'",
+      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
       "currentScore": 74
     },
     {
@@ -161,7 +140,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated and is advertising a WSJ subscription. There is no evaluative content about 'Parade' visible in the text.",
+      "reasoning": "The provided text appears to be a truncated news article snippet, possibly related to the Wall Street Journal, and does not contain any evaluative content about the show \"Parade\".",
       "currentScore": 78
     },
     {
@@ -171,7 +150,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of categories and links related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -181,7 +160,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's a feature piece.",
+      "reasoning": "The article describes the show and its context, but it does not offer a critical evaluation or recommendation. It includes interview snippets, but the primary purpose is to discuss the show's themes and relevance.",
       "currentScore": 83
     },
     {
@@ -201,7 +180,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
+      "reasoning": "The article consists of production credits and ticket information, which is typical of a news item or listing rather than a review. There is no evaluative content.",
       "currentScore": 64
     },
     {
@@ -211,7 +190,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It is closest to news.",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not an article about a specific show. It does not evaluate \"The Price\".",
       "currentScore": 78
     },
     {
@@ -221,7 +200,7 @@
       "outletId": "vulture",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the set design and the playwright's intentions, but does not offer an evaluation or recommendation of the show's quality. It reads more like a feature piece about the show's themes and design choices.",
+      "reasoning": "The article describes the set design and the playwright's intentions, drawing comparisons to other works, but it does not offer an evaluation or recommendation of the show's quality.",
       "currentScore": 64
     },
     {
@@ -231,7 +210,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of links and categories related to theater, rather than a review of a specific production.",
+      "reasoning": "This appears to be a collection of links and categories related to theater, not a review of a specific production.",
       "currentScore": 89
     },
     {
@@ -241,26 +220,11 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion about the quality of the production. It focuses on the play's themes and background, resembling a preview rather than a review.",
+      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It focuses on the play's themes and background, resembling a preview rather than a review.",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
-  "reviewsConfirmed": [
-    "giant-2026/wsj--unknown.json",
-    "reasons-to-be-pretty-2009/newsday--linda-winer.json",
-    "superior-donuts-2009/hollywood-reporter--david-rooney.json"
-  ],
-  "perShowSummary": [
-    {
-      "showId": "a-little-night-music-2009",
-      "currentCount": 20,
-      "removed": 1
-    },
-    {
-      "showId": "irving-berlins-white-christmas-2009",
-      "currentCount": 1,
-      "removed": 1
-    }
-  ]
+  "reviewsConfirmed": [],
+  "perShowSummary": []
 }
