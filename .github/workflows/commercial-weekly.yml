@@ -32,7 +32,7 @@ on:
         default: 5
 
 concurrency:
-  group: commercial-weekly
+  group: commercial-data-write
   cancel-in-progress: false
 
 jobs:
@@ -88,7 +88,7 @@ jobs:
     needs: batch-research
     if: always() && inputs.skip_deep_research != true
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 90
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -109,9 +109,9 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           ARGS="--all-tbd --queue"
-          ARGS="$ARGS --max-shows=${{ inputs.max_shows || '5' }}"
-          ARGS="$ARGS --budget=${{ inputs.budget || '5' }}"
-          ARGS="$ARGS --model=o4-mini"
+          ARGS="$ARGS --max-shows=${{ inputs.max_shows || '10' }}"
+          ARGS="$ARGS --budget=${{ inputs.budget || '50' }}"
+          ARGS="$ARGS --model=o4-mini-deep"
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
           fi
@@ -121,7 +121,7 @@ jobs:
       - name: Commit deep research results
         if: always() && inputs.dry_run != true
         run: |
-          git add data/commercial-pending-review.json data/deep-research-cost-log.json data/deep-research-progress.json data/commercial-research-spend.json data/commercial-research-queue.json 2>/dev/null || true
+          git add data/commercial-pending-review.json data/deep-research-cost-log.json data/deep-research-progress.json data/commercial-research-spend.json data/commercial-research-queue.json data/commercial.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No deep research results to commit"
           else

@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-03-26T02:06:21.626Z",
+  "timestamp": "2026-03-26T02:32:14.060Z",
   "stats": {
     "totalReviews": 32489,
     "alreadyFlagged": 11139,
     "dateGuardCatches": 141,
-    "directorMismatch": 957,
+    "directorMismatch": 958,
     "tvFilmSignals": 3453,
     "londonSignals": 1044,
     "offBroadwaySignals": 1009,
@@ -39229,6 +39229,20 @@
       "score": 85,
       "publishDate": null,
       "url": "http://www.nbcnewyork.com/entertainment/the-scene/pippin-revival-review-kahn-204698881.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from pippin-1972"
+        }
+      ]
+    },
+    {
+      "showId": "pippin-2013",
+      "file": "newsday--linda-winer.json",
+      "score": 82,
+      "publishDate": "2013-04-25",
+      "url": "http://www.newsday.com/entertainment/theater/pippin-review-a-circus-y-show-diverts-1.5133986",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -79838,8 +79852,8 @@
       "showId": "teeth-n-smiles-west-end-2026",
       "file": "guardian--unknown.json",
       "score": 63,
-      "publishDate": "2026-03-23",
-      "url": "https://www.theguardian.com/stage/2026/mar/23/self-esteem-david-hare-rock-romp-teeth-n-smiles-hippie",
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2026/mar/26/teeth-n-smiles-review-theatre-duke-yorks-theatre-london-self-esteem",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
