@@ -185,7 +185,7 @@ for var in SCRAPINGBEE_API_KEY BRIGHTDATA_TOKEN ANTHROPIC_API_KEY OPENAI_API_KEY
 done
 
 if [ "$SKIP_LIVE" != "true" ]; then
-  for var in RESEND_API_KEY OWNER_EMAIL APPROVAL_HMAC_SECRET; do
+  for var in BUTTONDOWN_API_KEY OWNER_EMAIL RESEND_API_KEY; do
     eval "val=\${$var:-}"
     [ -z "$val" ] && MISSING_VARS="$MISSING_VARS $var"
   done
@@ -533,32 +533,18 @@ else
 
   phase_time
 
-  # ─── Phase 7: Approval Link ────────────────────────────────────────
-  header 7 "Approval Link E2E"
+  # ─── Phase 7: Buttondown Draft Creation ────────────────────────────
+  header 7 "Buttondown Draft E2E (replaces approval link flow)"
 
-  APPROVAL_URL=$(grep -o 'https://[^ "]*approve-broadcast[^ "]*' /tmp/sim-preview.log 2>/dev/null | head -1)
-  if [ -n "$APPROVAL_URL" ]; then
-    HTTP_CODE=$(curl -s -o /tmp/sim-approval.html -w '%{http_code}' "$APPROVAL_URL" 2>/dev/null)
-    if [ "$HTTP_CODE" = "200" ]; then
-      if grep -qi "dispatched\|broadcast\|approved" /tmp/sim-approval.html 2>/dev/null; then
-        pass "Approval link returned 200 + dispatch confirmation"
-      else
-        warn "Approval returned 200 but unexpected content"
-      fi
-    else
-      fail "Approval link returned HTTP $HTTP_CODE"
-    fi
-
-    # Check workflow was triggered
-    sleep 5
-    LATEST_RUN=$(gh run list --workflow=opening-night-broadcast.yml --limit=1 --json status,conclusion,createdAt -q '.[0]' 2>/dev/null)
-    if [ -n "$LATEST_RUN" ]; then
-      pass "Workflow dispatched: $LATEST_RUN"
-    else
-      warn "Could not verify workflow dispatch"
-    fi
+  # The approval link flow has been removed. Broadcasts now work as:
+  # 1. Script creates a Buttondown DRAFT via API
+  # 2. Owner receives email with direct link to the draft
+  # 3. Owner logs into Buttondown and clicks Send manually
+  DRAFT_URL=$(grep -o 'https://buttondown.com/emails/[^ "]*' /tmp/sim-preview.log 2>/dev/null | head -1)
+  if [ -n "$DRAFT_URL" ]; then
+    pass "Buttondown draft URL found in output: $DRAFT_URL"
   else
-    warn "No approval URL found in preview log — skipping Phase 7"
+    warn "No Buttondown draft URL found in preview log — check if BUTTONDOWN_API_KEY is set"
   fi
 
   phase_time
