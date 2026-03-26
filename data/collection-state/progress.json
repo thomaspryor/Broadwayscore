@@ -7,11 +7,21 @@
     "teeth-n-smiles-west-end-2026/variety--unknown.json",
     "teeth-n-smiles-west-end-2026/times-uk--unknown.json",
     "a-mirrored-monet-west-end-2026/whatsonstage--unknown.json",
-    "broken-glass-west-end-2026/independent--samuel-mathewson.json"
+    "broken-glass-west-end-2026/independent--samuel-mathewson.json",
+    "evening-all-afternoon-west-end-2026/whatsonstage--unknown.json",
+    "all-my-sons-west-end-2025/whatsonstage--unknown.json",
+    "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+    "oliver-west-end-2024/telegraph--claire-allfree.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
-    "john-proctor-is-the-villain-west-end-2026/thestage--unknown.json"
+    "john-proctor-is-the-villain-west-end-2026/thestage--unknown.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "oh-mary-west-end-2025/standard--nick-curtis.json",
+    "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json",
+    "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
+    "my-neighbour-totoro-west-end-2025/the-morning-star--unknown.json",
+    "dracula-west-end-2025/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -22,15 +32,21 @@
       "john-proctor-is-the-villain-west-end-2026/whatsonstage--unknown.json",
       "teeth-n-smiles-west-end-2026/times-uk--unknown.json",
       "a-mirrored-monet-west-end-2026/whatsonstage--unknown.json",
-      "broken-glass-west-end-2026/independent--samuel-mathewson.json"
+      "broken-glass-west-end-2026/independent--samuel-mathewson.json",
+      "evening-all-afternoon-west-end-2026/whatsonstage--unknown.json",
+      "all-my-sons-west-end-2025/whatsonstage--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/teeth-n-smiles-west-end-2026/variety--unknown.json",
-      "teeth-n-smiles-west-end-2026/variety--unknown.json"
+      "teeth-n-smiles-west-end-2026/variety--unknown.json",
+      "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json"
     ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "oliver-west-end-2024/telegraph--claire-allfree.json"
+    ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/john-proctor-is-the-villain-west-end-2026/thestage--unknown.json"
@@ -38,7 +54,7 @@
     "archive": []
   },
   "startTime": "2026-03-26T09:40:49.858Z",
-  "lastProcessed": "broken-glass-west-end-2026/independent--samuel-mathewson.json",
+  "lastProcessed": "oliver-west-end-2024/telegraph--claire-allfree.json",
   "log": [
     {
       "t": "2026-03-26T09:43:13.034Z",
@@ -57,6 +73,12 @@
       "event": "bb-session",
       "session": "9eda7064",
       "url": "https://variety.com/gallery/celebrity-photos-red-carpet-march-2026/"
+    },
+    {
+      "t": "2026-03-26T09:45:58.010Z",
+      "event": "bb-session",
+      "session": "d6f62c5e",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
     }
   ]
 }
