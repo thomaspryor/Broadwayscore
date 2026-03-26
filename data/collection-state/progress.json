@@ -87,7 +87,11 @@
     "take-me-out-2022/theatermania--jesse-green.json",
     "topdog-underdog-2022/corey-hawkins--unknown.json",
     "the-skin-of-our-teeth-2022/vulture--helen-shaw.json",
-    "mrs-doubtfire-2021/wsj--unknown.json"
+    "mrs-doubtfire-2021/wsj--unknown.json",
+    "trouble-in-mind-2021/theatermania--jesse-green.json",
+    "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
+    "west-side-story-2020/vulture--helen-shaw.json",
+    "tina-2019/newyorker--unknown.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -174,7 +178,13 @@
     "titanique-off-broadway-2022/newyorker--dan-stahl.json",
     "girl-from-the-north-country-2022/times-uk--ann-treneman.json",
     "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/new-york-sun--elysa-gardner.json",
-    "the-skin-of-our-teeth-2022/dtli--ran-xia.json"
+    "the-skin-of-our-teeth-2022/dtli--ran-xia.json",
+    "trouble-in-mind-2021/deadline--greg-evans.json",
+    "diana-the-musical-2021/nbcnews--liz-shannon-miller.json",
+    "the-lehman-trilogy-2021/thestage--nicole-serratore.json",
+    "is-this-a-room-2021/washpost--peter-marks.json",
+    "a-soldiers-play-2020/wsj--terry-teachout.json",
+    "ink-2019/thestage--naveen-kumar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -234,7 +244,9 @@
       "data/review-texts/teeth-n-smiles-west-end-2026/variety--unknown.json",
       "teeth-n-smiles-west-end-2026/variety--unknown.json",
       "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
-      "my-neighbour-totoro-west-end-2025/variety--unknown.json"
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "data/review-texts/thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
+      "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -242,7 +254,8 @@
       "stranger-things-the-first-shadow-west-end-2023/telegraph--marianka-swain.json",
       "bigfoot-off-broadway-2026/playbill--unknown.json",
       "fat-ham-2023/nytimes--jesse-green.json",
-      "some-like-it-hot-2022/newyorker--unknown.json"
+      "some-like-it-hot-2022/newyorker--unknown.json",
+      "tina-2019/newyorker--unknown.json"
     ],
     "brightdata": [
       "public-charge-off-broadway-2026/talkinbroadway--unknown.json",
@@ -270,7 +283,9 @@
       "a-beautiful-noise-the-neil-diamond-musical-2022/theatermania--adam-feldman.json",
       "take-me-out-2022/theatermania--jesse-green.json",
       "the-skin-of-our-teeth-2022/vulture--helen-shaw.json",
-      "mrs-doubtfire-2021/wsj--unknown.json"
+      "mrs-doubtfire-2021/wsj--unknown.json",
+      "trouble-in-mind-2021/theatermania--jesse-green.json",
+      "west-side-story-2020/vulture--helen-shaw.json"
     ],
     "archiveToday": [
       "data/review-texts/john-proctor-is-the-villain-west-end-2026/thestage--unknown.json",
@@ -292,7 +307,7 @@
     ]
   },
   "startTime": "2026-03-26T09:40:49.858Z",
-  "lastProcessed": "mrs-doubtfire-2021/wsj--unknown.json",
+  "lastProcessed": "ink-2019/thestage--naveen-kumar.json",
   "log": [
     {
       "t": "2026-03-26T09:43:13.034Z",
@@ -364,6 +379,17 @@
       "t": "2026-03-26T11:46:01.816Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-26T11:47:20.476Z",
+      "event": "bb-session",
+      "session": "e2d57ee0",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/thoughts-of-a-colored-man-broad"
+    },
+    {
+      "t": "2026-03-26T11:47:21.573Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
