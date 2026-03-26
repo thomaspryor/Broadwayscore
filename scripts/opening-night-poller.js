@@ -242,8 +242,9 @@ async function runAggregators(show) {
     console.log(`  Show Score error: ${err.message}`);
   }
 
-  // 1c. BWW Review Roundup (skip for off-Broadway)
-  if (!isOffBroadway) {
+  // 1c. BWW Review Roundup (skip for off-Broadway; skip URL guessing for WE — BWW RR rare for WE)
+  // For WE: only check if a manual --bww-roundup-url is provided (bypass discovery entirely)
+  if (!isOffBroadway && (!isWestEnd || BWW_ROUNDUP_URL)) {
     try {
       console.log('  Checking BWW Review Roundup...');
       // Pass runtime override when SERP discovery fails (unindexed page, wrong Google result).
