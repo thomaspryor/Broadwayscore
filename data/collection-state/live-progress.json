@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-26T09:02:32.391Z",
-  "processed": 33,
-  "failed": 27,
-  "successRate": "55.0%",
+  "updatedAt": "2026-03-26T09:07:16.761Z",
+  "processed": 39,
+  "failed": 30,
+  "successRate": "56.5%",
   "tierBreakdown": {
-    "playwright": 27,
+    "playwright": 32,
     "amp": 0,
     "browserbase": 5,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 4
+    "archiveToday": 4,
+    "archive": 5
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-03-26T08:47:36.689Z",
@@ -56,6 +56,18 @@
       "event": "bb-login-fail",
       "domain": "thestage.co.uk",
       "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    34 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-03-26T09:05:20.480Z",
+      "event": "bb-session",
+      "session": "5df387c0",
+      "url": "https://www.thestage.co.uk/reviews/once-on-this-island-review-regents-park-open-"
+    },
+    {
+      "t": "2026-03-26T09:05:59.129Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    34 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
     }
   ]
 }

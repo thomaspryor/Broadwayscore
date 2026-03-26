@@ -32,7 +32,13 @@
     "the-book-of-mormon-west-end-2024/whatsonstage--sarah-crompton.json",
     "grace-pervades-west-end-2026/thestage--unknown.json",
     "sweetmeats-west-end-2026/standard--maya-chandran.json",
-    "robin-hood-and-the-merry-mandem-off-west-end-2026/times-uk--dominic-maxwell.json"
+    "robin-hood-and-the-merry-mandem-off-west-end-2026/times-uk--dominic-maxwell.json",
+    "this-is-not-about-me-off-west-end-2026/london-theatre--marianka-swain.json",
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "this-is-not-about-me-off-west-end-2026/whatsonstage--alun-hood.json",
+    "dear-england-new-wimbledon-theatre-west-end-2026/whatsonstage--sarah-crompton.json",
+    "happy-ending-west-end-2026/standard--unknown.json",
+    "im-every-woman-the-chaka-khan-musical-off-west-end-2026/london-theatre--unknown.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -61,7 +67,10 @@
     "high-noon-west-end-2025/times-uk--clive-davis.json",
     "robin-hood-and-the-merry-mandem-off-west-end-2026/telegraph--claire-allfree.json",
     "robin-hood-and-the-merry-mandem-off-west-end-2026/thestage--paul-vale.json",
-    "the-gruffalo-west-end-2026/daily-mail--unknown.json"
+    "the-gruffalo-west-end-2026/daily-mail--unknown.json",
+    "this-is-not-about-me-off-west-end-2026/thestage--sam-marlowe.json",
+    "this-is-not-about-me-off-west-end-2026/times-uk--clive-davis.json",
+    "dear-england-new-wimbledon-theatre-west-end-2026/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -92,7 +101,12 @@
       "the-book-of-mormon-west-end-2024/standard--nick-curtis.json",
       "the-book-of-mormon-west-end-2024/whatsonstage--sarah-crompton.json",
       "sweetmeats-west-end-2026/standard--maya-chandran.json",
-      "robin-hood-and-the-merry-mandem-off-west-end-2026/times-uk--dominic-maxwell.json"
+      "robin-hood-and-the-merry-mandem-off-west-end-2026/times-uk--dominic-maxwell.json",
+      "this-is-not-about-me-off-west-end-2026/london-theatre--marianka-swain.json",
+      "this-is-not-about-me-off-west-end-2026/whatsonstage--alun-hood.json",
+      "dear-england-new-wimbledon-theatre-west-end-2026/whatsonstage--sarah-crompton.json",
+      "happy-ending-west-end-2026/standard--unknown.json",
+      "im-every-woman-the-chaka-khan-musical-off-west-end-2026/london-theatre--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -108,17 +122,19 @@
     "archiveToday": [
       "data/review-texts/a-mirrored-monet-west-end-2026/thestage--unknown.json",
       "data/review-texts/robin-hood-and-the-merry-mandem-off-west-end-2026/thestage--paul-vale.json",
-      "data/review-texts/the-gruffalo-west-end-2026/daily-mail--unknown.json"
+      "data/review-texts/the-gruffalo-west-end-2026/daily-mail--unknown.json",
+      "data/review-texts/this-is-not-about-me-off-west-end-2026/thestage--sam-marlowe.json"
     ],
     "archive": [
       "john-proctor-is-the-villain-west-end-2026/telegraph--tim-robey.json",
       "john-proctor-is-the-villain-west-end-2026/thestage--unknown.json",
       "starlight-express-west-end-2024/the-express--unknown.json",
-      "grace-pervades-west-end-2026/thestage--unknown.json"
+      "grace-pervades-west-end-2026/thestage--unknown.json",
+      "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
     ]
   },
   "startTime": "2026-03-26T08:44:34.819Z",
-  "lastProcessed": "the-gruffalo-west-end-2026/daily-mail--unknown.json",
+  "lastProcessed": "im-every-woman-the-chaka-khan-musical-off-west-end-2026/london-theatre--unknown.json",
   "log": [
     {
       "t": "2026-03-26T08:47:36.689Z",
@@ -161,6 +177,18 @@
       "event": "bb-login-fail",
       "domain": "thestage.co.uk",
       "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    34 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-03-26T09:05:20.480Z",
+      "event": "bb-session",
+      "session": "5df387c0",
+      "url": "https://www.thestage.co.uk/reviews/once-on-this-island-review-regents-park-open-"
+    },
+    {
+      "t": "2026-03-26T09:05:59.129Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    34 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
     }
   ]
 }
