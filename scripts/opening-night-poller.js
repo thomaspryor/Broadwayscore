@@ -381,11 +381,17 @@ async function runAggregators(show) {
             }).on('error', () => resolve(null));
           });
           if (sitemapXml) {
-            // Match show title words against roundup URL slugs
+            // Match show title words against review URL slugs
+            // LBO uses both "review-round-up-{show}" and "{show}-review-{venue}" patterns
             const titleWords = show.title.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 2);
-            const roundupUrls = [...sitemapXml.matchAll(/<loc>(https:\/\/www\.londonboxoffice\.co\.uk\/news\/post\/[^<]*review-round-up[^<]*)<\/loc>/gi)]
-              .map(m => m[1]);
-            const match = roundupUrls.find(url => {
+            const reviewUrls = [...sitemapXml.matchAll(/<loc>(https:\/\/www\.londonboxoffice\.co\.uk\/news\/post\/[^<]*review[^<]*)<\/loc>/gi)]
+              .map(m => m[1])
+              .filter(url => {
+                const slug = url.split('/').pop().toLowerCase();
+                // Exclude non-review pages (photos, cast announcements, etc.)
+                return slug.includes('review') && !slug.includes('photo') && !slug.includes('cast-announced') && !slug.includes('announces');
+              });
+            const match = reviewUrls.find(url => {
               const slug = url.split('/').pop().toLowerCase();
               return titleWords.filter(w => slug.includes(w)).length >= Math.min(titleWords.length, 2);
             });
@@ -581,19 +587,29 @@ async function runAggregators(show) {
     }
   }
 
-  // 1g. WestEndTheatre.com roundups (WE/OWE only — WP API + page fetch fallback)
+  // 1g. WestEndTheatre.com roundups (WE/OWE only — WP API + rendered page fallback)
   if (isWestEnd) {
     try {
       console.log('  Checking WestEndTheatre.com (WP API)...');
-      const { execSync } = require('child_process');
       const cheerioWet = require('cheerio');
-      const searchTitle = show.title.replace(/['"]/g, '');
+      const searchTitle = show.title.replace(/['"'\u2018\u2019]/g, '');
       const apiUrl = `https://www.westendtheatre.com/wp-json/wp/v2/posts?categories=10&per_page=20&search=${encodeURIComponent(searchTitle)}`;
-      const apiResult = execSync(
-        `curl -s "${apiUrl}" -H "Accept: application/json" -H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"`,
-        { timeout: 15000, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }
-      );
-      const posts = JSON.parse(apiResult);
+
+      // Use https.get instead of execSync curl — more reliable in CI
+      const apiResult = await new Promise((resolve) => {
+        require('https').get(apiUrl, {
+          headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)', Accept: 'application/json' },
+        }, res => {
+          if (res.statusCode !== 200) { console.log(`    WET API status: ${res.statusCode}`); resolve(null); return; }
+          let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
+        }).on('error', e => { console.log(`    WET API error: ${e.message}`); resolve(null); });
+      });
+
+      let posts = [];
+      if (apiResult) {
+        try { posts = JSON.parse(apiResult); } catch (e) { console.log(`    WET API parse error: ${(e.message || '').substring(0, 60)}`); }
+      }
+
       if (Array.isArray(posts) && posts.length > 0) {
         for (const post of posts.slice(0, 3)) {
           const htmlContent = post.content?.rendered || '';
@@ -617,21 +633,40 @@ async function runAggregators(show) {
           // Fallback: fetch rendered page for section-format posts (CSS classes)
           if (wetReviews.length === 0 && post.link) {
             try {
-              const pageHtml = execSync(
-                `curl -s -L "${post.link}" -H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36" -H "Accept: text/html" --compressed`,
-                { timeout: 20000, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }
-              );
-              const $w = cheerioWet.load(pageHtml);
-              $w('.reviewnewpubhead').each((_, el) => {
-                const outlet = $w(el).text().trim();
-                const stars = ($w(el).next('.reviewnewstars').text().match(/★/g) || []).length;
-                const authorText = $w(el).nextAll('.reviewnewauthor').first().text().trim();
-                const cm = authorText.match(/^([A-Z][a-z]+(?:\s[A-Z][a-z'-]+)+)/);
-                if (outlet && stars > 0) {
-                  wetReviews.push({ outlet, stars, critic: cm ? cm[1] : 'Unknown' });
-                }
+              console.log(`    Fetching rendered page: ${post.link}`);
+              const pageHtml = await new Promise((resolve) => {
+                require('https').get(post.link, {
+                  headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)', Accept: 'text/html' },
+                }, res => {
+                  // Follow redirect
+                  if (res.statusCode === 301 || res.statusCode === 302) {
+                    require('https').get(res.headers.location, {
+                      headers: { 'User-Agent': 'Mozilla/5.0', Accept: 'text/html' },
+                    }, res2 => {
+                      if (res2.statusCode !== 200) { resolve(null); return; }
+                      let d = ''; res2.on('data', c => d += c); res2.on('end', () => resolve(d));
+                    }).on('error', () => resolve(null));
+                    return;
+                  }
+                  if (res.statusCode !== 200) { resolve(null); return; }
+                  let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
+                }).on('error', () => resolve(null));
               });
-            } catch (e) { /* page fetch failed — skip */ }
+              if (pageHtml) {
+                const $w = cheerioWet.load(pageHtml);
+                $w('.reviewnewpubhead').each((_, el) => {
+                  const outlet = $w(el).text().trim();
+                  const stars = ($w(el).next('.reviewnewstars').text().match(/★/g) || []).length;
+                  const authorText = $w(el).nextAll('.reviewnewauthor').first().text().trim();
+                  const cm = authorText.match(/^([A-Z][a-z]+(?:\s[A-Z][a-z'-]+)+)/);
+                  if (outlet && stars > 0) {
+                    wetReviews.push({ outlet, stars, critic: cm ? cm[1] : 'Unknown' });
+                  }
+                });
+              }
+            } catch (e) {
+              console.log(`    WET page fetch error: ${(e.message || '').substring(0, 60)}`);
+            }
           }
 
           if (wetReviews.length === 0) continue;
@@ -660,7 +695,7 @@ async function runAggregators(show) {
           break;
         }
       } else {
-        console.log('  WestEndTheatre: no matching roundup');
+        console.log(`  WestEndTheatre: no matching roundup (API returned ${Array.isArray(posts) ? posts.length + ' posts' : typeof posts})`);
       }
     } catch (err) {
       console.log(`  WestEndTheatre error: ${err.message}`);
