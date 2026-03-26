@@ -1,30 +1,73 @@
 {
-  "updatedAt": "2026-03-26T08:55:23.302Z",
-  "processed": 30,
-  "failed": 20,
-  "successRate": "60.0%",
+  "updatedAt": "2026-03-26T09:01:38.257Z",
+  "processed": 320,
+  "failed": 1261,
+  "successRate": "20.2%",
   "tierBreakdown": {
     "playwright": 25,
     "amp": 0,
     "browserbase": 5,
     "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 3
+    "scrapingbee": 9,
+    "brightdata": 113,
+    "archiveToday": 402,
+    "archive": 21
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
-      "t": "2026-03-26T08:47:36.689Z",
-      "event": "bb-session",
-      "session": "d5b35e64",
-      "url": "https://variety.com/gallery/celebrity-photos-red-carpet-march-2026/"
+      "t": "2026-03-26T07:01:59.093Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     },
     {
-      "t": "2026-03-26T08:48:02.904Z",
+      "t": "2026-03-26T07:06:10.936Z",
       "event": "bb-session",
-      "session": "409a8b37",
+      "session": "78172365",
+      "url": "https://www.hollywoodreporter.com/news/superior-donuts-theater-review-93738/"
+    },
+    {
+      "t": "2026-03-26T07:06:12.025Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-26T07:07:14.901Z",
+      "event": "bb-session",
+      "session": "8378b98f",
+      "url": "https://www.northjersey.com/entertainment/stage/WAITING0430.html"
+    },
+    {
+      "t": "2026-03-26T07:07:15.958Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-26T07:07:33.555Z",
+      "event": "bb-session",
+      "session": "cd887140",
+      "url": "https://www.hollywoodreporter.com/review/little-miss-sunshine-theater-review-656"
+    },
+    {
+      "t": "2026-03-26T07:07:34.569Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-26T07:07:48.419Z",
+      "event": "bb-session",
+      "session": "2deccbc9",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/waiting-for-godot-broadway-revi"
+    },
+    {
+      "t": "2026-03-26T07:07:49.358Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-26T08:38:27.841Z",
+      "event": "bb-session",
+      "session": "b02bdb4e",
       "url": "https://variety.com/2026/legit/news/jojo-broadway-chess-lea-michele-joanna-leves"
     },
     {
@@ -34,16 +77,48 @@
       "url": "https://www.thestage.co.uk/reviews/a-mirrored-monet-review-charing-cross-theatre"
     },
     {
-      "t": "2026-03-26T08:50:36.277Z",
-      "event": "bb-login-fail",
-      "domain": "thestage.co.uk",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    34 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
+      "t": "2026-03-26T08:40:01.223Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     },
     {
-      "t": "2026-03-26T08:51:44.488Z",
+      "t": "2026-03-26T08:49:59.904Z",
       "event": "bb-session",
-      "session": "473d63ff",
-      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
+      "session": "c3382326",
+      "url": "http://www.wsj.com/article_email/old-times-review-made-in-england-assembled-on-b"
+    },
+    {
+      "t": "2026-03-26T08:50:01.310Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-26T08:54:19.622Z",
+      "event": "bb-session",
+      "session": "c9a6f24b",
+      "url": "http://bigstory.ap.org/article/review-winslow-boy-tonic-stubborn"
+    },
+    {
+      "t": "2026-03-26T08:56:32.201Z",
+      "event": "bb-session",
+      "session": "c2ecbfa7",
+      "url": "https://online.wsj.com/article/AP2ae4a5b5ef0448d3a7db89d2dc5a931a.html"
+    },
+    {
+      "t": "2026-03-26T08:56:34.090Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-26T08:59:05.574Z",
+      "event": "bb-session",
+      "session": "9ca841ad",
+      "url": "https://online.wsj.com/article/AP95c59055d4bc4e6693e455d9d492d1bb.html?KEYWORDS="
+    },
+    {
+      "t": "2026-03-26T08:59:06.862Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
