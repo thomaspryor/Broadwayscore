@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-26T11:33:16.126Z",
-  "processed": 156,
-  "failed": 197,
-  "successRate": "44.2%",
+  "updatedAt": "2026-03-26T11:52:20.733Z",
+  "processed": 98,
+  "failed": 105,
+  "successRate": "48.3%",
   "tierBreakdown": {
-    "playwright": 72,
+    "playwright": 51,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingbee": 7,
-    "brightdata": 54,
-    "archiveToday": 10,
-    "archive": 21
+    "scrapingbee": 6,
+    "brightdata": 32,
+    "archiveToday": 8,
+    "archive": 6
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-03-26T09:43:13.034Z",
@@ -74,6 +74,28 @@
       "event": "bb-login-fail",
       "domain": "thestage.co.uk",
       "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    39 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-03-26T11:46:00.694Z",
+      "event": "bb-session",
+      "session": "250606bb",
+      "url": "https://www.wsj.com/articles/mrs-doubtfire-jerry-zacks-robin-williams-rob-mcclur"
+    },
+    {
+      "t": "2026-03-26T11:46:01.816Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-26T11:47:20.476Z",
+      "event": "bb-session",
+      "session": "e2d57ee0",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/thoughts-of-a-colored-man-broad"
+    },
+    {
+      "t": "2026-03-26T11:47:21.573Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
