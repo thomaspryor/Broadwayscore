@@ -29,7 +29,10 @@
     "showstopper-the-improvised-musical-west-end-2023/whatsonstage--alex-wood.json",
     "the-book-of-mormon-west-end-2024/independent--alice-saville.json",
     "the-book-of-mormon-west-end-2024/standard--nick-curtis.json",
-    "the-book-of-mormon-west-end-2024/whatsonstage--sarah-crompton.json"
+    "the-book-of-mormon-west-end-2024/whatsonstage--sarah-crompton.json",
+    "grace-pervades-west-end-2026/thestage--unknown.json",
+    "sweetmeats-west-end-2026/standard--maya-chandran.json",
+    "robin-hood-and-the-merry-mandem-off-west-end-2026/times-uk--dominic-maxwell.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -51,7 +54,14 @@
     "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
     "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
     "hamilton-west-end-2021/times-uk--clive-davis.json",
-    "the-book-of-mormon-west-end-2024/thestage--unknown.json"
+    "the-book-of-mormon-west-end-2024/thestage--unknown.json",
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "man-to-man-west-end-2026/stagebuddy--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/daily-mail--robert-gore-langton.json",
+    "high-noon-west-end-2025/times-uk--clive-davis.json",
+    "robin-hood-and-the-merry-mandem-off-west-end-2026/telegraph--claire-allfree.json",
+    "robin-hood-and-the-merry-mandem-off-west-end-2026/thestage--paul-vale.json",
+    "the-gruffalo-west-end-2026/daily-mail--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -80,7 +90,9 @@
       "showstopper-the-improvised-musical-west-end-2023/whatsonstage--alex-wood.json",
       "the-book-of-mormon-west-end-2024/independent--alice-saville.json",
       "the-book-of-mormon-west-end-2024/standard--nick-curtis.json",
-      "the-book-of-mormon-west-end-2024/whatsonstage--sarah-crompton.json"
+      "the-book-of-mormon-west-end-2024/whatsonstage--sarah-crompton.json",
+      "sweetmeats-west-end-2026/standard--maya-chandran.json",
+      "robin-hood-and-the-merry-mandem-off-west-end-2026/times-uk--dominic-maxwell.json"
     ],
     "amp": [],
     "browserbase": [
@@ -94,16 +106,19 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/a-mirrored-monet-west-end-2026/thestage--unknown.json"
+      "data/review-texts/a-mirrored-monet-west-end-2026/thestage--unknown.json",
+      "data/review-texts/robin-hood-and-the-merry-mandem-off-west-end-2026/thestage--paul-vale.json",
+      "data/review-texts/the-gruffalo-west-end-2026/daily-mail--unknown.json"
     ],
     "archive": [
       "john-proctor-is-the-villain-west-end-2026/telegraph--tim-robey.json",
       "john-proctor-is-the-villain-west-end-2026/thestage--unknown.json",
-      "starlight-express-west-end-2024/the-express--unknown.json"
+      "starlight-express-west-end-2024/the-express--unknown.json",
+      "grace-pervades-west-end-2026/thestage--unknown.json"
     ]
   },
   "startTime": "2026-03-26T08:44:34.819Z",
-  "lastProcessed": "the-book-of-mormon-west-end-2024/whatsonstage--sarah-crompton.json",
+  "lastProcessed": "the-gruffalo-west-end-2026/daily-mail--unknown.json",
   "log": [
     {
       "t": "2026-03-26T08:47:36.689Z",
@@ -134,6 +149,18 @@
       "event": "bb-session",
       "session": "473d63ff",
       "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
+    },
+    {
+      "t": "2026-03-26T09:00:28.499Z",
+      "event": "bb-session",
+      "session": "a2e5d5bb",
+      "url": "https://www.thestage.co.uk/reviews/robin-hood-review-london-palladium-michael-ha"
+    },
+    {
+      "t": "2026-03-26T09:01:08.063Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    34 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
     }
   ]
 }
