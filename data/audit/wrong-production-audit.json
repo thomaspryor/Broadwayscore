@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-03-26T10:48:26.972Z",
+  "timestamp": "2026-03-26T10:57:00.918Z",
   "stats": {
     "totalReviews": 32508,
-    "alreadyFlagged": 11177,
+    "alreadyFlagged": 11178,
     "dateGuardCatches": 143,
     "directorMismatch": 959,
-    "tvFilmSignals": 3453,
+    "tvFilmSignals": 3451,
     "londonSignals": 1043,
     "offBroadwaySignals": 1006,
     "yearMismatch": 71,
@@ -8175,19 +8175,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "bug-2026",
-      "file": "playbill--logan-culwell-block.json",
-      "publishDate": "2026-01-08",
-      "url": "https://playbill.com/article/did-reviews-fall-for-tracy-letts-bug-on-broadway",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -19683,19 +19670,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "grey-house-2023",
-      "file": "slash-film--caroline-cao.json",
-      "publishDate": "2023-06-07",
-      "url": "https://www.slashfilm.com/1307195/the-grey-house-review/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -45173,7 +45147,7 @@
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
+          "detail": "Contains TV/film keyword: \"netflix\""
         },
         {
           "type": "LONDON_SIGNAL",
@@ -85550,7 +85524,7 @@
     },
     {
       "showId": "wicked-2003",
-      "file": "broadwayworld--david-copney.json",
+      "file": "broadwayworld--jared-fessler.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
       "findings": [
