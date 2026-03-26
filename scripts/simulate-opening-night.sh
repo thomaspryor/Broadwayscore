@@ -227,34 +227,22 @@ else warn "Could not verify unsubscribe link in email"; fi
 if echo "$DRY_OUTPUT" | grep -q "score card: true"; then pass "Email HTML has score card"
 else warn "Could not verify score card in email"; fi
 
-# ─── Phase 6: HMAC Approval Link ───────────────────────────────────────
-header 6 "Approval Link HMAC (Fixes G, M)"
+# ─── Phase 6: Buttondown Draft Creation ────────────────────────────────
+header 6 "Buttondown Draft (replaces HMAC approval flow)"
 
-if [ -z "${APPROVAL_HMAC_SECRET:-}" ]; then
-  warn "APPROVAL_HMAC_SECRET not set — skipping HMAC verification"
-  warn "To test: export APPROVAL_HMAC_SECRET=your_secret"
+# The approval HMAC flow has been removed. Code now creates Buttondown DRAFTS.
+# Owner reviews and sends manually from the Buttondown UI. Code never pushes Send.
+if [ -z "${BUTTONDOWN_API_KEY:-}" ]; then
+  warn "BUTTONDOWN_API_KEY not set — skipping Buttondown draft verification"
+  warn "To test: export BUTTONDOWN_API_KEY=your_key"
 else
-  HMAC_RESULT=$(node -e "
-    const crypto = require('crypto');
-    const secret = process.env.APPROVAL_HMAC_SECRET;
-    const dateStr = new Date().toISOString().slice(0, 10);
-    const payload = 'broadcast:${SHOW_ID}:${MARKET}:' + dateStr;
-    const token = crypto.createHmac('sha256', secret).update(payload).digest('hex');
-    const expected = crypto.createHmac('sha256', secret).update(payload).digest('hex');
-    const valid = crypto.timingSafeEqual(Buffer.from(token, 'hex'), Buffer.from(expected, 'hex'));
-    console.log(valid ? 'PASS|HMAC token generation + verification' : 'FAIL|HMAC verification failed');
-    const url = '/api/approve-broadcast?token=' + token + '&shows=${SHOW_ID}&market=${MARKET}&lookback=${LOOKBACK}';
-    console.log(url.includes('shows=${SHOW_ID}') ? 'PASS|Approval URL contains show IDs (Fix G)' : 'FAIL|Missing show IDs');
-    console.log(url.includes('market=${MARKET}') ? 'PASS|Approval URL contains market (Fix G)' : 'FAIL|Missing market');
-    console.log(url.includes('lookback=${LOOKBACK}') ? 'PASS|Approval URL contains lookback (Fix M)' : 'FAIL|Missing lookback');
-  ")
-  echo "$HMAC_RESULT" | while IFS='|' read -r s m; do
-    case "$s" in PASS) echo "  ✅ $m";; FAIL) echo "  ❌ $m";; esac
-  done
-  HMAC_P=$(echo "$HMAC_RESULT" | grep -c "^PASS" || true)
-  HMAC_F=$(echo "$HMAC_RESULT" | grep -c "^FAIL" || true)
-  PASSED=$((PASSED + HMAC_P))
-  FAILED=$((FAILED + HMAC_F))
+  # Verify the dry-run output mentions Buttondown draft
+  if echo "$DRY_OUTPUT" | grep -q "buttondown\|draft\|Buttondown"; then
+    pass "Dry run references Buttondown draft (not Resend broadcast)"
+    PASSED=$((PASSED + 1))
+  else
+    warn "Dry run output did not mention Buttondown — check migration"
+  fi
 fi
 
 # ─── Phase 7: Subscriber Data ──────────────────────────────────────────
