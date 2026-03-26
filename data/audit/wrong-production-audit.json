@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-26T11:57:37.569Z",
+  "timestamp": "2026-03-26T12:07:11.070Z",
   "stats": {
     "totalReviews": 32509,
     "alreadyFlagged": 11176,
@@ -7,7 +7,7 @@
     "directorMismatch": 960,
     "tvFilmSignals": 3450,
     "londonSignals": 1043,
-    "offBroadwaySignals": 1006,
+    "offBroadwaySignals": 1007,
     "yearMismatch": 71,
     "noPublishDate": 6706
   },
@@ -67757,6 +67757,11 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 312d before show (May 13, 2022 vs 2023-03-21)"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
