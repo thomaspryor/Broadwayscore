@@ -1,44 +1,20 @@
 {
-  "updatedAt": "2026-03-26T12:33:02.000Z",
-  "processed": 147,
-  "failed": 206,
-  "successRate": "41.6%",
+  "updatedAt": "2026-03-26T12:50:38.277Z",
+  "processed": 152,
+  "failed": 251,
+  "successRate": "37.7%",
   "tierBreakdown": {
-    "playwright": 64,
+    "playwright": 65,
     "amp": 0,
     "browserbase": 10,
     "directCookies": 0,
     "scrapingbee": 8,
-    "brightdata": 54,
-    "archiveToday": 13,
-    "archive": 16
+    "brightdata": 57,
+    "archiveToday": 17,
+    "archive": 17
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 12,
   "recentActivity": [
-    {
-      "t": "2026-03-26T09:54:29.077Z",
-      "event": "bb-login-fail",
-      "domain": "thestage.co.uk",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    40 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-03-26T09:56:53.966Z",
-      "event": "bb-session",
-      "session": "1bcf42a0",
-      "url": "https://www.thestage.co.uk/reviews/robin-hood-review-london-palladium-michael-ha"
-    },
-    {
-      "t": "2026-03-26T09:57:32.281Z",
-      "event": "bb-login-fail",
-      "domain": "thestage.co.uk",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    40 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-03-26T10:00:02.754Z",
-      "event": "bb-session",
-      "session": "9f9dfae8",
-      "url": "https://www.thestage.co.uk/reviews/once-on-this-island-review-regents-park-open-"
-    },
     {
       "t": "2026-03-26T10:00:51.166Z",
       "event": "bb-login-fail",
@@ -128,6 +104,29 @@
       "event": "bb-session",
       "session": "e1359465",
       "url": "https://scheckonthearts.com/blog2.php/2011/10/21/review-ligrelatively-speakingl-"
+    },
+    {
+      "t": "2026-03-26T12:36:43.898Z",
+      "event": "bb-session",
+      "session": "0cb4c37e",
+      "url": "https://scheckonthearts.com/blog2.php/2011/04/28/review-ligthe-normal-heartl-ig"
+    },
+    {
+      "t": "2026-03-26T12:37:01.772Z",
+      "event": "bb-session",
+      "session": "f6979089",
+      "url": "https://www.newsday.com/entertainment/tv/tv-zone-1.811968/hbo-s-the-normal-heart"
+    },
+    {
+      "t": "2026-03-26T12:37:02.818Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-26T12:44:40.243Z",
+      "event": "bb-session",
+      "session": "e7ddb4fc",
+      "url": "https://blogs.villagevoice.com/dailymusto/2011/03/how_to_succeed.php"
     }
   ]
 }
