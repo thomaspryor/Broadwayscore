@@ -156,7 +156,10 @@
     "teeth-n-smiles-west-end-2026/standard--unknown.json",
     "giant-2026/talkinbroadway--unknown.json",
     "grace-pervades-west-end-2026/thestage--unknown.json",
-    "the-price-2017/thestage--chris-jones.json"
+    "the-price-2017/thestage--chris-jones.json",
+    "oleanna-2009/nytimes--dave-itzkoff.json",
+    "oleanna-2009/theatermania--unknown.json",
+    "9-to-5-2009/hollywood-reporter--david-rooney.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -704,7 +707,14 @@
     "a-view-from-the-bridge-2010/huffpost--michael-glitz.json",
     "a-view-from-the-bridge-2010/talkinbroadway--matthew-murray.json",
     "a-little-night-music-2009/talkinbroadway--matthew-murray.json",
-    "race-2009/theatermania--charles-isherwood.json"
+    "race-2009/theatermania--charles-isherwood.json",
+    "ragtime-2009/broadwayworld--jay-irwin.json",
+    "memphis-2009/variety--charles-isherwood.json",
+    "oleanna-2009/times-uk--dominic-maxwell.json",
+    "burn-the-floor-2009/ew--jennifer-armstrong.json",
+    "burn-the-floor-2009/backstage--jo-sagolla.json",
+    "waiting-for-godot-2009/ap--michael-kuchwara.json",
+    "waiting-for-godot-2009/northjerseycom--robert-feldberg.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -774,7 +784,8 @@
       "bullets-over-broadway-2014/timeout--david-cote.json",
       "once-2012/ew--emlyn-travis.json",
       "high-2011/theatermania--david-gordon.json",
-      "teeth-n-smiles-west-end-2026/standard--unknown.json"
+      "teeth-n-smiles-west-end-2026/standard--unknown.json",
+      "oleanna-2009/theatermania--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -789,7 +800,9 @@
       "data/review-texts/the-anarchist-2012/hollywood-reporter--david-rooney.json",
       "the-anarchist-2012/hollywood-reporter--david-rooney.json",
       "data/review-texts/sondheim-on-sondheim-2010/variety--charles-isherwood.json",
-      "sondheim-on-sondheim-2010/variety--charles-isherwood.json"
+      "sondheim-on-sondheim-2010/variety--charles-isherwood.json",
+      "data/review-texts/9-to-5-2009/hollywood-reporter--david-rooney.json",
+      "9-to-5-2009/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -800,7 +813,8 @@
       "some-like-it-hot-2022/newyorker--unknown.json",
       "tina-2019/newyorker--unknown.json",
       "the-price-2017/huffpost--stephen-suskin.json",
-      "jekyll-and-hyde-2013/nytimes--charles-isherwood.json"
+      "jekyll-and-hyde-2013/nytimes--charles-isherwood.json",
+      "oleanna-2009/nytimes--dave-itzkoff.json"
     ],
     "brightdata": [
       "public-charge-off-broadway-2026/talkinbroadway--unknown.json",
@@ -895,7 +909,9 @@
       "data/review-texts/the-people-in-the-picture-2011/philadelphia-inquirer--howard-shapiro.json",
       "data/review-texts/come-fly-away-2010/talkinbroadway--matthew-murray.json",
       "data/review-texts/a-view-from-the-bridge-2010/talkinbroadway--matthew-murray.json",
-      "data/review-texts/a-little-night-music-2009/talkinbroadway--matthew-murray.json"
+      "data/review-texts/a-little-night-music-2009/talkinbroadway--matthew-murray.json",
+      "data/review-texts/ragtime-2009/broadwayworld--jay-irwin.json",
+      "data/review-texts/waiting-for-godot-2009/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
       "wicked-2003/broadwayworld--jared-fessler.json",
@@ -920,7 +936,7 @@
     ]
   },
   "startTime": "2026-03-26T09:40:49.858Z",
-  "lastProcessed": "race-2009/theatermania--charles-isherwood.json",
+  "lastProcessed": "9-to-5-2009/hollywood-reporter--david-rooney.json",
   "log": [
     {
       "t": "2026-03-26T09:43:13.034Z",
@@ -1167,6 +1183,28 @@
       "t": "2026-03-26T14:01:57.325Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-26T14:15:11.034Z",
+      "event": "bb-session",
+      "session": "012a561d",
+      "url": "https://www.northjersey.com/entertainment/stage/WAITING0430.html"
+    },
+    {
+      "t": "2026-03-26T14:15:12.298Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-26T14:15:34.157Z",
+      "event": "bb-session",
+      "session": "2551d16c",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/9-5-musical-theater-revie"
+    },
+    {
+      "t": "2026-03-26T14:15:35.462Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
