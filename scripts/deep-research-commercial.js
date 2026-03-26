@@ -68,7 +68,7 @@ const MODEL_MAP = {
   'o4-mini': 'o4-mini',
   'o3': 'o3',
 };
-const MODEL_INPUT = flags['model'] || 'o4-mini-deep';
+const MODEL_INPUT = flags['model'] || 'o4-mini';
 const MODEL = MODEL_MAP[MODEL_INPUT] || MODEL_INPUT;
 const IS_DEEP_RESEARCH = MODEL.includes('deep-research');
 
@@ -445,11 +445,12 @@ async function main() {
     console.warn('Could not load grosses.json — plausibility cross-checks will be skipped');
   }
 
-  // Build show lookup
+  // Build show lookup (by both slug and id)
   const showBySlug = {};
   for (const s of allShows) {
-    if (s && typeof s === 'object' && s.slug) {
-      showBySlug[s.slug] = s;
+    if (s && typeof s === 'object') {
+      if (s.slug) showBySlug[s.slug] = s;
+      if (s.id && s.id !== s.slug) showBySlug[s.id] = s;
     }
   }
 
