@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-03-25T23:26:31.280Z",
+  "timestamp": "2026-03-25T23:59:39.923Z",
   "stats": {
     "totalReviews": 32489,
     "alreadyFlagged": 11139,
     "dateGuardCatches": 141,
     "directorMismatch": 957,
-    "tvFilmSignals": 3452,
+    "tvFilmSignals": 3453,
     "londonSignals": 1044,
     "offBroadwaySignals": 1009,
     "yearMismatch": 71,
@@ -41298,6 +41298,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
+      "showId": "robin-hood-and-the-merry-mandem-off-west-end-2026",
+      "file": "whatsonstage--tom-millward.json",
+      "score": 79,
+      "publishDate": null,
+      "url": "https://www.whatsonstage.com/news/robin-hood-pantomime-at-the-london-palladium-review_1657477/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
