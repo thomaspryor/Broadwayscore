@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-26T10:48:26.972Z",
+  "timestamp": "2026-03-26T11:46:17.286Z",
   "stats": {
-    "totalReviews": 32508,
-    "alreadyFlagged": 11177,
+    "totalReviews": 32509,
+    "alreadyFlagged": 11176,
     "dateGuardCatches": 143,
-    "directorMismatch": 959,
-    "tvFilmSignals": 3453,
+    "directorMismatch": 960,
+    "tvFilmSignals": 3450,
     "londonSignals": 1043,
     "offBroadwaySignals": 1006,
     "yearMismatch": 71,
-    "noPublishDate": 6705
+    "noPublishDate": 6706
   },
   "findings": [
     {
@@ -8175,19 +8175,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "bug-2026",
-      "file": "playbill--logan-culwell-block.json",
-      "publishDate": "2026-01-08",
-      "url": "https://playbill.com/article/did-reviews-fall-for-tracy-letts-bug-on-broadway",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -19683,19 +19670,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "grey-house-2023",
-      "file": "slash-film--caroline-cao.json",
-      "publishDate": "2023-06-07",
-      "url": "https://www.slashfilm.com/1307195/the-grey-house-review/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -44997,6 +44971,20 @@
     },
     {
       "showId": "spring-awakening-2015",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": 65,
+      "publishDate": "September 28, 2015",
+      "url": "https://www.hollywoodreporter.com/news/general-news/deaf-wests-spring-awakening-theater-2-827479/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from spring-awakening-2006"
+        }
+      ]
+    },
+    {
+      "showId": "spring-awakening-2015",
       "file": "huffpost--unknown.json",
       "score": 74,
       "publishDate": null,
@@ -45173,7 +45161,7 @@
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
+          "detail": "Contains TV/film keyword: \"netflix\""
         },
         {
           "type": "LONDON_SIGNAL",
@@ -60082,19 +60070,6 @@
     },
     {
       "showId": "waiting-for-godot-2013",
-      "file": "variety--frank-rizzo.json",
-      "publishDate": "2013-11-25",
-      "url": "https://variety.com/2013/legit/reviews/broadway-review-no-mans-landwaiting-for-godot-1200851722/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "waiting-for-godot-2013",
       "file": "vulture--jesse-green.json",
       "score": 72,
       "publishDate": "November 25, 2013",
@@ -67782,11 +67757,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 312d before show (May 13, 2022 vs 2023-03-21)"
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -69714,6 +69684,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "hand-to-god-2015",
+      "file": "nytimes--charles-isherwood.json",
+      "score": null,
+      "publishDate": "April 7, 2015",
+      "url": "http://www.nytimes.com/2015/04/08/theater/review-hand-to-god-features-a-foul-talking-puppet.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
         }
       ]
     },
@@ -85550,7 +85534,7 @@
     },
     {
       "showId": "wicked-2003",
-      "file": "broadwayworld--david-copney.json",
+      "file": "broadwayworld--jared-fessler.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
       "findings": [
