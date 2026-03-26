@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-03-26T12:50:38.277Z",
+  "updatedAt": "2026-03-26T12:54:10.078Z",
   "processed": 152,
-  "failed": 251,
-  "successRate": "37.7%",
+  "failed": 261,
+  "successRate": "36.8%",
   "tierBreakdown": {
     "playwright": 65,
     "amp": 0,
@@ -10,28 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 8,
     "brightdata": 57,
-    "archiveToday": 17,
+    "archiveToday": 19,
     "archive": 17
   },
-  "browserbaseSessions": 12,
+  "browserbaseSessions": 14,
   "recentActivity": [
-    {
-      "t": "2026-03-26T10:00:51.166Z",
-      "event": "bb-login-fail",
-      "domain": "thestage.co.uk",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    39 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-03-26T11:46:00.694Z",
-      "event": "bb-session",
-      "session": "250606bb",
-      "url": "https://www.wsj.com/articles/mrs-doubtfire-jerry-zacks-robin-williams-rob-mcclur"
-    },
-    {
-      "t": "2026-03-26T11:46:01.816Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-26T11:47:20.476Z",
       "event": "bb-session",
@@ -127,6 +110,23 @@
       "event": "bb-session",
       "session": "e7ddb4fc",
       "url": "https://blogs.villagevoice.com/dailymusto/2011/03/how_to_succeed.php"
+    },
+    {
+      "t": "2026-03-26T12:52:13.928Z",
+      "event": "bb-session",
+      "session": "e9f62f25",
+      "url": "https://leisureblogs.chicagotribune.com/the_theater_loop/2010/10/theater-review-"
+    },
+    {
+      "t": "2026-03-26T12:52:14.944Z",
+      "event": "bb-cookie-inject",
+      "domain": "chicagotribune.com"
+    },
+    {
+      "t": "2026-03-26T12:53:40.125Z",
+      "event": "bb-session",
+      "session": "4ebd740d",
+      "url": "https://www.thedailybeast.com/la-bete-a-broadway-beast/"
     }
   ]
 }
