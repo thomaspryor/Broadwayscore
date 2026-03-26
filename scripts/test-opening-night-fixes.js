@@ -318,6 +318,126 @@ assert(
 );
 
 // ============================================================
+// FIX — isWithinOpeningWindow (rss-discovery.js)
+// Date-window helper for narrow Broadway theater feeds.
+// ============================================================
+console.log('\n=== isWithinOpeningWindow: date window logic ===\n');
+
+const { isWithinOpeningWindow } = require('./lib/rss-discovery');
+
+const OPENING = '2026-03-23';
+
+// Opening night itself
+assert(
+  isWithinOpeningWindow(new Date('2026-03-23'), OPENING, 2),
+  'Day 0 (opening night): within window'
+);
+
+// Boundary: exactly ±2 days
+assert(
+  isWithinOpeningWindow(new Date('2026-03-25'), OPENING, 2),
+  'Day +2 (boundary): within window (inclusive)'
+);
+assert(
+  isWithinOpeningWindow(new Date('2026-03-21'), OPENING, 2),
+  'Day -2 (preview boundary): within window (inclusive)'
+);
+
+// Outside boundary
+assert(
+  !isWithinOpeningWindow(new Date('2026-03-26'), OPENING, 2),
+  'Day +3: outside window'
+);
+assert(
+  !isWithinOpeningWindow(new Date('2026-03-20'), OPENING, 2),
+  'Day -3: outside window'
+);
+
+// Fail-open cases
+assert(
+  isWithinOpeningWindow(null, OPENING, 2),
+  'null pubDate: fail-open (no date = include)'
+);
+assert(
+  isWithinOpeningWindow(undefined, OPENING, 2),
+  'undefined pubDate: fail-open'
+);
+assert(
+  isWithinOpeningWindow(new Date('2026-03-23'), null, 2),
+  'null openingDate: fail-open'
+);
+assert(
+  isWithinOpeningWindow(new Date('2026-03-23'), 'not-a-date', 2),
+  'invalid openingDate string: fail-open'
+);
+assert(
+  isWithinOpeningWindow(new Date('invalid'), OPENING, 2),
+  'invalid pubDate (NaN): fail-open'
+);
+
+// Custom window size
+assert(
+  isWithinOpeningWindow(new Date('2026-03-20'), OPENING, 3),
+  'Day -3 within window=3: included'
+);
+assert(
+  !isWithinOpeningWindow(new Date('2026-03-19'), OPENING, 3),
+  'Day -4 within window=3: excluded'
+);
+
+// ============================================================
+// FIX — openingWindow feed flag (rss-discovery.js)
+// Only narrow Broadway feeds get date-window; WE feeds always title-match.
+// ============================================================
+console.log('\n=== openingWindow: only narrow Broadway feeds flagged ===\n');
+
+const { ALL_FEEDS } = require('./lib/rss-discovery');
+
+const varietyFeed = ALL_FEEDS.find(f => f.name === 'Variety Legit');
+const nytFeed = ALL_FEEDS.find(f => f.name === 'NYT Theater');
+const wosFeed = ALL_FEEDS.find(f => f.name === 'WhatsOnStage');
+const standardFeed = ALL_FEEDS.find(f => f.name === 'Evening Standard Theatre');
+const thrFeed = ALL_FEEDS.find(f => f.name === 'THR');
+const guardianFeed = ALL_FEEDS.find(f => f.name === 'Guardian Stage');
+
+assert(varietyFeed && varietyFeed.openingWindow === true, 'Variety Legit: openingWindow=true');
+assert(nytFeed && nytFeed.openingWindow === true, 'NYT Theater: openingWindow=true');
+assert(wosFeed && !wosFeed.openingWindow, 'WhatsOnStage: no openingWindow (WE feed — always title-matches)');
+assert(standardFeed && !standardFeed.openingWindow, 'Evening Standard: no openingWindow (WE feed)');
+assert(thrFeed && !thrFeed.openingWindow, 'THR: no openingWindow (entertainment feed, has needsFilter)');
+assert(!guardianFeed, 'Guardian Stage: removed from ALL_FEEDS entirely (too broad)');
+
+// ============================================================
+// FIX — skipUrlFilter flag (site-search-discovery.js)
+// Variety section page is pre-scoped to /legit/reviews/ — skip urlLooksLikeReview.
+// TheaterMania and others retain url filtering.
+// ============================================================
+console.log('\n=== skipUrlFilter: only pre-scoped section pages skip URL matching ===\n');
+
+const { SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
+
+assert(
+  SITE_SEARCH_ENDPOINTS.variety && SITE_SEARCH_ENDPOINTS.variety.skipUrlFilter === true,
+  'variety: skipUrlFilter=true (section page already scoped to /legit/reviews/)'
+);
+assert(
+  SITE_SEARCH_ENDPOINTS.theatermania && !SITE_SEARCH_ENDPOINTS.theatermania.skipUrlFilter,
+  'theatermania: no skipUrlFilter (date-windowed API still needs title filtering)'
+);
+assert(
+  SITE_SEARCH_ENDPOINTS.guardian && !SITE_SEARCH_ENDPOINTS.guardian.skipUrlFilter,
+  'guardian: no skipUrlFilter (unchanged)'
+);
+assert(
+  SITE_SEARCH_ENDPOINTS.independent && !SITE_SEARCH_ENDPOINTS.independent.skipUrlFilter,
+  'independent: no skipUrlFilter (unchanged)'
+);
+assert(
+  SITE_SEARCH_ENDPOINTS['times-uk'] && !SITE_SEARCH_ENDPOINTS['times-uk'].skipUrlFilter,
+  'times-uk: no skipUrlFilter (unchanged)'
+);
+
+// ============================================================
 // Summary
 // ============================================================
 console.log(`\n${'='.repeat(50)}`);
