@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-26T09:00:00.840Z",
+  "timestamp": "2026-03-26T09:11:42.559Z",
   "stats": {
     "totalReviews": 32505,
     "alreadyFlagged": 11176,
     "dateGuardCatches": 143,
     "directorMismatch": 959,
-    "tvFilmSignals": 3453,
-    "londonSignals": 1044,
+    "tvFilmSignals": 3451,
+    "londonSignals": 1042,
     "offBroadwaySignals": 1008,
     "yearMismatch": 71,
     "noPublishDate": 6709
@@ -48137,39 +48137,6 @@
       ]
     },
     {
-      "showId": "teeth-n-smiles-west-end-2026",
-      "file": "times-uk--unknown.json",
-      "score": null,
-      "publishDate": "2026-03-19",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/phil-daniels-teeth-n-smiles-damon-albarn-p9qcrkhtv",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "teeth-n-smiles-west-end-2026",
-      "file": "variety--unknown.json",
-      "score": null,
-      "publishDate": "2026-03-25",
-      "url": "https://variety.com/gallery/celebrity-photos-red-carpet-march-2026/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"paramount\""
-        }
-      ]
-    },
-    {
       "showId": "that-championship-season-2011",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 38,
@@ -62976,20 +62943,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 182d before show (March 14, 2008 vs 2008-09-12)"
-        }
-      ]
-    },
-    {
-      "showId": "a-mirrored-monet-west-end-2026",
-      "file": "whatsonstage--unknown.json",
-      "score": null,
-      "publishDate": "2026-03-25",
-      "url": "https://www.whatsonstage.com/news/a-mirrored-monet-musical-at-charing-cross-theatre-review_1716250/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
