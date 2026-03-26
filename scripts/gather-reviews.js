@@ -1400,9 +1400,23 @@ async function searchBWWRoundup(show, year, options = {}) {
     show.title.replace(/'/g, '').replace(/[^a-zA-Z0-9\s]+/g, '').replace(/\s+/g, '-'),
   ];
 
+  // Format openingDate as YYYYMMDD for date-specific URL patterns
+  // BWW often uses the full date in the slug: Review-Roundup-TITLE-Opens-on-Broadway-YYYYMMDD
+  const dateSlug = show.openingDate ? show.openingDate.replace(/-/g, '') : null;
+
   const searchUrls = [];
   if (isLondonMarket(show.category)) {
     // West End BWW roundup URL patterns (broadwayworld.com/london/ subdomain + main domain)
+    // Date-specific patterns first (most precise, avoids wrong-production collisions)
+    if (dateSlug) {
+      for (const title of titleVariations) {
+        searchUrls.push(`https://www.broadwayworld.com/london/article/Review-Roundup-${title}-Opens-in-the-West-End-${dateSlug}`);
+        searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-in-the-West-End-${dateSlug}`);
+        searchUrls.push(`https://www.broadwayworld.com/london/article/Review-Roundup-${title}-Opens-in-the-West-End-Updating-LIVE-${dateSlug}`);
+        searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-in-the-West-End-Updating-LIVE-${dateSlug}`);
+      }
+    }
+    // Year-only patterns (fallback)
     for (const title of titleVariations) {
       searchUrls.push(`https://www.broadwayworld.com/london/article/Review-Roundup-${title}-Opens-in-the-West-End-Updating-LIVE-${year}`);
       searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-in-the-West-End-Updating-LIVE-${year}`);
@@ -1414,6 +1428,16 @@ async function searchBWWRoundup(show, year, options = {}) {
     }
   } else {
     // Broadway BWW roundup URL patterns
+    // Date-specific patterns first (most precise, avoids wrong-production collisions)
+    if (dateSlug) {
+      for (const title of titleVariations) {
+        searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-${dateSlug}`);
+        searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-On-Broadway-${dateSlug}`);
+        searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-Updating-LIVE-${dateSlug}`);
+        searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-On-Broadway-Updating-Live-${dateSlug}`);
+      }
+    }
+    // Year-only patterns (fallback)
     for (const title of titleVariations) {
       // BWW URLs have inconsistent capitalization — try common variants
       searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-Updating-LIVE-${year}`);

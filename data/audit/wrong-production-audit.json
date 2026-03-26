@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-26T02:55:17.327Z",
+  "timestamp": "2026-03-26T05:39:11.937Z",
   "stats": {
-    "totalReviews": 32489,
-    "alreadyFlagged": 11140,
+    "totalReviews": 32490,
+    "alreadyFlagged": 11142,
     "dateGuardCatches": 141,
     "directorMismatch": 958,
-    "tvFilmSignals": 3453,
+    "tvFilmSignals": 3454,
     "londonSignals": 1044,
     "offBroadwaySignals": 1009,
     "yearMismatch": 71,
-    "noPublishDate": 6725
+    "noPublishDate": 6723
   },
   "findings": [
     {
@@ -36702,6 +36702,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "on-a-clear-day-you-can-see-forever-2011",
+      "file": "variety--marilyn-stasio.json",
+      "score": 46,
+      "publishDate": "December 11, 2011",
+      "url": "https://variety.com/2011/legit/reviews/on-a-clear-day-you-can-see-forever-1117946748/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
