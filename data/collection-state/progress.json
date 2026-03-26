@@ -256,7 +256,9 @@
     "the-normal-heart-2011/timeout--david-cote.json",
     "born-yesterday-2011/theatermania--andy-propst.json",
     "sister-act-2011/philadelphia-inquirer--howard-shapiro.json",
-    "high-2011/theatermania--david-gordon.json"
+    "high-2011/theatermania--david-gordon.json",
+    "bengal-tiger-at-the-baghdad-zoo-2011/theatermania--david-finkle.json",
+    "how-to-succeed-in-business-without-really-trying-2011/timeout--david-cote.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -1182,7 +1184,15 @@
     "catch-me-if-you-can-2011/scheckontheater--frank-scheck.json",
     "catch-me-if-you-can-2011/new-jersey-newsroom--michael-sommers.json",
     "catch-me-if-you-can-2011/backstage--unknown.json",
-    "anything-goes-2011/talkinbroadway--matthew-murray.json"
+    "anything-goes-2011/talkinbroadway--matthew-murray.json",
+    "how-to-succeed-in-business-without-really-trying-2011/village-voice--michael-musto.json",
+    "how-to-succeed-in-business-without-really-trying-2011/washpost--peter-marks.json",
+    "how-to-succeed-in-business-without-really-trying-2011/new-jersey-newsroom--michael-sommers.json",
+    "how-to-succeed-in-business-without-really-trying-2011/times-uk--clive-davis.json",
+    "ghetto-klown-2011/ap--mark-kennedy.json",
+    "ghetto-klown-2011/scheckontheater--frank-scheck.json",
+    "ghetto-klown-2011/backstage--david-sheward.json",
+    "priscilla-queen-of-the-desert-2011/ap--jocelyn-noveck.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1407,7 +1417,9 @@
       "private-lives-2011/theatermania--david-finkle.json",
       "the-normal-heart-2011/timeout--david-cote.json",
       "born-yesterday-2011/theatermania--andy-propst.json",
-      "sister-act-2011/philadelphia-inquirer--howard-shapiro.json"
+      "sister-act-2011/philadelphia-inquirer--howard-shapiro.json",
+      "bengal-tiger-at-the-baghdad-zoo-2011/theatermania--david-finkle.json",
+      "how-to-succeed-in-business-without-really-trying-2011/timeout--david-cote.json"
     ],
     "archiveToday": [
       "data/review-texts/cult-of-love-2024/talkinbroadway--matthew-murray.json",
@@ -1726,7 +1738,10 @@
       "data/review-texts/sister-act-2011/scheckontheater--frank-scheck.json",
       "data/review-texts/wonderland-2011/northjerseycom--robert-feldberg.json",
       "data/review-texts/war-horse-2011/chicagotribune--unknown.json",
-      "data/review-texts/anything-goes-2011/talkinbroadway--matthew-murray.json"
+      "data/review-texts/anything-goes-2011/talkinbroadway--matthew-murray.json",
+      "data/review-texts/how-to-succeed-in-business-without-really-trying-2011/washpost--peter-marks.json",
+      "data/review-texts/ghetto-klown-2011/scheckontheater--frank-scheck.json",
+      "data/review-texts/priscilla-queen-of-the-desert-2011/ap--jocelyn-noveck.json"
     ],
     "archive": [
       "the-terms-of-my-surrender-2017/thestage--mark-sheton.json",
@@ -1745,7 +1760,7 @@
     ]
   },
   "startTime": "2026-03-25T09:08:12.319Z",
-  "lastProcessed": "anything-goes-2011/talkinbroadway--matthew-murray.json",
+  "lastProcessed": "priscilla-queen-of-the-desert-2011/ap--jocelyn-noveck.json",
   "log": [
     {
       "t": "2026-03-25T09:10:15.724Z",
@@ -2279,6 +2294,23 @@
       "t": "2026-03-26T06:09:13.788Z",
       "event": "bb-cookie-inject",
       "domain": "chicagotribune.com"
+    },
+    {
+      "t": "2026-03-26T06:13:38.361Z",
+      "event": "bb-session",
+      "session": "2251c076",
+      "url": "https://www.washingtonpost.com/lifestyle/style/theater_reviews_how_to_succeed_an"
+    },
+    {
+      "t": "2026-03-26T06:13:39.428Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-26T06:15:06.816Z",
+      "event": "bb-session",
+      "session": "301c08ea",
+      "url": "https://scheckonthearts.com/blog2.php/2011/03/23/review-john-leguizamo-s-ligghet"
     }
   ]
 }
