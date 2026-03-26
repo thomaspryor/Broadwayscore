@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-03-26T03:24:57.048Z",
+  "generatedAt": "2026-03-26T03:32:25.413Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 95,
+    "avgScoreDiff": 2
   },
   "syndicationPairs": [
     {
@@ -96,7 +96,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Nelson Pressley",
+      "showId": "the-lion-king-1997",
+      "primaryOutlet": "jasonraize",
+      "secondaryOutlet": "washington-times",
+      "primaryFile": "jasonraize--nelson-pressley.json",
+      "secondaryFile": "washington-times--nelson-pressley.json",
+      "similarity": 95,
+      "primaryScore": 80,
+      "secondaryScore": 82,
+      "scoreDiff": 2
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "bernhardthamlet-2018",
