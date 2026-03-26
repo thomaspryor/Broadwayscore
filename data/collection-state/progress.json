@@ -179,7 +179,8 @@
     "teeth-n-smiles-west-end-2026/financialtimes--unknown.json",
     "teeth-n-smiles-west-end-2026/london-theatre--unknown.json",
     "teeth-n-smiles-west-end-2026/telegraph--unknown.json",
-    "contact-2000/nytimes--robin-pogrebin.json"
+    "contact-2000/nytimes--robin-pogrebin.json",
+    "carrie-1988/northjerseycom--robert-feldberg.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -1064,7 +1065,16 @@
     "rent-1996/northjerseycom--robert-feldberg.json",
     "the-secret-garden-1991/broadwayworld--andrew-child.json",
     "la-bete-1991/ny1--roma-torre.json",
-    "love-letters-1989/ap--mark-kennedy.json"
+    "love-letters-1989/ap--mark-kennedy.json",
+    "the-phantom-of-the-opera-1988/businessworld--sam-marcelo.json",
+    "the-phantom-of-the-opera-1988/the-philippine-star--rosalinda-orosa.json",
+    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
+    "into-the-woods-1987/broadwayworld--albert-gutierrez.json",
+    "into-the-woods-1987/broadwayworld--mary-lincer.json",
+    "into-the-woods-1987/broadwayworld--penny-tannenbaum.json",
+    "into-the-woods-1987/broadwayworld--steve-murray.json",
+    "into-the-woods-1987/broadwayworld--taylor-clemons.json",
+    "les-liaisons-dangereuses-1987/ap--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1323,7 +1333,13 @@
       "data/review-texts/rent-1996/curtainup--unknown-1999.json",
       "data/review-texts/rent-1996/northjerseycom--robert-feldberg.json",
       "data/review-texts/the-secret-garden-1991/broadwayworld--andrew-child.json",
-      "data/review-texts/love-letters-1989/ap--mark-kennedy.json"
+      "data/review-texts/love-letters-1989/ap--mark-kennedy.json",
+      "data/review-texts/the-phantom-of-the-opera-1988/businessworld--sam-marcelo.json",
+      "data/review-texts/into-the-woods-1987/broadwayworld--albert-gutierrez.json",
+      "data/review-texts/into-the-woods-1987/broadwayworld--mary-lincer.json",
+      "data/review-texts/into-the-woods-1987/broadwayworld--penny-tannenbaum.json",
+      "data/review-texts/into-the-woods-1987/broadwayworld--steve-murray.json",
+      "data/review-texts/into-the-woods-1987/broadwayworld--taylor-clemons.json"
     ],
     "archive": [
       "wicked-2003/broadwayworld--jared-fessler.json",
@@ -1347,11 +1363,12 @@
       "the-price-2017/thestage--chris-jones.json",
       "9-to-5-2009/nydailynews--unknown.json",
       "teeth-n-smiles-west-end-2026/telegraph--unknown.json",
-      "contact-2000/nytimes--robin-pogrebin.json"
+      "contact-2000/nytimes--robin-pogrebin.json",
+      "carrie-1988/northjerseycom--robert-feldberg.json"
     ]
   },
   "startTime": "2026-03-26T09:40:49.858Z",
-  "lastProcessed": "love-letters-1989/ap--mark-kennedy.json",
+  "lastProcessed": "les-liaisons-dangereuses-1987/ap--mark-kennedy.json",
   "log": [
     {
       "t": "2026-03-26T09:43:13.034Z",
@@ -1675,6 +1692,12 @@
       "t": "2026-03-26T19:10:59.630Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-26T19:13:40.160Z",
+      "event": "bb-session",
+      "session": "cdfbb7a3",
+      "url": "https://www.bworldonline.com/weekender/content.php?id=57674"
     }
   ]
 }
