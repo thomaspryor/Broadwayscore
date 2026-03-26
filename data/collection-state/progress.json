@@ -251,7 +251,8 @@
     "seminar-2011/theatermania--david-finkle.json",
     "seminar-2011/theatermania--david-rooney.json",
     "private-lives-2011/theatermania--david-finkle.json",
-    "spring-dances-2026-off-broadway-2026/guardian--unknown.json"
+    "spring-dances-2026-off-broadway-2026/guardian--unknown.json",
+    "man-and-boy-2011/variety--marilyn-stasio.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -1142,7 +1143,16 @@
     "the-mountaintop-2011/northjerseycom--robert-feldberg.json",
     "the-mountaintop-2011/backstage--david-sheward.json",
     "the-mountaintop-2011/yonkers-tribune--john-simon.json",
-    "man-and-boy-2011/northjerseycom--robert-feldberg.json"
+    "man-and-boy-2011/northjerseycom--robert-feldberg.json",
+    "man-and-boy-2011/backstage--david-sheward.json",
+    "man-and-boy-2011/yonkers-tribune--john-simon.json",
+    "follies-2011/philadelphia-inquirer--howard-shapiro.json",
+    "master-class-2011/dailybeast--john-anderson.json",
+    "master-class-2011/scheckontheater--frank-scheck.json",
+    "master-class-2011/village-voice--michael-musto.json",
+    "master-class-2011/backstage--erik-haagensen.json",
+    "the-people-in-the-picture-2011/northjerseycom--robert-feldberg.json",
+    "the-people-in-the-picture-2011/philadelphia-inquirer--howard-shapiro.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1263,7 +1273,9 @@
       "data/review-texts/teeth-n-smiles-west-end-2026/variety--unknown.json",
       "teeth-n-smiles-west-end-2026/variety--unknown.json",
       "data/review-texts/a-mirrored-monet-west-end-2026/variety--unknown.json",
-      "data/review-texts/a-mirrored-monet-west-end-2026/variety--brent-lang.json"
+      "data/review-texts/a-mirrored-monet-west-end-2026/variety--brent-lang.json",
+      "data/review-texts/man-and-boy-2011/variety--marilyn-stasio.json",
+      "man-and-boy-2011/variety--marilyn-stasio.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1671,7 +1683,10 @@
       "data/review-texts/chinglish-2011/ny1--roma-torre.json",
       "data/review-texts/the-mountaintop-2011/latimes--charles-mcnulty-bway.json",
       "data/review-texts/the-mountaintop-2011/northjerseycom--robert-feldberg.json",
-      "data/review-texts/man-and-boy-2011/northjerseycom--robert-feldberg.json"
+      "data/review-texts/man-and-boy-2011/northjerseycom--robert-feldberg.json",
+      "data/review-texts/master-class-2011/dailybeast--john-anderson.json",
+      "data/review-texts/the-people-in-the-picture-2011/northjerseycom--robert-feldberg.json",
+      "data/review-texts/the-people-in-the-picture-2011/philadelphia-inquirer--howard-shapiro.json"
     ],
     "archive": [
       "the-terms-of-my-surrender-2017/thestage--mark-sheton.json",
@@ -1690,7 +1705,7 @@
     ]
   },
   "startTime": "2026-03-25T09:08:12.319Z",
-  "lastProcessed": "man-and-boy-2011/northjerseycom--robert-feldberg.json",
+  "lastProcessed": "the-people-in-the-picture-2011/philadelphia-inquirer--howard-shapiro.json",
   "log": [
     {
       "t": "2026-03-25T09:10:15.724Z",
@@ -2140,6 +2155,40 @@
       "t": "2026-03-26T05:52:43.143Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-26T05:53:02.326Z",
+      "event": "bb-session",
+      "session": "3497f40f",
+      "url": "https://variety.com/2011/legit/reviews/man-and-boy-1117946742/"
+    },
+    {
+      "t": "2026-03-26T05:53:03.324Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-26T05:55:33.454Z",
+      "event": "bb-session",
+      "session": "07dd8d74",
+      "url": "https://www.thedailybeast.com/master-class-review-tyne-daly-teaches-broadway-how"
+    },
+    {
+      "t": "2026-03-26T05:58:07.095Z",
+      "event": "bb-session",
+      "session": "91126e8e",
+      "url": "https://www.northjersey.com/arts_entertainment/120942159_Grandmother_paints_a_po"
+    },
+    {
+      "t": "2026-03-26T05:58:08.111Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-26T05:59:11.756Z",
+      "event": "bb-session",
+      "session": "dcf8cc88",
+      "url": "https://articles.philly.com/2011-04-28/news/29483230_1_schmaltz-bubbie-generatio"
     }
   ]
 }
