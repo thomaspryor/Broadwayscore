@@ -146,7 +146,8 @@
     "on-a-clear-day-you-can-see-forever-2011/timeout--david-cote.json",
     "seminar-2011/theatermania--david-finkle.json",
     "private-lives-2011/theatermania--david-finkle.json",
-    "godspell-2011/talkinbroadway--matthew-murray.json"
+    "godspell-2011/talkinbroadway--matthew-murray.json",
+    "master-class-2011/village-voice--michael-musto.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -354,7 +355,16 @@
     "relatively-speaking-2011/new-jersey-newsroom--michael-sommers.json",
     "relatively-speaking-2011/backstage--david-sheward.json",
     "the-mountaintop-2011/backstage--david-sheward.json",
-    "the-mountaintop-2011/yonkers-tribune--john-simon.json"
+    "the-mountaintop-2011/yonkers-tribune--john-simon.json",
+    "man-and-boy-2011/backstage--david-sheward.json",
+    "man-and-boy-2011/yonkers-tribune--john-simon.json",
+    "master-class-2011/scheckontheater--frank-scheck.json",
+    "master-class-2011/backstage--erik-haagensen.json",
+    "the-people-in-the-picture-2011/philadelphia-inquirer--howard-shapiro.json",
+    "the-people-in-the-picture-2011/backstage--david-sheward.json",
+    "the-people-in-the-picture-2011/talkinbroadway--matthew-murray.json",
+    "the-normal-heart-2011/scheckontheater--frank-scheck.json",
+    "the-normal-heart-2011/newsday--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -517,7 +527,9 @@
       "data/review-texts/peter-and-the-starcatcher-2012/philadelphia-inquirer--howard-shapiro.json",
       "data/review-texts/private-lives-2011/talkinbroadway--matthew-murray.json",
       "data/review-texts/other-desert-cities-2011/usatoday--elysa-garder.json",
-      "data/review-texts/relatively-speaking-2011/scheckontheater--frank-scheck.json"
+      "data/review-texts/relatively-speaking-2011/scheckontheater--frank-scheck.json",
+      "data/review-texts/the-people-in-the-picture-2011/talkinbroadway--matthew-murray.json",
+      "data/review-texts/the-normal-heart-2011/scheckontheater--frank-scheck.json"
     ],
     "archive": [
       "wicked-2003/broadwayworld--jared-fessler.json",
@@ -535,11 +547,12 @@
       "spring-awakening-2015/njcom--christopher-kelly.json",
       "doctor-zhivago-2015/timeout--david-cote.json",
       "hand-to-god-2015/nytimes--charles-isherwood.json",
-      "hands-on-a-hardbody-2013/vulture--york-magazine.json"
+      "hands-on-a-hardbody-2013/vulture--york-magazine.json",
+      "master-class-2011/village-voice--michael-musto.json"
     ]
   },
   "startTime": "2026-03-26T09:40:49.858Z",
-  "lastProcessed": "the-mountaintop-2011/yonkers-tribune--john-simon.json",
+  "lastProcessed": "the-normal-heart-2011/newsday--unknown.json",
   "log": [
     {
       "t": "2026-03-26T09:43:13.034Z",
@@ -684,6 +697,23 @@
       "event": "bb-session",
       "session": "e1359465",
       "url": "https://scheckonthearts.com/blog2.php/2011/10/21/review-ligrelatively-speakingl-"
+    },
+    {
+      "t": "2026-03-26T12:36:43.898Z",
+      "event": "bb-session",
+      "session": "0cb4c37e",
+      "url": "https://scheckonthearts.com/blog2.php/2011/04/28/review-ligthe-normal-heartl-ig"
+    },
+    {
+      "t": "2026-03-26T12:37:01.772Z",
+      "event": "bb-session",
+      "session": "f6979089",
+      "url": "https://www.newsday.com/entertainment/tv/tv-zone-1.811968/hbo-s-the-normal-heart"
+    },
+    {
+      "t": "2026-03-26T12:37:02.818Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
     }
   ]
 }

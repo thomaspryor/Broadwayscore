@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-03-26T12:33:02.000Z",
-  "processed": 147,
-  "failed": 206,
-  "successRate": "41.6%",
+  "updatedAt": "2026-03-26T12:38:06.665Z",
+  "processed": 148,
+  "failed": 215,
+  "successRate": "40.8%",
   "tierBreakdown": {
     "playwright": 64,
     "amp": 0,
@@ -10,29 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 8,
     "brightdata": 54,
-    "archiveToday": 13,
-    "archive": 16
+    "archiveToday": 15,
+    "archive": 17
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 11,
   "recentActivity": [
-    {
-      "t": "2026-03-26T09:54:29.077Z",
-      "event": "bb-login-fail",
-      "domain": "thestage.co.uk",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    40 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-03-26T09:56:53.966Z",
-      "event": "bb-session",
-      "session": "1bcf42a0",
-      "url": "https://www.thestage.co.uk/reviews/robin-hood-review-london-palladium-michael-ha"
-    },
-    {
-      "t": "2026-03-26T09:57:32.281Z",
-      "event": "bb-login-fail",
-      "domain": "thestage.co.uk",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    40 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
-    },
     {
       "t": "2026-03-26T10:00:02.754Z",
       "event": "bb-session",
@@ -128,6 +110,23 @@
       "event": "bb-session",
       "session": "e1359465",
       "url": "https://scheckonthearts.com/blog2.php/2011/10/21/review-ligrelatively-speakingl-"
+    },
+    {
+      "t": "2026-03-26T12:36:43.898Z",
+      "event": "bb-session",
+      "session": "0cb4c37e",
+      "url": "https://scheckonthearts.com/blog2.php/2011/04/28/review-ligthe-normal-heartl-ig"
+    },
+    {
+      "t": "2026-03-26T12:37:01.772Z",
+      "event": "bb-session",
+      "session": "f6979089",
+      "url": "https://www.newsday.com/entertainment/tv/tv-zone-1.811968/hbo-s-the-normal-heart"
+    },
+    {
+      "t": "2026-03-26T12:37:02.818Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
     }
   ]
 }
