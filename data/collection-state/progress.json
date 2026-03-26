@@ -97,7 +97,13 @@
     "the-lifespan-of-a-fact-2018/vulture--sara-holden.json",
     "the-lifespan-of-a-fact-2018/vulture--sarah-holdren.json",
     "bernhardthamlet-2018/stage-left--william-wolf.json",
-    "three-tall-women-2018/theater-life--david-sheward.json"
+    "three-tall-women-2018/theater-life--david-sheward.json",
+    "spongebob-squarepants-2017/wsj--unknown.json",
+    "latin-history-for-morons-2017/stage-left--william-wolf.json",
+    "the-bands-visit-2017/off-script-with-dan-dwyer--wendy-caster.json",
+    "prince-of-broadway-2017/vulture--jesse-green.json",
+    "the-terms-of-my-surrender-2017/latimes--charles-mcnulty.json",
+    "the-terms-of-my-surrender-2017/thestage--mark-sheton.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -204,7 +210,11 @@
     "three-tall-women-2018/usatoday--charles-isherwood.json",
     "angels-in-america-2018/theater-news-online--david-cote.json",
     "escape-to-margaritaville-2018/bloomberg--chris-rovzar.json",
-    "escape-to-margaritaville-2018/journal-inquirer--tim-leininger.json"
+    "escape-to-margaritaville-2018/journal-inquirer--tim-leininger.json",
+    "marvins-room-2017/wsj--terry-teachout.json",
+    "marvins-room-2017/thestage--nicole-serratore.json",
+    "1984-2017/chicagotribune--chris-jones-bway.json",
+    "a-dolls-house-part-2-2017/out-magazine--michael-musto.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -259,7 +269,9 @@
       "the-cottage-2023/theatermania--peter-hempstead.json",
       "topdog-underdog-2022/corey-hawkins--unknown.json",
       "bernhardthamlet-2018/stage-left--william-wolf.json",
-      "three-tall-women-2018/theater-life--david-sheward.json"
+      "three-tall-women-2018/theater-life--david-sheward.json",
+      "latin-history-for-morons-2017/stage-left--william-wolf.json",
+      "the-bands-visit-2017/off-script-with-dan-dwyer--wendy-caster.json"
     ],
     "amp": [],
     "browserbase": [
@@ -311,7 +323,10 @@
       "tootsie-2019/latimes--charles-mcnulty.json",
       "the-waverly-gallery-2018/vulture--matt-windman.json",
       "the-lifespan-of-a-fact-2018/vulture--sara-holden.json",
-      "the-lifespan-of-a-fact-2018/vulture--sarah-holdren.json"
+      "the-lifespan-of-a-fact-2018/vulture--sarah-holdren.json",
+      "spongebob-squarepants-2017/wsj--unknown.json",
+      "prince-of-broadway-2017/vulture--jesse-green.json",
+      "the-terms-of-my-surrender-2017/latimes--charles-mcnulty.json"
     ],
     "archiveToday": [
       "data/review-texts/john-proctor-is-the-villain-west-end-2026/thestage--unknown.json",
@@ -321,9 +336,7 @@
       "data/review-texts/john-proctor-is-the-villain-west-end-2026/thestage--unknown.json",
       "data/review-texts/giant-2026/talkinbroadway--unknown.json",
       "data/review-texts/public-charge-off-broadway-2026/culturesauce--unknown.json",
-      "data/review-texts/grace-pervades-west-end-2026/thestage--unknown.json",
-      "data/review-texts/the-price-2017/thestage--chris-jones.json",
-      "data/review-texts/one-man-two-guvnors-2012/talkinbroadway--matthew-murray.json"
+      "data/review-texts/grace-pervades-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
       "wicked-2003/broadwayworld--jared-fessler.json",
@@ -331,11 +344,12 @@
       "wicked-2003/broadwayworld--lauren-gienow.json",
       "once-upon-a-one-more-time-2023/ap--mark-kennedy.json",
       "grey-house-2023/slash-film--caroline-cao.json",
-      "life-of-pi-2023/newyorker--unknown.json"
+      "life-of-pi-2023/newyorker--unknown.json",
+      "the-terms-of-my-surrender-2017/thestage--mark-sheton.json"
     ]
   },
   "startTime": "2026-03-26T09:40:49.858Z",
-  "lastProcessed": "escape-to-margaritaville-2018/journal-inquirer--tim-leininger.json",
+  "lastProcessed": "a-dolls-house-part-2-2017/out-magazine--michael-musto.json",
   "log": [
     {
       "t": "2026-03-26T09:43:13.034Z",
@@ -418,6 +432,17 @@
       "t": "2026-03-26T11:47:21.573Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-26T11:52:27.904Z",
+      "event": "bb-session",
+      "session": "7f18cc12",
+      "url": "https://www.wsj.com/articles/spongebob-squarepants-review-an-ocean-of-colorful-c"
+    },
+    {
+      "t": "2026-03-26T11:52:29.029Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
