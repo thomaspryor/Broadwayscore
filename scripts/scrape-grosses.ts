@@ -198,7 +198,12 @@ function findMatchingSlug(bwwTitle: string, market: string = 'broadway'): string
   // 1996 revival, not Chicago 1975 original).
   const match = matchTitleToShow(bwwTitle, allShows, { market, prefer: 'open' });
   if (match && match.confidence === 'high') {
-    return match.show.slug;
+    const slug = match.show.slug;
+    // BWW only covers Broadway — never write to West End / Off-Broadway slugs
+    if (slug.includes('west-end') || slug.includes('off-broadway') || slug.includes('off-west-end')) {
+      return null;
+    }
+    return slug;
   }
   if (match && match.confidence === 'medium') {
     console.warn(`  ⚠ Medium-confidence match: "${bwwTitle}" → ${match.show.slug} (rejected for financial data)`);
