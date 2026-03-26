@@ -261,7 +261,8 @@
     "how-to-succeed-in-business-without-really-trying-2011/timeout--david-cote.json",
     "the-importance-of-being-earnest-2011/theatermania--charles-isherwood.json",
     "colin-quinn-long-story-short-2010/variety--marilyn-stasio.json",
-    "rain-2010/unscripted-takes--brett-burger.json"
+    "rain-2010/unscripted-takes--brett-burger.json",
+    "promises-promises-2010/variety--david-rooney.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -1242,7 +1243,16 @@
     "the-pitmen-painters-2010/backstage--erik-haagensen.json",
     "brief-encounter-2010/newyorker--uncredited.json",
     "everyday-rapture-2010/ny1--roma-torre.json",
-    "everyday-rapture-2010/backstage--david-sheward.json"
+    "everyday-rapture-2010/backstage--david-sheward.json",
+    "collected-stories-2010/bloomberg--jeremy-gerard.json",
+    "collected-stories-2010/ny1--david-cote.json",
+    "collected-stories-2010/ap--unknown.json",
+    "collected-stories-2010/backstage--david-sheward.json",
+    "enron-2010/new-jersey-newsroom--michael-sommers.json",
+    "enron-2010/backstage--erik-haagensen.json",
+    "fences-2010/backstage--erik-haagensen.json",
+    "promises-promises-2010/new-jersey-newsroom--michael-sommers.json",
+    "sondheim-on-sondheim-2010/northjerseycom--robert-feldberg.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1368,7 +1378,9 @@
       "data/review-texts/man-and-boy-2011/variety--marilyn-stasio.json",
       "man-and-boy-2011/variety--marilyn-stasio.json",
       "data/review-texts/colin-quinn-long-story-short-2010/variety--marilyn-stasio.json",
-      "colin-quinn-long-story-short-2010/variety--marilyn-stasio.json"
+      "colin-quinn-long-story-short-2010/variety--marilyn-stasio.json",
+      "data/review-texts/promises-promises-2010/variety--david-rooney.json",
+      "promises-promises-2010/variety--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1805,7 +1817,9 @@
       "data/review-texts/la-bete-2010/chicagotribune--chris-jones.json",
       "data/review-texts/la-bete-2010/dailybeast--john-anderson.json",
       "data/review-texts/the-pitmen-painters-2010/backstage--unknown.json",
-      "data/review-texts/the-pitmen-painters-2010/village-voice--michael-feingold.json"
+      "data/review-texts/the-pitmen-painters-2010/village-voice--michael-feingold.json",
+      "data/review-texts/collected-stories-2010/bloomberg--jeremy-gerard.json",
+      "data/review-texts/sondheim-on-sondheim-2010/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
       "the-terms-of-my-surrender-2017/thestage--mark-sheton.json",
@@ -1824,7 +1838,7 @@
     ]
   },
   "startTime": "2026-03-25T09:08:12.319Z",
-  "lastProcessed": "everyday-rapture-2010/backstage--david-sheward.json",
+  "lastProcessed": "sondheim-on-sondheim-2010/northjerseycom--robert-feldberg.json",
   "log": [
     {
       "t": "2026-03-25T09:10:15.724Z",
@@ -2447,6 +2461,39 @@
       "event": "bb-session",
       "session": "f622cac0",
       "url": "https://www.thedailybeast.com/la-bete-a-broadway-beast/"
+    },
+    {
+      "t": "2026-03-26T06:41:27.546Z",
+      "event": "bb-session",
+      "session": "82367db4",
+      "url": "https://preview.bloomberg.com/news/2010-04-29/linda-lavin-bellows-at-sarah-pauls"
+    },
+    {
+      "t": "2026-03-26T06:41:28.543Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-03-26T06:43:00.822Z",
+      "event": "bb-session",
+      "session": "099675c7",
+      "url": "https://variety.com/2010/legit/reviews/promises-promises-1117942216/"
+    },
+    {
+      "t": "2026-03-26T06:43:01.889Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-26T06:43:49.844Z",
+      "event": "bb-session",
+      "session": "e7a0017f",
+      "url": "https://www.northjersey.com/arts_entertainment/91887804_It_s_all_about_Sondheim_"
+    },
+    {
+      "t": "2026-03-26T06:43:50.848Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
