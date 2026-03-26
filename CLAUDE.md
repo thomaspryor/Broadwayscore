@@ -77,10 +77,10 @@ When asked "is everything ready for opening night?", check the AUTOMATION CHAIN,
 3. `gh workflow run opening-night-orchestrator.yml -f show_id=SHOW_ID -f market=broadway` to manually trigger if the cron is late (GitHub crons can lag 15-30 min or miss entirely on new workflows)
 4. **ScrapingBee credits:** `gh workflow run check-secrets-health.yml` and check output — needs >25% remaining. Check-secrets-health warns at 50% (monitor) and 75% (opening nights at risk).
 5. **Wrong-production pre-scores:** `ls data/llm-scores/{show-id}/` — verify every pre-existing score file is from the correct production (not a prior West End/OB/regional run). If any are wrong, add `wrongProduction: true` to those source files.
-6. **DTLI slug verification:** `node -e "const m=require('./data/dtli-slug-map.json'); console.log('DTLI slug:', m.shows['{show-id}'])"` — verify slug maps to the current-season DTLI page, not an old production (e.g., `giant-2` not `giant`). For revival shows (year in ID), expect a numbered suffix.
+6. **DTLI slug verification (Broadway only — DTLI doesn't cover WE):** `node -e "const m=require('./data/dtli-slug-map.json'); console.log('DTLI slug:', m.shows['{show-id}'])"` — verify slug maps to the current-season DTLI page, not an old production (e.g., `giant-2` not `giant`). For revival shows (year in ID), expect a numbered suffix.
 7. **Bright Data zone:** `gh workflow run check-secrets-health.yml` covers this — it now checks zone status directly. Or manually: `curl https://api.brightdata.com/zone?zone=mcp_unlocker -H "Authorization: Bearer $BRIGHTDATA_TOKEN"` — `disable` field must be absent. If zone is disabled: UI recovery only (Recover + enable toggle in Configuration tab). API cannot fix it.
-8. **BWW RR URL:** Find the BWW Review Roundup URL for the show BEFORE opening night. Pattern: `https://www.broadwayworld.com/article/Review-Roundup-{TITLE-SLUG}-Opens-on-Broadway-{YYYYMMDD}`. If Google hasn't indexed it yet (same-day openings), the SERP fallback may return the wrong production. Have the URL ready to pass as `--bww-roundup-url` to the opening-night-poller.
-9. **Talkin' Broadway URL:** TB direct URL pattern is `https://www.talkinbroadway.com/page/world/{titleslug}{year}.html` (e.g., `giant2026.html`). SERP returns forum posts (All That Chat) instead of the review. TB is T2 outlet — don't miss it.
+8. **BWW RR URL (Broadway primarily — rare for WE):** Find the BWW Review Roundup URL for the show BEFORE opening night. Pattern: `https://www.broadwayworld.com/article/Review-Roundup-{TITLE-SLUG}-Opens-on-Broadway-{YYYYMMDD}`. If Google hasn't indexed it yet (same-day openings), the SERP fallback may return the wrong production. Have the URL ready to pass as `--bww-roundup-url` to the opening-night-poller.
+9. **Talkin' Broadway URL (Broadway only — TB doesn't review WE shows):** TB is an outlet (not an aggregator). Direct URL pattern is `https://www.talkinbroadway.com/page/world/{titleslug}{year}.html` (e.g., `giant2026.html`). SERP returns forum posts (All That Chat) instead of the review. TB is T2 outlet — don't miss it.
 
 ---
 
@@ -113,7 +113,8 @@ Config: `src/config/commercial.ts`. Components: `src/components/biz/`. Never mar
 ### Web Scraping
 Fallback chain: Bright Data → ScrapingBee → Playwright (`scripts/lib/scraper.js`).
 **Rule:** All new scraping scripts MUST use `fetchPage()` from `scripts/lib/scraper.js` — never call BD/SB APIs directly. Workflows that scrape must pass both `BRIGHTDATA_TOKEN` AND `SCRAPINGBEE_API_KEY`. CI enforces this in `test.yml` (`lint-workflows` job). If a new workflow is legitimately exempt (health check, credential validator), add it to the exempt list in test.yml with a comment.
-6 aggregators: Show Score, DTLI, BWW Roundups, BWW Reviews Pages, Playbill Verdict, NYC Theatre Roundups.
+**Broadway aggregators:** Show Score, DTLI, BWW Roundups, BWW Reviews Pages, Playbill Verdict, NYC Theatre Roundups.
+**WE aggregators:** WestEndTheatre.com (WET), theatre.reviews (TR), Stagedoor (SD), The Stage roundups (TS), London Box Office (LBO). Integrated in both `gather-reviews.js` and `opening-night-poller.js`.
 
 For full details on any subsystem: `memory/CLAUDE-reference.md`
 
