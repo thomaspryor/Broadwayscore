@@ -410,6 +410,103 @@ assert(
 );
 
 // ============================================================
+// urlLooksLikeReview (site-search-discovery.js → review-guards.js)
+// URL-based filter: rejects tag/author/search pages, matches show title words.
+// Real function: urlLooksLikeReview() from scripts/lib/review-guards.js
+// ============================================================
+console.log('\n=== urlLooksLikeReview: URL title-match and rejection logic ===\n');
+
+const { urlLooksLikeReview } = require('./lib/review-guards');
+
+// Basic: URL slug contains show title words → pass
+assert(
+  urlLooksLikeReview('https://www.theatermania.com/new-york/theater/reviews/giant-review/', 'Giant'),
+  'Giant: URL contains "giant" → passes'
+);
+assert(
+  urlLooksLikeReview('https://www.vulture.com/2026/03/hamilton-review-still-brilliant.html', 'Hamilton'),
+  'Hamilton: URL contains "hamilton" → passes'
+);
+
+// Article-prefixed title: "the" is stripped, remaining word must match
+assert(
+  urlLooksLikeReview('https://deadline.com/2026/03/notebook-review-broadway/', 'The Notebook'),
+  'The Notebook: "the" stripped, "notebook" in URL → passes'
+);
+assert(
+  !urlLooksLikeReview('https://deadline.com/2026/03/something-else-review/', 'The Notebook'),
+  'The Notebook: URL has no notebook → rejected'
+);
+
+// 50% threshold: 2 of 4 words sufficient
+assert(
+  urlLooksLikeReview('https://example.com/outsiders-review-broadway/', 'The Outsiders'),
+  'The Outsiders: "outsiders" (1 of 1 significant word) → passes'
+);
+assert(
+  urlLooksLikeReview('https://example.com/play-goes-wrong-review/', 'The Play That Goes Wrong'),
+  'The Play That Goes Wrong: "play", "goes", "wrong" (3/3 after filtering) → passes'
+);
+
+// Rejection: tag/author/category pages
+assert(
+  !urlLooksLikeReview('https://variety.com/tag/hamilton/', 'Hamilton'),
+  'Tag page → rejected'
+);
+assert(
+  !urlLooksLikeReview('https://nytimes.com/author/ben-brantley/', 'Giant'),
+  'Author page → rejected'
+);
+assert(
+  !urlLooksLikeReview('https://example.com/category/theater/hamilton/', 'Hamilton'),
+  'Category page → rejected'
+);
+
+// Rejection: search and pagination
+assert(
+  !urlLooksLikeReview('https://example.com/search?q=hamilton', 'Hamilton'),
+  'Search URL → rejected'
+);
+assert(
+  !urlLooksLikeReview('https://example.com/page/2/', 'Hamilton'),
+  'Pagination URL → rejected'
+);
+
+// Rejection: ticket URL without review
+assert(
+  !urlLooksLikeReview('https://telecharge.com/ticket/hamilton/', 'Hamilton'),
+  'Ticket URL without "review" → rejected'
+);
+
+// Ticket URL that also contains "review" → pass (e.g. ticketmaster review page)
+assert(
+  urlLooksLikeReview('https://example.com/ticket-review/hamilton/', 'Hamilton'),
+  'Ticket URL that also contains "review" → passes'
+);
+
+// Single-word title "Giant" (length 5 > 2 threshold → kept)
+assert(
+  urlLooksLikeReview('https://theatermania.com/reviews/giant-2026/', 'Giant'),
+  'Giant: single significant word, in URL → passes'
+);
+assert(
+  !urlLooksLikeReview('https://theatermania.com/reviews/wicked-2026/', 'Giant'),
+  'Giant: URL contains other show name → rejected'
+);
+
+// Short-word titles: all words ≤2 chars → fail-open (no significant words → include)
+assert(
+  urlLooksLikeReview('https://example.com/anything/random-url/', 'I Am'),
+  'Title with no significant words (all ≤2 chars) → fail-open (true)'
+);
+
+// Special chars in title stripped cleanly
+assert(
+  urlLooksLikeReview('https://example.com/into-woods-review/', 'Into the Woods!'),
+  'Into the Woods!: special chars stripped, "into" + "woods" match → passes'
+);
+
+// ============================================================
 // Summary
 // ============================================================
 console.log(`\n${'='.repeat(50)}`);
