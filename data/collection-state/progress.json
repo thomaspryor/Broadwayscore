@@ -434,7 +434,17 @@
     "la-cage-aux-folles-2010/times-uk--clive-davis.json",
     "million-dollar-quartet-2010/ny1--roma-torre.json",
     "million-dollar-quartet-2010/backstage--david-sheward.json",
-    "the-addams-family-2010/backstage--erik-haagensen.json"
+    "the-addams-family-2010/backstage--erik-haagensen.json",
+    "lend-me-a-tenor-2010/new-jersey-newsroom--michael-sommers.json",
+    "lend-me-a-tenor-2010/backstage--david-sheward.json",
+    "red-2010/newyorker--john-lahr.json",
+    "red-2010/wsj--terry-teachout.json",
+    "red-2010/backstage--erik-haagensen.json",
+    "red-2010/washpost--peter-marks.json",
+    "come-fly-away-2010/new-jersey-newsroom--michael-sommers.json",
+    "come-fly-away-2010/backstage--david-sheward.json",
+    "come-fly-away-2010/talkinbroadway--matthew-murray.json",
+    "looped-2010/usatoday--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -612,7 +622,9 @@
       "data/review-texts/la-bete-2010/dailybeast--john-anderson.json",
       "data/review-texts/the-pitmen-painters-2010/backstage--unknown.json",
       "data/review-texts/the-pitmen-painters-2010/village-voice--michael-feingold.json",
-      "data/review-texts/sondheim-on-sondheim-2010/northjerseycom--robert-feldberg.json"
+      "data/review-texts/sondheim-on-sondheim-2010/northjerseycom--robert-feldberg.json",
+      "data/review-texts/come-fly-away-2010/talkinbroadway--matthew-murray.json",
+      "data/review-texts/looped-2010/usatoday--unknown.json"
     ],
     "archive": [
       "wicked-2003/broadwayworld--jared-fessler.json",
@@ -635,7 +647,7 @@
     ]
   },
   "startTime": "2026-03-26T09:40:49.858Z",
-  "lastProcessed": "the-addams-family-2010/backstage--erik-haagensen.json",
+  "lastProcessed": "looped-2010/usatoday--unknown.json",
   "log": [
     {
       "t": "2026-03-26T09:43:13.034Z",
@@ -842,6 +854,17 @@
       "t": "2026-03-26T13:03:08.884Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-26T13:05:27.006Z",
+      "event": "bb-session",
+      "session": "aeb8b47f",
+      "url": "https://www.wsj.com/articles/SB10001424052702303960604575157744105208812?gaa_at="
+    },
+    {
+      "t": "2026-03-26T13:05:28.114Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-03-26T13:05:05.169Z",
+  "updatedAt": "2026-03-26T13:12:37.606Z",
   "processed": 153,
-  "failed": 280,
-  "successRate": "35.3%",
+  "failed": 290,
+  "successRate": "34.5%",
   "tierBreakdown": {
     "playwright": 65,
     "amp": 0,
@@ -10,22 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 8,
     "brightdata": 57,
-    "archiveToday": 22,
+    "archiveToday": 24,
     "archive": 17
   },
-  "browserbaseSessions": 16,
+  "browserbaseSessions": 17,
   "recentActivity": [
-    {
-      "t": "2026-03-26T12:01:06.789Z",
-      "event": "bb-session",
-      "session": "8a9e76d4",
-      "url": "https://www.thestage.co.uk/reviews/2017/price-review-american-airlines-theatre-n"
-    },
-    {
-      "t": "2026-03-26T12:01:07.815Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
     {
       "t": "2026-03-26T12:04:41.539Z",
       "event": "bb-session",
@@ -127,6 +116,17 @@
       "t": "2026-03-26T13:03:08.884Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-26T13:05:27.006Z",
+      "event": "bb-session",
+      "session": "aeb8b47f",
+      "url": "https://www.wsj.com/articles/SB10001424052702303960604575157744105208812?gaa_at="
+    },
+    {
+      "t": "2026-03-26T13:05:28.114Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
