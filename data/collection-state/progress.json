@@ -264,7 +264,8 @@
     "rain-2010/unscripted-takes--brett-burger.json",
     "promises-promises-2010/variety--david-rooney.json",
     "sondheim-on-sondheim-2010/variety--charles-isherwood.json",
-    "sondheim-on-sondheim-2010/village-voice--michael-feingold.json"
+    "sondheim-on-sondheim-2010/village-voice--michael-feingold.json",
+    "red-2010/talkinbroadway--matthew-murray.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -1262,7 +1263,16 @@
     "million-dollar-quartet-2010/backstage--david-sheward.json",
     "the-addams-family-2010/backstage--erik-haagensen.json",
     "lend-me-a-tenor-2010/new-jersey-newsroom--michael-sommers.json",
-    "lend-me-a-tenor-2010/backstage--david-sheward.json"
+    "lend-me-a-tenor-2010/backstage--david-sheward.json",
+    "red-2010/newyorker--john-lahr.json",
+    "red-2010/wsj--terry-teachout.json",
+    "red-2010/backstage--erik-haagensen.json",
+    "red-2010/washpost--peter-marks.json",
+    "come-fly-away-2010/ap--michael-kuchwara.json",
+    "come-fly-away-2010/new-jersey-newsroom--michael-sommers.json",
+    "come-fly-away-2010/backstage--david-sheward.json",
+    "come-fly-away-2010/talkinbroadway--matthew-murray.json",
+    "looped-2010/usatoday--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1831,7 +1841,10 @@
       "data/review-texts/the-pitmen-painters-2010/backstage--unknown.json",
       "data/review-texts/the-pitmen-painters-2010/village-voice--michael-feingold.json",
       "data/review-texts/collected-stories-2010/bloomberg--jeremy-gerard.json",
-      "data/review-texts/sondheim-on-sondheim-2010/northjerseycom--robert-feldberg.json"
+      "data/review-texts/sondheim-on-sondheim-2010/northjerseycom--robert-feldberg.json",
+      "data/review-texts/red-2010/talkinbroadway--matthew-murray.json",
+      "data/review-texts/come-fly-away-2010/talkinbroadway--matthew-murray.json",
+      "data/review-texts/looped-2010/usatoday--unknown.json"
     ],
     "archive": [
       "the-terms-of-my-surrender-2017/thestage--mark-sheton.json",
@@ -1851,7 +1864,7 @@
     ]
   },
   "startTime": "2026-03-25T09:08:12.319Z",
-  "lastProcessed": "lend-me-a-tenor-2010/backstage--david-sheward.json",
+  "lastProcessed": "looped-2010/usatoday--unknown.json",
   "log": [
     {
       "t": "2026-03-25T09:10:15.724Z",
@@ -2518,6 +2531,17 @@
       "t": "2026-03-26T06:44:09.555Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-26T06:46:26.567Z",
+      "event": "bb-session",
+      "session": "65441bff",
+      "url": "https://www.wsj.com/articles/SB10001424052702303960604575157744105208812?gaa_at="
+    },
+    {
+      "t": "2026-03-26T06:46:27.661Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
