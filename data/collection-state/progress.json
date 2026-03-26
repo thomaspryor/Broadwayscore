@@ -185,7 +185,14 @@
     "friends-the-musical-parody-2022/tv-and-city--elazar-abrahams.json",
     "friends-the-musical-parody-2022/zeal-nyc--megan-wrappe.json",
     "hamlet-2026/blogcritics--jon-sobel.json",
-    "heathers-the-musical-2025/ap--peter-santilli.json"
+    "heathers-the-musical-2025/ap--peter-santilli.json",
+    "heathers-the-musical-2025/nbcny--robert-kahn.json",
+    "kinky-boots-2026/chicagotribune--chris-jones.json",
+    "kinky-boots-2026/financialtimes--brendan-lemon.json",
+    "kinky-boots-2026/northjerseycom--robert-feldberg.json",
+    "kinky-boots-2026/talkinbroadway--matthew-murray.json",
+    "kinky-boots-2026/washpost--peter-marks.json",
+    "little-women-the-musical-2026/artsdesk--rachel-halliburton.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -1084,7 +1091,10 @@
     "mack-and-mabel-1974/financialtimes--ian-shuttleworth.json",
     "the-visit-1973/ap--mark-kennedy.json",
     "the-merchant-of-venice-1973/backstage--david-sheward.json",
-    "a-little-night-music-1973/backstage--erik-haagensen.json"
+    "a-little-night-music-1973/backstage--erik-haagensen.json",
+    "hold-on-to-your-butts-2026/thestage--oliver-jones.json",
+    "kinky-boots-2026/ap--mark-kennedy.json",
+    "midnight-in-the-garden-of-good-and-evil-2024/broadwayworld--rachel-weinberg.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1162,7 +1172,11 @@
       "teeth-n-smiles-west-end-2026/london-theatre--unknown.json",
       "friends-the-musical-parody-2022/theater-life--iris-wiener.json",
       "friends-the-musical-parody-2022/tv-and-city--elazar-abrahams.json",
-      "hamlet-2026/blogcritics--jon-sobel.json"
+      "hamlet-2026/blogcritics--jon-sobel.json",
+      "heathers-the-musical-2025/nbcny--robert-kahn.json",
+      "kinky-boots-2026/financialtimes--brendan-lemon.json",
+      "kinky-boots-2026/washpost--peter-marks.json",
+      "little-women-the-musical-2026/artsdesk--rachel-halliburton.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1198,7 +1212,9 @@
       "oleanna-2009/nytimes--dave-itzkoff.json",
       "exit-the-king-2009/times-uk--david-jays.json",
       "the-little-mermaid-2008/independent--clarisse-loughrey.json",
-      "cymbeline-2007/nytimes--ben-brantley.json"
+      "cymbeline-2007/nytimes--ben-brantley.json",
+      "kinky-boots-2026/ap--mark-kennedy.json",
+      "kinky-boots-2026/chicagotribune--chris-jones.json"
     ],
     "brightdata": [
       "public-charge-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1354,7 +1370,9 @@
       "data/review-texts/into-the-woods-1987/broadwayworld--steve-murray.json",
       "data/review-texts/into-the-woods-1987/broadwayworld--taylor-clemons.json",
       "data/review-texts/torch-song-trilogy-1982/broadwayworld--michael-dale.json",
-      "data/review-texts/the-merchant-of-venice-1973/backstage--david-sheward.json"
+      "data/review-texts/the-merchant-of-venice-1973/backstage--david-sheward.json",
+      "data/review-texts/hold-on-to-your-butts-2026/thestage--oliver-jones.json",
+      "data/review-texts/midnight-in-the-garden-of-good-and-evil-2024/broadwayworld--rachel-weinberg.json"
     ],
     "archive": [
       "wicked-2003/broadwayworld--jared-fessler.json",
@@ -1381,11 +1399,13 @@
       "contact-2000/nytimes--robin-pogrebin.json",
       "carrie-1988/northjerseycom--robert-feldberg.json",
       "friends-the-musical-parody-2022/zeal-nyc--megan-wrappe.json",
-      "heathers-the-musical-2025/ap--peter-santilli.json"
+      "heathers-the-musical-2025/ap--peter-santilli.json",
+      "kinky-boots-2026/northjerseycom--robert-feldberg.json",
+      "kinky-boots-2026/talkinbroadway--matthew-murray.json"
     ]
   },
   "startTime": "2026-03-26T09:40:49.858Z",
-  "lastProcessed": "heathers-the-musical-2025/ap--peter-santilli.json",
+  "lastProcessed": "midnight-in-the-garden-of-good-and-evil-2024/broadwayworld--rachel-weinberg.json",
   "log": [
     {
       "t": "2026-03-26T09:43:13.034Z",
@@ -1715,6 +1735,17 @@
       "event": "bb-session",
       "session": "cdfbb7a3",
       "url": "https://www.bworldonline.com/weekender/content.php?id=57674"
+    },
+    {
+      "t": "2026-03-26T19:24:18.069Z",
+      "event": "bb-session",
+      "session": "ddeda087",
+      "url": "https://www.thestage.co.uk/reviews/hold-on-to-your-butts-review-arcola-theatre-d"
+    },
+    {
+      "t": "2026-03-26T19:24:19.380Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
