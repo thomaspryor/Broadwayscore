@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-26T11:55:37.681Z",
-  "processed": 104,
-  "failed": 109,
-  "successRate": "48.8%",
+  "updatedAt": "2026-03-26T12:01:26.072Z",
+  "processed": 109,
+  "failed": 114,
+  "successRate": "48.9%",
   "tierBreakdown": {
     "playwright": 53,
     "amp": 0,
     "browserbase": 6,
     "directCookies": 0,
-    "scrapingbee": 6,
-    "brightdata": 35,
-    "archiveToday": 8,
-    "archive": 7
+    "scrapingbee": 7,
+    "brightdata": 37,
+    "archiveToday": 9,
+    "archive": 9
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-03-26T09:43:13.034Z",
@@ -107,6 +107,17 @@
       "t": "2026-03-26T11:52:29.029Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-26T12:01:06.789Z",
+      "event": "bb-session",
+      "session": "8a9e76d4",
+      "url": "https://www.thestage.co.uk/reviews/2017/price-review-american-airlines-theatre-n"
+    },
+    {
+      "t": "2026-03-26T12:01:07.815Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
