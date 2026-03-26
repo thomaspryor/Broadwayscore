@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-03-26T03:29:08.557Z",
+  "generatedAt": "2026-03-26T03:30:46.011Z",
   "shows": {
     "days-of-wine-and-roses-2024": {
       "title": "Days of Wine and Roses",
       "slug": "days-of-wine-and-roses",
       "openingDate": "2024-01-28",
       "status": "closed",
-      "capitalization": 15.5,
+      "capitalization": 15500000,
       "capitalizationSource": "Reddit analysis citing $15.5 million initial capitalization",
       "weeklyRunningCost": 450,
       "costMethodology": "industry-estimate",
@@ -2640,6 +2640,112 @@
       ],
       "confidence": "medium",
       "researchedAt": "2026-03-26T03:29:08.557Z"
+    },
+    "sunset-boulevard-2024": {
+      "title": "Sunset Boulevard",
+      "slug": "sunset-boulevard-2024",
+      "openingDate": "2024-10-20",
+      "status": "closed",
+      "capitalization": 17000000,
+      "capitalizationSource": "BroadwayWorld 'Broadway Box Office Analysis - February 2025'",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "StageAgent 'Is the Curtain Falling? Broadway's Fight Against Financial Chaos, Fading Incentives, and Labor Standoffs'",
+      "designation": "Fizzle",
+      "notes": "The revival’s initial U.S. capitalization was $17M, but despite strong weekly grosses, high operating costs prevented recoupment. Sunset Boulevard closed on July 20, 2025, having lost money for investors.",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/Broadway-Box-Office-Analysis--February-2025-20250303",
+          "date": "2025-03-03"
+        },
+        {
+          "type": "trade",
+          "url": "https://stageagent.com/blog/is-the-curtain-falling-broadways-fight-against-financial-chaos-fading-incentives-and-labor-standoffs",
+          "date": "2025-10-05"
+        }
+      ],
+      "confidence": "medium",
+      "researchedAt": "2026-03-26T03:30:15.312Z"
+    },
+    "swept-away-2024": {
+      "title": "Swept Away",
+      "slug": "swept-away-2024",
+      "openingDate": "2024-11-19",
+      "status": "closed",
+      "capitalization": 14500000,
+      "capitalizationSource": "Reddit post-mortem: $14.5 million initial capitalization",
+      "recouped": false,
+      "designation": "Flop",
+      "notes": "Placeholder data in Reddit post-mortem. $14.5M capitalization, closed after short run.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "reddit",
+          "url": "https://www.reddit.com/r/u_Boring_Waltz_9545/comments/1h9rxeo/broadway_20242025_season_shows_postmortems/",
+          "date": "2024-12-08"
+        }
+      ],
+      "researchedAt": "2026-03-26T03:30:17.312Z"
+    },
+    "tammy-faye-2024": {
+      "title": "Tammy Faye",
+      "slug": "tammy-faye-2024",
+      "openingDate": "2024-11-14",
+      "status": "closed",
+      "capitalization": 25000000,
+      "capitalizationSource": "Reddit post-mortem: $25 million initial capitalization",
+      "weeklyRunningCost": 825000,
+      "costMethodology": "industry-estimate",
+      "recouped": false,
+      "recoupedSource": "Reddit: estimated total loss ~$25 million",
+      "designation": "Flop",
+      "notes": "$367k avg gross, 60% capacity, $74 ATP. One of largest flops in recent memory. Only 29 official performances. Estimated operating loss ~$4M, total loss ~$25M.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "reddit",
+          "url": "https://www.reddit.com/r/u_Boring_Waltz_9545/comments/1h9rxeo/broadway_20242025_season_shows_postmortems/",
+          "date": "2024-12-08"
+        }
+      ],
+      "researchedAt": "2026-03-26T03:30:17.313Z"
+    },
+    "the-picture-of-dorian-gray-2025": {
+      "title": "The Picture of Dorian Gray",
+      "slug": "the-picture-of-dorian-gray-2025",
+      "openingDate": "2025-03-27",
+      "status": "closed",
+      "capitalization": 8750000,
+      "capitalizationSource": "Town and Country Mag article ‘Inside The Rise of One-Person Plays in 2025’",
+      "weeklyRunningCost": 750000,
+      "costMethodology": "industry-estimate",
+      "recouped": true,
+      "recoupedDate": "2025-06",
+      "recoupedSource": "Playbill article ‘The Picture of Dorian Gray Recoups Its Investment in Final Week on Broadway’",
+      "designation": "Easy Winner",
+      "notes": "The production was capitalized at $8.75 M and ran 14 weeks before recouping its investment in its final week, with weekly running costs of approximately $750 K.",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.townandcountrymag.com/leisure/arts-and-culture/a64983272/one-person-solo-plays-trend-explained/",
+          "date": "2025-06-13"
+        },
+        {
+          "type": "reddit",
+          "url": "https://www.reddit.com/r/Broadway/comments/1jp2qp0/",
+          "date": "2025-03-30"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/the-picture-of-dorian-gray-recoups-its-investment-in-final-week-on-broadway",
+          "date": "2025-07-02"
+        }
+      ],
+      "confidence": "medium",
+      "researchedAt": "2026-03-26T03:30:46.011Z"
     }
   }
 }
