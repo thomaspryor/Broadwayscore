@@ -84,7 +84,10 @@
     "life-of-pi-2023/newyorker--unknown.json",
     "some-like-it-hot-2022/newyorker--unknown.json",
     "a-beautiful-noise-the-neil-diamond-musical-2022/theatermania--adam-feldman.json",
-    "take-me-out-2022/theatermania--jesse-green.json"
+    "take-me-out-2022/theatermania--jesse-green.json",
+    "topdog-underdog-2022/corey-hawkins--unknown.json",
+    "the-skin-of-our-teeth-2022/vulture--helen-shaw.json",
+    "mrs-doubtfire-2021/wsj--unknown.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -164,7 +167,14 @@
     "fat-ham-2023/newyorker--naomi-fry.json",
     "the-collaboration-2022/hollywood-reporter--angie-han.json",
     "the-collaboration-2022/hollywood-reporter--david-rooney.json",
-    "walking-with-ghosts-2022/dtli--ran-xia.json"
+    "walking-with-ghosts-2022/dtli--ran-xia.json",
+    "cost-of-living-2022/newyorker--vinson-cunningham.json",
+    "into-the-woods-2022/newyorker--alexandra-schwartz.json",
+    "the-kite-runner-2022/thewrap--robert-hofler.json",
+    "titanique-off-broadway-2022/newyorker--dan-stahl.json",
+    "girl-from-the-north-country-2022/times-uk--ann-treneman.json",
+    "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/new-york-sun--elysa-gardner.json",
+    "the-skin-of-our-teeth-2022/dtli--ran-xia.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -216,7 +226,8 @@
       "stephen-sondheims-old-friends-2025/in-act-two-of-merrily-we-roll-along--charley-kringas.json",
       "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
       "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json",
-      "the-cottage-2023/theatermania--peter-hempstead.json"
+      "the-cottage-2023/theatermania--peter-hempstead.json",
+      "topdog-underdog-2022/corey-hawkins--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -257,7 +268,9 @@
       "once-upon-a-one-more-time-2023/theatermania--david-gordon.json",
       "the-thanksgiving-play-2023/theatermania--adam-feldman.json",
       "a-beautiful-noise-the-neil-diamond-musical-2022/theatermania--adam-feldman.json",
-      "take-me-out-2022/theatermania--jesse-green.json"
+      "take-me-out-2022/theatermania--jesse-green.json",
+      "the-skin-of-our-teeth-2022/vulture--helen-shaw.json",
+      "mrs-doubtfire-2021/wsj--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/john-proctor-is-the-villain-west-end-2026/thestage--unknown.json",
@@ -279,7 +292,7 @@
     ]
   },
   "startTime": "2026-03-26T09:40:49.858Z",
-  "lastProcessed": "walking-with-ghosts-2022/dtli--ran-xia.json",
+  "lastProcessed": "mrs-doubtfire-2021/wsj--unknown.json",
   "log": [
     {
       "t": "2026-03-26T09:43:13.034Z",
@@ -340,6 +353,17 @@
       "event": "bb-login-fail",
       "domain": "thestage.co.uk",
       "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    39 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-03-26T11:46:00.694Z",
+      "event": "bb-session",
+      "session": "250606bb",
+      "url": "https://www.wsj.com/articles/mrs-doubtfire-jerry-zacks-robin-williams-rob-mcclur"
+    },
+    {
+      "t": "2026-03-26T11:46:01.816Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
