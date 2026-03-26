@@ -2,9 +2,12 @@
 /**
  * deep-research-commercial.js
  *
- * Uses OpenAI Responses API with web_search_preview to research Broadway show
- * commercial/financial data. Outputs to commercial-pending-review.json for
- * auto-apply or human review.
+ * Uses OpenAI Deep Research models (o4-mini-deep-research) with background
+ * polling to research Broadway show commercial/financial data. Outputs to
+ * commercial-pending-review.json for auto-apply or human review.
+ *
+ * Lifecycle triggers: pre-opening, 6-month re-research, closing.
+ * Max 3 successful research attempts per show (unless --force).
  *
  * Usage:
  *   node scripts/deep-research-commercial.js [options]
@@ -14,9 +17,10 @@
  *   --all-tbd            Research all TBD + uncovered open Broadway shows
  *   --max-shows=N        Max shows per run (default 10)
  *   --budget=N           Max spend in dollars (default 15)
- *   --model=MODEL        o4-mini (default) or o3
+ *   --model=MODEL        o4-mini-deep (default), o3-deep, o4-mini, o3
  *   --dry-run            Preview without writing files
  *   --queue              Also consume data/commercial-research-queue.json
+ *   --force              Reset attempt counter and re-research
  */
 
 const fs = require('fs');
@@ -52,9 +56,21 @@ const SHOW_LIST = flags['shows'] ? flags['shows'].split(',') : null;
 const ALL_TBD = flags['all-tbd'] === true;
 const MAX_SHOWS = parseInt(flags['max-shows']) || 10;
 const BUDGET = parseFloat(flags['budget']) || 15;
-const MODEL = flags['model'] || 'o4-mini';
+const FORCE = flags['force'] === true;
 const USE_QUEUE = flags['queue'] === true;
-const WEEKLY_SPEND_CAP = 20; // dollars
+const WEEKLY_SPEND_CAP = 50; // dollars (upgraded for deep research models)
+const MAX_RESEARCH_ATTEMPTS = 3;
+
+// Model mapping: CLI shorthand -> actual API model name
+const MODEL_MAP = {
+  'o4-mini-deep': 'o4-mini-deep-research',
+  'o3-deep': 'o3-deep-research',
+  'o4-mini': 'o4-mini',
+  'o3': 'o3',
+};
+const MODEL_INPUT = flags['model'] || 'o4-mini-deep';
+const MODEL = MODEL_MAP[MODEL_INPUT] || MODEL_INPUT;
+const IS_DEEP_RESEARCH = MODEL.includes('deep-research');
 
 // ---------------------------------------------------------------------------
 // Environment
@@ -114,20 +130,94 @@ function checkPlausibility(data, grossesData) {
 }
 
 // ---------------------------------------------------------------------------
-// OpenAI Responses API with web search
+// Initialize metadata for existing commercial entries (idempotent)
+// ---------------------------------------------------------------------------
+function initializeMetadata() {
+  let commercial;
+  try {
+    commercial = JSON.parse(fs.readFileSync(COMMERCIAL_PATH, 'utf8'));
+  } catch (e) {
+    return; // No commercial.json yet
+  }
+  const shows = commercial.shows || {};
+  let changed = false;
+  for (const [slug, entry] of Object.entries(shows)) {
+    if (entry.researchAttempts === undefined) {
+      entry.researchAttempts = 0;
+      changed = true;
+    }
+    if (entry.lastResearchedAt === undefined) {
+      entry.lastResearchedAt = null;
+      changed = true;
+    }
+    if (entry.researchTrigger === undefined) {
+      entry.researchTrigger = null;
+      changed = true;
+    }
+  }
+  if (changed && !DRY_RUN) {
+    fs.writeFileSync(COMMERCIAL_PATH, JSON.stringify(commercial, null, 2) + '\n');
+    console.log('Initialized research metadata for existing commercial entries');
+  }
+}
+
+// ---------------------------------------------------------------------------
+// OpenAI Responses API with web search + Deep Research background polling
 // ---------------------------------------------------------------------------
 
-// Cost estimates per 1M tokens (o4-mini)
+// Cost estimates per 1M tokens
 const COST_TABLE = {
   'o4-mini': { input: 1.10, output: 4.40 },
   'o3': { input: 2.00, output: 8.00 },
+  'o4-mini-deep-research': { input: 2.00, output: 8.00 },
+  'o3-deep-research': { input: 10.00, output: 40.00 },
 };
 
 function estimateCost(usage, model) {
-  const rates = COST_TABLE[model] || COST_TABLE['o4-mini'];
+  const rates = COST_TABLE[model] || COST_TABLE['o4-mini-deep-research'];
   const inputCost = (usage.input_tokens || 0) / 1e6 * rates.input;
   const outputCost = (usage.output_tokens || 0) / 1e6 * rates.output;
   return inputCost + outputCost;
+}
+
+/**
+ * Poll a background response until completed or timeout.
+ * Returns the completed response object.
+ */
+async function pollForCompletion(responseId, maxWaitMs = 900000) {
+  const pollInterval = 15000; // 15 seconds
+  const startTime = Date.now();
+
+  while (Date.now() - startTime < maxWaitMs) {
+    await sleep(pollInterval);
+
+    const resp = await fetch(`https://api.openai.com/v1/responses/${responseId}`, {
+      headers: { 'Authorization': `Bearer ${OPENAI_KEY}` },
+      signal: AbortSignal.timeout(30000),
+    });
+
+    if (!resp.ok) {
+      const err = await resp.text();
+      throw new Error(`OpenAI poll ${resp.status}: ${err.slice(0, 300)}`);
+    }
+
+    const result = await resp.json();
+    const elapsed = Math.round((Date.now() - startTime) / 1000);
+
+    if (result.status === 'completed') {
+      console.log(`    Completed after ${elapsed}s`);
+      return result;
+    } else if (result.status === 'failed' || result.status === 'cancelled') {
+      throw new Error(`Deep research ${result.status} after ${elapsed}s`);
+    }
+    // Still in_progress or queued — keep polling
+    process.stdout.write(`    Polling... ${elapsed}s\r`);
+  }
+
+  // Timeout — return null (don't throw, don't count as attempt)
+  const elapsed = Math.round((Date.now() - startTime) / 1000);
+  console.log(`    Poll timeout after ${elapsed}s — will NOT count as research attempt`);
+  return null;
 }
 
 async function researchShowWithOpenAI(show, model) {
@@ -173,14 +263,21 @@ Respond with a JSON object (no markdown fences):
   "sources": [{"type": "<sec|trade|reddit|other>", "url": "<url>", "date": "<YYYY-MM-DD or null>"}]
 }`;
 
+  const isDeep = model.includes('deep-research');
+
   const body = {
     model,
-    tools: [{ type: 'web_search_preview', search_context_size: 'low' }],
     input: prompt,
     max_output_tokens: 16000,
   };
 
-  if (model === 'o4-mini' || model === 'o3') {
+  if (isDeep) {
+    // Deep Research models use web_search tool and background mode
+    body.tools = [{ type: 'web_search' }];
+    body.background = true;
+  } else {
+    // Standard models use web_search_preview
+    body.tools = [{ type: 'web_search_preview', search_context_size: 'low' }];
     body.reasoning = { effort: 'high' };
   }
 
@@ -191,7 +288,7 @@ Respond with a JSON object (no markdown fences):
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(body),
-    signal: AbortSignal.timeout(300000),
+    signal: AbortSignal.timeout(60000), // 60s for initial request
   });
 
   if (!resp.ok) {
@@ -199,7 +296,18 @@ Respond with a JSON object (no markdown fences):
     throw new Error(`OpenAI API ${resp.status}: ${err.slice(0, 300)}`);
   }
 
-  const result = await resp.json();
+  let result = await resp.json();
+
+  // For background/deep research, poll until completion
+  if (isDeep && result.status !== 'completed') {
+    console.log(`    Background research started (ID: ${result.id})`);
+    result = await pollForCompletion(result.id);
+    if (!result) {
+      // Timeout — return special status so caller knows not to count this attempt
+      return { analysis: null, usage: {}, cost: 0, searchCount: 0, status: 'timeout' };
+    }
+  }
+
   const usage = result.usage || {};
   const cost = estimateCost(usage, model);
 
@@ -216,7 +324,9 @@ Respond with a JSON object (no markdown fences):
   }
 
   // Count web searches performed
-  const searchCount = (result.output || []).filter(i => i.type === 'web_search_call').length;
+  const searchCount = (result.output || []).filter(i =>
+    i.type === 'web_search_call' || i.type === 'web_search'
+  ).length;
 
   // Parse JSON from output — try direct parse first, then extract from markdown
   let analysis = null;
@@ -241,7 +351,7 @@ Respond with a JSON object (no markdown fences):
         }
       }
     } catch (e2) {
-      console.warn(`    ⚠️  Failed to parse JSON output: ${e2.message}`);
+      console.warn(`    Failed to parse JSON output: ${e2.message}`);
     }
   }
 
@@ -293,19 +403,36 @@ function getWeekStart() {
 }
 
 // ---------------------------------------------------------------------------
+// 6-month re-research eligibility
+// ---------------------------------------------------------------------------
+function isSixMonthEligible(entry) {
+  if (!entry || !entry.lastResearchedAt) return false;
+  if ((entry.researchAttempts || 0) >= MAX_RESEARCH_ATTEMPTS) return false;
+  if (entry.designation && entry.designation !== 'TBD') return false;
+
+  const lastResearched = new Date(entry.lastResearchedAt);
+  const sixMonthsAgo = new Date();
+  sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+  return lastResearched < sixMonthsAgo;
+}
+
+// ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
 async function main() {
   console.log(`\n=== Deep Research Commercial ===`);
-  console.log(`Model: ${MODEL}`);
+  console.log(`Model: ${MODEL} (${IS_DEEP_RESEARCH ? 'deep research' : 'standard'})`);
   console.log(`Budget: $${BUDGET} (weekly cap: $${WEEKLY_SPEND_CAP})`);
   console.log(`Max shows: ${MAX_SHOWS}`);
-  console.log(`Mode: ${DRY_RUN ? 'DRY RUN' : 'LIVE'}\n`);
+  console.log(`Mode: ${DRY_RUN ? 'DRY RUN' : 'LIVE'}${FORCE ? ' [FORCE]' : ''}\n`);
 
   if (!OPENAI_KEY) {
     console.error('ERROR: OPENAI_API_KEY is required');
     process.exit(1);
   }
+
+  // Step 1: Initialize metadata for existing entries (idempotent)
+  initializeMetadata();
 
   // Load data fresh
   const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
@@ -315,7 +442,7 @@ async function main() {
     const grossesRaw = JSON.parse(fs.readFileSync(GROSSES_PATH, 'utf8'));
     grossesShows = grossesRaw.shows || {};
   } catch (e) {
-    console.warn('⚠️  Could not load grosses.json — plausibility cross-checks will be skipped');
+    console.warn('Could not load grosses.json — plausibility cross-checks will be skipped');
   }
 
   // Build show lookup
@@ -333,19 +460,54 @@ async function main() {
     process.exit(0);
   }
 
+  // Load commercial data for attempt tracking
+  let commercial;
+  try {
+    commercial = JSON.parse(fs.readFileSync(COMMERCIAL_PATH, 'utf8'));
+  } catch (e) {
+    commercial = { shows: {} };
+  }
+  const commShows = commercial.shows || {};
+
   // Determine which shows to research
   let targetSlugs = [];
+  let queuedSlugs = [];
+  let sixMonthSlugs = [];
+
+  // Consume queue file if requested (highest priority)
+  if (USE_QUEUE) {
+    try {
+      const queue = JSON.parse(fs.readFileSync(QUEUE_PATH, 'utf8'));
+      queuedSlugs = (queue.shows || []).filter(slug => {
+        const entry = commShows[slug];
+        if (!FORCE && entry && (entry.researchAttempts || 0) >= MAX_RESEARCH_ATTEMPTS) {
+          console.log(`  Skipping queued ${slug} — max attempts (${entry.researchAttempts}) reached`);
+          return false;
+        }
+        return true;
+      });
+      if (queuedSlugs.length > 0) {
+        console.log(`Queue: ${queuedSlugs.length} shows`);
+      }
+      // Clear queue
+      if (!DRY_RUN) {
+        fs.writeFileSync(QUEUE_PATH, JSON.stringify({ shows: [], updatedAt: new Date().toISOString() }, null, 2) + '\n');
+      }
+    } catch (e) {
+      // No queue file
+    }
+  }
 
   if (SHOW_LIST) {
     targetSlugs = SHOW_LIST;
   } else if (ALL_TBD) {
-    // Read commercial.json fresh at decision time
-    const commercial = JSON.parse(fs.readFileSync(COMMERCIAL_PATH, 'utf8'));
-    const commShows = commercial.shows || {};
-
-    // Shows with TBD designation
+    // Shows with TBD designation (not maxed out)
     const tbdSlugs = Object.entries(commShows)
-      .filter(([, v]) => v && v.designation === 'TBD')
+      .filter(([, v]) => {
+        if (!v || v.designation !== 'TBD') return false;
+        if (!FORCE && (v.researchAttempts || 0) >= MAX_RESEARCH_ATTEMPTS) return false;
+        return true;
+      })
       .map(([k]) => k);
 
     // Open Broadway shows without any commercial data
@@ -355,27 +517,31 @@ async function main() {
         && !commShows[s.slug])
       .map(s => s.slug);
 
-    targetSlugs = [...new Set([...tbdSlugs, ...uncoveredSlugs])];
-    // Shuffle for rotation so we don't always research the same shows
-    targetSlugs = shuffle(targetSlugs);
-  }
+    // 6-month eligible shows (TBD, researched 6+ months ago, still open)
+    sixMonthSlugs = Object.entries(commShows)
+      .filter(([slug, entry]) => {
+        const show = showBySlug[slug];
+        if (!show || show.status !== 'open') return false;
+        return isSixMonthEligible(entry);
+      })
+      .map(([k]) => k);
 
-  // Consume queue file if requested
-  if (USE_QUEUE) {
-    try {
-      const queue = JSON.parse(fs.readFileSync(QUEUE_PATH, 'utf8'));
-      const queuedSlugs = queue.shows || [];
-      if (queuedSlugs.length > 0) {
-        console.log(`📋 Queue: ${queuedSlugs.length} shows`);
-        targetSlugs = [...new Set([...queuedSlugs, ...targetSlugs])];
-        // Clear queue
-        if (!DRY_RUN) {
-          fs.writeFileSync(QUEUE_PATH, JSON.stringify({ shows: [], updatedAt: new Date().toISOString() }, null, 2) + '\n');
-        }
-      }
-    } catch (e) {
-      // No queue file
+    if (sixMonthSlugs.length > 0) {
+      console.log(`6-month re-research eligible: ${sixMonthSlugs.length} shows`);
     }
+
+    // Priority order: queued first, then 6-month, then remaining TBDs (shuffled)
+    const remaining = [...new Set([...tbdSlugs, ...uncoveredSlugs])];
+    targetSlugs = [
+      ...queuedSlugs,
+      ...sixMonthSlugs.filter(s => !queuedSlugs.includes(s)),
+      ...shuffle(remaining.filter(s => !queuedSlugs.includes(s) && !sixMonthSlugs.includes(s))),
+    ];
+    // Deduplicate
+    targetSlugs = [...new Set(targetSlugs)];
+  } else if (queuedSlugs.length > 0) {
+    // Queue-only mode (no --all-tbd, no --shows)
+    targetSlugs = queuedSlugs;
   }
 
   // Limit to max shows
@@ -414,30 +580,60 @@ async function main() {
   for (const slug of targetSlugs) {
     // Skip if already completed in this batch
     if (progress.completed.includes(slug)) {
-      console.log(`  ⏭️  ${slug} — already completed this batch`);
+      console.log(`  ${slug} — already completed this batch`);
       continue;
     }
 
     // Budget checks
     if (runBudgetRemaining <= 0) {
-      console.log(`\n💰 Run budget exhausted ($${BUDGET}). Stopping.`);
+      console.log(`\nRun budget exhausted ($${BUDGET}). Stopping.`);
       break;
     }
     if (weeklySpend >= WEEKLY_SPEND_CAP) {
-      console.log(`\n💰 Weekly spend cap reached ($${weeklySpend.toFixed(2)}). Stopping.`);
+      console.log(`\nWeekly spend cap reached ($${weeklySpend.toFixed(2)}). Stopping.`);
       break;
     }
 
     const show = showBySlug[slug];
     if (!show) {
-      console.log(`  ❌ ${slug} — not found in shows.json`);
+      console.log(`  ${slug} — not found in shows.json`);
       continue;
     }
 
-    console.log(`📊 ${show.title} (${slug})`);
+    // Check attempt limit (unless --force)
+    const existingEntry = commShows[slug];
+    if (!FORCE && existingEntry && (existingEntry.researchAttempts || 0) >= MAX_RESEARCH_ATTEMPTS) {
+      console.log(`  ${slug} — max research attempts (${existingEntry.researchAttempts}) reached, skipping`);
+      continue;
+    }
+
+    // Determine trigger reason
+    let trigger = 'manual';
+    if (queuedSlugs.includes(slug)) {
+      // Read trigger from queue if present
+      try {
+        const queueData = JSON.parse(fs.readFileSync(QUEUE_PATH, 'utf8'));
+        trigger = (queueData.triggers || {})[slug] || 'queued';
+      } catch (e) {
+        trigger = 'queued';
+      }
+    } else if (sixMonthSlugs.includes(slug)) {
+      trigger = '6-month';
+    } else if (ALL_TBD) {
+      trigger = 'backlog';
+    }
+
+    console.log(`${show.title} (${slug}) [${trigger}]`);
 
     try {
       const { analysis, usage, cost, searchCount, status } = await researchShowWithOpenAI(show, MODEL);
+
+      // Handle timeout — don't count as attempt, don't record cost
+      if (status === 'timeout') {
+        console.log(`    Timeout — not counted as research attempt`);
+        costLog.push({ slug, status: 'timeout', timestamp: new Date().toISOString() });
+        continue;
+      }
 
       totalCost += cost;
       runBudgetRemaining -= cost;
@@ -455,16 +651,16 @@ async function main() {
         timestamp: new Date().toISOString(),
       });
 
-      console.log(`    🔍 ${searchCount} web searches, $${cost.toFixed(4)}, status: ${status}`);
+      console.log(`    ${searchCount} web searches, $${cost.toFixed(4)}, status: ${status}`);
 
       if (!analysis) {
-        console.log(`    ❌ No structured data returned`);
+        console.log(`    No structured data returned`);
         continue;
       }
 
       // Normalize capitalization if AI returned in millions
       if (analysis.capitalization != null && analysis.capitalization > 0 && analysis.capitalization < 5000) {
-        console.log(`    ℹ️  Normalizing capitalization: ${analysis.capitalization} -> ${analysis.capitalization * 1e6}`);
+        console.log(`    Normalizing capitalization: ${analysis.capitalization} -> ${analysis.capitalization * 1e6}`);
         analysis.capitalization = analysis.capitalization * 1e6;
       }
       if (analysis.weeklyRunningCost != null && analysis.weeklyRunningCost > 0 && analysis.weeklyRunningCost < 10000) {
@@ -475,20 +671,18 @@ async function main() {
       if (analysis.recouped === true) {
         analysis._recoupedClaim = true;
         analysis._recoupedNote = 'AI claimed recouped — requires human verification with citation before applying';
-        // Don't delete the field — leave it for the pending review, but mark it
       }
 
       // Plausibility check
       const plausibility = checkPlausibility(analysis, grossesShows[slug]);
       if (!plausibility.plausible) {
-        console.log(`    ⚠️  Plausibility: ${plausibility.reason}`);
+        console.log(`    Plausibility: ${plausibility.reason}`);
         analysis.notes = `[PLAUSIBILITY WARNING: ${plausibility.reason}] ${analysis.notes || ''}`;
         if (analysis.confidence === 'high') analysis.confidence = 'medium';
       }
 
       // Guardian check — respect protected data
       if (guardian) {
-        // Read commercial.json fresh for guardian check
         const freshCommercial = JSON.parse(fs.readFileSync(COMMERCIAL_PATH, 'utf8'));
         const existingShow = (freshCommercial.shows || {})[slug];
         if (existingShow) {
@@ -500,7 +694,7 @@ async function main() {
                 existingShow
               );
               if (conflict && guardian.shouldBlockChange(conflict)) {
-                console.log(`    🛡️  Guardian blocked ${field}: ${guardian.calculateDiscrepancy?.(field, conflict.verifiedValue, analysis[field]) || 'conflict'}`);
+                console.log(`    Guardian blocked ${field}: ${guardian.calculateDiscrepancy?.(field, conflict.verifiedValue, analysis[field]) || 'conflict'}`);
                 delete analysis[field];
               }
             }
@@ -515,28 +709,49 @@ async function main() {
       analysis.status = show.status;
       analysis.researchedAt = new Date().toISOString();
       analysis.model = MODEL;
+      analysis.researchTrigger = trigger;
 
-      console.log(`    ✅ ${analysis.designation || 'TBD'} | cap: ${analysis.capitalization ? '$' + (analysis.capitalization / 1e6).toFixed(1) + 'M' : '?'} | confidence: ${analysis.confidence}`);
+      console.log(`    ${analysis.designation || 'TBD'} | cap: ${analysis.capitalization ? '$' + (analysis.capitalization / 1e6).toFixed(1) + 'M' : '?'} | confidence: ${analysis.confidence}`);
 
       // Merge into pending (don't overwrite existing entries from other research runs)
       pending.shows[slug] = analysis;
       pending.generatedAt = new Date().toISOString();
 
+      // Update research tracking in commercial.json AFTER successful write
+      // Only increment after confirmed file write (per plan: increment after success AND confirmed write)
+      if (!DRY_RUN) {
+        fs.writeFileSync(PENDING_PATH, JSON.stringify(pending, null, 2) + '\n');
+
+        // Now increment attempt counter in commercial.json
+        const freshComm = JSON.parse(fs.readFileSync(COMMERCIAL_PATH, 'utf8'));
+        if (!freshComm.shows[slug]) {
+          freshComm.shows[slug] = { designation: 'TBD' };
+        }
+        const entry = freshComm.shows[slug];
+        if (FORCE) {
+          entry.researchAttempts = 1; // Reset on force
+        } else {
+          entry.researchAttempts = (entry.researchAttempts || 0) + 1;
+        }
+        entry.lastResearchedAt = new Date().toISOString();
+        entry.researchTrigger = trigger;
+        fs.writeFileSync(COMMERCIAL_PATH, JSON.stringify(freshComm, null, 2) + '\n');
+      }
+
       // Checkpoint progress
       progress.completed.push(slug);
       if (!DRY_RUN) {
-        fs.writeFileSync(PENDING_PATH, JSON.stringify(pending, null, 2) + '\n');
         fs.writeFileSync(PROGRESS_PATH, JSON.stringify(progress, null, 2) + '\n');
       }
 
     } catch (e) {
-      console.error(`    ❌ Error: ${e.message}`);
+      console.error(`    Error: ${e.message}`);
       costLog.push({ slug, error: e.message, timestamp: new Date().toISOString() });
     }
 
-    // Rate limit between shows
+    // Rate limit between shows (longer for deep research)
     if (targetSlugs.indexOf(slug) < targetSlugs.length - 1) {
-      await sleep(2000);
+      await sleep(IS_DEEP_RESEARCH ? 5000 : 2000);
     }
   }
 
@@ -549,7 +764,6 @@ async function main() {
 
   // Clean up progress file after successful complete run
   if (!DRY_RUN && researchedCount > 0) {
-    // Reset progress for next run
     fs.writeFileSync(PROGRESS_PATH, JSON.stringify({
       completed: [],
       lastRunAt: new Date().toISOString(),
