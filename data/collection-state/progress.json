@@ -215,7 +215,14 @@
     "the-play-that-goes-wrong-2019/theater-scene--david-kaufman.json",
     "the-play-that-goes-wrong-2019/upstage-downstage--howard-miller.json",
     "this-is-my-favorite-song-2024/theater-scene--tony-marinelli.json",
-    "touch-2026/blogcritics--jon-sobel.json"
+    "touch-2026/blogcritics--jon-sobel.json",
+    "touch-2026/epoch-times--judd-hollander.json",
+    "touch-2026/plays-to-see--austin-fimmano.json",
+    "touch-2026/talkinbroadway--howard-miller.json",
+    "touch-2026/theater-pizzazz--beatrice-williams-rude.json",
+    "touch-2026/theater-scene--victor-gluck.json",
+    "touch-2026/woman-around-town--alix-cohen.json",
+    "imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -1124,7 +1131,10 @@
     "the-play-that-goes-wrong-2019/dc-metro-theater-arts--richard-seff.json",
     "the-play-that-goes-wrong-2019/out-magazine--michael-musto.json",
     "the-play-that-goes-wrong-2019/theatre-is-easy--gabriella-steinberg.json",
-    "touch-2026/broadwayworld--marina-kennedy.json"
+    "touch-2026/broadwayworld--marina-kennedy.json",
+    "data-2026/vulture--jackson-mchenry.json",
+    "jackals-off-broadway-2026/hollywood-reporter--thr-staff.json",
+    "the-monsters-2026/vulture--jackson-mchenry.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1222,7 +1232,9 @@
       "the-play-that-goes-wrong-2019/theater-scene--david-kaufman.json",
       "the-play-that-goes-wrong-2019/upstage-downstage--howard-miller.json",
       "this-is-my-favorite-song-2024/theater-scene--tony-marinelli.json",
-      "touch-2026/blogcritics--jon-sobel.json"
+      "touch-2026/blogcritics--jon-sobel.json",
+      "touch-2026/theater-scene--victor-gluck.json",
+      "touch-2026/woman-around-town--alix-cohen.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1243,7 +1255,9 @@
       "data/review-texts/waiting-for-godot-2009/hollywood-reporter--david-rooney.json",
       "waiting-for-godot-2009/hollywood-reporter--david-rooney.json",
       "data/review-texts/9-to-5-2009/newsday--steve-parks.json",
-      "9-to-5-2009/newsday--steve-parks.json"
+      "9-to-5-2009/newsday--steve-parks.json",
+      "data/review-texts/imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
+      "imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1424,7 +1438,8 @@
       "data/review-texts/midnight-in-the-garden-of-good-and-evil-2024/broadwayworld--rachel-weinberg.json",
       "data/review-texts/the-other-place-2026/thestage--dave-fargnoli.json",
       "data/review-texts/the-play-that-goes-wrong-2019/curtainup--simon-saltzman.json",
-      "data/review-texts/the-play-that-goes-wrong-2019/dc-metro-theater-arts--richard-seff.json"
+      "data/review-texts/the-play-that-goes-wrong-2019/dc-metro-theater-arts--richard-seff.json",
+      "data/review-texts/touch-2026/broadwayworld--marina-kennedy.json"
     ],
     "archive": [
       "wicked-2003/broadwayworld--jared-fessler.json",
@@ -1457,11 +1472,15 @@
       "the-play-that-goes-wrong-2019/city-cabaret--elizabeth-ahlfors.json",
       "the-play-that-goes-wrong-2019/ny1--david-cote.json",
       "the-play-that-goes-wrong-2019/talkinbroadway--matthew-murray.json",
-      "the-play-that-goes-wrong-2019/theater-pizzazz--carol-rocamora.json"
+      "the-play-that-goes-wrong-2019/theater-pizzazz--carol-rocamora.json",
+      "touch-2026/epoch-times--judd-hollander.json",
+      "touch-2026/plays-to-see--austin-fimmano.json",
+      "touch-2026/talkinbroadway--howard-miller.json",
+      "touch-2026/theater-pizzazz--beatrice-williams-rude.json"
     ]
   },
   "startTime": "2026-03-26T09:40:49.858Z",
-  "lastProcessed": "touch-2026/broadwayworld--marina-kennedy.json",
+  "lastProcessed": "the-monsters-2026/vulture--jackson-mchenry.json",
   "log": [
     {
       "t": "2026-03-26T09:43:13.034Z",
@@ -1813,6 +1832,17 @@
       "t": "2026-03-26T19:31:49.499Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-26T19:42:53.275Z",
+      "event": "bb-session",
+      "session": "ad8c0a23",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/john-legend-lynn-nottage-liesl-"
+    },
+    {
+      "t": "2026-03-26T19:42:54.802Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
