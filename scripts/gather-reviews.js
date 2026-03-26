@@ -2085,7 +2085,18 @@ function createReviewFile(showId, reviewData, options = {}) {
 
   // URL-DOMAIN MISMATCH CHECK: reject URLs that don't match the outlet's registered domain
   // This catches bad SERP results, aggregator URLs (BWW roundup for a broadwaynews review), etc.
-  if (reviewData.url && normalizedOutletId) {
+  // EXCEPTION: Aggregator-sourced reviews use the aggregator's roundup URL, not the outlet's URL.
+  // These get their real outlet URL later via text collection / SERP discovery.
+  const isAggregatorSource = reviewData.source && (
+    reviewData.source.startsWith('westendtheatre') ||
+    reviewData.source.startsWith('theatre-reviews') ||
+    reviewData.source.startsWith('stagedoor') ||
+    reviewData.source.startsWith('thestage-roundup') ||
+    reviewData.source.startsWith('lbo') ||
+    reviewData.source === 'show-score' ||
+    reviewData.source === 'dtli'
+  );
+  if (reviewData.url && normalizedOutletId && !isAggregatorSource) {
     const expectedDomain = OUTLET_DOMAINS[normalizedOutletId];
     if (expectedDomain) {
       try {
