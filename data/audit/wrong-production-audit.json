@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-26T08:25:52.675Z",
+  "timestamp": "2026-03-26T08:36:09.359Z",
   "stats": {
-    "totalReviews": 32504,
-    "alreadyFlagged": 11167,
+    "totalReviews": 32505,
+    "alreadyFlagged": 11170,
     "dateGuardCatches": 140,
     "directorMismatch": 959,
-    "tvFilmSignals": 3455,
+    "tvFilmSignals": 3454,
     "londonSignals": 1044,
     "offBroadwaySignals": 1008,
     "yearMismatch": 71,
-    "noPublishDate": 6722
+    "noPublishDate": 6721
   },
   "findings": [
     {
@@ -11662,20 +11662,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "contact-2000",
-      "file": "nytimes--robin-pogrebin.json",
-      "score": null,
-      "publishDate": "2000-06-05",
-      "url": "https://www.nytimes.com/2000/06/05/theater/both-tonys-for-directing-go-michael-blakemore-kiss-me-kate-contact-aida.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
