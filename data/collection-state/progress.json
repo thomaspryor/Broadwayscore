@@ -258,7 +258,8 @@
     "sister-act-2011/philadelphia-inquirer--howard-shapiro.json",
     "high-2011/theatermania--david-gordon.json",
     "bengal-tiger-at-the-baghdad-zoo-2011/theatermania--david-finkle.json",
-    "how-to-succeed-in-business-without-really-trying-2011/timeout--david-cote.json"
+    "how-to-succeed-in-business-without-really-trying-2011/timeout--david-cote.json",
+    "the-importance-of-being-earnest-2011/theatermania--charles-isherwood.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -1192,7 +1193,16 @@
     "ghetto-klown-2011/ap--mark-kennedy.json",
     "ghetto-klown-2011/scheckontheater--frank-scheck.json",
     "ghetto-klown-2011/backstage--david-sheward.json",
-    "priscilla-queen-of-the-desert-2011/ap--jocelyn-noveck.json"
+    "priscilla-queen-of-the-desert-2011/ap--jocelyn-noveck.json",
+    "priscilla-queen-of-the-desert-2011/northjerseycom--robert-feldberg.json",
+    "priscilla-queen-of-the-desert-2011/philadelphia-inquirer--howard-shapiro.json",
+    "priscilla-queen-of-the-desert-2011/new-jersey-newsroom--michael-sommers.json",
+    "priscilla-queen-of-the-desert-2011/chicagotribune--unknown.json",
+    "arcadia-2011/talkinbroadway--matthew-murray.json",
+    "that-championship-season-2011/ny1--roma-torre.json",
+    "that-championship-season-2011/ap--jocelyn-noveck.json",
+    "good-people-2011/backstage--erik-haagensen.json",
+    "elling-2010/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1419,7 +1429,8 @@
       "born-yesterday-2011/theatermania--andy-propst.json",
       "sister-act-2011/philadelphia-inquirer--howard-shapiro.json",
       "bengal-tiger-at-the-baghdad-zoo-2011/theatermania--david-finkle.json",
-      "how-to-succeed-in-business-without-really-trying-2011/timeout--david-cote.json"
+      "how-to-succeed-in-business-without-really-trying-2011/timeout--david-cote.json",
+      "the-importance-of-being-earnest-2011/theatermania--charles-isherwood.json"
     ],
     "archiveToday": [
       "data/review-texts/cult-of-love-2024/talkinbroadway--matthew-murray.json",
@@ -1741,7 +1752,9 @@
       "data/review-texts/anything-goes-2011/talkinbroadway--matthew-murray.json",
       "data/review-texts/how-to-succeed-in-business-without-really-trying-2011/washpost--peter-marks.json",
       "data/review-texts/ghetto-klown-2011/scheckontheater--frank-scheck.json",
-      "data/review-texts/priscilla-queen-of-the-desert-2011/ap--jocelyn-noveck.json"
+      "data/review-texts/priscilla-queen-of-the-desert-2011/ap--jocelyn-noveck.json",
+      "data/review-texts/priscilla-queen-of-the-desert-2011/northjerseycom--robert-feldberg.json",
+      "data/review-texts/arcadia-2011/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "the-terms-of-my-surrender-2017/thestage--mark-sheton.json",
@@ -1760,7 +1773,7 @@
     ]
   },
   "startTime": "2026-03-25T09:08:12.319Z",
-  "lastProcessed": "priscilla-queen-of-the-desert-2011/ap--jocelyn-noveck.json",
+  "lastProcessed": "elling-2010/new-jersey-newsroom--michael-sommers.json",
   "log": [
     {
       "t": "2026-03-25T09:10:15.724Z",
@@ -2311,6 +2324,17 @@
       "event": "bb-session",
       "session": "301c08ea",
       "url": "https://scheckonthearts.com/blog2.php/2011/03/23/review-john-leguizamo-s-ligghet"
+    },
+    {
+      "t": "2026-03-26T06:16:34.877Z",
+      "event": "bb-session",
+      "session": "e90369c6",
+      "url": "https://www.northjersey.com/arts_entertainment/118346804_Theater_review__Priscil"
+    },
+    {
+      "t": "2026-03-26T06:16:35.877Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
