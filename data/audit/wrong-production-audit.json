@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-26T12:53:43.756Z",
+  "timestamp": "2026-03-26T13:04:29.757Z",
   "stats": {
     "totalReviews": 32509,
     "alreadyFlagged": 11176,
     "dateGuardCatches": 143,
     "directorMismatch": 960,
-    "tvFilmSignals": 3450,
+    "tvFilmSignals": 3451,
     "londonSignals": 1043,
     "offBroadwaySignals": 1007,
     "yearMismatch": 71,
-    "noPublishDate": 6706
+    "noPublishDate": 6705
   },
   "findings": [
     {
@@ -30966,6 +30966,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "master-class-2011",
+      "file": "village-voice--michael-musto.json",
+      "score": 85,
+      "publishDate": "2011-07-07",
+      "url": "https://blogs.villagevoice.com/dailymusto/2011/07/tyne_daly_in_ma.php",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
