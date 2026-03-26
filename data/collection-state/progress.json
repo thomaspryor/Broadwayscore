@@ -724,7 +724,17 @@
     "waiting-for-godot-2009/backstage--david-sheward.json",
     "the-philanthropist-2009/backstage--david-sheward.json",
     "mary-stuart-2009/ap--michael-kuchwara.json",
-    "mary-stuart-2009/northjerseycom--robert-feldberg.json"
+    "mary-stuart-2009/northjerseycom--robert-feldberg.json",
+    "mary-stuart-2009/backstage--david-sheward.json",
+    "next-to-normal-2009/ap--michael-kuchwara.json",
+    "next-to-normal-2009/broadwayworld--greg-rice.json",
+    "next-to-normal-2009/newyorker--john-lahr.json",
+    "next-to-normal-2009/ap--unknown.json",
+    "rock-of-ages-2009/backstage--david-sheward.json",
+    "rock-of-ages-2009/ny1--roma-torre.json",
+    "reasons-to-be-pretty-2009/amny--matt-windman.json",
+    "reasons-to-be-pretty-2009/northjerseycom--robert-feldberg.json",
+    "irenas-vow-2009/usatoday--elysa-gardner.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -927,7 +937,10 @@
       "data/review-texts/a-little-night-music-2009/talkinbroadway--matthew-murray.json",
       "data/review-texts/ragtime-2009/broadwayworld--jay-irwin.json",
       "data/review-texts/waiting-for-godot-2009/northjerseycom--robert-feldberg.json",
-      "data/review-texts/mary-stuart-2009/northjerseycom--robert-feldberg.json"
+      "data/review-texts/mary-stuart-2009/northjerseycom--robert-feldberg.json",
+      "data/review-texts/next-to-normal-2009/broadwayworld--greg-rice.json",
+      "data/review-texts/reasons-to-be-pretty-2009/northjerseycom--robert-feldberg.json",
+      "data/review-texts/irenas-vow-2009/usatoday--elysa-gardner.json"
     ],
     "archive": [
       "wicked-2003/broadwayworld--jared-fessler.json",
@@ -953,7 +966,7 @@
     ]
   },
   "startTime": "2026-03-26T09:40:49.858Z",
-  "lastProcessed": "mary-stuart-2009/northjerseycom--robert-feldberg.json",
+  "lastProcessed": "irenas-vow-2009/usatoday--elysa-gardner.json",
   "log": [
     {
       "t": "2026-03-26T09:43:13.034Z",
@@ -1255,6 +1268,17 @@
       "t": "2026-03-26T14:19:20.981Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-26T14:22:01.462Z",
+      "event": "bb-session",
+      "session": "e72fd0df",
+      "url": "https://www.amny.com/urbanite-1.812039/theater-review-reasons-to-be-happy-3-star"
+    },
+    {
+      "t": "2026-03-26T14:22:02.552Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
