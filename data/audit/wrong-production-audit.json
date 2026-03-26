@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-26T09:22:29.562Z",
+  "timestamp": "2026-03-26T09:43:41.924Z",
   "stats": {
     "totalReviews": 32508,
-    "alreadyFlagged": 11171,
-    "dateGuardCatches": 140,
+    "alreadyFlagged": 11176,
+    "dateGuardCatches": 143,
     "directorMismatch": 959,
     "tvFilmSignals": 3452,
     "londonSignals": 1043,
     "offBroadwaySignals": 1008,
     "yearMismatch": 71,
-    "noPublishDate": 6720
+    "noPublishDate": 6712
   },
   "findings": [
     {
@@ -26249,6 +26249,39 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "london-theatre--marianka-swain.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 498d before show (2024-11-07 vs 2026-03-20)"
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 498d before show (2024-11-07 vs 2026-03-20)"
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "telegraph--tim-robey.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 498d before show (2024-11-07 vs 2026-03-20)"
         }
       ]
     },
