@@ -444,8 +444,42 @@ async function runAggregators(show) {
         } catch (e) {}
       }
 
+      // Fallback: WP API search when URL construction misses
+      if (!trHtml) {
+        try {
+          const searchTitle = show.title.replace(/['"']/g, '');
+          const wpApiUrl = `https://theatre.reviews/wp-json/wp/v2/posts?per_page=5&search=${encodeURIComponent(searchTitle)}`;
+          const wpResult = await new Promise((resolve) => {
+            require('https').get(wpApiUrl, {
+              headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)', Accept: 'application/json' },
+            }, res => {
+              if (res.statusCode !== 200) { resolve(null); return; }
+              let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
+            }).on('error', () => resolve(null));
+          });
+          if (wpResult) {
+            const posts = JSON.parse(wpResult);
+            const roundup = posts.find(p => p.link && p.link.includes('/reviews-roundup/'));
+            if (roundup) {
+              console.log(`    WP API found: ${roundup.link}`);
+              const fetched = await new Promise((resolve) => {
+                require('https').get(roundup.link, {
+                  headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)' },
+                }, res => {
+                  if (res.statusCode !== 200) { resolve(null); return; }
+                  let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
+                }).on('error', () => resolve(null));
+              });
+              if (fetched && fetched.length > 1000) trHtml = fetched;
+            }
+          }
+        } catch (e) {
+          console.log(`    TR WP API fallback error: ${(e.message || '').substring(0, 60)}`);
+        }
+      }
+
       if (trHtml) {
-        // Also check archive
+        // Cache to archive for future runs
         const archivePath = path.join(DATA_DIR, 'aggregator-archive', 'theatre-reviews', `${show.id}.html`);
         if (!fs.existsSync(path.dirname(archivePath))) fs.mkdirSync(path.dirname(archivePath), { recursive: true });
         fs.writeFileSync(archivePath, trHtml);

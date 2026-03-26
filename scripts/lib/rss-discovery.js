@@ -15,11 +15,13 @@ const http = require('http');
 // Theater-specific feeds (narrow enough that date-window filtering is safe)
 // NOTE: Guardian Stage is NOT here — it covers all performing arts globally (WE, opera, dance, regional).
 // Guardian is handled by the Guardian Open Platform API in site-search-discovery.js (tag=stage/stage).
+// openingWindow: true — marks feeds narrow enough to use ±2-day date window when openingDate is known.
+// Only Broadway-specific feeds qualify; WE feeds (even without needsFilter) must still title-match.
 const THEATER_FEEDS = [
-  { url: 'https://variety.com/v/legit/feed/', outletId: 'variety', name: 'Variety Legit' },
+  { url: 'https://variety.com/v/legit/feed/', outletId: 'variety', name: 'Variety Legit', openingWindow: true },
   // Playbill RSS is defunct (404 as of March 2026) — kept for future reference
   // { url: 'https://playbill.com/feed', outletId: 'playbill', name: 'Playbill' },
-  { url: 'https://rss.nytimes.com/services/xml/rss/nyt/Theater.xml', outletId: 'nytimes', name: 'NYT Theater' },
+  { url: 'https://rss.nytimes.com/services/xml/rss/nyt/Theater.xml', outletId: 'nytimes', name: 'NYT Theater', openingWindow: true },
   // Guardian Stage removed: covers all performing arts globally, too broad for date-window filtering.
   // Use Guardian Open Platform API in site-search-discovery.js instead.
 ];
@@ -203,15 +205,16 @@ async function checkRSSFeeds(showTitle, options = {}) {
         if (feed.needsFilter) {
           // Entertainment feeds (THR, Deadline): always title-match — they cover everything
           if (!titleMatchesShow(item.title, showTitle)) continue;
+        } else if (feed.openingWindow && openingDate) {
+          // Narrow Broadway-specific feeds (NYT Theater, Variety Legit): when openingDate is known,
+          // use a ±2-day date window instead of title matching. These feeds are topic-scoped to
+          // Broadway/theater, so date-windowing is safe and avoids title-match failures.
+          // WE feeds (WhatsOnStage, Standard) do NOT have openingWindow:true — they fall through
+          // to the else-branch and always title-match, even when openingDate is provided.
+          if (!isWithinOpeningWindow(item.pubDate, openingDate, 2)) continue;
         } else {
-          // Narrow theater feeds (NYT Theater, Variety Legit): these are topic-scoped.
-          // When openingDate is available, use a ±2-day date window — no title matching needed.
-          // Fall back to title matching if no openingDate (backwards compat for non-poller callers).
-          if (openingDate) {
-            if (!isWithinOpeningWindow(item.pubDate, openingDate, 2)) continue;
-          } else {
-            if (!titleMatchesShow(item.title, showTitle)) continue;
-          }
+          // All other feeds (WE feeds, Broadway feeds without openingDate): title-match
+          if (!titleMatchesShow(item.title, showTitle)) continue;
         }
 
         // Check for review-like keywords in title (applied to all feeds)
