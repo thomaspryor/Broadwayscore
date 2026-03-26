@@ -84,6 +84,7 @@ const PINNED_IMAGES = new Set([
   'romeo-juliet-2024',            // Manually uploaded promotional art
   'art-2025',                     // Manually sourced thumbnail
   'burnout-paradise-off-broadway-2026', // Restored from original St. Ann's Warehouse poster.jpg
+  'bughouse-off-broadway-2026',         // TodayTix CDN returns "Coming Soon" — real art archived locally
   // Currently open shows — thumbnails curated/verified by human
   'aladdin-2014',
   'all-out-2025',
