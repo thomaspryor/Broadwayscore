@@ -288,7 +288,7 @@ Respond with a JSON object (no markdown fences):
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(body),
-    signal: AbortSignal.timeout(60000), // 60s for initial request
+    signal: AbortSignal.timeout(isDeep ? 60000 : 300000), // 60s for deep research initial, 5min for standard
   });
 
   if (!resp.ok) {
