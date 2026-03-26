@@ -28,6 +28,11 @@ on:
         required: false
         type: string
         default: ''
+      send_to_all:
+        description: 'Approval dispatch: send to all subscribers (skips preview dedup check)'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
