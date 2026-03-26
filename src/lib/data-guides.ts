@@ -77,7 +77,7 @@ export function getGuideEditorial(slug: string, actualShowCount?: number): Edito
   // Stale editorials mention specific shows that no longer match — misleading for users and SEO.
   if (actualShowCount !== undefined && entry.showCount > 0) {
     const drift = Math.abs(entry.showCount - actualShowCount) / Math.max(entry.showCount, actualShowCount);
-    if (actualShowCount === 0 || drift > 0.5) return null;
+    if (actualShowCount === 0 || drift > 0.65) return null;
   }
 
   return entry;
