@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-03-26T13:56:28.664Z",
+  "updatedAt": "2026-03-26T14:12:14.682Z",
   "processed": 157,
-  "failed": 496,
-  "successRate": "24.0%",
+  "failed": 546,
+  "successRate": "22.3%",
   "tierBreakdown": {
     "playwright": 66,
     "amp": 0,
@@ -10,22 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 8,
     "brightdata": 58,
-    "archiveToday": 30,
+    "archiveToday": 33,
     "archive": 19
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-03-26T12:15:39.294Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-26T12:19:18.517Z",
-      "event": "bb-session",
-      "session": "38506dbe",
-      "url": "https://articles.philly.com/2012-04-15/news/31345427_1_starcatcher-alex-timbers-"
-    },
     {
       "t": "2026-03-26T12:25:10.806Z",
       "event": "bb-session",
@@ -128,6 +117,17 @@
       "event": "bb-session",
       "session": "0c9292e3",
       "url": "https://blogs.villagevoice.com/dailymusto/2011/03/how_to_succeed.php"
+    },
+    {
+      "t": "2026-03-26T14:01:56.087Z",
+      "event": "bb-session",
+      "session": "1da5434b",
+      "url": "https://www.wsj.com/articles/SB10001424052702303960604575157744105208812?gaa_at="
+    },
+    {
+      "t": "2026-03-26T14:01:57.325Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
