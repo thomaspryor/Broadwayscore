@@ -252,7 +252,9 @@
     "seminar-2011/theatermania--david-rooney.json",
     "private-lives-2011/theatermania--david-finkle.json",
     "spring-dances-2026-off-broadway-2026/guardian--unknown.json",
-    "man-and-boy-2011/variety--marilyn-stasio.json"
+    "man-and-boy-2011/variety--marilyn-stasio.json",
+    "the-normal-heart-2011/timeout--david-cote.json",
+    "born-yesterday-2011/theatermania--andy-propst.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -1152,7 +1154,15 @@
     "master-class-2011/village-voice--michael-musto.json",
     "master-class-2011/backstage--erik-haagensen.json",
     "the-people-in-the-picture-2011/northjerseycom--robert-feldberg.json",
-    "the-people-in-the-picture-2011/philadelphia-inquirer--howard-shapiro.json"
+    "the-people-in-the-picture-2011/philadelphia-inquirer--howard-shapiro.json",
+    "the-people-in-the-picture-2011/backstage--david-sheward.json",
+    "the-people-in-the-picture-2011/talkinbroadway--matthew-murray.json",
+    "the-normal-heart-2011/scheckontheater--frank-scheck.json",
+    "the-normal-heart-2011/newsday--unknown.json",
+    "baby-its-you-2011/backstage--david-sheward.json",
+    "the-normal-heart-2011/backstage--unknown.json",
+    "the-house-of-blue-leaves-2011/variety--charles-isherwood.json",
+    "born-yesterday-2011/village-voice--michael-musto.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1373,7 +1383,9 @@
       "on-a-clear-day-you-can-see-forever-2011/timeout--david-cote.json",
       "seminar-2011/theatermania--david-finkle.json",
       "seminar-2011/theatermania--david-rooney.json",
-      "private-lives-2011/theatermania--david-finkle.json"
+      "private-lives-2011/theatermania--david-finkle.json",
+      "the-normal-heart-2011/timeout--david-cote.json",
+      "born-yesterday-2011/theatermania--andy-propst.json"
     ],
     "archiveToday": [
       "data/review-texts/cult-of-love-2024/talkinbroadway--matthew-murray.json",
@@ -1686,7 +1698,8 @@
       "data/review-texts/man-and-boy-2011/northjerseycom--robert-feldberg.json",
       "data/review-texts/master-class-2011/dailybeast--john-anderson.json",
       "data/review-texts/the-people-in-the-picture-2011/northjerseycom--robert-feldberg.json",
-      "data/review-texts/the-people-in-the-picture-2011/philadelphia-inquirer--howard-shapiro.json"
+      "data/review-texts/the-people-in-the-picture-2011/philadelphia-inquirer--howard-shapiro.json",
+      "data/review-texts/the-people-in-the-picture-2011/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "the-terms-of-my-surrender-2017/thestage--mark-sheton.json",
@@ -1705,7 +1718,7 @@
     ]
   },
   "startTime": "2026-03-25T09:08:12.319Z",
-  "lastProcessed": "the-people-in-the-picture-2011/philadelphia-inquirer--howard-shapiro.json",
+  "lastProcessed": "born-yesterday-2011/theatermania--andy-propst.json",
   "log": [
     {
       "t": "2026-03-25T09:10:15.724Z",
@@ -2189,6 +2202,17 @@
       "event": "bb-session",
       "session": "dcf8cc88",
       "url": "https://articles.philly.com/2011-04-28/news/29483230_1_schmaltz-bubbie-generatio"
+    },
+    {
+      "t": "2026-03-26T06:01:54.312Z",
+      "event": "bb-session",
+      "session": "10ca1d50",
+      "url": "https://www.newsday.com/entertainment/tv/tv-zone-1.811968/hbo-s-the-normal-heart"
+    },
+    {
+      "t": "2026-03-26T06:01:55.333Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
     }
   ]
 }
