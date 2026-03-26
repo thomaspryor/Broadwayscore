@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-26T19:34:07.223Z",
-  "processed": 199,
-  "failed": 904,
-  "successRate": "18.0%",
+  "updatedAt": "2026-03-26T19:44:41.202Z",
+  "processed": 231,
+  "failed": 913,
+  "successRate": "20.2%",
   "tierBreakdown": {
-    "playwright": 82,
+    "playwright": 103,
     "amp": 0,
-    "browserbase": 18,
+    "browserbase": 20,
     "directCookies": 0,
-    "scrapingbee": 15,
+    "scrapingbee": 18,
     "brightdata": 66,
-    "archiveToday": 91,
-    "archive": 28
+    "archiveToday": 92,
+    "archive": 35
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-03-26T14:01:57.325Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-26T14:15:11.034Z",
-      "event": "bb-session",
-      "session": "012a561d",
-      "url": "https://www.northjersey.com/entertainment/stage/WAITING0430.html"
-    },
     {
       "t": "2026-03-26T14:15:12.298Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "t": "2026-03-26T19:31:49.499Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-26T19:42:53.275Z",
+      "event": "bb-session",
+      "session": "ad8c0a23",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/john-legend-lynn-nottage-liesl-"
+    },
+    {
+      "t": "2026-03-26T19:42:54.802Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
