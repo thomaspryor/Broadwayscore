@@ -55,12 +55,24 @@ function hasRecoupedClaim(entry) {
 
 function main() {
   if (!fs.existsSync(PENDING_PATH)) {
-    console.log('❌ No pending file found at', PENDING_PATH);
+    console.log('No pending file found at', PENDING_PATH);
     process.exit(1);
   }
 
-  const pending = JSON.parse(fs.readFileSync(PENDING_PATH, 'utf8'));
-  const commercial = JSON.parse(fs.readFileSync(COMMERCIAL_PATH, 'utf8'));
+  // Fail loudly on malformed JSON (don't silently produce empty results)
+  let pending, commercial;
+  try {
+    pending = JSON.parse(fs.readFileSync(PENDING_PATH, 'utf8'));
+  } catch (e) {
+    console.error(`FATAL: Malformed pending JSON: ${e.message}`);
+    process.exit(1);
+  }
+  try {
+    commercial = JSON.parse(fs.readFileSync(COMMERCIAL_PATH, 'utf8'));
+  } catch (e) {
+    console.error(`FATAL: Malformed commercial.json: ${e.message}`);
+    process.exit(1);
+  }
 
   if (!pending.shows || Object.keys(pending.shows).length === 0) {
     console.log('No pending shows to apply.');
@@ -114,13 +126,15 @@ function main() {
       continue;
     }
 
-    if (commercial.shows[showId]) {
-      console.log(`  ⏭️  "${showId}" already in commercial.json — skipping`);
+    // If already exists, update rather than skip (merge new findings)
+    const existing = commercial.shows[showId];
+    if (existing && existing.designation && existing.designation !== 'TBD' && !SINGLE_SHOW) {
+      console.log(`  "${showId}" already has designation "${existing.designation}" — skipping`);
       skipped++;
       continue;
     }
 
-    // Build clean commercial entry
+    // Build clean commercial entry, preserving research metadata from existing
     const commercialEntry = {};
     if (entry.designation) commercialEntry.designation = entry.designation;
     if (entry.capitalization != null) commercialEntry.capitalization = entry.capitalization;
@@ -134,7 +148,14 @@ function main() {
     if (entry.sources && entry.sources.length > 0) commercialEntry.sources = entry.sources;
 
     commercialEntry.lastUpdated = new Date().toISOString().split('T')[0];
-    commercialEntry.firstAdded = new Date().toISOString().split('T')[0];
+    commercialEntry.firstAdded = existing?.firstAdded || new Date().toISOString().split('T')[0];
+
+    // Preserve research tracking metadata from existing entry
+    if (existing) {
+      if (existing.researchAttempts != null) commercialEntry.researchAttempts = existing.researchAttempts;
+      if (existing.lastResearchedAt != null) commercialEntry.lastResearchedAt = existing.lastResearchedAt;
+      if (existing.researchTrigger != null) commercialEntry.researchTrigger = existing.researchTrigger;
+    }
 
     if (DRY_RUN) {
       console.log(`  [DRY RUN] Would apply "${showId}" → ${JSON.stringify(commercialEntry, null, 2).slice(0, 200)}...`);
