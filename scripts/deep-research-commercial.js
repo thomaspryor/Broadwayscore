@@ -231,21 +231,46 @@ async function researchShowWithOpenAI(show, model) {
   const status = show.status || '';
   const type = show.type || 'musical';
 
-  const prompt = `Research the Broadway ${type} "${title}"${venue ? ` at ${venue}` : ''}${openingDate ? ` (opened ${openingDate})` : ''}. It is currently ${status}.
+  const prompt = `Research the Broadway ${type} "${title}"${venue ? ` at ${venue}` : ''}${openingDate ? ` (opened ${openingDate})` : ''}${show.closingDate ? ` (closed ${show.closingDate})` : ''}. It is currently ${status}.
 
-Find and report the following financial information. Use web search to find real sources. Only report data you can verify from actual sources — do not estimate or guess.
+Find and report the following financial information. Only report data you can verify from actual sources — do not estimate or guess.
 
-1. **Capitalization (budget):** How much money was raised to produce the show? Look for SEC Form D filings, trade press reports (Deadline, Variety, Broadway Journal, Broadway News, Playbill), or producer interviews mentioning the budget.
+## Where to search (in priority order)
 
-2. **Weekly running cost:** How much does the show cost per week to operate? Look for trade articles mentioning "weekly nut" or operating costs.
+**A. Reddit and forums — richest source of Broadway financials:**
+- Search r/Broadway for: "${title}" capitalization OR recouped OR budget OR "weekly nut" OR "running cost"
+- Reddit users post detailed weekly grosses analyses with financial breakdowns (capitalization, weekly operating costs, estimated profit/loss) — especially for musicals. Look for season post-mortem threads.
+- BroadwayWorld forums have investor discussions with capitalization figures, offering paper details, and recoupment speculation
+- Broadway investor forums (e.g., investmentbroadway.com) discuss specific show economics
 
-3. **Recoupment status:** Has the show recouped its investment? Look for announcements of recoupment, trade press reports. If not recouped, any estimates of how close?
+**B. SEC EDGAR Form D filings:**
+- Broadway LLCs file Form D with the SEC when raising capital. Search EDGAR for the show title or producing entity.
 
-4. **Commercial designation:** Based on the evidence, classify as one of: Miracle (mega-hit, 10+ year run), Windfall (solid hit, recouped well), Easy Winner (limited run, recouped quickly), Trickle (barely broke even), Fizzle (closed without recouping, recovered 30%+), Flop (closed without recouping, <30% back), TBD (insufficient data).
+**C. Trade press:**
+- Search SEC filings, trade press (Variety, Deadline, Broadway News, The Broadway Journal, Playbill, TheaterMania, BroadwayWorld), and producer interviews
+- Search for: "${title}" broadway capitalization OR budget OR investment OR recouped
 
-5. **Key sources:** List the specific URLs where you found this information.
+**D. NYC tax credits & financial databases:**
+- investmentbroadway.com lists NYC Musical and Theatrical Production Tax Credit recipients — receiving a credit implies known capitalization
+- The Broadway League publishes weekly grosses data
 
-Report ONLY what you can verify. If you cannot find information for a field, say so explicitly. Do not fabricate data.
+## What to find
+
+1. **Capitalization (budget):** How much was raised to produce the show? Look for Form D amounts, trade press budgets, producer interviews, Reddit post-mortems.
+
+2. **Weekly running cost:** Look for "weekly nut", operating costs, or Reddit grosses analyses that break down costs vs. revenue.
+
+3. **Recoupment status:** Has it recouped? Look for trade announcements, Reddit analyses. If not, estimate what percentage was recovered based on total grosses vs. capitalization.
+
+4. **Nonprofit check:** If the venue is Samuel J. Friedman Theatre (Manhattan Theatre Club), Helen Hayes Theater (Second Stage), Todd Haimes Theatre (Roundabout), or Vivian Beaumont (Lincoln Center Theater) — verify whether this was a nonprofit production. If so, use "Nonprofit" designation.
+
+5. **Commercial designation:** Miracle (mega-hit, 10+ year run), Windfall (solid hit, recouped well), Easy Winner (limited run, recouped quickly), Trickle (barely broke even), Fizzle (closed without recouping, recovered 30%+), Flop (closed without recouping, <30% back), Nonprofit, TBD (insufficient data).
+
+## Critical rules
+
+- **Wrong-production trap:** If this is a revival, make sure ALL data is about THIS production, not a prior one. A show may have recouped in 2005 but flopped as a 2023 revival. Check dates carefully.
+- Report ONLY what you can verify. If you cannot find information for a field, say so explicitly. Do not fabricate data or URLs.
+- Capitalization should be in dollars (e.g., 15000000 not 15). Weekly costs in dollars (e.g., 650000 not 650).
 
 Respond with a JSON object (no markdown fences):
 {
