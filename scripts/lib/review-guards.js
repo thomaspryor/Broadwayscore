@@ -95,4 +95,34 @@ function applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, p
   return { wpConfidence: resultWpConfidence, filmTvFlag: resultFilmTvFlag };
 }
 
-module.exports = { shouldSkipScoredReview, pickBestDtliSlug, applyTemporalOverrides };
+/**
+ * Check if a URL looks like a review for the given show title.
+ * Filters out tag pages, author pages, ticket links, etc.
+ * Used in site-search-discovery.js to filter URLs returned by section-page scrapers.
+ *
+ * Title matching: strips non-alphanumeric chars, removes articles + short words (≤2 chars),
+ * requires ≥50% of remaining title words to appear in the URL. Fails open (returns true)
+ * when no significant title words remain — better to include than miss.
+ *
+ * @param {string} url - The URL to check
+ * @param {string} showTitle - The show title to match against
+ * @returns {boolean}
+ */
+function urlLooksLikeReview(url, showTitle) {
+  const lower = url.toLowerCase();
+  // Reject non-article URLs
+  if (lower.includes('/tag/') || lower.includes('/author/') || lower.includes('/category/')) return false;
+  if (lower.includes('/search') || lower.includes('/page/')) return false;
+  if (lower.includes('ticket') && !lower.includes('review')) return false;
+
+  // Check if URL contains words from show title
+  const titleWords = showTitle.toLowerCase()
+    .replace(/[^a-z0-9\s]/g, '')
+    .split(/\s+/)
+    .filter(w => w.length > 2 && !['the', 'and', 'for'].includes(w));
+
+  const matchCount = titleWords.filter(w => lower.includes(w)).length;
+  return matchCount >= Math.ceil(titleWords.length * 0.5);
+}
+
+module.exports = { shouldSkipScoredReview, pickBestDtliSlug, applyTemporalOverrides, urlLooksLikeReview };

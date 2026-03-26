@@ -2,28 +2,28 @@
 /**
  * send-opening-night-broadcast.js
  *
- * Broadcasts opening-night emails to ALL general subscribers when a show
- * opens on Broadway and has 8+ scored reviews.
+ * Creates a Buttondown DRAFT when a show opens and has enough reviews.
+ * Owner logs into Buttondown, reviews the draft, and clicks Send manually.
+ * Code never pushes the Send button.
  *
  * Reads shows.json, reviews.json, critic-consensus.json, subscribers.json,
- * and opening-night-sent.json. Sends via Resend.
+ * and opening-night-sent.json.
  *
  * Multiple shows opening the same night are coalesced into a single email.
  *
  * Usage: node scripts/send-opening-night-broadcast.js [--dry-run] [--lookback=DAYS] [--market=broadway|west-end] [--send-to=EMAIL]
  *
- * --send-to=EMAIL  Preview mode: send to a single email only, skip sent-tracking.
- *                  Use this to review the email before approving a full send.
+ * --send-to=EMAIL  Preview mode: send a single transactional email via Resend (not a broadcast/draft).
+ *                  Use this to review the email rendering before a real draft is created.
  *
- * Env: RESEND_API_KEY, DISCORD_WEBHOOK_ALERTS
+ * Env: BUTTONDOWN_API_KEY, RESEND_API_KEY (for --send-to preview and owner notifications), DISCORD_WEBHOOK_ALERTS
  */
 
-const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const { sendAlert } = require('./lib/discord-notify');
 const {
-  postJSON, sleep, buildBroadcastOpeningNightHtml, buildBroadcastApprovalHtml, buildUnsubscribeUrl,
+  postJSON, buildBroadcastOpeningNightHtml, buildUnsubscribeUrl,
 } = require('./lib/email-templates');
 const { isLondonMarket } = require('./lib/venue-classification');
 
@@ -51,11 +51,6 @@ const MIN_REVIEWS = isLondonMarket(MARKET) ? 8 : 12;
 const MIN_T1_REVIEWS = 3;
 const MIN_T2_REVIEWS = isLondonMarket(MARKET) ? 2 : 3;
 const MIN_HIGH_CONFIDENCE = isLondonMarket(MARKET) ? 6 : 8;
-
-// Resend segment IDs for Broadcasts API
-const RESEND_SEGMENT_ID = isLondonMarket(MARKET)
-  ? '0b17260b-6a72-4a5a-a700-7b7526f18d87'
-  : '472ec5ef-d7cc-4c48-8007-c0a6a302e7a4';
 
 
 function loadJSON(filePath) {
@@ -121,17 +116,17 @@ function getReviewStats(reviews, showId) {
 }
 
 async function main() {
-  const RESEND_API_KEY = process.env.RESEND_API_KEY;
+  const BUTTONDOWN_API_KEY = process.env.BUTTONDOWN_API_KEY;
+  const RESEND_API_KEY = process.env.RESEND_API_KEY; // Still used for --send-to preview and owner notification
 
-  if (!RESEND_API_KEY && !DRY_RUN) {
-    console.log('Missing RESEND_API_KEY — skipping sends');
+  if (!BUTTONDOWN_API_KEY && !DRY_RUN && !SEND_TO) {
+    console.log('Missing BUTTONDOWN_API_KEY — skipping draft creation');
     process.exit(0);
   }
 
   console.log(`Opening Night Broadcast (${MARKET})`);
   console.log('=======================\n');
-  if (DRY_RUN) console.log('** DRY RUN — no emails will be sent **\n');
-  console.log(`Market: ${MARKET}, Segment: ${RESEND_SEGMENT_ID}`);
+  if (DRY_RUN) console.log('** DRY RUN — no drafts will be created **\n');
 
   // Load data
   const showsData = loadJSON(SHOWS_PATH);
@@ -146,13 +141,12 @@ async function main() {
   const consensus = loadJSON(CONSENSUS_PATH) || {};
 
   if (SEND_TO) {
-    console.log(`** PREVIEW MODE — sending to ${SEND_TO} only **\n`);
+    console.log(`** PREVIEW MODE — sending to ${SEND_TO} only (transactional, not a draft) **\n`);
   } else {
-    // Full sends go via Broadcasts API (targets Resend segment directly)
-    // Still log subscriber count for visibility
     const subscribersData = loadJSON(SUBSCRIBERS_PATH);
     const subCount = subscribersData?.subscribers?.length || 0;
-    console.log(`Subscribers in local file: ${subCount} (Broadcasts API sends to Resend segment)`);
+    console.log(`Subscribers in local file: ${subCount}`);
+    console.log(`Mode: Buttondown DRAFT — owner reviews and sends manually from Buttondown UI`);
   }
 
   // Load or init sent tracking
@@ -308,10 +302,10 @@ async function main() {
   }
 
   if (DRY_RUN) {
-    console.log(`\n[DRY RUN] Would broadcast to Resend segment: ${RESEND_SEGMENT_ID}`);
+    console.log(`\n[DRY RUN] Would create Buttondown draft for ${MARKET}`);
     const html = buildBroadcastOpeningNightHtml(showsForEmail, null, MARKET);
     console.log(`Email HTML length: ${html.length} chars`);
-    console.log('Has Resend unsubscribe variable:', html.includes('RESEND_UNSUBSCRIBE_URL'));
+    console.log('Has Buttondown unsubscribe variable:', html.includes('{{ unsubscribe_url }}'));
     console.log('Has score card:', html.includes('font-size:32px'));
     process.exit(0);
   }
@@ -362,99 +356,69 @@ async function main() {
       process.exit(1);
     }
   } else {
-    // Full send via Broadcasts API — one API call sends to entire Resend segment
-    // Resend handles dedup, delivery, and provides open/click analytics in dashboard
-    console.log(`\nSending broadcast via Resend Broadcasts API...`);
-    console.log(`  Segment: ${RESEND_SEGMENT_ID} (${MARKET})`);
+    // Create a Buttondown DRAFT — owner reviews and clicks Send manually from Buttondown UI.
+    // Code never pushes the Send button. This prevents any repeat of the March 2026 incidents.
+    console.log(`\nCreating Buttondown draft for owner review...`);
 
-    // Build HTML without per-subscriber email (uses {{{ RESEND_UNSUBSCRIBE_URL }}} variable)
+    // Sanity check — prevent test-labeled subjects from becoming drafts
+    const FORBIDDEN_SUBJECT_WORDS = ['test', 'ignore', 'debug', 'tracking'];
+    if (FORBIDDEN_SUBJECT_WORDS.some(w => subject.toLowerCase().includes(w))) {
+      throw new Error(`SAFETY ABORT: Subject contains test-language: "${subject}"\nUse --send-to=EMAIL for preview sends.`);
+    }
+
+    // Build HTML — uses {{ unsubscribe_url }} (Buttondown's template variable)
     const html = buildBroadcastOpeningNightHtml(showsForEmail, null, MARKET);
-
-    const broadcastName = `Opening Night: ${showsForEmail.map(s => s.showTitle).join(', ')} (${new Date().toISOString().slice(0, 10)})`;
-
-    // ============================================================
-    // BROADCAST SAFETY GATES — never remove or weaken these
-    // Root cause: March 2026 incident sent 500 emails to 162 unique subscribers (3x)
-    // and "[TRACKING TEST - ignore]" to full subscriber list due to wrong API params
-    // ============================================================
-
-    // GATE 1: Reject test-labeled subjects going to a real audience
-    const FORBIDDEN_SUBJECT_WORDS = ['test', 'ignore', 'debug', 'tracking', '[preview]'];
-    const subjectLower = subject.toLowerCase();
-    if (FORBIDDEN_SUBJECT_WORDS.some(w => subjectLower.includes(w))) {
-      throw new Error(
-        `SAFETY ABORT: Subject line contains test-language: "${subject}"\n` +
-        `NEVER send test-labeled emails via broadcast. Use --send-to=EMAIL for preview sends.`
-      );
-    }
-
-    // GATE 2: Verify contact count via API + enforce BROADCAST_MAX_RECIPIENTS cap
-    let contactCount = 0;
-    try {
-      let after = null;
-      while (true) {
-        let url = `https://api.resend.com/audiences/${RESEND_SEGMENT_ID}/contacts?limit=100`;
-        if (after) url += `&after=${after}`;
-        const resp = await fetch(url, { headers: { 'Authorization': `Bearer ${RESEND_API_KEY}` } });
-        const r = await resp.json();
-        const batch = r.data || [];
-        contactCount += batch.length;
-        if (!r.has_more || batch.length === 0) break;
-        after = batch[batch.length - 1].id;
-      }
-      console.log(`  Pre-send API contact count: ${contactCount}`);
-      if (contactCount === 0) {
-        throw new Error('SAFETY ABORT: Audience has 0 contacts — aborting to prevent empty send');
-      }
-    } catch (err) {
-      if (err.message.startsWith('SAFETY ABORT')) throw err;
-      console.warn(`  Warning: could not verify contact count: ${err.message}`);
-    }
-
-    // GATE 3: BROADCAST_MAX_RECIPIENTS hard cap (set in workflow when send_to_all=true)
-    const maxRecipients = parseInt(process.env.BROADCAST_MAX_RECIPIENTS || '0', 10);
-    if (maxRecipients > 0 && contactCount > maxRecipients) {
-      throw new Error(
-        `SAFETY ABORT: API contact count (${contactCount}) exceeds BROADCAST_MAX_RECIPIENTS cap (${maxRecipients}).\n` +
-        `If correct, update the expected_recipients input in the workflow dispatch.`
-      );
-    }
-
-    // WARNING: Resend has internal duplicate records invisible to the contacts API.
-    // The March 2026 incident showed 3x sends (500 emails to 162 unique contacts).
-    // Do not send until Resend support has confirmed duplicates are cleared.
-    console.log(`\n  ⚠️  BROADCAST: about to send to ${contactCount} API-visible contacts in segment ${RESEND_SEGMENT_ID}`);
-    console.log(`  ⚠️  NOTE: Resend may have internal duplicate records not visible via API.`);
-    console.log(`  ⚠️  Verify Resend duplicate issue is resolved before trusting send counts.\n`);
+    const marketLabel = isLondonMarket(MARKET) ? '[West End] ' : '';
 
     try {
-      // Create broadcast and send immediately
-      const result = await postJSON('https://api.resend.com/broadcasts', {
-        segment_id: RESEND_SEGMENT_ID,
-        from: `${SITE_NAME} <${FROM_EMAIL}>`,
-        subject,
-        html,
-        name: broadcastName,
+      const result = await postJSON('https://api.buttondown.com/v1/emails', {
+        subject: `${marketLabel}${subject}`,
+        body: html,
+        status: 'draft',
       }, {
-        'Authorization': `Bearer ${RESEND_API_KEY}`,
+        'Authorization': `Token ${BUTTONDOWN_API_KEY}`,
       });
 
-      const broadcastId = result.id;
-      console.log(`  Broadcast created: ${broadcastId}`);
+      const draftId = result.id;
+      const draftUrl = `https://buttondown.com/emails/${draftId}`;
 
-      // Send the broadcast
-      await postJSON(`https://api.resend.com/broadcasts/${broadcastId}/send`, {}, {
-        'Authorization': `Bearer ${RESEND_API_KEY}`,
-      });
+      console.log(`  Draft created: ${draftId}`);
+      console.log(`  Review at: ${draftUrl}`);
 
-      console.log(`  Broadcast sent to all contacts in segment`);
+      // Notify owner via Resend transactional (direct link to the exact draft)
+      const OWNER_EMAIL = process.env.OWNER_EMAIL;
+      if (OWNER_EMAIL && RESEND_API_KEY) {
+        const marketDisplay = isLondonMarket(MARKET) ? 'West End' : 'Broadway';
+        const notificationHtml = `
+<p>An opening night email draft is ready for your review in Buttondown.</p>
+<table style="margin:16px 0;border-collapse:collapse;">
+  <tr><td style="padding:4px 12px 4px 0;color:#666">Show(s)</td><td><strong>${showsForEmail.map(s => s.showTitle).join(', ')}</strong></td></tr>
+  <tr><td style="padding:4px 12px 4px 0;color:#666">Market</td><td><strong>${marketDisplay}</strong></td></tr>
+  <tr><td style="padding:4px 12px 4px 0;color:#666">Subject</td><td>${subject}</td></tr>
+</table>
+<p><a href="${draftUrl}" style="background:#0066cc;color:#fff;padding:12px 24px;border-radius:4px;text-decoration:none;display:inline-block;font-weight:bold;">Review &amp; Send Draft in Buttondown →</a></p>
+<p style="color:#888;font-size:12px;margin-top:16px;">Direct link: ${draftUrl}<br>
+${isLondonMarket(MARKET) ? '<strong>Note:</strong> This is a West End broadcast. Filter by the "west-end" tag before sending.' : ''}</p>`;
 
-      // Mark as complete
+        await postJSON('https://api.resend.com/emails', {
+          from: `Broadway Scorecard <${FROM_EMAIL}>`,
+          to: [OWNER_EMAIL],
+          subject: `[Action Required] ${marketDisplay} draft ready — ${showsForEmail.map(s => s.showTitle).join(', ')}`,
+          html: notificationHtml,
+        }, { 'Authorization': `Bearer ${RESEND_API_KEY}` });
+
+        console.log(`  Owner notified at ${OWNER_EMAIL.replace(/(.{2}).*(@.*)/, '$1***$2')}`);
+      } else {
+        console.log(`  Warning: OWNER_EMAIL or RESEND_API_KEY not set — owner not notified by email`);
+        console.log(`  Draft URL: ${draftUrl}`);
+      }
+
+      // Mark as complete from code's perspective — owner sends manually from Buttondown
       const completionData = {
-        sentAt: new Date().toISOString(),
-        broadcastId,
-        method: 'broadcasts-api',
-        segmentId: RESEND_SEGMENT_ID,
+        draftCreatedAt: new Date().toISOString(),
+        draftId,
+        draftUrl,
+        method: 'buttondown-draft',
         reviewCount: showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0),
         completed: true,
       };
@@ -464,74 +428,26 @@ async function main() {
       }
       saveSentData(sentData);
 
-      console.log(`\nBroadcast complete — check Resend dashboard for open/click analytics`);
+      console.log(`\nDraft ready — log into Buttondown to send: ${draftUrl}`);
     } catch (err) {
-      console.error(`ERROR sending broadcast: ${err.message}`);
+      console.error(`ERROR creating Buttondown draft: ${err.message}`);
       await sendAlert({
-        title: 'Opening Night Broadcast Failed',
-        description: `Broadcasts API error: ${err.message}`,
+        title: 'Opening Night Draft Creation Failed',
+        description: `Buttondown draft error: ${err.message}`,
         severity: 'error',
       });
       process.exit(1);
     }
   }
 
-  // Post-send actions (preview mode only: approval email)
+  // Track preview send
   if (SEND_TO) {
-    // Track preview send using today-based key (matches dedup check above)
     const today2 = new Date().toISOString().slice(0, 10);
     const previewKey2 = `preview:${broadcastKey}:${today2}`;
-    const alreadyPreviewed = !!sentData.shows[previewKey2];
     const previewReviewCount = showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0);
     sentData.shows[previewKey2] = { sentAt: new Date().toISOString(), previewTo: SEND_TO, reviewCount: previewReviewCount };
     saveSentData(sentData);
-
     console.log(`\nPreview sent to ${SEND_TO}`);
-
-    // Send approval email (only on 5 AM cron, not 8 AM)
-    const HMAC_SECRET = process.env.APPROVAL_HMAC_SECRET;
-    const BROADCAST_HOUR = process.env.BROADCAST_HOUR;
-    const OWNER_EMAIL = process.env.OWNER_EMAIL;
-
-    if (!HMAC_SECRET) {
-      console.log('No APPROVAL_HMAC_SECRET — skipping approval email');
-    } else if (alreadyPreviewed) {
-      console.log('Preview already sent for this show+hour — skipping duplicate approval email');
-    } else if (BROADCAST_HOUR === '8') {
-      console.log('8 AM run — skipping approval email (sent at 5 AM)');
-    } else if (!OWNER_EMAIL) {
-      console.log('No OWNER_EMAIL — skipping approval email');
-    } else {
-      try {
-        const dateStr = new Date().toISOString().slice(0, 10);
-        const showIds = showsForEmail.map(s => s.showId).sort().join(',');
-        const payload = `broadcast:${showIds}:${MARKET}:${dateStr}`;
-        const hmacToken = crypto.createHmac('sha256', HMAC_SECRET).update(payload).digest('hex');
-
-        const showNames = showsForEmail.map(s => s.showTitle).join(',');
-        const approvalUrl = `https://broadwayscorecard.com/api/approve-broadcast?token=${hmacToken}&shows=${encodeURIComponent(showIds)}&market=${MARKET}&lookback=${LOOKBACK_DAYS}&names=${encodeURIComponent(showNames)}`;
-
-        const approvalHtml = buildBroadcastApprovalHtml(showsForEmail, approvalUrl, MARKET);
-
-        await postJSON('https://api.resend.com/emails', {
-          from: `${SITE_NAME} <${FROM_EMAIL}>`,
-          to: [OWNER_EMAIL],
-          subject: `[Action Required] Approve ${MARKET === 'west-end' ? 'West End' : 'Broadway'} broadcast — ${showsForEmail.map(s => s.showTitle).join(', ')}`,
-          html: approvalHtml,
-        }, {
-          'Authorization': `Bearer ${RESEND_API_KEY}`,
-        });
-
-        console.log(`Approval email sent to owner (${OWNER_EMAIL.replace(/(.{2}).*(@.*)/, '$1***$2')})`);
-      } catch (err) {
-        console.error(`ERROR sending approval email: ${err.message}`);
-        await sendAlert({
-          title: 'Broadcast Approval Email Failed',
-          description: `Could not send approval email: ${err.message}. Owner cannot approve broadcast from phone.`,
-          severity: 'error',
-        });
-      }
-    }
   }
 }
 

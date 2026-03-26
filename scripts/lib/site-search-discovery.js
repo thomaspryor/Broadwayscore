@@ -16,6 +16,7 @@ const https = require('https');
 const http = require('http');
 const { URL } = require('url');
 const { isLondonMarket } = require('./venue-classification');
+const { urlLooksLikeReview } = require('./review-guards');
 
 /**
  * Search endpoint configuration.
@@ -359,26 +360,7 @@ function fetchWithScrapingBee(url, timeoutMs = 30000) {
   });
 }
 
-/**
- * Check if a URL looks like a review for the given show title.
- * Filters out tag pages, author pages, ticket links, etc.
- */
-function urlLooksLikeReview(url, showTitle) {
-  const lower = url.toLowerCase();
-  // Reject non-article URLs
-  if (lower.includes('/tag/') || lower.includes('/author/') || lower.includes('/category/')) return false;
-  if (lower.includes('/search') || lower.includes('/page/')) return false;
-  if (lower.includes('ticket') && !lower.includes('review')) return false;
-
-  // Check if URL contains words from show title
-  const titleWords = showTitle.toLowerCase()
-    .replace(/[^a-z0-9\s]/g, '')
-    .split(/\s+/)
-    .filter(w => w.length > 2 && !['the', 'and', 'for'].includes(w));
-
-  const matchCount = titleWords.filter(w => lower.includes(w)).length;
-  return matchCount >= Math.ceil(titleWords.length * 0.5);
-}
+// urlLooksLikeReview imported from ./review-guards (pure function, tested in test-opening-night-fixes.js)
 
 /**
  * Search a single outlet's website for a review.
