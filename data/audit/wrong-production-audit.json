@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-26T10:01:26.774Z",
+  "timestamp": "2026-03-26T10:20:29.513Z",
   "stats": {
     "totalReviews": 32508,
     "alreadyFlagged": 11176,
@@ -9,7 +9,7 @@
     "londonSignals": 1043,
     "offBroadwaySignals": 1008,
     "yearMismatch": 71,
-    "noPublishDate": 6711
+    "noPublishDate": 6707
   },
   "findings": [
     {
@@ -26255,6 +26255,9 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "london-theatre--marianka-swain.json",
+      "score": 82,
+      "publishDate": "2024-11-07",
+      "url": "https://www.londontheatre.co.uk/reviews/the-curious-case-of-benjamin-button-review-ambassadors-theatre",
       "findings": [
         {
           "type": "DATE_GUARD",
