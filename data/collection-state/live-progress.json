@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-26T12:02:57.807Z",
-  "processed": 111,
-  "failed": 122,
-  "successRate": "47.6%",
+  "updatedAt": "2026-03-26T12:04:57.462Z",
+  "processed": 116,
+  "failed": 127,
+  "successRate": "47.7%",
   "tierBreakdown": {
-    "playwright": 53,
+    "playwright": 56,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 7,
     "brightdata": 37,
     "archiveToday": 9,
-    "archive": 11
+    "archive": 12
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-03-26T09:43:13.034Z",
@@ -118,6 +118,17 @@
       "t": "2026-03-26T12:01:07.815Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-26T12:04:41.539Z",
+      "event": "bb-session",
+      "session": "4822896c",
+      "url": "https://www.hollywoodreporter.com/review/fiddler-roof-theater-review-850349"
+    },
+    {
+      "t": "2026-03-26T12:04:42.631Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
