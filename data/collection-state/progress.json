@@ -1172,7 +1172,17 @@
     "sister-act-2011/backstage--erik-haagensen.json",
     "high-2011/ap--mark-kennedy.json",
     "high-2011/scheckontheater--frank-scheck.json",
-    "high-2011/backstage--erik-haagensen.json"
+    "high-2011/backstage--erik-haagensen.json",
+    "wonderland-2011/northjerseycom--robert-feldberg.json",
+    "wonderland-2011/st-petersburg-times--john-fleming.json",
+    "war-horse-2011/chicagotribune--unknown.json",
+    "war-horse-2011/scheckontheater--frank-scheck.json",
+    "war-horse-2011/new-jersey-newsroom--michael-sommers.json",
+    "war-horse-2011/backstage--erik-haagensen.json",
+    "catch-me-if-you-can-2011/scheckontheater--frank-scheck.json",
+    "catch-me-if-you-can-2011/new-jersey-newsroom--michael-sommers.json",
+    "catch-me-if-you-can-2011/backstage--unknown.json",
+    "anything-goes-2011/talkinbroadway--matthew-murray.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1713,7 +1723,10 @@
       "data/review-texts/the-people-in-the-picture-2011/philadelphia-inquirer--howard-shapiro.json",
       "data/review-texts/the-people-in-the-picture-2011/talkinbroadway--matthew-murray.json",
       "data/review-texts/sister-act-2011/northjerseycom--robert-feldberg.json",
-      "data/review-texts/sister-act-2011/scheckontheater--frank-scheck.json"
+      "data/review-texts/sister-act-2011/scheckontheater--frank-scheck.json",
+      "data/review-texts/wonderland-2011/northjerseycom--robert-feldberg.json",
+      "data/review-texts/war-horse-2011/chicagotribune--unknown.json",
+      "data/review-texts/anything-goes-2011/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "the-terms-of-my-surrender-2017/thestage--mark-sheton.json",
@@ -1732,7 +1745,7 @@
     ]
   },
   "startTime": "2026-03-25T09:08:12.319Z",
-  "lastProcessed": "high-2011/backstage--erik-haagensen.json",
+  "lastProcessed": "anything-goes-2011/talkinbroadway--matthew-murray.json",
   "log": [
     {
       "t": "2026-03-25T09:10:15.724Z",
@@ -2244,6 +2257,28 @@
       "event": "bb-session",
       "session": "b0ace116",
       "url": "https://scheckonthearts.com/blog2.php/2011/04/21/review-ligsister-actl-ig"
+    },
+    {
+      "t": "2026-03-26T06:08:32.480Z",
+      "event": "bb-session",
+      "session": "fc5a650b",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/120045819_Theater_review_"
+    },
+    {
+      "t": "2026-03-26T06:08:33.570Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-26T06:09:12.734Z",
+      "event": "bb-session",
+      "session": "f8c2cbd8",
+      "url": "https://leisureblogs.chicagotribune.com/the_theater_loop/2011/04/war-horse-broad"
+    },
+    {
+      "t": "2026-03-26T06:09:13.788Z",
+      "event": "bb-cookie-inject",
+      "domain": "chicagotribune.com"
     }
   ]
 }
