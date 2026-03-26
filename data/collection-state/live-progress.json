@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-26T13:02:01.991Z",
-  "processed": 152,
-  "failed": 271,
-  "successRate": "35.9%",
+  "updatedAt": "2026-03-26T13:05:05.169Z",
+  "processed": 153,
+  "failed": 280,
+  "successRate": "35.3%",
   "tierBreakdown": {
     "playwright": 65,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 12,
     "directCookies": 0,
     "scrapingbee": 8,
     "brightdata": 57,
-    "archiveToday": 21,
+    "archiveToday": 22,
     "archive": 17
   },
-  "browserbaseSessions": 14,
+  "browserbaseSessions": 16,
   "recentActivity": [
-    {
-      "t": "2026-03-26T11:47:20.476Z",
-      "event": "bb-session",
-      "session": "e2d57ee0",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/thoughts-of-a-colored-man-broad"
-    },
-    {
-      "t": "2026-03-26T11:47:21.573Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-26T11:52:27.904Z",
-      "event": "bb-session",
-      "session": "7f18cc12",
-      "url": "https://www.wsj.com/articles/spongebob-squarepants-review-an-ocean-of-colorful-c"
-    },
-    {
-      "t": "2026-03-26T11:52:29.029Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-26T12:01:06.789Z",
       "event": "bb-session",
@@ -127,6 +105,28 @@
       "event": "bb-session",
       "session": "4ebd740d",
       "url": "https://www.thedailybeast.com/la-bete-a-broadway-beast/"
+    },
+    {
+      "t": "2026-03-26T13:02:49.157Z",
+      "event": "bb-session",
+      "session": "8ea498ad",
+      "url": "https://www.northjersey.com/arts_entertainment/91887804_It_s_all_about_Sondheim_"
+    },
+    {
+      "t": "2026-03-26T13:02:50.167Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-26T13:03:07.781Z",
+      "event": "bb-session",
+      "session": "d06ccf24",
+      "url": "https://variety.com/2010/legit/reviews/sondheim-on-sondheim-1117942391/"
+    },
+    {
+      "t": "2026-03-26T13:03:08.884Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

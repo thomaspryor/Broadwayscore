@@ -151,7 +151,8 @@
     "the-normal-heart-2011/timeout--david-cote.json",
     "high-2011/theatermania--david-gordon.json",
     "how-to-succeed-in-business-without-really-trying-2011/timeout--david-cote.json",
-    "the-importance-of-being-earnest-2011/theatermania--charles-isherwood.json"
+    "the-importance-of-being-earnest-2011/theatermania--charles-isherwood.json",
+    "sondheim-on-sondheim-2010/variety--charles-isherwood.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -424,7 +425,16 @@
     "collected-stories-2010/ap--unknown.json",
     "collected-stories-2010/backstage--david-sheward.json",
     "enron-2010/new-jersey-newsroom--michael-sommers.json",
-    "enron-2010/backstage--erik-haagensen.json"
+    "enron-2010/backstage--erik-haagensen.json",
+    "fences-2010/backstage--erik-haagensen.json",
+    "promises-promises-2010/new-jersey-newsroom--michael-sommers.json",
+    "sondheim-on-sondheim-2010/northjerseycom--robert-feldberg.json",
+    "la-cage-aux-folles-2010/new-jersey-newsroom--michael-sommers.json",
+    "la-cage-aux-folles-2010/backstage--david-sheward.json",
+    "la-cage-aux-folles-2010/times-uk--clive-davis.json",
+    "million-dollar-quartet-2010/ny1--roma-torre.json",
+    "million-dollar-quartet-2010/backstage--david-sheward.json",
+    "the-addams-family-2010/backstage--erik-haagensen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -506,7 +516,9 @@
       "data/review-texts/fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json",
       "fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json",
       "data/review-texts/the-anarchist-2012/hollywood-reporter--david-rooney.json",
-      "the-anarchist-2012/hollywood-reporter--david-rooney.json"
+      "the-anarchist-2012/hollywood-reporter--david-rooney.json",
+      "data/review-texts/sondheim-on-sondheim-2010/variety--charles-isherwood.json",
+      "sondheim-on-sondheim-2010/variety--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -599,7 +611,8 @@
       "data/review-texts/la-bete-2010/chicagotribune--chris-jones.json",
       "data/review-texts/la-bete-2010/dailybeast--john-anderson.json",
       "data/review-texts/the-pitmen-painters-2010/backstage--unknown.json",
-      "data/review-texts/the-pitmen-painters-2010/village-voice--michael-feingold.json"
+      "data/review-texts/the-pitmen-painters-2010/village-voice--michael-feingold.json",
+      "data/review-texts/sondheim-on-sondheim-2010/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
       "wicked-2003/broadwayworld--jared-fessler.json",
@@ -622,7 +635,7 @@
     ]
   },
   "startTime": "2026-03-26T09:40:49.858Z",
-  "lastProcessed": "enron-2010/backstage--erik-haagensen.json",
+  "lastProcessed": "the-addams-family-2010/backstage--erik-haagensen.json",
   "log": [
     {
       "t": "2026-03-26T09:43:13.034Z",
@@ -807,6 +820,28 @@
       "event": "bb-session",
       "session": "4ebd740d",
       "url": "https://www.thedailybeast.com/la-bete-a-broadway-beast/"
+    },
+    {
+      "t": "2026-03-26T13:02:49.157Z",
+      "event": "bb-session",
+      "session": "8ea498ad",
+      "url": "https://www.northjersey.com/arts_entertainment/91887804_It_s_all_about_Sondheim_"
+    },
+    {
+      "t": "2026-03-26T13:02:50.167Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-26T13:03:07.781Z",
+      "event": "bb-session",
+      "session": "d06ccf24",
+      "url": "https://variety.com/2010/legit/reviews/sondheim-on-sondheim-1117942391/"
+    },
+    {
+      "t": "2026-03-26T13:03:08.884Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
