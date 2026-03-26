@@ -16,6 +16,7 @@
 const https = require('https');
 const crypto = require('crypto');
 const { isLondonMarket } = require('./venue-classification');
+const { applyTemporalOverrides } = require('./review-guards');
 
 /**
  * Hash the first 2500 chars of text — used to detect when contentVerification
@@ -368,31 +369,23 @@ Set isValid=true only if the content is a review of the ${mc.label} production a
       let wpConfidence = parsed.confidence || 'medium';
       let wpReasoning = parsed.reasoning || '';
 
-      // Safety check: if LLM says wrongProduction but review published within 30 days
-      // of opening, downgrade confidence — LLMs hallucinate prior productions frequently,
-      // especially for shows with same-name films, musicals, or prior Broadway runs.
-      if (wpFlag && openingDate && publishDate) {
-        const daysDiff = Math.abs((new Date(publishDate) - new Date(openingDate)) / 86400000);
-        if (daysDiff <= 30) {
-          console.log(`    ⚠ LLM wrongProduction overridden: review published ${Math.round(daysDiff)}d from opening — downgrading to low confidence`);
-          wpConfidence = 'low';
-          wpReasoning = `[OVERRIDE: review within ${Math.round(daysDiff)}d of opening, likely correct production] ${wpReasoning}`;
-        }
-      }
-
-      // Safety check: if LLM says isFilmTv but review published within 30 days of opening,
-      // downgrade confidence. LLMs confuse same-name films/musicals (e.g. "Giant" 1956 film)
-      // with current Broadway productions, especially for shows with film adaptations.
+      // Temporal proximity guards — pure logic lives in review-guards.js (testable in isolation).
+      // Call site keeps logging and wpReasoning annotation so CI output remains informative.
       let filmTvFlag = parsed.isFilmTv || false;
       let filmTvConfidence = parsed.confidence || 'medium';
-      if (filmTvFlag && openingDate && publishDate) {
-        const daysDiff = Math.abs((new Date(publishDate) - new Date(openingDate)) / 86400000);
-        if (daysDiff <= 30) {
-          console.log(`    ⚠ LLM isFilmTv overridden: review published ${Math.round(daysDiff)}d from opening — downgrading to low confidence`);
-          filmTvConfidence = 'low';
-          filmTvFlag = false; // Clear the flag entirely — opening-week reviews are live theater
-        }
+      const temporalOverrides = applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, publishDate);
+      if (temporalOverrides.wpConfidence !== wpConfidence && wpFlag && openingDate && publishDate) {
+        const daysDiff = Math.round(Math.abs((new Date(publishDate) - new Date(openingDate)) / 86400000));
+        console.log(`    ⚠ LLM wrongProduction overridden: review published ${daysDiff}d from opening — downgrading to low confidence`);
+        wpReasoning = `[OVERRIDE: review within ${daysDiff}d of opening, likely correct production] ${wpReasoning}`;
       }
+      if (!temporalOverrides.filmTvFlag && filmTvFlag && openingDate && publishDate) {
+        const daysDiff = Math.round(Math.abs((new Date(publishDate) - new Date(openingDate)) / 86400000));
+        console.log(`    ⚠ LLM isFilmTv overridden: review published ${daysDiff}d from opening — downgrading to low confidence`);
+        filmTvConfidence = 'low';
+      }
+      wpConfidence = temporalOverrides.wpConfidence;
+      filmTvFlag = temporalOverrides.filmTvFlag;
 
       return {
         isValid: parsed.isValid ?? true,

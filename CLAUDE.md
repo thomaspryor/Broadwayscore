@@ -118,7 +118,15 @@ Fallback chain: Bright Data → ScrapingBee → Playwright (`scripts/lib/scraper
 
 For full details on any subsystem: `memory/CLAUDE-reference.md`
 
-### 15. Email Broadcast Safety (MANDATORY — NO EXCEPTIONS)
+### 15. Test Extraction Pattern (MANDATORY for new logic tests)
+**Never copy logic into test files — always `require()` the real function.**
+- Extract pure decision functions to `scripts/lib/review-guards.js` (or a new lib file)
+- `module.exports` the function; `require()` it in the test
+- If production code changes, updating the function will make the test fail — that's the point
+- See `scripts/lib/review-guards.js` for the established pattern (Fix #12/13/14)
+- **When you fix inline logic in a pipeline script:** extract it → export → wire back → test
+
+### 16. Email Broadcast Safety (MANDATORY — NO EXCEPTIONS)
 See `memory/email-broadcast-rules.md` for full incident history and rules.
 - **NEVER call `POST /broadcasts/{id}/send` directly** — all sends via `send-opening-night-broadcast.js` only
 - **NEVER broadcast to test or validate anything** — use `--send-to=your@email.com` (transactional, never broadcast)
