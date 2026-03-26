@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-26T11:52:20.733Z",
-  "processed": 98,
-  "failed": 105,
-  "successRate": "48.3%",
+  "updatedAt": "2026-03-26T12:07:07.119Z",
+  "processed": 120,
+  "failed": 133,
+  "successRate": "47.4%",
   "tierBreakdown": {
-    "playwright": 51,
+    "playwright": 58,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 8,
     "directCookies": 0,
-    "scrapingbee": 6,
-    "brightdata": 32,
-    "archiveToday": 8,
-    "archive": 6
+    "scrapingbee": 7,
+    "brightdata": 37,
+    "archiveToday": 9,
+    "archive": 14
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-03-26T09:43:13.034Z",
@@ -94,6 +94,39 @@
     },
     {
       "t": "2026-03-26T11:47:21.573Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-26T11:52:27.904Z",
+      "event": "bb-session",
+      "session": "7f18cc12",
+      "url": "https://www.wsj.com/articles/spongebob-squarepants-review-an-ocean-of-colorful-c"
+    },
+    {
+      "t": "2026-03-26T11:52:29.029Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-26T12:01:06.789Z",
+      "event": "bb-session",
+      "session": "8a9e76d4",
+      "url": "https://www.thestage.co.uk/reviews/2017/price-review-american-airlines-theatre-n"
+    },
+    {
+      "t": "2026-03-26T12:01:07.815Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-26T12:04:41.539Z",
+      "event": "bb-session",
+      "session": "4822896c",
+      "url": "https://www.hollywoodreporter.com/review/fiddler-roof-theater-review-850349"
+    },
+    {
+      "t": "2026-03-26T12:04:42.631Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
