@@ -134,7 +134,10 @@
     "the-nance-2013/timeout--adam-feldman.json",
     "motown-the-musical-2013/theatermania--david-rooney.json",
     "hands-on-a-hardbody-2013/vulture--york-magazine.json",
-    "glengarry-glen-ross-2012/theatermania--charles-isherwood.json"
+    "glengarry-glen-ross-2012/theatermania--charles-isherwood.json",
+    "the-anarchist-2012/hollywood-reporter--david-rooney.json",
+    "elf-2012/theatermania--charles-isherwood.json",
+    "harvey-2012/theatermania--david-finkle.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -294,7 +297,14 @@
     "lucky-guy-2013/backstage--erik-haagensen.json",
     "hands-on-a-hardbody-2013/bloomberg--jeremy-gerard.json",
     "ann-2013/bloomberg--jeremy-gerard.json",
-    "picnic-2013/bloomberg--jeremy-gerard.json"
+    "picnic-2013/bloomberg--jeremy-gerard.json",
+    "scandalous-2012/variety--marilyn-stasio.json",
+    "an-enemy-of-the-people-2012/bloomberg--jeremy-gerard.json",
+    "bring-it-on-the-musical-2012/backstage--erik-haagensen.json",
+    "bring-it-on-the-musical-2012/bloomberg--jeremy-gerard.json",
+    "fela-2012/variety--marilyn-stasio.json",
+    "fela-2012/backstage--david-sheward.json",
+    "harvey-2012/backstage--erik-haagensen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -372,7 +382,9 @@
       "data/review-texts/thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
       "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
       "data/review-texts/fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json",
-      "fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json"
+      "fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json",
+      "data/review-texts/the-anarchist-2012/hollywood-reporter--david-rooney.json",
+      "the-anarchist-2012/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -429,7 +441,9 @@
       "jekyll-and-hyde-2013/theatermania--david-gordon.json",
       "the-nance-2013/timeout--adam-feldman.json",
       "motown-the-musical-2013/theatermania--david-rooney.json",
-      "glengarry-glen-ross-2012/theatermania--charles-isherwood.json"
+      "glengarry-glen-ross-2012/theatermania--charles-isherwood.json",
+      "elf-2012/theatermania--charles-isherwood.json",
+      "harvey-2012/theatermania--david-finkle.json"
     ],
     "archiveToday": [
       "data/review-texts/john-proctor-is-the-villain-west-end-2026/thestage--unknown.json",
@@ -462,7 +476,7 @@
     ]
   },
   "startTime": "2026-03-26T09:40:49.858Z",
-  "lastProcessed": "glengarry-glen-ross-2012/theatermania--charles-isherwood.json",
+  "lastProcessed": "harvey-2012/backstage--erik-haagensen.json",
   "log": [
     {
       "t": "2026-03-26T09:43:13.034Z",
@@ -576,6 +590,17 @@
     },
     {
       "t": "2026-03-26T12:04:42.631Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-26T12:15:38.029Z",
+      "event": "bb-session",
+      "session": "fae5f7cd",
+      "url": "http://www.hollywoodreporter.com/review/anarchist-patti-lupone-debra-winger-3966"
+    },
+    {
+      "t": "2026-03-26T12:15:39.294Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
