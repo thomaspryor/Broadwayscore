@@ -368,6 +368,49 @@ async function runAggregators(show) {
         lboHtml = fs.readFileSync(lboArchivePath, 'utf8');
       }
 
+      // Fallback: live sitemap discovery (free, ~16 entries)
+      if (!lboHtml) {
+        try {
+          const sitemapXml = await new Promise((resolve) => {
+            require('https').get('https://www.londonboxoffice.co.uk/news-sitemap.xml', {
+              headers: { 'User-Agent': 'Mozilla/5.0' },
+            }, res => {
+              if (res.statusCode !== 200) { resolve(null); return; }
+              let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
+            }).on('error', () => resolve(null));
+          });
+          if (sitemapXml) {
+            // Match show title words against roundup URL slugs
+            const titleWords = show.title.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 2);
+            const roundupUrls = [...sitemapXml.matchAll(/<loc>(https:\/\/www\.londonboxoffice\.co\.uk\/news\/post\/[^<]*review-round-up[^<]*)<\/loc>/gi)]
+              .map(m => m[1]);
+            const match = roundupUrls.find(url => {
+              const slug = url.split('/').pop().toLowerCase();
+              return titleWords.filter(w => slug.includes(w)).length >= Math.min(titleWords.length, 2);
+            });
+            if (match) {
+              console.log(`    Sitemap match: ${match}`);
+              lboHtml = await new Promise((resolve) => {
+                require('https').get(match, {
+                  headers: { 'User-Agent': 'Mozilla/5.0' },
+                }, res => {
+                  if (res.statusCode !== 200) { resolve(null); return; }
+                  let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
+                }).on('error', () => resolve(null));
+              });
+              // Cache to archive
+              if (lboHtml) {
+                const archDir = path.dirname(lboArchivePath);
+                if (!fs.existsSync(archDir)) fs.mkdirSync(archDir, { recursive: true });
+                fs.writeFileSync(lboArchivePath, lboHtml);
+              }
+            }
+          }
+        } catch (e) {
+          console.log(`    LBO sitemap fallback error: ${(e.message || '').substring(0, 60)}`);
+        }
+      }
+
       if (lboHtml) {
         const lboReviews = extractReviewsFromLBO(lboHtml, show.id);
         console.log(`  LBO: ${lboReviews.length} reviews found`);
