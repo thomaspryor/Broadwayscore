@@ -111,7 +111,7 @@ jobs:
           ARGS="--all-tbd --queue"
           ARGS="$ARGS --max-shows=${{ inputs.max_shows || '10' }}"
           ARGS="$ARGS --budget=${{ inputs.budget || '50' }}"
-          ARGS="$ARGS --model=o4-mini-deep"
+          ARGS="$ARGS --model=o4-mini"
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
           fi
