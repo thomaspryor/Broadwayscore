@@ -151,9 +151,10 @@ const SITE_SEARCH_ENDPOINTS = {
     name: 'Variety',
     domain: 'variety.com',
     requiresJs: false,
-    // Variety's legit/reviews section page — SSR, lists recent Broadway/theater reviews.
-    // No search endpoint; section page is fast and doesn't require title matching.
-    // URL slug typically contains show title words (e.g. /giant-broadway-review-...).
+    // skipUrlFilter: all extracted URLs are already scoped to /legit/reviews/ (theater reviews only).
+    // urlLooksLikeReview() would reintroduce title-matching and silently drop reviews for shows
+    // whose title words don't appear in the URL slug. Content verifier handles any wrong-show URLs.
+    skipUrlFilter: true,
     fetchAndParse: async (showTitle) => {
       const html = await fetchSSR('https://variety.com/v/legit/reviews/');
       const pattern = /href="(https:\/\/variety\.com\/\d{4}\/legit\/reviews\/[^"]+)"/gi;
@@ -176,8 +177,9 @@ const SITE_SEARCH_ENDPOINTS = {
     domain: 'theatermania.com',
     requiresJs: false,
     // TheaterMania WordPress REST API — category 157 = Reviews (all theater reviews).
-    // Uses date window (openingDate ±3 days) instead of title matching.
-    // Passes openingDate as third param (see searchOutletSite).
+    // Uses date window (openingDate ±3 days) — intentionally wider than RSS (±2 days) because
+    // the API returns few results and TM sometimes publishes previews reviews several days before opening.
+    // Still uses urlLooksLikeReview() (no skipUrlFilter) to narrow the 6-day window to the right show.
     fetchAndParse: async (showTitle, market, openingDate) => {
       // Build date window: openingDate ±3 days
       let afterParam = '';
@@ -414,10 +416,12 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
       const seen = new Set();
       results = [];
       for (const url of urls) {
-        if (!seen.has(url) && urlLooksLikeReview(url, showTitle)) {
-          seen.add(url);
-          results.push({ url, outletId, outlet: config.name, source: 'site-search' });
-        }
+        if (seen.has(url)) continue;
+        // skipUrlFilter: config already scoped results to reviews (e.g. Variety /legit/reviews/).
+        // Applying urlLooksLikeReview() would reintroduce title-matching and drop valid URLs.
+        if (!config.skipUrlFilter && !urlLooksLikeReview(url, showTitle)) continue;
+        seen.add(url);
+        results.push({ url, outletId, outlet: config.name, source: 'site-search' });
       }
     } else {
       // Standard fetch + regex path
