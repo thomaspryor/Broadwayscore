@@ -684,7 +684,17 @@
     "promises-promises-2010/new-jersey-newsroom--michael-sommers.json",
     "la-cage-aux-folles-2010/new-jersey-newsroom--michael-sommers.json",
     "la-cage-aux-folles-2010/backstage--david-sheward.json",
-    "la-cage-aux-folles-2010/times-uk--clive-davis.json"
+    "la-cage-aux-folles-2010/times-uk--clive-davis.json",
+    "million-dollar-quartet-2010/backstage--david-sheward.json",
+    "the-addams-family-2010/backstage--erik-haagensen.json",
+    "lend-me-a-tenor-2010/new-jersey-newsroom--michael-sommers.json",
+    "lend-me-a-tenor-2010/backstage--david-sheward.json",
+    "red-2010/newyorker--john-lahr.json",
+    "red-2010/wsj--terry-teachout.json",
+    "red-2010/backstage--erik-haagensen.json",
+    "red-2010/washpost--peter-marks.json",
+    "come-fly-away-2010/new-jersey-newsroom--michael-sommers.json",
+    "come-fly-away-2010/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -897,7 +907,7 @@
     ]
   },
   "startTime": "2026-03-26T09:40:49.858Z",
-  "lastProcessed": "la-cage-aux-folles-2010/times-uk--clive-davis.json",
+  "lastProcessed": "come-fly-away-2010/backstage--david-sheward.json",
   "log": [
     {
       "t": "2026-03-26T09:43:13.034Z",
@@ -1133,6 +1143,17 @@
       "event": "bb-session",
       "session": "0c9292e3",
       "url": "https://blogs.villagevoice.com/dailymusto/2011/03/how_to_succeed.php"
+    },
+    {
+      "t": "2026-03-26T14:01:56.087Z",
+      "event": "bb-session",
+      "session": "1da5434b",
+      "url": "https://www.wsj.com/articles/SB10001424052702303960604575157744105208812?gaa_at="
+    },
+    {
+      "t": "2026-03-26T14:01:57.325Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
