@@ -254,7 +254,9 @@
     "spring-dances-2026-off-broadway-2026/guardian--unknown.json",
     "man-and-boy-2011/variety--marilyn-stasio.json",
     "the-normal-heart-2011/timeout--david-cote.json",
-    "born-yesterday-2011/theatermania--andy-propst.json"
+    "born-yesterday-2011/theatermania--andy-propst.json",
+    "sister-act-2011/philadelphia-inquirer--howard-shapiro.json",
+    "high-2011/theatermania--david-gordon.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -1162,7 +1164,15 @@
     "baby-its-you-2011/backstage--david-sheward.json",
     "the-normal-heart-2011/backstage--unknown.json",
     "the-house-of-blue-leaves-2011/variety--charles-isherwood.json",
-    "born-yesterday-2011/village-voice--michael-musto.json"
+    "born-yesterday-2011/village-voice--michael-musto.json",
+    "jerusalem-2011/backstage--erik-haagensen.json",
+    "sister-act-2011/northjerseycom--robert-feldberg.json",
+    "sister-act-2011/scheckontheater--frank-scheck.json",
+    "sister-act-2011/new-jersey-newsroom--michael-sommers.json",
+    "sister-act-2011/backstage--erik-haagensen.json",
+    "high-2011/ap--mark-kennedy.json",
+    "high-2011/scheckontheater--frank-scheck.json",
+    "high-2011/backstage--erik-haagensen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1261,7 +1271,8 @@
       "newsies-the-musical-2012/whatsonstage--alex-wood.json",
       "once-2012/ew--emlyn-travis.json",
       "death-of-a-salesman-2012/theatermania--charles-isherwood.json",
-      "spring-dances-2026-off-broadway-2026/guardian--unknown.json"
+      "spring-dances-2026-off-broadway-2026/guardian--unknown.json",
+      "high-2011/theatermania--david-gordon.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1385,7 +1396,8 @@
       "seminar-2011/theatermania--david-rooney.json",
       "private-lives-2011/theatermania--david-finkle.json",
       "the-normal-heart-2011/timeout--david-cote.json",
-      "born-yesterday-2011/theatermania--andy-propst.json"
+      "born-yesterday-2011/theatermania--andy-propst.json",
+      "sister-act-2011/philadelphia-inquirer--howard-shapiro.json"
     ],
     "archiveToday": [
       "data/review-texts/cult-of-love-2024/talkinbroadway--matthew-murray.json",
@@ -1699,7 +1711,9 @@
       "data/review-texts/master-class-2011/dailybeast--john-anderson.json",
       "data/review-texts/the-people-in-the-picture-2011/northjerseycom--robert-feldberg.json",
       "data/review-texts/the-people-in-the-picture-2011/philadelphia-inquirer--howard-shapiro.json",
-      "data/review-texts/the-people-in-the-picture-2011/talkinbroadway--matthew-murray.json"
+      "data/review-texts/the-people-in-the-picture-2011/talkinbroadway--matthew-murray.json",
+      "data/review-texts/sister-act-2011/northjerseycom--robert-feldberg.json",
+      "data/review-texts/sister-act-2011/scheckontheater--frank-scheck.json"
     ],
     "archive": [
       "the-terms-of-my-surrender-2017/thestage--mark-sheton.json",
@@ -1718,7 +1732,7 @@
     ]
   },
   "startTime": "2026-03-25T09:08:12.319Z",
-  "lastProcessed": "born-yesterday-2011/theatermania--andy-propst.json",
+  "lastProcessed": "high-2011/backstage--erik-haagensen.json",
   "log": [
     {
       "t": "2026-03-25T09:10:15.724Z",
@@ -2213,6 +2227,23 @@
       "t": "2026-03-26T06:01:55.333Z",
       "event": "bb-cookie-inject",
       "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-26T06:05:39.528Z",
+      "event": "bb-session",
+      "session": "89d979b9",
+      "url": "https://www.northjersey.com/arts_entertainment/120339269_Theater_review___Sister"
+    },
+    {
+      "t": "2026-03-26T06:05:40.593Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-26T06:06:51.898Z",
+      "event": "bb-session",
+      "session": "b0ace116",
+      "url": "https://scheckonthearts.com/blog2.php/2011/04/21/review-ligsister-actl-ig"
     }
   ]
 }
