@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-27T11:02:41.570Z",
+  "timestamp": "2026-03-27T11:24:28.315Z",
   "stats": {
     "totalReviews": 32529,
-    "alreadyFlagged": 11184,
+    "alreadyFlagged": 11187,
     "dateGuardCatches": 144,
     "directorMismatch": 961,
     "tvFilmSignals": 3452,
-    "londonSignals": 1045,
+    "londonSignals": 1048,
     "offBroadwaySignals": 1007,
     "yearMismatch": 70,
-    "noPublishDate": 6723
+    "noPublishDate": 6713
   },
   "findings": [
     {
@@ -79883,6 +79883,33 @@
     },
     {
       "showId": "teeth-n-smiles-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "score": 90,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/teeth-n-smiles-duke-yorks-theatre-review-rebecca-lucy-taylor-smash",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "teeth-n-smiles-west-end-2026",
+      "file": "city-am--unknown.json",
+      "publishDate": "2026-03-26",
+      "url": "https://www.cityam.com/teeth-n-smiles-review-self-esteem-is-magnetic-in-dated-show/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "teeth-n-smiles-west-end-2026",
       "file": "guardian--unknown.json",
       "score": 63,
       "publishDate": null,
@@ -79911,6 +79938,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "teeth-n-smiles-west-end-2026",
+      "file": "london-box-office--unknown.json",
+      "publishDate": "2026-03-26",
+      "url": "https://www.londonboxoffice.co.uk/news/post/teeth-n-smiles-review-duke-of-york",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
