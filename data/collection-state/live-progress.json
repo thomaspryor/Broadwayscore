@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-03-27T18:31:18.112Z",
-  "processed": 7,
-  "failed": 2,
-  "successRate": "77.8%",
+  "updatedAt": "2026-03-27T19:02:16.959Z",
+  "processed": 14,
+  "failed": 5,
+  "successRate": "73.7%",
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 13,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
+    "archiveToday": 2,
     "archive": 1
   },
   "browserbaseSessions": 1,
@@ -23,6 +23,17 @@
     },
     {
       "t": "2026-03-27T18:30:39.947Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-27T19:00:59.458Z",
+      "event": "bb-session",
+      "session": "1ca44dea",
+      "url": "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-th"
+    },
+    {
+      "t": "2026-03-27T19:01:00.777Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
