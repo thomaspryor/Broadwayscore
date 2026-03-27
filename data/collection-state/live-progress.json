@@ -1,17 +1,17 @@
 {
-  "updatedAt": "2026-03-27T09:16:58.206Z",
-  "processed": 11,
-  "failed": 12,
-  "successRate": "47.8%",
+  "updatedAt": "2026-03-27T11:09:54.518Z",
+  "processed": 37,
+  "failed": 36,
+  "successRate": "50.7%",
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 28,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingbee": 3,
+    "scrapingbee": 5,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 1
+    "archiveToday": 4,
+    "archive": 2
   },
   "browserbaseSessions": 2,
   "recentActivity": [
@@ -26,6 +26,28 @@
       "event": "bb-session",
       "session": "252cfa00",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/john-legend-lynn-nottage-liesl-"
+    },
+    {
+      "t": "2026-03-27T11:02:09.641Z",
+      "event": "bb-session",
+      "session": "9d59fbfc",
+      "url": "https://variety.com/gallery/celebrity-photos-red-carpet-march-2026/"
+    },
+    {
+      "t": "2026-03-27T11:02:10.935Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-27T11:06:24.371Z",
+      "event": "bb-session",
+      "session": "8ac0ec9f",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
+    },
+    {
+      "t": "2026-03-27T11:06:25.666Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
