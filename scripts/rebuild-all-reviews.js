@@ -915,24 +915,39 @@ showDirs.forEach(showId => {
   // Pre-read sort metadata once per file (avoids O(N log N) repeated reads in comparator)
   const sortMeta = new Map();
   for (const f of allJsonFiles) {
-    const meta = { isDupe: 0, isVerified: 1, hasEnsemble: 1 };
+    const meta = { isDupe: 0, isVerified: 1, hasEnsemble: 1, isOutletAsCritic: 0 };
     try {
       const d = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
       meta.isDupe = (d.isDuplicate || d.duplicateOf || d.duplicateTextOf) ? 1 : 0;
       meta.isVerified = d.contentVerification?.isValid ? 0 : 1;
       meta.hasEnsemble = d.ensembleData ? 0 : 1;
+      // Detect outlet-as-critic files (e.g., nydailynews--new-york-daily-news.json)
+      // so they sort AFTER real-critic files, ensuring the existing outlet-as-critic
+      // dedup mechanism (line ~1873) fires correctly
+      if (d.criticName) {
+        const rawCritic = d.criticName.toLowerCase().trim();
+        const rawOutletId = (d.outletId || '').toLowerCase().trim();
+        const rawOutlet = (d.outlet || '').toLowerCase().trim();
+        const displayName = (getOutletDisplayName(normalizeOutletCanonical(d.outletId || d.outlet)) || '').toLowerCase().trim();
+        if (rawCritic === rawOutletId || rawCritic === rawOutlet || rawCritic === displayName ||
+            rawCritic === displayName.replace(/^the\s+/, '')) {
+          meta.isOutletAsCritic = 1;
+        }
+      }
     } catch { /* defaults are conservative */ }
     sortMeta.set(f, meta);
   }
 
   // Sort: prefer higher-quality files first for dedup tiebreaking (first-seen wins)
-  // Priority: non-duplicate > non-unknown > verified > ensemble-scored > alphabetical
+  // Priority: non-duplicate > non-unknown > non-outlet-as-critic > verified > ensemble-scored > alphabetical
   const files = allJsonFiles.sort((a, b) => {
     const aUnknown = /unknown|unnamed/i.test(a) ? 1 : 0;
     const bUnknown = /unknown|unnamed/i.test(b) ? 1 : 0;
     if (aUnknown !== bUnknown) return aUnknown - bUnknown;
     const am = sortMeta.get(a), bm = sortMeta.get(b);
     if (am.isDupe !== bm.isDupe) return am.isDupe - bm.isDupe;
+    // Deprioritize outlet-as-critic files so real critics are processed first
+    if (am.isOutletAsCritic !== bm.isOutletAsCritic) return am.isOutletAsCritic - bm.isOutletAsCritic;
     if (am.isVerified !== bm.isVerified) return am.isVerified - bm.isVerified;
     if (am.hasEnsemble !== bm.hasEnsemble) return am.hasEnsemble - bm.hasEnsemble;
     return a.localeCompare(b);
