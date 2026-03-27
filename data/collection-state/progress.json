@@ -61,7 +61,10 @@
     "all-out-2025/ew--unknown.json",
     "waiting-for-godot-2025/nypost--entertainment-critic.json",
     "mamma-mia-2025/nytimes--elizabeth-vincentelli.json",
-    "stephen-sondheims-old-friends-2025/in-act-two-of-merrily-we-roll-along--charley-kringas.json"
+    "stephen-sondheims-old-friends-2025/in-act-two-of-merrily-we-roll-along--charley-kringas.json",
+    "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
+    "the-last-five-years-2025/nypost--lou-lumenick.json",
+    "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json"
   ],
   "failed": [
     "heartbreak-hotel-off-broadway-2026/playbill--unknown.json",
@@ -114,7 +117,14 @@
     "cyrano-de-bergerac-west-end-2026/daily-mail--robert-gore-langton.json",
     "high-noon-west-end-2025/times-uk--clive-davis.json",
     "art-2025/broadwaynews--unknown.json",
-    "call-me-izzy-2025/vulture--jackson-mchenry.json"
+    "call-me-izzy-2025/vulture--jackson-mchenry.json",
+    "redwood-2025/gmanetwork--stuart-santiago.json",
+    "redwood-2025/juiceph--wanggo-gallaga.json",
+    "gypsy-2024/theatermania--jesse-green.json",
+    "eureka-day-2024/times-uk--clive-davis.json",
+    "tammy-faye-2024/theatermania--jesse-green.json",
+    "romeo-juliet-2024/theatermania--jesse-green.json",
+    "romeo-juliet-2024/thestage--nicole-serratore.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -163,7 +173,9 @@
       "sweetmeats-west-end-2026/standard--maya-chandran.json",
       "all-out-2025/nytg--gillian-russo.json",
       "all-out-2025/ew--unknown.json",
-      "stephen-sondheims-old-friends-2025/in-act-two-of-merrily-we-roll-along--charley-kringas.json"
+      "stephen-sondheims-old-friends-2025/in-act-two-of-merrily-we-roll-along--charley-kringas.json",
+      "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
+      "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json"
     ],
     "amp": [],
     "browserbase": [
@@ -174,7 +186,9 @@
       "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
       "my-neighbour-totoro-west-end-2025/variety--unknown.json",
       "data/review-texts/waiting-for-godot-2025/nypost--entertainment-critic.json",
-      "waiting-for-godot-2025/nypost--entertainment-critic.json"
+      "waiting-for-godot-2025/nypost--entertainment-critic.json",
+      "data/review-texts/the-last-five-years-2025/nypost--lou-lumenick.json",
+      "the-last-five-years-2025/nypost--lou-lumenick.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -189,7 +203,10 @@
       "data/review-texts/public-charge-off-broadway-2026/talkinbroadway--unknown.json",
       "data/review-texts/teeth-n-smiles-west-end-2026/broadwayworld--unknown.json",
       "data/review-texts/giant-2026/talkinbroadway--unknown.json",
-      "data/review-texts/just-in-time-2025/billboard--unknown.json"
+      "data/review-texts/just-in-time-2025/billboard--unknown.json",
+      "data/review-texts/gypsy-2024/theatermania--jesse-green.json",
+      "data/review-texts/tammy-faye-2024/theatermania--jesse-green.json",
+      "data/review-texts/romeo-juliet-2024/theatermania--jesse-green.json"
     ],
     "archive": [
       "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json",
@@ -204,7 +221,7 @@
     ]
   },
   "startTime": "2026-03-27T09:10:33.099Z",
-  "lastProcessed": "stephen-sondheims-old-friends-2025/in-act-two-of-merrily-we-roll-along--charley-kringas.json",
+  "lastProcessed": "romeo-juliet-2024/thestage--nicole-serratore.json",
   "log": [
     {
       "t": "2026-03-27T09:13:58.494Z",
@@ -248,6 +265,17 @@
     },
     {
       "t": "2026-03-27T11:19:21.812Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-27T11:20:52.621Z",
+      "event": "bb-session",
+      "session": "3ec7df76",
+      "url": "https://nypost.com/2025/04/06/entertainment/the-last-five-years-review-nick-jona"
+    },
+    {
+      "t": "2026-03-27T11:20:54.133Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
     }
