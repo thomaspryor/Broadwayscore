@@ -95,12 +95,17 @@ async function researchShowWithO4Mini(show) {
 
   const prompt = `Research the Broadway ${isPlay ? 'play' : 'musical'} "${show.title}" which opened ${show.openingDate || 'unknown'} at ${show.venue || 'unknown venue'} and closed ${show.closingDate || 'unknown'}.${isRevival ? ' This was a REVIVAL — only report data about THIS production, not any prior production.' : ''}${isNonprofit ? ' This was produced by a nonprofit theater company.' : ''}
 
-## Where to search (priority order)
+## Search strategy — use site: searches for precision
 
-1. **Reddit & forums:** Search r/Broadway for "${show.title}" capitalization OR recouped OR budget. Reddit users post detailed weekly grosses analyses and season post-mortem threads with financial breakdowns. Also search BroadwayWorld forums for investor discussions with capitalization figures.
-2. **SEC EDGAR:** Broadway LLCs file Form D when raising capital. Search for the show title or producing entity.
-3. **Trade press:** Search Variety, Deadline, Broadway News, The Broadway Journal, Playbill, TheaterMania, BroadwayWorld for "${show.title}" broadway ${openingYear} capitalization OR budget OR investment OR recouped.
-4. **NYC tax credits:** investmentbroadway.com lists tax credit recipients, implying known capitalization.
+1. **Reddit:** Search \`site:reddit.com/r/Broadway "${show.title}" capitalization\`, then \`site:reddit.com/r/Broadway "${show.title}" recouped\`, then \`site:reddit.com/r/Broadway "${show.title}" budget\`. Also try \`site:reddit.com/r/Broadway "${show.title}" "weekly nut"\`. Look for weekly grosses analysis posts and season post-mortem threads with financial breakdowns.
+
+2. **BroadwayWorld forums:** Search \`site:forum.broadwayworld.com "${show.title}" capitalization\`, then \`site:forum.broadwayworld.com "${show.title}" budget\`. Forums have investor discussions, offering paper details, and weekly nut estimates.
+
+3. **SEC EDGAR:** Search \`site:sec.gov "${show.title}"\` and try the producing LLC name. Broadway shows file Form D when raising capital.
+
+4. **Trade press:** Search \`"${show.title}" broadway ${openingYear} capitalization OR budget OR recouped\` on Variety, Deadline, Broadway News, The Broadway Journal, Playbill, TheaterMania, BroadwayWorld.
+
+5. **NYC tax credits:** Check this specific page for the show's production company: https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit — The NYC 25% tax credit implies capitalization (credit amount ÷ 0.25 = eligible costs). Search for the show title or a related production company name on that page.
 
 ## What to find
 1. Initial capitalization / production budget
@@ -136,7 +141,7 @@ Respond with ONLY valid JSON (no markdown, no explanation):
     model: 'o4-mini',
     input: [{ role: 'user', content: prompt }],
     tools: [{ type: 'web_search_preview' }],
-    reasoning: { effort: 'medium' },
+    reasoning: { effort: 'high' },
   });
 
   return new Promise((resolve, reject) => {
