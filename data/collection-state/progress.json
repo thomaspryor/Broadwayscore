@@ -120,7 +120,8 @@
     "the-skin-of-our-teeth-2022/vulture--helen-shaw.json",
     "west-side-story-2020/vulture--helen-shaw.json",
     "the-waverly-gallery-2018/vulture--matt-windman.json",
-    "the-lifespan-of-a-fact-2018/vulture--sarah-holdren.json"
+    "the-lifespan-of-a-fact-2018/vulture--sarah-holdren.json",
+    "the-terms-of-my-surrender-2017/thestage--mark-sheton.json"
   ],
   "failed": [
     "heartbreak-hotel-off-broadway-2026/playbill--unknown.json",
@@ -531,7 +532,16 @@
     "choir-boy-2019/out-magazine--trevell-anderson.json",
     "the-prom-2018/journal-inquirer--tim-leininger.json",
     "the-waverly-gallery-2018/journal-inquirer--tim-leininger.json",
-    "the-ferryman-2018/walterthinnes--walter-thinnes.json"
+    "the-ferryman-2018/walterthinnes--walter-thinnes.json",
+    "saint-joan-2018/show-buzz-nyc--laura-heller.json",
+    "travesties-2018/washpost--peter-marks.json",
+    "children-of-a-lesser-god-2018/journal-inquirer--tim-leininger.json",
+    "children-of-a-lesser-god-2018/melindas-malarky--melinda-pressler.json",
+    "three-tall-women-2018/usatoday--charles-isherwood.json",
+    "angels-in-america-2018/theater-news-online--david-cote.json",
+    "escape-to-margaritaville-2018/bloomberg--chris-rovzar.json",
+    "escape-to-margaritaville-2018/journal-inquirer--tim-leininger.json",
+    "spongebob-squarepants-2017/wsj--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -733,11 +743,12 @@
       "the-skin-of-our-teeth-2022/vulture--helen-shaw.json",
       "west-side-story-2020/vulture--helen-shaw.json",
       "the-waverly-gallery-2018/vulture--matt-windman.json",
-      "the-lifespan-of-a-fact-2018/vulture--sarah-holdren.json"
+      "the-lifespan-of-a-fact-2018/vulture--sarah-holdren.json",
+      "the-terms-of-my-surrender-2017/thestage--mark-sheton.json"
     ]
   },
   "startTime": "2026-03-27T09:10:33.099Z",
-  "lastProcessed": "the-lifespan-of-a-fact-2018/vulture--sarah-holdren.json",
+  "lastProcessed": "the-terms-of-my-surrender-2017/thestage--mark-sheton.json",
   "log": [
     {
       "t": "2026-03-27T09:13:58.494Z",
@@ -881,6 +892,17 @@
     },
     {
       "t": "2026-03-27T16:00:27.205Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-27T16:16:39.462Z",
+      "event": "bb-session",
+      "session": "a9527f06",
+      "url": "https://www.wsj.com/articles/spongebob-squarepants-review-an-ocean-of-colorful-c"
+    },
+    {
+      "t": "2026-03-27T16:16:40.660Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
