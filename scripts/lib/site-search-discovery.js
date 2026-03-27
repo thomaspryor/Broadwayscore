@@ -94,6 +94,39 @@ const SITE_SEARCH_ENDPOINTS = {
     requiresJs: true,
   },
 
+  // --- Vulture (JS-rendered section page, needs ScrapingBee) ---
+  'vulture': {
+    name: 'Vulture',
+    domain: 'vulture.com',
+    requiresJs: true,
+    // Section page lists recent theater articles chronologically.
+    // Review URLs contain /article/theater-review- or /article/review-.
+    // skipUrlFilter: section page is already theater-scoped; urlLooksLikeReview
+    // would reject reviews whose URL slug doesn't contain the show title words.
+    skipUrlFilter: true,
+    fetchAndParse: async () => {
+      const html = await fetchWithScrapingBee('https://www.vulture.com/theater/', 45000);
+      // Extract article links — Vulture uses both protocol-relative and absolute URLs
+      const pattern = /href="((?:https?:)?\/\/(?:www\.)?vulture\.com\/article\/[^"]+)"/gi;
+      const urls = [];
+      let m;
+      while ((m = pattern.exec(html)) !== null) {
+        let url = m[1];
+        // Normalize protocol-relative URLs
+        if (url.startsWith('//')) url = 'https:' + url;
+        urls.push(url);
+      }
+      const unique = [...new Set(urls)];
+      // Zero-links guard: detect structural changes early
+      if (unique.length === 0) {
+        console.warn('    Site search [Vulture]: WARNING — section page returned 0 links (possible structural change)');
+      }
+      // Filter to review articles — Vulture review URLs contain "theater-review" or "review"
+      const reviewUrls = unique.filter(u => /theater-review|\/review-|\/article\/review/.test(u));
+      return reviewUrls;
+    },
+  },
+
   // --- West End outlets (SSR) ---
   'whatsonstage': {
     name: 'WhatsOnStage',
