@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-27T11:24:28.315Z",
+  "timestamp": "2026-03-27T11:47:51.946Z",
   "stats": {
     "totalReviews": 32529,
     "alreadyFlagged": 11187,
@@ -79898,6 +79898,7 @@
     {
       "showId": "teeth-n-smiles-west-end-2026",
       "file": "city-am--unknown.json",
+      "score": 47,
       "publishDate": "2026-03-26",
       "url": "https://www.cityam.com/teeth-n-smiles-review-self-esteem-is-magnetic-in-dated-show/",
       "findings": [
@@ -79944,6 +79945,7 @@
     {
       "showId": "teeth-n-smiles-west-end-2026",
       "file": "london-box-office--unknown.json",
+      "score": 66,
       "publishDate": "2026-03-26",
       "url": "https://www.londonboxoffice.co.uk/news/post/teeth-n-smiles-review-duke-of-york",
       "findings": [
@@ -85638,7 +85640,20 @@
     },
     {
       "showId": "wicked-2003",
-      "file": "broadwayworld--jared-fessler.json",
+      "file": "broadwayworld--david-copney.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Wicked",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "broadwayworld--emily-short.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
       "findings": [
@@ -85652,19 +85667,6 @@
     {
       "showId": "wicked-2003",
       "file": "broadwayworld--katrina-fageol.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
-      "file": "broadwayworld--lauren-gienow.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
       "findings": [
