@@ -79,7 +79,11 @@
     "tootsie-2019/latimes--charles-mcnulty.json",
     "the-lifespan-of-a-fact-2018/vulture--sara-holden.json",
     "bernhardthamlet-2018/stage-left--william-wolf.json",
-    "three-tall-women-2018/theater-life--david-sheward.json"
+    "three-tall-women-2018/theater-life--david-sheward.json",
+    "latin-history-for-morons-2017/stage-left--william-wolf.json",
+    "the-bands-visit-2017/off-script-with-dan-dwyer--wendy-caster.json",
+    "prince-of-broadway-2017/vulture--jesse-green.json",
+    "the-terms-of-my-surrender-2017/latimes--charles-mcnulty.json"
   ],
   "failed": [
     "heartbreak-hotel-off-broadway-2026/playbill--unknown.json",
@@ -184,7 +188,13 @@
     "travesties-2018/washpost--peter-marks.json",
     "children-of-a-lesser-god-2018/journal-inquirer--tim-leininger.json",
     "children-of-a-lesser-god-2018/melindas-malarky--melinda-pressler.json",
-    "three-tall-women-2018/usatoday--charles-isherwood.json"
+    "three-tall-women-2018/usatoday--charles-isherwood.json",
+    "angels-in-america-2018/theater-news-online--david-cote.json",
+    "escape-to-margaritaville-2018/bloomberg--chris-rovzar.json",
+    "escape-to-margaritaville-2018/journal-inquirer--tim-leininger.json",
+    "spongebob-squarepants-2017/wsj--unknown.json",
+    "the-terms-of-my-surrender-2017/thestage--mark-sheton.json",
+    "marvins-room-2017/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -241,7 +251,9 @@
       "grey-house-2023/slash-film--caroline-cao.json",
       "topdog-underdog-2022/corey-hawkins--unknown.json",
       "bernhardthamlet-2018/stage-left--william-wolf.json",
-      "three-tall-women-2018/theater-life--david-sheward.json"
+      "three-tall-women-2018/theater-life--david-sheward.json",
+      "latin-history-for-morons-2017/stage-left--william-wolf.json",
+      "the-bands-visit-2017/off-script-with-dan-dwyer--wendy-caster.json"
     ],
     "amp": [],
     "browserbase": [
@@ -294,7 +306,8 @@
       "data/review-texts/trouble-in-mind-2021/theatermania--jesse-green.json",
       "data/review-texts/west-side-story-2020/vulture--helen-shaw.json",
       "data/review-texts/the-waverly-gallery-2018/vulture--matt-windman.json",
-      "data/review-texts/the-lifespan-of-a-fact-2018/vulture--sarah-holdren.json"
+      "data/review-texts/the-lifespan-of-a-fact-2018/vulture--sarah-holdren.json",
+      "data/review-texts/the-terms-of-my-surrender-2017/thestage--mark-sheton.json"
     ],
     "archive": [
       "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json",
@@ -308,11 +321,13 @@
       "mamma-mia-2025/nytimes--elizabeth-vincentelli.json",
       "tina-2019/newyorker--unknown.json",
       "tootsie-2019/latimes--charles-mcnulty.json",
-      "the-lifespan-of-a-fact-2018/vulture--sara-holden.json"
+      "the-lifespan-of-a-fact-2018/vulture--sara-holden.json",
+      "prince-of-broadway-2017/vulture--jesse-green.json",
+      "the-terms-of-my-surrender-2017/latimes--charles-mcnulty.json"
     ]
   },
   "startTime": "2026-03-27T09:10:33.099Z",
-  "lastProcessed": "three-tall-women-2018/usatoday--charles-isherwood.json",
+  "lastProcessed": "marvins-room-2017/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-03-27T09:13:58.494Z",
@@ -391,6 +406,28 @@
       "t": "2026-03-27T11:44:25.622Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-27T11:55:37.200Z",
+      "event": "bb-session",
+      "session": "df22c019",
+      "url": "https://www.wsj.com/articles/spongebob-squarepants-review-an-ocean-of-colorful-c"
+    },
+    {
+      "t": "2026-03-27T11:55:38.470Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-27T11:58:45.293Z",
+      "event": "bb-session",
+      "session": "4de96039",
+      "url": "https://www.thestage.co.uk/reviews/2017/michael-moore-terms-surrender-review-bro"
+    },
+    {
+      "t": "2026-03-27T11:58:46.572Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
