@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-03-27T20:12:13.451Z",
+  "timestamp": "2026-03-27T20:41:43.726Z",
   "stats": {
-    "totalReviews": 32520,
+    "totalReviews": 32521,
     "alreadyFlagged": 11188,
     "dateGuardCatches": 143,
     "directorMismatch": 963,
-    "tvFilmSignals": 3453,
+    "tvFilmSignals": 3452,
     "londonSignals": 1045,
     "offBroadwaySignals": 1005,
     "yearMismatch": 70,
@@ -11914,25 +11914,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "cymbeline-2007",
-      "file": "nytimes--ben-brantley.json",
-      "score": null,
-      "publishDate": "August 22, 2007",
-      "url": "https://www.nytimes.com/2007/12/03/theater/reviews/03cymb.html",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 71d before show (August 22, 2007 vs 2007-11-01)"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -66533,6 +66514,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "cymbeline-2007",
+      "file": "nytimes--ben-brantley.json",
+      "score": null,
+      "publishDate": "August 22, 2007",
+      "url": "https://www.nytimes.com/2007/12/03/theater/reviews/03cymb.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 71d before show (August 22, 2007 vs 2007-11-01)"
         }
       ]
     },
