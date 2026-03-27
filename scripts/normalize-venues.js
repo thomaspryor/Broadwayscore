@@ -46,7 +46,7 @@ if (changes > 0) {
   });
 
   // Update lastUpdated
-  data._meta.lastUpdated = new Date().toISOString().split('T')[0];
+  data._meta.lastUpdated = new Date().toISOString();
 
   fs.writeFileSync(SHOWS_FILE, JSON.stringify(data, null, 2) + '\n');
   console.log(`\n✅ Updated ${SHOWS_FILE}`);

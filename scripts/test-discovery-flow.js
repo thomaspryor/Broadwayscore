@@ -182,7 +182,7 @@ async function testDiscoveryFlow() {
     }
 
     // Write updated shows.json
-    showsData._meta.lastUpdated = new Date().toISOString().split('T')[0];
+    showsData._meta.lastUpdated = new Date().toISOString();
     showsData._meta.showCount = showsData.shows.length;
     fs.writeFileSync(SHOWS_FILE, JSON.stringify(showsData, null, 2));
     console.log(`\n   ✓ shows.json updated (${showsData.shows.length} total shows)\n`);
