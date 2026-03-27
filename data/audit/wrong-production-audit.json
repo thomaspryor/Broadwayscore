@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-27T20:41:43.726Z",
+  "timestamp": "2026-03-27T21:14:00.288Z",
   "stats": {
-    "totalReviews": 32521,
+    "totalReviews": 32523,
     "alreadyFlagged": 11188,
     "dateGuardCatches": 143,
-    "directorMismatch": 963,
+    "directorMismatch": 964,
     "tvFilmSignals": 3452,
-    "londonSignals": 1045,
+    "londonSignals": 1046,
     "offBroadwaySignals": 1005,
     "yearMismatch": 70,
     "noPublishDate": 6706
@@ -26269,6 +26269,25 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 498d before show (2024-11-07 vs 2026-03-20)"
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "publicationratingcriticwhat-s-on-stage--unknown.json",
+      "score": null,
+      "publishDate": "2026-03-27",
+      "url": "https://www.westendtheatre.com/346848/news/reviews/reviews-of-john-proctor-is-the-villain-london/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
