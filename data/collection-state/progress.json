@@ -27,7 +27,9 @@
     "broken-glass-west-end-2026/independent--samuel-mathewson.json",
     "evening-all-afternoon-west-end-2026/whatsonstage--unknown.json",
     "chess-2025/playbill--logan-culwell-block.json",
-    "all-my-sons-west-end-2025/whatsonstage--unknown.json"
+    "all-my-sons-west-end-2025/whatsonstage--unknown.json",
+    "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+    "starlight-express-west-end-2024/the-express--unknown.json"
   ],
   "failed": [
     "heartbreak-hotel-off-broadway-2026/playbill--unknown.json",
@@ -54,7 +56,15 @@
     "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json",
     "two-strangers-bway-2025/guardian--unknown.json",
     "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
-    "ragtime-2025/bloomberg--chris-rovzar.json"
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "just-in-time-2025/billboard--unknown.json",
+    "my-neighbour-totoro-west-end-2025/the-morning-star--unknown.json",
+    "dracula-west-end-2025/times-uk--clive-davis.json",
+    "oliver-west-end-2024/telegraph--claire-allfree.json",
+    "oliver-west-end-2024/the-sun--dominic-maxwell.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -79,14 +89,17 @@
       "broken-glass-west-end-2026/independent--samuel-mathewson.json",
       "evening-all-afternoon-west-end-2026/whatsonstage--unknown.json",
       "chess-2025/playbill--logan-culwell-block.json",
-      "all-my-sons-west-end-2025/whatsonstage--unknown.json"
+      "all-my-sons-west-end-2025/whatsonstage--unknown.json",
+      "starlight-express-west-end-2024/the-express--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
       "imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
       "data/review-texts/teeth-n-smiles-west-end-2026/variety--unknown.json",
-      "teeth-n-smiles-west-end-2026/variety--unknown.json"
+      "teeth-n-smiles-west-end-2026/variety--unknown.json",
+      "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -100,14 +113,15 @@
     "archiveToday": [
       "data/review-texts/public-charge-off-broadway-2026/talkinbroadway--unknown.json",
       "data/review-texts/teeth-n-smiles-west-end-2026/broadwayworld--unknown.json",
-      "data/review-texts/giant-2026/talkinbroadway--unknown.json"
+      "data/review-texts/giant-2026/talkinbroadway--unknown.json",
+      "data/review-texts/just-in-time-2025/billboard--unknown.json"
     ],
     "archive": [
       "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json"
     ]
   },
   "startTime": "2026-03-27T09:10:33.099Z",
-  "lastProcessed": "ragtime-2025/bloomberg--chris-rovzar.json",
+  "lastProcessed": "hadestown-west-end-2024/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-03-27T09:13:58.494Z",
@@ -129,6 +143,17 @@
     },
     {
       "t": "2026-03-27T11:02:10.935Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-27T11:06:24.371Z",
+      "event": "bb-session",
+      "session": "8ac0ec9f",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
+    },
+    {
+      "t": "2026-03-27T11:06:25.666Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
