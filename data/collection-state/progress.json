@@ -46,7 +46,14 @@
     "wicked-2003/broadwayworld--lynn-beaver.json",
     "wicked-2003/broadwayworld--tyler-hinton.json",
     "sweetmeats-west-end-2026/standard--maya-chandran.json",
-    "all-out-2025/nytg--gillian-russo.json"
+    "all-out-2025/nytg--gillian-russo.json",
+    "all-out-2025/ew--unknown.json",
+    "waiting-for-godot-2025/nypost--entertainment-critic.json",
+    "mamma-mia-2025/nytimes--elizabeth-vincentelli.json",
+    "stephen-sondheims-old-friends-2025/in-act-two-of-merrily-we-roll-along--charley-kringas.json",
+    "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
+    "the-last-five-years-2025/nypost--lou-lumenick.json",
+    "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json"
   ],
   "failed": [
     "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
@@ -90,7 +97,10 @@
     "man-to-man-west-end-2026/stagebuddy--unknown.json",
     "cyrano-de-bergerac-west-end-2026/daily-mail--robert-gore-langton.json",
     "grace-pervades-west-end-2026/thestage--unknown.json",
-    "high-noon-west-end-2025/times-uk--clive-davis.json"
+    "high-noon-west-end-2025/times-uk--clive-davis.json",
+    "art-2025/broadwaynews--unknown.json",
+    "call-me-izzy-2025/vulture--jackson-mchenry.json",
+    "redwood-2025/gmanetwork--stuart-santiago.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -136,15 +146,25 @@
       "wicked-2003/broadwayworld--lynn-beaver.json",
       "wicked-2003/broadwayworld--tyler-hinton.json",
       "sweetmeats-west-end-2026/standard--maya-chandran.json",
-      "all-out-2025/nytg--gillian-russo.json"
+      "all-out-2025/nytg--gillian-russo.json",
+      "all-out-2025/ew--unknown.json",
+      "stephen-sondheims-old-friends-2025/in-act-two-of-merrily-we-roll-along--charley-kringas.json",
+      "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
+      "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
-      "my-neighbour-totoro-west-end-2025/variety--unknown.json"
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "data/review-texts/waiting-for-godot-2025/nypost--entertainment-critic.json",
+      "waiting-for-godot-2025/nypost--entertainment-critic.json",
+      "data/review-texts/the-last-five-years-2025/nypost--lou-lumenick.json",
+      "the-last-five-years-2025/nypost--lou-lumenick.json"
     ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "mamma-mia-2025/nytimes--elizabeth-vincentelli.json"
+    ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/teeth-n-smiles-west-end-2026/thestage--sam-marlowe.json",
@@ -161,7 +181,7 @@
     ]
   },
   "startTime": "2026-03-27T18:27:24.762Z",
-  "lastProcessed": "all-out-2025/nytg--gillian-russo.json",
+  "lastProcessed": "redwood-2025/gmanetwork--stuart-santiago.json",
   "log": [
     {
       "t": "2026-03-27T18:30:38.751Z",
@@ -206,6 +226,28 @@
       "t": "2026-03-27T19:18:28.936Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-27T19:19:21.332Z",
+      "event": "bb-session",
+      "session": "3cff2a38",
+      "url": "https://nypost.com/author/johnny-oleksinski/page/5/"
+    },
+    {
+      "t": "2026-03-27T19:19:22.546Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-27T19:21:12.269Z",
+      "event": "bb-session",
+      "session": "840f4af9",
+      "url": "https://nypost.com/2025/04/06/entertainment/the-last-five-years-review-nick-jona"
+    },
+    {
+      "t": "2026-03-27T19:21:13.548Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
