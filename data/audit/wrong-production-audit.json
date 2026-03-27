@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-27T03:16:11.229Z",
+  "timestamp": "2026-03-27T03:25:32.820Z",
   "stats": {
-    "totalReviews": 32515,
-    "alreadyFlagged": 11183,
+    "totalReviews": 32512,
+    "alreadyFlagged": 11182,
     "dateGuardCatches": 144,
     "directorMismatch": 960,
     "tvFilmSignals": 3452,
     "londonSignals": 1043,
     "offBroadwaySignals": 1007,
-    "yearMismatch": 71,
-    "noPublishDate": 6706
+    "yearMismatch": 70,
+    "noPublishDate": 6707
   },
   "findings": [
     {
@@ -58651,20 +58651,6 @@
       ]
     },
     {
-      "showId": "titanique-west-end-2024",
-      "file": "timeout--andrzej-lukowski.json",
-      "score": 75,
-      "publishDate": "2025-01-09",
-      "url": "https://www.timeout.com/london/theatre/titanique-review",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2026 (4x) more than 2024 (0x). 2026 matches production: titanique-2026"
-        }
-      ]
-    },
-    {
       "showId": "title-of-show-2008",
       "file": "nytimes--charles-isherwood.json",
       "score": 78,
@@ -79892,10 +79878,10 @@
     },
     {
       "showId": "teeth-n-smiles-west-end-2026",
-      "file": "independent--unknown.json",
+      "file": "independent--alice-saville.json",
       "score": 66,
       "publishDate": "2025-09-03",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/born-with-teeth-ncuti-gatwa-wyndhams-review-b2819206.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/teeth-n-smiles-review-self-esteem-b2945628.html",
       "findings": [
         {
           "type": "DATE_GUARD",
