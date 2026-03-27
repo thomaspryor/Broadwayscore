@@ -9,6 +9,8 @@
  * - Task 1.2.5: Cross-show URL deduplication (same URL in different show dirs)
  * - Task 1.3: Excerpt sentiment consistency check
  * - Task 1.4: Consolidated duplicate report
+ * - Task 1.5: Outlet-as-critic duplicates (critic name = outlet name, real critic exists)
+ * - Task 1.6: URL-domain mismatches (URL domain doesn't match attributed outlet)
  *
  * Output: data/audit/duplicate-review-files.json
  */
@@ -19,7 +21,38 @@ const {
   normalizeOutlet,
   normalizeCritic,
   generateReviewKey,
+  getOutletDisplayName,
 } = require('./lib/review-normalization');
+const { OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES } = require('./lib/url-discovery');
+const { domainMatchesExpected, setRegistryDomainAliases } = require('./lib/scraper');
+
+// Inject registry domain aliases for domain matching
+setRegistryDomainAliases(REGISTRY_DOMAIN_ALIASES);
+
+// Build reverse map: domain -> canonical outletId
+const domainToOutletId = {};
+for (const [key, domain] of Object.entries(OUTLET_DOMAINS)) {
+  const d = domain.replace(/^www\./, '');
+  if (!key.includes(' ') && !key.includes('the ') && !domainToOutletId[d]) {
+    domainToOutletId[d] = key;
+  }
+}
+
+const EXEMPT_URL_DOMAINS = new Set(['newspapers.com', 'archive.org']);
+const EXEMPT_OUTLET_IDS = new Set(['ap', 'reuters', 'upi']);
+
+function isOutletAsCriticName(criticName, outletId, outletDisplayName) {
+  if (!criticName) return false;
+  const rawCritic = criticName.toLowerCase().trim();
+  const rawOutletId = (outletId || '').toLowerCase().trim();
+  const displayName = (outletDisplayName || '').toLowerCase().trim();
+  const criticSlug = rawCritic.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const outletSlug = rawOutletId.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  return rawCritic === rawOutletId ||
+         rawCritic === displayName ||
+         criticSlug === outletSlug ||
+         rawCritic === displayName.replace(/^the\s+/, '');
+}
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const OUTPUT_PATH = path.join(__dirname, '..', 'data', 'audit', 'duplicate-review-files.json');
@@ -83,12 +116,17 @@ function auditReviewDuplicates() {
       duplicate_groups: 0,
       cross_show_duplicates: 0,
       url_duplicates_same_show: 0,
-      sentiment_inconsistencies: 0
+      sentiment_inconsistencies: 0,
+      outlet_as_critic_duplicates: 0,
+      domain_mismatches: 0,
+      domain_mismatches_with_suggestion: 0,
     },
     duplicates: [],
     url_duplicates: [],
     cross_show: [],
-    sentiment_issues: []
+    sentiment_issues: [],
+    outlet_as_critic: [],
+    domain_mismatches: []
   };
 
   // Maps for tracking
@@ -266,6 +304,92 @@ function auditReviewDuplicates() {
     }
   }
 
+  // Task 1.5: Outlet-as-critic duplicates
+  console.log('Analyzing outlet-as-critic duplicates...');
+  // Group all reviews by showId + canonical outletId
+  const reviewsByShowOutlet = {};
+  for (const review of allReviews) {
+    const d = review.data;
+    if (d.duplicateOf || d.duplicateTextOf || d.wrongShow || d.wrongProduction) continue;
+    const outletId = normalizeOutlet(d.outletId || d.outlet);
+    const key = `${review.showId}|${outletId}`;
+    if (!reviewsByShowOutlet[key]) reviewsByShowOutlet[key] = [];
+    reviewsByShowOutlet[key].push(review);
+  }
+
+  for (const [key, reviews] of Object.entries(reviewsByShowOutlet)) {
+    if (reviews.length < 2) continue;
+    const [showId, outletId] = key.split('|');
+    const displayName = getOutletDisplayName(outletId) || '';
+
+    const outletAsCriticFiles = [];
+    const realCriticFiles = [];
+    for (const rev of reviews) {
+      if (isOutletAsCriticName(rev.data.criticName, outletId, displayName)) {
+        outletAsCriticFiles.push(rev);
+      } else if (rev.data.criticName && !/^(unknown|unnamed)$/i.test(rev.data.criticName)) {
+        realCriticFiles.push(rev);
+      }
+    }
+
+    if (outletAsCriticFiles.length > 0 && realCriticFiles.length > 0) {
+      for (const loser of outletAsCriticFiles) {
+        report.summary.outlet_as_critic_duplicates++;
+        report.outlet_as_critic.push({
+          showId,
+          loserFile: path.join('data/review-texts', showId, loser.file.split('/').pop()),
+          loserCritic: loser.data.criticName,
+          loserUrl: loser.data.url,
+          winnerFile: path.join('data/review-texts', showId, realCriticFiles[0].file.split('/').pop()),
+          winnerCritic: realCriticFiles[0].data.criticName,
+          winnerUrl: realCriticFiles[0].data.url,
+          outletId,
+          outletDisplayName: displayName,
+        });
+      }
+    }
+  }
+
+  // Task 1.6: URL-domain mismatches
+  console.log('Analyzing URL-domain mismatches...');
+  for (const review of allReviews) {
+    const d = review.data;
+    if (d.duplicateOf || d.duplicateTextOf || d.wrongShow || d.wrongProduction || d.wrongUrl) continue;
+    const outletId = (d.outletId || '').toLowerCase();
+    if (!outletId || !d.url) continue;
+    if (EXEMPT_OUTLET_IDS.has(outletId)) continue;
+
+    const expectedDomain = OUTLET_DOMAINS[outletId];
+    if (!expectedDomain) continue;
+
+    let urlDomain;
+    try {
+      urlDomain = new URL(d.url).hostname.replace(/^www\./, '');
+    } catch { continue; }
+
+    if (EXEMPT_URL_DOMAINS.has(urlDomain)) continue;
+    if (urlDomain.endsWith('.blogspot.com') && urlDomain.includes(outletId.replace(/-/g, ''))) continue;
+
+    if (!domainMatchesExpected(expectedDomain.replace(/^www\./, ''), urlDomain)) {
+      const suggestedOutletId = domainToOutletId[urlDomain] || null;
+      report.summary.domain_mismatches++;
+      if (suggestedOutletId) report.summary.domain_mismatches_with_suggestion++;
+
+      report.domain_mismatches.push({
+        showId: review.showId,
+        file: review.file,
+        currentOutletId: outletId,
+        currentOutlet: d.outlet,
+        url: d.url,
+        urlDomain,
+        expectedDomain: expectedDomain.replace(/^www\./, ''),
+        suggestedOutletId,
+        suggestedDisplayName: suggestedOutletId ? (getOutletDisplayName(suggestedOutletId) || suggestedOutletId) : null,
+        criticName: d.criticName,
+      });
+    }
+  }
+
   // Print summary
   console.log('\n=== Summary ===');
   console.log(`Total files scanned: ${report.summary.total_files}`);
@@ -275,6 +399,33 @@ function auditReviewDuplicates() {
   console.log(`  URL duplicates (same show): ${report.summary.url_duplicates_same_show}`);
   console.log(`  Cross-show URL duplicates: ${report.summary.cross_show_duplicates} ${report.summary.cross_show_duplicates > 0 ? '*** CRITICAL ***' : '(PASS)'}`);
   console.log(`  Sentiment inconsistencies: ${report.summary.sentiment_inconsistencies}`);
+  console.log(`  Outlet-as-critic duplicates: ${report.summary.outlet_as_critic_duplicates}`);
+  console.log(`  URL-domain mismatches: ${report.summary.domain_mismatches} (${report.summary.domain_mismatches_with_suggestion} with suggestion)`);
+
+  // Show outlet-as-critic examples
+  if (report.outlet_as_critic.length > 0) {
+    console.log('\n--- Outlet-as-Critic Duplicates ---');
+    for (const d of report.outlet_as_critic.slice(0, 10)) {
+      console.log(`  ${d.showId}: ${d.outletDisplayName}`);
+      console.log(`    LOSER: ${d.loserFile} (critic="${d.loserCritic}")`);
+      console.log(`    WINNER: ${d.winnerFile} (critic="${d.winnerCritic}")`);
+    }
+    if (report.outlet_as_critic.length > 10) {
+      console.log(`  ... and ${report.outlet_as_critic.length - 10} more`);
+    }
+  }
+
+  // Show domain mismatch examples
+  if (report.domain_mismatches.length > 0) {
+    console.log('\n--- URL-Domain Mismatches ---');
+    for (const d of report.domain_mismatches.slice(0, 10)) {
+      console.log(`  ${d.showId}/${d.file.split('/').pop()}`);
+      console.log(`    outlet=${d.currentOutletId}, url domain=${d.urlDomain}, suggested=${d.suggestedOutletId || '?'}`);
+    }
+    if (report.domain_mismatches.length > 10) {
+      console.log(`  ... and ${report.domain_mismatches.length - 10} more`);
+    }
+  }
 
   // Show some examples
   if (report.duplicates.length > 0) {
