@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-27T07:07:47.923Z",
+  "timestamp": "2026-03-27T07:19:56.655Z",
   "stats": {
     "totalReviews": 32524,
-    "alreadyFlagged": 11180,
+    "alreadyFlagged": 11181,
     "dateGuardCatches": 144,
-    "directorMismatch": 960,
+    "directorMismatch": 961,
     "tvFilmSignals": 3452,
-    "londonSignals": 1043,
+    "londonSignals": 1048,
     "offBroadwaySignals": 1007,
     "yearMismatch": 70,
-    "noPublishDate": 6721
+    "noPublishDate": 6713
   },
   "findings": [
     {
@@ -26259,6 +26259,24 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 498d before show (2024-11-07 vs 2026-03-20)"
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "timeout--unknown.json",
+      "publishDate": "2026-03-26",
+      "url": "https://www.timeout.com/london/news/review-john-proctor-is-the-villain-at-the-royal-court-theatre-in-london-032626",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -79864,6 +79882,32 @@
     },
     {
       "showId": "teeth-n-smiles-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/teeth-n-smiles-duke-yorks-theatre-review-rebecca-lucy-taylor-smash",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "teeth-n-smiles-west-end-2026",
+      "file": "city-am--unknown.json",
+      "publishDate": "2026-03-26",
+      "url": "https://www.cityam.com/teeth-n-smiles-review-self-esteem-is-magnetic-in-dated-show/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "teeth-n-smiles-west-end-2026",
       "file": "guardian--unknown.json",
       "score": 63,
       "publishDate": null,
@@ -79897,12 +79941,39 @@
     },
     {
       "showId": "teeth-n-smiles-west-end-2026",
+      "file": "london-box-office--unknown.json",
+      "publishDate": "2026-03-26",
+      "url": "https://www.londonboxoffice.co.uk/news/post/teeth-n-smiles-review-duke-of-york",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "teeth-n-smiles-west-end-2026",
       "file": "standard--unknown.json",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 37d before show (2026-02-04 vs 2026-03-13)"
+        }
+      ]
+    },
+    {
+      "showId": "teeth-n-smiles-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": null,
+      "publishDate": "2026-03-25",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/teeth-n-smiles-review-self-esteem-brings-jagged-drama-to-life-vrr7b0vz3",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
