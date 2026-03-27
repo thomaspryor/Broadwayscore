@@ -507,6 +507,19 @@ async function main() {
               skippedDupe++;
               continue;
             }
+            // URL-based dedup: skip if same URL already exists under a different filename
+            const normalizedUrl = url.toLowerCase().replace(/\/+$/, '');
+            const urlDupe = existingFiles.some(f => {
+              if (!f.endsWith('.json')) return false;
+              try {
+                const existing = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
+                return existing.url && existing.url.toLowerCase().replace(/\/+$/, '') === normalizedUrl;
+              } catch { return false; }
+            });
+            if (urlDupe) {
+              skippedDupe++;
+              continue;
+            }
           }
 
           const reviewData = {
