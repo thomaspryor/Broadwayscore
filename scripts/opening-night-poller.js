@@ -660,8 +660,16 @@ async function runAggregators(show) {
                   const stars = ($w(el).next('.reviewnewstars').text().match(/★/g) || []).length;
                   const authorText = $w(el).nextAll('.reviewnewauthor').first().text().trim();
                   const cm = authorText.match(/^([A-Z][a-z]+(?:\s[A-Z][a-z'-]+)+)/);
+                  // Extract individual review URL from the <a> after this review block
+                  let reviewUrl = '';
+                  $w(el).nextAll('a').each((_, a) => {
+                    const href = $w(a).attr('href') || '';
+                    if (!reviewUrl && href.startsWith('http') && !href.includes('westendtheatre.com')) {
+                      reviewUrl = href;
+                    }
+                  });
                   if (outlet && stars > 0) {
-                    wetReviews.push({ outlet, stars, critic: cm ? cm[1] : 'Unknown' });
+                    wetReviews.push({ outlet, stars, critic: cm ? cm[1] : 'Unknown', url: reviewUrl });
                   }
                 });
               }
@@ -686,7 +694,7 @@ async function runAggregators(show) {
               outletId: normalizeOutlet(r.outlet),
               outlet: r.outlet,
               criticName: r.critic,
-              url: post.link || '',
+              url: r.url || post.link || '',
               excerpt: '',
               score: Math.round((r.stars / 5) * 100),
               scoreSource: 'westendtheatre-star-rating',
