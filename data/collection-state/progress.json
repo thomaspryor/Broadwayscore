@@ -441,7 +441,17 @@
     "data-2026/vulture--jackson-mchenry.json",
     "the-monsters-2026/vulture--jackson-mchenry.json",
     "hamlet-2026/deadline--jeremy-gerard.json",
-    "dear-england-new-wimbledon-theatre-west-end-2026/times-uk--clive-davis.json"
+    "dear-england-new-wimbledon-theatre-west-end-2026/times-uk--clive-davis.json",
+    "inter-alia-west-end-2026/thestage--sam-marlowe.json",
+    "copenhagen-west-end-2026/telegraph--unknown.json",
+    "john-proctor-is-the-villain-west-end-2026/thestage--unknown.json",
+    "giant-2026/talkinbroadway--unknown.json",
+    "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "oh-mary-west-end-2025/standard--nick-curtis.json",
+    "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -600,7 +610,9 @@
       "data/review-texts/private-lives-2011/theatermania--david-finkle.json",
       "data/review-texts/the-importance-of-being-earnest-2011/theatermania--charles-isherwood.json",
       "data/review-texts/oleanna-2009/theatermania--unknown.json",
-      "data/review-texts/9-to-5-2009/nydailynews--unknown.json"
+      "data/review-texts/9-to-5-2009/nydailynews--unknown.json",
+      "data/review-texts/john-proctor-is-the-villain-west-end-2026/thestage--unknown.json",
+      "data/review-texts/giant-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
       "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json",
@@ -626,7 +638,7 @@
     ]
   },
   "startTime": "2026-03-27T09:10:33.099Z",
-  "lastProcessed": "happy-ending-west-end-2026/standard--unknown.json",
+  "lastProcessed": "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json",
   "log": [
     {
       "t": "2026-03-27T09:13:58.494Z",
@@ -750,6 +762,17 @@
       "event": "bb-session",
       "session": "23d42b92",
       "url": "https://www.nydailynews.com/entertainment/music-arts/sunshine-theater-review-art"
+    },
+    {
+      "t": "2026-03-27T15:56:18.518Z",
+      "event": "bb-session",
+      "session": "7ef33913",
+      "url": "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-th"
+    },
+    {
+      "t": "2026-03-27T15:56:19.740Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
