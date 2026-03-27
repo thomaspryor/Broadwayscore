@@ -233,7 +233,8 @@
     "little-women-the-musical-2026/whatsonstage--alun-hood.json",
     "the-play-that-goes-wrong-2019/theatre-is-easy--gabriella-steinberg.json",
     "john-proctor-is-the-villain-west-end-2026/thestage--unknown.json",
-    "teeth-n-smiles-west-end-2026/times-uk--clive-davis.json"
+    "teeth-n-smiles-west-end-2026/times-uk--clive-davis.json",
+    "teeth-n-smiles-west-end-2026/whatsonstage--unknown.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -1718,7 +1719,8 @@
     "indian-princesses-off-broadway-2025/theatermania--linda-buchwald.json",
     "dear-england-new-wimbledon-theatre-west-end-2026/times-uk--clive-davis.json",
     "jackals-off-broadway-2026/times-uk--anne-treneman.json",
-    "john-proctor-is-the-villain-west-end-2026/standard--nick-curtis.json"
+    "john-proctor-is-the-villain-west-end-2026/standard--nick-curtis.json",
+    "teeth-n-smiles-west-end-2026/thestage--sam-marlowe.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1826,7 +1828,8 @@
       "this-is-my-favorite-song-2024/theatermania--pete-hempstead.json",
       "hold-on-to-your-butts-2026/whatsonstage--taylor-vaughan.json",
       "little-women-the-musical-2026/whatsonstage--alun-hood.json",
-      "teeth-n-smiles-west-end-2026/times-uk--clive-davis.json"
+      "teeth-n-smiles-west-end-2026/times-uk--clive-davis.json",
+      "teeth-n-smiles-west-end-2026/whatsonstage--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -2046,7 +2049,8 @@
       "data/review-texts/the-other-place-2026/thestage--dave-fargnoli.json",
       "data/review-texts/the-play-that-goes-wrong-2019/curtainup--simon-saltzman.json",
       "data/review-texts/the-play-that-goes-wrong-2019/dc-metro-theater-arts--richard-seff.json",
-      "data/review-texts/touch-2026/broadwayworld--marina-kennedy.json"
+      "data/review-texts/touch-2026/broadwayworld--marina-kennedy.json",
+      "data/review-texts/teeth-n-smiles-west-end-2026/thestage--sam-marlowe.json"
     ],
     "archive": [
       "wicked-2003/broadwayworld--jared-fessler.json",
@@ -2089,7 +2093,7 @@
     ]
   },
   "startTime": "2026-03-26T09:40:49.858Z",
-  "lastProcessed": "teeth-n-smiles-west-end-2026/times-uk--clive-davis.json",
+  "lastProcessed": "teeth-n-smiles-west-end-2026/whatsonstage--unknown.json",
   "log": [
     {
       "t": "2026-03-26T09:43:13.034Z",
@@ -2472,6 +2476,17 @@
     },
     {
       "t": "2026-03-26T20:27:54.269Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-27T04:39:01.984Z",
+      "event": "bb-session",
+      "session": "a0f38b55",
+      "url": "https://www.thestage.co.uk/reviews/teeth-n-smiles-review-duke-of-yorks-theatre-l"
+    },
+    {
+      "t": "2026-03-27T04:39:03.281Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
