@@ -112,7 +112,8 @@
     "on-a-clear-day-you-can-see-forever-2011/timeout--david-cote.json",
     "john-proctor-is-the-villain-west-end-2026/independent--unknown.json",
     "the-normal-heart-2011/timeout--david-cote.json",
-    "how-to-succeed-in-business-without-really-trying-2011/timeout--david-cote.json"
+    "how-to-succeed-in-business-without-really-trying-2011/timeout--david-cote.json",
+    "waiting-for-godot-2009/hollywood-reporter--david-rooney.json"
   ],
   "failed": [
     "heartbreak-hotel-off-broadway-2026/playbill--unknown.json",
@@ -404,7 +405,16 @@
     "oleanna-2009/theatermania--unknown.json",
     "oleanna-2009/times-uk--dominic-maxwell.json",
     "burn-the-floor-2009/ew--jennifer-armstrong.json",
-    "burn-the-floor-2009/backstage--jo-sagolla.json"
+    "burn-the-floor-2009/backstage--jo-sagolla.json",
+    "9-to-5-2009/nydailynews--unknown.json",
+    "waiting-for-godot-2009/newsday--linda-winer.json",
+    "9-to-5-2009/lansing-city-pulse--allan-i-ross.json",
+    "waiting-for-godot-2009/backstage--david-sheward.json",
+    "the-philanthropist-2009/backstage--david-sheward.json",
+    "mary-stuart-2009/backstage--david-sheward.json",
+    "next-to-normal-2009/newyorker--john-lahr.json",
+    "next-to-normal-2009/ap--unknown.json",
+    "exit-the-king-2009/newsday--linda-winer.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -495,7 +505,9 @@
       "data/review-texts/thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
       "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
       "data/review-texts/fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json",
-      "fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json"
+      "fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json",
+      "data/review-texts/waiting-for-godot-2009/hollywood-reporter--david-rooney.json",
+      "waiting-for-godot-2009/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -558,7 +570,8 @@
       "data/review-texts/seminar-2011/theatermania--david-finkle.json",
       "data/review-texts/private-lives-2011/theatermania--david-finkle.json",
       "data/review-texts/the-importance-of-being-earnest-2011/theatermania--charles-isherwood.json",
-      "data/review-texts/oleanna-2009/theatermania--unknown.json"
+      "data/review-texts/oleanna-2009/theatermania--unknown.json",
+      "data/review-texts/9-to-5-2009/nydailynews--unknown.json"
     ],
     "archive": [
       "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json",
@@ -584,7 +597,7 @@
     ]
   },
   "startTime": "2026-03-27T09:10:33.099Z",
-  "lastProcessed": "burn-the-floor-2009/backstage--jo-sagolla.json",
+  "lastProcessed": "exit-the-king-2009/newsday--linda-winer.json",
   "log": [
     {
       "t": "2026-03-27T09:13:58.494Z",
@@ -696,6 +709,18 @@
       "t": "2026-03-27T12:07:12.688Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-27T15:16:34.686Z",
+      "event": "bb-session",
+      "session": "da75868b",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/waiting-for-godot-broadway-revi"
+    },
+    {
+      "t": "2026-03-27T15:18:00.677Z",
+      "event": "bb-session",
+      "session": "23d42b92",
+      "url": "https://www.nydailynews.com/entertainment/music-arts/sunshine-theater-review-art"
     }
   ]
 }
