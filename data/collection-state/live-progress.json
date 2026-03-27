@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-27T20:26:30.336Z",
-  "processed": 107,
-  "failed": 442,
+  "updatedAt": "2026-03-27T20:27:24.591Z",
+  "processed": 109,
+  "failed": 450,
   "successRate": "19.5%",
   "tierBreakdown": {
-    "playwright": 66,
+    "playwright": 67,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 12,
     "directCookies": 1,
     "scrapingbee": 6,
     "brightdata": 0,
     "archiveToday": 7,
     "archive": 31
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-03-27T18:30:38.751Z",
@@ -111,6 +111,17 @@
     },
     {
       "t": "2026-03-27T19:42:07.471Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-27T20:27:06.735Z",
+      "event": "bb-session",
+      "session": "512678b2",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/waiting-for-godot-broadway-revi"
+    },
+    {
+      "t": "2026-03-27T20:27:08.023Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
