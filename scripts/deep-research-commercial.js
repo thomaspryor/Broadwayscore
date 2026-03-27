@@ -237,21 +237,22 @@ Find and report the following financial information. Only report data you can ve
 
 ## Where to search (in priority order)
 
-**A. Reddit and forums — richest source of Broadway financials:**
-- Search r/Broadway for: "${title}" capitalization OR recouped OR budget OR "weekly nut" OR "running cost"
+**A. Reddit and forums — use site: searches for precision:**
+- Search \`site:reddit.com/r/Broadway "${title}" capitalization\`, then recouped, then budget, then "weekly nut"
 - Reddit users post detailed weekly grosses analyses with financial breakdowns (capitalization, weekly operating costs, estimated profit/loss) — especially for musicals. Look for season post-mortem threads.
+- Search \`site:forum.broadwayworld.com "${title}" capitalization\` and \`"${title}" budget\`
 - BroadwayWorld forums have investor discussions with capitalization figures, offering paper details, and recoupment speculation
-- Broadway investor forums (e.g., investmentbroadway.com) discuss specific show economics
 
 **B. SEC EDGAR Form D filings:**
-- Broadway LLCs file Form D with the SEC when raising capital. Search EDGAR for the show title or producing entity.
+- Search \`site:sec.gov "${title}"\` and try the producing LLC name. Broadway shows file Form D when raising capital.
 
 **C. Trade press:**
-- Search SEC filings, trade press (Variety, Deadline, Broadway News, The Broadway Journal, Playbill, TheaterMania, BroadwayWorld), and producer interviews
+- Search Variety, Deadline, Broadway News, The Broadway Journal, Playbill, TheaterMania, BroadwayWorld, and producer interviews
 - Search for: "${title}" broadway capitalization OR budget OR investment OR recouped
 
-**D. NYC tax credits & financial databases:**
-- investmentbroadway.com lists NYC Musical and Theatrical Production Tax Credit recipients — receiving a credit implies known capitalization
+**D. NYC tax credits — check this specific page:**
+- https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit
+- The NYC 25% tax credit implies capitalization: credit amount ÷ 0.25 = eligible production costs. Search the page for the show title or related production company name.
 - The Broadway League publishes weekly grosses data
 
 ## What to find
