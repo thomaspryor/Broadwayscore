@@ -727,7 +727,7 @@ newShows.forEach(show => {
 });
 
 // Update metadata
-data._meta.lastUpdated = new Date().toISOString().split('T')[0];
+data._meta.lastUpdated = new Date().toISOString();
 
 // Write back
 fs.writeFileSync(showsPath, JSON.stringify(data, null, 2));

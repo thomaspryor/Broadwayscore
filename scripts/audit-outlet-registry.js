@@ -660,7 +660,7 @@ async function updateRegistry(auditResult) {
 
   // Update lastUpdated in _meta
   if (registry._meta) {
-    registry._meta.lastUpdated = new Date().toISOString().split('T')[0];
+    registry._meta.lastUpdated = new Date().toISOString();
   }
 
   // Write back

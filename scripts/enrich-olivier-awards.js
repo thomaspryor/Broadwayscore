@@ -318,7 +318,7 @@ async function main() {
   }
 
   if (!DRY_RUN && showMap.size > 0) {
-    awardsData._meta.lastUpdated = new Date().toISOString().split('T')[0];
+    awardsData._meta.lastUpdated = new Date().toISOString();
     if (!awardsData._meta.sources.includes('Wikipedia (Olivier Awards)')) {
       awardsData._meta.sources.push('Wikipedia (Olivier Awards)');
     }

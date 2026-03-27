@@ -140,7 +140,7 @@ KEY_SHOWS.forEach(showId => {
 
 // Save
 data.reviews = reviews;
-data._meta.lastUpdated = new Date().toISOString().split('T')[0];
+data._meta.lastUpdated = new Date().toISOString();
 fs.writeFileSync(reviewsJsonPath, JSON.stringify(data, null, 2));
 
 console.log(`\nFixed ${fixes} scores`);

@@ -38,7 +38,7 @@ for (const [showId, show] of Object.entries(audienceBuzz.shows)) {
   }
 }
 
-audienceBuzz._meta.lastUpdated = new Date().toISOString().split('T')[0];
+audienceBuzz._meta.lastUpdated = new Date().toISOString();
 audienceBuzz._meta.designationThresholds = {
   'Loving': '88-100',   // A+, A
   'Liking': '78-87',    // A-, B+

@@ -1695,7 +1695,7 @@ function applyChanges(applied, newEntries, commercial) {
   }
 
   // Update metadata
-  commercial._meta.lastUpdated = new Date().toISOString().split('T')[0];
+  commercial._meta.lastUpdated = new Date().toISOString();
 
   if (DRY_RUN) {
     console.log(`\n  [DRY RUN] Would apply ${changeCount} changes (not writing)`);

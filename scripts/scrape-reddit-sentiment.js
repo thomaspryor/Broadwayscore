@@ -504,7 +504,7 @@ function saveAudienceBuzz() {
     return false;
   }
 
-  audienceBuzz._meta.lastUpdated = new Date().toISOString().split('T')[0];
+  audienceBuzz._meta.lastUpdated = new Date().toISOString();
   audienceBuzz._meta.sources = ['Show Score', 'Mezzanine', 'Reddit'];
   audienceBuzz._meta.notes = 'Proportional weighting by reviewCount volume (max 80% single source)';
 
