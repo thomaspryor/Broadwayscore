@@ -234,7 +234,8 @@
     "the-play-that-goes-wrong-2019/theatre-is-easy--gabriella-steinberg.json",
     "john-proctor-is-the-villain-west-end-2026/thestage--unknown.json",
     "teeth-n-smiles-west-end-2026/times-uk--clive-davis.json",
-    "teeth-n-smiles-west-end-2026/whatsonstage--unknown.json"
+    "teeth-n-smiles-west-end-2026/whatsonstage--unknown.json",
+    "john-proctor-is-the-villain-west-end-2026/standard--nick-curtis.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -1720,7 +1721,16 @@
     "dear-england-new-wimbledon-theatre-west-end-2026/times-uk--clive-davis.json",
     "jackals-off-broadway-2026/times-uk--anne-treneman.json",
     "john-proctor-is-the-villain-west-end-2026/standard--nick-curtis.json",
-    "teeth-n-smiles-west-end-2026/thestage--sam-marlowe.json"
+    "teeth-n-smiles-west-end-2026/thestage--sam-marlowe.json",
+    "inter-alia-west-end-2026/thestage--sam-marlowe.json",
+    "teeth-n-smiles-west-end-2026/thestage--sam-marlowe.json",
+    "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "oh-mary-west-end-2025/standard--nick-curtis.json",
+    "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json",
+    "two-strangers-bway-2025/guardian--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1829,7 +1839,8 @@
       "hold-on-to-your-butts-2026/whatsonstage--taylor-vaughan.json",
       "little-women-the-musical-2026/whatsonstage--alun-hood.json",
       "teeth-n-smiles-west-end-2026/times-uk--clive-davis.json",
-      "teeth-n-smiles-west-end-2026/whatsonstage--unknown.json"
+      "teeth-n-smiles-west-end-2026/whatsonstage--unknown.json",
+      "john-proctor-is-the-villain-west-end-2026/standard--nick-curtis.json"
     ],
     "amp": [],
     "browserbase": [
@@ -2050,6 +2061,7 @@
       "data/review-texts/the-play-that-goes-wrong-2019/curtainup--simon-saltzman.json",
       "data/review-texts/the-play-that-goes-wrong-2019/dc-metro-theater-arts--richard-seff.json",
       "data/review-texts/touch-2026/broadwayworld--marina-kennedy.json",
+      "data/review-texts/teeth-n-smiles-west-end-2026/thestage--sam-marlowe.json",
       "data/review-texts/teeth-n-smiles-west-end-2026/thestage--sam-marlowe.json"
     ],
     "archive": [
@@ -2093,7 +2105,7 @@
     ]
   },
   "startTime": "2026-03-26T09:40:49.858Z",
-  "lastProcessed": "teeth-n-smiles-west-end-2026/whatsonstage--unknown.json",
+  "lastProcessed": "two-strangers-bway-2025/guardian--unknown.json",
   "log": [
     {
       "t": "2026-03-26T09:43:13.034Z",
@@ -2487,6 +2499,17 @@
     },
     {
       "t": "2026-03-27T04:39:03.281Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-27T04:49:25.691Z",
+      "event": "bb-session",
+      "session": "8daa6637",
+      "url": "https://www.thestage.co.uk/reviews/teeth-n-smiles-review-duke-of-yorks-theatre-l"
+    },
+    {
+      "t": "2026-03-27T04:49:26.979Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
