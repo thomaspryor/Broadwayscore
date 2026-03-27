@@ -443,6 +443,8 @@ jobs:
       - name: Record pipeline success
         if: success()
         run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
           mkdir -p data/audit/pipeline-health
           date -u > data/audit/pipeline-health/rebuild-reviews.last-success
           git add data/audit/pipeline-health/

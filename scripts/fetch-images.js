@@ -624,7 +624,7 @@ function updateShowsJson(imageResults) {
     }
   }
 
-  showsData._meta.lastUpdated = new Date().toISOString().split('T')[0];
+  showsData._meta.lastUpdated = new Date().toISOString();
   fs.writeFileSync(SHOWS_JSON_PATH, JSON.stringify(showsData, null, 2) + '\n');
 
   if (skippedCount > 0) {

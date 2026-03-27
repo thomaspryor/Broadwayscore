@@ -145,7 +145,7 @@ reviews.forEach(r => {
 
 // Update data and save
 data.reviews = reviews;
-data._meta.lastUpdated = new Date().toISOString().split('T')[0];
+data._meta.lastUpdated = new Date().toISOString();
 data._meta.notes = 'Cleaned: removed sentiment placeholders, fixed wrong conversions, removed duplicates';
 
 fs.writeFileSync(dataPath, JSON.stringify(data, null, 2));
