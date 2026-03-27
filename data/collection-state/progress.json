@@ -54,7 +54,14 @@
     "wicked-2003/broadwayworld--lauren-gienow.json",
     "wicked-2003/broadwayworld--linda-hodges.json",
     "wicked-2003/broadwayworld--lynn-beaver.json",
-    "wicked-2003/broadwayworld--tyler-hinton.json"
+    "wicked-2003/broadwayworld--tyler-hinton.json",
+    "grace-pervades-west-end-2026/thestage--unknown.json",
+    "sweetmeats-west-end-2026/standard--maya-chandran.json",
+    "all-out-2025/nytg--gillian-russo.json",
+    "all-out-2025/ew--unknown.json",
+    "waiting-for-godot-2025/nypost--entertainment-critic.json",
+    "mamma-mia-2025/nytimes--elizabeth-vincentelli.json",
+    "stephen-sondheims-old-friends-2025/in-act-two-of-merrily-we-roll-along--charley-kringas.json"
   ],
   "failed": [
     "heartbreak-hotel-off-broadway-2026/playbill--unknown.json",
@@ -104,7 +111,10 @@
     "the-lion-king-1997/timeout--adam-feldman.json",
     "the-lion-king-1997/familyvacationcritic--unknown.json",
     "man-to-man-west-end-2026/stagebuddy--unknown.json",
-    "cyrano-de-bergerac-west-end-2026/daily-mail--robert-gore-langton.json"
+    "cyrano-de-bergerac-west-end-2026/daily-mail--robert-gore-langton.json",
+    "high-noon-west-end-2025/times-uk--clive-davis.json",
+    "art-2025/broadwaynews--unknown.json",
+    "call-me-izzy-2025/vulture--jackson-mchenry.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -149,7 +159,11 @@
       "wicked-2003/broadwayworld--lauren-gienow.json",
       "wicked-2003/broadwayworld--linda-hodges.json",
       "wicked-2003/broadwayworld--lynn-beaver.json",
-      "wicked-2003/broadwayworld--tyler-hinton.json"
+      "wicked-2003/broadwayworld--tyler-hinton.json",
+      "sweetmeats-west-end-2026/standard--maya-chandran.json",
+      "all-out-2025/nytg--gillian-russo.json",
+      "all-out-2025/ew--unknown.json",
+      "stephen-sondheims-old-friends-2025/in-act-two-of-merrily-we-roll-along--charley-kringas.json"
     ],
     "amp": [],
     "browserbase": [
@@ -158,7 +172,9 @@
       "data/review-texts/teeth-n-smiles-west-end-2026/variety--unknown.json",
       "teeth-n-smiles-west-end-2026/variety--unknown.json",
       "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
-      "my-neighbour-totoro-west-end-2025/variety--unknown.json"
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "data/review-texts/waiting-for-godot-2025/nypost--entertainment-critic.json",
+      "waiting-for-godot-2025/nypost--entertainment-critic.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -182,11 +198,13 @@
       "harry-potter-2021/billboard--unknown.json",
       "wicked-2003/broadwayworld--david-copney.json",
       "wicked-2003/broadwayworld--emily-short.json",
-      "wicked-2003/broadwayworld--katrina-fageol.json"
+      "wicked-2003/broadwayworld--katrina-fageol.json",
+      "grace-pervades-west-end-2026/thestage--unknown.json",
+      "mamma-mia-2025/nytimes--elizabeth-vincentelli.json"
     ]
   },
   "startTime": "2026-03-27T09:10:33.099Z",
-  "lastProcessed": "cyrano-de-bergerac-west-end-2026/daily-mail--robert-gore-langton.json",
+  "lastProcessed": "stephen-sondheims-old-friends-2025/in-act-two-of-merrily-we-roll-along--charley-kringas.json",
   "log": [
     {
       "t": "2026-03-27T09:13:58.494Z",
@@ -221,6 +239,17 @@
       "t": "2026-03-27T11:06:25.666Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-27T11:19:20.472Z",
+      "event": "bb-session",
+      "session": "7a2295aa",
+      "url": "https://nypost.com/author/johnny-oleksinski/page/5/"
+    },
+    {
+      "t": "2026-03-27T11:19:21.812Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }

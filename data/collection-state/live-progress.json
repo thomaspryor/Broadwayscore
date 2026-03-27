@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-27T11:17:43.616Z",
-  "processed": 55,
-  "failed": 48,
-  "successRate": "53.4%",
+  "updatedAt": "2026-03-27T11:20:34.855Z",
+  "processed": 62,
+  "failed": 51,
+  "successRate": "54.9%",
   "tierBreakdown": {
-    "playwright": 41,
+    "playwright": 45,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 4,
-    "archive": 7
+    "archive": 9
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-03-27T09:13:58.494Z",
@@ -48,6 +48,17 @@
       "t": "2026-03-27T11:06:25.666Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-27T11:19:20.472Z",
+      "event": "bb-session",
+      "session": "7a2295aa",
+      "url": "https://nypost.com/author/johnny-oleksinski/page/5/"
+    },
+    {
+      "t": "2026-03-27T11:19:21.812Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
