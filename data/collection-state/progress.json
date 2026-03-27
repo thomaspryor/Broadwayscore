@@ -16,7 +16,14 @@
     "copenhagen-west-end-2026/whatsonstage--unknown.json",
     "john-proctor-is-the-villain-west-end-2026/whatsonstage--unknown.json",
     "teeth-n-smiles-west-end-2026/thereviewshub--unknown.json",
-    "teeth-n-smiles-west-end-2026/artsdesk--unknown.json"
+    "teeth-n-smiles-west-end-2026/artsdesk--unknown.json",
+    "teeth-n-smiles-west-end-2026/london-box-office--unknown.json",
+    "teeth-n-smiles-west-end-2026/radio-times--unknown.json",
+    "teeth-n-smiles-west-end-2026/theatre-weekly--unknown.json",
+    "teeth-n-smiles-west-end-2026/theupcoming--unknown.json",
+    "teeth-n-smiles-west-end-2026/variety--unknown.json",
+    "a-mirrored-monet-west-end-2026/guardian--lucinda-everett.json",
+    "a-mirrored-monet-west-end-2026/whatsonstage--unknown.json"
   ],
   "failed": [
     "heartbreak-hotel-off-broadway-2026/playbill--unknown.json",
@@ -34,7 +41,10 @@
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
     "copenhagen-west-end-2026/telegraph--unknown.json",
     "john-proctor-is-the-villain-west-end-2026/thestage--unknown.json",
-    "teeth-n-smiles-west-end-2026/broadwayworld--unknown.json"
+    "teeth-n-smiles-west-end-2026/broadwayworld--unknown.json",
+    "teeth-n-smiles-west-end-2026/city-am--unknown.json",
+    "teeth-n-smiles-west-end-2026/standard--unknown.json",
+    "giant-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -50,29 +60,40 @@
       "copenhagen-west-end-2026/whatsonstage--unknown.json",
       "john-proctor-is-the-villain-west-end-2026/whatsonstage--unknown.json",
       "teeth-n-smiles-west-end-2026/thereviewshub--unknown.json",
-      "teeth-n-smiles-west-end-2026/artsdesk--unknown.json"
+      "teeth-n-smiles-west-end-2026/artsdesk--unknown.json",
+      "teeth-n-smiles-west-end-2026/london-box-office--unknown.json",
+      "teeth-n-smiles-west-end-2026/theatre-weekly--unknown.json",
+      "teeth-n-smiles-west-end-2026/theupcoming--unknown.json",
+      "a-mirrored-monet-west-end-2026/guardian--lucinda-everett.json",
+      "a-mirrored-monet-west-end-2026/whatsonstage--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
-      "imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json"
+      "imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/teeth-n-smiles-west-end-2026/variety--unknown.json",
+      "teeth-n-smiles-west-end-2026/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json",
       "imitation-of-life-off-broadway-2026/theatermania--david-gordon.json",
-      "the-emporium-off-broadway-2025/theatermania--linda-buchwald.json"
+      "the-emporium-off-broadway-2025/theatermania--linda-buchwald.json",
+      "teeth-n-smiles-west-end-2026/city-am--unknown.json",
+      "teeth-n-smiles-west-end-2026/radio-times--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/public-charge-off-broadway-2026/talkinbroadway--unknown.json"
+      "data/review-texts/public-charge-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/teeth-n-smiles-west-end-2026/broadwayworld--unknown.json",
+      "data/review-texts/giant-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
       "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json"
     ]
   },
   "startTime": "2026-03-27T09:10:33.099Z",
-  "lastProcessed": "teeth-n-smiles-west-end-2026/broadwayworld--unknown.json",
+  "lastProcessed": "giant-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-03-27T09:13:58.494Z",
@@ -85,6 +106,17 @@
       "event": "bb-session",
       "session": "252cfa00",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/john-legend-lynn-nottage-liesl-"
+    },
+    {
+      "t": "2026-03-27T11:02:09.641Z",
+      "event": "bb-session",
+      "session": "9d59fbfc",
+      "url": "https://variety.com/gallery/celebrity-photos-red-carpet-march-2026/"
+    },
+    {
+      "t": "2026-03-27T11:02:10.935Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
