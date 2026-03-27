@@ -67,7 +67,11 @@
     "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json",
     "left-on-tenth-2024/nytimes--laura-collins-hughes.json",
     "the-cottage-2023/theatermania--peter-hempstead.json",
-    "just-for-us-2023/timeout--adam-feldman.json"
+    "just-for-us-2023/timeout--adam-feldman.json",
+    "once-upon-a-one-more-time-2023/ap--mark-kennedy.json",
+    "grey-house-2023/slash-film--caroline-cao.json",
+    "fat-ham-2023/nytimes--jesse-green.json",
+    "life-of-pi-2023/newyorker--unknown.json"
   ],
   "failed": [
     "heartbreak-hotel-off-broadway-2026/playbill--unknown.json",
@@ -134,7 +138,13 @@
     "stereophonic-2024/theatermania--jackson-mchenry.json",
     "the-wiz-2024/theatermania--jesse-green.json",
     "lempicka-2024/theatermania--david-gordon.json",
-    "purlie-victorious-2023/theatermania--david-gordon.json"
+    "purlie-victorious-2023/theatermania--david-gordon.json",
+    "once-upon-a-one-more-time-2023/theatermania--adam-feldman.json",
+    "once-upon-a-one-more-time-2023/theatermania--david-gordon.json",
+    "prima-facie-2023/newyorker--naomi-fry.json",
+    "the-thanksgiving-play-2023/theatermania--adam-feldman.json",
+    "fat-ham-2023/newyorker--naomi-fry.json",
+    "the-collaboration-2022/hollywood-reporter--angie-han.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -186,7 +196,9 @@
       "stephen-sondheims-old-friends-2025/in-act-two-of-merrily-we-roll-along--charley-kringas.json",
       "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
       "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json",
-      "the-cottage-2023/theatermania--peter-hempstead.json"
+      "the-cottage-2023/theatermania--peter-hempstead.json",
+      "once-upon-a-one-more-time-2023/ap--mark-kennedy.json",
+      "grey-house-2023/slash-film--caroline-cao.json"
     ],
     "amp": [],
     "browserbase": [
@@ -199,7 +211,9 @@
       "data/review-texts/waiting-for-godot-2025/nypost--entertainment-critic.json",
       "waiting-for-godot-2025/nypost--entertainment-critic.json",
       "data/review-texts/the-last-five-years-2025/nypost--lou-lumenick.json",
-      "the-last-five-years-2025/nypost--lou-lumenick.json"
+      "the-last-five-years-2025/nypost--lou-lumenick.json",
+      "data/review-texts/fat-ham-2023/nytimes--jesse-green.json",
+      "fat-ham-2023/nytimes--jesse-green.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -209,7 +223,8 @@
       "teeth-n-smiles-west-end-2026/city-am--unknown.json",
       "teeth-n-smiles-west-end-2026/radio-times--unknown.json",
       "left-on-tenth-2024/nytimes--laura-collins-hughes.json",
-      "just-for-us-2023/timeout--adam-feldman.json"
+      "just-for-us-2023/timeout--adam-feldman.json",
+      "life-of-pi-2023/newyorker--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -224,7 +239,10 @@
       "data/review-texts/stereophonic-2024/theatermania--jackson-mchenry.json",
       "data/review-texts/the-wiz-2024/theatermania--jesse-green.json",
       "data/review-texts/lempicka-2024/theatermania--david-gordon.json",
-      "data/review-texts/purlie-victorious-2023/theatermania--david-gordon.json"
+      "data/review-texts/purlie-victorious-2023/theatermania--david-gordon.json",
+      "data/review-texts/once-upon-a-one-more-time-2023/theatermania--adam-feldman.json",
+      "data/review-texts/once-upon-a-one-more-time-2023/theatermania--david-gordon.json",
+      "data/review-texts/the-thanksgiving-play-2023/theatermania--adam-feldman.json"
     ],
     "archive": [
       "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json",
@@ -239,7 +257,7 @@
     ]
   },
   "startTime": "2026-03-27T09:10:33.099Z",
-  "lastProcessed": "just-for-us-2023/timeout--adam-feldman.json",
+  "lastProcessed": "the-collaboration-2022/hollywood-reporter--angie-han.json",
   "log": [
     {
       "t": "2026-03-27T09:13:58.494Z",
@@ -296,6 +314,17 @@
       "t": "2026-03-27T11:20:54.133Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-27T11:36:21.950Z",
+      "event": "bb-session",
+      "session": "e50f84ca",
+      "url": "https://www.nytimes.com/2023/04/12/theater/fat-ham-review.html"
+    },
+    {
+      "t": "2026-03-27T11:36:23.250Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

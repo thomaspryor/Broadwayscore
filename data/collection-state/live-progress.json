@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-27T11:31:41.282Z",
-  "processed": 68,
-  "failed": 65,
-  "successRate": "51.1%",
+  "updatedAt": "2026-03-27T11:37:13.248Z",
+  "processed": 72,
+  "failed": 71,
+  "successRate": "50.3%",
   "tierBreakdown": {
-    "playwright": 48,
+    "playwright": 50,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 12,
     "directCookies": 0,
-    "scrapingbee": 7,
+    "scrapingbee": 8,
     "brightdata": 0,
-    "archiveToday": 12,
+    "archiveToday": 15,
     "archive": 9
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-03-27T09:13:58.494Z",
@@ -70,6 +70,17 @@
       "t": "2026-03-27T11:20:54.133Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-27T11:36:21.950Z",
+      "event": "bb-session",
+      "session": "e50f84ca",
+      "url": "https://www.nytimes.com/2023/04/12/theater/fat-ham-review.html"
+    },
+    {
+      "t": "2026-03-27T11:36:23.250Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
