@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-27T15:29:28.136Z",
+  "timestamp": "2026-03-27T15:37:04.346Z",
   "stats": {
     "totalReviews": 32508,
     "alreadyFlagged": 11186,
     "dateGuardCatches": 142,
-    "directorMismatch": 961,
+    "directorMismatch": 962,
     "tvFilmSignals": 3453,
-    "londonSignals": 1042,
+    "londonSignals": 1043,
     "offBroadwaySignals": 1007,
     "yearMismatch": 70,
-    "noPublishDate": 6705
+    "noPublishDate": 6704
   },
   "findings": [
     {
@@ -26236,6 +26236,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "independent--unknown.json",
+      "publishDate": "2026-03-27",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/john-proctor-is-the-villain-review-royal-court-b2946888.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
