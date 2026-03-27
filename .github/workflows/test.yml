@@ -9,6 +9,8 @@ on:
       - 'scripts/validate-data.js'
       - 'scripts/validate-aggregator-truth.js'
       - 'scripts/validate-market-expansion.js'
+      - 'scripts/validate-mobile-shows.js'
+      - 'public/data/mobile-shows.json'
       - 'package.json'
       - 'package-lock.json'
       - 'next.config.*'
