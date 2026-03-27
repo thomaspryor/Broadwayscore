@@ -300,6 +300,11 @@ jobs:
         run: node scripts/audit-critic-outlets.js --report-only
         continue-on-error: true  # Informational only
 
+      - name: Validate mobile-shows.json integrity
+        run: node scripts/validate-mobile-shows.js
+        # Catches stale build artifacts from worktree merges:
+        # closed shows without scores should be filtered out by generate-mobile-data.js
+
       - name: Validate review-text files
         run: |
           echo "Validating individual review-text files..."
