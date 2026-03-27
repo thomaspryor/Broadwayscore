@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway show metadata - source of truth for all shows",
-    "lastUpdated": "2026-03-26",
+    "lastUpdated": "2026-03-27T08:37:21.102Z",
     "source": "Manual + Playbill/IBDB cross-reference",
     "totalShows": 2258
   },
@@ -13,7 +13,7 @@
       "venue": "Palace Theatre",
       "openingDate": "2026-04-26",
       "closingDate": null,
-      "status": "upcoming",
+      "status": "previews",
       "type": "musical",
       "runtime": null,
       "intermissions": null,
@@ -210954,7 +210954,8 @@
       "ibdbUrl": null,
       "isRevival": true,
       "todayTixCategory": "Musicals",
-      "ibdbRevivalChecked": true
+      "ibdbRevivalChecked": true,
+      "_staleMissingSince": "2026-03-27"
     },
     {
       "id": "la-ternura-off-broadway-2025",
@@ -211066,8 +211067,7 @@
       "todaytixUrl": "https://www.todaytix.com/nyc/shows/44226-la-ternura",
       "todayTixCategory": "Plays",
       "ibdbRevivalChecked": true,
-      "isRevival": false,
-      "_staleMissingSince": "2026-03-26"
+      "isRevival": false
     },
     {
       "id": "the-monsters-off-broadway-2026",
@@ -211689,8 +211689,7 @@
       "todaytixUrl": "https://www.todaytix.com/nyc/shows/43817-messy-millie",
       "todayTixCategory": "Musicals",
       "ibdbRevivalChecked": true,
-      "isRevival": false,
-      "_staleMissingSince": "2026-03-26"
+      "isRevival": false
     },
     {
       "id": "an-ark-off-broadway-2026",
@@ -216286,7 +216285,7 @@
       "slug": "back-to-the-future-west-end",
       "venue": "Adelphi Theatre",
       "openingDate": "2021-09-13",
-      "closingDate": null,
+      "closingDate": "2026-04-12",
       "status": "open",
       "type": "musical",
       "category": "west-end",
@@ -218233,7 +218232,8 @@
       ],
       "todayTixCategory": "Plays",
       "ibdbRevivalChecked": true,
-      "isRevival": false
+      "isRevival": false,
+      "_staleMissingSince": "2026-03-27"
     },
     {
       "id": "murder-she-didnt-write-west-end-2025",
@@ -221923,7 +221923,7 @@
       "venue": "Hampstead Theatre",
       "openingDate": "2026-03-27",
       "closingDate": "2026-05-02",
-      "status": "upcoming",
+      "status": "open",
       "type": "play",
       "runtime": "1h 35m",
       "intermissions": null,
@@ -222683,7 +222683,8 @@
       "ibdbRevivalChecked": true,
       "isRevival": true,
       "todaytixId": 45671,
-      "todaytixUrl": "https://www.todaytix.com/london/shows/45671-john-proctor-is-the-villain"
+      "todaytixUrl": "https://www.todaytix.com/london/shows/45671-john-proctor-is-the-villain",
+      "_staleMissingSince": "2026-03-27"
     },
     {
       "id": "krapps-last-tape-godots-todo-list-west-end-2026",
@@ -225989,7 +225990,7 @@
       "venue": "Riverside Studios",
       "openingDate": "2026-03-27",
       "closingDate": "2026-04-12",
-      "status": "upcoming",
+      "status": "open",
       "type": "musical",
       "isRevival": true,
       "runtime": "1h 30m",
@@ -226505,8 +226506,7 @@
       "todaytixId": 44026,
       "todaytixUrl": "https://www.todaytix.com/nyc/shows/44026-sexual-misconduct-of-the-middle-classes",
       "todayTixCategory": "Plays",
-      "ibdbRevivalChecked": true,
-      "_staleMissingSince": "2026-03-26"
+      "ibdbRevivalChecked": true
     },
     {
       "id": "happy-ending-west-end-2026",
@@ -229081,8 +229081,7 @@
       "ibdbRevivalChecked": true,
       "category": "off-west-end",
       "todaytixId": 45825,
-      "todaytixUrl": "https://www.todaytix.com/london/shows/45825-tango-after-dark",
-      "_staleMissingSince": "2026-03-26"
+      "todaytixUrl": "https://www.todaytix.com/london/shows/45825-tango-after-dark"
     },
     {
       "id": "the-car-man-west-end-2026",
@@ -230187,7 +230186,7 @@
       "runtime": null,
       "intermissions": null,
       "images": {},
-      "synopsis": "",
+      "synopsis": "Audiences will be transported into the jungle as the Olivier is transformed for this timeless classic tale of family, courage and loyalty. Directed by Indhu Rubasingham.",
       "ageRecommendation": null,
       "previewsStartDate": "2026-11-13",
       "tags": [
@@ -230195,11 +230194,19 @@
         "new"
       ],
       "theaterAddress": null,
-      "ticketLinks": [],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/london/shows/44283-the-jungle-book",
+          "priceFrom": null
+        }
+      ],
       "cast": [],
       "creativeTeam": [],
       "ibdbRevivalChecked": true,
-      "category": "west-end"
+      "category": "west-end",
+      "todaytixId": 44283,
+      "todaytixUrl": "https://www.todaytix.com/london/shows/44283-the-jungle-book"
     },
     {
       "id": "kanpur-1857-off-west-end-2026",
@@ -230948,6 +230955,149 @@
       ],
       "ibdbRevivalChecked": true,
       "category": "off-broadway"
+    },
+    {
+      "id": "the-pushover-by-john-patrick-shanley-off-broadway-2026",
+      "title": "The Pushover by John Patrick Shanley",
+      "slug": "the-pushover-by-john-patrick-shanley-off-broadway",
+      "venue": "The Chain Theatre",
+      "openingDate": "2026-04-03",
+      "closingDate": "2026-04-26",
+      "status": "upcoming",
+      "type": "play",
+      "isRevival": false,
+      "runtime": "1h 40m",
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": "Ages 18+",
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows/46556-the-pushover-by-john-patrick-shanley",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": [],
+      "todayTixCategory": "Plays",
+      "ibdbRevivalChecked": true,
+      "category": "off-broadway",
+      "todaytixId": 46556,
+      "todaytixUrl": "https://www.todaytix.com/nyc/shows/46556-the-pushover-by-john-patrick-shanley"
+    },
+    {
+      "id": "a-time-travel-adventure-about-family-loss-and-the-power-of-imagination-from-breach-off-west-end-2026",
+      "title": "A time travel adventure about family, loss, and the power of imagination from Breach.",
+      "slug": "a-time-travel-adventure-about-family-loss-and-the-power-of-imagination-from-breach-off-west-end",
+      "venue": "New Diorama Theatre",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "announced",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "off-west-end"
+    },
+    {
+      "id": "the-shiverspolka-theatre-off-west-end-2026",
+      "title": "The ShiversPolka Theatre,",
+      "slug": "the-shiverspolka-theatre-off-west-end",
+      "venue": "New Diorama Theatre",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "announced",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "off-west-end"
+    },
+    {
+      "id": "a-fox-a-pigeon-and-a-rookie-agent-are-on-a-mission-to-save-the-world-but-everything-is-not-what-it-seems-off-west-end-2026",
+      "title": "A fox, a pigeon, and a rookie agent are on a mission to save the world - but everything is not what it seems.",
+      "slug": "a-fox-a-pigeon-and-a-rookie-agent-are-on-a-mission-to-save-the-world-but-everything-is-not-what-it-seems-off-west-end",
+      "venue": "New Diorama Theatre",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "announced",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "off-west-end"
+    },
+    {
+      "id": "operation-mincemeatwest-end-and-off-west-end-2026",
+      "title": "Operation MincemeatWest End &",
+      "slug": "operation-mincemeatwest-end-and-off-west-end",
+      "venue": "New Diorama Theatre",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "announced",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "off-west-end"
     }
   ]
 }
