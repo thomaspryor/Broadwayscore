@@ -507,6 +507,49 @@ assert(
 );
 
 // ============================================================
+// Vulture site-search endpoint configuration
+// Verifies SITE_SEARCH_ENDPOINTS has Vulture correctly configured.
+// ============================================================
+console.log('\n=== Vulture Site Search Configuration ===\n');
+
+const vultureConfig = SITE_SEARCH_ENDPOINTS['vulture'];
+
+assert(
+  vultureConfig !== undefined,
+  'Vulture is present in SITE_SEARCH_ENDPOINTS'
+);
+
+assert(
+  vultureConfig && vultureConfig.name === 'Vulture',
+  'Vulture config has correct name'
+);
+
+assert(
+  vultureConfig && vultureConfig.domain === 'vulture.com',
+  'Vulture config has correct domain'
+);
+
+assert(
+  vultureConfig && vultureConfig.requiresJs === true,
+  'Vulture config requires JS rendering'
+);
+
+assert(
+  vultureConfig && typeof vultureConfig.fetchAndParse === 'function',
+  'Vulture config has fetchAndParse function'
+);
+
+assert(
+  vultureConfig && vultureConfig.skipUrlFilter === true,
+  'Vulture config has skipUrlFilter (section page is already scoped)'
+);
+
+assert(
+  vultureConfig && !vultureConfig.market,
+  'Vulture config has no market restriction (reviews both BW and WE shows)'
+);
+
+// ============================================================
 // Summary
 // ============================================================
 console.log(`\n${'='.repeat(50)}`);
