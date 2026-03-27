@@ -3015,7 +3015,7 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
       };
     }
     if (outletRegistry._meta) {
-      outletRegistry._meta.lastUpdated = new Date().toISOString().split('T')[0];
+      outletRegistry._meta.lastUpdated = new Date().toISOString();
     }
     const registryPath = path.join(__dirname, '..', 'data', 'outlet-registry.json');
     fs.writeFileSync(registryPath, JSON.stringify(outletRegistry, null, 2));

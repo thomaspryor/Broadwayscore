@@ -585,7 +585,7 @@ async function main() {
       urlData.shows[d.showId] = d.url;
     }
     urlData._meta = urlData._meta || {};
-    urlData._meta.lastUpdated = new Date().toISOString().split('T')[0];
+    urlData._meta.lastUpdated = new Date().toISOString();
     urlData._meta.lastListingsDiscovery = new Date().toISOString();
     fs.writeFileSync(URLS_PATH, JSON.stringify(urlData, null, 2) + '\n');
     console.log(`Wrote ${newDiscoveries} new URLs to show-score-urls.json`);

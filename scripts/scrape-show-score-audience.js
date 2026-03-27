@@ -531,7 +531,7 @@ async function discoverShowScoreUrl(show) {
  * Save URL cache to disk (incremental persist)
  */
 function saveUrlCache() {
-  urlData._meta.lastUpdated = new Date().toISOString().split('T')[0];
+  urlData._meta.lastUpdated = new Date().toISOString();
   fs.writeFileSync(urlsPath, JSON.stringify(urlData, null, 2) + '\n');
 }
 
@@ -1105,7 +1105,7 @@ async function main() {
           }
 
           // Save incrementally after each successful show
-          audienceBuzz._meta.lastUpdated = new Date().toISOString().split('T')[0];
+          audienceBuzz._meta.lastUpdated = new Date().toISOString();
           audienceBuzz._meta.sources = ['Show Score', 'Mezzanine', 'Reddit'];
           audienceBuzz._meta.notes = 'Proportional weighting by reviewCount volume (max 80% single source)';
           fs.writeFileSync(audienceBuzzPath, JSON.stringify(audienceBuzz, null, 2));

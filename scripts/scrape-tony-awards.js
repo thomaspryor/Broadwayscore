@@ -678,7 +678,7 @@ async function main() {
 
   // Save
   if (!dryRun) {
-    awardsData._meta.lastUpdated = new Date().toISOString().split('T')[0];
+    awardsData._meta.lastUpdated = new Date().toISOString();
     fs.writeFileSync(awardsPath, JSON.stringify(awardsData, null, 2));
     console.log(`\n✅ Saved to ${awardsPath}`);
   } else {

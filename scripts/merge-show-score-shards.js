@@ -177,7 +177,7 @@ function main() {
   console.log(`Merged: ${merged} shows (${created} new entries, ${skippedOlder} older productions skipped)`);
 
   // Update metadata
-  audienceBuzz._meta.lastUpdated = new Date().toISOString().split('T')[0];
+  audienceBuzz._meta.lastUpdated = new Date().toISOString();
 
   if (!dryRun) {
     fs.writeFileSync(urlsPath, JSON.stringify(urlData, null, 2));

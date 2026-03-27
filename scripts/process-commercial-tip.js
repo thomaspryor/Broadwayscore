@@ -290,7 +290,7 @@ Rules:
         }
       }
 
-      commercial._meta.lastUpdated = new Date().toISOString().split('T')[0];
+      commercial._meta.lastUpdated = new Date().toISOString();
       fs.writeFileSync(COMMERCIAL_PATH, JSON.stringify(commercial, null, 2) + '\n');
 
       // Update changelog
@@ -312,7 +312,7 @@ Rules:
           confidence: analysis.confidence,
         })),
       });
-      changelog._meta.lastUpdated = new Date().toISOString().split('T')[0];
+      changelog._meta.lastUpdated = new Date().toISOString();
       fs.writeFileSync(CHANGELOG_PATH, JSON.stringify(changelog, null, 2) + '\n');
 
       // Post comment
