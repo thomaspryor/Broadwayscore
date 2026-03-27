@@ -9,6 +9,8 @@ on:
       - 'scripts/validate-data.js'
       - 'scripts/validate-aggregator-truth.js'
       - 'scripts/validate-market-expansion.js'
+      - 'scripts/validate-mobile-shows.js'
+      - 'public/data/mobile-shows.json'
       - 'package.json'
       - 'package-lock.json'
       - 'next.config.*'
@@ -299,6 +301,11 @@ jobs:
       - name: Audit critic-outlet affinities
         run: node scripts/audit-critic-outlets.js --report-only
         continue-on-error: true  # Informational only
+
+      - name: Validate mobile-shows.json integrity
+        run: node scripts/validate-mobile-shows.js
+        # Catches stale build artifacts from worktree merges:
+        # closed shows without scores should be filtered out by generate-mobile-data.js
 
       - name: Validate review-text files
         run: |

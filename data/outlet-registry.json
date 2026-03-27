@@ -49,7 +49,8 @@
       "accessModel": "free",
       "hasCredentials": true,
       "domainAliases": [
-        "nymag.com"
+        "nymag.com",
+        "newyorkmetro.com"
       ]
     },
     "variety": {
@@ -287,7 +288,10 @@
       ],
       "domain": "chicagotribune.com",
       "region": "chicago",
-      "accessModel": "metered"
+      "accessModel": "metered",
+      "domainAliases": [
+        "wgnradio.com"
+      ]
     },
     "latimes": {
       "displayName": "Los Angeles Times",
@@ -392,7 +396,11 @@
       ],
       "domain": "observer.com",
       "accessModel": "free",
-      "region": "london"
+      "region": "london",
+      "domainAliases": [
+        "observer.co.uk",
+        "theguardian.com"
+      ]
     },
     "broadwaynews": {
       "displayName": "Broadway News",
@@ -405,7 +413,8 @@
       ],
       "domain": "broadwaynews.com",
       "domainAliases": [
-        "broadway.news"
+        "broadway.news",
+        "bway.ly"
       ],
       "accessModel": "free"
     },
@@ -417,7 +426,10 @@
         "playbill.com"
       ],
       "domain": "playbill.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domainAliases": [
+        "playbill.vo.llnwd.net"
+      ]
     },
     "dailybeast": {
       "displayName": "The Daily Beast",
@@ -512,8 +524,11 @@
         "culture sauce",
         "culture-sauce"
       ],
-      "domain": "culturesauce.com",
-      "accessModel": "free"
+      "domain": "culturesauce.net",
+      "accessModel": "free",
+      "domainAliases": [
+        "culturesauce.com"
+      ]
     },
     "slantmagazine": {
       "displayName": "Slant Magazine",
@@ -607,7 +622,8 @@
       "domain": "theaterscene.net",
       "domainAliases": [
         "theaterscene.org",
-        "theaterscene.com"
+        "theaterscene.com",
+        "nytheaterscene.com"
       ],
       "accessModel": "free"
     },
@@ -978,7 +994,10 @@
         "bloomberg.com"
       ],
       "domain": "bloomberg.com",
-      "accessModel": "paywalled"
+      "accessModel": "paywalled",
+      "domainAliases": [
+        "businessweek.com"
+      ]
     },
     "slash-film": {
       "displayName": "SlashFilm",
@@ -1025,10 +1044,11 @@
         "gotham-playgoer",
         "gotham playgoer"
       ],
-      "domain": "gotham-playgoer.blogspot.com",
+      "domain": "bobs-theater-blog.blogspot.com",
       "accessModel": "free",
       "domainAliases": [
-        "gothamplaygoer.com"
+        "gothamplaygoer.com",
+        "gotham-playgoer.blogspot.com"
       ]
     },
     "medium": {
@@ -1211,8 +1231,12 @@
         "catholic-transcript",
         "catholic transcript"
       ],
-      "domain": "catholictranscript.com",
-      "accessModel": "free"
+      "domain": "catholictranscript.org",
+      "accessModel": "free",
+      "domainAliases": [
+        "catholictranscript.com",
+        "dearead.com"
+      ]
     },
     "classicalite": {
       "displayName": "Classicalite",
@@ -1444,10 +1468,12 @@
         "show showdown",
         "showshowdown"
       ],
-      "domain": "showshowdown.com",
+      "domain": "showshowdown.blogspot.com",
       "accessModel": "free",
       "domainAliases": [
-        "showshowdown.blogspot.com"
+        "showshowdown.blogspot.com",
+        "showshowdown.com",
+        "showshowdown.blogspot.co.id"
       ]
     },
     "theater-reviews-from-my-seat": {
@@ -1768,8 +1794,11 @@
         "next-magazine",
         "next magazine"
       ],
-      "domain": "nextmagazine.com",
-      "accessModel": "defunct"
+      "domain": "nextmag.ca",
+      "accessModel": "defunct",
+      "domainAliases": [
+        "nextmagazine.com"
+      ]
     },
     "the-globe-and-mail": {
       "displayName": "The Globe and Mail",
@@ -1973,8 +2002,12 @@
         "splash magazines",
         "splashmags"
       ],
-      "domain": "splashmagazines.com",
-      "accessModel": "free"
+      "domain": "splashmags.com",
+      "accessModel": "free",
+      "domainAliases": [
+        "splashmagazines.com",
+        "newyork.splashmags.com"
+      ]
     },
     "digital-journal": {
       "displayName": "Digital Journal",
@@ -2766,7 +2799,10 @@
         "edge"
       ],
       "domain": "edgemedianetwork.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domainAliases": [
+        "edgesandiego.com"
+      ]
     },
     "kget": {
       "displayName": "KGET",
@@ -3244,8 +3280,11 @@
         "fresh-fiction",
         "fresh fiction"
       ],
-      "domain": "freshfiction.com",
-      "accessModel": "free"
+      "domain": "freshfiction.tv",
+      "accessModel": "free",
+      "domainAliases": [
+        "freshfiction.com"
+      ]
     },
     "consequence": {
       "displayName": "Consequence",
@@ -3488,8 +3527,11 @@
         "contra-costa-times",
         "contra costa times"
       ],
-      "domain": "eastbaytimes.com",
-      "accessModel": "paywalled"
+      "domain": "contracostatimes.com",
+      "accessModel": "paywalled",
+      "domainAliases": [
+        "eastbaytimes.com"
+      ]
     },
     "news-tribune": {
       "displayName": "News Tribune",
@@ -3652,8 +3694,11 @@
         "3news",
         "3-news"
       ],
-      "domain": "newshub.co.nz",
-      "accessModel": "free"
+      "domain": "3news.co.nz",
+      "accessModel": "free",
+      "domainAliases": [
+        "newshub.co.nz"
+      ]
     },
     "tap-into": {
       "displayName": "TAPinto",
@@ -4914,8 +4959,6 @@
       "tier": 3,
       "aliases": [
         "american-theater-web",
-        "america-magazine",
-        "america magazine",
         "america"
       ],
       "domain": "americantheaterweb.com"
@@ -7351,7 +7394,10 @@
       ],
       "domain": "standard.co.uk",
       "region": "london",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domainAliases": [
+        "thisislondon.co.uk"
+      ]
     },
     "independent": {
       "displayName": "The Independent",
@@ -7449,8 +7495,11 @@
         "lohud",
         "journal news"
       ],
-      "domain": "lohud.com",
-      "accessModel": "free"
+      "domain": "thejournalnews.com",
+      "accessModel": "free",
+      "domainAliases": [
+        "lohud.com"
+      ]
     },
     "san-francisco-chronicle": {
       "displayName": "San Francisco Chronicle",
@@ -7698,11 +7747,12 @@
         "london theatre 1",
         "londontheatre1"
       ],
-      "domain": "londontheatre.co.uk",
+      "domain": "londontheatrereviews.co.uk",
       "region": "london",
       "accessModel": "free",
       "domainAliases": [
-        "londontheatre1.com"
+        "londontheatre1.com",
+        "londontheatre.co.uk"
       ]
     },
     "timeout-london": {
@@ -8014,7 +8064,8 @@
       "displayName": "Everything Theatre",
       "domain": "everythingtheatre.co.uk",
       "domainAliases": [
-        "everything-theatre.co.uk"
+        "everything-theatre.co.uk",
+        "everythingmusicals.com"
       ]
     },
     "buzzfeed": {
@@ -8740,6 +8791,27 @@
         "journaltimes"
       ],
       "domain": null
+    },
+    "america-magazine": {
+      "displayName": "America Magazine",
+      "tier": 3,
+      "aliases": [
+        "america-magazine",
+        "america magazine"
+      ],
+      "domain": "americamagazine.org",
+      "accessModel": "free"
+    },
+    "new-york-city-theatre": {
+      "displayName": "New York City Theatre",
+      "tier": 3,
+      "aliases": [
+        "new-york-city-theatre",
+        "new york city theatre",
+        "nyc theatre"
+      ],
+      "domain": "newyorkcitytheatre.com",
+      "accessModel": "free"
     }
   },
   "_aliasIndex": {

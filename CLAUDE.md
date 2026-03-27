@@ -35,10 +35,12 @@ Use shared components from `src/components/show-cards/` — never create custom 
 - **Score badges are sacred** — never change size/position/shape. Score column: `w-20 sm:w-24`.
 - **ANY change to files that render visible HTML needs before/after screenshots** — not just "UI" changes. Perf refactors, code moves, SSR migrations all change rendering.
 
-### 6. Roadmap Discipline
-See `memory/reference_notion_roadmap.md` for roadmap location and schema.
-- **Finishing session:** Add completed items to roadmap with Status=Done. Add new discoveries as Not started.
-- **New discoveries:** Add to roadmap. Don't context-switch.
+### 6. Notion Brain (MANDATORY — every session)
+**Notion is the single source of truth for project state.** See `memory/notion-brain-workflow.md` for IDs, schema, and full lifecycle.
+- **Session start:** Create a new Notion card for this session's work → set "In progress." Output card URL. Check for stale "In progress" cards.
+- **Session end:** Append Outcome (what/why/approach/gotchas) + Key Files + Tags → set "Done" or "Paused."
+- **New discoveries:** Create Notion card (Not started). Don't context-switch.
+- **If Notion unreachable:** Warn user, continue without tracking. On wrap-up failure, output Outcome text so nothing is lost.
 
 ### 7. Infrastructure Change Planning (MANDATORY)
 For 3+ workflow/CI changes: plan → review → test 3 representative cases → verify all steps.
