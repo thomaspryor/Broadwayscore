@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-27T18:50:09.117Z",
+  "timestamp": "2026-03-27T20:04:27.607Z",
   "stats": {
     "totalReviews": 32520,
     "alreadyFlagged": 11188,
     "dateGuardCatches": 143,
-    "directorMismatch": 962,
+    "directorMismatch": 963,
     "tvFilmSignals": 3453,
-    "londonSignals": 1044,
-    "offBroadwaySignals": 1007,
+    "londonSignals": 1045,
+    "offBroadwaySignals": 1005,
     "yearMismatch": 70,
-    "noPublishDate": 6707
+    "noPublishDate": 6706
   },
   "findings": [
     {
@@ -26236,6 +26236,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "financialtimes--unknown.json",
+      "publishDate": "2026-03-27",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -85598,33 +85616,7 @@
     },
     {
       "showId": "wicked-2003",
-      "file": "broadwayworld--david-copney.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
-      "file": "broadwayworld--emily-short.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
-      "file": "broadwayworld--katrina-fageol.json",
+      "file": "broadwayworld--armando-urdiales.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
       "findings": [
