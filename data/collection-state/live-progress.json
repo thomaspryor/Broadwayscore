@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-03-27T16:06:03.380Z",
-  "processed": 117,
-  "failed": 373,
-  "successRate": "23.9%",
+  "updatedAt": "2026-03-27T16:18:59.634Z",
+  "processed": 122,
+  "failed": 418,
+  "successRate": "22.6%",
   "tierBreakdown": {
     "playwright": 69,
     "amp": 0,
@@ -10,22 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 19,
     "brightdata": 0,
-    "archiveToday": 46,
-    "archive": 21
+    "archiveToday": 56,
+    "archive": 26
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-03-27T11:19:20.472Z",
-      "event": "bb-session",
-      "session": "7a2295aa",
-      "url": "https://nypost.com/author/johnny-oleksinski/page/5/"
-    },
-    {
-      "t": "2026-03-27T11:19:21.812Z",
-      "event": "bb-cookie-inject",
-      "domain": "nypost.com"
-    },
     {
       "t": "2026-03-27T11:20:52.621Z",
       "event": "bb-session",
@@ -123,6 +112,17 @@
     },
     {
       "t": "2026-03-27T16:00:27.205Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-27T16:16:39.462Z",
+      "event": "bb-session",
+      "session": "a9527f06",
+      "url": "https://www.wsj.com/articles/spongebob-squarepants-review-an-ocean-of-colorful-c"
+    },
+    {
+      "t": "2026-03-27T16:16:40.660Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
