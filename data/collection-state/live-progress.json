@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-27T19:15:37.070Z",
-  "processed": 44,
-  "failed": 35,
-  "successRate": "55.7%",
+  "updatedAt": "2026-03-27T19:19:10.821Z",
+  "processed": 47,
+  "failed": 42,
+  "successRate": "52.8%",
   "tierBreakdown": {
-    "playwright": 39,
+    "playwright": 42,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 4,
+    "archiveToday": 5,
     "archive": 4
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-03-27T18:30:38.751Z",
@@ -47,6 +47,17 @@
       "t": "2026-03-27T19:03:56.870Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-27T19:18:27.823Z",
+      "event": "bb-session",
+      "session": "e98898f0",
+      "url": "https://www.thestage.co.uk/reviews/grace-pervades-review-theatre-royal-bath"
+    },
+    {
+      "t": "2026-03-27T19:18:28.936Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
