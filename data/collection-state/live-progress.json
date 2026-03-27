@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-27T11:51:16.106Z",
-  "processed": 77,
-  "failed": 96,
-  "successRate": "44.5%",
+  "updatedAt": "2026-03-27T12:03:57.466Z",
+  "processed": 93,
+  "failed": 130,
+  "successRate": "41.7%",
   "tierBreakdown": {
-    "playwright": 51,
+    "playwright": 59,
     "amp": 0,
     "browserbase": 14,
     "directCookies": 0,
-    "scrapingbee": 9,
+    "scrapingbee": 12,
     "brightdata": 0,
-    "archiveToday": 19,
-    "archive": 11
+    "archiveToday": 22,
+    "archive": 16
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-03-27T09:13:58.494Z",
@@ -92,6 +92,28 @@
       "t": "2026-03-27T11:44:25.622Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-27T11:55:37.200Z",
+      "event": "bb-session",
+      "session": "df22c019",
+      "url": "https://www.wsj.com/articles/spongebob-squarepants-review-an-ocean-of-colorful-c"
+    },
+    {
+      "t": "2026-03-27T11:55:38.470Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-27T11:58:45.293Z",
+      "event": "bb-session",
+      "session": "4de96039",
+      "url": "https://www.thestage.co.uk/reviews/2017/michael-moore-terms-surrender-review-bro"
+    },
+    {
+      "t": "2026-03-27T11:58:46.572Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
