@@ -7,7 +7,9 @@
  * without scored reviews. If too many appear, the file is stale.
  *
  * Checks:
- * 1. Closed shows without critic scores should be rare (threshold: 10)
+ * 1. Cross-reference with reviews.json (when available in CI): closed shows
+ *    in mobile-shows.json must have at least one scored review in reviews.json.
+ *    Shows that don't have reviews shouldn't pass the visibility filter.
  * 2. Show count should not drop dramatically vs shows.json expectations
  */
 
@@ -16,11 +18,12 @@ const path = require('path');
 
 const MOBILE_PATH = path.join(__dirname, '..', 'public', 'data', 'mobile-shows.json');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
+const REVIEWS_PATH = path.join(__dirname, '..', 'data', 'reviews.json');
 
-// Closed shows without scores should be filtered out by generate-mobile-data.js
-// A handful may legitimately exist (recently closed, audience-only data)
-// but 17+ appeared when a stale worktree version was merged
-const MAX_CLOSED_WITHOUT_SCORE = 10;
+// Closed shows without any scored review in reviews.json should never appear
+// in mobile-shows.json — the visibility filter requires showsWithScores.
+// A small number (threshold) allows for race conditions during builds.
+const MAX_CLOSED_WITHOUT_REVIEWS = 5;
 
 function main() {
   if (!fs.existsSync(MOBILE_PATH)) {
@@ -37,25 +40,42 @@ function main() {
   console.log(`mobile-shows.json: ${mobileShows.length} shows`);
   console.log(`shows.json: ${allShows.length} shows`);
 
-  // Check 1: Closed shows without critic scores
-  const closedNoScore = mobileShows.filter(s =>
-    s.st === 'closed' && s.cs == null && (s.cr?.rc ?? 0) === 0
-  );
+  // Check 1: Cross-reference closed mobile shows against reviews.json
+  // The visibility filter is: showsWithScores.has(show.id) || show.status !== 'closed'
+  // So every closed show in mobile MUST have a scored review in reviews.json.
+  if (fs.existsSync(REVIEWS_PATH)) {
+    const reviewsRaw = JSON.parse(fs.readFileSync(REVIEWS_PATH, 'utf8'));
+    const reviews = reviewsRaw.reviews || reviewsRaw;
+    const reviewArr = Array.isArray(reviews) ? reviews : Object.values(reviews);
 
-  console.log(`\nClosed shows without scores or reviews: ${closedNoScore.length}`);
+    // Build the same showsWithScores set that generate-mobile-data.js uses
+    const showsWithScores = new Set();
+    for (const r of reviewArr) {
+      if (r.assignedScore != null) showsWithScores.add(r.showId);
+    }
 
-  if (closedNoScore.length > MAX_CLOSED_WITHOUT_SCORE) {
-    console.error(`\n❌ FAIL: mobile-shows.json contains ${closedNoScore.length} closed shows without scores (max ${MAX_CLOSED_WITHOUT_SCORE})`);
-    console.error('This usually means a stale build artifact was reintroduced by a worktree merge.');
-    console.error('Fix: run "npm run prebuild" to regenerate, or let the next Vercel deploy rebuild it.\n');
-    console.error('Shows that should not be in mobile-shows.json:');
-    for (const s of closedNoScore.slice(0, 20)) {
-      console.error(`  ${s.id} (${s.t}) — closed, no score, no reviews`);
+    const closedMobileShows = mobileShows.filter(s => s.st === 'closed');
+    const closedWithoutReviews = closedMobileShows.filter(s => !showsWithScores.has(s.id));
+
+    console.log(`\nClosed shows in mobile: ${closedMobileShows.length}`);
+    console.log(`Closed shows WITHOUT scored reviews in reviews.json: ${closedWithoutReviews.length}`);
+
+    if (closedWithoutReviews.length > MAX_CLOSED_WITHOUT_REVIEWS) {
+      console.error(`\n❌ FAIL: mobile-shows.json contains ${closedWithoutReviews.length} closed shows that have no scored reviews (max ${MAX_CLOSED_WITHOUT_REVIEWS})`);
+      console.error('These shows should not pass the visibility filter in generate-mobile-data.js.');
+      console.error('This usually means a stale build artifact was reintroduced by a worktree merge.');
+      console.error('Fix: run "npm run prebuild" to regenerate.\n');
+      console.error('Stale entries:');
+      for (const s of closedWithoutReviews.slice(0, 20)) {
+        console.error(`  ${s.id} (${s.t}) — closed, not in showsWithScores`);
+      }
+      if (closedWithoutReviews.length > 20) {
+        console.error(`  ... and ${closedWithoutReviews.length - 20} more`);
+      }
+      process.exit(1);
     }
-    if (closedNoScore.length > 20) {
-      console.error(`  ... and ${closedNoScore.length - 20} more`);
-    }
-    process.exit(1);
+  } else {
+    console.log('\n⚠️  reviews.json not available — skipping cross-reference check');
   }
 
   // Check 2: Basic sanity — mobile should have at least 50% of non-closed shows
