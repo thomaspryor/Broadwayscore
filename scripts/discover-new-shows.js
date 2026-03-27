@@ -1910,7 +1910,7 @@ async function discoverShows() {
         }
         if (urlsAssigned > 0) {
           urlData._meta = urlData._meta || {};
-          urlData._meta.lastUpdated = new Date().toISOString().split('T')[0];
+          urlData._meta.lastUpdated = new Date().toISOString();
           fs.writeFileSync(URLS_PATH, JSON.stringify(urlData, null, 2) + '\n');
           console.log(`Assigned ${urlsAssigned} ShowScore URLs to new shows`);
         }

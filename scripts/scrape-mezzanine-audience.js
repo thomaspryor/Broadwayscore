@@ -559,7 +559,7 @@ async function main() {
   if (!dryRun) {
     // Save
     audienceBuzz._meta = audienceBuzz._meta || {};
-    audienceBuzz._meta.lastUpdated = new Date().toISOString().split('T')[0];
+    audienceBuzz._meta.lastUpdated = new Date().toISOString();
     if (!audienceBuzz._meta.sources) audienceBuzz._meta.sources = [];
     if (!audienceBuzz._meta.sources.includes('Mezzanine')) {
       audienceBuzz._meta.sources.push('Mezzanine');

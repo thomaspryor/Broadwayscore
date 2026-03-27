@@ -88,7 +88,7 @@ additionalReviews.forEach(newReview => {
 
 // Save
 data.reviews = reviews;
-data._meta.lastUpdated = new Date().toISOString().split('T')[0];
+data._meta.lastUpdated = new Date().toISOString();
 fs.writeFileSync(reviewsPath, JSON.stringify(data, null, 2));
 
 console.log(`\nApplied ${fixCount} fixes`);

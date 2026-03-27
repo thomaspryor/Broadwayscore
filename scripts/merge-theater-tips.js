@@ -131,7 +131,7 @@ function main() {
 
   if (!isDryRun) {
     // Update meta
-    metadata._meta.lastUpdated = new Date().toISOString().split('T')[0];
+    metadata._meta.lastUpdated = new Date().toISOString();
     if (!metadata._meta.sources.includes('newyorkcitytheatre.com')) {
       metadata._meta.sources.push('newyorkcitytheatre.com');
     }

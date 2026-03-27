@@ -402,7 +402,7 @@ async function main() {
 
   // 5. Save
   if (!dryRun && updated > 0) {
-    audienceBuzz._meta.lastUpdated = new Date().toISOString().split('T')[0];
+    audienceBuzz._meta.lastUpdated = new Date().toISOString();
     if (!audienceBuzz._meta.sources.includes('Theatr')) {
       audienceBuzz._meta.sources.push('Theatr');
     }
