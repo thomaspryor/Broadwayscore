@@ -1,18 +1,41 @@
 {
-  "updatedAt": "2026-03-27T07:02:13.944Z",
-  "processed": 8,
-  "failed": 2,
-  "successRate": "80.0%",
+  "updatedAt": "2026-03-27T07:05:00.820Z",
+  "processed": 14,
+  "failed": 3,
+  "successRate": "82.4%",
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 10,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 1,
+    "archiveToday": 2,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-03-27T07:03:35.324Z",
+      "event": "bb-session",
+      "session": "a0a2a8dd",
+      "url": "https://www.thestage.co.uk/reviews/teeth-n-smiles-review-duke-of-yorks-theatre-l"
+    },
+    {
+      "t": "2026-03-27T07:03:36.912Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-27T07:04:24.311Z",
+      "event": "bb-session",
+      "session": "0e7e9ff8",
+      "url": "https://variety.com/gallery/celebrity-photos-red-carpet-march-2026/"
+    },
+    {
+      "t": "2026-03-27T07:04:25.881Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }

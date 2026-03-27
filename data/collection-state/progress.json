@@ -7,11 +7,18 @@
     "teeth-n-smiles-west-end-2026/artsdesk--unknown.json",
     "teeth-n-smiles-west-end-2026/city-am--unknown.json",
     "teeth-n-smiles-west-end-2026/london-box-office--unknown.json",
-    "teeth-n-smiles-west-end-2026/radio-times--unknown.json"
+    "teeth-n-smiles-west-end-2026/radio-times--unknown.json",
+    "teeth-n-smiles-west-end-2026/theatre-weekly--unknown.json",
+    "teeth-n-smiles-west-end-2026/theupcoming--unknown.json",
+    "teeth-n-smiles-west-end-2026/times-uk--clive-davis.json",
+    "teeth-n-smiles-west-end-2026/variety--unknown.json",
+    "teeth-n-smiles-west-end-2026/standard--unknown.json",
+    "teeth-n-smiles-west-end-2026/times-uk--unknown.json"
   ],
   "failed": [
     "john-proctor-is-the-villain-west-end-2026/thestage--unknown.json",
-    "teeth-n-smiles-west-end-2026/broadwayworld--unknown.json"
+    "teeth-n-smiles-west-end-2026/broadwayworld--unknown.json",
+    "teeth-n-smiles-west-end-2026/thestage--sam-marlowe.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -20,10 +27,18 @@
       "john-proctor-is-the-villain-west-end-2026/whatsonstage--unknown.json",
       "teeth-n-smiles-west-end-2026/thereviewshub--unknown.json",
       "teeth-n-smiles-west-end-2026/artsdesk--unknown.json",
-      "teeth-n-smiles-west-end-2026/london-box-office--unknown.json"
+      "teeth-n-smiles-west-end-2026/london-box-office--unknown.json",
+      "teeth-n-smiles-west-end-2026/theatre-weekly--unknown.json",
+      "teeth-n-smiles-west-end-2026/theupcoming--unknown.json",
+      "teeth-n-smiles-west-end-2026/times-uk--clive-davis.json",
+      "teeth-n-smiles-west-end-2026/standard--unknown.json",
+      "teeth-n-smiles-west-end-2026/times-uk--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/teeth-n-smiles-west-end-2026/variety--unknown.json",
+      "teeth-n-smiles-west-end-2026/variety--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "john-proctor-is-the-villain-west-end-2026/timeout--unknown.json",
@@ -32,11 +47,35 @@
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/teeth-n-smiles-west-end-2026/broadwayworld--unknown.json"
+      "data/review-texts/teeth-n-smiles-west-end-2026/broadwayworld--unknown.json",
+      "data/review-texts/teeth-n-smiles-west-end-2026/thestage--sam-marlowe.json"
     ],
     "archive": []
   },
   "startTime": "2026-03-27T06:56:32.577Z",
-  "lastProcessed": "teeth-n-smiles-west-end-2026/radio-times--unknown.json",
-  "log": []
+  "lastProcessed": "teeth-n-smiles-west-end-2026/times-uk--unknown.json",
+  "log": [
+    {
+      "t": "2026-03-27T07:03:35.324Z",
+      "event": "bb-session",
+      "session": "a0a2a8dd",
+      "url": "https://www.thestage.co.uk/reviews/teeth-n-smiles-review-duke-of-yorks-theatre-l"
+    },
+    {
+      "t": "2026-03-27T07:03:36.912Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-27T07:04:24.311Z",
+      "event": "bb-session",
+      "session": "0e7e9ff8",
+      "url": "https://variety.com/gallery/celebrity-photos-red-carpet-march-2026/"
+    },
+    {
+      "t": "2026-03-27T07:04:25.881Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
