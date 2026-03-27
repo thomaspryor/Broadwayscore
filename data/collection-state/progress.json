@@ -69,7 +69,11 @@
     "tootsie-2019/latimes--charles-mcnulty.json",
     "the-waverly-gallery-2018/vulture--matt-windman.json",
     "the-lifespan-of-a-fact-2018/vulture--sara-holden.json",
-    "bernhardthamlet-2018/stage-left--william-wolf.json"
+    "bernhardthamlet-2018/stage-left--william-wolf.json",
+    "three-tall-women-2018/theater-life--david-sheward.json",
+    "latin-history-for-morons-2017/stage-left--william-wolf.json",
+    "the-bands-visit-2017/off-script-with-dan-dwyer--wendy-caster.json",
+    "prince-of-broadway-2017/vulture--jesse-green.json"
   ],
   "failed": [
     "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
@@ -150,7 +154,13 @@
     "the-lifespan-of-a-fact-2018/vulture--sarah-holdren.json",
     "saint-joan-2018/show-buzz-nyc--laura-heller.json",
     "travesties-2018/washpost--peter-marks.json",
-    "children-of-a-lesser-god-2018/journal-inquirer--tim-leininger.json"
+    "children-of-a-lesser-god-2018/journal-inquirer--tim-leininger.json",
+    "children-of-a-lesser-god-2018/melindas-malarky--melinda-pressler.json",
+    "three-tall-women-2018/usatoday--charles-isherwood.json",
+    "angels-in-america-2018/theater-news-online--david-cote.json",
+    "escape-to-margaritaville-2018/bloomberg--chris-rovzar.json",
+    "escape-to-margaritaville-2018/journal-inquirer--tim-leininger.json",
+    "spongebob-squarepants-2017/wsj--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -204,7 +214,10 @@
       "the-cottage-2023/theatermania--peter-hempstead.json",
       "grey-house-2023/slash-film--caroline-cao.json",
       "topdog-underdog-2022/corey-hawkins--unknown.json",
-      "bernhardthamlet-2018/stage-left--william-wolf.json"
+      "bernhardthamlet-2018/stage-left--william-wolf.json",
+      "three-tall-women-2018/theater-life--david-sheward.json",
+      "latin-history-for-morons-2017/stage-left--william-wolf.json",
+      "the-bands-visit-2017/off-script-with-dan-dwyer--wendy-caster.json"
     ],
     "amp": [],
     "browserbase": [
@@ -246,11 +259,12 @@
       "the-skin-of-our-teeth-2022/vulture--helen-shaw.json",
       "tootsie-2019/latimes--charles-mcnulty.json",
       "the-waverly-gallery-2018/vulture--matt-windman.json",
-      "the-lifespan-of-a-fact-2018/vulture--sara-holden.json"
+      "the-lifespan-of-a-fact-2018/vulture--sara-holden.json",
+      "prince-of-broadway-2017/vulture--jesse-green.json"
     ]
   },
   "startTime": "2026-03-27T18:27:24.762Z",
-  "lastProcessed": "children-of-a-lesser-god-2018/journal-inquirer--tim-leininger.json",
+  "lastProcessed": "prince-of-broadway-2017/vulture--jesse-green.json",
   "log": [
     {
       "t": "2026-03-27T18:30:38.751Z",
@@ -328,6 +342,17 @@
       "t": "2026-03-27T19:24:57.294Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-27T19:29:58.885Z",
+      "event": "bb-session",
+      "session": "814b4c0e",
+      "url": "https://www.wsj.com/articles/spongebob-squarepants-review-an-ocean-of-colorful-c"
+    },
+    {
+      "t": "2026-03-27T19:30:00.123Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

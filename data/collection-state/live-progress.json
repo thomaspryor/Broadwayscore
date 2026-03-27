@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-27T19:29:08.015Z",
-  "processed": 70,
-  "failed": 79,
-  "successRate": "47.0%",
+  "updatedAt": "2026-03-27T19:32:10.550Z",
+  "processed": 74,
+  "failed": 85,
+  "successRate": "46.5%",
   "tierBreakdown": {
-    "playwright": 50,
+    "playwright": 53,
     "amp": 0,
     "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 4,
     "brightdata": 0,
     "archiveToday": 7,
-    "archive": 12
+    "archive": 13
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-03-27T18:30:38.751Z",
@@ -91,6 +91,17 @@
       "t": "2026-03-27T19:24:57.294Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-27T19:29:58.885Z",
+      "event": "bb-session",
+      "session": "814b4c0e",
+      "url": "https://www.wsj.com/articles/spongebob-squarepants-review-an-ocean-of-colorful-c"
+    },
+    {
+      "t": "2026-03-27T19:30:00.123Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
