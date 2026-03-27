@@ -73,7 +73,8 @@
     "fat-ham-2023/nytimes--jesse-green.json",
     "life-of-pi-2023/newyorker--unknown.json",
     "some-like-it-hot-2022/newyorker--unknown.json",
-    "topdog-underdog-2022/corey-hawkins--unknown.json"
+    "topdog-underdog-2022/corey-hawkins--unknown.json",
+    "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json"
   ],
   "failed": [
     "heartbreak-hotel-off-broadway-2026/playbill--unknown.json",
@@ -154,7 +155,16 @@
     "cost-of-living-2022/newyorker--vinson-cunningham.json",
     "into-the-woods-2022/newyorker--alexandra-schwartz.json",
     "the-kite-runner-2022/thewrap--robert-hofler.json",
-    "girl-from-the-north-country-2022/times-uk--ann-treneman.json"
+    "girl-from-the-north-country-2022/times-uk--ann-treneman.json",
+    "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/new-york-sun--elysa-gardner.json",
+    "the-skin-of-our-teeth-2022/vulture--helen-shaw.json",
+    "the-skin-of-our-teeth-2022/dtli--ran-xia.json",
+    "trouble-in-mind-2021/deadline--greg-evans.json",
+    "trouble-in-mind-2021/theatermania--jesse-green.json",
+    "diana-the-musical-2021/nbcnews--liz-shannon-miller.json",
+    "the-lehman-trilogy-2021/thestage--nicole-serratore.json",
+    "is-this-a-room-2021/washpost--peter-marks.json",
+    "west-side-story-2020/vulture--helen-shaw.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -224,7 +234,9 @@
       "data/review-texts/the-last-five-years-2025/nypost--lou-lumenick.json",
       "the-last-five-years-2025/nypost--lou-lumenick.json",
       "data/review-texts/fat-ham-2023/nytimes--jesse-green.json",
-      "fat-ham-2023/nytimes--jesse-green.json"
+      "fat-ham-2023/nytimes--jesse-green.json",
+      "data/review-texts/thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
+      "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -256,7 +268,8 @@
       "data/review-texts/once-upon-a-one-more-time-2023/theatermania--david-gordon.json",
       "data/review-texts/the-thanksgiving-play-2023/theatermania--adam-feldman.json",
       "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/theatermania--adam-feldman.json",
-      "data/review-texts/take-me-out-2022/theatermania--jesse-green.json"
+      "data/review-texts/take-me-out-2022/theatermania--jesse-green.json",
+      "data/review-texts/trouble-in-mind-2021/theatermania--jesse-green.json"
     ],
     "archive": [
       "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json",
@@ -271,7 +284,7 @@
     ]
   },
   "startTime": "2026-03-27T09:10:33.099Z",
-  "lastProcessed": "girl-from-the-north-country-2022/times-uk--ann-treneman.json",
+  "lastProcessed": "west-side-story-2020/vulture--helen-shaw.json",
   "log": [
     {
       "t": "2026-03-27T09:13:58.494Z",
@@ -339,6 +352,17 @@
       "t": "2026-03-27T11:36:23.250Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-27T11:44:24.444Z",
+      "event": "bb-session",
+      "session": "59e69c62",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/thoughts-of-a-colored-man-broad"
+    },
+    {
+      "t": "2026-03-27T11:44:25.622Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
