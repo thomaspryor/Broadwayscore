@@ -172,6 +172,13 @@ export function generateTheaterSchema(theater: {
       '@type': 'TheaterEvent',
       name: theater.currentShow.title,
       url: `${BASE_URL}/show/${theater.currentShow.slug}`,
+      location: {
+        '@type': 'PerformingArtsTheater',
+        name: theater.name,
+        ...(theater.address && { address: toPostalAddress(theater.address) }),
+      },
+      eventStatus: 'https://schema.org/EventScheduled',
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
     } : undefined,
   };
 }
@@ -206,14 +213,19 @@ export function generateItemListSchema(items: {
         ...(item.description && { description: item.description }),
       };
 
-      // Location (required for TheaterEvent)
-      if (item.venue) {
-        event.location = {
-          '@type': 'PerformingArtsTheater',
-          name: item.venue,
-          address: item.theaterAddress || item.venue,
-        };
-      }
+      // Location (required for TheaterEvent per Google structured data)
+      event.location = item.venue ? {
+        '@type': 'PerformingArtsTheater',
+        name: item.venue,
+        address: item.theaterAddress ? toPostalAddress(item.theaterAddress, getMarketCountry(item.category)) : item.venue,
+      } : {
+        '@type': 'PerformingArtsTheater',
+        name: isLondonMarket(item.category) ? 'West End Theatre' : item.category === 'off-broadway' ? 'Off-Broadway Theater' : 'Broadway Theater',
+        address: toPostalAddress(
+          isLondonMarket(item.category) ? 'London, England' : 'New York, NY',
+          getMarketCountry(item.category)
+        ),
+      };
 
       // Dates
       if (item.startDate) {
@@ -223,12 +235,9 @@ export function generateItemListSchema(items: {
         event.endDate = item.endDate;
       }
 
-      // Event status
-      if (item.status) {
-        // Closed shows completed their run — they weren't cancelled
-        event.eventStatus = 'https://schema.org/EventScheduled';
-        event.eventAttendanceMode = 'https://schema.org/OfflineEventAttendanceMode';
-      }
+      // Event status (required for TheaterEvent per Google structured data)
+      event.eventStatus = 'https://schema.org/EventScheduled';
+      event.eventAttendanceMode = 'https://schema.org/OfflineEventAttendanceMode';
 
       // Organizer
       event.organizer = {
