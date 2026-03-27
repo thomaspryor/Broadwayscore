@@ -100,6 +100,8 @@ export default function ReviewPage({ params }: { params: { slug: string } }) {
           addressCountry: 'US',
         },
       },
+      eventStatus: 'https://schema.org/EventScheduled',
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
     },
     reviewRating: {
       '@type': 'Rating',

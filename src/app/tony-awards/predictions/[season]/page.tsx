@@ -171,6 +171,13 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
         '@type': 'TheaterEvent',
         name: show.title,
         url: `${BASE_URL}/show/${show.slug}`,
+        location: {
+          '@type': 'PerformingArtsTheater',
+          name: show.venue || 'Broadway Theater',
+          address: show.venue || 'New York, NY',
+        },
+        eventStatus: 'https://schema.org/EventScheduled',
+        eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
       },
     })),
   }));
