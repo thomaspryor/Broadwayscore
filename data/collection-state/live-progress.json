@@ -1,18 +1,31 @@
 {
-  "updatedAt": "2026-03-27T09:13:07.529Z",
-  "processed": 5,
-  "failed": 5,
+  "updatedAt": "2026-03-27T09:16:22.685Z",
+  "processed": 10,
+  "failed": 10,
   "successRate": "50.0%",
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 6,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 1,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-03-27T09:13:58.494Z",
+      "event": "bb-session",
+      "session": "0a7f018e",
+      "url": "https://www.wsj.com/articles/the-other-place-review-greek-roots-naturalistic-sur"
+    },
+    {
+      "t": "2026-03-27T09:15:02.325Z",
+      "event": "bb-session",
+      "session": "252cfa00",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/john-legend-lynn-nottage-liesl-"
+    }
+  ]
 }
