@@ -1,14 +1,18 @@
 {
-  "totalCandidates": 1,
-  "cdxFound": 0,
+  "totalCandidates": 4,
+  "cdxFound": 3,
   "cdxNotFound": 0,
-  "recovered": 0,
+  "recovered": 3,
   "recoveredByTier": {
-    "1": 0,
+    "1": 1,
     "2": 0,
-    "3": 0
+    "3": 2
   },
-  "recoveredByDomain": {},
+  "recoveredByDomain": {
+    "timeout.com": 1,
+    "standard.co.uk": 1,
+    "broadwayworld.com": 1
+  },
   "tooShort": 0,
   "garbage": 0,
   "wrongShow": 0,
