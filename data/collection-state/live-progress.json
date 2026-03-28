@@ -1,74 +1,49 @@
 {
-  "updatedAt": "2026-03-28T08:23:28.800Z",
-  "processed": 86,
-  "failed": 317,
-  "successRate": "21.3%",
+  "updatedAt": "2026-03-28T08:44:12.004Z",
+  "processed": 29,
+  "failed": 21,
+  "successRate": "58.0%",
   "tierBreakdown": {
-    "playwright": 48,
+    "playwright": 24,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 11,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 143,
-    "archive": 27
+    "archiveToday": 3,
+    "archive": 4
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-03-28T03:50:35.596Z",
+      "t": "2026-03-28T08:34:26.407Z",
       "event": "bb-session",
-      "session": "2f3ab7f6",
-      "url": "https://www.thestage.co.uk/reviews/marie-and-rosetta-review-rose-theatre-kingsto"
+      "session": "da9ea14f",
+      "url": "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-th"
     },
     {
-      "t": "2026-03-28T03:50:36.625Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "t": "2026-03-28T08:35:06.153Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    28 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
     },
     {
-      "t": "2026-03-28T03:52:21.452Z",
+      "t": "2026-03-28T08:39:13.784Z",
       "event": "bb-session",
-      "session": "d1eca5ea",
-      "url": "https://www.thestage.co.uk/reviews/marie-and-rosetta-review-rose-theatre-kingsto"
-    },
-    {
-      "t": "2026-03-28T03:52:22.533Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-03-28T03:59:30.389Z",
-      "event": "bb-session",
-      "session": "00c6bbd4",
-      "url": "https://www.thestage.co.uk/reviews/beautiful-little-fool-review-southwark-playho"
-    },
-    {
-      "t": "2026-03-28T03:59:31.552Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-03-28T04:03:33.352Z",
-      "event": "bb-session",
-      "session": "e2fe5579",
+      "session": "30ae0de6",
       "url": "https://www.thestage.co.uk/reviews/paddington-the-musical-review-savoy-theatre-l"
     },
     {
-      "t": "2026-03-28T04:03:34.344Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "t": "2026-03-28T08:39:53.447Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    28 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
     },
     {
-      "t": "2026-03-28T04:09:01.741Z",
+      "t": "2026-03-28T08:41:09.584Z",
       "event": "bb-session",
-      "session": "34faa373",
-      "url": "https://www.thestage.co.uk/reviews/suffs-review-at-music-box-theatre-new-york-by"
-    },
-    {
-      "t": "2026-03-28T04:09:02.926Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "session": "bac03fc1",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
     }
   ]
 }
