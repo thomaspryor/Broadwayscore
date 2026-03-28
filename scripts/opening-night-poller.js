@@ -689,6 +689,25 @@ async function runAggregators(show) {
             JSON.stringify({ ourShowId: show.id, wpPostId: post.id, fetchedAt: new Date().toISOString().slice(0, 10) }, null, 2) + '\n');
 
           for (const r of wetReviews) {
+            // Validate URL date: extract date from URL slug and reject if >60 days before opening
+            let urlDate = null;
+            if (r.url) {
+              // Common UK URL date patterns: /2026/mar/26/ or /2026-03-26/ or /2026/03/26/
+              const dateMatch = r.url.match(/\/(\d{4})\/(\w{3}|\d{2})\/(\d{1,2})\//);
+              if (dateMatch) {
+                const months = { jan:0, feb:1, mar:2, apr:3, may:4, jun:5, jul:6, aug:7, sep:8, oct:9, nov:10, dec:11 };
+                const y = parseInt(dateMatch[1]);
+                const m = months[dateMatch[2].toLowerCase()] ?? (parseInt(dateMatch[2]) - 1);
+                const d = parseInt(dateMatch[3]);
+                if (!isNaN(y) && !isNaN(m) && !isNaN(d)) urlDate = new Date(y, m, d);
+              }
+            }
+            const openingMs = show.openingDate ? new Date(show.openingDate).getTime() : null;
+            if (urlDate && openingMs && (openingMs - urlDate.getTime()) > 60 * 86400000) {
+              console.log(`    ✗ Rejecting ${r.outlet} URL: date ${urlDate.toISOString().slice(0,10)} is >60 days before opening ${show.openingDate}`);
+              // Clear the bad URL so it falls back to the roundup post link
+              r.url = '';
+            }
             results.push({
               showId: show.id,
               outletId: normalizeOutlet(r.outlet),
@@ -699,6 +718,8 @@ async function runAggregators(show) {
               score: Math.round((r.stars / 5) * 100),
               scoreSource: 'westendtheatre-star-rating',
               source: 'westendtheatre',
+              // Pass roundup post date so createReviewFile can validate against opening date
+              publishDate: post.date ? post.date.slice(0, 10) : undefined,
             });
           }
           break;
