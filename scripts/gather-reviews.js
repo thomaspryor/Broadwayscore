@@ -2130,15 +2130,27 @@ function createReviewFile(showId, reviewData, options = {}) {
     const urlIndex = getGlobalUrlIndex();
     const existing = urlIndex.get(normalizeUrl(reviewData.url));
     if (existing && existing.showId !== showId) {
-      // Check if existing file is a roundup or combined review — those span shows legitimately
+      // Check if existing file is a roundup/combined review (spans shows legitimately)
+      // or is junk (invalid/wrongShow/wrongContent) that shouldn't block real reviews
       let allowCrossShow = false;
+      let existingIsJunk = false;
       try {
         const existingPath = path.join(REVIEW_TEXTS_DIR, existing.showId, existing.file);
         const existingData = JSON.parse(fs.readFileSync(existingPath, 'utf8'));
         allowCrossShow = existingData.isRoundupArticle === true || existingData.isCombinedReview === true;
+        // Don't let invalid/wrong-content files block legitimate reviews
+        existingIsJunk = existingData.contentTier === 'invalid'
+          || existingData.wrongShow === true
+          || existingData.incompleteReason === 'wrong_content'
+          || existingData.incompleteReason === 'scraper_garbage'
+          || (existingData.contentVerification && existingData.contentVerification.wrongArticle === true);
       } catch (e) { /* file unreadable, treat as non-exception */ }
 
-      if (!allowCrossShow) {
+      if (existingIsJunk) {
+        // Existing file is junk — let the new review through regardless
+        console.log(`    ⟳ Overriding ${existing.showId}/${existing.file} (junk: invalid/wrongContent) — allowing URL for ${showId}`);
+        // Fall through to save
+      } else if (!allowCrossShow) {
         // Instead of first-writer-wins, compare which production is correct.
         // Use review year proximity, falling back to most-recent-production-wins.
         const yearMap = getShowYearMap();
