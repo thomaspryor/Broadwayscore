@@ -110,6 +110,8 @@ function getFoundOutletIds(showId) {
     if (!file.endsWith('.json') || file === 'failed-fetches.json') continue;
     try {
       const data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
+      // Skip wrongProduction/wrongShow files — they shouldn't block re-discovery
+      if (data.wrongProduction || data.wrongShow) continue;
       if (data.outletId) outletIds.add(data.outletId.toLowerCase());
     } catch {}
   }
@@ -575,6 +577,8 @@ async function runAggregators(show) {
               const outletLine = before.split('\n').filter(l => l.trim()).pop()?.trim() || '';
               if (!outletLine || outletLine.length < 2 || outletLine.length > 50) continue;
               if (outletLine.startsWith('"') || outletLine.startsWith('\u201c')) continue;
+              // Skip table headers parsed as outlet names
+              if (/publication|rating|critic/i.test(outletLine)) continue;
               wetReviews.push({ outlet: outletLine, stars, critic: 'Unknown' });
             }
           }
