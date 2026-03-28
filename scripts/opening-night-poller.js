@@ -450,7 +450,9 @@ async function runAggregators(show) {
       for (const trUrl of trUrls) {
         try {
           const result = await fetchPage(trUrl, { renderJs: false });
-          if (result && result.content && result.content.length > 1000) {
+          // Check content is a real roundup page, not a 404 error page (can be 400KB+)
+          if (result && result.content && result.content.length > 1000 &&
+              (result.content.includes('★') || result.content.includes('reviews-roundup') || result.content.includes('star'))) {
             trHtml = result.content;
             console.log(`    Found at: ${trUrl} (via ${result.source})`);
             break;
