@@ -5,7 +5,8 @@
     "broken-glass-west-end-2026/independent--steve-fowler.json",
     "chinese-republicans-off-broadway-2026/the-interested-bystander--cary-wong.json",
     "chess-2025/billboard--rebecca-milzoff.json",
-    "chess-2025/playbill--logan-culwell-block.json"
+    "chess-2025/playbill--logan-culwell-block.json",
+    "the-producers-west-end-2025/whatsonstage--unknown.json"
   ],
   "failed": [
     "to-kill-a-mockingbird-west-end-2026/guardian--unknown.json",
@@ -31,14 +32,24 @@
     "the-hunger-games-on-stage-west-end-2025/thestage--unknown.json",
     "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json",
     "chess-2025/talkinbroadway--unknown.json",
-    "the-producers-west-end-2025/thestage--paul-vale.json"
+    "the-producers-west-end-2025/thestage--paul-vale.json",
+    "the-producers-west-end-2025/times-uk--clive-davis.json",
+    "burlesque-west-end-2026/broadwayworld--unknown.json",
+    "hercules-west-end-2025/thestage--sam-marlowe.json",
+    "redwood-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "redwood-2025/gmanetwork--stuart-santiago.json",
+    "redwood-2025/juiceph--wanggo-gallaga.json",
+    "cult-of-love-2024/talkinbroadway--matthew-murray.json",
+    "swept-away-2024/nytg--allison-considine.json",
+    "tammy-faye-2024/times-uk--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "broken-glass-west-end-2026/independent--samuel-mathewson.json",
       "chinese-republicans-off-broadway-2026/the-interested-bystander--cary-wong.json",
-      "chess-2025/playbill--logan-culwell-block.json"
+      "chess-2025/playbill--logan-culwell-block.json",
+      "the-producers-west-end-2025/whatsonstage--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -62,7 +73,10 @@
       "data/review-texts/the-hunger-games-on-stage-west-end-2025/broadwayworld--cindy-marcolina.json",
       "data/review-texts/the-hunger-games-on-stage-west-end-2025/thestage--unknown.json",
       "data/review-texts/chess-2025/talkinbroadway--unknown.json",
-      "data/review-texts/the-producers-west-end-2025/thestage--paul-vale.json"
+      "data/review-texts/the-producers-west-end-2025/thestage--paul-vale.json",
+      "data/review-texts/burlesque-west-end-2026/broadwayworld--unknown.json",
+      "data/review-texts/hercules-west-end-2025/thestage--sam-marlowe.json",
+      "data/review-texts/cult-of-love-2024/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "grace-pervades-west-end-2026/thestage--unknown.json",
@@ -70,7 +84,7 @@
     ]
   },
   "startTime": "2026-03-28T03:40:18.572Z",
-  "lastProcessed": "the-producers-west-end-2025/thestage--paul-vale.json",
+  "lastProcessed": "tammy-faye-2024/times-uk--jesse-green.json",
   "log": [
     {
       "t": "2026-03-28T03:46:20.601Z",
@@ -113,6 +127,17 @@
     },
     {
       "t": "2026-03-28T03:59:38.809Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-28T04:01:50.934Z",
+      "event": "bb-session",
+      "session": "500502f0",
+      "url": "https://www.thestage.co.uk/review-round-ups/hercules-at-the-theatre-royal-drury-"
+    },
+    {
+      "t": "2026-03-28T04:01:52.418Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
