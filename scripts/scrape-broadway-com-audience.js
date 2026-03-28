@@ -155,14 +155,35 @@ async function discoverFromSitemap() {
   if (!isBotChallenge(rawXml) && rawXml.includes('<url>')) {
     xml = rawXml;
   } else {
-    // Bot-challenged — use scraper fallback
-    console.log('  Sitemap bot-challenged, trying scraper fallback...');
-    try {
-      const result = await fetchPage('https://www.broadway.com/sitemap.xml', { renderJs: true });
-      xml = result?.content || '';
-    } catch (e) {
-      console.log(`  Sitemap fetch failed: ${e.message}`);
-      return [];
+    // Bot-challenged — use ScrapingBee (returns raw XML, no JS rendering needed)
+    const sbKey = process.env.SCRAPINGBEE_API_KEY;
+    if (sbKey) {
+      console.log('  Sitemap bot-challenged, trying ScrapingBee...');
+      try {
+        const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${sbKey}&url=${encodeURIComponent('https://www.broadway.com/sitemap.xml')}&render_js=false&premium_proxy=true`;
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 30000);
+        const res = await fetch(apiUrl, { signal: controller.signal });
+        clearTimeout(timeout);
+        if (res.status === 200) {
+          xml = await res.text();
+        } else {
+          console.log(`  ScrapingBee returned ${res.status} for sitemap`);
+        }
+      } catch (e) {
+        console.log(`  ScrapingBee sitemap fetch failed: ${e.message}`);
+      }
+    }
+    // Fallback: try Playwright (may not work for XML but worth trying)
+    if (!xml || !xml.includes('/shows/')) {
+      console.log('  Trying Playwright for sitemap...');
+      try {
+        const result = await fetchPage('https://www.broadway.com/sitemap.xml', { renderJs: true });
+        xml = result?.content || '';
+      } catch (e) {
+        console.log(`  Sitemap fetch failed: ${e.message}`);
+        return [];
+      }
     }
   }
 
