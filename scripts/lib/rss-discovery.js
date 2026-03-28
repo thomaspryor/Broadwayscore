@@ -25,6 +25,8 @@ const THEATER_FEEDS = [
   // Guardian Stage removed: covers all performing arts globally, too broad for date-window filtering.
   // Use Guardian Open Platform API in site-search-discovery.js instead.
   { url: 'https://www.broadwaynews.com/tag/review/rss/', outletId: 'broadwaynews', name: 'Broadway News Reviews', needsFilter: true },
+  { url: 'https://nystagereview.com/feed/', outletId: 'nysr', name: 'NY Stage Review', needsFilter: true },
+  { url: 'https://www.newyorktheater.me/feed/', outletId: 'nyt-theater', name: 'NY Theater', needsFilter: true },
 ];
 
 // West End theater feeds (verified March 2026)
