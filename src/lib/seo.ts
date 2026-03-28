@@ -130,7 +130,7 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string) {
       '@type': 'Offer',
       url: link.url,
       priceCurrency: currency,
-      price: link.priceFrom,
+      ...(link.priceFrom && { price: link.priceFrom }),
       availability: 'https://schema.org/InStock',
       seller: {
         '@type': 'Organization',
@@ -487,13 +487,8 @@ export function generateOutletSchema(outlet: {
     }),
     description: `${outlet.name} has published ${outlet.reviewCount} Broadway reviews with an average score of ${outlet.avgScore}/100. Tier ${outlet.tier} publication.`,
     knowsAbout: 'Broadway Theater Reviews',
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: toFiveStarScale(outlet.avgScore),
-      bestRating: 5,
-      worstRating: 1,
-      reviewCount: outlet.reviewCount,
-    },
+    // Note: AggregateRating is not valid on Organization per Google's structured data spec.
+    // Only supported on Product, Recipe, LocalBusiness, etc. Removed to avoid GSC warnings.
     ...(outlet.criticCount && { numberOfEmployees: outlet.criticCount }),
   };
 }
@@ -518,13 +513,8 @@ export function generateCriticSchema(critic: {
       ? critic.outlets.map(o => ({ '@type': 'Organization' as const, name: o }))
       : { '@type': 'Organization', name: critic.primaryOutlet },
     description: `${critic.name} is a Broadway theater critic at ${critic.primaryOutlet} with ${critic.reviewCount} reviews and an average score of ${critic.avgScore}/100.`,
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: toFiveStarScale(critic.avgScore),
-      bestRating: 5,
-      worstRating: 1,
-      reviewCount: critic.reviewCount,
-    },
+    // Note: AggregateRating is not valid on Person per Google's structured data spec.
+    // Only supported on Product, Recipe, LocalBusiness, etc. Removed to avoid GSC warnings.
   };
 }
 
