@@ -1,18 +1,52 @@
 {
-  "updatedAt": "2026-03-28T03:48:47.060Z",
-  "processed": 3,
-  "failed": 7,
-  "successRate": "30.0%",
+  "updatedAt": "2026-03-28T03:59:45.302Z",
+  "processed": 5,
+  "failed": 15,
+  "successRate": "25.0%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 4,
+    "archiveToday": 8,
     "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-03-28T03:50:35.596Z",
+      "event": "bb-session",
+      "session": "2f3ab7f6",
+      "url": "https://www.thestage.co.uk/reviews/marie-and-rosetta-review-rose-theatre-kingsto"
+    },
+    {
+      "t": "2026-03-28T03:50:36.625Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-28T03:52:21.452Z",
+      "event": "bb-session",
+      "session": "d1eca5ea",
+      "url": "https://www.thestage.co.uk/reviews/marie-and-rosetta-review-rose-theatre-kingsto"
+    },
+    {
+      "t": "2026-03-28T03:52:22.533Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-28T03:59:30.389Z",
+      "event": "bb-session",
+      "session": "00c6bbd4",
+      "url": "https://www.thestage.co.uk/reviews/beautiful-little-fool-review-southwark-playho"
+    },
+    {
+      "t": "2026-03-28T03:59:31.552Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }
