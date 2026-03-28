@@ -964,7 +964,7 @@ async function runAggregators(show) {
  * @param {string} [openingDate] - Show's opening date (YYYY-MM-DD). Enables date-window
  *   filtering on narrow theater feeds instead of title matching.
  */
-async function runRSSFeeds(showTitle, knownUrls, openingDate = null) {
+async function runRSSFeeds(showTitle, knownUrls, openingDate = null, market = 'broadway') {
   console.log('\n[Layer 2] RSS Feeds...');
   try {
     const results = await checkRSSFeeds(showTitle, {
@@ -972,6 +972,7 @@ async function runRSSFeeds(showTitle, knownUrls, openingDate = null) {
       knownUrls,
       verbose: true,
       openingDate,
+      market,
     });
     console.log(`  [Layer 2 Total] ${results.length} reviews from RSS`);
     return results;
@@ -1170,7 +1171,7 @@ async function pollCycle() {
   const aggResults = await runAggregators(show);
 
   // ── Layer 2: RSS ──
-  const rssResults = await runRSSFeeds(show.title, knownUrls, show.openingDate || null);
+  const rssResults = await runRSSFeeds(show.title, knownUrls, show.openingDate || null, market);
 
   // ── Layer 3: Site Search ──
   let siteSearchResults = [];

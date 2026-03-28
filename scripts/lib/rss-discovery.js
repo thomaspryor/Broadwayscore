@@ -18,21 +18,21 @@ const http = require('http');
 // openingWindow: true — marks feeds narrow enough to use ±2-day date window when openingDate is known.
 // Only Broadway-specific feeds qualify; WE feeds (even without needsFilter) must still title-match.
 const THEATER_FEEDS = [
-  { url: 'https://variety.com/v/legit/feed/', outletId: 'variety', name: 'Variety Legit', openingWindow: true },
+  { url: 'https://variety.com/v/legit/feed/', outletId: 'variety', name: 'Variety Legit', openingWindow: true, market: 'broadway' },
   // Playbill RSS is defunct (404 as of March 2026) — kept for future reference
   // { url: 'https://playbill.com/feed', outletId: 'playbill', name: 'Playbill' },
-  { url: 'https://rss.nytimes.com/services/xml/rss/nyt/Theater.xml', outletId: 'nytimes', name: 'NYT Theater', openingWindow: true },
+  { url: 'https://rss.nytimes.com/services/xml/rss/nyt/Theater.xml', outletId: 'nytimes', name: 'NYT Theater', openingWindow: true, market: 'broadway' },
   // Guardian Stage removed: covers all performing arts globally, too broad for date-window filtering.
   // Use Guardian Open Platform API in site-search-discovery.js instead.
-  { url: 'https://www.broadwaynews.com/tag/review/rss/', outletId: 'broadwaynews', name: 'Broadway News Reviews', needsFilter: true },
-  { url: 'https://nystagereview.com/feed/', outletId: 'nysr', name: 'NY Stage Review', needsFilter: true },
-  { url: 'https://www.newyorktheater.me/feed/', outletId: 'nyt-theater', name: 'NY Theater', needsFilter: true },
+  { url: 'https://www.broadwaynews.com/tag/review/rss/', outletId: 'broadwaynews', name: 'Broadway News Reviews', needsFilter: true, market: 'broadway' },
+  { url: 'https://nystagereview.com/feed/', outletId: 'nysr', name: 'NY Stage Review', needsFilter: true, market: 'broadway' },
+  { url: 'https://www.newyorktheater.me/feed/', outletId: 'nyt-theater', name: 'NY Theater', needsFilter: true, market: 'broadway' },
 ];
 
 // West End theater feeds (verified March 2026)
 const WE_THEATER_FEEDS = [
-  { url: 'https://www.whatsonstage.com/feed/', outletId: 'whatsonstage', name: 'WhatsOnStage' },
-  { url: 'https://www.standard.co.uk/culture/theatre/rss', outletId: 'standard', name: 'Evening Standard Theatre', needsFilter: true },
+  { url: 'https://www.whatsonstage.com/feed/', outletId: 'whatsonstage', name: 'WhatsOnStage', market: 'west-end' },
+  { url: 'https://www.standard.co.uk/culture/theatre/rss', outletId: 'standard', name: 'Evening Standard Theatre', needsFilter: true, market: 'west-end' },
   // The Stage has no RSS feed (404 as of March 2026)
   // Telegraph theatre RSS is defunct (404 as of March 2026)
 ];
@@ -196,10 +196,12 @@ function isWithinOpeningWindow(pubDate, openingDate, windowDays = 2) {
  * @returns {Promise<Array<{url: string, outletId: string, source: string}>>}
  */
 async function checkRSSFeeds(showTitle, options = {}) {
-  const { maxHoursAgo = 48, knownUrls = new Set(), verbose = false, openingDate = null } = options;
+  const { maxHoursAgo = 48, knownUrls = new Set(), verbose = false, openingDate = null, market = null, outletFilter = null } = options;
   const results = [];
 
   for (const feed of ALL_FEEDS) {
+    // Skip feeds restricted to a different market
+    if (market && feed.market && feed.market !== market) continue;
     try {
       const xml = await fetchUrl(feed.url);
       const items = parseFeedItems(xml);
