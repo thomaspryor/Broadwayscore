@@ -1,41 +1,49 @@
 {
-  "updatedAt": "2026-03-28T08:40:22.524Z",
-  "processed": 2,
-  "failed": 5,
-  "successRate": "28.6%",
+  "updatedAt": "2026-03-28T08:44:12.004Z",
+  "processed": 29,
+  "failed": 21,
+  "successRate": "58.0%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 24,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 3,
-    "archive": 0
+    "archive": 4
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-03-28T08:39:12.393Z",
+      "t": "2026-03-28T08:34:26.407Z",
       "event": "bb-session",
-      "session": "de95eb08",
+      "session": "da9ea14f",
       "url": "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-th"
     },
     {
-      "t": "2026-03-28T08:39:13.552Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "t": "2026-03-28T08:35:06.153Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    28 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
     },
     {
-      "t": "2026-03-28T08:39:55.708Z",
+      "t": "2026-03-28T08:39:13.784Z",
       "event": "bb-session",
-      "session": "5589bf10",
-      "url": "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-th"
+      "session": "30ae0de6",
+      "url": "https://www.thestage.co.uk/reviews/paddington-the-musical-review-savoy-theatre-l"
     },
     {
-      "t": "2026-03-28T08:39:56.857Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "t": "2026-03-28T08:39:53.447Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    28 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
+    },
+    {
+      "t": "2026-03-28T08:41:09.584Z",
+      "event": "bb-session",
+      "session": "bac03fc1",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
     }
   ]
 }
