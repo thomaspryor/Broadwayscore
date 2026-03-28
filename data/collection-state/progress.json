@@ -3,7 +3,13 @@
     "john-proctor-is-the-villain-west-end-2026/telegraph--claire-allfree.json",
     "john-proctor-is-the-villain-west-end-2026/whatsonstage--sarah-crompton.json",
     "john-proctor-is-the-villain-west-end-2026/whatsonstage--unknown.json",
-    "teeth-n-smiles-west-end-2026/city-am--unknown.json"
+    "teeth-n-smiles-west-end-2026/city-am--unknown.json",
+    "teeth-n-smiles-west-end-2026/standard--nick-curtis.json",
+    "a-mirrored-monet-west-end-2026/whatsonstage--unknown.json",
+    "broken-glass-west-end-2026/independent--samuel-mathewson.json",
+    "evening-all-afternoon-west-end-2026/whatsonstage--unknown.json",
+    "all-my-sons-west-end-2025/whatsonstage--unknown.json",
+    "my-neighbour-totoro-west-end-2025/variety--unknown.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -11,17 +17,29 @@
     "john-proctor-is-the-villain-west-end-2026/broadwayworld--unknown.json",
     "john-proctor-is-the-villain-west-end-2026/thestage--sam-marlowe.json",
     "john-proctor-is-the-villain-west-end-2026/standard--unknown.json",
-    "teeth-n-smiles-west-end-2026/thestage--unknown.json"
+    "teeth-n-smiles-west-end-2026/thestage--unknown.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "oh-mary-west-end-2025/standard--nick-curtis.json",
+    "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json",
+    "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "john-proctor-is-the-villain-west-end-2026/whatsonstage--sarah-crompton.json",
       "john-proctor-is-the-villain-west-end-2026/whatsonstage--unknown.json",
-      "teeth-n-smiles-west-end-2026/city-am--unknown.json"
+      "teeth-n-smiles-west-end-2026/city-am--unknown.json",
+      "teeth-n-smiles-west-end-2026/standard--nick-curtis.json",
+      "a-mirrored-monet-west-end-2026/whatsonstage--unknown.json",
+      "broken-glass-west-end-2026/independent--samuel-mathewson.json",
+      "evening-all-afternoon-west-end-2026/whatsonstage--unknown.json",
+      "all-my-sons-west-end-2025/whatsonstage--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "john-proctor-is-the-villain-west-end-2026/telegraph--claire-allfree.json"
@@ -35,7 +53,7 @@
     "archive": []
   },
   "startTime": "2026-03-28T08:53:32.420Z",
-  "lastProcessed": "teeth-n-smiles-west-end-2026/city-am--unknown.json",
+  "lastProcessed": "my-neighbour-totoro-west-end-2025/variety--unknown.json",
   "log": [
     {
       "t": "2026-03-28T08:58:39.652Z",
@@ -60,6 +78,12 @@
       "event": "bb-login-fail",
       "domain": "thestage.co.uk",
       "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    31 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-03-28T09:04:06.424Z",
+      "event": "bb-session",
+      "session": "f7caf8d3",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
     }
   ]
 }

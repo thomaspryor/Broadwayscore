@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-28T09:03:10.215Z",
-  "processed": 4,
-  "failed": 6,
-  "successRate": "40.0%",
+  "updatedAt": "2026-03-28T09:04:23.353Z",
+  "processed": 10,
+  "failed": 10,
+  "successRate": "50.0%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 8,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 3,
     "archive": 0
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-03-28T08:58:39.652Z",
@@ -38,6 +38,12 @@
       "event": "bb-login-fail",
       "domain": "thestage.co.uk",
       "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    31 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-03-28T09:04:06.424Z",
+      "event": "bb-session",
+      "session": "f7caf8d3",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
     }
   ]
 }
