@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-28T23:22:57.393Z",
+  "generatedAt": "2026-03-28T23:28:59.820Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -144,6 +144,14 @@
       "outlet": "theater-life",
       "critic": "Samuel L. Leiter",
       "detail": "originalRating \"5/5 stars\" (=100) vs score 78 (source: human-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "outlet": "timeout-london",
+      "critic": "Andrzej Lukowski",
+      "detail": "originalRating \"5/5\" (=100) vs score 63 (source: llmScore-override-star-conflict)"
     },
     {
       "type": "designation-score-mismatch",
