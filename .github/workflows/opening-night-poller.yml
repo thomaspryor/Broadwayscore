@@ -59,7 +59,7 @@ concurrency:
 jobs:
   poll:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 60
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -174,7 +174,7 @@ jobs:
             if [ -n "${{ inputs.tb_review_url }}" ]; then
               TB_ARG="--tb-review-url=${{ inputs.tb_review_url }}"
             fi
-            timeout 300 node scripts/opening-night-poller.js --show="$SHOW_ID" $SKIP_SERP_FLAG $BWW_ARG $TB_ARG 2>&1 || true
+            timeout 600 node scripts/opening-night-poller.js --show="$SHOW_ID" $SKIP_SERP_FLAG $BWW_ARG $TB_ARG 2>&1 || true
 
             # Check if files were created (review-texts is a separate git checkout)
             CREATED=$(cd data/review-texts && git status --porcelain | wc -l | tr -d ' ')
