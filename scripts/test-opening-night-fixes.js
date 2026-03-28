@@ -624,6 +624,39 @@ assert(
 );
 
 // ============================================================
+// WSJ, LA Times, WashPost RSS feed configuration
+// ============================================================
+console.log('\n=== T1 RSS Feeds: WSJ, LA Times, WashPost ===\n');
+
+const wsjFeed = ALL_FEEDS.find(f => f.outletId === 'wsj');
+const latimesFeed = ALL_FEEDS.find(f => f.outletId === 'latimes');
+const washpostFeed = ALL_FEEDS.find(f => f.outletId === 'washpost');
+
+assert(wsjFeed !== undefined, 'WSJ is present in ALL_FEEDS');
+assert(wsjFeed && wsjFeed.needsFilter === true, 'WSJ uses needsFilter (general lifestyle feed)');
+assert(wsjFeed && !wsjFeed.openingWindow, 'WSJ has no openingWindow (too broad)');
+
+assert(latimesFeed !== undefined, 'LA Times is present in ALL_FEEDS');
+assert(latimesFeed && latimesFeed.needsFilter === true, 'LA Times uses needsFilter (general entertainment feed)');
+
+assert(washpostFeed !== undefined, 'WashPost is present in ALL_FEEDS');
+assert(washpostFeed && washpostFeed.needsFilter === true, 'WashPost uses needsFilter (general entertainment feed)');
+
+// Title matching for typical WSJ/LAT/WashPost review headlines
+assert(
+  titleMatchesShow("'Giant' Review: John Lithgow as a Venomous Roald Dahl", 'Giant'),
+  'WSJ-style: Giant review headline matches'
+);
+assert(
+  titleMatchesShow("Review: 'Hamilton' Electrifies Broadway", 'Hamilton'),
+  'LAT-style: Hamilton review headline matches'
+);
+assert(
+  !titleMatchesShow("Review: 'Giant' Robot Movie Crushes the Box Office", 'Hamilton'),
+  'Negative: Giant robot movie does NOT match Hamilton'
+);
+
+// ============================================================
 // Endpoint-registry ID consistency check
 // All SITE_SEARCH_ENDPOINTS keys must exist in outlet-registry.json
 // ============================================================
@@ -644,6 +677,21 @@ if (idMismatches === 0) {
   passed++;
 } else {
   console.error(`  ${idMismatches} endpoint key(s) don't match registry — poller will never call them`);
+}
+
+// RSS feed outletId-registry consistency
+const rssFeedIds = ALL_FEEDS.map(f => f.outletId);
+let rssMismatches = 0;
+for (const id of rssFeedIds) {
+  if (!registry[id]) {
+    console.error(`  ✗ FAIL: RSS feed outletId "${id}" not in outlet-registry.json`);
+    rssMismatches++;
+    failed++;
+  }
+}
+if (rssMismatches === 0) {
+  console.log(`  ✓ All ${rssFeedIds.length} RSS feed outletIds match outlet-registry.json`);
+  passed++;
 }
 
 // ============================================================
