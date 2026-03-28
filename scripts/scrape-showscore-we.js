@@ -421,7 +421,7 @@ function createReviewFile(showId, review) {
     originalScore: review.starRating
       ? (review.starRating > 5 ? `${review.starRating}/100` : `${review.starRating}/5`)
       : null,
-    scoreSource: score ? 'explicit-rating' : null,
+    scoreSource: score ? 'show-score-stars' : null,
     assignedScore: score,
     confidence: score ? 'high' : null,
     contentTier: 'excerpt',
