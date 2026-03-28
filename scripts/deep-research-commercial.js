@@ -273,7 +273,9 @@ Find and report the following financial information. Only report data you can ve
 - Report ONLY what you can verify. If you cannot find information for a field, say so explicitly. Do not fabricate data or URLs.
 - Capitalization should be in dollars (e.g., 15000000 not 15). Weekly costs in dollars (e.g., 650000 not 650).
 
-Respond with a JSON object (no markdown fences):
+Write your research findings as a report, then at the VERY END include a structured JSON block wrapped in \`\`\`json fences containing ONLY the following fields:
+
+\`\`\`json
 {
   "capitalization": <number in dollars or null>,
   "capitalizationSource": "<description of source>",

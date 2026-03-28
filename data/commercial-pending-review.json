@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-28T22:41:38.640Z",
+  "generatedAt": "2026-03-28T23:04:43.611Z",
   "shows": {
     "days-of-wine-and-roses-2024": {
       "title": "Days of Wine and Roses",
@@ -800,19 +800,17 @@
       "researchedAt": "2026-03-27T03:24:18.895Z"
     },
     "appropriate-2023": {
-      "title": "Appropriate",
-      "slug": "appropriate",
-      "openingDate": "2023-12-18",
-      "status": "closed",
-      "capitalization": null,
-      "capitalizationSource": null,
+      "capitalization": 3750000,
+      "capitalizationSource": "Forbes (2024) – reported $3.75M cost to mount the Broadway transfer ([www.forbes.com](https://www.forbes.com/sites/marchershberg/2024/02/09/commercial-transfer-of-best-selling-broadway-play-prompts-questions/#:~:text=After%20Appropriate%20concludes%20its%20limited,75%20million))",
       "weeklyRunningCost": 440866,
       "costMethodology": "trade-reported",
-      "recouped": null,
+      "recouped": false,
       "recoupedDate": null,
       "recoupedSource": null,
-      "designation": "TBD",
-      "notes": "Despite strong box office performance and a well-received commercial transfer, “Appropriate” did not publicly announce recoupment of its initial investment by its June 30, 2024 closing, and its production budget remains undisclosed.",
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "NYC tax-credit ($1.72M) implies ~ $6.9M eligible costs ([www.broadwayworld.com](https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904#:~:text=%241%2C871%2C543%2C%C2%A0KPOP%C2%A0,%241%2C146%2C568%2C%C2%A0Mother%20Play)). Required ~ $760K/week to recoup ([www.forbes.com](https://www.forbes.com/sites/marchershberg/2024/02/09/commercial-transfer-of-best-selling-broadway-play-prompts-questions/#:~:text=Taking%20into%20account%20a%20%241,440%2C866%20before%20royalties%20and%20rent)). Closed after limited run ([playbill.com](https://playbill.com/article/broadways-appropriate-announces-3rd-and-final-extension#:~:text=The%20Second%20Stage%20Theater%20revival,continue%20performances%20through%20June%2030)) with no public recoup announcement.",
+      "confidence": "medium",
       "sources": [
         {
           "type": "trade",
@@ -821,12 +819,22 @@
         },
         {
           "type": "trade",
-          "url": "https://playbill.com/article/appropriate-ends-broadway-run-june-30",
-          "date": "2024-06-30"
+          "url": "https://www.playbill.com/article/broadways-appropriate-announces-3rd-and-final-extension",
+          "date": "2024-05-30"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904",
+          "date": "2025-09-04"
         }
       ],
-      "confidence": "low",
-      "researchedAt": "2026-03-28T21:13:03.466Z"
+      "title": "Appropriate",
+      "slug": "appropriate-2023",
+      "openingDate": "2023-12-18",
+      "status": "closed",
+      "researchedAt": "2026-03-28T23:04:43.611Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
     },
     "doubt-2024": {
       "title": "Doubt: A Parable",
