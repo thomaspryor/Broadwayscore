@@ -15,6 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { serpQuery } = require('./lib/url-discovery');
 const { isLondonMarket } = require('./lib/venue-classification');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -209,23 +210,16 @@ function scoreCandidate(url, serpTitle, showTitle) {
 }
 
 async function discoverOfficialUrl(show) {
-  const apiKey = process.env.SCRAPINGBEE_API_KEY;
-  if (!apiKey) return null;
-
   const query = buildSearchQuery(show);
-  const searchUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${apiKey}&search=${encodeURIComponent(query)}`;
 
   try {
-    const result = await httpGet(searchUrl);
-    if (result.statusCode !== 200) return null;
-
-    const data = JSON.parse(result.body);
-    const results = data.organic_results || data.results || [];
+    const results = await serpQuery(query);
+    if (!results) return null;
 
     // Score and filter candidates
     const candidates = [];
     for (const r of results) {
-      const url = r.url || r.link;
+      const url = r.url;
       if (!url) continue;
       if (isBlockedDomain(url)) continue;
 

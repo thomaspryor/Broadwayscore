@@ -15,6 +15,7 @@
 const { JSDOM } = require('jsdom');
 const { fetchPage, cleanup } = require('./scraper');
 const { isLondonMarket } = require('./venue-classification');
+const { serpQuery } = require('./url-discovery');
 
 const IBDB_BASE = 'https://www.ibdb.com';
 const RATE_LIMIT_MS = 1500;
@@ -35,78 +36,29 @@ async function searchIBDB(title, options = {}) {
 
   console.log(`  🔍 Searching IBDB: ${query}`);
 
-  let results = [];
-
-  // Try ScrapingBee Google SERP first (dedicated search endpoint)
   try {
-    const scrapingBeeKey = process.env.SCRAPINGBEE_API_KEY;
-    if (scrapingBeeKey) {
-      const url = `https://app.scrapingbee.com/api/v1/store/google?` +
-        `api_key=${scrapingBeeKey}` +
-        `&search=${encodeURIComponent(query)}`;
-
-      const resp = await fetch(url);
-      if (resp.ok) {
-        const data = await resp.json();
-        const organic = data.organic_results || [];
-        results = organic
-          .filter(r => r.url && r.url.includes('/broadway-production/'))
-          .map(r => ({
-            url: r.url,
-            title: r.title || '',
-            year: extractYearFromUrl(r.url)
-          }));
-        if (results.length > 0) {
-          console.log(`  ✅ Found ${results.length} IBDB production URL(s) via ScrapingBee SERP`);
-        }
+    const serpResults = await serpQuery(query);
+    if (serpResults) {
+      const results = serpResults
+        .filter(r => r.url && r.url.includes('/broadway-production/'))
+        .map(r => ({
+          url: r.url,
+          title: r.title || '',
+          year: extractYearFromUrl(r.url)
+        }));
+      if (results.length > 0) {
+        console.log(`  ✅ Found ${results.length} IBDB production URL(s) via SERP`);
+        return results;
       }
     }
   } catch (e) {
-    console.log(`  ⚠️  ScrapingBee SERP failed: ${e.message}`);
-  }
-
-  // Fallback: try Bright Data SERP
-  if (results.length === 0) {
-    try {
-      const brightToken = process.env.BRIGHTDATA_TOKEN;
-      if (brightToken) {
-        const resp = await fetch('https://api.brightdata.com/serp/req', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${brightToken}`
-          },
-          body: JSON.stringify({
-            query: query,
-            search_engine: 'google',
-            country: 'us'
-          })
-        });
-
-        if (resp.ok) {
-          const data = await resp.json();
-          const organic = data.organic || [];
-          results = organic
-            .filter(r => r.link && r.link.includes('/broadway-production/'))
-            .map(r => ({
-              url: r.link,
-              title: r.title || '',
-              year: extractYearFromUrl(r.link)
-            }));
-        }
-      }
-    } catch (e) {
-      console.log(`  ⚠️  Bright Data SERP failed: ${e.message}`);
-    }
+    console.log(`  ⚠️  SERP search failed: ${e.message}`);
   }
 
   // No fallback URL construction — IBDB bare slugs (without numeric production IDs)
   // always redirect to the homepage. Only real SERP results have valid URLs.
-  if (results.length === 0) {
-    console.log(`  📎 No SERP results for "${title}" — cannot construct IBDB URL without production ID`);
-  }
-
-  return results;
+  console.log(`  📎 No SERP results for "${title}" — cannot construct IBDB URL without production ID`);
+  return [];
 }
 
 /**
@@ -789,68 +741,26 @@ async function checkIBDBForPriorProductions(title, options = {}) {
     ];
 
     let results = [];
-    const scrapingBeeKey = process.env.SCRAPINGBEE_API_KEY;
 
     for (const prodPath of prodPaths) {
       const query = `site:${prodPath} "${title}"`;
       console.log(`  🔍 Revival check SERP: ${query}`);
 
-      if (scrapingBeeKey) {
-        try {
-          const url = `https://app.scrapingbee.com/api/v1/store/google?` +
-            `api_key=${scrapingBeeKey}` +
-            `&search=${encodeURIComponent(query)}`;
-
-          const resp = await fetch(url);
-          if (resp.ok) {
-            const data = await resp.json();
-            const organic = data.organic_results || [];
-            const pageResults = organic
-              .filter(r => r.url && (r.url.includes('/broadway-production/') || r.url.includes('/off-broadway-production/') || r.url.includes('/tour-production/')))
-              .map(r => ({ url: r.url, title: r.title || '' }));
-            results.push(...pageResults);
-          }
-        } catch (e) {
-          console.log(`  ⚠️  ScrapingBee SERP failed: ${e.message}`);
+      try {
+        const serpResults = await serpQuery(query);
+        if (serpResults) {
+          const pageResults = serpResults
+            .filter(r => r.url && (r.url.includes('/broadway-production/') || r.url.includes('/off-broadway-production/') || r.url.includes('/tour-production/')))
+            .map(r => ({ url: r.url, title: r.title || '' }));
+          results.push(...pageResults);
         }
+      } catch (e) {
+        console.log(`  ⚠️  SERP search failed: ${e.message}`);
       }
 
       // Rate limit between SERP calls
       if (prodPath !== prodPaths[prodPaths.length - 1]) {
         await sleep(500);
-      }
-    }
-
-    // Fallback: Bright Data SERP (single broad query)
-    if (results.length === 0) {
-      const brightToken = process.env.BRIGHTDATA_TOKEN;
-      if (brightToken) {
-        const query = `site:ibdb.com "${title}"`;
-        console.log(`  🔍 Revival check fallback SERP: ${query}`);
-        try {
-          const resp = await fetch('https://api.brightdata.com/serp/req', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${brightToken}`
-            },
-            body: JSON.stringify({
-              query: query,
-              search_engine: 'google',
-              country: 'us'
-            })
-          });
-
-          if (resp.ok) {
-            const data = await resp.json();
-            const organic = data.organic || [];
-            results = organic
-              .filter(r => r.link && (r.link.includes('/broadway-production/') || r.link.includes('/off-broadway-production/') || r.link.includes('/tour-production/')))
-              .map(r => ({ url: r.link, title: r.title || '' }));
-          }
-        } catch (e) {
-          console.log(`  ⚠️  Bright Data SERP failed: ${e.message}`);
-        }
       }
     }
 

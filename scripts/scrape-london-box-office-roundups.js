@@ -24,6 +24,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { serpQuery } = require('./lib/url-discovery');
 const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
 const { isLondonMarket } = require('./lib/venue-classification');
@@ -640,27 +641,10 @@ async function scrapeLBORoundups() {
       console.log(`[SERP] Searching for ${show.title} roundup...`);
       try {
         const query = `site:londonboxoffice.co.uk "review round up" "${show.title}"`;
-        const apiUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(query)}&nb_results=5`;
-
-        const searchResult = await new Promise((resolve, reject) => {
-          const req = https.get(apiUrl, (res) => {
-            let data = '';
-            res.on('data', chunk => data += chunk);
-            res.on('end', () => {
-              if (res.statusCode === 200) {
-                try {
-                  const results = JSON.parse(data);
-                  const urls = (results.organic_results || [])
-                    .map(r => r.url)
-                    .filter(u => u && u.includes('londonboxoffice.co.uk') && /review-round-?up/i.test(u));
-                  resolve(urls[0] || null);
-                } catch (e) { resolve(null); }
-              } else { resolve(null); }
-            });
-          });
-          req.on('error', () => resolve(null));
-          req.setTimeout(30000, () => { req.destroy(); resolve(null); });
-        });
+        const results = await serpQuery(query, { nbResults: 5 });
+        const searchResult = results
+          ? (results.map(r => r.url).filter(u => u && u.includes('londonboxoffice.co.uk') && /review-round-?up/i.test(u))[0] || null)
+          : null;
 
         if (searchResult) {
           console.log(`  Found via SERP: ${searchResult}`);

@@ -23,6 +23,7 @@
 
 const https = require('https');
 const fs = require('fs');
+const { serpQuery } = require('./lib/url-discovery');
 const path = require('path');
 const { compressImage } = require('./lib/compress-image');
 
@@ -248,72 +249,21 @@ async function downloadImageDirect(url) {
   return Buffer.from(await resp.arrayBuffer());
 }
 
-// Search Google via ScrapingBee SERP API for TodayTix pages (works for closed shows)
-function searchGoogleForTodayTix(showTitle) {
-  return new Promise((resolve, reject) => {
-    if (!SCRAPINGBEE_API_KEY) {
-      reject(new Error('SCRAPINGBEE_API_KEY not set'));
-      return;
-    }
-
-    const query = `site:todaytix.com "${showTitle}" broadway nyc`;
-    const serpUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_API_KEY}&search=${encodeURIComponent(query)}`;
-
-    https.get(serpUrl, (response) => {
-      if (response.statusCode !== 200) {
-        reject(new Error(`HTTP ${response.statusCode}`));
-        return;
-      }
-
-      let data = '';
-      response.on('data', chunk => data += chunk);
-      response.on('end', () => {
-        try {
-          resolve(JSON.parse(data));
-        } catch {
-          reject(new Error('Failed to parse Google SERP response'));
-        }
-      });
-      response.on('error', reject);
-    }).on('error', reject);
-  });
+// Search Google for TodayTix pages (works for closed shows)
+async function searchGoogleForTodayTix(showTitle) {
+  const query = `site:todaytix.com "${showTitle}" broadway nyc`;
+  const results = await serpQuery(query);
+  // Return in original format (callers expect {organic_results})
+  return { organic_results: (results || []).map(r => ({ url: r.url, title: r.title })) };
 }
 
-// Search Google via ScrapingBee SERP API for IBDB production pages
-function searchGoogleForIBDB(showTitle, openingYear) {
-  return new Promise((resolve, reject) => {
-    if (!SCRAPINGBEE_API_KEY) {
-      reject(new Error('SCRAPINGBEE_API_KEY not set'));
-      return;
-    }
-
-    const yearStr = openingYear ? ` ${openingYear}` : '';
-    const query = `site:ibdb.com/broadway-production "${showTitle}"${yearStr}`;
-    const serpUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_API_KEY}&search=${encodeURIComponent(query)}`;
-
-    https.get(serpUrl, (response) => {
-      if (response.statusCode !== 200) {
-        reject(new Error(`HTTP ${response.statusCode}`));
-        return;
-      }
-
-      let data = '';
-      response.on('data', chunk => data += chunk);
-      response.on('end', () => {
-        try {
-          const parsed = JSON.parse(data);
-          const organic = parsed.organic_results || [];
-          const results = organic
-            .filter(r => r.url && r.url.includes('/broadway-production/'))
-            .map(r => r.url);
-          resolve(results);
-        } catch {
-          reject(new Error('Failed to parse Google SERP response'));
-        }
-      });
-      response.on('error', reject);
-    }).on('error', reject);
-  });
+// Search Google for IBDB production pages
+async function searchGoogleForIBDB(showTitle, openingYear) {
+  const yearStr = openingYear ? ` ${openingYear}` : '';
+  const query = `site:ibdb.com/broadway-production "${showTitle}"${yearStr}`;
+  const results = await serpQuery(query);
+  if (!results) return [];
+  return results.map(r => r.url).filter(url => url && url.includes('/broadway-production/'));
 }
 
 // Extract broadway.org CDN image URLs from IBDB page HTML
