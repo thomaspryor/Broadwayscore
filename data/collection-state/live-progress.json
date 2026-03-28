@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-28T11:59:28.942Z",
-  "processed": 101,
-  "failed": 483,
-  "successRate": "17.3%",
+  "updatedAt": "2026-03-28T12:00:21.744Z",
+  "processed": 106,
+  "failed": 486,
+  "successRate": "17.9%",
   "tierBreakdown": {
-    "playwright": 46,
+    "playwright": 50,
     "amp": 0,
-    "browserbase": 14,
+    "browserbase": 16,
     "directCookies": 1,
     "scrapingbee": 8,
     "brightdata": 0,
     "archiveToday": 3,
     "archive": 41
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-03-28T10:37:37.435Z",
@@ -91,6 +91,17 @@
       "t": "2026-03-28T11:59:10.158Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-28T11:59:39.139Z",
+      "event": "bb-session",
+      "session": "3034bb3b",
+      "url": "https://deadline.com/2023/11/eddie-izzard-hamlet-1235640187/"
+    },
+    {
+      "t": "2026-03-28T11:59:40.215Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

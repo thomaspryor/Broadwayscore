@@ -100,7 +100,12 @@
     "oleanna-2009/theatermania--unknown.json",
     "waiting-for-godot-2009/hollywood-reporter--david-rooney.json",
     "cymbeline-2007/nytimes--ben-brantley.json",
-    "imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json"
+    "imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
+    "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json",
+    "hamlet-2026/deadline--jeremy-gerard.json",
+    "imitation-of-life-off-broadway-2026/theatermania--david-gordon.json",
+    "the-emporium-off-broadway-2025/theatermania--linda-buchwald.json",
+    "happy-ending-west-end-2026/standard--unknown.json"
   ],
   "failed": [
     "no-singing-in-the-navy-off-broadway-2026/talkinbroadway--unknown.json",
@@ -585,7 +590,10 @@
     "a-little-night-music-1973/backstage--erik-haagensen.json",
     "data-2026/vulture--jackson-mchenry.json",
     "jackals-off-broadway-2026/hollywood-reporter--thr-staff.json",
-    "the-monsters-2026/vulture--jackson-mchenry.json"
+    "the-monsters-2026/vulture--jackson-mchenry.json",
+    "indian-princesses-off-broadway-2025/theatermania--linda-buchwald.json",
+    "dear-england-new-wimbledon-theatre-west-end-2026/times-uk--clive-davis.json",
+    "jackals-off-broadway-2026/times-uk--anne-treneman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -635,7 +643,11 @@
       "bullets-over-broadway-2014/timeout--david-cote.json",
       "once-2012/ew--emlyn-travis.json",
       "oh-hello-on-broadway-2016/northjerseycom--unknown.json",
-      "oleanna-2009/theatermania--unknown.json"
+      "oleanna-2009/theatermania--unknown.json",
+      "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json",
+      "imitation-of-life-off-broadway-2026/theatermania--david-gordon.json",
+      "the-emporium-off-broadway-2025/theatermania--linda-buchwald.json",
+      "happy-ending-west-end-2026/standard--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -652,7 +664,9 @@
       "data/review-texts/waiting-for-godot-2009/hollywood-reporter--david-rooney.json",
       "waiting-for-godot-2009/hollywood-reporter--david-rooney.json",
       "data/review-texts/imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
-      "imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json"
+      "imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/hamlet-2026/deadline--jeremy-gerard.json",
+      "hamlet-2026/deadline--jeremy-gerard.json"
     ],
     "directCookies": [
       "oh-hello-on-broadway-2016/northjerseycom--unknown.json"
@@ -718,7 +732,7 @@
     ]
   },
   "startTime": "2026-03-28T09:38:57.589Z",
-  "lastProcessed": "the-monsters-2026/vulture--jackson-mchenry.json",
+  "lastProcessed": "jackals-off-broadway-2026/times-uk--anne-treneman.json",
   "log": [
     {
       "t": "2026-03-28T10:37:37.435Z",
@@ -796,6 +810,17 @@
       "t": "2026-03-28T11:59:10.158Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-28T11:59:39.139Z",
+      "event": "bb-session",
+      "session": "3034bb3b",
+      "url": "https://deadline.com/2023/11/eddie-izzard-hamlet-1235640187/"
+    },
+    {
+      "t": "2026-03-28T11:59:40.215Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
