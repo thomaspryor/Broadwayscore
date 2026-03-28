@@ -363,7 +363,7 @@ assert(
 // ============================================================
 console.log('\n=== openingWindow: only narrow Broadway feeds flagged ===\n');
 
-const { ALL_FEEDS } = require('./lib/rss-discovery');
+const { ALL_FEEDS, titleMatchesShow } = require('./lib/rss-discovery');
 
 const varietyFeed = ALL_FEEDS.find(f => f.name === 'Variety Legit');
 const nytFeed = ALL_FEEDS.find(f => f.name === 'NYT Theater');
@@ -548,6 +548,108 @@ assert(
   vultureConfig && !vultureConfig.market,
   'Vulture config has no market restriction (reviews both BW and WE shows)'
 );
+
+// ============================================================
+// Daily Beast ID fix — endpoint key matches outlet-registry.json
+// ============================================================
+console.log('\n=== Daily Beast Site Search ID Fix ===\n');
+
+assert(
+  SITE_SEARCH_ENDPOINTS['dailybeast'] !== undefined,
+  'dailybeast key exists in SITE_SEARCH_ENDPOINTS (matches registry)'
+);
+
+assert(
+  SITE_SEARCH_ENDPOINTS['daily-beast'] === undefined,
+  'old daily-beast key removed (was never matched by poller)'
+);
+
+assert(
+  SITE_SEARCH_ENDPOINTS['dailybeast'] && SITE_SEARCH_ENDPOINTS['dailybeast'].domain === 'thedailybeast.com',
+  'dailybeast has correct domain'
+);
+
+// ============================================================
+// Broadway News RSS feed configuration
+// ============================================================
+console.log('\n=== Broadway News RSS Feed ===\n');
+
+const bnFeed = ALL_FEEDS.find(f => f.outletId === 'broadwaynews');
+
+assert(
+  bnFeed !== undefined,
+  'Broadway News is present in ALL_FEEDS'
+);
+
+assert(
+  bnFeed && bnFeed.url === 'https://www.broadwaynews.com/tag/review/rss/',
+  'Broadway News uses tag-filtered review RSS (not main feed)'
+);
+
+assert(
+  bnFeed && bnFeed.needsFilter === true,
+  'Broadway News requires title filtering (needsFilter=true)'
+);
+
+assert(
+  bnFeed && !bnFeed.openingWindow,
+  'Broadway News does NOT use openingWindow (reviews cover all shows, not just Broadway openings)'
+);
+
+// ============================================================
+// Title matching: Broadway News review titles
+// Broadway News titles follow pattern: "The Broadway Review: '{Title}' ..."
+// titleMatchesShow must handle smart quotes and surrounding text
+// ============================================================
+console.log('\n=== Broadway News Title Matching ===\n');
+
+assert(
+  titleMatchesShow("The Broadway Review: 'Dead Outlaw' makes beautiful music in the dark", 'Dead Outlaw'),
+  'BN: Dead Outlaw with smart quotes matches'
+);
+
+assert(
+  titleMatchesShow("The Broadway Review: Broadway's 'Real Women Have Curves' is more jubilant", 'Real Women Have Curves'),
+  'BN: Real Women Have Curves matches (ignoring articles)'
+);
+
+assert(
+  titleMatchesShow("The Broadway Review: 'Giant' at the Broadway Theatre", 'Giant'),
+  'BN: Single-word title Giant matches'
+);
+
+assert(
+  !titleMatchesShow("The Broadway Review: 'Dead Outlaw' makes beautiful music", 'Giant'),
+  'BN: Dead Outlaw does NOT match Giant (different show)'
+);
+
+assert(
+  titleMatchesShow("The Broadway Review: 'Stranger Things: The First Shadow' is jaw-dropping", 'Stranger Things: The First Shadow'),
+  'BN: Stranger Things matches with subtitle'
+);
+
+// ============================================================
+// Endpoint-registry ID consistency check
+// All SITE_SEARCH_ENDPOINTS keys must exist in outlet-registry.json
+// ============================================================
+console.log('\n=== Endpoint-Registry ID Consistency ===\n');
+
+const registry = require('../data/outlet-registry.json').outlets;
+const endpointKeys = Object.keys(SITE_SEARCH_ENDPOINTS);
+let idMismatches = 0;
+for (const key of endpointKeys) {
+  if (!registry[key]) {
+    console.error(`  ✗ FAIL: endpoint "${key}" not in outlet-registry.json`);
+    idMismatches++;
+    failed++;
+  }
+}
+if (idMismatches === 0) {
+  console.log(`  ✓ All ${endpointKeys.length} endpoint keys match outlet-registry.json`);
+  passed++;
+} else {
+  console.error(`  ${idMismatches} endpoint key(s) don't match registry — poller will never call them`);
+}
 
 // ============================================================
 // Summary
