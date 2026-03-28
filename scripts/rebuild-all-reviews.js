@@ -802,7 +802,19 @@ const crossShowFingerprints = new Map();
     for (const f of fs.readdirSync(sDir).filter(x => x.endsWith('.json'))) {
       try {
         const d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8'));
-        if (d.wrongProduction || d.wrongShow || d.wrongProductionManualClear) continue;
+        if (d.wrongProduction || d.wrongShow) continue;
+        // Respect manual clears UNLESS the date mismatch is extreme (>365 days) —
+        // a 2016 review for a 2026 show is wrong regardless of manual override
+        if (d.wrongProductionManualClear) {
+          let mcReviewDate = null;
+          if (d.publishDate) {
+            const mcCleaned = d.publishDate.replace(/(\d+)(?:st|nd|rd|th)\b/g, '$1');
+            mcReviewDate = new Date(mcCleaned);
+            if (isNaN(mcReviewDate.getTime())) mcReviewDate = null;
+          }
+          if (!mcReviewDate || (showEarliest - mcReviewDate) <= 365 * 86400000) continue;
+          // Extreme date mismatch — override manual clear
+        }
         let reviewDate = null;
         if (d.publishDate) {
           const cleaned = d.publishDate.replace(/(\d+)(?:st|nd|rd|th)\b/g, '$1');
