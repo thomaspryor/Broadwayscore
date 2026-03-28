@@ -609,14 +609,14 @@ jobs:
           echo "Next batch dispatched."
 
       - name: Trigger rebuild + consensus (chain complete)
+        # Trigger rebuild when chain ends for ANY reason: remaining ≤ 10, batches exhausted,
+        # or chain stopped because this batch scored 0 (earlier batches may have scored reviews
+        # that are now stranded in source files without a rebuild).
         if: >-
           ${{ (github.event.inputs.chain == 'true' || github.event_name == 'schedule')
           && (fromJSON(steps.count-remaining.outputs.remaining) <= 10
               || github.event.inputs.remaining_batches == '0'
-              || (github.event.inputs.outdated == 'true' && steps.check-changes.outputs.has_scored_reviews == 'false')
-              || (github.event.inputs.needs_rescore == 'true' && steps.check-changes.outputs.has_scored_reviews == 'false')
-              || (github.event.inputs.stale_scores == 'true' && steps.check-changes.outputs.has_scored_reviews == 'false')
-              || (github.event.inputs.upgrade_ensemble == 'true' && steps.check-changes.outputs.has_scored_reviews == 'false')) }}
+              || steps.check-changes.outputs.has_scored_reviews == 'false') }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
