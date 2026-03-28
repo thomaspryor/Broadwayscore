@@ -134,6 +134,9 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 /.claude/commands/
 /.claude/settings.json
 
+# Agent memory (self-updating, may contain operational details — local only)
+/scripts/agent-memory/
+
 # Internal planning docs (root)
 /CAST-PLAN.md
 /EXPANSION-PLAN.md

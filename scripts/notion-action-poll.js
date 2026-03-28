@@ -39,7 +39,29 @@ if (fs.existsSync(envPath)) {
 const DRY_RUN = process.argv.includes('--dry-run');
 const REPO_DIR = path.join(__dirname, '..');
 const LOG_DIR = path.join(require('os').homedir(), 'Library', 'Logs');
+const MEMORY_DIR = path.join(__dirname, 'agent-memory');
 const DATABASE_ID = 'fa7b3ff2-c073-4097-b54c-0a78e56e06b6';
+
+// Tag → agent memory file mapping
+const TAG_MEMORY_MAP = {
+  scraping: 'agent-scraper.md',
+  scoring: 'agent-scoring.md',
+  'opening-night': 'agent-opening-night.md',
+  infra: 'agent-infra.md',
+  'data-quality': 'agent-scraper.md', // data quality often involves scraping
+  email: 'agent-infra.md',
+};
+
+// Keywords for auto-inferring tags when none are set
+const TAG_KEYWORDS = {
+  scraping: ['scrape', 'scraper', 'crawl', 'fetch', 'gather', 'aggregator', 'brightdata', 'scrapingbee', 'playwright', 'bww', 'dtli'],
+  scoring: ['score', 'scoring', 'tier', 'composite', 'blended', 'llm-score', 'review text', 'ensemble'],
+  'opening-night': ['opening night', 'opening-night', 'poller', 'orchestrator', 'premiere'],
+  infra: ['workflow', 'ci', 'deploy', 'vercel', 'launchd', 'cron', 'github action', 'plist', 'health check'],
+  commercial: ['recoup', 'gross', 'commercial', 'box office', 'ticket'],
+  email: ['email', 'broadcast', 'resend', 'buttondown', 'newsletter', 'subscriber'],
+  'west-end': ['west end', 'london', 'olivier', 'wet', 'the stage'],
+};
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
@@ -68,6 +90,100 @@ function getSelectValue(prop) {
 function getMultiSelectValues(prop) {
   if (!prop || prop.type !== 'multi_select') return [];
   return prop.multi_select.map(s => s.name);
+}
+
+// ── Agent Memory ─────────────────────────────────────────────────────
+
+function inferTags(card) {
+  const text = `${card.name} ${card.notes}`.toLowerCase();
+  const inferred = [];
+  for (const [tag, keywords] of Object.entries(TAG_KEYWORDS)) {
+    if (keywords.some(kw => text.includes(kw))) {
+      inferred.push(tag);
+    }
+  }
+  return inferred;
+}
+
+function getEffectiveTags(card) {
+  if (card.tags.length > 0) return card.tags.map(t => t.toLowerCase());
+  const inferred = inferTags(card);
+  if (inferred.length > 0) {
+    log(`  No tags on card — inferred: [${inferred.join(', ')}]`);
+  }
+  return inferred;
+}
+
+function getAgentMemory(card) {
+  const tags = getEffectiveTags(card);
+  const seen = new Set();
+  const sections = [];
+
+  for (const tag of tags) {
+    const file = TAG_MEMORY_MAP[tag];
+    if (!file || seen.has(file)) continue;
+    seen.add(file);
+
+    const filePath = path.join(MEMORY_DIR, file);
+    try {
+      const content = fs.readFileSync(filePath, 'utf8');
+      sections.push(`### ${file.replace('agent-', '').replace('.md', '')} knowledge\n${content}`);
+    } catch {
+      log(`  Warning: no memory file for tag "${tag}" (expected ${filePath})`);
+    }
+  }
+
+  return sections.length > 0 ? sections.join('\n\n') : '';
+}
+
+function writeMemoryUpdate(card, memoryText) {
+  if (!memoryText) return;
+
+  const tags = getEffectiveTags(card);
+  // Write to the first matched memory file
+  const targetFile = tags.map(t => TAG_MEMORY_MAP[t]).find(f => f);
+  if (!targetFile) {
+    log(`  No memory file target for tags [${tags.join(', ')}] — skipping memory update`);
+    return;
+  }
+
+  const filePath = path.join(MEMORY_DIR, targetFile);
+  const date = new Date().toISOString().slice(0, 10);
+  const entry = `\n### ${date} — ${card.name}\n${memoryText.trim()}\n`;
+
+  try {
+    let content = fs.existsSync(filePath) ? fs.readFileSync(filePath, 'utf8') : '---AUTO-APPENDED---\n';
+
+    // Find the auto-appended separator
+    const separator = '---AUTO-APPENDED---';
+    const sepIndex = content.indexOf(separator);
+    if (sepIndex === -1) {
+      // No separator — append at end with separator
+      content += `\n${separator}${entry}`;
+    } else {
+      // Insert after separator
+      const before = content.slice(0, sepIndex + separator.length);
+      const after = content.slice(sepIndex + separator.length);
+      content = before + entry + after;
+    }
+
+    // Enforce 200-line cap on auto-appended section only
+    const lines = content.split('\n');
+    const sepLineIndex = lines.findIndex(l => l.trim() === separator);
+    if (sepLineIndex !== -1 && lines.length > 200) {
+      // Keep everything up to separator + first 200-sepLineIndex lines after
+      const maxAutoLines = 200 - sepLineIndex - 1;
+      if (maxAutoLines > 0) {
+        const kept = [...lines.slice(0, sepLineIndex + 1), ...lines.slice(sepLineIndex + 1, sepLineIndex + 1 + maxAutoLines)];
+        content = kept.join('\n');
+      }
+    }
+
+    fs.writeFileSync(filePath, content);
+    log(`  Updated memory: ${targetFile} (+${entry.split('\n').length} lines)`);
+  } catch (err) {
+    log(`  Warning: failed to write memory update to ${targetFile}: ${err.message}`);
+  }
 }
 
 // ── Query for actionable cards ───────────────────────────────────────
@@ -107,6 +223,11 @@ function buildPrompt(card) {
 
   const instruction = actionInstructions[card.action] || actionInstructions.Investigate;
 
+  const agentMemory = getAgentMemory(card);
+  const memorySection = agentMemory
+    ? `\n## Domain Knowledge\nThe following operational knowledge has been accumulated from prior sessions. Follow these rules.\n\n${agentMemory}\n`
+    : '';
+
   return `You are an automated Claude session triggered by the Notion Action Queue.
 
 ## Card Details
@@ -123,7 +244,7 @@ ${card.notes || '(none)'}
 
 ## Existing Outcome
 ${card.outcome || '(none)'}
-
+${memorySection}
 ## Instructions
 ${instruction}
 
@@ -132,6 +253,12 @@ When done, output your findings in this exact format between markers:
 ===ACTION_RESULT_START===
 [Your structured findings/plan/implementation summary here]
 ===ACTION_RESULT_END===
+
+If you learned something durable that would help future automated sessions on this subsystem (gotchas, patterns that worked, things that broke), also output it between these markers. Only include reusable operational lessons, not session-specific details:
+
+===MEMORY_UPDATE_START===
+[Durable lessons learned, if any]
+===MEMORY_UPDATE_END===
 
 Be thorough but concise. Focus on actionable information.`;
 }
@@ -168,14 +295,19 @@ function runClaude(prompt, card) {
     // Write full output to log
     fs.writeFileSync(logFile, result);
 
-    // Extract result between markers
-    const match = result.match(/===ACTION_RESULT_START===([\s\S]*?)===ACTION_RESULT_END===/);
-    return match ? match[1].trim() : result.slice(-3000); // fallback: last 3000 chars
+    // Extract result and memory update between markers (single pass)
+    const resultMatch = result.match(/===ACTION_RESULT_START===([\s\S]*?)===ACTION_RESULT_END===/);
+    const memoryMatch = result.match(/===MEMORY_UPDATE_START===([\s\S]*?)===MEMORY_UPDATE_END===/);
+
+    return {
+      result: resultMatch ? resultMatch[1].trim() : result.slice(-3000),
+      memoryUpdate: memoryMatch ? memoryMatch[1].trim() : null,
+    };
   } catch (err) {
     const errMsg = `Claude session failed: ${err.message}`;
     log(errMsg);
     fs.appendFileSync(logFile, `\n\nERROR: ${errMsg}`);
-    return `[Automated session error] ${err.message.slice(0, 500)}`;
+    return { result: `[Automated session error] ${err.message.slice(0, 500)}`, memoryUpdate: null };
   } finally {
     try { fs.unlinkSync(tmpPrompt); } catch {}
   }
@@ -263,11 +395,14 @@ async function main() {
     }
 
     const prompt = buildPrompt(card);
-    const result = runClaude(prompt, card);
+    const { result, memoryUpdate } = runClaude(prompt, card);
 
     try {
       await updateCardOutcome(card, result);
       await addComment(card, result);
+      if (memoryUpdate) {
+        writeMemoryUpdate(card, memoryUpdate);
+      }
       await clearAction(card);
       log(`Done processing "${card.name}"`);
     } catch (err) {
