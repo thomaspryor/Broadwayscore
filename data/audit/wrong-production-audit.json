@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-03-28T19:45:49.866Z",
+  "timestamp": "2026-03-28T20:28:51.994Z",
   "stats": {
     "totalReviews": 32537,
     "alreadyFlagged": 11190,
-    "dateGuardCatches": 145,
+    "dateGuardCatches": 144,
     "directorMismatch": 965,
     "tvFilmSignals": 3458,
     "londonSignals": 1049,
@@ -80129,18 +80129,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "teeth-n-smiles-west-end-2026",
-      "file": "standard--nick-curtis.json",
-      "score": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 37d before show (2026-02-04 vs 2026-03-13)"
         }
       ]
     },
