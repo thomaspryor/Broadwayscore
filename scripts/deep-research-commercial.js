@@ -528,11 +528,13 @@ async function main() {
   if (SHOW_LIST) {
     targetSlugs = SHOW_LIST;
   } else if (ALL_TBD) {
-    // Shows with TBD designation (not maxed out)
+    // Shows with TBD designation (Broadway only, not maxed out)
     const tbdSlugs = Object.entries(commShows)
-      .filter(([, v]) => {
+      .filter(([slug, v]) => {
         if (!v || v.designation !== 'TBD') return false;
         if (!FORCE && (v.researchAttempts || 0) >= MAX_RESEARCH_ATTEMPTS) return false;
+        const show = showBySlug[slug];
+        if (show && show.category && show.category !== 'broadway') return false;
         return true;
       })
       .map(([k]) => k);
@@ -544,11 +546,12 @@ async function main() {
         && !commShows[s.slug])
       .map(s => s.slug);
 
-    // 6-month eligible shows (TBD, researched 6+ months ago, still open)
+    // 6-month eligible shows (TBD, Broadway only, researched 6+ months ago, still open)
     sixMonthSlugs = Object.entries(commShows)
       .filter(([slug, entry]) => {
         const show = showBySlug[slug];
         if (!show || show.status !== 'open') return false;
+        if (show.category && show.category !== 'broadway') return false;
         return isSixMonthEligible(entry);
       })
       .map(([k]) => k);
