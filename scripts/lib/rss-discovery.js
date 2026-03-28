@@ -208,6 +208,8 @@ async function checkRSSFeeds(showTitle, options = {}) {
   for (const feed of ALL_FEEDS) {
     // Skip feeds restricted to a different market
     if (market && feed.market && feed.market !== market) continue;
+    // Skip feeds not in the outlet filter (when provided)
+    if (outletFilter && !outletFilter.includes(feed.outletId)) continue;
     try {
       const xml = await fetchUrl(feed.url);
       const items = parseFeedItems(xml);
