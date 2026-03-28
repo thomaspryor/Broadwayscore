@@ -16,7 +16,10 @@
     "pied-a-terre-off-broadway-2026/nytg--unknown.json",
     "chinese-republicans-off-broadway-2026/the-interested-bystander--cary-wong.json",
     "chess-2025/playbill--logan-culwell-block.json",
-    "all-my-sons-west-end-2025/whatsonstage--unknown.json"
+    "all-my-sons-west-end-2025/whatsonstage--unknown.json",
+    "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+    "starlight-express-west-end-2024/the-express--unknown.json",
+    "stranger-things-the-first-shadow-west-end-2023/telegraph--marianka-swain.json"
   ],
   "failed": [
     "blood-of-my-blood-west-end-2026/thestage--sam-marlowe.json",
@@ -71,7 +74,14 @@
     "shadowlands-west-end-2026/times-uk--clive-davis.json",
     "oh-mary-west-end-2025/standard--nick-curtis.json",
     "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json",
-    "two-strangers-bway-2025/guardian--unknown.json"
+    "two-strangers-bway-2025/guardian--unknown.json",
+    "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "my-neighbour-totoro-west-end-2025/the-morning-star--unknown.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json",
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -94,7 +104,10 @@
       "all-my-sons-west-end-2025/whatsonstage--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -135,11 +148,13 @@
       "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/broadwayworld--linda-hodges.json"
     ],
     "archive": [
-      "the-choir-of-man-off-west-end-2026/thestage--tom-wicker.json"
+      "the-choir-of-man-off-west-end-2026/thestage--tom-wicker.json",
+      "starlight-express-west-end-2024/the-express--unknown.json",
+      "stranger-things-the-first-shadow-west-end-2023/telegraph--marianka-swain.json"
     ]
   },
   "startTime": "2026-03-28T03:42:42.349Z",
-  "lastProcessed": "all-my-sons-west-end-2025/whatsonstage--unknown.json",
+  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-03-28T03:44:08.946Z",
@@ -195,6 +210,17 @@
       "t": "2026-03-28T03:51:34.845Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-28T04:27:47.877Z",
+      "event": "bb-session",
+      "session": "329fe255",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
+    },
+    {
+      "t": "2026-03-28T04:27:49.506Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
