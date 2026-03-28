@@ -43,7 +43,13 @@
     "moulin-rouge-2019/billboard--unknown.json",
     "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json",
     "harry-potter-2021/billboard--unknown.json",
-    "showstopper-the-improvised-musical-west-end-2023/whatsonstage--alex-wood.json"
+    "showstopper-the-improvised-musical-west-end-2023/whatsonstage--alex-wood.json",
+    "the-book-of-mormon-west-end-2024/independent--alice-saville.json",
+    "the-book-of-mormon-west-end-2024/whatsonstage--sarah-crompton.json",
+    "wicked-2003/broadwayworld--armando-urdiales.json",
+    "wicked-2003/broadwayworld--courtney-symes.json",
+    "wicked-2003/broadwayworld--david-copney.json",
+    "wicked-2003/broadwayworld--emily-short.json"
   ],
   "failed": [
     "jerome-off-broadway-2025/one-minute-critic--unknown.json",
@@ -301,7 +307,11 @@
     "hadestown-2019/newyorker--hilton-als.json",
     "the-play-that-goes-wrong-off-broadway-2019/broadway-blog--samuel-l-leiter.json",
     "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
-    "hamilton-west-end-2021/times-uk--clive-davis.json"
+    "hamilton-west-end-2021/times-uk--clive-davis.json",
+    "hamilton-2015/chicagotribune--chris-jones.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "the-book-of-mormon-west-end-2024/thestage--unknown.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -336,7 +346,10 @@
       "back-to-the-future-west-end-2021/british-theatre--unknown.json",
       "the-phantom-of-the-opera-west-end-1986/whatsonstage--unknown.json",
       "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json",
-      "showstopper-the-improvised-musical-west-end-2023/whatsonstage--alex-wood.json"
+      "showstopper-the-improvised-musical-west-end-2023/whatsonstage--alex-wood.json",
+      "the-book-of-mormon-west-end-2024/independent--alice-saville.json",
+      "the-book-of-mormon-west-end-2024/whatsonstage--sarah-crompton.json",
+      "wicked-2003/broadwayworld--armando-urdiales.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -500,11 +513,14 @@
       "starlight-express-west-end-2024/the-express--unknown.json",
       "stranger-things-the-first-shadow-west-end-2023/telegraph--marianka-swain.json",
       "moulin-rouge-2019/billboard--unknown.json",
-      "harry-potter-2021/billboard--unknown.json"
+      "harry-potter-2021/billboard--unknown.json",
+      "wicked-2003/broadwayworld--courtney-symes.json",
+      "wicked-2003/broadwayworld--david-copney.json",
+      "wicked-2003/broadwayworld--emily-short.json"
     ]
   },
   "startTime": "2026-03-28T03:41:24.098Z",
-  "lastProcessed": "showstopper-the-improvised-musical-west-end-2023/whatsonstage--alex-wood.json",
+  "lastProcessed": "wicked-2003/broadwayworld--emily-short.json",
   "log": [
     {
       "t": "2026-03-28T03:50:35.596Z",
@@ -547,6 +563,17 @@
     },
     {
       "t": "2026-03-28T04:03:34.344Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-28T04:09:01.741Z",
+      "event": "bb-session",
+      "session": "34faa373",
+      "url": "https://www.thestage.co.uk/reviews/suffs-review-at-music-box-theatre-new-york-by"
+    },
+    {
+      "t": "2026-03-28T04:09:02.926Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
