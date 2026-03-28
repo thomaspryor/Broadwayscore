@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-28T05:32:41.052Z",
+  "timestamp": "2026-03-28T05:51:40.927Z",
   "stats": {
     "totalReviews": 32523,
-    "alreadyFlagged": 11188,
+    "alreadyFlagged": 11187,
     "dateGuardCatches": 143,
     "directorMismatch": 964,
-    "tvFilmSignals": 3451,
+    "tvFilmSignals": 3453,
     "londonSignals": 1046,
-    "offBroadwaySignals": 1008,
+    "offBroadwaySignals": 1005,
     "yearMismatch": 70,
-    "noPublishDate": 6706
+    "noPublishDate": 6707
   },
   "findings": [
     {
@@ -18545,6 +18545,20 @@
       "score": 42,
       "publishDate": "2025-03-31",
       "url": "https://www.washingtonpost.com/entertainment/theater/2025/03/31/glengarry-glen-ross-broadway-review-kieran-culkin/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "god-of-carnage-2009",
+      "file": "broadwayworld--michael-dale.json",
+      "score": 78,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/God-of-Carnage",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -56136,6 +56150,20 @@
       ]
     },
     {
+      "showId": "the-producers-west-end-2025",
+      "file": "whatsonstage--unknown.json",
+      "score": 86,
+      "publishDate": "2025-09-16",
+      "url": "https://www.whatsonstage.com/news/the-producers-revival-review-where-did-they-go-right_1657052/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"big screen\""
+        }
+      ]
+    },
+    {
       "showId": "the-prom-2018",
       "file": "dailybeast--tim-teeman.json",
       "score": 45,
@@ -85620,45 +85648,6 @@
     {
       "showId": "wicked-2003",
       "file": "broadwayworld--armando-urdiales.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
-      "file": "broadwayworld--courtney-symes.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
-      "file": "broadwayworld--david-copney.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
-      "file": "broadwayworld--lynn-beaver.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
       "findings": [
