@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-28T04:04:35.346Z",
-  "processed": 8,
-  "failed": 22,
-  "successRate": "26.7%",
+  "updatedAt": "2026-03-28T04:09:28.476Z",
+  "processed": 10,
+  "failed": 30,
+  "successRate": "25.0%",
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 6,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 13,
-    "archive": 1
+    "archiveToday": 18,
+    "archive": 2
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-03-28T03:50:35.596Z",
@@ -56,6 +56,17 @@
     },
     {
       "t": "2026-03-28T04:03:34.344Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-28T04:09:01.741Z",
+      "event": "bb-session",
+      "session": "34faa373",
+      "url": "https://www.thestage.co.uk/reviews/suffs-review-at-music-box-theatre-new-york-by"
+    },
+    {
+      "t": "2026-03-28T04:09:02.926Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
