@@ -354,15 +354,8 @@ async function runAggregators(show) {
       if (lboUrl) {
         console.log(`    Curated URL: ${lboUrl}`);
         try {
-          const https = require('https');
-          lboHtml = await new Promise((resolve, reject) => {
-            https.get(lboUrl, { headers: { 'User-Agent': 'Mozilla/5.0' } }, res => {
-              if (res.statusCode !== 200) { resolve(null); return; }
-              let data = '';
-              res.on('data', c => data += c);
-              res.on('end', () => resolve(data));
-            }).on('error', reject);
-          });
+          const lboResult = await fetchPage(lboUrl, { renderJs: false });
+          lboHtml = lboResult?.content || null;
         } catch (e) {
           console.log(`    LBO fetch error: ${e.message}`);
         }
@@ -374,14 +367,11 @@ async function runAggregators(show) {
       // Fallback: live sitemap discovery (free, ~16 entries)
       if (!lboHtml) {
         try {
-          const sitemapXml = await new Promise((resolve) => {
-            require('https').get('https://www.londonboxoffice.co.uk/news-sitemap.xml', {
-              headers: { 'User-Agent': 'Mozilla/5.0' },
-            }, res => {
-              if (res.statusCode !== 200) { resolve(null); return; }
-              let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
-            }).on('error', () => resolve(null));
-          });
+          let sitemapXml = null;
+          try {
+            const smResult = await fetchPage('https://www.londonboxoffice.co.uk/news-sitemap.xml', { renderJs: false });
+            sitemapXml = smResult?.content || null;
+          } catch (e) { /* sitemap fetch failed, continue */ }
           if (sitemapXml) {
             // Match show title words against review URL slugs
             // LBO uses both "review-round-up-{show}" and "{show}-review-{venue}" patterns
@@ -399,14 +389,10 @@ async function runAggregators(show) {
             });
             if (match) {
               console.log(`    Sitemap match: ${match}`);
-              lboHtml = await new Promise((resolve) => {
-                require('https').get(match, {
-                  headers: { 'User-Agent': 'Mozilla/5.0' },
-                }, res => {
-                  if (res.statusCode !== 200) { resolve(null); return; }
-                  let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
-                }).on('error', () => resolve(null));
-              });
+              try {
+                const matchResult = await fetchPage(match, { renderJs: false });
+                lboHtml = matchResult?.content || null;
+              } catch (e) { /* page fetch failed */ }
               // Cache to archive
               if (lboHtml) {
                 const archDir = path.dirname(lboArchivePath);
