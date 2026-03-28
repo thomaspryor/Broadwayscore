@@ -1287,9 +1287,15 @@ showDirs.forEach(showId => {
       }
 
       // Skip scraper garbage (scraper identified content as non-review material)
+      // BUT allow through if review has a valid score from aggregator data (excerpts + assignedScore)
       if (data.incompleteReason === 'scraper_garbage') {
-        stats.skippedScraperGarbage = (stats.skippedScraperGarbage || 0) + 1;
-        return;
+        const hasAggregatorScore = (data.assignedScore && data.assignedScore >= 1 && data.assignedScore <= 100)
+          || (data.originalScore && parseOriginalScore(data.originalScore, data.outletId) !== null);
+        const hasExcerpt = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt;
+        if (!hasAggregatorScore && !hasExcerpt) {
+          stats.skippedScraperGarbage = (stats.skippedScraperGarbage || 0) + 1;
+          return;
+        }
       }
 
       // Auto-fix relative URLs that look like BWW paths (missing domain prefix)
