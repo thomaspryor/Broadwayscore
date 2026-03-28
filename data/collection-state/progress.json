@@ -44,7 +44,12 @@
     "sweetmeats-west-end-2026/standard--maya-chandran.json",
     "all-out-2025/nytg--gillian-russo.json",
     "all-out-2025/ew--unknown.json",
-    "waiting-for-godot-2025/nypost--entertainment-critic.json"
+    "waiting-for-godot-2025/nypost--entertainment-critic.json",
+    "mamma-mia-2025/nytimes--elizabeth-vincentelli.json",
+    "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
+    "the-last-five-years-2025/nypost--lou-lumenick.json",
+    "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json",
+    "left-on-tenth-2024/nytimes--laura-collins-hughes.json"
   ],
   "failed": [
     "no-singing-in-the-navy-off-broadway-2026/talkinbroadway--unknown.json",
@@ -85,7 +90,12 @@
     "man-to-man-west-end-2026/stagebuddy--unknown.json",
     "cyrano-de-bergerac-west-end-2026/daily-mail--robert-gore-langton.json",
     "high-noon-west-end-2025/times-uk--clive-davis.json",
-    "art-2025/broadwaynews--unknown.json"
+    "art-2025/broadwaynews--unknown.json",
+    "call-me-izzy-2025/vulture--jackson-mchenry.json",
+    "redwood-2025/gmanetwork--stuart-santiago.json",
+    "redwood-2025/juiceph--wanggo-gallaga.json",
+    "eureka-day-2024/times-uk--clive-davis.json",
+    "romeo-juliet-2024/thestage--nicole-serratore.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -118,17 +128,23 @@
       "wicked-2003/broadwayworld--linda-hodges.json",
       "sweetmeats-west-end-2026/standard--maya-chandran.json",
       "all-out-2025/nytg--gillian-russo.json",
-      "all-out-2025/ew--unknown.json"
+      "all-out-2025/ew--unknown.json",
+      "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
+      "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
       "my-neighbour-totoro-west-end-2025/variety--unknown.json",
       "data/review-texts/waiting-for-godot-2025/nypost--entertainment-critic.json",
-      "waiting-for-godot-2025/nypost--entertainment-critic.json"
+      "waiting-for-godot-2025/nypost--entertainment-critic.json",
+      "data/review-texts/the-last-five-years-2025/nypost--lou-lumenick.json",
+      "the-last-five-years-2025/nypost--lou-lumenick.json"
     ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "left-on-tenth-2024/nytimes--laura-collins-hughes.json"
+    ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/no-singing-in-the-navy-off-broadway-2026/talkinbroadway--unknown.json"
@@ -147,11 +163,12 @@
       "wicked-2003/broadwayworld--lauren-gienow.json",
       "wicked-2003/broadwayworld--lynn-beaver.json",
       "wicked-2003/broadwayworld--tyler-hinton.json",
-      "grace-pervades-west-end-2026/thestage--unknown.json"
+      "grace-pervades-west-end-2026/thestage--unknown.json",
+      "mamma-mia-2025/nytimes--elizabeth-vincentelli.json"
     ]
   },
   "startTime": "2026-03-28T09:38:57.589Z",
-  "lastProcessed": "art-2025/broadwaynews--unknown.json",
+  "lastProcessed": "left-on-tenth-2024/nytimes--laura-collins-hughes.json",
   "log": [
     {
       "t": "2026-03-28T10:37:37.435Z",
@@ -172,6 +189,17 @@
     },
     {
       "t": "2026-03-28T10:44:48.650Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-28T10:45:43.573Z",
+      "event": "bb-session",
+      "session": "ca3818f4",
+      "url": "https://nypost.com/2025/04/06/entertainment/the-last-five-years-review-nick-jona"
+    },
+    {
+      "t": "2026-03-28T10:45:44.893Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
     }
