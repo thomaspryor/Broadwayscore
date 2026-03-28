@@ -358,7 +358,7 @@ function getBestScore(data, opts = {}) {
   const downgradeShowScore = isShowScoreSource && isWestEnd && !isOutletVerified;
 
   if (data.originalScore && !downgradeShowScore) {
-    if (data.scoreConfidence === 'low' || data.scoreSource === 'star-icon') {
+    if (data.scoreConfidence === 'low' || data.scoreSource === 'star-icon' || data.scoreSource === 'star-icon-cleared') {
       inc('skippedLowConfidenceOriginal');
     } else {
       const parsed = parseOriginalScore(data.originalScore, data.outletId);
@@ -371,6 +371,13 @@ function getBestScore(data, opts = {}) {
           if (parsedBucket !== llmBucket) {
             flagForHumanReview(data, 'originalScore-llm-conflict',
               `originalScore "${data.originalScore}" (=${parsed}, bucket=${parsedBucket}) vs LLM ${llm} (bucket=${llmBucket}, conf=${llmConf})`);
+            // When high-confidence LLM with real text disagrees on bucket,
+            // the star extraction is likely wrong (regex matched wrong element,
+            // aggregator misattributed rating, etc.). Prefer LLM in this case.
+            if (llmConf === 'high') {
+              inc('originalScoreOverriddenByLLM');
+              return { score: llm, source: 'llmScore-override-star-conflict' };
+            }
           }
         }
         return { score: parsed, source: 'originalScore-priority0' };
