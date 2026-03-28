@@ -642,6 +642,25 @@ assert(latimesFeed && latimesFeed.needsFilter === true, 'LA Times uses needsFilt
 assert(washpostFeed !== undefined, 'WashPost is present in ALL_FEEDS');
 assert(washpostFeed && washpostFeed.needsFilter === true, 'WashPost uses needsFilter (general entertainment feed)');
 
+const newyorkerFeed = ALL_FEEDS.find(f => f.outletId === 'newyorker');
+assert(newyorkerFeed !== undefined, 'New Yorker is present in ALL_FEEDS');
+assert(newyorkerFeed && newyorkerFeed.needsFilter === true, 'New Yorker uses needsFilter (general culture feed)');
+assert(newyorkerFeed && newyorkerFeed.url.includes('/feed/culture'), 'New Yorker uses /feed/culture (not /feed/culture/cultural-comment)');
+
+// New Yorker title matching — reviews use "Theatre Review:" or show title in headline
+assert(
+  titleMatchesShow('Theatre Review: "An Ark" and "Data"', 'An Ark'),
+  'NY: "An Ark" theater review matches'
+);
+assert(
+  titleMatchesShow('In Tracy Letts\'s "Bug," Crazy Is Contagious', 'Bug'),
+  'NY: Bug review matches (show title in headline)'
+);
+assert(
+  !titleMatchesShow('Two Playwrights Tackle Father Figures', 'Giant'),
+  'NY: Negative — generic headline does NOT match Giant'
+);
+
 // Title matching for typical WSJ/LAT/WashPost review headlines
 assert(
   titleMatchesShow("'Giant' Review: John Lithgow as a Venomous Roald Dahl", 'Giant'),
