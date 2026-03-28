@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-28T06:10:48.207Z",
+  "timestamp": "2026-03-28T06:20:29.158Z",
   "stats": {
     "totalReviews": 32524,
-    "alreadyFlagged": 11187,
-    "dateGuardCatches": 143,
+    "alreadyFlagged": 11186,
+    "dateGuardCatches": 144,
     "directorMismatch": 964,
-    "tvFilmSignals": 3453,
-    "londonSignals": 1046,
-    "offBroadwaySignals": 1005,
+    "tvFilmSignals": 3455,
+    "londonSignals": 1047,
+    "offBroadwaySignals": 1004,
     "yearMismatch": 70,
-    "noPublishDate": 6708
+    "noPublishDate": 6707
   },
   "findings": [
     {
@@ -7642,6 +7642,20 @@
     },
     {
       "showId": "book-of-mormon-2011",
+      "file": "village-voice--michael-musto.json",
+      "score": 82,
+      "publishDate": "2011-03-25T13:49:16-04:00",
+      "url": "http://blogs.villagevoice.com/dailymusto/2011/03/the_book_of_mor.php",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-2011",
       "file": "vulture--scott-brown.json",
       "score": 92,
       "publishDate": "2011-03-25T13:49:16-04:00",
@@ -14408,6 +14422,25 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 464d before show (2024-11-07 vs 2026-02-14)"
+        }
+      ]
+    },
+    {
+      "showId": "evening-all-afternoon-west-end-2026",
+      "file": "the-express--george-simpson.json",
+      "score": 92,
+      "publishDate": "2024-11-12",
+      "url": "https://www.express.co.uk/entertainment/theatre/1975202/Curious-Case-of-Benjamin-Button-musical-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 459d before show (2024-11-12 vs 2026-02-14)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -48399,6 +48432,20 @@
     },
     {
       "showId": "the-addams-family-2010",
+      "file": "broadwayworld--michael-dale.json",
+      "score": 72,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/The-Addams-Family",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-addams-family-2010",
       "file": "financialtimes--brendan-lemon.json",
       "score": 68,
       "publishDate": "2010-04-08",
@@ -74773,19 +74820,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "mother-russia-off-broadway-2026",
-      "file": "playbill--unknown.json",
-      "publishDate": "2026-02-24",
-      "url": "https://playbill.com/article/reviews-are-out-for-lauren-yees-mother-russia",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"st. ann's warehouse\""
         }
       ]
     },
