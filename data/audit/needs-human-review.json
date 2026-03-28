@@ -5,7 +5,7 @@
     "reasons": {
       "possible-tour-fulltext": 33,
       "borderline-rave": 1,
-      "originalScore-llm-conflict": 2
+      "originalScore-llm-conflict": 1
     }
   },
   "reviews": [
@@ -346,13 +346,13 @@
       "flaggedAt": "2026-03-28T23:36:49.185Z"
     },
     {
-      "showId": "operation-mincemeat-2025",
-      "outletId": "chicagotribune",
-      "criticName": "Chris Jones",
-      "reason": "originalScore-llm-conflict",
-      "detail": "originalScore \"1/5\" (=20, bucket=negative) vs LLM 67 (bucket=mixed, conf=medium)",
-      "llmScore": 67,
-      "llmBucket": "Mixed",
+      "showId": "paranormal-activity-west-end-2025",
+      "outletId": "financialtimes",
+      "criticName": "Sarah Hemming",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bon tour(?! with)\\b",
+      "llmScore": 81,
+      "llmBucket": "Positive",
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
@@ -487,7 +487,7 @@
     },
     {
       "showId": "the-lightning-thief-2019",
-      "outletId": "nysr",
+      "outletId": "theater-news-online",
       "criticName": "TheatreNewsOnline.com (Sandy Macdonald)",
       "reason": "possible-tour-fulltext",
       "detail": "Tour signal in fullText intro: \\bnational tour\\b",

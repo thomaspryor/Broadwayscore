@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-28T23:04:43.611Z",
+  "generatedAt": "2026-03-28T23:30:21.849Z",
   "shows": {
     "days-of-wine-and-roses-2024": {
       "title": "Days of Wine and Roses",
@@ -800,17 +800,19 @@
       "researchedAt": "2026-03-27T03:24:18.895Z"
     },
     "appropriate-2023": {
-      "capitalization": 3750000,
-      "capitalizationSource": "Forbes (2024) – reported $3.75M cost to mount the Broadway transfer ([www.forbes.com](https://www.forbes.com/sites/marchershberg/2024/02/09/commercial-transfer-of-best-selling-broadway-play-prompts-questions/#:~:text=After%20Appropriate%20concludes%20its%20limited,75%20million))",
+      "title": "Appropriate",
+      "slug": "appropriate",
+      "openingDate": "2023-12-18",
+      "status": "closed",
+      "capitalization": null,
+      "capitalizationSource": null,
       "weeklyRunningCost": 440866,
       "costMethodology": "trade-reported",
-      "recouped": false,
+      "recouped": null,
       "recoupedDate": null,
       "recoupedSource": null,
-      "estimatedRecoupmentPct": null,
-      "designation": "Nonprofit",
-      "notes": "NYC tax-credit ($1.72M) implies ~ $6.9M eligible costs ([www.broadwayworld.com](https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904#:~:text=%241%2C871%2C543%2C%C2%A0KPOP%C2%A0,%241%2C146%2C568%2C%C2%A0Mother%20Play)). Required ~ $760K/week to recoup ([www.forbes.com](https://www.forbes.com/sites/marchershberg/2024/02/09/commercial-transfer-of-best-selling-broadway-play-prompts-questions/#:~:text=Taking%20into%20account%20a%20%241,440%2C866%20before%20royalties%20and%20rent)). Closed after limited run ([playbill.com](https://playbill.com/article/broadways-appropriate-announces-3rd-and-final-extension#:~:text=The%20Second%20Stage%20Theater%20revival,continue%20performances%20through%20June%2030)) with no public recoup announcement.",
-      "confidence": "medium",
+      "designation": "TBD",
+      "notes": "Despite strong box office performance and a well-received commercial transfer, “Appropriate” did not publicly announce recoupment of its initial investment by its June 30, 2024 closing, and its production budget remains undisclosed.",
       "sources": [
         {
           "type": "trade",
@@ -819,22 +821,12 @@
         },
         {
           "type": "trade",
-          "url": "https://www.playbill.com/article/broadways-appropriate-announces-3rd-and-final-extension",
-          "date": "2024-05-30"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904",
-          "date": "2025-09-04"
+          "url": "https://playbill.com/article/appropriate-ends-broadway-run-june-30",
+          "date": "2024-06-30"
         }
       ],
-      "title": "Appropriate",
-      "slug": "appropriate-2023",
-      "openingDate": "2023-12-18",
-      "status": "closed",
-      "researchedAt": "2026-03-28T23:04:43.611Z",
-      "model": "o4-mini-deep-research",
-      "researchTrigger": "manual"
+      "confidence": "low",
+      "researchedAt": "2026-03-28T21:13:03.466Z"
     },
     "doubt-2024": {
       "title": "Doubt: A Parable",
@@ -2828,6 +2820,107 @@
       ],
       "confidence": "high",
       "researchedAt": "2026-03-28T22:41:38.640Z"
+    },
+    "data-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "No verifiable financial data for Data has been published. Trade articles confirm its production details but do not report any budget or weekly costs ([playbill.com](https://playbill.com/article/matthew-libbys-data-sets-new-york-stage-premiere-off-broadway#:~:text=Matthew%20Libby%27s%20suspense%20thriller%C2%A0Data%20will,Weather%20Girl%29%C2%A0will%20direct)) ([stageandcinema.com](https://stageandcinema.com/2026/01/29/data-off-broadway-review-lucille-lortel/#:~:text=Logging%20in%20to%20tackle%20these,the%20intersection%20of%20algorithmic%20predetermination)), and the New York City production tax credit summaries (Aug 2025) list no award to Data ([www.investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit#:~:text=The%20program%E2%80%99s%20first%20payouts%20were,season%20have%20yet%20received%20payment)). There is no public information on recoupment.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/matthew-libbys-data-sets-new-york-stage-premiere-off-broadway",
+          "date": "2025-11-18"
+        },
+        {
+          "type": "trade",
+          "url": "https://stageandcinema.com/2026/01/29/data-off-broadway-review-lucille-lortel/",
+          "date": "2026-01-29"
+        },
+        {
+          "type": "other",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        }
+      ],
+      "title": "Data",
+      "slug": "data-off-broadway",
+      "openingDate": "2026-01-09",
+      "status": "open",
+      "researchedAt": "2026-03-28T23:03:33.218Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
+    },
+    "the-dinosaurs-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "No financial figures (budget or weekly operating cost) were reported for The Dinosaurs. The show ran Off-Broadway at Playwrights Horizons ([playbill.com](https://playbill.com/article/the-dinosaurs-begins-off-broadway-world-premiere-february-4#:~:text=Jacob%20Perkins%20%27%C2%A0%203%20begins,Rubin%20Theater)), and Playwrights Horizons is a 501(c)(3) nonprofit theater company ([projects.propublica.org](https://projects.propublica.org/nonprofits/organizations/132805131#:~:text=Type%20of%20Nonprofit)). As a nonprofit production, it did not have a public capitalization or recoupment report. The limited run closed in March 2026 with no announcement of recoupment or reported grosses.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/the-dinosaurs-begins-off-broadway-world-premiere-february-4",
+          "date": "2026-02-04"
+        },
+        {
+          "type": "other",
+          "url": "https://projects.propublica.org/nonprofits/organizations/132805131",
+          "date": null
+        }
+      ],
+      "title": "The Dinosaurs",
+      "slug": "the-dinosaurs-off-broadway",
+      "openingDate": "2026-02-04",
+      "status": "closed",
+      "researchedAt": "2026-03-28T23:24:07.255Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
+    },
+    "bughouse-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": "No public figure found (nonprofit Off-Broadway production, not a commercially budgeted show) ([vineyardtheatre.org](https://vineyardtheatre.org/about/#:~:text=FEARLESSLY%20MADE%20IN%20NEW%20YORK))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "Bughouse was presented by the Vineyard Theatre (an Off-Broadway theatre company) in spring 2026 ([vineyardtheatre.org](https://vineyardtheatre.org/about/#:~:text=FEARLESSLY%20MADE%20IN%20NEW%20YORK)) ([vineyardtheatre.org](https://vineyardtheatre.org/shows/bughouse/#:~:text=)). No publicly reported capitalization or weekly running cost could be found. It ran a limited engagement (Feb 26–Apr 3, 2026 ([vineyardtheatre.org](https://vineyardtheatre.org/shows/bughouse/#:~:text=))) with no reports of recoupment.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "other",
+          "url": "https://vineyardtheatre.org/about",
+          "date": "2026-03-12"
+        },
+        {
+          "type": "other",
+          "url": "https://vineyardtheatre.org/shows/bughouse",
+          "date": "2026-03-12"
+        }
+      ],
+      "title": "Bughouse",
+      "slug": "bughouse-off-broadway",
+      "openingDate": "2026-03-11",
+      "status": "open",
+      "researchedAt": "2026-03-28T23:30:21.849Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
     }
   }
 }
