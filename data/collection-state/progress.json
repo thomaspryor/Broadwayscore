@@ -19,7 +19,10 @@
     "back-to-the-future-west-end-2021/british-theatre--unknown.json",
     "the-phantom-of-the-opera-west-end-1986/whatsonstage--unknown.json",
     "showstopper-the-improvised-musical-west-end-2023/whatsonstage--alex-wood.json",
-    "the-book-of-mormon-west-end-2024/independent--alice-saville.json"
+    "the-book-of-mormon-west-end-2024/independent--alice-saville.json",
+    "the-book-of-mormon-west-end-2024/whatsonstage--sarah-crompton.json",
+    "sweetmeats-west-end-2026/standard--maya-chandran.json",
+    "happy-ending-west-end-2026/standard--unknown.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -41,7 +44,13 @@
     "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
     "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
     "hamilton-west-end-2021/times-uk--clive-davis.json",
-    "the-book-of-mormon-west-end-2024/thestage--unknown.json"
+    "the-book-of-mormon-west-end-2024/thestage--unknown.json",
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "man-to-man-west-end-2026/stagebuddy--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/daily-mail--robert-gore-langton.json",
+    "grace-pervades-west-end-2026/thestage--unknown.json",
+    "high-noon-west-end-2025/times-uk--clive-davis.json",
+    "dear-england-new-wimbledon-theatre-west-end-2026/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -61,7 +70,10 @@
       "back-to-the-future-west-end-2021/british-theatre--unknown.json",
       "the-phantom-of-the-opera-west-end-1986/whatsonstage--unknown.json",
       "showstopper-the-improvised-musical-west-end-2023/whatsonstage--alex-wood.json",
-      "the-book-of-mormon-west-end-2024/independent--alice-saville.json"
+      "the-book-of-mormon-west-end-2024/independent--alice-saville.json",
+      "the-book-of-mormon-west-end-2024/whatsonstage--sarah-crompton.json",
+      "sweetmeats-west-end-2026/standard--maya-chandran.json",
+      "happy-ending-west-end-2026/standard--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -75,7 +87,8 @@
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/john-proctor-is-the-villain-west-end-2026/broadwayworld--unknown.json",
-      "data/review-texts/john-proctor-is-the-villain-west-end-2026/thestage--sam-marlowe.json"
+      "data/review-texts/john-proctor-is-the-villain-west-end-2026/thestage--sam-marlowe.json",
+      "data/review-texts/grace-pervades-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
       "copenhagen-west-end-2026/telegraph--unknown.json",
@@ -83,7 +96,7 @@
     ]
   },
   "startTime": "2026-03-28T09:16:55.185Z",
-  "lastProcessed": "the-book-of-mormon-west-end-2024/independent--alice-saville.json",
+  "lastProcessed": "happy-ending-west-end-2026/standard--unknown.json",
   "log": [
     {
       "t": "2026-03-28T09:24:04.060Z",
@@ -102,6 +115,18 @@
       "event": "bb-session",
       "session": "d34f063b",
       "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
+    },
+    {
+      "t": "2026-03-28T09:30:32.366Z",
+      "event": "bb-session",
+      "session": "47038042",
+      "url": "https://www.thestage.co.uk/reviews/grace-pervades-review-theatre-royal-bath"
+    },
+    {
+      "t": "2026-03-28T09:31:10.932Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    37 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
     }
   ]
 }

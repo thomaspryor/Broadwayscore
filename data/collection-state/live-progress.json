@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-28T09:27:50.892Z",
-  "processed": 20,
-  "failed": 20,
-  "successRate": "50.0%",
+  "updatedAt": "2026-03-28T09:31:47.443Z",
+  "processed": 23,
+  "failed": 26,
+  "successRate": "46.9%",
   "tierBreakdown": {
-    "playwright": 16,
+    "playwright": 19,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 2,
+    "archiveToday": 3,
     "archive": 2
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-03-28T09:24:04.060Z",
@@ -32,6 +32,18 @@
       "event": "bb-session",
       "session": "d34f063b",
       "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
+    },
+    {
+      "t": "2026-03-28T09:30:32.366Z",
+      "event": "bb-session",
+      "session": "47038042",
+      "url": "https://www.thestage.co.uk/reviews/grace-pervades-review-theatre-royal-bath"
+    },
+    {
+      "t": "2026-03-28T09:31:10.932Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    37 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
     }
   ]
 }
