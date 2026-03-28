@@ -82,7 +82,7 @@ export function generateBreadcrumbSchema(items: { name: string; url: string }[])
 }
 
 // TheaterEvent Schema with full details (enhanced)
-export function generateShowSchema(show: ComputedShow, lastUpdated?: string) {
+export function generateShowSchema(show: ComputedShow, lastUpdated?: string, performers?: { name: string; character?: string }[]) {
   const isLondon = isLondonMarket(show.category);
   const country = getMarketCountry(show.category);
   const currency = getMarketCurrency(show.category);
@@ -104,6 +104,11 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string) {
     ...(lastUpdated && { dateModified: lastUpdated }),
     eventStatus: 'https://schema.org/EventScheduled',
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    organizer: {
+      '@type': 'Organization',
+      name: isLondon ? 'West End Scorecard' : show.category === 'off-broadway' ? 'Off-Broadway Scorecard' : 'Broadway Scorecard',
+      url: BASE_URL,
+    },
   };
 
   // Add aggregate rating if we have scores and sufficient reviews
@@ -148,6 +153,15 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string) {
       '@type': 'Person',
       name: director.name,
     };
+  }
+
+  // Add performers from cast data (top 10 to avoid bloated JSON-LD)
+  if (performers && performers.length > 0) {
+    schema.performer = performers.slice(0, 10).map(p => ({
+      '@type': 'PerformingArtist',
+      name: p.name,
+      ...(p.character && { characterName: p.character }),
+    }));
   }
 
   return schema;

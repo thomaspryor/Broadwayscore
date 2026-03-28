@@ -16,6 +16,7 @@ import { GOLD_LIST_CONFIGS } from '@/config/gold-lists';
 import { getSeasonsForList } from '@/lib/data-gold-list-badges';
 import { featureFlags } from '@/config/feature-flags';
 import { getAllPredictionSeasons, getTonySeasonWindow } from '@/lib/data-tony-predictions';
+import { getAllBlogReviews } from '@/lib/data-reviews-blog';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -248,6 +249,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.8,
     },
+    {
+      url: `${BASE_URL}/west-end/audience-buzz`,
+      lastModified: showsDate,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
     // Critic & Outlet pages - high value for authority and AI citations
     {
       url: `${BASE_URL}/critics`,
@@ -326,12 +333,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.65,
       })),
     ] : []),
-    // Reviews index page
+    // Reviews index + individual blog reviews
     {
       url: `${BASE_URL}/reviews`,
       lastModified: reviewsDate,
       changeFrequency: 'weekly' as const,
       priority: 0.75,
+    },
+    ...getAllBlogReviews().map((review) => ({
+      url: `${BASE_URL}/reviews/${review.slug}`,
+      lastModified: review.publishDate,
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    })),
+    // Cast changes page
+    {
+      url: `${BASE_URL}/cast-changes`,
+      lastModified: showsDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
     },
     // About page
     {
