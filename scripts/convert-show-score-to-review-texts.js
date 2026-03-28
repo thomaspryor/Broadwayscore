@@ -105,7 +105,7 @@ function main() {
           } else {
             existing.data.originalScore = `${review.starRating}/${review.starMax || 5}`;
           }
-          existing.data.scoreSource = 'explicit-rating';
+          existing.data.scoreSource = 'show-score-stars';
           changed = true;
         }
         if (changed) {
@@ -134,7 +134,7 @@ function main() {
         } else {
           originalScore = `${review.starRating}/${review.starMax || 5}`;
         }
-        scoreSource = 'explicit-rating';
+        scoreSource = 'show-score-stars';
       }
 
       const reviewData = {
