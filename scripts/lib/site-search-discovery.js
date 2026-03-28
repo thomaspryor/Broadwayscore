@@ -56,7 +56,7 @@ const SITE_SEARCH_ENDPOINTS = {
     requiresJs: false,
     market: 'broadway',
   },
-  'daily-beast': {
+  'dailybeast': {
     name: 'The Daily Beast',
     url: 'https://www.thedailybeast.com/search?q={TITLE}+{MARKET_KEYWORD}+review',
     domain: 'thedailybeast.com',
