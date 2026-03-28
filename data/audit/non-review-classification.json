@@ -1,27 +1,58 @@
 {
   "meta": {
-    "generatedAt": "2026-03-28T20:37:51.157Z",
+    "generatedAt": "2026-03-28T20:54:58.107Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 33229,
-      "inReviewsJson": 15984,
-      "skippedExcluded": 81,
-      "withFullText": 21,
-      "excerptOnly": 1331,
-      "llmClassified": 20,
+      "totalFiles": 33231,
+      "inReviewsJson": 16777,
+      "skippedExcluded": 83,
+      "withFullText": 24,
+      "excerptOnly": 2035,
+      "llmClassified": 23,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 0,
+      "nonReviewsFound": 3,
       "uncertainCases": 20,
-      "budgetUsed": 0.0021000000000000003,
-      "llmCalls": 21,
+      "budgetUsed": 0.0024,
+      "llmCalls": 24,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14551
+      "skippedAlreadyClassified": 14635
     },
     "calibration": null
   },
-  "nonReviews": [],
+  "nonReviews": [
+    {
+      "file": "a-dolls-house-part-2-2017/off-script-with-dan-dwyer--dan-dwyer.json",
+      "showId": "a-dolls-house-part-2-2017",
+      "outlet": "Off Script with Dan Dwyer",
+      "outletId": "off-script-with-dan-dwyer",
+      "contentType": "feature",
+      "confidence": "high",
+      "reasoning": "This text is a collection of random thoughts and opinions on various topics, not a review of a theatrical production.",
+      "currentScore": 89
+    },
+    {
+      "file": "american-idiot-2010/broadwayworld--michael-dale.json",
+      "showId": "american-idiot-2010",
+      "outlet": "BroadwayWorld.com",
+      "outletId": "broadwayworld",
+      "contentType": "preview",
+      "confidence": "high",
+      "reasoning": "The article describes the show's premise, cast, and creative team, and mentions that it opened to 'a great set of reviews,' but it does not contain any actual review content or evaluation of the production itself. It's a preview with photos.",
+      "currentScore": 78
+    },
+    {
+      "file": "romeo-and-juliet-west-end-2026/thestage--unknown.json",
+      "showId": "romeo-and-juliet-west-end-2026",
+      "outlet": "The Stage",
+      "outletId": "thestage",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This is an advertisement for a theater publication, mentioning reviews as part of its offerings but not containing a review itself.",
+      "currentScore": 80
+    }
+  ],
   "uncertainCases": [
     {
       "file": "an-american-in-paris-2015/talkinbroadway--matthew-murray.json",
@@ -50,7 +81,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show like Fences.",
+      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show.",
       "currentScore": 82
     },
     {
@@ -60,7 +91,7 @@
       "outletId": "bloomberg",
       "contentType": "news",
       "confidence": "medium",
-      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in photo captions at the end. It does not offer a review or evaluation of \"First Date.\"",
+      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and its pre-Broadway run, with a brief mention of \"First Date\" only in photo captions. It does not offer a critical evaluation of \"First Date.\"",
       "currentScore": 57
     },
     {
@@ -80,7 +111,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London and awards, but it does not offer a critical evaluation of the production's quality.",
+      "reasoning": "The article describes the plot and background of the musical 'Groundhog Day' and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
       "currentScore": 81
     },
     {
@@ -90,7 +121,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and advertisements related to theater, not a review of a specific show.",
+      "reasoning": "This appears to be a list of links and advertisements related to theater, not a review of a specific show.",
       "currentScore": 78
     },
     {
@@ -100,7 +131,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there's no evaluative content to classify it as a review.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of various cultural events.",
       "currentScore": 88
     },
     {
@@ -110,7 +141,7 @@
       "outletId": "frequentbusinesstraveler",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and setting of \"Once on This Island\" without offering a critical evaluation or opinion. It focuses on introducing the story and characters.",
+      "reasoning": "The article describes the plot and setting of \"Once on This Island\" without offering a critical evaluation or opinion. It focuses on introducing the story and characters, indicating a preview rather than a review.",
       "currentScore": 82
     },
     {
@@ -120,7 +151,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
       "currentScore": 89
     },
     {
@@ -130,7 +161,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
+      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors'. It lacks any evaluative content about the show.",
       "currentScore": 74
     },
     {
@@ -140,7 +171,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated and is advertising a WSJ subscription. There is no evaluative content about 'Parade' visible in the text.",
+      "reasoning": "The article appears to be truncated and is displaying subscription prompts, suggesting it is a news article or a link to one.",
       "currentScore": 78
     },
     {
@@ -160,7 +191,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's a feature rather than a review.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
       "currentScore": 83
     },
     {
@@ -180,7 +211,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more indicative of a news item or listing than a review. There is no evaluative content present.",
+      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
       "currentScore": 64
     },
     {
@@ -190,7 +221,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review of a specific production.",
+      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific show.",
       "currentScore": 78
     },
     {
@@ -200,7 +231,7 @@
       "outletId": "vulture",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the set design and the playwright's intentions, but it does not offer an evaluation or opinion on the quality of the production itself. It's more of a feature piece about the show's themes and design choices.",
+      "reasoning": "The article describes the set design and the playwright's intentions, but it does not offer an evaluation or opinion on the quality of the production itself. It's more of a feature about the show's themes and design choices.",
       "currentScore": 64
     },
     {
@@ -220,11 +251,27 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" and mentions its autobiographical nature and connection to real events. However, it does not offer a critical evaluation or opinion on the quality of the production itself.",
+      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" and mentions the playwright's connection to the work, but it does not offer a critical evaluation or opinion on the quality of the production itself. It reads more like a preview or feature piece introducing the play to the audienc",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [],
-  "perShowSummary": []
+  "perShowSummary": [
+    {
+      "showId": "a-dolls-house-part-2-2017",
+      "currentCount": 60,
+      "removed": 1
+    },
+    {
+      "showId": "american-idiot-2010",
+      "currentCount": 23,
+      "removed": 1
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "currentCount": 5,
+      "removed": 1
+    }
+  ]
 }
