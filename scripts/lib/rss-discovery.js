@@ -154,8 +154,14 @@ function titleMatchesShow(itemTitle, showTitle) {
   if (showWords.length === 0) return false;
 
   const itemLower = normalize(itemTitle);
+  // Word-boundary match: prevents "tru" matching "trump" or "bug" matching "debug".
+  // Boundaries: start/end of string, space, hyphen, slash, period, quote, underscore.
+  const wordMatch = (haystack, word) => {
+    const escaped = word.replace(/[.*+?${}()|[\]\\]/g, '\\$&');
+    return new RegExp('(?:^|[\\s\\-/.\'"_])' + escaped + '(?:$|[\\s\\-/.\'"_])', 'i').test(haystack);
+  };
   // All significant show words must appear in the item title
-  const matchCount = showWords.filter(w => itemLower.includes(w)).length;
+  const matchCount = showWords.filter(w => wordMatch(itemLower, w)).length;
   // Require at least 80% of words to match (handles subtitles, alternate names)
   return matchCount >= Math.ceil(showWords.length * 0.8);
 }

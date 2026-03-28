@@ -505,6 +505,32 @@ assert(
   'Title with no significant words (all ≤2 chars) → fail-open (true)'
 );
 
+// Word-boundary matching: prevents substring false positives
+assert(
+  !urlLooksLikeReview('https://example.com/trump-executive-order-review/', 'Tru'),
+  'Tru: does NOT match "trump" (substring, not word boundary)'
+);
+assert(
+  urlLooksLikeReview('https://example.com/tru-broadway-review/', 'Tru'),
+  'Tru: DOES match "tru" at word boundary (hyphen-delimited)'
+);
+assert(
+  !urlLooksLikeReview('https://example.com/how-to-debug-code/', 'Bug'),
+  'Bug: does NOT match "debug" (substring)'
+);
+assert(
+  urlLooksLikeReview('https://example.com/bug-broadway-review-carrie-coon/', 'Bug'),
+  'Bug: DOES match "bug" at word boundary'
+);
+assert(
+  !titleMatchesShow('Trump Signs Executive Order on Broadway Funding', 'Tru'),
+  'RSS: Tru does NOT match Trump headline'
+);
+assert(
+  titleMatchesShow("Tru: Gossipy Truman Capote on the Warpath", 'Tru'),
+  'RSS: Tru DOES match actual Tru review headline'
+);
+
 // Special chars in title stripped cleanly
 assert(
   urlLooksLikeReview('https://example.com/into-woods-review/', 'Into the Woods!'),

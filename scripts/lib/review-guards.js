@@ -121,7 +121,13 @@ function urlLooksLikeReview(url, showTitle) {
     .split(/\s+/)
     .filter(w => w.length > 2 && !['the', 'and', 'for'].includes(w));
 
-  const matchCount = titleWords.filter(w => lower.includes(w)).length;
+  // Word-boundary match: prevents "tru" matching "trump" or "bug" matching "debug".
+  // Boundaries: start/end of string, space, hyphen, slash, period, quote, underscore.
+  const wordMatch = (haystack, word) => {
+    const escaped = word.replace(/[.*+?${}()|[\]\\]/g, '\\$&');
+    return new RegExp('(?:^|[\\s\\-/.\'"_])' + escaped + '(?:$|[\\s\\-/.\'"_])', 'i').test(haystack);
+  };
+  const matchCount = titleWords.filter(w => wordMatch(lower, w)).length;
   return matchCount >= Math.ceil(titleWords.length * 0.5);
 }
 
