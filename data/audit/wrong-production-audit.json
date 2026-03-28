@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-28T21:12:53.702Z",
+  "timestamp": "2026-03-28T22:02:32.852Z",
   "stats": {
-    "totalReviews": 32539,
-    "alreadyFlagged": 11195,
-    "dateGuardCatches": 144,
-    "directorMismatch": 965,
+    "totalReviews": 32545,
+    "alreadyFlagged": 11198,
+    "dateGuardCatches": 147,
+    "directorMismatch": 966,
     "tvFilmSignals": 3458,
-    "londonSignals": 1049,
+    "londonSignals": 1050,
     "offBroadwaySignals": 1013,
     "yearMismatch": 71,
-    "noPublishDate": 6700
+    "noPublishDate": 6699
   },
   "findings": [
     {
@@ -26265,6 +26265,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "broadwayworld--unknown.json",
+      "score": 87,
+      "publishDate": "2026-03-27",
+      "url": "https://www.broadwayworld.com/westend/article/Review-JOHN-PROCTOR-IS-THE-VILLAIN-Royal-Court-Theatre-20260327",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -63817,6 +63836,42 @@
     {
       "showId": "alice-in-wonderland-west-end-2026",
       "file": "guardian--kate-wyver.json",
+      "score": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 100d before show (2025-12-17 vs 2026-03-27)"
+        }
+      ]
+    },
+    {
+      "showId": "alice-in-wonderland-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 100d before show (2025-12-17 vs 2026-03-27)"
+        }
+      ]
+    },
+    {
+      "showId": "alice-in-wonderland-west-end-2026",
+      "file": "telegraph--tim-robey.json",
+      "score": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 100d before show (2025-12-17 vs 2026-03-27)"
+        }
+      ]
+    },
+    {
+      "showId": "alice-in-wonderland-west-end-2026",
+      "file": "thestage--tom-wicker.json",
       "score": null,
       "findings": [
         {
