@@ -67,6 +67,7 @@ const NON_THEATER_PATTERNS = [
   'immersive experience', // non-theatrical experiences
   'game show', 'gameshow', 'punishment game', // game shows (BATSU etc.)
   'jazz at lincoln center', // jazz concerts, not theater
+  'convention', 'festival of', // festivals/conventions (Breakin' Convention etc.)
 ];
 
 // West End-specific additional patterns — shared by TodayTix London, OLT, and ShowScore candidate processing
@@ -612,7 +613,7 @@ const OWE_VENUE_PAGES = [
   // Arcola: shows rendered in-page without individual links — needs Playwright (v2)
   // Theatre503: returns 403 — needs different approach (v2)
   { name: 'Theatre Royal Stratford East', url: 'https://www.stratfordeast.com/whats-on', linkPattern: /\/whats-on\/all-shows\/[^/]+/ },
-  { name: 'New Diorama Theatre', url: 'https://www.newdiorama.com/whats-on', linkPattern: /\/whats-on\/[^/]+/ },
+  { name: 'New Diorama Theatre', url: 'https://www.newdiorama.com/whats-on', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true },
   { name: "King's Head Theatre", url: 'https://www.kingsheadtheatre.com/whats-on', linkPattern: /\/whats-on\/[^/]+/ },
   { name: 'Finborough Theatre', url: 'https://www.finboroughtheatre.co.uk/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true },
   { name: 'Theatre503', url: 'https://theatre503.com/whats-on/', linkPattern: /\/whats-on\/[^/]+/ },
@@ -741,7 +742,7 @@ async function fetchSingleVenuePage(venue) {
     } else {
       title = cleanVenueTitle(link.textContent || '');
     }
-    if (!title || title.length < 3 || title.length > 120) continue;
+    if (!title || title.length < 3 || title.length > 60) continue;
     if (seen.has(title.toLowerCase())) continue;
     if (shouldExcludeVenueShow(title)) continue;
     // Skip generic link text and single-word category labels

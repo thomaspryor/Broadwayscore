@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway show metadata - source of truth for all shows",
-    "lastUpdated": "2026-03-28T08:26:21.882Z",
+    "lastUpdated": "2026-03-27T08:37:21.102Z",
     "source": "Manual + Playbill/IBDB cross-reference",
     "totalShows": 2258
   },
@@ -210954,7 +210954,8 @@
       "ibdbUrl": null,
       "isRevival": true,
       "todayTixCategory": "Musicals",
-      "ibdbRevivalChecked": true
+      "ibdbRevivalChecked": true,
+      "_staleMissingSince": "2026-03-27"
     },
     {
       "id": "la-ternura-off-broadway-2025",
@@ -217174,7 +217175,7 @@
       "creativeTeam": [
         {
           "name": "Agatha Christie",
-          "role": "Book Writer"
+          "role": "Book writer"
         }
       ],
       "ibdbRevivalChecked": true,
@@ -218231,7 +218232,8 @@
       ],
       "todayTixCategory": "Plays",
       "ibdbRevivalChecked": true,
-      "isRevival": false
+      "isRevival": false,
+      "_staleMissingSince": "2026-03-27"
     },
     {
       "id": "murder-she-didnt-write-west-end-2025",
@@ -221963,11 +221965,7 @@
       "creativeTeam": [
         {
           "name": "Michael Frayn",
-          "role": "Author"
-        },
-        {
-          "name": "Michael Blakemore",
-          "role": "Director"
+          "role": "Playwright"
         }
       ],
       "category": "off-west-end",
@@ -222685,7 +222683,8 @@
       "ibdbRevivalChecked": true,
       "isRevival": true,
       "todaytixId": 45671,
-      "todaytixUrl": "https://www.todaytix.com/london/shows/45671-john-proctor-is-the-villain"
+      "todaytixUrl": "https://www.todaytix.com/london/shows/45671-john-proctor-is-the-villain",
+      "_staleMissingSince": "2026-03-27"
     },
     {
       "id": "krapps-last-tape-godots-todo-list-west-end-2026",
@@ -226001,7 +226000,7 @@
         "thumbnail": "/images/shows/alice-in-wonderland-west-end-2026/thumbnail.webp",
         "poster": "/images/shows/alice-in-wonderland-west-end-2026/poster.webp"
       },
-      "synopsis": "We use cookies to personalise your experience, including improving the quality of your show recommendations. By clicking \"accept all\", you consent to our cookie policy.",
+      "synopsis": "Tumble down the rabbit hole this Easter holidays.",
       "ageRecommendation": null,
       "previewsStartDate": "2026-03-27",
       "tags": [
@@ -226054,24 +226053,7 @@
           "role": "Queen of Hearts"
         }
       ],
-      "creativeTeam": [
-        {
-          "name": "Christopher Gattelli",
-          "role": "Choreographer"
-        },
-        {
-          "name": "Frank Wildhorn",
-          "role": "Composer"
-        },
-        {
-          "name": "Jack Murphy",
-          "role": "Lyricist"
-        },
-        {
-          "name": "Linda Woolverton",
-          "role": "Book Writer"
-        }
-      ],
+      "creativeTeam": [],
       "category": "off-west-end",
       "ibdbUrl": null,
       "todayTixCategory": "Musicals",
@@ -230201,7 +230183,7 @@
       "status": "announced",
       "type": "play",
       "isRevival": false,
-      "runtime": "1h 35m",
+      "runtime": null,
       "intermissions": null,
       "images": {},
       "synopsis": "Audiences will be transported into the jungle as the Olivier is transformed for this timeless classic tale of family, courage and loyalty. Directed by Indhu Rubasingham.",
@@ -230816,95 +230798,16 @@
         "new"
       ],
       "theaterAddress": null,
-      "ticketLinks": [
-        {
-          "platform": "TodayTix",
-          "url": "https://www.todaytix.com/nyc/shows/46536-bent-through-glass",
-          "priceFrom": null
-        }
-      ],
+      "ticketLinks": [],
       "cast": [],
       "creativeTeam": [],
       "ibdbRevivalChecked": true,
-      "category": "off-broadway",
-      "todaytixId": 46536,
-      "todaytixUrl": "https://www.todaytix.com/nyc/shows/46536-bent-through-glass"
+      "category": "off-broadway"
     },
     {
       "id": "pat-rascal-space-gravy-off-west-end-2026",
       "title": "Pat Rascal: Space Gravy",
       "slug": "pat-rascal-space-gravy-off-west-end",
-      "venue": "Soho Theatre",
-      "openingDate": null,
-      "closingDate": null,
-      "status": "announced",
-      "type": "play",
-      "isRevival": false,
-      "runtime": null,
-      "intermissions": null,
-      "images": {},
-      "synopsis": "",
-      "ageRecommendation": null,
-      "previewsStartDate": null,
-      "tags": [
-        "upcoming",
-        "new"
-      ],
-      "theaterAddress": null,
-      "ticketLinks": [],
-      "cast": [],
-      "creativeTeam": [],
-      "ibdbRevivalChecked": true,
-      "category": "off-west-end"
-    },
-    {
-      "id": "breakin-convention-2026-west-end-2026",
-      "title": "Breakin' Convention 2026",
-      "slug": "breakin-convention-2026-west-end",
-      "venue": "Sadler's Wells",
-      "openingDate": null,
-      "closingDate": "2026-05-03",
-      "status": "previews",
-      "type": "play",
-      "isRevival": false,
-      "runtime": "1h 55m",
-      "intermissions": null,
-      "images": {
-        "hero": "/images/shows/breakin-convention-2026-west-end-2026/hero.webp",
-        "thumbnail": "/images/shows/breakin-convention-2026-west-end-2026/thumbnail.webp",
-        "poster": "/images/shows/breakin-convention-2026-west-end-2026/poster.webp"
-      },
-      "synopsis": "Fuel your soul this spring with Breakin’ Convention, the world’s biggest festival of hip hop theatre. Hosted and curated by Jonzi D, the festival features the freshest works from your favourite artists.",
-      "ageRecommendation": null,
-      "previewsStartDate": "2026-05-02",
-      "tags": [
-        "upcoming",
-        "new"
-      ],
-      "theaterAddress": null,
-      "ticketLinks": [
-        {
-          "platform": "TodayTix",
-          "url": "https://www.todaytix.com/london/shows/45787-breakin-convention-2026",
-          "priceFrom": null
-        }
-      ],
-      "cast": [],
-      "creativeTeam": [
-        {
-          "name": "Jonzi D",
-          "role": "Director"
-        }
-      ],
-      "ibdbRevivalChecked": true,
-      "category": "west-end",
-      "todaytixId": 45787,
-      "todaytixUrl": "https://www.todaytix.com/london/shows/45787-breakin-convention-2026"
-    },
-    {
-      "id": "neon-nights-with-ed-gamble-off-west-end-2026",
-      "title": "Neon Nights With Ed Gamble",
-      "slug": "neon-nights-with-ed-gamble-off-west-end",
       "venue": "Soho Theatre",
       "openingDate": null,
       "closingDate": null,
@@ -230951,12 +230854,7 @@
       "theaterAddress": null,
       "ticketLinks": [],
       "cast": [],
-      "creativeTeam": [
-        {
-          "name": "Kathleen Turner",
-          "role": "Director"
-        }
-      ],
+      "creativeTeam": [],
       "ibdbRevivalChecked": true,
       "category": "off-broadway"
     },
@@ -230973,7 +230871,7 @@
       "runtime": null,
       "intermissions": null,
       "images": {},
-      "synopsis": "I do not have enough information about the specific plot or premise of the Broadway show \"Mercury\" playing at Greenwich V. Without access to details about the show's storyline, I cannot provide a factual synopsis as requested.",
+      "synopsis": "",
       "ageRecommendation": null,
       "previewsStartDate": null,
       "tags": [
@@ -230985,12 +230883,8 @@
       "cast": [],
       "creativeTeam": [
         {
-          "name": "Michael Greif",
+          "name": "Ruben Santiago-Hudson",
           "role": "Director"
-        },
-        {
-          "name": "Rajiv Joseph",
-          "role": "Book Writer"
         }
       ],
       "ibdbRevivalChecked": true,
@@ -231030,273 +230924,6 @@
       "category": "off-broadway",
       "todaytixId": 46556,
       "todaytixUrl": "https://www.todaytix.com/nyc/shows/46556-the-pushover-by-john-patrick-shanley"
-    },
-    {
-      "id": "a-time-travel-adventure-about-family-loss-and-the-power-of-imagination-from-breach-off-west-end-2026",
-      "title": "A time travel adventure about family, loss, and the power of imagination from Breach.",
-      "slug": "a-time-travel-adventure-about-family-loss-and-the-power-of-imagination-from-breach-off-west-end",
-      "venue": "New Diorama Theatre",
-      "openingDate": null,
-      "closingDate": null,
-      "status": "announced",
-      "type": "play",
-      "isRevival": false,
-      "runtime": null,
-      "intermissions": null,
-      "images": {},
-      "synopsis": "",
-      "ageRecommendation": null,
-      "previewsStartDate": null,
-      "tags": [
-        "upcoming",
-        "new"
-      ],
-      "theaterAddress": null,
-      "ticketLinks": [],
-      "cast": [],
-      "creativeTeam": [],
-      "ibdbRevivalChecked": true,
-      "category": "off-west-end"
-    },
-    {
-      "id": "the-shiverspolka-theatre-off-west-end-2026",
-      "title": "The ShiversPolka Theatre,",
-      "slug": "the-shiverspolka-theatre-off-west-end",
-      "venue": "New Diorama Theatre",
-      "openingDate": null,
-      "closingDate": null,
-      "status": "announced",
-      "type": "play",
-      "isRevival": false,
-      "runtime": null,
-      "intermissions": null,
-      "images": {},
-      "synopsis": "",
-      "ageRecommendation": null,
-      "previewsStartDate": null,
-      "tags": [
-        "upcoming",
-        "new"
-      ],
-      "theaterAddress": null,
-      "ticketLinks": [],
-      "cast": [],
-      "creativeTeam": [],
-      "ibdbRevivalChecked": true,
-      "category": "off-west-end"
-    },
-    {
-      "id": "a-fox-a-pigeon-and-a-rookie-agent-are-on-a-mission-to-save-the-world-but-everything-is-not-what-it-seems-off-west-end-2026",
-      "title": "A fox, a pigeon, and a rookie agent are on a mission to save the world - but everything is not what it seems.",
-      "slug": "a-fox-a-pigeon-and-a-rookie-agent-are-on-a-mission-to-save-the-world-but-everything-is-not-what-it-seems-off-west-end",
-      "venue": "New Diorama Theatre",
-      "openingDate": null,
-      "closingDate": null,
-      "status": "announced",
-      "type": "play",
-      "isRevival": false,
-      "runtime": null,
-      "intermissions": null,
-      "images": {},
-      "synopsis": "",
-      "ageRecommendation": null,
-      "previewsStartDate": null,
-      "tags": [
-        "upcoming",
-        "new"
-      ],
-      "theaterAddress": null,
-      "ticketLinks": [],
-      "cast": [],
-      "creativeTeam": [],
-      "ibdbRevivalChecked": true,
-      "category": "off-west-end"
-    },
-    {
-      "id": "operation-mincemeatwest-end-and-off-west-end-2026",
-      "title": "Operation MincemeatWest End &",
-      "slug": "operation-mincemeatwest-end-and-off-west-end",
-      "venue": "New Diorama Theatre",
-      "openingDate": null,
-      "closingDate": null,
-      "status": "announced",
-      "type": "play",
-      "isRevival": false,
-      "runtime": null,
-      "intermissions": null,
-      "images": {},
-      "synopsis": "",
-      "ageRecommendation": null,
-      "previewsStartDate": null,
-      "tags": [
-        "upcoming",
-        "new"
-      ],
-      "theaterAddress": null,
-      "ticketLinks": [],
-      "cast": [],
-      "creativeTeam": [],
-      "ibdbRevivalChecked": true,
-      "category": "off-west-end"
-    },
-    {
-      "id": "soledad-barrio-and-noche-flamenca-aqua-fresca-off-broadway-2026",
-      "title": "Soledad Barrio & Noche Flamenca: Aqua Fresca",
-      "slug": "soledad-barrio-and-noche-flamenca-aqua-fresca-off-broadway",
-      "venue": "Joe's Pub at The Public Theatre",
-      "openingDate": "2026-05-20",
-      "closingDate": "2026-05-24",
-      "status": "upcoming",
-      "type": "special",
-      "isRevival": false,
-      "runtime": null,
-      "intermissions": null,
-      "images": {},
-      "synopsis": "",
-      "ageRecommendation": null,
-      "previewsStartDate": null,
-      "tags": [
-        "upcoming"
-      ],
-      "theaterAddress": null,
-      "ticketLinks": [
-        {
-          "platform": "TodayTix",
-          "url": "https://www.todaytix.com/nyc/shows/46555-soledad-barrio-and-noche-flamenca-aqua-fresca",
-          "priceFrom": null
-        }
-      ],
-      "cast": [],
-      "creativeTeam": [],
-      "todayTixCategory": "Dance",
-      "category": "off-broadway",
-      "todaytixId": 46555,
-      "todaytixUrl": "https://www.todaytix.com/nyc/shows/46555-soledad-barrio-and-noche-flamenca-aqua-fresca"
-    },
-    {
-      "id": "mas-sabe-el-saulo-por-viejo-off-broadway-2025",
-      "title": "MÁS SABE EL SAULO POR VIEJO...",
-      "slug": "mas-sabe-el-saulo-por-viejo-off-broadway",
-      "venue": "Repertorio Español / Spanish Theatre Repertory",
-      "openingDate": null,
-      "closingDate": "2026-12-01",
-      "status": "previews",
-      "type": "play",
-      "isRevival": false,
-      "runtime": null,
-      "intermissions": null,
-      "images": {},
-      "synopsis": "",
-      "ageRecommendation": null,
-      "previewsStartDate": "2025-12-19",
-      "tags": [
-        "upcoming",
-        "new"
-      ],
-      "theaterAddress": null,
-      "ticketLinks": [
-        {
-          "platform": "TodayTix",
-          "url": "https://www.todaytix.com/nyc/shows/45907-mas-sabe-el-saulo-por-viejo",
-          "priceFrom": null
-        }
-      ],
-      "cast": [],
-      "creativeTeam": [],
-      "todayTixCategory": "Comedy Shows",
-      "ibdbRevivalChecked": true,
-      "category": "off-broadway",
-      "todaytixId": 45907,
-      "todaytixUrl": "https://www.todaytix.com/nyc/shows/45907-mas-sabe-el-saulo-por-viejo"
-    },
-    {
-      "id": "the-comedy-about-spies-west-end-2026",
-      "title": "The Comedy About Spies",
-      "slug": "the-comedy-about-spies-west-end",
-      "venue": "TBA",
-      "openingDate": null,
-      "closingDate": null,
-      "status": "announced",
-      "type": "play",
-      "isRevival": false,
-      "runtime": null,
-      "intermissions": null,
-      "images": {},
-      "synopsis": "",
-      "ageRecommendation": null,
-      "previewsStartDate": null,
-      "tags": [
-        "upcoming",
-        "new"
-      ],
-      "theaterAddress": null,
-      "ticketLinks": [],
-      "cast": [],
-      "creativeTeam": [],
-      "ibdbRevivalChecked": true,
-      "category": "west-end"
-    },
-    {
-      "id": "noda-map-320f-west-end-2026",
-      "title": "NODA MAP – 320°F",
-      "slug": "noda-map-320f-west-end",
-      "venue": "Sadler's Wells",
-      "openingDate": null,
-      "closingDate": "2026-07-11",
-      "status": "previews",
-      "type": "play",
-      "isRevival": false,
-      "runtime": null,
-      "intermissions": null,
-      "images": {},
-      "synopsis": "NODA MAP returns to Sadler’s Wells Theatre after sell-out shows A Night At The Kabuki (2022) and Love In Action (2024).",
-      "ageRecommendation": null,
-      "previewsStartDate": "2026-07-02",
-      "tags": [
-        "upcoming",
-        "new"
-      ],
-      "theaterAddress": null,
-      "ticketLinks": [
-        {
-          "platform": "TodayTix",
-          "url": "https://www.todaytix.com/london/shows/46534-320-f",
-          "priceFrom": null
-        }
-      ],
-      "cast": [],
-      "creativeTeam": [],
-      "ibdbRevivalChecked": true,
-      "category": "west-end",
-      "todaytixId": 46534,
-      "todaytixUrl": "https://www.todaytix.com/london/shows/46534-320-f"
-    },
-    {
-      "id": "jason-manford-a-manford-all-seasons-off-west-end-2026",
-      "title": "Jason Manford: A Manford All Seasons",
-      "slug": "jason-manford-a-manford-all-seasons-off-west-end",
-      "venue": "Soho Theatre",
-      "openingDate": null,
-      "closingDate": null,
-      "status": "announced",
-      "type": "play",
-      "isRevival": false,
-      "runtime": null,
-      "intermissions": null,
-      "images": {},
-      "synopsis": "",
-      "ageRecommendation": null,
-      "previewsStartDate": null,
-      "tags": [
-        "upcoming",
-        "new"
-      ],
-      "theaterAddress": null,
-      "ticketLinks": [],
-      "cast": [],
-      "creativeTeam": [],
-      "ibdbRevivalChecked": true,
-      "category": "off-west-end"
     }
   ]
 }
