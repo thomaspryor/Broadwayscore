@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-28T11:51:59.218Z",
-  "processed": 97,
-  "failed": 407,
-  "successRate": "19.2%",
+  "updatedAt": "2026-03-28T12:00:21.744Z",
+  "processed": 106,
+  "failed": 486,
+  "successRate": "17.9%",
   "tierBreakdown": {
-    "playwright": 45,
+    "playwright": 50,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 16,
     "directCookies": 1,
     "scrapingbee": 8,
     "brightdata": 0,
     "archiveToday": 3,
-    "archive": 40
+    "archive": 41
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-03-28T10:37:37.435Z",
@@ -69,6 +69,39 @@
       "t": "2026-03-28T11:12:18.316Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-28T11:55:09.658Z",
+      "event": "bb-session",
+      "session": "a350e951",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/waiting-for-godot-broadway-revi"
+    },
+    {
+      "t": "2026-03-28T11:55:10.790Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-28T11:59:09.064Z",
+      "event": "bb-session",
+      "session": "77ea45ef",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/john-legend-lynn-nottage-liesl-"
+    },
+    {
+      "t": "2026-03-28T11:59:10.158Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-28T11:59:39.139Z",
+      "event": "bb-session",
+      "session": "3034bb3b",
+      "url": "https://deadline.com/2023/11/eddie-izzard-hamlet-1235640187/"
+    },
+    {
+      "t": "2026-03-28T11:59:40.215Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
