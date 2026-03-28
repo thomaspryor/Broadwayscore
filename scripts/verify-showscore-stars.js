@@ -224,11 +224,18 @@ async function phase3Scrape(reviews) {
       }
     }
 
-    // Last resort: archive.org for non-paywalled
-    if (!html && !isPaywalled(url)) {
-      console.log(`    → Trying archive.org (fallback)...`);
-      html = await fetchFromArchiveOrg(url);
-      if (html) console.log(`    → Archive.org: ${html.length} chars`);
+    // Last resort: archive.org (for any site where scraper failed or returned empty)
+    if (!html) {
+      if (!isPaywalled(url)) {
+        // Non-paywalled sites: try archive.org as fallback
+        console.log(`    → Trying archive.org (fallback)...`);
+      } else {
+        // Paywalled sites: archive.org was already tried, skip
+      }
+      if (!isPaywalled(url)) {
+        html = await fetchFromArchiveOrg(url);
+        if (html) console.log(`    → Archive.org: ${html.length} chars`);
+      }
     }
 
     if (html && html.length > 500) {
