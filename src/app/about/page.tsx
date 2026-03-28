@@ -9,6 +9,18 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${BASE_URL}/about`,
   },
+  openGraph: {
+    title: 'About Broadway Scorecard',
+    description: 'Broadway Scorecard is a one-person, independent project aggregating Broadway reviews. Always free, no ads, no paywalls.',
+    url: `${BASE_URL}/about`,
+    images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About Broadway Scorecard',
+    description: 'A one-person, independent project aggregating Broadway reviews. Always free, no ads, no paywalls.',
+    images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630 }],
+  },
 };
 
 export default function AboutPage() {

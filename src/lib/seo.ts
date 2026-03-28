@@ -82,7 +82,7 @@ export function generateBreadcrumbSchema(items: { name: string; url: string }[])
 }
 
 // TheaterEvent Schema with full details (enhanced)
-export function generateShowSchema(show: ComputedShow, lastUpdated?: string) {
+export function generateShowSchema(show: ComputedShow, lastUpdated?: string, performers?: { name: string }[]) {
   const isLondon = isLondonMarket(show.category);
   const country = getMarketCountry(show.category);
   const currency = getMarketCurrency(show.category);
@@ -148,6 +148,14 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string) {
       '@type': 'Person',
       name: director.name,
     };
+  }
+
+  // Add performers from cast data (top 10 to avoid bloated JSON-LD)
+  if (performers && performers.length > 0) {
+    schema.performer = performers.slice(0, 10).map(p => ({
+      '@type': 'Person',
+      name: p.name,
+    }));
   }
 
   return schema;
