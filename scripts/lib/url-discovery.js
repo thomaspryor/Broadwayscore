@@ -144,6 +144,7 @@ async function _serpViaScrapingBee(query, apiKey, log, dateRange) {
       return (data.organic_results || data.results || []).map(r => ({
         url: r.url || r.link,
         title: r.title || '',
+        snippet: r.description || r.snippet || '',
       }));
     } catch (error) {
       const status = error.response?.status;
@@ -246,6 +247,7 @@ async function _serpViaBrightDataSerpApi(query, apiKey, log) {
         return data.organic.slice(0, 10).map(r => ({
           url: r.link || r.url || '',
           title: r.title || '',
+          snippet: r.description || r.snippet || '',
         }));
       }
       if (data.response_id) continue;
@@ -289,6 +291,7 @@ async function _serpViaBrightDataWebUnlocker(query, apiKey, log) {
       return data.organic.slice(0, 10).map(r => ({
         url: r.link || r.url || '',
         title: r.title || '',
+        snippet: r.description || r.snippet || '',
       }));
     }
 

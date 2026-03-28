@@ -117,7 +117,7 @@ async function googleSearch(query) {
     return results.slice(0, 5).map(r => ({
       title: r.title || '',
       url: r.url || '',
-      snippet: '',
+      snippet: r.snippet || '',
     }));
   } catch {
     return [];

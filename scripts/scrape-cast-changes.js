@@ -229,7 +229,7 @@ async function googleSearch(query) {
     return results.map(r => ({
       url: r.url,
       title: r.title || '',
-      description: '',
+      description: r.snippet || '',
     }));
   } catch (e) {
     if (verbose) console.log(`  [Google] Search failed: ${e.message}`);
