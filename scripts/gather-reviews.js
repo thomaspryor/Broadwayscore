@@ -833,11 +833,32 @@ async function scrapeShowScoreWithPlaywright(url, options = {}) {
         const paragraph = card.querySelector('p');
         const excerpt = paragraph?.textContent?.replace(/Read more.*$/, '').trim() || '';
 
-        // NOTE: Show Score critic review cards do NOT display star ratings.
-        // The --rating CSS variable is an internal float (e.g. 3.9) that doesn't
-        // match the outlet's actual rating (which is always an integer like 3/5).
-        // Show Score's ratings are wrong 11% of the time. Do NOT extract them.
-        // Star ratings should come from the outlet's own page or from WET roundups.
+        // Show Score displays star ratings on WE critic review cards via CSS
+        // --rating variable. ONLY extract integer values (Show Score displays
+        // whole stars). Non-integer values like 3.9 are internal normalizations
+        // that don't match the outlet's actual rating.
+        // IMPORTANT: Show Score stars are wrong ~11% of the time. These should
+        // only be used as a FALLBACK when we can't get the rating from the
+        // outlet's own page or from WET/LBO roundups. The downstream scoring
+        // pipeline (rebuild-helpers.js P3b) already downgrades Show Score
+        // originalScores for WE shows below LLM scores.
+        let starRating = null;
+        let starMax = null;
+        const starsEl = card.querySelector('.review-tile-v2__stars');
+        if (starsEl) {
+          const style = starsEl.getAttribute('style') || '';
+          const ratingMatch = style.match(/--rating:\s*([\d.]+)/);
+          const gapsMatch = style.match(/--gaps:\s*([\d.]+)/);
+          if (ratingMatch) {
+            const val = parseFloat(ratingMatch[1]);
+            // Only trust integer star counts — fractional values are
+            // Show Score's internal normalization, not actual ratings
+            if (Number.isInteger(val) && val >= 1 && val <= 5) {
+              starRating = val;
+            }
+          }
+          if (gapsMatch) starMax = parseInt(gapsMatch[1]);
+        }
 
         if (href && !reviews.some(r => r.url === href)) {
           reviews.push({
@@ -846,8 +867,8 @@ async function scrapeShowScoreWithPlaywright(url, options = {}) {
             critic: critic,
             date: date,
             excerpt: excerpt,
-            starRating: null,
-            starMax: null
+            starRating: starRating,
+            starMax: starMax
           });
         }
       });
