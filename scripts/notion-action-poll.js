@@ -73,8 +73,9 @@ function getMultiSelectValues(prop) {
 // ── Query for actionable cards ───────────────────────────────────────
 
 async function getActionableCards() {
-  const response = await notion.databases.query({
-    database_id: DATABASE_ID,
+  // v5 SDK: query moved from databases to dataSources
+  const response = await notion.dataSources.query({
+    data_source_id: DATABASE_ID,
     filter: {
       property: 'Action',
       select: { is_not_empty: true },
