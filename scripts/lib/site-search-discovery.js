@@ -56,13 +56,15 @@ const SITE_SEARCH_ENDPOINTS = {
     requiresJs: false,
     market: 'broadway',
   },
-  'dailybeast': {
-    name: 'The Daily Beast',
-    url: 'https://www.thedailybeast.com/search?q={TITLE}+{MARKET_KEYWORD}+review',
-    domain: 'thedailybeast.com',
-    linkPattern: /href="(https:\/\/www\.thedailybeast\.com\/[^"]*)/gi,
-    requiresJs: false,
-  },
+  // Daily Beast search is JS-rendered and times out on ScrapingBee (March 2026).
+  // ID was also wrong (daily-beast vs dailybeast). Disabled until a working endpoint is found.
+  // 'dailybeast': {
+  //   name: 'The Daily Beast',
+  //   url: 'https://www.thedailybeast.com/search/?q={TITLE}+{MARKET_KEYWORD}+review',
+  //   domain: 'thedailybeast.com',
+  //   linkPattern: /href="(https:\/\/www\.thedailybeast\.com\/[^"]*)/gi,
+  //   requiresJs: true,
+  // },
 
   // --- JS-Rendered (need ScrapingBee with render_js) ---
   'hollywood-reporter': {

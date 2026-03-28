@@ -552,21 +552,16 @@ assert(
 // ============================================================
 // Daily Beast ID fix — endpoint key matches outlet-registry.json
 // ============================================================
-console.log('\n=== Daily Beast Site Search ID Fix ===\n');
+console.log('\n=== Daily Beast Site Search ===\n');
 
 assert(
-  SITE_SEARCH_ENDPOINTS['dailybeast'] !== undefined,
-  'dailybeast key exists in SITE_SEARCH_ENDPOINTS (matches registry)'
+  SITE_SEARCH_ENDPOINTS['dailybeast'] === undefined,
+  'dailybeast disabled (search is JS-rendered, times out on ScrapingBee)'
 );
 
 assert(
   SITE_SEARCH_ENDPOINTS['daily-beast'] === undefined,
-  'old daily-beast key removed (was never matched by poller)'
-);
-
-assert(
-  SITE_SEARCH_ENDPOINTS['dailybeast'] && SITE_SEARCH_ENDPOINTS['dailybeast'].domain === 'thedailybeast.com',
-  'dailybeast has correct domain'
+  'old daily-beast key also absent'
 );
 
 // ============================================================
@@ -629,6 +624,58 @@ assert(
 );
 
 // ============================================================
+// WSJ, LA Times, WashPost RSS feed configuration
+// ============================================================
+console.log('\n=== T1 RSS Feeds: WSJ, LA Times, WashPost ===\n');
+
+const wsjFeed = ALL_FEEDS.find(f => f.outletId === 'wsj');
+const latimesFeed = ALL_FEEDS.find(f => f.outletId === 'latimes');
+const washpostFeed = ALL_FEEDS.find(f => f.outletId === 'washpost');
+
+assert(wsjFeed !== undefined, 'WSJ is present in ALL_FEEDS');
+assert(wsjFeed && wsjFeed.needsFilter === true, 'WSJ uses needsFilter (general lifestyle feed)');
+assert(wsjFeed && !wsjFeed.openingWindow, 'WSJ has no openingWindow (too broad)');
+
+assert(latimesFeed !== undefined, 'LA Times is present in ALL_FEEDS');
+assert(latimesFeed && latimesFeed.needsFilter === true, 'LA Times uses needsFilter (general entertainment feed)');
+
+assert(washpostFeed !== undefined, 'WashPost is present in ALL_FEEDS');
+assert(washpostFeed && washpostFeed.needsFilter === true, 'WashPost uses needsFilter (general entertainment feed)');
+
+const newyorkerFeed = ALL_FEEDS.find(f => f.outletId === 'newyorker');
+assert(newyorkerFeed !== undefined, 'New Yorker is present in ALL_FEEDS');
+assert(newyorkerFeed && newyorkerFeed.needsFilter === true, 'New Yorker uses needsFilter (general culture feed)');
+assert(newyorkerFeed && newyorkerFeed.url.includes('/feed/culture'), 'New Yorker uses /feed/culture (not /feed/culture/cultural-comment)');
+
+// New Yorker title matching — reviews use "Theatre Review:" or show title in headline
+assert(
+  titleMatchesShow('Theatre Review: "An Ark" and "Data"', 'An Ark'),
+  'NY: "An Ark" theater review matches'
+);
+assert(
+  titleMatchesShow('In Tracy Letts\'s "Bug," Crazy Is Contagious', 'Bug'),
+  'NY: Bug review matches (show title in headline)'
+);
+assert(
+  !titleMatchesShow('Two Playwrights Tackle Father Figures', 'Giant'),
+  'NY: Negative — generic headline does NOT match Giant'
+);
+
+// Title matching for typical WSJ/LAT/WashPost review headlines
+assert(
+  titleMatchesShow("'Giant' Review: John Lithgow as a Venomous Roald Dahl", 'Giant'),
+  'WSJ-style: Giant review headline matches'
+);
+assert(
+  titleMatchesShow("Review: 'Hamilton' Electrifies Broadway", 'Hamilton'),
+  'LAT-style: Hamilton review headline matches'
+);
+assert(
+  !titleMatchesShow("Review: 'Giant' Robot Movie Crushes the Box Office", 'Hamilton'),
+  'Negative: Giant robot movie does NOT match Hamilton'
+);
+
+// ============================================================
 // Endpoint-registry ID consistency check
 // All SITE_SEARCH_ENDPOINTS keys must exist in outlet-registry.json
 // ============================================================
@@ -649,6 +696,21 @@ if (idMismatches === 0) {
   passed++;
 } else {
   console.error(`  ${idMismatches} endpoint key(s) don't match registry — poller will never call them`);
+}
+
+// RSS feed outletId-registry consistency
+const rssFeedIds = ALL_FEEDS.map(f => f.outletId);
+let rssMismatches = 0;
+for (const id of rssFeedIds) {
+  if (!registry[id]) {
+    console.error(`  ✗ FAIL: RSS feed outletId "${id}" not in outlet-registry.json`);
+    rssMismatches++;
+    failed++;
+  }
+}
+if (rssMismatches === 0) {
+  console.log(`  ✓ All ${rssFeedIds.length} RSS feed outletIds match outlet-registry.json`);
+  passed++;
 }
 
 // ============================================================

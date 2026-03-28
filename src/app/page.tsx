@@ -14,22 +14,23 @@ import type { HomepageShow, FeaturedRowData } from '@/components/HomePageClient'
 import FeaturedRowServer from '@/components/FeaturedRowServer';
 
 const homeOgImageUrl = `${BASE_URL}/og/home.png`;
+const currentYear = new Date().getFullYear();
 
 export const metadata: Metadata = {
-  title: 'Broadway Scorecard — Best Broadway Shows 2026 | Aggregated Critic Reviews & Ratings',
+  title: `Broadway Scorecard — Best Broadway Shows ${currentYear} | Aggregated Critic Reviews & Ratings`,
   description: 'Find the best Broadway shows with scores aggregated from every major critic. Compare ratings from The New York Times, Vulture, Variety, and 400+ outlets. Updated daily.',
   alternates: {
     canonical: BASE_URL,
   },
   openGraph: {
-    title: 'Broadway Scorecard — Best Broadway Shows 2026',
+    title: `Broadway Scorecard — Best Broadway Shows ${currentYear}`,
     description: 'Find the best Broadway shows with scores aggregated from every major critic. Compare ratings from The New York Times, Vulture, Variety, and 400+ outlets.',
     url: BASE_URL,
     images: [{ url: homeOgImageUrl, width: 1200, height: 630, alt: 'Broadway Scorecard — Aggregated Critic Scores for Every Broadway Show' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Broadway Scorecard — Best Broadway Shows 2026',
+    title: `Broadway Scorecard — Best Broadway Shows ${currentYear}`,
     description: 'Aggregated critic scores for every Broadway show. Compare ratings from 400+ outlets.',
     images: [{ url: homeOgImageUrl, width: 1200, height: 630, alt: 'Broadway Scorecard — Aggregated Critic Scores for Every Broadway Show' }],
   },
