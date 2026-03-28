@@ -49,6 +49,7 @@ const { normalizeOutlet } = require('./lib/review-normalization');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { extractReviews: extractTheatreReviews } = require('./scrape-theatre-reviews');
 const { matchTitleToShow } = require('./lib/show-matching');
+const { fetchPage, fetchJSON } = require('./lib/scraper');
 
 // Paths
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -467,32 +468,18 @@ async function runAggregators(show) {
       }
 
       let trHtml = null;
+      // Try direct URL construction via proxy (avoids TLS fingerprint blocking in CI)
       for (const trUrl of trUrls) {
         try {
-          const fetched = await new Promise((resolve, reject) => {
-            const req = require('https').get(trUrl, {
-              headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)' },
-            }, res => {
-              if (res.statusCode === 301 || res.statusCode === 302) {
-                require('https').get(res.headers.location, {
-                  headers: { 'User-Agent': 'Mozilla/5.0' },
-                }, res2 => {
-                  if (res2.statusCode !== 200) { resolve(null); return; }
-                  let d = ''; res2.on('data', c => d += c); res2.on('end', () => resolve(d));
-                }).on('error', () => resolve(null));
-                return;
-              }
-              if (res.statusCode !== 200) { resolve(null); return; }
-              let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
-            });
-            req.on('error', () => resolve(null));
-          });
-          if (fetched && fetched.length > 1000) {
-            trHtml = fetched;
-            console.log(`    Found at: ${trUrl}`);
+          const result = await fetchPage(trUrl, { renderJs: false });
+          if (result && result.content && result.content.length > 1000) {
+            trHtml = result.content;
+            console.log(`    Found at: ${trUrl} (via ${result.source})`);
             break;
           }
-        } catch (e) {}
+        } catch (e) {
+          // 404/403 are expected for guessed URLs — continue to next variation
+        }
       }
 
       // Fallback: WP API search when URL construction misses
@@ -500,28 +487,15 @@ async function runAggregators(show) {
         try {
           const searchTitle = show.title.replace(/['"']/g, '');
           const wpApiUrl = `https://theatre.reviews/wp-json/wp/v2/posts?per_page=5&search=${encodeURIComponent(searchTitle)}`;
-          const wpResult = await new Promise((resolve) => {
-            require('https').get(wpApiUrl, {
-              headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)', Accept: 'application/json' },
-            }, res => {
-              if (res.statusCode !== 200) { resolve(null); return; }
-              let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
-            }).on('error', () => resolve(null));
-          });
-          if (wpResult) {
-            const posts = JSON.parse(wpResult);
+          const posts = await fetchJSON(wpApiUrl);
+          if (posts && Array.isArray(posts)) {
             const roundup = posts.find(p => p.link && p.link.includes('/reviews-roundup/'));
             if (roundup) {
               console.log(`    WP API found: ${roundup.link}`);
-              const fetched = await new Promise((resolve) => {
-                require('https').get(roundup.link, {
-                  headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)' },
-                }, res => {
-                  if (res.statusCode !== 200) { resolve(null); return; }
-                  let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
-                }).on('error', () => resolve(null));
-              });
-              if (fetched && fetched.length > 1000) trHtml = fetched;
+              const pageResult = await fetchPage(roundup.link, { renderJs: false });
+              if (pageResult && pageResult.content && pageResult.content.length > 1000) {
+                trHtml = pageResult.content;
+              }
             }
           }
         } catch (e) {

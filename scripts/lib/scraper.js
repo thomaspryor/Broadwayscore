@@ -340,9 +340,11 @@ async function fetchPage(url, options = {}) {
   if (BRIGHTDATA_TOKEN && !skips.has('brightdata')) {
     console.log('  → Trying Bright Data...');
     const result = await fetchWithBrightData(url);
-    if (result) {
+    if (result && result.content && result.content.length > 0) {
       console.log(`  ✅ Success (Bright Data, ${result.format})`);
       return result;
+    } else if (result) {
+      console.log('  ⚠️  Bright Data returned empty content, trying next provider...');
     }
   }
 
