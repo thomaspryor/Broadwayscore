@@ -390,8 +390,69 @@ async function cleanup() {
   }
 }
 
+/**
+ * Fetch a JSON API endpoint through the proxy chain.
+ * Uses ScrapingBee with render_js=false (1 credit) → Bright Data → direct fetch.
+ * Unlike fetchPage(), returns parsed JSON instead of HTML.
+ *
+ * @param {string} url - The JSON API URL to fetch
+ * @param {object} [options]
+ * @param {object} [options.headers] - Additional headers (e.g. Accept: application/json)
+ * @returns {Promise<any>} Parsed JSON response
+ */
+async function fetchJSON(url, options = {}) {
+  const headers = { Accept: 'application/json', ...options.headers };
+
+  // Try ScrapingBee first (cheapest: 1 credit with render_js=false)
+  if (SCRAPINGBEE_KEY && !_sbCreditsLow) {
+    try {
+      const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
+      const response = await new Promise((resolve, reject) => {
+        https.get(apiUrl, (res) => {
+          let data = '';
+          res.on('data', chunk => data += chunk);
+          res.on('end', () => {
+            if (res.statusCode === 200) resolve(data);
+            else reject(new Error(`ScrapingBee HTTP ${res.statusCode}`));
+          });
+        }).on('error', reject);
+      });
+      _scraperStats.sbRequests++;
+      _scraperStats.sbCredits += 1; // render_js=false = 1 credit
+      return JSON.parse(response);
+    } catch (err) {
+      console.log(`  fetchJSON ScrapingBee failed: ${err.message}`);
+    }
+  }
+
+  // Fallback: direct fetch (works locally, may be TLS-blocked in CI)
+  try {
+    const proto = url.startsWith('https') ? https : require('http');
+    const response = await new Promise((resolve, reject) => {
+      proto.get(url, { headers: { 'User-Agent': 'BroadwayScorecard/1.0', ...headers } }, (res) => {
+        if (res.statusCode === 301 || res.statusCode === 302) {
+          proto.get(res.headers.location, { headers: { 'User-Agent': 'BroadwayScorecard/1.0', ...headers } }, (res2) => {
+            let d = ''; res2.on('data', c => d += c); res2.on('end', () => {
+              if (res2.statusCode === 200) resolve(d); else reject(new Error(`HTTP ${res2.statusCode}`));
+            });
+          }).on('error', reject);
+          return;
+        }
+        if (res.statusCode !== 200) { reject(new Error(`HTTP ${res.statusCode}`)); return; }
+        let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
+      }).on('error', reject);
+    });
+    return JSON.parse(response);
+  } catch (err) {
+    console.log(`  fetchJSON direct failed: ${err.message}`);
+  }
+
+  throw new Error(`fetchJSON: all methods failed for ${url}`);
+}
+
 module.exports = {
   fetchPage,
+  fetchJSON,
   fetchWithBrightData,
   fetchWithScrapingBee,
   fetchWithPlaywright,
