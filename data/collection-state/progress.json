@@ -31,7 +31,17 @@
     "art-2025/broadwaynews--unknown.json",
     "dead-outlaw-2025/nytg--gillian-russo.json",
     "glengarry-glen-ross-2025/usatoday--patrick-ryan.json",
-    "my-neighbour-totoro-west-end-2025/the-sun--dominic-maxwell.json"
+    "my-neighbour-totoro-west-end-2025/the-sun--dominic-maxwell.json",
+    "my-neighbour-totoro-west-end-2025/the-morning-star--unknown.json",
+    "death-becomes-her-2024/broadwayworld--misha-davenport.json",
+    "death-becomes-her-2024/the-gold-knight--chris-stack.json",
+    "elf-2024/amny--matt-windman.json",
+    "the-devil-wears-prada-west-end-2024/observer--unknown.json",
+    "the-devil-wears-prada-west-end-2024/broadwayworld--unknown.json",
+    "the-devil-wears-prada-west-end-2024/thestage--sam-marlowe.json",
+    "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
+    "mj-the-musical-west-end-2024/broadwayworld--unknown.json",
+    "sweeney-todd-2023/billboard--greg-evans.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -60,12 +70,19 @@
       "data/review-texts/the-reservoir-off-broadway-2026/talkinbroadway--howard-miller.json",
       "data/review-texts/the-dinosaurs-off-broadway-2026/talkinbroadway--marc-miller.json",
       "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/talkinbroadway--unknown.json",
-      "data/review-texts/glengarry-glen-ross-2025/usatoday--patrick-ryan.json"
+      "data/review-texts/glengarry-glen-ross-2025/usatoday--patrick-ryan.json",
+      "data/review-texts/death-becomes-her-2024/broadwayworld--misha-davenport.json",
+      "data/review-texts/death-becomes-her-2024/the-gold-knight--chris-stack.json",
+      "data/review-texts/elf-2024/amny--matt-windman.json",
+      "data/review-texts/the-devil-wears-prada-west-end-2024/broadwayworld--unknown.json",
+      "data/review-texts/the-devil-wears-prada-west-end-2024/thestage--sam-marlowe.json",
+      "data/review-texts/mj-the-musical-west-end-2024/broadwayworld--unknown.json",
+      "data/review-texts/sweeney-todd-2023/billboard--greg-evans.json"
     ],
     "archive": []
   },
   "startTime": "2026-03-28T03:43:33.811Z",
-  "lastProcessed": "my-neighbour-totoro-west-end-2025/the-sun--dominic-maxwell.json",
+  "lastProcessed": "sweeney-todd-2023/billboard--greg-evans.json",
   "log": [
     {
       "t": "2026-03-28T03:45:37.819Z",
@@ -86,6 +103,28 @@
     },
     {
       "t": "2026-03-28T03:47:33.699Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-28T03:58:51.722Z",
+      "event": "bb-session",
+      "session": "d144ab6f",
+      "url": "https://www.amny.com/entertainment/"
+    },
+    {
+      "t": "2026-03-28T03:58:52.897Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-28T04:01:35.689Z",
+      "event": "bb-session",
+      "session": "e32c3279",
+      "url": "https://www.thestage.co.uk/reviews/into-the-woods-review-bridge-theatre-london-s"
+    },
+    {
+      "t": "2026-03-28T04:01:36.850Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
