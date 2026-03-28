@@ -4,44 +4,73 @@
     "john-proctor-is-the-villain-west-end-2026/whatsonstage--sarah-crompton.json",
     "john-proctor-is-the-villain-west-end-2026/whatsonstage--unknown.json",
     "teeth-n-smiles-west-end-2026/city-am--unknown.json",
-    "a-mirrored-monet-west-end-2026/whatsonstage--unknown.json"
+    "a-mirrored-monet-west-end-2026/whatsonstage--unknown.json",
+    "broken-glass-west-end-2026/independent--samuel-mathewson.json",
+    "evening-all-afternoon-west-end-2026/whatsonstage--unknown.json",
+    "all-my-sons-west-end-2025/whatsonstage--unknown.json",
+    "my-neighbour-totoro-west-end-2025/variety--unknown.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
     "john-proctor-is-the-villain-west-end-2026/broadwayworld--unknown.json",
     "john-proctor-is-the-villain-west-end-2026/thestage--sam-marlowe.json",
     "john-proctor-is-the-villain-west-end-2026/standard--unknown.json",
-    "teeth-n-smiles-west-end-2026/standard--nick-curtis.json"
+    "teeth-n-smiles-west-end-2026/standard--nick-curtis.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "oh-mary-west-end-2025/standard--nick-curtis.json",
+    "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json",
+    "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
+    "my-neighbour-totoro-west-end-2025/the-morning-star--unknown.json",
+    "dracula-west-end-2025/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "john-proctor-is-the-villain-west-end-2026/whatsonstage--sarah-crompton.json",
       "john-proctor-is-the-villain-west-end-2026/whatsonstage--unknown.json",
-      "a-mirrored-monet-west-end-2026/whatsonstage--unknown.json"
+      "a-mirrored-monet-west-end-2026/whatsonstage--unknown.json",
+      "broken-glass-west-end-2026/independent--samuel-mathewson.json",
+      "evening-all-afternoon-west-end-2026/whatsonstage--unknown.json",
+      "all-my-sons-west-end-2025/whatsonstage--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "teeth-n-smiles-west-end-2026/city-am--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/john-proctor-is-the-villain-west-end-2026/broadwayworld--unknown.json"
+      "data/review-texts/john-proctor-is-the-villain-west-end-2026/broadwayworld--unknown.json",
+      "data/review-texts/john-proctor-is-the-villain-west-end-2026/thestage--sam-marlowe.json"
     ],
     "archive": [
       "copenhagen-west-end-2026/telegraph--unknown.json"
     ]
   },
   "startTime": "2026-03-28T09:16:55.185Z",
-  "lastProcessed": "a-mirrored-monet-west-end-2026/whatsonstage--unknown.json",
+  "lastProcessed": "dracula-west-end-2025/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-03-28T09:24:04.060Z",
       "event": "bb-session",
       "session": "804e1808",
       "url": "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-th"
+    },
+    {
+      "t": "2026-03-28T09:24:42.137Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    37 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
+    },
+    {
+      "t": "2026-03-28T09:24:58.240Z",
+      "event": "bb-session",
+      "session": "d34f063b",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
     }
   ]
 }
