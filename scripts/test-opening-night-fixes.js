@@ -552,21 +552,16 @@ assert(
 // ============================================================
 // Daily Beast ID fix — endpoint key matches outlet-registry.json
 // ============================================================
-console.log('\n=== Daily Beast Site Search ID Fix ===\n');
+console.log('\n=== Daily Beast Site Search ===\n');
 
 assert(
-  SITE_SEARCH_ENDPOINTS['dailybeast'] !== undefined,
-  'dailybeast key exists in SITE_SEARCH_ENDPOINTS (matches registry)'
+  SITE_SEARCH_ENDPOINTS['dailybeast'] === undefined,
+  'dailybeast disabled (search is JS-rendered, times out on ScrapingBee)'
 );
 
 assert(
   SITE_SEARCH_ENDPOINTS['daily-beast'] === undefined,
-  'old daily-beast key removed (was never matched by poller)'
-);
-
-assert(
-  SITE_SEARCH_ENDPOINTS['dailybeast'] && SITE_SEARCH_ENDPOINTS['dailybeast'].domain === 'thedailybeast.com',
-  'dailybeast has correct domain'
+  'old daily-beast key also absent'
 );
 
 // ============================================================
