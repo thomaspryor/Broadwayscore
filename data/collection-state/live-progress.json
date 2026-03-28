@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-28T05:51:48.691Z",
-  "processed": 85,
-  "failed": 228,
-  "successRate": "27.2%",
+  "updatedAt": "2026-03-28T05:53:01.614Z",
+  "processed": 89,
+  "failed": 234,
+  "successRate": "27.6%",
   "tierBreakdown": {
-    "playwright": 37,
+    "playwright": 38,
     "amp": 0,
-    "browserbase": 16,
+    "browserbase": 18,
     "directCookies": 0,
     "scrapingbee": 12,
     "brightdata": 0,
     "archiveToday": 90,
-    "archive": 22
+    "archive": 24
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-03-28T03:45:37.819Z",
@@ -113,6 +113,17 @@
       "t": "2026-03-28T05:41:51.163Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-28T05:51:49.714Z",
+      "event": "bb-session",
+      "session": "33af4ea9",
+      "url": "https://www.hollywoodreporter.com/review/fiddler-roof-theater-review-850349"
+    },
+    {
+      "t": "2026-03-28T05:51:50.984Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
