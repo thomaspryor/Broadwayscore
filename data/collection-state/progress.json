@@ -3,7 +3,9 @@
     "grace-pervades-west-end-2026/thestage--unknown.json",
     "broken-glass-west-end-2026/independent--samuel-mathewson.json",
     "broken-glass-west-end-2026/independent--steve-fowler.json",
-    "chinese-republicans-off-broadway-2026/the-interested-bystander--cary-wong.json"
+    "chinese-republicans-off-broadway-2026/the-interested-bystander--cary-wong.json",
+    "chess-2025/billboard--rebecca-milzoff.json",
+    "chess-2025/playbill--logan-culwell-block.json"
   ],
   "failed": [
     "to-kill-a-mockingbird-west-end-2026/guardian--unknown.json",
@@ -21,13 +23,22 @@
     "chinese-republicans-off-broadway-2026/talkinbroadway--unknown.json",
     "11-to-midnight-off-broadway-2026/playbill--unknown.json",
     "the-monsters-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
-    "the-monsters-off-broadway-2026/talkinbroadway--james-wilson.json"
+    "the-monsters-off-broadway-2026/talkinbroadway--james-wilson.json",
+    "the-disappear-off-broadway-2026/talkinbroadway--james-wilson.json",
+    "woman-in-mind-west-end-2025/broadwayworld--unknown.json",
+    "woman-in-mind-west-end-2025/thestage--unknown.json",
+    "the-hunger-games-on-stage-west-end-2025/broadwayworld--cindy-marcolina.json",
+    "the-hunger-games-on-stage-west-end-2025/thestage--unknown.json",
+    "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json",
+    "chess-2025/talkinbroadway--unknown.json",
+    "the-producers-west-end-2025/thestage--paul-vale.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "broken-glass-west-end-2026/independent--samuel-mathewson.json",
-      "chinese-republicans-off-broadway-2026/the-interested-bystander--cary-wong.json"
+      "chinese-republicans-off-broadway-2026/the-interested-bystander--cary-wong.json",
+      "chess-2025/playbill--logan-culwell-block.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -44,14 +55,22 @@
       "data/review-texts/bigfoot-off-broadway-2026/talkinbroadway--marc-miller.json",
       "data/review-texts/the-little-mermaid-the-musical-off-broadway-2026/broadwayworld--kaitlin-milligan.json",
       "data/review-texts/chinese-republicans-off-broadway-2026/talkinbroadway--unknown.json",
-      "data/review-texts/the-monsters-off-broadway-2026/talkinbroadway--james-wilson.json"
+      "data/review-texts/the-monsters-off-broadway-2026/talkinbroadway--james-wilson.json",
+      "data/review-texts/the-disappear-off-broadway-2026/talkinbroadway--james-wilson.json",
+      "data/review-texts/woman-in-mind-west-end-2025/broadwayworld--unknown.json",
+      "data/review-texts/woman-in-mind-west-end-2025/thestage--unknown.json",
+      "data/review-texts/the-hunger-games-on-stage-west-end-2025/broadwayworld--cindy-marcolina.json",
+      "data/review-texts/the-hunger-games-on-stage-west-end-2025/thestage--unknown.json",
+      "data/review-texts/chess-2025/talkinbroadway--unknown.json",
+      "data/review-texts/the-producers-west-end-2025/thestage--paul-vale.json"
     ],
     "archive": [
-      "grace-pervades-west-end-2026/thestage--unknown.json"
+      "grace-pervades-west-end-2026/thestage--unknown.json",
+      "chess-2025/billboard--rebecca-milzoff.json"
     ]
   },
   "startTime": "2026-03-28T03:40:18.572Z",
-  "lastProcessed": "the-monsters-off-broadway-2026/talkinbroadway--james-wilson.json",
+  "lastProcessed": "the-producers-west-end-2025/thestage--paul-vale.json",
   "log": [
     {
       "t": "2026-03-28T03:46:20.601Z",
@@ -61,6 +80,39 @@
     },
     {
       "t": "2026-03-28T03:46:21.930Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-28T03:54:34.817Z",
+      "event": "bb-session",
+      "session": "e9c33455",
+      "url": "https://www.thestage.co.uk/reviews/woman-in-mind-review-duke-of-yorks-theatre-lo"
+    },
+    {
+      "t": "2026-03-28T03:54:36.340Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-28T03:56:49.467Z",
+      "event": "bb-session",
+      "session": "b6bb0cf7",
+      "url": "https://www.thestage.co.uk/reviews/reviews/the-hunger-games-on-stage-review-trou"
+    },
+    {
+      "t": "2026-03-28T03:56:50.881Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-28T03:59:37.324Z",
+      "event": "bb-session",
+      "session": "5a697172",
+      "url": "https://www.thestage.co.uk/reviews/reviews/the-producers-review-garrick-theatre-"
+    },
+    {
+      "t": "2026-03-28T03:59:38.809Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }

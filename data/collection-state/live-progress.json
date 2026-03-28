@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-28T03:51:42.326Z",
-  "processed": 4,
-  "failed": 16,
+  "updatedAt": "2026-03-28T03:59:56.350Z",
+  "processed": 6,
+  "failed": 24,
   "successRate": "20.0%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 3,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 8,
-    "archive": 1
+    "archiveToday": 15,
+    "archive": 2
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-03-28T03:46:20.601Z",
@@ -23,6 +23,39 @@
     },
     {
       "t": "2026-03-28T03:46:21.930Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-28T03:54:34.817Z",
+      "event": "bb-session",
+      "session": "e9c33455",
+      "url": "https://www.thestage.co.uk/reviews/woman-in-mind-review-duke-of-yorks-theatre-lo"
+    },
+    {
+      "t": "2026-03-28T03:54:36.340Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-28T03:56:49.467Z",
+      "event": "bb-session",
+      "session": "b6bb0cf7",
+      "url": "https://www.thestage.co.uk/reviews/reviews/the-hunger-games-on-stage-review-trou"
+    },
+    {
+      "t": "2026-03-28T03:56:50.881Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-28T03:59:37.324Z",
+      "event": "bb-session",
+      "session": "5a697172",
+      "url": "https://www.thestage.co.uk/reviews/reviews/the-producers-review-garrick-theatre-"
+    },
+    {
+      "t": "2026-03-28T03:59:38.809Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
