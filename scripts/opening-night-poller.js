@@ -577,6 +577,8 @@ async function runAggregators(show) {
               const outletLine = before.split('\n').filter(l => l.trim()).pop()?.trim() || '';
               if (!outletLine || outletLine.length < 2 || outletLine.length > 50) continue;
               if (outletLine.startsWith('"') || outletLine.startsWith('\u201c')) continue;
+              // Skip table headers parsed as outlet names
+              if (/publication|rating|critic/i.test(outletLine)) continue;
               wetReviews.push({ outlet: outletLine, stars, critic: 'Unknown' });
             }
           }
