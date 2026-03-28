@@ -68,7 +68,7 @@ const MODEL_MAP = {
   'o4-mini': 'o4-mini',
   'o3': 'o3',
 };
-const MODEL_INPUT = flags['model'] || 'o4-mini';
+const MODEL_INPUT = flags['model'] || 'o4-mini-deep';
 const MODEL = MODEL_MAP[MODEL_INPUT] || MODEL_INPUT;
 const IS_DEEP_RESEARCH = MODEL.includes('deep-research');
 
