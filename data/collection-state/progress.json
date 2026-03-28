@@ -4,14 +4,24 @@
     "john-proctor-is-the-villain-west-end-2026/whatsonstage--sarah-crompton.json",
     "john-proctor-is-the-villain-west-end-2026/whatsonstage--unknown.json",
     "teeth-n-smiles-west-end-2026/musical-theatre-review--unknown.json",
-    "teeth-n-smiles-west-end-2026/thereviewshub--unknown.json"
+    "teeth-n-smiles-west-end-2026/thereviewshub--unknown.json",
+    "teeth-n-smiles-west-end-2026/artsdesk--unknown.json",
+    "teeth-n-smiles-west-end-2026/broadwayworld--unknown.json",
+    "teeth-n-smiles-west-end-2026/city-am--unknown.json",
+    "teeth-n-smiles-west-end-2026/theatre-weekly--unknown.json",
+    "teeth-n-smiles-west-end-2026/theupcoming--unknown.json",
+    "teeth-n-smiles-west-end-2026/standard--nick-curtis.json",
+    "a-mirrored-monet-west-end-2026/whatsonstage--unknown.json",
+    "broken-glass-west-end-2026/independent--samuel-mathewson.json",
+    "evening-all-afternoon-west-end-2026/whatsonstage--unknown.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
     "john-proctor-is-the-villain-west-end-2026/broadwayworld--unknown.json",
     "john-proctor-is-the-villain-west-end-2026/telegraph--claire-allfree.json",
     "john-proctor-is-the-villain-west-end-2026/thestage--sam-marlowe.json",
-    "john-proctor-is-the-villain-west-end-2026/standard--unknown.json"
+    "john-proctor-is-the-villain-west-end-2026/standard--unknown.json",
+    "teeth-n-smiles-west-end-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -19,7 +29,15 @@
       "john-proctor-is-the-villain-west-end-2026/whatsonstage--sarah-crompton.json",
       "john-proctor-is-the-villain-west-end-2026/whatsonstage--unknown.json",
       "teeth-n-smiles-west-end-2026/musical-theatre-review--unknown.json",
-      "teeth-n-smiles-west-end-2026/thereviewshub--unknown.json"
+      "teeth-n-smiles-west-end-2026/thereviewshub--unknown.json",
+      "teeth-n-smiles-west-end-2026/artsdesk--unknown.json",
+      "teeth-n-smiles-west-end-2026/city-am--unknown.json",
+      "teeth-n-smiles-west-end-2026/theatre-weekly--unknown.json",
+      "teeth-n-smiles-west-end-2026/theupcoming--unknown.json",
+      "teeth-n-smiles-west-end-2026/standard--nick-curtis.json",
+      "a-mirrored-monet-west-end-2026/whatsonstage--unknown.json",
+      "broken-glass-west-end-2026/independent--samuel-mathewson.json",
+      "evening-all-afternoon-west-end-2026/whatsonstage--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -28,14 +46,16 @@
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/john-proctor-is-the-villain-west-end-2026/broadwayworld--unknown.json",
-      "data/review-texts/john-proctor-is-the-villain-west-end-2026/thestage--sam-marlowe.json"
+      "data/review-texts/john-proctor-is-the-villain-west-end-2026/thestage--sam-marlowe.json",
+      "data/review-texts/teeth-n-smiles-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
-      "copenhagen-west-end-2026/telegraph--unknown.json"
+      "copenhagen-west-end-2026/telegraph--unknown.json",
+      "teeth-n-smiles-west-end-2026/broadwayworld--unknown.json"
     ]
   },
   "startTime": "2026-03-28T08:29:05.092Z",
-  "lastProcessed": "teeth-n-smiles-west-end-2026/thereviewshub--unknown.json",
+  "lastProcessed": "evening-all-afternoon-west-end-2026/whatsonstage--unknown.json",
   "log": [
     {
       "t": "2026-03-28T08:34:26.407Z",
@@ -48,6 +68,18 @@
       "event": "bb-login-fail",
       "domain": "thestage.co.uk",
       "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    28 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-03-28T08:39:13.784Z",
+      "event": "bb-session",
+      "session": "30ae0de6",
+      "url": "https://www.thestage.co.uk/reviews/paddington-the-musical-review-savoy-theatre-l"
+    },
+    {
+      "t": "2026-03-28T08:39:53.447Z",
+      "event": "bb-login-fail",
+      "domain": "thestage.co.uk",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    28 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
     }
   ]
 }
