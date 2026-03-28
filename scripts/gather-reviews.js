@@ -833,17 +833,11 @@ async function scrapeShowScoreWithPlaywright(url, options = {}) {
         const paragraph = card.querySelector('p');
         const excerpt = paragraph?.textContent?.replace(/Read more.*$/, '').trim() || '';
 
-        // Look for star rating (CSS variable --rating on .review-tile-v2__stars)
-        let starRating = null;
-        let starMax = null;
-        const starsEl = card.querySelector('.review-tile-v2__stars');
-        if (starsEl) {
-          const style = starsEl.getAttribute('style') || '';
-          const ratingMatch = style.match(/--rating:\s*([\d.]+)/);
-          const gapsMatch = style.match(/--gaps:\s*([\d.]+)/);
-          if (ratingMatch) starRating = parseFloat(ratingMatch[1]);
-          if (gapsMatch) starMax = parseInt(gapsMatch[1]);
-        }
+        // NOTE: Show Score critic review cards do NOT display star ratings.
+        // The --rating CSS variable is an internal float (e.g. 3.9) that doesn't
+        // match the outlet's actual rating (which is always an integer like 3/5).
+        // Show Score's ratings are wrong 11% of the time. Do NOT extract them.
+        // Star ratings should come from the outlet's own page or from WET roundups.
 
         if (href && !reviews.some(r => r.url === href)) {
           reviews.push({
@@ -852,8 +846,8 @@ async function scrapeShowScoreWithPlaywright(url, options = {}) {
             critic: critic,
             date: date,
             excerpt: excerpt,
-            starRating: starRating,
-            starMax: starMax
+            starRating: null,
+            starMax: null
           });
         }
       });
