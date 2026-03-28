@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-28T23:30:21.849Z",
+  "generatedAt": "2026-03-28T23:36:37.162Z",
   "shows": {
     "days-of-wine-and-roses-2024": {
       "title": "Days of Wine and Roses",
@@ -2919,6 +2919,33 @@
       "openingDate": "2026-03-11",
       "status": "open",
       "researchedAt": "2026-03-28T23:30:21.849Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
+    },
+    "stereophonic-off-broadway-2023": {
+      "capitalization": 4000000,
+      "capitalizationSource": "Broadway Journal (Philip Boroff, Apr 30, 2024) ([www.broadwayjournal.com](https://www.broadwayjournal.com/stereophonic-makes-tony-history-in-hazardous-season/#:~:text=Stereophonic%2C%20David%20Adjmi%27s%20ecstatically%20reviewed,Producers%20Sue%20Wagner%2C%20John%20Johnson))",
+      "weeklyRunningCost": 541000,
+      "costMethodology": "trade-reported",
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "According to a Broadway Journal analysis, Stereophonic had about a $4.0M capitalization ([www.broadwayjournal.com](https://www.broadwayjournal.com/stereophonic-makes-tony-history-in-hazardous-season/#:~:text=Stereophonic%2C%20David%20Adjmi%27s%20ecstatically%20reviewed,Producers%20Sue%20Wagner%2C%20John%20Johnson)).  Its most recent weekly gross was $541K, roughly matching its weekly expenses ([www.broadwayjournal.com](https://www.broadwayjournal.com/stereophonic-makes-tony-history-in-hazardous-season/#:~:text=Stereophonic%2C%20David%20Adjmi%27s%20ecstatically%20reviewed,Producers%20Sue%20Wagner%2C%20John%20Johnson)).  This production ran at nonprofit Playwrights Horizons (Off-Broadway) and has since closed, so traditional commercial recoupment isn’t applicable.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/stereophonic-makes-tony-history-in-hazardous-season/",
+          "date": "2024-04-30"
+        }
+      ],
+      "title": "Stereophonic",
+      "slug": "stereophonic-off-broadway-2023",
+      "openingDate": "2023-10-17",
+      "status": "closed",
+      "researchedAt": "2026-03-28T23:36:37.162Z",
       "model": "o4-mini-deep-research",
       "researchTrigger": "manual"
     }

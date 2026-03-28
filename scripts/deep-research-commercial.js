@@ -184,7 +184,7 @@ function estimateCost(usage, model) {
  * Poll a background response until completed or timeout.
  * Returns the completed response object.
  */
-async function pollForCompletion(responseId, maxWaitMs = 900000) {
+async function pollForCompletion(responseId, maxWaitMs = 1800000) {
   const pollInterval = 15000; // 15 seconds
   const startTime = Date.now();
 

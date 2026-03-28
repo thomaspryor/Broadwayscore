@@ -1463,8 +1463,11 @@ async function verifyAndCollect(images, show, tierName, verifyCtx) {
   });
 
   // Fix 2: Override non_broadway rejection for pre-Broadway venue shows
+  // ONLY when non_broadway is the sole issue — if the image is also wrong_show
+  // or generic_image, the override must NOT fire (e.g., Starlight Theatre banner ≠ Jerome)
   if (result.match === false
-      && result.issues?.includes('non_broadway')
+      && result.issues?.length === 1
+      && result.issues[0] === 'non_broadway'
       && PRE_BROADWAY_VENUE_SHOWS.has(show.id)) {
     console.log(`   ⚠ VENUE OVERRIDE: Accepting pre-Broadway venue art for ${show.id}`);
     const score = scoreCandidate({ ...result, match: true }, urlToVerify);
