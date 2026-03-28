@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-28T09:48:42.218Z",
+  "timestamp": "2026-03-28T11:34:34.446Z",
   "stats": {
     "totalReviews": 32537,
     "alreadyFlagged": 11189,
     "dateGuardCatches": 145,
     "directorMismatch": 966,
-    "tvFilmSignals": 3459,
+    "tvFilmSignals": 3458,
     "londonSignals": 1050,
-    "offBroadwaySignals": 1008,
+    "offBroadwaySignals": 1013,
     "yearMismatch": 71,
-    "noPublishDate": 6704
+    "noPublishDate": 6703
   },
   "findings": [
     {
@@ -19712,19 +19712,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "grey-house-2023",
-      "file": "slash-film--caroline-cao.json",
-      "publishDate": "2023-06-07",
-      "url": "https://www.slashfilm.com/1307195/the-grey-house-review/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -80139,6 +80126,7 @@
     {
       "showId": "teeth-n-smiles-west-end-2026",
       "file": "city-am--unknown.json",
+      "score": 52,
       "publishDate": "2026-03-11",
       "url": "https://www.cityam.com/teeth-n-smiles-review-self-esteem-is-magnetic-in-dated-show/",
       "findings": [
@@ -85848,6 +85836,19 @@
     },
     {
       "showId": "wicked-2003",
+      "file": "broadwayworld--armando-urdiales.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Wicked",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
       "file": "broadwayworld--courtney-symes.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
@@ -85888,6 +85889,58 @@
     {
       "showId": "wicked-2003",
       "file": "broadwayworld--jared-fessler.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Wicked",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "broadwayworld--katrina-fageol.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Wicked",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "broadwayworld--lauren-gienow.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Wicked",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "broadwayworld--lynn-beaver.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Wicked",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "broadwayworld--tyler-hinton.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
       "findings": [
