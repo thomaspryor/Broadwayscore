@@ -56,7 +56,7 @@ const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
 const { LETTER_GRADES } = require('./lib/score-extractors');
-const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
+const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { domainMatchesExpected } = require('./lib/scraper');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
@@ -1491,44 +1491,25 @@ async function searchBWWRoundup(show, year, options = {}) {
   // Priority 4: Google SERP search — BWW uses unpredictable URL formats
   // (e.g., "Tony-Winner-Daniel-Radcliffe-Stars-in-..." instead of "{SHOW}-Opens-on-Broadway-...")
   // so SERP discovery is essential, not just a fallback.
-  const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
-  if (SCRAPINGBEE_KEY) {
-    try {
-      const titleForSearch = show.title.replace(/'/g, '');
-      const marketKeyword = isLondonMarket(show.category) ? 'west end' : (show.category === 'off-broadway') ? 'off-broadway' : 'broadway';
-      const searchQuery = `site:broadwayworld.com/article "Review Roundup" "${titleForSearch}" ${marketKeyword} ${year}`;
-      console.log(`    Trying Google search for BWW roundup...`);
-      const apiUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(searchQuery)}&nb_results=5`;
-      const searchResult = await new Promise((resolve, reject) => {
-        const req = https.get(apiUrl, (res) => {
-          let data = '';
-          res.on('data', chunk => data += chunk);
-          res.on('end', () => {
-            if (res.statusCode === 200) {
-              try {
-                const results = JSON.parse(data);
-                const urls = (results.organic_results || [])
-                  .map(r => r.url)
-                  .filter(url => url && url.includes('broadwayworld.com/article/Review-Roundup'));
-                resolve(urls.length > 0 ? urls[0] : null);
-              } catch (e) { resolve(null); }
-            } else { resolve(null); }
-          });
-        });
-        req.on('error', () => resolve(null));
-        req.setTimeout(15000, () => { req.destroy(); resolve(null); });
-      });
-      if (searchResult) {
-        console.log(`    ✓ Found via Google: ${searchResult}`);
-        if (chromium) {
-          const result = await scrapeBWWRoundupWithPlaywright(searchResult);
-          if (result) return { url: searchResult, html: result.html };
-        }
-        const result = await searchAggregator('BWW', searchResult);
-        if (result.found && result.html) return { url: searchResult, html: result.html };
+  try {
+    const titleForSearch = show.title.replace(/'/g, '');
+    const marketKeyword = isLondonMarket(show.category) ? 'west end' : (show.category === 'off-broadway') ? 'off-broadway' : 'broadway';
+    const searchQuery = `site:broadwayworld.com/article "Review Roundup" "${titleForSearch}" ${marketKeyword} ${year}`;
+    console.log(`    Trying Google search for BWW roundup...`);
+    const serpResults = await serpQuery(searchQuery, { nbResults: 5 });
+    const searchResult = serpResults
+      ? (serpResults.map(r => r.url).filter(url => url && url.includes('broadwayworld.com/article/Review-Roundup'))[0] || null)
+      : null;
+    if (searchResult) {
+      console.log(`    ✓ Found via Google: ${searchResult}`);
+      if (chromium) {
+        const result = await scrapeBWWRoundupWithPlaywright(searchResult);
+        if (result) return { url: searchResult, html: result.html };
       }
-    } catch (e) { /* Google search failed, continue */ }
-  }
+      const result = await searchAggregator('BWW', searchResult);
+      if (result.found && result.html) return { url: searchResult, html: result.html };
+    }
+  } catch (e) { /* Google search failed, continue */ }
 
   console.log('    ✗ Not found on BWW');
   return null;
@@ -2923,22 +2904,19 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
       const bbProjectId = process.env.BROWSERBASE_PROJECT_ID;
       const tsEmail = process.env.THESTAGE_EMAIL;
       const tsPassword = process.env.THESTAGE_PASSWORD;
-      if (bbApiKey && bbProjectId && tsEmail && tsPassword && scrapingBeeKey) {
+      if (bbApiKey && bbProjectId && tsEmail && tsPassword) {
         try {
-          // SERP to find the roundup URL
-          const axios = require('axios');
-          const serpResp = await axios.get('https://app.scrapingbee.com/api/v1/store/google', {
-            params: { api_key: scrapingBeeKey, search: `site:thestage.co.uk/review-round-ups "${show.title}" review round-up` },
-            timeout: 15000,
-          }).catch(() => null);
+          // SERP to find the roundup URL (shared provider chain: BD first → SB fallback)
+          const serpResults = await serpQuery(
+            `site:thestage.co.uk/review-round-ups "${show.title}" review round-up`,
+            { scrapingBeeKey, nbResults: 3 }
+          ).catch(() => null);
 
           let tsUrl = null;
-          if (serpResp?.data) {
-            const results = serpResp.data.organic_results || serpResp.data.results || [];
-            for (const r of results.slice(0, 3)) {
-              const url = r.url || r.link;
-              if (url && url.includes('review-round-up') && url.toLowerCase().includes(show.title.toLowerCase().substring(0, 6))) {
-                tsUrl = url;
+          if (serpResults) {
+            for (const r of serpResults) {
+              if (r.url && r.url.includes('review-round-up') && r.url.toLowerCase().includes(show.title.toLowerCase().substring(0, 6))) {
+                tsUrl = r.url;
                 break;
               }
             }

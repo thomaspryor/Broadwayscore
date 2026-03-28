@@ -16,6 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { serpQuery } = require('./lib/url-discovery');
 const { buildTelechargeUrl, normalizeShowName } = require('./lib/url-utils');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -113,60 +114,14 @@ function httpGet(url, options = {}) {
 }
 
 /**
- * Generic SERP search — tries BrightData first (cheaper), falls back to ScrapingBee.
+ * Generic SERP search — uses shared provider chain (BD first → SB fallback).
  * Returns array of organic results or null.
  */
 async function serpSearch(query) {
-  // Try BrightData SERP first ($0.0015/query, async)
-  const bdToken = process.env.BRIGHTDATA_TOKEN;
-  if (bdToken) {
-    try {
-      const customer = process.env.BRIGHTDATA_CUSTOMER || 'hl_a2c64a47';
-      const zone = process.env.BRIGHTDATA_SERP_ZONE || 'serp_api1';
-      const submitUrl = `https://api.brightdata.com/serp/req?customer=${customer}&zone=${zone}`;
-      const submitResult = await httpGet(submitUrl, {
-        method: 'POST',
-        body: JSON.stringify({ query: { q: query, gl: 'us' } }),
-        headers: { 'Authorization': `Bearer ${bdToken}`, 'Content-Type': 'application/json' },
-      });
-      if (submitResult.statusCode === 200) {
-        const { response_id } = JSON.parse(submitResult.body);
-        if (response_id) {
-          for (let i = 0; i < 10; i++) {
-            await new Promise(r => setTimeout(r, 2000));
-            const poll = await httpGet(
-              `https://api.brightdata.com/serp/get_result?response_id=${response_id}`,
-              { headers: { 'Authorization': `Bearer ${bdToken}` } }
-            );
-            if (poll.statusCode === 200) {
-              const data = JSON.parse(poll.body);
-              return data.organic || data.organic_results || [];
-            }
-            if (poll.statusCode !== 202) break;
-          }
-        }
-      }
-    } catch (e) {
-      console.log(`    BrightData SERP error: ${e.message}`);
-    }
-  }
-
-  // Fallback: ScrapingBee (25 credits/query)
-  const sbKey = process.env.SCRAPINGBEE_API_KEY;
-  if (sbKey) {
-    try {
-      const searchUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${sbKey}&search=${encodeURIComponent(query)}`;
-      const result = await httpGet(searchUrl);
-      if (result.statusCode === 200) {
-        const data = JSON.parse(result.body);
-        return data.organic_results || data.results || [];
-      }
-    } catch (e) {
-      console.log(`    ScrapingBee SERP error: ${e.message}`);
-    }
-  }
-
-  return null;
+  const results = await serpQuery(query);
+  if (!results) return null;
+  // Return in the format callers expect ({url, title, link} etc.)
+  return results.map(r => ({ url: r.url, link: r.url, title: r.title || '' }));
 }
 
 /**
