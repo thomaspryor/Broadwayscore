@@ -258,6 +258,183 @@ async function phase3Scrape(reviews) {
 }
 
 // ---------------------------------------------------------------------------
+// Phase 4: Playwright — visit pages and extract from rendered DOM
+// ---------------------------------------------------------------------------
+async function phase4Playwright(reviews) {
+  console.log('\n═══ PHASE 4: Playwright (JS-rendered pages) ═══\n');
+
+  const pending = reviews.filter(r => !r.verified && r.url);
+  console.log(`  ${pending.length} reviews to check via Playwright\n`);
+  if (pending.length === 0) return;
+
+  let browser;
+  try {
+    const { chromium } = require('playwright');
+    browser = await chromium.launch({ headless: true });
+  } catch (err) {
+    console.log(`  Playwright not available: ${err.message}\n`);
+    return;
+  }
+
+  const context = await browser.newContext({
+    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+  });
+
+  for (let i = 0; i < pending.length; i++) {
+    const review = pending[i];
+    const url = review.url;
+    console.log(`  [${i + 1}/${pending.length}] ${review.showId} | ${review.outlet} | ${url}`);
+
+    try {
+      const page = await context.newPage();
+      await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      await page.waitForTimeout(2000);
+
+      const rating = await page.evaluate(() => {
+        const h1 = document.querySelector('h1');
+
+        // Strategy 1: The Stage — SVG star images (19stageStar.svg / 19stageNoStar.svg)
+        if (h1) {
+          const parent = h1.parentElement;
+          const imgs = parent ? parent.querySelectorAll('img') : [];
+          const starImgs = Array.from(imgs).filter(img => {
+            const src = (img.src || '').toLowerCase();
+            return src.includes('star') && img.width < 40;
+          });
+          if (starImgs.length === 5) {
+            const filled = starImgs.filter(img => !img.src.toLowerCase().includes('nostar')).length;
+            return { stars: filled, max: 5, source: 'stage-star-svg' };
+          }
+        }
+
+        // Strategy 2: JSON-LD ratingValue
+        for (const s of document.querySelectorAll('script[type="application/ld+json"]')) {
+          try {
+            const data = JSON.parse(s.textContent);
+            const findRating = (obj) => {
+              if (!obj || typeof obj !== 'object') return null;
+              if (obj.ratingValue) return parseFloat(obj.ratingValue);
+              if (obj.reviewRating && obj.reviewRating.ratingValue) return parseFloat(obj.reviewRating.ratingValue);
+              if (Array.isArray(obj['@graph'])) {
+                for (const item of obj['@graph']) {
+                  const r = findRating(item);
+                  if (r) return r;
+                }
+              }
+              return null;
+            };
+            const rv = findRating(data);
+            if (rv && rv >= 1 && rv <= 5) return { stars: rv, max: 5, source: 'json-ld' };
+          } catch (e) { /* ignore parse errors */ }
+        }
+
+        // Strategy 3: Meta itemprop ratingValue
+        const meta = document.querySelector('meta[itemprop="ratingValue"], meta[property="og:rating"]');
+        if (meta) {
+          const v = parseFloat(meta.content);
+          if (v >= 1 && v <= 5) return { stars: v, max: 5, source: 'meta-itemprop' };
+        }
+
+        // Strategy 4: Star images (WhatsOnStage yellow.png/star-grey.png)
+        const starContainers = document.querySelectorAll('[class*="star"], [class*="rating"]');
+        for (const container of starContainers) {
+          const imgs = container.querySelectorAll('img');
+          if (imgs.length >= 3 && imgs.length <= 5) {
+            const srcs = Array.from(imgs).map(i => i.src.toLowerCase());
+            const filled = srcs.filter(s =>
+              s.includes('yellow') || s.includes('filled') || s.includes('full') ||
+              (s.includes('star') && !s.includes('grey') && !s.includes('gray') && !s.includes('empty') && !s.includes('no'))
+            ).length;
+            if (filled > 0) return { stars: filled, max: imgs.length, source: 'wos-star-images' };
+          }
+        }
+
+        // Strategy 5: Unicode stars (★☆)
+        const body = document.body.innerText;
+        const unicodeMatch = body.match(/([★☆]{3,5})/);
+        if (unicodeMatch) {
+          const filled = (unicodeMatch[1].match(/★/g) || []).length;
+          const total = unicodeMatch[1].length;
+          if (total >= 3 && total <= 5) return { stars: filled, max: total, source: 'unicode-stars' };
+        }
+
+        // Strategy 6: "X/5" near rating context
+        const ratingMatch = body.match(/\b(\d)\/5\s*(?:stars?|★)/i);
+        if (ratingMatch) {
+          return { stars: parseInt(ratingMatch[1]), max: 5, source: 'explicit-rating' };
+        }
+
+        // Strategy 7: SVG-based stars near h1 (Guardian, etc.)
+        if (h1) {
+          const ratingParent = h1.closest('[class*="content"]') || h1.parentElement && h1.parentElement.parentElement;
+          if (ratingParent) {
+            const svgs = ratingParent.querySelectorAll('svg[viewBox]');
+            const starSvgs = Array.from(svgs).filter(function(svg) {
+              var vb = svg.getAttribute('viewBox') || '';
+              return vb.includes('24') || vb.includes('30');
+            });
+            if (starSvgs.length === 5) {
+              var classCounts = {};
+              starSvgs.forEach(function(svg) {
+                var pcls = (svg.parentElement && svg.parentElement.className) || 'unknown';
+                classCounts[pcls] = (classCounts[pcls] || 0) + 1;
+              });
+              var classKeys = Object.keys(classCounts);
+              if (classKeys.length === 2) {
+                var firstClass = (starSvgs[0].parentElement && starSvgs[0].parentElement.className) || '';
+                var filled = classCounts[firstClass] || 0;
+                if (filled >= 1 && filled <= 5) {
+                  return { stars: filled, max: 5, source: 'stage-star-svg' };
+                }
+              } else if (classKeys.length === 1) {
+                return { stars: 5, max: 5, source: 'stage-star-svg' };
+              }
+            }
+          }
+        }
+
+        // Strategy 8: Drupal fivestar widget (Arts Desk)
+        var fivestarEl = document.querySelector('.fivestar-widget, .field-name-field-rating, [class*="fivestar"]');
+        if (fivestarEl) {
+          var fivestarStars = fivestarEl.querySelectorAll('.star, [class*="star"]');
+          if (fivestarStars.length >= 3) {
+            var filledStars = Array.from(fivestarStars).filter(function(el) {
+              var cls = (el.className || '').toLowerCase();
+              return cls.includes('on') || cls.includes('filled') || cls.includes('hover');
+            }).length;
+            if (filledStars > 0) return { stars: filledStars, max: fivestarStars.length, source: 'fivestar-widget' };
+          }
+        }
+
+        return null;
+      });
+
+      await page.close();
+
+      if (rating && rating.stars && rating.max) {
+        const normalizedScore = Math.round((rating.stars / rating.max) * 100);
+        stats.phase4 = (stats.phase4 || 0) + 1;
+        applyResult(review, {
+          originalScore: rating.stars + '/' + rating.max + ' stars',
+          normalizedScore: normalizedScore,
+          source: rating.source,
+        }, 'playwright-rendered');
+      } else {
+        console.log('    ✗ No star rating found in rendered page');
+        stats.noScore++;
+      }
+    } catch (err) {
+      console.log('    ✗ Playwright error: ' + err.message);
+      stats.errors++;
+    }
+
+    if (i < pending.length - 1) await sleep(2000);
+  }
+
+  await browser.close();
+}
+
+// ---------------------------------------------------------------------------
 // Apply a verified result and compare with SS
 // ---------------------------------------------------------------------------
 function applyResult(review, result, extractedFrom) {
@@ -381,6 +558,7 @@ async function main() {
   if (PHASES.includes(1)) phase1LocalExtract(reviews);
   if (PHASES.includes(2)) await phase2APIs(reviews);
   if (PHASES.includes(3)) await phase3Scrape(reviews);
+  if (PHASES.includes(4)) await phase4Playwright(reviews);
 
   // Summary
   console.log('\n╔════════════════════════════════════════════════════════════╗');
@@ -390,6 +568,7 @@ async function main() {
   console.log(`  Phase 1 (local text):        ${stats.phase1} verified`);
   console.log(`  Phase 2 (API):               ${stats.phase2} verified`);
   console.log(`  Phase 3 (scrape):            ${stats.phase3} verified`);
+  console.log(`  Phase 4 (Playwright):        ${stats.phase4 || 0} verified`);
   console.log(`  ─────────────────────────────────`);
   console.log(`  Confirmed (SS was correct):  ${stats.confirmed}`);
   console.log(`  Mismatches (SS was WRONG):   ${stats.mismatches}`);
