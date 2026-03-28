@@ -47,6 +47,9 @@ const ENTERTAINMENT_FEEDS = [
   { url: 'https://www.latimes.com/entertainment-arts/rss2.0.xml', outletId: 'latimes', name: 'LA Times Entertainment', needsFilter: true },
   { url: 'https://feeds.washingtonpost.com/rss/entertainment', outletId: 'washpost', name: 'WashPost Entertainment', needsFilter: true },
   { url: 'https://www.newyorker.com/feed/culture', outletId: 'newyorker', name: 'New Yorker Culture', needsFilter: true },
+  { url: 'https://www.nbcnewyork.com/entertainment/?rss=y', outletId: 'nbcny', name: 'NBC New York', needsFilter: true },
+  { url: 'https://www.huffpost.com/section/entertainment/feed', outletId: 'huffpost', name: 'HuffPost Entertainment', needsFilter: true },
+  { url: 'https://www.slantmagazine.com/feed/', outletId: 'slantmagazine', name: 'Slant Magazine', needsFilter: true },
 ];
 
 const ALL_FEEDS = [...THEATER_FEEDS, ...WE_THEATER_FEEDS, ...ENTERTAINMENT_FEEDS];
