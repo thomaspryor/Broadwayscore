@@ -1,38 +1,27 @@
 {
   "meta": {
-    "generatedAt": "2026-03-28T05:57:08.019Z",
+    "generatedAt": "2026-03-28T06:06:37.254Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 33215,
-      "inReviewsJson": 15981,
+      "totalFiles": 33216,
+      "inReviewsJson": 15980,
       "skippedExcluded": 82,
-      "withFullText": 23,
+      "withFullText": 21,
       "excerptOnly": 1336,
-      "llmClassified": 22,
+      "llmClassified": 20,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 1,
+      "nonReviewsFound": 0,
       "uncertainCases": 20,
-      "budgetUsed": 0.0023,
-      "llmCalls": 23,
+      "budgetUsed": 0.0021000000000000003,
+      "llmCalls": 21,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14540
+      "skippedAlreadyClassified": 14541
     },
     "calibration": null
   },
-  "nonReviews": [
-    {
-      "file": "next-to-normal-2009/broadwayworld--michael-dale.json",
-      "showId": "next-to-normal-2009",
-      "outlet": "BroadwayWorld.com",
-      "outletId": "broadwayworld",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This article primarily reports on the opening night of 'Next to Normal' on Broadway, including cast information, production details, and quotes from reviews of a previous production. It does not offer a new, direct evaluation of the Broadway production itself.",
-      "currentScore": 84
-    }
-  ],
+  "nonReviews": [],
   "uncertainCases": [
     {
       "file": "an-american-in-paris-2015/talkinbroadway--matthew-murray.json",
@@ -51,7 +40,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion on the quality of the production. It also includes unrelated theater news.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -61,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
+      "reasoning": "The text is a list of theater-related items and links, suggesting a directory or advertisement rather than a review of a specific show.",
       "currentScore": 82
     },
     {
@@ -71,7 +60,7 @@
       "outletId": "bloomberg",
       "contentType": "news",
       "confidence": "medium",
-      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in photo captions. It does not offer a review or evaluation of \"First Date.\"",
+      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and its pre-Broadway run, with a brief mention of \"First Date\" only in photo captions. It does not offer a critical evaluation of \"First Date.\"",
       "currentScore": 57
     },
     {
@@ -111,7 +100,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there's no evaluative content to classify it as a review.",
       "currentScore": 88
     },
     {
@@ -121,7 +110,7 @@
       "outletId": "frequentbusinesstraveler",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and setting of \"Once on This Island\" without offering a critical evaluation or opinion on the quality of the production. It focuses on the story and characters, indicating a preview rather than a review.",
+      "reasoning": "The article describes the plot and setting of \"Once on This Island\" but does not offer an evaluation or opinion on the quality of the production. It reads like a preview or summary of the show's story.",
       "currentScore": 82
     },
     {
@@ -131,7 +120,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
       "currentScore": 89
     },
     {
@@ -151,7 +140,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated, but the available text suggests it's a news article or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
+      "reasoning": "The article appears to be truncated and incomplete, but the available text suggests it is a news article or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
       "currentScore": 78
     },
     {
@@ -161,7 +150,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of categories or tags related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -171,7 +160,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on its quality. It focuses on the show's concept and historical significance.",
       "currentScore": 83
     },
     {
@@ -181,7 +170,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -191,7 +180,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more aligned with a news item or listing than a review. There is no evaluative content.",
+      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
       "currentScore": 64
     },
     {
@@ -201,7 +190,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of theater-related links and search terms, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review of a specific production.",
       "currentScore": 78
     },
     {
@@ -211,7 +200,7 @@
       "outletId": "vulture",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the set design and the playwright's intentions, but does not offer an evaluation or recommendation of the show's quality. It reads more like a feature piece exploring the themes and context of the play.",
+      "reasoning": "The article describes the set design and the playwright's intentions, but does not offer an evaluation or recommendation of the show itself. It reads more like a feature piece about the play's themes and context.",
       "currentScore": 64
     },
     {
@@ -236,14 +225,6 @@
     }
   ],
   "heuristicFlags": [],
-  "reviewsConfirmed": [
-    "god-of-carnage-2009/broadwayworld--michael-dale.json"
-  ],
-  "perShowSummary": [
-    {
-      "showId": "next-to-normal-2009",
-      "currentCount": 17,
-      "removed": 1
-    }
-  ]
+  "reviewsConfirmed": [],
+  "perShowSummary": []
 }
