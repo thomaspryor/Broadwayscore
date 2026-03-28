@@ -699,6 +699,23 @@ assert(
   'NYSR: Negative — Giant review does NOT match Hamilton'
 );
 
+// ============================================================
+// NBC NY, HuffPost, Slant Magazine RSS feed configuration
+// ============================================================
+console.log('\n=== T2 RSS Feeds: NBC NY, HuffPost, Slant ===\n');
+
+const nbcnyFeed = ALL_FEEDS.find(f => f.outletId === 'nbcny');
+assert(nbcnyFeed !== undefined, 'NBC NY is present in ALL_FEEDS');
+assert(nbcnyFeed && nbcnyFeed.needsFilter === true, 'NBC NY uses needsFilter');
+
+const huffpostFeed = ALL_FEEDS.find(f => f.outletId === 'huffpost');
+assert(huffpostFeed !== undefined, 'HuffPost is present in ALL_FEEDS');
+assert(huffpostFeed && huffpostFeed.needsFilter === true, 'HuffPost uses needsFilter');
+
+const slantFeed = ALL_FEEDS.find(f => f.outletId === 'slantmagazine');
+assert(slantFeed !== undefined, 'Slant Magazine is present in ALL_FEEDS');
+assert(slantFeed && slantFeed.needsFilter === true, 'Slant uses needsFilter');
+
 // Title matching for typical WSJ/LAT/WashPost review headlines
 assert(
   titleMatchesShow("'Giant' Review: John Lithgow as a Venomous Roald Dahl", 'Giant'),
