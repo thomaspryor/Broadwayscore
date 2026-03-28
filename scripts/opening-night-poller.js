@@ -287,22 +287,14 @@ async function runAggregators(show) {
         console.log('  Talkin\' Broadway: already have review file, skipping');
       } else {
         console.log(`  Checking Talkin' Broadway: ${tbUrl}`);
-        // Try plain HTTPS first — TB serves HTML on direct article URLs
-        const tbResult = await new Promise((resolve) => {
-          const req = require('https').get(tbUrl, {
-            timeout: 10000,
-            headers: { 'User-Agent': 'Mozilla/5.0 (compatible; Broadway Scorecard/1.0)' }
-          }, res => {
-            if (res.statusCode === 200 || res.statusCode === 301) {
-              resolve({ ok: true, status: res.statusCode });
-            } else {
-              resolve({ ok: false, status: res.statusCode });
-            }
-            res.resume();
-          });
-          req.on('error', () => resolve({ ok: false, status: 0 }));
-          req.on('timeout', () => { req.destroy(); resolve({ ok: false, status: 0 }); });
-        });
+        // Try via proxy to avoid TLS blocking — only need to check if URL exists (HEAD-style)
+        let tbResult = { ok: false, status: 0 };
+        try {
+          const tbPage = await fetchPage(tbUrl, { renderJs: false });
+          tbResult = { ok: !!(tbPage && tbPage.content && tbPage.content.length > 500), status: 200 };
+        } catch (e) {
+          tbResult = { ok: false, status: 0 };
+        }
 
         if (tbResult.ok) {
           console.log(`  Talkin' Broadway: URL confirmed (${tbResult.status}) — creating stub`);
