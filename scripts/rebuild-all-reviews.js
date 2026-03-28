@@ -1791,7 +1791,10 @@ showDirs.forEach(showId => {
 
         if (data.showNotMentioned === true) {
           const hasExcerpt = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt;
-          if (!hasExcerpt) {
+          // Allow through if review has an aggregator-provided star rating (e.g. from WET roundup)
+          // even when scraped text was paywall junk that didn't mention the show
+          const hasOriginalScore = data.originalScore && parseOriginalScore(data.originalScore, data.outletId) !== null;
+          if (!hasExcerpt && !hasOriginalScore) {
             stats.skippedShowNotMentioned = (stats.skippedShowNotMentioned || 0) + 1;
             return;
           }
