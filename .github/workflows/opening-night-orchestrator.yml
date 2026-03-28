@@ -117,7 +117,9 @@ jobs:
             const shows = require('./data/shows.json').shows;
             const now = new Date();
             const cutoff = new Date(now);
-            cutoff.setDate(cutoff.getDate() - 1);
+            // WE reviews publish 12-48h after press night; Broadway same evening
+            const isWE = '$MARKET' === 'west-end';
+            cutoff.setDate(cutoff.getDate() - (isWE ? 4 : 2));
             cutoff.setHours(0,0,0,0);
             const market = '$MARKET';
             const opened = shows.filter(s => {

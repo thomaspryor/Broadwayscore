@@ -59,7 +59,7 @@ concurrency:
 jobs:
   poll:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 60
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -79,7 +79,13 @@ jobs:
       - name: Find shows to poll
         id: find
         run: |
-          LOOKBACK=${{ inputs.lookback_days || 2 }}
+          # WE reviews publish 12-48h after press night; use longer window
+          DEFAULT_LOOKBACK=2
+          if [ "${{ inputs.market }}" = "west-end" ]; then
+            DEFAULT_LOOKBACK=4
+          fi
+          LOOKBACK=${{ inputs.lookback_days || '' }}
+          LOOKBACK=${LOOKBACK:-$DEFAULT_LOOKBACK}
           INPUT_SHOW="${{ inputs.show_id }}"
           MARKET="${{ inputs.market }}"
 
@@ -168,7 +174,7 @@ jobs:
             if [ -n "${{ inputs.tb_review_url }}" ]; then
               TB_ARG="--tb-review-url=${{ inputs.tb_review_url }}"
             fi
-            timeout 300 node scripts/opening-night-poller.js --show="$SHOW_ID" $SKIP_SERP_FLAG $BWW_ARG $TB_ARG 2>&1 || true
+            timeout 600 node scripts/opening-night-poller.js --show="$SHOW_ID" $SKIP_SERP_FLAG $BWW_ARG $TB_ARG 2>&1 || true
 
             # Check if files were created (review-texts is a separate git checkout)
             CREATED=$(cd data/review-texts && git status --porcelain | wc -l | tr -d ' ')
