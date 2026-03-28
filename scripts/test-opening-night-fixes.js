@@ -373,24 +373,29 @@ const thrFeed = ALL_FEEDS.find(f => f.name === 'THR');
 const guardianFeed = ALL_FEEDS.find(f => f.name === 'Guardian Stage');
 
 assert(varietyFeed && varietyFeed.openingWindow === true, 'Variety Legit: openingWindow=true');
+assert(varietyFeed && varietyFeed.market === 'broadway', 'Variety Legit: market=broadway');
 assert(nytFeed && nytFeed.openingWindow === true, 'NYT Theater: openingWindow=true');
+assert(nytFeed && nytFeed.market === 'broadway', 'NYT Theater: market=broadway');
 assert(wosFeed && !wosFeed.openingWindow, 'WhatsOnStage: no openingWindow (WE feed — always title-matches)');
+assert(wosFeed && wosFeed.market === 'west-end', 'WhatsOnStage: market=west-end');
 assert(standardFeed && !standardFeed.openingWindow, 'Evening Standard: no openingWindow (WE feed)');
+assert(standardFeed && standardFeed.market === 'west-end', 'Evening Standard: market=west-end');
 assert(thrFeed && !thrFeed.openingWindow, 'THR: no openingWindow (entertainment feed, has needsFilter)');
+assert(!thrFeed.market, 'THR: no market restriction (covers both BW and WE)');
 assert(!guardianFeed, 'Guardian Stage: removed from ALL_FEEDS entirely (too broad)');
 
 // ============================================================
-// FIX — skipUrlFilter flag (site-search-discovery.js)
-// Variety section page is pre-scoped to /legit/reviews/ — skip urlLooksLikeReview.
-// TheaterMania and others retain url filtering.
+// Section pages use urlLooksLikeReview for show-title filtering.
+// skipUrlFilter removed from Variety and Vulture — was causing all section-page
+// reviews to be written as files for the polled show regardless of actual content.
 // ============================================================
-console.log('\n=== skipUrlFilter: only pre-scoped section pages skip URL matching ===\n');
+console.log('\n=== URL filtering: all endpoints use urlLooksLikeReview for show matching ===\n');
 
 const { SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
 
 assert(
-  SITE_SEARCH_ENDPOINTS.variety && SITE_SEARCH_ENDPOINTS.variety.skipUrlFilter === true,
-  'variety: skipUrlFilter=true (section page already scoped to /legit/reviews/)'
+  SITE_SEARCH_ENDPOINTS.variety && !SITE_SEARCH_ENDPOINTS.variety.skipUrlFilter,
+  'variety: no skipUrlFilter (urlLooksLikeReview filters to polled show)'
 );
 assert(
   SITE_SEARCH_ENDPOINTS.theatermania && !SITE_SEARCH_ENDPOINTS.theatermania.skipUrlFilter,
@@ -540,8 +545,8 @@ assert(
 );
 
 assert(
-  vultureConfig && vultureConfig.skipUrlFilter === true,
-  'Vulture config has skipUrlFilter (section page is already scoped)'
+  !vultureConfig.skipUrlFilter,
+  'Vulture has no skipUrlFilter (urlLooksLikeReview filters to polled show)'
 );
 
 assert(

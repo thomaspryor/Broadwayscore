@@ -34,7 +34,7 @@ const SITE_SEARCH_ENDPOINTS = {
   // --- SSR (plain HTTP works) ---
   'nypost': {
     name: 'New York Post',
-    url: 'https://nypost.com/?s={TITLE}+review',
+    url: 'https://nypost.com/search/{TITLE}+review/',
     domain: 'nypost.com',
     linkPattern: /href="(https:\/\/nypost\.com\/\d{4}\/\d{2}\/\d{2}\/[^"]*review[^"]*)"/gi,
     requiresJs: false,
@@ -103,9 +103,7 @@ const SITE_SEARCH_ENDPOINTS = {
     requiresJs: true,
     // Section page lists recent theater articles chronologically.
     // Review URLs contain /article/theater-review- or /article/review-.
-    // skipUrlFilter: section page is already theater-scoped; urlLooksLikeReview
-    // would reject reviews whose URL slug doesn't contain the show title words.
-    skipUrlFilter: true,
+    // urlLooksLikeReview filters to the polled show via URL title matching.
     fetchAndParse: async () => {
       const html = await fetchWithScrapingBee('https://www.vulture.com/theater/', 45000);
       // Extract article links — Vulture uses both protocol-relative and absolute URLs
@@ -187,10 +185,8 @@ const SITE_SEARCH_ENDPOINTS = {
     name: 'Variety',
     domain: 'variety.com',
     requiresJs: false,
-    // skipUrlFilter: all extracted URLs are already scoped to /legit/reviews/ (theater reviews only).
-    // urlLooksLikeReview() would reintroduce title-matching and silently drop reviews for shows
-    // whose title words don't appear in the URL slug. Content verifier handles any wrong-show URLs.
-    skipUrlFilter: true,
+    // Section page /legit/reviews/ returns all recent theater reviews.
+    // urlLooksLikeReview filters to the polled show via URL title matching.
     fetchAndParse: async (showTitle) => {
       const html = await fetchSSR('https://variety.com/v/legit/reviews/');
       const pattern = /href="(https:\/\/variety\.com\/\d{4}\/legit\/reviews\/[^"]+)"/gi;
