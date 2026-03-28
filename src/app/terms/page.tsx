@@ -12,6 +12,17 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  openGraph: {
+    title: 'Terms of Service — Broadway Scorecard',
+    description: 'Terms of Service for Broadway Scorecard. Guidelines for acceptable use of our aggregated Broadway review scores and data.',
+    url: `${BASE_URL}/terms`,
+    images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Terms of Service — Broadway Scorecard',
+    description: 'Terms of Service for Broadway Scorecard.',
+  },
 };
 
 const linkClass = 'text-amber-400 hover:text-amber-300 transition-colors';
