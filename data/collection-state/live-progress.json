@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-03-28T05:56:22.866Z",
+  "updatedAt": "2026-03-28T05:57:11.826Z",
   "processed": 97,
-  "failed": 256,
-  "successRate": "27.5%",
+  "failed": 266,
+  "successRate": "26.7%",
   "tierBreakdown": {
     "playwright": 42,
     "amp": 0,
@@ -67,6 +67,17 @@
     },
     {
       "t": "2026-03-28T04:07:49.965Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-28T05:33:10.059Z",
+      "event": "bb-session",
+      "session": "9fb7cecc",
+      "url": "https://nypost.com/author/johnny-oleksinski/page/5/"
+    },
+    {
+      "t": "2026-03-28T05:33:11.472Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
     },
