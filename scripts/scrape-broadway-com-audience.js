@@ -149,9 +149,12 @@ async function discoverShows() {
 async function discoverFromSitemap() {
   console.log('\nFetching Broadway.com sitemap for closed shows...');
 
+  // The main sitemap.xml is a sitemap index. The actual show URLs are in sitemap-shows.xml.
+  const sitemapUrl = 'https://www.broadway.com/sitemap-shows.xml';
+
   let xml;
-  // Try direct fetch first
-  const { data: rawXml } = await httpsGet('https://www.broadway.com/sitemap.xml');
+  // Try direct fetch first (sitemap-shows.xml is often not bot-challenged)
+  const { data: rawXml } = await httpsGet(sitemapUrl);
   if (!isBotChallenge(rawXml) && rawXml.includes('<url>')) {
     xml = rawXml;
   } else {
@@ -160,7 +163,7 @@ async function discoverFromSitemap() {
     if (sbKey) {
       console.log('  Sitemap bot-challenged, trying ScrapingBee...');
       try {
-        const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${sbKey}&url=${encodeURIComponent('https://www.broadway.com/sitemap.xml')}&render_js=false&premium_proxy=true`;
+        const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${sbKey}&url=${encodeURIComponent(sitemapUrl)}&render_js=false&premium_proxy=true`;
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 30000);
         const res = await fetch(apiUrl, { signal: controller.signal });
@@ -172,17 +175,6 @@ async function discoverFromSitemap() {
         }
       } catch (e) {
         console.log(`  ScrapingBee sitemap fetch failed: ${e.message}`);
-      }
-    }
-    // Fallback: try Playwright (may not work for XML but worth trying)
-    if (!xml || !xml.includes('/shows/')) {
-      console.log('  Trying Playwright for sitemap...');
-      try {
-        const result = await fetchPage('https://www.broadway.com/sitemap.xml', { renderJs: true });
-        xml = result?.content || '';
-      } catch (e) {
-        console.log(`  Sitemap fetch failed: ${e.message}`);
-        return [];
       }
     }
   }
